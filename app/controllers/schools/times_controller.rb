@@ -10,6 +10,7 @@ module Schools
       if @school.save(context: :school_times_update)
         redirect_to edit_school_times_path(@school), notice: 'School times updated'
       else
+        puts @school.errors.inspect
         render :edit
       end
     end
@@ -23,7 +24,7 @@ module Schools
 
     def school_params
       params.require(:school).permit(
-        school_times_attributes: [:id, :day, :opening_time, :closing_time, :term_time_only, :usage_type, :_destroy]
+        school_times_attributes: [:id, :day, :opening_time, :closing_time, :calendar_period, :usage_type, :_destroy]
       )
     end
   end

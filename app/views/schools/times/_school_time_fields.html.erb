@@ -24,9 +24,7 @@
           <% end %>
         </div>
         <div class="col-md-3 mb-3">
-          <div class="form-check">
-          <%= f.check_box :term_time_only, checked: f.object.term_time_only, class: 'form-check-input position-static' %>
-          </div>
+          <%= f.select :calendar_period, options_for_select(SchoolTime.calendar_periods.map {|key, value| [key.titleize, SchoolTime.calendar_periods.key(value)]}, f.object.calendar_period), {required: :true}, { class: 'form-control' } %>
         </div>
         <div class="col-md-2 mb-3">
           <%= link_to_remove_association 'Remove time', f, class: 'btn' %>
