@@ -75,8 +75,8 @@ class SchoolTime < ApplicationRecord
   end
 
   def no_overlaps
-    errors.add(:overlapping_time, 'community use periods cannot overlap the school day') if usage_type == "community_use" && overlaps_school_day?
-    errors.add(:overlapping_time, 'periods cannot overlap each other') if overlaps_other?
+    errors.add(:overlapping_time, 'Community use periods cannot overlap the school day') if usage_type == "community_use" && overlaps_school_day?
+    errors.add(:overlapping_time, 'Periods cannot overlap each other') if overlaps_other?
   end
 
   def to_analytics

@@ -50,6 +50,11 @@
         <%= render 'schools/times/school_time_fields', f: school_time %>
       <% end %>
       <div class="links">
+        <% if f.object.errors.has_key?(:"school_times.overlapping_time") %>
+          <div class="alert alert-danger mt-2">
+            <%= f.object.errors[:"school_times.overlapping_time"].join(", ") %>
+          </div>
+        <% end %>
         <%= link_to_add_association 'Add time', f, :school_times, partial: 'schools/times/school_time_fields', wrap_object: Proc.new{|time| time.usage_type=:community_use; time.community_use_defaults!; time}, class: 'btn' %>
         <%= f.submit 'Save community use times', class: 'btn btn-primary' %>
       </div>
