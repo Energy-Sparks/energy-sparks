@@ -46,15 +46,10 @@
 
   <%= form_for(@school, url: school_times_path(@school), html: {id: :community_use_form}) do |f| %>
     <div id="school-times">
-      <%= f.simple_fields_for :school_times, f.object.school_times.community_use.sort_by{|time| time.day ?  SchoolTime.days[time.day] : 99 } do |school_time| %>
+      <%= f.simple_fields_for :school_times, f.object.school_times.reject{|t| t.usage_type!='community_use'}.sort_by{|time| time.day ?  SchoolTime.days[time.day] : 99 } do |school_time| %>
         <%= render 'schools/times/school_time_fields', f: school_time %>
       <% end %>
-      <div class="links">
-        <% if f.object.errors.has_key?(:"school_times.overlapping_time") %>
-          <div class="alert alert-danger mt-2">
-            <%= f.object.errors[:"school_times.overlapping_time"].join(", ") %>
-          </div>
-        <% end %>
+      <div class="links mt-2">
         <%= link_to_add_association 'Add time', f, :school_times, partial: 'schools/times/school_time_fields', wrap_object: Proc.new{|time| time.usage_type=:community_use; time.community_use_defaults!; time}, class: 'btn' %>
         <%= f.submit 'Save community use times', class: 'btn btn-primary' %>
       </div>

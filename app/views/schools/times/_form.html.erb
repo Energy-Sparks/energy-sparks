@@ -27,7 +27,11 @@ Times should be entered in 24 hour format.
       </div>
 
       <div class="col-md-2 mb-3">
-        <%= ff.text_field :opening_time, value: format_school_time(ff.object.opening_time), id: "#{ff.object.day}-opening_time", class: 'form-control', pattern: "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" %>
+        <%= ff.text_field :opening_time,
+            value: format_school_time(ff.object.opening_time),
+            id: "#{ff.object.day}-opening_time",
+            class: "form-control" + (ff.object.errors.has_key?(:opening_time) ? ' is-invalid' : ''),
+            pattern: "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" %>
         <% if ff.object.errors.has_key?(:opening_time) %>
           <div class="alert alert-danger">
             <%= ff.object.errors.full_messages_for(:opening_time).join(', ') %>
@@ -35,7 +39,11 @@ Times should be entered in 24 hour format.
         <% end %>
       </div>
       <div class="col-md-2 mb-3">
-        <%= ff.text_field :closing_time, value: format_school_time(ff.object.closing_time), id: "#{ff.object.day}-closing_time", class: 'form-control', pattern: "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" %>
+        <%= ff.text_field :closing_time,
+            value: format_school_time(ff.object.closing_time),
+            id: "#{ff.object.day}-closing_time",
+              class: "form-control" + (ff.object.errors.has_key?(:closing_time) ? ' is-invalid' : ''),
+            pattern: "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" %>
         <% if ff.object.errors.has_key?(:closing_time) %>
           <div class="alert alert-danger">
             <%= ff.object.errors.full_messages_for(:closing_time).join(', ') %>
