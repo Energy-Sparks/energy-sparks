@@ -43,6 +43,8 @@ class SchoolTime < ApplicationRecord
   #School days must be term time
   validates_inclusion_of :calendar_period, in: ["term_times"], if: :school_day?
 
+  validate :closing_after_opening
+
   validate :no_overlaps
 
   scope :overlapping, ->(school, day, opening_time, closing_time, usage_type, calendar_period) {
@@ -75,8 +77,12 @@ class SchoolTime < ApplicationRecord
   end
 
   def no_overlaps
-    errors.add(:overlapping_time, 'community use periods cannot overlap the school day') if usage_type == "community_use" && overlaps_school_day?
-    errors.add(:overlapping_time, 'periods cannot overlap each other') if overlaps_other?
+    errors.add(:overlapping_time, 'Community use periods cannot overlap the school day') if usage_type == "community_use" && overlaps_school_day?
+    errors.add(:overlapping_time, 'Periods cannot overlap each other') if overlaps_other?
+  end
+
+  def closing_after_opening
+    errors.add(:closing_time, 'must be before opening time') if closing_time.present? && opening_time.present? && closing_time <= opening_time
   end
 
   def to_analytics
