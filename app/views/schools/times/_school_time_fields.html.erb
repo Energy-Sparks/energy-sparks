@@ -1,0 +1,33 @@
+  <div class="nested-fields">
+  <%= f.hidden_field :id, value: f.object.id %>
+      <div class="row">
+        <%= f.hidden_field :usage_type, value: "community_use" %>
+
+        <div class="col-md-3 mb-3">
+          <%= f.select :day, options_for_select(SchoolTime.days.map {|key, value| [key.titleize, SchoolTime.days.key(value)]}, f.object.day), {required: :true}, { class: 'form-control' } %>
+        </div>
+
+        <div class="col-md-2 mb-3">
+          <%= f.text_field :opening_time, value: format_school_time(f.object.opening_time), id: "#{f.object.day}-opening_time" %>
+          <% if f.object.school.errors.has_key?(:"school_times.opening_time") %>
+            <div class="alert alert-danger mt-2">
+              Opening time <%= f.object.school.errors[:"school_times.opening_time"].join(", ") %>
+            </div>
+          <% end %>
+        </div>
+        <div class="col-md-2 mb-3">
+          <%= f.text_field :closing_time, value: format_school_time(f.object.closing_time), id: "#{f.object.day}-closing_time" %>
+          <% if f.object.school.errors.has_key?(:"school_times.closing_time") %>
+            <div class="alert alert-danger mt-2">
+              Closing time <%= f.object.school.errors[:"school_times.closing_time"].join(", ") %>
+            </div>
+          <% end %>
+        </div>
+        <div class="col-md-3 mb-3">
+          <%= f.select :calendar_period, options_for_select(SchoolTime.calendar_periods.map {|key, value| [key.titleize, SchoolTime.calendar_periods.key(value)]}, f.object.calendar_period), {required: :true}, { class: 'form-control' } %>
+        </div>
+        <div class="col-md-2 mb-3">
+          <%= link_to_remove_association 'Remove time', f, class: 'btn' %>
+        </div>
+      </div>
+  </div>
