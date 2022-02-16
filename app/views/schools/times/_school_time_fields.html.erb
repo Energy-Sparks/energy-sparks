@@ -8,7 +8,7 @@
         </div>
 
         <div class="col-md-2 mb-3">
-          <%= f.text_field :opening_time, value: format_school_time(f.object.opening_time), id: "#{f.object.day}-opening_time" %>
+          <%= f.text_field :opening_time, value: format_school_time(f.object.opening_time), id: "#{f.object.day}-opening_time", class: 'form-control', pattern: "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" %>
           <% if f.object.school.errors.has_key?(:"school_times.opening_time") %>
             <div class="alert alert-danger mt-2">
               Opening time <%= f.object.school.errors[:"school_times.opening_time"].join(", ") %>
@@ -16,7 +16,7 @@
           <% end %>
         </div>
         <div class="col-md-2 mb-3">
-          <%= f.text_field :closing_time, value: format_school_time(f.object.closing_time), id: "#{f.object.day}-closing_time" %>
+          <%= f.text_field :closing_time, value: format_school_time(f.object.closing_time), id: "#{f.object.day}-closing_time", class: 'form-control', pattern: "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"  %>
           <% if f.object.school.errors.has_key?(:"school_times.closing_time") %>
             <div class="alert alert-danger mt-2">
               Closing time <%= f.object.school.errors[:"school_times.closing_time"].join(", ") %>
