@@ -3,7 +3,7 @@
 <%= form_for(@school, url: school_times_path(@school)) do |f| %>
   <%= render 'schools/times/form', f: f %>
   <div class="actions">
-    <%= f.submit 'Save changes', class: 'btn btn-primary' %>
+    <%= f.submit 'Save school times', class: 'btn btn-primary' %>
   </div>
 <% end %>
 
@@ -51,7 +51,7 @@
       <% end %>
       <div class="links">
         <%= link_to_add_association 'Add time', f, :school_times, partial: 'schools/times/school_time_fields', wrap_object: Proc.new{|time| time.usage_type=:community_use; time.community_use_defaults!; time}, class: 'btn' %>
-        <%= f.submit 'Save changes', class: 'btn btn-primary' %>
+        <%= f.submit 'Save community use times', class: 'btn btn-primary' %>
       </div>
     </div>
   <% end %>
