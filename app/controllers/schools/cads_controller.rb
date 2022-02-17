@@ -56,7 +56,7 @@ module Schools
     end
 
     def cad_params
-      params.require(:cad).permit(:name, :device_identifier, :max_power, :test_mode, :active, :refresh_interval)
+      params.require(:cad).permit(:name, :device_identifier, :max_power, :test_mode, :active, :refresh_interval, :meter_id)
     end
   end
 end

@@ -1,5 +1,6 @@
 <%= f.input :name %>
 <%= f.input :device_identifier %>
+<%= f.select :meter_id, options_from_collection_for_select(@school.meters.electricity.active, 'id', 'display_name', (@cad.meter.id if @cad.meter)), {include_blank: "Aggregate meter"}, { class: 'form-control' } %>
 <%= f.input :max_power, label: 'Maximum power (kW)' %>
 <%= f.input :refresh_interval, label: 'Refresh interval (seconds)' %>
 <%= f.input :test_mode %>
