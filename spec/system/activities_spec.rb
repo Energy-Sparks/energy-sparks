@@ -14,7 +14,7 @@ describe 'viewing and recording activities', type: :system do
 
   let!(:activity_type) { create(:activity_type, name: activity_type_name, activity_category: activity_category, description: activity_description, key_stages: [ks1], subjects: [subject], data_driven: activity_data_driven) }
 
-  let!(:school) { create_active_school(data_enabled: school_data_enabled) }
+  let(:school) { create_active_school(data_enabled: school_data_enabled) }
 
   context 'as a public user' do
 
@@ -179,6 +179,53 @@ describe 'viewing and recording activities', type: :system do
           click_on 'View your activity'
           expect(page.has_content?(activity_description)).to be true
           expect(page.has_content?(custom_title)).to be true
+        end
+      end
+
+      context 'on podium' do
+        context 'nil points' do
+          let!(:scoreboard)   { create :scoreboard }
+          before(:each) do
+            school.update!(scoreboard: scoreboard)
+          end
+          it 'records activity' do
+             visit activity_type_path(activity_type)
+             click_on 'Record this activity'
+             expect(find_field(:activity_happened_on).value).to eq Date.today.strftime("%d/%m/%Y")
+             click_on 'Save activity'
+             expect(page.has_content?("Congratulations! We've recorded your activity")).to be true
+          end
+        end
+        context 'with points' do
+          let!(:scoreboard)   { create :scoreboard }
+          let(:points)        { 10 }
+          let(:school)        { create :school, :with_points, score_points: points, scoreboard: scoreboard }
+
+          context 'in first place' do
+            it 'records activity' do
+              visit activity_type_path(activity_type)
+              click_on 'Record this activity'
+              expect(find_field(:activity_happened_on).value).to eq Date.today.strftime("%d/%m/%Y")
+              click_on 'Save activity'
+              expect(page.has_content?("Congratulations! We've recorded your activity")).to be true
+              expect(page.has_content?("You've just scored #{activity_type.score} points")).to be true
+              expect(page.has_content?("and your school is currently in 1st place")).to be true
+            end
+          end
+          context 'in second place' do
+            let!(:school_2) { create :school, :with_points, score_points: 1000, scoreboard: scoreboard }
+
+            it 'records activity' do
+              visit activity_type_path(activity_type)
+              click_on 'Record this activity'
+              expect(find_field(:activity_happened_on).value).to eq Date.today.strftime("%d/%m/%Y")
+              click_on 'Save activity'
+              expect(page.has_content?("Congratulations! We've recorded your activity")).to be true
+              expect(page.has_content?("You've just scored #{activity_type.score} points")).to be true
+              expect(page.has_content?("and your school is currently in 1st place")).to_not be true
+              expect(page.has_content?("to reach 1st place")).to be true
+            end
+          end
         end
       end
     end
