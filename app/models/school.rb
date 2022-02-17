@@ -7,7 +7,7 @@
 #  address                               :text
 #  bill_requested                        :boolean          default(FALSE)
 #  calendar_id                           :bigint(8)
-#  chart_preference                      :integer          default("default"), not null
+#  chart_preference                      :integer          default(0), not null
 #  cooks_dinners_for_other_schools       :boolean          default(FALSE), not null
 #  cooks_dinners_for_other_schools_count :integer
 #  cooks_dinners_onsite                  :boolean          default(FALSE), not null
@@ -161,7 +161,7 @@ class School < ApplicationRecord
 
   validates_associated :school_times, on: :school_time_update
 
-  accepts_nested_attributes_for :school_times
+  accepts_nested_attributes_for :school_times, reject_if: proc {|attributes| attributes['day'].blank? }, allow_destroy: true
 
   auto_strip_attributes :name, :website, :postcode, squish: true
 
@@ -459,6 +459,14 @@ class School < ApplicationRecord
 
   def consent_up_to_date?
     consent_grants.any? && consent_grants.by_date.first.consent_statement.current
+  end
+
+  def school_times_to_analytics
+    school_times.school_day.map(&:to_analytics)
+  end
+
+  def community_use_times_to_analytics
+    school_times.community_use.map(&:to_analytics)
   end
 
   private

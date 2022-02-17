@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_03_141419) do
+ActiveRecord::Schema.define(version: 2022_02_10_171719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1182,6 +1182,8 @@ ActiveRecord::Schema.define(version: 2022_02_03_141419) do
     t.integer "opening_time", default: 850
     t.integer "closing_time", default: 1520
     t.integer "day"
+    t.integer "usage_type", default: 0, null: false
+    t.integer "calendar_period", default: 0, null: false
     t.index ["school_id"], name: "index_school_times_on_school_id"
   end
 

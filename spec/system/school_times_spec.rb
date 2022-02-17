@@ -17,11 +17,11 @@ describe 'managing school times' do
     click_on 'Edit school times'
 
     fill_in 'monday-opening_time', with: ''
-    click_on 'Update school times'
+    click_on 'Save school times'
     expect(page).to have_content("Opening time can't be blank")
 
     fill_in 'monday-opening_time', with: '900'
-    click_on 'Update school times'
+    click_on 'Save school times'
 
     expect(school.school_times.where(day: :monday).first.opening_time).to eq(900)
 

@@ -1,0 +1,44 @@
+  <div class="nested-fields">
+  <%= f.hidden_field :id, value: f.object.id %>
+      <div class="row <%= f.object.errors.has_key?(:overlapping_time) ? 'pt-3 alert-danger' : '' %>">
+        <%= f.hidden_field :usage_type, value: "community_use" %>
+
+        <div class="col-md-3 mb-3">
+          <%= f.select :day, options_for_select(SchoolTime.days.map {|key, value| [key.titleize, SchoolTime.days.key(value)]}, f.object.day), {required: :true}, { class: 'form-control' } %>
+        </div>
+
+        <div class="col-md-2 mb-3">
+          <%= f.text_field :opening_time,
+              value: format_school_time(f.object.opening_time),
+              id: "#{f.object.day}-opening_time",
+              class: "form-control" + (f.object.errors.has_key?(:opening_time) ? ' is-invalid' : ''),
+              pattern: "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" %>
+          <% if f.object.errors.has_key?(:opening_time) %>
+            <div class="alert alert-danger mt-2">
+              <%= f.object.errors.full_messages_for(:opening_time).join(', ') %>
+            </div>
+          <% end %>
+        </div>
+        <div class="col-md-2 mb-3">
+          <%= f.text_field :closing_time,
+              value: format_school_time(f.object.closing_time),
+              id: "#{f.object.day}-closing_time",
+              class: "form-control" + (f.object.errors.has_key?(:closing_time) ? ' is-invalid' : ''),
+              pattern: "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"  %>
+          <% if f.object.errors.has_key?(:closing_time) %>
+            <div class="alert alert-danger mt-2">
+              <%= f.object.errors.full_messages_for(:closing_time).join(', ') %>
+            </div>
+          <% end %>
+        </div>
+        <div class="col-md-3 mb-3">
+          <%= f.select :calendar_period, options_for_select(SchoolTime.calendar_periods.map {|key, value| [key.titleize, SchoolTime.calendar_periods.key(value)]}, f.object.calendar_period), {required: :true}, { class: 'form-control' } %>
+        </div>
+        <div class="col-md-2 mb-3">
+          <%= link_to_remove_association 'Remove time', f, class: 'btn' %>
+        </div>
+        <% if f.object.errors.has_key?(:overlapping_time) %>
+          <div class="alert alert-danger" style="border: 0px;"><%= f.object.errors[:overlapping_time].join(", ") %></div>
+        <% end %>
+      </div>
+</div>

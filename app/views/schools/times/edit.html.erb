@@ -1,11 +1,57 @@
+<h1>School opening hours</h1>
+
 <%= form_for(@school, url: school_times_path(@school)) do |f| %>
-  <h2>School Times: <%= @school.name %></h2>
   <%= render 'schools/times/form', f: f %>
   <div class="actions">
-    <%= f.submit 'Update school times', class: 'btn btn-primary' %>
+    <%= f.submit 'Save school times', class: 'btn btn-primary' %>
   </div>
 <% end %>
 
-<div class="other-actions">
-  <%= link_to 'Back', school_path(@school), class: 'btn btn-secondary' %>
+<div class="row pt-3">
+  <div class="col">
+    <h1>Community use times</h1>
+  </div>
 </div>
+
+<div class="row">
+  <div class="col">
+  <p>
+    School premises are often used outside of school hours by your community. For example to host events, clubs or other private lettings.
+  </p>
+
+  <p>
+    Use the form below to add regular community use times at your school. We can use this information to provide extra insights into your energy usage outside of school hours.
+  </p>
+
+  <p>
+  Times should be entered in 24 hour format.
+  </p>
+  </div>
+</div>
+
+<div class="row pt-2">
+  <div class="col-md-3 mb-3">
+    <label for="day"><strong>Day</strong></label>
+  </div>
+  <div class="col-md-2 mb-3">
+    <label for="opening-time"><strong>Opening Time</strong></label>
+  </div>
+  <div class="col-md-2 mb-3">
+    <label for="closing-time"><strong>Closing Time</strong></label>
+  </div>
+  <div class="col-md-3 mb-3">
+    <label for="term-only"><strong>Time of year</strong></label>
+  </div>
+</div>
+
+  <%= form_for(@school, url: school_times_path(@school), html: {id: :community_use_form}) do |f| %>
+    <div id="school-times">
+      <%= f.simple_fields_for :school_times, f.object.school_times.reject{|t| t.usage_type!='community_use'}.sort_by{|time| time.day ?  SchoolTime.days[time.day] : 99 } do |school_time| %>
+        <%= render 'schools/times/school_time_fields', f: school_time %>
+      <% end %>
+      <div class="links mt-2">
+        <%= link_to_add_association 'Add time', f, :school_times, partial: 'schools/times/school_time_fields', wrap_object: Proc.new{|time| time.usage_type=:community_use; time.community_use_defaults!; time}, class: 'btn' %>
+        <%= f.submit 'Save community use times', class: 'btn btn-primary' %>
+      </div>
+    </div>
+  <% end %>
