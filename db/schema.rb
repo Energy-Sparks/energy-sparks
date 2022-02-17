@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_10_171719) do
+ActiveRecord::Schema.define(version: 2022_02_17_105735) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -526,6 +526,8 @@ ActiveRecord::Schema.define(version: 2022_02_10_171719) do
     t.boolean "test_mode", default: false
     t.float "max_power", default: 3.0
     t.integer "refresh_interval", default: 5
+    t.bigint "meter_id"
+    t.index ["meter_id"], name: "index_cads_on_meter_id"
     t.index ["school_id"], name: "index_cads_on_school_id"
   end
 
@@ -1551,6 +1553,7 @@ ActiveRecord::Schema.define(version: 2022_02_10_171719) do
   add_foreign_key "benchmark_result_school_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "benchmark_results", "alert_types", on_delete: :cascade
   add_foreign_key "benchmark_results", "benchmark_result_school_generation_runs", on_delete: :cascade
+  add_foreign_key "cads", "meters"
   add_foreign_key "cads", "schools", on_delete: :cascade
   add_foreign_key "calendar_events", "academic_years", on_delete: :restrict
   add_foreign_key "calendar_events", "calendar_event_types", on_delete: :restrict
