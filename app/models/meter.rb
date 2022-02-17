@@ -47,8 +47,8 @@ class Meter < ApplicationRecord
   has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :destroy
   has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy
 
-  has_many :tariff_prices,              inverse_of: :meter
-  has_many :tariff_standing_charges,    inverse_of: :meter
+  has_many :tariff_prices,              inverse_of: :meter, dependent: :destroy
+  has_many :tariff_standing_charges,    inverse_of: :meter, dependent: :destroy
 
   has_many :meter_attributes
 

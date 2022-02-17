@@ -116,7 +116,7 @@ class School < ApplicationRecord
   has_many :amr_validated_readings,       through: :meters
   has_many :alert_subscription_events,    through: :contacts
 
-  has_many :school_alert_type_exclusions
+  has_many :school_alert_type_exclusions, dependent: :destroy
   has_many :school_batch_runs
 
   belongs_to :calendar, optional: true
