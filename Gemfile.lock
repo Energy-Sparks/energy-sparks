@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 619f64b027a826289316c351595c0df0cc8b2340
-  branch: refactor-realtime-interface
+  revision: 5b16f87c1a8f3c02d9f499c66fba0a78a6406f32
+  tag: 1.30.3
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
