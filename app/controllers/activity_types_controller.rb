@@ -3,7 +3,11 @@ class ActivityTypesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show, :index]
 
   def index
-    @activity_types = @activity_types.includes(:activity_category).order("activity_categories.name", :name)
+    if params['query']
+      @activity_types = ActivityType.search(params['query'])
+    else
+      @activity_types = ActivityType.none
+    end
   end
 
   def show
