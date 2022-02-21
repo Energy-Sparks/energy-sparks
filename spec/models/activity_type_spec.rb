@@ -20,6 +20,19 @@ describe 'ActivityType' do
     expect( ActivityType.live_data ).to match_array([activity_type_1])
   end
 
+  context 'scoped by key stage' do
+    it 'filters activities by key stage' do
+      key_stage_1 = create(:key_stage, name: 'KeyStage1')
+      key_stage_2 = create(:key_stage, name: 'KeyStage2')
+      activity_type_1 =  create(:activity_type, name: 'KeyStage One', key_stages: [key_stage_1])
+      activity_type_2 =  create(:activity_type, name: 'KeyStage Two', key_stages: [key_stage_2])
+      activity_type_3 =  create(:activity_type, name: 'KeyStage One and Two', key_stages: [key_stage_1, key_stage_2])
+
+      expect(ActivityType.for_key_stages([key_stage_1])).to match_array([activity_type_1, activity_type_3])
+      expect(ActivityType.for_key_stages([key_stage_1]).search('KeyStage')).to match_array([activity_type_1, activity_type_3])
+    end
+  end
+
   context '#search' do
     it 'finds activities by name' do
       activity_type_1 =  create(:activity_type, name: 'foo')
