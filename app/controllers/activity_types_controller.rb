@@ -4,11 +4,15 @@ class ActivityTypesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show, :index]
 
   def index
-    key_stage1 = KeyStage.find_by_name('KS4')
-    key_stage2 = KeyStage.find_by_name('KS5')
-    subject = Subject.find_by_name('Citizenship')
     if params[:query]
-      @pagy, @activity_types = pagy(ActivityType.for_key_stages([key_stage1, key_stage2]).for_subject(subject).search(params[:query]))
+      query = ActivityType.search(params[:query])
+      if params[:key_stage]
+        query = query.for_key_stages([KeyStage.find_by_name(params[:key_stage])])
+      end
+      if params[:subject]
+        query = query.for_subject(Subject.find_by_name(params[:subject]))
+      end
+      @pagy, @activity_types = pagy(query)
     else
       @activity_types = ActivityType.none
     end
