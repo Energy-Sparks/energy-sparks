@@ -1,10 +1,11 @@
 class ActivityTypesController < ApplicationController
+  include Pagy::Backend
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:show, :index]
 
   def index
     if params['query']
-      @activity_types = ActivityType.search(params['query'])
+      @pagy, @activity_types = pagy(ActivityType.search(params['query']))
     else
       @activity_types = ActivityType.none
     end
