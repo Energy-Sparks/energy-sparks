@@ -4,8 +4,8 @@ class ActivityTypesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show, :index]
 
   def index
-    if params['query']
-      @pagy, @activity_types = pagy(ActivityType.search(params['query']))
+    if params[:query]
+      @pagy, @activity_types = pagy(ActivityType.search(params[:query]))
     else
       @activity_types = ActivityType.none
     end
