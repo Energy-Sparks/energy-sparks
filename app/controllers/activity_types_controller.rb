@@ -5,16 +5,10 @@ class ActivityTypesController < ApplicationController
 
   def index
     if params[:query]
-      query = ActivityType.search(params[:query])
-      if params[:key_stage]
-        query = query.for_key_stages([KeyStage.find_by_name(params[:key_stage])])
-      end
-      if params[:subject]
-        query = query.for_subject(Subject.find_by_name(params[:subject]))
-      end
-      @pagy, @activity_types = pagy(query)
+      activity_types = ActivityTypeSearchService.search(params[:query], key_stages, subjects)
+      @pagy, @activity_types = pagy(activity_types)
     else
-      @activity_types = ActivityType.none
+      @activity_types = []
     end
   end
 
@@ -45,6 +39,18 @@ class ActivityTypesController < ApplicationController
       interpolator.interpolate(:description).description
     else
       interpolator.interpolate(:school_specific_description_or_fallback).school_specific_description_or_fallback
+    end
+  end
+
+  def key_stages
+    if params[:key_stage]
+      KeyStage.where(name: params[:key_stage])
+    end
+  end
+
+  def subjects
+    if params[:subject]
+      Subject.where(name: params[:subject])
     end
   end
 end
