@@ -30,15 +30,15 @@
           <div class="col-md-11">
             <% KeyStage.by_name.each do |key_stage| %>
                 <span style="padding-right: 10px">
-                  <%= check_box_tag "key_stage[]", key_stage.name, @key_stages.include?(key_stage) %>
-                  <%= label_tag "key_stage[#{key_stage.id}]", key_stage.name %>
+                  <%= check_box_tag "key_stage[]", key_stage.name, @key_stages.include?(key_stage), id: "key_stage_#{key_stage.id}" %>
+                  <%= label_tag "key_stage_#{key_stage.id}", key_stage.name %>
                 </span>
             <% end %>
             <br/>
             <% Subject.by_name.each do |subject| %>
                 <span style="padding-right: 10px">
-                  <%= check_box_tag "subject[]", subject.name, @subjects.include?(subject) %>
-                  <%= label_tag "subject[#{subject.id}]", subject.name %>
+                  <%= check_box_tag "subject[]", subject.name, @subjects.include?(subject), id: "subject_#{subject.id}" %>
+                  <%= label_tag "subject_#{subject.id}", subject.name %>
                 </span>
             <% end %>
           </div>
