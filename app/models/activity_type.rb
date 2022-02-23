@@ -57,6 +57,8 @@ class ActivityType < ApplicationRecord
   scope :custom_last, -> { order(:custom) }
   scope :by_name, -> { order(name: :asc) }
   scope :live_data, -> { joins(:activity_category).merge(ActivityCategory.live_data) }
+  scope :for_key_stages, ->(key_stages) { joins(:key_stages).where(key_stages: { id: key_stages.map(&:id) }).distinct }
+  scope :for_subjects, ->(subjects) { joins(:subjects).where(subjects: { id: subjects.map(&:id) }).distinct }
 
   validates_presence_of :name, :activity_category_id, :score
   validates_uniqueness_of :name, scope: :activity_category_id

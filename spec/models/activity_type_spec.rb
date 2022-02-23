@@ -20,7 +20,7 @@ describe 'ActivityType' do
     expect( ActivityType.live_data ).to match_array([activity_type_1])
   end
 
-  context '#search' do
+  context 'search by query term' do
     it 'finds activities by name' do
       activity_type_1 =  create(:activity_type, name: 'foo')
       activity_type_2 =  create(:activity_type, name: 'bar')
@@ -28,65 +28,45 @@ describe 'ActivityType' do
       expect(ActivityType.search('foo')).to eq([activity_type_1])
       expect(ActivityType.search('bar')).to eq([activity_type_2])
     end
+  end
 
-    it 'finds activities by description' do
-      activity_type_1 =  create(:activity_type, description: 'foo')
-      activity_type_2 =  create(:activity_type, description: 'bar')
+  context 'scoped by key stage' do
+    it 'filters activities by key stage' do
+      key_stage_1 = create(:key_stage)
+      key_stage_2 = create(:key_stage)
+      activity_type_1 =  create(:activity_type, name: 'KeyStage One', key_stages: [key_stage_1])
+      activity_type_2 =  create(:activity_type, name: 'KeyStage Two', key_stages: [key_stage_2])
+      activity_type_3 =  create(:activity_type, name: 'KeyStage One and Two', key_stages: [key_stage_1, key_stage_2])
 
-      expect(ActivityType.search('foo')).to eq([activity_type_1])
-      expect(ActivityType.search('bar')).to eq([activity_type_2])
+      expect(ActivityType.for_key_stages([key_stage_1])).to match_array([activity_type_1, activity_type_3])
     end
 
-    it 'must match all words' do
-      activity_type_1 =  create(:activity_type, description: 'foo baz')
-      activity_type_2 =  create(:activity_type, description: 'bar baz')
+    it 'does not return duplicates' do
+      key_stage_1 = create(:key_stage)
+      key_stage_2 = create(:key_stage)
+      activity_type_1 =  create(:activity_type, name: 'foo one', key_stages: [key_stage_1, key_stage_2])
 
-      expect(ActivityType.search('foo bar')).to eq([])
-      expect(ActivityType.search('foo baz')).to eq([activity_type_1])
-      expect(ActivityType.search('baz')).to eq([activity_type_1, activity_type_2])
+      expect(ActivityType.for_key_stages([key_stage_1, key_stage_2]).count).to eq(1)
+    end
+  end
+
+  context 'scoped by subject' do
+    it 'filters activities by subject' do
+      subject_1 = create(:subject)
+      subject_2 = create(:subject)
+      activity_type_1 =  create(:activity_type, name: 'KeyStage One', subjects: [subject_1])
+      activity_type_2 =  create(:activity_type, name: 'KeyStage Two', subjects: [subject_2])
+      activity_type_3 =  create(:activity_type, name: 'KeyStage One and Two', subjects: [subject_1, subject_2])
+
+      expect(ActivityType.for_subjects([subject_1])).to match_array([activity_type_1, activity_type_3])
     end
 
-    it 'ignores school specific description' do
-      activity_type_1 =  create(:activity_type, description: 'foo', school_specific_description: 'foo bar')
-      activity_type_2 =  create(:activity_type, description: 'bar', school_specific_description: 'foo bar')
+    it 'does not return duplicates' do
+      subject_1 = create(:subject)
+      subject_2 = create(:subject)
+      activity_type_1 =  create(:activity_type, name: 'foo one', subjects: [subject_1, subject_2])
 
-      expect(ActivityType.search('foo')).to eq([activity_type_1])
-      expect(ActivityType.search('bar')).to eq([activity_type_2])
-    end
-
-    it 'ignores simple words' do
-      activity_type_1 =  create(:activity_type, name: 'foo and the stuff')
-      activity_type_2 =  create(:activity_type, name: 'bar and a thing')
-
-      expect(ActivityType.search('and')).to eq([])
-      expect(ActivityType.search('the')).to eq([])
-      expect(ActivityType.search('a')).to eq([])
-    end
-
-    it 'ignores html markup' do
-      activity_type_1 =  create(:activity_type, description: '<div>foo</div>')
-      activity_type_2 =  create(:activity_type, description: '<div>bar</div>')
-
-      expect(ActivityType.search('div')).to eq([])
-      expect(ActivityType.search('<div>')).to eq([])
-      expect(ActivityType.search('class')).to eq([])
-      expect(ActivityType.search('foo')).to eq([activity_type_1])
-      expect(ActivityType.search('bar')).to eq([activity_type_2])
-    end
-
-    it 'matches plurals' do
-      activity_type_1 =  create(:activity_type, name: 'a thing')
-      activity_type_2 =  create(:activity_type, name: 'some things')
-
-      expect(ActivityType.search('thing')).to eq([activity_type_1, activity_type_2])
-      expect(ActivityType.search('things')).to eq([activity_type_1, activity_type_2])
-    end
-
-    it 'does not match parts of words' do
-      activity_type_1 =  create(:activity_type, name: 'petrol')
-      activity_type_2 =  create(:activity_type, name: 'petroleum')
-
-      expect(ActivityType.search('petrol')).to eq([activity_type_1])
+      expect(ActivityType.for_subjects([subject_1, subject_2]).count).to eq(1)
     end
   end
 end
