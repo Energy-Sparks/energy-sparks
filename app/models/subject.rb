@@ -10,4 +10,5 @@
 
 class Subject < ApplicationRecord
   has_and_belongs_to_many :activity_types, join_table: :activity_type_subjects
+  scope :by_name, -> { order(name: :asc) }
 end
