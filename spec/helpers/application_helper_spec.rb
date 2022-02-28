@@ -98,4 +98,13 @@ describe ApplicationHelper do
       expect(helper.add_or_remove('KS1,KS2,KS3', 'KS2')).to eq('KS1,KS3')
     end
   end
+
+  describe 'activity_types_badge_class' do
+    it 'has the non-selected class' do
+      expect(helper.activity_types_badge_class('KS1, KS2', 'KS3', 'info')).to include('badge-light')
+    end
+    it 'has the selected class' do
+      expect(helper.activity_types_badge_class('KS1, KS2', 'KS1', 'info')).to include('badge-info')
+    end
+  end
 end
