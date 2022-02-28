@@ -45,7 +45,7 @@ Rails.application.routes.draw do
 
   resources :mailchimp_signups, only: [:new, :create, :index]
 
-  resources :activity_types, only: [:show]
+  resources :activity_types, only: [:index, :show]
   resources :activity_categories, only: [:index, :show] do
     collection do
       get :recommended

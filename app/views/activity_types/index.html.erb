@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>Find activities</h1>
+      <div>
+        <%= link_to 'All activities', activity_categories_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold'  %>
+        <%= link_to 'Adult activities', intervention_type_groups_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold'  %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <p>
+      Search for activities by keyword
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+      <%= form_tag activity_types_path, method: :get do %>
+        <%= text_field_tag :query, params[:query], class: 'form-control' %>
+        <br/>
+        <%= submit_tag "Search", class: "btn btn-primary" %>
+      <% end %>
+  </div>
+</div>
+
+<br/>
+<br/>
+
+<% if @activity_types.empty? %>
+  <% if params[:query] %>
+    <p>
+      No activities found
+    </p>
+  <% end %>
+<% else %>
+  <% @activity_types.each do |activity_type| %>
+    <%= render 'activity_types/activity_type', activity_type: activity_type, school: current_user_school %>
+  <% end %>
+
+  <br/>
+  <br/>
+
+  <div class="row justify-content-md-center">
+    <div class="col col-md-2">
+      <%== pagy_bootstrap_nav(@pagy) %>
+    </div>
+  </div>
+
+<% end %>

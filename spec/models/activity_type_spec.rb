@@ -37,6 +37,15 @@ describe 'ActivityType' do
       expect(ActivityType.search('bar')).to eq([activity_type_2])
     end
 
+    it 'must match all words' do
+      activity_type_1 =  create(:activity_type, description: 'foo baz')
+      activity_type_2 =  create(:activity_type, description: 'bar baz')
+
+      expect(ActivityType.search('foo bar')).to eq([])
+      expect(ActivityType.search('foo baz')).to eq([activity_type_1])
+      expect(ActivityType.search('baz')).to eq([activity_type_1, activity_type_2])
+    end
+
     it 'ignores school specific description' do
       activity_type_1 =  create(:activity_type, description: 'foo', school_specific_description: 'foo bar')
       activity_type_2 =  create(:activity_type, description: 'bar', school_specific_description: 'foo bar')
