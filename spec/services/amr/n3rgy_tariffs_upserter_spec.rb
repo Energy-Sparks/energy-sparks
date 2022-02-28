@@ -67,11 +67,14 @@ module Amr
       let!(:tariff_standing_charge_2) { create(:tariff_standing_charge, meter: meter, start_date: start_date - 1.day) }
 
       it "removes old prices and standing charges" do
+        expect( TariffPrice.count ).to eql 2
         expect( meter.tariff_prices.count ).to eql 2
         expect( meter.tariff_standing_charges.count ).to eql 2
         upserter.perform
         expect( meter.tariff_prices.count ).to eql 1
+        expect( TariffPrice.count ).to eql 1
         expect( meter.tariff_standing_charges.count ).to eql 1
+        expect( TariffStandingCharge.count ).to eql 1
         expect( meter.tariff_prices ).not_to include(tariff_price_1)
         expect( meter.tariff_prices ).not_to include(tariff_price_2)
         expect( meter.tariff_standing_charges ).not_to include(tariff_standing_charge_1)
