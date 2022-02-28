@@ -38,8 +38,9 @@ module Schools
     def live_data
       @cad = @school.cads.find(params[:cad_id])
       @reading = data_service(@cad).read
+      @power = Cads::RealtimePowerConsumptionService.read_consumption(@cad)
       respond_to do |format|
-        format.json { render json: { type: :electricity, units: :watts, value: @reading } }
+        format.json { render json: { type: :electricity, units: :watts, value: @reading, power: @power } }
         format.html { }
       end
     rescue => @error
@@ -56,7 +57,7 @@ module Schools
     end
 
     def cad_params
-      params.require(:cad).permit(:name, :device_identifier, :max_power, :test_mode, :active, :refresh_interval)
+      params.require(:cad).permit(:name, :device_identifier, :max_power, :test_mode, :active, :refresh_interval, :meter_id)
     end
   end
 end

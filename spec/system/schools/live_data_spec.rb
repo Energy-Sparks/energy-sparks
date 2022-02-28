@@ -5,6 +5,12 @@ RSpec.describe 'live data', type: :system do
   let!(:school)             { create(:school) }
   let!(:school_admin)       { create(:school_admin, school: school) }
 
+  let(:aggregate_school)    { double(:aggregate_school) }
+
+  before(:each) do
+    allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(aggregate_school)
+  end
+
   context 'with feature disabled' do
 
     before(:each) do
@@ -28,11 +34,13 @@ RSpec.describe 'live data', type: :system do
 
     before(:each) do
       allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+      allow(Cads::RealtimePowerConsumptionService).to receive(:cache_power_consumption_service)
     end
 
     context 'when not logged in' do
       it 'returns json data payload' do
         allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_return(123)
+        allow(Cads::RealtimePowerConsumptionService).to receive(:read_consumption).and_return(150)
 
         visit school_cad_live_data_path(school, school.cads.last, format: :json)
         data = JSON.parse(page.html)
@@ -40,6 +48,7 @@ RSpec.describe 'live data', type: :system do
         expect(data['type']).to eq('electricity')
         expect(data['units']).to eq('watts')
         expect(data['value']).to eq(123)
+        expect(data['power']).to eql(150)
       end
     end
 
@@ -104,6 +113,7 @@ RSpec.describe 'live data', type: :system do
 
       it 'returns json data payload' do
         allow_any_instance_of(Cads::LiveDataService).to receive(:read).and_return(123)
+        allow(Cads::RealtimePowerConsumptionService).to receive(:read_consumption).and_return(150)
 
         visit school_cad_live_data_path(school, school.cads.last, format: :json)
         data = JSON.parse(page.html)
@@ -111,6 +121,7 @@ RSpec.describe 'live data', type: :system do
         expect(data['type']).to eq('electricity')
         expect(data['units']).to eq('watts')
         expect(data['value']).to eq(123)
+        expect(data['power']).to eql(150)
       end
 
       it 'returns json error' do
