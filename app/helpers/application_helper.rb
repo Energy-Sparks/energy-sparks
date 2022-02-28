@@ -325,11 +325,7 @@ module ApplicationHelper
 
   def add_or_remove(list, item)
     arr = list ? list.split(',').map(&:strip) : []
-    if arr.include?(item)
-      arr.delete(item)
-    else
-      arr.append(item)
-    end
+    arr.include?(item) ? arr.delete(item) : arr.append(item)
     arr.join(',')
   end
 
