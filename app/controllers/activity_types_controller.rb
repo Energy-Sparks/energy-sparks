@@ -4,10 +4,13 @@ class ActivityTypesController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show, :index]
 
   def index
+    @key_stages = key_stages
+    @subjects = subjects
     if params[:query]
-      @pagy, @activity_types = pagy(ActivityType.search(params[:query]))
+      activity_types = ActivityTypeSearchService.search(params[:query], @key_stages, @subjects)
+      @pagy, @activity_types = pagy(activity_types)
     else
-      @activity_types = ActivityType.none
+      @activity_types = []
     end
   end
 
@@ -38,6 +41,22 @@ class ActivityTypesController < ApplicationController
       interpolator.interpolate(:description).description
     else
       interpolator.interpolate(:school_specific_description_or_fallback).school_specific_description_or_fallback
+    end
+  end
+
+  def key_stages
+    if params[:key_stage]
+      KeyStage.where(name: params[:key_stage])
+    else
+      []
+    end
+  end
+
+  def subjects
+    if params[:subject]
+      Subject.where(name: params[:subject])
+    else
+      []
     end
   end
 end

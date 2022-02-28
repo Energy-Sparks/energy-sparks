@@ -18,26 +18,52 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col">
-      <%= form_tag activity_types_path, method: :get do %>
-        <%= text_field_tag :query, params[:query], class: 'form-control' %>
-        <br/>
-        <%= submit_tag "Search", class: "btn btn-primary" %>
-      <% end %>
+<%= form_tag activity_types_path, method: :get do %>
+  <div class="row">
+    <div class="col-md-10">
+      <%= text_field_tag :query, params[:query], class: 'form-control' %>
+    </div>
+    <div class="col-md-2">
+      <%= submit_tag "Search", class: "btn btn-primary" %>
+    </div>
   </div>
-</div>
-
-<br/>
-<br/>
+  <br/>
+  <div class="row">
+    <div class="col">
+      <div class="row activity-type-filters">
+        <div class="col-md-2">
+          <p>Limit results shown</p>
+        </div>
+        <div class="col-md-10">
+          <% KeyStage.by_name.each do |key_stage| %>
+                  <span>
+                    <%= check_box_tag "key_stage[]", key_stage.name, @key_stages.include?(key_stage), id: "key_stage_#{key_stage.id}" %>
+                    <%= label_tag "key_stage_#{key_stage.id}", key_stage.name %>
+                  </span>
+          <% end %>
+          <br/>
+          <% Subject.by_name.each do |subject| %>
+                  <span>
+                    <%= check_box_tag "subject[]", subject.name, @subjects.include?(subject), id: "subject_#{subject.id}" %>
+                    <%= label_tag "subject_#{subject.id}", subject.name %>
+                  </span>
+          <% end %>
+        </div>
+      </div>
+      <br/>
+    </div>
+  </div>
+<% end %>
 
 <% if @activity_types.empty? %>
   <% if params[:query] %>
     <p>
-      No activities found
+      No results found
     </p>
   <% end %>
 <% else %>
+  <h4><%= "#{pluralize(@pagy.count, 'result')} found"  %></h4>
+  <br/>
   <% @activity_types.each do |activity_type| %>
     <%= render 'activity_types/activity_type', activity_type: activity_type, school: current_user_school %>
   <% end %>
@@ -47,7 +73,7 @@
 
   <div class="row justify-content-md-center">
     <div class="col col-md-2">
-      <%== pagy_bootstrap_nav(@pagy) %>
+      <%== pagy_bootstrap_nav(@pagy) if @pagy.count > @pagy.items %>
     </div>
   </div>
 
