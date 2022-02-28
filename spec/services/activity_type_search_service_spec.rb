@@ -11,6 +11,13 @@ describe ActivityTypeSearchService do
       expect(ActivityTypeSearchService.search('bar')).to eq([activity_type_2])
     end
 
+    it 'only finds active activity types' do
+      activity_type_1 =  create(:activity_type, name: 'foo baz', active: false)
+      activity_type_2 =  create(:activity_type, name: 'bar baz')
+
+      expect(ActivityTypeSearchService.search('baz')).to eq([activity_type_2])
+    end
+
     it 'finds activities by description' do
       activity_type_1 =  create(:activity_type, description: 'foo')
       activity_type_2 =  create(:activity_type, description: 'bar')
