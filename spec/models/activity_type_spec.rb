@@ -28,6 +28,13 @@ describe 'ActivityType' do
       expect(ActivityType.search('foo')).to eq([activity_type_1])
       expect(ActivityType.search('bar')).to eq([activity_type_2])
     end
+
+    it 'applies search variants' do
+      activity_type_1 =  create(:activity_type, name: 'time')
+      activity_type_2 =  create(:activity_type, name: 'timing')
+
+      expect(ActivityType.search('timing')).to eq([activity_type_1, activity_type_2])
+    end
   end
 
   context 'scoped by key stage' do
