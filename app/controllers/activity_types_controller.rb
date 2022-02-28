@@ -45,16 +45,16 @@ class ActivityTypesController < ApplicationController
   end
 
   def key_stages
-    if params[:key_stage]
-      KeyStage.where(name: params[:key_stage])
+    if params[:key_stages]
+      KeyStage.where(name: params[:key_stages].split(',').map(&:strip))
     else
       []
     end
   end
 
   def subjects
-    if params[:subject]
-      Subject.where(name: params[:subject])
+    if params[:subjects]
+      Subject.where(name: params[:subjects].split(',').map(&:strip))
     else
       []
     end

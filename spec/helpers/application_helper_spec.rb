@@ -83,4 +83,19 @@ describe ApplicationHelper do
       expect(helper.progress_as_percent(10, 0)).to eq(nil)
     end
   end
+
+  describe 'add_or_remove' do
+    it 'adds item when empty' do
+      expect(helper.add_or_remove(nil, 'KS1')).to eq('KS1')
+    end
+    it 'adds item to list' do
+      expect(helper.add_or_remove('KS1,KS2', 'KS3')).to eq('KS1,KS2,KS3')
+    end
+    it 'handles whitespace' do
+      expect(helper.add_or_remove(' KS1   , KS2', 'KS3')).to eq('KS1,KS2,KS3')
+    end
+    it 'removes item from list' do
+      expect(helper.add_or_remove('KS1,KS2,KS3', 'KS2')).to eq('KS1,KS3')
+    end
+  end
 end
