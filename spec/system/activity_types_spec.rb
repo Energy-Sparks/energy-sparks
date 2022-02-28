@@ -8,11 +8,20 @@ describe 'activity types', type: :system do
     let!(:activity_type_2) { create(:activity_type, name: 'bar', description: 'activity') }
 
     it 'links from activity categories page and shows empty page' do
-      visit activity_categories_path
-      click_on 'Search'
+      ClimateControl.modify FEATURE_FLAG_ACTIVITY_TYPE_SEARCH: 'true' do
+        visit activity_categories_path
+        click_on 'Search'
 
-      expect(page).to have_content('Find activities')
-      expect(page).not_to have_content('No results found')
+        expect(page).to have_content('Find activities')
+        expect(page).not_to have_content('No results found')
+      end
+    end
+
+    it 'link is feature flag controlled' do
+      ClimateControl.modify FEATURE_FLAG_ACTIVITY_TYPE_SEARCH: 'false' do
+        visit activity_categories_path
+        expect(page).not_to have_link('Search')
+      end
     end
 
     it 'links to activity categories page' do
