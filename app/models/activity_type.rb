@@ -26,6 +26,18 @@
 #
 
 class ActivityType < ApplicationRecord
+  include PgSearch::Model
+  pg_search_scope :search,
+                  against: [:name],
+                  associated_against: {
+                    rich_text_description: [:body]
+                  },
+                  using: {
+                    tsearch: {
+                      dictionary: 'english'
+                    }
+                  }
+
   belongs_to :activity_category
 
   has_one_attached :image

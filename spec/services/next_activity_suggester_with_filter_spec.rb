@@ -201,7 +201,7 @@ describe NextActivitySuggesterWithFilter do
 
     it 'suggests from an audit' do
       suggestions = subject.suggest_from_audits
-      expect(suggestions).to match audit.activity_types
+      expect(suggestions).to match_array(audit.activity_types)
     end
 
     it 'doesnt suggest if completed' do

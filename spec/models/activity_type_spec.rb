@@ -19,4 +19,65 @@ describe 'ActivityType' do
     activity_type_2 = create(:activity_type, activity_category: create(:activity_category, live_data: false))
     expect( ActivityType.live_data ).to match_array([activity_type_1])
   end
+
+  context '#search' do
+    it 'finds activities by name' do
+      activity_type_1 =  create(:activity_type, name: 'foo')
+      activity_type_2 =  create(:activity_type, name: 'bar')
+
+      expect(ActivityType.search('foo')).to eq([activity_type_1])
+      expect(ActivityType.search('bar')).to eq([activity_type_2])
+    end
+
+    it 'finds activities by description' do
+      activity_type_1 =  create(:activity_type, description: 'foo')
+      activity_type_2 =  create(:activity_type, description: 'bar')
+
+      expect(ActivityType.search('foo')).to eq([activity_type_1])
+      expect(ActivityType.search('bar')).to eq([activity_type_2])
+    end
+
+    it 'ignores school specific description' do
+      activity_type_1 =  create(:activity_type, description: 'foo', school_specific_description: 'foo bar')
+      activity_type_2 =  create(:activity_type, description: 'bar', school_specific_description: 'foo bar')
+
+      expect(ActivityType.search('foo')).to eq([activity_type_1])
+      expect(ActivityType.search('bar')).to eq([activity_type_2])
+    end
+
+    it 'ignores simple words' do
+      activity_type_1 =  create(:activity_type, name: 'foo and the stuff')
+      activity_type_2 =  create(:activity_type, name: 'bar and a thing')
+
+      expect(ActivityType.search('and')).to eq([])
+      expect(ActivityType.search('the')).to eq([])
+      expect(ActivityType.search('a')).to eq([])
+    end
+
+    it 'ignores html markup' do
+      activity_type_1 =  create(:activity_type, description: '<div>foo</div>')
+      activity_type_2 =  create(:activity_type, description: '<div>bar</div>')
+
+      expect(ActivityType.search('div')).to eq([])
+      expect(ActivityType.search('<div>')).to eq([])
+      expect(ActivityType.search('class')).to eq([])
+      expect(ActivityType.search('foo')).to eq([activity_type_1])
+      expect(ActivityType.search('bar')).to eq([activity_type_2])
+    end
+
+    it 'matches plurals' do
+      activity_type_1 =  create(:activity_type, name: 'a thing')
+      activity_type_2 =  create(:activity_type, name: 'some things')
+
+      expect(ActivityType.search('thing')).to eq([activity_type_1, activity_type_2])
+      expect(ActivityType.search('things')).to eq([activity_type_1, activity_type_2])
+    end
+
+    it 'does not match parts of words' do
+      activity_type_1 =  create(:activity_type, name: 'petrol')
+      activity_type_2 =  create(:activity_type, name: 'petroleum')
+
+      expect(ActivityType.search('petrol')).to eq([activity_type_1])
+    end
+  end
 end
