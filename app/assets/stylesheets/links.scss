@@ -27,6 +27,12 @@ a.nav-link.active {
   outline: none;
 }
 
+a.badge.outline {
+  outline: solid;
+  outline-width: 1px;
+  outline-color: lightgray;
+}
+
 .btn,
 .btn:hover,
 .btn:focus,

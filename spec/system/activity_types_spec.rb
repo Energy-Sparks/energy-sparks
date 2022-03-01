@@ -92,32 +92,32 @@ describe 'activity types', type: :system do
 
       it 'finds result with key stage filter' do
         fill_in 'query', with: 'baz'
-        check key_stage_1.name
         click_on 'Search'
+        click_on key_stage_1.name
         expect(page).to have_content('baz one')
         expect(page).not_to have_content('baz two')
       end
 
       it 'shows result count' do
         fill_in 'query', with: 'baz'
-        check key_stage_1.name
         click_on 'Search'
+        click_on key_stage_1.name
         expect(page).to have_content('1 result found')
       end
 
       it 'finds result with subject filter' do
         fill_in 'query', with: 'baz'
-        check subject_1.name
         click_on 'Search'
+        click_on subject_1.name
         expect(page).to have_content('baz one')
         expect(page).not_to have_content('baz two')
       end
 
       it 'finds none if key stage and subject filtered' do
         fill_in 'query', with: 'baz'
-        check key_stage_1.name
-        check subject_2.name
         click_on 'Search'
+        click_on key_stage_1.name
+        click_on subject_2.name
         expect(page).to have_content('No results found')
       end
     end
