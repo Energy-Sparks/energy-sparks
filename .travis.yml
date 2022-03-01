@@ -32,3 +32,4 @@ script:
 - bundle exec rails webpacker:compile
 - script/test-data-pipeline.sh
 - bundle exec rspec
+
