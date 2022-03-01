@@ -107,4 +107,19 @@ describe ApplicationHelper do
       expect(helper.activity_types_badge_class('KS1, KS2', 'KS1', 'info')).to include('badge-info')
     end
   end
+
+  describe '.file_type_icon' do
+    it 'renders a spreadsheet icon' do
+      expect(helper.file_type_icon('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')).to include('<i')
+      expect(helper.file_type_icon('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')).to include('file-excel')
+    end
+    it 'renders a doc icon' do
+      expect(helper.file_type_icon('application/vnd.openxmlformats-officedocument.wordprocessingml.document')).to include('<i')
+      expect(helper.file_type_icon('application/vnd.openxmlformats-officedocument.wordprocessingml.document')).to include('file-word')
+    end
+    it 'renders a download icon' do
+      expect(helper.file_type_icon('image/vnd.dwg')).to include('<i')
+      expect(helper.file_type_icon('image/vnd.dwg')).to include('file-download')
+    end
+  end
 end
