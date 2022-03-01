@@ -25,7 +25,6 @@ The application uses Ruby on Rails.
 Read the [developer guide](https://github.com/Energy-Sparks/energy-sparks/wiki/Setting-up-a-developer-environment) in the wiki for how to get started and the CONTRIBUTING.md guidelines.
 
 
-
 ## Browser testing provided by:
 
 [![Browserstack](https://raw.githubusercontent.com/Energy-Sparks/energy-sparks/master/markdown_pages/browserstack-logo.png)](https://www.browserstack.com/)
