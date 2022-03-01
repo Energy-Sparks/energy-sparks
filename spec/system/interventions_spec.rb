@@ -8,7 +8,7 @@ describe 'viewing and recording action', type: :system do
 
   let!(:intervention_type){ create :intervention_type, title: title, summary: summary, description: description }
 
-  let!(:school) { create_active_school() }
+  let(:school) { create_active_school() }
 
   context 'as a public user' do
 
