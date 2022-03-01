@@ -339,4 +339,15 @@ module ApplicationHelper
   def activity_types_badge_class(list, item, color = 'info')
     list && list.include?(item) ? "badge badge-#{color}" : "badge badge-light outline"
   end
+
+  def file_type_icon(type)
+    icon = if type.match?(/spreadsheet/)
+             fa_icon('file-excel')
+           elsif type.match?(/word/)
+             fa_icon('file-word')
+           else
+             fa_icon('file-download')
+           end
+    icon.html_safe
+  end
 end
