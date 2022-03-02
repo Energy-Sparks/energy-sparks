@@ -127,7 +127,10 @@ $(document).ready(function() {
     var timestamp = (new Date()).toLocaleTimeString();
     var maxVal = chart.yAxis[0].max;
     chart.series[0].setData(getData(reading, maxVal));
-    chart.setTitle(null, { text: subtitleWithMessage(reading, power, timestamp) });
+    chart.setTitle(null, { text: subtitleWithMessage(reading, timestamp) });
+    if ($("#typical-consumption").length && power) {
+      $("#typical-consumption").text("Your school's normal average consumption at this time is " + power + " kW");
+    }
   }
 
   function updateFailure(chart) {
@@ -166,8 +169,8 @@ $(document).ready(function() {
     $('#live-data-timeout-modal').modal();
   }
 
-  function subtitleWithMessage(value, power, timestamp) {
-    return (value / 1000) + " kW<br/><div class='live-data-subtitle'>Estimated: " + power + " kW<br>Last updated: " + timestamp + "</div>";
+  function subtitleWithMessage(value, timestamp) {
+    return (value / 1000) + " kW<br/><div class='live-data-subtitle'>Last updated: " + timestamp + "</div>";
   }
 
   $('#live-data-timeout-modal').on('hidden.bs.modal', function () {
