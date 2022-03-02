@@ -61,7 +61,7 @@ RSpec.describe 'live data', type: :system do
       end
 
       it 'lets me view live data' do
-        expect(page).to have_content("Your live energy data")
+        expect(page).to have_content("Your live electricity data")
         expect(page).to have_content("Understanding your data consumption")
       end
 
@@ -90,7 +90,7 @@ RSpec.describe 'live data', type: :system do
           expect(page).to have_content("Live energy data")
           click_link "Live energy data"
         end
-        expect(page).to have_content("Your live energy data")
+        expect(page).to have_content("Your live electricity data")
       end
 
       it 'returns html with reading' do
