@@ -98,6 +98,18 @@ describe 'activity types', type: :system do
         expect(page).not_to have_content('baz two')
       end
 
+      it 'keeps filters for next search' do
+        fill_in 'query', with: 'baz'
+        click_on 'Search'
+        click_on key_stage_1.name
+        expect(page).to have_content('baz one')
+        expect(page).not_to have_content('baz two')
+        fill_in 'query', with: 'baz'
+        click_on 'Search'
+        expect(page).to have_content('baz one')
+        expect(page).not_to have_content('baz two')
+      end
+
       it 'shows result count' do
         fill_in 'query', with: 'baz'
         click_on 'Search'
