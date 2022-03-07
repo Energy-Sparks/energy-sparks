@@ -15,6 +15,7 @@
     <tr>
       <th scope="col">Name</th>
       <th scope="col">Device identifier</th>
+      <th scope="col">Meter</th>
       <th scope="col">Max power</th>
       <th scope="col">Test mode?</th>
       <th scope="col">Refresh interval</th>
@@ -27,6 +28,7 @@
         <tr>
           <td><%= cad.name %></td>
           <td><%= cad.device_identifier %></td>
+          <td><%= cad.meter.display_name if cad.meter.present? %></td>
           <td><%= cad.max_power %> kW</td>
           <td><%= y_n(cad.test_mode) %></td>
           <td><%= cad.refresh_interval %> secs</td>

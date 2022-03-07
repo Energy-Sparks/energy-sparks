@@ -8,7 +8,7 @@ describe 'viewing and recording action', type: :system do
 
   let!(:intervention_type){ create :intervention_type, title: title, summary: summary, description: description }
 
-  let!(:school) { create_active_school() }
+  let(:school) { create_active_school() }
 
   context 'as a public user' do
 
@@ -127,6 +127,55 @@ describe 'viewing and recording action', type: :system do
         observation = school.observations.intervention.first
         expect(observation.intervention_type).to eq(intervention_type)
         expect(observation.at.to_date).to eq(Date.new(2019, 7, 1))
+      end
+
+      context 'on podium' do
+        context 'nil points' do
+          let!(:scoreboard)   { create :scoreboard }
+          before(:each) do
+            school.update!(scoreboard: scoreboard)
+          end
+          it 'records action' do
+            click_on 'Record this action'
+            fill_in_trix with: 'We changed to a more efficient boiler'
+            fill_in 'observation_at', with: '01/07/2019'
+            click_on 'Record action'
+            expect(page).to have_content("Congratulations! We've recorded your action")
+          end
+        end
+        context 'with points' do
+          let!(:scoreboard)   { create :scoreboard }
+          let(:points)        { 10 }
+          let(:school)        { create :school, :with_points, score_points: points, scoreboard: scoreboard }
+
+          context 'in first place' do
+            it 'records action' do
+              click_on 'Record this action'
+              fill_in_trix with: 'We changed to a more efficient boiler'
+              fill_in 'observation_at', with: '01/07/2019'
+              click_on 'Record action'
+              expect(page).to have_content("Congratulations! We've recorded your action")
+              expect(page).to have_content("You've just scored #{intervention_type.points} points")
+              expect(page).to have_content("You've recorded 1 action so far this year")
+              expect(page).to have_content("and your school is currently in 1st place")
+            end
+          end
+          context 'in second place' do
+            let!(:school_2) { create :school, :with_points, score_points: 1000, scoreboard: scoreboard }
+
+            it 'records action' do
+              click_on 'Record this action'
+              fill_in_trix with: 'We changed to a more efficient boiler'
+              fill_in 'observation_at', with: '01/07/2019'
+              click_on 'Record action'
+              expect(page).to have_content("Congratulations! We've recorded your action")
+              expect(page).to have_content("You've just scored #{intervention_type.points} points")
+              expect(page).to have_content("You've recorded 1 action so far this year")
+              expect(page).not_to have_content("and your school is currently in 1st place")
+              expect(page).to have_content("to reach 1st place")
+            end
+          end
+        end
       end
     end
 

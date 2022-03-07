@@ -570,7 +570,25 @@ describe School do
       school.update!(visible: true, data_enabled: false)
       expect(School.awaiting_activation).to match_array([school])
     end
+  end
 
+  context 'with school times' do
+    let(:school){ create :school, visible: true, data_enabled: true }
+
+    let!(:school_day) { create(:school_time, school: school, day: :tuesday, usage_type: :school_day, opening_time: 815, closing_time: 1520)}
+
+    let!(:community_use) { create(:school_time, school: school, day: :monday, usage_type: :community_use, opening_time: 1800, closing_time: 2030)}
+
+    it 'serialises school day' do
+      times = school.school_times_to_analytics
+      expect(times.length).to eq 1
+      expect(times[0][:day]).to eql :tuesday
+    end
+    it 'serialises community_use' do
+      times = school.community_use_times_to_analytics
+      expect(times.length).to eq 1
+      expect(times[0][:day]).to eql :monday
+    end
   end
 
   describe 'with activities' do

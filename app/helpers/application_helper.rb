@@ -132,6 +132,11 @@ module ApplicationHelper
     boolean ? 'bg-success' : 'bg-danger'
   end
 
+  def spinner_icon
+    content_class = "fa fa-spinner fa-spin"
+    content_tag(:i, nil, class: content_class)
+  end
+
   def icon(style, name)
     content_class = "#{style} fa-#{name}"
     content_tag(:i, nil, class: content_class)
@@ -321,5 +326,33 @@ module ApplicationHelper
       utm_medium: "email",
       utm_campaign: campaign
     }
+  end
+
+  def add_or_remove(list, item)
+    arr = list ? list.split(',').map(&:strip) : []
+    arr.include?(item) ? arr.delete(item) : arr.append(item)
+    arr.join(',')
+  end
+
+  def activity_types_search_link(params, key_stage, subject)
+    query = params[:query]
+    key_stages = params[:key_stages]
+    subjects = params[:subjects]
+    search_activity_types_path(query: query, key_stages: add_or_remove(key_stages, key_stage), subjects: add_or_remove(subjects, subject))
+  end
+
+  def activity_types_badge_class(list, item, color = 'info')
+    list && list.include?(item) ? "badge badge-#{color}" : "badge badge-light outline"
+  end
+
+  def file_type_icon(type)
+    icon = if type.match?(/spreadsheet/)
+             fa_icon('file-excel')
+           elsif type.match?(/word/)
+             fa_icon('file-word')
+           else
+             fa_icon('file-download')
+           end
+    icon.html_safe
   end
 end

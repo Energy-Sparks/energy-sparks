@@ -1,9 +1,17 @@
 class ActivityTypesController < ApplicationController
+  include Pagy::Backend
   load_and_authorize_resource
-  skip_before_action :authenticate_user!, only: [:show, :index]
+  skip_before_action :authenticate_user!, only: [:show, :search]
 
-  def index
-    @activity_types = @activity_types.includes(:activity_category).order("activity_categories.name", :name)
+  def search
+    @key_stages = key_stages
+    @subjects = subjects
+    if params[:query]
+      activity_types = ActivityTypeSearchService.search(params[:query], @key_stages, @subjects)
+      @pagy, @activity_types = pagy(activity_types)
+    else
+      @activity_types = []
+    end
   end
 
   def show
@@ -33,6 +41,22 @@ class ActivityTypesController < ApplicationController
       interpolator.interpolate(:description).description
     else
       interpolator.interpolate(:school_specific_description_or_fallback).school_specific_description_or_fallback
+    end
+  end
+
+  def key_stages
+    if params[:key_stages]
+      KeyStage.where(name: params[:key_stages].split(',').map(&:strip))
+    else
+      []
+    end
+  end
+
+  def subjects
+    if params[:subjects]
+      Subject.where(name: params[:subjects].split(',').map(&:strip))
+    else
+      []
     end
   end
 end

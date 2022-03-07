@@ -83,4 +83,50 @@ describe ApplicationHelper do
       expect(helper.progress_as_percent(10, 0)).to eq(nil)
     end
   end
+
+  describe 'add_or_remove' do
+    it 'adds item when empty' do
+      expect(helper.add_or_remove(nil, 'KS1')).to eq('KS1')
+    end
+    it 'adds item to list' do
+      expect(helper.add_or_remove('KS1,KS2', 'KS3')).to eq('KS1,KS2,KS3')
+    end
+    it 'handles whitespace' do
+      expect(helper.add_or_remove(' KS1   , KS2', 'KS3')).to eq('KS1,KS2,KS3')
+    end
+    it 'removes item from list' do
+      expect(helper.add_or_remove('KS1,KS2,KS3', 'KS2')).to eq('KS1,KS3')
+    end
+  end
+
+  describe 'activity_types_badge_class' do
+    it 'has the non-selected class' do
+      expect(helper.activity_types_badge_class('KS1, KS2', 'KS3', 'info')).to include('badge-light')
+    end
+    it 'has the selected class' do
+      expect(helper.activity_types_badge_class('KS1, KS2', 'KS1', 'info')).to include('badge-info')
+    end
+  end
+
+  describe '.file_type_icon' do
+    it 'renders a spreadsheet icon' do
+      expect(helper.file_type_icon('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')).to include('<i')
+      expect(helper.file_type_icon('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')).to include('file-excel')
+    end
+    it 'renders a doc icon' do
+      expect(helper.file_type_icon('application/vnd.openxmlformats-officedocument.wordprocessingml.document')).to include('<i')
+      expect(helper.file_type_icon('application/vnd.openxmlformats-officedocument.wordprocessingml.document')).to include('file-word')
+    end
+    it 'renders a download icon' do
+      expect(helper.file_type_icon('image/vnd.dwg')).to include('<i')
+      expect(helper.file_type_icon('image/vnd.dwg')).to include('file-download')
+    end
+  end
+
+  describe '.spinner_icon' do
+    it 'renders a spinner icon' do
+      expect(helper.spinner_icon).to include('<i')
+      expect(helper.spinner_icon).to include('fa-spinner fa-spin')
+    end
+  end
 end

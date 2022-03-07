@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center">
-  <h1>Your live energy data</h1>
+  <h1>Your live electricity data</h1>
   <div>
     <%= link_to_help_for_feature :live_data, css: "btn btn-outline-dark rounded-pill font-weight-bold" %>
   </div>
@@ -8,8 +8,21 @@
 <%= render "gauge", school: @school, cad: @school.cads.last, fuel_type: :electricity, timeout_interval: @timeout_interval %>
 
 <div class="row">
+  <div class="col-md-12 d-flex justify-content-center align-self-center">
+      <p id="typical-consumption"></p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12 d-flex justify-content-center align-self-center">
+    <p>What can you switch off to reduce your consumption below your normal use?</p>
+  </div>
+</div>
+
+
+<div class="row mt-4">
   <div class="col">
-    <h3>Understanding your data consumption</h3>
+    <h3>Understanding your energy consumption</h3>
   </div>
 </div>
 
