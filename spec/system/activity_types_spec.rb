@@ -12,7 +12,7 @@ describe 'activity types', type: :system do
         visit activity_categories_path
         click_on 'Search'
 
-        expect(page).to have_content('Find activities')
+        expect(page).to have_content('Find pupil activities')
         expect(page).not_to have_content('No results found')
       end
     end
@@ -29,6 +29,13 @@ describe 'activity types', type: :system do
       click_on 'All activities'
 
       expect(page).to have_content('Explore energy saving activities')
+    end
+
+    it 'links to interventions page' do
+      visit activity_types_path
+      click_on 'Adult actions'
+
+      expect(page).to have_content('Explore energy saving actions')
     end
 
     it 'shows search results' do
