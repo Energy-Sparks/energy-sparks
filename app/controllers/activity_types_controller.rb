@@ -1,9 +1,9 @@
 class ActivityTypesController < ApplicationController
   include Pagy::Backend
   load_and_authorize_resource
-  skip_before_action :authenticate_user!, only: [:show, :index]
+  skip_before_action :authenticate_user!, only: [:show, :search]
 
-  def index
+  def search
     @key_stages = key_stages
     @subjects = subjects
     if params[:query]
