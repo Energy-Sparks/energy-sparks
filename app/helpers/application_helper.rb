@@ -338,7 +338,7 @@ module ApplicationHelper
     query = params[:query]
     key_stages = params[:key_stages]
     subjects = params[:subjects]
-    activity_types_path(query: query, key_stages: add_or_remove(key_stages, key_stage), subjects: add_or_remove(subjects, subject))
+    search_activity_types_path(query: query, key_stages: add_or_remove(key_stages, key_stage), subjects: add_or_remove(subjects, subject))
   end
 
   def activity_types_badge_class(list, item, color = 'info')

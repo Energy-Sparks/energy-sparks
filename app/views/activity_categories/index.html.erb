@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-between align-items-center">
       <p class="display-3"><strong>Explore energy saving activities</strong></p>
       <% if EnergySparks::FeatureFlags.active?(:activity_type_search) %>
-        <%= link_to 'Search', activity_types_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+        <%= link_to 'Search', search_activity_types_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
       <% end %>
     </div>
   </div>

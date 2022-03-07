@@ -18,7 +18,7 @@
   </div>
 </div>
 
-<%= form_tag activity_types_path, method: :get do %>
+<%= form_tag search_activity_types_path, method: :get do %>
   <div class="row">
     <div class="col-md-10">
       <%= text_field_tag :query, params[:query], class: 'form-control' %>

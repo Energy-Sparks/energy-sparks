@@ -25,21 +25,21 @@ describe 'activity types', type: :system do
     end
 
     it 'links to activity categories page' do
-      visit activity_types_path
+      visit search_activity_types_path
       click_on 'All activities'
 
       expect(page).to have_content('Explore energy saving activities')
     end
 
     it 'links to interventions page' do
-      visit activity_types_path
+      visit search_activity_types_path
       click_on 'Adult actions'
 
       expect(page).to have_content('Explore energy saving actions')
     end
 
     it 'shows search results' do
-      visit activity_types_path
+      visit search_activity_types_path
       fill_in 'query', with: 'foo'
       click_on 'Search'
 
@@ -48,7 +48,7 @@ describe 'activity types', type: :system do
 
     it 'paginates search results' do
       Pagy::DEFAULT[:items] = 1
-      visit activity_types_path
+      visit search_activity_types_path
       fill_in 'query', with: 'activity'
       click_on 'Search'
 
@@ -65,7 +65,7 @@ describe 'activity types', type: :system do
     end
 
     it 'shows no results' do
-      visit activity_types_path
+      visit search_activity_types_path
       fill_in 'query', with: 'blah'
       click_on 'Search'
 
@@ -81,7 +81,7 @@ describe 'activity types', type: :system do
       let!(:activity_type_2) { create(:activity_type, name: 'baz two', key_stages: [key_stage_2], subjects: [subject_2]) }
 
       before :each do
-        visit activity_types_path
+        visit search_activity_types_path
       end
 
       it 'finds all with no filter' do
