@@ -3,7 +3,7 @@ cache:
   directories:
   - node_modules
   yarn: false
-  bundler: true`
+  bundler: true
 env:
   global:
   - NODE_ENV=test
@@ -32,4 +32,3 @@ script:
 - bundle exec rails webpacker:compile
 - script/test-data-pipeline.sh
 - bundle exec rspec
-
