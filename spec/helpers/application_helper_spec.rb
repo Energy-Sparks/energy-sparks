@@ -122,4 +122,11 @@ describe ApplicationHelper do
       expect(helper.file_type_icon('image/vnd.dwg')).to include('file-download')
     end
   end
+
+  describe '.spinner_icon' do
+    it 'renders a spinner icon' do
+      expect(helper.spinner_icon).to include('<i')
+      expect(helper.spinner_icon).to include('fa-spinner fa-spin')
+    end
+  end
 end

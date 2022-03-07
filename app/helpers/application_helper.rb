@@ -132,6 +132,11 @@ module ApplicationHelper
     boolean ? 'bg-success' : 'bg-danger'
   end
 
+  def spinner_icon
+    content_class = "fa fa-spinner fa-spin"
+    content_tag(:i, nil, class: content_class)
+  end
+
   def icon(style, name)
     content_class = "#{style} fa-#{name}"
     content_tag(:i, nil, class: content_class)

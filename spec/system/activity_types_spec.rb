@@ -12,7 +12,7 @@ describe 'activity types', type: :system do
         visit activity_categories_path
         click_on 'Search'
 
-        expect(page).to have_content('Find activities')
+        expect(page).to have_content('Find pupil activities')
         expect(page).not_to have_content('No results found')
       end
     end
@@ -29,6 +29,13 @@ describe 'activity types', type: :system do
       click_on 'All activities'
 
       expect(page).to have_content('Explore energy saving activities')
+    end
+
+    it 'links to interventions page' do
+      visit activity_types_path
+      click_on 'Adult actions'
+
+      expect(page).to have_content('Explore energy saving actions')
     end
 
     it 'shows search results' do
@@ -94,6 +101,18 @@ describe 'activity types', type: :system do
         fill_in 'query', with: 'baz'
         click_on 'Search'
         click_on key_stage_1.name
+        expect(page).to have_content('baz one')
+        expect(page).not_to have_content('baz two')
+      end
+
+      it 'keeps filters for next search' do
+        fill_in 'query', with: 'baz'
+        click_on 'Search'
+        click_on key_stage_1.name
+        expect(page).to have_content('baz one')
+        expect(page).not_to have_content('baz two')
+        fill_in 'query', with: 'baz'
+        click_on 'Search'
         expect(page).to have_content('baz one')
         expect(page).not_to have_content('baz two')
       end
