@@ -18,6 +18,9 @@ Disallow: /pupils/schools/*/analysis
 Disallow: /benchmark
 Disallow: /all_benchmarks
 Disallow: /users/sign_in
+Disallow: /activity_types/
+
+Allow: /activity_types/*
 
 User-agent: SemrushBot
 Disallow: /
