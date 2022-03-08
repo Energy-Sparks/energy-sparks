@@ -169,6 +169,23 @@ module Amr
         end
         FakeFS.activate!
       end
+
+      it 'record exception when file is invalid' do
+        FakeFS.deactivate!
+          ClimateControl.modify AMR_CONFIG_LOCAL_FILE_BUCKET_PATH: 'spec/fixtures' do
+          expect(AmrDataFeedReading.count).to be 0
+
+          e = StandardError.new
+          expect_any_instance_of(Amr::CsvToAmrReadingData).to receive(:perform).and_raise(e)
+
+          importer = CsvParserAndUpserter.new(highlands_config, 'empty.csv')
+          expect { importer.perform }.to raise_error StandardError
+
+          expect(AmrDataFeedReading.count).to be 0
+          expect(importer.inserted_record_count).to be 0
+        end
+        FakeFS.activate!
+      end
     end
 
     context 'sheffield' do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_17_105735) do
+ActiveRecord::Schema.define(version: 2022_03_08_152432) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -457,7 +457,7 @@ ActiveRecord::Schema.define(version: 2022_02_17_105735) do
     t.bigint "activity_type_id", null: false
     t.integer "position", default: 0, null: false
     t.text "notes"
-    t.index ["audit_id", "activity_type_id"], name: "audit_activity_type_uniq", unique: true
+    t.index ["audit_id"], name: "index_audit_activity_types_on_audit_id"
   end
 
   create_table "audit_intervention_types", force: :cascade do |t|
@@ -465,7 +465,7 @@ ActiveRecord::Schema.define(version: 2022_02_17_105735) do
     t.bigint "intervention_type_id", null: false
     t.integer "position", default: 0, null: false
     t.text "notes"
-    t.index ["audit_id", "intervention_type_id"], name: "audit_intervention_type_uniq", unique: true
+    t.index ["audit_id"], name: "index_audit_intervention_types_on_audit_id"
   end
 
   create_table "audits", force: :cascade do |t|

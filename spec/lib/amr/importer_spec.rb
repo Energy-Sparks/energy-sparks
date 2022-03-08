@@ -31,4 +31,19 @@ describe Amr::Importer do
     subject.send(:get_file_from_s3, thing_name)
     expect(File.read("#{config.local_bucket_path}/#{thing_name}")).to eq 'meter-readings!'
   end
+
+  it 'logs error to Rollbar' do
+    bucket = { key => { body: 'meter-readings!' }}
+    s3_client.stub_responses(:get_object, -> (context) {
+      obj = bucket[context.params[:key]]
+      obj || 'NoSuchKey'
+    })
+
+    FileUtils.mkdir_p config.local_bucket_path
+
+    e = StandardError.new
+    expect_any_instance_of(Amr::CsvParserAndUpserter).to receive(:perform).and_raise(e)
+    expect(Rollbar).to receive(:error).with(e, job: :import_all, config: thing_prefix, file_name: thing_name)
+    subject.import_all
+  end
 end

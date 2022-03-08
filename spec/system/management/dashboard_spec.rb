@@ -153,7 +153,10 @@ describe 'Management dashboard' do
             run_on: Date.today, school: school,
             rating: 9.0,
             template_data: {
-              average_capital_cost: '£2,000'
+              average_one_year_saving_gbp: '£5,000',
+              average_capital_cost: '£2,000',
+              one_year_saving_co2: '9,400 kg CO2',
+              average_payback_years: '0 days'
             }
           )
         end
@@ -166,6 +169,9 @@ describe 'Management dashboard' do
           visit management_school_path(school)
           expect(page).to have_content('Spending too much money on heating')
           expect(page).to have_content('£2,000')
+          expect(page).to have_content('£5,000')
+          expect(page).to have_content('9,400 kg CO2')
+          expect(page).to_not have_content('0 days')
         end
 
         it 'displays energy saving target prompt' do

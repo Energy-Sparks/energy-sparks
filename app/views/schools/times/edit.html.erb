@@ -1,5 +1,11 @@
 <h1>School opening hours</h1>
 
+<div class="alert alert-warning">
+<p>
+Please note that while we will immediately save any changes made to your school opening hours or community use times, any of our energy analysis that relies on these time periods will only update overnight.
+</p>
+</div>
+
 <%= form_for(@school, url: school_times_path(@school)) do |f| %>
   <%= render 'schools/times/form', f: f %>
   <div class="actions">

@@ -8,7 +8,7 @@ gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.
 gem 'bootsnap'
 gem 'rack-canonical-host' # Redirect www to root
 gem 'webpacker'
-gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 1.12"
 
 # Bumped from 4.3.9 for ElasticBeanstalk platform upgrade
 gem 'puma', '5.5.2' # Use Puma as the app server
@@ -23,7 +23,7 @@ gem 'closed_struct'
 gem 'pg_search'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.30.3'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.30.4'
 #gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'refactor-realtime-interface'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 

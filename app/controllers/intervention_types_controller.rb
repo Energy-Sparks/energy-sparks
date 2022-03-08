@@ -1,9 +1,16 @@
 class InterventionTypesController < ApplicationController
+  include Pagy::Backend
   load_and_authorize_resource
 
-  skip_before_action :authenticate_user!, only: [:index, :show]
+  skip_before_action :authenticate_user!, only: [:search, :show]
 
-  def index
+  def search
+    if params[:query]
+      intervention_types = InterventionTypeSearchService.search(params[:query])
+      @pagy, @intervention_types = pagy(intervention_types)
+    else
+      @intervention_types = []
+    end
   end
 
   def show
