@@ -1396,6 +1396,15 @@ ActiveRecord::Schema.define(version: 2022_03_10_143919) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "transport_surveys", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.date "run_on", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["run_on"], name: "index_transport_surveys_on_run_on", unique: true
+    t.index ["school_id"], name: "index_transport_surveys_on_school_id"
+  end
+
   create_table "transport_types", force: :cascade do |t|
     t.string "name", null: false
     t.string "image", null: false
@@ -1668,6 +1677,7 @@ ActiveRecord::Schema.define(version: 2022_03_10_143919) do
   add_foreign_key "subscription_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade
+  add_foreign_key "transport_surveys", "schools", on_delete: :cascade
   add_foreign_key "user_tariff_charges", "user_tariffs", on_delete: :cascade
   add_foreign_key "user_tariff_prices", "user_tariffs", on_delete: :cascade
   add_foreign_key "users", "school_groups", on_delete: :restrict
