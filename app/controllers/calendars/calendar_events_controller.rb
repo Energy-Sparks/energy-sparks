@@ -2,6 +2,8 @@ class Calendars::CalendarEventsController < ApplicationController
   load_and_authorize_resource :calendar
   load_and_authorize_resource through: :calendar
 
+  include Wisper::Publisher
+
   # GET /calendars
   def index
     academic_year_ids = @calendar.calendar_events.pluck(:academic_year_id).uniq.sort_by(&:to_i).reject(&:nil?)
@@ -19,6 +21,7 @@ class Calendars::CalendarEventsController < ApplicationController
   # POST /calendars
   def create
     if @calendar_event.save
+      broadcast(:calendar_edited, @calendar)
       redirect_to @calendar, notice: 'Calendar Event was successfully created.'
     else
       render :new
@@ -27,6 +30,7 @@ class Calendars::CalendarEventsController < ApplicationController
 
   def update
     if HolidayFactory.new(@calendar).with_neighbour_updates(@calendar_event, calendar_event_params)
+      broadcast(:calendar_edited, @calendar)
       redirect_to calendar_path(@calendar), notice: 'Event was successfully updated.'
     else
       render :edit

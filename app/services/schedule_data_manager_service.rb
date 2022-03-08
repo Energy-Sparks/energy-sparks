@@ -2,18 +2,25 @@ require 'dashboard'
 
 class ScheduleDataManagerService
   def initialize(school)
-    @calendar_id = school.calendar_id
+    @calendar = school.calendar
     @solar_pv_tuos_area_id = school.solar_pv_tuos_area_id
     @dark_sky_area_id = school.dark_sky_area_id
     @weather_station_id = school.weather_station_id
   end
 
+  def self.invalidate_cached_calendar(calendar)
+    Rails.cache.delete(self.calendar_cache_key(calendar))
+  end
+
+  def self.calendar_cache_key(calendar)
+    "#{calendar.id}-holidays"
+  end
+
   def holidays
-    cache_key = "#{@calendar_id}-holidays"
-    @holidays ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+    @holidays ||= Rails.cache.fetch(self.class.calendar_cache_key(@calendar), expires_in: 3.hours) do
       hol_data = HolidayData.new
 
-      Calendar.find(@calendar_id).outside_term_time.order(:start_date).includes(:academic_year, :calendar_event_type).map do |holiday|
+      Calendar.find(@calendar.id).outside_term_time.order(:start_date).includes(:academic_year, :calendar_event_type).map do |holiday|
         academic_year = nil # Not really being used at the moment by the analytics code
 
         analytics_holiday = Holiday.new(
