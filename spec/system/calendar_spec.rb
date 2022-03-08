@@ -50,7 +50,6 @@ RSpec.describe "calendar view", type: :system do
     let!(:school)           { create_active_school }
     let!(:school_admin)     { create(:school_admin, school: school) }
     let!(:school_calendar) do
-
       cal = CalendarFactory.new(existing_calendar: calendar, title: 'New calendar', calendar_type: :school).create
       cal.schools << school
       cal
@@ -69,6 +68,8 @@ RSpec.describe "calendar view", type: :system do
      first('input#calendar_event_end_date', visible: false).set('17/08/2018')
 
      click_on 'Create Calendar event'
+     #check for the page load to be complete, to avoid race condition with the event being generated
+     expect(page).to have_content("This calendar is allocated to the following schools")
     end
 
     it 'allows them to add an event to their calendar' do
