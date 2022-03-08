@@ -19,11 +19,17 @@ module Amr
         activation_date: @active_record_school.activation_date,
         created_at: @active_record_school.created_at,
         school_times: @active_record_school.school_times_to_analytics,
-        community_use_times: @active_record_school.community_use_times_to_analytics
+        community_use_times: @active_record_school.community_use_times_to_analytics,
+        location: location,
+        data_enabled: @active_record_school.data_enabled
       }
     end
 
   private
+
+    def location
+      [@active_record_school.latitude, @active_record_school.longitude]
+    end
 
     def floor_area
       @active_record_school.floor_area.to_f
