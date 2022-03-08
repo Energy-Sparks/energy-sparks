@@ -69,7 +69,7 @@ RSpec.describe "calendar view", type: :system do
 
      click_on 'Create Calendar event'
      #check for the page load to be complete, to avoid race condition with the event being generated
-     expect(page).to have_content("This calendar is allocated to the following schools")
+     expect(page).to have_content("Calendar Event was successfully created.")
     end
 
     it 'allows them to add an event to their calendar' do
