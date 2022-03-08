@@ -8,7 +8,7 @@ module Schools
     def update
       @school.attributes = school_params
       if @school.save(context: :school_times_update)
-        redirect_to edit_school_times_path(@school), notice: 'School times have been updated'
+        redirect_to edit_school_times_path(@school), notice: 'School times have been updated.'
       else
         render :edit
       end
