@@ -30,6 +30,18 @@ describe Audit do
     expect( audit.audit_intervention_types.last.notes ).to eq('some intervention type')
   end
 
+  it 'allows duplicate activity types and intervention types' do
+    audit = create(:audit)
+    audit.audit_activity_types.create(activity_type: activity_type)
+    audit.audit_activity_types.create(activity_type: activity_type)
+    audit.audit_intervention_types.create(intervention_type: intervention_type)
+    audit.audit_intervention_types.create(intervention_type: intervention_type)
+    expect(audit.activity_types.count).to eq(2)
+    expect(audit.activity_types.uniq.count).to eq(1)
+    expect(audit.intervention_types.count).to eq(2)
+    expect(audit.intervention_types.uniq.count).to eq(1)
+  end
+
   context 'when using factory' do
     it 'creates audit with multiple activities and interventions' do
       audit = create(:audit, :with_activity_and_intervention_types)
