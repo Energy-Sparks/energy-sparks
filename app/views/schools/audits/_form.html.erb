@@ -10,7 +10,8 @@
   <h2>Report</h2>
 
   <% if audit.file.attached? %>
-    <%= link_to 'Current file', url_for(@audit.file), target: '_blank' %>
+    Current file: <%= link_to @audit.file.filename, url_for(@audit.file), target: '_blank' %>
+    <%= f.hidden_field :file, value: f.object.file.signed_id %>
   <% else %>
     No file attached yet
   <% end %>
@@ -18,7 +19,7 @@
   <br/>
   <br/>
 
-  <%= f.input :file, label: false %>
+  <%= f.file_field :file, direct_upload: true, label: false %>
 
   <br/>
   <br/>
@@ -49,7 +50,7 @@
   </div>
 
   <div id="audit-activity-types">
-    <%= f.simple_fields_for :audit_activity_types, @audit.audit_activity_types.by_name do |audit_activity_type| %>
+    <%= f.simple_fields_for :audit_activity_types, @audit.audit_activity_types do |audit_activity_type| %>
       <%= render 'audit_activity_type_fields', f: audit_activity_type %>
     <% end %>
     <div class="links">
@@ -84,7 +85,7 @@
   </div>
 
   <div id="audit-intervention-types">
-    <%= f.simple_fields_for :audit_intervention_types, @audit.audit_intervention_types.by_title do |audit_intervention_type| %>
+    <%= f.simple_fields_for :audit_intervention_types, @audit.audit_intervention_types do |audit_intervention_type| %>
       <%= render 'audit_intervention_type_fields', f: audit_intervention_type %>
     <% end %>
     <div class="links">
