@@ -8,7 +8,7 @@ gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.
 gem 'bootsnap'
 gem 'rack-canonical-host' # Redirect www to root
 gem 'webpacker'
-gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 1.12"
 
 # Bumped from 4.3.9 for ElasticBeanstalk platform upgrade
 gem 'puma', '5.5.2' # Use Puma as the app server
