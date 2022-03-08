@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'activity types', type: :system do
 
-  context 'activity types index page' do
+  context 'activity types search page' do
 
     let!(:activity_type_1) { create(:activity_type, name: 'foo', description: 'activity') }
     let!(:activity_type_2) { create(:activity_type, name: 'bar', description: 'activity') }
