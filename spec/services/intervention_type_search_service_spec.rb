@@ -18,7 +18,7 @@ describe InterventionTypeSearchService do
       expect(InterventionTypeSearchService.search('baz')).to eq([intervention_type_2])
     end
 
-    it 'finds activities by description' do
+    it 'finds interventions by description' do
       intervention_type_1 = create(:intervention_type, description: 'foo')
       intervention_type_2 = create(:intervention_type, description: 'bar')
 
