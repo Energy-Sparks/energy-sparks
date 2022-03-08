@@ -4,6 +4,7 @@
 //= require jquery
 //= require jquery_ujs
 
+// to support active storage direct upload
 //= require activestorage
 
 // Popper is a requirement for bootstrap and is included either in the bootstrap gem
