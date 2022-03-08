@@ -39,6 +39,8 @@ describe Amr::Importer do
       obj || 'NoSuchKey'
     })
 
+    FileUtils.mkdir_p config.local_bucket_path
+
     e = StandardError.new
     expect_any_instance_of(Amr::CsvParserAndUpserter).to receive(:perform).and_raise(e)
     expect(Rollbar).to receive(:error).with(e, job: :import_all, config: thing_prefix, file_name: thing_name)
