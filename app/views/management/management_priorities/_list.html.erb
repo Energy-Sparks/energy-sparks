@@ -3,9 +3,9 @@
     <thead>
       <tr>
         <th scope="col" class="h4"></th>
-        <th scope="col">Potential saving</th>
-        <th scope="col">Cost</th>
-        <th scope="col">Payback</th>
+        <th scope="col">Cost saving<br>per year</th>
+        <th scope="col">Reduced emissions<br>per year</th>
+        <th scope="col">Delivery cost<br>&nbsp;</th>
         <th scope="col"></th>
       </tr>
     </thead>
@@ -19,9 +19,9 @@
               Priority: <%= priority.priority %>
             <% end %>
           </td>
-          <td><%= priority.template_variables[:average_one_year_saving_gbp] %> <small>/year</small></td>
+          <td><%= priority.template_variables[:average_one_year_saving_gbp] %></td>
+          <td><%= priority.template_variables[:one_year_saving_co2] %><br></td>
           <td><%= priority.template_variables[:average_capital_cost] %></td>
-          <td><%= priority.template_variables[:average_payback_years] %></td>
           <td>
             <% if priority.find_out_more %>
               <%= link_to 'Find out more', school_find_out_more_path(school, priority.find_out_more), class: 'btn btn-rounded btn-fixed-width-10' %>
