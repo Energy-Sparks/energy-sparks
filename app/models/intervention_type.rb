@@ -20,6 +20,18 @@
 #
 
 class InterventionType < ApplicationRecord
+  include PgSearch::Model
+  pg_search_scope :search,
+                  against: [:title],
+                  associated_against: {
+                    rich_text_description: [:body]
+                  },
+                  using: {
+                    tsearch: {
+                      dictionary: 'english'
+                    }
+                  }
+
   belongs_to :intervention_type_group
   has_many :observations
 
