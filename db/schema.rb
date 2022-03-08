@@ -1396,6 +1396,17 @@ ActiveRecord::Schema.define(version: 2022_03_10_143919) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "transport_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "image", null: false
+    t.decimal "kg_co2e_per_km", default: "0.0", null: false
+    t.decimal "speed_km_per_hour", default: "0.0", null: false
+    t.string "note"
+    t.boolean "can_share", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "user_tariff_charges", force: :cascade do |t|
     t.bigint "user_tariff_id", null: false
     t.text "charge_type", null: false
