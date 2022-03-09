@@ -55,23 +55,6 @@ RSpec.describe "calendar view", type: :system do
       cal
     end
 
-    it 'generates an event' do
-     expect_any_instance_of(CalendarEventListener).to receive(:calendar_edited).with(school.calendar)
-
-     sign_in(school_admin)
-     visit school_path(school)
-
-     click_on('School calendar')
-     click_on('Add Event to calendar')
-     fill_in 'Title', with: 'Calendar event'
-     first('input#calendar_event_start_date', visible: false).set('16/08/2018')
-     first('input#calendar_event_end_date', visible: false).set('17/08/2018')
-
-     click_on 'Create Calendar event'
-     #check for the page load to be complete, to avoid race condition with the event being generated
-     expect(page).to have_content("Calendar Event was successfully created.")
-    end
-
     it 'allows them to add an event to their calendar' do
       calendar_event_count = CalendarEvent.count
 

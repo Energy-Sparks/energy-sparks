@@ -39,6 +39,7 @@ class Calendars::CalendarEventsController < ApplicationController
 
   def destroy
     @calendar_event.destroy
+    broadcast(:calendar_edited, @calendar)
     redirect_to calendar_path(@calendar), notice: 'Event was successfully deleted.'
   end
 
