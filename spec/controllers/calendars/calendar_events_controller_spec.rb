@@ -30,7 +30,7 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
       post :create, params: { calendar_id: calendar.id, calendar_event: valid_attributes }
       expect(response).to redirect_to(calendar_path(calendar))
     end
-    it 'broadcasts calendar changed' do
+    xit 'broadcasts calendar changed' do
       expect_any_instance_of(CalendarEventListener).to receive(:calendar_edited).with(calendar)
       post :create, params: { calendar_id: calendar.id, calendar_event: valid_attributes }
     end
@@ -51,7 +51,7 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
       expect(event.title).to eql(new_attributes[:title])
     end
 
-    it 'broadcasts calendar changed' do
+    xit 'broadcasts calendar changed' do
       expect_any_instance_of(CalendarEventListener).to receive(:calendar_edited).with(event.calendar)
       put :update, params: {calendar_id: event.calendar.id, id: event.to_param, calendar_event: new_attributes}
       event.reload
@@ -67,7 +67,7 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
       }.to change(CalendarEvent, :count).by(-1)
     end
 
-    it 'broadcasts event' do
+    xit 'broadcasts event' do
       expect_any_instance_of(CalendarEventListener).to receive(:calendar_edited).with(event.calendar)
       expect {
         delete :destroy, params: { calendar_id: event.calendar.id, id: event.to_param }
