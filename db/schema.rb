@@ -1396,6 +1396,19 @@ ActiveRecord::Schema.define(version: 2022_03_10_143919) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "transport_survey_responses", force: :cascade do |t|
+    t.bigint "transport_survey_id", null: false
+    t.bigint "transport_type_id", null: false
+    t.string "device_identifier", null: false
+    t.datetime "surveyed_at", null: false
+    t.integer "journey_minutes", default: 0, null: false
+    t.integer "weather", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["transport_survey_id"], name: "index_transport_survey_responses_on_transport_survey_id"
+    t.index ["transport_type_id"], name: "index_transport_survey_responses_on_transport_type_id"
+  end
+
   create_table "transport_surveys", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.date "run_on", null: false
@@ -1677,6 +1690,8 @@ ActiveRecord::Schema.define(version: 2022_03_10_143919) do
   add_foreign_key "subscription_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade
+  add_foreign_key "transport_survey_responses", "transport_surveys", on_delete: :cascade
+  add_foreign_key "transport_survey_responses", "transport_types"
   add_foreign_key "transport_surveys", "schools", on_delete: :cascade
   add_foreign_key "user_tariff_charges", "user_tariffs", on_delete: :cascade
   add_foreign_key "user_tariff_prices", "user_tariffs", on_delete: :cascade

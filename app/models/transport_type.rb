@@ -15,5 +15,6 @@
 class TransportType < ApplicationRecord
   validates :name, :image, :speed_km_per_hour, :kg_co2e_per_km, :can_share, presence: true
   validates :kg_co2e_per_km, :speed_km_per_hour, numericality: { greater_than_or_equal_to: 0 }
-  validates_uniqueness_of :name
+  validates :name, uniqueness: true
+
 end

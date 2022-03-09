@@ -15,11 +15,12 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (school_id => schools.id)
+#  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
 class TransportSurvey < ApplicationRecord
   belongs_to :school
 
-  validates_uniqueness_of :run_on, scope: :school_id
+  validates :run_on, :school_id, presence: true
+  validates :run_on, uniqueness: { scope: :school_id }
 
 end
