@@ -3,7 +3,7 @@ div#ui-datepicker-div {
 }
 
 div.calendar-legend {
-    padding-bottom: 50px;
+    padding-top: 10px;
     align-content: center;
 
     .legend-scale ul {
@@ -18,7 +18,7 @@ div.calendar-legend {
         width: 175px;
         margin-bottom: 6px;
         text-align: center;
-        font-size: 120%;
+        font-size: 100%;
         list-style: none;
     }
     .legend-scale.vertical ul li {

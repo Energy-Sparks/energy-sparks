@@ -1,31 +1,42 @@
-<h1>Calendar: <%= @calendar.title %></h1>
-<p><%= link_to 'All calendars', admin_calendars_path if can? :index, Calendar %></p>
+<% content_for :page_title, "#{@calendar.title} Calendar" %>
 
-<% if @calendar.regional? %>
-  <p>This calendar is a regional calendar, it currently has <%= School.joins(:calendar).where('calendars.based_on_id = ?', @calendar.id).count %> dependent schools and <%= @calendar.calendars.count %> calendars which are dependent.</p>
-<% end %>
-
-<% if @calendar.national? %>
-  <p>This calendar is a national calendar, it currently has <%= @calendar.calendars.count %> calendars which are directly dependent.</p>
-<% end %>
-
-<% if @calendar.schools.any? %>
-  <h3>This calendar is allocated to the following schools:</h3>
-  <ul>
-    <% @calendar.schools.each do |school| %>
-      <li><%= link_to school.name, school_path(school) %></li>
+<div class="d-flex justify-content-between align-items-center">
+  <h1><%= @calendar.title %> Calendar </h1>
+  <div>
+    <% if can?(:index, Calendar) %>
+      <%= link_to "All calendars", admin_calendars_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
     <% end %>
-  </ul>
-<% end %>
-<% unless @calendar.based_on.nil? %>
-  <% if can?(:manage, :parent_calendars) %>
-    <p>And is based on: <%= link_to "#{@calendar.based_on.title} calendar", calendar_path(@calendar.based_on) %></p>
-  <% else %>
-    <p>And is based on: <%= @calendar.based_on.title %>, which the Energy Sparks administrator can edit.</p>
+  </div>
+</div>
+
+<% if current_user.admin? %>
+<div class="mb-2 alert alert-secondary">
+  <% if @calendar.regional? %>
+    <p>This calendar is a regional calendar, it currently has <%= School.joins(:calendar).where('calendars.based_on_id = ?', @calendar.id).count %> dependent schools and <%= @calendar.calendars.count %> calendars which are dependent.</p>
   <% end %>
+
+  <% if @calendar.national? %>
+    <p>This calendar is a national calendar, it currently has <%= @calendar.calendars.count %> calendars which are directly dependent.</p>
+  <% end %>
+
+  <% if @calendar.schools.any? %>
+    <p>This calendar is allocated to the following schools:</p>
+    <ul>
+      <% @calendar.schools.each do |school| %>
+        <li><%= link_to school.name, school_path(school) %></li>
+      <% end %>
+    </ul>
+  <% end %>
+  <% unless @calendar.based_on.nil? %>
+    <% if can?(:manage, :parent_calendars) %>
+      <p>This calendar is based on the <%= link_to "#{@calendar.based_on.title} #{@calendar.based_on.calendar_type} calendar", calendar_path(@calendar.based_on) %></p>
+    <% else %>
+      <p>This calendar is based on the <%= @calendar.based_on.title %> <%= @calendar.based_on.calendar_type %> calendar which is maintained by Energy Sparks.</p>
+    <% end %>
+  <% end %>
+</div>
 <% end %>
 
-<h3>This calendar is editable</h3>
 <p>You can amend the events, like the term times by clicking on them, updating the dates and saving the changes. You can also add a new event, like an inset day for example by clicking on the 'Add Event to calendar' button</p>
 
 <p><%= link_to 'Add Event to calendar', new_calendar_calendar_event_path(@calendar), class: 'btn btn-primary' %></p>
@@ -33,18 +44,20 @@
 <p>You can switch to a list view, which also allows you to delete events here</p>
 <p><%= link_to 'List view', calendar_calendar_events_path(@calendar), class: 'btn btn-success' %></p>
 
-<%= render 'legend' %>
-
 <div id="calendar" class="calendar"></div>
+
+<%= render 'legend' %>
 
 <%= render 'event_modal' %>
 
-<% if School.joins(:calendar).where('calendars.based_on_id = ?', @calendar.id).any? %>
-  <h3>Dependent Schools</h3>
-  <p>These schools all have their own calendar, based on this one.</p>
-  <ul>
-    <% School.joins(:calendar).where('calendars.based_on_id = ?', @calendar.id).each do | school| %>
-      <li><%= link_to school.name, calendar_path(school.calendar) %></li>
-    <% end %>
-  </ul>
+<% if current_user.admin? %>
+  <% if School.joins(:calendar).where('calendars.based_on_id = ?', @calendar.id).any? %>
+    <h3>Dependent Schools</h3>
+    <p>These schools all have their own calendar, based on this one.</p>
+    <ul>
+      <% School.joins(:calendar).where('calendars.based_on_id = ?', @calendar.id).each do | school| %>
+        <li><%= link_to school.name, calendar_path(school.calendar) %></li>
+      <% end %>
+    </ul>
+  <% end %>
 <% end %>
