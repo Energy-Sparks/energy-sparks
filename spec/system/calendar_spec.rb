@@ -50,7 +50,6 @@ RSpec.describe "calendar view", type: :system do
     let!(:school)           { create_active_school }
     let!(:school_admin)     { create(:school_admin, school: school) }
     let!(:school_calendar) do
-
       cal = CalendarFactory.new(existing_calendar: calendar, title: 'New calendar', calendar_type: :school).create
       cal.schools << school
       cal
