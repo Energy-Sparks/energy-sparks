@@ -22,6 +22,10 @@ class AcademicYear < ApplicationRecord
     (start_date <= today) && (end_date >= today)
   end
 
+  def next_year
+    AcademicYear.for_date(self.end_date + 1).where(calendar: self.calendar).reject(&:current?).first
+  end
+
   def title
     "#{start_date.year} - #{end_date.year}"
   end
