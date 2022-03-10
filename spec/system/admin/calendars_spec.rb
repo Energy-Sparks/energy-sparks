@@ -12,7 +12,7 @@ RSpec.describe 'calendars', :calendar, type: :system do
   end
 
   let!(:england_and_wales_calendar) { create :national_calendar, title: 'England and Wales'  }
-  let!(:bank_holiday)               { create :bank_holiday, calendar: england_and_wales_calendar, title: 'Good Friday', start_date: "2012-04-06", end_date: "2012-04-06" }
+  let!(:bank_holiday)               { create :bank_holiday, calendar: england_and_wales_calendar, start_date: "2012-04-06", end_date: "2012-04-06" }
 
   before do
     create_all_calendar_events

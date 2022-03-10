@@ -19,8 +19,7 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Title</th>
-            <th>Type of Event</th>
+            <th>Type</th>
             <th>Start Date</th>
             <th>End Date</th>
             <th>Actions</th>
@@ -29,7 +28,6 @@
         <tbody>
           <% @calendar_events.where(academic_year: academic_year).each do |calendar_event| %>
             <tr scope="row">
-              <td><%= calendar_event.title %></td>
               <td><%= calendar_event.calendar_event_type.title %></td>
               <td><%= nice_dates(calendar_event.start_date) %></td>
               <td><%= nice_dates(calendar_event.end_date) %></td>

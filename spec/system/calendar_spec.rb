@@ -20,7 +20,6 @@ RSpec.describe "calendar view", type: :system do
       expect(page).to have_content('New Calendar Event')
 
       select 'Holiday - Holiday', from: 'calendar_event_calendar_event_type_id'
-      fill_in(:calendar_event_title, with: 'Exciting day off')
 
       expect { click_on('Save') }.to change { calendar.calendar_events.count }.by(1)
 
@@ -29,16 +28,12 @@ RSpec.describe "calendar view", type: :system do
 
       fifteenth_jan.click
       expect(page).to have_content('Edit Calendar Event')
-      expect(page).to have_field('Title', with: 'Exciting day off')
-
-      fill_in(:calendar_event_title, with: 'Boring day off')
       click_on('Save')
 
       # Wait until ajax call is back
       assert_selector('td[style*="background-color"]')
 
       fifteenth_jan.click
-      expect(page).to have_field('Title', with: 'Boring day off')
       expect(page).to have_content('Delete')
 
       expect { click_on('Delete') }.to change { calendar.calendar_events.count }.by(-1)
@@ -63,7 +58,6 @@ RSpec.describe "calendar view", type: :system do
 
       click_on('School calendar')
       click_on('Add new event')
-      fill_in 'Title', with: 'Calendar event'
       first('input#calendar_event_start_date', visible: false).set('16/08/2018')
       first('input#calendar_event_end_date', visible: false).set('17/08/2018')
 
