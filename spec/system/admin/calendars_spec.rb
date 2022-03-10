@@ -44,6 +44,10 @@ RSpec.describe 'calendars', :calendar, type: :system do
       expect(calendar.terms.count).to eq(1)
 
       expect(calendar.based_on).to eq(england_and_wales_calendar)
+
+      click_on 'Delete'
+      expect(page).to have_content('Calendar was successfully deleted.')
+      expect(Calendar.regional.count).to eq 0
     end
   end
 end

@@ -12,6 +12,18 @@ class CalendarsController < ApplicationController
     end
   end
 
+  def destroy
+    if @calendar.school? || @calendar.national?
+      redirect_to admin_calendars_path, notice: 'Cannot delete national or school calendars' if @calendar.school?
+    end
+    if @calendar.regional? && @calendar.calendars.count > 0
+      redirect_to admin_calendars_path, notice: 'Cannot delete regional calendar with children'
+    else
+      @calendar.destroy
+      redirect_to admin_calendars_path, notice: 'Calendar was successfully deleted.'
+    end
+  end
+
   private
 
   def academic_year
