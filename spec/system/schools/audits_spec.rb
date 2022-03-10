@@ -53,11 +53,13 @@ describe 'Audits', type: :system do
 
         click_on 'Add activity'
         within '#audit-activity-types' do
+          expect(page).to have_css('.nested-fields')
           find(:xpath, "//option[contains(text(), '#{activity_type.name}')]").select_option
         end
 
         click_on 'Add action'
         within '#audit-intervention-types' do
+          expect(page).to have_css('.nested-fields')
           find(:xpath, "//option[contains(text(), '#{intervention_type.title}')]").select_option
         end
 

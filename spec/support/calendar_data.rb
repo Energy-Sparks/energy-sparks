@@ -23,7 +23,7 @@ RSpec.shared_context "calendar data", shared_context: :metadata do
   let!(:academic_year) { create(:academic_year, calendar: parent_template_calendar, start_date: '2016-09-01', end_date: '2017-08-30')}
   let!(:academic_year_2) { create(:academic_year, calendar: parent_template_calendar, start_date: '2017-09-01', end_date: '2018-08-30')}
 
-  let!(:bank_holiday) { create :bank_holiday, calendar: parent_template_calendar, title: 'Good Friday', start_date: "2012-04-06", end_date: "2012-04-06" }
+  let!(:bank_holiday) { create :bank_holiday, calendar: parent_template_calendar, start_date: "2012-04-06", end_date: "2012-04-06" }
   let!(:calendar) do
     cal = CalendarFactory.new(existing_calendar: parent_template_calendar, title: 'calendar title').create
     CalendarTermFactory.new(cal, autumn_terms).create_terms
@@ -36,14 +36,12 @@ RSpec.shared_context "calendar data", shared_context: :metadata do
 
   let!(:random_before_holiday) {
     CalendarEvent.create!(
-      title: 'random holiday',
       calendar: calendar,
       calendar_event_type: CalendarEventType.holiday.first,
       start_date: random_before_holiday_start_date,
       end_date: '01/02/2017')}
   let!(:random_after_holiday) {
     CalendarEvent.create!(
-      title: 'random holiday 2',
       calendar: calendar,
       calendar_event_type: CalendarEventType.holiday.first,
       start_date: '16/12/2017',

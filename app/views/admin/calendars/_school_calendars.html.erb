@@ -18,7 +18,6 @@
         <td>
           <div class="btn-group">
             <%= link_to 'Show', calendar, class: 'btn btn-info' if can?(:read, calendar) %>
-            <%= link_to 'Delete', calendar, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' if can?(:destroy, calendar) %>
           </div>
         </td>
       </tr>
