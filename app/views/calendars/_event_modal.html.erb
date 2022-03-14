@@ -12,11 +12,6 @@
       <div class="modal-body">
         <input name="event-index" type="hidden">
         <div class="form-group">
-          <%= f.label :title %>
-          <%= f.text_field :title, class: 'form-control' %>
-
-        </div>
-        <div class="form-group">
           <label for="inputAddress">Event Type</label>
           <%= f.select :calendar_event_type_id, options_from_collection_for_select(CalendarEventType.all, 'id', 'display_title',nil) ,{}, { class: 'form-control' } %>
         </div>

@@ -22,7 +22,7 @@ class Calendars::CalendarEventsController < ApplicationController
   def create
     if @calendar_event.save
       broadcast(:calendar_edited, @calendar)
-      redirect_to @calendar, notice: 'Calendar Event was successfully created.'
+      redirect_to calendar_path(@calendar, anchor: "calendar_event_#{@calendar_event.id}"), notice: 'Calendar Event was successfully created.'
     else
       render :new
     end
@@ -31,7 +31,7 @@ class Calendars::CalendarEventsController < ApplicationController
   def update
     if HolidayFactory.new(@calendar).with_neighbour_updates(@calendar_event, calendar_event_params)
       broadcast(:calendar_edited, @calendar)
-      redirect_to calendar_path(@calendar), notice: 'Event was successfully updated.'
+      redirect_to calendar_path(@calendar, anchor: "calendar_event_#{@calendar_event.id}"), notice: 'Event was successfully updated.'
     else
       render :edit
     end
@@ -46,6 +46,6 @@ class Calendars::CalendarEventsController < ApplicationController
 private
 
   def calendar_event_params
-    params.require(:calendar_event).permit(:title, :calendar_event_type_id, :start_date, :end_date, :school_id)
+    params.require(:calendar_event).permit(:calendar_event_type_id, :start_date, :end_date, :school_id)
   end
 end

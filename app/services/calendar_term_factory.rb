@@ -9,7 +9,7 @@ class CalendarTermFactory
       event_type = CalendarEventType.select { |cet| event[:term].include? cet.title }.first
       raise ArgumentError if event_type.nil?
 
-      @calendar.calendar_events.where(title: event[:term], start_date: event[:start_date], end_date: event[:end_date], calendar_event_type: event_type).first_or_create!
+      @calendar.calendar_events.where(start_date: event[:start_date], end_date: event[:end_date], calendar_event_type: event_type).first_or_create!
     end
 
     create_holidays_between_terms

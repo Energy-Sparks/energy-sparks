@@ -15,7 +15,6 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
   let!(:valid_attributes) {
     {
       calendar_event_type_id: CalendarEventType.first.id,
-      title: "My New Event",
       start_date: "2022-01-01",
       end_date: "2022-01-31"
     }
@@ -28,7 +27,8 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
   describe "POST #create" do
     it 'creates event' do
       post :create, params: { calendar_id: calendar.id, calendar_event: valid_attributes }
-      expect(response).to redirect_to(calendar_path(calendar))
+      event = CalendarEvent.where(calendar: calendar, start_date: Date.parse("2022-01-01")).last
+      expect(response).to redirect_to(calendar_path(calendar, anchor: "calendar_event_#{event.id}"))
     end
     it 'broadcasts calendar changed' do
       expect {
@@ -40,8 +40,7 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
   describe "PUT #update" do
     let!(:new_attributes) {
       {
-        title: "My Updated Event",
-        start_date: "2022-01-01",
+        start_date: "2022-01-02",
         end_date: "2022-01-31"
       }
     }
@@ -49,7 +48,7 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
     it 'updates event' do
       put :update, params: {calendar_id: event.calendar.id, id: event.to_param, calendar_event: new_attributes}
       event.reload
-      expect(event.title).to eql(new_attributes[:title])
+      expect(event.start_date.iso8601).to eql(new_attributes[:start_date])
     end
 
     it 'broadcasts calendar changed' do

@@ -69,7 +69,7 @@ Rails.application.routes.draw do
   end
   resources :interventions, only: [:new, :create, :edit, :update, :destroy]
 
-  resources :calendars, only: [:show] do
+  resources :calendars, only: [:show, :destroy] do
     scope module: :calendars do
       resources :calendar_events
     end

@@ -25,7 +25,7 @@ class ScheduleDataManagerService
 
         analytics_holiday = Holiday.new(
           holiday.calendar_event_type.analytics_event_type.to_sym,
-          holiday.title || 'No title',
+          nil,
           holiday.start_date,
           holiday.end_date,
           academic_year
