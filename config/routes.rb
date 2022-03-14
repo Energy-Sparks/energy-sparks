@@ -57,7 +57,11 @@ Rails.application.routes.draw do
   end
 
   resources :programme_types, only: [:index, :show]
-  resources :intervention_type_groups, only: [:index, :show]
+  resources :intervention_type_groups, only: [:index, :show] do
+    collection do
+      get :recommended
+    end
+  end
   resources :intervention_types, only: [:show] do
     collection do
       get :search
