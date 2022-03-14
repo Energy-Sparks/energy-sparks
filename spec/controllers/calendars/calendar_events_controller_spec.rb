@@ -27,7 +27,8 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
   describe "POST #create" do
     it 'creates event' do
       post :create, params: { calendar_id: calendar.id, calendar_event: valid_attributes }
-      expect(response).to redirect_to(calendar_path(calendar))
+      event = CalendarEvent.where(calendar: calendar, start_date: Date.parse("2022-01-01")).last
+      expect(response).to redirect_to(calendar_path(calendar, anchor: "calendar_event_#{event.id}"))
     end
     xit 'broadcasts calendar changed' do
       expect_any_instance_of(CalendarEventListener).to receive(:calendar_edited).with(calendar)
