@@ -91,5 +91,15 @@ describe Interventions::SuggestAction, type: :service do
       result = service.suggest(3)
       expect(result).to match_array([intervention_type_1, intervention_type_2, intervention_type_3])
     end
+
+    context 'when interventions have been done in last year' do
+      before :each do
+        expect(school).to receive(:intervention_types_in_academic_year).and_return([intervention_type_1, intervention_type_2])
+      end
+      it 'filters out already completed interventions' do
+        result = service.suggest
+        expect(result).to match_array([intervention_type_3, intervention_type_4])
+      end
+    end
   end
 end

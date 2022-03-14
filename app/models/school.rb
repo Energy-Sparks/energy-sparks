@@ -213,14 +213,23 @@ class School < ApplicationRecord
 
   def activities_in_academic_year(date)
     if (academic_year = academic_year_for(date))
-      activities.between(academic_year.start_date, academic_year.end_date)
+      return activities.between(academic_year.start_date, academic_year.end_date)
     end
+    []
   end
 
   def observations_in_academic_year(date)
     if (academic_year = academic_year_for(date))
-      observations.between(academic_year.start_date, academic_year.end_date)
+      return observations.between(academic_year.start_date, academic_year.end_date)
     end
+    []
+  end
+
+  def intervention_types_in_academic_year(date)
+    if (observations = observations_in_academic_year(date))
+      return observations.map(&:intervention_type).uniq
+    end
+    []
   end
 
   def national_calendar
