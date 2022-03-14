@@ -1399,7 +1399,9 @@ ActiveRecord::Schema.define(version: 2022_03_10_143919) do
   create_table "transport_survey_responses", force: :cascade do |t|
     t.bigint "transport_survey_id", null: false
     t.bigint "transport_type_id", null: false
-    t.string "device_identifier", null: false
+    t.integer "passengers", default: 1, null: false
+    t.integer "integer", default: 1, null: false
+    t.string "run_identifier", null: false
     t.datetime "surveyed_at", null: false
     t.integer "journey_minutes", default: 0, null: false
     t.integer "weather", default: 0, null: false

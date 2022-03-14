@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Schools Transport Surveys</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @transport_surveys.each do |transport_survey| %>
+      <tr>
+        <td><%= link_to transport_survey.run_on, school_transport_survey_url(@school, transport_survey) %></td>
+        <td><%= link_to 'Edit', edit_school_transport_survey_url(@school, transport_survey) %></td>
+        <td><%= link_to 'Destroy', school_transport_survey_url(@school, transport_survey, method: :delete, data: { confirm: 'Are you sure?' }) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

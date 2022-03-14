@@ -3,9 +3,11 @@
 # Table name: transport_survey_responses
 #
 #  created_at          :datetime         not null
-#  device_identifier   :string           not null
 #  id                  :bigint(8)        not null, primary key
+#  integer             :integer          default(1), not null
 #  journey_minutes     :integer          default(0), not null
+#  passengers          :integer          default(1), not null
+#  run_identifier      :string           not null
 #  surveyed_at         :datetime         not null
 #  transport_survey_id :bigint(8)        not null
 #  transport_type_id   :bigint(8)        not null
@@ -37,7 +39,17 @@ class TransportSurveyResponse < ApplicationRecord
     [5, 10, 15, 30, 60]
   end
 
-  validates :transport_survey_id, :transport_type_id, :device_identifier, :surveyed_at, :journey_minutes, :weather, presence: true
-  validates :journey_minutes, numericality: { greater_than_or_equal_to: 0 }
+  def self.passengers_options
+    [1, 2, 3, 4, 5]
+  end
+
+  def weather_symbol
+    self.class.weather_symbols[weather.to_sym]
+  end
+
+  validates :transport_survey_id, :transport_type_id, :passengers, :run_identifier, :surveyed_at, :journey_minutes, :weather, presence: true
+  validates :weather, inclusion: { in: weathers.keys }
+  validates :journey_minutes, numericality: { in: journey_minutes_options }
+  validates :passengers, numericality: { in: passengers_options }
 
 end

@@ -130,6 +130,14 @@ Rails.application.routes.draw do
       resources :audits
 
       resources :temperature_observations, only: [:show, :new, :create, :index, :destroy]
+      resources :transport_surveys, only: [:show, :edit, :update, :index, :destroy], param: :run_on do
+        collection do
+          get :intro
+        end
+        scope module: :transport_surveys do
+          resources :responses, only: [:destroy]
+        end
+      end
       resources :locations, only: [:new, :edit, :create, :update, :index, :destroy]
       resource :visibility, only: [:create, :destroy], controller: :visibility
       resource :public, only: [:create, :destroy], controller: :public
