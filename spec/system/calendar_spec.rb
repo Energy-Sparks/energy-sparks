@@ -12,10 +12,6 @@ RSpec.describe "calendar view", type: :system do
       visit calendar_path(calendar)
     end
 
-    describe 'using the table view' do
-      it 'allows an event to be added, edited and deleted'
-    end
-
     describe 'using the calendar view', js: true do
       it 'shows the calendar, allows an event to be added and deleted - flickering' do
         click_on('Calendar view')
@@ -62,7 +58,7 @@ RSpec.describe "calendar view", type: :system do
 
   end
 
-  describe 'a school admin can only do things with their calendar' do
+  describe 'a school admin can' do
 
     let!(:school)           { create_active_school }
     let!(:school_admin)     { create(:school_admin, school: school) }
@@ -72,7 +68,7 @@ RSpec.describe "calendar view", type: :system do
       cal
     end
 
-    it 'allows them to add an event to their calendar' do
+    it 'add an event to their calendar' do
       calendar_event_count = CalendarEvent.count
 
       sign_in(school_admin)
