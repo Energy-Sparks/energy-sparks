@@ -30,9 +30,10 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
       event = CalendarEvent.where(calendar: calendar, start_date: Date.parse("2022-01-01")).last
       expect(response).to redirect_to(calendar_path(calendar, anchor: "calendar_event_#{event.id}"))
     end
-    xit 'broadcasts calendar changed' do
-      expect_any_instance_of(CalendarEventListener).to receive(:calendar_edited).with(calendar)
-      post :create, params: { calendar_id: calendar.id, calendar_event: valid_attributes }
+    it 'broadcasts calendar changed' do
+      expect {
+        post :create, params: { calendar_id: calendar.id, calendar_event: valid_attributes }
+      }.to broadcast(:calendar_edited, calendar)
     end
   end
 
@@ -50,11 +51,10 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
       expect(event.start_date.iso8601).to eql(new_attributes[:start_date])
     end
 
-    xit 'broadcasts calendar changed' do
-      expect_any_instance_of(CalendarEventListener).to receive(:calendar_edited).with(event.calendar)
-      put :update, params: {calendar_id: event.calendar.id, id: event.to_param, calendar_event: new_attributes}
-      event.reload
-      expect(event.start_date.iso8601).to eql(new_attributes[:start_date])
+    it 'broadcasts calendar changed' do
+      expect{
+        put :update, params: {calendar_id: event.calendar.id, id: event.to_param, calendar_event: new_attributes}
+      }.to broadcast(:calendar_edited, event.calendar)
     end
   end
 
@@ -66,11 +66,10 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
       }.to change(CalendarEvent, :count).by(-1)
     end
 
-    xit 'broadcasts event' do
-      expect_any_instance_of(CalendarEventListener).to receive(:calendar_edited).with(event.calendar)
+    it 'broadcasts event' do
       expect {
         delete :destroy, params: { calendar_id: event.calendar.id, id: event.to_param }
-      }.to change(CalendarEvent, :count).by(-1)
+      }.to broadcast(:calendar_edited, event.calendar)
     end
   end
 end
