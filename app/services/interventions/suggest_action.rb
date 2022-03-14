@@ -15,13 +15,13 @@ module Interventions
     end
 
     def suggest_from_audits
-      @school.audits.map(&:intervention_types).flatten.uniq
+      @school.audits.map(&:intervention_types).flatten
     end
 
     def suggest_from_alerts
       content = @school.latest_content
       if content
-        content.find_out_more_intervention_types.uniq
+        content.find_out_more_intervention_types
       else
         InterventionType.none
       end

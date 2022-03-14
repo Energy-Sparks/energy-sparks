@@ -6,14 +6,13 @@ describe Interventions::SuggestAction, type: :service do
   let(:service)   { Interventions::SuggestAction.new(school) }
 
   describe '#suggest_from_audits' do
-    let!(:intervention_type_1){ create(:intervention_type, title: 'Check boiler controls') }
-    let!(:intervention_type_2){ create(:intervention_type, title: 'Turn off lights') }
+    let!(:intervention_type_1){ create(:intervention_type) }
+    let!(:intervention_type_2){ create(:intervention_type) }
     let!(:audit_1) { create(:audit, school: school, intervention_types: [intervention_type_1]) }
-    let!(:audit_2) { create(:audit, school: school, intervention_types: [intervention_type_1, intervention_type_2]) }
+    let!(:audit_2) { create(:audit, school: school, intervention_types: [intervention_type_2]) }
 
-    it 'returns unique intervention types from the audits' do
+    it 'returns intervention types from audits' do
       result = service.suggest_from_audits
-      expect(result.count).to eq(2)
       expect(result.to_a).to match_array([intervention_type_1, intervention_type_2])
     end
   end
