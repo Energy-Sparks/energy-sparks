@@ -33,7 +33,7 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
     it 'broadcasts calendar changed' do
       expect {
         post :create, params: { calendar_id: calendar.id, calendar_event: valid_attributes }
-      }.to broadcast(:calendar_edited)
+      }.to broadcast(:calendar_edited, calendar)
     end
   end
 
@@ -55,7 +55,7 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
     it 'broadcasts calendar changed' do
       expect{
         put :update, params: {calendar_id: event.calendar.id, id: event.to_param, calendar_event: new_attributes}
-      }.to broadcast(:calendar_edited)
+      }.to broadcast(:calendar_edited, event.calendar)
     end
   end
 
@@ -70,7 +70,7 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
     it 'broadcasts event' do
       expect {
         delete :destroy, params: { calendar_id: event.calendar.id, id: event.to_param }
-      }.to broadcast(:calendar_edited)
+      }.to broadcast(:calendar_edited, event.calendar)
     end
   end
 end
