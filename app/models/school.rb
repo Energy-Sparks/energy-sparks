@@ -227,7 +227,7 @@ class School < ApplicationRecord
 
   def intervention_types_in_academic_year(date)
     if (observations = observations_in_academic_year(date))
-      return observations.map(&:intervention_type).uniq
+      return observations.map(&:intervention_type)
     end
     []
   end
