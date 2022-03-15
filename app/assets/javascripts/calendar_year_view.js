@@ -16,7 +16,6 @@ $(document).ready(function() {
       $('#event-modal input[name="_method"]').val('patch');
 
       $("#calendar_event_calendar_event_type_id").val(lastEvent.calendarEventTypeId);
-      $('#event-modal input[name="calendar_event[title]"]').val(lastEvent.title);
 
       $('#event-modal input[name="calendar_event[start_date]"]').val(startDate.toLocaleDateString("en-GB"));
       $('#event-modal input[name="calendar_event[end_date]"]').val(endDate.toLocaleDateString("en-GB"));
@@ -41,7 +40,6 @@ $(document).ready(function() {
       $('#event-modal input[name="_method"]').val('post');
 
       $("#calendar_event_calendar_event_type_id").val('');
-      $('#event-modal input[name="calendar_event[title]"]').val('');
 
       $('#event-modal input[name="calendar_event[start_date]"]').val(event.date.toLocaleDateString("en-GB"));
       $('#event-modal input[name="calendar_event[end_date]"]').val(event.date.toLocaleDateString("en-GB"));
@@ -115,7 +113,6 @@ $(document).ready(function() {
             startDate: new Date(returnedData[i].startDate),
             endDate: new Date(returnedData[i].endDate),
             color: returnedData[i].color,
-            title: returnedData[i].title
           });
         }
         $('#calendar').data('calendar').setDataSource(data);
@@ -187,8 +184,7 @@ $(document).ready(function() {
             name: returnedData[i].name,
             startDate: new Date(returnedData[i].startDate),
             endDate: new Date(returnedData[i].endDate),
-            color: returnedData[i].color,
-            title: returnedData[i].title
+            color: returnedData[i].color
           });
         }
         $('#data-calendar').data('calendar').setDataSource(data);

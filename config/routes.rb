@@ -57,7 +57,11 @@ Rails.application.routes.draw do
   end
 
   resources :programme_types, only: [:index, :show]
-  resources :intervention_type_groups, only: [:index, :show]
+  resources :intervention_type_groups, only: [:index, :show] do
+    collection do
+      get :recommended
+    end
+  end
   resources :intervention_types, only: [:show] do
     collection do
       get :search
@@ -65,7 +69,7 @@ Rails.application.routes.draw do
   end
   resources :interventions, only: [:new, :create, :edit, :update, :destroy]
 
-  resources :calendars, only: [:show] do
+  resources :calendars, only: [:show, :destroy] do
     scope module: :calendars do
       resources :calendar_events
     end
@@ -221,11 +225,6 @@ Rails.application.routes.draw do
 
     # Maintain old scoreboard URL
     get '/scoreboard', to: redirect('/schools')
-
-
-    member do
-      get 'suggest_activity'
-    end
   end
 
   resource :email_unsubscription, only: [:new, :create, :show], controller: :email_unsubscription

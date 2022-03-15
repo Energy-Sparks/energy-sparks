@@ -7,7 +7,7 @@
 #  address                               :text
 #  bill_requested                        :boolean          default(FALSE)
 #  calendar_id                           :bigint(8)
-#  chart_preference                      :integer          default(0), not null
+#  chart_preference                      :integer          default("default"), not null
 #  cooks_dinners_for_other_schools       :boolean          default(FALSE), not null
 #  cooks_dinners_for_other_schools_count :integer
 #  cooks_dinners_onsite                  :boolean          default(FALSE), not null
@@ -213,14 +213,23 @@ class School < ApplicationRecord
 
   def activities_in_academic_year(date)
     if (academic_year = academic_year_for(date))
-      activities.between(academic_year.start_date, academic_year.end_date)
+      return activities.between(academic_year.start_date, academic_year.end_date)
     end
+    []
   end
 
   def observations_in_academic_year(date)
     if (academic_year = academic_year_for(date))
-      observations.between(academic_year.start_date, academic_year.end_date)
+      return observations.between(academic_year.start_date, academic_year.end_date)
     end
+    []
+  end
+
+  def intervention_types_in_academic_year(date)
+    if (observations = observations_in_academic_year(date))
+      return observations.map(&:intervention_type)
+    end
+    []
   end
 
   def national_calendar

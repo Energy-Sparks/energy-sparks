@@ -6,14 +6,16 @@ module Interventions
       @school = school
     end
 
-    #This is just an initial implementation to hook in suggesting based on
-    #alerts, needs further improvements
     def suggest(limit = 5)
-      suggestions = suggest_from_alerts.to_a
-      return suggestions.take(limit) unless suggestions.length < limit
-
-      top_up_from_list(InterventionType.not_other.sample(limit), suggestions)
+      suggestions = []
+      suggestions = top_up_from_list(suggest_from_audits, suggestions)
+      suggestions = top_up_from_list(suggest_from_alerts, suggestions) if suggestions.length < limit
+      suggestions = top_up_from_list(suggest_random(limit), suggestions) if suggestions.length < limit
       suggestions.take(limit)
+    end
+
+    def suggest_from_audits
+      @school.audits.map(&:intervention_types).flatten
     end
 
     def suggest_from_alerts
@@ -25,10 +27,21 @@ module Interventions
       end
     end
 
+    def suggest_random(limit)
+      InterventionType.not_other.sample(limit)
+    end
+
     private
 
+    def already_done
+      @already_done ||= @school.intervention_types_in_academic_year(Time.zone.now)
+    end
+
     def top_up_from_list(more, suggestions)
-      suggestions.concat(more)
+      more.to_a.each do |suggestion|
+        suggestions << suggestion unless suggestions.include?(suggestion) || already_done.include?(suggestion)
+      end
+      suggestions
     end
   end
 end

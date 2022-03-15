@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_08_152432) do
+ActiveRecord::Schema.define(version: 2022_03_15_135011) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -137,7 +137,6 @@ ActiveRecord::Schema.define(version: 2022_03_08_152432) do
     t.datetime "updated_at", null: false
     t.bigint "activity_category_id", null: false
     t.integer "score"
-    t.boolean "repeatable", default: true
     t.boolean "data_driven", default: false
     t.boolean "custom", default: false
     t.string "summary"
@@ -548,7 +547,6 @@ ActiveRecord::Schema.define(version: 2022_03_08_152432) do
     t.bigint "academic_year_id", null: false
     t.bigint "calendar_id", null: false
     t.bigint "calendar_event_type_id", null: false
-    t.text "title"
     t.text "description"
     t.date "start_date", null: false
     t.date "end_date", null: false

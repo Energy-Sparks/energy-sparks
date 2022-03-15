@@ -1,50 +1,107 @@
-<h1>Calendar: <%= @calendar.title %></h1>
-<p><%= link_to 'All calendars', admin_calendars_path if can? :index, Calendar %></p>
+<% content_for :page_title, "#{@calendar.title} Calendar" %>
 
-<% if @calendar.regional? %>
-  <p>This calendar is a regional calendar, it currently has <%= School.joins(:calendar).where('calendars.based_on_id = ?', @calendar.id).count %> dependent schools and <%= @calendar.calendars.count %> calendars which are dependent.</p>
-<% end %>
-
-<% if @calendar.national? %>
-  <p>This calendar is a national calendar, it currently has <%= @calendar.calendars.count %> calendars which are directly dependent.</p>
-<% end %>
-
-<% if @calendar.schools.any? %>
-  <h3>This calendar is allocated to the following schools:</h3>
-  <ul>
-    <% @calendar.schools.each do |school| %>
-      <li><%= link_to school.name, school_path(school) %></li>
+<div class="d-flex justify-content-between align-items-center">
+  <h1><%= @calendar.title %> Calendar </h1>
+  <div>
+    <% if can?(:index, Calendar) %>
+      <%= link_to "All calendars", admin_calendars_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
     <% end %>
-  </ul>
-<% end %>
-<% unless @calendar.based_on.nil? %>
-  <% if can?(:manage, :parent_calendars) %>
-    <p>And is based on: <%= link_to "#{@calendar.based_on.title} calendar", calendar_path(@calendar.based_on) %></p>
-  <% else %>
-    <p>And is based on: <%= @calendar.based_on.title %>, which the Energy Sparks administrator can edit.</p>
-  <% end %>
+  </div>
+</div>
+
+<% if current_user.admin? %>
+  <%= render 'admin_calendar_info' %>
 <% end %>
 
-<h3>This calendar is editable</h3>
-<p>You can amend the events, like the term times by clicking on them, updating the dates and saving the changes. You can also add a new event, like an inset day for example by clicking on the 'Add Event to calendar' button</p>
+<p>You can amend existing events, like the term times by clicking on them, updating the dates and saving the changes.</p>
 
-<p><%= link_to 'Add Event to calendar', new_calendar_calendar_event_path(@calendar), class: 'btn btn-primary' %></p>
 
-<p>You can switch to a list view, which also allows you to delete events here</p>
-<p><%= link_to 'List view', calendar_calendar_events_path(@calendar), class: 'btn btn-success' %></p>
+<%= link_to 'Add new event', new_calendar_calendar_event_path(@calendar), class: 'btn btn-primary' %>
 
-<%= render 'legend' %>
+<nav class="mt-2">
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link active" id="nav-list-view-tab" data-toggle="tab" href="#list-view-tab" role="tab" aria-controls="list-view-tab" aria-selected="yes">
+        Current events
+      </a>
+      <a class="nav-item nav-link" id="nav-calendar-view-tab" data-toggle="tab" href="#calendar-view-tab" role="tab" aria-controls="calendar-view-tab" aria-selected="yes">
+        Calendar view
+      </a>
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane active" id="list-view-tab" role="tabpanel" aria-labelledby="nav-list-view-tab">
 
-<div id="calendar" class="calendar"></div>
+    <p class="pt-4">
+      <% if @calendar.school? || @calendar.regional? %>
+        <%= link_to 'View all older events and bank holidays', calendar_calendar_events_path(@calendar) %>
+      <% else %>
+        <%= link_to 'View all older events', calendar_calendar_events_path(@calendar) %>
+      <% end %>
+    </p>
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% previous_year = nil %>
+        <% @current_events.each do |calendar_event| %>
+          <%= next if (@calendar.school? || @calendar.regional?) && calendar_event.calendar_event_type.bank_holiday? %>
+          <% if calendar_event.academic_year != previous_year %>
+            <% previous_year = calendar_event.academic_year %>
+            <tr scope="row">
+              <th colspan="4"><%= calendar_event.academic_year.title %></th>
+            </tr>
+          <% end %>
+          <tr scope="row" id='calendar_event_<%= calendar_event.id %>'>
+            <td><%= calendar_event.calendar_event_type.title %></td>
+            <td><%= nice_dates(calendar_event.start_date) %></td>
+            <td><%= nice_dates(calendar_event.end_date) %></td>
+            <td><div class="btn-group"><%= link_to 'Edit', edit_calendar_calendar_event_path(calendar_event.calendar, calendar_event), class: 'btn btn-warning' %><%= link_to 'Delete', calendar_calendar_event_path(@calendar, calendar_event), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></div></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <%= link_to 'Add new event', new_calendar_calendar_event_path(@calendar), class: 'btn btn-primary' %>
+
+    <p class="pt-4">
+      <% if @calendar.school? || @calendar.regional? %>
+        <%= link_to 'View all older events and bank holidays', calendar_calendar_events_path(@calendar) %>
+      <% else %>
+        <%= link_to 'View all older events', calendar_calendar_events_path(@calendar) %>
+      <% end %>
+    </p>
+
+
+  </div>
+  <div class="tab-pane" id="calendar-view-tab" role="tabpanel" aria-labelledby="nav-calendar-view-tab">
+
+    <div id="calendar" class="calendar"></div>
+
+    <%= render 'legend' %>
+
+  </div>
+</div>
 
 <%= render 'event_modal' %>
 
-<% if School.joins(:calendar).where('calendars.based_on_id = ?', @calendar.id).any? %>
-  <h3>Dependent Schools</h3>
-  <p>These schools all have their own calendar, based on this one.</p>
-  <ul>
-    <% School.joins(:calendar).where('calendars.based_on_id = ?', @calendar.id).each do | school| %>
-      <li><%= link_to school.name, calendar_path(school.calendar) %></li>
-    <% end %>
-  </ul>
+<% if current_user.admin? %>
+  <% if School.joins(:calendar).where('calendars.based_on_id = ?', @calendar.id).any? %>
+  <div class="mb-2 alert alert-secondary">
+
+    <h3>Dependent Schools</h3>
+    <p>These schools all have their own calendar, based on this one.</p>
+    <ul>
+      <% School.joins(:calendar).where('calendars.based_on_id = ?', @calendar.id).each do | school| %>
+        <li><%= link_to school.name, calendar_path(school.calendar) %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
 <% end %>

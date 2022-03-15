@@ -5,6 +5,18 @@ describe Interventions::SuggestAction, type: :service do
   let(:school)    { create(:school) }
   let(:service)   { Interventions::SuggestAction.new(school) }
 
+  describe '#suggest_from_audits' do
+    let!(:intervention_type_1){ create(:intervention_type) }
+    let!(:intervention_type_2){ create(:intervention_type) }
+    let!(:audit_1) { create(:audit, school: school, intervention_types: [intervention_type_1]) }
+    let!(:audit_2) { create(:audit, school: school, intervention_types: [intervention_type_2]) }
+
+    it 'returns intervention types from audits' do
+      result = service.suggest_from_audits
+      expect(result.to_a).to match_array([intervention_type_1, intervention_type_2])
+    end
+  end
+
   describe '#suggest_from_alerts' do
 
     let!(:intervention_type){ create(:intervention_type, title: 'Check boiler controls') }
@@ -43,16 +55,50 @@ describe Interventions::SuggestAction, type: :service do
         expect(result).to match_array([])
       end
     end
-
   end
 
-  describe '#suggest' do
+  describe 'tops up from others if no audits or alerts' do
     let!(:intervention_type_1){ create(:intervention_type) }
     let!(:intervention_type_2){ create(:intervention_type) }
 
     it 'suggests a sample' do
       result = service.suggest
       expect(result).to match_array([intervention_type_1, intervention_type_2])
+    end
+  end
+
+  describe '#suggest' do
+    let!(:intervention_type_1){ create(:intervention_type) }
+    let!(:intervention_type_2){ create(:intervention_type) }
+    let!(:intervention_type_3){ create(:intervention_type) }
+    let!(:intervention_type_4){ create(:intervention_type) }
+
+    let!(:audit_1) { create(:audit, school: school, intervention_types: [intervention_type_1, intervention_type_2]) }
+
+    let(:content) { double(find_out_more_intervention_types: [intervention_type_1, intervention_type_2, intervention_type_3]) }
+
+    before :each do
+      expect(school).to receive(:latest_content).and_return(content)
+    end
+
+    it 'returns unique collection' do
+      result = service.suggest
+      expect(result).to match_array([intervention_type_1, intervention_type_2, intervention_type_3, intervention_type_4])
+    end
+
+    it 'applies limit' do
+      result = service.suggest(3)
+      expect(result).to match_array([intervention_type_1, intervention_type_2, intervention_type_3])
+    end
+
+    context 'when interventions have been done in last year' do
+      before :each do
+        expect(school).to receive(:intervention_types_in_academic_year).and_return([intervention_type_1, intervention_type_2])
+      end
+      it 'filters out already completed interventions' do
+        result = service.suggest
+        expect(result).to match_array([intervention_type_3, intervention_type_4])
+      end
     end
   end
 end

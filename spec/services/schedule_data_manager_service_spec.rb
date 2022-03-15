@@ -3,6 +3,21 @@ require 'rails_helper'
 describe ScheduleDataManagerService do
   include_context 'calendar data'
 
+  describe 'calendar_cache_key' do
+    let!(:school)                                    { create(:school, calendar: calendar) }
+    it 'generates a key' do
+      expect(ScheduleDataManagerService.calendar_cache_key(calendar)).to include(calendar.id.to_s)
+    end
+  end
+
+  describe 'invalidate_cached_calendar' do
+    let!(:school)                                    { create(:school, calendar: calendar) }
+    it 'invalidates cache' do
+      expect(Rails.cache).to receive(:delete)
+      ScheduleDataManagerService.invalidate_cached_calendar(calendar)
+    end
+  end
+
   describe '#holidays' do
     let!(:school)                                    { create(:school, calendar: calendar) }
     let(:date_version_of_holiday_date_from_calendar) { Date.parse(random_before_holiday_start_date) }

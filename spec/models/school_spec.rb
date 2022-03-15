@@ -611,11 +611,25 @@ describe School do
     let(:school){ create :school, calendar: calendar }
     let(:date_1){ academic_year.start_date + 1.month}
     let(:date_2){ academic_year.start_date - 1.month}
-    let!(:observation_1){ create :observation, at: date_1, school: school }
-    let!(:observation_2){ create :observation, at: date_2, school: school }
+    let!(:intervention_type_1){ create :intervention_type }
+    let!(:intervention_type_2){ create :intervention_type }
+    let!(:observation_1){ create :observation, at: date_1, school: school, intervention_type: intervention_type_1 }
+    let!(:observation_2){ create :observation, at: date_2, school: school, intervention_type: intervention_type_2 }
 
     it 'finds observations from the academic year' do
       expect(school.observations_in_academic_year(academic_year.start_date + 2.months)).to eq([observation_1])
+    end
+
+    it 'handles missing academic year' do
+      expect(school.observations_in_academic_year(Date.parse('01-01-1900'))).to eq([])
+    end
+
+    it 'finds intervention types from the academic year' do
+      expect(school.intervention_types_in_academic_year(academic_year.start_date + 2.months)).to eq([intervention_type_1])
+    end
+
+    it 'handles missing academic year' do
+      expect(school.intervention_types_in_academic_year(Date.parse('01-01-1900'))).to eq([])
     end
   end
 end

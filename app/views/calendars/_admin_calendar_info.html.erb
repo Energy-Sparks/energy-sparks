@@ -1,0 +1,25 @@
+<div class="mb-2 alert alert-secondary">
+  <% if @calendar.regional? %>
+    <p>This calendar is a regional calendar, it currently has <%= School.joins(:calendar).where('calendars.based_on_id = ?', @calendar.id).count %> dependent schools and <%= @calendar.calendars.count %> calendars which are dependent.</p>
+  <% end %>
+
+  <% if @calendar.national? %>
+    <p>This calendar is a national calendar, it currently has <%= @calendar.calendars.count %> calendars which are directly dependent.</p>
+  <% end %>
+
+  <% if @calendar.schools.any? %>
+    <p>This calendar is allocated to the following schools:</p>
+    <ul>
+      <% @calendar.schools.each do |school| %>
+        <li><%= link_to school.name, school_path(school) %></li>
+      <% end %>
+    </ul>
+  <% end %>
+  <% unless @calendar.based_on.nil? %>
+    <% if can?(:manage, :parent_calendars) %>
+      <p>This calendar is based on the <%= link_to "#{@calendar.based_on.title} #{@calendar.based_on.calendar_type} calendar", calendar_path(@calendar.based_on) %></p>
+    <% else %>
+      <p>This calendar is based on the <%= @calendar.based_on.title %> <%= @calendar.based_on.calendar_type %> calendar which is maintained by Energy Sparks.</p>
+    <% end %>
+  <% end %>
+</div>

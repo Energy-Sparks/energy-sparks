@@ -132,7 +132,7 @@ describe 'viewing and recording activities', type: :system do
         context 'when activity not data driven' do
           let(:activity_data_driven)  { false }
 
-          it 'should show school specfici description' do
+          it 'should show school specific description' do
             visit school_activity_path(school, activity)
             expect(page).to have_content(activity_type.school_specific_description.to_plain_text)
             expect(page).to_not have_content(activity_type.description.to_plain_text)

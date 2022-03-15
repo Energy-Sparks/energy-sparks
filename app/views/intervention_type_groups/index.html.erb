@@ -17,6 +17,20 @@
   </div>
 </div>
 
+<% if !@suggested_interventions.blank? %>
+  <div class="row mt-3">
+    <div class="col">
+      <div class="d-flex justify-content-between align-items-center">
+        <h4><strong>Recommended for your school</strong></h4>
+        <div>
+          <%= link_to 'View all suggestions', recommended_intervention_type_groups_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%= render "cards", intervention_types: @suggested_interventions.first(4), card_deck_css: "" %>
+<% end %>
+
 <% @intervention_type_groups.each do |intervention_type_group| %>
   <div class="row mt-3">
     <div class="col">
