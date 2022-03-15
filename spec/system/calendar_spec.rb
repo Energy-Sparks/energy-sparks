@@ -13,7 +13,7 @@ RSpec.describe "calendar view", type: :system do
     end
 
     describe 'using the calendar view', js: true do
-      it 'shows the calendar, allows an event to be added and deleted - flickering' do
+      xit 'shows the calendar, allows an event to be added and deleted - flickering' do
         click_on('Calendar view')
         #wait for view to display
         expect(page).to have_css('.calendar-legend')
