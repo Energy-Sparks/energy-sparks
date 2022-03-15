@@ -9,7 +9,6 @@
 #  end_date               :date             not null
 #  id                     :bigint(8)        not null, primary key
 #  start_date             :date             not null
-#  title                  :text
 #
 # Indexes
 #

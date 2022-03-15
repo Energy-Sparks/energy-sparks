@@ -10,7 +10,7 @@
 #
 # Indexes
 #
-#  audit_intervention_type_uniq  (audit_id,intervention_type_id) UNIQUE
+#  index_audit_intervention_types_on_audit_id  (audit_id)
 #
 class AuditInterventionType < ApplicationRecord
   belongs_to :intervention_type

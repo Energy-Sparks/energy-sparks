@@ -10,7 +10,6 @@
 #  deprecated_description :text
 #  id                     :bigint(8)        not null, primary key
 #  name                   :string
-#  repeatable             :boolean          default(TRUE)
 #  score                  :integer
 #  summary                :string
 #  updated_at             :datetime         not null
