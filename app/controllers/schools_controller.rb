@@ -12,7 +12,7 @@ class SchoolsController < ApplicationController
   load_and_authorize_resource except: [:show, :index]
   load_resource only: [:show]
 
-  skip_before_action :authenticate_user!, only: [:index, :show, :usage, :suggest_activity]
+  skip_before_action :authenticate_user!, only: [:index, :show, :usage]
   before_action :set_key_stages, only: [:new, :create, :edit, :update]
 
   before_action :check_aggregated_school_in_cache, only: [:show]
@@ -47,15 +47,6 @@ class SchoolsController < ApplicationController
       setup_default_features
       setup_data_enabled_features if @show_data_enabled_features
     end
-  end
-
-  def suggest_activity
-    @filter = activity_type_filter
-    @first = @school.activities.empty?
-    suggester = NextActivitySuggesterWithFilter.new(@school, activity_type_filter)
-    @suggestions_from_programmes = suggester.suggest_from_programmes.limit(6)
-    @suggestions_from_alerts = suggester.suggest_from_find_out_mores.sample(6)
-    @suggestions_from_activity_history = suggester.suggest_from_activity_history.first(6)
   end
 
   # GET /schools/new
