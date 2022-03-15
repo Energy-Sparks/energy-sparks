@@ -6,7 +6,7 @@ module Schools
       load_resource :response, class: 'TransportSurveyResponse', through: :transport_survey
       # load_and_authorize_resource :response, class: 'TransportSurveyResponse', through: :transport_survey
 
-      # WIp
+      # WIP - not currently working, need to sort permissions
       def destroy
         @response.destroy
         respond_to do |format|

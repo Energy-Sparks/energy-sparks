@@ -44,7 +44,6 @@ module Schools
       @transport_surveys = @school.transport_surveys.all
     end
 
-
     # DELETE /schools/transport_surveys/2022-03-11 or /schools/transport_surveys/2022-03-11.json
     def destroy
       @transport_survey = @school.transport_surveys.find_by(run_on: params[:run_on])

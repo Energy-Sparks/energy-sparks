@@ -33,7 +33,6 @@ class TransportSurvey < ApplicationRecord
     responses_attributes.each do |response_attributes|
       response = self.responses.create_with(response_attributes).find_or_create_by(response_attributes.slice(:run_identifier, :surveyed_at))
     end
-    true
   end
 
 end

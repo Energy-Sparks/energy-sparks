@@ -31,6 +31,7 @@ class TransportSurveyResponse < ApplicationRecord
   # Until we decide if to use a table or not
   enum weather: [:sun, :rain, :icy, :snow]
 
+  # These class helper methods may not stay here. They are currently helping with prototyping!
   def self.weather_symbols
     { sun: '☀️', rain: '🌧️ ', icy: '❄️', snow: '❄️' }
   end
