@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 588df927a623acc06e88b108ff87e2d5738006ba
-  branch: 2045-fix-test-for-enough-data-checks-for-school-with-limited-data
+  revision: f3d00a14fb0e96fe23dbfeaa2abf4706570b4ac6
+  branch: aws-eb-test
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
