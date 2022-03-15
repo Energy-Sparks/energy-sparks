@@ -1,4 +1,5 @@
 class OnboardingMailer < ApplicationMailer
+  include MailgunMailerHelper
   helper :application
 
   def onboarding_email
@@ -41,6 +42,7 @@ class OnboardingMailer < ApplicationMailer
   def welcome_email
     @user = params[:user]
     @school = @user.school
-    make_bootstrap_mail(to: @user.email, subject: "Welcome to Energy Sparks")
+    email = make_bootstrap_mail(to: @user.email, subject: "Welcome to Energy Sparks")
+    add_mg_email_tag(email, 'welcome')
   end
 end
