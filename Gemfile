@@ -23,7 +23,7 @@ gem 'closed_struct'
 gem 'pg_search'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.30.5'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.30.6'
 #gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: '2045-fix-test-for-enough-data-checks-for-school-with-limited-data'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
