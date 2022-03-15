@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 3e05b163b5fcfe3d997c6a41ac68ddad5951a248
-  tag: 1.30.5
+  revision: a89d1e20072f90bb72571ee4c1ae4102b9fe76cb
+  branch: optimum-start-analysis
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
