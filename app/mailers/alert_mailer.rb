@@ -1,4 +1,5 @@
 class AlertMailer < ApplicationMailer
+  include MailgunMailerHelper
   helper :application
 
   def alert_email
@@ -9,7 +10,8 @@ class AlertMailer < ApplicationMailer
     @alert_content = self.class.create_content(@events)
     @target_prompt = params[:target_prompt]
 
-    make_bootstrap_mail(to: @email_address, subject: 'Energy Sparks alerts')
+    email = make_bootstrap_mail(to: @email_address, subject: 'Energy Sparks alerts')
+    add_mg_email_tag(email, 'alerts')
   end
 
   def self.create_content(events)
