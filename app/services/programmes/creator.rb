@@ -36,11 +36,7 @@ module Programmes
     end
 
     def already_enrolled?
-      enrolled = false
-      @school.programmes.each do |programme|
-        enrolled = programme.programme_type == @programme_type
-      end
-      enrolled
+      @school.programmes.any? { |programme| programme.programme_type == @programme_type }
     end
   end
 end
