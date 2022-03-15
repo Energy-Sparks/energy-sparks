@@ -88,6 +88,18 @@
     </tbody>
   </table>
 
+  <% if @partial_consumption %>
+    <% if @overview_data.present? && @overview_data.start_date(@fuel_type).present? %>
+      <p>We only have your actual <%= @fuel_type.to_s.humanize(capitalize: false) %> consumption data from <%= @overview_data.start_date(@fuel_type) %>. So can only show your consumption for a portion of your target period.</p>
+    <% else %>
+      <p>We only have a limited view of your actual <%= @fuel_type.to_s.humanize(capitalize: false) %> consumption data. So can only show your consumption for a portion of your target period.</p>
+    <% end %>
+  <% end %>
+
+  <% if @partial_targets %>
+    <p>We only have limited consumption data for your school, so we cannot currently calculate a full set of monthly targets or progress.</p>
+  <% end %>
+
   <p>
     In the tables above <span class="partial-month">text in red</span> indicates where we have only partial consumption data for a given month. Your usage figures and our estimate of your progress will not be accurate until the end of the month, or until we receive additional data. We also indicate when you have <span class="bg-positive-dark">met your target</span> or <span class="bg-negative-dark">exceeded your target</span> in a given month.
   </p>
