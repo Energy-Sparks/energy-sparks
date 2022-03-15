@@ -43,7 +43,7 @@ describe Programmes::Creator do
       end
 
       it "doesnt enrol twice when multiple programmes" do
-        programme_type_other = create(:programme_type_with_activity_types)
+        programme_type_other = create(:programme_type)
         school.programmes << create(:programme, programme_type: programme_type_other, started_on: Time.zone.now)
         service.create
         expect(school.programmes.count).to eql 2
