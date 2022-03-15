@@ -54,7 +54,7 @@ class SchoolsController < ApplicationController
     @first = @school.activities.empty?
     suggester = NextActivitySuggesterWithFilter.new(@school, activity_type_filter)
     @suggestions_from_programmes = suggester.suggest_from_programmes.limit(6)
-    @suggestions_from_alerts = suggester.suggest_from_programmes.sample(6)
+    @suggestions_from_alerts = suggester.suggest_from_find_out_mores.sample(6)
     @suggestions_from_activity_history = suggester.suggest_from_activity_history.first(6)
   end
 
