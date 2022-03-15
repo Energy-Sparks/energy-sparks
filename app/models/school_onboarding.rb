@@ -7,7 +7,7 @@
 #  created_by_id                 :bigint(8)
 #  created_user_id               :bigint(8)
 #  dark_sky_area_id              :bigint(8)
-#  default_chart_preference      :integer          default(0), not null
+#  default_chart_preference      :integer          default("default"), not null
 #  id                            :bigint(8)        not null, primary key
 #  notes                         :text
 #  school_group_id               :bigint(8)

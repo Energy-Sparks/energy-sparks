@@ -10,7 +10,7 @@
 #
 # Indexes
 #
-#  audit_activity_type_uniq  (audit_id,activity_type_id) UNIQUE
+#  index_audit_activity_types_on_audit_id  (audit_id)
 #
 class AuditActivityType < ApplicationRecord
   belongs_to :activity_type
