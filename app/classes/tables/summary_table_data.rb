@@ -12,8 +12,16 @@ module Tables
 
     def date_ranges
       fuel_types.map do |fuel_type|
-        "#{fuel_type.to_s.humanize} data: #{format_date(fetch(fuel_type, :start_date))} - #{format_date(fetch(fuel_type, :end_date))}."
+        "#{fuel_type.to_s.humanize} data: #{start_date(fuel_type)} - #{end_date(fuel_type)}."
       end.join(' ')
+    end
+
+    def start_date(fuel_type)
+      format_date(fetch(fuel_type, :start_date))
+    end
+
+    def end_date(fuel_type)
+      format_date(fetch(fuel_type, :end_date))
     end
 
     private

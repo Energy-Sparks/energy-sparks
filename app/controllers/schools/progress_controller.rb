@@ -29,6 +29,12 @@ module Schools
 
     private
 
+    def summary_table
+      if EnergySparks::FeatureFlags.active?(:use_management_data)
+        Schools::ManagementTableService.new(@school).management_data
+      end
+    end
+
     def index_for(fuel_type)
       @fuel_type = fuel_type
       @current_target = @school.current_target
@@ -38,6 +44,9 @@ module Schools
         service = TargetsService.new(aggregate_school, @fuel_type)
         @recent_data = service.recent_data?
         @progress = service.progress
+        @partial_consumption = partial_consumption_data?(@progress)
+        @partial_targets = partial_target_data?(@progress)
+        @overview_data = summary_table
         @debug_content = service.analytics_debug_info if current_user.present? && current_user.analytics?
       rescue => e
         Rollbar.error(e, school_id: @school.id, school: @school.name, fuel_type: @fuel_type)
@@ -53,6 +62,17 @@ module Schools
 
     def show_storage_heater_notes(school, fuel_type)
       fuel_type == :electricity && school.has_storage_heaters?
+    end
+
+    def partial_consumption_data?(progress)
+      #this could be more sophisticated, relies on ordering of months array reflecting
+      #actual starting month of the target reporting period
+      first_month = progress.months.first
+      progress.monthly_usage_kwh[first_month].nil? || progress.partial_months[first_month]
+    end
+
+    def partial_target_data?(progress)
+      progress.monthly_targets_kwh.value?(nil)
     end
 
     def progress_service
