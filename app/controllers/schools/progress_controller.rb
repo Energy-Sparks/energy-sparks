@@ -68,7 +68,7 @@ module Schools
       #this could be more sophisticated, relies on ordering of months array reflecting
       #actual starting month of the target reporting period
       first_month = progress.months.first
-      progress.monthly_usage_kwh[first_month].nil? || progress.partial_months[first_month] == true
+      progress.monthly_usage_kwh[first_month].nil? || progress.partial_months[first_month]
     end
 
     def partial_target_data?(progress)
