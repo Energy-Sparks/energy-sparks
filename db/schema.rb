@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_15_135011) do
+ActiveRecord::Schema.define(version: 2022_03_15_163745) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -951,7 +951,7 @@ ActiveRecord::Schema.define(version: 2022_03_15_135011) do
   create_table "programme_activities", force: :cascade do |t|
     t.bigint "programme_id", null: false
     t.bigint "activity_type_id", null: false
-    t.bigint "activity_id"
+    t.bigint "activity_id", null: false
     t.integer "position", default: 0, null: false
     t.index ["activity_id"], name: "index_programme_activities_on_activity_id"
     t.index ["programme_id", "activity_type_id"], name: "programme_activity_type_uniq", unique: true
