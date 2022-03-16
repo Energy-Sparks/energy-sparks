@@ -14,35 +14,52 @@ RSpec.describe Targets::ProgressService do
   let!(:service)                  { Targets::ProgressService.new(school) }
 
   context '#progress_summary' do
-    context 'and school targets are active' do
-      before(:each) do
-        allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+    it 'returns nil if school has no target' do
+      SchoolTarget.all.destroy_all
+      expect( service.progress_summary ).to be nil
+    end
+
+    context 'with only electricity fuel type' do
+      let(:progress_summary) { service.progress_summary }
+
+      it 'includes school target in summary' do
+        expect( progress_summary.school_target ).to eql school_target
       end
 
-      it 'returns nil if school has no target' do
-        SchoolTarget.all.destroy_all
-        expect( service.progress_summary ).to be nil
+      it 'includes only that fuel type' do
+        expect( progress_summary.gas_progress ).to be nil
+        expect( progress_summary.storage_heater_progress ).to be nil
+        expect( progress_summary.electricity_progress ).to_not be nil
       end
 
-      context 'with only electricity fuel type' do
-        let(:progress_summary) { service.progress_summary }
-
-        it 'includes school target in summary' do
-          expect( progress_summary.school_target ).to eql school_target
-        end
-
-        it 'includes only that fuel type' do
-          expect( progress_summary.gas_progress ).to be nil
-          expect( progress_summary.storage_heater_progress ).to be nil
-          expect( progress_summary.electricity_progress ).to_not be nil
-        end
-
-        it 'reports the fuel progress' do
-          expect( progress_summary.electricity_progress.progress ).to eql 0.99
-          expect( progress_summary.electricity_progress.usage ).to eql 15
-          expect( progress_summary.electricity_progress.target ).to eql 20
-        end
+      it 'reports the fuel progress' do
+        expect( progress_summary.electricity_progress.progress ).to eql 0.99
+        expect( progress_summary.electricity_progress.usage ).to eql 15
+        expect( progress_summary.electricity_progress.target ).to eql 20
       end
     end
   end
+
+  context '#display_progress_for_fuel_type' do
+    it 'checks for fuel type and enough data' do
+      expect( service.display_progress_for_fuel_type?(:electricity) ).to be true
+      expect( service.display_progress_for_fuel_type?(:gas) ).to be false
+      expect( service.display_progress_for_fuel_type?(:storage_heaters) ).to be false
+    end
+
+    context 'and v2 school targets are active' do
+      before(:each) do
+        expect(EnergySparks::FeatureFlags).to receive(:active?).at_least(:once).with(:school_targets_v2).and_return(true)
+        school.configuration.update(school_target_fuel_types: [])
+      end
+
+      it 'checks only for fuel type' do
+        expect( service.display_progress_for_fuel_type?(:electricity) ).to be true
+        expect( service.display_progress_for_fuel_type?(:gas) ).to be false
+        expect( service.display_progress_for_fuel_type?(:storage_heaters) ).to be false
+      end
+
+    end
+  end
+
 end
