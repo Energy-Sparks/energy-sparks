@@ -20,21 +20,20 @@ json.charts @output.each do |chart|
   next if chart_data.nil?
 
   colour_hash = {
-    SeriesNames::DEGREEDAYS => '#232b49',
-    SeriesNames::TEMPERATURE => '#232b49',
-    SeriesNames::SCHOOLDAYCLOSED => '#3bc0f0',
-    SeriesNames::SCHOOLDAYOPEN => '#5cb85c',
-    SeriesNames::HOLIDAY => '#ff4500',
-    SeriesNames::WEEKEND => '#ffac21',
+    Series::DegreeDays::DEGREEDAYS => '#232b49',
+    Series::Temperature::TEMPERATURE => '#232b49',
+    Series::DayType::SCHOOLDAYCLOSED => '#3bc0f0',
+    Series::DayType::SCHOOLDAYOPEN => '#5cb85c',
+    Series::DayType::HOLIDAY => '#ff4500',
+    Series::DayType::WEEKEND => '#ffac21',
     'electricity' => '#ff4500',
     '' => '#ff4500',
     'gas' => '#3bc0f0',
-    SeriesNames::HEATINGDAY => '#3bc0f0',
-    SeriesNames::NONHEATINGDAY => '#5cb85c',
-    SeriesNames::HEATINGDAYMODEL => '#ff4500',
-    SeriesNames::NONHEATINGDAYMODEL => '#ffac21',
-    SeriesNames::USEFULHOTWATERUSAGE => '#3bc0f0',
-    SeriesNames::WASTEDHOTWATERUSAGE => '#ff4500'
+    Series::HeatingNonHeating::HEATINGDAY => '#3bc0f0',
+    Series::HeatingNonHeating::NONHEATINGDAY => '#5cb85c',
+    Series::HotWater::USEFULHOTWATERUSAGE => '#3bc0f0',
+    Series::HotWater::WASTEDHOTWATERUSAGE => '#ff4500',
+    Series::MultipleFuels::SOLARPV => '#ffac21' # 'solar pv (consumed onsite)'
   }
 
   json.chart_index        chart_index
