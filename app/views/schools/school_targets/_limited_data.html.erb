@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-md-4 justify-content-center align-self-center">
+    <h4 class="card-title"><%= fuel_type.to_s.humanize %></h4>
+  </div>
+  <div class="col-md-2 justify-content-center align-self-center">
+    <h4>
+      Goal: <%= target %>% <span style="color: green;"<%= fa_icon('arrow-circle-down') %>
+    </h4>
+  </div>
+  <div class="col-md-3 justify-content-center align-self-center work_week">
+    <% if overview_data.work_week(fuel_type).has_data %>
+    <h4>
+      Last week: <%= up_downify(overview_data.work_week(fuel_type).change) %>
+    </h4>
+    <% end %>
+  </div>
+  <div class="col-md-1 justify-content-center align-self-center">
+  </div>
+  <div class="col-md-2 justify-content-center align-self-center">
+    <span class="text-center">
+      <%= link_to "View progress", progress_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+    </span>
+  </div>
+</div>
