@@ -42,6 +42,12 @@ describe Programmes::Creator do
         expect(school.programmes.count).to eql 1
       end
 
+      it "doesnt enrol twice when multiple programmes" do
+        programme_type_other = create(:programme_type)
+        school.programmes << create(:programme, programme_type: programme_type_other, started_on: Time.zone.now)
+        service.create
+        expect(school.programmes.count).to eql 2
+      end
     end
 
     context "when school has recent activity in programme" do
@@ -73,6 +79,7 @@ describe Programmes::Creator do
       end
 
     end
+
     context "when school recorded an activity last year" do
       let!(:activity) { create(:activity, school: school, activity_type: programme_type.activity_types.first, happened_on: Date.today.last_year)}
       before(:each) do
@@ -83,6 +90,5 @@ describe Programmes::Creator do
         expect(programme.activities.any?).to be false
       end
     end
-
   end
 end

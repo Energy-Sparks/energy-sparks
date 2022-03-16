@@ -3,7 +3,7 @@
 # Table name: school_groups
 #
 #  created_at                    :datetime         not null
-#  default_chart_preference      :integer          default(0), not null
+#  default_chart_preference      :integer          default("default"), not null
 #  default_dark_sky_area_id      :bigint(8)
 #  default_scoreboard_id         :bigint(8)
 #  default_solar_pv_tuos_area_id :bigint(8)

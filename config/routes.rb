@@ -225,11 +225,6 @@ Rails.application.routes.draw do
 
     # Maintain old scoreboard URL
     get '/scoreboard', to: redirect('/schools')
-
-
-    member do
-      get 'suggest_activity'
-    end
   end
 
   resource :email_unsubscription, only: [:new, :create, :show], controller: :email_unsubscription
