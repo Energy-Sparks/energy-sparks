@@ -52,5 +52,4 @@ class TransportSurveyResponse < ApplicationRecord
   validates :weather, inclusion: { in: weathers.keys }
   validates :journey_minutes, numericality: { in: journey_minutes_options }
   validates :passengers, numericality: { in: passengers_options }
-
 end

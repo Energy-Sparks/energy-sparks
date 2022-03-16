@@ -14,13 +14,6 @@ module Schools
           format.json { head :no_content }
         end
       end
-
-      private
-
-      #def transport_survey_response_params
-        # might need to make this stricter at some point
-        #params.require(:transport_survey_response).permit(:id)
-      #end
     end
   end
 end
