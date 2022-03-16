@@ -12,6 +12,7 @@
 #  school_id                           :bigint(8)        not null
 #  school_target_fuel_types            :string           default([]), not null, is an Array
 #  storage_heater_dashboard_chart_type :integer          default("no_storage_heater_chart"), not null
+#  suggest_estimates_fuel_types        :string           default([]), not null, is an Array
 #  updated_at                          :datetime         not null
 #
 # Indexes

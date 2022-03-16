@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_15_163745) do
+ActiveRecord::Schema.define(version: 2022_03_16_140302) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -600,6 +600,7 @@ ActiveRecord::Schema.define(version: 2022_03_15_163745) do
     t.integer "storage_heater_dashboard_chart_type", default: 0, null: false
     t.integer "electricity_dashboard_chart_type", default: 0, null: false
     t.string "school_target_fuel_types", default: [], null: false, array: true
+    t.string "suggest_estimates_fuel_types", default: [], null: false, array: true
     t.index ["school_id"], name: "index_configurations_on_school_id"
   end
 
