@@ -135,13 +135,6 @@ describe Targets::GenerateProgressService do
           expect( target.electricity_progress["usage"] ).to eql 15
           expect( target.electricity_progress["target"] ).to eql 20
         end
-
-        it 'does nothing if feature disabled' do
-          allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(false)
-          expect( service.generate! ).to be nil
-          school.update!(enable_targets_feature: false)
-          expect( service.generate! ).to be nil
-        end
       end
 
       context 'and not enough data' do

@@ -42,13 +42,6 @@ RSpec.describe Targets::ProgressService do
           expect( progress_summary.electricity_progress.usage ).to eql 15
           expect( progress_summary.electricity_progress.target ).to eql 20
         end
-
-        it 'returns nil if feature disabled' do
-          allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(false)
-          expect( service.progress_summary ).to be nil
-          school.update!(enable_targets_feature: false)
-          expect( service.progress_summary ).to be nil
-        end
       end
     end
   end
