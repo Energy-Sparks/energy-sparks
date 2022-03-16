@@ -4,7 +4,7 @@ module Schools
       load_resource :school, :tranport_survey
       load_resource :transport_survey, through: :school
       load_resource :response, class: 'TransportSurveyResponse', through: :transport_survey
-      # load_and_authorize_resource :response, class: 'TransportSurveyResponse', through: :transport_survey
+      load_and_authorize_resource :response, class: 'TransportSurveyResponse', through: :transport_survey
 
       # WIP - not currently working, need to sort permissions
       def destroy

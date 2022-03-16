@@ -13,11 +13,13 @@
     <% @transport_surveys.each do |transport_survey| %>
       <tr>
         <td><%= link_to transport_survey.run_on, school_transport_survey_url(@school, transport_survey) %></td>
-        <td><%= link_to 'Edit', edit_school_transport_survey_url(@school, transport_survey) %></td>
-        <td><%= link_to 'Destroy', school_transport_survey_url(@school, transport_survey, method: :delete, data: { confirm: 'Are you sure?' }) %></td>
+        <td><%= link_to 'Edit', edit_school_transport_survey_url(@school, transport_survey), class: 'btn btn-sm btn-danger' %></td>
+        <td><%= link_to 'Destroy', school_transport_survey_url(@school, transport_survey), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
+
+  <%= link_to 'Start surveying', intro_school_transport_surveys_url(@school), class: 'btn' %>

@@ -25,6 +25,8 @@ class Ability
 
     can :read, FindOutMore
     can :read, Observation
+    can :read, TransportSurvey
+    can :read, TransportSurveyResponse
     can :read, ProgrammeType
     can :read_dashboard_menu, School
 
@@ -89,6 +91,8 @@ class Ability
         meter.amr_data_feed_readings.count > 0
       end
       can :manage, Observation, related_school_scope
+      can :manage, TransportSurvey, related_school_scope
+      can :manage, TransportSurveyResponse, related_school_scope
       can :crud, Programme, related_school_scope
 
       can [:manage, :enable_alerts], User, related_school_scope
@@ -116,6 +120,8 @@ class Ability
       can :compare, SchoolGroup, { id: user.school.school_group_id }
       can :manage, Activity, school: { id: user.school_id, visible: true }
       can :manage, Observation, school: { id: user.school_id, visible: true }
+      can :manage, TransportSurvey, school: { id: user.school_id, visible: true }
+      can :manage, TransportSurveyResponse, school: { id: user.school_id, visible: true }
       can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
       can :read, [:my_school_menu, :school_downloads]
       can :read, Meter
