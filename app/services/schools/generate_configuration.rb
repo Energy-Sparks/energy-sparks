@@ -29,8 +29,11 @@ module Schools
       configuration.update!(pupil_analysis_charts: pupil_analysis_charts)
 
       #should come after fuel_configuration
-      school_target_fuel_types = Targets::GenerateFuelTypes.new(@school, @aggregated_meter_collection).perform
+      school_target_fuel_types = Targets::GenerateFuelTypes.new(@school, @aggregated_meter_collection).fuel_types_with_enough_data
       configuration.update!(school_target_fuel_types: school_target_fuel_types)
+
+      suggest_estimates_fuel_types = Targets::GenerateFuelTypes.new(@school, @aggregated_meter_collection).suggest_estimates_for_fuel_types
+      configuration.update!(suggest_estimates_fuel_types: suggest_estimates_fuel_types)
 
       configuration
     end
