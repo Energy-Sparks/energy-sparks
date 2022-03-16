@@ -12,8 +12,6 @@ RSpec.describe 'school targets', type: :system do
   let(:school_target_fuel_types) { ["gas", "electricity", "storage_heater"] }
 
   before(:each) do
-    allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-
     allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
     allow_any_instance_of(TargetsService).to receive(:annual_kwh_estimate_required?).and_return(false)
     allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
