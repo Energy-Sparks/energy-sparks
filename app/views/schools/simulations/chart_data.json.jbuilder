@@ -30,11 +30,10 @@ json.charts @output.each do |chart|
     '' => '#ff4500',
     'gas' => '#3bc0f0',
     Series::HeatingNonHeating::HEATINGDAY => '#3bc0f0',
-    SeriesNamesDeprecated::NONHEATINGDAY => '#5cb85c',
-    SeriesNamesDeprecated::HEATINGDAYMODEL => '#ff4500',
-    SeriesNamesDeprecated::NONHEATINGDAYMODEL => '#ffac21',
-    SeriesNamesDeprecated::USEFULHOTWATERUSAGE => '#3bc0f0',
-    SeriesNamesDeprecated::WASTEDHOTWATERUSAGE => '#ff4500'
+    Series::HeatingNonHeating::NONHEATINGDAY => '#5cb85c',
+    Series::HotWater::USEFULHOTWATERUSAGE => '#3bc0f0',
+    Series::HotWater::WASTEDHOTWATERUSAGE => '#ff4500',
+    Series::MultipleFuels::SOLARPV => '#ffac21' # 'solar pv (consumed onsite)'
   }
 
   json.chart_index        chart_index

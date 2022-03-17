@@ -29,13 +29,11 @@ class ChartDataValues
     Series::DayType::HOLIDAY => '#ff4500',
     Series::DayType::WEEKEND => '#ffac21',
     Series::HeatingNonHeating::HEATINGDAY => '#3bc0f0',
+    Series::HeatingNonHeating::NONHEATINGDAY => GREEN,
+    Series::HotWater::USEFULHOTWATERUSAGE => '#3bc0f0',
+    Series::HotWater::WASTEDHOTWATERUSAGE => '#ff4500',
+    Series::MultipleFuels::SOLARPV => '#ffac21', # 'solar pv (consumed onsite)'
 
-    SeriesNamesDeprecated::NONHEATINGDAY => GREEN,
-    SeriesNamesDeprecated::HEATINGDAYMODEL => '#ff4500',
-    SeriesNamesDeprecated::NONHEATINGDAYMODEL => '#ffac21',
-    SeriesNamesDeprecated::USEFULHOTWATERUSAGE => '#3bc0f0',
-    SeriesNamesDeprecated::WASTEDHOTWATERUSAGE => '#ff4500',
-    SeriesNamesDeprecated::SOLARPV => '#ffac21', # 'solar pv (consumed onsite)'
     'electricity' => MIDDLE_ELECTRICITY,
     'gas' => MIDDLE_GAS,
     'storage heater' => STORAGE_HEATER,

@@ -12,11 +12,12 @@ RSpec.describe 'school targets', type: :system do
   let(:school_target_fuel_types) { ["gas", "electricity", "storage_heater"] }
 
   before(:each) do
-    allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-
     allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
     allow_any_instance_of(TargetsService).to receive(:annual_kwh_estimate_required?).and_return(false)
     allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
+
+    allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+    allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(false)
 
     #Update the configuration rather than creating one, as the school factory builds one
     #and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
@@ -46,6 +47,14 @@ RSpec.describe 'school targets', type: :system do
         refresh
         expect(page).to_not have_link("Review targets", href: school_school_targets_path(school))
       end
+
+      it 'does have a link if v2 of targets is active' do
+        school.configuration.update!(school_target_fuel_types: [])
+        allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(true)
+        refresh
+        expect(page).to have_link("Review targets", href: school_school_targets_path(school))
+      end
+
     end
 
     context 'with targets disabled' do
@@ -63,7 +72,6 @@ RSpec.describe 'school targets', type: :system do
         visit school_school_targets_path(school)
         expect(page).to have_current_path(management_school_path(school))
       end
-
     end
 
     context "with no target" do
@@ -95,7 +103,7 @@ RSpec.describe 'school targets', type: :system do
             click_on 'Set this target'
 
             expect(page).to have_content('Target successfully created')
-            expect(page).to have_content("We are calculating your targets")
+            expect(page).to have_content("We are calculating your progress")
             expect(school.has_current_target?).to eql(true)
             expect(school.current_target.electricity).to eql 15.0
             expect(school.current_target.gas).to eql 15.0
@@ -122,7 +130,7 @@ RSpec.describe 'school targets', type: :system do
           click_on 'Set this target'
 
           expect(page).to have_content('Target successfully created')
-          expect(page).to have_content("We are calculating your targets")
+          expect(page).to have_content("We are calculating your progress")
           expect(school.has_current_target?).to eql(true)
           expect(school.current_target.electricity).to eql 15.0
           expect(school.current_target.gas).to eql nil
@@ -145,7 +153,7 @@ RSpec.describe 'school targets', type: :system do
           click_on 'Set this target'
 
           expect(page).to have_content('Target successfully created')
-          expect(page).to have_content("We are calculating your targets")
+          expect(page).to have_content("We are calculating your progress")
           expect(school.has_current_target?).to eql(true)
           expect(school.current_target.electricity).to eql 15.0
           expect(school.current_target.gas).to eql nil
@@ -162,7 +170,7 @@ RSpec.describe 'school targets', type: :system do
       end
 
       it "displays message to come back tomorrow" do
-        expect(page).to have_content("We are calculating your targets")
+        expect(page).to have_content("We are calculating your progress")
         expect(page).to have_content("Check back tomorrow to see the results.")
         expect(page).to_not have_link("View progress", href: electricity_school_progress_index_path(school))
       end
@@ -193,6 +201,47 @@ RSpec.describe 'school targets', type: :system do
         expect(School.first.has_electricity?).to be true
 
         expect(page).to have_link("View progress", href: electricity_school_progress_index_path(school))
+      end
+
+      it 'shows the bullet charts' do
+        expect(page).to have_css('#bullet-chart-electricity')
+        expect(page).to have_css('#bullet-chart-gas')
+        expect(page).to_not have_css('#bullet-chart-storage_heater')
+      end
+
+      it 'does not show limited data' do
+        expect(page).to_not have_content("Goal")
+        expect(page).to_not have_content("Last week")
+      end
+
+      context "and v2 is active and limited data is available" do
+        before(:each) do
+          allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(true)
+          target.update!(electricity_progress: {})
+          refresh
+        end
+        it 'doesnt show the electricity bullet chart' do
+          expect(page).to_not have_css('#bullet-chart-electricity')
+          expect(page).to have_css('#bullet-chart-gas')
+        end
+
+        it 'shows limited data' do
+          expect(page).to have_content("Goal")
+          expect(page).to_not have_content("Last week")
+        end
+
+        context 'and some recent data' do
+          let(:management_data) {
+            Tables::SummaryTableData.new({ electricity: { year: { :percent_change => 0.11050 }, workweek: { :kwh => 100, :percent_change => -0.0923132131 } } })
+          }
+          before(:each) do
+            allow_any_instance_of(Schools::ManagementTableService).to receive(:management_data).and_return(management_data)
+            refresh
+          end
+          it 'shows the same data as the management dashboard' do
+            expect(page).to have_content("Last week")
+          end
+        end
       end
 
       it 'links to help page if there is one' do
@@ -273,7 +322,6 @@ RSpec.describe 'school targets', type: :system do
 
         context "and theres enough data" do
           before(:each) do
-
             target.update!(revised_fuel_types: ["storage_heater"])
           end
 
@@ -453,7 +501,7 @@ RSpec.describe 'school targets', type: :system do
             click_on 'Set this target'
 
             expect(page).to have_content('Target successfully created')
-            expect(page).to have_content("We are calculating your targets")
+            expect(page).to have_content("We are calculating your progress")
             expect(school.has_current_target?).to eql(true)
             expect(school.current_target.electricity).to eql 15.0
             expect(school.current_target.gas).to eql 15.0

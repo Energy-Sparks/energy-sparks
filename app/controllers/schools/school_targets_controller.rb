@@ -29,6 +29,7 @@ module Schools
         @progress_summary = progress_service.progress_summary
         @prompt_to_review_target = prompt_to_review_target?
         @fuel_types_changed = fuel_types_changed
+        @overview_data = Schools::ManagementTableService.new(@school).management_data
       end
     end
 

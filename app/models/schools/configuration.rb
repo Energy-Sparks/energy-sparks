@@ -12,6 +12,7 @@
 #  school_id                           :bigint(8)        not null
 #  school_target_fuel_types            :string           default([]), not null, is an Array
 #  storage_heater_dashboard_chart_type :integer          default("no_storage_heater_chart"), not null
+#  suggest_estimates_fuel_types        :string           default([]), not null, is an Array
 #  updated_at                          :datetime         not null
 #
 # Indexes
@@ -72,6 +73,15 @@ module Schools
         school_target_fuel_types.include?("storage_heater")
       else
         school_target_fuel_types.include?(fuel_type.to_s)
+      end
+    end
+
+    def suggest_annual_estimate_for_fuel_type?(fuel_type)
+      case fuel_type.to_s
+      when "storage_heater", "storage_heaters"
+        suggest_estimates_fuel_types.include?("storage_heater")
+      else
+        suggest_estimates_fuel_types.include?(fuel_type.to_s)
       end
     end
 

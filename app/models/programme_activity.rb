@@ -2,7 +2,7 @@
 #
 # Table name: programme_activities
 #
-#  activity_id      :bigint(8)
+#  activity_id      :bigint(8)        not null
 #  activity_type_id :bigint(8)        not null
 #  id               :bigint(8)        not null, primary key
 #  position         :integer          default(0), not null
