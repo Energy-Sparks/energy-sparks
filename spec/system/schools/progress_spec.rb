@@ -166,6 +166,7 @@ describe 'targets', type: :system do
         sign_in(admin)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
+        school.configuration.update!(suggest_estimates_fuel_types: ["electricity"])
       end
 
       context 'and there is missing actual consumption' do
@@ -184,6 +185,11 @@ describe 'targets', type: :system do
         it 'describes why some consumption data is missing' do
           visit electricity_school_progress_index_path(school)
           expect(page).to have_content("We only have your actual electricity consumption data from 1 Oct 2016")
+        end
+
+        it 'shows prompt to add estimate' do
+          visit electricity_school_progress_index_path(school)
+          expect(page).to have_content("If you can supply an estimate of your annual consumption then we can generate a detailed progress report")
         end
       end
 
