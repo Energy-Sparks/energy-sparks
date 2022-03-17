@@ -6,6 +6,10 @@
   </div>
 </div>
 
+<% if @suggest_estimates.present? && @suggest_estimates.any? %>
+  <%= render 'schools/school_targets/prompt_to_add_estimate' %>
+<% end %>
+
 <% if !@recent_data %>
   <div class="row alert info-bar text-light bg-negative">
     <div class="col">

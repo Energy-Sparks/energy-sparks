@@ -47,6 +47,7 @@ module Schools
         @partial_consumption = partial_consumption_data?(@progress)
         @partial_targets = partial_target_data?(@progress)
         @overview_data = summary_table
+        @suggest_estimates = suggest_estimates
         @debug_content = service.analytics_debug_info if current_user.present? && current_user.analytics?
       rescue => e
         Rollbar.error(e, school_id: @school.id, school: @school.name, fuel_type: @fuel_type)

@@ -218,6 +218,7 @@ RSpec.describe 'school targets', type: :system do
         before(:each) do
           allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(true)
           target.update!(electricity_progress: {})
+          school.configuration.update!(suggest_estimates_fuel_types: ["electricity"])
           refresh
         end
         it 'doesnt show the electricity bullet chart' do
@@ -228,6 +229,10 @@ RSpec.describe 'school targets', type: :system do
         it 'shows limited data' do
           expect(page).to have_content("Goal")
           expect(page).to_not have_content("Last week")
+        end
+
+        it 'shows prompt to add estimate' do
+          expect(page).to have_content("If you can supply an estimate of your annual consumption then we can generate a detailed progress report")
         end
 
         context 'and some recent data' do
