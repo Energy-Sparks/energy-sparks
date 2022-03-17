@@ -44,6 +44,10 @@
   <% end %>
 <% end %>
 
+<% if @suggest_estimates.present? && @suggest_estimates.any? %>
+  <%= render 'prompt_to_add_estimate' %>
+<% end %>
+
 <div class="row">
   <div class="col">
     <h3>Achieving your targets</h3>
