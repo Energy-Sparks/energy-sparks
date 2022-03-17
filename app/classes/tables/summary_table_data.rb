@@ -24,6 +24,14 @@ module Tables
       format_date(fetch(fuel_type, :end_date))
     end
 
+    def work_week(fuel_type)
+      summary_data_for(fuel_type, :workweek)
+    end
+
+    def year(fuel_type)
+      summary_data_for(fuel_type, :year)
+    end
+
     private
 
     def fuel_types
