@@ -1,0 +1,60 @@
+<%= form_with model: [estimated_annual_consumption.school, estimated_annual_consumption], local: true, html: {class: 'form-horizontal'} do |f| %>
+
+  <%= hidden_field :estimated_annual_consumption, :school_id %>
+
+  <%= render 'shared/errors', subject: estimated_annual_consumption, subject_name: 'Estimate' %>
+
+  <div class="input-group mb-3">
+    <div class="col-sm-6">
+      <%= f.label :year, "Which is year is your estimate based on?", class: "form-label" %>
+    </div>
+    <div class="col-sm-2">
+      <%= f.text_field :year, class: 'form-control', value: estimated_annual_consumption.year || Date.today.prev_year.year, pattern: '[0-9.]+' %>
+    </div>
+  </div>
+
+  <% if school.configuration.suggest_annual_estimate_for_fuel_type?(:electricity) || estimated_annual_consumption.electricity.present? %>
+    <div class="input-group mb-3">
+      <div class="col-sm-6">
+        <%= f.label :electricity, "Annual electricity consumption", class: "form-label" %>
+      </div>
+      <div class="col-sm-2">
+        <%= f.text_field :electricity, class: 'form-control', value: estimated_annual_consumption.electricity || "", pattern: '[0-9.]+' %>
+      </div>
+      <div class="input-group-append">
+        <span class="input-group-text"> kwh </span>
+      </div>
+    </div>
+  <% end %>
+
+  <% if school.configuration.suggest_annual_estimate_for_fuel_type?(:gas) || estimated_annual_consumption.gas.present? %>
+    <div class="input-group mb-3">
+      <div class="col-sm-6">
+        <%= f.label :gas, "Annual gas consumption", class: "form-label" %>
+      </div>
+      <div class="col-sm-2">
+        <%= f.text_field :gas, class: 'form-control', value: estimated_annual_consumption.gas || "", pattern: '[0-9.]+'  %>
+      </div>
+      <div class="input-group-append">
+        <span class="input-group-text"> kwh </span>
+      </div>
+    </div>
+  <% end %>
+
+  <% if school.configuration.suggest_annual_estimate_for_fuel_type?(:gas) || estimated_annual_consumption.storage_heaters.present? %>
+    <div class="input-group mb-3">
+      <div class="col-sm-6">
+        <%= f.label :storage_heaters, "Annual storage heater electricity consumption", class: "form-label" %>
+      </div>
+      <div class="col-sm-2">
+        <%= f.text_field :storage_heaters, class: 'form-control', value: estimated_annual_consumption.storage_heaters || "", pattern: '[0-9.]+' %>
+      </div>
+      <div class="input-group-append">
+        <span class="input-group-text"> kwh </span>
+      </div>
+    </div>
+  <% end %>
+
+  <%= f.submit estimated_annual_consumption.persisted? ? "Update" : "Save", class: "btn btn-primary" %>
+
+<% end %>
