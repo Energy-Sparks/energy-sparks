@@ -74,6 +74,7 @@ class Ability
         :show_management_dash,
         :read, :start_programme, :read_restricted_analysis
       ], School, school_scope
+      can :manage, EstimatedAnnualConsumption, related_school_scope
       can :manage, SchoolTarget, related_school_scope
       can :manage, Activity, related_school_scope
       can :manage, Contact, related_school_scope
@@ -134,6 +135,7 @@ class Ability
       end
       if user.staff? || user.volunteer?
         can :manage, SchoolTarget, school: { id: user.school_id, visible: true }
+        can :manage, EstimatedAnnualConsumption, school: { id: user.school_id, visible: true }
         can [:show_management_dash], School, id: user.school_id, visible: true
         can [:show_management_dash, :start_programme], School, { school_group_id: user.school.school_group_id, visible: true }
         can :crud, Programme, school: { id: user.school_id, visible: true }

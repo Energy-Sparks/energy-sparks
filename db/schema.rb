@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_16_140302) do
+ActiveRecord::Schema.define(version: 2022_03_17_105249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -724,6 +724,17 @@ ActiveRecord::Schema.define(version: 2022_03_16_140302) do
     t.date "to_date"
     t.index ["equivalence_type_content_version_id"], name: "index_equivalences_on_equivalence_type_content_version_id"
     t.index ["school_id"], name: "index_equivalences_on_school_id"
+  end
+
+  create_table "estimated_annual_consumptions", force: :cascade do |t|
+    t.integer "year", null: false
+    t.float "electricity"
+    t.float "storage_heaters"
+    t.float "gas"
+    t.bigint "school_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_estimated_annual_consumptions_on_school_id"
   end
 
   create_table "find_out_mores", force: :cascade do |t|
@@ -1578,6 +1589,7 @@ ActiveRecord::Schema.define(version: 2022_03_16_140302) do
   add_foreign_key "equivalence_type_content_versions", "equivalence_types", on_delete: :cascade
   add_foreign_key "equivalences", "equivalence_type_content_versions", on_delete: :cascade
   add_foreign_key "equivalences", "schools", on_delete: :cascade
+  add_foreign_key "estimated_annual_consumptions", "schools"
   add_foreign_key "find_out_mores", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "find_out_mores", "alerts", on_delete: :cascade
   add_foreign_key "find_out_mores", "content_generation_runs", on_delete: :cascade

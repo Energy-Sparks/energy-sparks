@@ -124,6 +124,8 @@ Rails.application.routes.draw do
         end
       end
       resources :school_targets, except: [:destroy]
+      resources :estimated_annual_consumptions, except: [:show, :destroy]
+
       resources :programmes, only: [:create]
 
       resource :action, only: [:new]
