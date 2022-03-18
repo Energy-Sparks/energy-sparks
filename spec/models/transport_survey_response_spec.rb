@@ -2,10 +2,17 @@ require 'rails_helper'
 
 describe 'TransportSurveyResponse' do
 
-  subject { create :transport_survey_response }
+  context "with valid attributes" do
+    subject { create :transport_survey_response }
+    it { is_expected.to be_valid }
+  end
 
-  it 'is valid with valid attributes' do
-    expect(subject).to be_valid
+  describe '#weather_symbol' do
+    subject { create :transport_survey_response, weather: :sun }
+
+    it 'returns a weather symbol' do
+      expect(subject.weather_symbol).to eq("☀️")
+    end
   end
 
 end
