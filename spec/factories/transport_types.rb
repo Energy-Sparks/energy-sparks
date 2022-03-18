@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :transport_type do
-    name { "Car" }
+    sequence(:name) {|n| "name#{n}"}
     image { "🚗" }
     kg_co2e_per_km { "0.17137" }
     speed_km_per_hour { "32" }
