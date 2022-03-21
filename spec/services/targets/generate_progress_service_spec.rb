@@ -22,6 +22,7 @@ describe Targets::GenerateProgressService do
   let(:cumulative_usage_kwh)      { [10,15] }
   let(:cumulative_performance)    { [-0.99,0.99] }
   let(:partial_months)            { [Date.today.strftime("%b")] }
+  let(:percentage_synthetic)      { [0, 0]}
 
   let(:progress) do
     TargetsProgress.new(
@@ -35,7 +36,8 @@ describe Targets::GenerateProgressService do
         cumulative_performance: cumulative_performance,
         cumulative_performance_versus_synthetic_last_year: cumulative_performance,
         monthly_performance_versus_synthetic_last_year: monthly_performance,
-        partial_months: partial_months
+        partial_months: partial_months,
+        percentage_synthetic: percentage_synthetic
     )
   end
 
