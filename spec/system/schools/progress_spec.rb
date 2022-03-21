@@ -23,6 +23,7 @@ describe 'targets', type: :system do
   let(:cumulative_performance)    { [-0.99,0.99] }
 
   let(:partial_months)            { [false, true] }
+  let(:percentage_synthetic)      { [0, 0]}
 
   let(:progress) do
     TargetsProgress.new(
@@ -36,7 +37,8 @@ describe 'targets', type: :system do
         cumulative_performance: cumulative_performance,
         cumulative_performance_versus_synthetic_last_year: cumulative_performance,
         monthly_performance_versus_synthetic_last_year: monthly_performance,
-        partial_months: partial_months
+        partial_months: partial_months,
+        percentage_synthetic: percentage_synthetic
     )
   end
 
