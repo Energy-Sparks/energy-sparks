@@ -10,6 +10,7 @@ module Interventions
       suggestions = []
       suggestions = top_up_from_list(suggest_from_audits, suggestions)
       suggestions = top_up_from_list(suggest_from_alerts, suggestions) if suggestions.length < limit
+      suggestions = top_up_from_list(suggest_from_most_recent_intervention, suggestions) if suggestions.length < limit
       suggestions = top_up_from_list(suggest_random(limit), suggestions) if suggestions.length < limit
       suggestions.take(limit)
     end
@@ -23,7 +24,15 @@ module Interventions
       if content
         content.find_out_more_intervention_types
       else
-        InterventionType.none
+        []
+      end
+    end
+
+    def suggest_from_most_recent_intervention
+      if (most_recent_intervention_type = @school.intervention_types_by_date.first)
+        most_recent_intervention_type.suggested_types
+      else
+        []
       end
     end
 

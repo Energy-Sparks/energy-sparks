@@ -229,9 +229,13 @@ class School < ApplicationRecord
 
   def intervention_types_in_academic_year(date)
     if (observations = observations_in_academic_year(date))
-      return observations.map(&:intervention_type)
+      return observations.map(&:intervention_type).compact
     end
     []
+  end
+
+  def intervention_types_by_date
+    observations.by_date.map(&:intervention_type).compact
   end
 
   def national_calendar
