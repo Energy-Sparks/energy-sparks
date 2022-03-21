@@ -36,7 +36,7 @@
 
 <% if @current_target %>
   <p>
-    Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @current_target.electricity %>% by <%= nice_dates(@current_target.target_date) %>.
+    Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @current_target.attributes[@fuel_type.to_s] %>% by <%= nice_dates(@current_target.target_date) %>.
   </p>
 <% end %>
 
