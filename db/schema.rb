@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_17_105249) do
+ActiveRecord::Schema.define(version: 2022_03_21_102735) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -798,6 +798,15 @@ ActiveRecord::Schema.define(version: 2022_03_17_105249) do
     t.string "icon", default: "question-circle"
     t.string "description"
     t.boolean "active", default: true
+  end
+
+  create_table "intervention_type_suggestions", force: :cascade do |t|
+    t.bigint "intervention_type_id"
+    t.integer "suggested_type_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["intervention_type_id"], name: "index_intervention_type_suggestions_on_intervention_type_id"
+    t.index ["suggested_type_id"], name: "index_intervention_type_suggestions_on_suggested_type_id"
   end
 
   create_table "intervention_types", force: :cascade do |t|
@@ -1596,6 +1605,7 @@ ActiveRecord::Schema.define(version: 2022_03_17_105249) do
   add_foreign_key "global_meter_attributes", "global_meter_attributes", column: "replaced_by_id", on_delete: :nullify
   add_foreign_key "global_meter_attributes", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "global_meter_attributes", "users", column: "deleted_by_id", on_delete: :restrict
+  add_foreign_key "intervention_type_suggestions", "intervention_types", on_delete: :cascade
   add_foreign_key "intervention_types", "intervention_type_groups", on_delete: :cascade
   add_foreign_key "locations", "schools", on_delete: :cascade
   add_foreign_key "low_carbon_hub_installations", "amr_data_feed_configs", on_delete: :cascade

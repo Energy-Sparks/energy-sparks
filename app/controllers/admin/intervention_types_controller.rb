@@ -12,15 +12,24 @@ module Admin
     end
 
     def new
+      add_intervention_type_suggestions
     end
 
     def edit
+      number_of_suggestions_so_far = @intervention_type.intervention_type_suggestions.count
+      if number_of_suggestions_so_far > 8
+        @intervention_type.intervention_type_suggestions.build
+      else
+        # Top up to 8
+        add_intervention_type_suggestions(number_of_suggestions_so_far)
+      end
     end
 
     def create
       if @intervention_type.save
         redirect_to admin_intervention_types_path, notice: 'Intervention type was successfully created.'
       else
+        add_intervention_type_suggestions
         render :new
       end
     end
@@ -41,6 +50,10 @@ module Admin
 
   private
 
+    def add_intervention_type_suggestions(number_of_suggestions_so_far = 0)
+      (0..(7 - number_of_suggestions_so_far)).each { @intervention_type.intervention_type_suggestions.build }
+    end
+
     def intervention_type_params
       params.require(:intervention_type).permit(:title,
           :summary,
@@ -50,7 +63,13 @@ module Admin
           :active,
           :intervention_type_group_id,
           :points,
-          :other)
+          :other,
+          intervention_type_suggestions_attributes: suggestions_params
+      )
+    end
+
+    def suggestions_params
+      [:id, :suggested_type_id, :_destroy]
     end
   end
 end

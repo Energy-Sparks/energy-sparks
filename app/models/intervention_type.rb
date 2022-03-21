@@ -35,9 +35,14 @@ class InterventionType < ApplicationRecord
   belongs_to :intervention_type_group
   has_many :observations
 
+  has_many :intervention_type_suggestions
+  has_many :suggested_types, through: :intervention_type_suggestions
+
   has_one_attached :image
   has_rich_text :description
   has_rich_text :download_links
+
+  accepts_nested_attributes_for :intervention_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
 
   validates :intervention_type_group, :title, presence: true
   validates :title, uniqueness: { scope: :intervention_type_group_id }
