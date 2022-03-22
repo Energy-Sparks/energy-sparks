@@ -436,6 +436,7 @@ RSpec.describe 'school targets', type: :system do
       it 'allows target to be deleted' do
         click_on "Delete"
         expect(page).to have_content("Target successfully removed")
+        expect(SchoolTarget.count).to eql 0
       end
     end
   end
