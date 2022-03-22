@@ -94,6 +94,7 @@ class Ability
       can :manage, TransportSurvey, related_school_scope
       can :manage, TransportSurveyResponse, transport_survey: related_school_scope
       can :crud, Programme, related_school_scope
+
       can [:manage, :enable_alerts], User, related_school_scope
 
       can [:manage, :enable_alerts], User do |other_user|
@@ -125,10 +126,10 @@ class Ability
       can [:start_programme], School, id: user.school_id, visible: true
       #pupils can view management dashboard for their school and others in group
       if user.pupil?
-        can [:intro, :read, :update, :create], TransportSurvey, related_school_scope
-        can [:read, :create], TransportSurveyResponse, transport_survey: related_school_scope
         can :show_management_dash, School, id: user.school_id, visible: true
         can :show_management_dash, School, { school_group_id: user.school.school_group_id, visible: true }
+        can [:intro, :read, :update, :create], TransportSurvey, related_school_scope
+        can [:read, :create], TransportSurveyResponse, transport_survey: related_school_scope
       end
       #pupils and volunteers can only read real cost data if their school is public
       if user.volunteer? || user.pupil?
@@ -145,7 +146,7 @@ class Ability
         can :enable_alerts, User, id: user.id
         can [:create, :update, :destroy], Contact, user_id: user.id
         can :manage, TransportSurvey, school: { id: user.school_id, visible: true }
-        can :manage, TransportSurveyResponse, transport_survey: { school: { id: user.school_id, visible: true }}
+        can :manage, TransportSurveyResponse, transport_survey: { school: { id: user.school_id, visible: true } }
       end
     elsif user.guest?
       can :manage, SchoolOnboarding, created_user_id: nil
