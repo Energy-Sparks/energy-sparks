@@ -35,4 +35,6 @@
   </table>
 </div>
 
-<%= link_to 'Collect more responses', intro_school_transport_surveys_url(@school), class: 'btn' %>
+<% if can?(:update, TransportSurvey) %>
+  <%= link_to 'Collect more responses', intro_school_transport_surveys_url(@school), class: 'btn' %>
+<% end %>

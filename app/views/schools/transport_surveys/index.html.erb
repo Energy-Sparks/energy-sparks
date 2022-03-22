@@ -23,9 +23,10 @@
         <% end %>
       </tr>
     <% end %>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>
 
-<br>
-
-<%= link_to 'Start surveying', intro_school_transport_surveys_url(@school), class: 'btn' %>
+<% if can? :intro, TransportSurvey %>
+  <%= link_to 'Start surveying', intro_school_transport_surveys_url(@school), class: 'btn' %>
+<% end %>
