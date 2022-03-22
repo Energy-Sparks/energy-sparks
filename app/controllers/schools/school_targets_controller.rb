@@ -77,6 +77,12 @@ module Schools
       end
     end
 
+    def destroy
+      authorize! :destroy, @school_target
+      @school_target.destroy
+      redirect_to school_path(@school), notice: 'Target successfully removed'
+    end
+
     private
 
     def school_target_params

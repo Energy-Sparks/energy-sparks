@@ -44,6 +44,12 @@ module Schools
       end
     end
 
+    def destroy
+      authorize! :delete, @estimated_annual_consumption
+      @estimated_annual_consumption.destroy
+      redirect_to school_path(@school), notice: 'Estimate successfully removed'
+    end
+
     private
 
     def estimated_annual_consumption_params
