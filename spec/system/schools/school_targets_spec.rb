@@ -297,7 +297,7 @@ RSpec.describe 'school targets', type: :system do
 
       it "doesnt show delete button" do
         click_on "Revise your target"
-        expect(page).to_not have_content("Delete")
+        expect(page).to_not have_link("Delete")
       end
 
       it "validates target values" do
