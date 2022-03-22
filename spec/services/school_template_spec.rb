@@ -16,7 +16,7 @@ describe SchoolTemplate do
 
     template = SchoolTemplate.new(school)
     rendered = template.render("{{#chart}}daily_electricity_breakdown{{/chart}}", {})
-    expect(rendered).to include('£')
+    expect(rendered).to include('&quot;£&quot;')
   end
 
   it 'can specify a y-axis-unit with a bar' do
@@ -24,8 +24,8 @@ describe SchoolTemplate do
 
     template = SchoolTemplate.new(school)
     rendered = template.render("{{#chart}}daily_electricity_breakdown|kwh{{/chart}}", {})
-    expect(rendered).to include('kwh')
-    expect(rendered).to_not include('£')
+    expect(rendered).to include('&quot;kwh&quot;')
+    expect(rendered).to_not include('&quot;£&quot;')
   end
 
 end
