@@ -92,9 +92,8 @@ class Ability
       end
       can :manage, Observation, related_school_scope
       can :manage, TransportSurvey, related_school_scope
-      can :manage, TransportSurveyResponse
+      can :manage, TransportSurveyResponse, { transport_survey: related_school_scope }
       can :crud, Programme, related_school_scope
-
       can [:manage, :enable_alerts], User, related_school_scope
 
       can [:manage, :enable_alerts], User do |other_user|
@@ -120,16 +119,16 @@ class Ability
       can :compare, SchoolGroup, { id: user.school.school_group_id }
       can :manage, Activity, school: { id: user.school_id, visible: true }
       can :manage, Observation, school: { id: user.school_id, visible: true }
-      can :manage, TransportSurvey, school: { id: user.school_id, visible: true }
-      can :manage, TransportSurveyResponse
+      can :manage, TransportSurvey, school: school_scope
+      can :manage, TransportSurveyResponse, transport_survey: { school: school_scope }
       can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
       can :read, [:my_school_menu, :school_downloads]
       can :read, Meter
       can [:start_programme], School, id: user.school_id, visible: true
       #pupils can view management dashboard for their school and others in group
       if user.pupil?
-        can [:index, :edit, :update, :show], TransportSurvey, school: { id: user.school_id, visible: true }
-        can [:index, :create, :show], TransportSurveyResponse
+        can [:read, :create], TransportSurvey, school: school_scope
+        can [:read, :create], TransportSurveyResponse, transport_survey: { school: school_scope }
         can :show_management_dash, School, id: user.school_id, visible: true
         can :show_management_dash, School, { school_group_id: user.school.school_group_id, visible: true }
       end

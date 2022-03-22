@@ -12,7 +12,9 @@
         <th>Passengers</th>
         <th>Response Time</th>
         <th>Run Identifier</th>
-        <th>Actions</th>
+        <% if can? :delete, TransportSurveyResponse %>
+          <th>Actions</th>
+        <% end %>
       </tr>
     </thead>
     <tbody>
@@ -20,15 +22,13 @@
         <tr scope="row">
           <td><%= response.weather_symbol %></td>
           <td><%= response.journey_minutes %></td>
-          <td><%= response.transport_type.image %><%= response.transport_type.name %></td>
+          <td><%= response.transport_type.image %> <%= response.transport_type.name %></td>
           <td><%= response.passengers %></td>
           <td><%= response.surveyed_at %></td>
           <td><%= response.run_identifier %></td>
-          <td>
-          <% if can? :manage, response %>
-            <%= link_to 'Delete', school_transport_survey_response_path(@school, @transport_survey, response), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
+          <% if can? :delete, response %>
+            <td><%= link_to 'Delete', school_transport_survey_response_path(@school, @transport_survey, response), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %></td>
           <% end %>
-          </td>
         </tr>
       <% end %>
     </tbody>
