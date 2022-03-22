@@ -123,7 +123,7 @@ Rails.application.routes.draw do
           get :storage_heater
         end
       end
-      resources :school_targets, except: [:destroy]
+      resources :school_targets
       resources :estimated_annual_consumptions, except: [:show, :destroy]
 
       resources :programmes, only: [:create]
