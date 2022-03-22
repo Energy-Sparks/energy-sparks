@@ -85,6 +85,10 @@ RSpec.describe 'estimated annual consumption', type: :system do
         latest_estimate = school.latest_annual_estimate
         expect(latest_estimate.electricity).to eq 6000.0
       end
+
+      it 'does not show delete link' do
+        expect(page).to_not have_link("Delete")
+      end
     end
 
     context 'and previous estimate given, but is now not needed' do
@@ -118,6 +122,23 @@ RSpec.describe 'estimated annual consumption', type: :system do
     it 'doesnt let me access page' do
       visit school_estimated_annual_consumptions_path(school)
       expect(page).to have_content("Sign in to Energy Sparks")
+    end
+  end
+
+  context 'as an admin' do
+    let(:admin)            { create(:admin)}
+    let!(:estimate)   { create(:estimated_annual_consumption, year: 2021, electricity: 1000.0, gas: 2000.0, storage_heaters: 3000.0, school: school )}
+
+    before(:each) do
+      sign_in(admin)
+      visit school_path(school)
+    end
+
+    it 'allows me to delete the estimate' do
+      click_on('Manage usage estimate')
+      click_on('Delete')
+      expect(page).to have_content("Estimate successfully removed")
+      expect(EstimatedAnnualConsumption.count).to eq 0
     end
   end
 end

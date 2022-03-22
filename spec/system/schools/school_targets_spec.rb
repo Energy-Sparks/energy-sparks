@@ -295,6 +295,11 @@ RSpec.describe 'school targets', type: :system do
         expect(school.current_target.storage_heaters).to eql 7.0
       end
 
+      it "doesnt show delete button" do
+        click_on "Revise your target"
+        expect(page).to_not have_link("Delete")
+      end
+
       it "validates target values" do
         click_on "Revise your target"
 
@@ -428,6 +433,11 @@ RSpec.describe 'school targets', type: :system do
         expect(target.target_date).to eql today
       end
 
+      it 'allows target to be deleted' do
+        click_on "Delete"
+        expect(page).to have_content("Target successfully removed")
+        expect(SchoolTarget.count).to eql 0
+      end
     end
   end
 
