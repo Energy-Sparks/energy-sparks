@@ -87,7 +87,7 @@ RSpec.describe 'estimated annual consumption', type: :system do
       end
 
       it 'does not show delete link' do
-        expect(page).to_not have_content("Delete")
+        expect(page).to_not have_link("Delete")
       end
     end
 
