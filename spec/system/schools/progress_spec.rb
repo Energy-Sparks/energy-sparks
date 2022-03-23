@@ -122,7 +122,7 @@ describe 'targets', type: :system do
 
       it 'does not show message about storage heaters' do
         visit electricity_school_progress_index_path(school)
-        expect(page).not_to have_content("does not include your storage heater usage")
+        expect(page).not_to have_content("This report only show progress on reducing your electricity usage")
       end
 
       context 'when school also has storage heaters' do
@@ -132,7 +132,8 @@ describe 'targets', type: :system do
 
         it 'does show message about storage heaters' do
           visit electricity_school_progress_index_path(school)
-          expect(page).to have_content("does not include your storage heater usage")
+          expect(page).to have_content("This report only show progress on reducing your electricity usage")
+          expect(page).to have_link("storage heater progress report")
         end
 
       end
@@ -186,7 +187,7 @@ describe 'targets', type: :system do
 
         it 'describes why some consumption data is missing' do
           visit electricity_school_progress_index_path(school)
-          expect(page).to have_content("We only have your actual electricity consumption data from 1 Oct 2016")
+          expect(page).to have_content("We only have data on your electricity consumption from 1 Oct 2016")
         end
 
         it 'shows prompt to add estimate' do
@@ -214,7 +215,7 @@ describe 'targets', type: :system do
 
         it 'describes why target consumption data is missing' do
           visit electricity_school_progress_index_path(school)
-          expect(page).to have_content('We only have limited consumption data for your school, so we cannot currently calculate a full set of monthly targets or progress')
+          expect(page).to have_content('We only have limited historical consumption data for your school, so we cannot currently calculate a full set of monthly targets or progress')
         end
       end
     end
