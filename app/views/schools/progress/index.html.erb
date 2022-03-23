@@ -19,7 +19,7 @@
 <% else %>
   <% if @school_target.current? %>
     <p>
-      Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @school_target.attributes[@fuel_type.to_s] %>% between <%= @school_target.target_date.strftime("%b %Y") %> and <%= @school_target.target_date.strftime("%b %Y") %>.
+      Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @school_target.attributes[@fuel_type.to_s] %>% between <%= @school_target.start_date.strftime("%b %Y") %> and <%= @school_target.target_date.strftime("%b %Y") %>.
     </p>
   <% else %>
     <p>
