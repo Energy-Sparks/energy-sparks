@@ -37,19 +37,19 @@ module Schools
 
     def index_for(fuel_type)
       @fuel_type = fuel_type
-      @current_target = @school.current_target
-      authorize! :show, @current_target
+      @school_target = @school.most_recent_target
+      authorize! :show, @school_target
       @show_storage_heater_notes = show_storage_heater_notes(@school, @fuel_type)
       begin
         service = TargetsService.new(aggregate_school, @fuel_type)
         @recent_data = service.recent_data?
         @progress = service.progress
-        @partial_consumption = partial_consumption_data?(@progress)
-        @partial_targets = partial_target_data?(@progress)
         @overview_data = summary_table
         @suggest_estimates = suggest_estimates
         @debug_content = service.analytics_debug_info if current_user.present? && current_user.analytics?
       rescue => e
+        Rails.logger.error e
+        Rails.logger.error e.backtrace.join("\n")
         Rollbar.error(e, school_id: @school.id, school: @school.name, fuel_type: @fuel_type)
         @debug_error = e.message
       end
@@ -63,17 +63,6 @@ module Schools
 
     def show_storage_heater_notes(school, fuel_type)
       fuel_type == :electricity && school.has_storage_heaters?
-    end
-
-    def partial_consumption_data?(progress)
-      #this could be more sophisticated, relies on ordering of months array reflecting
-      #actual starting month of the target reporting period
-      first_month = progress.months.first
-      progress.monthly_usage_kwh[first_month].nil? || progress.partial_months[first_month]
-    end
-
-    def partial_target_data?(progress)
-      progress.monthly_targets_kwh.value?(nil)
     end
 
     def progress_service
