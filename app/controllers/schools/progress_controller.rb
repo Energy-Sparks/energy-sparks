@@ -37,8 +37,8 @@ module Schools
 
     def index_for(fuel_type)
       @fuel_type = fuel_type
-      @current_target = @school.current_target
-      authorize! :show, @current_target
+      @school_target = @school.most_recent_target
+      authorize! :show, @school_target
       @show_storage_heater_notes = show_storage_heater_notes(@school, @fuel_type)
       begin
         service = TargetsService.new(aggregate_school, @fuel_type)

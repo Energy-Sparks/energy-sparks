@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between align-items-center">
   <h1>Tracking progress to reduce your <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage</h1>
   <div>
-    <%= link_to "Review targets", school_school_target_path(@school, @current_target), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+    <%= link_to "Review targets", school_school_target_path(@school, @school_target), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
     <%= link_to_help_for_feature :school_targets, css: "btn btn-outline-dark rounded-pill font-weight-bold" %>
   </div>
 </div>
@@ -17,9 +17,13 @@
     </div>
   </div>
 <% else %>
-  <% if @current_target %>
+  <% if @school_target.current? %>
     <p>
-      Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @current_target.attributes[@fuel_type.to_s] %>% between <%= @current_target.start_date.strftime("%b %Y") %> and <%= @current_target.target_date.strftime("%b %Y") %>.
+      Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @school_target.attributes[@fuel_type.to_s] %>% between <%= @school_target.start_date.strftime("%b %Y") %> and <%= @school_target.target_date.strftime("%b %Y") %>.
+    </p>
+  <% else %>
+    <p>
+      Your school previously set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @school_target.attributes[@fuel_type.to_s] %>% before <%= @school_target.target_date.strftime("%b %Y") %>. This target is now out of date.
     </p>
   <% end %>
 
