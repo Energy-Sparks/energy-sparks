@@ -1,0 +1,41 @@
+<h1>Transport Surveys</h1>
+
+<h3>Responses for: <%= @transport_survey.run_on %></h3>
+
+<div class="table-responsive mt-2">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Weather</th>
+        <th>Journey Time (minutes)</th>
+        <th>Transport Method</th>
+        <th>Passengers</th>
+        <th>Response Time</th>
+        <th>Run Identifier</th>
+        <% if can? :delete, TransportSurveyResponse %>
+          <th>Actions</th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+			<% @transport_survey.responses.each do |response| %>
+        <tr scope="row">
+          <td><%= response.weather_symbol %></td>
+          <td><%= response.journey_minutes %></td>
+          <td><%= response.transport_type.image %> <%= response.transport_type.name %></td>
+          <td><%= response.passengers %></td>
+          <td><%= response.surveyed_at %></td>
+          <td><%= response.run_identifier %></td>
+          <% if can? :delete, response %>
+            <td><%= link_to 'Delete', school_transport_survey_response_path(@school, @transport_survey, response), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<% if can?(:update, TransportSurvey) %>
+  <%= link_to 'Collect more responses', intro_school_transport_surveys_url(@school), class: 'btn' %>
+<% end %>
+

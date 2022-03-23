@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Schools Transport Surveys</h1>
+
+<div class="table-responsive mt-2">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Survey Date</th>
+        <th>Responses</th>
+        <% if can? :delete, TransportSurvey %>
+          <th>Actions</th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+    <% @transport_surveys.each do |transport_survey| %>
+      <tr>
+        <td><%= link_to_if can?(:show, transport_survey), transport_survey.run_on, school_transport_survey_url(@school, transport_survey) %></td>
+        <td><%= transport_survey.responses.length %></td>
+        <% if can? :delete, transport_survey %>
+          <td><%= link_to 'Delete', school_transport_survey_url(@school, transport_survey), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %></td>
+        <% end %>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+<% if can? :intro, TransportSurvey %>
+  <%= link_to 'Start surveying', intro_school_transport_surveys_url(@school), class: 'btn' %>
+<% end %>

@@ -1417,6 +1417,41 @@ ActiveRecord::Schema.define(version: 2022_03_23_103737) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "transport_survey_responses", force: :cascade do |t|
+    t.bigint "transport_survey_id", null: false
+    t.bigint "transport_type_id", null: false
+    t.integer "passengers", default: 1, null: false
+    t.integer "integer", default: 1, null: false
+    t.string "run_identifier", null: false
+    t.datetime "surveyed_at", null: false
+    t.integer "journey_minutes", default: 0, null: false
+    t.integer "weather", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["transport_survey_id"], name: "index_transport_survey_responses_on_transport_survey_id"
+    t.index ["transport_type_id"], name: "index_transport_survey_responses_on_transport_type_id"
+  end
+
+  create_table "transport_surveys", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.date "run_on", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["run_on"], name: "index_transport_surveys_on_run_on", unique: true
+    t.index ["school_id"], name: "index_transport_surveys_on_school_id"
+  end
+
+  create_table "transport_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "image", null: false
+    t.decimal "kg_co2e_per_km", default: "0.0", null: false
+    t.decimal "speed_km_per_hour", default: "0.0", null: false
+    t.string "note"
+    t.boolean "can_share", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "user_tariff_charges", force: :cascade do |t|
     t.bigint "user_tariff_id", null: false
     t.text "charge_type", null: false
@@ -1680,6 +1715,9 @@ ActiveRecord::Schema.define(version: 2022_03_23_103737) do
   add_foreign_key "subscription_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade
+  add_foreign_key "transport_survey_responses", "transport_surveys", on_delete: :cascade
+  add_foreign_key "transport_survey_responses", "transport_types"
+  add_foreign_key "transport_surveys", "schools", on_delete: :cascade
   add_foreign_key "user_tariff_charges", "user_tariffs", on_delete: :cascade
   add_foreign_key "user_tariff_prices", "user_tariffs", on_delete: :cascade
   add_foreign_key "users", "school_groups", on_delete: :restrict
