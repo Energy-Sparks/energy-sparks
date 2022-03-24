@@ -9,6 +9,7 @@ $(document).ready(function() {
     units = $(el).data("units");
     plotBands = $(el).data("bands");
     start_date = $(el).data("start-date");
+    month = $(el).data("month");
 
     Highcharts.chart(el[0], {
         chart: {
@@ -40,7 +41,7 @@ $(document).ready(function() {
             enabled: false
         },
         xAxis: {
-            categories: ['<span class="bullet-chart-title">' + label + '</span> ('+ units + ')']
+            categories: ['<span class="bullet-chart-title">' + label + '</span><br>('+ units + ')']
         },
         yAxis: {
             gridLineWidth: 0,
@@ -52,7 +53,7 @@ $(document).ready(function() {
         }],
         tooltip: {
             headerFormat: ""  ,
-            pointFormat: '<b>{point.y} '+ units + '</b> consumed since <b>' + start_date + '</b>. With a target of <b>{point.target} ' + units + '</b> consumed by the end of this month)'
+            pointFormat: '<b>{point.y} '+ units + '</b> consumed since <b>' + start_date + '</b>. You should use less than <b>{point.target} ' + units + '</b> by the end of ' + month
         }
     });
   }
