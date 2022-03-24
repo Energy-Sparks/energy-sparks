@@ -51,11 +51,14 @@ RSpec.describe Targets::SchoolTargetService do
     end
 
     context 'an updated target' do
-      let!(:old_target)  { create(:school_target, school: school) }
+      let(:start_date)      { Date.today.last_year}
+      let(:target_date)     { start_date.next_year }
+
+      let!(:old_target)  { create(:school_target, school: school, start_date: start_date, target_date: target_date) }
       let(:target) { service.build_target }
 
-      it 'should default to this month' do
-        expect(target.start_date).to eql Time.zone.today.beginning_of_month
+      it 'should default to end of previous target' do
+        expect(target.start_date).to eq old_target.target_date
       end
 
       it 'should default to 12 months from now' do
