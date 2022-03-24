@@ -3,11 +3,22 @@ require 'rails_helper'
 describe "admin transport type", type: :system, include_application_helper: true do
 
   let!(:admin)  { create(:admin) }
+  let!(:transport_type) { create(:transport_type) }
 
   describe 'when not logged in' do
     context "and viewing the index" do
       before(:each) do
         visit admin_transport_types_path
+      end
+
+      it 'does not authorise viewing' do
+        expect(page).to have_content('You need to sign in or sign up before continuing.')
+      end
+    end
+
+    context "and viewing a transport type" do
+      before(:each) do
+        visit admin_transport_type_path(transport_type)
       end
 
       it 'does not authorise viewing' do
@@ -22,7 +33,6 @@ describe "admin transport type", type: :system, include_application_helper: true
       sign_in(admin)
     end
 
-    let!(:transport_type) { create(:transport_type) }
     let(:minimum_attributes) { [:image, :name, :speed_km_per_hour, :kg_co2e_per_km] }
 
     describe "Viewing the index" do
