@@ -1,0 +1,32 @@
+<h1>Transport types</h1>
+
+<table class="table table-sorted">
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Speed (km/hour)</th>
+      <th>kg of co2e per km</th>
+      <th>Can share?</th>
+      <th>Note</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @transport_types.each do |transport_type| %>
+      <tr>
+        <td><%= transport_type.image %></td>
+        <td><%= transport_type.name %></td>
+        <td><%= transport_type.speed_km_per_hour %></td>
+        <td><%= transport_type.kg_co2e_per_km %></td>
+        <td><%= transport_type.can_share %></td>
+        <td><%= transport_type.note %></td>
+        <td>
+          <div class="btn-group">
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
