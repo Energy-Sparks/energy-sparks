@@ -38,6 +38,8 @@ class SchoolTarget < ApplicationRecord
 
   scope :currently_active, -> { where('start_date <= ? and target_date <= ?', Time.zone.today, Time.zone.today.next_year) }
 
+  before_save :adjust_target_date
+
   def current?
     Time.zone.now >= start_date && Time.zone.now <= target_date
   end
@@ -92,5 +94,9 @@ class SchoolTarget < ApplicationRecord
     if electricity.blank? && gas.blank? && storage_heaters.blank?
       errors.add :base, "At least one target must be provided"
     end
+  end
+
+  def adjust_target_date
+    self.target_date = self.start_date.next_year
   end
 end
