@@ -536,7 +536,7 @@ describe School do
 
       context "with expired target" do
         before(:each) do
-          target.update!(target_date: Date.yesterday)
+          target.update!(start_date: Date.yesterday.prev_year)
         end
 
         it "should find the expired target" do
