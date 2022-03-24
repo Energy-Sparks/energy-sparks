@@ -17,10 +17,10 @@
     <% @transport_types.each do |transport_type| %>
       <tr>
         <td><%= transport_type.image %></td>
-        <td><%= transport_type.name %></td>
+        <td><%= link_to transport_type.name, admin_transport_type_path(transport_type) %></td>
         <td><%= transport_type.speed_km_per_hour %></td>
         <td><%= transport_type.kg_co2e_per_km %></td>
-        <td><%= transport_type.can_share %></td>
+        <td><span class="badge bg-primary text-light"><%= y_n(transport_type.can_share) %></span></td>
         <td><%= transport_type.note %></td>
         <td>
           <div class="btn-group">

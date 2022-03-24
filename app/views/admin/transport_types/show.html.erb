@@ -1,0 +1,28 @@
+<h1>Transport types</h1>
+
+<h2><%= @transport_type.image %> <%= @transport_type.name %></h2>
+
+<dl class="row">
+  <dt class="col-md-2">Image</dt>
+  <dd class="col-md-10"><%= @transport_type.image %></dd>
+
+  <dt class="col-md-2">Note</dt>
+  <dd class="col-md-10"><%= @transport_type.note %></dd>
+
+  <dt class="col-md-2">Speed</dt>
+  <dd class="col-md-10"><%= @transport_type.speed_km_per_hour %></dd>
+
+  <dt class="col-md-2">kg of co2e per km</dt>
+  <dd class="col-md-10"><%= @transport_type.kg_co2e_per_km %></dd>
+
+  <dt class="col-md-2">Can share</dt>
+  <dd class="col-md-10"><span class="badge bg-primary text-light"><%= y_n(@transport_type.can_share) %></span></dd>
+  <dt class="col-md-2">Created on</dt>
+  <dd class="col-md-10"><%= nice_date_times @transport_type.created_at %></dd>
+
+  <dt class="col-md-2">Updated on</span></dt>
+  <dd class="col-md-10"><%= nice_date_times @transport_type.updated_at %></dd>
+
+</dl>
+
+<%= link_to 'Back', admin_transport_types_path, class: 'btn btn-secondary' %>
