@@ -6,7 +6,8 @@ module Schools
     end
 
     def generate
-      configuration = Schools::Configuration.where(school: @school).first_or_create
+      @school.build_configuration unless @school.configuration
+      configuration = @school.configuration
 
       fuel_configuration = GenerateFuelConfiguration.new(@aggregated_meter_collection).generate
       configuration.update!(fuel_configuration: fuel_configuration)
