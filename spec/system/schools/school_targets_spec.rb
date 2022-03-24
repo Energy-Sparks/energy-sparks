@@ -76,6 +76,8 @@ RSpec.describe 'school targets', type: :system do
 
     context "with no target" do
 
+      let(:last_year)         { Date.today.last_year }
+
       context "with all fuel types" do
         before(:each) do
           visit school_school_targets_path(school)
@@ -93,9 +95,6 @@ RSpec.describe 'school targets', type: :system do
 
         context "and all fuel types" do
           it "allows all targets to be set" do
-            expect(page).to_not have_content("Start date")
-            expect(page).to_not have_content("Target date")
-
             fill_in "Reducing electricity usage by", with: 15
             fill_in "Reducing gas usage by", with: 15
             fill_in "Reducing storage heater usage by", with: 25
@@ -109,6 +108,14 @@ RSpec.describe 'school targets', type: :system do
             expect(school.current_target.gas).to eql 15.0
             expect(school.current_target.storage_heaters).to eql 25.0
           end
+        end
+
+        it 'allows start date to be specified' do
+          fill_in 'Start date', with: last_year.strftime("%d/%m/%Y")
+          click_on 'Set this target'
+          expect(page).to have_content('Target successfully created')
+          expect(school.most_recent_target.start_date).to eql last_year
+          expect(school.most_recent_target.target_date).to eql last_year.next_year
         end
 
       end
@@ -409,28 +416,9 @@ RSpec.describe 'school targets', type: :system do
     context 'when viewing a target' do
       let!(:target)          { create(:school_target, school: school) }
 
-      let(:today)             { Date.today }
-      let(:last_year)         { Date.today.last_year }
-
       before(:each) do
         visit school_school_targets_path(school)
         click_on "Revise your target"
-      end
-
-      it 'displays form fields' do
-        expect(page).to have_content("Admin options")
-        expect(page).to have_content("Start date")
-        expect(page).to have_content("Target date")
-      end
-
-      it 'allows target to be updated' do
-        fill_in 'Start date', with: last_year.strftime("%d/%m/%Y")
-        fill_in 'Target date', with: today.strftime("%d/%m/%Y")
-        click_on 'Update our target'
-
-        target.reload
-        expect(target.start_date).to eql last_year
-        expect(target.target_date).to eql today
       end
 
       it 'allows target to be deleted' do
@@ -506,9 +494,6 @@ RSpec.describe 'school targets', type: :system do
 
         context "and all fuel types" do
           it "allows all targets to be set" do
-            expect(page).to_not have_content("Start date")
-            expect(page).to_not have_content("Target date")
-
             fill_in "Reducing electricity usage by", with: 15
             fill_in "Reducing gas usage by", with: 15
             fill_in "Reducing storage heater usage by", with: 25

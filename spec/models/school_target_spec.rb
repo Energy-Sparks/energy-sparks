@@ -6,6 +6,26 @@ RSpec.describe SchoolTarget, type: :model do
   let(:start_date)      { Date.today.beginning_of_month}
   let(:target_date)     { Date.today.beginning_of_month.next_year}
 
+  context "when saving" do
+    before(:each) do
+      school.school_targets.create!(start_date: start_date, target_date: target_date, electricity: 10)
+    end
+
+    it 'saves given start and end dates' do
+      expect(SchoolTarget.first.start_date).to eq start_date
+      expect(SchoolTarget.first.target_date).to eq target_date
+    end
+
+    context "and dates are mismatched" do
+      let(:start_date) { Date.today.last_year }
+
+      it 'ensures end date is 12 months from start' do
+        expect(SchoolTarget.first.start_date).to eq start_date
+        expect(SchoolTarget.first.target_date).to eq start_date.next_year
+      end
+    end
+  end
+
   context "when validating" do
     it "should require target and start dates" do
       target = SchoolTarget.new({school: school, electricity: 10})
