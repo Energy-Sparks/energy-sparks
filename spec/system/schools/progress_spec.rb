@@ -192,7 +192,7 @@ describe 'targets', type: :system do
 
         it 'shows prompt to add estimate' do
           visit electricity_school_progress_index_path(school)
-          expect(page).to have_content("If you can supply an estimate of your annual consumption then we can generate a detailed progress report")
+          expect(page).to have_content("If you can supply an estimate of your annual consumption then we can generate a more detailed progress report")
         end
       end
 

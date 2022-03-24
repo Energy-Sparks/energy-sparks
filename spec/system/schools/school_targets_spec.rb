@@ -232,7 +232,7 @@ RSpec.describe 'school targets', type: :system do
         end
 
         it 'shows prompt to add estimate' do
-          expect(page).to have_content("If you can supply an estimate of your annual consumption then we can generate a detailed progress report")
+          expect(page).to have_content("If you can supply an estimate of your annual consumption then we can generate a more detailed progress report")
         end
 
         context 'and some recent data' do
