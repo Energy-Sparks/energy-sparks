@@ -84,7 +84,10 @@ module Targets
     #to set a target. In this case we're rolling back the target start date to the
     #month of the last validated reading. But only if they're not using an annual
     #estimate.
+    #
+    #However if there's a previous target, then we just default to when that ended
     def determine_target_start_date
+      return most_recent_target.target_date if most_recent_target.present?
       target_start_date = default_target_start_date
       [:electricity, :gas, :storage_heater].each do |fuel_type|
         service = target_service(aggregate_school, fuel_type)
