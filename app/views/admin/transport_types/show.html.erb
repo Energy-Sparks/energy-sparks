@@ -12,10 +12,10 @@
   <dt class="col-md-2">Note</dt>
   <dd class="col-md-10"><%= @transport_type.note %></dd>
 
-  <dt class="col-md-2">Speed</dt>
+  <dt class="col-md-2">Speed (km/h)</dt>
   <dd class="col-md-10"><%= @transport_type.speed_km_per_hour %></dd>
 
-  <dt class="col-md-2">kg of co2e per km</dt>
+  <dt class="col-md-2">Carbon (kg co2e/km)</dt>
   <dd class="col-md-10"><%= @transport_type.kg_co2e_per_km %></dd>
 
   <dt class="col-md-2">Can share</dt>
@@ -25,7 +25,11 @@
 
   <dt class="col-md-2">Updated at</span></dt>
   <dd class="col-md-10"><%= nice_date_times @transport_type.updated_at %></dd>
-
 </dl>
 
-<%= link_to 'Back', admin_transport_types_path, class: 'btn btn-secondary' %>
+<p>
+  <div class="btn-group">
+    <%= link_to 'Edit', edit_admin_transport_type_path(@transport_type), class: 'btn' %>
+    <%= link_to 'Back', admin_transport_types_path, class: 'btn btn-secondary' %>
+  </div>
+</p>
