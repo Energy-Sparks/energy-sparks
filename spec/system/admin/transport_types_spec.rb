@@ -33,9 +33,19 @@ describe "admin transport type", type: :system, include_application_helper: true
       sign_in(admin)
     end
 
-    let(:minimum_attributes) { [:image, :name, :speed_km_per_hour, :kg_co2e_per_km] }
+    let(:attributes) { {
+      "Name" => transport_type.name,
+      "Image" => transport_type.image,
+      "Speed (km/hour)" => transport_type.speed_km_per_hour,
+      "kg of co2e/km" => transport_type.kg_co2e_per_km,
+      "Can share?" => y_n(transport_type.can_share),
+      "Note" => transport_type.note,
+      "Created at" => nice_date_times(transport_type.created_at),
+      "Updated at" => nice_date_times(transport_type.updated_at)
+    } }
 
     describe "Viewing the index" do
+      let(:show_attributes) { attributes.except("Created at", "Updated at")}
 
       before(:each) do
         visit admin_transport_types_path
@@ -43,9 +53,7 @@ describe "admin transport type", type: :system, include_application_helper: true
 
       it "lists created transport type" do
         within('table') do
-          minimum_attributes.each do |attribute|
-            expect(page).to have_content(transport_type[attribute])
-          end
+          expect(page).to have_selector(:table_row, show_attributes)
         end
       end
 
@@ -65,22 +73,22 @@ describe "admin transport type", type: :system, include_application_helper: true
         visit admin_transport_type_path(transport_type)
       end
 
-      it "shows the minimum attributes" do
-        minimum_attributes.each do |attribute|
-          expect(page).to have_content(transport_type[attribute])
+      it "shows the attributes" do
+        within('dl') do
+          attributes.values.each do |value|
+            expect(page).to have_content(value)
+          end
         end
       end
-      it { expect(page).to have_content(y_n(transport_type[:can_share])) }
-      it { expect(page).to have_content(nice_date_times(transport_type[:created_at]))}
-      it { expect(page).to have_content(nice_date_times(transport_type[:updated_at]))}
 
-      context "with some buttons" do
+      context "and some buttons" do
         it { expect(page).to have_link('Back') }
 
         context "and clicking on the back button" do
           before(:each) do
             click_link('Back')
           end
+
           it "shows index page" do
             expect(page).to have_current_path(admin_transport_types_path)
           end
