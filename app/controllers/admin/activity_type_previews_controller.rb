@@ -3,7 +3,7 @@ module Admin
     def create
       school = School.process_data.first
       activity_type = ActivityType.new(school_specific_description: params[:activity_type][:school_specific_description])
-      @content = TemplateInterpolation.new(
+      @activity_type_content = TemplateInterpolation.new(
         activity_type,
         render_with: SchoolTemplate.new(school)
       ).interpolate(
