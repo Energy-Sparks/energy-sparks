@@ -78,6 +78,7 @@ describe "admin transport type", type: :system, include_application_helper: true
 
       context "with some action buttons" do
         it { expect(page).to have_link('Edit') }
+        it { expect(page).to have_link('Delete') }
         it { expect(page).to have_link('New Transport type') }
 
         context "and clicking the edit button" do
@@ -99,6 +100,16 @@ describe "admin transport type", type: :system, include_application_helper: true
             expect(page).to have_current_path(new_admin_transport_type_path)
           end
         end
+
+        context "and clicking on the delete button" do
+          before(:each) do
+            click_link('Delete')
+          end
+
+          it "shows index page" do
+            expect(page).to have_current_path(admin_transport_types_path)
+          end
+        end
       end
     end
 
@@ -118,6 +129,7 @@ describe "admin transport type", type: :system, include_application_helper: true
       context "and some action buttons" do
         it { expect(page).to have_link('Back') }
         it { expect(page).to have_link('Edit') }
+        it { expect(page).to have_link('Delete') }
 
         context "and clicking on the back button" do
           before(:each) do
@@ -136,6 +148,16 @@ describe "admin transport type", type: :system, include_application_helper: true
 
           it "shows edit page" do
             expect(page).to have_current_path(edit_admin_transport_type_path(transport_type))
+          end
+        end
+
+        context "and clicking on the delete button" do
+          before(:each) do
+            click_link('Delete')
+          end
+
+          it "shows index page" do
+            expect(page).to have_current_path(admin_transport_types_path)
           end
         end
       end
@@ -202,7 +224,6 @@ describe "admin transport type", type: :system, include_application_helper: true
       end
     end
 
-
     describe "Creating a transport type" do
       before(:each) do
         visit new_admin_transport_type_path(transport_type)
@@ -261,6 +282,73 @@ describe "admin transport type", type: :system, include_application_helper: true
 
           it "has error message on field" do
             expect(page).to have_content "Name *\ncan't be blank"
+          end
+        end
+      end
+    end
+
+    describe "Deleting a transport type" do
+      context "from the index page" do
+        let(:viewable_attributes) { attributes.except('Created at', 'Updated at') }
+
+        context "when the transport type has associated responses" do
+          before(:each) do
+            create(:transport_survey_response, transport_type: transport_type)
+            visit admin_transport_types_path
+          end
+
+          it { expect(page).to have_selector(:table_row, viewable_attributes) }
+
+          it "disables delete button" do
+            expect(find_link("Delete")['class']).to match /disabled/
+          end
+        end
+
+        context "when there are no associated responses", js: true do
+          before(:each) do
+            visit admin_transport_types_path
+          end
+
+          it { expect(page).to have_selector(:table_row, viewable_attributes) }
+
+          context "and clicking delete and confirming" do
+            before(:each) do
+              accept_confirm do
+                click_link("Delete")
+              end
+            end
+
+            it "shows transport types index page" do
+              expect(page).to have_current_path(admin_transport_types_path)
+            end
+
+            it "shows a flash message" do
+              expect(page).to have_content "Transport type was successfully deleted."
+            end
+
+            it "removes transport type" do
+              within('table') do
+                expect(page).to_not have_selector(:table_row, viewable_attributes)
+              end
+            end
+          end
+
+          context "and clicking delete and dismissing" do
+            before(:each) do
+              dismiss_confirm do
+                click_link("Delete")
+              end
+            end
+
+            it "does not remove transport type" do
+              within('table') do
+                expect(page).to have_selector(:table_row, viewable_attributes)
+              end
+            end
+
+            it "shows transport types index page" do
+              expect(page).to have_current_path(admin_transport_types_path)
+            end
           end
         end
       end

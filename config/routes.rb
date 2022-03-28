@@ -338,7 +338,7 @@ Rails.application.routes.draw do
 
     resources :global_meter_attributes
     resources :consents
-    resources :transport_types, only: [:index, :new, :create, :show, :edit, :update]
+    resources :transport_types, only: [:index, :new, :create, :show, :edit, :update, :destroy]
 
     resource :content_generation_run, controller: :content_generation_run
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index, :edit, :update, :destroy] do
