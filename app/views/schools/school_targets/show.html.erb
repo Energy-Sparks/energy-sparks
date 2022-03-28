@@ -8,9 +8,9 @@
   <% end %>
   <div>
     <% if can?(:manage, @school_target) %>
-      <%= link_to "Revise your target", edit_school_school_target_path(@school, @school_target), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+      <%= link_to "Revise your target", edit_school_school_target_path(@school, @school_target), class: "btn btn-outline-dark font-weight-bold" %>
     <% end %>
-    <%= link_to_help_for_feature :school_targets, css: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+    <%= link_to_help_for_feature :school_targets, css: "btn btn-outline-dark font-weight-bold" %>
   </div>
 </div>
 

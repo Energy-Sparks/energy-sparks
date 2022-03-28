@@ -1,8 +1,8 @@
 <div class="row pt-4">
-  <div class="col-md-2 justify-content-center align-self-center">
+  <div class="col-md-2 align-self-center">
     <h4 class="card-title"><%= fuel_progress.fuel_type.to_s.humanize %></h4>
   </div>
-  <div class="col-md-8">
+  <div class="col-md-8 d-none d-sm-block">
     <% if fuel_progress.can_chart? %>
       <figure class="highcharts-figure">
           <div class="bullet-chart" id="bullet-chart-<%= fuel_progress.fuel_type.to_s %>" data-title="Progress against target reduction of <%=target%>%" data-series='<%= bullet_chart_series(fuel_progress) %>'
@@ -10,9 +10,7 @@
       </figure>
     <% end %>
   </div>
-  <div class="col-md-2 justify-content-center align-self-center">
-    <span class="text-center">
-      <%= link_to "View report", progress_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
-    </span>
+  <div class="col-md-2 align-self-center">
+    <%= link_to "View report", progress_path, class: "btn btn-outline-dark font-weight-bold" %>
   </div>
 </div>

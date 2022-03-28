@@ -1,8 +1,8 @@
 <div class="row pt-4 limited_data">
-  <div class="col-md-2 justify-content-center align-self-center">
+  <div class="col-md-2 align-self-center">
     <h4 class="card-title"><%= fuel_type.to_s.humanize %></h4>
   </div>
-  <div class="col-md-8 align-self-center work_week">
+  <div class="col-md-8 align-self-center work_week d-none d-sm-block">
     <div class="d-flex justify-content-center">
         <span class="text-center">
         Progress against target reduction of <%= target %>%
@@ -18,9 +18,7 @@
       </span>
     </div>
   </div>
-  <div class="col-md-2 justify-content-center align-self-center">
-    <span class="text-center">
-      <%= link_to "View report", progress_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
-    </span>
+  <div class="col-md-2 align-self-center">
+    <%= link_to "View report", progress_path, class: "btn btn-outline-dark font-weight-bold" %>
   </div>
 </div>
