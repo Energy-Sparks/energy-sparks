@@ -4,7 +4,7 @@
   <% if @school_target.report_last_generated.nil? %>
     <h1>We are calculating your progress</h1>
   <% else %>
-    <h1>Progress towards reducing your energy usage</h1>
+    <h1>Reducing your energy usage by <%= @school_target.target_date.strftime("%B %Y") %></h1>
   <% end %>
   <div>
     <% if can?(:manage, @school_target) %>

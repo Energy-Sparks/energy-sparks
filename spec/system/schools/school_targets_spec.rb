@@ -192,7 +192,7 @@ RSpec.describe 'school targets', type: :system do
       end
 
       it "displays current target" do
-        expect(page).to have_content("Progress towards reducing your energy usage")
+        expect(page).to have_content("Reducing your energy usage by")
       end
 
       it "links to progress pages" do
@@ -210,7 +210,7 @@ RSpec.describe 'school targets', type: :system do
       end
 
       it 'does not show limited data' do
-        expect(page).to_not have_content("Progress against target reduction")
+        expect(page).to_not have_content("against target reduction")
         expect(page).to_not have_content("last week")
       end
 
@@ -311,7 +311,7 @@ RSpec.describe 'school targets', type: :system do
 
       it "redirects from new target page" do
         visit new_school_school_target_path(school, target)
-        expect(page).to have_content("Progress towards reducing your energy usage")
+        expect(page).to have_content("Reducing your energy usage by")
       end
 
       context "and fuel types are out of date" do
@@ -448,7 +448,7 @@ RSpec.describe 'school targets', type: :system do
       visit school_school_targets_path(school)
     end
     it 'lets me view a target' do
-      expect(page).to have_content("Progress towards reducing your energy usage")
+      expect(page).to have_content("Reducing your energy usage by")
     end
     it 'shows me a link to the report' do
       expect(page).to have_link("View report", href: electricity_school_progress_index_path(school))
@@ -472,7 +472,7 @@ RSpec.describe 'school targets', type: :system do
       visit school_school_targets_path(school)
     end
     it 'lets me view a target' do
-      expect(page).to have_content("Progress towards reducing your energy usage")
+      expect(page).to have_content("Reducing your energy usage by")
     end
     it 'shows me a link to the report' do
       expect(page).to have_link("View report", href: electricity_school_progress_index_path(school))
