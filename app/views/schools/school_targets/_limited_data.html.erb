@@ -2,19 +2,14 @@
   <div class="col-md-2 align-self-center">
     <h4 class="card-title"><%= fuel_type.to_s.humanize %></h4>
   </div>
-  <div class="col-md-8 align-self-center work_week d-none d-sm-block">
-    <div class="d-flex justify-content-center">
-        <span class="text-center">
-        Progress against target reduction of <%= target %>%
-        </span>
-    </div>
+  <div class="col-md-8 align-self-center work_week d-none d-sm-block" style="padding-right: 25px">
     <div class="d-flex justify-content-center mt-2">
       <span class="text-center">
-      <% if overview_data.present? && overview_data.work_week(fuel_type).has_data %>
-        <%= up_downify(overview_data.work_week(fuel_type).change) %> Last week
-      <% else %>
-        N/A
-      <% end %>
+        <% if overview_data.present? && overview_data.work_week(fuel_type).has_data %>
+              <%= up_downify(overview_data.work_week(fuel_type).change) %> last week against target of <%= target %>%
+        <% else %>
+          Target reduction of <%= target %>%
+        <% end %>
       </span>
     </div>
   </div>

@@ -210,8 +210,8 @@ RSpec.describe 'school targets', type: :system do
       end
 
       it 'does not show limited data' do
-        expect(page).to_not have_content("Goal")
-        expect(page).to_not have_content("Last week")
+        expect(page).to_not have_content("Progress against target reduction")
+        expect(page).to_not have_content("last week")
       end
 
       context "and v2 is active and limited data is available" do
@@ -227,8 +227,8 @@ RSpec.describe 'school targets', type: :system do
         end
 
         it 'shows limited data' do
-          expect(page).to have_content("Progress against target reduction")
-          expect(page).to_not have_content("Last week")
+          expect(page).to have_content("Target reduction")
+          expect(page).to_not have_content("last week")
         end
 
         it 'shows prompt to add estimate' do
@@ -244,7 +244,7 @@ RSpec.describe 'school targets', type: :system do
             refresh
           end
           it 'shows the same data as the management dashboard' do
-            expect(page).to have_content("Last week")
+            expect(page).to have_content("last week")
           end
         end
       end

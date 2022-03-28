@@ -13,9 +13,9 @@ $(document).ready(function() {
 
     Highcharts.chart(el[0], {
         chart: {
-            marginTop: 40,
+            marginTop: 10,
             inverted: true,
-            marginLeft: 135,
+            marginLeft: 100,
             type: 'bullet'
         },
         plotOptions: {
@@ -32,7 +32,8 @@ $(document).ready(function() {
             enabled: false
         },
         title: {
-            text: title
+            text: null,
+            align: 'left'
         },
         credits: {
             enabled: false
