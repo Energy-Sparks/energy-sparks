@@ -1,24 +1,19 @@
-<div class="row limited_data">
-  <div class="col-md-4 justify-content-center align-self-center">
+<div class="row pt-4 limited_data">
+  <div class="col-md-2 align-self-center">
     <h4 class="card-title"><%= fuel_type.to_s.humanize %></h4>
   </div>
-  <div class="col-md-2 justify-content-center align-self-center work_week">
-    <h4>
-      Goal: <%= up_downify("-#{target}%") %>
-    </h4>
+  <div class="col-md-8 align-self-center work_week d-none d-sm-block" style="padding-right: 25px">
+    <div class="d-flex justify-content-center mt-2">
+      <span class="text-center">
+        <% if overview_data.present? && overview_data.work_week(fuel_type).has_data %>
+              <%= up_downify(overview_data.work_week(fuel_type).change) %> last week against target of <%= target %>%
+        <% else %>
+          Target reduction of <%= target %>%
+        <% end %>
+      </span>
+    </div>
   </div>
-  <div class="col-md-3 justify-content-center align-self-center work_week">
-    <% if overview_data.present? && overview_data.work_week(fuel_type).has_data %>
-    <h4>
-      Last week: <%= up_downify(overview_data.work_week(fuel_type).change) %>
-    </h4>
-    <% end %>
-  </div>
-  <div class="col-md-1 justify-content-center align-self-center">
-  </div>
-  <div class="col-md-2 justify-content-center align-self-center">
-    <span class="text-center">
-      <%= link_to "View progress", progress_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
-    </span>
+  <div class="col-md-2 align-self-center">
+    <%= link_to "View report", progress_path, class: "btn btn-outline-dark font-weight-bold" %>
   </div>
 </div>
