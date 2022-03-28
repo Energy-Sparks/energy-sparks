@@ -24,10 +24,12 @@
         <td><%= transport_type.note %></td>
         <td>
           <div class="btn-group">
-            <%= link_to 'Edit', edit_admin_transport_type_path(transport_type), class: 'btn btn-info' %>
+            <%= link_to 'Edit', edit_admin_transport_type_path(transport_type), class: 'btn btn-info' if can? :edit, transport_type %>
           </div>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<%= link_to 'New Transport type', new_admin_transport_type_path, class: 'btn btn-primary' if can? :create, TransportType %>

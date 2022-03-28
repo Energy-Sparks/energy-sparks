@@ -2,6 +2,14 @@ module Admin
   class TransportTypesController < AdminController
     load_and_authorize_resource
 
+    def create
+      if @transport_type.save
+        redirect_to admin_transport_types_path, notice: 'Transport type was successfully created.'
+      else
+        render :new
+      end
+    end
+
     def update
       if @transport_type.update(transport_type_params)
         redirect_to admin_transport_types_path, notice: 'Transport type was successfully updated.'

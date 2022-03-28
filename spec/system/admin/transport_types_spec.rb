@@ -77,6 +77,9 @@ describe "admin transport type", type: :system, include_application_helper: true
       end
 
       context "with some action buttons" do
+        it { expect(page).to have_link('Edit') }
+        it { expect(page).to have_link('New Transport type') }
+
         context "and clicking the edit button" do
           before(:each) do
             click_link("Edit")
@@ -84,6 +87,16 @@ describe "admin transport type", type: :system, include_application_helper: true
 
           it "shows transport type edit page" do
             expect(page).to have_current_path(edit_admin_transport_type_path(transport_type))
+          end
+        end
+
+        context "and clicking the new button" do
+          before(:each) do
+            click_link("New Transport type")
+          end
+
+          it "shows transport type new page" do
+            expect(page).to have_current_path(new_admin_transport_type_path)
           end
         end
       end
@@ -104,6 +117,7 @@ describe "admin transport type", type: :system, include_application_helper: true
 
       context "and some action buttons" do
         it { expect(page).to have_link('Back') }
+        it { expect(page).to have_link('Edit') }
 
         context "and clicking on the back button" do
           before(:each) do
@@ -132,11 +146,11 @@ describe "admin transport type", type: :system, include_application_helper: true
         visit edit_admin_transport_type_path(transport_type)
       end
 
-      let(:editable_attributes) { attributes.except('Can share','Created at', 'Updated at') }
+      let(:editable_attributes) { attributes.except('Created at', 'Updated at') }
 
       it "shows prefilled form elements" do
         within('form') do
-          editable_attributes.except('Can share?').each do |key, value|
+          editable_attributes.except('Can share').each do |key, value|
             expect(page).to have_field(key, with: value)
           end
           expect(page).to have_checked_field('Can share')
@@ -163,10 +177,13 @@ describe "admin transport type", type: :system, include_application_helper: true
               expect(page).to have_selector(:table_row, new_valid_attributes)
             end
           end
+
+          it "has a flash message" do
+            expect(page).to have_content "Transport type was successfully updated."
+          end
         end
 
         context 'when the form has an invalid entry' do
-          # Not going to test validations here, this should be done in the model
           before(:each) do
             fill_in 'Name', with: ""
             click_button 'Save'
@@ -178,7 +195,71 @@ describe "admin transport type", type: :system, include_application_helper: true
             end
           end
 
-          it "has error message" do
+          it "has error message on field" do
+            expect(page).to have_content "Name *\ncan't be blank"
+          end
+        end
+      end
+    end
+
+
+    describe "Creating a transport type" do
+      before(:each) do
+        visit new_admin_transport_type_path(transport_type)
+      end
+
+      let(:new_attributes) { attributes.except('Created at', 'Updated at') }
+
+      it "shows a blank form" do
+        within('form') do
+          ["Name", "Image", "Note"].each do |field_name|
+            expect(find_field(field_name).text).to be_blank
+          end
+          ['Speed (km/h)', 'Carbon (kg co2e/km)'].each do |field_name|
+            expect(page).to have_field(field_name, with: 0.0)
+          end
+          expect(page).to have_unchecked_field('Can share')
+        end
+      end
+
+      context "when entering new values" do
+        context "with valid attributes" do
+          before(:each) do
+            new_valid_attributes.except('Can share').each do |key, value|
+              fill_in key, with: value
+            end
+            check 'Can share'
+            click_button 'Save'
+          end
+
+          it "displays index page" do
+            expect(page).to have_current_path(admin_transport_types_path)
+          end
+
+          it "shows new transport type" do
+            within('table') do
+              expect(page).to have_selector(:table_row, new_valid_attributes)
+            end
+          end
+
+          it "has a flash message" do
+            expect(page).to have_content "Transport type was successfully created."
+          end
+        end
+
+        context 'when the form has an invalid entry' do
+          before(:each) do
+            fill_in 'Name', with: ""
+            click_button 'Save'
+          end
+
+          it "renders new page" do
+            within('h1') do
+              expect(page).to have_content "New Transport type"
+            end
+          end
+
+          it "has error message on field" do
             expect(page).to have_content "Name *\ncan't be blank"
           end
         end
