@@ -17,6 +17,7 @@ class ActivitiesController < ApplicationController
     else
       @activity_type_content = interpolator.interpolate(:school_specific_description_or_fallback).school_specific_description_or_fallback
     end
+    @activity_type_content = @activity_type_content.body.to_html.html_safe
   end
 
   def completed

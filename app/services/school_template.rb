@@ -14,13 +14,9 @@ class SchoolTemplate < Mustache
     chart_config = {}
     chart_config['y_axis_units'] = (y_axis_unit || '£')
 
-    ret = "<div id=\"chart_wrapper_#{chart_type}\" class=\"chart-wrapper\">"
-    ret += ApplicationController.render(
-      partial: 'shared/analysis_controls',
-      locals: { chart_type: chart_type, axis_controls: true, analysis_controls: true }
+    ApplicationController.render(
+      partial: 'shared/chart_with_controls',
+      locals: { school: @school, chart_type: chart_type, chart_config: chart_config }
     )
-    ret += chart_tag(@school, chart_type, chart_config: chart_config, wrap: false, show_advice: false, html_class: 'analysis-chart embedded-chart')
-    ret += "</div>"
-    ret
   end
 end

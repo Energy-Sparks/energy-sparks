@@ -288,12 +288,16 @@ function processAnalysisOperations(chartConfig, chart, operations, drilldownAvai
   var controls = $(chartContainer).parent().find('.analysis-controls');
   var anyOperations = false;
   if(controls.length){
+
+    console.log(JSON. stringify(controls));
+
     $.each(operations, function(operation, config ) {
       $.each(config.directions, function(direction, enabled ) {
         var control = controls.find(`.${operation}_${direction}`);
         anyOperations |= enabled;
         if(enabled){
           control.prop("disabled", false);
+          console.log('show');
           control.show();
         } else {
           control.prop("disabled", true);

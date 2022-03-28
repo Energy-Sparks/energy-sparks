@@ -1,0 +1,4 @@
+<div id="chart_wrapper_<%= chart_type %>" class="chart-wrapper">
+  <%= render 'shared/analysis_controls', chart_type: chart_type, axis_controls: true, analysis_controls: true %>
+  <%= chart_tag(school, chart_type, chart_config: chart_config, wrap: false, show_advice: false, html_class: 'analysis-chart embedded-chart') %>
+</div>
