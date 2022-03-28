@@ -200,6 +200,7 @@ function processAnnotations(loaded_annotations, chart){
   chart.addAnnotation({
     labelOptions:{
       useHTML: true,
+      allowOverlap: true,
       style: {
         fontSize: '15px'
       }
