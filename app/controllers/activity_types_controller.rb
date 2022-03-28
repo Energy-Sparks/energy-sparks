@@ -23,6 +23,7 @@ class ActivityTypesController < ApplicationController
     else
       @activity_type_content = @activity_type.description
     end
+    @activity_type_content = @activity_type_content.body.to_html.html_safe
   end
 
   private
