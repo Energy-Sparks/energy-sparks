@@ -49,6 +49,13 @@ describe 'TariffsReport', type: :system, include_application_helper: true do
     expect(page).to have_content('[1, 2, 3]')
   end
 
+  it 'shows sub nav' do
+    click_on 'Tariffs report'
+    click_on meter.display_name
+
+    expect(page).to have_link('Manage School')
+  end
+
   it 'links to meter attributes page' do
     click_on 'Tariffs report'
     click_on meter.display_name
