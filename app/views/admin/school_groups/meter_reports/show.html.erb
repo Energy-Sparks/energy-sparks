@@ -13,7 +13,7 @@
 
 <% unless @meter_scope.empty? %>
   <h2>Meters</h2>
-  <p>This shows all active meters by default, if you would like deprecated meters to be included: <%= link_to 'Show all meters', admin_reports_amr_validated_readings_path(all_meters: true), class: 'btn' %></p>
+  <p>This shows all active meters by default, if you would like deprecated meters to be included: <%= link_to 'Show all meters', admin_school_group_meter_report_path(@school_group, all_meters: true), class: 'btn' %></p>
 <% end %>
 
 <h3>Loader Legend</h3>

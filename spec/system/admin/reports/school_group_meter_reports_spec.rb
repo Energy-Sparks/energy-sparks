@@ -6,7 +6,8 @@ describe 'school group meter reports', type: :system do
   let(:school_group)            { create(:school_group, name: 'Big Group') }
   let(:school)                  { create(:school, school_group: school_group) }
 
-  let!(:meter)                  { create(:electricity_meter, school: school) }
+  let!(:meter)            { create(:electricity_meter, school: school) }
+  let!(:meter_inactive)   { create(:electricity_meter, school: school, active: false) }
 
   before(:each) do
     sign_in(admin)
@@ -48,7 +49,20 @@ describe 'school group meter reports', type: :system do
       expect(page).to have_content("#{school_group.name} meter report")
       expect(page).to have_link("Download CSV")
       expect(page).to have_link("Download meter collections")
+    end
+
+    it 'only shows active meters' do
+      expect(page).to have_content(meter.mpan_mprn)
+      expect(page).not_to have_content(meter_inactive.mpan_mprn)
       expect(page).to have_link("Show all meters")
+    end
+
+    it 'links to page including inactive meters' do
+      click_on "Show all meters"
+      expect(page).to have_content("#{school_group.name} meter report")
+      expect(page).to have_content(meter.mpan_mprn)
+      expect(page).to have_content(meter_inactive.mpan_mprn)
+      expect(page).not_to have_link("Show all meters")
     end
 
     it 'downloads csv' do
