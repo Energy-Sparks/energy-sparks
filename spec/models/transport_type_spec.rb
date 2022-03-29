@@ -1,10 +1,20 @@
 require 'rails_helper'
 
-describe 'TransportType' do
+describe TransportType do
 
-  context "with valid attributes" do
-    subject { create :transport_type }
+  describe 'validations' do
+    subject { build(:transport_type) }
+
     it { is_expected.to be_valid }
+    it { is_expected.to validate_uniqueness_of(:name) }
+
+    [:name, :image, :kg_co2e_per_km, :speed_km_per_hour].each do |attribute|
+      it { is_expected.to validate_presence_of(attribute) }
+    end
+
+    [:kg_co2e_per_km, :speed_km_per_hour].each do |attribute|
+      it { is_expected.to validate_numericality_of(attribute).is_greater_than_or_equal_to(0) }
+    end
   end
 
   describe "#safe_destroy" do

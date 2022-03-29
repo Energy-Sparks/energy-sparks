@@ -64,7 +64,7 @@ describe 'TransportSurveys', type: :system do
       end
 
       let!(:transport_survey) { create(:transport_survey, school: school) }
-      let!(:transport_survey_response) { create(:transport_survey_response, transport_survey: transport_survey) }
+      let!(:transport_survey_response) { create(:transport_survey_response, transport_survey: transport_survey, transport_type: transport_type) }
 
       before(:each) do
         sign_in(user)
@@ -121,7 +121,7 @@ describe 'TransportSurveys', type: :system do
   describe 'as a pupil who cannot delete transport surveys or responses' do
     let!(:pupil) { create(:pupil, school: school)}
     let!(:transport_survey) { create(:transport_survey, school: school) }
-    let!(:transport_survey_response) { create(:transport_survey_response, transport_survey: transport_survey) }
+    let!(:transport_survey_response) { create(:transport_survey_response, transport_survey: transport_survey, transport_type: transport_type) }
 
     before(:each) do
       sign_in(pupil)
