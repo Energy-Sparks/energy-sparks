@@ -30,6 +30,11 @@ RSpec.describe "meter reports", :amr_validated_readings, type: :system do
       expect(page).to have_content 'Report for meter'
       expect(page).to have_content 'January'
     end
+
+    it 'includes sub nav on meter readings page' do
+      click_on('Electricity meter')
+      expect(page).to have_link('Manage School')
+    end
   end
 
   context 'when there are gaps in the meter readings' do
