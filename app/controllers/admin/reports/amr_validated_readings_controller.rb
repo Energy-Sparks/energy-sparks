@@ -12,6 +12,7 @@ module Admin
         @colour_hash = COLOUR_ARRAY.each_with_index.map { |colour, index| [@amr_types.keys[index], colour] }.to_h
         @colour_hash['MISSING'] = '#ff4500'
         @meter = Meter.includes(:amr_validated_readings).find(params[:meter_id])
+        @school = @meter.school
 
         @first_validated_reading_date = @meter.first_validated_reading
         respond_to do |format|
