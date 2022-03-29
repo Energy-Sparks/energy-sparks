@@ -112,8 +112,8 @@
     <% end %>
 
     <% if @progress.reporting_period_before_consumption_data? %>
-      <% if @overview_data.present? && @overview_data.start_date(@fuel_type).present? %>
-        <p>We only have data on your <%= @fuel_type.to_s.humanize(capitalize: false) %> consumption from <%= @overview_data.start_date(@fuel_type) %>. The report will only show your consumption for a portion of your target period.</p>
+      <% if @school.configuration.meter_start_date(@fuel_type).present? %>
+        <p>We only have data on your <%= @fuel_type.to_s.humanize(capitalize: false) %> consumption from <%= @school.configuration.meter_start_date(@fuel_type).strftime("%b %Y") %>. The report will only show your consumption for a portion of your target period.</p>
       <% else %>
         <p>We only have limited data on your actual <%= @fuel_type.to_s.humanize(capitalize: false) %> consumption. The report will only show your consumption for a portion of your target period.</p>
       <% end %>

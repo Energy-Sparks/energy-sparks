@@ -42,19 +42,8 @@ describe 'targets', type: :system do
     )
   end
 
-  let(:management_data) {
-    Tables::SummaryTableData.new({
-        electricity: {
-          :start_date => '2016-10-01',
-          :end_date => '2021-11-01',
-          year: { :percent_change => 0.11050 }, workweek: { :percent_change => -0.0923132131 }
-        }
-    })
-  }
-
   before(:each) do
     allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-    allow_any_instance_of(Schools::ManagementTableService).to receive(:management_data).and_return(management_data)
   end
 
   context 'as an admin' do
@@ -169,7 +158,7 @@ describe 'targets', type: :system do
         sign_in(admin)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
-        school.configuration.update!(suggest_estimates_fuel_types: ["electricity"])
+        school.configuration.update!(suggest_estimates_fuel_types: ["electricity"], aggregate_meter_dates: {"electricity"=>{"start_date"=>"2022-02-01", "end_date"=>"2022-03-21"}})
       end
 
       context 'and there is missing actual consumption' do
@@ -187,7 +176,7 @@ describe 'targets', type: :system do
 
         it 'describes why some consumption data is missing' do
           visit electricity_school_progress_index_path(school)
-          expect(page).to have_content("We only have data on your electricity consumption from 1 Oct 2016")
+          expect(page).to have_content("We only have data on your electricity consumption from Feb 2022")
         end
 
         it 'shows prompt to add estimate' do
