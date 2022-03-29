@@ -8,10 +8,10 @@ describe 'TransportSurveyResponse' do
   end
 
   describe '#weather_symbol' do
-    subject { create :transport_survey_response, weather: :sun }
+    subject(:response) { build :transport_survey_response, weather: :sun }
 
     it 'returns a weather symbol' do
-      expect(subject.weather_symbol).to eq("☀️")
+      expect(response.weather_symbol).to eq("☀️")
     end
   end
 
