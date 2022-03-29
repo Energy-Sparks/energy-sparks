@@ -194,6 +194,13 @@ describe 'targets', type: :system do
           visit electricity_school_progress_index_path(school)
           expect(page).to have_content("If you can supply an estimate of your annual consumption then we can generate a more detailed progress report")
         end
+
+        it 'doesnt show prompt if different fuel type' do
+          school.configuration.update!(suggest_estimates_fuel_types: ["gas"])
+          visit electricity_school_progress_index_path(school)
+          expect(page).to_not have_content("If you can supply an estimate of your annual consumption then we can generate a more detailed progress report")
+        end
+
       end
 
       context 'and there is missing target consumption and performance' do
