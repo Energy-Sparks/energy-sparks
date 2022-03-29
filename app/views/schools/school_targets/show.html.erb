@@ -45,7 +45,7 @@
   <% end %>
 <% end %>
 
-<% if @suggest_estimates.present? && @suggest_estimates.any? %>
+<% if show_prompt_for_estimates?(@suggest_estimates) %>
   <%= render 'prompt_to_add_estimate', school: @school, suggest_estimates: @suggest_estimates %>
 <% end %>
 

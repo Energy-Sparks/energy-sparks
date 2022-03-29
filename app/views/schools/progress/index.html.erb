@@ -6,7 +6,7 @@
   </div>
 </div>
 
-<% if @suggest_estimates.present? && @suggest_estimates.any? && @suggest_estimates.include?(@fuel_type.to_s) %>
+<% if show_prompt_for_estimates?(@suggest_estimates, @fuel_type) %>
   <%= render 'schools/school_targets/prompt_to_add_estimate', school: @school, suggest_estimates: [@fuel_type.to_s] %>
 <% end %>
 
