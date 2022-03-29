@@ -26,7 +26,7 @@
 #
 class TransportSurveyResponse < ApplicationRecord
   belongs_to :transport_survey
-  belongs_to :transport_type
+  belongs_to :transport_type, inverse_of: :responses
 
   # Until we decide if to use a table or not
   enum weather: [:sun, :rain, :icy, :snow]

@@ -145,4 +145,5 @@ group :test do
   gem 'database_cleaner'
   gem 'webdrivers'
   gem 'simplecov', :require => false, :group => :test
+  gem 'shoulda-matchers'
 end
