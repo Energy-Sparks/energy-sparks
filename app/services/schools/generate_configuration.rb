@@ -39,6 +39,9 @@ module Schools
       suggest_estimates_fuel_types = Targets::GenerateFuelTypes.new(@school, @aggregated_meter_collection).suggest_estimates_for_fuel_types
       configuration.update!(suggest_estimates_fuel_types: suggest_estimates_fuel_types)
 
+      estimated_consumption = Targets::GenerateEstimatedUsage.new(@school, @aggregated_meter_collection).generate
+      configuration.update!(estimated_consumption: estimated_consumption)
+
       configuration
     end
   end
