@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_23_103737) do
+ActiveRecord::Schema.define(version: 2022_03_29_153127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -602,6 +602,8 @@ ActiveRecord::Schema.define(version: 2022_03_23_103737) do
     t.integer "electricity_dashboard_chart_type", default: 0, null: false
     t.string "school_target_fuel_types", default: [], null: false, array: true
     t.string "suggest_estimates_fuel_types", default: [], null: false, array: true
+    t.json "estimated_consumption", default: {}
+    t.json "aggregate_meter_dates", default: {}
     t.index ["school_id"], name: "index_configurations_on_school_id"
   end
 
@@ -1450,6 +1452,7 @@ ActiveRecord::Schema.define(version: 2022_03_23_103737) do
     t.boolean "can_share", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_transport_types_on_name", unique: true
   end
 
   create_table "user_tariff_charges", force: :cascade do |t|

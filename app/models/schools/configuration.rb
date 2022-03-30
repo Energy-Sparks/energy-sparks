@@ -2,9 +2,11 @@
 #
 # Table name: configurations
 #
+#  aggregate_meter_dates               :json
 #  analysis_charts                     :json             not null
 #  created_at                          :datetime         not null
 #  electricity_dashboard_chart_type    :integer          default("no_electricity_chart"), not null
+#  estimated_consumption               :json
 #  fuel_configuration                  :json
 #  gas_dashboard_chart_type            :integer          default("no_gas_chart"), not null
 #  id                                  :bigint(8)        not null, primary key
@@ -89,6 +91,10 @@ module Schools
       end
     end
 
+    def estimated_consumption_for_fuel_type(fuel_type)
+      estimated_consumption.symbolize_keys[fuel_type.to_sym]
+    end
+
     def analysis_charts_as_symbols(charts_field = :analysis_charts)
       configuration = {}
       self[charts_field].each do |page, config|
@@ -107,6 +113,26 @@ module Schools
 
     def can_show_analysis_chart?(charts_field, page, *sub_pages, chart_name)
       get_charts(charts_field, page, *sub_pages).include?(chart_name)
+    end
+
+    def meter_start_date(fuel_type)
+      dates = meter_dates(fuel_type)
+      dates.present? ? dates[:start_date] : nil
+    end
+
+    def meter_end_date(fuel_type)
+      dates = meter_dates(fuel_type)
+      dates.present? ? dates[:end_date] : nil
+    end
+
+    def meter_dates(fuel_type)
+      dates = aggregate_meter_dates.deep_symbolize_keys
+      dates_for_fuel_types = dates[fuel_type.to_sym]
+      if dates_for_fuel_types.present?
+        dates_for_fuel_types.transform_values {|v| Date.parse(v) }
+      else
+        {}
+      end
     end
 
     private

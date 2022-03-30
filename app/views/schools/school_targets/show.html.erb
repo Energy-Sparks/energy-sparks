@@ -45,8 +45,8 @@
   <% end %>
 <% end %>
 
-<% if @suggest_estimates.present? && @suggest_estimates.any? %>
-  <%= render 'prompt_to_add_estimate', school: @school, suggest_estimates: @suggest_estimates %>
+<% if @suggest_estimates_for_fuel_types.any? %>
+  <%= render 'prompt_to_add_estimate', school: @school, fuel_types: @suggest_estimates_for_fuel_types %>
 <% end %>
 
 <div class="row">

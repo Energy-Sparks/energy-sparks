@@ -31,7 +31,8 @@ module Schools
         @fuel_types_changed = fuel_types_changed
         @overview_data = Schools::ManagementTableService.new(@school).management_data
       end
-      @suggest_estimates = suggest_estimates
+      #list of fuel types to suggest estimates
+      @suggest_estimates_for_fuel_types = suggest_estimates_for_fuel_types(check_data: true)
     end
 
     #create first or new target if current has expired

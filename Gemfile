@@ -23,7 +23,7 @@ gem 'closed_struct'
 gem 'pg_search'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.40.6'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.40.7'
 #gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'aws-eb-test'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
@@ -145,4 +145,5 @@ group :test do
   gem 'database_cleaner'
   gem 'webdrivers'
   gem 'simplecov', :require => false, :group => :test
+  gem 'shoulda-matchers'
 end
