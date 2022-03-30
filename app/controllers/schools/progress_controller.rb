@@ -33,7 +33,7 @@ module Schools
       @fuel_type = fuel_type
       @school_target = @school.most_recent_target
       authorize! :show, @school_target
-      @show_storage_heater_notes = show_storage_heater_notes(@school, @fuel_type)
+      @show_storage_heater_notes = show_storage_heater_notes(@school, @school_target, @fuel_type)
       begin
         service = TargetsService.new(aggregate_school, @fuel_type)
         @recent_data = service.recent_data?
@@ -54,8 +54,8 @@ module Schools
       render :missing
     end
 
-    def show_storage_heater_notes(school, fuel_type)
-      fuel_type == :electricity && school.has_storage_heaters?
+    def show_storage_heater_notes(school, school_target, fuel_type)
+      fuel_type == :electricity && school.has_storage_heaters? && school_target.storage_heaters.present?
     end
 
     def progress_service
