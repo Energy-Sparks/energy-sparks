@@ -16,7 +16,7 @@ private
   end
 
   def suggest_estimates
-    if EnergySparks::FeatureFlags.active?(:school_targets_v2) && can?(:manage, EstimatedAnnualConsumption) && @school.configuration.suggest_annual_estimate?
+    if EnergySparks::FeatureFlags.active?(:school_targets_v2) && can?(:manage, EstimatedAnnualConsumption) && Targets::SuggestEstimatesService.new(school).perform
       @school.configuration.suggest_estimates_fuel_types
     end
   end
