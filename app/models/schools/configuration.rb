@@ -91,6 +91,10 @@ module Schools
       end
     end
 
+    def estimated_consumption_for_fuel_type(fuel_type)
+      estimated_consumption.symbolize_keys[fuel_type.to_sym]
+    end
+
     def analysis_charts_as_symbols(charts_field = :analysis_charts)
       configuration = {}
       self[charts_field].each do |page, config|
