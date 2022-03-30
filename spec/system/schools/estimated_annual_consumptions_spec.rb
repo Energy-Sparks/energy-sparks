@@ -27,7 +27,7 @@ RSpec.describe 'estimated annual consumption', type: :system do
     end
 
     context 'and estimates needed' do
-      let(:suggest_estimates)   { ["gas", "electricity", "storage_heaters"] }
+      let(:suggest_estimates)   { ["gas", "electricity", "storage_heater"] }
       it 'shows a link' do
         expect(page).to have_content("Manage usage estimate")
       end
@@ -57,6 +57,14 @@ RSpec.describe 'estimated annual consumption', type: :system do
         expect(latest_estimate.electricity).to eq 1000.0
         expect(latest_estimate.gas).to eq 2000.0
         expect(latest_estimate.storage_heaters).to eq 3000.0
+      end
+
+      it 'displays our estimate' do
+        school.configuration.update!(estimated_consumption: {"electricity": 1515.0, "gas": 2515.0, "storage_heater": 3515.0})
+        click_on("Manage usage estimate")
+        expect(page).to have_content("Based on the available data we estimate your gas usage")
+        expect(page).to have_content("Based on the available data we estimate your electricity usage")
+        expect(page).to have_content("Based on the available data we estimate your storage heater electricity usage")
       end
     end
 
