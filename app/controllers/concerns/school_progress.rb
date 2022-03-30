@@ -24,7 +24,6 @@ private
   end
 
   def suggest_estimate_for_fuel_type?(fuel_type, check_data: false)
-    pry
     if EnergySparks::FeatureFlags.active?(:school_targets_v2) && can?(:manage, EstimatedAnnualConsumption)
       Targets::SuggestEstimatesService.new(@school).suggest_for_fuel_type?(fuel_type, check_data: check_data)
     else

@@ -242,6 +242,11 @@ RSpec.describe 'school targets', type: :system do
           expect(page).to have_content("If you can supply an estimate of your annual consumption then we can generate a more detailed progress report for your electricity")
         end
 
+        it 'shows prompt on dashboard' do
+          visit school_path(school)
+          expect(page).to have_content("Add an estimate of your annual electricity consumption")
+        end
+
         context 'and some recent data' do
           let(:management_data) {
             Tables::SummaryTableData.new({ electricity: { year: { :percent_change => 0.11050 }, workweek: { :kwh => 100, :percent_change => -0.0923132131 } } })

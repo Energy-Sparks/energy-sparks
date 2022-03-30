@@ -24,6 +24,10 @@
   <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
 <% end %>
 
+<% if @suggest_estimates_for_fuel_types.any? %>
+  <%= render 'management/schools/prompt_for_estimate', school: @school, fuel_types: @suggest_estimates_for_fuel_types %>
+<% end %>
+
 <% if @prompt_for_bill %>
   <%= render 'management/schools/prompt_for_bill', school: @school %>
 <% end %>
