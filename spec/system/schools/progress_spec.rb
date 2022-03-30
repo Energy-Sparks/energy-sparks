@@ -111,7 +111,7 @@ describe 'targets', type: :system do
 
       it 'does not show message about storage heaters' do
         visit electricity_school_progress_index_path(school)
-        expect(page).not_to have_content("This report only show progress on reducing your electricity usage")
+        expect(page).not_to have_content("This report only shows progress on reducing your electricity usage")
       end
 
       context 'when school also has storage heaters' do
@@ -121,10 +121,16 @@ describe 'targets', type: :system do
 
         it 'does show message about storage heaters' do
           visit electricity_school_progress_index_path(school)
-          expect(page).to have_content("This report only show progress on reducing your electricity usage")
+          expect(page).to have_content("This report only shows progress on reducing your electricity usage")
           expect(page).to have_link("storage heater progress report")
         end
 
+        it 'doesnt show message if no storage heater target' do
+          school_target.update!(storage_heaters: nil)
+          visit electricity_school_progress_index_path(school)
+          expect(page).to_not have_content("This report only shows progress on reducing your electricity usage")
+          expect(page).to_not have_link("storage heater progress report")
+        end
       end
     end
 
