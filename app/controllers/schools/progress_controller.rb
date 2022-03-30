@@ -29,12 +29,6 @@ module Schools
 
     private
 
-    def summary_table
-      if EnergySparks::FeatureFlags.active?(:use_management_data)
-        Schools::ManagementTableService.new(@school).management_data
-      end
-    end
-
     def index_for(fuel_type)
       @fuel_type = fuel_type
       @school_target = @school.most_recent_target
@@ -44,8 +38,7 @@ module Schools
         service = TargetsService.new(aggregate_school, @fuel_type)
         @recent_data = service.recent_data?
         @progress = service.progress
-        @overview_data = summary_table
-        @suggest_estimates = suggest_estimates
+        @suggest_estimate_important = suggest_estimate_for_fuel_type?(@fuel_type, check_data: true)
         @debug_content = service.analytics_debug_info if current_user.present? && current_user.analytics?
       rescue => e
         Rails.logger.error e

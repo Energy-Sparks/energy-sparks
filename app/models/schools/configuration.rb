@@ -111,6 +111,26 @@ module Schools
       get_charts(charts_field, page, *sub_pages).include?(chart_name)
     end
 
+    def meter_start_date(fuel_type)
+      dates = meter_dates(fuel_type)
+      dates.present? ? dates[:start_date] : nil
+    end
+
+    def meter_end_date(fuel_type)
+      dates = meter_dates(fuel_type)
+      dates.present? ? dates[:end_date] : nil
+    end
+
+    def meter_dates(fuel_type)
+      dates = aggregate_meter_dates.deep_symbolize_keys
+      dates_for_fuel_types = dates[fuel_type.to_sym]
+      if dates_for_fuel_types.present?
+        dates_for_fuel_types.transform_values {|v| Date.parse(v) }
+      else
+        {}
+      end
+    end
+
     private
 
     def symbolize_charts_config(charts_config)
