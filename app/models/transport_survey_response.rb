@@ -33,7 +33,7 @@ class TransportSurveyResponse < ApplicationRecord
 
   # These class helper methods may not stay here. They are currently helping with prototyping!
   def self.weather_symbols
-    { sun: '☀️', cloud: '⛅' , rain: '🌧️' , snow: '❄️' }
+    { sun: '☀️', cloud: '⛅', rain: '🌧️', snow: '❄️' }
   end
 
   def self.journey_minutes_options
@@ -49,7 +49,6 @@ class TransportSurveyResponse < ApplicationRecord
   end
 
   validates :transport_survey_id, :transport_type_id, :passengers, :run_identifier, :surveyed_at, :journey_minutes, :weather, presence: true
-  validates :weather, inclusion: { in: weathers.keys }
-  validates :journey_minutes, numericality: { in: journey_minutes_options }
-  validates :passengers, numericality: { in: passengers_options }
+  validates :journey_minutes, inclusion: { in: journey_minutes_options }
+  validates :passengers, inclusion: { in: passengers_options }
 end
