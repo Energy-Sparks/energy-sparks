@@ -6,8 +6,8 @@
   </div>
 </div>
 
-<% if show_prompt_for_estimates?(@suggest_estimates, @fuel_type) %>
-  <%= render 'schools/school_targets/prompt_to_add_estimate', school: @school, suggest_estimates: [@fuel_type.to_s] %>
+<% if @suggest_estimate_important %>
+  <%= render 'schools/school_targets/prompt_to_add_estimate', school: @school, fuel_types: [@fuel_type.to_s] %>
 <% end %>
 
 <% if !@recent_data %>

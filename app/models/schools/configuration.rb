@@ -123,7 +123,7 @@ module Schools
 
     def meter_dates(fuel_type)
       dates = aggregate_meter_dates.deep_symbolize_keys
-      dates_for_fuel_types = dates[fuel_type]
+      dates_for_fuel_types = dates[fuel_type.to_sym]
       if dates_for_fuel_types.present?
         dates_for_fuel_types.transform_values {|v| Date.parse(v) }
       else

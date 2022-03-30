@@ -38,7 +38,7 @@ module Schools
         service = TargetsService.new(aggregate_school, @fuel_type)
         @recent_data = service.recent_data?
         @progress = service.progress
-        @suggest_estimates = suggest_estimates
+        @suggest_estimate_important = suggest_estimate_for_fuel_type?(@fuel_type, check_data: true)
         @debug_content = service.analytics_debug_info if current_user.present? && current_user.analytics?
       rescue => e
         Rails.logger.error e

@@ -26,6 +26,7 @@ describe Targets::SuggestEstimatesService, type: :service do
 
   before(:each) do
     school.configuration.update!(suggest_estimates_fuel_types: suggest_estimates_fuel_types, aggregate_meter_dates: aggregate_meter_dates)
+    school.reload
   end
 
   context '#suggestions' do
@@ -58,6 +59,13 @@ describe Targets::SuggestEstimatesService, type: :service do
     context 'when not checking data' do
       it 'keeps gas' do
         expect(service.suggest_for_fuel_type?(:gas, check_data: false)).to eq true
+      end
+    end
+    context 'with no candidates' do
+      let(:suggest_estimates_fuel_types) { [] }
+      it 'never suggests' do
+        expect(service.suggest_for_fuel_type?(:gas, check_data: false)).to eq false
+        expect(service.suggest_for_fuel_type?(:gas, check_data: true)).to eq false
       end
     end
   end
