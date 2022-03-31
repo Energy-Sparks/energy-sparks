@@ -79,6 +79,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         fill_in 'Address', with: '1 Station Road'
         fill_in 'Postcode', with: 'A1 2BC'
         fill_in 'Website', with: 'http://oldfield.sch.uk'
+        choose('Primary')
         click_on 'Save school details'
 
         #Consent
@@ -183,6 +184,7 @@ RSpec.describe "onboarding", :schools, type: :system do
             fill_in 'Address', with: '1 Station Road'
             fill_in 'Postcode', with: 'A1 2BC'
             fill_in 'Website', with: 'http://oldfield.sch.uk'
+            choose('Primary')
             click_on 'Save school details'
 
             onboarding.reload
