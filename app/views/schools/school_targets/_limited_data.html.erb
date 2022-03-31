@@ -14,6 +14,8 @@
     </div>
   </div>
   <div class="col-md-2 align-self-center">
-    <%= link_to "View report", progress_path, class: "btn btn-outline-dark font-weight-bold" %>
+    <% if link_to_progress_report?(school_target, fuel_type) %>
+      <%= link_to "View report", progress_path, class: "btn btn-outline-dark font-weight-bold" %>
+    <% end %>
   </div>
 </div>

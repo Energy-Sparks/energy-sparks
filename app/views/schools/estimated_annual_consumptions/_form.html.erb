@@ -19,7 +19,7 @@
         <%= f.label :electricity, "Annual electricity consumption", class: "form-label" %>
       </div>
       <div class="col-sm-2">
-        <%= f.text_field :electricity, class: 'form-control', value: estimated_annual_consumption.electricity || "", pattern: '[0-9.]+' %>
+        <%= f.text_field :electricity, class: "form-control #{estimate_to_low?(school, estimated_annual_consumption.electricity, :electricity)}", value: estimated_annual_consumption.electricity || "", pattern: '[0-9.]+' %>
       </div>
       <div class="input-group-append">
         <span class="input-group-text"> kwh </span>
@@ -27,7 +27,7 @@
     </div>
     <% if school.configuration.estimated_consumption_for_fuel_type(:electricity).present? %>
       <div class="input-group">
-        <div class="col-sm-9"><p class="small">Based on the available data we estimate your electricity usage is likely to be at least <%= estimated_usage_for(school, :electricity) %> kwh</p></div>
+        <div class="col-sm-9"><p class="small <%= estimate_to_low?(school, estimated_annual_consumption.electricity, :electricity) %>">Based on the available data we estimate your electricity usage is likely to be at least <%= estimated_usage_for(school, :electricity) %> kwh</p></div>
       </div>
     <% end %>
   <% end %>
@@ -38,7 +38,7 @@
         <%= f.label :gas, "Annual gas consumption", class: "form-label" %>
       </div>
       <div class="col-sm-2">
-        <%= f.text_field :gas, class: 'form-control', value: estimated_annual_consumption.gas || "", pattern: '[0-9.]+'  %>
+        <%= f.text_field :gas, class: "form-control #{estimate_to_low?(school, estimated_annual_consumption.gas, :gas)}", value: estimated_annual_consumption.gas || "", pattern: '[0-9.]+'  %>
       </div>
       <div class="input-group-append">
         <span class="input-group-text"> kwh </span>
@@ -46,7 +46,7 @@
     </div>
     <% if school.configuration.estimated_consumption_for_fuel_type(:gas).present? %>
       <div class="input-group">
-        <div class="col-sm-9"><p class="small">Based on the available data we estimate your gas usage is likely to be at least <%= estimated_usage_for(school, :gas) %> kwh</p></div>
+        <div class="col-sm-9"><p class="small <%= estimate_to_low?(school, estimated_annual_consumption.gas, :gas) %>">Based on the available data we estimate your gas usage is likely to be at least <%= estimated_usage_for(school, :gas) %> kwh</p></div>
       </div>
     <% end %>
   <% end %>
@@ -57,7 +57,7 @@
         <%= f.label :storage_heaters, "Annual storage heater electricity consumption", class: "form-label" %>
       </div>
       <div class="col-sm-2">
-        <%= f.text_field :storage_heaters, class: 'form-control', value: estimated_annual_consumption.storage_heaters || "", pattern: '[0-9.]+' %>
+        <%= f.text_field :storage_heaters, class: "form-control #{estimate_to_low?(school, estimated_annual_consumption.storage_heaters, :storage_heater)}", value: estimated_annual_consumption.storage_heaters || "", pattern: '[0-9.]+' %>
       </div>
       <div class="input-group-append">
         <span class="input-group-text"> kwh </span>
@@ -65,7 +65,7 @@
     </div>
     <% if school.configuration.estimated_consumption_for_fuel_type(:storage_heater).present? %>
       <div class="input-group">
-        <div class="col-sm-9"><p class="small">Based on the available data we estimate your storage heater electricity usage is likely to be at least <%= estimated_usage_for(school, :storage_heater) %> kwh</p></div>
+        <div class="col-sm-9"><p class="small <%= estimate_to_low?(school, estimated_annual_consumption.storage_heaters, :storage_heater) %>">Based on the available data we estimate your storage heater electricity usage is likely to be at least <%= estimated_usage_for(school, :storage_heater) %> kwh</p></div>
       </div>
     <% end %>
   <% end %>

@@ -36,8 +36,12 @@ module Targets
     private
 
     def can_generate_fuel_type?(fuel_type)
-      has_fuel_type_and_target?(fuel_type) &&
-        @school.configuration.enough_data_to_set_target_for_fuel_type?(fuel_type)
+      if EnergySparks::FeatureFlags.active?(:school_targets_v2)
+        has_fuel_type_and_target?(fuel_type)
+      else
+        has_fuel_type_and_target?(fuel_type) &&
+          @school.configuration.enough_data_to_set_target_for_fuel_type?(fuel_type)
+      end
     end
 
     def fuel_type_progress(fuel_type)
@@ -89,7 +93,7 @@ module Targets
       begin
         @progress_by_fuel_type[fuel_type] ||= target_service(fuel_type).progress
       rescue => e
-        Rollbar.error(e, school_id: @school.id, school: @school.name, fuel_type: fuel_type)
+        Rollbar.error(e, scope: :generate_progress, school_id: @school.id, school: @school.name, fuel_type: fuel_type)
         return nil
       end
     end

@@ -137,10 +137,24 @@ describe Targets::GenerateProgressService do
     context 'and not enough data' do
       let(:school_target_fuel_types)  { [] }
 
-      it 'does nothing' do
-        expect( service.generate! ).to eq school_target
+      context 'v1' do
+        before(:each) do
+          allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(false)
+        end
+        it 'does nothing' do
+          expect( service.generate! ).to eq school_target
+        end
       end
-
+      context 'v2' do
+        before(:each) do
+          allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(true)
+          allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
+          allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
+        end
+        it 'generates' do
+          expect( service.generate! ).to eq school_target
+        end
+      end
     end
   end
 

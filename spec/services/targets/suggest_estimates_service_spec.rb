@@ -51,8 +51,8 @@ describe Targets::SuggestEstimatesService, type: :service do
       context 'and no meter dates' do
         let(:aggregate_meter_dates) { {} }
 
-        it 'defaults to including all' do
-          expect(service.suggest_for_fuel_type?(:gas, check_data: true)).to eq true
+        it 'defaults to excluding all' do
+          expect(service.suggest_for_fuel_type?(:gas, check_data: true)).to eq false
         end
       end
     end
