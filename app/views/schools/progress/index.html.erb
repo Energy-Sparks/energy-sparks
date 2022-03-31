@@ -145,13 +145,31 @@
   <% end %>
 <% else %>
 
-  <p>
-    Unfortunately we are currently unable to display your detailed progress report. We have been notified about this error and will investigate.
-  </p>
+  <div class="alert alert-danger">
+    <h4>Unfortunately due to a calculation error we are currently unable to display your detailed progress report.</h4>
+
+    <% if @bad_estimate %>
+      <p>
+        The <%= link_to 'annual estimate', school_estimated_annual_consumptions_path(@school) %> of your <%= @fuel_type %> usage that has been provided for your school is too low.
+      </p>
+      <p>
+        Please <%= link_to 'review your estimate and our guidance', school_estimated_annual_consumptions_path(@school) %> to see if it is correct.
+      </p>
+      <p>
+        In the meantime, we have been notified about this error and will investigate.
+      </p>
+    <% else %>
+      <p>We have been notified about this error and will investigate.</p>
+    <% end %>
+  </div>
 
   <% if current_user.present? && current_user.analytics? %>
-    <h2>Debug</h2>
-    <p>Error: <%= @debug_error if @debug_error.present? %></p>
+  <div class="alert alert-secondary">
+    <h4>Debug</h4>
+    <p><strong>Error</strong>: <%= @debug_error if @debug_error.present? %></p>
+    <p><strong>Problem</strong>: <%= @debug_problem if @debug_problem.present? %></p>
+  </div>
   <% end %>
+
 
 <% end %>
