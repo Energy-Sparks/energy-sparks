@@ -47,13 +47,17 @@ module Schools
         @debug_error = e.message
         begin
           @debug_problem = TargetsService.new(aggregate_school, @fuel_type).target_meter_calculation_problem
-          @bad_estimate = @debug_problem[:type] == MissingGasEstimationBase::MoreDataAlreadyThanEstimate
+          @bad_estimate = bad_estimate?(@debug_problem[:type])
         rescue => ex
           Rails.logger.error ex
           Rollbar.error(ex, scope: :target_meter_calculation_problem, school_id: @school.id, school: @school.name, fuel_type: @fuel_type)
         end
       end
       render :index
+    end
+
+    def bad_estimate?(type)
+      [MissingGasEstimationBase::MoreDataAlreadyThanEstimate, MissingElectricityEstimation::MoreDataAlreadyThanEstimate].include?(type)
     end
 
     def missing(fuel_type)
