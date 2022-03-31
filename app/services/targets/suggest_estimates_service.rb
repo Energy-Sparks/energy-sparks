@@ -42,9 +42,9 @@ module Targets
       target_start_date = school_target.start_date
       fuel_type_start = @school.configuration.meter_start_date(fuel_type)
       #default to including if no data, or if target is before data starts
-      #then just default to what we had from analytics
+      #then dont suggest
       if fuel_type_start.nil? || target_start_date <= fuel_type_start
-        @school.configuration.suggest_annual_estimate_for_fuel_type?(fuel_type)
+        false
       #if we have more than 8 months of data, then we're close to having a full
       #year so dont prompt
       else
