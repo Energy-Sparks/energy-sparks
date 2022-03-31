@@ -11,6 +11,19 @@ RSpec.describe 'school targets', type: :system do
 
   let(:school_target_fuel_types) { ["gas", "electricity", "storage_heater"] }
 
+  let(:aggregate_meter_dates) {
+    {
+      "electricity": {
+        "start_date": "2021-12-01",
+        "end_date": "2022-02-01"
+      },
+      "gas": {
+        "start_date": "2021-03-01",
+        "end_date": "2022-02-01"
+      }
+    }
+  }
+
   before(:each) do
     allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
     allow_any_instance_of(TargetsService).to receive(:annual_kwh_estimate_required?).and_return(false)
@@ -22,7 +35,7 @@ RSpec.describe 'school targets', type: :system do
     #Update the configuration rather than creating one, as the school factory builds one
     #and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
     #relationship
-    school.configuration.update!(fuel_configuration: fuel_configuration, school_target_fuel_types: school_target_fuel_types)
+    school.configuration.update!(fuel_configuration: fuel_configuration, school_target_fuel_types: school_target_fuel_types, aggregate_meter_dates: aggregate_meter_dates)
   end
 
   context 'as a school admin' do
