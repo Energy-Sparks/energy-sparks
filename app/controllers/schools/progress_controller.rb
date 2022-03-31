@@ -50,6 +50,7 @@ module Schools
           @bad_estimate = @debug_problem[:type] == MissingGasEstimationBase::MoreDataAlreadyThanEstimate
         rescue
           Rails.logger.error e
+          Rollbar.error(e, scope: :target_meter_calculation_problem, school_id: @school.id, school: @school.name, fuel_type: @fuel_type)
         end
       end
       render :index
