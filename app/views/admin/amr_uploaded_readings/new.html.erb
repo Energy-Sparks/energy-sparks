@@ -1,13 +1,16 @@
-<h1>Upload AMR data</h1>
-<h2>Configuration: <%= @amr_uploaded_reading.amr_data_feed_config.description %></h2>
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Manually load data</h1>
+  <div>
+    <%= link_to "All data feed configurations", admin_amr_data_feed_configs_path, class: "btn btn-outline-dark font-weight-bold" %>
+  </div>
+</div>
 
-<p>Here you can upload an AMR CSV file and preview the results before deciding on whether to import the data or not</p>
-
-<%= link_to 'All AMR Data feed configurations', admin_amr_data_feed_configs_path %>
+<p>Upload an CSV file containing AMR data using the <strong><%= @amr_uploaded_reading.amr_data_feed_config.description %></strong> configuration and preview the results before deciding on whether to import the data or not</p>
 
 <% if @errors %>
-  <p>We have identified some problem processing the file you have uploaded, are you sure it is in the correct format?</p>
   <div class="alert alert-danger" role="alert">
+    <p>We have identified some problem processing the file you have uploaded, are you sure it is in the correct format?</p>
+    <p><strong>Errors</strong></p>
     <%= @errors %>
   </div>
 
@@ -20,10 +23,20 @@
   <%= render 'first_ten_reading_rows', valid_reading_data: @valid_reading_data if @valid_reading_data.any? %>
 <% end %>
 
-<h2>File details</h2>
-<p>The import process is expecting:</p>
+<div class="alert alert-secondary">
+  <%= simple_form_for [:admin, @amr_data_feed_config, @amr_uploaded_reading] do |f| %>
+    <%= f.input :csv_file, label: 'Upload a file', as: :file, input_html: {accept: '.csv'} %>
+    <%= f.submit 'Preview', class: 'btn' %>
+  <% end %>
+</div>
+
+
+<hr>
+
+<h3>Configuration summary </h3>
+<p>The import process is expecting a file with:</p>
 <ul>
-  <li>the date format to be <b><%= DateTime.now.strftime(@amr_data_feed_config.date_format) %></b></li>
+  <li>a date format of <b><%= DateTime.now.strftime(@amr_data_feed_config.date_format) %></b></li>
   <% if @amr_data_feed_config.number_of_header_rows > 0 %>
     <li>the file to have <b><%= @amr_data_feed_config.number_of_header_rows %> header rows</b></li>
   <% else %>
@@ -47,11 +60,7 @@
 </ul>
 
 <h3>Header example</h3>
+
+<p>The file will have a header that looks like:</p>
+
 <%= @amr_data_feed_config.header_example %>
-
-<h2>Upload form</h2>
-<%= simple_form_for [:admin, @amr_data_feed_config, @amr_uploaded_reading] do |f| %>
-  <%= f.input :csv_file, as: :file, input_html: {accept: '.csv'} %>
-  <%= f.submit 'Preview', class: 'btn' %>
-<% end %>
-
