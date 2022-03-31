@@ -43,7 +43,7 @@ module Schools
       rescue => e
         Rails.logger.error e
         Rails.logger.error e.backtrace.join("\n")
-        Rollbar.error(e, school_id: @school.id, school: @school.name, fuel_type: @fuel_type)
+        Rollbar.error(e, scope: :progress_report, school_id: @school.id, school: @school.name, fuel_type: @fuel_type)
         @debug_error = e.message
       end
       render :index
