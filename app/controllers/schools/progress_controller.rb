@@ -34,8 +34,8 @@ module Schools
       @school_target = @school.most_recent_target
       authorize! :show, @school_target
       @show_storage_heater_notes = show_storage_heater_notes(@school, @school_target, @fuel_type)
+      service = TargetsService.new(aggregate_school, @fuel_type)
       begin
-        service = TargetsService.new(aggregate_school, @fuel_type)
         @recent_data = service.recent_data?
         @progress = service.progress
         @suggest_estimate_important = suggest_estimate_for_fuel_type?(@fuel_type, check_data: true)
@@ -45,6 +45,13 @@ module Schools
         Rails.logger.error e.backtrace.join("\n")
         Rollbar.error(e, scope: :progress_report, school_id: @school.id, school: @school.name, fuel_type: @fuel_type)
         @debug_error = e.message
+        begin
+          @debug_problem = TargetsService.new(aggregate_school, @fuel_type).target_meter_calculation_problem
+          @bad_estimate = @debug_problem[:type] == MissingGasEstimationBase::MoreDataAlreadyThanEstimate
+        rescue => ex
+          Rails.logger.error ex
+          Rollbar.error(ex, scope: :target_meter_calculation_problem, school_id: @school.id, school: @school.name, fuel_type: @fuel_type)
+        end
       end
       render :index
     end

@@ -13,4 +13,10 @@ module TargetsHelper
     return false if meter_start_date.nil?
     return meter_start_date <= school_target.start_date
   end
+
+  def estimate_to_low?(school, value, fuel_type)
+    estimate = school.configuration.estimated_consumption_for_fuel_type(fuel_type)
+    return '' unless estimate.present? && value.present?
+    value < estimate ? 'text-danger' : ''
+  end
 end

@@ -155,7 +155,7 @@ describe 'targets', type: :system do
 
       it 'handles errors' do
         visit electricity_school_progress_index_path(school)
-        expect(page).to have_content("Unfortunately we are currently unable to display your detailed progress report")
+        expect(page).to have_content("Unfortunately due to an error we are currently unable to display your detailed progress report")
       end
     end
 
