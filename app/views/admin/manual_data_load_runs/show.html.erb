@@ -1,4 +1,4 @@
-<% if !@manual_data_load_run.done? %>
+<% if !@manual_data_load_run.complete? %>
   <% content_for :head do %>
     <meta http-equiv="refresh" content="5" />
   <% end %>
@@ -6,7 +6,7 @@
 
 <div class="d-flex justify-content-between align-items-center">
   <h1>
-    <% if !@manual_data_load_run.done? %>
+    <% if !@manual_data_load_run.complete? %>
     Processing manual data load...
     <% else %>
     Manual data load result
