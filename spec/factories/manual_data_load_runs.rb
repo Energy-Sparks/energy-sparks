@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :manual_data_load_run do
-    amr_data_feed_config { nil }
+    amr_uploaded_reading { create(:amr_uploaded_reading) }
   end
 end
