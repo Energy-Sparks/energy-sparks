@@ -5,7 +5,7 @@
   </div>
 </div>
 
-<p>Upload an CSV file containing AMR data using the <strong><%= @amr_uploaded_reading.amr_data_feed_config.description %></strong> configuration and preview the results before deciding on whether to import the data or not</p>
+<p>Upload an CSV file containing AMR data using the <strong><%= @amr_data_feed_config.description %></strong> configuration and preview the results before deciding on whether to import the data or not</p>
 
 <ul class="nav nav-tabs" id="manual-loading" role="tablist">
   <li class="nav-item">
@@ -25,13 +25,13 @@
         <%= @errors %>
       </div>
 
-      <% if @warnings.any? %>
+      <% if @warnings.present? && @warnings.any? %>
         <%= render 'warnings', warnings: @warnings %>
       <% else %>
         <p>Note: There were no warnings for this file</p>
       <% end %>
 
-      <%= render 'first_ten_reading_rows', valid_reading_data: @valid_reading_data if @valid_reading_data.any? %>
+      <%= render 'first_ten_reading_rows', valid_reading_data: @valid_reading_data if @valid_reading_data.present? && @valid_reading_data.any? %>
     <% end %>
 
     <div class="alert alert-secondary">
