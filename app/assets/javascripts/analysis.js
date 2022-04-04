@@ -200,13 +200,17 @@ function processAnnotations(loaded_annotations, chart){
   chart.addAnnotation({
     labelOptions:{
       useHTML: true,
+      allowOverlap: true,
       style: {
         fontSize: '15px'
       }
     },
     labels: annotations
   }, true);
-  $('.highcharts-annotation [data-toggle="tooltip"]').tooltip()
+  if (annotations.length) {
+    $('.highcharts-annotation [data-toggle="tooltip"]').tooltip()
+    chart.redraw()
+  }
 }
 
 function setupAnalysisControls(chartContainer, chartConfig){

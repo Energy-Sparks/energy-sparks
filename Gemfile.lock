@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 77ae17fd87d8d81202e63f387bb330844d5a459f
-  tag: 1.30.6.2
+  revision: 1e2b2638658237aeaf832c6e05271fd6ba25400d
+  tag: 1.40.8
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
@@ -545,6 +545,8 @@ GEM
     semantic_range (3.0.0)
     sexp_processor (4.16.0)
     shellany (0.0.1)
+    shoulda-matchers (5.1.0)
+      activesupport (>= 5.2.0)
     simple_form (5.1.0)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
@@ -703,6 +705,7 @@ DEPENDENCIES
   sass-rails
   scout_apm
   selenium-webdriver
+  shoulda-matchers
   simple_form
   simplecov
   sitemap_generator

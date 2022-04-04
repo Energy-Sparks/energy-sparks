@@ -7,6 +7,11 @@
     <%= link_to 'Manage users', school_users_path(school), class: 'dropdown-item' if can? :manage_users, school %>
     <%= link_to 'Manage alert contacts', school_contacts_path(school), class: 'dropdown-item' if can? :manage, Contact %>
     <%= link_to 'Manage meters', school_meters_path(school), class: 'dropdown-item' if can? :index, Meter %>
+    <%= link_to 'Manage tariffs', school_user_tariffs_path(school), class: 'dropdown-item' if can? :manage, UserTariff %>
+
+    <% if EnergySparks::FeatureFlags.active?(:school_targets_v2) %>
+      <%= link_to 'Manage usage estimate', school_estimated_annual_consumptions_path(school), class: 'dropdown-item' if school.latest_annual_estimate.present? || school.suggest_annual_estimate? %>
+    <% end %>
     <% if current_user.admin? %>
       <div class="dropdown-divider"></div>
     <% end %>

@@ -1,7 +1,14 @@
-<h1>Preview uploaded data</h1>
-<h2>From file: <%= @amr_uploaded_reading.file_name %></h2>
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Data preview</h1>
+  <div>
+    <%= link_to "All data feed configurations", admin_amr_data_feed_configs_path, class: "btn btn-outline-dark font-weight-bold" %>
+  </div>
+</div>
 
-<p>Configuration: <%= @amr_uploaded_reading.amr_data_feed_config.description %></p>
+<ul>
+  <li><strong>Uploaded File</strong>: <%= @amr_uploaded_reading.file_name %></li>
+  <li><strong>Configuration</strong>: <%= link_to @amr_uploaded_reading.amr_data_feed_config.description, new_admin_amr_data_feed_config_amr_uploaded_reading_path(@amr_data_feed_config) %></li>
+</ul>
 
 <% if @warnings.any? %>
   <%= render 'warnings', warnings: @warnings %>
@@ -12,8 +19,10 @@
 <%= render 'first_ten_reading_rows', valid_reading_data: @valid_reading_data %>
 
 <%= form_with(url: admin_create_amr_data_feed_readings_path(@amr_uploaded_reading), method: :post, local: true) do %>
-  <%= submit_tag "I'm happy, insert this data", class: 'btn', data: { disable_with: false } %>
+  <%= submit_tag "Insert this data", class: 'btn', data: { disable_with: false } %>
 <% end %>
+<br>
 
-<p><%= link_to 'Back', new_admin_amr_data_feed_config_amr_uploaded_reading_path(@amr_data_feed_config) %></p>
-<p><%= link_to 'Back to AMR Data Feed Configurations', admin_amr_data_feed_configs_path %></p>
+<%= form_with(url: admin_amr_data_feed_config_amr_uploaded_reading_manual_data_load_runs_path(@amr_data_feed_config, @amr_uploaded_reading), method: :post, local: true) do %>
+  <%= submit_tag "Insert this data (NEW)", class: 'btn', data: { disable_with: false } %>
+<% end %>

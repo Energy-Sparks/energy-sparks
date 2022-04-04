@@ -23,6 +23,7 @@ describe 'targets', type: :system do
   let(:cumulative_performance)    { [-0.99,0.99] }
 
   let(:partial_months)            { [false, true] }
+  let(:percentage_synthetic)      { [0, 0]}
 
   let(:progress) do
     TargetsProgress.new(
@@ -36,23 +37,13 @@ describe 'targets', type: :system do
         cumulative_performance: cumulative_performance,
         cumulative_performance_versus_synthetic_last_year: cumulative_performance,
         monthly_performance_versus_synthetic_last_year: monthly_performance,
-        partial_months: partial_months
+        partial_months: partial_months,
+        percentage_synthetic: percentage_synthetic
     )
   end
 
-  let(:management_data) {
-    Tables::SummaryTableData.new({
-        electricity: {
-          :start_date => '2016-10-01',
-          :end_date => '2021-11-01',
-          year: { :percent_change => 0.11050 }, workweek: { :percent_change => -0.0923132131 }
-        }
-    })
-  }
-
   before(:each) do
     allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-    allow_any_instance_of(Schools::ManagementTableService).to receive(:management_data).and_return(management_data)
   end
 
   context 'as an admin' do
@@ -120,7 +111,7 @@ describe 'targets', type: :system do
 
       it 'does not show message about storage heaters' do
         visit electricity_school_progress_index_path(school)
-        expect(page).not_to have_content("does not include your storage heater usage")
+        expect(page).not_to have_content("This report only shows progress on reducing your electricity usage")
       end
 
       context 'when school also has storage heaters' do
@@ -130,9 +121,16 @@ describe 'targets', type: :system do
 
         it 'does show message about storage heaters' do
           visit electricity_school_progress_index_path(school)
-          expect(page).to have_content("does not include your storage heater usage")
+          expect(page).to have_content("This report only shows progress on reducing your electricity usage")
+          expect(page).to have_link("storage heater progress report")
         end
 
+        it 'doesnt show message if no storage heater target' do
+          school_target.update!(storage_heaters: nil)
+          visit electricity_school_progress_index_path(school)
+          expect(page).to_not have_content("This report only shows progress on reducing your electricity usage")
+          expect(page).to_not have_link("storage heater progress report")
+        end
       end
     end
 
@@ -157,7 +155,7 @@ describe 'targets', type: :system do
 
       it 'handles errors' do
         visit electricity_school_progress_index_path(school)
-        expect(page).to have_content("Unfortunately we are currently unable to display your detailed progress report")
+        expect(page).to have_content("Unfortunately due to an error we are currently unable to display your detailed progress report")
       end
     end
 
@@ -166,6 +164,7 @@ describe 'targets', type: :system do
         sign_in(admin)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
+        school.configuration.update!(suggest_estimates_fuel_types: ["electricity"], aggregate_meter_dates: {"electricity"=>{"start_date"=>"2022-02-01", "end_date"=>"2022-03-21"}})
       end
 
       context 'and there is missing actual consumption' do
@@ -183,8 +182,26 @@ describe 'targets', type: :system do
 
         it 'describes why some consumption data is missing' do
           visit electricity_school_progress_index_path(school)
-          expect(page).to have_content("We only have your actual electricity consumption data from 1 Oct 2016")
+          expect(page).to have_content("We only have data on your electricity consumption from Feb 2022")
         end
+
+        it 'shows prompt to add estimate' do
+          visit electricity_school_progress_index_path(school)
+          expect(page).to have_content("If you can supply an estimate of your annual consumption then we can generate a more detailed progress report")
+        end
+
+        it 'doesnt show prompt if different fuel type' do
+          school.configuration.update!(suggest_estimates_fuel_types: ["gas"])
+          visit electricity_school_progress_index_path(school)
+          expect(page).to_not have_content("gas")
+        end
+
+        it 'doesnt show prompt if estimate not needed' do
+          school.configuration.update!(suggest_estimates_fuel_types: [""])
+          visit electricity_school_progress_index_path(school)
+          expect(page).to_not have_content("If you can supply an estimate of your annual consumption then we can generate a more detailed progress report")
+        end
+
       end
 
       context 'and there is missing target consumption and performance' do
@@ -206,7 +223,7 @@ describe 'targets', type: :system do
 
         it 'describes why target consumption data is missing' do
           visit electricity_school_progress_index_path(school)
-          expect(page).to have_content('We only have limited consumption data for your school, so we cannot currently calculate a full set of monthly targets or progress')
+          expect(page).to have_content('We only have limited historical consumption data for your school, so we cannot currently calculate a full set of monthly targets or progress')
         end
       end
     end

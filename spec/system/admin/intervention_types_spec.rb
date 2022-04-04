@@ -100,5 +100,30 @@ describe "Intervention Types", type: :system do
       expect(intervention_type.description.body.to_plain_text).to eq(description)
       expect(intervention_type.active?).to be false
     end
+
+    it 'can add and remove suggested next actions' do
+      intervention_type = create(:intervention_type, intervention_type_group: intervention_type_group )
+      refresh
+
+      click_on 'Edit'
+      within ('.intervention_type_suggestions') do
+        find(:xpath, "//option[contains(text(), '#{intervention_type.title}')]", match: :first).select_option
+      end
+
+      click_on('Update Intervention type')
+      expect(page.has_content?("Intervention type was successfully updated.")).to be true
+      intervention_type.reload
+      expect(intervention_type.suggested_types).to match_array([intervention_type])
+
+      click_on 'Edit'
+      within ('.intervention_type_suggestions') do
+        first("input[type='checkbox']").check
+      end
+
+      click_on('Update Intervention type')
+      expect(page.has_content?("Intervention type was successfully updated.")).to be true
+      intervention_type.reload
+      expect(intervention_type.suggested_types).to be_empty
+    end
   end
 end

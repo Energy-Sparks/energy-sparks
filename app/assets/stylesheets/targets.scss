@@ -24,6 +24,19 @@
   color: $bg-negative;
 }
 
+.estimated-target-month {
+  font-style: italic;
+}
+
 pre.debug {
     white-space: pre-wrap;
+}
+
+.work_week {
+  .fa-arrow-circle-down {
+    color: $green;
+  }
+  .fa-arrow-circle-up {
+    color: $new-red;
+  }
 }

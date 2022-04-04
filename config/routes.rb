@@ -123,13 +123,23 @@ Rails.application.routes.draw do
           get :storage_heater
         end
       end
-      resources :school_targets, except: [:destroy]
+      resources :school_targets
+      resources :estimated_annual_consumptions, except: [:show]
+
       resources :programmes, only: [:create]
 
       resource :action, only: [:new]
       resources :audits
 
       resources :temperature_observations, only: [:show, :new, :create, :index, :destroy]
+      resources :transport_surveys, only: [:show, :edit, :update, :index, :destroy], param: :run_on do
+        collection do
+          get :intro
+        end
+        scope module: :transport_surveys do
+          resources :responses, only: [:destroy]
+        end
+      end
       resources :locations, only: [:new, :edit, :create, :update, :index, :destroy]
       resource :visibility, only: [:create, :destroy], controller: :visibility
       resource :public, only: [:create, :destroy], controller: :public
@@ -315,7 +325,9 @@ Rails.application.routes.draw do
     end
 
     resources :amr_data_feed_configs, only: [:index, :show, :edit, :update] do
-      resources :amr_uploaded_readings, only: [:index, :show, :new, :create]
+      resources :amr_uploaded_readings, only: [:index, :show, :new, :create] do
+        resources :manual_data_load_runs, only: [:show, :create]
+      end
     end
 
     resources :equivalence_types
@@ -328,6 +340,7 @@ Rails.application.routes.draw do
 
     resources :global_meter_attributes
     resources :consents
+    resources :transport_types
 
     resource :content_generation_run, controller: :content_generation_run
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index, :edit, :update, :destroy] do
@@ -358,6 +371,7 @@ Rails.application.routes.draw do
       resources :interventions, only: :index
       resources :school_targets, only: :index
       resources :meter_reports, only: :index
+      resources :data_loads, only: :index
     end
 
     resource :settings, only: [:show, :update]

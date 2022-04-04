@@ -22,19 +22,18 @@ class ChartDataValues
   MONEY = '#232B49'.freeze
 
   COLOUR_HASH = {
-    SeriesNames::DEGREEDAYS => '#232b49',
-    SeriesNames::TEMPERATURE => '#232b49',
-    SeriesNames::SCHOOLDAYCLOSED => '#3bc0f0',
-    SeriesNames::SCHOOLDAYOPEN => GREEN,
-    SeriesNames::HOLIDAY => '#ff4500',
-    SeriesNames::WEEKEND => '#ffac21',
-    SeriesNames::HEATINGDAY => '#3bc0f0',
-    SeriesNames::NONHEATINGDAY => GREEN,
-    SeriesNames::HEATINGDAYMODEL => '#ff4500',
-    SeriesNames::NONHEATINGDAYMODEL => '#ffac21',
-    SeriesNames::USEFULHOTWATERUSAGE => '#3bc0f0',
-    SeriesNames::WASTEDHOTWATERUSAGE => '#ff4500',
-    SeriesNames::SOLARPV => '#ffac21', # 'solar pv (consumed onsite)'
+    Series::DegreeDays::DEGREEDAYS => '#232b49',
+    Series::Temperature::TEMPERATURE => '#232b49',
+    Series::DayType::SCHOOLDAYCLOSED => '#3bc0f0',
+    Series::DayType::SCHOOLDAYOPEN => GREEN,
+    Series::DayType::HOLIDAY => '#ff4500',
+    Series::DayType::WEEKEND => '#ffac21',
+    Series::HeatingNonHeating::HEATINGDAY => '#3bc0f0',
+    Series::HeatingNonHeating::NONHEATINGDAY => GREEN,
+    Series::HotWater::USEFULHOTWATERUSAGE => '#3bc0f0',
+    Series::HotWater::WASTEDHOTWATERUSAGE => '#ff4500',
+    Series::MultipleFuels::SOLARPV => '#ffac21', # 'solar pv (consumed onsite)'
+
     'electricity' => MIDDLE_ELECTRICITY,
     'gas' => MIDDLE_GAS,
     'storage heater' => STORAGE_HEATER,

@@ -1,10 +1,14 @@
 <div class="d-flex justify-content-between align-items-center">
   <h1>Tracking progress to reduce your <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage</h1>
   <div>
-    <%= link_to "Review targets", school_school_target_path(@school, @current_target), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+    <%= link_to "Review targets", school_school_target_path(@school, @school_target), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
     <%= link_to_help_for_feature :school_targets, css: "btn btn-outline-dark rounded-pill font-weight-bold" %>
   </div>
 </div>
+
+<% if @suggest_estimate_important %>
+  <%= render 'schools/school_targets/prompt_to_add_estimate', school: @school, fuel_types: [@fuel_type.to_s] %>
+<% end %>
 
 <% if !@recent_data %>
   <div class="row alert info-bar text-light bg-negative">
@@ -13,8 +17,22 @@
     </div>
   </div>
 <% else %>
-  <% if @progress && @progress.current_cumulative_performance_versus_synthetic_last_year %>
-    <% if @progress.current_cumulative_performance_versus_synthetic_last_year > 0.0 %>
+  <% if @school_target.current? %>
+    <p>
+      Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @school_target.attributes[@fuel_type.to_s] %>% between <%= @school_target.start_date.strftime("%b %Y") %> and <%= @school_target.target_date.strftime("%b %Y") %>.
+    </p>
+  <% else %>
+    <p>
+      Your school previously set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @school_target.attributes[@fuel_type.to_s] %>% before <%= @school_target.target_date.strftime("%b %Y") %>. This target is now out of date.
+    </p>
+  <% end %>
+
+  <% if @progress && @current_month_target && @progress.current_cumulative_performance_versus_synthetic_last_year %>
+    <% if @progress.current_cumulative_performance_versus_synthetic_last_year == 0.0 %>
+      <p>
+        Unfortunately you are currently consuming as much data as you did last year.
+      </p>
+    <% elsif @progress.current_cumulative_performance_versus_synthetic_last_year > 0.0 %>
       <p>
         Unfortunately you are currently running
         <%= format_target(@progress.current_cumulative_performance_versus_synthetic_last_year, :relative_percent) %>
@@ -28,18 +46,6 @@
       </p>
     <% end %>
   <% end %>
-<% end %>
-
-<% if @current_target %>
-  <p>
-    Your school has set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> energy usage by <%= @current_target.electricity %>% by <%= nice_dates(@current_target.target_date) %>.
-  </p>
-<% end %>
-
-<% if @show_storage_heater_notes %>
-  <p>
-    Note: this page shows progress on reducing your electricity usage. It does not include your storage heater usage. This <%= link_to 'can be reviewed separately', storage_heater_school_progress_index_path(@school) %>.
-  </p>
 <% end %>
 
 <% if @progress  %>
@@ -60,9 +66,9 @@
     </tr>
     </thead>
     <tbody>
-    <%= render 'row', title: 'Target Consumption (kWh)', data: @progress.monthly_targets_kwh, keys: @progress.months, partial_months: {}, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Actual Consumption (kWh)', data: @progress.monthly_usage_kwh, keys: @progress.months, partial_months: @progress.partial_months, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Overall change since last year', data: @progress.monthly_performance_versus_synthetic_last_year, keys: @progress.months, partial_months: @progress.partial_months, units: :relative_percent, final_row: true %>
+    <%= render 'row', title: 'Target Consumption (kWh)', progress: @progress, data: @progress.monthly_targets_kwh, keys: @progress.months, partial_months: {}, percentage_synthetic: @progress.percentage_synthetic, units: :kwh, final_row: false %>
+    <%= render 'row', title: 'Actual Consumption (kWh)', progress: @progress, data: @progress.monthly_usage_kwh, keys: @progress.months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :kwh, final_row: false %>
+    <%= render 'row', title: 'Overall change since last year', progress: @progress, data: @progress.monthly_performance_versus_synthetic_last_year, keys: @progress.months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :relative_percent, final_row: true %>
     </tbody>
   </table>
 
@@ -82,27 +88,50 @@
     </tr>
     </thead>
     <tbody>
-    <%= render 'row', title: 'Target Consumption (kWh)', data: @progress.cumulative_targets_kwh, keys: @progress.months, partial_months: {}, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Actual Consumption (kWh)', data: @progress.cumulative_usage_kwh, keys: @progress.months, partial_months: @progress.partial_months, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Overall performance since last year', data: @progress.cumulative_performance_versus_synthetic_last_year, keys: @progress.months, partial_months: @progress.partial_months, units: :relative_percent, final_row: true %>
+    <%= render 'row', title: 'Target Consumption (kWh)', data: @progress.cumulative_targets_kwh, keys: @progress.months, partial_months: {}, percentage_synthetic: @progress.percentage_synthetic, units: :kwh, final_row: false %>
+    <%= render 'row', title: 'Actual Consumption (kWh)', data: @progress.cumulative_usage_kwh, keys: @progress.months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :kwh, final_row: false %>
+    <%= render 'row', title: 'Overall performance since last year', data: @progress.cumulative_performance_versus_synthetic_last_year, keys: @progress.months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :relative_percent, final_row: true %>
     </tbody>
   </table>
 
-  <% if @partial_consumption %>
-    <% if @overview_data.present? && @overview_data.start_date(@fuel_type).present? %>
-      <p>We only have your actual <%= @fuel_type.to_s.humanize(capitalize: false) %> consumption data from <%= @overview_data.start_date(@fuel_type) %>. So can only show your consumption for a portion of your target period.</p>
-    <% else %>
-      <p>We only have a limited view of your actual <%= @fuel_type.to_s.humanize(capitalize: false) %> consumption data. So can only show your consumption for a portion of your target period.</p>
+  <h5 class="font-weight-bold">Footnotes</h5>
+
+  <div class="ml-2">
+    <% if @show_storage_heater_notes %>
+      <p>
+        This report only shows progress on reducing your electricity usage. Your <%= link_to 'storage heater progress report', storage_heater_school_progress_index_path(@school) %> can be viewed separately.
+      </p>
     <% end %>
-  <% end %>
 
-  <% if @partial_targets %>
-    <p>We only have limited consumption data for your school, so we cannot currently calculate a full set of monthly targets or progress.</p>
-  <% end %>
+    <p>
+    We use colour coding to indicate when you have <span class="bg-positive-dark">met your target</span> or <span class="bg-negative-dark">exceeded your target</span> in a given month
+    </p>
 
-  <p>
-    In the tables above <span class="partial-month">text in red</span> indicates where we have only partial consumption data for a given month. Your usage figures and our estimate of your progress will not be accurate until the end of the month, or until we receive additional data. We also indicate when you have <span class="bg-positive-dark">met your target</span> or <span class="bg-negative-dark">exceeded your target</span> in a given month.
-  </p>
+    <% if @progress.partial_consumption_data? %>
+      <p>Consumption data <span class="partial-month">shown in red</span> indicates a month in which we have only partial data. Your consumption and performance figures will not be accurate until the end of the month. Or until we receive additional historical data.</p>
+    <% end %>
+
+    <% if @progress.reporting_period_before_consumption_data? %>
+      <% if @school.configuration.meter_start_date(@fuel_type).present? %>
+        <p>We only have data on your <%= @fuel_type.to_s.humanize(capitalize: false) %> consumption from <%= @school.configuration.meter_start_date(@fuel_type).strftime("%b %Y") %>. The report will only show your consumption for a portion of your target period.</p>
+      <% else %>
+        <p>We only have limited data on your actual <%= @fuel_type.to_s.humanize(capitalize: false) %> consumption. The report will only show your consumption for a portion of your target period.</p>
+      <% end %>
+    <% end %>
+
+    <% if @progress.targets_derived_from_synthetic_data? %>
+      <p>
+        Monthly targets <i>shown in italics</i> have been created from the <%= link_to 'annual estimate', school_estimated_annual_consumptions_path(@school) %> you provided, rather than your historical data. Their accuracy will depend on the quality of your estimate.
+      </p>
+    <% end %>
+
+    <% if @progress.partial_target_data? %>
+      <p>
+        We only have limited historical consumption data for your school, so we cannot currently calculate a full set of monthly targets or progress.
+        You can <%= link_to 'provide us with an annual estimate', school_estimated_annual_consumptions_path(@school) %> to see more detail.
+      </p>
+    <% end %>
+  </div>
 
   <h3>Progress charts</h3>
 
@@ -116,13 +145,31 @@
   <% end %>
 <% else %>
 
-  <p>
-    Unfortunately we are currently unable to display your detailed progress report. We have been notified about this error and will investigate.
-  </p>
+  <div class="alert alert-danger">
+    <h4>Unfortunately due to an error we are currently unable to display your detailed progress report</h4>
+
+    <% if @bad_estimate %>
+      <p>
+        The <%= link_to 'annual estimate', school_estimated_annual_consumptions_path(@school) %> of your <%= @fuel_type %> usage that has been provided for your school is too low.
+      </p>
+      <p>
+        Please <%= link_to 'review your estimate and our guidance', school_estimated_annual_consumptions_path(@school) %> to see if it is correct.
+      </p>
+      <p>
+        In the meantime, we have been notified about this error and will investigate.
+      </p>
+    <% else %>
+      <p>We have been notified about this error and will investigate.</p>
+    <% end %>
+  </div>
 
   <% if current_user.present? && current_user.analytics? %>
-    <h2>Debug</h2>
-    <p>Error: <%= @debug_error if @debug_error.present? %></p>
+  <div class="alert alert-secondary">
+    <h4>Debug</h4>
+    <p><strong>Error</strong>: <%= @debug_error if @debug_error.present? %></p>
+    <p><strong>Problem</strong>: <%= @debug_problem if @debug_problem.present? %></p>
+  </div>
   <% end %>
+
 
 <% end %>

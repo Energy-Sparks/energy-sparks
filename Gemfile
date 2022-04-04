@@ -23,8 +23,8 @@ gem 'closed_struct'
 gem 'pg_search'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.30.6.2'
-#gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: '2045-fix-test-for-enough-data-checks-for-school-with-limited-data'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.40.8'
+#gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'aws-eb-test'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -145,4 +145,5 @@ group :test do
   gem 'database_cleaner'
   gem 'webdrivers'
   gem 'simplecov', :require => false, :group => :test
+  gem 'shoulda-matchers'
 end

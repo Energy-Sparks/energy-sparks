@@ -8,6 +8,7 @@ module Admin
 
       def show
         @meter = Meter.find(params[:meter_id])
+        @school = @meter.school
       end
     end
   end

@@ -9,7 +9,7 @@ module Targets
     end
 
     def self.targets_enabled?(school)
-      EnergySparks::FeatureFlags.active?(:school_targets) && school.enable_targets_feature?
+      school.enable_targets_feature?
     end
 
     def build_target
@@ -43,22 +43,30 @@ module Targets
     end
 
     def enough_data?
+      return true if v2_feature_active?
       @school.configuration.enough_data_to_set_target?
     end
 
     def enough_data_for_electricity?
+      return @school.has_electricity? if v2_feature_active?
       @school.configuration.enough_data_to_set_target_for_fuel_type?(:electricity)
     end
 
     def enough_data_for_gas?
+      return @school.has_gas? if v2_feature_active?
       @school.configuration.enough_data_to_set_target_for_fuel_type?(:gas)
     end
 
     def enough_data_for_storage_heater?
+      return @school.has_storage_heaters? if v2_feature_active?
       @school.configuration.enough_data_to_set_target_for_fuel_type?(:storage_heater)
     end
 
     private
+
+    def v2_feature_active?
+      EnergySparks::FeatureFlags.active?(:school_targets_v2)
+    end
 
     def target_end_date
       target_start_date.next_year
@@ -76,7 +84,10 @@ module Targets
     #to set a target. In this case we're rolling back the target start date to the
     #month of the last validated reading. But only if they're not using an annual
     #estimate.
+    #
+    #However if there's a previous target, then we just default to when that ended
     def determine_target_start_date
+      return most_recent_target.target_date if most_recent_target.present?
       target_start_date = default_target_start_date
       [:electricity, :gas, :storage_heater].each do |fuel_type|
         service = target_service(aggregate_school, fuel_type)

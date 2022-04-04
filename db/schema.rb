@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_15_135011) do
+ActiveRecord::Schema.define(version: 2022_04_04_121958) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -424,6 +424,7 @@ ActiveRecord::Schema.define(version: 2022_03_15_135011) do
     t.text "status", null: false
     t.date "substitute_date"
     t.datetime "upload_datetime"
+    t.index ["meter_id", "one_day_kwh"], name: "index_amr_validated_readings_on_meter_id_and_one_day_kwh"
     t.index ["meter_id", "reading_date"], name: "unique_amr_meter_validated_readings", unique: true
     t.index ["meter_id"], name: "index_amr_validated_readings_on_meter_id"
     t.index ["reading_date"], name: "index_amr_validated_readings_on_reading_date"
@@ -600,6 +601,9 @@ ActiveRecord::Schema.define(version: 2022_03_15_135011) do
     t.integer "storage_heater_dashboard_chart_type", default: 0, null: false
     t.integer "electricity_dashboard_chart_type", default: 0, null: false
     t.string "school_target_fuel_types", default: [], null: false, array: true
+    t.string "suggest_estimates_fuel_types", default: [], null: false, array: true
+    t.json "estimated_consumption", default: {}
+    t.json "aggregate_meter_dates", default: {}
     t.index ["school_id"], name: "index_configurations_on_school_id"
   end
 
@@ -725,6 +729,17 @@ ActiveRecord::Schema.define(version: 2022_03_15_135011) do
     t.index ["school_id"], name: "index_equivalences_on_school_id"
   end
 
+  create_table "estimated_annual_consumptions", force: :cascade do |t|
+    t.integer "year", null: false
+    t.float "electricity"
+    t.float "storage_heaters"
+    t.float "gas"
+    t.bigint "school_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_id"], name: "index_estimated_annual_consumptions_on_school_id"
+  end
+
   create_table "find_out_mores", force: :cascade do |t|
     t.bigint "alert_type_rating_content_version_id", null: false
     t.bigint "alert_id", null: false
@@ -786,6 +801,15 @@ ActiveRecord::Schema.define(version: 2022_03_15_135011) do
     t.string "icon", default: "question-circle"
     t.string "description"
     t.boolean "active", default: true
+  end
+
+  create_table "intervention_type_suggestions", force: :cascade do |t|
+    t.bigint "intervention_type_id"
+    t.integer "suggested_type_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["intervention_type_id"], name: "index_intervention_type_suggestions_on_intervention_type_id"
+    t.index ["suggested_type_id"], name: "index_intervention_type_suggestions_on_suggested_type_id"
   end
 
   create_table "intervention_types", force: :cascade do |t|
@@ -855,6 +879,22 @@ ActiveRecord::Schema.define(version: 2022_03_15_135011) do
     t.index ["alert_type_rating_content_version_id"], name: "mp_altrcv"
     t.index ["content_generation_run_id"], name: "index_management_priorities_on_content_generation_run_id"
     t.index ["find_out_more_id"], name: "index_management_priorities_on_find_out_more_id"
+  end
+
+  create_table "manual_data_load_run_log_entries", force: :cascade do |t|
+    t.bigint "manual_data_load_run_id", null: false
+    t.string "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["manual_data_load_run_id"], name: "manual_data_load_run_log_idx"
+  end
+
+  create_table "manual_data_load_runs", force: :cascade do |t|
+    t.bigint "amr_uploaded_reading_id", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["amr_uploaded_reading_id"], name: "index_manual_data_load_runs_on_amr_uploaded_reading_id"
   end
 
   create_table "meter_attributes", force: :cascade do |t|
@@ -951,7 +991,7 @@ ActiveRecord::Schema.define(version: 2022_03_15_135011) do
   create_table "programme_activities", force: :cascade do |t|
     t.bigint "programme_id", null: false
     t.bigint "activity_type_id", null: false
-    t.bigint "activity_id"
+    t.bigint "activity_id", null: false
     t.integer "position", default: 0, null: false
     t.index ["activity_id"], name: "index_programme_activities_on_activity_id"
     t.index ["programme_id", "activity_type_id"], name: "programme_activity_type_uniq", unique: true
@@ -1189,7 +1229,7 @@ ActiveRecord::Schema.define(version: 2022_03_15_135011) do
 
   create_table "schools", force: :cascade do |t|
     t.string "name"
-    t.integer "school_type"
+    t.integer "school_type", null: false
     t.text "address"
     t.string "postcode"
     t.string "website"
@@ -1395,6 +1435,42 @@ ActiveRecord::Schema.define(version: 2022_03_15_135011) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "transport_survey_responses", force: :cascade do |t|
+    t.bigint "transport_survey_id", null: false
+    t.bigint "transport_type_id", null: false
+    t.integer "passengers", default: 1, null: false
+    t.integer "integer", default: 1, null: false
+    t.string "run_identifier", null: false
+    t.datetime "surveyed_at", null: false
+    t.integer "journey_minutes", default: 0, null: false
+    t.integer "weather", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["transport_survey_id"], name: "index_transport_survey_responses_on_transport_survey_id"
+    t.index ["transport_type_id"], name: "index_transport_survey_responses_on_transport_type_id"
+  end
+
+  create_table "transport_surveys", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.date "run_on", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["run_on"], name: "index_transport_surveys_on_run_on", unique: true
+    t.index ["school_id"], name: "index_transport_surveys_on_school_id"
+  end
+
+  create_table "transport_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "image", null: false
+    t.decimal "kg_co2e_per_km", default: "0.0", null: false
+    t.decimal "speed_km_per_hour", default: "0.0", null: false
+    t.string "note"
+    t.boolean "can_share", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_transport_types_on_name", unique: true
+  end
+
   create_table "user_tariff_charges", force: :cascade do |t|
     t.bigint "user_tariff_id", null: false
     t.text "charge_type", null: false
@@ -1577,12 +1653,14 @@ ActiveRecord::Schema.define(version: 2022_03_15_135011) do
   add_foreign_key "equivalence_type_content_versions", "equivalence_types", on_delete: :cascade
   add_foreign_key "equivalences", "equivalence_type_content_versions", on_delete: :cascade
   add_foreign_key "equivalences", "schools", on_delete: :cascade
+  add_foreign_key "estimated_annual_consumptions", "schools"
   add_foreign_key "find_out_mores", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "find_out_mores", "alerts", on_delete: :cascade
   add_foreign_key "find_out_mores", "content_generation_runs", on_delete: :cascade
   add_foreign_key "global_meter_attributes", "global_meter_attributes", column: "replaced_by_id", on_delete: :nullify
   add_foreign_key "global_meter_attributes", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "global_meter_attributes", "users", column: "deleted_by_id", on_delete: :restrict
+  add_foreign_key "intervention_type_suggestions", "intervention_types", on_delete: :cascade
   add_foreign_key "intervention_types", "intervention_type_groups", on_delete: :cascade
   add_foreign_key "locations", "schools", on_delete: :cascade
   add_foreign_key "low_carbon_hub_installations", "amr_data_feed_configs", on_delete: :cascade
@@ -1594,6 +1672,8 @@ ActiveRecord::Schema.define(version: 2022_03_15_135011) do
   add_foreign_key "management_priorities", "alerts", on_delete: :cascade
   add_foreign_key "management_priorities", "content_generation_runs", on_delete: :cascade
   add_foreign_key "management_priorities", "find_out_mores", on_delete: :nullify
+  add_foreign_key "manual_data_load_run_log_entries", "manual_data_load_runs"
+  add_foreign_key "manual_data_load_runs", "amr_uploaded_readings"
   add_foreign_key "meter_attributes", "meter_attributes", column: "replaced_by_id", on_delete: :nullify
   add_foreign_key "meter_attributes", "meters", on_delete: :cascade
   add_foreign_key "meter_attributes", "users", column: "created_by_id", on_delete: :nullify
@@ -1656,6 +1736,9 @@ ActiveRecord::Schema.define(version: 2022_03_15_135011) do
   add_foreign_key "subscription_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade
+  add_foreign_key "transport_survey_responses", "transport_surveys", on_delete: :cascade
+  add_foreign_key "transport_survey_responses", "transport_types"
+  add_foreign_key "transport_surveys", "schools", on_delete: :cascade
   add_foreign_key "user_tariff_charges", "user_tariffs", on_delete: :cascade
   add_foreign_key "user_tariff_prices", "user_tariffs", on_delete: :cascade
   add_foreign_key "users", "school_groups", on_delete: :restrict

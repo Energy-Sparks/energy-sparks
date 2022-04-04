@@ -17,6 +17,20 @@ describe Interventions::SuggestAction, type: :service do
     end
   end
 
+  describe '#suggest_from_most_recent_intervention' do
+    let(:calendar){ school.calendar }
+    let(:academic_year){ calendar.academic_years.last }
+    let(:date_1){ academic_year.start_date + 1.month}
+    let!(:intervention_type_1){ create(:intervention_type) }
+    let!(:intervention_type_2){ create(:intervention_type, suggested_types: [intervention_type_1]) }
+    let!(:observation_1){ create :observation, at: date_1, school: school, intervention_type: intervention_type_2 }
+
+    it 'returns intervention type suggestions from most recent intervention' do
+      result = service.suggest_from_most_recent_intervention
+      expect(result.to_a).to match_array([intervention_type_1])
+    end
+  end
+
   describe '#suggest_from_alerts' do
 
     let!(:intervention_type){ create(:intervention_type, title: 'Check boiler controls') }

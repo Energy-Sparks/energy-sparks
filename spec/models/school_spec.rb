@@ -472,6 +472,27 @@ describe School do
     end
   end
 
+  context 'with annual estimates' do
+
+    it "there are no meter attributes without an estimate" do
+      expect(subject.estimated_annual_consumption_meter_attributes).to eql({})
+      expect(subject.all_pseudo_meter_attributes).to eql({})
+    end
+
+    context "when an estimate is given" do
+      let!(:estimate)  { create(:estimated_annual_consumption, school: subject, electricity: 1000.0, gas: 1500.0, storage_heaters: 500.0, year: 2021) }
+
+      before(:each) do
+        subject.reload
+      end
+
+      it "the target should add meter attributes" do
+        expect(subject.all_pseudo_meter_attributes).to_not eql({})
+      end
+
+    end
+  end
+
   context 'with school targets' do
 
     it "there is no target by default" do
@@ -515,7 +536,7 @@ describe School do
 
       context "with expired target" do
         before(:each) do
-          target.update!(target_date: Date.yesterday)
+          target.update!(start_date: Date.yesterday.prev_year)
         end
 
         it "should find the expired target" do
@@ -615,9 +636,10 @@ describe School do
     let!(:intervention_type_2){ create :intervention_type }
     let!(:observation_1){ create :observation, at: date_1, school: school, intervention_type: intervention_type_1 }
     let!(:observation_2){ create :observation, at: date_2, school: school, intervention_type: intervention_type_2 }
+    let!(:observation_without_intervention_type) { create(:observation, at: date_1, school: school) }
 
     it 'finds observations from the academic year' do
-      expect(school.observations_in_academic_year(academic_year.start_date + 2.months)).to eq([observation_1])
+      expect(school.observations_in_academic_year(academic_year.start_date + 2.months)).to eq([observation_1, observation_without_intervention_type])
     end
 
     it 'handles missing academic year' do
@@ -630,6 +652,13 @@ describe School do
 
     it 'handles missing academic year' do
       expect(school.intervention_types_in_academic_year(Date.parse('01-01-1900'))).to eq([])
+    end
+
+    context 'when finding intervention types by date' do
+      let!(:recent_observation)  { create(:observation, at: date_1 + 1.day, school: school, intervention_type: intervention_type_2) }
+      it 'finds intervention types by date, including duplicates, excluding non-intervention observations' do
+        expect(school.intervention_types_by_date).to eq([intervention_type_2, intervention_type_1, intervention_type_2])
+      end
     end
   end
 end

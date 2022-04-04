@@ -28,6 +28,7 @@ class HelpPage < ApplicationRecord
   enum feature: {
     school_targets: 0,
     live_data: 1,
-    management_summary_overview: 2
+    management_summary_overview: 2,
+    annual_usage_estimate: 3
   }
 end

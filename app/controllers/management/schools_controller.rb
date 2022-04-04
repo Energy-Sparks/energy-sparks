@@ -48,6 +48,7 @@ module Management
       @add_targets = prompt_for_target?
       @review_targets = prompt_to_review_target?
       @recent_audit = Audits::AuditService.new(@school).recent_audit
+      @suggest_estimates_for_fuel_types = suggest_estimates_for_fuel_types(check_data: true)
     end
   end
 end

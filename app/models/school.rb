@@ -83,6 +83,7 @@ class School < ApplicationRecord
   has_many :activities,           inverse_of: :school
   has_many :contacts,             inverse_of: :school
   has_many :observations,         inverse_of: :school
+  has_many :transport_surveys,    inverse_of: :school
   has_many :consent_documents,    inverse_of: :school
   has_many :meter_attributes,     inverse_of: :school, class_name: 'SchoolMeterAttribute'
   has_many :consent_grants,       inverse_of: :school
@@ -111,6 +112,8 @@ class School < ApplicationRecord
   has_many :locations
 
   has_many :simulations, inverse_of: :school
+
+  has_many :estimated_annual_consumptions
 
   has_many :amr_data_feed_readings,       through: :meters
   has_many :amr_validated_readings,       through: :meters
@@ -154,7 +157,7 @@ class School < ApplicationRecord
   scope :with_config, -> { joins(:configuration) }
   scope :by_name,     -> { order(name: :asc) }
 
-  validates_presence_of :urn, :name, :address, :postcode, :website
+  validates_presence_of :urn, :name, :address, :postcode, :website, :school_type
   validates_uniqueness_of :urn
   validates :floor_area, :number_of_pupils, :cooks_dinners_for_other_schools_count, numericality: { greater_than: 0, allow_blank: true }
   validates :cooks_dinners_for_other_schools_count, presence: true, if: :cooks_dinners_for_other_schools?
@@ -227,9 +230,13 @@ class School < ApplicationRecord
 
   def intervention_types_in_academic_year(date)
     if (observations = observations_in_academic_year(date))
-      return observations.map(&:intervention_type)
+      return observations.map(&:intervention_type).compact
     end
     []
+  end
+
+  def intervention_types_by_date
+    observations.by_date.map(&:intervention_type).compact
   end
 
   def national_calendar
@@ -398,6 +405,10 @@ class School < ApplicationRecord
     school_onboarding && school_onboarding.has_event?(event_name)
   end
 
+  def suggest_annual_estimate?
+    estimated_annual_consumptions.any? || configuration.suggest_annual_estimate?
+  end
+
   def school_target_attributes
     #use the current target if we have one, otherwise the most current target
     #based on start date. So if target as expired, then progress pages still work
@@ -410,6 +421,14 @@ class School < ApplicationRecord
     end
   end
 
+  def latest_annual_estimate
+    estimated_annual_consumptions.order(created_at: :desc).first
+  end
+
+  def estimated_annual_consumption_meter_attributes
+    latest_annual_estimate.nil? ? {} : latest_annual_estimate.meter_attributes_by_meter_type
+  end
+
   def school_group_pseudo_meter_attributes
     school_group ? school_group.pseudo_meter_attributes : {}
   end
@@ -419,7 +438,7 @@ class School < ApplicationRecord
   end
 
   def all_pseudo_meter_attributes
-    [school_group_pseudo_meter_attributes, pseudo_meter_attributes, school_target_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
+    [school_group_pseudo_meter_attributes, pseudo_meter_attributes, school_target_attributes, estimated_annual_consumption_meter_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
       pseudo_attributes.each do |meter_type, attributes|
         collection[meter_type] ||= []
         collection[meter_type] = collection[meter_type] + attributes

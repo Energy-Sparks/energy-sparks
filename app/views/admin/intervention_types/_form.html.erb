@@ -42,6 +42,39 @@
 
   <%= f.input :other, label: "Custom ('Other')" %>
 
+  <div class="intervention_type_suggestions">
+    <h2>Suggested Next Actions</h2>
+
+    <div class="row">
+      <div class="col-md-8 mb-3">
+        <label for="firstName">Action Type</label>
+      </div>
+      <div class="col-md-1 mb-3">
+        <label for="lastName">Delete?</label>
+      </div>
+    </div>
+
+    <%= f.fields_for :intervention_type_suggestions do |suggestion| %>
+      <div class="row">
+        <div class="col-md-8 mb-3">
+          <%= suggestion.select(
+                :suggested_type_id,
+                grouped_options_for_select(
+                  InterventionTypeGroup.listed_with_intervention_types.map{|group, types| [group.title, types.map {|type| [type.title, type.id]}]},
+                  suggestion.object.suggested_type_id.to_s
+                ),
+                { include_blank: true },
+                { class: 'form-control select2'}
+              )
+          %>
+        </div>
+        <div class="col-md-1 mb-3">
+          <%= suggestion.check_box :_destroy, class: 'form-control' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
   <div class="actions">
     <%= f.submit class: 'btn btn-primary' %>
   </div>

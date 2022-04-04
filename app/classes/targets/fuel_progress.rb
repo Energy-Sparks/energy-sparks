@@ -23,7 +23,7 @@ module Targets
     end
 
     def achieving_target?
-      @progress.present? && @progress <= 0
+      @target.present? && @progress.present? && @progress <= 0
     end
   end
 end

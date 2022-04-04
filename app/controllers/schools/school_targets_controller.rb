@@ -29,7 +29,10 @@ module Schools
         @progress_summary = progress_service.progress_summary
         @prompt_to_review_target = prompt_to_review_target?
         @fuel_types_changed = fuel_types_changed
+        @overview_data = Schools::ManagementTableService.new(@school).management_data
       end
+      #list of fuel types to suggest estimates
+      @suggest_estimates_for_fuel_types = suggest_estimates_for_fuel_types(check_data: true)
     end
 
     #create first or new target if current has expired
@@ -73,6 +76,12 @@ module Schools
         target_service
         render :edit
       end
+    end
+
+    def destroy
+      authorize! :destroy, @school_target
+      @school_target.destroy
+      redirect_to school_path(@school), notice: 'Target successfully removed'
     end
 
     private

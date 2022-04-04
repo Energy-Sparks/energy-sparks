@@ -3,33 +3,12 @@ require 'rails_helper'
 describe 'user tariffs', type: :system do
 
   let!(:school)                   { create_active_school(name: "Big School")}
-  let!(:admin)                    { create(:admin) }
+  let!(:school_admin)             { create(:school_admin, school: school) }
   let!(:electricity_meter)        { create(:electricity_meter, school: school, mpan_mprn: '12345678901234') }
   let!(:gas_meter)                { create(:gas_meter, school: school, mpan_mprn: '999888777') }
 
-  context 'as a school admin' do
-    let!(:school_admin)                    { create(:school_admin, school: school) }
-
-    before(:each) do
-      sign_in(school_admin)
-    end
-
-    it 'menu item is not there' do
-      visit school_path(school)
-      expect(page).not_to have_link('Manage tariffs')
-
-      visit school_meters_path(school)
-      expect(page).not_to have_link('Manage tariffs')
-    end
-
-    it 'access is denied' do
-      visit school_user_tariffs_path(school)
-      expect(page).to have_content('not authorized')
-      expect(page).to have_content('Adult Dashboard')
-    end
-  end
-
   context 'as an admin' do
+    let!(:admin)                    { create(:admin) }
 
     before(:each) do
       sign_in(admin)
@@ -47,12 +26,62 @@ describe 'user tariffs', type: :system do
       end
     end
 
+    context 'with existing user tariff' do
+
+      let!(:user_tariff)  do
+        UserTariff.create(
+          school: school,
+          start_date: '01/04/2021',
+          end_date: '31/03/2022',
+          name: 'My First Tariff',
+          fuel_type: :electricity,
+          flat_rate: true,
+          vat_rate: '20%',
+          ccl: true,
+          user_tariff_prices: [user_tariff_price],
+          user_tariff_charges: [user_tariff_charge],
+          meters: [electricity_meter]
+        )
+      end
+
+      let(:user_tariff_price)  { UserTariffPrice.new(start_time: '00:00', end_time: '23:30', value: 1.23, units: 'kwh') }
+      let(:user_tariff_charge)  { UserTariffCharge.new(charge_type: :fixed_charge, value: 4.56, units: :month) }
+
+      it 'shows meter attributes on the meter attributes page' do
+        visit admin_school_single_meter_attribute_path(school, electricity_meter)
+
+        expect(page).to have_content('My First Tariff')
+        expect(page).to have_content('manually_entered')
+        expect(page).to have_content('Thu, 01 Apr 2021')
+        expect(page).to have_content('Thu, 31 Mar 2022')
+        expect(page).to have_content('1.23')
+        expect(page).to have_content(':kwh')
+        expect(page).to have_content('4.56')
+        expect(page).to have_content(':month')
+      end
+
+      it 'links to the review page' do
+        visit admin_school_single_meter_attribute_path(school, electricity_meter)
+        click_link 'User tariffs'
+        expect(page).to have_content('Tariff details')
+      end
+    end
+  end
+
+  context 'as a school admin' do
+
+    before(:each) do
+      sign_in(school_admin)
+    end
+
     context 'creating flat rate gas tariffs' do
 
-      it 'can create a tariff and add prices and charges' do
-        visit school_meters_path(school)
+      before(:each) do
+        visit school_path(school)
         click_link('Manage tariffs')
+      end
 
+      it 'can create a tariff and add prices and charges' do
         expect(page).to have_content('Manage tariffs')
 
         click_link('Add gas tariff')
@@ -109,9 +138,12 @@ describe 'user tariffs', type: :system do
 
     context 'creating flat rate electricity tariffs' do
 
-      it 'requires a meter to be selected' do
-        visit school_meters_path(school)
+      before(:each) do
+        visit school_path(school)
         click_link('Manage tariffs')
+      end
+
+      it 'requires a meter to be selected' do
         click_link('Add electricity tariff')
 
         expect(page).to have_content('Select meters for this tariff')
@@ -124,9 +156,6 @@ describe 'user tariffs', type: :system do
       end
 
       it 'can handle partially created tariff with bits missing' do
-        visit school_meters_path(school)
-        click_link('Manage tariffs')
-
         expect(page).to have_content('Manage tariffs')
 
         click_link('Add electricity tariff')
@@ -149,8 +178,6 @@ describe 'user tariffs', type: :system do
       end
 
       it 'can create a flat rate tariff with price' do
-        visit school_meters_path(school)
-        click_link('Manage tariffs')
         click_link('Add electricity tariff')
 
         check('12345678901234')
@@ -190,9 +217,12 @@ describe 'user tariffs', type: :system do
 
     context 'creating differential electricity tariffs' do
 
-      it 'can create a tariff and add prices and charges' do
-        visit school_meters_path(school)
+      before(:each) do
+        visit school_path(school)
         click_link('Manage tariffs')
+      end
+
+      it 'can create a tariff and add prices and charges' do
         click_link('Add electricity tariff')
 
         check('12345678901234')
@@ -249,9 +279,12 @@ describe 'user tariffs', type: :system do
 
     context 'adding electricity standing charges' do
 
-      it 'can create a tariff and add charges' do
-        visit school_meters_path(school)
+      before(:each) do
+        visit school_path(school)
         click_link('Manage tariffs')
+      end
+
+      it 'can create a tariff and add charges' do
         click_link('Add electricity tariff')
 
         check('12345678901234')
@@ -316,47 +349,6 @@ describe 'user tariffs', type: :system do
         expect(user_tariff.value_for_charge(:nhh_metering_agent_charge)).to eq('1.9')
         expect(user_tariff.value_for_charge(:nhh_automatic_meter_reading_charge)).to eq('0.12')
         expect(user_tariff.value_for_charge(:data_collection_dcda_agent_charge)).to eq('0.34')
-      end
-    end
-
-    context 'with existing user tariff' do
-
-      let!(:user_tariff)  do
-        UserTariff.create(
-          school: school,
-          start_date: '01/04/2021',
-          end_date: '31/03/2022',
-          name: 'My First Tariff',
-          fuel_type: :electricity,
-          flat_rate: true,
-          vat_rate: '20%',
-          ccl: true,
-          user_tariff_prices: [user_tariff_price],
-          user_tariff_charges: [user_tariff_charge],
-          meters: [electricity_meter]
-        )
-      end
-
-      let(:user_tariff_price)  { UserTariffPrice.new(start_time: '00:00', end_time: '23:30', value: 1.23, units: 'kwh') }
-      let(:user_tariff_charge)  { UserTariffCharge.new(charge_type: :fixed_charge, value: 4.56, units: :month) }
-
-      it 'shows meter attributes on the meter attributes page' do
-        visit admin_school_single_meter_attribute_path(school, electricity_meter)
-
-        expect(page).to have_content('My First Tariff')
-        expect(page).to have_content('manually_entered')
-        expect(page).to have_content('Thu, 01 Apr 2021')
-        expect(page).to have_content('Thu, 31 Mar 2022')
-        expect(page).to have_content('1.23')
-        expect(page).to have_content(':kwh')
-        expect(page).to have_content('4.56')
-        expect(page).to have_content(':month')
-      end
-
-      it 'links to the review page' do
-        visit admin_school_single_meter_attribute_path(school, electricity_meter)
-        click_link 'User tariffs'
-        expect(page).to have_content('Tariff details')
       end
     end
   end

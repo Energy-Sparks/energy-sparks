@@ -11,17 +11,31 @@ RSpec.describe 'school targets', type: :system do
 
   let(:school_target_fuel_types) { ["gas", "electricity", "storage_heater"] }
 
-  before(:each) do
-    allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+  let(:aggregate_meter_dates) {
+    {
+      "electricity": {
+        "start_date": "2021-12-01",
+        "end_date": "2022-02-01"
+      },
+      "gas": {
+        "start_date": "2021-03-01",
+        "end_date": "2022-02-01"
+      }
+    }
+  }
 
+  before(:each) do
     allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
     allow_any_instance_of(TargetsService).to receive(:annual_kwh_estimate_required?).and_return(false)
     allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
 
+    allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+    allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(false)
+
     #Update the configuration rather than creating one, as the school factory builds one
     #and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
     #relationship
-    school.configuration.update!(fuel_configuration: fuel_configuration, school_target_fuel_types: school_target_fuel_types)
+    school.configuration.update!(fuel_configuration: fuel_configuration, school_target_fuel_types: school_target_fuel_types, aggregate_meter_dates: aggregate_meter_dates)
   end
 
   context 'as a school admin' do
@@ -46,6 +60,14 @@ RSpec.describe 'school targets', type: :system do
         refresh
         expect(page).to_not have_link("Review targets", href: school_school_targets_path(school))
       end
+
+      it 'does have a link if v2 of targets is active' do
+        school.configuration.update!(school_target_fuel_types: [])
+        allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(true)
+        refresh
+        expect(page).to have_link("Review targets", href: school_school_targets_path(school))
+      end
+
     end
 
     context 'with targets disabled' do
@@ -63,10 +85,11 @@ RSpec.describe 'school targets', type: :system do
         visit school_school_targets_path(school)
         expect(page).to have_current_path(management_school_path(school))
       end
-
     end
 
     context "with no target" do
+
+      let(:last_year)         { Date.today.last_year }
 
       context "with all fuel types" do
         before(:each) do
@@ -85,9 +108,6 @@ RSpec.describe 'school targets', type: :system do
 
         context "and all fuel types" do
           it "allows all targets to be set" do
-            expect(page).to_not have_content("Start date")
-            expect(page).to_not have_content("Target date")
-
             fill_in "Reducing electricity usage by", with: 15
             fill_in "Reducing gas usage by", with: 15
             fill_in "Reducing storage heater usage by", with: 25
@@ -95,12 +115,20 @@ RSpec.describe 'school targets', type: :system do
             click_on 'Set this target'
 
             expect(page).to have_content('Target successfully created')
-            expect(page).to have_content("We are calculating your targets")
+            expect(page).to have_content("We are calculating your progress")
             expect(school.has_current_target?).to eql(true)
             expect(school.current_target.electricity).to eql 15.0
             expect(school.current_target.gas).to eql 15.0
             expect(school.current_target.storage_heaters).to eql 25.0
           end
+        end
+
+        it 'allows start date to be specified' do
+          fill_in 'Start date', with: last_year.strftime("%d/%m/%Y")
+          click_on 'Set this target'
+          expect(page).to have_content('Target successfully created')
+          expect(school.most_recent_target.start_date).to eql last_year
+          expect(school.most_recent_target.target_date).to eql last_year.next_year
         end
 
       end
@@ -122,7 +150,7 @@ RSpec.describe 'school targets', type: :system do
           click_on 'Set this target'
 
           expect(page).to have_content('Target successfully created')
-          expect(page).to have_content("We are calculating your targets")
+          expect(page).to have_content("We are calculating your progress")
           expect(school.has_current_target?).to eql(true)
           expect(school.current_target.electricity).to eql 15.0
           expect(school.current_target.gas).to eql nil
@@ -145,7 +173,7 @@ RSpec.describe 'school targets', type: :system do
           click_on 'Set this target'
 
           expect(page).to have_content('Target successfully created')
-          expect(page).to have_content("We are calculating your targets")
+          expect(page).to have_content("We are calculating your progress")
           expect(school.has_current_target?).to eql(true)
           expect(school.current_target.electricity).to eql 15.0
           expect(school.current_target.gas).to eql nil
@@ -162,7 +190,7 @@ RSpec.describe 'school targets', type: :system do
       end
 
       it "displays message to come back tomorrow" do
-        expect(page).to have_content("We are calculating your targets")
+        expect(page).to have_content("We are calculating your progress")
         expect(page).to have_content("Check back tomorrow to see the results.")
         expect(page).to_not have_link("View progress", href: electricity_school_progress_index_path(school))
       end
@@ -184,7 +212,7 @@ RSpec.describe 'school targets', type: :system do
       end
 
       it "displays current target" do
-        expect(page).to have_content("Your energy saving target")
+        expect(page).to have_content("Reducing your energy usage by")
       end
 
       it "links to progress pages" do
@@ -192,7 +220,58 @@ RSpec.describe 'school targets', type: :system do
         expect(Schools::Configuration.count).to eql 1
         expect(School.first.has_electricity?).to be true
 
-        expect(page).to have_link("View progress", href: electricity_school_progress_index_path(school))
+        expect(page).to have_link("View report", href: electricity_school_progress_index_path(school))
+      end
+
+      it 'shows the bullet charts' do
+        expect(page).to have_css('#bullet-chart-electricity')
+        expect(page).to have_css('#bullet-chart-gas')
+        expect(page).to_not have_css('#bullet-chart-storage_heater')
+      end
+
+      it 'does not show limited data' do
+        expect(page).to_not have_content("against target reduction")
+        expect(page).to_not have_content("last week")
+      end
+
+      context "and v2 is active and limited data is available" do
+        before(:each) do
+          allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(true)
+          target.update!(electricity_progress: {})
+          school.configuration.update!(suggest_estimates_fuel_types: ["electricity"])
+          refresh
+        end
+        it 'doesnt show the electricity bullet chart' do
+          expect(page).to_not have_css('#bullet-chart-electricity')
+          expect(page).to have_css('#bullet-chart-gas')
+        end
+
+        it 'shows limited data' do
+          expect(page).to have_content("Target reduction")
+          expect(page).to_not have_content("last week")
+        end
+
+        it 'shows prompt to add estimate' do
+          expect(page).to have_content("If you can supply an estimate of your annual consumption then we can generate a more detailed progress report for your electricity")
+        end
+
+        it 'shows prompt on dashboard' do
+          visit school_path(school)
+          expect(page).to have_content("Add an estimate of your annual electricity consumption")
+        end
+
+        context 'and some recent data' do
+          let(:management_data) {
+            Tables::SummaryTableData.new({ electricity: { year: { :percent_change => 0.11050 }, workweek: { :kwh => 100, :percent_change => -0.0923132131 } } })
+          }
+          before(:each) do
+            allow_any_instance_of(Schools::ManagementTableService).to receive(:management_data).and_return(management_data)
+            refresh
+          end
+          it 'shows the same data as the management dashboard' do
+            expect(page).to have_content("last week")
+          end
+        end
       end
 
       it 'links to help page if there is one' do
@@ -241,6 +320,11 @@ RSpec.describe 'school targets', type: :system do
         expect(school.current_target.storage_heaters).to eql 7.0
       end
 
+      it "doesnt show delete button" do
+        click_on "Revise your target"
+        expect(page).to_not have_link("Delete")
+      end
+
       it "validates target values" do
         click_on "Revise your target"
 
@@ -252,7 +336,7 @@ RSpec.describe 'school targets', type: :system do
 
       it "redirects from new target page" do
         visit new_school_school_target_path(school, target)
-        expect(page).to have_content("Your energy saving target")
+        expect(page).to have_content("Reducing your energy usage by")
       end
 
       context "and fuel types are out of date" do
@@ -273,7 +357,6 @@ RSpec.describe 'school targets', type: :system do
 
         context "and theres enough data" do
           before(:each) do
-
             target.update!(revised_fuel_types: ["storage_heater"])
           end
 
@@ -351,30 +434,16 @@ RSpec.describe 'school targets', type: :system do
     context 'when viewing a target' do
       let!(:target)          { create(:school_target, school: school) }
 
-      let(:today)             { Date.today }
-      let(:last_year)         { Date.today.last_year }
-
       before(:each) do
         visit school_school_targets_path(school)
         click_on "Revise your target"
       end
 
-      it 'displays form fields' do
-        expect(page).to have_content("Admin options")
-        expect(page).to have_content("Start date")
-        expect(page).to have_content("Target date")
+      it 'allows target to be deleted' do
+        click_on "Delete"
+        expect(page).to have_content("Target successfully removed")
+        expect(SchoolTarget.count).to eql 0
       end
-
-      it 'allows target to be updated' do
-        fill_in 'Start date', with: last_year.strftime("%d/%m/%Y")
-        fill_in 'Target date', with: today.strftime("%d/%m/%Y")
-        click_on 'Update our target'
-
-        target.reload
-        expect(target.start_date).to eql last_year
-        expect(target.target_date).to eql today
-      end
-
     end
   end
 
@@ -385,10 +454,10 @@ RSpec.describe 'school targets', type: :system do
       visit school_school_targets_path(school)
     end
     it 'lets me view a target' do
-      expect(page).to have_content("Your energy saving target")
+      expect(page).to have_content("Reducing your energy usage by")
     end
     it 'shows me a link to the report' do
-      expect(page).to have_link("View progress", href: electricity_school_progress_index_path(school))
+      expect(page).to have_link("View report", href: electricity_school_progress_index_path(school))
     end
     it 'doesnt have a revise link' do
       expect(page).to_not have_link("Revise your target")
@@ -409,10 +478,10 @@ RSpec.describe 'school targets', type: :system do
       visit school_school_targets_path(school)
     end
     it 'lets me view a target' do
-      expect(page).to have_content("Your energy saving target")
+      expect(page).to have_content("Reducing your energy usage by")
     end
     it 'shows me a link to the report' do
-      expect(page).to have_link("View progress", href: electricity_school_progress_index_path(school))
+      expect(page).to have_link("View report", href: electricity_school_progress_index_path(school))
     end
     it 'doesnt have a revise link' do
       expect(page).to_not have_link("Revise your target")
@@ -443,9 +512,6 @@ RSpec.describe 'school targets', type: :system do
 
         context "and all fuel types" do
           it "allows all targets to be set" do
-            expect(page).to_not have_content("Start date")
-            expect(page).to_not have_content("Target date")
-
             fill_in "Reducing electricity usage by", with: 15
             fill_in "Reducing gas usage by", with: 15
             fill_in "Reducing storage heater usage by", with: 25
@@ -453,7 +519,7 @@ RSpec.describe 'school targets', type: :system do
             click_on 'Set this target'
 
             expect(page).to have_content('Target successfully created')
-            expect(page).to have_content("We are calculating your targets")
+            expect(page).to have_content("We are calculating your progress")
             expect(school.has_current_target?).to eql(true)
             expect(school.current_target.electricity).to eql 15.0
             expect(school.current_target.gas).to eql 15.0

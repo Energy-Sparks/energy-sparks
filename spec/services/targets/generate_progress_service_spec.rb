@@ -22,6 +22,7 @@ describe Targets::GenerateProgressService do
   let(:cumulative_usage_kwh)      { [10,15] }
   let(:cumulative_performance)    { [-0.99,0.99] }
   let(:partial_months)            { [Date.today.strftime("%b")] }
+  let(:percentage_synthetic)      { [0, 0]}
 
   let(:progress) do
     TargetsProgress.new(
@@ -35,7 +36,8 @@ describe Targets::GenerateProgressService do
         cumulative_performance: cumulative_performance,
         cumulative_performance_versus_synthetic_last_year: cumulative_performance,
         monthly_performance_versus_synthetic_last_year: monthly_performance,
-        partial_months: partial_months
+        partial_months: partial_months,
+        percentage_synthetic: percentage_synthetic
     )
   end
 
@@ -96,63 +98,63 @@ describe Targets::GenerateProgressService do
   end
 
   context '#generate!' do
-    context 'and school targets are active' do
+    it 'does nothing if school has no target' do
+      SchoolTarget.all.destroy_all
+      expect( service.generate! ).to be nil
+    end
+
+    context 'with only electricity fuel type' do
+
       before(:each) do
-        allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+        allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
+        allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
+        allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
       end
 
-      it 'does nothing if school has no target' do
-        SchoolTarget.all.destroy_all
-        expect( service.generate! ).to be nil
+      let(:target) { service.generate! }
+
+      it 'updates the target' do
+        expect( target ).to eql school_target
       end
 
-      context 'with only electricity fuel type' do
+      it 'records when last run' do
+        expect( target.report_last_generated ).to_not be_nil
+      end
 
+      it 'includes only that fuel type' do
+        expect( target.gas_progress ).to eq({})
+        expect( target.storage_heaters_progress ).to eq({})
+        expect( target.electricity_progress ).to_not eq({})
+      end
+
+      it 'reports the fuel progress' do
+        expect( target.electricity_progress["progress"] ).to eql 0.99
+        expect( target.electricity_progress["usage"] ).to eql 15
+        expect( target.electricity_progress["target"] ).to eql 20
+      end
+    end
+
+    context 'and not enough data' do
+      let(:school_target_fuel_types)  { [] }
+
+      context 'v1' do
         before(:each) do
-          allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
-          allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
-          allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
+          allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(false)
         end
-
-        let(:target) { service.generate! }
-
-        it 'updates the target' do
-          expect( target ).to eql school_target
-        end
-
-        it 'records when last run' do
-          expect( target.report_last_generated ).to_not be_nil
-        end
-
-        it 'includes only that fuel type' do
-          expect( target.gas_progress ).to eq({})
-          expect( target.storage_heaters_progress ).to eq({})
-          expect( target.electricity_progress ).to_not eq({})
-        end
-
-        it 'reports the fuel progress' do
-          expect( target.electricity_progress["progress"] ).to eql 0.99
-          expect( target.electricity_progress["usage"] ).to eql 15
-          expect( target.electricity_progress["target"] ).to eql 20
-        end
-
-        it 'does nothing if feature disabled' do
-          allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(false)
-          expect( service.generate! ).to be nil
-          school.update!(enable_targets_feature: false)
-          expect( service.generate! ).to be nil
-        end
-      end
-
-      context 'and not enough data' do
-        let(:school_target_fuel_types)  { [] }
-
         it 'does nothing' do
           expect( service.generate! ).to eq school_target
         end
-
       end
-
+      context 'v2' do
+        before(:each) do
+          allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(true)
+          allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
+          allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
+        end
+        it 'generates' do
+          expect( service.generate! ).to eq school_target
+        end
+      end
     end
   end
 
