@@ -1,0 +1,43 @@
+<% if !@manual_data_load_run.complete? %>
+  <% content_for :head do %>
+    <meta http-equiv="refresh" content="5" />
+  <% end %>
+<% end %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <h1>
+    <% if !@manual_data_load_run.complete? %>
+    Processing manual data load...
+    <% else %>
+    Manual data load result
+    <% end %>
+  </h1>
+  <div>
+    <%= link_to "All data feed configurations", admin_amr_data_feed_configs_path, class: "btn btn-outline-dark font-weight-bold" %>
+  </div>
+</div>
+
+<ul>
+  <li><strong>Uploaded File</strong>:
+    <%= link_to @manual_data_load_run.amr_uploaded_reading.file_name, admin_amr_data_feed_config_amr_uploaded_reading_path(@manual_data_load_run.amr_uploaded_reading.amr_data_feed_config, @manual_data_load_run.amr_uploaded_reading)
+    %></li>
+  <li><strong>Configuration</strong>: <%= link_to @manual_data_load_run.amr_uploaded_reading.amr_data_feed_config.description, admin_amr_data_feed_config_amr_uploaded_reading_path(@manual_data_load_run.amr_uploaded_reading.amr_data_feed_config) %></li>
+  <li><strong>Status</strong>: <%= @manual_data_load_run.status %></li>
+</ul>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Time</th>
+    <th>Message</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @manual_data_load_run.manual_data_load_run_log_entries.by_date.each do |entry| %>
+    <tr>
+      <td><%= nice_date_times(entry.created_at) %></td>
+      <td><%= entry.message %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

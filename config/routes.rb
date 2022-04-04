@@ -325,7 +325,9 @@ Rails.application.routes.draw do
     end
 
     resources :amr_data_feed_configs, only: [:index, :show, :edit, :update] do
-      resources :amr_uploaded_readings, only: [:index, :show, :new, :create]
+      resources :amr_uploaded_readings, only: [:index, :show, :new, :create] do
+        resources :manual_data_load_runs, only: [:show, :create]
+      end
     end
 
     resources :equivalence_types
@@ -369,6 +371,7 @@ Rails.application.routes.draw do
       resources :interventions, only: :index
       resources :school_targets, only: :index
       resources :meter_reports, only: :index
+      resources :data_loads, only: :index
     end
 
     resource :settings, only: [:show, :update]

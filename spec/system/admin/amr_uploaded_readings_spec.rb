@@ -34,15 +34,32 @@ describe AmrUploadedReading, type: :system do
       expect(AmrUploadedReading.first.imported).to be false
 
       expect(page).to_not have_content('We have identified a problem')
-      expect(page).to have_content('First ten rows')
+      expect(page).to have_content('Data preview')
       expect(page).to have_content('2200012767323')
       expect(page).to have_content('2200012030374')
       expect(page).to have_content('2200040922992')
 
-      expect { click_on "I'm happy, insert this data" }.to change { AmrDataFeedReading.count }.by(5).and change { AmrDataFeedImportLog.count }.by(1)
+      expect { click_on "Insert this data" }.to change { AmrDataFeedReading.count }.by(5).and change { AmrDataFeedImportLog.count }.by(1)
 
       expect(AmrUploadedReading.count).to be 1
       expect(AmrUploadedReading.first.imported).to be true
+    end
+
+    it 'can upload a file via new loader' do
+      attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/banes-example-file.csv')
+      expect { click_on 'Preview' }.to change { AmrUploadedReading.count }.by 1
+
+      expect(AmrUploadedReading.count).to be 1
+      expect(AmrUploadedReading.first.imported).to be false
+
+      expect(page).to_not have_content('We have identified a problem')
+      expect(page).to have_content('Data preview')
+      expect(page).to have_content('2200012767323')
+      expect(page).to have_content('2200012030374')
+      expect(page).to have_content('2200040922992')
+
+      expect { click_on "Insert this data (NEW)" }.to change { ManualDataLoadRun.count }.by(1)
+      expect(page).to have_content("Processing")
     end
 
     it 'produces an error message when an invalid CSV file is uploaded' do
@@ -150,10 +167,10 @@ describe AmrUploadedReading, type: :system do
       expect(AmrUploadedReading.first.imported).to be false
 
       expect(page).to_not have_content('We have identified a problem')
-      expect(page).to have_content('First ten rows')
+      expect(page).to have_content('Data preview')
       expect(page).to have_content('1712423842469')
 
-      expect { click_on "I'm happy, insert this data" }.to change { AmrDataFeedReading.count }.by(1).and change { AmrDataFeedImportLog.count }.by(1)
+      expect { click_on "Insert this data" }.to change { AmrDataFeedReading.count }.by(1).and change { AmrDataFeedImportLog.count }.by(1)
 
       expect(AmrUploadedReading.count).to be 1
       expect(AmrUploadedReading.first.imported).to be true
