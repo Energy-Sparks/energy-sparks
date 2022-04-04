@@ -27,7 +27,7 @@
     </p>
   <% end %>
 
-  <% if @progress && @progress.current_cumulative_performance_versus_synthetic_last_year %>
+  <% if @progress && @current_month_target && @progress.current_cumulative_performance_versus_synthetic_last_year %>
     <% if @progress.current_cumulative_performance_versus_synthetic_last_year == 0.0 %>
       <p>
         Unfortunately you are currently consuming as much data as you did last year.
