@@ -38,6 +38,7 @@ module Schools
       begin
         @recent_data = service.recent_data?
         @progress = service.progress
+        @this_month_target = @progress.cumulative_targets_kwh[this_month]
         @suggest_estimate_important = suggest_estimate_for_fuel_type?(@fuel_type, check_data: true)
         @debug_content = service.analytics_debug_info if current_user.present? && current_user.analytics?
       rescue => e
@@ -54,6 +55,10 @@ module Schools
         end
       end
       render :index
+    end
+
+    def this_month
+      Time.zone.now.strftime("%b")
     end
 
     def bad_estimate?(type)
