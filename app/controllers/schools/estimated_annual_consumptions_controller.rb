@@ -25,7 +25,7 @@ module Schools
     def create
       authorize! :create, @estimated_annual_consumption
       if @estimated_annual_consumption.save
-        redirect_to edit_school_estimated_annual_consumption_path(@school, @estimated_annual_consumption), notice: 'Estimate was successfully created'
+        redirect_to edit_school_estimated_annual_consumption_path(@school, @estimated_annual_consumption, updated: true)
       else
         render :new
       end
@@ -38,7 +38,7 @@ module Schools
     def update
       authorize! :update, @estimated_annual_consumption
       if @estimated_annual_consumption.update(estimated_annual_consumption_params)
-        redirect_to edit_school_estimated_annual_consumption_path(@school, @estimated_annual_consumption), notice: 'Estimate was successfully updated'
+        redirect_to edit_school_estimated_annual_consumption_path(@school, @estimated_annual_consumption, updated: true)
       else
         render :edit
       end

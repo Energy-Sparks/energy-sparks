@@ -25,13 +25,20 @@
   <div class="col-md-8">
     <h3>Your estimate</h3>
 
-    <div class="alert alert-info">
-      <p>
-        <%= far_icon("lightbulb fa-lg") %>
-        <strong>Tip</strong>: Check our energy bill.<br>
-        Your recent energy bills should provide the data you need.
-      </p>
-    </div>
+    <% if params[:updated] %>
+      <div class="alert alert-warning">
+          <p><%= fa_icon("info-circle fa-lg") %><strong>Note</strong>: Estimate was successfully updated.</p>
+          <p>We've recorded your estimate and will use this when we analyse your data overnight.</p>
+      </div>
+    <% else %>
+      <div class="alert alert-info">
+        <p>
+          <%= far_icon("lightbulb fa-lg") %>
+          <strong>Tip</strong>: Check our energy bill.<br>
+          Your recent energy bills should provide the data you need.
+        </p>
+      </div>
+    <% end %>
 
     <%= render "form", estimated_annual_consumption: @estimated_annual_consumption, school: @school %>
   </div>
