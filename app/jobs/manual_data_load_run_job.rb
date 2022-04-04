@@ -8,7 +8,7 @@ class ManualDataLoadRunJob < ApplicationJob
   end
 
   def load(amr_data_feed_config, amr_uploaded_reading, manual_data_load_run)
-    manual_data_load_run.update(status: :running)
+    manual_data_load_run.update!(status: :running)
     begin
       manual_data_load_run.info("Started import of #{amr_uploaded_reading.file_name}")
 
@@ -21,12 +21,14 @@ class ManualDataLoadRunJob < ApplicationJob
       manual_data_load_run.info("Inserted: #{amr_data_feed_import_log.records_imported}")
       manual_data_load_run.info("Updated: #{amr_data_feed_import_log.records_updated}")
       manual_data_load_run.info("SUCCESS")
+      status = :done
     rescue => e
       Rollbar.error(e, job: :manual_data_load_run, id: manual_data_load_run.id, filename: amr_uploaded_reading.file_name)
       manual_data_load_run.error("Error: #{e.message}")
       manual_data_load_run.error("FAILED")
+      status = :failed
     end
-    manual_data_load_run.update(status: :done)
+    manual_data_load_run.update!(status: status)
   end
 
   private

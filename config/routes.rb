@@ -371,6 +371,7 @@ Rails.application.routes.draw do
       resources :interventions, only: :index
       resources :school_targets, only: :index
       resources :meter_reports, only: :index
+      resources :data_loads, only: :index
     end
 
     resource :settings, only: [:show, :update]

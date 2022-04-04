@@ -5,11 +5,15 @@ class ManualDataLoadRun < ApplicationRecord
 
   scope :by_date, -> { order(created_at: :desc) }
 
+  def complete?
+    %w{done failed}.include?(status)
+  end
+
   def info(msg)
-    manual_data_load_run_log_entries.create(message: msg)
+    manual_data_load_run_log_entries.create!(message: msg)
   end
 
   def error(msg)
-    manual_data_load_run_log_entries.create(message: msg)
+    manual_data_load_run_log_entries.create!(message: msg)
   end
 end
