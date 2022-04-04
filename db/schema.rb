@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_31_144105) do
+ActiveRecord::Schema.define(version: 2022_04_04_121958) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -881,6 +881,22 @@ ActiveRecord::Schema.define(version: 2022_03_31_144105) do
     t.index ["find_out_more_id"], name: "index_management_priorities_on_find_out_more_id"
   end
 
+  create_table "manual_data_load_run_log_entries", force: :cascade do |t|
+    t.bigint "manual_data_load_run_id", null: false
+    t.string "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["manual_data_load_run_id"], name: "manual_data_load_run_log_idx"
+  end
+
+  create_table "manual_data_load_runs", force: :cascade do |t|
+    t.bigint "amr_uploaded_reading_id", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["amr_uploaded_reading_id"], name: "index_manual_data_load_runs_on_amr_uploaded_reading_id"
+  end
+
   create_table "meter_attributes", force: :cascade do |t|
     t.bigint "meter_id", null: false
     t.string "attribute_type", null: false
@@ -1656,6 +1672,8 @@ ActiveRecord::Schema.define(version: 2022_03_31_144105) do
   add_foreign_key "management_priorities", "alerts", on_delete: :cascade
   add_foreign_key "management_priorities", "content_generation_runs", on_delete: :cascade
   add_foreign_key "management_priorities", "find_out_mores", on_delete: :nullify
+  add_foreign_key "manual_data_load_run_log_entries", "manual_data_load_runs"
+  add_foreign_key "manual_data_load_runs", "amr_uploaded_readings"
   add_foreign_key "meter_attributes", "meter_attributes", column: "replaced_by_id", on_delete: :nullify
   add_foreign_key "meter_attributes", "meters", on_delete: :cascade
   add_foreign_key "meter_attributes", "users", column: "created_by_id", on_delete: :nullify

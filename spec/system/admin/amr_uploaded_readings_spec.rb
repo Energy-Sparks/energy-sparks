@@ -34,12 +34,12 @@ describe AmrUploadedReading, type: :system do
       expect(AmrUploadedReading.first.imported).to be false
 
       expect(page).to_not have_content('We have identified a problem')
-      expect(page).to have_content('First ten rows')
+      expect(page).to have_content('Data preview')
       expect(page).to have_content('2200012767323')
       expect(page).to have_content('2200012030374')
       expect(page).to have_content('2200040922992')
 
-      expect { click_on "I'm happy, insert this data" }.to change { AmrDataFeedReading.count }.by(5).and change { AmrDataFeedImportLog.count }.by(1)
+      expect { click_on "Insert this data" }.to change { AmrDataFeedReading.count }.by(5).and change { AmrDataFeedImportLog.count }.by(1)
 
       expect(AmrUploadedReading.count).to be 1
       expect(AmrUploadedReading.first.imported).to be true
@@ -150,10 +150,10 @@ describe AmrUploadedReading, type: :system do
       expect(AmrUploadedReading.first.imported).to be false
 
       expect(page).to_not have_content('We have identified a problem')
-      expect(page).to have_content('First ten rows')
+      expect(page).to have_content('Data preview')
       expect(page).to have_content('1712423842469')
 
-      expect { click_on "I'm happy, insert this data" }.to change { AmrDataFeedReading.count }.by(1).and change { AmrDataFeedImportLog.count }.by(1)
+      expect { click_on "Insert this data" }.to change { AmrDataFeedReading.count }.by(1).and change { AmrDataFeedImportLog.count }.by(1)
 
       expect(AmrUploadedReading.count).to be 1
       expect(AmrUploadedReading.first.imported).to be true

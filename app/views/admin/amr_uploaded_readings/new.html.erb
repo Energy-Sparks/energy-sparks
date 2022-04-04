@@ -1,57 +1,78 @@
-<h1>Upload AMR data</h1>
-<h2>Configuration: <%= @amr_uploaded_reading.amr_data_feed_config.description %></h2>
-
-<p>Here you can upload an AMR CSV file and preview the results before deciding on whether to import the data or not</p>
-
-<%= link_to 'All AMR Data feed configurations', admin_amr_data_feed_configs_path %>
-
-<% if @errors %>
-  <p>We have identified some problem processing the file you have uploaded, are you sure it is in the correct format?</p>
-  <div class="alert alert-danger" role="alert">
-    <%= @errors %>
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Manually load data</h1>
+  <div>
+    <%= link_to "All data feed configurations", admin_amr_data_feed_configs_path, class: "btn btn-outline-dark font-weight-bold" %>
   </div>
+</div>
 
-  <% if @warnings.any? %>
-    <%= render 'warnings', warnings: @warnings %>
-  <% else %>
-    <p>Note: There were no warnings for this file</p>
-  <% end %>
+<p>Upload an CSV file containing AMR data using the <strong><%= @amr_data_feed_config.description %></strong> configuration and preview the results before deciding on whether to import the data or not</p>
 
-  <%= render 'first_ten_reading_rows', valid_reading_data: @valid_reading_data if @valid_reading_data.any? %>
-<% end %>
-
-<h2>File details</h2>
-<p>The import process is expecting:</p>
-<ul>
-  <li>the date format to be <b><%= DateTime.now.strftime(@amr_data_feed_config.date_format) %></b></li>
-  <% if @amr_data_feed_config.number_of_header_rows > 0 %>
-    <li>the file to have <b><%= @amr_data_feed_config.number_of_header_rows %> header rows</b></li>
-  <% else %>
-    <li>the file to not have a header row</li>
-  <% end %>
-  <% if @amr_data_feed_config.handle_off_by_one %>
-    <li>It is expecting the half hourly readings to be off by one half hour</li>
-  <% end %>
-
-  <% if @amr_data_feed_config.header_example %>
-    <li>the header to be <b><%= @amr_data_feed_config.header_example.truncate(70) %></b></li>
-  <% end %>
-
-  <li>the MPAN/MPRN to be in a field titled <b><%= @amr_data_feed_config.mpan_mprn_field %></b></li>
-  <li>the reading date to be in a field titled <b><%= @amr_data_feed_config.reading_date_field %></b></li>
-  <li>It expects the reading fields to be titled <b><%= @amr_data_feed_config.reading_fields.join(',').truncate(70) %></b></li>
-
-  <% if @amr_data_feed_config.row_per_reading %>
-    <li>It expects there to be <b>a row per half hour reading</b>, rather than a row per day</li>
-  <% end %>
+<ul class="nav nav-tabs" id="manual-loading" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id='loading-tab' data-toggle="tab" href="#loading" role="tab" aria-controls="loading" aria-selected="true">Preview and load</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id='config-tab' data-toggle="tab" href="#config" role="tab" aria-controls="config" aria-selected="false">Configuration</a>
+  </li>
 </ul>
+<div class="tab-content" id="manual-loading-tabs">
+  <div class="tab-pane fade show active" id="loading" role="tabpanel" aria-labelledby="loading-tab">
 
-<h3>Header example</h3>
-<%= @amr_data_feed_config.header_example %>
+    <% if @errors %>
+      <div class="alert alert-danger" role="alert">
+        <p>We have identified some problem processing the file you have uploaded, are you sure it is in the correct format?</p>
+        <p><strong>Errors</strong></p>
+        <%= @errors %>
+      </div>
 
-<h2>Upload form</h2>
-<%= simple_form_for [:admin, @amr_data_feed_config, @amr_uploaded_reading] do |f| %>
-  <%= f.input :csv_file, as: :file, input_html: {accept: '.csv'} %>
-  <%= f.submit 'Preview', class: 'btn' %>
-<% end %>
+      <% if @warnings.present? && @warnings.any? %>
+        <%= render 'warnings', warnings: @warnings %>
+      <% else %>
+        <p>Note: There were no warnings for this file</p>
+      <% end %>
 
+      <%= render 'first_ten_reading_rows', valid_reading_data: @valid_reading_data if @valid_reading_data.present? && @valid_reading_data.any? %>
+    <% end %>
+
+    <div class="alert alert-secondary">
+      <%= simple_form_for [:admin, @amr_data_feed_config, @amr_uploaded_reading] do |f| %>
+        <%= f.input :csv_file, label: 'Upload a file', as: :file, input_html: {accept: '.csv'} %>
+        <%= f.submit 'Preview', class: 'btn' %>
+      <% end %>
+    </div>
+
+  </div>
+  <div class="tab-pane fade show" id="config" role="tabpanel" aria-labelledby="config-tab">
+      <h4>Configuration summary</h4>
+      <p>The import process is expecting a file with:</p>
+      <ul>
+        <li>a date format of <b><%= DateTime.now.strftime(@amr_data_feed_config.date_format) %></b></li>
+        <% if @amr_data_feed_config.number_of_header_rows > 0 %>
+          <li>the file to have <b><%= @amr_data_feed_config.number_of_header_rows %> header rows</b></li>
+        <% else %>
+          <li>the file to not have a header row</li>
+        <% end %>
+        <% if @amr_data_feed_config.handle_off_by_one %>
+          <li>It is expecting the half hourly readings to be off by one half hour</li>
+        <% end %>
+
+        <% if @amr_data_feed_config.header_example %>
+          <li>the header to be <b><%= @amr_data_feed_config.header_example.truncate(70) %></b></li>
+        <% end %>
+
+        <li>the MPAN/MPRN to be in a field titled <b><%= @amr_data_feed_config.mpan_mprn_field %></b></li>
+        <li>the reading date to be in a field titled <b><%= @amr_data_feed_config.reading_date_field %></b></li>
+        <li>It expects the reading fields to be titled <b><%= @amr_data_feed_config.reading_fields.join(',').truncate(70) %></b></li>
+
+        <% if @amr_data_feed_config.row_per_reading %>
+          <li>It expects there to be <b>a row per half hour reading</b>, rather than a row per day</li>
+        <% end %>
+      </ul>
+
+      <h3>Header example</h3>
+
+      <p>The file will have a header that looks like:</p>
+
+      <%= @amr_data_feed_config.header_example %>
+  </div>
+</div>

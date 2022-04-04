@@ -33,7 +33,9 @@ module Admin
       end
     rescue Amr::CsvParser::Error => e
       Rollbar.error(e)
-      redirect_to new_admin_amr_data_feed_config_amr_uploaded_reading_path(@amr_data_feed_config), notice: "CSV error: #{e.message}"
+      @errors = ["CSV error: #{e.message}"]
+      @amr_uploaded_reading = AmrUploadedReading.new(amr_data_feed_config: @amr_data_feed_config)
+      render :new
     end
 
     private
