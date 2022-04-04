@@ -51,7 +51,7 @@ RSpec.describe 'estimated annual consumption', type: :system do
         fill_in "Annual gas consumption", with: 2000
         fill_in "Annual storage heater electricity consumption", with: 3000
         click_on 'Save'
-        expect(page).to have_content("Estimate was successfully created")
+        expect(page).to have_content("Estimate was successfully updated")
         latest_estimate = school.latest_annual_estimate
         expect(latest_estimate.year).to eq 2021
         expect(latest_estimate.electricity).to eq 1000.0
