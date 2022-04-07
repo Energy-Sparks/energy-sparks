@@ -48,6 +48,8 @@ class Ability
         school_scope = { school_group_id: user.school_group_id, visible: true }
         related_school_scope = { school: { school_group_id: user.school_group_id, visible: true } }
         can :show, SchoolGroup, id: user.school_group_id
+        can :compare, SchoolGroup, id: user.school_group_id
+
         can [:show, :update], Calendar do |calendar|
           user.school_group.calendars.include?(calendar)
         end
