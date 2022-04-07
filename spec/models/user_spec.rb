@@ -118,6 +118,28 @@ describe User do
       it { is_expected.to be_able_to(:show, ActivityType.new) }
       it { is_expected.to be_able_to(:show, create(:school_target) ) }
     end
+
+    context "when a group admin" do
+      let(:public)       { true }
+      let(:school_group) { create(:school_group, public: public) }
+      let(:user)         { create(:user, role: :group_admin, school_group: school_group)}
+
+      it { is_expected.to be_able_to(:compare, school_group) }
+
+      context 'and group is private' do
+        let(:public)     { false }
+        it { is_expected.to be_able_to(:compare, school_group) }
+
+        context 'and its not my group' do
+          let(:my_group)  { create(:school_group) }
+
+          let(:user)    {  create(:user, role: :group_admin, school_group: my_group) }
+          it { is_expected.to be_able_to(:compare, my_group) }
+          it { is_expected.to_not be_able_to(:compare, school_group) }
+
+        end
+      end
+    end
   end
 
   describe 'staff roles as symbols' do
