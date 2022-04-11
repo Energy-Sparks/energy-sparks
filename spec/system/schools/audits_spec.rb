@@ -72,34 +72,75 @@ describe 'Audits', type: :system do
         expect(audit.activity_types).to eq([activity_type])
       end
 
-      it 'retains fields if first save fails validation' do
-        activity_type
-        visit school_audits_path(school)
-        click_on("New audit")
+      context 'when saving fails' do
 
-        click_on 'Add activity'
-        within '#audit-activity-types' do
-          find(:xpath, "//option[contains(text(), '#{activity_type.name}')]").select_option
+        before(:each) do
+          activity_type
+          visit school_audits_path(school)
+          click_on("New audit")
         end
 
-        click_on 'Add action'
-        within '#audit-intervention-types' do
-          find(:xpath, "//option[contains(text(), '#{intervention_type.title}')]").select_option
+        it 'shows title and file error messages' do
+          click_on("Create")
+          expect(page).to have_content("Title can't be blank")
+          expect(page).to have_content("File can't be blank")
+          within '.audit_title' do
+            expect(page).to have_content("can't be blank")
+          end
+          within '#file_error' do
+            expect(page).to have_content("can't be blank")
+          end
         end
 
-        click_on("Create")
-        expect(page).to have_content("can't be blank")
+        it 'shows activity type error message' do
+          click_on 'Add activity'
+          click_on("Create")
+          expect(page).to have_content("Audit activity types activity type must exist")
+          expect(page).to have_content("Audit activity types activity type can't be blank")
+          within '#audit-activity-types' do
+            expect(page).to have_content("must exist and can't be blank")
+          end
+        end
 
-        fill_in "Title", with: "New audit"
-        attach_file("audit[file]", Rails.root + "spec/fixtures/images/newsletter-placeholder.png")
+        it 'shows intervention type error message' do
+          click_on 'Add action'
+          click_on("Create")
+          expect(page).to have_content("Audit intervention types intervention type must exist")
+          expect(page).to have_content("Audit intervention types intervention type can't be blank")
+          within '#audit-intervention-types' do
+            expect(page).to have_content("must exist and can't be blank")
+          end
+        end
 
-        click_on("Create")
-        expect(page).to have_content("Audit created")
+        it 'retains fields' do
+          activity_type
+          visit school_audits_path(school)
+          click_on("New audit")
 
-        audit = Audit.last
-        expect(audit.title).to eq('New audit')
-        expect(audit.intervention_types).to eq([intervention_type])
-        expect(audit.activity_types).to eq([activity_type])
+          click_on 'Add activity'
+          within '#audit-activity-types' do
+            find(:xpath, "//option[contains(text(), '#{activity_type.name}')]").select_option
+          end
+
+          click_on 'Add action'
+          within '#audit-intervention-types' do
+            find(:xpath, "//option[contains(text(), '#{intervention_type.title}')]").select_option
+          end
+
+          click_on("Create")
+          expect(page).to have_content("can't be blank")
+
+          fill_in "Title", with: "New audit"
+          attach_file("audit[file]", Rails.root + "spec/fixtures/images/newsletter-placeholder.png")
+
+          click_on("Create")
+          expect(page).to have_content("Audit created")
+
+          audit = Audit.last
+          expect(audit.title).to eq('New audit')
+          expect(audit.intervention_types).to eq([intervention_type])
+          expect(audit.activity_types).to eq([activity_type])
+        end
       end
     end
 
