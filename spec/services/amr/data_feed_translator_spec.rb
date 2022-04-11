@@ -46,13 +46,13 @@ describe Amr::DataFeedTranslator do
 
     let(:eft_config) { build(:amr_data_feed_config,
         description: 'EfT',
-        date_format: "%d/%m/%Y",
-        mpan_mprn_field: 'Meter',
+        date_format: "%H:%M:%S %a %d/%m/%Y",
+        mpan_mprn_field: 'SerialNumber',
         units_field: 'units',
         reading_date_field: 'DateTime',
-        reading_fields:   "import0000,import0030,import0100,import0130,import0200,import0230,import0300,import0330,import0400,import0430,import0500,import0520,import0600,import0630,import0700,import0730,import0800,import0830,import0900,import0930,import1000,import1030,import1100,import1130,import1200,import1230,import1300,import1330,import1400,import1430,import1500,import1530,import1600,import1630,import1700,import1730,import1800,import1830,import1900,import1930,import2000,import2030,import2100,import2130,import2200,import2230,import2300,import2330".split(','),
+        reading_fields:   "kWh_1,kWh_2,kWh_3,kWh_4,kWh_5,kWh_6,kWh_7,kWh_8,kWh_9,kWh_10,kWh_11,kWh_12,kWh_13,kWh_14,kWh_15,kWh_16,kWh_17,kWh_18,kWh_19,kWh_20,kWh_21,kWh_22,kWh_23,kWh_24,kWh_25,kWh_26,kWh_27,kWh_28,kWh_29,kWh_30,kWh_31,kWh_32,kWh_33,kWh_34,kWh_35,kWh_36,kWh_37,kWh_38,kWh_39,kWh_40,kWh_41,kWh_42,kWh_43,kWh_44,kWh_45,kWh_46,kWh_47,kWh_48".split(','),
         meter_description_field: 'siteRef',
-        header_example: "Description,MeterSerial,DateTime,import_total,export_total,import0000,export0000,import0030,export0030,import0100,export0100,import0130,export0130,import0200,export0200,import0230,export0230,import0300,export0300,import0330,export0330,import0400,export0400,import0430,export0430,import0500,export0500,import0520,export0520,import0600,export0600,import0630,export0630,import0700,export0700,import0730,export0730,import0800,export0800,import0830,export0830,import0900,export0900,import0930,export0930,import1000,export1000,import1030,export1030,import1100,export1100,import1130,export1130,import1200,export1200,import1230,export1230,import1300,export1300,import1330,export1330,import1400,export1400,import1430,export1430,import1500,export1500,import1530,export1530,import1600,export1600,import1630,export1630,import1700,export1700,import1730,export1730,import1800,export1800,import1830,export1830,import1900,export1900,import1930,export1930,import2000,export2000,import2030,export2030,import2100,export2100,import2130,export2130,import2200,export2200,import2230,export2230,import2300,export2300,import2330,export2330",
+        header_example: "Description,SerialNumber,DateTime,import_total,export_total,kWh_1,_,kWh_2,_,kWh_3,_,kWh_4,_,kWh_5,_,kWh_6,_,kWh_7,_,kWh_8,_,kWh_9,_,kWh_10,_,kWh_11,_,kWh_12,_,kWh_13,_,kWh_14,_,kWh_15,_,kWh_16,_,kWh_17,_,kWh_18,_,kWh_19,_,kWh_20,_,kWh_21,_,kWh_22,_,kWh_23,_,kWh_24,_,kWh_25,_,kWh_26,_,kWh_27,_,kWh_28,_,kWh_29,_,kWh_30,_,kWh_31,_,kWh_32,_,kWh_33,_,kWh_34,_,kWh_35,_,kWh_36,_,kWh_37,_,kWh_38,_,kWh_39,_,kWh_40,_,kWh_41,_,kWh_42,_,kWh_43,_,kWh_44,_,kWh_45,_,kWh_46,_,kWh_47,_,kWh_48",
         expected_units: ''
       )
     }
@@ -66,8 +66,14 @@ describe Amr::DataFeedTranslator do
       results = Amr::DataFeedTranslator.new(eft_config, readings).perform
 
       expect(results.size).to eq(2)
+      expect(results.first[:readings].count).to eq(48)
       expect(results.first[:readings][12]).to eq('0.121895')
       expect(results.first[:readings][13]).to eq('0.399635')
+      expect(results.first[:readings][14]).to eq('0.756100')
+      expect(results.second[:readings].count).to eq(48)
+      expect(results.second[:readings][11]).to eq('0.066830')
+      expect(results.second[:readings][12]).to eq('0.036760')
+      expect(results.second[:readings][13]).to eq('0.741800')
     end
 
   end
