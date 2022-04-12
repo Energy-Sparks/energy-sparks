@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :school do
-    sequence(:urn)
     sequence(:number_of_pupils)
     sequence(:name) { |n| "test #{n} school" }
     school_type     { :primary }
@@ -12,6 +11,7 @@ FactoryBot.define do
     floor_area      { BigDecimal("1234.567")}
     website         { "http://#{name.camelize}.test" }
     calendar        { create(:school_calendar) }
+    urn             { SecureRandom.random_number(1000000) }
 
     after(:build) do |school, _evaluator|
       build(:configuration, school: school)
