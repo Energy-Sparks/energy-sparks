@@ -7,7 +7,7 @@ module Admin
           meters[meter.mpan_mprn] = analytics_attributes unless analytics_attributes.empty?
           meters
         end
-        collection[school.urn] = {
+        collection[school.id] = {
           name: school.name,
           meter_attributes: meter_attributes,
           pseudo_meter_attributes: school.pseudo_meter_attributes_to_analytics

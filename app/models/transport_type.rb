@@ -12,6 +12,10 @@
 #  speed_km_per_hour :decimal(, )      default(0.0), not null
 #  updated_at        :datetime         not null
 #
+# Indexes
+#
+#  index_transport_types_on_name  (name) UNIQUE
+#
 class TransportType < ApplicationRecord
   has_many :responses, class_name: 'TransportSurveyResponse', inverse_of: :transport_type
 

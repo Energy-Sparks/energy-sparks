@@ -32,7 +32,7 @@
 #  public                                :boolean          default(TRUE)
 #  removal_date                          :date
 #  school_group_id                       :bigint(8)
-#  school_type                           :integer
+#  school_type                           :integer          not null
 #  scoreboard_id                         :bigint(8)
 #  serves_dinners                        :boolean          default(FALSE), not null
 #  slug                                  :string
@@ -53,7 +53,7 @@
 #  index_schools_on_latitude_and_longitude  (latitude,longitude)
 #  index_schools_on_school_group_id         (school_group_id)
 #  index_schools_on_scoreboard_id           (scoreboard_id)
-#  index_schools_on_urn                     (urn) UNIQUE
+#  index_schools_on_urn                     (urn)
 #
 # Foreign Keys
 #
@@ -158,7 +158,6 @@ class School < ApplicationRecord
   scope :by_name,     -> { order(name: :asc) }
 
   validates_presence_of :urn, :name, :address, :postcode, :website, :school_type
-  validates_uniqueness_of :urn
   validates :floor_area, :number_of_pupils, :cooks_dinners_for_other_schools_count, numericality: { greater_than: 0, allow_blank: true }
   validates :cooks_dinners_for_other_schools_count, presence: true, if: :cooks_dinners_for_other_schools?
 
