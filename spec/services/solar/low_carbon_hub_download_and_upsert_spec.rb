@@ -62,7 +62,7 @@ module Solar
 
       before(:each) do
         expect(api).to receive(:download).with(installation.rbee_meter_id,
-          installation.school.urn, requested_start_date, requested_end_date).and_return(readings)
+          installation.school.id, requested_start_date, requested_end_date).and_return(readings)
       end
 
       it "should use that" do
@@ -84,7 +84,7 @@ module Solar
 
       before(:each) do
         expect(api).to receive(:download).with(installation.rbee_meter_id,
-          installation.school.urn, expected_start, expected_end).and_return(readings)
+          installation.school.id, expected_start, expected_end).and_return(readings)
       end
 
       context "and they are old" do
@@ -112,7 +112,7 @@ module Solar
 
       it "should load all data" do
         expect(api).to receive(:download).with(installation.rbee_meter_id,
-          installation.school.urn, expected_start, expected_end).and_return(readings)
+          installation.school.id, expected_start, expected_end).and_return(readings)
         upserter.perform
       end
     end
