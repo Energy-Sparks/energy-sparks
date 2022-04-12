@@ -30,7 +30,7 @@ describe 'Benchmarks' do
       {:type=>:table_text, :content=>'Table text'},
       {:type=>:analytics_html, :content=>'analytics html'},
       {:type=>:chart_data, :content=>'chart data'},
-      {:type=>:table_composite, :content=> { header: ['column 1'], rows: [[{ formatted: 'row 1', raw: 'row 1'}], [{ formatted: school_1.name, urn: school_1.urn, drilldown_content_class: gas_fuel_alert_type.class_name }]] }},
+      {:type=>:table_composite, :content=> { header: ['column 1'], rows: [[{ formatted: 'row 1', raw: 'row 1'}], [{ formatted: school_1.name, urn: school_1.id, drilldown_content_class: gas_fuel_alert_type.class_name }]] }},
     ]
   }
 
