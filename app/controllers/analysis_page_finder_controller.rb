@@ -3,10 +3,10 @@ class AnalysisPageFinderController < ApplicationController
   include AnalysisPages
 
   def show
-    urn = params[:urn]
+    school_id = params[:school_id]
     analysis_class = params[:analysis_class]
 
-    school = School.find_by!(urn: urn)
+    school = School.find(school_id)
     analysis_page = find_analysis_page_of_class(school, analysis_class)
 
     if analysis_page

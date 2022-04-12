@@ -4,9 +4,9 @@
 
   <p>
     Add meter tariffs from your electricity and gas bills here, to improve the accuracy of the cost calculations displayed on your
-    <%= link_to 'electricity cost analysis', analysis_page_finder_path(urn: @school.urn, analysis_class: 'AdviceElectricityCosts') %>
+    <%= link_to 'electricity cost analysis', analysis_page_finder_path(@school, analysis_class: 'AdviceElectricityCosts') %>
     and
-    <%= link_to 'gas cost analysis', analysis_page_finder_path(urn: @school.urn, analysis_class: 'AdviceGasCosts') %>
+    <%= link_to 'gas cost analysis', analysis_page_finder_path(@school, analysis_class: 'AdviceGasCosts') %>
     pages.
   </p>
 

@@ -97,7 +97,7 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'analysis_page_finder/:urn/:analysis_class', to: 'analysis_page_finder#show', as: :analysis_page_finder
+  get 'analysis_page_finder/:school_id/:analysis_class', to: 'analysis_page_finder#show', as: :analysis_page_finder
 
   resources :schools do
     resources :activities do

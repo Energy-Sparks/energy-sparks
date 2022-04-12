@@ -34,7 +34,7 @@ module Schools
 
     def find_daily_variation_url(school)
       if find_analysis_page_of_class(school, 'AdviceElectricityIntraday')
-        analysis_page_finder_path(urn: school.urn, analysis_class: 'AdviceElectricityIntraday')
+        analysis_page_finder_path(school, analysis_class: 'AdviceElectricityIntraday')
       end
     end
   end
