@@ -29,7 +29,7 @@ module Schools
     end
 
     def redirect_if_disabled
-      redirect_to school_path(@school) unless EnergySparks::FeatureFlags.active?(:live_data)
+      # redirect_to school_path(@school) unless EnergySparks::FeatureFlags.active?(:live_data)
     end
 
     def find_daily_variation_url(school)
