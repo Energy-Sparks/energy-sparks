@@ -30,10 +30,6 @@ class SolarEdgeInstallation < ApplicationRecord
 
   validates_presence_of :site_id, :mpan, :api_key
 
-  def school_number
-    school.urn
-  end
-
   def electricity_meter
     meters.electricity.first if meters.electricity.present?
   end

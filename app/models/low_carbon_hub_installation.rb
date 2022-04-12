@@ -32,7 +32,7 @@ class LowCarbonHubInstallation < ApplicationRecord
   validates_presence_of :rbee_meter_id
 
   def school_number
-    school.urn
+    school.id
   end
 
   def electricity_meter

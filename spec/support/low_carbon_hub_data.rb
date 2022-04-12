@@ -39,7 +39,7 @@ RSpec.shared_context  "low carbon hub data", shared_context: :metadata do
   before(:each) do
     allow(low_carbon_hub_api).to receive(:full_installation_information).with(rbee_meter_id).and_return(information)
     allow(low_carbon_hub_api).to receive(:first_meter_reading_date).with(rbee_meter_id).and_return(start_date)
-    allow(low_carbon_hub_api).to receive(:download).with(rbee_meter_id, school.urn, start_date, end_date).and_return(readings)
+    allow(low_carbon_hub_api).to receive(:download).with(rbee_meter_id, school.id, start_date, end_date).and_return(readings)
   end
 
 end
