@@ -8,6 +8,7 @@ module Amr
 
     def build
       {
+        id: @active_record_school.id,
         name: @active_record_school.name,
         address: @active_record_school.address,
         floor_area: floor_area,

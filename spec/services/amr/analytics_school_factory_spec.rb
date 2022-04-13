@@ -7,6 +7,7 @@ describe Amr::AnalyticsSchoolFactory do
 
   it 'populates fields' do
     data = factory.build
+    expect(data[:id]).to eql(school.id)
     expect(data[:name]).to eql(school.name)
     expect(data[:address]).to eql(school.address)
     expect(data[:number_of_pupils]).to eql(school.number_of_pupils)
