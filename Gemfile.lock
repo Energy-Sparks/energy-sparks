@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 0399da59d379f07aacd878d1ba0013d9cedf77df
-  branch: 1417-add-id-to-dashboard-school
+  revision: 207ace5b3e67843d9153704e1a4592b0bb445fc3
+  tag: 1.40.9
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
