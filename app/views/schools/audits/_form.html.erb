@@ -1,4 +1,7 @@
 <%= simple_form_for([@school, audit], html: { id: :audit_form } ) do |f| %>
+
+  <%= render 'shared/errors', subject: audit, subject_name: 'audit' %>
+
   <%= f.input :title %>
 
   <%= f.label 'Description', for: :description %>
@@ -20,8 +23,8 @@
   <br/>
 
   <%= f.file_field :file, direct_upload: true, label: false %>
-
   <br/>
+  <%= f.error :file, id: 'file_error' %>
   <br/>
 
   <%= f.input :published %>
