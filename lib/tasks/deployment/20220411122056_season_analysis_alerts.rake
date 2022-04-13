@@ -19,11 +19,11 @@ namespace :after_party do
       fuel_type: :gas,
       sub_category: :heating,
       title: "Warn school when it's warm enough to turn their boilers off",
-      class_name: 'AlertHeatingOff',
+      class_name: 'AlertTurnHeatingOff',
       source: :analytics,
       has_ratings: true,
       benchmark: true
-    ) unless AlertType.find_by_class_name('AlertHeatingOff')
+    ) unless AlertType.find_by_class_name('AlertTurnHeatingOff')
 
     AlertType.create!(
       frequency: :weekly,
