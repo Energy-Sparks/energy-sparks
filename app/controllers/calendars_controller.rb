@@ -24,6 +24,11 @@ class CalendarsController < ApplicationController
     end
   end
 
+  def reset
+    CalendarResetService.new(@calendar).reset
+    redirect_back fallback_location: admin_calendars_path, notice: 'Calendar was successfully reset.'
+  end
+
   private
 
   def academic_year
