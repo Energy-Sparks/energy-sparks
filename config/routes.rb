@@ -69,7 +69,7 @@ Rails.application.routes.draw do
   end
   resources :interventions, only: [:new, :create, :edit, :update, :destroy]
 
-  resources :calendars, only: [:show, :destroy] do
+  resources :calendars, only: [:show, :destroy, :edit, :update] do
     scope module: :calendars do
       resources :calendar_events
     end
@@ -336,7 +336,7 @@ Rails.application.routes.draw do
 
     resources :unsubscriptions, only: [:index]
 
-    resources :calendars, only: [:new, :create, :index, :show]
+    resources :calendars, only: [:new, :create, :index, :show, :edit, :update]
 
     resources :global_meter_attributes
     resources :consents

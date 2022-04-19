@@ -51,4 +51,13 @@ class Calendar < ApplicationRecord
     next_after_today = next_holiday(today: today)
     next_after_today.present? && (next_after_today.start_date - today <= 7)
   end
+
+  def self.listed_with_type
+    list = {}
+    [:national, :regional].each do |type|
+      list[type] = Calendar.where(calendar_type: type)
+    end
+    list
+    # all.order(:name).map {|category| [category, category.activity_types.custom_last.order(:name).to_a]}
+  end
 end

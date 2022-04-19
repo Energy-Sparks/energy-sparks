@@ -49,5 +49,26 @@ RSpec.describe 'calendars', :calendar, type: :system do
       expect(page).to have_content('Calendar was successfully deleted.')
       expect(Calendar.regional.count).to eq 0
     end
+
+    it 'allows calendar to be edited' do
+      regional_calendar_1 = create(:regional_calendar, title: 'Old regional calendar')
+      regional_calendar_2 = create(:regional_calendar, title: 'New regional calendar')
+      calendar = create(:calendar, based_on: regional_calendar_1)
+      click_on 'Manage'
+      click_on 'Admin'
+      click_on 'Calendars'
+      within '.school-calendars' do
+        click_on 'Edit'
+      end
+
+      fill_in 'Title', with: 'Updated..'
+      select 'New regional calendar', from: 'Based on'
+      click_on 'Update Calendar'
+      expect(page).to have_content("Calendar was successfully updated.")
+
+      calendar.reload
+      expect(calendar.title).to eq('Updated..')
+      expect(calendar.based_on).to eq(regional_calendar_2)
+    end
   end
 end

@@ -1,0 +1,21 @@
+<h1>Edit Calendar</h1>
+<%= simple_form_for @calendar, url: admin_calendar_path(@calendar), method: :put  do |form| %>
+
+  <div class="form-group">
+    <%= form.label :based_on_id, 'Based on calendar' %>
+    <%= form.select(
+          :based_on_id,
+          grouped_options_for_select(
+            Calendar.listed_with_type.map{|type, calendars| [type.to_s.humanize, calendars.map {|calendar| [calendar.title, calendar.id]}]},
+            form.object.based_on_id
+          ),
+          { include_blank: false },
+          { class: 'form-control select2'}
+        )
+    %>
+  </div>
+
+  <%= form.input :title, as: :string %>
+  <%= form.button :submit, 'Update Calendar' %>
+<% end %>
+
