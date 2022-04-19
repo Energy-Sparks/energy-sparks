@@ -551,6 +551,7 @@ ActiveRecord::Schema.define(version: 2022_05_10_172051) do
     t.text "description"
     t.date "start_date", null: false
     t.date "end_date", null: false
+    t.bigint "based_on_id"
     t.index ["academic_year_id"], name: "index_calendar_events_on_academic_year_id"
     t.index ["calendar_event_type_id"], name: "index_calendar_events_on_calendar_event_type_id"
     t.index ["calendar_id"], name: "index_calendar_events_on_calendar_id"
@@ -1275,7 +1276,7 @@ ActiveRecord::Schema.define(version: 2022_05_10_172051) do
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
     t.index ["scoreboard_id"], name: "index_schools_on_scoreboard_id"
-    t.index ["urn"], name: "index_schools_on_urn", unique: true
+    t.index ["urn"], name: "index_schools_on_urn"
   end
 
   create_table "scoreboards", force: :cascade do |t|
