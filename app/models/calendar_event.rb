@@ -28,6 +28,9 @@ class CalendarEvent < ApplicationRecord
   belongs_to :calendar, touch: true
   belongs_to :calendar_event_type
 
+  belongs_to  :based_on, class_name: 'CalendarEvent', optional: true
+  has_many    :calendar_events, class_name: 'CalendarEvent', foreign_key: :based_on_id
+
   scope :terms,             -> { joins(:calendar_event_type).merge(CalendarEventType.term) }
   scope :inset_days,        -> { joins(:calendar_event_type).merge(CalendarEventType.inset_day) }
   scope :holidays,          -> { joins(:calendar_event_type).merge(CalendarEventType.holiday) }
@@ -54,6 +57,7 @@ private
         next if there_is_an_overlapping_child_event?(self, child_calendar)
         duplicate = self.dup
         duplicate.calendar = child_calendar
+        duplicate.based_on = self
         duplicate.save!
       end
     end
