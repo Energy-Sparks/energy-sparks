@@ -1,0 +1,13 @@
+<h1>Edit Calendar</h1>
+<%= simple_form_for @calendar, url: admin_calendar_path(@calendar), method: :put  do |form| %>
+
+  <% if @calendar.school? %>
+    <%= form.input :based_on_id, as: :select, collection: Calendar.regional, include_blank: false %>
+  <% elsif @calendar.regional? %>
+    <%= form.input :based_on_id, as: :select, collection: Calendar.national, include_blank: false %>
+  <% end %>
+
+  <%= form.input :title, as: :string %>
+  <%= form.button :submit, 'Update Calendar' %>
+<% end %>
+
