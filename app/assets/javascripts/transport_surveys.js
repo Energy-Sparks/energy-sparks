@@ -56,7 +56,7 @@ $(document).ready(function() {
 			$('.alert-success').removeClass('hide').html(error_message);
 			return false;
 		} else {
-			alert("ok");
+			alert("submitting");
 			return true;
 		}
   });
