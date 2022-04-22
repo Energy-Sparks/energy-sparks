@@ -93,6 +93,7 @@ Rails.application.routes.draw do
 
   resources :school_groups, only: [:show, :index]
   resources :scoreboards, only: [:show, :index]
+  resources :transport_types, only: [:index]
 
   resources :onboarding, path: 'school_setup', only: [:show] do
     scope module: :onboarding do
@@ -154,6 +155,7 @@ Rails.application.routes.draw do
           resources :responses, only: [:destroy]
         end
       end
+
       resources :locations, only: [:new, :edit, :create, :update, :index, :destroy]
       resource :visibility, only: [:create, :destroy], controller: :visibility
       resource :public, only: [:create, :destroy], controller: :public
