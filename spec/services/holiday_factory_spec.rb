@@ -43,6 +43,20 @@ describe HolidayFactory do
 
   describe '#process_event_update' do
 
+    describe 'when updating an event' do
+      describe 'when the event has a parent' do
+        it 'the event is orphaned' do
+          event_1 = create(:calendar_event, calendar: create(:calendar), calendar_event_type: holiday)
+          event_2 = create(:calendar_event, calendar: calendar, based_on: event_1, calendar_event_type: holiday)
+          holiday_factory = HolidayFactory.new(calendar)
+          expect(calendar.calendar_events.holidays.first.based_on).to eq(event_1)
+          holiday_factory.with_neighbour_updates(event_2, {description: 'New title'})
+          expect(calendar.calendar_events.holidays.first.description).to eq('New title')
+          expect(calendar.calendar_events.holidays.first.based_on).to be_nil
+        end
+      end
+    end
+
     describe 'when updating a term' do
       describe 'when the start_date has changed' do
         it 'moves a preceding holiday end date forwards' do

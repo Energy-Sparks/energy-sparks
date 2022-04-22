@@ -25,7 +25,7 @@ class HolidayFactory
 
   def with_neighbour_updates(calendar_event, attributes)
     managing_state(calendar_event) do |pre_save, post_save|
-      calendar_event.attributes = attributes
+      calendar_event.attributes = attributes.merge(based_on_id: nil)
       if calendar_event.calendar_event_type.term_time || calendar_event.calendar_event_type.holiday
         if calendar_event.start_date_changed?
           update_previous_events(calendar_event, pre_save, post_save)

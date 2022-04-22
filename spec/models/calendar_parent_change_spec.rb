@@ -14,7 +14,7 @@ describe 'ParentCalendarChange' do
       expect(template_calendar.calendars.first).to eq child_calendar
     end
 
-    it 'events have a relationship' do
+    it 'events reference the parent event' do
       expect(child_calendar.calendar_events.count).to eq template_calendar.calendar_events.count
       expect(child_calendar.calendar_events.first.based_on).to eq template_calendar.calendar_events.first
       expect(child_calendar.calendar_events.last.based_on).to eq template_calendar.calendar_events.last
