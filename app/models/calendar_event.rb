@@ -38,6 +38,7 @@ class CalendarEvent < ApplicationRecord
   scope :outside_term_time, -> { joins(:calendar_event_type).merge(CalendarEventType.outside_term_time) }
 
   after_create :check_whether_child_needs_creating
+  before_update :reset_parent
 
   before_validation :update_academic_year
 
@@ -49,6 +50,10 @@ private
 
   def update_academic_year
     self.academic_year = calendar.academic_year_for(start_date) if start_date
+  end
+
+  def reset_parent
+    self.based_on_id = nil
   end
 
   def check_whether_child_needs_creating
