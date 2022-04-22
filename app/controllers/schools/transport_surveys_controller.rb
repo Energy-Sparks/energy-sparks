@@ -14,7 +14,6 @@ module Schools
     def edit
       @transport_survey = @school.transport_surveys.find_or_initialize_by(run_on: params[:run_on])
       # authorize! :read, @transport_survey
-      render layout: false
     end
 
     # Take bunch of transport survey responses and write them to the database & create transport survey entry if not already been created

@@ -1,0 +1,11 @@
+<div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-3">
+	<div class="card bg-light text-dark h-100">
+	  <input type="hidden" class="option" value="<%= identifier %>" />
+	  <div class="card-body">
+	    <div class="text-center" style="font-size: 300%;"><a href="#" class="stretched-link text-decoration-none <%= action %>"><%= content %></a></div>
+	  </div>
+	  <% unless label.blank? %>
+			<div class="card-footer text-muted text-center"><%= label %></div>
+	  <% end %>
+	</div>
+</div>

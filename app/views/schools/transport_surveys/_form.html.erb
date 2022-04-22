@@ -1,0 +1,10 @@
+<%= form_with(model: @transport_survey, url: school_transport_survey_url(@school, @transport_survey), method: :patch, local: true) do |f| %>
+		<%= f.hidden_field :run_on %>
+    Weather: <%= select_tag "transport_survey[responses][][weather]", options_from_collection_for_select(TransportSurveyResponse::weather_symbols, :first, :last) %><br />
+    Journey minutes: <%= select_tag "transport_survey[responses][][journey_minutes]", options_for_select(TransportSurveyResponse.journey_minutes_options) %><br />
+    Transport type: <%= select_tag "transport_survey[responses][][transport_type_id]", options_from_collection_for_select(TransportType.all, :id, :image)  %><br />
+    Pupils from this school sharing transport: <%= select_tag "transport_survey[responses][][passengers]", options_for_select(TransportSurveyResponse.passengers_options) %><br />
+    <%= hidden_field_tag "transport_survey[responses][][surveyed_at]", DateTime.now %><br />
+    <%= hidden_field_tag "transport_survey[responses][][run_identifier]", TransportSurveyResponse.generate_unique_secure_token %><br />
+    <%= submit_tag "submit", class: 'btn btn-primary' %>
+<% end %>

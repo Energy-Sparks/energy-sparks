@@ -1,15 +1,89 @@
+
 <h1>Transport Surveys</h1>
 
 <h3>Surveying on <%= @transport_survey.run_on %></h3>
 
-<%= form_with(model: @transport_survey, url: school_transport_survey_url(@school, @transport_survey), method: :patch, local: true) do |f| %>
-		<%= f.hidden_field :run_on %>
-    Weather: <%= select_tag "transport_survey[responses][][weather]", options_from_collection_for_select(TransportSurveyResponse::weather_symbols, :first, :last) %><br />
-    Journey minutes: <%= select_tag "transport_survey[responses][][journey_minutes]", options_for_select(TransportSurveyResponse.journey_minutes_options) %><br />
-    Transport type: <%= select_tag "transport_survey[responses][][transport_type_id]", options_from_collection_for_select(TransportType.all, :id, :image)  %><br />
-    Pupils from this school sharing transport: <%= select_tag "transport_survey[responses][][passengers]", options_for_select(TransportSurveyResponse.passengers_options) %><br />
-    <%= hidden_field_tag "transport_survey[responses][][surveyed_at]", DateTime.now %><br />
-    <%= hidden_field_tag "transport_survey[responses][][run_identifier]", TransportSurveyResponse.generate_unique_secure_token %><br />
-    <%= submit_tag "submit", class: 'btn btn-primary' %>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#transport_survey_modal">
+  I am heading away from wifi!
+</button>
 
-<% end %>
+<div class="modal fade" id="transport_survey_modal" data-backdrop="false" data-keyboard="false" tabindex="-1" aria-labelledby="transport_survey_modal_label" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+        <%= form_with(model: @transport_survey, url: school_transport_survey_url(@school, @transport_survey), method: :patch, local: true, novalidate: true, id: 'transport_survey') do |f| %>
+
+      <div class="modal-header">
+        <h1 class="modal-title" id="transport_survey_modal_label">Travel to school survey</h1>
+      </div>
+      <div class="modal-body">
+          <div class="alert alert-success hide"></div>
+          <div id="weather" class="panel">
+            <h2>Please select today's weather</h2>
+            <%= hidden_field_tag :weather, "", class: 'selected' %>
+            <div class="row">
+              <% TransportSurveyResponse.weather_symbols.each do |label, symbol| %>
+                <%= render 'option', { label: label, content: symbol, identifier: label, action: "start" } %>
+              <% end %>
+            </div>
+          </div>
+
+          <div id="survey" style="display: none;">
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+
+            <fieldset class="panel">
+              <h2>Step 1: How many minutes did your journey take in total?</h2>
+              <%= hidden_field_tag :journey_minutes, "", class: 'selected' %>
+              <div class="row">
+                <% TransportSurveyResponse.journey_minutes_options.each do |time| %>
+                  <%= render 'option', { label: "", content: time, identifier: time, action: "next" } %>
+                <% end %>
+              </div>
+            </fieldset>
+
+            <fieldset class="panel" style="display: none;">
+              <h2>Step 2: What mode of transport did you use to get to school?</h2>
+              <%= hidden_field_tag :transport_type_id, "", class: 'selected' %>
+              <div class="row">
+                <% TransportType.all.each do |transport_type| %>
+                  <%= render 'option', { label: transport_type.name, content: transport_type.image, identifier: transport_type.id, action: "next" } %>
+                <% end %>
+              </div>
+              <%= button_tag 'Back', type: 'button', class: "previous btn btn-default w-100" %>
+            </fieldset>
+
+            <fieldset class="panel" style="display: none;">
+              <%= hidden_field_tag :passengers, "", class: 'selected' %>
+              <h2>Step 3: How many pupils from this school shared this transport (including you)?</h2>
+              <div class="row">
+                <% TransportSurveyResponse.passengers_options.each do |passengers| %>
+                  <%= render 'option', { label: "", content: passengers, identifier: passengers, action: "next" } %>
+                <% end %>
+              </div>
+
+              <%= button_tag 'Back', type: 'button', class: "previous btn btn-default w-100" %>
+            </fieldset>
+
+            <fieldset class="panel" style="display: none;">
+              <h2>Summary</h2>
+              <div>
+                You have used x kgs of carbon.
+              </div>
+              <div>
+                That's the same as....
+              </div>
+              <%= button_tag "Next pupil", type: 'button', class: 'next-pupil btn btn-primary w-100' %>
+              <%= button_tag 'Back', type: 'button', class: "previous btn btn-default w-100" %>
+            </fieldset>
+          </div>
+
+          <div class="modal-footer">
+            <%= button_tag "Finish & Submit results", type: 'submit', class: 'submit btn btn-primary' %>
+            <%= button_tag 'Cancel', type: 'button', class: "btn btn-secondary", "data-dismiss": "modal" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
