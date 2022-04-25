@@ -13,6 +13,14 @@ module Admin
       @calendar.calendar_type = calendar_type_string if calendar_type_string
     end
 
+    def edit
+    end
+
+    def update
+      @calendar.update(calendar_params)
+      redirect_to admin_calendars_path, notice: 'Calendar was successfully updated.'
+    end
+
     def create
       terms = EnergySparks::CsvLoader.from_text(params.fetch(:terms) {{}}.fetch(:csv) {''})
       based_on_calendar = Calendar.find(calendar_params[:based_on_id])

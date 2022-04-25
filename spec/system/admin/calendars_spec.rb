@@ -49,5 +49,48 @@ RSpec.describe 'calendars', :calendar, type: :system do
       expect(page).to have_content('Calendar was successfully deleted.')
       expect(Calendar.regional.count).to eq 0
     end
+
+    it 'allows calendar to be edited' do
+      regional_calendar_1 = create(:regional_calendar, title: 'Old regional calendar')
+      regional_calendar_2 = create(:regional_calendar, title: 'New regional calendar')
+      calendar = create(:calendar, based_on: regional_calendar_1)
+      click_on 'Manage'
+      click_on 'Admin'
+      click_on 'Calendars'
+      within '.school-calendars' do
+        click_on 'Edit'
+      end
+
+      fill_in 'Title', with: 'Updated..'
+      select 'New regional calendar', from: 'Based on'
+      click_on 'Update Calendar'
+      expect(page).to have_content("Calendar was successfully updated.")
+
+      calendar.reload
+      expect(calendar.title).to eq('Updated..')
+      expect(calendar.based_on).to eq(regional_calendar_2)
+    end
+
+    it 'allows calendar to be reset' do
+      regional_calendar = create(:regional_calendar, title: 'Regional calendar')
+      parent_event = create(:holiday, calendar: regional_calendar, description: 'Regional calendar event')
+      calendar = create(:calendar, based_on: regional_calendar)
+
+      expect(calendar.calendar_events.count).to eq(0)
+
+      click_on 'Manage'
+      click_on 'Admin'
+      click_on 'Calendars'
+      within '.school-calendars' do
+        click_on 'Show'
+      end
+
+      click_on 'Reset all events'
+      expect(page).to have_content("Calendar was successfully reset.")
+
+      calendar.reload
+      expect(calendar.calendar_events.count).to eq(1)
+      expect(calendar.calendar_events.last.description).to eq(parent_event.description)
+    end
   end
 end
