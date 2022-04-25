@@ -552,6 +552,8 @@ ActiveRecord::Schema.define(version: 2022_05_10_172051) do
     t.date "start_date", null: false
     t.date "end_date", null: false
     t.bigint "based_on_id"
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
     t.index ["academic_year_id"], name: "index_calendar_events_on_academic_year_id"
     t.index ["calendar_event_type_id"], name: "index_calendar_events_on_calendar_event_type_id"
     t.index ["calendar_id"], name: "index_calendar_events_on_calendar_id"
