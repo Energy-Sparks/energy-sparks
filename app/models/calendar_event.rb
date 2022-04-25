@@ -37,7 +37,6 @@ class CalendarEvent < ApplicationRecord
   scope :bank_holidays,     -> { joins(:calendar_event_type).merge(CalendarEventType.bank_holiday) }
   scope :outside_term_time, -> { joins(:calendar_event_type).merge(CalendarEventType.outside_term_time) }
 
-  # after_create :check_whether_child_needs_creating
   before_update :reset_parent
 
   before_validation :update_academic_year

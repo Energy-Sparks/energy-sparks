@@ -27,20 +27,6 @@ describe 'ParentCalendarChange' do
       expect(child_calendar.terms.count).to be 3
       expect(template_calendar.terms.count).to be 2
     end
-
-    it 'if a parent has a new term, the child is updated' do
-      expect(child_calendar.terms.count).to be 2
-      expect(child_calendar.holidays.count).to be 3
-      expect(template_calendar.terms.count).to be 2
-      calendar_event = create(:term, calendar: template_calendar)
-      expect(template_calendar.terms.count).to be 3
-      expect(child_calendar.holidays.count).to be 3
-
-      expect(child_calendar.terms.count).to be 3
-      child_calendar.terms.each do |term|
-        expect(term.calendar).to eq child_calendar
-      end
-    end
   end
 
   describe 'a parent calendar with children' do
