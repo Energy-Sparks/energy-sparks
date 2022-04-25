@@ -19,11 +19,14 @@ class ActivityTypesController < ApplicationController
     @school_count = Activity.select(:school_id).where(activity_type: @activity_type).distinct.count
     if current_user_school
       @activity_type_content = load_content(@activity_type, current_user_school)
+      #ensure that embedded charts, etc are working
+      if show_data_enabled_activity_type?(@activity_type, current_user_school)
+        @activity_type_content = @activity_type_content.body.to_html.html_safe
+      end
       @can_be_completed = can_be_completed(@activity_type, current_user_school)
     else
       @activity_type_content = @activity_type.description
     end
-    @activity_type_content = @activity_type_content.body.to_html.html_safe
   end
 
   private
