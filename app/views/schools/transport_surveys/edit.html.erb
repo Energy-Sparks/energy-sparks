@@ -16,7 +16,7 @@
         </div>
         <div class="modal-body">
           <div class="alert alert-success hide"></div>
-          <div id="weather" class="panel">
+          <div id="setup" class="panel">
             <h2>Please select today's weather</h2>
             <%= hidden_field_tag :weather, "", class: 'selected' %>
             <div class="container">
@@ -72,15 +72,20 @@
             </fieldset>
 
             <fieldset class="panel" style="display: none;">
-              <h2>Summary</h2>
-              <div>
-                You have used <span id="carbon"></span> kgs of carbon.
+              <h2>Summary</h4>
+
+              <div class="alert" role="alert">
+                <p>For your <span id="display-time"></span> minute journey to school by <span id="display-transport"></span> for <span id="display-passengers"></span> pupil(s).</p>
+                <hr />
+                <p>You used <span id="display-carbon" class="badge badge-secondary"></span> of carbon each!</p>
+                <hr />
+                <p class="mb-0"><span id="display-carbon-equivalent"></span></p>
               </div>
+
               <div>
-                <span id="carbon-equivalent"></span>
+                <%= button_tag "Next pupil", type: 'button', class: 'next-pupil btn btn-primary w-100' %>
+                <%= button_tag 'Back', type: 'button', class: "previous btn btn-default w-100" %>
               </div>
-              <%= button_tag "Next pupil", type: 'button', class: 'next-pupil btn btn-primary w-100' %>
-              <%= button_tag 'Back', type: 'button', class: "previous btn btn-default w-100" %>
             </fieldset>
           </div>
         </div>

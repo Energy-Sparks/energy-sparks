@@ -14,16 +14,36 @@ $(document).ready(function() {
   $('.next').on('click', next);
   $('.previous').on('click', previous);
   $('.last').on('click', last);
-  $('.card').on('click', selectCard);
 
   $('#transport_survey').on('submit', submit);
 
 	//* methods *//
 
+	function start() {
+		selectCard(this);
+		$('#setup').hide();
+		$('#survey').show();
+	}
+
+	function next() {
+		selectCard(this);
+		nextPanel(this);
+	}
+
+	function previous() {
+		previousPanel(this);
+	}
+
+	function last() {
+		selectCard(this);
+		nextPanel(this);
+		displayCarbon();
+	}
+
   function loadTransportTypes() {
 		$.getJSON( "/transport_types.json", function( data ) {
 			transport_types = data;
-		}); // what if this fails?
+		}); // this needs to be more robust
 	}
 
 	function setProgressBar(step){
@@ -32,53 +52,56 @@ $(document).ready(function() {
 		$(".progress-bar").css("width",percent+"%").html(percent+"%");
 	}
 
-	function selectCard() {
-		let panel = $(this).closest('.panel');
+	function selectCard(current) {
+		let panel = $(current).closest('.panel');
 
 		// remove highlight from other cards in panel
 		panel.find('.card').removeClass('bg-primary');
 		panel.find('.card').addClass('bg-light');
 
 		// highlight current card
-		$(this).removeClass('bg-light');
-		$(this).addClass('bg-primary');
-		var selected_value = $(this).find('input[type="hidden"].option').val();
+		let card = $(current).closest('div.card');
+		card.removeClass('bg-light');
+		card.addClass('bg-primary');
+
+		let selected_value = card.find('input[type="hidden"].option').val();
 
 		// change the value in the hidden field
 		panel.find('input[type="hidden"].selected').val(selected_value);
 	}
 
-	function start() {
-		$('#weather').hide();
-		$('#survey').show();
-	}
-
-	function next() {
-		let fieldset = $(this).closest('fieldset');
+	function nextPanel(current) {
+		let fieldset = $(current).closest('fieldset');
 		fieldset.next().show();
 		fieldset.hide();
 		setProgressBar(++fieldset_count);
 	}
 
-	function previous() {
-		let fieldset = $(this).closest('fieldset');
+	function previousPanel(current) {
+		let fieldset = $(current).closest('fieldset');
 		fieldset.prev().show();
 		fieldset.hide();
 		setProgressBar(--fieldset_count);
 	}
 
-	function last() {
+	function displayCarbon() {
 		var journey_minutes = $('#journey_minutes').val();
 		var passengers = $('#passengers').val();
 		var transport_type_id = $('#transport_type_id').val();
+		var weather = $('#weather').val();
 
 		carbon = carbonCalc(transport_types[transport_type_id], journey_minutes, passengers);
 
 		niceCarbon = carbon === 0 ? '0' : carbon.toFixed(3)
 		fun_weight = funWeight(carbon);
 
-		$('#carbon').text(niceCarbon);
-		$('#carbon-equivalent').text(funWeight(carbon));
+		$('#display-time').text(journey_minutes);
+		$('#display-transport').text(transport_types[transport_type_id].image + " " + transport_types[transport_type_id].name);
+		$('#display-passengers').text(passengers);
+
+		$('#display-carbon').text(niceCarbon + "kg");
+		$('#display-carbon-equivalent').text(funWeight(carbon));
+
 	}
 
   function submit() {
@@ -101,8 +124,7 @@ $(document).ready(function() {
 		return (timeMins > 15 ? timeMins - 15 : 0);
   }
 
-	function carbonCalc(transport, timeMins, passengers) { // need to include passengers in the calc!
-		alert(passengers);
+	function carbonCalc(transport, timeMins, passengers) {
 		if (transport) {
 			timeMins = transport.image === '🚶🚘' ? parkAndStrideTimeMins : timeMins; // need a better way of identifying park and stride!
 			return (((transport.speed_km_per_hour * timeMins) / 60) * transport.kg_co2e_per_km) / passengers ;
