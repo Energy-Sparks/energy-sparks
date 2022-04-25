@@ -3,17 +3,16 @@ require 'dashboard'
 class ChartData
   OPERATIONS = %i[move extend contract compare].freeze
 
-  def initialize(school, aggregated_school, original_chart_type, chart_config, transformations: [], show_benchmark_figures: false)
+  def initialize(school, aggregated_school, original_chart_type, chart_config, transformations: [])
     @school = school
     @aggregated_school = aggregated_school
     @original_chart_type = original_chart_type
     @chart_config_overrides = chart_config
     @transformations = transformations
-    @show_benchmark_figures = show_benchmark_figures
   end
 
   def data
-    chart_manager = ChartManager.new(@aggregated_school, @show_benchmark_figures)
+    chart_manager = ChartManager.new(@aggregated_school)
 
     chart_config = customised_chart_config(chart_manager)
 
