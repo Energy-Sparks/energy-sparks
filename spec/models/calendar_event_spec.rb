@@ -18,12 +18,12 @@ describe CalendarEvent do
     expect(event_2 .academic_year).to eq(academic_year)
   end
 
-  it 'creates a copy in child calendars' do
-    child_calendar = create(:calendar, based_on: calendar)
-    event = create(:holiday, calendar: calendar)
-    expect(child_calendar.calendar_events.count).to eq(1)
-    expect(child_calendar.calendar_events.last.based_on).to eq(event)
-  end
+  # it 'creates a copy in child calendars' do
+  #   child_calendar = create(:calendar, based_on: calendar)
+  #   event = create(:holiday, calendar: calendar)
+  #   expect(child_calendar.calendar_events.count).to eq(1)
+  #   expect(child_calendar.calendar_events.last.based_on).to eq(event)
+  # end
 
   describe '#valid?' do
 
