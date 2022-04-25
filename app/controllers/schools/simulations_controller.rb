@@ -115,7 +115,7 @@ private
 
     simulator = ElectricitySimulator.new(local_school)
     simulator.simulate(@simulation_configuration)
-    chart_manager = ChartManager.new(local_school, false)
+    chart_manager = ChartManager.new(local_school)
 
     @number_of_charts = @charts.size
 

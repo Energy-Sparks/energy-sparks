@@ -73,6 +73,9 @@ Rails.application.routes.draw do
     scope module: :calendars do
       resources :calendar_events
     end
+    member do
+      post :reset
+    end
   end
 
   resource :school_switcher, only: [:create], controller: :school_switcher
@@ -336,7 +339,7 @@ Rails.application.routes.draw do
 
     resources :unsubscriptions, only: [:index]
 
-    resources :calendars, only: [:new, :create, :index, :show]
+    resources :calendars, only: [:new, :create, :index, :show, :edit, :update]
 
     resources :global_meter_attributes
     resources :consents
