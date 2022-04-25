@@ -4,7 +4,7 @@ class CalendarResetService
   end
 
   def reset
-    calendar_types = (CalendarEventType.holiday + CalendarEventType.term)
+    calendar_types = (CalendarEventType.holiday + CalendarEventType.term + CalendarEventType.bank_holiday)
     CalendarEvent.transaction do
       @calendar.calendar_events.where(calendar_event_type: calendar_types).destroy_all
       if @calendar.based_on
