@@ -26,5 +26,10 @@ FactoryBot.define do
       association :calendar
       association :calendar_event_type, term_time: false, holiday: false, bank_holiday: true, analytics_event_type: :bank_holiday, title: 'Woof'
     end
+    factory :inset_day  do
+      description { 'this is a new inset day in achool event' }
+      association :calendar
+      association :calendar_event_type, term_time: false, holiday: false, bank_holiday: false, inset_day: true, analytics_event_type: :bank_holiday, title: 'Woof'
+    end
   end
 end
