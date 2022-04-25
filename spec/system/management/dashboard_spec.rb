@@ -222,7 +222,7 @@ describe 'Management dashboard' do
 
         context 'and there is no data' do
           it 'has no notice' do
-            expect(page).to_not have_content("Well done, you are currently meeting your target")
+            expect(page).to_not have_content("Well done, you are making progress towards achieving your target")
             expect(page).to_not have_content("Unfortunately you are not meeting your targets")
           end
         end
@@ -230,7 +230,7 @@ describe 'Management dashboard' do
         context 'that are being met' do
           let(:progress_summary)  { build(:progress_summary, school_target: school_target) }
           it 'displays a notice' do
-            expect(page).to have_content("Well done, you are currently meeting your target")
+            expect(page).to have_content("Well done, you are making progress towards achieving your target")
           end
 
           it 'links to target page' do
@@ -243,7 +243,7 @@ describe 'Management dashboard' do
 
           it 'displays a notice' do
             expect(page).to have_content("Unfortunately you are not meeting your target to reduce your gas usage")
-            expect(page).to have_content("Well done, you are currently meeting your target to reduce your electricity and storage heater usage")
+            expect(page).to have_content("Well done, you are making progress towards achieving your target to reduce your electricity and storage heater usage")
           end
 
           it 'links to target page' do
@@ -257,7 +257,7 @@ describe 'Management dashboard' do
 
           it 'displays a notice' do
             expect(page).to_not have_content("Unfortunately you are not meeting your target")
-            expect(page).to have_content("Well done, you are currently meeting your target to reduce your gas and storage heater usage")
+            expect(page).to have_content("Well done, you are making progress towards achieving your target to reduce your gas and storage heater usage")
           end
 
           it 'links to target page' do
