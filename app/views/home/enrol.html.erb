@@ -1,48 +1,77 @@
 <% content_for :page_title, 'Enrol' %>
 
-<div class="application container">
-  <div class="row padded-row">
-    <div class="col-md-12">
-
-      <h1 id="how">How do I enrol my school?</h1>
-      <p>Check the <%= link_to 'Energy Sparks Schools page', schools_path %> to see if we already work with your Local Authority or Schools Trust. If you buy energy through your Local Authority or Schools Trust then we can normally quickly and easily access your energy data.</p>
-
-      <h1 id="success">What do I need to do to make my school's involvement in Energy Sparks a success?</h1>
-      <ol>
-        <li>Nominate an Energy Sparks champion for your school. This is a lead adult who will act as the Energy Sparks account administrator for your school, support pupil energy saving activities, receive Energy Sparks alerts telling you about changes in energy use and recommended energy saving actions, and commit to checking your school's Energy Sparks online account regularly.</li>
-        <li>Set up an Energy Sparks pupil club or eco-team to meet several times a term, ideally once a fortnight at least.</li>
-        <li>Get parents and community volunteers involved. Some schools use parents or other volunteers to run their Energy Sparks or eco team.</li>
-        <li>Regularly check your school's energy data on Energy Sparks so that pupils, staff and volunteers can see how much difference they are making to your school's energy use, and what they need to do next.</li>
-        <li>Involve the whole school. Whether through a notice board, regular assemblies or inter-class competitions, make sure the rest of the school knows why you are saving energy and what they can do to help.</li>
-      </ol>
-
-      <h1 id="process">What is the process to enrol my school?</h1>
-      <p>The process is very straight-forward. The main thing we need from your school is permission to publish your energy usage data to Energy Sparks.</p>
-      <p>The setup process involves the following steps:</p>
-      <ol>
-        <li>The head teacher or school business manager must send an email to <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a> asking to be enrolled in the Energy Sparks programme. Please include in your email:</li>
-          <ul>
-            <li>Contact Name for your school's Energy Sparks Champion</li>
-            <li>Their role within the school (i.e. Business Manager, Eco team leader, Teacher)</li>
-            <li>Their email address</li>
-            <li>Local authority</li>
-            <li>Multi-academy Trust if relevant</li>
-            <li>Energy buying arrangements (i.e. do you have a contract with the local authority or your multi-academy trust, do you use a broker)</li>
-            <li>Energy suppliers for electricity and gas</li>
-          </ul>
-      </ol>
-      <ol start="2">
-        <li>We will respond with a link to an online form for you to give us some details about your school and to provide permission for your energy use data to be published to Energy Sparks.</li>
-        <li>We will setup an account for you on Energy Sparks.</li>
-        <li>Your profile is made public and you can begin using the service.</li>
-        <li>We will remind you annually that your data is being published to Energy Sparks, and remind you how to withdraw consent for your data to be published if you wish.</li>
-      </ol>
-
-      <h1 id="process">What if my school is outside your existing areas of operation?</h1>
-      <p>If you would like us to offer Energy Sparks to your school, Local Authority or Multi-Academy Trust then contact us at <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a> to express your interest. Knowing that you're interested will help us prioritise our work.</p>
-
+<div class="application container extra-padding">
+  <div class="row mt-2">
+    <div class="col">
+      <div class="d-flex justify-content-between align-items-center">
+        <p class="display-3"><strong>Enrol with Energy Sparks</strong></p>
+      </div>
     </div>
   </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <p>
+        We have difference processes to support enrolling individual schools, whole Multi-Academy Trusts or groups of schools within a
+        Local Authority Area.
+      </p>
+      <p>
+        Learn more about what our service can offer for different users, and then select one of the options below to start the
+        process.
+      </p>
+    </div>
+  </div>
+
+  <div class="row mt-2">
+    <div class="card-deck activities">
+      <div class="card activity">
+        <div class="card-body">
+          <h4 class="card-title text-center">Enrol our School</h4>
+          <div class="d-flex justify-content-center mt-2">
+            <small>
+            Read more about <%= link_to 'how Energy Sparks can support your school', for_schools_path %>
+            </small>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex justify-content-end">
+            <%= link_to 'Enrol now', enrol_path, class: 'btn btn-lg bg-positive' %>
+          </div>
+        </div>
+      </div>
+
+      <div class="card activity">
+        <div class="card-body">
+          <h4 class="card-title text-center">Enrol our Multi-Academy Trust</h4>
+          <div class="d-flex justify-content-center mt-2">
+            <small>
+            Read more about <%= link_to 'how Energy Sparks can support your MAT', for_multi_academy_trusts_path %>
+            </small>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex justify-content-end">
+            <%= link_to 'Enrol now', enrol_path, class: 'btn btn-lg bg-positive' %>
+          </div>
+        </div>
+      </div>
+
+      <div class="card activity">
+        <div class="card-body">
+          <h4 class="card-title text-center">Enrol our Local Authority</h4>
+          <div class="d-flex justify-content-center mt-2">
+            <small>
+            Read more about <%= link_to 'how Energy Sparks can support schools in your area', for_local_authorities_path %>
+            </small>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="d-flex justify-content-end">
+            <%= link_to 'Enrol now', enrol_path, class: 'btn btn-lg bg-positive' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
-
-
