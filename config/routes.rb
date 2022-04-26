@@ -25,6 +25,10 @@ Rails.application.routes.draw do
 
   get 'contact', to: 'home#contact'
   get 'enrol', to: 'home#enrol'
+  get 'enrol-our-school', to: 'home#enrol_our_school'
+  get 'enrol-our-multi-academy-trust', to: 'home#enrol_our_multi_academy_trust'
+  get 'enrol-our-local-authority', to: 'home#enrol_our_local_authority'
+
   get 'datasets', to: 'home#datasets'
   get 'attribution', to: 'home#attribution'
   get 'child-safeguarding-policy', to: 'home#child_safeguarding_policy'

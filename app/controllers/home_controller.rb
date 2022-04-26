@@ -84,6 +84,15 @@ class HomeController < ApplicationController
   def enrol
   end
 
+  def enrol_our_school
+  end
+
+  def enrol_our_multi_academy_trust
+  end
+
+  def enrol_our_local_authority
+  end
+
   def privacy_and_cookie_policy
   end
 
