@@ -15,7 +15,7 @@
       Energy Sparks is an online energy analysis tool and energy education programme specifically designed to help schools reduce their electricity and gas usage through the analysis of smart meter data. Energy Sparks helps schools reduce their carbon emissions, and make a real contribution to addressing the 'climate emergency'.
       </p>
       <p>
-      Energy Sparks is a registered charity working for the public benefit to develop and promote tools, services and programmes to reduce energy and resource consumption and carbon emissions. Energy Sparks aims to educate the public, particularly young people about the causes and impacts of climate change, and the importance of energy saving and reducing carbon emissions. Energy Sparks is currently working with <%= link_to "#{School.visible.count} schools", schools_path %> schools across the UK.
+      Energy Sparks is a registered charity working for the public benefit to develop and promote tools, services and programmes to reduce energy and resource consumption and carbon emissions. Energy Sparks aims to educate the public, particularly young people about the causes and impacts of climate change, and the importance of energy saving and reducing carbon emissions. Energy Sparks is currently working with <strong><%= link_to "#{@school_count} schools", schools_path %></strong> across the UK.
       </p>
     </div>
   </div>
@@ -47,7 +47,7 @@
     <div class="col-md-12">
       <h4><strong>Ecoteam and classroom activities for pupils linked to energy analysis</strong></h4>
       <p>
-        Energy Sparks has <%= ActivityType.active_and_not_custom.count %> energy and sustainability education <%= link_to 'activities', activity_categories_path %> and accompanying resources which pupils can participate in through eco-teams or curriculum learning. These activities support learning about climate change and energy, investigating energy use around the school site, taking action to reduce energy use and spreading the energy saving and carbon reduction message across the wider school community. Schools are encouraged to record completed activities on Energy Sparks, <%= link_to 'earning points', scoreboards_path %> and sharing best practice with other schools.
+        Energy Sparks has <%= @activities_count %> energy and sustainability education <%= link_to 'activities', activity_categories_path %> and accompanying resources which pupils can participate in through eco-teams or curriculum learning. These activities support learning about climate change and energy, investigating energy use around the school site, taking action to reduce energy use and spreading the energy saving and carbon reduction message across the wider school community. Schools are encouraged to record completed activities on Energy Sparks, <%= link_to 'earning points', scoreboards_path %> and sharing best practice with other schools.
       </p>
     </div>
   </div>

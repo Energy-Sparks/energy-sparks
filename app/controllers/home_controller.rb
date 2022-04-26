@@ -29,6 +29,8 @@ class HomeController < ApplicationController
   end
 
   def for_schools
+    @school_count = School.visible.count
+    @activities_count = ActivityType.active_and_not_custom.count
     @videos = [
       { title: 'An overview of Energy Sparks for new schools', embed_url: 'https://www.youtube.com/embed/ltIDE9C4bO8' },
       { title: 'An introduction to Energy Sparks for eco teams', embed_url: 'https://www.youtube.com/embed/P9yJMOP9O9w' },
