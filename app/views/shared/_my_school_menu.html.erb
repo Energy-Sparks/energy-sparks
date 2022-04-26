@@ -32,5 +32,6 @@
     <% if current_user.school.data_enabled? %>
       <%= link_to "Download our data", school_downloads_path(current_user.school), id: "download-your-data", class: 'dropdown-item' %>
     <% end %>
+    <%= link_to "My school group", school_group_path(group_for_nav(current_user)), class: 'dropdown-item' %>
 </div>
 </li>

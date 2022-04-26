@@ -1,12 +1,14 @@
-<%= render 'shared/my_school_menu' if can?(:read, :my_school_menu) && current_user.school.visible? %>
+<% if current_user && current_user.school.visible? %>
+  <%= render 'shared/my_school_menu' if can?(:read, :my_school_menu) && current_user.school.visible? %>
+<% else %>
+  <%= render 'shared/our_schools_menu' %>
+<% end %>
 
 <% if can? :switch, School %>
   <% if current_user && !current_user.cluster_schools_for_switching.blank? %>
     <%= render 'shared/switch_schools' %>
   <% end %>
 <% end %>
-
-<%= render 'shared/our_schools_menu' %>
 
 <li class="nav-item">
   <%= link_to "Activities", activity_categories_path, class: 'nav-link' %>
