@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   get "/robots.txt" => "robots_txts#show", as: :robots
 
+  get 'for-schools', to: 'home#for_schools'
   get 'for-teachers', to: 'home#for_teachers'
   get 'for-pupils', to: 'home#for_pupils'
   get 'for-management', to: 'home#for_management'

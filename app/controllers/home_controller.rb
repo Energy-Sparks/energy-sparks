@@ -28,6 +28,14 @@ class HomeController < ApplicationController
     }].sample
   end
 
+  def for_schools
+    @videos = [
+      { title: 'An overview of Energy Sparks for new schools', embed_url: 'https://www.youtube.com/embed/ltIDE9C4bO8' },
+      { title: 'An introduction to Energy Sparks for eco teams', embed_url: 'https://www.youtube.com/embed/P9yJMOP9O9w' },
+      { title: 'Saundersfoot CP School and Energy Sparks', embed_url: 'https://www.youtube.com/embed/Rg0znmJtr5s' },
+    ]
+  end
+
   def for_pupils
   end
 
