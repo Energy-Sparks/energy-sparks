@@ -72,6 +72,9 @@ class HomeController < ApplicationController
     ].sample
   end
 
+  def energy_audits
+  end
+
   def contact
   end
 

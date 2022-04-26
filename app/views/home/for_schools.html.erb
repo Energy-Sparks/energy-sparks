@@ -107,12 +107,12 @@
     <div class="col-sm-6">
       <p>Schools are supported with:</p>
       <ul>
-        <li>webinar training sessions</li>
-        <li>newsletters</li>
+        <li><%= link_to 'webinar training sessions', training_path %></li>
+        <li><%= link_to 'newsletters', newsletters_path %></li>
         <li>email and phone support</li>
         <li>education workshops</li>
-        <li>virtual energy audits</li>
-        <li>on-site energy audits</li>
+        <li><%= link_to 'virtual energy audits', energy_audits_path %></li>
+        <li><%= link_to 'on-site energy audits', energy_audits_path %></li>
       </ul>
     </div>
   </div>
@@ -155,7 +155,7 @@
       Access to the online tool and education resources is currently <i>free of charge</i> for state schools across the UK through Energy Sparks' funding and support from central government, local authorities and charitables trusts and foundations.
       </p>
       <p>
-      Funding covers all aspects of our service for state schools except for on-site energy audits which are a chargeable extra.
+      Funding covers all aspects of our service for state schools except for <%= link_to 'on-site energy audits', energy_audits_path %> which are a chargeable extra.
       </p>
       <p><strong>
       Your supplier may charge a small additional fee to provide your energy data to Energy Sparks. If applicable this cost will be added to your energy bill. Any costs will be confirmed before your account set up goes ahead.
@@ -173,7 +173,7 @@
       The basic package provides a publicly visible dashboard in line with all state schools. If you would  like your school’s energy use data to be private, and only accessible to logged in users, this can be requested at an extra charge of £75 per year. Our recommendation is to opt to have your energy data publicly visible to maximise engagement across your pupils and staff team.
       </p>
       <p>
-      Education workshops and virtual and on-site audits are available at extra cost.
+      Education workshops and virtual and <%= link_to 'on-site energy audits', energy_audits_path %> are available at extra cost.
       </p>
     </div>
   </div>

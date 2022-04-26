@@ -61,13 +61,13 @@
       Schools are supported with:
       </p>
       <ul>
-        <li>webinar training sessions</li>
-        <li>newsletters</li>
+        <li><%= link_to 'webinar training sessions', training_path %></li>
+        <li><%= link_to 'newsletters', newsletters_path %></li>
         <li>email and phone support</li>
         <li>education workshops</li>
         <li>energy management mentoring</li>
-        <li>virtual energy audits</li>
-        <li>on-site energy audits</li>
+        <li><%= link_to 'virtual energy audits', energy_audits_path %></li>
+        <li><%= link_to 'on-site energy audits', energy_audits_path %></li>
       </ul>
     </div>
   </div>
@@ -118,8 +118,8 @@
         Energy Sparks' funding and support from central government and charitables trusts and foundations currently provides free access for the first 30 state schools (maintained and academies) in any Local Authority area. We expect funded schools to want to engage with the tool and programme. If you would like more schools to join in your area, contact us to discuss costs.
       </p>
       <p>
-        Funding covers all aspects of our service for state schools except for on-site energy audits (link to audits page) which are a chargeable extra.
-        Funded education workshops and virtual audits are limited and subject to availability. Where possible Energy Sparks will work with existing local sustainability education workshop providers working with your Local Authority to maximise impact.
+        Funding covers all aspects of our service for state schools except for <%= link_to 'on-site energy audits', energy_audits_path %> which are a chargeable extra.
+        Funded education workshops and <%= link_to 'virtual audits', energy_audits_path %> are limited and subject to availability. Where possible Energy Sparks will work with existing local sustainability education workshop providers working with your Local Authority to maximise impact.
       </p>
       <p>
         The school’s energy supplier may charge a small additional fee to provide the school’s energy data to Energy Sparks. If applicable this cost is normally added to the school’s energy bill.
