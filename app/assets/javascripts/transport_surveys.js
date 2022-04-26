@@ -4,6 +4,8 @@ $(document).ready(function() {
 
 	//* setup *//
 
+	const transport_fields = ['run_identifier', 'journey_minutes', 'passengers', 'transport_type_id', 'weather'];
+
 	var transport_types;
 	loadTransportTypes();
 
@@ -14,6 +16,7 @@ $(document).ready(function() {
   $('.next').on('click', next);
   $('.previous').on('click', previous);
   $('.last').on('click', last);
+  $('.next-pupil').on('click', nextPupil);
 
   $('#transport_survey').on('submit', submit);
 
@@ -38,6 +41,36 @@ $(document).ready(function() {
 		selectCard(this);
 		nextPanel(this);
 		displayCarbon();
+	}
+
+	function nextPupil() {
+		storeResponse();
+		resetFields();
+		resetCards();
+	}
+
+	function storeResponse() {
+    var responses = JSON.parse(localStorage.getItem('es_ts_responses')) || [];
+    var response = getResponse();
+    responses.push(response);
+    localStorage.setItem('es_ts_responses', JSON.stringify(responses));
+	}
+
+	function getResponse() {
+		var response = {};
+		for (const element of transport_fields) {
+			response[element] = $("#" + element).val();
+		}
+		response['surveyed_at'] = new Date().toISOString();
+		return response;
+	}
+
+	function resetFields() {
+		$('#transport_survey').find('input[type="hidden"].selected').val("");
+	}
+
+	function resetCards() {
+
 	}
 
   function loadTransportTypes() {
@@ -85,23 +118,18 @@ $(document).ready(function() {
 	}
 
 	function displayCarbon() {
-		var journey_minutes = $('#journey_minutes').val();
-		var passengers = $('#passengers').val();
-		var transport_type_id = $('#transport_type_id').val();
-		var weather = $('#weather').val();
+		let response = getResponse();
+		let transport_type = transport_types[response['transport_type_id']];
 
-		carbon = carbonCalc(transport_types[transport_type_id], journey_minutes, passengers);
+		let carbon = carbonCalc(transport_type, response['journey_minutes'], response['passengers']);
+		let niceCarbon = carbon === 0 ? '0' : carbon.toFixed(3)
+		let fun_weight = funWeight(carbon);
 
-		niceCarbon = carbon === 0 ? '0' : carbon.toFixed(3)
-		fun_weight = funWeight(carbon);
-
-		$('#display-time').text(journey_minutes);
-		$('#display-transport').text(transport_types[transport_type_id].image + " " + transport_types[transport_type_id].name);
-		$('#display-passengers').text(passengers);
-
+		$('#display-time').text(response['journey_minutes']);
+		$('#display-transport').text(transport_type.image + " " + transport_type.name);
+		$('#display-passengers').text(response['passengers']);
 		$('#display-carbon').text(niceCarbon + "kg");
 		$('#display-carbon-equivalent').text(funWeight(carbon));
-
 	}
 
   function submit() {

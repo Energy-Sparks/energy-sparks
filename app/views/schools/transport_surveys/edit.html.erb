@@ -15,6 +15,8 @@
       </div>
       <div class="modal-body">
         <%= form_with(model: @transport_survey, url: school_transport_survey_url(@school, @transport_survey), method: :patch, local: true, novalidate: true, id: 'transport_survey') do |f| %>
+          <%= f.hidden_field :run_on %>
+          <%= hidden_field_tag :run_identifier, TransportSurveyResponse.generate_unique_secure_token %>
           <div class="alert alert-success hide"></div>
           <div id="setup" class="panel">
             <h2>Please select today's weather</h2>
