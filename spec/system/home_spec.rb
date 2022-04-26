@@ -6,13 +6,25 @@ RSpec.describe "home", type: :system do
     expect(page.has_content? "Energy Sparks")
   end
 
-  it 'has a teachers page' do
+  it 'has a for-schools page' do
     visit root_path
     click_on('About')
     within('.dropdown') do
-      click_on('For Teachers')
+      click_on('For Schools')
     end
-    expect(page.has_content? "What is Energy Sparks?")
+    expect(page.has_content? "Energy Sparks for schools")
+  end
+
+  it 'redirects old pages' do
+    get for_teachers_path
+    expect(response).to redirect_to(for_schools_path)
+
+    get for_pupils_path
+    expect(response).to redirect_to(for_schools_path)
+
+    get for_management_path
+    expect(response).to redirect_to(for_schools_path)
+
   end
 
   it 'has a contact page' do

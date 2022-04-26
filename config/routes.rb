@@ -4,9 +4,11 @@ Rails.application.routes.draw do
   get "/robots.txt" => "robots_txts#show", as: :robots
 
   get 'for-schools', to: 'home#for_schools'
-  get 'for-teachers', to: 'home#for_teachers'
-  get 'for-pupils', to: 'home#for_pupils'
-  get 'for-management', to: 'home#for_management'
+
+  get 'for-teachers', to: redirect('/for-schools') #'home#for_teachers'
+  get 'for-pupils', to: redirect('/for-schools')
+  get 'for-management', to: redirect('/for-schools')
+
   get 'case-studies', to: 'case_studies#index', as: :case_studies
   get 'case_studies/:id/:serve', to: 'case_studies#download'
   get 'newsletters', to: 'newsletters#index', as: :newsletters
