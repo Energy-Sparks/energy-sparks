@@ -75,6 +75,9 @@ class HomeController < ApplicationController
   def energy_audits
   end
 
+  def education_workshops
+  end
+
   def contact
   end
 

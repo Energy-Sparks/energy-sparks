@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   get 'terms_and_conditions', to: 'home#terms_and_conditions', as: :terms_and_conditions
   get 'training', to: 'home#training'
   get 'energy-audits', to: 'home#energy_audits'
+  get 'education-workshops', to: 'home#education_workshops'
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
   get 'data_feeds/solar_pv_tuos_readings/:area_id',  to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings
