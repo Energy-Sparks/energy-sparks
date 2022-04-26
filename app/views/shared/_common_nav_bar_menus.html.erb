@@ -6,19 +6,7 @@
   <% end %>
 <% end %>
 
-<% if current_user && current_user.default_scoreboard %>
-  <li class="nav-item"><%= link_to "Scoreboard", scoreboard_path(current_user.default_scoreboard), class: 'nav-link' %></li>
-<% end %>
-
-<% if group_for_nav(current_user) %>
-  <li class="nav-item">
-    <%= link_to "Schools", school_group_path(group_for_nav(current_user)), class: 'nav-link' %>
-  </li>
-<% else %>
-  <li class="nav-item">
-    <%= link_to "Schools", schools_path, class: 'nav-link' %>
-  </li>
-<% end %>
+<%= render 'shared/our_schools_menu' %>
 
 <li class="nav-item">
   <%= link_to "Activities", activity_categories_path, class: 'nav-link' %>
@@ -28,10 +16,8 @@
   <%= link_to "Actions", intervention_type_groups_path, class: 'nav-link' %>
 </li>
 
-<%= render 'shared/about_menu' %>
+<%= render 'shared/our_services_menu' %>
 
-<li class="nav-item">
-  <%= link_to "Contact", contact_path, class: 'nav-link' %>
-</li>
+<%= render 'shared/about_menu' %>
 
 <%= render 'shared/manage_menu' if can?(:manage, :admin_functions) %>

@@ -1,17 +1,16 @@
-<li class="nav-item dropdown">
-  <a class="nav-link dropdown-toggle" href="#" id="aboutDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About</a>
+<li class="nav-item dropdown" id="about-menu">
+  <a class="nav-link dropdown-toggle" href="#" id="aboutDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">About us</a>
   <div class="dropdown-menu" aria-labelledby="aboutDropDown">
-    <%= link_to "Case Studies", case_studies_path, class: 'dropdown-item' %>
-    <%= link_to "Enrol", enrol_path, class: 'dropdown-item' %>
-    <%= link_to "For Schools", for_schools_path, class: 'dropdown-item' %>
-    <%= link_to "For Local Authorities", for_local_authorities_path, class: 'dropdown-item' %>
-    <%= link_to "For Multi-Academy Trusts", for_multi_academy_trusts_path, class: 'dropdown-item' %>
+    <%= link_to "Contact", contact_path, class: 'dropdown-item' %>
+    <%= link_to "Team", team_path, class: 'dropdown-item' %>
+    <%= link_to "Blog", "http://blog.energysparks.uk", target:"_blank", class: 'dropdown-item' %>
+    <%= link_to "Partners", team_path(anchor: "partners"), class: 'dropdown-item' %>
     <%= link_to "Jobs", jobs_path, class: 'dropdown-item' %>
-    <%= link_to "Newsletters", newsletters_path, class: 'dropdown-item' %>
-    <%= link_to 'Resources', resources_path, class: 'dropdown-item' %>
-    <%= link_to "Scoreboards", scoreboards_path, class: 'dropdown-item' %>
+    <%= link_to "Terms and conditions", terms_and_conditions_path, class: 'dropdown-item' %>
+    <%= link_to "Privacy policy", privacy_and_cookie_policy_path, class: 'dropdown-item' %>
+    <%= link_to "Child safeguarding", child_safeguarding_policy_path, class: 'dropdown-item' %>
     <%= link_to 'School statistics', school_statistics_path, class: 'dropdown-item' %>
-    <%= link_to 'Training', training_path, class: 'dropdown-item' %>
-    <%= link_to 'User Guide Videos', user_guide_videos_path, class: 'dropdown-item' %>
+    <%= link_to "Datasets", attribution_path, class: 'dropdown-item' %>
+    <%= link_to "Open data", datasets_path, class: 'dropdown-item' %>
   </div>
 </li>

@@ -1,0 +1,13 @@
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="ourSchoolsDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Our schools</a>
+  <div class="dropdown-menu" aria-labelledby="ourSchoolsDropDown">
+    <% if group_for_nav(current_user) %>
+        <%= link_to "My school group", school_group_path(group_for_nav(current_user)), class: 'dropdown-item' %>
+        <%= link_to "View all schools", schools_path, class: 'dropdown-item' %>
+    <% else %>
+        <%= link_to "View schools", schools_path, class: 'dropdown-item' %>
+    <% end %>
+    <%= link_to "Scoreboards", scoreboards_path, class: 'dropdown-item' %>
+    <%= link_to "Compare schools", benchmarks_path, class: 'dropdown-item' %>
+  </div>
+</li>
