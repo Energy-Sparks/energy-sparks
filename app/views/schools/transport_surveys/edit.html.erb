@@ -7,14 +7,14 @@
   I am heading away from wifi!
 </button>
 
-<div class="modal fade" id="transport_survey_modal" data-backdrop="false" data-keyboard="false" tabindex="-1" aria-labelledby="transport_survey_modal_label" aria-hidden="true">
+<div class="modal fade modal-fullscreen-xs modal-fullscreen-sm modal-fullscreen-md" id="transport_survey_modal" data-backdrop="true" data-keyboard="false" tabindex="-1" aria-labelledby="transport_survey_modal_label" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
-      <%= form_with(model: @transport_survey, url: school_transport_survey_url(@school, @transport_survey), method: :patch, local: true, novalidate: true, id: 'transport_survey') do |f| %>
-        <div class="modal-header">
-          <h1 class="modal-title" id="transport_survey_modal_label">Travel to school survey</h1>
-        </div>
-        <div class="modal-body">
+      <div class="modal-header">
+        <h1 class="modal-title" id="transport_survey_modal_label">Travel to school survey</h1>
+      </div>
+      <div class="modal-body">
+        <%= form_with(model: @transport_survey, url: school_transport_survey_url(@school, @transport_survey), method: :patch, local: true, novalidate: true, id: 'transport_survey') do |f| %>
           <div class="alert alert-success hide"></div>
           <div id="setup" class="panel">
             <h2>Please select today's weather</h2>
@@ -88,12 +88,12 @@
               </div>
             </fieldset>
           </div>
-        </div>
-        <div class="modal-footer">
-          <%= button_tag "Finish & Submit results", type: 'submit', class: 'submit btn btn-primary' %>
-          <%= button_tag 'Cancel', type: 'button', class: "btn btn-secondary", "data-dismiss": "modal" %>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <%= button_tag "Finish & Submit results", type: 'submit', class: 'submit btn btn-primary' %>
+        <%= button_tag 'Cancel', type: 'button', class: "btn btn-secondary", "data-dismiss": "modal" %>
+      </div>
     </div>
   </div>
 </div>
