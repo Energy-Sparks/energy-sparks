@@ -552,7 +552,7 @@ RSpec.describe "school", type: :system do
       end
 
       it 'should display menu on other pages' do
-        click_on 'Scoreboard'
+        visit root_path
         expect(page).to have_css("#my_school_menu")
       end
 
@@ -585,7 +585,7 @@ RSpec.describe "school", type: :system do
       end
 
       it 'should display menu on other pages' do
-        click_on 'Scoreboard'
+        visit root_path
         expect(page).to have_css("#my_school_menu")
       end
 
