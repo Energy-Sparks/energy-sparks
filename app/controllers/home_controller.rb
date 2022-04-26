@@ -14,34 +14,41 @@ class HomeController < ApplicationController
     render :index
   end
 
-  def for_teachers
-    @testimonial = [{
-      quote: 'The website is a great resource for adults and children with activities and data which allow children to apply their mathematical and scientific skills and knowledge. I would highly recommend to any other school.',
-      by: 'Jennie Nixon',
-      title: 'Head of School',
-      location: 'Whiteways Primary School, Sheffield'
-    }, {
-      quote: 'The Energy Sparks website is very easy to use, and the children have found it interesting to measure how energy is used differently in different parts of the school&hellip; The children are motivated by the competitive element as well as the desire to save money and energy&hellip;',
-      by: 'Warrick Barton',
-      title: 'Headteacher',
-      location: 'Pensford Primary School, Bath'
-    }].sample
-  end
-
   def for_schools
     @school_count = School.visible.count
     @activities_count = ActivityType.active_and_not_custom.count
-    @videos = [
-      { title: 'An overview of Energy Sparks for new schools', embed_url: 'https://www.youtube.com/embed/ltIDE9C4bO8' },
-      { title: 'An introduction to Energy Sparks for eco teams', embed_url: 'https://www.youtube.com/embed/P9yJMOP9O9w' },
-      { title: 'Saundersfoot CP School and Energy Sparks', embed_url: 'https://www.youtube.com/embed/Rg0znmJtr5s' },
-    ]
+    @videos = videos
+    @testimonial = [
+      {
+        quote: "Energy Sparks has enabled children at Freshford to investigate how energy is used in different parts of the school and devise strategies to reduce the school's consumption. The children's enthusiasm was kick-started by the competitive element and they’ve worked effectively with staff and the local community to think innovatively about what we can do to reduce our impact on the environment and reduce costs. The children developed and presented evidence-based initiatives to the school's business managers, securing installation of energy-efficient lighting and kitchen equipment, movement-sensor-switches, and a solar-panel campaign.
+        <br><br>
+        The Energy Sparks  resources are inspirational, powerful and transformational tools for all schools that will enable them to reduce their CO2 footprint, save money and help children to develop a powerful can-do attitude towards the challenges of global warming.",
+        by: 'Andrew Wishart',
+        title: 'Head teacher',
+        location: 'Freshford Church School'
+      }
+    ].sample
   end
 
-  def for_pupils
-  end
-
-  def for_management
+  def for_local_authorities
+    @school_count = School.visible.count
+    @testimonial = [
+      {
+        quote: "The comparison function is amazing&hellip; The data in the comparison tab will be very useful for analysing and reporting purposes, and it offers a wide variety of benchmarks. I think this is a 'fab' idea and very useful tool.",
+        by: 'Kremena Renwick',
+        title: 'Local Authority Sustainability Officer (Energy)',
+        location: 'Highland Council'
+      }
+    ].sample
+    @testimonial_saving = [
+      {
+        quote: "I initially got involved with Energy Sparks as I thought it would inspire the children to be more eco-aware. Little did I realise back then how much we would be saving now! …We should be able to save £800 annually so that's over £15 extra per child per year - all thanks to Energy Sparks.",
+        by: 'Andrew Marriott',
+        title: 'Deputy Head',
+        location: 'Federation of Bishop Sutton and Stanton Drew Primary Schools, Bath and NE Somerset'
+      }
+    ].sample
+    @videos = videos
   end
 
   def contact
@@ -82,6 +89,14 @@ class HomeController < ApplicationController
   end
 
   private
+
+  def videos
+    [
+      { title: 'An overview of Energy Sparks for new schools', embed_url: 'https://www.youtube.com/embed/ltIDE9C4bO8' },
+      { title: 'An introduction to Energy Sparks for eco teams', embed_url: 'https://www.youtube.com/embed/P9yJMOP9O9w' },
+      { title: 'Saundersfoot CP School and Energy Sparks', embed_url: 'https://www.youtube.com/embed/Rg0znmJtr5s' },
+    ]
+  end
 
   def set_newsletters
     @newsletters = Newsletter.order(published_on: :desc).limit(3)

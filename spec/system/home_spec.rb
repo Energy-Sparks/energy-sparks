@@ -24,8 +24,17 @@ RSpec.describe "home", type: :system do
 
     get for_management_path
     expect(response).to redirect_to(for_schools_path)
-
   end
+
+  it 'has a for-local-authorities page' do
+    visit root_path
+    click_on('About')
+    within('.dropdown') do
+      click_on('For Local Authorities')
+    end
+    expect(page.has_content? "Energy Sparks for Local Authorities")
+  end
+
 
   it 'has a contact page' do
     visit root_path
