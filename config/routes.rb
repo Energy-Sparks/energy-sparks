@@ -3,9 +3,14 @@ Rails.application.routes.draw do
 
   get "/robots.txt" => "robots_txts#show", as: :robots
 
-  get 'for-teachers', to: 'home#for_teachers'
-  get 'for-pupils', to: 'home#for_pupils'
-  get 'for-management', to: 'home#for_management'
+  get 'for-schools', to: 'home#for_schools'
+  get 'for-teachers', to: redirect('/for-schools')
+  get 'for-pupils', to: redirect('/for-schools')
+  get 'for-management', to: redirect('/for-schools')
+
+  get 'for-local-authorities', to: 'home#for_local_authorities'
+  get 'for-multi-academy-trusts', to: 'home#for_multi_academy_trusts'
+
   get 'case-studies', to: 'case_studies#index', as: :case_studies
   get 'case_studies/:id/:serve', to: 'case_studies#download'
   get 'newsletters', to: 'newsletters#index', as: :newsletters
@@ -20,6 +25,10 @@ Rails.application.routes.draw do
 
   get 'contact', to: 'home#contact'
   get 'enrol', to: 'home#enrol'
+  get 'enrol-our-school', to: 'home#enrol_our_school'
+  get 'enrol-our-multi-academy-trust', to: 'home#enrol_our_multi_academy_trust'
+  get 'enrol-our-local-authority', to: 'home#enrol_our_local_authority'
+
   get 'datasets', to: 'home#datasets'
   get 'attribution', to: 'home#attribution'
   get 'child-safeguarding-policy', to: 'home#child_safeguarding_policy'
@@ -28,6 +37,8 @@ Rails.application.routes.draw do
   get 'privacy_and_cookie_policy', to: 'home#privacy_and_cookie_policy', as: :privacy_and_cookie_policy
   get 'terms_and_conditions', to: 'home#terms_and_conditions', as: :terms_and_conditions
   get 'training', to: 'home#training'
+  get 'energy-audits', to: 'home#energy_audits'
+  get 'education-workshops', to: 'home#education_workshops'
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
   get 'data_feeds/solar_pv_tuos_readings/:area_id',  to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings

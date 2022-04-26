@@ -13,8 +13,9 @@ describe 'Partners', type: :system do
     it 'allows the user to create a partner' do
       visit root_path
       click_on 'Admin'
-      click_on 'Partners', match: :first
-
+      within('.application') do
+        click_on 'Partners', match: :first
+      end
       click_on 'New partner'
       fill_in 'Position', with: '1'
       fill_in 'Url', with: 'https://example.com'
