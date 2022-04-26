@@ -12,7 +12,10 @@ RSpec.describe "home", type: :system do
     within('.dropdown') do
       click_on('For Schools')
     end
-    expect(page.has_content? "Energy Sparks for schools")
+    expect(page).to have_content("Energy Sparks for schools")
+    click_on('Enrol our school')
+    expect(page).to have_content("Enrol our school")
+    expect(page).to have_link("Enrol now")
   end
 
   it 'redirects old pages' do
@@ -32,7 +35,10 @@ RSpec.describe "home", type: :system do
     within('.dropdown') do
       click_on('For Local Authorities')
     end
-    expect(page.has_content? "Energy Sparks for Local Authorities")
+    expect(page).to have_content("Energy Sparks for Local Authorities")
+    click_on('Enrol our Local Authority')
+    expect(page).to have_content("Enrol our Local Authority")
+    expect(page).to have_link("Enrol now")
   end
 
   it 'has a for-multi-academy-trusts page' do
@@ -41,7 +47,10 @@ RSpec.describe "home", type: :system do
     within('.dropdown') do
       click_on('For Multi-Academy Trusts')
     end
-    expect(page.has_content? "Energy Sparks for Multi-Academy Trusts")
+    expect(page).to have_content("Energy Sparks for Multi-Academy Trusts")
+    click_on('Enrol our Multi-Academy Trust')
+    expect(page).to have_content("Enrol our Multi-Academy Trust")
+    expect(page).to have_link("Enrol now")
   end
 
   it 'has a contact page' do
@@ -58,7 +67,7 @@ RSpec.describe "home", type: :system do
     within('.dropdown') do
       click_on('Enrol')
     end
-    expect(page.has_content? "How do I enroll my school?")
+    expect(page.has_content? "Enrol with Energy Sparks")
   end
 
   it "has a training page" do
