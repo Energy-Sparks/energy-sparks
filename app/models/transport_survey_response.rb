@@ -41,7 +41,7 @@ class TransportSurveyResponse < ApplicationRecord
   end
 
   def self.passengers_options
-    [1, 2, 3, 4, 5, 6]
+    [1, 2, 3, 4]
   end
 
   def weather_symbol
