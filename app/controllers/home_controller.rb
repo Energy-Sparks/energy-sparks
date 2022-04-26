@@ -51,6 +51,27 @@ class HomeController < ApplicationController
     @videos = videos
   end
 
+  def for_multi_academy_trusts
+    @school_count = School.visible.count
+    @videos = videos
+    @testimonial = [
+      {
+        quote: "The Energy Sparks website is very easy to use, and the children have found it interesting to measure how energy is used differently in different parts of the school… The children are motivated by the competitive element as well as the desire to save money and energy&hellip;",
+        by: 'Warrick Barton',
+        title: 'Headteacher',
+        location: 'Pensford Primary School, Bath'
+      }
+    ].sample
+    @testimonial_saving = [
+      {
+        quote: "I initially got involved with Energy Sparks as I thought it would inspire the children to be more eco-aware. Little did I realise back then how much we would be saving now! …We should be able to save £800 annually so that's over £15 extra per child per year - all thanks to Energy Sparks.",
+        by: 'Andrew Marriott',
+        title: 'Deputy Head',
+        location: 'Federation of Bishop Sutton and Stanton Drew Primary Schools, Bath and NE Somerset'
+      }
+    ].sample
+  end
+
   def contact
   end
 

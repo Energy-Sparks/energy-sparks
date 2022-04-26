@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get 'for-management', to: redirect('/for-schools')
 
   get 'for-local-authorities', to: 'home#for_local_authorities'
+  get 'for-multi-academy-trusts', to: 'home#for_multi_academy_trusts'
 
   get 'case-studies', to: 'case_studies#index', as: :case_studies
   get 'case_studies/:id/:serve', to: 'case_studies#download'

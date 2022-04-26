@@ -1,10 +1,10 @@
-<% content_for :page_title, 'For Local Authorities' %>
+<% content_for :page_title, 'For Multi-Academy Trusts' %>
 
 <div class="application container extra-padding">
   <div class="row mt-2">
     <div class="col">
       <div class="d-flex justify-content-between align-items-center">
-        <p class="display-3"><strong>Energy Sparks for Local Authorities</strong></p>
+        <p class="display-3"><strong>Energy Sparks for Multi-Academy Trusts</strong></p>
       </div>
     </div>
   </div>
@@ -12,7 +12,7 @@
   <div class="row">
     <div class="col-md-12">
       <p>
-        Energy Sparks provides an online energy analysis tool and energy education programme specifically designed to help schools reduce their electricity and gas usage through the analysis of smart meter data. Energy Sparks can help Local Authorities meet their climate emergency commitments, democratise access to schools’ energy data and empower school staff and students with taking no and low cost action to reduce their school’s carbon footprint.
+        Energy Sparks provides an online energy analysis tool and energy education programme specifically designed to help schools reduce their electricity and gas usage through the analysis of smart meter data. Energy Sparks can help Multi-Academy Trusts meet their carbon saving targets, democratise access to schools’ energy data and empower school staff and students with taking no and low cost action to reduce their school’s carbon footprint.
       </p>
       <p>
         Energy Sparks is a registered charity working for the public benefit to develop and promote tools, services and programmes to reduce energy and resource consumption and carbon emissions. Energy Sparks aims to educate the public, particularly young people about the causes and impacts of climate change, and the importance of energy saving and reducing carbon emissions.
@@ -38,21 +38,22 @@
     </div>
   </div>
 
-  <div class="row mt-3">
-    <div class="col-md-12">
-      <h4><strong>Comparing school energy performance</strong></h4>
-      <p>
-        Energy Sparks provides a <%= link_to 'school comparison and benchmarking tool', benchmarks_path %> to allow portfolio analysis of schools in Local Authority groups or across the whole Energy Sparks portfolio. This tool compares performance against a range of benchmarks including per pupil and per floor area, school holiday consumption and heating start time, and is a powerful means of identifying the worst performing schools to target with additional support and the best performing schools to feature in case studies.
-      </p>
-    </div>
-  </div>
-
   <%= render 'home/testimonial',
     quote: @testimonial[:quote],
     by: @testimonial[:by],
     title: @testimonial[:title],
     location: @testimonial[:location]
   %>
+
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <h4><strong>School comparison tool for Multi-Academy Trusts</strong></h4>
+      <p>Energy Sparks provides a <%= link_to 'school comparison and benchmarking tool', benchmarks_path %> to allow portfolio analysis of schools in Multi-Academy Trust groups or across the whole Energy Sparks portfolio. This tool compares performance against a range of benchmarks including per pupil and per floor area, school holiday consumption and heating start time, and is a powerful means of identifying the worst performing schools to target with additional support and the best performing schools to feature in case studies.</p>
+      <p>
+        The tool can also provide easy to access information to support SECR carbon reporting obligations.
+      </p>
+    </div>
+  </div>
 
   <div class="row mt-3">
     <div class="col-md-12">
@@ -91,19 +92,6 @@
     </div>
   </div>
 
-  <div class="row mt-3">
-    <div class="col-md-12">
-      <h4><strong>How does Energy Sparks access the schools’ energy data?</strong></h4>
-      <p>Energy Sparks normally obtains energy data direct from the energy supplier or meter data collector (DC/DA)</p>
-      <p>
-        Where schools purchase energy through a Local Authority contract,  Energy Sparks will normally need a Letter of Authority and a list of the relevant meter numbers provided by the Council energy team. Sometimes, the Local Authority can set up automated data reports to Energy Sparks through their own supplier portal access. Where schools have alternative purchasing arrangements, they will normally provide their own Letter of Authority.
-      </p>
-      <p>
-        Each individual school will also provide permission for us to access and publish their energy data as part of their account set up, alongside confirming agreement with our <%= link_to 'Terms and Conditions', terms_and_conditions_path %>.
-      </p>
-    </div>
-  </div>
-
   <%= render 'home/testimonial',
     quote: @testimonial_saving[:quote],
     by: @testimonial_saving[:by],
@@ -113,13 +101,26 @@
 
   <div class="row mt-3">
     <div class="col-md-12">
-      <h4><strong>What does it cost for Local Authorities?</strong></h4>
+      <h4><strong>How does Energy Sparks access the schools’ energy data?</strong></h4>
+      <p>Energy Sparks normally obtains energy data direct from the energy supplier or meter data collector (DC/DA).</p>
       <p>
-        Energy Sparks' funding and support from central government and charitables trusts and foundations currently provides free access for the first 30 state schools (maintained and academies) in any Local Authority area. We expect funded schools to want to engage with the tool and programme. If you would like more schools to join in your area, contact us to discuss costs.
+        Where schools purchase energy through a Multi-Academy Trust contract,  Energy Sparks will normally need a Letter of Authority and a list of the relevant meter numbers provided by the MAT. Where schools purchase energy through a Local Authority contract,  Energy Sparks will normally need a Letter of Authority provided by the Council energy team. Sometimes, the Local Authority can set up automated data reports to Energy Sparks through their own supplier portal access. Where schools have alternative purchasing arrangements, they will normally provide their own Letter of Authority.
+      </p>
+      <p>
+        Each individual school will also provide permission for us to access and publish their energy data as part of their account set up, alongside confirming agreement with our  <%= link_to 'Terms and Conditions', terms_and_conditions_path %>.
+      </p>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <h4><strong>What does it cost for Multi-Academy Trusts?</strong></h4>
+      <p>
+        Energy Sparks' funding and support from central government and charitables trusts and foundations currently provides free access for the first 30 state schools (maintained and academies) in any Local Authority area. We expect funded schools to want to engage with the tool and programme.
       </p>
       <p>
         Funding covers all aspects of our service for state schools except for on-site energy audits (link to audits page) which are a chargeable extra.
-        Funded education workshops and virtual audits are limited and subject to availability. Where possible Energy Sparks will work with existing local sustainability education workshop providers working with your Local Authority to maximise impact.
+        Funded education workshops and virtual audits are limited and subject to availability.
       </p>
       <p>
         The school’s energy supplier may charge a small additional fee to provide the school’s energy data to Energy Sparks. If applicable this cost is normally added to the school’s energy bill.
@@ -129,9 +130,9 @@
 
   <div class="row mt-3">
     <div class="col-md-12">
-      <h4><strong>What additional support is needed from the Local Authority?</strong></h4>
+      <h4><strong>What additional support is needed from the Multi-Academy Trust?</strong></h4>
       <p>
-        In addition to supporting access to the school’s energy data, Local Authority officers will be expected to support Energy Sparks with school recruitment using marketing materials provided by Energy Sparks. Energy Sparks is most impactful when it is linked with other sustainability focused activities ongoing across your Local Authority. Energy Sparks can often present to business manager or school leadership forums, school climate change forums or other appropriate events to promote recruitment and ongoing engagement and impact.
+        In addition to supporting access to the school’s energy data, the MAT office will be expected to support Energy Sparks with school recruitment using marketing materials provided by Energy Sparks. Energy Sparks is most impactful when it is linked with other sustainability focused activities ongoing across your MAT. Energy Sparks can often present to MAT sustainability groups or other appropriate forums.
       </p>
     </div>
   </div>
@@ -139,7 +140,7 @@
   <div class="row mt-4">
     <div class="col-md-12">
       <div class="d-flex justify-content-center">
-        <%= link_to 'Enrol my Local Authority', enrol_path, class: 'btn btn-lg bg-positive' %>
+        <%= link_to 'Enrol my Multi-Academy Trust', enrol_path, class: 'btn btn-lg bg-positive' %>
       </div>
     </div>
   </div>

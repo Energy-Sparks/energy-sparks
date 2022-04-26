@@ -35,6 +35,14 @@ RSpec.describe "home", type: :system do
     expect(page.has_content? "Energy Sparks for Local Authorities")
   end
 
+  it 'has a for-multi-academy-trusts page' do
+    visit root_path
+    click_on('About')
+    within('.dropdown') do
+      click_on('For Multi-Academy Trusts')
+    end
+    expect(page.has_content? "Energy Sparks for Multi-Academy Trusts")
+  end
 
   it 'has a contact page' do
     visit root_path
