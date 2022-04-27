@@ -48,6 +48,7 @@ $(document).ready(function() {
 		resetAllFields();
 		resetAllCards();
 		resetPanels();
+		resetProgressBar();
 	}
 
 	function storeResponse() {
@@ -75,19 +76,30 @@ $(document).ready(function() {
 		cards.addClass('bg-light');
 	}
 
+	function highlightCard(card) {
+		card.removeClass('bg-light');
+		card.addClass('bg-primary');
+	}
+
 	function resetAllCards() {
 		let cards = $('#transport_survey .panel').find('.card');
 		resetCards(cards);
 	}
 
 	function resetPanels() {
-
+		$("fieldset").not(":first").hide();
+		$("fieldset:first").show();
 	}
 
   function loadTransportTypes() {
 		$.getJSON( "/transport_types.json", function( data ) {
 			transport_types = data;
 		}); // this needs to be more robust
+	}
+
+	function resetProgressBar() {
+		fieldset_count = 1
+		setProgressBar(fieldset_count);
 	}
 
 	function setProgressBar(step){
@@ -98,13 +110,10 @@ $(document).ready(function() {
 
 	function selectCard(current) {
 		let panel = $(current).closest('.panel');
-
 		resetCards(panel.find('.card'));
 
-		// highlight current card
 		let card = $(current).closest('div.card');
-		card.removeClass('bg-light');
-		card.addClass('bg-primary');
+		highlightCard(card);
 
 		let selected_value = card.find('input[type="hidden"].option').val();
 
@@ -131,13 +140,13 @@ $(document).ready(function() {
 		let transport_type = transport_types[response['transport_type_id']];
 
 		let carbon = carbonCalc(transport_type, response['journey_minutes'], response['passengers']);
-		let niceCarbon = carbon === 0 ? '0' : carbon.toFixed(3)
+		let nice_carbon = carbon === 0 ? '0' : carbon.toFixed(3)
 		let fun_weight = funWeight(carbon);
 
 		$('#display-time').text(response['journey_minutes']);
 		$('#display-transport').text(transport_type.image + " " + transport_type.name);
 		$('#display-passengers').text(response['passengers']);
-		$('#display-carbon').text(niceCarbon + "kg");
+		$('#display-carbon').text(nice_carbon + "kg");
 		$('#display-carbon-equivalent').text(funWeight(carbon));
 	}
 
