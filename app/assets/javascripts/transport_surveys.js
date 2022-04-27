@@ -45,8 +45,9 @@ $(document).ready(function() {
 
 	function nextPupil() {
 		storeResponse();
-		resetFields();
-		resetCards();
+		resetAllFields();
+		resetAllCards();
+		resetPanels();
 	}
 
 	function storeResponse() {
@@ -65,11 +66,21 @@ $(document).ready(function() {
 		return response;
 	}
 
-	function resetFields() {
-		$('#transport_survey').find('input[type="hidden"].selected').val("");
+	function resetAllFields() {
+		$('#transport_survey #survey').find('input[type="hidden"].selected').val("");
 	}
 
-	function resetCards() {
+	function resetCards(cards) {
+		cards.removeClass('bg-primary');
+		cards.addClass('bg-light');
+	}
+
+	function resetAllCards() {
+		let cards = $('#transport_survey .panel').find('.card');
+		resetCards(cards);
+	}
+
+	function resetPanels() {
 
 	}
 
@@ -88,9 +99,7 @@ $(document).ready(function() {
 	function selectCard(current) {
 		let panel = $(current).closest('.panel');
 
-		// remove highlight from other cards in panel
-		panel.find('.card').removeClass('bg-primary');
-		panel.find('.card').addClass('bg-light');
+		resetCards(panel.find('.card'));
 
 		// highlight current card
 		let card = $(current).closest('div.card');

@@ -17,7 +17,9 @@
         <%= form_with(model: @transport_survey, url: school_transport_survey_url(@school, @transport_survey), method: :patch, local: true, novalidate: true, id: 'transport_survey') do |f| %>
           <%= f.hidden_field :run_on %>
           <%= hidden_field_tag :run_identifier, TransportSurveyResponse.generate_unique_secure_token %>
+
           <div class="alert alert-success hide"></div>
+
           <div id="setup" class="panel">
             <h2>Please select today's weather</h2>
             <%= hidden_field_tag :weather, "", class: 'selected' %>
@@ -75,7 +77,6 @@
 
             <fieldset class="panel" style="display: none;">
               <h2>Summary</h4>
-
               <div class="alert" role="alert">
                 <p>For your <span id="display-time"></span> minute journey to school by <span id="display-transport"></span> for <span id="display-passengers"></span> pupil(s).</p>
                 <hr />
