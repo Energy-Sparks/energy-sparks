@@ -37,7 +37,7 @@ class TransportSurveyResponse < ApplicationRecord
   end
 
   def self.journey_minutes_options
-    [5, 10, 15, 30, 60]
+    [5, 10, 15, 20, 30, 45, 60]
   end
 
   def self.passengers_options
