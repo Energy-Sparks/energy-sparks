@@ -9,8 +9,7 @@ $(document).ready(function() {
 	var transport_types;
 	loadTransportTypes();
 
-	var fieldset_count = 1;
-	setProgressBar(fieldset_count);
+	resetProgressBar();
 
   $('.start').on('click', start);
   $('.next').on('click', next);
@@ -52,14 +51,14 @@ $(document).ready(function() {
 	}
 
 	function storeResponse() {
-    var responses = JSON.parse(localStorage.getItem('es_ts_responses')) || [];
-    var response = getResponse();
+    let responses = JSON.parse(localStorage.getItem('es_ts_responses')) || [];
+    let response = getResponse();
     responses.push(response);
     localStorage.setItem('es_ts_responses', JSON.stringify(responses));
 	}
 
 	function getResponse() {
-		var response = {};
+		let response = {};
 		for (const element of transport_fields) {
 			response[element] = $("#" + element).val();
 		}
@@ -98,8 +97,8 @@ $(document).ready(function() {
 	}
 
 	function resetProgressBar() {
-		fieldset_count = 1
-		setProgressBar(fieldset_count);
+		window.step = 1
+		setProgressBar(window.step);
 	}
 
 	function setProgressBar(step){
@@ -125,14 +124,14 @@ $(document).ready(function() {
 		let fieldset = $(current).closest('fieldset');
 		fieldset.next().show();
 		fieldset.hide();
-		setProgressBar(++fieldset_count);
+		setProgressBar(++window.step);
 	}
 
 	function previousPanel(current) {
 		let fieldset = $(current).closest('fieldset');
 		fieldset.prev().show();
 		fieldset.hide();
-		setProgressBar(--fieldset_count);
+		setProgressBar(--window.step);
 	}
 
 	function displayCarbon() {
