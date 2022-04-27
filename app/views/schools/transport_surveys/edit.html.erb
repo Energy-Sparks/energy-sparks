@@ -12,9 +12,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title" id="transport_survey_modal_label">Travel to school survey</h1>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><h1>&times;</h1></span>
+        </button>
       </div>
       <div class="modal-body">
-        <%= form_with(model: @transport_survey, url: school_transport_survey_url(@school, @transport_survey), method: :patch, local: true, novalidate: true, id: 'transport_survey') do |f| %>
+        <%= form_with(model: @transport_survey, url: school_transport_survey_url(@school, @transport_survey),
+          method: :patch, local: true, novalidate: true, id: 'transport_survey') do |f| %>
           <%= f.hidden_field :run_on %>
           <%= hidden_field_tag :run_identifier, TransportSurveyResponse.generate_unique_secure_token %>
 
@@ -94,7 +99,9 @@
         <% end %>
       </div>
       <div class="modal-footer">
-        <%= button_tag "Finish & Submit results", type: 'submit', class: 'submit btn btn-primary' %>
+        <%= button_tag(type: 'submit', class: 'submit btn btn-primary', id: 'save-results') do %>
+          Finish & save results <span id="results-count" class="badge badge-primary"></span>
+        <% end %>
         <%= button_tag 'Cancel', type: 'button', class: "btn btn-secondary", "data-dismiss": "modal" %>
       </div>
     </div>

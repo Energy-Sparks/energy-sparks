@@ -5,6 +5,7 @@ $(document).ready(function() {
 	//* setup *//
 
 	const transport_fields = ['run_identifier', 'journey_minutes', 'passengers', 'transport_type_id', 'weather'];
+	const run_identifier = $("#run_identifier").val();
 
 	var transport_types;
 	loadTransportTypes();
@@ -17,6 +18,7 @@ $(document).ready(function() {
   $('.last').on('click', last);
   $('.next-pupil').on('click', nextPupil);
 
+  $('#save-results').on('click', function(e) { $('#transport_survey').submit(); });
   $('#transport_survey').on('submit', submit);
 
 	//* methods *//
@@ -50,12 +52,17 @@ $(document).ready(function() {
 		resetProgressBar();
 	}
 
+	function setResultsCount(value) {
+		$('#results-count').text(value);
+	}
+
 	function storeResponse() {
     let responses = JSON.parse(localStorage.getItem('es_ts_responses')) || {};
     let response = getResponse();
-    responses[response['run_identifier']] ||= [];
-    responses[response['run_identifier']].push(response);
+    responses[run_identifier] ||= [];
+    responses[run_identifier].push(response);
     localStorage.setItem('es_ts_responses', JSON.stringify(responses));
+    setResultsCount(responses[run_identifier].length);
 	}
 
 	function getResponse() {
