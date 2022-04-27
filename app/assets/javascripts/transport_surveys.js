@@ -51,9 +51,10 @@ $(document).ready(function() {
 	}
 
 	function storeResponse() {
-    let responses = JSON.parse(localStorage.getItem('es_ts_responses')) || [];
+    let responses = JSON.parse(localStorage.getItem('es_ts_responses')) || {};
     let response = getResponse();
-    responses.push(response);
+    responses[response['run_identifier']] ||= [];
+    responses[response['run_identifier']].push(response);
     localStorage.setItem('es_ts_responses', JSON.stringify(responses));
 	}
 
