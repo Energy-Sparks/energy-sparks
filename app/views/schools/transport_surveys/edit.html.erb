@@ -1,9 +1,10 @@
-
 <h1>Transport Surveys</h1>
 
 <h3>Surveying on <%= @transport_survey.run_on %></h3>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#transport_survey_modal">
+<%= render partial: 'no_javascript_warning' %>
+
+<button type="button" class="btn btn-primary jsonly" data-toggle="modal" data-target="#transport_survey_modal">
   I am heading away from wifi!
 </button>
 
