@@ -113,6 +113,7 @@ $(document).ready(function() {
 		let percent = parseFloat(100 / $("fieldset").length) * step;
 		percent = percent.toFixed();
 		$(".progress-bar").css("width",percent+"%").html(percent+"%");
+		setTab(step);
 	}
 
 	function selectCard(current) {
@@ -140,6 +141,12 @@ $(document).ready(function() {
 		fieldset.prev().show();
 		fieldset.hide();
 		setProgressBar(--window.step);
+	}
+
+	function setTab(step) {
+		let tabs = $("#survey a.nav-link");
+		tabs.removeClass('active');
+		$(tabs[step-1]).addClass('active');
 	}
 
 	function displayCarbon() {

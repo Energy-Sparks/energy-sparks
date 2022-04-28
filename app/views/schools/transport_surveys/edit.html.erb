@@ -12,7 +12,6 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title" id="transport_survey_modal_label">Travel to school survey</h1>
-
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true"><h1>&times;</h1></span>
         </button>
@@ -38,12 +37,10 @@
           </div>
 
           <div id="survey" style="display: none;">
-            <div class="progress">
-              <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
+            <%= render partial: 'progress_bar' %>
 
             <fieldset class="panel">
-              <h2>Step 1: How many minutes did your journey take in total?</h2>
+              <h2>Time: How many minutes did your journey take in total?</h2>
               <%= hidden_field_tag :journey_minutes, "", class: 'selected' %>
               <div class="container">
                 <div class="row">
@@ -55,7 +52,7 @@
             </fieldset>
 
             <fieldset class="panel" style="display: none;">
-              <h2>Step 2: What mode of transport did you use to get to school?</h2>
+              <h2>Transport: What mode of transport did you use to get to school?</h2>
               <%= hidden_field_tag :transport_type_id, "", class: 'selected' %>
               <div class="container">
                 <div class="row">
@@ -69,7 +66,7 @@
 
             <fieldset class="panel" style="display: none;">
               <%= hidden_field_tag :passengers, "", class: 'selected' %>
-              <h2>Step 3: How many pupils from school shared this mode of transport (including you)?</h2>
+              <h2>Transport: How many pupils from school shared this mode of transport (including you)?</h2>
               <div class="container">
                 <div class="row">
                   <% TransportSurveyResponse.passengers_options.each do |passengers| %>
