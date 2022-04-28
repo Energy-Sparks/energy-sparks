@@ -45,7 +45,7 @@
               <div class="container">
                 <div class="row">
                   <% TransportSurveyResponse.journey_minutes_options.each do |time| %>
-                    <%= render 'option', { label: "", content: time, identifier: time, action: "next" } %>
+                    <%= render 'option', { label: "minutes", content: time, identifier: time, action: "next" } %>
                   <% end %>
                 </div>
               </div>
@@ -66,11 +66,11 @@
 
             <fieldset class="panel" style="display: none;">
               <%= hidden_field_tag :passengers, "", class: 'selected' %>
-              <h2>Transport: How many pupils from school shared this mode of transport (including you)?</h2>
+              <h2>Pupil Passengers: How many pupils from school shared this mode of transport (including you)?</h2>
               <div class="container">
                 <div class="row">
                   <% TransportSurveyResponse.passengers_options.each do |passengers| %>
-                    <%= render 'option', { label: "", content: '🧍' * passengers, identifier: passengers, action: "last" } %>
+                    <%= render 'option', { label: "pupil passengers", content: '🧍' * passengers, identifier: passengers, action: "confirm" } %>
                   <% end %>
                 </div>
               </div>
@@ -78,19 +78,25 @@
             </fieldset>
 
             <fieldset class="panel" style="display: none;">
-              <h2>Summary</h4>
-              <div class="alert" role="alert">
-                <p>For your <span id="display-time"></span> minute journey to school by <span id="display-transport"></span> for <span id="display-passengers"></span> pupil(s).</p>
-                <hr />
-                <p>You used <span id="display-carbon" class="badge badge-secondary"></span> of carbon each!</p>
-                <hr />
-                <p class="mb-0"><span id="display-carbon-equivalent"></span></p>
+              <h2>Confirm your selection</h2>
+              <div class="container">
+                <div class="row">
+                  <%= render 'option', { label: "minutes", content: 'x', identifier: 'confirm-time', action: '' } %>
+                  <%= render 'option', { label: "transport", content: 'x', identifier: 'confirm-transport', action: '' } %>
+                  <%= render 'option', { label: "pupil passengers", content: 'x', identifier: 'confirm-passengers', action: '' } %>
+                </div>
               </div>
+              <p><%= button_tag "Confirm", type: 'button', class: 'store btn btn-primary w-100' %></p>
+              <p><%= button_tag 'Back', type: 'button', class: "previous btn btn-default w-100" %></p>
+            </fieldset>
 
-              <div>
-                <p><%= button_tag "Next pupil", type: 'button', class: 'next-pupil btn btn-primary w-100' %></p>
-                <p><%= button_tag 'Back', type: 'button', class: "previous btn btn-default w-100" %></p>
-              </div>
+            <fieldset class="panel" style="display: none;">
+              <h2>For your <span id="display-time"></span> minute journey to school by <span id="display-transport"></span> for <span id="display-passengers"></span> pupil(s).</h2>
+              <hr />
+              <h2>You used <span id="display-carbon" class="badge badge-secondary"></span> of carbon each!</h2>
+              <hr />
+              <h2 class="mb-0"><span id="display-carbon-equivalent"></span></h2>
+              <p><%= button_tag "Next pupil", type: 'button', class: 'next-pupil btn btn-primary w-100' %></p>
             </fieldset>
           </div>
         <% end %>

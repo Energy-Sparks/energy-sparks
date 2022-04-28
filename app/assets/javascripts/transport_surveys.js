@@ -15,7 +15,8 @@ $(document).ready(function() {
   $('.start').on('click', start);
   $('.next').on('click', next);
   $('.previous').on('click', previous);
-  $('.last').on('click', last);
+  $('.confirm').on('click', confirm);
+	$('.store').on('click', store);
   $('.next-pupil').on('click', nextPupil);
 
   $('#save-results').on('click', function(e) { $('#transport_survey').submit(); });
@@ -38,14 +39,19 @@ $(document).ready(function() {
 		previousPanel(this);
 	}
 
-	function last() {
+	function confirm() {
 		selectCard(this);
+		displaySelection();
 		nextPanel(this);
+	}
+
+	function store() {
 		displayCarbon();
+		storeResponse();
+		nextPanel(this);
 	}
 
 	function nextPupil() {
-		storeResponse();
 		resetAllFields();
 		resetAllCards();
 		resetPanels();
@@ -116,6 +122,12 @@ $(document).ready(function() {
 		setTab(step);
 	}
 
+	function setTab(step) {
+		let tabs = $("#survey a.nav-link");
+		tabs.removeClass('active');
+		$(tabs[step-1]).addClass('active');
+	}
+
 	function selectCard(current) {
 		let panel = $(current).closest('.panel');
 		resetCards(panel.find('.card'));
@@ -143,10 +155,14 @@ $(document).ready(function() {
 		setProgressBar(--window.step);
 	}
 
-	function setTab(step) {
-		let tabs = $("#survey a.nav-link");
-		tabs.removeClass('active');
-		$(tabs[step-1]).addClass('active');
+	function displaySelection() {
+		let response = getResponse();
+		let transport_type = transport_types[response['transport_type_id']];
+
+		$('#confirm-time div.option-content').text(response['journey_minutes']);
+		$('#confirm-transport div.option-content').text(transport_type.image);
+		$('#confirm-transport div.option-label').text(transport_type.name);
+		$('#confirm-passengers div.option-content').text("🧍".repeat(response['passengers']));
 	}
 
 	function displayCarbon() {
