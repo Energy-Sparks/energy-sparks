@@ -29,6 +29,11 @@ class CalendarsController < ApplicationController
     redirect_back fallback_location: admin_calendars_path, notice: 'Calendar was successfully reset.'
   end
 
+  def resync
+    CalendarResyncService.new(@calendar).resync
+    redirect_back fallback_location: admin_calendars_path, notice: 'Calendar was successfully copied to dependents.'
+  end
+
   private
 
   def academic_year

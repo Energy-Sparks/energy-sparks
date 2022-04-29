@@ -20,6 +20,7 @@
 
 <% if can? :manage, @calendar %>
   <%= link_to 'Reset all events', reset_calendar_path(@calendar), method: :post, class: 'btn btn-primary', data: { confirm: 'Are you sure?' } %>
+  <%= link_to 'Copy to dependent schools', resync_calendar_path(@calendar), method: :post, class: 'btn btn-primary', data: { confirm: 'Are you sure?' } %>
 <% end %>
 
 <nav class="mt-2">
