@@ -46,6 +46,17 @@ describe CalendarResyncService do
     end
   end
 
+  context 'when parent event has been deleted' do
+    it 'deletes child events' do
+      CalendarResyncService.new(parent).resync
+      expect(calendar.calendar_events.count).to eq(1)
+      parent.calendar_events.destroy_all
+      parent.reload
+      CalendarResyncService.new(parent).resync
+      expect(calendar.calendar_events.count).to eq(0)
+    end
+  end
+
   context 'when child has conflicting event' do
     let!(:parent_event) { create(:term, calendar: parent, description: 'parent event', start_date: '2021-01-01', end_date: '2021-02-01') }
     let!(:calendar_event) { create(:term, calendar: calendar, description: 'calendar event', start_date: '2021-01-01', end_date: '2021-02-01') }
