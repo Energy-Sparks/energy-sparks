@@ -30,7 +30,7 @@ class CalendarsController < ApplicationController
   end
 
   def resync
-    CalendarResyncService.new(@calendar).resync
+    CalendarResyncService.new(@calendar, 1.month.ago).resync
     redirect_back fallback_location: admin_calendars_path, notice: 'Calendar was successfully copied to dependents.'
   end
 

@@ -1,10 +1,11 @@
 class CalendarResyncService
-  def initialize(calendar)
+  def initialize(calendar, from_date = nil)
     @calendar = calendar
+    @from_date = from_date || @calendar.created_at
   end
 
   def resync
-    calendar_events = calendar_events_to_sync(@calendar)
+    calendar_events = calendar_events_to_sync(@calendar, @from_date)
     @calendar.calendars.each do |child_calendar|
       child_calendar.transaction do
         resync_child_events(calendar_events, child_calendar)
@@ -23,9 +24,7 @@ class CalendarResyncService
 
   private
 
-  # brutal
-  # should probably only be future events, or recent events, or events recently modified..
-  def calendar_events_to_sync(calendar)
-    calendar.calendar_events
+  def calendar_events_to_sync(calendar, from_date)
+    calendar.calendar_events.where('updated_at > ?', from_date)
   end
 end
