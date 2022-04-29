@@ -17,6 +17,24 @@ describe CalendarResyncService do
     end
   end
 
+  context 'when restricting earliest event to sync' do
+    let(:from_date) { Date.parse('2021-06-06') }
+    let(:old_parent_event) { create(:holiday, calendar: parent, description: 'old parent event', start_date: '2020-01-01', end_date: '2020-01-01') }
+
+    before :each do
+      old_parent_event.update(updated_at: from_date - 1.day)
+    end
+
+    it 'creates new events for recent events only' do
+      expect(parent.calendar_events.count).to eq(2)
+      expect(calendar.calendar_events.count).to eq(0)
+      CalendarResyncService.new(parent, from_date).resync
+      expect(calendar.calendar_events.count).to eq(1)
+      expect(calendar.calendar_events.first.description).to eq('parent event')
+      expect(calendar.calendar_events.first.based_on).to eq(parent_event)
+    end
+  end
+
   context 'when child has event based on parent' do
     let!(:calendar_event) { create(:holiday, calendar: calendar, description: 'calendar event', based_on: parent_event) }
     it 'updates child events' do
