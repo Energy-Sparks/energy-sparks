@@ -15,6 +15,12 @@ class CalendarResyncService
     end
   end
 
+  private
+
+  def calendar_events_to_sync(calendar, from_date)
+    calendar.calendar_events.where('updated_at > ?', from_date)
+  end
+
   def delete_orphaned_child_events(child_calendar, parent_event_ids)
     child_calendar.calendar_events.where.not(based_on_id: nil).where.not(based_on_id: parent_event_ids).destroy_all
   end
@@ -26,11 +32,5 @@ class CalendarResyncService
       child_event.based_on = calendar_event
       child_calendar.calendar_events << child_event
     end
-  end
-
-  private
-
-  def calendar_events_to_sync(calendar, from_date)
-    calendar.calendar_events.where('updated_at > ?', from_date)
   end
 end
