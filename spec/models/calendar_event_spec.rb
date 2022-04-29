@@ -18,13 +18,6 @@ describe CalendarEvent do
     expect(event_2 .academic_year).to eq(academic_year)
   end
 
-  # it 'creates a copy in child calendars' do
-  #   child_calendar = create(:calendar, based_on: calendar)
-  #   event = create(:holiday, calendar: calendar)
-  #   expect(child_calendar.calendar_events.count).to eq(1)
-  #   expect(child_calendar.calendar_events.last.based_on).to eq(event)
-  # end
-
   describe '#valid?' do
 
     it 'is valid with default attributes' do
@@ -75,8 +68,24 @@ describe CalendarEvent do
           expect(build(:term, calendar: calendar, start_date: Date.new(2018, 1, 12), end_date: Date.new(2018, 2, 1))).to be_valid
         end
       end
+
+      describe 'for same calendar type' do
+        let(:calendar_event_type_1) { create(:calendar_event_type) }
+        let(:calendar_event_type_2) { create(:calendar_event_type) }
+
+        it 'is not valid when there is another event of same type with overlapping dates' do
+          create(:calendar_event, calendar: calendar, calendar_event_type: calendar_event_type_1, start_date: Date.new(2018, 1, 22), end_date: Date.new(2018, 1, 30))
+          expect(build(:calendar_event, calendar: calendar, calendar_event_type: calendar_event_type_1, start_date: Date.new(2018, 1, 23), end_date: Date.new(2018, 2, 1))).to_not be_valid
+        end
+        it 'is valid when there is another event of different type with overlapping dates' do
+          create(:calendar_event, calendar: calendar, calendar_event_type: calendar_event_type_1, start_date: Date.new(2018, 1, 22), end_date: Date.new(2018, 1, 30))
+          expect(build(:calendar_event, calendar: calendar, calendar_event_type: calendar_event_type_2, start_date: Date.new(2018, 1, 23), end_date: Date.new(2018, 2, 1))).to be_valid
+        end
+        it 'is valid when there is another event of same type with non-overlapping dates' do
+          create(:calendar_event, calendar: calendar, calendar_event_type: calendar_event_type_1, start_date: Date.new(2018, 1, 22), end_date: Date.new(2018, 1, 30))
+          expect(build(:calendar_event, calendar: calendar, calendar_event_type: calendar_event_type_1, start_date: Date.new(2018, 2, 1), end_date: Date.new(2018, 2, 2))).to be_valid
+        end
+      end
     end
-
   end
-
 end
