@@ -92,5 +92,33 @@ RSpec.describe 'calendars', :calendar, type: :system do
       expect(calendar.calendar_events.count).to eq(1)
       expect(calendar.calendar_events.last.description).to eq(parent_event.description)
     end
+
+    it 'allows calendar to be resynced to dependents' do
+      regional_calendar = create(:regional_calendar, title: 'Regional calendar')
+      parent_event = create(:holiday, calendar: regional_calendar, description: 'Regional calendar event', start_date: '2021-01-01')
+
+      calendar = CalendarFactory.new(existing_calendar: regional_calendar, title: 'child calendar', calendar_type: :school).create
+      expect(calendar.calendar_events.count).to eq(1)
+      expect(calendar.calendar_events.last.description).to eq('Regional calendar event')
+      expect(calendar.calendar_events.last.start_date).to eq(Date.parse('2021-01-01'))
+
+      parent_event.update(description: 'new description')
+      parent_event.update(start_date: '2021-06-06')
+
+      click_on 'Manage'
+      click_on 'Admin'
+      click_on 'Calendars'
+      within '.regional-calendars' do
+        click_on 'Show'
+      end
+
+      click_on 'Copy to dependent schools'
+      expect(page).to have_content("Calendar was successfully copied to dependents.")
+
+      calendar.reload
+      expect(calendar.calendar_events.count).to eq(1)
+      expect(calendar.calendar_events.last.description).to eq('new description')
+      expect(calendar.calendar_events.last.start_date).to eq(Date.parse('2021-06-06'))
+    end
   end
 end
