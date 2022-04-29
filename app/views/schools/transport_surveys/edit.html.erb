@@ -71,7 +71,7 @@
               <div class="container">
                 <div class="row">
                   <% TransportSurveyResponse.passengers_options.each do |passengers| %>
-                    <%= render 'option', { label: "pupil passengers", content: '🧍' * passengers, identifier: passengers, action: "confirm" } %>
+                    <%= render 'option', { label: "Just me" + ((passengers > 1) ? " + #{passengers - 1} more" : "") , content: '🧍' * passengers, identifier: passengers, action: "confirm" } %>
                   <% end %>
                 </div>
               </div>
@@ -84,7 +84,7 @@
                 <div class="row">
                   <%= render 'option', { label: "minutes", content: 'x', identifier: 'confirm-time', action: '' } %>
                   <%= render 'option', { label: "transport", content: 'x', identifier: 'confirm-transport', action: '' } %>
-                  <%= render 'option', { label: "pupil passengers", content: 'x', identifier: 'confirm-passengers', action: '' } %>
+                  <%= render 'option', { label: "pupil passenger(s)", content: 'x', identifier: 'confirm-passengers', action: '' } %>
                 </div>
               </div>
               <p><%= button_tag "Confirm", type: 'button', class: 'store btn btn-primary w-100' %></p>
