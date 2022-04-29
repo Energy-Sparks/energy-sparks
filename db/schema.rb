@@ -1278,7 +1278,7 @@ ActiveRecord::Schema.define(version: 2022_04_25_091650) do
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
     t.index ["scoreboard_id"], name: "index_schools_on_scoreboard_id"
-    t.index ["urn"], name: "index_schools_on_urn"
+    t.index ["urn"], name: "index_schools_on_urn", unique: true
   end
 
   create_table "scoreboards", force: :cascade do |t|
