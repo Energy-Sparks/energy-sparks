@@ -18,9 +18,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <%= form_with(model: @transport_survey, url: school_transport_survey_url(@school, @transport_survey),
-          method: :patch, local: true, novalidate: true, id: 'transport_survey') do |f| %>
-          <%= f.hidden_field :run_on %>
+        <%= form_with(url: school_transport_surveys_url(@school), method: :patch, local: true, id: 'transport_survey') do |f| %>
+          <%= hidden_field_tag :run_on, @transport_survey.run_on %>
           <%= hidden_field_tag :run_identifier, TransportSurveyResponse.generate_unique_secure_token %>
 
           <div class="alert alert-success hide"></div>
@@ -39,7 +38,6 @@
 
           <div id="survey" style="display: none;">
             <%= render partial: 'progress_bar' %>
-
             <fieldset class="panel">
               <h2>Time: How many minutes did your journey take in total?</h2>
               <%= hidden_field_tag :journey_minutes, "", class: 'selected' %>

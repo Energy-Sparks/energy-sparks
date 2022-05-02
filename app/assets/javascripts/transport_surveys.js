@@ -5,12 +5,16 @@ $(document).ready(function() {
 	//* setup *//
 
 	const transport_fields = ['run_identifier', 'journey_minutes', 'passengers', 'transport_type_id', 'weather'];
+	const storage_key = 'es_ts_responses';
+	const run_on = $("#run_on").val();
 	const run_identifier = $("#run_identifier").val();
+	const action = $('#transport_survey').attr('action');
 
 	var transport_types;
 	loadTransportTypes();
 
 	resetProgressBar();
+  setResultsCount(getStoredResponses(run_on).length);
 
   $('.start').on('click', start);
   $('.next').on('click', next);
@@ -20,7 +24,7 @@ $(document).ready(function() {
   $('.next-pupil').on('click', nextPupil);
 
   $('#save-results').on('click', function(e) { $('#transport_survey').submit(); });
-  $('#transport_survey').on('submit', submit);
+  $('#transport_survey').on('submit', function(e) { submit(e); });
 
 	//* methods *//
 
@@ -63,15 +67,64 @@ $(document).ready(function() {
 	}
 
 	function storeResponse() {
-    let responses = JSON.parse(localStorage.getItem('es_ts_responses')) || {};
-    let response = getResponse();
-    responses[run_identifier] ||= [];
-    responses[run_identifier].push(response);
-    localStorage.setItem('es_ts_responses', JSON.stringify(responses));
-    setResultsCount(responses[run_identifier].length);
+    addResponse(run_on, readResponse());
+    setResultsCount(getStoredResponses(run_on).length);
 	}
 
-	function getResponse() {
+	function getStoredResponses(date) {
+		let responses = JSON.parse(localStorage.getItem(storage_key)) || {};
+		if (date) {
+			responses[date] ||= []
+			return responses[date];
+		} else {
+			return responses;
+		}
+	}
+
+	function removeStoredResponses(date) {
+		let responses = getStoredResponses();
+		delete responses[date];
+    localStorage.setItem(storage_key, JSON.stringify( responses ));
+	}
+
+	function addResponse(date, response) {
+		let responses = getStoredResponses();
+    responses[date] ||= [];
+    responses[date].push(response);
+    localStorage.setItem(storage_key, JSON.stringify( responses ));
+	}
+
+	function syncResponses(baseurl, date, redirect = true) {
+		let responses = getStoredResponses(date);
+		if (responses) {
+			let url = baseurl + "/" + date;
+			let data = { transport_survey: { run_on: date, responses: responses }};
+			$.ajax({
+        url: url,
+        type: 'PUT',
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        dataType: "text" })
+			.done(function(data) {
+				removeStoredResponses(date);
+				if (redirect) {
+					window.location.href = url;
+				}	else {
+					alert("Responses saved!");
+				}
+			})
+			.fail(function(err) { alert("Error saving responses, please try again! " + err); });
+		} else {
+			alert("Nothing to save - please collect some survey responses first!");
+		}
+	}
+
+  function submit(event) {
+		event.preventDefault(); // disable form submitting
+		syncResponses(action, run_on, true);
+  }
+
+	function readResponse() {
 		let response = {};
 		for (const element of transport_fields) {
 			response[element] = $("#" + element).val();
@@ -156,7 +209,7 @@ $(document).ready(function() {
 	}
 
 	function displaySelection() {
-		let response = getResponse();
+		let response = readResponse();
 		let transport_type = transport_types[response['transport_type_id']];
 
 		$('#confirm-time div.option-content').text(response['journey_minutes']);
@@ -166,7 +219,7 @@ $(document).ready(function() {
 	}
 
 	function displayCarbon() {
-		let response = getResponse();
+		let response = readResponse();
 		let transport_type = transport_types[response['transport_type_id']];
 
 		let carbon = carbonCalc(transport_type, response['journey_minutes'], response['passengers']);
@@ -179,19 +232,6 @@ $(document).ready(function() {
 		$('#display-carbon').text(nice_carbon + "kg");
 		$('#display-carbon-equivalent').text(funWeight(carbon));
 	}
-
-  function submit() {
-		let error_message = '';
-
-		// Display error if any else submit form
-		if(error_message) {
-			$('.alert-success').removeClass('hide').html(error_message);
-			return false;
-		} else {
-			alert("submitting");
-			return true;
-		}
-  }
 
 	// logic mostly lifted from the old app.
 
