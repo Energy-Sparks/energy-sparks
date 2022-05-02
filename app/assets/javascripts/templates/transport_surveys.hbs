@@ -1,7 +1,7 @@
 {{#each responses}}
 <div class="alert alert-warning alert-dismissible fade show clearfix" role="alert">
-  <span><strong>You have {{this.length}} unsaved survey responses from {{@key}}.</strong> Do you want to save these or delete them?</span>
-  <button data-date="{{@key}}" type="button" class="date-remove btn btn-primary float-right pr-2" data-dismiss="alert" aria-label="Close">Delete</button>
-  <button data-date="{{@key}}" type="button" class="date-save btn btn-primary float-right" data-dismiss="alert" aria-label="Close">Save</button>
+  <span>There are <strong>{{this.length}}</strong> unsaved survey responses from <strong>{{@key}}</strong>. Do you want to save or delete them?</span>
+  <button data-date="{{@key}}" type="button" class="responses-save btn btn-primary float-right ml-2" data-dismiss="alert" aria-label="Close">Save</button>
+  <button data-date="{{@key}}" type="button" class="responses-remove btn btn-primary float-right" data-dismiss="alert" aria-label="Close">Delete</button>
 </div>
 {{/each}}

@@ -27,6 +27,9 @@ $(document).ready(function() {
   $('#save-results').on('click', function(e) { $('#transport_survey').submit(); });
   $('#transport_survey').on('submit', function(e) { submit(e); });
 
+  $('.responses-save').on('click', saveResponses);
+  $('.responses-remove').on('click', removeResponses);
+
 	//* methods *//
 
 	function start() {
@@ -61,6 +64,16 @@ $(document).ready(function() {
 		resetAllCards();
 		resetPanels();
 		resetProgressBar();
+	}
+
+	function saveResponses() {
+		let date = $(this).attr('data-date');
+		syncResponses(action, date, false);
+	}
+
+	function removeResponses() {
+		let date = $(this).attr('data-date');
+		removeStoredResponses(date);
 	}
 
 	function setResponsesCount(value) {
