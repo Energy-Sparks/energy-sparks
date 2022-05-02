@@ -4,6 +4,8 @@
 
 <%= render partial: 'no_javascript_warning' %>
 
+<div id="unsaved-responses"></div>
+
 <button type="button" class="btn btn-primary jsonly" data-toggle="modal" data-target="#transport_survey_modal">
   I am heading away from wifi!
 </button>
@@ -102,7 +104,7 @@
       </div>
       <div class="modal-footer">
         <%= button_tag(type: 'submit', class: 'submit btn btn-primary', id: 'save-results') do %>
-          Finish & save results <span id="results-count" class="badge badge-primary"></span>
+          Finish & save results <span id="unsaved-responses-count" class="badge badge-primary"></span>
         <% end %>
         <%= button_tag 'Cancel', type: 'button', class: "btn btn-secondary", "data-dismiss": "modal" %>
       </div>

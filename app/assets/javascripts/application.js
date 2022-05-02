@@ -22,6 +22,7 @@
 
 // This is used (handlebars) but slight overkill I think
 //= require handlebars
+//= require_tree ./templates
 
 //= require activity_types
 //= require usage_charts

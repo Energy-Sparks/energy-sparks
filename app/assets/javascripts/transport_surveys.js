@@ -14,7 +14,8 @@ $(document).ready(function() {
 	loadTransportTypes();
 
 	resetProgressBar();
-  setResultsCount(getStoredResponses(run_on).length);
+  setResponsesCount(getStoredResponses(run_on).length);
+  setUnsavedResponses();
 
   $('.start').on('click', start);
   $('.next').on('click', next);
@@ -62,13 +63,20 @@ $(document).ready(function() {
 		resetProgressBar();
 	}
 
-	function setResultsCount(value) {
-		$('#results-count').text(value);
+	function setResponsesCount(value) {
+		$('#unsaved-responses-count').text(value);
+	}
+
+	function setUnsavedResponses() {
+		let responses = getStoredResponses();
+		let html = HandlebarsTemplates['transport_surveys']({responses: responses});
+		$('#unsaved-responses').html(html);
 	}
 
 	function storeResponse() {
     addResponse(run_on, readResponse());
-    setResultsCount(getStoredResponses(run_on).length);
+    setResponsesCount(getStoredResponses(run_on).length);
+    setUnsavedResponses();
 	}
 
 	function getStoredResponses(date) {

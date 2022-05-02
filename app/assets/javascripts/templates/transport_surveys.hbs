@@ -1,0 +1,7 @@
+{{#each responses}}
+<div class="alert alert-warning alert-dismissible fade show clearfix" role="alert">
+  <span><strong>You have {{this.length}} unsaved survey responses from {{@key}}.</strong> Do you want to save these or delete them?</span>
+  <button data-date="{{@key}}" type="button" class="date-remove btn btn-primary float-right pr-2" data-dismiss="alert" aria-label="Close">Delete</button>
+  <button data-date="{{@key}}" type="button" class="date-save btn btn-primary float-right" data-dismiss="alert" aria-label="Close">Save</button>
+</div>
+{{/each}}
