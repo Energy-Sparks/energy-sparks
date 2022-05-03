@@ -3,19 +3,15 @@
 $(document).ready(function() {
 
 	//* setup *//
+	const config = {
+		transport_fields: ['run_identifier', 'journey_minutes', 'passengers', 'transport_type_id', 'weather'],
+		storage_key: 'es_ts_responses',
+		run_on: $("#run_on").val(),
+		url: $('#transport_survey').attr('action'),
+		transport_types: loadTransportTypes('/transport_types.json')
+	}
 
-	const transport_fields = ['run_identifier', 'journey_minutes', 'passengers', 'transport_type_id', 'weather'];
-	const storage_key = 'es_ts_responses';
-	const run_on = $("#run_on").val();
-	const run_identifier = $("#run_identifier").val();
-	const action = $('#transport_survey').attr('action');
-
-	var transport_types;
-	loadTransportTypes();
-
-	resetProgressBar();
-  setResponsesCount(getStoredResponses(run_on).length);
-  setUnsavedResponses();
+	setupSurvey();
 
   $('.start').on('click', start);
   $('.next').on('click', next);
@@ -33,27 +29,38 @@ $(document).ready(function() {
 
 	//* methods *//
 
+	/* onclick handlers */
+
+  function resetSurvey() {
+
+  }
+
+  // Select weather card, hide weather panel and begin surveying
 	function start() {
 		selectCard(this);
 		$('#setup').hide();
 		$('#survey').show();
 	}
 
+	// Generic select card for current panel and move to next panel
 	function next() {
 		selectCard(this);
 		nextPanel(this);
 	}
 
+	// Generic move to previous panel
 	function previous() {
 		previousPanel(this);
 	}
 
+	// select card, set confirmation details for display on confirmation page and show confirmation panel
 	function confirm() {
 		selectCard(this);
 		displaySelection();
 		nextPanel(this);
 	}
 
+	// show the carbon calculation, store confirmed results to localstorage and show carbon calculation panel
 	function store() {
 		displayCarbon();
 		storeResponse();
@@ -69,13 +76,21 @@ $(document).ready(function() {
 
 	function saveResponses() {
 		let date = $(this).attr('data-date');
-		syncResponses(action, date, false);
+		syncResponses(config.url, date, false);
 	}
 
 	function removeResponses() {
 		let date = $(this).attr('data-date');
 		removeStoredResponses(date);
 	}
+
+	/* end of onclick handlers */
+
+	function setupSurvey() {
+		resetProgressBar();
+		setResponsesCount(getStoredResponses(config.run_on).length);
+		setUnsavedResponses();
+  }
 
 	function setResponsesCount(value) {
 		$('#unsaved-responses-count').text(value);
@@ -88,13 +103,13 @@ $(document).ready(function() {
 	}
 
 	function storeResponse() {
-    addResponse(run_on, readResponse());
-    setResponsesCount(getStoredResponses(run_on).length);
+    addResponse(config.run_on, readResponse());
+    setResponsesCount(getStoredResponses(config.run_on).length);
     setUnsavedResponses();
 	}
 
 	function getStoredResponses(date) {
-		let responses = JSON.parse(localStorage.getItem(storage_key)) || {};
+		let responses = JSON.parse(localStorage.getItem(config.storage_key)) || {};
 		if (date) {
 			responses[date] ||= []
 			return responses[date];
@@ -106,14 +121,14 @@ $(document).ready(function() {
 	function removeStoredResponses(date) {
 		let responses = getStoredResponses();
 		delete responses[date];
-    localStorage.setItem(storage_key, JSON.stringify( responses ));
+    localStorage.setItem(config.storage_key, JSON.stringify( responses ));
 	}
 
 	function addResponse(date, response) {
 		let responses = getStoredResponses();
     responses[date] ||= [];
     responses[date].push(response);
-    localStorage.setItem(storage_key, JSON.stringify( responses ));
+    localStorage.setItem(config.storage_key, JSON.stringify( responses ));
 	}
 
 	function syncResponses(baseurl, date, redirect = true) {
@@ -141,14 +156,31 @@ $(document).ready(function() {
 		}
 	}
 
+  function loadTransportTypes(path) {
+		let transport_types = {};
+		$.ajax({
+			url: path,
+			type: 'GET',
+			dataType: 'json',
+			async: false,
+		})
+		.done(function(data) {
+			transport_types = data;
+		})
+		.fail(function(err) {
+			alert("Error loading data from server! " + err);
+		});
+		return transport_types;
+	}
+
   function submit(event) {
 		event.preventDefault(); // disable form submitting
-		syncResponses(action, run_on, true);
+		syncResponses(config.url, config.run_on, true);
   }
 
 	function readResponse() {
 		let response = {};
-		for (const element of transport_fields) {
+		for (const element of config.transport_fields) {
 			response[element] = $("#" + element).val();
 		}
 		response['surveyed_at'] = new Date().toISOString();
@@ -175,7 +207,7 @@ $(document).ready(function() {
 	}
 
 	function sharing() {
-		let transport_type = transport_types[$("#transport_type_id").val()];
+		let transport_type = config.transport_types[$("#transport_type_id").val()];
 		if (transport_type.can_share) {
 			$("fieldset#sharing .card").show();
 		} else {
@@ -189,11 +221,6 @@ $(document).ready(function() {
 		$("fieldset:first").show();
 	}
 
-  function loadTransportTypes() {
-		$.getJSON( "/transport_types.json", function( data ) {
-			transport_types = data;
-		}); // this needs to be more robust
-	}
 
 	function resetProgressBar() {
 		window.step = 1
@@ -242,7 +269,7 @@ $(document).ready(function() {
 
 	function displaySelection() {
 		let response = readResponse();
-		let transport_type = transport_types[response['transport_type_id']];
+		let transport_type = config.transport_types[response['transport_type_id']];
 
 		$('#confirm-time div.option-content').text(response['journey_minutes']);
 		$('#confirm-transport div.option-content').text(transport_type.image);
@@ -252,7 +279,7 @@ $(document).ready(function() {
 
 	function displayCarbon() {
 		let response = readResponse();
-		let transport_type = transport_types[response['transport_type_id']];
+		let transport_type = config.transport_types[response['transport_type_id']];
 
 		let carbon = carbonCalc(transport_type, response['journey_minutes'], response['passengers']);
 		let nice_carbon = carbon === 0 ? '0' : carbon.toFixed(3)
