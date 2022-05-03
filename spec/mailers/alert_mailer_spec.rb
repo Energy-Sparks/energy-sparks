@@ -16,7 +16,7 @@ RSpec.describe AlertMailer do
       expect(email.mailgun_headers['X-Mailgun-Tag']).to eql "alerts"
     end
 
-    it 'does not send an email if env var is set to suppress' do
+    it 'does not send an email if env var is not set' do
       AlertMailer.with(email_address: email_address, school: school, events: []).alert_email.deliver_now
       expect(ActionMailer::Base.deliveries.count).to eql 0
     end
