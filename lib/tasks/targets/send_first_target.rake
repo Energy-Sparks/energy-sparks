@@ -2,7 +2,7 @@ namespace :targets do
   desc 'Send email to set first target'
   task send_first_target: [:environment] do
     puts "#{Time.zone.now} send_first_target start - Sending first target invite emails"
-    if ENV['SEND_AUTOMATED_EMAILS']
+    if ENV['SEND_AUTOMATED_EMAILS'] == 'true'
       Targets::TargetMailerService.new.invite_schools_to_set_first_target
       Targets::TargetMailerService.new.remind_schools_to_set_first_target
     else
