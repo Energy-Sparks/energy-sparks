@@ -58,14 +58,14 @@
               <div class="container">
                 <div class="row">
                   <% TransportType.all.each do |transport_type| %>
-                    <%= render 'option', { label: transport_type.name, content: transport_type.image, identifier: transport_type.id, action: "next" } %>
+                    <%= render 'option', { label: transport_type.name, content: transport_type.image, identifier: transport_type.id, action: "next sharing" } %>
                   <% end %>
                 </div>
               </div>
               <%= button_tag 'Back', type: 'button', class: "previous btn btn-default w-100" %>
             </fieldset>
 
-            <fieldset class="panel" style="display: none;">
+            <fieldset class="panel" id="sharing" style="display: none;">
               <%= hidden_field_tag :passengers, "", class: 'selected' %>
               <h2>Pupil Passengers: How many pupils from school shared this mode of transport (including you)?</h2>
               <div class="container">
