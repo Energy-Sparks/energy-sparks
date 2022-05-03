@@ -11,6 +11,6 @@ class SendSms
   end
 
   def send
-    @twilio_client.messages.create(body: @body, to: @to_number, from: @from_phone_number)
+    @twilio_client.messages.create(body: @body, to: @to_number, from: @from_phone_number) unless ENV['SUPPRESS_ALERT_MESSAGES'] == 'true'
   end
 end

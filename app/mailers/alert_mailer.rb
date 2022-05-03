@@ -2,6 +2,8 @@ class AlertMailer < ApplicationMailer
   include MailgunMailerHelper
   helper :application
 
+  after_action :prevent_delivery_from_test
+
   def alert_email
     @email_address = params[:email_address]
     @events = params[:events]
@@ -28,5 +30,9 @@ class AlertMailer < ApplicationMailer
         with: event.alert.template_variables
       )
     end
+  end
+
+  def prevent_delivery_from_test
+    mail.perform_deliveries = false if ENV['SUPPRESS_ALERT_MESSAGES'] == 'true'
   end
 end
