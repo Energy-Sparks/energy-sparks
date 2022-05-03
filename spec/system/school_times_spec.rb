@@ -9,7 +9,7 @@ describe 'managing school times' do
   before(:each) do
     sign_in(admin)
     visit root_path
-    click_on('Schools')
+    click_on('View schools')
     click_on('Oldfield Park Infants')
   end
 

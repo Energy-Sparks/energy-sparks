@@ -39,8 +39,7 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
       end
 
       it 'can view the public and private boards' do
-        visit schools_path
-        click_on 'Scoreboards'
+        visit scoreboards_path
         expect(page).to have_content('Super scoreboard')
         expect(page).to have_content('Private scoreboard')
         click_on 'Private scoreboard'

@@ -35,7 +35,7 @@ RSpec.describe "school", type: :system do
 
     it 'shows me the adult dashboard by default' do
       visit root_path
-      click_on('Schools')
+      click_on('View schools')
       expect(page.has_content? "Energy Sparks schools across the UK").to be true
       click_on(school_name)
 
@@ -131,7 +131,9 @@ RSpec.describe "school", type: :system do
 
         it 'doesnt link to compare schools' do
           visit school_path(school)
-          expect(page).to_not have_link("Compare schools")
+          within('.application') do
+            expect(page).to_not have_link("Compare schools")
+          end
         end
 
         context 'and signed in as school user' do
@@ -141,7 +143,9 @@ RSpec.describe "school", type: :system do
           end
           it 'links to compare schools' do
             visit school_path(school)
-            expect(page).to have_link("Compare schools")
+            within('.application') do
+              expect(page).to have_link("Compare schools")
+            end
           end
         end
       end
@@ -186,7 +190,7 @@ RSpec.describe "school", type: :system do
     context "as guest user" do
       it 'does not show invisible school or the group' do
         visit root_path
-        click_on('Schools')
+        click_on('View schools')
         expect(page.has_content? school_name).to be true
         expect(page.has_content? 'Invisible School').to_not be true
         expect(page.has_content? 'School Group').to_not be true
@@ -202,7 +206,7 @@ RSpec.describe "school", type: :system do
       before(:each) do
         sign_in(admin)
         visit root_path
-        click_on('Schools')
+        click_on('View schools')
       end
 
       it 'does show invisible school, but not the group' do
@@ -229,7 +233,7 @@ RSpec.describe "school", type: :system do
 
       it 'is listed on school page' do
         visit root_path
-        click_on('Schools')
+        click_on('View schools')
 
         expect(page.has_content? non_public_school.name).to be true
         expect(page.has_content? 'School Group').to be true
@@ -298,7 +302,7 @@ RSpec.describe "school", type: :system do
       sign_in(admin)
       visit root_path
       expect(page.has_content? 'Sign Out').to be true
-      click_on('Schools')
+      click_on('View schools')
       expect(page.has_content? "Energy Sparks schools across the UK").to be true
     end
 
@@ -548,7 +552,7 @@ RSpec.describe "school", type: :system do
       end
 
       it 'should display menu on other pages' do
-        click_on 'Scoreboard'
+        visit root_path
         expect(page).to have_css("#my_school_menu")
       end
 
@@ -581,7 +585,7 @@ RSpec.describe "school", type: :system do
       end
 
       it 'should display menu on other pages' do
-        click_on 'Scoreboard'
+        visit root_path
         expect(page).to have_css("#my_school_menu")
       end
 
@@ -609,9 +613,11 @@ RSpec.describe "school", type: :system do
     end
 
     it 'does not show data-enabled links' do
-      expect(page).to_not have_link("Compare schools")
-      expect(page).to_not have_link("Explore data")
-      expect(page).to_not have_link("Review energy analysis")
+      within('.application') do
+        expect(page).to_not have_link("Compare schools")
+        expect(page).to_not have_link("Explore data")
+        expect(page).to_not have_link("Review energy analysis")
+      end
     end
 
     describe 'it does not show a loading page' do
@@ -624,7 +630,7 @@ RSpec.describe "school", type: :system do
         visit school_path(school)
         expect(page).to_not have_content("Adult Dashboard")
         expect(page).to_not have_content("Energy Sparks is processing all of this school's data to provide today's analysis")
-        expect(page).to have_content("Enter temperatures")
+        expect(page).to have_content("No activities completed, make a start!")
       end
 
     end

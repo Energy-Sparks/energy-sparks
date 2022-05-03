@@ -1,0 +1,215 @@
+<% content_for :page_title, 'For Schools' %>
+
+<div class="application container extra-padding">
+  <div class="row mt-2">
+    <div class="col">
+      <div class="d-flex justify-content-between align-items-center">
+        <p class="display-3"><strong>Energy Sparks for schools</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <p>
+      Energy Sparks is an online energy analysis tool and energy education programme specifically designed to help schools reduce their electricity and gas usage through the analysis of smart meter data. Energy Sparks helps schools reduce their carbon emissions, and make a real contribution to addressing the 'climate emergency'.
+      </p>
+      <p>
+      Energy Sparks is a registered charity working for the public benefit to develop and promote tools, services and programmes to reduce energy and resource consumption and carbon emissions. Energy Sparks aims to educate the public, particularly young people, about the causes and impacts of climate change, and the importance of energy saving and reducing carbon emissions.
+      </p>
+      <p>
+        Energy Sparks is currently working with <strong><%= link_to "#{@school_count} schools", schools_path %></strong> across the UK.
+      </p>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <h4><strong>Energy Sparks shows schools when and how much energy they are using and provides tailored energy saving advice designed for individual schools</strong></h4>
+      <p>
+        Using a school’s electricity, gas and solar data, Energy Sparks shows pupils, staff and the wider school community how much energy the school is using. The online tool presents bespoke analysis of the energy data with suggestions of actions the school community could take to save energy and reduce the school’s carbon emissions.
+      </p>
+      <p>
+        Energy Sparks provides adult and pupil dashboards tailored to meet the specific needs of the students and staff at a school.
+      </p>
+    </div>
+  </div>
+
+  <%= render 'two_column_image_deck', column_one: 'for-schools/management-dashboard.png', column_two: 'for-schools/pupil-dashboard.png' %>
+
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <h4><strong>Ecoteam and classroom activities for pupils linked to energy analysis</strong></h4>
+      <p>
+        Energy Sparks has <%= @activities_count %> energy and sustainability education <%= link_to 'activities', activity_categories_path %> and accompanying resources which pupils can participate in through eco-teams or curriculum learning. These activities support learning about climate change and energy, investigating energy use around the school site, taking action to reduce energy use and spreading the energy saving and carbon reduction message across the wider school community. Schools are encouraged to record completed activities on Energy Sparks, <%= link_to 'earning points', scoreboards_path %> and sharing best practice with other schools.
+      </p>
+    </div>
+  </div>
+
+  <%= render 'two_column_image_deck', column_one: 'for-schools/activities-detective.png', column_two: 'for-schools/activities-analyst.png' %>
+
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <h4><strong>Advice for school staff on taking impactful action</strong></h4>
+      <p>
+        Energy Sparks provides guidance to support <%= link_to 'adult-led actions', intervention_type_groups_path %> to save energy through changes in:
+      </p>
+      <ul>
+        <li>Staff and pupil behaviour</li>
+        <li>Heating system setup</li>
+        <li>Building fabric</li>
+        <li>Appliance upgrades</li>
+        <li>Operations</li>
+        <li>Policies</li>
+      </ul>
+    </div>
+  </div>
+
+  <%= render 'two_column_image_deck', column_one: 'for-schools/actions-heating.png', column_two: 'for-schools/actions-operations.png' %>
+
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <h4><strong>Automated alerts to let schools know when energy use changes</strong></h4>
+      <p>
+        Energy Sparks provides online and weekly email and text alerts and action prompts informing users when their consumption changes and the cost and carbon implications. Alerts are uniquely linked to pupil activities and recommended adult-led actions to empower pupils and staff with taking impactful action to target energy waste.
+      </p>
+    </div>
+  </div>
+
+  <div class="row bg-light pb-4 pt-4">
+    <div class="col-md-12">
+      <div class="d-flex justify-content-center">
+        <%= image_tag("for-schools/dashboard-alerts.png", class: "img-fluid") %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <h4><strong>Improve pupil and staff energy and carbon literacy and develop transferable life skills</strong></h4>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <p>Participation empowers pupils to:</p>
+      <ul>
+        <li>take action to reduce their school's carbon footprint</li>
+        <li>see the impact of their actions</li>
+        <li>develop environmental awareness</li>
+        <li>participate in leadership and collaborative opportunities</li>
+        <li>build communication and analytical skills</li>
+        <li>be motivated to take responsibility for their school</li>
+        <li>have opportunities to influence and engage school and community leaders, and</li>
+        <li>develop positive responses to climate change</li>
+      </ul>
+    </div>
+    <div class="col-sm-6">
+      <p>Schools are supported with:</p>
+      <ul>
+        <li><%= link_to 'webinar training sessions', training_path %></li>
+        <li><%= link_to 'newsletters', newsletters_path %></li>
+        <li>email and phone support</li>
+        <li><%= link_to 'education workshops', education_workshops_path %></li>
+        <li><%= link_to 'virtual energy audits', energy_audits_path %></li>
+        <li><%= link_to 'on-site energy audits', energy_audits_path %></li>
+      </ul>
+    </div>
+  </div>
+
+  <%= render 'home/testimonial',
+    quote: @testimonial[:quote],
+    by: @testimonial[:by],
+    title: @testimonial[:title],
+    location: @testimonial[:location]
+  %>
+
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <h4><strong>How much energy can participating schools save?</strong></h4>
+      <p>
+        Most schools participating with Energy Sparks can expect to achieve energy savings of around 10% in their first year of engagement with Energy Sparks, resulting in cost savings of around £2500 and 8 tonnes of CO2 based on an average 2 form entry primary school. Energy Sparks' best performing schools have achieved savings of up to 30%, generally by reducing school holiday, weekend and overnight heating use and cutting their electricity baseload. Examples of savings achieved at participating schools are provided in the Energy Sparks' <%= link_to 'Case Studies', case_studies_path %>.
+      </p>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <h4><strong>What meters does the school need to join Energy Sparks?</strong></h4>
+      <p>
+        To join Energy Sparks you need smart meters installed which are capable of providing half hourly electricity and gas consumption data to Energy Sparks. These can be Half-Hourly (HH), Automated Meter Reading (AMR) or Smart Metering Equipment Technical Specifications (SMETS2) meters. If you don’t have the right meters installed, you can request an upgrade from your energy supplier. Energy Sparks recommends SMETS2 for electricity and AMR for gas where available.
+      </p>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <h4><strong>Free access to Energy Sparks for state schools</strong></h4>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6 pr-4">
+      <p><strong>State schools (maintained and academies)</strong></p>
+      <p>
+      Access to the online tool and education resources is currently <strong>free of charge</strong> for state schools across the UK through Energy Sparks' funding and support from central government, local authorities and charitable trusts and foundations.
+      </p>
+      <p>
+      Funding covers all aspects of our service for state schools except for <%= link_to 'on-site energy audits', energy_audits_path %> which are a chargeable extra.
+      </p>
+      <p><strong>
+      Your supplier may charge a small additional fee to provide your energy data to Energy Sparks. If applicable, this cost will be added to your energy bill. Any costs will be confirmed before your account set up goes ahead.
+      </strong></p>
+    </div>
+    <div class="col-sm-6">
+      <p><strong>Independent schools (private)</strong></p>
+      <p>
+      Access to the online tool, education resources, training webinars and email and phone support starts from £499 per year for independent schools.
+      </p>
+      <p>
+      This basic package covers support for up to 10 meters per year. Additional meters are charged at £10 per meter per year.
+      </p>
+      <p>
+      The basic package provides a publicly visible dashboard in line with all state schools. If you would  like your school’s energy use data to be private, and only accessible to logged in users, this can be requested at an extra charge of £75 per year. Our recommendation is to opt to have your energy data publicly visible to maximise engagement across your pupils and staff team.
+      </p>
+      <p>
+      <%= link_to 'Education workshops', education_workshops_path %> and virtual and on-site <%= link_to 'energy audits', energy_audits_path %> are available at extra cost.
+      </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <p>Participating schools and adult users confirm their agreement with Energy Sparks’ <%= link_to 'Terms and Conditions', terms_and_conditions_path %> as part of their initial account set up process.</p>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <div class="d-flex justify-content-center">
+        <%= link_to 'Enrol our school', enrol_our_school_path, class: 'btn btn-lg bg-positive' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <h4><strong>Find out more</strong></h4>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="card-deck col-md-12">
+      <% @videos.each do |video| %>
+      <div class="card border-light">
+        <div class="card-body">
+          <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="<%= video[:embed_url] %>" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <h5 class="card-title"><strong><%= video[:title] %></strong></h5>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -18,6 +18,9 @@
       <%= link_to 'Energy analysis', school_analysis_index_path(current_user.school), class: 'dropdown-item' %>
       <%= link_to 'Review targets', school_school_targets_path(current_user.school), class: 'dropdown-item' if Targets::SchoolTargetService.targets_enabled?(current_user.school) && can?(:manage, SchoolTarget) && Targets::SchoolTargetService.new(current_user.school).enough_data? %>
     <% end %>
+    <% if current_user.default_scoreboard %>
+      <%= link_to "Scoreboard", scoreboard_path(current_user.default_scoreboard), class: 'dropdown-item' %>
+    <% end %>
     <%= link_to 'School programmes', programme_types_path, class: 'dropdown-item' %>
     <%= link_to 'Complete pupil activities', activity_categories_path, class: 'dropdown-item' %>
     <%= link_to 'Energy saving actions', school_interventions_path(current_user.school), class: 'dropdown-item' if can? :index, Observation %>
@@ -28,6 +31,9 @@
     <% end %>
     <% if current_user.school.data_enabled? %>
       <%= link_to "Download our data", school_downloads_path(current_user.school), id: "download-your-data", class: 'dropdown-item' %>
+    <% end %>
+    <% if group_for_nav(current_user) %>
+      <%= link_to "My school group", school_group_path(group_for_nav(current_user)), class: 'dropdown-item' %>
     <% end %>
 </div>
 </li>
