@@ -24,6 +24,8 @@ class CalendarEventType < ApplicationRecord
   scope :inset_day,         -> { where(inset_day: true) }
   scope :holiday,           -> { where(holiday: true) }
   scope :outside_term_time, -> { where(term_time: false) }
+  scope :bank_holiday,      -> { where(bank_holiday: true) }
+  scope :not_bank_holiday,  -> { where(bank_holiday: false) }
 
   enum analytics_event_type: [:term_time, :school_holiday, :bank_holiday, :inset_day_in_school, :inset_day_out_of_school]
 
