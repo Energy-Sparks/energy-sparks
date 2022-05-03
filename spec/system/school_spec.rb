@@ -630,7 +630,7 @@ RSpec.describe "school", type: :system do
         visit school_path(school)
         expect(page).to_not have_content("Adult Dashboard")
         expect(page).to_not have_content("Energy Sparks is processing all of this school's data to provide today's analysis")
-        expect(page).to have_content("Enter temperatures")
+        expect(page).to have_content("No activities completed, make a start!")
       end
 
     end
