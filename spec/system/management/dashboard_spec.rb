@@ -375,10 +375,12 @@ describe 'Management dashboard' do
       end
 
       it 'does not show data-enabled links' do
-        expect(page).to_not have_link("Compare schools")
-        expect(page).to_not have_link("Explore your data")
-        expect(page).to_not have_link("Review your energy analysis")
-        expect(page).to_not have_link("Print view")
+        within('.application') do
+          expect(page).to_not have_link("Compare schools")
+          expect(page).to_not have_link("Explore your data")
+          expect(page).to_not have_link("Review your energy analysis")
+          expect(page).to_not have_link("Print view")
+        end
       end
 
     end

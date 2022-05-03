@@ -41,7 +41,6 @@ describe 'Benchmarks' do
     expect(benchmark_content_manager_instance).to receive(:content).at_least(:once).and_return(example_content)
 
     visit root_path
-    click_on 'Schools'
     within ".all-schools" do
       click_on 'Compare schools'
     end
@@ -103,7 +102,6 @@ describe 'Benchmarks' do
     before do
       Alerts::GenerateContent.new(school_1).perform
     end
-
 
     it 'a user can drilldown to an analysis page' do
       expect(AlertType.count).to be 1

@@ -6,18 +6,57 @@ RSpec.describe "home", type: :system do
     expect(page.has_content? "Energy Sparks")
   end
 
-  it 'has a teachers page' do
+  it 'has a for-schools page' do
     visit root_path
-    click_on('About')
-    within('.dropdown') do
-      click_on('For Teachers')
+    click_on('Our services')
+    within('#our-services') do
+      click_on('For Schools')
     end
-    expect(page.has_content? "What is Energy Sparks?")
+    expect(page).to have_content("Energy Sparks for schools")
+    click_on('Enrol our school')
+    expect(page).to have_content("Enrol our school")
+    expect(page).to have_link("Enrol now")
+  end
+
+  it 'redirects old pages' do
+    get for_teachers_path
+    expect(response).to redirect_to(for_schools_path)
+
+    get for_pupils_path
+    expect(response).to redirect_to(for_schools_path)
+
+    get for_management_path
+    expect(response).to redirect_to(for_schools_path)
+  end
+
+  it 'has a for-local-authorities page' do
+    visit root_path
+    click_on('Our services')
+    within('#our-services') do
+      click_on('For Local Authorities')
+    end
+    expect(page).to have_content("Energy Sparks for Local Authorities")
+    click_on('Enrol our Local Authority')
+    expect(page).to have_content("Enrol our Local Authority")
+    expect(page).to have_link("Enrol now")
+  end
+
+  it 'has a for-multi-academy-trusts page' do
+    visit root_path
+    click_on('Our services')
+    within('#our-services') do
+      click_on('For Multi-Academy Trusts')
+    end
+    expect(page).to have_content("Energy Sparks for Multi-Academy Trusts")
+    click_on('Enrol our Multi-Academy Trust')
+    expect(page).to have_content("Enrol our Multi-Academy Trust")
+    expect(page).to have_link("Enrol now")
   end
 
   it 'has a contact page' do
     visit root_path
-    within('.navbar-nav') do
+    click_on('About')
+    within('#about-menu') do
       click_on('Contact')
     end
     expect(page.has_content? "Contact us")
@@ -25,17 +64,14 @@ RSpec.describe "home", type: :system do
 
   it 'has an enrol page' do
     visit root_path
-    click_on('About')
-    within('.dropdown') do
-      click_on('Enrol')
-    end
-    expect(page.has_content? "How do I enroll my school?")
+    click_on('Enrol')
+    expect(page.has_content? "Enrol with Energy Sparks")
   end
 
   it "has a training page" do
       visit root_path
-      click_on('About')
-      within('.navbar-nav') do
+      click_on('Our services')
+      within('#our-services') do
         click_on('Training')
       end
     expect(page.has_content? 'Training')
@@ -43,7 +79,10 @@ RSpec.describe "home", type: :system do
 
   it 'has a datasets page' do
     visit root_path
-    click_on('Open data')
+    click_on('About us')
+    within('#about-menu') do
+      click_on('Datasets')
+    end
     expect(page.has_content? "Data used in Energy Sparks")
   end
 
@@ -93,18 +132,6 @@ RSpec.describe "home", type: :system do
     end
   end
 
-  context 'with resources' do
-    let!(:resource_file) { create(:resource_file) }
-
-    it 'shows all resources on a separate page' do
-      visit root_path
-
-      click_on 'Resources'
-
-      expect(page).to have_content(resource_file.title)
-    end
-  end
-
   context 'school admin user' do
     let(:school)       { create(:school, :with_school_group, name: 'Oldfield Park Infants')}
     let(:school_admin) { create(:school_admin, school: school)}
@@ -126,7 +153,7 @@ RSpec.describe "home", type: :system do
       end
 
       it 'does not have navigation options' do
-        expect(page).to_not have_content('My school')
+        expect(page).to_not have_css('#my_school_menu')
         expect(page).to_not have_content('Dashboards')
       end
     end
@@ -143,7 +170,7 @@ RSpec.describe "home", type: :system do
       end
 
       it 'does have navigation options' do
-        expect(page).to have_content('My school')
+        expect(page).to have_css('#my_school_menu')
         expect(page).to have_link('Pupil dashboard')
       end
     end
