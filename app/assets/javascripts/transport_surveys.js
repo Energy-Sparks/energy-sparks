@@ -53,20 +53,21 @@ $(document).ready(function() {
 		previousPanel(this);
 	}
 
-	// select card, set confirmation details for display on confirmation page and show confirmation panel
+	// Select card, set confirmation details for display on confirmation page and show confirmation panel
 	function confirm() {
 		selectCard(this);
 		displaySelection();
 		nextPanel(this);
 	}
 
-	// show the carbon calculation, store confirmed results to localstorage and show carbon calculation panel
+	// Show the carbon calculation, store confirmed results to localstorage and show carbon calculation panel
 	function store() {
 		displayCarbon();
 		storeResponse();
 		nextPanel(this);
 	}
 
+	// Reset survey for next pupil
 	function nextPupil() {
 		resetAllFields();
 		resetAllCards();
@@ -74,11 +75,13 @@ $(document).ready(function() {
 		resetProgressBar();
 	}
 
+	// Save responses for a specific date to server
 	function saveResponses() {
 		let date = $(this).attr('data-date');
 		syncResponses(config.url, date, false);
 	}
 
+	// Remove survey data from localstorage for given date
 	function removeResponses() {
 		let date = $(this).attr('data-date');
 		removeStoredResponses(date);
@@ -221,10 +224,8 @@ $(document).ready(function() {
 		$("fieldset:first").show();
 	}
 
-
 	function resetProgressBar() {
-		window.step = 1
-		setProgressBar(window.step);
+		setProgressBar(window.step = 1);
 	}
 
 	function setProgressBar(step){
