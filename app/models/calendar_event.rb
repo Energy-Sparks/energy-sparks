@@ -44,7 +44,11 @@ class CalendarEvent < ApplicationRecord
   validates :calendar, :calendar_event_type, :start_date, :end_date, presence: true
   validate :start_date_end_date_order, :no_overlaps, :calendar_event_type_is_valid
 
-private
+  def display_title
+    "#{calendar_event_type.display_title} #{description} : #{start_date} to #{end_date}"
+  end
+
+  private
 
   def update_academic_year
     self.academic_year = calendar.academic_year_for(start_date) if start_date
