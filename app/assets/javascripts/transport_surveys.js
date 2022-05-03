@@ -1,15 +1,106 @@
 "use strict"
 
+// storage module
+const storage = ( function() {
+
+	var local = {
+		key: '',
+		base_url: ''
+	}
+
+	// private methods
+	function getAllResponses() {
+		let responses = JSON.parse(localStorage.getItem(local.key)) || {};
+		return responses;
+	}
+
+	function getResponses(date) {
+		let responses = getAllResponses();
+		responses[date] ||= []
+		return responses[date];
+	}
+
+	function removeResponses(date) {
+		let responses = getAllResponses();
+		delete responses[date];
+		localStorage.setItem(local.key, JSON.stringify( responses ));
+	}
+
+	function addResponse(date, response) {
+		let responses = getAllResponses();
+		responses[date] ||= [];
+		responses[date].push(response);
+		localStorage.setItem(local.key, JSON.stringify( responses ));
+	}
+
+	function syncResponses(date, redirect = true) {
+		let responses = getResponses(date);
+		if (responses) {
+			let url = local.base_url + "/" + date;
+			let data = { transport_survey: { run_on: date, responses: responses }};
+			$.ajax({
+				url: url,
+				type: 'PUT',
+				data: JSON.stringify(data),
+				contentType: "application/json; charset=utf-8",
+				dataType: "text" })
+			.done(function(data) {
+				removeResponses(date);
+				if (redirect) {
+					window.location.href = url;
+				}	else {
+					alert("Responses saved!");
+				}
+			})
+			.fail(function(err) { alert("Error saving responses, please try again! " + err); });
+		} else {
+			alert("Nothing to save - please collect some survey responses first!");
+		}
+	}
+
+	// public methods
+	return {
+		init: function(cfg) {
+			local = cfg;
+		},
+
+		removeResponses: function(date) {
+			return removeResponses(date);
+		},
+
+		getAllResponses: function() {
+			return getAllResponses();
+		},
+
+		getResponses: function(date) {
+			return getResponses(date);
+		},
+
+		getResponsesCount: function(date) {
+			return getResponses(date).length;
+		},
+
+		addResponse: function(date, response) {
+			return addResponse(date, response);
+		},
+
+		syncResponses: function(date, redirect) {
+			return syncResponses(date, redirect);
+		}
+	}
+}());
+
 $(document).ready(function() {
 
-	//* setup *//
 	const config = {
 		transport_fields: ['run_identifier', 'journey_minutes', 'passengers', 'transport_type_id', 'weather'],
 		storage_key: 'es_ts_responses',
 		run_on: $("#run_on").val(),
-		url: $('#transport_survey').attr('action'),
+		base_url: $('#transport_survey').attr('action'),
 		transport_types: loadTransportTypes('/transport_types.json')
 	}
+
+	storage.init({key: config.storage_key, base_url: config.base_url});
 
 	setupSurvey();
 
@@ -27,12 +118,9 @@ $(document).ready(function() {
   $('.responses-save').on('click', saveResponses);
   $('.responses-remove').on('click', removeResponses);
 
-	//* methods *//
-
 	/* onclick handlers */
 
   function resetSurvey() {
-
   }
 
   // Select weather card, hide weather panel and begin surveying
@@ -72,26 +160,31 @@ $(document).ready(function() {
 		resetAllFields();
 		resetAllCards();
 		resetPanels();
-		resetProgressBar();
+		setProgressBar(window.step = 1);
+	}
+
+  function submit(event) {
+		event.preventDefault(); // disable form submitting
+		storage.syncResponses(config.run_on, true);
 	}
 
 	// Save responses for a specific date to server
 	function saveResponses() {
 		let date = $(this).attr('data-date');
-		syncResponses(config.url, date, false);
+		storage.syncResponses(date, false);
 	}
 
 	// Remove survey data from localstorage for given date
 	function removeResponses() {
 		let date = $(this).attr('data-date');
-		removeStoredResponses(date);
+		storage.removeResponses(date);
 	}
 
 	/* end of onclick handlers */
 
 	function setupSurvey() {
-		resetProgressBar();
-		setResponsesCount(getStoredResponses(config.run_on).length);
+		setProgressBar(window.step = 1)
+		setResponsesCount(storage.getResponsesCount(config.run_on));
 		setUnsavedResponses();
   }
 
@@ -100,63 +193,14 @@ $(document).ready(function() {
 	}
 
 	function setUnsavedResponses() {
-		let responses = getStoredResponses();
-		let html = HandlebarsTemplates['transport_surveys']({responses: responses});
+		let html = HandlebarsTemplates['transport_surveys']({responses: storage.getAllResponses()});
 		$('#unsaved-responses').html(html);
 	}
 
 	function storeResponse() {
-    addResponse(config.run_on, readResponse());
-    setResponsesCount(getStoredResponses(config.run_on).length);
+		storage.addResponse(config.run_on, readResponse());
+    setResponsesCount(storage.getResponsesCount(config.run_on));
     setUnsavedResponses();
-	}
-
-	function getStoredResponses(date) {
-		let responses = JSON.parse(localStorage.getItem(config.storage_key)) || {};
-		if (date) {
-			responses[date] ||= []
-			return responses[date];
-		} else {
-			return responses;
-		}
-	}
-
-	function removeStoredResponses(date) {
-		let responses = getStoredResponses();
-		delete responses[date];
-    localStorage.setItem(config.storage_key, JSON.stringify( responses ));
-	}
-
-	function addResponse(date, response) {
-		let responses = getStoredResponses();
-    responses[date] ||= [];
-    responses[date].push(response);
-    localStorage.setItem(config.storage_key, JSON.stringify( responses ));
-	}
-
-	function syncResponses(baseurl, date, redirect = true) {
-		let responses = getStoredResponses(date);
-		if (responses) {
-			let url = baseurl + "/" + date;
-			let data = { transport_survey: { run_on: date, responses: responses }};
-			$.ajax({
-        url: url,
-        type: 'PUT',
-        data: JSON.stringify(data),
-        contentType: "application/json; charset=utf-8",
-        dataType: "text" })
-			.done(function(data) {
-				removeStoredResponses(date);
-				if (redirect) {
-					window.location.href = url;
-				}	else {
-					alert("Responses saved!");
-				}
-			})
-			.fail(function(err) { alert("Error saving responses, please try again! " + err); });
-		} else {
-			alert("Nothing to save - please collect some survey responses first!");
-		}
 	}
 
   function loadTransportTypes(path) {
@@ -175,11 +219,6 @@ $(document).ready(function() {
 		});
 		return transport_types;
 	}
-
-  function submit(event) {
-		event.preventDefault(); // disable form submitting
-		syncResponses(config.url, config.run_on, true);
-  }
 
 	function readResponse() {
 		let response = {};
@@ -222,10 +261,6 @@ $(document).ready(function() {
 	function resetPanels() {
 		$("fieldset").not(":first").hide();
 		$("fieldset:first").show();
-	}
-
-	function resetProgressBar() {
-		setProgressBar(window.step = 1);
 	}
 
 	function setProgressBar(step){
@@ -361,4 +396,5 @@ $(document).ready(function() {
 	    return randomEquivalent.equivalentStatement(carbonKgs);
 	  }
 	};
+
 });
