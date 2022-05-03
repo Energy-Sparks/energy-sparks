@@ -15,7 +15,7 @@ RSpec.describe AlertMailer do
     end
 
     it 'does not send an email if env var is set to suppress' do
-      ClimateControl.modify SUPPRESS_ALERT_MESSAGES: 'true' do
+      ClimateControl.modify SEND_AUTOMATED_EMAILS: 'true' do
         AlertMailer.with(email_address: email_address, school: school, events: []).alert_email.deliver_now
         expect(ActionMailer::Base.deliveries.count).to eql 0
       end

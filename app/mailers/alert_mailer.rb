@@ -33,6 +33,6 @@ class AlertMailer < ApplicationMailer
   end
 
   def prevent_delivery_from_test
-    mail.perform_deliveries = false if ENV['SUPPRESS_ALERT_MESSAGES'] == 'true'
+    mail.perform_deliveries = false if ENV['SEND_AUTOMATED_EMAILS']
   end
 end
