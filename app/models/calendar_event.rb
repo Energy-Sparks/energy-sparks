@@ -42,8 +42,7 @@ class CalendarEvent < ApplicationRecord
   before_validation :update_academic_year
 
   validates :calendar, :calendar_event_type, :start_date, :end_date, presence: true
-
-  validate :start_date_end_date_order, :no_overlaps
+  validate :start_date_end_date_order, :no_overlaps, :calendar_event_type_is_valid
 
 private
 
@@ -72,6 +71,15 @@ private
       if events_to_check.where.not(id: id).where('(start_date, end_date) OVERLAPS (?,?)', start_date, end_date).any?
         errors.add(:base, 'overlaps another term or holiday event')
       end
+    end
+  end
+
+  def calendar_event_type_is_valid
+    if calendar.national? && !calendar_event_type.bank_holiday?
+      errors.add(:base, 'only Bank Holidays can be created on National calendars')
+    end
+    if !calendar.national? && calendar_event_type.bank_holiday?
+      errors.add(:base, 'Bank Holidays can only be created on National calendars')
     end
   end
 end
