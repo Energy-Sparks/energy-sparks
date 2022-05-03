@@ -78,8 +78,5 @@ private
     if calendar.national? && !calendar_event_type.bank_holiday?
       errors.add(:base, 'only Bank Holidays can be created on National calendars')
     end
-    if !calendar.national? && calendar_event_type.bank_holiday?
-      errors.add(:base, 'Bank Holidays can only be created on National calendars')
-    end
   end
 end

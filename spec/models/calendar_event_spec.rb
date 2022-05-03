@@ -33,15 +33,6 @@ describe CalendarEvent do
       end
     end
 
-    describe 'for regional calendar' do
-      let(:regional_calendar)      { create(:regional_calendar) }
-      it 'bank holiday is not valid' do
-        expect(build(:holiday, calendar: regional_calendar)).to be_valid
-        expect(build(:term, calendar: regional_calendar)).to be_valid
-        expect(build(:bank_holiday, calendar: regional_calendar)).not_to be_valid
-      end
-    end
-
     describe 'date orders' do
       it 'is not valid when the end date and start date are in the wrong order' do
         expect(build(:holiday, calendar: calendar, start_date: Date.new(2018, 2, 2), end_date: Date.new(2018, 2, 1))).to_not be_valid
