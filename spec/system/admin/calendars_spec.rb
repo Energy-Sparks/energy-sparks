@@ -85,7 +85,7 @@ RSpec.describe 'calendars', :calendar, type: :system do
         click_on 'Show'
       end
 
-      click_on 'Reset all events'
+      click_on 'Reset to regional calendar'
       expect(page).to have_content("Calendar was successfully reset.")
 
       calendar.reload
@@ -112,7 +112,7 @@ RSpec.describe 'calendars', :calendar, type: :system do
         click_on 'Show'
       end
 
-      click_on 'Copy to dependent schools'
+      click_on 'Update dependent schools'
       expect(page).to have_content("Calendar was successfully copied to dependents.")
 
       calendar.reload

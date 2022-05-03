@@ -19,8 +19,11 @@
 <%= link_to 'Add new event', new_calendar_calendar_event_path(@calendar), class: 'btn btn-primary' %>
 
 <% if can? :manage, @calendar %>
-  <%= link_to 'Reset all events', reset_calendar_path(@calendar), method: :post, class: 'btn btn-primary', data: { confirm: 'Are you sure?' } %>
-  <%= link_to 'Copy to dependent schools', resync_calendar_path(@calendar), method: :post, class: 'btn btn-primary', data: { confirm: 'Are you sure?' } %>
+  <% if @calendar.calendars.any? %>
+    <%= link_to 'Update dependent schools', resync_calendar_path(@calendar), method: :post, class: 'btn btn-primary', data: { confirm: 'Are you sure?' } %>
+  <% else %>
+    <%= link_to 'Reset to regional calendar', reset_calendar_path(@calendar), method: :post, class: 'btn btn-primary', data: { confirm: 'Are you sure?' } %>
+  <% end %>
 <% end %>
 
 <nav class="mt-2">
