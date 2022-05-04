@@ -6,6 +6,8 @@
 
 <div id="unsaved-responses"></div>
 
+<%= render 'intro' %>
+
 <button type="button" class="btn btn-primary jsonly" data-toggle="modal" data-target="#transport_survey_modal">
   Start a travel to school survey
 </button>
@@ -23,8 +25,6 @@
         <%= form_with(url: school_transport_surveys_url(@school), method: :patch, local: true, id: 'transport_survey') do |f| %>
           <%= hidden_field_tag :run_on, @transport_survey.run_on %>
           <%= hidden_field_tag :run_identifier, TransportSurveyResponse.generate_unique_secure_token %>
-
-          <div class="alert alert-success hide"></div>
 
           <div id="setup" class="panel">
             <h2>Please select today's weather</h2>
