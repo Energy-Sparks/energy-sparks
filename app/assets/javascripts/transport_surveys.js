@@ -384,7 +384,7 @@ $(document).ready(function() {
 
 	function carbonCalc(transport, timeMins, passengers) {
 		if (transport) {
-			timeMins = transport.image === '🚶🚘' ? parkAndStrideTimeMins : timeMins; // need a better way of identifying park and stride!
+			timeMins = transport.image === '🚶🚘' ? parkAndStrideTimeMins(timeMins) : timeMins; // need a better way of identifying park and stride!
 			return (((transport.speed_km_per_hour * timeMins) / 60) * transport.kg_co2e_per_km) / passengers ;
 		} else {
 			return 0;
