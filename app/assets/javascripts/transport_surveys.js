@@ -104,13 +104,16 @@ $(document).ready(function() {
 
 	setupSurvey();
 
+	/* onclick bindings */
+
   $('.start').on('click', start);
   $('.next').on('click', next);
   $('.sharing').on('click', sharing);
   $('.previous').on('click', previous);
   $('.confirm').on('click', confirm);
 	$('.store').on('click', store);
-  $('.next-pupil').on('click', nextPupil);
+  $('.next-pupil').on('click', nextSurveyRun);
+  $('#reset').on('click', fullReset);
 
   $('#save-results').on('click', function(e) { $('#transport_survey').submit(); });
   $('#transport_survey').on('submit', function(e) { submit(e); });
@@ -120,14 +123,10 @@ $(document).ready(function() {
 
 	/* onclick handlers */
 
-  function resetSurvey() {
-  }
-
   // Select weather card, hide weather panel and begin surveying
 	function start() {
 		selectCard(this);
-		$('#setup').hide();
-		$('#survey').show();
+		showSurvey();
 	}
 
 	// Generic select card for current panel and move to next panel
@@ -156,10 +155,10 @@ $(document).ready(function() {
 	}
 
 	// Reset survey for next pupil
-	function nextPupil() {
-		resetAllFields();
-		resetAllCards();
-		resetPanels();
+	function nextSurveyRun() {
+		resetSurveyFields();
+		resetSurveyCards();
+		resetSurveyPanels();
 		setProgressBar(window.step = 1);
 	}
 
@@ -172,21 +171,52 @@ $(document).ready(function() {
 	function saveResponses() {
 		let date = $(this).attr('data-date');
 		storage.syncResponses(date, false);
+
+		if (date == config.run_on) {
+			setResponsesCount(0);
+		}
 	}
 
 	// Remove survey data from localstorage for given date
 	function removeResponses() {
 		let date = $(this).attr('data-date');
 		storage.removeResponses(date);
+
+		if (date == config.run_on) {
+			fullSurveyReset();
+		}
 	}
+
+	// Remove survey data for current date and reset survey form
+  function fullReset() {
+		storage.removeResponses(config.run_on);
+		fullSurveyReset();
+  }
 
 	/* end of onclick handlers */
 
+  function fullSurveyReset() {
+		updateResponsesCounts();
+		resetSetupFields();
+		resetSetupCards();
+		nextSurveyRun();
+		showSetup();
+  }
+
 	function setupSurvey() {
 		setProgressBar(window.step = 1)
-		setResponsesCount(storage.getResponsesCount(config.run_on));
-		setUnsavedResponses();
-  }
+		updateResponsesCounts();
+	}
+
+	function showSetup() {
+		$('#setup').show();
+		$('#survey').hide();
+	}
+
+	function showSurvey() {
+		$('#setup').hide();
+		$('#survey').show();
+	}
 
 	function setResponsesCount(value) {
 		$('#unsaved-responses-count').text(value);
@@ -195,12 +225,18 @@ $(document).ready(function() {
 	function setUnsavedResponses() {
 		let html = HandlebarsTemplates['transport_surveys']({responses: storage.getAllResponses()});
 		$('#unsaved-responses').html(html);
+	  $('.responses-save').on('click', saveResponses);
+	  $('.responses-remove').on('click', removeResponses);
+	}
+
+	function updateResponsesCounts() {
+		setResponsesCount(storage.getResponsesCount(config.run_on));
+    setUnsavedResponses();
 	}
 
 	function storeResponse() {
 		storage.addResponse(config.run_on, readResponse());
-    setResponsesCount(storage.getResponsesCount(config.run_on));
-    setUnsavedResponses();
+		updateResponsesCounts();
 	}
 
   function loadTransportTypes(path) {
@@ -229,7 +265,16 @@ $(document).ready(function() {
 		return response;
 	}
 
-	function resetAllFields() {
+	function resetSetupFields() {
+		$('#transport_survey #setup').find('input[type="hidden"].selected').val("");
+	}
+
+	function resetSetupCards() {
+		let cards = $('#transport_survey #setup').find('.card');
+		resetCards(cards);
+	}
+
+	function resetSurveyFields() {
 		$('#transport_survey #survey').find('input[type="hidden"].selected').val("");
 	}
 
@@ -243,7 +288,7 @@ $(document).ready(function() {
 		card.addClass('bg-primary');
 	}
 
-	function resetAllCards() {
+	function resetSurveyCards() {
 		let cards = $('#transport_survey .panel').find('.card');
 		resetCards(cards);
 	}
@@ -258,7 +303,7 @@ $(document).ready(function() {
 		}
 	}
 
-	function resetPanels() {
+	function resetSurveyPanels() {
 		$("fieldset").not(":first").hide();
 		$("fieldset:first").show();
 	}

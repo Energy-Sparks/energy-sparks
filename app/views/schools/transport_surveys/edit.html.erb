@@ -103,10 +103,12 @@
         <% end %>
       </div>
       <div class="modal-footer">
+        <%= button_tag(class: 'submit btn btn-primary', id: 'reset', :confirm => "Sure?") do %>
+          Reset & clear results</span>
+        <% end %>
         <%= button_tag(type: 'submit', class: 'submit btn btn-primary', id: 'save-results') do %>
           Finish & save results <span id="unsaved-responses-count" class="badge badge-primary"></span>
         <% end %>
-        <%= button_tag 'Cancel', type: 'button', class: "btn btn-secondary", "data-dismiss": "modal" %>
       </div>
     </div>
   </div>
