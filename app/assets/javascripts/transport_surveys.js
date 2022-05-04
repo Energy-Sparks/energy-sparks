@@ -9,6 +9,10 @@ const storage = ( function() {
 	}
 
 	// private methods
+	function init(cfg) {
+		local = cfg;
+	}
+
 	function getAllResponses() {
 		let responses = JSON.parse(localStorage.getItem(local.key)) || {};
 		return responses;
@@ -57,36 +61,21 @@ const storage = ( function() {
 		}
 	}
 
+	function getResponsesCount(date) {
+		return getResponses(date).length;
+	}
+
 	// public methods
 	return {
-		init: function(cfg) {
-			local = cfg;
-		},
-
-		removeResponses: function(date) {
-			return removeResponses(date);
-		},
-
-		getAllResponses: function() {
-			return getAllResponses();
-		},
-
-		getResponses: function(date) {
-			return getResponses(date);
-		},
-
-		getResponsesCount: function(date) {
-			return getResponses(date).length;
-		},
-
-		addResponse: function(date, response) {
-			return addResponse(date, response);
-		},
-
-		syncResponses: function(date, redirect) {
-			return syncResponses(date, redirect);
-		}
+		init: init,
+		removeResponses: removeResponses,
+		getAllResponses: getAllResponses,
+		getResponses: getResponses,
+		addResponse: addResponse,
+		syncResponses: syncResponses,
+		getResponsesCount: getResponsesCount
 	}
+
 }());
 
 $(document).ready(function() {
@@ -118,7 +107,7 @@ $(document).ready(function() {
   $('#transport_survey').on('submit', function(e) { submit(e); });
 
   $('.responses-save').on('click', saveResponses);
-  $('.responses-remove').on('click', removeResponses);
+  $('.responses-remove').on('click', deleteResponses);
 
 	/* onclick handlers */
 
@@ -182,9 +171,9 @@ $(document).ready(function() {
 	}
 
 	// Remove survey data from localstorage for given date
-	function removeResponses() {
+	function deleteResponses() {
 		let date = $(this).attr('data-date');
-		if (window.confirm('Are you sure you want to remove unsaved results from ' + date + '?')) {
+		if (window.confirm('Are you sure you want to remove ' + storage.getResponsesCount(date) + ' unsaved result(s) from ' + date + '?')) {
 			storage.removeResponses(date);
 			dismissAlert(this);
 
@@ -196,7 +185,7 @@ $(document).ready(function() {
 
 	// Remove survey data for current date and reset survey form
   function fullReset() {
-		if (window.confirm('Are you sure you want to reset and remove all unsaved results from ' + config.run_on + '?')) {
+		if (window.confirm('Are you sure you want to reset and remove ' + storage.getResponsesCount(config.run_on) + ' unsaved result(s) from ' + config.run_on + '?')) {
 			storage.removeResponses(config.run_on);
 			fullSurveyReset();
 		}
@@ -235,7 +224,7 @@ $(document).ready(function() {
 		let html = HandlebarsTemplates['transport_surveys']({responses: storage.getAllResponses()});
 		$('#unsaved-responses').html(html);
 	  $('.responses-save').on('click', saveResponses);
-	  $('.responses-remove').on('click', removeResponses);
+	  $('.responses-remove').on('click', deleteResponses);
 	}
 
 	function updateResponsesCounts() {
