@@ -35,7 +35,7 @@ const storage = ( function() {
 
 	function syncResponses(date, redirect = true) {
 		let responses = getResponses(date);
-		if (responses) {
+		if (responses.length > 0) {
 			let url = local.base_url + "/" + date;
 			let data = { transport_survey: { run_on: date, responses: responses }};
 			$.ajax({
@@ -45,11 +45,10 @@ const storage = ( function() {
 				contentType: "application/json; charset=utf-8",
 				dataType: "text" })
 			.done(function(data) {
+				alert("Responses saved!");
 				removeResponses(date);
 				if (redirect) {
 					window.location.href = url;
-				}	else {
-					alert("Responses saved!");
 				}
 			})
 			.fail(function(err) { alert("Error saving responses, please try again! " + err); });
@@ -164,6 +163,7 @@ $(document).ready(function() {
 
   function submit(event) {
 		event.preventDefault(); // disable form submitting
+
 		storage.syncResponses(config.run_on, true);
 	}
 
@@ -189,8 +189,10 @@ $(document).ready(function() {
 
 	// Remove survey data for current date and reset survey form
   function fullReset() {
-		storage.removeResponses(config.run_on);
-		fullSurveyReset();
+		if (window.confirm('Are you sure you want to reset and remove all unsaved results from ' + config.run_on + '?')) {
+			storage.removeResponses(config.run_on);
+			fullSurveyReset();
+		}
   }
 
 	/* end of onclick handlers */
