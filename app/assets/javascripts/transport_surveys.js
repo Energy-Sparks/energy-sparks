@@ -167,6 +167,10 @@ $(document).ready(function() {
 		storage.syncResponses(config.run_on, true);
 	}
 
+	function dismissAlert(current) {
+		$(current).closest('.alert').hide;
+	}
+
 	// Save responses for a specific date to server
 	function saveResponses() {
 		let date = $(this).attr('data-date');
@@ -180,10 +184,13 @@ $(document).ready(function() {
 	// Remove survey data from localstorage for given date
 	function removeResponses() {
 		let date = $(this).attr('data-date');
-		storage.removeResponses(date);
+		if (window.confirm('Are you sure you want to remove unsaved results from ' + date + '?')) {
+			storage.removeResponses(date);
+			dismissAlert(this);
 
-		if (date == config.run_on) {
-			fullSurveyReset();
+			if (date == config.run_on) {
+				fullSurveyReset();
+			}
 		}
 	}
 
