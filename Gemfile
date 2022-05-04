@@ -49,7 +49,7 @@ gem 'rgeo-geojson'
 gem 'aws-sdk-s3'
 
 # Assets for Emails
-gem 'bootstrap-email', '0.3.4'
+gem 'bootstrap-email'
 
 # Frontend
 gem 'bootstrap', '~> 4.3.0' # Use bootstrap for responsive layout
