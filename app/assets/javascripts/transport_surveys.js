@@ -51,7 +51,7 @@ const storage = ( function() {
 					window.location.href = url;
 				}
 			})
-			.fail(function(err) { alert("Error saving responses, please try again! " + err); });
+			.fail(function() { alert("Error saving responses - please make sure you have a wifi connection before saving! "); });
 		} else {
 			alert("Nothing to save - please collect some survey responses first!");
 		}
