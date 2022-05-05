@@ -10,42 +10,48 @@
     </style>
   </head>
   <body class="bg-light">
-    <div class="container">
-      <div class="row mt-2">
-        <div class="col-12 bg-black">
-          <%= image_tag 'nav-brand-transparent.png', class: 'ax-center', width: '300px', height: '300px' %>
-        </div>
-      </div>
+    <div class="container-fluid">
       <div class="row">
-         <div class="col-12 bg-dark-blue">
-           <h4 class="ax-center text-white mt-2 mb-2"><strong><%= @title %></strong></h4>
-        </div>
-      </div>
-      <div class="row mt-4 mb-4">
-        <div class="col-12">
-              <%= yield %>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12 bg-black">
-           <span class="ax-center text-white mt-2"><strong>Get in touch</strong></span>
-           <span class="ax-center text-white mt-2 mb-2"><strong><a href="mailto:hello@energysparks.uk" class="new-yellow">hello@energysparks.uk</a></strong></span>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12 bg-black">
-          <div class="stack-row gap-4 ax-center mt-2 mb-2">
-               <a href="https://twitter.com/EnergySparks">
-                 <%= image_tag 'email/twitter-brands.png', width: '20px', height: '20px' %>
-               </a>
-               <a href="https://www.facebook.com/EnergySparksUK/">
-                 <%= image_tag 'email/facebook-brands.png', width: '20px', height: '20px' %>
-               </a>
-               <a href="https://github.com/Energy-Sparks/energy-sparks">
-                 <%= image_tag 'email/github-brands.png', width: '20px', height: '20px' %>
-               </a>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+          <div class="row mt-2">
+            <div class="col-12 bg-black">
+              <%= image_tag 'nav-brand-transparent.png', class: 'ax-center', width: '300px', height: '300px' %>
+            </div>
+          </div>
+          <div class="row">
+             <div class="col-12 bg-dark-blue">
+               <h4 class="ax-center text-white mt-2 mb-2"><strong><%= @title %></strong></h4>
+            </div>
+          </div>
+          <div class="row mt-4 mb-4">
+            <div class="col-12">
+                  <%= yield %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 bg-black">
+               <span class="ax-center text-white mt-2"><strong>Get in touch</strong></span>
+               <span class="ax-center text-white mt-2 mb-2"><strong><a href="mailto:hello@energysparks.uk" class="new-yellow">hello@energysparks.uk</a></strong></span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 bg-black">
+              <div class="stack-row gap-4 ax-center mt-2 mb-2">
+                   <a href="https://twitter.com/EnergySparks">
+                     <%= image_tag 'email/twitter-brands.png', width: '20px', height: '20px' %>
+                   </a>
+                   <a href="https://www.facebook.com/EnergySparksUK/">
+                     <%= image_tag 'email/facebook-brands.png', width: '20px', height: '20px' %>
+                   </a>
+                   <a href="https://github.com/Energy-Sparks/energy-sparks">
+                     <%= image_tag 'email/github-brands.png', width: '20px', height: '20px' %>
+                   </a>
+              </div>
+            </div>
           </div>
         </div>
+        <div class="col-lg-1"></div>
       </div>
    </div>
   </body>
