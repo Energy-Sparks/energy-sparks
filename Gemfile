@@ -23,7 +23,7 @@ gem 'closed_struct'
 gem 'pg_search'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.50.1'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.50.2'
 #gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'aws-eb-test'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
@@ -49,7 +49,7 @@ gem 'rgeo-geojson'
 gem 'aws-sdk-s3'
 
 # Assets for Emails
-gem 'bootstrap-email', '0.3.4'
+gem 'bootstrap-email'
 
 # Frontend
 gem 'bootstrap', '~> 4.3.0' # Use bootstrap for responsive layout
