@@ -8,6 +8,7 @@ class EnergySparksDeviseMailer < Devise::Mailer
   protected
 
   def devise_mail(record, action, opts = {}, &block)
+    @title = t(:title, scope: [:devise, :mailer, action], default: "")
     initialize_from_record(record)
     if Rails.env.test?
       mail headers_for(action, opts), &block

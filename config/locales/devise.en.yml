@@ -18,12 +18,16 @@ en:
       unconfirmed: "You have to confirm your email address before continuing."
     mailer:
       confirmation_instructions:
+        title: "Confirm your account"
         subject: "Energy Sparks: confirm your account"
       reset_password_instructions:
+        title: "Reset your password"
         subject: "Energy Sparks: reset your password"
       unlock_instructions:
+        title: "Unlock your account"
         subject: "Energy Sparks: unlock your account"
       password_change:
+        title: "Password changed"
         subject: "Energy Sparks: password changed"
     omniauth_callbacks:
       failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
