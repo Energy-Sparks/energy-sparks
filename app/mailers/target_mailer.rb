@@ -4,19 +4,19 @@ class TargetMailer < ApplicationMailer
   def first_target
     @school = params[:school]
     @to = params[:to]
-    make_bootstrap_mail(to: @to, subject: "Set your first energy saving target")
+    make_bootstrap_mail(to: @to, subject: subject(:first_target))
   end
 
   def first_target_reminder
     @school = params[:school]
     @to = params[:to]
-    make_bootstrap_mail(to: @to, subject: "Reminder to set your first energy saving target")
+    make_bootstrap_mail(to: @to, subject: subject(:first_target_reminder))
   end
 
   def review_target
     @school = params[:school]
     @to = params[:to]
-    make_bootstrap_mail(to: @to, subject: "Review your progress and set a new saving target")
+    make_bootstrap_mail(to: @to, subject: subject(:review_target))
   end
 
   def admin_target_report
@@ -44,5 +44,9 @@ class TargetMailer < ApplicationMailer
 
   def timestamp
     Time.zone.today.strftime("%Y-%m-%d")
+  end
+
+  def subject(method, vars = {})
+    t(:subject, scope: [:target_mailer, method], **vars)
   end
 end

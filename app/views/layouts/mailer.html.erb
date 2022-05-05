@@ -16,7 +16,9 @@
         <div class="col-lg-10">
           <div class="row mt-2">
             <div class="col-12 bg-black">
-              <%= image_tag 'nav-brand-transparent.png', class: 'ax-center', width: '300px', height: '300px' %>
+              <%= link_to root_url do %>
+                <%= image_tag 'nav-brand-transparent.png', class: 'ax-center', width: '300px', height: '300px' %>
+              <% end %>
             </div>
           </div>
           <div class="row">
@@ -31,7 +33,7 @@
           </div>
           <div class="row">
             <div class="col-12 bg-black">
-               <span class="ax-center text-white mt-2"><strong>Get in touch</strong></span>
+               <span class="ax-center text-white mt-2"><strong><%= t(:get_in_touch, scope: [:mailer]) %></strong></span>
                <span class="ax-center text-white mt-2 mb-2"><strong><a href="mailto:hello@energysparks.uk" class="new-yellow">hello@energysparks.uk</a></strong></span>
             </div>
           </div>

@@ -3,13 +3,13 @@ class OnboardingMailer < ApplicationMailer
 
   def onboarding_email
     @school_onboarding = params[:school_onboarding]
-    make_bootstrap_mail(to: @school_onboarding.contact_email, subject: "Set up your school on Energy Sparks")
+    make_bootstrap_mail(to: @school_onboarding.contact_email, subject: subject(:onboarding_email))
   end
 
   def completion_email
     @school_onboarding = params[:school_onboarding]
     if @school_onboarding.created_by
-      make_bootstrap_mail(to: 'operations@energysparks.uk', subject: "#{@school_onboarding.school_name} has completed the onboarding process")
+      make_bootstrap_mail(to: 'operations@energysparks.uk', subject: subject(:completion_email, school: @school_onboarding.school_name))
     end
   end
 
@@ -22,25 +22,31 @@ class OnboardingMailer < ApplicationMailer
     @school = params[:school]
     @to = params[:to]
     @target_prompt = params[:target_prompt]
-    make_bootstrap_mail(to: @to, subject: "#{@school.name} is live on Energy Sparks")
+    make_bootstrap_mail(to: @to, subject: subject(:activation_email, school: @school.name))
   end
 
   def onboarded_email
     @school = params[:school]
     @to = params[:to]
-    make_bootstrap_mail(to: @to, subject: "#{@school.name} is now live on Energy Sparks")
+    make_bootstrap_mail(to: @to, subject: subject(:onboarded_email, school: @school.name))
   end
 
   def data_enabled_email
     @school = params[:school]
     @to = params[:to]
     @target_prompt = params[:target_prompt]
-    make_bootstrap_mail(to: @to, subject: "#{@school.name} energy data is now available on Energy Sparks")
+    make_bootstrap_mail(to: @to, subject: subject(:data_enabled_email, school: @school.name))
   end
 
   def welcome_email
     @user = params[:user]
     @school = @user.school
-    make_bootstrap_mail(to: @user.email, subject: "Welcome to Energy Sparks")
+    make_bootstrap_mail(to: @user.email, subject: subject(:welcome_email))
+  end
+
+  private
+
+  def subject(method, vars = {})
+    t(:subject, scope: [:onboarding_mailer, method], **vars)
   end
 end
