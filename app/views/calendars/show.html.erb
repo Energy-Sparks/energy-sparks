@@ -74,7 +74,7 @@
             <td><%= calendar_event.calendar_event_type.title %></td>
             <td><%= nice_dates(calendar_event.start_date) %></td>
             <td><%= nice_dates(calendar_event.end_date) %></td>
-            <td><%= nice_dates(calendar_event.updated_at) %></td>
+            <td><%= nice_date_times(calendar_event.updated_at) %></td>
             <% if can? :manage, @calendar %>
               <td><%= calendar_event_status(calendar_event) %></td>
             <% end %>
