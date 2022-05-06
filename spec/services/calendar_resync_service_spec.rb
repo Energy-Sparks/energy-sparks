@@ -20,12 +20,13 @@ describe CalendarResyncService do
   end
 
   context 'when child calendar has child calendar' do
-    it 'cascades events down to both levels of child' do
+    it 'only cascades top event down to lowest level' do
       expect(regional_calendar.calendar_events.count).to eq(1)
       expect(school_calendar.calendar_events.count).to eq(0)
       CalendarResyncService.new(national_calendar).resync
       expect(regional_calendar.calendar_events.count).to eq(2)
-      expect(school_calendar.calendar_events.count).to eq(2)
+      expect(school_calendar.calendar_events.count).to eq(1)
+      expect(school_calendar.calendar_events.first.description).to eq('national event')
     end
   end
 
