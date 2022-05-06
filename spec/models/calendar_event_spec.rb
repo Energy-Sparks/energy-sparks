@@ -4,14 +4,6 @@ describe CalendarEvent do
 
   let(:calendar)      { create(:calendar) }
 
-  it 'unsets parent event if updated' do
-    event_1 = create(:holiday, calendar: create(:calendar))
-    event_2 = create(:holiday, calendar: calendar, based_on: event_1)
-    expect(event_2.based_on).to eq(event_1)
-    event_2.update(description: 'New title')
-    expect(event_2.based_on).to be_nil
-  end
-
   it 'sets its own academic year' do
     academic_year = create(:academic_year, start_date: Date.new(2019, 9, 1), end_date: Date.new(2020, 8, 31), calendar: calendar)
     event_2 = create(:holiday, calendar: calendar, start_date: Date.new(2020, 1, 22), end_date: Date.new(2020, 1, 30))
