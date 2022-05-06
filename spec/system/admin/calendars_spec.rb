@@ -121,12 +121,23 @@ RSpec.describe 'calendars', :calendar, type: :system do
       expect(calendar.calendar_events.last.start_date).to eq(Date.parse('2021-06-06'))
     end
 
-    it 'shows status of calendar events' do
+    it 'shows status of calendar events and resets parent to nil after edit' do
       regional_calendar = create(:regional_calendar, title: 'Regional calendar')
       parent_event = create(:holiday, calendar: regional_calendar, description: 'Regional calendar event')
       calendar = CalendarFactory.new(existing_calendar: regional_calendar, title: 'child calendar', calendar_type: :school).create
+
+      expect(calendar.calendar_events.first.based_on).to eq(parent_event)
+
       visit calendar_path(calendar)
       expect(page).to have_content("inherited")
+      click_on 'Edit'
+      fill_in 'Start date', with: parent_event.start_date - 1.day
+      click_on 'Update Calendar event'
+
+      expect(page).to have_content("Event was successfully updated.")
+      expect(page).not_to have_content("inherited")
+
+      expect(calendar.calendar_events.first.reload.based_on).to be_nil
     end
   end
 end
