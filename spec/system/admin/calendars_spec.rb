@@ -120,5 +120,13 @@ RSpec.describe 'calendars', :calendar, type: :system do
       expect(calendar.calendar_events.last.description).to eq('new description')
       expect(calendar.calendar_events.last.start_date).to eq(Date.parse('2021-06-06'))
     end
+
+    it 'shows status of calendar events' do
+      regional_calendar = create(:regional_calendar, title: 'Regional calendar')
+      parent_event = create(:holiday, calendar: regional_calendar, description: 'Regional calendar event')
+      calendar = CalendarFactory.new(existing_calendar: regional_calendar, title: 'child calendar', calendar_type: :school).create
+      visit calendar_path(calendar)
+      expect(page).to have_content("inherited")
+    end
   end
 end
