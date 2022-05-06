@@ -17,10 +17,16 @@ describe CalendarInitService do
   let!(:child_calendar_bank_holiday_event) { create(:calendar_event, calendar_event_type: bank_holiday, calendar: child_calendar, description: 'child bank holiday') }
   let!(:child_calendar_inset_day_event) { create(:calendar_event, calendar_event_type: inset_day, calendar: child_calendar, description: 'child inset day event') }
 
-  it 'sets based on for matching events' do
+  it 'sets parent for matching events' do
     CalendarInitService.new(child_calendar).call
     expect(child_calendar_event.reload.based_on).to eq(parent_calendar_event)
     expect(child_calendar_bank_holiday_event.reload.based_on).to eq(parent_calendar_bank_holiday_event)
     expect(child_calendar_inset_day_event.reload.based_on).to eq(parent_calendar_inset_day_event)
+  end
+
+  it 'ignores non-matching events' do
+    other_child_calendar_event = create(:calendar_event, calendar_event_type: holiday, calendar: child_calendar, description: 'child event', start_date: start_date + 2.months, end_date: start_date + 3.months)
+    CalendarInitService.new(child_calendar).call
+    expect(other_child_calendar_event.reload.based_on).to be_nil
   end
 end
