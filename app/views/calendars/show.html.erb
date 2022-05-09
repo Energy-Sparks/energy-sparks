@@ -20,7 +20,7 @@
 
 <% if can? :manage, @calendar %>
   <% if @calendar.calendars.any? %>
-    <%= link_to 'Update dependent schools', resync_calendar_path(@calendar), method: :post, class: 'btn btn-primary', data: { confirm: 'Are you sure?' } %>
+    <%= link_to 'Update dependent schools', resync_calendar_path(@calendar), method: :post, class: 'btn btn-primary', data: { confirm: 'This will copy all events that have been edited in the 7 days to child calendars. Are you sure?' } %>
   <% end %>
 <% end %>
 
