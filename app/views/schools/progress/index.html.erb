@@ -135,7 +135,7 @@
 
   <h3>Progress charts</h3>
 
-  <%= render 'charts', school: @school, fuel_type: @fuel_type %>
+  <%= render 'charts', school: @school, fuel_type: @fuel_type, progress: @progress %>
 
   <% if current_user.present? && current_user.analytics? %>
     <h2>Debug</h2>
