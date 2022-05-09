@@ -1,12 +1,16 @@
 class CalendarInitService
+  attr_reader :messages
+
   def initialize(calendar)
     @calendar = calendar
+    @messages = []
   end
 
   def call
     @calendar.transaction do
       @calendar.calendar_events.where(based_on: nil).each do |calendar_event|
         if (parent_event = find_matching_event(@calendar.based_on, calendar_event))
+          messages << "Matched child #{calendar_event.display_title} with parent #{parent_event.display_title}"
           calendar_event.update!(based_on: parent_event)
         end
       end
