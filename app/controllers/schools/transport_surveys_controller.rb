@@ -8,6 +8,10 @@ module Schools
     authorize_resource :transport_survey
     before_action :load_or_create, only: [:update]
 
+    def start
+      redirect_to edit_school_transport_survey_path(@school, Date.today)
+    end
+
     # We need to decide how we are going to lock this down. For example, we shouldn't allow surveying in the future (or the past really). Maybe Just today?
     def edit
       @transport_survey = @school.transport_surveys.find_or_initialize_by(run_on: params[:run_on])

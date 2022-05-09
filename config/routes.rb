@@ -149,7 +149,7 @@ Rails.application.routes.draw do
       resources :temperature_observations, only: [:show, :new, :create, :index, :destroy]
       resources :transport_surveys, only: [:show, :edit, :update, :index, :destroy], param: :run_on do
         collection do
-          get :intro
+          get :start
         end
         scope module: :transport_surveys do
           resources :responses, only: [:destroy]

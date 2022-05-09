@@ -42,7 +42,7 @@ export const carbonExamples = [
       return `That's the same as ${veggieDinners} veggie dinner${veggieDinners === 1 ? '' : 's'} 🥗!`;
 		},
   },
- ];
+];
 
 export const funWeight = function(carbonKgs) {
   if (carbonKgs === 0) {
