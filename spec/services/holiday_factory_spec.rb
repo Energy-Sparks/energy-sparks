@@ -42,6 +42,25 @@ describe HolidayFactory do
   end
 
   describe '#process_event_update' do
+    describe 'when calendar has a parent' do
+      let(:parent_calendar){ create :calendar, calendars: [calendar] }
+      describe 'when the event has changed' do
+        it 'resets the based_on of the event and any updated neighbours' do
+          term_1_parent = create(:term, calendar: parent_calendar, start_date: Date.new(2018, 3, 20), end_date: Date.new(2018, 3, 23))
+          term_2_parent = create(:term, calendar: parent_calendar, start_date: Date.new(2018, 4, 20), end_date: Date.new(2018, 5, 2))
+          holiday_1_parent = create(:holiday, calendar: parent_calendar, start_date: Date.new(2018, 3, 24), end_date: Date.new(2018, 4, 19))
+          term_1 = create(:term, calendar: calendar, start_date: Date.new(2018, 3, 20), end_date: Date.new(2018, 3, 23), based_on: term_1_parent)
+          term_2 = create(:term, calendar: calendar, start_date: Date.new(2018, 4, 20), end_date: Date.new(2018, 5, 2), based_on: term_2_parent)
+          holiday_factory = HolidayFactory.new(calendar)
+          holiday_factory.create
+          calendar.calendar_events.holidays.first.update(based_on: holiday_1_parent)
+          expect(holiday_factory.with_neighbour_updates(term_2, {start_date: Date.new(2018, 4, 25)})).to eq(true)
+          expect(term_1.based_on).not_to be_nil
+          expect(term_2.based_on).to be_nil
+          expect(calendar.calendar_events.holidays.first.based_on).to be_nil
+        end
+      end
+    end
     describe 'when updating a term' do
       describe 'when the start_date has changed' do
         it 'moves a preceding holiday end date forwards' do
