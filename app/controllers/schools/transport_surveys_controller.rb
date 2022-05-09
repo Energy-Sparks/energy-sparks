@@ -9,7 +9,7 @@ module Schools
     before_action :load_or_create, only: [:update]
 
     def start
-      redirect_to edit_school_transport_survey_path(@school, Date.today)
+      redirect_to edit_school_transport_survey_path(@school, Time.zone.today)
     end
 
     # We need to decide how we are going to lock this down. For example, we shouldn't allow surveying in the future (or the past really). Maybe Just today?
