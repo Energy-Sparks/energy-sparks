@@ -1,8 +1,8 @@
-<h1>Energy Sparks alerts for <%= link_to @school.name, school_url(@school) %></h1>
+<h1>Your weekly alerts</h1>
 
 <div class="s-3"></div>
 <p>
-  We analyse your school's energy data to highlight where you are making progress
+  We analyse <%= link_to "your school's", school_url(@school) %> energy data to highlight where you are making progress
   or where you may be able to take steps to reduce your usage to save money and
   reduce carbon emissions.
 </p>
