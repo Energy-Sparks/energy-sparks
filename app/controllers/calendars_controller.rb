@@ -24,11 +24,6 @@ class CalendarsController < ApplicationController
     end
   end
 
-  def reset
-    CalendarResetService.new(@calendar).reset
-    redirect_back fallback_location: admin_calendars_path, notice: 'Calendar was successfully reset.'
-  end
-
   def resync
     CalendarResyncService.new(@calendar, 1.week.ago).resync
     redirect_back fallback_location: admin_calendars_path, notice: 'Calendar was successfully copied to dependents.'
