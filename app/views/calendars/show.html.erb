@@ -21,8 +21,6 @@
 <% if can? :manage, @calendar %>
   <% if @calendar.calendars.any? %>
     <%= link_to 'Update dependent schools', resync_calendar_path(@calendar), method: :post, class: 'btn btn-primary', data: { confirm: 'Are you sure?' } %>
-  <% else %>
-    <%= link_to 'Reset to regional calendar', reset_calendar_path(@calendar), method: :post, class: 'btn btn-primary', data: { confirm: 'Are you sure?' } %>
   <% end %>
 <% end %>
 
