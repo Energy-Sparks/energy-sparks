@@ -355,4 +355,8 @@ module ApplicationHelper
            end
     icon.html_safe
   end
+
+  def calendar_event_status(calendar_event)
+    calendar_event.based_on ? 'inherited' : ''
+  end
 end

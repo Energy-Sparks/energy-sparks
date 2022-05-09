@@ -28,52 +28,32 @@ class CalendarEvent < ApplicationRecord
   belongs_to :calendar, touch: true
   belongs_to :calendar_event_type
 
+  belongs_to  :based_on, class_name: 'CalendarEvent', optional: true
+  has_many    :calendar_events, class_name: 'CalendarEvent', foreign_key: :based_on_id
+
   scope :terms,             -> { joins(:calendar_event_type).merge(CalendarEventType.term) }
   scope :inset_days,        -> { joins(:calendar_event_type).merge(CalendarEventType.inset_day) }
   scope :holidays,          -> { joins(:calendar_event_type).merge(CalendarEventType.holiday) }
   scope :bank_holidays,     -> { joins(:calendar_event_type).merge(CalendarEventType.bank_holiday) }
   scope :outside_term_time, -> { joins(:calendar_event_type).merge(CalendarEventType.outside_term_time) }
 
-  after_create :check_whether_child_needs_creating
-
   before_validation :update_academic_year
 
   validates :calendar, :calendar_event_type, :start_date, :end_date, presence: true
+  validate :start_date_end_date_order, :no_overlaps, :calendar_event_type_is_valid
 
-  validate :start_date_end_date_order, :no_overlaps
+  def display_title
+    "#{calendar_event_type.display_title} #{description} : #{start_date} to #{end_date}"
+  end
 
-private
+  private
 
   def update_academic_year
     self.academic_year = calendar.academic_year_for(start_date) if start_date
   end
 
-  def check_whether_child_needs_creating
-    if calendar.calendars.any?
-      calendar.calendars.each do |child_calendar|
-        next if there_is_an_overlapping_child_event?(self, child_calendar)
-        duplicate = self.dup
-        duplicate.calendar = child_calendar
-        duplicate.save!
-      end
-    end
-  end
-
-  def there_is_an_overlapping_child_event?(calendar_event, child_calendar)
-    overlap_types = if calendar_event.calendar_event_type.term_time || calendar_event.calendar_event_type.holiday
-                      (CalendarEventType.holiday + CalendarEventType.term)
-                    else
-                      [calendar_event.calendar_event_type]
-                    end
-    new_start_date = calendar_event.start_date
-    new_end_date = calendar_event.end_date
-    any_overlapping_before = any_overlapping_here?(overlap_types, child_calendar, new_start_date)
-    any_overlapping_after = any_overlapping_here?(overlap_types, child_calendar, new_end_date)
-    any_overlapping_before || any_overlapping_after
-  end
-
-  def any_overlapping_here?(overlap_types, child_calendar, date_to_check)
-    child_calendar.calendar_events.where(calendar_event_type: overlap_types).where('start_date <= ? and end_date >= ?', date_to_check, date_to_check).any?
+  def reset_parent
+    self.based_on_id = nil
   end
 
   def start_date_end_date_order
@@ -83,11 +63,22 @@ private
   end
 
   def no_overlaps
-    if (start_date && end_date && calendar_event_type) && (calendar_event_type.term_time || calendar_event_type.holiday)
-      holiday_or_term_events = calendar.calendar_events.joins(:calendar_event_type).where(calendar_event_types: { id: (CalendarEventType.holiday + CalendarEventType.term) })
-      if holiday_or_term_events.where.not(id: id).where('(start_date, end_date) OVERLAPS (?,?)', start_date, end_date).any?
-        errors.add(:base, 'overlaps another event')
+    if start_date && end_date && calendar_event_type
+      overlap_types = if calendar_event_type.term_time || calendar_event_type.holiday
+                        (CalendarEventType.holiday + CalendarEventType.term)
+                      else
+                        [calendar_event_type]
+                      end
+      events_to_check = calendar.calendar_events.where(calendar_event_type: overlap_types)
+      if events_to_check.where.not(id: id).where('(start_date, end_date) OVERLAPS (?,?)', start_date, end_date).any?
+        errors.add(:base, 'overlaps another term or holiday event')
       end
+    end
+  end
+
+  def calendar_event_type_is_valid
+    if calendar.national? && !calendar_event_type.bank_holiday?
+      errors.add(:base, 'only Bank Holidays can be created on National calendars')
     end
   end
 end

@@ -26,6 +26,7 @@ class HolidayFactory
   def with_neighbour_updates(calendar_event, attributes)
     managing_state(calendar_event) do |pre_save, post_save|
       calendar_event.attributes = attributes
+      reset_parent(calendar_event)
       if calendar_event.calendar_event_type.term_time || calendar_event.calendar_event_type.holiday
         if calendar_event.start_date_changed?
           update_previous_events(calendar_event, pre_save, post_save)
@@ -38,6 +39,12 @@ class HolidayFactory
   end
 
 private
+
+  def reset_parent(calendar_event)
+    if calendar_event.start_date_changed? || calendar_event.end_date_changed? || calendar_event.calendar_event_type_id_changed?
+      calendar_event.based_on = nil
+    end
+  end
 
   def update_previous_events(calendar_event, pre_save, post_save)
     previous_event = @calendar.terms_and_holidays.find_by(end_date: calendar_event.start_date_was - 1.day)
@@ -66,7 +73,7 @@ private
   end
 
   def move_neighbour(event, field, new_date)
-    lambda { event.update!(field => new_date) }
+    lambda { event.update!(field => new_date, based_on: nil) }
   end
 
   def destroy_neighbour(event)
