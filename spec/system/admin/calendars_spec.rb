@@ -91,7 +91,9 @@ RSpec.describe 'calendars', :calendar, type: :system do
       end
 
       click_on 'Update dependent schools'
-      expect(page).to have_content("Calendar was successfully copied to dependents.")
+      expect(page).to have_content("Resync completed for #{regional_calendar.title}")
+      expect(page).to have_content("Events deleted")
+      expect(page).to have_content("Events created")
 
       calendar.reload
       expect(calendar.calendar_events.count).to eq(1)
