@@ -49,12 +49,12 @@ RSpec.describe Schools::ConsentRequestService do
         end
 
         it 'should include the school name' do
-          email_body = @email.html_part.body.to_s
+          email_body = @email.body.to_s
           expect(email_body).to include(school.name)
         end
 
         it 'should include a link to the give consent page' do
-          email_body = @email.html_part.body.to_s
+          email_body = @email.body.to_s
           node = Capybara::Node::Simple.new(email_body.to_s)
           expect(node).to have_link('Give consent')
         end

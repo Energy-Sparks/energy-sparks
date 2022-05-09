@@ -2,6 +2,8 @@ class AlertMailer < ApplicationMailer
   include MailgunMailerHelper
   helper :application
 
+  after_action :prevent_delivery_from_test
+
   def alert_email
     @email_address = params[:email_address]
     @events = params[:events]
@@ -9,6 +11,7 @@ class AlertMailer < ApplicationMailer
     @unsubscribe_emails = User.where(school: @school, role: :school_admin).pluck(:email).join(', ')
     @alert_content = self.class.create_content(@events)
     @target_prompt = params[:target_prompt]
+    @title = @school.name
 
     email = make_bootstrap_mail(to: @email_address, subject: 'Energy Sparks alerts')
     add_mg_email_tag(email, 'alerts')
@@ -28,5 +31,9 @@ class AlertMailer < ApplicationMailer
         with: event.alert.template_variables
       )
     end
+  end
+
+  def prevent_delivery_from_test
+    mail.perform_deliveries = false unless ENV['SEND_AUTOMATED_EMAILS'] == 'true'
   end
 end
