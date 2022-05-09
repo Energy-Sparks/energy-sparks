@@ -94,4 +94,23 @@ describe CalendarResyncService do
       expect(other_calendar.calendar_events.last.based_on).to eq(regional_calendar_event)
     end
   end
+
+  context 'when resyncing' do
+    it 'adds success messages' do
+      service = CalendarResyncService.new(regional_calendar)
+      service.resync
+      expect(service.successes.count).to eq(1)
+      expect(service.successes.first[:calendar]).to eq(school_calendar)
+      expect(service.successes.first[:created].count).to eq(1)
+    end
+    it 'adds failure messages' do
+      school_calendar.calendar_events << regional_calendar.calendar_events.map {|event| event.dup}
+      service = CalendarResyncService.new(regional_calendar)
+      service.resync
+      expect(service.failures.count).to eq(1)
+      expect(service.failures.first[:calendar]).to eq(school_calendar)
+      expect(service.failures.first[:message]).to include('overlaps another term or holiday')
+    end
+  end
+
 end
