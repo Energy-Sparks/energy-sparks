@@ -127,6 +127,46 @@ describe 'Management dashboard' do
         expect(page).to have_content("Recorded temperatures")
       end
 
+      context 'when displaying charts' do
+        let(:dashboard_charts) { [] }
+
+        before(:each) do
+          school.configuration.update!(dashboard_charts: dashboard_charts)
+          visit management_school_path(school)
+        end
+
+        context 'and they can all be shown' do
+          let(:dashboard_charts) { [:management_dashboard_group_by_week_electricity, :management_dashboard_group_by_week_gas, :management_dashboard_group_by_week_storage_heater, :management_dashboard_group_by_month_solar_pv] }
+          it 'displays the expected charts' do
+            expect(page).to have_content("Your recent energy usage")
+            expect(page).to have_css("#management-energy-overview")
+            expect(page).to have_css("#electricity-overview")
+            expect(page).to have_css("#gas-overview")
+            expect(page).to have_css("#storage_heater-overview")
+            expect(page).to have_css("#solar-overview")
+          end
+        end
+
+        context 'and there are limited charts' do
+          let(:dashboard_charts) { [:management_dashboard_group_by_week_electricity, :management_dashboard_group_by_week_gas] }
+          it 'displays the expected charts' do
+            expect(page).to have_content("Your recent energy usage")
+            expect(page).to have_css("#management-energy-overview")
+            expect(page).to have_css("#electricity-overview")
+            expect(page).to have_css("#gas-overview")
+            expect(page).to_not have_css("#storage_heater-overview")
+            expect(page).to_not have_css("#solar-overview")
+          end
+        end
+
+        context 'and there are no charts' do
+          it 'displays the expected charts' do
+            expect(page).to_not have_content("Your recent energy usage")
+            expect(page).to_not have_css("#management-energy-overview")
+          end
+        end
+      end
+
       context 'with management priorities' do
 
         let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :weekly) }
