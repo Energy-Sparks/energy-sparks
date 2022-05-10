@@ -132,7 +132,7 @@ class Ability
       if user.pupil?
         can :show_management_dash, School, id: user.school_id, visible: true
         can :show_management_dash, School, { school_group_id: user.school.school_group_id, visible: true }
-        can [:start, :edit, :read, :update, :create], TransportSurvey, related_school_scope
+        can [:start, :read, :update, :create], TransportSurvey, related_school_scope
         can [:read, :create], TransportSurveyResponse, transport_survey: related_school_scope
       end
       #pupils and volunteers can only read real cost data if their school is public
