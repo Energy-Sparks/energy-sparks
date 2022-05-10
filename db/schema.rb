@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_09_142126) do
+ActiveRecord::Schema.define(version: 2022_05_09_150353) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -601,6 +601,7 @@ ActiveRecord::Schema.define(version: 2022_05_09_142126) do
     t.string "suggest_estimates_fuel_types", default: [], null: false, array: true
     t.json "estimated_consumption", default: {}
     t.json "aggregate_meter_dates", default: {}
+    t.string "dashboard_charts", default: [], null: false, array: true
     t.index ["school_id"], name: "index_configurations_on_school_id"
   end
 

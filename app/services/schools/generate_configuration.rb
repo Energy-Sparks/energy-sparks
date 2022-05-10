@@ -15,8 +15,10 @@ module Schools
       aggregate_meter_dates = GenerateMeterDates.new(@aggregated_meter_collection).generate
       configuration.update!(aggregate_meter_dates: aggregate_meter_dates)
 
-      analysis_chart_configuration = GenerateAnalysisChartConfiguration.new(@school, @aggregated_meter_collection, fuel_configuration)
+      dashboard_charts = GenerateDashboardChartConfiguration.new(@school, @aggregated_meter_collection, fuel_configuration).generate
+      configuration.update!(dashboard_charts: dashboard_charts)
 
+      analysis_chart_configuration = GenerateAnalysisChartConfiguration.new(@school, @aggregated_meter_collection, fuel_configuration)
       analysis_charts = analysis_chart_configuration.generate
       configuration.update!(analysis_charts: analysis_charts)
 

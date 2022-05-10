@@ -2,20 +2,18 @@
 #
 # Table name: configurations
 #
-#  aggregate_meter_dates               :json
-#  analysis_charts                     :json             not null
-#  created_at                          :datetime         not null
-#  electricity_dashboard_chart_type    :integer          default("no_electricity_chart"), not null
-#  estimated_consumption               :json
-#  fuel_configuration                  :json
-#  gas_dashboard_chart_type            :integer          default("no_gas_chart"), not null
-#  id                                  :bigint(8)        not null, primary key
-#  pupil_analysis_charts               :json             not null
-#  school_id                           :bigint(8)        not null
-#  school_target_fuel_types            :string           default([]), not null, is an Array
-#  storage_heater_dashboard_chart_type :integer          default("no_storage_heater_chart"), not null
-#  suggest_estimates_fuel_types        :string           default([]), not null, is an Array
-#  updated_at                          :datetime         not null
+#  aggregate_meter_dates        :json
+#  analysis_charts              :json             not null
+#  created_at                   :datetime         not null
+#  dashboard_charts             :string           default([]), not null, is an Array
+#  estimated_consumption        :json
+#  fuel_configuration           :json
+#  id                           :bigint(8)        not null, primary key
+#  pupil_analysis_charts        :json             not null
+#  school_id                    :bigint(8)        not null
+#  school_target_fuel_types     :string           default([]), not null, is an Array
+#  suggest_estimates_fuel_types :string           default([]), not null, is an Array
+#  updated_at                   :datetime         not null
 #
 # Indexes
 #
@@ -29,6 +27,13 @@
 module Schools
   class Configuration < ApplicationRecord
     belongs_to :school
+
+    MANAGEMENT_DASHBOARD_CHARTS = {
+      electricity: :management_dashboard_group_by_week_electricity,
+      gas: :management_dashboard_group_by_week_gas,
+      storage_heaters: :management_dashboard_group_by_week_storage_heater,
+      solar_pv: :management_dashboard_group_by_month_solar_pv
+    }.freeze
 
     delegate :has_electricity, :has_gas, :has_storage_heaters, :has_solar_pv, :fuel_types_for_analysis, :dual_fuel,
       to: :fuel_configuration
