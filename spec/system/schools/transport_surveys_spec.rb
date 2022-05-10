@@ -194,11 +194,11 @@ describe 'TransportSurveys', type: :system do
 
           context "and viewing responses" do
             before(:each) do
-              click_link("#{Date.today}")
+              click_link("#{transport_survey.run_on}")
             end
 
             it "lists responses" do
-              expect(page).to have_content("Responses for: #{Date.today}")
+              expect(page).to have_content("Responses for: #{transport_survey.run_on}")
             end
 
             it "displays added response" do
@@ -246,7 +246,7 @@ describe 'TransportSurveys', type: :system do
 
         context "and viewing responses" do
           before(:each) do
-            click_link("#{Date.today}")
+            click_link("#{transport_survey.run_on}")
           end
 
           it "shows link to collect more responses" do
@@ -294,7 +294,7 @@ describe 'TransportSurveys', type: :system do
 
         context "and viewing responses" do
           before(:each) do
-            click_link("#{Date.today}")
+            click_link("#{transport_survey.run_on}")
           end
 
           it "doesn't show link to collect more responses" do
@@ -312,4 +312,5 @@ describe 'TransportSurveys', type: :system do
       end
     end
   end
+
 end
