@@ -142,7 +142,6 @@ Rails.application.routes.draw do
 
       resources :programmes, only: [:create]
 
-      resource :action, only: [:new]
       resources :audits
 
       resources :temperature_observations, only: [:show, :new, :create, :index, :destroy]
