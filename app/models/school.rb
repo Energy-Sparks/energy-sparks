@@ -32,7 +32,7 @@
 #  public                                :boolean          default(TRUE)
 #  removal_date                          :date
 #  school_group_id                       :bigint(8)
-#  school_type                           :integer
+#  school_type                           :integer          not null
 #  scoreboard_id                         :bigint(8)
 #  serves_dinners                        :boolean          default(FALSE), not null
 #  slug                                  :string

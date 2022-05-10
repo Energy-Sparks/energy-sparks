@@ -194,9 +194,9 @@ private
   end
 
   def teachers_chart_colour(index)
-    if Schools::Configuration.gas_dashboard_chart_types.key?(@chart_type) || @chart_type.match?(/_gas_/)
+    if @chart_type.match?(/_gas_/)
       index.zero? ? DARK_GAS : LIGHT_GAS
-    elsif Schools::Configuration.storage_heater_dashboard_chart_types.key?(@chart_type) || @chart_type.match?(/_storage_/)
+    elsif @chart_type.match?(/_storage_/)
       index.zero? ? DARK_STORAGE : LIGHT_STORAGE
     else
       index.zero? ? DARK_ELECTRICITY : LIGHT_ELECTRICITY
