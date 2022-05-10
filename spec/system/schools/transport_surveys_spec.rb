@@ -5,6 +5,33 @@ describe 'TransportSurveys', type: :system do
   let!(:school)            { create(:school, :with_school_group) }
   let!(:transport_type)    { create(:transport_type) }
 
+
+  describe "Survey app" do
+
+    describe "as a pupil who can carry out surveys" do
+      let(:user) { create(:pupil, school: school) }
+
+      before(:each) do
+        sign_in(user)
+      end
+
+      context "viewing the start page" do
+        before(:each) do
+          visit start_school_transport_surveys_path(school)
+        end
+
+        context "when javascript is enabled", js: true do
+          it { expect(page).to have_button('Launch survey app') }
+        end
+
+        context "when javascript is not enabled" do
+          it { expect(page).to have_content('Javascript must be enabled to use this functionality.') }
+        end
+      end
+    end
+  end
+
+=begin
   describe "Abilities" do
     # admin / group admin / school admin / staff - can manage Transport Surveys, Transport Survey Responses
     # pupil - as above except deleting Surveys and Transport Survey Responses
@@ -199,5 +226,8 @@ describe 'TransportSurveys', type: :system do
       end
     end
   end
+=end
+
+
 end
 
