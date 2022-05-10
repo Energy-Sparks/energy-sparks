@@ -191,7 +191,7 @@ Rails.application.routes.draw do
       resources :alerts, only: [:show]
       resources :find_out_more, controller: :find_out_more
 
-      resources :interventions do
+      resources :interventions, only: [:index, :show, :destroy] do
         member do
           get :completed
         end
