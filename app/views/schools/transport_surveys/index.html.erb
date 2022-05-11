@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Schools Transport Surveys</h1>
+<h1>Travel to School Surveys</h1>
 
 <div class="table-responsive mt-2">
   <table class="table table-striped">
@@ -27,6 +27,6 @@
   </table>
 </div>
 
-<% if can? :intro, TransportSurvey %>
-  <%= link_to 'Start surveying', intro_school_transport_surveys_url(@school), class: 'btn' %>
+<% if can?(:start, TransportSurvey) %>
+  <%= link_to 'Start a travel to school survey', start_school_transport_surveys_url(@school), class: 'btn' %>
 <% end %>

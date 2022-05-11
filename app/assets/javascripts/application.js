@@ -22,13 +22,13 @@
 
 // This is used (handlebars) but slight overkill I think
 //= require handlebars
+//= require_tree ./templates
 
 //= require activity_types
 //= require usage_charts
 //= require bullet_charts
 //= require schools
 //= require users
-//= require transport_surveys
 
 // from https://github.com/neivars/bootstrap-year-calendar
 //= require bootstrap-year-calendar
