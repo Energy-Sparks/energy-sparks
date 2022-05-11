@@ -29,19 +29,23 @@ class TransportSurveyResponse < ApplicationRecord
   belongs_to :transport_type, inverse_of: :responses
 
   # Until we decide if to use a table or not
-  enum weather: [:sun, :rain, :icy, :snow]
+  enum weather: [:sun, :cloud, :rain, :snow]
 
   # These class helper methods may not stay here. They are currently helping with prototyping!
   def self.weather_symbols
-    { sun: '☀️', rain: '🌧️ ', icy: '❄️', snow: '❄️' }
+    { sun: '☀️', cloud: '⛅', rain: '🌧️', snow: '❄️' }
+  end
+
+  def self.passenger_symbol
+    '👤'
   end
 
   def self.journey_minutes_options
-    [5, 10, 15, 30, 60]
+    [5, 10, 15, 20, 30, 45, 60]
   end
 
   def self.passengers_options
-    [1, 2, 3, 4, 5]
+    [1, 2, 3, 4]
   end
 
   def weather_symbol
@@ -49,7 +53,6 @@ class TransportSurveyResponse < ApplicationRecord
   end
 
   validates :transport_survey_id, :transport_type_id, :passengers, :run_identifier, :surveyed_at, :journey_minutes, :weather, presence: true
-  validates :weather, inclusion: { in: weathers.keys }
-  validates :journey_minutes, numericality: { in: journey_minutes_options }
-  validates :passengers, numericality: { in: passengers_options }
+  validates :journey_minutes, inclusion: { in: journey_minutes_options }
+  validates :passengers, inclusion: { in: passengers_options }
 end

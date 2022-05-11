@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_04_121958) do
+ActiveRecord::Schema.define(version: 2022_05_10_172051) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1455,7 +1455,7 @@ ActiveRecord::Schema.define(version: 2022_04_04_121958) do
     t.date "run_on", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["run_on"], name: "index_transport_surveys_on_run_on", unique: true
+    t.index ["school_id", "run_on"], name: "index_transport_surveys_on_school_id_and_run_on", unique: true
     t.index ["school_id"], name: "index_transport_surveys_on_school_id"
   end
 
