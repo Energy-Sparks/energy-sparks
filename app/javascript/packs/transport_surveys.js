@@ -10,7 +10,8 @@ $(document).ready(function() {
     storage_key: 'es_ts_responses',
     run_on: $("#run_on").val(),
     base_url: $('#transport_survey').attr('action'),
-    transport_types: loadTransportTypes('/transport_types.json')
+    transport_types: loadTransportTypes('/transport_types.json'),
+    passenger_symbol: $("#passenger_symbol").val()
   }
 
   storage.init({key: config.storage_key, base_url: config.base_url});
@@ -278,7 +279,7 @@ $(document).ready(function() {
     $('#confirm-time div.option-content').text(response['journey_minutes']);
     $('#confirm-transport div.option-content').text(transport_type.image);
     $('#confirm-transport div.option-label').text(transport_type.name);
-    $('#confirm-passengers div.option-content').text("🧍".repeat(response['passengers']));
+    $('#confirm-passengers div.option-content').text(config.passenger_symbol.repeat(response['passengers']));
   }
 
   function displayCarbon() {

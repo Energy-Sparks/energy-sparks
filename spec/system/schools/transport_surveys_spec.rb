@@ -62,7 +62,7 @@ describe 'TransportSurveys', type: :system do
 
                   it { expect(page).to have_content('Pupil Passengers: How many pupils from school shared this mode of transport (including you)?') }
                   let(:passengers) { TransportSurveyResponse.passengers_options.last.to_i }
-                  let(:passengers_link) { '🧍' * passengers }
+                  let(:passengers_link) { TransportSurveyResponse.passenger_symbol * passengers }
 
                   context "selecting passengers" do
                     before(:each) do
