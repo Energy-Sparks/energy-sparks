@@ -36,6 +36,10 @@ class TransportSurveyResponse < ApplicationRecord
     { sun: '☀️', cloud: '⛅', rain: '🌧️', snow: '❄️' }
   end
 
+  def self.passenger_symbol
+    '👤'
+  end
+
   def self.journey_minutes_options
     [5, 10, 15, 20, 30, 45, 60]
   end
