@@ -1,5 +1,5 @@
 #!/bin/bash
-echo `date -u` "Getting any files"
+echo `date -u` "BANES FTP start"
 
 set +x
 export $(cat /opt/elasticbeanstalk/deployment/env | xargs)
@@ -50,3 +50,5 @@ then
 else
   echo `date -u` "No files"
 fi
+
+echo `date -u` "BANES FTP end"
