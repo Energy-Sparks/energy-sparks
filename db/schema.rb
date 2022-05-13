@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_10_172051) do
+ActiveRecord::Schema.define(version: 2022_05_13_160539) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1471,6 +1471,7 @@ ActiveRecord::Schema.define(version: 2022_05_10_172051) do
     t.boolean "can_share", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "park_and_stride", default: false, null: false
     t.index ["name"], name: "index_transport_types_on_name", unique: true
   end
 
