@@ -351,6 +351,7 @@ ActiveRecord::Schema.define(version: 2022_05_13_160539) do
     t.integer "import_warning_days", default: 10
     t.string "expected_units"
     t.integer "missing_readings_limit"
+    t.boolean "lookup_by_serial_number", default: false
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
   end
