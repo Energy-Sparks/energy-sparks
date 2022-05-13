@@ -6,5 +6,6 @@ FactoryBot.define do
     speed_km_per_hour { "32" }
     note { "Average car, unknown size or fuel type" }
     can_share { true }
+    park_and_stride { false }
   end
 end
