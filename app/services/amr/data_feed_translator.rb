@@ -6,7 +6,6 @@ module Amr
     end
 
     def perform
-      @map_of_fields_to_indexes = @config.map_of_fields_to_indexes
       hash_rows = @array_of_rows.map { |row| translate_row_to_hash(row) }
       check_units(hash_rows)
     end
@@ -14,16 +13,9 @@ module Amr
   private
 
     def translate_row_to_hash(row)
-      meter_details = meter_details_from_row(row)
-      reading_date_string = fetch_from_row(:reading_date_index, row)
-
-      data_feed_reading_hash = {}
-
+      data_feed_reading_hash = meter_details_from_row(row)
       data_feed_reading_hash[:amr_data_feed_config_id] = @config.id
-      data_feed_reading_hash[:meter_id] = meter_details[:meter_id]
-      data_feed_reading_hash[:mpan_mprn] = meter_details[:mpan_mprn]
-      data_feed_reading_hash[:meter_serial_number] = meter_details[:meter_serial_number]
-      data_feed_reading_hash[:reading_date] = reading_date_string
+      data_feed_reading_hash[:reading_date] = fetch_from_row(:reading_date_index, row)
       data_feed_reading_hash[:postcode] = fetch_from_row(:postcode_index, row)
       data_feed_reading_hash[:units] = fetch_from_row(:units_index, row)
       data_feed_reading_hash[:description] = fetch_from_row(:description_index, row)
@@ -35,11 +27,11 @@ module Amr
     def meter_details_from_row(row)
       meter_serial_number = fetch_from_row(:meter_serial_number_index, row)
       if @config.lookup_by_serial_number
-        meter_id = meter_serial_numbers_hash[meter_serial_number]
-        mpan_mprn = meter_mpan_mprns_hash.key(meter_id)
+        meter_id = map_of_serial_numbers_to_ids[meter_serial_number]
+        mpan_mprn = map_of_mpan_mprns_to_ids.key(meter_id)
       else
         mpan_mprn = fetch_from_row(:mpan_mprn_index, row)
-        meter_id = meter_mpan_mprns_hash[mpan_mprn]
+        meter_id = map_of_mpan_mprns_to_ids[mpan_mprn]
       end
       {
         meter_id: meter_id,
@@ -48,17 +40,9 @@ module Amr
       }
     end
 
-    def meter_mpan_mprns_hash
-      @meter_mpan_mprns_hash ||= Meter.all.map { |m| [m.mpan_mprn.to_s, m.id]}.to_h
-    end
-
-    def meter_serial_numbers_hash
-      @meter_serial_numbers_hash ||= Meter.all.map { |m| [m.meter_serial_number.to_s, m.id]}.to_h
-    end
-
     def fetch_from_row(index_symbol, row)
-      return if @map_of_fields_to_indexes[index_symbol].nil?
-      row[@map_of_fields_to_indexes[index_symbol]]
+      return if map_of_fields_to_indexes[index_symbol].nil?
+      row[map_of_fields_to_indexes[index_symbol]]
     end
 
     def readings_as_array(amr_data_feed_row)
@@ -68,6 +52,18 @@ module Amr
     def check_units(rows)
       return rows if @config.expected_units.blank?
       rows.select {|row| row[:units] == @config.expected_units}
+    end
+
+    def map_of_mpan_mprns_to_ids
+      @map_of_mpan_mprns_to_ids ||= Meter.all.map { |m| [m.mpan_mprn.to_s, m.id]}.to_h
+    end
+
+    def map_of_serial_numbers_to_ids
+      @map_of_serial_numbers_to_ids ||= Meter.all.map { |m| [m.meter_serial_number.to_s, m.id]}.to_h
+    end
+
+    def map_of_fields_to_indexes
+      @map_of_fields_to_indexes ||= @config.map_of_fields_to_indexes
     end
   end
 end
