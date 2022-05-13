@@ -52,10 +52,6 @@ class CalendarEvent < ApplicationRecord
     self.academic_year = calendar.academic_year_for(start_date) if start_date
   end
 
-  def reset_parent
-    self.based_on_id = nil
-  end
-
   def start_date_end_date_order
     if (start_date && end_date) && (end_date < start_date)
       errors.add(:end_date, 'must be on or after the start date')
