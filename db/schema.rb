@@ -598,15 +598,13 @@ ActiveRecord::Schema.define(version: 2022_05_13_160539) do
     t.json "analysis_charts", default: {}, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "gas_dashboard_chart_type", default: 0, null: false
     t.json "pupil_analysis_charts", default: {}, null: false
     t.json "fuel_configuration", default: {}
-    t.integer "storage_heater_dashboard_chart_type", default: 0, null: false
-    t.integer "electricity_dashboard_chart_type", default: 0, null: false
     t.string "school_target_fuel_types", default: [], null: false, array: true
     t.string "suggest_estimates_fuel_types", default: [], null: false, array: true
     t.json "estimated_consumption", default: {}
     t.json "aggregate_meter_dates", default: {}
+    t.string "dashboard_charts", default: [], null: false, array: true
     t.index ["school_id"], name: "index_configurations_on_school_id"
   end
 
