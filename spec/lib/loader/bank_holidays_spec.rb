@@ -17,11 +17,10 @@ module Loader
        expect(national_calendar.bank_holidays.first.start_date).to eq Date.parse("2016-08-16")
     end
 
-    it 'should cascade to child calendars' do
+    it 'should not cascade to child calendars' do
       child_calendar = create :calendar, based_on_id: national_calendar.id, calendar_type: :regional
       BankHolidays.load!(sample_file)
-      expect(child_calendar.bank_holidays.count).to be 1
-      expect(child_calendar.bank_holidays.first.start_date).to eq Date.parse("2016-08-16")
+      expect(child_calendar.bank_holidays.count).to be 0
     end
   end
 end
