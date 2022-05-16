@@ -1,4 +1,7 @@
 module Amr
+  class DataFeedException < RuntimeError
+  end
+
   class DataFeedTranslator
     def initialize(config, array_of_rows)
       @config = config

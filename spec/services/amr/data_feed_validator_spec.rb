@@ -61,7 +61,7 @@ describe Amr::DataFeedValidator do
     it 'raises exception when configuration expects more header rows than is in data' do
       orsis_config.number_of_header_rows = 2
       only_header = [["sep="]]
-      expect { Amr::DataFeedValidator.new(orsis_config, only_header).perform }.to raise_error Amr::DataFeedValidatorException
+      expect { Amr::DataFeedValidator.new(orsis_config, only_header).perform }.to raise_error Amr::DataFeedException
     end
 
   end
