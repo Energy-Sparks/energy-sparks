@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: manual_data_load_runs
+#
+#  amr_uploaded_reading_id :bigint(8)        not null
+#  created_at              :datetime         not null
+#  id                      :bigint(8)        not null, primary key
+#  status                  :integer          default("pending"), not null
+#  updated_at              :datetime         not null
+#
+# Indexes
+#
+#  index_manual_data_load_runs_on_amr_uploaded_reading_id  (amr_uploaded_reading_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (amr_uploaded_reading_id => amr_uploaded_readings.id)
+#
 class ManualDataLoadRun < ApplicationRecord
   belongs_to :amr_uploaded_reading
   enum status: [:pending, :running, :done, :failed]

@@ -10,28 +10,6 @@ module Schools
       @interventions = @observations.intervention.visible.order('at DESC')
     end
 
-    def new
-    end
-
-    def create
-      if InterventionCreator.new(@observation).process
-        redirect_to completed_school_intervention_path(@school, @observation)
-      else
-        render :new
-      end
-    end
-
-    def edit
-    end
-
-    def update
-      if @observation.update(observation_params)
-        redirect_to school_interventions_path(@school)
-      else
-        render :edit
-      end
-    end
-
     def destroy
       ObservationRemoval.new(@observation).process
       redirect_back fallback_location: school_interventions_path(@school)
@@ -56,10 +34,6 @@ module Schools
                                    InterventionTypeGroup.find(params[:intervention_type_group_id])
                                  end
       @intervention_types = @intervention_type_group.intervention_types.display_order
-    end
-
-    def observation_params
-      params.require(:observation).permit(:description, :at, :intervention_type_id)
     end
 
     def load_suggested_actions(school)

@@ -1,4 +1,4 @@
-<h1>Transport Surveys</h1>
+<h1>Travel to School Surveys</h1>
 
 <h3>Responses for: <%= @transport_survey.run_on %></h3>
 
@@ -35,6 +35,8 @@
   </table>
 </div>
 
-<% if can?(:update, TransportSurvey) %>
-  <%= link_to 'Collect more responses', intro_school_transport_surveys_url(@school), class: 'btn' %>
+<% if can?(:edit, TransportSurvey) %>
+  <%= link_to 'Collect more responses', edit_school_transport_survey_url(@school, @transport_survey.run_on), class: 'btn' %>
 <% end %>
+
+<%= link_to 'View survey responses by date', school_transport_surveys_url(@school), class: 'btn' %>

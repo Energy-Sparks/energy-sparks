@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_04_121958) do
+ActiveRecord::Schema.define(version: 2022_05_13_160539) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -351,6 +351,7 @@ ActiveRecord::Schema.define(version: 2022_04_04_121958) do
     t.integer "import_warning_days", default: 10
     t.string "expected_units"
     t.integer "missing_readings_limit"
+    t.boolean "lookup_by_serial_number", default: false
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
   end
@@ -551,6 +552,9 @@ ActiveRecord::Schema.define(version: 2022_04_04_121958) do
     t.text "description"
     t.date "start_date", null: false
     t.date "end_date", null: false
+    t.bigint "based_on_id"
+    t.datetime "created_at", precision: 6, default: -> { "(CURRENT_TIMESTAMP - '1 mon'::interval)" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "(CURRENT_TIMESTAMP - '1 mon'::interval)" }, null: false
     t.index ["academic_year_id"], name: "index_calendar_events_on_academic_year_id"
     t.index ["calendar_event_type_id"], name: "index_calendar_events_on_calendar_event_type_id"
     t.index ["calendar_id"], name: "index_calendar_events_on_calendar_id"
@@ -595,15 +599,13 @@ ActiveRecord::Schema.define(version: 2022_04_04_121958) do
     t.json "analysis_charts", default: {}, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "gas_dashboard_chart_type", default: 0, null: false
     t.json "pupil_analysis_charts", default: {}, null: false
     t.json "fuel_configuration", default: {}
-    t.integer "storage_heater_dashboard_chart_type", default: 0, null: false
-    t.integer "electricity_dashboard_chart_type", default: 0, null: false
     t.string "school_target_fuel_types", default: [], null: false, array: true
     t.string "suggest_estimates_fuel_types", default: [], null: false, array: true
     t.json "estimated_consumption", default: {}
     t.json "aggregate_meter_dates", default: {}
+    t.string "dashboard_charts", default: [], null: false, array: true
     t.index ["school_id"], name: "index_configurations_on_school_id"
   end
 
@@ -1455,7 +1457,7 @@ ActiveRecord::Schema.define(version: 2022_04_04_121958) do
     t.date "run_on", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["run_on"], name: "index_transport_surveys_on_run_on", unique: true
+    t.index ["school_id", "run_on"], name: "index_transport_surveys_on_school_id_and_run_on", unique: true
     t.index ["school_id"], name: "index_transport_surveys_on_school_id"
   end
 
@@ -1468,6 +1470,7 @@ ActiveRecord::Schema.define(version: 2022_04_04_121958) do
     t.boolean "can_share", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "park_and_stride", default: false, null: false
     t.index ["name"], name: "index_transport_types_on_name", unique: true
   end
 
