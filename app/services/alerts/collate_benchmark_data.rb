@@ -19,14 +19,14 @@ module Alerts
       latest_school_runs.each do |benchmark_result_school_generation_run|
         school_id = benchmark_result_school_generation_run.school_id
 
-        benchmark_result_school_generation_run.benchmark_results.each do |benchmark_result|
-          unless benchmarks.key?(benchmark_result.asof)
-            benchmarks[benchmark_result.asof] = { school_id => {} }
+        benchmark_result_school_generation_run.benchmark_results.pluck(:asof, :data).each do |benchmark_result|
+          unless benchmarks.key?(benchmark_result[0])
+            benchmarks[benchmark_result[0]] = { school_id => {} }
           end
-          unless benchmarks[benchmark_result.asof].key?(school_id)
-            benchmarks[benchmark_result.asof][school_id] = {}
+          unless benchmarks[benchmark_result[0]].key?(school_id)
+            benchmarks[benchmark_result[0]][school_id] = {}
           end
-          benchmarks[benchmark_result.asof][school_id] = benchmarks[benchmark_result.asof][school_id].merge!(benchmark_result.data)
+          benchmarks[benchmark_result[0]][school_id] = benchmarks[benchmark_result[0]][school_id].merge!(benchmark_result[1])
         end
       end
     end

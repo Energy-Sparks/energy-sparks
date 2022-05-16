@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_09_150353) do
+ActiveRecord::Schema.define(version: 2022_05_13_160539) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -551,6 +551,9 @@ ActiveRecord::Schema.define(version: 2022_05_09_150353) do
     t.text "description"
     t.date "start_date", null: false
     t.date "end_date", null: false
+    t.bigint "based_on_id"
+    t.datetime "created_at", precision: 6, default: -> { "(CURRENT_TIMESTAMP - '1 mon'::interval)" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "(CURRENT_TIMESTAMP - '1 mon'::interval)" }, null: false
     t.index ["academic_year_id"], name: "index_calendar_events_on_academic_year_id"
     t.index ["calendar_event_type_id"], name: "index_calendar_events_on_calendar_event_type_id"
     t.index ["calendar_id"], name: "index_calendar_events_on_calendar_id"
@@ -1453,7 +1456,7 @@ ActiveRecord::Schema.define(version: 2022_05_09_150353) do
     t.date "run_on", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["run_on"], name: "index_transport_surveys_on_run_on", unique: true
+    t.index ["school_id", "run_on"], name: "index_transport_surveys_on_school_id_and_run_on", unique: true
     t.index ["school_id"], name: "index_transport_surveys_on_school_id"
   end
 
@@ -1466,6 +1469,7 @@ ActiveRecord::Schema.define(version: 2022_05_09_150353) do
     t.boolean "can_share", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "park_and_stride", default: false, null: false
     t.index ["name"], name: "index_transport_types_on_name", unique: true
   end
 

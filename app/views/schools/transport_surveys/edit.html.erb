@@ -1,15 +1,122 @@
-<h1>Transport Surveys</h1>
+<% content_for :head do %>
+  <%= javascript_pack_tag 'transport_surveys' %>
+<% end %>
+
+<h1>Travel to School Surveys</h1>
 
 <h3>Surveying on <%= @transport_survey.run_on %></h3>
 
-<%= form_with(model: @transport_survey, url: school_transport_survey_url(@school, @transport_survey), method: :patch, local: true) do |f| %>
-		<%= f.hidden_field :run_on %>
-    Weather: <%= select_tag "transport_survey[responses][][weather]", options_from_collection_for_select(TransportSurveyResponse::weather_symbols, :first, :last) %><br />
-    Journey minutes: <%= select_tag "transport_survey[responses][][journey_minutes]", options_for_select(TransportSurveyResponse.journey_minutes_options) %><br />
-    Transport type: <%= select_tag "transport_survey[responses][][transport_type_id]", options_from_collection_for_select(TransportType.all, :id, :image)  %><br />
-    Pupils from this school sharing transport: <%= select_tag "transport_survey[responses][][passengers]", options_for_select(TransportSurveyResponse.passengers_options) %><br />
-    <%= hidden_field_tag "transport_survey[responses][][surveyed_at]", DateTime.now %><br />
-    <%= hidden_field_tag "transport_survey[responses][][run_identifier]", TransportSurveyResponse.generate_unique_secure_token %><br />
-    <%= submit_tag "submit", class: 'btn btn-primary' %>
+<%= render partial: 'no_javascript_warning' %>
 
-<% end %>
+<div id="unsaved-responses"></div>
+
+<%= render 'intro' %>
+
+<button type="button" class="btn btn-primary jsonly" data-toggle="modal" data-target="#transport_survey_modal">
+  Launch survey app
+</button>
+
+<%= link_to 'View survey responses by date', school_transport_surveys_url(@school), class: 'btn' %>
+
+<div class="modal fade modal-fullscreen-xs modal-fullscreen-sm modal-fullscreen-md" id="transport_survey_modal" data-backdrop="true" data-keyboard="false" tabindex="-1" aria-labelledby="transport_survey_modal_label" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="transport_survey_modal_label">Travel to school survey</h1>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"><h1>&times;</h1></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= form_with(url: school_transport_surveys_url(@school), method: :patch, local: true, id: 'transport_survey') do |f| %>
+          <%= hidden_field_tag :run_on, @transport_survey.run_on %>
+          <%= hidden_field_tag :run_identifier, TransportSurveyResponse.generate_unique_secure_token %>
+          <%= hidden_field_tag :passenger_symbol, TransportSurveyResponse.passenger_symbol %>
+
+          <div id="setup" class="panel">
+            <h2>Please select today's weather</h2>
+            <%= hidden_field_tag :weather, "", class: 'selected' %>
+            <div class="container">
+              <div class="row">
+                <% TransportSurveyResponse.weather_symbols.each do |label, symbol| %>
+                  <%= render 'option', { label: label, content: symbol, identifier: label, action: "start" } %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          <div id="survey" style="display: none;">
+            <%= render partial: 'progress_bar' %>
+            <fieldset class="panel">
+              <h2>Time: How many minutes did your journey take in total?</h2>
+              <%= hidden_field_tag :journey_minutes, "", class: 'selected' %>
+              <div class="container">
+                <div class="row">
+                  <% TransportSurveyResponse.journey_minutes_options.each do |time| %>
+                    <%= render 'option', { label: "minutes", content: time, identifier: time, action: "next" } %>
+                  <% end %>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="panel" style="display: none;">
+              <h2>Transport: What mode of transport did you use to get to school?</h2>
+              <%= hidden_field_tag :transport_type_id, "", class: 'selected' %>
+              <div class="container">
+                <div class="row">
+                  <% TransportType.all.each do |transport_type| %>
+                    <%= render 'option', { label: transport_type.name, content: transport_type.image, identifier: transport_type.id, action: "next sharing" } %>
+                  <% end %>
+                </div>
+              </div>
+              <%= button_tag 'Back', type: 'button', class: "previous btn btn-default w-100" %>
+            </fieldset>
+
+            <fieldset class="panel" id="sharing" style="display: none;">
+              <%= hidden_field_tag :passengers, "", class: 'selected' %>
+              <h2>Pupil Passengers: How many pupils from school shared this mode of transport (including you)?</h2>
+              <div class="container">
+                <div class="row">
+                  <% TransportSurveyResponse.passengers_options.each do |passengers| %>
+                    <%= render 'option', { label: "Just me" + ((passengers > 1) ? " + #{passengers - 1} more" : ""), content: TransportSurveyResponse.passenger_symbol * passengers, identifier: passengers, action: "confirm" } %>
+                  <% end %>
+                </div>
+              </div>
+              <%= button_tag 'Back', type: 'button', class: "previous btn btn-default w-100" %>
+            </fieldset>
+
+            <fieldset class="panel" style="display: none;">
+              <h2>Confirm your selection</h2>
+              <div class="container">
+                <div class="row">
+                  <%= render 'option', { label: "minutes", content: 'x', identifier: 'confirm-time', action: '' } %>
+                  <%= render 'option', { label: "transport", content: 'x', identifier: 'confirm-transport', action: '' } %>
+                  <%= render 'option', { label: "pupil(s)", content: 'x', identifier: 'confirm-passengers', action: '' } %>
+                </div>
+              </div>
+              <p><%= button_tag "Confirm", type: 'button', class: 'store btn btn-primary w-100' %></p>
+              <p><%= button_tag 'Back', type: 'button', class: "previous btn btn-default w-100" %></p>
+            </fieldset>
+
+            <fieldset class="panel" style="display: none;">
+              <h2>For your <span id="display-time"></span> minute journey to school by <span id="display-transport"></span> for <span id="display-passengers"></span> pupil(s).</h2>
+              <hr />
+              <h2>You used <span id="display-carbon" class="badge badge-secondary"></span> of carbon each!</h2>
+              <hr />
+              <h2 class="mb-0"><span id="display-carbon-equivalent"></span></h2>
+              <p><%= button_tag "Next pupil", type: 'button', class: 'next-pupil btn btn-primary w-100' %></p>
+            </fieldset>
+          </div>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <%= button_tag(class: 'btn btn-primary', id: 'reset') do %>
+          Reset & clear results</span>
+        <% end %>
+        <%= button_tag(type: 'submit', class: 'submit btn btn-primary', id: 'save-results') do %>
+          Finish & save results <span id="unsaved-responses-count" class="badge badge-primary"></span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

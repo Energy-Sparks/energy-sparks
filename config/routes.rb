@@ -85,7 +85,7 @@ Rails.application.routes.draw do
       resources :calendar_events
     end
     member do
-      post :reset
+      post :resync
     end
   end
 
@@ -93,6 +93,7 @@ Rails.application.routes.draw do
 
   resources :school_groups, only: [:show, :index]
   resources :scoreboards, only: [:show, :index]
+  resources :transport_types, only: [:index]
 
   resources :onboarding, path: 'school_setup', only: [:show] do
     scope module: :onboarding do
@@ -142,18 +143,18 @@ Rails.application.routes.draw do
 
       resources :programmes, only: [:create]
 
-      resource :action, only: [:new]
       resources :audits
 
       resources :temperature_observations, only: [:show, :new, :create, :index, :destroy]
       resources :transport_surveys, only: [:show, :edit, :update, :index, :destroy], param: :run_on do
         collection do
-          get :intro
+          get :start
         end
         scope module: :transport_surveys do
           resources :responses, only: [:destroy]
         end
       end
+
       resources :locations, only: [:new, :edit, :create, :update, :index, :destroy]
       resource :visibility, only: [:create, :destroy], controller: :visibility
       resource :public, only: [:create, :destroy], controller: :public
@@ -192,7 +193,7 @@ Rails.application.routes.draw do
       resources :alerts, only: [:show]
       resources :find_out_more, controller: :find_out_more
 
-      resources :interventions do
+      resources :interventions, only: [:index, :show, :destroy] do
         member do
           get :completed
         end

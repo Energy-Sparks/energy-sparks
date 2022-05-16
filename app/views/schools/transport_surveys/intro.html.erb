@@ -1,9 +1,0 @@
-<h1>Transport surveys</h1>
-
-<%= render 'intro' %>
-
-<% if @school.transport_surveys.find_by(run_on: Date.today) %>
-  <%= link_to 'Carry on surveying today', edit_school_transport_survey_path(@school, Date.today), class: 'btn' %>
-<% else %>
-  <%= link_to 'Start surveying', edit_school_transport_survey_path(@school, Date.today), class: 'btn' %>
-<% end %>

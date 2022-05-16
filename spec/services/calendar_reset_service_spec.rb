@@ -26,4 +26,10 @@ describe CalendarResetService do
     expect(child_calendar.calendar_events.map(&:description)).to include('parent bank holiday')
     expect(child_calendar.calendar_events.map(&:description)).not_to include('parent inset day event')
   end
+
+  it 'new events have reference to parent events' do
+    CalendarResetService.new(child_calendar).reset
+    expect(child_calendar.calendar_events.holidays.first.based_on).to eq(parent_calendar_event)
+    expect(child_calendar.calendar_events.bank_holidays.first.based_on).to eq(parent_calendar_bank_holiday_event)
+  end
 end

@@ -19,7 +19,9 @@
 <%= link_to 'Add new event', new_calendar_calendar_event_path(@calendar), class: 'btn btn-primary' %>
 
 <% if can? :manage, @calendar %>
-  <%= link_to 'Reset all events', reset_calendar_path(@calendar), method: :post, class: 'btn btn-primary', data: { confirm: 'Are you sure?' } %>
+  <% if @calendar.calendars.any? %>
+    <%= link_to 'Update dependent schools', resync_calendar_path(@calendar), method: :post, class: 'btn btn-primary', data: { confirm: 'This will copy all events that have been edited in the 7 days to child calendars. Are you sure?' } %>
+  <% end %>
 <% end %>
 
 <nav class="mt-2">
@@ -49,6 +51,10 @@
           <th>Type</th>
           <th>Start Date</th>
           <th>End Date</th>
+          <th>Last Updated</th>
+          <% if can? :manage, @calendar %>
+            <th>Status</th>
+          <% end %>
           <th>Actions</th>
         </tr>
       </thead>
@@ -59,13 +65,17 @@
           <% if calendar_event.academic_year != previous_year %>
             <% previous_year = calendar_event.academic_year %>
             <tr scope="row">
-              <th colspan="4"><%= calendar_event.academic_year.title %></th>
+              <th colspan="6"><%= calendar_event.academic_year.title %></th>
             </tr>
           <% end %>
           <tr scope="row" id='calendar_event_<%= calendar_event.id %>'>
             <td><%= calendar_event.calendar_event_type.title %></td>
             <td><%= nice_dates(calendar_event.start_date) %></td>
             <td><%= nice_dates(calendar_event.end_date) %></td>
+            <td><%= nice_date_times(calendar_event.updated_at) %></td>
+            <% if can? :manage, @calendar %>
+              <td><%= calendar_event_status(calendar_event) %></td>
+            <% end %>
             <td><div class="btn-group"><%= link_to 'Edit', edit_calendar_calendar_event_path(calendar_event.calendar, calendar_event), class: 'btn btn-warning' %><%= link_to 'Delete', calendar_calendar_event_path(@calendar, calendar_event), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></div></td>
           </tr>
         <% end %>

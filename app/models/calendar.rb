@@ -35,6 +35,10 @@ class Calendar < ApplicationRecord
 
   scope :template, -> { regional }
 
+  def valid_calendar_event_types
+    national? ? CalendarEventType.bank_holiday : CalendarEventType.all
+  end
+
   def academic_year_for(date)
     academic_years.for_date(date).first || based_on && based_on.academic_year_for(date)
   end
