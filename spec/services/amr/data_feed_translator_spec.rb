@@ -123,7 +123,7 @@ describe Amr::DataFeedTranslator do
       expect(results.second[:meter_serial_number]).to eq('5678')
     end
 
-    xit 'raises error if duplicate serial numbers found' do
+    it 'raises error if duplicate serial numbers found' do
 
       meter_with_duplicate_serial_number = create(:solar_pv_meter, meter_serial_number: meter_1.meter_serial_number)
 
