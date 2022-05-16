@@ -3,7 +3,7 @@ require 'rails_helper'
 describe "admin transport type", type: :system, include_application_helper: true do
 
   let!(:admin)  { create(:admin) }
-  let!(:transport_type) { create(:transport_type) }
+  let!(:transport_type) { create(:transport_type, can_share: false, park_and_stride: false) }
 
   describe 'when not logged in' do
     context "and viewing the index" do
@@ -39,6 +39,7 @@ describe "admin transport type", type: :system, include_application_helper: true
       'Speed (km/h)' => transport_type.speed_km_per_hour,
       'Carbon (kg co2e/km)' => transport_type.kg_co2e_per_km,
       'Can share' => y_n(transport_type.can_share),
+      'Park and stride' => y_n(transport_type.park_and_stride),
       'Note' => transport_type.note,
       'Created at' => nice_date_times(transport_type.created_at),
       'Updated at' => nice_date_times(transport_type.updated_at)
@@ -50,12 +51,15 @@ describe "admin transport type", type: :system, include_application_helper: true
       'Speed (km/h)' => 740,
       'Carbon (kg co2e/km)' => 0.146,
       'Can share' => 'Yes',
+      'Park and stride' => 'Yes',
       'Note' => 'Why not?'
     } }
 
-    describe "Viewing the index" do
-      let(:viewable_attributes) { attributes.except('Created at', 'Updated at') }
+    let(:boolean_attributes) { ['Can share', 'Park and stride'] }
+    let(:viewable_attributes) { attributes.excluding('Created at', 'Updated at') }
+    let(:editable_attributes) { attributes.excluding('Created at', 'Updated at') }
 
+    describe "Viewing the index" do
       before(:each) do
         visit admin_transport_types_path
       end
@@ -168,25 +172,26 @@ describe "admin transport type", type: :system, include_application_helper: true
         visit edit_admin_transport_type_path(transport_type)
       end
 
-      let(:editable_attributes) { attributes.except('Created at', 'Updated at') }
-
       it "shows prefilled form elements" do
         within('form') do
-          editable_attributes.except('Can share').each do |key, value|
+          editable_attributes.excluding(boolean_attributes).each do |key, value|
             expect(page).to have_field(key, with: value)
           end
-          expect(page).to have_checked_field('Can share')
-          # expect(page).to have_field('transport_type[can_share]', with: 1)
+          boolean_attributes.each do |field_name|
+            expect(page).to have_unchecked_field(field_name)
+          end
         end
       end
 
       context "when entering new values" do
         context "with valid attributes" do
           before(:each) do
-            new_valid_attributes.except('Can share').each do |key, value|
+            new_valid_attributes.excluding(boolean_attributes).each do |key, value|
               fill_in key, with: value
             end
-            check 'Can share'
+            boolean_attributes.each do |field_name|
+              check field_name
+            end
             click_button 'Save'
           end
 
@@ -226,10 +231,8 @@ describe "admin transport type", type: :system, include_application_helper: true
 
     describe "Creating a transport type" do
       before(:each) do
-        visit new_admin_transport_type_path(transport_type)
+        visit new_admin_transport_type_path
       end
-
-      let(:new_attributes) { attributes.except('Created at', 'Updated at') }
 
       it "shows a blank form" do
         within('form') do
@@ -239,17 +242,21 @@ describe "admin transport type", type: :system, include_application_helper: true
           ['Speed (km/h)', 'Carbon (kg co2e/km)'].each do |field_name|
             expect(page).to have_field(field_name, with: 0.0)
           end
-          expect(page).to have_unchecked_field('Can share')
+          boolean_attributes.each do |field_name|
+            expect(page).to have_unchecked_field(field_name)
+          end
         end
       end
 
       context "when entering new values" do
         context "with valid attributes" do
           before(:each) do
-            new_valid_attributes.except('Can share').each do |key, value|
+            new_valid_attributes.excluding(boolean_attributes).each do |key, value|
               fill_in key, with: value
             end
-            check 'Can share'
+            boolean_attributes.each do |field_name|
+              check field_name
+            end
             click_button 'Save'
           end
 
@@ -289,7 +296,6 @@ describe "admin transport type", type: :system, include_application_helper: true
 
     describe "Deleting a transport type" do
       context "from the index page" do
-        let(:viewable_attributes) { attributes.except('Created at', 'Updated at') }
 
         context "when the transport type has associated responses" do
           before(:each) do

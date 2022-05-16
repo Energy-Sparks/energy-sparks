@@ -32,11 +32,12 @@ class AggregateSchoolService
   end
 
   def self.analysis_date(meter_collection, fuel_type)
+    return Time.zone.today unless fuel_type
     fuel_type = fuel_type.to_sym
     if fuel_type == :gas
-      meter_collection.aggregated_heat_meters.amr_data.keys.last
+      meter_collection.aggregated_heat_meters.amr_data.end_date
     elsif fuel_type == :electricity
-      meter_collection.aggregated_electricity_meters.amr_data.keys.last
+      meter_collection.aggregated_electricity_meters.amr_data.end_date
     else
       Time.zone.today
     end

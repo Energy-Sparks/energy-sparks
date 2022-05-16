@@ -60,7 +60,7 @@ const parkAndStrideTimeMins = function(timeMins) {
 
 export const carbonCalc = function(transport, timeMins, passengers) {
   if (transport) {
-    timeMins = transport.image === '🚶🚘' ? parkAndStrideTimeMins(timeMins) : timeMins; // need a better way of identifying park and stride!
+    timeMins = transport.park_and_stride == true ? parkAndStrideTimeMins(timeMins) : timeMins;
     return (((transport.speed_km_per_hour * timeMins) / 60) * transport.kg_co2e_per_km) / passengers ;
   } else {
     return 0;

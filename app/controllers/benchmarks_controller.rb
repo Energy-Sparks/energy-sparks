@@ -47,7 +47,7 @@ private
   end
 
   def content_for_page(page, errors = [])
-    @content_manager.content(@benchmark_results, page, user_type: user_type_hash)
+    @content_manager.content(@benchmark_results, page, user_type: user_type_hash, online: true)
     # rubocop:disable Lint/RescueException
   rescue Exception => e
     # rubocop:enable Lint/RescueException
