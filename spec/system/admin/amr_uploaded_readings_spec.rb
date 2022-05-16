@@ -68,7 +68,18 @@ describe AmrUploadedReading, type: :system do
 
       expect(AmrUploadedReading.count).to be 0
 
-      expect(page).to have_content('CSV error:')
+      expect(page).to have_content('Error:')
+    end
+
+    it 'produces an error message when translator raise error' do
+      attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/not_a_csv.csv')
+      expect_any_instance_of(Amr::CsvToAmrReadingData).to receive(:perform).and_raise(Amr::DataFeedException.new('bad file'))
+
+      click_on 'Preview'
+
+      expect(AmrUploadedReading.count).to be 0
+      expect(page).to have_content('Error:')
+      expect(page).to have_content('bad file')
     end
 
 
