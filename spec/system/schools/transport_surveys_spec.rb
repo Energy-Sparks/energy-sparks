@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'TransportSurveys', type: :system do
 
   let!(:school)            { create(:school, :with_school_group) }
-  let!(:transport_type)    { create(:transport_type) }
+  let!(:transport_type)    { create(:transport_type, can_share: true) }
 
   describe "Survey app" do
 
