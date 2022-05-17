@@ -10,8 +10,8 @@
 #
 # Indexes
 #
-#  index_transport_surveys_on_run_on     (run_on) UNIQUE
-#  index_transport_surveys_on_school_id  (school_id)
+#  index_transport_surveys_on_school_id             (school_id)
+#  index_transport_surveys_on_school_id_and_run_on  (school_id,run_on) UNIQUE
 #
 # Foreign Keys
 #
