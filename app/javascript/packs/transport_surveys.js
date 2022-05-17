@@ -34,7 +34,7 @@ $(document).ready(function() {
     $('.responses-remove').on('click', deleteResponses);
 
   } else {
-    setPageError("localStorage needs to be available in your browser to use this app. Either upgrade your browser, or enable localStorage.");
+    setPageError("Your browser does not support a feature required by our survey tool. Either upgrade your browser, use an alternative or enable 'localStorage'.");
     disableAppButton();
   }
 
