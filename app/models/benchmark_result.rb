@@ -8,6 +8,7 @@
 #  created_at                                :datetime         not null
 #  data                                      :text
 #  id                                        :bigint(8)        not null, primary key
+#  results                                   :json
 #  updated_at                                :datetime         not null
 #
 # Indexes

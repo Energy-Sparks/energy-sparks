@@ -9,6 +9,7 @@
 #  kg_co2e_per_km    :decimal(, )      default(0.0), not null
 #  name              :string           not null
 #  note              :string
+#  park_and_stride   :boolean          default(FALSE), not null
 #  speed_km_per_hour :decimal(, )      default(0.0), not null
 #  updated_at        :datetime         not null
 #
