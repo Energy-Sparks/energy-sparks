@@ -80,12 +80,17 @@ $(document).ready(function() {
     storage.syncResponses(config.run_on, notifier, 'app', true);
   }
 
-  function notifier(where, level, message) {
+  function notifier(where, level, message, fade = true) {
     // where = page or app
     // level = boostrap alert level
     let identifier = '#' + where + '-notifier';
     let classes = 'alert alert-' + level;
-    $(identifier).removeClass().addClass(classes).text(message).fadeTo(5000, 500).slideUp(1000);
+    $(identifier).removeClass().addClass(classes).text(message);
+    if(fade) {
+      $(identifier).fadeTo(5000, 500).slideUp(1000);
+    } else {
+      $(identifier).show();
+    }
   }
 
   function hideAlert(current) {
@@ -127,14 +132,9 @@ $(document).ready(function() {
 
   /* end of onclick handlers */
 
-  function fatalError(error) {
-    setPageError(error);
+  function fatalError(message) {
+    notifier('page', 'danger', message, false)
     hideAppButton();
-  }
-
-  function setPageError(error) {
-    $('#page-error').text(error);
-    $('#page-error').show();
   }
 
   function hideAppButton() {
