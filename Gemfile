@@ -119,7 +119,6 @@ group :development, :test do
   gem 'rubocop-performance', '1.8.0'
   gem 'rubocop-rspec'
   gem 'wisper-rspec', require: false
-  gem 'scout_apm'
 end
 
 group :development do
@@ -135,6 +134,9 @@ group :development do
   gem 'fasterer'
   gem 'bundler-audit'
   gem 'brakeman'
+  gem 'scout_apm'
+#  gem 'rack-mini-profiler'
+#  gem 'memory_profiler'
 end
 
 group :test do
