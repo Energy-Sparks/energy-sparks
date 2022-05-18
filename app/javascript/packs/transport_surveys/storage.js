@@ -45,7 +45,7 @@ export const storage = ( function() {
     localStorage.setItem(local.key, JSON.stringify( responses ));
   }
 
-  function syncResponses(date, redirect = true) {
+  function syncResponses(date, notifier, location, redirect = false) {
     let responses = getResponses(date);
     if (responses.length > 0) {
       let url = local.base_url + "/" + date;
@@ -57,15 +57,15 @@ export const storage = ( function() {
         contentType: "application/json; charset=utf-8",
         dataType: "text" })
       .done(function(data) {
-        alert("Responses saved!");
         removeResponses(date);
-        if (redirect) {
+        notifier(location, 'success', 'Responses saved!');
+        if (redirect == true) {
           window.location.href = url;
         }
       })
-      .fail(function() { alert("Error saving responses - please make sure you have a wifi connection before saving! "); });
+      .fail(function() { notifier(location, 'danger', 'Error saving responses - please make sure you have a wifi connection before saving! '); });
     } else {
-      alert("Nothing to save - please collect some survey responses first!");
+      notifier(location, 'warning', 'Nothing to save - please collect some survey responses first!');
     }
   }
 

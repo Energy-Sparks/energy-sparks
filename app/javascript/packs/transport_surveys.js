@@ -30,12 +30,8 @@ $(document).ready(function() {
     $('#save-results').on('click', function(e) { $('#transport_survey').submit(); });
     $('#transport_survey').on('submit', function(e) { submit(e); });
 
-    $('.responses-save').on('click', saveResponses);
-    $('.responses-remove').on('click', deleteResponses);
-
   } else {
-    setPageError("Your browser does not support a feature required by our survey tool. Either upgrade your browser, use an alternative or enable 'localStorage'.");
-    disableAppButton();
+    fatalError("Your browser does not support a feature required by our survey tool. Either upgrade your browser, use an alternative or enable 'localStorage'.");
   }
 
   /* onclick handlers */
@@ -81,21 +77,30 @@ $(document).ready(function() {
 
   function submit(event) {
     event.preventDefault(); // disable form submitting
-
-    storage.syncResponses(config.run_on, true);
+    storage.syncResponses(config.run_on, notifier, 'app', true);
   }
 
-  function dismissAlert(current) {
-    $(current).closest('.alert').hide;
+  function notifier(where, level, message) {
+    // where = page or app
+    // level = boostrap alert level
+    let identifier = '#' + where + '-notifier';
+    let classes = 'alert alert-' + level;
+    $(identifier).removeClass().addClass(classes).text(message).fadeTo(5000, 500).slideUp(1000);
+  }
+
+  function hideAlert(current) {
+    $(current).closest('.alert').hide();
   }
 
   // Save responses for a specific date to server
   function saveResponses() {
     let date = $(this).attr('data-date');
-    storage.syncResponses(date, false);
-
-    if (date == config.run_on) {
-      setResponsesCount(0);
+    if (window.confirm('Are you sure you want to save ' + storage.getResponsesCount(date) + ' unsaved result(s) from ' + date + '?')) {
+      storage.syncResponses(date, notifier, 'page', false);
+      hideAlert(this);
+      if (date == config.run_on) {
+        setResponsesCount(0);
+      }
     }
   }
 
@@ -104,8 +109,8 @@ $(document).ready(function() {
     let date = $(this).attr('data-date');
     if (window.confirm('Are you sure you want to remove ' + storage.getResponsesCount(date) + ' unsaved result(s) from ' + date + '?')) {
       storage.removeResponses(date);
-      dismissAlert(this);
-
+      hideAlert(this);
+      notifier('page', 'success', 'Unsaved responses removed!');
       if (date == config.run_on) {
         fullSurveyReset();
       }
@@ -122,12 +127,17 @@ $(document).ready(function() {
 
   /* end of onclick handlers */
 
+  function fatalError(error) {
+    setPageError(error);
+    hideAppButton();
+  }
+
   function setPageError(error) {
     $('#page-error').text(error);
     $('#page-error').show();
   }
 
-  function disableAppButton() {
+  function hideAppButton() {
     $('.jsonly').hide();
   }
 
