@@ -83,13 +83,13 @@ $(document).ready(function() {
   function notifier(where, level, message, fade = true) {
     // where = page or app
     // level = boostrap alert level
-    let identifier = '#' + where + '-notifier';
+    let alert = $('#' + where + '-notifier');
     let classes = 'alert alert-' + level;
-    $(identifier).removeClass().addClass(classes).text(message);
+    alert.removeClass().addClass(classes).text(message);
     if(fade) {
-      $(identifier).fadeTo(5000, 500).slideUp(1000);
+      alert.fadeTo(5000, 500).slideUp(1000);
     } else {
-      $(identifier).show();
+      alert.show();
     }
   }
 
@@ -104,7 +104,7 @@ $(document).ready(function() {
       storage.syncResponses(date, notifier, 'page', false);
       hideAlert(this);
       if (date == config.run_on) {
-        setResponsesCount(0);
+        fullSurveyReset();
       }
     }
   }
@@ -142,7 +142,7 @@ $(document).ready(function() {
   }
 
   function fullSurveyReset() {
-    updateResponsesCounts();
+    setResponsesCount(0);
     resetSetupFields();
     resetSetupCards();
     nextSurveyRun();
