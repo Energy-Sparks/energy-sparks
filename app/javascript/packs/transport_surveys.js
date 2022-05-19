@@ -1,7 +1,8 @@
 "use strict"
 
 import { storage } from './transport_surveys/storage';
-import { carbonCalc, carbonExamples, funWeight } from './transport_surveys/carbon'
+import { carbonCalc, carbonExamples, funWeight } from './transport_surveys/carbon';
+import { notifier } from './transport_surveys/notifier';
 
 $(document).ready(function() {
 
@@ -74,7 +75,7 @@ $(document).ready(function() {
   }
 
   function finishAndSave() {
-    storage.syncResponses(config.run_on, appNotifier).done( function() {
+    storage.syncResponses(config.run_on, notifier.app).done( function() {
       window.location.href = config.base_url + "/" + config.run_on;
     });
   }
@@ -85,7 +86,7 @@ $(document).ready(function() {
     let alert = button.closest('.alert');
     let date = button.attr('data-date');
     if (window.confirm('Are you sure you want to save ' + storage.getResponsesCount(date) + ' unsaved result(s) from ' + date + '?')) {
-      storage.syncResponses(date, pageNotifier).done( function() {
+      storage.syncResponses(date, notifier.page).done( function() {
         alert.hide();
         if (date == config.run_on) fullSurveyReset();
       });
@@ -99,7 +100,7 @@ $(document).ready(function() {
     let date = $(this).attr('data-date');
     if (window.confirm('Are you sure you want to remove ' + storage.getResponsesCount(date) + ' unsaved result(s) from ' + date + '?')) {
       storage.removeResponses(date);
-      pageNotifier('success', 'Unsaved responses removed!');
+      notifier.page('success', 'Unsaved responses removed!');
       alert.hide();
       if (date == config.run_on) fullSurveyReset();
     }
@@ -115,29 +116,8 @@ $(document).ready(function() {
 
   /* end of onclick handlers */
 
-  function pageNotifier(level, message, fade = true) {
-    notifier('page', level, message, fade);
-  }
-
-  function appNotifier(level, message, fade = true) {
-    notifier('app', level, message, fade);
-  }
-
-  function notifier(where, level, message, fade = true) {
-    // where = page or app
-    // level = boostrap alert level
-    let alert = $('#' + where + '-notifier');
-    let classes = 'alert alert-' + level;
-    alert.removeClass().addClass(classes).text(message);
-    if(fade) {
-      alert.fadeTo(5000, 500).slideUp(1000);
-    } else {
-      alert.show();
-    }
-  }
-
   function fatalError(message) {
-    pageNotifier('danger', message, false)
+    notifier.page('danger', message, false)
     hideAppButton();
   }
 
