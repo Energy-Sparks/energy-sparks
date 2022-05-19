@@ -26,9 +26,7 @@ $(document).ready(function() {
     $('.store').on('click', store);
     $('.next-pupil').on('click', nextSurveyRun);
     $('#reset').on('click', fullReset);
-
-    $('#save-results').on('click', function(e) { $('#transport_survey').submit(); });
-    $('#transport_survey').on('submit', function(e) { submit(e); });
+    $('#save-results').on('click', finishAndSave);
 
   } else {
     fatalError("Your browser does not support a feature required by our survey tool. Either upgrade your browser, use an alternative or enable 'localStorage'.");
@@ -75,8 +73,7 @@ $(document).ready(function() {
     setProgressBar(window.step = 1);
   }
 
-  function submit(event) {
-    event.preventDefault(); // disable form submitting
+  function finishAndSave() {
     storage.syncResponses(config.run_on, appNotifier).done( function() {
       window.location.href = config.base_url + "/" + config.run_on;
     });
