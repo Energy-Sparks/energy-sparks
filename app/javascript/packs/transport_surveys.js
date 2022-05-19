@@ -77,30 +77,9 @@ $(document).ready(function() {
 
   function submit(event) {
     event.preventDefault(); // disable form submitting
-    storage.syncResponses(config.run_on, appNotifier, true).done( function() {
+    storage.syncResponses(config.run_on, appNotifier).done( function() {
       window.location.href = config.base_url + "/" + config.run_on;
     });
-  }
-
-  function pageNotifier(level, message, fade = true) {
-    notifier('page', level, message, fade);
-  }
-
-  function appNotifier(level, message, fade = true) {
-    notifier('app', level, message, fade);
-  }
-
-  function notifier(where, level, message, fade = true) {
-    // where = page or app
-    // level = boostrap alert level
-    let alert = $('#' + where + '-notifier');
-    let classes = 'alert alert-' + level;
-    alert.removeClass().addClass(classes).text(message);
-    if(fade) {
-      alert.fadeTo(5000, 500).slideUp(1000);
-    } else {
-      alert.show();
-    }
   }
 
   // Save responses for a specific date to server
@@ -123,8 +102,8 @@ $(document).ready(function() {
     let date = $(this).attr('data-date');
     if (window.confirm('Are you sure you want to remove ' + storage.getResponsesCount(date) + ' unsaved result(s) from ' + date + '?')) {
       storage.removeResponses(date);
-      alert.hide();
       pageNotifier('success', 'Unsaved responses removed!');
+      alert.hide();
       if (date == config.run_on) fullSurveyReset();
     }
   }
@@ -138,6 +117,27 @@ $(document).ready(function() {
   }
 
   /* end of onclick handlers */
+
+  function pageNotifier(level, message, fade = true) {
+    notifier('page', level, message, fade);
+  }
+
+  function appNotifier(level, message, fade = true) {
+    notifier('app', level, message, fade);
+  }
+
+  function notifier(where, level, message, fade = true) {
+    // where = page or app
+    // level = boostrap alert level
+    let alert = $('#' + where + '-notifier');
+    let classes = 'alert alert-' + level;
+    alert.removeClass().addClass(classes).text(message);
+    if(fade) {
+      alert.fadeTo(5000, 500).slideUp(1000);
+    } else {
+      alert.show();
+    }
+  }
 
   function fatalError(message) {
     pageNotifier('danger', message, false)
