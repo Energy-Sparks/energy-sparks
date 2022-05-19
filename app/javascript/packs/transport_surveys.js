@@ -83,11 +83,10 @@ $(document).ready(function() {
   // Save responses for a specific date to server
   function saveResponses() {
     let button = $(this);
-    let alert = button.closest('.alert');
     let date = button.attr('data-date');
     if (window.confirm('Are you sure you want to save ' + storage.getResponsesCount(date) + ' unsaved result(s) from ' + date + '?')) {
       storage.syncResponses(date, notifier.page).done( function() {
-        alert.hide();
+        button.closest('.alert').hide();
         if (date == config.run_on) fullSurveyReset();
       });
     }
@@ -96,12 +95,11 @@ $(document).ready(function() {
   // Remove survey data from localstorage for given date
   function deleteResponses() {
     let button = $(this);
-    let alert = button.closest('.alert');
-    let date = $(this).attr('data-date');
+    let date = button.attr('data-date');
     if (window.confirm('Are you sure you want to remove ' + storage.getResponsesCount(date) + ' unsaved result(s) from ' + date + '?')) {
       storage.removeResponses(date);
       notifier.page('success', 'Unsaved responses removed!');
-      alert.hide();
+      button.closest('.alert').hide();
       if (date == config.run_on) fullSurveyReset();
     }
   }
