@@ -68,7 +68,7 @@ export const storage = ( function() {
         notifier('danger', 'Error saving responses - please make sure you have a wifi connection before saving!');
       });
     } else {
-      return { done: function(done) { done(); notifier('warning', 'Nothing to save - please collect some survey responses first!'); } }
+      return { done: function() { notifier('warning', 'Nothing to save - please collect some survey responses first!'); } };
     }
   }
 
