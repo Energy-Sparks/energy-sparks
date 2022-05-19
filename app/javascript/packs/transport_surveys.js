@@ -77,7 +77,17 @@ $(document).ready(function() {
 
   function submit(event) {
     event.preventDefault(); // disable form submitting
-    storage.syncResponses(config.run_on, notifier, 'app', true);
+    storage.syncResponses(config.run_on, appNotifier, true).done( function() {
+      window.location.href = config.base_url + "/" + config.run_on;
+    });
+  }
+
+  function pageNotifier(level, message, fade = true) {
+    notifier('page', level, message, fade);
+  }
+
+  function appNotifier(level, message, fade = true) {
+    notifier('app', level, message, fade);
   }
 
   function notifier(where, level, message, fade = true) {
@@ -93,32 +103,29 @@ $(document).ready(function() {
     }
   }
 
-  function hideAlert(current) {
-    $(current).closest('.alert').hide();
-  }
-
   // Save responses for a specific date to server
   function saveResponses() {
-    let date = $(this).attr('data-date');
+    let button = $(this);
+    let alert = button.closest('.alert');
+    let date = button.attr('data-date');
     if (window.confirm('Are you sure you want to save ' + storage.getResponsesCount(date) + ' unsaved result(s) from ' + date + '?')) {
-      storage.syncResponses(date, notifier, 'page', false);
-      hideAlert(this);
-      if (date == config.run_on) {
-        fullSurveyReset();
-      }
+      storage.syncResponses(date, pageNotifier).done( function() {
+        alert.hide();
+        if (date == config.run_on) fullSurveyReset();
+      });
     }
   }
 
   // Remove survey data from localstorage for given date
   function deleteResponses() {
+    let button = $(this);
+    let alert = button.closest('.alert');
     let date = $(this).attr('data-date');
     if (window.confirm('Are you sure you want to remove ' + storage.getResponsesCount(date) + ' unsaved result(s) from ' + date + '?')) {
       storage.removeResponses(date);
-      hideAlert(this);
-      notifier('page', 'success', 'Unsaved responses removed!');
-      if (date == config.run_on) {
-        fullSurveyReset();
-      }
+      alert.hide();
+      pageNotifier('success', 'Unsaved responses removed!');
+      if (date == config.run_on) fullSurveyReset();
     }
   }
 
@@ -133,7 +140,7 @@ $(document).ready(function() {
   /* end of onclick handlers */
 
   function fatalError(message) {
-    notifier('page', 'danger', message, false)
+    pageNotifier('danger', message, false)
     hideAppButton();
   }
 
@@ -197,7 +204,7 @@ $(document).ready(function() {
       transport_types = data;
     })
     .fail(function(err) {
-      alert("Error loading data from server! " + err);
+      fatalError("Error loading data from server! Please reload the page and try again.");
     });
     return transport_types;
   }
