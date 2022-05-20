@@ -11,11 +11,13 @@
 #  cooks_dinners_for_other_schools       :boolean          default(FALSE), not null
 #  cooks_dinners_for_other_schools_count :integer
 #  cooks_dinners_onsite                  :boolean          default(FALSE), not null
+#  country                               :string
 #  created_at                            :datetime         not null
 #  dark_sky_area_id                      :bigint(8)
 #  data_enabled                          :boolean          default(FALSE)
 #  enable_targets_feature                :boolean          default(TRUE)
 #  floor_area                            :decimal(, )
+#  funding_status                        :string
 #  has_swimming_pool                     :boolean          default(FALSE), not null
 #  id                                    :bigint(8)        not null, primary key
 #  indicated_has_solar_panels            :boolean          default(FALSE), not null
@@ -143,6 +145,8 @@ class School < ApplicationRecord
   enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle, :mixed_primary_and_secondary]
 
   enum chart_preference: [:default, :carbon, :usage, :cost]
+  enum countries: [:england, :scotland, :wales]
+  enum funding_statuses: [:state_school, :private_school]
 
   scope :active,             -> { where(active: true) }
   scope :inactive,           -> { where(active: false) }
@@ -161,6 +165,8 @@ class School < ApplicationRecord
   validates_uniqueness_of :urn
   validates :floor_area, :number_of_pupils, :cooks_dinners_for_other_schools_count, numericality: { greater_than: 0, allow_blank: true }
   validates :cooks_dinners_for_other_schools_count, presence: true, if: :cooks_dinners_for_other_schools?
+  validates :country, inclusion: { in: countries }
+  validates :funding_status, inclusion: { in: funding_statuses }
 
   validates_associated :school_times, on: :school_time_update
 

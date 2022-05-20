@@ -5,6 +5,10 @@
 <%= f.hidden_field :data_enabled, value: school.data_enabled %>
 <%= f.input :name, label: 'School name'%>
 <%= f.input :urn, label: 'Unique Reference Number', hint: 'This is your URN in England, SEED in Scotland' %>
+<div class="form-group">
+  <%= f.label :funding_status, class: "form-label"%>
+  <%= f.select :funding_status, options_for_select(School.funding_statuses.map {|key, value| [key.titleize, key]}, f.object.funding_status), class: 'form-control' %>
+</div>
 
 <% if current_user.admin? %>
   <div class="bg-light">
@@ -22,9 +26,15 @@
 
 <% if can?(:manage, :geocoding) %>
   <h2>Location</h2>
+  <div class="form-group">
+    <%= f.label :country, class: "form-label"%>
+    <%= f.select :country, options_for_select(School.countries.map {|key, value| [key.titleize, key]}, f.object.country), class: 'form-control' %>
+  </div>
   <p>Leave these blank to have them set from the postcode</p>
-  <%= f.input :latitude %>
-  <%= f.input :longitude %>
+  <div class="form-group">
+    <%= f.input :latitude %>
+    <%= f.input :longitude %>
+  </div>
 
   <% if f.object.latitude && f.object.longitude %>
     <p>
