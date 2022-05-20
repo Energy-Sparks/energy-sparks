@@ -1,6 +1,30 @@
 "use strict"
 
+function loadCalendarData(dataUrl, calendarDiv) {
+
+  $.ajax({
+    url: dataUrl,
+    dataType: "json",
+    success: function(response) {
+      var data = [];
+      var returnedData = response.calendar_events;
+      for (var i = 0; i < returnedData.length; i++) {
+        data.push({
+          id: returnedData[i].id,
+          calendarEventTypeId: returnedData[i].calendarEventTypeId,
+          name: returnedData[i].name,
+          startDate: new Date(returnedData[i].startDate),
+          endDate: new Date(returnedData[i].endDate),
+          color: returnedData[i].color,
+        });
+      }
+      calendarDiv.data('calendar').setDataSource(data);
+    }
+  });
+}
+
 $(document).ready(function() {
+
   if ($("#calendar").length) {
 
     function editEvent(event) {
@@ -96,28 +120,10 @@ $(document).ready(function() {
       });
     });
 
-    var currentPath = window.location.pathname;
     var dataUrl = window.location.pathname + '.json';
+    var calendarDiv = $('#calendar');
 
-    $.ajax({
-      url: dataUrl,
-      dataType: "json",
-      success: function(response) {
-        var data = [];
-        var returnedData = response.calendar_events;
-        for (var i = 0; i < returnedData.length; i++) {
-          data.push({
-            id: returnedData[i].id,
-            calendarEventTypeId: returnedData[i].calendarEventTypeId,
-            name: returnedData[i].name,
-            startDate: new Date(returnedData[i].startDate),
-            endDate: new Date(returnedData[i].endDate),
-            color: returnedData[i].color,
-          });
-        }
-        $('#calendar').data('calendar').setDataSource(data);
-      }
-    });
+    loadCalendarData(dataUrl, calendarDiv);
   }
 
   if ($("#data-calendar").length) {
@@ -162,34 +168,15 @@ $(document).ready(function() {
       });
     });
 
-    var currentPath = window.location.pathname;
-
     if ($('#data-calendar').data('url')) {
-      console.log('data calendar url');
       var dataUrl = $('#data-calendar').data('url');
     } else {
       var dataUrl = window.location.pathname + '.json';
     }
 
-    $.ajax({
-      url: dataUrl,
-      dataType: "json",
-      success: function(response) {
-        var data = [];
-        var returnedData = response.calendar_events;
-        for (var i = 0; i < returnedData.length; i++) {
-          data.push({
-            id: returnedData[i].id,
-            calendarEventTypeId: returnedData[i].calendarEventTypeId,
-            name: returnedData[i].name,
-            startDate: new Date(returnedData[i].startDate),
-            endDate: new Date(returnedData[i].endDate),
-            color: returnedData[i].color
-          });
-        }
-        $('#data-calendar').data('calendar').setDataSource(data);
-      }
-    });
+    var calendarDiv = $('#data-calendar');
+
+    loadCalendarData(dataUrl, calendarDiv);
   }
 
 });

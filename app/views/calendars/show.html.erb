@@ -26,16 +26,26 @@
 
 <nav class="mt-2">
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
-      <a class="nav-item nav-link active" id="nav-list-view-tab" data-toggle="tab" href="#list-view-tab" role="tab" aria-controls="list-view-tab" aria-selected="yes">
-        Current events
-      </a>
-      <a class="nav-item nav-link" id="nav-calendar-view-tab" data-toggle="tab" href="#calendar-view-tab" role="tab" aria-controls="calendar-view-tab" aria-selected="yes">
-        Calendar view
-      </a>
+    <a class="nav-item nav-link active" id="nav-calendar-view-tab" data-toggle="tab" href="#calendar-view-tab" role="tab" aria-controls="calendar-view-tab" aria-selected="yes">
+      Calendar view
+    </a>
+    <a class="nav-item nav-link" id="nav-list-view-tab" data-toggle="tab" href="#list-view-tab" role="tab" aria-controls="list-view-tab" aria-selected="yes">
+      Current events
+    </a>
   </div>
 </nav>
+
 <div class="tab-content" id="nav-tabContent">
-  <div class="tab-pane active" id="list-view-tab" role="tabpanel" aria-labelledby="nav-list-view-tab">
+
+  <div class="tab-pane active" id="calendar-view-tab" role="tabpanel" aria-labelledby="nav-calendar-view-tab">
+
+    <div id="calendar" class="calendar"></div>
+
+    <%= render 'legend' %>
+
+  </div>
+
+  <div class="tab-pane" id="list-view-tab" role="tabpanel" aria-labelledby="nav-list-view-tab">
 
     <p class="pt-4">
       <% if @calendar.school? || @calendar.regional? %>
@@ -94,13 +104,7 @@
 
 
   </div>
-  <div class="tab-pane" id="calendar-view-tab" role="tabpanel" aria-labelledby="nav-calendar-view-tab">
 
-    <div id="calendar" class="calendar"></div>
-
-    <%= render 'legend' %>
-
-  </div>
 </div>
 
 <%= render 'event_modal' %>
