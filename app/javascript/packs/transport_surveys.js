@@ -26,7 +26,6 @@ $(document).ready(function() {
     $('.confirm').on('click', confirm);
     $('.store').on('click', store);
     $('.next-pupil').on('click', nextSurveyRun);
-    $('#reset').on('click', fullReset);
     $('#save-results').on('click', finishAndSave);
 
   } else {
@@ -104,14 +103,6 @@ $(document).ready(function() {
       notifier.page('success', 'Unsaved responses removed!');
       button.closest('.alert').hide();
       if (date == config.run_on) fullSurveyReset();
-    }
-  }
-
-  // Remove survey data for current date and reset survey form
-  function fullReset() {
-    if (window.confirm('Are you sure you want to reset and remove ' + storage.getResponsesCount(config.run_on) + ' unsaved result(s) from ' + config.run_on + '?')) {
-      storage.removeResponses(config.run_on);
-      fullSurveyReset();
     }
   }
 
