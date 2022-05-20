@@ -85,6 +85,7 @@ Rails.application.routes.draw do
       resources :calendar_events
     end
     member do
+      get :current_events
       post :resync
     end
   end

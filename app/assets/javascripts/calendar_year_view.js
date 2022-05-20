@@ -1,7 +1,6 @@
 "use strict"
 
 function loadCalendarData(dataUrl, calendarDiv) {
-
   $.ajax({
     url: dataUrl,
     dataType: "json",
@@ -19,6 +18,15 @@ function loadCalendarData(dataUrl, calendarDiv) {
         });
       }
       calendarDiv.data('calendar').setDataSource(data);
+    }
+  });
+}
+
+function loadCurrentEvents(dataUrl, currentEventsDiv) {
+  $.ajax({
+    url: dataUrl,
+    success: function(response) {
+      currentEventsDiv.html(response);
     }
   });
 }
@@ -118,6 +126,12 @@ $(document).ready(function() {
           $(e.element).popover('hide');
         },
       });
+    });
+
+    var currentEventsDiv = $('#current_events');
+
+    $('a[data-toggle="tab"].reloadable').on('shown.bs.tab', function (e) {
+      loadCurrentEvents($(this).data('reload-url'), currentEventsDiv);
     });
 
     var dataUrl = window.location.pathname + '.json';
