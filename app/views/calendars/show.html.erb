@@ -43,8 +43,10 @@
   </div>
 
   <div class="tab-pane" id="list-view-tab" role="tabpanel" aria-labelledby="nav-list-view-tab">
+    <%= render 'calendar_links', calendar: @calendar %>
     <div id="current_events"><%= render 'current_events', calendar: @calendar, current_events: @current_events %></div>
     <%= render 'calendar_actions', calendar: @calendar %>
+    <%= render 'calendar_links', calendar: @calendar %>
   </div>
 
 </div>
