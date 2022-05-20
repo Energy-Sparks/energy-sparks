@@ -76,6 +76,9 @@ $(document).ready(function() {
 
   function finishAndSave() {
     storage.syncResponses(config.run_on, notifier.app).done( function() {
+      let button = $("[data-date='" + config.run_on + "']");
+      button.closest('.alert').hide();
+      fullSurveyReset();
       window.location.href = config.base_url + "/" + config.run_on;
     });
   }
