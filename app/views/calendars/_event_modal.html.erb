@@ -7,7 +7,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <%= simple_form_for([@calendar, CalendarEvent.new], method: :patch, html: { id: 'event_form', calendar_id: @calendar.id, class:"form-horizontal calendar_event_form"} ) do |f| %>
+      <%= simple_form_for([@calendar, CalendarEvent.new], method: :patch, remote: true, html: { id: 'event_form', calendar_id: @calendar.id, class:"form-horizontal calendar_event_form"} ) do |f| %>
 
       <div class="modal-body">
         <input name="event-index" type="hidden">

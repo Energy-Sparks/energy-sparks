@@ -1,0 +1,7 @@
+<p class="pt-4">
+  <% if calendar.school? || calendar.regional? %>
+    <%= link_to 'View all older events and bank holidays', calendar_calendar_events_path(calendar) %>
+  <% else %>
+    <%= link_to 'View all older events', calendar_calendar_events_path(calendar) %>
+  <% end %>
+</p>

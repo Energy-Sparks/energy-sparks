@@ -8,6 +8,7 @@
 
 <%= render partial: 'no_javascript_warning' %>
 
+<div id="page-error" class="alert alert-danger hide" role="alert"></div>
 <div id="unsaved-responses"></div>
 
 <%= render 'intro' %>
@@ -78,7 +79,7 @@
               <div class="container">
                 <div class="row">
                   <% TransportSurveyResponse.passengers_options.each do |passengers| %>
-                    <%= render 'option', { label: "Just me" + ((passengers > 1) ? " + #{passengers - 1} more" : ""), content: TransportSurveyResponse.passenger_symbol * passengers, identifier: passengers, action: "confirm" } %>
+                    <%= render 'option', { label: ((passengers > 1) ? "Me + #{passengers - 1} more" : "Just me"), content: TransportSurveyResponse.passenger_symbol * passengers, identifier: passengers, action: "confirm" } %>
                   <% end %>
                 </div>
               </div>

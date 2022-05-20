@@ -10,6 +10,15 @@ export const storage = ( function() {
   // private methods
   function init(cfg) {
     local = cfg;
+    return checkLocalStorage();
+  }
+
+  function checkLocalStorage() {
+    try {
+      return !!localStorage.getItem;
+    } catch(e) {
+      return false;
+    }
   }
 
   function getAllResponses() {

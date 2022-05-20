@@ -14,26 +14,29 @@ $(document).ready(function() {
     passenger_symbol: $("#passenger_symbol").val()
   }
 
-  storage.init({key: config.storage_key, base_url: config.base_url});
+  if (storage.init({key: config.storage_key, base_url: config.base_url})) {
+    setupSurvey();
 
-  setupSurvey();
+    /* onclick bindings */
+    $('.start').on('click', start);
+    $('.next').on('click', next);
+    $('.sharing').on('click', sharing);
+    $('.previous').on('click', previous);
+    $('.confirm').on('click', confirm);
+    $('.store').on('click', store);
+    $('.next-pupil').on('click', nextSurveyRun);
+    $('#reset').on('click', fullReset);
 
-  /* onclick bindings */
+    $('#save-results').on('click', function(e) { $('#transport_survey').submit(); });
+    $('#transport_survey').on('submit', function(e) { submit(e); });
 
-  $('.start').on('click', start);
-  $('.next').on('click', next);
-  $('.sharing').on('click', sharing);
-  $('.previous').on('click', previous);
-  $('.confirm').on('click', confirm);
-  $('.store').on('click', store);
-  $('.next-pupil').on('click', nextSurveyRun);
-  $('#reset').on('click', fullReset);
+    $('.responses-save').on('click', saveResponses);
+    $('.responses-remove').on('click', deleteResponses);
 
-  $('#save-results').on('click', function(e) { $('#transport_survey').submit(); });
-  $('#transport_survey').on('submit', function(e) { submit(e); });
-
-  $('.responses-save').on('click', saveResponses);
-  $('.responses-remove').on('click', deleteResponses);
+  } else {
+    setPageError("Your browser does not support a feature required by our survey tool. Either upgrade your browser, use an alternative or enable 'localStorage'.");
+    disableAppButton();
+  }
 
   /* onclick handlers */
 
@@ -118,6 +121,15 @@ $(document).ready(function() {
   }
 
   /* end of onclick handlers */
+
+  function setPageError(error) {
+    $('#page-error').text(error);
+    $('#page-error').show();
+  }
+
+  function disableAppButton() {
+    $('.jsonly').hide();
+  }
 
   function fullSurveyReset() {
     updateResponsesCounts();
