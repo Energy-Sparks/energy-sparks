@@ -65,6 +65,10 @@ a.badge.outline {
   background-image: none;
 }
 
+.btn-no-border {
+  border: $btn-border-width solid transparent;
+}
+
 .btn-group {
   .btn {
     margin-left: 5px;
