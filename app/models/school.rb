@@ -145,8 +145,8 @@ class School < ApplicationRecord
   enum school_type: [:primary, :secondary, :special, :infant, :junior, :middle, :mixed_primary_and_secondary]
 
   enum chart_preference: [:default, :carbon, :usage, :cost]
-  enum countries: [:england, :scotland, :wales]
-  enum funding_statuses: [:state_school, :private_school]
+  enum country: [:england, :scotland, :wales]
+  enum funding_status: [:state_school, :private_school]
 
   scope :active,             -> { where(active: true) }
   scope :inactive,           -> { where(active: false) }
