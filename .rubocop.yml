@@ -6,6 +6,7 @@ AllCops:
 # Disable specs for now
 #   - 'spec/**/*.rb'
   Exclude:
+    - 'app/services/schools/funding_status_lookup.rb'
     - 'lib/data_feeds/weather_underground_loader.rb'
     - 'lib/data_feeds/solar_pv_tuos_loader.rb'
     - 'lib/data_feeds/dark_sky_temperature_loader.rb'
