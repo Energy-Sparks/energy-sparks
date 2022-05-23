@@ -15,6 +15,8 @@ describe Amr::AnalyticsSchoolFactory do
     expect(data[:area_name]).to eql(school.area_name)
     expect(data[:urn]).to eql(school.urn)
     expect(data[:postcode]).to eql(school.postcode)
+    expect(data[:country]).to eql(:england)
+    expect(data[:funding_status]).to eql(:state)
     expect(data[:activation_date]).to eql(school.activation_date)
     expect(data[:created_at]).to eql(school.created_at)
     expect(data[:location]).to eql([school.latitude, school.longitude])
