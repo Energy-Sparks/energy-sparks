@@ -67,11 +67,15 @@ module Alerts
     }
 
     it 'does the stuff' do
-      expect(CollateBenchmarkData.new(run).perform).to eq example_output
+      ClimateControl.modify FEATURE_FLAG_JSON_BENCHMARKS: 'false' do
+        expect(CollateBenchmarkData.new(run).perform).to eq example_output
+      end
     end
 
     it 'collates filtering by school' do
-      expect(CollateBenchmarkData.new(run).perform([school_1])).to eq example_output_school_1
+      ClimateControl.modify FEATURE_FLAG_JSON_BENCHMARKS: 'false' do
+        expect(CollateBenchmarkData.new(run).perform([school_1])).to eq example_output_school_1
+      end
     end
 
     it 'uses json column when feature active' do
