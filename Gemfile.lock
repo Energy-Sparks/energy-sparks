@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 495dc54f5e6c8daaa85dbd014e6550f135e61240
-  branch: support-formatting-dates-from-strings
+  revision: e39bd509b71c09cafc302e24d155f7d693cb3f3a
+  tag: 1.50.4
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
