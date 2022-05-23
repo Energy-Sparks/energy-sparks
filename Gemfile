@@ -23,8 +23,8 @@ gem 'closed_struct'
 gem 'pg_search'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.50.3'
-#gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'aws-eb-test'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.50.4'
+#gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'support-formatting-dates-from-strings'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -119,7 +119,6 @@ group :development, :test do
   gem 'rubocop-performance', '1.8.0'
   gem 'rubocop-rspec'
   gem 'wisper-rspec', require: false
-  gem 'scout_apm'
 end
 
 group :development do
@@ -135,6 +134,9 @@ group :development do
   gem 'fasterer'
   gem 'bundler-audit'
   gem 'brakeman'
+  gem 'scout_apm'
+#  gem 'rack-mini-profiler'
+#  gem 'memory_profiler'
 end
 
 group :test do
