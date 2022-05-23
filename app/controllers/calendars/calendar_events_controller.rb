@@ -22,7 +22,10 @@ class Calendars::CalendarEventsController < ApplicationController
   def create
     if @calendar_event.save
       broadcast(:calendar_edited, @calendar)
-      redirect_to calendar_path(@calendar, anchor: "calendar_event_#{@calendar_event.id}"), notice: 'Calendar Event was successfully created.'
+      respond_to do |format|
+        format.html { redirect_to calendar_path(@calendar, anchor: "calendar_event_#{@calendar_event.id}"), notice: 'Calendar Event was successfully created.' }
+        format.js { render :reload }
+      end
     else
       render :new
     end
@@ -31,7 +34,10 @@ class Calendars::CalendarEventsController < ApplicationController
   def update
     if HolidayFactory.new(@calendar).with_neighbour_updates(@calendar_event, calendar_event_params)
       broadcast(:calendar_edited, @calendar)
-      redirect_to calendar_path(@calendar, anchor: "calendar_event_#{@calendar_event.id}"), notice: 'Event was successfully updated.'
+      respond_to do |format|
+        format.html { redirect_to calendar_path(@calendar, anchor: "calendar_event_#{@calendar_event.id}"), notice: 'Event was successfully updated.' }
+        format.js { render :reload }
+      end
     else
       render :edit
     end
@@ -40,7 +46,10 @@ class Calendars::CalendarEventsController < ApplicationController
   def destroy
     @calendar_event.destroy
     broadcast(:calendar_edited, @calendar)
-    redirect_to calendar_path(@calendar), notice: 'Event was successfully deleted.'
+    respond_to do |format|
+      format.html { redirect_to calendar_path(@calendar), notice: 'Event was successfully deleted.' }
+      format.js { render :reload }
+    end
   end
 
 private

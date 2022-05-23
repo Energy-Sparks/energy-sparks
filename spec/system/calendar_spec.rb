@@ -12,6 +12,14 @@ RSpec.describe "calendar view", type: :system do
       visit calendar_path(calendar)
     end
 
+    it "current events are rendered with just the events data table" do
+      visit current_events_calendar_path(calendar)
+      expect(page).to have_content("Type")
+      expect(page).to have_content("Start Date")
+      expect(page).to have_content("End Date")
+      expect(page).not_to have_content(calendar.title)
+    end
+
     describe 'using the calendar view', js: true do
       xit 'shows the calendar, allows an event to be added and deleted - flickering' do
         click_on('Calendar view')
