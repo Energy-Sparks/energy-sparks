@@ -28,7 +28,6 @@ class TransportSurvey < ApplicationRecord
     run_on.to_s
   end
 
-  # We will need to do something more robust than this!
   def responses=(responses_attributes)
     responses_attributes.each do |response_attributes|
       self.responses.create_with(response_attributes).find_or_create_by(response_attributes.slice(:run_identifier, :surveyed_at))
