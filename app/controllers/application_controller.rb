@@ -8,6 +8,14 @@ class ApplicationController < ActionController::Base
     redirect_to root_url, alert: exception.message
   end
 
+  def default_url_options
+    if Rails.env.production?
+      { host: I18n.locale == :cy ? ENV['WELSH_APPLICATION_HOST'] : ENV['APPLICATION_HOST'] }
+    else
+      super
+    end
+  end
+
   def route_not_found
     render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
   end
