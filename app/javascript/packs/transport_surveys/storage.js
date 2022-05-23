@@ -45,27 +45,30 @@ export const storage = ( function() {
     localStorage.setItem(local.key, JSON.stringify( responses ));
   }
 
-  function syncResponses(date, redirect = true) {
+  function ajaxCall(url, data) {
+    return $.ajax({
+      url: url,
+      type: 'PUT',
+      data: JSON.stringify(data),
+      contentType: "application/json; charset=utf-8",
+      dataType: "text" });
+  }
+
+  function syncResponses(date, notifier) {
     let responses = getResponses(date);
     if (responses.length > 0) {
       let url = local.base_url + "/" + date;
       let data = { transport_survey: { run_on: date, responses: responses }};
-      $.ajax({
-        url: url,
-        type: 'PUT',
-        data: JSON.stringify(data),
-        contentType: "application/json; charset=utf-8",
-        dataType: "text" })
-      .done(function(data) {
-        alert("Responses saved!");
+      return ajaxCall(url, data)
+      .done(function() {
         removeResponses(date);
-        if (redirect) {
-          window.location.href = url;
-        }
+        notifier('success', 'Responses saved!');
       })
-      .fail(function() { alert("Error saving responses - please make sure you have a wifi connection before saving! "); });
+      .fail(function() {
+        notifier('danger', 'Error saving responses - please make sure you have a wifi connection before saving!');
+      });
     } else {
-      alert("Nothing to save - please collect some survey responses first!");
+      return { done: function() { notifier('warning', 'Nothing to save - please collect some survey responses first!'); } };
     }
   }
 
