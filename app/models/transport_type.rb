@@ -24,6 +24,8 @@ class TransportType < ApplicationRecord
   validates :kg_co2e_per_km, :speed_km_per_hour, numericality: { greater_than_or_equal_to: 0 }
   validates :name, uniqueness: true
 
+  enum category: [:active_travel, :car, :public_transport]
+
   def safe_destroy
     raise EnergySparks::SafeDestroyError, 'Transport type has associated responses' if responses.any?
     destroy
