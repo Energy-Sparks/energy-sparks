@@ -1,11 +1,17 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+  around_action :switch_locale
   before_action :authenticate_user!
   before_action :analytics_code
   helper_method :site_settings, :current_school_podium, :current_user_school
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
+  end
+
+  def switch_locale(&action)
+    locale = LocaleFinder.new(params, request).locale
+    I18n.with_locale(locale, &action)
   end
 
   def route_not_found
