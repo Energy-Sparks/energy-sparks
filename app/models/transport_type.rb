@@ -3,7 +3,7 @@
 # Table name: transport_types
 #
 #  can_share         :boolean          default(FALSE), not null
-#  category          :integer          default("active_travel"), not null
+#  category          :integer
 #  created_at        :datetime         not null
 #  id                :bigint(8)        not null, primary key
 #  image             :string           not null
