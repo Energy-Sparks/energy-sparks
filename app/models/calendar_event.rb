@@ -3,12 +3,15 @@
 # Table name: calendar_events
 #
 #  academic_year_id       :bigint(8)        not null
+#  based_on_id            :bigint(8)
 #  calendar_event_type_id :bigint(8)        not null
 #  calendar_id            :bigint(8)        not null
+#  created_at             :datetime         not null
 #  description            :text
 #  end_date               :date             not null
 #  id                     :bigint(8)        not null, primary key
 #  start_date             :date             not null
+#  updated_at             :datetime         not null
 #
 # Indexes
 #

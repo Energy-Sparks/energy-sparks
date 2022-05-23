@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_13_160539) do
+ActiveRecord::Schema.define(version: 2022_05_20_152148) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -513,6 +513,7 @@ ActiveRecord::Schema.define(version: 2022_05_13_160539) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "benchmark_result_school_generation_run_id", null: false
+    t.json "results", default: {}
     t.index ["alert_type_id"], name: "index_benchmark_results_on_alert_type_id"
     t.index ["benchmark_result_school_generation_run_id"], name: "ben_rgr_index"
   end
@@ -1273,6 +1274,8 @@ ActiveRecord::Schema.define(version: 2022_05_13_160539) do
     t.boolean "data_enabled", default: false
     t.boolean "bill_requested", default: false
     t.integer "chart_preference", default: 0, null: false
+    t.integer "country", default: 0, null: false
+    t.integer "funding_status", default: 0, null: false
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"

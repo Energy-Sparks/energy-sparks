@@ -12,6 +12,12 @@ class CalendarsController < ApplicationController
     end
   end
 
+  def current_events
+    @academic_year = academic_year
+    @current_events = list_current_events(@academic_year)
+    render partial: 'current_events', locals: { calendar: @calendar, current_events: @current_events }
+  end
+
   def destroy
     if @calendar.school? || @calendar.national?
       redirect_to admin_calendars_path, notice: 'Cannot delete national or school calendars' if @calendar.school?

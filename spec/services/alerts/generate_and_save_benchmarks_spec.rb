@@ -73,6 +73,14 @@ module Alerts
         expect(BenchmarkResultSchoolGenerationRun.first.benchmark_result_count).to be 2
       end
 
+      it 'store json results' do
+        allow_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result)
+        service = GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school, benchmark_result_generation_run: benchmark_result_generation_run)
+        service.perform
+        expect(BenchmarkResult.last.data).to_not eq({})
+        expect(BenchmarkResult.last.results).to_not eq({})
+      end
+
       it 'handles just errors' do
         allow_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result_just_errors)
 

@@ -15,11 +15,15 @@ module Alerts
 
     private
 
+    def result_column
+      EnergySparks::FeatureFlags.active?(:json_benchmarks) ? :results : :data
+    end
+
     def get_benchmarks_for_latest_run(latest_school_runs, benchmarks)
       latest_school_runs.each do |benchmark_result_school_generation_run|
         school_id = benchmark_result_school_generation_run.school_id
 
-        benchmark_result_school_generation_run.benchmark_results.pluck(:asof, :data).each do |benchmark_result|
+        benchmark_result_school_generation_run.benchmark_results.pluck(:asof, result_column).each do |benchmark_result|
           unless benchmarks.key?(benchmark_result[0])
             benchmarks[benchmark_result[0]] = { school_id => {} }
           end
