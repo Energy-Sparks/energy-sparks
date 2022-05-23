@@ -1274,8 +1274,8 @@ ActiveRecord::Schema.define(version: 2022_05_20_152148) do
     t.boolean "data_enabled", default: false
     t.boolean "bill_requested", default: false
     t.integer "chart_preference", default: 0, null: false
-    t.integer "country"
-    t.integer "funding_status"
+    t.integer "country", default: 0, null: false
+    t.integer "funding_status", default: 0, null: false
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
