@@ -21,6 +21,7 @@
 
 en:
   application: "Energy Sparks"
+  more-information: "More information"
   school_types:
     mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
   kwh: "kWh"
