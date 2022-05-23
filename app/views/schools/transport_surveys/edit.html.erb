@@ -7,8 +7,7 @@
 <h3>Surveying on <%= @transport_survey.run_on %></h3>
 
 <%= render partial: 'no_javascript_warning' %>
-
-<div id="page-error" class="alert alert-danger hide" role="alert"></div>
+<div id="page-notifier" role="alert"></div>
 <div id="unsaved-responses"></div>
 
 <%= render 'intro' %>
@@ -29,6 +28,8 @@
         </button>
       </div>
       <div class="modal-body">
+        <div id="app-notifier" role="alert"></div>
+
         <%= form_with(url: school_transport_surveys_url(@school), method: :patch, local: true, id: 'transport_survey') do |f| %>
           <%= hidden_field_tag :run_on, @transport_survey.run_on %>
           <%= hidden_field_tag :run_identifier, TransportSurveyResponse.generate_unique_secure_token %>
@@ -111,9 +112,6 @@
         <% end %>
       </div>
       <div class="modal-footer">
-        <%= button_tag(class: 'btn btn-primary', id: 'reset') do %>
-          Reset & clear results</span>
-        <% end %>
         <%= button_tag(type: 'submit', class: 'submit btn btn-primary', id: 'save-results') do %>
           Finish & save results <span id="unsaved-responses-count" class="badge badge-primary"></span>
         <% end %>

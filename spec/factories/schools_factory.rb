@@ -4,11 +4,13 @@ FactoryBot.define do
     sequence(:number_of_pupils)
     sequence(:name) { |n| "test #{n} school" }
     school_type     { :primary }
+    funding_status  { :state_school }
     visible         { true }
     process_data    { true }
     data_enabled    { true }
     address         { '1 Station Road' }
     postcode        { 'ab1 2cd' }
+    country         { :england }
     floor_area      { BigDecimal("1234.567")}
     website         { "http://#{name.camelize}.test" }
     calendar        { create(:school_calendar) }

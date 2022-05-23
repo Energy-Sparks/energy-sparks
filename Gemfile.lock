@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 495dc54f5e6c8daaa85dbd014e6550f135e61240
-  branch: support-formatting-dates-from-strings
+  revision: 2f909fe284a01a3ba5a43dfe3fcfa44148f74a29
+  tag: 1.50.4
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
@@ -350,7 +350,7 @@ GEM
     netrc (0.11.0)
     newrelic_rpm (8.7.0)
     nio4r (2.5.8)
-    nokogiri (1.13.4)
+    nokogiri (1.13.6)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     notiffany (0.1.3)

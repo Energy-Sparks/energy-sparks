@@ -1,7 +1,8 @@
 "use strict"
 
 import { storage } from './transport_surveys/storage';
-import { carbonCalc, carbonExamples, funWeight } from './transport_surveys/carbon'
+import { carbonCalc, carbonExamples, funWeight } from './transport_surveys/carbon';
+import { notifier } from './transport_surveys/notifier';
 
 $(document).ready(function() {
 
@@ -25,17 +26,10 @@ $(document).ready(function() {
     $('.confirm').on('click', confirm);
     $('.store').on('click', store);
     $('.next-pupil').on('click', nextSurveyRun);
-    $('#reset').on('click', fullReset);
-
-    $('#save-results').on('click', function(e) { $('#transport_survey').submit(); });
-    $('#transport_survey').on('submit', function(e) { submit(e); });
-
-    $('.responses-save').on('click', saveResponses);
-    $('.responses-remove').on('click', deleteResponses);
+    $('#save-results').on('click', finishAndSave);
 
   } else {
-    setPageError("Your browser does not support a feature required by our survey tool. Either upgrade your browser, use an alternative or enable 'localStorage'.");
-    disableAppButton();
+    fatalError("Your browser does not support a feature required by our survey tool. Either upgrade your browser, use an alternative or enable 'localStorage'.");
   }
 
   /* onclick handlers */
@@ -79,60 +73,52 @@ $(document).ready(function() {
     setProgressBar(window.step = 1);
   }
 
-  function submit(event) {
-    event.preventDefault(); // disable form submitting
-
-    storage.syncResponses(config.run_on, true);
-  }
-
-  function dismissAlert(current) {
-    $(current).closest('.alert').hide;
+  function finishAndSave() {
+    storage.syncResponses(config.run_on, notifier.app).done( function() {
+      let button = $("[data-date='" + config.run_on + "']");
+      button.closest('.alert').hide();
+      setResponsesCount(0);
+      window.location.href = config.base_url + "/" + config.run_on;
+    });
   }
 
   // Save responses for a specific date to server
   function saveResponses() {
-    let date = $(this).attr('data-date');
-    storage.syncResponses(date, false);
-
-    if (date == config.run_on) {
-      setResponsesCount(0);
+    let button = $(this);
+    let date = button.attr('data-date');
+    if (window.confirm('Are you sure you want to save ' + storage.getResponsesCount(date) + ' unsaved result(s) from ' + date + '?')) {
+      storage.syncResponses(date, notifier.page).done( function() {
+        button.closest('.alert').hide();
+        if (date == config.run_on) fullSurveyReset();
+      });
     }
   }
 
   // Remove survey data from localstorage for given date
   function deleteResponses() {
-    let date = $(this).attr('data-date');
+    let button = $(this);
+    let date = button.attr('data-date');
     if (window.confirm('Are you sure you want to remove ' + storage.getResponsesCount(date) + ' unsaved result(s) from ' + date + '?')) {
       storage.removeResponses(date);
-      dismissAlert(this);
-
-      if (date == config.run_on) {
-        fullSurveyReset();
-      }
-    }
-  }
-
-  // Remove survey data for current date and reset survey form
-  function fullReset() {
-    if (window.confirm('Are you sure you want to reset and remove ' + storage.getResponsesCount(config.run_on) + ' unsaved result(s) from ' + config.run_on + '?')) {
-      storage.removeResponses(config.run_on);
-      fullSurveyReset();
+      notifier.page('success', 'Unsaved responses removed!');
+      button.closest('.alert').hide();
+      if (date == config.run_on) fullSurveyReset();
     }
   }
 
   /* end of onclick handlers */
 
-  function setPageError(error) {
-    $('#page-error').text(error);
-    $('#page-error').show();
+  function fatalError(message) {
+    notifier.page('danger', message, false)
+    hideAppButton();
   }
 
-  function disableAppButton() {
+  function hideAppButton() {
     $('.jsonly').hide();
   }
 
   function fullSurveyReset() {
-    updateResponsesCounts();
+    setResponsesCount(0);
     resetSetupFields();
     resetSetupCards();
     nextSurveyRun();
@@ -187,7 +173,7 @@ $(document).ready(function() {
       transport_types = data;
     })
     .fail(function(err) {
-      alert("Error loading data from server! " + err);
+      fatalError("Error loading data from server! Please reload the page and try again.");
     });
     return transport_types;
   }

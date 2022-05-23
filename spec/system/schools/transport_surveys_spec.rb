@@ -93,12 +93,8 @@ describe 'TransportSurveys', type: :system do
 
                       context "Saving results" do
                         before(:each) do
-                          accept_alert do
-                            click_button("Finish & save results 1")
-                          end
+                          click_button("Finish & save results 1")
                         end
-
-                        # PAGE CONTENT WILL CHANGE SHORTLY
                         it { expect(page).to have_content("Responses for: #{Date.today}") }
                         it "displays added response" do
                           expect(page).to have_content(weather)
@@ -111,6 +107,12 @@ describe 'TransportSurveys', type: :system do
                   end
                 end
               end
+            end
+            context "when there is nothing to save" do
+              before(:each) do
+                click_button("Finish & save results 0")
+              end
+              it { expect(page).to have_content("Nothing to save - please collect some survey responses first!") }
             end
           end
         end
