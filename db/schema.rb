@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_23_102554) do
+ActiveRecord::Schema.define(version: 2022_05_23_104145) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1444,7 +1444,6 @@ ActiveRecord::Schema.define(version: 2022_05_23_102554) do
     t.bigint "transport_survey_id", null: false
     t.bigint "transport_type_id", null: false
     t.integer "passengers", default: 1, null: false
-    t.integer "integer", default: 1, null: false
     t.string "run_identifier", null: false
     t.datetime "surveyed_at", null: false
     t.integer "journey_minutes", default: 0, null: false
