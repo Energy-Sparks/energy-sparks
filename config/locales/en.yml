@@ -1,9 +1,5 @@
 ---
 en:
-  activerecord:
-    attributes:
-      temperature_recording:
-        centigrade: Temperature
   application: Energy Sparks
   chart_preference:
     carbon: Prefer the display of chart data in kg CO2, where available
@@ -26,7 +22,6 @@ en:
       storage_heaters:
         title: Storage heaters
         usage: storage heater usage
-    hourly-usage-link: View usage by day
     usage:
       date_picker:
         daily:
@@ -35,28 +30,6 @@ en:
         weekly:
           first: Select week (beginning)
           second: Compare to
-      titles:
-        electricity:
-          daily:
-            not_split: Your school's half hourly electricity use on your chosen day
-            split: Your school's half hourly electricity use on your chosen day recorded by meter
-          weekly:
-            not_split: Your school's daily electricity use in your chosen weeks
-            split: Your school's daily electricity use in your chosen week recorded by meter
-        gas:
-          daily:
-            not_split: Your school's half hourly gas use on your chosen day
-            split: Your school's half hourly gas use on your chosen day recorded by meter
-          weekly:
-            not_split: Your school's daily gas use in your chosen weeks
-            split: Your school's daily gas use in your chosen week recorded by meter
-    weekly-usage-link: View usage by week
-  co2: kg CO2
-  date:
-    formats:
-      default: "%d/%m/%Y"
-      long: "%d %B, %Y"
-      short: "%d %b"
   default_chart_preference:
     carbon: Display chart data in kg CO2, where available
     cost: Display chart data in £, where available
@@ -64,16 +37,6 @@ en:
     explanation: Choose a default option for how energy usage data is displayed in charts
     form_group: Default chart units
     usage: Display chart data in kwh, where available
-  gb_pounds: "£"
-  kwh: kWh
   more-information: More information
   school_types:
     mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
-  simple_form:
-    labels:
-      defaults:
-        find_out_more_chart_title: Chart title
-        find_out_more_chart_variable: Chart variable
-        find_out_more_content: Page content
-        find_out_more_table_variable: Table variable
-        find_out_more_title: Page title
