@@ -21,7 +21,6 @@ $(document).ready(function() {
     /* onclick bindings */
     $('.start').on('click', start);
     $('.next').on('click', next);
-    $('.sharing').on('click', sharing);
     $('.previous').on('click', previous);
     $('.confirm').on('click', confirm);
     $('.store').on('click', store);
@@ -213,16 +212,6 @@ $(document).ready(function() {
   function resetSurveyCards() {
     let cards = $('#transport_survey .panel').find('.card');
     resetCards(cards);
-  }
-
-  function sharing() {
-    let transport_type = config.transport_types[$("#transport_type_id").val()];
-    if (transport_type.can_share) {
-      $("fieldset#sharing .card").show();
-    } else {
-      $("fieldset#sharing .card").not(":first").hide();
-      $("fieldset#sharing .card:first").show();
-    }
   }
 
   function resetSurveyPanels() {
