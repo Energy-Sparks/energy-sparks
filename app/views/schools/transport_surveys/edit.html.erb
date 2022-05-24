@@ -92,9 +92,9 @@
               <h2>Confirm your selection</h2>
               <div class="container">
                 <div class="row">
+                  <%= render 'option', { label: "Pupil(s)", content: 'x', identifier: 'confirm-passengers', action: '' } %>
                   <%= render 'option', { label: "Minutes", content: 'x', identifier: 'confirm-time', action: '' } %>
                   <%= render 'option', { label: "Transport", content: 'x', identifier: 'confirm-transport', action: '' } %>
-                  <%= render 'option', { label: "Pupil(s)", content: 'x', identifier: 'confirm-passengers', action: '' } %>
                 </div>
               </div>
               <p><%= button_tag "Confirm", type: 'button', class: 'store btn btn-primary w-100' %></p>
