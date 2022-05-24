@@ -11,6 +11,7 @@
 #  name              :string           not null
 #  note              :string
 #  park_and_stride   :boolean          default(FALSE), not null
+#  position          :integer          default(0), not null
 #  speed_km_per_hour :decimal(, )      default(0.0), not null
 #  updated_at        :datetime         not null
 #
@@ -21,8 +22,8 @@
 class TransportType < ApplicationRecord
   has_many :responses, class_name: 'TransportSurveyResponse', inverse_of: :transport_type
 
-  validates :name, :image, :speed_km_per_hour, :kg_co2e_per_km, presence: true
-  validates :kg_co2e_per_km, :speed_km_per_hour, numericality: { greater_than_or_equal_to: 0 }
+  validates :name, :image, :speed_km_per_hour, :kg_co2e_per_km, :position, presence: true
+  validates :kg_co2e_per_km, :speed_km_per_hour, :position, numericality: { greater_than_or_equal_to: 0 }
   validates :name, uniqueness: true
 
   enum category: [:active_travel, :car, :public_transport]
