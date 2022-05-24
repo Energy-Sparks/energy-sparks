@@ -42,6 +42,7 @@ describe "admin transport type", type: :system, include_application_helper: true
       'Park and stride' => y_n(transport_type.park_and_stride),
       'Note' => transport_type.note,
       'Category' => transport_type.category.humanize,
+      'Position' => transport_type.position,
       'Created at' => nice_date_times(transport_type.created_at),
       'Updated at' => nice_date_times(transport_type.updated_at)
     } }
@@ -53,8 +54,9 @@ describe "admin transport type", type: :system, include_application_helper: true
       'Carbon (kg co2e/km)' => 0.146,
       'Can share' => 'Yes',
       'Park and stride' => 'Yes',
-      'Note' => 'Why not?',
-      'Category' => 'Public transport'
+      'Category' => 'Public transport',
+      'Position' => 1,
+      'Note' => 'Why not?'
     } }
 
     let(:checkbox_attributes) { ['Can share', 'Park and stride'] }
@@ -251,8 +253,11 @@ describe "admin transport type", type: :system, include_application_helper: true
           ['Speed (km/h)', 'Carbon (kg co2e/km)'].each do |field_name|
             expect(page).to have_field(field_name, with: 0.0)
           end
+          ['Position'].each do |field_name|
+            expect(page).to have_field(field_name, with: 0)
+          end
           select_attributes.each do |field_name|
-            expect(page).to have_select(field_name, selected: [])
+              expect(page).to have_select(field_name, selected: [])
           end
           checkbox_attributes.each do |field_name|
             expect(page).to have_unchecked_field(field_name)

@@ -2,6 +2,10 @@ module Admin
   class TransportTypesController < AdminController
     load_and_authorize_resource
 
+    def index
+      @transport_types = @transport_types.by_position
+    end
+
     def create
       if @transport_type.save
         redirect_to admin_transport_types_path, notice: 'Transport type was successfully created.'
