@@ -1,102 +1,79 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
-
+---
 en:
-  application: "Energy Sparks"
-  more-information: "More information"
-  school_types:
-    mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
-  kwh: "kWh"
-  co2: "kg CO2"
-  gb_pounds: "£"
-  charts:
-    hourly-usage-link: "View usage by day"
-    weekly-usage-link: "View usage by week"
-    dashboard:
-      solar:
-        usage: 'electricity and solar usage'
-        title: 'Electricity'
-      electricity:
-        usage: 'electricity usage'
-        title: 'Electricity'
-      gas:
-        usage: 'gas usage'
-        title: 'Gas'
-      storage_heaters:
-        usage: 'storage heater usage'
-        title: 'Storage heaters'
-    usage:
-      titles:
-        gas:
-          weekly:
-            split: "Your school's daily gas use in your chosen week recorded by meter"
-            not_split: "Your school's daily gas use in your chosen weeks"
-          daily:
-            split: "Your school's half hourly gas use on your chosen day recorded by meter"
-            not_split: "Your school's half hourly gas use on your chosen day"
-        electricity:
-          weekly:
-            split: "Your school's daily electricity use in your chosen week recorded by meter"
-            not_split: "Your school's daily electricity use in your chosen weeks"
-          daily:
-            split: "Your school's half hourly electricity use on your chosen day recorded by meter"
-            not_split: "Your school's half hourly electricity use on your chosen day"
-      date_picker:
-        weekly:
-          first: 'Select week (beginning)'
-          second: 'Compare to'
-        daily:
-          first: 'Select day'
-          second: 'Compare to'
-  date:
-    formats:
-      default: "%d/%m/%Y"
-      short: "%d %b"
-      long: "%d %B, %Y"
-  errors:
-    messages:
-      not_saved: 'We were unable to save'
-  simple_form:
-    labels:
-      defaults:
-        find_out_more_table_variable: 'Table variable'
-        find_out_more_chart_variable: 'Chart variable'
-        find_out_more_chart_title: 'Chart title'
-        find_out_more_content: 'Page content'
-        find_out_more_title: 'Page title'
   activerecord:
     attributes:
       temperature_recording:
-        centigrade: "Temperature"
-  default_chart_preference:
-    form_group: "Default chart units"
-    explanation: "Choose a default option for how energy usage data is displayed in charts"
-    default: "Use system default options for each chart"
-    carbon: "Display chart data in kg CO2, where available"
-    usage: "Display chart data in kwh, where available"
-    cost: "Display chart data in £, where available"
+        centigrade: Temperature
+  application: Energy Sparks
   chart_preference:
-    form_group: "Preferred units for chart data"
-    explanation: "Choose a default option for how energy usage data is displayed in charts"
-    default: "Automatically select a sensible default unit for each chart"
-    carbon: "Prefer the display of chart data in kg CO2, where available"
-    usage: "Prefer the display of chart data in kwh, where available"
-    cost: "Prefer the display of chart data in £, where available"
+    carbon: Prefer the display of chart data in kg CO2, where available
+    cost: Prefer the display of chart data in £, where available
+    default: Automatically select a sensible default unit for each chart
+    explanation: Choose a default option for how energy usage data is displayed in charts
+    form_group: Preferred units for chart data
+    usage: Prefer the display of chart data in kwh, where available
+  charts:
+    dashboard:
+      electricity:
+        title: Electricity
+        usage: electricity usage
+      gas:
+        title: Gas
+        usage: gas usage
+      solar:
+        title: Electricity
+        usage: electricity and solar usage
+      storage_heaters:
+        title: Storage heaters
+        usage: storage heater usage
+    hourly-usage-link: View usage by day
+    usage:
+      date_picker:
+        daily:
+          first: Select day
+          second: Compare to
+        weekly:
+          first: Select week (beginning)
+          second: Compare to
+      titles:
+        electricity:
+          daily:
+            not_split: Your school's half hourly electricity use on your chosen day
+            split: Your school's half hourly electricity use on your chosen day recorded by meter
+          weekly:
+            not_split: Your school's daily electricity use in your chosen weeks
+            split: Your school's daily electricity use in your chosen week recorded by meter
+        gas:
+          daily:
+            not_split: Your school's half hourly gas use on your chosen day
+            split: Your school's half hourly gas use on your chosen day recorded by meter
+          weekly:
+            not_split: Your school's daily gas use in your chosen weeks
+            split: Your school's daily gas use in your chosen week recorded by meter
+    weekly-usage-link: View usage by week
+  co2: kg CO2
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      long: "%d %B, %Y"
+      short: "%d %b"
+  default_chart_preference:
+    carbon: Display chart data in kg CO2, where available
+    cost: Display chart data in £, where available
+    default: Use system default options for each chart
+    explanation: Choose a default option for how energy usage data is displayed in charts
+    form_group: Default chart units
+    usage: Display chart data in kwh, where available
+  gb_pounds: "£"
+  kwh: kWh
+  more-information: More information
+  school_types:
+    mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
+  simple_form:
+    labels:
+      defaults:
+        find_out_more_chart_title: Chart title
+        find_out_more_chart_variable: Chart variable
+        find_out_more_content: Page content
+        find_out_more_table_variable: Table variable
+        find_out_more_title: Page title
