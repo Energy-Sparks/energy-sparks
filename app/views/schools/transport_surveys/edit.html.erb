@@ -56,7 +56,7 @@
               <div class="container">
                 <div class="row">
                   <% TransportSurveyResponse.passengers_options.each do |passengers| %>
-                    <%= render 'option', { label: ((passengers > 1) ? "Me + #{passengers - 1} more" : "Just me"), content: TransportSurveyResponse.passenger_symbol * passengers, identifier: passengers, action: "next" } %>
+                    <%= render 'option', { label: ((passengers > 1) ? "Group of #{passengers}" : "Single pupil"), content: TransportSurveyResponse.passenger_symbol * passengers, identifier: passengers, action: "next" } %>
                   <% end %>
                 </div>
               </div>
@@ -68,7 +68,7 @@
               <div class="container">
                 <div class="row">
                   <% TransportSurveyResponse.journey_minutes_options.each do |time| %>
-                    <%= render 'option', { label: "minutes", content: time, identifier: time, action: "next" } %>
+                    <%= render 'option', { label: "Minutes", content: time, identifier: time, action: "next" } %>
                   <% end %>
                 </div>
               </div>
@@ -92,9 +92,9 @@
               <h2>Confirm your selection</h2>
               <div class="container">
                 <div class="row">
-                  <%= render 'option', { label: "minutes", content: 'x', identifier: 'confirm-time', action: '' } %>
-                  <%= render 'option', { label: "transport", content: 'x', identifier: 'confirm-transport', action: '' } %>
-                  <%= render 'option', { label: "pupil(s)", content: 'x', identifier: 'confirm-passengers', action: '' } %>
+                  <%= render 'option', { label: "Minutes", content: 'x', identifier: 'confirm-time', action: '' } %>
+                  <%= render 'option', { label: "Transport", content: 'x', identifier: 'confirm-transport', action: '' } %>
+                  <%= render 'option', { label: "Pupil(s)", content: 'x', identifier: 'confirm-passengers', action: '' } %>
                 </div>
               </div>
               <p><%= button_tag "Confirm", type: 'button', class: 'store btn btn-primary w-100' %></p>
