@@ -22,6 +22,8 @@
 class TransportType < ApplicationRecord
   has_many :responses, class_name: 'TransportSurveyResponse', inverse_of: :transport_type
 
+  scope :by_position, -> { order(position: :asc) }
+
   validates :name, :image, :speed_km_per_hour, :kg_co2e_per_km, :position, presence: true
   validates :kg_co2e_per_km, :speed_km_per_hour, :position, numericality: { greater_than_or_equal_to: 0 }
   validates :name, uniqueness: true
