@@ -1,7 +1,8 @@
 ---
 en:
   consent_grant_mailer:
-    subject: Your grant of consent to Energy Sparks
+    email_consent:
+      subject: Your grant of consent to Energy Sparks
   mailer:
     get_in_touch: Get in touch
   onboarding_mailer:
@@ -15,9 +16,13 @@ en:
       subject: "%{school} is now live on Energy Sparks"
     onboarding_email:
       subject: Set up your school on Energy Sparks
+    reminder_email:
+      subject: "Don't forget to set up your school on Energy Sparks"
     welcome_email:
       subject: Welcome to Energy Sparks
   target_mailer:
+    admin_target_report:
+      subject: "Target Progress and Data Report"
     first_target:
       subject: Set your first energy saving target
     first_target_reminder:
