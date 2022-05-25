@@ -5,9 +5,12 @@ en:
       messages:
         record_invalid: 'Validation failed: %{errors}'
         restrict_dependent_destroy:
-          has_one: Cannot delete record because a dependent %{record} exists
           has_many: Cannot delete record because dependent %{record} exist
+          has_one: Cannot delete record because a dependent %{record} exists
   errors:
+    attributes:
+      temperature_recording:
+        centigrade: Temperature
     format: "%{attribute} %{message}"
     messages:
       accepted: must be accepted
@@ -45,6 +48,3 @@ en:
       header:
         one: 1 error prohibited this %{model} from being saved
         other: "%{count} errors prohibited this %{model} from being saved"
-    attributes:
-      temperature_recording:
-        centigrade: Temperature

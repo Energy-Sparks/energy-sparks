@@ -117,7 +117,9 @@ ignore_missing:
 
 ## Consider these keys used:
 ignore_unused:
-  - 'activerecord.attributes.*'
+  - 'activerecord.*'
+  - 'helpers.*'
+  - 'support.*'
   - '{devise,errors, simple_form}.*'
   - '*_mailer.*.subject'
 # - '{devise,kaminari,will_paginate}.*'
