@@ -100,6 +100,7 @@ gem 'stateful_enum', '0.6.0'
 gem 'cocoon'
 
 gem 'newrelic_rpm'
+gem 'i18n-tasks', '~> 1.0.10'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
