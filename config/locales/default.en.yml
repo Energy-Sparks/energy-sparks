@@ -1,5 +1,12 @@
 ---
 en:
+  helpers:
+    select:
+      prompt: Please select
+    submit:
+      create: Create %{model}
+      submit: Save %{model}
+      update: Update %{model}
   simple_form:
     labels:
       defaults:
@@ -8,3 +15,8 @@ en:
         find_out_more_content: Page content
         find_out_more_table_variable: Table variable
         find_out_more_title: Page title
+  support:
+    array:
+      last_word_connector: ", and "
+      two_words_connector: " and "
+      words_connector: ", "
