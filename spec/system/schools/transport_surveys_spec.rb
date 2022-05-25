@@ -41,7 +41,7 @@ describe 'TransportSurveys', type: :system do
                 click_link weather
               end
 
-              it { expect(page).to have_content('Sharing: Are you recording this journey for a single pupil or a group?') }
+              it { expect(page).to have_content('Sharing: Are you recording this journey for a single pupil or a family or group?') }
               it { expect(page).to_not have_button('Back') }
               let(:passengers) { TransportSurveyResponse.passengers_options.last.to_i }
               let(:passengers_link) { TransportSurveyResponse.passenger_symbol * passengers }
