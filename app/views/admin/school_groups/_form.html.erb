@@ -51,12 +51,12 @@
       </div>
 
       <div class="form-group">
-        <label><%= t("default_chart_preference.form_group") %></label>
-        <p class="small"><%= t("default_chart_preference.explanation") %></p>
+        <label><%= t("admin.school_groups.default_chart_preference.form_group") %></label>
+        <p class="small"><%= t("admin.school_groups.default_chart_preference.explanation") %></p>
         <% SchoolGroup.default_chart_preferences.keys.each do |preference| %>
           <div class="form-check">
             <%= f.radio_button :default_chart_preference, preference, checked: @school_group.default_chart_preference == preference, class: "form-check-input" %>
-            <%= f.label "default_chart_preference_#{preference.to_sym}", t("default_chart_preference.#{preference}", default: preference.humanize),  class: "form-check-label" %>
+            <%= f.label "default_chart_preference_#{preference.to_sym}", t("admin.school_groups.default_chart_preference.#{preference}", default: preference.humanize),  class: "form-check-label" %>
           </div>
         <% end %>
       </div>
