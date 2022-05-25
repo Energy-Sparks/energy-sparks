@@ -1,0 +1,6 @@
+---
+en:
+  activerecord:
+    attributes:
+      temperature_recording:
+        centigrade: Temperature
