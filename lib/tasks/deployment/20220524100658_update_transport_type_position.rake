@@ -5,7 +5,7 @@ namespace :after_party do
 
     order = [ "Walking", "Bike",
               "Park and Stride", "Car", "Car (Petrol)", "Car (Diesel)", "Car (Hybrid)", "Electric Car", "Taxi",
-              "Bus", "School bus", "Bus (London)", "Tube", "Train",
+              "School bus", "Bus", "Bus (London)", "Train", "Tube",
               "Motorbike"]
 
     order.each_with_index do |name, position|
