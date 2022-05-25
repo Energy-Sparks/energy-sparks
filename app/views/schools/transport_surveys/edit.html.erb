@@ -49,16 +49,30 @@
 
           <div id="survey" style="display: none;">
             <%= render partial: 'progress_bar' %>
+
             <fieldset class="panel">
+              <%= hidden_field_tag :passengers, "", class: 'selected' %>
+              <h2>Sharing: Are you recording this journey for a single pupil or a family or group?</h2>
+              <div class="container">
+                <div class="row">
+                  <% TransportSurveyResponse.passengers_options.each do |passengers| %>
+                    <%= render 'option', { label: ((passengers > 1) ? "Group of #{passengers}" : "Single pupil"), content: TransportSurveyResponse.passenger_symbol * passengers, identifier: passengers, action: "next" } %>
+                  <% end %>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="panel" style="display: none;">
               <h2>Time: How many minutes did your journey take in total?</h2>
               <%= hidden_field_tag :journey_minutes, "", class: 'selected' %>
               <div class="container">
                 <div class="row">
                   <% TransportSurveyResponse.journey_minutes_options.each do |time| %>
-                    <%= render 'option', { label: "minutes", content: time, identifier: time, action: "next" } %>
+                    <%= render 'option', { label: "Minutes", content: time, identifier: time, action: "next" } %>
                   <% end %>
                 </div>
               </div>
+              <%= button_tag 'Back', type: 'button', class: "previous btn btn-default w-100" %>
             </fieldset>
 
             <fieldset class="panel" style="display: none;">
@@ -67,20 +81,7 @@
               <div class="container">
                 <div class="row">
                   <% TransportType.all.each do |transport_type| %>
-                    <%= render 'option', { label: transport_type.name, content: transport_type.image, identifier: transport_type.id, action: "next sharing" } %>
-                  <% end %>
-                </div>
-              </div>
-              <%= button_tag 'Back', type: 'button', class: "previous btn btn-default w-100" %>
-            </fieldset>
-
-            <fieldset class="panel" id="sharing" style="display: none;">
-              <%= hidden_field_tag :passengers, "", class: 'selected' %>
-              <h2>Pupil Passengers: How many pupils from school shared this mode of transport (including you)?</h2>
-              <div class="container">
-                <div class="row">
-                  <% TransportSurveyResponse.passengers_options.each do |passengers| %>
-                    <%= render 'option', { label: ((passengers > 1) ? "Me + #{passengers - 1} more" : "Just me"), content: TransportSurveyResponse.passenger_symbol * passengers, identifier: passengers, action: "confirm" } %>
+                    <%= render 'option', { label: transport_type.name, content: transport_type.image, identifier: transport_type.id, action: "confirm" } %>
                   <% end %>
                 </div>
               </div>
@@ -91,9 +92,9 @@
               <h2>Confirm your selection</h2>
               <div class="container">
                 <div class="row">
-                  <%= render 'option', { label: "minutes", content: 'x', identifier: 'confirm-time', action: '' } %>
-                  <%= render 'option', { label: "transport", content: 'x', identifier: 'confirm-transport', action: '' } %>
-                  <%= render 'option', { label: "pupil(s)", content: 'x', identifier: 'confirm-passengers', action: '' } %>
+                  <%= render 'option', { label: "Pupil(s)", content: 'x', identifier: 'confirm-passengers', action: '' } %>
+                  <%= render 'option', { label: "Minutes", content: 'x', identifier: 'confirm-time', action: '' } %>
+                  <%= render 'option', { label: "Transport", content: 'x', identifier: 'confirm-transport', action: '' } %>
                 </div>
               </div>
               <p><%= button_tag "Confirm", type: 'button', class: 'store btn btn-primary w-100' %></p>
