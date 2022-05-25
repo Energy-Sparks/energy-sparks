@@ -4,7 +4,6 @@
 #
 #  created_at          :datetime         not null
 #  id                  :bigint(8)        not null, primary key
-#  integer             :integer          default(1), not null
 #  journey_minutes     :integer          default(0), not null
 #  passengers          :integer          default(1), not null
 #  run_identifier      :string           not null
@@ -28,10 +27,8 @@ class TransportSurveyResponse < ApplicationRecord
   belongs_to :transport_survey
   belongs_to :transport_type, inverse_of: :responses
 
-  # Until we decide if to use a table or not
   enum weather: [:sun, :cloud, :rain, :snow]
 
-  # These class helper methods may not stay here. They are currently helping with prototyping!
   def self.weather_symbols
     { sun: '☀️', cloud: '⛅', rain: '🌧️', snow: '❄️' }
   end
