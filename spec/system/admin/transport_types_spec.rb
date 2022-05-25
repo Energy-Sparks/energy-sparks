@@ -257,7 +257,7 @@ describe "admin transport type", type: :system, include_application_helper: true
             expect(page).to have_field(field_name, with: 0)
           end
           select_attributes.each do |field_name|
-              expect(page).to have_select(field_name, selected: [])
+            expect(page).to have_select(field_name, selected: [])
           end
           checkbox_attributes.each do |field_name|
             expect(page).to have_unchecked_field(field_name)
