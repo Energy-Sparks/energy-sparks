@@ -19,6 +19,7 @@ data:
     ## Default:
     - config/locales/%{locale}.yml
     ## More files:
+    - config/locales/**/%{locale}.yml
     - config/locales/**/*.%{locale}.yml
 
   # Locale files to write new keys to, based on a list of key pattern => file rules. Matched from top to bottom:
@@ -118,6 +119,7 @@ ignore_missing:
 ignore_unused:
   - 'activerecord.attributes.*'
   - '{devise,errors, simple_form}.*'
+  - '*_mailer.*.subject'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'

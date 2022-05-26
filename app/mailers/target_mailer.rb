@@ -4,19 +4,19 @@ class TargetMailer < ApplicationMailer
   def first_target
     @school = params[:school]
     @to = params[:to]
-    make_bootstrap_mail(to: @to, subject: subject(:first_target))
+    make_bootstrap_mail(to: @to)
   end
 
   def first_target_reminder
     @school = params[:school]
     @to = params[:to]
-    make_bootstrap_mail(to: @to, subject: subject(:first_target_reminder))
+    make_bootstrap_mail(to: @to)
   end
 
   def review_target
     @school = params[:school]
     @to = params[:to]
-    make_bootstrap_mail(to: @to, subject: subject(:review_target))
+    make_bootstrap_mail(to: @to)
   end
 
   def admin_target_report
@@ -28,7 +28,7 @@ class TargetMailer < ApplicationMailer
     attach(@progress_report, "progress-report")
     attach(@target_data_report, "target-data-report")
 
-    make_bootstrap_mail(to: @to, subject: "Target Progress and Data Report")
+    make_bootstrap_mail(to: @to)
   end
 
   private
@@ -44,9 +44,5 @@ class TargetMailer < ApplicationMailer
 
   def timestamp
     Time.zone.today.strftime("%Y-%m-%d")
-  end
-
-  def subject(method, vars = {})
-    t(:subject, scope: [:target_mailer, method], **vars)
   end
 end

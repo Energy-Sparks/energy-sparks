@@ -1,0 +1,10 @@
+---
+en:
+  schools:
+    chart_preference:
+      carbon: Prefer the display of chart data in kg CO2, where available
+      cost: Prefer the display of chart data in £, where available
+      default: Automatically select a sensible default unit for each chart
+      explanation: Choose a default option for how energy usage data is displayed in charts
+      form_group: Preferred units for chart data
+      usage: Prefer the display of chart data in kwh, where available
