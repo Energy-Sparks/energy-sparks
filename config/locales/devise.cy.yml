@@ -17,16 +17,16 @@ cy:
       unconfirmed: Mae'n rhaid i chi gadarnhau eich cyfeiriad e-bost cyn parhau.
     mailer:
       confirmation_instructions:
-        subject: "Energy Sparks: cadarnhau eich cyfrif"
+        subject: 'Energy Sparks: cadarnhau eich cyfrif'
         title: Cadarnhewch eich cyfrif
       password_change:
-        subject: "Energy Sparks: cyfrinair wedi'i newid"
+        subject: 'Energy Sparks: cyfrinair wedi''i newid'
         title: Cyfrinair wedi'i newid
       reset_password_instructions:
-        subject: "Energy Sparks: ailosod eich cyfrinair"
+        subject: 'Energy Sparks: ailosod eich cyfrinair'
         title: Ailosod eich cyfrinair
       unlock_instructions:
-        subject: "Energy Sparks: datgloi eich cyfrif"
+        subject: 'Energy Sparks: datgloi eich cyfrif'
         title: Datgloi eich cyfrif
     omniauth_callbacks:
       failure: Could not authenticate you from %{kind} because "%{reason}".
@@ -55,11 +55,11 @@ cy:
       unlocked: Mae eich cyfrif wedi'i ddatgloi yn llwyddiannus. Mewngofnodwch i barhau.
   errors:
     messages:
-      already_confirmed: "wedi'i gadarnhau eisoes, ceisiwch fewngofnodi"
+      already_confirmed: wedi'i gadarnhau eisoes, ceisiwch fewngofnodi
       confirmation_period_expired: needs to be confirmed within %{period}, please request a new one
       expired: wedi dod i ben, gofynnwch am un newydd
-      not_found: "ni chanfuwyd"
-      not_locked: "heb ei gloi"
+      not_found: ni chanfuwyd
+      not_locked: heb ei gloi
       not_saved:
         one: '1 error prohibited this %{resource} from being saved:'
         other: "%{count} errors prohibited this %{resource} from being saved:"
