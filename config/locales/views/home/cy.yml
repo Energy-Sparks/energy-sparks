@@ -2,25 +2,25 @@
 cy:
   home:
     carousel:
-      message_1: Helpwch eich ysgol i arbed ynni, arian ac atal newid hinsawdd
-      message_2: Dangoswch i'ch ysgol faint a phryd rydych chi'n defnyddio ynni
-      message_3: Mynnwch gyngor arbed ynni wedi'i deilwra ar gyfer eich ysgol chi yn unig
-      message_4: Sicrhewch rybuddion awtomataidd i roi gwybod i chi pan fydd eich defnydd o ynni yn newid
-      message_5: Archwiliwch weithgareddau tîm eco a dosbarth ar gyfer disgyblion
-      message_6: Rhannu syniadau arbed ynni a chystadlu yn erbyn ysgolion eraill
+      message_1: Helpwch eich ysgol i arbed ynni, arian ac atal newid hinsawdd.
+      message_2: Dangoswch i'ch ysgol faint a phryd rydych chi'n defnyddio ynni.
+      message_3: Mynnwch gyngor arbed ynni wedi'i deilwra ar gyfer eich ysgol chi yn unig.
+      message_4: Sicrhewch rybuddion awtomataidd i roi gwybod i chi pan fydd eich defnydd o ynni yn newid.
+      message_5: Archwiliwch weithgareddau tîm eco a dosbarth ar gyfer disgyblion.
+      message_6: Rhannu syniadau arbed ynni a chystadlu yn erbyn ysgolion eraill.
     enrol_your_school: Cofrestrwch eich ysgol
     funnels:
       school:
         button: Energy Sparks i ysgolion
-        text: Dysgwch fwy am sut y gall Energy Sparks gefnogi eich ysgol
+        text: Dysgwch fwy am sut y gall Energy Sparks gefnogi eich ysgol.
         title: Ar gyfer ysgolion
       multi_academy:
         button: Energy Sparks ar gyfer Ymddiriedolaethau Aml-Academi
-        text: Dysgwch fwy am sut mae Energy Sparks yn cefnogi Ymddiriedolaethau Aml-Academi
+        text: Dysgwch fwy am sut mae Energy Sparks yn cefnogi Ymddiriedolaethau Aml-Academi.
         title: Ar gyfer Ymddiriedolaethau Aml-Academi
       local_authority:
         button: Energy Sparks i Awdurdodau Lleol
-        text: Dysgwch fwy am sut y gall Energy Sparks weithio gydag Awdurdodau Lleol i gefnogi ysgolion yn eu hardal
+        text: Dysgwch fwy am sut y gall Energy Sparks weithio gydag Awdurdodau Lleol i gefnogi ysgolion yn eu hardal.
         title: Ar gyfer Awdurdodau Lleol
     sub_title: Offeryn dadansoddi ynni a rhaglen addysg ynni ar-lein yw Energy Sparks.
     title: Rydym yn helpu ysgolion i fod yn fwy ynni-effeithlon a brwydro yn erbyn newid hinsawdd.
