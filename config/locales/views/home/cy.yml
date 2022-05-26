@@ -10,17 +10,17 @@ cy:
       message_6: Rhannu syniadau arbed ynni a chystadlu yn erbyn ysgolion eraill.
     enrol_your_school: Cofrestrwch eich ysgol
     funnels:
-      school:
-        button: Energy Sparks i ysgolion
-        text: Dysgwch fwy am sut y gall Energy Sparks gefnogi eich ysgol.
-        title: Ar gyfer ysgolion
-      multi_academy:
-        button: Energy Sparks ar gyfer Ymddiriedolaethau Aml-Academi
-        text: Dysgwch fwy am sut mae Energy Sparks yn cefnogi Ymddiriedolaethau Aml-Academi.
-        title: Ar gyfer Ymddiriedolaethau Aml-Academi
       local_authority:
         button: Energy Sparks i Awdurdodau Lleol
         text: Dysgwch fwy am sut y gall Energy Sparks weithio gydag Awdurdodau Lleol i gefnogi ysgolion yn eu hardal.
         title: Ar gyfer Awdurdodau Lleol
+      multi_academy:
+        button: Energy Sparks ar gyfer Ymddiriedolaethau Aml-Academi
+        text: Dysgwch fwy am sut mae Energy Sparks yn cefnogi Ymddiriedolaethau Aml-Academi.
+        title: Ar gyfer Ymddiriedolaethau Aml-Academi
+      school:
+        button: Energy Sparks i ysgolion
+        text: Dysgwch fwy am sut y gall Energy Sparks gefnogi eich ysgol.
+        title: Ar gyfer ysgolion
     sub_title: Offeryn dadansoddi ynni a rhaglen addysg ynni ar-lein yw Energy Sparks.
     title: Rydym yn helpu ysgolion i fod yn fwy ynni-effeithlon a brwydro yn erbyn newid hinsawdd.
