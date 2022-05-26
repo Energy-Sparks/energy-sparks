@@ -1,0 +1,29 @@
+---
+cy:
+  activerecord:
+    errors:
+      messages:
+        record_invalid: 'Gwirio wedi methu: %{errors}'
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: angen ei dderbyn
+      blank: methu bod yn wag
+      confirmation: heb fod yn gyfateb
+      empty: methu bod yn wag
+      equal_to: angen bod yn %{count}
+      even: rhaid bod yn eilrif
+      exclusion: wedi cadw
+      greater_than: angen bod yn fwy na %{count}
+      greater_than_or_equal_to: angen bod yr un maint neu fwy na %{count}
+      inclusion: heb fod yn y rhestr
+      invalid: heb fod yn nheilwng
+      less_than: angen bod yn llai na %{count}
+      less_than_or_equal_to: angen bod yr un maint neu lai na %{count}
+      not_a_number: heb fod yn rhif
+      not_an_integer: heb fod yn rhif llawn
+      odd: rhaid bod yn odrif
+      taken: wedi'i gymryd yn barod
+      too_long: yn rhy hir (cewch %{count} llythyren ar y fwyaf)
+      too_short: yn rhy fyr (rhaid am o leiaf %{count} llythyren)
+      wrong_length: gyda maint anghywir o lythrennau (dylai fod yn %{count} llythyren)
