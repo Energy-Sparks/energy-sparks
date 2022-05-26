@@ -1,8 +1,6 @@
 ---
 en:
   home:
-    sub_title: Energy Sparks is an online, school-specific energy analysis tool & energy education programme.
-    title: We help schools become more energy efficient and fight climate change.
     carousel:
       message_1: Help your school save energy, money and prevent climate change.
       message_2: Show your school how much and when you are using energy.
@@ -10,3 +8,6 @@ en:
       message_4: Get automated alerts to let you know when your energy use changes.
       message_5: Explore eco-team and classroom activities for pupils.
       message_6: Share energy saving ideas and compete against other schools.
+    enrol_your_school: Enrol your school
+    sub_title: Energy Sparks is an online, school-specific energy analysis tool & energy education programme.
+    title: We help schools become more energy efficient and fight climate change.
