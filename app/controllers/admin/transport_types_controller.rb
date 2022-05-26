@@ -28,7 +28,7 @@ module Admin
     private
 
     def transport_type_params
-      params.require(:transport_type).permit(:name, :image, :kg_co2e_per_km, :speed_km_per_hour, :can_share, :park_and_stride, :note)
+      params.require(:transport_type).permit(:name, :category, :image, :kg_co2e_per_km, :speed_km_per_hour, :can_share, :park_and_stride, :note)
     end
   end
 end

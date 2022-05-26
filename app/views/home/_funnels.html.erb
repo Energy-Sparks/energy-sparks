@@ -6,11 +6,11 @@
           <%= image_tag("funnel-pupils.png", class: "img-fluid  funnel-image") %>
         </div>
         <div class="card-body">
-          <h4 class="card-title"><strong>For schools</strong></h4>
-          <p class="card-text">Learn more about how Energy Sparks can support your school</p>
+          <h4 class="card-title"><strong><%= t('home.funnels.school.title') %></strong></h4>
+          <p class="card-text"><%= t('home.funnels.school.text') %></p>
         </div>
         <div class="card-footer text-center">
-          <%= link_to 'Energy Sparks for Schools', for_schools_path, class: 'btn btn-outline-dark btn-sm rounded-pill' %>
+          <%= link_to t('home.funnels.school.button'), for_schools_path, class: 'btn btn-outline-dark btn-sm rounded-pill' %>
         </div>
       </div>
       <div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>
@@ -19,11 +19,11 @@
           <%= image_tag("funnel-teachers.png", class: "img-fluid  funnel-image") %>
         </div>
         <div class="card-body">
-          <h4 class="card-title"><strong>For Multi-Academy Trusts</strong></h4>
-          <p class="card-text">Learn more about how Energy Sparks supports Multi-Academy Trusts.</p>
+          <h4 class="card-title"><strong><%= t('home.funnels.multi_academy.title') %></strong></h4>
+          <p class="card-text"><%= t('home.funnels.multi_academy.text') %></p>
         </div>
         <div class="card-footer text-center">
-          <%= link_to 'Energy Sparks for Multi-Academy Trusts', for_multi_academy_trusts_path, class: 'btn btn-outline-dark btn-sm rounded-pill' %>
+          <%= link_to t('home.funnels.multi_academy.button'), for_multi_academy_trusts_path, class: 'btn btn-outline-dark btn-sm rounded-pill' %>
         </div>
       </div>
        <div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>
@@ -32,11 +32,11 @@
           <%= image_tag("funnel-manager.png", class: "img-fluid funnel-image") %>
         </div>
         <div class="card-body">
-          <h4 class="card-title"><strong>For Local Authorities</strong></h4>
-          <p class="card-text">Learn more about how Energy Sparks can work with Local Authorities to support schools in their area.</p>
+          <h4 class="card-title"><strong><%= t('home.funnels.local_authority.title') %></strong></h4>
+          <p class="card-text"><%= t('home.funnels.local_authority.text') %></p>
         </div>
         <div class="card-footer text-center">
-          <%= link_to 'Energy Sparks for Local Authorities', for_local_authorities_path, class: 'btn btn-outline-dark btn-sm rounded-pill' %>
+          <%= link_to t('home.funnels.local_authority.button'), for_local_authorities_path, class: 'btn btn-outline-dark btn-sm rounded-pill' %>
         </div>
 
       </div>

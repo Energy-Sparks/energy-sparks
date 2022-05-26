@@ -35,6 +35,9 @@ module EnergySparks
     # this will remove them from the list of binary file types, but is a slight risk
     config.active_storage.content_types_to_serve_as_binary.delete("image/svg+xml")
 
+    # session cookie config will be overridden in production.rb
+    config.session_store :cookie_store, key: '_energy-sparks_session'
+
     config.after_initialize do
       ActionText::ContentHelper.allowed_attributes.add 'id'
       ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'
