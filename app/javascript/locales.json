@@ -1,0 +1,696 @@
+{
+  "cy": {
+    "devise": {
+      "confirmations": {
+        "confirmed": "Mae eich cyfeiriad e-bost wedi'i gadarnhau'n llwyddiannus.",
+        "send_instructions": "Byddwch yn derbyn e-bost gyda chyfarwyddiadau ar sut i gadarnhau eich cyfeiriad e-bost mewn ychydig funudau.",
+        "send_paranoid_instructions": "Os yw eich cyfeiriad e-bost yn bodoli yn ein cronfa ddata, byddwch yn derbyn e-bost gyda chyfarwyddiadau ar sut i gadarnhau eich cyfeiriad e-bost mewn ychydig funudau."
+      },
+      "failure": {
+        "already_authenticated": "Rydych chi eisoes wedi mewngofnodi.",
+        "inactive": "Nid yw eich cyfrif wedi'i actifadu eto.",
+        "invalid": "Invalid %{authentication_keys} or password.",
+        "last_attempt": "Mae gennych un ymgais arall cyn i'ch cyfrif gael ei gloi.",
+        "locked": "Mae eich cyfrif wedi'i gloi.",
+        "not_found_in_database": "Invalid %{authentication_keys} or password.",
+        "timeout": "Daeth eich sesiwn i ben. Mewngofnodwch eto i barhau.",
+        "unauthenticated": "Mae angen i chi fewngofnodi neu gofrestru cyn parhau.",
+        "unconfirmed": "Mae'n rhaid i chi gadarnhau eich cyfeiriad e-bost cyn parhau."
+      },
+      "mailer": {
+        "confirmation_instructions": {
+          "subject": "Energy Sparks: cadarnhau eich cyfrif",
+          "title": "Cadarnhewch eich cyfrif"
+        },
+        "password_change": {
+          "subject": "Energy Sparks: cyfrinair wedi'i newid",
+          "title": "Cyfrinair wedi'i newid"
+        },
+        "reset_password_instructions": {
+          "subject": "Energy Sparks: ailosod eich cyfrinair",
+          "title": "Ailosod eich cyfrinair"
+        },
+        "unlock_instructions": {
+          "subject": "Energy Sparks: datgloi eich cyfrif",
+          "title": "Datgloi eich cyfrif"
+        }
+      },
+      "omniauth_callbacks": {
+        "failure": "Could not authenticate you from %{kind} because \"%{reason}\".",
+        "success": "Successfully authenticated from %{kind} account."
+      },
+      "passwords": {
+        "no_token": "Ni allwch gael mynediad i'r dudalen hon heb ddod o e-bost ailosod cyfrinair. Os ydych yn dod o e-bost ailosod cyfrinair, gwnewch yn siŵr eich bod wedi defnyddio'r URL llawn a ddarparwyd.",
+        "send_instructions": "Byddwch yn derbyn e-bost gyda chyfarwyddiadau ar sut i ailosod eich cyfrinair mewn ychydig funudau.",
+        "send_paranoid_instructions": "Os yw eich cyfeiriad e-bost yn bodoli yn ein cronfa ddata, byddwch yn derbyn dolen adfer cyfrinair yn eich cyfeiriad e-bost mewn ychydig funudau.",
+        "updated": "Mae eich cyfrinair wedi'i newid yn llwyddiannus. Rydych chi bellach wedi mewngofnodi.",
+        "updated_not_active": "Mae eich cyfrinair wedi'i newid yn llwyddiannus."
+      },
+      "registrations": {
+        "destroyed": "Hwyl! Mae'ch cyfrif wedi'i ganslo'n llwyddiannus. Gobeithiwn eich gweld eto yn fuan.",
+        "signed_up": "Croeso! Rydych chi wedi cofrestru'n llwyddiannus.",
+        "signed_up_but_inactive": "Rydych chi wedi cofrestru'n llwyddiannus. Fodd bynnag, ni allem eich mewngofnodi oherwydd nad yw eich cyfrif wedi'i actifadu eto.",
+        "signed_up_but_locked": "Rydych chi wedi cofrestru'n llwyddiannus. Fodd bynnag, ni allem eich mewngofnodi oherwydd bod eich cyfrif wedi'i gloi.",
+        "signed_up_but_unconfirmed": "Mae neges gyda dolen cadarnhau wedi'i hanfon i'ch cyfeiriad e-bost. Dilynwch y ddolen i actifadu eich cyfrif.",
+        "update_needs_confirmation": "Rydych wedi diweddaru eich cyfrif yn llwyddiannus, ond mae angen i ni wirio eich cyfeiriad e-bost newydd. Gwiriwch eich e-bost a dilynwch y ddolen cadarnhau i gadarnhau eich cyfeiriad e-bost newydd.",
+        "updated": "Mae'ch cyfrif wedi'i ddiweddaru'n llwyddiannus."
+      },
+      "sessions": {
+        "already_signed_out": "Wedi llofnodi allan yn llwyddiannus.",
+        "signed_in": "Wedi mewngofnodi yn llwyddiannus.",
+        "signed_out": "Wedi llofnodi allan yn llwyddiannus."
+      },
+      "unlocks": {
+        "send_instructions": "Byddwch yn derbyn e-bost gyda chyfarwyddiadau ar sut i ddatgloi eich cyfrif mewn ychydig funudau.",
+        "send_paranoid_instructions": "Os yw'ch cyfrif yn bodoli, byddwch yn derbyn e-bost gyda chyfarwyddiadau ar sut i'w ddatgloi mewn ychydig funudau.",
+        "unlocked": "Mae eich cyfrif wedi'i ddatgloi yn llwyddiannus. Mewngofnodwch i barhau."
+      }
+    },
+    "helpers": {
+      "select": {
+        "prompt": "Dewiswch"
+      },
+      "submit": {
+        "create": "Creu %{model}",
+        "submit": "Cadw %{model}",
+        "update": "Diweddaru %{model}"
+      }
+    },
+    "home": {
+      "carousel": {
+        "message_1": "Helpwch eich ysgol i arbed ynni, arian ac atal newid hinsawdd.",
+        "message_2": "Dangoswch i'ch ysgol faint a phryd rydych chi'n defnyddio ynni.",
+        "message_3": "Mynnwch gyngor arbed ynni wedi'i deilwra ar gyfer eich ysgol chi yn unig.",
+        "message_4": "Sicrhewch rybuddion awtomataidd i roi gwybod i chi pan fydd eich defnydd o ynni yn newid.",
+        "message_5": "Archwiliwch weithgareddau tîm eco a dosbarth ar gyfer disgyblion.",
+        "message_6": "Rhannu syniadau arbed ynni a chystadlu yn erbyn ysgolion eraill."
+      },
+      "enrol_your_school": "Cofrestrwch eich ysgol",
+      "funnels": {
+        "local_authority": {
+          "button": "Energy Sparks i Awdurdodau Lleol",
+          "text": "Dysgwch fwy am sut y gall Energy Sparks weithio gydag Awdurdodau Lleol i gefnogi ysgolion yn eu hardal.",
+          "title": "Ar gyfer Awdurdodau Lleol"
+        },
+        "multi_academy": {
+          "button": "Energy Sparks ar gyfer Ymddiriedolaethau Aml-Academi",
+          "text": "Dysgwch fwy am sut mae Energy Sparks yn cefnogi Ymddiriedolaethau Aml-Academi.",
+          "title": "Ar gyfer Ymddiriedolaethau Aml-Academi"
+        },
+        "school": {
+          "button": "Energy Sparks i ysgolion",
+          "text": "Dysgwch fwy am sut y gall Energy Sparks gefnogi eich ysgol.",
+          "title": "Ar gyfer ysgolion"
+        }
+      },
+      "sub_title": "Offeryn dadansoddi ynni a rhaglen addysg ynni ar-lein yw Energy Sparks.",
+      "title": "Rydym yn helpu ysgolion i fod yn fwy ynni-effeithlon a brwydro yn erbyn newid hinsawdd."
+    },
+    "more_information": "Mwy o wybodaeth",
+    "support": {
+      "array": {
+        "last_word_connector": ", a ",
+        "two_words_connector": " a ",
+        "words_connector": ", "
+      }
+    }
+  },
+  "en": {
+    "admin": {
+      "school_groups": {
+        "default_chart_preference": {
+          "carbon": "Display chart data in kg CO2, where available",
+          "cost": "Display chart data in £, where available",
+          "default": "Use system default options for each chart",
+          "explanation": "Choose a default option for how energy usage data is displayed in charts",
+          "form_group": "Default chart units",
+          "usage": "Display chart data in kwh, where available"
+        }
+      }
+    },
+    "application": "Energy Sparks",
+    "charts": {
+      "dashboard": {
+        "electricity": {
+          "title": "Electricity",
+          "usage": "electricity usage"
+        },
+        "gas": {
+          "title": "Gas",
+          "usage": "gas usage"
+        },
+        "solar": {
+          "title": "Electricity",
+          "usage": "electricity and solar usage"
+        },
+        "storage_heaters": {
+          "title": "Storage heaters",
+          "usage": "storage heater usage"
+        }
+      },
+      "usage": {
+        "date_picker": {
+          "daily": {
+            "first": "Select day",
+            "second": "Compare to"
+          },
+          "weekly": {
+            "first": "Select week (beginning)",
+            "second": "Compare to"
+          }
+        }
+      }
+    },
+    "consent_grant_mailer": {
+      "email_consent": {
+        "subject": "Your grant of consent to Energy Sparks"
+      }
+    },
+    "date": {
+      "abbr_day_names": [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat"
+      ],
+      "abbr_month_names": [
+        null,
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+      ],
+      "day_names": [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ],
+      "formats": {
+        "default": "%Y-%m-%d",
+        "long": "%B %d, %Y",
+        "short": "%b %d"
+      },
+      "month_names": [
+        null,
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ],
+      "order": [
+        "year",
+        "month",
+        "day"
+      ]
+    },
+    "datetime": {
+      "distance_in_words": {
+        "about_x_hours": {
+          "one": "about 1 hour",
+          "other": "about %{count} hours"
+        },
+        "about_x_months": {
+          "one": "about 1 month",
+          "other": "about %{count} months"
+        },
+        "about_x_years": {
+          "one": "about 1 year",
+          "other": "about %{count} years"
+        },
+        "almost_x_years": {
+          "one": "almost 1 year",
+          "other": "almost %{count} years"
+        },
+        "half_a_minute": "half a minute",
+        "less_than_x_minutes": {
+          "one": "less than a minute",
+          "other": "less than %{count} minutes"
+        },
+        "less_than_x_seconds": {
+          "one": "less than 1 second",
+          "other": "less than %{count} seconds"
+        },
+        "over_x_years": {
+          "one": "over 1 year",
+          "other": "over %{count} years"
+        },
+        "x_days": {
+          "one": "1 day",
+          "other": "%{count} days"
+        },
+        "x_minutes": {
+          "one": "1 minute",
+          "other": "%{count} minutes"
+        },
+        "x_months": {
+          "one": "1 month",
+          "other": "%{count} months"
+        },
+        "x_seconds": {
+          "one": "1 second",
+          "other": "%{count} seconds"
+        }
+      },
+      "prompts": {
+        "day": "Day",
+        "hour": "Hour",
+        "minute": "Minute",
+        "month": "Month",
+        "second": "Seconds",
+        "year": "Year"
+      }
+    },
+    "devise": {
+      "confirmations": {
+        "confirmed": "Your email address has been successfully confirmed.",
+        "send_instructions": "You will receive an email with instructions for how to confirm your email address in a few minutes.",
+        "send_paranoid_instructions": "If your email address exists in our database, you will receive an email with instructions for how to confirm your email address in a few minutes."
+      },
+      "failure": {
+        "already_authenticated": "You are already signed in.",
+        "inactive": "Your account is not activated yet.",
+        "invalid": "Invalid %{authentication_keys} or password.",
+        "last_attempt": "You have one more attempt before your account is locked.",
+        "locked": "Your account is locked.",
+        "not_found_in_database": "Invalid %{authentication_keys} or password.",
+        "timeout": "Your session expired. Please sign in again to continue.",
+        "unauthenticated": "You need to sign in or sign up before continuing.",
+        "unconfirmed": "You have to confirm your email address before continuing."
+      },
+      "mailer": {
+        "confirmation_instructions": {
+          "subject": "Energy Sparks: confirm your account",
+          "title": "Confirm your account"
+        },
+        "email_changed": {
+          "subject": "Email Changed"
+        },
+        "password_change": {
+          "subject": "Energy Sparks: password changed",
+          "title": "Password changed"
+        },
+        "reset_password_instructions": {
+          "subject": "Energy Sparks: reset your password",
+          "title": "Reset your password"
+        },
+        "unlock_instructions": {
+          "subject": "Energy Sparks: unlock your account",
+          "title": "Unlock your account"
+        }
+      },
+      "omniauth_callbacks": {
+        "failure": "Could not authenticate you from %{kind} because \"%{reason}\".",
+        "success": "Successfully authenticated from %{kind} account."
+      },
+      "passwords": {
+        "no_token": "You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided.",
+        "send_instructions": "You will receive an email with instructions on how to reset your password in a few minutes.",
+        "send_paranoid_instructions": "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.",
+        "updated": "Your password has been changed successfully. You are now signed in.",
+        "updated_not_active": "Your password has been changed successfully."
+      },
+      "registrations": {
+        "destroyed": "Bye! Your account has been successfully cancelled. We hope to see you again soon.",
+        "signed_up": "Welcome! You have signed up successfully.",
+        "signed_up_but_inactive": "You have signed up successfully. However, we could not sign you in because your account is not yet activated.",
+        "signed_up_but_locked": "You have signed up successfully. However, we could not sign you in because your account is locked.",
+        "signed_up_but_unconfirmed": "A message with a confirmation link has been sent to your email address. Please follow the link to activate your account.",
+        "update_needs_confirmation": "You updated your account successfully, but we need to verify your new email address. Please check your email and follow the confirm link to confirm your new email address.",
+        "updated": "Your account has been updated successfully.",
+        "updated_but_not_signed_in": "Your account has been updated successfully, but since your password was changed, you need to sign in again."
+      },
+      "sessions": {
+        "already_signed_out": "Signed out successfully.",
+        "signed_in": "Signed in successfully.",
+        "signed_out": "Signed out successfully."
+      },
+      "unlocks": {
+        "send_instructions": "You will receive an email with instructions for how to unlock your account in a few minutes.",
+        "send_paranoid_instructions": "If your account exists, you will receive an email with instructions for how to unlock it in a few minutes.",
+        "unlocked": "Your account has been unlocked successfully. Please sign in to continue."
+      }
+    },
+    "flash": {
+      "actions": {
+        "create": {
+          "notice": "%{resource_name} was successfully created."
+        },
+        "destroy": {
+          "alert": "%{resource_name} could not be destroyed.",
+          "notice": "%{resource_name} was successfully destroyed."
+        },
+        "update": {
+          "notice": "%{resource_name} was successfully updated."
+        }
+      }
+    },
+    "helpers": {
+      "select": {
+        "prompt": "Please select"
+      },
+      "submit": {
+        "create": "Create %{model}",
+        "submit": "Save %{model}",
+        "update": "Update %{model}"
+      }
+    },
+    "home": {
+      "carousel": {
+        "message_1": "Help your school save energy, money and prevent climate change.",
+        "message_2": "Show your school how much and when you are using energy.",
+        "message_3": "Get tailored energy saving advice designed just for your school.",
+        "message_4": "Get automated alerts to let you know when your energy use changes.",
+        "message_5": "Explore eco-team and classroom activities for pupils.",
+        "message_6": "Share energy saving ideas and compete against other schools."
+      },
+      "enrol_your_school": "Enrol your school",
+      "funnels": {
+        "local_authority": {
+          "button": "Energy Sparks for Local Authorities",
+          "text": "Learn more about how Energy Sparks can work with Local Authorities to support schools in their area.",
+          "title": "For Local Authorities"
+        },
+        "multi_academy": {
+          "button": "Energy Sparks for Multi-Academy Trusts",
+          "text": "Learn more about how Energy Sparks supports Multi-Academy Trusts.",
+          "title": "For Multi-Academy Trusts"
+        },
+        "school": {
+          "button": "Energy Sparks for Schools",
+          "text": "Learn more about how Energy Sparks can support your school.",
+          "title": "For schools"
+        }
+      },
+      "sub_title": "Energy Sparks is an online, school-specific energy analysis tool & energy education programme.",
+      "title": "We help schools become more energy efficient and fight climate change."
+    },
+    "i18n_tasks": {
+      "add_missing": {
+        "added": {
+          "one": "Added %{count} key",
+          "other": "Added %{count} keys"
+        }
+      },
+      "cmd": {
+        "args": {
+          "default_text": "Default: %{value}",
+          "desc": {
+            "all_locales": "Do not expect key patterns to start with a locale, instead apply them to all locales implicitly.",
+            "config": "Override config location",
+            "confirm": "Confirm automatically",
+            "data_format": "Data format: %{valid_text}.",
+            "keep_order": "Keep the order of the keys",
+            "key_pattern": "Filter by key pattern (e.g. 'common.*')",
+            "key_pattern_to_rename": "Full key (pattern) to rename. Required",
+            "locale": "i18n_tasks.common.locale",
+            "locale_to_translate_from": "Locale to translate from",
+            "locales_filter": "Locale(s) to process. Special: base",
+            "missing_types": "Filter by types: %{valid}",
+            "new_key_name": "New name, interpolates original name as %{key}. Required",
+            "nostdin": "Do not read from stdin",
+            "out_format": "Output format: %{valid_text}",
+            "pattern_router": "Use pattern router: keys moved per config data.write",
+            "strict": "Avoid inferring dynamic key usages such as t(\"cats.#{cat}.name\"). Takes precedence over the config setting if set.",
+            "translation_backend": "Translation backend (google or deepl)",
+            "value": "Value. Interpolates: %{value}, %{human_key}, %{key}, %{default}, %{value_or_human_key}, %{value_or_default_or_human_key}"
+          }
+        },
+        "desc": {
+          "add_missing": "add missing keys to locale data",
+          "check_consistent_interpolations": "verify that all translations use correct interpolation variables",
+          "check_normalized": "verify that all translation data is normalized",
+          "config": "display i18n-tasks configuration",
+          "data": "show locale data",
+          "data_merge": "merge locale data with trees",
+          "data_remove": "remove keys present in tree from data",
+          "data_write": "replace locale data with tree",
+          "eq_base": "show translations equal to base value",
+          "find": "show where keys are used in the code",
+          "gem_path": "show path to the gem",
+          "health": "is everything OK?",
+          "irb": "start REPL session within i18n-tasks context",
+          "missing": "show missing translations",
+          "mv": "rename/merge the keys in locale data that match the given pattern",
+          "normalize": "normalize translation data: sort and move to the right files",
+          "remove_unused": "remove unused keys",
+          "rm": "remove the keys in locale data that match the given pattern",
+          "translate_missing": "translate missing keys with Google Translate or DeepL Pro",
+          "tree_convert": "convert tree between formats",
+          "tree_filter": "filter tree by key pattern",
+          "tree_merge": "merge trees",
+          "tree_mv_key": "rename/merge/remove the keys matching the given pattern",
+          "tree_set_value": "set values of keys, optionally match a pattern",
+          "tree_subtract": "tree A minus the keys in tree B",
+          "tree_translate": "Google Translate a tree to root locales",
+          "unused": "show unused translations"
+        },
+        "encourage": [
+          "Good job!",
+          "Well done!",
+          "Perfect!"
+        ],
+        "enum_list_opt": {
+          "invalid": "%{invalid} is not in: %{valid}."
+        },
+        "enum_opt": {
+          "invalid": "%{invalid} is not one of: %{valid}."
+        },
+        "errors": {
+          "invalid_format": "invalid format: %{invalid}. valid: %{valid}.",
+          "invalid_locale": "invalid locale: %{invalid}",
+          "invalid_missing_type": {
+            "one": "invalid type: %{invalid}. valid: %{valid}.",
+            "other": "unknown types: %{invalid}. valid: %{valid}."
+          },
+          "pass_forest": "pass locale forest"
+        }
+      },
+      "common": {
+        "continue_q": "Continue?",
+        "key": "Key",
+        "locale": "Locale",
+        "n_more": "%{count} more",
+        "value": "Value"
+      },
+      "data_stats": {
+        "text": "has %{key_count} keys across %{locale_count} locales. On average, values are %{value_chars_avg} characters long, keys have %{key_segments_avg} segments, a locale has %{per_locale_avg} keys.",
+        "text_single_locale": "has %{key_count} keys in total. On average, values are %{value_chars_avg} characters long, keys have %{key_segments_avg} segments.",
+        "title": "Forest (%{locales})"
+      },
+      "deepl_translate": {
+        "errors": {
+          "no_api_key": "Setup DeepL Pro API key via DEEPL_AUTH_KEY environment variable or translation.deepl_api_key in config/i18n-tasks.yml. Get the key at https://www.deepl.com/pro.",
+          "no_results": "DeepL returned no results."
+        }
+      },
+      "google_translate": {
+        "errors": {
+          "no_api_key": "Set Google API key via GOOGLE_TRANSLATE_API_KEY environment variable or translation.google_translate_api_key in config/i18n-tasks.yml. Get the key at https://code.google.com/apis/console.",
+          "no_results": "Google Translate returned no results. Make sure billing information is set at https://code.google.com/apis/console."
+        }
+      },
+      "health": {
+        "no_keys_detected": "No keys detected. Check data.read in config/i18n-tasks.yml."
+      },
+      "inconsistent_interpolations": {
+        "none": "No inconsistent interpolations found."
+      },
+      "missing": {
+        "details_title": "Value in other locales or source",
+        "none": "No translations are missing."
+      },
+      "remove_unused": {
+        "confirm": {
+          "one": "%{count} translation will be removed from %{locales}.",
+          "other": "%{count} translation will be removed from %{locales}."
+        },
+        "noop": "No unused keys to remove",
+        "removed": "Removed %{count} keys"
+      },
+      "translate_missing": {
+        "translated": "Translated %{count} keys"
+      },
+      "unused": {
+        "none": "Every translation is in use."
+      },
+      "usages": {
+        "none": "No key usages found."
+      },
+      "yandex_translate": {
+        "errors": {
+          "no_api_key": "Set Yandex API key via YANDEX_API_KEY environment variable or translation.yandex_api_key in config/i18n-tasks.yml. Get the key at https://tech.yandex.com/translate.",
+          "no_results": "Yandex returned no results."
+        }
+      }
+    },
+    "mailer": {
+      "get_in_touch": "Get in touch"
+    },
+    "more_information": "More information",
+    "number": {
+      "currency": {
+        "format": {
+          "delimiter": ",",
+          "format": "%u%n",
+          "precision": 2,
+          "separator": ".",
+          "significant": false,
+          "strip_insignificant_zeros": false,
+          "unit": "$"
+        }
+      },
+      "format": {
+        "delimiter": ",",
+        "precision": 3,
+        "separator": ".",
+        "significant": false,
+        "strip_insignificant_zeros": false
+      },
+      "human": {
+        "decimal_units": {
+          "format": "%n %u",
+          "units": {
+            "billion": "Billion",
+            "million": "Million",
+            "quadrillion": "Quadrillion",
+            "thousand": "Thousand",
+            "trillion": "Trillion",
+            "unit": ""
+          }
+        },
+        "format": {
+          "delimiter": "",
+          "precision": 3,
+          "significant": true,
+          "strip_insignificant_zeros": true
+        },
+        "storage_units": {
+          "format": "%n %u",
+          "units": {
+            "byte": {
+              "one": "Byte",
+              "other": "Bytes"
+            },
+            "eb": "EB",
+            "gb": "GB",
+            "kb": "KB",
+            "mb": "MB",
+            "pb": "PB",
+            "tb": "TB"
+          }
+        }
+      },
+      "percentage": {
+        "format": {
+          "delimiter": "",
+          "format": "%n%"
+        }
+      },
+      "precision": {
+        "format": {
+          "delimiter": ""
+        }
+      }
+    },
+    "onboarding_mailer": {
+      "activation_email": {
+        "subject": "%{school} is live on Energy Sparks"
+      },
+      "completion_email": {
+        "subject": "%{school} has completed the onboarding process"
+      },
+      "data_enabled_email": {
+        "subject": "%{school} energy data is now available on Energy Sparks"
+      },
+      "onboarded_email": {
+        "subject": "%{school} is now live on Energy Sparks"
+      },
+      "onboarding_email": {
+        "subject": "Set up your school on Energy Sparks"
+      },
+      "reminder_email": {
+        "subject": "Don't forget to set up your school on Energy Sparks"
+      },
+      "welcome_email": {
+        "subject": "Welcome to Energy Sparks"
+      }
+    },
+    "school_types": {
+      "mixed_primary_and_secondary": "Mixed: Primary and Secondary"
+    },
+    "schools": {
+      "chart_preference": {
+        "carbon": "Prefer the display of chart data in kg CO2, where available",
+        "cost": "Prefer the display of chart data in £, where available",
+        "default": "Automatically select a sensible default unit for each chart",
+        "explanation": "Choose a default option for how energy usage data is displayed in charts",
+        "form_group": "Preferred units for chart data",
+        "usage": "Prefer the display of chart data in kwh, where available"
+      }
+    },
+    "simple_form": {
+      "labels": {
+        "defaults": {
+          "find_out_more_chart_title": "Chart title",
+          "find_out_more_chart_variable": "Chart variable",
+          "find_out_more_content": "Page content",
+          "find_out_more_table_variable": "Table variable",
+          "find_out_more_title": "Page title"
+        }
+      }
+    },
+    "support": {
+      "array": {
+        "last_word_connector": ", and ",
+        "two_words_connector": " and ",
+        "words_connector": ", "
+      }
+    },
+    "target_mailer": {
+      "admin_target_report": {
+        "subject": "Target Progress and Data Report"
+      },
+      "first_target": {
+        "subject": "Set your first energy saving target"
+      },
+      "first_target_reminder": {
+        "subject": "Reminder to set your first energy saving target"
+      },
+      "review_target": {
+        "subject": "Review your progress and set a new saving target"
+      }
+    },
+    "time": {
+      "am": "am",
+      "formats": {
+        "default": "%a, %d %b %Y %H:%M:%S %z",
+        "long": "%B %d, %Y %H:%M",
+        "short": "%d %b %H:%M"
+      },
+      "pm": "pm"
+    }
+  }
+}
