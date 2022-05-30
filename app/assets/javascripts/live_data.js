@@ -130,7 +130,6 @@ $(document).ready(function() {
     chart.setTitle(null, { text: subtitleWithMessage(reading, timestamp) });
     if ($("#typical-consumption").length && power) {
       $("#typical-consumption").text(I18n.t('schools.live_data.normal_consumption', {power: power}));
-      // $("#typical-consumption").text(I18n.t('more_information'));
     }
   }
 
