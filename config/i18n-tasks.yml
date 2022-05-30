@@ -122,6 +122,7 @@ ignore_unused:
   - 'support.*'
   - '{devise,errors, simple_form}.*'
   - '*_mailer.*.subject'
+  - 'energy_units.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'
