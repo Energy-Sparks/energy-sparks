@@ -58,3 +58,7 @@
 //= require live_data
 //= require gtag
 //= require cocoon
+
+//= require i18n
+//= require i18n/translations
+//= require localization
