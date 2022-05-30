@@ -99,7 +99,6 @@ gem 'wisper', '2.0.0'
 gem 'stateful_enum', '0.6.0'
 gem 'cocoon'
 
-gem 'newrelic_rpm'
 gem 'i18n-tasks', '~> 1.0.10'
 
 group :development, :test do
