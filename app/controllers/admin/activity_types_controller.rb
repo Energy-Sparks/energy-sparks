@@ -61,6 +61,8 @@ module Admin
     # Never trust parameters from the scary internet, only allow the white list through.
     def activity_type_params
       params.require(:activity_type).permit(:name,
+          :name_en,
+          :name_cy,
           :description,
           :description_en,
           :description_cy,

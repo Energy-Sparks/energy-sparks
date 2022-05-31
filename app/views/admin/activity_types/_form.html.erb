@@ -6,7 +6,8 @@
 
   <%= render 'shared/trix_components/chart_list', chart_list: @chart_list %>
 
-  <%= f.input :name, as: :string %>
+  <%= f.input :name_en, label: 'ENGLISH name', as: :string %>
+  <%= f.input :name_cy, label: 'WELSH name', as: :string %>
   <%= f.input :activity_category_id, as: :select, collection: ActivityCategory.all, include_blank: false %>
 
 
