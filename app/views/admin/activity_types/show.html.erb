@@ -15,9 +15,18 @@
     <% end %>
 
     <div class="activity_type">
-      <h3>Activity description</h3>
-      <% if @activity_type.description %>
-        <%= @activity_type.description %>
+      <h3>ENGLISH Activity description</h3>
+      <% if @activity_type.description_en %>
+        <%= @activity_type.description_en %>
+      <% else %>
+        <p><em>No description given</em></p>
+      <% end %>
+    </div>
+
+    <div class="activity_type">
+      <h3>WELSH Activity description</h3>
+      <% if @activity_type.description_cy %>
+        <%= @activity_type.description_cy %>
       <% else %>
         <p><em>No description given</em></p>
       <% end %>

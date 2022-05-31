@@ -37,9 +37,15 @@
   </div>
 
   <div class="description-trix-editor">
-    <%= f.label 'Description', for: :description %>
+    <%= f.label 'Description', for: :description_en %>
     <p class="small">Note: This is the non-school specific description for non-logged in users. The site will default to this one if the school specific one has not been set.</p>
-    <%= f.rich_text_area :description %>
+    <%= f.rich_text_area :description_en %>
+  </div>
+
+  <div class="description-trix-editor">
+    <%= f.label 'Description', for: :description_cy %>
+    <p class="small">Note: This is the WELSH non-school specific description for non-logged in users. The site will default to this one if the school specific one has not been set.</p>
+    <%= f.rich_text_area :description_cy %>
   </div>
 
   <div class="school-specific-description-trix-editor chart-list">

@@ -27,6 +27,10 @@
 class ActivityType < ApplicationRecord
   extend Mobility
   translates :name, type: :string, fallbacks: { cy: :en }
+  translates :description, backend: :action_text
+  translates :school_specific_description, backend: :action_text
+  translates :download_links, backend: :action_text
+
 
   include PgSearch::Model
   pg_search_scope :search,
@@ -78,10 +82,6 @@ class ActivityType < ApplicationRecord
   has_many :audits, through: :audit_activity_types
 
   accepts_nested_attributes_for :activity_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
-
-  has_rich_text :description
-  has_rich_text :school_specific_description
-  has_rich_text :download_links
 
   def key_stage_list
     key_stages.map(&:name).sort.join(', ')
