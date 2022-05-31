@@ -107,6 +107,19 @@
       "title": "Rydym yn helpu ysgolion i fod yn fwy ynni-effeithlon a brwydro yn erbyn newid hinsawdd."
     },
     "more_information": "Mwy o wybodaeth",
+    "schools": {
+      "chart_preference": {
+        "carbon": "Prefer the display of chart data in kg CO2, where available",
+        "cost": "Prefer the display of chart data in £, where available",
+        "default": "Automatically select a sensible default unit for each chart",
+        "explanation": "Choose a default option for how energy usage data is displayed in charts",
+        "form_group": "Preferred units for chart data",
+        "usage": "Prefer the display of chart data in kwh, where available"
+      },
+      "live_data": {
+        "normal_consumption": "Ar hyn o bryd, defnydd cyfartalog arferol eich ysgol yw %{power} kW"
+      }
+    },
     "support": {
       "array": {
         "last_word_connector": ", a ",
@@ -649,6 +662,9 @@
         "explanation": "Choose a default option for how energy usage data is displayed in charts",
         "form_group": "Preferred units for chart data",
         "usage": "Prefer the display of chart data in kwh, where available"
+      },
+      "live_data": {
+        "normal_consumption": "Your school's normal average consumption at this time is %{power} kW"
       }
     },
     "simple_form": {

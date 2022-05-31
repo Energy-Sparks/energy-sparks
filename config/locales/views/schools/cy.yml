@@ -1,0 +1,5 @@
+---
+cy:
+  schools:
+    live_data:
+      normal_consumption: Ar hyn o bryd, defnydd cyfartalog arferol eich ysgol yw %{power} kW
