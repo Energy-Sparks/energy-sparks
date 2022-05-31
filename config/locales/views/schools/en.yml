@@ -8,3 +8,5 @@ en:
       explanation: Choose a default option for how energy usage data is displayed in charts
       form_group: Preferred units for chart data
       usage: Prefer the display of chart data in kwh, where available
+    live_data:
+      normal_consumption: Your school's normal average consumption at this time is %{power} kW

@@ -48,3 +48,9 @@
 
 
 <%= render 'timeout_modal', timeout_interval: @timeout_interval %>
+
+<script>
+  function schools_live_data_normal_consumption(power) {
+    return `<%= t('schools.live_data.normal_consumption').gsub('%{','${').html_safe %>`;
+  }
+</script>

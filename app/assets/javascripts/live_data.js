@@ -129,7 +129,7 @@ $(document).ready(function() {
     chart.series[0].setData(getData(reading, maxVal));
     chart.setTitle(null, { text: subtitleWithMessage(reading, timestamp) });
     if ($("#typical-consumption").length && power) {
-      $("#typical-consumption").text("Your school's normal average consumption at this time is " + power + " kW");
+      $("#typical-consumption").text(schools_live_data_normal_consumption(power));
     }
   }
 
