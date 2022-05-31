@@ -83,6 +83,8 @@ class ActivityType < ApplicationRecord
 
   accepts_nested_attributes_for :activity_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
 
+  before_save :copy_searchable_attributes
+
   def key_stage_list
     key_stages.map(&:name).sort.join(', ')
   end
@@ -97,5 +99,9 @@ class ActivityType < ApplicationRecord
 
   def activities_for_school(school)
     activities.for_school(school)
+  end
+
+  def copy_searchable_attributes
+    self.write_attribute(:name, self.name(locale: :en))
   end
 end
