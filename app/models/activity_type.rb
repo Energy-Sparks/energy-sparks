@@ -25,6 +25,9 @@
 #
 
 class ActivityType < ApplicationRecord
+  extend Mobility
+  translates :name, type: :string, fallbacks: { cy: :en }
+
   include PgSearch::Model
   pg_search_scope :search,
                   against: [:name],
