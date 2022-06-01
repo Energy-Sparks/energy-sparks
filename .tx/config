@@ -1,0 +1,66 @@
+[main]
+host = https://www.transifex.com
+
+[o:energy-sparks:p:energy-sparks:r:activerecord-yml]
+file_filter  = config/locales/<lang>/activerecord.yml
+source_file  = config/locales/activerecord.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:common-yml]
+file_filter  = config/locales/<lang>/common.yml
+source_file  = config/locales/common.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:default-yml]
+file_filter  = config/locales/<lang>/default.yml
+source_file  = config/locales/default.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:devise-yml]
+file_filter  = config/locales/<lang>/devise.yml
+source_file  = config/locales/devise.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:mailers-mailer-yml]
+file_filter  = config/locales/<lang>/mailers/mailer.yml
+source_file  = config/locales/mailers/mailer.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-admin-school_groups-school_groups-yml]
+file_filter  = config/locales/<lang>/views/admin/school_groups/school_groups.yml
+source_file  = config/locales/views/admin/school_groups/school_groups.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-home-home-yml]
+file_filter  = config/locales/<lang>/views/home/home.yml
+source_file  = config/locales/views/home/home.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-schools-schools-yml]
+file_filter  = config/locales/<lang>/views/schools/schools.yml
+source_file  = config/locales/views/schools/schools.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-shared-shared-yml]
+file_filter  = config/locales/<lang>/views/shared/shared.yml
+source_file  = config/locales/views/shared/shared.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
