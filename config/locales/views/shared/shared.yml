@@ -14,11 +14,4 @@ en:
       storage_heaters:
         title: Storage heaters
         usage: storage heater usage
-    usage:
-      date_picker:
-        daily:
-          first: Select day
-          second: Compare to
-        weekly:
-          first: Select week (beginning)
-          second: Compare to
+  more_information: More information

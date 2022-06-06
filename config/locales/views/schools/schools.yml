@@ -1,5 +1,14 @@
 ---
 en:
+  charts:
+    usage:
+      date_picker:
+        daily:
+          first: Select day
+          second: Compare to
+        weekly:
+          first: Select week (beginning)
+          second: Compare to
   schools:
     chart_preference:
       carbon: Prefer the display of chart data in kg CO2, where available
