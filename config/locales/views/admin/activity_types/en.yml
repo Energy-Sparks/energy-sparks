@@ -1,0 +1,7 @@
+---
+en:
+  admin:
+    activity_types:
+      show:
+        description_en: Description (English)
+        description_cy: Description (Welsh)

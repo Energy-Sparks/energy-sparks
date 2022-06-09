@@ -16,7 +16,7 @@
 
     <div class="activity_type">
       <% I18n.available_locales.each do |locale| %>
-        <h3><%= t_label('Activity description', locale) %></h3>
+        <h3><%= t("admin.activity_types.show.description_#{locale}") %></h3>
         <% if @activity_type.description(locale: locale).present? %>
           <%= @activity_type.description(locale: locale)  %>
         <% else %>

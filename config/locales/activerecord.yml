@@ -1,6 +1,12 @@
 ---
 en:
   activerecord:
+    attributes:
+      activity_type:
+        description_en: Description (English)
+        description_cy: Description (Welsh)
+        name_cy: Name (Welsh)
+        name_en: Name (English)
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
