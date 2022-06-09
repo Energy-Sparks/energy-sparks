@@ -1,4 +1,8 @@
 module LocaleHelper
+  def t_key(key, locale)
+    t("#{key}_#{Mobility.normalize_locale(locale)}")
+  end
+
   def t_field(sym, locale)
     "#{sym}_#{Mobility.normalize_locale(locale)}".to_sym
   end

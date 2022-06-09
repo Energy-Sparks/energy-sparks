@@ -1,15 +1,18 @@
 require 'rails_helper'
 
 describe LocaleHelper do
+  describe '.t_key' do
+    it 'makes a locale-aware string and translates it' do
+      expect(helper.t_key('admin.activity_types.show.description', :cy)).to eq('Description (Welsh)')
+    end
+  end
+
   describe '.t_field' do
     it 'makes a locale-aware field symbol' do
       expect(helper.t_field(:name, :cy)).to eq(:name_cy)
     end
     it 'handles unfriendly locales' do
       expect(helper.t_field(:name, 'pt-BR')).to eq(:name_pt_br)
-    end
-    it 'makes translation strings' do
-      expect(helper.t_field('activity_type.description', :cy)).to eq('activity_type.description_cy')
     end
   end
 
