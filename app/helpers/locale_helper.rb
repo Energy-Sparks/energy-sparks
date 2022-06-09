@@ -1,7 +1,7 @@
 module LocaleHelper
   def t_attr(model_name, attribute_name, suffix = nil)
     key = "activerecord.attributes.#{model_name}.#{attribute_name}"
-    key.concat("_#{suffix}") if suffix
+    key.concat('_', suffix.to_s) if suffix
     t(key)
   end
 
