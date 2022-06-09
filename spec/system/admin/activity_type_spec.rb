@@ -115,7 +115,7 @@ describe "activity type", type: :system do
 
     it 'can does not crash if you forget the score' do
       click_on 'New Activity Type'
-      fill_in('Name', with: 'New activity')
+      fill_in('ENGLISH name', with: 'New activity')
       fill_in_trix with: "the description"
 
       check('KS1')
