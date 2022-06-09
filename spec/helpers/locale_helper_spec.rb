@@ -24,7 +24,7 @@ describe LocaleHelper do
 
   describe '.t_params' do
     it 'returns array of locale-specific fields' do
-      expect(helper.t_params([:en, :cy],[:name, :description])).to eq([:name_en, :description_en, :name_cy, :description_cy])
+      expect(helper.t_params([:name, :description], [:en, :cy])).to eq([:name_en, :description_en, :name_cy, :description_cy])
     end
   end
 end

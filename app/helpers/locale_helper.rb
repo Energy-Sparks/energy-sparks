@@ -11,7 +11,7 @@ module LocaleHelper
     "#{str} (#{t_language(locale)})"
   end
 
-  def t_params(locales, fields)
+  def t_params(fields, locales = I18n.available_locales)
     locales.map do |locale|
        fields.map do |field|
          t_field(field, locale)

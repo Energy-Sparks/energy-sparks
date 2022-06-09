@@ -61,7 +61,7 @@ module Admin
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def activity_type_params
-      translated_params = t_params(I18n.available_locales, [:name, :description])
+      translated_params = t_params([:name, :description])
       params.require(:activity_type).permit(translated_params,
           :name,
           :description,
