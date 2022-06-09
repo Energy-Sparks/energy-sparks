@@ -7,7 +7,7 @@
   <%= render 'shared/trix_components/chart_list', chart_list: @chart_list %>
 
   <% I18n.available_locales.each do |locale| %>
-    <%= f.input t_field(:name, locale), label: t_label("Name", locale), as: :string %>
+    <%= f.input t_field(:name, locale), as: :string %>
   <% end %>
 
   <%= f.input :activity_category_id, as: :select, collection: ActivityCategory.all, include_blank: false %>
@@ -40,7 +40,7 @@
 
   <% I18n.available_locales.each do |locale| %>
     <div class="description-trix-editor <%= locale %>">
-      <%= f.label t_label("Description", locale), for: t_field(:description, locale) %>
+      <%= f.label t_field(:description, locale) %>
       <p class="small">Note: This is the non-school specific description for non-logged in users. The site will default to this one if the school specific one has not been set.</p>
       <%= f.rich_text_area t_field(:description, locale) %>
     </div>
