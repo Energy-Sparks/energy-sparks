@@ -45,7 +45,7 @@ describe "activity type", type: :system do
       activity_name = 'New activity'
 
       click_on 'New Activity Type'
-      fill_in('Name', with: activity_name)
+      fill_in('ENGLISH name', with: activity_name)
       fill_in('Summary', with: summary)
 
       attach_file("activity_type_image", Rails.root + "spec/fixtures/images/placeholder.png")
@@ -54,7 +54,7 @@ describe "activity type", type: :system do
         fill_in_trix with: download_links
       end
 
-      within('.description-trix-editor') do
+      within('.description-trix-editor.en') do
         fill_in_trix with: description
       end
 
