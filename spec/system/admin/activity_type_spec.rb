@@ -149,5 +149,22 @@ describe "activity type", type: :system do
       expect(page.has_content?("Activity type was successfully updated.")).to be true
       expect(ActivityType.count).to be 1
     end
+
+    it 'updates original name for searchability' do
+      activity_type = create(:activity_type, activity_category: activity_category)
+      refresh
+
+      new_name = 'MY NEW NAME FOR ACTIVITY'
+      expect(ActivityType.search(new_name)).to eq([])
+
+      click_on 'Edit'
+      fill_in('ENGLISH name', with: new_name)
+      click_on('Update Activity type')
+
+      activity_type.reload
+      expect(activity_type.name).to eq(new_name)
+      expect(activity_type.attributes['name']).to eq(new_name)
+      expect(ActivityType.search(new_name)).to eq([activity_type])
+    end
   end
 end
