@@ -1,6 +1,6 @@
 module Admin
   class ActivityTypesController < AdminController
-    include TranslationsHelper
+    include LocaleHelper
     load_and_authorize_resource
 
     before_action :load_filters, only: [:new, :edit, :create, :update]

@@ -1,4 +1,4 @@
-module TranslationsHelper
+module LocaleHelper
   def t_language(locale)
     t('language_name', locale: locale)
   end

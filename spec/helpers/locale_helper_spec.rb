@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TranslationsHelper do
+describe LocaleHelper do
   describe '.t_language' do
     it 'returns a string language name' do
       expect(helper.t_language(:cy)).to eq('Welsh')
