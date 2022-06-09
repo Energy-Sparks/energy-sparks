@@ -150,6 +150,33 @@ describe "activity type", type: :system do
       expect(ActivityType.count).to be 1
     end
 
+    it 'can update en and cy descriptions and show both' do
+      activity_type = create(:activity_type, activity_category: activity_category)
+      refresh
+
+      click_on 'Edit'
+
+      within('.description-trix-editor.en') do
+        fill_in_trix with: 'some english description'
+      end
+
+      within('.description-trix-editor.cy') do
+        fill_in_trix with: 'some welsh description'
+      end
+
+      click_on('Update Activity type')
+
+      activity_type.reload
+
+      expect(activity_type.description(locale: :en).body.to_html).to include('some english description')
+      expect(activity_type.description(locale: :cy).body.to_html).to include('some welsh description')
+
+      visit admin_activity_type_path(activity_type)
+
+      expect(page).to have_content('some english description')
+      expect(page).to have_content('some welsh description')
+    end
+
     it 'updates original name for searchability' do
       activity_type = create(:activity_type, activity_category: activity_category)
       refresh
