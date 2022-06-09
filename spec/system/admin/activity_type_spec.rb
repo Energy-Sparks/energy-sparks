@@ -45,7 +45,7 @@ describe "activity type", type: :system do
       activity_name = 'New activity'
 
       click_on 'New Activity Type'
-      fill_in('ENGLISH name', with: activity_name)
+      fill_in('Name (English)', with: activity_name)
       fill_in('Summary', with: summary)
 
       attach_file("activity_type_image", Rails.root + "spec/fixtures/images/placeholder.png")
@@ -115,7 +115,7 @@ describe "activity type", type: :system do
 
     it 'can does not crash if you forget the score' do
       click_on 'New Activity Type'
-      fill_in('ENGLISH name', with: 'New activity')
+      fill_in('Name (English)', with: 'New activity')
       fill_in_trix with: "the description"
 
       check('KS1')
@@ -158,7 +158,7 @@ describe "activity type", type: :system do
       expect(ActivityType.search(new_name)).to eq([])
 
       click_on 'Edit'
-      fill_in('ENGLISH name', with: new_name)
+      fill_in('Name (English)', with: new_name)
       click_on('Update Activity type')
 
       activity_type.reload

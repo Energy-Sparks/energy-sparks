@@ -1,5 +1,6 @@
 ---
 en:
+  language_name: "English"
   charts:
     dashboard:
       electricity:
