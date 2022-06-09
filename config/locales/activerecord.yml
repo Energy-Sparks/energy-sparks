@@ -4,8 +4,8 @@ en:
     attributes:
       activity_type:
         description: Description
-        description_en: Description (English)
         description_cy: Description (Welsh)
+        description_en: Description (English)
         name_cy: Name (Welsh)
         name_en: Name (English)
     errors:
