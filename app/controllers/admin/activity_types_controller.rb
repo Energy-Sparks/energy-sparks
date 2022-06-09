@@ -1,5 +1,6 @@
 module Admin
   class ActivityTypesController < AdminController
+    include LocaleHelper
     load_and_authorize_resource
 
     before_action :load_filters, only: [:new, :edit, :create, :update]
@@ -60,7 +61,9 @@ module Admin
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def activity_type_params
-      params.require(:activity_type).permit(:name,
+      translated_params = t_params([:name, :description])
+      params.require(:activity_type).permit(translated_params,
+          :name,
           :description,
           :summary,
           :school_specific_description,
