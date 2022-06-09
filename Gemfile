@@ -101,7 +101,7 @@ gem 'cocoon'
 
 gem 'i18n-tasks', '~> 1.0.10'
 gem 'mobility', '~> 1.2.6'
-gem 'mobility-actiontext'
+gem 'mobility-actiontext', '~> 1.1.1'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

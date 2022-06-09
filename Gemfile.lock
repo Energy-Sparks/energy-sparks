@@ -712,7 +712,7 @@ DEPENDENCIES
   lograge
   mailgun_rails
   mobility (~> 1.2.6)
-  mobility-actiontext
+  mobility-actiontext (~> 1.1.1)
   momentjs-rails
   mustache (~> 1.0)
   oj
