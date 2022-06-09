@@ -3,6 +3,7 @@ en:
   activerecord:
     attributes:
       activity_type:
+        description: Description
         description_en: Description (English)
         description_cy: Description (Welsh)
         name_cy: Name (Welsh)

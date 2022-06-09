@@ -1,9 +1,12 @@
 require 'rails_helper'
 
 describe LocaleHelper do
-  describe '.t_key' do
+  describe '.t_attr' do
     it 'makes a locale-aware string and translates it' do
-      expect(helper.t_key('admin.activity_types.show.description', :cy)).to eq('Description (Welsh)')
+      expect(helper.t_attr(:activity_type, :description, :cy)).to eq('Description (Welsh)')
+    end
+    it 'makes a non-locale-aware string and translates it' do
+      expect(helper.t_attr(:activity_type, :description)).to eq('Description')
     end
   end
 

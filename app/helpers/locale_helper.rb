@@ -1,6 +1,8 @@
 module LocaleHelper
-  def t_key(key, locale)
-    t("#{key}_#{Mobility.normalize_locale(locale)}")
+  def t_attr(model_name, attribute_name, suffix = nil)
+    key = "activerecord.attributes.#{model_name}.#{attribute_name}"
+    key.concat("_#{suffix}") if suffix
+    t(key)
   end
 
   def t_field(sym, locale)
