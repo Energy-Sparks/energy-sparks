@@ -7,7 +7,7 @@
   <%= render 'shared/trix_components/chart_list', chart_list: @chart_list %>
 
   <% I18n.available_locales.each do |locale| %>
-    <%= f.input t_field(:name, locale), label: "Name (#{t_language(locale)})", as: :string %>
+    <%= f.input t_field(:name, locale), label: t_label("Name", locale), as: :string %>
   <% end %>
 
   <%= f.input :activity_category_id, as: :select, collection: ActivityCategory.all, include_blank: false %>
