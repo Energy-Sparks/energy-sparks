@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe TranslationHelper do
+describe TranslationsHelper do
   describe '.t_language' do
     it 'returns a string language name' do
       expect(helper.t_language(:cy)).to eq('Welsh')
@@ -19,6 +19,12 @@ describe TranslationHelper do
   describe '.t_label' do
     it 'makes a locale-aware field label' do
       expect(helper.t_label('Description', :cy)).to eq('Description (Welsh)')
+    end
+  end
+
+  describe '.t_params' do
+    it 'returns array of locale-specific fields' do
+      expect(helper.t_params([:en, :cy],[:name, :description])).to eq([:name_en, :description_en, :name_cy, :description_cy])
     end
   end
 end

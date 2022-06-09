@@ -1,4 +1,4 @@
-module TranslationHelper
+module TranslationsHelper
   def t_language(locale)
     t('language_name', locale: locale)
   end
@@ -9,5 +9,13 @@ module TranslationHelper
 
   def t_label(str, locale)
     "#{str} (#{t_language(locale)})"
+  end
+
+  def t_params(locales, fields)
+    locales.map do |locale|
+       fields.map do |field|
+         t_field(field, locale)
+       end
+    end.flatten
   end
 end
