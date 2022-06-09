@@ -11,6 +11,9 @@ describe TranslationHelper do
     it 'makes a locale-aware field symbol' do
       expect(helper.t_field(:name, :cy)).to eq(:name_cy)
     end
+    it 'handles unfriendly locales' do
+      expect(helper.t_field(:name, 'pt-BR')).to eq(:name_pt_br)
+    end
   end
 
   describe '.t_label' do

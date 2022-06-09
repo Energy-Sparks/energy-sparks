@@ -4,7 +4,7 @@ module TranslationHelper
   end
 
   def t_field(sym, locale)
-    "#{sym}_#{locale}".to_sym
+    "#{sym}_#{Mobility.normalize_locale(locale)}".to_sym
   end
 
   def t_label(str, locale)

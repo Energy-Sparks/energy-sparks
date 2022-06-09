@@ -15,27 +15,20 @@
     <% end %>
 
     <div class="activity_type">
-      <h3>ENGLISH Activity description</h3>
-      <% if @activity_type.description_en %>
-        <%= @activity_type.description_en %>
-      <% else %>
-        <p><em>No description given</em></p>
-      <% end %>
-    </div>
-
-    <div class="activity_type">
-      <h3>WELSH Activity description</h3>
-      <% if @activity_type.description_cy %>
-        <%= @activity_type.description_cy %>
-      <% else %>
-        <p><em>No description given</em></p>
+      <% I18n.available_locales.each do |locale| %>
+        <h3><%= t_label('Activity description', locale) %></h3>
+        <% if @activity_type.description(locale: locale).present? %>
+          <%= @activity_type.description(locale: locale)  %>
+        <% else %>
+          <p><em>No description given</em></p>
+        <% end %>
       <% end %>
     </div>
 
     <h3>School specific description</h3>
     <div class="row">
       <div class="col-md-12 activity_type">
-        <% if @activity_type.school_specific_description %>
+        <% if @activity_type.school_specific_description.present? %>
           <%= @activity_type.school_specific_description %>
         <% else %>
           <p><em>No school specific description given</em></p>

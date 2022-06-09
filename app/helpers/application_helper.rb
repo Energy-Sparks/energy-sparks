@@ -3,18 +3,6 @@ require 'pagy/extras/bootstrap'
 module ApplicationHelper
   include Pagy::Frontend
 
-  def t_language(locale)
-    t('language_name', locale: locale)
-  end
-
-  def t_field(sym, locale)
-    "#{sym}_#{locale}".to_sym
-  end
-
-  def t_label(str, locale)
-    "#{str} (#{t_language(locale)})"
-  end
-
   def nice_date_times(datetime)
     return "" if datetime.nil?
     "#{datetime.strftime('%a')} #{datetime.day.ordinalize} #{datetime.strftime('%b %Y %H:%M')} "
