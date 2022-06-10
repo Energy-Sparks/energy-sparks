@@ -239,7 +239,7 @@ describe 'Audits', type: :system do
         visit school_audits_path(school)
         click_on("Our audit")
         audit.audit_intervention_types.each do |at|
-          expect(page).to have_link(at.intervention_title, href: intervention_type_path(at.intervention_type))
+          expect(page).to have_link(at.intervention_name, href: intervention_type_path(at.intervention_type))
         end
       end
 
