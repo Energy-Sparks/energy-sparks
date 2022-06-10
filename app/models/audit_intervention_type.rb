@@ -18,7 +18,7 @@ class AuditInterventionType < ApplicationRecord
 
   validates :intervention_type, :audit, presence: true
 
-  scope :by_title, -> { joins(:intervention_type).order('intervention_types.title ASC') }
+  scope :by_title, -> { joins(:intervention_type).order('intervention_types.name ASC') }
 
   def intervention_title
     intervention_type.name
