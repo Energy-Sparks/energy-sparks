@@ -1,7 +1,9 @@
 <%= simple_form_for([:admin, intervention_type],
   html: { id: 'intervention_type_form' }) do |f| %>
 
-  <%= f.input :name, label: 'Title', as: :string %>
+  <% I18n.available_locales.each do |locale| %>
+    <%= f.input t_field(:name, locale), as: :string %>
+  <% end %>
   <%= f.input :intervention_type_group_id, as: :select, label: 'Intervention category', collection: InterventionTypeGroup.all, include_blank: false %>
 
   <%= f.label 'Image' %>
@@ -21,20 +23,26 @@
     <%= f.input :image, label: false %>
   </p>
 
-  <%= f.input :summary, as: :string %>
-  <p class="small">The summary text will appear on lists of intervention types.</p>
+  <% I18n.available_locales.each do |locale| %>
+    <%= f.input t_field(:summary, locale), as: :string %>
+    <p class="small">The summary text will appear on lists of intervention types.</p>
+  <% end %>
 
-  <div class="download-links-trix-editor">
-    <%= f.label 'Download links', for: :download_links %>
-    <p class="small">These download links will appear in the right-hand panel under the image.</p>
-    <%= f.rich_text_area :download_links %>
-  </div>
+  <% I18n.available_locales.each do |locale| %>
+    <div class="download-links-trix-editor <%= locale %>">
+      <%= f.label t_field(:download_links, locale) %>
+      <p class="small">These download links will appear in the right-hand panel under the image.</p>
+      <%= f.rich_text_area t_field(:download_links, locale) %>
+    </div>
+  <% end %>
 
-  <div class="description-trix-editor">
-    <%= f.label 'Description', for: :description %>
-    <p class="small">The description of the intervention for all users</p>
-    <%= f.rich_text_area :description %>
-  </div>
+  <% I18n.available_locales.each do |locale| %>
+    <div class="description-trix-editor <%= locale %>">
+      <%= f.label t_field(:description, locale) %>
+      <p class="small">The description of the intervention for all users</p>
+      <%= f.rich_text_area t_field(:description, locale) %>
+    </div>
+  <% end %>
 
   <%= f.input :score, label: 'Score', as: :string %>
 

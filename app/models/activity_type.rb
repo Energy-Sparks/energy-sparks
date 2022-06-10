@@ -31,7 +31,6 @@ class ActivityType < ApplicationRecord
   translates :school_specific_description, backend: :action_text
   translates :download_links, backend: :action_text
 
-
   include PgSearch::Model
   pg_search_scope :search,
                   against: [:name],

@@ -1,5 +1,6 @@
 module Admin
   class InterventionTypesController < AdminController
+    include LocaleHelper
     load_and_authorize_resource
 
     def index
@@ -55,7 +56,9 @@ module Admin
     end
 
     def intervention_type_params
-      params.require(:intervention_type).permit(:name,
+      translated_params = t_params([:name, :summary, :description, :download_links])
+      params.require(:intervention_type).permit(translated_params,
+          :name,
           :summary,
           :description,
           :download_links,
