@@ -58,7 +58,15 @@ class InterventionType < ApplicationRecord
   scope :not_custom,            -> { where(custom: false) }
   scope :active_and_not_custom, -> { active.not_custom }
 
+  before_save :copy_searchable_attributes
+
   def actions_for_school(school)
     observations.for_school(school)
+  end
+
+  private
+
+  def copy_searchable_attributes
+    self.write_attribute(:name, self.name(locale: :en))
   end
 end

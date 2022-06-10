@@ -100,6 +100,8 @@ class ActivityType < ApplicationRecord
     activities.for_school(school)
   end
 
+  private
+
   def copy_searchable_attributes
     self.write_attribute(:name, self.name(locale: :en))
   end
