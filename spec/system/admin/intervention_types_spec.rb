@@ -29,16 +29,16 @@ describe "Intervention Types", type: :system do
       download_links = 'Some download links'
 
       click_on('New Intervention type', match: :first)
-      fill_in('Title', with: title)
-      fill_in('Summary', with: summary)
+      fill_in('Title (English)', with: title)
+      fill_in('Summary (English)', with: summary)
 
       attach_file("intervention_type_image", Rails.root + "spec/fixtures/images/placeholder.png")
 
-      within('.download-links-trix-editor') do
+      within('.download-links-trix-editor.en') do
         fill_in_trix with: download_links
       end
 
-      within('.description-trix-editor') do
+      within('.description-trix-editor.en') do
         fill_in_trix with: description
       end
 
@@ -64,7 +64,7 @@ describe "Intervention Types", type: :system do
 
     it 'can does not crash if you forget the score' do
       click_on('New Intervention type', match: :first)
-      fill_in('Title', with: 'New activity')
+      fill_in('Title (English)', with: 'New activity')
       fill_in_trix with: "the description"
 
       click_on('Create Intervention type')
@@ -84,9 +84,9 @@ describe "Intervention Types", type: :system do
       summary = "New summary"
 
       uncheck('Active')
-      fill_in 'Title', with: title
-      fill_in 'Summary', with: summary
-      within('.description-trix-editor') do
+      fill_in 'Title (English)', with: title
+      fill_in 'Summary (English)', with: summary
+      within('.description-trix-editor.en') do
         fill_in_trix with: description
       end
 
