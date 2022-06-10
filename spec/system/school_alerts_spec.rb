@@ -17,7 +17,7 @@ RSpec.describe "school alerts", type: :system do
     describe 'Find Out More' do
 
       let!(:activity_type){ create(:activity_type, name: 'Turn off the heating') }
-      let!(:intervention_type){ create(:intervention_type, title: 'Install cladding')}
+      let!(:intervention_type){ create(:intervention_type, name: 'Install cladding')}
       let!(:alert_type_rating) do
         create(
           :alert_type_rating,

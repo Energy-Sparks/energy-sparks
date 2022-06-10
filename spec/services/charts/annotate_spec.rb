@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-
 describe Charts::Annotate do
 
   let(:school){ create :school }
-  let(:boiler_intervention){ create :intervention_type, title: 'Changed boiler' }
-  let(:bulbs_intervention){ create :intervention_type, title: 'Changed bulbs' }
+  let(:boiler_intervention){ create :intervention_type, name: 'Changed boiler' }
+  let(:bulbs_intervention){ create :intervention_type, name: 'Changed bulbs' }
 
   describe '.annotate' do
 

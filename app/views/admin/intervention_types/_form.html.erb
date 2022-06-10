@@ -1,7 +1,7 @@
 <%= simple_form_for([:admin, intervention_type],
   html: { id: 'intervention_type_form' }) do |f| %>
 
-  <%= f.input :name, as: :string %>
+  <%= f.input :name, label: 'Title', as: :string %>
   <%= f.input :intervention_type_group_id, as: :select, label: 'Intervention category', collection: InterventionTypeGroup.all, include_blank: false %>
 
   <%= f.label 'Image' %>

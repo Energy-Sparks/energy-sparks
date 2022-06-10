@@ -320,7 +320,7 @@ describe 'Management dashboard' do
 
       context 'with observations' do
         before(:each) do
-          intervention_type = create(:intervention_type, title: 'Upgraded insulation')
+          intervention_type = create(:intervention_type, name: 'Upgraded insulation')
           create(:observation, :intervention, school: school, intervention_type: intervention_type)
           create(:observation_with_temperature_recording_and_location, school: school)
           activity_type = create(:activity_type) # doesn't get saved if built with activity below

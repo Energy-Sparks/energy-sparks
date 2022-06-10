@@ -6,7 +6,7 @@ describe 'viewing and recording action', type: :system do
   let(:summary)     { 'Old boiler bad, new boiler good' }
   let(:description) { 'How to change your boiler' }
 
-  let!(:intervention_type){ create :intervention_type, title: title, summary: summary, description: description }
+  let!(:intervention_type){ create :intervention_type, name: title, summary: summary, description: description }
 
   let(:school) { create_active_school() }
 
