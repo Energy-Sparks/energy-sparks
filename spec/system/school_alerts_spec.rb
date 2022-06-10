@@ -17,7 +17,7 @@ RSpec.describe "school alerts", type: :system do
     describe 'Find Out More' do
 
       let!(:activity_type){ create(:activity_type, name: 'Turn off the heating') }
-      let!(:intervention_type){ create(:intervention_type, title: 'Install cladding')}
+      let!(:intervention_type){ create(:intervention_type, name: 'Install cladding')}
       let!(:alert_type_rating) do
         create(
           :alert_type_rating,
@@ -70,7 +70,7 @@ RSpec.describe "school alerts", type: :system do
         expect(page).to have_content('You might want to think about heating')
         expect(page).to have_content('This is what you need to do')
         expect(page).to have_content(activity_type.name)
-        expect(page).to have_content(intervention_type.title)
+        expect(page).to have_content(intervention_type.name)
         expect(page).to have_selector('table', text: 'Body 1')
 
       end

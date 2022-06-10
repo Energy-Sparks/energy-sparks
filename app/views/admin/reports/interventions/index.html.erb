@@ -29,9 +29,9 @@
         <td>
           <%= link_to school_intervention_path(observation.school, observation) do %>
             <% if observation.description.present? %>
-              <span class="text-success"><%= observation.intervention_type.title %></span>
+              <span class="text-success"><%= observation.intervention_type.name %></span>
             <% else %>
-              <span class="text-muted"><%= observation.intervention_type.title %></span>
+              <span class="text-muted"><%= observation.intervention_type.name %></span>
             <% end %>
           <% end %>
         </td>

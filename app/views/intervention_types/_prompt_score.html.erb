@@ -5,7 +5,7 @@
         <i class="fas fa-tasks fa-3x"></i>
       </div>
       <div class="col-lg-7 col-sm-12 align-self-center">
-        Complete this action to score your school <strong><%= intervention_type.points %></strong> points!
+        Complete this action to score your school <strong><%= intervention_type.score %></strong> points!
       </div>
       <div class="col-lg-4 col-sm-12">
         <%= link_to 'Record this action', new_intervention_path(intervention_type_id: intervention_type.id), class: 'btn btn-primary' %>

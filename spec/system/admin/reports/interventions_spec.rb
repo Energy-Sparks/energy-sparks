@@ -17,7 +17,7 @@ describe 'Interventions report', type: :system do
       click_on "Recently recorded interventions"
       expect(page).to have_content("Recently recorded interventions")
       expect(page).to have_content(intervention.school.name)
-      expect(page).to have_content(intervention.intervention_type.title)
+      expect(page).to have_content(intervention.intervention_type.name)
     end
   end
 end

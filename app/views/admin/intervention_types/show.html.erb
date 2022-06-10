@@ -1,10 +1,10 @@
 <% content_for :page_title do %>
-    Intervention Type: <%= @intervention_type.title %>
+    Intervention Type: <%= @intervention_type.name %>
 <% end %>
 
 <div class="row padded-row">
   <div class="col-md-9">
-    <h1><%= @intervention_type.title %></h1>
+    <h1><%= @intervention_type.name %></h1>
 
     <h3>Intervention summary</h3>
     <% if @intervention_type.summary %>
