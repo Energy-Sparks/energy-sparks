@@ -1,10 +1,10 @@
 <%= simple_form_for([:admin, intervention_type],
   html: { id: 'intervention_type_form' }) do |f| %>
 
-  <ul class="nav nav-tabs" id="nav-intervention-types" role="tablist">
+  <ul class="nav nav-tabs">
     <% I18n.available_locales.each do |locale| %>
       <li class="nav-item">
-        <a class="nav-link <%= 'active' if locale == I18n.locale %>" id="nav-intervention-type-<%= locale %>-tab" data-toggle="tab" href="#intervention-type-<%= locale %>" role="tab" aria-controls="intervention-type-<%= locale %>" aria-selected="true">
+        <a class="nav-link <%= 'active' if locale == I18n.locale %>" id="<%= locale %>-tab" data-toggle="tab" href="#<%= locale %>-content" role="tab" aria-controls="<%= locale %>-tab">
           <%= locale %>
         </a>
       </li>
@@ -13,9 +13,9 @@
 
   <br/>
 
-  <div class="tab-content locale" id="nav-tabContent">
+  <div class="tab-content locale">
     <% I18n.available_locales.each do |locale| %>
-      <div class="tab-pane <%= 'active' if locale == I18n.locale %>" id="intervention-type-<%= locale %>" role="tabpanel" aria-labelledby="nav-intervention-type-<%= locale %>-tab">
+      <div class="tab-pane <%= 'active' if locale == I18n.locale %>" id="<%= locale %>-content" role="tabpanel" aria-labelledby="<%= locale %>-tab">
         <%= render 'form_locale', f: f, intervention_type: @intervention_type, locale: locale %>
       </div>
     <% end %>
