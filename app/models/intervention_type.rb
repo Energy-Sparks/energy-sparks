@@ -3,12 +3,12 @@
 # Table name: intervention_types
 #
 #  active                     :boolean          default(TRUE)
+#  custom                     :boolean          default(FALSE)
 #  id                         :bigint(8)        not null, primary key
 #  intervention_type_group_id :bigint(8)        not null
-#  other                      :boolean          default(FALSE)
-#  points                     :integer
+#  name                       :string           not null
+#  score                      :integer
 #  summary                    :string
-#  title                      :string           not null
 #
 # Indexes
 #
@@ -22,7 +22,7 @@
 class InterventionType < ApplicationRecord
   include PgSearch::Model
   pg_search_scope :search,
-                  against: [:title],
+                  against: [:name],
                   associated_against: {
                     rich_text_description: [:body]
                   },
@@ -44,21 +44,15 @@ class InterventionType < ApplicationRecord
 
   accepts_nested_attributes_for :intervention_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
 
-  validates :intervention_type_group, :title, presence: true
-  validates :title, uniqueness: { scope: :intervention_type_group_id }
-  validates :points, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :intervention_type_group, :name, presence: true
+  validates :name, uniqueness: { scope: :intervention_type_group_id }
+  validates :score, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
-  scope :by_title,      -> { order(title: :asc) }
-  scope :active,        -> { where(active: true) }
-  scope :display_order, -> { order(:other, :title) }
-
-  scope :not_other, -> { where(other: false) }
-
-  scope :active_and_not_other, -> { active.not_other }
-
-  def display_with_points
-    points ? "#{title} (#{points} points)" : title
-  end
+  scope :by_name,               -> { order(name: :asc) }
+  scope :active,                -> { where(active: true) }
+  scope :display_order,         -> { order(:custom, :name) }
+  scope :not_custom,            -> { where(custom: false) }
+  scope :active_and_not_custom, -> { active.not_custom }
 
   def actions_for_school(school)
     observations.for_school(school)

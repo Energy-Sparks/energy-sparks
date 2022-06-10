@@ -21,7 +21,7 @@
             <%= fa_icon("#{intervention.intervention_type.intervention_type_group.icon} fa-2x") %>
           </td>
           <td>
-            <h4><%= link_to intervention.intervention_type.title, school_intervention_path(@school, intervention)%></h4>
+            <h4><%= link_to intervention.intervention_type.name, school_intervention_path(@school, intervention)%></h4>
             <%= nice_dates(intervention.at) %>
           </td>
           <td class="text-right">

@@ -11,13 +11,13 @@
 #  cooks_dinners_for_other_schools       :boolean          default(FALSE), not null
 #  cooks_dinners_for_other_schools_count :integer
 #  cooks_dinners_onsite                  :boolean          default(FALSE), not null
-#  country                               :string
+#  country                               :integer          default("england"), not null
 #  created_at                            :datetime         not null
 #  dark_sky_area_id                      :bigint(8)
 #  data_enabled                          :boolean          default(FALSE)
 #  enable_targets_feature                :boolean          default(TRUE)
 #  floor_area                            :decimal(, )
-#  funding_status                        :string
+#  funding_status                        :integer          default("state_school"), not null
 #  has_swimming_pool                     :boolean          default(FALSE), not null
 #  id                                    :bigint(8)        not null, primary key
 #  indicated_has_solar_panels            :boolean          default(FALSE), not null

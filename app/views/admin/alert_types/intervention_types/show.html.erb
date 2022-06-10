@@ -11,7 +11,7 @@
       <%- intervention_types.each do |intervention_type| %>
         <li>
           <%= text_field_tag "intervention_types[#{intervention_type.id}][position]", @positions[intervention_type.id] %>
-          <%= label_tag "intervention_types[#{intervention_type.id}][position]", intervention_type.title %>
+          <%= label_tag "intervention_types[#{intervention_type.id}][position]", intervention_type.name %>
           <%= hidden_field_tag  "intervention_types[#{intervention_type.id}][intervention_type_id]", intervention_type.id %>
         </li>
       <% end %>

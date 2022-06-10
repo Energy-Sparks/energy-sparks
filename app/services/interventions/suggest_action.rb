@@ -37,7 +37,7 @@ module Interventions
     end
 
     def suggest_random(limit)
-      InterventionType.not_other.sample(limit)
+      InterventionType.not_custom.sample(limit)
     end
 
     private

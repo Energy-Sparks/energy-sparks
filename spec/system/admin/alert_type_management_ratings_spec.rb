@@ -17,8 +17,8 @@ RSpec.describe 'alert type management', type: :system do
     let!(:activity_type_2) { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category)}
 
     let!(:intervention_type_group) { create(:intervention_type_group) }
-    let!(:intervention_type_1) { create(:intervention_type, title: 'Install cladding', intervention_type_group: intervention_type_group)}
-    let!(:intervention_type_2) { create(:intervention_type, title: 'Check the boiler', intervention_type_group: intervention_type_group)}
+    let!(:intervention_type_1) { create(:intervention_type, name: 'Install cladding', intervention_type_group: intervention_type_group)}
+    let!(:intervention_type_2) { create(:intervention_type, name: 'Check the boiler', intervention_type_group: intervention_type_group)}
 
     before do
       sign_in(admin)

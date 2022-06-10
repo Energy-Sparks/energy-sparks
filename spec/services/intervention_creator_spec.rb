@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe InterventionCreator do
 
-  let(:intervention_type){ create(:intervention_type, points: 50) }
+  let(:intervention_type){ create(:intervention_type, score: 50) }
 
   it 'saves the observation' do
     observation = build(:observation, intervention_type: intervention_type)

@@ -4,10 +4,10 @@ describe 'intervention types', type: :system do
 
   context 'intervention types search page' do
 
-    let!(:intervention_type_1) { create(:intervention_type, title: 'foo', description: 'intervention') }
-    let!(:intervention_type_2) { create(:intervention_type, title: 'bar', description: 'intervention') }
+    let!(:intervention_type_1) { create(:intervention_type, name: 'foo', description: 'intervention') }
+    let!(:intervention_type_2) { create(:intervention_type, name: 'bar', description: 'intervention') }
 
-    it 'links from intervention grouops page and shows empty page' do
+    it 'links from intervention groups page and shows empty page' do
       ClimateControl.modify FEATURE_FLAG_INTERVENTION_TYPE_SEARCH: 'true' do
         visit intervention_type_groups_path
         click_on 'Search'
@@ -43,7 +43,7 @@ describe 'intervention types', type: :system do
       fill_in 'query', with: 'foo'
       click_on 'Search'
 
-      expect(page).to have_content(intervention_type_1.title)
+      expect(page).to have_content(intervention_type_1.name)
     end
 
     it 'paginates search results' do
@@ -52,13 +52,13 @@ describe 'intervention types', type: :system do
       fill_in 'query', with: 'intervention'
       click_on 'Search'
 
-      expect(page).to have_content(intervention_type_1.title)
-      expect(page).not_to have_content(intervention_type_2.title)
+      expect(page).to have_content(intervention_type_1.name)
+      expect(page).not_to have_content(intervention_type_2.name)
 
       click_on 'Next'
 
-      expect(page).not_to have_content(intervention_type_1.title)
-      expect(page).to have_content(intervention_type_2.title)
+      expect(page).not_to have_content(intervention_type_1.name)
+      expect(page).to have_content(intervention_type_2.name)
 
       # reset this to prevent problems with other tests..
       Pagy::DEFAULT[:items] = 20

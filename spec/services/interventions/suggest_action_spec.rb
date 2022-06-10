@@ -33,7 +33,7 @@ describe Interventions::SuggestAction, type: :service do
 
   describe '#suggest_from_alerts' do
 
-    let!(:intervention_type){ create(:intervention_type, title: 'Check boiler controls') }
+    let!(:intervention_type){ create(:intervention_type, name: 'Check boiler controls') }
     let!(:alert_type_rating) do
       create(
         :alert_type_rating,
