@@ -51,7 +51,7 @@ describe "Intervention Types", type: :system do
 
       intervention_type = InterventionType.first
 
-      expect(intervention_type.title).to eq(title)
+      expect(intervention_type.name).to eq(title)
       expect(intervention_type.summary).to eq(summary)
       expect(intervention_type.image.filename).to eq('placeholder.png')
 
@@ -95,7 +95,7 @@ describe "Intervention Types", type: :system do
       expect(InterventionType.count).to be 1
 
       intervention_type.reload
-      expect(intervention_type.title).to eq(title)
+      expect(intervention_type.name).to eq(title)
       expect(intervention_type.summary).to eq(summary)
       expect(intervention_type.description.body.to_plain_text).to eq(description)
       expect(intervention_type.active?).to be false
@@ -107,7 +107,7 @@ describe "Intervention Types", type: :system do
 
       click_on 'Edit'
       within ('.intervention_type_suggestions') do
-        find(:xpath, "//option[contains(text(), '#{intervention_type.title}')]", match: :first).select_option
+        find(:xpath, "//option[contains(text(), '#{intervention_type.name}')]", match: :first).select_option
       end
 
       click_on('Update Intervention type')

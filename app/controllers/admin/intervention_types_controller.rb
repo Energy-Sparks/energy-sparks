@@ -3,7 +3,7 @@ module Admin
     load_and_authorize_resource
 
     def index
-      @intervention_types = @intervention_types.includes(:intervention_type_group).order("intervention_types.title", :title)
+      @intervention_types = @intervention_types.includes(:intervention_type_group).order("intervention_types.name", :name)
     end
 
     def show
@@ -55,15 +55,15 @@ module Admin
     end
 
     def intervention_type_params
-      params.require(:intervention_type).permit(:title,
+      params.require(:intervention_type).permit(:name,
           :summary,
           :description,
           :download_links,
           :image,
           :active,
           :intervention_type_group_id,
-          :points,
-          :other,
+          :score,
+          :custom,
           intervention_type_suggestions_attributes: suggestions_params
       )
     end

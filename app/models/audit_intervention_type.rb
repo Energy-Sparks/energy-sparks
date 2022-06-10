@@ -21,6 +21,6 @@ class AuditInterventionType < ApplicationRecord
   scope :by_title, -> { joins(:intervention_type).order('intervention_types.title ASC') }
 
   def intervention_title
-    intervention_type.title
+    intervention_type.name
   end
 end

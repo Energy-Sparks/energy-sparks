@@ -296,7 +296,7 @@ RSpec.describe 'school targets', type: :system do
       end
 
       it "includes links to intervention types" do
-        expect(page).to have_link(intervention_type.title, href: intervention_type_path(intervention_type))
+        expect(page).to have_link(intervention_type.name, href: intervention_type_path(intervention_type))
       end
 
       it "includes links to analysis" do

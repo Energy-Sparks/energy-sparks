@@ -1,7 +1,7 @@
 <%= simple_form_for([:admin, intervention_type],
   html: { id: 'intervention_type_form' }) do |f| %>
 
-  <%= f.input :title, as: :string %>
+  <%= f.input :name, as: :string %>
   <%= f.input :intervention_type_group_id, as: :select, label: 'Intervention category', collection: InterventionTypeGroup.all, include_blank: false %>
 
   <%= f.label 'Image' %>
@@ -36,11 +36,11 @@
     <%= f.rich_text_area :description %>
   </div>
 
-  <%= f.input :points, label: 'Score', as: :string %>
+  <%= f.input :score, label: 'Score', as: :string %>
 
   <%= f.input :active %>
 
-  <%= f.input :other, label: "Custom ('Other')" %>
+  <%= f.input :custom, label: "Custom ('Other')" %>
 
   <div class="intervention_type_suggestions">
     <h2>Suggested Next Actions</h2>
@@ -60,7 +60,7 @@
           <%= suggestion.select(
                 :suggested_type_id,
                 grouped_options_for_select(
-                  InterventionTypeGroup.listed_with_intervention_types.map{|group, types| [group.title, types.map {|type| [type.title, type.id]}]},
+                  InterventionTypeGroup.listed_with_intervention_types.map{|group, types| [group.title, types.map {|type| [type.name, type.id]}]},
                   suggestion.object.suggested_type_id.to_s
                 ),
                 { include_blank: true },
