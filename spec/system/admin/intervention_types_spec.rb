@@ -125,5 +125,37 @@ describe "Intervention Types", type: :system do
       intervention_type.reload
       expect(intervention_type.suggested_types).to be_empty
     end
+
+    it 'can update en and cy descriptions and show both' do
+      intervention_type = create(:intervention_type)
+      refresh
+
+      click_on 'Edit'
+
+      fill_in 'Summary (English)', with: 'some english summary'
+      fill_in 'Summary (Welsh)', with: 'some welsh summary'
+
+      within('.description-trix-editor.en') do
+        fill_in_trix with: 'some english description'
+      end
+
+      within('.description-trix-editor.cy') do
+        fill_in_trix with: 'some welsh description'
+      end
+
+      click_on('Update Intervention type')
+
+      intervention_type.reload
+
+      expect(intervention_type.description(locale: :en).body.to_html).to include('some english description')
+      expect(intervention_type.description(locale: :cy).body.to_html).to include('some welsh description')
+
+      visit admin_intervention_type_path(intervention_type)
+
+      expect(page).to have_content('some english description')
+      expect(page).to have_content('some welsh description')
+      expect(page).to have_content('some english summary')
+      expect(page).to have_content('some welsh summary')
+    end
   end
 end

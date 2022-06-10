@@ -6,21 +6,25 @@
   <div class="col-md-9">
     <h1><%= @intervention_type.name %></h1>
 
-    <h3>Intervention summary</h3>
-    <% if @intervention_type.summary %>
-      <%= @intervention_type.summary %>
-    <% else %>
-      <p><em>No summary given</em></p>
+    <% I18n.available_locales.each do |locale| %>
+      <h3><%= t_attr(:intervention_type, :summary, locale) %></h3>
+      <% if @intervention_type.summary(locale: locale).present?  %>
+        <%= @intervention_type.summary(locale: locale) %>
+      <% else %>
+        <p><em>No summary given</em></p>
+      <% end %>
     <% end %>
 
-    <div class="intervention_type">
-      <h3>Intervention description</h3>
-      <% if @intervention_type.description.present? %>
-        <%= @intervention_type.description %>
-      <% else %>
-        <p><em>No description given</em></p>
-      <% end %>
-    </div>
+    <% I18n.available_locales.each do |locale| %>
+      <div class="intervention_type">
+        <h3><%= t_attr(:intervention_type, :description, locale) %></h3>
+        <% if @intervention_type.description(locale: locale).present? %>
+          <%= @intervention_type.description(locale: locale) %>
+        <% else %>
+          <p><em>No description given</em></p>
+        <% end %>
+      </div>
+    <% end %>
 
   </div>
   <div class="col-md-3 pt-2">
