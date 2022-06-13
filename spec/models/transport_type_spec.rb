@@ -8,11 +8,11 @@ describe TransportType do
     it { is_expected.to be_valid }
     it { is_expected.to validate_uniqueness_of(:name) }
 
-    [:name, :image, :kg_co2e_per_km, :speed_km_per_hour].each do |attribute|
+    [:name, :image, :kg_co2e_per_km, :speed_km_per_hour, :position].each do |attribute|
       it { is_expected.to validate_presence_of(attribute) }
     end
 
-    [:kg_co2e_per_km, :speed_km_per_hour].each do |attribute|
+    [:kg_co2e_per_km, :speed_km_per_hour, :position].each do |attribute|
       it { is_expected.to validate_numericality_of(attribute).is_greater_than_or_equal_to(0) }
     end
   end

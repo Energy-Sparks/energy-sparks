@@ -1500,6 +1500,7 @@ ActiveRecord::Schema.define(version: 2022_06_10_084010) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "park_and_stride", default: false, null: false
     t.integer "category"
+    t.integer "position", default: 0, null: false
     t.index ["name"], name: "index_transport_types_on_name", unique: true
   end
 
