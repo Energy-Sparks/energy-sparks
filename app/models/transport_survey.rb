@@ -28,6 +28,18 @@ class TransportSurvey < ApplicationRecord
     run_on.to_s
   end
 
+  def total_passengers
+    self.responses.sum(:passengers)
+  end
+
+  def total_carbon
+    self.responses.sum(&:carbon).round(2)
+  end
+
+  def pie_chart_data
+    [{ name: 'Car', y: 60 }, { name: 'Other', y: 40 }]
+  end
+
   def responses=(responses_attributes)
     responses_attributes.each do |response_attributes|
       self.responses.create_with(response_attributes).find_or_create_by(response_attributes.slice(:run_identifier, :surveyed_at))

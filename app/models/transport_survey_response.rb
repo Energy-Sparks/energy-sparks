@@ -53,7 +53,7 @@ class TransportSurveyResponse < ApplicationRecord
     '👤'
   end
 
-  def carbon_per_group
+  def carbon
     transport_type.can_share? ? carbon_calc : (carbon_calc * passengers)
   end
 
@@ -64,6 +64,6 @@ class TransportSurveyResponse < ApplicationRecord
   private
 
   def carbon_calc
-    ((transport_type.speed_km_per_hour * time) / 60) * transport_type.kg_co2e_per_km
+    ((transport_type.speed_km_per_hour * journey_minutes) / 60) * transport_type.kg_co2e_per_km
   end
 end

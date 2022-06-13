@@ -29,7 +29,7 @@ module Schools
     def show
       respond_to do |format|
         format.html
-        format.json { render json: [{ name: 'Car', y: 60 }, { name: 'Other', y: 40 }] } # obvs need to get this out of the db!
+        format.json { render json: @transport_survey.pie_chart_data }
       end
     end
 
