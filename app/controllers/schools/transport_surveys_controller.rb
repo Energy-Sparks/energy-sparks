@@ -26,6 +26,13 @@ module Schools
       end
     end
 
+    def show
+      respond_to do |format|
+        format.html
+        format.json { render json: [{ name: 'Car', y: 60 }, { name: 'Other', y: 40 }] } # obvs need to get this out of the db!
+      end
+    end
+
     def destroy
       @transport_survey.destroy
       redirect_to school_transport_surveys_url(@school), notice: "Transport survey was successfully destroyed."

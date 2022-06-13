@@ -1,5 +1,13 @@
 <h1>Travel to School Surveys</h1>
 
+<% content_for :head do %>
+  <%= javascript_pack_tag 'transport_surveys/charts' %>
+<% end %>
+
+<div id="transport_surveys_pie">
+  <h3>Pie chart</h3>
+</div>
+
 <h3>Responses for: <%= @transport_survey.run_on %></h3>
 
 <div class="table-responsive mt-2">
