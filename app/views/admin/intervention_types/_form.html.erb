@@ -1,27 +1,9 @@
 <%= simple_form_for([:admin, intervention_type],
   html: { id: 'intervention_type_form' }) do |f| %>
 
-  <ul class="nav nav-tabs">
-    <% I18n.available_locales.each do |locale| %>
-      <li class="nav-item">
-        <a class="nav-link <%= 'active' if locale == I18n.locale %>" id="<%= locale %>-tab" data-toggle="tab" href="#<%= locale %>-content" role="tab" aria-controls="<%= locale %>-tab">
-          <%= locale %>
-        </a>
-      </li>
-    <% end %>
-  </ul>
-
-  <br/>
-
-  <div class="tab-content locale">
-    <% I18n.available_locales.each do |locale| %>
-      <div class="tab-pane <%= 'active' if locale == I18n.locale %>" id="<%= locale %>-content" role="tabpanel" aria-labelledby="<%= locale %>-tab">
-        <%= render 'form_locale', f: f, intervention_type: @intervention_type, locale: locale %>
-      </div>
-    <% end %>
-  </div>
-
-  <br/>
+  <%= render 'locale_tabs', f: f, field: :name do |locale| %>
+    <%= f.input t_field(:name, locale), as: :string %>
+  <% end %>
 
   <%= f.input :intervention_type_group_id, as: :select, label: 'Intervention category', collection: InterventionTypeGroup.all, include_blank: false %>
 
@@ -41,6 +23,27 @@
   <p>
     <%= f.input :image, label: false %>
   </p>
+
+  <%= render 'locale_tabs', f: f, field: :summary do |locale| %>
+    <%= f.input t_field(:summary, locale), as: :string %>
+    <p class="small">The summary text will appear on lists of intervention types.</p>
+  <% end %>
+
+  <%= render 'locale_tabs', f: f, field: :download_links do |locale| %>
+    <div class="download-links-trix-editor <%= locale %>">
+      <%= f.label t_field(:download_links, locale) %>
+      <p class="small">These download links will appear in the right-hand panel under the image.</p>
+      <%= f.rich_text_area t_field(:download_links, locale) %>
+    </div>
+  <% end %>
+
+  <%= render 'locale_tabs', f: f, field: :description do |locale| %>
+    <div class="description-trix-editor <%= locale %>">
+      <%= f.label t_field(:description, locale) %>
+      <p class="small">The description of the intervention for all users</p>
+      <%= f.rich_text_area t_field(:description, locale) %>
+    </div>
+  <% end %>
 
   <%= f.input :score, label: 'Score', as: :string %>
 
