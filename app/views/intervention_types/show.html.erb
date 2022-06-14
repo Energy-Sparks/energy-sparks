@@ -44,3 +44,9 @@
     <% end %>
   </div>
 </div>
+
+<% if can?(:edit, @intervention_type) %>
+  <div class="row padded-row">
+    <p><%= link_to 'Edit', edit_admin_intervention_type_path(@intervention_type), class: 'btn' %></p>
+  </div>
+<% end %>

@@ -101,7 +101,7 @@ describe "Intervention Types", type: :system do
       expect(intervention_type.active?).to be false
     end
 
-    it 'shows user view not admin from index' do
+    it 'shows user view from index' do
       intervention_type = create(:intervention_type, intervention_type_group: intervention_type_group, score: 99 )
       refresh
       click_on intervention_type.name
@@ -156,6 +156,7 @@ describe "Intervention Types", type: :system do
       visit intervention_type_path(intervention_type)
       expect(page).to have_content('some english summary')
       expect(page).to have_content('some english description')
+      expect(page).to have_link('Edit')
 
       visit intervention_type_path(intervention_type, locale: :cy)
       expect(page).to have_content('some welsh summary')
