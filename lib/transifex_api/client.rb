@@ -30,13 +30,13 @@ module TransifexApi
       post_data(url, resource_data(name, slug, project_id))
     end
 
-    def create_resource_translation_upload(slug, content)
-      url = make_url("resource_translations_async_uploads")
-      post_data(url, resource_translation_upload_data(resource_id(slug), content))
+    def create_resource_strings_async_upload(slug, content)
+      url = make_url("resource_strings_async_uploads")
+      post_data(url, resource_strings_async_upload_data(resource_id(slug), content))
     end
 
-    def get_resource_translations_async_upload(resource_translations_async_upload_id)
-      url = "resource_translations_async_uploads/#{resource_translations_async_upload_id}"
+    def get_resource_strings_async_upload(resource_strings_async_upload_id)
+      url = make_url("resource_strings_async_uploads/#{resource_strings_async_upload_id}")
       get_data(url)
     end
 
@@ -101,21 +101,14 @@ module TransifexApi
       response.body
     end
 
-    def resource_translation_upload_data(resource_id, content)
+    def resource_strings_async_upload_data(resource_id, content)
       {
         "data": {
           "attributes": {
             "content": content,
-            "content_encoding": "text",
-            "file_type": "default"
+            "content_encoding": "text"
           },
           "relationships": {
-            "language": {
-              "data": {
-                "id": "l:en",
-                "type": "languages"
-              }
-            },
             "resource": {
               "data": {
                 "id": resource_id,
@@ -123,7 +116,7 @@ module TransifexApi
               }
             }
           },
-          "type": "resource_translations_async_uploads"
+          "type": "resource_strings_async_uploads"
         }
       }
     end
