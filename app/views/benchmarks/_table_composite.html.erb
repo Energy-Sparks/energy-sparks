@@ -1,5 +1,13 @@
 <table class="table table-sm table-bordered table-sorted">
   <thead>
+    <% puts content[:column_groups] %>
+    <% if content[:column_groups] %>
+    <tr>
+      <% content[:column_groups].each do |col_group| %>
+        <th colspan="<%= col_group[:span] %>"><%= col_group[:name] %></th>
+      <% end %>
+    </tr>
+    <% end %>
     <tr>
       <% content[:header].each_with_index do |head, index| %>
         <th class="<%= index.zero? ? '' : 'text-center' %>"><%= head %></th>

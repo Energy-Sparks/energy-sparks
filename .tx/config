@@ -8,6 +8,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 0
 
+[o:energy-sparks:p:energy-sparks:r:analytics-common-yml]
+file_filter  = config/locales/<lang>/analytics/common.yml
+source_file  = config/locales/analytics/common.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
 [o:energy-sparks:p:energy-sparks:r:common-yml]
 file_filter  = config/locales/<lang>/common.yml
 source_file  = config/locales/common.yml
