@@ -153,17 +153,13 @@ describe "Intervention Types", type: :system do
 
       click_on('Update Intervention type')
 
-      intervention_type.reload
-
-      expect(intervention_type.description(locale: :en).body.to_html).to include('some english description')
-      expect(intervention_type.description(locale: :cy).body.to_html).to include('some welsh description')
-
-      visit admin_intervention_type_path(intervention_type)
-
-      expect(page).to have_content('some english description')
-      expect(page).to have_content('some welsh description')
+      visit intervention_type_path(intervention_type)
       expect(page).to have_content('some english summary')
+      expect(page).to have_content('some english description')
+
+      visit intervention_type_path(intervention_type, locale: :cy)
       expect(page).to have_content('some welsh summary')
+      expect(page).to have_content('some welsh description')
     end
   end
 end

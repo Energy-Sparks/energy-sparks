@@ -7,11 +7,6 @@ module Admin
       @intervention_types = @intervention_types.includes(:intervention_type_group).order("intervention_types.name", :name)
     end
 
-    def show
-      #      @recorded = Intervention.where(activity_type: @activity_type).count
-      #      @school_count = Activity.select(:school_id).where(activity_type: @activity_type).distinct.count
-    end
-
     def new
       add_intervention_type_suggestions
     end
