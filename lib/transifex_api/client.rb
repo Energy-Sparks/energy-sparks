@@ -40,6 +40,15 @@ module TransifexApi
       get_data(url)
     end
 
+    def get_resource_language_stats(slug = nil, language = nil)
+      if slug && language
+        url = make_url("resource_language_stats/#{resource_language_id(slug, language)}")
+      else
+        url = add_filter("resource_language_stats")
+      end
+      get_data(url)
+    end
+
     private
 
     def headers
@@ -62,7 +71,11 @@ module TransifexApi
     end
 
     def resource_id(slug)
-      "o:#{ORGANIZATION}:p:#{@project}:r:#{slug}"
+      "#{project_id}:r:#{slug}"
+    end
+
+    def resource_language_id(slug, language)
+      "#{resource_id(slug)}:l:#{language}"
     end
 
     def connection
