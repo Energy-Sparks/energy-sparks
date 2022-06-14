@@ -30,6 +30,16 @@ module TransifexApi
       post_data(url, resource_data(name, slug, project_id))
     end
 
+    def create_resource_translation_upload(slug, content)
+      url = make_url("resource_translations_async_uploads")
+      post_data(url, resource_translation_upload_data(resource_id(slug), content))
+    end
+
+    def get_resource_translations_async_upload(resource_translations_async_upload_id)
+      url = "resource_translations_async_uploads/#{resource_translations_async_upload_id}"
+      get_data(url)
+    end
+
     private
 
     def headers
@@ -49,6 +59,10 @@ module TransifexApi
 
     def project_id
       "o:#{ORGANIZATION}:p:#{@project}"
+    end
+
+    def resource_id(slug)
+      "o:#{ORGANIZATION}:p:#{@project}:r:#{slug}"
     end
 
     def connection
@@ -78,13 +92,40 @@ module TransifexApi
       data = JSON.parse(response.body)
       if data['errors']
         error = data['errors'][0]
-        error['title']
+        error['title'] + ' : ' + error['detail']
       else
         response.body
       end
     rescue
       #problem parsing or traversing json, return original api error
       response.body
+    end
+
+    def resource_translation_upload_data(resource_id, content)
+      {
+        "data": {
+          "attributes": {
+            "content": content,
+            "content_encoding": "text",
+            "file_type": "default"
+          },
+          "relationships": {
+            "language": {
+              "data": {
+                "id": "l:en",
+                "type": "languages"
+              }
+            },
+            "resource": {
+              "data": {
+                "id": resource_id,
+                "type": "resources"
+              }
+            }
+          },
+          "type": "resource_translations_async_uploads"
+        }
+      }
     end
 
     def resource_data(name, slug, project_id)
