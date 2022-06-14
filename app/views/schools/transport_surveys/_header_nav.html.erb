@@ -1,0 +1,9 @@
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Travel to School Surveys</h1>
+  <div>
+    <% unless current_page?(start_school_transport_surveys_url(@school)) %>
+      <%= link_to "Survey today", start_school_transport_surveys_url(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' if can?(:start, TransportSurvey) %>
+    <% end %>
+    <%= link_to "View all transport surveys", school_transport_surveys_url(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+  </div>
+</div>

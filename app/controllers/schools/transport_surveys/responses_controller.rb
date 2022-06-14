@@ -7,7 +7,10 @@ module Schools
 
       def destroy
         @response.destroy
-        redirect_to school_transport_survey_url(@school, @transport_survey), notice: "Transport survey response was successfully destroyed."
+        redirect_to school_transport_survey_responses_url(@school, @transport_survey), notice: "Transport survey response was successfully removed."
+      end
+
+      def index
       end
     end
   end

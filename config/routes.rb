@@ -152,7 +152,7 @@ Rails.application.routes.draw do
           get :start
         end
         scope module: :transport_surveys do
-          resources :responses, only: [:destroy]
+          resources :responses, only: [:index, :destroy]
         end
       end
 

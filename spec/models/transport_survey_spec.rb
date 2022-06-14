@@ -52,4 +52,42 @@ describe 'TransportSurvey' do
       end
     end
   end
+
+  describe "#total_passengers" do
+    subject { create :transport_survey }
+    context "with no responses" do
+      it { expect(subject.total_passengers).to eql 0 }
+    end
+
+    context "with one response" do
+      before(:each) do
+        create :transport_survey_response, transport_survey: subject, passengers: 2
+      end
+      it { expect(subject.total_passengers).to eql 2 }
+    end
+    context "with more than one response" do
+      before(:each) do
+        create :transport_survey_response, transport_survey: subject, passengers: 2
+        create :transport_survey_response, transport_survey: subject, passengers: 3
+      end
+      it { expect(subject.total_passengers).to eql 5 }
+    end
+  end
+
+  describe "#total_carbon" do
+    pending "being written"
+  end
+
+  describe "#today?" do
+    context "when survey has a run_on date of today" do
+      subject { create :transport_survey, run_on: Time.zone.today }
+      it { expect(subject.today?).to be true }
+    end
+
+    context "when survey has a run_on date other than today" do
+      subject { create :transport_survey, run_on: 3.days.ago }
+      it { expect(subject.today?).to be false }
+    end
+  end
+
 end

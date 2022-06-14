@@ -25,4 +25,13 @@ describe TransportSurveyResponse do
       end
     end
   end
+
+  describe "#carbon" do
+    pending "being written"
+  end
+
+  describe "#carbon_per_passenger" do
+    pending "being written"
+  end
+
 end

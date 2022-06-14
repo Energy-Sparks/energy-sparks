@@ -97,7 +97,7 @@ describe 'TransportSurveys', type: :system do
                         before(:each) do
                           click_button("Finish & save results 1")
                         end
-                        it { expect(page).to have_content("Responses for: #{Date.today}") }
+                        it { expect(page).to have_content(Date.today.to_s(:es_full)) }
                         it "displays added response" do
                           expect(page).to have_content(weather)
                           expect(page).to have_content(time)

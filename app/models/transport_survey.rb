@@ -36,6 +36,11 @@ class TransportSurvey < ApplicationRecord
     self.responses.sum(&:carbon).round(2)
   end
 
+  def today?
+    run_on == Time.zone.today
+  end
+
+  # WIP!
   def pie_chart_data
     [{ name: 'Car', y: 60 }, { name: 'Other', y: 40 }]
   end

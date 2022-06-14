@@ -1,49 +1,12 @@
-<h1>Travel to School Surveys</h1>
-
 <% content_for :head do %>
   <%= javascript_pack_tag 'transport_surveys/charts' %>
 <% end %>
 
-<div><%= @transport_survey.total_passengers %> pupils were surveyed on <%= nice_dates @transport_survey.run_on %>.</div>
-<div>Their travel to school generated <%= @transport_survey.total_carbon %> kg CO2.</div>
+<%= render 'header_nav' %>
+<%= render 'nav' %>
+<h3>Results summary</h3>
+
+<div><%= @transport_survey.total_passengers %> pupils were surveyed on <strong><%= nice_dates @transport_survey.run_on %></strong>.</div>
+<div>Their travel to school generated <strong><%= @transport_survey.total_carbon %>kg CO2</strong>.</div>
 
 <div id="transport_surveys_pie"></div>
-
-<h3>Responses for <%= nice_dates @transport_survey.run_on %></h3>
-
-<div class="table-responsive mt-2">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Weather</th>
-        <th>Journey Time</th>
-        <th>Transport Method</th>
-        <th>Passengers</th>
-        <th>Taken</th>
-        <% if can? :delete, TransportSurveyResponse %>
-          <th>Actions</th>
-        <% end %>
-      </tr>
-    </thead>
-    <tbody>
-      <% @transport_survey.responses.each do |response| %>
-        <tr scope="row">
-          <td><%= response.weather_symbol %></td>
-          <td><%= response.journey_minutes %> mins</td>
-          <td><%= response.transport_type.image %> <%= response.transport_type.name %></td>
-          <td><%= response.passengers %></td>
-          <td><%= nice_date_times response.surveyed_at %></td>
-          <% if can? :delete, response %>
-            <td><%= link_to 'Delete', school_transport_survey_response_path(@school, @transport_survey, response), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %></td>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-
-<% if can?(:edit, TransportSurvey) %>
-  <%= link_to 'Collect more responses', edit_school_transport_survey_url(@school, @transport_survey.run_on), class: 'btn' %>
-<% end %>
-
-<%= link_to 'View survey responses by date', school_transport_surveys_url(@school), class: 'btn' %>
