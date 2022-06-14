@@ -31,7 +31,6 @@ class ActivityType < ApplicationRecord
   translates :school_specific_description, backend: :action_text
   translates :download_links, backend: :action_text
 
-
   include PgSearch::Model
   pg_search_scope :search,
                   against: [:name],
@@ -100,6 +99,8 @@ class ActivityType < ApplicationRecord
   def activities_for_school(school)
     activities.for_school(school)
   end
+
+  private
 
   def copy_searchable_attributes
     self.write_attribute(:name, self.name(locale: :en))

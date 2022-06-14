@@ -6,8 +6,22 @@ en:
         description: Description
         description_cy: Description (Welsh)
         description_en: Description (English)
+        name: Name
         name_cy: Name (Welsh)
         name_en: Name (English)
+      intervention_type:
+        description: Description
+        description_cy: Description (Welsh)
+        description_en: Description (English)
+        download_links: Download links
+        download_links_cy: Download links (Welsh)
+        download_links_en: Download links (English)
+        name: Title
+        name_cy: Title (Welsh)
+        name_en: Title (English)
+        summary: Summary
+        summary_cy: Summary (Welsh)
+        summary_en: Summary (English)
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'

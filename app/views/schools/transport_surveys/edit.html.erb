@@ -80,7 +80,7 @@
               <%= hidden_field_tag :transport_type_id, "", class: 'selected' %>
               <div class="container">
                 <div class="row">
-                  <% TransportType.all.each do |transport_type| %>
+                  <% TransportType.all.by_position.each do |transport_type| %>
                     <%= render 'option', { label: transport_type.name, content: transport_type.image, identifier: transport_type.id, action: "confirm" } %>
                   <% end %>
                 </div>

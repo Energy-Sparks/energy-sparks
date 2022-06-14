@@ -11,6 +11,7 @@ en:
       comparison_percent: "%"
       computer_console: computer consoles
       date: ''
+      date_mmm_yyyy: ''
       datetime: ''
       days: days
       electricity: electricity
@@ -49,6 +50,8 @@ en:
       r2: ''
       relative_percent: "%"
       relative_percent_0dp: "%"
+      school_name: ''
+      short_school_name: ''
       shower: showers
       smartphone: smartphone charges
       solar_panels: solar panels

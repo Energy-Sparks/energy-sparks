@@ -2,6 +2,10 @@ module Admin
   class TransportTypesController < AdminController
     load_and_authorize_resource
 
+    def index
+      @transport_types = @transport_types.by_position
+    end
+
     def create
       if @transport_type.save
         redirect_to admin_transport_types_path, notice: 'Transport type was successfully created.'
@@ -28,7 +32,7 @@ module Admin
     private
 
     def transport_type_params
-      params.require(:transport_type).permit(:name, :category, :image, :kg_co2e_per_km, :speed_km_per_hour, :can_share, :park_and_stride, :note)
+      params.require(:transport_type).permit(:name, :category, :image, :kg_co2e_per_km, :speed_km_per_hour, :can_share, :park_and_stride, :position, :note)
     end
   end
 end

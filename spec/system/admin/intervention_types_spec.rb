@@ -29,16 +29,16 @@ describe "Intervention Types", type: :system do
       download_links = 'Some download links'
 
       click_on('New Intervention type', match: :first)
-      fill_in('Title', with: title)
-      fill_in('Summary', with: summary)
+      fill_in('Title (English)', with: title)
+      fill_in('Summary (English)', with: summary)
 
       attach_file("intervention_type_image", Rails.root + "spec/fixtures/images/placeholder.png")
 
-      within('.download-links-trix-editor') do
+      within('.download-links-trix-editor.en') do
         fill_in_trix with: download_links
       end
 
-      within('.description-trix-editor') do
+      within('.description-trix-editor.en') do
         fill_in_trix with: description
       end
 
@@ -64,7 +64,7 @@ describe "Intervention Types", type: :system do
 
     it 'can does not crash if you forget the score' do
       click_on('New Intervention type', match: :first)
-      fill_in('Title', with: 'New activity')
+      fill_in('Title (English)', with: 'New activity')
       fill_in_trix with: "the description"
 
       click_on('Create Intervention type')
@@ -84,9 +84,9 @@ describe "Intervention Types", type: :system do
       summary = "New summary"
 
       uncheck('Active')
-      fill_in 'Title', with: title
-      fill_in 'Summary', with: summary
-      within('.description-trix-editor') do
+      fill_in 'Title (English)', with: title
+      fill_in 'Summary (English)', with: summary
+      within('.description-trix-editor.en') do
         fill_in_trix with: description
       end
 
@@ -99,6 +99,14 @@ describe "Intervention Types", type: :system do
       expect(intervention_type.summary).to eq(summary)
       expect(intervention_type.description.body.to_plain_text).to eq(description)
       expect(intervention_type.active?).to be false
+    end
+
+    it 'shows user view from index' do
+      intervention_type = create(:intervention_type, intervention_type_group: intervention_type_group, score: 99 )
+      refresh
+      click_on intervention_type.name
+      expect(page).to have_content('Overview')
+      expect(page).to have_content('99 points for this action')
     end
 
     it 'can add and remove suggested next actions' do
@@ -124,6 +132,35 @@ describe "Intervention Types", type: :system do
       expect(page.has_content?("Intervention type was successfully updated.")).to be true
       intervention_type.reload
       expect(intervention_type.suggested_types).to be_empty
+    end
+
+    it 'can update en and cy descriptions and show both' do
+      intervention_type = create(:intervention_type)
+      refresh
+
+      click_on 'Edit'
+
+      fill_in 'Summary (English)', with: 'some english summary'
+      fill_in 'Summary (Welsh)', with: 'some welsh summary'
+
+      within('.description-trix-editor.en') do
+        fill_in_trix with: 'some english description'
+      end
+
+      within('.description-trix-editor.cy') do
+        fill_in_trix with: 'some welsh description'
+      end
+
+      click_on('Update Intervention type')
+
+      visit intervention_type_path(intervention_type)
+      expect(page).to have_content('some english summary')
+      expect(page).to have_content('some english description')
+      expect(page).to have_link('Edit')
+
+      visit intervention_type_path(intervention_type, locale: :cy)
+      expect(page).to have_content('some welsh summary')
+      expect(page).to have_content('some welsh description')
     end
   end
 end

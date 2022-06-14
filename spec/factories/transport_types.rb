@@ -8,5 +8,6 @@ FactoryBot.define do
     category { :car }
     can_share { true }
     park_and_stride { false }
+    position { 0 }
   end
 end
