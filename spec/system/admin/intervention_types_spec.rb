@@ -101,6 +101,14 @@ describe "Intervention Types", type: :system do
       expect(intervention_type.active?).to be false
     end
 
+    it 'shows user view not admin from index' do
+      intervention_type = create(:intervention_type, intervention_type_group: intervention_type_group, score: 99 )
+      refresh
+      click_on intervention_type.name
+      expect(page).to have_content('Overview')
+      expect(page).to have_content('99 points for this action')
+    end
+
     it 'can add and remove suggested next actions' do
       intervention_type = create(:intervention_type, intervention_type_group: intervention_type_group )
       refresh
