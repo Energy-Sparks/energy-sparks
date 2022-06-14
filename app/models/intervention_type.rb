@@ -20,6 +20,12 @@
 #
 
 class InterventionType < ApplicationRecord
+  extend Mobility
+  translates :name, type: :string, fallbacks: { cy: :en }
+  translates :summary, type: :string, fallbacks: { cy: :en }
+  translates :description, backend: :action_text
+  translates :download_links, backend: :action_text
+
   include PgSearch::Model
   pg_search_scope :search,
                   against: [:name],
@@ -39,8 +45,6 @@ class InterventionType < ApplicationRecord
   has_many :suggested_types, through: :intervention_type_suggestions
 
   has_one_attached :image
-  has_rich_text :description
-  has_rich_text :download_links
 
   accepts_nested_attributes_for :intervention_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
 
@@ -54,7 +58,15 @@ class InterventionType < ApplicationRecord
   scope :not_custom,            -> { where(custom: false) }
   scope :active_and_not_custom, -> { active.not_custom }
 
+  before_save :copy_searchable_attributes
+
   def actions_for_school(school)
     observations.for_school(school)
+  end
+
+  private
+
+  def copy_searchable_attributes
+    self.write_attribute(:name, self.name(locale: :en))
   end
 end

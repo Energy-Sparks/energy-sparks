@@ -20,6 +20,21 @@ describe 'ActivityType' do
     expect( ActivityType.live_data ).to match_array([activity_type_1])
   end
 
+  context 'when translations are being applied' do
+    let(:old_name) { 'old-name' }
+    let(:new_name) { 'new-name' }
+
+    it 'updates original name so search still works' do
+      activity_type = create(:activity_type, name: old_name)
+      expect(ActivityType.search(new_name)).to eq([])
+
+      activity_type.update(name: new_name)
+
+      expect(activity_type.attributes['name']).to eq(new_name)
+      expect(ActivityType.search(new_name)).to eq([activity_type])
+    end
+  end
+
   context 'search by query term' do
     it 'finds activities by name' do
       activity_type_1 = create(:activity_type, name: 'foo')
