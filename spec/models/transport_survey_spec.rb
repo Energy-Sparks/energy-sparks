@@ -75,7 +75,97 @@ describe 'TransportSurvey' do
   end
 
   describe "#total_carbon" do
-    pending "being written"
+    subject { create :transport_survey }
+
+    context "with no responses" do
+      it { expect(subject.total_carbon).to eql 0 }
+    end
+
+    context "with one response" do
+      let!(:response) { create(:transport_survey_response, transport_survey: subject, passengers: 2) }
+      it { expect(subject.total_carbon).to eql response.carbon }
+    end
+
+    context "with more than one response" do
+      let!(:responses) do
+        [ create(:transport_survey_response, transport_survey: subject, passengers: 2),
+          create(:transport_survey_response, transport_survey: subject, passengers: 3) ]
+      end
+
+      it "adds up the carbon for each response" do
+        expect(subject.total_carbon).to eql(responses[0].carbon + responses[1].carbon)
+      end
+    end
+  end
+
+  describe "#passengers_per_category" do
+    subject { create :transport_survey }
+
+    let(:categories) { [:car, :active_travel, :public_transport, nil] }
+    let(:types) { categories.map {|type| [type, create(:transport_type, category: type)] }.to_h }
+
+    context "when there are passengers in each category" do
+      let!(:responses) do
+        types.transform_values do |v|
+          create(:transport_survey_response, transport_survey: subject, transport_type: v, passengers: 3)
+        end
+      end
+      it "returns a hash of passengers per category" do
+        expect(subject.passengers_per_category).to eql( {"car" => 3, "active_travel" => 3, "public_transport" => 3, nil => 3} )
+      end
+    end
+
+    context "when not all categories have passengers" do
+      let!(:responses) do
+        types.except(:car, :active_travel).transform_values do |v|
+          create(:transport_survey_response, transport_survey: subject, transport_type: v, passengers: 3)
+        end
+      end
+      it "returns a hash with zero values for missing categories" do
+        expect(subject.passengers_per_category).to eql( {"car" => 0, "active_travel" => 0, "public_transport" => 3, nil => 3} )
+      end
+    end
+
+    context "when there are no responses" do
+      it "returns a hash with zero values for missing categories" do
+        expect(subject.passengers_per_category).to eql( {"car" => 0, "active_travel" => 0, "public_transport" => 0, nil => 0} )
+      end
+    end
+  end
+
+  describe "#percentage_per_category" do
+    subject { create :transport_survey }
+
+    let(:categories) { [:car, :active_travel, :public_transport, nil] }
+    let(:types) { categories.map {|type| [type, create(:transport_type, category: type)] }.to_h }
+
+    context "when there are passengers in each category" do
+      let!(:responses) do
+        types.transform_values do |v|
+          create(:transport_survey_response, transport_survey: subject, transport_type: v, passengers: 3)
+        end
+      end
+      it "returns a hash of passenger percentages per category" do
+        expect(subject.percentage_per_category).to eql( {"car" => 25.0, "active_travel" => 25.0, "public_transport" => 25.0, nil => 25.0} )
+      end
+    end
+
+    context "when not all categories have passengers" do
+      let!(:responses) do
+        types.except(:car, nil).transform_values do |v|
+          create(:transport_survey_response, transport_survey: subject, transport_type: v, passengers: 3)
+        end
+      end
+      it "returns a hash with zero values for missing categories" do
+        expect(subject.percentage_per_category).to eql( {"car" => 0, "active_travel" => 50.0, "public_transport" => 50.0 , nil => 0 } )
+      end
+    end
+
+    context "when there are no responses" do
+      it "returns a hash with zero values for missing categories" do
+        expect(subject.percentage_per_category).to eql( {"car" => 0, "active_travel" => 0, "public_transport" => 0, nil => 0 } )
+      end
+    end
   end
 
   describe "#today?" do

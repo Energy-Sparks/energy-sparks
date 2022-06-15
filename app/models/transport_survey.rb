@@ -32,17 +32,14 @@ class TransportSurvey < ApplicationRecord
     self.responses.sum(:passengers)
   end
 
-  # test
   def total_carbon
-    self.responses.sum(&:carbon).round(2)
+    self.responses.sum(&:carbon)
   end
 
-  # test
   def today?
     run_on == Time.zone.today
   end
 
-  # test
   def passengers_per_category
     passengers_per_cat = self.responses.with_transport_type.group(:category).sum(:passengers)
     TransportType.categories.merge(nil => nil).transform_values { |v| passengers_per_cat[v] || 0 }

@@ -18,7 +18,7 @@
       <tr>
         <td><%= link_to nice_dates(transport_survey.run_on), school_transport_survey_url(@school, transport_survey) %></td>
         <td><%= transport_survey.total_passengers %> pupils</td>
-        <td><%= transport_survey.total_carbon %>kg CO2</td>
+        <td><%= transport_survey.total_carbon.round(2) %>kg CO2</td>
         <td><%= link_to 'Summary', school_transport_survey_url(@school, transport_survey), class: 'btn btn-sm' %></td>
 
         <% if can?(:manage, TransportSurveyResponse) || can?(:delete, transport_survey) %>
