@@ -24,3 +24,7 @@
     </tbody>
   </table>
 </div>
+
+<% if can?(:start, TransportSurvey) %>
+  <%= link_to 'Start surveying today', start_school_transport_surveys_url(@school), class: 'btn' %>
+<% end %>
