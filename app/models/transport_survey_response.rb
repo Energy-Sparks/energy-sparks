@@ -27,6 +27,8 @@ class TransportSurveyResponse < ApplicationRecord
   belongs_to :transport_survey
   belongs_to :transport_type, inverse_of: :responses
 
+  scope :with_transport_type, -> {joins(:transport_type)}
+
   def self.journey_minutes_options
     [5, 10, 15, 20, 30, 45, 60]
   end

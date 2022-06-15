@@ -1,4 +1,4 @@
-<ul id="survey_nav" class="nav nav-tabs"<%= " style=display:none;" unless @transport_survey.responses.any? %>>
+<ul id="survey_nav" class="nav nav-tabs"<%= " style=display:none;" if (!@transport_survey.responses.any? && current_page?(start_school_transport_surveys_url(@school)))  %>>
   <% if @transport_survey.today? %>
     <%= nav_item "Survey today", start_school_transport_surveys_url(@school) if can?(:start, TransportSurvey) %>
   <% else %>
