@@ -72,6 +72,7 @@ $(document).ready(function() {
     setProgressBar(window.step = 1);
   }
 
+  // Save responses and redirect to results page
   function finishAndSave() {
     storage.syncResponses(config.run_on, notifier.app).done( function() {
       let button = $("[data-date='" + config.run_on + "']");
@@ -88,7 +89,10 @@ $(document).ready(function() {
     if (window.confirm('Are you sure you want to save ' + storage.getResponsesCount(date) + ' unsaved result(s) from ' + date + '?')) {
       storage.syncResponses(date, notifier.page).done( function() {
         button.closest('.alert').hide();
-        if (date == config.run_on) fullSurveyReset();
+        if (date == config.run_on) {
+          fullSurveyReset();
+          $("#survey_nav").show();
+        }
       });
     }
   }

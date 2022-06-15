@@ -1,13 +1,11 @@
 <% if @transport_survey %>
-  <ul class="nav nav-tabs">
+  <ul id="survey_nav" class="nav nav-tabs"<%= " style=display:none;" unless @transport_survey.responses.any? %>>
     <% if @transport_survey.today? %>
       <%= nav_item "Survey today", start_school_transport_surveys_url(@school) %>
     <% else %>
       <li class="navbar-brand"><%= nice_dates(@transport_survey.run_on) %></li>
     <% end %>
-    <% if @transport_survey.responses.any? %>
-      <%= nav_item "Results summary", school_transport_survey_url(@school, @transport_survey) %>
-      <%= nav_item "Manage responses", school_transport_survey_responses_url(@school, @transport_survey) if can?(:manage, TransportSurveyResponse) %>
-    <% end %>
+    <%= nav_item "Results summary", school_transport_survey_url(@school, @transport_survey) %>
+    <%= nav_item "Manage responses", school_transport_survey_responses_url(@school, @transport_survey) if can?(:manage, TransportSurveyResponse) %>
   </ul>
 <% end %>
