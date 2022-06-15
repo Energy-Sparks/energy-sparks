@@ -66,6 +66,15 @@ class TransportSurveyResponse < ApplicationRecord
   private
 
   def carbon_calc
-    ((transport_type.speed_km_per_hour * journey_minutes) / 60) * transport_type.kg_co2e_per_km
+    ((transport_type.speed_km_per_hour * journey_mins_ps) / 60) * transport_type.kg_co2e_per_km
+  end
+
+  # take 15 minutes off journey time for park and stride transport types
+  def journey_mins_ps
+    if transport_type.park_and_stride == true
+      (journey_minutes > 15 ? journey_minutes - 15 : 0)
+    else
+      journey_minutes
+    end
   end
 end
