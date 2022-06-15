@@ -8,6 +8,10 @@ module Schools
     authorize_resource :transport_survey
     before_action :load_or_create, only: [:update]
 
+    def index
+      @transport_surveys = @transport_surveys.order(run_on: :desc)
+    end
+
     def start
       @transport_survey = @school.transport_surveys.find_or_initialize_by(run_on: Time.zone.today)
       render :edit

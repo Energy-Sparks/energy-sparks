@@ -4,9 +4,11 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Survey Date</th>
-        <th>Responses</th>
-        <% if can? :delete, TransportSurvey %>
+        <th>Survey date</th>
+        <th>Total pupils</th>
+        <th>Total carbon</th>
+        <th>Results</th>
+        <% if can?(:manage, TransportSurveyResponse) || can?(:delete, TransportSurvey) %>
           <th>Actions</th>
         <% end %>
       </tr>
@@ -14,10 +16,16 @@
     <tbody>
     <% @transport_surveys.each do |transport_survey| %>
       <tr>
-        <td><%= link_to_if can?(:show, transport_survey), transport_survey.run_on, school_transport_survey_url(@school, transport_survey) %></td>
-        <td><%= transport_survey.responses.length %></td>
-        <% if can? :delete, transport_survey %>
-          <td><%= link_to 'Delete', school_transport_survey_url(@school, transport_survey), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %></td>
+        <td><%= link_to nice_dates(transport_survey.run_on), school_transport_survey_url(@school, transport_survey) %></td>
+        <td><%= transport_survey.total_passengers %> pupils</td>
+        <td><%= transport_survey.total_carbon %>kg CO2</td>
+        <td><%= link_to 'Summary', school_transport_survey_url(@school, transport_survey), class: 'btn btn-sm' %></td>
+
+        <% if can?(:manage, TransportSurveyResponse) || can?(:delete, transport_survey) %>
+          <td>
+            <%= link_to "Manage", school_transport_survey_responses_url(@school, transport_survey), class: 'btn btn-sm' if can? :manage, TransportSurveyResponse %>
+            <%= link_to 'Delete', school_transport_survey_url(@school, transport_survey), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' if can? :delete, transport_survey %>
+          </td>
         <% end %>
       </tr>
     <% end %>
