@@ -1,5 +1,6 @@
 module Schools
   class TransportSurveysController < ApplicationController
+    include Pagy::Backend
     skip_before_action :authenticate_user!, only: [:index, :show]
 
     load_resource :school
@@ -10,6 +11,7 @@ module Schools
 
     def index
       @transport_surveys = @transport_surveys.order(run_on: :desc)
+      @pagy, @transport_surveys = pagy(@transport_surveys)
     end
 
     def start
