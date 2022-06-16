@@ -1,33 +1,36 @@
 <%= render "header_nav" %>
 
-<div class="table-responsive mt-2">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Survey date</th>
-        <th>Total pupils</th>
-        <th>Total carbon</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-    <% @transport_surveys.each do |transport_survey| %>
-      <tr>
-        <td><%= link_to nice_dates(transport_survey.run_on), school_transport_survey_url(@school, transport_survey) %></td>
-        <td><%= transport_survey.total_passengers %> pupils</td>
-        <td><%= transport_survey.total_carbon.round(2) %>kg CO2</td>
-        <td>
-          <%= link_to 'View results', school_transport_survey_url(@school, transport_survey), class: 'btn btn-sm' %>
-          <%= link_to "Manage", school_transport_survey_responses_url(@school, transport_survey), class: 'btn btn-sm' if can? :manage, TransportSurveyResponse %>
-          <%= link_to 'Delete', school_transport_survey_url(@school, transport_survey), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' if can? :delete, transport_survey %>
-        </td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
-</div>
-
-<%= render "pagy" %>
+<% if @transport_surveys.any? %>
+  <div class="table-responsive mt-2">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Survey date</th>
+          <th>Total pupils</th>
+          <th>Total carbon</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @transport_surveys.each do |transport_survey| %>
+        <tr>
+          <td><%= link_to nice_dates(transport_survey.run_on), school_transport_survey_url(@school, transport_survey) %></td>
+          <td><%= transport_survey.total_passengers %> pupils</td>
+          <td><%= transport_survey.total_carbon.round(2) %>kg CO2</td>
+          <td>
+            <%= link_to 'View results', school_transport_survey_url(@school, transport_survey), class: 'btn btn-sm' %>
+            <%= link_to "Manage", school_transport_survey_responses_url(@school, transport_survey), class: 'btn btn-sm' if can? :manage, TransportSurveyResponse %>
+            <%= link_to 'Delete', school_transport_survey_url(@school, transport_survey), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' if can? :delete, transport_survey %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <%= render "pagy" %>
+<% else %>
+  <h4>No surveys have been completed yet</h4>
+<% end %>
 
 <% if can?(:start, TransportSurvey) %>
   <%= link_to 'Start surveying today', start_school_transport_surveys_url(@school), class: 'btn' %>

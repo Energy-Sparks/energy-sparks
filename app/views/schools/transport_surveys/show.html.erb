@@ -5,8 +5,12 @@
 <%= render 'header_nav' %>
 <%= render 'nav' %>
 
-<div><strong><%= @transport_survey.total_passengers %> pupils</strong> were surveyed on <strong><%= nice_dates @transport_survey.run_on %></strong>.</div>
-<div>Their travel to school generated <strong><%= @transport_survey.total_carbon.round(2) %>kg CO2</strong>.</div>
-<div><strong><%= @transport_survey.percentage_per_category["active_travel"].round %>%</strong> used active travel, generating zero CO2, <strong><%= @transport_survey.percentage_per_category["public_transport"].round %>%</strong> travelled by public transport and <strong><%= @transport_survey.percentage_per_category["car"].round %>%</strong> travelled by car.</div>
+<% if @transport_survey.responses.any? %>
+  <div><strong><%= @transport_survey.total_passengers %> pupils</strong> were surveyed on <strong><%= nice_dates @transport_survey.run_on %></strong>.</div>
+  <div>Their travel to school generated <strong><%= @transport_survey.total_carbon.round(2) %>kg CO2</strong>.</div>
+  <div><strong><%= @transport_survey.percentage_per_category["active_travel"].round %>%</strong> used active travel, generating zero CO2, <strong><%= @transport_survey.percentage_per_category["public_transport"].round %>%</strong> travelled by public transport and <strong><%= @transport_survey.percentage_per_category["car"].round %>%</strong> travelled by car.</div>
 
-<div id="transport_surveys_pie"></div>
+  <div id="transport_surveys_pie"></div>
+<% else %>
+  <h4>No responses have been collected</h4>
+<% end %>

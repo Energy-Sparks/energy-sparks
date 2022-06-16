@@ -38,7 +38,7 @@ describe 'TransportSurveys', type: :system do
             before(:each) do
               click_link 'View all transport surveys'
             end
-            it { expect(page).to have_content('Survey date') }
+            it { expect(page).to have_content('No surveys have been completed yet') }
           end
         end
       end
@@ -191,6 +191,7 @@ describe 'TransportSurveys', type: :system do
 
       context "viewing transport surveys index" do
         let!(:transport_survey) { create(:transport_survey, school: school) }
+        let!(:transport_survey_response) { create(:transport_survey_response, transport_survey: transport_survey, transport_type: transport_type) }
 
         before(:each) do
           visit school_transport_surveys_path(school)
