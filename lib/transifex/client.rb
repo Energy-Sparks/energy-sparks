@@ -1,4 +1,4 @@
-module TransifexApi
+module Transifex
   class Client
     class ApiFailure < StandardError; end
     class BadRequest < StandardError; end

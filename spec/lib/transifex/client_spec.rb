@@ -1,7 +1,6 @@
 require 'rails_helper'
-require 'faraday/adapter/test'
 
-module TransifexApi
+module Transifex
   describe Client do
     let(:api_key)     { '1/123abc' }
     let(:project)     { 'es-test' }
@@ -10,7 +9,7 @@ module TransifexApi
     let(:response)    { double(status: status, 'success?' => success, body: body) }
     let(:connection)  { double(get: response) }
 
-    let(:client)      { TransifexApi::Client.new(api_key, project, connection) }
+    let(:client)      { Transifex::Client.new(api_key, project, connection) }
 
     context '#get_languages' do
       let(:body)  { File.read('spec/fixtures/transifex/get_languages.json') }
