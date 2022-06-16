@@ -67,8 +67,8 @@ describe 'TransportSurveys', type: :system do
             expect(page).to have_content(nice_dates(transport_survey.run_on))
           end
 
-          it "shows summary button" do
-            expect(page).to have_link('Summary')
+          it "shows view results button" do
+            expect(page).to have_link('View results')
           end
 
           it "shows manage button" do
@@ -146,8 +146,8 @@ describe 'TransportSurveys', type: :system do
           expect(page).to have_link('Start surveying today')
         end
 
-        it "shows summary button" do
-          expect(page).to have_link('Summary')
+        it "shows view results button" do
+          expect(page).to have_link('View results')
         end
 
         it "doesn't show manage button" do
@@ -158,12 +158,12 @@ describe 'TransportSurveys', type: :system do
           expect(page).to_not have_link('Delete')
         end
 
-        context "and viewing summary" do
+        context "and viewing results" do
           before(:each) do
-            click_link("Summary")
+            click_link("View results")
           end
 
-          it "shows results summary" do
+          it "shows results" do
             within("h3") do
               expect(page).to have_content("Results summary")
             end
@@ -204,8 +204,8 @@ describe 'TransportSurveys', type: :system do
           expect(page).to have_content(nice_dates(transport_survey.run_on))
         end
 
-        it "shows summary button" do
-          expect(page).to have_link('Summary')
+        it "shows view results button" do
+          expect(page).to have_link('View results')
         end
 
         it "doesn't show surveying link" do
@@ -221,9 +221,9 @@ describe 'TransportSurveys', type: :system do
           expect(page).to_not have_link('Manage')
         end
 
-        context "and viewing summary" do
+        context "and viewing results" do
           before(:each) do
-            click_link("Summary")
+            click_link("View results")
           end
 
           it "shows results summary" do
