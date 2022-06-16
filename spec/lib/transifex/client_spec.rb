@@ -25,6 +25,20 @@ module Transifex
     context 'when using connection' do
       let(:client)      { Transifex::Client.new(api_key, project, connection) }
 
+      context 'when api returns error' do
+        let(:status)      { 404 }
+        let(:body)        { File.read('spec/fixtures/transifex/errors.json') }
+
+        it 'includes messages' do
+          expect(connection).to receive(:get).and_return(response)
+          begin
+            client.get_resource_translations_async_download('123')
+          rescue Transifex::Client::NotFound => e
+            expect(e.message).to eq('not_found: URL `/resource_strings_async_uploads/123` does not refer to an existing endpoint')
+          end
+        end
+      end
+
       context '#get_languages' do
         let(:body)          { File.read('spec/fixtures/transifex/get_languages.json') }
         let(:expected_path) { "projects/o:energy-sparks:p:#{project}/languages" }
@@ -162,17 +176,11 @@ module Transifex
 
         context 'when translation has errors' do
           let(:body)        { File.read('spec/fixtures/transifex/get_resource_translations_async_downloads_errors.json') }
-          it 'raises error' do
-            expect(connection).to receive(:get).with(expected_path).and_return(response)
-            expect {
-              client.get_resource_translations_async_download(download_id)
-            }.to raise_error(Transifex::Client::TranslationsDownloadError)
-          end
-          it 'includes messages' do
+          it 'raises error which includes messages' do
             expect(connection).to receive(:get).with(expected_path).and_return(response)
             begin
               client.get_resource_translations_async_download(download_id)
-            rescue => e
+            rescue Transifex::Client::TranslationsDownloadError => e
               expect(e.message).to eq('parse_error: Could not decode JSON object')
             end
           end

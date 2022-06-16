@@ -146,8 +146,7 @@ module Transifex
     def error_message(response)
       data = JSON.parse(response.body)
       if data['errors']
-        error = data['errors'][0]
-        error['title'] + ' : ' + error['detail']
+        error_messages(data['errors'])
       else
         response.body
       end
