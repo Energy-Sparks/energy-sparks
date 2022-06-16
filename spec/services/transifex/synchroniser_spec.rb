@@ -4,6 +4,7 @@ describe Transifex::Synchroniser, type: :service do
 
   let(:activity_type) { create(:activity_type) }
   let(:service)     { Transifex::Synchroniser.new(activity_type) }
+  let(:resource_key)  { activity_type.resource_key }
 
   describe '#last_pushed' do
     context 'and no status' do
@@ -144,7 +145,15 @@ describe Transifex::Synchroniser, type: :service do
     end
 
     context 'when translations are reviewed' do
-      let(:translations) { {} }
+      let(:resource_key)  { activity_type.resource_key }
+      let(:translations) { {
+          :cy => {
+            resource_key => {
+              name: "Welsh name"
+            }
+           }
+         }
+      }
       before(:each) do
         allow_any_instance_of(Transifex::Service).to receive(:reviews_completed?).and_return(true)
         expect_any_instance_of(Transifex::Service).to receive(:pull).and_return(translations)
@@ -157,7 +166,11 @@ describe Transifex::Synchroniser, type: :service do
         expect(status.tx_last_pull).to_not be_nil
       end
 
-      it 'updates the record'
+      it 'updates the record' do
+        expect(service.pull).to be true
+        activity_type.reload
+        expect(activity_type.name_cy).to eql("Welsh name")
+      end
     end
 
     context 'when not changed in transifex' do
@@ -175,10 +188,16 @@ describe Transifex::Synchroniser, type: :service do
     context 'when changed in transifex' do
       let(:yesterday)      { Date.today - 1 }
       let(:tx_last_pulled) { yesterday }
+      let(:translations) { {
+          :cy => {
+            resource_key => {}
+           }
+         }
+      }
       before(:each) do
         allow_any_instance_of(Transifex::Service).to receive(:reviews_completed?).and_return(true)
         allow_any_instance_of(Transifex::Service).to receive(:last_reviewed).and_return(Time.zone.now)
-        expect_any_instance_of(Transifex::Service).to receive(:pull).and_return({})
+        expect_any_instance_of(Transifex::Service).to receive(:pull).and_return(translations)
       end
 
       it 'does a pull' do
@@ -253,9 +272,15 @@ describe Transifex::Synchroniser, type: :service do
     context 'when changes to pull and no changes to push' do
       let(:tx_created_at) { Date.today }
       let(:tx_last_pushed) { Time.zone.now }
+      let(:translations) { {
+          :cy => {
+            resource_key => {}
+           }
+         }
+      }
       before(:each) do
         expect_any_instance_of(Transifex::Service).to receive(:reviews_completed?).and_return true
-        expect_any_instance_of(Transifex::Service).to receive(:pull).and_return({})
+        expect_any_instance_of(Transifex::Service).to receive(:pull).and_return(translations)
       end
 
       it 'does a pull only' do

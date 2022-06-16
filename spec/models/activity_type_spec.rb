@@ -128,9 +128,36 @@ describe 'ActivityType' do
       end
     end
     context 'when updating from transifex' do
-      it 'updates simple fields'
-      it 'updates HTML fields'
-      it 'translates the template syntax'
+      let(:resource_key) { "activity_type_#{subject.id}".to_sym }
+      let(:name) { subject.name }
+      let(:description) { subject.description }
+      let(:school_specific_description) { subject.school_specific_description}
+      let(:data) { {
+        :cy => {
+           resource_key => {
+             name: "Welsh name",
+             description: "The Welsh description",
+             school_specific_description: "Instructions for schools. %{chart|£}"
+           }
+         }
+       }
+      }
+      before(:each) do
+        subject.tx_update(data, :cy)
+        subject.reload
+      end
+      it 'updates simple fields' do
+        expect(subject.name).to eq name
+        expect(subject.name_cy).to eq "Welsh name"
+      end
+      it 'updates HTML fields' do
+        expect(subject.description).to eq description
+        expect(subject.description_cy.to_s).to eql("<div class=\"trix-content\">\n  The Welsh description\n</div>\n")
+      end
+      it 'translates the template syntax' do
+        expect(subject.school_specific_description).to eq school_specific_description
+        expect(subject.school_specific_description_cy.to_s).to eql("<div class=\"trix-content\">\n  Instructions for schools. {{chart|£}}\n</div>\n")
+      end
     end
   end
 end

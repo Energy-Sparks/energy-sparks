@@ -32,11 +32,25 @@ module TransifexSerialisable
 
   #Update the model using data from transifex
   def tx_update(data, locale)
-    #loop through translatable attributes locally
-    #get data from transifex, using locale as key
-    #map _html to bare key name
-    #translate templated fields back
-    #do a single model update
+    raise "Unexpected locale" unless I18n.available_locales.include?(locale)
+    raise "Unexpected i18n format" unless data[locale].present? && !data[locale][resource_key].nil?
+
+    translated_attributes = self.class.mobility_attributes.map(&:to_sym)
+    to_update = {}
+    tx_attributes = data[locale][resource_key]
+    tx_attributes.symbolize_keys!
+    tx_attributes.each_key do |attr|
+      #ignore any attributes that aren't translated
+      if translated_attributes.include?(attr)
+        #map translation key to translated attribute name
+        name = tx_key_to_attribute_name(attr, locale)
+        #get value, converting template formats if required
+        value = tx_to_attribute_value(attr, tx_attributes)
+        #add to hash for updating
+        to_update[name] = value
+      end
+    end
+    self.update!(to_update)
   end
 
   def tx_slug
@@ -51,6 +65,22 @@ module TransifexSerialisable
     TransifexStatus.find_by_model(self)
   end
 
+  def tx_key_to_attribute_name(attr, locale)
+    if attr.end_with?("_html")
+      attr.to_s.gsub("_html", "") + "_#{locale}".to_sym
+    else
+      "#{attr}_#{locale}".to_sym
+    end
+  end
+
+  def tx_to_attribute_value(attr, tx_attributes)
+    if self.class.tx_templated_attribute?(attr)
+      yaml_template_to_mustache(tx_attributes[attr])
+    else
+      tx_attributes[attr]
+    end
+  end
+
   def tx_attribute_key(attr)
     self.class.tx_html_field?(attr) ? "#{attr}_html".to_sym : attr
   end
@@ -58,7 +88,6 @@ module TransifexSerialisable
   def tx_value(attr)
     #TODO is there a better way to access the HTML?
     value = self.class.tx_rich_text_field?(attr) ? send(attr).to_s : self[attr]
-    #TODO need to change content to handle substitutions
     self.class.tx_templated_attribute?(attr) ? mustache_to_yaml(value) : value
   end
 
@@ -67,6 +96,11 @@ module TransifexSerialisable
   end
 
   private
+
+  #TODO this needs work
+  def yaml_template_to_mustache(value)
+    value.gsub(/%{/, "{{").gsub(/}/, "}}")
+  end
 
   def mustache_to_yaml(value)
     value.gsub(/{{/, "%{").gsub(/}}/, "}")
