@@ -107,8 +107,8 @@ describe 'ActivityType' do
         "<div class=\"trix-content\">\n  description\n</div>\n")
         expect(activity_type.tx_value(:school_specific_description)).to eql("<div class=\"trix-content\">\n  Description %{chart}\n</div>\n")
       end
-      it 'produces the expected record key' do
-        expect(activity_type.record_key).to eq "activity_type_#{activity_type.id}".to_sym
+      it 'produces the expected resource key' do
+        expect(activity_type.resource_key).to eq "activity_type_#{activity_type.id}".to_sym
       end
       it 'maps all translated fields' do
         data = activity_type.tx_serialise
@@ -126,6 +126,11 @@ describe 'ActivityType' do
         expect(TransifexStatus.count).to eq 1
         expect(activity_type.tx_status).to eq status
       end
+    end
+    context 'when updating from transifex' do
+      it 'updates simple fields'
+      it 'updates HTML fields'
+      it 'translates the template syntax'
     end
   end
 end

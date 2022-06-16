@@ -124,36 +124,148 @@ describe Transifex::Synchroniser, type: :service do
   end
 
   describe '#pull' do
+    let(:tx_created_at)  { Date.today }
+    let(:tx_last_pulled) { nil }
+    let!(:status) { create(:transifex_status, record_type: "ActivityType", record_id: activity_type.id, tx_created_at: tx_created_at, tx_last_pull: tx_last_pulled)}
+    context 'when not created' do
+      let(:tx_created_at) { nil }
+      it 'does not do a pull' do
+        expect(service.pull).to be false
+      end
+    end
+
     context 'when not reviewed' do
-      it 'does not do a pull'
+      before(:each) do
+        allow_any_instance_of(Transifex::Service).to receive(:reviews_completed?).and_return(false)
+      end
+      it 'does not do a pull' do
+        expect(service.pull).to be false
+      end
     end
 
-    context 'when reviewed' do
-      it 'pulls the data'
-      it 'updated the record'
+    context 'when translations are reviewed' do
+      let(:translations) { {} }
+      before(:each) do
+        allow_any_instance_of(Transifex::Service).to receive(:reviews_completed?).and_return(true)
+        expect_any_instance_of(Transifex::Service).to receive(:pull).and_return(translations)
+      end
+
+      it 'pulls the data' do
+        expect(status.tx_last_pull).to be_nil
+        expect(service.pull).to be true
+        status.reload
+        expect(status.tx_last_pull).to_not be_nil
+      end
+
+      it 'updates the record'
     end
 
-    context 'when no changes in transifex' do
-      it 'does not do a pull'
+    context 'when not changed in transifex' do
+      let(:tx_last_pulled) { Time.zone.now }
+      before(:each) do
+        allow_any_instance_of(Transifex::Service).to receive(:reviews_completed?).and_return(true)
+        allow_any_instance_of(Transifex::Service).to receive(:last_reviewed).and_return(Date.today - 1)
+      end
+
+      it 'doesnt do a pull' do
+        expect(service.pull).to be false
+      end
+    end
+
+    context 'when changed in transifex' do
+      let(:yesterday)      { Date.today - 1 }
+      let(:tx_last_pulled) { yesterday }
+      before(:each) do
+        allow_any_instance_of(Transifex::Service).to receive(:reviews_completed?).and_return(true)
+        allow_any_instance_of(Transifex::Service).to receive(:last_reviewed).and_return(Time.zone.now)
+        expect_any_instance_of(Transifex::Service).to receive(:pull).and_return({})
+      end
+
+      it 'does a pull' do
+        expect(service.pull).to be true
+        status.reload
+        expect(status.tx_last_pull).to_not eq yesterday
+      end
     end
   end
 
   describe '#push' do
+    let(:tx_created_at)  { nil }
+    let(:tx_last_pushed) { nil }
+    let!(:status) { create(:transifex_status, record_type: "ActivityType", record_id: activity_type.id, tx_created_at: tx_created_at, tx_last_push: tx_last_pushed)}
+
     context 'when not created' do
-      it 'pushes the data'
+      before(:each) do
+        expect_any_instance_of(Transifex::Service).to receive(:create_resource).and_return true
+        expect_any_instance_of(Transifex::Service).to receive(:push).and_return true
+      end
+      it 'creates the resource and pushes' do
+        expect(service.push).to be true
+        status.reload
+        expect(status.tx_created_at).to_not be_nil
+        expect(status.tx_last_push).to_not be_nil
+      end
     end
     context 'when there are local changes' do
-      it 'pushes the data'
+      let(:yesterday)      { Date.today - 1 }
+      let(:tx_created_at) { yesterday }
+      let(:tx_last_pushed) { yesterday }
+      before(:each) do
+        expect_any_instance_of(Transifex::Service).to receive(:push).and_return true
+      end
+
+      it 'pushes the data' do
+        #activity type updated_at will be Time.zone.now
+        #so should push as tx dates are yesterday
+        expect(service.push).to be true
+        status.reload
+        expect(status.tx_last_push).to_not eq yesterday
+      end
     end
     context 'when there are no recent changes' do
-      it 'does not push'
+      let(:tx_created_at) { Date.today - 1}
+      let(:tx_last_pushed) { Time.zone.now }
+      it 'does not push' do
+        expect(service.push).to be false
+      end
     end
   end
 
   describe '#synchronise' do
-    it 'does a pull then a push'
-    it 'does not pull if just pushed'
-    it 'returns some stats?'
+    let(:tx_created_at)  { nil }
+    let(:tx_last_pushed) { nil }
+    let!(:status) { create(:transifex_status, record_type: "ActivityType", record_id: activity_type.id, tx_created_at: tx_created_at, tx_last_push: tx_last_pushed)}
+
+    context 'not created yet' do
+      before(:each) do
+        expect_any_instance_of(Transifex::Service).to receive(:create_resource).and_return true
+        expect_any_instance_of(Transifex::Service).to receive(:push).and_return true
+      end
+
+      it 'only does a push' do
+        pulled, pushed = service.synchronise
+        expect(pulled).to eq false
+        expect(pushed).to eq true
+        status.reload
+        expect(status.tx_created_at).to_not be_nil
+      end
+    end
+    context 'when changes to pull and no changes to push' do
+      let(:tx_created_at) { Date.today }
+      let(:tx_last_pushed) { Time.zone.now }
+      before(:each) do
+        expect_any_instance_of(Transifex::Service).to receive(:reviews_completed?).and_return true
+        expect_any_instance_of(Transifex::Service).to receive(:pull).and_return({})
+      end
+
+      it 'does a pull only' do
+        pulled, pushed = service.synchronise
+        expect(pulled).to eq true
+        expect(pushed).to eq false
+        status.reload
+        expect(status.tx_last_pull).to_not be_nil
+      end
+    end
   end
 
 end

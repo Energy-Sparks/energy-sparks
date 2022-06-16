@@ -10,26 +10,33 @@ module Transifex
     end
 
     def synchronise
-      pull
-      push
+      pulled = pull
+      pushed = push
+      return pulled, pushed
     end
 
     def pull
-      #TODO: should only be if reviews_completed
-      if created_in_transifex? && (last_pulled.nil? || translations_updated_since_last_pull?)
-        data = transifex_service.pull(@tx_serialisable.slug, :cy)
+      if created_in_transifex? && reviews_completed? && (last_pulled.nil? || translations_updated_since_last_pull?)
+        data = transifex_service.pull(@tx_serialisable.tx_slug, :cy)
         #TODO
         @tx_serialisable.tx_update(data, :cy)
+        update_timestamp(:tx_last_pull)
+        return true
       end
+      false
     end
 
     def push
       unless created_in_transifex?
-        transifex_service.create_resource(@tx_serialisable.slug, @tx_serialisable.tx_categories)
+        transifex_service.create_resource(@tx_serialisable.tx_slug, @tx_serialisable.tx_categories)
+        update_timestamp(:tx_created_at)
       end
       if last_pushed.nil? || updated_since_last_pushed?
-        transifex_service.push(@tx_serialisable.slug, @tx_serialisable.tx_serialise)
+        transifex_service.push(@tx_serialisable.tx_slug, @tx_serialisable.tx_serialise)
+        update_timestamp(:tx_last_push)
+        return true
       end
+      return false
     end
 
     #Has the resource been created in Transifex?
@@ -54,7 +61,7 @@ module Transifex
 
     #Have the translations been completed and fully reviewed?
     def reviews_completed?
-      return transifex_service.reviews_completed?(@tx_serialisable.slug)
+      return transifex_service.reviews_completed?(@tx_serialisable.tx_slug)
     end
 
     #Has the model been updated since it was last pushed?
@@ -64,7 +71,7 @@ module Transifex
 
     #Has the resource been updated in Transifex since it was last pulled?
     def translations_updated_since_last_pull?
-      return transifex_service.last_reviewed(@tx_serialisable.slug) > last_pulled
+      return transifex_service.last_reviewed(@tx_serialisable.tx_slug) > last_pulled
     end
 
     private
@@ -75,6 +82,14 @@ module Transifex
 
     def transifex_status
       @tx_serialisable.tx_status
+    end
+
+    def update_timestamp(field)
+      status = transifex_status
+      if status.nil?
+        status = TransifexStatus.create_for!(@tx_serialisable)
+      end
+      status.update_attribute(field, Time.zone.now)
     end
   end
 end

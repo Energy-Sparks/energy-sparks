@@ -26,7 +26,7 @@ module TransifexSerialisable
       attr_key = tx_attribute_key(attr)
       attribs[attr_key] = tx_value(attr)
     end
-    data = { record_key => attribs }
+    data = { resource_key => attribs }
     return { en: data }
   end
 
@@ -39,8 +39,8 @@ module TransifexSerialisable
     #do a single model update
   end
 
-  def slug
-    record_key
+  def tx_slug
+    resource_key
   end
 
   def tx_categories
@@ -62,12 +62,14 @@ module TransifexSerialisable
     self.class.tx_templated_attribute?(attr) ? mustache_to_yaml(value) : value
   end
 
-  def mustache_to_yaml(value)
-    value.gsub(/{{/, "%{").gsub(/}}/, "}")
+  def resource_key
+    "#{self.class.model_name.i18n_key}_#{self.id}".to_sym
   end
 
-  def record_key
-    "#{self.class.model_name.i18n_key}_#{self.id}".to_sym
+  private
+
+  def mustache_to_yaml(value)
+    value.gsub(/{{/, "%{").gsub(/}}/, "}")
   end
 
   module ClassMethods
