@@ -20,3 +20,6 @@ en:
       last_word_connector: ", and "
       two_words_connector: " and "
       words_connector: ", "
+
+
+helpers: {select: {prompt: "Dewiswch os gwelwch yn dda"}, submit: {create: "Creu %{model}"}}

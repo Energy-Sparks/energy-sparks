@@ -8,6 +8,7 @@ module Transifex
 
     BASE_URL = 'https://rest.api.transifex.com/'.freeze
     ORGANIZATION = 'energy-sparks'.freeze
+    CONTENT_TYPE_JSON = 'application/vnd.api+json'.freeze
 
     def initialize(api_key, project, connection = nil)
       @api_key = api_key
@@ -40,6 +41,16 @@ module Transifex
       get_data(url)
     end
 
+    def create_resource_translations_async_downloads(slug, language)
+      url = make_url("resource_translations_async_downloads")
+      post_data(url, resource_translations_async_downloads_data(resource_id(slug), language))
+    end
+
+    def get_resource_translations_async_downloads(resource_translations_async_download_id)
+      url = make_url("resource_translations_async_downloads/#{resource_translations_async_download_id}")
+      get_data(url)
+    end
+
     def get_resource_language_stats(slug = nil, language = nil)
       if slug && language
         url = make_url("resource_language_stats/#{resource_language_id(slug, language)}")
@@ -54,7 +65,7 @@ module Transifex
     def headers
       {
         'Authorization' => "Bearer #{@api_key}",
-        'Content-Type' => 'application/vnd.api+json'
+        'Content-Type' => CONTENT_TYPE_JSON
       }
     end
 
@@ -79,7 +90,7 @@ module Transifex
     end
 
     def connection
-      @connection ||= Faraday.new(BASE_URL, headers: headers)
+      @connection ||= Faraday.new(BASE_URL, headers: headers) { |f| f.use FaradayMiddleware::FollowRedirects }
     end
 
     def get_data(url)
@@ -102,7 +113,15 @@ module Transifex
       # dump to console for setting up test data files
       # puts JSON.pretty_generate(JSON.parse(response.body), :indent => "\t")
 
-      JSON.parse(response.body)['data']
+      if json?(response)
+        JSON.parse(response.body)['data']
+      else
+        response.body
+      end
+    end
+
+    def json?(response)
+      response.headers["content-type"].include?(CONTENT_TYPE_JSON)
     end
 
     def error_message(response)
@@ -163,6 +182,34 @@ module Transifex
             }
           },
           "type": "resources"
+        }
+      }
+    end
+
+    def resource_translations_async_downloads_data(resource_id, language)
+      {
+        "data": {
+          "attributes": {
+            "content_encoding": "text",
+            "file_type": "default",
+            "mode": "default",
+            "pseudo": false
+          },
+          "relationships": {
+            "language": {
+              "data": {
+                "id": "l:#{language}",
+                "type": "languages"
+              }
+            },
+            "resource": {
+              "data": {
+                "id": resource_id,
+                "type": "resources"
+              }
+            }
+          },
+          "type": "resource_translations_async_downloads"
         }
       }
     end

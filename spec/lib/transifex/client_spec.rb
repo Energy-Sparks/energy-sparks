@@ -6,16 +6,17 @@ module Transifex
     let(:project)     { 'es-test' }
     let(:status)      { 200 }
     let(:success)     { true }
+    let(:headers)     { { "content-type" => "application/vnd.api+json" } }
     let(:body)        { { data: {} }.to_json }
-    let(:response)    { double(status: status, 'success?' => success, body: body) }
+    let(:response)    { double(status: status, 'success?' => success, headers: headers, body: body) }
     let(:connection)  { double(:faraday) }
 
     context 'when creating connection' do
-      let(:client)    { Transifex::Client.new(api_key, project) }
-      let(:headers)   { { "Authorization"=>"Bearer #{api_key}", "Content-Type"=>"application/vnd.api+json"} }
+      let(:client)          { Transifex::Client.new(api_key, project) }
+      let(:request_headers) { { "Authorization"=>"Bearer #{api_key}", "Content-Type"=>"application/vnd.api+json"} }
 
       it 'supplies headers' do
-        expect(Faraday).to receive(:new).with(Transifex::Client::BASE_URL, headers: headers).and_return(connection)
+        expect(Faraday).to receive(:new).with(Transifex::Client::BASE_URL, headers: request_headers).and_return(connection)
         expect(connection).to receive(:get).and_return(response)
         client.get_languages
       end
@@ -78,6 +79,45 @@ module Transifex
             expect(resource_language_stats["attributes"]["last_review_update"]).to eq('2022-06-15T14:30:49Z')
             expect(resource_language_stats["relationships"]["language"]["data"]["id"]).to eq('l:cy')
           end
+        end
+      end
+
+      context '#create_resource_strings_async_upload' do
+        let(:slug)          { 'slug-jh1' }
+        let(:content)       { 'some yaml' }
+        let(:body)          { File.read('spec/fixtures/transifex/create_resource_strings_async_upload.json') }
+        let(:expected_path) { "resource_strings_async_uploads" }
+
+        it 'requests url with path and returns data' do
+          expect(connection).to receive(:post).with(expected_path, anything).and_return(response)
+          ret = client.create_resource_strings_async_upload(slug, content)
+          expect(ret["id"]).to eq('2b3d4f24-4b37-46b2-b4a1-d5365ae1d3ca')
+        end
+      end
+
+      context '#create_resource_strings_async_upload' do
+        let(:slug)          { 'slug-jh1' }
+        let(:content)       { 'some yaml' }
+        let(:body)          { File.read('spec/fixtures/transifex/create_resource_strings_async_upload.json') }
+        let(:expected_path) { "resource_strings_async_uploads" }
+
+        it 'requests url with path and returns data' do
+          expect(connection).to receive(:post).with(expected_path, anything).and_return(response)
+          ret = client.create_resource_strings_async_upload(slug, content)
+          expect(ret["id"]).to eq('2b3d4f24-4b37-46b2-b4a1-d5365ae1d3ca')
+        end
+      end
+
+      context '#get_resource_strings_async_upload' do
+        let(:upload_id)     { 'abc-123' }
+        let(:body)          { File.read('spec/fixtures/transifex/get_resource_strings_async_upload.json') }
+        let(:expected_path) { "resource_strings_async_uploads/#{upload_id}" }
+
+        it 'requests url with path and returns data' do
+          expect(connection).to receive(:get).with(expected_path).and_return(response)
+          ret = client.get_resource_strings_async_upload(upload_id)
+          expect(ret["id"]).to eq('2b3d4f24-4b37-46b2-b4a1-d5365ae1d3ca')
+          expect(ret["attributes"]["status"]).to eq('succeeded')
         end
       end
     end
