@@ -91,4 +91,41 @@ describe 'ActivityType' do
       expect(ActivityType.for_subjects([subject_1, subject_2]).count).to eq(1)
     end
   end
+
+  context 'serialising for transifex' do
+    context 'when mapping fields' do
+      let!(:activity_type) { create(:activity_type, description: "description", school_specific_description: "Description {{chart}}")}
+      it 'produces the expected key names' do
+        expect(activity_type.tx_attribute_key(:name)).to eq :name
+        expect(activity_type.tx_attribute_key(:description)).to eq :description_html
+        expect(activity_type.tx_attribute_key(:school_specific_description)).to eq :school_specific_description_html
+        expect(activity_type.tx_attribute_key(:download_links)).to eq :download_links_html
+      end
+      it 'produces the expected tx values' do
+        expect(activity_type.tx_value(:name)).to eql activity_type.name
+        expect(activity_type.tx_value(:description)).to eql(
+        "<div class=\"trix-content\">\n  description\n</div>\n")
+        expect(activity_type.tx_value(:school_specific_description)).to eql("<div class=\"trix-content\">\n  Description %{chart}\n</div>\n")
+      end
+      it 'produces the expected record key' do
+        expect(activity_type.record_key).to eq "activity_type_#{activity_type.id}".to_sym
+      end
+      it 'maps all translated fields' do
+        data = activity_type.tx_serialise
+        expect(data[:en]).to_not be nil
+        key = "activity_type_#{activity_type.id}".to_sym
+        expect(data[:en][key]).to_not be nil
+        expect(data[:en][key].keys).to match_array([:name, :description_html, :school_specific_description_html, :download_links_html])
+      end
+      it 'created categories' do
+        expect(activity_type.tx_categories).to match_array(["activity_type"])
+      end
+      it 'fetches status' do
+        expect(activity_type.tx_status).to be_nil
+        status = TransifexStatus.create_for!(activity_type)
+        expect(TransifexStatus.count).to eq 1
+        expect(activity_type.tx_status).to eq status
+      end
+    end
+  end
 end
