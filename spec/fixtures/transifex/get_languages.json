@@ -1,0 +1,23 @@
+{
+  "data": [
+    {
+      "id": "l:cy",
+      "type": "languages",
+      "attributes": {
+        "code": "cy",
+        "name": "Welsh",
+        "rtl": false,
+        "plural_equation": "(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3",
+        "plural_rules": {
+          "one": "n is 1",
+          "two": "n is 2",
+          "many": "n is 8 or n is 11",
+          "other": "everything else"
+        }
+      },
+      "links": {
+        "self": "https://rest.api.transifex.com/languages/l:cy"
+      }
+    }
+  ]
+}

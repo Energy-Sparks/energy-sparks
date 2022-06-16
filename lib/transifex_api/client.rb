@@ -98,6 +98,10 @@ module TransifexApi
       raise NotAllowed.new(error_message(response)) if response.status == 403
       raise NotFound.new(error_message(response)) if response.status == 404
       raise ApiFailure.new(error_message(response)) unless response.success?
+
+      # dump to console for setting up test data files
+      # puts JSON.pretty_generate(JSON.parse(response.body), :indent => "\t")
+
       JSON.parse(response.body)['data']
     end
 
