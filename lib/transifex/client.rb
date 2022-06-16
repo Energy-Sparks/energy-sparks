@@ -25,9 +25,9 @@ module Transifex
       get_data(url)
     end
 
-    def create_resource(name, slug)
+    def create_resource(name, slug, categories = [], priority = 'normal')
       url = make_url("resources")
-      post_data(url, resource_data(name, slug, project_id))
+      post_data(url, resource_data(name, slug, project_id, categories, priority))
     end
 
     def create_resource_strings_async_upload(slug, content)
@@ -138,12 +138,14 @@ module Transifex
       }
     end
 
-    def resource_data(name, slug, project_id)
+    def resource_data(name, slug, project_id, categories, priority)
       {
         "data": {
           "attributes": {
             "accept_translations": true,
+            "categories": categories,
             "name": name,
+            "priority": priority,
             "slug": slug,
           },
           "relationships": {
