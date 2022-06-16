@@ -42,16 +42,15 @@ class TransportSurvey < ApplicationRecord
 
   def passengers_per_category
     passengers_per_cat = self.responses.with_transport_type.group(:category).sum(:passengers)
-    TransportType.categories.merge(nil => nil).transform_values { |v| passengers_per_cat[v] || 0 }
+    TransportType.categories.merge(other: nil).transform_values { |v| passengers_per_cat[v] || 0 }
   end
 
   def percentage_per_category
     passengers_per_category.transform_values { |v| v == 0 ? 0 : (v.to_f / total_passengers * 100) }
   end
 
-  # not sure if this is the best place for this
   def pie_chart_data
-    [{ name: 'Car', y: percentage_per_category['car'] }, { name: 'Other', y: percentage_per_category.except('car').values.sum }]
+    percentage_per_category.collect { |k, v| { name: k.humanize, y: v } }
   end
 
   def responses=(responses_attributes)
