@@ -28,7 +28,7 @@ describe 'TransportSurveys', type: :system do
             visit start_school_transport_surveys_path(school)
           end
 
-          it { expect(page).to have_content('Travel to School Surveys') }
+          it { expect(page).to have_content('Today\'s travel to school survey') }
           it { expect(page).to have_content('Survey today') }
           it { expect(page).to have_content('Javascript must be enabled to use this functionality.') }
           it { expect(page).to have_link('View all transport surveys') }
@@ -81,15 +81,14 @@ describe 'TransportSurveys', type: :system do
 
           context "and managing responses" do
             before(:each) do
-              # save_and_open_page
               within('table') do
                 click_link("Manage")
               end
             end
 
-            it "shows responses page" do
-              within('h3') do
-                expect(page).to have_content("Manage responses")
+            it "shows results" do
+              within("table") do
+                expect(page).to have_content("Survey time")
               end
             end
 
@@ -119,7 +118,6 @@ describe 'TransportSurveys', type: :system do
               expect(page).to_not have_content(nice_dates(transport_survey.run_on))
             end
           end
-
         end
       end
     end
@@ -163,10 +161,8 @@ describe 'TransportSurveys', type: :system do
             click_link("View results")
           end
 
-          it "shows results" do
-            within("h3") do
-              expect(page).to have_content("Results summary")
-            end
+          it "shows results page" do
+              expect(page).to have_css('#transport_surveys_pie')
           end
 
           it "doesn't show link to manage responses" do
@@ -226,10 +222,8 @@ describe 'TransportSurveys', type: :system do
             click_link("View results")
           end
 
-          it "shows results summary" do
-            within("h3") do
-              expect(page).to have_content("Results summary")
-            end
+          it "shows results page" do
+              expect(page).to have_css('#transport_surveys_pie')
           end
 
           it "doesn't show link to Survey today" do

@@ -4,7 +4,6 @@
 
 <%= render 'header_nav' %>
 <%= render 'nav' %>
-<h3>Results summary</h3>
 
 <div><strong><%= @transport_survey.total_passengers %> pupils</strong> were surveyed on <strong><%= nice_dates @transport_survey.run_on %></strong>.</div>
 <div>Their travel to school generated <strong><%= @transport_survey.total_carbon.round(2) %>kg CO2</strong>.</div>
