@@ -120,6 +120,64 @@ module Transifex
           expect(ret["attributes"]["status"]).to eq('succeeded')
         end
       end
+
+      context '#create_resource_translations_async_downloads' do
+        let(:slug)          { 'slug-jh1' }
+        let(:language)      { 'cy' }
+        let(:body)          { File.read('spec/fixtures/transifex/create_resource_translations_async_downloads.json') }
+        let(:expected_path) { "resource_translations_async_downloads" }
+
+        it 'requests url with path and returns data' do
+          expect(connection).to receive(:post).with(expected_path, anything).and_return(response)
+          ret = client.create_resource_translations_async_downloads(slug, language)
+          expect(ret["id"]).to eq('2fc50390-613e-4658-b613-077cd36af734')
+          expect(ret["attributes"]["status"]).to eq('pending')
+        end
+      end
+
+      context '#get_resource_translations_async_download' do
+        let(:download_id)   { 'xyz-987' }
+        let(:expected_path) { "resource_translations_async_downloads/#{download_id}" }
+
+        context 'when translation has not yet completed' do
+          let(:body)        { File.read('spec/fixtures/transifex/get_resource_translations_async_downloads_pending.json') }
+
+          it 'returns file contents' do
+            expect(connection).to receive(:get).with(expected_path).and_return(response)
+            contents = client.get_resource_translations_async_download(download_id)
+            expect(contents).to be_nil
+          end
+        end
+
+        context 'when translation has completed' do
+          let(:headers)     { { "content-type" => "text/yaml; charset=utf-8" } }
+          let(:body)        { 'some yaml' }
+
+          it 'returns file contents' do
+            expect(connection).to receive(:get).with(expected_path).and_return(response)
+            contents = client.get_resource_translations_async_download(download_id)
+            expect(contents).to eq('some yaml')
+          end
+        end
+
+        context 'when translation has errors' do
+          let(:body)        { File.read('spec/fixtures/transifex/get_resource_translations_async_downloads_errors.json') }
+          it 'raises error' do
+            expect(connection).to receive(:get).with(expected_path).and_return(response)
+            expect {
+              client.get_resource_translations_async_download(download_id)
+            }.to raise_error(Transifex::Client::TranslationsDownloadError)
+          end
+          it 'includes messages' do
+            expect(connection).to receive(:get).with(expected_path).and_return(response)
+            begin
+              client.get_resource_translations_async_download(download_id)
+            rescue => e
+              expect(e.message).to eq('parse_error: Could not decode JSON object')
+            end
+          end
+        end
+      end
     end
   end
 end

@@ -5,6 +5,7 @@ module Transifex
     class NotFound < StandardError; end
     class NotAllowed < StandardError; end
     class NotAuthorised < StandardError; end
+    class TranslationsDownloadError < StandardError; end
 
     BASE_URL = 'https://rest.api.transifex.com/'.freeze
     ORGANIZATION = 'energy-sparks'.freeze
@@ -46,9 +47,9 @@ module Transifex
       post_data(url, resource_translations_async_downloads_data(resource_id(slug), language))
     end
 
-    def get_resource_translations_async_downloads(resource_translations_async_download_id)
+    def get_resource_translations_async_download(resource_translations_async_download_id)
       url = make_url("resource_translations_async_downloads/#{resource_translations_async_download_id}")
-      get_data(url)
+      get_data_or_file(url)
     end
 
     def get_resource_language_stats(slug = nil, language = nil)
@@ -95,29 +96,49 @@ module Transifex
 
     def get_data(url)
       response = connection.get(url)
+      check_response_status(response)
       process_response(response)
     end
 
     def post_data(url, data)
       response = connection.post(url, data.to_json)
+      check_response_status(response)
       process_response(response)
     end
 
-    def process_response(response)
+    def get_data_or_file(url)
+      response = connection.get(url)
+      check_response_status(response)
+      process_response_or_file(response)
+    end
+
+    def check_response_status(response)
       raise BadRequest.new(error_message(response)) if response.status == 400
       raise NotAuthorised.new(error_message(response)) if response.status == 401
       raise NotAllowed.new(error_message(response)) if response.status == 403
       raise NotFound.new(error_message(response)) if response.status == 404
       raise ApiFailure.new(error_message(response)) unless response.success?
+    end
 
+    def process_response(response)
       # dump to console for setting up test data files
       # puts JSON.pretty_generate(JSON.parse(response.body), :indent => "\t")
+      JSON.parse(response.body)['data']
+    end
 
+    def process_response_or_file(response)
       if json?(response)
-        JSON.parse(response.body)['data']
+        data = JSON.parse(response.body)['data']
+        if data['attributes']['errors'].present?
+          raise TranslationsDownloadError.new(error_messages(data['attributes']['errors']))
+        end
       else
         response.body
       end
+    end
+
+    def error_messages(errors)
+      errors.map { |error| error["code"] + ": " + error["detail"] }.join('\n')
     end
 
     def json?(response)
