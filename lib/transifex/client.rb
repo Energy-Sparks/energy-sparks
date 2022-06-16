@@ -121,8 +121,6 @@ module Transifex
     end
 
     def process_response(response)
-      # dump to console for setting up test data files
-      # puts JSON.pretty_generate(JSON.parse(response.body), :indent => "\t")
       JSON.parse(response.body)['data']
     end
 
