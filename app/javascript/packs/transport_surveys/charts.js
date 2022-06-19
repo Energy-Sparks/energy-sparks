@@ -5,9 +5,12 @@ $(document).ready(function() { chart.render(); });
 const chart = ( function() {
 
   var chartId = 'transport_surveys_pie';
+  var colors = ["#97c086","#cd4851", "#e59757", "#7a9fb1"];
 
   function render() {
-    let pieChart = Highcharts.chart(chartId, commonChartOptions());
+    let chart_options = commonChartOptions();
+    chart_options.colors = colors;
+    let pieChart = Highcharts.chart(chartId, chart_options);
     pieChart.showLoading();
 
     ajaxCall()
