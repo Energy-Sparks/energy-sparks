@@ -42,7 +42,7 @@ class TransportSurvey < ApplicationRecord
 
   def passengers_per_category
     passengers_per_cat = self.responses.with_transport_type.group(:category).sum(:passengers)
-    TransportType.categories.merge(other: nil).transform_values { |v| passengers_per_cat[v] || 0 }
+    TransportType.categories_with_other.transform_values { |v| passengers_per_cat[v] || 0 }
   end
 
   def percentage_per_category

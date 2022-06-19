@@ -6,11 +6,33 @@
 <%= render 'nav' %>
 
 <% if @transport_survey.responses.any? %>
-  <div><strong><%= @transport_survey.total_passengers %> pupils</strong> were surveyed on <strong><%= nice_dates @transport_survey.run_on %></strong>.</div>
-  <div>Their travel to school generated <strong><%= @transport_survey.total_carbon.round(2) %>kg CO2</strong>.</div>
-  <div><strong><%= @transport_survey.percentage_per_category["active_travel"].round %>%</strong> used active travel, generating zero CO2, <strong><%= @transport_survey.percentage_per_category["public_transport"].round %>%</strong> travelled by public transport and <strong><%= @transport_survey.percentage_per_category["car"].round %>%</strong> travelled by car.</div>
+  <div class="mb-3">
+    <div><strong><%= @transport_survey.total_passengers %> pupils</strong> were surveyed on <strong><%= nice_dates @transport_survey.run_on %></strong>.</div>
+    <div>Their travel to school generated <strong><%= @transport_survey.total_carbon.round(2) %>kg CO2</strong>.</div>
+    <div><strong><%= @transport_survey.percentage_per_category["active_travel"].round %>%</strong> used active travel, generating zero CO2, <strong><%= @transport_survey.percentage_per_category["public_transport"].round %>%</strong> travelled by public transport and <strong><%= @transport_survey.percentage_per_category["car"].round %>%</strong> travelled by car.</div>
+  </div>
 
-  <div id="transport_surveys_pie"></div>
+  <div id="transport_surveys_pie" class="mb-3"></div>
+
+  <table class="table">
+    <thead class="thead-light">
+      <tr>
+        <th>Transport category</th>
+        <th>Total pupils</th>
+        <th>Percentage pupils</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% TransportType.categories_with_other.each do |cat, value| %>
+        <tr>
+          <td><%= cat.humanize %></td>
+          <td><%= @transport_survey.passengers_per_category[cat] %></td>
+          <td><%= @transport_survey.percentage_per_category[cat].round %>%</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
 <% else %>
   <h4>No responses have been collected</h4>
 <% end %>

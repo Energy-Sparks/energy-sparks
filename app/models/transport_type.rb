@@ -30,6 +30,10 @@ class TransportType < ApplicationRecord
 
   enum category: [:active_travel, :car, :public_transport]
 
+  def self.categories_with_other
+    TransportType.categories.merge(other: nil)
+  end
+
   def safe_destroy
     raise EnergySparks::SafeDestroyError, 'Transport type has associated responses' if responses.any?
     destroy
