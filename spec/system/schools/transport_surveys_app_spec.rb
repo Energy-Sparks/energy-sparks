@@ -98,7 +98,7 @@ describe 'TransportSurveys - App', type: :system do
                           click_button("Finish & save results 1")
                         end
 
-                        it { expect(page).to have_content("Results summary") }
+                        it { expect(page).to have_css('#transport_surveys_pie') }
                         it { expect(page).to have_content(Date.today.to_s(:es_full)) }
                         it { expect(page).to have_content("#{passengers} pupils") }
                         it { expect(page).to_not have_link("Manage responses") }
