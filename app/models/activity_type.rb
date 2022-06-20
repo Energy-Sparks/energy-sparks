@@ -26,6 +26,7 @@
 
 class ActivityType < ApplicationRecord
   extend Mobility
+  include TransifexSerialisable
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :description, backend: :action_text
   translates :school_specific_description, backend: :action_text
@@ -42,6 +43,10 @@ class ActivityType < ApplicationRecord
                       dictionary: 'english'
                     }
                   }
+
+  TX_ATTRIBUTE_MAPPING = {
+    school_specific_description: { templated: true },
+  }.freeze
 
   belongs_to :activity_category
 
@@ -98,6 +103,11 @@ class ActivityType < ApplicationRecord
 
   def activities_for_school(school)
     activities.for_school(school)
+  end
+
+  #override default name for this resource in transifex
+  def tx_name
+    name
   end
 
   private

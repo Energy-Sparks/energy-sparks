@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_10_084010) do
+ActiveRecord::Schema.define(version: 2022_06_15_090102) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1464,6 +1464,17 @@ ActiveRecord::Schema.define(version: 2022_06_10_084010) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "transifex_statuses", force: :cascade do |t|
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "tx_created_at"
+    t.datetime "tx_last_push"
+    t.datetime "tx_last_pull"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["record_type", "record_id"], name: "index_transifex_statuses_uniqueness", unique: true
   end
 
   create_table "transport_survey_responses", force: :cascade do |t|
