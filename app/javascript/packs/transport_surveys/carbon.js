@@ -1,39 +1,56 @@
-// logic mostly lifted from the old app.
+// Would be nice to pull these straight from Analytics at some point
+const UK_ELECTRIC_GRID_CO2_KG_KWH = 0.230;
+const TREE_CO2_KG_YEAR = 22;
+const TV_POWER_KW = 0.04;
+const COMPUTER_CONSOLE_POWER_KW = 0.2;
+const CARNIVORE_DINNER_CO2_KG = 1.0;
+const VEGETARIAN_DINNER_CO2_KG = 0.5;
+const SMARTPHONE_CHARGE_kWH = 3.6 * 2.0 / 1000.0;
 
-
-export const carbonExamples = [
+const carbonExamples = [
   {
     name: 'Tree',
     emoji: '🌳',
-    kgPerActivity: 0.06,
+    co2_kg: TREE_CO2_KG_YEAR / 365,
     unit: 'day',
     statement: (amount, unit, emoji) => `1 tree would absorb this amount of CO2 in ${amount} ${unit} ${emoji}!`,
   }, {
     name: 'TV',
     emoji: '📺',
-    kgPerActivity: 0.008,
+    co2_kg: TV_POWER_KW * UK_ELECTRIC_GRID_CO2_KG_KWH,
     unit: 'hour',
-    statement: (amount, unit, emoji) => `That\'s the same as ${amount} ${unit} of TV! ${emoji}!`,
+    statement: (amount, unit, emoji) => `That\'s the same as ${amount} ${unit} of TV ${emoji}!`,
   }, {
     name: 'Gaming',
     emoji: '🎮',
-    kgPerActivity: 0.04,
+    co2_kg: COMPUTER_CONSOLE_POWER_KW * UK_ELECTRIC_GRID_CO2_KG_KWH,
     unit: 'hour',
-    statement: (amount, unit, emoji) => `That\'s the same as playing ${amount} ${unit} of computer games! ${emoji}!`,
+    statement: (amount, unit, emoji) => `That\'s the same as playing ${amount} ${unit} of computer games ${emoji}!`,
   }, {
     name: 'Meat dinners',
     emoji: '🍲',
-    kgPerActivity: 1,
+    co2_kg: CARNIVORE_DINNER_CO2_KG,
     unit: 'meat dinner',
     statement: (amount, unit, emoji) => `That\'s the same as ${amount} ${unit} ${emoji}!`,
   }, {
     name: 'Veggie dinners',
     emoji: '🥗',
-    kgPerActivity: 0.5,
+    co2_kg: VEGETARIAN_DINNER_CO2_KG,
     unit: 'veggie dinner',
     statement: (amount, unit, emoji) => `That\'s the same as ${amount} ${unit} ${emoji}!`,
+  }, {
+    name: 'Smart phones',
+    emoji: '📱',
+    co2_kg: SMARTPHONE_CHARGE_kWH * UK_ELECTRIC_GRID_CO2_KG_KWH,
+    unit: 'smart phone',
+    statement: (amount, unit, emoji) => `That\'s the same as charging ${amount} ${unit} ${emoji}!`,
   }
 ];
+
+const parkAndStrideTimeMins = function(timeMins) {
+  // take 15 mins off a park and stride journey
+  return (timeMins > 15 ? timeMins - 15 : 0);
+};
 
 export const carbonEquivalence = function(carbonKgs) {
   if (carbonKgs === 0) {
@@ -44,7 +61,7 @@ export const carbonEquivalence = function(carbonKgs) {
     while (examples.length > 0) {
       let i = Math.floor(Math.random() * examples.length);
       let example = examples[i];
-      let amount = Math.round(carbonKgs / example.kgPerActivity);
+      let amount = Math.round(carbonKgs / example.co2_kg);
       if (amount >= 1) {
         return example.statement(amount, pluralise(example.unit, amount), example.emoji);
       } else {
@@ -58,11 +75,6 @@ export const carbonEquivalence = function(carbonKgs) {
 export const pluralise = function(word, amount = 1) {
   return `${word}${amount == 1 ? '' : 's'}`;
 }
-
-const parkAndStrideTimeMins = function(timeMins) {
-  // take 15 mins off a park and stride journey
-  return (timeMins > 15 ? timeMins - 15 : 0);
-};
 
 export const carbonCalc = function(transport, timeMins, passengers) {
   if (transport) {

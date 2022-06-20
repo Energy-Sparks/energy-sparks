@@ -1,10 +1,9 @@
 "use strict"
 
 import { storage } from './transport_surveys/storage';
-import { carbonCalc, carbonExamples, carbonEquivalence, pluralise } from './transport_surveys/carbon';
+import { carbonCalc, carbonEquivalence, pluralise } from './transport_surveys/carbon';
 import { notifier } from './transport_surveys/notifier';
 import * as handlebarsHelpers from './transport_surveys/handlebars_helpers';
-
 
 $(document).ready(function() {
 
