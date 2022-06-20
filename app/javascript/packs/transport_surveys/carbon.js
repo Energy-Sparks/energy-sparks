@@ -17,7 +17,7 @@ export const carbonExamples = [
   }, {
     name: 'Gaming',
     emoji: '🎮',
-    kgPerActivity: 0.008,
+    kgPerActivity: 0.04,
     unit: 'hour',
     statement: (amount, unit, emoji) => `That\'s the same as playing ${amount} ${unit} of computer games! ${emoji}!`,
   }, {
