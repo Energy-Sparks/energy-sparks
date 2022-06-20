@@ -56,7 +56,7 @@ export const funWeight = function(carbonKgs) {
 const parkAndStrideTimeMins = function(timeMins) {
   // take 15 mins off a park and stride journey
   return (timeMins > 15 ? timeMins - 15 : 0);
-}
+};
 
 export const carbonCalc = function(transport, timeMins, passengers) {
   if (transport) {
@@ -67,4 +67,4 @@ export const carbonCalc = function(transport, timeMins, passengers) {
   } else {
     return 0;
   }
-}
+};
