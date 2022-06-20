@@ -1,46 +1,37 @@
 // logic mostly lifted from the old app.
 
+
 export const carbonExamples = [
   {
     name: 'Tree',
     emoji: '🌳',
-    equivalentStatement: function(carbonKgs) {
-      const treeAbsorbsionKgPerDay = 0.06;
-      let days = Math.round(carbonKgs / treeAbsorbsionKgPerDay);
-      return `1 tree would absorb this amount of CO2 in ${days} day(s) 🌳!`;
-    }
+    kgPerActivity: 0.06,
+    unit: 'day',
+    statement: (amount, unit, emoji) => `1 tree would absorb this amount of CO2 in ${amount} ${unit} ${emoji}!`,
   }, {
     name: 'TV',
     emoji: '📺',
-    equivalentStatement: function(carbonKgs) {
-      const tvKgPerHour = 0.008;
-      let hours = Math.round(carbonKgs / tvKgPerHour);
-      return `That's the same as ${hours} hour${hours === 1 ? '' : 's'} of TV 📺!`;
-    },
+    kgPerActivity: 0.008,
+    unit: 'hour',
+    statement: (amount, unit, emoji) => `That\'s the same as ${amount} ${unit} of TV! ${emoji}!`,
   }, {
     name: 'Gaming',
     emoji: '🎮',
-    equivalentStatement: function(carbonKgs) {
-      const gamingKgPerHour = 0.008;
-      let hours = Math.round(carbonKgs / gamingKgPerHour);
-      return `That's the same as playing ${hours} hour${hours === 1 ? '' : 's'} of computer games 🎮!`;
-    },
+    kgPerActivity: 0.008,
+    unit: 'hour',
+    statement: (amount, unit, emoji) => `That\'s the same as playing ${amount} ${unit} of computer games! ${emoji}!`,
   }, {
     name: 'Meat dinners',
     emoji: '🍲',
-    equivalentStatement: function(carbonKgs) {
-      const kgPerMeatDinner = 1;
-      let meatDinners = Math.round(carbonKgs / kgPerMeatDinner);
-      return `That's the same as ${meatDinners} meat dinner${meatDinners === 1 ? '' : 's'} 🍲!`;
-    },
+    kgPerActivity: 1,
+    unit: 'meat dinner',
+    statement: (amount, unit, emoji) => `That\'s the same as ${amount} ${unit} ${emoji}!`,
   }, {
     name: 'Veggie dinners',
     emoji: '🥗',
-    equivalentStatement: function(carbonKgs) {
-      const kgPerVeggieDinner = 0.5;
-      let veggieDinners = Math.round(carbonKgs / kgPerVeggieDinner);
-      return `That's the same as ${veggieDinners} veggie dinner${veggieDinners === 1 ? '' : 's'} 🥗!`;
-    },
+    kgPerActivity: 0.5,
+    unit: 'veggie dinner',
+    statement: (amount, unit, emoji) => `That\'s the same as ${amount} ${unit} ${emoji}!`,
   },
 ];
 
@@ -48,10 +39,15 @@ export const funWeight = function(carbonKgs) {
   if (carbonKgs === 0) {
     return "That's Carbon Neutral 🌳!";
   } else {
-    let randomEquivalent = carbonExamples[Math.floor(Math.random() * carbonExamples.length)];
-    return randomEquivalent.equivalentStatement(carbonKgs);
+    let example = carbonExamples[Math.floor(Math.random() * carbonExamples.length)];
+    let amount = Math.round(carbonKgs / example.kgPerActivity);
+    return example.statement(amount, pluralise(example.unit, amount), example.emoji);
   }
 };
+
+const pluralise = function(word, amount = 1) {
+  return `${word}${amount === 1 ? '' : 's'}`;
+}
 
 const parkAndStrideTimeMins = function(timeMins) {
   // take 15 mins off a park and stride journey
