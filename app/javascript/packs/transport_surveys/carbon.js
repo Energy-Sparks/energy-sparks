@@ -55,8 +55,8 @@ export const carbonEquivalence = function(carbonKgs) {
   }
 };
 
-const pluralise = function(word, amount = 1) {
-  return `${word}${amount === 1 ? '' : 's'}`;
+export const pluralise = function(word, amount = 1) {
+  return `${word}${amount == 1 ? '' : 's'}`;
 }
 
 const parkAndStrideTimeMins = function(timeMins) {
