@@ -1,7 +1,7 @@
 "use strict"
 
 import { storage } from './transport_surveys/storage';
-import { carbonCalc, carbonExamples, funWeight } from './transport_surveys/carbon';
+import { carbonCalc, carbonExamples, carbonEquivalence } from './transport_surveys/carbon';
 import { notifier } from './transport_surveys/notifier';
 import * as handlebarsHelpers from './transport_surveys/handlebars_helpers';
 
@@ -282,13 +282,12 @@ $(document).ready(function() {
 
     let carbon = carbonCalc(transport_type, response['journey_minutes'], response['passengers']);
     let nice_carbon = carbon === 0 ? '0' : carbon.toFixed(3)
-    let fun_weight = funWeight(carbon);
 
     $('#display-time').text(response['journey_minutes']);
     $('#display-transport').text(transport_type.image + " " + transport_type.name);
     $('#display-passengers').text(response['passengers']);
     $('#display-carbon').text(nice_carbon + "kg");
-    $('#display-carbon-equivalent').text(funWeight(carbon));
+    $('#display-carbon-equivalent').text(carbonEquivalence(carbon));
   }
 
 });

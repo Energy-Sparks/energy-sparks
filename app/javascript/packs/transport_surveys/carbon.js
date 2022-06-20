@@ -32,16 +32,26 @@ export const carbonExamples = [
     kgPerActivity: 0.5,
     unit: 'veggie dinner',
     statement: (amount, unit, emoji) => `That\'s the same as ${amount} ${unit} ${emoji}!`,
-  },
+  }
 ];
 
-export const funWeight = function(carbonKgs) {
+export const carbonEquivalence = function(carbonKgs) {
   if (carbonKgs === 0) {
     return "That's Carbon Neutral 🌳!";
   } else {
-    let example = carbonExamples[Math.floor(Math.random() * carbonExamples.length)];
-    let amount = Math.round(carbonKgs / example.kgPerActivity);
-    return example.statement(amount, pluralise(example.unit, amount), example.emoji);
+    // pick random example until one returning a non-zero amount is found
+    var examples = carbonExamples;
+    while (examples.length > 0) {
+      let i = Math.floor(Math.random() * examples.length);
+      let example = examples[i];
+      let amount = Math.round(carbonKgs / example.kgPerActivity);
+      if (amount >= 1) {
+        return example.statement(amount, pluralise(example.unit, amount), example.emoji);
+      } else {
+        examples.splice(i, 1); // remove as tried this example
+      }
+    }
+    return ""; // no equivalence found
   }
 };
 
