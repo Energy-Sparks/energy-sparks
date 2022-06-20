@@ -21,8 +21,8 @@
       <tbody>
         <% @intervention_types.where(intervention_type_group: intervention_type_group).each do |intervention_type| %>
           <tr class="<%= active(intervention_type.active) %>" scope="row" >
-            <td><%= link_to intervention_type.title, admin_intervention_type_path(intervention_type) %></td>
-            <td><%= intervention_type.points %></td>
+            <td><%= link_to intervention_type.name, intervention_type_path(intervention_type) %></td>
+            <td><%= intervention_type.score %></td>
             <td><%= link_to 'Edit', edit_admin_intervention_type_path(intervention_type), class: 'btn btn-sm' %></td>
           </tr>
         <% end %>

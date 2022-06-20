@@ -23,7 +23,7 @@ gem 'closed_struct'
 gem 'pg_search'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.50.4'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.50.5.1'
 #gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'aws-eb-test'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
@@ -98,6 +98,10 @@ gem 'eventbrite_sdk'
 gem 'wisper', '2.0.0'
 gem 'stateful_enum', '0.6.0'
 gem 'cocoon'
+
+gem 'i18n-tasks', '~> 1.0.10'
+gem 'mobility', '~> 1.2.6'
+gem 'mobility-actiontext', '~> 1.1.1'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

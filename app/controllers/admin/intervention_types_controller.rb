@@ -1,14 +1,10 @@
 module Admin
   class InterventionTypesController < AdminController
+    include LocaleHelper
     load_and_authorize_resource
 
     def index
-      @intervention_types = @intervention_types.includes(:intervention_type_group).order("intervention_types.title", :title)
-    end
-
-    def show
-      #      @recorded = Intervention.where(activity_type: @activity_type).count
-      #      @school_count = Activity.select(:school_id).where(activity_type: @activity_type).distinct.count
+      @intervention_types = @intervention_types.includes(:intervention_type_group).order("intervention_types.name", :name)
     end
 
     def new
@@ -55,15 +51,17 @@ module Admin
     end
 
     def intervention_type_params
-      params.require(:intervention_type).permit(:title,
+      translated_params = t_params([:name, :summary, :description, :download_links])
+      params.require(:intervention_type).permit(translated_params,
+          :name,
           :summary,
           :description,
           :download_links,
           :image,
           :active,
           :intervention_type_group_id,
-          :points,
-          :other,
+          :score,
+          :custom,
           intervention_type_suggestions_attributes: suggestions_params
       )
     end

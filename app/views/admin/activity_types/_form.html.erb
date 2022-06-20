@@ -6,9 +6,11 @@
 
   <%= render 'shared/trix_components/chart_list', chart_list: @chart_list %>
 
-  <%= f.input :name, as: :string %>
-  <%= f.input :activity_category_id, as: :select, collection: ActivityCategory.all, include_blank: false %>
+  <% I18n.available_locales.each do |locale| %>
+    <%= f.input t_field(:name, locale), as: :string %>
+  <% end %>
 
+  <%= f.input :activity_category_id, as: :select, collection: ActivityCategory.all, include_blank: false %>
 
   <%= f.label 'Image' %>
   <p class="small">This image will appear in the right-hand panel next to both non-specific and school-specific descriptions.</p>
@@ -36,11 +38,13 @@
     <%= f.rich_text_area :download_links %>
   </div>
 
-  <div class="description-trix-editor">
-    <%= f.label 'Description', for: :description %>
-    <p class="small">Note: This is the non-school specific description for non-logged in users. The site will default to this one if the school specific one has not been set.</p>
-    <%= f.rich_text_area :description %>
-  </div>
+  <% I18n.available_locales.each do |locale| %>
+    <div class="description-trix-editor <%= locale %>">
+      <%= f.label t_field(:description, locale) %>
+      <p class="small">Note: This is the non-school specific description for non-logged in users. The site will default to this one if the school specific one has not been set.</p>
+      <%= f.rich_text_area t_field(:description, locale) %>
+    </div>
+  <% end %>
 
   <div class="school-specific-description-trix-editor chart-list">
     <%= f.label 'School specific description', for: :school_specific_description %>

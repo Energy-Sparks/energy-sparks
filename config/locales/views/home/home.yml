@@ -1,0 +1,26 @@
+---
+en:
+  home:
+    carousel:
+      message_1: Help your school save energy, money and prevent climate change.
+      message_2: Show your school how much and when you are using energy.
+      message_3: Get tailored energy saving advice designed just for your school.
+      message_4: Get automated alerts to let you know when your energy use changes.
+      message_5: Explore eco-team and classroom activities for pupils.
+      message_6: Share energy saving ideas and compete against other schools.
+    enrol_your_school: Enrol your school
+    funnels:
+      local_authority:
+        button: Energy Sparks for Local Authorities
+        text: Learn more about how Energy Sparks can work with Local Authorities to support schools in their area.
+        title: For Local Authorities
+      multi_academy:
+        button: Energy Sparks for Multi-Academy Trusts
+        text: Learn more about how Energy Sparks supports Multi-Academy Trusts.
+        title: For Multi-Academy Trusts
+      school:
+        button: Energy Sparks for Schools
+        text: Learn more about how Energy Sparks can support your school.
+        title: For schools
+    sub_title: Energy Sparks is an online, school-specific energy analysis tool & energy education programme.
+    title: We help schools become more energy efficient and fight climate change.

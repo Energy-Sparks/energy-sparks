@@ -1,5 +1,5 @@
 <% content_for :page_title do %>
-  <%= @intervention_type.title %>
+  <%= @intervention_type.name %>
 <% end %>
 
 <div class="row padded-row">
@@ -7,7 +7,7 @@
     <%= render 'image', intervention_type: @intervention_type, css_class: "" %>
   </div>
   <div class="col-md-6">
-    <h2><%= @intervention_type.title %></h2>
+    <h2><%= @intervention_type.name %></h2>
     <p><%= @intervention_type.summary %></p>
     <div>
       <%= render 'intervention_types/intervention_type_points', intervention_type: @intervention_type %>
@@ -19,7 +19,7 @@
 </div>
 
 <% if current_user.nil? %>
-  <%= render 'shared/activities/prompt_login_to_record', label: 'action', score: @intervention_type.points, return_path: intervention_type_path(@intervention_type) %>
+  <%= render 'shared/activities/prompt_login_to_record', label: 'action', score: @intervention_type.score, return_path: intervention_type_path(@intervention_type) %>
 <% end %>
 
 <% if current_user_school && can?(:create, Observation) %>
@@ -44,3 +44,9 @@
     <% end %>
   </div>
 </div>
+
+<% if can?(:edit, @intervention_type) %>
+  <div class="row padded-row">
+    <p><%= link_to 'Edit', edit_admin_intervention_type_path(@intervention_type), class: 'btn' %></p>
+  </div>
+<% end %>

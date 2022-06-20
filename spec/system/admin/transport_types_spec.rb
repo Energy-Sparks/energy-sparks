@@ -41,6 +41,8 @@ describe "admin transport type", type: :system, include_application_helper: true
       'Can share' => y_n(transport_type.can_share),
       'Park and stride' => y_n(transport_type.park_and_stride),
       'Note' => transport_type.note,
+      'Category' => transport_type.category.humanize,
+      'Position' => transport_type.position,
       'Created at' => nice_date_times(transport_type.created_at),
       'Updated at' => nice_date_times(transport_type.updated_at)
     } }
@@ -52,12 +54,15 @@ describe "admin transport type", type: :system, include_application_helper: true
       'Carbon (kg co2e/km)' => 0.146,
       'Can share' => 'Yes',
       'Park and stride' => 'Yes',
+      'Category' => 'Public transport',
+      'Position' => 1,
       'Note' => 'Why not?'
     } }
 
-    let(:boolean_attributes) { ['Can share', 'Park and stride'] }
-    let(:viewable_attributes) { attributes.excluding('Created at', 'Updated at') }
-    let(:editable_attributes) { attributes.excluding('Created at', 'Updated at') }
+    let(:checkbox_attributes) { ['Can share', 'Park and stride'] }
+    let(:select_attributes) { ['Category'] }
+    let(:display_attributes) { attributes.except('Created at', 'Updated at') }
+    let(:form_attributes) { attributes.except('Created at', 'Updated at') }
 
     describe "Viewing the index" do
       before(:each) do
@@ -66,7 +71,7 @@ describe "admin transport type", type: :system, include_application_helper: true
 
       it "lists created transport type" do
         within('table') do
-          expect(page).to have_selector(:table_row, viewable_attributes)
+          expect(page).to have_selector(:table_row, display_attributes)
         end
       end
 
@@ -174,10 +179,13 @@ describe "admin transport type", type: :system, include_application_helper: true
 
       it "shows prefilled form elements" do
         within('form') do
-          editable_attributes.excluding(boolean_attributes).each do |key, value|
+          form_attributes.excluding(checkbox_attributes + select_attributes).each do |key, value|
             expect(page).to have_field(key, with: value)
           end
-          boolean_attributes.each do |field_name|
+          form_attributes.slice(*select_attributes).each do |key, value|
+            expect(page).to have_select(key, selected: value)
+          end
+          checkbox_attributes.each do |field_name|
             expect(page).to have_unchecked_field(field_name)
           end
         end
@@ -186,10 +194,13 @@ describe "admin transport type", type: :system, include_application_helper: true
       context "when entering new values" do
         context "with valid attributes" do
           before(:each) do
-            new_valid_attributes.excluding(boolean_attributes).each do |key, value|
+            new_valid_attributes.excluding(checkbox_attributes + select_attributes).each do |key, value|
               fill_in key, with: value
             end
-            boolean_attributes.each do |field_name|
+            new_valid_attributes.slice(*select_attributes).each do |key, value|
+              select value, from: key
+            end
+            checkbox_attributes.each do |field_name|
               check field_name
             end
             click_button 'Save'
@@ -242,7 +253,13 @@ describe "admin transport type", type: :system, include_application_helper: true
           ['Speed (km/h)', 'Carbon (kg co2e/km)'].each do |field_name|
             expect(page).to have_field(field_name, with: 0.0)
           end
-          boolean_attributes.each do |field_name|
+          ['Position'].each do |field_name|
+            expect(page).to have_field(field_name, with: 0)
+          end
+          select_attributes.each do |field_name|
+            expect(page).to have_select(field_name, selected: [])
+          end
+          checkbox_attributes.each do |field_name|
             expect(page).to have_unchecked_field(field_name)
           end
         end
@@ -251,10 +268,13 @@ describe "admin transport type", type: :system, include_application_helper: true
       context "when entering new values" do
         context "with valid attributes" do
           before(:each) do
-            new_valid_attributes.excluding(boolean_attributes).each do |key, value|
+            new_valid_attributes.excluding(checkbox_attributes + select_attributes).each do |key, value|
               fill_in key, with: value
             end
-            boolean_attributes.each do |field_name|
+            new_valid_attributes.slice(*select_attributes).each do |key, value|
+              select value, from: key
+            end
+            checkbox_attributes.each do |field_name|
               check field_name
             end
             click_button 'Save'
@@ -303,7 +323,7 @@ describe "admin transport type", type: :system, include_application_helper: true
             visit admin_transport_types_path
           end
 
-          it { expect(page).to have_selector(:table_row, viewable_attributes) }
+          it { expect(page).to have_selector(:table_row, display_attributes) }
 
           it "disables delete button" do
             expect(find_link("Delete")['class']).to match /disabled/
@@ -315,7 +335,7 @@ describe "admin transport type", type: :system, include_application_helper: true
             visit admin_transport_types_path
           end
 
-          it { expect(page).to have_selector(:table_row, viewable_attributes) }
+          it { expect(page).to have_selector(:table_row, display_attributes) }
 
           context "and clicking delete and confirming" do
             before(:each) do
@@ -334,7 +354,7 @@ describe "admin transport type", type: :system, include_application_helper: true
 
             it "removes transport type" do
               within('table') do
-                expect(page).to_not have_selector(:table_row, viewable_attributes)
+                expect(page).to_not have_selector(:table_row, display_attributes)
               end
             end
           end
@@ -348,7 +368,7 @@ describe "admin transport type", type: :system, include_application_helper: true
 
             it "does not remove transport type" do
               within('table') do
-                expect(page).to have_selector(:table_row, viewable_attributes)
+                expect(page).to have_selector(:table_row, display_attributes)
               end
             end
 

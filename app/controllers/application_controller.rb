@@ -1,11 +1,25 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+  around_action :switch_locale
   before_action :authenticate_user!
   before_action :analytics_code
   helper_method :site_settings, :current_school_podium, :current_user_school
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
+  end
+
+  def switch_locale(&action)
+    locale = LocaleFinder.new(params, request).locale
+    I18n.with_locale(locale, &action)
+  end
+
+  def default_url_options
+    if Rails.env.production?
+      { host: I18n.locale == :cy ? ENV['WELSH_APPLICATION_HOST'] : ENV['APPLICATION_HOST'] }
+    else
+      super
+    end
   end
 
   def route_not_found

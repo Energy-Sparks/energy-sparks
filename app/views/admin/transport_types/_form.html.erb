@@ -1,9 +1,11 @@
 <%= simple_form_for([:admin, transport_type]) do |f| %>
   <%= f.input :name %>
+  <%= f.input :category, collection: TransportType.categories.keys, label_method: lambda {|k| k.humanize} %>
   <%= f.input :note %>
   <%= f.input :image %>
   <%= f.input :speed_km_per_hour, label: 'Speed (km/h)' %>
   <%= f.input :kg_co2e_per_km, label: 'Carbon (kg co2e/km)' %>
+  <%= f.input :position %>
   <%= f.input :can_share, as: :boolean %>
   <%= f.input :park_and_stride, as: :boolean %>
   <%= f.submit 'Save', class: 'btn btn-primary' %>

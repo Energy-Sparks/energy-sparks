@@ -61,7 +61,9 @@ const parkAndStrideTimeMins = function(timeMins) {
 export const carbonCalc = function(transport, timeMins, passengers) {
   if (transport) {
     timeMins = transport.park_and_stride == true ? parkAndStrideTimeMins(timeMins) : timeMins;
-    return (((transport.speed_km_per_hour * timeMins) / 60) * transport.kg_co2e_per_km) / passengers ;
+    var total_carbon = ((transport.speed_km_per_hour * timeMins) / 60) * transport.kg_co2e_per_km;
+    total_carbon = transport.can_share == true ? (total_carbon / passengers) : total_carbon;
+    return total_carbon;
   } else {
     return 0;
   }

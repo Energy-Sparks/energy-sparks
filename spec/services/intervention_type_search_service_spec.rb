@@ -4,16 +4,16 @@ describe InterventionTypeSearchService do
 
   context 'search by query term' do
     it 'finds interventions by name' do
-      intervention_type_1 = create(:intervention_type, title: 'foo')
-      intervention_type_2 = create(:intervention_type, title: 'bar')
+      intervention_type_1 = create(:intervention_type, name: 'foo')
+      intervention_type_2 = create(:intervention_type, name: 'bar')
 
       expect(InterventionTypeSearchService.search('foo')).to eq([intervention_type_1])
       expect(InterventionTypeSearchService.search('bar')).to eq([intervention_type_2])
     end
 
     it 'only finds active intervention types' do
-      intervention_type_1 = create(:intervention_type, title: 'foo baz', active: false)
-      intervention_type_2 = create(:intervention_type, title: 'bar baz')
+      intervention_type_1 = create(:intervention_type, name: 'foo baz', active: false)
+      intervention_type_2 = create(:intervention_type, name: 'bar baz')
 
       expect(InterventionTypeSearchService.search('baz')).to eq([intervention_type_2])
     end
@@ -36,8 +36,8 @@ describe InterventionTypeSearchService do
     end
 
     it 'ignores simple words' do
-      intervention_type_1 = create(:intervention_type, title: 'foo and the stuff')
-      intervention_type_2 = create(:intervention_type, title: 'bar and a thing')
+      intervention_type_1 = create(:intervention_type, name: 'foo and the stuff')
+      intervention_type_2 = create(:intervention_type, name: 'bar and a thing')
 
       expect(InterventionTypeSearchService.search('and')).to eq([])
       expect(InterventionTypeSearchService.search('the')).to eq([])
@@ -56,16 +56,16 @@ describe InterventionTypeSearchService do
     end
 
     it 'matches plurals' do
-      intervention_type_1 = create(:intervention_type, title: 'a thing')
-      intervention_type_2 = create(:intervention_type, title: 'some things')
+      intervention_type_1 = create(:intervention_type, name: 'a thing')
+      intervention_type_2 = create(:intervention_type, name: 'some things')
 
       expect(InterventionTypeSearchService.search('thing')).to eq([intervention_type_1, intervention_type_2])
       expect(InterventionTypeSearchService.search('things')).to eq([intervention_type_1, intervention_type_2])
     end
 
     it 'does not match parts of words' do
-      intervention_type_1 = create(:intervention_type, title: 'petrol')
-      intervention_type_2 = create(:intervention_type, title: 'petroleum')
+      intervention_type_1 = create(:intervention_type, name: 'petrol')
+      intervention_type_2 = create(:intervention_type, name: 'petroleum')
 
       expect(InterventionTypeSearchService.search('petrol')).to eq([intervention_type_1])
     end

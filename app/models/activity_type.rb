@@ -25,6 +25,12 @@
 #
 
 class ActivityType < ApplicationRecord
+  extend Mobility
+  translates :name, type: :string, fallbacks: { cy: :en }
+  translates :description, backend: :action_text
+  translates :school_specific_description, backend: :action_text
+  translates :download_links, backend: :action_text
+
   include PgSearch::Model
   pg_search_scope :search,
                   against: [:name],
@@ -76,9 +82,7 @@ class ActivityType < ApplicationRecord
 
   accepts_nested_attributes_for :activity_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
 
-  has_rich_text :description
-  has_rich_text :school_specific_description
-  has_rich_text :download_links
+  before_save :copy_searchable_attributes
 
   def key_stage_list
     key_stages.map(&:name).sort.join(', ')
@@ -94,5 +98,11 @@ class ActivityType < ApplicationRecord
 
   def activities_for_school(school)
     activities.for_school(school)
+  end
+
+  private
+
+  def copy_searchable_attributes
+    self.write_attribute(:name, self.name(locale: :en))
   end
 end

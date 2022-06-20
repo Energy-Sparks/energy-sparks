@@ -21,7 +21,6 @@ $(document).ready(function() {
     /* onclick bindings */
     $('.start').on('click', start);
     $('.next').on('click', next);
-    $('.sharing').on('click', sharing);
     $('.previous').on('click', previous);
     $('.confirm').on('click', confirm);
     $('.store').on('click', store);
@@ -215,16 +214,6 @@ $(document).ready(function() {
     resetCards(cards);
   }
 
-  function sharing() {
-    let transport_type = config.transport_types[$("#transport_type_id").val()];
-    if (transport_type.can_share) {
-      $("fieldset#sharing .card").show();
-    } else {
-      $("fieldset#sharing .card").not(":first").hide();
-      $("fieldset#sharing .card:first").show();
-    }
-  }
-
   function resetSurveyPanels() {
     $("fieldset").not(":first").hide();
     $("fieldset:first").show();
@@ -274,10 +263,11 @@ $(document).ready(function() {
     let response = readResponse();
     let transport_type = config.transport_types[response['transport_type_id']];
 
+    $('#confirm-passengers div.option-content').text(config.passenger_symbol.repeat(response['passengers']));
+    $('#confirm-passengers div.option-label').text((response['passengers'] > 1 ? "Group of " + response['passengers'] : "Single pupil"));
     $('#confirm-time div.option-content').text(response['journey_minutes']);
     $('#confirm-transport div.option-content').text(transport_type.image);
     $('#confirm-transport div.option-label').text(transport_type.name);
-    $('#confirm-passengers div.option-content').text(config.passenger_symbol.repeat(response['passengers']));
   }
 
   function displayCarbon() {

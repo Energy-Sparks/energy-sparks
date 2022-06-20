@@ -35,11 +35,18 @@ module EnergySparks
     # this will remove them from the list of binary file types, but is a slight risk
     config.active_storage.content_types_to_serve_as_binary.delete("image/svg+xml")
 
+    # session cookie config will be overridden in production.rb
+    config.session_store :cookie_store, key: '_energy-sparks_session'
+
     config.after_initialize do
       ActionText::ContentHelper.allowed_attributes.add 'id'
       ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'
     end
 
-    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**/*.{rb,yml}').to_s]
+    config.i18n.available_locales = [:en, :cy]
+    config.i18n.default_locale = :en
+    config.i18n.enforce_available_locales = true
+    config.i18n.fallbacks = true
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
   end
 end

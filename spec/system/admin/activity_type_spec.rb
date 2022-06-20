@@ -45,7 +45,7 @@ describe "activity type", type: :system do
       activity_name = 'New activity'
 
       click_on 'New Activity Type'
-      fill_in('Name', with: activity_name)
+      fill_in('Name (English)', with: activity_name)
       fill_in('Summary', with: summary)
 
       attach_file("activity_type_image", Rails.root + "spec/fixtures/images/placeholder.png")
@@ -54,7 +54,7 @@ describe "activity type", type: :system do
         fill_in_trix with: download_links
       end
 
-      within('.description-trix-editor') do
+      within('.description-trix-editor.en') do
         fill_in_trix with: description
       end
 
@@ -115,7 +115,7 @@ describe "activity type", type: :system do
 
     it 'can does not crash if you forget the score' do
       click_on 'New Activity Type'
-      fill_in('Name', with: 'New activity')
+      fill_in('Name (English)', with: 'New activity')
       fill_in_trix with: "the description"
 
       check('KS1')
@@ -148,6 +148,33 @@ describe "activity type", type: :system do
 
       expect(page.has_content?("Activity type was successfully updated.")).to be true
       expect(ActivityType.count).to be 1
+    end
+
+    it 'can update en and cy descriptions and show both' do
+      activity_type = create(:activity_type, activity_category: activity_category)
+      refresh
+
+      click_on 'Edit'
+
+      within('.description-trix-editor.en') do
+        fill_in_trix with: 'some english description'
+      end
+
+      within('.description-trix-editor.cy') do
+        fill_in_trix with: 'some welsh description'
+      end
+
+      click_on('Update Activity type')
+
+      activity_type.reload
+
+      expect(activity_type.description(locale: :en).body.to_html).to include('some english description')
+      expect(activity_type.description(locale: :cy).body.to_html).to include('some welsh description')
+
+      visit admin_activity_type_path(activity_type)
+
+      expect(page).to have_content('some english description')
+      expect(page).to have_content('some welsh description')
     end
   end
 end

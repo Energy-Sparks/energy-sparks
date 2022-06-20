@@ -29,15 +29,15 @@ RSpec.describe "intervention type groups", type: :system do
 
       it 'shows recommended actions' do
         expect(page).to have_content('Recommended for your school')
-        expect(page).to have_content(intervention_type_1.title)
-        expect(page).to have_content(intervention_type_2.title)
+        expect(page).to have_content(intervention_type_1.name)
+        expect(page).to have_content(intervention_type_2.name)
       end
 
       it 'links to all suggestions' do
         click_on 'View all suggestions'
         expect(page).to have_content('A collection of 2 actions that are suggested for your school')
-        expect(page).to have_content(intervention_type_1.title)
-        expect(page).to have_content(intervention_type_2.title)
+        expect(page).to have_content(intervention_type_1.name)
+        expect(page).to have_content(intervention_type_2.name)
       end
     end
   end

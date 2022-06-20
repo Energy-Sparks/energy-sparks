@@ -1,0 +1,31 @@
+---
+en:
+  consent_grant_mailer:
+    email_consent:
+      subject: Your grant of consent to Energy Sparks
+  mailer:
+    get_in_touch: Get in touch
+  onboarding_mailer:
+    activation_email:
+      subject: "%{school} is live on Energy Sparks"
+    completion_email:
+      subject: "%{school} has completed the onboarding process"
+    data_enabled_email:
+      subject: "%{school} energy data is now available on Energy Sparks"
+    onboarded_email:
+      subject: "%{school} is now live on Energy Sparks"
+    onboarding_email:
+      subject: Set up your school on Energy Sparks
+    reminder_email:
+      subject: Don't forget to set up your school on Energy Sparks
+    welcome_email:
+      subject: Welcome to Energy Sparks
+  target_mailer:
+    admin_target_report:
+      subject: Target Progress and Data Report
+    first_target:
+      subject: Set your first energy saving target
+    first_target_reminder:
+      subject: Reminder to set your first energy saving target
+    review_target:
+      subject: Review your progress and set a new saving target

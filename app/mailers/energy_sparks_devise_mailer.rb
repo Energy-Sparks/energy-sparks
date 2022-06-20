@@ -5,6 +5,14 @@ class EnergySparksDeviseMailer < Devise::Mailer
 
   layout 'mailer'
 
+  def default_url_options
+    if Rails.env.production?
+      { host: I18n.locale == :cy ? ENV['WELSH_APPLICATION_HOST'] : ENV['APPLICATION_HOST'] }
+    else
+      super
+    end
+  end
+
   protected
 
   def devise_mail(record, action, opts = {}, &block)

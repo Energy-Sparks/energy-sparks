@@ -14,7 +14,7 @@
     <div class="col-md-12">
 
       <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'form-horizontal' }) do |f| %>
-          <%= devise_error_messages! %>
+          <%= render "devise/shared/error_messages", resource: resource %>
 
           <div class="form-group row">
             <%= f.label :email, class: "col-sm-4 col-form-label" %>

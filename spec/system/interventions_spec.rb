@@ -6,7 +6,7 @@ describe 'viewing and recording action', type: :system do
   let(:summary)     { 'Old boiler bad, new boiler good' }
   let(:description) { 'How to change your boiler' }
 
-  let!(:intervention_type){ create :intervention_type, title: title, summary: summary, description: description }
+  let!(:intervention_type){ create :intervention_type, name: title, summary: summary, description: description }
 
   let(:school) { create_active_school() }
 
@@ -27,7 +27,7 @@ describe 'viewing and recording action', type: :system do
       end
 
       it 'should display score' do
-        expect(page).to have_content("#{intervention_type.points} points for this action")
+        expect(page).to have_content("#{intervention_type.score} points for this action")
       end
 
       it 'should display description' do
@@ -63,8 +63,8 @@ describe 'viewing and recording action', type: :system do
         within '#staff' do
           click_on 'Sign in'
         end
-        expect(page).to have_content(intervention_type.title)
-        expect(page).to have_content("Complete this action to score your school #{intervention_type.points} points!")
+        expect(page).to have_content(intervention_type.name)
+        expect(page).to have_content("Complete this action to score your school #{intervention_type.score} points!")
       end
     end
   end
@@ -83,7 +83,7 @@ describe 'viewing and recording action', type: :system do
       end
 
       it 'should see prompt to record it' do
-        expect(page).to have_content("Complete this action to score your school #{intervention_type.points} points!")
+        expect(page).to have_content("Complete this action to score your school #{intervention_type.score} points!")
         expect(page).to have_link("Record this action")
       end
     end
@@ -118,7 +118,7 @@ describe 'viewing and recording action', type: :system do
         click_on 'Record action'
 
         expect(page).to have_content("Congratulations! We've recorded your action")
-        expect(page).to have_content("You've just scored #{intervention_type.points} points")
+        expect(page).to have_content("You've just scored #{intervention_type.score} points")
 
         click_on 'View your action'
 
@@ -155,7 +155,7 @@ describe 'viewing and recording action', type: :system do
               fill_in 'observation_at', with: '01/07/2019'
               click_on 'Record action'
               expect(page).to have_content("Congratulations! We've recorded your action")
-              expect(page).to have_content("You've just scored #{intervention_type.points} points")
+              expect(page).to have_content("You've just scored #{intervention_type.score} points")
               expect(page).to have_content("You've recorded 1 action so far this year")
               expect(page).to have_content("and your school is currently in 1st place")
             end
@@ -169,7 +169,7 @@ describe 'viewing and recording action', type: :system do
               fill_in 'observation_at', with: '01/07/2019'
               click_on 'Record action'
               expect(page).to have_content("Congratulations! We've recorded your action")
-              expect(page).to have_content("You've just scored #{intervention_type.points} points")
+              expect(page).to have_content("You've just scored #{intervention_type.score} points")
               expect(page).to have_content("You've recorded 1 action so far this year")
               expect(page).not_to have_content("and your school is currently in 1st place")
               expect(page).to have_content("to reach 1st place")

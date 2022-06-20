@@ -8,7 +8,7 @@ class InterventionCreator
     if @observation.valid?
       academic_year = @observation.school.academic_year_for(@observation.at)
       if academic_year && academic_year.current?
-        @observation.points = @observation.intervention_type.points
+        @observation.points = @observation.intervention_type.score
       end
       @observation.save
     end

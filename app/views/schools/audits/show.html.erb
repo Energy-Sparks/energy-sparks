@@ -45,14 +45,14 @@
 <% if @audit.audit_intervention_types.any? %>
   <h3>Recommended energy saving actions</h3>
 
-  <% @audit.audit_intervention_types.by_title.each_with_index do |audit_intervention_type, idx| %>
+  <% @audit.audit_intervention_types.by_name.each_with_index do |audit_intervention_type, idx| %>
     <div class="row">
       <div class="col-sm-2 text-center align-self-center">
           <span class="h4"><%= idx + 1 %>.</span>
       </div>
       <div class="col-sm-10">
         <h4>
-          <%= link_to audit_intervention_type.intervention_title, intervention_type_path(audit_intervention_type.intervention_type) %>
+          <%= link_to audit_intervention_type.intervention_name, intervention_type_path(audit_intervention_type.intervention_type) %>
         </h4>
         <p>
           <%= audit_intervention_type.notes %>
