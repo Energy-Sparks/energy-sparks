@@ -1,0 +1,45 @@
+{
+  "data": {
+    "id": "o:energy-sparks:p:es-development:r:slug-jh1:l:cy",
+    "type": "resource_language_stats",
+    "attributes": {
+      "untranslated_words": 22,
+      "translated_words": 22,
+      "reviewed_words": 22,
+      "proofread_words": 22,
+      "total_words": 22,
+      "untranslated_strings": 0,
+      "translated_strings": 12,
+      "reviewed_strings": 12,
+      "proofread_strings": 12,
+      "total_strings": 12,
+      "last_update": "2022-06-14T14:30:49Z",
+      "last_translation_update": "2022-06-14T13:30:49Z",
+      "last_review_update": "2022-06-14T14:30:49Z",
+      "last_proofread_update": "2022-06-14T13:30:49Z"
+    },
+    "relationships": {
+      "resource": {
+        "links": {
+          "related": "https://rest.api.transifex.com/resources/o:energy-sparks:p:es-development:r:slug-jh1"
+        },
+        "data": {
+          "type": "resources",
+          "id": "o:energy-sparks:p:es-development:r:slug-jh1"
+        }
+      },
+      "language": {
+        "links": {
+          "related": "https://rest.api.transifex.com/languages/l:cy"
+        },
+        "data": {
+          "type": "languages",
+          "id": "l:cy"
+        }
+      }
+    },
+    "links": {
+      "self": "https://rest.api.transifex.com/resource_language_stats/o:energy-sparks:p:es-development:r:slug-jh1:l:cy"
+    }
+  }
+}

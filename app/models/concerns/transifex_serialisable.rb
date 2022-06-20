@@ -38,7 +38,6 @@ module TransifexSerialisable
     translated_attributes = self.class.mobility_attributes.map(&:to_sym)
     to_update = {}
     tx_attributes = data[locale][resource_key]
-    tx_attributes.symbolize_keys!
     tx_attributes.each_key do |attr|
       #ignore any attributes that aren't translated
       if translated_attributes.include?(attr)
