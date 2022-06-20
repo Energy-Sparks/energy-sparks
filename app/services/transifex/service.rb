@@ -22,7 +22,7 @@ module Transifex
     #adding categories and other params
     #throw exception if problem
     #return true if created ok
-    def create_resource(_slug, _categories = [])
+    def create_resource(_name, _slug, _categories = [])
       true
     end
 

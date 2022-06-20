@@ -28,7 +28,7 @@ module Transifex
 
     def push
       unless created_in_transifex?
-        transifex_service.create_resource(@tx_serialisable.tx_slug, @tx_serialisable.tx_categories)
+        transifex_service.create_resource(@tx_serialisable.tx_name, @tx_serialisable.tx_slug, @tx_serialisable.tx_categories)
         update_timestamp(:tx_created_at)
       end
       if last_pushed.nil? || updated_since_last_pushed?

@@ -105,6 +105,11 @@ class ActivityType < ApplicationRecord
     activities.for_school(school)
   end
 
+  #override default name for this resource in transifex
+  def tx_name
+    name
+  end
+
   private
 
   def copy_searchable_attributes

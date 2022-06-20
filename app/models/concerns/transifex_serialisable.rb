@@ -53,6 +53,10 @@ module TransifexSerialisable
     self.update!(to_update)
   end
 
+  def tx_name
+    "#{self.class.model_name.human} #{self.id}"
+  end
+
   def tx_slug
     resource_key
   end

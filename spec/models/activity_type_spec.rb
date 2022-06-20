@@ -94,7 +94,7 @@ describe 'ActivityType' do
 
   context 'serialising for transifex' do
     context 'when mapping fields' do
-      let!(:activity_type) { create(:activity_type, description: "description", school_specific_description: "Description {{chart}}")}
+      let!(:activity_type) { create(:activity_type, name: "My activity", description: "description", school_specific_description: "Description {{chart}}")}
       it 'produces the expected key names' do
         expect(activity_type.tx_attribute_key(:name)).to eq :name
         expect(activity_type.tx_attribute_key(:description)).to eq :description_html
@@ -119,6 +119,9 @@ describe 'ActivityType' do
       end
       it 'created categories' do
         expect(activity_type.tx_categories).to match_array(["activity_type"])
+      end
+      it 'overrides default name' do
+        expect(activity_type.tx_name).to eq("My activity")
       end
       it 'fetches status' do
         expect(activity_type.tx_status).to be_nil
