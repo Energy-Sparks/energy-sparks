@@ -52,7 +52,7 @@ module Transifex
       @max_tries.times do
         resp = @client.get_resource_translations_async_download(create_resp["id"])
         if resp.completed?
-          return YAML.safe_load(resp.content).deep_transform_keys(&:to_sym)
+          return YAML.safe_load(resp.content)
         end
         sleep(@sleep_seconds)
       end

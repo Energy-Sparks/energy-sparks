@@ -67,7 +67,7 @@ describe Transifex::Service, type: :service do
     let(:tx_create_response)    { File.read('spec/fixtures/transifex/create_resource_strings_async_upload.json') }
     let(:create_data)           { JSON.parse(tx_create_response)["data"] }
     let(:get_data)              { JSON.parse(tx_get_response)["data"] }
-    let(:yaml)                  { "en:\n foo: bar" }
+    let(:hash_for_yaml)         { { 'en' => { 'name' => 'wibble' } } }
 
     before(:each) do
       expect(client).to receive(:create_resource_strings_async_upload).and_return(create_data)
@@ -82,7 +82,7 @@ describe Transifex::Service, type: :service do
       end
 
       it 'returns true' do
-        expect(service.push("slug", yaml)).to be_truthy
+        expect(service.push("slug", hash_for_yaml)).to be_truthy
       end
     end
 
@@ -95,7 +95,7 @@ describe Transifex::Service, type: :service do
       end
 
       it 'returns false after max tries' do
-        expect(service.push("slug", yaml)).to be_falsey
+        expect(service.push("slug", hash_for_yaml)).to be_falsey
       end
     end
 
@@ -105,7 +105,7 @@ describe Transifex::Service, type: :service do
       end
       it 'raises error' do
         expect {
-          service.push("slug", yaml)
+          service.push("slug", hash_for_yaml)
         }.to raise_error(Transifex::Client::ResponseError)
       end
     end
@@ -120,8 +120,8 @@ describe Transifex::Service, type: :service do
     end
 
     context 'and download is successful' do
-      let(:yaml)                   { "en:\n foo: bar" }
-      let(:response)               { Transifex::Response.new(completed: true, content: yaml) }
+      let(:content_yaml)           { "cy:\n  name: Hwyl fawr\n" }
+      let(:response)               { Transifex::Response.new(completed: true, content: content_yaml) }
 
       before do
         expect(client).to receive(:get_resource_translations_async_download).and_return(response)
@@ -129,7 +129,7 @@ describe Transifex::Service, type: :service do
 
       it 'fetches the file' do
         yaml = service.pull("slug", :cy)
-        expect(yaml[:en]).to eq({foo: "bar"})
+        expect(yaml['cy']).to eq({'name' => 'Hwyl fawr'})
       end
     end
 

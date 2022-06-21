@@ -1,0 +1,33 @@
+{
+  "data": {
+    "id": "640d8a8c-44ec-4a2d-85aa-fa99ca750bf0",
+    "type": "resource_strings_async_uploads",
+    "attributes": {
+      "status": "succeeded",
+      "errors": [
+      ],
+      "date_created": "2022-06-21T15:48:07Z",
+      "date_modified": "2022-06-21T15:48:07Z",
+      "details": {
+        "strings_created": 1,
+        "strings_updated": 0,
+        "strings_skipped": 0,
+        "strings_deleted": 0
+      }
+    },
+    "relationships": {
+      "resource": {
+        "links": {
+          "related": "https://rest.api.transifex.com/resources/o:energy-sparks:p:es-development:r:slug-jh7"
+        },
+        "data": {
+          "type": "resources",
+          "id": "o:energy-sparks:p:es-development:r:slug-jh7"
+        }
+      }
+    },
+    "links": {
+      "self": "https://rest.api.transifex.com/resource_strings_async_uploads/640d8a8c-44ec-4a2d-85aa-fa99ca750bf0"
+    }
+  }
+}
