@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: transifex_statuses
+#
+#  created_at    :datetime         not null
+#  id            :bigint(8)        not null, primary key
+#  record_id     :bigint(8)        not null
+#  record_type   :string           not null
+#  tx_created_at :datetime
+#  tx_last_pull  :datetime
+#  tx_last_push  :datetime
+#  updated_at    :datetime         not null
+#
+# Indexes
+#
+#  index_transifex_statuses_uniqueness  (record_type,record_id) UNIQUE
+#
 class TransifexStatus < ApplicationRecord
   validates_presence_of :record_type, :record_id
   validates :record_id, uniqueness: { scope: :record_type }
