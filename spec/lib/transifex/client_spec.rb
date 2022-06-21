@@ -61,6 +61,19 @@ module Transifex
         end
       end
 
+      context '#create_resource' do
+        let(:slug)          { 'slug-jh1' }
+        let(:name)          { 'some resource' }
+        let(:body)          { File.read('spec/fixtures/transifex/create_resource.json') }
+        let(:expected_path) { "resources" }
+
+        it 'posts data to path and returns data' do
+          expect(connection).to receive(:post).with(expected_path, anything).and_return(response)
+          ret = client.create_resource(name, slug)
+          expect(ret["id"]).to eq('o:organization_slug:p:project_slug:r:resource_slug')
+        end
+      end
+
       context '#get_resource_language_stats' do
         context 'for project' do
           let(:body)          { File.read('spec/fixtures/transifex/get_resource_language_stats.json') }
