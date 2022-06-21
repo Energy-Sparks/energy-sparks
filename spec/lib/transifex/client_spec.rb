@@ -159,14 +159,26 @@ module Transifex
 
       context '#get_resource_strings_async_upload' do
         let(:upload_id)     { 'abc-123' }
-        let(:body)          { File.read('spec/fixtures/transifex/get_resource_strings_async_upload.json') }
         let(:expected_path) { "resource_strings_async_uploads/#{upload_id}" }
 
-        it 'requests url with path and returns data' do
-          expect(connection).to receive(:get).with(expected_path).and_return(response)
-          ret = client.get_resource_strings_async_upload(upload_id)
-          expect(ret["id"]).to eq('2b3d4f24-4b37-46b2-b4a1-d5365ae1d3ca')
-          expect(ret["attributes"]["status"]).to eq('succeeded')
+        context 'when translation has not yet completed' do
+          let(:body)          { File.read('spec/fixtures/transifex/get_resource_strings_async_upload_pending.json') }
+          it 'requests url with path and returns data' do
+            expect(connection).to receive(:get).with(expected_path).and_return(response)
+            ret = client.get_resource_strings_async_upload(upload_id)
+            expect(ret.completed?).to be_falsey
+            expect(ret.data["attributes"]["status"]).to eq('pending')
+          end
+        end
+
+        context 'when translation has completed' do
+          let(:body)          { File.read('spec/fixtures/transifex/get_resource_strings_collection.json') }
+          it 'requests url with path and returns data' do
+            expect(connection).to receive(:get).with(expected_path).and_return(response)
+            ret = client.get_resource_strings_async_upload(upload_id)
+            expect(ret.completed?).to be_truthy
+            expect(ret.data[0]["attributes"]["strings"]["one"]).to eq('hello')
+          end
         end
       end
 
@@ -239,7 +251,7 @@ module Transifex
             expect(connection).to receive(:get).with(expected_path).and_return(response)
             begin
               client.get_resource_translations_async_download(download_id)
-            rescue Transifex::Client::TranslationsDownloadError => e
+            rescue Transifex::Client::ResponseError => e
               expect(e.message).to eq('parse_error: Could not decode JSON object')
             end
           end

@@ -5,7 +5,7 @@ module Transifex
     class NotFound < StandardError; end
     class NotAllowed < StandardError; end
     class NotAuthorised < StandardError; end
-    class TranslationsDownloadError < StandardError; end
+    class ResponseError < StandardError; end
 
     BASE_URL = 'https://rest.api.transifex.com/'.freeze
     ORGANIZATION = 'energy-sparks'.freeze
@@ -39,7 +39,7 @@ module Transifex
 
     def get_resource_strings_async_upload(resource_strings_async_upload_id)
       url = make_url("resource_strings_async_uploads/#{resource_strings_async_upload_id}")
-      get_data(url)
+      get_data_or_status(url)
     end
 
     def create_resource_translations_async_downloads(slug, language, mode = 'onlyreviewed')
@@ -112,6 +112,12 @@ module Transifex
       process_response_or_file(response)
     end
 
+    def get_data_or_status(url)
+      response = connection.get(url)
+      check_response_status(response)
+      process_response_or_status(response)
+    end
+
     def check_response_status(response)
       raise BadRequest.new(error_message(response)) if response.status == 400
       raise NotAuthorised.new(error_message(response)) if response.status == 401
@@ -127,12 +133,26 @@ module Transifex
     def process_response_or_file(response)
       if json?(response)
         data = process_response(response)
-        if data['attributes']['errors'].present?
-          raise TranslationsDownloadError.new(error_messages(data['attributes']['errors']))
-        end
+        process_errors(data)
         Response.new(completed: false, data: data)
       else
         Response.new(completed: true, content: response.body)
+      end
+    end
+
+    def process_response_or_status(response)
+      data = process_response(response)
+      if data.is_a?(Array)
+        Response.new(completed: true, data: data)
+      else
+        process_errors(data)
+        Response.new(completed: false, data: data)
+      end
+    end
+
+    def process_errors(data)
+      if data['attributes']['errors'].present?
+        raise ResponseError.new(error_messages(data['attributes']['errors']))
       end
     end
 

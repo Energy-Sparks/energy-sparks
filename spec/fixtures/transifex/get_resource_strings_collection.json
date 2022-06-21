@@ -1,0 +1,67 @@
+{
+  "data": [
+    {
+      "attributes": {
+        "appearance_order": 0,
+        "character_limit": 100,
+        "context": "frontpage,footer,verb",
+        "datetime_created": "XXXX-XX-XXTXX:XX:XXZ",
+        "developer_comment": "Wrapped in a 30px width div",
+        "instructions": "Please use causal language for translations.",
+        "key": "hello_world",
+        "metadata_datetime_modified": "XXXX-XX-XXTXX:XX:XXZ",
+        "occurrences": "/my_project/templates/frontpage/hello.html:30",
+        "pluralized": true,
+        "string_hash": "2e354ef120752c67afa1b6855aa80c52",
+        "strings": {
+          "one": "hello",
+          "other": "world"
+        },
+        "strings_datetime_modified": "XXXX-XX-XXTXX:XX:XXZ",
+        "tags": [
+          "foo",
+          "bar"
+        ]
+      },
+      "id": "o:organization_slug:p:project_slug:r:resource_slug:s:2e354ef120752c67afa1b6855aa80c52",
+      "links": {
+        "self": "/resource_strings/o:organization_slug:p:project_slug:r:resource_slug:s:2e354ef120752c67afa1b6855aa80c52"
+      },
+      "relationships": {
+        "committer": {
+          "data": {
+            "id": "u:user_1",
+            "type": "users"
+          },
+          "links": {
+            "related": "/users/u:user_1"
+          }
+        },
+        "language": {
+          "data": {
+            "id": "l:en_US",
+            "type": "languages"
+          },
+          "links": {
+            "related": "/languages/l:en_US"
+          }
+        },
+        "resource": {
+          "data": {
+            "id": "o:organization_slug:p:project_slug:r:resource_slug",
+            "type": "resources"
+          },
+          "links": {
+            "related": "/resources/o:organization_slug:p:project_slug:r:resource_slug"
+          }
+        }
+      },
+      "type": "resource_strings"
+    }
+  ],
+  "links": {
+    "next": "/resource_strings?filter[resource]=o:organization_slug:p:project_slug:r:resource_slug&page[cursor]=XXX",
+    "previous": "/resource_strings?filter[resource]=o:organization_slug:p:project_slug:r:resource_slug&page[cursor]=XXX",
+    "self": "/resource_strings?filter[resource]=o:organization_slug:p:project_slug:r:resource_slug"
+  }
+}
