@@ -40,7 +40,7 @@ module Transifex
     def get_resource_strings_async_upload(resource_strings_async_upload_id)
       url = make_url("resource_strings_async_uploads/#{resource_strings_async_upload_id}")
       get_data(url) do |response|
-        process_response_or_status(response)
+        process_async_upload_response(response)
       end
     end
 
@@ -52,7 +52,7 @@ module Transifex
     def get_resource_translations_async_download(resource_translations_async_download_id)
       url = make_url("resource_translations_async_downloads/#{resource_translations_async_download_id}")
       get_data(url) do |response|
-        process_response_or_file(response)
+        process_async_download_response(response)
       end
     end
 
@@ -101,11 +101,7 @@ module Transifex
     def get_data(url)
       response = connection.get(url)
       check_response_status(response)
-      if block_given?
-        yield(response)
-      else
-        process_response(response)
-      end
+      block_given? ? yield(response) : process_response(response)
     end
 
     def post_data(url, data)
@@ -126,7 +122,7 @@ module Transifex
       JSON.parse(response.body)['data']
     end
 
-    def process_response_or_file(response)
+    def process_async_download_response(response)
       if json?(response)
         data = process_response(response)
         process_errors(data)
@@ -136,7 +132,7 @@ module Transifex
       end
     end
 
-    def process_response_or_status(response)
+    def process_async_upload_response(response)
       data = process_response(response)
       if data.is_a?(Array)
         Response.new(completed: true, data: data)
