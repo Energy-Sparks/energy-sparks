@@ -1,7 +1,7 @@
 module Transifex
   class Service
+    MAX_TRIES     = 5
     SLEEP_SECONDS = 5
-    MAX_TRIES = 5
 
     def initialize(client = Service.create_client, max_tries = MAX_TRIES, sleep_seconds = SLEEP_SECONDS)
       @client = client
