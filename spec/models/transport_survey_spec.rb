@@ -52,4 +52,146 @@ describe 'TransportSurvey' do
       end
     end
   end
+
+  describe "#total_passengers" do
+    subject { create :transport_survey }
+    context "with no responses" do
+      it { expect(subject.total_passengers).to eql 0 }
+    end
+
+    context "with one response" do
+      before(:each) do
+        create :transport_survey_response, transport_survey: subject, passengers: 2
+      end
+      it { expect(subject.total_passengers).to eql 2 }
+    end
+    context "with more than one response" do
+      before(:each) do
+        create :transport_survey_response, transport_survey: subject, passengers: 2
+        create :transport_survey_response, transport_survey: subject, passengers: 3
+      end
+      it { expect(subject.total_passengers).to eql 5 }
+    end
+  end
+
+  describe "#total_carbon" do
+    subject { create :transport_survey }
+
+    context "with no responses" do
+      it { expect(subject.total_carbon).to eql 0 }
+    end
+
+    context "with one response" do
+      let!(:response) { create(:transport_survey_response, transport_survey: subject, passengers: 2) }
+      it { expect(subject.total_carbon).to eql response.carbon }
+    end
+
+    context "with more than one response" do
+      let!(:responses) do
+        [ create(:transport_survey_response, transport_survey: subject, passengers: 2),
+          create(:transport_survey_response, transport_survey: subject, passengers: 3) ]
+      end
+
+      it "adds up the carbon for each response" do
+        expect(subject.total_carbon).to eql(responses[0].carbon + responses[1].carbon)
+      end
+    end
+  end
+
+  describe "Category based methods" do
+    subject { create :transport_survey }
+
+    let(:categories) { [:car, :active_travel, :public_transport, nil] }
+
+    def create_responses(cats)
+      cats.each do |cat|
+        transport_type = create(:transport_type, category: cat)
+        create(:transport_survey_response, transport_survey: subject, transport_type: transport_type, passengers: 3)
+      end
+    end
+
+    describe "#passengers_per_category" do
+      context "when there are passengers in each category" do
+        before { create_responses(categories) }
+
+        it "returns a hash of passengers per category" do
+          expect(subject.passengers_per_category).to eql( {"car" => 3, "active_travel" => 3, "public_transport" => 3, "other" => 3} )
+        end
+      end
+
+      context "when not all categories have passengers" do
+        before { create_responses(categories.excluding(:car, :active_travel)) }
+
+        it "returns a hash with zero values for missing categories" do
+          expect(subject.passengers_per_category).to eql( {"car" => 0, "active_travel" => 0, "public_transport" => 3, "other" => 3} )
+        end
+      end
+
+      context "when there are no responses" do
+        it "returns a hash with zero values for missing categories" do
+          expect(subject.passengers_per_category).to eql( {"car" => 0, "active_travel" => 0, "public_transport" => 0, "other" => 0} )
+        end
+      end
+    end
+
+    describe "#percentage_per_category" do
+      context "when there are passengers in each category" do
+        before { create_responses(categories) }
+
+        it "returns a hash of passenger percentages per category" do
+          expect(subject.percentage_per_category).to eql( {"car" => 25.0, "active_travel" => 25.0, "public_transport" => 25.0, "other" => 25.0} )
+        end
+      end
+
+      context "when not all categories have passengers" do
+        before { create_responses(categories.excluding(:car, nil)) }
+        it "returns zero values for missing categories" do
+          expect(subject.percentage_per_category).to eql( {"car" => 0, "active_travel" => 50.0, "public_transport" => 50.0 , "other" => 0 } )
+        end
+      end
+
+      context "when there are no responses" do
+        it "returns zero values for missing categories" do
+          expect(subject.percentage_per_category).to eql( {"car" => 0, "active_travel" => 0, "public_transport" => 0, "other" => 0 } )
+        end
+      end
+    end
+
+    describe "#pie_chart_data" do
+      context "when there are passengers in each category" do
+        before { create_responses(categories) }
+
+        it "returns passenger percentages per category" do
+          expect(subject.pie_chart_data).to eql( [{name: "Active travel", y: 25.0}, {name: "Car", y: 25.0}, {name: "Public transport", y: 25.0}, {name: "Other", y: 25.0}] )
+        end
+      end
+
+      context "when not all categories have passengers" do
+        before { create_responses(categories.excluding(:car, nil)) }
+
+        it "returns zero values for missing categories" do
+          expect(subject.pie_chart_data).to eql( [{name: "Active travel", y: 50.0}, {name: "Car", y: 0}, {name: "Public transport", y: 50.0}, {name: "Other", y: 0}] )
+        end
+      end
+
+      context "when there are no responses" do
+        it "returns zero values for missing categories" do
+          expect(subject.pie_chart_data).to eql( [{name: "Active travel", y: 0}, {name: "Car", y: 0}, {name: "Public transport", y: 0}, {name: "Other", y: 0}] )
+        end
+      end
+    end
+  end
+
+  describe "#today?" do
+    context "when survey has a run_on date of today" do
+      subject { create :transport_survey, run_on: Time.zone.today }
+      it { expect(subject.today?).to be true }
+    end
+
+    context "when survey has a run_on date other than today" do
+      subject { create :transport_survey, run_on: 3.days.ago }
+      it { expect(subject.today?).to be false }
+    end
+  end
+
 end

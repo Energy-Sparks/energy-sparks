@@ -39,4 +39,13 @@ describe TransportType do
       end
     end
   end
+
+  describe "#categories_with_other" do
+    it "adds 'other' to categories" do
+      expect(TransportType.categories_with_other.keys).to eql( TransportType.categories.keys + ['other'] )
+    end
+    it "sets other to nil" do
+      expect(TransportType.categories_with_other['other']).to be_nil
+    end
+  end
 end

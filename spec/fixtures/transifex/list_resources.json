@@ -1,0 +1,54 @@
+{
+  "data": [
+    {
+      "id": "o:energy-sparks:p:es-development:r:slug-jh1",
+      "type": "resources",
+      "attributes": {
+        "slug": "slug-jh1",
+        "name": "resource-jh1",
+        "priority": "normal",
+        "i18n_type": "YML_KEY",
+        "i18n_version": 1,
+        "accept_translations": true,
+        "string_count": 12,
+        "word_count": 22,
+        "datetime_created": "2022-06-14T14:30:49Z",
+        "datetime_modified": "2022-06-14T15:46:17Z",
+        "categories": [
+
+        ],
+        "i18n_options": {
+        },
+        "mp4_url": null,
+        "ogg_url": null,
+        "youtube_url": null,
+        "webm_url": null
+      },
+      "relationships": {
+        "project": {
+          "links": {
+            "related": "https://rest.api.transifex.com/projects/o:energy-sparks:p:es-development"
+          },
+          "data": {
+            "type": "projects",
+            "id": "o:energy-sparks:p:es-development"
+          }
+        },
+        "i18n_format": {
+          "data": {
+            "type": "i18n_formats",
+            "id": "YML_KEY"
+          }
+        }
+      },
+      "links": {
+        "self": "https://rest.api.transifex.com/resources/o:energy-sparks:p:es-development:r:slug-jh1"
+      }
+    }
+  ],
+  "links": {
+    "self": "https://rest.api.transifex.com/resources?filter[project]=o:energy-sparks:p:es-development",
+    "next": null,
+    "previous": null
+  }
+}
