@@ -39,7 +39,9 @@ module Transifex
 
     def get_resource_strings_async_upload(resource_strings_async_upload_id)
       url = make_url("resource_strings_async_uploads/#{resource_strings_async_upload_id}")
-      get_data_or_status(url)
+      get_data(url) do |response|
+        process_response_or_status(response)
+      end
     end
 
     def create_resource_translations_async_downloads(slug, language, mode = 'onlyreviewed')
@@ -49,7 +51,9 @@ module Transifex
 
     def get_resource_translations_async_download(resource_translations_async_download_id)
       url = make_url("resource_translations_async_downloads/#{resource_translations_async_download_id}")
-      get_data_or_file(url)
+      get_data(url) do |response|
+        process_response_or_file(response)
+      end
     end
 
     def get_resource_language_stats(slug = nil, language = nil)
@@ -97,25 +101,17 @@ module Transifex
     def get_data(url)
       response = connection.get(url)
       check_response_status(response)
-      process_response(response)
+      if block_given?
+        yield(response)
+      else
+        process_response(response)
+      end
     end
 
     def post_data(url, data)
       response = connection.post(url, data.to_json)
       check_response_status(response)
       process_response(response)
-    end
-
-    def get_data_or_file(url)
-      response = connection.get(url)
-      check_response_status(response)
-      process_response_or_file(response)
-    end
-
-    def get_data_or_status(url)
-      response = connection.get(url)
-      check_response_status(response)
-      process_response_or_status(response)
     end
 
     def check_response_status(response)
