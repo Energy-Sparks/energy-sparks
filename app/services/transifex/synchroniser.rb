@@ -5,14 +5,9 @@ module Transifex
   #Creates and maintains a resource in transifex for the specific active record
   #instance
   class Synchroniser
-    def initialize(tx_serialisable)
+    def initialize(tx_serialisable, locale)
       @tx_serialisable = tx_serialisable
-    end
-
-    def synchronise
-      pulled = pull
-      pushed = push
-      return pulled, pushed
+      @locale = locale
     end
 
     def pull

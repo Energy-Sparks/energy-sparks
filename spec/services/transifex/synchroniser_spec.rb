@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Transifex::Synchroniser, type: :service do
 
   let(:activity_type) { create(:activity_type) }
-  let(:service)     { Transifex::Synchroniser.new(activity_type) }
+  let(:service)     { Transifex::Synchroniser.new(activity_type, :cy) }
   let(:resource_key)  { activity_type.resource_key }
 
   describe '#last_pushed' do
@@ -249,48 +249,4 @@ describe Transifex::Synchroniser, type: :service do
       end
     end
   end
-
-  describe '#synchronise' do
-    let(:tx_created_at)  { nil }
-    let(:tx_last_pushed) { nil }
-    let!(:status) { create(:transifex_status, record_type: "ActivityType", record_id: activity_type.id, tx_created_at: tx_created_at, tx_last_push: tx_last_pushed)}
-
-    context 'not created yet' do
-      before(:each) do
-        expect_any_instance_of(Transifex::Service).to receive(:create_resource).and_return true
-        expect_any_instance_of(Transifex::Service).to receive(:push).and_return true
-      end
-
-      it 'only does a push' do
-        pulled, pushed = service.synchronise
-        expect(pulled).to eq false
-        expect(pushed).to eq true
-        status.reload
-        expect(status.tx_created_at).to_not be_nil
-      end
-    end
-    context 'when changes to pull and no changes to push' do
-      let(:tx_created_at) { Date.today }
-      let(:tx_last_pushed) { Time.zone.now }
-      let(:translations) { {
-          :cy => {
-            resource_key => {}
-           }
-         }
-      }
-      before(:each) do
-        expect_any_instance_of(Transifex::Service).to receive(:reviews_completed?).and_return true
-        expect_any_instance_of(Transifex::Service).to receive(:pull).and_return(translations)
-      end
-
-      it 'does a pull only' do
-        pulled, pushed = service.synchronise
-        expect(pulled).to eq true
-        expect(pushed).to eq false
-        status.reload
-        expect(status.tx_last_pull).to_not be_nil
-      end
-    end
-  end
-
 end
