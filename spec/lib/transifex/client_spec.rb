@@ -62,14 +62,33 @@ module Transifex
       end
 
       context '#create_resource' do
-        let(:slug)          { 'slug-jh1' }
-        let(:name)          { 'some resource' }
-        let(:body)          { File.read('spec/fixtures/transifex/create_resource.json') }
-        let(:expected_path) { "resources" }
+        let(:slug)              { 'slug-jh1' }
+        let(:name)              { 'some resource' }
+        let(:categories)        { ['some category'] }
+        let(:body)              { File.read('spec/fixtures/transifex/create_resource.json') }
+        let(:expected_path)     { "resources" }
+        let(:expected_payload)  do
+          {
+            data: {
+              attributes: {
+                name: name,
+                slug: slug,
+                categories: categories,
+              },
+              relationships: {
+                project: {
+                  data: {
+                    id: "o:energy-sparks:p:#{project}"
+                  }
+                }
+              }
+            }
+          }
+        end
 
         it 'posts data to path and returns data' do
-          expect(connection).to receive(:post).with(expected_path, anything).and_return(response)
-          ret = client.create_resource(name, slug)
+          expect(connection).to receive(:post).with(expected_path, include_json(expected_payload)).and_return(response)
+          ret = client.create_resource(name, slug, categories)
           expect(ret["id"]).to eq('o:organization_slug:p:project_slug:r:resource_slug')
         end
       end
@@ -110,13 +129,29 @@ module Transifex
       end
 
       context '#create_resource_strings_async_upload' do
-        let(:slug)          { 'slug-jh1' }
-        let(:content)       { 'some yaml' }
-        let(:body)          { File.read('spec/fixtures/transifex/create_resource_strings_async_upload.json') }
-        let(:expected_path) { "resource_strings_async_uploads" }
+        let(:slug)              { 'slug-jh1' }
+        let(:content)           { 'some yaml' }
+        let(:body)              { File.read('spec/fixtures/transifex/create_resource_strings_async_upload.json') }
+        let(:expected_path)     { "resource_strings_async_uploads" }
+        let(:expected_payload)  do
+          {
+            data: {
+              attributes: {
+                content: content
+              },
+              relationships: {
+                resource: {
+                  data: {
+                    id: "o:energy-sparks:p:#{project}:r:#{slug}"
+                  }
+                }
+              }
+            }
+          }
+        end
 
-        it 'requests url with path and returns data' do
-          expect(connection).to receive(:post).with(expected_path, anything).and_return(response)
+        it 'requests url with path and payload, and returns data' do
+          expect(connection).to receive(:post).with(expected_path, include_json(expected_payload)).and_return(response)
           ret = client.create_resource_strings_async_upload(slug, content)
           expect(ret["id"]).to eq('2b3d4f24-4b37-46b2-b4a1-d5365ae1d3ca')
         end
