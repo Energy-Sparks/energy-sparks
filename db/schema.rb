@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_15_090102) do
+ActiveRecord::Schema.define(version: 2022_06_21_094238) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1466,6 +1466,23 @@ ActiveRecord::Schema.define(version: 2022_06_15_090102) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "transifex_load_errors", force: :cascade do |t|
+    t.string "record_type"
+    t.bigint "record_id"
+    t.string "error"
+    t.bigint "transifex_load_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["transifex_load_id"], name: "transifex_load_error_run_idx"
+  end
+
+  create_table "transifex_loads", force: :cascade do |t|
+    t.integer "pushed"
+    t.integer "pulled"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "transifex_statuses", force: :cascade do |t|
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -1780,6 +1797,7 @@ ActiveRecord::Schema.define(version: 2022_06_15_090102) do
   add_foreign_key "subscription_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade
+  add_foreign_key "transifex_load_errors", "transifex_loads"
   add_foreign_key "transport_survey_responses", "transport_surveys", on_delete: :cascade
   add_foreign_key "transport_survey_responses", "transport_types"
   add_foreign_key "transport_surveys", "schools", on_delete: :cascade

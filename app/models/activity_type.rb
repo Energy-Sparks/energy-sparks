@@ -57,6 +57,8 @@ class ActivityType < ApplicationRecord
   has_and_belongs_to_many :topics, join_table: :activity_type_topics
   has_and_belongs_to_many :activity_timings, join_table: :activity_type_timings
 
+  scope :transifex_list, -> { active }
+
   scope :active, -> { where(active: true) }
   scope :not_custom, -> { where(custom: false) }
 
