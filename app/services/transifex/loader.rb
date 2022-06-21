@@ -1,37 +1,35 @@
 module Transifex
   class Loader
-    def initialize(logger = Rails.logger)
+    def initialize(locale = :cy, logger = Rails.logger)
+      @locale = locale
       @logger = logger
     end
 
     def perform
-      transifex_load = TransifexLoad.new
-
-      log("Synchronising Activity Types")
-      synchronise_activity_types(transifex_load)
+      transifex_load = TransifexLoad.create!
+      @logger.info("Synchronising Activity Types")
+      synchronise_resources(transifex_load, ActivityType.active)
     end
 
     private
 
-    def synchronise_activity_types(transifex_load)
-      total_pulled = 0
-      total_pushed = 0
-      ActivityType.transifex_list.each do |at|
-        process_tx_serialisable(transifex_load, at, total_pulled, total_pushed)
+    #synchronise a list of individual resources
+    def synchronise_resources(transifex_load, tx_serialisable_resources)
+      counter = OpenStruct.new(total_pulled: 0, total_pushed: 0)
+      tx_serialisable_resources.each do |tx_serialisable|
+        process_tx_serialisable(transifex_load, tx_serialisable, counter)
       end
-      #load.update!(
-      #   pushed: load.pushed + total_pushed,
-      #   pulled: load.pulled + total_pulled
-      #)
+      transifex_load.update!(
+        pushed: transifex_load.pushed + counter.total_pushed,
+        pulled: transifex_load.pulled + counter.total_pulled
+      )
     end
 
-    def process_tx_serialisable(transifex_load, tx_serialisable)
+    def process_tx_serialisable(transifex_load, tx_serialisable, counter)
       begin
-        synchroniser = Synchroniser.new(tx_serialisable)
-        synchroniser.pull
-        #total_pulled += 1 if pulled
-        synchroniser.push
-        #total_pushed += 1 if pushed
+        synchroniser = Synchroniser.new(tx_serialisable, @locale)
+        counter.total_pulled += 1 if synchroniser.pull
+        counter.total_pushed += 1 if synchroniser.push
       rescue => error
         log_error(transifex_load, tx_serialisable, error)
       end
@@ -48,11 +46,6 @@ module Transifex
         record_id: tx_serialisable.id,
         error: error.message
       )
-    end
-
-    def log(msg)
-      puts msg
-      @logger.info(msg)
     end
   end
 end
