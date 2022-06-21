@@ -42,9 +42,9 @@ module Transifex
       get_data(url)
     end
 
-    def create_resource_translations_async_downloads(slug, language)
+    def create_resource_translations_async_downloads(slug, language, mode = 'onlyreviewed')
       url = make_url("resource_translations_async_downloads")
-      post_data(url, resource_translations_async_downloads_data(resource_id(slug), language))
+      post_data(url, resource_translations_async_downloads_data(resource_id(slug), language, mode))
     end
 
     def get_resource_translations_async_download(resource_translations_async_download_id)
@@ -205,13 +205,13 @@ module Transifex
       }
     end
 
-    def resource_translations_async_downloads_data(resource_id, language)
+    def resource_translations_async_downloads_data(resource_id, language, mode)
       {
         "data": {
           "attributes": {
             "content_encoding": "text",
             "file_type": "default",
-            "mode": "default",
+            "mode": mode,
             "pseudo": false
           },
           "relationships": {
