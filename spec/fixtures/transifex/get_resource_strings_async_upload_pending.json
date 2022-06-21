@@ -3,7 +3,7 @@
     "id": "2b3d4f24-4b37-46b2-b4a1-d5365ae1d3ca",
     "type": "resource_strings_async_uploads",
     "attributes": {
-      "status": "succeeded",
+      "status": "pending",
       "errors": [
 
       ],

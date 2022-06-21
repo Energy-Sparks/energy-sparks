@@ -5,7 +5,7 @@ module Transifex
     class NotFound < StandardError; end
     class NotAllowed < StandardError; end
     class NotAuthorised < StandardError; end
-    class TranslationsDownloadError < StandardError; end
+    class ResponseError < StandardError; end
 
     BASE_URL = 'https://rest.api.transifex.com/'.freeze
     ORGANIZATION = 'energy-sparks'.freeze
@@ -39,17 +39,21 @@ module Transifex
 
     def get_resource_strings_async_upload(resource_strings_async_upload_id)
       url = make_url("resource_strings_async_uploads/#{resource_strings_async_upload_id}")
-      get_data(url)
+      get_data(url) do |response|
+        process_async_upload_response(response)
+      end
     end
 
-    def create_resource_translations_async_downloads(slug, language)
+    def create_resource_translations_async_downloads(slug, language, mode = 'onlyreviewed')
       url = make_url("resource_translations_async_downloads")
-      post_data(url, resource_translations_async_downloads_data(resource_id(slug), language))
+      post_data(url, resource_translations_async_downloads_data(resource_id(slug), language, mode))
     end
 
     def get_resource_translations_async_download(resource_translations_async_download_id)
       url = make_url("resource_translations_async_downloads/#{resource_translations_async_download_id}")
-      get_data_or_file(url)
+      get_data(url) do |response|
+        process_async_download_response(response)
+      end
     end
 
     def get_resource_language_stats(slug = nil, language = nil)
@@ -97,19 +101,13 @@ module Transifex
     def get_data(url)
       response = connection.get(url)
       check_response_status(response)
-      process_response(response)
+      block_given? ? yield(response) : process_response(response)
     end
 
     def post_data(url, data)
       response = connection.post(url, data.to_json)
       check_response_status(response)
       process_response(response)
-    end
-
-    def get_data_or_file(url)
-      response = connection.get(url)
-      check_response_status(response)
-      process_response_or_file(response)
     end
 
     def check_response_status(response)
@@ -124,14 +122,29 @@ module Transifex
       JSON.parse(response.body)['data']
     end
 
-    def process_response_or_file(response)
+    def process_async_download_response(response)
       if json?(response)
-        data = JSON.parse(response.body)['data']
-        if data['attributes']['errors'].present?
-          raise TranslationsDownloadError.new(error_messages(data['attributes']['errors']))
-        end
+        data = process_response(response)
+        process_errors(data)
+        Response.new(completed: false, data: data)
       else
-        response.body
+        Response.new(completed: true, content: response.body)
+      end
+    end
+
+    def process_async_upload_response(response)
+      data = process_response(response)
+      if data.is_a?(Array)
+        Response.new(completed: true, data: data)
+      else
+        process_errors(data)
+        Response.new(completed: false, data: data)
+      end
+    end
+
+    def process_errors(data)
+      if data['attributes']['errors'].present?
+        raise ResponseError.new(error_messages(data['attributes']['errors']))
       end
     end
 
@@ -204,13 +217,13 @@ module Transifex
       }
     end
 
-    def resource_translations_async_downloads_data(resource_id, language)
+    def resource_translations_async_downloads_data(resource_id, language, mode)
       {
         "data": {
           "attributes": {
             "content_encoding": "text",
             "file_type": "default",
-            "mode": "default",
+            "mode": mode,
             "pseudo": false
           },
           "relationships": {
