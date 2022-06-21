@@ -1,9 +1,12 @@
 module Transifex
   class Service
     SLEEP_SECONDS = 5
+    MAX_TRIES = 5
 
-    def initialize(client = Service.create_client)
+    def initialize(client = Service.create_client, max_tries = MAX_TRIES, sleep_seconds = SLEEP_SECONDS)
       @client = client
+      @max_tries = max_tries
+      @sleep_seconds = sleep_seconds
     end
 
     def self.create_client(api_key = ENV["TRANSIFEX_API_KEY"], project = ENV["TRANSIFEX_PROJECT"])
@@ -34,23 +37,26 @@ module Transifex
 
     def push(slug, data)
       create_resp = @client.create_resource_strings_async_upload(slug, YAML.dump(data))
-      resp = @client.get_resource_strings_async_upload(create_resp["id"])
-      until resp.completed?
-        sleep(SLEEP_SECONDS)
+      @max_tries.times do
         resp = @client.get_resource_strings_async_upload(create_resp["id"])
+        if resp.completed?
+          return true
+        end
+        sleep(@sleep_seconds)
       end
-      true
+      false
     end
 
     def pull(slug, locale)
       create_resp = @client.create_resource_translations_async_downloads(slug, locale)
-      resp = @client.get_resource_translations_async_download(create_resp["id"])
-      until resp.completed?
-        #Make this configurable?
-        sleep(SLEEP_SECONDS)
+      @max_tries.times do
         resp = @client.get_resource_translations_async_download(create_resp["id"])
+        if resp.completed?
+          return YAML.safe_load(resp.content).deep_transform_keys(&:to_sym)
+        end
+        sleep(@sleep_seconds)
       end
-      YAML.safe_load(resp.content).deep_transform_keys(&:to_sym)
+      false
     end
 
     private
