@@ -19,5 +19,6 @@
 #  fk_rails_...  (transifex_load_id => transifex_loads.id)
 #
 class TransifexLoadError < ApplicationRecord
+  belongs_to :transifex_load
   validates_presence_of :record_type, :record_id, :error
 end

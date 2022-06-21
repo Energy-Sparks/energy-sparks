@@ -1,7 +1,8 @@
 FactoryBot.define do
   factory :transifex_load_error do
-    record_type { "" }
-    record_id { "" }
-    error { "MyString" }
+    transifex_load
+    record_type { "ActivityType" }
+    record_id { 1 }
+    error { "A problem occured" }
   end
 end

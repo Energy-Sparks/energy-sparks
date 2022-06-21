@@ -388,6 +388,7 @@ Rails.application.routes.draw do
       resources :school_targets, only: :index
       resources :meter_reports, only: :index
       resources :data_loads, only: :index
+      resources :transifex_loads, only: [:index, :show]
     end
 
     resource :settings, only: [:show, :update]
