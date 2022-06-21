@@ -126,12 +126,13 @@ module Transifex
 
     def process_response_or_file(response)
       if json?(response)
-        data = JSON.parse(response.body)['data']
+        data = process_response(response)
         if data['attributes']['errors'].present?
           raise TranslationsDownloadError.new(error_messages(data['attributes']['errors']))
         end
+        Response.new(completed: false, data: data)
       else
-        response.body
+        Response.new(completed: true, content: response.body)
       end
     end
 

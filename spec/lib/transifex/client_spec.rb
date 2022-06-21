@@ -109,19 +109,6 @@ module Transifex
         end
       end
 
-      context '#create_resource_strings_async_upload' do
-        let(:slug)          { 'slug-jh1' }
-        let(:content)       { 'some yaml' }
-        let(:body)          { File.read('spec/fixtures/transifex/create_resource_strings_async_upload.json') }
-        let(:expected_path) { "resource_strings_async_uploads" }
-
-        it 'requests url with path and returns data' do
-          expect(connection).to receive(:post).with(expected_path, anything).and_return(response)
-          ret = client.create_resource_strings_async_upload(slug, content)
-          expect(ret["id"]).to eq('2b3d4f24-4b37-46b2-b4a1-d5365ae1d3ca')
-        end
-      end
-
       context '#get_resource_strings_async_upload' do
         let(:upload_id)     { 'abc-123' }
         let(:body)          { File.read('spec/fixtures/transifex/get_resource_strings_async_upload.json') }
@@ -158,8 +145,9 @@ module Transifex
 
           it 'returns file contents' do
             expect(connection).to receive(:get).with(expected_path).and_return(response)
-            contents = client.get_resource_translations_async_download(download_id)
-            expect(contents).to be_nil
+            result = client.get_resource_translations_async_download(download_id)
+            expect(result.completed?).to be_falsey
+            expect(result.data["attributes"]["status"]).to eq('pending')
           end
         end
 
@@ -169,8 +157,9 @@ module Transifex
 
           it 'returns file contents' do
             expect(connection).to receive(:get).with(expected_path).and_return(response)
-            contents = client.get_resource_translations_async_download(download_id)
-            expect(contents).to eq('some yaml')
+            result = client.get_resource_translations_async_download(download_id)
+            expect(result.completed?).to be_truthy
+            expect(result.content).to eq('some yaml')
           end
         end
 
