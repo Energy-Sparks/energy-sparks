@@ -63,22 +63,48 @@ describe Transifex::Service, type: :service do
   end
 
   describe '#push' do
-    context 'and upload is successful' do
-      it 'returns true'
+    let(:tx_create_response)    { File.read('spec/fixtures/transifex/create_resource_strings_async_upload.json') }
+    let(:tx_get_response)       { File.read('spec/fixtures/transifex/get_resource_strings_collection.json') }
+    let(:create_data)           { JSON.parse(tx_create_response)["data"] }
+    let(:get_data)              { JSON.parse(tx_get_response)["data"] }
+    let(:yaml)                  { "en:\n foo: bar" }
+    let(:response)              { Transifex::Response.new(completed: true, data: get_data) }
+
+    before(:each) do
+      expect(client).to receive(:create_resource_strings_async_upload).and_return(create_data)
     end
+
+    context 'and upload is successful' do
+      before  do
+        expect(client).to receive(:get_resource_strings_async_upload).and_return(response)
+      end
+
+      it 'returns true' do
+        expect(service.push("slug", yaml)).to be_truthy
+      end
+    end
+
     context 'and upload fails' do
-      it 'throws an error if failed'
+      before  do
+        expect(client).to receive(:get_resource_strings_async_upload).and_raise(Transifex::Client::ResponseError.new('test'))
+      end
+      it 'raises error' do
+        expect {
+          service.push("slug", yaml)
+        }.to raise_error(StandardError)
+      end
     end
   end
 
   describe '#pull' do
-    let(:tx_response)     { File.read('spec/fixtures/transifex/get_resource_translations_async_downloads_pending.json') }
+    let(:tx_response)     { File.read('spec/fixtures/transifex/create_resource_translations_async_downloads.json') }
     let(:data)            { JSON.parse(tx_response)["data"] }
     let(:yaml)            { "en:\n foo: bar" }
+    let(:response)        { Transifex::Response.new(completed: true, content: yaml) }
 
     before(:each) do
       expect(client).to receive(:create_resource_translations_async_downloads).and_return(data)
-      expect(client).to receive(:get_resource_translations_async_download).and_return(yaml)
+      expect(client).to receive(:get_resource_translations_async_download).and_return(response)
     end
 
     it 'fetches the file' do

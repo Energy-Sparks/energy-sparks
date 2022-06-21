@@ -1,10 +1,6 @@
 module Transifex
-  class TranslationsUploadError < StandardError; end
-  #Stub for full implementation
-  #Higher level service interface over the basic
-  #Transifex client library
   class Service
-    COMPLETED = %w{failed success}.freeze
+    SLEEP_SECONDS = 5
 
     def initialize(client = Service.create_client)
       @client = client
@@ -36,32 +32,25 @@ module Transifex
       @client.create_resource(name, slug, categories)
     end
 
-    def push(_slug, _data)
-      # create_resp = @client.create_resource_strings_async_upload(slug, YAML.dump(data))
-      # resp = @client.get_resource_strings_async_upload(create_resp["id"])
-      # #Should we have max retries?
-      # until COMPLETED.include?(resp["attributes"]["status"])
-      #   #Make this configurable?
-      #   sleep(5)
-      #   resp = @client.get_resource_strings_async_upload(create_resp["id"])
-      # end
-      # if resp["attributes"]["status"] == "failed"
-      #   errors = data['attributes']['errors'].present? ? error_messages(data['attributes']['errors']) : ""
-      #   raise TranslationsUploadError("#{slug}, errors: #{errors}")
-      # end
+    def push(slug, data)
+      create_resp = @client.create_resource_strings_async_upload(slug, YAML.dump(data))
+      resp = @client.get_resource_strings_async_upload(create_resp["id"])
+      until resp.completed?
+        sleep(SLEEP_SECONDS)
+        resp = @client.get_resource_strings_async_upload(create_resp["id"])
+      end
       true
     end
 
-    #Pull reviewed translations from tx
-    #Convert the object to YAML
-    #Create async download of reviewed translationed
-    #Poll until download ready
-    #Parse YAML
-    #Raise exception if problem
     def pull(slug, locale)
       create_resp = @client.create_resource_translations_async_downloads(slug, locale)
       resp = @client.get_resource_translations_async_download(create_resp["id"])
-      YAML.safe_load(resp).deep_transform_keys(&:to_sym)
+      until resp.completed?
+        #Make this configurable?
+        sleep(SLEEP_SECONDS)
+        resp = @client.get_resource_translations_async_download(create_resp["id"])
+      end
+      YAML.safe_load(resp.content).deep_transform_keys(&:to_sym)
     end
 
     private
