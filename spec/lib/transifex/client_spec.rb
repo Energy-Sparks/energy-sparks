@@ -106,7 +106,7 @@ module Transifex
         end
 
         it 'raise error if project is not development' do
-          ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: "not-this--project, some-other-project" do
+          ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: "not-this-project, some-other-project" do
             expect {
               client.delete_resource(slug)
             }.to raise_error(Transifex::Client::AccessError)
