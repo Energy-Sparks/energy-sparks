@@ -27,7 +27,7 @@ module TransifexSerialisable
       attribs[attr_key] = tx_value(attr)
     end
     data = { resource_key => attribs }
-    return { "en": data }
+    return { "en" => data }
   end
 
   #Update the model using data from transifex
