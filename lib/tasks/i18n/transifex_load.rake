@@ -1,6 +1,6 @@
 namespace :i18n do
   desc 'run transifex loader to synchronise content from the database'
-  task :transifex_load do
+  task transifex_load: :environment do
     puts "#{DateTime.now.utc} transifex_load start"
     begin
       Transifex::Loader.new.perform
