@@ -134,12 +134,9 @@ module Transifex
 
     def process_async_upload_response(response)
       data = process_response(response)
-      if data.is_a?(Array)
-        Response.new(completed: true, data: data)
-      else
-        process_errors(data)
-        Response.new(completed: false, data: data)
-      end
+      process_errors(data)
+      completed = (data['attributes']['status'] == 'succeeded')
+      Response.new(completed: completed, data: data)
     end
 
     def process_errors(data)

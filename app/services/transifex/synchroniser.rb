@@ -10,11 +10,17 @@ module Transifex
       @locale = locale
     end
 
+    def synchronise
+      pulled = pull
+      pushed = push
+      return pulled, pushed
+    end
+
     def pull
       if created_in_transifex? && reviews_completed? && (last_pulled.nil? || translations_updated_since_last_pull?)
-        data = transifex_service.pull(@tx_serialisable.tx_slug, :cy)
+        data = transifex_service.pull(@tx_serialisable.tx_slug, @locale)
         #TODO
-        @tx_serialisable.tx_update(data, :cy)
+        @tx_serialisable.tx_update(data, @locale)
         update_timestamp(:tx_last_pull)
         return true
       end
@@ -56,7 +62,7 @@ module Transifex
 
     #Have the translations been completed and fully reviewed?
     def reviews_completed?
-      return transifex_service.reviews_completed?(@tx_serialisable.tx_slug)
+      return transifex_service.reviews_completed?(@tx_serialisable.tx_slug, @locale)
     end
 
     #Has the model been updated since it was last pushed?
@@ -66,7 +72,7 @@ module Transifex
 
     #Has the resource been updated in Transifex since it was last pulled?
     def translations_updated_since_last_pull?
-      return transifex_service.last_reviewed(@tx_serialisable.tx_slug) > last_pulled
+      return transifex_service.last_reviewed(@tx_serialisable.tx_slug, @locale) > last_pulled
     end
 
     private
