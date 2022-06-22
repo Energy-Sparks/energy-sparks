@@ -61,7 +61,15 @@ module Transifex
 
     #Has the model been updated since it was last pushed?
     def updated_since_last_pushed?
-      return @tx_serialisable.updated_at > last_pushed
+      #If we've just done a pull then we don't want to trigger an update, as all
+      #that's happened is the translated fields have been updated.
+      #So check if the update is after the pull timestamp AND since we last pushed
+      if last_pulled.present?
+        return @tx_serialisable.updated_at > last_pulled && @tx_serialisable.updated_at > last_pushed
+      else
+        #just check the timestamp
+        return @tx_serialisable.updated_at > last_pushed
+      end
     end
 
     #Has the resource been updated in Transifex since it was last pulled?

@@ -196,7 +196,7 @@ describe Transifex::Synchroniser, type: :service do
       let(:tx_last_pulled) { yesterday }
       let(:translations) { {
           "cy" => {
-            resource_key => {}
+            resource_key => {"name": "Updated"}
            }
          }
       }
@@ -210,6 +210,12 @@ describe Transifex::Synchroniser, type: :service do
         expect(service.pull).to be true
         status.reload
         expect(status.tx_last_pull).to_not eq yesterday
+      end
+
+      it 'wont push after that pull' do
+        status.update!(tx_last_push: yesterday)
+        expect(service.pull).to be true
+        expect(service.push).to be false
       end
     end
   end
@@ -255,5 +261,4 @@ describe Transifex::Synchroniser, type: :service do
       end
     end
   end
-
 end
