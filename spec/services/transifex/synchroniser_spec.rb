@@ -147,9 +147,9 @@ describe Transifex::Synchroniser, type: :service do
     context 'when translations are reviewed' do
       let(:resource_key)  { activity_type.resource_key }
       let(:translations) { {
-          :cy => {
+          "cy" => {
             resource_key => {
-              name: "Welsh name"
+              "name" => "Welsh name"
             }
            }
          }
@@ -189,7 +189,7 @@ describe Transifex::Synchroniser, type: :service do
       let(:yesterday)      { Date.today - 1 }
       let(:tx_last_pulled) { yesterday }
       let(:translations) { {
-          :cy => {
+          "cy" => {
             resource_key => {}
            }
          }
