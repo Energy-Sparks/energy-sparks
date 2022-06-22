@@ -1,0 +1,10 @@
+{
+  "errors": [
+    {
+      "status": "404",
+      "code": "not_found",
+      "title": "Object not found",
+      "detail": "No `Resource` resource found with the identifier `o:energy-sparks:p:es-development:r:slug-jh1`"
+    }
+  ]
+}
