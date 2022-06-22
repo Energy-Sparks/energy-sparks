@@ -1,8 +1,9 @@
 "use strict"
 
 import { storage } from './transport_surveys/storage';
-import { carbonCalc, carbonEquivalence, pluralise } from './transport_surveys/carbon';
+import { carbon } from './transport_surveys/carbon';
 import { notifier } from './transport_surveys/notifier';
+import { pluralise } from './transport_surveys/helpers';
 import * as handlebarsHelpers from './transport_surveys/handlebars_helpers';
 
 $(document).ready(function() {
@@ -13,8 +14,11 @@ $(document).ready(function() {
     run_on: $("#run_on").val(),
     base_url: $('#transport_survey').attr('action'),
     transport_types: loadTransportTypes('/transport_types.json'),
-    passenger_symbol: $("#passenger_symbol").val()
+    passenger_symbol: $("#passenger_symbol").val(),
+    rates: $('#rates').data()
   }
+
+  carbon.init(config.rates);
 
   if (storage.init({key: config.storage_key, base_url: config.base_url})) {
     setupSurvey();
@@ -279,14 +283,14 @@ $(document).ready(function() {
     let response = readResponse();
     let transport_type = config.transport_types[response['transport_type_id']];
 
-    let carbon = carbonCalc(transport_type, response['journey_minutes'], response['passengers']);
-    let nice_carbon = carbon === 0 ? '0' : carbon.toFixed(3)
+    let co2 = carbon.calc(transport_type, response['journey_minutes'], response['passengers']);
+    let nice_carbon = co2 === 0 ? '0' : co2.toFixed(3)
 
     $('#display-time').text(response['journey_minutes']);
     $('#display-transport').text(transport_type.image + " " + transport_type.name);
     $('#display-passengers').text(response['passengers'] + " " + pluralise("pupil", response['passengers']));
     $('#display-carbon').text(nice_carbon + "kg");
-    $('#display-carbon-equivalent').text(carbonEquivalence(carbon));
+    $('#display-carbon-equivalent').text(carbon.equivalence(co2));
   }
 
 });

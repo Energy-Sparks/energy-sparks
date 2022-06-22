@@ -15,6 +15,8 @@
   Launch survey app
 </button>
 
+
+
 <div class="modal fade modal-fullscreen-xs modal-fullscreen-sm modal-fullscreen-md" id="transport_survey_modal" data-backdrop="true" data-keyboard="false" tabindex="-1" aria-labelledby="transport_survey_modal_label" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
@@ -28,6 +30,7 @@
         <div id="app-notifier" role="alert"></div>
 
         <%= form_with(url: school_transport_surveys_url(@school), method: :patch, local: true, id: 'transport_survey') do |f| %>
+          <%= hidden_field_tag :rates, "", data: TransportSurvey.equivalence_rates %>
           <%= hidden_field_tag :run_on, @transport_survey.run_on %>
           <%= hidden_field_tag :run_identifier, TransportSurveyResponse.generate_unique_secure_token %>
           <%= hidden_field_tag :passenger_symbol, TransportSurveyResponse.passenger_symbol %>
