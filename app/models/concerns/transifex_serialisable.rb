@@ -22,22 +22,22 @@ module TransifexSerialisable
   # { attribute_name: {templated: true, html: true} }
   def tx_serialise
     attribs = {}
-    self.class.mobility_attributes.map(&:to_sym).each do |attr|
+    self.class.mobility_attributes.map.each do |attr|
       attr_key = tx_attribute_key(attr)
       attribs[attr_key] = tx_value(attr)
     end
     data = { resource_key => attribs }
-    return { en: data }
+    return { "en": data }
   end
 
   #Update the model using data from transifex
   def tx_update(data, locale)
     raise "Unexpected locale" unless I18n.available_locales.include?(locale)
-    raise "Unexpected i18n format" unless data[locale].present? && !data[locale][resource_key].nil?
+    raise "Unexpected i18n format" unless data[locale.to_s].present? && !data[locale.to_s][resource_key].nil?
 
-    translated_attributes = self.class.mobility_attributes.map(&:to_sym)
+    translated_attributes = self.class.mobility_attributes
     to_update = {}
-    tx_attributes = data[locale][resource_key]
+    tx_attributes = data[locale.to_s][resource_key]
     tx_attributes.each_key do |attr|
       #ignore any attributes that aren't translated
       if translated_attributes.include?(attr)
@@ -85,7 +85,7 @@ module TransifexSerialisable
   end
 
   def tx_attribute_key(attr)
-    self.class.tx_html_field?(attr) ? "#{attr}_html".to_sym : attr
+    self.class.tx_html_field?(attr) ? "#{attr}_html" : attr
   end
 
   def tx_value(attr)
@@ -95,7 +95,7 @@ module TransifexSerialisable
   end
 
   def resource_key
-    "#{self.class.model_name.i18n_key}_#{self.id}".to_sym
+    "#{self.class.model_name.i18n_key}_#{self.id}"
   end
 
   private
@@ -112,7 +112,7 @@ module TransifexSerialisable
   module ClassMethods
     def tx_attribute_mapping(attr)
       return {} unless const_defined?(:TX_ATTRIBUTE_MAPPING)
-      const_get(:TX_ATTRIBUTE_MAPPING).key?(attr) ? const_get(:TX_ATTRIBUTE_MAPPING)[attr] : {}
+      const_get(:TX_ATTRIBUTE_MAPPING).key?(attr.to_sym) ? const_get(:TX_ATTRIBUTE_MAPPING)[attr.to_sym] : {}
     end
 
     def tx_html_field?(attr)
