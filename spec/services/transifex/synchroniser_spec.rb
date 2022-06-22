@@ -280,7 +280,7 @@ describe Transifex::Synchroniser, type: :service do
       let(:tx_created_at) { Date.today }
       let(:tx_last_pushed) { Time.zone.now }
       let(:translations) { {
-          :cy => {
+          "cy" => {
             resource_key => {}
            }
          }
