@@ -140,8 +140,8 @@ describe 'ActivityType' do
       "cy" => {
          resource_key => {
            "name" => "Welsh name",
-           "description" => "The Welsh description",
-           "school_specific_description" => "Instructions for schools. %{chart|£}"
+           "description_html" => "The Welsh description",
+           "school_specific_description_html" => "Instructions for schools. %{chart|£}"
          }
        }
      }
