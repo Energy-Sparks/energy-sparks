@@ -112,10 +112,10 @@ describe 'ActivityType' do
       end
       it 'maps all translated fields' do
         data = activity_type.tx_serialise
-        expect(data[:en]).to_not be nil
+        expect(data["en"]).to_not be nil
         key = "activity_type_#{activity_type.id}"
-        expect(data[:en][key]).to_not be nil
-        expect(data[:en][key].keys).to match_array(["name", "description_html", "school_specific_description_html", "download_links_html"])
+        expect(data["en"][key]).to_not be nil
+        expect(data["en"][key].keys).to match_array(["name", "description_html", "school_specific_description_html", "download_links_html"])
       end
       it 'created categories' do
         expect(activity_type.tx_categories).to match_array(["activity_type"])
