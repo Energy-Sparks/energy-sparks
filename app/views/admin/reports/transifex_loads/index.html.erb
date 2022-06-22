@@ -1,0 +1,40 @@
+<h1>Transifex Content Loads</h1>
+
+<p>
+Listing the results of the 50 most recent runs of the Transifex content loader.
+</p>
+
+<p>
+The loader pulls resources from Transifex and pushes content from our database.
+Content is only pushed if there is new or updated content. Updates from Transifex are only
+imported into our database when translations have been reviewed.
+</p>
+
+<table class="table table-striped table-sorted">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Pulled</th>
+      <th>Pushed</th>
+      <th>Errors</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @transifex_loads.each do |transifex_load| %>
+      <tr>
+        <td>
+          <%= link_to admin_reports_transifex_load_path(transifex_load) do %>
+            <%= nice_dates(transifex_load.created_at) %>
+          <% end %>
+        </td>
+        <td><%= transifex_load.pulled %></td>
+        <td><%= transifex_load.pushed %></td>
+        <td><%= transifex_load.transifex_load_errors.count %></td>
+        <td>
+          <%= link_to "View", admin_reports_transifex_load_path(transifex_load), class: "btn btn-secondary" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
