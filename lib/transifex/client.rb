@@ -6,6 +6,7 @@ module Transifex
     class NotAllowed < StandardError; end
     class NotAuthorised < StandardError; end
     class ResponseError < StandardError; end
+    class AccessError < StandardError; end
 
     BASE_URL = 'https://rest.api.transifex.com/'.freeze
     ORGANIZATION = 'energy-sparks'.freeze
@@ -25,6 +26,13 @@ module Transifex
     def list_resources
       url = add_filter("resources")
       get_data(url)
+    end
+
+    def delete_resource(slug)
+      raise AccessError.new("#{slug} in #{@project} is not deletable") unless resource_is_deletable
+
+      url = make_url("resources/#{resource_id(slug)}")
+      del_data(url)
     end
 
     def create_resource(name, slug, categories = [], priority = 'normal')
@@ -110,12 +118,18 @@ module Transifex
       process_response(response)
     end
 
+    def del_data(url)
+      response = connection.delete(url)
+      check_response_status(response)
+    end
+
     def check_response_status(response)
       raise BadRequest.new(error_message(response)) if response.status == 400
       raise NotAuthorised.new(error_message(response)) if response.status == 401
       raise NotAllowed.new(error_message(response)) if response.status == 403
       raise NotFound.new(error_message(response)) if response.status == 404
       raise ApiFailure.new(error_message(response)) unless response.success?
+      true
     end
 
     def process_response(response)
@@ -134,12 +148,9 @@ module Transifex
 
     def process_async_upload_response(response)
       data = process_response(response)
-      if data.is_a?(Array)
-        Response.new(completed: true, data: data)
-      else
-        process_errors(data)
-        Response.new(completed: false, data: data)
-      end
+      process_errors(data)
+      completed = (data['attributes']['status'] == 'succeeded')
+      Response.new(completed: completed, data: data)
     end
 
     def process_errors(data)
@@ -166,6 +177,13 @@ module Transifex
     rescue
       #problem parsing or traversing json, return original api error
       response.body
+    end
+
+    def resource_is_deletable
+      if (deletable_projects = ENV['TRANSIFEX_DELETABLE_PROJECTS'])
+        return deletable_projects.split(',').include?(@project)
+      end
+      false
     end
 
     def resource_strings_async_upload_data(resource_id, content)

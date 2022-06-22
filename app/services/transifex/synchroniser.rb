@@ -12,9 +12,9 @@ module Transifex
 
     def pull
       if created_in_transifex? && reviews_completed? && (last_pulled.nil? || translations_updated_since_last_pull?)
-        data = transifex_service.pull(@tx_serialisable.tx_slug, :cy)
+        data = transifex_service.pull(@tx_serialisable.tx_slug, @locale)
         #TODO
-        @tx_serialisable.tx_update(data, :cy)
+        @tx_serialisable.tx_update(data, @locale)
         update_timestamp(:tx_last_pull)
         return true
       end
@@ -56,17 +56,25 @@ module Transifex
 
     #Have the translations been completed and fully reviewed?
     def reviews_completed?
-      return transifex_service.reviews_completed?(@tx_serialisable.tx_slug)
+      return transifex_service.reviews_completed?(@tx_serialisable.tx_slug, @locale)
     end
 
     #Has the model been updated since it was last pushed?
     def updated_since_last_pushed?
-      return @tx_serialisable.updated_at > last_pushed
+      #If we've just done a pull then we don't want to trigger an update, as all
+      #that's happened is the translated fields have been updated.
+      #So check if the update is after the pull timestamp AND since we last pushed
+      if last_pulled.present?
+        return @tx_serialisable.updated_at > last_pulled && @tx_serialisable.updated_at > last_pushed
+      else
+        #just check the timestamp
+        return @tx_serialisable.updated_at > last_pushed
+      end
     end
 
     #Has the resource been updated in Transifex since it was last pulled?
     def translations_updated_since_last_pull?
-      return transifex_service.last_reviewed(@tx_serialisable.tx_slug) > last_pulled
+      return transifex_service.last_reviewed(@tx_serialisable.tx_slug, @locale) > last_pulled
     end
 
     private

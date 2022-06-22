@@ -9,7 +9,9 @@
 #  updated_at :datetime         not null
 #
 class TransifexLoad < ApplicationRecord
-  has_many :transifex_load_errors
+  has_many :transifex_load_errors, :dependent => :destroy
+
+  enum status: [:running, :done]
 
   scope :by_date, -> { order(created_at: :desc) }
 

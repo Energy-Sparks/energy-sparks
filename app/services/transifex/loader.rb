@@ -6,9 +6,15 @@ module Transifex
     end
 
     def perform
-      transifex_load = TransifexLoad.create!
-      @logger.info("Synchronising Activity Types")
-      synchronise_resources(transifex_load, ActivityType.active)
+      transifex_load = TransifexLoad.create!(status: :running)
+      begin
+        log("Synchronising Activity Types")
+        synchronise_resources(transifex_load, ActivityType.active.order(:id))
+      rescue => error
+        #ensure all errors are caught and logged
+        log_error(transifex_load, error)
+      end
+      transifex_load.update!(status: :done)
     end
 
     private
@@ -28,24 +34,35 @@ module Transifex
     def process_tx_serialisable(transifex_load, tx_serialisable, counter)
       begin
         synchroniser = Synchroniser.new(tx_serialisable, @locale)
+        log("processing #{tx_serialisable.resource_key}")
         counter.total_pulled += 1 if synchroniser.pull
         counter.total_pushed += 1 if synchroniser.push
       rescue => error
-        log_error(transifex_load, tx_serialisable, error)
+        log("error processing #{tx_serialisable.resource_key}")
+        log_error(transifex_load, error, tx_serialisable)
       end
     end
 
-    def log_error(transifex_load, tx_serialisable, error)
-      Rollbar.error(error,
-        job: :transifex_load,
-        record_type: tx_serialisable.class.name,
-        record_id: tx_serialisable.id
-      )
-      transifex_load.transifex_load_errors.create!(
-        record_type: tx_serialisable.class.name,
-        record_id: tx_serialisable.id,
-        error: error.message
-      )
+    def log_error(transifex_load, error, tx_serialisable = nil)
+      if tx_serialisable.present?
+        Rollbar.error(error,
+          job: :transifex_load,
+          record_type: tx_serialisable.class.name,
+          record_id: tx_serialisable.id
+        )
+        transifex_load.transifex_load_errors.create!(
+          record_type: tx_serialisable.class.name,
+          record_id: tx_serialisable.id,
+          error: error.message
+        )
+      else
+        Rollbar.error(error, job: :transifex_load)
+        transifex_load.transifex_load_errors.create!(error: error.message)
+      end
+    end
+
+    def log(msg)
+      @logger.info("Transifex Loader: #{msg}")
     end
   end
 end

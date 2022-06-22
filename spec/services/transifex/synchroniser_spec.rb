@@ -3,8 +3,14 @@ require 'rails_helper'
 describe Transifex::Synchroniser, type: :service do
 
   let(:activity_type) { create(:activity_type) }
-  let(:service)     { Transifex::Synchroniser.new(activity_type, :cy) }
+  let(:service)       { Transifex::Synchroniser.new(activity_type, :cy) }
   let(:resource_key)  { activity_type.resource_key }
+
+  let(:client)        { double('transifex-client') }
+
+  before(:each) do
+    allow(Transifex::Service).to receive(:create_client).and_return(client)
+  end
 
   describe '#last_pushed' do
     context 'and no status' do
@@ -147,9 +153,9 @@ describe Transifex::Synchroniser, type: :service do
     context 'when translations are reviewed' do
       let(:resource_key)  { activity_type.resource_key }
       let(:translations) { {
-          :cy => {
+          "cy" => {
             resource_key => {
-              name: "Welsh name"
+              "name" => "Welsh name"
             }
            }
          }
@@ -189,8 +195,8 @@ describe Transifex::Synchroniser, type: :service do
       let(:yesterday)      { Date.today - 1 }
       let(:tx_last_pulled) { yesterday }
       let(:translations) { {
-          :cy => {
-            resource_key => {}
+          "cy" => {
+            resource_key => {"name": "Updated"}
            }
          }
       }
@@ -204,6 +210,12 @@ describe Transifex::Synchroniser, type: :service do
         expect(service.pull).to be true
         status.reload
         expect(status.tx_last_pull).to_not eq yesterday
+      end
+
+      it 'wont push after that pull' do
+        status.update!(tx_last_push: yesterday)
+        expect(service.pull).to be true
+        expect(service.push).to be false
       end
     end
   end
