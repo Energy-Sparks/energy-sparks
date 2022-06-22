@@ -1,4 +1,3 @@
-
 import { pluralise } from './helpers';
 
 export const carbon = ( function() {

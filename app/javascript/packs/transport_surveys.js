@@ -3,7 +3,7 @@
 import { storage } from './transport_surveys/storage';
 import { carbon } from './transport_surveys/carbon';
 import { notifier } from './transport_surveys/notifier';
-import { pluralise } from './transport_surveys/helpers';
+import { pluralise, nice_date } from './transport_surveys/helpers';
 import * as handlebarsHelpers from './transport_surveys/handlebars_helpers';
 
 $(document).ready(function() {
@@ -91,7 +91,8 @@ $(document).ready(function() {
   function saveResponses() {
     let button = $(this);
     let date = button.attr('data-date');
-    if (window.confirm('Are you sure you want to save ' + storage.getResponsesCount(date) + ' unsaved result(s) from ' + date + '?')) {
+    let count = storage.getResponsesCount(date);
+    if (window.confirm(`Are you sure you want to save ${count} unsaved ${pluralise("response", count)} from ${nice_date(date)}?`)) {
       storage.syncResponses(date, notifier.page).done( function() {
         button.closest('.alert').hide();
         if (date == config.run_on) {
@@ -106,7 +107,8 @@ $(document).ready(function() {
   function deleteResponses() {
     let button = $(this);
     let date = button.attr('data-date');
-    if (window.confirm('Are you sure you want to remove ' + storage.getResponsesCount(date) + ' unsaved result(s) from ' + date + '?')) {
+    let count = storage.getResponsesCount(date);
+    if (window.confirm(`Are you sure you want to remove ${count} unsaved ${pluralise("response", count)} from ${nice_date(date)}?`)) {
       storage.removeResponses(date);
       notifier.page('success', 'Unsaved responses removed!');
       button.closest('.alert').hide();
