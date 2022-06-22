@@ -1,7 +1,7 @@
 namespace :after_party do
-  desc 'Deployment task: upate_transport_types_kg_co2e_per_km'
-  task upate_transport_types_kg_co2e_per_km: :environment do
-    puts "Running deploy task 'upate_transport_types_kg_co2e_per_km'"
+  desc 'Deployment task: update_transport_types_kg_co2e_per_km'
+  task update_transport_types_kg_co2e_per_km: :environment do
+    puts "Running deploy task 'update_transport_types_kg_co2e_per_km'"
 
     # Update kg_co2e_per_km figures from:
     # https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2021
