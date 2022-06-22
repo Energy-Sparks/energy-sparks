@@ -180,9 +180,10 @@ module Transifex
     end
 
     def resource_is_deletable
-      return false unless ENV['TRANSIFEX_DELETABLE_PROJECTS']
-      deletable_projects = ENV['TRANSIFEX_DELETABLE_PROJECTS'].split(',')
-      deletable_projects.include?(@project)
+      if (deletable_projects = ENV['TRANSIFEX_DELETABLE_PROJECTS'])
+        return deletable_projects.split(',').include?(@project)
+      end
+      false
     end
 
     def resource_strings_async_upload_data(resource_id, content)
