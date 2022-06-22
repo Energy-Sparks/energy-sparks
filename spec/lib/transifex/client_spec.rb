@@ -172,12 +172,13 @@ module Transifex
         end
 
         context 'when translation has completed' do
-          let(:body)          { File.read('spec/fixtures/transifex/get_resource_strings_collection.json') }
+          let(:body)          { File.read('spec/fixtures/transifex/get_resource_strings_async_upload_succeeded.json') }
           it 'requests url with path and returns data' do
             expect(connection).to receive(:get).with(expected_path).and_return(response)
             ret = client.get_resource_strings_async_upload(upload_id)
             expect(ret.completed?).to be_truthy
-            expect(ret.data[0]["attributes"]["strings"]["one"]).to eq('hello')
+            expect(ret.data["attributes"]["status"]).to eq('succeeded')
+            expect(ret.data["attributes"]["details"]["strings_created"]).to eq(1)
           end
         end
       end
