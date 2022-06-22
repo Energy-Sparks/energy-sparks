@@ -35,7 +35,7 @@ module TransifexSerialisable
     raise "Unexpected locale" unless I18n.available_locales.include?(locale)
     raise "Unexpected i18n format" unless data[locale.to_s].present? && !data[locale.to_s][resource_key].nil?
 
-    translated_attributes = self.class.mobility_attributes
+    translated_attributes = self.class.mobility_attributes.map { |attr| tx_attribute_key(attr) }
     to_update = {}
     tx_attributes = data[locale.to_s][resource_key]
     tx_attributes.each_key do |attr|
@@ -69,15 +69,11 @@ module TransifexSerialisable
   end
 
   def tx_key_to_attribute_name(attr, locale)
-    if attr.end_with?("_html")
-      attr.to_s.gsub("_html", "") + "_#{locale}".to_sym
-    else
-      "#{attr}_#{locale}".to_sym
-    end
+    "#{original_attribute_key(attr)}_#{locale}".to_sym
   end
 
   def tx_to_attribute_value(attr, tx_attributes)
-    if self.class.tx_templated_attribute?(attr)
+    if self.class.tx_templated_attribute?(original_attribute_key(attr))
       yaml_template_to_mustache(tx_attributes[attr])
     else
       tx_attributes[attr]
@@ -86,6 +82,10 @@ module TransifexSerialisable
 
   def tx_attribute_key(attr)
     self.class.tx_html_field?(attr) ? "#{attr}_html" : attr
+  end
+
+  def original_attribute_key(attr)
+    attr.chomp('_html')
   end
 
   def tx_value(attr)
