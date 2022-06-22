@@ -8,7 +8,7 @@ module Transifex
     def perform
       transifex_load = TransifexLoad.create!
       @logger.info("Synchronising Activity Types")
-      synchronise_resources(transifex_load, ActivityType.active)
+      synchronise_resources(transifex_load, ActivityType.active.order(:id))
     end
 
     private
