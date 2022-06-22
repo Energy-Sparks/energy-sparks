@@ -10,12 +10,6 @@ module Transifex
       @locale = locale
     end
 
-    def synchronise
-      pulled = pull
-      pushed = push
-      return pulled, pushed
-    end
-
     def pull
       if created_in_transifex? && reviews_completed? && (last_pulled.nil? || translations_updated_since_last_pull?)
         data = transifex_service.pull(@tx_serialisable.tx_slug, @locale)
