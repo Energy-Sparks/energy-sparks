@@ -14,6 +14,7 @@ imported into our database when translations have been reviewed.
   <thead>
     <tr>
       <th>Date</th>
+      <th>Status</th>
       <th>Pulled</th>
       <th>Pushed</th>
       <th>Errors</th>
@@ -25,9 +26,10 @@ imported into our database when translations have been reviewed.
       <tr>
         <td>
           <%= link_to admin_reports_transifex_load_path(transifex_load) do %>
-            <%= nice_dates(transifex_load.created_at) %>
+            <%= nice_date_times(transifex_load.created_at) %>
           <% end %>
         </td>
+        <td><%= transifex_load.status %></td>
         <td><%= transifex_load.pulled %></td>
         <td><%= transifex_load.pushed %></td>
         <td><%= transifex_load.transifex_load_errors.count %></td>
