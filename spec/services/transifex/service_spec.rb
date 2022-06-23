@@ -158,4 +158,36 @@ describe Transifex::Service, type: :service do
       end
     end
   end
+
+  describe '#clear_resources' do
+    let(:item_1)          { { "id"=>"o:energy-sparks:p:es-development:r:activity_type_1", "attributes"=>{"slug"=>"activity_type_1"} } }
+    let(:item_2)          { { "id"=>"o:energy-sparks:p:es-development:r:activity_type_2", "attributes"=>{"slug"=>"activity_type_2"} } }
+    let(:items)           { [ item_1, item_2 ] }
+
+    context 'when deletions succeed' do
+      before(:each) do
+        expect(client).to receive(:list_resources).and_return(items)
+        expect(client).to receive(:delete_resource).with('activity_type_1').and_return(true)
+        expect(client).to receive(:delete_resource).with('activity_type_2').and_return(true)
+      end
+
+      it 'returns true' do
+        expect(service.clear_resources).to be_truthy
+      end
+    end
+
+    context 'when deletions fail' do
+      before(:each) do
+        expect(client).to receive(:list_resources).and_return(items)
+        expect(client).to receive(:delete_resource).with('activity_type_1').and_raise(Transifex::Client::NotAllowed.new('test'))
+      end
+
+      it 'raises error' do
+        expect {
+          service.clear_resources
+        }.to raise_error(Transifex::Client::NotAllowed)
+      end
+    end
+
+  end
 end

@@ -59,6 +59,14 @@ module Transifex
       false
     end
 
+    def clear_resources
+      items = @client.list_resources
+      items.each do |item|
+        @client.delete_resource(item['attributes']['slug'])
+      end
+      true
+    end
+
     private
 
     def error_messages(errors)
