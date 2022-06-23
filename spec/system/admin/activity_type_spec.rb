@@ -50,7 +50,7 @@ describe "activity type", type: :system do
 
       attach_file("activity_type_image", Rails.root + "spec/fixtures/images/placeholder.png")
 
-      within('.download-links-trix-editor') do
+      within('.download-links-trix-editor.en') do
         fill_in_trix with: download_links
       end
 
@@ -58,7 +58,7 @@ describe "activity type", type: :system do
         fill_in_trix with: description
       end
 
-      within('.school-specific-description-trix-editor') do
+      within('.school-specific-description-trix-editor.en') do
         fill_in_trix with: school_specific_description
       end
 
@@ -99,14 +99,14 @@ describe "activity type", type: :system do
       allow_any_instance_of(ChartData).to receive(:data).and_return(nil)
 
       click_on 'New Activity Type'
-      within('.school-specific-description-trix-editor') do
+      within('.school-specific-description-trix-editor.en') do
         fill_in_trix with: "Your chart"
         find('button[data-trix-action="chart"]').click
         select 'last_7_days_intraday_gas', from: 'chart-list-chart'
         click_on 'Insert'
         expect(find('trix-editor')).to have_text('{{#chart}}last_7_days_intraday_gas{{/chart}}')
         click_on 'Preview'
-        within '#school-specific-description-preview' do
+        within '#school-specific-description-en-preview' do
           expect(page).to have_content('Your chart')
           expect(page).to have_selector('#chart_wrapper_last_7_days_intraday_gas')
         end
@@ -164,17 +164,29 @@ describe "activity type", type: :system do
         fill_in_trix with: 'some welsh description'
       end
 
+      within('.school-specific-description-trix-editor.en') do
+        fill_in_trix with: 'some english school specific description'
+      end
+
+      within('.school-specific-description-trix-editor.cy') do
+        fill_in_trix with: 'some welsh school specific description'
+      end
+
       click_on('Update Activity type')
 
       activity_type.reload
 
       expect(activity_type.description(locale: :en).body.to_html).to include('some english description')
       expect(activity_type.description(locale: :cy).body.to_html).to include('some welsh description')
+      expect(activity_type.school_specific_description(locale: :en).body.to_html).to include('some english school specific description')
+      expect(activity_type.school_specific_description(locale: :cy).body.to_html).to include('some welsh school specific description')
 
       visit admin_activity_type_path(activity_type)
 
       expect(page).to have_content('some english description')
       expect(page).to have_content('some welsh description')
+      expect(page).to have_content('some english school specific description')
+      expect(page).to have_content('some welsh school specific description')
     end
   end
 end
