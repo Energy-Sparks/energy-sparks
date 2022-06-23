@@ -53,6 +53,12 @@ class TransportSurvey < ApplicationRecord
     percentage_per_category.collect { |k, v| { name: k.humanize, y: v } }
   end
 
+  def self.equivalence_rates
+    [:tree, :tv, :computer_console, :smartphone, :carnivore_dinner, :vegetarian_dinner].index_with do |type|
+      EnergyEquivalences.all_equivalences[type][:conversions][:co2][:rate]
+    end
+  end
+
   def responses=(responses_attributes)
     responses_attributes.each do |response_attributes|
       self.responses.create_with(response_attributes).find_or_create_by(response_attributes.slice(:run_identifier, :surveyed_at))

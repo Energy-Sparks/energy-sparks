@@ -28,6 +28,7 @@
         <div id="app-notifier" role="alert"></div>
 
         <%= form_with(url: school_transport_surveys_url(@school), method: :patch, local: true, id: 'transport_survey') do |f| %>
+          <%= hidden_field_tag :rates, "", data: TransportSurvey.equivalence_rates %>
           <%= hidden_field_tag :run_on, @transport_survey.run_on %>
           <%= hidden_field_tag :run_identifier, TransportSurveyResponse.generate_unique_secure_token %>
           <%= hidden_field_tag :passenger_symbol, TransportSurveyResponse.passenger_symbol %>
@@ -99,7 +100,7 @@
             </fieldset>
 
             <fieldset class="panel" style="display: none;">
-              <h2>For your <span id="display-time"></span> minute journey to school by <span id="display-transport"></span> for <span id="display-passengers"></span> pupil(s).</h2>
+              <h2>For your <span id="display-time"></span> minute journey to school by <span id="display-transport"></span> for <span id="display-passengers"></span>.</h2>
               <hr />
               <h2>You used <span id="display-carbon" class="badge badge-secondary"></span> of carbon each!</h2>
               <hr />

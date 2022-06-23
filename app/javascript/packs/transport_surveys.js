@@ -1,10 +1,10 @@
 "use strict"
 
 import { storage } from './transport_surveys/storage';
-import { carbonCalc, carbonExamples, funWeight } from './transport_surveys/carbon';
+import { carbon } from './transport_surveys/carbon';
 import { notifier } from './transport_surveys/notifier';
+import { pluralise, nice_date } from './transport_surveys/helpers';
 import * as handlebarsHelpers from './transport_surveys/handlebars_helpers';
-
 
 $(document).ready(function() {
 
@@ -14,8 +14,11 @@ $(document).ready(function() {
     run_on: $("#run_on").val(),
     base_url: $('#transport_survey').attr('action'),
     transport_types: loadTransportTypes('/transport_types.json'),
-    passenger_symbol: $("#passenger_symbol").val()
+    passenger_symbol: $("#passenger_symbol").val(),
+    rates: $('#rates').data()
   }
+
+  carbon.init(config.rates);
 
   if (storage.init({key: config.storage_key, base_url: config.base_url})) {
     setupSurvey();
@@ -88,7 +91,8 @@ $(document).ready(function() {
   function saveResponses() {
     let button = $(this);
     let date = button.attr('data-date');
-    if (window.confirm('Are you sure you want to save ' + storage.getResponsesCount(date) + ' unsaved result(s) from ' + date + '?')) {
+    let count = storage.getResponsesCount(date);
+    if (window.confirm(`Are you sure you want to save ${count} unsaved ${pluralise("response", count)} from ${nice_date(date)}?`)) {
       storage.syncResponses(date, notifier.page).done( function() {
         button.closest('.alert').hide();
         if (date == config.run_on) {
@@ -103,7 +107,8 @@ $(document).ready(function() {
   function deleteResponses() {
     let button = $(this);
     let date = button.attr('data-date');
-    if (window.confirm('Are you sure you want to remove ' + storage.getResponsesCount(date) + ' unsaved result(s) from ' + date + '?')) {
+    let count = storage.getResponsesCount(date);
+    if (window.confirm(`Are you sure you want to remove ${count} unsaved ${pluralise("response", count)} from ${nice_date(date)}?`)) {
       storage.removeResponses(date);
       notifier.page('success', 'Unsaved responses removed!');
       button.closest('.alert').hide();
@@ -280,15 +285,14 @@ $(document).ready(function() {
     let response = readResponse();
     let transport_type = config.transport_types[response['transport_type_id']];
 
-    let carbon = carbonCalc(transport_type, response['journey_minutes'], response['passengers']);
-    let nice_carbon = carbon === 0 ? '0' : carbon.toFixed(3)
-    let fun_weight = funWeight(carbon);
+    let co2 = carbon.calc(transport_type, response['journey_minutes'], response['passengers']);
+    let nice_carbon = co2 === 0 ? '0' : co2.toFixed(3)
 
     $('#display-time').text(response['journey_minutes']);
     $('#display-transport').text(transport_type.image + " " + transport_type.name);
-    $('#display-passengers').text(response['passengers']);
+    $('#display-passengers').text(response['passengers'] + " " + pluralise("pupil", response['passengers']));
     $('#display-carbon').text(nice_carbon + "kg");
-    $('#display-carbon-equivalent').text(funWeight(carbon));
+    $('#display-carbon-equivalent').text(carbon.equivalence(co2));
   }
 
 });
