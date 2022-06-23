@@ -86,7 +86,7 @@ describe 'TransportSurveys - App', type: :system do
                       let(:carbon) { ((((transport_type.speed_km_per_hour * time) / 60) * transport_type.kg_co2e_per_km) / passengers).round(3) }
 
                       it "displays carbon summary" do
-                        expect(page).to have_content("For your #{time} minute journey to school by #{transport_type.image} #{transport_type.name} for #{passengers} pupil(s).")
+                        expect(page).to have_content("For your #{time} minute journey to school by #{transport_type.image} #{transport_type.name} for #{passengers} #{'pupil'.pluralize(passengers)}.")
                         expect(page).to have_content("You used #{carbon}kg of carbon each!")
                         expect(find("#display-carbon-equivalent")).to_not be_blank #the content of this is random, so this is as far as it can be tested without getting too complex
                       end
