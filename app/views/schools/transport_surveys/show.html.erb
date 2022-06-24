@@ -1,42 +1,41 @@
-<h1>Travel to School Surveys</h1>
+<% content_for :head do %>
+  <%= javascript_pack_tag 'transport_surveys/charts' %>
+<% end %>
 
-<h3>Responses for: <%= @transport_survey.run_on %></h3>
+<%= render 'header_nav' %>
+<%= render 'nav' %>
 
-<div class="table-responsive mt-2">
-  <table class="table table-striped">
-    <thead>
+<% if @transport_survey.responses.any? %>
+  <div class="mb-3">
+    <div><strong><%= @transport_survey.total_passengers %> pupils</strong> were surveyed on <strong><%= nice_dates @transport_survey.run_on %></strong>.</div>
+    <div>Their travel to school generated <strong><%= @transport_survey.total_carbon.round(2) %>kg CO2</strong>.</div>
+    <div> <strong><%= @transport_survey.percentage_per_category["active_travel"].round %>%</strong> used active travel, generating zero CO2,
+          <strong><%= @transport_survey.percentage_per_category["public_transport"].round %>%</strong> travelled by public transport,
+          <strong><%= @transport_survey.percentage_per_category["park_and_stride"].round %>%</strong> used park and stride and
+          <strong><%= @transport_survey.percentage_per_category["car"].round %>%</strong> travelled by car.</div>
+  </div>
+
+  <div id="transport_surveys_pie" class="mb-3"></div>
+
+  <table class="table">
+    <thead class="thead-light">
       <tr>
-        <th>Weather</th>
-        <th>Journey Time (minutes)</th>
-        <th>Transport Method</th>
-        <th>Passengers</th>
-        <th>Response Time</th>
-        <th>Run Identifier</th>
-        <% if can? :delete, TransportSurveyResponse %>
-          <th>Actions</th>
-        <% end %>
+        <th>Transport category</th>
+        <th>Total pupils</th>
+        <th>Percentage pupils</th>
       </tr>
     </thead>
     <tbody>
-      <% @transport_survey.responses.each do |response| %>
-        <tr scope="row">
-          <td><%= response.weather_symbol %></td>
-          <td><%= response.journey_minutes %></td>
-          <td><%= response.transport_type.image %> <%= response.transport_type.name %></td>
-          <td><%= response.passengers %></td>
-          <td><%= response.surveyed_at %></td>
-          <td><%= response.run_identifier %></td>
-          <% if can? :delete, response %>
-            <td><%= link_to 'Delete', school_transport_survey_response_path(@school, @transport_survey, response), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %></td>
-          <% end %>
+      <% TransportType.categories_with_other.each do |cat, value| %>
+        <tr>
+          <td><%= cat.humanize %></td>
+          <td><%= @transport_survey.passengers_per_category[cat] %></td>
+          <td><%= @transport_survey.percentage_per_category[cat].round %>%</td>
         </tr>
       <% end %>
     </tbody>
   </table>
-</div>
 
-<% if can?(:edit, TransportSurvey) %>
-  <%= link_to 'Collect more responses', edit_school_transport_survey_url(@school, @transport_survey.run_on), class: 'btn' %>
+<% else %>
+  <h4>No responses have been collected</h4>
 <% end %>
-
-<%= link_to 'View survey responses by date', school_transport_surveys_url(@school), class: 'btn' %>

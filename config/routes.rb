@@ -147,12 +147,12 @@ Rails.application.routes.draw do
       resources :audits
 
       resources :temperature_observations, only: [:show, :new, :create, :index, :destroy]
-      resources :transport_surveys, only: [:show, :edit, :update, :index, :destroy], param: :run_on do
+      resources :transport_surveys, only: [:show, :update, :index, :destroy], param: :run_on do
         collection do
           get :start
         end
         scope module: :transport_surveys do
-          resources :responses, only: [:destroy]
+          resources :responses, only: [:index, :destroy]
         end
       end
 
@@ -388,6 +388,7 @@ Rails.application.routes.draw do
       resources :school_targets, only: :index
       resources :meter_reports, only: :index
       resources :data_loads, only: :index
+      resources :transifex_loads, only: [:index, :show]
     end
 
     resource :settings, only: [:show, :update]

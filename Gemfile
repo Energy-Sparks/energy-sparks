@@ -108,6 +108,7 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem "bullet", require: false # use bullet to optimise queries
   gem 'rspec-rails', '~> 4.0.1'
+  gem 'rspec-json_expectations'
   gem 'rails-controller-testing'
   gem "fakefs", require: "fakefs/safe"
   gem 'factory_bot_rails'

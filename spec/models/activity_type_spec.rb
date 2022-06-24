@@ -91,4 +91,76 @@ describe 'ActivityType' do
       expect(ActivityType.for_subjects([subject_1, subject_2]).count).to eq(1)
     end
   end
+
+  context 'serialising for transifex' do
+    context 'when mapping fields' do
+      let!(:activity_type) { create(:activity_type, name: "My activity", description: "description", school_specific_description: "Description {{chart}}")}
+      it 'produces the expected key names' do
+        expect(activity_type.tx_attribute_key("name")).to eq "name"
+        expect(activity_type.tx_attribute_key("description")).to eq "description_html"
+        expect(activity_type.tx_attribute_key("school_specific_description")).to eq "school_specific_description_html"
+        expect(activity_type.tx_attribute_key("download_links")).to eq "download_links_html"
+      end
+      it 'produces the expected tx values' do
+        expect(activity_type.tx_value("name")).to eql activity_type.name
+        expect(activity_type.tx_value("description")).to eql(
+        "<div class=\"trix-content\">\n  description\n</div>\n")
+        expect(activity_type.tx_value("school_specific_description")).to eql("<div class=\"trix-content\">\n  Description %{chart}\n</div>\n")
+      end
+      it 'produces the expected resource key' do
+        expect(activity_type.resource_key).to eq "activity_type_#{activity_type.id}"
+      end
+      it 'maps all translated fields' do
+        data = activity_type.tx_serialise
+        expect(data["en"]).to_not be nil
+        key = "activity_type_#{activity_type.id}"
+        expect(data["en"][key]).to_not be nil
+        expect(data["en"][key].keys).to match_array(["name", "description_html", "school_specific_description_html", "download_links_html"])
+      end
+      it 'created categories' do
+        expect(activity_type.tx_categories).to match_array(["activity_type"])
+      end
+      it 'overrides default name' do
+        expect(activity_type.tx_name).to eq("My activity")
+      end
+      it 'fetches status' do
+        expect(activity_type.tx_status).to be_nil
+        status = TransifexStatus.create_for!(activity_type)
+        expect(TransifexStatus.count).to eq 1
+        expect(activity_type.tx_status).to eq status
+      end
+    end
+  end
+  context 'when updating from transifex' do
+    let(:resource_key) { "activity_type_#{subject.id}" }
+    let(:name) { subject.name }
+    let(:description) { subject.description }
+    let(:school_specific_description) { subject.school_specific_description}
+    let(:data) { {
+      "cy" => {
+         resource_key => {
+           "name" => "Welsh name",
+           "description_html" => "The Welsh description",
+           "school_specific_description_html" => "Instructions for schools. %{chart|£}"
+         }
+       }
+     }
+    }
+    before(:each) do
+      subject.tx_update(data, :cy)
+      subject.reload
+    end
+    it 'updates simple fields' do
+      expect(subject.name).to eq name
+      expect(subject.name_cy).to eq "Welsh name"
+    end
+    it 'updates HTML fields' do
+      expect(subject.description).to eq description
+      expect(subject.description_cy.to_s).to eql("<div class=\"trix-content\">\n  The Welsh description\n</div>\n")
+    end
+    it 'translates the template syntax' do
+      expect(subject.school_specific_description).to eq school_specific_description
+      expect(subject.school_specific_description_cy.to_s).to eql("<div class=\"trix-content\">\n  Instructions for schools. {{chart|£}}\n</div>\n")
+    end
+  end
 end

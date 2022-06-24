@@ -51,7 +51,7 @@ module Admin
     end
 
     def intervention_type_params
-      translated_params = t_params([:name, :summary, :description, :download_links])
+      translated_params = t_params(InterventionType.mobility_attributes)
       params.require(:intervention_type).permit(translated_params,
           :name,
           :summary,

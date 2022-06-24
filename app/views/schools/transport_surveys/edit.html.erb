@@ -2,11 +2,10 @@
   <%= javascript_pack_tag 'transport_surveys' %>
 <% end %>
 
-<h1>Travel to School Surveys</h1>
+<%= render 'header_nav' %>
+<%= render 'nav' %>
 
-<h3>Surveying on <%= @transport_survey.run_on %></h3>
-
-<%= render partial: 'no_javascript_warning' %>
+<%= render 'no_javascript_warning' %>
 <div id="page-notifier" role="alert"></div>
 <div id="unsaved-responses"></div>
 
@@ -15,8 +14,6 @@
 <button type="button" class="btn btn-primary jsonly" data-toggle="modal" data-target="#transport_survey_modal">
   Launch survey app
 </button>
-
-<%= link_to 'View survey responses by date', school_transport_surveys_url(@school), class: 'btn' %>
 
 <div class="modal fade modal-fullscreen-xs modal-fullscreen-sm modal-fullscreen-md" id="transport_survey_modal" data-backdrop="true" data-keyboard="false" tabindex="-1" aria-labelledby="transport_survey_modal_label" aria-hidden="true">
   <div class="modal-dialog modal-xl">
@@ -31,6 +28,7 @@
         <div id="app-notifier" role="alert"></div>
 
         <%= form_with(url: school_transport_surveys_url(@school), method: :patch, local: true, id: 'transport_survey') do |f| %>
+          <%= hidden_field_tag :rates, "", data: TransportSurvey.equivalence_rates %>
           <%= hidden_field_tag :run_on, @transport_survey.run_on %>
           <%= hidden_field_tag :run_identifier, TransportSurveyResponse.generate_unique_secure_token %>
           <%= hidden_field_tag :passenger_symbol, TransportSurveyResponse.passenger_symbol %>
@@ -102,7 +100,7 @@
             </fieldset>
 
             <fieldset class="panel" style="display: none;">
-              <h2>For your <span id="display-time"></span> minute journey to school by <span id="display-transport"></span> for <span id="display-passengers"></span> pupil(s).</h2>
+              <h2>For your <span id="display-time"></span> minute journey to school by <span id="display-transport"></span> for <span id="display-passengers"></span>.</h2>
               <hr />
               <h2>You used <span id="display-carbon" class="badge badge-secondary"></span> of carbon each!</h2>
               <hr />

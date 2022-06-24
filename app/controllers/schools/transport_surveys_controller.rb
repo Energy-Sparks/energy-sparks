@@ -1,21 +1,22 @@
 module Schools
   class TransportSurveysController < ApplicationController
+    include Pagy::Backend
     skip_before_action :authenticate_user!, only: [:index, :show]
 
     load_resource :school
-    load_resource :transport_survey, find_by: :run_on, id_param: :run_on, through: :school, except: [:edit, :update]
+    load_resource :transport_survey, find_by: :run_on, id_param: :run_on, through: :school, except: [:update]
 
     authorize_resource :transport_survey
     before_action :load_or_create, only: [:update]
 
-    def start
-      redirect_to edit_school_transport_survey_path(@school, Time.zone.today)
+    def index
+      @transport_surveys = @transport_surveys.order(run_on: :desc)
+      @pagy, @transport_surveys = pagy(@transport_surveys)
     end
 
-    # We need to decide how we are going to lock this down. For example, we shouldn't allow surveying in the future (or the past really). Maybe Just today?
-    def edit
-      @transport_survey = @school.transport_surveys.find_or_initialize_by(run_on: params[:run_on])
-      # authorize! :read, @transport_survey
+    def start
+      @transport_survey = @school.transport_surveys.find_or_initialize_by(run_on: Time.zone.today)
+      render :edit
     end
 
     def update
@@ -23,6 +24,13 @@ module Schools
         render json: @transport_survey, status: :ok
       else
         render json: @transport_survey.errors, status: :unprocessable_entity
+      end
+    end
+
+    def show
+      respond_to do |format|
+        format.html
+        format.json { render json: @transport_survey.pie_chart_data }
       end
     end
 

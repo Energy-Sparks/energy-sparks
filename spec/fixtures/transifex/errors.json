@@ -1,0 +1,10 @@
+{
+  "errors": [
+    {
+      "code": "not_found",
+      "title": "URL does not exist",
+      "status": "404",
+      "detail": "URL `/resource_strings_async_uploads/123` does not refer to an existing endpoint"
+    }
+  ]
+}

@@ -28,6 +28,37 @@ class TransportSurvey < ApplicationRecord
     run_on.to_s
   end
 
+  def total_passengers
+    self.responses.sum(:passengers)
+  end
+
+  def total_carbon
+    self.responses.sum(&:carbon)
+  end
+
+  def today?
+    run_on == Time.zone.today
+  end
+
+  def passengers_per_category
+    passengers_per_cat = self.responses.with_transport_type.group(:category).sum(:passengers)
+    TransportType.categories_with_other.transform_values { |v| passengers_per_cat[v] || 0 }
+  end
+
+  def percentage_per_category
+    passengers_per_category.transform_values { |v| v == 0 ? 0 : (v.to_f / total_passengers * 100) }
+  end
+
+  def pie_chart_data
+    percentage_per_category.collect { |k, v| { name: k.humanize, y: v } }
+  end
+
+  def self.equivalence_rates
+    [:tree, :tv, :computer_console, :smartphone, :carnivore_dinner, :vegetarian_dinner].index_with do |type|
+      EnergyEquivalences.all_equivalences[type][:conversions][:co2][:rate]
+    end
+  end
+
   def responses=(responses_attributes)
     responses_attributes.each do |response_attributes|
       self.responses.create_with(response_attributes).find_or_create_by(response_attributes.slice(:run_identifier, :surveyed_at))
