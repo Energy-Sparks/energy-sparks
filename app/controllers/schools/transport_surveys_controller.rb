@@ -4,7 +4,7 @@ module Schools
     skip_before_action :authenticate_user!, only: [:index, :show]
 
     load_resource :school
-    load_resource :transport_survey, find_by: :run_on, id_param: :run_on, through: :school, except: [:edit, :update]
+    load_resource :transport_survey, find_by: :run_on, id_param: :run_on, through: :school, except: [:update]
 
     authorize_resource :transport_survey
     before_action :load_or_create, only: [:update]
@@ -17,12 +17,6 @@ module Schools
     def start
       @transport_survey = @school.transport_surveys.find_or_initialize_by(run_on: Time.zone.today)
       render :edit
-    end
-
-    # We need to decide how we are going to lock this down. For example, we shouldn't allow surveying in the future (or the past really). Maybe Just today?
-    def edit
-      @transport_survey = @school.transport_surveys.find_or_initialize_by(run_on: params[:run_on])
-      # authorize! :read, @transport_survey
     end
 
     def update

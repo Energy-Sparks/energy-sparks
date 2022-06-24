@@ -93,6 +93,49 @@ module Transifex
         end
       end
 
+      context '#delete_resource' do
+        let(:slug)          { "some-slug" }
+        let(:expected_path) { "resources/o:energy-sparks:p:#{project}:r:#{slug}" }
+
+        it 'handles missing env var' do
+          ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: nil do
+            expect {
+              client.delete_resource(slug)
+            }.to raise_error(Transifex::Client::AccessError)
+          end
+        end
+
+        it 'raise error if project is not development' do
+          ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: "not-this-project, some-other-project" do
+            expect {
+              client.delete_resource(slug)
+            }.to raise_error(Transifex::Client::AccessError)
+          end
+        end
+
+        it 'deletes url and returns true' do
+          ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: "#{project}" do
+            expect(connection).to receive(:delete).with(expected_path).and_return(response)
+            expect(client.delete_resource(slug)).to be_truthy
+          end
+        end
+
+        context 'when api call fails' do
+          let(:status)        { 401 }
+          let(:success)       { false }
+          let(:body)          { File.read('spec/fixtures/transifex/delete_resource_error.json') }
+
+          it 'raises error if api returns error' do
+            ClimateControl.modify TRANSIFEX_DELETABLE_PROJECTS: "#{project}" do
+              expect(connection).to receive(:delete).with(expected_path).and_return(response)
+              expect {
+                client.delete_resource(slug)
+              }.to raise_error(Transifex::Client::NotAuthorised)
+            end
+          end
+        end
+      end
+
       context '#get_resource_language_stats' do
         context 'for project' do
           let(:body)          { File.read('spec/fixtures/transifex/get_resource_language_stats.json') }
@@ -172,12 +215,13 @@ module Transifex
         end
 
         context 'when translation has completed' do
-          let(:body)          { File.read('spec/fixtures/transifex/get_resource_strings_collection.json') }
+          let(:body)          { File.read('spec/fixtures/transifex/get_resource_strings_async_upload_succeeded.json') }
           it 'requests url with path and returns data' do
             expect(connection).to receive(:get).with(expected_path).and_return(response)
             ret = client.get_resource_strings_async_upload(upload_id)
             expect(ret.completed?).to be_truthy
-            expect(ret.data[0]["attributes"]["strings"]["one"]).to eq('hello')
+            expect(ret.data["attributes"]["status"]).to eq('succeeded')
+            expect(ret.data["attributes"]["details"]["strings_created"]).to eq(1)
           end
         end
       end

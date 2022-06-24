@@ -6,9 +6,15 @@ en:
         description: Description
         description_cy: Description (Welsh)
         description_en: Description (English)
+        download_links: Download links
+        download_links_cy: Download links (Welsh)
+        download_links_en: Download links (English)
         name: Name
         name_cy: Name (Welsh)
         name_en: Name (English)
+        school_specific_description: School specific description
+        school_specific_description_cy: School specific description (Welsh)
+        school_specific_description_en: School specific description (English)
       intervention_type:
         description: Description
         description_cy: Description (Welsh)
