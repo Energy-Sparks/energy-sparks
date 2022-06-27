@@ -140,8 +140,8 @@ describe "Intervention Types", type: :system do
 
       click_on 'Edit'
 
-      fill_in 'Summary (English)', with: 'some english summary'
-      fill_in 'Summary (Welsh)', with: 'some welsh summary'
+      fill_in :intervention_type_summary_en, with: 'some english summary'
+      fill_in :intervention_type_summary_cy, with: 'some welsh summary'
 
       within('.description-trix-editor.en') do
         fill_in_trix with: 'some english description'

@@ -1,8 +1,5 @@
 ---
 cy:
-  languages:
-    en: Saesneg
-    cy: Cymraeg
   helpers:
     select:
       prompt: Dewiswch
@@ -10,6 +7,9 @@ cy:
       create: Creu %{model}
       submit: Cadw %{model}
       update: Diweddaru %{model}
+  languages:
+    cy: Cymraeg
+    en: Saesneg
   support:
     array:
       last_word_connector: ", a "

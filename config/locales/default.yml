@@ -1,8 +1,5 @@
 ---
 en:
-  languages:
-    en: English
-    cy: Welsh
   helpers:
     select:
       prompt: Please select
@@ -10,6 +7,9 @@ en:
       create: Create %{model}
       submit: Save %{model}
       update: Update %{model}
+  languages:
+    en: English
+    cy: Welsh
   simple_form:
     labels:
       defaults:
