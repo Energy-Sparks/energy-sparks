@@ -1,5 +1,8 @@
 ---
 cy:
+  languages:
+    en: Saesneg
+    cy: Cymraeg
   helpers:
     select:
       prompt: Dewiswch

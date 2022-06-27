@@ -1,5 +1,8 @@
 ---
 en:
+  languages:
+    en: English
+    cy: Welsh
   helpers:
     select:
       prompt: Please select

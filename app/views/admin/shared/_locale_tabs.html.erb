@@ -2,7 +2,7 @@
   <% I18n.available_locales.each do |locale| %>
     <li class="nav-item">
       <a class="nav-link <%= 'active' if locale == I18n.locale %>" id="<%= "#{field}-#{locale}" %>-tab" data-toggle="tab" href="#<%= "#{field}-#{locale}" %>-content" role="tab" aria-controls="<%= "#{field}-#{locale}" %>-tab">
-        <%= locale %>
+        <%= t("languages.#{locale}") %>
       </a>
     </li>
   <% end %>
