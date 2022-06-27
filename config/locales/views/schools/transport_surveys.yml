@@ -1,0 +1,14 @@
+---
+en:
+  transport_surveys:
+    header_nav:
+      survey_today: Survey today
+      view_all: View all transport surveys
+    tab_nav:
+      manage_responses: Manage responses
+      results: Results
+      survey_today: Survey today
+    title:
+      dated: Travel to school survey on %{date}
+      default: Travel to school surveys
+      today: Today's travel to school survey
