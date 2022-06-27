@@ -101,11 +101,10 @@ describe 'ActivityType' do
         expect(activity_type.tx_attribute_key("school_specific_description")).to eq "school_specific_description_html"
         expect(activity_type.tx_attribute_key("download_links")).to eq "download_links_html"
       end
-      it 'produces the expected tx values' do
+      it 'produces the expected tx values, removing trix content wrapper' do
         expect(activity_type.tx_value("name")).to eql activity_type.name
-        expect(activity_type.tx_value("description")).to eql(
-        "<div class=\"trix-content\">\n  description\n</div>\n")
-        expect(activity_type.tx_value("school_specific_description")).to eql("<div class=\"trix-content\">\n  Description %{chart}\n</div>\n")
+        expect(activity_type.tx_value("description")).to eql("description")
+        expect(activity_type.tx_value("school_specific_description")).to eql("Description %{chart}")
       end
       it 'produces the expected resource key' do
         expect(activity_type.resource_key).to eq "activity_type_#{activity_type.id}"
