@@ -128,6 +128,15 @@ describe Transifex::Synchroniser, type: :service do
         expect(service.translations_updated_since_last_pull?).to be true
       end
     end
+    context 'when last pulled not set yet' do
+      let(:last_pull) { nil }
+      context 'updated' do
+        let(:last_reviewed) { nil }
+        it 'always returns true' do
+          expect(service.translations_updated_since_last_pull?).to be true
+        end
+      end
+    end
   end
 
   describe '#pull' do
