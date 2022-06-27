@@ -6,7 +6,7 @@
 
   <%= render 'shared/trix_components/chart_list', chart_list: @chart_list %>
 
-  <% I18n.available_locales.each do |locale| %>
+  <%= render 'admin/shared/locale_tabs', f: f, field: :name do |locale| %>
     <%= f.input t_field(:name, locale), as: :string %>
   <% end %>
 
@@ -32,7 +32,7 @@
   <%= f.input :summary, as: :string %>
   <p class="small">The summary text will appear on lists of activity types.</p>
 
-  <% I18n.available_locales.each do |locale| %>
+  <%= render 'admin/shared/locale_tabs', f: f, field: :download_links do |locale| %>
     <div class="download-links-trix-editor <%= locale %>">
       <%= f.label t_field(:download_links, locale) %>
       <p class="small">These download links will appear in the right-hand panel under the image.</p>
@@ -40,7 +40,7 @@
     </div>
   <% end %>
 
-  <% I18n.available_locales.each do |locale| %>
+  <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
     <div class="description-trix-editor <%= locale %>">
       <%= f.label t_field(:description, locale) %>
       <p class="small">Note: This is the non-school specific description for non-logged in users. The site will default to this one if the school specific one has not been set.</p>
@@ -48,7 +48,7 @@
     </div>
   <% end %>
 
-  <% I18n.available_locales.each do |locale| %>
+  <%= render 'admin/shared/locale_tabs', f: f, field: :school_specific_description do |locale| %>
     <div class="school-specific-description-trix-editor chart-list <%= locale %>">
       <%= f.label t_field(:school_specific_description, locale) %>
       <%= render 'admin/shared/preview_section', scope: "school-specific-description-#{locale}", preview_url: admin_activity_type_preview_path(locale: locale), no_timings: true, no_weightings: true do %>
