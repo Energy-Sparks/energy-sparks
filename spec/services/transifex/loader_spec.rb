@@ -28,7 +28,8 @@ describe Transifex::Loader, type: :service do
     end
 
     context 'when there are no errors' do
-      let!(:activity_type2) { create(:activity_type, active: true) }
+      let!(:activity_type2)     { create(:activity_type, active: true) }
+      let!(:intervention_type)  { create(:intervention_type, active: true) }
 
       before(:each) do
         allow_any_instance_of(Transifex::Synchroniser).to receive(:pull).and_return(true)
@@ -38,11 +39,11 @@ describe Transifex::Loader, type: :service do
       end
 
       it 'updates the pull count' do
-        expect(TransifexLoad.first.pulled).to eq 2
+        expect(TransifexLoad.first.pulled).to eq 3
       end
 
       it 'updates the push count' do
-        expect(TransifexLoad.first.pushed).to eq 2
+        expect(TransifexLoad.first.pushed).to eq 3
       end
     end
 

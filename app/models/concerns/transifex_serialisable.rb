@@ -103,7 +103,7 @@ module TransifexSerialisable
     if self.class.tx_templated_attribute?(attr)
       value = mustache_to_yaml(value)
     end
-    value.strip
+    value.strip if value
   end
 
   def resource_key
