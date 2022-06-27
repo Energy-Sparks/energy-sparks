@@ -74,8 +74,12 @@ module Transifex
 
     #Has the resource been updated in Transifex since it was last pulled?
     def translations_updated_since_last_pull?
-      return true unless last_pulled
-      return transifex_service.last_reviewed(@tx_serialisable.tx_slug, @locale) > last_pulled
+      last_reviewed = transifex_service.last_reviewed(@tx_serialisable.tx_slug, @locale)
+      if last_pulled
+        transifex_service.last_reviewed(@tx_serialisable.tx_slug, @locale) > last_pulled
+      else
+        last_reviewed.present?
+      end
     end
 
     private

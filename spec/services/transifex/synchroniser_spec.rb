@@ -130,9 +130,15 @@ describe Transifex::Synchroniser, type: :service do
     end
     context 'when last pulled not set yet' do
       let(:last_pull) { nil }
-      context 'updated' do
+      context 'but not reviewed yet' do
         let(:last_reviewed) { nil }
-        it 'always returns true' do
+        it 'returns false' do
+          expect(service.translations_updated_since_last_pull?).to be false
+        end
+      end
+      context 'and has been reviewed' do
+        let(:last_reviewed) { Date.today }
+        it 'returns true' do
           expect(service.translations_updated_since_last_pull?).to be true
         end
       end
