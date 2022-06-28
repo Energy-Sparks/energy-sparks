@@ -8,8 +8,8 @@ en:
       submit: Save %{model}
       update: Update %{model}
   languages:
-    en: English
     cy: Welsh
+    en: English
   simple_form:
     labels:
       defaults:

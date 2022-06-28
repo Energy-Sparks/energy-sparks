@@ -8,8 +8,8 @@ cy:
       submit: Cadw %{model}
       update: Diweddaru %{model}
   languages:
-    cy: Cymraeg
     en: Saesneg
+    cy: Cymraeg
   support:
     array:
       last_word_connector: ", a "
