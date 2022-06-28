@@ -1,16 +1,14 @@
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs locales">
   <% I18n.available_locales.each do |locale| %>
     <li class="nav-item">
       <a class="nav-link <%= 'active' if locale == I18n.locale %>" id="<%= "#{field}-#{locale}" %>-tab" data-toggle="tab" href="#<%= "#{field}-#{locale}" %>-content" role="tab" aria-controls="<%= "#{field}-#{locale}" %>-tab">
-        <%= locale %>
+        <%= t("languages.#{locale}") %>
       </a>
     </li>
   <% end %>
 </ul>
 
-<br/>
-
-<div class="tab-content locale">
+<div class="tab-content locales">
   <% I18n.available_locales.each do |locale| %>
     <div class="tab-pane <%= 'active' if locale == I18n.locale %>" id="<%= "#{field}-#{locale}" %>-content" role="tabpanel" aria-labelledby="<%= "#{field}-#{locale}" %>-tab">
       <%= yield "#{locale}" %>

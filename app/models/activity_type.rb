@@ -28,6 +28,7 @@ class ActivityType < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
   translates :name, type: :string, fallbacks: { cy: :en }
+  translates :summary, type: :string, fallbacks: { cy: :en }
   translates :description, backend: :action_text
   translates :school_specific_description, backend: :action_text
   translates :download_links, backend: :action_text
