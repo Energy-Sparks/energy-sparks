@@ -46,7 +46,7 @@ describe "activity type", type: :system do
 
       click_on 'New Activity Type'
       fill_in :activity_type_name_en, with: activity_name
-      fill_in('Summary', with: summary)
+      fill_in :activity_type_summary_en, with: summary
 
       attach_file("activity_type_image", Rails.root + "spec/fixtures/images/placeholder.png")
 
