@@ -17,7 +17,7 @@
       <%= f.input :email %>
       <%= f.input :password, required: true %>
       <%= f.input :password_confirmation, required: true %>
-      <%= f.input :staff_role_id, label: 'Role', required: :true, collection: StaffRole.order(:title), label_method: :title, hint: 'What is your primary role in relation to Energy Sparks?'%>
+      <%= f.input :staff_role_id, label: 'Role', required: :true, collection: StaffRole.order(:title), label_method: :translated_title, hint: 'What is your primary role in relation to Energy Sparks?'%>
 
       <p>
       Our newsletters share best practice at participating schools, provide pupil activity prompts, invitations to join free training, volunteer support opportunities and free energy audits and educational workshops.

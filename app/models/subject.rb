@@ -11,4 +11,8 @@
 class Subject < ApplicationRecord
   has_and_belongs_to_many :activity_types, join_table: :activity_type_subjects
   scope :by_name, -> { order(name: :asc) }
+
+  def i18n_key
+    "#{self.class.model_name.i18n_key}.#{name.parameterize.underscore}"
+  end
 end

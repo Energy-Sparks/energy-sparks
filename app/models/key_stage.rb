@@ -12,4 +12,8 @@
 
 class KeyStage < ApplicationRecord
   scope :by_name, -> { order(name: :asc) }
+
+  def i18n_key
+    "#{self.class.model_name.i18n_key}.#{name.parameterize.underscore}"
+  end
 end

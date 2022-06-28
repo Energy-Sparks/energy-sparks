@@ -52,7 +52,7 @@ describe 'School admin user management' do
     end
 
     describe 'for staff' do
-      let!(:teacher_role){ create :staff_role, :teacher, title: 'Teacher' }
+      let!(:teacher_role){ create :staff_role, :teacher, title: 'Teacher or teaching assistant' }
 
       context 'it can create staff' do
 
@@ -64,7 +64,7 @@ describe 'School admin user management' do
 
           fill_in 'Name', with: 'Mrs Jones'
           fill_in 'Email', with: 'mrsjones@test.com'
-          select 'Teacher', from: 'Role'
+          select 'Teacher or teaching assistant', from: 'Role'
         end
 
         it 'can create staff with an alert contact' do
@@ -200,7 +200,7 @@ describe 'School admin user management' do
 
     describe 'managing school admins' do
 
-      let!(:management_role){ create(:staff_role, :management, title: 'Management') }
+      let!(:management_role){ create(:staff_role, :management, title: 'Business manager') }
 
       context 'when adding a user' do
         before(:each) do
@@ -211,7 +211,7 @@ describe 'School admin user management' do
 
           fill_in 'Name', with: 'Mrs Jones'
           fill_in 'Email', with: 'mrsjones@test.com'
-          select 'Management', from: 'Role'
+          select 'Business manager', from: 'Role'
         end
 
         it 'can create a school admin' do

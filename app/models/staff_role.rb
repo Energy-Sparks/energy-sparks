@@ -13,6 +13,14 @@ class StaffRole < ApplicationRecord
 
   enum dashboard: [:management, :teachers]
 
+  def translated_title
+    I18n.t(i18n_key)
+  end
+
+  def i18n_key
+    "#{self.class.model_name.i18n_key}.#{title.parameterize.underscore}"
+  end
+
   def as_symbol
     title.parameterize.underscore.to_sym
   end
