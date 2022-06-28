@@ -33,6 +33,6 @@ class CalendarEventType < ApplicationRecord
   end
 
   def display_title
-    "#{I18n.t(i18n_key('title'))} - #{I18n.t(i18n_key('title'))}"
+    "#{I18n.t(i18n_key('title'))} - #{I18n.t(i18n_key('description'))}"
   end
 end
