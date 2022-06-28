@@ -54,6 +54,17 @@ RSpec.describe 'Activity categories', :scoreboards, type: :system do
       expect(new_activity_category.pupil).to be_truthy
       expect(new_activity_category.live_data).to be_truthy
     end
+
+    it 'rejects duplicate name' do
+      create(:activity_category, name: 'Wibble')
+      click_on 'Activity Categories'
+      click_on 'New activity category'
+      fill_in :activity_category_name_en, with: "Wibble"
+      expect { click_on 'Create Activity category' }.to change { ActivityCategory.count }.by(0)
+      expect(page).to have_content("has already been taken")
+      fill_in :activity_category_name_en, with: "Wibble2"
+      expect { click_on 'Create Activity category' }.to change { ActivityCategory.count }.by(1)
+    end
   end
 
   describe 'when not logged in' do
