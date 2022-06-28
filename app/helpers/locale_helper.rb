@@ -1,10 +1,10 @@
 module LocaleHelper
   def locale_field_has_errors(form, field, locale)
-    I18n.locale == locale && form.object.errors.messages[field].present?
+    I18n.locale == locale && form.object.errors.include?(field)
   end
 
   def locale_field_errors(form, field)
-    form.object.errors.messages[field].join(' and ')
+    form.object.errors[field].join(' and ')
   end
 
   def t_field(sym, locale)
