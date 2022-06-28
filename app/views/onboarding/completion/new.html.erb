@@ -31,7 +31,7 @@
                 </tr>
                 <tr>
                   <th>Role:</th>
-                  <td><%=@school_onboarding.created_user.staff_role.title%></td>
+                  <td><%= t(@school_onboarding.created_user.staff_role.i18n_key) %></td>
                 </tr>
                 <tr>
                   <th>Password:</th>
