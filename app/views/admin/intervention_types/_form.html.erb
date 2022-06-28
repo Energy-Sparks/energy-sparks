@@ -2,7 +2,7 @@
   html: { id: 'intervention_type_form' }) do |f| %>
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :name do |locale| %>
-    <%= f.input t_field(:name, locale), as: :string %>
+    <%= f.input t_field(:name, locale), label: InterventionType.human_attribute_name(:name), as: :string %>
   <% end %>
 
   <%= f.input :intervention_type_group_id, as: :select, label: 'Intervention category', collection: InterventionTypeGroup.all, include_blank: false %>
@@ -25,13 +25,13 @@
   </p>
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :summary do |locale| %>
-    <%= f.input t_field(:summary, locale), as: :string %>
+    <%= f.input t_field(:summary, locale), label: InterventionType.human_attribute_name(:summary), as: :string %>
     <p class="small">The summary text will appear on lists of intervention types.</p>
   <% end %>
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :download_links do |locale| %>
     <div class="download-links-trix-editor <%= locale %>">
-      <%= f.label t_field(:download_links, locale) %>
+      <%= f.label InterventionType.human_attribute_name(:download_links) %>
       <p class="small">These download links will appear in the right-hand panel under the image.</p>
       <%= f.rich_text_area t_field(:download_links, locale) %>
     </div>
@@ -39,7 +39,7 @@
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
     <div class="description-trix-editor <%= locale %>">
-      <%= f.label t_field(:description, locale) %>
+      <%= f.label InterventionType.human_attribute_name(:description) %>
       <p class="small">The description of the intervention for all users</p>
       <%= f.rich_text_area t_field(:description, locale) %>
     </div>

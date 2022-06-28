@@ -29,8 +29,8 @@ describe "Intervention Types", type: :system do
       download_links = 'Some download links'
 
       click_on('New Intervention type', match: :first)
-      fill_in('Title (English)', with: title)
-      fill_in('Summary (English)', with: summary)
+      fill_in :intervention_type_name_en, with: title
+      fill_in :intervention_type_summary_en, with: summary
 
       attach_file("intervention_type_image", Rails.root + "spec/fixtures/images/placeholder.png")
 
@@ -64,7 +64,7 @@ describe "Intervention Types", type: :system do
 
     it 'can does not crash if you forget the score' do
       click_on('New Intervention type', match: :first)
-      fill_in('Title (English)', with: 'New activity')
+      fill_in :intervention_type_name_en, with: 'New activity'
       fill_in_trix with: "the description"
 
       click_on('Create Intervention type')
@@ -84,8 +84,8 @@ describe "Intervention Types", type: :system do
       summary = "New summary"
 
       uncheck('Active')
-      fill_in 'Title (English)', with: title
-      fill_in 'Summary (English)', with: summary
+      fill_in :intervention_type_name_en, with: title
+      fill_in :intervention_type_summary_en, with: summary
       within('.description-trix-editor.en') do
         fill_in_trix with: description
       end
@@ -140,8 +140,8 @@ describe "Intervention Types", type: :system do
 
       click_on 'Edit'
 
-      fill_in 'Summary (English)', with: 'some english summary'
-      fill_in 'Summary (Welsh)', with: 'some welsh summary'
+      fill_in :intervention_type_summary_en, with: 'some english summary'
+      fill_in :intervention_type_summary_cy, with: 'some welsh summary'
 
       within('.description-trix-editor.en') do
         fill_in_trix with: 'some english description'

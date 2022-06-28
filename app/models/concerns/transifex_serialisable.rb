@@ -1,6 +1,9 @@
 module TransifexSerialisable
   extend ActiveSupport::Concern
 
+  TRIX_DIV = "<div class=\"trix-content\">".freeze
+  CLOSE_DIV = "</div>".freeze
+
   def self.included(base)
     base.include ClassMethods
   end
@@ -90,8 +93,17 @@ module TransifexSerialisable
 
   def tx_value(attr)
     #TODO is there a better way to access the HTML?
-    value = self.class.tx_rich_text_field?(attr) ? send(attr).to_s : self[attr]
-    self.class.tx_templated_attribute?(attr) ? mustache_to_yaml(value) : value
+    if self.class.tx_rich_text_field?(attr)
+      value = send(attr).to_s
+      value = remove_newlines(value)
+      value = remove_rich_text_wrapper(value)
+    else
+      value = self[attr]
+    end
+    if self.class.tx_templated_attribute?(attr)
+      value = mustache_to_yaml(value)
+    end
+    value ? value.strip : value
   end
 
   def resource_key
@@ -99,6 +111,14 @@ module TransifexSerialisable
   end
 
   private
+
+  def remove_newlines(value)
+    value.delete("\n")
+  end
+
+  def remove_rich_text_wrapper(value)
+    value.start_with?(TRIX_DIV) ? value.gsub(TRIX_DIV, '').chomp(CLOSE_DIV) : value
+  end
 
   #TODO this needs work
   def yaml_template_to_mustache(value)
