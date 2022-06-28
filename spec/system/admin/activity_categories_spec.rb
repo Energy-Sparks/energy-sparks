@@ -19,11 +19,11 @@ RSpec.describe 'Activity categories', :scoreboards, type: :system do
       expect(page).to have_content(activity_category.name)
       expect(page).to have_content(activity_category.description)
       click_on 'Edit'
-      fill_in 'Description', with: new_description
-      fill_in 'Name', with: ''
+      fill_in :activity_category_description_en, with: new_description
+      fill_in :activity_category_name_en, with: ''
       click_on 'Update Activity category'
       expect(page).to have_content("can't be blank")
-      fill_in 'Name', with: new_name
+      fill_in :activity_category_name_en, with: new_name
 
       click_on 'Update Activity category'
 
@@ -37,13 +37,13 @@ RSpec.describe 'Activity categories', :scoreboards, type: :system do
       new_name = "Alias the jester"
       new_description = 'Now then'
       click_on 'New activity category'
-      fill_in 'Description', with: new_description
+      fill_in :activity_category_description_en, with: new_description
       check 'Featured'
       check 'Pupil'
       check 'Live data'
       expect { click_on 'Create Activity category' }.to change { ActivityCategory.count }.by(0)
       expect(page).to have_content("can't be blank")
-      fill_in 'Name', with: new_name
+      fill_in :activity_category_name_en, with: new_name
       expect { click_on 'Create Activity category' }.to change { ActivityCategory.count }.by(1)
       expect(page).to have_content('Activity Categories')
       expect(page).to have_content(activity_category.name)
