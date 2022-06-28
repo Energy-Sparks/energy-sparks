@@ -6,3 +6,10 @@ en:
     ks3: "KS3"
     ks4: "KS4"
     ks5: "KS5"
+  subject:
+    science: "Science"
+    geography: "Geography"
+    maths: "Maths"
+    citizenship: "Citizenship"
+    english: "English"
+    design_and_technology: "Design and Technology"
