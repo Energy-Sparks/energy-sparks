@@ -128,7 +128,7 @@ class HomeController < ApplicationController
 
   def videos
     [
-      { title: 'An overview of Energy Sparks for new schools', embed_url: 'https://www.youtube.com/embed/ltIDE9C4bO8' },
+      { title: 'What is Energy Sparks - an introduction', embed_url: 'https://www.youtube.com/embed/yPx8LCsK_rc' },
       { title: 'An introduction to Energy Sparks for eco teams', embed_url: 'https://www.youtube.com/embed/P9yJMOP9O9w' },
       { title: 'Saundersfoot CP School and Energy Sparks', embed_url: 'https://www.youtube.com/embed/Rg0znmJtr5s' },
     ]
