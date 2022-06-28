@@ -94,7 +94,7 @@
                   <th>Key stages:</th>
                   <td>
                     <% if @school.key_stages.present? %>
-                      <%= @school.key_stages.map(&:name).to_sentence %>
+                      <%= @school.key_stages.map {|ks| t(ks.i18n_key) }.to_sentence %>
                     <% else %>
                       <%= link_to 'Edit', edit_onboarding_school_details_path(@school_onboarding, anchor: 'basic-details') %>
                     <% end %>
