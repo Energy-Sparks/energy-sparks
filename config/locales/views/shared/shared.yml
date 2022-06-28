@@ -1,5 +1,11 @@
 ---
 en:
+  activity_type:
+    description: Description
+    download_links: Download links
+    name: Name
+    school_specific_description: School specific description
+    summary: Summary
   charts:
     dashboard:
       electricity:
@@ -14,4 +20,9 @@ en:
       storage_heaters:
         title: Storage heaters
         usage: storage heater usage
+  intervention_type:
+    description: Description
+    download_links: Download links
+    name: Title
+    summary: Summary
   more_information: More information

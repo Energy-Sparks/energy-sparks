@@ -1,15 +1,6 @@
 require 'rails_helper'
 
 describe LocaleHelper do
-  describe '.t_attr' do
-    it 'makes a locale-aware string and translates it' do
-      expect(helper.t_attr(:activity_type, :description, :cy)).to eq('Description')
-    end
-    it 'makes a non-locale-aware string and translates it' do
-      expect(helper.t_attr(:activity_type, :description)).to eq('Description')
-    end
-  end
-
   describe '.t_field' do
     it 'makes a locale-aware field symbol' do
       expect(helper.t_field(:name, :cy)).to eq(:name_cy)
