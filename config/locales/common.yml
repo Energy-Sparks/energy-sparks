@@ -3,3 +3,5 @@ en:
   application: Energy Sparks
   school_types:
     mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
+  common:
+      delete_confirm: Are you sure you want to delete this %{model}?

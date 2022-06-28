@@ -10,7 +10,6 @@ en:
         manage: Manage
         start_surveying: Start surveying today
         view_results: View results
-      delete_confirm: Are you sure you want to delete this transport survey?
       header:
         actions: Actions
         survey_date: Survey date

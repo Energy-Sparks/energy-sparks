@@ -1,6 +1,10 @@
 ---
 en:
   activerecord:
+    models:
+      transport_surveys:
+        one: Transport survey
+        other: Transport surveys
     attributes:
       activity_type:
         description: Description
