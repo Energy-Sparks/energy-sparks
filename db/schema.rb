@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_22_121758) do
+ActiveRecord::Schema.define(version: 2022_06_27_131219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -823,6 +823,8 @@ ActiveRecord::Schema.define(version: 2022_06_22_121758) do
     t.integer "score"
     t.boolean "active", default: true
     t.string "summary"
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
     t.index ["intervention_type_group_id"], name: "index_intervention_types_on_intervention_type_group_id"
   end
 
