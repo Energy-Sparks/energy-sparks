@@ -22,3 +22,34 @@ en:
     council_or_mat_staff: "Council or MAT staff"
     parent_or_volunteer: "Parent or volunteer"
     public: "Public"
+  calendar_event_type:
+    term_1:
+      title: "Term 1"
+      description: "Autumn Half Term 1"
+    term_2:
+      title: "Term 2"
+      description: "Autumn Half Term 2"
+    term_3:
+      title: "Term 3"
+      description: "Spring Half Term 1"
+    term_4:
+      title: "Term 4"
+      description: "Spring Half Term 2"
+    term_5:
+      title: "Term 5"
+      description: "Summer Half Term 1"
+    term_5:
+      title: "Term 6"
+      description: "Summer Half Term 2"
+    bank_holiday:
+      title: "Bank Holiday"
+      description: "Bank Holiday"
+    holiday:
+      title: "Holiday"
+      description: "Holiday"
+    in_school_inset_day:
+      title: "In school Inset Day"
+      description: "Training day in school"
+    out_of_school_inset_day:
+      title: "Out of school Inset Day"
+      description: "Training day out of school"

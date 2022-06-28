@@ -376,7 +376,7 @@
                 <% @inset_days.each do |inset_day| %>
                   <tr>
                     <td><%= inset_day.start_date %></td>
-                    <td><%= inset_day.calendar_event_type.title %></td>
+                    <td><%= I18n.t(inset_day.calendar_event_type.i18n_key("title")) %></td>
                     <td>
                       <div class="btn-group">
                         <%= link_to 'Edit', edit_onboarding_inset_day_path(@school_onboarding, inset_day), class: 'btn btn-sm btn-warning' %>

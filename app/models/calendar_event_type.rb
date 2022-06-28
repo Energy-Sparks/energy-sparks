@@ -28,7 +28,11 @@ class CalendarEventType < ApplicationRecord
 
   enum analytics_event_type: [:term_time, :school_holiday, :bank_holiday, :inset_day_in_school, :inset_day_out_of_school]
 
+  def i18n_key(field)
+    "#{self.class.model_name.i18n_key}.#{title.parameterize.underscore}.#{field}"
+  end
+
   def display_title
-    "#{title} - #{description}"
+    "#{I18n.t(i18n_key('title'))} - #{I18n.t(i18n_key('title'))}"
   end
 end

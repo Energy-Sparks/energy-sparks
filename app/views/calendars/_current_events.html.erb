@@ -22,7 +22,7 @@
         </tr>
       <% end %>
       <tr scope="row" id='calendar_event_<%= calendar_event.id %>'>
-        <td><%= calendar_event.calendar_event_type.title %></td>
+        <td><%= I18n.t(calendar_event.calendar_event_type.i18n_key("title")) %></td>
         <td><%= nice_dates(calendar_event.start_date) %></td>
         <td><%= nice_dates(calendar_event.end_date) %></td>
         <td><%= nice_date_times(calendar_event.updated_at) %></td>
