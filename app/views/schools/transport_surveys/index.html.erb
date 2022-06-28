@@ -20,7 +20,7 @@
           <td>
             <%= link_to t('transport_surveys.index.button.view_results'), school_transport_survey_url(@school, transport_survey), class: 'btn btn-sm' %>
             <%= link_to t('transport_surveys.index.button.manage'), school_transport_survey_responses_url(@school, transport_survey), class: 'btn btn-sm' if can? :manage, TransportSurveyResponse %>
-            <%= link_to t('transport_surveys.index.button.delete'), school_transport_survey_url(@school, transport_survey), method: :delete, data: { confirm: t('common.delete_confirm', model: TransportSurvey.model_name.human.downcase) }, class: 'btn btn-sm btn-danger' if can? :delete, transport_survey %>
+            <%= link_to t('transport_surveys.index.button.delete'), school_transport_survey_url(@school, transport_survey), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-sm btn-danger' if can? :delete, transport_survey %>
           </td>
         </tr>
       <% end %>
