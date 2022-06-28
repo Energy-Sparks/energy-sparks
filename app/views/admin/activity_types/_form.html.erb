@@ -29,8 +29,10 @@
     <%= f.input :image, label: false %>
   </p>
 
-  <%= f.input :summary, as: :string %>
-  <p class="small">The summary text will appear on lists of activity types.</p>
+  <%= render 'admin/shared/locale_tabs', f: f, field: :summary do |locale| %>
+    <%= f.input t_field(:summary, locale), as: :string %>
+    <p class="small">The summary text will appear on lists of activity types.</p>
+  <% end %>
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :download_links do |locale| %>
     <div class="download-links-trix-editor <%= locale %>">

@@ -15,6 +15,9 @@ en:
         school_specific_description: School specific description
         school_specific_description_cy: School specific description
         school_specific_description_en: School specific description
+        summary: Summary
+        summary_cy: Summary
+        summary_en: Summary
       intervention_type:
         description: Description
         description_cy: Description
