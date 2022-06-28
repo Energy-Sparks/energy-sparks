@@ -1,6 +1,10 @@
 ---
 en:
   transport_surveys:
+    pupils:
+      zero: no pupils
+      one: 1 pupil
+      other: "%{count} pupils"
     header_nav:
       survey_today: Survey today
       view_all: View all transport surveys
@@ -12,3 +16,16 @@ en:
       dated: Travel to school survey on %{date}
       default: Travel to school surveys
       today: Today's travel to school survey
+    index:
+      header:
+        survey_date: Survey date # database field - pull this out
+        total_pupils: Total pupils
+        total_carbon: Total carbon
+        actions: Actions
+      no_results: No surveys have been completed yet
+      button:
+        view_results: View results
+        manage: Manage
+        delete: Delete
+        start_surveying: Start surveying today
+      delete_confirm: Are you sure you want to delete this transport survey?

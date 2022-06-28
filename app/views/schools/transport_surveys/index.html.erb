@@ -5,22 +5,22 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Survey date</th>
-          <th>Total pupils</th>
-          <th>Total carbon</th>
-          <th>Actions</th>
+          <th><%= t('transport_surveys.index.header.survey_date') %></th>
+          <th><%= t('transport_surveys.index.header.total_pupils') %></th>
+          <th><%= t('transport_surveys.index.header.total_carbon') %></th>
+          <th><%= t('transport_surveys.index.header.actions') %></th>
         </tr>
       </thead>
       <tbody>
       <% @transport_surveys.each do |transport_survey| %>
         <tr>
           <td><%= link_to nice_dates(transport_survey.run_on), school_transport_survey_url(@school, transport_survey) %></td>
-          <td><%= transport_survey.total_responses %> pupils</td>
+          <td><%= t('transport_surveys.pupils', count: transport_survey.total_responses) %></td>
           <td><%= transport_survey.total_carbon.round(2) %>kg CO2</td>
           <td>
-            <%= link_to 'View results', school_transport_survey_url(@school, transport_survey), class: 'btn btn-sm' %>
-            <%= link_to "Manage", school_transport_survey_responses_url(@school, transport_survey), class: 'btn btn-sm' if can? :manage, TransportSurveyResponse %>
-            <%= link_to 'Delete', school_transport_survey_url(@school, transport_survey), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' if can? :delete, transport_survey %>
+            <%= link_to t('transport_surveys.index.button.view_results'), school_transport_survey_url(@school, transport_survey), class: 'btn btn-sm' %>
+            <%= link_to t('transport_surveys.index.button.manage'), school_transport_survey_responses_url(@school, transport_survey), class: 'btn btn-sm' if can? :manage, TransportSurveyResponse %>
+            <%= link_to t('transport_surveys.index.button.delete'), school_transport_survey_url(@school, transport_survey), method: :delete, data: { confirm: t('transport_surveys.index.delete_confirm') }, class: 'btn btn-sm btn-danger' if can? :delete, transport_survey %>
           </td>
         </tr>
       <% end %>
@@ -29,9 +29,9 @@
   </div>
   <%= render "pagy" %>
 <% else %>
-  <h4>No surveys have been completed yet</h4>
+  <h4><%= t('transport_surveys.index.no_results') %></h4>
 <% end %>
 
 <% if can?(:start, TransportSurvey) %>
-  <%= link_to 'Start surveying today', start_school_transport_surveys_url(@school), class: 'btn' %>
+  <%= link_to t('transport_surveys.index.button.start_surveying'), start_school_transport_surveys_url(@school), class: 'btn' %>
 <% end %>
