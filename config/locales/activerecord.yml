@@ -1,6 +1,18 @@
 ---
 en:
   activerecord:
+    attributes:
+      activity_type:
+        description: Description
+        download_links: Download links
+        name: Name
+        school_specific_description: School specific description
+        summary: Summary
+      intervention_type:
+        description: Description
+        download_links: Download links
+        name: Title
+        summary: Summary
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'

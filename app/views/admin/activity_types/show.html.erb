@@ -7,7 +7,7 @@
     <h1><%= @activity_type.name %></h1>
     <%= render 'activity_type_badges', activity_type: @activity_type %>
 
-    <h3><%= t('activity_type.summary') %></h3>
+    <h3><%= ActivityType.human_attribute_name(:summary) %></h3>
     <% if @activity_type.summary %>
       <%= @activity_type.summary %>
     <% else %>
@@ -16,7 +16,7 @@
 
     <div class="activity_type">
       <% I18n.available_locales.each do |locale| %>
-        <h3><%= t('activity_type.description') %></h3>
+        <h3><%= ActivityType.human_attribute_name(:description) %></h3>
         <% if @activity_type.description(locale: locale).present? %>
           <%= @activity_type.description(locale: locale)  %>
         <% else %>
@@ -26,7 +26,7 @@
     </div>
 
     <% I18n.available_locales.each do |locale| %>
-      <h3><%= t('activity_type.school_specific_description') %></h3>
+      <h3><%= ActivityType.human_attribute_name(:school_specific_description) %></h3>
       <div class="row">
         <div class="col-md-12 activity_type">
           <% if @activity_type.school_specific_description(locale: locale).present? %>
