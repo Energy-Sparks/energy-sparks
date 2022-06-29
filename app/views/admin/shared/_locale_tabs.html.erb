@@ -12,6 +12,9 @@
   <% I18n.available_locales.each do |locale| %>
     <div class="tab-pane <%= 'active' if locale == I18n.locale %>" id="<%= "#{field}-#{locale}" %>-content" role="tabpanel" aria-labelledby="<%= "#{field}-#{locale}" %>-tab">
       <%= yield "#{locale}" %>
+      <% if locale_field_has_errors(f, field, locale) %>
+        <div class="invalid-feedback"><%= locale_field_errors(f, field) %></div>
+      <% end %>
     </div>
   <% end %>
 </div>

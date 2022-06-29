@@ -1,6 +1,13 @@
 <%= simple_form_for([:admin, activity_category]) do |f| %>
-  <%= f.input :name, as: :string %>
-  <%= f.input :description, as: :string %>
+
+  <%= render 'admin/shared/locale_tabs', f: f, field: :name do |locale| %>
+    <%= f.input t_field(:name, locale), label: ActivityCategory.human_attribute_name(:name), as: :string %>
+  <% end %>
+
+  <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
+    <%= f.input t_field(:description, locale), label: ActivityCategory.human_attribute_name(:description), as: :string %>
+  <% end %>
+
 
   <%= f.label 'Image' %>
   <p class="small">This image will appear in the list of categories.</p>
