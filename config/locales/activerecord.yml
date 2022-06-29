@@ -23,6 +23,9 @@ en:
       transport_survey:
         one: Transport survey
         other: Transport surveys
+      transport_survey_response:
+        one: Response
+        other: Responses
   errors:
     attributes:
       temperature_recording:
