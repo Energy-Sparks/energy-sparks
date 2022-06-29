@@ -40,6 +40,9 @@ describe Transifex::Loader, type: :service do
     let!(:help_page)            { create(:help_page) }
     let!(:case_study)           { create(:case_study) }
 
+    let!(:programme_type)           { create(:programme_type) }
+    let!(:programme_type2)           { create(:programme_type, active: false) }
+
     before(:each) do
       allow_any_instance_of(Transifex::Synchroniser).to receive(:pull).and_return(true)
       allow_any_instance_of(Transifex::Synchroniser).to receive(:push).and_return(true)
@@ -47,11 +50,11 @@ describe Transifex::Loader, type: :service do
     end
 
     it 'updates the pull count' do
-      expect(TransifexLoad.first.pulled).to eq 6
+      expect(TransifexLoad.first.pulled).to eq 7
     end
 
     it 'updates the push count' do
-      expect(TransifexLoad.first.pushed).to eq 6
+      expect(TransifexLoad.first.pushed).to eq 7
     end
   end
 
