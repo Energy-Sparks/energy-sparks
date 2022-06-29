@@ -20,7 +20,7 @@ en:
           has_many: Cannot delete record because dependent %{record} exist
           has_one: Cannot delete record because a dependent %{record} exists
     models:
-      transport_surveys:
+      transport_survey:
         one: Transport survey
         other: Transport surveys
   errors:
