@@ -1,10 +1,12 @@
 <%= form_with model: [:admin, help_page], local: true do |f| %>
   <%= render 'shared/errors', subject: help_page, subject_name: 'Help page' %>
 
-  <div class="form-group">
-    <%= f.label :title, "Title", class: "form-label" %>
-    <%= f.text_field :title, class: 'form-control' %>
-  </div>
+  <%= render 'admin/shared/locale_tabs', f: f, field: :name do |locale| %>
+    <div class="form-group">
+      <%= f.label t_field(:title, locale), "Title", class: "form-label" %>
+      <%= f.text_field t_field(:title, locale), class: 'form-control' %>
+    </div>
+  <% end %>
 
   <div class="form-group">
     <%= f.label :feature, "Feature", class: "form-label" %>
@@ -14,10 +16,13 @@
     </p>
   </div>
 
-  <div class="description-trix-editor form-group">
-    <%= f.label :description, "Description", class: "form-label" %>
-    <%= f.rich_text_area :description, class: '' %>
-  </div>
+  <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
+    <div class="description-trix-editor-<%=locale%> form-group">
+      <%= f.label t_field(:description, locale), "Description", class: "form-label" %>
+      <%= f.rich_text_area t_field(:description, locale), class: '' %>
+    </div>
+  <% end %>
+
 
   <div class="form-group">
     <div class="form-check form-check-inline">

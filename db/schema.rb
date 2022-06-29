@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_29_120304) do
+ActiveRecord::Schema.define(version: 2022_06_29_144508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -783,7 +783,7 @@ ActiveRecord::Schema.define(version: 2022_06_29_120304) do
   end
 
   create_table "help_pages", force: :cascade do |t|
-    t.string "title", null: false
+    t.string "title"
     t.integer "feature", null: false
     t.boolean "published", default: false, null: false
     t.string "slug", null: false
