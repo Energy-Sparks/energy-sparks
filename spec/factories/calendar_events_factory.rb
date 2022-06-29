@@ -15,11 +15,11 @@ FactoryBot.define do
 
     factory :term do
       description { 'this is a new term' }
-      association :calendar_event_type, term_time: true, holiday: false
+      association :calendar_event_type, term_time: true, holiday: false, title: 'Term 1'
     end
     factory :holiday do
       description { 'this is a new holiday' }
-      association :calendar_event_type, term_time: false, holiday: true, analytics_event_type: :school_holiday
+      association :calendar_event_type, term_time: false, holiday: true, analytics_event_type: :school_holiday, title: 'Holiday'
     end
     factory :bank_holiday  do
       description { 'this is a new bank holiday event' }
@@ -29,7 +29,7 @@ FactoryBot.define do
     factory :inset_day  do
       description { 'this is a new inset day event' }
       association :calendar
-      association :calendar_event_type, term_time: false, holiday: false, bank_holiday: false, inset_day: true, analytics_event_type: :inset_day_in_school, title: 'Inset Day'
+      association :calendar_event_type, term_time: false, holiday: false, bank_holiday: false, inset_day: true, analytics_event_type: :inset_day_in_school, title: 'In school Inset Day'
     end
   end
 end

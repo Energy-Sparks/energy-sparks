@@ -28,7 +28,7 @@ RSpec.describe "onboarding", :schools, type: :system do
 
   context 'as a user' do
     let!(:ks1) { KeyStage.create(name: 'KS1') }
-    let!(:headteacher_role) { create(:staff_role, :management, title: 'Headteacher') }
+    let!(:headteacher_role) { create(:staff_role, :management, title: 'Headteacher or Deputy Head') }
     let!(:governor_role) { create(:staff_role, :management, title: 'Governor') }
 
     let!(:onboarding) do
@@ -437,14 +437,14 @@ RSpec.describe "onboarding", :schools, type: :system do
       end
 
       it 'inset days can be added' do
-        create :calendar_event_type, title: 'Teacher training', inset_day: true
+        create :calendar_event_type, title: 'In school Inset Day', description: 'Training day in school', inset_day: true
         academic_year = create :academic_year, start_date: Date.new(2018, 9,1), end_date: Date.new(2019, 8, 31), calendar: template_calendar
         visit new_onboarding_completion_path(onboarding)
 
         # Inset days
         expect(page).to have_content('Configure inset days')
         click_on 'Add an inset day'
-        select 'Teacher training', from: 'Type'
+        select 'Training day in school', from: 'Type'
         # Grr, actual input hidden for JS datepicker
         fill_in 'Date', with: '2019-01-09'
         expect(page).to have_field('Date', with: '2019-01-09')

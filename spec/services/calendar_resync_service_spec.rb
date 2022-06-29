@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe CalendarResyncService do
 
-  let!(:bank_holiday) { create(:calendar_event_type, :bank_holiday)}
-  let!(:holiday) { create(:calendar_event_type, :holiday)}
+  let!(:bank_holiday) { create(:calendar_event_type, :bank_holiday, title: 'Bank Holiday')}
+  let!(:holiday) { create(:calendar_event_type, :holiday, title: 'Holiday')}
 
   let!(:national_calendar)  { create(:calendar, calendar_type: :national) }
   let!(:regional_calendar)  { create(:calendar, calendar_type: :regional, based_on: national_calendar) }
