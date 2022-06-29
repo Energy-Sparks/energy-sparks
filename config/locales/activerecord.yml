@@ -17,9 +17,9 @@ en:
         category:
           active_travel: Active travel
           car: Car
-          public_transport: Public transport
-          park_and_stride: Park and stride
           other: Other
+          park_and_stride: Park and stride
+          public_transport: Public transport
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
