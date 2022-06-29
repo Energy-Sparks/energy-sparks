@@ -13,18 +13,23 @@
 #
 
 class ActivityCategory < ApplicationRecord
+  extend Mobility
+  include TransifexSerialisable
+  translates :name, type: :string, fallbacks: { cy: :en }
+  translates :description, type: :string, fallbacks: { cy: :en }
+
   has_many :activity_types
   validates_presence_of :name
   validates_uniqueness_of :name
 
   has_one_attached :image
 
-  scope :by_name, -> { order(name: :asc) }
+  scope :by_name, -> { i18n.order(name: :asc) }
   scope :featured, -> { where(featured: true) }
   scope :pupil, -> { where(pupil: true) }
   scope :live_data, -> { where(live_data: true) }
 
   def self.listed_with_activity_types
-    all.order(:name).map {|category| [category, category.activity_types.custom_last.order(:name).to_a]}
+    by_name.map {|category| [category, category.activity_types.custom_last.order(:name).to_a]}
   end
 end
