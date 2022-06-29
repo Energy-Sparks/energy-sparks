@@ -1,9 +1,10 @@
 module Admin
   class InterventionTypeGroupsController < AdminController
+    include LocaleHelper
     load_and_authorize_resource
 
     def index
-      @intervention_type_groups = @intervention_type_groups.by_title
+      @intervention_type_groups = @intervention_type_groups.by_name
     end
 
     def show
@@ -34,7 +35,8 @@ module Admin
   private
 
     def intervention_type_group_params
-      params.require(:intervention_type_group).permit(:title, :description, :image, :active, :icon)
+      translated_params = t_params(InterventionTypeGroup.mobility_attributes)
+      params.require(:intervention_type_group).permit(translated_params, :name, :description, :image, :active, :icon)
     end
   end
 end

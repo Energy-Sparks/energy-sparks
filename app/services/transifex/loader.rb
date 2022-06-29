@@ -12,6 +12,10 @@ module Transifex
         synchronise_resources(transifex_load, ActivityType.active.order(:id))
         log("Synchronising Intervention Types")
         synchronise_resources(transifex_load, InterventionType.active.order(:id))
+        log("Synchronising Activity Categories")
+        synchronise_resources(transifex_load, ActivityCategory.all.order(:id))
+        log("Synchronising Intervention Type Groups")
+        synchronise_resources(transifex_load, InterventionTypeGroup.all.order(:id))
       rescue => error
         #ensure all errors are caught and logged
         log_error(transifex_load, error)
