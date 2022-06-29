@@ -69,7 +69,7 @@
           <%= suggestion.select(
                 :suggested_type_id,
                 grouped_options_for_select(
-                  InterventionTypeGroup.listed_with_intervention_types.map{|group, types| [group.title, types.map {|type| [type.name, type.id]}]},
+                  InterventionTypeGroup.listed_with_intervention_types.map{|group, types| [group.name, types.map {|type| [type.name, type.id]}]},
                   suggestion.object.suggested_type_id.to_s
                 ),
                 { include_blank: true },
