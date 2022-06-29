@@ -1,7 +1,15 @@
 <%= simple_form_for([:admin, case_study]) do |f| %>
-  <%= f.input :title %>
-  <%= f.label 'Description', for: :description %>
-  <%= f.rich_text_area :description %>
+
+<%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
+  <%= f.input t_field(:title, locale), label: CaseStudy.human_attribute_name(:title), as: :string %>
+<% end %>
+
+<%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
+  <div class="description-trix-editor-<%=locale%>">
+    <%= f.rich_text_area t_field(:description, locale), label: CaseStudy.human_attribute_name(:description), as: :string %>
+  </div>
+<% end %>
+
   <%= f.input :position %>
   <%= f.input :file %>
   <%= f.button :submit %>
