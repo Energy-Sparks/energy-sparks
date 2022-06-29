@@ -29,7 +29,7 @@ class HelpPage < ApplicationRecord
   validates_uniqueness_of :feature
 
   scope :published,            -> { where(published: true) }
-  scope :by_title,             -> { order(title: :asc) }
+  scope :by_title,             -> { i18n.order(title: :asc) }
 
   enum feature: {
     school_targets: 0,

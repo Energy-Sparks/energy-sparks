@@ -19,8 +19,8 @@ describe 'programme type management', type: :system do
       old_title = 'Super programme number 1'
       new_title = 'Super programme number 2'
       click_on 'New Programme Type'
-      fill_in 'Title', with: old_title
-      fill_in_trix '#programme_type_description', with: description
+      fill_in :programme_type_title_en, with: old_title
+      fill_in_trix '#programme_type_description_en', with: description
       attach_file("programme_type_image", Rails.root + "spec/fixtures/images/placeholder.png")
       click_on 'Save'
       expect(page).to have_content('Programme Types')
@@ -31,7 +31,7 @@ describe 'programme type management', type: :system do
       expect(ProgrammeType.last.image.filename).to eq('placeholder.png')
 
       click_on 'Edit'
-      fill_in 'Title', with: new_title
+      fill_in :programme_type_title_en, with: new_title
       check("Active", allow_label_click: true)
       check("Default", allow_label_click: true)
 

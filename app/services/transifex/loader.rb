@@ -16,6 +16,8 @@ module Transifex
         synchronise_resources(transifex_load, ActivityCategory.all.order(:id))
         log("Synchronising Intervention Type Groups")
         synchronise_resources(transifex_load, InterventionTypeGroup.all.order(:id))
+        log("Synchronising Programme Types")
+        synchronise_resources(transifex_load, ProgrammeType.active.order(:id))
         log("Synchronising Help Pages")
         synchronise_resources(transifex_load, HelpPage.all.order(:id))
         log("Synchronising Case Studies")

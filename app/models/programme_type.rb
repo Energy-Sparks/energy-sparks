@@ -11,6 +11,12 @@
 #
 
 class ProgrammeType < ApplicationRecord
+  extend Mobility
+  include TransifexSerialisable
+  translates :title, type: :string, fallbacks: { cy: :en }
+  translates :short_description, type: :string, fallbacks: { cy: :en }
+  translates :description, backend: :action_text
+
   has_one_attached :image
   has_many :programme_type_activity_types
   has_many :activity_types, through: :programme_type_activity_types
@@ -19,7 +25,7 @@ class ProgrammeType < ApplicationRecord
 
   scope :active, -> { where(active: true) }
   scope :default, -> { where(default: true) }
-  scope :by_title, -> { order(title: :asc) }
+  scope :by_title, -> { i18n.order(title: :asc) }
 
   scope :default_first, -> { order(default: :desc) }
   scope :featured, -> { active.default_first.by_title }
@@ -29,8 +35,6 @@ class ProgrammeType < ApplicationRecord
   validates_uniqueness_of :default, if: :default
 
   accepts_nested_attributes_for :programme_type_activity_types, reject_if: proc {|attributes| attributes['position'].blank? }
-
-  has_rich_text :description
 
   def activity_types_by_position
     programme_type_activity_types.order(:position).map(&:activity_type)
