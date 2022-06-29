@@ -7,12 +7,16 @@
 
 <% if @transport_survey.responses.any? %>
   <div class="mb-3">
-    <div><strong><%= @transport_survey.total_responses %> pupils</strong> were surveyed on <strong><%= nice_dates @transport_survey.run_on %></strong>.</div>
-    <div>Their travel to school generated <strong><%= @transport_survey.total_carbon.round(2) %>kg CO2</strong>.</div>
-    <div> <strong><%= @transport_survey.percentage_per_category["active_travel"].round %>%</strong> used active travel, generating zero CO2,
-          <strong><%= @transport_survey.percentage_per_category["public_transport"].round %>%</strong> travelled by public transport,
-          <strong><%= @transport_survey.percentage_per_category["park_and_stride"].round %>%</strong> used park and stride and
-          <strong><%= @transport_survey.percentage_per_category["car"].round %>%</strong> travelled by car.</div>
+    <div><%= t('transport_surveys.show.summary', count: @transport_survey.total_responses, date: nice_dates(@transport_survey.run_on)).html_safe %>.</div>
+    <div><%= t('transport_surveys.show.carbon', carbon: tag.strong("#{@transport_survey.total_carbon.round(2)}kg CO2")).html_safe %>.</div>
+    <div>
+      <% percentages = @transport_survey.percentage_per_category %>
+      <%= t('transport_surveys.show.percentages',
+      active_travel: tag.strong("#{percentages["active_travel"].round}%"),
+      public_transport: tag.strong("#{percentages["public_transport"].round}%"),
+      park_and_stride: tag.strong("#{percentages["park_and_stride"].round}%"),
+      car: tag.strong("#{percentages["car"].round}%")).html_safe %>.
+    </div>
   </div>
 
   <div id="transport_surveys_pie" class="mb-3"></div>
@@ -20,16 +24,16 @@
   <table class="table">
     <thead class="thead-light">
       <tr>
-        <th>Transport category</th>
-        <th>Total pupils</th>
-        <th>Percentage pupils</th>
+        <th><%= t('transport_surveys.common.transport_category') %></th>
+        <th><%= t('transport_surveys.common.total_pupils') %></th>
+        <th><%= t('transport_surveys.common.percentage_pupils') %></th>
       </tr>
     </thead>
     <tbody>
       <% TransportType.categories_with_other.each do |cat, value| %>
         <tr>
           <td><%= TransportType.human_enum_name(:category, cat) %></td>
-<td><%= @transport_survey.responses_per_category[cat] %></td>
+          <td><%= @transport_survey.responses_per_category[cat] %></td>
           <td><%= @transport_survey.percentage_per_category[cat].round %>%</td>
         </tr>
       <% end %>
@@ -37,5 +41,5 @@
   </table>
 
 <% else %>
-  <h4>No responses have been collected</h4>
+  <h4><%= t('transport_surveys.show.no_results') %></h4>
 <% end %>
