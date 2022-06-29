@@ -28,8 +28,8 @@
     <tbody>
       <% TransportType.categories_with_other.each do |cat, value| %>
         <tr>
-          <td><%= cat.humanize %></td>
-          <td><%= @transport_survey.responses_per_category[cat] %></td>
+          <td><%= TransportType.human_enum_name(:category, cat) %></td>
+<td><%= @transport_survey.responses_per_category[cat] %></td>
           <td><%= @transport_survey.percentage_per_category[cat].round %>%</td>
         </tr>
       <% end %>

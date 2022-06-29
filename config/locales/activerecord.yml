@@ -13,6 +13,13 @@ en:
         download_links: Download links
         name: Title
         summary: Summary
+      transport_type:
+        category:
+          active_travel: Active travel
+          car: Car
+          public_transport: Public transport
+          park_and_stride: Park and stride
+          other: Other
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
