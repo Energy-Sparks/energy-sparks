@@ -1,7 +1,7 @@
 ---
 en:
-  application: Energy Sparks
   common:
+    application: Energy Sparks
     confirm: Are you sure?
     labels:
       actions: Actions
