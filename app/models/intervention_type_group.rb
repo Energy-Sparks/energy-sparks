@@ -7,21 +7,29 @@
 #  description :string
 #  icon        :string           default("question-circle")
 #  id          :bigint(8)        not null, primary key
-#  title       :string           not null
+#  name        :string
 #  updated_at  :datetime         not null
 #
-
 class InterventionTypeGroup < ApplicationRecord
-  has_many :intervention_types
+  extend Mobility
+  include TransifexSerialisable
+  translates :name, type: :string, fallbacks: { cy: :en }
+  translates :description, type: :string, fallbacks: { cy: :en }
 
+  validates :name, presence: true, uniqueness: true
+
+  has_many :intervention_types
   has_one_attached :image
 
-  scope :by_title, -> { order(title: :asc) }
-  scope :active,   -> { where(active: true) }
+  scope :by_name, -> { i18n.order(name: :asc) }
+  scope :active,  -> { where(active: true) }
 
-  validates :title, presence: true, uniqueness: true
+  #override default name for this resource in transifex
+  def tx_name
+    name
+  end
 
   def self.listed_with_intervention_types
-    all.order(:title).map {|group| [group, group.intervention_types.display_order.to_a]}
+    all.order(:name).map {|group| [group, group.intervention_types.display_order.to_a]}
   end
 end

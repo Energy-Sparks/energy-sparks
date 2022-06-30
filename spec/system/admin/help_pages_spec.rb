@@ -13,25 +13,25 @@ describe 'managing help pages', type: :system do
 
     it 'lets me create and edit help pages' do
       click_on 'New Help Page'
-      within('.description-trix-editor') do
+      within('.description-trix-editor-en') do
         fill_in_trix with: 'Help content'
       end
-      fill_in 'Title', with: ''
+      fill_in :help_page_title_en, with: ''
 
       click_on 'Create'
       expect(page).to have_content("can't be blank")
-      fill_in 'Title', with: 'Page title'
+      fill_in :help_page_title_en, with: 'Page title'
 
       click_on 'Create'
       expect(page).to have_content('Page title')
       expect(page).to have_css(".text-danger")
 
       click_on 'Edit'
-      within('.description-trix-editor') do
+      within('.description-trix-editor-en') do
         fill_in_trix with: 'New content'
       end
 
-      fill_in 'Title', with: 'New title'
+      fill_in :help_page_title_en, with: 'New title'
 
       check 'Publish'
       click_on 'Update'

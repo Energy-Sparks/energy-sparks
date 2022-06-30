@@ -35,7 +35,7 @@
   <div class="row mt-3">
     <div class="col">
       <div class="d-flex justify-content-between align-items-center">
-        <h4><strong><%= intervention_type_group.title %></strong></h4>
+        <h4><strong><%= intervention_type_group.name %></strong></h4>
         <div>
           <%= link_to "View all #{intervention_type_group.intervention_types.active.count} actions", intervention_type_group_path(intervention_type_group), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
         </div>

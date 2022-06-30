@@ -1,5 +1,6 @@
 module Admin
   class CaseStudiesController < AdminController
+    include LocaleHelper
     load_and_authorize_resource
 
     def index
@@ -39,7 +40,8 @@ module Admin
     private
 
     def case_study_params
-      params.require(:case_study).permit(:title, :description, :position, :file)
+      translated_params = t_params(CaseStudy.mobility_attributes)
+      params.require(:case_study).permit(translated_params, :title, :description, :position, :file)
     end
   end
 end

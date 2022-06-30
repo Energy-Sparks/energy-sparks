@@ -7,7 +7,7 @@
 #  id         :bigint(8)        not null, primary key
 #  published  :boolean          default(FALSE), not null
 #  slug       :string           not null
-#  title      :string           not null
+#  title      :string
 #  updated_at :datetime         not null
 #
 # Indexes
@@ -17,13 +17,19 @@
 class HelpPage < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: [:finders, :slugged, :history]
-  has_rich_text :description
+
+  extend Mobility
+  include TransifexSerialisable
+  translates :title, type: :string, fallbacks: { cy: :en }
+  translates :description, backend: :action_text
+
+  #has_rich_text :description
 
   validates_presence_of :title, :feature
   validates_uniqueness_of :feature
 
   scope :published,            -> { where(published: true) }
-  scope :by_title,             -> { order(title: :asc) }
+  scope :by_title,             -> { i18n.order(title: :asc) }
 
   enum feature: {
     school_targets: 0,

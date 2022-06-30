@@ -14,25 +14,25 @@ RSpec.describe 'Intervention Type Groups', type: :system do
 
     it 'I can view and edit the categories' do
       click_on 'Intervention Categories'
-      expect(page).to have_content(intervention_type_group.title)
+      expect(page).to have_content(intervention_type_group.name)
       expect(page).to have_content(intervention_type_group.description)
 
       new_description = 'Some useful text'
-      new_title = "Upgrade equipment"
+      new_name = "Upgrade equipment"
 
       click_on 'Edit'
-      fill_in 'Description', with: new_description
-      fill_in 'Title', with: ''
+      fill_in :intervention_type_group_description_en, with: new_description
+      fill_in :intervention_type_group_name_en, with: ''
       click_on 'Update Intervention type group'
 
       expect(page).to have_content("can't be blank")
-      fill_in 'Title', with: new_title
+      fill_in :intervention_type_group_name_en, with: new_name
       uncheck 'Active'
 
       click_on 'Update Intervention type group'
 
       expect(page).to have_content('Intervention Categories')
-      expect(page).to have_content(new_title)
+      expect(page).to have_content(new_name)
       expect(page).to have_content(new_description)
       expect(page).to have_content("No")
     end
@@ -42,16 +42,16 @@ RSpec.describe 'Intervention Type Groups', type: :system do
       click_on 'New intervention category'
 
       new_description = 'Some useful text'
-      new_title = "Upgrade equipment"
+      new_name = "Upgrade equipment"
 
-      fill_in 'Title', with: ''
-      fill_in 'Description', with: new_description
+      fill_in :intervention_type_group_name_en, with: ''
+      fill_in :intervention_type_group_description_en, with: new_description
       expect { click_on 'Create Intervention type group' }.to change { InterventionTypeGroup.count }.by(0)
       expect(page).to have_content("can't be blank")
-      fill_in 'Title', with: new_title
+      fill_in :intervention_type_group_name_en, with: new_name
       expect { click_on 'Create Intervention type group' }.to change { InterventionTypeGroup.count }.by(1)
 
-      expect(page).to have_content(new_title)
+      expect(page).to have_content(new_name)
       expect(page).to have_content(new_description)
     end
 

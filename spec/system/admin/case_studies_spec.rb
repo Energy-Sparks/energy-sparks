@@ -18,17 +18,19 @@ describe 'Case studies', type: :system do
       new_title = 'Case study: We saved a school loads of dosh'
 
       click_on 'New Case study'
-      fill_in_trix with: 'We told them to switch off their lights'
+      within('.description-trix-editor-en') do
+        fill_in_trix with: 'We told them to switch off their lights'
+      end
       fill_in 'Position', with: '1'
       click_on 'Create Case study'
       expect(page).to have_content('blank')
-      fill_in 'Title', with: title
+      fill_in :case_study_title_en, with: title
       attach_file("File", Rails.root + "spec/fixtures/images/newsletter-placeholder.png")
       click_on 'Create Case study'
       expect(page).to have_content title
 
       click_on 'Edit'
-      fill_in 'Title', with: new_title
+      fill_in :case_study_title_en, with: new_title
       click_on 'Update Case study'
 
       expect(page).to have_content new_title
