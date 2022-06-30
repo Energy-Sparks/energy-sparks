@@ -7,6 +7,9 @@ en:
       create: Create %{model}
       submit: Save %{model}
       update: Update %{model}
+  languages:
+    cy: Welsh
+    en: English
   simple_form:
     labels:
       defaults:

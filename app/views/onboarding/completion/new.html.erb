@@ -31,7 +31,7 @@
                 </tr>
                 <tr>
                   <th>Role:</th>
-                  <td><%=@school_onboarding.created_user.staff_role.title%></td>
+                  <td><%= t(@school_onboarding.created_user.staff_role.i18n_key) %></td>
                 </tr>
                 <tr>
                   <th>Password:</th>
@@ -94,7 +94,7 @@
                   <th>Key stages:</th>
                   <td>
                     <% if @school.key_stages.present? %>
-                      <%= @school.key_stages.map(&:name).to_sentence %>
+                      <%= @school.key_stages.map {|ks| t(ks.i18n_key) }.to_sentence %>
                     <% else %>
                       <%= link_to 'Edit', edit_onboarding_school_details_path(@school_onboarding, anchor: 'basic-details') %>
                     <% end %>
@@ -376,7 +376,7 @@
                 <% @inset_days.each do |inset_day| %>
                   <tr>
                     <td><%= inset_day.start_date %></td>
-                    <td><%= inset_day.calendar_event_type.title %></td>
+                    <td><%= I18n.t(inset_day.calendar_event_type.i18n_key("title")) %></td>
                     <td>
                       <div class="btn-group">
                         <%= link_to 'Edit', edit_onboarding_inset_day_path(@school_onboarding, inset_day), class: 'btn btn-sm btn-warning' %>

@@ -39,13 +39,13 @@
         <div class="col-md-10">
           <% KeyStage.by_name.each do |key_stage| %>
             <span data-toggle="tooltip" data-placement="bottom" title="Key Stages">
-              <%= link_to key_stage.name, activity_types_search_link(params, key_stage.name, ''), class: activity_types_badge_class(params[:key_stages], key_stage.name, 'info'), data: { disable_with: spinner_icon } %>
+              <%= link_to t(key_stage.i18n_key), activity_types_search_link(params, key_stage.name, ''), class: activity_types_badge_class(params[:key_stages], t(key_stage.i18n_key), 'info'), data: { disable_with: spinner_icon } %>
             </span>
           <% end %>
           <br/>
           <% Subject.by_name.each do |subject| %>
             <span data-toggle="tooltip" data-placement="bottom" title="Subjects">
-              <%= link_to subject.name, activity_types_search_link(params, '', subject.name), class: activity_types_badge_class(params[:subjects], subject.name, 'dark'), data: { disable_with: spinner_icon } %>
+              <%= link_to t(subject.i18n_key), activity_types_search_link(params, '', subject.name), class: activity_types_badge_class(params[:subjects], t(subject.i18n_key), 'dark'), data: { disable_with: spinner_icon } %>
             </span>
           <% end %>
         </div>

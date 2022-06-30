@@ -94,18 +94,17 @@ describe 'ActivityType' do
 
   context 'serialising for transifex' do
     context 'when mapping fields' do
-      let!(:activity_type) { create(:activity_type, name: "My activity", description: "description", school_specific_description: "Description {{chart}}")}
+      let!(:activity_type) { create(:activity_type, name: "My activity", description: "description", school_specific_description: "Description {{#chart}}chart_name{{/chart}} {{#chart}}chart_name2|£{{/chart}}")}
       it 'produces the expected key names' do
         expect(activity_type.tx_attribute_key("name")).to eq "name"
         expect(activity_type.tx_attribute_key("description")).to eq "description_html"
         expect(activity_type.tx_attribute_key("school_specific_description")).to eq "school_specific_description_html"
         expect(activity_type.tx_attribute_key("download_links")).to eq "download_links_html"
       end
-      it 'produces the expected tx values' do
+      it 'produces the expected tx values, removing trix content wrapper' do
         expect(activity_type.tx_value("name")).to eql activity_type.name
-        expect(activity_type.tx_value("description")).to eql(
-        "<div class=\"trix-content\">\n  description\n</div>\n")
-        expect(activity_type.tx_value("school_specific_description")).to eql("<div class=\"trix-content\">\n  Description %{chart}\n</div>\n")
+        expect(activity_type.tx_value("description")).to eql("description")
+        expect(activity_type.tx_value("school_specific_description")).to eql("Description %{chart_name} %{chart_name2|£}")
       end
       it 'produces the expected resource key' do
         expect(activity_type.resource_key).to eq "activity_type_#{activity_type.id}"
@@ -115,7 +114,7 @@ describe 'ActivityType' do
         expect(data["en"]).to_not be nil
         key = "activity_type_#{activity_type.id}"
         expect(data["en"][key]).to_not be nil
-        expect(data["en"][key].keys).to match_array(["name", "description_html", "school_specific_description_html", "download_links_html"])
+        expect(data["en"][key].keys).to match_array(["name", "description_html", "school_specific_description_html", "download_links_html", "summary"])
       end
       it 'created categories' do
         expect(activity_type.tx_categories).to match_array(["activity_type"])
@@ -141,7 +140,7 @@ describe 'ActivityType' do
          resource_key => {
            "name" => "Welsh name",
            "description_html" => "The Welsh description",
-           "school_specific_description_html" => "Instructions for schools. %{chart|£}"
+           "school_specific_description_html" => "Instructions for schools. %{chart_name|£}"
          }
        }
      }
@@ -160,7 +159,7 @@ describe 'ActivityType' do
     end
     it 'translates the template syntax' do
       expect(subject.school_specific_description).to eq school_specific_description
-      expect(subject.school_specific_description_cy.to_s).to eql("<div class=\"trix-content\">\n  Instructions for schools. {{chart|£}}\n</div>\n")
+      expect(subject.school_specific_description_cy.to_s).to eql("<div class=\"trix-content\">\n  Instructions for schools. {{#chart}}chart_name|£{{/chart}}\n</div>\n")
     end
   end
 end

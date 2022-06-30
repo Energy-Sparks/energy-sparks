@@ -1,6 +1,20 @@
 ---
 en:
   charts:
+    dashboard:
+      electricity:
+        title: Electricity
+        usage: electricity usage
+      gas:
+        title: Gas
+        usage: gas usage
+      solar:
+        title: Electricity
+        usage: electricity and solar usage
+      storage_heaters:
+        title: Storage heaters
+        usage: storage heater usage
+    hourly-usage-link: View usage by day
     usage:
       date_picker:
         daily:
@@ -9,6 +23,22 @@ en:
         weekly:
           first: Select week (beginning)
           second: Compare to
+      titles:
+        electricity:
+          daily:
+            not_split: Your school's half hourly electricity use on your chosen day
+            split: Your school's half hourly electricity use on your chosen day recorded by meter
+          weekly:
+            not_split: Your school's daily electricity use in your chosen weeks
+            split: Your school's daily electricity use in your chosen week recorded by meter
+        gas:
+          daily:
+            not_split: Your school's half hourly gas use on your chosen day
+            split: Your school's half hourly gas use on your chosen day recorded by meter
+          weekly:
+            not_split: Your school's daily gas use in your chosen weeks
+            split: Your school's daily gas use in your chosen week recorded by meter
+    weekly-usage-link: View usage by week
   schools:
     chart_preference:
       carbon: Prefer the display of chart data in kg CO2, where available

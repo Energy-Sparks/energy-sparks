@@ -1,8 +1,10 @@
 module LocaleHelper
-  def t_attr(model_name, attribute_name, suffix = nil)
-    key = "activerecord.attributes.#{model_name}.#{attribute_name}"
-    key.concat('_', suffix.to_s) if suffix
-    t(key)
+  def locale_field_has_errors(form, field, locale)
+    I18n.locale == locale && form.object.errors.include?(field)
+  end
+
+  def locale_field_errors(form, field)
+    form.object.errors[field].join(' and ')
   end
 
   def t_field(sym, locale)

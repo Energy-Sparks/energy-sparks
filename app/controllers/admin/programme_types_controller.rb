@@ -1,5 +1,6 @@
 module Admin
   class ProgrammeTypesController < AdminController
+    include LocaleHelper
     load_and_authorize_resource
 
     def index
@@ -36,7 +37,8 @@ module Admin
   private
 
     def programme_type_params
-      params.require(:programme_type).permit(:title, :description, :short_description, :document_link, :active, :default, :image)
+      translated_params = t_params(ProgrammeType.mobility_attributes)
+      params.require(:programme_type).permit(translated_params, :title, :description, :short_description, :document_link, :active, :default, :image)
     end
   end
 end

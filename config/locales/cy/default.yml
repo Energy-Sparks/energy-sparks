@@ -7,6 +7,9 @@ cy:
       create: Creu %{model}
       submit: Cadw %{model}
       update: Diweddaru %{model}
+  languages:
+    en: Saesneg
+    cy: Cymraeg
   support:
     array:
       last_word_connector: ", a "

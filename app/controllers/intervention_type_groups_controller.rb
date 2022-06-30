@@ -7,7 +7,7 @@ class InterventionTypeGroupsController < ApplicationController
     if current_user_school
       @suggested_interventions = load_suggested_interventions(current_user_school)
     end
-    @intervention_type_groups = @intervention_type_groups.by_title
+    @intervention_type_groups = @intervention_type_groups.by_name
   end
 
   def show

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_22_121758) do
+ActiveRecord::Schema.define(version: 2022_06_29_151252) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -580,7 +580,7 @@ ActiveRecord::Schema.define(version: 2022_06_22_121758) do
   end
 
   create_table "case_studies", force: :cascade do |t|
-    t.string "title", null: false
+    t.string "title"
     t.integer "position", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -783,7 +783,7 @@ ActiveRecord::Schema.define(version: 2022_06_22_121758) do
   end
 
   create_table "help_pages", force: :cascade do |t|
-    t.string "title", null: false
+    t.string "title"
     t.integer "feature", null: false
     t.boolean "published", default: false, null: false
     t.string "slug", null: false
@@ -799,7 +799,7 @@ ActiveRecord::Schema.define(version: 2022_06_22_121758) do
   end
 
   create_table "intervention_type_groups", force: :cascade do |t|
-    t.string "title", null: false
+    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "icon", default: "question-circle"
@@ -823,6 +823,8 @@ ActiveRecord::Schema.define(version: 2022_06_22_121758) do
     t.integer "score"
     t.boolean "active", default: true
     t.string "summary"
+    t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
+    t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
     t.index ["intervention_type_group_id"], name: "index_intervention_types_on_intervention_type_group_id"
   end
 

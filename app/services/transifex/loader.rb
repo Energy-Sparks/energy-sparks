@@ -10,6 +10,18 @@ module Transifex
       begin
         log("Synchronising Activity Types")
         synchronise_resources(transifex_load, ActivityType.active.order(:id))
+        log("Synchronising Intervention Types")
+        synchronise_resources(transifex_load, InterventionType.active.order(:id))
+        log("Synchronising Activity Categories")
+        synchronise_resources(transifex_load, ActivityCategory.all.order(:id))
+        log("Synchronising Intervention Type Groups")
+        synchronise_resources(transifex_load, InterventionTypeGroup.all.order(:id))
+        log("Synchronising Programme Types")
+        synchronise_resources(transifex_load, ProgrammeType.active.order(:id))
+        log("Synchronising Help Pages")
+        synchronise_resources(transifex_load, HelpPage.all.order(:id))
+        log("Synchronising Case Studies")
+        synchronise_resources(transifex_load, CaseStudy.all.order(:id))
       rescue => error
         #ensure all errors are caught and logged
         log_error(transifex_load, error)

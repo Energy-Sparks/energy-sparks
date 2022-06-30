@@ -1,5 +1,6 @@
 module Admin
   class HelpPagesController < AdminController
+    include LocaleHelper
     load_and_authorize_resource
 
     def index
@@ -41,7 +42,8 @@ module Admin
     private
 
     def help_page_params
-      params.require(:help_page).permit(:title, :description, :published, :feature)
+      translated_params = t_params(HelpPage.mobility_attributes)
+      params.require(:help_page).permit(translated_params, :title, :description, :published, :feature)
     end
   end
 end

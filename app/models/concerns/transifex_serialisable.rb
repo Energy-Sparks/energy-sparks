@@ -1,5 +1,9 @@
 module TransifexSerialisable
+  # rubocop:disable Style/RegexpLiteral
   extend ActiveSupport::Concern
+
+  TRIX_DIV = "<div class=\"trix-content\">".freeze
+  CLOSE_DIV = "</div>".freeze
 
   def self.included(base)
     base.include ClassMethods
@@ -90,8 +94,17 @@ module TransifexSerialisable
 
   def tx_value(attr)
     #TODO is there a better way to access the HTML?
-    value = self.class.tx_rich_text_field?(attr) ? send(attr).to_s : self[attr]
-    self.class.tx_templated_attribute?(attr) ? mustache_to_yaml(value) : value
+    if self.class.tx_rich_text_field?(attr)
+      value = send(attr).to_s
+      value = remove_newlines(value)
+      value = remove_rich_text_wrapper(value)
+    else
+      value = self[attr]
+    end
+    if self.class.tx_templated_attribute?(attr)
+      value = mustache_to_yaml(value)
+    end
+    value ? value.strip : value
   end
 
   def resource_key
@@ -100,13 +113,22 @@ module TransifexSerialisable
 
   private
 
-  #TODO this needs work
-  def yaml_template_to_mustache(value)
-    value.gsub(/%{/, "{{").gsub(/}/, "}}")
+  def remove_newlines(value)
+    value.delete("\n")
   end
 
+  def remove_rich_text_wrapper(value)
+    value.start_with?(TRIX_DIV) ? value.gsub(TRIX_DIV, '').chomp(CLOSE_DIV) : value
+  end
+
+  def yaml_template_to_mustache(value)
+    value.gsub(/%{([a-z0-9_|£]+)}/, '{{#chart}}\1{{/chart}}')
+  end
+
+  #we only have a single custom Mustache tag, see SchoolTemplate
+  #we will need to do something more sophisticated if we add more
   def mustache_to_yaml(value)
-    value.gsub(/{{/, "%{").gsub(/}}/, "}")
+    value.gsub(/{{#chart}}([a-z0-9_|£]+){{\/chart}}/, '%{\1}')
   end
 
   module ClassMethods
@@ -134,4 +156,5 @@ module TransifexSerialisable
       reflect_on_all_associations(:has_one).collect(&:name).include?("rich_text_#{name}".to_sym)
     end
   end
+  # rubocop:enable Style/RegexpLiteral
 end

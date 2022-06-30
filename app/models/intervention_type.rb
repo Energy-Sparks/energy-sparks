@@ -21,6 +21,7 @@
 
 class InterventionType < ApplicationRecord
   extend Mobility
+  include TransifexSerialisable
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :summary, type: :string, fallbacks: { cy: :en }
   translates :description, backend: :action_text
@@ -62,6 +63,11 @@ class InterventionType < ApplicationRecord
 
   def actions_for_school(school)
     observations.for_school(school)
+  end
+
+  #override default name for this resource in transifex
+  def tx_name
+    name
   end
 
   private
