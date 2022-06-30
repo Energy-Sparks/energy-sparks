@@ -7,11 +7,11 @@
 
 <% if @transport_survey.responses.any? %>
   <div class="mb-3">
-    <div><%= t('transport_surveys.show.summary', count: @transport_survey.total_responses, date: nice_dates(@transport_survey.run_on)).html_safe %>.</div>
-    <div><%= t('transport_surveys.show.carbon', carbon: tag.strong("#{@transport_survey.total_carbon.round(2)}kg CO2")).html_safe %>.</div>
+    <div><%= t('schools.transport_surveys.show.summary', count: @transport_survey.total_responses, date: nice_dates(@transport_survey.run_on)).html_safe %>.</div>
+    <div><%= t('schools.transport_surveys.show.carbon', carbon: tag.strong("#{@transport_survey.total_carbon.round(2)}kg CO2")).html_safe %>.</div>
     <div>
       <% percentages = @transport_survey.percentage_per_category %>
-      <%= t('transport_surveys.show.percentages',
+      <%= t('schools.transport_surveys.show.percentages',
       active_travel: tag.strong("#{percentages["active_travel"].round}%"),
       public_transport: tag.strong("#{percentages["public_transport"].round}%"),
       park_and_stride: tag.strong("#{percentages["park_and_stride"].round}%"),
@@ -24,9 +24,9 @@
   <table class="table">
     <thead class="thead-light">
       <tr>
-        <th><%= t('transport_surveys.common.transport_category') %></th>
-        <th><%= t('transport_surveys.common.total_pupils') %></th>
-        <th><%= t('transport_surveys.common.percentage_pupils') %></th>
+        <th><%= t('schools.transport_surveys.common.transport_category') %></th>
+        <th><%= t('schools.transport_surveys.common.total_pupils') %></th>
+        <th><%= t('schools.transport_surveys.common.percentage_pupils') %></th>
       </tr>
     </thead>
     <tbody>
@@ -41,5 +41,5 @@
   </table>
 
 <% else %>
-  <h4><%= t('transport_surveys.show.no_results') %></h4>
+  <h4><%= t('schools.transport_surveys.show.no_results') %></h4>
 <% end %>

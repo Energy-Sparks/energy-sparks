@@ -1,43 +1,44 @@
 ---
 en:
-  transport_surveys:
-    common:
-      actions: Actions
-      percentage_pupils: Percentage pupils
-      survey_date: Survey date
-      total_carbon: Total carbon
-      total_pupils: Total pupils
-      transport_category: Transport category
-    header_nav:
-      survey_today: Survey today
-      view_all: View all transport surveys
-    index:
-      button:
-        delete: Delete
-        manage: Manage
-        start_surveying: Start surveying today
-        view_results: View results
-      no_results: No surveys have been completed yet
-    pupils:
-      one: 1 pupil
-      other: "%{count} pupils"
-      zero: no pupils
-    show:
-      carbon: Their travel to school generated %{carbon}
-      no_results: No responses have been collected
-      percentages: |
-        %{active_travel} used active travel, generating zero CO2,
-        %{public_transport} travelled by public transport,
-        %{park_and_stride} used park and stride and
-        %{car} travelled by car
-      summary:
-        one: "<strong>1 pupil</strong> was surveyed on <strong>%{date}</strong>"
-        other: "<strong>%{count} pupils</strong> were surveyed on <strong>%{date}</strong>"
-    tab_nav:
-      manage_responses: Manage responses
-      results: Results
-      survey_today: Survey today
-    title:
-      dated: Travel to school survey on %{date}
-      default: Travel to school surveys
-      today: Today's travel to school survey
+  schools:
+    transport_surveys:
+      common:
+        actions: Actions
+        percentage_pupils: Percentage pupils
+        survey_date: Survey date
+        total_carbon: Total carbon
+        total_pupils: Total pupils
+        transport_category: Transport category
+      header_nav:
+        survey_today: Survey today
+        view_all: View all transport surveys
+      index:
+        button:
+          delete: Delete
+          manage: Manage
+          start_surveying: Start surveying today
+          view_results: View results
+        no_results: No surveys have been completed yet
+      pupils:
+        one: 1 pupil
+        other: "%{count} pupils"
+        zero: no pupils
+      show:
+        carbon: Their travel to school generated %{carbon}
+        no_results: No responses have been collected
+        percentages: |
+          %{active_travel} used active travel, generating zero CO2,
+          %{public_transport} travelled by public transport,
+          %{park_and_stride} used park and stride and
+          %{car} travelled by car
+        summary:
+          one: "<strong>1 pupil</strong> was surveyed on <strong>%{date}</strong>"
+          other: "<strong>%{count} pupils</strong> were surveyed on <strong>%{date}</strong>"
+      tab_nav:
+        manage_responses: Manage responses
+        results: Results
+        survey_today: Survey today
+      title:
+        dated: Travel to school survey on %{date}
+        default: Travel to school surveys
+        today: Today's travel to school survey
