@@ -3,7 +3,6 @@ en:
   schools:
     transport_surveys:
       common:
-        actions: Actions
         percentage_pupils: Percentage pupils
         survey_date: Survey date
         total_carbon: Total carbon
@@ -13,12 +12,8 @@ en:
         survey_today: Survey today
         view_all: View all transport surveys
       index:
-        button:
-          delete: Delete
-          manage: Manage
-          start_surveying: Start surveying today
-          view_results: View results
         no_results: No surveys have been completed yet
+        start_surveying: Start surveying today
       pupils:
         one: 1 pupil
         other: "%{count} pupils"

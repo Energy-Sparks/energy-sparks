@@ -3,5 +3,10 @@ en:
   application: Energy Sparks
   common:
     confirm: Are you sure?
+    labels:
+      actions: Actions
+      delete: Delete
+      manage: Manage
+      view_results: View results
   school_types:
     mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
