@@ -1,44 +1,44 @@
 ---
 en:
   charts:
-    hourly-usage-link: "View usage by day"
-    weekly-usage-link: "View usage by week"
     dashboard:
-      solar:
-        usage: 'electricity and solar usage'
-        title: 'Electricity'
       electricity:
-        usage: 'electricity usage'
-        title: 'Electricity'
+        title: Electricity
+        usage: electricity usage
       gas:
-        usage: 'gas usage'
-        title: 'Gas'
+        title: Gas
+        usage: gas usage
+      solar:
+        title: Electricity
+        usage: electricity and solar usage
       storage_heaters:
-        usage: 'storage heater usage'
-        title: 'Storage heaters'
+        title: Storage heaters
+        usage: storage heater usage
+    hourly-usage-link: View usage by day
     usage:
-      titles:
-        gas:
-          weekly:
-            split: "Your school's daily gas use in your chosen week recorded by meter"
-            not_split: "Your school's daily gas use in your chosen weeks"
-          daily:
-            split: "Your school's half hourly gas use on your chosen day recorded by meter"
-            not_split: "Your school's half hourly gas use on your chosen day"
-        electricity:
-          weekly:
-            split: "Your school's daily electricity use in your chosen week recorded by meter"
-            not_split: "Your school's daily electricity use in your chosen weeks"
-          daily:
-            split: "Your school's half hourly electricity use on your chosen day recorded by meter"
-            not_split: "Your school's half hourly electricity use on your chosen day"
       date_picker:
-        weekly:
-          first: 'Select week (beginning)'
-          second: 'Compare to'
         daily:
-          first: 'Select day'
-          second: 'Compare to'
+          first: Select day
+          second: Compare to
+        weekly:
+          first: Select week (beginning)
+          second: Compare to
+      titles:
+        electricity:
+          daily:
+            not_split: Your school's half hourly electricity use on your chosen day
+            split: Your school's half hourly electricity use on your chosen day recorded by meter
+          weekly:
+            not_split: Your school's daily electricity use in your chosen weeks
+            split: Your school's daily electricity use in your chosen week recorded by meter
+        gas:
+          daily:
+            not_split: Your school's half hourly gas use on your chosen day
+            split: Your school's half hourly gas use on your chosen day recorded by meter
+          weekly:
+            not_split: Your school's daily gas use in your chosen weeks
+            split: Your school's daily gas use in your chosen week recorded by meter
+    weekly-usage-link: View usage by week
   schools:
     chart_preference:
       carbon: Prefer the display of chart data in kg CO2, where available

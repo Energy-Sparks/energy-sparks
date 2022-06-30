@@ -1,17 +1,3 @@
 ---
 en:
-  charts:
-    dashboard:
-      electricity:
-        title: Electricity
-        usage: electricity usage
-      gas:
-        title: Gas
-        usage: gas usage
-      solar:
-        title: Electricity
-        usage: electricity and solar usage
-      storage_heaters:
-        title: Storage heaters
-        usage: storage heater usage
   more_information: More information
