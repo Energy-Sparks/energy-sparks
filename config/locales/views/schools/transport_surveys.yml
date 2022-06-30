@@ -19,14 +19,14 @@ en:
         other: "%{count} pupils"
         zero: no pupils
       show:
-        carbon: Their travel to school generated %{carbon}
+        carbon_html: Their travel to school generated %{carbon}
         no_results: No responses have been collected
-        percentages: |
+        percentages_html: >
           %{active_travel} used active travel, generating zero CO2,
           %{public_transport} travelled by public transport,
           %{park_and_stride} used park and stride and
           %{car} travelled by car
-        summary:
+        summary_html:
           one: "<strong>1 pupil</strong> was surveyed on <strong>%{date}</strong>"
           other: "<strong>%{count} pupils</strong> were surveyed on <strong>%{date}</strong>"
       tab_nav:

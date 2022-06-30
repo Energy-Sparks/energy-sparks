@@ -7,15 +7,15 @@
 
 <% if @transport_survey.responses.any? %>
   <div class="mb-3">
-    <div><%= t('schools.transport_surveys.show.summary', count: @transport_survey.total_responses, date: nice_dates(@transport_survey.run_on)).html_safe %>.</div>
-    <div><%= t('schools.transport_surveys.show.carbon', carbon: tag.strong("#{@transport_survey.total_carbon.round(2)}kg CO2")).html_safe %>.</div>
+    <div><%= t('schools.transport_surveys.show.summary_html', count: @transport_survey.total_responses, date: nice_dates(@transport_survey.run_on)) %>.</div>
+    <div><%= t('schools.transport_surveys.show.carbon_html', carbon: tag.strong("#{@transport_survey.total_carbon.round(2)}kg CO2")) %>.</div>
     <div>
       <% percentages = @transport_survey.percentage_per_category %>
-      <%= t('schools.transport_surveys.show.percentages',
+      <%= t('schools.transport_surveys.show.percentages_html',
       active_travel: tag.strong("#{percentages["active_travel"].round}%"),
       public_transport: tag.strong("#{percentages["public_transport"].round}%"),
       park_and_stride: tag.strong("#{percentages["park_and_stride"].round}%"),
-      car: tag.strong("#{percentages["car"].round}%")).html_safe %>.
+      car: tag.strong("#{percentages["car"].round}%")) %>.
     </div>
   </div>
 
