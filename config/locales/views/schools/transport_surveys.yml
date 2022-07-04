@@ -11,6 +11,7 @@ en:
         total_carbon: Total carbon
         total_pupils: Total pupils
         transport_category: Transport category
+        transport_method: Transport method
         weather: Weather
         passengers: Passengers
         journey_time: Journey time

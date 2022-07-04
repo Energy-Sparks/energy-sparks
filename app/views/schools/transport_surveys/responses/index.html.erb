@@ -21,7 +21,7 @@
         <% @responses.each do |response| %>
           <tr scope="row">
             <td><%= response.weather_symbol %></td>
-            <td><%= response.journey_minutes %> <%= t('schools.transport_surveys.common.units.mins') %></td>
+            <td><%= response.journey_minutes %> <%= t('schools.transport_surveys.common.mins') %></td>
             <td><%= response.transport_type.image %> <%= response.transport_type.name %></td>
             <td><%= response.passengers > 1 ? response.passengers : "" %></td>
             <td><%= response.carbon.round(3) %>kg CO2</td>
