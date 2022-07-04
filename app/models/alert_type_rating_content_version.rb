@@ -73,13 +73,12 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   has_rich_text :find_out_more_content
   has_rich_text :pupil_dashboard_title
   has_rich_text :public_dashboard_title
-  has_rich_text :teacher_dashboard_title
   has_rich_text :management_dashboard_title
   has_rich_text :management_priorities_title
 
   def self.functionality
     [
-      :teacher_dashboard_alert, :pupil_dashboard_alert,
+      :pupil_dashboard_alert,
       :public_dashboard_alert, :management_dashboard_alert,
       :management_priorities, :sms, :email, :analysis
     ]
@@ -87,7 +86,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
 
   def self.template_fields
     [
-      :pupil_dashboard_title, :teacher_dashboard_title,
+      :pupil_dashboard_title,
       :public_dashboard_title, :management_dashboard_title,
       :find_out_more_title, :find_out_more_content,
       :email_title, :email_content, :sms_content,
@@ -108,10 +107,6 @@ class AlertTypeRatingContentVersion < ApplicationRecord
 
   validates :colour, presence: true
 
-  validates :teacher_dashboard_title,
-    presence: true,
-    if: ->(content) { content.alert_type_rating && content.alert_type_rating.teacher_dashboard_alert_active?},
-    on: :create
   validates :pupil_dashboard_title,
     presence: true,
     if: ->(content) { content.alert_type_rating && content.alert_type_rating.pupil_dashboard_alert_active?},
