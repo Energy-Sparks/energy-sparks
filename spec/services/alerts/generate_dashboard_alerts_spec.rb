@@ -44,16 +44,12 @@ describe Alerts::GenerateDashboardAlerts do
 
       it 'creates a dashboard alert pairing the alert and the content for each active dashboard' do
         service.perform(school.latest_alerts_without_exclusions)
-        expect(content_generation_run.dashboard_alerts.count).to be 4
-
-        teacher_alert = content_generation_run.dashboard_alerts.teacher_dashboard.first
-        expect(teacher_alert.alert).to eq(alert)
-        expect(teacher_alert.content_version).to eq(content_version)
-        expect(teacher_alert.priority).to eq(0.15)
+        expect(content_generation_run.dashboard_alerts.count).to be 3
 
         pupil_alert = content_generation_run.dashboard_alerts.pupil_dashboard.first
         expect(pupil_alert.alert).to eq(alert)
         expect(pupil_alert.content_version).to eq(content_version)
+        expect(pupil_alert.priority).to eq(0.15)
 
         public_alert = content_generation_run.dashboard_alerts.public_dashboard.first
         expect(public_alert.alert).to eq(alert)
