@@ -37,7 +37,6 @@ RSpec.describe "school alerts", type: :system do
           :alert_type_rating_content_version,
           alert_type_rating: alert_type_rating,
           management_dashboard_title: 'Your heating is on!',
-          teacher_dashboard_title: 'Your heating is on!',
           pupil_dashboard_title: 'It is too warm',
           find_out_more_title: 'You might want to think about heating',
           find_out_more_content: 'This is what you need to do',
