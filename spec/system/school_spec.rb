@@ -200,6 +200,14 @@ RSpec.describe "school", type: :system do
         visit school_path(school_invisible)
         expect(page.has_content? 'You are not authorized to access this page').to be true
       end
+
+      context 'when also not data enabled' do
+        it 'does not raise a double render error' do
+          school_invisible.update(data_enabled: false)
+          visit school_path(school_invisible)
+          expect(page.has_content? 'You are not authorized to access this page').to be true
+        end
+      end
     end
 
     context 'as admin' do
