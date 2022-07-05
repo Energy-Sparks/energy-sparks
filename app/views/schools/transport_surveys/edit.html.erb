@@ -76,7 +76,7 @@
             <fieldset class="panel" style="display: none;">
               <%= hidden_field_tag :passengers, "", class: 'selected' %>
               <h2 class="pb-0">Sharing: How many pupils at this school shared your <span id="transport_type_name" %></span> journey?</h2>
-              <div class="pb-4">Don’t include your parents or carers or children who attend different schools or nurseries.</div>
+              <h2><small class="pb-4">Don’t include your parents or carers or children who attend different schools or nurseries.</small></h2>
               <div class="container">
                 <div class="row">
                   <% TransportSurveyResponse.passengers_options.each do |passengers| %>
@@ -97,7 +97,7 @@
                 </div>
               </div>
               <p>
-                <%= button_tag "Confirm", type: 'button', class: 'store btn btn-outline-primary w-100 mb-2 mt-2' %>
+                <%= button_tag "Confirm", type: 'button', class: 'store btn btn-primary w-100 mb-2 mt-2' %>
                 <%= button_tag 'Back', type: 'button', class: "previous-transport btn btn-outline-secondary w-100" %>
               </p>
             </fieldset>
@@ -108,7 +108,7 @@
               <h2>You used <span id="display-carbon" class="badge badge-secondary"></span> of carbon!</h2>
               <hr />
               <h2 class="mb-0"><span id="display-carbon-equivalent"></span></h2>
-              <p><%= button_tag "Next pupil", type: 'button', class: 'next-pupil btn btn-outline-primary w-100' %></p>
+              <p><%= button_tag "Next pupil", type: 'button', class: 'next-pupil btn btn-primary w-100' %></p>
             </fieldset>
           </div>
         <% end %>
