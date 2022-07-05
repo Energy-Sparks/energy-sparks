@@ -8,7 +8,6 @@
 #  _management_priorities_title          :string
 #  _public_dashboard_title               :string
 #  _pupil_dashboard_title                :string
-#  _teacher_dashboard_title              :string
 #  alert_type_rating_id                  :bigint(8)        not null
 #  analysis_end_date                     :date
 #  analysis_start_date                   :date
@@ -49,9 +48,6 @@
 #  sms_end_date                          :date
 #  sms_start_date                        :date
 #  sms_weighting                         :decimal(, )      default(5.0)
-#  teacher_dashboard_alert_end_date      :date
-#  teacher_dashboard_alert_start_date    :date
-#  teacher_dashboard_alert_weighting     :decimal(, )      default(5.0)
 #  updated_at                            :datetime         not null
 #
 # Indexes
