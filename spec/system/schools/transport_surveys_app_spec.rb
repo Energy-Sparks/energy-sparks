@@ -100,7 +100,7 @@ describe 'TransportSurveys - App', type: :system do
 
                         it { expect(page).to have_css('#transport_surveys_pie') }
                         it { expect(page).to have_content(Date.today.to_s(:es_full)) }
-                        it { expect(page).to have_content("#{passengers} pupils") }
+                        it { expect(page).to have_content("1 pupils") }
                         it { expect(page).to_not have_link("Manage responses") }
                       end
                     end
