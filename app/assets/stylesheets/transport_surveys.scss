@@ -2,3 +2,17 @@
 #transport_survey li.nav-item {
   width: calc(100% / 5);
 }
+
+#transport_survey .btn-outline-secondary {
+  background-image: none;
+}
+
+#transport_survey .btn-outline-primary {
+  color: $primary;
+  border-color: $primary;
+  background-image: none;
+}
+
+#transport_survey .btn-outline-primary:hover {
+  color: #fff;
+}

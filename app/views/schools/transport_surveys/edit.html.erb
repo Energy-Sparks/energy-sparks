@@ -70,7 +70,7 @@
                   <% end %>
                 </div>
               </div>
-              <%= button_tag 'Back', type: 'button', class: "previous btn btn-default w-100" %>
+              <%= button_tag 'Back', type: 'button', class: "previous btn btn-outline-secondary w-100" %>
             </fieldset>
 
             <fieldset class="panel" style="display: none;">
@@ -84,7 +84,7 @@
                   <% end %>
                 </div>
               </div>
-              <%= button_tag 'Back', type: 'button', class: "previous btn btn-default w-100" %>
+              <%= button_tag 'Back', type: 'button', class: "previous btn btn-outline-secondary w-100" %>
             </fieldset>
 
             <fieldset class="panel" style="display: none;">
@@ -96,8 +96,10 @@
                   <%= render 'option', { label: "Pupil(s)", content: 'x', identifier: 'confirm-passengers', action: '' } %>
                 </div>
               </div>
-              <p><%= button_tag "Confirm", type: 'button', class: 'store btn btn-primary w-100' %></p>
-              <p><%= button_tag 'Back', type: 'button', class: "previous-transport btn btn-default w-100" %></p>
+              <p>
+                <%= button_tag "Confirm", type: 'button', class: 'store btn btn-outline-primary w-100 mb-2 mt-2' %>
+                <%= button_tag 'Back', type: 'button', class: "previous-transport btn btn-outline-secondary w-100" %>
+              </p>
             </fieldset>
 
             <fieldset class="panel" style="display: none;">
@@ -106,7 +108,7 @@
               <h2>You used <span id="display-carbon" class="badge badge-secondary"></span> of carbon!</h2>
               <hr />
               <h2 class="mb-0"><span id="display-carbon-equivalent"></span></h2>
-              <p><%= button_tag "Next pupil", type: 'button', class: 'next-pupil btn btn-primary w-100' %></p>
+              <p><%= button_tag "Next pupil", type: 'button', class: 'next-pupil btn btn-outline-primary w-100' %></p>
             </fieldset>
           </div>
         <% end %>
