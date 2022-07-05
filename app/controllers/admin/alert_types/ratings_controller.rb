@@ -51,7 +51,7 @@ module Admin
         params.require(:alert_type_rating).permit(
           :description, :rating_from, :rating_to,
           :sms_active, :email_active, :find_out_more_active,
-          :teacher_dashboard_alert_active, :pupil_dashboard_alert_active,
+          :pupil_dashboard_alert_active,
           :public_dashboard_alert_active, :management_dashboard_alert_active,
           :management_priorities_active, :analysis_active
         )
