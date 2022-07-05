@@ -35,6 +35,7 @@ describe 'TransportSurveys - App', type: :system do
 
             it { expect(page).to have_content('Please select today\'s weather') }
             it { expect(page).to have_link(weather) }
+            it { expect(page).to have_button('Finish & save results 0', disabled: true) }
 
             context "selecting the weather" do
               before(:each) do
@@ -45,6 +46,7 @@ describe 'TransportSurveys - App', type: :system do
               it { expect(page).to have_content('Time: How many minutes did your journey take in total?') }
               it { expect(page).to have_link(time.to_s) }
               it { expect(page).to_not have_button('Back') }
+              it { expect(page).to have_button('Finish & save results 0', disabled: true) }
 
               context "selecting a time" do
                 before(:each) do
@@ -54,6 +56,7 @@ describe 'TransportSurveys - App', type: :system do
                 it { expect(page).to have_content('Transport: What mode of transport did you use to get to school?') }
                 it { expect(page).to have_link(transport_type.image) }
                 it { expect(page).to have_button('Back') }
+                it { expect(page).to have_button('Finish & save results 0', disabled: true) }
 
                 context "selecting a transport type" do
                   before(:each) do
@@ -78,6 +81,7 @@ describe 'TransportSurveys - App', type: :system do
                     end
                     it { expect(page).to have_button('Confirm') }
                     it { expect(page).to have_button('Back') }
+                    it { expect(page).to have_button('Finish & save results 0', disabled: true) }
 
                     context "confirming selection" do
                       before(:each) do
@@ -107,12 +111,6 @@ describe 'TransportSurveys - App', type: :system do
                   end
                 end
               end
-            end
-            context "when there is nothing to save" do
-              before(:each) do
-                click_button("Finish & save results 0")
-              end
-              it { expect(page).to have_content("Nothing to save - please collect some survey responses first!") }
             end
           end
         end
