@@ -17,7 +17,6 @@
 #  rating_from                       :decimal(, )      not null
 #  rating_to                         :decimal(, )      not null
 #  sms_active                        :boolean          default(FALSE)
-#  teacher_dashboard_alert_active    :boolean          default(FALSE)
 #  updated_at                        :datetime         not null
 #
 # Indexes

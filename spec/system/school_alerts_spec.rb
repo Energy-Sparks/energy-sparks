@@ -26,7 +26,6 @@ RSpec.describe "school alerts", type: :system do
           rating_to: 10,
           find_out_more_active: true,
           management_dashboard_alert_active: true,
-          teacher_dashboard_alert_active: true,
           pupil_dashboard_alert_active: true,
           activity_types: [activity_type],
           intervention_types: [intervention_type]

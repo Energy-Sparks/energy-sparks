@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_04_124802) do
+ActiveRecord::Schema.define(version: 2022_07_05_084130) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -277,7 +277,6 @@ ActiveRecord::Schema.define(version: 2022_07_04_124802) do
     t.boolean "sms_active", default: false
     t.boolean "email_active", default: false
     t.boolean "find_out_more_active", default: false
-    t.boolean "teacher_dashboard_alert_active", default: false
     t.boolean "pupil_dashboard_alert_active", default: false
     t.boolean "public_dashboard_alert_active", default: false
     t.boolean "management_dashboard_alert_active", default: false

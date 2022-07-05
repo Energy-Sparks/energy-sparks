@@ -23,7 +23,6 @@ describe Alerts::GenerateDashboardAlerts do
 
   context 'when there are find out mores that match the alert type' do
     let(:rating){ 5.0 }
-    let(:teacher_active){ true }
     let(:pupil_active){ true }
     let(:public_active){ true }
     let(:management_active){ true }
@@ -33,7 +32,6 @@ describe Alerts::GenerateDashboardAlerts do
         alert_type: alert.alert_type,
         rating_from: 1,
         rating_to: 6,
-        teacher_dashboard_alert_active: teacher_active,
         pupil_dashboard_alert_active: pupil_active,
         public_dashboard_alert_active: public_active,
         management_dashboard_alert_active: management_active
