@@ -5,7 +5,7 @@ $(document).ready(function() {
   // This stops content disappearing under the site navigation
   function getNavHeight() {
     let height = 0;
-    $("nav.navbar").each( function(index) {
+    $("body > nav.navbar").each( function(index) {
       height += $(this).height();
     })
     return height;
