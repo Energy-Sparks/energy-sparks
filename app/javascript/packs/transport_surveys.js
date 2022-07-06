@@ -97,6 +97,7 @@ $(document).ready(function() {
     displayCarbon();
     storeResponse();
     nextPanel(this);
+    enableFinishAndSaveButton();
   }
 
   // Reset survey for next pupil
@@ -105,6 +106,7 @@ $(document).ready(function() {
     resetSurveyCards();
     resetSurveyPanels();
     setProgressBar(window.step = 1);
+    disableFinishAndSaveButton();
   }
 
   // Save responses and redirect to results page
@@ -224,7 +226,7 @@ $(document).ready(function() {
       response[element] = $("#" + element).val();
     }
     response['passengers'] ||= 1;
-    response['surveyed_at'] = new Date().toISOString();
+    response['surveyed_at'] = moment().toISOString(true);
     return response;
   }
 
@@ -259,6 +261,20 @@ $(document).ready(function() {
   function resetSurveyPanels() {
     $("fieldset").not(":first").hide();
     $("fieldset:first").show();
+  }
+
+  function disableFinishAndSaveButton() {
+    $('#save-results').prop("disabled", true);
+    let badge = $('#unsaved-responses-count');
+    badge.removeClass("badge-primary");
+    badge.addClass("badge-light");
+  }
+
+  function enableFinishAndSaveButton() {
+    $('#save-results').prop("disabled", false);
+    let badge = $('#unsaved-responses-count');
+    badge.removeClass("badge-light");
+    badge.addClass("badge-primary");
   }
 
   function setProgressBar(step){
