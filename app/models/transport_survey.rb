@@ -28,8 +28,8 @@ class TransportSurvey < ApplicationRecord
     run_on.to_s
   end
 
-  def total_passengers
-    self.responses.sum(:passengers)
+  def total_responses
+    self.responses.count
   end
 
   def total_carbon
@@ -40,13 +40,13 @@ class TransportSurvey < ApplicationRecord
     run_on == Time.zone.today
   end
 
-  def passengers_per_category
-    passengers_per_cat = self.responses.with_transport_type.group(:category).sum(:passengers)
-    TransportType.categories_with_other.transform_values { |v| passengers_per_cat[v] || 0 }
+  def responses_per_category
+    responses_per_cat = self.responses.with_transport_type.group(:category).count
+    TransportType.categories_with_other.transform_values { |v| responses_per_cat[v] || 0 }
   end
 
   def percentage_per_category
-    passengers_per_category.transform_values { |v| v == 0 ? 0 : (v.to_f / total_passengers * 100) }
+    responses_per_category.transform_values { |v| v == 0 ? 0 : (v.to_f / total_responses * 100) }
   end
 
   def pie_chart_data

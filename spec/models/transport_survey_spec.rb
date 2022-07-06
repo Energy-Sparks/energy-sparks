@@ -53,24 +53,24 @@ describe 'TransportSurvey' do
     end
   end
 
-  describe "#total_passengers" do
+  describe "#total_responses" do
     subject { create :transport_survey }
     context "with no responses" do
-      it { expect(subject.total_passengers).to eql 0 }
+      it { expect(subject.total_responses).to eql 0 }
     end
 
     context "with one response" do
       before(:each) do
         create :transport_survey_response, transport_survey: subject, passengers: 2
       end
-      it { expect(subject.total_passengers).to eql 2 }
+      it { expect(subject.total_responses).to eql 1 }
     end
     context "with more than one response" do
       before(:each) do
         create :transport_survey_response, transport_survey: subject, passengers: 2
         create :transport_survey_response, transport_survey: subject, passengers: 3
       end
-      it { expect(subject.total_passengers).to eql 5 }
+      it { expect(subject.total_responses).to eql 2 }
     end
   end
 
@@ -110,46 +110,57 @@ describe 'TransportSurvey' do
       end
     end
 
-    describe "#passengers_per_category" do
-      context "when there are passengers in each category" do
+    describe "#responses_per_category" do
+      context "when there are responses in each category" do
         before(:each) { create_responses(categories) }
 
-        it "returns a hash of passengers per category" do
-          puts categories.inspect
-          expect(subject.passengers_per_category).to eql( {"car" => 3, "active_travel" => 3, "public_transport" => 3, "park_and_stride" => 3, "other" => 3} )
+        it "returns a hash of responses per category" do
+          expect(subject.responses_per_category).to eql( {"car" => 1, "active_travel" => 1, "public_transport" => 1, "park_and_stride" => 1, "other" => 1} )
         end
       end
 
-      context "when not all categories have passengers" do
+      context "when not all categories have responses" do
         before { create_responses(categories.excluding('car', 'active_travel')) }
 
         it "returns a hash with zero values for missing categories" do
-          expect(subject.passengers_per_category).to eql( {"car" => 0, "active_travel" => 0, "public_transport" => 3, "park_and_stride" => 3, "other" => 3} )
+          expect(subject.responses_per_category).to eql( {"car" => 0, "active_travel" => 0, "public_transport" => 1, "park_and_stride" => 1, "other" => 1} )
+        end
+
+        context "and categories have multiple responses" do
+          before { create_responses(categories) }
+          it "adds them up" do
+            expect(subject.responses_per_category).to eql( {"car" => 1, "active_travel" => 1, "public_transport" => 2, "park_and_stride" => 2, "other" => 2} )
+          end
         end
       end
 
       context "when there are no responses" do
         it "returns a hash with zero values for missing categories" do
-          expect(subject.passengers_per_category).to eql( {"car" => 0, "active_travel" => 0, "public_transport" => 0, "park_and_stride" => 0, "other" => 0} )
+          expect(subject.responses_per_category).to eql( {"car" => 0, "active_travel" => 0, "public_transport" => 0, "park_and_stride" => 0, "other" => 0} )
         end
       end
     end
 
     describe "#percentage_per_category" do
-      context "when there are passengers in each category" do
+      context "when there are responses in each category" do
         before { create_responses(categories) }
 
-        it "returns a hash of passenger percentages per category" do
+        it "returns a hash of responses percentages per category" do
           expect(subject.percentage_per_category).to eql( {"car" => 20.0, "active_travel" => 20.0, "public_transport" => 20.0, "park_and_stride" => 20.0, "other" => 20.0} )
         end
       end
 
-      context "when not all categories have passengers" do
-        before {
-          create_responses(categories.excluding('car', 'park_and_stride', nil))
-        }
+      context "when not all categories have responses" do
+        before { create_responses(categories.excluding('car', 'park_and_stride', nil)) }
         it "returns zero values for missing categories" do
           expect(subject.percentage_per_category).to eql( {"car" => 0, "active_travel" => 50.0, "public_transport" => 50.0 , "park_and_stride" => 0, "other" => 0 } )
+        end
+
+        context "and categories have multiple responses" do
+          before { create_responses(categories) }
+          it "adds them up" do
+            expect(subject.percentage_per_category).to eql( {"car" => 14.285714285714285, "active_travel" => 28.57142857142857, "public_transport" => 28.57142857142857, "park_and_stride" => 14.285714285714285, "other" => 14.285714285714285} )
+          end
         end
       end
 

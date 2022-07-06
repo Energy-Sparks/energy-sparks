@@ -20,6 +20,9 @@ RSpec.describe Calendars::CalendarEventsController, type: :controller do
     }
   }
 
+  # academic years are automatically created with factory instances, but not "real" ones, so we need to create..
+  let!(:academic_years) { AcademicYearFactory.new(parent_template_calendar).create(start_year: 2021, end_year: 2023) }
+
   before(:each) do
     sign_in_user(:admin)
   end

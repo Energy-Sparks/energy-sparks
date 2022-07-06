@@ -56,10 +56,6 @@ class TransportSurveyResponse < ApplicationRecord
   end
 
   def carbon
-    transport_type.can_share? ? carbon_calc : (carbon_calc * passengers)
-  end
-
-  def carbon_per_passenger
     transport_type.can_share? ? (carbon_calc / passengers) : carbon_calc
   end
 
