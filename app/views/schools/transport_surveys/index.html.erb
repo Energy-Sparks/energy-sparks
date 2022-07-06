@@ -15,7 +15,7 @@
       <% @transport_surveys.each do |transport_survey| %>
         <tr>
           <td><%= link_to nice_dates(transport_survey.run_on), school_transport_survey_url(@school, transport_survey) %></td>
-          <td><%= transport_survey.total_passengers %> pupils</td>
+          <td><%= transport_survey.total_responses %> pupils</td>
           <td><%= transport_survey.total_carbon.round(2) %>kg CO2</td>
           <td>
             <%= link_to 'View results', school_transport_survey_url(@school, transport_survey), class: 'btn btn-sm' %>

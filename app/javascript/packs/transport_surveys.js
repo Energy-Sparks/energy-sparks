@@ -27,6 +27,8 @@ $(document).ready(function() {
     $('.start').on('click', start);
     $('.next').on('click', next);
     $('.previous').on('click', previous);
+    $('.transport').on('click', transport);
+    $('.previous-transport').on('click', previousTransport);
     $('.confirm').on('click', confirm);
     $('.store').on('click', store);
     $('.next-pupil').on('click', nextSurveyRun);
@@ -55,6 +57,34 @@ $(document).ready(function() {
     previousPanel(this);
   }
 
+  // Move back two panels & clear previous cards
+  function previousTransport() {
+    let transport_type = config.transport_types[$('#transport_type_id').val()];
+    if(transport_type.can_share == true) {
+      previousPanel(this);
+    } else {
+      let panel = $(this).closest('.panel').prev();
+      clearCards(panel);
+      previousPanel(this, 2);
+    }
+  }
+
+  function transport() {
+    selectCard(this);
+    let transport_type = config.transport_types[$('#transport_type_id').val()];
+
+    if(transport_type.can_share == true) {
+      $('#transport_type_name').text(transport_type.image + " " + transport_type.name);
+      nextPanel(this);
+    } else {
+      // skip sharing panel if cannot share selected transport type
+      let panel = $(this).closest('.panel').next();
+      clearCards(panel);
+      displaySelection();
+      nextPanel(this, 2);
+    }
+  }
+
   // Select card, set confirmation details for display on confirmation page and show confirmation panel
   function confirm() {
     selectCard(this);
@@ -67,6 +97,7 @@ $(document).ready(function() {
     displayCarbon();
     storeResponse();
     nextPanel(this);
+    enableFinishAndSaveButton();
   }
 
   // Reset survey for next pupil
@@ -75,6 +106,7 @@ $(document).ready(function() {
     resetSurveyCards();
     resetSurveyPanels();
     setProgressBar(window.step = 1);
+    disableFinishAndSaveButton();
   }
 
   // Save responses and redirect to results page
@@ -193,7 +225,8 @@ $(document).ready(function() {
     for (const element of config.transport_fields) {
       response[element] = $("#" + element).val();
     }
-    response['surveyed_at'] = new Date().toISOString();
+    response['passengers'] ||= 1;
+    response['surveyed_at'] = moment().toISOString();
     return response;
   }
 
@@ -230,6 +263,20 @@ $(document).ready(function() {
     $("fieldset:first").show();
   }
 
+  function disableFinishAndSaveButton() {
+    $('#save-results').prop("disabled", true);
+    let badge = $('#unsaved-responses-count');
+    badge.removeClass("badge-primary");
+    badge.addClass("badge-light");
+  }
+
+  function enableFinishAndSaveButton() {
+    $('#save-results').prop("disabled", false);
+    let badge = $('#unsaved-responses-count');
+    badge.removeClass("badge-light");
+    badge.addClass("badge-primary");
+  }
+
   function setProgressBar(step){
     let percent = parseFloat(100 / $("fieldset").length) * step;
     percent = percent.toFixed();
@@ -241,6 +288,11 @@ $(document).ready(function() {
     let tabs = $("#survey a.nav-link");
     tabs.removeClass('active');
     $(tabs[step-1]).addClass('active');
+  }
+
+  function clearCards(panel) {
+    resetCards(panel.find('.card'));
+    panel.find('input[type="hidden"].selected').val("");
   }
 
   function selectCard(current) {
@@ -256,29 +308,35 @@ $(document).ready(function() {
     panel.find('input[type="hidden"].selected').val(selected_value);
   }
 
-  function nextPanel(current) {
+  function nextPanel(current, increment = 1) {
     let fieldset = $(current).closest('fieldset');
-    fieldset.next().show();
+    fieldset.nextAll().eq(increment-1).show();
     fieldset.hide();
-    setProgressBar(++window.step);
+    setProgressBar(window.step+=increment);
   }
 
-  function previousPanel(current) {
+  function previousPanel(current, decrement = 1) {
     let fieldset = $(current).closest('fieldset');
-    fieldset.prev().show();
+    fieldset.prevAll().eq(decrement-1).show();
     fieldset.hide();
-    setProgressBar(--window.step);
+    setProgressBar(window.step-=decrement);
   }
 
   function displaySelection() {
     let response = readResponse();
     let transport_type = config.transport_types[response['transport_type_id']];
 
-    $('#confirm-passengers div.option-content').text(config.passenger_symbol.repeat(response['passengers']));
-    $('#confirm-passengers div.option-label').text((response['passengers'] > 1 ? "Group of " + response['passengers'] : "Single pupil"));
     $('#confirm-time div.option-content').text(response['journey_minutes']);
     $('#confirm-transport div.option-content').text(transport_type.image);
     $('#confirm-transport div.option-label').text(transport_type.name);
+
+    if (transport_type.can_share) {
+      $('#confirm-passengers div.option-content').text(config.passenger_symbol.repeat(response['passengers']));
+      $('#confirm-passengers div.option-label').text((response['passengers'] > 1 ? response['passengers'] + " pupils" : "Just me"));
+      $('#confirm-passengers').show();
+    } else {
+      $('#confirm-passengers').hide();
+    }
   }
 
   function displayCarbon() {
