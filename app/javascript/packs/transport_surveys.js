@@ -226,7 +226,7 @@ $(document).ready(function() {
       response[element] = $("#" + element).val();
     }
     response['passengers'] ||= 1;
-    response['surveyed_at'] = moment().toISOString(true);
+    response['surveyed_at'] = moment().toISOString();
     return response;
   }
 
