@@ -17,6 +17,7 @@ en:
         category:
           active_travel: Active travel
           car: Car
+          one: Category
           other: Other
           park_and_stride: Park and stride
           public_transport: Public transport

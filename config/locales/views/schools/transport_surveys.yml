@@ -7,12 +7,12 @@ en:
         journey_time: Journey time
         mins: mins
         no_responses: No responses have been collected
-        pupils_sharing: Pupils sharing
         percentage_pupils: Percentage pupils
         pupils:
           one: 1 pupil
           other: "%{count} pupils"
           zero: no pupils
+        pupils_sharing: Pupils sharing
         survey_date: Survey date
         survey_time: Survey time
         total_carbon: Total carbon
