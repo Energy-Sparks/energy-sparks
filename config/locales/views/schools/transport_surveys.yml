@@ -3,23 +3,23 @@ en:
   schools:
     transport_surveys:
       common:
+        carbon: Carbon
+        journey_time: Journey time
         mins: mins
+        no_responses: No responses have been collected
+        passengers: Passengers
+        percentage_pupils: Percentage pupils
         pupils:
           one: 1 pupil
           other: "%{count} pupils"
           zero: no pupils
+        survey_date: Survey date
+        survey_time: Survey time
         total_carbon: Total carbon
         total_pupils: Total pupils
         transport_category: Transport category
         transport_method: Transport method
         weather: Weather
-        passengers: Passengers
-        journey_time: Journey time
-        survey_time: Survey time
-        carbon: Carbon
-        no_responses: No responses have been collected
-        percentage_pupils: Percentage pupils
-        survey_date: Survey date
       header_nav:
         survey_today: Survey today
         view_all: View all transport surveys
@@ -28,11 +28,7 @@ en:
         start_surveying: Start surveying today
       show:
         carbon_html: Their travel to school generated %{carbon}
-        percentages_html: >-
-          %{active_travel} used active travel, generating zero CO2,
-          %{public_transport} travelled by public transport,
-          %{park_and_stride} used park and stride and
-          %{car} travelled by car
+        percentages_html: "%{active_travel} used active travel, generating zero CO2, %{public_transport} travelled by public transport, %{park_and_stride} used park and stride and %{car} travelled by car"
         summary_html:
           one: "<strong>1 pupil</strong> was surveyed on <strong>%{date}</strong>"
           other: "<strong>%{count} pupils</strong> were surveyed on <strong>%{date}</strong>"
