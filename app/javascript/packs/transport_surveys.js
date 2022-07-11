@@ -8,19 +8,18 @@ import * as handlebarsHelpers from './transport_surveys/handlebars_helpers';
 
 $(document).ready(function() {
 
-  const config = {
-    transport_fields: ['run_identifier', 'journey_minutes', 'passengers', 'transport_type_id', 'weather'],
-    storage_key: 'es_ts_responses',
-    run_on: $("#run_on").val(),
-    base_url: $('#transport_survey').attr('action'),
-    transport_types: loadTransportTypes('/transport_types.json'),
-    passenger_symbol: $("#passenger_symbol").val(),
-    rates: $('#rates').data()
+  const local_config = {
+    transportFields: ['run_identifier', 'journey_minutes', 'passengers', 'transport_type_id', 'weather'],
+    storageKey: 'es_ts_responses',
+    baseUrl: $('#transport_survey').attr('action'),
+    transportTypes: loadTransportTypes('/transport_types.json'),
   }
 
-  carbon.init(config.rates);
+  const config = Object.assign({}, local_config, $('#config').data());
 
-  if (storage.init({key: config.storage_key, base_url: config.base_url})) {
+  carbon.init({rates: config.rates, parkAndStrideMins: config.parkAndStrideMins});
+
+  if (storage.init({key: config.storageKey, baseUrl: config.baseUrl})) {
     setupSurvey();
 
     /* onclick bindings */
@@ -59,7 +58,7 @@ $(document).ready(function() {
 
   // Move back two panels & clear previous cards
   function previousTransport() {
-    let transport_type = config.transport_types[$('#transport_type_id').val()];
+    let transport_type = config.transportTypes[$('#transport_type_id').val()];
     if(transport_type.can_share == true) {
       previousPanel(this);
     } else {
@@ -71,7 +70,7 @@ $(document).ready(function() {
 
   function transport() {
     selectCard(this);
-    let transport_type = config.transport_types[$('#transport_type_id').val()];
+    let transport_type = config.transportTypes[$('#transport_type_id').val()];
 
     if(transport_type.can_share == true) {
       $('#transport_type_name').text(transport_type.image + " " + transport_type.name);
@@ -111,11 +110,11 @@ $(document).ready(function() {
 
   // Save responses and redirect to results page
   function finishAndSave() {
-    storage.syncResponses(config.run_on, notifier.app).done( function() {
-      let button = $("[data-date='" + config.run_on + "']");
+    storage.syncResponses(config.runOn, notifier.app).done( function() {
+      let button = $("[data-date='" + config.runOn + "']");
       button.closest('.alert').hide();
       setResponsesCount(0);
-      window.location.href = config.base_url + "/" + config.run_on;
+      window.location.href = config.baseUrl + "/" + config.runOn;
     });
   }
 
@@ -127,7 +126,7 @@ $(document).ready(function() {
     if (window.confirm(`Are you sure you want to save ${count} unsaved ${pluralise("response", count)} from ${nice_date(date)}?`)) {
       storage.syncResponses(date, notifier.page).done( function() {
         button.closest('.alert').hide();
-        if (date == config.run_on) {
+        if (date == config.runOn) {
           fullSurveyReset();
           $("#survey_nav").show();
         }
@@ -144,7 +143,7 @@ $(document).ready(function() {
       storage.removeResponses(date);
       notifier.page('success', 'Unsaved responses removed!');
       button.closest('.alert').hide();
-      if (date == config.run_on) fullSurveyReset();
+      if (date == config.runOn) fullSurveyReset();
     }
   }
 
@@ -194,12 +193,12 @@ $(document).ready(function() {
   }
 
   function updateResponsesCounts() {
-    setResponsesCount(storage.getResponsesCount(config.run_on));
+    setResponsesCount(storage.getResponsesCount(config.runOn));
     setUnsavedResponses();
   }
 
   function storeResponse() {
-    storage.addResponse(config.run_on, readResponse());
+    storage.addResponse(config.runOn, readResponse());
     updateResponsesCounts();
   }
 
@@ -222,7 +221,7 @@ $(document).ready(function() {
 
   function readResponse() {
     let response = {};
-    for (const element of config.transport_fields) {
+    for (const element of config.transportFields) {
       response[element] = $("#" + element).val();
     }
     response['passengers'] ||= 1;
@@ -324,14 +323,14 @@ $(document).ready(function() {
 
   function displaySelection() {
     let response = readResponse();
-    let transport_type = config.transport_types[response['transport_type_id']];
+    let transport_type = config.transportTypes[response['transport_type_id']];
 
     $('#confirm-time div.option-content').text(response['journey_minutes']);
     $('#confirm-transport div.option-content').text(transport_type.image);
     $('#confirm-transport div.option-label').text(transport_type.name);
 
     if (transport_type.can_share) {
-      $('#confirm-passengers div.option-content').text(config.passenger_symbol.repeat(response['passengers']));
+      $('#confirm-passengers div.option-content').text(config.passengerSymbol.repeat(response['passengers']));
       $('#confirm-passengers div.option-label').text((response['passengers'] > 1 ? response['passengers'] + " pupils" : "Just me"));
       $('#confirm-passengers').show();
     } else {
@@ -341,7 +340,7 @@ $(document).ready(function() {
 
   function displayCarbon() {
     let response = readResponse();
-    let transport_type = config.transport_types[response['transport_type_id']];
+    let transport_type = config.transportTypes[response['transport_type_id']];
 
     let co2 = carbon.calc(transport_type, response['journey_minutes'], response['passengers']);
     let nice_carbon = co2 === 0 ? '0' : co2.toFixed(3)
