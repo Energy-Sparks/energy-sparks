@@ -20,7 +20,7 @@ describe Transifex::Loader, type: :service do
       expect_any_instance_of(Transifex::Synchroniser).not_to receive(:push)
       allow_any_instance_of(Transifex::Synchroniser).to receive(:pull).and_return(true)
     end
-    it 'does push but does not pull' do
+    it 'does pull but not push' do
       service.perform
     end
   end
