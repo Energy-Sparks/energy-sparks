@@ -2,15 +2,32 @@ require 'rails_helper'
 
 describe Transifex::Loader, type: :service do
 
-  let(:service)                  { Transifex::Loader.new }
+  let(:logger)      { double(info: true) }
+  let(:locale)      { :cy }
+  let(:full_sync)   { true }
+  let(:service)     { Transifex::Loader.new(locale, logger, full_sync) }
 
   it 'creates a transifex load record' do
     expect{ service.perform }.to change(TransifexLoad, :count).by(1)
   end
 
+  context 'when configured to only pull' do
+    let!(:activity_category)  { create(:activity_category) }
+    let!(:activity_type)      { create(:activity_type, active: true, activity_category: activity_category) }
+    let(:full_sync)                 { false }
+
+    before(:each) do
+      expect_any_instance_of(Transifex::Synchroniser).not_to receive(:push)
+      allow_any_instance_of(Transifex::Synchroniser).to receive(:pull).and_return(true)
+    end
+    it 'does push but does not pull' do
+      service.perform
+    end
+  end
+
   context 'when there are errors' do
-    let!(:activity_category)        { create(:activity_category) }
-    let!(:activity_type)        { create(:activity_type, active: true, activity_category: activity_category) }
+    let!(:activity_category)  { create(:activity_category) }
+    let!(:activity_type)      { create(:activity_type, active: true, activity_category: activity_category) }
 
     before(:each) do
       allow_any_instance_of(Transifex::Synchroniser).to receive(:pull).and_raise("Sync error")

@@ -2,8 +2,9 @@ namespace :i18n do
   desc 'run transifex loader to synchronise content from the database'
   task transifex_load: :environment do
     puts "#{DateTime.now.utc} transifex_load start"
+    full_sync = (ENV['ENVIRONMENT_IDENTIFIER'] == 'production')
     begin
-      Transifex::Loader.new.perform
+      Transifex::Loader.new(:cy, Rails.logger, full_sync).perform
     rescue => e
       puts "Exception: running transifex_load: #{e.class} #{e.message}"
       puts e.backtrace.join("\n")
