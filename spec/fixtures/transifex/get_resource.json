@@ -1,0 +1,48 @@
+{
+  "data": {
+    "attributes": {
+      "accept_translations": true,
+      "categories": [
+        "category_1",
+        "category_2"
+      ],
+      "datetime_created": "2022-01-01T12:15:00Z",
+      "datetime_modified": "2022-02-01T13:20:00Z",
+      "i18n_options": {
+        "allow_duplicate_strings": true
+      },
+      "i18n_version": 1,
+      "mp4_url": "https://some.host.net/some_mp4_url",
+      "name": "Resource Name",
+      "ogg_url": "https://some.host.net/some_ogg_url",
+      "priority": "normal",
+      "slug": "Slug Name",
+      "string_count": 0,
+      "webm_url": "https://some.host.net/some_webm_url",
+      "word_count": 0,
+      "youtube_url": "https://www.youtube.com/"
+    },
+    "id": "o:organization_slug:p:project_slug:r:resource_slug",
+    "links": {
+      "self": "/resources/o:organization_slug:p:project_slug:r:resource_slug"
+    },
+    "relationships": {
+      "i18n_format": {
+        "data": {
+          "id": "YML_KEY",
+          "type": "i18n_formats"
+        }
+      },
+      "project": {
+        "data": {
+          "id": "o:organization_slug:p:project_slug",
+          "type": "projects"
+        },
+        "links": {
+          "related": "/projects/o:organization_slug:p:project_slug"
+        }
+      }
+    },
+    "type": "resources"
+  }
+}
