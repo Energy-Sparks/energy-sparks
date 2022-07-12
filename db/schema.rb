@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_29_151252) do
+ActiveRecord::Schema.define(version: 2022_07_05_084130) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -194,7 +194,6 @@ ActiveRecord::Schema.define(version: 2022_06_29_151252) do
 
   create_table "alert_type_rating_content_versions", force: :cascade do |t|
     t.bigint "alert_type_rating_id", null: false
-    t.string "_teacher_dashboard_title"
     t.string "find_out_more_title"
     t.text "_find_out_more_content"
     t.integer "replaced_by_id"
@@ -209,8 +208,6 @@ ActiveRecord::Schema.define(version: 2022_06_29_151252) do
     t.string "find_out_more_chart_title", default: ""
     t.date "find_out_more_start_date"
     t.date "find_out_more_end_date"
-    t.date "teacher_dashboard_alert_start_date"
-    t.date "teacher_dashboard_alert_end_date"
     t.date "pupil_dashboard_alert_start_date"
     t.date "pupil_dashboard_alert_end_date"
     t.date "sms_start_date"
@@ -232,7 +229,6 @@ ActiveRecord::Schema.define(version: 2022_06_29_151252) do
     t.decimal "management_priorities_weighting", default: "5.0"
     t.decimal "pupil_dashboard_alert_weighting", default: "5.0"
     t.decimal "public_dashboard_alert_weighting", default: "5.0"
-    t.decimal "teacher_dashboard_alert_weighting", default: "5.0"
     t.decimal "find_out_more_weighting", default: "5.0"
     t.text "find_out_more_table_variable", default: "none"
     t.string "analysis_title"
@@ -281,7 +277,6 @@ ActiveRecord::Schema.define(version: 2022_06_29_151252) do
     t.boolean "sms_active", default: false
     t.boolean "email_active", default: false
     t.boolean "find_out_more_active", default: false
-    t.boolean "teacher_dashboard_alert_active", default: false
     t.boolean "pupil_dashboard_alert_active", default: false
     t.boolean "public_dashboard_alert_active", default: false
     t.boolean "management_dashboard_alert_active", default: false

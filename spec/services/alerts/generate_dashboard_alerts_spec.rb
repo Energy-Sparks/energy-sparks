@@ -23,7 +23,6 @@ describe Alerts::GenerateDashboardAlerts do
 
   context 'when there are find out mores that match the alert type' do
     let(:rating){ 5.0 }
-    let(:teacher_active){ true }
     let(:pupil_active){ true }
     let(:public_active){ true }
     let(:management_active){ true }
@@ -33,7 +32,6 @@ describe Alerts::GenerateDashboardAlerts do
         alert_type: alert.alert_type,
         rating_from: 1,
         rating_to: 6,
-        teacher_dashboard_alert_active: teacher_active,
         pupil_dashboard_alert_active: pupil_active,
         public_dashboard_alert_active: public_active,
         management_dashboard_alert_active: management_active
@@ -44,16 +42,12 @@ describe Alerts::GenerateDashboardAlerts do
 
       it 'creates a dashboard alert pairing the alert and the content for each active dashboard' do
         service.perform(school.latest_alerts_without_exclusions)
-        expect(content_generation_run.dashboard_alerts.count).to be 4
-
-        teacher_alert = content_generation_run.dashboard_alerts.teacher_dashboard.first
-        expect(teacher_alert.alert).to eq(alert)
-        expect(teacher_alert.content_version).to eq(content_version)
-        expect(teacher_alert.priority).to eq(0.15)
+        expect(content_generation_run.dashboard_alerts.count).to be 3
 
         pupil_alert = content_generation_run.dashboard_alerts.pupil_dashboard.first
         expect(pupil_alert.alert).to eq(alert)
         expect(pupil_alert.content_version).to eq(content_version)
+        expect(pupil_alert.priority).to eq(0.15)
 
         public_alert = content_generation_run.dashboard_alerts.public_dashboard.first
         expect(public_alert.alert).to eq(alert)
@@ -88,14 +82,6 @@ describe Alerts::GenerateDashboardAlerts do
         end
       end
 
-      context 'where the teacher alerts are not active' do
-        let(:teacher_active){ false }
-        it 'does not include the alert' do
-          service.perform(school.latest_alerts_without_exclusions)
-          expect(content_generation_run.dashboard_alerts.teacher_dashboard.count).to be 0
-        end
-      end
-
       context 'where the public alerts are not active' do
         let(:public_active){ false }
         it 'does not include the alert' do
@@ -118,7 +104,6 @@ describe Alerts::GenerateDashboardAlerts do
           service.perform(school.latest_alerts_without_exclusions)
           expect(content_generation_run.dashboard_alerts.management_dashboard.count).to be 0
           expect(content_generation_run.dashboard_alerts.public_dashboard.count).to be 0
-          expect(content_generation_run.dashboard_alerts.teacher_dashboard.count).to be 0
           expect(content_generation_run.dashboard_alerts.pupil_dashboard.count).to be 0
         end
       end
