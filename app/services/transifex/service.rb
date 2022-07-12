@@ -28,10 +28,9 @@ module Transifex
     end
 
     def created_in_transifex?(slug)
-      resp = @client.get_resource(slug)
-      ts = resp["attributes"]["datetime_created"]
-      ts.present?
-    rescue => e
+      @client.get_resource(slug)
+      true
+    rescue Transifex::Client::NotFound
       false
     end
 
