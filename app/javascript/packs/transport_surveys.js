@@ -9,10 +9,9 @@ import * as handlebarsHelpers from './transport_surveys/handlebars_helpers';
 $(document).ready(function() {
 
   const local_config = {
-    transportFields: ['run_identifier', 'journey_minutes', 'passengers', 'transport_type_id', 'weather'],
+    transportFields: ['journey_minutes', 'passengers', 'transport_type_id', 'weather'],
     storageKey: 'es_ts_responses',
     baseUrl: $('#transport_survey').attr('action'),
-    transportTypes: loadTransportTypes('/transport_types.json'),
   }
 
   const config = Object.assign({}, local_config, $('#config').data());
@@ -202,28 +201,12 @@ $(document).ready(function() {
     updateResponsesCounts();
   }
 
-  function loadTransportTypes(path) {
-    let transport_types = {};
-    $.ajax({
-      url: path,
-      type: 'GET',
-      dataType: 'json',
-      async: false,
-    })
-    .done(function(data) {
-      transport_types = data;
-    })
-    .fail(function(err) {
-      fatalError("Error loading data from server! Please reload the page and try again.");
-    });
-    return transport_types;
-  }
-
   function readResponse() {
     let response = {};
     for (const element of config.transportFields) {
       response[element] = $("#" + element).val();
     }
+    response['run_identifier'] = config.runIdentifier;
     response['passengers'] ||= 1;
     response['surveyed_at'] = moment().toISOString();
     return response;
