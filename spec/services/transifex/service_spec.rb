@@ -51,6 +51,27 @@ describe Transifex::Service, type: :service do
 
   end
 
+  describe '#created_in_transifex?' do
+    context 'when resource exists' do
+      let(:tx_response)   { File.read('spec/fixtures/transifex/get_resource.json') }
+      let(:data)          { JSON.parse(tx_response)["data"] }
+      before(:each) do
+        expect(client).to receive(:get_resource).and_return(data)
+      end
+      it 'returns true' do
+        expect(service.created_in_transifex?("slug")).to be_truthy
+      end
+    end
+    context 'when resource does not exist' do
+      before(:each) do
+        expect(client).to receive(:get_resource).and_raise(Transifex::Client::NotFound.new('test'))
+      end
+      it 'returns false' do
+        expect(service.created_in_transifex?("slug")).to be_falsey
+      end
+    end
+  end
+
   describe '#create_resource' do
     let(:tx_response) { File.read('spec/fixtures/transifex/create_resource.json') }
     let(:data)          { JSON.parse(tx_response)["data"] }

@@ -2,14 +2,13 @@
 #
 # Table name: transifex_statuses
 #
-#  created_at    :datetime         not null
-#  id            :bigint(8)        not null, primary key
-#  record_id     :bigint(8)        not null
-#  record_type   :string           not null
-#  tx_created_at :datetime
-#  tx_last_pull  :datetime
-#  tx_last_push  :datetime
-#  updated_at    :datetime         not null
+#  created_at   :datetime         not null
+#  id           :bigint(8)        not null, primary key
+#  record_id    :bigint(8)        not null
+#  record_type  :string           not null
+#  tx_last_pull :datetime
+#  tx_last_push :datetime
+#  updated_at   :datetime         not null
 #
 # Indexes
 #
