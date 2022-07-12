@@ -54,17 +54,25 @@
 #
 
 class AlertTypeRatingContentVersion < ApplicationRecord
+  extend Mobility
+  include TransifexSerialisable
+
   belongs_to :alert_type_rating
   belongs_to :replaced_by, class_name: 'AlertTypeRatingContentVersion', foreign_key: :replaced_by_id, optional: true
 
   enum colour: [:negative, :neutral, :positive]
 
+  translates :pupil_dashboard_title, backend: :action_text
+
   has_rich_text :email_content
   has_rich_text :find_out_more_content
-  has_rich_text :pupil_dashboard_title
   has_rich_text :public_dashboard_title
   has_rich_text :management_dashboard_title
   has_rich_text :management_priorities_title
+
+  TX_ATTRIBUTE_MAPPING = {
+    pupil_dashboard_title: { templated: true },
+  }.freeze
 
   def self.functionality
     [
@@ -85,6 +93,10 @@ class AlertTypeRatingContentVersion < ApplicationRecord
       :analysis_title, :analysis_subtitle,
       :find_out_more_table_variable
     ]
+  end
+
+  def resource_key
+    "#{self.class.model_name.i18n_key}_#{self.alert_type_rating.id}"
   end
 
   def self.timing_fields

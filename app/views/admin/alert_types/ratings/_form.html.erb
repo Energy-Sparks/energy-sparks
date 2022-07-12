@@ -42,9 +42,9 @@
 
 
   <%= render 'content_section', form: form, field: :pupil_dashboard_alert_active, field_name: 'Pupil dashboard alert' do %>
-    <%= render 'admin/shared/preview_section', content: content, scope: 'pupil_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :pupil_dashboard_title) do %>
-      <%= content.label 'Pupil dashboard title', for: :pupil_dashboard_title %>
-      <%= content.rich_text_area :pupil_dashboard_title %>
+    <%= render 'admin/shared/preview_section', content: content, scope: 'pupil_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :pupil_dashboard_title), locales: I18n.available_locales do |locale| %>
+      <%= content.label "Pupil dashboard title", for: t_field(:pupil_dashboard_title, locale) %>
+      <%= content.rich_text_area t_field(:pupil_dashboard_title, locale) %>
     <% end %>
   <% end %>
 
