@@ -61,6 +61,18 @@ module Transifex
         end
       end
 
+      context '#get_resource' do
+        let(:body)          { File.read('spec/fixtures/transifex/get_resource.json') }
+        let(:slug)          { "some-slug" }
+        let(:expected_path) { "resources/o:energy-sparks:p:#{project}:r:#{slug}" }
+
+        it 'requests url and returns data' do
+          expect(connection).to receive(:get).with(expected_path).and_return(response)
+          resource = client.get_resource(slug)
+          expect(resource["attributes"]["datetime_created"]).to eq('2022-01-01T12:15:00Z')
+        end
+      end
+
       context '#create_resource' do
         let(:slug)              { 'slug-jh1' }
         let(:name)              { 'some resource' }

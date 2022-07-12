@@ -28,6 +28,11 @@ module Transifex
       get_data(url)
     end
 
+    def get_resource(slug)
+      url = make_url("resources/#{resource_id(slug)}")
+      get_data(url)
+    end
+
     def delete_resource(slug)
       raise AccessError.new("#{slug} in #{@project} is not deletable") unless resource_is_deletable
 

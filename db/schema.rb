@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_12_103320) do
+ActiveRecord::Schema.define(version: 2022_07_12_105036) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1486,7 +1486,6 @@ ActiveRecord::Schema.define(version: 2022_07_12_103320) do
   create_table "transifex_statuses", force: :cascade do |t|
     t.string "record_type", null: false
     t.bigint "record_id", null: false
-    t.datetime "tx_created_at"
     t.datetime "tx_last_push"
     t.datetime "tx_last_pull"
     t.datetime "created_at", precision: 6, null: false

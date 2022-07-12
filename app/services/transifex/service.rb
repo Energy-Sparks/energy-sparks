@@ -27,6 +27,14 @@ module Transifex
       ts.present? ? DateTime.parse(ts) : nil
     end
 
+    def created_in_transifex?(slug)
+      resp = @client.get_resource(slug)
+      ts = resp["attributes"]["datetime_created"]
+      ts.present?
+    rescue => e
+      false
+    end
+
     #create resource in tx
     #adding categories and other params
     #throw exception if problem

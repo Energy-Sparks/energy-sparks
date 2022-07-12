@@ -52,26 +52,6 @@ describe Transifex::Synchroniser, type: :service do
     end
   end
 
-  describe '#created_in_transifex?' do
-    context 'and no status' do
-      it 'returns false' do
-        expect(service.created_in_transifex?).to be false
-      end
-    end
-    context 'and not created' do
-      let!(:status) { create(:transifex_status, record_type: "ActivityType", record_id: activity_type.id, tx_created_at: nil)}
-      it 'returns false' do
-        expect(service.created_in_transifex?).to be false
-      end
-    end
-    context 'and created' do
-      let!(:status) { create(:transifex_status, record_type: "ActivityType", record_id: activity_type.id)}
-      it 'returns the date' do
-        expect(service.created_in_transifex?).to eq true
-      end
-    end
-  end
-
   describe '#reviews_completed?' do
     context 'not completed' do
       before(:each) do
@@ -146,11 +126,13 @@ describe Transifex::Synchroniser, type: :service do
   end
 
   describe '#pull' do
-    let(:tx_created_at)  { Date.today }
     let(:tx_last_pulled) { nil }
-    let!(:status) { create(:transifex_status, record_type: "ActivityType", record_id: activity_type.id, tx_created_at: tx_created_at, tx_last_pull: tx_last_pulled)}
+    let!(:status) { create(:transifex_status, record_type: "ActivityType", record_id: activity_type.id, tx_last_pull: tx_last_pulled)}
+
     context 'when not created' do
-      let(:tx_created_at) { nil }
+      before do
+        allow_any_instance_of(Transifex::Service).to receive(:created_in_transifex?).and_return(false)
+      end
       it 'does not do a pull' do
         expect(service.pull).to be false
       end
@@ -158,6 +140,7 @@ describe Transifex::Synchroniser, type: :service do
 
     context 'when not reviewed' do
       before(:each) do
+        allow_any_instance_of(Transifex::Service).to receive(:created_in_transifex?).and_return(true)
         allow_any_instance_of(Transifex::Service).to receive(:reviews_completed?).and_return(false)
       end
       it 'does not do a pull' do
@@ -176,6 +159,7 @@ describe Transifex::Synchroniser, type: :service do
          }
       }
       before(:each) do
+        allow_any_instance_of(Transifex::Service).to receive(:created_in_transifex?).and_return(true)
         allow_any_instance_of(Transifex::Service).to receive(:reviews_completed?).and_return(true)
         expect_any_instance_of(Transifex::Service).to receive(:pull).and_return(translations)
       end
@@ -197,6 +181,7 @@ describe Transifex::Synchroniser, type: :service do
     context 'when not changed in transifex' do
       let(:tx_last_pulled) { Time.zone.now }
       before(:each) do
+        allow_any_instance_of(Transifex::Service).to receive(:created_in_transifex?).and_return(true)
         allow_any_instance_of(Transifex::Service).to receive(:reviews_completed?).and_return(true)
         allow_any_instance_of(Transifex::Service).to receive(:last_reviewed).and_return(Date.today - 1)
       end
@@ -216,6 +201,7 @@ describe Transifex::Synchroniser, type: :service do
          }
       }
       before(:each) do
+        allow_any_instance_of(Transifex::Service).to receive(:created_in_transifex?).and_return(true)
         allow_any_instance_of(Transifex::Service).to receive(:reviews_completed?).and_return(true)
         allow_any_instance_of(Transifex::Service).to receive(:last_reviewed).and_return(Time.zone.now)
         expect_any_instance_of(Transifex::Service).to receive(:pull).and_return(translations)
@@ -236,27 +222,26 @@ describe Transifex::Synchroniser, type: :service do
   end
 
   describe '#push' do
-    let(:tx_created_at)  { nil }
     let(:tx_last_pushed) { nil }
-    let!(:status) { create(:transifex_status, record_type: "ActivityType", record_id: activity_type.id, tx_created_at: tx_created_at, tx_last_push: tx_last_pushed)}
+    let!(:status) { create(:transifex_status, record_type: "ActivityType", record_id: activity_type.id, tx_last_push: tx_last_pushed)}
 
     context 'when not created' do
       before(:each) do
+        allow_any_instance_of(Transifex::Service).to receive(:created_in_transifex?).and_return(false)
         expect_any_instance_of(Transifex::Service).to receive(:create_resource).and_return true
         expect_any_instance_of(Transifex::Service).to receive(:push).and_return true
       end
       it 'creates the resource and pushes' do
         expect(service.push).to be true
         status.reload
-        expect(status.tx_created_at).to_not be_nil
         expect(status.tx_last_push).to_not be_nil
       end
     end
     context 'when there are local changes' do
       let(:yesterday)      { Date.today - 1 }
-      let(:tx_created_at) { yesterday }
       let(:tx_last_pushed) { yesterday }
       before(:each) do
+        allow_any_instance_of(Transifex::Service).to receive(:created_in_transifex?).and_return(true)
         expect_any_instance_of(Transifex::Service).to receive(:push).and_return true
       end
 
@@ -269,8 +254,10 @@ describe Transifex::Synchroniser, type: :service do
       end
     end
     context 'when there are no recent changes' do
-      let(:tx_created_at) { Date.today - 1}
       let(:tx_last_pushed) { Time.zone.now }
+      before(:each) do
+        allow_any_instance_of(Transifex::Service).to receive(:created_in_transifex?).and_return(true)
+      end
       it 'does not push' do
         expect(service.push).to be false
       end
