@@ -1036,6 +1036,8 @@ ActiveRecord::Schema.define(version: 2022_07_05_084130) do
     t.text "short_description"
     t.string "document_link"
     t.boolean "default", default: false
+    t.datetime "created_at", precision: 6, default: "2022-07-06 12:00:00", null: false
+    t.datetime "updated_at", precision: 6, default: "2022-07-06 12:00:00", null: false
   end
 
   create_table "programmes", force: :cascade do |t|
