@@ -52,19 +52,18 @@ describe TransportSurveyResponse do
     context "when transport type uses park and stride" do
       let(:park_and_stride) { true }
       let(:can_share) { false }
-      let(:carbon_calc_ps) { ((transport_type.speed_km_per_hour * (response.journey_minutes - 15)) / 60) * transport_type.kg_co2e_per_km }
+      let(:carbon_calc_ps) { ((transport_type.speed_km_per_hour * (response.journey_minutes - TransportSurveyResponse.park_and_stride_mins)) / 60) * transport_type.kg_co2e_per_km }
 
-      context "for journeys 15 minutes and under" do
-        let(:response) { create :transport_survey_response, transport_type: transport_type, passengers: 3, journey_minutes: 15 }
+      context "for journeys #{TransportSurveyResponse.park_and_stride_mins} minutes and under" do
+        let(:response) { create :transport_survey_response, transport_type: transport_type, passengers: 3, journey_minutes: TransportSurveyResponse.park_and_stride_mins }
         it { expect(response.carbon).to eq(0) }
       end
-      context "for journeys over 15 mins" do
-        let(:response) { create :transport_survey_response, transport_type: transport_type, passengers: 3, journey_minutes: 20 }
-        it "calculates the carbon with 15 less minutes" do
+      context "for journeys over #{TransportSurveyResponse.park_and_stride_mins} mins" do
+        let(:response) { create :transport_survey_response, transport_type: transport_type, passengers: 3, journey_minutes: TransportSurveyResponse.park_and_stride_mins + 5 }
+        it "calculates the carbon with #{TransportSurveyResponse.park_and_stride_mins} less minutes" do
           expect(response.carbon).to eq(carbon_calc_ps)
         end
       end
-
     end
   end
 end
