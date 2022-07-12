@@ -40,12 +40,6 @@
     <% end %>
   <% end %>
 
-  <%= render 'content_section', form: form, field: :teacher_dashboard_alert_active, field_name: 'Teacher dashboard alert' do %>
-    <%= render 'admin/shared/preview_section', content: content, scope: 'teacher_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :teacher_dashboard_title) do %>
-      <%= content.label 'Teacher dashboard title', for: :teacher_dashboard_title %>
-      <%= content.rich_text_area :teacher_dashboard_title %>
-    <% end %>
-  <% end %>
 
   <%= render 'content_section', form: form, field: :pupil_dashboard_alert_active, field_name: 'Pupil dashboard alert' do %>
     <%= render 'admin/shared/preview_section', content: content, scope: 'pupil_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :pupil_dashboard_title) do %>

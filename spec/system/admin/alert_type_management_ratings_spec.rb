@@ -153,27 +153,6 @@ RSpec.describe 'alert type management', type: :system do
 
         select 'Negative', from: 'Colour'
 
-        check 'Teacher dashboard alert'
-        fill_in_trix  with: 'Your gas usage is too high'
-
-
-        within '.teacher_dashboard_alert_active' do
-
-          click_on 'Timings'
-          find_field('Start date').click
-          fill_in 'Start date', with: '01/12/2019'
-
-          click_on 'Priority weighting'
-          fill_in 'Weighting', with: '1.3'
-
-          click_on 'Preview'
-          within '#teacher_dashboard_alert-preview .content' do
-            expect(page).to have_content(gas_fuel_alert_type_title)
-          end
-
-
-        end
-
         check 'Pupil dashboard alert'
         fill_in_trix with: gas_fuel_alert_type_title
 
@@ -278,8 +257,6 @@ RSpec.describe 'alert type management', type: :system do
         first_content = alert_type_rating.current_content
         expect(first_content.find_out_more_title).to eq('You are using too much gas!')
         expect(first_content.sms_content).to eq(gas_fuel_alert_type_title)
-        expect(first_content.teacher_dashboard_alert_start_date).to eq(Date.new(2019, 12, 1))
-        expect(first_content.teacher_dashboard_alert_weighting).to eq(1.3)
         expect(first_content.public_dashboard_title.to_plain_text).to eq('PUBLIC - This school is using gas')
         expect(first_content.management_dashboard_title.to_plain_text).to eq('MDASH - Your school is using gas')
         expect(first_content.management_priorities_title.to_plain_text).to eq('Your school is spending too much on gas')

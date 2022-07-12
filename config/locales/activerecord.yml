@@ -13,12 +13,27 @@ en:
         download_links: Download links
         name: Title
         summary: Summary
+      transport_type:
+        category:
+          active_travel: Active travel
+          car: Car
+          one: Category
+          other: Other
+          park_and_stride: Park and stride
+          public_transport: Public transport
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
         restrict_dependent_destroy:
           has_many: Cannot delete record because dependent %{record} exist
           has_one: Cannot delete record because a dependent %{record} exists
+    models:
+      transport_survey:
+        one: Transport survey
+        other: Transport surveys
+      transport_survey_response:
+        one: Response
+        other: Responses
   errors:
     attributes:
       temperature_recording:

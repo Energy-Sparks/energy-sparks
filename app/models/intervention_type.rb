@@ -3,12 +3,14 @@
 # Table name: intervention_types
 #
 #  active                     :boolean          default(TRUE)
+#  created_at                 :datetime         not null
 #  custom                     :boolean          default(FALSE)
 #  id                         :bigint(8)        not null, primary key
 #  intervention_type_group_id :bigint(8)        not null
 #  name                       :string           not null
 #  score                      :integer
 #  summary                    :string
+#  updated_at                 :datetime         not null
 #
 # Indexes
 #

@@ -1,8 +1,9 @@
 module Transifex
   class Loader
-    def initialize(locale = :cy, logger = Rails.logger)
+    def initialize(locale = :cy, logger = Rails.logger, full_sync = true)
       @locale = locale
       @logger = logger
+      @full_sync = full_sync
     end
 
     def perform
@@ -48,7 +49,9 @@ module Transifex
         synchroniser = Synchroniser.new(tx_serialisable, @locale)
         log("processing #{tx_serialisable.resource_key}")
         counter.total_pulled += 1 if synchroniser.pull
-        counter.total_pushed += 1 if synchroniser.push
+        if @full_sync
+          counter.total_pushed += 1 if synchroniser.push
+        end
       rescue => error
         log("error processing #{tx_serialisable.resource_key}")
         log_error(transifex_load, error, tx_serialisable)
