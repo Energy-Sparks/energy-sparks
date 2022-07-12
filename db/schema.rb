@@ -195,15 +195,12 @@ ActiveRecord::Schema.define(version: 2022_07_20_112439) do
   create_table "alert_type_rating_content_versions", force: :cascade do |t|
     t.bigint "alert_type_rating_id", null: false
     t.string "find_out_more_title"
-    t.text "_find_out_more_content"
     t.integer "replaced_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "colour", default: 0, null: false
-    t.string "_pupil_dashboard_title"
     t.string "sms_content"
     t.string "email_title"
-    t.text "_email_content"
     t.text "find_out_more_chart_variable", default: "none"
     t.string "find_out_more_chart_title", default: ""
     t.date "find_out_more_start_date"
@@ -216,11 +213,8 @@ ActiveRecord::Schema.define(version: 2022_07_20_112439) do
     t.date "email_end_date"
     t.date "public_dashboard_alert_start_date"
     t.date "public_dashboard_alert_end_date"
-    t.string "_public_dashboard_title"
     t.date "management_dashboard_alert_start_date"
     t.date "management_dashboard_alert_end_date"
-    t.string "_management_dashboard_title"
-    t.string "_management_priorities_title"
     t.date "management_priorities_start_date"
     t.date "management_priorities_end_date"
     t.decimal "email_weighting", default: "5.0"

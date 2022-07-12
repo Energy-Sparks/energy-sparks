@@ -2,12 +2,6 @@
 #
 # Table name: alert_type_rating_content_versions
 #
-#  _email_content                        :text
-#  _find_out_more_content                :text
-#  _management_dashboard_title           :string
-#  _management_priorities_title          :string
-#  _public_dashboard_title               :string
-#  _pupil_dashboard_title                :string
 #  alert_type_rating_id                  :bigint(8)        not null
 #  analysis_end_date                     :date
 #  analysis_start_date                   :date
