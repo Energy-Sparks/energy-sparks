@@ -15,7 +15,7 @@ en:
         summary: Summary
       transport_type:
         category:
-          active_travel: Active travel
+          walking_and_cycling: Walking and cycling
           car: Car
           one: Category
           other: Other

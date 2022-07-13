@@ -28,7 +28,7 @@ en:
         start_surveying: Start surveying today
       show:
         carbon_html: Their travel to school generated %{carbon}
-        percentages_html: "%{active_travel} used active travel, generating zero CO2, %{public_transport} travelled by public transport, %{park_and_stride} used park and stride and %{car} travelled by car"
+        percentages_html: "%{walking_and_cycling} walked or cycled, generating zero CO2, %{public_transport} travelled by public transport, %{park_and_stride} used park and stride and %{car} travelled by car"
         summary_html:
           one: "<strong>1 pupil</strong> was surveyed on <strong>%{date}</strong>"
           other: "<strong>%{count} pupils</strong> were surveyed on <strong>%{date}</strong>"

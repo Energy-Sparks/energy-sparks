@@ -12,7 +12,7 @@
     <div>
       <% percentages = @transport_survey.percentage_per_category %>
       <%= t('schools.transport_surveys.show.percentages_html',
-      active_travel: tag.strong("#{percentages["active_travel"].round}%"),
+      walking_and_cycling: tag.strong("#{percentages["walking_and_cycling"].round}%"),
       public_transport: tag.strong("#{percentages["public_transport"].round}%"),
       park_and_stride: tag.strong("#{percentages["park_and_stride"].round}%"),
       car: tag.strong("#{percentages["car"].round}%")) %>.
