@@ -7,16 +7,12 @@ en:
         journey_time: Journey time
         mins: mins
         no_responses: No responses have been collected
-        percentage_pupils: Percentage pupils
-        pupils:
-          one: 1 pupil
-          other: "%{count} pupils"
-          zero: no pupils
-        pupils_sharing: Pupils sharing
+        percentage_pupils_and_staff: Percentage pupils & staff
+        pupils_and_staff_sharing: Pupils & staff sharing
         survey_date: Survey date
         survey_time: Survey time
         total_carbon: Total carbon
-        total_pupils: Total pupils
+        total_pupils_and_staff: Total pupils & staff
         transport_category: Transport category
         transport_method: Transport method
         weather: Weather

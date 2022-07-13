@@ -11,7 +11,7 @@ describe 'TransportSurveys', type: :system do
 
       let(:transport_survey) { create(:transport_survey, school: school) }
       let(:categories) { [] }
-      let(:cols) { ["Transport category", "Total pupils", "Percentage pupils"] }
+      let(:cols) { ["Transport category", "Total pupils & staff", "Percentage pupils & staff"] }
 
       before(:each) do
         categories.each do |cat|
