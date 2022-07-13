@@ -28,7 +28,7 @@ describe 'TransportSurveys', type: :system do
 
       context "with one result" do
         let(:categories) { [:car] }
-        it { expect(page).to have_content("1 pupil was surveyed on #{nice_dates(Time.zone.today)}") }
+        it { expect(page).to have_content("1 pupil or staff member was surveyed on #{nice_dates(Time.zone.today)}") }
         it { expect(page).to have_content("Their travel to school generated 0.46kg CO2") }
         it { expect(page).to have_content("0% walked or cycled, generating zero CO2, 0% travelled by public transport, 0% used park and stride and 100% travelled by car") }
         it { expect(page).to have_css('#transport_surveys_pie') }
@@ -45,7 +45,7 @@ describe 'TransportSurveys', type: :system do
 
       context "with more than one result" do
         let(:categories) { [:car, :walking_and_cycling, :public_transport, :park_and_stride, nil] }
-        it { expect(page).to have_content("5 pupils were surveyed on #{nice_dates(Time.zone.today)}") }
+        it { expect(page).to have_content("5 pupils and staff were surveyed on #{nice_dates(Time.zone.today)}") }
         it { expect(page).to have_content("Their travel to school generated 2.28kg CO2") }
         it { expect(page).to have_content("20% walked or cycled, generating zero CO2, 20% travelled by public transport, 20% used park and stride and 20% travelled by car") }
         it { expect(page).to have_css('#transport_surveys_pie') }
