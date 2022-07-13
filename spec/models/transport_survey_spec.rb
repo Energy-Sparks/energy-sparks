@@ -115,28 +115,28 @@ describe 'TransportSurvey' do
         before(:each) { create_responses(categories) }
 
         it "returns a hash of responses per category" do
-          expect(subject.responses_per_category).to eql( {"car" => 1, "active_travel" => 1, "public_transport" => 1, "park_and_stride" => 1, "other" => 1} )
+          expect(subject.responses_per_category).to eql( {"car" => 1, "walking_and_cycling" => 1, "public_transport" => 1, "park_and_stride" => 1, "other" => 1} )
         end
       end
 
       context "when not all categories have responses" do
-        before { create_responses(categories.excluding('car', 'active_travel')) }
+        before { create_responses(categories.excluding('car', 'walking_and_cycling')) }
 
         it "returns a hash with zero values for missing categories" do
-          expect(subject.responses_per_category).to eql( {"car" => 0, "active_travel" => 0, "public_transport" => 1, "park_and_stride" => 1, "other" => 1} )
+          expect(subject.responses_per_category).to eql( {"car" => 0, "walking_and_cycling" => 0, "public_transport" => 1, "park_and_stride" => 1, "other" => 1} )
         end
 
         context "and categories have multiple responses" do
           before { create_responses(categories) }
           it "adds them up" do
-            expect(subject.responses_per_category).to eql( {"car" => 1, "active_travel" => 1, "public_transport" => 2, "park_and_stride" => 2, "other" => 2} )
+            expect(subject.responses_per_category).to eql( {"car" => 1, "walking_and_cycling" => 1, "public_transport" => 2, "park_and_stride" => 2, "other" => 2} )
           end
         end
       end
 
       context "when there are no responses" do
         it "returns a hash with zero values for missing categories" do
-          expect(subject.responses_per_category).to eql( {"car" => 0, "active_travel" => 0, "public_transport" => 0, "park_and_stride" => 0, "other" => 0} )
+          expect(subject.responses_per_category).to eql( {"car" => 0, "walking_and_cycling" => 0, "public_transport" => 0, "park_and_stride" => 0, "other" => 0} )
         end
       end
     end
@@ -146,27 +146,27 @@ describe 'TransportSurvey' do
         before { create_responses(categories) }
 
         it "returns a hash of responses percentages per category" do
-          expect(subject.percentage_per_category).to eql( {"car" => 20.0, "active_travel" => 20.0, "public_transport" => 20.0, "park_and_stride" => 20.0, "other" => 20.0} )
+          expect(subject.percentage_per_category).to eql( {"car" => 20.0, "walking_and_cycling" => 20.0, "public_transport" => 20.0, "park_and_stride" => 20.0, "other" => 20.0} )
         end
       end
 
       context "when not all categories have responses" do
         before { create_responses(categories.excluding('car', 'park_and_stride', nil)) }
         it "returns zero values for missing categories" do
-          expect(subject.percentage_per_category).to eql( {"car" => 0, "active_travel" => 50.0, "public_transport" => 50.0 , "park_and_stride" => 0, "other" => 0 } )
+          expect(subject.percentage_per_category).to eql( {"car" => 0, "walking_and_cycling" => 50.0, "public_transport" => 50.0 , "park_and_stride" => 0, "other" => 0 } )
         end
 
         context "and categories have multiple responses" do
           before { create_responses(categories) }
           it "adds them up" do
-            expect(subject.percentage_per_category).to eql( {"car" => 14.285714285714285, "active_travel" => 28.57142857142857, "public_transport" => 28.57142857142857, "park_and_stride" => 14.285714285714285, "other" => 14.285714285714285} )
+            expect(subject.percentage_per_category).to eql( {"car" => 14.285714285714285, "walking_and_cycling" => 28.57142857142857, "public_transport" => 28.57142857142857, "park_and_stride" => 14.285714285714285, "other" => 14.285714285714285} )
           end
         end
       end
 
       context "when there are no responses" do
         it "returns zero values for missing categories" do
-          expect(subject.percentage_per_category).to eql( {"car" => 0, "active_travel" => 0, "public_transport" => 0, "park_and_stride" => 0, "other" => 0 } )
+          expect(subject.percentage_per_category).to eql( {"car" => 0, "walking_and_cycling" => 0, "public_transport" => 0, "park_and_stride" => 0, "other" => 0 } )
         end
       end
     end
@@ -176,7 +176,7 @@ describe 'TransportSurvey' do
         before { create_responses(categories) }
 
         it "returns passenger percentages per category" do
-          expect(subject.pie_chart_data).to eql( [{name: "Active travel", y: 20.0}, {name: "Car", y: 20.0}, {name: "Public transport", y: 20.0}, {name: "Park and stride", y: 20.0}, {name: "Other", y: 20.0}] )
+          expect(subject.pie_chart_data).to eql( [{name: "Walking and cycling", y: 20.0}, {name: "Car", y: 20.0}, {name: "Public transport", y: 20.0}, {name: "Park and stride", y: 20.0}, {name: "Other", y: 20.0}] )
         end
       end
 
@@ -184,13 +184,13 @@ describe 'TransportSurvey' do
         before { create_responses(categories.excluding('car', 'park_and_stride', nil)) }
 
         it "returns zero values for missing categories" do
-          expect(subject.pie_chart_data).to eql( [{name: "Active travel", y: 50.0}, {name: "Car", y: 0}, {name: "Public transport", y: 50.0}, {name: "Park and stride", y: 0}, {name: "Other", y: 0}] )
+          expect(subject.pie_chart_data).to eql( [{name: "Walking and cycling", y: 50.0}, {name: "Car", y: 0}, {name: "Public transport", y: 50.0}, {name: "Park and stride", y: 0}, {name: "Other", y: 0}] )
         end
       end
 
       context "when there are no responses" do
         it "returns zero values for missing categories" do
-          expect(subject.pie_chart_data).to eql( [{name: "Active travel", y: 0}, {name: "Car", y: 0}, {name: "Public transport", y: 0}, {name: "Park and stride", y: 0}, {name: "Other", y: 0}] )
+          expect(subject.pie_chart_data).to eql( [{name: "Walking and cycling", y: 0}, {name: "Car", y: 0}, {name: "Public transport", y: 0}, {name: "Park and stride", y: 0}, {name: "Other", y: 0}] )
         end
       end
     end

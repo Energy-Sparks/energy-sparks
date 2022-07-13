@@ -15,12 +15,12 @@ en:
         summary: Summary
       transport_type:
         category:
-          walking_and_cycling: Walking and cycling
           car: Car
           one: Category
           other: Other
           park_and_stride: Park and stride
           public_transport: Public transport
+          walking_and_cycling: Walking and cycling
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
