@@ -28,6 +28,9 @@ module EnergySparks
     # HAS to be UTC for group by date to work
     config.active_record.default_timezone = :utc
 
+    # For our application date helpers to use to optionally display times in configured zone
+    config.display_timezone = 'London'
+
     config.middleware.use Rack::Attack
     config.middleware.use Rack::XRobotsTag
 
