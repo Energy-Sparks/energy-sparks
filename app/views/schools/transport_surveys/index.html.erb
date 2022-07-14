@@ -6,7 +6,7 @@
       <thead>
         <tr>
           <th><%= t('schools.transport_surveys.common.survey_date') %></th>
-          <th><%= t('schools.transport_surveys.common.total_pupils') %></th>
+          <th><%= t('schools.transport_surveys.common.total_pupils_and_staff') %></th>
           <th><%= t('schools.transport_surveys.common.total_carbon') %></th>
           <th><%= t('common.labels.actions') %></th>
         </tr>
@@ -15,7 +15,7 @@
       <% @transport_surveys.each do |transport_survey| %>
         <tr>
           <td><%= link_to nice_dates(transport_survey.run_on), school_transport_survey_url(@school, transport_survey) %></td>
-          <td><%= t('schools.transport_surveys.common.pupils', count: transport_survey.total_responses) %></td>
+          <td><%= transport_survey.total_responses %></td>
           <td><%= transport_survey.total_carbon.round(2) %>kg CO2</td>
           <td>
             <%= link_to t('common.labels.view_results'), school_transport_survey_url(@school, transport_survey), class: 'btn btn-sm' %>
