@@ -8,7 +8,7 @@ namespace :after_party do
 
     # Create or update two new transport types
     TransportType.upsert({name: 'Van',           image: '🚐',   speed_km_per_hour: 32.0, kg_co2e_per_km: 0.24017, can_share: true, park_and_stride: false, category: nil, note: 'Average van, unknown size or fuel type', created_at: Time.zone.now, updated_at: Time.zone.now }, unique_by: :name)
-    TransportType.upsert({name: 'Electric Bike', image: '🔌🚲', speed_km_per_hour: 19.3, kg_co2e_per_km: 0.00133, can_share: false, park_and_stride: false, category: 'active_travel', note: '400Wh battery, 60km per charge, highest assistance level', created_at: Time.zone.now, updated_at: Time.zone.now }, unique_by: :name)
+    TransportType.upsert({name: 'Electric Bike', image: '🔌🚲', speed_km_per_hour: 19.3, kg_co2e_per_km: 0.00133, can_share: false, park_and_stride: false, category: 'walking_and_cycling', note: '400Wh battery, 60km per charge, highest assistance level', created_at: Time.zone.now, updated_at: Time.zone.now }, unique_by: :name)
 
     # These notes needs updating too
     TransportType.find_by(name: "Park and Stride").update(note: "Park and Stride, car emmisions but assumed 10 mins walked")
