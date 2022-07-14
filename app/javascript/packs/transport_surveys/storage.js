@@ -4,7 +4,7 @@ export const storage = ( function() {
 
   var local = {
     key: '',
-    base_url: ''
+    baseUrl: ''
   }
 
   // private methods
@@ -57,7 +57,7 @@ export const storage = ( function() {
   function syncResponses(date, notifier) {
     let responses = getResponses(date);
     if (responses.length > 0) {
-      let url = local.base_url + "/" + date;
+      let url = local.baseUrl + "/" + date;
       let data = { transport_survey: { run_on: date, responses: responses }};
       return ajaxCall(url, data)
       .done(function() {

@@ -27,6 +27,13 @@ module Transifex
       ts.present? ? DateTime.parse(ts) : nil
     end
 
+    def created_in_transifex?(slug)
+      @client.get_resource(slug)
+      true
+    rescue Transifex::Client::NotFound
+      false
+    end
+
     #create resource in tx
     #adding categories and other params
     #throw exception if problem

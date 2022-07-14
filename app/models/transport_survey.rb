@@ -50,7 +50,7 @@ class TransportSurvey < ApplicationRecord
   end
 
   def pie_chart_data
-    percentage_per_category.collect { |k, v| { name: k.humanize, y: v } }
+    percentage_per_category.collect { |k, v| { name: TransportType.human_enum_name(:category, k), y: v } }
   end
 
   def self.equivalence_rates

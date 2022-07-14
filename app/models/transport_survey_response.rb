@@ -55,6 +55,10 @@ class TransportSurveyResponse < ApplicationRecord
     '👤'
   end
 
+  def self.park_and_stride_mins
+    10
+  end
+
   def carbon
     transport_type.can_share? ? (carbon_calc / passengers) : carbon_calc
   end
@@ -68,7 +72,7 @@ class TransportSurveyResponse < ApplicationRecord
   # take 15 minutes off journey time for park and stride transport types
   def journey_mins_ps
     if transport_type.park_and_stride == true
-      (journey_minutes > 15 ? journey_minutes - 15 : 0)
+      (journey_minutes > self.class.park_and_stride_mins ? journey_minutes - self.class.park_and_stride_mins : 0)
     else
       journey_minutes
     end
