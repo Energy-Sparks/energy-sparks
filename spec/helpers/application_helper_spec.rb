@@ -129,4 +129,37 @@ describe ApplicationHelper do
       expect(helper.spinner_icon).to include('fa-spinner fa-spin')
     end
   end
+
+  describe 'nice_date_times' do
+    let(:utc_date_time) { Time.zone.now }
+    let(:utc_nice_date_time) { nice_date_times(utc_date_time) }
+
+    context "localtime option is true" do
+      subject { nice_date_times(utc_date_time, localtime: true) }
+
+      context "and display_timezone config option is not set" do
+        before { Rails.application.config.display_timezone = nil }
+        it { expect(subject).to eql(utc_nice_date_time) }
+      end
+      context "and display_timezone config option is set" do
+        before { Rails.application.config.display_timezone = "Saskatchewan" }
+        it { expect(subject).to_not eql(utc_nice_date_time) }
+      end
+    end
+
+    context "localtime option is false" do
+      subject { nice_date_times(utc_date_time, localtime: false) }
+
+      context "and display_timezone config option is set" do
+        before { Rails.application.config.display_timezone = "Saskatchewan" }
+        it { expect(subject).to eql(utc_nice_date_time) }
+      end
+    end
+
+    context "when date is nil" do
+      subject {nice_date_times(nil)}
+      it { expect(nice_date_times(nil)).to be_blank }
+    end
+  end
+
 end
