@@ -24,6 +24,8 @@
 #  fk_rails_...  (transport_type_id => transport_types.id)
 #
 class TransportSurveyResponse < ApplicationRecord
+  extend ActiveModel::Translation
+
   belongs_to :transport_survey
   belongs_to :transport_type, inverse_of: :responses
 
@@ -63,13 +65,34 @@ class TransportSurveyResponse < ApplicationRecord
     transport_type.can_share? ? (carbon_calc / passengers) : carbon_calc
   end
 
+  def self.csv_attributes
+    %w{id run_identifier weather weather_symbol journey_minutes transport_type.name transport_type.image passengers surveyed_at}
+  end
+
+  def self.to_csv
+    CSV.generate(headers: true) do |csv|
+      csv << csv_attributes.map do |attr|
+        (attr, relation) = attr.split('.').reverse
+        if relation
+          klass = reflections[relation].klass
+          "#{klass.model_name.human} #{klass.human_attribute_name(attr).downcase}"
+        else
+          human_attribute_name(attr)
+        end
+      end
+      all.find_each do |response|
+        csv << csv_attributes.map { |attr| attr.split('.').inject(response, :send) }
+      end
+    end
+  end
+
   private
 
   def carbon_calc
     ((transport_type.speed_km_per_hour * journey_mins_ps) / 60) * transport_type.kg_co2e_per_km
   end
 
-  # take 15 minutes off journey time for park and stride transport types
+  # take specified amount of minutes off journey time for park and stride transport types
   def journey_mins_ps
     if transport_type.park_and_stride == true
       (journey_minutes > self.class.park_and_stride_mins ? journey_minutes - self.class.park_and_stride_mins : 0)

@@ -4,6 +4,7 @@ en:
     transport_surveys:
       common:
         carbon: Carbon
+        download_responses: Download responses
         journey_time: Journey time
         mins: mins
         no_responses: No responses have been collected
