@@ -148,7 +148,7 @@ describe 'TransportSurveys', type: :system do
             end
 
             it "displays added response" do
-              expect(page).to have_content(nice_date_times(transport_survey_response.surveyed_at.localtime))
+              expect(page).to have_content(nice_date_times(transport_survey_response.surveyed_at, localtime: true))
             end
 
             context "and deleting response" do
@@ -158,7 +158,7 @@ describe 'TransportSurveys', type: :system do
                 end
               end
               it "removes response" do
-                expect(page).to_not have_content(nice_date_times(transport_survey_response.surveyed_at.localtime))
+                expect(page).to_not have_content(nice_date_times(transport_survey_response.surveyed_at, localtime: true))
               end
             end
           end
