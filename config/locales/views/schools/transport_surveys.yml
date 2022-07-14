@@ -7,16 +7,12 @@ en:
         journey_time: Journey time
         mins: mins
         no_responses: No responses have been collected
-        percentage_pupils: Percentage pupils
-        pupils:
-          one: 1 pupil
-          other: "%{count} pupils"
-          zero: no pupils
-        pupils_sharing: Pupils sharing
+        percentage_pupils_and_staff: Percentage pupils & staff
+        pupils_and_staff_sharing: Pupils & staff sharing
         survey_date: Survey date
         survey_time: Survey time
         total_carbon: Total carbon
-        total_pupils: Total pupils
+        total_pupils_and_staff: Total pupils & staff
         transport_category: Transport category
         transport_method: Transport method
         weather: Weather
@@ -28,10 +24,10 @@ en:
         start_surveying: Start surveying today
       show:
         carbon_html: Their travel to school generated %{carbon}
-        percentages_html: "%{active_travel} used active travel, generating zero CO2, %{public_transport} travelled by public transport, %{park_and_stride} used park and stride and %{car} travelled by car"
+        percentages_html: "%{walking_and_cycling} walked or cycled, generating zero CO2, %{public_transport} travelled by public transport, %{park_and_stride} used park and stride and %{car} travelled by car"
         summary_html:
-          one: "<strong>1 pupil</strong> was surveyed on <strong>%{date}</strong>"
-          other: "<strong>%{count} pupils</strong> were surveyed on <strong>%{date}</strong>"
+          one: "<strong>1 pupil or staff member</strong> was surveyed on <strong>%{date}</strong>"
+          other: "<strong>%{count} pupils and staff</strong> were surveyed on <strong>%{date}</strong>"
       tab_nav:
         manage_responses: Manage responses
         results: Results

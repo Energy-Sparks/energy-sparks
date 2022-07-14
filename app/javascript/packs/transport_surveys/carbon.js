@@ -2,10 +2,15 @@ import { pluralise } from './helpers';
 
 export const carbon = ( function() {
 
-  var rates = {};
 
+  var local = {
+    rates: '',
+    parkAndStrideMins: ''
+  }
+
+  // private methods
   function init(cfg) {
-    rates = cfg;
+    local = cfg;
   }
 
   const equivalences = [
@@ -13,44 +18,44 @@ export const carbon = ( function() {
       name: 'tree',
       emoji: '🌳',
       unit: 'day',
-      rate: () => rates.tree / 365,
+      rate: () => local.rates.tree / 365,
       statement: (amount, unit, emoji) => `1 tree would absorb this amount of CO2 in ${amount} ${unit} ${emoji}!`,
     }, {
       name: 'tv',
       emoji: '📺',
       unit: 'hour',
-      rate: () => rates.tv,
+      rate: () => local.rates.tv,
       statement: (amount, unit, emoji) => `That\'s the same as ${amount} ${unit} of TV ${emoji}!`,
     }, {
       name: 'computer_console',
       emoji: '🎮',
       unit: 'hour',
-      rate: () => rates.computerConsole,
+      rate: () => local.rates.computerConsole,
       statement: (amount, unit, emoji) => `That\'s the same as playing ${amount} ${unit} of computer games ${emoji}!`,
     }, {
       name: 'smartphone',
       emoji: '📱',
       unit: 'smart phone',
-      rate: () => rates.smartphone,
+      rate: () => local.rates.smartphone,
       statement: (amount, unit, emoji) => `That\'s the same as charging ${amount} ${unit} ${emoji}!`,
     } , {
       name: 'carnivore_dinner',
       emoji: '🍲',
       unit: 'meat dinner',
-      rate: () => rates.carnivoreDinner,
+      rate: () => local.rates.carnivoreDinner,
       statement: (amount, unit, emoji) => `That\'s the same as ${amount} ${unit} ${emoji}!`,
     }, {
       name: 'vegetarian_dinner',
       emoji: '🥗',
       unit: 'veggie dinner',
-      rate: () => rates.vegetarianDinner,
+      rate: () => local.rates.vegetarianDinner,
       statement: (amount, unit, emoji) => `That\'s the same as ${amount} ${unit} ${emoji}!`,
     }
   ];
 
   function parkAndStrideTimeMins(timeMins) {
-    // take 15 mins off a park and stride journey
-    return (timeMins > 15 ? timeMins - 15 : 0);
+    // take 10 mins off a park and stride journey
+    return (timeMins > local.parkAndStrideMins ? timeMins - local.parkAndStrideMins : 0);
   }
 
   function equivalence(carbonKgs) {

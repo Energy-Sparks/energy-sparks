@@ -12,7 +12,7 @@
     <div>
       <% percentages = @transport_survey.percentage_per_category %>
       <%= t('schools.transport_surveys.show.percentages_html',
-      active_travel: tag.strong("#{percentages["active_travel"].round}%"),
+      walking_and_cycling: tag.strong("#{percentages["walking_and_cycling"].round}%"),
       public_transport: tag.strong("#{percentages["public_transport"].round}%"),
       park_and_stride: tag.strong("#{percentages["park_and_stride"].round}%"),
       car: tag.strong("#{percentages["car"].round}%")) %>.
@@ -25,8 +25,8 @@
     <thead class="thead-light">
       <tr>
         <th><%= t('schools.transport_surveys.common.transport_category') %></th>
-        <th><%= t('schools.transport_surveys.common.total_pupils') %></th>
-        <th><%= t('schools.transport_surveys.common.percentage_pupils') %></th>
+        <th><%= t('schools.transport_surveys.common.total_pupils_and_staff') %></th>
+        <th><%= t('schools.transport_surveys.common.percentage_pupils_and_staff') %></th>
       </tr>
     </thead>
     <tbody>
