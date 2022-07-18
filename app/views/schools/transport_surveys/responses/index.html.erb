@@ -20,7 +20,7 @@
       <tbody>
         <% @responses.each do |response| %>
           <tr scope="row">
-            <td><%= response.weather_symbol %></td>
+            <td><%= response.weather_image %></td>
             <td><%= response.journey_minutes %> <%= t('schools.transport_surveys.common.mins') %></td>
             <td><%= response.transport_type.image %> <%= response.transport_type.name %></td>
             <td><%= response.passengers > 1 ? response.passengers : "" %></td>

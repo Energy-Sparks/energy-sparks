@@ -35,7 +35,7 @@
             <%= hidden_field_tag :weather, "", class: 'selected' %>
             <div class="container">
               <div class="row">
-                <% TransportSurveyResponse.weather_symbols.each do |label, symbol| %>
+                <% TransportSurveyResponse.weather_images.each do |label, symbol| %>
                   <%= render 'option', { label: label, content: symbol, identifier: label, action: "start" } %>
                 <% end %>
               </div>

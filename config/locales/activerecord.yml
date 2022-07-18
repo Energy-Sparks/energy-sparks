@@ -25,7 +25,7 @@ en:
           rain: Rain
           snow: Snow
           sun: Sun
-        weather_symbol: Weather image
+        weather_image: Weather image
       transport_type:
         category:
           car: Car

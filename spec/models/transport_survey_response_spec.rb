@@ -17,11 +17,11 @@ describe TransportSurveyResponse do
     it { should define_enum_for(:weather).with_values([:sun, :cloud, :rain, :snow]) }
   end
 
-  describe '#weather_symbol' do
-    TransportSurveyResponse.weather_symbols.each do |key, value|
+  describe '#weather_image' do
+    TransportSurveyResponse.weather_images.each do |key, value|
       context "for #{key}" do
         subject(:response) { create :transport_survey_response, weather: key }
-        it { expect(response.weather_symbol).to eq(value) }
+        it { expect(response.weather_image).to eq(value) }
       end
     end
   end
@@ -79,7 +79,7 @@ describe TransportSurveyResponse do
       it { expect(subject.lines.count).to eq(3) }
       it { expect(subject.lines.first.chomp).to eq(header) }
       2.times do |i|
-        it { expect(subject.lines[i+1].chomp).to eq([responses[i].id, responses[i].run_identifier, responses[i].weather, responses[i].weather_symbol, responses[i].journey_minutes, responses[i].transport_type.name, responses[i].transport_type.image, responses[i].passengers, responses[i].surveyed_at].join(',')) }
+        it { expect(subject.lines[i+1].chomp).to eq([responses[i].id, responses[i].run_identifier, responses[i].weather, responses[i].weather_image, responses[i].journey_minutes, responses[i].transport_type.name, responses[i].transport_type.image, responses[i].passengers, responses[i].surveyed_at].join(',')) }
       end
     end
 

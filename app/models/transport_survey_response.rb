@@ -45,12 +45,12 @@ class TransportSurveyResponse < ApplicationRecord
 
   enum weather: [:sun, :cloud, :rain, :snow]
 
-  def self.weather_symbols
+  def self.weather_images
     { sun: '☀️', cloud: '⛅', rain: '🌧️', snow: '❄️' }
   end
 
-  def weather_symbol
-    self.class.weather_symbols[weather.to_sym]
+  def weather_image
+    self.class.weather_images[weather.to_sym]
   end
 
   def self.passenger_symbol
@@ -62,7 +62,7 @@ class TransportSurveyResponse < ApplicationRecord
   end
 
   def self.csv_attributes
-    %w{id run_identifier weather weather_symbol journey_minutes transport_type.name transport_type.image passengers surveyed_at}
+    %w{id run_identifier weather weather_image journey_minutes transport_type.name transport_type.image passengers surveyed_at}
   end
 
   def self.csv_headers
