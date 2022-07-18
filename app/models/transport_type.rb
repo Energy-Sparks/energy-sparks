@@ -20,6 +20,9 @@
 #  index_transport_types_on_name  (name) UNIQUE
 #
 class TransportType < ApplicationRecord
+  extend Mobility
+  translates :name, type: :string, fallbacks: { cy: :en }
+
   has_many :responses, class_name: 'TransportSurveyResponse', inverse_of: :transport_type
 
   scope :by_position, -> { order(position: :asc) }
