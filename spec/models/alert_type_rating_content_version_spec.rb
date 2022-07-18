@@ -120,7 +120,7 @@ describe AlertTypeRatingContentVersion do
         expect(data["en"]).to_not be nil
         key = "alert_type_rating_content_version_#{alert_type_rating.id}"
         expect(data["en"][key]).to_not be nil
-        expect(data["en"][key].keys).to match_array(["pupil_dashboard_title_html"])
+        expect(data["en"][key].keys).to match_array(["pupil_dashboard_title_html", "management_dashboard_title_html"])
       end
       it 'created categories' do
         expect(content_version.tx_categories).to match_array(["alert_rating"])

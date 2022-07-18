@@ -63,15 +63,16 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   enum colour: [:negative, :neutral, :positive]
 
   translates :pupil_dashboard_title, backend: :action_text
+  translates :management_dashboard_title, backend: :action_text
 
   has_rich_text :email_content
   has_rich_text :find_out_more_content
   has_rich_text :public_dashboard_title
-  has_rich_text :management_dashboard_title
   has_rich_text :management_priorities_title
 
   TX_ATTRIBUTE_MAPPING = {
     pupil_dashboard_title: { templated: true },
+    management_dashboard_title: { templated: true },
   }.freeze
 
   def self.functionality
