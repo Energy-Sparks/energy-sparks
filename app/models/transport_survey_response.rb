@@ -61,29 +61,33 @@ class TransportSurveyResponse < ApplicationRecord
     10
   end
 
-  def carbon
-    transport_type.can_share? ? (carbon_calc / passengers) : carbon_calc
-  end
-
   def self.csv_attributes
     %w{id run_identifier weather weather_symbol journey_minutes transport_type.name transport_type.image passengers surveyed_at}
   end
 
-  def self.to_csv
-    CSV.generate(headers: true) do |csv|
-      csv << csv_attributes.map do |attr|
-        (attr, relation) = attr.split('.').reverse
-        if relation
-          klass = reflections[relation].klass
-          "#{klass.model_name.human} #{klass.human_attribute_name(attr).downcase}"
-        else
-          human_attribute_name(attr)
-        end
-      end
-      all.find_each do |response|
-        csv << csv_attributes.map { |attr| attr.split('.').inject(response, :send) }
+  def self.csv_headers
+    csv_attributes.map do |attr|
+      (attr, relation) = attr.split('.').reverse
+      if relation
+        klass = reflections[relation].klass
+        "#{klass.model_name.human} #{klass.human_attribute_name(attr).downcase}"
+      else
+        human_attribute_name(attr)
       end
     end
+  end
+
+  def self.to_csv
+    CSV.generate(headers: true) do |csv|
+      csv << csv_headers
+      all.find_each do |response|
+        csv << csv_attributes.map { |attr| attr.split('.').inject(response, :send) } # TODO: translate transport type name & weather
+      end
+    end
+  end
+
+  def carbon
+    transport_type.can_share? ? (carbon_calc / passengers) : carbon_calc
   end
 
   private

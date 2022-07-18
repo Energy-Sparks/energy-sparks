@@ -19,7 +19,12 @@ en:
         passengers: Passengers
         run_identifier: Run identifier
         surveyed_at: Surveyed at
-        weather: Weather
+        weather:
+          cloud: Cloud
+          one: Weather
+          rain: Rain
+          snow: Snow
+          sun: Sun
         weather_symbol: Weather image
       transport_type:
         category:
