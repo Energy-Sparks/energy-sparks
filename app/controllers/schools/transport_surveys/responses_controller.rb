@@ -15,7 +15,10 @@ module Schools
       def index
         respond_to do |format|
           format.html { @pagy, @responses = pagy(@responses) }
-          format.csv { send_data @responses.to_csv, filename: "#{t('common.application')} #{TransportSurvey.model_name.human} #{@school.slug} #{@transport_survey.run_on}".parameterize + ".csv" }
+          format.csv do
+            send_data @responses.to_csv,
+            filename: "#{t('common.application')}-#{TransportSurvey.model_name.human}-#{@school.slug}-#{@transport_survey.run_on}".parameterize + '.csv'
+          end
         end
       end
     end
