@@ -85,7 +85,6 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   def self.template_fields
     [
       :pupil_dashboard_title,
-      :pupil_dashboard_title_en,
       :public_dashboard_title, :management_dashboard_title,
       :find_out_more_title, :find_out_more_content,
       :email_title, :email_content, :sms_content,

@@ -2,6 +2,8 @@ module Admin
   module AlertTypes
     module Ratings
       class PreviewController < AdminController
+        include LocaleHelper
+
         def create
           @alert_type = AlertType.find(params[:alert_type_id])
           @alert = @alert_type.alerts.displayable.rating_between(from_parameter, to_parameter).order(created_at: :desc).first
@@ -14,7 +16,7 @@ module Admin
           end
         end
 
-      private
+        private
 
         def load_rating_requirements
           @activity_types = get_activity_types
@@ -26,7 +28,7 @@ module Admin
             with_objects: { find_out_more: nil, rating: @alert.rating },
             proxy: [:colour]
           ).interpolate(
-            *AlertTypeRatingContentVersion.template_fields,
+            *template_fields,
             with: @alert.template_variables
           )
           @chart = @alert.chart_data[content_version.find_out_more_chart_variable]
@@ -45,8 +47,13 @@ module Admin
 
         def content_params
           params.require(:alert_type_rating).permit(
-            content: AlertTypeRatingContentVersion.template_fields + [:colour]
+            content: template_fields + [:colour]
           )
+        end
+
+        def template_fields
+          translated_params = t_params(AlertTypeRatingContentVersion.mobility_attributes)
+          AlertTypeRatingContentVersion.template_fields + translated_params
         end
 
         def template_path(key)
