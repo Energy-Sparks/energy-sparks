@@ -97,7 +97,43 @@ describe AlertTypeRatingContentVersion do
         expect(content_version.meets_timings?(scope: :find_out_more, today: Date.new(2019, 5, 12))).to eq(false)
       end
     end
-
   end
 
+  context 'serialising for transifex' do
+
+    let(:alert_type)          { create(:alert_type, title: 'some alert type') }
+    let(:alert_type_rating)   { create(:alert_type_rating, description: '0 to 10', alert_type: alert_type, rating_from: 0.0, rating_to: 10.0) }
+    let(:content_version)     { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating, pupil_dashboard_title: 'some content with {{#chart}}chart_name{{/chart}}') }
+
+    context 'when mapping fields' do
+      it 'produces the expected resource key' do
+        expect(content_version.resource_key).to eq "alert_type_rating_content_version_#{alert_type_rating.id}"
+      end
+      it 'produces the expected key names' do
+        expect(content_version.tx_attribute_key("pupil_dashboard_title")).to eq "pupil_dashboard_title_html"
+      end
+      it 'produces the expected tx values, removing trix content wrapper' do
+        expect(content_version.tx_value("pupil_dashboard_title")).to eql "some content with %{chart_name}"
+      end
+      it 'maps all translated fields' do
+        data = content_version.tx_serialise
+        expect(data["en"]).to_not be nil
+        key = "alert_type_rating_content_version_#{alert_type_rating.id}"
+        expect(data["en"][key]).to_not be nil
+        expect(data["en"][key].keys).to match_array(["pupil_dashboard_title_html"])
+      end
+      it 'created categories' do
+        expect(content_version.tx_categories).to match_array(["alert_rating"])
+      end
+      it 'overrides default name' do
+        expect(content_version.tx_name).to eq("some alert type - 0 to 10")
+      end
+      it 'fetches status' do
+        expect(content_version.tx_status).to be_nil
+        status = TransifexStatus.create_for!(content_version)
+        expect(TransifexStatus.count).to eq 1
+        expect(content_version.tx_status).to eq status
+      end
+    end
+  end
 end

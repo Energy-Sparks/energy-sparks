@@ -85,6 +85,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   def self.template_fields
     [
       :pupil_dashboard_title,
+      :pupil_dashboard_title_en,
       :public_dashboard_title, :management_dashboard_title,
       :find_out_more_title, :find_out_more_content,
       :email_title, :email_content, :sms_content,
@@ -97,6 +98,14 @@ class AlertTypeRatingContentVersion < ApplicationRecord
 
   def resource_key
     "#{self.class.model_name.i18n_key}_#{self.alert_type_rating.id}"
+  end
+
+  def tx_name
+    "#{alert_type_rating.alert_type.title} - #{alert_type_rating.description}"
+  end
+
+  def tx_categories
+    ['alert_rating']
   end
 
   def self.timing_fields
