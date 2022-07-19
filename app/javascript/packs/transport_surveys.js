@@ -42,6 +42,7 @@ $(document).ready(function() {
   function start() {
     selectCard(this);
     showSurvey();
+    enableFinishAndSaveButton();
   }
 
   // Select card, move to next panel, display finish and save button
@@ -258,10 +259,12 @@ $(document).ready(function() {
   }
 
   function enableFinishAndSaveButton() {
-    $('#save-results').prop("disabled", false);
-    let badge = $('#unsaved-responses-count');
-    badge.removeClass("badge-light");
-    badge.addClass("badge-primary");
+    if (storage.getResponsesCount(config.runOn) > 0) {
+      $('#save-results').prop("disabled", false);
+      let badge = $('#unsaved-responses-count');
+      badge.removeClass("badge-light");
+      badge.addClass("badge-primary");
+    }
   }
 
   function setProgressBar(step){
