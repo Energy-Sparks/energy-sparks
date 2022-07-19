@@ -1,0 +1,60 @@
+<h1>Activity Type Report</h1>
+
+<p>
+  This report provides some high-level insights into our pupil activities.
+</p>
+
+<p>
+  The table lists every activity in the system. Those highlighted in yellow are not active and are
+  no longer visible to users.
+</p>
+
+<p>
+  The table is sorted by name by default, but you can chose to sort by any of the columns.
+</p>
+
+<p>
+  There are two <strong>Recorded</strong> figures: number of times the activity has ever been recorded, and
+  the number of unique schools that have recorded it.
+</p>
+
+<p>
+  There are four <strong>Referenced</strong> counts. These list the number of times that the activity is
+  referenced as a "Suggested" next activity, as a step in a "Programme" from an alert via its "Find Out More" pages
+  and from an "Audit".
+</p>
+
+<table class="table table-striped table-sorted dataTable ">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="2">Recorded</th>
+      <th colspan="3">Referenced</th>
+      <th></th>
+    </tr>
+    <tr>
+      <th>Name</th>
+      <th>Count</th>
+      <th>Schools</th>
+      <th>Suggested</th>
+      <th>Programmes</th>
+      <th>Find Out Mores</th>
+      <th>Audits</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @activity_types.each do |at| %>
+      <tr class="<%= 'bg-warning' unless at.active %>">
+        <td><%= link_to at.name, admin_activity_type_path(at) %></td>
+        <td><%= Activity.where(activity_type: at).count %></td>
+        <td><%= Activity.select(:school_id).where(activity_type: at).distinct.count %></td>
+        <td><%= ActivityType.joins(:activity_type_suggestions).where("activity_type_suggestions.activity_type_id = ?", at.id).count %></td>
+        <td><%= at.programme_types.count %></td>
+        <td><%= AlertTypeRating.joins(:alert_type_rating_activity_types).where("alert_type_rating_activity_types.activity_type_id = ?", at.id).count %></td>
+        <td><%= at.audits.count %></td>
+        <td><%= link_to 'Edit', edit_admin_activity_type_path(at), class: 'btn btn-primary' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
