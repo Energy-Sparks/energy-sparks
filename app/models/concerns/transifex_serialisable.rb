@@ -155,6 +155,10 @@ module TransifexSerialisable
     def tx_rich_text_field?(name)
       reflect_on_all_associations(:has_one).collect(&:name).include?("rich_text_#{name}".to_sym)
     end
+
+    def tx_resources
+      all.order(:id)
+    end
   end
   # rubocop:enable Style/RegexpLiteral
 end

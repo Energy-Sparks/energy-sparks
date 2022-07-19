@@ -108,6 +108,10 @@ class AlertTypeRatingContentVersion < ApplicationRecord
     ['alert_rating']
   end
 
+  def self.tx_resources
+    AlertTypeRating.with_dashboard_alerts.map(&:current_content)
+  end
+
   def self.timing_fields
     self.functionality.map {|function| [:"#{function}_start_date", :"#{function}_end_date"]}.flatten
   end

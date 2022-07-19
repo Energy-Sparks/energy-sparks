@@ -65,4 +65,8 @@ class ProgrammeType < ApplicationRecord
       [programme_type_activity_type.activity_type, activity]
     end
   end
+
+  def self.tx_resources
+    active.order(:id)
+  end
 end

@@ -102,6 +102,27 @@ describe AlertTypeRatingContentVersion do
   context 'serialising for transifex' do
 
     let(:alert_type)          { create(:alert_type, title: 'some alert type') }
+
+    let(:alert_type_rating)              { create(:alert_type_rating, alert_type: alert_type) }
+    let(:alert_type_rating_pupil)        { create(:alert_type_rating, alert_type: alert_type, pupil_dashboard_alert_active: true) }
+    let(:alert_type_rating_management)   { create(:alert_type_rating, alert_type: alert_type, management_dashboard_alert_active: true) }
+    let(:alert_type_rating_both)         { create(:alert_type_rating, alert_type: alert_type, management_dashboard_alert_active: true, pupil_dashboard_alert_active: true) }
+
+    let!(:content_version)              { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating) }
+    let!(:content_version_pupil)        { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating_pupil, pupil_dashboard_title: 'some title') }
+    let!(:content_version_management)   { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating_management, management_dashboard_title: 'some title') }
+    let!(:content_version_both)         { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating_both, management_dashboard_title: 'some title', pupil_dashboard_title: 'some title') }
+
+    context 'when fetching records for sync' do
+      it 'includes records with pupil or management dashboard alert active' do
+        expect(AlertTypeRatingContentVersion.tx_resources).to match_array([content_version_pupil, content_version_management, content_version_both])
+      end
+    end
+  end
+
+  context 'serialising for transifex' do
+
+    let(:alert_type)          { create(:alert_type, title: 'some alert type') }
     let(:alert_type_rating)   { create(:alert_type_rating, description: '0 to 10', alert_type: alert_type, rating_from: 0.0, rating_to: 10.0) }
     let(:content_version)     { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating, pupil_dashboard_title: 'some content with {{#chart}}chart_name{{/chart}}') }
 
