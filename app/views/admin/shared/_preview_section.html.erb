@@ -27,11 +27,13 @@
       </a>
     </li>
   <% end %>
-  <li class="nav-item">
-    <a class="nav-link preview-tab" href="#<%= scope %>-preview" id="<%= scope %>-preview-tab" data-toggle="tab"  role="tab" aria-controls="<%= scope %>-preview">
-      Preview
-    </a>
-  </li>
+  <% locales.each do |locale| %>
+    <li class="nav-item">
+      <a class="nav-link preview-tab" href="#<%= scope %>-preview-<%= locale %>" id="<%= scope %>-preview-<%= locale %>-tab" data-toggle="tab"  role="tab" aria-controls="<%= scope %>-preview">
+        Preview (<%= t("languages.#{locale}") %>)
+      </a>
+    </li>
+  <% end %>
 </ul>
 
 <div class="tab-content" id="<%= scope %>-content-panes">
@@ -61,11 +63,13 @@
     </div>
   <% end %>
 
-  <div class="tab-pane fade" id="<%= scope %>-preview" role="tabpanel" aria-labelledby="<%= scope %>-preview-tab" data-content-url="<%= preview_url %>">
-    <div class="loading">
-      <h3 class="mb-3 mt-3"><%= fa_icon('spinner') %> Loading...</h3>
+  <% locales.each do |locale| %>
+    <div class="tab-pane fade" id="<%= scope %>-preview-<%= locale %>" role="tabpanel" aria-labelledby="<%= scope %>-preview-tab" data-content-url="<%= preview_url + "&locale=#{locale}" %>">
+      <div class="loading">
+        <h3 class="mb-3 mt-3"><%= fa_icon('spinner') %> Loading...</h3>
+      </div>
+      <div class="content pt-3 pb-3">
+      </div>
     </div>
-    <div class="content pt-3 pb-3">
-    </div>
-  </div>
+  <% end %>
 </div>
