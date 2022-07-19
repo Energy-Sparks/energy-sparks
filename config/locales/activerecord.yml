@@ -14,7 +14,6 @@ en:
         name: Title
         summary: Summary
       transport_type:
-        name: Name
         category:
           car: Car
           one: Category
@@ -22,6 +21,7 @@ en:
           park_and_stride: Park and stride
           public_transport: Public transport
           walking_and_cycling: Walking and cycling
+        name: Name
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
