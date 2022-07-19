@@ -132,8 +132,10 @@ describe "admin transport type", type: :system, include_application_helper: true
 
       it "shows all attributes" do
         within('dl') do
-          attributes.values.each do |value|
-            expect(page).to have_content(value)
+          expect(page).to have_content("Name (English) #{attributes['Name']}")
+          expect(page).to have_content("Name (Welsh) No name present")
+          attributes.except(*translated_fields.keys).each do |key, value|
+            expect(page).to have_content("#{key} #{value}")
           end
         end
       end
