@@ -70,14 +70,14 @@
               <%= button_tag 'Back', type: 'button', class: "previous btn btn-outline-secondary w-100" %>
             </fieldset>
 
-            <fieldset class="panel" id="passengers" style="display: none;">
+            <fieldset class="panel" id="sharing" style="display: none;">
               <%= hidden_field_tag :passengers, "", class: 'selected' %>
               <h2 class="pb-0">Sharing: How many pupils at this school shared your <span id="transport_type_name" %></span> journey?</h2>
               <h2><small class="pb-4">Don’t include your parents or carers or children who attend different schools or nurseries.</small></h2>
               <div class="container">
                 <div class="row">
                   <% TransportSurveyResponse.passengers_options.each do |passengers| %>
-                    <%= render 'option', { label: ((passengers > 1) ? "#{passengers} pupils" : "Just me"), content: TransportSurveyResponse.passenger_symbol * passengers, identifier: passengers, action: "passengers" } %>
+                    <%= render 'option', { label: ((passengers > 1) ? "#{passengers} pupils" : "Just me"), content: TransportSurveyResponse.passenger_symbol * passengers, identifier: passengers, action: "sharing" } %>
                   <% end %>
                 </div>
               </div>

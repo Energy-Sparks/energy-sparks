@@ -25,7 +25,7 @@ $(document).ready(function() {
     $('.start').on('click', start);
     $('.time').on('click', time);
     $('.transport').on('click', transport);
-    $('.passengers').on('click', passengers);
+    $('.sharing').on('click', sharing);
     $('.confirm').on('click', confirm);
     $('.summary').on('click', nextSurveyRun);
     $('.previous').on('click', previous);
@@ -69,7 +69,7 @@ $(document).ready(function() {
   }
 
   // Select card, set confirmation details for display on confirmation page and show confirmation panel
-  function passengers() {
+  function sharing() {
     selectCard(this);
     displaySelection();
     nextPanel(this);
