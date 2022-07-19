@@ -45,19 +45,19 @@
           <div id="survey" style="display: none;">
             <%= render partial: 'progress_bar' %>
 
-            <fieldset class="panel">
+            <fieldset class="panel" id="time">
               <h2>Time: How many minutes did your journey take in total?</h2>
               <%= hidden_field_tag :journey_minutes, "", class: 'selected' %>
               <div class="container">
                 <div class="row">
                   <% TransportSurveyResponse.journey_minutes_options.each do |time| %>
-                    <%= render 'option', { label: "Minutes", content: time, identifier: time, action: "next" } %>
+                    <%= render 'option', { label: "Minutes", content: time, identifier: time, action: "time" } %>
                   <% end %>
                 </div>
               </div>
             </fieldset>
 
-            <fieldset class="panel" style="display: none;">
+            <fieldset class="panel" id="transport" style="display: none;">
               <h2>Transport: What mode of transport did you use to get to school?</h2>
               <%= hidden_field_tag :transport_type_id, "", class: 'selected' %>
               <div class="container">
@@ -70,21 +70,21 @@
               <%= button_tag 'Back', type: 'button', class: "previous btn btn-outline-secondary w-100" %>
             </fieldset>
 
-            <fieldset class="panel" style="display: none;">
+            <fieldset class="panel" id="passengers" style="display: none;">
               <%= hidden_field_tag :passengers, "", class: 'selected' %>
               <h2 class="pb-0">Sharing: How many pupils at this school shared your <span id="transport_type_name" %></span> journey?</h2>
               <h2><small class="pb-4">Don’t include your parents or carers or children who attend different schools or nurseries.</small></h2>
               <div class="container">
                 <div class="row">
                   <% TransportSurveyResponse.passengers_options.each do |passengers| %>
-                    <%= render 'option', { label: ((passengers > 1) ? "#{passengers} pupils" : "Just me"), content: TransportSurveyResponse.passenger_symbol * passengers, identifier: passengers, action: "confirm" } %>
+                    <%= render 'option', { label: ((passengers > 1) ? "#{passengers} pupils" : "Just me"), content: TransportSurveyResponse.passenger_symbol * passengers, identifier: passengers, action: "passengers" } %>
                   <% end %>
                 </div>
               </div>
               <%= button_tag 'Back', type: 'button', class: "previous btn btn-outline-secondary w-100" %>
             </fieldset>
 
-            <fieldset class="panel" style="display: none;">
+            <fieldset class="panel" id="confirm" style="display: none;">
               <h2>Confirm your selection</h2>
               <div class="container">
                 <div class="row">
@@ -94,18 +94,18 @@
                 </div>
               </div>
               <p>
-                <%= button_tag "Confirm", type: 'button', class: 'store btn btn-primary w-100 mb-2 mt-2' %>
+                <%= button_tag "Confirm", type: 'button', class: 'confirm btn btn-primary w-100 mb-2 mt-2' %>
                 <%= button_tag 'Back', type: 'button', class: "previous-transport btn btn-outline-secondary w-100" %>
               </p>
             </fieldset>
 
-            <fieldset class="panel" style="display: none;">
+            <fieldset class="panel" id="summary" style="display: none;">
               <h2>For your <span id="display-time"></span> minute journey to school by <span id="display-transport"></span>.</h2>
               <hr />
               <h2>You used <span id="display-carbon" class="badge badge-secondary"></span> of carbon!</h2>
               <hr />
               <h2 class="mb-0"><span id="display-carbon-equivalent"></span></h2>
-              <p><%= button_tag "Next pupil", type: 'button', class: 'next-pupil btn btn-primary w-100' %></p>
+              <p><%= button_tag "Next pupil", type: 'button', class: 'summary btn btn-primary w-100' %></p>
             </fieldset>
           </div>
         <% end %>

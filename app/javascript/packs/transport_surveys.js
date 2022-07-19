@@ -23,13 +23,13 @@ $(document).ready(function() {
 
     /* onclick bindings */
     $('.start').on('click', start);
-    $('.next').on('click', next);
-    $('.previous').on('click', previous);
+    $('.time').on('click', time);
     $('.transport').on('click', transport);
-    $('.previous-transport').on('click', previousTransport);
+    $('.passengers').on('click', passengers);
     $('.confirm').on('click', confirm);
-    $('.store').on('click', store);
-    $('.next-pupil').on('click', nextSurveyRun);
+    $('.summary').on('click', nextSurveyRun);
+    $('.previous').on('click', previous);
+    $('.previous-transport').on('click', previousTransport);
     $('#save-results').on('click', finishAndSave);
 
   } else {
@@ -44,27 +44,11 @@ $(document).ready(function() {
     showSurvey();
   }
 
-  // Generic select card for current panel and move to next panel
-  function next() {
+  // Select card, move to next panel, display finish and save button
+  function time() {
     selectCard(this);
     nextPanel(this);
-  }
-
-  // Generic move to previous panel
-  function previous() {
-    previousPanel(this);
-  }
-
-  // Move back two panels & clear previous cards
-  function previousTransport() {
-    let transport_type = config.transportTypes[$('#transport_type_id').val()];
-    if(transport_type.can_share == true) {
-      previousPanel(this);
-    } else {
-      let panel = $(this).closest('.panel').prev();
-      clearCards(panel);
-      previousPanel(this, 2);
-    }
+    disableFinishAndSaveButton();
   }
 
   function transport() {
@@ -84,14 +68,14 @@ $(document).ready(function() {
   }
 
   // Select card, set confirmation details for display on confirmation page and show confirmation panel
-  function confirm() {
+  function passengers() {
     selectCard(this);
     displaySelection();
     nextPanel(this);
   }
 
   // Show the carbon calculation, store confirmed results to localstorage and show carbon calculation panel
-  function store() {
+  function confirm() {
     displayCarbon();
     storeResponse();
     nextPanel(this);
@@ -104,7 +88,28 @@ $(document).ready(function() {
     resetSurveyCards();
     resetSurveyPanels();
     setProgressBar(window.step = 1);
-    disableFinishAndSaveButton();
+    enableFinishAndSaveButton();
+  }
+
+  // Generic move to previous panel
+  function previous() {
+    let fieldset = $(this).closest('fieldset').attr('id');
+    if (fieldset == 'transport') {
+      enableFinishAndSaveButton();
+    }
+    previousPanel(this);
+  }
+
+  // Move back two panels & clear previous cards
+  function previousTransport() {
+    let transport_type = config.transportTypes[$('#transport_type_id').val()];
+    if(transport_type.can_share == true) {
+      previousPanel(this);
+    } else {
+      let panel = $(this).closest('.panel').prev();
+      clearCards(panel);
+      previousPanel(this, 2);
+    }
   }
 
   // Save responses and redirect to results page
