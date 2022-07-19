@@ -36,3 +36,8 @@ en:
         dated: Travel to school survey on %{date}
         default: Travel to school surveys
         today: Today's travel to school survey
+      destroy:
+        notice: "Transport survey was successfully removed"
+      responses:
+        destroy:
+          notice: "Transport survey response was successfully removed"
