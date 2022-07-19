@@ -108,6 +108,15 @@ class AlertTypeRatingContentVersion < ApplicationRecord
     ['alert_rating']
   end
 
+  def tx_valid_attribute(attr)
+    case attr.to_sym
+    when :pupil_dashboard_title
+      return alert_type_rating.pupil_dashboard_alert_active?
+    when :management_dashboard_title
+      return alert_type_rating.management_dashboard_alert_active?
+    end
+  end
+
   def self.tx_resources
     AlertTypeRating.with_dashboard_alerts.map(&:current_content)
   end

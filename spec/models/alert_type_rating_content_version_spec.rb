@@ -118,12 +118,31 @@ describe AlertTypeRatingContentVersion do
         expect(AlertTypeRatingContentVersion.tx_resources).to match_array([content_version_pupil, content_version_management, content_version_both])
       end
     end
+    context 'when serialising fields' do
+      it 'only includes fields with active alerts' do
+        data = content_version.tx_serialise
+        key = data["en"].keys.first
+        expect(data["en"][key].keys).to match_array([])
+
+        data = content_version_pupil.tx_serialise
+        key = data["en"].keys.first
+        expect(data["en"][key].keys).to match_array(["pupil_dashboard_title_html"])
+
+        data = content_version_management.tx_serialise
+        key = data["en"].keys.first
+        expect(data["en"][key].keys).to match_array(["management_dashboard_title_html"])
+
+        data = content_version_both.tx_serialise
+        key = data["en"].keys.first
+        expect(data["en"][key].keys).to match_array(["pupil_dashboard_title_html", "management_dashboard_title_html"])
+      end
+    end
   end
 
   context 'serialising for transifex' do
 
     let(:alert_type)          { create(:alert_type, title: 'some alert type') }
-    let(:alert_type_rating)   { create(:alert_type_rating, description: '0 to 10', alert_type: alert_type, rating_from: 0.0, rating_to: 10.0) }
+    let(:alert_type_rating)   { create(:alert_type_rating, description: '0 to 10', alert_type: alert_type, rating_from: 0.0, rating_to: 10.0, pupil_dashboard_alert_active: true) }
     let(:content_version)     { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating, pupil_dashboard_title: 'some content with {{#chart}}chart_name{{/chart}}') }
 
     context 'when mapping fields' do
@@ -141,7 +160,7 @@ describe AlertTypeRatingContentVersion do
         expect(data["en"]).to_not be nil
         key = "alert_type_rating_content_version_#{alert_type_rating.id}"
         expect(data["en"][key]).to_not be nil
-        expect(data["en"][key].keys).to match_array(["pupil_dashboard_title_html", "management_dashboard_title_html"])
+        expect(data["en"][key].keys).to match_array(["pupil_dashboard_title_html"])
       end
       it 'created categories' do
         expect(content_version.tx_categories).to match_array(["alert_rating"])

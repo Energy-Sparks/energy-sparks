@@ -27,11 +27,18 @@ module TransifexSerialisable
   def tx_serialise
     attribs = {}
     self.class.mobility_attributes.map.each do |attr|
-      attr_key = tx_attribute_key(attr)
-      attribs[attr_key] = tx_value(attr)
+      if tx_valid_attribute(attr)
+        attr_key = tx_attribute_key(attr)
+        attribs[attr_key] = tx_value(attr)
+      end
     end
     data = { resource_key => attribs }
     return { "en" => data }
+  end
+
+  # overide in classes to check instance-specific fields
+  def tx_valid_attribute(_attr)
+    true
   end
 
   #Update the model using data from transifex
