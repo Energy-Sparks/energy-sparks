@@ -14,6 +14,7 @@ en:
         name: Title
         summary: Summary
       transport_type:
+        name: Name
         category:
           car: Car
           one: Category
