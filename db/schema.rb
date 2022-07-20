@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_18_174747) do
+ActiveRecord::Schema.define(version: 2022_07_20_112439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -447,6 +447,7 @@ ActiveRecord::Schema.define(version: 2022_07_18_174747) do
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
     t.integer "back_fill_years", default: 4
+    t.string "gsp_name"
   end
 
   create_table "audit_activity_types", force: :cascade do |t|

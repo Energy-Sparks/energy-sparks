@@ -5,6 +5,7 @@ RSpec.describe 'Solar pv areas', type: :system do
   let(:title)                   { 'Lights out for darker skies' }
   let(:latitude)                { 123.456 }
   let(:longitude)               { -789.012 }
+  let(:gsp_name)                { 'MELK_1' }
 
   describe 'when logged in' do
     before(:each) do
@@ -23,6 +24,7 @@ RSpec.describe 'Solar pv areas', type: :system do
       fill_in 'Title', with: title
       fill_in 'Latitude', with: latitude
       fill_in 'Longitude', with: longitude
+      fill_in 'Gsp name', with: gsp_name
 
       expect { click_on 'Create' }.to change { SolarPvTuosArea.count }.by(1)
 
@@ -31,6 +33,7 @@ RSpec.describe 'Solar pv areas', type: :system do
       expect(page).to have_content title
       expect(page).to have_content latitude
       expect(page).to have_content longitude
+      expect(page).to have_content gsp_name
     end
 
     it 'checks for valid fields' do
@@ -44,17 +47,19 @@ RSpec.describe 'Solar pv areas', type: :system do
       expect(page).to have_content("can't be blank")
 
       fill_in 'Longitude', with: longitude
+      fill_in 'Gsp name', with: gsp_name
       expect { click_on 'Create' }.to change { SolarPvTuosArea.count }.by(1)
 
       expect(page).to have_content('Solar PV Areas')
       expect(page).to have_content title
       expect(page).to have_content latitude
       expect(page).to have_content longitude
+      expect(page).to have_content gsp_name
     end
 
     context 'with an existing area' do
 
-      let!(:area) { SolarPvTuosArea.create!(title: title, latitude: latitude, longitude: longitude) }
+      let!(:area) { SolarPvTuosArea.create!(title: title, latitude: latitude, longitude: longitude, gsp_name: 'ABC') }
 
       before(:each) do
         click_on 'Manage'
@@ -66,6 +71,7 @@ RSpec.describe 'Solar pv areas', type: :system do
         expect(page).to have_content title
         expect(page).to have_content latitude
         expect(page).to have_content longitude
+        expect(page).to have_content 'ABC'
       end
 
       it 'can be edited' do
@@ -76,7 +82,7 @@ RSpec.describe 'Solar pv areas', type: :system do
         new_longitude = 999.999
         fill_in 'Latitude', with: new_latitude
         fill_in 'Longitude', with: new_longitude
-
+        fill_in 'Gsp name', with: gsp_name
         click_on 'Update'
 
         expect(page).to have_content("Solar PV Area was updated")
@@ -85,6 +91,7 @@ RSpec.describe 'Solar pv areas', type: :system do
         expect(page).to have_content title
         expect(page).to have_content new_latitude
         expect(page).to have_content new_longitude
+        expect(page).to have_content gsp_name
       end
 
       it 'checks for valid fields on update' do
@@ -101,6 +108,7 @@ RSpec.describe 'Solar pv areas', type: :system do
         expect(page).to have_content("can't be blank")
 
         fill_in 'Latitude', with: new_latitude
+        fill_in 'Gsp name', with: gsp_name
 
         click_on 'Update'
         expect(page).to have_content("Solar PV Area was updated")
@@ -109,6 +117,7 @@ RSpec.describe 'Solar pv areas', type: :system do
         expect(page).to have_content title
         expect(page).to have_content new_latitude
         expect(page).to have_content new_longitude
+        expect(page).to have_content gsp_name
       end
 
       it 'deletes old PV readings if lat/long changed' do
