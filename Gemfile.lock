@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: d6eeb3752078896ee8b1457565d327ab9d5c3ef4
-  tag: 1.50.5.1
+  revision: 3b68cdfea4fc36fa55df2a8d89d55d13089a791c
+  tag: 1.60.1
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
@@ -12,7 +12,6 @@ GIT
       hashdiff (~> 1.0.0)
       html-table (~> 1.5.1)
       interpolate (~> 0.3.0)
-      mechanize (~> 2.7.6)
       pry-byebug
       require_all (~> 2.0.0)
       roo (~> 2.7.1)
@@ -198,7 +197,6 @@ GEM
     coderay (1.1.3)
     colorize (0.8.1)
     concurrent-ruby (1.1.10)
-    connection_pool (2.2.5)
     crack (0.4.5)
       rexml
     crass (1.0.6)
@@ -336,16 +334,6 @@ GEM
       rest-client (>= 1.6.7)
     marcel (1.0.2)
     matrix (0.4.2)
-    mechanize (2.7.7)
-      domain_name (~> 0.5, >= 0.5.1)
-      http-cookie (~> 1.0)
-      mime-types (>= 1.17.2)
-      net-http-digest_auth (~> 1.1, >= 1.1.1)
-      net-http-persistent (>= 2.5.2)
-      nokogiri (~> 1.6)
-      ntlm-http (~> 0.1, >= 0.1.1)
-      webrick (~> 1.7)
-      webrobots (>= 0.0.9, < 0.2)
     memory_profiler (0.9.14)
     method_source (1.0.0)
     mime-types (3.4.1)
@@ -371,9 +359,6 @@ GEM
     multipart-post (2.0.0)
     mustache (1.1.1)
     nenv (0.3.0)
-    net-http-digest_auth (1.4.1)
-    net-http-persistent (4.0.1)
-      connection_pool (~> 2.2)
     netrc (0.11.0)
     nio4r (2.5.8)
     nokogiri (1.13.6)
@@ -382,7 +367,6 @@ GEM
     notiffany (0.1.3)
       nenv (~> 0.1)
       shellany (~> 0.0)
-    ntlm-http (0.1.1)
     oj (3.13.9)
     orm_adapter (0.5.0)
     overcommit (0.58.0)
@@ -650,8 +634,6 @@ GEM
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
-    webrick (1.7.0)
-    webrobots (0.1.2)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)

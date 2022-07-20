@@ -1,5 +1,6 @@
 <%= simple_form_for([:admin, solar_pv_area]) do |f| %>
   <%= f.input :title, as: :string %>
+  <%= f.input :gsp_name %>
   <%= f.input :latitude %>
   <%= f.input :longitude %>
   <%= f.input :back_fill_years %>

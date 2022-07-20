@@ -1,5 +1,6 @@
 module Admin
   class TransportTypesController < AdminController
+    include LocaleHelper
     load_and_authorize_resource
 
     def index
@@ -32,7 +33,8 @@ module Admin
     private
 
     def transport_type_params
-      params.require(:transport_type).permit(:name, :category, :image, :kg_co2e_per_km, :speed_km_per_hour, :can_share, :park_and_stride, :position, :note)
+      translated_params = t_params(TransportType.mobility_attributes)
+      params.require(:transport_type).permit(translated_params, :name, :category, :image, :kg_co2e_per_km, :speed_km_per_hour, :can_share, :park_and_stride, :position, :note)
     end
   end
 end
