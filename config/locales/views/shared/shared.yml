@@ -16,6 +16,9 @@ en:
   common_nav_bar_menus:
     actions: Actions
     activities: Activities
+  manage_menu:
+    admin: Admin
+    reports: Reports
   more_information: More information
   our_schools_menu:
     compare_schools: Compare schools
@@ -33,6 +36,3 @@ en:
     our_services: Our services
     training: Training
     videos: Videos
-  manage_menu:
-    admin: Admin
-    reports: Reports
