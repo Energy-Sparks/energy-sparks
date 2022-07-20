@@ -5,7 +5,7 @@
   <thead>
     <tr>
       <th>Title</th>
-      <th>GSP Id</th>
+      <th>GSP Name</th>
       <th>Latitude</th>
       <th>Longitude</th>
       <th>Readings</th>
@@ -19,7 +19,7 @@
     <% @solar_pv_tuos_areas.each do |solar_pv_tuos_area| %>
       <tr>
         <td><%= solar_pv_tuos_area.title %></td>
-        <td><%= solar_pv_tuos_area.gsp_id %></td>
+        <td><%= solar_pv_tuos_area.gsp_name %></td>
         <td><%= solar_pv_tuos_area.latitude %></td>
         <td><%= solar_pv_tuos_area.longitude %></td>
         <td><%= solar_pv_tuos_area.solar_pv_tuos_readings.count %></td>

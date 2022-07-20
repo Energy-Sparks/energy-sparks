@@ -11,7 +11,7 @@ namespace :after_party do
       gsps = row[3]
       area = SolarPvTuosArea.find_by_title(name)
       if area.present?
-        area.update(gsp_id: gsps)
+        area.update(gsp_name: gsps)
       else
         puts "Unable to match #{name}"
       end

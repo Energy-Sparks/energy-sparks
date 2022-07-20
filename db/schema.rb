@@ -447,7 +447,7 @@ ActiveRecord::Schema.define(version: 2022_07_20_112439) do
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
     t.integer "back_fill_years", default: 4
-    t.string "gsp_id"
+    t.string "gsp_name"
   end
 
   create_table "audit_activity_types", force: :cascade do |t|

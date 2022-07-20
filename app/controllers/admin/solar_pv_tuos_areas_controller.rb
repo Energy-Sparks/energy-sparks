@@ -36,7 +36,7 @@ module Admin
     end
 
     def solar_pv_tuos_area_params
-      params.require(:solar_pv_tuos_area).permit(:title, :latitude, :longitude, :back_fill_years, :gsp_id)
+      params.require(:solar_pv_tuos_area).permit(:title, :latitude, :longitude, :back_fill_years, :gsp_name)
     end
   end
 end
