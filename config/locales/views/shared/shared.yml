@@ -1,5 +1,18 @@
 ---
 en:
+  about_menu:
+    about_us: About us
+    blog: Blog
+    child_safeguarding: Child safeguarding
+    contact: Contact
+    datasets: Datasets
+    jobs: Jobs
+    open_data: Open data
+    partners: Partners
+    privacy_policy: Privacy policy
+    school_statistics: School statistics
+    team: Team
+    terms_and_conditions: Terms and conditions
   common_nav_bar_menus:
     actions: Actions
     activities: Activities
@@ -20,3 +33,6 @@ en:
     our_services: Our services
     training: Training
     videos: Videos
+  manage_menu:
+    admin: Admin
+    reports: Reports
