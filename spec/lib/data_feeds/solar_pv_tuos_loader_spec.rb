@@ -9,13 +9,14 @@ module DataFeeds
     let(:bad_generation_readings)         { [10.0] }
     let(:latitude)                        { 51.39 }
     let(:longitude)                       { -2.37 }
+    let(:gsp_name)                        { 'MELK_1' }
     let(:distance_km)                     { 123.45 }
     let(:start_date)                      { Date.parse('2019-05-01') }
-    let!(:solar_pv_tuos_area)             { create(:solar_pv_tuos_area, title: "The sun has got his hat on") }
+    let!(:solar_pv_tuos_area)             { create(:solar_pv_tuos_area, title: "The sun has got his hat on", gsp_name: gsp_name) }
 
     before(:each) do
-      allow(solar_pv_tuos_interface).to receive(:find_nearest_areas) do
-        [{ gsp_id: 123, gsp_name: 'Here', latitude: latitude, longitude: longitude, distance_km: distance_km }]
+      allow(solar_pv_tuos_interface).to receive(:find_areas) do
+        [{ gsp_id: 123, gsp_name: gsp_name, pes_id: 999 }]
       end
     end
 

@@ -3,6 +3,7 @@ FactoryBot.define do
     sequence(:title) {|n| "Solar PV TUOS Area #{n}"}
     latitude         { 123.456 }
     longitude        { 789.101 }
+    gsp_name         { 'ABC' }
   end
 
   factory :dark_sky_area, class: 'DarkSkyArea' do
@@ -11,4 +12,3 @@ FactoryBot.define do
     longitude        { 789.101 }
   end
 end
-
