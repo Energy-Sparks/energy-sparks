@@ -6,7 +6,7 @@ module ApplicationHelper
   def nice_date_times(datetime, options = {})
     return "" if datetime.nil?
     datetime = datetime.in_time_zone(Rails.application.config.display_timezone) if options[:localtime] && Rails.application.config.display_timezone
-    "#{datetime.strftime('%a')} #{datetime.day.ordinalize} #{datetime.strftime('%b %Y %H:%M')} "
+    "#{datetime.strftime('%a')} #{datetime.day.ordinalize} #{datetime.strftime('%b %Y %H:%M')}"
   end
 
   def nice_times_only(datetime)

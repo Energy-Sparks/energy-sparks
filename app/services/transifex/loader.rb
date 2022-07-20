@@ -23,6 +23,8 @@ module Transifex
         synchronise_resources(transifex_load, HelpPage.all.order(:id))
         log("Synchronising Case Studies")
         synchronise_resources(transifex_load, CaseStudy.all.order(:id))
+        log("Synchronising Transport Types")
+        synchronise_resources(transifex_load, TransportType.all.order(:id))
       rescue => error
         #ensure all errors are caught and logged
         log_error(transifex_load, error)

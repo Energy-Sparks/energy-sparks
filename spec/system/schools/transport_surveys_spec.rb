@@ -157,8 +157,28 @@ describe 'TransportSurveys', type: :system do
                   click_link('Delete')
                 end
               end
+              it { expect(page).to have_content("Transport survey response was successfully removed") }
               it "removes response" do
                 expect(page).to_not have_content(nice_date_times(transport_survey_response.surveyed_at, localtime: true))
+              end
+            end
+
+            it "displays a link to download responses" do
+              expect(page).to have_link('Download responses')
+            end
+
+            context "and downloading responses" do
+              before do
+                click_link('Download responses')
+              end
+              it "shows csv contents" do
+                expect(page.body).to eq transport_survey.responses.to_csv
+              end
+              it "has csv content type" do
+                expect(response_headers['Content-Type']).to eq 'text/csv'
+              end
+              it "has expected file name" do
+                expect(response_headers['Content-Disposition']).to include("energy-sparks-transport-survey-#{school.slug}-#{transport_survey.run_on}.csv")
               end
             end
           end
@@ -169,6 +189,7 @@ describe 'TransportSurveys', type: :system do
                 click_link('Delete')
               end
             end
+            it { expect(page).to have_content("Transport survey was successfully removed") }
             it "removes transport survey" do
               expect(page).to_not have_content(nice_dates(transport_survey.run_on))
             end

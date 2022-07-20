@@ -25,15 +25,15 @@ module DataFeeds
   private
 
     def nearest_gsp_area(area)
-      @solar_pv_tuos_interface.find_nearest_areas(area.latitude, area.longitude).first
+      @solar_pv_tuos_interface.find_areas(area.gsp_name).first
     end
 
     def process_area(area)
       gsp_area = nearest_gsp_area(area)
       solar_pv_data, _missing_date_times, _whole_day_substitutes = @solar_pv_tuos_interface.historic_solar_pv_data(
         gsp_area[:gsp_id],
-        gsp_area[:latitude],
-        gsp_area[:longitude],
+        area.latitude,
+        area.longitude,
         @start_date,
         @end_date
       )
