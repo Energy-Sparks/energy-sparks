@@ -13,6 +13,20 @@ en:
         download_links: Download links
         name: Title
         summary: Summary
+      transport_survey_response:
+        id: Id
+        journey_minutes: Journey minutes
+        passengers: Passengers
+        run_identifier: Run identifier
+        surveyed_at: Surveyed at
+        weather:
+          cloud: Cloud
+          one: Weather
+          rain: Rain
+          snow: Snow
+          sun: Sun
+        weather_image: Weather image
+        weather_name: Weather
       transport_type:
         category:
           car: Car
@@ -21,6 +35,7 @@ en:
           park_and_stride: Park and stride
           public_transport: Public transport
           walking_and_cycling: Walking and cycling
+        image: Image
         name: Name
     errors:
       messages:

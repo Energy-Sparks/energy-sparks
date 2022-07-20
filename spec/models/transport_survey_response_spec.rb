@@ -17,15 +17,14 @@ describe TransportSurveyResponse do
     it { should define_enum_for(:weather).with_values([:sun, :cloud, :rain, :snow]) }
   end
 
-  describe '#weather_symbol' do
-    TransportSurveyResponse.weather_symbols.each do |key, value|
+  describe '#weather_image' do
+    TransportSurveyResponse.weather_images.each do |key, value|
       context "for #{key}" do
         subject(:response) { create :transport_survey_response, weather: key }
-        it { expect(response.weather_symbol).to eq(value) }
+        it { expect(response.weather_image).to eq(value) }
       end
     end
   end
-
 
   describe "#carbon" do
     let(:transport_type) { create :transport_type, can_share: can_share, park_and_stride: park_and_stride }
@@ -64,6 +63,37 @@ describe TransportSurveyResponse do
           expect(response.carbon).to eq(carbon_calc_ps)
         end
       end
+    end
+  end
+
+  describe ".to_csv" do
+    let(:transport_survey) { create(:transport_survey) }
+    subject { transport_survey.responses.to_csv }
+    let('header') { 'Id,Run identifier,Weather,Weather image,Journey minutes,Transport type name,Transport type image,Passengers,Surveyed at' }
+
+    context "with responses" do
+      let!(:responses) do
+        [ create(:transport_survey_response, transport_survey: transport_survey),
+          create(:transport_survey_response, transport_survey: transport_survey) ]
+      end
+      it { expect(subject.lines.count).to eq(3) }
+      it { expect(subject.lines.first.chomp).to eq(header) }
+      2.times do |i|
+        it { expect(subject.lines[i+1].chomp).to eq([responses[i].id, responses[i].run_identifier, responses[i].weather_name, responses[i].weather_image, responses[i].journey_minutes, responses[i].transport_type.name, responses[i].transport_type.image, responses[i].passengers, responses[i].surveyed_at].join(',')) }
+      end
+    end
+
+    context "with responses for other schools" do
+      let!(:responses) do
+        [ create(:transport_survey_response),
+          create(:transport_survey_response) ]
+      end
+      it { expect(subject.lines.count).to eq(1) }
+    end
+
+    context "with no responses" do
+      it { expect(subject.lines.count).to eq(1) }
+      it { expect(subject.lines.first.chomp).to eq(header) }
     end
   end
 end

@@ -32,7 +32,7 @@ describe 'TransportSurveys - App', type: :system do
               click_button('Launch survey app')
             end
 
-            let(:weather) { TransportSurveyResponse.weather_symbols[:rain] }
+            let(:weather) { TransportSurveyResponse.weather_images[:rain] }
 
             it { expect(page).to have_content('Please select today\'s weather') }
             it { expect(page).to have_link(weather) }
