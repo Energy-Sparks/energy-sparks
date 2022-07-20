@@ -20,7 +20,25 @@ en:
     admin: Admin
     reports: Reports
   manage_school_menu:
+    batch_reports: Batch reports
+    edit_school_details: Edit school details
+    edit_school_times: Edit school times
+    expert_analysis: Expert analysis
+    manage_alert_contacts: Manage alert contacts
+    manage_audits: Manage Audits
+    manage_cads: Manage CADs
+    manage_meters: Manage meters
+    manage_partners: Manage partners
     manage_school: Manage School
+    manage_tariffs: Manage tariffs
+    manage_usage_estimate: Manage usage estimate
+    manage_users: Manage users
+    meter_attributes: Meter attributes
+    remove_school: Remove school
+    review_targets: Review targets
+    school calendar: School calendar
+    school_configuration: School configuration
+    transport_surveys: Transport surveys
   more_information: More information
   my_school_menu:
     complete_pupil_activities: Complete pupil activities
