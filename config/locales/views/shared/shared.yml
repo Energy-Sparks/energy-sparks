@@ -1,3 +1,11 @@
 ---
 en:
+  common_nav_bar_menus:
+    actions: Actions
+    activities: Activities
   more_information: More information
+  our_schools_menu:
+    compare_schools: Compare schools
+    our_schools: Our schools
+    scoreboards: Scoreboards
+    view_schools: View schools
