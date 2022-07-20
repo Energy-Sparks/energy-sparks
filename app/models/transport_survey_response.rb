@@ -53,6 +53,10 @@ class TransportSurveyResponse < ApplicationRecord
     self.class.weather_images[weather.to_sym]
   end
 
+  def weather_name
+    self.class.human_enum_name(:weather, weather)
+  end
+
   def self.passenger_symbol
     '👤'
   end
@@ -62,7 +66,7 @@ class TransportSurveyResponse < ApplicationRecord
   end
 
   def self.csv_attributes
-    %w{id run_identifier weather weather_image journey_minutes transport_type.name transport_type.image passengers surveyed_at}
+    %w{id run_identifier weather_name weather_image journey_minutes transport_type.name transport_type.image passengers surveyed_at}
   end
 
   def self.csv_headers
@@ -81,7 +85,7 @@ class TransportSurveyResponse < ApplicationRecord
     CSV.generate(headers: true) do |csv|
       csv << csv_headers
       all.find_each do |response|
-        csv << csv_attributes.map { |attr| attr.split('.').inject(response, :send) } # TODO: translate transport type name & weather
+        csv << csv_attributes.map { |attr| attr.split('.').inject(response, :try) }
       end
     end
   end

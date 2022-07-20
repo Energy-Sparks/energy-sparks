@@ -26,6 +26,7 @@ en:
           snow: Snow
           sun: Sun
         weather_image: Weather image
+        weather_name: Weather
       transport_type:
         category:
           car: Car

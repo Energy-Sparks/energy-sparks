@@ -79,7 +79,7 @@ describe TransportSurveyResponse do
       it { expect(subject.lines.count).to eq(3) }
       it { expect(subject.lines.first.chomp).to eq(header) }
       2.times do |i|
-        it { expect(subject.lines[i+1].chomp).to eq([responses[i].id, responses[i].run_identifier, responses[i].weather, responses[i].weather_image, responses[i].journey_minutes, responses[i].transport_type.name, responses[i].transport_type.image, responses[i].passengers, responses[i].surveyed_at].join(',')) }
+        it { expect(subject.lines[i+1].chomp).to eq([responses[i].id, responses[i].run_identifier, responses[i].weather_name, responses[i].weather_image, responses[i].journey_minutes, responses[i].transport_type.name, responses[i].transport_type.image, responses[i].passengers, responses[i].surveyed_at].join(',')) }
       end
     end
 
