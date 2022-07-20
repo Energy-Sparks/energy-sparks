@@ -19,7 +19,26 @@ en:
   manage_menu:
     admin: Admin
     reports: Reports
+  manage_school_menu:
+    manage_school: Manage School
   more_information: More information
+  my_school_menu:
+    complete_pupil_activities: Complete pupil activities
+    download_our_data: Download our data
+    electricity_and_solar_usage: Electricity and solar usage
+    electricity_usage: Electricity usage
+    energy_analysis: Energy analysis
+    energy_audits: Energy audits
+    energy_saving_actions: Energy saving actions
+    gas_usage: Gas usage
+    live_energy_data: Live energy data
+    my_alerts: My alerts
+    my_school: My school
+    my_school_group: My school group
+    review_targets: Review targets
+    school_programmes: School programmes
+    scoreboard: Scoreboard
+    storage_heater_usage: Storage heater usage
   nav:
     enrol: Enrol
     sign_in: Sign In

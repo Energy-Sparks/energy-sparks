@@ -1,5 +1,5 @@
 <li class="nav-item dropdown mt-2">
-  <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="manage_school" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage School</a>
+  <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="manage_school" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%=t('manage_school_menu.manage_school') %></a>
   <div class="dropdown-menu" aria-labelledby="manage_school" id="manage_school_menu">
     <%= link_to 'Edit school details', edit_school_path(school), class: 'dropdown-item' %>
     <%= link_to 'Edit school times', edit_school_times_path(school), class: 'dropdown-item' if can? :manage_school_times, school%>
