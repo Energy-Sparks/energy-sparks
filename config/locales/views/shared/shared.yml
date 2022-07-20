@@ -20,6 +20,10 @@ en:
     admin: Admin
     reports: Reports
   more_information: More information
+  nav:
+    enrol: Enrol
+    sign_in: Sign In
+    sign_out: Sign Out
   our_schools_menu:
     compare_schools: Compare schools
     our_schools: Our schools
