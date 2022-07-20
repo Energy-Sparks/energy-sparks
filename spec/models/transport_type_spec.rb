@@ -48,4 +48,5 @@ describe TransportType do
       expect(TransportType.categories_with_other['other']).to be_nil
     end
   end
+
 end

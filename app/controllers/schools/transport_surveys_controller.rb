@@ -36,7 +36,7 @@ module Schools
 
     def destroy
       @transport_survey.destroy
-      redirect_to school_transport_surveys_url(@school), notice: "Transport survey was successfully destroyed."
+      redirect_to school_transport_surveys_url(@school), notice: t('schools.transport_surveys.destroy.notice')
     end
 
     private

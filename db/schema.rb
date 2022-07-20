@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_12_105036) do
+ActiveRecord::Schema.define(version: 2022_07_18_174747) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1517,7 +1517,7 @@ ActiveRecord::Schema.define(version: 2022_07_12_105036) do
   end
 
   create_table "transport_types", force: :cascade do |t|
-    t.string "name", null: false
+    t.string "name"
     t.string "image", null: false
     t.decimal "kg_co2e_per_km", default: "0.0", null: false
     t.decimal "speed_km_per_hour", default: "0.0", null: false

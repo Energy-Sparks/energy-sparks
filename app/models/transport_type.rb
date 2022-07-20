@@ -20,6 +20,10 @@
 #  index_transport_types_on_name  (name) UNIQUE
 #
 class TransportType < ApplicationRecord
+  extend Mobility
+  include TransifexSerialisable
+  translates :name, type: :string, fallbacks: { cy: :en }
+
   has_many :responses, class_name: 'TransportSurveyResponse', inverse_of: :transport_type
 
   scope :by_position, -> { order(position: :asc) }
@@ -41,5 +45,10 @@ class TransportType < ApplicationRecord
   def safe_destroy
     raise EnergySparks::SafeDestroyError, 'Transport type has associated responses' if responses.any?
     destroy
+  end
+
+  #override default name for this resource in transifex
+  def tx_name
+    name
   end
 end

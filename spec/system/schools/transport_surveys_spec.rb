@@ -157,6 +157,7 @@ describe 'TransportSurveys', type: :system do
                   click_link('Delete')
                 end
               end
+              it { expect(page).to have_content("Transport survey response was successfully removed") }
               it "removes response" do
                 expect(page).to_not have_content(nice_date_times(transport_survey_response.surveyed_at, localtime: true))
               end
@@ -169,6 +170,7 @@ describe 'TransportSurveys', type: :system do
                 click_link('Delete')
               end
             end
+            it { expect(page).to have_content("Transport survey was successfully removed") }
             it "removes transport survey" do
               expect(page).to_not have_content(nice_dates(transport_survey.run_on))
             end

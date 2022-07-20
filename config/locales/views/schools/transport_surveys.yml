@@ -16,12 +16,17 @@ en:
         transport_category: Transport category
         transport_method: Transport method
         weather: Weather
+      destroy:
+        notice: Transport survey was successfully removed
       header_nav:
         survey_today: Survey today
         view_all: View all transport surveys
       index:
         no_surveys: No surveys have been completed yet
         start_surveying: Start surveying today
+      responses:
+        destroy:
+          notice: Transport survey response was successfully removed
       show:
         carbon_html: Their travel to school generated %{carbon}
         percentages_html: "%{walking_and_cycling} walked or cycled, generating zero CO2, %{public_transport} travelled by public transport, %{park_and_stride} used park and stride and %{car} travelled by car"
