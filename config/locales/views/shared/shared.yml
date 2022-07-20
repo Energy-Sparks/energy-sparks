@@ -16,6 +16,14 @@ en:
   common_nav_bar_menus:
     actions: Actions
     activities: Activities
+  footer:
+    cc_licence_notice: Content on this website is published under <a href="https://creativecommons.org/licenses/by/4.0/">a Creative Commons Attribution 4.0 Licence</a>
+    child_safeguarding_policy: Child safeguarding policy
+    follow_energy_sparks: Follow Energy Sparks
+    more_information: More information
+    privacy_and_cookie_policy: Privacy and cookie policy
+    registered_charity_notice: Energy Sparks is a registered charity in England and Wales, registration 1189273
+    terms_and_conditions: Terms and conditions
   manage_menu:
     admin: Admin
     reports: Reports
@@ -39,7 +47,6 @@ en:
     school_calendar: School calendar
     school_configuration: School configuration
     transport_surveys: Transport surveys
-  more_information: More information
   my_school_menu:
     complete_pupil_activities: Complete pupil activities
     download_our_data: Download our data

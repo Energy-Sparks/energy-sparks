@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-4">
           <p class="small">
-            Energy Sparks is a registered charity in England and Wales, registration 1189273.
+            <%= t('footer.registered_charity_notice') %>.
           </p>
           <div class="row">
             <div class="col-2">
@@ -13,26 +13,26 @@
             </div>
             <div class="col-10">
               <p class="small">
-                Content on this website is published under <a href="https://creativecommons.org/licenses/by/4.0/">a Creative Commons Attribution 4.0 Licence</a>.
+                <%= t('footer.cc_licence_notice').html_safe %>.
               </p>
             </div>
            </div>
         </div>
         <div class="col-5">
-          <h6><%= t('more_information') %></h6>
+          <h6><%= t('footer.more_information') %></h6>
           <div class="row">
             <div class="col">
               <ul class="list-unstyled">
-                <li><%= link_to "Terms and conditions", terms_and_conditions_path %></li>
-                <li><%= link_to "Privacy and cookie policy", privacy_and_cookie_policy_path %></li>
-                <li><%= link_to "Child safeguarding policy", child_safeguarding_policy_path %></li>
+                <li><%= link_to t('footer.terms_and_conditions'), terms_and_conditions_path %></li>
+                <li><%= link_to t('footer.privacy_and_cookie_policy'), privacy_and_cookie_policy_path %></li>
+                <li><%= link_to t('footer.child_safeguarding_policy'), child_safeguarding_policy_path %></li>
               </ul>
             </div>
           </div>
         </div>
 
         <div class="col-3">
-          <h6>Follow Energy Sparks</h6>
+          <h6><%= t('footer.follow_energy_sparks') %></h6>
           <ul class="list-inline">
             <li class="list-inline-item p-2">
               <a href="//twitter.com/EnergySparks" class=""><%= fab_icon('twitter fa-2x') %></a>
