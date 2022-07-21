@@ -53,9 +53,19 @@ class TransportSurvey < ApplicationRecord
     percentage_per_category.collect { |k, v| { name: TransportType.human_enum_name(:category, k), y: v } }
   end
 
-  def self.equivalence_rates
-    [:tree, :tv, :computer_console, :smartphone, :carnivore_dinner, :vegetarian_dinner].index_with do |type|
-      EnergyEquivalences.all_equivalences[type][:conversions][:co2][:rate]
+  def self.equivalence_images
+    { tree: '🌳', tv: '📺', computer_console: '🎮', smartphone: '📱', carnivore_dinner: '🍲', vegetarian_dinner: '🥗' }
+  end
+
+  def self.equivalence_devisors
+    { tree: 365 }
+  end
+
+  def self.equivalences
+    equivalence_images.collect do |name, image|
+      { rate: EnergyEquivalences.all_equivalences[name][:conversions][:co2][:rate] / (equivalence_devisors[name] || 1),
+        statement: I18n.t(name, scope: 'schools.transport_surveys.equivalences'),
+        image: image }
     end
   end
 

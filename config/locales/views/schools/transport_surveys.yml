@@ -19,6 +19,26 @@ en:
         weather: Weather
       destroy:
         notice: Transport survey was successfully removed
+      equivalences:
+        carnivore_dinner:
+          one: That's the same as 1 meat dinner ${image}!
+          other: That's the same as ${amount} meat dinners ${image}!
+        computer_console:
+          one: That's the same as playing 1 hour of computer games ${image}!
+          other: That's the same as playing ${amount} hours of computer games ${image}!
+        neutral: "That's Carbon Neutral 🌳!"
+        smartphone:
+          one: That's the same as charging 1 smart phone ${image}!
+          other: That's the same as charging ${amount} smart phones ${image}!
+        tree:
+          one: 1 tree would absorb this amount of CO2 in 1 day ${image}!
+          other: 1 tree would absorb this amount of CO2 in ${amount} days ${image}!
+        tv:
+          one: That's the same as 1 hour of TV ${image}!
+          other: That's the same as ${amount} hours of TV ${image}!
+        vegetarian_dinner:
+          one: That's the same as 1 veggie dinner ${image}!
+          other: That's the same as ${amount} veggie dinners ${image}!
       header_nav:
         survey_today: Survey today
         view_all: View all transport surveys

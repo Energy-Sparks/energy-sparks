@@ -6,6 +6,9 @@
 <%= render 'tab_nav' %>
 
 <% if @transport_survey.responses.any? %>
+
+  <%#= render :equivalences %>
+
   <div class="mb-3">
     <div><%= t('schools.transport_surveys.show.summary_html', count: @transport_survey.total_responses, date: nice_dates(@transport_survey.run_on)) %>.</div>
     <div><%= t('schools.transport_surveys.show.carbon_html', carbon: tag.strong("#{@transport_survey.total_carbon.round(2)}kg CO2")) %>.</div>
