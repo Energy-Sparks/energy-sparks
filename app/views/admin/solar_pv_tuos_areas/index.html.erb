@@ -1,18 +1,29 @@
 <h1>Solar PV Areas</h1>
 
 <% if @solar_pv_tuos_areas.any? %>
-<table class="table table-sorted">
+<table class="table table-sorted table-sm">
   <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th colspan="2">GSP</th>
+      <th></th>
+      <th>Dates</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
     <tr>
       <th>Title</th>
       <th>Active?</th>
-      <th>GSP Id</th>
-      <th>GSP Name</th>
+      <th>Id</th>
+      <th>Name</th>
       <th>Location</th>
+      <th>First</th>
+      <th>Last</th>
       <th>Readings</th>
-      <th>Earliest date</th>
-      <th>Latest date</th>
-      <th>Back fill years</th>
+      <th>Back fill</th>
       <th>Schools</th>
       <th>Actions</th>
     </tr>
@@ -24,10 +35,10 @@
         <td><%= fa_icon( area.active? ? 'check-circle text-success' : 'times-circle text-danger') %></td>
         <td><%= area.gsp_id %></td>
         <td><%= area.gsp_name %></td>
-        <td><%= area.latitude %>, <%= area.longitude %></td>
-        <td><%= area.solar_pv_tuos_readings.count %></td>
+        <td><%= link_to "#{area.latitude}, #{area.longitude}", "https://www.openstreetmap.org/?mlat=#{area.latitude}&mlon=#{area.longitude}", target: "_blank" %></td>
         <td><%= area.first_reading_date %></td>
         <td><%= area.last_reading_date %></td>
+        <td><%= area.solar_pv_tuos_readings.count %></td>
         <td><%= area.back_fill_years %></td>
         <td><%= area.schools.count %></td>
         <td>
