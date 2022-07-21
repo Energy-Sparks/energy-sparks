@@ -3,13 +3,11 @@
 <div class="application container">
   <div class="row padded-row">
     <div class="col-md-6">
-      <h1>Contact us</h1>
+      <h1><%= t('contact.title') %></h1>
     </div>
     <div class="col-md-6">
-
     </div>
   </div>
-
   <div class="row">
     <div class="col-md-3 callout-text">
       <p><strong><%= t('contact.questions.title') %></strong></p><p>
@@ -35,25 +33,24 @@
       </ul>
     </div>
   </div>
-
   <div class="row">
     <div class="col-md-3 callout-text">
-      <p><strong>Problem Reporting</strong></p>
+      <p><strong><%= t('contact.problem_reporting.title') %></strong></p>
     </div>
     <div class="col-md-8">
-      <p>If you are reporting a problem with the service, please try to include as much detail in your email as possible, including which web browser and operating system you are using, the URL (address) of the page and when you experienced the problem.</p>
+      <p><%= t('contact.problem_reporting.content_1') %>.</p>
     </div>
   </div>
   <div class="row">
     <div class="col-md-3 callout-text">
-      <p><strong>Further Information</strong></p>
+      <p><strong><%= t('contact.further_information.title') %></strong></p>
     </div>
     <div class="col-md-8">
-      <p>In the meantime you can:</p>
+      <p><%= t('contact.problem_reporting.in_the_meantime') %>:</p>
       <ul>
-        <li>Read <%= link_to "about EnergySparks", for_teachers_path %> and the goals of the project</li>
-        <li>Learn how to <%= link_to "enrol your school", enrol_path %></li>
-        <li>Discover what <%= link_to "open data", datasets_path %> we use in the service</li>
+        <li><%= t('contact.further_information.read_html', for_teachers_path: for_teachers_path) %></li>
+        <li><%= t('contact.further_information.learn_html', enrol_path: enrol_path) %></li>
+        <li><%= t('contact.further_information.discover_html', datasets_path: datasets_path) %></li>
       </ul>
     </div>
   </div>
