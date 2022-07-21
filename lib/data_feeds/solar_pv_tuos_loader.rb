@@ -24,14 +24,18 @@ module DataFeeds
 
   private
 
+    def gsp_area_id(area)
+      area.gsp_id.present? ? area.gsp_id : nearest_gsp_area(area)[:gsp_id]
+    end
+
     def nearest_gsp_area(area)
       @solar_pv_tuos_interface.find_areas(area.gsp_name).first
     end
 
     def process_area(area)
-      gsp_area = nearest_gsp_area(area)
+      gsp_area_id = gsp_area_id(area)
       solar_pv_data, _missing_date_times, _whole_day_substitutes = @solar_pv_tuos_interface.historic_solar_pv_data(
-        gsp_area[:gsp_id],
+        gsp_area_id,
         area.latitude,
         area.longitude,
         @start_date,
@@ -40,7 +44,7 @@ module DataFeeds
       solar_pv_data.each do |reading_date, generation_mw_x48|
         next if generation_mw_x48.size != 48
         next if reading_date.nil?
-        process_day(reading_date, generation_mw_x48, area, gsp_area)
+        process_day(reading_date, generation_mw_x48, area)
       end
     rescue => e
       Rails.logger.error "Exception: running solar pv for #{area.title} from #{@start_date} to #{@end_date} : #{e.class} #{e.message}"
@@ -48,27 +52,16 @@ module DataFeeds
       Rollbar.error(e, job: :solar_pv_tuos_area, area_id: area.id, area: area.title)
     end
 
-    def process_day(reading_date, generation_mw_x48, area, gsp_area)
-      gsp_id = gsp_area[:gsp_id]
-      gsp_name = gsp_area[:gsp_name]
-      latitude = gsp_area[:latitude]
-      longitude = gsp_area[:longitude]
-      distance_km = gsp_area[:distance_km]
-
+    def process_day(reading_date, generation_mw_x48, area)
       record = SolarPvTuosReading.find_by(reading_date: reading_date, area_id: area.id)
       if record
-        record.update(generation_mw_x48: generation_mw_x48, gsp_id: gsp_id, gsp_name: gsp_name, latitude: latitude, longitude: longitude, distance_km: distance_km)
+        record.update(generation_mw_x48: generation_mw_x48)
         @update_count = @update_count + 1
       else
         SolarPvTuosReading.create!(
           reading_date: reading_date,
           generation_mw_x48: generation_mw_x48,
-          gsp_id: gsp_id,
-          gsp_name: gsp_name,
-          latitude: latitude,
-          longitude: longitude,
-          area_id: area.id,
-          distance_km: distance_km)
+          area_id: area.id)
         @insert_count = @insert_count + 1
       end
     end

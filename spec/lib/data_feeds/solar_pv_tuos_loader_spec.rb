@@ -14,29 +14,42 @@ module DataFeeds
     let(:start_date)                      { Date.parse('2019-05-01') }
     let!(:solar_pv_tuos_area)             { create(:solar_pv_tuos_area, title: "The sun has got his hat on", gsp_name: gsp_name) }
 
-    before(:each) do
-      allow(solar_pv_tuos_interface).to receive(:find_areas) do
-        [{ gsp_id: 123, gsp_name: gsp_name, pes_id: 999 }]
-      end
-    end
-
     describe 'with disabled area' do
       before(:each) do
         solar_pv_tuos_area.update(active: false)
       end
       it 'does not load data' do
+        expect(solar_pv_tuos_interface).to_not receive(:find_areas)
         expect(solar_pv_tuos_interface).to_not receive(:historic_solar_pv_data)
         spvtl = SolarPvTuosLoader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
         expect { spvtl.import }.to_not change { SolarPvTuosReading.count }
       end
     end
 
-    describe 'with good data' do
-      it 'creates a record per day and updates if a record exists' do
+    describe 'with no gsp_id' do
+      before(:each) do
+        solar_pv_tuos_area.update(gsp_id: nil)
+      end
+      it 'looks up the id' do
+        expect(solar_pv_tuos_interface).to receive(:find_areas) do
+          [{ gsp_id: 123, gsp_name: gsp_name, pes_id: 999 }]
+        end
         allow(solar_pv_tuos_interface).to receive(:historic_solar_pv_data) do
           [ { start_date => good_generation_readings }, nil, nil ]
         end
+        spvtl = SolarPvTuosLoader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
+        expect { spvtl.import }.to change { SolarPvTuosReading.count }.from(0).to(1)
+      end
+    end
 
+    describe 'with good data' do
+      before(:each) do
+        expect(solar_pv_tuos_interface).to_not receive(:find_areas)
+        allow(solar_pv_tuos_interface).to receive(:historic_solar_pv_data) do
+          [ { start_date => good_generation_readings }, nil, nil ]
+        end
+      end
+      it 'creates a record per day and updates if a record exists' do
         spvtl = SolarPvTuosLoader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
         expect { spvtl.import }.to change { SolarPvTuosReading.count }.from(0).to(1)
         expect(SolarPvTuosReading.first.generation_mw_x48).to eq good_generation_readings
@@ -51,13 +64,18 @@ module DataFeeds
       end
     end
 
-    it 'rejects duff data  record per day' do
-      allow(solar_pv_tuos_interface).to receive(:historic_solar_pv_data) do
-        [ { start_date => bad_generation_readings }, nil, nil ]
+    describe 'with bad data' do
+      before(:each) do
+        expect(solar_pv_tuos_interface).to_not receive(:find_areas)
+        allow(solar_pv_tuos_interface).to receive(:historic_solar_pv_data) do
+          [ { start_date => bad_generation_readings }, nil, nil ]
+        end
       end
 
-      spvtl = SolarPvTuosLoader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
-      expect { spvtl.import }.to_not change { SolarPvTuosReading.count }
+      it 'rejects duff data  record per day' do
+        spvtl = SolarPvTuosLoader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
+        expect { spvtl.import }.to_not change { SolarPvTuosReading.count }
+      end
     end
   end
 end
