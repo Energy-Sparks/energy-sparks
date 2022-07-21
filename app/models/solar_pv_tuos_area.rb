@@ -20,6 +20,7 @@ class SolarPvTuosArea < Area
   has_many :schools, inverse_of: :solar_pv_tuos_area
 
   validates_presence_of :latitude, :longitude, :title, :back_fill_years, :gsp_name
+  validate :cannot_be_inactive_if_attached_to_schools
 
   def reading_count
     solar_pv_tuos_readings.count
@@ -38,6 +39,12 @@ class SolarPvTuosArea < Area
   def last_reading_date
     if reading_count > 0
       solar_pv_tuos_readings.by_date.last.reading_date.strftime('%d %b %Y')
+    end
+  end
+
+  def cannot_be_inactive_if_attached_to_schools
+    if !active && schools.count > 0
+      errors.add(:active, "cannot disable region as it is used by some schools")
     end
   end
 end
