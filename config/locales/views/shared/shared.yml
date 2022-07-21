@@ -1,3 +1,88 @@
 ---
 en:
-  more_information: More information
+  about_menu:
+    about_us: About us
+    blog: Blog
+    child_safeguarding: Child safeguarding
+    contact: Contact
+    datasets: Datasets
+    jobs: Jobs
+    open_data: Open data
+    partners: Partners
+    privacy_policy: Privacy policy
+    school_statistics: School statistics
+    team: Team
+    terms_and_conditions: Terms and conditions
+  common_nav_bar_menus:
+    actions: Actions
+    activities: Activities
+  footer:
+    cc_licence_notice_html: Content on this website is published under <a href="https://creativecommons.org/licenses/by/4.0/">a Creative Commons Attribution 4.0 Licence</a>
+    child_safeguarding_policy: Child safeguarding policy
+    follow_energy_sparks: Follow Energy Sparks
+    more_information: More information
+    privacy_and_cookie_policy: Privacy and cookie policy
+    registered_charity_notice: Energy Sparks is a registered charity in England and Wales, registration 1189273
+    terms_and_conditions: Terms and conditions
+  manage_menu:
+    admin: Admin
+    reports: Reports
+  manage_school_menu:
+    batch_reports: Batch reports
+    edit_school_details: Edit school details
+    edit_school_times: Edit school times
+    expert_analysis: Expert analysis
+    manage_alert_contacts: Manage alert contacts
+    manage_audits: Manage Audits
+    manage_cads: Manage CADs
+    manage_meters: Manage meters
+    manage_partners: Manage partners
+    manage_school: Manage School
+    manage_tariffs: Manage tariffs
+    manage_usage_estimate: Manage usage estimate
+    manage_users: Manage users
+    meter_attributes: Meter attributes
+    remove_school: Remove school
+    review_targets: Review targets
+    school_calendar: School calendar
+    school_configuration: School configuration
+    transport_surveys: Transport surveys
+  my_school_menu:
+    complete_pupil_activities: Complete pupil activities
+    download_our_data: Download our data
+    electricity_and_solar_usage: Electricity and solar usage
+    electricity_usage: Electricity usage
+    energy_analysis: Energy analysis
+    energy_audits: Energy audits
+    energy_saving_actions: Energy saving actions
+    gas_usage: Gas usage
+    live_energy_data: Live energy data
+    my_alerts: My alerts
+    my_school: My school
+    my_school_group: My school group
+    review_targets: Review targets
+    school_programmes: School programmes
+    scoreboard: Scoreboard
+    storage_heater_usage: Storage heater usage
+  nav:
+    enrol: Enrol
+    sign_in: Sign In
+    sign_out: Sign Out
+  our_schools_menu:
+    compare_schools: Compare schools
+    our_schools: Our schools
+    scoreboards: Scoreboards
+    view_schools: View schools
+  our_services_menu:
+    case_studies: Case Studies
+    educational_workshops: Educational workshops
+    energy_audits: Energy audits
+    for_local_authorities: For Local Authorities
+    for_multi_academy_trusts: For Multi-Academy Trusts
+    for_schools: For Schools
+    newsletters: Newsletters
+    our_services: Our services
+    training: Training
+    videos: Videos
+  switch_schools_menu:
+    switch_school: Switch school
