@@ -3,7 +3,7 @@
 <div class="application container">
   <div class="row padded-row">
     <div class="col-md-6">
-      <h1><%= t('contact.title') %></h1>
+      <h1>Contact us</h1>
     </div>
     <div class="col-md-6">
 
@@ -15,7 +15,9 @@
       <p><strong><%= t('contact.questions.title') %></strong></p><p>
     </div>
     <div class="col-md-5">
-      <%= t('contact.questions.content_1_html') %>
+      <p><%= t('contact.questions.content_1') %></p>
+      <p><a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a></p>
+      <p><%= t('contact.questions.content_2') %></p>
     </div>
     <div class="col-3">
       <%= image_tag("actions/radiator-thermostat.png", class: "img-fluid") %>
@@ -25,7 +27,12 @@
     <div class="col-md-3 callout-text">
     </div>
     <div class="col-md-8">
-      <%= t('contact.questions.content_2_html') %>
+      <p><%= t('contact.questions.content_3') %></p>
+      <p><%= t('contact.questions.content_4') %>:</p>
+      <ul>
+        <li><%= t('contact.questions.twitter') %> <a href="https://twitter.com/EnergySparks">@EnergySparks</a></li>
+        <li><%= t('contact.questions.facebook') %> <a href="https://www.facebook.com/EnergySparksUK/">@EnergySparksUK</a></li>
+      </ul>
     </div>
   </div>
 

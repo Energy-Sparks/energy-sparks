@@ -2,7 +2,11 @@
 en:
   contact:
     questions:
-      content_1_html: <p>If you have any questions or comments relating to Energy Sparks then please email us at</p> <p><a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a></p> <p>and one of the team will get in touch shortly.</p>
-      content_2_html: <p>You can contact us with questions about your gas and electricity data, ask us for advice to increase the energy savings at your school, ask us for support with running your pupil energy team, or report a problem with the website. You can also provide suggestions for improving Energy Sparks to better meet your needs. If you'd like to see a new feature please let us know.</p> <p>You can also contact us via social media:</p> <ul> <li>You can find us on twitter <a href="https://twitter.com/EnergySparks">@EnergySparks</a></li> <li>And on Facebook at <a href="https://www.facebook.com/EnergySparksUK/">@EnergySparksUK</a></li> </ul>
+      content_1: If you have any questions or comments relating to Energy Sparks then please email us at
+      content_2: and one of the team will get in touch shortly
+      content_3: You can contact us with questions about your gas and electricity data, ask us for advice to increase the energy savings at your school, ask us for support with running your pupil energy team, or report a problem with the website. You can also provide suggestions for improving Energy Sparks to better meet your needs. If you'd like to see a new feature please let us know
+      content_4: You can also contact us via social media
+      twitter:  You can find us on twitter
+      facebook: And on Facebook at
       title: Questions?
     title: Contact us
