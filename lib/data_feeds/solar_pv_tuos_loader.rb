@@ -11,7 +11,7 @@ module DataFeeds
     end
 
     def import
-      SolarPvTuosArea.all.each do |area|
+      SolarPvTuosArea.active.each do |area|
         process_area(area)
       end
       p "Imported #{@insert_count} records, Updated #{@update_count} records"

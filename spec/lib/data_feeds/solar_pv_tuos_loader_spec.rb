@@ -20,6 +20,17 @@ module DataFeeds
       end
     end
 
+    describe 'with disabled area' do
+      before(:each) do
+        solar_pv_tuos_area.update(active: false)
+      end
+      it 'does not load data' do
+        expect(solar_pv_tuos_interface).to_not receive(:historic_solar_pv_data)
+        spvtl = SolarPvTuosLoader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
+        expect { spvtl.import }.to_not change { SolarPvTuosReading.count }
+      end
+    end
+
     describe 'with good data' do
       it 'creates a record per day and updates if a record exists' do
         allow(solar_pv_tuos_interface).to receive(:historic_solar_pv_data) do

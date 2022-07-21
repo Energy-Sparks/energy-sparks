@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_20_112439) do
+ActiveRecord::Schema.define(version: 2022_07_21_141039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -448,6 +448,8 @@ ActiveRecord::Schema.define(version: 2022_07_20_112439) do
     t.decimal "longitude", precision: 10, scale: 6
     t.integer "back_fill_years", default: 4
     t.string "gsp_name"
+    t.integer "gsp_id"
+    t.boolean "active", default: true
   end
 
   create_table "audit_activity_types", force: :cascade do |t|
@@ -1269,7 +1271,6 @@ ActiveRecord::Schema.define(version: 2022_07_20_112439) do
     t.bigint "calendar_id"
     t.string "slug"
     t.bigint "temperature_area_id"
-    t.bigint "solar_irradiance_area_id"
     t.bigint "met_office_area_id"
     t.integer "number_of_pupils"
     t.decimal "floor_area"

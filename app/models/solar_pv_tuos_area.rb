@@ -2,9 +2,11 @@
 #
 # Table name: areas
 #
+#  active          :boolean          default(TRUE)
 #  back_fill_years :integer          default(4)
 #  description     :text
-#  gsp_name          :string
+#  gsp_id          :integer
+#  gsp_name        :string
 #  id              :bigint(8)        not null, primary key
 #  latitude        :decimal(10, 6)
 #  longitude       :decimal(10, 6)
@@ -16,7 +18,7 @@
 class SolarPvTuosArea < Area
   has_many :solar_pv_tuos_readings, class_name: 'DataFeeds::SolarPvTuosReading', foreign_key: :area_id, dependent: :destroy
 
-  validates_presence_of :latitude, :longitude, :title, :back_fill_years
+  validates_presence_of :latitude, :longitude, :title, :back_fill_years, :gsp_name
 
   def reading_count
     solar_pv_tuos_readings.count
