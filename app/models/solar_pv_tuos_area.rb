@@ -17,6 +17,7 @@
 # TUOS is The University of Sheffield
 class SolarPvTuosArea < Area
   has_many :solar_pv_tuos_readings, class_name: 'DataFeeds::SolarPvTuosReading', foreign_key: :area_id, dependent: :destroy
+  has_many :schools, inverse_of: :solar_pv_tuos_area
 
   validates_presence_of :latitude, :longitude, :title, :back_fill_years, :gsp_name
 
