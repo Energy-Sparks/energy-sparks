@@ -3,6 +3,7 @@ en:
   activities:
     actions:
       are_you_sure: Are you sure?
+      home: Home
       delete: Delete
       edit: Edit
       title: Actions
@@ -16,3 +17,10 @@ en:
     sign_in_html: "<a href='%{new_user_session_path}'>Sign in</a> to record a new energy saving activity that has taken place in your school"
     title: Energy saving activities
     type: Type
+    show:
+      no_entry: You haven't entered what you did for this activity, please edit the activitiy and tell us what you did
+      activity_description: Activity description
+      score_awarded_for_this_activity: Score awarded for this activity
+      category_of_activity: Category of activity
+      key_stages: Key Stages
+      all_activities: All activities
