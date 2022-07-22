@@ -57,6 +57,10 @@ class TransportSurvey < ApplicationRecord
     { tree: '🌳', tv: '📺', computer_console: '🎮', smartphone: '📱', carnivore_dinner: '🍲', vegetarian_dinner: '🥗' }
   end
 
+  def self.equivalence_svgs
+    { tree: 'tree', tv: 'television', computer_console: 'video_game', smartphone: 'phone', carnivore_dinner: 'roast_meal', vegetarian_dinner: 'meal' }
+  end
+
   def self.equivalence_devisors
     { tree: 365 }
   end
@@ -65,8 +69,20 @@ class TransportSurvey < ApplicationRecord
     equivalence_images.collect do |name, image|
       { rate: EnergyEquivalences.all_equivalences[name][:conversions][:co2][:rate] / (equivalence_devisors[name] || 1),
         statement: I18n.t(name, scope: 'schools.transport_surveys.equivalences'),
-        image: image }
+        image: image,
+        name: name }
     end
+  end
+
+  def equivalences
+    self.class.equivalences.collect do |equivalence|
+      amount = (total_carbon / equivalence[:rate]).round
+      if amount > 0
+        { name: equivalence[:name],
+          statement: I18n.t(equivalence[:name], scope: 'schools.transport_surveys.equivalences', image: equivalence[:image], amount: amount, count: amount),
+          svg: self.class.equivalence_svgs[equivalence[:name]] }
+      end
+    end.compact.shuffle
   end
 
   def responses=(responses_attributes)

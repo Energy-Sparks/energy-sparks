@@ -7,7 +7,7 @@
 
 <% if @transport_survey.responses.any? %>
 
-  <%#= render :equivalences %>
+  <%= render 'equivalences' %>
 
   <div class="mb-3">
     <div><%= t('schools.transport_surveys.show.summary_html', count: @transport_survey.total_responses, date: nice_dates(@transport_survey.run_on)) %>.</div>

@@ -1,0 +1,25 @@
+<div id="survey_carousel" class="carousel slide" data-wrap="true" data-interval="false">
+  <div class="carousel-inner">
+    <% @transport_survey.equivalences.each_with_index do |equivalence, index| %>
+      <div class="carousel-item <%= 'active' if index == 0 %>">
+        <div class="row illustration-background">
+          <div class="col-lg-6 equivalence-wrapper">
+            <h4><%= equivalence[:statement] %></h4>
+          </div>
+          <div class="col-lg-6 illustration-wrapper">
+            <%= image_tag("equivalences/#{equivalence[:svg]}.svg") %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <a class="carousel-control-prev" href="#survey_carousel" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#survey_carousel" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+

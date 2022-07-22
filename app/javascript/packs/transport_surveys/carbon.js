@@ -15,7 +15,7 @@ export const carbon = ( function() {
   }
 
   function statement(statement, amount, image) {
-    return statement.replace(/\${amount}/, amount).replace(/(\${image})/, image);
+    return statement.replace(/%{amount}/, amount).replace(/(%{image})/, image);
   }
 
   function parkAndStrideTimeMins(timeMins) {
