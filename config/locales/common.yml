@@ -8,5 +8,7 @@ en:
       delete: Delete
       manage: Manage
       view_results: View results
+      next: Next
+      previous: Previous
   school_types:
     mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
