@@ -27,7 +27,7 @@
               <td><%= link_to activity.display_name, school_activity_path(@school, activity) %></td>
               <td><span class="badge badge-secondary"><%= activity.activity_category.name %></span></td>
               <td><%= activity.happened_on.strftime("%A, %d %B %Y") %></td>
-              <% if 1==1 #can? :manage, @activity %>
+              <% if can? :manage, @activity %>
                 <td>
                   <div class="btn-group">
                     <%= link_to t('activities.actions.edit'), edit_school_activity_path(@school, activity), class: 'btn btn-warning' %>
