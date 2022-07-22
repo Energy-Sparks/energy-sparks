@@ -24,7 +24,7 @@ en:
           one: That's the same as 1 meat dinner %{image}!
           other: That's the same as %{count} meat dinners %{image}!
         computer_console:
-          one: That's the same as playing 1 hour of computer games text_fieldsimage}!
+          one: That's the same as playing 1 hour of computer games %{image}!
           other: That's the same as playing %{count} hours of computer games %{image}!
         neutral: "That's Carbon Neutral 🌳!"
         smartphone:

@@ -53,7 +53,6 @@ describe 'TransportSurveys', type: :system do
           it { expect(page).to_not have_content("meat dinner") }
           it { expect(page).to_not have_content("That's Carbon Neutral 🌳!") }
 
-
           it { expect(page).to have_content("1 pupil or staff member included in this survey generated 0.46kg carbon by travelling to school") }
           it { expect(page).to have_content("0% walked or cycled, generating zero CO2") }
           it { expect(page).to have_content("0% travelled by public transport") }
