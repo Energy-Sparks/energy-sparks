@@ -22,23 +22,23 @@ en:
       equivalences:
         carnivore_dinner:
           one: That's the same as 1 meat dinner %{image}!
-          other: That's the same as %{amount} meat dinners %{image}!
+          other: That's the same as %{count} meat dinners %{image}!
         computer_console:
           one: That's the same as playing 1 hour of computer games text_fieldsimage}!
-          other: That's the same as playing %{amount} hours of computer games %{image}!
+          other: That's the same as playing %{count} hours of computer games %{image}!
         neutral: "That's Carbon Neutral 🌳!"
         smartphone:
           one: That's the same as charging 1 smart phone %{image}!
-          other: That's the same as charging %{amount} smart phones %{image}!
+          other: That's the same as charging %{count} smart phones %{image}!
         tree:
           one: 1 tree would absorb this amount of CO2 in 1 day %{image}!
-          other: 1 tree would absorb this amount of CO2 in %{amount} days %{image}!
+          other: 1 tree would absorb this amount of CO2 in %{count} days %{image}!
         tv:
           one: That's the same as 1 hour of TV %{image}!
-          other: That's the same as %{amount} hours of TV %{image}!
+          other: That's the same as %{count} hours of TV %{image}!
         vegetarian_dinner:
           one: That's the same as 1 veggie dinner %{image}!
-          other: That's the same as %{amount} veggie dinners %{image}!
+          other: That's the same as %{count} veggie dinners %{image}!
       header_nav:
         survey_today: Survey today
         view_all: View all transport surveys
@@ -49,11 +49,14 @@ en:
         destroy:
           notice: Transport survey response was successfully removed
       show:
-        carbon_html: Their travel to school generated %{carbon}
-        percentages_html: "%{walking_and_cycling} walked or cycled, generating zero CO2, %{public_transport} travelled by public transport, %{park_and_stride} used park and stride and %{car} travelled by car"
         summary_html:
-          one: "<strong>1 pupil or staff member</strong> was surveyed on <strong>%{date}</strong>"
-          other: "<strong>%{count} pupils and staff</strong> were surveyed on <strong>%{date}</strong>"
+          one: "<strong>%{count} pupil or staff member</strong> included in this survey generated <strong>%{carbon}kg</strong> carbon by travelling to school"
+          other: "<strong>%{count} pupils and staff</strong> included in this survey generated <strong>%{carbon}kg</strong> carbon by travelling to school"
+        percentages:
+          walking_and_cycling_html: "%{amount} walked or cycled, generating zero C02"
+          public_transport_html: "%{amount} travelled by public transport"
+          park_and_stride_html: "%{amount} used park and stride"
+          car_html: "%{amount} travelled by car"
       tab_nav:
         manage_responses: Manage responses
         results: Results

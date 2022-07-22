@@ -9,18 +9,7 @@
 
   <%= render 'equivalences' %>
 
-  <div class="mb-3">
-    <div><%= t('schools.transport_surveys.show.summary_html', count: @transport_survey.total_responses, date: nice_dates(@transport_survey.run_on)) %>.</div>
-    <div><%= t('schools.transport_surveys.show.carbon_html', carbon: tag.strong("#{@transport_survey.total_carbon.round(2)}kg CO2")) %>.</div>
-    <div>
-      <% percentages = @transport_survey.percentage_per_category %>
-      <%= t('schools.transport_surveys.show.percentages_html',
-      walking_and_cycling: tag.strong("#{percentages["walking_and_cycling"].round}%"),
-      public_transport: tag.strong("#{percentages["public_transport"].round}%"),
-      park_and_stride: tag.strong("#{percentages["park_and_stride"].round}%"),
-      car: tag.strong("#{percentages["car"].round}%")) %>.
-    </div>
-  </div>
+  <h2 class="mt-3">Let's look at this in more detail here:</h2>
 
   <div id="transport_surveys_pie" class="mb-3"></div>
 

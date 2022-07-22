@@ -79,7 +79,7 @@ class TransportSurvey < ApplicationRecord
       amount = (total_carbon / equivalence[:rate]).round
       if amount > 0
         { name: equivalence[:name],
-          statement: I18n.t(equivalence[:name], scope: 'schools.transport_surveys.equivalences', image: equivalence[:image], amount: amount, count: amount),
+          statement: I18n.t(equivalence[:name], scope: 'schools.transport_surveys.equivalences', image: equivalence[:image], count: amount),
           svg: self.class.equivalence_svgs[equivalence[:name]] }
       end
     end.compact.shuffle

@@ -4,7 +4,15 @@
       <div class="carousel-item <%= 'active' if index == 0 %>">
         <div class="row illustration-background">
           <div class="col-lg-6 equivalence-wrapper">
-            <h4><%= equivalence[:statement] %></h4>
+            <div><%= t('schools.transport_surveys.show.summary_html', count: @transport_survey.total_responses, carbon: @transport_survey.total_carbon.round(2)) %></div>
+            <h1><%= equivalence[:statement] %></h1>
+            <div>
+              <ul>
+                <% TransportType.categories.keys.each do |cat| %>
+                  <li><%= t("schools.transport_surveys.show.percentages.#{cat}_html", amount: "#{@transport_survey.percentage_per_category[cat].round}%") %></li>
+                <% end %>
+              </ul>
+            </div>
           </div>
           <div class="col-lg-6 illustration-wrapper">
             <%= image_tag("equivalences/#{equivalence[:svg]}.svg") %>
