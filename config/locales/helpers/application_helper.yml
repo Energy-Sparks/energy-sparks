@@ -1,0 +1,8 @@
+---
+en:
+  application_helper:
+    human_counts:
+      no_times: no times
+      once: once
+      several_times: several times
+      twice: twice
