@@ -1,0 +1,13 @@
+---
+en:
+  activity_types:
+    search:
+      button_label: Search
+      for_activities_by_keyword: Search for activities by keyword
+      limit_results_shown: Limit results shown
+      no_results_found: No results found
+      results_found:
+        one: 1 result found
+        other: "%{count} results found"
+        zero: No results found
+      title: Find pupil activities
