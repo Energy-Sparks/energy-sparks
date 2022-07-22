@@ -53,10 +53,11 @@ en:
           one: "<strong>%{count} pupil or staff member</strong> included in this survey generated <strong>%{carbon}kg</strong> carbon by travelling to school"
           other: "<strong>%{count} pupils and staff</strong> included in this survey generated <strong>%{carbon}kg</strong> carbon by travelling to school"
         percentages:
-          walking_and_cycling_html: "%{amount} walked or cycled, generating zero C02"
+          walking_and_cycling_html: "%{amount} walked or cycled, generating zero CO2"
           public_transport_html: "%{amount} travelled by public transport"
           park_and_stride_html: "%{amount} used park and stride"
           car_html: "%{amount} travelled by car"
+        more_detail: "Let's look at this in more detail:"
       tab_nav:
         manage_responses: Manage responses
         results: Results

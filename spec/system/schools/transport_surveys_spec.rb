@@ -13,48 +13,89 @@ describe 'TransportSurveys', type: :system do
       let(:categories) { [] }
       let(:cols) { ["Transport category", "Total pupils & staff", "Percentage pupils & staff"] }
 
-      before(:each) do
-        categories.each do |cat|
-          transport_type = create(:transport_type, category: cat)
-          create(:transport_survey_response, transport_survey: transport_survey, transport_type: transport_type, passengers: 1)
-        end
-        visit school_transport_survey_path(school, transport_survey)
-      end
-
       context "with no results" do
-        let(:categories) { [] }
+        before do
+          visit school_transport_survey_path(school, transport_survey)
+        end
         it { expect(page).to have_content("No responses have been collected") }
       end
 
-      context "with one result" do
-        let(:categories) { [:car] }
-        it { expect(page).to have_content("1 pupil or staff member was surveyed on #{nice_dates(Time.zone.today)}") }
-        it { expect(page).to have_content("Their travel to school generated 0.46kg CO2") }
-        it { expect(page).to have_content("0% walked or cycled, generating zero CO2, 0% travelled by public transport, 0% used park and stride and 100% travelled by car") }
-        it { expect(page).to have_css('#transport_surveys_pie') }
+      context "with a zero carbon result" do
+        before do
+          transport_type = create(:transport_type, category: 'public_transport', kg_co2e_per_km: 0)
+          create(:transport_survey_response, transport_survey: transport_survey, transport_type: transport_type, passengers: 1, journey_minutes: 5)
+          visit school_transport_survey_path(school, transport_survey)
+        end
+        it { expect(page).to have_content("1 pupil or staff member included in this survey generated 0.0kg carbon by travelling to school") }
+        it { expect(page).to have_content("That's Carbon Neutral 🌳!") }
+        it { expect(page).to have_content("0% walked or cycled, generating zero CO2") }
+        it { expect(page).to have_content("100% travelled by public transport") }
+        it { expect(page).to have_content("0% used park and stride") }
+        it { expect(page).to have_content("0% travelled by car") }
+      end
 
-        it "displays a table of transport type results" do
-          within('table') do
-            rows = [['Walking and cycling', 0, '0%'], ['Car', 1, '100%'], ['Public transport', 0, '0%'], ['Park and stride', 0, '0%'], ['Other', 0, '0%']]
-            rows.each do |row|
-              expect(page).to have_selector(:table_row, cols.zip(row).to_h)
+      context "with a carbon result" do
+        before(:each) do
+          categories.each do |cat|
+            transport_type = create(:transport_type, category: cat, kg_co2e_per_km: 0.17148)
+            create(:transport_survey_response, transport_survey: transport_survey, transport_type: transport_type, passengers: 1, journey_minutes: 5)
+          end
+          visit school_transport_survey_path(school, transport_survey)
+        end
+
+        context "with one result" do
+          let(:categories) { [:car] }
+          it { expect(page).to have_content("That's the same as charging 276 smart phones 📱!") }
+          it { expect(page).to have_content("That's the same as 1 veggie dinner 🥗!") }
+          it { expect(page).to have_content("That's the same as 50 hours of TV 📺!") }
+          it { expect(page).to have_content("That's the same as playing 10 hours of computer games 🎮!") }
+          it { expect(page).to_not have_content("would absorb this amount of CO2 in 1 day 🌳!") }
+          it { expect(page).to_not have_content("meat dinner") }
+          it { expect(page).to_not have_content("That's Carbon Neutral 🌳!") }
+
+
+          it { expect(page).to have_content("1 pupil or staff member included in this survey generated 0.46kg carbon by travelling to school") }
+          it { expect(page).to have_content("0% walked or cycled, generating zero CO2") }
+          it { expect(page).to have_content("0% travelled by public transport") }
+          it { expect(page).to have_content("0% used park and stride") }
+          it { expect(page).to have_content("100% travelled by car") }
+
+          it { expect(page).to have_css('#transport_surveys_pie') }
+
+          it "displays a table of transport type results" do
+            within('table') do
+              rows = [['Walking and cycling', 0, '0%'], ['Car', 1, '100%'], ['Public transport', 0, '0%'], ['Park and stride', 0, '0%'], ['Other', 0, '0%']]
+              rows.each do |row|
+                expect(page).to have_selector(:table_row, cols.zip(row).to_h)
+              end
             end
           end
         end
-      end
 
-      context "with more than one result" do
-        let(:categories) { [:car, :walking_and_cycling, :public_transport, :park_and_stride, nil] }
-        it { expect(page).to have_content("5 pupils and staff were surveyed on #{nice_dates(Time.zone.today)}") }
-        it { expect(page).to have_content("Their travel to school generated 2.28kg CO2") }
-        it { expect(page).to have_content("20% walked or cycled, generating zero CO2, 20% travelled by public transport, 20% used park and stride and 20% travelled by car") }
-        it { expect(page).to have_css('#transport_surveys_pie') }
+        context "with more than one result" do
+          let(:categories) { [:car, :walking_and_cycling, :public_transport, :park_and_stride, nil] }
+          it { expect(page).to have_content("1 tree would absorb this amount of CO2 in 1 day 🌳!") }
+          it { expect(page).to have_content("That's the same as charging 1381 smart phones 📱!") }
+          it { expect(page).to have_content("That's the same as 2 meat dinners 🍲!") }
+          it { expect(page).to have_content("That's the same as 5 veggie dinners 🥗!") }
+          it { expect(page).to have_content("That's the same as 249 hours of TV 📺!") }
+          it { expect(page).to have_content("That's the same as playing 50 hours of computer games 🎮!") }
+          it { expect(page).to_not have_content("That's Carbon Neutral 🌳!") }
 
-        it "displays a table of transport type results" do
-          rows = [['Walking and cycling', 1, '20%'], ['Car', 1, '20%'], ['Public transport', 1, '20%'], ['Park and stride', 1, '20%'], ['Other', 1, '20%']]
-          within('table') do
-            rows.each do |row|
-              expect(page).to have_selector(:table_row, cols.zip(row).to_h)
+          it { expect(page).to have_content("5 pupils and staff included in this survey generated 2.29kg carbon by travelling to school") }
+          it { expect(page).to have_content("20% walked or cycled, generating zero CO2") }
+          it { expect(page).to have_content("20% travelled by public transport") }
+          it { expect(page).to have_content("20% used park and stride") }
+          it { expect(page).to have_content("20% travelled by car") }
+
+          it { expect(page).to have_css('#transport_surveys_pie') }
+
+          it "displays a table of transport type results" do
+            rows = [['Walking and cycling', 1, '20%'], ['Car', 1, '20%'], ['Public transport', 1, '20%'], ['Park and stride', 1, '20%'], ['Other', 1, '20%']]
+            within('table') do
+              rows.each do |row|
+                expect(page).to have_selector(:table_row, cols.zip(row).to_h)
+              end
             end
           end
         end
