@@ -175,8 +175,7 @@ describe 'TransportSurveys - App', type: :system do
                         end
 
                         it { expect(page).to have_css('#transport_surveys_pie') }
-                        it { expect(page).to have_content(Time.zone.today.to_s(:es_full)) }
-                        it { expect(page).to have_content("1 pupil") }
+                        it { expect(page).to have_content("1 pupil or staff member") }
                         it { expect(page).to_not have_link("Manage responses") }
                       end
                     end
