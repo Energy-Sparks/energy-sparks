@@ -2,6 +2,8 @@
 en:
   activity_types:
     search:
+      adult_actions: Adult actions
+      all_activities: All activities
       button_label: Search
       for_activities_by_keyword: Search for activities by keyword
       limit_results_shown: Limit results shown
