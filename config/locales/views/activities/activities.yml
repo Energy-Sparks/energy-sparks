@@ -1,0 +1,18 @@
+---
+en:
+  activities:
+    actions:
+      are_you_sure: Are you sure?
+      delete: Delete
+      edit: Edit
+      title: Actions
+    activity_title: Activity title
+    choose_next_activity: Choose Next Activity
+    completed_on: Completed on
+    home: Home
+    introduction: A list of the recent energy saving activities recorded by
+    no_activities_completed: No activities completed
+    page_title: All Activities
+    sign_in_html: "<a href='%{new_user_session_path}'>Sign in</a> to record a new energy saving activity that has taken place in your school"
+    title: Energy saving activities
+    type: Type

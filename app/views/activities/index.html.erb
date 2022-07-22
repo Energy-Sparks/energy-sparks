@@ -1,22 +1,22 @@
-<% content_for :page_title, "#{@school.name} All Activities" %>
+<% content_for :page_title, "#{@school.name} #{t('activities.page_title')}" %>
 
 <div class="row">
   <div class="col-md-12">
-    <h1>Energy saving activities</h1>
+    <h1><%= t('activities.title') %></h1>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-12 activity">
-    <p>A list of the recent energy saving activities recorded by <%= link_to @school.name, school_path(@school) %>.</p>
+    <p><%= t('activities.introduction') %> <%= link_to @school.name, school_path(@school) %>.</p>
     <table class="table activities">
       <thead>
         <tr>
-          <th>Activity title</th>
-          <th>Type</th>
-          <th>Completed on</th>
+          <th><%= t('activities.activity_title') %></th>
+          <th><%= t('activities.type') %></th>
+          <th><%= t('activities.completed_on') %></th>
           <% if can? :manage, @activity %>
-            <th>Actions</th>
+            <th><%= t('activities.actions.title') %></th>
           <% end %>
         </tr>
       </thead>
@@ -27,11 +27,11 @@
               <td><%= link_to activity.display_name, school_activity_path(@school, activity) %></td>
               <td><span class="badge badge-secondary"><%= activity.activity_category.name %></span></td>
               <td><%= activity.happened_on.strftime("%A, %d %B %Y") %></td>
-              <% if can? :manage, @activity %>
+              <% if 1==1 #can? :manage, @activity %>
                 <td>
                   <div class="btn-group">
-                    <%= link_to 'Edit', edit_school_activity_path(@school, activity), class: 'btn btn-warning' %>
-                    <%= link_to 'Delete', school_activity_path(@school, activity), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
+                    <%= link_to t('activities.actions.edit'), edit_school_activity_path(@school, activity), class: 'btn btn-warning' %>
+                    <%= link_to t('activities.actions.delete'), school_activity_path(@school, activity), method: :delete, data: {confirm: t('activities.actions.are_you_sure')}, class: 'btn btn-danger' %>
                   </div>
                 </td>
               <% end %>
@@ -39,17 +39,19 @@
           <% end %>
         <% else %>
           <tr>
-            <td colspan="8">No activities completed</td>
+            <td colspan="8"><%= t('activities.no_activities_completed') %></td>
           </tr>
         <% end %>
       </tbody>
     </table>
 
-  <%= link_to 'Choose Next Activity', activity_categories_path, class: 'btn btn-success' if can? :suggest_activity, @school %>
-  <%= link_to 'Home', school_path(@school), class: 'btn btn-secondary' %>
+  <%= link_to t('activities.choose_next_activity'), activity_categories_path, class: 'btn btn-success' if can? :suggest_activity, @school %>
+  <%= link_to t('activities.home'), school_path(@school), class: 'btn btn-secondary' %>
 
   <% if !user_signed_in?  %>
-    <p><%= link_to "Sign in", new_user_session_path%> to record a new energy saving activity that has taken place in your school
+    <p>
+      <%= t('activities.sign_in_html', new_user_session_path: new_user_session_path) %>
+    </p>
   <% end %>
 
   </div>
