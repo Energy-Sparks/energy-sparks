@@ -18,6 +18,7 @@ en:
       completed_most_recently_on: most recently on
       completed_on: 'on'
       previously_completed: "%{label} previously completed"
+    prompt_login_to_record:
       sign_in_html:
         one: Are you an Energy Sparks user?<br>Sign in now to record this %{label} and score your school <strong>1</strong> point!
         other: Are you an Energy Sparks user?<br>Sign in now to record this %{label} and score your school <strong>%{count}</strong> points!
