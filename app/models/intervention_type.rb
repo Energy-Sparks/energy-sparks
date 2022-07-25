@@ -72,6 +72,10 @@ class InterventionType < ApplicationRecord
     name
   end
 
+  def self.tx_resources
+    active.order(:id)
+  end
+
   private
 
   def copy_searchable_attributes

@@ -174,7 +174,15 @@ RSpec.describe 'alert type management', type: :system do
         end
 
         check 'Adult dashboard alert'
-        fill_in_trix with: 'MDASH - Your school is using gas'
+        within('#management_dashboard_alert-en-content') do
+          fill_in_trix with: 'MDASH - Your school is using gas'
+        end
+        within '.management_dashboard_alert_active' do
+          click_on 'Content (Welsh)'
+        end
+        within('#management_dashboard_alert-cy-content') do
+          fill_in_trix with: 'MDASH WELSH - Your school is using gas'
+        end
 
         within '.management_dashboard_alert_active' do
           click_on 'Preview'
@@ -259,6 +267,7 @@ RSpec.describe 'alert type management', type: :system do
         expect(first_content.sms_content).to eq(gas_fuel_alert_type_title)
         expect(first_content.public_dashboard_title.to_plain_text).to eq('PUBLIC - This school is using gas')
         expect(first_content.management_dashboard_title.to_plain_text).to eq('MDASH - Your school is using gas')
+        expect(first_content.management_dashboard_title(locale: :cy).to_plain_text).to eq('MDASH WELSH - Your school is using gas')
         expect(first_content.management_priorities_title.to_plain_text).to eq('Your school is spending too much on gas')
 
         click_on 'Edit'
