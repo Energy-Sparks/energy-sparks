@@ -17,7 +17,7 @@ class TemplateInterpolation
     end
     templated = fields.inject(with_proxied_objects) do |collection, field|
       template = @object.send(field) || ""
-      collection[field] = if template.is_a?(ActionText::RichText)
+      collection[field] = if template.is_a?(ActionText::RichText) || template.is_a?(Mobility::Backends::ActionText::RichTextTranslation)
                             process_rich_text_template(template, with)
                           else
                             process_string_template(template, with)
