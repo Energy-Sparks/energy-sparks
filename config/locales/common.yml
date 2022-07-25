@@ -16,11 +16,10 @@ en:
       next: Next
       previous: Previous
       view_results: View results
-    line_graphs: Line graphs
-    pie_charts: Pie charts
-    school: School
-    storage_heaters: Storage heaters
-  kwh: kWh
+    units:
+      minutes:
+        one: "%{count} minute"
+        other: "%{count} minutes"
   school_types:
     mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
   "£": "£"

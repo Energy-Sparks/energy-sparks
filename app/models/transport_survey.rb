@@ -42,11 +42,25 @@ class TransportSurvey < ApplicationRecord
 
   def responses_per_category
     responses_per_cat = self.responses.with_transport_type.group(:category).count
+    # also include counts of zero for categories without responses
     TransportType.categories_with_other.transform_values { |v| responses_per_cat[v] || 0 }
   end
 
   def percentage_per_category
     responses_per_category.transform_values { |v| v == 0 ? 0 : (v.to_f / total_responses * 100) }
+  end
+
+  def responses_per_time_for_category(category)
+    responses_per_time = responses.with_transport_type.where(transport_types: { category: category }).group(:journey_minutes).count
+    # also include counts of zero for times without responses
+    TransportSurveyResponse.journey_minutes_options.each { |v| responses_per_time[v] ||= 0 }
+    responses_per_time
+  end
+
+  def responses_per_time_for_category_car
+    results, thirty_plus = responses_per_time_for_category(:car).partition { |time, _count| time < 30 }.map(&:to_h)
+    results['30+'] = thirty_plus.values.sum || 0
+    results
   end
 
   def pie_chart_data
