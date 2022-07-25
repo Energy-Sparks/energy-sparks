@@ -361,6 +361,10 @@ module ApplicationHelper
     calendar_event.based_on ? 'inherited' : ''
   end
 
+  def current_locale(locale)
+    locale.to_s == I18n.locale.to_s
+  end
+
   def path_with_locale(preview_url, locale)
     if preview_url.include?('?')
       preview_url += '&'
