@@ -7,6 +7,8 @@ en:
       actions: Actions
       delete: Delete
       manage: Manage
+      next: Next
+      previous: Previous
       view_results: View results
   school_types:
     mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
