@@ -16,7 +16,7 @@ $(document).ready(function() {
 
   const config = Object.assign({}, local_config, $('#config').data());
 
-  carbon.init({rates: config.rates, parkAndStrideMins: config.parkAndStrideMins});
+  carbon.init({equivalences: config.equivalences, neutral: config.neutral, parkAndStrideMins: config.parkAndStrideMins});
 
   if (storage.init({key: config.storageKey, baseUrl: config.baseUrl})) {
     setupSurvey();
