@@ -46,6 +46,14 @@ describe 'InterventionType' do
     end
   end
 
+  context 'finding resources for transifex' do
+    let!(:intervention_type_1) { create(:intervention_type, name: "one", active: true)}
+    let!(:intervention_type_2) { create(:intervention_type, name: "two", active: false)}
+    it "#tx_resources" do
+      expect( InterventionType.tx_resources ).to match_array([intervention_type_1])
+    end
+  end
+
   context 'serialising for transifex' do
     context 'when mapping fields' do
       let!(:intervention_type) { create(:intervention_type, name: "My intervention", description: "description", summary: "summary")}
@@ -83,6 +91,7 @@ describe 'InterventionType' do
       end
     end
   end
+
   context 'when updating from transifex' do
     let(:resource_key) { "intervention_type_#{subject.id}" }
     let(:name) { subject.name }

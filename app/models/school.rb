@@ -38,7 +38,6 @@
 #  scoreboard_id                         :bigint(8)
 #  serves_dinners                        :boolean          default(FALSE), not null
 #  slug                                  :string
-#  solar_irradiance_area_id              :bigint(8)
 #  solar_pv_tuos_area_id                 :bigint(8)
 #  temperature_area_id                   :bigint(8)
 #  template_calendar_id                  :integer
