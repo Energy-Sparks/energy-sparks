@@ -1,0 +1,63 @@
+<h1>School Activity Report</h1>
+
+<p>
+This activity ("<%= link_to @activity_type.name, admin_activity_type_path(@activity_type) %>") has been recorded a total of <strong><%= @recorded %></strong> times by <strong><%= @school_count %></strong> schools.
+</p>
+
+<% if @recorded > @school_count %>
+  <p>This activity has been recorded multiple times by some schools. Here's a breakdown of the
+    number of recordings by each school</p>
+  <table class="table table-sm">
+    <thead>
+      <th>School</th>
+      <th>Count</th>
+    </thead>
+    <tbody>
+      <% @group_by_school.each do |row| %>
+        <tr>
+          <td><%= link_to row[0].name, school_path(row[0]) %></td>
+          <td><%= row[1] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<p>
+  Here are the recent recordings of this activity.
+</p>
+
+<table class="table table-sm table-sorted">
+  <thead>
+    <tr>
+      <th>Recorded</th>
+      <th>Happened</th>
+      <th>School</th>
+      <th>Score</th>
+      <th>Title</th>
+      <th>Images?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @activities.each do |activity| %>
+      <tr>
+        <td><%= nice_dates(activity.created_at) %></td>
+        <td><%= nice_dates(activity.happened_on) %></td>
+        <td><%= link_to activity.school.name, school_path(activity.school) %></td>
+        <td><%= activity.observations.any? ? activity.observations.first.points : '-' %></td>
+        <td>
+          <%= link_to school_activity_path(activity.school, activity) do %>
+            <% if activity.title.present? %>
+              <span class="text-success"><%= activity.title %></span>
+            <% else %>
+              <span class="text-muted"><%= activity.activity_type.name %></span>
+            <% end %>
+          <% end %>
+        </td>
+        <td>
+          <%= fa_icon('check-circle text-success') if activity.description_includes_images? %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -46,7 +46,7 @@
   <tbody>
     <% @activity_types.each do |at| %>
       <tr class="<%= 'bg-warning' unless at.active %>">
-        <td><%= link_to at.name, admin_activity_type_path(at) %></td>
+        <td><%= link_to at.name, admin_reports_activity_type_path(at) %></td>
         <td><%= Activity.where(activity_type: at).count %></td>
         <td><%= Activity.select(:school_id).where(activity_type: at).distinct.count %></td>
         <td><%= ActivityType.joins(:activity_type_suggestions).where("activity_type_suggestions.activity_type_id = ?", at.id).count %></td>
