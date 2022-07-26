@@ -21,10 +21,35 @@
 #
 
 class EquivalenceTypeContentVersion < ApplicationRecord
+  extend Mobility
+  include TransifexSerialisable
+
   belongs_to :equivalence_type
   belongs_to :replaced_by, class_name: 'EquivalenceTypeContentVersion', foreign_key: :replaced_by_id, optional: true
 
-  has_rich_text :equivalence
+  translates :equivalence, backend: :action_text
 
   scope :latest, -> { where(replaced_by_id: nil) }
+
+  TX_ATTRIBUTE_MAPPING = {
+    equivalence: { templated: true }
+  }.freeze
+
+  def self.template_fields
+    [
+      :equivalence,
+    ]
+  end
+
+  def resource_key
+    "#{self.class.model_name.i18n_key}_#{self.equivalence_type.id}"
+  end
+
+  def tx_name
+    "#{self.class.model_name.i18n_key} #{equivalence_type.id}"
+  end
+
+  def tx_categories
+    ['equivalences']
+  end
 end
