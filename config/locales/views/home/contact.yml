@@ -1,0 +1,21 @@
+---
+en:
+  contact:
+    further_information:
+      discover_html: Discover what <a href='%{datasets_path}'>open data</a> we use in the service
+      in_the_meantime: In the meantime you can
+      learn_html: Learn how to <a href='%{enrol_path}'>enrol your school</a>
+      read_html: Read <a href='%{for_teachers_path}'>about EnergySparks</a> and the goals of the project
+      title: Further Information
+    problem_reporting:
+      content_1: If you are reporting a problem with the service, please try to include as much detail in your email as possible, including which web browser and operating system you are using, the URL (address) of the page and when you experienced the problem
+      title: Problem Reporting
+    questions:
+      content_1: If you have any questions or comments relating to Energy Sparks then please email us at
+      content_2: and one of the team will get in touch shortly
+      content_3: You can contact us with questions about your gas and electricity data, ask us for advice to increase the energy savings at your school, ask us for support with running your pupil energy team, or report a problem with the website. You can also provide suggestions for improving Energy Sparks to better meet your needs. If you'd like to see a new feature please let us know
+      content_4: You can also contact us via social media
+      facebook: And on Facebook at
+      title: Questions?
+      twitter: You can find us on twitter
+    title: Contact us

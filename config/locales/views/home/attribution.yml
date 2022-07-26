@@ -1,0 +1,28 @@
+---
+en:
+  attribution:
+    data: Data
+    datasets:
+    - name: Address locations
+      source: <a href="http://postcodes.io/about" target="_new">Postcodes.io</a>. <br>Contains Ordnance Survey data © Crown copyright and database right 2021. <br>Contains Royal Mail data © Royal Mail copyright and database right 2021
+      terms: <a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" target="_new">Open Government Licence</a>
+    - name: Estimated Carbon Intensity data
+      source: <a href="https://carbonintensity.org.uk/" target="_new">Carbon Intensity Data</a>
+      terms: <a href="https://creativecommons.org/licenses/by/4.0/" target="_new">CC-BY 4.0</a>
+    - name: Estimated Solar PV Generation
+      source: <a href="https://www.solar.sheffield.ac.uk/" target="_new">Sheffield PV Live</a>
+      terms: ''
+    - name: Historical Temperature data
+      source: <a href="https://meteostat.net/" target="_new">Meteostat</a>. <br>Raw data provided by <a href="https://www.noaa.gov/" target="_new">NOAA</a>, <a href="https://www.dwd.de/" target="_new">DWD</a> and <a href="https://dev.meteostat.net/docs/sources.html" target="_new">others</a>.
+      terms: <a href="https://creativecommons.org/licenses/by-nc/4.0/legalcode" target="_new">CC-BY-NC 4.0</a>
+    - name: Maps
+      source: <a href="https://www.openstreetmap.org/copyright" target="_new">OpenStreetMap</a> <br>© <a href="https://stadiamaps.com/" target="_new">Stadia Maps</a>, © <a href="https://openmaptiles.org/" target="_new">OpenMapTiles</a> © <a href="http://openstreetmap.org" target="_new">OpenStreetMap</a> contributors
+      terms: <a href="https://opendatacommons.org/licenses/odbl/" target="_new">ODbL</a>
+    - name: Weather forecast
+      source: <a href="https://darksky.net/poweredby/" target="_new">Powered by Dark Sky</a>.
+      terms: ''
+    introduction: Energy Sparks relies on a number of public and open datasets. Here is a list of the third-party datasets which we import and use on the site
+    read_more_html: You can also read more about the <a href='%{datasets_path}'>school energy generation and usage data</a> we use and make available
+    source: Source
+    terms: Terms
+    title: Dataset attributions
