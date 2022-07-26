@@ -1,20 +1,15 @@
-<h1>Jobs</h1>
+<h1><%= t('jobs.title') %></h1>
 
 <% if @jobs.any? %>
-  <p>
-    Join Energy Sparks staff and volunteer team to make a real difference in the fight against climate change. You will support the delivery of data driven learning opportunities to teach young people how to cut carbon emissions in their schools and homes.
-  </p>
-
-  <p>
-  The following jobs and voluntary positions are currently available. If you are interested in volunteering for Energy Sparks and don't see a suitable opportunity below, please contact us on <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>
-  </p>
+  <p><%= t('jobs.content_1') %>.</p>
+  <p><%= t('jobs.content_2_html') %></p>
   <table class="table mt-2">
     <thead>
       <tr>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Voluntary?</th>
-        <th>Closing Date</th>
+        <th><%= t('jobs.title') %></th>
+        <th><%= t('jobs.description') %></th>
+        <th><%= t('jobs.voluntary') %></th>
+        <th><%= t('jobs.closing_date') %></th>
         <th></th>
       </tr>
     </thead>
@@ -27,7 +22,7 @@
           <td><%= nice_dates(job.closing_date) %></td>
           <td>
             <% if job.file.attached? %>
-              <%= link_to 'More information', controller: :jobs, action: :download, serve: :inline, id: job.id %>
+              <%= link_to t('jobs.more_information'), controller: :jobs, action: :download, serve: :inline, id: job.id %>
             <% else %>
               -
             <% end %>
@@ -41,7 +36,5 @@
     <%= @jobs.map { |job| job.to_job_posting.to_json }.join(",").html_safe %>
   </script>
 <% else %>
-  <p>
-    We currently have no jobs or voluntary positions available.
-  </p>
+  <p><%= t('jobs.none_available') %>.</p>
 <% end %>

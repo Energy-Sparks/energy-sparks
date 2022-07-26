@@ -39,6 +39,10 @@ class AlertTypeRating < ApplicationRecord
 
   scope :for_rating, ->(rating) { where('rating_from <= ? AND rating_to >= ?', rating, rating) }
 
+  scope :pupil_dashboard_alert, -> { where(pupil_dashboard_alert_active: true) }
+  scope :management_dashboard_alert, -> { where(management_dashboard_alert_active: true) }
+  scope :with_dashboard_alerts, -> { pupil_dashboard_alert.or(management_dashboard_alert) }
+
   validates :rating_from, :rating_to, :description, presence: true
   validates :rating_from, :rating_to, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10 }
 

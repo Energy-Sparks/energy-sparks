@@ -99,14 +99,14 @@ describe "activity type", type: :system do
       allow_any_instance_of(ChartData).to receive(:data).and_return(nil)
 
       click_on 'New Activity Type'
-      within('.school-specific-description-trix-editor.en') do
-        fill_in_trix with: "Your chart"
+      within('.school-specific-description-trix-editor') do
+        fill_in_trix '#activity_type_school_specific_description_en', with: "Your chart"
         find('button[data-trix-action="chart"]').click
         select 'last_7_days_intraday_gas', from: 'chart-list-chart'
         click_on 'Insert'
         expect(find('trix-editor')).to have_text('{{#chart}}last_7_days_intraday_gas{{/chart}}')
         click_on 'Preview'
-        within '#school-specific-description-en-preview' do
+        within '#school-specific-description-preview-en' do
           expect(page).to have_content('Your chart')
           expect(page).to have_selector('#chart_wrapper_last_7_days_intraday_gas')
         end

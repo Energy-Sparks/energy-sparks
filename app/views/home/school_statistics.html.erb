@@ -1,14 +1,14 @@
-<% content_for :page_title, 'Report' %>
+<% content_for :page_title, t('school_statistics.page_title') %>
 
 <div class="application container">
   <div class="row padded-row">
     <div class="col">
-      <h1>School Statistics</h1>
-      <p>Here is a summary of all of the Energy Sparks schools</p>
+      <h1><%= t('school_statistics.title') %></h1>
+      <p><%= t('school_statistics.introduction') %></p>
 
       <ul class="nav nav-pills">
         <li class="nav-item">
-          <a class="nav-link disabled" href="#">Jump to</a>
+          <a class="nav-link disabled" href="#"><%= t('school_statistics.jump_to') %></a>
         </li>
         <% @school_groups.each do |school_group| %>
           <li class="nav-item">
@@ -27,23 +27,23 @@
           <table class="table table-bordered table-sorted">
             <thead>
               <tr>
-                <th colspan="3" class="text-center">School</th>
-                <th colspan="4" class="text-center">Meter count on site</th>
+                <th colspan="3" class="text-center"><%= t('school_statistics.school') %></th>
+                <th colspan="4" class="text-center"><%= t('school_statistics.meter_count_on_site') %></th>
                 <th colspan="4"></th>
               </tr>
               <tr>
-                <th class='fixed-width-150'>Name</th>
-                <th>URN/ SEED</th>
-                <th>Postcode</th>
-                <th>Gas</th>
-                <th>Electricity</th>
-                <th>Solar</th>
-                <th>Solar export</th>
-                <th>Floor area</th>
-                <th>Pupil numbers</th>
-                <th>% free school meals</th>
-                <th>Activities completed</th>
-                <th>Interventions</th>
+                <th class='fixed-width-150'><%= t('school_statistics.school_name') %></th>
+                <th><%= t('school_statistics.urn_seed') %></th>
+                <th><%= t('school_statistics.postcode') %></th>
+                <th><%= t('school_statistics.gas') %></th>
+                <th><%= t('school_statistics.electricity') %></th>
+                <th><%= t('school_statistics.solar') %></th>
+                <th><%= t('school_statistics.solar_export') %></th>
+                <th><%= t('school_statistics.floor_area') %></th>
+                <th><%= t('school_statistics.pupil_numbers') %></th>
+                <th><%= t('school_statistics.percent_free_school_meals') %></th>
+                <th><%= t('school_statistics.activities_completed') %></th>
+                <th><%= t('school_statistics.interventions') %></th>
               </tr>
             </thead>
             <tbody>

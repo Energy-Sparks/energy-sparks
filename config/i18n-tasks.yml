@@ -125,6 +125,8 @@ ignore_unused:
   - 'staff_role.*'
   - 'subject.*'
   - 'charts.*'
+  - 'schools.transport_surveys.equivalences.*'
+  - 'schools.transport_surveys.show.percentages.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'

@@ -27,11 +27,18 @@ module TransifexSerialisable
   def tx_serialise
     attribs = {}
     self.class.mobility_attributes.map.each do |attr|
-      attr_key = tx_attribute_key(attr)
-      attribs[attr_key] = tx_value(attr)
+      if tx_valid_attribute(attr)
+        attr_key = tx_attribute_key(attr)
+        attribs[attr_key] = tx_value(attr)
+      end
     end
     data = { resource_key => attribs }
     return { "en" => data }
+  end
+
+  # overide in classes to check instance-specific fields
+  def tx_valid_attribute(_attr)
+    true
   end
 
   #Update the model using data from transifex
@@ -154,6 +161,10 @@ module TransifexSerialisable
     #borrowed from: https://github.com/rails/rails/blob/3872bc0e54d32e8bf3a6299b0bfe173d94b072fc/actiontext/lib/action_text/attribute.rb#L61
     def tx_rich_text_field?(name)
       reflect_on_all_associations(:has_one).collect(&:name).include?("rich_text_#{name}".to_sym)
+    end
+
+    def tx_resources
+      all.order(:id)
     end
   end
   # rubocop:enable Style/RegexpLiteral

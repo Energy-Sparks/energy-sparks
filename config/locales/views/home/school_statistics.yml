@@ -1,0 +1,21 @@
+---
+en:
+  school_statistics:
+    activities_completed: Activities completed
+    electricity: Electricity
+    floor_area: Floor area
+    gas: Gas
+    interventions: Interventions
+    introduction: Here is a summary of all of the Energy Sparks schools
+    jump_to: Jump to
+    meter_count_on_site: Meter count on site
+    page_title: Report
+    percent_free_school_meals: "% free school meals"
+    postcode: Postcode
+    pupil_numbers: Pupil numbers
+    school: School
+    school_name: Name
+    solar: Solar
+    solar_export: Solar export
+    title: School Statistics
+    urn_seed: URN/ SEED
