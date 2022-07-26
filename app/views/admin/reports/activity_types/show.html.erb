@@ -1,63 +1,95 @@
-<h1>School Activity Report</h1>
+<% content_for :page_title, 'Activity Type Recording Report' %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Activity Type Recording Report</h1>
+
+  <div>
+    <%= link_to "All activity types", admin_reports_activity_types_path, class: "btn btn-outline-dark font-weight-bold" %>
+    <%= link_to "All reports", admin_reports_path, class: "btn btn-outline-dark font-weight-bold" %>
+  </div>
+</div>
 
 <p>
-This activity ("<%= link_to @activity_type.name, admin_activity_type_path(@activity_type) %>") has been recorded a total of <strong><%= @recorded %></strong> times by <strong><%= @school_count %></strong> schools.
+<strong>"<%= link_to @activity_type.name, admin_activity_type_path(@activity_type) %>"</strong> has been recorded a total of <strong><%= @recorded %></strong> times by <strong><%= @school_count %></strong> schools.
 </p>
+
+<h2>Recording Summary</h2>
 
 <% if @recorded > @school_count %>
-  <p>This activity has been recorded multiple times by some schools. Here's a breakdown of the
-    number of recordings by each school</p>
-  <table class="table table-sm">
-    <thead>
-      <th>School</th>
-      <th>Count</th>
-    </thead>
-    <tbody>
-      <% @group_by_school.each do |row| %>
-        <tr>
-          <td><%= link_to row[0].name, school_path(row[0]) %></td>
-          <td><%= row[1] %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <div class="row">
+    <div class="col">
+      <p>
+        This activity has been recorded multiple times by the same schools. The table below summarises how many times the activity has been recorded by each school.
+      </p>
+
+      <table class="table table-sm">
+        <thead>
+          <th>School</th>
+          <th>Count</th>
+        </thead>
+        <tbody>
+          <% @group_by_school.each do |row| %>
+            <tr>
+              <td><%= link_to row[0].name, school_path(row[0]) %></td>
+              <td><%= row[1] %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <hr>
+    </div>
+  </div>
 <% end %>
 
-<p>
-  Here are the recent recordings of this activity.
-</p>
+<div class="row">
+  <div class="col">
+    <p>
+      The following table links to the summary of every time a school has recorded this
+      activity. Use the table headers to sort the results.
+    </p>
 
-<table class="table table-sm table-sorted">
-  <thead>
-    <tr>
-      <th>Recorded</th>
-      <th>Happened</th>
-      <th>School</th>
-      <th>Score</th>
-      <th>Title</th>
-      <th>Images?</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @activities.each do |activity| %>
-      <tr>
-        <td><%= nice_dates(activity.created_at) %></td>
-        <td><%= nice_dates(activity.happened_on) %></td>
-        <td><%= link_to activity.school.name, school_path(activity.school) %></td>
-        <td><%= activity.observations.any? ? activity.observations.first.points : '-' %></td>
-        <td>
-          <%= link_to school_activity_path(activity.school, activity) do %>
-            <% if activity.title.present? %>
-              <span class="text-success"><%= activity.title %></span>
-            <% else %>
-              <span class="text-muted"><%= activity.activity_type.name %></span>
-            <% end %>
-          <% end %>
-        </td>
-        <td>
-          <%= fa_icon('check-circle text-success') if activity.description_includes_images? %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+    <p>
+      Activities with a <span class="text-success">Green link</span> are those where the school has provided a custom title. Others are shown as a <span class="text-muted">grey link</span> </p>
+    <p>
+
+    <p>
+      The <%= fa_icon('check-circle text-success') %> icon in the images column indicates that the activity includes
+      images provided by the user
+    </p>
+
+    <table class="table table-sm table-sorted">
+      <thead>
+        <tr>
+          <th>Recorded</th>
+          <th>Happened</th>
+          <th>School</th>
+          <th>Score</th>
+          <th>Title</th>
+          <th>Images?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @activities.each do |activity| %>
+          <tr>
+            <td><%= nice_dates(activity.created_at) %></td>
+            <td><%= nice_dates(activity.happened_on) %></td>
+            <td><%= link_to activity.school.name, school_path(activity.school) %></td>
+            <td><%= activity.observations.any? ? activity.points : '-' %></td>
+            <td>
+              <%= link_to school_activity_path(activity.school, activity) do %>
+                <% if activity.title.present? %>
+                  <span class="text-success"><%= activity.title %></span>
+                <% else %>
+                  <span class="text-muted"><%= activity.activity_type.name %></span>
+                <% end %>
+              <% end %>
+            </td>
+            <td>
+              <%= fa_icon('check-circle text-success') if activity.description_includes_images? %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,18 +1,33 @@
-<h1>Activity Types</h1>
+<% content_for :page_title, 'Manage activity types' %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Manage activity types</h1>
+
+  <div>
+    <%= link_to "Activity type report", admin_reports_activity_types_path, class: "btn btn-outline-dark font-weight-bold" %>
+    <%= link_to "All reports", admin_reports_path, class: "btn btn-outline-dark font-weight-bold" %>
+  </div>
+</div>
+
 <div class="container">
   <div class="row">
     <p><%= link_to 'New Activity Type', new_admin_activity_type_path, class: 'btn' %></p>
   </div>
 </div>
 
+<p>
+  Activity types highlighted in <span class="bg-secondary">grey</span> have been marked as not active and are no longer visible to users.
+</p>
+
 <% ActivityCategory.all.each do |activity_category| %>
   <div class="container">
     <h2><%= activity_category.name %></h2>
     <div class="row">
-    <table class="table table-striped">
+    <table class="table table-striped table-sm">
       <thead>
         <tr>
           <th scope="col">Name</th>
+          <th scope="col">School specific instructions?</th>
           <th scope="col">Score</th>
           <th scope="col">Key Stages</th>
           <th scope="col"></th>
@@ -20,13 +35,19 @@
       </thead>
 
       <tbody>
-        <% @activity_types.where(activity_category: activity_category).each do |activity_type| %>
-          <tr class="<%= active(activity_type.active) %>" scope="row" >
-            <td><%= link_to activity_type.name, admin_activity_type_path(activity_type) %></td>
-            <td><%= activity_type.score %></td>
-            <td><%= activity_type.key_stage_list %></td>
-            <td><%= link_to 'Edit', edit_admin_activity_type_path(activity_type), class: 'btn btn-sm' %></td>
-          </tr>
+        <% if @activity_types.where(activity_category: activity_category).count > 0 %>
+          <% @activity_types.where(activity_category: activity_category).each do |activity_type| %>
+            <tr class="<%= active(activity_type.active) %>" scope="row" >
+              <td><%= link_to activity_type.name, admin_activity_type_path(activity_type) %></td>
+              <td><%= fa_icon( activity_type.school_specific_description.present? ? 'check-circle text-success' : 'times-circle text-muted') %></td>
+              <td><%= activity_type.score %></td>
+              <td><%= activity_type.key_stage_list %></td>
+              <td><%= link_to 'Edit', edit_admin_activity_type_path(activity_type), class: 'btn btn-sm' %>
+              <%= link_to 'Report', admin_reports_activity_type_path(activity_type), class: 'btn btn-sm' %></td>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr><td colspan="4">No activities</td></tr>
         <% end %>
       </tbody>
     </table>

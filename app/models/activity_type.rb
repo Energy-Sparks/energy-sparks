@@ -106,6 +106,14 @@ class ActivityType < ApplicationRecord
     activities.for_school(school)
   end
 
+  def grouped_school_count
+    activities.group(:school).count
+  end
+
+  def unique_school_count
+    activities.select(:school_id).distinct.count
+  end
+
   #override default name for this resource in transifex
   def tx_name
     name

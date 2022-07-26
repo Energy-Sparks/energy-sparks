@@ -1,30 +1,32 @@
-<h1>Activity Type Report</h1>
+<% content_for :page_title, 'Activity Type Management Report' %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Activity Type Management Report</h1>
+  <div>
+    <%= link_to "Recent activities", admin_reports_activities_path, class: "btn btn-outline-dark font-weight-bold" %>
+    <%= link_to "All reports", admin_reports_path, class: "btn btn-outline-dark font-weight-bold" %>
+  </div>
+</div>
 
 <p>
-  This report provides some high-level insights into our pupil activities.
+  This table provides some high-level insights into our pupil activities. Use the table header
+  to sort the rows and click on an individual activity for more detail.
 </p>
 
 <p>
-  The table lists every activity in the system. Those highlighted in yellow are not active and are
-  no longer visible to users.
+  Those highlighted in <span class="bg-warning">yellow</span> have been marked as not active and are no longer visible to users.
 </p>
 
 <p>
-  The table is sorted by name by default, but you can chose to sort by any of the columns.
-</p>
-
-<p>
-  There are two <strong>Recorded</strong> figures: number of times the activity has ever been recorded, and
+  The <strong>Recorded</strong> columns reports the number of times the activity has ever been recorded, and
   the number of unique schools that have recorded it.
 </p>
 
 <p>
-  There are four <strong>Referenced</strong> counts. These list the number of times that the activity is
-  referenced as a "Suggested" next activity, as a step in a "Programme" from an alert via its "Find Out More" pages
-  and from an "Audit".
+  The <strong>Referenced</strong> columns show how many types the activity is referenced as a "Suggested next activity" via another activity, the number of programmes in which it is included, the number of times it is referenced from "Find out more" pages, and the number of audits that reference it.
 </p>
 
-<table class="table table-striped table-sorted dataTable ">
+<table class="table table-sorted dataTable table-sm">
   <thead>
     <tr>
       <th></th>
@@ -45,10 +47,10 @@
   </thead>
   <tbody>
     <% @activity_types.each do |at| %>
-      <tr class="<%= 'bg-warning' unless at.active %>">
+      <tr class="<%= active(at.active) %>">
         <td><%= link_to at.name, admin_reports_activity_type_path(at) %></td>
-        <td><%= Activity.where(activity_type: at).count %></td>
-        <td><%= Activity.select(:school_id).where(activity_type: at).distinct.count %></td>
+        <td><%= at.activities.count %></td>
+        <td><%= at.unique_school_count %></td>
         <td><%= ActivityType.joins(:activity_type_suggestions).where("activity_type_suggestions.activity_type_id = ?", at.id).count %></td>
         <td><%= at.programme_types.count %></td>
         <td><%= AlertTypeRating.joins(:alert_type_rating_activity_types).where("alert_type_rating_activity_types.activity_type_id = ?", at.id).count %></td>

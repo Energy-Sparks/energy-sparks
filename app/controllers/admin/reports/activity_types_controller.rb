@@ -4,20 +4,20 @@ module Admin
       load_and_authorize_resource
 
       def index
-        @activity_types = ActivityType.order(:name)
+        @activity_types = ActivityType.by_name
       end
 
       def show
-        @activities = Activity.where(activity_type: @activity_type).order(:created_at)
-        @recorded = Activity.where(activity_type: @activity_type).count
-        @school_count = Activity.select(:school_id).where(activity_type: @activity_type).distinct.count
-        @group_by_school = group_by_school.to_a.sort {|a, b| b[1] <=> a[1]}
+        @activities = @activity_type.activities.most_recent
+        @recorded = @activity_type.activities.count
+        @school_count = @activity_type.unique_school_count
+        @group_by_school = group_by_school
       end
 
       private
 
       def group_by_school
-        Activity.where(activity_type: @activity_type).group(:school).count
+        @activity_type.grouped_school_count.to_a.sort {|a, b| b[1] <=> a[1]}
       end
     end
   end
