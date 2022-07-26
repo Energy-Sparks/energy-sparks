@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_18_174747) do
+ActiveRecord::Schema.define(version: 2022_07_21_141039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -195,15 +195,12 @@ ActiveRecord::Schema.define(version: 2022_07_18_174747) do
   create_table "alert_type_rating_content_versions", force: :cascade do |t|
     t.bigint "alert_type_rating_id", null: false
     t.string "find_out_more_title"
-    t.text "_find_out_more_content"
     t.integer "replaced_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "colour", default: 0, null: false
-    t.string "_pupil_dashboard_title"
     t.string "sms_content"
     t.string "email_title"
-    t.text "_email_content"
     t.text "find_out_more_chart_variable", default: "none"
     t.string "find_out_more_chart_title", default: ""
     t.date "find_out_more_start_date"
@@ -216,11 +213,8 @@ ActiveRecord::Schema.define(version: 2022_07_18_174747) do
     t.date "email_end_date"
     t.date "public_dashboard_alert_start_date"
     t.date "public_dashboard_alert_end_date"
-    t.string "_public_dashboard_title"
     t.date "management_dashboard_alert_start_date"
     t.date "management_dashboard_alert_end_date"
-    t.string "_management_dashboard_title"
-    t.string "_management_priorities_title"
     t.date "management_priorities_start_date"
     t.date "management_priorities_end_date"
     t.decimal "email_weighting", default: "5.0"
@@ -447,6 +441,9 @@ ActiveRecord::Schema.define(version: 2022_07_18_174747) do
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
     t.integer "back_fill_years", default: 4
+    t.string "gsp_name"
+    t.integer "gsp_id"
+    t.boolean "active", default: true
   end
 
   create_table "audit_activity_types", force: :cascade do |t|
@@ -1268,7 +1265,6 @@ ActiveRecord::Schema.define(version: 2022_07_18_174747) do
     t.bigint "calendar_id"
     t.string "slug"
     t.bigint "temperature_area_id"
-    t.bigint "solar_irradiance_area_id"
     t.bigint "met_office_area_id"
     t.integer "number_of_pupils"
     t.decimal "floor_area"

@@ -3,11 +3,13 @@
 # Table name: programme_types
 #
 #  active            :boolean          default(FALSE)
+#  created_at        :datetime         default(Wed, 06 Jul 2022 12:00:00 UTC +00:00), not null
 #  default           :boolean          default(FALSE)
 #  document_link     :string
 #  id                :bigint(8)        not null, primary key
 #  short_description :text
 #  title             :text
+#  updated_at        :datetime         default(Wed, 06 Jul 2022 12:00:00 UTC +00:00), not null
 #
 
 class ProgrammeType < ApplicationRecord
@@ -62,5 +64,9 @@ class ProgrammeType < ApplicationRecord
       activity = school.activities.find_by(activity_type_id: programme_type_activity_type.activity_type_id)
       [programme_type_activity_type.activity_type, activity]
     end
+  end
+
+  def self.tx_resources
+    active.order(:id)
   end
 end

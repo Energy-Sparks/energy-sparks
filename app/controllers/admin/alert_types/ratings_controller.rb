@@ -1,6 +1,7 @@
 module Admin
   module AlertTypes
     class RatingsController < AdminController
+      include LocaleHelper
       load_and_authorize_resource :alert_type
 
       before_action :set_template_variables, except: [:index]
@@ -58,8 +59,13 @@ module Admin
       end
 
       def content_params
+        translated_params = t_params(AlertTypeRatingContentVersion.mobility_attributes)
         params.require(:alert_type_rating).permit(
-          content: [:colour] + AlertTypeRatingContentVersion.template_fields + AlertTypeRatingContentVersion.timing_fields + AlertTypeRatingContentVersion.weighting_fields
+          content: [:colour] +
+          AlertTypeRatingContentVersion.template_fields +
+          AlertTypeRatingContentVersion.timing_fields +
+          AlertTypeRatingContentVersion.weighting_fields +
+          translated_params
         )
       end
 
