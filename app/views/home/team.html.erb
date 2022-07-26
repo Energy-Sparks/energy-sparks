@@ -1,33 +1,31 @@
-<% content_for :page_title, 'Our Team' %>
+<% content_for :page_title, t('team.background.title') %>
 
 <div class="application container extra-padding">
 
-  <h1 id="background">Background</h1>
-  <p>Energy Sparks is a registered charity in England and Wales, registration 1189273. Energy Sparks started in 2017 as a project of Transition Bath, a registered charity in England and Wales, registration 1139853, but became an independent charity in 2020.</p>
+  <h1 id="background"><%= t('team.background.title') %></h1>
+  <p><%= t('team.background.content') %>.</p>
 
-  <h1 id="team">Our Team</h1>
-  <h2>Staff</h2>
+  <h1 id="team"><%= t('team.our_team.title') %></h1>
+  <h2><%= t('team.our_team.staff') %></h2>
 
   <% @staff.each do |team_member| %>
     <%= render 'team_member', team_member: team_member %>
   <% end %>
 
-  <h2>Consultants</h2>
+  <h2><%= t('team.our_team.consultants') %></h2>
   <% @consultants.each do |team_member| %>
     <%= render 'team_member', team_member: team_member %>
   <% end %>
 
-  <h2>Trustees</h2>
+  <h2><%= t('team.our_team.trustees') %></h2>
   <% @trustees.each do |team_member| %>
     <%= render 'team_member', team_member: team_member %>
   <% end %>
 
   <div class="row padded-row">
     <div class="col-md-9">
-      <h1 id="partners">Project Partners</h1>
-      <p>
-        Energy Sparks has been supported by a number of organisations who have provided funding or support to the project.
-      </p>
+      <h1 id="partners"><%= t('team.project_partners.title') %></h1>
+      <p><%= t('team.project_partners.content') %>.</p>
     </div>
   </div>
 
