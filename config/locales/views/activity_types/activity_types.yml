@@ -1,6 +1,8 @@
 ---
 en:
   activity_types:
+    activity: Activity
+    impacts: Impacts
     key_stages: Key Stages
     recommended:
       all_activities: All activities
@@ -28,3 +30,5 @@ en:
         one: View 1 related activity
         other: View %{count} related activities
     subjects: Subjects
+    timings: Timings
+    topics: Topics
