@@ -19,6 +19,21 @@ en:
     edit:
       page_title: Update activity
       update_your_activity: Update your activity
+    form:
+      build_a_record_message: You can record a recent activity and older activities to build up a record of all of the energy saving activities you've carried out as a school
+      cancel: Cancel
+      completing_this_activity:
+        one: Completing this activity will earn you 1 point
+        other: Completing this activity will earn you %{count} points
+      how_would_you_describe_this_activity: How would you describe this activity
+      not_a_standard_activity_message: As you're not recording one of our standard activities, you need to supply a title. Choose a clear title which will make others want to read about your activity
+      other: Other
+      save_activity: Save activity
+      tell_us_more_formatting_message: You can add formatting, links to your school website and attach images using the toolbar below. Hover over each icon to learn what it does
+      tell_us_more_label: Tell us more about what you did
+      tell_us_more_message: Tell us a bit more about your activity. What did you do? What did you learn? What could you do next to build on this task?
+      the_activity_you_completed: The activity you completed
+      update_activity: Update activity
     home: Home
     introduction: A list of the recent energy saving activities recorded by
     new:
