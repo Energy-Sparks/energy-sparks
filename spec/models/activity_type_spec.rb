@@ -93,6 +93,15 @@ describe 'ActivityType' do
   end
 
   context 'serialising for transifex' do
+
+    context 'finding resources for transifex' do
+      let!(:activity_type_1) { create(:activity_type, name: "activity", active: true)}
+      let!(:activity_type_2) { create(:activity_type, name: "activity", active: false)}
+      it "#tx_resources" do
+        expect( ActivityType.tx_resources ).to match_array([activity_type_1])
+      end
+    end
+
     context 'when mapping fields' do
       let!(:activity_type) { create(:activity_type, name: "My activity", description: "description", school_specific_description: "Description {{#chart}}chart_name{{/chart}} {{#chart}}chart_name2|£{{/chart}}")}
       it 'produces the expected key names' do
@@ -130,6 +139,7 @@ describe 'ActivityType' do
       end
     end
   end
+
   context 'when updating from transifex' do
     let(:resource_key) { "activity_type_#{subject.id}" }
     let(:name) { subject.name }

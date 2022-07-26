@@ -28,8 +28,10 @@
         <div id="app-notifier" role="alert"></div>
 
         <%= form_with(url: school_transport_surveys_url(@school), method: :patch, local: true, id: 'transport_survey') do |f| %>
-          <%= hidden_field_tag :config, "", data: { rates: TransportSurvey.equivalence_rates, run_on: @transport_survey.run_on.to_s, run_identifier: TransportSurveyResponse.generate_unique_secure_token, passenger_symbol: TransportSurveyResponse.passenger_symbol, park_and_stride_mins: TransportSurveyResponse.park_and_stride_mins, transport_types: TransportType.app_data } %>
-
+          <%= hidden_field_tag :config, "", data: { equivalences: TransportSurvey.equivalences,
+            neutral: t('schools.transport_surveys.equivalences.neutral'), run_on: @transport_survey.run_on.to_s,
+            run_identifier: TransportSurveyResponse.generate_unique_secure_token, passenger_symbol: TransportSurveyResponse.passenger_symbol,
+            park_and_stride_mins: TransportSurveyResponse.park_and_stride_mins, transport_types: TransportType.app_data } %>
           <div id="setup" class="panel">
             <h2>Please select today's weather</h2>
             <%= hidden_field_tag :weather, "", class: 'selected' %>

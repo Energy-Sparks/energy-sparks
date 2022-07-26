@@ -23,8 +23,6 @@ class HelpPage < ApplicationRecord
   translates :title, type: :string, fallbacks: { cy: :en }
   translates :description, backend: :action_text
 
-  #has_rich_text :description
-
   validates_presence_of :title, :feature
   validates_uniqueness_of :feature
 
