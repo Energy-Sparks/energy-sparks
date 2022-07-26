@@ -1,7 +1,6 @@
 ---
 en:
   datasets:
-    title: Datasets
     content_html: |-
       <div class="row padded-row">
         <div class="col-md-12">
@@ -72,3 +71,4 @@ en:
           </p>
         </div>
       </div>
+    title: Datasets
