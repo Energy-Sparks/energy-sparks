@@ -42,7 +42,7 @@ describe 'viewing and recording activities', type: :system do
       end
 
       it 'should display navigation' do
-        expect(page).to have_link("View #{activity_category.activity_types.count} related activities")
+        expect(page).to have_link("View #{activity_category.activity_types.count} related activity")
       end
 
       it 'should display resource links' do
