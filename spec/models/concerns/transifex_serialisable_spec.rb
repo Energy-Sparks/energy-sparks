@@ -23,6 +23,9 @@ describe TransifexSerialisable do
       it 'converts combinations of tags' do
         expect(test.mustache_to_yaml('text {{#chart}}some_chart{{/chart}} at {{position}} here')).to eq('text %{tx_chart_some_chart} at %{tx_var_position} here')
       end
+      it 'handles odd chars in chart names' do
+        expect(test.mustache_to_yaml('text {{#chart}}some_chart|£{{/chart}} here')).to eq('text %{tx_chart_some_chart|£} here')
+      end
     end
 
     describe '#yaml_template_to_mustache' do
@@ -40,6 +43,9 @@ describe TransifexSerialisable do
       end
       it 'converts combinations of tags' do
         expect(test.yaml_template_to_mustache('text %{tx_chart_some_chart} and %{other_chart} at %{tx_var_position} here')).to eq('text {{#chart}}some_chart{{/chart}} and {{#chart}}other_chart{{/chart}} at {{position}} here')
+      end
+      it 'handles odd chars in chart names' do
+        expect(test.yaml_template_to_mustache('text %{tx_chart_some_chart|£} here')).to eq('text {{#chart}}some_chart|£{{/chart}} here')
       end
     end
   end
