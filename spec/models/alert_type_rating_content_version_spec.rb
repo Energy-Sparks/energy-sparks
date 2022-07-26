@@ -153,7 +153,7 @@ describe AlertTypeRatingContentVersion do
         expect(content_version.tx_attribute_key("pupil_dashboard_title")).to eq "pupil_dashboard_title_html"
       end
       it 'produces the expected tx values, removing trix content wrapper' do
-        expect(content_version.tx_value("pupil_dashboard_title")).to eql "some content with %{chart_name}"
+        expect(content_version.tx_value("pupil_dashboard_title")).to eql "some content with %{tx_chart_chart_name}"
       end
       it 'maps all translated fields' do
         data = content_version.tx_serialise
