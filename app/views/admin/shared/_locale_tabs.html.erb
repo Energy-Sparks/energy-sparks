@@ -1,7 +1,7 @@
 <ul class="nav nav-tabs locales">
   <% I18n.available_locales.each do |locale| %>
     <li class="nav-item">
-      <a class="nav-link <%= 'active' if current_locale(locale) %>" id="<%= "#{field}-#{locale}" %>-tab" data-toggle="tab" href="#<%= "#{field}-#{locale}" %>-content" role="tab" aria-controls="<%= "#{field}-#{locale}" %>-tab">
+      <a class="nav-link <%= 'active' if current_locale?(locale) %>" id="<%= "#{field}-#{locale}" %>-tab" data-toggle="tab" href="#<%= "#{field}-#{locale}" %>-content" role="tab" aria-controls="<%= "#{field}-#{locale}" %>-tab">
         <%= t("languages.#{locale}") %>
       </a>
     </li>
@@ -10,7 +10,7 @@
 
 <div class="tab-content locales">
   <% I18n.available_locales.each do |locale| %>
-    <div class="tab-pane <%= 'active' if current_locale(locale) %>" id="<%= "#{field}-#{locale}" %>-content" role="tabpanel" aria-labelledby="<%= "#{field}-#{locale}" %>-tab">
+    <div class="tab-pane <%= 'active' if current_locale?(locale) %>" id="<%= "#{field}-#{locale}" %>-content" role="tabpanel" aria-labelledby="<%= "#{field}-#{locale}" %>-tab">
       <%= yield "#{locale}" %>
       <% if locale_field_has_errors(f, field, locale) %>
         <div class="invalid-feedback"><%= locale_field_errors(f, field) %></div>

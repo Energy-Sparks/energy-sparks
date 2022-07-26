@@ -4,7 +4,7 @@
 
   <% locales.each do |locale| %>
     <li class="nav-item">
-      <a class="nav-link <%= 'active' if current_locale(locale) %>" href="#<%= scope %>-<%= locale %>-content" id="<%= scope %>-content-tab" data-toggle="tab"  role="tab" aria-controls="<%= scope %>-<%= locale %>-content" aria-selected="true">
+      <a class="nav-link <%= 'active' if current_locale?(locale) %>" href="#<%= scope %>-<%= locale %>-content" id="<%= scope %>-content-tab" data-toggle="tab"  role="tab" aria-controls="<%= scope %>-<%= locale %>-content" aria-selected="true">
         <span class="text-danger d-none"><%= fa_icon('exclamation-triangle') %></span>
         Content (<%= t("languages.#{locale}") %>)
       </a>
@@ -39,7 +39,7 @@
 <div class="tab-content" id="<%= scope %>-content-panes">
 
   <% locales.each do |locale| %>
-    <div class="tab-pane fade show <%= 'active' if current_locale(locale) %>" id="<%= scope %>-<%= locale %>-content" role="tabpanel" aria-labelledby="<%= scope %>-<%= locale %>-content-tab">
+    <div class="tab-pane fade show <%= 'active' if current_locale?(locale) %>" id="<%= scope %>-<%= locale %>-content" role="tabpanel" aria-labelledby="<%= scope %>-<%= locale %>-content-tab">
       <%= yield "#{locale}" %>
     </div>
   <% end %>

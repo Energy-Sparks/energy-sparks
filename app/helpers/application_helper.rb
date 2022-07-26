@@ -361,7 +361,7 @@ module ApplicationHelper
     calendar_event.based_on ? 'inherited' : ''
   end
 
-  def current_locale(locale)
+  def current_locale?(locale)
     locale.to_s == I18n.locale.to_s
   end
 
