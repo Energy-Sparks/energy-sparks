@@ -26,10 +26,9 @@ describe EquivalenceTypeContentVersion do
       it 'produces the expected key names' do
         expect(content_version.tx_attribute_key("equivalence")).to eq "equivalence_html"
       end
-      # TODO this should work after the yaml<->mustache conversion has been updated
-      # it 'produces the expected tx values, removing trix content wrapper' do
-      #   expect(content_version.tx_value("equivalence")).to eql "some content with %{position}"
-      # end
+      it 'produces the expected tx values, removing trix content wrapper' do
+        expect(content_version.tx_value("equivalence")).to eql "some content with %{tx_var_position}"
+      end
       it 'created categories' do
         expect(content_version.tx_categories).to match_array(["equivalence_type"])
       end
