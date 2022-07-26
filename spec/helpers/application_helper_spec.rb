@@ -162,4 +162,23 @@ describe ApplicationHelper do
     end
   end
 
+  describe '#current_locale' do
+    it 'handles symbols' do
+      expect(helper.current_locale?(:en)).to be_truthy
+      expect(helper.current_locale?(:cy)).to be_falsey
+    end
+    it 'handles strings' do
+      expect(helper.current_locale?('en')).to be_truthy
+      expect(helper.current_locale?('cy')).to be_falsey
+    end
+  end
+
+  describe '#path_with_locale' do
+    it 'adds parameter when no other parameters' do
+      expect(helper.path_with_locale('/search?q=blah', :cy)).to eq('/search?q=blah&locale=cy')
+    end
+    it 'adds parameter when other parameters' do
+      expect(helper.path_with_locale('/search', :cy)).to eq('/search?locale=cy')
+    end
+  end
 end
