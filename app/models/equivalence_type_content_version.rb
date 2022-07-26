@@ -2,7 +2,6 @@
 #
 # Table name: equivalence_type_content_versions
 #
-#  _equivalence        :text
 #  created_at          :datetime         not null
 #  equivalence_type_id :bigint(8)        not null
 #  id                  :bigint(8)        not null, primary key
@@ -42,14 +41,14 @@ class EquivalenceTypeContentVersion < ApplicationRecord
   end
 
   def resource_key
-    "#{self.class.model_name.i18n_key}_#{self.equivalence_type.id}"
+    "#{self.class.model_name.i18n_key}_#{equivalence_type.id}"
   end
 
   def tx_name
-    "#{self.class.model_name.i18n_key} #{equivalence_type.id}"
+    "#{self.class.model_name.human} #{equivalence_type.id}"
   end
 
   def tx_categories
-    ['equivalences']
+    ['equivalence_type']
   end
 end
