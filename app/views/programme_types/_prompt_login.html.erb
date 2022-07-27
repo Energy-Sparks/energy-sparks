@@ -4,10 +4,10 @@
       <i class="fas fa-play-circle fa-3x"></i>
     </div>
     <div class="col-lg-7 col-sm-12">
-      Are you an Energy Sparks user?<br>Sign in and enrol your school in this programme, or record your recent progress.
+      <%= t('programme_types.prompt_login.are_you_an_energy_sparks_user_html') %>
     </div>
     <div class="col-lg-4 col-sm-12">
-      <%= link_to "Sign in now", sign_in_and_redirect_path(url: programme_type_path(programme_type)), class: 'btn btn-primary' %>
+      <%= link_to t('programme_types.prompt_login.sign_in_now'), sign_in_and_redirect_path(url: programme_type_path(programme_type)), class: 'btn btn-primary' %>
     </div>
   </div>
 </div>

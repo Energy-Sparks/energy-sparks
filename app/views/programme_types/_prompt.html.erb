@@ -5,10 +5,10 @@
         <i class="fas fa-play-circle fa-3x"></i>
       </div>
       <div class="col-lg-7 col-sm-12 align-self-center">
-        You can enrol your school in this programme
+        <%= t('programme_types.prompt.you_can_enrol_your_school_in_this_programme') %>
       </div>
       <div class="col-lg-4 col-sm-12">
-        <%= link_to 'Start', school_programmes_path(school, programme_type_id: programme_type), method: :post, class: 'btn btn-secondary' %>
+        <%= link_to t('programme_types.prompt.start'), school_programmes_path(school, programme_type_id: programme_type), method: :post, class: 'btn btn-secondary' %>
       </div>
     </div>
   </div>
