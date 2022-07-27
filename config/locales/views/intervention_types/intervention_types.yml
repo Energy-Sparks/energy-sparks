@@ -1,10 +1,20 @@
 ---
 en:
   intervention_types:
+    search:
+      all_actions: All actions
+      no_results_found: No results found
+      pupil_activities: Pupil activities
+      results_found:
+        one: 1 result found
+        other: "%{count} results found"
+      search: Search
+      search_for_actions_by_keyword: Search for actions by keyword
+      title: Find actions
     show:
+      download_resources: Download resources
+      edit: Edit
+      overview: Overview
       view_related_actions:
         one: View %{count} related action
         other: View %{count} related actions
-      overview: Overview
-      download_resources: Download resources
-      edit: Edit
