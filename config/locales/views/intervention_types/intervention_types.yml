@@ -1,0 +1,10 @@
+---
+en:
+  intervention_types:
+    show:
+      view_related_actions:
+        one: View %{count} related action
+        other: View %{count} related actions
+      overview: Overview
+      download_resources: Download resources
+      edit: Edit
