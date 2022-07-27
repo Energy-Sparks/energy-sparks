@@ -1,6 +1,11 @@
 ---
 en:
   intervention_types:
+    prompt_score:
+      complete_this_action_html:
+        one: Complete this action to score your school <strong>%{count}</strong> point!
+        other: Complete this action to score your school <strong>%{count}</strong> points!
+      record_this_action: Record this action
     search:
       all_actions: All actions
       no_results_found: No results found
