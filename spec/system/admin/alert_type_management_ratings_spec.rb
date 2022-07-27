@@ -195,7 +195,7 @@ RSpec.describe 'alert type management', type: :system do
         fill_in_trix with: 'Your school is spending too much on gas'
 
         within '.management_priorities_active' do
-          click_on 'Preview'
+          click_on 'Preview (English)'
           within '#management_priorities-preview-en .content' do
             expect(page).to have_content('Your school is spending too much on gas')
           end

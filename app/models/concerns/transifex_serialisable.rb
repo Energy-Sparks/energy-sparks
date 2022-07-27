@@ -118,6 +118,22 @@ module TransifexSerialisable
     "#{self.class.model_name.i18n_key}_#{self.id}"
   end
 
+  def yaml_template_to_mustache(value)
+    value = value.gsub(/%{tx_chart_([a-z0-9_|£]+)}/, '{{#chart}}\1{{/chart}}')
+    value = value.gsub(/%{tx_var_([a-z0-9_|£]+)}/, '{{\1}}')
+    # retain this conversion for legacy content which didn't have the tx_chart_ prefix
+    value = value.gsub(/%{([a-z0-9_|£]+)}/, '{{#chart}}\1{{/chart}}')
+    value
+  end
+
+  #we only have a single custom Mustache tag, see SchoolTemplate
+  #we will need to do something more sophisticated if we add more
+  def mustache_to_yaml(value)
+    value = value.gsub(/{{#chart}}([a-z0-9_|£]+){{\/chart}}/, '%{tx_chart_\1}')
+    value = value.gsub(/{{([a-z0-9_|£]+)}}/, '%{tx_var_\1}')
+    value
+  end
+
   private
 
   def remove_newlines(value)
@@ -126,16 +142,6 @@ module TransifexSerialisable
 
   def remove_rich_text_wrapper(value)
     value.start_with?(TRIX_DIV) ? value.gsub(TRIX_DIV, '').chomp(CLOSE_DIV) : value
-  end
-
-  def yaml_template_to_mustache(value)
-    value.gsub(/%{([a-z0-9_|£]+)}/, '{{#chart}}\1{{/chart}}')
-  end
-
-  #we only have a single custom Mustache tag, see SchoolTemplate
-  #we will need to do something more sophisticated if we add more
-  def mustache_to_yaml(value)
-    value.gsub(/{{#chart}}([a-z0-9_|£]+){{\/chart}}/, '%{\1}')
   end
 
   module ClassMethods
