@@ -173,6 +173,17 @@ describe ApplicationHelper do
     end
   end
 
+  describe 'nice_dates' do
+    it 'outputs dates as strings' do
+      # TODO: test for 1 through 31 and fix day names
+      date = Date.strptime("01/01/2022", "%d/%m/%Y")
+      I18n.locale = 'en'
+      expect(helper.nice_dates(date)).to eq('Sat 1st Jan 2022')
+      I18n.locale = 'cy'
+      expect(helper.nice_dates(date)).to eq('Sat 1af Jan 2022')
+    end
+  end
+
   describe '#path_with_locale' do
     it 'adds parameter when no other parameters' do
       expect(helper.path_with_locale('/search?q=blah', :cy)).to eq('/search?q=blah&locale=cy')
