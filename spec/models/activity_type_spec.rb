@@ -113,7 +113,7 @@ describe 'ActivityType' do
       it 'produces the expected tx values, removing trix content wrapper' do
         expect(activity_type.tx_value("name")).to eql activity_type.name
         expect(activity_type.tx_value("description")).to eql("description")
-        expect(activity_type.tx_value("school_specific_description")).to eql("Description %{chart_name} %{chart_name2|£}")
+        expect(activity_type.tx_value("school_specific_description")).to eql("Description %{tx_chart_chart_name} %{tx_chart_chart_name2|£}")
       end
       it 'produces the expected resource key' do
         expect(activity_type.resource_key).to eq "activity_type_#{activity_type.id}"
