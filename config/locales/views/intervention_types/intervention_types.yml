@@ -1,6 +1,10 @@
 ---
 en:
   intervention_types:
+    intervention_type_points:
+      points_for_this_action:
+        one: point for this action
+        other: points for this action
     prompt_score:
       complete_this_action_html:
         one: Complete this action to score your school <strong>%{count}</strong> point!
