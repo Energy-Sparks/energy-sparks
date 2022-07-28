@@ -1,1 +1,1 @@
-<%= render 'shared/activities/previous_records', label: 'Activity', list: activities, school: school, most_recent: activities.last.happened_on, path: school_activity_path(school, activities.last) %>
+<%= render 'shared/activities/previous_records', label: t('activity_types.activity'), list: activities, school: school, most_recent: activities.last.happened_on, path: school_activity_path(school, activities.last) %>

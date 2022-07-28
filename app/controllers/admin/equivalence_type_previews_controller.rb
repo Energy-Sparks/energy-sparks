@@ -1,5 +1,7 @@
 module Admin
   class EquivalenceTypePreviewsController < AdminController
+    include LocaleHelper
+
     def create
       school = School.find(params[:school_id])
       equivalence_type = EquivalenceType.new(equivalence_type_params)
@@ -10,7 +12,7 @@ module Admin
         content,
         with_objects: { equivalence_type: equivalence_type }
       ).interpolate(
-        :equivalence,
+        *template_fields,
         with: @equivalence.formatted_variables
       )
       render 'show', layout: nil
@@ -20,13 +22,20 @@ module Admin
 
   private
 
+    def template_fields
+      translated_params = t_params(EquivalenceTypeContentVersion.mobility_attributes)
+      EquivalenceTypeContentVersion.template_fields + translated_params
+    end
+
     def equivalence_type_params
-      params.require(:equivalence_type).permit(:meter_type, :time_period, :image_name)
+      params.require(:equivalence_type).permit(
+        template_fields + [:meter_type, :time_period, :image_name]
+      )
     end
 
     def content_params
       params.require(:equivalence_type).permit(
-        content: [:equivalence]
+        content: template_fields
       )
     end
   end

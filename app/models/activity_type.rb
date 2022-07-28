@@ -90,6 +90,14 @@ class ActivityType < ApplicationRecord
 
   before_save :copy_searchable_attributes
 
+  def suggested_from
+    ActivityType.joins(:activity_type_suggestions).where("activity_type_suggestions.suggested_type_id = ?", id)
+  end
+
+  def referenced_from_find_out_mores
+    AlertTypeRating.joins(:alert_type_rating_activity_types).where("alert_type_rating_activity_types.activity_type_id = ?", id)
+  end
+
   def key_stage_list
     key_stages.map(&:name).sort.join(', ')
   end
@@ -104,6 +112,14 @@ class ActivityType < ApplicationRecord
 
   def activities_for_school(school)
     activities.for_school(school)
+  end
+
+  def grouped_school_count
+    activities.group(:school).count
+  end
+
+  def unique_school_count
+    activities.select(:school_id).distinct.count
   end
 
   #override default name for this resource in transifex

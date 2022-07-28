@@ -1,3 +1,3 @@
 <% activity_type.key_stages.order(:name).each do |key_stage| %>
-  <span class="badge badge-info" data-toggle="tooltip" data-placement="bottom" title="Key Stages"><%= t(key_stage.i18n_key) %></span>
+  <span class="badge badge-info" data-toggle="tooltip" data-placement="bottom" title="<%= t('activity_types.key_stages') %>"><%= t(key_stage.i18n_key) %></span>
 <% end %>

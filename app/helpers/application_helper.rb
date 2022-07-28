@@ -26,13 +26,13 @@ module ApplicationHelper
   def human_counts(collection)
     case collection.count
     when 0
-      'no times'
+      t('application_helper.human_counts.no_times')
     when 1
-      'once'
+      t('application_helper.human_counts.once')
     when 2
-      'twice'
+      t('application_helper.human_counts.twice')
     else
-      'several times'
+      t('application_helper.human_counts.several_times')
     end
   end
 

@@ -7,6 +7,7 @@ module Admin
     before_action :load_chart_list, except: :index
 
     def index
+      @activity_categories = ActivityCategory.by_name
       @activity_types = @activity_types.includes(:activity_category).order("activity_categories.name", :name)
     end
 
