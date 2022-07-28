@@ -1,0 +1,4 @@
+cy:
+  date:
+    day_names: [Dydd Sul, Dydd Llun, Dydd Mawrth, Dydd Mercher, Dydd Iau, Dydd Gwener, Dydd Sadwrn]
+    abbr_day_names: [Sul, Llu, Maw, Mer, Iau, Gwe, Sad]
