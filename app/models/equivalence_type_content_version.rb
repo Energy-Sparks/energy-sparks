@@ -51,4 +51,8 @@ class EquivalenceTypeContentVersion < ApplicationRecord
   def tx_categories
     ['equivalence_type']
   end
+
+  def self.tx_resources
+    self.latest
+  end
 end
