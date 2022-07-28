@@ -1,13 +1,13 @@
-<% content_for :page_title, "#{@school.name} Activity" %>
+<% content_for :page_title, "#{@school.name} " + t('activities.show.page_title') %>
 
 <div class="row">
   <div class="col-md-12">
     <h1><%= @activity.display_name %></h1>
     <p class="text-muted">
       <span><%= link_to @school.name, school_path(@school) %>, <%= @activity.happened_on.strftime("%A, %d %B %Y") %></span><br>
-      <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="Score awarded for this activity"><%= @activity.activity_type.score %></span>
-      <span class="badge badge-secondary" data-toggle="tooltip" data-placement="bottom" title="Category of activity"><%= @activity.activity_type.activity_category.name %></span>
-      <span class="badge badge-primary" data-toggle="tooltip" data-placement="bottom" title="Key Stages"><%= @activity.activity_type.key_stage_list %></span>
+      <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="<%= t('activities.show.score_awarded_for_this_activity') %>"><%= @activity.activity_type.score %></span>
+      <span class="badge badge-secondary" data-toggle="tooltip" data-placement="bottom" title="<%= t('activities.show.category_of_activity') %>"><%= @activity.activity_type.activity_category.name %></span>
+      <span class="badge badge-primary" data-toggle="tooltip" data-placement="bottom" title="<%= t('activities.show.key_stages') %>"><%= @activity.activity_type.key_stage_list %></span>
     </p>
   </div>
 </div>
@@ -23,8 +23,10 @@
 <% else %>
   <div class="row">
     <div class="col-md-12 activity">
-      <p>You haven't entered what you did for this activity, please edit the activitiy and tell us what you did.</p>
-      <p><%= link_to "Edit", edit_school_activity_path(@school, @activity), class: 'btn btn-warning' %></p>
+      <p>
+        <%= t('activities.show.no_entry') %>.
+      </p>
+      <p><%= link_to t('activities.actions.edit'), edit_school_activity_path(@school, @activity), class: 'btn btn-warning' %></p>
     </div>
   </div>
 <% end %>
@@ -34,7 +36,7 @@
     <div class="col-md-12 activity_type">
       <div class="card">
         <div class="card-body">
-          <h3 class="card-title">Activity description</h3>
+          <h3 class="card-title"><%= t('activities.show.activity_description') %></h3>
           <p class="card-text"><%= @activity_type_content %></p>
         </div>
       </div>
@@ -45,11 +47,11 @@
 <div class="row">
   <div class="col-md-12 activity">
     <p></p>
-    <%= link_to 'All activities', school_activities_path(@school), class: 'btn btn-success' %>
+    <%= link_to t('activities.show.all_activities') %>, school_activities_path(@school), class: 'btn btn-success' %>
     <% if can? :manage, @activity %>
-      <%= link_to 'Home', school_path(@school), class: 'btn btn-primary' %>
-      <%= link_to 'Edit', edit_school_activity_path(@school, @activity), class: 'btn btn-warning' %>
-      <%= link_to 'Delete', school_activity_path(@school, @activity), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger' %>
+      <%= link_to t('activities.actions.home'), school_path(@school), class: 'btn btn-primary' %>
+      <%= link_to t('activities.actions.edit'), edit_school_activity_path(@school, @activity), class: 'btn btn-warning' %>
+      <%= link_to t('activities.actions.delete'), school_activity_path(@school, @activity), method: :delete, data: {confirm: t('activities.actions.are_you_sure')}, class: 'btn btn-danger' %>
     <% end %>
   </div>
 </div>
