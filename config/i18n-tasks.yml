@@ -127,6 +127,7 @@ ignore_unused:
   - 'charts.*'
   - 'schools.transport_surveys.equivalences.*'
   - 'schools.transport_surveys.show.percentages.*'
+  - 'date.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'

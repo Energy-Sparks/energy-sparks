@@ -2,11 +2,11 @@ cy:
   date:
     # day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
     # abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
-    day_names: [Dydd Sul, Dydd Llun, Dydd Mawrth, Dydd Mercher, Dydd Iau, Dydd Gwener, Dydd Sadwrn]
+    # day_names: [Dydd Sul, Dydd Llun, Dydd Mawrth, Dydd Mercher, Dydd Iau, Dydd Gwener, Dydd Sadwrn]
     abbr_day_names: [Sul, Llu, Maw, Mer, Iau, Gwe, Sad]
 
     # Don't forget the nil at the beginning; there's no such thing as a 0th month
     # month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
     # abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
-    month_names: [~, Ionawr, Chwefror, Mawrth, Ebrill, Mai, Mehefin, Gorffennaf, Awst, Medi, Hydref, Tachwedd, Rhagfyr]
+    # month_names: [~, Ionawr, Chwefror, Mawrth, Ebrill, Mai, Mehefin, Gorffennaf, Awst, Medi, Hydref, Tachwedd, Rhagfyr]
     abbr_month_names: [~, Ion, Chw, Maw, Ebr, Mai, Meh, Gor, Aws, Med, Hyd, Tac, Rha]
