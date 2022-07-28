@@ -13,6 +13,17 @@ en:
     school_statistics: School statistics
     team: Team
     terms_and_conditions: Terms and conditions
+  activities:
+    previous_records:
+      completed_most_recently_on: most recently on
+      completed_on: 'on'
+      previously_completed: "%{label} previously completed"
+    prompt_login_to_record:
+      are_you_an_energy_sparks_user: Are you an Energy Sparks user?
+      sign_in_html:
+        one: Sign in now to record this %{label} and score your school <strong>1</strong> point!
+        other: Sign in now to record this %{label} and score your school <strong>%{count}</strong> points!
+      sign_in_to_record_html: Sign in to record %{label}
   common_nav_bar_menus:
     actions: Actions
     activities: Activities

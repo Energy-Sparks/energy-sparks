@@ -1,10 +1,10 @@
 <div class="row">
   <div class="col">
     <div class="d-flex justify-content-between align-items-center">
-      <h1>Find pupil activities</h1>
+      <h1><%= t('activity_types.search.title') %></h1>
       <div>
-        <%= link_to 'All activities', activity_categories_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold'  %>
-        <%= link_to 'Adult actions', intervention_type_groups_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold'  %>
+        <%= link_to t('activity_types.search.all_activities'), activity_categories_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold'  %>
+        <%= link_to t('activity_types.search.adult_actions'), intervention_type_groups_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold'  %>
       </div>
     </div>
   </div>
@@ -13,7 +13,7 @@
 <div class="row">
   <div class="col">
     <p>
-      Search for activities by keyword
+      <%= t('activity_types.search.for_activities_by_keyword') %>
     </p>
   </div>
 </div>
@@ -26,7 +26,7 @@
       <%= hidden_field_tag :subjects, params[:subjects] %>
     </div>
     <div class="col-md-2">
-      <%= submit_tag "Search", class: "btn btn-primary" %>
+      <%= submit_tag t('activity_types.search.button_label'), class: "btn btn-primary" %>
     </div>
   </div>
   <br/>
@@ -34,17 +34,17 @@
     <div class="col">
       <div class="row activity-type-filters">
         <div class="col-md-2">
-          <p>Limit results shown</p>
+          <p><%= t('activity_types.search.limit_results_shown') %></p>
         </div>
         <div class="col-md-10">
           <% KeyStage.by_name.each do |key_stage| %>
-            <span data-toggle="tooltip" data-placement="bottom" title="Key Stages">
+            <span data-toggle="tooltip" data-placement="bottom" title="<%= t('activity_types.key_stages') %>">
               <%= link_to t(key_stage.i18n_key), activity_types_search_link(params, key_stage.name, ''), class: activity_types_badge_class(params[:key_stages], t(key_stage.i18n_key), 'info'), data: { disable_with: spinner_icon } %>
             </span>
           <% end %>
           <br/>
           <% Subject.by_name.each do |subject| %>
-            <span data-toggle="tooltip" data-placement="bottom" title="Subjects">
+            <span data-toggle="tooltip" data-placement="bottom" title="<%= t('activity_types.subjects') %>">
               <%= link_to t(subject.i18n_key), activity_types_search_link(params, '', subject.name), class: activity_types_badge_class(params[:subjects], t(subject.i18n_key), 'dark'), data: { disable_with: spinner_icon } %>
             </span>
           <% end %>
@@ -58,11 +58,13 @@
 <% if @activity_types.empty? %>
   <% if params[:query] %>
     <p>
-      No results found
+      <%= t('activity_types.search.no_results_found') %>
     </p>
   <% end %>
 <% else %>
-  <h4><%= "#{pluralize(@pagy.count, 'result')} found"  %></h4>
+  <h4>
+    <%= t('activity_types.search.results_found', count: @pagy.count) %>
+  </h4>
   <br/>
   <% @activity_types.each do |activity_type| %>
     <%= render 'activity_types/activity_type', activity_type: activity_type, school: current_user_school %>

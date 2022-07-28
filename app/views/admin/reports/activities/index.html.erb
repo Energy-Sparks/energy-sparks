@@ -1,6 +1,13 @@
-<% content_for :page_title, 'Latest activities' %>
+<% content_for :page_title, 'Recently recorded activities' %>
 
-<h1>Recently recorded activities</h1>
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Recently recorded activities</h1>
+
+  <div>
+    <%= link_to "Activity type overview", admin_reports_activity_types_path, class: "btn btn-outline-dark font-weight-bold" %>
+    <%= link_to "All reports", admin_reports_path, class: "btn btn-outline-dark font-weight-bold" %>
+  </div>
+</div>
 
 <p>
   The following is a list of the 150 most recently recorded activities by schools across the

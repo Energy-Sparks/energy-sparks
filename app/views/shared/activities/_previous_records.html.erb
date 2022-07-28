@@ -6,10 +6,11 @@
       </div>
       <div class="col-lg-11 col-sm-12 align-self-center">
         <%= label %> previously completed
+        <%= t('activities.previous_records.previously_completed', label: label) %>
         <strong>
           <%= link_to "#{human_counts(list)}", school_timeline_path(school) %>
         </strong>
-        <%= list.count > 1 ? ' most recently on ' : ' on ' %>
+        <%= list.count > 1 ? " #{t('activities.previous_records.completed_most_recently_on')} " : " #{t('activities.previous_records.completed_on')} " %>
         <strong>
           <%= link_to "#{nice_dates(most_recent)}", path %>
         </strong>

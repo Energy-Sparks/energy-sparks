@@ -1,5 +1,6 @@
 module Admin
   class EquivalenceTypesController < AdminController
+    include LocaleHelper
     load_and_authorize_resource
 
     before_action :set_template_variables, except: [:index, :show]
@@ -46,8 +47,9 @@ module Admin
     end
 
     def content_params
+      translated_params = t_params(EquivalenceTypeContentVersion.mobility_attributes)
       params.require(:equivalence_type).permit(
-        content: [:equivalence]
+        content: translated_params
       )
     end
 
