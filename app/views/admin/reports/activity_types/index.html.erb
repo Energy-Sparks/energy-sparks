@@ -35,6 +35,7 @@
       <th></th>
     </tr>
     <tr>
+      <th>Category</th>
       <th>Name</th>
       <th>Count</th>
       <th>Schools</th>
@@ -48,6 +49,7 @@
   <tbody>
     <% @activity_types.each do |at| %>
       <tr class="<%= active(at.active) %>">
+        <td><%= at.activity_category.name %></td>
         <td><%= link_to at.name, admin_reports_activity_type_path(at) %></td>
         <td><%= at.activities.count %></td>
         <td><%= at.unique_school_count %></td>
