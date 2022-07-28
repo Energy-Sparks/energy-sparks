@@ -174,7 +174,7 @@ describe ApplicationHelper do
   end
 
   describe 'nice_dates' do
-    it 'outputs dates as strings' do
+    it 'outputs dates as strings in a nice way' do
       # TODO: test for 1 through 31 and fix day names
       date = Date.strptime("01/01/2022", "%d/%m/%Y")
       I18n.locale = 'en'
