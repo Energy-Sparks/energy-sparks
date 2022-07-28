@@ -64,15 +64,16 @@ class AlertTypeRatingContentVersion < ApplicationRecord
 
   translates :pupil_dashboard_title, backend: :action_text
   translates :management_dashboard_title, backend: :action_text
+  translates :management_priorities_title, backend: :action_text
 
   has_rich_text :email_content
   has_rich_text :find_out_more_content
   has_rich_text :public_dashboard_title
-  has_rich_text :management_priorities_title
 
   TX_ATTRIBUTE_MAPPING = {
     pupil_dashboard_title: { templated: true },
     management_dashboard_title: { templated: true },
+    management_priorities_title: { templated: true },
   }.freeze
 
   def self.functionality
@@ -97,7 +98,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   end
 
   def resource_key
-    "#{self.class.model_name.i18n_key}_#{self.alert_type_rating.id}"
+    "#{self.class.model_name.i18n_key}_#{alert_type_rating.id}"
   end
 
   def tx_name
@@ -114,6 +115,8 @@ class AlertTypeRatingContentVersion < ApplicationRecord
       return alert_type_rating.pupil_dashboard_alert_active?
     when :management_dashboard_title
       return alert_type_rating.management_dashboard_alert_active?
+    when :management_priorities_title
+      return alert_type_rating.management_priorities_active?
     end
   end
 
