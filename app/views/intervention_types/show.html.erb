@@ -14,7 +14,7 @@
     </div>
   </div>
   <div class="col-md-3">
-    <%= link_to "View #{@intervention_type.intervention_type_group.intervention_types.count} related actions", intervention_type_group_path(@intervention_type.intervention_type_group), class: 'btn btn-outline-dark rounded-pill font-weight-bold float-right' %>
+    <%= link_to t('intervention_types.show.view_related_actions', count: @intervention_type.intervention_type_group.intervention_types.count), intervention_type_group_path(@intervention_type.intervention_type_group), class: 'btn btn-outline-dark rounded-pill font-weight-bold float-right' %>
   </div>
 </div>
 
@@ -32,12 +32,14 @@
 
 <div class="row padded-row">
   <div class="col-md-9">
-    <h3>Overview</h3>
+    <h3>
+      <%= t('intervention_types.show.overview') %>
+    </h3>
     <%= @intervention_type.description %>
   </div>
   <div class="col-md-3 text-center intervention-type-download-links" data-event-value="<%= @intervention_type.id %>">
     <% if @intervention_type.download_links.present? %>
-      <h4 style="padding-top: 0px;">Download resources</h4>
+      <h4 style="padding-top: 0px;"><%= t('intervention_types.show.download_resources') %></h4>
       <div class="activity_type">
         <%= @intervention_type.download_links %>
       </div>
@@ -47,6 +49,6 @@
 
 <% if can?(:edit, @intervention_type) %>
   <div class="row padded-row">
-    <p><%= link_to 'Edit', edit_admin_intervention_type_path(@intervention_type), class: 'btn' %></p>
+    <p><%= link_to t('intervention_types.show.edit'), edit_admin_intervention_type_path(@intervention_type), class: 'btn' %></p>
   </div>
 <% end %>
