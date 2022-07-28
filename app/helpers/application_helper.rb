@@ -15,9 +15,7 @@ module ApplicationHelper
   end
 
   def nice_dates(date)
-    return '' unless date
-
-    I18n.l(date, format: "%a #{date.day.ordinalize} %b %Y")
+    date ? date.to_s(:es_full) : ""
   end
 
   def short_dates(date)
