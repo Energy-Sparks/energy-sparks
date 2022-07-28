@@ -36,7 +36,7 @@ describe 'viewing and recording action', type: :system do
       end
 
       it 'should display navigation' do
-        expect(page).to have_link("View #{intervention_type.intervention_type_group.intervention_types.count} related actions")
+        expect(page).to have_link("View #{intervention_type.intervention_type_group.intervention_types.count} related action")
       end
 
       it 'should display resource links' do
