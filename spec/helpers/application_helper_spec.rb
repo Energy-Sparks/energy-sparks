@@ -133,6 +133,8 @@ describe ApplicationHelper do
   describe 'nice_date_times' do
     let(:utc_date_time) { Time.zone.now }
     let(:utc_nice_date_time) { nice_date_times(utc_date_time) }
+    before { I18n.locale = 'en' }
+    after { I18n.locale = 'en' }
 
     context "localtime option is true" do
       subject { nice_date_times(utc_date_time, localtime: true) }
@@ -172,6 +174,8 @@ describe ApplicationHelper do
       expect(helper.current_locale?('cy')).to be_falsey
     end
   end
+
+
 
   describe 'nice_dates' do
     before { I18n.locale = 'en' }
