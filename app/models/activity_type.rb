@@ -90,6 +90,14 @@ class ActivityType < ApplicationRecord
 
   before_save :copy_searchable_attributes
 
+  def suggested_from
+    ActivityType.joins(:activity_type_suggestions).where("activity_type_suggestions.suggested_type_id = ?", id)
+  end
+
+  def referenced_from_find_out_mores
+    AlertTypeRating.joins(:alert_type_rating_activity_types).where("alert_type_rating_activity_types.activity_type_id = ?", id)
+  end
+
   def key_stage_list
     key_stages.map(&:name).sort.join(', ')
   end

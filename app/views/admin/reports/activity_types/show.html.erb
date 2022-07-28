@@ -9,11 +9,26 @@
   </div>
 </div>
 
-<p>
-<strong>"<%= link_to @activity_type.name, admin_activity_type_path(@activity_type) %>"</strong> has been recorded a total of <strong><%= @recorded %></strong> times by <strong><%= @school_count %></strong> schools.
-</p>
+<div class="row">
+  <div class="col">
+    <% if !@activity_type.active %>
+      <p class="bg-warning">This activity is no longer active</p>
+    <% end %>
+    <p>
+    <strong>"<%= link_to @activity_type.name, admin_activity_type_path(@activity_type) %>"</strong> has been recorded a total of <strong><%= @recorded %></strong> times by <strong><%= @school_count %></strong> schools.
+    </p>
+  </div>
+  <div class="col">
+    <ul>
+      <li><a href="#recording-summary">Recording summary</a></li>
+      <li><a href="#references">References</a></li>
+    </ul>
+  </div>
+</div>
 
-<h2>Recording Summary</h2>
+
+
+<h2 id="recording-summary">Recording Summary</h2>
 
 <% if @recorded > @school_count %>
   <div class="row">
@@ -91,5 +106,41 @@
         <% end %>
       </tbody>
     </table>
+  </div>
+</div>
+
+<h2 id="references">References</h2>
+
+<p>This activity is referenced from the following areas</p>
+
+<div class="row">
+  <div class="col col-md-3">
+    <h3>Suggested Next Activity</h3>
+    <ul>
+      <% @activity_type.suggested_from.each do |at| %>
+        <li><%= link_to at.name, edit_admin_activity_type_path(at) %></li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="col col-md-3">
+    <h3>Programmes</h3>
+    <ul>
+      <% @activity_type.programme_types.each do |programme_type| %>
+        <li><%= link_to programme_type.title, edit_admin_programme_type_path(programme_type) %></li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="col col-md-6">
+    <h3>Find Out More</h3>
+    <ul>
+      <% @activity_type.referenced_from_find_out_mores.each do |alert_type_rating| %>
+        <li>
+          <%= link_to admin_alert_type_ratings_path(alert_type_rating.alert_type) do %>
+            <%= alert_type_rating.alert_type.title %>
+          <% end %>
+           - <%= alert_type_rating.description %>
+        </li>
+      <% end %>
+    </ul>
   </div>
 </div>

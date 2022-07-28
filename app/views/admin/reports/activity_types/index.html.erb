@@ -29,7 +29,7 @@
 <table class="table table-sorted dataTable table-sm">
   <thead>
     <tr>
-      <th></th>
+      <th colspan="2"></th>
       <th colspan="2">Recorded</th>
       <th colspan="3">Referenced</th>
       <th></th>
@@ -53,11 +53,11 @@
         <td><%= link_to at.name, admin_reports_activity_type_path(at) %></td>
         <td><%= at.activities.count %></td>
         <td><%= at.unique_school_count %></td>
-        <td><%= ActivityType.joins(:activity_type_suggestions).where("activity_type_suggestions.activity_type_id = ?", at.id).count %></td>
+        <td><%= at.suggested_from.count %></td>
         <td><%= at.programme_types.count %></td>
         <td><%= AlertTypeRating.joins(:alert_type_rating_activity_types).where("alert_type_rating_activity_types.activity_type_id = ?", at.id).count %></td>
         <td><%= at.audits.count %></td>
-        <td><%= link_to 'Edit', edit_admin_activity_type_path(at), class: 'btn btn-primary' %></td>
+        <td><%= link_to 'Report', admin_reports_activity_type_path(at), class: 'btn btn-primary' %></td>
       </tr>
     <% end %>
   </tbody>
