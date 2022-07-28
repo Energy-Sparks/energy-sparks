@@ -179,9 +179,10 @@ describe ApplicationHelper do
       date = Date.strptime("01/01/2022", "%d/%m/%Y")
       I18n.locale = 'en'
       expect(helper.nice_dates(date)).to eq('Sat 1st Jan 2022')
+      expect(helper.nice_dates(date)).to eq('Sat 1st Jan 2022')
+      expect(helper.nice_dates(date)).to eq('Sat 1st Jan 2022')
       I18n.locale = 'cy'
-      expect(helper.nice_dates(date)).to eq('Sat 1af Jan 2022')
-
+      expect(helper.nice_dates(date)).to eq('Sad 1af Jan 2022')
       # Reset locale to English
       I18n.locale = 'en'
     end
