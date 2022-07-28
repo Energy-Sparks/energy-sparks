@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_21_141039) do
+ActiveRecord::Schema.define(version: 2022_07_25_152512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -695,7 +695,6 @@ ActiveRecord::Schema.define(version: 2022_07_21_141039) do
   end
 
   create_table "equivalence_type_content_versions", force: :cascade do |t|
-    t.text "_equivalence"
     t.bigint "equivalence_type_id", null: false
     t.bigint "replaced_by_id"
     t.datetime "created_at", precision: 6, null: false

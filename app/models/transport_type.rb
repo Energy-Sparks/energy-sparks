@@ -8,7 +8,7 @@
 #  id                :bigint(8)        not null, primary key
 #  image             :string           not null
 #  kg_co2e_per_km    :decimal(, )      default(0.0), not null
-#  name              :string           not null
+#  name              :string
 #  note              :string
 #  park_and_stride   :boolean          default(FALSE), not null
 #  position          :integer          default(0), not null

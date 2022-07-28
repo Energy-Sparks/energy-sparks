@@ -2,7 +2,6 @@
 #
 # Table name: equivalence_type_content_versions
 #
-#  _equivalence        :text
 #  created_at          :datetime         not null
 #  equivalence_type_id :bigint(8)        not null
 #  id                  :bigint(8)        not null, primary key
@@ -21,10 +20,39 @@
 #
 
 class EquivalenceTypeContentVersion < ApplicationRecord
+  extend Mobility
+  include TransifexSerialisable
+
   belongs_to :equivalence_type
   belongs_to :replaced_by, class_name: 'EquivalenceTypeContentVersion', foreign_key: :replaced_by_id, optional: true
 
-  has_rich_text :equivalence
+  translates :equivalence, backend: :action_text
 
   scope :latest, -> { where(replaced_by_id: nil) }
+
+  TX_ATTRIBUTE_MAPPING = {
+    equivalence: { templated: true }
+  }.freeze
+
+  def self.template_fields
+    [
+      :equivalence,
+    ]
+  end
+
+  def resource_key
+    "#{self.class.model_name.i18n_key}_#{equivalence_type.id}"
+  end
+
+  def tx_name
+    "#{self.class.model_name.human} #{equivalence_type.id}"
+  end
+
+  def tx_categories
+    ['equivalence_type']
+  end
+
+  def self.tx_resources
+    self.latest
+  end
 end

@@ -98,7 +98,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   end
 
   def resource_key
-    "#{self.class.model_name.i18n_key}_#{self.alert_type_rating.id}"
+    "#{self.class.model_name.i18n_key}_#{alert_type_rating.id}"
   end
 
   def tx_name
