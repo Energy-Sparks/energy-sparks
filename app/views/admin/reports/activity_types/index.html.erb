@@ -1,0 +1,64 @@
+<% content_for :page_title, 'Activity Type Management Report' %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Activity Type Management Report</h1>
+  <div>
+    <%= link_to "Recent activities", admin_reports_activities_path, class: "btn btn-outline-dark font-weight-bold" %>
+    <%= link_to "All reports", admin_reports_path, class: "btn btn-outline-dark font-weight-bold" %>
+  </div>
+</div>
+
+<p>
+  This table provides some high-level insights into our pupil activities. Use the table header
+  to sort the rows and click on an individual activity for more detail.
+</p>
+
+<p>
+  Those highlighted in <span class="bg-warning">yellow</span> have been marked as not active and are no longer visible to users.
+</p>
+
+<p>
+  The <strong>Recorded</strong> columns reports the number of times the activity has ever been recorded, and
+  the number of unique schools that have recorded it.
+</p>
+
+<p>
+  The <strong>Referenced</strong> columns show how many types the activity is referenced as a "Suggested next activity" via another activity, the number of programmes in which it is included, the number of times it is referenced from "Find out more" pages, and the number of audits that reference it.
+</p>
+
+<table class="table table-sorted dataTable table-sm">
+  <thead>
+    <tr>
+      <th colspan="2"></th>
+      <th colspan="2">Recorded</th>
+      <th colspan="3">Referenced</th>
+      <th></th>
+    </tr>
+    <tr>
+      <th>Category</th>
+      <th>Name</th>
+      <th>Count</th>
+      <th>Schools</th>
+      <th>Suggested</th>
+      <th>Programmes</th>
+      <th>Find Out Mores</th>
+      <th>Audits</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @activity_types.each do |at| %>
+      <tr class="<%= active(at.active) %>">
+        <td><%= at.activity_category.name %></td>
+        <td><%= link_to at.name, admin_reports_activity_type_path(at) %></td>
+        <td><%= at.activities.count %></td>
+        <td><%= at.unique_school_count %></td>
+        <td><%= at.suggested_from.count %></td>
+        <td><%= at.programme_types.count %></td>
+        <td><%= AlertTypeRating.joins(:alert_type_rating_activity_types).where("alert_type_rating_activity_types.activity_type_id = ?", at.id).count %></td>
+        <td><%= at.audits.count %></td>
+        <td><%= link_to 'Report', admin_reports_activity_type_path(at), class: 'btn btn-primary' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
