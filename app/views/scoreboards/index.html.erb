@@ -1,27 +1,54 @@
 
 
 <div class="row padded-row">
-  <div class="col-lg-8">
-    <h1>Scoreboards</h1>
-    <p>See how well each of our Energy Sparks schools are recording their energy saving activities! Scoreboard points are earned from recording activities investigating energy use, learning about energy and taking energy saving action around their school. Schools choose a scoreboard to join, normally competing against other schools in their local area.</p>
-    <p>Click on a scoreboard to see how the schools are doing!</p>
-  </div>
-  <div class="col-lg-4">
+  <div class="col-lg-3">
     <%= image_tag("actions/podium.png", class: "img-fluid ") %>
+  </div>
+  <div class="col-lg-9">
+    <h1 class="display-3"><strong>Scoreboards</strong></h1>
+    <p>
+      See how well each of our Energy Sparks schools are recording their energy saving activities!
+    </p>
+    <p>
+      Scoreboard points are earned from recording activities investigating energy use, learning about energy and taking energy saving action around their school. Schools choose a scoreboard to join, normally competing against other schools in their local area.
+    </p>
+    <p>
+      Click on a scoreboard to see how the schools are doing!
+    </p>
   </div>
 </div>
 
 <% if @scoreboards.any? %>
-  <table class="table table-condensed">
-    <tbody>
-      <% @scoreboards.each do |scoreboard| %>
-        <tr>
-          <td><%= link_to scoreboard.name, scoreboard_path(scoreboard) %></td>
-          <td><%= scoreboard.description %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <% @scoreboards.each_slice(2) do |row| %>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card-deck">
+          <% row.each do |scoreboard| %>
+            <div class="card mt-4">
+              <div class="card-body">
+                <h3 style="font-weight: bolder;"><%= scoreboard.name %></h3>
+                  <% scoreboard.scored_schools.with_points.schools_at(0, 3).each_with_index do |s, idx| %>
+                  <div class="row">
+                    <div class="col-1"><h4 style="padding-top: 0px; padding-bottom: 5px;"><span class="badge badge-success"><%= s.sum_points %></span></h4></div>
+                    <div class="col-11"><h4 style="padding-top: 0px; padding-bottom: 5px;"><%= s.name %></h4></div>
+                  </div>
+                  <% end %>
+              </div>
+              <div class="card-footer text-right" style="border-top: none; background-color: white;">
+                <%= link_to scoreboard_path(scoreboard) do %>
+                  View scores for all <%= scoreboard.schools.visible.count %> schools
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <div class="row">
+    <div class="col">
+    </div>
+  </div>
 <% else %>
   <h2>There are no Scoreboards</h2>
 <% end %>

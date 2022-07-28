@@ -61,11 +61,11 @@
         <% end %>
         <% @schools.without_points.each do |school| %>
           <tr>
-            <td />
+            <td><h2><span class="badge badge-secondary">-</span></h2></td>
             <td>
               <h2><%= link_to school.name, school_path(school) %></h2>
             </td>
-            <td />
+            <td><h2><span class="badge badge-secondary">0</span></h2></td>
           </tr>
         <% end %>
       </tbody>
