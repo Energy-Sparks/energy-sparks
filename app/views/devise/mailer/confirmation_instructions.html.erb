@@ -8,7 +8,7 @@
 <% if @resource.school.present? %>
   <p><%= t('devise.mailer.confirmation_instructions.user_account_created_for_you_for', resource_school_name: @resource.school.name) %>.</p>
 <% else %>
-  <p><%= t('devise.mailer.confirmation_instructions.user_account_created_for_you_on' %>.</p>
+  <p><%= t('devise.mailer.confirmation_instructions.user_account_created_for_you_on') %>.</p>
 <% end %>
 <div class="s-3"></div>
 <p>
