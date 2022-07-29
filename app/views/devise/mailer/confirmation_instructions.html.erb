@@ -2,7 +2,7 @@
   <%= t('devise.mailer.confirmation_instructions.please_confirm_your_energy_sparks_account') %>
 </h1>
 
-<p><%= t('devise.mailer.confirmation_instructions.welcome', name: @resource.name) %>!</p>
+<p><%= t('devise.mailer.confirmation_instructions.welcome', resource_name: @resource.name) %>!</p>
 
 <div class="s-3"></div>
 <% if @resource.school.present? %>
