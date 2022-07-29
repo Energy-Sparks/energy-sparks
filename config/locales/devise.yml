@@ -1,6 +1,14 @@
 ---
 en:
   devise:
+    shared:
+      links:
+        sign_in: Sign in
+        sign_up: Sign up
+        forgot_your_password: Forgot your password
+        didnt_receive_confirmation_instructions: Didn't receive confirmation instructions?
+        didnt_receive_unlock_instructions: Didn't receive unlock instructions
+        sign_in_with: Sign in with
     confirmations:
       confirmed: Your email address has been successfully confirmed.
       send_instructions: You will receive an email with instructions for how to confirm your email address in a few minutes.
@@ -46,6 +54,19 @@ en:
       update_needs_confirmation: You updated your account successfully, but we need to verify your new email address. Please check your email and follow the confirm link to confirm your new email address.
       updated: Your account has been updated successfully.
     sessions:
+      new:
+        page_title: Sign In to Energy Sparks
+        title: Sign in to Energy Sparks with your
+        email_address_and_password: email address and password
+        pupil_password: pupil password
+        email: Email
+        password: Password
+        remember_me: Remember me
+        sign_in: Sign in
+        not_your_school: Not your school?
+        pupil_sign_in_for: Pupil sign in for
+        select_your_school: Select your school
+        your_pupil_password: Your pupil password
       already_signed_out: Signed out successfully.
       signed_in: Signed in successfully.
       signed_out: Signed out successfully.
