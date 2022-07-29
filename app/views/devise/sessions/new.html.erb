@@ -54,7 +54,7 @@
         <% end %>
 
       </div>
-      <div class="tab-pane fade <%= 'show active' %>" id="pupil" role="tabpanel" aria-labelledby="pupil-tab">
+      <div class="tab-pane fade <%= 'show active' if params[:role] == 'pupil'%>" id="pupil" role="tabpanel" aria-labelledby="pupil-tab">
         <%= simple_form_for :pupil, url: pupils_session_path, html: { autocomplete: 'off', class: 'mt-3'} do |f| %>
           <%- if @school %>
             <%= link_to t('devise.sessions.new.not_your_school'), url_for(role: 'pupil'), class: 'float-right'%>
