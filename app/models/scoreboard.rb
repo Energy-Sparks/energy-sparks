@@ -43,8 +43,12 @@ class Scoreboard < ApplicationRecord
     name_changed? || super
   end
 
-  def active_academic_years(today: Time.zone.today)
-    academic_year_calendar.academic_years.where("date_part('year', start_date) >= ? AND start_date <= ?", FIRST_YEAR, today).order(:start_date)
+  def current_academic_year(today: Time.zone.today)
+    academic_year_calendar.academic_year_for(today)
+  end
+
+  def previous_academic_year(today: Time.zone.today)
+    academic_year_calendar.academic_year_for(today).previous_year
   end
 
   def scored_schools(recent_boundary: 1.month.ago, academic_year: this_academic_year)

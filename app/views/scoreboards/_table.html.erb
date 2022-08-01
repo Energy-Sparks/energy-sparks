@@ -1,0 +1,41 @@
+<table id='scoreboard' class='table'>
+  <thead>
+    <tr>
+      <th><h2><%= t('scoreboard.position') %></h2></th>
+      <th><h2><%= t('common.school') %></h2></th>
+      <th><h2><%= t('scoreboard.score') %></h2></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @schools.with_points.schools_with_positions.each do |position, schools| %>
+      <% schools.each do |school|%>
+        <tr>
+          <td scope="row">
+            <h2><span class="badge badge-primary"><%= '=' if schools.size > 1 %><%= position %></span></h2>
+          </td>
+          <td>
+            <h2><%= link_to school.name, school_path(school) %></h2>
+          </td>
+          <td>
+            <h2>
+              <%= link_to school.sum_points, school_timeline_path(school, academic_year: @academic_year), class: 'badge badge-success' %>
+              &nbsp;
+              <% if school.recent_points && school.recent_points > 0 %>
+                <i class="fa fa-arrow-up" data-toggle="tooltip" title="<%= t('scoreboard.score_tooltip') %>"></i>
+              <% end %>
+            </h2>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+    <% @schools.without_points.each do |school| %>
+      <tr>
+        <td><h2><span class="badge badge-secondary">-</span></h2></td>
+        <td>
+          <h2><%= link_to school.name, school_path(school) %></h2>
+        </td>
+        <td><h2><span class="badge badge-secondary">0</span></h2></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

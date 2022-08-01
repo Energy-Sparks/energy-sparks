@@ -2,17 +2,41 @@ require 'rails_helper'
 
 RSpec.describe 'scoreboards', :scoreboards, type: :system do
 
-  let!(:scoreboard)   { create(:scoreboard, name: 'Super scoreboard')}
-  let!(:school)       { create(:school, :with_school_group, scoreboard: scoreboard) }
+  let!(:scoreboard)         { create(:scoreboard, name: 'Super scoreboard')}
+  let!(:school)             { create(:school, :with_school_group, scoreboard: scoreboard, name: "No points" ) }
+  let(:points)              { 123 }
+  let!(:school_with_points) { create :school, :with_points, score_points: points, scoreboard: scoreboard }
 
   describe 'with public scoreboards' do
+
+    describe 'on the index page' do
+      before(:each) do
+        visit scoreboards_path
+      end
+
       it 'allows anyone to see the scoreboard' do
-        visit schools_path
-        click_on 'Scoreboards'
-        click_on 'Super scoreboard'
+        expect(page).to have_content('Super scoreboard')
+        expect(page).to have_link(href: scoreboard_path(scoreboard))
+        visit scoreboard_path(scoreboard)
         expect(page).to have_content('Super scoreboard')
         expect(page).to have_content(school.name)
       end
+
+      it 'includes top ranking schools' do
+        expect(page).to have_content(school_with_points.name)
+        expect(page).to have_content(points)
+        expect(page).to_not have_content(school.name)
+        expect(page).to have_link('View scores for 2 schools')
+      end
+    end
+
+    it 'includes schools and points on the scoreboard' do
+      visit scoreboard_path(scoreboard)
+      expect(page).to have_content(school_with_points.name)
+      expect(page).to have_content(points)
+      expect(page).to have_content(school.name)
+      expect(page).to have_content("0")
+    end
   end
 
   describe 'with private scoreboards' do
@@ -42,7 +66,8 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
         visit scoreboards_path
         expect(page).to have_content('Super scoreboard')
         expect(page).to have_content('Private scoreboard')
-        click_on 'Private scoreboard'
+        expect(page).to have_link(href: scoreboard_path(private_scoreboard))
+        visit scoreboard_path(private_scoreboard)
         expect(page).to have_content('Private scoreboard')
         expect(page).to have_content(other_school.name)
       end
