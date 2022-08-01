@@ -17,6 +17,10 @@ class ScoredSchoolsList
     schools_with_positions.select {|_position, schools| schools.include?(school)}.first.first
   end
 
+  def top_three
+    with_points.schools_at(0, 3)
+  end
+
   def with_points
     self.class.new(@scored_schools.reject {|scored_school| scored_school.sum_points.nil? || scored_school.sum_points <= 0})
   end
