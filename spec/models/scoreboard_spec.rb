@@ -90,15 +90,17 @@ describe Scoreboard, :scoreboards, type: :model do
   end
 
   describe '#current_academic_year' do
-    it 'finds the right year'
+    it 'finds the right year' do
+      expect(scoreboard.current_academic_year).to eq AcademicYear.first
+    end
   end
 
   describe '#previous_academic_year' do
-    it 'finds the right year'
-  end
+    let!(:previous_year) { create(:academic_year, calendar: scoreboard.academic_year_calendar, start_date: AcademicYear.first.start_date.prev_year, end_date: AcademicYear.first.start_date.prev_day) }
 
-  describe '#active_academic_years' do
-    it 'returns this year and last year'
+    it 'finds the right year' do
+      expect(scoreboard.previous_academic_year).to eq AcademicYear.first.previous_year
+    end
   end
 
 end

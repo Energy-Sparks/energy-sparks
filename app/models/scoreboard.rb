@@ -51,10 +51,6 @@ class Scoreboard < ApplicationRecord
     academic_year_calendar.academic_year_for(today).previous_year
   end
 
-  def active_academic_years(today: Time.zone.today)
-    [current_academic_year(today), previous_academic_year(today)]
-  end
-
   def scored_schools(recent_boundary: 1.month.ago, academic_year: this_academic_year)
     scored = schools.visible.select('schools.*, SUM(observations.points) AS sum_points, MAX(observations.at) AS recent_observation').select(
       self.class.sanitize_sql_array(
