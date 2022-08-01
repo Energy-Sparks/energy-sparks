@@ -1,0 +1,34 @@
+---
+en:
+  activity_types:
+    activity: Activity
+    impacts: Impacts
+    key_stages: Key Stages
+    recommended:
+      all_activities: All activities
+      introduction: These are activities that are suggested for your school, based on your previous activity and your targets
+      title: Recommended for your school
+    score_for_this_activity: Score for this activity
+    search:
+      adult_actions: Adult actions
+      all_activities: All activities
+      button_label: Search
+      for_activities_by_keyword: Search for activities by keyword
+      limit_results_shown: Limit results shown
+      no_results_found: No results found
+      results_found:
+        one: 1 result found
+        other: "%{count} results found"
+        zero: No results found
+      title: Find pupil activities
+    show:
+      complete_this_activity_html:
+        one: Complete this activity to score your school <strong>1</strong> point!
+        other: Complete this activity to score your school <strong>%{count}</strong> points!
+      record_this_activity: Record this activity
+      view_related_activities:
+        one: View 1 related activity
+        other: View %{count} related activities
+    subjects: Subjects
+    timings: Timings
+    topics: Topics

@@ -4,10 +4,10 @@
       <i class="fas fa-tasks fa-3x"></i>
     </div>
     <div class="col-lg-7 col-sm-12 align-self-center">
-      Complete this activity to score your school <strong><%= activity_type.score %></strong> points!
+      <%= t('activity_types.show.complete_this_activity_html', count: activity_type.score) %>
     </div>
     <div class="col-lg-4 col-sm-12">
-      <%= link_to 'Record this activity', new_school_activity_path(school, activity_type_id: activity_type.id), class: 'btn btn-primary' %>
+      <%= link_to t('activity_types.show.record_this_activity'), new_school_activity_path(school, activity_type_id: activity_type.id), class: 'btn btn-primary' %>
     </div>
   </div>
 </div>

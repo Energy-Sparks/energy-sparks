@@ -1,35 +1,68 @@
-<h1>Activity Types</h1>
-<div class="container">
-  <div class="row">
-    <p><%= link_to 'New Activity Type', new_admin_activity_type_path, class: 'btn' %></p>
+<% content_for :page_title, 'Manage activity types' %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Manage activity types</h1>
+
+  <div>
+    <%= link_to "Activity type report", admin_reports_activity_types_path, class: "btn btn-outline-dark font-weight-bold" %>
+    <%= link_to "All reports", admin_reports_path, class: "btn btn-outline-dark font-weight-bold" %>
   </div>
 </div>
 
-<% ActivityCategory.all.each do |activity_category| %>
-  <div class="container">
-    <h2><%= activity_category.name %></h2>
-    <div class="row">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Score</th>
-          <th scope="col">Key Stages</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <p>
+        Activity types highlighted in <span class="bg-warning">yellow</span> have been marked as not active and are no longer visible to users.
+      </p>
+      <p>
+        Use links on the right to jump to a specific category.
+      </p>
+      <p><%= link_to 'New Activity Type', new_admin_activity_type_path, class: 'btn' %></p>
+    </div>
 
-      <tbody>
-        <% @activity_types.where(activity_category: activity_category).each do |activity_type| %>
-          <tr class="<%= active(activity_type.active) %>" scope="row" >
-            <td><%= link_to activity_type.name, admin_activity_type_path(activity_type) %></td>
-            <td><%= activity_type.score %></td>
-            <td><%= activity_type.key_stage_list %></td>
-            <td><%= link_to 'Edit', edit_admin_activity_type_path(activity_type), class: 'btn btn-sm' %></td>
+    <div class="col">
+    <ul>
+      <% @activity_categories.each do |activity_category| %>
+        <li><a href="#activity-category-<%= activity_category.id %>"><%= activity_category.name %></li>
+      <% end %>
+    </ul>
+    </div>
+  </div>
+</div>
+
+<% @activity_categories.each do |activity_category| %>
+  <div class="container">
+    <div class="row" id="activity-category-<%= activity_category.id %>">
+      <h2><%= activity_category.name %></h2>
+      <table class="table table-striped table-sm">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">School specific instructions?</th>
+            <th scope="col">Score</th>
+            <th scope="col">Key Stages</th>
+            <th scope="col"></th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </thead>
+
+        <tbody>
+          <% if activity_category.activity_types.count > 0 %>
+            <% activity_category.activity_types.by_name.each do |activity_type| %>
+              <tr class="<%= active(activity_type.active) %>" scope="row" >
+                <td><%= link_to activity_type.name, admin_activity_type_path(activity_type) %></td>
+                <td><%= fa_icon( activity_type.school_specific_description.present? ? 'check-circle text-success' : 'times-circle text-muted') %></td>
+                <td><%= activity_type.score %></td>
+                <td><%= activity_type.key_stage_list %></td>
+                <td><%= link_to 'Edit', edit_admin_activity_type_path(activity_type), class: 'btn btn-sm' %>
+                <%= link_to 'Report', admin_reports_activity_type_path(activity_type), class: 'btn btn-sm' %></td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr><td colspan="4">No activities</td></tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
   </div>
 
