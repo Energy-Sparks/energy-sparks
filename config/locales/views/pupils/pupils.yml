@@ -1,0 +1,21 @@
+---
+en:
+  pupils:
+    schools:
+      show:
+        title: Pupil dashboard for %{school_name}
+        look_at_the_energy_use: Let's look at the energy use data for your school
+        activities_completed: You've completed %{count} activities
+        no_activities_completed: No activities completed, make a start!
+        try_this_first: Try this one first
+        try_this_next: Try this one next
+        choose_another_activity: Choose another activity
+        see_scoreboard: See the scoreboard
+        points: points
+    analysis:
+      electricity: Electricity
+      gas: Gas
+      storage_heaters: Storage heaters
+      electricity_and_solar_pv: Electricity & Solar PV
+      without_storage_heaters: without storage heaters
+      live_energy_data: Live energy data
