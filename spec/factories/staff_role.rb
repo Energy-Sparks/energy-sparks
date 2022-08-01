@@ -5,7 +5,7 @@ FactoryBot.define do
     end
 
     trait :teacher do
-      sequence(:title) {|n| "Teacher#{n}"}
+      sequence(:title) {|n| "Teacher"}
     end
 
   end
