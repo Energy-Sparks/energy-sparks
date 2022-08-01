@@ -88,4 +88,17 @@ describe Scoreboard, :scoreboards, type: :model do
     end
 
   end
+
+  describe '#current_academic_year' do
+    it 'finds the right year'
+  end
+
+  describe '#previous_academic_year' do
+    it 'finds the right year'
+  end
+
+  describe '#active_academic_years' do
+    it 'returns this year and last year'
+  end
+
 end
