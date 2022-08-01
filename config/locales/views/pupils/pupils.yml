@@ -1,36 +1,36 @@
 ---
 en:
   pupils:
-    schools:
-      show:
-        title: Pupil dashboard for %{school_name}
-        look_at_the_energy_use: Let's look at the energy use data for your school
-        activities_completed: You've completed %{count} activities
-        no_activities_completed: No activities completed, make a start!
-        complete_an_activity: Complete an activity to score points on Energy Sparks
-        try_this_first: Try this one first
-        try_this_next: Try this one next
-        choose_another_activity: Choose another activity
-        see_scoreboard: See the scoreboard
-        points: points
-        admin_view: Admin view
-        user_view: User view
-        setting_up: We're setting up this school's energy data and will update this page when it is ready to explore
-        find_out_more: Find out more&hellip;
-        things_to_do: Things to do
-        measure_temperatures: Measure classroom temperatures to find out whether you should turn down the heating to save energy
-        enter_temperatures: Enter temperatures
-        update_temperatures: Update your classroom temperatures to see if you are saving energy
-        previous_temperatures: Previous temperatures
-        how_will_school_compare: How will your school compare? You'll soon be able to find out!
-        find_how_much_energy_used: Find out how much energy has been used
-        no_points_this_year: Your school hasn't scored any points yet this school year
-        points_needed_to_overtake: You only need to score %{points} points to overtake the next school!
-        school_podium_position_html: Your school is in <strong>%{position_ordinal} place</strong>
     analysis:
       electricity: Electricity
-      gas: Gas
-      storage_heaters: Storage heaters
       electricity_and_solar_pv: Electricity & Solar PV
-      without_storage_heaters: without storage heaters
+      gas: Gas
       live_energy_data: Live energy data
+      storage_heaters: Storage heaters
+      without_storage_heaters: without storage heaters
+    schools:
+      show:
+        activities_completed: You've completed %{count} activities
+        admin_view: Admin view
+        choose_another_activity: Choose another activity
+        complete_an_activity: Complete an activity to score points on Energy Sparks
+        enter_temperatures: Enter temperatures
+        find_how_much_energy_used: Find out how much energy has been used
+        find_out_more: Find out more&hellip;
+        how_will_school_compare: How will your school compare? You'll soon be able to find out!
+        look_at_the_energy_use: Let's look at the energy use data for your school
+        measure_temperatures: Measure classroom temperatures to find out whether you should turn down the heating to save energy
+        no_activities_completed: No activities completed, make a start!
+        no_points_this_year: Your school hasn't scored any points yet this school year
+        points: points
+        points_needed_to_overtake: You only need to score %{points} points to overtake the next school!
+        previous_temperatures: Previous temperatures
+        school_podium_position_html: Your school is in <strong>%{position_ordinal} place</strong>
+        see_scoreboard: See the scoreboard
+        setting_up: We're setting up this school's energy data and will update this page when it is ready to explore
+        things_to_do: Things to do
+        title: Pupil dashboard for %{school_name}
+        try_this_first: Try this one first
+        try_this_next: Try this one next
+        update_temperatures: Update your classroom temperatures to see if you are saving energy
+        user_view: User view
