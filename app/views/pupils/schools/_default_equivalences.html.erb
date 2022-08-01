@@ -6,7 +6,7 @@
           <div class="col-lg-6 equivalence-wrapper">
             <div><%= equivalence[:measure].html_safe %></div>
             <h1><%= equivalence[:equivalence] %></h1>
-            <p>How will your school compare? You'll soon be able to find out!</p>
+            <p><%= t('pupils.schools.show.how_will_school_compare') %></p>
           </div>
           <div class="col-lg-6 illustration-wrapper">
             <%= image_tag("equivalences/#{equivalence[:image_name]}.svg") if equivalence[:image_name].present? %>
@@ -17,10 +17,10 @@
   </div>
   <a class="carousel-control-prev" href="#pupil_carousel" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
+    <span class="sr-only"><%= t('common.labels.previous') %></span>
   </a>
   <a class="carousel-control-next" href="#pupil_carousel" role="button" data-slide="next">
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
+    <span class="sr-only"><%= t('common.labels.next') %></span>
   </a>
 </div>

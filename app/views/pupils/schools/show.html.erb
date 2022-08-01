@@ -5,9 +5,9 @@
     <div class="col">
       <div class="float-right">
         <% if params[:no_data] %>
-          <%= link_to 'Admin view', pupils_school_path(@school), class: 'btn btn-outline-dark bg-warning rounded-pill font-weight-bold' %>
+          <%= link_to t('pupils.schools.show.admin_view'), pupils_school_path(@school), class: 'btn btn-outline-dark bg-warning rounded-pill font-weight-bold' %>
         <% else %>
-          <%= link_to 'User view', pupils_school_path(@school, no_data: true), class: 'btn btn-outline-dark bg-warning rounded-pill font-weight-bold' %>
+          <%= link_to t('pupils.schools.show.user_view'), pupils_school_path(@school, no_data: true), class: 'btn btn-outline-dark bg-warning rounded-pill font-weight-bold' %>
         <% end %>
       </div>
     </div>
@@ -24,19 +24,19 @@
   <%= render 'schools/dashboard/info_bar',
         colour: 'bg-neutral',
         icon: 'info-circle fa-3x',
-        content: "We're setting up this school's energy data and will update this page when it is ready to explore",
+        content: t('pupils.schools.show.setting_up'),
         buttons: {}
   %>
 <% end %>
 
-<h2 class="mt-2">Things to do</h2>
+<h2 class="mt-2"><%= t('pupils.schools.show.things_to_do') %></h2>
 <% if @dashboard_alerts && @dashboard_alerts.any? %>
   <% @dashboard_alerts.each do |content| %>
     <%= render 'schools/dashboard/info_bar',
           colour: class_for_alert_colour(content.colour),
           icon: alert_icon(content.alert, 'fa-3x'),
           content: content.pupil_dashboard_title,
-          buttons: content.find_out_more ? { 'Find out more&hellip;' => school_find_out_more_path(@school, content.find_out_more) } : {}
+          buttons: content.find_out_more ? { t('pupils.schools.show.find_out_more') => school_find_out_more_path(@school, content.find_out_more) } : {}
     %>
    <% end %>
 <% end %>
@@ -46,15 +46,15 @@
     <%= render 'schools/dashboard/info_bar',
           colour: 'bg-positive',
           icon: 'temperature-high fa-3x',
-          content: 'Measure classroom temperatures to find out whether you should turn down the heating to save energy',
-          buttons: { 'Enter temperatures' => new_school_temperature_observation_path(@school, introduction: true) }
+          content: t('pupils.schools.show.measure_temperatures'),
+          buttons: { t('pupils.schools.show.enter_temperatures') => new_school_temperature_observation_path(@school, introduction: true) }
     %>
   <% else %>
     <%= render 'schools/dashboard/info_bar',
           colour: 'bg-positive',
           icon: 'temperature-high fa-3x',
-          content: 'Update your classroom temperatures to see if you are saving energy',
-          buttons: { 'Previous temperatures' => school_temperature_observations_path(@school), 'Update temperatures' => new_school_temperature_observation_path(@school, introduction: true) }
+          content: t('pupils.schools.show.update_temperatures'),
+          buttons: { t('pupils.schools.show.previous_temperatures') => school_temperature_observations_path(@school), t('pupils.schools.show.update_temperatures') => new_school_temperature_observation_path(@school, introduction: true) }
     %>
   <% end %>
 <% end %>
@@ -93,6 +93,8 @@
       </div>
     </div>
   </div>
+
+
 
   <div class="col card-deck actions">
     <% if current_school_podium && can?(:read, current_school_podium.scoreboard) %>

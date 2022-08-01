@@ -1,4 +1,6 @@
-<h4 class="text-center">Your school is in <strong><%= podium.school_position.ordinal %> place.</strong></h4>
+<h4 class="text-center">
+  <%= t('pupils.schools.show.school_podium_position_html', position_ordinal: podium.school_position.ordinal) %>.
+</h4>
 <div class="row align-items-end border-bottom grey">
   <% podium.low_to_high.each do |position| %>
     <div class="col-4 text-center">
