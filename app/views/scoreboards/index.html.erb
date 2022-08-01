@@ -25,10 +25,7 @@
               <div class="card-body">
                 <h3><%= scoreboard.name %></h3>
                   <% scoreboard.scored_schools.with_points.schools_at(0, 3).each_with_index do |s, idx| %>
-                  <div class="row">
-                    <div class="col-1"><h4><span class="badge badge-success"><%= s.sum_points %></span></h4></div>
-                    <div class="col-11"><h4><%= s.name %></h4></div>
-                  </div>
+                    <h4><span class="badge badge-success"><%= s.sum_points %></span> <%= s.name %></h4>
                   <% end %>
               </div>
               <div class="card-footer text-right">
