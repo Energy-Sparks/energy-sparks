@@ -21,7 +21,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         event_names: [:email_sent],
         school_name: school_name,
         template_calendar: template_calendar,
-        # solar_pv_tuos_area: solar_pv_area,
+        solar_pv_tuos_area: solar_pv_area,
         created_by: admin
       )
     end
