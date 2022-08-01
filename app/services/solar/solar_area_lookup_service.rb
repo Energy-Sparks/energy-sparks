@@ -18,8 +18,10 @@ module Solar
 
     def assign
       solar_area = lookup
-      solar_area.update(active: true) unless solar_area.active
-      @school.update(solar_pv_tuos_area: solar_area)
+      if solar_area
+        solar_area.update(active: true) unless solar_area.active
+        @school.update(solar_pv_tuos_area: solar_area)
+      end
       solar_area
     end
 
