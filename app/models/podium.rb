@@ -10,7 +10,7 @@ class Podium
     end
 
     def ordinal
-      @position.ordinalize
+      "#{@position}#{@position.ordinal}"
     end
 
     def recent_points
