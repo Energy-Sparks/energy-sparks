@@ -2,29 +2,13 @@ require 'rails_helper'
 
 RSpec.describe "onboarding", :schools, type: :system do
 
-  let(:admin) { create(:admin) }
+  let(:admin)                     { create(:admin) }
   let(:school_name)               { 'Oldfield Park Infants'}
 
   # This calendar is there to allow for the calendar area selection
-  let!(:template_calendar)        { create(:regional_calendar, :with_terms, title: 'BANES calendar') }
+  let(:template_calendar)   { create(:regional_calendar, :with_terms, title: 'BANES calendar') }
   let(:solar_pv_area)             { create(:solar_pv_tuos_area, title: 'BANES solar') }
-  let(:dark_sky_weather_area)     { create(:dark_sky_area, title: 'BANES dark sky weather') }
-  let(:scoreboard)                { create(:scoreboard, name: 'BANES scoreboard') }
-  let!(:weather_station)          { create(:weather_station, title: 'BANES weather') }
-
-  let!(:school_group) do
-    create(
-      :school_group,
-      name: 'BANES',
-      default_template_calendar: template_calendar,
-      default_solar_pv_tuos_area: solar_pv_area,
-      default_dark_sky_area: dark_sky_weather_area,
-      default_weather_station: weather_station,
-      default_scoreboard: scoreboard
-    )
-  end
-
-  let!(:consent_statement) { ConsentStatement.create!(title: 'Some consent statement', content: 'Some consent text', current: true) }
+  let!(:consent_statement)  { ConsentStatement.create!(title: 'Some consent statement', content: 'Some consent text', current: true) }
 
   context 'as a user' do
     let!(:ks1) { KeyStage.create(name: 'KS1') }
@@ -37,6 +21,7 @@ RSpec.describe "onboarding", :schools, type: :system do
         event_names: [:email_sent],
         school_name: school_name,
         template_calendar: template_calendar,
+        # solar_pv_tuos_area: solar_pv_area,
         created_by: admin
       )
     end
