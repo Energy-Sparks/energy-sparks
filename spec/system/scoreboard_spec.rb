@@ -9,7 +9,9 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
       it 'allows anyone to see the scoreboard' do
         visit schools_path
         click_on 'Scoreboards'
-        click_on 'Super scoreboard'
+        expect(page).to have_content('Super scoreboard')
+        expect(page).to have_link(href: scoreboard_path(scoreboard))
+        visit scoreboard_path(scoreboard)
         expect(page).to have_content('Super scoreboard')
         expect(page).to have_content(school.name)
       end
@@ -42,7 +44,8 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
         visit scoreboards_path
         expect(page).to have_content('Super scoreboard')
         expect(page).to have_content('Private scoreboard')
-        click_on 'Private scoreboard'
+        expect(page).to have_link(href: scoreboard_path(private_scoreboard))
+        visit scoreboard_path(private_scoreboard)
         expect(page).to have_content('Private scoreboard')
         expect(page).to have_content(other_school.name)
       end

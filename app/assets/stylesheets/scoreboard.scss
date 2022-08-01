@@ -1,0 +1,28 @@
+#scoreboard {
+  thead {
+    tr {
+      th {
+        h2 {
+          font-weight: bolder;
+        }
+      }
+    }
+  }
+  .fa-arrow-up {
+    color: $green;
+  }
+}
+
+#scoreboards {
+  h3 {
+    font-weight: bolder;
+  }
+  h4 {
+    padding-top: 0px;
+    padding-bottom: 5px;
+  }
+  .card-footer {
+    border-top: none;
+    background-color: white;
+  }
+}

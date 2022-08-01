@@ -1,0 +1,20 @@
+---
+en:
+  scoreboards:
+    page_title: Scoreboards
+    intro_para_1: Schools score points by recording their activities to investigate their energy use, learning about energy, and taking energy saving actions around their school.
+    intro_para_2: Our scoreboards show which schools are most active across England, Scotland and Wales.
+    view_all:
+      one: View scores for 1 school
+      other: View scores for %{count} schools
+  scoreboard:
+    intro_para_1:
+      one: There is only 1 school on this scoreboard
+      other: There are %{count} schools competing on this scoreboard
+    current_scores: These are the current scores for this academic year
+    current_scoreboard: View the current scoreboard
+    previous_scores: These were the final scores from last year
+    previous_scoreboard: View the final scores from last year
+    position: Position
+    score: Score
+    score_tooltip: School has scored points in the last month
