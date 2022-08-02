@@ -1,11 +1,11 @@
-<% content_for :page_title, "Here's the electricity and solar data for your school" %>
+<% content_for :page_title, strip_tags(t('pupils.analysis.electricity_and_solar_data_html')) %>
 
 <div class="d-flex justify-content-between align-items-center">
   <div>
     <%= link_to t('common.labels.back'),  pupils_school_analysis_path(@school, category: :solar), class: 'btn btn-rounded' %>
   </div>
   <div>
-    <h1>Here's the <strong>electricity and solar</strong> data for your school</h1>
+    <h1><%= t('pupils.analysis.electricity_and_solar_data_html') %></h1>
   </div>
   <div></div>
 </div>
@@ -16,19 +16,19 @@
 <div class="row">
 
   <%= render 'chart_link', school: @school, energy: :solar, chart_config: {energy: 'Electricity', presentation: 'Bar', secondary_presentation: 'Bench'} do %>
-    find out how my school's electricity use compares with other schools
+    <%= t('pupils.analysis.find_electricity_comparison') %>
   <% end %>
 
   <%= render 'chart_link', school: @school, energy: :solar, chart_config: {energy: 'Electricity', presentation: 'Bar', secondary_presentation: 'Week'} do %>
-    find out how much electricity was used last year
+    <%= t('pupils.analysis.find_electricity_use_last_year') %>
   <% end %>
 
   <%= render 'chart_link', school: @school, energy: :solar, chart_config: {energy: 'Electricity', presentation: 'Bar', secondary_presentation: 'Year'} do %>
-    find out how electricity use has changed long term
+    <%= t('pupils.analysis.find_electricity_use_long_term') %>
   <% end %>
 
   <%= render 'usage_link', school: @school, energy: :solar, supply: :electricity, usage_config: {period: :weekly} do %>
-    compare the electricity used in two different weeks
+    <%= t('pupils.analysis.compare_electricity_in_2_weeks') %>
   <% end %>
 
 </div>
