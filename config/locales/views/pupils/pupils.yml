@@ -11,6 +11,7 @@ en:
       electricity_and_solar_data_html: Here's the <strong>electricity and solar</strong> data for your school
       electricity_data_html: Here's the <strong>electricity</strong> data for your school
       explore_data: Explore data
+      explore_energy_data_html: Explore the <strong>%{fuel_type}</strong> data for your school
       find_electricity_comparison: find out how my school's electricity use compares with other schools
       find_electricity_use_7days: find out how much electricity was used in the last 7 days
       find_electricity_use_last_year: find out how much electricity was used last year
