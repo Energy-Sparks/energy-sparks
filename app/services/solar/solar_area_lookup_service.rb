@@ -18,8 +18,12 @@ module Solar
 
     def assign
       solar_area = lookup
-      solar_area.update(active: true) unless solar_area.active
-      @school.update(solar_pv_tuos_area: solar_area)
+      if solar_area
+        solar_area.update(active: true) unless solar_area.active
+        @school.update(solar_pv_tuos_area: solar_area)
+      else
+        Rollbar.error('No solar area found', scope: :solar_area_lookup_service, school: @school_onboarding.school_name)
+      end
       solar_area
     end
 
