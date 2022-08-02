@@ -12,6 +12,7 @@ en:
         user_account_created_for_you_for: A user account has been created for you on Energy Sparks for %{resource_school_name}
         user_account_created_for_you_on: A user account has been created for you on Energy Sparks
         welcome: Welcome %{resource_name}
+        subject: 'Energy Sparks: confirm your account'
       password_change:
         title: 'Energy Sparks: password changed'
       reset_password_instructions:
