@@ -13,6 +13,9 @@ en:
       compare_electricity_in_2_weeks: compare the electricity used in two different weeks
       compare_electricity_on_2_days: compare the electricity used on two different days
       compare_electricity_use_by_meters: compare the electricity use by different meters
+      find_electricity_comparison: find out how my school's electricity use compares with other schools
+      find_electricity_use_last_year: find out how much electricity was used last year
+      find_electricity_use_long_term: find out how electricity use has changed long term
     schools:
       show:
         activities_completed: You've completed %{count} activities
