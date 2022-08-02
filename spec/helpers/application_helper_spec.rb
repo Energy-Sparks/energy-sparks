@@ -227,7 +227,7 @@ describe ApplicationHelper do
     before { I18n.locale = 'en' }
     after { I18n.locale = 'en' }
     it 'outputs times as strings in a nice way' do
-      start_of_the_day = DateTime.new(2022, 1, 1, 0o0, 0o0, 0).to_i
+      start_of_the_day = DateTime.new(2022, 1, 1, 0, 0, 0).to_i
       end_of_the_day = DateTime.new(2022, 1, 1, 23, 30, 0).to_i
       times = (start_of_the_day..end_of_the_day).step(30.minutes)
       times = times.map { |time| helper.nice_times_only(Time.zone.at(time)) }
