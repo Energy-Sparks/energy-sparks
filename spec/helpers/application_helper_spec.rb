@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 describe ApplicationHelper do
-
   describe '.up_downify' do
-
     it 'adds an up arrow icon for positive starts' do
       expect(helper.up_downify('+10%')).to include('<i')
       expect(helper.up_downify('+10%')).to include('up')
@@ -28,7 +26,6 @@ describe ApplicationHelper do
       expect(helper.up_downify('hello')).to_not include('<i')
       expect(helper.up_downify('hello + goodbye')).to_not include('<i')
     end
-
   end
 
   describe 'last signed in helper' do
@@ -37,7 +34,7 @@ describe ApplicationHelper do
     end
 
     it 'shows the last time as user signed in' do
-      last_sign_in_at = DateTime.new(2001,2,3,4,5,6)
+      last_sign_in_at = DateTime.new(2001, 2, 3, 4, 5, 6)
       expect(display_last_signed_in_as(build(:user, last_sign_in_at: last_sign_in_at))).to eq nice_date_times(last_sign_in_at)
     end
   end
@@ -59,10 +56,10 @@ describe ApplicationHelper do
       expect(helper.human_counts([1])).to eq('once')
     end
     it 'shows 2 as twice' do
-      expect(helper.human_counts([1,2])).to eq('twice')
+      expect(helper.human_counts([1, 2])).to eq('twice')
     end
     it 'shows more than 2 as several times' do
-      expect(helper.human_counts([1,2,3])).to eq('several times')
+      expect(helper.human_counts([1, 2, 3])).to eq('several times')
     end
   end
 
@@ -133,8 +130,6 @@ describe ApplicationHelper do
   describe 'nice_date_times' do
     let(:utc_date_time) { Time.zone.now }
     let(:utc_nice_date_time) { nice_date_times(utc_date_time) }
-    before { I18n.locale = 'en' }
-    after { I18n.locale = 'en' }
 
     context "localtime option is true" do
       subject { nice_date_times(utc_date_time, localtime: true) }
@@ -225,6 +220,20 @@ describe ApplicationHelper do
       expect(helper.nice_dates(Date.strptime("01/10/2022", "%d/%m/%Y"))).to eq('Sat 1st Oct 2022')
       expect(helper.nice_dates(Date.strptime("01/11/2022", "%d/%m/%Y"))).to eq('Tue 1st Nov 2022')
       expect(helper.nice_dates(Date.strptime("01/12/2022", "%d/%m/%Y"))).to eq('Thu 1st Dec 2022')
+    end
+  end
+
+  describe 'nice_times_only' do
+    before { I18n.locale = 'en' }
+    after { I18n.locale = 'en' }
+    it 'outputs times as strings in a nice way' do
+      start_of_the_day = DateTime.new(2022, 1, 1, 0o0, 0o0, 0).to_i
+      end_of_the_day = DateTime.new(2022, 1, 1, 23, 30, 0).to_i
+      times = (start_of_the_day..end_of_the_day).step(30.minutes)
+      times = times.map { |time| helper.nice_times_only(Time.zone.at(time)) }
+      expect(times).to eq(
+        ["00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30", "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30"]
+      )
     end
   end
 
