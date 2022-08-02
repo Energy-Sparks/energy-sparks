@@ -3,6 +3,19 @@ require 'rails_helper'
 
 describe ScoredSchoolsList do
 
+  describe '#with_points' do
+    let(:school_a){ double(:school, sum_points: 30)}
+    let(:school_b){ double(:school, sum_points: 20)}
+    let(:school_c){ double(:school, sum_points: 0)}
+    let(:school_d){ double(:school, sum_points: nil)}
+
+    it 'returns just those with points' do
+      expect(ScoredSchoolsList.new([school_a, school_b, school_c, school_d]).with_points).to match_array(
+        [school_a, school_b]
+      )
+    end
+  end
+
   describe '#schools_with_positions' do
 
     context 'schools with unique points' do

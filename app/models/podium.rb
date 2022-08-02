@@ -24,7 +24,7 @@ class Podium
     school_index = schools_with_points.index(school)
 
     final = if schools_with_points.size > 3
-              schools_with_points.schools_at(starting_index(school_index, schools_with_points), 3).compact
+              schools_with_points.schools_at(index: starting_index(school_index, schools_with_points), length: 3).compact
             else
               schools_with_points
             end

@@ -1,5 +1,6 @@
 ---
 en:
+  co2: CO2
   common:
     application: Energy Sparks
     confirm: Are you sure?
@@ -10,5 +11,8 @@ en:
       next: Next
       previous: Previous
       view_results: View results
+    school: School
+  kwh: kWh
   school_types:
     mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
+  "£": "£"

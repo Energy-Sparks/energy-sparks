@@ -17,8 +17,12 @@ class ScoredSchoolsList
     schools_with_positions.select {|_position, schools| schools.include?(school)}.first.first
   end
 
+  def top_three
+    with_points.schools_at(index: 0, length: 3)
+  end
+
   def with_points
-    self.class.new(@scored_schools.reject {|scored_school| scored_school.sum_points.nil? || scored_school.sum_points <= 0})
+    self.class.new(positive_scored_schools)
   end
 
   def without_points
@@ -33,11 +37,17 @@ class ScoredSchoolsList
     @scored_schools.size
   end
 
-  def schools_at(index, length)
+  def schools_at(index:, length:)
     @scored_schools.slice(index, length)
   end
 
   def each
     @scored_schools.each {|school| yield school}
+  end
+
+  private
+
+  def positive_scored_schools
+    @scored_schools.select {|scored_school| scored_school.sum_points&.positive?}
   end
 end
