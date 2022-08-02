@@ -3,13 +3,11 @@ en:
   co2: CO2
   common:
     application: Energy Sparks
+    bar_charts: Bar charts
     confirm: Are you sure?
     electricity: Electricity
     electricity_and_solar_pv: Electricity & Solar PV
     gas: Gas
-    pie_charts: Pie charts
-    bar_charts: Bar charts
-    line_graphs: Line graphs
     labels:
       actions: Actions
       back: Back
@@ -18,6 +16,8 @@ en:
       next: Next
       previous: Previous
       view_results: View results
+    line_graphs: Line graphs
+    pie_charts: Pie charts
     school: School
   kwh: kWh
   school_types:

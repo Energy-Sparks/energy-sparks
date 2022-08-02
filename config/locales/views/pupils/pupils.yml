@@ -2,20 +2,28 @@
 en:
   pupils:
     analysis:
-      live_energy_data: Live energy data
-      without_storage_heaters: without storage heaters
-      electricity_data_html: Here's the <strong>electricity</strong> data for your school
-      i_want_to: I want to&hellip;
-      i_want_to_look_at: I want to look at&hellip;
-      find_when_electricity_used_html: find out <strong>when</strong> the electricity was used
-      find_how_much_electricity_cost_html: find out <strong>how much</strong> the electricity cost
-      find_how_much_co2_generated_html: find out how much <strong>carbon dioxide</strong> was generated
       compare_electricity_in_2_weeks: compare the electricity used in two different weeks
       compare_electricity_on_2_days: compare the electricity used on two different days
       compare_electricity_use_by_meters: compare the electricity use by different meters
+      compare_gas_in_2_weeks: compare the gas used in two different weeks
+      compare_gas_on_2_days: compare the gas used on two different days
+      compare_gas_use_by_meters: compare the gas use by different meters
+      electricity_data_html: Here's the <strong>electricity</strong> data for your school
       find_electricity_comparison: find out how my school's electricity use compares with other schools
+      find_electricity_use_7days: find out how much electricity was used in the last 7 days
       find_electricity_use_last_year: find out how much electricity was used last year
+      find_electricity_use_lights: find out how much electricity was used by lights and appliances running all the time
       find_electricity_use_long_term: find out how electricity use has changed long term
+      find_how_much_co2_generated_html: find out how much <strong>carbon dioxide</strong> was generated
+      find_how_much_electricity_cost_html: find out <strong>how much</strong> the electricity cost
+      find_how_much_gas_cost_html: find out <strong>how much</strong> the gas cost
+      find_when_electricity_used_html: find out <strong>when</strong> the electricity was used
+      find_when_gas_used_html: find out <strong>when</strong> the gas was used
+      gas_data_html: Here's the <strong>gas</strong> data for your school
+      i_want_to: I want to&hellip;
+      i_want_to_look_at: I want to look at&hellip;
+      live_energy_data: Live energy data
+      without_storage_heaters: without storage heaters
     schools:
       show:
         activities_completed: You've completed %{count} activities

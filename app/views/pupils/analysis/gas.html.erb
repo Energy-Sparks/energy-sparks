@@ -2,57 +2,57 @@
 
 <div class="d-flex justify-content-between align-items-center">
   <div>
-    <%= link_to 'Back',  pupils_school_analysis_path(@school), class: 'btn btn-rounded' %>
+    <%= link_to t('common.labels.back'),  pupils_school_analysis_path(@school), class: 'btn btn-rounded' %>
   </div>
   <div>
-    <h1>Here's the <strong>gas</strong> data for your school</h1>
+    <h1><%= t('pupils.analysis.gas_data_html') %></h1>
   </div>
   <div></div>
 </div>
 <hr />
 
-<h2>I want to&hellip;</h2>
+<h2><%= sanitize t('pupils.analysis.i_want_to') %></h2>
 
 <div class="row">
 
   <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'kWh'} do %>
-    find out <strong>when</strong> the gas was used
+    <%= t('pupils.analysis.find_when_gas_used_html') %>
   <% end %>
 
   <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Cost'} do %>
-    find out <strong>how much</strong> the gas cost
-  <% end %>
+    <%= t('pupils.analysis.find_how_much_gas_cost_html') %>
+<% end %>
 
   <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'CO2'} do %>
-    find out how much <strong>carbon dioxide</strong> was generated
+    <%= t('pupils.analysis.find_how_much_co2_generated_html') %>
   <% end %>
 
   <%= render 'usage_link', school: @school, energy: :gas, usage_config: {period: :weekly} do %>
-    compare the gas used in two different weeks
+    <%= t('pupils.analysis.compare_gas_in_2_weeks') %>
   <% end %>
 
   <%= render 'usage_link', school: @school, energy: :gas, usage_config: {period: :daily} do %>
-    compare the gas used on two different days
+    <%= t('pupils.analysis.compare_gas_on_2_days') %>
   <% end %>
 
   <% if @school.filterable_meters.gas.count > 1 %>
     <%= render 'usage_link', school: @school, energy: :gas, usage_config: {period: :weekly, split_meters: true} do %>
-      compare the gas use by different meters
+      <%= t('pupils.analysis.compare_gas_use_by_meters') %>
     <% end %>
   <% end %>
 
 </div>
 
-<h2>I want to look at&hellip;</h2>
+<h2><%= sanitize t('pupils.analysis.i_want_to_look_at') %></h2>
 
 <div class="row">
   <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Pie'}, centre: true do %>
     <div class="p-4">
       <%= fa_icon "chart-pie fa-3x" %>
     </div>
-    Pie charts
+    <%= t('common.pie_charts') %>
   <% end %>
 
-  <%= render 'category_link', school: @school, energy: :gas, category: :gas_bar, category_name: 'Bar charts', icon: 'chart-bar' %>
-  <%= render 'category_link', school: @school, energy: :gas, category: :gas_line, category_name: 'Line graphs', icon: 'chart-line' %>
+  <%= render 'category_link', school: @school, energy: :gas, category: :gas_bar, category_name: t('common.bar_charts'), icon: 'chart-bar' %>
+  <%= render 'category_link', school: @school, energy: :gas, category: :gas_line, category_name: t('common.line_graphs'), icon: 'chart-line' %>
 </div>
