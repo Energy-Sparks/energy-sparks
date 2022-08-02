@@ -7,6 +7,6 @@ EB_APP_USER=$(sudo /opt/elasticbeanstalk/bin/get-config platformconfig -k AppUse
 
 #envvars
 set +x
-export $(sudo cat /opt/elasticbeanstalk/deployment/env | xargs)
+export $(sudo /opt/elasticbeanstalk/bin/get-config --output YAML environment | sed -r 's/: /=/' | xargs)
 set -x
 su -s /bin/bash -c "${*}" $EB_APP_USER
