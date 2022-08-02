@@ -117,7 +117,7 @@ ignore_unused:
   - 'activerecord.*'
   - 'helpers.*'
   - 'support.*'
-  - '{devise,errors, simple_form}.*'
+  - '{errors, simple_form}.*'
   - '*_mailer.*.subject'
   - 'analytics.*'
   - 'calendar_event_type.*'

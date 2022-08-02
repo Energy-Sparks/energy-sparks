@@ -21,21 +21,21 @@
           <div class="form-group row">
             <%= f.label :email, class: "col-sm-4 col-form-label" %>
             <div class="col-sm-6">
-              <%= f.email_field :email, autofocus: true , class: "form-control" %>
+              <%= f.email_field (t('devise.sessions.new.email') || :email), autofocus: true , class: "form-control" %>
             </div>
           </div>
 
           <div class="form-group row">
             <%= f.label :password, class: "col-sm-4 col-form-label" %>
             <div class="col-sm-6">
-              <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+              <%= f.password_field (t('devise.sessions.new.password') || :password), autocomplete: "off", class: "form-control" %>
             </div>
           </div>
 
           <% if devise_mapping.rememberable? -%>
             <div class="form-group row">
               <div class="col-sm-6 offset-sm-4">
-                <%= f.check_box :remember_me %> <%= f.label t('devise.sessions.new.remember_me') %>
+                <%= f.check_box (t('devise.sessions.new.remember_me') || :remember_me) %> <%= f.label t('devise.sessions.new.remember_me') %>
               </div>
             </div>
           <% end -%>
