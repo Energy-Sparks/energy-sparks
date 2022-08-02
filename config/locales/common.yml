@@ -19,8 +19,8 @@ en:
     line_graphs: Line graphs
     pie_charts: Pie charts
     school: School
+    storage_heaters: Storage heaters
   kwh: kWh
   school_types:
     mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
-    storage_heaters: Storage heaters
   "£": "£"

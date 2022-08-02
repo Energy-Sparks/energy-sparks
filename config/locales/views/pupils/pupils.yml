@@ -14,6 +14,10 @@ en:
       find_electricity_use_last_year: find out how much electricity was used last year
       find_electricity_use_lights: find out how much electricity was used by lights and appliances running all the time
       find_electricity_use_long_term: find out how electricity use has changed long term
+      find_gas_comparison: find out how my school's gas use compares with other schools
+      find_gas_use_7days: find out how much gas was used in the last 7 days
+      find_gas_use_last_year: find out how much gas was used last year
+      find_gas_use_long_term: find out how gas use has changed long term
       find_how_much_co2_generated_html: find out how much <strong>carbon dioxide</strong> was generated
       find_how_much_electricity_cost_html: find out <strong>how much</strong> the electricity cost
       find_how_much_gas_cost_html: find out <strong>how much</strong> the gas cost
@@ -23,6 +27,7 @@ en:
       i_want_to: I want to&hellip;
       i_want_to_look_at: I want to look at&hellip;
       live_energy_data: Live energy data
+      look_at_energy_use: Let's look at the energy use data for your school
       without_storage_heaters: without storage heaters
     schools:
       show:
