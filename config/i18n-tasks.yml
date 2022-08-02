@@ -130,6 +130,7 @@ ignore_unused:
   - 'kwh'
   - 'co2'
   - '£'
+  - 'devise.mailer.confirmation_instructions.subject'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'

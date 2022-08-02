@@ -49,8 +49,6 @@ class OnboardingMailer < ApplicationMailer
     @user = params[:user]
     @school = @user.school
     @title = @school.name
-    make_bootstrap_mail(
-      to: @user.email
-    )
+    make_bootstrap_mail(to: @user.email)
   end
 end
