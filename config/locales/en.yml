@@ -1,9 +1,47 @@
 ---
 en:
   date:
-    day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
-    abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
-
-    # Don't forget the nil at the beginning; there's no such thing as a 0th month
-    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
-    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
+    abbr_day_names:
+    - Sun
+    - Mon
+    - Tue
+    - Wed
+    - Thu
+    - Fri
+    - Sat
+    abbr_month_names:
+    - 
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - Jun
+    - Jul
+    - Aug
+    - Sep
+    - Oct
+    - Nov
+    - Dec
+    day_names:
+    - Sunday
+    - Monday
+    - Tuesday
+    - Wednesday
+    - Thursday
+    - Friday
+    - Saturday
+    month_names:
+    - 
+    - January
+    - February
+    - March
+    - April
+    - May
+    - June
+    - July
+    - August
+    - September
+    - October
+    - November
+    - December
