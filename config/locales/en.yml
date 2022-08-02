@@ -9,7 +9,6 @@ en:
     - Thu
     - Fri
     - Sat
-    # Don't forget the nil at the beginning; there's no such thing as a 0th month    
     abbr_month_names:
     - 
     - Jan
@@ -32,7 +31,6 @@ en:
     - Thursday
     - Friday
     - Saturday
-    # Don't forget the nil at the beginning; there's no such thing as a 0th month    
     month_names:
     - 
     - January
