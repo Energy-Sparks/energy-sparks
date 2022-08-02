@@ -37,6 +37,8 @@ jobs:
       # Precompile assets
       - name: Precompile assets
         run: bundle exec rake assets:precompile
+      - name: Test data pipeline
+        run: script/test-data-pipeline.sh
       # Add or replace test runners here
       - name: Run tests
         run: bin/rake
