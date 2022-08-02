@@ -175,8 +175,6 @@ describe ApplicationHelper do
     end
   end
 
-
-
   describe 'nice_dates' do
     before { I18n.locale = 'en' }
     after { I18n.locale = 'en' }
