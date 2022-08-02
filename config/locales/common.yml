@@ -4,8 +4,15 @@ en:
   common:
     application: Energy Sparks
     confirm: Are you sure?
+    electricity: Electricity
+    electricity_and_solar_pv: Electricity & Solar PV
+    gas: Gas
+    pie_charts: Pie charts
+    bar_charts: Bar charts
+    line_graphs: Line graphs
     labels:
       actions: Actions
+      back: Back
       delete: Delete
       manage: Manage
       next: Next
@@ -15,4 +22,5 @@ en:
   kwh: kWh
   school_types:
     mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
+    storage_heaters: Storage heaters
   "£": "£"
