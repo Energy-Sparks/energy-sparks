@@ -3,21 +3,9 @@ en:
   devise:
     confirmations:
       new:
-        title: Resend confirmation instructions
         resend_confirmation_instructions: Resend confirmation instructions
+        title: Resend confirmation instructions
     mailer:
-      email_changed:
-        hello: Hello
-        email_is_being_changed: We're contacting you to notify you that your email is being changed to
-        email_has_been_changed: We're contacting you to notify you that your email has been changed to
-      password_change:
-        hello: Hello
-        were_contacting_you: We're contacting you to notify you that your password has been changed.
-      unlock_instructions:
-        hello: Hello
-        your_account_has_been_locked: Your account has been locked due to an excessive number of unsuccessful sign in attempts
-        click_the_link_below: Click the link below to unlock your account
-        unlock_my_account: Unlock my account
       confirmation_instructions:
         before_you_begin: Before you can begin using your account you need to confirm your email address using the link below
         confirm_my_account: Confirm my account
@@ -29,8 +17,14 @@ en:
         user_account_created_for_you_for: A user account has been created for you on Energy Sparks for %{resource_school_name}
         user_account_created_for_you_on: A user account has been created for you on Energy Sparks
         welcome: Welcome %{resource_name}
+      email_changed:
+        email_has_been_changed: We're contacting you to notify you that your email has been changed to
+        email_is_being_changed: We're contacting you to notify you that your email is being changed to
+        hello: Hello
       password_change:
+        hello: Hello
         title: 'Energy Sparks: password changed'
+        were_contacting_you: We're contacting you to notify you that your password has been changed.
       reset_password_instructions:
         change_my_password: Change my password
         energy_sparks_password_reset: Energy Sparks password reset
@@ -42,14 +36,19 @@ en:
         title: 'Energy Sparks: reset your password'
         you_recently_requested_to_reset_the_password_for: You recently requested to reset your password for
       unlock_instructions:
+        click_the_link_below: Click the link below to unlock your account
+        hello: Hello
         title: 'Energy Sparks: unlock your account'
+        unlock_my_account: Unlock my account
+        your_account_has_been_locked: Your account has been locked due to an excessive number of unsuccessful sign in attempts
     passwords:
       edit:
+        characters_minimum: characters minimum
         confirm_new_password: Confirm new password
         new_password: New password
         page_title: Change your password
         set_my_password: Set my password
-        title: Set your password
+        set_your_password: Set your password
       new:
         forgot_your_password: Forgot your password?
         page_title: Reset Password
@@ -76,8 +75,8 @@ en:
         sign_up: Sign up
     unlocks:
       new:
-        title: Resend unlock instructions
         resend_unlock_instructions: Resend unlock instructions
+        title: Resend unlock instructions
   errors:
     messages:
       already_confirmed: was already confirmed, please try signing in

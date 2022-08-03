@@ -1,0 +1,63 @@
+<% content_for :page_title do %>
+    <%= t('devise.passwords.edit.page_title') %>
+<% end %>
+<div class="application container">
+
+  <div class="row padded-row">
+    <div class="col-md-12">
+      <h1><%= t('devise.passwords.edit.set_your_password') %></h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+
+      <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: 'form-horizontal' }) do |f| %>
+          <%= render "devise/shared/error_messages", resource: resource %>
+          <%= f.hidden_field :reset_password_token %>
+
+          <div class="form-group row">
+            <%= f.label :password, t('devise.passwords.edit.new_password'), class: "col-sm-4 col-form-label" %>
+            <div class="col-sm-6">
+              <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+              <% if @minimum_password_length %>
+                  <em>(<%= @minimum_password_length %> <%= t('devise.passwords.edit.characters_minimum') %>)</em><br />
+              <% end %>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <%= f.label :password_confirmation, t('devise.passwords.edit.confirm_new_password'), class: "col-sm-4 col-form-label" %>
+            <div class="col-sm-6">
+              <%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control" %>
+              <% if @minimum_password_length %>
+                  <em>(<%= @minimum_password_length %> <%= t('devise.passwords.edit.characters_minimum') %>)</em><br />
+              <% end %>
+
+            </div>
+          </div>
+
+        <div class="form-group row">
+          <div class="col-sm-6 offset-sm-4">
+            <%= render 'shared/agree_terms_checkbox' %>
+          </div>
+        </div>
+
+
+        <div class="form-group row">
+          <div class="col-sm-6 offset-sm-4">
+            <%= f.submit t('devise.passwords.edit.set_my_password'), class: 'btn btn-primary' %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-6 offset-sm-4">
+              <%= render "devise/shared/links" %>
+            </div>
+          </div>
+
+      <% end %>
+
+    </div>
+  </div>
+</div>
