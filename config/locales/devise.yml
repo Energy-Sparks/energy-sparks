@@ -1,7 +1,23 @@
 ---
 en:
   devise:
+    confirmations:
+      new:
+        title: Resend confirmation instructions
+        resend_confirmation_instructions: Resend confirmation instructions
     mailer:
+      email_changed:
+        hello: Hello
+        email_is_being_changed: We're contacting you to notify you that your email is being changed to
+        email_has_been_changed: We're contacting you to notify you that your email has been changed to
+      password_change:
+        hello: Hello
+        were_contacting_you: We're contacting you to notify you that your password has been changed.
+      unlock_instructions:
+        hello: Hello
+        your_account_has_been_locked: Your account has been locked due to an excessive number of unsuccessful sign in attempts
+        click_the_link_below: Click the link below to unlock your account
+        unlock_my_account: Unlock my account
       confirmation_instructions:
         before_you_begin: Before you can begin using your account you need to confirm your email address using the link below
         confirm_my_account: Confirm my account
@@ -58,6 +74,10 @@ en:
         sign_in: Sign in
         sign_in_with: Sign in with
         sign_up: Sign up
+    unlocks:
+      new:
+        title: Resend unlock instructions
+        resend_unlock_instructions: Resend unlock instructions
   errors:
     messages:
       already_confirmed: was already confirmed, please try signing in
