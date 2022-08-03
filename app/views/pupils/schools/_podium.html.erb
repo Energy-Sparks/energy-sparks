@@ -1,16 +1,18 @@
-<h4 class="text-center">Your school is in <strong><%= podium.school_position.ordinal %> place.</strong></h4>
+<h4 class="text-center">
+  <%= t('pupils.schools.show.school_podium_position_html', position_ordinal: podium.school_position.ordinal) %>.
+</h4>
 <div class="row align-items-end border-bottom grey">
   <% podium.low_to_high.each do |position| %>
     <div class="col-4 text-center">
       <h5>
         <% if podium.current_school?(position) %>
           <%= fa_icon('crown fa-2x') %>
-          <p class='h2'><%= position.ordinal%></p>
+          <p class='h2'><%= position.ordinal %></p>
         <% else %>
-          <p><%= position.ordinal%></p>
+          <p><%= position.ordinal %></p>
           <% if (position.normalised_points * 149).to_i < 70 %>
             <p class="mb-1"><strong><%= position.points %></strong></p>
-            <p class="text-uppercase">points</p>
+            <p class="text-uppercase"><%= t('pupils.schools.show.points') %></p>
           <% end %>
         <% end %>
       </h5>
@@ -20,7 +22,7 @@
         <div class="bar-body" style="height:<%= (position.normalised_points * 149).to_i + 1 %>px">
           <% if (position.normalised_points * 149).to_i > 70 %>
             <p class="pt-2 mb-0"><strong><%= position.points %></strong></p>
-            <p class="text-uppercase">points</p>
+            <p class="text-uppercase"><%= t('pupils.schools.show.points') %></p>
           <% end %>
         </div>
       </div>
