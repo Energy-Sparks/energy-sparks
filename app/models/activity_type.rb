@@ -92,8 +92,9 @@ class ActivityType < ApplicationRecord
                   }
 
   def self.translatable_search(query, locale)
-    ids = MobilityStringTranslations.where(locale: locale, translatable_type: 'ActivityType')
-                                    .where("value ILIKE ?", '%' + query + '%')
+    ids = MobilityStringTranslations.where(locale: locale)
+                                    .activity_type
+                                    .search(query)
                                     .pluck(:translatable_id)
     ActivityType.active.where(id: ids)
   end
