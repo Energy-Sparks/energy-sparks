@@ -1,7 +1,7 @@
 class ActivityTypeSearchService
   def self.search(query, key_stages = [], subjects = [], locale = 'en')
     activity_types = if locale.to_s == 'en'
-                       ActivityType.active.regular_search(query)
+                       ActivityType.active.search(query)
                      else
                        ActivityType.translatable_search(query, locale)
                      end

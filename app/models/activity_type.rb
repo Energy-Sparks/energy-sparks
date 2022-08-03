@@ -80,7 +80,7 @@ class ActivityType < ApplicationRecord
 
   before_save :copy_searchable_attributes
 
-  pg_search_scope :regular_search,
+  pg_search_scope :search,
                   against: [:name],
                   associated_against: {
                     rich_text_description: [:body]
