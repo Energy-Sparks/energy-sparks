@@ -5,7 +5,7 @@ EB_APP_STAGING_DIR=$(/opt/elasticbeanstalk/bin/get-config platformconfig -k AppS
 EB_APP_USER=$(/opt/elasticbeanstalk/bin/get-config platformconfig -k AppUser)
 
 set +x
-export $(cat /opt/elasticbeanstalk/deployment/env | xargs)
+export $(/opt/elasticbeanstalk/bin/get-config --output YAML environment | sed -r 's/: /=/' | xargs)
 set -x
 
 cd $EB_APP_STAGING_DIR
