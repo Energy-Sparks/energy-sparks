@@ -34,16 +34,6 @@ class ActivityType < ApplicationRecord
   translates :download_links, backend: :action_text
 
   include PgSearch::Model
-  pg_search_scope :search,
-                  against: [:name],
-                  associated_against: {
-                    rich_text_description: [:body]
-                  },
-                  using: {
-                    tsearch: {
-                      dictionary: 'english'
-                    }
-                  }
 
   TX_ATTRIBUTE_MAPPING = {
     school_specific_description: { templated: true },
@@ -89,6 +79,24 @@ class ActivityType < ApplicationRecord
   accepts_nested_attributes_for :activity_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
 
   before_save :copy_searchable_attributes
+
+  pg_search_scope :regular_search,
+                  against: [:name],
+                  associated_against: {
+                    rich_text_description: [:body]
+                  },
+                  using: {
+                    tsearch: {
+                      dictionary: 'english'
+                    }
+                  }
+
+  def self.translatable_search(query, locale)
+    ids = MobilityStringTranslations.where(locale: locale, translatable_type: 'ActivityType')
+                                    .where("value ILIKE ?", '%' + query + '%')
+                                    .pluck(:translatable_id)
+    ActivityType.active.where(id: ids)
+  end
 
   def suggested_from
     ActivityType.joins(:activity_type_suggestions).where("activity_type_suggestions.suggested_type_id = ?", id)

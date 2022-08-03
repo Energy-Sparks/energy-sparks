@@ -7,7 +7,7 @@ class ActivityTypesController < ApplicationController
     @key_stages = key_stages
     @subjects = subjects
     if params[:query]
-      activity_types = ActivityTypeSearchService.search(params[:query], @key_stages, @subjects)
+      activity_types = ActivityTypeSearchService.search(params[:query], @key_stages, @subjects, I18n.locale)
       @pagy, @activity_types = pagy(activity_types)
     else
       @activity_types = []

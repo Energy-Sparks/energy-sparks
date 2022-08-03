@@ -1,0 +1,2 @@
+class MobilityStringTranslations < ApplicationRecord
+end
