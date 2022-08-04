@@ -92,11 +92,26 @@ class ActivityType < ApplicationRecord
                   }
 
   def self.translatable_search(query, locale)
-    ids = MobilityStringTranslations.where(locale: locale)
-                                    .activity_type
-                                    .search(query)
-                                    .pluck(:translatable_id)
-    ActivityType.active.where(id: ids)
+    # ids = MobilityStringTranslations.where(locale: locale)
+    #                                 .activity_type
+    #                                 .search(query)
+    #                                 .pluck(:translatable_id)
+    # ActivityType.active.where(id: MobilityStringTranslations.where(locale: locale)
+    #                                 .activity_type
+    #                                 .search(query)
+    #                                 .pluck(:translatable_id))
+
+    ActivityType.active.joins_mobility_with(locale).where("mobility_string_translations.value ILIKE  '%#{query}%'")
+  end
+
+  def self.joins_mobility_with(locale)
+    join_query = <<-SQL.squish
+                      INNER JOIN mobility_string_translations
+                      ON mobility_string_translations.locale = '#{locale}'
+                      AND mobility_string_translations.translatable_type = 'ActivityType'
+                      AND mobility_string_translations.translatable_id = activity_types.id
+    SQL
+    joins(join_query)
   end
 
   def suggested_from
