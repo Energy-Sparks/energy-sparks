@@ -80,10 +80,11 @@ class ActivityType < ApplicationRecord
 
   before_save :copy_searchable_attributes
 
-  pg_search_scope :search,
-                  against: [:name],
+  pg_search_scope :full_search,
+                  # against: [:name],
                   associated_against: {
-                    rich_text_description: [:body]
+                    rich_text_description: [:body],
+                    string_translations: [:value]
                   },
                   using: {
                     tsearch: {
@@ -91,27 +92,8 @@ class ActivityType < ApplicationRecord
                     }
                   }
 
-  def self.translatable_search(query, locale)
-    # ids = MobilityStringTranslations.where(locale: locale)
-    #                                 .activity_type
-    #                                 .search(query)
-    #                                 .pluck(:translatable_id)
-    # ActivityType.active.where(id: MobilityStringTranslations.where(locale: locale)
-    #                                 .activity_type
-    #                                 .search(query)
-    #                                 .pluck(:translatable_id))
-
-    ActivityType.active.joins_mobility_with(locale).where("mobility_string_translations.value ILIKE  '%#{query}%'")
-  end
-
-  def self.joins_mobility_with(locale)
-    join_query = <<-SQL.squish
-                      INNER JOIN mobility_string_translations
-                      ON mobility_string_translations.locale = '#{locale}'
-                      AND mobility_string_translations.translatable_type = 'ActivityType'
-                      AND mobility_string_translations.translatable_id = activity_types.id
-    SQL
-    joins(join_query)
+  def self.search(query:, locale: 'en')
+    joins(build_search_sql_for(query, locale))
   end
 
   def suggested_from
@@ -153,6 +135,65 @@ class ActivityType < ApplicationRecord
 
   def self.tx_resources
     active.order(:id)
+  end
+
+  class << self
+    def build_search_sql_for(query, locale)
+      dictionary = locale.to_s == 'en' ? 'english' : 'simple'
+
+      search_sql = <<-SQL.squish
+        INNER JOIN (
+          SELECT "activity_types"."id" AS search_id, (
+            ts_rank(
+              (
+                to_tsvector('#{dictionary}', coalesce(action_text_rich_texts_results.action_text_rich_texts_body::text, ''))
+                ||
+                to_tsvector('#{dictionary}', coalesce(mobility_string_translations_results.mobility_string_translations_value::text, ''))
+              ),
+              (
+                to_tsquery('#{dictionary}', ''' ' || '#{query}' || ' ''')
+              ), 0
+            )
+          ) AS rank FROM "activity_types"
+
+          LEFT OUTER JOIN (
+            SELECT "activity_types"."id" AS id, "action_text_rich_texts"."body"::text AS action_text_rich_texts_body
+            FROM "activity_types"
+            INNER JOIN "action_text_rich_texts" ON "action_text_rich_texts"."record_type" = 'ActivityType'
+            AND "action_text_rich_texts"."name" = 'description'
+            AND "action_text_rich_texts"."locale" = '#{locale}'
+            AND "action_text_rich_texts"."record_id" = "activity_types"."id"
+            WHERE "activity_types"."active" = 'true'
+          ) action_text_rich_texts_results ON action_text_rich_texts_results.id = "activity_types"."id"
+
+          LEFT OUTER JOIN (
+            SELECT "activity_types"."id" AS id, string_agg("mobility_string_translations"."value"::text, ' ') AS mobility_string_translations_value
+            FROM "activity_types"
+            INNER JOIN "mobility_string_translations" ON "mobility_string_translations"."translatable_type" = 'ActivityType'
+            AND "mobility_string_translations"."key" IN ('name', 'summary')
+            AND "mobility_string_translations"."translatable_id" = "activity_types"."id"
+            AND "mobility_string_translations"."locale" = '#{locale}'
+            WHERE "activity_types"."active" = 'true'
+            GROUP BY "activity_types"."id"
+          ) mobility_string_translations_results ON mobility_string_translations_results.id = "activity_types"."id"
+
+          WHERE (
+            (
+              to_tsvector('#{dictionary}', coalesce(action_text_rich_texts_results.action_text_rich_texts_body::text, ''))
+              ||
+              to_tsvector('#{dictionary}', coalesce(mobility_string_translations_results.mobility_string_translations_value::text, ''))
+            )
+            @@
+            (
+              to_tsquery('#{dictionary}', ''' ' || '#{query}' || ' ''')
+            )
+          )
+        ) AS activity_type_results ON "activity_types"."id" = activity_type_results.search_id
+
+        ORDER BY activity_type_results.rank DESC, "activity_types"."id" ASC
+      SQL
+      search_sql
+    end
   end
 
   private
