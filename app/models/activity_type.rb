@@ -81,7 +81,8 @@ class ActivityType < ApplicationRecord
   before_save :copy_searchable_attributes
 
   def self.search(query:, locale: 'en')
-    where(id: select('DISTINCT activity_types.id, activity_type_results.rank').joins(build_search_sql_for(query, locale)).pluck(:id))
+    query = build_search_sql_for(query, locale)
+    where(id: select('DISTINCT activity_types.id, activity_type_results.rank').joins(query).pluck(:id))
   end
 
   def suggested_from
@@ -180,7 +181,8 @@ class ActivityType < ApplicationRecord
 
         ORDER BY activity_type_results.rank DESC, "activity_types"."id" ASC
       SQL
-      search_sql
+
+      sanitize_sql(search_sql)
     end
   end
 
