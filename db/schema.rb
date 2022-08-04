@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_25_152512) do
+ActiveRecord::Schema.define(version: 2022_08_04_124332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -996,6 +996,7 @@ ActiveRecord::Schema.define(version: 2022_07_25_152512) do
     t.integer "points"
     t.boolean "visible", default: true
     t.bigint "audit_id"
+    t.boolean "involved_pupils", default: false, null: false
     t.index ["activity_id"], name: "index_observations_on_activity_id"
     t.index ["audit_id"], name: "index_observations_on_audit_id"
     t.index ["intervention_type_id"], name: "index_observations_on_intervention_type_id"

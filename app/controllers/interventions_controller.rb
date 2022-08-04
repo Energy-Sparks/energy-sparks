@@ -43,6 +43,6 @@ class InterventionsController < ApplicationController
   private
 
   def observation_params
-    params.require(:observation).permit(:description, :at, :intervention_type_id)
+    params.require(:observation).permit(:description, :at, :intervention_type_id, :involved_pupils)
   end
 end

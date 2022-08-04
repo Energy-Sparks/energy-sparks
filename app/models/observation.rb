@@ -9,6 +9,7 @@
 #  created_at           :datetime         not null
 #  id                   :bigint(8)        not null, primary key
 #  intervention_type_id :bigint(8)
+#  involved_pupils      :boolean          default(FALSE), not null
 #  observation_type     :integer          not null
 #  points               :integer
 #  school_id            :bigint(8)        not null
