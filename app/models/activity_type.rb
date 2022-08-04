@@ -81,7 +81,7 @@ class ActivityType < ApplicationRecord
   before_save :copy_searchable_attributes
 
   def self.search(query:, locale: 'en')
-    query = build_search_sql_for(query, locale)
+    query = build_sanitized_search_sql_for(query, locale)
     where(id: select('DISTINCT activity_types.id, activity_type_results.rank').joins(query).pluck(:id))
   end
 
@@ -127,7 +127,7 @@ class ActivityType < ApplicationRecord
   end
 
   class << self
-    def build_search_sql_for(query, locale)
+    def build_sanitized_search_sql_for(query, locale)
       dictionary = locale.to_s == 'en' ? 'english' : 'simple'
 
       search_sql = <<-SQL.squish
