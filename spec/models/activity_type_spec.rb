@@ -26,12 +26,12 @@ describe 'ActivityType' do
 
     it 'updates original name so search still works' do
       activity_type = create(:activity_type, name: old_name)
-      expect(ActivityType.search(new_name)).to eq([])
+      expect(ActivityType.search(query: new_name, locale: 'en')).to eq([])
 
       activity_type.update(name: new_name)
 
       expect(activity_type.attributes['name']).to eq(new_name)
-      expect(ActivityType.search(new_name)).to eq([activity_type])
+      expect(ActivityType.search(query: new_name, locale: 'en')).to eq([activity_type])
     end
   end
 
@@ -40,15 +40,15 @@ describe 'ActivityType' do
       activity_type_1 = create(:activity_type, name: 'foo')
       activity_type_2 = create(:activity_type, name: 'bar')
 
-      expect(ActivityType.search('foo')).to eq([activity_type_1])
-      expect(ActivityType.search('bar')).to eq([activity_type_2])
+      expect(ActivityType.search(query: 'foo', locale: 'en')).to eq([activity_type_1])
+      expect(ActivityType.search(query: 'bar', locale: 'en')).to eq([activity_type_2])
     end
 
     it 'applies search variants' do
       activity_type_1 = create(:activity_type, name: 'time')
       activity_type_2 = create(:activity_type, name: 'timing')
 
-      expect(ActivityType.search('timing')).to eq([activity_type_1, activity_type_2])
+      expect(ActivityType.search(query: 'timing', locale: 'en')).to eq([activity_type_1, activity_type_2])
     end
   end
 
