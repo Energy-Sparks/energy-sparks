@@ -53,12 +53,11 @@ class TransportSurvey < ApplicationRecord
   def responses_per_time_for_category(category)
     responses_per_time = responses.with_transport_type.where(transport_types: { category: category }).group(:journey_minutes).count
     # also include counts of zero for times without responses
-    TransportSurveyResponse.journey_minutes_options.each { |v| responses_per_time[v] ||= 0 }
-    responses_per_time
+    TransportSurveyResponse.journey_minutes_options.index_with { |mins| responses_per_time[mins] || 0 }
   end
 
   def responses_per_time_for_category_car
-    results, thirty_plus = responses_per_time_for_category(:car).partition { |time, _count| time < 30 }.map(&:to_h)
+    results, thirty_plus = responses_per_time_for_category(:car).partition { |mins, _count| mins < 30 }.map(&:to_h)
     results['30+'] = thirty_plus.values.sum || 0
     results
   end
