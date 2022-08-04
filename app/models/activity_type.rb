@@ -80,19 +80,8 @@ class ActivityType < ApplicationRecord
 
   before_save :copy_searchable_attributes
 
-  # pg_search_scope :search,
-  #                 associated_against: {
-  #                   string_translations: [:value],
-  #                   rich_text_description: [:body]
-  #                 },
-  #                 using: {
-  #                   tsearch: {
-  #                     dictionary: 'english'
-  #                   }
-  #                 }
-
   def self.search(query:, locale: 'en')
-    select('DISTINCT activity_types.*, activity_type_results.rank').joins(build_search_sql_for(query, locale))
+    where(id: select('DISTINCT activity_types.id, activity_type_results.rank').joins(build_search_sql_for(query, locale)).pluck(:id))
   end
 
   def suggested_from
