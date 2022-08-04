@@ -80,9 +80,12 @@ class ActivityType < ApplicationRecord
 
   before_save :copy_searchable_attributes
 
-  def self.search(query:, locale: 'en')
-    query = build_sanitized_search_sql_for(query, locale)
-    where(id: select('DISTINCT activity_types.id, activity_type_results.rank').joins(query).pluck(:id))
+  def self.search(query:, locale:)
+    locale = locale.to_s
+    dictionary = locale == 'en' ? 'english' : 'simple'
+    query = query.delete("'")
+    sanitized_sql = ActiveRecord::Base.sanitize_sql_array([build_search_sql, { locale: locale, dictionary: dictionary, query: query }])
+    where(id: select('DISTINCT activity_types.id, activity_type_results.rank').joins(sanitized_sql).pluck(:id))
   end
 
   def suggested_from
@@ -127,20 +130,18 @@ class ActivityType < ApplicationRecord
   end
 
   class << self
-    def build_sanitized_search_sql_for(query, locale)
-      dictionary = locale.to_s == 'en' ? 'english' : 'simple'
-
+    def build_search_sql
       search_sql = <<-SQL.squish
         INNER JOIN (
           SELECT "activity_types"."id" AS search_id, (
             ts_rank(
               (
-                to_tsvector('#{dictionary}', coalesce(action_text_rich_texts_results.action_text_rich_texts_body::text, ''))
+                to_tsvector(:dictionary, coalesce(action_text_rich_texts_results.action_text_rich_texts_body::text, ''))
                 ||
-                to_tsvector('#{dictionary}', coalesce(mobility_string_translations_results.mobility_string_translations_value::text, ''))
+                to_tsvector(:dictionary, coalesce(mobility_string_translations_results.mobility_string_translations_value::text, ''))
               ),
               (
-                to_tsquery('#{dictionary}', ''' ' || '#{query}' || ' ''')
+                to_tsquery(:dictionary, ''' ' || :query || ' ''')
               ), 0
             )
           ) AS rank FROM "activity_types"
@@ -150,7 +151,7 @@ class ActivityType < ApplicationRecord
             FROM "activity_types"
             INNER JOIN "action_text_rich_texts" ON "action_text_rich_texts"."record_type" = 'ActivityType'
             AND "action_text_rich_texts"."name" = 'description'
-            AND "action_text_rich_texts"."locale" = '#{locale}'
+            AND "action_text_rich_texts"."locale" = :locale
             AND "action_text_rich_texts"."record_id" = "activity_types"."id"
             WHERE "activity_types"."active" = 'true'
           ) action_text_rich_texts_results ON action_text_rich_texts_results.id = "activity_types"."id"
@@ -161,20 +162,20 @@ class ActivityType < ApplicationRecord
             INNER JOIN "mobility_string_translations" ON "mobility_string_translations"."translatable_type" = 'ActivityType'
             AND "mobility_string_translations"."key" IN ('name', 'summary')
             AND "mobility_string_translations"."translatable_id" = "activity_types"."id"
-            AND "mobility_string_translations"."locale" = '#{locale}'
+            AND "mobility_string_translations"."locale" = :locale
             WHERE "activity_types"."active" = 'true'
             GROUP BY "activity_types"."id"
           ) mobility_string_translations_results ON mobility_string_translations_results.id = "activity_types"."id"
 
           WHERE (
             (
-              to_tsvector('#{dictionary}', coalesce(action_text_rich_texts_results.action_text_rich_texts_body::text, ''))
+              to_tsvector(:dictionary, coalesce(action_text_rich_texts_results.action_text_rich_texts_body::text, ''))
               ||
-              to_tsvector('#{dictionary}', coalesce(mobility_string_translations_results.mobility_string_translations_value::text, ''))
+              to_tsvector(:dictionary, coalesce(mobility_string_translations_results.mobility_string_translations_value::text, ''))
             )
             @@
             (
-              to_tsquery('#{dictionary}', ''' ' || '#{query}' || ' ''')
+              to_tsquery(:dictionary, ''' ' || :query || ' ''')
             )
           )
         ) AS activity_type_results ON "activity_types"."id" = activity_type_results.search_id
@@ -182,7 +183,7 @@ class ActivityType < ApplicationRecord
         ORDER BY activity_type_results.rank DESC, "activity_types"."id" ASC
       SQL
 
-      sanitize_sql(search_sql)
+      search_sql
     end
   end
 
