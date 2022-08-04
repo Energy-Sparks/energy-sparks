@@ -49,15 +49,15 @@ en:
         destroy:
           notice: Transport survey response was successfully removed
       show:
+        30_or_more_minutes: 30 or more minutes
+        cars_summary: Persuading people who travel only 5 minutes by car to switch to coming to school by foot or bike is a great first step to reducing the school's carbon footprint from travel.
+        cars_title: Breakdown of journeys by car
         more_detail: 'Let''s look at this in more detail:'
         percentages:
           car_html: "%{amount} travelled by car"
           park_and_stride_html: "%{amount} used park and stride"
           public_transport_html: "%{amount} travelled by public transport"
           walking_and_cycling_html: "%{amount} walked or cycled, generating zero CO2"
-        30_or_more_minutes: 30 or more minutes
-        cars_summary: Persuading people who travel only 5 minutes by car to switch to coming to school by foot or bike is a great first step to reducing the school's carbon footprint from travel.
-        cars_title: Breakdown of journeys by car
         summary_html:
           one: "<strong>1 pupil or staff member</strong> included in this survey generated <strong>%{carbon}kg</strong> carbon by travelling to school"
           other: "<strong>%{count} pupils and staff</strong> included in this survey generated <strong>%{carbon}kg</strong> carbon by travelling to school"
