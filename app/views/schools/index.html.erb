@@ -1,8 +1,8 @@
-<% content_for :page_title, 'Map' %>
+<% content_for :page_title, t('schools.index.page_title') %>
 
 <div class="row">
   <div class="col-md-8">
-    <h1>Energy Sparks schools across the UK</h1>
+    <h1><%= t('schools.index.title') %></h1>
   </div>
 </div>
 
@@ -10,14 +10,14 @@
 
 <div class="col-md-12">
 
-  <p>Discover which schools are using Energy Sparks to reduce their energy usage.</p>
-  <p>We have <%= @schools.count %> schools across England, Wales, and Scotland including state primary and secondary schools, independent schools, special schools and nursery schools.</p>
-  <p>Explore their electricity and gas consumption data, find out how much energy they generate from their solar panels and learn about their energy saving activities.</p>
-  <p>We’re proud to have a great network of schools all working hard to save energy and help fight climate change.</p>
+  <p><%= t('schools.index.introduction_1') %>.</p>
+  <p><%= t('schools.index.introduction_2', count: @schools.count) %>.</p>
+  <p><%= t('schools.index.introduction_3') %>.</p>
+  <p><%= t('schools.index.introduction_4') %>.</p>
 
   <br/>
 
-  <h2>View Energy Sparks schools by group</h2>
+  <h2><%= t('schools.index.view_energy_sparks_schools_by_group') %></h2>
   <div class="row">
     <% school_groups_left, school_groups_right = @school_groups.partition.with_index{|_,v| v.even?} %>
     <div class="col-lg-6">
@@ -36,10 +36,10 @@
   <br/>
 
   <div class="all-schools"
-    <h2>View all Energy Sparks schools</h2>
+    <h2><%= t('schools.index.view_all_energy_sparks_schools') %></h2>
     <div class="row">
       <div class="col-lg-12">
-        <%= render 'schools', schools: @schools, title: 'A to Z of all Energy Sparks schools', label: 'allSchools' %>
+        <%= render 'schools', schools: @schools, title: t('schools.index.a_to_z_of_all_energy_sparks_schools'), label: 'allSchools' %>
       </div>
     </div>
   </div>
@@ -47,10 +47,10 @@
   <% if @schools_not_visible.any? && can?(:read_invisible_schools, School)%>
     <br/>
     <br/>
-    <h2>Not visible schools</h2>
+    <h2><%= t('schools.index.not_visible_schools') %></h2>
     <div class="row">
       <div class="col-lg-12">
-        <%= render 'schools', schools: @schools_not_visible, title: 'Not visible schools', label: 'invisibleSchools' %>
+        <%= render 'schools', schools: @schools_not_visible, title: t('schools.index.not_visible_schools'), label: 'invisibleSchools' %>
       </div>
     </div>
   <% end %>
