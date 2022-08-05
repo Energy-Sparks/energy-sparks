@@ -10,6 +10,7 @@ en:
   languages:
     cy: Welsh
     en: English
+  name: English
   simple_form:
     labels:
       defaults:
