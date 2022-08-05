@@ -49,7 +49,7 @@ module Searchable
           LEFT OUTER JOIN (
             SELECT "#{table}"."id" AS id, string_agg("mobility_string_translations"."value"::text, ' ') AS mobility_string_translations_value
             FROM "#{table}"
-            INNER JOIN "mobility_string_translations" ON "mobility_string_translations"."translatable_type" = '#{table}'
+            INNER JOIN "mobility_string_translations" ON "mobility_string_translations"."translatable_type" = '#{name}'
             AND "mobility_string_translations"."key" IN ('name', 'summary')
             AND "mobility_string_translations"."translatable_id" = "#{table}"."id"
             AND "mobility_string_translations"."locale" = :locale
