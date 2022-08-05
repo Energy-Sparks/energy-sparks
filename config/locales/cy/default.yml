@@ -1,6 +1,6 @@
 ---
 cy:
-  name: Cymru
+  name: Cymraeg
   helpers:
     select:
       prompt: Dewiswch
