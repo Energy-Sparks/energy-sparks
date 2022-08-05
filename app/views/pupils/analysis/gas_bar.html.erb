@@ -1,39 +1,39 @@
-<% content_for :page_title, "Here's the gas data for your school" %>
+<% content_for :page_title, strip_tags(t('pupils.analysis.gas_data_html')) %>
 
 <div class="d-flex justify-content-between align-items-center">
   <div>
-    <%= link_to 'Back',  pupils_school_analysis_path(@school, category: :gas), class: 'btn btn-rounded' %>
+    <%= link_to t('common.labels.back'),  pupils_school_analysis_path(@school, category: :gas), class: 'btn btn-rounded' %>
   </div>
   <div>
-    <h1>Here's the <strong>gas</strong> data for your school</h1>
+    <h1><%= t('pupils.analysis.gas_data_html') %></h1>
   </div>
   <div></div>
 </div>
 <hr />
 
-<h2>I want to&hellip;</h2>
+<h2><%= t('pupils.analysis.i_want_to') %></h2>
 
 <div class="row">
 
   <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Bar', secondary_presentation: 'Bench'} do %>
-    find out how my school's gas use compares with other schools
+    <%= t('pupils.analysis.find_gas_comparison') %>
   <% end %>
 
   <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Bar', secondary_presentation: 'Week'} do %>
-    find out how much gas was used last year
+    <%= t('pupils.analysis.find_gas_use_last_year') %>
   <% end %>
 
   <%= render 'chart_link', school: @school, energy: :gas, chart_config: {energy: 'Gas', presentation: 'Bar', secondary_presentation: 'Year'} do %>
-    find out how gas use has changed long term
+    <%= t('pupils.analysis.find_gas_use_long_term') %>
   <% end %>
 
   <%= render 'usage_link', school: @school, energy: :gas, usage_config: {period: :weekly} do %>
-    compare the gas used in two different weeks
+    <%= t('pupils.analysis.compare_gas_in_2_weeks') %>
   <% end %>
 
   <% if @school.filterable_meters.gas.count > 1 %>
     <%= render 'usage_link', school: @school, energy: :gas, usage_config: {period: :weekly, split_meters: true} do %>
-      compare the gas use by different meters
+      <%= t('pupils.analysis.compare_gas_use_by_meters') %>
     <% end %>
   <% end %>
 

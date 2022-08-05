@@ -1,0 +1,67 @@
+---
+en:
+  pupils:
+    analysis:
+      compare_electricity_in_2_weeks: compare the electricity used in two different weeks
+      compare_electricity_on_2_days: compare the electricity used on two different days
+      compare_electricity_use_by_meters: compare the electricity use by different meters
+      compare_gas_in_2_weeks: compare the gas used in two different weeks
+      compare_gas_on_2_days: compare the gas used on two different days
+      compare_gas_use_by_meters: compare the gas use by different meters
+      electricity_and_solar_data_html: Here's the <strong>electricity and solar</strong> data for your school
+      electricity_data_html: Here's the <strong>electricity</strong> data for your school
+      explore_data: Explore data
+      explore_energy_data_html: Explore the <strong>%{fuel_type}</strong> data for your school
+      find_electricity_comparison: find out how my school's electricity use compares with other schools
+      find_electricity_use_7days: find out how much electricity was used in the last 7 days
+      find_electricity_use_last_year: find out how much electricity was used last year
+      find_electricity_use_lights: find out how much electricity was used by lights and appliances running all the time
+      find_electricity_use_long_term: find out how electricity use has changed long term
+      find_gas_comparison: find out how my school's gas use compares with other schools
+      find_gas_use_7days: find out how much gas was used in the last 7 days
+      find_gas_use_last_year: find out how much gas was used last year
+      find_gas_use_long_term: find out how gas use has changed long term
+      find_how_much_co2_generated_html: find out how much <strong>carbon dioxide</strong> was generated
+      find_how_much_electricity_cost_html: find out <strong>how much</strong> the electricity cost
+      find_how_much_gas_cost_html: find out <strong>how much</strong> the gas cost
+      find_how_much_storage_heaters_cost_html: find out <strong>how much</strong> the storage heaters cost
+      find_out_about_solar_html: find out about <strong>solar</strong>
+      find_storage_heaters_comparison: find out how my school's storage heater use compares with other schools
+      find_storage_heaters_use_last_year: find out how much electricity was used by storage heaters last year
+      find_storage_heaters_use_long_term: find out how storage heater electricity use has changed long term
+      find_when_electricity_used_html: find out <strong>when</strong> the electricity was used
+      find_when_gas_used_html: find out <strong>when</strong> the gas was used
+      find_when_storage_heaters_used_html: find out <strong>when</strong> the storage heaters used electricity
+      gas_data_html: Here's the <strong>gas</strong> data for your school
+      i_want_to: I want to…
+      i_want_to_look_at: I want to look at…
+      live_energy_data: Live energy data
+      look_at_energy_use: Let's look at the energy use data for your school
+      storage_heater_data_html: Here's the <strong>storage heater</strong> data for your school
+      without_storage_heaters: without storage heaters
+    schools:
+      show:
+        activities_completed: You've completed %{count} activities
+        admin_view: Admin view
+        choose_another_activity: Choose another activity
+        complete_an_activity: Complete an activity to score points on Energy Sparks
+        enter_temperatures: Enter temperatures
+        find_how_much_energy_used: Find out how much energy has been used
+        find_out_more: Find out more&hellip;
+        how_will_school_compare: How will your school compare? You'll soon be able to find out!
+        look_at_the_energy_use: Let's look at the energy use data for your school
+        measure_temperatures: Measure classroom temperatures to find out whether you should turn down the heating to save energy
+        no_activities_completed: No activities completed, make a start!
+        no_points_this_year: Your school hasn't scored any points yet this school year
+        points: points
+        points_needed_to_overtake: You only need to score %{points} points to overtake the next school!
+        previous_temperatures: Previous temperatures
+        school_podium_position_html: Your school is in <strong>%{position_ordinal} place</strong>
+        see_scoreboard: See the scoreboard
+        setting_up: We're setting up this school's energy data and will update this page when it is ready to explore
+        things_to_do: Things to do
+        title: Pupil dashboard for %{school_name}
+        try_this_first: Try this one first
+        try_this_next: Try this one next
+        update_temperatures: Update your classroom temperatures to see if you are saving energy
+        user_view: User view
