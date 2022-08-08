@@ -196,6 +196,75 @@ describe 'TransportSurvey' do
     end
   end
 
+  describe "time based methods" do
+    subject { create :transport_survey }
+
+    def create_responses(times, cat)
+      times.each do |time|
+        transport_type = create(:transport_type, category: cat)
+        create(:transport_survey_response, transport_survey: subject, transport_type: transport_type, journey_minutes: time)
+      end
+    end
+
+    describe "#responses_per_time_for_category" do
+      let(:category) { :car }
+
+      context "when there is one response for each time" do
+        before { create_responses(TransportSurveyResponse.journey_minutes_options, category) }
+        it "returns a hash of responses count per time" do
+          expect(subject.responses_per_time_for_category(category)).to eql( {5 => 1, 10 => 1, 15 => 1, 20 => 1, 30 => 1, 45 => 1, 60 => 1} )
+        end
+      end
+
+      context "when there is more than one response for a time" do
+        before do
+          create_responses(TransportSurveyResponse.journey_minutes_options, category)
+          create_responses(TransportSurveyResponse.journey_minutes_options.drop(1), category)
+        end
+        it "adds up responses" do
+          expect(subject.responses_per_time_for_category(category)).to eql( {5 => 1, 10 => 2, 15 => 2, 20 => 2, 30 => 2, 45 => 2, 60 => 2} )
+        end
+      end
+
+      context "when there are no responses for some times" do
+        before { create_responses(TransportSurveyResponse.journey_minutes_options[..0], category) }
+        it "has zero values for those times" do
+          expect(subject.responses_per_time_for_category(category)).to eql( {5 => 1, 10 => 0, 15 => 0, 20 => 0, 30 => 0, 45 => 0, 60 => 0} )
+        end
+      end
+
+      context "when there are responses for more than one cateogory" do
+        before do
+          create_responses(TransportSurveyResponse.journey_minutes_options[..0], category)
+          create_responses(TransportSurveyResponse.journey_minutes_options[..0], :park_and_stride)
+        end
+        it "only counts those in specified category" do
+          expect(subject.responses_per_time_for_category(category)).to eql( {5 => 1, 10 => 0, 15 => 0, 20 => 0, 30 => 0, 45 => 0, 60 => 0} )
+        end
+      end
+    end
+
+    describe "#responses_per_time_for_category_car" do
+      let(:category) { :car }
+      context "when there is one response for each time" do
+        before { create_responses(TransportSurveyResponse.journey_minutes_options, category) }
+        it "sums 30+ minutes together" do
+          expect(subject.responses_per_time_for_category_car).to eql( {5 => 1, 10 => 1, 15 => 1, 20 => 1, '30+' => 3} )
+        end
+      end
+
+      context "when there is more than one response for a time" do
+        before do
+          create_responses(TransportSurveyResponse.journey_minutes_options, category)
+          create_responses(TransportSurveyResponse.journey_minutes_options.drop(1), category)
+        end
+        it "sums 30+ minutes together" do
+          expect(subject.responses_per_time_for_category_car).to eql( {5 => 1, 10 => 2, 15 => 2, 20 => 2, '30+' => 6} )
+        end
+      end
+    end
+  end
+
   describe "#today?" do
     context "when survey has a run_on date of today" do
       subject { create :transport_survey, run_on: Time.zone.today }
