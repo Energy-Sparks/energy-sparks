@@ -1,37 +1,35 @@
-<% unless case_studies.empty? %>
-  <div class=" mt-3">
-    <div class="application container">
-
-      <div class="row">
-        <div class="col-md-8">
-          <h2><%= t('case_studies.title') %></h2>
-        </div>
-        <div class="col-md-4 text-right">
-          <% if all_case_studies_count > case_studies.size %>
-            <%= link_to t('case_studies.more_case_studies'), case_studies_path, class: 'btn mt-2' %>
-          <% end %>
-        </div>
-      </div>
-      <% case_studies.in_groups_of(3, false).each do |group| %>
-        <div class="card-deck mb-4">
-          <% group.each do |case_study| %>
-            <div class="card">
-              <div class="card-header bg-positive"><%= case_study.title %></div>
-              <div class="card-body">
-                <div class="card-text">
-                  <%= case_study.description %>
-                </div>
-              </div>
-              <div class="card-footer case-studies-download-links" data-event-value="<%= case_study.id %>">
-                <%= link_to url_for( controller: :case_studies, action: :download, serve: :download, id: case_study.id ), class: 'btn' do %>
-                  <%= t('case_studies.download') %>
-                  <i class="fas fa-file-download"></i>
-                <% end %>
-              </div>
-            </div>
-          <% end %>
-        </div>
+<% content_for :page_title, t('case_studies.title') %>
+<div class="application container">
+  <div class="row">
+    <div class="col-md-8">
+      <h1><%= t('case_studies.title') %></h1>
+    </div>
+    <div class="col-md-4 text-right">
+      <% if all_case_studies_count > case_studies.size %>
+        <%= link_to t('case_studies.more_case_studies'), case_studies_path, class: 'btn mt-2' %>
       <% end %>
     </div>
   </div>
-<% end %>
+  <% unless case_studies.empty? %>
+    <% case_studies.in_groups_of(3, false).each do |group| %>
+      <div class="card-deck mb-4">
+        <% group.each do |case_study| %>
+          <div class="card">
+            <div class="card-header bg-positive"><%= case_study.title %></div>
+            <div class="card-body">
+              <div class="card-text">
+                <%= case_study.description %>
+              </div>
+            </div>
+            <div class="card-footer case-studies-download-links" data-event-value="<%= case_study.id %>">
+              <%= link_to url_for( controller: :case_studies, action: :download, serve: :download, id: case_study.id ), class: 'btn' do %>
+                <%= t('case_studies.download') %>
+                <i class="fas fa-file-download"></i>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+   <% end %>
+</div>
