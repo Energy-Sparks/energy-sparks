@@ -1,10 +1,10 @@
-<% content_for :page_title, 'For Schools' %>
+<% content_for :page_title, t('for_schools.title') %>
 
 <div class="application container extra-padding">
   <div class="row mt-2">
     <div class="col">
       <div class="d-flex justify-content-between align-items-center">
-        <p class="display-3"><strong>Energy Sparks for schools</strong></p>
+        <p class="display-3"><strong><%= t('for_schools.title') %></strong></p>
       </div>
     </div>
   </div>
@@ -12,26 +12,20 @@
   <div class="row">
     <div class="col-md-12">
       <p>
-      Energy Sparks is an online energy analysis tool and energy education programme specifically designed to help schools reduce their electricity and gas usage through the analysis of smart meter data. Energy Sparks helps schools reduce their carbon emissions, and make a real contribution to addressing the 'climate emergency'.
+        <%= t('for_schools.intro') %>
       </p>
       <p>
-      Energy Sparks is a registered charity working for the public benefit to develop and promote tools, services and programmes to reduce energy and resource consumption and carbon emissions. Energy Sparks aims to educate the public, particularly young people, about the causes and impacts of climate change, and the importance of energy saving and reducing carbon emissions.
+        <%= t('about_energy_sparks') %>
       </p>
       <p>
-        Energy Sparks is currently working with <strong><%= link_to "#{@school_count} schools", schools_path %></strong> across the UK.
+        <%= t('working_with') %> <strong><%= link_to t('school_count', count: @school_count), schools_path %></strong>.
       </p>
     </div>
   </div>
 
   <div class="row mt-3">
     <div class="col-md-12">
-      <h4><strong>Energy Sparks shows schools when and how much energy they are using and provides tailored energy saving advice designed for individual schools</strong></h4>
-      <p>
-        Using a school’s electricity, gas and solar data, Energy Sparks shows pupils, staff and the wider school community how much energy the school is using. The online tool presents bespoke analysis of the energy data with suggestions of actions the school community could take to save energy and reduce the school’s carbon emissions.
-      </p>
-      <p>
-        Energy Sparks provides adult and pupil dashboards tailored to meet the specific needs of the students and staff at a school.
-      </p>
+      <%= t('for_schools.section_1_html') %>
     </div>
   </div>
 
@@ -39,10 +33,7 @@
 
   <div class="row mt-3">
     <div class="col-md-12">
-      <h4><strong>Ecoteam and classroom activities for pupils linked to energy analysis</strong></h4>
-      <p>
-        Energy Sparks has <%= @activities_count %> energy and sustainability education <%= link_to 'activities', activity_categories_path %> and accompanying resources which pupils can participate in through eco-teams or curriculum learning. These activities support learning about climate change and energy, investigating energy use around the school site, taking action to reduce energy use and spreading the energy saving and carbon reduction message across the wider school community. Schools are encouraged to record completed activities on Energy Sparks, <%= link_to 'earning points', scoreboards_path %> and sharing best practice with other schools.
-      </p>
+      <%= t('for_schools.section_2_html', activity_count: @activities_count) %>
     </div>
   </div>
 
@@ -50,18 +41,7 @@
 
   <div class="row mt-3">
     <div class="col-md-12">
-      <h4><strong>Advice for school staff on taking impactful action</strong></h4>
-      <p>
-        Energy Sparks provides guidance to support <%= link_to 'adult-led actions', intervention_type_groups_path %> to save energy through changes in:
-      </p>
-      <ul>
-        <li>Staff and pupil behaviour</li>
-        <li>Heating system setup</li>
-        <li>Building fabric</li>
-        <li>Appliance upgrades</li>
-        <li>Operations</li>
-        <li>Policies</li>
-      </ul>
+      <%= t('for_schools.section_3_html') %>
     </div>
   </div>
 
@@ -69,10 +49,7 @@
 
   <div class="row mt-3">
     <div class="col-md-12">
-      <h4><strong>Automated alerts to let schools know when energy use changes</strong></h4>
-      <p>
-        Energy Sparks provides online and weekly email and text alerts and action prompts informing users when their consumption changes and the cost and carbon implications. Alerts are uniquely linked to pupil activities and recommended adult-led actions to empower pupils and staff with taking impactful action to target energy waste.
-      </p>
+      <%= t('for_schools.section_4_html') %>
     </div>
   </div>
 
@@ -86,34 +63,16 @@
 
   <div class="row mt-3">
     <div class="col-md-12">
-      <h4><strong>Improve pupil and staff energy and carbon literacy and develop transferable life skills</strong></h4>
+      <%= t('for_schools.section_5.title_html') %>
     </div>
   </div>
 
   <div class="row">
     <div class="col-sm-6">
-      <p>Participation empowers pupils to:</p>
-      <ul>
-        <li>take action to reduce their school's carbon footprint</li>
-        <li>see the impact of their actions</li>
-        <li>develop environmental awareness</li>
-        <li>participate in leadership and collaborative opportunities</li>
-        <li>build communication and analytical skills</li>
-        <li>be motivated to take responsibility for their school</li>
-        <li>have opportunities to influence and engage school and community leaders, and</li>
-        <li>develop positive responses to climate change</li>
-      </ul>
+      <%= t('for_schools.section_5.list_1_html') %>
     </div>
     <div class="col-sm-6">
-      <p>Schools are supported with:</p>
-      <ul>
-        <li><%= link_to 'webinar training sessions', training_path %></li>
-        <li><%= link_to 'newsletters', newsletters_path %></li>
-        <li>email and phone support</li>
-        <li><%= link_to 'education workshops', education_workshops_path %></li>
-        <li><%= link_to 'virtual energy audits', energy_audits_path %></li>
-        <li><%= link_to 'on-site energy audits', energy_audits_path %></li>
-      </ul>
+      <%= t('for_schools.section_5.list_2_html') %>
     </div>
   </div>
 

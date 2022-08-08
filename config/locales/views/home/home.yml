@@ -1,5 +1,7 @@
 ---
 en:
+  about_energy_sparks: Energy Sparks is a registered charity working for the public benefit to develop and promote tools, services and programmes to reduce energy and resource consumption and carbon emissions. Energy Sparks aims to educate the public, particularly young people, about the causes and impacts of climate change, and the importance of energy saving and reducing carbon emissions.
+  working_with: Energy Sparks is currently working with
   case_studies:
     download: Download
     more_case_studies: More case studies
@@ -40,5 +42,8 @@ en:
   training:
     intro: This page lists all of our upcoming training sessions. Follow the links to our Eventbrite page to book your tickets.
     title: Training
+  school_count:
+    one: 1 school
+    other: "%{count} schools"
   videos:
     title: User guide videos

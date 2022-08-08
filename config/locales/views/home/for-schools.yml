@@ -1,0 +1,60 @@
+---
+en:
+  for_schools:
+    title: Energy Sparks for schools
+    intro: Energy Sparks is an online energy analysis tool and energy education programme specifically designed to help schools reduce their electricity and gas usage through the analysis of smart meter data. Energy Sparks helps schools reduce their carbon emissions, and make a real contribution to addressing the 'climate emergency'.
+    section_1_html: |-
+      <h4><strong>Energy Sparks shows schools when and how much energy they are using and provides tailored energy saving advice designed for individual schools</strong></h4>
+      <p>
+        Using a school’s electricity, gas and solar data, Energy Sparks shows pupils, staff and the wider school community how much energy the school is using. The online tool presents bespoke analysis of the energy data with suggestions of actions the school community could take to save energy and reduce the school’s carbon emissions.
+      </p>
+      <p>
+        Energy Sparks provides adult and pupil dashboards tailored to meet the specific needs of the students and staff at a school.
+      </p>
+    section_2_html: |-
+      <h4><strong>Ecoteam and classroom activities for pupils linked to energy analysis</strong></h4>
+      <p>
+        Energy Sparks has %{activity_count} energy and sustainability education <a href="/activity_categories">activities</a> and accompanying resources which pupils can participate in through eco-teams or curriculum learning. These activities support learning about climate change and energy, investigating energy use around the school site, taking action to reduce energy use and spreading the energy saving and carbon reduction message across the wider school community. Schools are encouraged to record completed activities on Energy Sparks, <a href="/scoreboards">earning points</a> and sharing best practice with other schools.
+      </p>
+    section_3_html: |-
+      <h4><strong>Advice for school staff on taking impactful action</strong></h4>
+      <p>
+        Energy Sparks provides guidance to support <a href="/intervention_type_groups">adult-led actions</a> to save energy through changes in:
+      </p>
+      <ul>
+        <li>Staff and pupil behaviour</li>
+        <li>Heating system setup</li>
+        <li>Building fabric</li>
+        <li>Appliance upgrades</li>
+        <li>Operations</li>
+        <li>Policies</li>
+      </ul>
+    section_4_html: |-
+      <h4><strong>Automated alerts to let schools know when energy use changes</strong></h4>
+      <p>
+        Energy Sparks provides online and weekly email and text alerts and action prompts informing users when their consumption changes and the cost and carbon implications. Alerts are uniquely linked to pupil activities and recommended adult-led actions to empower pupils and staff with taking impactful action to target energy waste.
+      </p>
+    section_5:
+      title_html: <h4><strong>Improve pupil and staff energy and carbon literacy and develop transferable life skills</strong></h4>
+      list_1_html: |-
+        <p>Participation empowers pupils to:</p>
+        <ul>
+          <li>take action to reduce their school's carbon footprint</li>
+          <li>see the impact of their actions</li>
+          <li>develop environmental awareness</li>
+          <li>participate in leadership and collaborative opportunities</li>
+          <li>build communication and analytical skills</li>
+          <li>be motivated to take responsibility for their school</li>
+          <li>have opportunities to influence and engage school and community leaders, and</li>
+          <li>develop positive responses to climate change</li>
+        </ul>
+      list_2_html: |-
+        <p>Schools are supported with:</p>
+        <ul>
+            <li><a href="/training">webinar training sessions</a></li>
+            <li><a href="/newsletters">newsletters</a></li>
+            <li>email and phone support</li>
+            <li><a href="/education-workshops">education workshops</a></li>
+            <li><a href="/energy-audits">virtual energy audits</a></li>
+            <li><a href="/energy-audits">on-site energy audits</a></li>
+        </ul>
