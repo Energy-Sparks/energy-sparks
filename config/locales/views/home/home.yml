@@ -37,5 +37,8 @@ en:
     your_email_address: Your email address
   newsletters:
     title: Newsletters
+  training:
+    title: Training
+    intro: This page lists all of our upcoming training sessions. Follow the links to our Eventbrite page to book your tickets.
   videos:
     title: User guide videos
