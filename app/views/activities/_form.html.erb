@@ -27,7 +27,7 @@
     <p class="small">
       <%= t('activities.form.build_a_record_message') %>.
     </p>
-    <%= f.input :happened_on, label: false, as: :tempus_dominus_date, default_date: Time.zone.today %>
+    <%= f.input :happened_on, label: false, as: :tempus_dominus_date %>
   </div>
 
   <%= f.hidden_field :activity_type_id, value: activity.activity_type.id, required: true %>

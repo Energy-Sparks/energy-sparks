@@ -245,4 +245,22 @@ describe ApplicationHelper do
       expect(helper.path_with_locale('/search', :cy)).to eq('/search?locale=cy')
     end
   end
+
+  describe '#i18n_key_from' do
+    it 'handles simple strings' do
+      expect(helper.i18n_key_from('Electricity+Solar PV')).to eq('electricity_and_solar_pv')
+    end
+    it 'handles simple strings' do
+      expect(helper.i18n_key_from('Gas')).to eq('gas')
+    end
+    it 'removes spaces' do
+      expect(helper.i18n_key_from('some thing')).to eq('something')
+    end
+    it 'adds underscores between caps' do
+      expect(helper.i18n_key_from('SomeThing')).to eq('some_thing')
+    end
+    it 'applies both' do
+      expect(helper.i18n_key_from('Some Thing')).to eq('some_thing')
+    end
+  end
 end

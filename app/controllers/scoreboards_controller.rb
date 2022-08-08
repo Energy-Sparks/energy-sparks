@@ -9,12 +9,14 @@ class ScoreboardsController < ApplicationController
 
   def show
     authorize! :read, @scoreboard
+    @current_year = @scoreboard.current_academic_year
+    @previous_year = @scoreboard.previous_academic_year
+
     @academic_year = if params[:academic_year]
                        @scoreboard.academic_year_calendar.academic_years.find(params[:academic_year])
                      else
-                       @scoreboard.academic_year_calendar.academic_year_for(Time.zone.today)
+                       @current_year
                      end
-    @active_academic_years = @scoreboard.active_academic_years
     @schools = @scoreboard.scored_schools(academic_year: @academic_year)
   end
 end

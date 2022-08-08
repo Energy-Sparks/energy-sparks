@@ -374,4 +374,8 @@ module ApplicationHelper
     end
     preview_url + "locale=#{locale}"
   end
+
+  def i18n_key_from(str)
+    str.gsub('+', ' And ').delete(' ').underscore
+  end
 end
