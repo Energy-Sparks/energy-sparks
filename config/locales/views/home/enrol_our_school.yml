@@ -2,16 +2,6 @@
 en:
   enrol_our_school:
     enrol_now: Enrol now
-    title: Enrol our school
-    intro_html: |-
-      <h4><strong>What do I need to do to make my school's involvement in Energy Sparks a success?</strong></h4>
-      <ol>
-        <li>Nominate an Energy Sparks champion for your school. This is a lead adult who will act as the Energy Sparks account administrator for your school, support pupil energy saving activities, receive Energy Sparks alerts telling you about changes in energy use and recommended energy saving actions, and commit to checking your school's Energy Sparks online account regularly.</li>
-        <li>Set up an Energy Sparks pupil club or eco-team to meet several times a term, ideally once a fortnight at least.</li>
-        <li>Get parents and community volunteers involved. Some schools use parents or other volunteers to run their Energy Sparks or eco team.</li>
-        <li>Regularly check your school's energy data on Energy Sparks so that pupils, staff and volunteers can see how much difference they are making to your school's energy use, and what they need to do next.</li>
-        <li>Involve the whole school. Whether through a notice board, regular assemblies or inter-class competitions, make sure the rest of the school knows why you are saving energy and what they can do to help.</li>
-      </ol>
     how_to_html: |-
       <h4><strong>How do I enrol our school?</strong></h4>
       <p>Please complete the following steps:</p>
@@ -21,3 +11,13 @@ en:
         <li>If you purchase energy through your Local Authority or Multi-Academy Trust and that group is already on Energy Sparks, we should generally be able to set up your Energy Sparks account quickly. We will issue an account set up link to your Energy Sparks lead. They will be asked to provide some additional information about your school and will have the opportunity to add further staff and pupils. Once this has been completed, Energy Sparks will then activate the school's data feeds and you should be able to use our full service within a few days.</li>
         <li>If your school is not within one of our existing areas or groups, we will review your energy supply arrangements and come back to you with next steps.</li>
       </ol>
+    intro_html: |-
+      <h4><strong>What do I need to do to make my school's involvement in Energy Sparks a success?</strong></h4>
+      <ol>
+        <li>Nominate an Energy Sparks champion for your school. This is a lead adult who will act as the Energy Sparks account administrator for your school, support pupil energy saving activities, receive Energy Sparks alerts telling you about changes in energy use and recommended energy saving actions, and commit to checking your school's Energy Sparks online account regularly.</li>
+        <li>Set up an Energy Sparks pupil club or eco-team to meet several times a term, ideally once a fortnight at least.</li>
+        <li>Get parents and community volunteers involved. Some schools use parents or other volunteers to run their Energy Sparks or eco team.</li>
+        <li>Regularly check your school's energy data on Energy Sparks so that pupils, staff and volunteers can see how much difference they are making to your school's energy use, and what they need to do next.</li>
+        <li>Involve the whole school. Whether through a notice board, regular assemblies or inter-class competitions, make sure the rest of the school knows why you are saving energy and what they can do to help.</li>
+      </ol>
+    title: Enrol our school
