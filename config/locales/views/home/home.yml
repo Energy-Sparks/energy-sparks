@@ -35,3 +35,7 @@ en:
     never_share_your_email_promise: We'll never share your email with anyone else
     title_html: Stay up to date&hellip;
     your_email_address: Your email address
+  newsletters:
+    title: Newsletters
+  videos:
+    title: User guide videos

@@ -1,8 +1,8 @@
-<% content_for :page_title, 'User guide videos' %>
+<% content_for :page_title, t('videos.title') %>
 <div class="application container">
   <div class="row padded-row">
     <div class="col">
-      <h1 id="intro">User guide videos</h1>
+      <h1 id="intro"><%= t('videos.title') %></h1>
 
       <% @videos.each_slice(2) do |videos| %>
         <div class="card-deck">
