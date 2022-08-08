@@ -7,7 +7,7 @@ describe 'Management dashboard' do
   let!(:regional_calendar)  { create(:regional_calendar) }
   let!(:calendar)           { create(:school_calendar, based_on: regional_calendar) }
   let!(:school)             { create(:school, :with_feed_areas, calendar: calendar, name: school_name, school_group: school_group) }
-  let!(:intervention)       { create(:observation, school: school) }
+  let!(:intervention)       { create(:observation, :temperature, school: school) }
 
   let!(:school_admin)       { create(:school_admin, school: school)}
   let(:staff)               { create(:staff, school: school, staff_role: create(:staff_role, :management)) }
