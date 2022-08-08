@@ -198,7 +198,7 @@ describe 'viewing and recording action', type: :system do
     end
 
     context 'editing an action' do
-      let!(:observation) { create(:observation, :intervention, intervention_type: intervention_type, school: school)}
+      let!(:observation) { create(:observation, :intervention, intervention_type: intervention_type, school: school, involved_pupils: false)}
 
       it 'can be updated' do
         visit management_school_path(school)
@@ -220,7 +220,24 @@ describe 'viewing and recording action', type: :system do
 
       end
 
-      it 'updates points if pupils were actually involved'
+      it 'updates points if pupils were actually involved' do
+        expect(observation.points).to be_nil
+
+        visit management_school_path(school)
+        click_on 'View all events'
+
+        within '.application' do
+          click_on 'Edit'
+        end
+
+        fill_in 'observation_at', with: Date.today.strftime("%d/%m/%Y")
+        check 'Were the pupils involved?'
+        click_on 'Update action'
+
+        observation.reload
+        expect(observation.involved_pupils).to be true
+        expect(observation.points).to eql intervention_type.score
+      end
 
       it 'can be deleted' do
         visit management_school_path(school)

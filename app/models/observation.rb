@@ -57,11 +57,22 @@ class Observation < ApplicationRecord
 
   has_rich_text :description
 
+  before_save :add_points_for_interventions
+
   def at_date_cannot_be_in_the_future
     errors.add(:at, "can't be in the future") if at.present? && at > Time.zone.today.end_of_day
   end
 
 private
+
+  def add_points_for_interventions
+    if intervention?
+      academic_year = school.academic_year_for(at)
+      if academic_year&.current? && involved_pupils?
+        self.points = intervention_type.score
+      end
+    end
+  end
 
   def reject_temperature_recordings(attributes)
     attributes['centigrade'].blank?

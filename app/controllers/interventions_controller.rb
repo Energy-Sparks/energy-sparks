@@ -7,9 +7,9 @@ class InterventionsController < ApplicationController
   end
 
   def create
-    @observation = current_user.school.observations.new(observation_params)
+    @observation = current_user.school.observations.new(observation_params.merge(observation_type: :intervention))
     authorize! :create, @observation
-    if InterventionCreator.new(@observation).process
+    if @observation.save
       redirect_to completed_school_intervention_path(current_user.school, @observation)
     else
       @intervention_type = @observation.intervention_type
