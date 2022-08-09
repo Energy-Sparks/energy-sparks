@@ -10,4 +10,14 @@ RSpec.describe "i18n", type: :system do
     expect(page).to have_content('Mwy o wybodaeth')
     expect(page).not_to have_content('More information')
   end
+
+  it 'applies locale switcher buttons to the navbar' do
+    visit root_path(locale: 'en')
+    expect(page).to have_content("Cymraeg")
+    expect(page).not_to have_content('English')
+
+    visit root_path(locale: 'cy')
+    expect(page).to have_content('English')
+    expect(page).not_to have_content("Cymraeg")
+  end
 end
