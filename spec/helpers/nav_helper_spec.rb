@@ -12,4 +12,18 @@ describe NavHelper do
       I18n.locale = 'en'
     end
   end
+
+  describe '#locale_name_for' do
+    it 'returns the subdomain for a given locale' do
+      expect(helper.locale_name_for('en')).to eq('English')
+      expect(helper.locale_name_for('cy')).to eq('Cymraeg')
+    end
+  end
+
+  describe '#subdomain_for' do
+    it 'returns the subdomain for a given locale' do
+      expect(helper.subdomain_for('en')).to eq('')
+      expect(helper.subdomain_for('cy')).to eq('cy')
+    end
+  end
 end
