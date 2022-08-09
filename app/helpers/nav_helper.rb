@@ -11,7 +11,7 @@ module NavHelper
     (I18n.available_locales - [I18n.locale]).each do |locale|
       subdomain = locale.to_s == 'en' ? '' : locale
       locale_name = I18n.t('name', locale: locale)
-      locale_links << link_to(locale_name, url_for(subdomain: subdomain, only_path: false), class: 'nav-item pl-3')
+      locale_links << link_to(locale_name, url_for(subdomain: subdomain, only_path: false), class: 'nav-item pl-3 pr-3 nav-lozenge nav-lozenge-little-padding')
     end
     locale_links.join(' ').html_safe
   end
