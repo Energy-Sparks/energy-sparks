@@ -85,75 +85,48 @@
 
   <div class="row mt-3">
     <div class="col-md-12">
-      <h4><strong>How much energy can participating schools save?</strong></h4>
-      <p>
-        Most schools participating with Energy Sparks can expect to achieve energy savings of around 10% in their first year of engagement with Energy Sparks, resulting in cost savings of around £2500 and 8 tonnes of CO2 based on an average 2 form entry primary school. Energy Sparks' best performing schools have achieved savings of up to 30%, generally by reducing school holiday, weekend and overnight heating use and cutting their electricity baseload. Examples of savings achieved at participating schools are provided in the Energy Sparks' <%= link_to 'Case Studies', case_studies_path %>.
-      </p>
+      <%= t('for_schools.section_6_html') %>
     </div>
   </div>
 
   <div class="row mt-3">
     <div class="col-md-12">
-      <h4><strong>What meters does the school need to join Energy Sparks?</strong></h4>
-      <p>
-        To join Energy Sparks you need smart meters installed which are capable of providing half hourly electricity and gas consumption data to Energy Sparks. These can be Half-Hourly (HH), Automated Meter Reading (AMR) or Smart Metering Equipment Technical Specifications (SMETS2) meters. If you don’t have the right meters installed, you can request an upgrade from your energy supplier. Energy Sparks recommends SMETS2 for electricity and AMR for gas where available.
-      </p>
+      <%= t('for_schools.section_7_html') %>
     </div>
   </div>
 
   <div class="row mt-3">
     <div class="col-md-12">
-      <h4><strong>Free access to Energy Sparks for state schools</strong></h4>
+      <%= t('for_schools.section_8.title_html') %>
     </div>
   </div>
 
   <div class="row">
     <div class="col-sm-6 pr-4">
-      <p><strong>State schools (maintained and academies)</strong></p>
-      <p>
-      Access to the online tool and education resources is currently <strong>free of charge</strong> for state schools across the UK through Energy Sparks' funding and support from central government, local authorities and charitable trusts and foundations.
-      </p>
-      <p>
-      Funding covers all aspects of our service for state schools except for <%= link_to 'on-site energy audits', energy_audits_path %> which are a chargeable extra.
-      </p>
-      <p><strong>
-      Your supplier may charge a small additional fee to provide your energy data to Energy Sparks. If applicable, this cost will be added to your energy bill. Any costs will be confirmed before your account set up goes ahead.
-      </strong></p>
+      <%= t('for_schools.section_8.list_1_html') %>
     </div>
     <div class="col-sm-6">
-      <p><strong>Independent schools (private)</strong></p>
-      <p>
-      Access to the online tool, education resources, training webinars and email and phone support starts from £499 per year for independent schools.
-      </p>
-      <p>
-      This basic package covers support for up to 10 meters per year. Additional meters are charged at £10 per meter per year.
-      </p>
-      <p>
-      The basic package provides a publicly visible dashboard in line with all state schools. If you would  like your school’s energy use data to be private, and only accessible to logged in users, this can be requested at an extra charge of £75 per year. Our recommendation is to opt to have your energy data publicly visible to maximise engagement across your pupils and staff team.
-      </p>
-      <p>
-      <%= link_to 'Education workshops', education_workshops_path %> and virtual and on-site <%= link_to 'energy audits', energy_audits_path %> are available at extra cost.
-      </p>
+      <%= t('for_schools.section_8.list_2_html') %>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-      <p>Participating schools and adult users confirm their agreement with Energy Sparks’ <%= link_to 'Terms and Conditions', terms_and_conditions_path %> as part of their initial account set up process.</p>
+      <%= t('for_schools.section_9_html') %>
     </div>
   </div>
 
   <div class="row mt-4">
     <div class="col-md-12">
       <div class="d-flex justify-content-center">
-        <%= link_to 'Enrol our school', enrol_our_school_path, class: 'btn btn-lg bg-positive' %>
+        <%= link_to t('for_schools.enrol_our_school'), enrol_our_school_path, class: 'btn btn-lg bg-positive' %>
       </div>
     </div>
   </div>
 
   <div class="row mt-3">
     <div class="col-md-12">
-      <h4><strong>Find out more</strong></h4>
+      <h4><strong><%= t('for_schools.find_out_more') %></strong></h4>
     </div>
   </div>
 

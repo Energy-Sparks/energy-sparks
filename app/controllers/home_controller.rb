@@ -20,11 +20,9 @@ class HomeController < ApplicationController
     @videos = videos
     @testimonial = [
       {
-        quote: "Energy Sparks has enabled children at Freshford to investigate how energy is used in different parts of the school and devise strategies to reduce the school's consumption. The children's enthusiasm was kick-started by the competitive element and they’ve worked effectively with staff and the local community to think innovatively about what we can do to reduce our impact on the environment and reduce costs. The children developed and presented evidence-based initiatives to the school's business managers, securing installation of energy-efficient lighting and kitchen equipment, movement-sensor-switches, and a solar-panel campaign.
-        <br><br>
-        The Energy Sparks  resources are inspirational, powerful and transformational tools for all schools that will enable them to reduce their CO2 footprint, save money and help children to develop a powerful can-do attitude towards the challenges of global warming.",
+        quote: t('for_schools.quote_html'),
         by: 'Andrew Wishart',
-        title: 'Head teacher',
+        title: t('for_schools.quote_title'),
         location: 'Freshford Church School'
       }
     ].sample

@@ -1,7 +1,8 @@
 ---
 en:
   for_schools:
-    title: Energy Sparks for schools
+    enrol_our_school: Enrol our school
+    find_out_more: Find out more
     intro: Energy Sparks is an online energy analysis tool and energy education programme specifically designed to help schools reduce their electricity and gas usage through the analysis of smart meter data. Energy Sparks helps schools reduce their carbon emissions, and make a real contribution to addressing the 'climate emergency'.
     section_1_html: |-
       <h4><strong>Energy Sparks shows schools when and how much energy they are using and provides tailored energy saving advice designed for individual schools</strong></h4>
@@ -35,7 +36,6 @@ en:
         Energy Sparks provides online and weekly email and text alerts and action prompts informing users when their consumption changes and the cost and carbon implications. Alerts are uniquely linked to pupil activities and recommended adult-led actions to empower pupils and staff with taking impactful action to target energy waste.
       </p>
     section_5:
-      title_html: <h4><strong>Improve pupil and staff energy and carbon literacy and develop transferable life skills</strong></h4>
       list_1_html: |-
         <p>Participation empowers pupils to:</p>
         <ul>
@@ -58,3 +58,48 @@ en:
             <li><a href="/energy-audits">virtual energy audits</a></li>
             <li><a href="/energy-audits">on-site energy audits</a></li>
         </ul>
+      title_html: "<h4><strong>Improve pupil and staff energy and carbon literacy and develop transferable life skills</strong></h4>"
+    section_6_html: |-
+      <h4><strong>How much energy can participating schools save?</strong></h4>
+      <p>
+        Most schools participating with Energy Sparks can expect to achieve energy savings of around 10% in their first year of engagement with Energy Sparks, resulting in cost savings of around £2500 and 8 tonnes of CO2 based on an average 2 form entry primary school. Energy Sparks' best performing schools have achieved savings of up to 30%, generally by reducing school holiday, weekend and overnight heating use and cutting their electricity baseload. Examples of savings achieved at participating schools are provided in the Energy Sparks' <a href="/case-studies">Case Studies</a>.
+      </p>
+    section_7_html: |-
+      <h4><strong>What meters does the school need to join Energy Sparks?</strong></h4>
+      <p>
+        To join Energy Sparks you need smart meters installed which are capable of providing half hourly electricity and gas consumption data to Energy Sparks. These can be Half-Hourly (HH), Automated Meter Reading (AMR) or Smart Metering Equipment Technical Specifications (SMETS2) meters. If you don’t have the right meters installed, you can request an upgrade from your energy supplier. Energy Sparks recommends SMETS2 for electricity and AMR for gas where available.
+      </p>
+    section_8:
+      list_1_html: |-
+        <p><strong>State schools (maintained and academies)</strong></p>
+        <p>
+        Access to the online tool and education resources is currently <strong>free of charge</strong> for state schools across the UK through Energy Sparks' funding and support from central government, local authorities and charitable trusts and foundations.
+        </p>
+        <p>
+        Funding covers all aspects of our service for state schools except for <a href="/energy-audits">on-site energy audits</a> which are a chargeable extra.
+        </p>
+        <p><strong>
+        Your supplier may charge a small additional fee to provide your energy data to Energy Sparks. If applicable, this cost will be added to your energy bill. Any costs will be confirmed before your account set up goes ahead.
+        </strong></p>
+      list_2_html: |-
+        <p><strong>Independent schools (private)</strong></p>
+        <p>
+        Access to the online tool, education resources, training webinars and email and phone support starts from £499 per year for independent schools.
+        </p>
+        <p>
+        This basic package covers support for up to 10 meters per year. Additional meters are charged at £10 per meter per year.
+        </p>
+        <p>
+        The basic package provides a publicly visible dashboard in line with all state schools. If you would  like your school’s energy use data to be private, and only accessible to logged in users, this can be requested at an extra charge of £75 per year. Our recommendation is to opt to have your energy data publicly visible to maximise engagement across your pupils and staff team.
+        </p>
+        <p>
+        <a href="/education-workshops">Education workshops</a> and virtual and on-site <a href="/energy-audits">energy audits</a> are available at extra cost.
+        </p>
+      title_html: "<h4><strong>Free access to Energy Sparks for state schools</strong></h4>"
+    section_9_html: <p>Participating schools and adult users confirm their agreement with Energy Sparks’ <a href="/terms_and_conditions">Terms and Conditions</a> as part of their initial account set up process.</p>
+    title: Energy Sparks for schools
+    quote_html: |-
+      "Energy Sparks has enabled children at Freshford to investigate how energy is used in different parts of the school and devise strategies to reduce the school's consumption. The children's enthusiasm was kick-started by the competitive element and they’ve worked effectively with staff and the local community to think innovatively about what we can do to reduce our impact on the environment and reduce costs. The children developed and presented evidence-based initiatives to the school's business managers, securing installation of energy-efficient lighting and kitchen equipment, movement-sensor-switches, and a solar-panel campaign.
+      <br><br>
+      The Energy Sparks  resources are inspirational, powerful and transformational tools for all schools that will enable them to reduce their CO2 footprint, save money and help children to develop a powerful can-do attitude towards the challenges of global warming."
+    quote_title: Head teacher
