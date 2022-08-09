@@ -7,11 +7,13 @@ module NavHelper
   end
 
   def locale_switcher_buttons
-    locale_links = []
+    locale_links = ['<ul class="navbar-nav">']
     (I18n.available_locales - [I18n.locale]).each do |locale|
-      locale_links << link_to(locale_name_for(locale), url_for(subdomain: subdomain_for(locale), only_path: false), class: 'nav-item pl-3 pr-3 nav-lozenge nav-lozenge-little-padding')
+      locale_links << '<li class="nav-item pl-3 pr-3 nav-lozenge nav-lozenge-little-padding">' +
+                      link_to(locale_name_for(locale), url_for(subdomain: subdomain_for(locale), only_path: false)) + '</li>'
     end
-    locale_links.join(' ').html_safe
+    locale_links << '</ul>'
+    locale_links.join('').html_safe
   end
 
   def subdomain_for(locale)
