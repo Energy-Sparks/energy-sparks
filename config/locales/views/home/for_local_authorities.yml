@@ -3,6 +3,12 @@ en:
   for_local_authorities:
     enrol_our_la: Enrol our Local Authority
     intro: Energy Sparks provides an online energy analysis tool and energy education programme specifically designed to help schools reduce their electricity and gas usage through the analysis of smart meter data. Energy Sparks can help Local Authorities meet their climate emergency commitments, democratise access to schools’ energy data and empower school staff and students with taking no and low cost action to reduce their school’s carbon footprint.
+    quote_1:
+      job_title: Local Authority Sustainability Officer (Energy)
+      text_html: The comparison function is amazing…; The data in the comparison tab will be very useful for analysing and reporting purposes, and it offers a wide variety of benchmarks. I think this is a 'fab' idea and very useful tool.
+    quote_2:
+      job_title: Deputy Head
+      text_html: I initially got involved with Energy Sparks as I thought it would inspire the children to be more eco-aware. Little did I realise back then how much we would be saving now! …We should be able to save £800 annually so that's over £15 extra per child per year - all thanks to Energy Sparks.
     section_1_html: |-
       <strong>Energy Sparks provides</strong>
       <ul>

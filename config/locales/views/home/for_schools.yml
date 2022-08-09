@@ -4,11 +4,12 @@ en:
     enrol_our_school: Enrol our school
     find_out_more: Find out more
     intro: Energy Sparks is an online energy analysis tool and energy education programme specifically designed to help schools reduce their electricity and gas usage through the analysis of smart meter data. Energy Sparks helps schools reduce their carbon emissions, and make a real contribution to addressing the 'climate emergency'.
-    quote_html: |-
-      "Energy Sparks has enabled children at Freshford to investigate how energy is used in different parts of the school and devise strategies to reduce the school's consumption. The children's enthusiasm was kick-started by the competitive element and they’ve worked effectively with staff and the local community to think innovatively about what we can do to reduce our impact on the environment and reduce costs. The children developed and presented evidence-based initiatives to the school's business managers, securing installation of energy-efficient lighting and kitchen equipment, movement-sensor-switches, and a solar-panel campaign.
-      <br><br>
-      The Energy Sparks  resources are inspirational, powerful and transformational tools for all schools that will enable them to reduce their CO2 footprint, save money and help children to develop a powerful can-do attitude towards the challenges of global warming."
-    quote_title: Head teacher
+    quote_1:
+      job_title: Head teacher
+      text_html: |-
+        "Energy Sparks has enabled children at Freshford to investigate how energy is used in different parts of the school and devise strategies to reduce the school's consumption. The children's enthusiasm was kick-started by the competitive element and they’ve worked effectively with staff and the local community to think innovatively about what we can do to reduce our impact on the environment and reduce costs. The children developed and presented evidence-based initiatives to the school's business managers, securing installation of energy-efficient lighting and kitchen equipment, movement-sensor-switches, and a solar-panel campaign.
+        <br><br>
+        The Energy Sparks  resources are inspirational, powerful and transformational tools for all schools that will enable them to reduce their CO2 footprint, save money and help children to develop a powerful can-do attitude towards the challenges of global warming."
     section_1_html: |-
       <h4><strong>Energy Sparks shows schools when and how much energy they are using and provides tailored energy saving advice designed for individual schools</strong></h4>
       <p>

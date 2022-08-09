@@ -3,6 +3,9 @@ en:
   for_multi_academy_trusts:
     enrol_our_mat: Enrol our Multi-Academy Trust
     intro: Energy Sparks provides an online energy analysis tool and energy education programme specifically designed to help schools reduce their electricity and gas usage through the analysis of smart meter data. Energy Sparks can help Multi-Academy Trusts meet their carbon saving targets, democratise access to schools’ energy data and empower school staff and students with taking no and low cost action to reduce their school’s carbon footprint.
+    quote_1:
+      job_title: Headteacher
+      text_html: '"The Energy Sparks website is very easy to use, and the children have found it interesting to measure how energy is used differently in different parts of the school… The children are motivated by the competitive element as well as the desire to save money and energy…"'
     section_1_html: |-
       <strong>Energy Sparks provides</strong>
       <ul>
