@@ -429,6 +429,7 @@ PreCommit:
     description: 'Check for trailing whitespace'
     required_executable: 'grep'
     flags: ['-IHn', "[ \t]$"]
+    exclude: 'config/locales/en.yml'
 
   TravisLint:
     enabled: true

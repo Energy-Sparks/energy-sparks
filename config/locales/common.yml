@@ -6,7 +6,7 @@ en:
     bar_charts: Bar charts
     confirm: Are you sure?
     electricity: Electricity
-    electricity_and_solar_pv: Electricity & Solar PV
+    electricity_and_solar_pv: Electricity and Solar PV
     gas: Gas
     labels:
       actions: Actions
@@ -20,6 +20,10 @@ en:
     pie_charts: Pie charts
     school: School
     storage_heaters: Storage heaters
+    units:
+      minutes:
+        one: "%{count} minute"
+        other: "%{count} minutes"
   kwh: kWh
   school_types:
     mixed_primary_and_secondary: 'Mixed: Primary and Secondary'

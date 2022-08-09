@@ -18,7 +18,7 @@ en:
         other: A collection of <strong>%{count}</strong> actions that are suggested for your school, based on your previous actions and your targets
       title: Recommended for your school
     show:
-      all_actions: All actions'
+      all_actions: All actions
       introduction_html:
         one: "<strong>1</strong> action that can be carried out around the school to help improve your save energy"
-        other: A collection of <strong>%{count}</strong> actions that can be carried out around the school to help improve your save energy
+        other: A collection of <strong>%{count}</strong> actions that can be carried out around the school to help save energy

@@ -117,7 +117,7 @@ ignore_unused:
   - 'activerecord.*'
   - 'helpers.*'
   - 'support.*'
-  - '{devise,errors, simple_form}.*'
+  - '{errors, simple_form}.*'
   - '*_mailer.*.subject'
   - 'analytics.*'
   - 'calendar_event_type.*'
@@ -130,6 +130,8 @@ ignore_unused:
   - 'kwh'
   - 'co2'
   - '£'
+  - 'date.*'
+  - 'devise.mailer.confirmation_instructions.subject'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'
@@ -162,3 +164,4 @@ ignore_unused:
 #
 # <%# I18n::Tasks.add_scanner 'I18n::Tasks::Scanners::PatternMapper',
 #       patterns: [['\bSpree\.t[( ]\s*%{key}', 'spree.%{key}']] %>
+
