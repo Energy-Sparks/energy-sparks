@@ -7,7 +7,7 @@ describe 'Pupil dashboard' do
   let!(:regional_calendar)  { create(:regional_calendar) }
   let!(:calendar)           { create(:school_calendar, based_on: regional_calendar) }
   let!(:school)             { create(:school, :with_feed_areas, calendar: calendar, name: school_name, school_group: school_group) }
-  let!(:intervention)       { create(:observation, school: school) }
+  let!(:intervention)       { create(:observation, :temperature, school: school) }
 
   let(:equivalence_type)          { create(:equivalence_type, time_period: :last_week )}
   let(:equivalence_type_content)  { create(:equivalence_type_content_version, equivalence_type: equivalence_type, equivalence: 'Your school spent {{gbp}} on electricity last year!')}

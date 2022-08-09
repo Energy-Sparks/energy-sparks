@@ -114,7 +114,8 @@ describe 'viewing and recording action', type: :system do
 
         expect(page).to have_content("can't be blank")
 
-        fill_in 'observation_at', with: '01/07/2019'
+        fill_in 'observation_at', with: Date.today.strftime("%d/%m/%Y")
+        check 'Were the pupils involved?'
         click_on 'Record action'
 
         expect(page).to have_content("Congratulations! We've recorded your action")
@@ -126,7 +127,19 @@ describe 'viewing and recording action', type: :system do
 
         observation = school.observations.intervention.first
         expect(observation.intervention_type).to eq(intervention_type)
-        expect(observation.at.to_date).to eq(Date.new(2019, 7, 1))
+        expect(observation.points).to eq(intervention_type.score)
+        expect(observation.at.to_date).to eq(Date.today)
+      end
+
+      it 'does not show points if none scored' do
+        click_on 'Record this action'
+        fill_in_trix with: 'We changed to a more efficient boiler'
+        fill_in 'observation_at', with: Date.today.strftime("%d/%m/%Y")
+        click_on 'Record action'
+        expect(page).to have_content("Congratulations! We've recorded your action")
+        expect(page).to_not have_content("You've just scored #{intervention_type.score} points")
+        observation = school.observations.intervention.first
+        expect(observation.points).to be_nil
       end
 
       context 'on podium' do
@@ -138,7 +151,8 @@ describe 'viewing and recording action', type: :system do
           it 'records action' do
             click_on 'Record this action'
             fill_in_trix with: 'We changed to a more efficient boiler'
-            fill_in 'observation_at', with: '01/07/2019'
+            fill_in 'observation_at', with: Date.today.strftime("%d/%m/%Y")
+            check 'Were the pupils involved?'
             click_on 'Record action'
             expect(page).to have_content("Congratulations! We've recorded your action")
           end
@@ -152,11 +166,13 @@ describe 'viewing and recording action', type: :system do
             it 'records action' do
               click_on 'Record this action'
               fill_in_trix with: 'We changed to a more efficient boiler'
-              fill_in 'observation_at', with: '01/07/2019'
+              fill_in 'observation_at', with: Date.today.strftime("%d/%m/%Y")
+              check 'Were the pupils involved?'
               click_on 'Record action'
               expect(page).to have_content("Congratulations! We've recorded your action")
               expect(page).to have_content("You've just scored #{intervention_type.score} points")
-              expect(page).to have_content("You've recorded 1 action so far this year")
+              #2 actions, because one created via :with_points above
+              expect(page).to have_content("You've recorded 2 actions so far this year")
               expect(page).to have_content("and your school is currently in 1st place")
             end
           end
@@ -166,11 +182,13 @@ describe 'viewing and recording action', type: :system do
             it 'records action' do
               click_on 'Record this action'
               fill_in_trix with: 'We changed to a more efficient boiler'
-              fill_in 'observation_at', with: '01/07/2019'
+              fill_in 'observation_at', with: Date.today.strftime("%d/%m/%Y")
+              check 'Were the pupils involved?'
               click_on 'Record action'
               expect(page).to have_content("Congratulations! We've recorded your action")
               expect(page).to have_content("You've just scored #{intervention_type.score} points")
-              expect(page).to have_content("You've recorded 1 action so far this year")
+              #2 actions, because one created via :with_points above
+              expect(page).to have_content("You've recorded 2 actions so far this year")
               expect(page).not_to have_content("and your school is currently in 1st place")
               expect(page).to have_content("to reach 1st place")
             end
@@ -180,7 +198,7 @@ describe 'viewing and recording action', type: :system do
     end
 
     context 'editing an action' do
-      let!(:observation) { create(:observation, :intervention, intervention_type: intervention_type, school: school)}
+      let!(:observation) { create(:observation, :intervention, intervention_type: intervention_type, school: school, involved_pupils: false)}
 
       it 'can be updated' do
         visit management_school_path(school)
@@ -200,6 +218,25 @@ describe 'viewing and recording action', type: :system do
         click_on 'Changed boiler'
         expect(page).to have_content('We changed to a more efficient boiler')
 
+      end
+
+      it 'updates points if pupils were actually involved' do
+        expect(observation.points).to be_nil
+
+        visit management_school_path(school)
+        click_on 'View all events'
+
+        within '.application' do
+          click_on 'Edit'
+        end
+
+        fill_in 'observation_at', with: Date.today.strftime("%d/%m/%Y")
+        check 'Were the pupils involved?'
+        click_on 'Update action'
+
+        observation.reload
+        expect(observation.involved_pupils).to be true
+        expect(observation.points).to eql intervention_type.score
       end
 
       it 'can be deleted' do
