@@ -1,4 +1,7 @@
-<h4 class="text-center"><strong>You've just scored <%= points %> points!</strong></h4>
+<% if points&.positive? %>
+  <h4 class="text-center"><strong>You've just scored <%= points %> points!</strong></h4>
+<% end %>
+
 <% if podium && podium.includes_school? && can?(:read, podium.scoreboard) %>
   <% if podium.school_position.position == 1 %>
     <h4 class="text-center">

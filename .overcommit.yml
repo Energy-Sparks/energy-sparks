@@ -803,4 +803,3 @@ PreRebase:
     enabled: false
     description: 'Check for commits that have already been merged'
     branches: ['master']
-

@@ -23,6 +23,7 @@ module Schools
 
     def update
       if @audit.update(audit_params)
+        Audits::AuditService.new(@school).update_points(@audit)
         redirect_to school_audit_path(@school, @audit), notice: 'Audit updated'
       else
         render :edit
@@ -37,7 +38,7 @@ module Schools
   private
 
     def audit_params
-      params.require(:audit).permit(:school_id, :title, :description, :file, :published, audit_activity_types_attributes: audit_activity_types_attributes, audit_intervention_types_attributes: audit_intervention_types_attributes)
+      params.require(:audit).permit(:school_id, :title, :description, :file, :published, :involved_pupils, audit_activity_types_attributes: audit_activity_types_attributes, audit_intervention_types_attributes: audit_intervention_types_attributes)
     end
 
     def audit_activity_types_attributes

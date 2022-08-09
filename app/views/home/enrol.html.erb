@@ -1,24 +1,17 @@
-<% content_for :page_title, 'Enrol' %>
+<% content_for :page_title, t('enrol.title') %>
 
 <div class="application container extra-padding">
   <div class="row mt-2">
     <div class="col">
       <div class="d-flex justify-content-between align-items-center">
-        <p class="display-3"><strong>Enrol with Energy Sparks</strong></p>
+        <p class="display-3"><strong><%= t('enrol.title') %></strong></p>
       </div>
     </div>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-      <p>
-        We have difference processes to support enrolling individual schools, whole Multi-Academy Trusts or groups of schools within a
-        Local Authority Area.
-      </p>
-      <p>
-        Learn more about what our service can offer for different users, and then select one of the options below to start the
-        process.
-      </p>
+      <%= t('enrol.section_1_html') %>
     </div>
   </div>
 
@@ -26,48 +19,48 @@
     <div class="card-deck activities">
       <div class="card activity">
         <div class="card-body">
-          <h4 class="card-title text-center">Enrol our School</h4>
+          <h4 class="card-title text-center"><%= t('enrol.enrol_school.title') %></h4>
           <div class="d-flex justify-content-center mt-2">
             <small>
-            Read more about <%= link_to 'how Energy Sparks can support your school', for_schools_path %>
+              <%= t('enrol.enrol_school.read_more_html') %>
             </small>
           </div>
         </div>
         <div class="card-footer">
           <div class="d-flex justify-content-end">
-            <%= link_to 'Enrol now', enrol_our_school_path, class: 'btn btn-lg bg-positive' %>
+            <%= link_to t('enrol.enrol_now'), enrol_our_school_path, class: 'btn btn-lg bg-positive' %>
           </div>
         </div>
       </div>
 
       <div class="card activity">
         <div class="card-body">
-          <h4 class="card-title text-center">Enrol our Multi-Academy Trust</h4>
+          <h4 class="card-title text-center"><%= t('enrol.enrol_mat.title') %></h4>
           <div class="d-flex justify-content-center mt-2">
             <small>
-            Read more about <%= link_to 'how Energy Sparks can support your MAT', for_multi_academy_trusts_path %>
+              <%= t('enrol.enrol_mat.read_more_html') %>
             </small>
           </div>
         </div>
         <div class="card-footer">
           <div class="d-flex justify-content-end">
-            <%= link_to 'Enrol now', enrol_our_multi_academy_trust_path, class: 'btn btn-lg bg-positive' %>
+            <%= link_to t('enrol.enrol_now'), enrol_our_multi_academy_trust_path, class: 'btn btn-lg bg-positive' %>
           </div>
         </div>
       </div>
 
       <div class="card activity">
         <div class="card-body">
-          <h4 class="card-title text-center">Enrol our Local Authority</h4>
+          <h4 class="card-title text-center"><%= t('enrol.enrol_la.title') %></h4>
           <div class="d-flex justify-content-center mt-2">
             <small>
-            Read more about <%= link_to 'how Energy Sparks can support schools in your area', for_local_authorities_path %>
+              <%= t('enrol.enrol_la.read_more_html') %>
             </small>
           </div>
         </div>
         <div class="card-footer">
           <div class="d-flex justify-content-end">
-            <%= link_to 'Enrol now', enrol_our_local_authority_path, class: 'btn btn-lg bg-positive' %>
+            <%= link_to t('enrol.enrol_now'), enrol_our_local_authority_path, class: 'btn btn-lg bg-positive' %>
           </div>
         </div>
       </div>

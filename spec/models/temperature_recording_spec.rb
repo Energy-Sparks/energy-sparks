@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe TemperatureRecording do
   let(:location)       { build(:location) }
-  let(:observation)    { build(:observation)}
+  let(:observation)    { build(:observation, :temperature)}
 
   it 'can have a temperature in the range 0 to 50' do
    expect { TemperatureRecording.create(centigrade: 20, location: location, observation: observation) }.to change { TemperatureRecording.count }.by(1)

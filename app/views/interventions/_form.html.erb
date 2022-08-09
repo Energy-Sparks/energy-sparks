@@ -8,6 +8,10 @@
   <small class="form-text text-muted">You can record both recent and older actions to build up a complete record of all of the energy saving activities you've carried out as a school.</small>
 </fieldset>
 <fieldset class="form-group mt-4">
+  <%= f.input :involved_pupils, as: :boolean, label: "Were the pupils involved?", inline_label: true %>
+  <small class="form-text text-muted">If pupils were involved in proposing, planning, fund-raising or carrying out this action then recording this action will score <span class="badge badge-success"><%= intervention_type.score %></span> points for your school.</small>
+</fieldset>
+<fieldset class="form-group mt-5">
   <%= f.label 'Tell us more about what you did', for: :description %>
   <small class="form-text text-muted">Adding some background detail can help you track and monitor improvements</small>
   <small class="form-text text-muted">You can add formatting, links and attach images using the toolbar below. Hover over each icon to learn what it does.</small>

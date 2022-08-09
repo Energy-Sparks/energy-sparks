@@ -1,7 +1,7 @@
 module TimelineHelper
   def title_for_month(month, year)
     if month == Date.current.strftime("%B") && year == Date.current.strftime("%Y")
-      month_title = "THIS MONTH"
+      month_title = t('timeline.this_month')
       year_title = ""
     else
       month_title = month

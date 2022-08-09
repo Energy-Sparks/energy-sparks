@@ -1,18 +1,20 @@
 FactoryBot.define do
   factory :observation do
-    school           { create(:school)}
-    observation_type { :temperature }
-    at               { Time.now.utc }
+    school            { create(:school) }
+    at                { Time.now.utc }
 
-    to_create { |instance| TemperatureObservationCreator.new(instance).process }
+    trait :temperature do
+      observation_type { :temperature }
+      to_create { |instance| TemperatureObservationCreator.new(instance).process }
+    end
 
     trait :intervention do
       observation_type { :intervention }
       intervention_type
-      to_create { |instance| InterventionCreator.new(instance).process }
     end
 
     factory :observation_with_temperature_recording_and_location do
+      observation_type { :temperature }
       after(:create) do |observation, evaluator|
         location = create(:location, school: observation.school)
         create(:temperature_recording, observation: observation, location: location)
