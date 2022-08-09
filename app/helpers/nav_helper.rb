@@ -6,7 +6,7 @@ module NavHelper
     end
   end
 
-  def locale_switcher_links
+  def locale_switcher_buttons
     locale_links = []
     (I18n.available_locales - [I18n.locale]).each do |locale|
       subdomain = locale.to_s == 'en' ? '' : locale
