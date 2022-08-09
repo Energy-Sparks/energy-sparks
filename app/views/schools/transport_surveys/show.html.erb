@@ -13,25 +13,47 @@
 
   <div id="transport_surveys_pie" class="mb-3"></div>
 
-  <table class="table">
+  <h4><%= t('schools.transport_surveys.show.transport_categories_title') %></h4>
+
+  <table class="table" id="responses_per_category">
     <thead class="thead-light">
       <tr>
-        <th><%= t('schools.transport_surveys.common.transport_category') %></th>
-        <th><%= t('schools.transport_surveys.common.total_pupils_and_staff') %></th>
-        <th><%= t('schools.transport_surveys.common.percentage_pupils_and_staff') %></th>
+        <th class="col-md-4"><%= t('schools.transport_surveys.common.transport_category') %></th>
+        <th class="col-md-4"><%= t('schools.transport_surveys.common.total_pupils_and_staff') %></th>
+        <th class="col-md-4"><%= t('schools.transport_surveys.common.percentage_pupils_and_staff') %></th>
       </tr>
     </thead>
     <tbody>
       <% TransportType.categories_with_other.each do |cat, value| %>
         <tr>
-          <td><%= TransportType.human_enum_name(:category, cat) %></td>
-          <td><%= @transport_survey.responses_per_category[cat] %></td>
-          <td><%= @transport_survey.percentage_per_category[cat].round %>%</td>
+          <td class="col-md-4"><%= TransportType.human_enum_name(:category, cat) %></td>
+          <td class="col-md-4"><%= @transport_survey.responses_per_category[cat] %></td>
+          <td class="col-md-4"><%= @transport_survey.percentage_per_category[cat].round %>%</td>
         </tr>
       <% end %>
     </tbody>
   </table>
 
+  <h4><%= t('schools.transport_surveys.show.cars_title') %></h4>
+  <p><%= t('schools.transport_surveys.show.cars_summary') %></p>
+
+  <table class="table" id='time_travelled_by_car'>
+    <thead class="thead-light">
+      <tr>
+        <th class="col-md-8"><%= t('schools.transport_surveys.show.time_travelled_by_car') %></th>
+        <th class="col-md-4"><%= t('schools.transport_surveys.common.total_pupils_and_staff') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @transport_survey.responses_per_time_for_category_car.each do |time, value| %>
+        <tr>
+          <td class="col-md-8">
+            <%= time == '30+' ? t('schools.transport_surveys.show.30_or_more_minutes') : t('common.units.minutes', count: time) %></td>
+          <td class="col-md-4"><%= value %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 <% else %>
   <h4><%= t('schools.transport_surveys.common.no_responses') %></h4>
 <% end %>
