@@ -12,7 +12,9 @@ RSpec.describe "i18n", type: :system do
   end
 
   it 'applies locale switcher buttons to the navbar' do
-    visit root_path(locale: 'en')
+    allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+
+    visit root_path
     expect(page).to have_content("Cymraeg")
     expect(page).not_to have_content('English')
 
