@@ -54,7 +54,7 @@ concurrency: '%{processors}'
 # This is a defense mechanism when working with repositories which can contain
 # untrusted code (e.g. when you fetch a pull request from a third party).
 # See https://github.com/brigade/overcommit#security for more information.
-verify_signatures: true
+verify_signatures: false
 
 # Hooks that are run against every commit message after a user has written it.
 # These hooks are useful for enforcing policies on commit messages written for a
@@ -802,4 +802,3 @@ PreRebase:
     enabled: false
     description: 'Check for commits that have already been merged'
     branches: ['master']
-
