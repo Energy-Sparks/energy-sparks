@@ -130,6 +130,7 @@ ignore_unused:
   - 'kwh'
   - 'co2'
   - '£'
+  - 'date.*'
   - 'devise.mailer.confirmation_instructions.subject'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
@@ -163,3 +164,4 @@ ignore_unused:
 #
 # <%# I18n::Tasks.add_scanner 'I18n::Tasks::Scanners::PatternMapper',
 #       patterns: [['\bSpree\.t[( ]\s*%{key}', 'spree.%{key}']] %>
+
