@@ -35,8 +35,6 @@ class ActivityType < ApplicationRecord
   translates :school_specific_description, backend: :action_text
   translates :download_links, backend: :action_text
 
-  include PgSearch::Model
-
   TX_ATTRIBUTE_MAPPING = {
     school_specific_description: { templated: true },
   }.freeze

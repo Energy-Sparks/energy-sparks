@@ -31,8 +31,6 @@ class InterventionType < ApplicationRecord
   translates :description, backend: :action_text
   translates :download_links, backend: :action_text
 
-  include PgSearch::Model
-
   belongs_to :intervention_type_group
   has_many :observations
 
