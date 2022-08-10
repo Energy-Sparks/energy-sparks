@@ -17,6 +17,11 @@ module Audits
       audit.persisted?
     end
 
+    def update_points(audit)
+      observation = Observation.find_by(school: @school, audit: audit)
+      observation.update(points: points(audit))
+    end
+
     private
 
     def create_observation(audit)
@@ -25,8 +30,12 @@ module Audits
         observation_type: :audit,
         audit: audit,
         at: audit.created_at,
-        points: AUDIT_POINTS
+        points: points(audit)
       )
+    end
+
+    def points(audit)
+      audit.involved_pupils? ? AUDIT_POINTS : 0
     end
   end
 end

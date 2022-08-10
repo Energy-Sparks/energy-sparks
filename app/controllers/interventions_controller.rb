@@ -2,14 +2,14 @@ class InterventionsController < ApplicationController
   def new
     @intervention_type = InterventionType.find(params[:intervention_type_id])
     @intervention_type_group = @intervention_type.intervention_type_group
-    @observation = current_user.school.observations.new(intervention_type_id: @intervention_type.id, at: Time.zone.now)
+    @observation = current_user.school.observations.new(intervention_type_id: @intervention_type.id)
     authorize! :create, @observation
   end
 
   def create
-    @observation = current_user.school.observations.new(observation_params)
+    @observation = current_user.school.observations.new(observation_params.merge(observation_type: :intervention))
     authorize! :create, @observation
-    if InterventionCreator.new(@observation).process
+    if @observation.save
       redirect_to completed_school_intervention_path(current_user.school, @observation)
     else
       @intervention_type = @observation.intervention_type
@@ -43,6 +43,6 @@ class InterventionsController < ApplicationController
   private
 
   def observation_params
-    params.require(:observation).permit(:description, :at, :intervention_type_id)
+    params.require(:observation).permit(:description, :at, :intervention_type_id, :involved_pupils)
   end
 end

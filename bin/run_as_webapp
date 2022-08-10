@@ -2,11 +2,13 @@
 set -xe
 EB_APP_USER=$(sudo /opt/elasticbeanstalk/bin/get-config platformconfig -k AppUser)
 
-#. $EB_SUPPORT_DIR/envvars-wrapper.sh
-#. $EB_SCRIPT_DIR/use-app-ruby.sh
-
 #envvars
 set +x
-export $(sudo cat /opt/elasticbeanstalk/deployment/env | xargs)
+export $(sudo /opt/elasticbeanstalk/bin/get-config --output YAML environment | sed -r 's/: /=/' | xargs)
 set -x
+
+PATH=/opt/elasticbeanstalk/.rbenv/shims:/opt/elasticbeanstalk/.rbenv/bin:$PATH
+RBENV_ROOT=/opt/elasticbeanstalk/.rbenv
+RBENV_VERSION=$(cat $RBENV_ROOT/version)
+
 su -s /bin/bash -c "${*}" $EB_APP_USER

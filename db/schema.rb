@@ -469,6 +469,7 @@ ActiveRecord::Schema.define(version: 2022_08_10_065919) do
     t.boolean "published", default: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "involved_pupils", default: false, null: false
     t.index ["school_id"], name: "index_audits_on_school_id"
   end
 
@@ -996,6 +997,7 @@ ActiveRecord::Schema.define(version: 2022_08_10_065919) do
     t.integer "points"
     t.boolean "visible", default: true
     t.bigint "audit_id"
+    t.boolean "involved_pupils", default: false, null: false
     t.index ["activity_id"], name: "index_observations_on_activity_id"
     t.index ["audit_id"], name: "index_observations_on_audit_id"
     t.index ["intervention_type_id"], name: "index_observations_on_intervention_type_id"

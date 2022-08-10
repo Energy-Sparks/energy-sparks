@@ -1,0 +1,7 @@
+---
+en:
+  timeline:
+    events:
+      one: 1 event
+      other: "%{count} events"
+    this_month: THIS MONTH

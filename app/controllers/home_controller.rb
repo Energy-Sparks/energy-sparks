@@ -20,11 +20,9 @@ class HomeController < ApplicationController
     @videos = videos
     @testimonial = [
       {
-        quote: "Energy Sparks has enabled children at Freshford to investigate how energy is used in different parts of the school and devise strategies to reduce the school's consumption. The children's enthusiasm was kick-started by the competitive element and they’ve worked effectively with staff and the local community to think innovatively about what we can do to reduce our impact on the environment and reduce costs. The children developed and presented evidence-based initiatives to the school's business managers, securing installation of energy-efficient lighting and kitchen equipment, movement-sensor-switches, and a solar-panel campaign.
-        <br><br>
-        The Energy Sparks  resources are inspirational, powerful and transformational tools for all schools that will enable them to reduce their CO2 footprint, save money and help children to develop a powerful can-do attitude towards the challenges of global warming.",
+        quote: t('for_schools.quote_1.text_html'),
         by: 'Andrew Wishart',
-        title: 'Head teacher',
+        title: t('for_schools.quote_1.job_title'),
         location: 'Freshford Church School'
       }
     ].sample
@@ -34,17 +32,17 @@ class HomeController < ApplicationController
     @school_count = School.visible.count
     @testimonial = [
       {
-        quote: "The comparison function is amazing&hellip; The data in the comparison tab will be very useful for analysing and reporting purposes, and it offers a wide variety of benchmarks. I think this is a 'fab' idea and very useful tool.",
+        quote: t('for_local_authorities.quote_1.text_html'),
         by: 'Kremena Renwick',
-        title: 'Local Authority Sustainability Officer (Energy)',
+        title: t('for_local_authorities.quote_1.job_title'),
         location: 'Highland Council'
       }
     ].sample
     @testimonial_saving = [
       {
-        quote: "I initially got involved with Energy Sparks as I thought it would inspire the children to be more eco-aware. Little did I realise back then how much we would be saving now! …We should be able to save £800 annually so that's over £15 extra per child per year - all thanks to Energy Sparks.",
+        quote: t('for_local_authorities.quote_2.text_html'),
         by: 'Andrew Marriott',
-        title: 'Deputy Head',
+        title: t('for_local_authorities.quote_2.job_title'),
         location: 'Federation of Bishop Sutton and Stanton Drew Primary Schools, Bath and NE Somerset'
       }
     ].sample
@@ -56,17 +54,17 @@ class HomeController < ApplicationController
     @videos = videos
     @testimonial = [
       {
-        quote: "The Energy Sparks website is very easy to use, and the children have found it interesting to measure how energy is used differently in different parts of the school… The children are motivated by the competitive element as well as the desire to save money and energy&hellip;",
+        quote: t('for_multi_academy_trusts.quote_1.text_html'),
         by: 'Warrick Barton',
-        title: 'Headteacher',
+        title: t('for_multi_academy_trusts.quote_1.job_title'),
         location: 'Pensford Primary School, Bath'
       }
     ].sample
     @testimonial_saving = [
       {
-        quote: "I initially got involved with Energy Sparks as I thought it would inspire the children to be more eco-aware. Little did I realise back then how much we would be saving now! …We should be able to save £800 annually so that's over £15 extra per child per year - all thanks to Energy Sparks.",
+        quote: t('for_local_authorities.quote_2.text_html'),
         by: 'Andrew Marriott',
-        title: 'Deputy Head',
+        title: t('for_local_authorities.quote_2.job_title'),
         location: 'Federation of Bishop Sutton and Stanton Drew Primary Schools, Bath and NE Somerset'
       }
     ].sample

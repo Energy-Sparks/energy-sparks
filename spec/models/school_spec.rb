@@ -634,9 +634,9 @@ describe School do
     let(:date_2){ academic_year.start_date - 1.month}
     let!(:intervention_type_1){ create :intervention_type }
     let!(:intervention_type_2){ create :intervention_type }
-    let!(:observation_1){ create :observation, at: date_1, school: school, intervention_type: intervention_type_1 }
-    let!(:observation_2){ create :observation, at: date_2, school: school, intervention_type: intervention_type_2 }
-    let!(:observation_without_intervention_type) { create(:observation, at: date_1, school: school) }
+    let!(:observation_1){ create :observation, :intervention, at: date_1, school: school, intervention_type: intervention_type_1 }
+    let!(:observation_2){ create :observation, :intervention, at: date_2, school: school, intervention_type: intervention_type_2 }
+    let!(:observation_without_intervention_type) { create(:observation, :temperature, at: date_1, school: school) }
 
     it 'finds observations from the academic year' do
       expect(school.observations_in_academic_year(academic_year.start_date + 2.months)).to eq([observation_1, observation_without_intervention_type])
@@ -655,7 +655,7 @@ describe School do
     end
 
     context 'when finding intervention types by date' do
-      let!(:recent_observation)  { create(:observation, at: date_1 + 1.day, school: school, intervention_type: intervention_type_2) }
+      let!(:recent_observation)  { create(:observation, :intervention, at: date_1 + 1.day, school: school, intervention_type: intervention_type_2) }
       it 'finds intervention types by date, including duplicates, excluding non-intervention observations' do
         expect(school.intervention_types_by_date).to eq([intervention_type_2, intervention_type_1, intervention_type_2])
       end

@@ -51,6 +51,8 @@ private
     # rubocop:disable Lint/RescueException
   rescue Exception => e
     # rubocop:enable Lint/RescueException
+    Rollbar.error(e, benchmark: page)
+
     error_message = "Exception: #{page}: #{e.class} #{e.message}"
 
     backtrace = e.backtrace.select { |b| b.include?('analytics')}.join("<br>")
