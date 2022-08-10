@@ -89,7 +89,7 @@ describe 'temperature recordings as school admin' do
         end
 
         it 'deletes an assocated temperature recording if location is nobbled' do
-          observation = create(:observation).tap do |obs|
+          observation = create(:observation, :temperature).tap do |obs|
             create(:temperature_recording, observation: obs, location: the_hall)
           end
           click_on 'Change room names'
@@ -104,7 +104,7 @@ describe 'temperature recordings as school admin' do
 
     let!(:user)       { create(:school_admin, school: school)}
     let!(:observation) do
-      create(:observation, school: school).tap do |obs|
+      create(:observation, :temperature, school: school).tap do |obs|
         create(:temperature_recording, observation: obs, location: the_hall)
       end
     end

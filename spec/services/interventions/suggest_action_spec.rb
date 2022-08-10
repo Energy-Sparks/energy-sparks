@@ -23,7 +23,7 @@ describe Interventions::SuggestAction, type: :service do
     let(:date_1){ academic_year.start_date + 1.month}
     let!(:intervention_type_1){ create(:intervention_type) }
     let!(:intervention_type_2){ create(:intervention_type, suggested_types: [intervention_type_1]) }
-    let!(:observation_1){ create :observation, at: date_1, school: school, intervention_type: intervention_type_2 }
+    let!(:observation_1){ create :observation, :intervention, at: date_1, school: school, intervention_type: intervention_type_2 }
 
     it 'returns intervention type suggestions from most recent intervention' do
       result = service.suggest_from_most_recent_intervention
