@@ -4,7 +4,16 @@ module Searchable
   class_methods do
     def search(query:, locale:)
       ids = select("DISTINCT #{name.underscore.pluralize}.id, search_type_results.rank").joins(sanitized_sql_for(locale, query)).pluck(:id)
-      where(id: ids)
+      find_ordered(ids)
+    end
+
+    def find_ordered(ids)
+      return where(id: ids) if ids.size <= 1
+
+      order_sql = " CASE \"#{table_name}\".\"id\" "
+      ids.each_with_index { |id, index| order_sql << sanitize_sql_array(["WHEN :id THEN :index ", { id: id, index: index }]) }
+      order_sql << sanitize_sql_array(["ELSE :ids_length END", { ids_length: ids.length }])
+      where(id: ids).order(order_sql)
     end
 
     def sanitized_sql_for(locale, query)
