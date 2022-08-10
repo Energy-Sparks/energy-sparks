@@ -44,6 +44,31 @@ describe 'InterventionType' do
 
       expect(InterventionType.search(query: 'timing', locale: 'en')).to eq([intervention_type_1, intervention_type_2])
     end
+
+    it 'finds search content for different locales' do
+      I18n.locale = :en
+      intervention_type_1 = create(:intervention_type, name: 'Starting the work', summary: 'is two', description: 'thirds of it')
+      I18n.locale = :cy
+      intervention_type_2 = create(:intervention_type, name: 'Deuparth gwaith', summary: 'yw ei', description: 'ddechrau')
+
+      I18n.locale = :en
+      expect(InterventionType.search(query: 'Starting the work', locale: 'en')).to eq([intervention_type_1])
+      expect(InterventionType.search(query: 'is two', locale: 'en')).to eq([intervention_type_1])
+      expect(InterventionType.search(query: 'thirds of it', locale: 'en')).to eq([intervention_type_1])
+      expect(InterventionType.search(query: 'Deuparth gwaith', locale: 'en')).to eq([])
+      expect(InterventionType.search(query: 'yw ei', locale: 'en')).to eq([])
+      expect(InterventionType.search(query: 'ddechrau', locale: 'en')).to eq([])
+
+      I18n.locale = :cy
+      expect(InterventionType.search(query: 'Starting the work', locale: 'cy')).to eq([])
+      expect(InterventionType.search(query: 'is two', locale: 'cy')).to eq([])
+      expect(InterventionType.search(query: 'thirds of it', locale: 'cy')).to eq([])
+      expect(InterventionType.search(query: 'Deuparth gwaith', locale: 'cy')).to eq([intervention_type_2])
+      expect(InterventionType.search(query: 'yw ei', locale: 'cy')).to eq([intervention_type_2])
+      expect(InterventionType.search(query: 'ddechrau', locale: 'cy')).to eq([intervention_type_2])
+
+      I18n.locale = :en
+    end
   end
 
   context 'finding resources for transifex' do

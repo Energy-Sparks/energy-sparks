@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_25_152512) do
+ActiveRecord::Schema.define(version: 2022_08_10_065919) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -808,7 +808,7 @@ ActiveRecord::Schema.define(version: 2022_07_25_152512) do
   end
 
   create_table "intervention_types", force: :cascade do |t|
-    t.string "name", null: false
+    t.string "name"
     t.bigint "intervention_type_group_id", null: false
     t.boolean "custom", default: false
     t.integer "score"
@@ -1046,6 +1046,13 @@ ActiveRecord::Schema.define(version: 2022_07_25_152512) do
     t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
     t.index ["programme_type_id"], name: "index_programmes_on_programme_type_id"
     t.index ["school_id"], name: "index_programmes_on_school_id"
+  end
+
+  create_table "question_responses", force: :cascade do |t|
+    t.integer "question_id"
+    t.string "response"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "resource_file_types", force: :cascade do |t|
