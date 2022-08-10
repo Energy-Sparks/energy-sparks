@@ -14,15 +14,14 @@ en:
       our_suggestions: Our suggestions based on your school programmes and analysis of your energy data
       page_title: Activity
       recommended_for_your_school: Recommended for your school
+      see_the_scoreboard: See the scoreboard
       view_all_suggestions: View all suggestions
       view_your_activity: View your activity
-      see_the_scoreboard: See the scoreboard
     completed_on: Completed on
     edit:
       page_title: Update activity
       update_your_activity: Update your activity
     form:
-      when_did_you_complete_this_activity: When did you complete this activity?
       build_a_record_message: You can record a recent activity and older activities to build up a record of all of the energy saving activities you've carried out as a school
       cancel: Cancel
       completing_this_activity:
@@ -37,6 +36,7 @@ en:
       tell_us_more_message: Tell us a bit more about your activity. What did you do? What did you learn? What could you do next to build on this task?
       the_activity_you_completed: The activity you completed
       update_activity: Update activity
+      when_did_you_complete_this_activity: When did you complete this activity?
     home: Home
     introduction: A list of the recent energy saving activities recorded by
     new:

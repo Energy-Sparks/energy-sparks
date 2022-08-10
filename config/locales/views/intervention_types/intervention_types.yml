@@ -5,6 +5,8 @@ en:
       points_for_this_action:
         one: point for this action
         other: points for this action
+    previous_records:
+      action: Action
     prompt_score:
       complete_this_action_html:
         one: Complete this action to score your school <strong>%{count}</strong> point!
