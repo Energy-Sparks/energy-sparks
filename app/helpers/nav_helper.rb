@@ -17,7 +17,12 @@ module NavHelper
   end
 
   def subdomain_for(locale)
-    locale.to_s == 'en' ? '' : locale
+    case locale.to_s
+    when 'en' then ''
+    when 'cy' then ENV['WELSH_APPLICATION_HOST']&.split('.')&.first || 'cy'
+    else
+      locale.to_s
+    end
   end
 
   def locale_name_for(locale)
