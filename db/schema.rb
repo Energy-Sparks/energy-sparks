@@ -1050,13 +1050,6 @@ ActiveRecord::Schema.define(version: 2022_08_10_065919) do
     t.index ["school_id"], name: "index_programmes_on_school_id"
   end
 
-  create_table "question_responses", force: :cascade do |t|
-    t.integer "question_id"
-    t.string "response"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "resource_file_types", force: :cascade do |t|
     t.string "title", null: false
     t.integer "position", null: false
