@@ -1,4 +1,5 @@
 <% content_for :page_title, @content.find_out_more_title %>
+<%= render 'shared/translation_coming_soon' if I18n.locale.to_s != 'en' %>
 
 <h1 class="pt-4"><%= sanitize @content.find_out_more_title %></h1>
 

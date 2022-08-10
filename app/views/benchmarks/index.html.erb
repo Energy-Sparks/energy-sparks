@@ -1,4 +1,5 @@
 <% content_for :page_title, 'School Comparison Tool' %>
+<%= render 'shared/translation_coming_soon' if I18n.locale.to_s != 'en' %>
 
 <% if @filter_names.present? %>
   <h1>School Comparison Tool for <%= @filter_names %></h1>
