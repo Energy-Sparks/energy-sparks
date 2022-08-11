@@ -6,7 +6,7 @@ class InterventionTypesController < ApplicationController
 
   def search
     if params[:query]
-      intervention_types = InterventionTypeSearchService.search(params[:query])
+      intervention_types = InterventionTypeSearchService.search(params[:query], I18n.locale)
       @pagy, @intervention_types = pagy(intervention_types)
     else
       @intervention_types = []
