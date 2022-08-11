@@ -22,17 +22,17 @@ class ChartDataValues
   MONEY = '#232B49'.freeze
 
   COLOUR_HASH = {
-    Series::DegreeDays::DEGREEDAYS => '#232b49',
-    Series::Temperature::TEMPERATURE => '#232b49',
-    Series::DayType::SCHOOLDAYCLOSED => '#3bc0f0',
-    Series::DayType::SCHOOLDAYOPEN => GREEN,
-    Series::DayType::HOLIDAY => '#ff4500',
-    Series::DayType::WEEKEND => '#ffac21',
-    Series::HeatingNonHeating::HEATINGDAY => '#3bc0f0',
-    Series::HeatingNonHeating::NONHEATINGDAY => GREEN,
-    Series::HotWater::USEFULHOTWATERUSAGE => '#3bc0f0',
-    Series::HotWater::WASTEDHOTWATERUSAGE => '#ff4500',
-    Series::MultipleFuels::SOLARPV => '#ffac21', # 'solar pv (consumed onsite)'
+    I18n.t('chart_data_values.degree_days') => '#232b49',
+    I18n.t('chart_data_values.temperature') => '#232b49',
+    I18n.t('chart_data_values.school_day_closed') => '#3bc0f0',
+    I18n.t('chart_data_values.school_day_open') => GREEN,
+    I18n.t('chart_data_values.holiday') => '#ff4500',
+    I18n.t('chart_data_values.weekend') => '#ffac21',
+    I18n.t('chart_data_values.heating_on_in_cold_weather') => '#3bc0f0',
+    I18n.t('chart_data_values.hot_water_kitchen') => GREEN,
+    I18n.t('chart_data_values.hot_water_usage') => '#3bc0f0',
+    I18n.t('chart_data_values.wasted_hot_water_usage') => '#ff4500',
+    I18n.t('chart_data_values.solar_pv_consumed_onsite') => '#ffac21', # 'solar pv (consumed onsite)'
 
     'electricity' => MIDDLE_ELECTRICITY,
     'gas' => MIDDLE_GAS,
@@ -48,23 +48,36 @@ class ChartDataValues
   X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
 
   def initialize(chart, chart_type, transformations: [], allowed_operations: {}, drilldown_available: false, parent_timescale_description: nil, y1_axis_choices: [])
-    if chart
+    @chart = chart
+    if @chart
+      config_name = chart[:config_name]
+
       @chart_type         = chart_type
-      @chart              = chart
-      @title              = chart[:title]
-      @subtitle           = chart[:subtitle]
-      @x_axis_categories  = chart[:x_axis]
-      @x_axis_ranges      = chart[:x_axis_ranges] # Not actually used but range of actual dates
-      @chart1_type        = chart[:chart1_type]
-      @chart1_subtype     = chart[:chart1_subtype]
-      @x_axis_label       = chart[:x_axis_label]
-      @y_axis_label       = chart[:y_axis_label]
-      @configuration      = chart[:configuration]
-      @advice_header      = chart[:advice_header]
-      @advice_footer      = chart[:advice_footer]
-      @x_data             = chart[:x_data]
-      @y2_data            = chart[:y2_data]
-      @y2_chart_type      = chart[:y2_chart_type]
+      @title              = I18n.t("chart_data.#{config_name}.title", default: nil) || @chart[:title]
+      @subtitle           = I18n.t("chart_data.#{config_name}.subtitle", default: nil) || @chart[:subtitle]
+
+      puts '-----'
+      puts chart.inspect
+      # puts @chart[:x_axis_label].inspect
+      # puts @chart[:y_axis_label].inspect
+      # puts @chart[:x_axis].inspect
+      # puts @chart[:x_axis_ranges].inspect
+
+      puts '-----'
+
+
+      @x_axis_categories  = translate_x_axis
+      @x_axis_ranges      = @chart[:x_axis_ranges] # Not actually used but range of actual dates
+      @chart1_type        = @chart[:chart1_type]
+      @chart1_subtype     = @chart[:chart1_subtype]
+      @x_axis_label       = @chart[:x_axis_label]
+      @y_axis_label       = I18n.t("units.#{@chart[:yaxis_units.to_s]}", default: nil) || @chart[:y_axis_label]
+      @configuration      = @chart[:configuration]
+      @advice_header      = @chart[:advice_header]
+      @advice_footer      = @chart[:advice_footer]
+      @x_data             = translate_x_data
+      @y2_data            = @chart[:y2_data]
+      @y2_chart_type      = @chart[:y2_chart_type]
       @annotations        = []
       @y2_axis_label = '' # Set later
       @transformations = transformations
@@ -77,6 +90,32 @@ class ChartDataValues
       @title = "We do not have enough data to display this chart at the moment: #{chart_type.to_s.capitalize}"
     end
     @used_name_colours = []
+  end
+
+  def translate_x_axis
+    return @chart[:x_axis] if @chart[:x_axis] == ['No Dates']
+
+    return @chart[:x_axis] if @chart[:chart1_type] == :bar
+
+    @chart[:x_axis].map do |date|
+      ApplicationController.helpers.nice_dates(Date.parse(date))
+    end
+  end
+
+  # def translate_y2_data
+  #   return unless @chart[:y2_data].present?
+  #   @chart[:y2_data].map do |data_label, values|
+  #     [
+  #       I18n.t("chart_data_values.#{data_label.parameterize.underscore}", default: nil) || data_label,
+  #       values
+  #     ]
+  #   end.to_h
+  # end
+
+  def translate_x_data
+    @chart[:x_data].transform_keys do |data_label|
+      I18n.t("chart_data_values.#{data_label.parameterize.underscore}", default: nil) || data_label
+    end
   end
 
   def process

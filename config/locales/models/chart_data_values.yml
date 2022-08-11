@@ -1,0 +1,17 @@
+---
+en:
+  chart_data_values:
+    holiday: Holidays
+    weekend: Weekends
+    degree_days: Degree Days
+    temperature: Temperature
+    school_day_closed: School Day Closed
+    school_day_open: School Day Open
+    heating_on_in_cold_weather: Heating on in cold weather
+    hot_water_kitchen: Hot Water (& Kitchen)
+    hot_water_usage: Hot Water Usage
+    wasted_hot_water_usage: Wasted Hot Water Usage
+    solar_pv_consumed_onsite: solar pv (consumed onsite)
+    units:
+      kwh: kWh 1
+      degreedays: Degree Days
