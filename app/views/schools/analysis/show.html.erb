@@ -1,4 +1,6 @@
 <% content_for :page_title, @title %>
+<%= render 'shared/translation_coming_soon' if I18n.locale.to_s != 'en' %>
+
 <%= link_to 'Back', school_analysis_index_path(@school), class: 'btn btn-rounded mt-3 mb-2' %>
 
 <% if @structured_content %>
