@@ -106,6 +106,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 0
 
+[o:energy-sparks:p:energy-sparks:r:views-home-child_safeguarding_policy-yml]
+file_filter  = config/locales/<lang>/views/home/child_safeguarding_policy.yml
+source_file  = config/locales/views/home/child_safeguarding_policy.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
 [o:energy-sparks:p:energy-sparks:r:views-home-contact-yml]
 file_filter  = config/locales/<lang>/views/home/contact.yml
 source_file  = config/locales/views/home/contact.yml
@@ -186,6 +193,13 @@ minimum_perc = 0
 [o:energy-sparks:p:energy-sparks:r:views-home-home-yml]
 file_filter  = config/locales/<lang>/views/home/home.yml
 source_file  = config/locales/views/home/home.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-home-privacy_and_cookie_policy-yml]
+file_filter  = config/locales/<lang>/views/home/privacy_and_cookie_policy.yml
+source_file  = config/locales/views/home/privacy_and_cookie_policy.yml
 source_lang  = en
 type         = YML
 minimum_perc = 0
