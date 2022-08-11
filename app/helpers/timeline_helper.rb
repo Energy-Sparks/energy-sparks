@@ -1,10 +1,10 @@
 module TimelineHelper
   def title_for_month(month, year)
-    if month == Date.current.strftime("%B") && year == Date.current.strftime("%Y")
+    if month == Date.current.strftime("%-m") && year == Date.current.strftime("%Y")
       month_title = t('timeline.this_month')
       year_title = ""
     else
-      month_title = month
+      month_title = t('date.month_names')[month.to_i]
       year_title = year
     end
     content = content_tag(:span) do
