@@ -1,5 +1,6 @@
 ---
 cy:
+  name: Cymraeg
   helpers:
     select:
       prompt: Dewiswch
