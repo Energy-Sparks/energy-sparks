@@ -6,6 +6,29 @@ module NavHelper
     end
   end
 
+  def locale_switcher_buttons
+    locale_links = ['<ul class="navbar-nav">']
+    (I18n.available_locales - [I18n.locale]).each do |locale|
+      locale_links << '<li class="nav-item pl-3 pr-3 nav-lozenge nav-lozenge-little-padding">' +
+                      link_to(locale_name_for(locale), url_for(subdomain: subdomain_for(locale), only_path: false)) + '</li>'
+    end
+    locale_links << '</ul>'
+    locale_links.join('').html_safe
+  end
+
+  def subdomain_for(locale)
+    case locale.to_s
+    when 'en' then ''
+    when 'cy' then ENV['WELSH_APPLICATION_HOST']&.split('.')&.first || 'cy'
+    else
+      locale.to_s
+    end
+  end
+
+  def locale_name_for(locale)
+    I18n.t('name', locale: locale)
+  end
+
   def on_test?
     request.host.include?('test')
   end

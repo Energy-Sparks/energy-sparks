@@ -89,6 +89,10 @@ Rails.application.configure do
   config.action_mailer.asset_host = ENV.fetch('ASSET_HOST'){ "http://#{ENV['APPLICATION_HOST']}" }
 
   config.mailchimp_client = MailchimpMarketing::Client.new({ api_key: ENV['MAILCHIMP_API_KEY'], server: ENV['MAILCHIMP_SERVER'] })
+
+  # Add these to your /etc/hosts file
+  config.hosts << "energysparks.development"
+  config.hosts << "cy.energysparks.development"
 end
 
 class MyAppFormatter < Logger::Formatter
