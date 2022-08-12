@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_08_112839) do
+ActiveRecord::Schema.define(version: 2022_08_10_065919) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -809,7 +809,7 @@ ActiveRecord::Schema.define(version: 2022_08_08_112839) do
   end
 
   create_table "intervention_types", force: :cascade do |t|
-    t.string "name", null: false
+    t.string "name"
     t.bigint "intervention_type_group_id", null: false
     t.boolean "custom", default: false
     t.integer "score"

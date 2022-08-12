@@ -24,22 +24,12 @@
 class InterventionType < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
+  include Searchable
+
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :summary, type: :string, fallbacks: { cy: :en }
   translates :description, backend: :action_text
   translates :download_links, backend: :action_text
-
-  include PgSearch::Model
-  pg_search_scope :search,
-                  against: [:name],
-                  associated_against: {
-                    rich_text_description: [:body]
-                  },
-                  using: {
-                    tsearch: {
-                      dictionary: 'english'
-                    }
-                  }
 
   belongs_to :intervention_type_group
   has_many :observations

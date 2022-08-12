@@ -1,6 +1,5 @@
 class InterventionTypeSearchService
-  def self.search(query)
-    intervention_types = InterventionType.active.search(query)
-    intervention_types.with_pg_search_rank.distinct
+  def self.search(query, locale = 'en')
+    InterventionType.search(query: query, locale: locale)
   end
 end
