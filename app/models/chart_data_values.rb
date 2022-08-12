@@ -93,9 +93,11 @@ class ChartDataValues
   end
 
   def translate_x_axis
-    return @chart[:x_axis] if @chart[:x_axis] == ['No Dates']
+    # return @chart[:x_axis] if @chart[:x_axis] == ['No Dates']
 
-    return @chart[:x_axis] if @chart[:chart1_type] == :bar
+    # return @chart[:x_axis] if @chart[:chart1_type] == :bar
+
+    return unless @chart[:chart1_type] == :column
 
     @chart[:x_axis].map do |date|
       ApplicationController.helpers.nice_dates(Date.parse(date))
