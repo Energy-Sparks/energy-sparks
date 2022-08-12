@@ -51,34 +51,22 @@ class ChartDataValues
     @chart = chart
     if @chart
       config_name = chart[:config_name]
-
-      @chart_type         = chart_type
-      @title              = I18n.t("chart_data.#{config_name}.title", default: nil) || @chart[:title]
-      @subtitle           = I18n.t("chart_data.#{config_name}.subtitle", default: nil) || @chart[:subtitle]
-
-      puts '-----'
-      puts chart.inspect
-      # puts @chart[:x_axis_label].inspect
-      # puts @chart[:y_axis_label].inspect
-      # puts @chart[:x_axis].inspect
-      # puts @chart[:x_axis_ranges].inspect
-
-      puts '-----'
-
-
-      @x_axis_categories  = translate_x_axis
-      @x_axis_ranges      = @chart[:x_axis_ranges] # Not actually used but range of actual dates
-      @chart1_type        = @chart[:chart1_type]
-      @chart1_subtype     = @chart[:chart1_subtype]
-      @x_axis_label       = @chart[:x_axis_label]
-      @y_axis_label       = I18n.t("units.#{@chart[:yaxis_units.to_s]}", default: nil) || @chart[:y_axis_label]
-      @configuration      = @chart[:configuration]
-      @advice_header      = @chart[:advice_header]
-      @advice_footer      = @chart[:advice_footer]
-      @x_data             = translate_x_data
-      @y2_data            = @chart[:y2_data]
-      @y2_chart_type      = @chart[:y2_chart_type]
-      @annotations        = []
+      @chart_type = chart_type
+      @title = @chart[:title]
+      @subtitle = I18n.t("chart_data.#{config_name}.subtitle", default: nil) || @chart[:subtitle]
+      @x_axis_categories = translate_x_axis
+      @x_axis_ranges = @chart[:x_axis_ranges] # Not actually used but range of actual dates
+      @chart1_type = @chart[:chart1_type]
+      @chart1_subtype = @chart[:chart1_subtype]
+      @x_axis_label = @chart[:x_axis_label]
+      @y_axis_label = I18n.t("units.#{@chart[:yaxis_units.to_s]}", default: nil) || @chart[:y_axis_label]
+      @configuration = @chart[:configuration]
+      @advice_header = @chart[:advice_header]
+      @advice_footer = @chart[:advice_footer]
+      @x_data = translate_x_data
+      @y2_data = @chart[:y2_data]
+      @y2_chart_type = @chart[:y2_chart_type]
+      @annotations = []
       @y2_axis_label = '' # Set later
       @transformations = transformations
       @allowed_operations = allowed_operations
@@ -99,17 +87,6 @@ class ChartDataValues
       ApplicationController.helpers.nice_dates(Date.parse(date))
     end
   end
-
-  # def translate_y2_data
-  #   return unless @chart[:y2_data].present?
-
-  #   @chart[:y2_data].map do |data_label, values|
-  #     [
-  #       I18n.t("chart_data_values.#{data_label.parameterize.underscore}", default: nil) || data_label,
-  #       values
-  #     ]
-  #   end.to_h
-  # end
 
   def translate_x_data
     @chart[:x_data].transform_keys do |data_label|

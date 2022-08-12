@@ -1,11 +1,63 @@
 ---
 en:
   chart_data:
-    pupil_dashboard_daytype_breakdown_electricity:
-      title: When your school used electricity over the past year. School day closed is the electricity used in the evenings and early mornings during term time.
-    pupil_dashboard_daytype_breakdown_gas:
-      title: When your school used gas over the past year. School day closed is the gas used in the evenings and early mornings during term time.
     timescale_description:
       year: year
       day: day
       week: week
+    chart_config:
+      pupil_dashboard_daytype_breakdown_gas:
+        title_1: When your school used gas over the past year. School day closed is the gas used in the evenings and early mornings during term time.
+      pupil_dashboard_group_by_week_electricity_£:
+        title:
+          - Your school's electricity costs over a year (in £). Each bar shows a week's costs.
+          - Electricity costs in your chosen week (in £)
+          - Electricity costs on your chosen day (in £)
+      pupil_dashboard_daytype_breakdown_electricity:
+        title:
+          - When your school used electricity over the past year. School day closed is the electricity used in the evenings and early mornings during term time.
+      benchmark:
+        title:
+          - Annual Electricity and Gas Consumption Comparison with other schools in your region
+      benchmark_co2:
+        title:
+          - School Carbon Emissions from Electricity and Gas Usage
+      last_2_weeks_carbon_emissions:
+        title:
+          - Last 2 weeks carbon emissions at your school from electricity and gas
+      benchmark_electric:
+        title:
+          - Benchmark Comparison (Annual Electricity Consumption)
+      gas_longterm_trend:
+        title:
+          - 'Gas: long term trends'
+      gas_longterm_trend_kwh_with_carbon:
+        title:
+          - Your School Gas Carbon Emissions over the last few years
+      electricity_longterm_trend:
+        title:
+          - 'Electricity: long term trends'
+      electricity_longterm_trend_kwh_with_carbon:
+        title:
+          - Your schools electricity consumption over the last few years
+      daytype_breakdown_gas:
+        title:
+          - 'Breakdown by type of day/time: Gas'
+      alert_daytype_breakdown_storage_heater:
+        title:
+          - 'Breakdown by type of day/time: Storage Heaters'
+      daytype_breakdown_electricity:
+        title:
+          - 'Breakdown by type of day/time: Electricity'
+      group_by_week_electricity:
+        title:
+          - 'By Week: Electricity'
+      group_by_week_electricity_versus_benchmark:
+        title:
+          - 'By Week: Electricity - compared with benchmark'
+      targeting_and_tracking_weekly_electricity_to_date_line:
+        title:
+          - Weekly progress versus target
+      targeting_and_tracking_weekly_electricity_one_year_line:
+        title:
+          - Weekly progress versus target to date
