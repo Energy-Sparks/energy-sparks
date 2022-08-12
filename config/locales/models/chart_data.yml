@@ -3,3 +3,9 @@ en:
   chart_data:
     pupil_dashboard_daytype_breakdown_electricity:
       title: When your school used electricity over the past year. School day closed is the electricity used in the evenings and early mornings during term time.
+    pupil_dashboard_daytype_breakdown_gas:
+      title: When your school used gas over the past year. School day closed is the gas used in the evenings and early mornings during term time.
+    timescale_description:
+      year: year
+      day: day
+      week: week

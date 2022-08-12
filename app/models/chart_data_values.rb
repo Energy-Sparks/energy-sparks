@@ -93,11 +93,7 @@ class ChartDataValues
   end
 
   def translate_x_axis
-    # return @chart[:x_axis] if @chart[:x_axis] == ['No Dates']
-
-    # return @chart[:x_axis] if @chart[:chart1_type] == :bar
-
-    return unless @chart[:chart1_type] == :column
+    return @chart[:x_axis] unless @chart[:chart1_type] == :column
 
     @chart[:x_axis].map do |date|
       ApplicationController.helpers.nice_dates(Date.parse(date))
@@ -106,6 +102,7 @@ class ChartDataValues
 
   # def translate_y2_data
   #   return unless @chart[:y2_data].present?
+
   #   @chart[:y2_data].map do |data_label, values|
   #     [
   #       I18n.t("chart_data_values.#{data_label.parameterize.underscore}", default: nil) || data_label,
