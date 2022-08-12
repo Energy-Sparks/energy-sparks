@@ -6,13 +6,27 @@ en:
       day: day
       week: week
     chart_config:
-      pupil_dashboard_daytype_breakdown_gas:
-        title_1: When your school used gas over the past year. School day closed is the gas used in the evenings and early mornings during term time.
-      pupil_dashboard_group_by_week_electricity_£:
+      pupil_dashboard_electricity_longterm_trend_£:
         title:
+          - Your school's long term electricity costs (£). Each bar shows a year's costs.
           - Your school's electricity costs over a year (in £). Each bar shows a week's costs.
           - Electricity costs in your chosen week (in £)
           - Electricity costs on your chosen day (in £)
+      pupil_dashboard_electricity_benchmark:
+        title:
+          - How much my school spends on electricity in comparison with other schools (£)
+      pupil_dashboard_group_by_week_electricity_co2:
+        title:
+          - Your school's carbon emissions from electricity use over a year (in kg CO2). Each bar shows a week's emissions.
+          - Electricity carbon emissions in your chosen week (in kg CO2)
+          - Electricity carbon emissions on your chosen day (in kg CO2)
+      pupil_dashboard_daytype_breakdown_gas:
+        title: When your school used gas over the past year. School day closed is the gas used in the evenings and early mornings during term time.
+      pupil_dashboard_group_by_week_electricity_£:
+        title:
+          - Your school's electricity costs over a year (in £). Each bar shows a week's costs. [es]
+          - Electricity costs in your chosen week (in £) [es]
+          - Electricity costs on your chosen day (in £) [es]
       pupil_dashboard_daytype_breakdown_electricity:
         title:
           - When your school used electricity over the past year. School day closed is the electricity used in the evenings and early mornings during term time.
@@ -61,3 +75,12 @@ en:
       targeting_and_tracking_weekly_electricity_one_year_line:
         title:
           - Weekly progress versus target to date
+      targeting_and_tracking_standard_group_by_week_electricity:
+        title:
+          - Standard %{meter_fuel_type} group by week chart (%{total_kwh} kWh)
+      targeting_and_tracking_target_only_group_by_week_electricity:
+        title:
+          - Target only %{meter_fuel_type} group by week chart (%{total_kwh} kWh)
+      targeting_and_tracking_unscaled_target_group_by_week_electricity:
+        title:
+          - Unscaled target %{meter_fuel_type} group by week chart (%{total_kwh} kWh)
