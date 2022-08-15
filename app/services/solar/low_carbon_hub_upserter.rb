@@ -15,14 +15,15 @@ module Solar
         mpan_mprn = details[:mpan_mprn]
         readings_hash = details[:readings]
 
-        meter = Meter.where(
+        meter = Meter.find_or_create_by!(
           meter_type: meter_type,
           mpan_mprn: mpan_mprn,
-          name: meter_type.to_s.humanize,
           low_carbon_hub_installation_id: @low_carbon_hub_installation.id,
           school: @low_carbon_hub_installation.school,
           pseudo: true
-        ).first_or_create!
+        ) do |new_record|
+          new_record.name = meter_type.to_s.humanize
+        end
 
         Amr::DataFeedUpserter.new(data_feed_reading_array(readings_hash, meter.id, mpan_mprn), @amr_data_feed_import_log).perform
         Rails.logger.info "Upserted #{@amr_data_feed_import_log.records_updated} inserted #{@amr_data_feed_import_log.records_imported}for #{@low_carbon_hub_installation.rbee_meter_id} at #{@low_carbon_hub_installation.school.name}"

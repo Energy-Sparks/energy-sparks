@@ -5,7 +5,7 @@ module Solar
 
     let!(:school)               { create(:school) }
     let(:rbee_meter_id)         { "216057958" }
-    let(:meter)         { create(:electricity_meter, low_carbon_hub_installation: installation) }
+    let(:meter)         { create(:electricity_meter, low_carbon_hub_installation: installation, mpan_mprn: 90000000123085, pseudo: true, name: "Test", school: school) }
 
     let(:installation)  { create(:low_carbon_hub_installation, rbee_meter_id: rbee_meter_id, school: school)}
 
@@ -102,6 +102,11 @@ module Solar
         let(:expected_end) { Date.yesterday }
         it "should default to reloading last 6 days" do
           upserter.perform
+        end
+        it "should insert data" do
+          expect(AmrDataFeedReading.count).to eql 1
+          upserter.perform
+          expect(AmrDataFeedReading.count).to eql 7
         end
       end
     end
