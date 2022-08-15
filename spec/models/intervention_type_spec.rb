@@ -20,12 +20,12 @@ describe 'InterventionType' do
 
     it 'updates original name so search still works' do
       intervention_type = create(:intervention_type, name: old_name)
-      expect(InterventionType.search(new_name)).to eq([])
+      expect(InterventionType.search(query: new_name, locale: 'en')).to eq([])
 
       intervention_type.update(name: new_name)
 
       expect(intervention_type.attributes['name']).to eq(new_name)
-      expect(InterventionType.search(new_name)).to eq([intervention_type])
+      expect(InterventionType.search(query: new_name, locale: 'en')).to eq([intervention_type])
     end
   end
 
@@ -34,15 +34,40 @@ describe 'InterventionType' do
       intervention_type_1 = create(:intervention_type, name: 'foo')
       intervention_type_2 = create(:intervention_type, name: 'bar')
 
-      expect(InterventionType.search('foo')).to eq([intervention_type_1])
-      expect(InterventionType.search('bar')).to eq([intervention_type_2])
+      expect(InterventionType.search(query: 'foo', locale: 'en')).to eq([intervention_type_1])
+      expect(InterventionType.search(query: 'bar', locale: 'en')).to eq([intervention_type_2])
     end
 
     it 'applies search variants' do
       intervention_type_1 = create(:intervention_type, name: 'time')
       intervention_type_2 = create(:intervention_type, name: 'timing')
 
-      expect(InterventionType.search('timing')).to eq([intervention_type_1, intervention_type_2])
+      expect(InterventionType.search(query: 'timing', locale: 'en')).to eq([intervention_type_1, intervention_type_2])
+    end
+
+    it 'finds search content for different locales' do
+      I18n.locale = :en
+      intervention_type_1 = create(:intervention_type, name: 'Starting the work', summary: 'is two', description: 'thirds of it')
+      I18n.locale = :cy
+      intervention_type_2 = create(:intervention_type, name: 'Deuparth gwaith', summary: 'yw ei', description: 'ddechrau')
+
+      I18n.locale = :en
+      expect(InterventionType.search(query: 'Starting the work', locale: 'en')).to eq([intervention_type_1])
+      expect(InterventionType.search(query: 'is two', locale: 'en')).to eq([intervention_type_1])
+      expect(InterventionType.search(query: 'thirds of it', locale: 'en')).to eq([intervention_type_1])
+      expect(InterventionType.search(query: 'Deuparth gwaith', locale: 'en')).to eq([])
+      expect(InterventionType.search(query: 'yw ei', locale: 'en')).to eq([])
+      expect(InterventionType.search(query: 'ddechrau', locale: 'en')).to eq([])
+
+      I18n.locale = :cy
+      expect(InterventionType.search(query: 'Starting the work', locale: 'cy')).to eq([])
+      expect(InterventionType.search(query: 'is two', locale: 'cy')).to eq([])
+      expect(InterventionType.search(query: 'thirds of it', locale: 'cy')).to eq([])
+      expect(InterventionType.search(query: 'Deuparth gwaith', locale: 'cy')).to eq([intervention_type_2])
+      expect(InterventionType.search(query: 'yw ei', locale: 'cy')).to eq([intervention_type_2])
+      expect(InterventionType.search(query: 'ddechrau', locale: 'cy')).to eq([intervention_type_2])
+
+      I18n.locale = :en
     end
   end
 

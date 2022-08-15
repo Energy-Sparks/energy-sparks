@@ -17,13 +17,6 @@ describe 'activity types', type: :system do
       end
     end
 
-    it 'link is feature flag controlled' do
-      ClimateControl.modify FEATURE_FLAG_ACTIVITY_TYPE_SEARCH: 'false' do
-        visit activity_categories_path
-        expect(page).not_to have_link('Search')
-      end
-    end
-
     it 'links to activity categories page' do
       visit search_activity_types_path
       click_on 'All activities'

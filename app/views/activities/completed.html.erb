@@ -34,7 +34,7 @@
     <div class="col card-deck actions">
       <div class="card surrounding-schools">
         <div class="card-footer text-center">
-          <%= link_to 'View your activity', school_activity_path(@school, @activity), class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
+          <%= link_to t('activities.completed.view_your_activity'), school_activity_path(@school, @activity), class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
         </div>
       </div>
     </div>
@@ -44,7 +44,7 @@
       <% if current_school_podium && can?(:read, current_school_podium.scoreboard) %>
         <div class="card surrounding-schools">
           <div class="card-footer text-center">
-            <%= link_to 'See the scoreboard', scoreboard_path(current_school_podium.scoreboard), class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
+            <%= link_to t('activities.completed.see_the_scoreboard'), scoreboard_path(current_school_podium.scoreboard), class: "btn btn-lg btn-light rounded-pill font-weight-bold" %>
           </div>
         </div>
       <% end %>
