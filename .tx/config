@@ -36,9 +36,58 @@ source_lang  = en
 type         = YML
 minimum_perc = 0
 
+[o:energy-sparks:p:energy-sparks:r:en-yml]
+file_filter  = config/locales/<lang>/en.yml
+source_file  = config/locales/en.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:helpers-application_helper-yml]
+file_filter  = config/locales/<lang>/helpers/application_helper.yml
+source_file  = config/locales/helpers/application_helper.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:helpers-timeline_helper-yml]
+file_filter  = config/locales/<lang>/helpers/timeline_helper.yml
+source_file  = config/locales/helpers/timeline_helper.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
 [o:energy-sparks:p:energy-sparks:r:mailers-mailer-yml]
 file_filter  = config/locales/<lang>/mailers/mailer.yml
 source_file  = config/locales/mailers/mailer.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:models-lists-yml]
+file_filter  = config/locales/<lang>/models/lists.yml
+source_file  = config/locales/models/lists.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-activities-activities-yml]
+file_filter  = config/locales/<lang>/views/activities/activities.yml
+source_file  = config/locales/views/activities/activities.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-activity_categories-activity_categories-yml]
+file_filter  = config/locales/<lang>/views/activity_categories/activity_categories.yml
+source_file  = config/locales/views/activity_categories/activity_categories.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-activity_types-activity_types-yml]
+file_filter  = config/locales/<lang>/views/activity_types/activity_types.yml
+source_file  = config/locales/views/activity_types/activity_types.yml
 source_lang  = en
 type         = YML
 minimum_perc = 0
@@ -50,9 +99,170 @@ source_lang  = en
 type         = YML
 minimum_perc = 0
 
+[o:energy-sparks:p:energy-sparks:r:views-home-attribution-yml]
+file_filter  = config/locales/<lang>/views/home/attribution.yml
+source_file  = config/locales/views/home/attribution.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-home-child_safeguarding_policy-yml]
+file_filter  = config/locales/<lang>/views/home/child_safeguarding_policy.yml
+source_file  = config/locales/views/home/child_safeguarding_policy.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-home-contact-yml]
+file_filter  = config/locales/<lang>/views/home/contact.yml
+source_file  = config/locales/views/home/contact.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-home-datasets-yml]
+file_filter  = config/locales/<lang>/views/home/datasets.yml
+source_file  = config/locales/views/home/datasets.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-home-education_workshops-yml]
+file_filter  = config/locales/<lang>/views/home/education_workshops.yml
+source_file  = config/locales/views/home/education_workshops.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-home-energy_audits-yml]
+file_filter  = config/locales/<lang>/views/home/energy_audits.yml
+source_file  = config/locales/views/home/energy_audits.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-home-enrol-yml]
+file_filter  = config/locales/<lang>/views/home/enrol.yml
+source_file  = config/locales/views/home/enrol.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-home-enrol_our_local_authority-yml]
+file_filter  = config/locales/<lang>/views/home/enrol_our_local_authority.yml
+source_file  = config/locales/views/home/enrol_our_local_authority.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-home-enrol_our_multi_academy_trust-yml]
+file_filter  = config/locales/<lang>/views/home/enrol_our_multi_academy_trust.yml
+source_file  = config/locales/views/home/enrol_our_multi_academy_trust.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-home-enrol_our_school-yml]
+file_filter  = config/locales/<lang>/views/home/enrol_our_school.yml
+source_file  = config/locales/views/home/enrol_our_school.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-home-for_local_authorities-yml]
+file_filter  = config/locales/<lang>/views/home/for_local_authorities.yml
+source_file  = config/locales/views/home/for_local_authorities.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-home-for_multi_academy_trusts-yml]
+file_filter  = config/locales/<lang>/views/home/for_multi_academy_trusts.yml
+source_file  = config/locales/views/home/for_multi_academy_trusts.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-home-for_schools-yml]
+file_filter  = config/locales/<lang>/views/home/for_schools.yml
+source_file  = config/locales/views/home/for_schools.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
 [o:energy-sparks:p:energy-sparks:r:views-home-home-yml]
 file_filter  = config/locales/<lang>/views/home/home.yml
 source_file  = config/locales/views/home/home.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-home-privacy_and_cookie_policy-yml]
+file_filter  = config/locales/<lang>/views/home/privacy_and_cookie_policy.yml
+source_file  = config/locales/views/home/privacy_and_cookie_policy.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-home-school_statistics-yml]
+file_filter  = config/locales/<lang>/views/home/school_statistics.yml
+source_file  = config/locales/views/home/school_statistics.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-home-team-yml]
+file_filter  = config/locales/<lang>/views/home/team.yml
+source_file  = config/locales/views/home/team.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-intervention_type_groups-intervention_type_groups-yml]
+file_filter  = config/locales/<lang>/views/intervention_type_groups/intervention_type_groups.yml
+source_file  = config/locales/views/intervention_type_groups/intervention_type_groups.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-intervention_types-intervention_types-yml]
+file_filter  = config/locales/<lang>/views/intervention_types/intervention_types.yml
+source_file  = config/locales/views/intervention_types/intervention_types.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-interventions-interventions-yml]
+file_filter  = config/locales/<lang>/views/interventions/interventions.yml
+source_file  = config/locales/views/interventions/interventions.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-jobs-jobs-yml]
+file_filter  = config/locales/<lang>/views/jobs/jobs.yml
+source_file  = config/locales/views/jobs/jobs.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-programme_types-programme_types-yml]
+file_filter  = config/locales/<lang>/views/programme_types/programme_types.yml
+source_file  = config/locales/views/programme_types/programme_types.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-pupils-pupils-yml]
+file_filter  = config/locales/<lang>/views/pupils/pupils.yml
+source_file  = config/locales/views/pupils/pupils.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-school_groups-school_groups-yml]
+file_filter  = config/locales/<lang>/views/school_groups/school_groups.yml
+source_file  = config/locales/views/school_groups/school_groups.yml
 source_lang  = en
 type         = YML
 minimum_perc = 0
@@ -64,9 +274,30 @@ source_lang  = en
 type         = YML
 minimum_perc = 0
 
+[o:energy-sparks:p:energy-sparks:r:views-schools-transport_surveys-yml]
+file_filter  = config/locales/<lang>/views/schools/transport_surveys.yml
+source_file  = config/locales/views/schools/transport_surveys.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-scoreboards-scoreboards-yml]
+file_filter  = config/locales/<lang>/views/scoreboards/scoreboards.yml
+source_file  = config/locales/views/scoreboards/scoreboards.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
 [o:energy-sparks:p:energy-sparks:r:views-shared-shared-yml]
 file_filter  = config/locales/<lang>/views/shared/shared.yml
 source_file  = config/locales/views/shared/shared.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-terms_and_conditions-terms_and_conditions-yml]
+file_filter  = config/locales/<lang>/views/terms_and_conditions/terms_and_conditions.yml
+source_file  = config/locales/views/terms_and_conditions/terms_and_conditions.yml
 source_lang  = en
 type         = YML
 minimum_perc = 0
