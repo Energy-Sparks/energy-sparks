@@ -15,14 +15,15 @@ module Solar
         mpan_mprn = synthetic_mpan(meter_type, @solar_edge_installation.mpan)
         readings_hash = details[:readings]
 
-        meter = Meter.where(
+        meter = Meter.find_or_create_by!(
           meter_type: meter_type,
           mpan_mprn: mpan_mprn,
-          name: meter_type.to_s.humanize,
           solar_edge_installation_id: @solar_edge_installation.id,
           school: @solar_edge_installation.school,
           pseudo: true
-        ).first_or_create!
+        ) do |new_record|
+          new_record.name = meter_type.to_s.humanize
+        end
 
         Amr::DataFeedUpserter.new(data_feed_reading_array(readings_hash, meter.id, mpan_mprn), @amr_data_feed_import_log).perform
         Rails.logger.info "Upserted #{@amr_data_feed_import_log.records_updated} inserted #{@amr_data_feed_import_log.records_imported}for #{@solar_edge_installation.site_id} at #{@solar_edge_installation.school.name}"
