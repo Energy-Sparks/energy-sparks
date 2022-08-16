@@ -163,7 +163,7 @@ private
     return @chart[:x_axis] unless @chart[:chart1_type] == :column
 
     @chart[:x_axis].map do |date|
-      ApplicationController.helpers.nice_dates(Date.parse(date))
+      ApplicationController.helpers.nice_dates(Date.strptime(date, '%d %b %Y'))
     end
   rescue
     @chart[:x_axis]
