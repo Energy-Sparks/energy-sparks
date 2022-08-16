@@ -40,7 +40,7 @@ en:
           - Impact of Solar PV on your chosen day (in kWh)
       pupil_dashboard_solar_pv_benchmark:
         title:
-          - How much my school spends on electricity in comparison with other schools (£)
+          - How much my school spends on electricity in comparison with other schools (£) [ES]
       pupil_dashboard_intraday_line_storage_heaters_last7days:
         title:
           - Your school\'s storage heaters use over 7 days (kW)
@@ -121,7 +121,7 @@ en:
           - Electricity costs on your chosen day (in £)
       pupil_dashboard_electricity_benchmark:
         title:
-          - How much my school spends on electricity in comparison with other schools (£)
+          - How much my school spends on electricity in comparison with other schools (£) [ES]
       pupil_dashboard_group_by_week_electricity_co2:
         title:
           - Your school's carbon emissions from electricity use over a year (in kg CO2). Each bar shows a week's emissions.
