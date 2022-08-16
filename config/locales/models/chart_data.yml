@@ -2,6 +2,6 @@
 en:
   chart_data:
     timescale_description:
-      year: year
       day: day
       week: week
+      year: year
