@@ -39,7 +39,10 @@ module Alerts
               enough_data: :enough,
               relevance: :relevant,
               template_data: {
-                mpan_mprns: meters.map(&:mpan_mprn).to_sentence
+                mpan_mprns: mpan_mprns(meters)
+              },
+              template_data_cy: {
+                mpan_mprns: mpan_mprns(meters, :cy)
               },
               priority_data: {
                 time_of_year_relevance: 5.0
@@ -47,6 +50,20 @@ module Alerts
             )
           end
         end
+      end
+
+      private
+
+      def mpan_mprns(meters, locale = :en)
+        mprns = ""
+        if locale == :en
+          mprns = meters.map(&:mpan_mprn).to_sentence
+        else
+          I18n.with_locale(locale) do
+            mprns = meters.map(&:mpan_mprn).to_sentence
+          end
+        end
+        mprns
       end
     end
   end
