@@ -97,3 +97,10 @@ en:
     videos: Videos
   switch_schools_menu:
     switch_school: Switch school
+  analysis_controls:
+    change_units: Change units
+    explore: Explore
+    back_one: Back 1
+    up_to: Up to
+    view: view
+    forward_one: Forward 1
