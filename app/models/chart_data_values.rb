@@ -53,7 +53,7 @@ class ChartDataValues
       @chart              = chart
       @title              = chart[:title]
       @subtitle           = chart[:subtitle]
-      @x_axis_categories  = chart[:x_axis]
+      @x_axis_categories  = translate_x_axis_categories
       @x_axis_ranges      = chart[:x_axis_ranges] # Not actually used but range of actual dates
       @chart1_type        = chart[:chart1_type]
       @chart1_subtype     = chart[:chart1_subtype]
@@ -158,6 +158,16 @@ class ChartDataValues
   end
 
 private
+
+  def translate_x_axis_categories
+    return @chart[:x_axis] unless @chart[:chart1_type] == :column
+
+    @chart[:x_axis].map do |date|
+      ApplicationController.helpers.nice_dates(Date.parse(date))
+    end
+  rescue
+    @chart[:x_axis]
+  end
 
   def start_date_from_label(full_label)
     # Remove leading Energy:
