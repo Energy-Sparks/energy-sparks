@@ -1,6 +1,8 @@
 ---
 en:
   analytics:
+    aggregator:
+      subttitle: "%{start_date} to %{end_date} [es]"
     chart_configuration:
       acc1:
         title:
