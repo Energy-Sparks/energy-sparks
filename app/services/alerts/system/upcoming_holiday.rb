@@ -50,8 +50,13 @@ module Alerts
             enough_data: :enough,
             relevance: :relevant,
             template_data: {
-              holiday_start_date: next_holiday.start_date.strftime("%d/%m/%Y"),
-              holiday_end_date: next_holiday.end_date.strftime("%d/%m/%Y"),
+              holiday_start_date: next_holiday.start_date.to_s(:es_compact),
+              holiday_end_date: next_holiday.end_date.to_s(:es_compact),
+              holiday_title: nil
+            },
+            template_data_cy: {
+              holiday_start_date: next_holiday.start_date.to_s(:es_compact),
+              holiday_end_date: next_holiday.end_date.to_s(:es_compact),
               holiday_title: nil
             },
             priority_data: {

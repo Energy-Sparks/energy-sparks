@@ -249,6 +249,62 @@ describe 'Management dashboard' do
           expect(page).to have_content('Spending too much money on heating')
           expect(page).to have_content('£2,000')
         end
+
+      end
+
+      context 'with dashboard alerts' do
+        let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :weekly) }
+        let!(:alert_type_rating) do
+          create(
+            :alert_type_rating,
+            alert_type: gas_fuel_alert_type,
+            rating_from: 0,
+            rating_to: 10,
+            management_dashboard_alert_active: true,
+          )
+        end
+        let!(:alert_type_rating_content_version) do
+          create(
+            :alert_type_rating_content_version,
+            alert_type_rating: alert_type_rating,
+            management_dashboard_title_en: 'You can save {{average_one_year_saving_gbp}} on heating in {{average_payback_years}}',
+            management_dashboard_title_cy: 'Gallwch arbed {{average_one_year_saving_gbp}} mewn {{average_payback_years}}',
+          )
+        end
+        let(:alert_summary){ 'Summary of the alert' }
+        let!(:alert) do
+          create(:alert, :with_run,
+            alert_type: gas_fuel_alert_type,
+            run_on: Date.today, school: school,
+            rating: 9.0,
+            template_data: {
+              average_one_year_saving_gbp: '£5,000',
+              average_payback_years: '1 year'
+            },
+            template_data_cy: {
+              average_one_year_saving_gbp: '£5,000',
+              average_payback_years: '1 flwyddyn'
+            }
+          )
+        end
+
+        before do
+          Alerts::GenerateContent.new(school).perform
+        end
+
+        context 'in English' do
+          it 'displays English alert text' do
+            visit management_school_path(school)
+            expect(page).to have_content('You can save £5,000 on heating in 1 year')
+          end
+        end
+
+        context 'in Welsh' do
+          it 'displays Welsh alert text' do
+            visit management_school_path(school, locale: 'cy')
+            expect(page).to have_content('Gallwch arbed £5,000 mewn 1 flwyddyn')
+          end
+        end
       end
 
       context 'with school targets' do
