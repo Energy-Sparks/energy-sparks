@@ -1,4 +1,11 @@
-Time::DATE_FORMATS.merge!({ es_short: '%d %b %Y' })
+Time::DATE_FORMATS.merge!(
+  {
+    es_short:
+      lambda do |date|
+        I18n.l(date, format: '%d %b %Y')
+      end
+  }
+)
 Time::DATE_FORMATS.merge!(
   {
     es_full:
@@ -7,7 +14,14 @@ Time::DATE_FORMATS.merge!(
       end
   }
 )
-Date::DATE_FORMATS.merge!({ es_short: '%d %b %Y' })
+Date::DATE_FORMATS.merge!(
+  {
+    es_short:
+      lambda do |date|
+        I18n.l(date, format: '%d %b %Y')
+      end
+  }
+)
 Date::DATE_FORMATS.merge!({ es_compact: '%d/%m/%Y' })
 Date::DATE_FORMATS.merge!(
   {
