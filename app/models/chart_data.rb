@@ -32,6 +32,10 @@ class ChartData
       y1_axis_choices: Charts::YAxisSelectionService.new(@school, transformed_chart_type).y1_axis_choices(transformed_chart_config)
     ).process
 
+    # puts '-----'
+    # puts values.inspect
+    # puts '-----'
+
     values
   end
 

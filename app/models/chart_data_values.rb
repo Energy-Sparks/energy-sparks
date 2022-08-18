@@ -21,33 +21,10 @@ class ChartDataValues
   STORAGE_HEATER = "#501e74".freeze
   MONEY = '#232B49'.freeze
 
-  COLOUR_HASH = {
-    Series::DegreeDays::DEGREEDAYS => '#232b49',
-    Series::Temperature::TEMPERATURE => '#232b49',
-    Series::DayType::SCHOOLDAYCLOSED => '#3bc0f0',
-    Series::DayType::SCHOOLDAYOPEN => GREEN,
-    Series::DayType::HOLIDAY => '#ff4500',
-    Series::DayType::WEEKEND => '#ffac21',
-    Series::HeatingNonHeating::HEATINGDAY => '#3bc0f0',
-    Series::HeatingNonHeating::NONHEATINGDAY => GREEN,
-    Series::HotWater::USEFULHOTWATERUSAGE => '#3bc0f0',
-    Series::HotWater::WASTEDHOTWATERUSAGE => '#ff4500',
-    Series::MultipleFuels::SOLARPV => '#ffac21', # 'solar pv (consumed onsite)'
-
-    'electricity' => MIDDLE_ELECTRICITY,
-    'gas' => MIDDLE_GAS,
-    'storage heater' => STORAGE_HEATER,
-    '£' => MONEY,
-    'Electricity consumed from solar pv' => GREEN,
-    'Solar irradiance (brightness of sunshine)' => MIDDLE_GAS,
-    'Electricity consumed from mains' => MIDDLE_ELECTRICITY,
-    'Exported solar electricity (not consumed onsite)' => LIGHT_GAS_LINE,
-    'rating' => '#232b49'
-  }.freeze
-
   X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
 
   def initialize(chart, chart_type, transformations: [], allowed_operations: {}, drilldown_available: false, parent_timescale_description: nil, y1_axis_choices: [])
+    @series_colours = build_series_colours
     if chart
       @chart_type         = chart_type
       @chart              = chart
@@ -119,10 +96,10 @@ class ChartDataValues
   end
 
   def work_out_best_colour(data_type)
-    from_hash = COLOUR_HASH[data_type]
+    from_hash = @series_colours[data_type]
     return from_hash unless from_hash.nil?
 
-    using_name = COLOUR_HASH.detect do |key, colour|
+    using_name = @series_colours.detect do |key, colour|
       data_type.to_s.downcase.include?(key.downcase) && !@used_name_colours.include?(colour)
     end
     unless using_name.nil?
@@ -321,5 +298,34 @@ private
     when :management_dashboard_group_by_week_electricity, :management_dashboard_group_by_week_gas, :electricity_co2_last_year_weekly_with_co2_intensity then :weekly
     when :baseload_lastyear then :daily
     end
+  end
+
+  def build_series_colours
+    {
+      Series::DegreeDays::DEGREEDAYS => '#232b49',
+      Series::Temperature::TEMPERATURE => '#232b49',
+
+      I18n.t('analytics.aggregator_single_series.school_day_closed', default: Series::DayType::SCHOOLDAYCLOSED) => '#3bc0f0',
+      I18n.t('analytics.aggregator_single_series.school_day_open', default: Series::DayType::SCHOOLDAYOPEN) => GREEN,
+      I18n.t('analytics.aggregator_single_series.holiday', default: Series::DayType::HOLIDAY) => '#ff4500',
+      I18n.t('analytics.aggregator_single_series.weekend', default: Series::DayType::WEEKEND) => '#ffac21',
+
+      Series::HeatingNonHeating::HEATINGDAY => '#3bc0f0',
+      Series::HeatingNonHeating::NONHEATINGDAY => GREEN,
+      Series::HotWater::USEFULHOTWATERUSAGE => '#3bc0f0',
+      Series::HotWater::WASTEDHOTWATERUSAGE => '#ff4500',
+      Series::MultipleFuels::SOLARPV => '#ffac21', # 'solar pv (consumed onsite)'
+
+      I18n.t('analytics.aggregator_single_series.electricity', default: 'electricity') => MIDDLE_ELECTRICITY,
+      I18n.t('analytics.aggregator_single_series.gas', default: 'gas') => MIDDLE_GAS,
+
+      'storage heater' => STORAGE_HEATER,
+      '£' => MONEY,
+      'Electricity consumed from solar pv' => GREEN,
+      'Solar irradiance (brightness of sunshine)' => MIDDLE_GAS,
+      'Electricity consumed from mains' => MIDDLE_ELECTRICITY,
+      'Exported solar electricity (not consumed onsite)' => LIGHT_GAS_LINE,
+      'rating' => '#232b49'
+    }
   end
 end
