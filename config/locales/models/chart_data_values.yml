@@ -1,0 +1,5 @@
+---
+en:
+  chart_data_values:
+    error_message: "We do not have enough data to display this chart at the moment: %{chart_type}"
+    temperature: Temperature

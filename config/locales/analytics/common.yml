@@ -2,11 +2,11 @@
 en:
   analytics:
     aggregator_single_series:
-      holiday: Holiday [es]
-      weekend: Weekend [es]
-      school_day_open: School Day Open [es]
-      school_day_closed: School Day Closed [es]
-      electricity: Electricity [es]
+      holiday: Holiday
+      weekend: Weekend
+      school_day_open: School Day Open
+      school_day_closed: School Day Closed
+      electricity: Electricity
       gas: Gas [es]
     energy_units:
       accounting_cost: "£"

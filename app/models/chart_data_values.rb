@@ -25,6 +25,7 @@ class ChartDataValues
 
   def initialize(chart, chart_type, transformations: [], allowed_operations: {}, drilldown_available: false, parent_timescale_description: nil, y1_axis_choices: [])
     @series_colours = build_series_colours
+
     if chart
       @chart_type         = chart_type
       @chart              = chart
@@ -51,7 +52,7 @@ class ChartDataValues
       @uses_time_of_day = false
       @y1_axis_choices = y1_axis_choices
     else
-      @title = "We do not have enough data to display this chart at the moment: #{chart_type.to_s.capitalize}"
+      @title = I18n.t('chart_data_values.error_message', chart_type: chart_type.to_s.capitalize)
     end
     @used_name_colours = []
   end
@@ -234,7 +235,7 @@ private
       end
 
       @y2_axis_label = @y2_data.keys[0]
-      @y2_axis_label = 'Temperature' if @y2_axis_label.start_with?('Temp')
+      @y2_axis_label = I18n.t('chart_data_values.temperature') if @y2_axis_label.start_with?('Temp')
 
       @y2_data.each do |data_type, data|
         data_type = tidy_and_keep_label(data_type)

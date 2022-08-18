@@ -1,0 +1,11 @@
+---
+cy:
+  date:
+    abbr_day_names:
+    - WSun
+    - WMon
+    - WTue
+    - WWed
+    - WThu
+    - WFri
+    - WSat
