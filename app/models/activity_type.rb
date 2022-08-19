@@ -80,7 +80,6 @@ class ActivityType < ApplicationRecord
 
   before_save :copy_searchable_attributes
 
-
   def suggested_from
     ActivityType.joins(:activity_type_suggestions).where("activity_type_suggestions.suggested_type_id = ?", id)
   end
