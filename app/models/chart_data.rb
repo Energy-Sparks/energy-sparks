@@ -20,7 +20,9 @@ class ChartData
 
     allowed_operations = check_operations(transformed_chart_config)
     drilldown_available = chart_manager.drilldown_available?(transformed_chart_config)
+
     parent_timescale_description = chart_manager.parent_chart_timescale_description(transformed_chart_config)
+    parent_timescale_description = I18n.t("chart_data.timescale_description.#{parent_timescale_description}", default: nil) || parent_timescale_description
 
     values = ChartDataValues.new(
       chart_manager.run_chart(transformed_chart_config, transformed_chart_type),
@@ -78,8 +80,9 @@ private
     OPERATIONS.each do |operation_type|
       manipulator = ChartManagerTimescaleManipulation.factory(operation_type, chart_config, @aggregated_school)
       allowed_operations[operation_type] = if manipulator.chart_suitable_for_timescale_manipulation?
+        timescale_description = I18n.t("chart_data.timescale_description.#{manipulator.timescale_description.downcase}", default: nil) || manipulator.timescale_description
         {
-          timescale_description: manipulator.timescale_description,
+          timescale_description: timescale_description,
           directions: {
             forward: (manipulator.can_go_forward_in_time_one_period? rescue false), # remove rescue once manipulation for drilled down charts is fixed
             back: (manipulator.can_go_back_in_time_one_period? rescue false) # remove rescue once manipulation for drilled down charts is fixed
