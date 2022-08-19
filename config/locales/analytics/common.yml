@@ -1,13 +1,21 @@
 ---
 en:
   analytics:
-    aggregator_single_series:
-      holiday: Holiday
-      weekend: Weekend
-      school_day_open: School Day Open
-      school_day_closed: School Day Closed
-      electricity: Electricity
-      gas: Gas [es]
+    series:
+      degreedays: Degree Days [test]
+      temperature: Temperature [test]
+      irradiance: Solar Irradiance [test]
+      gridcarbon: Carbon Intensity of Electricity Grid (kg/kWh) [test]
+      gascarbon: Carbon Intensity of Gas (kg/kWh) [test]
+      target_degreedays: Target degree days [test]
+      holiday: Holiday [test]
+      weekend: Weekend [test]
+      school_day_open: School Day Open [test]
+      school_day_closed: School Day Closed [test]
+      electricity: Electricity [test]
+      gas: Gas [test]
+      storage_heaters: Storage heaters [test]
+      solar_pv_consumed_onsite: solar pv (consumed onsite)
     energy_units:
       accounting_cost: "£"
       bev_car: km
