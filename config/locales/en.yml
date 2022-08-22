@@ -10,7 +10,7 @@ en:
     - Fri
     - Sat
     abbr_month_names:
-    -
+    - 
     - Jan
     - Feb
     - Mar
@@ -32,7 +32,7 @@ en:
     - Friday
     - Saturday
     month_names:
-    -
+    - 
     - January
     - February
     - March
