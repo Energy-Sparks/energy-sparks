@@ -63,9 +63,18 @@ en:
       view_schools: View schools
     schools:
       compare_schools: Compare schools
+      explore_data: Explore your data
+      review_energy_analysis: Review your energy analysis
     show:
       act_on_energy_usage: Act on energy usage
+      adult_dashboard: Adult Dashboard
       annual_usage_summary: Annual usage summary
+      co2_kg: CO2 (kg)
+      cost_£: Cost (£)
+      dashboard_title: Adult dashboard for %{school_name}
       energy_saving_opportunities: Energy saving opportunities
+      percentage_change: "% Change"
+      potential_savings: Potential savings
       recent_energy_usage: Recent energy usage
       summary_of_recent_energy_usage: Summary of recent energy usage
+      use_kwh: Use (kWh)
