@@ -15,4 +15,19 @@ describe LocaleHelper do
       expect(helper.t_params([:name, :description], [:en, :cy])).to eq([:name_en, :description_en, :name_cy, :description_cy])
     end
   end
+
+  describe '.t_fuels_as_sentence' do
+    before :each do
+      I18n.backend.store_translations("cy", {common: {electricity: 'Trydan', gas: 'Nwy', storage_heater: 'Gwresogydd storio'}})
+      I18n.backend.store_translations("cy", {support: {array: {last_word_connector: ', a '}}})
+    end
+    it 'formats sentence' do
+      expect(helper.t_fuels_as_sentence([:electricity, :gas, :storage_heater])).to eq('electricity, gas, and storage heater')
+    end
+    it 'translates sentence' do
+      I18n.with_locale(:cy) do
+        expect(helper.t_fuels_as_sentence([:electricity, :gas, :storage_heater])).to eq('trydan, nwy, a gwresogydd storio')
+      end
+    end
+  end
 end

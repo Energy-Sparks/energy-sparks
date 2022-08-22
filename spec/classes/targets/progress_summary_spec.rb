@@ -43,20 +43,6 @@ describe Targets::ProgressSummary do
         expect(progress_summary.passing_fuel_targets).to match_array([:electricity, :gas, :storage_heater])
         expect(progress_summary.any_passing_targets?).to be true
       end
-      it 'formats sentence' do
-        expect(progress_summary.passing_fuel_targets_as_sentence).to eq('electricity, gas, and storage heater')
-      end
-      context 'when using locale' do
-        before :each do
-          I18n.backend.store_translations("cy", {common: {electricity: 'Trydan', gas: 'Nwy', storage_heater: 'Gwresogydd storio'}})
-          I18n.backend.store_translations("cy", {support: {array: {last_word_connector: ', a '}}})
-        end
-        it 'translates sentence' do
-          I18n.with_locale(:cy) do
-            expect(progress_summary.passing_fuel_targets_as_sentence).to eq('trydan, nwy, a gwresogydd storio')
-          end
-        end
-      end
     end
   end
 
