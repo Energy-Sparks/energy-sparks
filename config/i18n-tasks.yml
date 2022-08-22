@@ -132,7 +132,7 @@ ignore_unused:
   - '£'
   - 'date.*'
   - 'devise.mailer.confirmation_instructions.subject'
-  - 'chart_configuration'
+  - 'chart_configuration.*'
 
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
