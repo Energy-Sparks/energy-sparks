@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_10_065919) do
+ActiveRecord::Schema.define(version: 2022_08_16_115552) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -309,6 +309,7 @@ ActiveRecord::Schema.define(version: 2022_08_10_065919) do
     t.integer "relevance", default: 0
     t.json "priority_data", default: {}
     t.bigint "alert_generation_run_id"
+    t.json "template_data_cy", default: {}
     t.index ["alert_generation_run_id"], name: "index_alerts_on_alert_generation_run_id"
     t.index ["alert_type_id", "created_at"], name: "index_alerts_on_alert_type_id_and_created_at"
     t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"

@@ -17,6 +17,7 @@
 #  school_id               :bigint(8)        not null
 #  table_data              :json
 #  template_data           :json
+#  template_data_cy        :json
 #  updated_at              :datetime         not null
 #
 # Indexes
@@ -76,8 +77,18 @@ class Alert < ApplicationRecord
   end
 
   def template_variables
-    template_data.deep_transform_keys do |key|
+    template_data_for_locale.deep_transform_keys do |key|
       :"#{key.to_s.gsub('£', 'gbp')}"
+    end
+  end
+
+  private
+
+  def template_data_for_locale
+    if I18n.locale == :cy
+      template_data_cy&.any? ? template_data_cy : template_data
+    else
+      template_data
     end
   end
 end
