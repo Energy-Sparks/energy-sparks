@@ -65,7 +65,7 @@ module Targets
     private
 
     def to_sentence(list_of_fuel_types)
-      list_of_fuel_types.map { |s| s.to_s.humanize(capitalize: false) }.to_sentence
+      list_of_fuel_types.map { |s| I18n.t('common.' + s.to_s).downcase }.to_sentence
     end
   end
 end
