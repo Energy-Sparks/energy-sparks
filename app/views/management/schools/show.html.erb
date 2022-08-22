@@ -69,8 +69,8 @@
   <h3><%= t('schools.show.recent_energy_usage') %></h3>
   <div class="chart-placeholder-image">
     <div class="chart-placeholder-text">
-      <h1>Coming Soon</h1>
-      <p>We're configuring access to your energy data and will notify you when it's ready to explore</p>
+      <h1><%= t('schools.show.coming_soon') %></h1>
+      <p><%= t('schools.show.configuring_data_access') %></p>
     </div>
   </div>
 <% end %>
@@ -88,9 +88,9 @@
     <div class="float-right">
         <%= link_to url_for(report: true), class: 'btn btn-outline-dark rounded-pill font-weight-bold' do %>
           <%= fa_icon('file-alt') %>
-          Print view
+          <%= t('schools.show.print_view') %>
         <% end %>
-        <%= link_to "Download your data", school_downloads_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' if can?(:read, :school_downloads) %>
+        <%= link_to t('schools.show.download_data'), school_downloads_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' if can?(:read, :school_downloads) %>
     </div>
   </div>
 <% end %>
