@@ -3,7 +3,7 @@ class ChartDataValues
               :y_axis_label, :x_axis_label, :x_axis_categories,
               :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges, :annotations,
               :transformations, :allowed_operations, :drilldown_available, :parent_timescale_description,
-              :uses_time_of_day, :y1_axis_choices
+              :uses_time_of_day, :y1_axis_choices, :explore_message
 
   DARK_ELECTRICITY = '#007EFF'.freeze
   MIDDLE_ELECTRICITY = '#02B8FF'.freeze
@@ -73,6 +73,7 @@ class ChartDataValues
       @parent_timescale_description = parent_timescale_description
       @uses_time_of_day = false
       @y1_axis_choices = y1_axis_choices
+      @explore_message = 'Click on the chart to explore the data'
     else
       @title = "We do not have enough data to display this chart at the moment: #{chart_type.to_s.capitalize}"
     end
@@ -150,7 +151,8 @@ class ChartDataValues
       :transformations,
       :parent_timescale_description,
       :uses_time_of_day,
-      :y1_axis_choices
+      :y1_axis_choices,
+      :explore_message
     ].inject({}) do |json, field|
       json[field] = output.public_send(field)
       json

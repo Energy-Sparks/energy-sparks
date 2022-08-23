@@ -22,11 +22,13 @@ function chartSuccess(chartConfig, chartData, chart) {
 
   titleH3.text(chartData.title);
 
+  console.log(chartData)
+
   if (chartData.subtitle) {
     titleH5.text(chartData.subtitle);
   } else {
     if (chartData.drilldown_available) {
-      titleH5.text('Click on the chart to explore the data');
+      titleH5.text(chartData.explore_message);
     } else {
       titleH5.text('');
     }
