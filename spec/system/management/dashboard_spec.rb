@@ -12,20 +12,11 @@ describe 'Management dashboard' do
   let!(:school_admin)       { create(:school_admin, school: school)}
   let(:staff)               { create(:staff, school: school, staff_role: create(:staff_role, :management)) }
 
-  let(:management_table) {
-    [
-      ["", "Annual Use (kWh)", "Annual CO2 (kg)", "Annual Cost", "Change from last year", "Change in last 4 school weeks", "Potential savings"],
-      ["Electricity", "730,000", "140,000", "£110,000", "+12%", "-8.5%", "£83,000"],
-      ["Gas", "not enough data", "not enough data", "not enough data", "not enough data", "-50%", "not enough data"]
-    ]
-  }
-
   let(:management_data) {
     Tables::SummaryTableData.new({ electricity: { year: { :percent_change => 0.11050 }, workweek: { :percent_change => -0.0923132131 } } })
   }
 
   before(:each) do
-    allow_any_instance_of(Schools::ManagementTableService).to receive(:management_table).and_return(management_table)
     allow_any_instance_of(Schools::ManagementTableService).to receive(:management_data).and_return(management_data)
   end
 
