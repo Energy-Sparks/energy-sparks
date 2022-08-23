@@ -9,20 +9,11 @@ RSpec.describe "school", type: :system do
   let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
   let!(:school_group)       { create(:school_group, name: 'School Group')}
 
-  let(:management_table) {
-    [
-      ["", "Annual Use (kWh)", "Annual CO2 (kg)", "Annual Cost", "Change from last year", "Change in last 4 school weeks", "Potential savings"],
-      ["Electricity", "730,000", "140,000", "£110,000", "+12%", "-8.5%", "£83,000"],
-      ["Gas", "not enough data", "not enough data", "not enough data", "not enough data", "-50%", "not enough data"]
-    ]
-  }
-
   let(:management_data) {
     Tables::SummaryTableData.new({ electricity: { year: { :percent_change => 0.11050 }, workweek: { :percent_change => -0.0923132131 } } })
   }
 
   before(:each) do
-    allow_any_instance_of(Schools::ManagementTableService).to receive(:management_table).and_return(management_table)
     allow_any_instance_of(Schools::ManagementTableService).to receive(:management_data).and_return(management_data)
 
     #Update the configuration rather than creating one, as the school factory builds one
