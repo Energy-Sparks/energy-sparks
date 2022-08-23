@@ -1,11 +1,17 @@
 "use strict";
 
 function chartFailure(chart, title) {
+  var $standardErrorMessage = document.getElementById('chart-error').textContent
   var $chartDiv = $(chart.renderTo);
   var $chartWrapper = $chartDiv.parents('.chart-wrapper');
 
   $chartWrapper.addClass('alert alert-warning');
-  $chartWrapper.html(`<h3>${title} chart</h3>`)
+
+  if (title) {
+    $chartWrapper.html(`<h3>${title}</h3>`)
+  } else {
+    $chartWrapper.html(`<h3>${$standardErrorMessage}</h3>`)
+  }
 }
 
 function chartSuccess(chartConfig, chartData, chart) {
@@ -16,6 +22,8 @@ function chartSuccess(chartConfig, chartData, chart) {
   var noAdvice = chartConfig.no_advice;
 
   var $chartWrapper = $chartDiv.parents('.chart-wrapper');
+  // Remove the hidden chart error placeholder
+  $chartWrapper.find('#chart-error').remove()
 
   var titleH3 = $chartWrapper.find('h3');
   var titleH5 = $chartWrapper.find('h5');
@@ -145,7 +153,7 @@ function processAnalysisChartAjax(chartId, chartConfig, highchartsChart) {
     success: function (returnedData) {
       var thisChartData = returnedData;
       if (thisChartData == undefined || thisChartData.length == 0) {
-        chartFailure(highchartsChart, "We do not have enough data at the moment to display this ");
+        chartFailure(highchartsChart, "");
       } else if (thisChartData.series_data == null) {
         chartFailure(highchartsChart, thisChartData.title);
       } else {
@@ -153,7 +161,7 @@ function processAnalysisChartAjax(chartId, chartConfig, highchartsChart) {
       }
     },
     error: function(broken) {
-      chartFailure(highchartsChart, "We do not have enough data at the moment to display this ");
+      chartFailure(highchartsChart, "");
     }
   });
 }

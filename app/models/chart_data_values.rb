@@ -73,9 +73,9 @@ class ChartDataValues
       @parent_timescale_description = parent_timescale_description
       @uses_time_of_day = false
       @y1_axis_choices = y1_axis_choices
-      @explore_message = 'Click on the chart to explore the data'
+      @explore_message = I18n.t('chart_data_values.explore_message')
     else
-      @title = "We do not have enough data to display this chart at the moment: #{chart_type.to_s.capitalize}"
+      @title = I18n.t('chart_data_values.not_enough_data_message', chart_type: chart_type.to_s.capitalize)
     end
     @used_name_colours = []
   end
