@@ -38,18 +38,6 @@ module Targets
       failed
     end
 
-    def out_of_date_fuel_types_as_sentence
-      to_sentence(out_of_date_fuel_types)
-    end
-
-    def passing_fuel_targets_as_sentence
-      to_sentence(passing_fuel_targets)
-    end
-
-    def failing_fuel_targets_as_sentence
-      to_sentence(failing_fuel_targets)
-    end
-
     def any_failing_targets?
       failing_fuel_targets.any?
     end
@@ -60,12 +48,6 @@ module Targets
 
     def any_out_of_date_fuel_types?
       out_of_date_fuel_types.any?
-    end
-
-    private
-
-    def to_sentence(list_of_fuel_types)
-      list_of_fuel_types.map { |s| s.to_s.humanize(capitalize: false) }.to_sentence
     end
   end
 end

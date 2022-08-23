@@ -3,9 +3,9 @@
     <thead>
       <tr>
         <th scope="col" class="h4"></th>
-        <th scope="col">Cost saving<br>per year</th>
-        <th scope="col">Reduced emissions<br>per year</th>
-        <th scope="col">Delivery cost<br>&nbsp;</th>
+        <th scope="col"><%= t('management.priorities.cost_saving_html') %></th>
+        <th scope="col"><%= t('management.priorities.reduced_emissions_html') %></th>
+        <th scope="col"><%= t('management.priorities.delivery_cost_html') %></th>
         <th scope="col"></th>
       </tr>
     </thead>
@@ -15,8 +15,8 @@
           <td scope="row">
             <%= priority.management_priorities_title  %>
             <% if local_assigns[:show_debug] %>
-              <%= link_to 'Alert', school_alert_path(school, priority.alert) %>
-              Priority: <%= priority.priority %>
+              <%= link_to t('management.priorities.alert'), school_alert_path(school, priority.alert) %>
+              <%= t('management.priorities.priority') %>: <%= priority.priority %>
             <% end %>
           </td>
           <td><%= priority.template_variables[:average_one_year_saving_gbp] %></td>
@@ -24,7 +24,7 @@
           <td><%= priority.template_variables[:average_capital_cost] %></td>
           <td>
             <% if priority.find_out_more %>
-              <%= link_to 'Find out more', school_find_out_more_path(school, priority.find_out_more), class: 'btn btn-rounded btn-fixed-width-10' %>
+              <%= link_to t('management.priorities.find_out_more'), school_find_out_more_path(school, priority.find_out_more), class: 'btn btn-rounded btn-fixed-width-10' %>
             <% end %>
           </td>
         </tr>
@@ -33,7 +33,7 @@
     <% if local_assigns[:show_more] %>
       <tfoot>
         <tr>
-          <td colspan="5" class="text-right"><%= link_to 'See more opportunities', management_school_management_priorities_path(school)  %></td>
+          <td colspan="5" class="text-right"><%= link_to t('management.priorities.more_opportunities'), management_school_management_priorities_path(school)  %></td>
         </tr>
       </tfoot>
     <% end %>

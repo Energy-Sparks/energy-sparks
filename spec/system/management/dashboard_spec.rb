@@ -105,7 +105,7 @@ describe 'Management dashboard' do
       it 'shows data-enabled features' do
         ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'false' do
           visit management_school_path(school)
-          expect(page).to have_content("Your annual usage")
+          expect(page).to have_content("Annual usage summary")
         end
         ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'true' do
           visit management_school_path(school)
@@ -116,8 +116,8 @@ describe 'Management dashboard' do
       it 'shows data-enabled links' do
         visit management_school_path(school)
         expect(page).to have_link("Compare schools")
-        expect(page).to have_link("Explore your data")
-        expect(page).to have_link("Review your energy analysis")
+        expect(page).to have_link("Explore data")
+        expect(page).to have_link("Review energy analysis")
         expect(page).to have_link("Print view")
       end
 
@@ -138,7 +138,7 @@ describe 'Management dashboard' do
         context 'and they can all be shown' do
           let(:dashboard_charts) { [:management_dashboard_group_by_week_electricity, :management_dashboard_group_by_week_gas, :management_dashboard_group_by_week_storage_heater, :management_dashboard_group_by_month_solar_pv] }
           it 'displays the expected charts' do
-            expect(page).to have_content("Your recent energy usage")
+            expect(page).to have_content("Recent energy usage")
             expect(page).to have_css("#management-energy-overview")
             expect(page).to have_css("#electricity-overview")
             expect(page).to have_css("#gas-overview")
@@ -150,7 +150,7 @@ describe 'Management dashboard' do
         context 'and there are limited charts' do
           let(:dashboard_charts) { [:management_dashboard_group_by_week_electricity, :management_dashboard_group_by_week_gas] }
           it 'displays the expected charts' do
-            expect(page).to have_content("Your recent energy usage")
+            expect(page).to have_content("Recent energy usage")
             expect(page).to have_css("#management-energy-overview")
             expect(page).to have_css("#electricity-overview")
             expect(page).to have_css("#gas-overview")
@@ -161,7 +161,7 @@ describe 'Management dashboard' do
 
         context 'and there are no charts' do
           it 'displays the expected charts' do
-            expect(page).to_not have_content("Your recent energy usage")
+            expect(page).to_not have_content("Recent energy usage")
             expect(page).to_not have_css("#management-energy-overview")
           end
         end
@@ -413,7 +413,7 @@ describe 'Management dashboard' do
       it 'overrides flag and shows data-enabled features' do
         ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'false' do
           visit management_school_path(school)
-          expect(page).to have_content("Your annual usage")
+          expect(page).to have_content("Annual usage summary")
         end
         ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'true' do
           visit management_school_path(school)
@@ -424,8 +424,8 @@ describe 'Management dashboard' do
       it 'overrides flag and shows data-enabled links' do
         visit management_school_path(school)
         expect(page).to have_link("Compare schools")
-        expect(page).to have_link("Explore your data")
-        expect(page).to have_link("Review your energy analysis")
+        expect(page).to have_link("Explore data")
+        expect(page).to have_link("Review energy analysis")
         expect(page).to have_link("Download your data")
       end
 
@@ -434,8 +434,8 @@ describe 'Management dashboard' do
         expect(page).to have_link("User view")
         click_on("User view")
         expect(page).to have_link("Admin view")
-        expect(page).to_not have_link("Explore your data")
-        expect(page).to_not have_content("Your annual usage")
+        expect(page).to_not have_link("Explore data")
+        expect(page).to_not have_content("Annual usage summary")
       end
     end
 
@@ -463,7 +463,7 @@ describe 'Management dashboard' do
       end
 
       it 'does not show data-enabled features' do
-        expect(page).to_not have_content("Your annual usage")
+        expect(page).to_not have_content("Annual usage summary")
       end
 
       it 'shows placeholder chart' do
@@ -473,7 +473,7 @@ describe 'Management dashboard' do
       it 'does not show data-enabled links' do
         within('.application') do
           expect(page).to_not have_link("Compare schools")
-          expect(page).to_not have_link("Explore your data")
+          expect(page).to_not have_link("Explore data")
           expect(page).to_not have_link("Review your energy analysis")
           expect(page).to_not have_link("Print view")
         end

@@ -18,4 +18,8 @@ module LocaleHelper
        end
     end.flatten
   end
+
+  def t_fuels_as_sentence(fuels)
+    fuels.map { |fuel| I18n.t('common.' + fuel.to_s).downcase }.to_sentence
+  end
 end
