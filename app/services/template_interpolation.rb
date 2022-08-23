@@ -19,6 +19,8 @@ class TemplateInterpolation
       template = @object.send(field) || ""
       collection[field] = if template.is_a?(ActionText::RichText)
                             process_rich_text_template(template, with)
+                          elsif template.is_a?(Mobility::Backends::ActionText::RichTextTranslation)
+                            process_rich_text_template(template, with)
                           else
                             process_string_template(template, with)
                           end
