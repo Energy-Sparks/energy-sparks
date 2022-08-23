@@ -2,5 +2,5 @@
 en:
   chart_data_values:
     explore_message: Click on the chart to explore the data
-    not_enough_data_message: "We do not have enough data to display this chart at the moment: %{chart_type}"
-    standard_error_message: We do not have enough data at the moment to display this
+    not_enough_data_message: "We do not have enough data to display this chart at the moment: %{chart_type} chart"
+    standard_error_message: We do not have enough data at the moment to display this chart
