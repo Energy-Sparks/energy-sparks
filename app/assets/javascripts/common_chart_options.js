@@ -122,6 +122,9 @@ function commonChartOptions(clickListener){
 }
 
 function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
+
+console.log(chartData)
+
   var subChartType = chartData.chart1_subtype;
   var chartType = chartData.chart1_type;
 
@@ -155,7 +158,7 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
   // Column charts
   if (chartType == 'column') {
     if (! noZoom) {
-      highchartsChart.update({ chart: { zoomType: 'x'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
+      highchartsChart.update({ chart: { zoomType: 'x'}, subtitle: { text: document.ontouchstart === undefined ?  chartData.click_and_drag_message : chartData.pinch_and_zoom_message }});
     }
 
     if (subChartType == 'stacked') {
@@ -174,35 +177,15 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
 
   // Handle Y2 axis
   if (y2AxisLabel) {
-    var axisTitle;
-    var pointFormat;
     var max;
     var colour = '#232b49';
 
     //console.log('Y2 axis label' + y2AxisLabel);
 
     axisFontSize = '18px'
-    if (y2AxisLabel == 'Temperature') {
-      axisTitle = '°C';
-      pointFormat = '{point.y:.2f} °C';
-    } else if (y2AxisLabel == 'Degree Days') {
-      axisTitle = '<span>Degree<br>days</span>';
-      pointFormat = '{point.y:.2f} Degree days';
-    } else if (isAStringAndStartsWith(y2AxisLabel, 'Carbon Intensity')) {
-      axisTitle = 'kg/kWh';
-      pointFormat = '{point.y:.2f} kg/kWh';
-      max = 0.5;
-    } else if (isAStringAndStartsWith(y2AxisLabel, 'Carbon')) {
-      axisTitle = 'kWh';
-      pointFormat = '{point.y:.2f} kWh';
-    } else if (isAStringAndStartsWith(y2AxisLabel, 'Solar')) {
-      axisTitle = '<span>Brightness<br>of sunshine<br>W/m2</span>';
-      pointFormat = '{point.y:.2f} W/m2';
-    } else if (y2AxisLabel == 'rating') {
-      axisTitle = 'Rating';
-    }
-    highchartsChart.addAxis({ title: { text: axisTitle, rotation: 0, useHTML: true, margin: 10, style: {fontSize: axisFontSize} }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: max });
-    highchartsChart.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: pointFormat }}}});
+
+    highchartsChart.addAxis({ title: { text: chartData.y2_axis_label, rotation: 0, useHTML: true, margin: 10, style: {fontSize: axisFontSize} }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: max });
+    highchartsChart.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: chartData.y2_point_format }}}});
   }
 
   Object.keys(seriesData).forEach(function (key) {
@@ -233,9 +216,6 @@ function updateChartLabels(data, chart){
 
   if (yAxisLabel) {
     //console.log('we have a yAxisLabel ' + yAxisLabel);
-    if(yAxisLabel == 'kg CO2') {
-      yAxisLabel = 'kg<br>CO2';
-    }
     chart.update({ yAxis: [{ title: { text: yAxisLabel, useHTML: true }}]});
   }
 
@@ -263,7 +243,7 @@ function scatter(chartData, highchartsChart, seriesData) {
   //console.log('scatter');
 
   updateChartLabels(chartData, highchartsChart);
-  highchartsChart.update({chart: { type: 'scatter', zoomType: 'xy'}, subtitle: { text: document.ontouchstart === undefined ?  'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in' }});
+  highchartsChart.update({chart: { type: 'scatter', zoomType: 'xy'}, subtitle: { text: document.ontouchstart === undefined ? chartData.click_and_drag_message : chartData.pinch_and_zoom_message }});
 
 
   Object.keys(seriesData).forEach(function (key) {
