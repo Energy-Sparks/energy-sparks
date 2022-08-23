@@ -23,5 +23,7 @@
 </html>
 
 <script type="text/javascript">
-  moment.locale('<%= I18n.locale %>')
+  moment.updateLocale('<%= I18n.locale %>',
+    { week : { dow : 0 } }
+  )
 </script>
