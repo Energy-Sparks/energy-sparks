@@ -8,29 +8,22 @@ describe Schools::ManagementTableService do
   context 'when calculating the management dashboard' do
     context 'and there is no ManagementDashboardTable' do
       it 'returns nil' do
-        expect(service.management_table).to be_nil
+        expect(service.management_data).to be_nil
       end
     end
 
     context 'and there is analytics data' do
       let!(:content_generation_run) { create(:content_generation_run, school: school)}
 
-      let(:summary) {
-        [
-          ["", "Annual Use (kWh)", "Annual CO2 (kg)", "Annual Cost", "Change from last year", "Change in last 4 school weeks", "Potential savings"],
-          ["Electricity", "730,000", "140,000", "£110,000", "+12%", "-8.5%", "£83,000"],
-          ["Gas", "not enough data", "not enough data", "not enough data", "not enough data", "-50%", "not enough data"]
-        ]
-      }
-      let(:table_data)  { { 'summary_table' => summary } }
+      let(:template_data)  { { 'summary_data' => "{ gas: { start_date: '2020-01-01', end_date: '2020-02-01' } }" } }
 
-      let!(:alert)     { create(:alert, table_data: table_data ) }
+      let!(:alert)     { create(:alert, template_data: template_data ) }
       let!(:management_dashboard_table) { create(:management_dashboard_table, content_generation_run: content_generation_run, alert: alert) }
 
       it 'returns the alert content' do
-        expect(service.management_table).to eql summary
+        expect(service.management_data.start_date(:gas)).to eq('1 Jan 2020')
+        expect(service.management_data.end_date(:gas)).to eq('1 Feb 2020')
       end
     end
   end
-
 end
