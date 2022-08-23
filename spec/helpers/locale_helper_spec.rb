@@ -21,8 +21,20 @@ describe LocaleHelper do
       I18n.backend.store_translations("cy", {common: {electricity: 'Trydan', gas: 'Nwy', storage_heater: 'Gwresogydd storio'}})
       I18n.backend.store_translations("cy", {support: {array: {last_word_connector: ', a '}}})
     end
-    it 'formats sentence' do
+    it 'formats single fuel' do
+      expect(helper.t_fuels_as_sentence([:gas])).to eq('gas')
+    end
+    it 'formats 2 fuels' do
+      expect(helper.t_fuels_as_sentence([:gas, :electricity])).to eq('gas and electricity')
+    end
+    it 'formats multiple fuels' do
       expect(helper.t_fuels_as_sentence([:electricity, :gas, :storage_heater])).to eq('electricity, gas, and storage heater')
+    end
+    it 'shows missing translations (might want to adjust this)' do
+      expect(helper.t_fuels_as_sentence([:wibble, :gas])).to eq('translation missing: en.common.wibble and gas')
+    end
+    it 'handles empty list' do
+      expect(helper.t_fuels_as_sentence([])).to eq('')
     end
     it 'translates sentence' do
       I18n.with_locale(:cy) do
