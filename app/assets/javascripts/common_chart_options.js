@@ -122,9 +122,6 @@ function commonChartOptions(clickListener){
 }
 
 function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
-
-console.log(chartData)
-
   var subChartType = chartData.chart1_subtype;
   var chartType = chartData.chart1_type;
 
