@@ -24,7 +24,6 @@ describe Alerts::GenerateDashboardAlerts do
   context 'when there are find out mores that match the alert type' do
     let(:rating){ 5.0 }
     let(:pupil_active){ true }
-    let(:public_active){ true }
     let(:management_active){ true }
     let!(:alert)               { create(:alert, :with_run, school: school, rating: rating)}
     let!(:alert_type_rating) do
@@ -33,7 +32,6 @@ describe Alerts::GenerateDashboardAlerts do
         rating_from: 1,
         rating_to: 6,
         pupil_dashboard_alert_active: pupil_active,
-        public_dashboard_alert_active: public_active,
         management_dashboard_alert_active: management_active
     end
     let!(:content_version){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating }
@@ -78,14 +76,6 @@ describe Alerts::GenerateDashboardAlerts do
         end
       end
 
-      context 'where the public alerts are not active' do
-        let(:public_active){ false }
-        it 'does not include the alert' do
-          service.perform(school.latest_alerts_without_exclusions)
-          expect(content_generation_run.dashboard_alerts.public_dashboard.count).to be 0
-        end
-      end
-
       context 'where the management alerts are not active' do
         let(:management_active){ false }
         it 'does not include the alert' do
@@ -99,7 +89,6 @@ describe Alerts::GenerateDashboardAlerts do
           SchoolAlertTypeExclusion.create(school: school, alert_type: alert.alert_type)
           service.perform(school.latest_alerts_without_exclusions)
           expect(content_generation_run.dashboard_alerts.management_dashboard.count).to be 0
-          expect(content_generation_run.dashboard_alerts.public_dashboard.count).to be 0
           expect(content_generation_run.dashboard_alerts.pupil_dashboard.count).to be 0
         end
       end
