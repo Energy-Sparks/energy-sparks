@@ -38,9 +38,9 @@ describe Targets::ProgressSummary do
       end
     end
     context 'with all present fuel types passing' do
-      let(:gas)  { -0.5 }
+      let(:gas_progress)  { nil }
       it 'sees all as passing' do
-        expect(progress_summary.passing_fuel_targets).to match_array([:electricity, :gas, :storage_heater])
+        expect(progress_summary.passing_fuel_targets).to match_array([:electricity, :storage_heater])
         expect(progress_summary.any_passing_targets?).to be true
       end
     end
