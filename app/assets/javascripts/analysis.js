@@ -23,14 +23,14 @@ function chartSuccess(chartConfig, chartData, chart) {
 
   var $chartWrapper = $chartDiv.parents('.chart-wrapper');
   // Remove the hidden chart error placeholder
-  $chartWrapper.find('#chart-error').remove()
+  if (document.getElementById('chart-error')) {
+    document.getElementById('chart-error').remove()
+  }
 
   var titleH3 = $chartWrapper.find('h3');
   var titleH5 = $chartWrapper.find('h5');
 
   titleH3.text(chartData.title);
-
-  console.log(chartData)
 
   if (chartData.subtitle) {
     titleH5.text(chartData.subtitle);
