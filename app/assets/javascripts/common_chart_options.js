@@ -174,14 +174,13 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
 
   // Handle Y2 axis
   if (y2AxisLabel) {
-    var max;
     var colour = '#232b49';
 
     //console.log('Y2 axis label' + y2AxisLabel);
 
     axisFontSize = '18px'
 
-    highchartsChart.addAxis({ title: { text: chartData.y2_axis_label, rotation: 0, useHTML: true, margin: 10, style: {fontSize: axisFontSize} }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: max });
+    highchartsChart.addAxis({ title: { text: chartData.y2_axis_label, rotation: 0, useHTML: true, margin: 10, style: {fontSize: axisFontSize} }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: chartData.y2_max });
     highchartsChart.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: chartData.y2_point_format }}}});
   }
 

@@ -1,7 +1,7 @@
 class ChartDataValues
   attr_reader :anaylsis_type, :title, :subtitle, :chart1_type, :chart1_subtype,
               :y_axis_label, :x_axis_label, :x_axis_categories,
-              :advice_header, :advice_footer, :y2_axis_label, :y2_point_format, :x_axis_ranges, :annotations,
+              :advice_header, :advice_footer, :y2_axis_label, :y2_point_format, :y2_max, :x_axis_ranges, :annotations,
               :transformations, :allowed_operations, :drilldown_available, :parent_timescale_description,
               :uses_time_of_day, :y1_axis_choices, :explore_message, :pinch_and_zoom_message, :click_and_drag_message
 
@@ -155,6 +155,7 @@ class ChartDataValues
       :advice_footer,
       :y2_axis_label,
       :y2_point_format,
+      :y2_max,
       :series_data,
       :annotations,
       :allowed_operations,
@@ -236,22 +237,22 @@ private
 
       y2_data_title = @y2_data.keys[0]
 
-      @y2_axis_label, @point_format = if y2_data_title == 'Temperature'
-                                        ['°C', '{point.y:.2f} °C']
-                                      elsif y2_data_title ==  'Degree Days'
-                                        ['<span>Degree<br>days</span>', '{point.y:.2f} Degree days']
-                                      elsif y2_data_title.starts_with?('Carbon Intensity')
-                                        ['kg/kWh', '{point.y:.2f} kg/kWh']
-                                      elsif y2_data_title.starts_with?('Carbon')
-                                        ['kWh', '{point.y:.2f} kWh']
-                                      elsif y2_data_title.starts_with?('Solar')
-                                        [
-                                          '<span>Brightness<br>of sunshine<br>W/m2</span>',
-                                          '{point.y:.2f} W/m2'
-                                        ]
-                                      elsif y2_data_title == 'rating'
-                                        ['Rating',]
-                                      end
+      @y2_axis_label, @y2_point_format, @y2_max = if y2_data_title == 'Temperature'
+                                                    ['°C', '{point.y:.2f} °C',]
+                                                  elsif y2_data_title ==  'Degree Days'
+                                                    ['<span>Degree<br>days</span>', '{point.y:.2f} Degree days',]
+                                                  elsif y2_data_title.starts_with?('Carbon Intensity',)
+                                                    ['kg/kWh', '{point.y:.2f} kg/kWh', 0.5]
+                                                  elsif y2_data_title.starts_with?('Carbon')
+                                                    ['kWh', '{point.y:.2f} kWh',]
+                                                  elsif y2_data_title.starts_with?('Solar')
+                                                    [
+                                                      '<span>Brightness<br>of sunshine<br>W/m2</span>',
+                                                      '{point.y:.2f} W/m2',
+                                                    ]
+                                                  elsif y2_data_title == 'rating'
+                                                    ['Rating',]
+                                                  end
 
 
       @y2_data.each do |data_type, data|
