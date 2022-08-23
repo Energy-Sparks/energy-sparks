@@ -103,14 +103,8 @@ describe 'Management dashboard' do
       end
 
       it 'shows data-enabled features' do
-        ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'false' do
-          visit management_school_path(school)
-          expect(page).to have_content("Annual usage summary")
-        end
-        ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'true' do
-          visit management_school_path(school)
-          expect(page).to have_content("Summary of recent energy usage")
-        end
+        visit management_school_path(school)
+        expect(page).to have_content("Summary of recent energy usage")
       end
 
       it 'shows data-enabled links' do
@@ -411,14 +405,8 @@ describe 'Management dashboard' do
       end
 
       it 'overrides flag and shows data-enabled features' do
-        ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'false' do
-          visit management_school_path(school)
-          expect(page).to have_content("Annual usage summary")
-        end
-        ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'true' do
-          visit management_school_path(school)
-          expect(page).to have_content("Summary of recent energy usage")
-        end
+        visit management_school_path(school)
+        expect(page).to have_content("Summary of recent energy usage")
       end
 
       it 'overrides flag and shows data-enabled links' do

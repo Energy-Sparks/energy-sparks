@@ -50,14 +50,8 @@ RSpec.describe "school", type: :system do
     end
 
     it 'shows data-enabled features' do
-      ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'false' do
-        visit school_path(school)
-        expect(page).to have_content("Annual usage summary")
-      end
-      ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'true' do
-        visit school_path(school)
-        expect(page).to have_content("Summary of recent energy usage")
-      end
+      visit school_path(school)
+      expect(page).to have_content("Summary of recent energy usage")
     end
 
     it 'shows data-enabled links' do
