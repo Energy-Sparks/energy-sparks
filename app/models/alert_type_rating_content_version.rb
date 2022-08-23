@@ -31,9 +31,6 @@
 #  management_priorities_end_date        :date
 #  management_priorities_start_date      :date
 #  management_priorities_weighting       :decimal(, )      default(5.0)
-#  public_dashboard_alert_end_date       :date
-#  public_dashboard_alert_start_date     :date
-#  public_dashboard_alert_weighting      :decimal(, )      default(5.0)
 #  pupil_dashboard_alert_end_date        :date
 #  pupil_dashboard_alert_start_date      :date
 #  pupil_dashboard_alert_weighting       :decimal(, )      default(5.0)

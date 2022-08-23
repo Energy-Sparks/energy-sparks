@@ -7,7 +7,7 @@
 #  custom                     :boolean          default(FALSE)
 #  id                         :bigint(8)        not null, primary key
 #  intervention_type_group_id :bigint(8)        not null
-#  name                       :string           not null
+#  name                       :string
 #  score                      :integer
 #  summary                    :string
 #  updated_at                 :datetime         not null
