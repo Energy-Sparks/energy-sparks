@@ -16,16 +16,6 @@ en:
         usage: storage heater usage
     hourly-usage-link: View usage by day
     usage:
-      show:
-        explore_data: Explore data
-        data_available: "%{supply} data is available from %{from_date} to %{to_date}"
-        compare_message:
-          split_meter:
-            daily_html: Compare your school's <strong>%{supply}</strong> daily usage between different meters
-            weekly_html: Compare your school's <strong>%{supply}</strong> weekly usage between different meters
-          other:
-            daily_html: Compare your school's <strong>%{supply}</strong> usage between two different days
-            weekly_html: Compare your school's <strong>%{supply}</strong> usage between two different weeks
       date_picker:
         daily:
           first: Select day
@@ -33,6 +23,16 @@ en:
         weekly:
           first: Select week (beginning)
           second: Compare to
+      show:
+        compare_message:
+          other:
+            daily_html: Compare your school's <strong>%{supply}</strong> usage between two different days
+            weekly_html: Compare your school's <strong>%{supply}</strong> usage between two different weeks
+          split_meter:
+            daily_html: Compare your school's <strong>%{supply}</strong> daily usage between different meters
+            weekly_html: Compare your school's <strong>%{supply}</strong> weekly usage between different meters
+        data_available: "%{supply} data is available from %{from_date} to %{to_date}"
+        explore_data: Explore data
       titles:
         electricity:
           daily:
