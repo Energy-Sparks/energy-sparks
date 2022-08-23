@@ -116,8 +116,8 @@ describe 'Management dashboard' do
       it 'shows data-enabled links' do
         visit management_school_path(school)
         expect(page).to have_link("Compare schools")
-        expect(page).to have_link("Explore your data")
-        expect(page).to have_link("Review your energy analysis")
+        expect(page).to have_link("Explore data")
+        expect(page).to have_link("Review energy analysis")
         expect(page).to have_link("Print view")
       end
 
@@ -424,8 +424,8 @@ describe 'Management dashboard' do
       it 'overrides flag and shows data-enabled links' do
         visit management_school_path(school)
         expect(page).to have_link("Compare schools")
-        expect(page).to have_link("Explore your data")
-        expect(page).to have_link("Review your energy analysis")
+        expect(page).to have_link("Explore data")
+        expect(page).to have_link("Review energy analysis")
         expect(page).to have_link("Download your data")
       end
 
@@ -434,7 +434,7 @@ describe 'Management dashboard' do
         expect(page).to have_link("User view")
         click_on("User view")
         expect(page).to have_link("Admin view")
-        expect(page).to_not have_link("Explore your data")
+        expect(page).to_not have_link("Explore data")
         expect(page).to_not have_content("Annual usage summary")
       end
     end
@@ -473,7 +473,7 @@ describe 'Management dashboard' do
       it 'does not show data-enabled links' do
         within('.application') do
           expect(page).to_not have_link("Compare schools")
-          expect(page).to_not have_link("Explore your data")
+          expect(page).to_not have_link("Explore data")
           expect(page).to_not have_link("Review your energy analysis")
           expect(page).to_not have_link("Print view")
         end
