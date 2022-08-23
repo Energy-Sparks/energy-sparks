@@ -1,0 +1,11 @@
+---
+en:
+  management:
+    priorities:
+      alert: Alert
+      cost_saving_html: Cost saving<br>per year
+      delivery_cost_html: Delivery cost<br>&nbsp;
+      find_out_more: Find out more
+      more_opportunities: See more opportunities
+      priority: Priority
+      reduced_emissions_html: Reduced emissions<br>per year
