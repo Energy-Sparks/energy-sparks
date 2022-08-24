@@ -39,7 +39,7 @@ class ChartDataValues
       @advice_header      = chart[:advice_header]
       @advice_footer      = chart[:advice_footer]
       @x_data             = translate_data_keys_for(chart[:x_data])
-      @y2_data            = translate_data_keys_for(chart[:y2_data])
+      @y2_data            = chart[:y2_data]
       @y2_chart_type      = chart[:y2_chart_type]
       @annotations        = []
       @y2_axis_label = '' # Set later
@@ -226,6 +226,10 @@ private
     end
   end
 
+  def wrap_label_as_html(label)
+    '<span>' + label.split.join('<br />') + '</span>'
+  end
+
   def column_or_bar
     @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
       data_type = tidy_label(data_type)
@@ -246,8 +250,11 @@ private
 
       @y2_axis_label, @y2_point_format, @y2_max = if y2_data_title == 'Temperature'
                                                     ['°C', '{point.y:.2f} °C',]
-                                                  elsif y2_data_title ==  'Degree Days'
-                                                    ['<span>Degree<br>days</span>', '{point.y:.2f} Degree days',]
+                                                  elsif y2_data_title == Series::DegreeDays::DEGREEDAYS
+                                                    [
+                                                      wrap_label_as_html(Series::ManagerBase.translated_series_item_for(y2_data_title)),
+                                                      '{point.y:.2f} Degree days',
+                                                    ]
                                                   elsif y2_data_title.starts_with?('Carbon Intensity',)
                                                     ['kg/kWh', '{point.y:.2f} kg/kWh', 0.5]
                                                   elsif y2_data_title.starts_with?('Carbon')
