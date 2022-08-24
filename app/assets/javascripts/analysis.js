@@ -22,11 +22,6 @@ function chartSuccess(chartConfig, chartData, chart) {
   var noAdvice = chartConfig.no_advice;
 
   var $chartWrapper = $chartDiv.parents('.chart-wrapper');
-  // Remove the hidden chart error placeholder
-  if (document.getElementById('chart-error')) {
-    document.getElementById('chart-error').remove()
-  }
-
   var titleH3 = $chartWrapper.find('h3');
   var titleH5 = $chartWrapper.find('h5');
 
