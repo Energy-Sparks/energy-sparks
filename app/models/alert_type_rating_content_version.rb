@@ -31,9 +31,6 @@
 #  management_priorities_end_date        :date
 #  management_priorities_start_date      :date
 #  management_priorities_weighting       :decimal(, )      default(5.0)
-#  public_dashboard_alert_end_date       :date
-#  public_dashboard_alert_start_date     :date
-#  public_dashboard_alert_weighting      :decimal(, )      default(5.0)
 #  pupil_dashboard_alert_end_date        :date
 #  pupil_dashboard_alert_start_date      :date
 #  pupil_dashboard_alert_weighting       :decimal(, )      default(5.0)
@@ -68,7 +65,6 @@ class AlertTypeRatingContentVersion < ApplicationRecord
 
   has_rich_text :email_content
   has_rich_text :find_out_more_content
-  has_rich_text :public_dashboard_title
 
   TX_ATTRIBUTE_MAPPING = {
     pupil_dashboard_title: { templated: true },
@@ -79,7 +75,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   def self.functionality
     [
       :pupil_dashboard_alert,
-      :public_dashboard_alert, :management_dashboard_alert,
+      :management_dashboard_alert,
       :management_priorities, :sms, :email, :analysis
     ]
   end
@@ -87,7 +83,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   def self.template_fields
     [
       :pupil_dashboard_title,
-      :public_dashboard_title, :management_dashboard_title,
+      :management_dashboard_title,
       :find_out_more_title, :find_out_more_content,
       :email_title, :email_content, :sms_content,
       :find_out_more_chart_variable, :find_out_more_chart_title,

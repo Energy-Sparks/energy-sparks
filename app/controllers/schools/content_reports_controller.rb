@@ -14,7 +14,6 @@ module Schools
       @run = @school.content_generation_runs.find(params[:id])
 
       @pupil_dashboard_alerts = setup_alerts(@run.dashboard_alerts.pupil_dashboard, :pupil_dashboard_title, limit: nil)
-      @public_dashboard_alerts = setup_alerts(@run.dashboard_alerts.public_dashboard, :public_dashboard_title, limit: nil)
       @management_dashboard_alerts = setup_alerts(@run.dashboard_alerts.management_dashboard, :management_dashboard_title, limit: nil)
       @management_priorities = setup_priorities(@run.management_priorities)
       setup_analysis_pages(@run.analysis_pages)
