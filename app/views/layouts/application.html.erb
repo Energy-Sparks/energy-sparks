@@ -20,10 +20,5 @@
     <% end %>
     <%= render 'shared/footer' %>
   </body>
-
-  <script type="text/javascript">
-    moment.updateLocale('<%= I18n.locale %>',
-      { week : { dow : 0 } }
-    )
-  </script>
+  <%= render 'layouts/set_mobility_locale' if ['analysis','usage'].include?(controller_name) %>
 </html>
