@@ -194,7 +194,7 @@ private
     start_date = start_date_from_label(full_label)
     return full_label unless start_date
     end_date = start_date + 6.days
-    "#{start_date.strftime('%a %d/%m/%Y')} - #{end_date.strftime('%a %d/%m/%Y')}"
+    "#{I18n.l(start_date, format: '%a %d/%m/%Y')} - #{I18n.l(end_date, format: '%a %d/%m/%Y')}"
   rescue ArgumentError
     full_label
   end
@@ -207,7 +207,7 @@ private
 
       #run map over the data to turn it into a hash of {y: d, day: formatted_date from index}
       if start_date
-        data.map!.with_index {|v, i| { y: v, day: start_date.next_day(i).strftime('%a %d/%m/%Y') } }
+        data.map!.with_index {|v, i| { y: v, day: I18n.l(start_date.next_day(i), format: '%a %d/%m/%Y') } }
       end
 
       #add some useful cue to the json to indicate it should use an alternate formatter
