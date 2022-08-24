@@ -29,7 +29,7 @@ class ChartDataValues
       @chart              = chart
       @title              = chart[:title]
       @subtitle           = chart[:subtitle]
-      @x_axis_categories  = chart[:x_axis]
+      @x_axis_categories  = translate_categories_for(chart[:x_axis])
       @x_axis_ranges      = chart[:x_axis_ranges] # Not actually used but range of actual dates
       @chart1_type        = chart[:chart1_type]
       @chart1_subtype     = chart[:chart1_subtype]
@@ -39,7 +39,7 @@ class ChartDataValues
       @advice_header      = chart[:advice_header]
       @advice_footer      = chart[:advice_footer]
       @x_data             = translate_data_keys_for(chart[:x_data])
-      @y2_data            = chart[:y2_data]
+      @y2_data            = translate_data_keys_for(chart[:y2_data])
       @y2_chart_type      = chart[:y2_chart_type]
       @annotations        = []
       @y2_axis_label = '' # Set later
@@ -56,6 +56,12 @@ class ChartDataValues
       @title = I18n.t('chart_data_values.not_enough_data_message', chart_type: chart_type.to_s.capitalize)
     end
     @used_name_colours = []
+  end
+
+  def translate_categories_for(categories)
+    return categories unless categories.is_a? Array
+
+    categories.map { |category_label| Series::ManagerBase.translated_series_item_for(category_label) }
   end
 
   def translate_data_keys_for(data)
@@ -248,29 +254,29 @@ private
 
       y2_data_title = @y2_data.keys[0]
 
-      @y2_axis_label, @y2_point_format, @y2_max = if y2_data_title == 'Temperature'
+      @y2_axis_label, @y2_point_format, @y2_max = if y2_data_title == Series::ManagerBase.translated_series_item_for(Series::Temperature::TEMPERATURE)
                                                     ['°C', '{point.y:.2f} °C',]
-                                                  elsif y2_data_title == Series::DegreeDays::DEGREEDAYS
+                                                  elsif y2_data_title == Series::ManagerBase.translated_series_item_for(Series::DegreeDays::DEGREEDAYS)
                                                     [
-                                                      wrap_label_as_html(Series::ManagerBase.translated_series_item_for(y2_data_title)),
-                                                      '{point.y:.2f} Degree days',
+                                                      wrap_label_as_html(y2_data_title),
+                                                      "{point.y:.2f} #{y2_data_title}",
                                                     ]
-                                                  elsif y2_data_title.starts_with?('Carbon Intensity',)
+                                                  elsif y2_data_title.starts_with?('Carbon Intensity',) # TODO match against series constants
                                                     ['kg/kWh', '{point.y:.2f} kg/kWh', 0.5]
-                                                  elsif y2_data_title.starts_with?('Carbon')
+                                                  elsif y2_data_title.starts_with?('Carbon') # TODO match against series constants
                                                     ['kWh', '{point.y:.2f} kWh',]
-                                                  elsif y2_data_title.starts_with?('Solar')
+                                                  elsif y2_data_title.starts_with?('Solar') # TODO match against series constants
                                                     [
-                                                      '<span>Brightness<br>of sunshine<br>W/m2</span>',
+                                                      I18n.t('series_data_manager.series.y2_solar_html'),
                                                       '{point.y:.2f} W/m2',
                                                     ]
-                                                  elsif y2_data_title == 'rating'
-                                                    ['Rating',]
+                                                  elsif y2_data_title == 'rating' # TODO match against series constants
+                                                    [I18n.t('series_data_manager.series.y2_rating'),]
                                                   end
 
 
       @y2_data.each do |data_type, data|
-        data_type = 'Solar irradiance (brightness of sunshine)' if data_type.start_with?('Solar')
+        data_type = I18n.t('series_data_manager.series.y2_solar_label') if data_type.start_with?('Solar') # TODO match against series constants
         @series_data << { name: data_type, color: work_out_best_colour(data_type), type: 'line', data: data, yAxis: 1 }
       end
     end
