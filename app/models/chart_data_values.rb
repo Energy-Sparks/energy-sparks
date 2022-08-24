@@ -21,30 +21,6 @@ class ChartDataValues
   STORAGE_HEATER = "#501e74".freeze
   MONEY = '#232B49'.freeze
 
-  COLOUR_HASH = {
-    Series::DegreeDays::DEGREEDAYS => '#232b49',
-    Series::Temperature::TEMPERATURE => '#232b49',
-    Series::DayType::SCHOOLDAYCLOSED => '#3bc0f0',
-    Series::DayType::SCHOOLDAYOPEN => GREEN,
-    Series::DayType::HOLIDAY => '#ff4500',
-    Series::DayType::WEEKEND => '#ffac21',
-    Series::HeatingNonHeating::HEATINGDAY => '#3bc0f0',
-    Series::HeatingNonHeating::NONHEATINGDAY => GREEN,
-    Series::HotWater::USEFULHOTWATERUSAGE => '#3bc0f0',
-    Series::HotWater::WASTEDHOTWATERUSAGE => '#ff4500',
-    Series::MultipleFuels::SOLARPV => '#ffac21', # 'solar pv (consumed onsite)'
-
-    'electricity' => MIDDLE_ELECTRICITY,
-    'gas' => MIDDLE_GAS,
-    'storage heater' => STORAGE_HEATER,
-    '£' => MONEY,
-    'Electricity consumed from solar pv' => GREEN,
-    'Solar irradiance (brightness of sunshine)' => MIDDLE_GAS,
-    'Electricity consumed from mains' => MIDDLE_ELECTRICITY,
-    'Exported solar electricity (not consumed onsite)' => LIGHT_GAS_LINE,
-    'rating' => '#232b49'
-  }.freeze
-
   X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
 
   def initialize(chart, chart_type, transformations: [], allowed_operations: {}, drilldown_available: false, parent_timescale_description: nil, y1_axis_choices: [])
@@ -62,8 +38,8 @@ class ChartDataValues
       @configuration      = chart[:configuration]
       @advice_header      = chart[:advice_header]
       @advice_footer      = chart[:advice_footer]
-      @x_data             = chart[:x_data]
-      @y2_data            = chart[:y2_data]
+      @x_data             = translate_data_keys_for(chart[:x_data])
+      @y2_data            = translate_data_keys_for(chart[:y2_data])
       @y2_chart_type      = chart[:y2_chart_type]
       @annotations        = []
       @y2_axis_label = '' # Set later
@@ -80,6 +56,12 @@ class ChartDataValues
       @title = I18n.t('chart_data_values.not_enough_data_message', chart_type: chart_type.to_s.capitalize)
     end
     @used_name_colours = []
+  end
+
+  def translate_data_keys_for(data)
+    return unless data.present?
+
+    data.transform_keys { |series_item| Series::ManagerBase.translated_series_item_for(series_item) }
   end
 
   def format_y_axis_label_for(y_axis_label)
@@ -129,11 +111,36 @@ class ChartDataValues
     end
   end
 
+  def colour_lookup
+    @colour_lookup ||= {
+      I18n.t("series_data_manager.series.#{Series::DegreeDays::DEGREEDAYS_I18N_KEY}") => '#232b49',
+      I18n.t("series_data_manager.series.#{Series::Temperature::TEMPERATURE_I18N_KEY}") => '#232b49',
+      I18n.t("series_data_manager.series.#{Series::DayType::SCHOOLDAYCLOSED_I18N_KEY}") => '#3bc0f0',
+      I18n.t("series_data_manager.series.#{Series::DayType::SCHOOLDAYOPEN_I18N_KEY}") => GREEN,
+      I18n.t("series_data_manager.series.#{Series::DayType::HOLIDAY_I18N_KEY}") => '#ff4500',
+      I18n.t("series_data_manager.series.#{Series::DayType::WEEKEND_I18N_KEY}") => '#ffac21',
+      I18n.t("series_data_manager.series.#{Series::HeatingNonHeating::HEATINGDAY_I18N_KEY}") => '#3bc0f0',
+      I18n.t("series_data_manager.series.#{Series::HeatingNonHeating::NONHEATINGDAY_I18N_KEY}") => GREEN,
+      I18n.t("series_data_manager.series.#{Series::HotWater::USEFULHOTWATERUSAGE_I18N_KEY}") => '#3bc0f0',
+      I18n.t("series_data_manager.series.#{Series::HotWater::WASTEDHOTWATERUSAGE_I18N_KEY}") => '#ff4500',
+      I18n.t("series_data_manager.series.#{Series::MultipleFuels::SOLARPV_I18N_KEY}") => '#ffac21',
+      I18n.t('series_data_manager.series.electricity') => MIDDLE_ELECTRICITY,
+      I18n.t('series_data_manager.series.gas') => MIDDLE_GAS,
+      I18n.t('series_data_manager.series.storage_heaters') => STORAGE_HEATER,
+      '£' => MONEY,
+      'Electricity consumed from solar pv' => GREEN,
+      'Solar irradiance (brightness of sunshine)' => MIDDLE_GAS,
+      'Electricity consumed from mains' => MIDDLE_ELECTRICITY,
+      'Exported solar electricity (not consumed onsite)' => LIGHT_GAS_LINE,
+      'rating' => '#232b49'
+    }
+  end
+
   def work_out_best_colour(data_type)
-    from_hash = COLOUR_HASH[data_type]
+    from_hash = colour_lookup[data_type]
     return from_hash unless from_hash.nil?
 
-    using_name = COLOUR_HASH.detect do |key, colour|
+    using_name = colour_lookup.detect do |key, colour|
       data_type.to_s.downcase.include?(key.downcase) && !@used_name_colours.include?(colour)
     end
     unless using_name.nil?
