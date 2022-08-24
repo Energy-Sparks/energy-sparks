@@ -1,9 +1,9 @@
 class ChartDataValues
   attr_reader :anaylsis_type, :title, :subtitle, :chart1_type, :chart1_subtype,
               :y_axis_label, :x_axis_label, :x_axis_categories,
-              :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges, :annotations,
+              :advice_header, :advice_footer, :y2_axis_label, :y2_point_format, :y2_max, :x_axis_ranges, :annotations,
               :transformations, :allowed_operations, :drilldown_available, :parent_timescale_description,
-              :uses_time_of_day, :y1_axis_choices
+              :uses_time_of_day, :y1_axis_choices, :explore_message, :pinch_and_zoom_message, :click_and_drag_message
 
   DARK_ELECTRICITY = '#007EFF'.freeze
   MIDDLE_ELECTRICITY = '#02B8FF'.freeze
@@ -21,6 +21,30 @@ class ChartDataValues
   STORAGE_HEATER = "#501e74".freeze
   MONEY = '#232B49'.freeze
 
+  COLOUR_HASH = {
+    Series::DegreeDays::DEGREEDAYS => '#232b49',
+    Series::Temperature::TEMPERATURE => '#232b49',
+    Series::DayType::SCHOOLDAYCLOSED => '#3bc0f0',
+    Series::DayType::SCHOOLDAYOPEN => GREEN,
+    Series::DayType::HOLIDAY => '#ff4500',
+    Series::DayType::WEEKEND => '#ffac21',
+    Series::HeatingNonHeating::HEATINGDAY => '#3bc0f0',
+    Series::HeatingNonHeating::NONHEATINGDAY => GREEN,
+    Series::HotWater::USEFULHOTWATERUSAGE => '#3bc0f0',
+    Series::HotWater::WASTEDHOTWATERUSAGE => '#ff4500',
+    Series::MultipleFuels::SOLARPV => '#ffac21', # 'solar pv (consumed onsite)'
+
+    'electricity' => MIDDLE_ELECTRICITY,
+    'gas' => MIDDLE_GAS,
+    'storage heater' => STORAGE_HEATER,
+    '£' => MONEY,
+    'Electricity consumed from solar pv' => GREEN,
+    'Solar irradiance (brightness of sunshine)' => MIDDLE_GAS,
+    'Electricity consumed from mains' => MIDDLE_ELECTRICITY,
+    'Exported solar electricity (not consumed onsite)' => LIGHT_GAS_LINE,
+    'rating' => '#232b49'
+  }.freeze
+
   X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
 
   def initialize(chart, chart_type, transformations: [], allowed_operations: {}, drilldown_available: false, parent_timescale_description: nil, y1_axis_choices: [])
@@ -34,12 +58,12 @@ class ChartDataValues
       @chart1_type        = chart[:chart1_type]
       @chart1_subtype     = chart[:chart1_subtype]
       @x_axis_label       = chart[:x_axis_label]
-      @y_axis_label       = chart[:y_axis_label]
+      @y_axis_label       = format_y_axis_label_for(chart[:y_axis_label])
       @configuration      = chart[:configuration]
       @advice_header      = chart[:advice_header]
       @advice_footer      = chart[:advice_footer]
-      @x_data             = translate_data_keys_for(chart[:x_data])
-      @y2_data            = translate_data_keys_for(chart[:y2_data])
+      @x_data             = chart[:x_data]
+      @y2_data            = chart[:y2_data]
       @y2_chart_type      = chart[:y2_chart_type]
       @annotations        = []
       @y2_axis_label = '' # Set later
@@ -49,16 +73,21 @@ class ChartDataValues
       @parent_timescale_description = parent_timescale_description
       @uses_time_of_day = false
       @y1_axis_choices = y1_axis_choices
+      @explore_message = I18n.t('chart_data_values.explore_message')
+      @pinch_and_zoom_message = I18n.t('chart_data_values.pinch_and_zoom_message')
+      @click_and_drag_message = I18n.t('chart_data_values.click_and_drag_message')
     else
-      @title = "We do not have enough data to display this chart at the moment: #{chart_type.to_s.capitalize}"
+      @title = I18n.t('chart_data_values.not_enough_data_message', chart_type: chart_type.to_s.capitalize)
     end
     @used_name_colours = []
   end
 
-  def translate_data_keys_for(data)
-    return unless data.present?
-
-    data.transform_keys { |series_item| Series::ManagerBase.translated_series_item_for(series_item) }
+  def format_y_axis_label_for(y_axis_label)
+    if y_axis_label == 'kg CO2'
+      'kg<br>CO2'
+    else
+      y_axis_label
+    end
   end
 
   def process
@@ -100,36 +129,11 @@ class ChartDataValues
     end
   end
 
-  def colour_lookup
-    @colour_lookup ||= {
-      I18n.t("series_data_manager.#{Series::DegreeDays::DEGREEDAYS_I18N_KEY}") => '#232b49',
-      I18n.t("series_data_manager.#{Series::Temperature::TEMPERATURE_I18N_KEY}") => '#232b49',
-      I18n.t("series_data_manager.#{Series::DayType::SCHOOLDAYCLOSED_I18N_KEY}") => '#3bc0f0',
-      I18n.t("series_data_manager.#{Series::DayType::SCHOOLDAYOPEN_I18N_KEY}") => GREEN,
-      I18n.t("series_data_manager.#{Series::DayType::HOLIDAY_I18N_KEY}") => '#ff4500',
-      I18n.t("series_data_manager.#{Series::DayType::WEEKEND_I18N_KEY}") => '#ffac21',
-      I18n.t("series_data_manager.#{Series::HeatingNonHeating::HEATINGDAY_I18N_KEY}") => '#3bc0f0',
-      I18n.t("series_data_manager.#{Series::HeatingNonHeating::NONHEATINGDAY_I18N_KEY}") => GREEN,
-      I18n.t("series_data_manager.#{Series::HotWater::USEFULHOTWATERUSAGE_I18N_KEY}") => '#3bc0f0',
-      I18n.t("series_data_manager.#{Series::HotWater::WASTEDHOTWATERUSAGE_I18N_KEY}") => '#ff4500',
-      I18n.t("series_data_manager.#{Series::MultipleFuels::SOLARPV_I18N_KEY}") => '#ffac21',
-      'electricity' => MIDDLE_ELECTRICITY,
-      'gas' => MIDDLE_GAS,
-      'storage heater' => STORAGE_HEATER,
-      '£' => MONEY,
-      'Electricity consumed from solar pv' => GREEN,
-      'Solar irradiance (brightness of sunshine)' => MIDDLE_GAS,
-      'Electricity consumed from mains' => MIDDLE_ELECTRICITY,
-      'Exported solar electricity (not consumed onsite)' => LIGHT_GAS_LINE,
-      'rating' => '#232b49'
-    }
-  end
-
   def work_out_best_colour(data_type)
-    from_hash = colour_lookup[data_type]
+    from_hash = COLOUR_HASH[data_type]
     return from_hash unless from_hash.nil?
 
-    using_name = colour_lookup.detect do |key, colour|
+    using_name = COLOUR_HASH.detect do |key, colour|
       data_type.to_s.downcase.include?(key.downcase) && !@used_name_colours.include?(colour)
     end
     unless using_name.nil?
@@ -150,6 +154,8 @@ class ChartDataValues
       :advice_header,
       :advice_footer,
       :y2_axis_label,
+      :y2_point_format,
+      :y2_max,
       :series_data,
       :annotations,
       :allowed_operations,
@@ -157,7 +163,10 @@ class ChartDataValues
       :transformations,
       :parent_timescale_description,
       :uses_time_of_day,
-      :y1_axis_choices
+      :y1_axis_choices,
+      :explore_message,
+      :pinch_and_zoom_message,
+      :click_and_drag_message
     ].inject({}) do |json, field|
       json[field] = output.public_send(field)
       json
@@ -225,7 +234,27 @@ private
     end
 
     if @y2_data != nil && @y2_chart_type == :line
-      @y2_axis_label = @y2_data.keys[0]
+
+      y2_data_title = @y2_data.keys[0]
+
+      @y2_axis_label, @y2_point_format, @y2_max = if y2_data_title == 'Temperature'
+                                                    ['°C', '{point.y:.2f} °C',]
+                                                  elsif y2_data_title ==  'Degree Days'
+                                                    ['<span>Degree<br>days</span>', '{point.y:.2f} Degree days',]
+                                                  elsif y2_data_title.starts_with?('Carbon Intensity',)
+                                                    ['kg/kWh', '{point.y:.2f} kg/kWh', 0.5]
+                                                  elsif y2_data_title.starts_with?('Carbon')
+                                                    ['kWh', '{point.y:.2f} kWh',]
+                                                  elsif y2_data_title.starts_with?('Solar')
+                                                    [
+                                                      '<span>Brightness<br>of sunshine<br>W/m2</span>',
+                                                      '{point.y:.2f} W/m2',
+                                                    ]
+                                                  elsif y2_data_title == 'rating'
+                                                    ['Rating',]
+                                                  end
+
+
       @y2_data.each do |data_type, data|
         data_type = 'Solar irradiance (brightness of sunshine)' if data_type.start_with?('Solar')
         @series_data << { name: data_type, color: work_out_best_colour(data_type), type: 'line', data: data, yAxis: 1 }
