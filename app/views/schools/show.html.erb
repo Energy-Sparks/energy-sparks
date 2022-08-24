@@ -16,7 +16,7 @@
 <%= render 'management/schools/targets/progress_notice', school: @school, progress_summary: @progress_summary %>
 
 <% if @dashboard_alerts %>
-  <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :public_dashboard_title %>
+  <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
 <% end %>
 
 <% if @overview_charts && @overview_charts.any? %>

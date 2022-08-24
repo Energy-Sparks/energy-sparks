@@ -48,13 +48,6 @@
     <% end %>
   <% end %>
 
-  <%= render 'content_section', form: form, field: :public_dashboard_alert_active, field_name: 'Public dashboard alert' do %>
-    <%= render 'admin/shared/preview_section', content: content, scope: 'public_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :public_dashboard_title) do %>
-      <%= content.label 'Public dashboard title', for: :public_dashboard_title %>
-      <%= content.rich_text_area :public_dashboard_title %>
-    <% end %>
-  <% end %>
-
   <%= render 'content_section', form: form, field: :management_dashboard_alert_active, field_name: 'Adult dashboard alert' do %>
     <%= render 'admin/shared/preview_section', content: content, scope: 'management_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :management_dashboard_title), locales: I18n.available_locales do |locale| %>
       <%= content.label "Adult dashboard title", for: t_field(:management_dashboard_title, locale) %>

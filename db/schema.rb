@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_16_115552) do
+ActiveRecord::Schema.define(version: 2022_08_23_162339) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -211,8 +211,6 @@ ActiveRecord::Schema.define(version: 2022_08_16_115552) do
     t.date "sms_end_date"
     t.date "email_start_date"
     t.date "email_end_date"
-    t.date "public_dashboard_alert_start_date"
-    t.date "public_dashboard_alert_end_date"
     t.date "management_dashboard_alert_start_date"
     t.date "management_dashboard_alert_end_date"
     t.date "management_priorities_start_date"
@@ -222,7 +220,6 @@ ActiveRecord::Schema.define(version: 2022_08_16_115552) do
     t.decimal "management_dashboard_alert_weighting", default: "5.0"
     t.decimal "management_priorities_weighting", default: "5.0"
     t.decimal "pupil_dashboard_alert_weighting", default: "5.0"
-    t.decimal "public_dashboard_alert_weighting", default: "5.0"
     t.decimal "find_out_more_weighting", default: "5.0"
     t.text "find_out_more_table_variable", default: "none"
     t.string "analysis_title"
