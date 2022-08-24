@@ -39,6 +39,8 @@
 //= require simulator
 
 //= require moment
+//= require moment/cy.js
+
 //= require tempusdominus-bootstrap-4.js
 
 //= require content

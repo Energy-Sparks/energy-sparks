@@ -1,7 +1,6 @@
 "use strict";
 
 $(document).ready(function() {
-
   //called by event handlers that need to update the graph
   //they should have already made any changes to the form we're using, so this just updates
   //the explanation and then triggers the data load
@@ -86,6 +85,7 @@ $(document).ready(function() {
       maxDate: maxMin.max,
       useCurrent: false, // without this set, maxDate takes priority over the set value
       allowInputToggle: true,
+      locale: moment.locale()
     });
 
     $(divId).on('change.datetimepicker', function() {

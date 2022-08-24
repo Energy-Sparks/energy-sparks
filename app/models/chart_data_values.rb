@@ -1,9 +1,9 @@
 class ChartDataValues
   attr_reader :anaylsis_type, :title, :subtitle, :chart1_type, :chart1_subtype,
               :y_axis_label, :x_axis_label, :x_axis_categories,
-              :advice_header, :advice_footer, :y2_axis_label, :x_axis_ranges, :annotations,
+              :advice_header, :advice_footer, :y2_axis_label, :y2_point_format, :y2_max, :x_axis_ranges, :annotations,
               :transformations, :allowed_operations, :drilldown_available, :parent_timescale_description,
-              :uses_time_of_day, :y1_axis_choices
+              :uses_time_of_day, :y1_axis_choices, :explore_message, :pinch_and_zoom_message, :click_and_drag_message
 
   DARK_ELECTRICITY = '#007EFF'.freeze
   MIDDLE_ELECTRICITY = '#02B8FF'.freeze
@@ -58,7 +58,7 @@ class ChartDataValues
       @chart1_type        = chart[:chart1_type]
       @chart1_subtype     = chart[:chart1_subtype]
       @x_axis_label       = chart[:x_axis_label]
-      @y_axis_label       = chart[:y_axis_label]
+      @y_axis_label       = format_y_axis_label_for(chart[:y_axis_label])
       @configuration      = chart[:configuration]
       @advice_header      = chart[:advice_header]
       @advice_footer      = chart[:advice_footer]
@@ -73,10 +73,21 @@ class ChartDataValues
       @parent_timescale_description = parent_timescale_description
       @uses_time_of_day = false
       @y1_axis_choices = y1_axis_choices
+      @explore_message = I18n.t('chart_data_values.explore_message')
+      @pinch_and_zoom_message = I18n.t('chart_data_values.pinch_and_zoom_message')
+      @click_and_drag_message = I18n.t('chart_data_values.click_and_drag_message')
     else
-      @title = "We do not have enough data to display this chart at the moment: #{chart_type.to_s.capitalize}"
+      @title = I18n.t('chart_data_values.not_enough_data_message', chart_type: chart_type.to_s.capitalize)
     end
     @used_name_colours = []
+  end
+
+  def format_y_axis_label_for(y_axis_label)
+    if y_axis_label == 'kg CO2'
+      'kg<br>CO2'
+    else
+      y_axis_label
+    end
   end
 
   def process
@@ -143,6 +154,8 @@ class ChartDataValues
       :advice_header,
       :advice_footer,
       :y2_axis_label,
+      :y2_point_format,
+      :y2_max,
       :series_data,
       :annotations,
       :allowed_operations,
@@ -150,7 +163,10 @@ class ChartDataValues
       :transformations,
       :parent_timescale_description,
       :uses_time_of_day,
-      :y1_axis_choices
+      :y1_axis_choices,
+      :explore_message,
+      :pinch_and_zoom_message,
+      :click_and_drag_message
     ].inject({}) do |json, field|
       json[field] = output.public_send(field)
       json
@@ -218,7 +234,27 @@ private
     end
 
     if @y2_data != nil && @y2_chart_type == :line
-      @y2_axis_label = @y2_data.keys[0]
+
+      y2_data_title = @y2_data.keys[0]
+
+      @y2_axis_label, @y2_point_format, @y2_max = if y2_data_title == 'Temperature'
+                                                    ['°C', '{point.y:.2f} °C',]
+                                                  elsif y2_data_title ==  'Degree Days'
+                                                    ['<span>Degree<br>days</span>', '{point.y:.2f} Degree days',]
+                                                  elsif y2_data_title.starts_with?('Carbon Intensity',)
+                                                    ['kg/kWh', '{point.y:.2f} kg/kWh', 0.5]
+                                                  elsif y2_data_title.starts_with?('Carbon')
+                                                    ['kWh', '{point.y:.2f} kWh',]
+                                                  elsif y2_data_title.starts_with?('Solar')
+                                                    [
+                                                      '<span>Brightness<br>of sunshine<br>W/m2</span>',
+                                                      '{point.y:.2f} W/m2',
+                                                    ]
+                                                  elsif y2_data_title == 'rating'
+                                                    ['Rating',]
+                                                  end
+
+
       @y2_data.each do |data_type, data|
         data_type = 'Solar irradiance (brightness of sunshine)' if data_type.start_with?('Solar')
         @series_data << { name: data_type, color: work_out_best_colour(data_type), type: 'line', data: data, yAxis: 1 }
