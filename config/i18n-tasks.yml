@@ -133,6 +133,7 @@ ignore_unused:
   - 'date.*'
   - 'devise.mailer.confirmation_instructions.subject'
   - 'common.storage_heater'
+  - 'chart_configuration.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'
@@ -165,4 +166,3 @@ ignore_unused:
 #
 # <%# I18n::Tasks.add_scanner 'I18n::Tasks::Scanners::PatternMapper',
 #       patterns: [['\bSpree\.t[( ]\s*%{key}', 'spree.%{key}']] %>
-
