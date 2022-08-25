@@ -47,4 +47,7 @@ Rails.application.configure do
   config.action_view.raise_on_missing_translations = true
 
   config.mailchimp_client = MailchimpMarketing::MockClient.new
+
+  # Uncomment to pull in locale files when testing with a local version of the Energy Sparks Analytics gem
+  # config.i18n.load_path += Dir[Gem.loaded_specs['energy-sparks_analytics'].full_gem_path + '/config/locales/**/*.{rb,yml}']
 end
