@@ -304,7 +304,7 @@ private
       @y2_axis_label, @y2_point_format, @y2_max = label_point_and_max_for(y2_data_title)
 
       @y2_data.each do |data_type, data|
-        data_type = I18n.t('series_data_manager.series.y2_solar_label') if data_type.start_with?('Solar') # TODO match against series constants
+        data_type = I18n.t('series_data_manager.series.y2_solar_label') if y2_is_solar?(data_type)
         @series_data << { name: data_type, color: work_out_best_colour(data_type), type: 'line', data: data, yAxis: 1 }
       end
     end
@@ -320,6 +320,7 @@ private
       ]
     elsif y2_is_carbon_intensity?(y2_data_title)
       ['kg/kWh', '{point.y:.2f} kg/kWh', 0.5]
+
     elsif y2_is_carbon?(y2_data_title)
       ['kWh', '{point.y:.2f} kWh',]
     elsif y2_is_solar?(y2_data_title)
@@ -438,9 +439,9 @@ private
   end
 
   def y2_is_carbon_intensity?(y2_data_title)
-    return true if translated_series_item_for(Series::GridCarbon::GRIDCARBON)
-    return true if translated_series_item_for(Series::GridCarbon::GASCARBON)
-    return true if y2_data_title.starts_with?('Carbon Intensity')
+    return true if y2_data_title == translated_series_item_for(Series::GridCarbon::GRIDCARBON)
+    return true if y2_data_title == translated_series_item_for(Series::GasCarbon::GASCARBON)
+    return true if y2_data_title.downcase.starts_with?('carbon intensity')
 
     false
   end
@@ -451,12 +452,12 @@ private
 
   def y2_is_solar?(y2_data_title)
     return true if y2_data_title == translated_series_item_for(Series::Irradiance::IRRADIANCE)
-    return true if y2_data_title.starts_with?('Solar') # TODO match against series constants
+    return true if y2_data_title.downcase.starts_with?('solar') # TODO match against series constants
 
     false
   end
 
   def y2_is_rating?(y2_data_title)
-    y2_data_title == 'rating'
+    y2_data_title.casecmp('rating').zero?
   end
 end

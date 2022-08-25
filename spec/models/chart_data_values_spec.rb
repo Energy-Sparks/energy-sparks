@@ -91,6 +91,8 @@ describe ChartDataValues do
           "Solar Irradiance" => "solar_irradiance",
           "Carbon Intensity of Electricity Grid (kg/kWh)" => "gridcarbon",
           "Carbon Intensity of Gas (kg/kWh)" => "gascarbon",
+          "Community Baseload" => "community_baseload",
+          "Community" => "community",
           "Heating on in cold weather" => "heating_day",
           "Hot Water (& Kitchen)" => "non_heating_day",
           "Heating on in warm weather" => "heating_day_warm_weather",
@@ -132,6 +134,65 @@ describe ChartDataValues do
 
     it 'returns the series string if no translation is found' do
       expect(chart_data_values.translated_series_item_for('This series item is not translated')).to eq('This series item is not translated')
+    end
+  end
+
+  describe '#wrap_label_as_html' do
+    chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG, :teachers_landing_page_gas).process
+
+    it 'adds line breaks tags to break up a given label and wraps it in a span' do
+      expect(chart_data_values.send(:wrap_label_as_html, 'Degree Days')).to eq('<span>Degree<br />Days</span>')
+    end
+  end
+
+  describe '#label_point_and_max_for' do
+    chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG, :teachers_landing_page_gas).process
+
+    it 'returns the label, point format, and max value (if needed) for a given y2 data title' do
+      expect(chart_data_values.send(:label_point_and_max_for, Series::Temperature::TEMPERATURE)).to eq(['°C', '{point.y:.2f} °C',])
+      expect(chart_data_values.send(:label_point_and_max_for, 'Temperature')).to eq(['°C', '{point.y:.2f} °C',])
+      expect(chart_data_values.send(:label_point_and_max_for, Series::DegreeDays::DEGREEDAYS)).to eq(["<span>Degree<br />Days</span>", "{point.y:.2f} Degree Days"])
+      expect(chart_data_values.send(:label_point_and_max_for, 'Degree Days')).to eq(["<span>Degree<br />Days</span>", "{point.y:.2f} Degree Days"])
+      expect(chart_data_values.send(:label_point_and_max_for, Series::GridCarbon::GRIDCARBON)).to eq(["kg/kWh", "{point.y:.2f} kg/kWh", 0.5])
+      expect(chart_data_values.send(:label_point_and_max_for, 'Carbon Intensity of Electricity Grid (kg/kWh)')).to eq(["kg/kWh", "{point.y:.2f} kg/kWh", 0.5])
+      expect(chart_data_values.send(:label_point_and_max_for, Series::GasCarbon::GASCARBON)).to eq(['kg/kWh', '{point.y:.2f} kg/kWh', 0.5])
+      expect(chart_data_values.send(:label_point_and_max_for, 'Carbon Intensity of Gas (kg/kWh)')).to eq(['kg/kWh', '{point.y:.2f} kg/kWh', 0.5])
+      expect(chart_data_values.send(:label_point_and_max_for, 'Carbon Intensity')).to eq(['kg/kWh', '{point.y:.2f} kg/kWh', 0.5])
+      expect(chart_data_values.send(:label_point_and_max_for, 'Carbon')).to eq(['kWh', '{point.y:.2f} kWh',])
+      expect(chart_data_values.send(:label_point_and_max_for, chart_data_values.translated_series_item_for(Series::Irradiance::IRRADIANCE))).to eq(['<span>Brightness<br>of sunshine<br>W/m2</span>', "{point.y:.2f} W/m2"])
+      expect(chart_data_values.send(:label_point_and_max_for, 'Solar Irradiance')).to eq(['<span>Brightness<br>of sunshine<br>W/m2</span>', "{point.y:.2f} W/m2"])
+      expect(chart_data_values.send(:label_point_and_max_for, 'Solar')).to eq(['<span>Brightness<br>of sunshine<br>W/m2</span>', "{point.y:.2f} W/m2"])
+      expect(chart_data_values.send(:label_point_and_max_for, 'Rating')).to eq(['Rating'])
+    end
+  end
+
+  describe '#colour_lookup' do
+    chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG, :teachers_landing_page_gas).process
+
+    it 'returns a hash with colours assigned to chart series names' do
+      expect(chart_data_values.colour_lookup).to eq(
+        {
+          "Degree Days" => "#232b49",
+          "Temperature" => "#232b49",
+          "School Day Closed" => "#3bc0f0",
+          "School Day Open" => "#5cb85c",
+          "Holiday" => "#ff4500",
+          "Weekend" => "#ffac21",
+          "Heating on in cold weather" => "#3bc0f0",
+          "Hot Water (& Kitchen)" => "#5cb85c",
+          "Hot Water Usage" => "#3bc0f0",
+          "Wasted Hot Water Usage" => "#ff4500",
+          "Solar PV (consumed onsite)" => "#ffac21",
+          "Electricity" => "#02B8FF", "Gas" => "#FFB138",
+          "storage heaters" => "#501e74",
+          "£" => "#232B49",
+          "Electricity consumed from solar pv" => "#5cb85c",
+          "Solar irradiance (brightness of sunshine)" => "#FFB138",
+          "Electricity consumed from mains" => "#02B8FF",
+          "Exported solar electricity (not consumed onsite)" => "#FCB43A",
+          "rating" => "#232b49"
+        }
+      )
     end
   end
 end
