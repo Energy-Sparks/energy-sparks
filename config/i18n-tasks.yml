@@ -110,6 +110,7 @@ search:
 
 ## Do not consider these keys missing:
 ignore_missing:
+
 # - 'errors.messages.{accepted,blank,invalid,too_short,too_long}'
 
 ## Consider these keys used:
@@ -134,6 +135,7 @@ ignore_unused:
   - 'devise.mailer.confirmation_instructions.subject'
   - 'chart_configuration.*'
   - 'common.storage_heater'
+  - 'chart_configuration.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'
