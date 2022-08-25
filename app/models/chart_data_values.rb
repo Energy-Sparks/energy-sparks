@@ -251,34 +251,35 @@ private
     end
 
     if @y2_data != nil && @y2_chart_type == :line
-
       y2_data_title = @y2_data.keys[0]
-
-      @y2_axis_label, @y2_point_format, @y2_max = if y2_data_title == Series::ManagerBase.translated_series_item_for(Series::Temperature::TEMPERATURE)
-                                                    ['°C', '{point.y:.2f} °C',]
-                                                  elsif y2_data_title == Series::ManagerBase.translated_series_item_for(Series::DegreeDays::DEGREEDAYS)
-                                                    [
-                                                      wrap_label_as_html(y2_data_title),
-                                                      "{point.y:.2f} #{y2_data_title}",
-                                                    ]
-                                                  elsif y2_data_title.starts_with?('Carbon Intensity',) # TODO match against series constants
-                                                    ['kg/kWh', '{point.y:.2f} kg/kWh', 0.5]
-                                                  elsif y2_data_title.starts_with?('Carbon') # TODO match against series constants
-                                                    ['kWh', '{point.y:.2f} kWh',]
-                                                  elsif y2_data_title.starts_with?('Solar') # TODO match against series constants
-                                                    [
-                                                      I18n.t('series_data_manager.series.y2_solar_html'),
-                                                      '{point.y:.2f} W/m2',
-                                                    ]
-                                                  elsif y2_data_title == 'rating' # TODO match against series constants
-                                                    [I18n.t('series_data_manager.series.y2_rating'),]
-                                                  end
-
+      @y2_axis_label, @y2_point_format, @y2_max = label_point_and_max_for(y2_data_title)
 
       @y2_data.each do |data_type, data|
         data_type = I18n.t('series_data_manager.series.y2_solar_label') if data_type.start_with?('Solar') # TODO match against series constants
         @series_data << { name: data_type, color: work_out_best_colour(data_type), type: 'line', data: data, yAxis: 1 }
       end
+    end
+  end
+
+  def label_point_and_max_for(y2_data_title)
+    if y2_is_temperature?(y2_data_title)
+      ['°C', '{point.y:.2f} °C',]
+    elsif y2_is_degree_days?(y2_data_title)
+      [
+        wrap_label_as_html(y2_data_title),
+        "{point.y:.2f} #{y2_data_title}",
+      ]
+    elsif y2_is_carbon_intensity?(y2_data_title)
+      ['kg/kWh', '{point.y:.2f} kg/kWh', 0.5]
+    elsif y2_is_carbon?(y2_data_title)
+      ['kWh', '{point.y:.2f} kWh',]
+    elsif y2_is_solar?(y2_data_title)
+      [
+        I18n.t('series_data_manager.series.y2_solar_html'),
+        '{point.y:.2f} W/m2',
+      ]
+    elsif y2_is_rating?(y2_data_title)
+      [I18n.t('series_data_manager.series.y2_rating'),]
     end
   end
 
@@ -377,5 +378,36 @@ private
     when :management_dashboard_group_by_week_electricity, :management_dashboard_group_by_week_gas, :electricity_co2_last_year_weekly_with_co2_intensity then :weekly
     when :baseload_lastyear then :daily
     end
+  end
+
+  def y2_is_temperature?(y2_data_title)
+    y2_data_title == Series::ManagerBase.translated_series_item_for(Series::Temperature::TEMPERATURE)
+  end
+
+  def y2_is_degree_days?(y2_data_title)
+    y2_data_title == Series::ManagerBase.translated_series_item_for(Series::DegreeDays::DEGREEDAYS)
+  end
+
+  def y2_is_carbon_intensity?(y2_data_title)
+    return true if Series::ManagerBase.translated_series_item_for(Series::GridCarbon::GRIDCARBON)
+    return true if Series::ManagerBase.translated_series_item_for(Series::GridCarbon::GASCARBON)
+    return true if y2_data_title.starts_with?('Carbon Intensity')
+
+    false
+  end
+
+  def y2_is_carbon?(y2_data_title)
+    y2_data_title.starts_with?('Carbon')
+  end
+
+  def y2_is_solar?(y2_data_title)
+    return true if y2_data_title == Series::ManagerBase.translated_series_item_for(Series::Irradiance::IRRADIANCE)
+    return true if y2_data_title.starts_with?('Solar') # TODO match against series constants
+
+    false
+  end
+
+  def y2_is_rating?(y2_data_title)
+    y2_data_title == 'rating'
   end
 end
