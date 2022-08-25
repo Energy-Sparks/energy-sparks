@@ -4,6 +4,7 @@
 #
 #  created_at                          :datetime         not null
 #  data                                :json
+#  data_cy                             :json
 #  equivalence_type_content_version_id :bigint(8)        not null
 #  from_date                           :date
 #  id                                  :bigint(8)        not null, primary key
