@@ -28,6 +28,20 @@ describe Equivalence do
         school_dinners_gbp: '£2.50'
       })
     end
+
+    it 'fetches right version for locale' do
+      equivalence = Equivalence.new(
+        data: {
+          'school_dinners_£' => {'formatted_equivalence' => '£2.50', 'conversion' => 0.5}
+        },
+        data_cy: {
+          'school_dinners_£' => {'formatted_equivalence' => 'WELSH', 'conversion' => 0.5}
+        }
+      )
+      expect(equivalence.formatted_variables(:cy)).to eq({
+        school_dinners_gbp: 'WELSH'
+      })
+    end
   end
 
 end

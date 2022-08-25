@@ -30,8 +30,8 @@ class Equivalence < ApplicationRecord
 
   delegate :equivalence_type, to: :content_version
 
-  def formatted_variables
-    variables.inject({}) do |formatted, (name, values)|
+  def formatted_variables(locale = I18n.locale)
+    variables(locale).inject({}) do |formatted, (name, values)|
       formatted[name] = values[:formatted_equivalence]
       formatted
     end
@@ -43,8 +43,13 @@ class Equivalence < ApplicationRecord
 
 private
 
-  def variables
-    data.deep_transform_keys do |key|
+  def variables(locale)
+    if locale == :cy
+      variables = data_cy&.any? ? data_cy : data
+    else
+      variables = data
+    end
+    variables.deep_transform_keys do |key|
       :"#{key.to_s.gsub('£', 'gbp')}"
     end
   end

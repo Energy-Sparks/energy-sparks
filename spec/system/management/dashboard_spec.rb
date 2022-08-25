@@ -267,7 +267,7 @@ describe 'Management dashboard' do
               average_payback_years: '1 year'
             },
             template_data_cy: {
-              average_one_year_saving_gbp: '£5,000',
+              average_one_year_saving_gbp: '£7,000',
               average_payback_years: '1 flwyddyn'
             }
           )
@@ -287,7 +287,7 @@ describe 'Management dashboard' do
         context 'in Welsh' do
           it 'displays Welsh alert text' do
             visit management_school_path(school, locale: 'cy')
-            expect(page).to have_content('Gallwch arbed £5,000 mewn 1 flwyddyn')
+            expect(page).to have_content('Gallwch arbed £7,000 mewn 1 flwyddyn')
           end
         end
       end
