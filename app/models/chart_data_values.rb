@@ -61,13 +61,13 @@ class ChartDataValues
   def translate_categories_for(categories)
     return categories unless categories.is_a? Array
 
-    categories.map { |category_label| Series::ManagerBase.translated_series_item_for(category_label) }
+    categories.map { |category_label| translated_series_item_for(category_label) }
   end
 
   def translate_data_keys_for(data)
     return unless data.present?
 
-    data.transform_keys { |series_item| Series::ManagerBase.translated_series_item_for(series_item) }
+    data.transform_keys { |series_item| translated_series_item_for(series_item) }
   end
 
   def format_y_axis_label_for(y_axis_label)
@@ -119,20 +119,20 @@ class ChartDataValues
 
   def colour_lookup
     @colour_lookup ||= {
-      I18n.t("series_data_manager.series.#{Series::DegreeDays::DEGREEDAYS_I18N_KEY}") => '#232b49',
-      I18n.t("series_data_manager.series.#{Series::Temperature::TEMPERATURE_I18N_KEY}") => '#232b49',
-      I18n.t("series_data_manager.series.#{Series::DayType::SCHOOLDAYCLOSED_I18N_KEY}") => '#3bc0f0',
-      I18n.t("series_data_manager.series.#{Series::DayType::SCHOOLDAYOPEN_I18N_KEY}") => GREEN,
-      I18n.t("series_data_manager.series.#{Series::DayType::HOLIDAY_I18N_KEY}") => '#ff4500',
-      I18n.t("series_data_manager.series.#{Series::DayType::WEEKEND_I18N_KEY}") => '#ffac21',
-      I18n.t("series_data_manager.series.#{Series::HeatingNonHeating::HEATINGDAY_I18N_KEY}") => '#3bc0f0',
-      I18n.t("series_data_manager.series.#{Series::HeatingNonHeating::NONHEATINGDAY_I18N_KEY}") => GREEN,
-      I18n.t("series_data_manager.series.#{Series::HotWater::USEFULHOTWATERUSAGE_I18N_KEY}") => '#3bc0f0',
-      I18n.t("series_data_manager.series.#{Series::HotWater::WASTEDHOTWATERUSAGE_I18N_KEY}") => '#ff4500',
-      I18n.t("series_data_manager.series.#{Series::MultipleFuels::SOLARPV_I18N_KEY}") => '#ffac21',
-      I18n.t('series_data_manager.series.electricity') => MIDDLE_ELECTRICITY,
-      I18n.t('series_data_manager.series.gas') => MIDDLE_GAS,
-      I18n.t('series_data_manager.series.storage_heaters') => STORAGE_HEATER,
+      I18n.t("analytics.series_data_manager.series_name.#{Series::DegreeDays::DEGREEDAYS_I18N_KEY}") => '#232b49',
+      I18n.t("analytics.series_data_manager.series_name.#{Series::Temperature::TEMPERATURE_I18N_KEY}") => '#232b49',
+      I18n.t("analytics.series_data_manager.series_name.#{Series::DayType::SCHOOLDAYCLOSED_I18N_KEY}") => '#3bc0f0',
+      I18n.t("analytics.series_data_manager.series_name.#{Series::DayType::SCHOOLDAYOPEN_I18N_KEY}") => GREEN,
+      I18n.t("analytics.series_data_manager.series_name.#{Series::DayType::HOLIDAY_I18N_KEY}") => '#ff4500',
+      I18n.t("analytics.series_data_manager.series_name.#{Series::DayType::WEEKEND_I18N_KEY}") => '#ffac21',
+      I18n.t("analytics.series_data_manager.series_name.#{Series::HeatingNonHeating::HEATINGDAY_I18N_KEY}") => '#3bc0f0',
+      I18n.t("analytics.series_data_manager.series_name.#{Series::HeatingNonHeating::NONHEATINGDAY_I18N_KEY}") => GREEN,
+      I18n.t("analytics.series_data_manager.series_name.#{Series::HotWater::USEFULHOTWATERUSAGE_I18N_KEY}") => '#3bc0f0',
+      I18n.t("analytics.series_data_manager.series_name.#{Series::HotWater::WASTEDHOTWATERUSAGE_I18N_KEY}") => '#ff4500',
+      I18n.t("analytics.series_data_manager.series_name.#{Series::MultipleFuels::SOLARPV_I18N_KEY}") => '#ffac21',
+      I18n.t('analytics.series_data_manager.series_name.electricity') => MIDDLE_ELECTRICITY,
+      I18n.t('analytics.series_data_manager.series_name.gas') => MIDDLE_GAS,
+      I18n.t('analytics.series_data_manager.series_name.storage_heaters') => STORAGE_HEATER,
       '£' => MONEY,
       'Electricity consumed from solar pv' => GREEN,
       'Solar irradiance (brightness of sunshine)' => MIDDLE_GAS,
@@ -184,6 +184,53 @@ class ChartDataValues
       json[field] = output.public_send(field)
       json
     end
+  end
+
+  def translated_series_item_for(series_key_as_string)
+    i18n_key = series_translation_key_lookup[series_key_as_string]
+    return series_key_as_string unless i18n_key
+
+    I18n.t("analytics.series_data_manager.series_name.#{i18n_key}")
+  end
+
+  def series_translation_key_lookup
+    @series_translation_key_lookup ||= {
+      Series::DegreeDays::DEGREEDAYS => Series::DegreeDays::DEGREEDAYS_I18N_KEY,
+      Series::Temperature::TEMPERATURE => Series::Temperature::TEMPERATURE_I18N_KEY,
+      Series::DayType::SCHOOLDAYCLOSED => Series::DayType::SCHOOLDAYCLOSED_I18N_KEY,
+      Series::DayType::SCHOOLDAYOPEN => Series::DayType::SCHOOLDAYOPEN_I18N_KEY,
+      Series::DayType::HOLIDAY => Series::DayType::HOLIDAY_I18N_KEY,
+      Series::DayType::WEEKEND => Series::DayType::WEEKEND_I18N_KEY,
+      Series::DayType::STORAGE_HEATER_CHARGE => Series::DayType::STORAGE_HEATER_CHARGE_I18N_KEY,
+      Series::HotWater::USEFULHOTWATERUSAGE => Series::HotWater::USEFULHOTWATERUSAGE_I18N_KEY,
+      Series::HotWater::WASTEDHOTWATERUSAGE => Series::HotWater::WASTEDHOTWATERUSAGE_I18N_KEY,
+      Series::MultipleFuels::SOLARPV => Series::MultipleFuels::SOLARPV_I18N_KEY,
+      Series::Irradiance::IRRADIANCE => Series::Irradiance::IRRADIANCE_I18N_KEY,
+      Series::GridCarbon::GRIDCARBON => Series::GridCarbon::GRIDCARBON_I18N_KEY,
+      Series::GasCarbon::GASCARBON => Series::GasCarbon::GASCARBON_I18N_KEY,
+      Series::HeatingNonHeating::HEATINGDAY => Series::HeatingNonHeating::HEATINGDAY_I18N_KEY,
+      Series::HeatingNonHeating::NONHEATINGDAY => Series::HeatingNonHeating::NONHEATINGDAY_I18N_KEY,
+      Series::HeatingNonHeating::HEATINGDAYWARMWEATHER => Series::HeatingNonHeating::HEATINGDAYWARMWEATHER_I18N_KEY,
+      Series::MultipleFuels::ELECTRICITY => Series::MultipleFuels::ELECTRICITY_I18N_KEY,
+      Series::MultipleFuels::GAS => Series::MultipleFuels::GAS_I18N_KEY,
+      Series::MultipleFuels::STORAGEHEATERS => Series::MultipleFuels::STORAGEHEATERS_I18N_KEY,
+      Series::MultipleFuels::SOLARPV => Series::MultipleFuels::SOLARPV_I18N_KEY,
+      Series::PredictedHeat::PREDICTEDHEAT => Series::PredictedHeat::PREDICTEDHEAT_I18N_KEY,
+      Series::TargetDegreeDays::TARGETDEGREEDAYS => Series::TargetDegreeDays::TARGETDEGREEDAYS_I18N_KEY,
+      Series::Cusum::CUSUM => Series::Cusum::CUSUM_I18N_KEY,
+      Series::Baseload::BASELOAD => Series::Baseload::BASELOAD_I18N_KEY,
+      Series::PeakKw::PEAK_KW => Series::PeakKw::PEAK_KW_I18N_KEY,
+      Series::HeatingDayType::SCHOOLDAYHEATING => Series::HeatingDayType::SCHOOLDAYHEATING_I18N_KEY,
+      Series::HeatingDayType::HOLIDAYHEATING => Series::HeatingDayType::HOLIDAYHEATING_I18N_KEY,
+      Series::HeatingDayType::WEEKENDHEATING => Series::HeatingDayType::WEEKENDHEATING_I18N_KEY,
+      Series::HeatingDayType::SCHOOLDAYHOTWATER => Series::HeatingDayType::SCHOOLDAYHOTWATER_I18N_KEY,
+      Series::HeatingDayType::HOLIDAYHOTWATER => Series::HeatingDayType::HOLIDAYHOTWATER_I18N_KEY,
+      Series::HeatingDayType::WEEKENDHOTWATER => Series::HeatingDayType::WEEKENDHOTWATER_I18N_KEY,
+      Series::HeatingDayType::BOILEROFF => Series::HeatingDayType::BOILEROFF_I18N_KEY,
+      Series::NoBreakdown::NONE => Series::NoBreakdown::NONE_I18N_KEY,
+      AggregatorBenchmarks.exemplar_school_name => 'exemplar_school',
+      AggregatorBenchmarks.benchmark_school_name => 'benchmark_school'
+    }
   end
 
 private
@@ -275,11 +322,11 @@ private
       ['kWh', '{point.y:.2f} kWh',]
     elsif y2_is_solar?(y2_data_title)
       [
-        I18n.t('series_data_manager.series.y2_solar_html'),
+        I18n.t('analytics.series_data_manager.y2_solar_html'),
         '{point.y:.2f} W/m2',
       ]
     elsif y2_is_rating?(y2_data_title)
-      [I18n.t('series_data_manager.series.y2_rating'),]
+      [I18n.t('analytics.series_data_manager.y2_rating'),]
     end
   end
 
@@ -381,16 +428,16 @@ private
   end
 
   def y2_is_temperature?(y2_data_title)
-    y2_data_title == Series::ManagerBase.translated_series_item_for(Series::Temperature::TEMPERATURE)
+    y2_data_title == translated_series_item_for(Series::Temperature::TEMPERATURE)
   end
 
   def y2_is_degree_days?(y2_data_title)
-    y2_data_title == Series::ManagerBase.translated_series_item_for(Series::DegreeDays::DEGREEDAYS)
+    y2_data_title == translated_series_item_for(Series::DegreeDays::DEGREEDAYS)
   end
 
   def y2_is_carbon_intensity?(y2_data_title)
-    return true if Series::ManagerBase.translated_series_item_for(Series::GridCarbon::GRIDCARBON)
-    return true if Series::ManagerBase.translated_series_item_for(Series::GridCarbon::GASCARBON)
+    return true if translated_series_item_for(Series::GridCarbon::GRIDCARBON)
+    return true if translated_series_item_for(Series::GridCarbon::GASCARBON)
     return true if y2_data_title.starts_with?('Carbon Intensity')
 
     false
@@ -401,7 +448,7 @@ private
   end
 
   def y2_is_solar?(y2_data_title)
-    return true if y2_data_title == Series::ManagerBase.translated_series_item_for(Series::Irradiance::IRRADIANCE)
+    return true if y2_data_title == translated_series_item_for(Series::Irradiance::IRRADIANCE)
     return true if y2_data_title.starts_with?('Solar') # TODO match against series constants
 
     false
