@@ -134,11 +134,11 @@ class ChartDataValues
       I18n.t('analytics.series_data_manager.series_name.gas') => MIDDLE_GAS,
       I18n.t('analytics.series_data_manager.series_name.storage_heaters') => STORAGE_HEATER,
       '£' => MONEY,
-      'Electricity consumed from solar pv' => GREEN,
-      'Solar irradiance (brightness of sunshine)' => MIDDLE_GAS,
-      'Electricity consumed from mains' => MIDDLE_ELECTRICITY,
-      'Exported solar electricity (not consumed onsite)' => LIGHT_GAS_LINE,
-      'rating' => '#232b49'
+      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME_I18N_KEY}") => GREEN,
+      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME}") => MIDDLE_ELECTRICITY,
+      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME}") => LIGHT_GAS_LINE,
+      I18n.t('analytics.series_data_manager.series_name.y2_solar_label') => MIDDLE_GAS,
+      I18n.t('analytics.series_data_manager.series_name.rating') => '#232b49'
     }
   end
 
@@ -231,7 +231,10 @@ class ChartDataValues
       AggregatorBenchmarks.exemplar_school_name => 'exemplar_school',
       AggregatorBenchmarks.benchmark_school_name => 'benchmark_school',
       OpenCloseTime.community => OpenCloseTime::COMMUNITY_I18N_KEY,
-      OpenCloseTime.community_baseload => OpenCloseTime::COMMUNITY_BASELOAD_I18N_KEY
+      OpenCloseTime.community_baseload => OpenCloseTime::COMMUNITY_BASELOAD_I18N_KEY,
+      SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME => SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME_I18N_KEY,
+      SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME => SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME_I18N_KEY,
+      SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME => SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME_I18N_KEY
     }
   end
 
