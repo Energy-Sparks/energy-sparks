@@ -14,7 +14,7 @@
   <%= select_tag :school_id, options_from_collection_for_select(School.process_data.order(:name), :id, :name) %>
 </div>
 
-<%= render 'admin/shared/preview_section', content: 'equivalence', scope: 'public_dashboard_alert', preview_url: admin_equivalence_type_preview_path, no_timings: true, no_weightings: true, locales: I18n.available_locales do |locale| %>
+<%= render 'admin/shared/preview_section', content: 'equivalence', scope: 'management_dashboard_alert', preview_url: admin_equivalence_type_preview_path, no_timings: true, no_weightings: true, locales: I18n.available_locales do |locale| %>
   <%= form.simple_fields_for :content, content do |content| %>
     <div class="equivalence-trix-editor-<%=locale%> form-group">
       <%= content.rich_text_area t_field(:equivalence, locale) %>

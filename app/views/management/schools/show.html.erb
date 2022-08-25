@@ -1,22 +1,17 @@
-<%= content_for :page_title, "Adult dashboard for #{@school.name}" %>
+<%= content_for :page_title, t('schools.show.dashboard_title', school_name: @school.name) %>
 
 <%= render 'shared/dashboard_title', school: @school, co2_pages: @co2_pages, public: false, show_data_enabled_features: @show_data_enabled_features %>
 
-<% if @overview_table %>
-  <h2>Your annual usage</h2>
-  <%= render 'overview_table', overview_table: @overview_table %>
-<% end %>
-
 <% if @overview_data %>
-  <h2>Summary of recent energy usage</h2>
+  <h2><%= t('schools.show.summary_of_recent_energy_usage') %></h2>
   <%= render 'overview_data', overview_data: @overview_data %>
   <div class="text-right management-overview-caption">
     <%= @overview_data.date_ranges %>
-    <%= link_to_help_for_feature :management_summary_overview, title: "More information #{fa_icon('info-circle')}".html_safe %>
+    <%= link_to_help_for_feature :management_summary_overview, title: "#{t('schools.show.more_information')} #{fa_icon('info-circle')}".html_safe %>
   </div>
 <% end %>
 
-<h3>Act on your energy usage</h3>
+<h3><%= t('schools.show.act_on_energy_usage') %></h3>
 
 <%= render 'management/schools/targets/progress_notice', school: @school, progress_summary: @progress_summary %>
 
@@ -63,21 +58,21 @@
 <% end %>
 
 <% if @overview_charts && @overview_charts.any? %>
-  <h3>Your recent energy usage</h3>
+  <h3><%= t('schools.show.recent_energy_usage') %></h3>
   <%= render 'overview_charts', overview_charts: @overview_charts %>
 <% elsif @show_data_enabled_features == false %>
-  <h3>Your recent energy usage</h3>
+  <h3><%= t('schools.show.recent_energy_usage') %></h3>
   <div class="chart-placeholder-image">
     <div class="chart-placeholder-text">
-      <h1>Coming Soon</h1>
-      <p>We're configuring access to your energy data and will notify you when it's ready to explore</p>
+      <h1><%= t('schools.show.coming_soon') %></h1>
+      <p><%= t('schools.show.configuring_data_access') %></p>
     </div>
   </div>
 <% end %>
 
 
 <% if @management_priorities && @management_priorities.any? %>
-  <h3>Your energy saving opportunities</h3>
+  <h3><%= t('schools.show.energy_saving_opportunities') %></h3>
   <%= render 'management/management_priorities/list', management_priorities: @management_priorities, school: @school, show_more: @show_more_management_priorities %>
 <% end %>
 
@@ -88,9 +83,9 @@
     <div class="float-right">
         <%= link_to url_for(report: true), class: 'btn btn-outline-dark rounded-pill font-weight-bold' do %>
           <%= fa_icon('file-alt') %>
-          Print view
+          <%= t('schools.show.print_view') %>
         <% end %>
-        <%= link_to "Download your data", school_downloads_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' if can?(:read, :school_downloads) %>
+        <%= link_to t('schools.show.download_data'), school_downloads_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' if can?(:read, :school_downloads) %>
     </div>
   </div>
 <% end %>

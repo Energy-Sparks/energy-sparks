@@ -16,6 +16,7 @@ module ChartHelper
         )
       }
     )
+    chart_container += "<div id='chart-error' class='d-none'>#{I18n.t('chart_data_values.standard_error_message')}</div>".html_safe
     if wrap
       content_tag :div, chart_container, id: "chart_wrapper_#{chart_type}", class: 'chart-wrapper'
     else

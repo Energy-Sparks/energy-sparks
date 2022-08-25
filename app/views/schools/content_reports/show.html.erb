@@ -10,11 +10,6 @@
 <%= render 'shared/dashboard_alerts', show_debug: true, dashboard_alerts: @management_dashboard_alerts, school: @school, content_field: :management_dashboard_title, show_all: true %>
 <hr />
 
-<h3>Public dashboard alerts</h3>
-
-<%= render 'shared/dashboard_alerts', show_debug: true, dashboard_alerts: @public_dashboard_alerts, school: @school, content_field: :public_dashboard_title, show_all: true %>
-
-<hr />
 <%= render 'management/management_priorities/list', show_debug: true, management_priorities: @management_priorities, school: @school, show_more: false  %>
 
 <hr />

@@ -133,7 +133,7 @@ ignore_unused:
   - 'date.*'
   - 'devise.mailer.confirmation_instructions.subject'
   - 'chart_configuration.*'
-
+  - 'common.storage_heater'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'

@@ -3,10 +3,12 @@
 <h1>Energy Sparks</h1>
 <h2>Energy Management information for <%= @school.name %></h2>
 
-<h2>Annual use</h2>
-
-<% if @overview_table %>
-  <%= render 'overview_table', overview_table: @overview_table %>
+<% if @overview_data %>
+  <h2><%= t('schools.show.summary_of_recent_energy_usage') %></h2>
+  <%= render 'overview_data', overview_data: @overview_data %>
+  <div class="text-right management-overview-caption">
+    <%= @overview_data.date_ranges %>
+  </div>
 <% end %>
 
 <h2>Recent energy alerts</h2>

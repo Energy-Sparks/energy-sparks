@@ -1,6 +1,6 @@
 <%= render 'schools/dashboard/info_bar',
   colour: 'bg-neutral',
-  content: "Add an estimate of your annual #{ fuel_types.map{|s| s.humanize(capitalize: false)}.to_sentence} consumption so we can provide you with a more detailed progress report to help you achieve your targets",
+  content: t('schools.show.add_consumption_estimate', fuels: t_fuels_as_sentence(fuel_types)),
   icon: 'calculator fa-3x',
-  buttons: { 'Add an estimate' => school_estimated_annual_consumptions_path(school)}
+  buttons: { t('schools.show.add_estimate') => school_estimated_annual_consumptions_path(school)}
 %>

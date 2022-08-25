@@ -163,16 +163,6 @@ RSpec.describe 'alert type management', type: :system do
           end
         end
 
-        check 'Public dashboard alert'
-        fill_in_trix with: 'PUBLIC - This school is using gas'
-
-        within '.public_dashboard_alert_active' do
-          click_on 'Preview'
-          within '#public_dashboard_alert-preview-en .content' do
-            expect(page).to have_content('PUBLIC - This school is using gas')
-          end
-        end
-
         check 'Adult dashboard alert'
         within('#management_dashboard_alert-en-content') do
           fill_in_trix with: 'MDASH - Your school is using gas'
@@ -265,7 +255,6 @@ RSpec.describe 'alert type management', type: :system do
         first_content = alert_type_rating.current_content
         expect(first_content.find_out_more_title).to eq('You are using too much gas!')
         expect(first_content.sms_content).to eq(gas_fuel_alert_type_title)
-        expect(first_content.public_dashboard_title.to_plain_text).to eq('PUBLIC - This school is using gas')
         expect(first_content.management_dashboard_title.to_plain_text).to eq('MDASH - Your school is using gas')
         expect(first_content.management_dashboard_title(locale: :cy).to_plain_text).to eq('MDASH WELSH - Your school is using gas')
         expect(first_content.management_priorities_title.to_plain_text).to eq('Your school is spending too much on gas')

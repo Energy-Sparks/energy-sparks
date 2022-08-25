@@ -103,7 +103,10 @@ RSpec.describe 'calendars', :calendar, type: :system do
 
     it 'shows status of calendar events and resets parent to nil after edit' do
       regional_calendar = create(:regional_calendar, title: 'Regional calendar')
-      parent_event = create(:holiday, calendar: regional_calendar, description: 'Regional calendar event')
+      #Note: this test was flickering towards end of August as the default start_date in the
+      #calendar event factory put the holiday into the next academic year.
+      #Adding a start_date fixes the problem
+      parent_event = create(:holiday, calendar: regional_calendar, description: 'Regional calendar event', start_date: Date.new(2022,4,1))
       calendar = CalendarFactory.new(existing_calendar: regional_calendar, title: 'child calendar', calendar_type: :school).create
 
       expect(calendar.calendar_events.first.based_on).to eq(parent_event)

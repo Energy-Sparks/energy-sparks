@@ -2,11 +2,6 @@
 
 <%= render 'shared/dashboard_title', school: @school, co2_pages: @co2_pages, public: true, show_data_enabled_features: @show_data_enabled_features %>
 
-<% if @overview_table %>
-  <h3><%= t('schools.show.annual_usage_summary') %></h3>
-  <%= render 'management/schools/overview_table', overview_table: @overview_table %>
-<% end %>
-
 <% if @overview_data %>
   <h2><%= t('schools.show.summary_of_recent_energy_usage') %></h2>
   <%= render 'management/schools/overview_data', overview_data: @overview_data %>
@@ -21,7 +16,7 @@
 <%= render 'management/schools/targets/progress_notice', school: @school, progress_summary: @progress_summary %>
 
 <% if @dashboard_alerts %>
-  <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :public_dashboard_title %>
+  <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
 <% end %>
 
 <% if @overview_charts && @overview_charts.any? %>
