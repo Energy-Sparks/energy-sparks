@@ -48,6 +48,6 @@ Rails.application.configure do
 
   config.mailchimp_client = MailchimpMarketing::MockClient.new
 
-  # Use locales from a local version of the energy Sparks Analytics gem
-  config.i18n.load_path += Dir[Gem.loaded_specs['energy-sparks_analytics'].full_gem_path + '/config/locales/**/*.{rb,yml}']
+  # Uncomment to pull in locale files when testing with a local version of the Energy Sparks Analytics gem
+  # config.i18n.load_path += Dir[Gem.loaded_specs['energy-sparks_analytics'].full_gem_path + '/config/locales/**/*.{rb,yml}']
 end
