@@ -135,8 +135,6 @@ ignore_unused:
   - 'devise.mailer.confirmation_instructions.subject'
   - 'common.storage_heater'
   - 'chart_configuration.*'
-  - 'analytics.series_data_manager.*'
-  - 'series_data_manager.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'
