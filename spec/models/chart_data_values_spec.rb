@@ -77,44 +77,7 @@ describe ChartDataValues do
 
     it 'returns a hash matching series text keys to translation key values' do
       expect(chart_data_values.series_translation_key_lookup).to eq(
-        {
-          "Degree Days" => "degree_days",
-          "Temperature" => "temperature",
-          "School Day Closed" => "school_day_closed",
-          "School Day Open" => "school_day_open",
-          "Holiday" => "holiday",
-          "Weekend" => "weekend",
-          "Storage heater charge (school day)" => "storage_heater_charge",
-          "Hot Water Usage" => "useful_hot_water_usage",
-          "Wasted Hot Water Usage" => "wasted_hot_water_usage",
-          "solar pv (consumed onsite)" => "solar_pv",
-          "Solar Irradiance" => "solar_irradiance",
-          "Carbon Intensity of Electricity Grid (kg/kWh)" => "gridcarbon",
-          "Carbon Intensity of Gas (kg/kWh)" => "gascarbon",
-          "Community Baseload" => "community_baseload",
-          "Community" => "community",
-          "Heating on in cold weather" => "heating_day",
-          "Hot Water (& Kitchen)" => "non_heating_day",
-          "Heating on in warm weather" => "heating_day_warm_weather",
-          "electricity" => "electricity",
-          "gas" => "gas",
-          "storage heaters" => "storage_heaters",
-          "Predicted Heat" => "predicted_heat",
-          "Target degree days" => "target_degree_days",
-          "CUSUM" => "cusum",
-          "BASELOAD" => "baseload",
-          "Peak (kW)" => "peak_kw",
-          "Heating On School Days" => "school_day_heating",
-          "Heating On Holidays" => "holiday_heating",
-          "Heating On Weekends" => "weekend_heating",
-          "Hot water/kitchen only On School Days" => "school_day_hot_water_kitchen",
-          "Hot water/kitchen only On Holidays" => "holiday_hot_water_kitchen",
-          "Hot water/kitchen only On Weekends" => "weekend_hot_water_kitchen",
-          "Boiler Off" => "boiler_off",
-          "Energy" => "none",
-          "Exemplar School" => "exemplar_school",
-          "Benchmark (Good) School" => "benchmark_school"
-        }
+        { "Degree Days" => "degree_days", "Temperature" => "temperature", "School Day Closed" => "school_day_closed", "School Day Open" => "school_day_open", "Holiday" => "holiday", "Weekend" => "weekend", "Storage heater charge (school day)" => "storage_heater_charge", "Hot Water Usage" => "useful_hot_water_usage", "Wasted Hot Water Usage" => "wasted_hot_water_usage", "solar pv (consumed onsite)" => "solar_pv", "Solar Irradiance" => "solar_irradiance", "Carbon Intensity of Electricity Grid (kg/kWh)" => "gridcarbon", "Carbon Intensity of Gas (kg/kWh)" => "gascarbon", "Heating on in cold weather" => "heating_day", "Hot Water (& Kitchen)" => "non_heating_day", "Heating on in warm weather" => "heating_day_warm_weather", "electricity" => "electricity", "gas" => "gas", "storage heaters" => "storage_heaters", "Predicted Heat" => "predicted_heat", "Target degree days" => "target_degree_days", "CUSUM" => "cusum", "BASELOAD" => "baseload", "Peak (kW)" => "peak_kw", "Heating On School Days" => "school_day_heating", "Heating On Holidays" => "holiday_heating", "Heating On Weekends" => "weekend_heating", "Hot water/kitchen only On School Days" => "school_day_hot_water_kitchen", "Hot water/kitchen only On Holidays" => "holiday_hot_water_kitchen", "Hot water/kitchen only On Weekends" => "weekend_hot_water_kitchen", "Boiler Off" => "boiler_off", "Energy" => "none", "Exemplar School" => "exemplar_school", "Benchmark (Good) School" => "benchmark_school", "Community" => "community", "Community Baseload" => "community_baseload", "Electricity consumed from solar pv" => "electricity_consumed_from_solar_pv", "Exported solar electricity (not consumed onsite)" => "exported_solar_electricity", "Electricity consumed from mains" => "electricity_consumed_from_mains"}
       )
     end
 
@@ -169,29 +132,11 @@ describe ChartDataValues do
   describe '#colour_lookup' do
     chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG, :teachers_landing_page_gas).process
 
+    puts chart_data_values.colour_lookup
+
     it 'returns a hash with colours assigned to chart series names' do
       expect(chart_data_values.colour_lookup).to eq(
-        {
-          "Degree Days" => "#232b49",
-          "Temperature" => "#232b49",
-          "School Day Closed" => "#3bc0f0",
-          "School Day Open" => "#5cb85c",
-          "Holiday" => "#ff4500",
-          "Weekend" => "#ffac21",
-          "Heating on in cold weather" => "#3bc0f0",
-          "Hot Water (& Kitchen)" => "#5cb85c",
-          "Hot Water Usage" => "#3bc0f0",
-          "Wasted Hot Water Usage" => "#ff4500",
-          "Solar PV (consumed onsite)" => "#ffac21",
-          "Electricity" => "#02B8FF", "Gas" => "#FFB138",
-          "storage heaters" => "#501e74",
-          "£" => "#232B49",
-          "Electricity consumed from solar pv" => "#5cb85c",
-          "Solar irradiance (brightness of sunshine)" => "#FFB138",
-          "Electricity consumed from mains" => "#02B8FF",
-          "Exported solar electricity (not consumed onsite)" => "#FCB43A",
-          "rating" => "#232b49"
-        }
+        {"Degree Days" => "#232b49", "Temperature" => "#232b49", "School Day Closed" => "#3bc0f0", "School Day Open" => "#5cb85c", "Holiday" => "#ff4500", "Weekend" => "#ffac21", "Heating on in cold weather" => "#3bc0f0", "Hot Water (& Kitchen)" => "#5cb85c", "Hot Water Usage" => "#3bc0f0", "Wasted Hot Water Usage" => "#ff4500", "Solar PV (consumed onsite)" => "#ffac21", "Electricity" => "#02B8FF", "Gas" => "#FFB138", "storage heaters" => "#501e74", "£" => "#232B49", "Electricity consumed from solar pv" => "#5cb85c", "translation missing: en.analytics.series_data_manager.series_name.Electricity consumed from mains" => "#02B8FF", "translation missing: en.analytics.series_data_manager.series_name.Exported solar electricity (not consumed onsite)" => "#FCB43A", "Solar irradiance (brightness of sunshine)" => "#FFB138", "Rating" => "#232b49"}
       )
     end
   end

@@ -137,8 +137,8 @@ class ChartDataValues
       I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME_I18N_KEY}") => GREEN,
       I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME}") => MIDDLE_ELECTRICITY,
       I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME}") => LIGHT_GAS_LINE,
-      I18n.t('analytics.series_data_manager.series_name.y2_solar_label') => MIDDLE_GAS,
-      I18n.t('analytics.series_data_manager.series_name.rating') => '#232b49'
+      I18n.t('analytics.series_data_manager.y2_solar_label') => MIDDLE_GAS,
+      I18n.t('analytics.series_data_manager.y2_rating') => '#232b49'
     }
   end
 
@@ -307,7 +307,7 @@ private
       @y2_axis_label, @y2_point_format, @y2_max = label_point_and_max_for(y2_data_title)
 
       @y2_data.each do |data_type, data|
-        data_type = I18n.t('series_data_manager.series.y2_solar_label') if y2_is_solar?(data_type)
+        data_type = I18n.t('analytics.series_data_manager.y2_solar_label') if y2_is_solar?(data_type)
         @series_data << { name: data_type, color: work_out_best_colour(data_type), type: 'line', data: data, yAxis: 1 }
       end
     end
