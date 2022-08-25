@@ -5,7 +5,7 @@ describe 'activity types', type: :system do
   context 'activity types search page' do
 
     let!(:activity_type_1) { create(:activity_type, name: 'foo', description: 'activity') }
-    let!(:activity_type_2) { create(:activity_type, name: 'bar', description: 'activity') }
+    let!(:activity_type_2) { create(:activity_type, name: 'bar', description: 'activity the second') }
 
     it 'links from activity categories page and shows empty page' do
       ClimateControl.modify FEATURE_FLAG_ACTIVITY_TYPE_SEARCH: 'true' do
@@ -45,6 +45,7 @@ describe 'activity types', type: :system do
       fill_in 'query', with: 'activity'
       click_on 'Search'
 
+      #possibly flickering as ordering might be different?
       expect(page).to have_content(activity_type_1.name)
       expect(page).not_to have_content(activity_type_2.name)
 
@@ -80,6 +81,7 @@ describe 'activity types', type: :system do
       it 'finds all with no filter' do
         fill_in 'query', with: 'baz'
         click_on 'Search'
+        #flickering?
         expect(page).to have_content('baz one')
         expect(page).to have_content('baz two')
       end
