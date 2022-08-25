@@ -76,16 +76,16 @@ class Alert < ApplicationRecord
     rating.nil? ? 'Unrated' : "#{rating.round(0)}/10"
   end
 
-  def template_variables
-    template_data_for_locale.deep_transform_keys do |key|
+  def template_variables(locale = I18n.locale)
+    template_data_for_locale(locale).deep_transform_keys do |key|
       :"#{key.to_s.gsub('£', 'gbp')}"
     end
   end
 
   private
 
-  def template_data_for_locale
-    if I18n.locale == :cy
+  def template_data_for_locale(locale)
+    if locale == :cy
       template_data_cy&.any? ? template_data_cy : template_data
     else
       template_data
