@@ -229,7 +229,9 @@ class ChartDataValues
       Series::HeatingDayType::BOILEROFF => Series::HeatingDayType::BOILEROFF_I18N_KEY,
       Series::NoBreakdown::NONE => Series::NoBreakdown::NONE_I18N_KEY,
       AggregatorBenchmarks.exemplar_school_name => 'exemplar_school',
-      AggregatorBenchmarks.benchmark_school_name => 'benchmark_school'
+      AggregatorBenchmarks.benchmark_school_name => 'benchmark_school',
+      OpenCloseTime.community => OpenCloseTime::COMMUNITY_I18N_KEY,
+      OpenCloseTime.community_baseload => OpenCloseTime::COMMUNITY_BASELOAD_I18N_KEY
     }
   end
 
