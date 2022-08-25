@@ -1,0 +1,9 @@
+---
+en:
+  analytics:
+    alert_change_in_daily_gas_short_term:
+      timescale: week (school days only)
+    alert_gas_annual_versus_benchmark:
+      timescale: last year
+    alert_weekend_gas_consumption_short_term:
+      timescale: last weekend

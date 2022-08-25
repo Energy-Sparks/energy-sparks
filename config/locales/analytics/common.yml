@@ -3,29 +3,47 @@ en:
   analytics:
     adjectives:
       about: about
+      about_average: about average
       above: above
+      above_average: above average
+      bad: bad
       below: below
+      below_average: below average
+      better_than_average: better than average
       down: down
+      excellent: excellent
+      good: good
       higher: higher
       increase: increase
       just_above: just above
       just_below: just below
+      just_below_average: just below average
       lower: lower
+      no_change: the same
       ok: ok
+      perfect: perfect
+      poor: poor
       poorly: poorly
       reduction: reduction
       significantly_above: significantly above
       significantly_below: significantly below
+      unchanged: unchanged
       up: up
+      very_poor: very poor
       well: well
+      worse_than_average: worse than average
     aggregator:
       subttitle: "%{start_date} to %{end_date}"
     common:
       electricity: electricity
       gas: gas
+      gas_boiler: gas boiler
       holiday: holiday
+      last_school_week: last school week
       pa: "%{cost}pa"
+      previous_school_week: previous school week
       school_day: school day
+      storage_heaters: storage_heaters
       weekend: weekend
     holidays:
       autumn_half_term: Autumn half term
