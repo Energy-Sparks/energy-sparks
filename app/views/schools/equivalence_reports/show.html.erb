@@ -13,6 +13,8 @@
       <div class="card-body">
         <h5>Equivalence variables (English)</h5>
         <%= sanitize ap(@equivalence.data, index: false, plain: true)%>
+        <h5>Equivalence variables (Welsh)</h5>
+        <%= sanitize ap(@equivalence.data_cy, index: false, plain: true)%>
       </div>
       <div class="card-footer text-muted">
         <p class="card-text"><b>Relevant</b>: <%= @equivalence.relevant %></p>
