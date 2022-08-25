@@ -29,7 +29,10 @@ describe "School Batch Reports", type: :system do
         expect(page).to have_content(equivalence_type.time_period.humanize)
         click_on 'View'
         expect(page).to have_content("formatted_equivalence")
+<<<<<<< HEAD
         expect(page).to have_content("dydd Sadwrn")
+=======
+>>>>>>> Add admin only reports to view equivalence data
       end
     end
   end
