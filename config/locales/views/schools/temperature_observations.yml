@@ -1,0 +1,27 @@
+---
+en:
+  schools:
+    temperature_observations:
+      index:
+        actions: Actions
+        add_new_temperature_recordings: Add new temperature recordings
+        are_you_sure: Are you sure?
+        change_room_names: Change room names
+        date: Date
+        delete: Delete
+        good_temperature_message: This is a good temperature for energy efficient schools. Well done!
+        no_observations_message: There are no observations recorded at the moment
+        page_title: Temperature recordings
+        roof_and_wall_insulation_message: This may be a little chilly. Could your school add more roof and wall insulation to help keep the school warmer without using more energy?
+        time: Time
+        try_turning_down_your_heating_message: Energy Sparks recommends classroom temperatures are no higher than 18C. Try turning down your heating to save energy and money.
+        what_to_do_next_message_html: |
+          <h3>What to do next</h3>
+          <ul>
+            <li>If any of your classrooms are too hot, ask your teacher if you can adjust the temperature, using the thermostat or individual radiator control valves.</li>
+            <li>Radiator control valves are normally numbered, a bigger number means a higher temperature, a smaller number a lower temperature.</li>
+            <li>Sometimes radiator control valves become stuck, so if you can’t turn them easily then ask your teacher to help.</li>
+            <li>If a valve is broken or missing ask your caretaker to fix it.</li>
+            <li>The thermostat is often a dial or digital display on the wall showing the temperature. There is often only one thermostat for the whole school. See if you can find out where it is located, and what it is set to?</li>
+            <li>Sometimes teachers are worried about turning down thermostats in case everyone feels cold. You could agree to reduce the thermostat by 1 &deg;C first, or turn the radiator valve down by one number, and then continue to check temperatures and pupil and staff comfort levels. Ask them whether they feel too hot or cold or just right. If they feel hot or comfortable, you could try reducing the temperature a little more.</li>
+          </ul>
