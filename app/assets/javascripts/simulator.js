@@ -75,7 +75,8 @@ $(document).ready(function() {
     });
 
     $('div.timepicker').datetimepicker({
-      format: 'LT'
+      format: 'LT',
+      locale: moment.locale()
     });
 
 
