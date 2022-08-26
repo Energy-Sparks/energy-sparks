@@ -55,3 +55,14 @@ en:
           <p>Every day you record your classroom temperatures, you will earn 5 Energy Sparks points!</p>
         you_havent_created_any_locations_yet: You haven't created any locations yet. Add some more below.
         you_will_earn_five_points: You will earn 5 points for each day you measure and record your classroom temperatures
+      new:
+        create_temperature_recordings: Create temperature recordings
+        enter_temperatures: Enter temperatures
+        leave_locations_blank: Leave any rooms or locations that you don't have readings for blank
+        title: Record your school's temperatures
+      show:
+        observations: Observations
+        observations_for: Observations for
+      temperature_recording_fields:
+        temperature: Temperature
+        temperature_in_centigrade_message: Enter the temperature in centigrade as a single number between 0 and 50
