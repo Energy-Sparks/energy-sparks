@@ -147,7 +147,6 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
 
     if (chartData.x_max_value) {
       highchartsChart.update({yAxis: { max: chartData.x_max_value, min: -chartData.x_max_value }})
-
     }
   }
 
