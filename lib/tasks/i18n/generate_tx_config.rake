@@ -16,7 +16,7 @@ namespace :i18n do
         f.puts "source_file  = config/locales/#{yml}"
         f.puts "source_lang  = en"
         f.puts "type         = YML"
-        f.puts "minimum_perc = 0"
+        f.puts "minimum_perc = 100"
         f.puts
       end
     end

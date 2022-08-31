@@ -1,6 +1,6 @@
 class ChartDataValues
   attr_reader :anaylsis_type, :title, :subtitle, :chart1_type, :chart1_subtype,
-              :y_axis_label, :x_axis_label, :x_axis_categories,
+              :y_axis_label, :x_axis_label, :x_axis_categories, :x_max_value, :x_min_value,
               :advice_header, :advice_footer, :y2_axis_label, :y2_point_format, :y2_max, :x_axis_ranges, :annotations,
               :transformations, :allowed_operations, :drilldown_available, :parent_timescale_description,
               :uses_time_of_day, :y1_axis_choices, :explore_message, :pinch_and_zoom_message, :click_and_drag_message
@@ -31,6 +31,8 @@ class ChartDataValues
       @subtitle           = chart[:subtitle]
       @x_axis_categories  = translate_categories_for(chart[:x_axis])
       @x_axis_ranges      = chart[:x_axis_ranges] # Not actually used but range of actual dates
+      @x_max_value        = chart[:x_max_value]
+      @x_min_value        = chart[:x_min_value]
       @chart1_type        = chart[:chart1_type]
       @chart1_subtype     = chart[:chart1_subtype]
       @x_axis_label       = chart[:x_axis_label]
@@ -164,6 +166,8 @@ class ChartDataValues
       :y_axis_label,
       :x_axis_label,
       :x_axis_categories,
+      :x_max_value,
+      :x_min_value,
       :advice_header,
       :advice_footer,
       :y2_axis_label,

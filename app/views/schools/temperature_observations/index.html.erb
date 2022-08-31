@@ -1,22 +1,22 @@
-<h1>Temperature recordings</h1>
+<h1><%= t('schools.temperature_observations.index.page_title') %></h1>
 <h2><%= @school.name %></h2>
 
 <p>
-  <%= link_to 'Add new temperature recordings', new_school_temperature_observation_path(@school, introduction: true), class: 'btn' %>
-  <%= link_to 'Change room names', school_locations_path(@school), class: 'btn' %>
+  <%= link_to t('schools.temperature_observations.index.add_new_temperature_recordings'), new_school_temperature_observation_path(@school, introduction: true), class: 'btn' %>
+  <%= link_to t('schools.temperature_observations.index.change_room_names'), school_locations_path(@school), class: 'btn' %>
 </p>
 
 <% if @observations.any? %>
   <table class="table table-bordered temperatures table-large">
     <thead>
       <tr>
-        <th class='fixed-width-date'>Date</th>
-        <th>Time</th>
+        <th class='fixed-width-date'><%= t('schools.temperature_observations.index.date') %></th>
+        <th><%= t('schools.temperature_observations.index.time') %></th>
         <% @locations.each do |location| %>
           <th><%= location.name %></th>
         <% end %>
         <% if can? :delete, Observation %>
-          <th>Actions</th>
+          <th><%= t('schools.temperature_observations.index.actions') %></th>
         <% end %>
       </tr>
     </thead>
@@ -34,7 +34,7 @@
 
           <% end %>
           <% if can? :delete, observation %>
-            <td><%= link_to 'Delete', school_temperature_observation_path(@school, observation), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm' %></td>
+            <td><%= link_to t('schools.temperature_observations.index.delete'), school_temperature_observation_path(@school, observation), method: :delete, data: { confirm: t('schools.temperature_observations.index.are_you_sure') }, class: 'btn btn-sm' %></td>
           <% end %>
         </tr>
       <% end %>
@@ -46,22 +46,29 @@
   <div class='calendar-legend row'>
     <div class='legend-scale vertical'>
       <ul class='legend-labels'>
-        <li><span class="<%= temperature_cell_colour(16) %>"></span><div class="description">This may be a little chilly. Could your school add more roof and wall insulation to help keep the school warmer without using more energy?</div></li>
-        <li><span class="<%= temperature_cell_colour(18) %>"></span><div class="description">This is a good temperature for energy efficient schools. Well done!</div></li>
-        <li><span class="<%= temperature_cell_colour(19) %>"></span><div class="description">Energy Sparks recommends classroom temperatures are no higher than 18C. Try turning down your heating to save energy and money.</div></li>
+        <li>
+          <span class="<%= temperature_cell_colour(16) %>"></span>
+          <div class="description">
+            <%= t('schools.temperature_observations.index.roof_and_wall_insulation_message') %>
+          </div>
+        </li>
+        <li>
+          <span class="<%= temperature_cell_colour(18) %>"></span>
+          <div class="description">
+            <%= t('schools.temperature_observations.index.good_temperature_message') %>
+          </div>
+        </li>
+        <li>
+          <span class="<%= temperature_cell_colour(19) %>"></span>
+          <div class="description">
+            <%= t('schools.temperature_observations.index.try_turning_down_your_heating_message') %>
+          </div>
+        </li>
       </ul>
     </div>
   </div>
 
-  <h3>What to do next</h3>
-  <ul>
-    <li>If any of your classrooms are too hot, ask your teacher if you can adjust the temperature, using the thermostat or individual radiator control valves.</li>
-    <li>Radiator control valves are normally numbered, a bigger number means a higher temperature, a smaller number a lower temperature.</li>
-    <li>Sometimes radiator control valves become stuck, so if you can’t turn them easily then ask your teacher to help.</li>
-    <li>If a valve is broken or missing ask your caretaker to fix it.</li>
-    <li>The thermostat is often a dial or digital display on the wall showing the temperature. There is often only one thermostat for the whole school. See if you can find out where it is located, and what it is set to?</li>
-    <li>Sometimes teachers are worried about turning down thermostats in case everyone feels cold. You could agree to reduce the thermostat by 1 &deg;C first, or turn the radiator valve down by one number, and then continue to check temperatures and pupil and staff comfort levels. Ask them whether they feel too hot or cold or just right. If they feel hot or comfortable, you could try reducing the temperature a little more.</li>
-  </ul>
+  <%= t('schools.temperature_observations.index.what_to_do_next_message_html') %>
 <% else %>
-  <p>There are no observations recorded at the moment</p>
+  <p><%= t('schools.temperature_observations.index.no_observations_message') %></p>
 <% end %>
