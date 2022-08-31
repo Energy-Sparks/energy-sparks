@@ -120,6 +120,7 @@ RSpec.describe 'consent_requests', type: :system do
           expect(consent_grant.school_name).to eq('Boss school')
           expect(consent_grant.user).to eq(school_admin)
           expect(consent_grant.school).to eq(school)
+          expect(consent_grant.ip_address).not_to be_nil
         end
 
         it 'should send an email' do
