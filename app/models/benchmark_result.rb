@@ -27,4 +27,44 @@ class BenchmarkResult < ApplicationRecord
   belongs_to :alert_type
 
   store :data, coder: YAML
+
+  #converts JSON which may contain, NAN, Float::Infinity,
+  def self.convert_for_storage(json)
+    return nil if json.nil?
+    json.transform_values { |v| for_storage(v) }
+  end
+
+  def self.convert_for_processing(json)
+    return nil if json.nil?
+    json.transform_values { |v| for_processing(v) }
+  end
+
+  private_class_method def self.needs_conversion?(val)
+    val.is_a?(Float) || val.is_a?(BigDecimal)
+  end
+
+  private_class_method def self.for_storage(val)
+    return val if val.nil? || !needs_conversion?(val)
+    if val.infinite? == 1
+      ".inf"
+    elsif val.infinite? == -1
+      "-.Inf"
+    elsif val.nan?
+      ".NAN"
+    else
+      val
+    end
+  end
+
+  private_class_method def self.for_processing(val)
+    if val == ".inf"
+      Float::INFINITY
+    elsif val == "-.Inf"
+      -Float::INFINITY
+    elsif val == ".NAN"
+      Float::NAN
+    else
+      val
+    end
+  end
 end

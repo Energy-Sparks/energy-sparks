@@ -9,11 +9,14 @@ module NavHelper
   def locale_switcher_buttons
     locale_links = ['<ul class="navbar-nav">']
     (I18n.available_locales - [I18n.locale]).each do |locale|
-      locale_links << '<li class="nav-item pl-3 pr-3 nav-lozenge nav-lozenge-little-padding">' +
-                      link_to(locale_name_for(locale), url_for(subdomain: subdomain_for(locale), only_path: false)) + '</li>'
+      locale_links << '<li class="nav-item pl-3 pr-3 nav-lozenge nav-lozenge-little-padding">' + link_to_locale(locale) + '</li>'
     end
     locale_links << '</ul>'
     locale_links.join('').html_safe
+  end
+
+  def link_to_locale(locale)
+    link_to(locale_name_for(locale), url_for(subdomain: subdomain_for(locale), only_path: false, params: request.query_parameters))
   end
 
   def subdomain_for(locale)

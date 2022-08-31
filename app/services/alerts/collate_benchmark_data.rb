@@ -30,7 +30,7 @@ module Alerts
           unless benchmarks[benchmark_result[0]].key?(school_id)
             benchmarks[benchmark_result[0]][school_id] = {}
           end
-          benchmarks[benchmark_result[0]][school_id] = benchmarks[benchmark_result[0]][school_id].merge!(benchmark_result[1])
+          benchmarks[benchmark_result[0]][school_id] = benchmarks[benchmark_result[0]][school_id].merge!(BenchmarkResult.convert_for_processing(benchmark_result[1]))
         end
       end
     end
