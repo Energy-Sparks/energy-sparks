@@ -96,6 +96,9 @@ Rails.application.configure do
 
   # Uncomment to pull in locale files when testing with a local version of the Energy Sparks Analytics gem
   # config.i18n.load_path += Dir[Gem.loaded_specs['energy-sparks_analytics'].full_gem_path + '/config/locales/**/*.{rb,yml}']
+
+  config.i18n.available_locales << :mirror
+  I18n::Backend::Simple.include(I18n::Backend::Custom)
 end
 
 class MyAppFormatter < Logger::Formatter
