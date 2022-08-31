@@ -42,6 +42,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def current_ip_address
+    request.env['HTTP_X_FORWARDED_FOR'] || request.remote_ip
+  end
+
   private
 
   def analytics_code
