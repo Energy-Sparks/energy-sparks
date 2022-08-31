@@ -217,6 +217,7 @@ RSpec.describe "onboarding", :schools, type: :system do
           expect(consent_grant.school_name).to eq('Boss school')
           expect(consent_grant.user).to eq(onboarding.created_user)
           expect(consent_grant.school).to eq(onboarding.school)
+          expect(consent_grant.ip_address).not_to be_nil
         end
 
       end
