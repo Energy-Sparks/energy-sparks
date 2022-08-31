@@ -1,0 +1,68 @@
+---
+en:
+  schools:
+    temperature_observations:
+      index:
+        actions: Actions
+        add_new_temperature_recordings: Add new temperature recordings
+        are_you_sure: Are you sure?
+        change_room_names: Change room names
+        date: Date
+        delete: Delete
+        good_temperature_message: This is a good temperature for energy efficient schools. Well done!
+        no_observations_message: There are no observations recorded at the moment
+        page_title: Temperature recordings
+        roof_and_wall_insulation_message: This may be a little chilly. Could your school add more roof and wall insulation to help keep the school warmer without using more energy?
+        time: Time
+        try_turning_down_your_heating_message: Energy Sparks recommends classroom temperatures are no higher than 18C. Try turning down your heating to save energy and money.
+        what_to_do_next_message_html: |
+          <h3>What to do next</h3>
+          <ul>
+            <li>If any of your classrooms are too hot, ask your teacher if you can adjust the temperature, using the thermostat or individual radiator control valves.</li>
+            <li>Radiator control valves are normally numbered, a bigger number means a higher temperature, a smaller number a lower temperature.</li>
+            <li>Sometimes radiator control valves become stuck, so if you can’t turn them easily then ask your teacher to help.</li>
+            <li>If a valve is broken or missing ask your caretaker to fix it.</li>
+            <li>The thermostat is often a dial or digital display on the wall showing the temperature. There is often only one thermostat for the whole school. See if you can find out where it is located, and what it is set to?</li>
+            <li>Sometimes teachers are worried about turning down thermostats in case everyone feels cold. You could agree to reduce the thermostat by 1 &deg;C first, or turn the radiator valve down by one number, and then continue to check temperatures and pupil and staff comfort levels. Ask them whether they feel too hot or cold or just right. If they feel hot or comfortable, you could try reducing the temperature a little more.</li>
+          </ul>
+      introduction:
+        change_room_names: Change room names
+        how_to_carry_out_this_activity_html: |
+          <h3>How to carry out this activity</h3>
+          <ol>
+          <li>This activity needs to be carried out when your school heating is running. For most schools this is from October to April.</li>
+          <li>Record the classroom or area of the school where you are measuring the temperature.</li>
+          <li>Now record the temperature in that room.</li>
+          <li>You may find that the temperature in the school increases during the day as the school warms up from the heating and hot bodies in the classrooms. You could try recording temperatures in the morning, at lunchtime and in the afternoon to see how the temperature changes across the day.</li>
+          </ol>
+        locations_you_can_add_temperatures: Locations or rooms you can add temperatures to
+        name: Name
+        next: Next
+        ready_to_record_your_temperatures: Ready to record your temperatures?
+        recording_temperatures_for_a_new_location: Recording temperatures for a new location or room?
+        temperature_recording_tips_html: |
+          <h3>Temperature recording tips</h3>
+          <ul>
+          <li>The best way to measure the temperature is to put the thermometer down on a table or shelf, and wait until the temperature reading stops changing.</li>
+          <li>To get a good measurement of the overall temperature in the room, you should put the thermometer away from any radiators or heaters, spotlights, electrical equipment like whiteboards or computers, air conditioning vents, windows, outside walls and direct sunlight.</li>
+          <li>You should be careful not to hold the thermometer while taking your measurement as your body heat will warm the thermometer.</li>
+          </ul>
+        temperatures_recorded: Temperatures recorded
+        title: Record your school's temperatures
+        why_are_we_doing_this_html: |
+          <h3>Why are we doing this?</h3>
+          <p>Getting the temperature right at your school is important. A hot classroom is expensive as more heating is needed, and heating costs money. The best temperature for schools is 18&deg;C, but corridors and sports halls can be 15&deg;C. If some areas of your school are hotter than this, you are wasting energy and money. For every 1&deg;C you reduce the temperature, you save the school about 10% of its heating costs.</p>
+          <p>Every day you record your classroom temperatures, you will earn 5 Energy Sparks points!</p>
+        you_havent_created_any_locations_yet: You haven't created any locations yet. Add some more below.
+        you_will_earn_five_points: You will earn 5 points for each day you measure and record your classroom temperatures
+      new:
+        create_temperature_recordings: Create temperature recordings
+        enter_temperatures: Enter temperatures
+        leave_locations_blank: Leave any rooms or locations that you don't have readings for blank
+        title: Record your school's temperatures
+      show:
+        observations: Observations
+        observations_for: Observations for
+      temperature_recording_fields:
+        temperature: Temperature
+        temperature_in_centigrade_message: Enter the temperature in centigrade as a single number between 0 and 50

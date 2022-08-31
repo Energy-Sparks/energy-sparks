@@ -6,7 +6,7 @@
     </div>
 
     <div class="col-lg-3 form-group">
-      <%= temperature_form.input :centigrade, as: :number, required: false, label: "Temperature" do %>
+      <%= temperature_form.input :centigrade, as: :number, required: false, label: t('schools.temperature_observations.temperature_recording_fields.temperature') do %>
         <div class="input-group">
           <div class="input-group-prepend">
             <span class="input-group-text"><%= fa_icon('temperature-high') %></span>
@@ -18,7 +18,7 @@
         </div>
       <% end %>
       <% if temperature_form.index.zero? %>
-        <small class='form-text text-muted'>Enter the temperature in centigrade as a single number between 0 and 50.</small>
+        <small class='form-text text-muted'><%= t('schools.temperature_observations.temperature_recording_fields.temperature_in_centigrade_message') %>.</small>
       <% end %>
     </div>
   </div>
