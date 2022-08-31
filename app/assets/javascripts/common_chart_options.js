@@ -244,7 +244,19 @@ function scatter(chartData, highchartsChart, seriesData) {
 
   Object.keys(seriesData).forEach(function (key) {
     //console.log(seriesData[key].name);
-    highchartsChart.addSeries(seriesData[key], false);
+    if (seriesData[key].name.startsWith("trendline_")) {
+      highchartsChart.addSeries(
+        {
+          type: 'line',
+          name: seriesData[key].name,
+          data: seriesData[key].data.filter(function( obj ) {
+            return obj[1] !== null; // Remove nulls so there's no gap in the line
+          })
+        }
+      )
+    } else {
+      highchartsChart.addSeries(seriesData[key], false)
+    }
   });
   normaliseYAxis(highchartsChart);
   highchartsChart.redraw();
