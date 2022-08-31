@@ -39,13 +39,17 @@ class BenchmarkResult < ApplicationRecord
     json.transform_values { |v| for_processing(v) }
   end
 
+  private_class_method def self.needs_conversion?(val)
+    val.is_a?(Float) || val.is_a?(BigDecimal)
+  end
+
   private_class_method def self.for_storage(val)
-    return val if val.nil? || !val.is_a?(Float)
+    return val if val.nil? || !needs_conversion?(val)
     if val.infinite? == 1
       ".inf"
     elsif val.infinite? == -1
       "-.Inf"
-    elsif (val.is_a?(Float) || val.is_a?(BigDecimal)) && val.nan?
+    elsif val.nan?
       ".NAN"
     else
       val

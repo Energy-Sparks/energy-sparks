@@ -6,10 +6,12 @@ describe BenchmarkResult do
 
   context '#convert_for_processing' do
     it 'returns simple json unchanged' do
-      data = {foo: 123, bar: 1.2, var: Date.new(2022,4,1)}
+      data = {foo: 123, bar: 1.2, other: "String", check: true, var: Date.new(2022,4,1)}
       expect(BenchmarkResult.convert_for_processing(data)).to eq({
           foo: 123,
           bar: 1.2,
+          other: "String",
+          check: true,
           var: Date.new(2022,4,1)
         })
     end
@@ -55,6 +57,12 @@ describe BenchmarkResult do
           bar: 1.2,
           var: ".inf"
         })
+        data = {foo: 123, bar: 1.2, var: BigDecimal('Infinity')}
+        expect(BenchmarkResult.convert_for_storage(data)).to eq({
+            foo: 123,
+            bar: 1.2,
+            var: ".inf"
+          })
     end
     it 'replaces -Infinity with -.Inf' do
       data = {foo: 123, bar: 1.2, var: -Float::INFINITY}
@@ -63,6 +71,12 @@ describe BenchmarkResult do
           bar: 1.2,
           var: "-.Inf"
         })
+        data = {foo: 123, bar: 1.2, var: BigDecimal('-Infinity')}
+        expect(BenchmarkResult.convert_for_storage(data)).to eq({
+            foo: 123,
+            bar: 1.2,
+            var: "-.Inf"
+          })
     end
     it 'replaces with NaN with .NaN' do
       data = {foo: 123, bar: 1.2, var: Float::NAN}
