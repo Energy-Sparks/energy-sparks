@@ -71,6 +71,7 @@ module I18n
       def translate(locale, key, options = EMPTY_HASH)
         if locale.to_s == 'mirror' && key
           entry = lookup('en', key, options[:scope], options)
+          entry = pluralize('en', entry, options[:count]) if options[:count]
 
           return mirrored_text_for(entry) unless entry.nil?
         end
