@@ -8,9 +8,86 @@ source_lang  = en
 type         = YML
 minimum_perc = 0
 
+[o:energy-sparks:p:energy-sparks:r:analytics-alerts-common-common-yml]
+file_filter  = config/locales/<lang>/analytics/alerts/common/common.yml
+source_file  = config/locales/analytics/alerts/common/common.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:analytics-alerts-electricity-baseload-yml]
+file_filter  = config/locales/<lang>/analytics/alerts/electricity/baseload.yml
+source_file  = config/locales/analytics/alerts/electricity/baseload.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:analytics-alerts-electricity-electricity-yml]
+file_filter  = config/locales/<lang>/analytics/alerts/electricity/electricity.yml
+source_file  = config/locales/analytics/alerts/electricity/electricity.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:analytics-alerts-electricity-tariffs-yml]
+file_filter  = config/locales/<lang>/analytics/alerts/electricity/tariffs.yml
+source_file  = config/locales/analytics/alerts/electricity/tariffs.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:analytics-alerts-gas-boilercontrol-yml]
+file_filter  = config/locales/<lang>/analytics/alerts/gas/boilercontrol.yml
+source_file  = config/locales/analytics/alerts/gas/boilercontrol.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:analytics-alerts-gas-gas-yml]
+file_filter  = config/locales/<lang>/analytics/alerts/gas/gas.yml
+source_file  = config/locales/analytics/alerts/gas/gas.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:analytics-alerts-gas-hotwater-yml]
+file_filter  = config/locales/<lang>/analytics/alerts/gas/hotwater.yml
+source_file  = config/locales/analytics/alerts/gas/hotwater.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:analytics-alerts-time_period_comparison-time_period_comparison-yml]
+file_filter  = config/locales/<lang>/analytics/alerts/time_period_comparison/time_period_comparison.yml
+source_file  = config/locales/analytics/alerts/time_period_comparison/time_period_comparison.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:analytics-charts-chart_configuration-yml]
+file_filter  = config/locales/<lang>/analytics/charts/chart_configuration.yml
+source_file  = config/locales/analytics/charts/chart_configuration.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
 [o:energy-sparks:p:energy-sparks:r:analytics-common-yml]
 file_filter  = config/locales/<lang>/analytics/common.yml
 source_file  = config/locales/analytics/common.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:analytics-dates-yml]
+file_filter  = config/locales/<lang>/analytics/dates.yml
+source_file  = config/locales/analytics/dates.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:analytics-energy_units-yml]
+file_filter  = config/locales/<lang>/analytics/energy_units.yml
+source_file  = config/locales/analytics/energy_units.yml
 source_lang  = en
 type         = YML
 minimum_perc = 0
@@ -60,6 +137,20 @@ minimum_perc = 0
 [o:energy-sparks:p:energy-sparks:r:mailers-mailer-yml]
 file_filter  = config/locales/<lang>/mailers/mailer.yml
 source_file  = config/locales/mailers/mailer.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:models-chart_data-yml]
+file_filter  = config/locales/<lang>/models/chart_data.yml
+source_file  = config/locales/models/chart_data.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:models-chart_data_values-yml]
+file_filter  = config/locales/<lang>/models/chart_data_values.yml
+source_file  = config/locales/models/chart_data_values.yml
 source_lang  = en
 type         = YML
 minimum_perc = 0
@@ -246,6 +337,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 0
 
+[o:energy-sparks:p:energy-sparks:r:views-management-management-yml]
+file_filter  = config/locales/<lang>/views/management/management.yml
+source_file  = config/locales/views/management/management.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
 [o:energy-sparks:p:energy-sparks:r:views-programme_types-programme_types-yml]
 file_filter  = config/locales/<lang>/views/programme_types/programme_types.yml
 source_file  = config/locales/views/programme_types/programme_types.yml
@@ -270,6 +368,13 @@ minimum_perc = 0
 [o:energy-sparks:p:energy-sparks:r:views-schools-schools-yml]
 file_filter  = config/locales/<lang>/views/schools/schools.yml
 source_file  = config/locales/views/schools/schools.yml
+source_lang  = en
+type         = YML
+minimum_perc = 0
+
+[o:energy-sparks:p:energy-sparks:r:views-schools-temperature_observations-yml]
+file_filter  = config/locales/<lang>/views/schools/temperature_observations.yml
+source_file  = config/locales/views/schools/temperature_observations.yml
 source_lang  = en
 type         = YML
 minimum_perc = 0
