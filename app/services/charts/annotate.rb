@@ -48,6 +48,12 @@ module Charts
 
     private
 
+    def abbr_month_name_lookup
+      @abbr_month_name_lookup ||= I18n.t('date.abbr_month_names').map.with_index do |abbr_month_name, index|
+        [abbr_month_name, I18n.t('date.abbr_month_names', locale: 'en')[index]]
+      end.to_h
+    end
+
     def date_for(x_axis_category)
       return Date.parse(x_axis_category) if I18n.locale.to_s == 'en'
 
@@ -55,12 +61,6 @@ module Charts
       # so we need to "de-localise" to the default locale ('en') first (e.g. '01 Feb 2022').
       delocalised_date = x_axis_category.gsub(/\w+/) { |date_string| abbr_month_name_lookup.fetch(date_string, date_string) }
       Date.parse(delocalised_date)
-    end
-
-    def abbr_month_name_lookup
-      @abbr_month_name_lookup ||= I18n.t('date.abbr_month_names').map.with_index do |abbr_month_name, index|
-        [abbr_month_name, I18n.t('date.abbr_month_names', locale: 'en')[index]]
-      end.to_h
     end
   end
 end
