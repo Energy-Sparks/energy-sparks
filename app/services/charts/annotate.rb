@@ -52,7 +52,7 @@ module Charts
       return Date.parse(x_axis_category) if I18n.locale.to_s == 'en'
 
       # Date.parse doesn't work with localised date strings as passed in x_axis_categories (e.g. '01 Chwe 2022')
-      # so we need to "de-localise" to English (e.g. '01 Feb 2022') first
+      # so we need to "de-localise" to the default locale ('en') first (e.g. '01 Feb 2022').
       delocalised_date = x_axis_category.gsub(/\w+/) { |date_string| abbr_month_name_lookup.fetch(date_string, date_string) }
       Date.parse(delocalised_date)
     end
