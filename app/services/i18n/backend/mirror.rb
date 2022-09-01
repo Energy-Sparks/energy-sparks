@@ -1,6 +1,6 @@
 module I18n
   module Backend
-    module Custom
+    module Mirror
       MIRRORED_CHARACTERS = {
         " " => " ",
         "a" => "ɐ",
@@ -69,13 +69,22 @@ module I18n
       }.freeze
 
       def translate(locale, key, options = EMPTY_HASH)
-        if locale.to_s == 'mirror' && key
-          entry = lookup('en', key, options[:scope], options)
-          entry = pluralize('en', entry, options[:count]) if options[:count]
-
-          return mirrored_text_for(entry) unless entry.nil?
+        if Rails.env.development? && locale.to_s == 'mirror' && key
+          find_and_mirror_entry_for(key, options)
+        else
+          super
         end
-        super
+      end
+
+      def find_and_mirror_entry_for(key, options)
+        entry = lookup('en', key, options[:scope], options)
+        entry = entry.dup if entry.is_a?(String)
+
+        entry = pluralize('en', entry, options[:count]) if options[:count]
+
+        return if entry.nil?
+
+        mirrored_text_for(entry)
       end
 
       def mirrored_text_for(entry)
