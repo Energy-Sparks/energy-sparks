@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-
 RSpec.describe 'school targets', type: :system do
 
   let!(:school)            { create(:school) }
