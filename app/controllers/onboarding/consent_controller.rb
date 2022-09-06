@@ -11,7 +11,7 @@ module Onboarding
     end
 
     def create
-      @consent_grant = ConsentGrant.new(school_onboarding_consent_params.merge(user: current_user, school: @school_onboarding.school))
+      @consent_grant = ConsentGrant.new(school_onboarding_consent_params.merge(user: current_user, school: @school_onboarding.school, ip_address: current_ip_address))
       if @consent_grant.save
         @school_onboarding.events.create!(event: :permission_given)
         ConsentGrantMailer.with(consent_grant: @consent_grant).email_consent.deliver_now

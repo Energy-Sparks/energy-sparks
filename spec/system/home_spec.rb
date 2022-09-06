@@ -1,9 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe "home", type: :system do
+
   it 'has a home page' do
     visit root_path
     expect(page.has_content? "Energy Sparks")
+  end
+
+  it 'allows locale switch retaining extra parameters' do
+    ClimateControl.modify FEATURE_FLAG_LOCALE_SWITCHER_BUTTONS: 'true' do
+      visit root_path(foo: :bar)
+      expect(page).to have_link("Cymraeg", href: "http://127.0.0.1/?foo=bar")
+    end
   end
 
   it 'has a for-schools page' do

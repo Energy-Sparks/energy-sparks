@@ -42,6 +42,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def current_ip_address
+    request.remote_ip
+  end
+
   private
 
   def analytics_code

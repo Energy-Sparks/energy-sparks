@@ -36,6 +36,8 @@ RSpec.describe 'school targets', type: :system do
     #and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
     #relationship
     school.configuration.update!(fuel_configuration: fuel_configuration, school_target_fuel_types: school_target_fuel_types, aggregate_meter_dates: aggregate_meter_dates)
+    # So tests for 'prompts always show on dashboard' we need to set months_between to always be below the threshold for filtering
+    allow_any_instance_of(Targets::SuggestEstimatesService).to receive(:months_between) { Targets::SuggestEstimatesService::THRESHOLD_FOR_FILTERING - 1 }
   end
 
   context 'as a school admin' do

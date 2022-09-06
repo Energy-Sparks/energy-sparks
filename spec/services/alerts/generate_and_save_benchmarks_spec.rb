@@ -19,7 +19,7 @@ module Alerts
       chart_data: {chart: 'variables'},
       table_data: {table: 'variables'},
       priority_data: {priority: 'variables'},
-      benchmark_data: {benchmark: 'variables'}
+      benchmark_data: {benchmark: 'variables', var: Float::INFINITY}
     }}
 
     let(:example_benchmark_report)    { Adapters::Report.new(**alert_report_attributes) }
@@ -79,6 +79,7 @@ module Alerts
         service.perform
         expect(BenchmarkResult.last.data).to_not eq({})
         expect(BenchmarkResult.last.results).to_not eq({})
+        expect(BenchmarkResult.last.results["var"]).to eq ".inf"
       end
 
       it 'handles just errors' do

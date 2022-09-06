@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_25_134314) do
+ActiveRecord::Schema.define(version: 2022_08_31_102929) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -619,7 +619,7 @@ ActiveRecord::Schema.define(version: 2022_08_25_134314) do
 
   create_table "consent_grants", force: :cascade do |t|
     t.bigint "consent_statement_id", null: false
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.bigint "school_id", null: false
     t.text "name"
     t.text "job_title"
