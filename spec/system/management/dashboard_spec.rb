@@ -12,20 +12,11 @@ describe 'Management dashboard' do
   let!(:school_admin)       { create(:school_admin, school: school)}
   let(:staff)               { create(:staff, school: school, staff_role: create(:staff_role, :management)) }
 
-  let(:management_table) {
-    [
-      ["", "Annual Use (kWh)", "Annual CO2 (kg)", "Annual Cost", "Change from last year", "Change in last 4 school weeks", "Potential savings"],
-      ["Electricity", "730,000", "140,000", "£110,000", "+12%", "-8.5%", "£83,000"],
-      ["Gas", "not enough data", "not enough data", "not enough data", "not enough data", "-50%", "not enough data"]
-    ]
-  }
-
   let(:management_data) {
     Tables::SummaryTableData.new({ electricity: { year: { :percent_change => 0.11050 }, workweek: { :percent_change => -0.0923132131 } } })
   }
 
   before(:each) do
-    allow_any_instance_of(Schools::ManagementTableService).to receive(:management_table).and_return(management_table)
     allow_any_instance_of(Schools::ManagementTableService).to receive(:management_data).and_return(management_data)
   end
 
@@ -103,21 +94,15 @@ describe 'Management dashboard' do
       end
 
       it 'shows data-enabled features' do
-        ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'false' do
-          visit management_school_path(school)
-          expect(page).to have_content("Your annual usage")
-        end
-        ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'true' do
-          visit management_school_path(school)
-          expect(page).to have_content("Summary of recent energy usage")
-        end
+        visit management_school_path(school)
+        expect(page).to have_content("Summary of recent energy usage")
       end
 
       it 'shows data-enabled links' do
         visit management_school_path(school)
         expect(page).to have_link("Compare schools")
-        expect(page).to have_link("Explore your data")
-        expect(page).to have_link("Review your energy analysis")
+        expect(page).to have_link("Explore data")
+        expect(page).to have_link("Review energy analysis")
         expect(page).to have_link("Print view")
       end
 
@@ -138,7 +123,7 @@ describe 'Management dashboard' do
         context 'and they can all be shown' do
           let(:dashboard_charts) { [:management_dashboard_group_by_week_electricity, :management_dashboard_group_by_week_gas, :management_dashboard_group_by_week_storage_heater, :management_dashboard_group_by_month_solar_pv] }
           it 'displays the expected charts' do
-            expect(page).to have_content("Your recent energy usage")
+            expect(page).to have_content("Recent energy usage")
             expect(page).to have_css("#management-energy-overview")
             expect(page).to have_css("#electricity-overview")
             expect(page).to have_css("#gas-overview")
@@ -150,7 +135,7 @@ describe 'Management dashboard' do
         context 'and there are limited charts' do
           let(:dashboard_charts) { [:management_dashboard_group_by_week_electricity, :management_dashboard_group_by_week_gas] }
           it 'displays the expected charts' do
-            expect(page).to have_content("Your recent energy usage")
+            expect(page).to have_content("Recent energy usage")
             expect(page).to have_css("#management-energy-overview")
             expect(page).to have_css("#electricity-overview")
             expect(page).to have_css("#gas-overview")
@@ -161,7 +146,7 @@ describe 'Management dashboard' do
 
         context 'and there are no charts' do
           it 'displays the expected charts' do
-            expect(page).to_not have_content("Your recent energy usage")
+            expect(page).to_not have_content("Recent energy usage")
             expect(page).to_not have_css("#management-energy-overview")
           end
         end
@@ -248,6 +233,62 @@ describe 'Management dashboard' do
           expect(page).to have_content("Management information for #{school.name}")
           expect(page).to have_content('Spending too much money on heating')
           expect(page).to have_content('£2,000')
+        end
+
+      end
+
+      context 'with dashboard alerts' do
+        let!(:gas_fuel_alert_type) { create(:alert_type, fuel_type: :gas, frequency: :weekly) }
+        let!(:alert_type_rating) do
+          create(
+            :alert_type_rating,
+            alert_type: gas_fuel_alert_type,
+            rating_from: 0,
+            rating_to: 10,
+            management_dashboard_alert_active: true,
+          )
+        end
+        let!(:alert_type_rating_content_version) do
+          create(
+            :alert_type_rating_content_version,
+            alert_type_rating: alert_type_rating,
+            management_dashboard_title_en: 'You can save {{average_one_year_saving_gbp}} on heating in {{average_payback_years}}',
+            management_dashboard_title_cy: 'Gallwch arbed {{average_one_year_saving_gbp}} mewn {{average_payback_years}}',
+          )
+        end
+        let(:alert_summary){ 'Summary of the alert' }
+        let!(:alert) do
+          create(:alert, :with_run,
+            alert_type: gas_fuel_alert_type,
+            run_on: Date.today, school: school,
+            rating: 9.0,
+            template_data: {
+              average_one_year_saving_gbp: '£5,000',
+              average_payback_years: '1 year'
+            },
+            template_data_cy: {
+              average_one_year_saving_gbp: '£7,000',
+              average_payback_years: '1 flwyddyn'
+            }
+          )
+        end
+
+        before do
+          Alerts::GenerateContent.new(school).perform
+        end
+
+        context 'in English' do
+          it 'displays English alert text' do
+            visit management_school_path(school)
+            expect(page).to have_content('You can save £5,000 on heating in 1 year')
+          end
+        end
+
+        context 'in Welsh' do
+          it 'displays Welsh alert text' do
+            visit management_school_path(school, locale: 'cy')
+            expect(page).to have_content('Gallwch arbed £7,000 mewn 1 flwyddyn')
+          end
         end
       end
 
@@ -355,21 +396,15 @@ describe 'Management dashboard' do
       end
 
       it 'overrides flag and shows data-enabled features' do
-        ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'false' do
-          visit management_school_path(school)
-          expect(page).to have_content("Your annual usage")
-        end
-        ClimateControl.modify FEATURE_FLAG_USE_MANAGEMENT_DATA: 'true' do
-          visit management_school_path(school)
-          expect(page).to have_content("Summary of recent energy usage")
-        end
+        visit management_school_path(school)
+        expect(page).to have_content("Summary of recent energy usage")
       end
 
       it 'overrides flag and shows data-enabled links' do
         visit management_school_path(school)
         expect(page).to have_link("Compare schools")
-        expect(page).to have_link("Explore your data")
-        expect(page).to have_link("Review your energy analysis")
+        expect(page).to have_link("Explore data")
+        expect(page).to have_link("Review energy analysis")
         expect(page).to have_link("Download your data")
       end
 
@@ -378,8 +413,8 @@ describe 'Management dashboard' do
         expect(page).to have_link("User view")
         click_on("User view")
         expect(page).to have_link("Admin view")
-        expect(page).to_not have_link("Explore your data")
-        expect(page).to_not have_content("Your annual usage")
+        expect(page).to_not have_link("Explore data")
+        expect(page).to_not have_content("Annual usage summary")
       end
     end
 
@@ -407,7 +442,7 @@ describe 'Management dashboard' do
       end
 
       it 'does not show data-enabled features' do
-        expect(page).to_not have_content("Your annual usage")
+        expect(page).to_not have_content("Annual usage summary")
       end
 
       it 'shows placeholder chart' do
@@ -417,7 +452,7 @@ describe 'Management dashboard' do
       it 'does not show data-enabled links' do
         within('.application') do
           expect(page).to_not have_link("Compare schools")
-          expect(page).to_not have_link("Explore your data")
+          expect(page).to_not have_link("Explore data")
           expect(page).to_not have_link("Review your energy analysis")
           expect(page).to_not have_link("Print view")
         end

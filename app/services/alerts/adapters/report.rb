@@ -1,13 +1,14 @@
 module Alerts
   module Adapters
     class Report
-      attr_reader :valid, :rating, :enough_data, :relevance, :template_data, :chart_data, :table_data, :priority_data, :benchmark_data, :asof_date
-      def initialize(valid:, rating:, enough_data:, relevance:, template_data: {}, chart_data: {}, table_data: {}, priority_data: {}, benchmark_data: {})
+      attr_reader :valid, :rating, :enough_data, :relevance, :template_data, :template_data_cy, :chart_data, :table_data, :priority_data, :benchmark_data, :asof_date
+      def initialize(valid:, rating:, enough_data:, relevance:, template_data: {}, template_data_cy: {}, chart_data: {}, table_data: {}, priority_data: {}, benchmark_data: {})
         @valid = valid
         @rating = rating
         @enough_data = enough_data
         @relevance = relevance
         @template_data = template_data
+        @template_data_cy = template_data_cy
         @chart_data = chart_data
         @table_data = table_data
         @priority_data = priority_data

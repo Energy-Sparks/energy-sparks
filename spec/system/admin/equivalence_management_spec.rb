@@ -95,13 +95,13 @@ RSpec.describe 'equivalence type management', type: :system do
       analytics = double :analytics
 
       expect(analytics).to receive(:new).and_return(analytics)
-      expect(analytics).to receive(:front_end_convert).with(:kwh, {month: -1}, :electricity).and_return(
+      expect(analytics).to receive(:front_end_convert).at_least(:once).with(:kwh, {month: -1}, :electricity).and_return(
         {
           formatted_equivalence: '100 kwh',
           show_equivalence: true
         }
       )
-      expect(analytics).to receive(:front_end_convert).with(:number_trees, {month: -1}, :electricity).and_return(
+      expect(analytics).to receive(:front_end_convert).at_least(:once).with(:number_trees, {month: -1}, :electricity).and_return(
         {
           formatted_equivalence: '200,000',
           show_equivalence: true

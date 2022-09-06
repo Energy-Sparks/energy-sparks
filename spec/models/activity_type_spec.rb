@@ -48,7 +48,7 @@ describe 'ActivityType' do
       activity_type_1 = create(:activity_type, name: 'time')
       activity_type_2 = create(:activity_type, name: 'timing')
 
-      expect(ActivityType.search(query: 'timing', locale: 'en')).to eq([activity_type_1, activity_type_2])
+      expect(ActivityType.search(query: 'timing', locale: 'en')).to match_array([activity_type_1, activity_type_2])
     end
 
     it 'finds search content for different locales' do

@@ -58,6 +58,10 @@ module Alerts
           priority_data: analysis_object.priority_template_data,
         }
 
+        I18n.with_locale(:cy) do
+          variable_data[:template_data_cy] = analysis_object.front_end_template_data
+        end
+
         variable_data[:benchmark_data] = analysis_object.benchmark_template_data if benchmark
         variable_data
       end

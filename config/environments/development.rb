@@ -93,6 +93,9 @@ Rails.application.configure do
   # Add these to your /etc/hosts file
   config.hosts << "energysparks.development"
   config.hosts << "cy.energysparks.development"
+
+  # Uncomment to pull in locale files when testing with a local version of the Energy Sparks Analytics gem
+  # config.i18n.load_path += Dir[Gem.loaded_specs['energy-sparks_analytics'].full_gem_path + '/config/locales/**/*.{rb,yml}']
 end
 
 class MyAppFormatter < Logger::Formatter

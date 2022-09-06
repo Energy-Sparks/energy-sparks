@@ -202,6 +202,7 @@ Rails.application.routes.draw do
 
       resources :alert_reports, only: [:index, :show]
       resources :content_reports, only: [:index, :show]
+      resources :equivalence_reports, only: [:index, :show]
       get :chart, to: 'charts#show'
       get :annotations, to: 'annotations#show'
 

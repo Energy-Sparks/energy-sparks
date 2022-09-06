@@ -26,6 +26,9 @@ en:
       description: Spring Half Term 2
       title: Term 4
     term_5:
+      description: Summer Half Term 1
+      title: Term 5
+    term_6:
       description: Summer Half Term 2
       title: Term 6
   key_stage:

@@ -1,0 +1,8 @@
+---
+en:
+  chart_data_values:
+    click_and_drag_message: Click and drag in the plot area to zoom in
+    explore_message: Click on the chart to explore the data
+    not_enough_data_message: 'We do not have enough data to display this chart at the moment: %{chart_type} chart'
+    pinch_and_zoom_message: Pinch the chart to zoom in
+    standard_error_message: We do not have enough data at the moment to display this chart
