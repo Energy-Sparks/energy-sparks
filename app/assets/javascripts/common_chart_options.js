@@ -279,7 +279,6 @@ function scatter(chartData, highchartsChart, seriesData) {
   highchartsChart.redraw();
 }
 
-
 function pie(chartData, highchartsChart, seriesData, $chartDiv) {
   $chartDiv.addClass('pie-chart');
   var chartHeight = $chartDiv.height();
