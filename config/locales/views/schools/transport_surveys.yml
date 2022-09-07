@@ -40,6 +40,7 @@ en:
           transport: 'Transport: What mode of transport did you use to get to school?'
           weather: Please select today's weather
         title: Travel to school survey
+        no_javascript_warning: Javascript must be enabled to use this functionality
       equivalences:
         carnivore_dinner:
           one: That's the same as 1 meat dinner %{image}!

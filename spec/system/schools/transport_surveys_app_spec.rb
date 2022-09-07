@@ -21,7 +21,7 @@ describe 'TransportSurveys - App', type: :system do
         end
 
         context "when javascript is not enabled" do
-          it { expect(page).to have_content('Javascript must be enabled to use this functionality.') }
+          it { expect(page).to have_content('Javascript must be enabled to use this functionality') }
         end
 
         context "when javascript is enabled", js: true do

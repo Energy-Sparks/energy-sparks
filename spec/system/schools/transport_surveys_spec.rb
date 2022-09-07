@@ -174,7 +174,7 @@ describe 'TransportSurveys', type: :system do
 
           it { expect(page).to have_content('Today\'s travel to school survey') }
           it { expect(page).to have_content('Survey today') }
-          it { expect(page).to have_content('Javascript must be enabled to use this functionality.') }
+          it { expect(page).to have_content('Javascript must be enabled to use this functionality') }
           it { expect(page).to have_link('View all transport surveys') }
           it { expect(page).to_not have_css('#survey_nav') }
 
