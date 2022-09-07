@@ -19,6 +19,48 @@ en:
         weather: Weather
       destroy:
         notice: Transport survey was successfully removed
+      edit:
+        buttons:
+          back: Back
+          confirm: Confirm
+          finish_and_save: Finish & save results
+          launch_survey_app: Launch survey app
+          next_pupil: Next pupil
+        intro:
+          how_html: |
+            <li>This can be carried out by a group of pupils with ipads or tablets at the school gate or by a teacher at registration time</li>
+            <li>Click "Launch survey app" and then select today's weather</li>
+            <li>Once the app is launched you can go out of WiFi range, so you can survey pupils arriving at the school gate</li>
+            <li>Ask members of the school community the questions presented in the survey. Park and Stride should be ticked if pupils are dropped off at least %{park_and_stride_mins} minutes walk from school and walk the last part of their journey</li>
+            <li>When you have finished, make sure you are connected to the internet before submitting the results</li>
+            <li>You could try conducting a transport survey on a different day to see if you have reduced your carbon</li>
+          how_title: How to carry out this activity
+          why: Transport accounts for around one-fifth of global carbon dioxide (CO2) emissions. Some modes of transport, emit more carbon than others! For example, petrol or diesel cars emit, on average, about 3 times more than electric cars. Some modes emit no carbon whatsoever - can you guess what they are? Find out how much carbon your school community uses by travelling to school
+          why_title: Why are we doing this?
+        labels:
+          minutes: Minutes
+          pupils: Pupil(s)
+          transport: Transport
+        no_javascript_warning: Javascript must be enabled to use this functionality
+        progress:
+          confirm: Confirm
+          sharing: Sharing
+          summary: Summary
+          time: Time
+          transport: Transport
+        pupils:
+          one: Just me
+          other: "%{count} pupils"
+        steps:
+          carbon_html: You used %{carbon} of carbon!
+          confirm: Confirm your selection
+          sharing_html: 'Sharing: How many pupils at this school shared your %{transport} journey?'
+          sharing_note: Don’t include your parents or carers or children who attend different schools or nurseries
+          summary_html: For your %{time} minute journey to school by %{transport}
+          time: 'Time: How many minutes did your journey take in total?'
+          transport: 'Transport: What mode of transport did you use to get to school?'
+          weather: Please select today's weather
+        title: Travel to school survey
       equivalences:
         carnivore_dinner:
           one: That's the same as 1 meat dinner %{image}!
