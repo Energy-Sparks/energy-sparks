@@ -36,10 +36,16 @@ describe Alerts::DeleteAlertGenerationRunService, type: :service do
         alert_generation_run = school.alert_generation_runs.create!(created_at: date_time)
         create(:alert, school: school, alert_type: gas_fuel_alert_type, created_at: date_time, alert_generation_run: alert_generation_run)
         create(:alert, school: school, alert_type: electricity_fuel_alert_type, created_at: date_time, alert_generation_run: alert_generation_run)
+        create(:alert_error, alert_type: gas_fuel_alert_type, created_at: date_time, alert_generation_run: alert_generation_run)
+        create(:alert_error, alert_type: electricity_fuel_alert_type, created_at: date_time, alert_generation_run: alert_generation_run)
         expect(AlertGenerationRun.count).to eq 1
         expect(AlertGenerationRun.first.alerts.count).to eq 2
+        expect(AlertGenerationRun.first.alert_errors.count).to eq 2
         expect(Alert.count).to eq 2
-        expect { service.delete! }.to change(AlertGenerationRun, :count).from(1).to(0) & change(Alert, :count).from(2).to(0)
+        expect(AlertError.count).to eq 2
+        expect { service.delete! }.to change(AlertGenerationRun, :count).from(1).to(0) &
+          change(Alert, :count).from(2).to(0) &
+            change(AlertError, :count).from(2).to(0)
       end
     end
   end
