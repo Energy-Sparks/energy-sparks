@@ -41,6 +41,12 @@ en:
           weather: Please select today's weather
         title: Travel to school survey
         no_javascript_warning: Javascript must be enabled to use this functionality
+        progress:
+          time: Time
+          transport: Transport
+          sharing: Sharing
+          confirm: Confirm
+          summary: Summary
       equivalences:
         carnivore_dinner:
           one: That's the same as 1 meat dinner %{image}!
