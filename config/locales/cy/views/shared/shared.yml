@@ -1,4 +1,111 @@
----
 cy:
+  about_menu:
+    about_us: Amdanom ni
+    blog: Blog
+    child_safeguarding: Diogelu plant
+    contact: Cysylltu
+    datasets: Setiau data
+    jobs: Swyddi
+    open_data: Agor data
+    partners: Partneriaid
+    privacy_policy: Polisi preifatrwydd
+    school_statistics: Ystadegau ysgolion
+    team: Tîm
+    terms_and_conditions: Telerau ac amodau
+  activities:
+    previous_records:
+      completed_most_recently_on: yn fwyaf diweddar ar
+      completed_on: 'ar'
+      previously_completed: "%{label} wedi'i gwblhau o'r blaen"
+    prompt_login_to_record:
+      are_you_an_energy_sparks_user: Ydych chi'n ddefnyddiwr Energy Sparks?
+      sign_in_html:
+        one: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>1</strong> pwynt i'ch ysgol!
+        two: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>%{count}</strong> bwynt i'ch ysgol!
+        many: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>%{count}</strong> o bwyntiau i'ch ysgol!
+        other: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>%{count}</strong> o bwyntiau i'ch ysgol!
+      sign_in_to_record_html: Mewngofnodwch i gofnodi %{label}
+  analysis_controls:
+    back_one: Yn ôl 1
+    change_units: Newid unedau
+    explore: Archwilio
+    forward_one: Ymlaen 1
+    period: cyfnod
+    up_to: Hyd at
+    view: gwedd
+  common_nav_bar_menus:
+    actions: Gweithredoedd
+    activities: Gweithgareddau
   footer:
-    more_information: Mwy o wybodaeth
+    cc_licence_notice_html: Cyhoeddir cynnwys ar y wefan hon o dan <a href="https://creativecommons.org/licenses/by/4.0/">Drwydded Creative Commons Attribution 4.0</a>
+    child_safeguarding_policy: Polisi diogelu plant
+    follow_energy_sparks: Dilyn Energy Sparks
+    more_information: Rhagor o wybodaeth
+    privacy_and_cookie_policy: Polisi preifatrwydd a chwcis
+    registered_charity_notice: Mae Energy Sparks yn elusen gofrestredig yng Nghymru a Lloegr, cofrestriad 1189273
+    terms_and_conditions: Telerau ac amodau
+  manage_menu:
+    admin: Gweinyddwr
+    reports: Adroddiadau
+  manage_school_menu:
+    batch_reports: Adroddiadau swp
+    edit_school_details: Golygu manylion yr ysgol
+    edit_school_times: Golygu amseroedd ysgol
+    expert_analysis: Dadansoddiad arbenigol
+    manage_alert_contacts: Rheoli cysylltiadau rhybuddio
+    manage_audits: Rheoli Archwiliadau
+    manage_cads: Rheoli CADs
+    manage_meters: Rheoli mesuryddion
+    manage_partners: Rheoli partneriaid
+    manage_school: Rheoli'r Ysgol
+    manage_tariffs: Rheoli tariffau
+    manage_usage_estimate: Rheoli amcangyfrif defnydd
+    manage_users: Rheoli defnyddwyr
+    meter_attributes: Priodweddau mesurydd
+    remove_school: Tynnu'r ysgol
+    review_targets: Adolygu targedau
+    school_calendar: Calendr ysgol
+    school_configuration: Ffurfweddiad ysgol
+    transport_surveys: Arolygon trafnidiaeth
+  my_school_menu:
+    complete_pupil_activities: Gweithgareddau disgyblion cyflawn
+    download_our_data: Lawrlwytho ein data
+    electricity_and_solar_usage: Defnydd trydan a solar
+    electricity_usage: Defnydd trydan
+    energy_analysis: Dadansoddiad ynni
+    energy_audits: Archwiliadau ynni
+    energy_saving_actions: Camau arbed ynni
+    gas_usage: Defnydd nwy
+    live_energy_data: Data ynni byw
+    my_alerts: Fy rhybuddion
+    my_school: Fy ysgol
+    my_school_group: Fy ngrŵp ysgol
+    review_targets: Adolygu targedau
+    school_programmes: Rhaglenni ysgol
+    scoreboard: Bwrdd sgorio
+    storage_heater_usage: Defnydd stôr-wresogyddion
+  nav:
+    enrol: Cofrestru
+    sign_in: Mewngofnodi
+    sign_out: Allgofnodi
+  our_schools_menu:
+    compare_schools: Cymharu ysgolion
+    our_schools: Ein hysgolion
+    scoreboards: Byrddau sgorio
+    view_schools: Gweld ysgolion
+  our_services_menu:
+    case_studies: Astudiaethau achos
+    educational_workshops: Gweithdai addysgol
+    energy_audits: Archwiliadau ynni
+    for_local_authorities: Ar gyfer Awdurdodau Lleol
+    for_multi_academy_trusts: Ar gyfer Ymddiriedolaethau Aml-Academi
+    for_schools: Ar gyfer Ysgolion
+    newsletters: Cylchlythyrau
+    our_services: Ein gwasanaethau
+    training: Hyfforddiant
+    videos: Fideos
+  switch_schools_menu:
+    switch_school: Newid ysgol
+  timeline:
+    view_all_events: Gweld pob digwyddiad
+    whats_been_going_on: Beth sydd wedi bod yn digwydd?
