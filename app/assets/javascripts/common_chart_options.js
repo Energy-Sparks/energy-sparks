@@ -268,15 +268,7 @@ function scatter(chartData, highchartsChart, seriesData) {
         {
           type: 'line',
           name: seriesData[key].name,
-          data: trendlineData,
-          marker: {
-            enabled: false,
-            states: {
-                hover: {
-                    enabled: false
-                }
-            }
-          }
+          data: trendlineData
         }
       )
     } else {
