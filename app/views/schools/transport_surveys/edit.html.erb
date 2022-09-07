@@ -79,7 +79,7 @@
               <div class="container">
                 <div class="row">
                   <% TransportSurveyResponse.passengers_options.each do |passengers| %>
-                    <%= render 'option', { label: ((passengers > 1) ? "#{passengers} pupils" : "Just me"), content: TransportSurveyResponse.passenger_symbol * passengers, identifier: passengers, action: "sharing" } %>
+                    <%= render 'option', { label: t('schools.transport_surveys.edit.pupils', count: passengers), content: TransportSurveyResponse.passenger_symbol * passengers, identifier: passengers, action: "sharing" } %>
                   <% end %>
                 </div>
               </div>

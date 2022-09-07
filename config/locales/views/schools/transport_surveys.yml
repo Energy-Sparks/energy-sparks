@@ -48,6 +48,9 @@ en:
           summary: Summary
           time: Time
           transport: Transport
+        pupils:
+          one: Just me
+          other: "%{count} pupils"
         steps:
           carbon_html: You used %{carbon} of carbon!
           confirm: Confirm your selection
