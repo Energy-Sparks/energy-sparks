@@ -19,6 +19,27 @@ en:
         weather: Weather
       destroy:
         notice: Transport survey was successfully removed
+      edit:
+        buttons:
+          back: Back
+          confirm: Confirm
+          finish_and_save: Finish & save results
+          launch_survey_app: Launch survey app
+          next_pupil: Next pupil
+        labels:
+          minutes: Minutes
+          pupils: Pupil(s)
+          transport: Transport
+        steps:
+          carbon_html: You used %{carbon} of carbon!
+          confirm: Confirm your selection
+          sharing_html: 'Sharing: How many pupils at this school shared your %{transport} journey?'
+          sharing_note: Don’t include your parents or carers or children who attend different schools or nurseries
+          summary_html: For your %{time} minute journey to school by %{transport}
+          time: 'Time: How many minutes did your journey take in total?'
+          transport: 'Transport: What mode of transport did you use to get to school?'
+          weather: Please select today's weather
+        title: Travel to school survey
       equivalences:
         carnivore_dinner:
           one: That's the same as 1 meat dinner %{image}!
