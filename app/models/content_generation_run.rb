@@ -17,17 +17,17 @@
 #
 
 class ContentGenerationRun < ApplicationRecord
-  has_many :dashboard_alerts
-  has_many :find_out_mores
-  has_many :management_priorities
-  has_many :analysis_pages
-  has_many :management_dashboard_tables
-  has_many :alert_subscription_events
+  has_many :dashboard_alerts, dependent: :delete_all
+  has_many :find_out_mores, dependent: :delete_all
+  has_many :management_priorities, dependent: :delete_all
+  has_many :analysis_pages, dependent: :delete_all
+  has_many :management_dashboard_tables, dependent: :delete_all
+  has_many :alert_subscription_events, dependent: :delete_all
 
-  has_many :find_out_more_content_versions, through: :find_out_mores, source: :content_version
-  has_many :find_out_more_alert_type_ratings, through: :find_out_more_content_versions, source: :alert_type_rating
-  has_many :find_out_more_activity_types, through: :find_out_more_alert_type_ratings, source: :activity_types
-  has_many :find_out_more_intervention_types, through: :find_out_more_alert_type_ratings, source: :intervention_types
+  has_many :find_out_more_content_versions, through: :find_out_mores, source: :content_version, dependent: :delete_all
+  has_many :find_out_more_alert_type_ratings, through: :find_out_more_content_versions, source: :alert_type_rating, dependent: :delete_all
+  has_many :find_out_more_activity_types, through: :find_out_more_alert_type_ratings, source: :activity_types, dependent: :delete_all
+  has_many :find_out_more_intervention_types, through: :find_out_more_alert_type_ratings, source: :intervention_types, dependent: :delete_all
 
   belongs_to :school
 end
