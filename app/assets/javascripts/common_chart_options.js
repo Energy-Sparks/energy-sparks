@@ -254,13 +254,21 @@ function scatter(chartData, highchartsChart, seriesData) {
   Object.keys(seriesData).forEach(function (key) {
     //console.log(seriesData[key].name);
     if (seriesData[key].name.startsWith("trendline_")) {
+      dataValues = seriesData[key].data.map(a=>a[1])
+
+      min = Math.min(...dataValues.filter(function(val) { return val !== null }))
+      max = Math.max(...dataValues.filter(function(val) { return val !== null }))
+
+      minIndex = dataValues.indexOf(min)
+      maxIndex = dataValues.indexOf(max)
+
+      trendlineData = [seriesData[key].data[minIndex], seriesData[key].data[maxIndex]]
+
       highchartsChart.addSeries(
         {
           type: 'line',
           name: seriesData[key].name,
-          data: seriesData[key].data.filter(function( obj ) {
-            return obj[1] !== null; // Remove nulls so there's no gap in the line
-          })
+          data: trendlineData
         }
       )
     } else {
