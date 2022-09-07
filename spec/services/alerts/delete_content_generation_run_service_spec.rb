@@ -12,10 +12,23 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
   end
 
   it 'doesnt delete new runs' do
+    date_time = (Time.zone.now - 3.months)
+    school.content_generation_runs.create!(created_at: date_time + 1.day)
+    school.content_generation_runs.create!(created_at: date_time + 1.week)
+    school.content_generation_runs.create!(created_at: date_time + 1.month)
+    school.content_generation_runs.create!(created_at: Time.zone.now)
+    expect(ContentGenerationRun.count).to eq 4
+    expect { service.delete! }.not_to change(ContentGenerationRun, :count)
   end
 
   context 'when there are older runs to delete' do
     it 'deletes only the older runs' do
+      school.content_generation_runs.create!(created_at: Time.zone.now)
+      school.content_generation_runs.create!(created_at: (Time.zone.now - 3.months).beginning_of_month + 1.day)
+      school.content_generation_runs.create!(created_at: (Time.zone.now - 3.months).beginning_of_month)
+      school.content_generation_runs.create!(created_at: (Time.zone.now - 6.months).beginning_of_month)
+      expect(ContentGenerationRun.count).to eq 4
+      expect { service.delete! }.to change(ContentGenerationRun, :count).from(4).to(2)
     end
 
     it 'deletes all of the dependent objects' do
