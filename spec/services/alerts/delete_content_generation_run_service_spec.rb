@@ -32,6 +32,14 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
     end
 
     it 'deletes all of the dependent objects' do
+        date_time = (Time.zone.now - 3.months).beginning_of_month
+        content_generation_run = school.content_generation_runs.create!(created_at: date_time)
+        create(:dashboard_alert, created_at: date_time, content_generation_run: content_generation_run)
+
+        expect(ContentGenerationRun.count).to eq 1
+        expect(ContentGenerationRun.first.dashboard_alerts.count).to eq 1
+        expect { service.delete! }.to change(ContentGenerationRun, :count).from(1).to(0) &
+          change(DashboardAlert, :count).from(1).to(0)
     end
   end
 end
