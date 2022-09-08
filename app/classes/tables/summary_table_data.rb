@@ -96,12 +96,12 @@ module Tables
     end
 
     def format_period(period)
-      period == :workweek ? 'Last week' : 'Last year'
+      period == :workweek ? I18n.t('classes.tables.summary_table_data.last_week') : I18n.t('classes.tables.summary_table_data.last_year')
     end
 
     def format_date(value)
       if (date = Date.parse(value))
-        date.strftime("%-d %b %Y")
+        I18n.l(date, format: '%-d %b %Y')
       end
     rescue
       value
