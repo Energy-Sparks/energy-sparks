@@ -8,8 +8,8 @@ cy:
       update: Diweddaru %{model}
   languages:
     cy: Cymraeg
-    en: Saesneg
-  name: Saesneg
+    en: English
+  name: Cymraeg
   simple_form:
     labels:
       defaults:
