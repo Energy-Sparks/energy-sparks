@@ -18,7 +18,9 @@ $(document).ready(function() {
 
   carbon.init({equivalences: config.equivalences, neutral: config.neutral, parkAndStrideMins: config.parkAndStrideMins});
 
-  if (storage.init({key: config.storageKey, baseUrl: config.baseUrl})) {
+  console.log(config.notifications);
+
+  if (storage.init({key: config.storageKey, baseUrl: config.baseUrl, notifications: config.notifications})) {
     setupSurvey();
 
     /* onclick bindings */
@@ -33,7 +35,7 @@ $(document).ready(function() {
     $('#save-results').on('click', finishAndSave);
 
   } else {
-    fatalError("Your browser does not support a feature required by our survey tool. Either upgrade your browser, use an alternative or enable 'localStorage'.");
+    fatalError(config.notifications.no_local_storage);
   }
 
   /* onclick handlers */

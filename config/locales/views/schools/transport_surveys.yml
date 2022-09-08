@@ -61,6 +61,11 @@ en:
           transport: 'Transport: What mode of transport did you use to get to school?'
           weather: Please select today's weather
         title: Travel to school survey
+        notifications:
+          no_local_storage: Your browser does not support a feature required by our survey tool. Either upgrade your browser, use an alternative or enable 'localStorage'
+          responses_saved: Responses saved!
+          no_connection: Error saving responses - please make sure you have a wifi connection before saving!
+          no_responses: Nothing to save - please collect some survey responses first!
       equivalences:
         carnivore_dinner:
           one: That's the same as 1 meat dinner %{image}!
