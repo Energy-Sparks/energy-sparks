@@ -58,6 +58,7 @@ en:
           unsaved_responses_html:
             one: There is <strong>1</strong> unsaved survey response from <strong>%{date}</strong>. Do you want to save or remove it?
             other: There are <strong>%{count}</strong> unsaved survey responses from <strong>%{date}</strong>. Do you want to save or remove them?
+          responses_removed: Unsaved responses removed!
         progress:
           confirm: Confirm
           sharing: Sharing

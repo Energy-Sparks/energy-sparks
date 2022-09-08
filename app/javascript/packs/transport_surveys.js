@@ -148,7 +148,7 @@ $(document).ready(function() {
     let count = storage.getResponsesCount(date);
     if (window.confirm(pluralise(config.notifications.confirm_remove, {count: count, date: nice_date(date, config.today)}))) {
       storage.removeResponses(date);
-      notifier.page('success', 'Unsaved responses removed!');
+      notifier.page('success', config.notifications.responses_removed);
       button.closest('.alert').hide();
       if (date == config.runOn) fullSurveyReset();
     }
