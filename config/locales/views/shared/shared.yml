@@ -35,6 +35,10 @@ en:
   common_nav_bar_menus:
     actions: Actions
     activities: Activities
+  dashboard_alerts:
+    show_more_alerts:
+      one: 'Show 1 more alert'
+      other: 'Show %{count} more alerts'
   dashboards:
     adult_dashboard: Adult dashboard
     pupil_dashboard: Pupil dashboard
