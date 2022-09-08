@@ -1,0 +1,106 @@
+cy:
+  analytics:
+    adjectives:
+      about: tua
+      about_average: tua'r cyfartaledd
+      above: uwch
+      above_average: uwch na'r cyfartaledd
+      bad: drwg
+      below: is
+      below_average: is na'r cyfartaledd
+      better_than_average: gwell na'r cyfartaledd
+      down: i lawr
+      excellent: rhagorol
+      good: da
+      higher: uwch
+      increase: cynyddu
+      just_above: ychydig yn uwch
+      just_below: ychydig yn is
+      just_below_average: ychydig yn is na'r cyfartaledd
+      lower: is
+      no_change: yr un peth
+      ok: iawn
+      perfect: perffaith
+      poor: gwael
+      poorly: yn wael
+      reduction: lleihad
+      significantly_above: yn sylweddol uwch
+      significantly_below: yn sylweddol is
+      unchanged: dim newid
+      up: i fyny
+      very_poor: gwael iawn
+      well: yn dda
+      worse_than_average: waeth na'r cyfartaledd
+    aggregator:
+      subttitle: "%{start_date} i %{end_date}"
+    common:
+      electricity: trydan
+      gas: nwy
+      gas_boiler: boeler nwy
+      holiday: gwyliau
+      last_school_week: wythnos ysgol ddiwethaf
+      pa: "%{cost}pa"
+      previous_school_week: wythnos ysgol flaenorol
+      school_day: diwrnod ysgol
+      storage_heaters: stôr-wresogyddion
+      weekend: penwythnos
+    holidays:
+      autumn_half_term: Hanner tymor yr hydref
+      easter: Pasg
+      mayday: Gŵyl Fai
+      spring_half_term: Hanner tymor y gwanwyn
+      summer: Haf
+      summer_half_term: Hanner tymor yr haf
+      xmas: Nadolig
+    school_types:
+      infant: Babanod
+      junior: Iau
+      middle: Canol
+      mixed_primary_and_secondary: 'Cymysg: Cynradd ac Uwchradd'
+      primary: Cynradd
+      secondary: Uwchradd
+      special: Arbennig
+    series_data_manager:
+      series_name:
+        baseload: LLWYTH SYLFAEN
+        benchmark_school: Ysgol Meincnodi (Da)
+        boiler_off: Boeler i ffwrdd
+        community: Cymuned
+        community_baseload: Llwyth Sylfaen Cymunedol
+        cusum: CUSUM
+        degree_days: Dyddiau Gradd
+        electricity: Trydan
+        electricity_consumed_from_mains: Trydan a ddefnyddir o'r prif gyflenwad
+        electricity_consumed_from_solar_pv: Trydan a ddefnyddir o solar pv
+        exemplar_school: Ysgol Enghreifftiol
+        exported_solar_electricity: Allforio trydan solar (heb ei ddefnyddio ar y safle)
+        gas: Nwy
+        gascarbon: Dwysedd Carbon Nwy (kg/kWh)
+        gridcarbon: Grid Dwysedd Carbon Trydan (kg/kWh)
+        heating_day: Gwres ymlaen mewn tywydd oer
+        heating_day_warm_weather: Gwres ymlaen mewn tywydd cynnes
+        holiday: Gwyliau
+        holiday_heating: Gwres Ymlaen yn ystod y Gwyliau
+        holiday_hot_water_kitchen: Dŵr poeth/cegin yn unig Ymlaen yn ystod y Gwyliau
+        non_heating_day: Dŵr Poeth (a Chegin)
+        none: Ynni
+        peak_kw: Brig (kW)
+        predicted_heat: Gwres a Ragwelir
+        school_day_closed: Diwrnod Ysgol Ar Gau
+        school_day_heating: Gwres Ymlaen yn ystod Diwrnodau Ysgol
+        school_day_hot_water_kitchen: Dŵr poeth/cegin yn unig Ar Ddiwrnodau Ysgol
+        school_day_open: Diwrnod Ysgol Ar Agor
+        solar_irradiance: Arbelydru solar
+        solar_pv: Solar PV (a ddefnyddir ar y safle)
+        storage_heater_charge: Tâl stôr-wresogydd (diwrnod ysgol)
+        storage_heaters: stôr-wresogyddion
+        target_degree_days: Diwrnodau gradd targed
+        temperature: Tymheredd
+        useful_hot_water_usage: Defnydd Dŵr Poeth
+        wasted_hot_water_usage: Defnydd Dŵr Poeth wedi'i Wastraffu
+        weekend: Penwythnos
+        weekend_heating: Gwres Ymlaen ar Benwythnosau
+        weekend_hot_water_kitchen: Dŵr poeth/cegin yn unig Ymlaen Ar Benwythnosau
+      y2_rating: Graddio
+      y2_solar_html: "<span>Disgleirdeb <br>yr heulwen<br>W/m2</span>"
+      y2_solar_label: Arbelydru solar (disgleirdeb yr heulwen)

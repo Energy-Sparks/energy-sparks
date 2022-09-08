@@ -1,0 +1,76 @@
+cy:
+  activities:
+    actions:
+      are_you_sure: Wyt ti'n siŵr?
+      delete: Dileu
+      edit: Golygu
+      home: Hafan
+      title: Gweithredoedd
+    activity_title: Teitl gweithgaredd
+    choose_next_activity: Dewisa'r Gweithgaredd Nesaf
+    completed:
+      congratulations: Llongyfarchiadau! Rydym wedi cofnodi dy weithgaredd
+      our_suggestions: Ein hawgrymiadau yn seiliedig ar eich rhaglenni ysgol a dadansoddiad o'ch data ynni
+      page_title: Gweithgaredd
+      recommended_for_your_school: Argymhellir ar gyfer eich ysgol
+      see_the_scoreboard: Gweld y bwrdd sgorio
+      view_all_suggestions: Gweld yr holl awgrymiadau
+      view_your_activity: Gweld dy weithgarwch
+    completed_on: Cwblhawyd ar
+    edit:
+      page_title: Diweddaru gweithgaredd
+      update_your_activity: Diweddaru dy weithgaredd
+    form:
+      build_a_record_message: Galli di gofnodi gweithgaredd diweddar a gweithgareddau hŷn i adeiladu cofnod o'r holl weithgareddau arbed ynni rydych wedi'u cyflawni fel ysgol
+      cancel: Canslo
+      completing_this_activity:
+        one: Bydd cwblhau'r gweithgaredd hwn yn ennill 1 pwynt i ti
+        two: Bydd cwblhau'r gweithgaredd hwn yn ennill %{count} bwynt i ti
+        many: Bydd cwblhau'r gweithgaredd hwn yn ennill %{count} o bwyntiau i ti
+        other: Bydd cwblhau'r gweithgaredd hwn yn ennill %{count} o bwyntiau i ti
+      how_would_you_describe_this_activity: Sut byddet ti'n disgrifio'r gweithgaredd hwn
+      not_a_standard_activity_message: Gan nad wyt ti'n recordio un o'n gweithgareddau safonol, mae angen i ti ddarparu teitl. Dewisa deitl clir a fydd yn annog eraill i ddarllen am dy weithgaredd
+      other: Arall
+      save_activity: Cadw'r gweithgaredd
+      tell_us_more_formatting_message: Galli di ychwanegu fformatio, dolenni i wefan dy ysgol ac atodi delweddau gan ddefnyddio'r bar offer isod. Galli di hofran dros bob eicon i ddysgu beth mae'n ei wneud
+      tell_us_more_label: Dyweda ragor wrthym am yr hyn a wnaethoch
+      tell_us_more_message: Dyweda ychydig mwy wrthym am dy weithgaredd. Beth wnest ti? Beth wnest ti ddysgu? Beth allet ti ei wneud nesaf i adeiladu ar y dasg hon?
+      the_activity_you_completed: Y gweithgaredd a gwblhawyd gennyt ti
+      update_activity: Diweddaru gweithgaredd
+      when_did_you_complete_this_activity: Pryd wnest ti gwblhau'r gweithgaredd hwn?
+    home: Hafan
+    introduction: Rhestr o'r gweithgareddau arbed ynni diweddar a gofnodwyd gan
+    new:
+      page_title: Cofnodi gweithgaredd
+      record_a_new_activity: Cofnodi gweithgaredd arbed ynni newydd ar gyfer dy ysgol
+    no_activities_completed: Dim gweithgareddau wedi'u cwblhau
+    page_title: Pob Gweithgaredd
+    points:
+      and_need_to_score:
+        one: ac angen sgorio %{count} pwynt i gyrraedd safle %{place_to_reach}
+        two: ac angen sgorio %{count} bwynt i gyrraedd safle %{place_to_reach}
+        many: ac angen sgorio %{count} o bwyntiau i gyrraedd safle %{place_to_reach}
+        other: ac angen sgorio %{count} o bwyntiau i gyrraedd safle %{place_to_reach}
+      choose_your_next_activity: Dewisa dy weithgaredd nesaf o'r awgrymiadau isod.
+      recorded_this_year:
+        one: Rwyt ti wedi recordio 1 gweithgaredd hyd yn hyn eleni
+        two: Rwyt ti wedi recordio %{count} weithgaredd hyd yn hyn eleni
+        many: Rwyt ti wedi recordio %{count} o weithgareddau hyd yn hyn eleni
+        other: Rwyt ti wedi recordio %{count} o weithgareddau hyd yn hyn eleni
+      school_position: ac mae dy ysgol yn safle %{ordinal_place} ar hyn o bryd.
+      you_just_scored:
+        one: Rwyt ti newydd sgorio 1 pwynt!
+        two: Rwyt ti newydd sgorio %{count} bwynt!
+        many: Rwyt ti newydd sgorio %{count} o bwyntiau!
+        other: Rwyt ti newydd sgorio %{count} o bwyntiau!
+    show:
+      activity_description: Disgrifiad o'r gweithgaredd
+      all_activities: Pob gweithgaredd
+      category_of_activity: Categori'r gweithgaredd
+      key_stages: Cyfnodau Allweddol
+      no_entry: Nid wyt ti wedi nodi'r hyn a wnest ti ar gyfer y gweithgaredd hwn, golyga'r gweithgaredd a dyweda wrthym beth wnest ti
+      page_title: Gweithgaredd
+      score_awarded_for_this_activity: Sgôr a roddwyd am y gweithgaredd hwn
+    sign_in_html: "<a href='%{new_user_session_path}'>Mewngofnoda</a> i gofnodi gweithgaredd arbed ynni newydd sydd wedi digwydd yn dy ysgol"
+    title: Gweithgareddau arbed ynni
+    type: Math

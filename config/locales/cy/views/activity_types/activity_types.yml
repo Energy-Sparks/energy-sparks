@@ -1,0 +1,38 @@
+cy:
+  activity_types:
+    activity: Gweithgaredd
+    impacts: Effeithiau
+    key_stages: Cyfnodau Allweddol
+    recommended:
+      all_activities: Pob gweithgaredd
+      introduction: Mae'r rhain yn weithgareddau a awgrymir ar gyfer eich ysgol, yn seiliedig ar eich gweithgaredd blaenorol a'ch targedau
+      title: Argymhellir ar gyfer eich ysgol
+    score_for_this_activity: Sgôr ar gyfer y gweithgaredd hwn
+    search:
+      adult_actions: Gweithredoedd oedolion
+      all_activities: Pob gweithgaredd
+      button_label: Chwilio
+      for_activities_by_keyword: Chwilio am weithgareddau yn ôl allweddair
+      limit_results_shown: Cyfyngu ar y canlyniadau a ddangosir
+      no_results_found: Heb ganfod unrhyw ganlyniadau
+      results_found:
+        one: Wedi canfod 1 canlyniad
+        two: Wedi canfod %{count} ganlyniad
+        many: Wedi canfod %{count} o ganlyniadau
+        other: Wedi canfod %{count} o ganlyniadau
+      title: Dod o hyd i weithgareddau disgyblion
+    show:
+      complete_this_activity_html:
+        one: Cwblhewch y gweithgaredd hwn i sgorio <strong>1</strong> pwynt!
+        two: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> bwynt!
+        many: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> o bwyntiau!
+        other: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> o bwyntiau!
+      record_this_activity: Cofnodi'r gweithgaredd hwn
+      view_related_activities:
+        one: Gweld 1 gweithgaredd cysylltiedig
+        two: Gweld %{count} weithgaredd cysylltiedig
+        many: Gweld %{count} o weithgareddau cysylltiedig
+        other: Gweld %{count} o weithgareddau cysylltiedig
+    subjects: Pynciau
+    timings: Amseroedd
+    topics: Testunau

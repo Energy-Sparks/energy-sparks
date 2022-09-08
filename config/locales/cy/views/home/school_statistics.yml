@@ -1,0 +1,20 @@
+cy:
+  school_statistics:
+    activities_completed: Gweithgareddau wedi'u cwblhau
+    electricity: Trydan
+    floor_area: Arwynebedd llawr
+    gas: Nwy
+    interventions: Ymyriadau
+    introduction: Dyma grynodeb o holl ysgolion Energy Sparks
+    jump_to: Neidio i
+    meter_count_on_site: Cyfrif mesurydd ar y safle
+    page_title: Adrodd
+    percent_free_school_meals: "% o brydau ysgol am ddim"
+    postcode: Cod post
+    pupil_numbers: Niferoedd disgyblion
+    school: Ysgol
+    school_name: Enw
+    solar: Solar
+    solar_export: Allforio solar
+    title: Ystadegau Ysgolion
+    urn_seed: URN/ SEED

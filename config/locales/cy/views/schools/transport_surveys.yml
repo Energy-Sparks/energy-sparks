@@ -1,0 +1,130 @@
+cy:
+  schools:
+    transport_surveys:
+      common:
+        carbon: Carbon
+        download_responses: Lawrlwytho ymatebion
+        journey_time: Amser taith
+        mins: munudau
+        no_responses: Nid oes unrhyw ymatebion wedi'u casglu
+        percentage_pupils_and_staff: Canran disgyblion a staff
+        pupils_and_staff_sharing: Disgyblion a staff yn rhannu
+        survey_date: Dyddiad arolwg
+        survey_time: Amser arolwg
+        total_carbon: Cyfanswm carbon
+        total_pupils_and_staff: Cyfanswm disgyblion a staff
+        transport_category: Categori trafnidiaeth
+        transport_method: Dull trafnidiaeth
+        weather: Tywydd
+      destroy:
+        notice: Cafodd arolwg trafnidiaeth ei ddileu yn llwyddiannus
+      edit:
+        buttons:
+          back: Yn ôl
+          confirm: Cadarnhau
+          finish_and_save: Gorffen a chadw canlyniadau
+          launch_survey_app: Lansio ap arolwg
+          next_pupil: Disgybl nesaf
+        intro:
+          how_html: |
+            <li>Gall hyn gael ei wneud gan grŵp o ddisgyblion ag ipads neu lechi wrth gât yr ysgol neu gan athro adeg cofrestru</li>
+            <li>Cliciwch "Lansio'r ap arolwg" ac yna dewiswch y tywydd heddiw</li>
+            <li>Unwaith y bydd yr ap wedi'i lansio gallwch fynd allan o'r ystod WiFi, fel y gallwch wneud arolwg o ddisgyblion sy'n cyrraedd giât yr ysgol</li>
+            <li>Gofynnwch i aelodau cymuned yr ysgol y cwestiynau a gyflwynwyd yn yr arolwg. Dylid ticio Parcio a Chamu os caiff disgyblion eu gollwng o leiaf %{park_and_stride_mins} o funudau ar droed o'r ysgol a cherdded rhan olaf eu taith</li>
+            <li>Pan fyddwch wedi gorffen, gwnewch yn siŵr eich bod wedi'ch cysylltu â'r rhyngrwyd cyn cyflwyno'r canlyniadau</li>
+            <li>Gallech geisio cynnal arolwg trafnidiaeth ar ddiwrnod gwahanol i weld a ydych wedi lleihau eich carbon</li>
+          how_title: Sut i wneud y gweithgaredd hwn
+          why: Mae trafnidiaeth yn cyfrif am tua un rhan o bump o allyriadau carbon deuocsid (CO2) byd-eang. Mae rhai dulliau trafnidiaeth yn allyrru mwy o garbon nag eraill! Er enghraifft, mae ceir petrol neu ddiesel yn allyrru, ar gyfartaledd, tua 3 gwaith yn fwy na cheir trydan. Nid yw rhai dulliau yn allyrru unrhyw garbon o gwbl - allwch chi ddyfalu beth ydyn nhw? Darganfyddwch faint o garbon y mae cymuned eich ysgol yn ei ddefnyddio trwy deithio i'r ysgol
+          why_title: Pam ydyn ni'n gwneud hyn?
+        labels:
+          minutes: Munudau
+          pupils: Disgybl(ion)
+          transport: Trafnidiaeth
+        no_javascript_warning: Rhaid galluogi Javascript i ddefnyddio'r swyddogaeth hon
+        progress:
+          confirm: Cadarnhau
+          sharing: Rhannu
+          summary: Crynodeb
+          time: Amser
+          transport: Trafnidiaeth
+        pupils:
+          one: Jyst fi
+          two: '%{count} ddisgybl'
+          many: '%{count} o ddisgyblion'
+          other: '%{count} o ddisgyblion'
+        steps:
+          carbon_html: Gwnaethoch chi ddefnyddio %{carbon} o garbon!
+          confirm: Cadarnhewch eich dewis
+          sharing_html: 'Rhannu: Faint o ddisgyblion yr ysgol hon a rannodd eich taith %{transport}?'
+          sharing_note: Peidiwch â chynnwys eich rhieni neu ofalwyr neu blant sy’n mynychu ysgolion neu feithrinfeydd gwahanol
+          summary_html: Ar gyfer eich taith %{time} o funudau i'r ysgol gan %{transport}
+          time: 'Amser: Sawl munud gymerodd eich taith i gyd?'
+          transport: 'Trafnidiaeth: Pa fath o drafnidiaeth wnest ti ei ddefnyddio i gyrraedd yr ysgol?'
+          weather: Dewisa'r tywydd heddiw
+        title: Arolwg teithio i'r ysgol
+      equivalences:
+        carnivore_dinner:
+          one: Mae hynny yr un peth ag 1 cinio cig %{image}!
+          two: Mae hynny yr un peth â %{count} o giniawau cig %{image}!
+          many: Mae hynny yr un peth â %{count} o giniawau cig %{image}!
+          other: Mae hynny yr un peth â %{count} o giniawau cig %{image}!
+        computer_console:
+          one: Mae hynny yr un peth a chwarae 1 awr o gemau cyfrifiadur %{image}!
+          two: Mae hynny yr un peth a chwarae %{count} awr o gemau cyfrifiadur %{image}!
+          many: Mae hynny yr un peth a chwarae %{count} awr o gemau cyfrifiadur %{image}!
+          other: Mae hynny yr un peth â chwarae %{count} awr o gemau cyfrifiadur %{image}!
+        neutral: "Mae hynny'n Garbon Niwtral \U0001F333!"
+        smartphone:
+          one: Mae hynny yr un peth â gwefru 1 ffon clyfar %{image}!
+          two: Mae hynny yr un peth â gwefru %{count} ffon clyfar %{image}!
+          many: Mae hynny yr un peth â gwefru %{count} ffon clyfar %{image}!
+          other: Mae hynny yr un peth â gwefru %{count} ffôn clyfar %{image}!
+        tree:
+          one: Byddai 1 goeden yn amsugno'r swm hwn o CO2 ymhen 1 diwrnod %{image}!
+          two: Byddai 1 goeden yn amsugno'r swm hwn o CO2 ymhen %{count} ddiwrnod %{image}!
+          many: Byddai 1 goeden yn amsugno'r swm hwn o CO2 ymhen %{count} o ddiwrnodau %{image}!
+          other: Byddai 1 goeden yn amsugno'r swm hwn o CO2 ymhen %{count} o ddiwrnodau %{image}!
+        tv:
+          one: Mae hynny yr un peth a 1 awr o deledu %{image}!
+          two: Mae hynny yr un peth a %{count} awr o deledu %{image}!
+          many: Mae hynny yr un peth a %{count} awr o deledu %{image}!
+          other: Mae hynny yr un peth â %{count} awr o deledu %{image}!
+        vegetarian_dinner:
+          one: Mae hynny yr un peth â 1 cinio llysieuol %{image}!
+          two: Mae hynny yr un peth â %{count} o giniawau llysieuol %{image}!
+          many: Mae hynny yr un peth â %{count} o giniawau llysieuol %{image}!
+          other: Mae hynny yr un peth â %{count} o giniawau llysieuol %{image}!
+      header_nav:
+        survey_today: Arolwg heddiw
+        view_all: Gweld yr holl arolygon trafnidiaeth
+      index:
+        no_surveys: Nid oes unrhyw arolygon wedi'u cwblhau eto
+        start_surveying: Dechreuwch arolygu heddiw
+      responses:
+        destroy:
+          notice: Cafodd yr ymateb i'r arolwg trafnidiaeth ei ddileu'n llwyddiannus
+      show:
+        30_or_more_minutes: 30 munud neu fwy
+        cars_summary: Mae perswadio pobl sy'n teithio dim ond 5 munud mewn car i newid i ddod i'r ysgol ar droed neu ar feic yn gam cyntaf gwych i leihau ôl troed carbon yr ysgol o deithio.
+        cars_title: Dadansoddiad o deithiau mewn car
+        more_detail: 'Gadewch i ni edrych ar hyn yn fwy manwl:'
+        percentages:
+          car_html: "Teithiodd %{swm} mewn car"
+          park_and_stride_html: "Defnyddiodd %{amount} parcio a chamu"
+          public_transport_html: "Teithiodd %{amount} ar drafnidiaeth gyhoeddus"
+          walking_and_cycling_html: "Roedd %{amount} wedi cerdded neu feicio, gan gynhyrchu sero CO2"
+        summary_html:
+          one: Cynhyrchodd <strong>1 disgybl a staff</strong> sydd wedi'u cynnwys yn yr arolwg hwn<strong> %{carbon}kg</strong> o garbon drwy deithio i'r ysgol
+          two: Cynhyrchodd <strong>%{count} o ddisgyblion a staff</strong> sydd wedi'u cynnwys yn yr arolwg hwn<strong> %{carbon}kg</strong> o garbon drwy deithio i'r ysgol
+          many: Cynhyrchodd <strong>%{count} o ddisgyblion a staff</strong> sydd wedi'u cynnwys yn yr arolwg hwn<strong> %{carbon}kg</strong> o garbon drwy deithio i'r ysgol
+          other: Cynhyrchodd <strong>%{count} o ddisgyblion a staff</strong> sydd wedi'u cynnwys yn yr arolwg hwn<strong> %{carbon}kg</strong> o garbon drwy deithio i'r ysgol
+        time_travelled_by_car: Amser a deithiwyd yn y car
+        transport_categories_title: Dadansoddiad o deithiau yn ôl categori trafnidiaeth
+      tab_nav:
+        manage_responses: Rheoli ymatebion
+        results: Canlyniadau
+        survey_today: Arolwg heddiw
+      title:
+        dated: Arolwg teithio i'r ysgol ar %{date}
+        default: Arolygon teithio i'r ysgol
+        today: Arolwg teithio i'r ysgol heddiw
