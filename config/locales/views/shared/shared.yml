@@ -1,10 +1,5 @@
 ---
 en:
-  dashboards:
-    pupil_dashboard: Pupil dashboard
-    adult_dashboard: Adult dashboard
-  partners:
-    supports_in_partnership_with: Energy Sparks supports %{school_name} in partnership with
   about_menu:
     about_us: About us
     blog: Blog
@@ -40,6 +35,9 @@ en:
   common_nav_bar_menus:
     actions: Actions
     activities: Activities
+  dashboards:
+    adult_dashboard: Adult dashboard
+    pupil_dashboard: Pupil dashboard
   footer:
     cc_licence_notice_html: Content on this website is published under <a href="https://creativecommons.org/licenses/by/4.0/">a Creative Commons Attribution 4.0 Licence</a>
     child_safeguarding_policy: Child safeguarding policy
@@ -108,6 +106,8 @@ en:
     our_services: Our services
     training: Training
     videos: Videos
+  partners:
+    supports_in_partnership_with: Energy Sparks supports %{school_name} in partnership with
   switch_schools_menu:
     switch_school: Switch school
   timeline:
