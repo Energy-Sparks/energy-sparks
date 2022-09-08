@@ -84,10 +84,20 @@ module I18n
 
         return if entry.nil?
 
-        mirrored_text_for(entry)
+        if entry.is_a?(String)
+          mirrored_text_for(entry)
+        elsif entry.is_a?(Hash)
+          entry.update(entry) { |_key, value| mirrored_text_for(value) }
+        elsif entry.is_a?(Array)
+          entry.map { |_value| mirrored_text_for(entry) }
+        else
+          entry
+        end
       end
 
       def mirrored_text_for(entry)
+        return entry unless entry.is_a? String
+
         entry.split(//).reverse.map do |character|
           MIRRORED_CHARACTERS[character] || character
         end.join('')
