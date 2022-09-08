@@ -50,6 +50,11 @@ en:
             split: Your school's daily gas use in your chosen week recorded by meter
     weekly-usage-link: View usage by week
   schools:
+    observations:
+      timeline:
+        action:
+          one: '%{count }action'
+          other: '%{count} actions'
     chart_preference:
       carbon: Prefer the display of chart data in kg CO2, where available
       cost: Prefer the display of chart data in £, where available
