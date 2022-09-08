@@ -26,6 +26,8 @@ en:
           finish_and_save: Finish & save results
           launch_survey_app: Launch survey app
           next_pupil: Next pupil
+          remove: Remove
+          save: Save
         intro:
           how_html: |
             <li>This can be carried out by a group of pupils with ipads or tablets at the school gate or by a teacher at registration time</li>
@@ -42,6 +44,20 @@ en:
           pupils: Pupil(s)
           transport: Transport
         no_javascript_warning: Javascript must be enabled to use this functionality
+        notifications:
+          confirm_remove:
+            one: Are you sure you want to remove 1 unsaved response from %{date}?
+            other: Are you sure you want to remove %{count} unsaved responses from %{date}?
+          confirm_save:
+            one: Are you sure you want to save 1 unsaved response from %{date}?
+            other: Are you sure you want to save %{count} unsaved responses from %{date}?
+          no_connection: Error saving responses - please make sure you have a wifi connection before saving!
+          no_local_storage: Your browser does not support a feature required by our survey tool. Either upgrade your browser, use an alternative or enable 'localStorage'
+          no_responses: Nothing to save - please collect some survey responses first!
+          responses_saved: Responses saved!
+          unsaved_responses_html:
+            one: There is <strong>1</strong> unsaved survey response from <strong>%{date}</strong>. Do you want to save or remove it?
+            other: There are <strong>%{count}</strong> unsaved survey responses from <strong>%{date}</strong>. Do you want to save or remove them?
         progress:
           confirm: Confirm
           sharing: Sharing
@@ -51,6 +67,9 @@ en:
         pupils:
           one: Just me
           other: "%{count} pupils"
+        responses:
+          one: response
+          other: "%{count} responses"
         steps:
           carbon_html: You used %{carbon} of carbon!
           confirm: Confirm your selection
@@ -61,11 +80,7 @@ en:
           transport: 'Transport: What mode of transport did you use to get to school?'
           weather: Please select today's weather
         title: Travel to school survey
-        notifications:
-          no_local_storage: Your browser does not support a feature required by our survey tool. Either upgrade your browser, use an alternative or enable 'localStorage'
-          responses_saved: Responses saved!
-          no_connection: Error saving responses - please make sure you have a wifi connection before saving!
-          no_responses: Nothing to save - please collect some survey responses first!
+        today: today
       equivalences:
         carnivore_dinner:
           one: That's the same as 1 meat dinner %{image}!

@@ -17,8 +17,7 @@ $(document).ready(function() {
   const config = Object.assign({}, local_config, $('#config').data());
 
   carbon.init({equivalences: config.equivalences, neutral: config.neutral, parkAndStrideMins: config.parkAndStrideMins});
-
-  console.log(config.notifications);
+  moment.locale(config.locale);
 
   if (storage.init({key: config.storageKey, baseUrl: config.baseUrl, notifications: config.notifications})) {
     setupSurvey();
@@ -130,7 +129,8 @@ $(document).ready(function() {
     let button = $(this);
     let date = button.attr('data-date');
     let count = storage.getResponsesCount(date);
-    if (window.confirm(`Are you sure you want to save ${count} unsaved ${pluralise("response", count)} from ${nice_date(date)}?`)) {
+
+    if (window.confirm(pluralise(config.notifications.confirm_save, {count: count, date: nice_date(date, config.today)}))) {
       storage.syncResponses(date, notifier.page).done( function() {
         button.closest('.alert').hide();
         if (date == config.runOn) {
@@ -146,7 +146,7 @@ $(document).ready(function() {
     let button = $(this);
     let date = button.attr('data-date');
     let count = storage.getResponsesCount(date);
-    if (window.confirm(`Are you sure you want to remove ${count} unsaved ${pluralise("response", count)} from ${nice_date(date)}?`)) {
+    if (window.confirm(pluralise(config.notifications.confirm_remove, {count: count, date: nice_date(date, config.today)}))) {
       storage.removeResponses(date);
       notifier.page('success', 'Unsaved responses removed!');
       button.closest('.alert').hide();
@@ -193,7 +193,7 @@ $(document).ready(function() {
   }
 
   function setUnsavedResponses() {
-    let html = HandlebarsTemplates['transport_surveys']({responses: storage.getAllResponses()});
+    let html = HandlebarsTemplates['transport_surveys']({responses: storage.getAllResponses(), today: config.today, notice: config.notifications.unsaved_responses_html, buttons: config.buttons});
     $('#unsaved-responses').html(html);
     $('.responses-save').on('click', saveResponses);
     $('.responses-remove').on('click', deleteResponses);
@@ -324,7 +324,7 @@ $(document).ready(function() {
 
     if (transport_type.can_share) {
       $('#confirm-passengers div.option-content').text(config.passengerSymbol.repeat(response['passengers']));
-      $('#confirm-passengers div.option-label').text((response['passengers'] > 1 ? response['passengers'] + " pupils" : "Just me"));
+      $('#confirm-passengers div.option-label').text(pluralise(config.pupils, {count: response['passengers']}));
       $('#confirm-passengers').show();
     } else {
       $('#confirm-passengers').hide();
@@ -340,7 +340,6 @@ $(document).ready(function() {
 
     $('#display-time').text(response['journey_minutes']);
     $('#display-transport').text(transport_type.image + " " + transport_type.name);
-    $('#display-passengers').text(response['passengers'] + " " + pluralise("pupil", response['passengers']));
     $('#display-carbon').text(nice_carbon + "kg");
     $('#display-carbon-equivalent').text(carbon.equivalence(co2));
   }
