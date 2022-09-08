@@ -11,4 +11,8 @@ en:
       reduced_emissions_html: Reduced emissions<br>per year
     schools:
       overview_charts:
-        overview: overview
+        overview:
+          electricity: Electricity overview
+          gas: Gas overview
+          solar: Solar overview
+          storage_heater: Storage heater overview
