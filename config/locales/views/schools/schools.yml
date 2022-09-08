@@ -71,7 +71,7 @@ en:
     observations:
       timeline:
         action:
-          one: "%{count }action"
+          one: "%{count} action"
           other: "%{count} actions"
     school_group:
       compare_schools: Compare schools
