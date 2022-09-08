@@ -37,8 +37,8 @@ en:
     activities: Activities
   dashboard_alerts:
     show_more_alerts:
-      one: 'Show 1 more alert'
-      other: 'Show %{count} more alerts'
+      one: Show 1 more alert
+      other: Show %{count} more alerts
   dashboards:
     adult_dashboard: Adult dashboard
     pupil_dashboard: Pupil dashboard
@@ -51,8 +51,8 @@ en:
     registered_charity_notice: Energy Sparks is a registered charity in England and Wales, registration 1189273
     terms_and_conditions: Terms and conditions
   manage_menu:
-    manage: Manage
     admin: Admin
+    manage: Manage
     reports: Reports
   manage_school_menu:
     batch_reports: Batch reports
