@@ -112,7 +112,7 @@ module Tables
         FormatEnergyUnit.format(units, value.to_f, medium, false, true, :target).html_safe
       end
     rescue
-      value
+      I18n.t("classes.tables.summary_table_data.#{value}", default: value)
     end
 
     def fetch(fuel_type, period, item = nil)
