@@ -1,0 +1,38 @@
+cy:
+  intervention_types:
+    intervention_type_points:
+      points_for_this_action:
+        one: pwynt ar gyfer y weithred hon
+        two: o bwyntiau ar gyfer y weithred hon
+        many: o bwyntiau ar gyfer y weithred hon
+        other: o bwyntiau ar gyfer y weithred hon
+    previous_records:
+      action: Gweithred
+    prompt_score:
+      complete_this_action_html:
+        one: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> pwynt i'th ysgol!
+        two: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> bwynt i'th ysgol!
+        many: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> o bwyntiau i'th ysgol!
+        other: Cwblha'r weithred hon i sgorio <strong>%{count}</strong> o bwyntiau i dy ysgol!
+      record_this_action: Cofnodi'r weithred hon
+    search:
+      all_actions: Pob gweithred
+      no_results_found: Heb ganfod unrhyw ganlyniadau
+      pupil_activities: Gweithgareddau disgyblion
+      results_found:
+        one: Wedi canfod 1 canlyniad
+        two: Wedi canfod %{count} ganlyniad
+        many: Wedi canfod %{count} o ganlyniadau
+        other: Wedi canfod %{count} o ganlyniadau
+      search: Chwilio
+      search_for_actions_by_keyword: Chwilio am gamau gweithredu yn ôl allweddair
+      title: Dod o hyd i gamau gweithredu
+    show:
+      download_resources: Lawrlwytho adnoddau
+      edit: Golygu
+      overview: Trosolwg
+      view_related_actions:
+        one: Gweld %{count} weithred gysylltiedig
+        two: Gweld %{count} weithred gysylltiedig
+        many: Gweld %{count} o weithredoedd cysylltiedig
+        other: Gweld %{count} o weithredoedd cysylltiedig

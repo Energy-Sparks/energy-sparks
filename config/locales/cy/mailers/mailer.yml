@@ -1,0 +1,30 @@
+cy:
+  consent_grant_mailer:
+    email_consent:
+      subject: Eich caniatâd i Energy Sparks
+  mailer:
+    get_in_touch: Cysylltwch
+  onboarding_mailer:
+    activation_email:
+      subject: "Mae %{school} yn fyw ar Energy Sparks"
+    completion_email:
+      subject: "Mae %{school} wedi cwblhau'r broses ymuno"
+    data_enabled_email:
+      subject: "Mae data ynni %{school} bellach ar gael ar Energy Sparks"
+    onboarded_email:
+      subject: "Mae %{school} bellach yn fyw ar Energy Sparks"
+    onboarding_email:
+      subject: Sefydlwch eich ysgol ar Energy Sparks
+    reminder_email:
+      subject: Peidiwch ag anghofio sefydlu eich ysgol ar Energy Sparks
+    welcome_email:
+      subject: Croeso i Energy Sparks
+  target_mailer:
+    admin_target_report:
+      subject: Cynnydd Targed ac Adroddiad Data
+    first_target:
+      subject: Gosodwch eich targed arbed ynni cyntaf
+    first_target_reminder:
+      subject: Nodyn atgoffa i osod eich targed arbed ynni cyntaf
+    review_target:
+      subject: Adolygwch eich cynnydd a gosodwch darged arbed newydd
