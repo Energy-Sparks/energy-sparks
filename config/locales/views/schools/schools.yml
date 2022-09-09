@@ -70,6 +70,11 @@ en:
       view_energy_sparks_schools_by_group: View Energy Sparks schools by group
     observations:
       timeline:
+        activity:
+          completed_an_activity: Completed an activity
+          edit: Edit
+          delete: Delete
+          are_you_sure: Are you sure?
         action:
           one: "%{count} action"
           other: "%{count} actions"
