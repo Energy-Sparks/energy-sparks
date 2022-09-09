@@ -22,6 +22,7 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
   end
 
   context 'when there are older runs to delete' do
+
     let(:school){ create :school }
     let(:electricity_fuel_alert_type) { create(:alert_type, fuel_type: :electricity, frequency: :termly) }
     let(:alert_type_rating){ create(:alert_type_rating, alert_type: electricity_fuel_alert_type) }
@@ -47,28 +48,29 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
     let!(:find_out_more_2){ create(:find_out_more, alert: alert_2, content_generation_run: content_generation_run_2) }
 
 
-    it 'deletes only the older runs and all of the older runs dependent objects' do
-      expect(ContentGenerationRun.count).to eq 2
-      # :dashboard_alerts
-      # :management_priorities
-      # :analysis_pages
-      # :management_dashboard_tables
-      # :alert_subscription_events
-      # :find_out_mores
 
+
+    it 'deletes only the older runs and all of the older runs dependent objects' do
+      # AlertTypeRatingContentVersion.delete_all
+
+      expect(ContentGenerationRun.count).to eq 2
       expect(DashboardAlert.count).to eq(2)
       expect(ManagementPriority.count).to eq(2)
       expect(AnalysisPage.count).to eq(2)
       expect(ManagementDashboardTable.count).to eq(2)
       # expect(AlertSubscriptionEvent.count).to eq(2)
       expect(FindOutMore.count).to eq(2)
+      cv_ids = FindOutMore.all.pluck(:alert_type_rating_content_version_id)
+      alert_type_rating_content_versions = AlertTypeRatingContentVersion.where(id: cv_ids)
+      expect(alert_type_rating_content_versions.count).to eq(2)
 
       expect { service.delete! }.to change(ContentGenerationRun, :count).from(2).to(1) &
         change(DashboardAlert, :count).from(2).to(1) &
           change(ManagementPriority, :count).from(2).to(1) &
             change(AnalysisPage, :count).from(2).to(1) &
               change(ManagementDashboardTable, :count).from(2).to(1) &
-                change(FindOutMore, :count).from(2).to(1)
+                change(FindOutMore, :count).from(2).to(1) &
+                  change(alert_type_rating_content_versions, :count).from(2).to(1)
 
                # & change(AlertSubscriptionEvent, :count).from(2).to(1)
 
