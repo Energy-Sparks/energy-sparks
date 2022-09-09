@@ -1,0 +1,23 @@
+cy:
+  scoreboard:
+    current_scoreboard: Gweld y bwrdd sgorio presennol
+    current_scores: Dyma'r sgorau presennol ar gyfer y flwyddyn academaidd hon
+    intro_para_1:
+      one: 'Mae 1 ysgol yn cystadlu ar y sgorfwrdd hwn '
+      two: 'Mae %{count} ysgol yn cystadlu ar y sgorfwrdd hwn '
+      many: 'Mae %{count} ysgol yn cystadlu ar y sgorfwrdd hwn '
+      other: 'Mae %{count} ysgol yn cystadlu ar y bwrdd sgorio hwn '
+    position: Safle
+    previous_scoreboard: Gweld y sgorau terfynol o'r llynedd
+    previous_scores: Dyma'r sgorau terfynol y llynedd
+    score: Sgôr
+    score_tooltip: Ysgol wedi sgorio pwyntiau yn ystod y mis diwethaf
+  scoreboards:
+    intro_para_1: Mae ysgolion yn sgorio pwyntiau drwy gofnodi eu gweithgareddau i ymchwilio i'w defnydd o ynni, dysgu am ynni, a chymryd camau arbed ynni o amgylch eu hysgol.
+    intro_para_2: Mae ein byrddau sgorio yn dangos pa ysgolion sydd fwyaf gweithgar ledled Cymru, Lloegr a’r Alban.
+    page_title: Byrddau sgorio
+    view_all:
+      one: Gweld sgorau ar gyfer 1 ysgol
+      two: Gweld sgorau ar gyfer %{count} ysgol
+      many: Gweld sgorau ar gyfer %{count} ysgol
+      other: Gweld sgorau ar gyfer %{count} ysgol

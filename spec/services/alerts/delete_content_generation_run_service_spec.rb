@@ -34,15 +34,17 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
     let(:content_generation_run_2){ create(:content_generation_run, school: school, created_at: older_than_date + 1.day) }
 
     let!(:dashboard_alert_1){ create(:dashboard_alert, alert: alert_1, content_version: content_version_1, content_generation_run: content_generation_run_1) }
-    let!(:dashboard_alert_2){ create(:dashboard_alert, alert: alert_1, content_version: content_version_1, content_generation_run: content_generation_run_2) }
+    let!(:dashboard_alert_2){ create(:dashboard_alert, alert: alert_2, content_version: content_version_1, content_generation_run: content_generation_run_2) }
     let!(:management_priority_1){ create(:management_priority, alert: alert_1, content_generation_run: content_generation_run_1) }
-    let!(:management_priority_2){ create(:management_priority, alert: alert_1, content_generation_run: content_generation_run_2) }
+    let!(:management_priority_2){ create(:management_priority, alert: alert_2, content_generation_run: content_generation_run_2) }
     let!(:analysis_page_1){ create(:analysis_page, alert: alert_1, content_generation_run: content_generation_run_1) }
-    let!(:analysis_page_2){ create(:analysis_page, alert: alert_1, content_generation_run: content_generation_run_2) }
+    let!(:analysis_page_2){ create(:analysis_page, alert: alert_2, content_generation_run: content_generation_run_2) }
     let!(:management_dashboard_table_1){ create(:management_dashboard_table, alert: alert_1, content_generation_run: content_generation_run_1) }
-    let!(:management_dashboard_table_2){ create(:management_dashboard_table, alert: alert_1, content_generation_run: content_generation_run_2) }
+    let!(:management_dashboard_table_2){ create(:management_dashboard_table, alert: alert_2, content_generation_run: content_generation_run_2) }
     # let!(:alert_subscription_event_1){ create(:alert_subscription_event, alert: alert_1, content_generation_run: content_generation_run_1) }
     # let!(:alert_subscription_event_2){ create(:alert_subscription_event, alert: alert_1, content_generation_run: content_generation_run_2) }
+    let!(:find_out_more_1){ create(:find_out_more, alert: alert_1, content_generation_run: content_generation_run_1) }
+    let!(:find_out_more_2){ create(:find_out_more, alert: alert_2, content_generation_run: content_generation_run_2) }
 
 
     it 'deletes only the older runs and all of the older runs dependent objects' do
@@ -59,12 +61,14 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
       expect(AnalysisPage.count).to eq(2)
       expect(ManagementDashboardTable.count).to eq(2)
       # expect(AlertSubscriptionEvent.count).to eq(2)
+      expect(FindOutMore.count).to eq(2)
 
       expect { service.delete! }.to change(ContentGenerationRun, :count).from(2).to(1) &
         change(DashboardAlert, :count).from(2).to(1) &
           change(ManagementPriority, :count).from(2).to(1) &
             change(AnalysisPage, :count).from(2).to(1) &
-              change(ManagementDashboardTable, :count).from(2).to(1)
+              change(ManagementDashboardTable, :count).from(2).to(1) &
+                change(FindOutMore, :count).from(2).to(1)
 
                # & change(AlertSubscriptionEvent, :count).from(2).to(1)
 

@@ -1,29 +1,104 @@
----
 cy:
   activerecord:
+    attributes:
+      activity_type:
+        description: Disgrifiad
+        download_links: Lawrlwytho dolenni
+        name: Enw
+        school_specific_description: Disgrifiad penodol i'r ysgol
+        summary: Crynodeb
+      intervention_type:
+        description: Disgrifiad
+        download_links: Lawrlwytho dolenni
+        name: Teitl
+        summary: Crynodeb
+      transport_survey_response:
+        id: Rhif adnabod
+        journey_minutes: Munudau taith
+        passengers: Teithwyr
+        run_identifier: Dynodwr rhediad
+        surveyed_at: Arolygwyd yn
+        weather:
+          cloud: Cwmwl
+          one: Tywydd
+          rain: Glaw
+          snow: Eira
+          sun: Haul
+        weather_image: Llun tywydd
+        weather_name: Tywydd
+      transport_type:
+        category:
+          car: Car
+          one: Categori
+          other: Arall
+          park_and_stride: Parcio a cherdded
+          public_transport: Trafnidiaeth gyhoeddus
+          walking_and_cycling: Cerdded a seiclo
+        image: Llun
+        name: Enw
     errors:
       messages:
-        record_invalid: 'Gwirio wedi methu: %{errors}'
+        record_invalid: 'Wedi methu â dilysu: %{errors}'
+        restrict_dependent_destroy:
+          has_many: Methu â dileu cofnod oherwydd bod dibynnydd %{record} yn bodoli
+          has_one: Methu â dileu cofnod oherwydd bod dibynnydd %{record} yn bodoli
+    models:
+      transport_survey:
+        one: Arolwg trafnidiaeth
+        two: Arolygon trafnidiaeth
+        many: Arolygon trafnidiaeth
+        other: Arolygon trafnidiaeth
+      transport_survey_response:
+        one: Ymateb
+        two: Ymatebion
+        many: Ymatebion
+        other: Ymatebion
   errors:
+    attributes:
+      temperature_recording:
+        centigrade: Tymheredd
     format: "%{attribute} %{message}"
     messages:
-      accepted: angen ei dderbyn
-      blank: methu bod yn wag
-      confirmation: heb fod yn gyfateb
-      empty: methu bod yn wag
-      equal_to: angen bod yn %{count}
+      accepted: rhaid derbyn
+      blank: methu â bod yn wag
+      confirmation: nid yw'n cyfateb i %{attribute}
+      empty: methu â bod yn wag
+      equal_to: rhaid bod yn hafal i %{count}
       even: rhaid bod yn eilrif
-      exclusion: wedi cadw
-      greater_than: angen bod yn fwy na %{count}
-      greater_than_or_equal_to: angen bod yr un maint neu fwy na %{count}
-      inclusion: heb fod yn y rhestr
-      invalid: heb fod yn nheilwng
-      less_than: angen bod yn llai na %{count}
-      less_than_or_equal_to: angen bod yr un maint neu lai na %{count}
-      not_a_number: heb fod yn rhif
-      not_an_integer: heb fod yn rhif llawn
+      exclusion: yn cael ei gadw
+      greater_than: rhaid bod yn fwy na %{count}
+      greater_than_or_equal_to: rhaid bod yn fwy na neu'n hafal i %{count}
+      inclusion: heb ei gynnwys yn y rhestr
+      invalid: yn annilys
+      less_than: rhaid bod yn llai na %{count}
+      less_than_or_equal_to: rhaid bod yn llai na neu'n hafal i %{count}
+      model_invalid: 'Wedi methu â dilysu: %{errors}'
+      not_a_number: nid yw'n rhif
+      not_an_integer: rhaid bod yn gyfanrif
       odd: rhaid bod yn odrif
-      taken: wedi'i gymryd yn barod
-      too_long: yn rhy hir (cewch %{count} llythyren ar y fwyaf)
-      too_short: yn rhy fyr (rhaid am o leiaf %{count} llythyren)
-      wrong_length: gyda maint anghywir o lythrennau (dylai fod yn %{count} llythyren)
+      other_than: rhaid bod heblaw am %{count}
+      present: rhaid bod yn wag
+      required: rhaid bodoli
+      taken: eisoes wedi'i gymryd
+      too_long:
+        one: yn rhy hir (uchafswm yw 1 nod)
+        two: yn rhy hir (uchafswm yw %{count} nod)
+        many: yn rhy hir (uchafswm yw %{count} nod)
+        other: yn rhy hir (uchafswm yw %{count} nod)
+      too_short:
+        one: yn rhy fyr (lleiafswm yw 1 nod)
+        two: yn rhy fyr (lleiafswm yw %{count} nod)
+        many: yn rhy fyr (lleiafswm yw %{count} nod)
+        other: yn rhy fyr (lleiafswm yw %{count} nod)
+      wrong_length:
+        one: yw'r hyd anghywir (dylai fod yn 1 nod)
+        two: yw'r hyd anghywir (dylai fod yn %{count} nod)
+        many: yw'r hyd anghywir (dylai fod yn %{count} nod)
+        other: yw'r hyd anghywir (dylai fod yn %{count} nod)
+    template:
+      body: 'Roedd problemau gyda’r meysydd canlynol:'
+      header:
+        one: Roedd 1 gwall yn gwahardd y %{model} hwn rhag cael ei gadw
+        two: Roedd %{count} wall yn gwahardd y %{model} hwn rhag cael ei gadw
+        many: Roedd %{count} gwall yn gwahardd y %{model} hwn rhag cael ei gadw
+        other: Roedd %{count} gwall yn gwahardd y %{model} hwn rhag cael ei gadw

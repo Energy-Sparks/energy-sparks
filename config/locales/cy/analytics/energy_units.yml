@@ -1,0 +1,105 @@
+cy:
+  analytics:
+    energy_units:
+      accounting_cost: "£%{value}"
+      bev_car: "%{value} km"
+      boiler_start_time: "%{value} amser cychwyn boeler"
+      carnivore_dinner: "%{value} o giniawau"
+      co2: "%{value} kg CO2"
+      co2t: "%{value} o dunelli CO2"
+      comparison_percent: "%"
+      computer_console: "%{value} o gonsolau cyfrifiaduron"
+      days: dyddiau
+      electricity: "%{value} trydan"
+      gas: "%{value} nwy"
+      home: "%{value} o gartrefi"
+      homes_electricity: "%{value} o gartrefi (defnydd trydan)"
+      homes_gas: "%{value} o gartrefi (defnydd nwy)"
+      hour: "%{value} awr"
+      ice_car: "%{value} km"
+      kettle: "%{value} o degellau"
+      kg: "%{value} kg"
+      kg_co2_per_kwh: "%{value} kg CO2/kWh"
+      km: "%{value} km"
+      kva: "%{value} kVA"
+      kw: "%{value} kW"
+      kwh: "%{value} kWh"
+      kwh_per_day: "%{value} kWh/dydd"
+      kwh_per_day_per_c: "%{value} kWh/dydd/C"
+      kwp: "%{value} kWp"
+      library_books: "%{value} o lyfrau llyfrgell"
+      litre: "%{value} litr"
+      m2: "%{value} m2"
+      m2_html: "%{value} m<sup>2</sup>"
+      meters: "%{value} metr"
+      morning_start_time: "%{value} amser o'r dydd"
+      offshore_wind_turbine_hours: "%{value} awr tyrbinau gwynt ar y môr"
+      offshore_wind_turbines: "%{value} o dyrbinau gwynt ar y môr"
+      onshore_wind_turbine_hours: "%{value} awr tyrbinau gwynt ar y tir"
+      onshore_wind_turbines: "%{value} o dyrbinau gwynt ar y tir"
+      opt_start_standard_deviation: "%{value} gwyriad safonol (oriau)"
+      optimum_start_sensitivity: "%{value} awr/C"
+      p: "%{value}c"
+      panels: "%{value} o baneli solar PV"
+      percent: "%{value}%"
+      percent_0dp: "%{value}%"
+      percent_html: "%{value}&percnt;"
+      pupils: "%{value} o ddisgyblion"
+      relative_percent: "%{sign}%{value}%"
+      relative_percent_0dp: "%{sign}%{value}%"
+      shower: "%{value} o gawodydd"
+      smartphone: "%{value} o wefrau ffonau clyfar"
+      solar_panels: "%{value} o baneli solar"
+      solar_panels_in_a_year: "%{value} o baneli solar mewn blwyddyn"
+      teaching_assistant: "%{value} cynorthwyydd addysgu"
+      teaching_assistant_hours: "%{value} cynorthwyydd addysgu (oriau)"
+      temperature: "%{value}C"
+      tree: "%{value} o goed"
+      tv: "%{value} set teledu"
+      vegetarian_dinner: "%{value} o giniawau"
+      w: "%{value} W"
+      years: blynyddoedd
+      years_decimal: "%{value} o flynyddoedd"
+      years_range: "%{low} i %{high}"
+      £: "%{sign}£%{value}"
+      £_0dp: "%{sign}£%{value}"
+      £_0dp_html: "%{sign}&pound;%{value}"
+      £_html: "%{sign}&pound;%{value}"
+      £_per_kva: "%{sign}£%{value}/kVA"
+      £_per_kva_html: "%{sign}&pound;%{value}/kVA"
+      £_per_kwh: "%{sign}£%{value}/kWh"
+      £_per_kwh_html: "%{sign}&pound;%{value}/kWh"
+      £_range: "%{low} i %{high}"
+    units:
+      days:
+        one: '%{count} dydd'
+        two: '%{count} ddydd'
+        many: '%{count} o ddyddiau'
+        other: '%{count} o ddyddiau'
+      hours:
+        one: '%{count} awr'
+        two: '%{count} awr'
+        many: '%{count} awr'
+        other: '%{count} awr'
+      infinity: Anfeidroldeb
+      minutes:
+        one: '%{count} funud'
+        two: '%{count} funud '
+        many: '%{count} o funudau '
+        other: '%{count} o funudau '
+      months:
+        one: '%{count} mis'
+        two: '%{count} fis'
+        many: '%{count} o fisoedd'
+        other: '%{count} o fisoedd'
+      nan: Angyfrifadwy
+      weeks:
+        one: '%{count} wythnos'
+        two: '%{count} wythnos'
+        many: '%{count} wythnos'
+        other: '%{count} wythnos'
+      years:
+        one: '%{count} blwyddyn'
+        two: '%{count} flynedd'
+        many: '%{count} o flynyddoedd'
+        other: '%{count} o flynyddoedd'
