@@ -47,12 +47,7 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
     let!(:find_out_more_1){ create(:find_out_more, alert: alert_1, content_generation_run: content_generation_run_1) }
     let!(:find_out_more_2){ create(:find_out_more, alert: alert_2, content_generation_run: content_generation_run_2) }
 
-
-
-
     it 'deletes only the older runs and all of the older runs dependent objects' do
-      # AlertTypeRatingContentVersion.delete_all
-
       expect(ContentGenerationRun.count).to eq 2
       expect(DashboardAlert.count).to eq(2)
       expect(ManagementPriority.count).to eq(2)
