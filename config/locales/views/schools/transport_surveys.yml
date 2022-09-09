@@ -111,6 +111,7 @@ en:
         destroy:
           notice: Transport survey response was successfully removed
       show:
+        chart_load_error: There was a problem loading this chart
         30_or_more_minutes: 30 or more minutes
         cars_summary: Persuading people who travel only 5 minutes by car to switch to coming to school by foot or bike is a great first step to reducing the school's carbon footprint from travel.
         cars_title: Breakdown of journeys by car
