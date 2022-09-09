@@ -21,7 +21,7 @@ describe 'TransportSurveys - App', type: :system do
         end
 
         context "when javascript is not enabled" do
-          it { expect(page).to have_content('Javascript must be enabled to use this functionality.') }
+          it { expect(page).to have_content('Javascript must be enabled to use this functionality') }
         end
 
         context "when javascript is enabled", js: true do
@@ -94,7 +94,7 @@ describe 'TransportSurveys - App', type: :system do
                     let(:carbon) { ((((transport_type.speed_km_per_hour * time) / 60) * transport_type.kg_co2e_per_km)).round(3) }
 
                     it "displays carbon summary" do
-                      expect(page).to have_content("For your #{time} minute journey to school by #{transport_type.image} #{transport_type.name}.")
+                      expect(page).to have_content("For your #{time} minute journey to school by #{transport_type.image} #{transport_type.name}")
                       expect(page).to have_content("You used #{carbon}kg of carbon!")
                       expect(find("#display-carbon-equivalent")).to_not be_blank #the content of this is random, so this is as far as it can be tested without getting too complex
                     end
@@ -154,7 +154,7 @@ describe 'TransportSurveys - App', type: :system do
                       let(:carbon) { ((((transport_type.speed_km_per_hour * time) / 60) * transport_type.kg_co2e_per_km) / passengers).round(3) }
 
                       it "displays carbon summary" do
-                        expect(page).to have_content("For your #{time} minute journey to school by #{transport_type.image} #{transport_type.name}.")
+                        expect(page).to have_content("For your #{time} minute journey to school by #{transport_type.image} #{transport_type.name}")
                         expect(page).to have_content("You used #{carbon}kg of carbon!")
                         expect(find("#display-carbon-equivalent")).to_not be_blank #the content of this is random, so this is as far as it can be tested without getting too complex
                       end
