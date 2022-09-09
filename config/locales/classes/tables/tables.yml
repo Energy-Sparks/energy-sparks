@@ -1,0 +1,9 @@
+---
+en:
+  classes:
+    tables:
+      summary_table_data:
+        last_week: Last week
+        last_year: Last year
+        no_recent_data: no recent data
+        none: none

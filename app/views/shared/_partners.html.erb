@@ -12,7 +12,11 @@
 <div class="container-fluid d-flex justify-content-center pb-2">
   <div class="row">
     <div class="col-12">
-      <span><small>Energy Sparks supports <%= @school.name %> in partnership with <%= list_of_partners_as_links(@school.all_partners) %></small></span>
+      <span>
+        <small>
+          <%= t('partners.supports_in_partnership_with', school_name: @school.name) %>&nbsp;<%= list_of_partners_as_links(@school.all_partners) %>
+        </small>
+      </span>
     </div>
   </div>
 </div>

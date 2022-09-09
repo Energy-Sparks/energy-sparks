@@ -4,7 +4,9 @@
       <tr>
         <th colspan="4">
           <h5><%= title_for_month(month, year) %></h5>
-          <span class="text-muted"><%= pluralize(grouped_observations.size, 'action') %></span>
+          <span class="text-muted">
+            <%= t('schools.observations.timeline.action', count: grouped_observations.size) %>
+          </span>
         </th>
       </tr>
     </thead>

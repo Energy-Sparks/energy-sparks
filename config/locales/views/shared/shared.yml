@@ -35,6 +35,13 @@ en:
   common_nav_bar_menus:
     actions: Actions
     activities: Activities
+  dashboard_alerts:
+    show_more_alerts:
+      one: Show 1 more alert
+      other: Show %{count} more alerts
+  dashboards:
+    adult_dashboard: Adult dashboard
+    pupil_dashboard: Pupil dashboard
   footer:
     cc_licence_notice_html: Content on this website is published under <a href="https://creativecommons.org/licenses/by/4.0/">a Creative Commons Attribution 4.0 Licence</a>
     child_safeguarding_policy: Child safeguarding policy
@@ -45,6 +52,7 @@ en:
     terms_and_conditions: Terms and conditions
   manage_menu:
     admin: Admin
+    manage: Manage
     reports: Reports
   manage_school_menu:
     batch_reports: Batch reports
@@ -103,6 +111,8 @@ en:
     our_services: Our services
     training: Training
     videos: Videos
+  partners:
+    supports_in_partnership_with: Energy Sparks supports %{school_name} in partnership with
   switch_schools_menu:
     switch_school: Switch school
   timeline:

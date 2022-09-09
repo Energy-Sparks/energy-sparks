@@ -68,6 +68,11 @@ en:
       title: Energy Sparks schools across the UK
       view_all_energy_sparks_schools: View all Energy Sparks schools
       view_energy_sparks_schools_by_group: View Energy Sparks schools by group
+    observations:
+      timeline:
+        action:
+          one: "%{count} action"
+          other: "%{count} actions"
     school_group:
       compare_schools: Compare schools
       view_schools: View schools
