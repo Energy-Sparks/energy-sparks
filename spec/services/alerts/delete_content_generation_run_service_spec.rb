@@ -22,24 +22,53 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
   end
 
   context 'when there are older runs to delete' do
-    it 'deletes only the older runs' do
-      school.content_generation_runs.create!(created_at: Time.zone.now)
-      school.content_generation_runs.create!(created_at: (Time.zone.now - 3.months).beginning_of_month + 1.day)
-      school.content_generation_runs.create!(created_at: (Time.zone.now - 3.months).beginning_of_month)
-      school.content_generation_runs.create!(created_at: (Time.zone.now - 6.months).beginning_of_month)
-      expect(ContentGenerationRun.count).to eq 4
-      expect { service.delete! }.to change(ContentGenerationRun, :count).from(4).to(2)
-    end
+    let(:school){ create :school }
+    let(:electricity_fuel_alert_type) { create(:alert_type, fuel_type: :electricity, frequency: :termly) }
+    let(:alert_type_rating){ create(:alert_type_rating, alert_type: electricity_fuel_alert_type) }
 
-    it 'deletes all of the dependent objects' do
-        date_time = (Time.zone.now - 3.months).beginning_of_month
-        content_generation_run = school.content_generation_runs.create!(created_at: date_time)
-        create(:dashboard_alert, created_at: date_time, content_generation_run: content_generation_run)
+    let(:content_version_1){ create(:alert_type_rating_content_version, alert_type_rating: alert_type_rating)}
+    let(:alert_1){ create(:alert, alert_type: electricity_fuel_alert_type) }
+    let(:alert_2){ create(:alert, alert_type: electricity_fuel_alert_type) }
+    older_than_date = Alerts::DeleteContentGenerationRunService::DEFAULT_OLDER_THAN
+    let(:content_generation_run_1){ create(:content_generation_run, school: school, created_at: older_than_date) }
+    let(:content_generation_run_2){ create(:content_generation_run, school: school, created_at: older_than_date + 1.day) }
 
-        expect(ContentGenerationRun.count).to eq 1
-        expect(ContentGenerationRun.first.dashboard_alerts.count).to eq 1
-        expect { service.delete! }.to change(ContentGenerationRun, :count).from(1).to(0) &
-          change(DashboardAlert, :count).from(1).to(0)
+    let!(:dashboard_alert_1){ create(:dashboard_alert, alert: alert_1, content_version: content_version_1, content_generation_run: content_generation_run_1) }
+    let!(:dashboard_alert_2){ create(:dashboard_alert, alert: alert_1, content_version: content_version_1, content_generation_run: content_generation_run_2) }
+    let!(:management_priority_1){ create(:management_priority, alert: alert_1, content_generation_run: content_generation_run_1) }
+    let!(:management_priority_2){ create(:management_priority, alert: alert_1, content_generation_run: content_generation_run_2) }
+    let!(:analysis_page_1){ create(:analysis_page, alert: alert_1, content_generation_run: content_generation_run_1) }
+    let!(:analysis_page_2){ create(:analysis_page, alert: alert_1, content_generation_run: content_generation_run_2) }
+    let!(:management_dashboard_table_1){ create(:management_dashboard_table, alert: alert_1, content_generation_run: content_generation_run_1) }
+    let!(:management_dashboard_table_2){ create(:management_dashboard_table, alert: alert_1, content_generation_run: content_generation_run_2) }
+    # let!(:alert_subscription_event_1){ create(:alert_subscription_event, alert: alert_1, content_generation_run: content_generation_run_1) }
+    # let!(:alert_subscription_event_2){ create(:alert_subscription_event, alert: alert_1, content_generation_run: content_generation_run_2) }
+
+
+    it 'deletes only the older runs and all of the older runs dependent objects' do
+      expect(ContentGenerationRun.count).to eq 2
+      # :dashboard_alerts
+      # :management_priorities
+      # :analysis_pages
+      # :management_dashboard_tables
+      # :alert_subscription_events
+      # :find_out_mores
+
+      expect(DashboardAlert.count).to eq(2)
+      expect(ManagementPriority.count).to eq(2)
+      expect(AnalysisPage.count).to eq(2)
+      expect(ManagementDashboardTable.count).to eq(2)
+      # expect(AlertSubscriptionEvent.count).to eq(2)
+
+      expect { service.delete! }.to change(ContentGenerationRun, :count).from(2).to(1) &
+        change(DashboardAlert, :count).from(2).to(1) &
+          change(ManagementPriority, :count).from(2).to(1) &
+            change(AnalysisPage, :count).from(2).to(1) &
+              change(ManagementDashboardTable, :count).from(2).to(1)
+
+               # & change(AlertSubscriptionEvent, :count).from(2).to(1)
+
+      expect(ContentGenerationRun.first.created_at).to be > Alerts::DeleteContentGenerationRunService::DEFAULT_OLDER_THAN
     end
   end
 end
