@@ -239,4 +239,4 @@ Pagy::I18n.load(
 
 
 # When you are done setting your own default freeze it, so it will not get changed accidentally
-Pagy::DEFAULT.freeze
+# Pagy::DEFAULT.freeze
