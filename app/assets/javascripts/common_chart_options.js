@@ -251,7 +251,6 @@ function scatter(chartData, highchartsChart, seriesData) {
   highchartsChart.update({chart: { type: 'scatter', zoomType: 'xy'}, subtitle: { text: document.ontouchstart === undefined ? chartData.click_and_drag_message : chartData.pinch_and_zoom_message }});
 
   Object.keys(seriesData).forEach(function (key) {
-    //console.log(seriesData[key].name);
     if (seriesData[key].name.toLowerCase().startsWith("trendline")) {
       highchartsChart.addSeries(
         {
