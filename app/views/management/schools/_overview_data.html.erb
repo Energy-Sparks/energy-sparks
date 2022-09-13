@@ -15,7 +15,7 @@
     <tbody>
     <% overview_data.by_fuel_type.each do |data| %>
       <tr>
-        <% if data.period == 'Last week' %>
+        <% if data.period == I18n.t('classes.tables.summary_table_data.last_week') %>
           <td class="icon"><%= fa_icon fuel_type_icon(data.fuel_type) %></td>
           <td class="text-left"><%= data.fuel_type.to_s.humanize %></td>
         <% else %>

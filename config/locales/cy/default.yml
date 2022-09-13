@@ -1,18 +1,20 @@
----
 cy:
-  name: Cymraeg
   helpers:
     select:
-      prompt: Dewiswch
+      prompt: Dewisa
     submit:
       create: Creu %{model}
       submit: Cadw %{model}
       update: Diweddaru %{model}
   languages:
-    en: Saesneg
     cy: Cymraeg
-  support:
-    array:
-      last_word_connector: ", a "
-      two_words_connector: " a "
-      words_connector: ", "
+    en: English
+  name: Cymraeg
+  simple_form:
+    labels:
+      defaults:
+        find_out_more_chart_title: Teitl y siart
+        find_out_more_chart_variable: Newidyn siart
+        find_out_more_content: Cynnwys tudalen
+        find_out_more_table_variable: Newidyn tabl
+        find_out_more_title: Teitl y dudalen

@@ -1,0 +1,9 @@
+cy:
+  analytics:
+    alert_differential_tariff_opportunity:
+      timescale: blwyddyn
+    alert_meter_asc_limit:
+      close_to_margin: Rydych yn agos iawn at y terfyn capasiti y cytunwyd arno, a gallai mynd y tu hwnt i’r rhestr arwain at gosb fisol.
+      opportunity: Mae cyfle i arbed %{annual_saving} y flwyddyn, neu %{ten_year_saving} os caiff ei ystyried dros gyfnod o 10 mlynedd.
+      peak_power_consumption: Ar gyfer mesurydd %{mpan} eich terfyn ASC yw %{asc_limit} ond eich defnydd pŵer brig yw %{peak_kw}.
+      timescale: blwyddyn

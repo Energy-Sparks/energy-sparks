@@ -1,0 +1,20 @@
+cy:
+  analytics:
+    alert_energy_annual_versus_benchmark:
+      timescale: blwyddyn
+    alert_impending_holiday:
+      timescale:
+        one: 1 wythnos
+        two: '%{count} wythnos'
+        many: '%{count} wythnos'
+        other: '%{count} wythnos'
+      timescale_unknown: Anhysbys
+    alert_long_term_trend:
+      summary: "%{cost}pa %{increase_or_reduction} ers y llynedd, %{percent}"
+      timescale: 2 flynedd diwethaf
+    alert_out_of_hours_base_usage:
+      summary: "%{cost}pa (%{percent} o gost flynyddol) "
+      timescale: y llynedd
+    alert_target_base:
+      summary: "%{percent} %{above_or_below} targed"
+      timescale: o leiaf 1 flwyddyn

@@ -250,17 +250,14 @@ function scatter(chartData, highchartsChart, seriesData) {
   updateChartLabels(chartData, highchartsChart);
   highchartsChart.update({chart: { type: 'scatter', zoomType: 'xy'}, subtitle: { text: document.ontouchstart === undefined ? chartData.click_and_drag_message : chartData.pinch_and_zoom_message }});
 
-
   Object.keys(seriesData).forEach(function (key) {
-    //console.log(seriesData[key].name);
-    if (seriesData[key].name.startsWith("trendline_")) {
+    if (seriesData[key].name.toLowerCase().startsWith("trendline")) {
       highchartsChart.addSeries(
         {
           type: 'line',
           name: seriesData[key].name,
-          data: seriesData[key].data.filter(function( obj ) {
-            return obj[1] !== null; // Remove nulls so there's no gap in the line
-          })
+          data: seriesData[key].data,
+          connectNulls: true
         }
       )
     } else {
