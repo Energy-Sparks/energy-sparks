@@ -38,7 +38,7 @@ class Equivalence < ApplicationRecord
   end
 
   def via_unit
-    data_via_units.join(' ')
+    data_via_units.compact.join(' ')
   end
 
   def hide_preview?
@@ -48,14 +48,11 @@ class Equivalence < ApplicationRecord
 private
 
   def data_via_units
-    energy_conversion_units.each_with_object([]) do |unit, via|
-      next unless data.key?(unit.to_s)
-      via << data.dig(unit&.to_s, 'via')
-    end
+    energy_conversion_units.map { |unit| data.dig(unit.to_s, 'via') }
   end
 
   def energy_conversion_units
-    EnergyConversions.additional_frontend_only_variable_descriptions.map { |units| units.last[:via] }
+    EnergyConversions.additional_frontend_only_variable_descriptions.map { |unit| unit.last[:via] }
   end
 
   def variables(locale)
