@@ -124,3 +124,6 @@ en:
       upload_energy_bill: Upload a bill
       use_kwh: Use (kWh)
       view_programmes: View your programmes
+    timeline:
+      no_events: No events to show
+      title: What's been going on?
