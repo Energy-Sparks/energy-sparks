@@ -250,31 +250,15 @@ function scatter(chartData, highchartsChart, seriesData) {
   updateChartLabels(chartData, highchartsChart);
   highchartsChart.update({chart: { type: 'scatter', zoomType: 'xy'}, subtitle: { text: document.ontouchstart === undefined ? chartData.click_and_drag_message : chartData.pinch_and_zoom_message }});
 
-console.log(seriesData)
-
   Object.keys(seriesData).forEach(function (key) {
     //console.log(seriesData[key].name);
     if (seriesData[key].name.toLowerCase().startsWith("trendline")) {
-      dataValues = seriesData[key].data.map(a=>a[1])
-
-      minValue = Math.min(...dataValues.filter(function(val) { return val !== null }))
-      maxValue = Math.max(...dataValues.filter(function(val) { return val !== null }))
-
-      if (minValue == maxValue) {
-        minIndex = dataValues.indexOf(minValue)
-        maxIndex = dataValues.lastIndexOf(maxValue)
-      } else {
-        minIndex = dataValues.indexOf(minValue)
-        maxIndex = dataValues.indexOf(maxValue)
-      }
-
-      trendlineData = [seriesData[key].data[minIndex], seriesData[key].data[maxIndex]]
-
       highchartsChart.addSeries(
         {
           type: 'line',
           name: seriesData[key].name,
-          data: trendlineData
+          data: seriesData[key].data,
+          connectNulls: true
         }
       )
     } else {
