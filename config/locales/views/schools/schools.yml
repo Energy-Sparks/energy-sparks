@@ -73,6 +73,8 @@ en:
         action:
           one: "%{count} action"
           other: "%{count} actions"
+        activity:
+          completed_an_activity: Completed an activity
     school_group:
       compare_schools: Compare schools
       view_schools: View schools
