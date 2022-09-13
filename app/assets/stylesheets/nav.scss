@@ -48,6 +48,11 @@
     left: auto;
   }
 
+  .scrollable-dropdown-menu {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
   .dropdown-item:hover {
     color: $dark;
   }
