@@ -25,13 +25,12 @@ const chart = ( function() {
   function renderChart(data, pieChart) {
     let chartConfig =  { y_axis_label: '%' };
     let series = { data: data };
-
     pie(chartConfig, pieChart, series, $(pieChart.renderTo));
     pieChart.hideLoading();
   }
 
   function renderError(pieChart) {
-    $(pieChart.renderTo).add("h3").text('There was a problem loading this chart');
+    $(pieChart.renderTo).add("h3").text($(pieChart.renderTo).data('error'));
     $(pieChart.renderTo).remove();
   }
 

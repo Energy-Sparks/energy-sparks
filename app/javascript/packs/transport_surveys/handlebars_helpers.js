@@ -1,13 +1,5 @@
-import { nice_date } from './helpers';
+import { nice_date, pluralise } from './helpers';
 
-Handlebars.registerHelper('pluralise', function(number, single, plural) {
-  if (number > 1) {
-    return plural;
-  } else {
-    return single;
-  }
-});
-
-Handlebars.registerHelper('nice_date', function(dateString) {
-  return nice_date(dateString);
+Handlebars.registerHelper('unsaved_responses', function(element, count, date, today) {
+  return pluralise(element, {count: count, date: nice_date(date, today)});
 });

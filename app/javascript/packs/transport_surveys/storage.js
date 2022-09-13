@@ -4,7 +4,8 @@ export const storage = ( function() {
 
   var local = {
     key: '',
-    baseUrl: ''
+    baseUrl: '',
+    notifications: ''
   }
 
   // private methods
@@ -62,13 +63,13 @@ export const storage = ( function() {
       return ajaxCall(url, data)
       .done(function() {
         removeResponses(date);
-        notifier('success', 'Responses saved!');
+        notifier('success', local.notifications.responses_saved);
       })
       .fail(function() {
-        notifier('danger', 'Error saving responses - please make sure you have a wifi connection before saving!');
+        notifier('danger', local.notifications.no_connection);
       });
     } else {
-      return { done: function() { notifier('warning', 'Nothing to save - please collect some survey responses first!'); } };
+      return { done: function() { notifier('warning', local.notifications.no_responses); } };
     }
   }
 
