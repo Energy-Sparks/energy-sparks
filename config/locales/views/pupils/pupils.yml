@@ -80,5 +80,6 @@ en:
         title: Pupil dashboard for %{school_name}
         try_this_first: Try this one first
         try_this_next: Try this one next
-        update_temperatures: Update your classroom temperatures to see if you are saving energy
         user_view: User view
+        update_temperatures: Update temperatures
+        updating_temperatures: Update your classroom temperatures to see if you are saving energy
