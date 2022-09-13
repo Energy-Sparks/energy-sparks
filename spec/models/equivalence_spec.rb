@@ -3,6 +3,27 @@ require 'rails_helper'
 
 describe Equivalence do
 
+  describe '#via_unit' do
+    it 'returns the unit used' do
+      equivalence = Equivalence.new(
+        data: {
+          '£' => { 'via' => '£'},
+          'carnivore_dinner_£_carnivore_dinner' => { 'via' => 'this should not show' }
+        }
+      )
+      expect(equivalence.via_unit).to eq('£')
+      equivalence = Equivalence.new(
+        data: {
+          'kwh' => { 'via' => 'kwh' },
+          'co2' => { 'via' => 'co2' },
+          '£' => { 'via' => '£'},
+          'carnivore_dinner_£_carnivore_dinner' => { 'via' => 'this should not show' }
+        }
+      )
+      expect(equivalence.via_unit).to eq('kwh co2 £')
+    end
+  end
+
   describe 'formatted_variables' do
 
     it 'pulls out the formatted equivalence value' do
