@@ -102,7 +102,7 @@ class User < ApplicationRecord
   end
 
   def cluster_schools_for_switching
-    cluster_schools.visible.excluding(school)
+    cluster_schools.visible.by_name.excluding(school)
   end
 
   def add_cluster_school(school)

@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   around_action :switch_locale
   before_action :authenticate_user!
   before_action :analytics_code
+  before_action :pagy_locale
   helper_method :site_settings, :current_school_podium, :current_user_school
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -50,5 +51,9 @@ class ApplicationController < ActionController::Base
 
   def analytics_code
     @analytics_code ||= ENV['GOOGLE_ANALYTICS_CODE']
+  end
+
+  def pagy_locale
+    @pagy_locale = I18n.locale.to_s
   end
 end

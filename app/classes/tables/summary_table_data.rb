@@ -64,14 +64,14 @@ module Tables
       value = fetch(fuel_type, period, :recent)
       return !value if value.in? [true, false]
       #otherwise its old structure
-      value.present? && value == "no recent data"
+      value.present? && value == I18n.t('classes.tables.summary_table_data.no_recent_data')
     end
 
     def data_validity_message(fuel_type, period)
       message = fetch(fuel_type, period, :available_from)
       return format_availability_message(message) if message.present?
       value = fetch(fuel_type, period, :recent)
-      return "no recent data" if value == false
+      return I18n.t('classes.tables.summary_table_data.no_recent_data') if value == false
       #otherwise its old structure
       return value if value.present?
     end
@@ -96,12 +96,12 @@ module Tables
     end
 
     def format_period(period)
-      period == :workweek ? 'Last week' : 'Last year'
+      period == :workweek ? I18n.t('classes.tables.summary_table_data.last_week') : I18n.t('classes.tables.summary_table_data.last_year')
     end
 
     def format_date(value)
       if (date = Date.parse(value))
-        date.strftime("%-d %b %Y")
+        I18n.l(date, format: '%-d %b %Y')
       end
     rescue
       value
@@ -112,7 +112,7 @@ module Tables
         FormatEnergyUnit.format(units, value.to_f, medium, false, true, :target).html_safe
       end
     rescue
-      value
+      I18n.t("classes.tables.summary_table_data.#{value}", default: value)
     end
 
     def fetch(fuel_type, period, item = nil)
