@@ -74,10 +74,7 @@ en:
           one: "%{count} action"
           other: "%{count} actions"
         activity:
-          are_you_sure: Are you sure?
           completed_an_activity: Completed an activity
-          delete: Delete
-          edit: Edit
     school_group:
       compare_schools: Compare schools
       view_schools: View schools

@@ -8,8 +8,8 @@
 <% if show_actions && can?(:manage, observation.activity) %>
   <td class="text-right">
     <div class="btn-group">
-      <%= link_to t('schools.observations.timeline.activity.edit'), edit_school_activity_path(@school, observation.activity), class: 'btn btn-warning' %>
-      <%= link_to t('schools.observations.timeline.activity.delete'), school_activity_path(@school, observation.activity), method: :delete, data: { confirm: t('schools.observations.timeline.activity.are_you_sure') }, class: 'btn btn-danger' %>
+      <%= link_to t('common.labels.edit'), edit_school_activity_path(@school, observation.activity), class: 'btn btn-warning' %>
+      <%= link_to t('common.labels.delete'), school_activity_path(@school, observation.activity), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
     </div>
   </td>
 <% end %>
