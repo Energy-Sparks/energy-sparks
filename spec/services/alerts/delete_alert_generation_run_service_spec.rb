@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe Alerts::DeleteAlertGenerationRunService, type: :service do
-  let!(:school)            { create(:school) }
-  let(:service)   { Alerts::DeleteAlertGenerationRunService.new }
+  let!(:school) { create(:school) }
+  let(:service) { Alerts::DeleteAlertGenerationRunService.new }
   let(:alert_type_description) { 'all about this alert type' }
   let(:gas_fuel_alert_type)             { create(:alert_type, fuel_type: :gas, frequency: :termly, description: alert_type_description) }
   let(:electricity_fuel_alert_type)     { create(:alert_type, fuel_type: :electricity, frequency: :termly, description: alert_type_description) }
@@ -44,8 +44,8 @@ describe Alerts::DeleteAlertGenerationRunService, type: :service do
         expect(Alert.count).to eq 2
         expect(AlertError.count).to eq 2
         expect { service.delete! }.to change(AlertGenerationRun, :count).from(1).to(0) &
-          change(Alert, :count).from(2).to(0) &
-            change(AlertError, :count).from(2).to(0)
+                                      change(Alert, :count).from(2).to(0) &
+                                      change(AlertError, :count).from(2).to(0)
       end
     end
   end
