@@ -23,6 +23,9 @@ en:
         weekly:
           first: Select week (beginning)
           second: Compare to
+      select_meter:
+        all_meters: All Meters
+        title: Which meter?
       show:
         compare_message:
           other:
