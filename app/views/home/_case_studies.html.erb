@@ -25,6 +25,12 @@
                 <%= t('case_studies.download') %>
                 <i class="fas fa-file-download"></i>
               <% end %>
+              <% if case_study.file_cy.present? %>
+                <%= link_to url_for( controller: :case_studies, action: :download, serve: :download, id: case_study.id, :locale => :cy), class: 'btn' do %>
+                  <%= t('case_studies.download', :locale => :cy) %>
+                  <i class="fas fa-file-download"></i>
+                <% end %>
+              <% end %>
             </div>
           </div>
         <% end %>

@@ -15,6 +15,7 @@ class CaseStudy < ApplicationRecord
   translates :description, backend: :action_text
 
   has_one_attached :file
+  has_one_attached :file_cy
 
   validates :title, :file, presence: true
   validates :position, numericality: true, presence: true
