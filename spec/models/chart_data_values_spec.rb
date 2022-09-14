@@ -138,4 +138,33 @@ describe ChartDataValues do
       )
     end
   end
+
+  describe '#trendline?' do
+    chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG, :teachers_landing_page_gas).process
+    it 'returns true if the data type starts with trendline' do
+      expect(chart_data_values.send(:trendline?, :"trendline_heating_occupied_all_days =-138.9T + 2684, r2 = 0.64, n=138")).to be_truthy
+      expect(chart_data_values.send(:trendline?, "trendline_heating_occupied_all_days =-138.9T + 2684, r2 = 0.64, n=138")).to be_truthy
+      expect(chart_data_values.send(:trendline?, :"Trendline heating occupied all days =-138.9T + 2684, r2 = 0.64, n=138")).to be_truthy
+      expect(chart_data_values.send(:trendline?, "Trendline heating occupied all days =-138.9T + 2684, r2 = 0.64, n=138")).to be_truthy
+      expect(chart_data_values.send(:trendline?, :not_a_trendline)).not_to be_truthy
+      expect(chart_data_values.send(:trendline?, "not a trendline either")).not_to be_truthy
+    end
+  end
+
+  describe '#reduced_trendline_series_data_for' do
+    chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG, :teachers_landing_page_gas).process
+    it 'merges elements of the x_axis with corresponding data elements replacing all but the maximum and minimum values with nil' do
+      # Trendline data needs to be reduced to max and minimum values only to reliably plot
+      # a non-breaking straight line between two points.
+      expect(chart_data_values.send(:reduced_trendline_series_data_for, [0,1,2,3,4,5,6])).to eq([["Sunday", 0], ["Monday", nil], ["Tuesday", nil], ["Wednesday", nil], ["Thursday", nil], ["Friday", nil], ["Saturday", 6]])
+      expect(chart_data_values.send(:reduced_trendline_series_data_for, [0,6,2,-1,4,5,3])).to eq([["Sunday", nil], ["Monday", 6], ["Tuesday", nil], ["Wednesday", -1], ["Thursday", nil], ["Friday", nil], ["Saturday", nil]])
+    end
+  end
+
+  describe '#scatter_series_data_for' do
+    chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG, :teachers_landing_page_gas).process
+    it 'merges elements of the x_axis with corresponding data elements' do
+      expect(chart_data_values.send(:scatter_series_data_for, [0,1,2,3,4,5,6])).to eq([["Sunday", 0], ["Monday", 1], ["Tuesday", 2], ["Wednesday", 3], ["Thursday", 4], ["Friday", 5], ["Saturday", 6]])
+    end
+  end
 end

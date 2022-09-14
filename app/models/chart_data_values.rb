@@ -95,7 +95,7 @@ class ChartDataValues
         column_or_bar
       end
     elsif @chart1_type == :scatter
-      scatter
+      scatter_and_trendline
     elsif @chart1_type == :line
       #TODO chart colours that show gas/electricity/storage should all be using usage_line.
       if @chart_type.match?(/^targeting_and_tracking/) || @chart_type.match?(/^calendar_picker/) && @chart[:configuration][:series_breakdown] != :meter
@@ -340,13 +340,39 @@ private
     end
   end
 
-  def scatter
+  def trendline?(data_type)
+    data_type.to_s.downcase.start_with?("trendline")
+  end
+
+  def scatter_and_trendline
     @x_data_hash.each do |data_type, data|
-      scatter_data = @x_axis_categories.each_with_index.collect do |one_x_axis_point, index|
-        [one_x_axis_point, data[index]]
-      end
-      @series_data << { name: data_type, color: work_out_best_colour(data_type), data: scatter_data }
+      @series_data << {
+        name: data_type,
+        color: work_out_best_colour(data_type),
+        data: scatter_and_trendline_series_data_for(data_type, data)
+      }
     end
+  end
+
+  def scatter_and_trendline_series_data_for(data_type, data)
+    if trendline?(data_type)
+      reduced_trendline_series_data_for(data)
+    else
+      scatter_series_data_for(data)
+    end
+  end
+
+  def reduced_trendline_series_data_for(data)
+    # Trendline data needs to be reduced to max and minimum values only to reliably plot
+    # a non-breaking straight line between two points.
+    maximum_value = data.compact.max
+    minimum_value = data.compact.min
+    reduced_data = data.map { |value| [maximum_value, minimum_value].include?(value) ? value : nil }
+    @x_axis_categories.zip(reduced_data)
+  end
+
+  def scatter_series_data_for(data)
+    @x_axis_categories.zip(data)
   end
 
   def usage_line
