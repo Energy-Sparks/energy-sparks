@@ -37,11 +37,23 @@ class Equivalence < ApplicationRecord
     end
   end
 
+  def via_unit
+    data_via_units.compact.join(' ')
+  end
+
   def hide_preview?
     ! relevant
   end
 
 private
+
+  def data_via_units
+    energy_conversion_units.map { |unit| data.dig(unit.to_s, 'via') }
+  end
+
+  def energy_conversion_units
+    EnergyConversions.additional_frontend_only_variable_descriptions.map { |unit| unit.last[:via] }
+  end
 
   def variables(locale)
     if locale == :cy
