@@ -165,6 +165,7 @@ describe ChartDataValues do
     chart_data_values = ChartDataValues.new(EXAMPLE_CONFIG, :teachers_landing_page_gas).process
     it 'merges elements of the x_axis with corresponding data elements' do
       expect(chart_data_values.send(:scatter_series_data_for, [0,1,2,3,4,5,6])).to eq([["Sunday", 0], ["Monday", 1], ["Tuesday", 2], ["Wednesday", 3], ["Thursday", 4], ["Friday", 5], ["Saturday", 6]])
+      expect(chart_data_values.send(:scatter_series_data_for, [6,2,5,4,3,0,1])).to eq([["Sunday", 6], ["Monday", 2], ["Tuesday", 5], ["Wednesday", 4], ["Thursday", 3], ["Friday", 0], ["Saturday", 1]])
     end
   end
 end
