@@ -1,0 +1,6 @@
+cy:
+  analytics:
+    alert_hot_water_efficiency:
+      timescale: blwyddyn
+    alert_hot_water_insulation_advice:
+      timescale: y llynedd
