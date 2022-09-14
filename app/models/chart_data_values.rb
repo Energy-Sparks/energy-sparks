@@ -363,7 +363,7 @@ private
   end
 
   def reduced_trendline_series_data_for(data)
-    # Trendline data needs to be reduced to max and minimum values only to reliably plot
+    # Trendline data needs to be reduced to maximum and minimum values only to reliably plot
     # a non-breaking straight line between two points.
     maximum_value = data.compact.max
     minimum_value = data.compact.min
