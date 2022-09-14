@@ -12,7 +12,6 @@
     <% if EnergySparks::FeatureFlags.active?(:school_targets_v2) %>
       <%= link_to t('manage_school_menu.manage_usage_estimate'), school_estimated_annual_consumptions_path(school), class: 'dropdown-item' if school.latest_annual_estimate.present? || school.suggest_annual_estimate? %>
     <% end %>
-    <%= link_to t('manage_school_menu.transport_surveys'), school_transport_surveys_path(school), class: 'dropdown-item' %>
     <% if current_user.admin? %>
       <div class="dropdown-divider"></div>
     <% end %>
