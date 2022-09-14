@@ -42,8 +42,6 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
     let!(:analysis_page_2){ create(:analysis_page, alert: alert_2, content_generation_run: content_generation_run_2) }
     let!(:management_dashboard_table_1){ create(:management_dashboard_table, alert: alert_1, content_generation_run: content_generation_run_1) }
     let!(:management_dashboard_table_2){ create(:management_dashboard_table, alert: alert_2, content_generation_run: content_generation_run_2) }
-    # let!(:alert_subscription_event_1){ create(:alert_subscription_event, alert: alert_1, content_generation_run: content_generation_run_1) }
-    # let!(:alert_subscription_event_2){ create(:alert_subscription_event, alert: alert_1, content_generation_run: content_generation_run_2) }
     let!(:find_out_more_1){ create(:find_out_more, alert: alert_1, content_generation_run: content_generation_run_1) }
     let!(:find_out_more_2){ create(:find_out_more, alert: alert_2, content_generation_run: content_generation_run_2) }
 
@@ -53,11 +51,14 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
       expect(ManagementPriority.count).to eq(2)
       expect(AnalysisPage.count).to eq(2)
       expect(ManagementDashboardTable.count).to eq(2)
-      # expect(AlertSubscriptionEvent.count).to eq(2)
       expect(FindOutMore.count).to eq(2)
       cv_ids = FindOutMore.all.pluck(:alert_type_rating_content_version_id)
       alert_type_rating_content_versions = AlertTypeRatingContentVersion.where(id: cv_ids)
       expect(alert_type_rating_content_versions.count).to eq(2)
+
+
+# AlertType, AlertTypeRating or AlertTypeRatingContentVersion
+
 
       expect { service.delete! }.to change(ContentGenerationRun, :count).from(2).to(1) &
         change(DashboardAlert, :count).from(2).to(1) &
@@ -65,9 +66,7 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
             change(AnalysisPage, :count).from(2).to(1) &
               change(ManagementDashboardTable, :count).from(2).to(1) &
                 change(FindOutMore, :count).from(2).to(1) &
-                  change(alert_type_rating_content_versions, :count).from(2).to(1)
-
-               # & change(AlertSubscriptionEvent, :count).from(2).to(1)
+                  not_change(alert_type_rating_content_versions, :count)
 
       expect(ContentGenerationRun.first.created_at).to be > Alerts::DeleteContentGenerationRunService::DEFAULT_OLDER_THAN
     end
