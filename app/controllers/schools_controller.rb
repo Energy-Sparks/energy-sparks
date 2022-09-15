@@ -38,15 +38,29 @@ class SchoolsController < ApplicationController
 
   # GET /schools/1
   def show
-    if go_to_specific_dashboard?
-      redirect_to_specific_dashboard
-    else
-      redirect_to pupils_school_path(@school) and return unless @school.data_enabled
-      authorize! :show, @school
-      @show_data_enabled_features = show_data_enabled_features?
-      setup_default_features
-      setup_data_enabled_features if @show_data_enabled_features
+    #if we have a user and this user is linked to this school
+    if current_user && (current_user.school_id == @school.id)
+      #Show page to say school is not yet active, unless its visible
+      redirect_to school_inactive_path(@school) and return unless @school.visible?
+
+      #Redirect pupils to pupil dash if its their school
+      redirect_to pupils_school_path(@school) if current_user.pupil?
     end
+
+    #Non-logged in sessions, guests, admins, other users not directly linked to schools
+    #Or any school/pupils users not linked to this school
+    #Or users for this school who are adults (staff, etc)
+    #Get past this point
+
+    #If school is not data-enabled then redirect guests, only
+    #Previously admins, staff, etc would all have gone to the mgt page, we now want to
+    #let these through
+    redirect_to pupils_school_path(@school) and return if !@school.data_enabled && (current_user.nil? || current_user.guest?)
+
+    authorize! :show, @school
+    @show_data_enabled_features = show_data_enabled_features?
+    setup_default_features
+    setup_data_enabled_features if @show_data_enabled_features
   end
 
   # GET /schools/new
@@ -114,9 +128,9 @@ private
     @co2_pages = setup_co2_pages(@school.latest_analysis_pages)
   end
 
-  def go_to_specific_dashboard?
-    current_user && (current_user.school_id == @school.id || can?(:manage, :admin_functions))
-  end
+  #  def go_to_specific_dashboard?
+  #    current_user && (current_user.school_id == @school.id)
+  #  end
 
   def set_key_stages
     @key_stages = KeyStage.order(:name)
@@ -151,20 +165,19 @@ private
       key_stage_ids: []
     )
   end
+  #  def redirect_to_specific_dashboard
+  #    if @school.visible? || can?(:manage, :admin_functions)
+  #      redirect_for_active_school_or_admin
+  #    else
+  #      redirect_to school_inactive_path(@school)
+  #    end
+  #  end
 
-  def redirect_to_specific_dashboard
-    if @school.visible? || can?(:manage, :admin_functions)
-      redirect_for_active_school_or_admin
-    else
-      redirect_to school_inactive_path(@school)
-    end
-  end
-
-  def redirect_for_active_school_or_admin
-    if current_user.pupil?
-      redirect_to pupils_school_path(@school), status: :found
-    else
-      redirect_to management_school_path(@school), status: :found
-    end
-  end
+  #  def redirect_for_active_school_or_admin
+  #    if current_user.pupil?
+  #      redirect_to pupils_school_path(@school), status: :found
+  #    else
+  #      redirect_to management_school_path(@school), status: :found
+  #    end
+  #  end
 end
