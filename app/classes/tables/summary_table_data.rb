@@ -12,7 +12,7 @@ module Tables
 
     def date_ranges
       fuel_types.map do |fuel_type|
-        "#{fuel_type.to_s.humanize} data: #{start_date(fuel_type)} - #{end_date(fuel_type)}."
+        "#{I18n.t('common.%{fuel_type}', default: fuel_type.to_s.humanize)} #{I18n.t('common.data')}: #{start_date(fuel_type)} - #{end_date(fuel_type)}."
       end.join(' ')
     end
 
@@ -88,7 +88,7 @@ module Tables
       #old style
       return message if message.start_with?("Data available")
       #now a date
-      return I18n.t('classes.tables.summary_table_data', date: format_future_date(Date.parse(message)))
+      return I18n.t('classes.tables.summary_table_data.data_available_from', date: format_future_date(Date.parse(message)))
     end
 
     def format_future_date(date)
