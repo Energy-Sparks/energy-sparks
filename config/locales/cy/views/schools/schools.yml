@@ -22,6 +22,9 @@ cy:
         weekly:
           first: Dewis wythnos (dechrau)
           second: Cymharu â
+      select_meter:
+        all_meters: Pob Mesurydd
+        title: Pa fesurydd?
       show:
         compare_message:
           other:
@@ -74,6 +77,8 @@ cy:
           two: '%{count} weithred'
           many: '%{count} o weithredoedd'
           other: '%{count} o weithredoedd'
+        activity:
+          completed_an_activity: Cwblhawyd gweithgaredd
     school_group:
       compare_schools: Cymharu ysgolion
       view_schools: Gweld ysgolion
@@ -123,3 +128,6 @@ cy:
       upload_energy_bill: Uwchlwytho bil
       use_kwh: Defnyddio (kWh)
       view_programmes: Gweld eich rhaglenni
+    timeline:
+      no_events: Dim digwyddiadau i'w dangos
+      title: Beth sydd wedi bod yn digwydd?

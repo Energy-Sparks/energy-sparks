@@ -92,6 +92,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:classes-tables-tables-yml]
+file_filter  = config/locales/<lang>/classes/tables/tables.yml
+source_file  = config/locales/classes/tables/tables.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:common-yml]
 file_filter  = config/locales/<lang>/common.yml
 source_file  = config/locales/common.yml
@@ -158,6 +165,13 @@ minimum_perc = 100
 [o:energy-sparks:p:energy-sparks:r:models-lists-yml]
 file_filter  = config/locales/<lang>/models/lists.yml
 source_file  = config/locales/models/lists.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:pagy-yml]
+file_filter  = config/locales/<lang>/pagy.yml
+source_file  = config/locales/pagy.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100
