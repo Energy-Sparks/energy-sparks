@@ -43,8 +43,17 @@ class SchoolsController < ApplicationController
       #Show page to say school is not yet active, unless its visible
       redirect_to school_inactive_path(@school) and return unless @school.visible?
 
+      #FIXME this means pupils can't access their own adult dashboard
+      #Generally all school users would have been redirected to pupil dash from
+      #a school_path link.
+      #This was possible because the switching link would be to the mgt dash which
+      #didn't have the redirect behaviour
+
+      #Solution: add a param to school page to disable redirect, this can be added to the
+      #sub_nav
+
       #Redirect pupils to pupil dash if its their school
-      redirect_to pupils_school_path(@school) if current_user.pupil?
+      redirect_to pupils_school_path(@school) if current_user.pupil? && !params[:switch].present?
     end
 
     #Non-logged in sessions, guests, admins, other users not directly linked to schools

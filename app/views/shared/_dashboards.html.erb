@@ -1,29 +1,15 @@
 <% if @school %>
-
-<% if user_signed_in? %>
-
   <% if show_pupils_dashboard_button? %>
     <li class="nav-item mt-2 px-2"><%= link_to t('dashboards.pupil_dashboard'), pupils_school_path(@school) %></li>
   <% end %>
 
-  <% if show_management_dashboard_button? %>
-    <li class="nav-item mt-2 px-2"><%= link_to t('dashboards.adult_dashboard'), management_school_path(@school) %></li>
+  <% if show_adult_dashboard_button? %>
+    <li class="nav-item mt-2 px-2">
+      <% if user_signed_in? && current_user.pupil? %>
+        <%= link_to t('dashboards.adult_dashboard'), school_path(@school, switch: true) %>
+      <% else %>
+        <%= link_to t('dashboards.adult_dashboard'), school_path(@school) %>
+      <% end %>
+    </li>
   <% end %>
-
-  <% if !show_management_dashboard_button? && show_adult_dashboard_button? %>
-    <li class="nav-item mt-2 px-2"><%= link_to t('dashboards.adult_dashboard'), school_path(@school) %></li>
-  <% end %>
-
-<% else %>
-
-    <% if show_pupils_dashboard_button? %>
-      <li class="nav-item mt-2 px-2"><%= link_to t('dashboards.pupil_dashboard'), pupils_school_path(@school) %></li>
-    <% end %>
-
-    <% if show_adult_dashboard_button? %>
-      <li class="nav-item mt-2 px-3"><%= link_to t('dashboards.adult_dashboard'), school_path(@school) %></li>
-    <% end %>
-
-<% end %>
-
 <% end %>

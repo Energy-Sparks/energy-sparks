@@ -37,14 +37,10 @@ describe 'Management dashboard' do
         visit root_path
       end
 
-      it 'allows access to dashboard' do
-        expect(page).to have_content("#{school.name}")
-        expect(page).to have_link("Adult dashboard", href: management_school_path(school))
-      end
-
       it 'has link to adult dashboard' do
-        click_on 'Adult dashboard'
         expect(page).to have_content("#{school.name}")
+        expect(page).to have_link("Adult dashboard", href: school_path(school, switch: true))
+        click_on 'Adult dashboard'
         expect(page).to have_link("Compare schools")
       end
 

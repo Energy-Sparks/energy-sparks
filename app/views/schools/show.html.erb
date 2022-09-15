@@ -1,4 +1,4 @@
-<%= content_for :page_title, @school.name %>
+<%= content_for :page_title, t('schools.show.dashboard_title', school_name: @school.name) %>
 
 <%= render 'shared/dashboard_title', school: @school, co2_pages: @co2_pages, public: true, show_data_enabled_features: @show_data_enabled_features %>
 

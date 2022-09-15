@@ -85,7 +85,7 @@ RSpec.describe 'school targets', type: :system do
 
       it 'doesnt let me navigate there' do
         visit school_school_targets_path(school)
-        expect(page).to have_current_path(management_school_path(school))
+        expect(page).to have_current_path(school_path(school))
       end
     end
 
