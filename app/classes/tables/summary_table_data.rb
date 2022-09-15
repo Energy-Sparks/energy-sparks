@@ -12,7 +12,7 @@ module Tables
 
     def date_ranges
       fuel_types.map do |fuel_type|
-        "#{I18n.t('common.%{fuel_type}', default: fuel_type.to_s.humanize)} #{I18n.t('common.data')}: #{start_date(fuel_type)} - #{end_date(fuel_type)}."
+        "#{I18n.t("common.#{fuel_type}")} #{I18n.t('common.data')}: #{start_date(fuel_type)} - #{end_date(fuel_type)}."
       end.join(' ')
     end
 
