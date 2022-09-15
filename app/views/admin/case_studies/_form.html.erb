@@ -12,7 +12,8 @@
   <%= f.input :position %>
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :file do |locale| %>
-    <%= f.input t_field(:file, locale), label: CaseStudy.human_attribute_name(:file), as: :string) %>
+    <%#= @case_study.file_en.blob.filename if @case_study.file_en.attached? %>
+    <%= f.input t_field(:file, locale), label: CaseStudy.human_attribute_name(:file) %>
   <% end %>
 
   <%= f.button :submit %>
