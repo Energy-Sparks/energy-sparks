@@ -5,7 +5,7 @@
 
 <% if @overview_data %>
   <h2><%= t('schools.show.summary_of_recent_energy_usage') %></h2>
-  <%= render 'overview_data', overview_data: @overview_data %>
+  <%= render 'management/schools/overview_data', overview_data: @overview_data %>
   <div class="text-right management-overview-caption">
     <%= @overview_data.date_ranges %>
   </div>

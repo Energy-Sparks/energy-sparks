@@ -52,7 +52,7 @@ describe 'Management dashboard' do
       it 'does not display energy saving target prompt' do
         allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
         allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-        visit management_school_path(school)
+        visit school_path(school)
         expect(page).to_not have_content("Set targets to reduce your school's energy consumption")
         expect(page).to_not have_link('Set energy saving target')
       end
@@ -62,7 +62,7 @@ describe 'Management dashboard' do
     context 'and logged in as a school admin' do
       before(:each) do
         sign_in(school_admin)
-        visit management_school_path(school)
+        visit school_path(school)
       end
 
       it 'allows access to dashboard' do
@@ -77,25 +77,25 @@ describe 'Management dashboard' do
       end
 
       it 'allows access to dashboard' do
-        visit management_school_path(school)
+        visit school_path(school)
         expect(page).to have_content("#{school.name}")
         expect(page).to have_content("Adult Dashboard")
       end
 
       it 'shows the expected prompts' do
-        visit management_school_path(school)
+        visit school_path(school)
         expect(page).to have_link("View your programmes")
         expect(page).to have_link("Record a pupil activity")
         expect(page).to have_link("Record an action")
       end
 
       it 'shows data-enabled features' do
-        visit management_school_path(school)
+        visit school_path(school)
         expect(page).to have_content("Summary of recent energy usage")
       end
 
       it 'shows data-enabled links' do
-        visit management_school_path(school)
+        visit school_path(school)
         expect(page).to have_link("Compare schools")
         expect(page).to have_link("Explore data")
         expect(page).to have_link("Review energy analysis")
@@ -103,7 +103,7 @@ describe 'Management dashboard' do
       end
 
       it 'shows temperature observations' do
-        visit management_school_path(school)
+        visit school_path(school)
         #this is from the default observation created above
         expect(page).to have_content("Recorded temperatures")
       end
@@ -113,7 +113,7 @@ describe 'Management dashboard' do
 
         before(:each) do
           school.configuration.update!(dashboard_charts: dashboard_charts)
-          visit management_school_path(school)
+          visit school_path(school)
         end
 
         context 'and they can all be shown' do
@@ -187,7 +187,7 @@ describe 'Management dashboard' do
         end
 
         it 'displays the priorities in a table' do
-          visit management_school_path(school)
+          visit school_path(school)
           expect(page).to have_content('Spending too much money on heating')
           expect(page).to have_content('£2,000')
           expect(page).to have_content('£5,000')
@@ -199,12 +199,12 @@ describe 'Management dashboard' do
           allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
           allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
 
-          visit management_school_path(school)
+          visit school_path(school)
           expect(page).to have_content("Set targets to reduce your school's energy consumption")
           expect(page).to have_link('Set energy saving target')
 
           school.school_targets << create(:school_target)
-          visit management_school_path(school)
+          visit school_path(school)
           expect(page).not_to have_content("Set targets to reduce your school's energy consumption")
         end
 
@@ -212,19 +212,19 @@ describe 'Management dashboard' do
           allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
           allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(false)
 
-          visit management_school_path(school)
+          visit school_path(school)
           expect(page).to_not have_content("Set targets to reduce your school's energy consumption")
         end
 
         it 'doesnt display prompt if feature disabled for school' do
           allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
           school.update!(enable_targets_feature: false)
-          visit management_school_path(school)
+          visit school_path(school)
           expect(page).to_not have_content("Set targets to reduce your school's energy consumption")
         end
 
         it 'displays a report version of the page' do
-          visit management_school_path(school)
+          visit school_path(school)
           click_on 'Print view'
           expect(page).to have_content("Management information for #{school.name}")
           expect(page).to have_content('Spending too much money on heating')
@@ -275,14 +275,14 @@ describe 'Management dashboard' do
 
         context 'in English' do
           it 'displays English alert text' do
-            visit management_school_path(school)
+            visit school_path(school)
             expect(page).to have_content('You can save £5,000 on heating in 1 year')
           end
         end
 
         context 'in Welsh' do
           it 'displays Welsh alert text' do
-            visit management_school_path(school, locale: 'cy')
+            visit school_path(school, locale: 'cy')
             expect(page).to have_content('Gallwch arbed £7,000 mewn 1 flwyddyn')
           end
         end
@@ -347,8 +347,8 @@ describe 'Management dashboard' do
       context 'with co2 analysis' do
           before(:each) do
             co2_page = double(analysis_title: 'Some CO2 page', analysis_page: 'analysis/page/co2')
-            expect_any_instance_of(Management::SchoolsController).to receive(:process_analysis_templates).and_return([co2_page])
-            visit management_school_path(school)
+            expect_any_instance_of(SchoolsController).to receive(:process_analysis_templates).and_return([co2_page])
+            visit school_path(school)
           end
           it 'shows link to co2 analysis page' do
             expect(page).to have_link("Some CO2 page")
@@ -362,7 +362,7 @@ describe 'Management dashboard' do
           create(:observation_with_temperature_recording_and_location, school: school)
           activity_type = create(:activity_type) # doesn't get saved if built with activity below
           create(:activity, school: school, activity_type: activity_type)
-          visit management_school_path(school)
+          visit school_path(school)
         end
 
         it 'displays interventions and temperature recordings in a timeline' do
@@ -392,12 +392,12 @@ describe 'Management dashboard' do
       end
 
       it 'overrides flag and shows data-enabled features' do
-        visit management_school_path(school)
+        visit school_path(school)
         expect(page).to have_content("Summary of recent energy usage")
       end
 
       it 'overrides flag and shows data-enabled links' do
-        visit management_school_path(school)
+        visit school_path(school)
         expect(page).to have_link("Compare schools")
         expect(page).to have_link("Explore data")
         expect(page).to have_link("Review energy analysis")
@@ -405,7 +405,7 @@ describe 'Management dashboard' do
       end
 
       it 'shows link to user view' do
-        visit management_school_path(school)
+        visit school_path(school)
         expect(page).to have_link("User view")
         click_on("User view")
         expect(page).to have_link("Admin view")
@@ -417,7 +417,7 @@ describe 'Management dashboard' do
     context 'and logged in as staff' do
       before(:each) do
         sign_in(staff)
-        visit management_school_path(school)
+        visit school_path(school)
       end
 
       it 'allows access to dashboard' do

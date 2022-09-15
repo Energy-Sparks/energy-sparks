@@ -53,7 +53,7 @@ class SchoolsController < ApplicationController
       #sub_nav
 
       #Redirect pupils to pupil dash if its their school
-      redirect_to pupils_school_path(@school) if current_user.pupil? && !params[:switch].present?
+      redirect_to pupils_school_path(@school) and return if current_user.pupil? && !params[:switch].present?
     end
 
     #Non-logged in sessions, guests, admins, other users not directly linked to schools
@@ -70,6 +70,12 @@ class SchoolsController < ApplicationController
     @show_data_enabled_features = show_data_enabled_features?
     setup_default_features
     setup_data_enabled_features if @show_data_enabled_features
+
+    if params[:report] && @show_data_enabled_features
+      render template: "management/schools/report", layout: 'report'
+    else
+      render :show
+    end
   end
 
   # GET /schools/new
@@ -126,6 +132,14 @@ private
 
   def setup_default_features
     @observations = setup_timeline(@school.observations)
+    #Setup management dashboard features if users has permission
+    #to do that
+    if can?(:show_management_dash, @school)
+      @add_contacts = site_settings.message_for_no_contacts && @school.contacts.empty? && can?(:manage, Contact)
+      @add_pupils = site_settings.message_for_no_pupil_accounts && @school.users.pupil.empty? && can?(:manage_users, @school)
+      @prompt_training = !@show_data_enabled_features || current_user.confirmed_at < 60.days.ago
+      @prompt_for_bill = @school.bill_requested && can?(:index, ConsentDocument)
+    end
   end
 
   def setup_data_enabled_features
@@ -135,6 +149,15 @@ private
     @overview_data = Schools::ManagementTableService.new(@school).management_data
     @progress_summary = progress_service.progress_summary
     @co2_pages = setup_co2_pages(@school.latest_analysis_pages)
+
+    #Setup management dashboard features if users has permission
+    #to do that
+    if can?(:show_management_dash, @school)
+      @add_targets = prompt_for_target?
+      @review_targets = prompt_to_review_target?
+      @recent_audit = Audits::AuditService.new(@school).recent_audit
+      @suggest_estimates_for_fuel_types = suggest_estimates_for_fuel_types(check_data: true)
+    end
   end
 
   #  def go_to_specific_dashboard?
