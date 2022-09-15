@@ -1,6 +1,5 @@
 class SchoolsController < ApplicationController
   include SchoolAggregation
-  include ActivityTypeFilterable
   include AnalysisPages
   include DashboardEnergyCharts
   include DashboardAlerts
@@ -17,11 +16,24 @@ class SchoolsController < ApplicationController
 
   before_action :check_aggregated_school_in_cache, only: [:show]
 
+  #If this isn't a publicly visible school, then redirect away if user can't
+  #view this school
   before_action only: [:show] do
     redirect_unless_permitted :show
   end
 
-  # GET /schools
+  #Redirect users associated with this school to a holding page, if its not
+  #visible yet. Other users will end up getting an access denied error
+  before_action :redirect_if_not_visible, only: [:show]
+
+  #Redirect pupil accounts associated with this school to the pupil dashboard
+  #(unless they should see the adult dashboard)
+  before_action :redirect_pupils, only: [:show]
+
+  #Redirect guest / not logged in users to the pupil dashboard if not
+  #data enabled to offer a better initial user experience
+  before_action :redirect_to_pupil_dash_if_not_data_enabled, only: [:show]
+
   def index
     @schools = School.visible.by_name
     @school_groups = SchoolGroup.by_name.select(&:has_visible_schools?)
@@ -29,43 +41,11 @@ class SchoolsController < ApplicationController
     @schools_not_visible = School.not_visible.by_name
   end
 
-  # retain the original index page
-  def list
-    @school_groups = SchoolGroup.by_name
-    @ungrouped_visible_schools = School.visible.without_group.by_name
-    @schools_not_visible = School.not_visible.by_name
-  end
-
-  # GET /schools/1
   def show
-    #if we have a user and this user is linked to this school
-    if current_user && (current_user.school_id == @school.id)
-      #Show page to say school is not yet active, unless its visible
-      redirect_to school_inactive_path(@school) and return unless @school.visible?
-
-      #FIXME this means pupils can't access their own adult dashboard
-      #Generally all school users would have been redirected to pupil dash from
-      #a school_path link.
-      #This was possible because the switching link would be to the mgt dash which
-      #didn't have the redirect behaviour
-
-      #Solution: add a param to school page to disable redirect, this can be added to the
-      #sub_nav
-
-      #Redirect pupils to pupil dash if its their school
-      redirect_to pupils_school_path(@school) and return if current_user.pupil? && !params[:switch].present?
-    end
-
-    #Non-logged in sessions, guests, admins, other users not directly linked to schools
-    #Or any school/pupils users not linked to this school
-    #Or users for this school who are adults (staff, etc)
-    #Get past this point
-
-    #If school is not data-enabled then redirect guests, only
-    #Previously admins, staff, etc would all have gone to the mgt page, we now want to
-    #let these through
-    redirect_to pupils_school_path(@school) and return if !@school.data_enabled && (current_user.nil? || current_user.guest?)
-
+    #The before_actions will redirect users away in certain scenarios
+    #If we reach this action, then the current user will be:
+    #Not logged in, a guest, an admin, or any other user not directly linked to this school
+    #OR an adult user for this school, or a pupil that is trying to view the adult dashboard
     authorize! :show, @school
     @show_data_enabled_features = show_data_enabled_features?
     setup_default_features
@@ -129,6 +109,26 @@ class SchoolsController < ApplicationController
   end
 
 private
+
+  def user_signed_in_and_linked_to_school?
+    user_signed_in? && (current_user.school_id == @school.id)
+  end
+
+  def not_signed_in?
+    !user_signed_in? || current_user.guest?
+  end
+
+  def redirect_if_not_visible
+    redirect_to school_inactive_path(@school) if user_signed_in_and_linked_to_school? && !@school.visible?
+  end
+
+  def redirect_pupils
+    redirect_to pupils_school_path(@school) if user_signed_in_and_linked_to_school? && current_user.pupil? && !params[:switch].present?
+  end
+
+  def redirect_to_pupil_dash_if_not_data_enabled
+    redirect_to pupils_school_path(@school) if not_signed_in? && !@school.data_enabled
+  end
 
   def setup_default_features
     @observations = setup_timeline(@school.observations)
