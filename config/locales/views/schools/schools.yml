@@ -23,6 +23,9 @@ en:
         weekly:
           first: Select week (beginning)
           second: Compare to
+      select_meter:
+        all_meters: All Meters
+        title: Which meter?
       show:
         compare_message:
           other:
@@ -124,3 +127,6 @@ en:
       upload_energy_bill: Upload a bill
       use_kwh: Use (kWh)
       view_programmes: View your programmes
+    timeline:
+      no_events: No events to show
+      title: What's been going on?

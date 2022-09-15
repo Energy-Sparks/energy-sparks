@@ -1,4 +1,4 @@
-<h1>What's been going on?</h1>
+<h1><%= t('schools.timeline.title') %></h1>
 
 <ul class="nav nav-pills mb-3">
   <% @active_academic_years.each do |academic_year| %>
@@ -9,7 +9,7 @@
 </ul>
 
 <% if @observations.empty? %>
-  <h3>No events to show</h3>
+  <h3><%= t('schools.timeline.no_events') %></h3>
 <% else %>
   <div class="row justify-content-md-center">
     <div class="col col-md-10">

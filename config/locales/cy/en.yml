@@ -46,6 +46,6 @@ cy:
       - Rhagfyr
   support:
     array:
-      last_word_connector: ", a"
-      two_words_connector: "a"
+      last_word_connector: ", a "
+      two_words_connector: " a "
       words_connector: ", "

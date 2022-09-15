@@ -10,7 +10,7 @@ cy:
       electricity_and_solar_data_html: Dyma'r data <strong>trydan a solar</strong> ar gyfer eich ysgol
       electricity_data_html: Dyma'r data <strong>trydan</strong> ar gyfer eich ysgol
       explore_data: Archwilio data
-      explore_energy_data_html: Archwiliwch y data <strong>1%{fuel_type}</strong> ar gyfer eich ysgol
+      explore_energy_data_html: Archwiliwch y data <strong>%{fuel_type}</strong> ar gyfer eich ysgol
       find_electricity_comparison: darganfod sut mae defnydd trydan fy ysgol yn cymharu ag ysgolion eraill
       find_electricity_use_7days: darganfod faint o drydan a ddefnyddiwyd yn ystod y 7 diwrnod diwethaf
       find_electricity_use_last_year: darganfod faint o drydan a ddefnyddiwyd y llynedd

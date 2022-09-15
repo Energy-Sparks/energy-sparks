@@ -1,0 +1,7 @@
+cy:
+  chart_data_values:
+    click_and_drag_message: Clicia a llusga ardal y plot i chwyddo i mewn
+    explore_message: Clicia ar y siart i archwilio'r data
+    not_enough_data_message: 'Nid oes gennym ddigon o ddata i ddangos y siart hwn ar hyn o bryd: siart %{chart_type}'
+    pinch_and_zoom_message: Pinsia'r siart i chwyddo i mewn
+    standard_error_message: Nid oes gennym ddigon o ddata ar hyn o bryd i arddangos y siart hwn
