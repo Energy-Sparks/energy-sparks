@@ -1,7 +1,6 @@
-<%= content_for :page_title, "Energy Management information for #{@school.name}" %>
+<%= content_for :page_title, t('schools.show.dashboard_title', school_name: @school.name) %>
 
-<h1>Energy Sparks</h1>
-<h2>Energy Management information for <%= @school.name %></h2>
+<h2><%= t('schools.show.dashboard_title', school_name: @school.name) %></h2>
 
 <% if @overview_data %>
   <h2><%= t('schools.show.summary_of_recent_energy_usage') %></h2>
@@ -11,19 +10,16 @@
   </div>
 <% end %>
 
-<h2>Recent energy alerts</h2>
-
 <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
 
 <% @overview_charts.each_with_index do |(energy, chart_config), index| %>
-  <h2>Annual <%= energy.to_s.humanize.downcase %> overview</h2>
-  <%= chart_tag(@school, chart_config[:chart].last, show_advice: false, no_zoom: true, chart_config: {y_axis_units: chart_config[:units]}) %>
+  <h2><%= t("management.schools.overview_charts.overview.#{energy.to_s}") %></h2>
+  <%= chart_tag(@school, chart_config[:chart], show_advice: false, no_zoom: true, chart_config: {y_axis_units: select_y_axis(@school, chart_config[:chart], chart_config[:units])}) %>
 <% end %>
 
 <% unless @management_priorities.empty? %>
-  <h3>Energy saving opportunities</h3>
+  <h3><%= t('schools.show.energy_saving_opportunities') %></h3>
   <%= render 'management/management_priorities/list', management_priorities: @management_priorities, school: @school, show_more: false %>
 <% end %>
-
 
 <%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>

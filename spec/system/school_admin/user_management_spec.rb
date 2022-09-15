@@ -8,7 +8,7 @@ describe 'School admin user management' do
   describe 'as school admin' do
     before(:each) do
       sign_in(school_admin)
-      visit management_school_path(school)
+      visit school_path(school)
     end
 
     describe 'for pupils' do
@@ -419,7 +419,7 @@ describe 'School admin user management' do
 
     before(:each) do
       sign_in(admin)
-      visit management_school_path(school)
+      visit school_path(school)
       click_on('Manage users')
     end
 

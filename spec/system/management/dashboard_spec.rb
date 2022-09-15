@@ -20,6 +20,7 @@ describe 'Management dashboard' do
     allow_any_instance_of(Schools::ManagementTableService).to receive(:management_data).and_return(management_data)
   end
 
+  #FIXME update to a better test since refactoring
   describe 'when not logged in' do
     it 'prompts for login' do
       visit management_school_path(school)
@@ -226,7 +227,7 @@ describe 'Management dashboard' do
         it 'displays a report version of the page' do
           visit school_path(school)
           click_on 'Print view'
-          expect(page).to have_content("Management information for #{school.name}")
+          expect(page).to have_content("Adult dashboard for #{school.name}")
           expect(page).to have_content('Spending too much money on heating')
           expect(page).to have_content('£2,000')
         end

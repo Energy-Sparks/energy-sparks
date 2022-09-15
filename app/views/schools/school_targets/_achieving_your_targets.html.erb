@@ -51,7 +51,7 @@
           <%= link_to 'View energy saving opportunities', management_school_management_priorities_path(school)  %>
         </li>
         <li>
-          <%= link_to 'View recent alerts', management_school_path(school, anchor: "dashboard-alerts") %>
+          <%= link_to 'View recent alerts', school_path(school, anchor: "dashboard-alerts") %>
         </li>
         <% if school.school_group && can?(:compare, school.school_group) %>
           <li>

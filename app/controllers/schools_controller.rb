@@ -160,10 +160,6 @@ private
     end
   end
 
-  #  def go_to_specific_dashboard?
-  #    current_user && (current_user.school_id == @school.id)
-  #  end
-
   def set_key_stages
     @key_stages = KeyStage.order(:name)
   end
@@ -197,19 +193,4 @@ private
       key_stage_ids: []
     )
   end
-  #  def redirect_to_specific_dashboard
-  #    if @school.visible? || can?(:manage, :admin_functions)
-  #      redirect_for_active_school_or_admin
-  #    else
-  #      redirect_to school_inactive_path(@school)
-  #    end
-  #  end
-
-  #  def redirect_for_active_school_or_admin
-  #    if current_user.pupil?
-  #      redirect_to pupils_school_path(@school), status: :found
-  #    else
-  #      redirect_to management_school_path(@school), status: :found
-  #    end
-  #  end
 end
