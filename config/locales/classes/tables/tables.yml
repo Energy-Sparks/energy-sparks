@@ -7,3 +7,4 @@ en:
         last_year: Last year
         no_recent_data: no recent data
         none: none
+        data_available_from: Data available from %{date}

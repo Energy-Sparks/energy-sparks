@@ -88,11 +88,11 @@ module Tables
       #old style
       return message if message.start_with?("Data available")
       #now a date
-      return "Data available from #{format_future_date(Date.parse(message))}"
+      return I18n.t('classes.tables.summary_table_data', date: format_future_date(Date.parse(message)))
     end
 
     def format_future_date(date)
-      date < 30.days.from_now ? date.strftime('%a %d %b %Y') : date.strftime('%b %Y')
+      date < 30.days.from_now ? I18n.l(date, format: '%a %d %b %Y') : I18n.l(date, format: '%b %Y')
     end
 
     def format_period(period)
