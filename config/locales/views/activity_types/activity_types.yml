@@ -22,6 +22,7 @@ en:
         zero: No results found
       title: Find pupil activities
     show:
+      download_resources: Download resources
       complete_this_activity_html:
         one: Complete this activity to score your school <strong>1</strong> point!
         other: Complete this activity to score your school <strong>%{count}</strong> points!
