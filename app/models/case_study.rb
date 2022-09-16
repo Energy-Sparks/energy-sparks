@@ -11,7 +11,7 @@
 class CaseStudy < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
-  include TranslateAttachment
+  include TranslatableAttachment
 
   translates :title, type: :string, fallbacks: { cy: :en }
   translates :description, backend: :action_text
