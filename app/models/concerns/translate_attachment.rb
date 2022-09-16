@@ -1,4 +1,4 @@
-module TranslateAttachement
+module TranslateAttachment
   extend ActiveSupport::Concern
 
   class_methods do
