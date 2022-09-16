@@ -1,4 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+<% navbar_expand_breakpoint = I18n.locale == 'en' ? 'lg' : 'xl' %>
+<nav class="navbar navbar-expand-<%= navbar_expand_breakpoint %> navbar-custom fixed-top">
   <div class="container">
     <%= navbar_image_link %>
     <a class='nav-item pl-3' href="/"><%= "Test" if on_test? %></a>
