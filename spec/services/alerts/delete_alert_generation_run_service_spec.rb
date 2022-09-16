@@ -7,7 +7,7 @@ describe Alerts::DeleteAlertGenerationRunService, type: :service do
   let(:gas_fuel_alert_type)             { create(:alert_type, fuel_type: :gas, frequency: :termly, description: alert_type_description) }
   let(:electricity_fuel_alert_type)     { create(:alert_type, fuel_type: :electricity, frequency: :termly, description: alert_type_description) }
 
-  it 'defaults to beginning of month, 2 months ago' do
+  it 'defaults to beginning of month, 3 months ago' do
     expect(service.older_than).to eql(3.months.ago.beginning_of_month)
   end
 
