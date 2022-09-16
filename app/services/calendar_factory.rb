@@ -14,6 +14,10 @@ class CalendarFactory
     @existing_calendar.calendar_events.each do |calendar_event|
       new_calendar_event = calendar_event.dup
       new_calendar_event.based_on = calendar_event
+      new_calendar_event.calendar_id = @new_calendar.id
+
+      new_calendar_event.save!
+
       @new_calendar.calendar_events << new_calendar_event
     end
 

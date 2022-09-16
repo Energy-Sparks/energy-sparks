@@ -51,6 +51,23 @@ class CalendarEvent < ApplicationRecord
 
   private
 
+  def find_overlaps
+    ovelap_events_to_check.where.not(id: id)
+                          .where('(start_date, end_date) OVERLAPS (?,?)', start_date, end_date)
+  end
+
+  def ovelap_events_to_check
+    calendar.calendar_events.where(calendar_event_type: overlap_types)
+  end
+
+  def overlap_types
+    if calendar_event_type.term_time || calendar_event_type.holiday
+      (CalendarEventType.holiday + CalendarEventType.term)
+    else
+      [calendar_event_type]
+    end
+  end
+
   def update_academic_year
     self.academic_year = calendar.academic_year_for(start_date) if start_date
   end
@@ -63,13 +80,7 @@ class CalendarEvent < ApplicationRecord
 
   def no_overlaps
     if start_date && end_date && calendar_event_type
-      overlap_types = if calendar_event_type.term_time || calendar_event_type.holiday
-                        (CalendarEventType.holiday + CalendarEventType.term)
-                      else
-                        [calendar_event_type]
-                      end
-      events_to_check = calendar.calendar_events.where(calendar_event_type: overlap_types)
-      if events_to_check.where.not(id: id).where('(start_date, end_date) OVERLAPS (?,?)', start_date, end_date).any?
+      if find_overlaps.any?
         errors.add(:base, 'overlaps another term or holiday event')
       end
     end
