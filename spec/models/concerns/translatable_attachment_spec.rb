@@ -1,19 +1,19 @@
 require 'rails_helper'
 
-class Dummy < ApplicationRecord
-  def self.load_schema!; end
-
-  include TranslatableAttachment
-
-  t_has_one_attached :file
-  t_has_one_attached :other
-
-  has_one_attached :normal
-end
-
 describe TranslatableAttachment do
 
-  let(:test) { Dummy.new }
+  class TranslatableDummy < ApplicationRecord
+    def self.load_schema!; end
+
+    include TranslatableAttachment
+
+    t_has_one_attached :file
+    t_has_one_attached :other
+
+    has_one_attached :normal
+  end
+
+  let(:test) { TranslatableDummy.new }
 
   let(:t_attachments) {[:file, :other]}
   let(:attachments) { [:normal] }
