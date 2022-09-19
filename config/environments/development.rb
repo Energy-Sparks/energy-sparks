@@ -95,8 +95,8 @@ Rails.application.configure do
 
   # This adds a 'mirror' locale that turns all translated text upside down so we can visually check for any
   # untranslated text in the erb templates.
-  #config.i18n.available_locales << :mirror
-  #I18n::Backend::Simple.include(I18n::Backend::Mirror)
+  config.i18n.available_locales << :mirror
+  I18n::Backend::Simple.include(I18n::Backend::Mirror)
 
   # Add these to your /etc/hosts file
   config.hosts << "energysparks.development"
