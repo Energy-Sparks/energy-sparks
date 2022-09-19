@@ -20,8 +20,7 @@
         <td><%= case_study.description %></td>
         <td><%= case_study.position %></td>
         <td class="text-nowrap">
-            <%= link_to_if(case_study.file_en.attached?, 'en', case_study.file_en) %>
-            | <%= link_to_if(case_study.file_cy.attached?, 'cy', case_study.file_cy) %>
+          <%= t_attached_links(case_study, :file, " | ") %>
         </td>
         <td>
           <div class="btn-group">

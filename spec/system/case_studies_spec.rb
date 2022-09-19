@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "case_studies", type: :system do
 
   let!(:case_study) { CaseStudy.create!( title: "First Case Study", position: 1,
-    file: fixture_file_upload(Rails.root + "spec/fixtures/images/newsletter-placeholder.png")) }
+    file_en: fixture_file_upload(Rails.root + "spec/fixtures/images/newsletter-placeholder.png")) }
 
   before do
     visit case_studies_path
@@ -31,7 +31,7 @@ RSpec.describe "case_studies", type: :system do
 
   context "a welsh download is available" do
     let!(:case_study) { CaseStudy.create!( title: "First Case Study", position: 1,
-      file: fixture_file_upload(Rails.root + "spec/fixtures/images/newsletter-placeholder.png"),
+      file_en: fixture_file_upload(Rails.root + "spec/fixtures/images/newsletter-placeholder.png"),
       file_cy: fixture_file_upload(Rails.root + "spec/fixtures/images/newsletter-placeholder.png")) }
 
     before do

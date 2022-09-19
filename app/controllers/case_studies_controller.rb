@@ -8,7 +8,7 @@ class CaseStudiesController < ApplicationController
   def download
     resource = CaseStudy.find_by(id: params[:id])
     if resource.present?
-      file = params[:locale] == 'cy' ? resource.file_cy : resource.file
+      file = resource.t_attached(:file, params[:locale])
       serve_from_storage(file, params[:serve])
     else
       render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
