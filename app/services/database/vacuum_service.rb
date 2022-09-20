@@ -6,7 +6,13 @@ module Database
 
     def perform
       @tables.each do |table|
-        ActiveRecord::Base.connection.execute("VACUUM ANALYSE #{table}")
+        begin
+          ActiveRecord::Base.connection.execute("VACUUM ANALYSE #{table}")
+        rescue => exception
+          message = "VACUUM ANALYSE #{table} error: #{exception.message}"
+          Rails.logger.error(message)
+          Rollbar.error(message)
+        end
       end
     end
   end
