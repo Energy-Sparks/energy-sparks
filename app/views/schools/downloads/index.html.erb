@@ -1,4 +1,5 @@
 <% content_for :page_title, "#{@school.name} Downloads" %>
+<%= render 'shared/translation_coming_soon' if I18n.locale.to_s != 'en' %>
 
 <h1>Downloads for <%= @school.name %></h1>
 

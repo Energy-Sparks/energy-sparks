@@ -40,8 +40,8 @@ module Admin
     private
 
     def case_study_params
-      translated_params = t_params(CaseStudy.mobility_attributes)
-      params.require(:case_study).permit(translated_params, :title, :description, :position, :file)
+      translated_params = t_params(CaseStudy.mobility_attributes + CaseStudy.t_attached_attributes)
+      params.require(:case_study).permit(translated_params, :title, :description, :position)
     end
   end
 end

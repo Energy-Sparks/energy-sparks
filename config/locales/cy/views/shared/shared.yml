@@ -36,6 +36,15 @@ cy:
   common_nav_bar_menus:
     actions: Gweithredoedd
     activities: Gweithgareddau
+  dashboard_alerts:
+    show_more_alerts:
+      one: Dangos 1 rhybudd arall
+      two: Dangos %{count} rybudd arall
+      many: Dangos %{count} o rybuddion eraill
+      other: Dangos %{count} o rybuddion eraill
+  dashboards:
+    adult_dashboard: Dangosfwrdd oedolion
+    pupil_dashboard: Dangosfwrdd disgyblion
   footer:
     cc_licence_notice_html: Cyhoeddir cynnwys ar y wefan hon o dan <a href="https://creativecommons.org/licenses/by/4.0/">Drwydded Creative Commons Attribution 4.0</a>
     child_safeguarding_policy: Polisi diogelu plant
@@ -46,6 +55,7 @@ cy:
     terms_and_conditions: Telerau ac amodau
   manage_menu:
     admin: Gweinyddwr
+    manage: Rheoli
     reports: Adroddiadau
   manage_school_menu:
     batch_reports: Adroddiadau swp
@@ -66,7 +76,6 @@ cy:
     review_targets: Adolygu targedau
     school_calendar: Calendr ysgol
     school_configuration: Ffurfweddiad ysgol
-    transport_surveys: Arolygon trafnidiaeth
   my_school_menu:
     complete_pupil_activities: Gweithgareddau disgyblion cyflawn
     download_our_data: Lawrlwytho ein data
@@ -104,8 +113,12 @@ cy:
     our_services: Ein gwasanaethau
     training: Hyfforddiant
     videos: Fideos
+  partners:
+    supports_in_partnership_with: Mae Energy Sparks yn cefnogi %{school_name} mewn partneriaeth â
   switch_schools_menu:
     switch_school: Newid ysgol
   timeline:
     view_all_events: Gweld pob digwyddiad
     whats_been_going_on: Beth sydd wedi bod yn digwydd?
+  translation_coming_soon:
+    message: Rydym yn dal i weithio tuag at gael Energy Sparks wedi'i gyfieithu'n llawn i'r Gymraeg. Rydym wedi rhoi blaenoriaeth i gyfieithu ein gweithgareddau addysgol a'n gweithgareddau sy'n ymwneud â disgyblion. Mae cyfieithu'r rhan hon o'r wefan yn dal i fynd rhagddo, felly am y tro rydym yn defnyddio'r gosodiad diofyn o Saesneg.

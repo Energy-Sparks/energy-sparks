@@ -19,12 +19,8 @@
         <td><%= case_study.title %></td>
         <td><%= case_study.description %></td>
         <td><%= case_study.position %></td>
-        <td>
-          <% if case_study.file.attached? %>
-            <%= link_to 'File', url_for(case_study.file) %>
-          <% else %>
-            No file attached
-          <% end %>
+        <td class="text-nowrap">
+          <%= t_attached_links(case_study, :file, " | ") %>
         </td>
         <td>
           <div class="btn-group">

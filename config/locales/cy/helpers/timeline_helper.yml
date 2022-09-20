@@ -1,0 +1,8 @@
+cy:
+  timeline:
+    events:
+      one: 1 digwyddiad
+      two: '%{count} ddigwyddiad'
+      many: '%{count}o ddigwyddiadau'
+      other: '%{count} o ddigwyddiadau'
+    this_month: Y MIS HWN

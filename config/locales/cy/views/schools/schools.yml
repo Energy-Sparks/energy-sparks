@@ -22,6 +22,9 @@ cy:
         weekly:
           first: Dewis wythnos (dechrau)
           second: Cymharu â
+      select_meter:
+        all_meters: Pob Mesurydd
+        title: Pa fesurydd?
       show:
         compare_message:
           other:
@@ -67,6 +70,15 @@ cy:
       title: Ysgolion Energy Sparks ledled y DU
       view_all_energy_sparks_schools: Gweld holl ysgolion Energy Sparks
       view_energy_sparks_schools_by_group: Gweld ysgolion Energy Sparks fesul grŵp
+    observations:
+      timeline:
+        action:
+          one: '%{count} weithred'
+          two: '%{count} weithred'
+          many: '%{count} o weithredoedd'
+          other: '%{count} o weithredoedd'
+        activity:
+          completed_an_activity: Cwblhawyd gweithgaredd
     school_group:
       compare_schools: Cymharu ysgolion
       view_schools: Gweld ysgolion
@@ -116,3 +128,6 @@ cy:
       upload_energy_bill: Uwchlwytho bil
       use_kwh: Defnyddio (kWh)
       view_programmes: Gweld eich rhaglenni
+    timeline:
+      no_events: Dim digwyddiadau i'w dangos
+      title: Beth sydd wedi bod yn digwydd?

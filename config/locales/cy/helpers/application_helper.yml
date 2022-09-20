@@ -1,0 +1,7 @@
+cy:
+  application_helper:
+    human_counts:
+      no_times: byth
+      once: unwaith
+      several_times: sawl gwaith
+      twice: dwywaith

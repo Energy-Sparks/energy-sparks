@@ -1,6 +1,32 @@
 cy:
   schools:
     transport_surveys:
+      app:
+        buttons:
+          remove: Tynnu
+          save: Cadw
+        notifications:
+          confirm_remove:
+            one: Ydych yn siŵr eich bod am ddileu 1 ymateb sydd heb ei gadw o %{date}?
+            two: Ydych yn siŵr eich bod am ddileu %{count} ymateb sydd heb eu cadw o %{date}?
+            many: Ydych yn siŵr eich bod am ddileu %{count} ymateb sydd heb eu cadw o %{date}?
+            other: Ydych yn siŵr eich bod am ddileu %{count} ymateb sydd heb eu cadw o %{date}?
+          confirm_save:
+            one: Ydych yn siŵr eich bod am gadw 1 ymateb sydd heb ei gadw o %{date}?
+            two: Ydych yn siŵr eich bod am gadw %{count} ymateb sydd heb eu cadw o %{date}?
+            many: Ydych yn siŵr eich bod am gadw %{count} ymateb sydd heb eu cadw o %{date}?
+            other: Ydych yn siŵr eich bod am gadw %{count} ymateb sydd heb eu cadw o %{date}?
+          no_connection: Bu gwall wrth gadw ymatebion - gwnewch yn siŵr bod gennych gysylltiad WIFI cyn cadw!
+          no_local_storage: Nid yw eich porwr yn cefnogi nodwedd sy'n ofynnol gan ein hofferyn arolwg. Naill ai uwchraddiwch eich porwr, defnyddiwch ddewis arall neu galluogwch 'localStorage'
+          no_responses: Dim byd i'w gadw - casglwch rai ymatebion arolwg yn gyntaf!
+          responses_removed: Ymatebion sydd heb eu cadw wedi'u dileu!
+          responses_saved: Ymatebion wedi'u cadw!
+          unsaved_responses_html:
+            one: Mae <strong>1</strong> ymateb i'r arolwg sydd heb ei gadw o <strong>%{date}</strong>. Ydych chi am ei gadw neu ei ddileu?
+            two: Mae <strong>%{count}</strong> ymateb i'r arolwg sydd heb eu cadw o <strong>%{date}</strong>. Ydych chi am eu cadw neu eu dileu?
+            many: Mae <strong>%{count}</strong> ymateb i'r arolwg sydd heb eu cadw o <strong>%{date}</strong>. Ydych chi am eu cadw neu eu dileu?
+            other: Mae <strong>%{count}</strong> ymateb i'r arolwg sydd heb eu cadw o <strong>%{date}</strong>. Ydych chi am eu cadw neu eu dileu?
+        today: heddiw
       common:
         carbon: Carbon
         download_responses: Lawrlwytho ymatebion
@@ -107,6 +133,7 @@ cy:
         30_or_more_minutes: 30 munud neu fwy
         cars_summary: Mae perswadio pobl sy'n teithio dim ond 5 munud mewn car i newid i ddod i'r ysgol ar droed neu ar feic yn gam cyntaf gwych i leihau ôl troed carbon yr ysgol o deithio.
         cars_title: Dadansoddiad o deithiau mewn car
+        chart_load_error: Bu problem wrth lwytho'r siart hwn
         more_detail: 'Gadewch i ni edrych ar hyn yn fwy manwl:'
         percentages:
           car_html: "Teithiodd %{swm} mewn car"

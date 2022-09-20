@@ -25,6 +25,7 @@ en:
       complete_this_activity_html:
         one: Complete this activity to score your school <strong>1</strong> point!
         other: Complete this activity to score your school <strong>%{count}</strong> points!
+      download_resources: Download resources
       record_this_activity: Record this activity
       view_related_activities:
         one: View 1 related activity

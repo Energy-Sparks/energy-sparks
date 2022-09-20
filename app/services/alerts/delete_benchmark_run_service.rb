@@ -8,7 +8,9 @@ module Alerts
     end
 
     def delete!
-      BenchmarkResultGenerationRun.where("created_at <= ?", @older_than).destroy_all
+      ActiveRecord::Base.transaction do
+        BenchmarkResultGenerationRun.where("created_at <= ?", @older_than).destroy_all
+      end
     end
   end
 end
