@@ -14,8 +14,9 @@ module Amr
       if @config.filter_column_rows.present? && headers_as_array
         @config.filter_column_rows.each do |column_name, filter|
           column_index = headers_as_array.index(column_name)
+          next unless column_index
           array_of_rows = array_of_rows.reject do |row|
-            row[column_index] == filter
+            row[column_index].strip == filter
           end
         end
       end
