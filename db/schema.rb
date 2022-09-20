@@ -340,7 +340,7 @@ ActiveRecord::Schema.define(version: 2022_09_20_074935) do
     t.string "expected_units"
     t.integer "missing_readings_limit"
     t.boolean "lookup_by_serial_number", default: false
-    t.jsonb "filter_column_rows", default: {}
+    t.jsonb "column_row_filters", default: {}
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
   end

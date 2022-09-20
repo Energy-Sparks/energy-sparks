@@ -10,14 +10,14 @@ module Amr
       array_of_rows = sort_out_off_by_one_array(array_of_rows) if @config.handle_off_by_one && array_of_rows.size > 1
       array_of_rows = array_of_rows.reject { |row| invalid_row?(row) }
       array_of_rows = array_of_rows.reject { |row| partial_row?(row) } unless @config.missing_readings_limit.nil?
-      array_of_rows = filter_column_rows_for(array_of_rows) if @config.filter_column_rows.present? && headers_as_array
+      array_of_rows = filter_column_rows_for(array_of_rows) if @config.column_row_filters.present? && headers_as_array
       array_of_rows
     end
 
   private
 
     def filter_column_rows_for(array_of_rows)
-      @config.filter_column_rows.each do |column_name, filter_as_regex|
+      @config.column_row_filters.each do |column_name, filter_as_regex|
         column_index = headers_as_array.index(column_name)
         next unless column_index
 
