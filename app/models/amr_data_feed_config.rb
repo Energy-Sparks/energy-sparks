@@ -2,6 +2,7 @@
 #
 # Table name: amr_data_feed_configs
 #
+#  column_row_filters      :jsonb
 #  column_separator        :text             default(","), not null
 #  created_at              :datetime         not null
 #  date_format             :text             not null
