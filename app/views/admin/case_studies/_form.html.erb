@@ -1,16 +1,19 @@
 <%= simple_form_for([:admin, case_study]) do |f| %>
+  <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
+    <%= f.input t_field(:title, locale), label: CaseStudy.human_attribute_name(:title), as: :string %>
+  <% end %>
 
-<%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
-  <%= f.input t_field(:title, locale), label: CaseStudy.human_attribute_name(:title), as: :string %>
-<% end %>
-
-<%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
-  <div class="description-trix-editor-<%=locale%>">
-    <%= f.rich_text_area t_field(:description, locale), label: CaseStudy.human_attribute_name(:description), as: :string %>
-  </div>
-<% end %>
+  <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
+    <div class="description-trix-editor-<%=locale%>">
+      <%= f.rich_text_area t_field(:description, locale), label: CaseStudy.human_attribute_name(:description), as: :string %>
+    </div>
+  <% end %>
 
   <%= f.input :position %>
-  <%= f.input :file %>
+
+  <%= render 'admin/shared/locale_tabs', f: f, field: :file do |locale| %>
+    <%= f.input t_field(:file, locale), label: CaseStudy.human_attribute_name(:file) %>
+  <% end %>
+
   <%= f.button :submit %>
 <% end %>

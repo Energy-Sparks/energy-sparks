@@ -22,4 +22,11 @@ module LocaleHelper
   def t_fuels_as_sentence(fuels)
     fuels.map { |fuel| I18n.t('common.' + fuel.to_s).downcase }.to_sentence
   end
+
+  def t_attached_links(obj, field, char = " | ", locales = I18n.available_locales)
+    output = locales.collect do |locale|
+      link_to_if(obj.send("#{field}_#{locale}").attached?, I18n.t("languages.#{locale}"), obj.send("#{field}_#{locale}")).html_safe
+    end
+    safe_join output, char
+  end
 end
