@@ -1,5 +1,5 @@
 module Alerts
-  class DeleteBenchmarkRunService
+  class ContentDeletionService
     DEFAULT_OLDER_THAN = 3.months.ago.beginning_of_month
     attr_reader :older_than
 
@@ -9,7 +9,9 @@ module Alerts
 
     def delete!
       ActiveRecord::Base.transaction do
-        BenchmarkResultGenerationRun.where("created_at <= ?", @older_than).destroy_all
+        Alerts::DeleteContentGenerationRunService.new(older_than).delete!
+        Alerts::DeleteBenchmarkRunService.new(older_than).delete!
+        Alerts::DeleteAlertGenerationRunService.new(older_than).delete!
       end
     end
   end

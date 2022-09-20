@@ -20,7 +20,7 @@ describe Alerts::DeleteBenchmarkRunService, type: :service do
 
   let(:service)   { Alerts::DeleteBenchmarkRunService.new }
 
-  it 'defaults to beginning of month, 2 months ago' do
+  it 'defaults to beginning of month, 3 months ago' do
     expect(service.older_than).to eql(3.months.ago.beginning_of_month)
   end
 

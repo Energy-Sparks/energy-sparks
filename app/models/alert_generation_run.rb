@@ -18,6 +18,6 @@
 
 class AlertGenerationRun < ApplicationRecord
   belongs_to :school
-  has_many :alerts
-  has_many :alert_errors
+  has_many :alerts, dependent: :delete_all
+  has_many :alert_errors, dependent: :delete_all
 end
