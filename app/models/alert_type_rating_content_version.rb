@@ -62,6 +62,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   translates :pupil_dashboard_title, backend: :action_text
   translates :management_dashboard_title, backend: :action_text
   translates :management_priorities_title, backend: :action_text
+  translates :analysis_title, type: :string, fallbacks: { cy: :en }
 
   has_rich_text :email_content
   has_rich_text :find_out_more_content

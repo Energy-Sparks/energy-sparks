@@ -130,6 +130,7 @@
 /* Top, Right, Bottom, Left */
 
 .nav-lozenge {
+  white-space: nowrap;
   background: #232B49;
   background-image: linear-gradient(180deg, #252E50 0%, #374268 99%);
   border-radius: 25px;

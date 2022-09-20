@@ -10,6 +10,7 @@ en:
   languages:
     cy: Welsh
     en: English
+    mirror: Mirror
   name: English
   simple_form:
     labels:

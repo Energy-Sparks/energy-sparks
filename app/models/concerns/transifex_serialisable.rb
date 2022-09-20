@@ -106,7 +106,7 @@ module TransifexSerialisable
       value = remove_newlines(value)
       value = remove_rich_text_wrapper(value)
     else
-      value = self[attr]
+      value = self.send("#{attr}_#{I18n.default_locale}".to_sym)
     end
     if self.class.tx_templated_attribute?(attr)
       value = mustache_to_yaml(value)
