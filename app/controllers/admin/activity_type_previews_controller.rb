@@ -1,7 +1,7 @@
 module Admin
   class ActivityTypePreviewsController < AdminController
     def create
-      school = School.process_data.first
+      school = params['school_id'] ? School.find(params['school_id'].to_i) : School.process_data.order(:name).first
       activity_type = ActivityType.new(school_specific_description: school_specific_description(params))
       @activity_type_content = TemplateInterpolation.new(
         activity_type,
