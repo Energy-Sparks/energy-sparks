@@ -4,7 +4,7 @@
 
   <div class="form-group">
     <%= form.label :mpan_mprn, 'Meter Point Number' %>
-    <% if disabled_for_pseudo_meter?(meter) %>
+    <% if disabled_for_pseudo_meter?(meter) && current_user.admin? %>
       <span class='badge badge-warning'>
         Editing disabled for pseudo meters
       </span>
@@ -21,7 +21,7 @@
   </div>
   <div class="form-group">
     <%= form.label :meter_type, 'Type' %>
-    <% if disabled_for_pseudo_meter?(meter) %>
+    <% if disabled_for_pseudo_meter?(meter) && current_user.admin? %>
       <span class='badge badge-warning'>
         Editing disabled for pseudo meters
       </span>
