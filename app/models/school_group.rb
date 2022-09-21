@@ -86,4 +86,8 @@ class SchoolGroup < ApplicationRecord
   def page_anchor
     name.parameterize
   end
+
+  def self.with_active_schools
+    joins(:schools).where('schools.active = true').distinct
+  end
 end
