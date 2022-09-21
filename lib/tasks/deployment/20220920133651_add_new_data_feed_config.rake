@@ -4,8 +4,8 @@ namespace :after_party do
     puts "Running deploy task 'add_new_data_feed_config'"
 
     new_config = {}
-    new_config['description'] = ''
-    new_config['identifier'] = ''
+    new_config['description'] = 'SSE Dukefield Energy'
+    new_config['identifier'] = 'sse-dukefield-energy'
     new_config['number_of_header_rows'] = 1
     new_config['date_format'] = '%d/%m/%y'
     new_config['mpan_mprn_field'] = 'MPAN'
