@@ -64,7 +64,7 @@
   <% end %>
 
   <% locales.each do |locale| %>
-    <%= select_tag "schools", options_from_collection_for_select(School.process_data.order(:name), "slug", "name", "1"), id: 'school-selector', "data-content-url": path_with_locale(preview_url, locale) %>
+    <%= select_tag "schools", options_from_collection_for_select(School.process_data.order(:name), "slug", "name", "1"), id: 'school-selector', "data-content-url": path_with_locale(preview_url, locale), class: "form-select" %>
     <div class="tab-pane fade show" id="<%= scope %>-preview-<%= locale %>" role="tabpanel" aria-labelledby="<%= scope %>-preview-tab" data-content-url="<%= path_with_locale(preview_url, locale) %>">
       <div class="loading">
         <h3 class="mb-3 mt-3"><%= fa_icon('spinner') %> Loading...</h3>
