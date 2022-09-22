@@ -26,6 +26,9 @@ cy:
         button: Energy Sparks ar gyfer Ysgolion
         text: Dysgu rhagor am sut y gall Energy Sparks gefnogi dy ysgol.
         title: Ar gyfer ysgolion
+    quote:
+      job_title: Pennaeth yr Ysgol
+      text_html: Mae ymgysylltu ag Energy Sparks wedi bod yn brofiad gwerth chweil. Nid yn unig y mae'r ysgol wedi arbed arian, mae'r plant wedi dod yn fwy ymwybodol o'r ffyrdd y gallant helpu i leihau defnydd ynni&hellip;
     sub_title: Offeryn dadansoddi ynni a rhaglen addysg ynni ar-lein sy'n benodol i ysgolion yw Energy Sparks.
     title: Rydym yn helpu ysgolion i ddod yn fwy ynni-effeithlon a brwydro yn erbyn newid hinsawdd.
   mailchimp:

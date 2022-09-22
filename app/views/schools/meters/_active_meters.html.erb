@@ -31,12 +31,10 @@
       </div>
     </td>
     <td>
-      <% if ! meter.pseudo %>
-        <div class="btn-group btn-group-sm" role="group">
-          <%= link_to 'Edit', edit_school_meter_path(@school, meter), class: 'btn btn-sm' if can?(:edit, meter) %>
-          <%= link_to 'Deactivate', deactivate_school_meter_path(@school, meter), method: :put, class: 'btn btn-sm' if can?(:deactivate, meter) %>
-        </div>
-      <% end %>
+      <div class="btn-group btn-group-sm" role="group">
+        <%= link_to 'Edit', edit_school_meter_path(@school, meter), class: 'btn btn-sm' if can?(:edit, meter) %>
+        <%= link_to 'Deactivate', deactivate_school_meter_path(@school, meter), method: :put, class: 'btn btn-sm' if can?(:deactivate, meter) %>
+      </div>
     </td>
   </tr>
 <% end %>

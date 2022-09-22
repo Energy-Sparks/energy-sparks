@@ -26,6 +26,24 @@ describe SchoolGroup, :school_groups, type: :model do
 
   end
 
+  describe '#with_active_schools' do
+    before { SchoolGroup.delete_all }
+    it 'returns all school groups that have one or more associated active schools' do
+      sg1 = create(:school_group, public: public)
+      sg2 = create(:school_group, public: public)
+      sg3 = create(:school_group, public: public)
+      create(:school, school_group: sg1, active: true)
+      create(:school, school_group: sg1, active: true)
+      create(:school, school_group: sg1, active: true)
+      school2 = create(:school, school_group: sg2, active: false)
+      school3 = create(:school, school_group: sg2, active: false)
+      expect(SchoolGroup.all.count).to eq(3)
+      expect(SchoolGroup.with_active_schools.count).to eq(1)
+      school2.update(active: true)
+      expect(SchoolGroup.with_active_schools.count).to eq(2)
+    end
+  end
+
   context 'with partners' do
     let(:partner)       { create(:partner) }
     let(:other_partner) { create(:partner) }
