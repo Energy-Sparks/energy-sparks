@@ -123,7 +123,11 @@ private
   end
 
   def redirect_pupils
-    redirect_to pupils_school_path(@school) if user_signed_in_and_linked_to_school? && current_user.pupil? && !params[:switch].present?
+    redirect_to pupils_school_path(@school) if user_signed_in_and_linked_to_school? && current_user.pupil? && !switch_dashboard?
+  end
+
+  def switch_dashboard?
+    params[:switch].present? && params[:switch] == "true"
   end
 
   def redirect_to_pupil_dash_if_not_data_enabled

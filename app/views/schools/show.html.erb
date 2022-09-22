@@ -84,7 +84,7 @@
 <% if can?(:show_management_dash, @school) && @show_data_enabled_features %>
   <div class="padded-row">
     <div class="float-right">
-        <%= link_to url_for(report: true), class: 'btn btn-outline-dark rounded-pill font-weight-bold' do %>
+        <%= link_to url_for(report: true, switch: true), class: 'btn btn-outline-dark rounded-pill font-weight-bold' do %>
           <%= fa_icon('file-alt') %>
           <%= t('schools.show.print_view') %>
         <% end %>
