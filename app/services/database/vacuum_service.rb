@@ -8,7 +8,7 @@ module Database
       @tables.each do |table|
         begin
           ActiveRecord::Base.connection.execute("VACUUM ANALYSE #{table}")
-        rescue => exception
+        rescue StandardError => exception
           message = "VACUUM ANALYSE #{table} error: #{exception.message}"
           Rails.logger.error(message)
           Rollbar.error(message)

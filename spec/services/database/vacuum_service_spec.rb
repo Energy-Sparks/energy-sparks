@@ -6,23 +6,22 @@ describe Database::VacuumService do
   subject(:vacuum_service) { Database::VacuumService.new(tables) }
 
   describe "#perform" do
-    context "under normal running conditions" do
-      it "calls vacuum analyse on each table" do
-        tables.each do |table|
-          expect(ActiveRecord::Base.connection).to receive(:execute).with("VACUUM ANALYSE #{table}")
-        end
-        subject.perform
-      end
-
+    # Vacuum can't run inside in a transaction block! ts: false means we don't use transactions for rolling back data created in tests
+    context "under normal running conditions", ts:false do
       it "doesn't raise" do
         expect { subject.perform }.not_to raise_error
+      end
+
+      it "logs no error" do
+        expect(Rails.logger).not_to receive(:error)
+        subject.perform
       end
     end
 
     context "an error occurs" do
       before do
         tables.each do |table|
-          expect(ActiveRecord::Base.connection).to receive(:execute).with("VACUUM ANALYSE #{table}").and_raise("ERROR")
+          expect(ActiveRecord::Base.connection).to receive(:execute).with("VACUUM ANALYSE #{table}").and_raise(ActiveRecord::ActiveRecordError.new("ERROR"))
         end
       end
 

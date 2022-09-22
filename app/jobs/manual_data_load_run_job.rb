@@ -22,6 +22,7 @@ class ManualDataLoadRunJob < ApplicationJob
       manual_data_load_run.info("Updated: #{amr_data_feed_import_log.records_updated}")
       manual_data_load_run.info("SUCCESS")
       status = :done
+      Database::VacuumService.new([:amr_data_feed_readings]).perform
     rescue => e
       Rollbar.error(e, job: :manual_data_load_run, id: manual_data_load_run.id, filename: amr_uploaded_reading.file_name)
       manual_data_load_run.error("Error: #{e.message}")

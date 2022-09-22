@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ManualDataLoadRunJob do
+describe ManualDataLoadRunJob, ts: false do
 
   let!(:run)                { create(:manual_data_load_run) }
 
@@ -15,6 +15,7 @@ describe ManualDataLoadRunJob do
 
   context 'with a valid file' do
     before(:each) do
+      expect_any_instance_of(Database::VacuumService).to receive(:perform)
       expect(run.status).to eq "pending"
       job.load(run.amr_uploaded_reading.amr_data_feed_config, run.amr_uploaded_reading, run)
     end
@@ -39,6 +40,7 @@ describe ManualDataLoadRunJob do
       allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_imported).and_return(0)
       allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_updated).and_return(0)
       expect(run.status).to eq "pending"
+      expect_any_instance_of(Database::VacuumService).to_not receive(:perform)
       job.load(run.amr_uploaded_reading.amr_data_feed_config, run.amr_uploaded_reading, run)
     end
 
