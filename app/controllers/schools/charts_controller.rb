@@ -10,38 +10,42 @@ class Schools::ChartsController < ApplicationController
   before_action :check_aggregated_school_in_cache
 
   def show
+    respond_to do |format|
+      format.html { render_html }
+      format.json { render_json }
+    end
+  end
+
+private
+
+  def render_html
+    @chart_type = params.require(:chart_type).to_sym
+    set_measurement_options
+    @measurement = measurement_unit(params[:measurement])
+    @title = @chart_type.to_s.humanize
+  end
+
+  def render_json
     @chart_type ||= begin
                       params.require(:chart_type).to_sym
                     rescue => error
                       render json: { error: error, status: 400 }.to_json and return
                     end
 
-    respond_to do |format|
-      format.html do
-        set_measurement_options
-        @measurement = measurement_unit(params[:measurement])
-        @title = @chart_type.to_s.humanize
-      end
-      format.json do
-        chart_config = {
-          mpan_mprn: params[:mpan_mprn],
-          series_breakdown: params[:series_breakdown],
-          date_ranges: get_date_ranges
-        }
-        y_axis_units = params[:chart_y_axis_units]
-        chart_config[:y_axis_units] = y_axis_units.to_sym if y_axis_units.present?
-
-        output = ChartData.new(@school, aggregate_school, @chart_type, chart_config, transformations: get_transformations).data
-        if output
-          render json: ChartDataValues.as_chart_json(output)
-        else
-          render json: {}
-        end
-      end
+    chart_config = {
+      mpan_mprn: params[:mpan_mprn],
+      series_breakdown: params[:series_breakdown],
+      date_ranges: get_date_ranges
+    }
+    y_axis_units = params[:chart_y_axis_units]
+    chart_config[:y_axis_units] = y_axis_units.to_sym if y_axis_units.present?
+    output = ChartData.new(@school, aggregate_school, @chart_type, chart_config, transformations: get_transformations).data
+    if output
+      render json: ChartDataValues.as_chart_json(output)
+    else
+      render json: {}
     end
   end
-
-private
 
   def set_school
     @school = School.friendly.find(params[:school_id])
