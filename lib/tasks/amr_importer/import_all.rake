@@ -14,8 +14,7 @@ namespace :amr do
         Rollbar.error(e, job: :import_all, config: config.identifier)
       end
     end
-    puts "#{DateTime.now.utc} amr import all end"
-
     Database::VacuumService.new([:amr_data_feed_readings]).perform
+    puts "#{DateTime.now.utc} amr import all end"
   end
 end
