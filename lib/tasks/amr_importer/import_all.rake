@@ -15,6 +15,7 @@ namespace :amr do
       end
     end
     puts "#{DateTime.now.utc} amr import all end"
+
     Database::VacuumService.new([:amr_data_feed_readings]).perform
   end
 end
