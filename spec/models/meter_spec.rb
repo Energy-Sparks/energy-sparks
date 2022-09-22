@@ -70,7 +70,8 @@ describe 'Meter', :meters do
 
       context 'with a pseudo solar electricity meter' do
 
-        let(:attributes) {attributes_for(:electricity_meter).merge(pseudo: true)}
+        let(:attributes) { attributes_for(:electricity_meter).merge(pseudo: true) }
+        let!(:school)    { create(:school) }
 
         it 'is valid with a 14 digit number' do
           meter = Meter.new(attributes.merge(mpan_mprn: 91098598765437))
@@ -94,6 +95,34 @@ describe 'Meter', :meters do
           meter = Meter.new(attributes.merge(mpan_mprn: 11098598765437))
           meter.valid?
           expect(meter.errors[:mpan_mprn]).to_not be_empty
+        end
+
+        it 'validates meter type is not changed when there is an update' do
+          meter = Meter.new(attributes.merge(pseudo: true, mpan_mprn: 91098598765437, meter_type: 'electricity', school: school))
+          meter.valid?
+          expect(meter.errors[:meter_type]).to be_empty
+          meter.save!
+          meter.meter_type = 'solar_pv'
+          meter.valid?
+          expect(meter.errors[:meter_type]).to eq(["Change of meter type is not allowed for pseudo meters"])
+          meter.pseudo = 'false'
+          meter.meter_type = 'solar_pv'
+          meter.valid?
+          expect(meter.errors[:meter_type]).to eq([])
+        end
+
+        it 'validates mpan mprn is not changed when there is an update' do
+          meter = Meter.new(attributes.merge(pseudo: true, mpan_mprn: 91098598765437, meter_type: 'electricity', school: school))
+          meter.valid?
+          expect(meter.errors[:mpan_mprn]).to be_empty
+          meter.save!
+          meter.mpan_mprn = 91000000000037
+          meter.valid?
+          expect(meter.errors[:mpan_mprn]).to eq(["Change of mpan mprn is not allowed for pseudo meters"])
+          meter.pseudo = 'false'
+          meter.mpan_mprn = 91000000000037
+          meter.valid?
+          expect(meter.errors[:mpan_mprn]).to eq([])
         end
       end
 
