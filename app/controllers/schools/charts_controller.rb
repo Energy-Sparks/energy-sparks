@@ -10,7 +10,12 @@ class Schools::ChartsController < ApplicationController
   before_action :check_aggregated_school_in_cache
 
   def show
-    @chart_type = params.require(:chart_type).to_sym
+    @chart_type ||= begin
+                      params.require(:chart_type).to_sym
+                    rescue => error
+                      render json: { error: error, status: 400 }.to_json and return
+                    end
+
     respond_to do |format|
       format.html do
         set_measurement_options
@@ -34,8 +39,6 @@ class Schools::ChartsController < ApplicationController
         end
       end
     end
-  rescue => error
-    render json: { error: error, status: 400 }.to_json
   end
 
 private
