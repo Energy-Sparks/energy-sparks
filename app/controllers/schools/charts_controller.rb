@@ -34,6 +34,8 @@ class Schools::ChartsController < ApplicationController
         end
       end
     end
+  rescue => error
+    render json: { error: error, status: 400 }.to_json
   end
 
 private
