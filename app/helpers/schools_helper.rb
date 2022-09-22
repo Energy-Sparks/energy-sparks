@@ -14,4 +14,8 @@ module SchoolsHelper
     meter = Meter.find_by_mpan_mprn(mpan_mprn)
     meter.present? ? meter.display_name : meter
   end
+
+  def disabled_for_pseudo_meter?(meter)
+    meter.pseudo && action_name == 'edit'
+  end
 end
