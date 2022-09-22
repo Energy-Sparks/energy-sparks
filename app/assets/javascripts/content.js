@@ -32,7 +32,6 @@ $(document).ready(function() {
     var pane  = $(tab.attr('href'));
     var url = pane.data('content-url');
     var form = pane.parents('form');
-
     var data = form.find("[name!='_method']").serialize();
 
     $.ajax({
@@ -46,6 +45,7 @@ $(document).ready(function() {
       success: function(data, textStatus, jqXHR){
         pane.find('.loading').hide();
         pane.find('.content').html(data);
+        document.getElementById('school-selector').classList.remove("d-none")
         processAnalysisCharts();
       }
     });
@@ -56,6 +56,7 @@ $(document).ready(function() {
     var pane  = $(tab.attr('href'));
     pane.find('.loading').show();
     pane.find('.content').html('');
+    document.getElementById('school-selector').classList.add("d-none")
   });
 
   $('.content-section .tab-pane:has(.is-invalid)').each(function(){
