@@ -11,5 +11,7 @@ namespace :solar do
       Solar::RtoneVariantDownloadAndUpsert.new(installation: installation, start_date: start_date, end_date: end_date).perform
     end
     puts "#{DateTime.now.utc} import_rtone_variant_readings end"
+
+    Database::VacuumService.new([:amr_data_feed_readings]).perform
   end
 end
