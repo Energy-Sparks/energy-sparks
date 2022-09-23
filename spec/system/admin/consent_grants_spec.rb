@@ -69,6 +69,9 @@ RSpec.describe 'consent_grants', type: :system do
             let(:term) { "Primary" }
           end
           it_behaves_like "a search page with a result" do
+            let(:term) { "primary" }
+          end
+          it_behaves_like "a search page with a result" do
             let(:term) { school.name }
           end
         end

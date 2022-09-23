@@ -15,7 +15,7 @@ module Admin
       if params[:search].present?
         search = params[:search]
         if search["school"].present?
-          return ConsentGrant.joins(:school).where("schools.name LIKE ?", "%#{search['school']}%").by_date
+          return ConsentGrant.joins(:school).where("schools.name ILIKE ?", "%#{search['school']}%").by_date
         end
         if search["reference"].present?
           return ConsentGrant.where(guid: search["reference"]).by_date
