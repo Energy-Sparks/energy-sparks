@@ -1,14 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe ManualDataLoadRun, type: :model do
-  before { @ManualDataLoadRun }
-
   describe '#delete' do
-    before do
-      ManualDataLoadRun.delete_all
-    end
-
     it 'destroys a manual data load run and all associated manual data load run log entries' do
+      ManualDataLoadRun.delete_all
       new_manual_data_load_run = ManualDataLoadRun.create!(amr_uploaded_reading: create(:amr_uploaded_reading), status: 'done')
       ManualDataLoadRunLogEntry.create(manual_data_load_run: new_manual_data_load_run, message: "SUCCESS")
       ManualDataLoadRunLogEntry.create(manual_data_load_run: new_manual_data_load_run, message: "SUCCESS")
