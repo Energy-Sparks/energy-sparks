@@ -56,7 +56,7 @@ RSpec.describe 'consent_grants', type: :system do
 
       it_behaves_like "a search page with a result"
 
-      context "searching" do
+      describe "searching" do
         before do
           fill_in field, with: term
           click_on "Search"
@@ -90,14 +90,18 @@ RSpec.describe 'consent_grants', type: :system do
         end
       end
 
-      it 'shows consent details and contents' do
-        click_on 'View'
-        expect(page).to have_content(school.name)
-        expect(page).to have_content(name)
-        expect(page).to have_content(job_title)
-        expect(page).to have_content(ip_address)
-        expect(page).to have_content('First consent statement')
-        expect(page).to have_content('You may use my data..')
+      describe "viewing" do
+        before do
+          click_on 'View'
+        end
+        it 'shows consent details and contents' do
+          expect(page).to have_content(school.name)
+          expect(page).to have_content(name)
+          expect(page).to have_content(job_title)
+          expect(page).to have_content(ip_address)
+          expect(page).to have_content('First consent statement')
+          expect(page).to have_content('You may use my data..')
+        end
       end
     end
   end
