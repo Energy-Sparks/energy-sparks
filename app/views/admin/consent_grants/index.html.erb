@@ -1,10 +1,11 @@
 <h1>Consents Granted</h1>
 
 <p>
-Find consent records by reference code provided to n3rgy or meter mpxn.
+Find consent records by school name, reference code provided to n3rgy or meter mpxn.
 </p>
 
 <%= simple_form_for :search, url: admin_consent_grants_path, method: "GET", html: { class: 'form' } do |f| %>
+  <%= f.input :school, input_html: {value: params[:search].present? ? params[:search]["school"]: ''} %>
   <%= f.input :reference, input_html: {value: params[:search].present? ? params[:search]["reference"]: ''} %>
   <%= f.input :mpxn, input_html: {value: params[:search].present? ? params[:search]["mpxn"]: ''} %>
   <%= f.submit "Search", class: "btn btn-primary" %>
