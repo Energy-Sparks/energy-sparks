@@ -16,7 +16,7 @@ module Admin
 
     def destroy
       @manual_data_load_run = ManualDataLoadRun.find(params[:id])
-      @manual_data_load_run.destroy
+      @manual_data_load_run.destroy!
       respond_to do |format|
         format.html { redirect_to admin_reports_data_loads_path, notice: 'Manual data load was successfully deleted.' }
         format.json { head :no_content }
