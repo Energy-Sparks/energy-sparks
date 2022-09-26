@@ -62,6 +62,23 @@ describe AmrUploadedReading, type: :system do
       expect(page).to have_content("Processing")
     end
 
+    context "successful file upload" do
+      before do
+        attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/banes-example-file.csv')
+        click_on 'Preview'
+        click_on "Insert this data (NEW)"
+      end
+      it "has a link to upload another file" do
+        expect(page).to have_link("Upload another file")
+      end
+      context "and clicking link" do
+        before { click_link "Upload another file" }
+        it "displays the manual upload page for the same configuration" do
+          expect(page).to have_current_path(new_admin_amr_data_feed_config_amr_uploaded_reading_path(config))
+        end
+      end
+    end
+
     it 'produces an error message when an invalid CSV file is uploaded' do
       attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/not_a_csv.csv')
       expect { click_on 'Preview' }.to_not change { AmrUploadedReading.count }
