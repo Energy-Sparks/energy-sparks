@@ -26,55 +26,36 @@ describe AmrUploadedReading, type: :system do
       click_on 'Upload file'
     end
 
-    it 'can upload a file' do
-      attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/banes-example-file.csv')
-      expect { click_on 'Preview' }.to change { AmrUploadedReading.count }.by 1
-
-      expect(AmrUploadedReading.count).to be 1
-      expect(AmrUploadedReading.first.imported).to be false
-
-      expect(page).to_not have_content('We have identified a problem')
-      expect(page).to have_content('Data preview')
-      expect(page).to have_content('2200012767323')
-      expect(page).to have_content('2200012030374')
-      expect(page).to have_content('2200040922992')
-
-      expect { click_on "Insert this data" }.to change { AmrDataFeedReading.count }.by(5).and change { AmrDataFeedImportLog.count }.by(1)
-
-      expect(AmrUploadedReading.count).to be 1
-      expect(AmrUploadedReading.first.imported).to be true
-    end
-
-    it 'can upload a file via new loader' do
-      attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/banes-example-file.csv')
-      expect { click_on 'Preview' }.to change { AmrUploadedReading.count }.by 1
-
-      expect(AmrUploadedReading.count).to be 1
-      expect(AmrUploadedReading.first.imported).to be false
-
-      expect(page).to_not have_content('We have identified a problem')
-      expect(page).to have_content('Data preview')
-      expect(page).to have_content('2200012767323')
-      expect(page).to have_content('2200012030374')
-      expect(page).to have_content('2200040922992')
-
-      expect { click_on "Insert this data (NEW)" }.to change { ManualDataLoadRun.count }.by(1)
-      expect(page).to have_content("Processing")
-    end
-
-    context "successful file upload" do
+    context "previewing a valid csv file" do
       before do
         attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/banes-example-file.csv')
-        click_on 'Preview'
-        click_on "Insert this data (NEW)"
+        expect { click_on 'Preview' }.to change { AmrUploadedReading.count }.by 1
       end
-      it "has a link to upload another file" do
-        expect(page).to have_link("Upload another file")
-      end
-      context "and clicking link" do
-        before { click_link "Upload another file" }
-        it "displays the manual upload page for the same configuration" do
-          expect(page).to have_current_path(new_admin_amr_data_feed_config_amr_uploaded_reading_path(config))
+
+      it { expect(AmrUploadedReading.count).to be 1 }
+      it { expect(AmrUploadedReading.first.imported).to be false }
+      it { expect(page).to_not have_content('We have identified a problem') }
+      it { expect(page).to have_content('Data preview') }
+      it { expect(page).to have_content('2200012767323') }
+      it { expect(page).to have_content('2200012030374') }
+      it { expect(page).to have_content('2200040922992') }
+
+      context "and uploading with the new loader" do
+        before do
+          expect { click_on "Insert this data (NEW)" }.to change { ManualDataLoadRun.count }.by(1)
+        end
+
+        it { expect(page).to have_content("Processing") }
+        it "has a link to upload another file" do
+          expect(page).to have_link("Upload another file")
+        end
+
+        context "and clicking link" do
+          before { click_link "Upload another file" }
+
+          it "displays the manual upload page for the same configuration" do
+            expect(page).to have_current_path(new_admin_amr_data_feed_config_amr_uploaded_reading_path(config))
+          end
         end
       end
     end
@@ -198,10 +179,9 @@ describe AmrUploadedReading, type: :system do
       expect(page).to have_content('Data preview')
       expect(page).to have_content('1712423842469')
 
-      expect { click_on "Insert this data" }.to change { AmrDataFeedReading.count }.by(1).and change { AmrDataFeedImportLog.count }.by(1)
+      expect { click_on "Insert this data (NEW)" }.to change { ManualDataLoadRun.count }.by(1)
 
-      expect(AmrUploadedReading.count).to be 1
-      expect(AmrUploadedReading.first.imported).to be true
+      expect(page).to have_content("Processing")
     end
 
     it 'handles a wrong file format' do
