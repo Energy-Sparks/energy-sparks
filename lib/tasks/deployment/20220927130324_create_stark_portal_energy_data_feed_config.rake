@@ -6,7 +6,7 @@ namespace :after_party do
     new_config = {}
     new_config['description'] = 'Stark portal'
     new_config['identifier'] = 'stark-portal'
-    new_config['number_of_header_rows'] = 1
+    new_config['number_of_header_rows'] = 9
     new_config['date_format'] = '%d/%m/%y'
     new_config['mpan_mprn_field'] = 'MPAN'
     new_config['reading_date_field'] = 'Date'
