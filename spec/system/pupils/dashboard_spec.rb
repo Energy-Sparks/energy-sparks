@@ -65,6 +65,7 @@ describe 'Pupil dashboard' do
 
     it 'has navigation to adult dashboard' do
       expect(page).to have_content("#{school.name}")
+      expect(page).to have_link("Adult dashboard", href: school_path(school, switch: true))
       click_on 'Adult dashboard'
       expect(page).to have_title("Adult dashboard")
       click_on 'Pupil dashboard'
