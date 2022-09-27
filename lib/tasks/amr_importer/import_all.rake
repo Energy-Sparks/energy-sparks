@@ -6,7 +6,6 @@ namespace :amr do
       begin
         FileUtils.mkdir_p config.local_bucket_path
         Amr::Importer.new(config).import_all
-        Database::VacuumService.new([:amr_data_feed_readings])
       rescue => e
         puts "Exception: running import_all for #{config.description}: #{e.class} #{e.message}"
         puts e.backtrace.join("\n")
@@ -15,6 +14,7 @@ namespace :amr do
         Rollbar.error(e, job: :import_all, config: config.identifier)
       end
     end
+    Database::VacuumService.new([:amr_data_feed_readings]).perform
     puts "#{DateTime.now.utc} amr import all end"
   end
 end
