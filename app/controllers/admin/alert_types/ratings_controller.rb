@@ -47,6 +47,8 @@ module Admin
       end
 
       def destroy
+        raise unless @alert_type.class_name == 'Alerts::System::ContentManaged'
+
         ActiveRecord::Base.transaction do
           @rating = @alert_type.ratings.find(params[:id])
           alert_type_rating_content_version = AlertTypeRatingContentVersion.where(alert_type_rating_id: @rating.id)
