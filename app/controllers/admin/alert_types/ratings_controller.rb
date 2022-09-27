@@ -48,6 +48,10 @@ module Admin
 
       def destroy
         @rating = @alert_type.ratings.find(params[:id])
+        alert_type_rating_content_version = AlertTypeRatingContentVersion.where(alert_type_rating_id: @rating.id)
+        dashboard_alerts = DashboardAlert.where(alert_type_rating_content_version_id: alert_type_rating_content_version.ids)
+        dashboard_alerts.delete_all
+        alert_type_rating_content_version.delete_all
         @rating.delete
         redirect_to admin_alert_type_ratings_path(@alert_type), notice: 'Rating deleted'
       end

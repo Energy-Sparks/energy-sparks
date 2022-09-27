@@ -30,7 +30,7 @@
 
 class AlertTypeRating < ApplicationRecord
   belongs_to :alert_type
-  has_many :content_versions, class_name: 'AlertTypeRatingContentVersion', dependent: :destroy
+  has_many :content_versions, class_name: 'AlertTypeRatingContentVersion'
   has_many :alert_type_rating_activity_types
   has_many :activity_types, through: :alert_type_rating_activity_types
 
