@@ -46,7 +46,9 @@ module EnergySparks
       ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'
     end
 
-    config.active_job.queue_adapter = :delayed_job
+    # We will switch to delayed job after running single some non-critical jobs on test and production
+    # config.active_job.queue_adapter = :delayed_job
+    config.active_job.queue_adapter = :async
 
     config.i18n.available_locales = [:en, :cy]
     config.i18n.default_locale = :en
