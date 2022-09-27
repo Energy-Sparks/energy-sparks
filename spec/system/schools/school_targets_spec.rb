@@ -85,7 +85,7 @@ RSpec.describe 'school targets', type: :system do
 
       it 'doesnt let me navigate there' do
         visit school_school_targets_path(school)
-        expect(page).to have_current_path(management_school_path(school))
+        expect(page).to have_current_path(school_path(school))
       end
     end
 
@@ -290,7 +290,7 @@ RSpec.describe 'school targets', type: :system do
         expect(page).to have_link('Record an energy saving action', href: intervention_type_groups_path)
 
         expect(page).to have_content("Explore your data")
-        expect(page).to have_link("View dashboard", href: management_school_path(school))
+        expect(page).to have_link("View dashboard", href: school_path(school))
       end
 
       it "includes links to activities" do

@@ -201,7 +201,7 @@ describe 'viewing and recording action', type: :system do
       let!(:observation) { create(:observation, :intervention, intervention_type: intervention_type, school: school, involved_pupils: false)}
 
       it 'can be updated' do
-        visit management_school_path(school)
+        visit school_path(school)
         click_on 'View all events'
 
         within '.application' do
@@ -223,7 +223,7 @@ describe 'viewing and recording action', type: :system do
       it 'updates points if pupils were actually involved' do
         expect(observation.points).to be_nil
 
-        visit management_school_path(school)
+        visit school_path(school)
         click_on 'View all events'
 
         within '.application' do
@@ -240,7 +240,7 @@ describe 'viewing and recording action', type: :system do
       end
 
       it 'can be deleted' do
-        visit management_school_path(school)
+        visit school_path(school)
         click_on 'View all events'
 
         expect{
