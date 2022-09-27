@@ -46,6 +46,8 @@ module EnergySparks
       ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'
     end
 
+    config.active_job.queue_adapter = :delayed_job
+
     config.i18n.available_locales = [:en, :cy]
     config.i18n.default_locale = :en
     config.i18n.enforce_available_locales = true
