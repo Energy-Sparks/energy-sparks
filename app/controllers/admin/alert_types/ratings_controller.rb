@@ -46,6 +46,12 @@ module Admin
         end
       end
 
+      def destroy
+        @rating = @alert_type.ratings.find(params[:id])
+        @rating.delete
+        redirect_to admin_alert_type_ratings_path(@alert_type), notice: 'Rating deleted'
+      end
+
     private
 
       def rating_params
