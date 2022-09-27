@@ -47,8 +47,8 @@ module Admin
       end
 
       def destroy
-        @rating = @alert_type.ratings.find(params[:id])
         ActiveRecord::Base.transaction do
+          @rating = @alert_type.ratings.find(params[:id])
           alert_type_rating_content_version = AlertTypeRatingContentVersion.where(alert_type_rating_id: @rating.id)
           dashboard_alerts = DashboardAlert.where(alert_type_rating_content_version_id: alert_type_rating_content_version.ids)
           dashboard_alerts.delete_all
