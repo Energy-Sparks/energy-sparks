@@ -42,7 +42,7 @@ describe AmrUploadedReading, type: :system do
 
       context "and uploading with the new loader" do
         before do
-          expect { click_on "Insert this data (NEW)" }.to change { ManualDataLoadRun.count }.by(1)
+          expect { click_on "Insert this data" }.to change { ManualDataLoadRun.count }.by(1)
         end
 
         it { expect(page).to have_content("Processing") }
@@ -179,7 +179,7 @@ describe AmrUploadedReading, type: :system do
       expect(page).to have_content('Data preview')
       expect(page).to have_content('1712423842469')
 
-      expect { click_on "Insert this data (NEW)" }.to change { ManualDataLoadRun.count }.by(1)
+      expect { click_on "Insert this data" }.to change { ManualDataLoadRun.count }.by(1)
 
       expect(page).to have_content("Processing")
     end
