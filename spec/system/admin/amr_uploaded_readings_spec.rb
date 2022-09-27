@@ -46,15 +46,25 @@ describe AmrUploadedReading, type: :system do
         end
 
         it { expect(page).to have_content("Processing") }
-        it "has a link to upload another file" do
-          expect(page).to have_link("Upload another file")
-        end
+        it { expect(page).to_not have_link("Upload another file") }
 
-        context "and clicking link" do
-          before { click_link "Upload another file" }
+        context "when complete" do
+          before do
+            expect_any_instance_of(ManualDataLoadRun).to receive(:complete?).at_least(:once).and_return true
+            visit current_path # force / speed up page reload (that would usually happen after 5 secs anyway)
+          end
+          it { expect(page).to_not have_content("Processing") }
 
-          it "displays the manual upload page for the same configuration" do
-            expect(page).to have_current_path(new_admin_amr_data_feed_config_amr_uploaded_reading_path(config))
+          it "has a link to upload another file" do
+            expect(page).to have_link("Upload another file")
+          end
+
+          context "and clicking link" do
+            before { click_link "Upload another file" }
+
+            it "displays the manual upload page for the same configuration" do
+              expect(page).to have_current_path(new_admin_amr_data_feed_config_amr_uploaded_reading_path(config))
+            end
           end
         end
       end
