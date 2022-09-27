@@ -17,7 +17,7 @@
 #  fk_rails_...  (amr_uploaded_reading_id => amr_uploaded_readings.id)
 #
 class ManualDataLoadRun < ApplicationRecord
-  belongs_to :amr_uploaded_reading
+  belongs_to :amr_uploaded_reading, dependent: :destroy
   enum status: [:pending, :running, :done, :failed]
   has_many :manual_data_load_run_log_entries, dependent: :destroy
 
