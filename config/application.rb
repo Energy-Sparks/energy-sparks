@@ -46,7 +46,8 @@ module EnergySparks
       ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'
     end
 
-    # We will switch to delayed job after running single some non-critical jobs on test and production
+    # We will eventually switch over to DJ for all jobs but will test run some individual
+    # non-critical jobs on test and production first (see DccCheckerJob)
     # config.active_job.queue_adapter = :delayed_job
     config.active_job.queue_adapter = :async
 
