@@ -44,8 +44,9 @@ gem 'pagy'
 gem 'geocoder'
 gem 'rgeo-geojson'
 
-# AWS S3 api
+# AWS
 gem 'aws-sdk-s3'
+gem 'aws-sdk-cloudwatch'
 
 # Assets for Emails
 gem 'bootstrap-email'

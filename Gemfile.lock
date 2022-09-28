@@ -118,6 +118,9 @@ GEM
       execjs (~> 2)
     aws-eventstream (1.2.0)
     aws-partitions (1.538.0)
+    aws-sdk-cloudwatch (1.59.0)
+      aws-sdk-core (~> 3, >= 3.122.0)
+      aws-sigv4 (~> 1.1)
     aws-sdk-core (3.124.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.525.0)
@@ -662,6 +665,7 @@ DEPENDENCIES
   after_party
   annotate
   auto_strip_attributes (~> 2.5)
+  aws-sdk-cloudwatch
   aws-sdk-s3
   better_errors
   binding_of_caller
