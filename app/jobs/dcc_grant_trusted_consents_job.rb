@@ -8,4 +8,3 @@ class DccGrantTrustedConsentsJob < ApplicationJob
     end
   end
 end
-
