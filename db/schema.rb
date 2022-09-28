@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_20_074935) do
+ActiveRecord::Schema.define(version: 2022_09_27_150906) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -684,6 +684,21 @@ ActiveRecord::Schema.define(version: 2022_09_20_074935) do
     t.index ["alert_type_rating_content_version_id"], name: "index_dashboard_alerts_on_alert_type_rating_content_version_id"
     t.index ["content_generation_run_id"], name: "index_dashboard_alerts_on_content_generation_run_id"
     t.index ["find_out_more_id"], name: "index_dashboard_alerts_on_find_out_more_id"
+  end
+
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer "priority", default: 0, null: false
+    t.integer "attempts", default: 0, null: false
+    t.text "handler", null: false
+    t.text "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string "locked_by"
+    t.string "queue"
+    t.datetime "created_at", precision: 6
+    t.datetime "updated_at", precision: 6
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
   create_table "emails", force: :cascade do |t|
