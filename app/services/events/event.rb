@@ -5,7 +5,7 @@ module Events
     #create with an EventbriteSDK::Event object
     def initialize(eventbrite)
       @name = eventbrite.name.html
-      @date = Date.parse(eventbrite.start.local)
+      @date = DateTime.parse(eventbrite.start.local)
       @url = eventbrite.url
       @sold_out = false
       if eventbrite.ticket_availability.present?
