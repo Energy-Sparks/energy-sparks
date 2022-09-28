@@ -426,6 +426,9 @@ Rails.application.routes.draw do
 
     post 'amr_data_feed_readings/:amr_uploaded_reading_id', to: 'amr_data_feed_readings#create', as: :create_amr_data_feed_readings
 
+    authenticated :user, -> user { user.admin? }  do
+      mount DelayedJobWeb, at: "/delayed_job"
+    end
   end # Admin name space
 
   #redirect from old teacher dashboard
