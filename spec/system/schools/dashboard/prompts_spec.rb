@@ -105,4 +105,11 @@ RSpec.describe "adult dashboard prompts", type: :system do
       let(:test_school) { school }
     end
   end
+
+  context 'as admin' do
+    let(:user)  { create(:admin) }
+    include_examples "dashboard prompts" do
+      let(:test_school) { school }
+    end
+  end
 end

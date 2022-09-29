@@ -43,7 +43,7 @@
   <%= render 'management/schools/targets/review_targets', school: @school %>
 <% end %>
 
-<% if can?(:show_management_dash, @school) && current_user_school == @school %>
+<% if @show_standard_prompts %>
   <%= render 'management/schools/complete_programmes', school: @school %>
 
   <%= render 'management/schools/record_activity', school: @school %>
