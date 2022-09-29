@@ -214,4 +214,46 @@ describe SchoolCreator, :schools, type: :service do
     end
 
   end
+
+  describe 'with a group admin' do
+    let(:school)                    { build :school}
+    let(:onboarding_user)           { create :group_admin, school_group: school_group }
+
+    let(:school_onboarding) do
+      create :school_onboarding,
+        created_user: onboarding_user,
+        template_calendar: template_calendar,
+        solar_pv_tuos_area: solar_pv_area,
+        dark_sky_area: dark_sky_area,
+        school_group: school_group,
+        scoreboard: scoreboard,
+        weather_station: weather_station,
+        school_will_be_public: true
+    end
+
+    describe '#onboard_school!' do
+      it 'saves the school' do
+        service.onboard_school!(school_onboarding)
+        expect(school).to be_persisted
+      end
+      it 'does not change role' do
+        service.onboard_school!(school_onboarding)
+        onboarding_user.reload
+        expect(onboarding_user.role).to eq('group_admin')
+      end
+      it 'does not assign the school to the onboarding user' do
+        service.onboard_school!(school_onboarding)
+        onboarding_user.reload
+        expect(onboarding_user.school).to be_nil
+      end
+      it 'does not create an alert contact for the school administrator' do
+        service.onboard_school!(school_onboarding)
+        expect(school.contacts).to be_empty
+      end
+      it 'does not add a cluster school' do
+        service.onboard_school!(school_onboarding)
+        expect(onboarding_user.cluster_schools).to be_empty
+      end
+    end
+  end
 end

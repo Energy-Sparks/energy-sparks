@@ -120,10 +120,9 @@ describe User do
     end
 
     context "when a group admin" do
-      let(:public)       { true }
-      let(:school_group) { create(:school_group, public: public) }
-      let(:user)         { create(:user, role: :group_admin, school_group: school_group)}
-
+      let(:public)              { true }
+      let(:school_group)        { create(:school_group, public: public) }
+      let(:user)                { create(:user, role: :group_admin, school_group: school_group)}
       it { is_expected.to be_able_to(:compare, school_group) }
 
       context 'and group is private' do
@@ -136,8 +135,26 @@ describe User do
           let(:user)    {  create(:user, role: :group_admin, school_group: my_group) }
           it { is_expected.to be_able_to(:compare, my_group) }
           it { is_expected.to_not be_able_to(:compare, school_group) }
-
         end
+      end
+
+      context 'is onboarding' do
+
+        context 'a school in their group' do
+          let(:school_onboarding)   { create(:school_onboarding, school_group: school_group)}
+          it { is_expected.to be_able_to(:manage, school_onboarding)}
+        end
+
+        context 'but not for their group' do
+          let(:school_onboarding)   { create(:school_onboarding, school_group: create(:school_group)) }
+          it { is_expected.to_not be_able_to(:manage, school_onboarding)}
+        end
+
+        context 'for a different school' do
+          let(:school_onboarding)  { create(:school_onboarding, school: create(:school) ) }
+          it { is_expected.to_not be_able_to(:manage, school_onboarding) }
+        end
+
       end
     end
   end
