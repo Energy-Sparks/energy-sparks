@@ -200,7 +200,7 @@ describe 'School admin user management' do
 
     describe 'managing school admins' do
 
-      let!(:management_role){ create(:staff_role, :management, title: 'Business manager') }
+#      let!(:management_role){ create(:staff_role, :management, title: 'Business manager') }
 
       context 'when adding a user' do
         before(:each) do
