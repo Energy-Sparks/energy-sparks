@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :staff_role do
     trait :management do
-      title { 'Management' }
+      title { 'Business Manager' }
     end
 
     trait :teacher do
