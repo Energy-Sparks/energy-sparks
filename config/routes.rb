@@ -424,8 +424,6 @@ Rails.application.routes.draw do
       end
     end
 
-    post 'amr_data_feed_readings/:amr_uploaded_reading_id', to: 'amr_data_feed_readings#create', as: :create_amr_data_feed_readings
-
   end # Admin name space
 
   #redirect from old teacher dashboard
