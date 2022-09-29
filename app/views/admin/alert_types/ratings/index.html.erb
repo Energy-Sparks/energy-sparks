@@ -39,6 +39,11 @@
         <td><%= link_to 'Edit', edit_admin_alert_type_rating_path(@alert_type, rating), class: 'btn' %></td>
         <td><%= link_to "Activity types (#{rating.activity_types.count})", admin_alert_type_rating_activity_types_path(@alert_type, rating), class: 'btn' %></td>
         <td><%= link_to "Actions (#{rating.intervention_types.count})", admin_alert_type_rating_intervention_types_path(@alert_type, rating), class: 'btn' %></td>
+        <% if @alert_type.class_name == "Alerts::System::ContentManaged" %>
+          <td>
+            <%= link_to "Delete", admin_alert_type_rating_path(@alert_type, rating), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+          </td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

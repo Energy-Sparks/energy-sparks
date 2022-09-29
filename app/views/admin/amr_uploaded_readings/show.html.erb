@@ -18,11 +18,6 @@
 
 <%= render 'first_ten_reading_rows', valid_reading_data: @valid_reading_data %>
 
-<%= form_with(url: admin_create_amr_data_feed_readings_path(@amr_uploaded_reading), method: :post, local: true) do %>
-  <%= submit_tag "Insert this data", class: 'btn', data: { disable_with: false } %>
-<% end %>
-<br>
-
 <%= form_with(url: admin_amr_data_feed_config_amr_uploaded_reading_manual_data_load_runs_path(@amr_data_feed_config, @amr_uploaded_reading), method: :post, local: true) do %>
-  <%= submit_tag "Insert this data (NEW)", class: 'btn', data: { disable_with: false } %>
+  <%= submit_tag "Insert this data", class: 'btn', data: { disable_with: false } %>
 <% end %>
