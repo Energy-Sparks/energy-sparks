@@ -27,6 +27,7 @@ cy:
         two: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> bwynt!
         many: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> o bwyntiau!
         other: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> o bwyntiau!
+      download_resources: Lawrlwytho adnoddau
       record_this_activity: Cofnodi'r gweithgaredd hwn
       view_related_activities:
         one: Gweld 1 gweithgaredd cysylltiedig
