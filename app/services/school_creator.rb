@@ -63,6 +63,8 @@ class SchoolCreator
 private
 
   def add_school(user, school)
+    return if user.group_admin?
+
     user.add_cluster_school(school)
     user.update!(school: school, role: :school_admin) unless user.school
   end
@@ -81,6 +83,7 @@ private
   end
 
   def create_default_contact(onboarding)
+    return if onboarding.created_user.group_admin?
     onboarding_service.record_event(onboarding, :alert_contact_created) do
       @school.contacts.create!(
         user: onboarding.created_user,

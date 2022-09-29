@@ -111,7 +111,98 @@ RSpec.describe "onboarding", :schools, type: :system do
         expect(onboarding.created_user.role).to eq('school_onboarding')
       end
 
-      it 'allows an existing user to sign in'
+      context 'and user already has an account' do
+        let(:existing_user)    { nil }
+        let(:school_group)    { create(:school_group) }
+
+        before(:each) do
+          onboarding.update!(school_group: school_group)
+          click_on 'Start'
+          click_on 'Use an existing account'
+          fill_in 'Email', with: existing_user.email
+          fill_in 'Password', with: existing_user.password
+          within '#staff' do
+            click_on 'Sign in'
+          end
+        end
+
+        context 'as a school admin' do
+          let(:other_school)    { create(:school) }
+          let(:existing_user)   { create(:school_admin, school: other_school) }
+
+          it 'allows them to sign in' do
+            expect(page).to have_content("Step 1: Confirm your administrator account")
+            expect(page).to have_content("Do you want to use this user as your administrator account")
+          end
+          it 'allows them to complete onboarding' do
+            click_on 'Yes, use this account'
+
+            #School details
+            fill_in 'Unique Reference Number', with: '4444244'
+            fill_in 'Address', with: '1 Station Road'
+            fill_in 'Postcode', with: 'A1 2BC'
+            fill_in 'Website', with: 'http://oldfield.sch.uk'
+            choose('Primary')
+            click_on 'Save school details'
+
+            #Consent
+            fill_in 'Name', with: 'Boss user'
+            fill_in 'Job title', with: 'Boss'
+            fill_in 'School name', with: 'Boss school'
+            click_on 'Grant consent'
+
+            #Additional school accounts
+            click_on 'Skip for now'
+
+            #Pupils
+            fill_in 'Name', with: 'The energy savers'
+            fill_in 'Pupil password', with: 'theenergysavers'
+            click_on 'Create pupil account'
+
+            #Completion
+            click_on "Complete setup", match: :first
+            expect(page).to have_content("Setup completed")
+          end
+        end
+
+        context 'as a group admin' do
+          let(:existing_user)   { create(:group_admin, school_group: school_group) }
+
+          it 'allows them to sign in' do
+            expect(page).to have_content("Step 1: Confirm your administrator account")
+            expect(page).to have_content("Do you want to complete onboarding for Oldfield Park Infants using this school group admin account?")
+          end
+          it 'allows them to complete onboarding' do
+            click_on 'Yes, use this account'
+
+            #School details
+            fill_in 'Unique Reference Number', with: '4444244'
+            fill_in 'Address', with: '1 Station Road'
+            fill_in 'Postcode', with: 'A1 2BC'
+            fill_in 'Website', with: 'http://oldfield.sch.uk'
+            choose('Primary')
+            click_on 'Save school details'
+
+            #Consent
+            fill_in 'Name', with: 'Boss user'
+            fill_in 'Job title', with: 'Boss'
+            fill_in 'School name', with: 'Boss school'
+            click_on 'Grant consent'
+
+            #Additional school accounts
+            click_on 'Skip for now'
+
+            #Pupils
+            fill_in 'Name', with: 'The energy savers'
+            fill_in 'Pupil password', with: 'theenergysavers'
+            click_on 'Create pupil account'
+
+            #Completion
+            click_on "Complete setup", match: :first
+            expect(page).to have_content("Setup completed")
+          end
+        end
+      end
 
       context 'having created an account' do
         let(:user) { create(:onboarding_user) }

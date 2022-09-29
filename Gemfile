@@ -98,9 +98,14 @@ gem 'wisper', '2.0.0'
 gem 'stateful_enum', '0.6.0'
 gem 'cocoon'
 
+# Internationalisation
 gem 'i18n-tasks', '~> 1.0.10'
 gem 'mobility', '~> 1.2.6'
 gem 'mobility-actiontext', '~> 1.1.1'
+
+# Background jobs
+gem 'delayed_job_active_record'
+gem "delayed_job_web"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

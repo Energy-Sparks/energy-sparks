@@ -35,7 +35,11 @@ module NavHelper
   end
 
   def locale_name_for(locale)
-    I18n.t('name', locale: locale)
+    case I18n.locale.to_s
+    when 'cy' then 'English'
+    when 'en' then 'Cymraeg'
+    else I18n.t('name', locale: locale)
+    end
   end
 
   def on_test?
