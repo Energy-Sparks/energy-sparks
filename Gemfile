@@ -104,7 +104,6 @@ gem 'mobility', '~> 1.2.6'
 gem 'mobility-actiontext', '~> 1.1.1'
 
 # Background jobs
-gem 'daemons'
 gem 'delayed_job_active_record'
 gem "delayed_job_web"
 

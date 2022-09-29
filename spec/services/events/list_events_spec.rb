@@ -33,8 +33,8 @@ module Events
       expect( events[0].name ).to eql("Energy Sparks induction session")
       expect( events[0].url ).to eql("https://www.eventbrite.co.uk/e/energy-sparks-induction-session-tickets-138294742297")
       expect( events[0].sold_out?).to eql(false)
-      expect( events[0].date ).to eql(Date.parse("2021-03-02T16:00:00"))
-      expect( events[3].date).to eql(Date.parse("2021-06-08T16:00:00"))
+      expect( events[0].date ).to eql(DateTime.parse("2021-03-02T16:00:00"))
+      expect( events[3].date).to eql(DateTime.parse("2021-06-08T16:00:00"))
     end
 
   end

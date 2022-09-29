@@ -329,7 +329,7 @@ Rails.application.routes.draw do
 
     resources :alert_types, only: [:index, :show, :edit, :update] do
       scope module: :alert_types do
-        resources :ratings, only: [:index, :new, :create, :edit, :update] do
+        resources :ratings, only: [:index, :new, :edit, :create, :update, :destroy] do
           resource :activity_types, only: [:show, :update]
           resource :intervention_types, only: [:show, :update]
         end
@@ -342,7 +342,7 @@ Rails.application.routes.draw do
 
     resources :amr_data_feed_configs, only: [:index, :show, :edit, :update] do
       resources :amr_uploaded_readings, only: [:index, :show, :new, :create] do
-        resources :manual_data_load_runs, only: [:show, :create]
+        resources :manual_data_load_runs, only: [:show, :create, :destroy]
       end
     end
 
@@ -423,8 +423,6 @@ Rails.application.routes.draw do
         post :deactivate
       end
     end
-
-    post 'amr_data_feed_readings/:amr_uploaded_reading_id', to: 'amr_data_feed_readings#create', as: :create_amr_data_feed_readings
 
     authenticated :user, -> user { user.admin? }  do
       mount DelayedJobWeb, at: "/delayed_job"
