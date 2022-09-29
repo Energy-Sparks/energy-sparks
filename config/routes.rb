@@ -342,7 +342,7 @@ Rails.application.routes.draw do
 
     resources :amr_data_feed_configs, only: [:index, :show, :edit, :update] do
       resources :amr_uploaded_readings, only: [:index, :show, :new, :create] do
-        resources :manual_data_load_runs, only: [:show, :create]
+        resources :manual_data_load_runs, only: [:show, :create, :destroy]
       end
     end
 
