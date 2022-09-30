@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ContentBatch do
+describe ContentBatchJob do
 
   let!(:school_1) { create(:school) }
   let!(:school_2) { create(:school) }
@@ -18,7 +18,7 @@ describe ContentBatch do
   end
 
   it 'should broadcast event when successful' do
-    expect{ ContentBatch.new.generate }.to broadcast(:school_content_generated, school_1).and broadcast(:school_content_generated, school_2)
+    expect{ ContentBatchJob.new.generate }.to broadcast(:school_content_generated, school_1).and broadcast(:school_content_generated, school_2)
   end
 
   context 'when school has a target' do
