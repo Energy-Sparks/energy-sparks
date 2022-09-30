@@ -1,6 +1,6 @@
 class ValidateAndAggregateAmrReadingsJob < ApplicationJob
   self.queue_adapter = :delayed_job
-  queue_as :school
+  queue_as :validate_amr_readings
 
   def perform(school:, send_metrics_after_perform: false)
     Amr::ValidateAndPersistReadingsService.new(school).perform
