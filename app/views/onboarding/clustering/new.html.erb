@@ -3,7 +3,12 @@
     <h1>Step 1: Confirm your administrator account</h1>
 
     <p>You are currently logged in as <strong><%= current_user.email %></strong></p>
-    <p>Do you want to use this user as your administrator account for <%= @school_onboarding.school_name %>?</p>
+
+    <% if current_user.group_admin? %>
+      <p>Do you want to complete onboarding for <%= @school_onboarding.school_name %> using this school group admin account?</p>
+    <% else %>
+      <p>Do you want to use this user as your administrator account for <%= @school_onboarding.school_name %>?</p>
+    <% end %>
 
     <%= simple_form_for(current_user, url: onboarding_clustering_path(@school_onboarding), method: :post) do |f| %>
       <%= f.button :submit, 'Yes, use this account' %>

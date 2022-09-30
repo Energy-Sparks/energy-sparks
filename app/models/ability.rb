@@ -56,6 +56,11 @@ class Ability
         can :manage, CalendarEvent do |calendar_event|
           user.school_group.calendars.include?(calendar_event.calendar)
         end
+        #A group admin can manage onboarding for any school in their group
+        #The onboarding must be associated with the group
+        can :manage, SchoolOnboarding do |onboarding|
+          onboarding.school_group.present? && user.school_group == onboarding.school_group
+        end
       else
         school_scope = { id: user.school_id, visible: true }
         related_school_scope = { school_id: user.school_id }

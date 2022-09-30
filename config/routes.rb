@@ -424,6 +424,9 @@ Rails.application.routes.draw do
       end
     end
 
+    authenticated :user, -> user { user.admin? }  do
+      mount DelayedJobWeb, at: "/delayed_job"
+    end
   end # Admin name space
 
   #redirect from old teacher dashboard

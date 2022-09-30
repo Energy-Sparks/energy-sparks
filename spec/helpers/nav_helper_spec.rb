@@ -15,7 +15,9 @@ describe NavHelper do
 
   describe '#locale_name_for' do
     it 'returns the name for a given locale' do
+      I18n.locale = 'cy'
       expect(helper.locale_name_for('en')).to eq('English')
+      I18n.locale = 'en'
       expect(helper.locale_name_for('cy')).to eq('Cymraeg')
     end
   end
