@@ -10,5 +10,8 @@ class SchoolContentBatchJob < ApplicationJob
     Equivalences::GenerateEquivalences.new(school: school, aggregate_school: aggregate_school).perform
     Alerts::GenerateContent.new(school).perform
     Targets::GenerateProgressService.new(school, aggregate_school).generate!
+
+    school_target = school.most_recent_target
+    school_target.update(report_last_generated: Time.zone.now) if school_target.present?
   end
 end
