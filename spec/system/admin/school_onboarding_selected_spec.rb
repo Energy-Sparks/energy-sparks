@@ -24,9 +24,8 @@ RSpec.describe 'admin school onboardings selectable actions', type: :system do
         end
 
         describe "Make selected visible" do
-          before do
-            onboarding.school.update!(visible: false)
-          end
+          before {  onboarding.school.update!(visible: false) }
+
           it { expect(onboarding.school).to_not be_visible }
           it { expect(onboarding).to be_incomplete }
 
@@ -40,10 +39,14 @@ RSpec.describe 'admin school onboardings selectable actions', type: :system do
           end
 
           context "with consent" do
+            before  { Wisper.clear; Wisper.subscribe(Onboarding::OnboardingDataEnabledListener.new) }
+            after   { Wisper.clear }
+
             before do
               create(:consent_grant, school: onboarding.school)
               click_button "Make selected visible"
             end
+
             it { expect(page).to have_content('Schools made visible') }
             it { expect(onboarding.reload.school).to be_visible }
             it { expect(ActionMailer::Base.deliveries.count).to eq(2) }
@@ -55,7 +58,7 @@ RSpec.describe 'admin school onboardings selectable actions', type: :system do
             it "sends school live email" do
               email = ActionMailer::Base.deliveries.second
               expect(email.to).to include(onboarding.created_user.email)
-              expect(email.subject).to eq("#{onboarding.school.name} is live on Energy Sparks")
+              expect(email.subject).to eq("#{onboarding.school.name} is now live on Energy Sparks")
             end
           end
         end
