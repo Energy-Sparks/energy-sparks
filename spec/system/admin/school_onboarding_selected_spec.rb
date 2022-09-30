@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe 'admin school onboardings', type: :system do
+RSpec.describe 'admin school onboardings selectable actions', type: :system do
 
   let(:admin)             { create(:admin) }
   let(:school_group)      { create :school_group }
 
-  let!(:onboardings)      { 3.times.collect { create :school_onboarding, :with_events, :with_school, event_names: [:email_sent], school_group: school_group } }
+  let!(:onboardings)      { 3.times.collect { create :school_onboarding, :with_school, school_group: school_group, created_by: admin } }
 
   describe 'when logged in' do
     before do
@@ -27,6 +27,9 @@ RSpec.describe 'admin school onboardings', type: :system do
           before do
             onboarding.school.update!(visible: false)
           end
+          it { expect(onboarding.school).to_not be_visible }
+          it { expect(onboarding).to be_incomplete }
+
           context "without consents" do
             before do
               click_button "Make selected visible"
@@ -43,6 +46,17 @@ RSpec.describe 'admin school onboardings', type: :system do
             end
             it { expect(page).to have_content('Schools made visible') }
             it { expect(onboarding.reload.school).to be_visible }
+            it { expect(ActionMailer::Base.deliveries.count).to eq(2) }
+            it "sends onboarding complete email" do
+              email = ActionMailer::Base.deliveries.first
+              expect(email.to).to include('operations@energysparks.uk')
+              expect(email.subject).to eq("#{onboarding.school.name} has completed the onboarding process")
+            end
+            it "sends school live email" do
+              email = ActionMailer::Base.deliveries.second
+              expect(email.to).to include(onboarding.created_user.email)
+              expect(email.subject).to eq("#{onboarding.school.name} is live on Energy Sparks")
+            end
           end
         end
 
@@ -53,6 +67,11 @@ RSpec.describe 'admin school onboardings', type: :system do
           it { expect(page).to have_current_path(admin_school_onboardings_path(school_group: school_group)) }
           it { expect(onboarding.reload.events.map(&:event)).to include('reminder_sent') }
           it { expect(page).to have_content('Reminders sent') }
+          it "sends email" do
+            email = ActionMailer::Base.deliveries.last
+            expect(email.subject).to include("Don't forget to set up your school on Energy Sparks")
+            expect(email.body.to_s).to include(onboarding_path(onboarding))
+          end
         end
       end
     end

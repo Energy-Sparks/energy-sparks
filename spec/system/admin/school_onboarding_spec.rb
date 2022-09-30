@@ -74,7 +74,7 @@ RSpec.describe "onboarding", :schools, type: :system do
     it 'sends reminder emails when requested' do
       onboarding = create :school_onboarding, :with_events
       click_on 'Manage school onboarding'
-      click_on 'Send reminder'
+      click_on 'Send reminder email'
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to include("Don't forget to set up your school on Energy Sparks")
