@@ -2,12 +2,13 @@ require 'rails_helper'
 
 RSpec.describe 'admin school onboardings selectable actions', type: :system do
 
-  let(:admin)             { create(:admin) }
-  let(:school_group)      { create :school_group }
-
-  let!(:onboardings)      { 3.times.collect { create :school_onboarding, :with_school, school_group: school_group, created_by: admin } }
+  let(:admin)         { create(:admin) }
+  let(:school_group)  { create :school_group }
+  let(:school_group_onboardings) { 3.times.collect { create :school_onboarding, :with_school, school_group: school_group, created_by: admin } }
 
   describe 'when logged in' do
+    let!(:onboardings)  { school_group_onboardings }
+
     before do
       sign_in(admin)
       visit root_path
@@ -98,14 +99,21 @@ RSpec.describe 'admin school onboardings selectable actions', type: :system do
     end
 
     context "Checking all", js: true do
+      let(:another)      { create :school_onboarding, :with_school, created_by: admin, school_group: create(:school_group) }
+      let(:onboardings)  { school_group_onboardings << another }
+
       before do
         check "check-all-#{school_group.id}"
       end
 
-      it "checks all checkboxes" do
+      it "checks all group's checkboxes" do
         school_group.school_onboardings.each do |onboarding|
           expect(page).to have_checked_field("school_group_school_onboarding_ids_#{onboarding.id}")
         end
+      end
+
+      it "doesn't check other group's checkboxes" do
+        expect(page).to have_unchecked_field("school_group_school_onboarding_ids_#{another.id}")
       end
 
       context "unchecking all" do
@@ -114,7 +122,7 @@ RSpec.describe 'admin school onboardings selectable actions', type: :system do
         end
         it "unchecks all checkboxes" do
           school_group.school_onboardings.each do |onboarding|
-            expect(page).to_not have_checked_field("school_group_school_onboarding_ids_#{onboarding.id}")
+            expect(page).to have_unchecked_field("school_group_school_onboarding_ids_#{onboarding.id}")
           end
         end
       end
