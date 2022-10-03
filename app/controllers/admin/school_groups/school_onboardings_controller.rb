@@ -10,6 +10,21 @@ module Admin
         end
       end
 
+      def reminders
+        for_selected "Reminders sent" do |onboarding|
+          OnboardingMailer.with(school_onboarding: onboarding).reminder_email.deliver_now
+          onboarding.events.create!(event: :reminder_sent)
+        end
+      end
+
+      def make_visible
+        for_selected "Schools made visible" do |onboarding|
+          SchoolCreator.new(onboarding.school).make_visible! if onboarding.school
+        end
+      rescue SchoolCreator::Error => e
+        redirect_to admin_school_onboardings_path(school_group: @school_group.slug, anchor: @school_group.slug), notice: e.message
+      end
+
       private
 
       def filename(school_group)
@@ -61,6 +76,17 @@ module Admin
           helpers.y_n(school.visible),
           helpers.y_n(school.active)
         ]
+      end
+
+      def for_selected(notice)
+        if (ids = params.dig(:school_group, :school_onboarding_ids))
+          @school_group.school_onboardings.find(ids).each do |onboarding|
+            yield onboarding
+          end
+        else
+          notice = "Nothing selected"
+        end
+        redirect_to admin_school_onboardings_path(school_group: @school_group.slug, anchor: @school_group.slug), notice: notice
       end
     end
   end
