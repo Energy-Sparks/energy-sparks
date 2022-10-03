@@ -47,16 +47,14 @@
               <td><%= onboarding.contact_email %> <%= link_to 'Change', edit_admin_school_onboarding_email_path(onboarding), class: 'btn btn-warning btn-sm' if onboarding.has_only_sent_email_or_reminder? %></td>
               <td data-order="<%= onboarding.events.maximum(:created_at) %>"><%= nice_date_times(onboarding.events.maximum(:created_at)) %></td>
               <td><%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)).try(:humanize) %></td>
-              <td>
-                <div class="btn-group">
-                  <%= link_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding), class: 'btn btn-warning btn-sm', method: :post %>
-                  <% if onboarding.school && onboarding.school.consent_grants.any? %>
-                    <%= link_to 'Make visible', school_visibility_path(onboarding.school), class: 'btn btn-sm', method: :post %>
-                  <% else %>
-                    <%= link_to 'Edit', edit_admin_school_onboarding_path(onboarding), class: 'btn btn-sm' %>
-                  <% end %>
-                  <%= link_to 'Delete', admin_school_onboarding_path(onboarding), class: 'btn btn-sm', method: :delete, data: {confirm: 'Are you sure?'} %>
-                </div>
+              <td class="nowrap">
+                <%= link_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding), class: 'btn btn-warning btn-sm', method: :post %>
+                <% if onboarding.school && onboarding.school.consent_grants.any? %>
+                  <%= link_to 'Make visible', school_visibility_path(onboarding.school), class: 'btn btn-sm', method: :post %>
+                <% else %>
+                  <%= link_to 'Edit', edit_admin_school_onboarding_path(onboarding), class: 'btn btn-sm' %>
+                <% end %>
+                <%= link_to 'Delete', admin_school_onboarding_path(onboarding), class: 'btn btn-sm', method: :delete, data: {confirm: 'Are you sure?'} %>
               </td>
             </tr>
           <% end %>
