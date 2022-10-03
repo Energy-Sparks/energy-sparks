@@ -1,7 +1,10 @@
 class DccGrantTrustedConsentsJob < ApplicationJob
+  self.queue_adapter = :delayed_job
   queue_as :default
 
   def perform(meters)
-    Meters::DccGrantTrustedConsents.new(meters).perform
+    ActiveRecord::Base.transaction do
+      Meters::DccGrantTrustedConsents.new(meters).perform
+    end
   end
 end
