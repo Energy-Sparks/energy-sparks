@@ -54,6 +54,8 @@ class Observation < ApplicationRecord
   scope :by_date, -> { order(at: :desc) }
   scope :for_school, ->(school) { where(school: school) }
   scope :between, ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
+  scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago)}
+
 
   has_rich_text :description
 

@@ -2,7 +2,7 @@ module Admin
   module Reports
     class InterventionsController < AdminController
       def index
-        @observations = Observation.intervention.order(created_at: :desc).limit(50)
+        @observations = Observation.intervention.recorded_in_last_year.order(created_at: :desc)
       end
     end
   end
