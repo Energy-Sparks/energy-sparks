@@ -1,4 +1,4 @@
-<h1>Users</h1>
+<h1>All users</h1>
 
 <div id="top" class="d-flex justify-content-between align-items-center">
   <form action="" class="form">
@@ -19,11 +19,13 @@
 
 <% @school_users.each do |school_group, schools| %>
   <div class="row nav-anchor">
-    <a name="<%= school_group.name.parameterize %>"> </a>
-    <h2><%= school_group.name %></h2>
+    <div class="col">
+      <a name="<%= school_group.name.parameterize %>"> </a>
+      <h2><%= school_group.name %></h2>
+    </div>
   </div>
 
-  <table class="table table-condensed table-sorted">
+  <table class="table table-sm table-sorted">
     <thead>
       <tr>
         <th>School</th>
@@ -49,12 +51,12 @@
             <td><%= user.access_locked? ? 'Y' : '' %></td>
             <td>
               <div class="btn-group">
-                <% unless user.confirmed? %>
-                  <%= button_to 'Resend confirmation', admin_user_confirmation_path(user), class: 'btn btn-warning btn-sm' %>
-                <% end %>
                 <%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-primary btn-sm' %>
                 <%= link_to 'Delete', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
               </div>
+              <% unless user.confirmed? %>
+                <%= button_to 'Resend confirmation', admin_user_confirmation_path(user), class: 'btn btn-warning btn-sm' %>
+              <% end %>
             </td>
           </tr>
         <% end %>
@@ -69,7 +71,7 @@
   <h2>School group users</h2>
 </div>
 
-<table class="table table-condensed table-sorted">
+<table class="table table-sm table-sorted">
   <thead>
     <tr>
       <th>Name</th>
@@ -107,7 +109,7 @@
   <h2>Users without a school</h2>
 </div>
 
-<table class="table table-condensed table-sorted">
+<table class="table table-sm table-sorted">
   <thead>
     <tr>
       <th>Name</th>
