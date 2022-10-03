@@ -3,11 +3,9 @@ class ManualDataLoadRunJob < ApplicationJob
   queue_as :default
 
   def perform(manual_data_load_run)
-    ActiveRecord::Base.transaction do
-      load(manual_data_load_run.amr_uploaded_reading.amr_data_feed_config,
-           manual_data_load_run.amr_uploaded_reading,
-           manual_data_load_run)
-    end
+    load(manual_data_load_run.amr_uploaded_reading.amr_data_feed_config,
+         manual_data_load_run.amr_uploaded_reading,
+         manual_data_load_run)
   end
 
   def load(amr_data_feed_config, amr_uploaded_reading, manual_data_load_run)
