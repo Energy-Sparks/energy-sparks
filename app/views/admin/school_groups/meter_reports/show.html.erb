@@ -46,6 +46,7 @@
         <th>Large gaps (last 2 years)</th>
         <th>Modified readings (last 2 years)</th>
         <th>Zero reading days</th>
+        <th>Notes</th>
       </tr>
     </thead>
     <tbody>
@@ -54,7 +55,9 @@
           <tr>
             <td><%= link_to(school.name, school_path(school)) %></td>
             <td><%= fa_icon fuel_type_icon(meter.meter_type) %></td>
-            <td><%= meter.mpan_mprn %></td>
+            <td>
+              <%= link_to(meter.mpan_mprn, school_meter_path(school, meter)) %>
+            </td>
             <td><%= link_to(meter.name.present? ? meter.name : meter.meter_type.to_s.humanize, admin_reports_amr_validated_reading_path(meter)) if AmrValidatedReading.where(meter_id: meter.id).any? %></td>
             <% if @meter_scope.empty? %>
               <td><%= meter.active ? 'Active' : 'Deprecated' %></td>
@@ -65,6 +68,11 @@
             <td class="modified-dates"><%= meter.modified_validated_readings.count %></td>
             <td class="<%= meter.zero_reading_days_warning? ? 'table-danger' : ''%>">
               <%= meter.zero_reading_days.count %>
+            </td>
+            <td>
+              <% if meter.notes.present? %>
+                <%= render 'schools/meters/meter_notes', meter: meter %>
+              <% end %>
             </td>
           </tr>
         <% end %>
