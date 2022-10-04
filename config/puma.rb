@@ -44,7 +44,7 @@ if ENV["RAILS_ENV"] == "production"
  stdout_redirect '/var/log/puma/puma.log', '/var/log/puma/puma.log', true
 end
 
-if ENV["RAILS_ENV"] == 'development'
+if ENV["RAILS_ENV"] != 'production'
   before_fork do
     GoodJob.shutdown
   end
