@@ -1,5 +1,5 @@
 class SchoolBatchRunJob < ApplicationJob
-  self.queue_adapter = :delayed_job
+  self.queue_adapter = :good_job
   queue_as :default
 
   def perform(school_batch_run)
