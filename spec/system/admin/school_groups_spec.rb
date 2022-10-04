@@ -14,7 +14,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
       click_on 'Admin'
     end
 
-    context "viewing a tabular list of school groups" do
+    describe "Viewing school groups list page" do
       before do
         school_groups.each do |school_group|
           onboarding = create :school_onboarding, created_by: admin, school_group: school_group
@@ -45,6 +45,25 @@ RSpec.describe 'school groups', :school_groups, type: :system do
           pending "2474-manage-school-group-page"
           expect(page).to have_link('Manage school group')
         end
+      end
+    end
+
+    describe "Viewing school group page" do
+      let(:schools) { [] }
+      let(:school_group) { create :school_group }
+      before do
+        visit admin_school_group_path(school_group)
+      end
+
+      it "has a button to view all school groups" do
+        expect(page).to have_link('All school groups')
+      end
+
+      context "clicking on All school groups" do
+        before do
+          click_link "All school groups"
+        end
+        it { expect(page).to have_current_path(admin_school_groups_path) }
       end
     end
 

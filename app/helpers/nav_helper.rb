@@ -77,4 +77,10 @@ module NavHelper
       end
     end
   end
+
+  def header_nav_link(link_text, link_path)
+    nav_class = 'btn btn-outline-dark rounded-pill font-weight-bold'
+    nav_class += ' disabled' if current_page?(link_path)
+    link_to link_text, link_path, class: nav_class
+  end
 end
