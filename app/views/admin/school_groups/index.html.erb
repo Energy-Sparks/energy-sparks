@@ -18,7 +18,7 @@
     <tbody>
       <% @school_groups.each do |school_group| %>
         <tr>
-          <td><%= school_group.name %></td>
+          <td><%= link_to school_group.name, admin_school_group_path(school_group) %></td>
           <td><%= school_group.school_onboardings.select(&:incomplete?).count %></td>
           <td><%= school_group.schools.visible.count %></td>
           <td><%= school_group.schools.visible.data_enabled.count %></td>
