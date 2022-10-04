@@ -64,6 +64,10 @@ RSpec.describe 'school groups', :school_groups, type: :system do
         expect(page).to have_link('All school groups')
       end
 
+      it "displays pupils in active schools count" do
+        expect(page).to have_content("Pupils in active schools: #{school_group.schools.visible.map(&:number_of_pupils).compact.sum}")
+      end
+
       context "school group status panel" do
         it { expect(page).to have_content("Active 2") }
         it { expect(page).to have_content("Active (with data visible) 1") }
