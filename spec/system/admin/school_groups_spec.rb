@@ -6,7 +6,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
   let!(:scoreboard)           { create(:scoreboard, name: 'BANES and Frome') }
   let!(:dark_sky_weather_area) { create(:dark_sky_area, title: 'BANES dark sky weather') }
 
-  def create_school_groups_data(school_groups)
+  def create_data_for_school_groups(school_groups)
     school_groups.each do |school_group|
       onboarding = create :school_onboarding, created_by: admin, school_group: school_group
       visble = create :school, visible: true, data_enabled: false, school_group: school_group
@@ -26,7 +26,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
 
     describe "Viewing school groups admin page" do
       before do
-        create_school_groups_data(school_groups)
+        create_data_for_school_groups(school_groups)
         click_on 'Edit School Groups'
       end
 
@@ -54,7 +54,9 @@ RSpec.describe 'school groups', :school_groups, type: :system do
 
     describe "Viewing school group page" do
       let(:school_group) { create :school_group }
+
       before do
+        create_data_for_school_groups([school_group])
         visit admin_school_group_path(school_group)
       end
 
@@ -62,12 +64,21 @@ RSpec.describe 'school groups', :school_groups, type: :system do
         expect(page).to have_link('All school groups')
       end
 
-      context "clicking on All school groups" do
+      context "school group status panel" do
+        it { expect(page).to have_content("Active 2") }
+        it { expect(page).to have_content("Active (with data visible) 1") }
+        it { expect(page).to have_content("Invisible 1") }
+        it { expect(page).to have_content("Onboarding 1") }
+        it { expect(page).to have_content("Removed 1") }
+      end
+
+      context "clicking on 'All school groups'" do
         before do
           click_link "All school groups"
         end
         it { expect(page).to have_current_path(admin_school_groups_path) }
       end
+
     end
 
     it 'can add a new school group with validation' do
