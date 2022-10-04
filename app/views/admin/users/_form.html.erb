@@ -2,7 +2,6 @@
 
   <%= f.input :name %>
   <%= f.input :email %>
-  <%= f.input :password %>
   <%= f.input :role, collection: User.roles.except(:guest).keys, label_method: :titleize %>
   <%= f.input :school_id, collection: @schools, hint: 'For staff and school admins'%>
   <%= f.input :school_group_id, collection: @school_groups, hint: 'For group admins'%>

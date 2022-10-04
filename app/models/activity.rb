@@ -39,6 +39,7 @@ class Activity < ApplicationRecord
   scope :most_recent, -> { order(created_at: :desc) }
   scope :by_date, -> { order(happened_on: :asc) }
   scope :between, ->(first_date, last_date) { where('happened_on BETWEEN ? AND ?', first_date, last_date) }
+  scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago)}
 
   has_rich_text :description
 

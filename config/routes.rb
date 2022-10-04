@@ -285,7 +285,12 @@ Rails.application.routes.draw do
     resources :school_groups do
       scope module: :school_groups do
         resources :meter_attributes
-        resources :school_onboardings, only: [:index]
+        resources :school_onboardings, only: [:index] do
+          collection do
+            post :reminders
+            post :make_visible
+          end
+        end
         resource :partners, only: [:show, :update]
         resource :meter_report, only: [:show]
       end
@@ -369,6 +374,7 @@ Rails.application.routes.draw do
         get 'completed'
       end
     end
+
     resources :activations, only: :index
     namespace :reports do
       resources :alert_subscribers, only: :index
