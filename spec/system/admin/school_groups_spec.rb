@@ -5,6 +5,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
   let!(:admin)                { create(:admin) }
   let!(:scoreboard)           { create(:scoreboard, name: 'BANES and Frome') }
   let!(:dark_sky_weather_area) { create(:dark_sky_area, title: 'BANES dark sky weather') }
+  let!(:setup_data) {}
 
   def create_data_for_school_groups(school_groups)
     school_groups.each do |school_group|
@@ -25,8 +26,8 @@ RSpec.describe 'school groups', :school_groups, type: :system do
     end
 
     describe "Viewing school groups admin page" do
+      let!(:setup_data) { create_data_for_school_groups(school_groups) }
       before do
-        create_data_for_school_groups(school_groups)
         click_on 'Edit School Groups'
       end
 
@@ -53,10 +54,9 @@ RSpec.describe 'school groups', :school_groups, type: :system do
     end
 
     describe "Viewing school group page" do
-      let(:school_group) { create :school_group }
-
+      let!(:school_group) { create :school_group }
       before do
-        create_data_for_school_groups([school_group])
+        setup_data
         visit admin_school_group_path(school_group)
       end
 
@@ -68,12 +68,31 @@ RSpec.describe 'school groups', :school_groups, type: :system do
         expect(page).to have_content("Pupils in active schools: #{school_group.schools.visible.map(&:number_of_pupils).compact.sum}")
       end
 
-      context "school group status panel" do
+      context "school counts by status panel" do
+        let!(:setup_data) { create_data_for_school_groups([school_group]) }
+
         it { expect(page).to have_content("Active 2") }
         it { expect(page).to have_content("Active (with data visible) 1") }
         it { expect(page).to have_content("Invisible 1") }
         it { expect(page).to have_content("Onboarding 1") }
         it { expect(page).to have_content("Removed 1") }
+      end
+
+      context "school counts by school type panel" do
+        School.school_types.keys.each do |school_type|
+          context "active #{school_type} schools" do
+            let!(:setup_data) { create(:school, school_group: school_group, school_type: school_type, active: true) }
+            it "should be counted" do
+              expect(page).to have_content("#{school_type.humanize} 1")
+            end
+          end
+          context "inactive #{school_type} schools" do
+            let!(:setup_data) { create(:school, school_group: school_group, school_type: school_type, active: false) }
+            it "should not be counted" do
+              expect(page).to have_content("#{school_type.humanize} 0")
+            end
+          end
+        end
       end
 
       context "clicking on 'All school groups'" do
@@ -82,7 +101,6 @@ RSpec.describe 'school groups', :school_groups, type: :system do
         end
         it { expect(page).to have_current_path(admin_school_groups_path) }
       end
-
     end
 
     it 'can add a new school group with validation' do

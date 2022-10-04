@@ -19,6 +19,9 @@
       </div>
       <div class="card">
         <div class="card-body">
+          <% School.school_types.keys.each do |school_type| %>
+            <div><%= school_type.humanize %> <span class="float-right"><%= @school_group.schools.visible.where(school_type: school_type).count %></span></div>
+          <% end %>
         </div>
       </div>
     </div>
