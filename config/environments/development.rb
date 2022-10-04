@@ -93,6 +93,10 @@ Rails.application.configure do
   # Uncomment to pull in locale files when testing with a local version of the Energy Sparks Analytics gem
   # config.i18n.load_path += Dir[Gem.loaded_specs['energy-sparks_analytics'].full_gem_path + '/config/locales/**/*.{rb,yml}']
 
+  # Default good job execution mode configuration for development
+  # See https://github.com/bensheldon/good_job#configuration-options
+  config.good_job.execution_mode = :async
+
   # This adds a 'mirror' locale that turns all translated text upside down so we can visually check for any
   # untranslated text in the erb templates.
   config.i18n.available_locales << :mirror

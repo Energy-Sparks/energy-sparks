@@ -48,6 +48,10 @@ Rails.application.configure do
 
   config.mailchimp_client = MailchimpMarketing::MockClient.new
 
+  # Default good job execution mode configuration for test
+  # See https://github.com/bensheldon/good_job#configuration-options
+  config.good_job.execution_mode = :inline
+
   # Uncomment to pull in locale files when testing with a local version of the Energy Sparks Analytics gem
   # config.i18n.load_path += Dir[Gem.loaded_specs['energy-sparks_analytics'].full_gem_path + '/config/locales/**/*.{rb,yml}']
 end
