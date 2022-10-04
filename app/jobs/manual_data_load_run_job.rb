@@ -1,5 +1,5 @@
 class ManualDataLoadRunJob < ApplicationJob
-  self.queue_adapter = :delayed_job
+  self.queue_adapter = :good_job
   queue_as :default
 
   def perform(manual_data_load_run)

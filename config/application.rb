@@ -46,10 +46,7 @@ module EnergySparks
       ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'
     end
 
-    # We will eventually switch over to DJ for all jobs but will test run some individual
-    # non-critical jobs on test and production first (see DccCheckerJob)
-    # config.active_job.queue_adapter = :delayed_job
-    config.active_job.queue_adapter = :async
+    config.active_job.queue_adapter = :good_job
 
     config.i18n.available_locales = [:en, :cy]
     config.i18n.default_locale = :en
