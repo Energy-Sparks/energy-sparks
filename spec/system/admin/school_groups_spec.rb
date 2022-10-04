@@ -6,6 +6,16 @@ RSpec.describe 'school groups', :school_groups, type: :system do
   let!(:scoreboard)           { create(:scoreboard, name: 'BANES and Frome') }
   let!(:dark_sky_weather_area) { create(:dark_sky_area, title: 'BANES dark sky weather') }
 
+  def create_school_groups_data(school_groups)
+    school_groups.each do |school_group|
+      onboarding = create :school_onboarding, created_by: admin, school_group: school_group
+      visble = create :school, visible: true, data_enabled: false, school_group: school_group
+      data_visible = create :school, visible: true, data_enabled: true, school_group: school_group
+      invisible = create :school, visible: false, school_group: school_group
+      removed = create :school, active: false, school_group: school_group
+    end
+  end
+
   describe 'when logged in' do
     before(:each) do
       sign_in(admin)
@@ -14,15 +24,9 @@ RSpec.describe 'school groups', :school_groups, type: :system do
       click_on 'Admin'
     end
 
-    describe "Viewing school groups list page" do
+    describe "Viewing school groups admin page" do
       before do
-        school_groups.each do |school_group|
-          onboarding = create :school_onboarding, created_by: admin, school_group: school_group
-          visble = create :school, visible: true, data_enabled: false, school_group: school_group
-          data_visible = create :school, visible: true, data_enabled: true, school_group: school_group
-          invisible = create :school, visible: false, school_group: school_group
-          removed = create :school, active: false, school_group: school_group
-        end
+        create_school_groups_data(school_groups)
         click_on 'Edit School Groups'
       end
 
@@ -49,7 +53,6 @@ RSpec.describe 'school groups', :school_groups, type: :system do
     end
 
     describe "Viewing school group page" do
-      let(:schools) { [] }
       let(:school_group) { create :school_group }
       before do
         visit admin_school_group_path(school_group)
