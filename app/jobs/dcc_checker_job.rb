@@ -3,8 +3,6 @@ class DccCheckerJob < ApplicationJob
   queue_as :default
 
   def perform(meter)
-    ActiveRecord::Base.transaction do
-      Meters::DccChecker.new([meter]).perform
-    end
+    Meters::DccChecker.new([meter]).perform
   end
 end

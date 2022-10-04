@@ -14,6 +14,40 @@ RSpec.describe 'school groups', :school_groups, type: :system do
       click_on 'Admin'
     end
 
+    context "viewing a tabular list of school groups" do
+      before do
+        school_groups.each do |school_group|
+          onboarding = create :school_onboarding, created_by: admin, school_group: school_group
+          visble = create :school, visible: true, data_enabled: false, school_group: school_group
+          data_visible = create :school, visible: true, data_enabled: true, school_group: school_group
+          invisible = create :school, visible: false, school_group: school_group
+          removed = create :school, active: false, school_group: school_group
+        end
+        click_on 'Edit School Groups'
+      end
+
+      context "with multiple groups" do
+        let(:school_groups) { [create(:school_group), create(:school_group)] }
+
+        it "displays totals for each group" do
+          within('table') do
+            school_groups.each do |school_group|
+              expect(page).to have_selector(:table_row, { "Name" => school_group.name, "Onboarding" => 1 , "Active" => 2, "Data visible" => 1, "Invisible" => 1, "Removed" => 1 })
+            end
+          end
+        end
+        it "displays a grand total" do
+          within('table') do
+            expect(page).to have_selector(:table_row, { "Name" => "All Energy Sparks Schools", "Onboarding" => 2 , "Active" => 4, "Data visible" => 2, "Invisible" => 2, "Removed" => 2 })
+          end
+        end
+        it "has a link to manage school group" do
+          pending "2474-manage-school-group-page"
+          expect(page).to have_link('Manage school group')
+        end
+      end
+    end
+
     it 'can add a new school group with validation' do
       click_on 'Edit School Groups'
       click_on 'New School group'
