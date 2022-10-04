@@ -27,3 +27,15 @@
     </div>
   </div>
 </div>
+
+<div class="bg-light p-2 my-2 d-flex justify-content-between">
+  <%= link_to 'View', school_group_path(@school_group), class: 'btn btn-sm' %>
+  <%= link_to 'Edit', edit_admin_school_group_path(@school_group), class: 'btn btn-sm' %>
+  <%= link_to 'Manage partners', admin_school_group_partners_path(@school_group), class: 'btn btn-sm' %>
+  <%= link_to 'Meter attributes', admin_school_group_meter_attributes_path(@school_group), class: 'btn btn-sm' %>
+  <%= link_to 'Meter report', admin_school_group_meter_report_path(@school_group), class: 'btn btn-sm' %>
+  <%= link_to 'Download meter report', admin_school_group_meter_report_path(@school_group, format: :csv) , class: 'btn btn-sm' %>
+  <div title="School groups can only be deleted when all schools in group are inactive" rel="tooltip">
+    <%= link_to 'Delete', admin_school_group_path(@school_group), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm#{' disabled' if @school_group.schools.active.any?}" %>
+  </div>
+</div>
