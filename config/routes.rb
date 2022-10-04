@@ -433,6 +433,10 @@ Rails.application.routes.draw do
     authenticated :user, -> user { user.admin? }  do
       mount DelayedJobWeb, at: "/delayed_job"
     end
+
+    authenticate :user, ->(user) { user.admin? } do
+      mount GoodJob::Engine => 'good_job'
+    end
   end # Admin name space
 
   #redirect from old teacher dashboard
