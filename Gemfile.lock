@@ -721,7 +721,7 @@ DEPENDENCIES
   foreman
   friendly_id
   geocoder
-  good_job (~> 3.4)
+  good_job (~> 3.4.6)
   groupdate (= 4.0.1)
   guard-rspec
   handlebars_assets

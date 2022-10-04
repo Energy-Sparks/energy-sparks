@@ -50,6 +50,7 @@ Rails.application.configure do
 
   # Default good job execution mode configuration for test
   # See https://github.com/bensheldon/good_job#configuration-options
+  config.active_job.queue_adapter = :good_job
   config.good_job.execution_mode = :inline
 
   # Uncomment to pull in locale files when testing with a local version of the Energy Sparks Analytics gem

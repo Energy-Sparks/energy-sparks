@@ -43,3 +43,17 @@ if ENV["RAILS_ENV"] == "production"
  bind 'unix:///var/run/puma/my_app.sock'
  stdout_redirect '/var/log/puma/puma.log', '/var/log/puma/puma.log', true
 end
+
+if ENV["RAILS_ENV"] == 'development'
+  before_fork do
+    GoodJob.shutdown
+  end
+
+  on_worker_boot do
+    GoodJob.restart
+  end
+
+  on_worker_shutdown do
+    GoodJob.shutdown
+  end
+end

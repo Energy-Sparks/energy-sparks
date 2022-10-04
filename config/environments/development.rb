@@ -95,6 +95,7 @@ Rails.application.configure do
 
   # Default good job execution mode configuration for development
   # See https://github.com/bensheldon/good_job#configuration-options
+  config.active_job.queue_adapter = :good_job
   config.good_job.execution_mode = :async
 
   # This adds a 'mirror' locale that turns all translated text upside down so we can visually check for any
