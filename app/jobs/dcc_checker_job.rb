@@ -1,6 +1,9 @@
 class DccCheckerJob < ApplicationJob
-  self.queue_adapter = :good_job
   queue_as :default
+
+  def priority
+    5
+  end
 
   def perform(meter)
     Meters::DccChecker.new([meter]).perform
