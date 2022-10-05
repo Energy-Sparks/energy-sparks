@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Find all delayed job pids
+# Find all good job pids
 PIDS=$(pgrep -f good_job)
 # Return count
 echo ${#PIDS[@]}
