@@ -24,12 +24,7 @@
           <td><%= school_group.schools.visible.data_enabled.count %></td>
           <td><%= school_group.schools.not_visible.count %></td>
           <td><%= school_group.schools.inactive.count %></td>
-          <td class="nowrap">
-            <%= link_to 'Edit', edit_admin_school_group_path(school_group), class: 'btn btn-sm' %>
-            <%= link_to 'Meter attributes', admin_school_group_meter_attributes_path(school_group), class: 'btn btn-sm' %>
-            <%= link_to 'Manage Partners', admin_school_group_partners_path(school_group), class: 'btn btn-sm' %>
-            <%= link_to 'Delete', admin_school_group_path(school_group), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-danger' %>
-          </td>
+          <td><%= link_to 'Manage', admin_school_group_path(school_group), class: 'btn btn-sm' %></td>
         </tr>
       <% end %>
       <tr class="font-weight-bold">
