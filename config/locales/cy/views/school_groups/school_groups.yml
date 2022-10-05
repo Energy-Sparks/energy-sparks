@@ -4,15 +4,6 @@ cy:
       compare_schools: Cymharu ysgolion
       scoreboard: Bwrdd sgorio
       view_all_schools: Gweld pob ysgol
-    index:
-      active_schools: Ysgolion gweithredol
-      active_with_data_visible_schools: Ysgolion gweithredol (gyda data yn weladwy)
-      alert_contacts: Cysylltiadau rhybuddio
-      energy_sparks_total: Cyfanswm Energy Sparks
-      invisible_schools: Ysgolion anweledig
-      number_of_pupils_in_active_schools: Nifer y disgyblion mewn ysgolion gweithredol
-      onboarding_schools: Cyflwyno ysgolion
-      title: Grwpiau ysgol
     show:
       currently_works_with_from:
         one: Mae Energy Sparks yn gweithio gydag %{count} ysgol ar hyn o bryd
