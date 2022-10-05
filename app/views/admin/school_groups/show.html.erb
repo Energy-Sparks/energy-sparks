@@ -4,23 +4,23 @@
     <%= header_nav_link 'All school groups', admin_school_groups_url %>
   </div>
 </div>
-<p>Pupils in active schools: <%= number_with_delimiter @school_group.schools.visible.map(&:number_of_pupils).compact.sum %></p>
+<p>Pupils in active schools: <span class="badge badge-success"><%= number_with_delimiter @school_group.schools.visible.map(&:number_of_pupils).compact.sum %></span></p>
 <div class="row">
   <div class="col-lg-12">
     <div class="card-deck">
       <div class="card">
         <div class="card-body">
-          <div>Active <span class="float-right"><%= @school_group.schools.visible.count %></span></div>
-          <div>Active (with data visible) <span class="float-right"><%= @school_group.schools.visible.data_enabled.count %></span></div>
-          <div>Invisible <span class="float-right"><%= @school_group.schools.not_visible.count %></span></div>
-          <div>Onboarding <span class="float-right"><%= @school_group.school_onboardings.select(&:incomplete?).count %></span></div>
-          <div>Removed <span class="float-right"><%= @school_group.schools.inactive.count %></span></div>
+          <div>Active <span class="float-right badge badge-success"><%= @school_group.schools.visible.count %></span></div>
+          <div>Active (with data visible) <span class="float-right badge badge-success"><%= @school_group.schools.visible.data_enabled.count %></span></div>
+          <div>Invisible <span class="float-right badge badge-info"><%= @school_group.schools.not_visible.count %></span></div>
+          <div>Onboarding <span class="float-right badge badge-warning"><%= @school_group.school_onboardings.select(&:incomplete?).count %></span></div>
+          <div>Removed <span class="float-right badge badge-secondary"><%= @school_group.schools.inactive.count %></span></div>
         </div>
       </div>
       <div class="card">
         <div class="card-body">
           <% School.school_types.keys.each do |school_type| %>
-            <div><%= school_type.humanize %> <span class="float-right"><%= @school_group.schools.visible.where(school_type: school_type).count %></span></div>
+            <div><%= school_type.humanize %> <span class="float-right badge badge-success"><%= @school_group.schools.visible.where(school_type: school_type).count %></span></div>
           <% end %>
         </div>
       </div>
