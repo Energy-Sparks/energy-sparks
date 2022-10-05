@@ -9,5 +9,5 @@ do
   process_memory_usage=$(ps -o rss= -p $pid)
   total_memory_usage=$(($total_memory_usage+$process_memory_usage))
 done
-# Return total memory usage of all delayed job processes
+# Return total memory usage of all good job processes
 echo $total_memory_usage

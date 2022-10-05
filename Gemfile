@@ -104,8 +104,6 @@ gem 'mobility', '~> 1.2.6'
 gem 'mobility-actiontext', '~> 1.1.1'
 
 # Background jobs
-gem 'delayed_job_active_record'
-gem "delayed_job_web"
 gem "good_job", "~> 3.4.6"
 
 group :development, :test do
