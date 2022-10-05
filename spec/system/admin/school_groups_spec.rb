@@ -25,7 +25,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
       click_on 'Admin'
     end
 
-    describe "Viewing school groups admin page" do
+    describe "Viewing school groups index page" do
       let!(:setup_data) { create_data_for_school_groups(school_groups) }
       before do
         click_on 'Edit School Groups'
@@ -57,20 +57,26 @@ RSpec.describe 'school groups', :school_groups, type: :system do
       let!(:school_group) { create :school_group }
       before do
         setup_data
-        visit admin_school_group_path(school_group)
+        click_on 'Edit School Groups'
+        click_on "#{school_group.name}" # change to "Manage"
       end
 
-      it "has a button to view all school groups" do
-        expect(page).to have_link('All school groups')
+      describe "Header" do
+        it { expect(page).to have_content("#{school_group.name} School Group")}
+        it "has a button to view all school groups" do
+          expect(page).to have_link('All school groups')
+        end
+        context "clicking on 'All school groups'" do
+          before { click_link "All school groups" }
+          it { expect(page).to have_current_path(admin_school_groups_path) }
+        end
+        it "displays pupils in active schools count" do
+          expect(page).to have_content("Pupils in active schools: #{school_group.schools.visible.map(&:number_of_pupils).compact.sum}")
+        end
       end
 
-      it "displays pupils in active schools count" do
-        expect(page).to have_content("Pupils in active schools: #{school_group.schools.visible.map(&:number_of_pupils).compact.sum}")
-      end
-
-      context "school counts by status panel" do
+      describe "School counts by status panel" do
         let!(:setup_data) { create_data_for_school_groups([school_group]) }
-
         it { expect(page).to have_content("Active 2") }
         it { expect(page).to have_content("Active (with data visible) 1") }
         it { expect(page).to have_content("Invisible 1") }
@@ -78,29 +84,57 @@ RSpec.describe 'school groups', :school_groups, type: :system do
         it { expect(page).to have_content("Removed 1") }
       end
 
-      context "school counts by school type panel" do
+      describe "School counts by school type panel" do
         School.school_types.keys.each do |school_type|
           context "active #{school_type} schools" do
             let!(:setup_data) { create(:school, school_group: school_group, school_type: school_type, active: true) }
-            it "should be counted" do
-              expect(page).to have_content("#{school_type.humanize} 1")
-            end
+            it { expect(page).to have_content("#{school_type.humanize} 1") }
           end
           context "inactive #{school_type} schools" do
             let!(:setup_data) { create(:school, school_group: school_group, school_type: school_type, active: false) }
-            it "should not be counted" do
-              expect(page).to have_content("#{school_type.humanize} 0")
-            end
+            it { expect(page).to have_content("#{school_type.humanize} 0") }
           end
         end
       end
 
-      context "clicking on 'All school groups'" do
-        before do
-          click_link "All school groups"
+      describe "Button panel" do
+        it { expect(page).to have_link('View') }
+        context "clicking 'View'" do
+          before { click_link 'View' }
+          it { expect(page).to have_current_path(school_group_path(school_group)) }
         end
-        it { expect(page).to have_current_path(admin_school_groups_path) }
+        it { expect(page).to have_link('Edit') }
+        context "clicking 'Edit'" do
+          before { click_link 'Edit' }
+          it { expect(page).to have_current_path(edit_admin_school_group_path(school_group)) }
+        end
+        it { expect(page).to have_link('Manage partners') }
+        context "clicking 'Manage partners'" do
+          before { click_link 'Manage partners' }
+          it { expect(page).to have_current_path(admin_school_group_partners_path(school_group)) }
+        end
+        it { expect(page).to have_link('Meter attributes') }
+        context "clicking 'Meter attributes'" do
+          before { click_link 'Meter attributes' }
+          it { expect(page).to have_current_path(admin_school_group_meter_attributes_path(school_group)) }
+        end
+        it { expect(page).to have_link('Meter report') }
+        context "clicking 'Meter report'" do
+          before { click_link 'Meter report' }
+          it { expect(page).to have_current_path(admin_school_group_meter_report_path(school_group)) }
+        end
+        it { expect(page).to have_link('Download meter report') }
+        context "clicking 'Download meter report'" do
+          before { click_link 'Download meter report' }
+          it { expect(page).to have_current_path(admin_school_group_meter_report_path(school_group, format: :csv)) }
+        end
+        it { expect(page).to have_link('Delete') }
+        context "clicking 'Delete'" do
+          before { click_link 'Delete' }
+          it { expect(page).to have_current_path(admin_school_groups_path) }
+        end
       end
+
     end
 
     it 'can add a new school group with validation' do
