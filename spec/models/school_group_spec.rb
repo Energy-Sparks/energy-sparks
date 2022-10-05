@@ -23,7 +23,24 @@ describe SchoolGroup, :school_groups, type: :model do
         subject.safe_destroy
       }.to change{SchoolGroup.count}.from(1).to(0)
     end
+  end
 
+  describe "#safe_to_destroy?" do
+    context "with no associated schools or users" do
+      it { expect(subject).to be_safe_to_destroy }
+    end
+    context "with associated schools" do
+      let!(:school) { create(:school, school_group: subject) }
+      it { expect(subject).to_not be_safe_to_destroy }
+    end
+    context "with associated users" do
+      let!(:user) { create(:user, school_group: subject) }
+      it { expect(subject).to_not be_safe_to_destroy }
+      context "and school" do
+        let!(:user) { create(:user, school_group: subject) }
+        it { expect(subject).to_not be_safe_to_destroy }
+      end
+    end
   end
 
   describe '#with_active_schools' do

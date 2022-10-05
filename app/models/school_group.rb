@@ -66,6 +66,10 @@ class SchoolGroup < ApplicationRecord
     schools.awaiting_activation.any?
   end
 
+  def safe_to_destroy?
+    !(schools.any? || users.any?)
+  end
+
   def safe_destroy
     raise EnergySparks::SafeDestroyError, 'Group has associated schools' if schools.any?
     raise EnergySparks::SafeDestroyError, 'Group has associated users' if users.any?
