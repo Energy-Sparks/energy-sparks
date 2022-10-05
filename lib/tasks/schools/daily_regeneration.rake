@@ -1,6 +1,7 @@
 namespace :school do
   desc "Schools daily regeneration"
   task daily_regeneration: :environment do
+    puts "#{DateTime.now.utc} Run daily regeneration for all process data schools start"
     School.process_data.each do |school|
       puts "Run daily regeneration job for #{school.name}"
       begin
@@ -13,5 +14,6 @@ namespace :school do
         Rollbar.error(e, job: :daily_regeneration, school_id: school.id, school: school.name)
       end
     end
+    puts "#{DateTime.now.utc} Run daily regeneration for all process data schools end"
   end
 end
