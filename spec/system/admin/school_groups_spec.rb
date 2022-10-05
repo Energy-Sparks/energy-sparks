@@ -1,10 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'school groups', :school_groups, type: :system do
-
   let!(:admin)                  { create(:admin) }
-  let!(:scoreboard)             { create(:scoreboard, name: 'BANES and Frome') }
-  let!(:dark_sky_weather_area)  { create(:dark_sky_area, title: 'BANES dark sky weather') }
   let!(:setup_data)             {}
 
   def create_data_for_school_groups(school_groups)
@@ -50,19 +47,26 @@ RSpec.describe 'school groups', :school_groups, type: :system do
           expect(page).to have_link('Manage')
         end
         context "clicking 'Manage'" do
-          before { click_on "Manage", match: :first }
-        #  it { expect(page).to have_current_path(admin_school_group_path(school_groups.first)) }
+          before do
+            within "table" do
+              click_on "Manage", match: :first
+            end
+          end
+          it { expect(page).to have_current_path(admin_school_group_path(school_groups.first)) }
         end
       end
     end
 
     describe "Adding a new school group" do
+      let!(:scoreboard)             { create(:scoreboard, name: 'BANES and Frome') }
+      let!(:dark_sky_weather_area)  { create(:dark_sky_area, title: 'BANES dark sky weather') }
+
       before do
         click_on 'Edit School Groups'
         click_on 'New School group'
       end
 
-      context "when required data is missing" do
+      context "when required data has not been entered" do
         before do
           click_on 'Create School group'
         end
@@ -88,7 +92,9 @@ RSpec.describe 'school groups', :school_groups, type: :system do
       before do
         setup_data
         click_on 'Edit School Groups'
-        click_on "#{school_group.name}" # change to "Manage"
+        within "table" do
+          click_on 'Manage'
+        end
       end
 
       describe "Header" do
