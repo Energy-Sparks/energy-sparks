@@ -44,7 +44,9 @@ RSpec.describe 'school groups', :school_groups, type: :system do
           end
         end
         it "has a link to manage school group" do
-          expect(page).to have_link('Manage')
+          within('table') do
+            expect(page).to have_link('Manage')
+          end
         end
         context "clicking 'Manage'" do
           before do
@@ -63,7 +65,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
 
       before do
         click_on 'Edit School Groups'
-        click_on 'New School group'
+        click_on 'New school group'
       end
 
       context "when required data has not been entered" do
