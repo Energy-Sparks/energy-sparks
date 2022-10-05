@@ -17,7 +17,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
     end
   end
 
-  describe 'when logged in' do
+  describe 'when logged in to the admin index' do
     before(:each) do
       sign_in(admin)
       visit root_path
@@ -52,6 +52,33 @@ RSpec.describe 'school groups', :school_groups, type: :system do
         context "clicking 'Manage'" do
           before { click_on "Manage", match: :first }
         #  it { expect(page).to have_current_path(admin_school_group_path(school_groups.first)) }
+        end
+      end
+    end
+
+    describe "Adding a new school group" do
+      before do
+        click_on 'Edit School Groups'
+        click_on 'New School group'
+      end
+
+      context "when required data is missing" do
+        before do
+          click_on 'Create School group'
+        end
+        it { expect(page).to have_content("Name can't be blank") }
+      end
+      context "when all data has been entered" do
+        before do
+          fill_in 'Name', with: 'BANES'
+          fill_in 'Description', with: 'Bath & North East Somerset'
+          select 'BANES and Frome', from: 'Default scoreboard'
+          select 'BANES dark sky weather', from: 'Default Dark Sky Weather Data Feed Area'
+          choose 'Display chart data in kwh, where available'
+          click_on 'Create School group'
+        end
+        it "is created" do
+          expect(SchoolGroup.where(name: 'BANES').count).to eq(1)
         end
       end
     end
@@ -139,33 +166,6 @@ RSpec.describe 'school groups', :school_groups, type: :system do
       end
     end
 
-    describe "Adding a new school group" do
-      before do
-        click_on 'Edit School Groups'
-        click_on 'New School group'
-      end
-
-      context "when required data is missing" do
-        before do
-          click_on 'Create School group'
-        end
-        it { expect(page).to have_content("Name can't be blank") }
-      end
-      context "when all data has been entered" do
-        before do
-          fill_in 'Name', with: 'BANES'
-          fill_in 'Description', with: 'Bath & North East Somerset'
-          select 'BANES and Frome', from: 'Default scoreboard'
-          select 'BANES dark sky weather', from: 'Default Dark Sky Weather Data Feed Area'
-          choose 'Display chart data in kwh, where available'
-          click_on 'Create School group'
-        end
-        it "is created" do
-          expect(SchoolGroup.where(name: 'BANES').count).to eq(1)
-        end
-      end
-    end
-
     describe "Editing a school group" do
       let!(:school_group) { create(:school_group, name: 'BANES', public: true) }
       before do
@@ -209,60 +209,49 @@ RSpec.describe 'school groups', :school_groups, type: :system do
         end
       end
     end
-  end
 
-  describe "Managing partners" do
-
-  end
-
-=begin
-  context "with partners" do
-
-    let!(:partner_1)         { create(:partner) }
-    let!(:partner_2)         { create(:partner) }
-    let!(:partner_3)         { create(:partner) }
-    let!(:school_group)      { create(:school_group, name: 'BANES') }
-
-    before(:each) do
-      sign_in(admin)
-      visit root_path
-      click_on 'Manage'
-      click_on 'Admin'
-      click_on 'Edit School Groups'
+    describe "Managing partners" do
+      let!(:partners) { 3.times.collect { create(:partner) } }
+      let!(:school_group)      { create(:school_group, name: 'BANES') }
+      before do
+        click_on 'Edit School Groups'
+        within "table" do
+          click_on 'Manage'
+        end
+        click_on 'Manage partners'
+      end
+      it 'has a partner link' do
+        expect(page).to have_content("BANES")
+        expect(page).to have_content(partners.first.display_name)
+      end
+      it "has blank partner fields for all partners" do
+        expect(page.find_field(partners.first.name).value).to be_blank
+        expect(page.find_field(partners.second.name).value).to be_blank
+        expect(page.find_field(partners.last.name).value).to be_blank
+      end
+      context "assigning 2 partners to school groups via text box position" do
+        before do
+          fill_in partners.last.name, with: '1'
+          fill_in partners.second.name, with: '2'
+          click_on 'Update associated partners', match: :first
+          click_on 'Manage partners'
+        end
+        it "partners are ordered" do
+          expect(school_group.partners).to match_array([partners.last, partners.second])
+          expect(school_group.school_group_partners.first.position).to eql 1
+          expect(school_group.school_group_partners.last.position).to eql 2
+        end
+        context "and then clearing one order position" do
+          before do
+            fill_in partners.last.name, with: ""
+            click_on 'Update associated partners', match: :first
+            click_on 'Manage partners'
+          end
+          it "removes partner" do
+            expect(school_group.partners).to match_array([partners.second])
+          end
+        end
+      end
     end
-
-    it 'has a partner link on the school group page' do
-      click_on 'Manage Partners'
-      expect(page).to have_content("BANES")
-      expect(page).to have_content(partner_1.display_name)
-    end
-
-    it 'assigns partners to school groups via text box position' do
-      click_on 'Manage Partners'
-      expect(page.find_field(partner_1.name).value).to be_blank
-      expect(page.find_field(partner_2.name).value).to be_blank
-      expect(page.find_field(partner_3.name).value).to be_blank
-
-      fill_in partner_3.name, with: '1'
-      fill_in partner_2.name, with: '2'
-
-      click_on 'Update associated partners', match: :first
-      click_on 'Manage Partners'
-
-      expect(school_group.partners).to match_array([partner_3, partner_2])
-      expect(school_group.school_group_partners.first.position).to eql 1
-      expect(school_group.school_group_partners.last.position).to eql 2
-
-      fill_in partner_3.name, with: ""
-
-      click_on 'Update associated partners', match: :first
-      click_on 'Manage Partners'
-      school_group.reload
-      expect(school_group.partners).to match_array([partner_2])
-
-    end
-
   end
-=end
-
 end
