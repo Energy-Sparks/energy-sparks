@@ -47,6 +47,11 @@ module EnergySparks
     end
 
     config.active_job.queue_adapter = :good_job
+    config.good_job.retry_on_unhandled_error = false
+    config.good_job.max_threads = 5
+    config.good_job.enable_cron = false
+    config.good_job.cleanup_preserved_jobs_before_seconds_ago = 30.days.to_i
+    config.good_job.logger = Logger.new(File.join(Rails.root, 'log', 'good_job.log'))
 
     config.i18n.available_locales = [:en, :cy]
     config.i18n.default_locale = :en
