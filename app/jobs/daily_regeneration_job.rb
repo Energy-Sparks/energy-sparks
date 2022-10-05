@@ -4,15 +4,15 @@ class DailyRegenerationJob < ApplicationJob
   def perform(school:)
     GoodJob.logger.info("#{DateTime.now.utc} Regeneration for school #{school.name} start")
     run_validate_and_persist_readings_service_for(school)
-    run_aggregate_school_service_for(school)
+    invalidate_cache_for(school)
     run_content_batch_for(school)
     GoodJob.logger.info("#{DateTime.now.utc} Regeneration for school #{school.name} end")
   end
 
-  def run_aggregate_school_service_for(school)
+  def invalidate_cache_for(school)
     AggregateSchoolService.new(school).invalidate_cache
   rescue => e
-    GoodJob.logger.error "Exception: running AggregateSchoolService in DailyRegenerationJob for #{school.name}: #{e.class} #{e.message}"
+    GoodJob.logger.error "Exception: running AggregateSchoolService#invalidate_cache in DailyRegenerationJob for #{school.name}: #{e.class} #{e.message}"
     GoodJob.logger.error e.backtrace.join("\n")
     Rollbar.error(e, job: :daily_regeneration_job, school_id: school.id, school: school.name)
   end
@@ -26,6 +26,6 @@ class DailyRegenerationJob < ApplicationJob
   end
 
   def run_content_batch_for(school)
-    ContentBatch.new([school], GoodJob.logger).regenerate
+    ContentBatch.new([school], GoodJob.logger).generate
   end
 end
