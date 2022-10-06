@@ -5,15 +5,6 @@ en:
       compare_schools: Compare schools
       scoreboard: Scoreboard
       view_all_schools: View all schools
-    index:
-      active_schools: Active schools
-      active_with_data_visible_schools: Active (with data visible) schools
-      alert_contacts: Alert contacts
-      energy_sparks_total: Energy Sparks Total
-      invisible_schools: Invisible schools
-      number_of_pupils_in_active_schools: Number of pupils in active schools
-      onboarding_schools: Onboarding schools
-      title: School groups
     show:
       currently_works_with_from:
         one: Energy Sparks currently works with %{count} school from

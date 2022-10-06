@@ -91,7 +91,7 @@ Rails.application.routes.draw do
 
   resource :school_switcher, only: [:create], controller: :school_switcher
 
-  resources :school_groups, only: [:show, :index]
+  resources :school_groups, only: [:show]
   resources :scoreboards, only: [:show, :index]
   resources :transport_types, only: [:index]
 
