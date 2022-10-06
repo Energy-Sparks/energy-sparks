@@ -26,10 +26,9 @@
   <tbody>
   <% @school_batch_run.school_batch_run_log_entries.by_date.each do |entry| %>
     <tr>
-      <td><%= nice_date_times(entry.created_at) %></td>
+      <td><%= nice_dates(entry.created_at) %> <%= entry.created_at.strftime("%H:%M:%S") %></td>
       <td><%= entry.message %></td>
     </tr>
   <% end %>
   </tbody>
 </table>
-
