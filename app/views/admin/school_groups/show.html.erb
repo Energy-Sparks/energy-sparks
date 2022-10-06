@@ -44,20 +44,24 @@
 
 <div class="tab-content" id="school-group-schools-content">
   <div class="tab-pane fade show active" id="active-content" role="tabpanel" aria-labelledby="active-tab">
-    <table class="table table-striped table-sorted">
-      <tbody>
-        <% @school_group.schools.data_enabled.by_name.each do |school| %>
-          <tr>
-            <td><%= school.name %></td>
-            <td><%= render 'shared/school_status_buttons', school: school %></td>
-            <td class="nowrap text-right">
-              <%= link_to 'Edit', edit_school_path(school), class: "btn btn-sm" %>
-              <%= link_to 'Users', school_users_path(school), class: "btn btn-sm" %>
-              <%= link_to 'Meters', school_meters_path(school), class: "btn btn-sm" %>
+    <table id="active" class="table table-striped table-sorted">
+      <% @school_group.schools.data_enabled.by_name.each do |school| %>
+        <tr>
+          <td>
+            <% if school.school_onboarding %>
+              <%= link_to school.name, edit_admin_school_onboarding_configuration_url(school.try(:school_onboarding)) %>
+            <% else %>
+              <%= school.name %>
+            <% end %>
             </td>
-          </tr>
-        <% end %>
-      </tbody>
+          <td><%= render 'shared/school_status_buttons', school: school %></td>
+          <td class="nowrap text-right">
+            <%= link_to 'Edit', edit_school_path(school), class: "btn btn-sm" %>
+            <%= link_to 'Users', school_users_path(school), class: "btn btn-sm" %>
+            <%= link_to 'Meters', school_meters_path(school), class: "btn btn-sm" %>
+          </td>
+        </tr>
+      <% end %>
     </table>
   </div>
   <div class="tab-pane fade" id="onboarding-content" role="tabpanel" aria-labelledby="onboarding-tab">
