@@ -8,7 +8,7 @@ module Admin
     include Measurements
 
     before_action :check_aggregated_school_in_cache
-    before_action :build_aggregate_school, except: [:analysis]
+    before_action :build_aggregate_school
     before_action :set_measurement_options
 
     def analysis
