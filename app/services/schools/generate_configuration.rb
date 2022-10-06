@@ -19,9 +19,7 @@ module Schools
       configuration.update!(dashboard_charts: dashboard_charts)
 
       analysis_chart_configuration = GenerateAnalysisChartConfiguration.new(@school, @aggregated_meter_collection, fuel_configuration)
-      analysis_charts = analysis_chart_configuration.generate
-      configuration.update!(analysis_charts: analysis_charts)
-
+      configuration.update!(analysis_charts: {})
       pupil_analysis_charts = analysis_chart_configuration.generate([:pupil_analysis_page])
       configuration.update!(pupil_analysis_charts: pupil_analysis_charts)
 
