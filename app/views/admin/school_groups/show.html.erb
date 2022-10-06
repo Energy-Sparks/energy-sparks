@@ -83,6 +83,10 @@
     <% end %>
   </div>
   <div class="tab-pane fade" id="removed-content" role="tabpanel" aria-labelledby="removed-tab">
-    Removed
+    <table id="removed" class="table table-striped">
+      <% @school_group.schools.inactive.by_name.each do |school| %>
+        <tr><td><%= link_to school.name, school_path(school) %></td></tr>
+      <% end %>
+    </table>
   </div>
 </div>
