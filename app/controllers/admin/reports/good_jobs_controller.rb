@@ -15,10 +15,10 @@ module Admin
             row_number() over (partition BY queue_name, serialized_params->>'job_class' ORDER BY (finished_at - performed_at) desc) AS row,
             queue_name,
             serialized_params->>'job_class' as job_class,
-            id,
+            serialized_params->>'job_id' as job_id,
             (finished_at - performed_at) as time_to_completion
             from good_jobs
-            group by queue_name, serialized_params->>'job_class', id, (finished_at - performed_at)
+            group by queue_name, serialized_params->>'job_class', serialized_params->>'job_id', (finished_at - performed_at)
             order by (finished_at - performed_at) desc
           ) jobs
           where jobs.row <= 5
