@@ -377,6 +377,7 @@ Rails.application.routes.draw do
 
     resources :activations, only: :index
     namespace :reports do
+      resources :good_jobs, only: :index
       resources :alert_subscribers, only: :index
       get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
       get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
