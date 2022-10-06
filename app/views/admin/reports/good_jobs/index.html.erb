@@ -39,7 +39,7 @@
       <tr>
         <th scope="col">Queue name</th>
         <th scope="col">Job class</th>
-        <th scope="col">Id</th>
+        <th scope="col">Job Id</th>
         <th scope="col">Time to completion</th>
       </tr>
     </thead>
@@ -48,7 +48,7 @@
         <tr>
           <td scope="col"><%= job['queue_name'] %></td>
           <td scope="col"><%= job['job_class'] %></td>
-          <td scope="col"><%= link_to job['id'], admin_good_job_path(job['id']) %></td>
+          <td scope="col"><%= link_to job['job_id'], admin_good_job_url + "/jobs/#{job['job_id']}" %></td>
           <td scope="col"><%= job['time_to_completion'] %></td>
         </tr>
       <% end %>
