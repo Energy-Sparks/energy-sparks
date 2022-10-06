@@ -2,10 +2,10 @@ namespace :school do
   desc "Schools daily regeneration"
   task daily_regeneration: :environment do
     puts "#{DateTime.now.utc} Run daily regeneration for all process data schools start"
+    BenchmarkResultGenerationRun.create!
     School.process_data.each do |school|
       puts "Run daily regeneration job for #{school.name}"
       begin
-        BenchmarkResultGenerationRun.create!
         DailyRegenerationJob.perform_later(school: school)
       rescue => e
         puts "Exception: running validation for #{school.name}: #{e.class} #{e.message}"
