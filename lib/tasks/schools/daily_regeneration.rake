@@ -5,6 +5,7 @@ namespace :school do
     School.process_data.each do |school|
       puts "Run daily regeneration job for #{school.name}"
       begin
+        BenchmarkResultGenerationRun.create!
         DailyRegenerationJob.perform_later(school: school)
       rescue => e
         puts "Exception: running validation for #{school.name}: #{e.class} #{e.message}"
