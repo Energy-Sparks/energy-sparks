@@ -48,11 +48,7 @@
       <% @school_group.schools.data_enabled.by_name.each do |school| %>
         <tr>
           <td>
-            <% if school.school_onboarding %>
-              <%= link_to school.name, edit_admin_school_onboarding_configuration_url(school.try(:school_onboarding)) %>
-            <% else %>
-              <%= school.name %>
-            <% end %>
+              <%= link_to_if school.school_onboarding, school.name, [:edit, :admin, school.school_onboarding, :configuration] %>
             </td>
           <td><%= render 'shared/school_status_buttons', school: school %></td>
           <td class="nowrap text-right">
