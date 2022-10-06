@@ -181,6 +181,27 @@ class School < ApplicationRecord
   # https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Dirty.html#method-i-will_save_change_to_attribute-3F
   after_save :add_joining_observation, if: proc { saved_change_to_activation_date?(from: nil) }
 
+
+  def reading_date_bounds
+    # query = <<-SQL.squish
+    #   select
+    #   max(amr_validated_readings.reading_date) as reading_date
+    #   from amr_validated_readings
+    #   inner join meters on amr_validated_readings.meter_id = meters.id
+    #   where meters.school_id = #{id}
+    #   union
+    #   select
+    #   min(amr_validated_readings.reading_date) as reading_date
+    #   from amr_validated_readings
+    #   inner join meters on amr_validated_readings.meter_id = meters.id
+    #   where meters.school_id = #{id}
+    # SQL
+    # ActiveRecord::Base.connection.select(query) #.values.flatten
+
+    # Need to include amr_data_feed_readings here too
+    [amr_validated_readings.minimum(:reading_date), amr_validated_readings.maximum(:reading_date)]
+  end
+
   def find_user_or_cluster_user_by_id(id)
     users.find_by_id(id) || cluster_users.find_by_id(id)
   end
