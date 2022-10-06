@@ -44,12 +44,10 @@
 
 <div class="tab-content" id="school-group-schools-content">
   <div class="tab-pane fade show active" id="active-content" role="tabpanel" aria-labelledby="active-tab">
-    <table id="active" class="table table-striped table-sorted">
-      <% @school_group.schools.data_enabled.by_name.each do |school| %>
+    <table id="active" class="table table-striped">
+      <% @school_group.schools.active.data_enabled.by_name.each do |school| %>
         <tr>
-          <td>
-              <%= link_to_if school.school_onboarding, school.name, [:edit, :admin, school.school_onboarding, :configuration] %>
-            </td>
+          <td><%= link_to_if school.school_onboarding, school.name, [:edit, :admin, school.school_onboarding, :configuration] %></td>
           <td><%= render 'shared/school_status_buttons', school: school %></td>
           <td class="nowrap text-right">
             <%= link_to 'Edit', edit_school_path(school), class: "btn btn-sm" %>
@@ -61,7 +59,28 @@
     </table>
   </div>
   <div class="tab-pane fade" id="onboarding-content" role="tabpanel" aria-labelledby="onboarding-tab">
-    Onboarding
+    <table id="onboarding" class="table table-striped">
+    <%= simple_form_for @school_group, html: { class: 'form-group', method: 'post' } do |f| %>
+      <% @school_group.school_onboardings.by_name.select(&:incomplete?).each do |onboarding| %>
+        <tr>
+          <td><%= f.check_box :school_onboarding_ids, { multiple: true, checked: false }, onboarding.id, nil %></td>
+          <td><%= link_to onboarding.school_name, onboarding_path(onboarding) %></td>
+          <td><%= onboarding.contact_email %> <%= link_to 'Change', edit_admin_school_onboarding_email_path(onboarding), class: 'btn btn-warning btn-sm' if onboarding.has_only_sent_email_or_reminder? %></td>
+          <td data-order="<%= onboarding.events.maximum(:created_at) %>"><%= nice_date_times(onboarding.events.maximum(:created_at)) %></td>
+          <td><%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)).try(:humanize) %></td>
+          <td class="nowrap">
+            <%= link_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding), class: 'btn btn-warning btn-sm', method: :post %>
+            <% if onboarding.school && onboarding.school.consent_grants.any? %>
+              <%= link_to 'Make visible', school_visibility_path(onboarding.school), class: 'btn btn-sm', method: :post %>
+            <% else %>
+              <%= link_to 'Edit', edit_admin_school_onboarding_path(onboarding), class: 'btn btn-sm' %>
+            <% end %>
+            <%= link_to 'Delete', admin_school_onboarding_path(onboarding), class: 'btn btn-sm', method: :delete, data: {confirm: 'Are you sure?'} %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+    <% end %>
   </div>
   <div class="tab-pane fade" id="removed-content" role="tabpanel" aria-labelledby="removed-tab">
     Removed
