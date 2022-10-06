@@ -67,21 +67,7 @@ describe 'School admin user management' do
           select 'Teacher or teaching assistant', from: 'Role'
         end
 
-        it 'can create staff with an alert contact' do
-          expect { click_on 'Create account' }.to change { User.count }.by(1).and change { Contact.count }.by(1)
-
-          staff = school.users.staff.first
-          expect(staff.email).to eq('mrsjones@test.com')
-          expect(staff.staff_role).to eq(teacher_role)
-          expect(staff.confirmed?).to be false
-
-          email = ActionMailer::Base.deliveries.last
-          expect(email.subject).to eq('Energy Sparks: confirm your account')
-          expect(email.encoded).to match(school.name)
-        end
-
-        it 'can create staff without generating an alert contact' do
-          uncheck 'Subscribe to school alerts'
+        it 'can create staff' do
           expect { click_on 'Create account' }.to change { User.count }.by(1).and change { Contact.count }.by(0)
 
           staff = school.users.staff.first
@@ -93,7 +79,6 @@ describe 'School admin user management' do
           expect(email.subject).to eq('Energy Sparks: confirm your account')
           expect(email.encoded).to match(school.name)
         end
-
       end
 
       it 'can edit and delete staff' do
@@ -225,16 +210,6 @@ describe 'School admin user management' do
           expect(email.subject).to eq('Energy Sparks: confirm your account')
           expect(email.encoded).to match(school.name)
         end
-
-        it 'creates an alert contact by default' do
-          expect { click_on 'Create account' }.to change { User.count }.by(1).and change { Contact.count }.by(1)
-        end
-
-        it 'doesnt create contact when requested' do
-          uncheck 'Subscribe to school alerts'
-          expect { click_on 'Create account' }.to change { User.count }.by(1).and change { Contact.count }.by(0)
-        end
-
       end
 
       context 'when managing a user' do
