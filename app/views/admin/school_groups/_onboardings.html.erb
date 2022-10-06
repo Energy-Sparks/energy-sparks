@@ -1,5 +1,5 @@
 <%= simple_form_for school_group, html: { class: 'form-group', method: 'post' } do |f| %>
-  <table class="table table-sorted">
+  <table class="table table-sorted table-striped">
     <thead>
       <tr>
         <th class="no-sort"><%= check_box_tag "check-all-#{school_group.id}", false, false, { class: 'check-all' } %></th>
