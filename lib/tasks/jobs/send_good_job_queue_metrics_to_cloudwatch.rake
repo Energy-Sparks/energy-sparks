@@ -1,7 +1,7 @@
 namespace :jobs do
   desc 'Send good job queue metrics to AWS Cloudwatch'
   task send_good_job_queue_metrics_to_cloudwatch: :environment do
-    instance_id = system('ec2-metadata --instance-id | cut -d " " -f 2')
+    instance_id = `ec2-metadata --instance-id | cut -d " " -f 2`.strip
     command_template = "aws cloudwatch put-metric-data --metric-name %{metric_name} --timestamp %{time_stamp} --namespace GoodJob --value=%{value} --unit Count --region='eu-west-2' --dimensions InstanceId=#{instance_id},QueueName=%{queue_name}"
 
     GoodJob::Job.distinct(:queue_name).pluck(:queue_name).each do |queue_name|
