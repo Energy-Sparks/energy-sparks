@@ -1,0 +1,13 @@
+<%- headers = ['queue_name', 'job_class', 'job_id', 'performed_at', 'finished_at', 'time_to_completion'] -%>
+<%= CSV.generate_line headers %>
+<%- @jobs.each do |job| -%>
+<%= CSV.generate_line(
+  [
+    job['queue_name'],
+    job['job_class'],
+    job['performed_at'],
+    job['finished_at'],
+    job['time_to_completion_in_seconds']
+  ]
+) -%>
+<%- end -%>
