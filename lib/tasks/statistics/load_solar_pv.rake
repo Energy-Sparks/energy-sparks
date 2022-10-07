@@ -1,5 +1,5 @@
 namespace :statistics do
-  desc "Get benchmarks for temperature data loads"
+  desc "Get benchmarks for loading solar pv data"
   task load_solar_pv: :environment do
     benchmarks = [] # Store all benchmark data for later output to csv
     SolarPvTuosArea.all.each do |solar_pv_tuos_area|
