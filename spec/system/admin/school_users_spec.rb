@@ -1,14 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe 'School Users', :schools, type: :system do
-
-  # let!(:school_group)   { create(:school_group, name: 'BANES') }
-  # let(:school_name)           { 'Oldfield Park Infants'}
-  # let(:school)         { create_active_school(name: school_name, school_group: school_group) }
-
   let(:school)                { create(:school) }
   let(:confirmation_token)    { 'abc123' }
-  let!(:user)                  { create(:user, confirmation_token: confirmation_token, confirmed_at: nil, school: school, email: 'foo@bar.com', name: 'Foo Bar') }
+  let!(:user)           { create(:user, confirmation_token: confirmation_token, confirmed_at: nil, school: school, email: 'foo@bar.com', name: 'Foo Bar') }
 
   context "as new user" do
 
