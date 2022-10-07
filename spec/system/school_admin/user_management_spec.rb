@@ -119,7 +119,6 @@ describe 'School admin user management' do
         expect(page).to_not have_checked_field('contact_auto_create_alert_contact')
         check "Subscribe to school alerts"
         expect { click_on 'Update account' }.to change { Contact.count }.by(1)
-
       end
 
       it 'can update contact email address if contact has user association' do

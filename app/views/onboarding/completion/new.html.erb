@@ -39,10 +39,6 @@
                   <th>Password:</th>
                   <td>***********</td>
                 </tr>
-                <tr>
-                  <th>Subscribe to newsletter?</th>
-                  <td><%= @school_onboarding.subscribe_to_newsletter ? 'Yes' : 'No' %></td>
-                </tr>
               </tbody>
             </table>
             <%= link_to 'Edit your account', edit_onboarding_account_path(@school_onboarding), class: 'btn btn-primary' %>
