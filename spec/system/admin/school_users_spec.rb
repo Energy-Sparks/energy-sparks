@@ -15,8 +15,15 @@ RSpec.describe 'School Users', :schools, type: :system do
       expect(page).to have_content('Your email address has been successfully confirmed')
     end
 
+    it 'does not allow blank passwords' do
+      click_button 'Set my password'
+      expect(page).to have_content("Password can't be blank")
+    end
+
     it 'allows newsletter to be subscribed' do
       expect_any_instance_of(MailchimpSubscriber).to receive(:subscribe).with(school, user)
+      fill_in :user_password, with: 'abcdef'
+      fill_in :user_password_confirmation, with: 'abcdef'
       check 'privacy'
       check 'Subscribe to school alerts'
       click_button 'Set my password'
@@ -24,6 +31,8 @@ RSpec.describe 'School Users', :schools, type: :system do
     end
 
     it 'allows alert to be subscribed' do
+      fill_in :user_password, with: 'abcdef'
+      fill_in :user_password_confirmation, with: 'abcdef'
       check 'privacy'
       check 'Subscribe to school alerts'
       click_button 'Set my password'
@@ -34,8 +43,7 @@ RSpec.describe 'School Users', :schools, type: :system do
 
     it 'reshows subscription check boxes after failed validation' do
       check 'privacy'
-      fill_in :user_password, with: 'abc'
-      fill_in :user_password_confirmation, with: 'xyz'
+      fill_in :user_password, with: 'abcdef'
       click_button 'Set my password'
       expect(page).to have_content("Password confirmation doesn't match Password")
       expect(page).to have_content("Energy Sparks can automatically create an alert contact")

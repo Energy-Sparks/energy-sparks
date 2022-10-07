@@ -6,7 +6,7 @@ class PasswordsController < Devise::PasswordsController
 
   def update
     super do |user|
-      if user.valid?
+      if user.errors.empty?
         create_or_update_alert_contact(user.school, user) if auto_create_alert_contact?
         subscribe_newsletter(user.school, user) if auto_subscribe_newsletter?
       end
