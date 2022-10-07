@@ -9,20 +9,20 @@ namespace :statistics do
       weather_station_title = weather_station_id ? WeatherStation.find(weather_station_id)&.title : 'none'
       dark_sky_area_title = dark_sky_area_id ? DarkSkyArea.find(dark_sky_area_id)&.title : 'none'
 
-      cache_key = if weather_station_id && dark_sky_area_id
-                    "#{weather_station_id}-#{dark_sky_area_id}-dark-sky-temperatures-test"
-                  elsif weather_station_id && dark_sky_area_id.nil?
-                    "#{weather_station_id}-temperatures-test"
-                  elsif dark_sky_area_id && weather_station_id.nil?
-                    "#{dark_sky_area_id}-dark-sky-temperatures-test"
-                  end
+      # cache_key = if weather_station_id && dark_sky_area_id
+      #               "#{weather_station_id}-#{dark_sky_area_id}-dark-sky-temperatures-test"
+      #             elsif weather_station_id && dark_sky_area_id.nil?
+      #               "#{weather_station_id}-temperatures-test"
+      #             elsif dark_sky_area_id && weather_station_id.nil?
+      #               "#{dark_sky_area_id}-dark-sky-temperatures-test"
+      #             end
 
       puts "\nBenchmark for weather_station: #{weather_station_title} (#{weather_station_id || 'nil'}) and dark_sky_area: #{dark_sky_area_title} (#{dark_sky_area_id || 'nil'})"
 
       temperatures = Temperatures.new('temperatures')
 
       benchmark_measure = Benchmark.measure {
-        Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+        # Rails.cache.fetch(cache_key, expires_in: 3.hours) do
           # Load meteostat readings
           earliest = nil
           WeatherObservation.where(weather_station_id: weather_station_id).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
@@ -44,7 +44,7 @@ namespace :statistics do
               end
             end
           end
-        end
+        # end
       }
       puts benchmark_measure
       puts temperatures.inspect
