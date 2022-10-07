@@ -38,6 +38,16 @@ RSpec.describe 'School Users', :schools, type: :system do
         expect(user.contacts.count).to eq(1)
         expect(school.contacts.last.email_address).to eq('foo@bar.com')
       end
+
+      it 'reshows subscription check boxes after failed validation' do
+        check 'privacy'
+        fill_in :user_password, with: 'abc'
+        fill_in :user_password_confirmation, with: 'xyz'
+        click_button 'Set my password'
+        expect(page).to have_content("Password confirmation doesn't match Password")
+        expect(page).to have_content("Energy Sparks can automatically create an alert contact")
+        expect(page).to have_content("You can also add the new user to the mailing list for newsletters")
+      end
     end
 
   end
