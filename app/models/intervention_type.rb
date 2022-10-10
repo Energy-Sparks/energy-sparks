@@ -46,6 +46,7 @@ class InterventionType < ApplicationRecord
   validates :score, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   scope :by_name,               -> { order(name: :asc) }
+  scope :by_id,                 -> { order(id: :asc) }
   scope :active,                -> { where(active: true) }
   scope :display_order,         -> { order(:custom, :name) }
   scope :not_custom,            -> { where(custom: false) }
