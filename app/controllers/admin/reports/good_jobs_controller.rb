@@ -10,6 +10,7 @@ module Admin
 
       def export
         @jobs = find_jobs_per_queue_and_job_class
+
         respond_to do |format|
           format.csv do
             response.headers['Content-Type'] = 'text/csv'
@@ -26,6 +27,7 @@ module Admin
           queue_name,
           serialized_params->>'job_class' as job_class,
           serialized_params->>'job_id' as job_id,
+          serialized_params->>'arguments' as school_id,
           performed_at,
           finished_at,
           extract(EPOCH from (finished_at - performed_at)) as time_to_completion_in_seconds
