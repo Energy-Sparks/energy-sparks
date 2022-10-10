@@ -35,7 +35,7 @@ RSpec.describe 'admin school onboardings selectable actions', type: :system do
               click_button "Make selected visible"
             end
             it { expect(page).to have_content('School cannot be made visible as we dont have a record of consent') }
-            it { expect(page).to_not have_content('Schools made visible') }
+            it { expect(page).to_not have_content('schools made visible') }
             it { expect(onboarding.reload.school).to_not be_visible }
           end
 
@@ -48,7 +48,7 @@ RSpec.describe 'admin school onboardings selectable actions', type: :system do
               click_button "Make selected visible"
             end
 
-            it { expect(page).to have_content('Schools made visible') }
+            it { expect(page).to have_content("#{school_group.name} schools made visible") }
             it { expect(onboarding.reload.school).to be_visible }
             it { expect(ActionMailer::Base.deliveries.count).to eq(2) }
             it "sends onboarding complete email" do
@@ -68,9 +68,9 @@ RSpec.describe 'admin school onboardings selectable actions', type: :system do
           before do
             click_button "Send reminders to selected"
           end
-          it { expect(page).to have_current_path(admin_school_onboardings_path(school_group: school_group)) }
+          it { expect(page).to have_current_path(admin_school_onboardings_path) }
           it { expect(onboarding.reload.events.map(&:event)).to include('reminder_sent') }
-          it { expect(page).to have_content('Reminders sent') }
+          it { expect(page).to have_content("#{school_group.name} schools reminders sent") }
           it "sends email" do
             email = ActionMailer::Base.deliveries.last
             expect(email.subject).to include("Don't forget to set up your school on Energy Sparks")
@@ -85,7 +85,7 @@ RSpec.describe 'admin school onboardings selectable actions', type: :system do
         before do
           click_button "Make selected visible"
         end
-        it { expect(page).to_not have_content('Schools made visible') }
+        it { expect(page).to_not have_content('schools made visible') }
         it { expect(page).to have_content('Nothing selected') }
       end
 
@@ -93,7 +93,7 @@ RSpec.describe 'admin school onboardings selectable actions', type: :system do
         before do
           click_button "Send reminders to selected"
         end
-        it { expect(page).to_not have_content('Reminders sent') }
+        it { expect(page).to_not have_content('schools reminders sent') }
         it { expect(page).to have_content('Nothing selected') }
       end
     end

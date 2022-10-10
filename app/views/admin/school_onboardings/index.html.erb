@@ -18,7 +18,6 @@
   <br/>
 
   <h3><%= school_group.name %></h3>
-  <%= content_tag(:div, notice, class: "alert alert-info") if notice && school_group.slug == params[:school_group]  %>
 
   <%= link_to 'Download as CSV', admin_school_group_school_onboardings_path(school_group, format: :csv), class: 'btn' %>
   <br/>
