@@ -75,9 +75,13 @@ cy:
         school_podium_position_html: Mae dy ysgol yn <strong>%{position_ordinal}</strong>
         see_scoreboard: Gweler y bwrdd sgorio
         setting_up: Rydym yn sefydlu data ynni'r ysgol hon a byddwn yn diweddaru'r dudalen hon pan fydd yn barod i'w harchwilio
+        start_transport_survey: Dechrau arolygu
         things_to_do: Pethau i'w gwneud
         title: Dangosfwrdd disgyblion ar gyfer %{school_name}
+        transport_surveys: Dechreuwch arolwg trafnidiaeth fel y gallwch ddarganfod faint o garbon y mae cymuned eich ysgol yn ei ddefnyddio trwy deithio i'r ysgol
         try_this_first: Rho gynnig ar yr un hwn yn gyntaf
         try_this_next: Rho gynnig ar hwn nesaf
-        update_temperatures: Diweddara dymhereddau dy ystafell ddosbarth i weld a wyt ti'n arbed ynni
+        update_temperatures: Diweddaru tymereddau
+        updating_temperatures: Diweddara dymereddau dy ystafell ddosbarth i weld a wyt ti'n arbed ynni
         user_view: Gwedd y defnyddiwr
+        view_transport_surveys: Gweld arolygon
