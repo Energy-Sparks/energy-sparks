@@ -204,6 +204,28 @@ RSpec.describe "onboarding", :schools, type: :system do
         end
       end
 
+      context 'when resuming onboarding' do
+        let(:user) { create(:onboarding_user) }
+        let(:school) { build(:school) }
+
+        before(:each) do
+          onboarding.update!(created_user: user)
+          onboarding.events.create!(event: :onboarding_user_created)
+          SchoolCreator.new(school).onboard_school!(onboarding)
+        end
+
+        it 'shows login page' do
+          visit onboarding_path(onboarding)
+          expect(page).to have_content("You must sign in to resume the onboarding process")
+          fill_in 'Email', with: user.email
+          fill_in 'Password', with: user.password
+          within '#staff' do
+            click_on 'Sign in'
+          end
+          expect(page).to have_content("You have a few more steps to complete before we can setup your school.")
+        end
+      end
+
       context 'having created an account' do
         let(:user) { create(:onboarding_user) }
 
