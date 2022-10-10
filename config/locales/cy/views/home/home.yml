@@ -1,13 +1,14 @@
+---
 cy:
-  about_energy_sparks: Mae Energy Sparks yn elusen gofrestredig sy'n gweithio er budd y cyhoedd i ddatblygu a hyrwyddo offer, gwasanaethau a rhaglenni i leihau'r defnydd o ynni ac adnoddau ac allyriadau carbon. Nod Energy Sparks yw addysgu'r cyhoedd, yn enwedig pobl ifanc, am achosion ac effeithiau newid yn yr hinsawdd, a phwysigrwydd arbed ynni a lleihau allyriadau carbon.
+  about_energy_sparks: "Mae Energy Sparks yn elusen gofrestredig sy'n gweithio er budd y cyhoedd i ddatblygu a hyrwyddo offer, gwasanaethau a rhaglenni i leihau'r defnydd o ynni ac adnoddau ac allyriadau carbon. Nod Energy Sparks yw addysgu'r cyhoedd, yn enwedig pobl ifanc, am achosion ac effeithiau newid yn yr hinsawdd, a phwysigrwydd arbed ynni a lleihau allyriadau carbon."
   case_studies:
     download: Lawrlwytho
     more_case_studies: Rhagor o astudiaethau achos
     title: Astudiaethau achos
   home:
     carousel:
-      message_1: Helpa dy ysgol i arbed ynni, arian ac atal newid hinsawdd.
-      message_2: Dangosa i dy ysgol faint a phryd rydych ch'n defnyddio ynni.
+      message_1: "Helpa dy ysgol i arbed ynni, arian ac atal newid hinsawdd."
+      message_2: Dangosa i dy ysgol faint a phryd rydych yn defnyddio ynni.
       message_3: Cael cyngor arbed ynni wedi'i deilwra ar gyfer dy ysgol di yn unig.
       message_4: Cael rhybuddion awtomataidd i roi gwybod i ti pan fydd eich defnydd o ynni yn newid.
       message_5: Archwilia weithgareddau tîm eco a dosbarth ar gyfer disgyblion.
@@ -28,7 +29,7 @@ cy:
         title: Ar gyfer ysgolion
     quote:
       job_title: Pennaeth yr Ysgol
-      text_html: Mae ymgysylltu ag Energy Sparks wedi bod yn brofiad gwerth chweil. Nid yn unig y mae'r ysgol wedi arbed arian, mae'r plant wedi dod yn fwy ymwybodol o'r ffyrdd y gallant helpu i leihau defnydd ynni&hellip;
+      text_html: "Mae ymgysylltu ag Energy Sparks wedi bod yn brofiad gwerth chweil. Nid yn unig y mae'r ysgol wedi arbed arian, mae'r plant wedi dod yn fwy ymwybodol o'r ffyrdd y gallant helpu i leihau defnydd ynni&hellip;"
     sub_title: Offeryn dadansoddi ynni a rhaglen addysg ynni ar-lein sy'n benodol i ysgolion yw Energy Sparks.
     title: Rydym yn helpu ysgolion i ddod yn fwy ynni-effeithlon a brwydro yn erbyn newid hinsawdd.
   mailchimp:
@@ -42,9 +43,9 @@ cy:
     title: Cylchlythyrau
   school_count:
     one: 1 ysgol
-    two: '%{count} ysgol'
-    many: '%{count} ysgol'
-    other: '%{count} ysgol'
+    two: "%{count} ysgol"
+    many: "%{count} ysgol"
+    other: "%{count} ysgol"
   training:
     intro: Mae'r dudalen hon yn rhestru ein holl sesiynau hyfforddi sydd i ddod. Dilyna'r dolenni i’n tudalen Eventbrite i archebu dy docynnau.
     title: Hyfforddiant

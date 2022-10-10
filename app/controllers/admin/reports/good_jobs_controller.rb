@@ -1,3 +1,5 @@
+require 'csv'
+
 module Admin
   module Reports
     class GoodJobsController < AdminController
@@ -6,7 +8,34 @@ module Admin
         @slowest_jobs = find_slowest_jobs_per_queue_and_job_class
       end
 
+      def export
+        @jobs = find_jobs_per_queue_and_job_class
+
+        respond_to do |format|
+          format.csv do
+            response.headers['Content-Type'] = 'text/csv'
+            response.headers['Content-Disposition'] = "attachment; filename=good_jobs_time_to_completion.csv"
+          end
+        end
+      end
+
       private
+
+      def find_jobs_per_queue_and_job_class
+        query = <<-SQL.squish
+          select
+          queue_name,
+          serialized_params->>'job_class' as job_class,
+          serialized_params->>'job_id' as job_id,
+          serialized_params->>'arguments' as school_id,
+          performed_at,
+          finished_at,
+          extract(EPOCH from (finished_at - performed_at)) as time_to_completion_in_seconds
+          from good_jobs
+        SQL
+
+        ActiveRecord::Base.connection.execute(query)
+      end
 
       def find_slowest_jobs_per_queue_and_job_class
         query = <<-SQL.squish
