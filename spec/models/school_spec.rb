@@ -51,59 +51,59 @@ describe School do
 
   describe '#meters_with_readings' do
     it 'works if explicitly giving a supply type of electricity' do
-      electricity_meter = create(:electricity_meter_with_reading, school: subject)
+      electricity_meter = create(:electricity_meter_with_reading, reading_count: 10, school: subject)
       expect(subject.meters_with_readings(:electricity).first).to eq electricity_meter
       expect(subject.meters_with_readings(:gas)).to be_empty
     end
 
     it 'works if explicitly giving a supply type of gas' do
-      gas_meter = create(:gas_meter_with_reading, school: subject)
+      gas_meter = create(:gas_meter_with_reading, reading_count: 10, school: subject)
       expect(subject.meters_with_readings(:gas).first).to eq gas_meter
       expect(subject.meters_with_readings(:electricity)).to be_empty
     end
 
     it 'works without a supply type for a gas meter' do
-      gas_meter = create(:gas_meter_with_reading, school: subject)
+      gas_meter = create(:gas_meter_with_reading, reading_count: 10, school: subject)
       expect(subject.meters_with_readings.first).to eq gas_meter
     end
 
     it 'works without a supply type for an electricity' do
-      electricity_meter = create(:electricity_meter_with_reading, school: subject)
+      electricity_meter = create(:electricity_meter_with_reading, reading_count: 10, school: subject)
       expect(subject.meters_with_readings.first).to eq electricity_meter
     end
 
     it 'ignores deactivated meters' do
-      electricity_meter = create(:electricity_meter_with_reading, school: subject)
-      electricity_meter_inactive = create(:electricity_meter_with_reading, school: subject, active: false)
+      electricity_meter = create(:electricity_meter_with_reading, reading_count: 10, school: subject)
+      electricity_meter_inactive = create(:electricity_meter_with_reading, reading_count: 10, school: subject, active: false)
       expect(subject.meters_with_readings(:electricity)).to match_array([electricity_meter])
     end
   end
 
   describe '#meters_with_validated_readings' do
     it 'works if explicitly giving a supply type of electricity' do
-      electricity_meter = create(:electricity_meter_with_validated_reading, school: subject)
+      electricity_meter = create(:electricity_meter_with_validated_reading, reading_count: 10, school: subject)
       expect(subject.meters_with_validated_readings(:electricity).first).to eq electricity_meter
       expect(subject.meters_with_validated_readings(:gas)).to be_empty
     end
 
     it 'works if explicitly giving a supply type of gas' do
-      gas_meter = create(:gas_meter_with_validated_reading, school: subject)
+      gas_meter = create(:gas_meter_with_validated_reading, reading_count: 10, school: subject)
       expect(subject.meters_with_validated_readings(:gas).first).to eq gas_meter
       expect(subject.meters_with_validated_readings(:electricity)).to be_empty
     end
 
     it 'works without a supply type for a gas meter' do
-      gas_meter = create(:gas_meter_with_validated_reading, school: subject)
+      gas_meter = create(:gas_meter_with_validated_reading, reading_count: 10, school: subject)
       expect(subject.meters_with_validated_readings.first).to eq gas_meter
     end
 
     it 'works without a supply type for an electricity' do
-      electricity_meter = create(:electricity_meter_with_validated_reading, school: subject)
+      electricity_meter = create(:electricity_meter_with_validated_reading, reading_count: 10, school: subject)
       expect(subject.meters_with_validated_readings.first).to eq electricity_meter
     end
 
     it 'ignores deactivated meters' do
-      electricity_meter = create(:electricity_meter_with_validated_reading, school: subject)
+      electricity_meter = create(:electricity_meter_with_validated_reading, reading_count: 10, school: subject)
       electricity_meter_inactive = create(:electricity_meter_with_validated_reading, school: subject, active: false)
       expect(subject.meters_with_validated_readings(:electricity)).to match_array([electricity_meter])
     end
