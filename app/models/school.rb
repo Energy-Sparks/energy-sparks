@@ -257,11 +257,11 @@ class School < ApplicationRecord
   end
 
   def meters_with_readings(supply = Meter.meter_types.keys)
-    active_meters.includes(:amr_data_feed_readings).where(meter_type: supply).where.not(amr_data_feed_readings: { meter_id: nil })
+    active_meters.joins(:amr_data_feed_readings).where(meter_type: supply).where.not(amr_data_feed_readings: { meter_id: nil }).distinct
   end
 
   def meters_with_validated_readings(supply = Meter.meter_types.keys)
-    active_meters.includes(:amr_validated_readings).where(meter_type: supply).where.not(amr_validated_readings: { meter_id: nil })
+    active_meters.joins(:amr_validated_readings).where(meter_type: supply).where.not(amr_validated_readings: { meter_id: nil }).distinct
   end
 
   def fuel_types
