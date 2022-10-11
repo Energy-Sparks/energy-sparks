@@ -26,7 +26,7 @@ module Amr
       @array_of_data_feed_reading_hashes.each do |hash|
         mpans << hash[:mpan_mprn]
       end
-      AmrDataFeedReading.where(mpan_mprn: mpans).count
+      AmrDataFeedReading.where(mpan_mprn: mpans.uniq).count
     end
 
     def add_import_log_id_and_dates_to_hash
