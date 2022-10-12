@@ -232,6 +232,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           it "doesn't show school active tab" do
             within '#active-content' do
               expect(page).to_not have_link(school.name)
+              expect(page).to have_content("No active schools for #{school_group.name}.")
             end
           end
         end
@@ -240,6 +241,11 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       describe "Onboarding schools tab" do
         before do
           click_on "Onboarding"
+        end
+        it "displays a message when there are no onboarding schools" do
+            within '#onboarding-content' do
+              expect(page).to have_content("No schools currently onboarding for #{school_group.name}.")
+            end
         end
         it_behaves_like "school group onboardings"
       end
@@ -262,6 +268,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           it "doesn't show school in removed tab" do
             within '#removed-content' do
               expect(page).to_not have_link(school.name)
+              expect(page).to have_content("No removed schools for #{school_group.name}.")
             end
           end
         end
