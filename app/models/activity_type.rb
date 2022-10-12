@@ -39,6 +39,8 @@ class ActivityType < ApplicationRecord
     school_specific_description: { templated: true },
   }.freeze
 
+  TX_REWRITEABLE_FIELDS = [:description_cy, :school_specific_description_cy, :download_links_cy].freeze
+
   belongs_to :activity_category
 
   has_one_attached :image
@@ -76,6 +78,10 @@ class ActivityType < ApplicationRecord
 
   has_many :audit_activity_types
   has_many :audits, through: :audit_activity_types
+
+  has_many :link_rewrites, as: :rewriteable
+
+  accepts_nested_attributes_for :link_rewrites, reject_if: proc { |attributes| attributes[:source].blank? }, allow_destroy: true
 
   accepts_nested_attributes_for :activity_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
 
