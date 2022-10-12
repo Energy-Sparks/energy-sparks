@@ -44,7 +44,7 @@
 
 <div class="tab-content" id="school-group-schools-content">
   <div class="tab-pane fade show active" id="active-content" role="tabpanel" aria-labelledby="active-tab">
-    <% if @school_group.schools.active.visible.any? %>
+    <% if @school_group.schools.active.any? %>
       <%= render 'active_schools', school_group: @school_group %>
     <% else %>
       <div class="bg-light p-2">No active schools for <%= @school_group.name %>.</div>
