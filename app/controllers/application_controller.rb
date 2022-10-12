@@ -57,7 +57,7 @@ class ApplicationController < ActionController::Base
   end
 
   def admin_mode?
-    EnergySparks::FeatureFlags.active?(:admin_mode)
+    ENV["ADMIN_MODE"] == 'true'
   end
 
   def current_user_admin?
