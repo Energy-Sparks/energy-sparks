@@ -26,6 +26,8 @@ class InterventionType < ApplicationRecord
   include TransifexSerialisable
   include Searchable
 
+  TX_REWRITEABLE_FIELDS = [:description_cy, :download_links_cy].freeze
+
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :summary, type: :string, fallbacks: { cy: :en }
   translates :description, backend: :action_text
@@ -38,6 +40,10 @@ class InterventionType < ApplicationRecord
   has_many :suggested_types, through: :intervention_type_suggestions
 
   has_one_attached :image
+
+  has_many :link_rewrites, as: :rewriteable
+
+  accepts_nested_attributes_for :link_rewrites, reject_if: proc { |attributes| attributes[:source].blank? }, allow_destroy: true
 
   accepts_nested_attributes_for :intervention_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
 

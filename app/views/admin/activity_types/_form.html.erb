@@ -42,39 +42,7 @@
     </div>
   <% end %>
 
-  <div class="row">
-    <div class="col-md-12 mb-3">
-      <h4>Link Rewrites</h4>
-      <small>If any of the original links listed below are found in the
-      Welsh text, they will be replaced with the specified replacement URL. Deleting a replacement will not recover any original links.</small>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-5 mb-3">
-      <label>Original URL</label>
-    </div>
-    <div class="col-md-5 mb-3">
-      <label>Replacement URL</label>
-    </div>
-    <div class="col-md-2 mb-3">
-      <label>Delete?</label>
-    </div>
-  </div>
-
-  <%= f.fields_for :link_rewrites do |rewrite| %>
-    <div class="row">
-      <div class="col-md-5 mb-3">
-        <%= rewrite.url_field :source, class: 'form-control' %>
-      </div>
-      <div class="col-md-5 mb-3">
-        <%= rewrite.url_field :target, class: 'form-control' %>
-      </div>
-      <div class="col-md-1 mb-3">
-        <%= rewrite.check_box :_destroy, label: 'Delete', class: 'form-control' %>
-      </div>
-    </div>
-  <% end %>
+  <%= render 'link_rewrites', f: f %>
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
     <div class="description-trix-editor <%= locale %>">

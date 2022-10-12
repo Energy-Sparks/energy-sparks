@@ -18,6 +18,9 @@ module Admin
 
     def new
       add_activity_type_suggestions
+      3.times do
+        @activity_type.link_rewrites.build
+      end
     end
 
     def edit

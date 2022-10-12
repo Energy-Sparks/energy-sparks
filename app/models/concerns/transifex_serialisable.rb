@@ -185,7 +185,7 @@ module TransifexSerialisable
     end
 
     def tx_rewrite_links?(attr)
-      return tx_rewriteable_fields.include?(attr)
+      return tx_model_has_link_rewrites? && tx_rewriteable_fields.include?(attr)
     end
 
     def tx_templated_attribute?(attr)
@@ -196,6 +196,10 @@ module TransifexSerialisable
     #borrowed from: https://github.com/rails/rails/blob/3872bc0e54d32e8bf3a6299b0bfe173d94b072fc/actiontext/lib/action_text/attribute.rb#L61
     def tx_rich_text_field?(name)
       reflect_on_all_associations(:has_one).collect(&:name).include?("rich_text_#{name}".to_sym)
+    end
+
+    def tx_model_has_link_rewrites?
+      reflect_on_all_associations(:has_many).collect(&:name).include?(:link_rewrites)
     end
 
     def tx_resources
