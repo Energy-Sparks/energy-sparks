@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_04_165032) do
+ActiveRecord::Schema.define(version: 2022_10_12_100700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -871,6 +871,16 @@ ActiveRecord::Schema.define(version: 2022_10_04_165032) do
   create_table "key_stages", force: :cascade do |t|
     t.string "name"
     t.index ["name"], name: "index_key_stages_on_name", unique: true
+  end
+
+  create_table "link_rewrites", force: :cascade do |t|
+    t.string "source"
+    t.string "target"
+    t.string "rewriteable_type"
+    t.bigint "rewriteable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["rewriteable_type", "rewriteable_id"], name: "index_link_rewrites_on_rewriteable_type_and_rewriteable_id"
   end
 
   create_table "locations", force: :cascade do |t|

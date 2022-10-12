@@ -9,6 +9,9 @@ module Admin
 
     def new
       add_intervention_type_suggestions
+      3.times do
+        @intervention_type.link_rewrites.build
+      end
     end
 
     def edit
@@ -18,6 +21,9 @@ module Admin
       else
         # Top up to 8
         add_intervention_type_suggestions(number_of_suggestions_so_far)
+      end
+      3.times do
+        @intervention_type.link_rewrites.build
       end
     end
 
@@ -32,7 +38,10 @@ module Admin
 
     def update
       if @intervention_type.update(intervention_type_params)
-        redirect_to admin_intervention_types_path, notice: 'Intervention type was successfully updated.'
+        #Rewrite links in Welsh text
+        rewritten = @intervention_type.update(@intervention_type.rewrite_all)
+        notice = rewritten ? 'Intervention type was successfully updated.' : 'Intervention type was saved, but failed to rewrite links.'
+        redirect_to admin_intervention_types_path, notice: notice
       else
         render :edit
       end
@@ -62,12 +71,17 @@ module Admin
           :intervention_type_group_id,
           :score,
           :custom,
+          link_rewrites_attributes: link_rewrites_params,
           intervention_type_suggestions_attributes: suggestions_params
       )
     end
 
     def suggestions_params
       [:id, :suggested_type_id, :_destroy]
+    end
+
+    def link_rewrites_params
+      [:id, :source, :target, :_destroy]
     end
   end
 end
