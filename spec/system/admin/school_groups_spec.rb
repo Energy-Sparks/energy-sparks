@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'school groups', :school_groups, type: :system do
+RSpec.describe 'school groups', :school_groups, type: :system, include_application_helper: true do
   let!(:admin)                  { create(:admin) }
   let!(:setup_data)             {}
 
@@ -22,7 +22,6 @@ RSpec.describe 'school groups', :school_groups, type: :system do
       click_on 'Admin'
     end
 
-=begin
     describe "Viewing school groups index page" do
       let!(:setup_data) { create_data_for_school_groups(school_groups) }
       before do
@@ -89,7 +88,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
         end
       end
     end
-=end
+
     describe "Viewing school group page" do
       let!(:school_group) { create :school_group }
       before do
@@ -99,7 +98,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
           click_on 'Manage'
         end
       end
-=begin
+
       describe "Header" do
         it { expect(page).to have_content("#{school_group.name} School Group")}
         it "has a button to view all school groups" do
@@ -173,7 +172,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
           it { expect(page).to have_current_path(admin_school_groups_path) }
         end
       end
-=end
+
       describe "Active schools tab" do
         context "when there are active schools" do
           let(:school_onboarding) { create :school_onboarding, school_group: school_group }
@@ -230,15 +229,46 @@ RSpec.describe 'school groups', :school_groups, type: :system do
         context "when there are inactive schools only" do
           let!(:school) { create(:school, active: false, name: "A School", school_group: school_group) }
           let!(:setup_data) { school }
-          it "doesn't list school active tab" do
+          it "doesn't show school active tab" do
             within '#active-content' do
               expect(page).to_not have_link(school.name)
             end
           end
         end
       end
+
+      describe "Onboarding schools tab" do
+        before do
+          click_on "Onboarding"
+        end
+        it_behaves_like "school group onboardings"
+      end
+
+      describe "Removed schools tab" do
+        context "when there are inactive schools" do
+          let!(:school) { create(:school, active: false, name: "A School", school_group: school_group, removal_date: Time.now) }
+          let!(:setup_data) { school }
+          it "lists school in removed tab" do
+            within '#removed-content' do
+              expect(page).to have_link(school.name, href: school_path(school))
+              expect(page).to have_content(nice_dates(school.removal_date))
+              expect(page).to have_link("Meters")
+            end
+          end
+        end
+        context "when there are only active schools" do
+          let!(:school) { create(:school, active: true, name: "A School", school_group: school_group) }
+          let!(:setup_data) { school }
+          it "doesn't show school in removed tab" do
+            within '#removed-content' do
+              expect(page).to_not have_link(school.name)
+            end
+          end
+        end
+      end
+
     end
-=begin
+
     describe "Editing a school group" do
       let!(:school_group) { create(:school_group, name: 'BANES', public: true) }
       before do
@@ -326,6 +356,5 @@ RSpec.describe 'school groups', :school_groups, type: :system do
         end
       end
     end
-=end
   end
 end
