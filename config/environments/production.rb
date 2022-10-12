@@ -107,6 +107,11 @@ Rails.application.configure do
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
+  # Default good job execution mode configuration for production
+  # See https://github.com/bensheldon/good_job#configuration-options
+  config.active_job.queue_adapter = :good_job
+  config.good_job.execution_mode = :external
+
   if ENV["RAILS_LOG_TO_STDOUT"].present?
     logger           = ActiveSupport::Logger.new(STDOUT)
     logger.formatter = config.log_formatter

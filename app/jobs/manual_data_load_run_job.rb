@@ -1,6 +1,10 @@
 class ManualDataLoadRunJob < ApplicationJob
   queue_as :default
 
+  def priority
+    10
+  end
+
   def perform(manual_data_load_run)
     load(manual_data_load_run.amr_uploaded_reading.amr_data_feed_config,
          manual_data_load_run.amr_uploaded_reading,

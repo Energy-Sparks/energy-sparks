@@ -17,7 +17,6 @@ module Admin
     end
 
     def create
-      @user.confirmed_at = Time.zone.now
       if @user.save
         redirect_to admin_users_path, notice: 'User was successfully created.'
       else
@@ -43,8 +42,7 @@ module Admin
   private
 
     def user_params
-      params[:user].delete(:password) if params[:user][:password].blank?
-      params.require(:user).permit(:name, :email, :password, :role, :school_id, :school_group_id, :staff_role_id, cluster_school_ids: [])
+      params.require(:user).permit(:name, :email, :role, :school_id, :school_group_id, :staff_role_id, cluster_school_ids: [])
     end
 
     def set_schools_options

@@ -39,6 +39,8 @@ class ActivityType < ApplicationRecord
     school_specific_description: { templated: true },
   }.freeze
 
+  TX_REWRITEABLE_FIELDS = [:description_cy, :school_specific_description_cy, :download_links_cy].freeze
+
   belongs_to :activity_category
 
   has_one_attached :image
@@ -57,6 +59,7 @@ class ActivityType < ApplicationRecord
   scope :random_suggestions, -> { active }
   scope :custom_last, -> { order(:custom) }
   scope :by_name, -> { order(name: :asc) }
+  scope :by_id, -> { order(id: :asc) }
   scope :live_data, -> { joins(:activity_category).merge(ActivityCategory.live_data) }
   scope :for_key_stages, ->(key_stages) { joins(:key_stages).where(key_stages: { id: key_stages.map(&:id) }).distinct }
   scope :for_subjects, ->(subjects) { joins(:subjects).where(subjects: { id: subjects.map(&:id) }).distinct }
@@ -75,6 +78,10 @@ class ActivityType < ApplicationRecord
 
   has_many :audit_activity_types
   has_many :audits, through: :audit_activity_types
+
+  has_many :link_rewrites, as: :rewriteable
+
+  accepts_nested_attributes_for :link_rewrites, reject_if: proc { |attributes| attributes[:source].blank? }, allow_destroy: true
 
   accepts_nested_attributes_for :activity_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
 

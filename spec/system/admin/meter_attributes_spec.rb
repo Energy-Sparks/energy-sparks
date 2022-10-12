@@ -142,6 +142,9 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       click_on 'Manage'
       click_on 'Admin'
       click_on 'School Groups'
+      within 'table' do
+        click_on 'Manage'
+      end
       click_on 'Meter attributes'
       select 'Tariff', from: 'type'
       click_on 'New attribute'
@@ -155,7 +158,6 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       attribute = school_group.meter_attributes.first
       expect{ attribute.to_analytics }.to_not raise_error
       expect(attribute.to_analytics.to_s).to include('economy_7')
-
 
       click_on 'Edit'
 
@@ -174,7 +176,6 @@ RSpec.describe "meter attribute management", :meters, type: :system do
       expect(school_group.meter_attributes.active.size).to eq(0)
       new_attribute.reload
       expect(new_attribute.deleted_by).to eq(admin)
-
     end
 
     it 'allow the admin to download all meter attributes' do

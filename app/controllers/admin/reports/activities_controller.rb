@@ -2,7 +2,7 @@ module Admin
   module Reports
     class ActivitiesController < AdminController
       def index
-        @activities = Activity.all.order(created_at: :desc).limit(150)
+        @activities = Activity.recorded_in_last_year.order(created_at: :desc)
       end
     end
   end

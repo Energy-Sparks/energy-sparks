@@ -8,15 +8,12 @@ module Admin
     include Measurements
 
     before_action :check_aggregated_school_in_cache
-    before_action :build_aggregate_school, except: [:analysis]
-    before_action :set_nav
+    before_action :build_aggregate_school
     before_action :set_measurement_options
 
     def analysis
-      if @school.analysis?
-        # Redirect to correct dashboard
-        redirect_to admin_school_analysis_tab_path(school: @school, tab: pages.keys.first)
-      end
+      heat_meter = @aggregate_school.all_heat_meters.first
+      redirect_to admin_school_analysis_tab_path(@school, tab: :heating_model_fitting, mpan_mprn: heat_meter.mpan_mprn)
     end
 
     def show
@@ -28,16 +25,6 @@ module Admin
     def build_aggregate_school
       # use for heat model fitting tabs
       @aggregate_school = aggregate_school
-    end
-
-    def set_nav
-      @nav_array = pages.map do |page, config|
-        { name: config[:name], page: page }
-      end
-    end
-
-    def pages
-      @school.configuration.analysis_charts_as_symbols(:analysis_charts)
     end
 
     def render_generic_chart_template(extra_chart_config = {})

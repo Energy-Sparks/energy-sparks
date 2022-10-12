@@ -24,7 +24,7 @@
     <div class="col">
     <ul>
       <% @activity_categories.each do |activity_category| %>
-        <li><a href="#activity-category-<%= activity_category.id %>"><%= activity_category.name %></li>
+        <li><a href="#activity-category-<%= activity_category.id %>"><%= activity_category.name %></a></li>
       <% end %>
     </ul>
     </div>
@@ -38,6 +38,7 @@
       <table class="table table-striped table-sm">
         <thead>
           <tr>
+            <th scope="col">Id</th>
             <th scope="col">Name</th>
             <th scope="col">School specific instructions?</th>
             <th scope="col">Score</th>
@@ -48,8 +49,9 @@
 
         <tbody>
           <% if activity_category.activity_types.count > 0 %>
-            <% activity_category.activity_types.by_name.each do |activity_type| %>
+            <% activity_category.activity_types.by_id.each do |activity_type| %>
               <tr class="<%= active(activity_type.active) %>" scope="row" >
+                <td><%= activity_type.id %></td>
                 <td><%= link_to activity_type.name, admin_activity_type_path(activity_type) %></td>
                 <td><%= fa_icon( activity_type.school_specific_description.present? ? 'check-circle text-success' : 'times-circle text-muted') %></td>
                 <td><%= activity_type.score %></td>

@@ -12,6 +12,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
+          <th scope="col">Id</th>
           <th scope="col">Title</th>
           <th scope="col">Score</th>
           <th scope="col"></th>
@@ -19,8 +20,9 @@
       </thead>
 
       <tbody>
-        <% @intervention_types.where(intervention_type_group: intervention_type_group).each do |intervention_type| %>
+        <% @intervention_types.where(intervention_type_group: intervention_type_group).sort_by(&:id).each do |intervention_type| %>
           <tr class="<%= active(intervention_type.active) %>" scope="row" >
+            <td><%= intervention_type.id %>
             <td><%= link_to intervention_type.name, intervention_type_path(intervention_type) %></td>
             <td><%= intervention_type.score %></td>
             <td><%= link_to 'Edit', edit_admin_intervention_type_path(intervention_type), class: 'btn btn-sm' %></td>

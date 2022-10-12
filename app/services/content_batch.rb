@@ -7,7 +7,7 @@ class ContentBatch
   end
 
   def generate
-    @benchmark_result_generation_run = BenchmarkResultGenerationRun.create!
+    @benchmark_result_generation_run = BenchmarkResultGenerationRun.find_or_create_by!(created_at: Time.current.all_day)
     generate_content(@benchmark_result_generation_run)
   end
 

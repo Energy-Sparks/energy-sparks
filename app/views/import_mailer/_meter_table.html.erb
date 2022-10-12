@@ -1,11 +1,19 @@
 <tbody>
   <% meters.each do |meter| %>
     <tr>
-      <td><%= meter.school.school_group.name %></td>
+      <td><%= link_to meter.school.school_group.name, school_group_url(meter.school.school_group) %></td>
       <td><%= meter.meter_type.to_s.humanize%></td>
-      <td><%= meter.school.name %></td>
-      <td><%= meter.mpan_mprn %></td>
+      <td><%= link_to meter.school.name, school_url(meter.school) %></td>
+      <td><%= link_to meter.mpan_mprn, school_meter_url(meter.school, meter) %>
+      </td>
       <td><%= nice_dates(meter.last_validated_reading) %></td>
+      <td>
+        <% if meter.notes.present? %>
+          <%= link_to school_meter_url(meter.school, meter) do %>
+            <%= image_tag 'email/sticky-note-regular.png', width: '20px', height: '20px' %>
+          <% end %>
+        <% end %>
+      </td>
     </tr>
   <% end %>
 </tbody>

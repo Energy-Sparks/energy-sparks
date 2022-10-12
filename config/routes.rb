@@ -91,7 +91,7 @@ Rails.application.routes.draw do
 
   resource :school_switcher, only: [:create], controller: :school_switcher
 
-  resources :school_groups, only: [:show, :index]
+  resources :school_groups, only: [:show]
   resources :scoreboards, only: [:show, :index]
   resources :transport_types, only: [:index]
 
@@ -285,7 +285,12 @@ Rails.application.routes.draw do
     resources :school_groups do
       scope module: :school_groups do
         resources :meter_attributes
-        resources :school_onboardings, only: [:index]
+        resources :school_onboardings, only: [:index] do
+          collection do
+            post :reminders
+            post :make_visible
+          end
+        end
         resource :partners, only: [:show, :update]
         resource :meter_report, only: [:show]
       end
@@ -369,8 +374,11 @@ Rails.application.routes.draw do
         get 'completed'
       end
     end
+
     resources :activations, only: :index
     namespace :reports do
+      resources :good_jobs, only: :index
+      get 'good_jobs/export', to: 'good_jobs#export'
       resources :alert_subscribers, only: :index
       get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
       get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
@@ -424,8 +432,8 @@ Rails.application.routes.draw do
       end
     end
 
-    authenticated :user, -> user { user.admin? }  do
-      mount DelayedJobWeb, at: "/delayed_job"
+    authenticate :user, ->(user) { user.admin? } do
+      mount GoodJob::Engine => 'good_job'
     end
   end # Admin name space
 
