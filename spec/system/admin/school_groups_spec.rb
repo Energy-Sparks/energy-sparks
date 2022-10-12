@@ -247,7 +247,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
               expect(page).to have_content("No schools currently onboarding for #{school_group.name}.")
             end
         end
-        it_behaves_like "school group onboardings"
+        it_behaves_like "admin school group onboardings"
       end
 
       describe "Removed schools tab" do

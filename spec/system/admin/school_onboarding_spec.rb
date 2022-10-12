@@ -37,6 +37,14 @@ RSpec.describe "onboarding", :schools, type: :system do
       click_on 'Admin'
     end
 
+    context "selectable actions" do
+      let!(:setup_data)  { } # call to create all objects required by tests before page is loaded, overriden in contexts
+      before do
+        click_on 'Manage school onboarding'
+      end
+      it_behaves_like "admin school group onboardings"
+    end
+
     it 'allows a new onboarding to be setup and sends an email to the school' do
       click_on 'Manage school onboarding'
       click_on 'New Automatic School Setup'

@@ -1,4 +1,4 @@
-RSpec.shared_examples "school group onboardings" do
+RSpec.shared_examples "admin school group onboardings" do
   let(:school_group_onboardings) { 3.times.collect { create :school_onboarding, :with_school, school_group: school_group, created_by: admin } }
   let(:setup_data) { school_group_onboardings }
 
