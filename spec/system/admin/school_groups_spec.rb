@@ -22,6 +22,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
       click_on 'Admin'
     end
 
+=begin
     describe "Viewing school groups index page" do
       let!(:setup_data) { create_data_for_school_groups(school_groups) }
       before do
@@ -88,7 +89,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
         end
       end
     end
-
+=end
     describe "Viewing school group page" do
       let!(:school_group) { create :school_group }
       before do
@@ -98,7 +99,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
           click_on 'Manage'
         end
       end
-
+=begin
       describe "Header" do
         it { expect(page).to have_content("#{school_group.name} School Group")}
         it "has a button to view all school groups" do
@@ -172,8 +173,72 @@ RSpec.describe 'school groups', :school_groups, type: :system do
           it { expect(page).to have_current_path(admin_school_groups_path) }
         end
       end
-    end
+=end
+      describe "Active schools tab" do
+        context "when there are active schools" do
+          let(:school_onboarding) { create :school_onboarding, school_group: school_group }
+          let!(:school) { create(:school, active: true, name: "A School", school_group: school_group, school_onboarding: school_onboarding) }
+          let!(:setup_data) { school }
 
+          it "lists school in active tab" do
+            within '#active-content' do
+              expect(page).to have_link(school.name, href: edit_admin_school_onboarding_configuration_path(school.school_onboarding))
+            end
+          end
+
+          it "has an action buttons" do
+            within '#active-content' do
+              expect(page).to have_link('Edit')
+              expect(page).to have_link('Users')
+              expect(page).to have_link('Meters')
+            end
+          end
+          it "has status pill buttons" do
+            within '#active-content' do
+              expect(page).to have_link('Visible')
+              expect(page).to have_link('Public')
+              expect(page).to have_link('Process data')
+              expect(page).to have_link('Data visible')
+              expect(page).to have_link('Regenerate')
+            end
+          end
+          context "and clicking 'Edit'" do
+            before do
+              within '#active-content' do
+                click_link 'Edit'
+              end
+            end
+            it { expect(page).to have_current_path(edit_school_path(school)) }
+          end
+          context "and clicking 'Users'" do
+            before do
+              within '#active-content' do
+                click_link 'User'
+              end
+            end
+            it { expect(page).to have_current_path(school_users_path(school)) }
+          end
+          context "and clicking 'Meters'" do
+            before do
+              within '#active-content' do
+                click_link 'Meters'
+              end
+            end
+            it { expect(page).to have_current_path(school_meters_path(school)) }
+          end
+        end
+        context "when there are inactive schools only" do
+          let!(:school) { create(:school, active: false, name: "A School", school_group: school_group) }
+          let!(:setup_data) { school }
+          it "doesn't list school active tab" do
+            within '#active-content' do
+              expect(page).to_not have_link(school.name)
+            end
+          end
+        end
+      end
+    end
+=begin
     describe "Editing a school group" do
       let!(:school_group) { create(:school_group, name: 'BANES', public: true) }
       before do
@@ -261,5 +326,6 @@ RSpec.describe 'school groups', :school_groups, type: :system do
         end
       end
     end
+=end
   end
 end
