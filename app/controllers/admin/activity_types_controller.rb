@@ -44,9 +44,10 @@ module Admin
 
     def update
       if @activity_type.update(activity_type_params)
-        #TODO improve
-        @activity_type.update(@activity_type.rewrite_all)
-        redirect_to admin_activity_types_path, notice: 'Activity type was successfully updated.'
+        #Rewrite links in Welsh text
+        rewritten = @activity_type.update(@activity_type.rewrite_all)
+        notice = rewritten ? 'Activity type was successfully updated.' : 'Activity type was saved, but failed to rewrite links.'
+        redirect_to admin_activity_types_path, notice: notice
       else
         render :edit
       end
