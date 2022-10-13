@@ -8,4 +8,5 @@
 #  updated_at :datetime         not null
 #
 class DashboardMessage < ApplicationRecord
+  has_one :school_group, dependent: :nullify
 end
