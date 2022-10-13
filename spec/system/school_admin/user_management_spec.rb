@@ -121,6 +121,16 @@ describe 'School admin user management' do
         expect { click_on 'Update account' }.to change { Contact.count }.by(1)
       end
 
+      it 'cannot edit alert contact if user is not yet confirmed' do
+        staff = create(:staff, school: school, confirmed_at: nil)
+        click_on 'Manage users'
+        within '.staff' do
+          click_on 'Edit'
+        end
+
+        expect(page).not_to have_content "Subscribe to school alerts"
+      end
+
       it 'can update contact email address if contact has user association' do
         staff = create(:staff, school: school)
         contact = create(:contact, name: staff.name, user: staff, email_address: staff.email, school: school)
