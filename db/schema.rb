@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_12_100700) do
+ActiveRecord::Schema.define(version: 2022_10_13_104708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -687,6 +687,12 @@ ActiveRecord::Schema.define(version: 2022_10_12_100700) do
     t.index ["find_out_more_id"], name: "index_dashboard_alerts_on_find_out_more_id"
   end
 
+  create_table "dashboard_messages", force: :cascade do |t|
+    t.text "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "emails", force: :cascade do |t|
     t.bigint "contact_id", null: false
     t.datetime "sent_at"
@@ -1194,6 +1200,8 @@ ActiveRecord::Schema.define(version: 2022_10_12_100700) do
     t.bigint "default_weather_station_id"
     t.boolean "public", default: true
     t.integer "default_chart_preference", default: 0, null: false
+    t.bigint "dashboard_message_id"
+    t.index ["dashboard_message_id"], name: "index_school_groups_on_dashboard_message_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
     t.index ["default_template_calendar_id"], name: "index_school_groups_on_default_template_calendar_id"
@@ -1812,6 +1820,7 @@ ActiveRecord::Schema.define(version: 2022_10_12_100700) do
   add_foreign_key "school_group_meter_attributes", "users", column: "deleted_by_id", on_delete: :nullify
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
   add_foreign_key "school_groups", "calendars", column: "default_template_calendar_id", on_delete: :nullify
+  add_foreign_key "school_groups", "dashboard_messages"
   add_foreign_key "school_groups", "scoreboards", column: "default_scoreboard_id"
   add_foreign_key "school_key_stages", "key_stages", on_delete: :restrict
   add_foreign_key "school_key_stages", "schools", on_delete: :cascade
