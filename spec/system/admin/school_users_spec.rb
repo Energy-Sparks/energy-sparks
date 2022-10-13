@@ -71,18 +71,14 @@ RSpec.describe 'School Users', :schools, type: :system do
       expect(user.contacts.count).to eq(0)
     end
 
-    # it 'reshows subscription check boxes after failed validation' do
-    #   check 'privacy'
-    #   fill_in :user_password, with: 'abcdef'
-    #   uncheck 'Subscribe to newsletters'
-    #   uncheck 'Subscribe to school alerts'
-    #   click_button 'Set my password'
-    #   expect(page).to have_content("Password confirmation doesn't match Password")
-    #   expect(page).to have_content("Energy Sparks can automatically create an alert contact")
-    #   expect(page).not_to have_checked_field("Subscribe to school alerts")
-    #   expect(page).to have_content("You can also add the new user to the mailing list for newsletters")
-    #   expect(page).not_to have_checked_field("Subscribe to newsletters")
-    # end
+    it 'reshows subscription check boxes after failed validation' do
+      check 'privacy'
+      fill_in :user_password, with: 'abcdef'
+      click_button 'Set my password'
+      expect(page).to have_content("Password confirmation doesn't match Password")
+      expect(page).to have_content("Energy Sparks can automatically create an alert contact")
+      expect(page).to have_content("You can also add the new user to the mailing list for newsletters")
+    end
   end
 
   context "when resetting password for existing user" do
