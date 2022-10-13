@@ -24,7 +24,7 @@ class PasswordsController < Devise::PasswordsController
   private
 
   def set_confirmed
-    @confirmed = params[:confirmed].present?
+    @confirmed = (params[:confirmed] == 'true')
   end
 
   def allow_subscriptions?(user)

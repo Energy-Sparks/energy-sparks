@@ -28,7 +28,7 @@ RSpec.describe 'School Users', :schools, type: :system do
     end
 
     it 'does not allow blank passwords' do
-      click_button 'Set my password'
+      click_button 'Complete registration'
       expect(page).to have_content("Password can't be blank")
     end
 
@@ -37,7 +37,7 @@ RSpec.describe 'School Users', :schools, type: :system do
       fill_in :user_password, with: 'abcdef'
       fill_in :user_password_confirmation, with: 'abcdef'
       check 'privacy'
-      click_button 'Set my password'
+      click_button 'Complete registration'
       expect(page).to have_content('Your password has been changed successfully. You are now signed in.')
     end
 
@@ -47,7 +47,7 @@ RSpec.describe 'School Users', :schools, type: :system do
       fill_in :user_password_confirmation, with: 'abcdef'
       check 'privacy'
       uncheck 'Subscribe to newsletters'
-      click_button 'Set my password'
+      click_button 'Complete registration'
       expect(page).to have_content('Your password has been changed successfully. You are now signed in.')
     end
 
@@ -55,7 +55,7 @@ RSpec.describe 'School Users', :schools, type: :system do
       fill_in :user_password, with: 'abcdef'
       fill_in :user_password_confirmation, with: 'abcdef'
       check 'privacy'
-      click_button 'Set my password'
+      click_button 'Complete registration'
       expect(page).to have_content('Your password has been changed successfully. You are now signed in.')
       expect(user.contacts.count).to eq(1)
       expect(school.contacts.last.email_address).to eq('foo@bar.com')
@@ -66,7 +66,7 @@ RSpec.describe 'School Users', :schools, type: :system do
       fill_in :user_password_confirmation, with: 'abcdef'
       check 'privacy'
       uncheck 'Subscribe to school alerts'
-      click_button 'Set my password'
+      click_button 'Complete registration'
       expect(page).to have_content('Your password has been changed successfully. You are now signed in.')
       expect(user.contacts.count).to eq(0)
     end
@@ -74,7 +74,7 @@ RSpec.describe 'School Users', :schools, type: :system do
     it 'reshows subscription check boxes after failed validation' do
       check 'privacy'
       fill_in :user_password, with: 'abcdef'
-      click_button 'Set my password'
+      click_button 'Complete registration'
       expect(page).to have_content("Password confirmation doesn't match Password")
       expect(page).to have_content("Energy Sparks can automatically create an alert contact")
       expect(page).to have_content("You can also add the new user to the mailing list for newsletters")
