@@ -1,5 +1,5 @@
 <table class="table table-striped">
-  <% school_group.schools.active.by_name.each do |school| %>
+  <% school_group.schools.visible.by_name.each do |school| %>
     <tr>
       <td><%= link_to_if school.school_onboarding, school.name, [:edit, :admin, school.school_onboarding, :configuration] %></td>
       <td><%= render 'shared/school_status_buttons', school: school %></td>
