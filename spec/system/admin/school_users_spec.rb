@@ -9,8 +9,8 @@ RSpec.describe 'School Users', :schools, type: :system do
     it 'does not show newsletter or alert subscription options' do
       visit user_confirmation_path(confirmation_token: confirmation_token)
       expect(page).to have_content('Your email address has been successfully confirmed')
-      expect(page).not_to have_content("Energy Sparks can automatically create an alert contact")
-      expect(page).not_to have_content("You can also add the new user to the mailing list for newsletters")
+      expect(page).not_to have_content("Energy Sparks alerts:")
+      expect(page).not_to have_content("subscribe to the mailing list for newsletters")
     end
   end
 
@@ -76,8 +76,8 @@ RSpec.describe 'School Users', :schools, type: :system do
       fill_in :user_password, with: 'abcdef'
       click_button 'Complete registration'
       expect(page).to have_content("Password confirmation doesn't match Password")
-      expect(page).to have_content("Energy Sparks can automatically create an alert contact")
-      expect(page).to have_content("You can also add the new user to the mailing list for newsletters")
+      expect(page).to have_content("Energy Sparks alerts:")
+      expect(page).to have_content("subscribe to the mailing list for newsletters")
     end
   end
 
@@ -100,8 +100,8 @@ RSpec.describe 'School Users', :schools, type: :system do
 
     it "should not show checkboxes for subscriptions" do
       expect(page).to have_content("Set your password")
-      expect(page).not_to have_content("Energy Sparks can automatically create an alert contact")
-      expect(page).not_to have_content("You can also add the new user to the mailing list for newsletters")
+      expect(page).not_to have_content("Energy Sparks alerts:")
+      expect(page).not_to have_content("subscribe to the mailing list for newsletters")
     end
   end
 end
