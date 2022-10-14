@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-3">
     <%= simple_fields_for :contact do |n| %>
-      <%= n.input :auto_create_alert_contact, label: "Subscribe to school alerts", as: :boolean, class: "custom-checkbox pb-3", wrapper_html: { id: "test", class: "custom-checkbox pb-3"}, label_html: {class: "custom-control-label"}, input_html: { class: "custom-control-input", checked: user.persisted? ? Schools::ContactFinder.new(school).contact_for(user).present? : true } %>
+      <%= n.input :auto_create_alert_contact, label: "Subscribe to school alerts", as: :boolean, class: "custom-checkbox pb-3", wrapper_html: { id: "test", class: "custom-checkbox pb-3"}, label_html: {class: "custom-control-label"}, input_html: { class: "custom-control-input", checked: checked } %>
     <% end %>
   </div>
   <div class="col-md-9">

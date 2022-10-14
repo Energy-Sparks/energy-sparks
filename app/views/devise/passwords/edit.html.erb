@@ -34,9 +34,9 @@
 
     <% if @allow_subscriptions %>
       <hr/>
-      <%= render 'schools/users/auto_create_alert_contact', f: f, school: resource.school, user: resource %>
+      <%= render 'schools/users/auto_create_alert_contact', f: f, school: resource.school, user: resource, checked: @subscribe_alerts %>
       <hr/>
-      <%= render 'schools/users/auto_subscribe_newsletter' %>
+      <%= render 'schools/users/auto_subscribe_newsletter', checked: @subscribe_newsletters %>
       <hr/>
     <% end %>
 

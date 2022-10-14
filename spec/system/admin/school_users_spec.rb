@@ -74,10 +74,12 @@ RSpec.describe 'School Users', :schools, type: :system do
     it 'reshows subscription check boxes after failed validation' do
       check 'privacy'
       fill_in :user_password, with: 'abcdef'
+      uncheck 'Subscribe to school alerts'
+      uncheck 'Subscribe to newsletters'
       click_button 'Complete registration'
       expect(page).to have_content("Password confirmation doesn't match Password")
-      expect(page).to have_content("Energy Sparks alerts:")
-      expect(page).to have_content("subscribe to the mailing list for newsletters")
+      expect(page).not_to have_checked_field("Subscribe to school alerts")
+      expect(page).not_to have_checked_field("Subscribe to newsletters")
     end
   end
 
