@@ -1,7 +1,6 @@
 module Schools
   class ClusterAdminsController < ApplicationController
     include AlertContactCreator
-    include NewsletterSubscriber
 
     load_and_authorize_resource :school
 

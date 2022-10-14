@@ -1244,8 +1244,6 @@ ActiveRecord::Schema.define(version: 2022_10_12_100700) do
     t.bigint "template_calendar_id"
     t.bigint "scoreboard_id"
     t.bigint "weather_station_id"
-    t.boolean "subscribe_to_newsletter", default: true
-    t.bigint "subscribe_users_to_newsletter", default: [], null: false, array: true
     t.boolean "school_will_be_public", default: true
     t.integer "default_chart_preference", default: 0, null: false
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"

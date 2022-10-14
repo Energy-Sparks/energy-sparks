@@ -62,7 +62,6 @@ RSpec.describe "onboarding", :schools, type: :system do
       click_on "Send setup email"
 
       onboarding = SchoolOnboarding.first
-      expect(onboarding.subscribe_to_newsletter).to be_truthy
       expect(onboarding.school_will_be_public).to be_falsey
       expect(onboarding.default_chart_preference).to eq "carbon"
 
