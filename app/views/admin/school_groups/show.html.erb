@@ -39,3 +39,5 @@
     <%= link_to 'Delete', admin_school_group_path(@school_group), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm#{' disabled' unless @school_group.safe_to_destroy?}" %>
   </div>
 </div>
+
+<%= render 'admin/shared/dashboard_message', object: @school_group %>
