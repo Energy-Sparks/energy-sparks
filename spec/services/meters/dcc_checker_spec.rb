@@ -21,5 +21,19 @@ module Meters
       expect(meter.reload.dcc_meter).to be_falsey
       expect(meter.reload.dcc_checked_at).not_to be nil
     end
+
+    it 'should generate an email if status changed' do
+      expect(n3rgy_api).to receive(:find).with(meter.mpan_mprn).and_return(true)
+      expect{
+        Meters::DccChecker.new([meter], n3rgy_api_factory).perform
+      }.to change(ActionMailer::Base.deliveries, :count).from(0).to(1)
+    end
+
+    it 'should not generate an email if status not changed' do
+      expect(n3rgy_api).to receive(:find).with(meter.mpan_mprn).and_return(false)
+      expect{
+        Meters::DccChecker.new([meter], n3rgy_api_factory).perform
+      }.not_to change(ActionMailer::Base.deliveries, :count)
+    end
   end
 end
