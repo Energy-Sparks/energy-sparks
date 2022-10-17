@@ -44,6 +44,8 @@
 <% end %>
 
 <% if @show_standard_prompts %>
+  <%= render 'management/schools/dashboard_message', school: @school %>
+
   <%= render 'management/schools/complete_programmes', school: @school %>
 
   <%= render 'management/schools/record_activity', school: @school %>
