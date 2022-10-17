@@ -3,7 +3,6 @@
 # Table name: school_groups
 #
 #  created_at                    :datetime         not null
-#  dashboard_message_id          :bigint(8)
 #  default_chart_preference      :integer          default("default"), not null
 #  default_dark_sky_area_id      :bigint(8)
 #  default_scoreboard_id         :bigint(8)
@@ -19,14 +18,12 @@
 #
 # Indexes
 #
-#  index_school_groups_on_dashboard_message_id           (dashboard_message_id)
 #  index_school_groups_on_default_scoreboard_id          (default_scoreboard_id)
 #  index_school_groups_on_default_solar_pv_tuos_area_id  (default_solar_pv_tuos_area_id)
 #  index_school_groups_on_default_template_calendar_id   (default_template_calendar_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (dashboard_message_id => dashboard_messages.id)
 #  fk_rails_...  (default_scoreboard_id => scoreboards.id)
 #  fk_rails_...  (default_solar_pv_tuos_area_id => areas.id)
 #  fk_rails_...  (default_template_calendar_id => calendars.id) ON DELETE => nullify
@@ -47,12 +44,13 @@ class SchoolGroup < ApplicationRecord
   has_many :partners, through: :school_group_partners
   accepts_nested_attributes_for :school_group_partners, reject_if: proc {|attributes| attributes['position'].blank?}
 
+  has_one :dashboard_message, as: :messageable, dependent: :destroy
+
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
   belongs_to :default_solar_pv_tuos_area, class_name: 'SolarPvTuosArea', optional: true
   belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true
   belongs_to :default_weather_station, class_name: 'WeatherStation', foreign_key: 'default_weather_station_id', optional: true
   belongs_to :default_scoreboard, class_name: 'Scoreboard', optional: true
-  belongs_to :dashboard_message, optional: true, dependent: :destroy
 
   has_many :meter_attributes, inverse_of: :school_group, class_name: 'SchoolGroupMeterAttribute'
 
