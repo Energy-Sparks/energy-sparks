@@ -172,6 +172,12 @@ RSpec.describe 'school groups', :school_groups, type: :system do
           it { expect(page).to have_current_path(admin_school_groups_path) }
         end
       end
+
+      describe "Dashboard message panel" do
+        it_behaves_like "admin dashboard messages" do
+          let(:object) { school_group }
+        end
+      end
     end
 
     describe "Editing a school group" do
