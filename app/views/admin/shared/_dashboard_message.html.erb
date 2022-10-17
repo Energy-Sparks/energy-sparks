@@ -1,32 +1,11 @@
-<% dashboard_message = object.dashboard_message || object.build_dashboard_message %>
 <div class="bg-neutral py-2 clearfix">
   <div class="float-left px-4">
     <%= fa_icon(:info) %>
   </div>
   <div class="float-left">
-    <%= dashboard_message.try(:message) || "No message is currently set to display on dashboards for this #{object.model_name.human.downcase}" %>
+    <%= object.dashboard_message.try(:message) || "No message is currently set to display on dashboards for this #{object.model_name.human.downcase}" %>
   </div>
   <div class="float-right px-2">
-    <button class="btn btn-sm" data-toggle="modal" data-target="#messageModal">Set message</button>
-  </div>
-</div>
-
-<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title"><%= object.model_name.human %> dashboard message</h4>
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-      </div>
-      <div class="modal-body">
-        <%= simple_form_for(dashboard_message, url: [:admin, object, :dashboard_messages]) do |f| %>
-          <%= f.input :message %>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-          <%= f.submit "Save", class: "btn btn-success" %>
-        <% end %>
-      </div>
-    </div>
+    <%= link_to 'Set message', url_for([:edit, :admin, object, :dashboard_message]), class: 'btn btn-sm' %>
   </div>
 </div>

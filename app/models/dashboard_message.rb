@@ -9,4 +9,5 @@
 #
 class DashboardMessage < ApplicationRecord
   has_one :school_group, dependent: :nullify
+  validates :message, presence: true
 end

@@ -8,24 +8,23 @@ module Admin
     # A new route will be required for dashboard messages for schools too
     # Along with including the partial for a dashboard message in admin/schools#show
 
-    def create
-      @dashboard_message = @object.create_dashboard_message!(dashboard_message_params)
-      redirect_to url_for([:admin, @object]), notice: "#{@object.model_name.human} dashboard message saved"
-    end
-
     def edit
-      @dashboard_message = @object.dashboard_message
+      @dashboard_message = @object.dashboard_message || @object.build_dashboard_message
     end
 
     def update
-      @dashboard_message = @object.dashboard_message
-      @dashboard_message.update!(dashboard_message_params)
-      redirect_to url_for([:admin, @object]), notice: "#{@object.model_name.human} dashboard message saved"
+      @dashboard_message = @object.dashboard_message || @object.build_dashboard_message
+      @dashboard_message.attributes = dashboard_message_params
+      if @dashboard_message.save
+        redirect_to url_for([:admin, @object]), notice: "#{@object.model_name.human} dashboard message saved"
+      else
+        render :edit
+      end
     end
 
     def destroy
       @dashboard_message = @object.dashboard_message
-      @dashboard_message.destroy
+      @dashboard_message.destroy!
       redirect_to url_for([:admin, @object]), notice: "#{@object.model_name.human} dashboard message removed"
     end
 

@@ -293,7 +293,7 @@ Rails.application.routes.draw do
         end
         resource :partners, only: [:show, :update]
         resource :meter_report, only: [:show]
-        resource :dashboard_messages, only: [:create, :update, :edit, :delete], controller: '/admin/dashboard_messages'
+        resource :dashboard_message, only: [:update, :edit, :destroy], controller: '/admin/dashboard_messages'
       end
     end
 
