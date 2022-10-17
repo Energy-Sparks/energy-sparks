@@ -5,7 +5,7 @@ RSpec.shared_examples "admin dashboard messages" do
     it { expect(page).to have_link('Set message') }
     context "Clicking on 'Set message'" do
       before { click_link "Set message" }
-      it { expect(page).to have_content("Dashboard message for #{object.name} #{object.model_name.human.downcase}") }
+      it { expect(page).to have_content("Dashboard Message for #{object.name} #{object.model_name.to_s.titleize}") }
       it { expect(page).to have_link("View #{object.model_name.human.downcase}") }
       context "and clicking link back" do
         before { click_link "View #{object.model_name.human.downcase}" }

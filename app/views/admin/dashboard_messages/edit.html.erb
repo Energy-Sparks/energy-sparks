@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center">
-  <h1>Dashboard message for <%= "#{@object.name} #{@object.model_name.human.downcase}" %></h1>
+  <h1>Dashboard Message for <%= "#{@object.name} #{@object.model_name.to_s.titleize}" %></h1>
   <div>
     <%= header_nav_link "View #{@object.model_name.human.downcase}", url_for( [:admin, @object] ) %>
   </div>
