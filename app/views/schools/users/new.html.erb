@@ -5,7 +5,5 @@
 <%= simple_form_for @user, url: school_users_path(@school) do |f| %>
   <%= f.hidden_field :role %>
   <%= render 'form', f: f %>
-  <%= render 'schools/users/auto_create_alert_contact', f: f, school: @school, user: @user %>
-  <%= render 'schools/users/auto_subscribe_newsletter' %>
   <%= f.submit 'Create account', class: 'btn btn-rounded'%>
 <% end %>

@@ -20,8 +20,8 @@ Rails.application.config.action_view.default_enforce_utf8 = false
 Rails.application.config.active_job.return_false_on_aborted_enqueue = true
 
 # Send Active Storage analysis and purge jobs to dedicated queues.
-Rails.application.config.active_storage.queues.analysis = :active_storage_analysis
-Rails.application.config.active_storage.queues.purge    = :active_storage_purge
+Rails.application.config.active_storage.queues.analysis = :default
+Rails.application.config.active_storage.queues.purge    = :default
 
 # Use ActionMailer::MailDeliveryJob for sending parameterized and normal mail.
 #

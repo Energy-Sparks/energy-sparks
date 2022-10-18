@@ -40,6 +40,7 @@ describe Solar::SolarAreaLookupService, type: :service do
     end
     it 'assigns the nearest area' do
       ClimateControl.modify FEATURE_FLAG_AUTO_ASSIGN_SOLAR_AREA: 'true' do
+        expect(SolarAreaLoaderJob).to receive(:perform_later).with(bath_area)
         expect(service.assign).to eq bath_area
         expect(school.solar_pv_tuos_area).to eq bath_area
         bath_area.reload

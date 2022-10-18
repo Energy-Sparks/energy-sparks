@@ -173,7 +173,13 @@ class School < ApplicationRecord
 
   auto_strip_attributes :name, :website, :postcode, squish: true
 
-  geocoded_by :postcode
+  geocoded_by :postcode do |obj, results|
+    if (geo = results.first)
+      obj.latitude = geo.data['latitude']
+      obj.longitude = geo.data['longitude']
+      obj.country = geo.data['country'].downcase
+    end
+  end
 
   after_validation :geocode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
 

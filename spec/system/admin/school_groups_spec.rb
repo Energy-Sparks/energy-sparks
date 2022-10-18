@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'school groups', :school_groups, type: :system do
+RSpec.describe 'school groups', :school_groups, type: :system, include_application_helper: true do
   let!(:admin)                  { create(:admin) }
   let!(:setup_data)             {}
 
@@ -176,6 +176,107 @@ RSpec.describe 'school groups', :school_groups, type: :system do
       describe "Dashboard message panel" do
         it_behaves_like "admin dashboard messages" do
           let(:object) { school_group }
+        end
+      end
+
+      describe "Active schools tab" do
+        context "when there are active schools" do
+          let(:school_onboarding) { create :school_onboarding, school_group: school_group }
+          let!(:school) { create(:school, active: true, name: "A School", school_group: school_group, school_onboarding: school_onboarding) }
+          let!(:setup_data) { school }
+
+          it "lists school in active tab" do
+            within '#active-content' do
+              expect(page).to have_link(school.name, href: edit_admin_school_onboarding_configuration_path(school.school_onboarding))
+            end
+          end
+
+          it "has an action buttons" do
+            within '#active-content' do
+              expect(page).to have_link('Edit')
+              expect(page).to have_link('Users')
+              expect(page).to have_link('Meters')
+            end
+          end
+          it "has status pill buttons" do
+            within '#active-content' do
+              expect(page).to have_link('Visible')
+              expect(page).to have_link('Public')
+              expect(page).to have_link('Process data')
+              expect(page).to have_link('Data visible')
+              expect(page).to have_link('Regenerate')
+            end
+          end
+          context "and clicking 'Edit'" do
+            before do
+              within '#active-content' do
+                click_link 'Edit'
+              end
+            end
+            it { expect(page).to have_current_path(edit_school_path(school)) }
+          end
+          context "and clicking 'Users'" do
+            before do
+              within '#active-content' do
+                click_link 'User'
+              end
+            end
+            it { expect(page).to have_current_path(school_users_path(school)) }
+          end
+          context "and clicking 'Meters'" do
+            before do
+              within '#active-content' do
+                click_link 'Meters'
+              end
+            end
+            it { expect(page).to have_current_path(school_meters_path(school)) }
+          end
+        end
+        context "when there are inactive schools only" do
+          let!(:school) { create(:school, active: false, name: "A School", school_group: school_group) }
+          let!(:setup_data) { school }
+          it "doesn't show school active tab" do
+            within '#active-content' do
+              expect(page).to_not have_link(school.name)
+              expect(page).to have_content("No active schools for #{school_group.name}.")
+            end
+          end
+        end
+      end
+
+      describe "Onboarding schools tab" do
+        before do
+          click_on "Onboarding"
+        end
+        it "displays a message when there are no onboarding schools" do
+            within '#onboarding-content' do
+              expect(page).to have_content("No schools currently onboarding for #{school_group.name}.")
+            end
+        end
+        it_behaves_like "admin school group onboardings"
+      end
+
+      describe "Removed schools tab" do
+        context "when there are inactive schools" do
+          let!(:school) { create(:school, active: false, name: "A School", school_group: school_group, removal_date: Time.now) }
+          let!(:setup_data) { school }
+          it "lists school in removed tab" do
+            within '#removed-content' do
+              expect(page).to have_link(school.name, href: school_path(school))
+              expect(page).to have_content(nice_dates(school.removal_date))
+              expect(page).to have_link("Meters")
+            end
+          end
+        end
+        context "when there are only active schools" do
+          let!(:school) { create(:school, active: true, name: "A School", school_group: school_group) }
+          let!(:setup_data) { school }
+          it "doesn't show school in removed tab" do
+            within '#removed-content' do
+              expect(page).to_not have_link(school.name)
+              expect(page).to have_content("No removed schools for #{school_group.name}.")
+            end
+          end
         end
       end
     end
