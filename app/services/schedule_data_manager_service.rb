@@ -86,7 +86,7 @@ class ScheduleDataManagerService
   private
 
   def school_reading_date_bounds
-    @school_reading_date_bounds ||= @school.reading_date_bounds
+    @school_reading_date_bounds ||= @school&.reading_date_bounds
   end
 
   def cache_key_temperatures
