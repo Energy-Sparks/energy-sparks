@@ -1,0 +1,13 @@
+<table class="table table-striped">
+  <% school_group.schools.visible.by_name.each do |school| %>
+    <tr>
+      <td><%= link_to_if school.school_onboarding, school.name, [:edit, :admin, school.school_onboarding, :configuration] %></td>
+      <td><%= render 'shared/school_status_buttons', school: school %></td>
+      <td class="nowrap text-right">
+        <%= link_to 'Edit', edit_school_path(school), class: "btn btn-sm" %>
+        <%= link_to 'Users', school_users_path(school), class: "btn btn-sm" %>
+        <%= link_to 'Meters', school_meters_path(school), class: "btn btn-sm" %>
+      </td>
+    </tr>
+  <% end %>
+</table>

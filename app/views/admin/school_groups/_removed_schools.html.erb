@@ -1,0 +1,18 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Removal date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% school_group.schools.inactive.by_name.each do |school| %>
+      <tr>
+        <td><%= link_to school.name, school_path(school) %></td>
+        <td><%= nice_dates(school.removal_date) %></td>
+        <td class="nowrap text-right"><%= link_to 'Meters', school_meters_path(school), class: "btn btn-sm" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
