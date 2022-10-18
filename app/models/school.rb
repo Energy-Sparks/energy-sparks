@@ -182,9 +182,9 @@ class School < ApplicationRecord
   after_save :add_joining_observation, if: proc { saved_change_to_activation_date?(from: nil) }
 
   def reading_date_bounds
-    # # Ideally, we'd also use the minimum amr_data_feed_readings reading_date here, however, those reading dates are
-    # # currently stored as strings (and in an inconsistent date format as defined in the associated meter's amr data feed
-    # # config) so we instead use the minimum validated reading date minus 1 year. The single query in this method is equivelent of:
+    # Ideally, we'd also use the minimum amr_data_feed_readings reading_date here, however, those reading dates are
+    # currently stored as strings (and in an inconsistent date format as defined in the associated meter's amr data feed
+    # config) so we instead use the minimum validated reading date minus 1 year. The single query in this method is equivelent of:
     # [
     #   amr_validated_readings.minimum(:reading_date) - 1.year,
     #   amr_validated_readings.maximum(:reading_date)
