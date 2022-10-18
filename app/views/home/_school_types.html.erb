@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col">
+    <h2><%= t('school_statistics.school_types') %></h2>
+
+    <table class="table table-bordered table-sm col-4">
+      <thead>
+        <tr>
+          <th><%= t('school_statistics.school_type') %></th>
+          <th class="text-right"><%= t('school_statistics.count') %></th>
+        </tr>
+      </thead>
+      <tbody>
+         <% @report.school_types.keys.sort.each do |type| %>
+          <tr>
+            <td><%= t('analytics.school_types.' + type) %></td>
+            <td class="text-right"><%= report.school_types[type] %></td>
+          </tr>
+         <% end %>
+         <tr>
+           <td><strong><%= t('school_statistics.total') %></strong></td>
+           <td class="text-right"><%= School.visible.count %></td>
+         </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

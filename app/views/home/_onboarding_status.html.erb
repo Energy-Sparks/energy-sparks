@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col">
+    <h2><%= t('school_statistics.onboarding_status') %></h2>
+
+    <table class="table table-bordered table-sm col-4">
+      <thead>
+        <tr>
+          <th><%= t('school_statistics.status') %></th>
+          <th class="text-right"><%= t('school_statistics.count') %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><%= t('school_statistics.onboarding') %></td>
+          <td class="text-right"><%= report.onboarding_status[:onboarding] %></td>
+        </tr>
+        <tr>
+          <td><%= t('school_statistics.active') %></td>
+          <td class="text-right"><%= report.onboarding_status[:active] %></td>
+        </tr>
+        <tr>
+          <td><%= t('school_statistics.active_and_enabled') %></td>
+          <td class="text-right"><%= report.onboarding_status[:active_and_enabled] %></td>
+        </tr>
+        <tr>
+          <td><strong><%= t('school_statistics.total') %></strong></td>
+          <td class="text-right"><%= report.onboarding_status[:total] %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
