@@ -52,7 +52,11 @@ class ScheduleDataManagerService
     # Only use solar pv data within datetime bounds of school meter readings
     return cached_solar_pv unless school_reading_date_bounds_present?
 
-    cached_solar_pv.select { |datetime_key, _values| datetime_key.between?(*school_reading_date_bounds) }
+    data = SolarPV.new('solar pv')
+    cached_solar_pv.select { |datetime_key, _values| datetime_key.between?(*school_reading_date_bounds) }.each do |date, values|
+      data.add(date, values)
+    end
+    data
   end
 
   def find_uk_grid_carbon_intensity

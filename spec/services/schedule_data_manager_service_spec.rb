@@ -23,10 +23,44 @@ describe ScheduleDataManagerService do
     let(:date_version_of_holiday_date_from_calendar) { Date.parse(random_before_holiday_start_date) }
 
     it 'assigns school date periods for the analytics code' do
+      allow(school).to receive(:reading_date_bounds).and_return([])
       results = ScheduleDataManagerService.new(school).holidays
       school_date_period = results.find_holiday(date_version_of_holiday_date_from_calendar)
       expect(school_date_period.start_date).to eq date_version_of_holiday_date_from_calendar
       expect(school_date_period.type).to_not be_nil
+    end
+  end
+
+  describe '#solar_pv' do
+    let!(:school)           { create(:school, solar_pv_tuos_area: create(:solar_pv_tuos_area)) }
+    let!(:service)          { ScheduleDataManagerService.new(school) }
+
+    it 'loads the solar pv data' do
+      reading_1 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: Date.parse('2019-01-01'))
+      reading_2 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: '2019-02-01')
+      reading_3 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: '2019-03-01')
+      reading_4 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: '2019-04-01')
+      reading_5 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: '2019-05-01')
+
+      allow(school).to receive(:reading_date_bounds).and_return([])
+      solar_pv = service.solar_pv
+
+      expect(solar_pv.start_date).to eql reading_1.reading_date
+      expect(solar_pv.end_date).to eql reading_5.reading_date
+    end
+
+    it 'loads the solar pv data but returns solar pv data only within the date ranges of a schools meter readings' do
+      reading_1 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: Date.parse('2019-01-01'))
+      reading_2 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: '2019-02-01')
+      reading_3 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: '2019-03-01')
+      reading_4 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: '2019-04-01')
+      reading_5 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: '2019-05-01')
+
+      allow(school).to receive(:reading_date_bounds).and_return([Date.parse('2019-03-01'), Date.parse('2019-04-01')])
+      solar_pv = service.solar_pv
+
+      expect(solar_pv.start_date).to eql reading_3.reading_date
+      expect(solar_pv.end_date).to eql reading_4.reading_date
     end
   end
 
@@ -36,6 +70,8 @@ describe ScheduleDataManagerService do
     let!(:school)           { create(:school, dark_sky_area: area, weather_station: station) }
 
     let!(:service)          { ScheduleDataManagerService.new(school) }
+
+    before { allow(school).to receive(:reading_date_bounds).and_return([]) }
 
     it 'loads dark_sky data' do
       reading_1 = create(:dark_sky_temperature_reading, dark_sky_area: area, reading_date: '2019-01-01')
@@ -114,7 +150,6 @@ describe ScheduleDataManagerService do
         expect(temperatures.date_exists?(reading_2.reading_date)).to eql false
         expect(temperatures.date_exists?(reading_3.reading_date)).to eql true
         expect(temperatures.date_exists?(reading_4.reading_date)).to eql true
-
 
         expect(temperatures.date_exists?(obs_1.reading_date)).to eql true
         expect(temperatures.date_exists?(obs_2.reading_date)).to eql true
