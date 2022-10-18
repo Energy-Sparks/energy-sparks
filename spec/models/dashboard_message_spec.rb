@@ -1,5 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe DashboardMessage, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'validations' do
+    subject { build(:dashboard_message) }
+
+    it { is_expected.to be_valid }
+    it { is_expected.to validate_presence_of(:message) }
+  end
 end
