@@ -10,6 +10,10 @@ module Schools
       @free_school_meals ||= School.visible.calculate_in_group(:count, :percentage_free_school_meals, RANGES, { include_nil: 'unknown' })
     end
 
+    def country_summary
+      @country_summary ||= School.visible.group(:country).count
+    end
+
     def onboarding_status
       @onboarding_status ||= {
         onboarding: incomplete_onboardings,

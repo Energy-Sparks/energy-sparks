@@ -7,11 +7,23 @@
     </div>
   </div>
 
-  <%= render 'onboarding_status', report: @report %>
+  <div class="row">
+    <div class="col-6">
+      <%= render 'onboarding_status', report: @report %>
+    </div>
+    <div class="col-6">
+      <%= render 'country_summary', report: @report %>
+    </div>
+  </div>
 
-  <%= render 'school_types', report: @report %>
-
-  <%= render 'school_meals', report: @report %>
+  <div class="row">
+    <div class="col-6">
+      <%= render 'school_meals', report: @report %>
+    </div>
+    <div class="col-6">
+      <%= render 'school_types', report: @report %>
+    </div>
+  </div>
 
   <%= render 'school_details', report: @report %>
 
