@@ -117,23 +117,27 @@ class SchoolTime < ApplicationRecord
   end
 
   def overlapping_times?(other)
-    return shorter_period?(other) || longer_period?(other) || overlaps_start?(other) || overlaps_end?(other)
+    return same_period?(other) || shorter_period?(other) || longer_period?(other) || overlaps_start?(other) || overlaps_end?(other)
+  end
+
+  def same_period?(other)
+    other.opening_time == self.opening_time && other.closing_time == self.closing_time
   end
 
   def shorter_period?(other)
-    other.opening_time >= self.opening_time && other.closing_time <= self.closing_time
+    other.opening_time > self.opening_time && other.closing_time < self.closing_time
   end
 
   def longer_period?(other)
-    other.opening_time <= self.opening_time && other.closing_time >= self.closing_time
+    other.opening_time < self.opening_time && other.closing_time > self.closing_time
   end
 
   def overlaps_start?(other)
-    other.opening_time <= self.opening_time && other.closing_time >= self.opening_time && other.closing_time <= self.closing_time
+    other.opening_time < self.opening_time && other.closing_time > self.opening_time && other.closing_time < self.closing_time
   end
 
   def overlaps_end?(other)
-    other.opening_time >= self.opening_time && other.opening_time <= self.closing_time
+    other.opening_time > self.opening_time && other.opening_time < self.closing_time
   end
 
   def overlapping_calendar_periods
