@@ -18,7 +18,84 @@ class ScheduleDataManagerService
   end
 
   def holidays
-    @holidays ||= Rails.cache.fetch(self.class.calendar_cache_key(@calendar), expires_in: 3.hours) do
+    @holidays ||= find_holidays
+  end
+
+  def temperatures
+    @temperatures ||= find_temperatures
+  end
+
+  def solar_pv
+    @solar_pv ||= find_solar_pv
+  end
+
+  def uk_grid_carbon_intensity
+    @uk_grid_carbon_intensity ||= find_uk_grid_carbon_intensity
+  end
+
+  private
+
+  def school_reading_date_bounds_present?
+    school_reading_date_bounds.present? && school_reading_date_bounds.uniq.size == 2
+  end
+
+  def find_solar_pv
+    cache_key = "#{@solar_pv_tuos_area_id}-solar-pv-2-tuos"
+    cached_solar_pv ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+      data = SolarPV.new('solar pv')
+      DataFeeds::SolarPvTuosReading.where(area_id: @solar_pv_tuos_area_id).pluck(:reading_date, :generation_mw_x48).each do |date, values|
+        data.add(date, values.map(&:to_f))
+      end
+      data
+    end
+
+    # Only use solar pv data within datetime bounds of school meter readings
+    return cached_solar_pv unless school_reading_date_bounds_present?
+
+    cached_solar_pv.select { |datetime_key, _values| datetime_key.between?(*school_reading_date_bounds) }
+  end
+
+  def find_uk_grid_carbon_intensity
+    cache_key = "co2-feed"
+    cached_uk_grid_carbon_intensity ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+      uk_grid_carbon_intensity_data = GridCarbonIntensity.new
+      DataFeeds::CarbonIntensityReading.all.pluck(:reading_date, :carbon_intensity_x48).each do |date, values|
+        uk_grid_carbon_intensity_data.add(date, values.map(&:to_f))
+      end
+      uk_grid_carbon_intensity_data
+    end
+
+    # Only use uk grid carbon intensity data within datetime bounds of school meter readings
+    return cached_uk_grid_carbon_intensity unless school_reading_date_bounds_present?
+
+    cached_uk_grid_carbon_intensity.select { |datetime_key, _values| datetime_key.between?(*school_reading_date_bounds) }
+  end
+
+  def find_temperatures
+    cache_key = cache_key_temperatures
+    cached_temperatures ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+      data = Temperatures.new('temperatures')
+
+      #FEATURE FLAG: if this is set then we want to start using Meteostat data
+      #Relies on the school, or its group also having been associated with
+      #a station
+      if EnergySparks::FeatureFlags.active?(:use_meteostat)
+        earliest = load_meteostat_readings(data)
+        load_dark_sky_readings(data, earliest)
+      else
+        load_dark_sky_readings(data)
+      end
+      data
+    end
+
+    # Only use temperature data within datetime bounds of school meter readings
+    return cached_temperatures unless school_reading_date_bounds.present?
+
+    cached_temperatures.select { |datetime_key, _values| datetime_key.between?(*school_reading_date_bounds) }
+  end
+
+  def find_holidays
+    cached_holidays ||= Rails.cache.fetch(self.class.calendar_cache_key(@calendar), expires_in: 3.hours) do
       hol_data = HolidayData.new
 
       Calendar.find(@calendar.id).outside_term_time.order(:start_date).includes(:academic_year, :calendar_event_type).map do |holiday|
@@ -36,55 +113,15 @@ class ScheduleDataManagerService
       end
       Holidays.new(hol_data)
     end
-  end
 
-  def temperatures
-    cache_key = cache_key_temperatures
-    cached_temperatures ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
-      data = Temperatures.new('temperatures')
+    # Only use holiday data within datetime bounds of school meter readings
+    return cached_holidays unless school_reading_date_bounds_present?
 
-      #FEATURE FLAG: if this is set then we want to start using Meteostat data
-      #Relies on the school, or its group also having been associated with
-      #a station
-      if EnergySparks::FeatureFlags.active?(:use_meteostat)
-        earliest = load_meteostat_readings(data)
-        load_dark_sky_readings(data, earliest)
-      else
-        load_dark_sky_readings(data)
-      end
-      data
-    end
-    # Only use temperature data within datetime bounds of school meter readings
-    @temperatures = if school_reading_date_bounds.present? && school_reading_date_bounds.uniq.size == 2
-                      cached_temperatures.select { |datetime_key, _values| datetime_key.between?(*school_reading_date_bounds) }
-                    else
-                      cached_temperatures
-                    end
-  end
-
-  def solar_pv
-    cache_key = "#{@solar_pv_tuos_area_id}-solar-pv-2-tuos"
-    @solar_pv ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
-      data = SolarPV.new('solar pv')
-      DataFeeds::SolarPvTuosReading.where(area_id: @solar_pv_tuos_area_id).pluck(:reading_date, :generation_mw_x48).each do |date, values|
-        data.add(date, values.map(&:to_f))
-      end
-      data
+    cached_holidays.select do |holiday|
+      holiday.start_date.between?(*school_reading_date_bounds) &&
+        holiday.end_date.between?(*school_reading_date_bounds)
     end
   end
-
-  def uk_grid_carbon_intensity
-    cache_key = "co2-feed"
-    @uk_grid_carbon_intensity ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
-      uk_grid_carbon_intensity_data = GridCarbonIntensity.new
-      DataFeeds::CarbonIntensityReading.all.pluck(:reading_date, :carbon_intensity_x48).each do |date, values|
-        uk_grid_carbon_intensity_data.add(date, values.map(&:to_f))
-      end
-      uk_grid_carbon_intensity_data
-    end
-  end
-
-  private
 
   def school_reading_date_bounds
     @school_reading_date_bounds ||= @school.reading_date_bounds
