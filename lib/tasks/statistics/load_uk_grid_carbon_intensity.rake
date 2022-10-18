@@ -8,7 +8,7 @@ namespace :statistics do
       end
       uk_grid_carbon_intensity_data
     }
-
-    puts benchmark_measure
+    puts 'Benchmarks for loading uk grid carbon intensity data:'
+    puts benchmark_measure.real
   end
 end
