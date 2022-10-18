@@ -11,9 +11,8 @@ namespace :statistics do
 
       puts "\nBenchmark for weather_station: #{weather_station_title} (#{weather_station_id || 'nil'}) and dark_sky_area: #{dark_sky_area_title} (#{dark_sky_area_id || 'nil'})"
 
-      temperatures = Temperatures.new('temperatures')
-
       benchmark_measure = Benchmark.measure do
+        temperatures = Temperatures.new('temperatures')
         earliest = nil
         WeatherObservation.where(weather_station_id: weather_station_id).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
           if earliest.nil?
@@ -36,7 +35,6 @@ namespace :statistics do
         end
       end
       puts benchmark_measure
-      puts temperatures.inspect
 
       benchmarks << [
         weather_station_id,
