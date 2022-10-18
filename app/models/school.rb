@@ -181,13 +181,29 @@ class School < ApplicationRecord
   # https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Dirty.html#method-i-will_save_change_to_attribute-3F
   after_save :add_joining_observation, if: proc { saved_change_to_activation_date?(from: nil) }
 
-  def minimum_readings_date
-    return if amr_validated_readings.count.zero?
+  def reading_date_bounds
+    # # Ideally, we'd also use the minimum amr_data_feed_readings reading_date here, however, those reading dates are
+    # # currently stored as strings (and in an inconsistent date format as defined in the associated meter's amr data feed
+    # # config) so we instead use the minimum validated reading date minus 1 year. The single query in this method is equivelent of:
+    # [
+    #   amr_validated_readings.minimum(:reading_date) - 1.year,
+    #   amr_validated_readings.maximum(:reading_date)
+    # ]
+    query = <<-SQL.squish
+      select
+      max(amr_validated_readings.reading_date - (interval '0 Year')) as reading_date
+      from amr_validated_readings
+      inner join meters on amr_validated_readings.meter_id = meters.id
+      where meters.school_id = #{id}
+      union
+      select
+      min(amr_validated_readings.reading_date - (interval '1 Year')) as reading_date
+      from amr_validated_readings
+      inner join meters on amr_validated_readings.meter_id = meters.id
+      where meters.school_id = #{id}
+    SQL
 
-    # Ideally, we'd also use the minimum amr_data_feed_readings reading_date here, however, since those reading dates are
-    # currently stored as strings (and in an inconsistent date format as defined in the associated meter's amr data feed
-    # config) we instead use the minimum validated reading date minus 1 year.
-    amr_validated_readings.minimum(:reading_date) - 1.year
+    ActiveRecord::Base.connection.execute(query).values.flatten.compact.sort
   end
 
   def find_user_or_cluster_user_by_id(id)

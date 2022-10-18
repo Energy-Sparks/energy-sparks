@@ -39,7 +39,7 @@ class ScheduleDataManagerService
 
   def temperatures
     cache_key = cache_key_temperatures
-    @temperatures ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+    cached_temperatures ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
       data = Temperatures.new('temperatures')
 
       #FEATURE FLAG: if this is set then we want to start using Meteostat data
@@ -53,6 +53,12 @@ class ScheduleDataManagerService
       end
       data
     end
+    # Only use temperature data within datetime bounds of school meter readings
+    @temperatures = if school_reading_date_bounds.present? && school_reading_date_bounds.uniq.size == 2
+                      cached_temperatures.select { |datetime_key, _values| datetime_key.between?(*school_reading_date_bounds) }
+                    else
+                      cached_temperatures
+                    end
   end
 
   def solar_pv
@@ -78,6 +84,10 @@ class ScheduleDataManagerService
   end
 
   private
+
+  def school_reading_date_bounds
+    @school_reading_date_bounds ||= @school.reading_date_bounds
+  end
 
   def cache_key_temperatures
     if EnergySparks::FeatureFlags.active?(:use_meteostat)
