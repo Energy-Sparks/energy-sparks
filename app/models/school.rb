@@ -184,9 +184,9 @@ class School < ApplicationRecord
   def minimum_readings_date
     return if amr_validated_readings.count.zero?
 
-    # Ideally, we'd also use the minimum amr_data_feed_readings reading_date here. However, those reading dates are
-    # currently stored as strings (and in an inconsisent date format as defined in the associated meter's amr data feed
-    # config) so instead we use the minimum validated reading date minus 1 year.
+    # Ideally, we'd also use the minimum amr_data_feed_readings reading_date here, however, since those reading dates are
+    # currently stored as strings (and in an inconsistent date format as defined in the associated meter's amr data feed
+    # config) we instead use the minimum validated reading date minus 1 year.
     amr_validated_readings.minimum(:reading_date) - 1.year
   end
 
