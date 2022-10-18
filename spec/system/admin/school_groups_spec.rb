@@ -173,6 +173,12 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         end
       end
 
+      describe "Dashboard message panel" do
+        it_behaves_like "admin dashboard messages" do
+          let(:object) { school_group }
+        end
+      end
+
       describe "Active schools tab" do
         context "when there are active schools" do
           let(:school_onboarding) { create :school_onboarding, school_group: school_group }
@@ -273,7 +279,6 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           end
         end
       end
-
     end
 
     describe "Editing a school group" do
