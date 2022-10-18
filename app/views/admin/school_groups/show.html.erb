@@ -5,7 +5,7 @@
   </div>
 </div>
 <p>Pupils in active schools: <span class="badge badge-success"><%= number_with_delimiter @school_group.schools.visible.map(&:number_of_pupils).compact.sum %></span></p>
-<div class="row">
+<div class="row pb-2">
   <div class="col-lg-12">
     <div class="card-deck">
       <div class="card">
@@ -28,6 +28,8 @@
   </div>
 </div>
 
+<%= render 'admin/shared/dashboard_message', object: @school_group %>
+
 <div class="bg-light p-2 my-2 d-flex justify-content-between">
   <%= link_to 'View', school_group_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Edit', edit_admin_school_group_path(@school_group), class: 'btn btn-sm' %>
@@ -40,7 +42,6 @@
   </div>
 </div>
 
-<%= render 'admin/shared/dashboard_message', object: @school_group %>
 <%= render 'schools_tabs' %>
 
 <div class="tab-content" id="school-group-schools-content">
