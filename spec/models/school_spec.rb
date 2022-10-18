@@ -17,21 +17,27 @@ describe School do
   describe '#reading_date_bounds' do
     it 'returns the minimum amr validated readings date minus 1 year if amr_validated_readings are present' do
       meter = create(:electricity_meter, school: subject)
+      meter2 = create(:electricity_meter, school: subject)
+      meter3 = create(:electricity_meter, school: subject)
+
       base_date = Date.today - 1.years
       create(:amr_validated_reading, meter: meter, reading_date: base_date)
       create(:amr_validated_reading, meter: meter, reading_date: base_date + 2.days)
       create(:amr_validated_reading, meter: meter, reading_date: base_date + 4.days)
+      create(:amr_validated_reading, meter: meter2, reading_date: base_date + 1.day)
+      create(:amr_validated_reading, meter: meter2, reading_date: base_date + 2.days)
+      create(:amr_validated_reading, meter: meter3, reading_date: base_date + 6.days)
 
       expect(subject.reading_date_bounds).to eq(
         [
           base_date - 1.year,
-          base_date + 4.days
+          base_date + 6.days
         ]
       )
       expect(subject.reading_date_bounds).to eq(
         [
           AmrValidatedReading.where(meter_id: meter.id).minimum(:reading_date) - 1.year,
-          AmrValidatedReading.where(meter_id: meter.id).maximum(:reading_date)
+          AmrValidatedReading.where(meter_id: meter3.id).maximum(:reading_date)
         ]
       )
     end

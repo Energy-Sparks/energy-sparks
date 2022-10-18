@@ -2,6 +2,7 @@ require 'dashboard'
 
 class ScheduleDataManagerService
   def initialize(school)
+    @school = school
     @calendar = school.calendar
     @solar_pv_tuos_area_id = school.solar_pv_tuos_area_id
     @dark_sky_area_id = school.dark_sky_area_id
@@ -86,7 +87,7 @@ class ScheduleDataManagerService
   private
 
   def school_reading_date_bounds
-    @school_reading_date_bounds ||= @school&.reading_date_bounds
+    @school_reading_date_bounds ||= @school.reading_date_bounds
   end
 
   def cache_key_temperatures
