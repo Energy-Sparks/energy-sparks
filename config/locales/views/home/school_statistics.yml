@@ -3,12 +3,10 @@ en:
   school_statistics:
     active: Active
     active_and_enabled: Active, with data enabled
+    by_country: Active schools by country
     count: Count
     country: Country
     england: England
-    scotland: Scotland
-    wales: Wales
-    by_country: Active schools by country
     free_school_meals: Active schools, free school meal status
     introduction: Here is a summary of all of the Energy Sparks schools
     onboarding: Onboarding
@@ -23,7 +21,9 @@ en:
     school_summary: Key data for active schools
     school_type: School type
     school_types: Active schools by type
+    scotland: Scotland
     status: Status
     title: School Statistics
     total: Total
     unknown: Unknown
+    wales: Wales
