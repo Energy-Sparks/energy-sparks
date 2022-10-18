@@ -13,28 +13,28 @@ namespace :statistics do
 
       temperatures = Temperatures.new('temperatures')
 
-      benchmark_measure = Benchmark.measure {
-          earliest = nil
-          WeatherObservation.where(weather_station_id: weather_station_id).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
-            if earliest.nil?
-              earliest = date
-            elsif date < earliest
-              earliest = date
-            end
-            temperatures.add(date, values.map(&:to_f))
+      benchmark_measure = Benchmark.measure do
+        earliest = nil
+        WeatherObservation.where(weather_station_id: weather_station_id).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
+          if earliest.nil?
+            earliest = date
+          elsif date < earliest
+            earliest = date
           end
-          if dark_sky_area_id.present?
-            if earliest.present?
-              DataFeeds::DarkSkyTemperatureReading.where("area_id = ? AND reading_date < ?", dark_sky_area_id, earliest).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
-                temperatures.add(date, values.map(&:to_f))
-              end
-            else
-              DataFeeds::DarkSkyTemperatureReading.where(area_id: dark_sky_area_id).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
-                temperatures.add(date, values.map(&:to_f))
-              end
+          temperatures.add(date, values.map(&:to_f))
+        end
+        if dark_sky_area_id.present?
+          if earliest.present?
+            DataFeeds::DarkSkyTemperatureReading.where("area_id = ? AND reading_date < ?", dark_sky_area_id, earliest).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
+              temperatures.add(date, values.map(&:to_f))
+            end
+          else
+            DataFeeds::DarkSkyTemperatureReading.where(area_id: dark_sky_area_id).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
+              temperatures.add(date, values.map(&:to_f))
             end
           end
-      }
+        end
+      end
       puts benchmark_measure
       puts temperatures.inspect
 
@@ -49,7 +49,7 @@ namespace :statistics do
 
     require 'csv'
     CSV.open("weather_benchmarks.csv", "w") do |csv|
-      csv << ['weather_station_id', 'weather_station_title', 'dark_sky_area_id', 'dark_sky_area_title', 'elapsed_real_time']
+      csv << %w[weather_station_id weather_station_title dark_sky_area_id dark_sky_area_title elapsed_real_time]
       benchmarks.each { |row| csv << row }
     end
   end
