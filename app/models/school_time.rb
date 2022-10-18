@@ -51,6 +51,21 @@ class SchoolTime < ApplicationRecord
     where(school: school, day: day, usage_type: usage_type, calendar_period: calendar_period).where('(opening_time <= :start AND closing_time >= :start AND closing_time <= :end) OR (opening_time >= :start AND opening_time <= :end) OR (opening_time <= :start AND closing_time >= :end) OR (opening_time >= :start AND closing_time <= :end)', :start => opening_time, :end => closing_time)
   }
 
+  def overlapping_custom(day, opening_time, closing_time, usage_type, calendar_period)
+    overlapping = false
+    self.school.school_times.each do |st|
+      if day.include?(st.day) && usage_type == st.usage_type && calendar_period.include?(st.calendar_period) && (
+          (st.opening_time <= opening_time && st.closing_time >= opening_time && st.closing_time <= closing_time) ||
+          (st.opening_time >= opening_time && st.opening_time <= closing_time) ||
+          (st.opening_time <= opening_time && st.closing_time >= closing_time) ||
+          (st.opening_time >= opening_time && st.closing_time <= closing_time)
+        ) && st != self
+        overlapping = true
+      end
+    end
+    overlapping
+  end
+
   def opening_time=(time)
     time = time.delete(':') if time.respond_to?(:delete)
     super(time)
@@ -69,14 +84,17 @@ class SchoolTime < ApplicationRecord
   end
 
   def overlaps_school_day?
-    self.class.overlapping(self.school, overlapping_days, self.opening_time, self.closing_time, :school_day, overlapping_calendar_periods).where.not(id: self.id).exists?
+    #self.class.overlapping(self.school, overlapping_days, self.opening_time, self.closing_time, :school_day, overlapping_calendar_periods).where.not(id: self.id).exists?
+    overlapping_custom(overlapping_days, self.opening_time, self.closing_time, "school_day", overlapping_calendar_periods)
   end
 
   def overlaps_other?
-    self.class.overlapping(self.school, overlapping_days, self.opening_time, self.closing_time, self.usage_type, overlapping_calendar_periods).where.not(id: self.id).exists?
+    #self.class.overlapping(self.school, overlapping_days, self.opening_time, self.closing_time, self.usage_type, overlapping_calendar_periods).where.not(id: self.id).exists?
+    overlapping_custom(overlapping_days, self.opening_time, self.closing_time, self.usage_type, overlapping_calendar_periods)
   end
 
   def no_overlaps
+    return unless self.opening_time.present? && self.closing_time.present?
     errors.add(:overlapping_time, 'Community use periods cannot overlap the school day') if usage_type == "community_use" && overlaps_school_day?
     errors.add(:overlapping_time, 'Periods cannot overlap each other') if overlaps_other?
   end
@@ -100,30 +118,30 @@ class SchoolTime < ApplicationRecord
   def overlapping_calendar_periods
     case self.calendar_period
     when "term_times"
-      [self.calendar_period.to_sym, :all_year]
+      [self.calendar_period, "all_year"]
     when "only_holidays"
-      [self.calendar_period.to_sym, :all_year]
+      [self.calendar_period, "all_year"]
     when "all_year"
-      [self.calendar_period.to_sym, :term_times, :only_holidays]
+      [self.calendar_period, "term_times", "only_holidays"]
     else
-      self.calendar_period.to_sym
+      [self.calendar_period]
     end
   end
 
   def overlapping_days
     case self.day
     when "monday", "tuesday", "wednesday", "thursday", "friday"
-      [self.day.to_sym, :weekdays, :everyday]
+      [self.day, "weekdays", "everyday"]
     when "saturday", "sunday"
-      [self.day.to_sym, :weekends, :everyday]
+      [self.day, "weekends", "everyday"]
     when "weekdays"
-      [self.day.to_sym, :monday, :tuesday, :wednesday, :thursday, :friday]
+      [self.day, "monday", "tuesday", "wednesday", "thursday", "friday"]
     when "weekends"
-      [self.day.to_sym, :saturday, :sunday]
+      [self.day, "saturday", "sunday"]
     when "everyday"
-      SchoolTime.days.keys.map(&:to_sym)
+      SchoolTime.days.keys.map(&:to_s)
     else
-      self.day.to_sym
+      [self.day]
     end
   end
 

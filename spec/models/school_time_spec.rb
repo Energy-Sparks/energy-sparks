@@ -82,6 +82,19 @@ describe 'SchoolTime' do
     before(:each) do
       school.school_times.destroy_all
     end
+
+    context 'and adding multiple' do
+      it 'handles overlaps' do
+        params = { "school_times_attributes" => { "123" => { day: :monday, opening_time: 1721, closing_time: 1800, usage_type: :community_use, calendar_period: :term_times }, "456" => { day: :monday, opening_time: 1721, closing_time: 1800, usage_type: :community_use, calendar_period: :all_year} } }
+        school.attributes = params
+#        ActiveRecord::Base.logger = Logger.new(STDOUT) if defined?(ActiveRecord::Base)
+#        ActiveRecord::Base.verbose_query_logs = true
+#        school.school_times.each do |st| st.save end
+        school.save(context: :school_time_update)
+        expect( school.school_times.count).to eql 0
+      end
+    end
+
     context 'of community use' do
       let(:day)              { :monday }
       let(:usage_type)       { :community_use }
@@ -89,7 +102,7 @@ describe 'SchoolTime' do
       let(:opening_time)     { 800 }
       let(:closing_time)     { 1200 }
 
-      let!(:time)  { create(:school_time, school: school, day: day, usage_type: usage_type,
+      let!(:time)  { school.school_times.create(day: day, usage_type: usage_type,
         calendar_period: calendar_period, opening_time: opening_time, closing_time: closing_time)}
 
       context 'ranges' do
@@ -120,16 +133,26 @@ describe 'SchoolTime' do
 
       context 'and school day' do
         let(:usage_type) { :school_day }
-        it 'should not allow overlaps' do
+        it 'should ignore when no overlaps' do
           #13-14, no overlap. OK
           expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 1300, closing_time: 1400) ).to be_valid
+        end
+        it 'should not allow overlaps on first page of range' do
           #7-10, overlapping first part of range
-          #pry
           expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1000) ).to_not be_valid
+        end
+        it 'should not allow overlaps on end of range' do
           #9-1, overlapping second part
           expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1300) ).to_not be_valid
+        end
+        it 'should not allow identical ranges' do
+          puts "SETUP DONE"
           #8-12, identical
+          expect(school.school_times.count).to eq 1
+          puts school.school_times.first.inspect
           expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 800, closing_time: 1200) ).to_not be_valid
+        end
+        it 'should not allow longer periods' do
           #7-2, longer period
           expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1400) ).to_not be_valid
         end
