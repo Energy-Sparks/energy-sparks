@@ -91,7 +91,11 @@ class ScheduleDataManagerService
     # Only use temperature data within datetime bounds of school meter readings
     return cached_temperatures unless school_reading_date_bounds.present?
 
-    cached_temperatures.select { |datetime_key, _values| datetime_key.between?(*school_reading_date_bounds) }
+    data = Temperatures.new('temperatures')
+    cached_temperatures.select { |datetime_key, _values| datetime_key.between?(*school_reading_date_bounds) }.each do |date, values|
+      data.add(date, values)
+    end
+    data
   end
 
   def find_holidays
