@@ -105,13 +105,12 @@ class SchoolTime < ApplicationRecord
     calendar_period = overlapping_calendar_periods
     overlapping = false
     school.school_times.each do |other|
-      if other != self &&
-         usage_type == other.usage_type &&
-         day.include?(other.day) &&
-         calendar_period.include?(other.calendar_period) &&
-         overlapping_times?(other)
-        overlapping = true
-      end
+      overlapping = true if other != self &&
+                            usage_type == other.usage_type &&
+                            day.include?(other.day) &&
+                            calendar_period.include?(other.calendar_period) &&
+                            overlapping_times?(other)
+      break if overlapping
     end
     overlapping
   end
