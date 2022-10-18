@@ -123,12 +123,12 @@ class ScheduleDataManagerService
     end
 
     # Only use holiday data within datetime bounds of school meter readings
-    return cached_holidays unless school_reading_date_bounds_present?
+    return cached_holidays # unless school_reading_date_bounds_present?
 
-    cached_holidays.select do |holiday|
-      holiday.start_date.between?(*school_reading_date_bounds) &&
-        holiday.end_date.between?(*school_reading_date_bounds)
-    end
+    # cached_holidays.select do |holiday|
+    #   holiday.start_date.between?(*school_reading_date_bounds) &&
+    #     holiday.end_date.between?(*school_reading_date_bounds)
+    # end
   end
 
   def school_reading_date_bounds
