@@ -182,24 +182,29 @@ class School < ApplicationRecord
   after_save :add_joining_observation, if: proc { saved_change_to_activation_date?(from: nil) }
 
 
-  def reading_date_bounds
-    # query = <<-SQL.squish
-    #   select
-    #   max(amr_validated_readings.reading_date) as reading_date
-    #   from amr_validated_readings
-    #   inner join meters on amr_validated_readings.meter_id = meters.id
-    #   where meters.school_id = #{id}
-    #   union
-    #   select
-    #   min(amr_validated_readings.reading_date) as reading_date
-    #   from amr_validated_readings
-    #   inner join meters on amr_validated_readings.meter_id = meters.id
-    #   where meters.school_id = #{id}
-    # SQL
-    # ActiveRecord::Base.connection.select(query) #.values.flatten
+  def minimum_reading_date
+    reading_date_bounds.min
+  end
 
+  def reading_date_bounds
+    # [amr_validated_readings.minimum(:reading_date), amr_validated_readings.maximum(:reading_date)]
     # Need to include amr_data_feed_readings here too
-    [amr_validated_readings.minimum(:reading_date), amr_validated_readings.maximum(:reading_date)]
+
+    query = <<-SQL.squish
+      select
+      max(amr_validated_readings.reading_date) as reading_date
+      from amr_validated_readings
+      inner join meters on amr_validated_readings.meter_id = meters.id
+      where meters.school_id = #{id}
+      union
+      select
+      min(amr_validated_readings.reading_date) as reading_date
+      from amr_validated_readings
+      inner join meters on amr_validated_readings.meter_id = meters.id
+      where meters.school_id = #{id}
+    SQL
+
+    ActiveRecord::Base.connection.execute(query).values.flatten.map { |date| Date.parse(date) }
   end
 
   def find_user_or_cluster_user_by_id(id)
