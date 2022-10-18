@@ -31,11 +31,12 @@ if Rails.env.test?
   Geocoder::Lookup::Test.set_default_stub(
     [
       {
-        'coordinates'  => [51.340620, -2.301420],
+        'latitude'     => 51.340620,
+        'longitude'    => -2.301420,
         'address'      => 'Freshford Station',
         'state'        => 'Somerset',
         'state_code'   => '',
-        'country'      => 'United Kingdom',
+        'country'      => 'England',
         'country_code' => 'UK'
       }
     ]

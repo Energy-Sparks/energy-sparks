@@ -227,17 +227,20 @@ describe School do
 
     it 'the school is geolocated if the postcode is changed' do
       school = create(:school)
-      school.update(latitude: nil, longitude: nil)
+      school.update(latitude: nil, longitude: nil, country: 'scotland')
       school.reload
 
       expect(school.latitude).to be nil
       expect(school.longitude).to be nil
+      expect(school.country).to eq('scotland')
 
       school.update(postcode: 'B')
       school.reload
 
-      expect(school.latitude).to_not be nil
-      expect(school.longitude).to_not be nil
+      # values from default stub on Geocoder::Lookup::Test
+      expect(school.latitude).to eq(51.340620)
+      expect(school.longitude).to eq(-2.301420)
+      expect(school.country).to eq('england')
     end
   end
 
