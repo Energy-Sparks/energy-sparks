@@ -84,6 +84,10 @@ class SchoolOnboarding < ApplicationRecord
     !complete?
   end
 
+  def self.incomplete
+    all.select(&:incomplete?)
+  end
+
   def started?
     !has_only_sent_email_or_reminder?
   end
