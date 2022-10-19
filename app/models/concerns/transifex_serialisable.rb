@@ -138,7 +138,7 @@ module TransifexSerialisable
 
   def rewrite_links_in_value(value)
     link_rewrites.each do |rewrite|
-      value.gsub!(rewrite.source, rewrite.target)
+      value.gsub!(rewrite.escaped_source, rewrite.target)
     end
     value
   end
