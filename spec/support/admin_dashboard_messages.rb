@@ -19,6 +19,11 @@ RSpec.shared_examples "admin dashboard messages" do
           click_on 'Save'
         end
         it { expect(page).to have_content message }
+        context "visiting a school dashboard" do
+          let!(:school) { object.is_a?(School) ? object : create(:school, school_group: school_group) }
+          before { visit school_path(school, switch: true) }
+          it { expect(page).to have_content message }
+        end
       end
       context "when message is invalid" do
         before do
@@ -49,6 +54,11 @@ RSpec.shared_examples "admin dashboard messages" do
           click_on 'Delete'
         end
         it { expect(page).to have_content "No message is currently set to display on dashboards for this #{object.model_name.human.downcase}" }
+        context "visiting a school dashboard" do
+          let!(:school) { object.is_a?(School) ? object : create(:school, school_group: school_group) }
+          before { visit school_path(school, switch: true) }
+          it { expect(page).to_not have_content message }
+        end
       end
     end
   end
