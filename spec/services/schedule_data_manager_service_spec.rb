@@ -77,7 +77,7 @@ describe ScheduleDataManagerService do
     let!(:service)          { ScheduleDataManagerService.new(school) }
 
     it 'loads the solar pv data' do
-      reading_1 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: Date.parse('2019-01-01'))
+      reading_1 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: '2019-01-01')
       reading_2 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: '2019-02-01')
       reading_3 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: '2019-03-01')
       reading_4 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: '2019-04-01')
@@ -85,9 +85,17 @@ describe ScheduleDataManagerService do
 
       allow(school).to receive(:reading_date_bounds).and_return([])
       solar_pv = service.solar_pv
-
       expect(solar_pv.start_date).to eql reading_1.reading_date
       expect(solar_pv.end_date).to eql reading_5.reading_date
+      expect(solar_pv.keys.sort).to eq(
+        [
+          Date.parse('2019-01-01'),
+          Date.parse('2019-02-01'),
+          Date.parse('2019-03-01'),
+          Date.parse('2019-04-01'),
+          Date.parse('2019-05-01')
+        ]
+      )
     end
 
     it 'loads the solar pv data but returns solar pv data only within the date ranges of a schools meter readings' do
@@ -102,6 +110,12 @@ describe ScheduleDataManagerService do
 
       expect(solar_pv.start_date).to eql reading_3.reading_date
       expect(solar_pv.end_date).to eql reading_4.reading_date
+      expect(solar_pv.keys.sort).to eq(
+        [
+          Date.parse('2019-03-01'),
+          Date.parse('2019-04-01')
+        ]
+      )
     end
   end
 
@@ -118,6 +132,7 @@ describe ScheduleDataManagerService do
       reading_1 = create(:dark_sky_temperature_reading, dark_sky_area: area, reading_date: '2019-01-01')
       reading_2 = create(:dark_sky_temperature_reading, dark_sky_area: area, reading_date: '2019-02-01')
       temperatures = service.temperatures
+
       expect(temperatures.start_date).to eql reading_1.reading_date
       expect(temperatures.end_date).to eql reading_2.reading_date
     end
@@ -156,6 +171,15 @@ describe ScheduleDataManagerService do
         expect(temperatures.date_exists?(obs_2.reading_date)).to eql true
         expect(temperatures.start_date).to eql reading_1.reading_date
         expect(temperatures.end_date).to eql obs_2.reading_date
+
+        expect(temperatures.keys.sort).to eq(
+          [
+            Date.parse('2019-01-01'),
+            Date.parse('2019-02-01'),
+            Date.parse('2020-01-01'),
+            Date.parse('2020-02-01')
+          ]
+        )
       end
     end
 
@@ -199,6 +223,15 @@ describe ScheduleDataManagerService do
 
         expect(temperatures.start_date).to eql reading_3.reading_date
         expect(temperatures.end_date).to eql obs_2.reading_date
+
+        expect(temperatures.keys.sort).to eq(
+          [
+            Date.parse('2019-03-01'),
+            Date.parse('2019-04-01'),
+            Date.parse('2020-01-01'),
+            Date.parse('2020-02-01')
+          ]
+        )
       end
     end
   end

@@ -52,11 +52,8 @@ class ScheduleDataManagerService
     # Only use solar pv data within datetime bounds of school meter readings
     return cached_solar_pv unless school_reading_date_bounds_present?
 
-    data = SolarPV.new('solar pv')
-    cached_solar_pv.select { |datetime_key, _values| datetime_key.between?(*school_reading_date_bounds) }.each do |date, values|
-      data.add(date, values)
-    end
-    data
+    dates_to_remove = cached_solar_pv.keys.select { |date| !date.between?(*school_reading_date_bounds) }
+    cached_solar_pv.remove_dates!(*dates_to_remove)
   end
 
   def find_uk_grid_carbon_intensity
@@ -95,11 +92,8 @@ class ScheduleDataManagerService
     # Only use temperature data within datetime bounds of school meter readings
     return cached_temperatures unless school_reading_date_bounds.present?
 
-    data = Temperatures.new('temperatures')
-    cached_temperatures.select { |datetime_key, _values| datetime_key.between?(*school_reading_date_bounds) }.each do |date, values|
-      data.add(date, values)
-    end
-    data
+    dates_to_remove = cached_temperatures.keys.select { |date| !date.between?(*school_reading_date_bounds) }
+    cached_temperatures.remove_dates!(*dates_to_remove)
   end
 
   def find_holidays
