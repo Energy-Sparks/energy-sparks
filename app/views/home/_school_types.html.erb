@@ -10,16 +10,16 @@
         </tr>
       </thead>
       <tbody>
-         <% @report.school_types.keys.sort.each do |type| %>
+        <% @report.school_types.keys.sort.each do |type| %>
           <tr>
             <td><%= t('analytics.school_types.' + type) %></td>
             <td class="text-right"><%= report.school_types[type] %></td>
           </tr>
-         <% end %>
-         <tr>
-           <td><strong><%= t('school_statistics.total') %></strong></td>
-           <td class="text-right"><%= School.visible.count %></td>
-         </tr>
+        <% end %>
+          <tr>
+            <td><strong><%= t('school_statistics.total') %></strong></td>
+            <td class="text-right"><%= School.visible.count %></td>
+          </tr>
       </tbody>
     </table>
   </div>
