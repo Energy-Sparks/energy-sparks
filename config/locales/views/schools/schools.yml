@@ -86,9 +86,9 @@ en:
       compare_schools: Compare schools
       view_schools: View schools
     schools:
+      carbon_emissions: Carbon emissions
       compare_schools: Compare schools
       explore_data: Explore data
-      carbon_emissions: Carbon emissions
       review_energy_analysis: Review energy analysis
     show:
       act_on_energy_usage: Act on energy usage
