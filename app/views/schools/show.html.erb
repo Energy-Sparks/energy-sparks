@@ -19,6 +19,10 @@
   <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
 <% end %>
 
+<% if @show_standard_prompts %>
+  <%= render 'management/schools/dashboard_message', school: @school %>
+<% end %>
+
 <% if @suggest_estimates_for_fuel_types.present? && @suggest_estimates_for_fuel_types.any? %>
   <%= render 'management/schools/prompt_for_estimate', school: @school, fuel_types: @suggest_estimates_for_fuel_types %>
 <% end %>
@@ -44,8 +48,6 @@
 <% end %>
 
 <% if @show_standard_prompts %>
-  <%= render 'management/schools/dashboard_message', school: @school %>
-
   <%= render 'management/schools/complete_programmes', school: @school %>
 
   <%= render 'management/schools/record_activity', school: @school %>
