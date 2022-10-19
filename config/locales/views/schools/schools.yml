@@ -78,6 +78,10 @@ en:
           other: "%{count} actions"
         activity:
           completed_an_activity: Completed an activity
+        audit:
+          received_an_audit: Received an energy audit
+        temperatures:
+          recorded_temperatures_in: Recorded temperatures in
     school_group:
       compare_schools: Compare schools
       view_schools: View schools
