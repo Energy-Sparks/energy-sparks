@@ -21,6 +21,7 @@ describe ScheduleDataManagerService do
   describe '#holidays' do
     let!(:school)                                    { create(:school, calendar: calendar) }
     let(:date_version_of_holiday_date_from_calendar) { Date.parse(random_before_holiday_start_date) }
+    let!(:service)          { ScheduleDataManagerService.new(school) }
 
     it 'assigns school date periods for the analytics code' do
       allow(school).to receive(:reading_date_bounds).and_return([])
@@ -28,6 +29,27 @@ describe ScheduleDataManagerService do
       school_date_period = results.find_holiday(date_version_of_holiday_date_from_calendar)
       expect(school_date_period.start_date).to eq date_version_of_holiday_date_from_calendar
       expect(school_date_period.type).to_not be_nil
+    end
+
+    it 'loads holiday data' do
+      allow(school).to receive(:minimum_reading_date).and_return(nil)
+      holidays = service.holidays
+      expect(holidays.holidays.map { |holiday| [holiday.start_date, holiday.end_date].sort }).to eq([
+        [Date.parse('01-01-2017'),Date.parse('01-02-2017')],
+        [Date.parse('21-10-2017'), Date.parse('29-10-2017')],
+        [Date.parse('16-12-2017'), Date.parse('20-12-2017')]
+      ])
+    end
+
+    it 'loads all holiday data even if date bounds of school meter data is set' do
+      allow(school).to receive(:minimum_reading_date).and_return(Date.parse('2017-06-01'))
+
+      holidays = service.holidays
+      expect(holidays.holidays.map { |holiday| [holiday.start_date, holiday.end_date].sort }).to eq([
+        [Date.parse('01-01-2017'),Date.parse('01-02-2017')],
+        [Date.parse('21-10-2017'), Date.parse('29-10-2017')],
+        [Date.parse('16-12-2017'), Date.parse('20-12-2017')]
+      ])
     end
   end
 
@@ -42,7 +64,7 @@ describe ScheduleDataManagerService do
       reading_4 = create(:carbon_intensity_reading, reading_date: Date.parse('2019-04-01'))
       reading_5 = create(:carbon_intensity_reading, reading_date: Date.parse('2019-05-01'))
 
-      allow(school).to receive(:reading_date_bounds).and_return([])
+      allow(school).to receive(:minimum_reading_date).and_return(nil)
       uk_grid_carbon_intensity = service.uk_grid_carbon_intensity
 
       # uk_grid_carbon_intensity is a Hash
@@ -64,11 +86,11 @@ describe ScheduleDataManagerService do
       reading_4 = create(:carbon_intensity_reading, reading_date: Date.parse('2019-04-01'))
       reading_5 = create(:carbon_intensity_reading, reading_date: Date.parse('2019-05-01'))
 
-      allow(school).to receive(:reading_date_bounds).and_return([Date.parse('2019-02-01'), Date.parse('2019-04-01')])
+      allow(school).to receive(:minimum_reading_date).and_return(Date.parse('2019-02-01'))
       uk_grid_carbon_intensity = service.uk_grid_carbon_intensity
 
       # uk_grid_carbon_intensity is a Hash
-      expect(uk_grid_carbon_intensity.keys.sort).to eq([Date.parse('2019-02-01'), Date.parse('2019-03-01'), Date.parse('2019-04-01')])
+      expect(uk_grid_carbon_intensity.keys.sort).to eq([Date.parse('2019-02-01'), Date.parse('2019-03-01'), Date.parse('2019-04-01'), Date.parse('2019-05-01')])
     end
   end
 
@@ -83,7 +105,7 @@ describe ScheduleDataManagerService do
       reading_4 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: '2019-04-01')
       reading_5 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: '2019-05-01')
 
-      allow(school).to receive(:reading_date_bounds).and_return([])
+      allow(school).to receive(:minimum_reading_date).and_return(nil)
       solar_pv = service.solar_pv
       expect(solar_pv.start_date).to eql reading_1.reading_date
       expect(solar_pv.end_date).to eql reading_5.reading_date
@@ -105,15 +127,16 @@ describe ScheduleDataManagerService do
       reading_4 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: '2019-04-01')
       reading_5 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: '2019-05-01')
 
-      allow(school).to receive(:reading_date_bounds).and_return([Date.parse('2019-03-01'), Date.parse('2019-04-01')])
+      allow(school).to receive(:minimum_reading_date).and_return(Date.parse('2019-03-01'))
       solar_pv = service.solar_pv
 
       expect(solar_pv.start_date).to eql reading_3.reading_date
-      expect(solar_pv.end_date).to eql reading_4.reading_date
+      expect(solar_pv.end_date).to eql reading_5.reading_date
       expect(solar_pv.keys.sort).to eq(
         [
           Date.parse('2019-03-01'),
-          Date.parse('2019-04-01')
+          Date.parse('2019-04-01'),
+          Date.parse('2019-05-01')
         ]
       )
     end
@@ -206,7 +229,7 @@ describe ScheduleDataManagerService do
       obs_3 = create(:weather_observation, weather_station: station, reading_date: '2020-03-01')
       obs_4 = create(:weather_observation, weather_station: station, reading_date: '2020-04-01')
 
-      allow(school).to receive(:reading_date_bounds).and_return([Date.parse('2019-03-01'), Date.parse('2020-02-01')])
+      allow(school).to receive(:minimum_reading_date).and_return(Date.parse('2019-03-01'))
 
       ClimateControl.modify FEATURE_FLAG_USE_METEOSTAT: 'true' do
         temperatures = service.temperatures
@@ -218,18 +241,20 @@ describe ScheduleDataManagerService do
 
         expect(temperatures.date_exists?(obs_1.reading_date)).to eql true
         expect(temperatures.date_exists?(obs_2.reading_date)).to eql true
-        expect(temperatures.date_exists?(obs_3.reading_date)).to eql false
-        expect(temperatures.date_exists?(obs_4.reading_date)).to eql false
+        expect(temperatures.date_exists?(obs_3.reading_date)).to eql true
+        expect(temperatures.date_exists?(obs_4.reading_date)).to eql true
 
         expect(temperatures.start_date).to eql reading_3.reading_date
-        expect(temperatures.end_date).to eql obs_2.reading_date
+        expect(temperatures.end_date).to eql obs_4.reading_date
 
         expect(temperatures.keys.sort).to eq(
           [
             Date.parse('2019-03-01'),
             Date.parse('2019-04-01'),
             Date.parse('2020-01-01'),
-            Date.parse('2020-02-01')
+            Date.parse('2020-02-01'),
+            Date.parse('2020-03-01'),
+            Date.parse('2020-04-01')
           ]
         )
       end

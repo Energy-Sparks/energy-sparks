@@ -49,10 +49,10 @@ class ScheduleDataManagerService
       data
     end
 
-    # Only use solar pv data within datetime bounds of school meter readings
-    return cached_solar_pv unless school_reading_date_bounds_present?
+    # Only use solar pv data within lower datetime bounds of school meter readings
+    return cached_solar_pv unless @school.minimum_reading_date.present?
 
-    dates_to_remove = cached_solar_pv.keys.select { |date| !date.between?(*school_reading_date_bounds) }
+    dates_to_remove = cached_solar_pv.keys.select { |date| date < @school.minimum_reading_date }
     cached_solar_pv.remove_dates!(*dates_to_remove)
   end
 
@@ -66,10 +66,10 @@ class ScheduleDataManagerService
       uk_grid_carbon_intensity_data
     end
 
-    # Only use uk grid carbon intensity data within datetime bounds of school meter readings
-    return cached_uk_grid_carbon_intensity unless school_reading_date_bounds_present?
+    # Only use uk grid carbon intensity data within lower datetime bounds of school meter readings
+    return cached_uk_grid_carbon_intensity unless @school.minimum_reading_date.present?
 
-    cached_uk_grid_carbon_intensity.select { |datetime_key, _values| datetime_key.between?(*school_reading_date_bounds) }
+    cached_uk_grid_carbon_intensity.select { |date, _v| date >= @school.minimum_reading_date }
   end
 
   def find_temperatures
@@ -89,15 +89,15 @@ class ScheduleDataManagerService
       data
     end
 
-    # Only use temperature data within datetime bounds of school meter readings
-    return cached_temperatures unless school_reading_date_bounds.present?
+    # Only use temperature data within lower datetime bounds of school meter readings
+    return cached_temperatures unless @school.minimum_reading_date.present?
 
-    dates_to_remove = cached_temperatures.keys.select { |date| !date.between?(*school_reading_date_bounds) }
+    dates_to_remove = cached_temperatures.keys.select { |date| date < @school.minimum_reading_date }
     cached_temperatures.remove_dates!(*dates_to_remove)
   end
 
   def find_holidays
-    cached_holidays ||= Rails.cache.fetch(self.class.calendar_cache_key(@calendar), expires_in: 3.hours) do
+    Rails.cache.fetch(self.class.calendar_cache_key(@calendar), expires_in: 3.hours) do
       hol_data = HolidayData.new
 
       Calendar.find(@calendar.id).outside_term_time.order(:start_date).includes(:academic_year, :calendar_event_type).map do |holiday|
@@ -115,18 +115,6 @@ class ScheduleDataManagerService
       end
       Holidays.new(hol_data)
     end
-
-    # Only use holiday data within datetime bounds of school meter readings
-    return cached_holidays # unless school_reading_date_bounds_present?
-
-    # cached_holidays.select do |holiday|
-    #   holiday.start_date.between?(*school_reading_date_bounds) &&
-    #     holiday.end_date.between?(*school_reading_date_bounds)
-    # end
-  end
-
-  def school_reading_date_bounds
-    @school_reading_date_bounds ||= @school.reading_date_bounds
   end
 
   def cache_key_temperatures

@@ -14,7 +14,7 @@ describe School do
     expect(subject.slug).to eq(subject.name.parameterize)
   end
 
-  describe '#reading_date_bounds' do
+  describe '#minimum_reading_date' do
     it 'returns the minimum amr validated readings date minus 1 year if amr_validated_readings are present' do
       meter = create(:electricity_meter, school: subject)
       meter2 = create(:electricity_meter, school: subject)
@@ -28,22 +28,12 @@ describe School do
       create(:amr_validated_reading, meter: meter2, reading_date: base_date + 2.days)
       create(:amr_validated_reading, meter: meter3, reading_date: base_date + 6.days)
 
-      expect(subject.reading_date_bounds).to eq(
-        [
-          base_date - 1.year,
-          base_date + 6.days
-        ]
-      )
-      expect(subject.reading_date_bounds).to eq(
-        [
-          AmrValidatedReading.where(meter_id: meter.id).minimum(:reading_date) - 1.year,
-          AmrValidatedReading.where(meter_id: meter3.id).maximum(:reading_date)
-        ]
-      )
+      expect(subject.minimum_reading_date).to eq(base_date - 1.year)
+      expect(subject.minimum_reading_date).to eq(AmrValidatedReading.where(meter_id: meter.id).minimum(:reading_date) - 1.year)
     end
 
     it 'returns nil if amr_validated_readings are not present' do
-      expect(subject.reading_date_bounds).to eq([])
+      expect(subject.minimum_reading_date).to eq(nil)
     end
   end
 
