@@ -167,6 +167,11 @@ class School < ApplicationRecord
   validates :country, inclusion: { in: countries }
   validates :funding_status, inclusion: { in: funding_statuses }
 
+  validates :percentage_free_school_meals, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true }
+  #simplified pattern from: https://stackoverflow.com/questions/164979/regex-for-matching-uk-postcodes
+  #adjusted to use \A and \z
+  validates :postcode, format: { with: /\A[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}\z/i }
+
   validates_associated :school_times, on: :school_time_update
 
   accepts_nested_attributes_for :school_times, reject_if: proc {|attributes| attributes['day'].blank? }, allow_destroy: true
