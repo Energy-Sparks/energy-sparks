@@ -37,6 +37,26 @@ describe School do
     end
   end
 
+  it 'validates postcodes' do
+    ["BA2 £3Z", "BA14 9 DU", "TS11 7B"].each do |invalid|
+      subject.postcode=invalid
+      expect(subject).to_not be_valid
+    end
+    ["Sa48JA", "OL8 4JZ"].each do |valid|
+      subject.postcode=valid
+      expect(subject).to be_valid
+    end
+  end
+
+  it 'validates free school meals' do
+    [-1, 200].each do |invalid|
+      subject.percentage_free_school_meals = invalid
+      expect(subject).to_not be_valid
+    end
+    subject.percentage_free_school_meals = 20
+    expect(subject).to be_valid
+  end
+
   describe 'FriendlyID#slug_candidates' do
     context 'when two schools have the same name' do
       it 'builds a different slug using :postcode and :name' do
@@ -74,59 +94,59 @@ describe School do
 
   describe '#meters_with_readings' do
     it 'works if explicitly giving a supply type of electricity' do
-      electricity_meter = create(:electricity_meter_with_reading, school: subject)
+      electricity_meter = create(:electricity_meter_with_reading, reading_count: 10, school: subject)
       expect(subject.meters_with_readings(:electricity).first).to eq electricity_meter
       expect(subject.meters_with_readings(:gas)).to be_empty
     end
 
     it 'works if explicitly giving a supply type of gas' do
-      gas_meter = create(:gas_meter_with_reading, school: subject)
+      gas_meter = create(:gas_meter_with_reading, reading_count: 10, school: subject)
       expect(subject.meters_with_readings(:gas).first).to eq gas_meter
       expect(subject.meters_with_readings(:electricity)).to be_empty
     end
 
     it 'works without a supply type for a gas meter' do
-      gas_meter = create(:gas_meter_with_reading, school: subject)
+      gas_meter = create(:gas_meter_with_reading, reading_count: 10, school: subject)
       expect(subject.meters_with_readings.first).to eq gas_meter
     end
 
     it 'works without a supply type for an electricity' do
-      electricity_meter = create(:electricity_meter_with_reading, school: subject)
+      electricity_meter = create(:electricity_meter_with_reading, reading_count: 10, school: subject)
       expect(subject.meters_with_readings.first).to eq electricity_meter
     end
 
     it 'ignores deactivated meters' do
-      electricity_meter = create(:electricity_meter_with_reading, school: subject)
-      electricity_meter_inactive = create(:electricity_meter_with_reading, school: subject, active: false)
+      electricity_meter = create(:electricity_meter_with_reading, reading_count: 10, school: subject)
+      electricity_meter_inactive = create(:electricity_meter_with_reading, reading_count: 10, school: subject, active: false)
       expect(subject.meters_with_readings(:electricity)).to match_array([electricity_meter])
     end
   end
 
   describe '#meters_with_validated_readings' do
     it 'works if explicitly giving a supply type of electricity' do
-      electricity_meter = create(:electricity_meter_with_validated_reading, school: subject)
+      electricity_meter = create(:electricity_meter_with_validated_reading, reading_count: 10, school: subject)
       expect(subject.meters_with_validated_readings(:electricity).first).to eq electricity_meter
       expect(subject.meters_with_validated_readings(:gas)).to be_empty
     end
 
     it 'works if explicitly giving a supply type of gas' do
-      gas_meter = create(:gas_meter_with_validated_reading, school: subject)
+      gas_meter = create(:gas_meter_with_validated_reading, reading_count: 10, school: subject)
       expect(subject.meters_with_validated_readings(:gas).first).to eq gas_meter
       expect(subject.meters_with_validated_readings(:electricity)).to be_empty
     end
 
     it 'works without a supply type for a gas meter' do
-      gas_meter = create(:gas_meter_with_validated_reading, school: subject)
+      gas_meter = create(:gas_meter_with_validated_reading, reading_count: 10, school: subject)
       expect(subject.meters_with_validated_readings.first).to eq gas_meter
     end
 
     it 'works without a supply type for an electricity' do
-      electricity_meter = create(:electricity_meter_with_validated_reading, school: subject)
+      electricity_meter = create(:electricity_meter_with_validated_reading, reading_count: 10, school: subject)
       expect(subject.meters_with_validated_readings.first).to eq electricity_meter
     end
 
     it 'ignores deactivated meters' do
-      electricity_meter = create(:electricity_meter_with_validated_reading, school: subject)
+      electricity_meter = create(:electricity_meter_with_validated_reading, reading_count: 10, school: subject)
       electricity_meter_inactive = create(:electricity_meter_with_validated_reading, school: subject, active: false)
       expect(subject.meters_with_validated_readings(:electricity)).to match_array([electricity_meter])
     end
@@ -250,17 +270,20 @@ describe School do
 
     it 'the school is geolocated if the postcode is changed' do
       school = create(:school)
-      school.update(latitude: nil, longitude: nil)
+      school.update(latitude: nil, longitude: nil, country: 'scotland')
       school.reload
 
       expect(school.latitude).to be nil
       expect(school.longitude).to be nil
+      expect(school.country).to eq('scotland')
 
-      school.update(postcode: 'B')
+      school.update(postcode: "OL8 4JZ")
       school.reload
 
-      expect(school.latitude).to_not be nil
-      expect(school.longitude).to_not be nil
+      # values from default stub on Geocoder::Lookup::Test
+      expect(school.latitude).to eq(51.340620)
+      expect(school.longitude).to eq(-2.301420)
+      expect(school.country).to eq('england')
     end
   end
 

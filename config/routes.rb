@@ -255,7 +255,7 @@ Rails.application.routes.draw do
 
   resource :email_unsubscription, only: [:new, :create, :show], controller: :email_unsubscription
 
-  devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions' }
+  devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions', passwords: 'passwords' }
 
   devise_for :users, skip: :sessions
 
@@ -293,8 +293,10 @@ Rails.application.routes.draw do
         end
         resource :partners, only: [:show, :update]
         resource :meter_report, only: [:show]
+        resource :dashboard_message, only: [:update, :edit, :destroy], controller: '/admin/dashboard_messages'
       end
     end
+
     resources :help_pages do
       member do
         put :publish
@@ -377,6 +379,8 @@ Rails.application.routes.draw do
 
     resources :activations, only: :index
     namespace :reports do
+      resources :good_jobs, only: :index
+      get 'good_jobs/export', to: 'good_jobs#export'
       resources :alert_subscribers, only: :index
       get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
       get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading

@@ -1,21 +1,29 @@
 ---
 en:
   school_statistics:
-    activities_completed: Activities completed
-    electricity: Electricity
-    floor_area: Floor area
-    gas: Gas
-    interventions: Interventions
+    active: Active
+    active_and_enabled: Active, with data enabled
+    by_country: Active schools by country
+    count: Count
+    country: Country
+    england: England
+    free_school_meals: Active schools, free school meal status
     introduction: Here is a summary of all of the Energy Sparks schools
-    jump_to: Jump to
-    meter_count_on_site: Meter count on site
-    page_title: Report
+    onboarding: Onboarding
+    onboarding_status: School onboarding status
+    page_title: School statistics
     percent_free_school_meals: "% free school meals"
+    percentage_range: Percentage range
     postcode: Postcode
     pupil_numbers: Pupil numbers
-    school: School
+    school_group: School group
     school_name: Name
-    solar: Solar
-    solar_export: Solar export
+    school_summary: Key data for active schools
+    school_type: School type
+    school_types: Active schools by type
+    scotland: Scotland
+    status: Status
     title: School Statistics
-    urn_seed: URN/ SEED
+    total: Total
+    unknown: Unknown
+    wales: Wales

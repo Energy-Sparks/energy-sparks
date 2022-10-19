@@ -44,6 +44,8 @@ en:
     passwords:
       edit:
         characters_minimum: characters minimum
+        complete_registration: Complete registration
+        complete_your_registration: Complete your registration
         confirm_new_password: Confirm new password
         new_password: New password
         page_title: Change your password

@@ -1,7 +1,7 @@
 cy:
   helpers:
     select:
-      prompt: Dewisa
+      prompt: Dewiswch
     submit:
       create: Creu %{model}
       submit: Cadw %{model}

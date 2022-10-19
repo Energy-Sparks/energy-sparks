@@ -1,13 +1,5 @@
 <div class="row" id="nav-row">
   <ul class="nav nav-tabs">
-    <% @nav_array.each do |nav| %>
-      <li>
-        <%= nav_link(nav[:name], admin_school_analysis_tab_path(@school, tab: nav[:page])) %>
-      </li>
-    <% end %>
-
-    <li><%= nav_link('Test', admin_school_analysis_tab_path(tab: :test)) %></li>
-
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Heating Model Fitting</a>
       <div class="dropdown-menu">
@@ -16,6 +8,5 @@
         <% end %>
       </div>
     </li>
-
   </ul>
 </div>

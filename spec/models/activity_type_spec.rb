@@ -165,7 +165,7 @@ describe 'ActivityType' do
     end
   end
 
-  context 'when updating from transifex' do
+  context 'as transifex serialisable' do
     let(:resource_key) { "activity_type_#{subject.id}" }
     let(:name) { subject.name }
     let(:description) { subject.description }
@@ -180,21 +180,88 @@ describe 'ActivityType' do
        }
      }
     }
-    before(:each) do
-      subject.tx_update(data, :cy)
-      subject.reload
+    context 'when updating from transifex' do
+      before(:each) do
+        subject.tx_update(data, :cy)
+        subject.reload
+      end
+      it 'updates simple fields' do
+        expect(subject.name).to eq name
+        expect(subject.name_cy).to eq "Welsh name"
+      end
+      it 'updates HTML fields' do
+        expect(subject.description).to eq description
+        expect(subject.description_cy.to_s).to eql("<div class=\"trix-content\">\n  The Welsh description\n</div>\n")
+      end
+      it 'translates the template syntax' do
+        expect(subject.school_specific_description).to eq school_specific_description
+        expect(subject.school_specific_description_cy.to_s).to eql("<div class=\"trix-content\">\n  Instructions for schools. {{#chart}}chart_name|£{{/chart}}\n</div>\n")
+      end
     end
-    it 'updates simple fields' do
-      expect(subject.name).to eq name
-      expect(subject.name_cy).to eq "Welsh name"
+
+    context 'when there are rewriteable links' do
+      let(:source)    { "http://old.example.org" }
+      let(:target)    { "http://new.example.org" }
+
+      before(:each) do
+        subject.link_rewrites.create(source: source, target: target)
+      end
+
+      it 'correctly identifies rewriteable fields' do
+        expect(ActivityType.tx_rewriteable_fields).to match_array([:description_cy, :school_specific_description_cy, :download_links_cy])
+      end
+
+      context 'when updating from transifex' do
+        let(:data) { {
+          "cy" => {
+             resource_key => {
+               "name" => "Welsh name",
+               "description_html" => "The Welsh description <a href=\"http://old.example.org\">Link</a>",
+               "school_specific_description_html" => "Instructions for schools. %{chart_name|£}. <a href=\"http://old.example.org\">Link</a>"
+             }
+           }
+         }
+        }
+
+        before(:each) do
+          subject.tx_update(data, :cy)
+          subject.reload
+        end
+
+        context 'and source link is escaped' do
+          let(:source)    { "http://old.example.org?param1=x&param2=y" }
+
+          let(:data) { {
+            "cy" => {
+               resource_key => {
+                 "name" => "Welsh name",
+                 "description_html" => "The Welsh description <a href=\"http://old.example.org?param1=x&amp;param2=y\">Link</a>",
+                 "school_specific_description_html" => "Instructions for schools. %{chart_name|£}. <a href=\"http://old.example.org\">Link</a>"
+               }
+             }
+           }
+          }
+          it 'automatically rewrites links' do
+            expect(subject.description_cy.to_s).to eq "<div class=\"trix-content\">\n  The Welsh description <a href=\"http://new.example.org\">Link</a>\n</div>\n"
+            expect(subject.school_specific_description_cy.to_s).to eq "<div class=\"trix-content\">\n  Instructions for schools. {{#chart}}chart_name|£{{/chart}}. <a href=\"http://old.example.org\">Link</a>\n</div>\n"
+          end
+        end
+
+        it 'automatically rewrites links' do
+          expect(subject.description_cy.to_s).to eq "<div class=\"trix-content\">\n  The Welsh description <a href=\"http://new.example.org\">Link</a>\n</div>\n"
+        end
+
+        it 'rewrites links across all fields' do
+          subject.update!(school_specific_description_cy: '<a href="http://old.example.org">Link</a><a href="http://example.com">Link2</a>')
+
+          rewritten = subject.rewrite_all
+
+          expect(rewritten[:description_cy].to_s).to eq "  The Welsh description <a href=\"http://new.example.org\">Link</a>"
+          expect(rewritten[:school_specific_description_cy].to_s).to eq "  <a href=\"http://new.example.org\">Link</a><a href=\"http://example.com\">Link2</a>"
+        end
+      end
     end
-    it 'updates HTML fields' do
-      expect(subject.description).to eq description
-      expect(subject.description_cy.to_s).to eql("<div class=\"trix-content\">\n  The Welsh description\n</div>\n")
-    end
-    it 'translates the template syntax' do
-      expect(subject.school_specific_description).to eq school_specific_description
-      expect(subject.school_specific_description_cy.to_s).to eql("<div class=\"trix-content\">\n  Instructions for schools. {{#chart}}chart_name|£{{/chart}}\n</div>\n")
-    end
+
   end
+
 end

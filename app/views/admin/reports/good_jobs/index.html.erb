@@ -1,0 +1,60 @@
+<% content_for :page_title, 'Good Job' %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Good Job</h1>
+</div>
+<div>
+  <h3>Job Statistics for the last 7 days per queue and job class</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Queue name</th>
+        <th scope="col">Job class</th>
+        <th scope="col">Count</th>
+        <th scope="col">Average completion time</th>
+        <th scope="col">Minimum completion time</th>
+        <th scope="col">Maximum completion time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @queue_and_job_class_statistics.each do |row| %>
+        <tr>
+          <td><%= row['date'].strftime('%d/%m/%Y') %></td>
+          <td><%= row['queue_name'] %></td>
+          <td><%= row['job_class'] %></td>
+          <td><%= row['count'] %></td>
+          <td><%= row['avg'] %></td>
+          <td><%= row['min'] %></td>
+          <td><%= row['max'] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div class='pt-4'>
+  <h3>Slowest jobs in the last 24 hours per queue and job class</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Queue name</th>
+        <th scope="col">Job class</th>
+        <th scope="col">Job Id</th>
+        <th scope="col">Time to completion</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @slowest_jobs.each do |job| %>
+        <tr>
+          <td scope="col"><%= job['queue_name'] %></td>
+          <td scope="col"><%= job['job_class'] %></td>
+          <td scope="col"><%= link_to job['job_id'], admin_good_job_url + "/jobs/#{job['job_id']}" %></td>
+          <td scope="col"><%= job['time_to_completion'] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div>
+  <%= link_to 'Download job time to completion as .csv', admin_reports_good_jobs_export_path(format: 'csv') %>
+</div>

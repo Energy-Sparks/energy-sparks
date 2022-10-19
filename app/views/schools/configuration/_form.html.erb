@@ -12,7 +12,6 @@
     <%= f.label :template_calendar_id, 'Template calendar' %>
     <%= f.select :template_calendar_id, options_from_collection_for_select(Calendar.regional.order(:title), 'id', 'title', (@school.template_calendar_id if @school.template_calendar)),{},{ disabled: !edit_template_calendar, class: 'form-control' }%>
   </div>
-
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :solar_pv_tuos_area_id, 'Solar PV from The University of Sheffield Data Feed Area' %>

@@ -56,6 +56,8 @@ module TransifexSerialisable
         name = tx_key_to_attribute_name(attr, locale)
         #get value, converting template formats if required
         value = tx_to_attribute_value(attr, tx_attributes)
+        #rewrite links
+        value = rewrite_links_in_value(value) if self.class.tx_rewrite_links?(name.to_sym)
         #add to hash for updating
         to_update[name] = value
       end
@@ -134,6 +136,24 @@ module TransifexSerialisable
     value
   end
 
+  def rewrite_links_in_value(value)
+    link_rewrites.each do |rewrite|
+      value.gsub!(rewrite.escaped_source, rewrite.target)
+    end
+    value
+  end
+
+  def rewrite_all
+    rewritten = {}
+    self.class.tx_rewriteable_fields.each do |attr|
+      value = send(attr).to_s.dup
+      value = remove_newlines(value)
+      value = remove_rich_text_wrapper(value)
+      rewritten[attr] = rewrite_links_in_value(value)
+    end
+    rewritten
+  end
+
   private
 
   def remove_newlines(value)
@@ -145,6 +165,11 @@ module TransifexSerialisable
   end
 
   module ClassMethods
+    def tx_rewriteable_fields
+      return [] unless const_defined?(:TX_REWRITEABLE_FIELDS)
+      const_get(:TX_REWRITEABLE_FIELDS)
+    end
+
     def tx_attribute_mapping(attr)
       return {} unless const_defined?(:TX_ATTRIBUTE_MAPPING)
       const_get(:TX_ATTRIBUTE_MAPPING).key?(attr.to_sym) ? const_get(:TX_ATTRIBUTE_MAPPING)[attr.to_sym] : {}
@@ -159,6 +184,10 @@ module TransifexSerialisable
       return mapping.key?(:html) && mapping[:html]
     end
 
+    def tx_rewrite_links?(attr)
+      return tx_model_has_link_rewrites? && tx_rewriteable_fields.include?(attr)
+    end
+
     def tx_templated_attribute?(attr)
       mapping = tx_attribute_mapping(attr)
       return mapping.key?(:templated) && mapping[:templated]
@@ -167,6 +196,10 @@ module TransifexSerialisable
     #borrowed from: https://github.com/rails/rails/blob/3872bc0e54d32e8bf3a6299b0bfe173d94b072fc/actiontext/lib/action_text/attribute.rb#L61
     def tx_rich_text_field?(name)
       reflect_on_all_associations(:has_one).collect(&:name).include?("rich_text_#{name}".to_sym)
+    end
+
+    def tx_model_has_link_rewrites?
+      reflect_on_all_associations(:has_many).collect(&:name).include?(:link_rewrites)
     end
 
     def tx_resources
