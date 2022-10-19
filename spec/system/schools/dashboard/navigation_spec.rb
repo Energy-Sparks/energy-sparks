@@ -40,7 +40,7 @@ RSpec.shared_examples "navigation" do
       visit school_path(test_school, switch: true)
     end
     it 'shows link to co2 analysis page' do
-      expect(page).to have_link("Some CO2 page")
+      expect(page).to have_link("Carbon emissions")
     end
   end
 
