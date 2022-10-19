@@ -1,7 +1,6 @@
 module Schools
   class UsersController < ApplicationController
     include AlertContactCreator
-    include NewsletterSubscriber
 
     load_and_authorize_resource :school
 
@@ -23,8 +22,6 @@ module Schools
       authorize! :manage_users, @school
       @user = User.new(user_params.merge(school: @school))
       if @user.save
-        create_or_update_alert_contact(@school, @user) if auto_create_alert_contact?
-        subscribe_newsletter(@school, @user) if auto_subscribe_newsletter?
         redirect_to school_users_path(@school)
       else
         render :new

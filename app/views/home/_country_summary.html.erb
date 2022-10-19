@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col">
+    <h2><%= t('school_statistics.by_country') %></h2>
+
+    <table class="table table-bordered table-sm">
+      <thead>
+        <tr>
+          <th><%= t('school_statistics.country') %></th>
+          <th class="text-right"><%= t('school_statistics.count') %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><%= t('school_statistics.england') %></td>
+          <td class="text-right"><%= report.country_summary["england"] %></td>
+        </tr>
+        <tr>
+          <td><%= t('school_statistics.scotland') %></td>
+          <td class="text-right"><%= report.country_summary["scotland"] %></td>
+        </tr>
+        <tr>
+          <td><%= t('school_statistics.wales') %></td>
+          <td class="text-right"><%= report.country_summary["wales"] %></td>
+        </tr>
+        <tr>
+          <td><strong><%= t('school_statistics.total') %></strong></td>
+          <td class="text-right"><%= School.visible.count %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

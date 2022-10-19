@@ -14,7 +14,7 @@ describe 'account confirmation' do
     fill_in 'New password', with: 'testtest1'
     fill_in 'Confirm new password', with: 'testtest1'
 
-    click_on 'Set my password'
+    click_on 'Complete registration'
 
     expect(page).to have_content('Sign Out')
 

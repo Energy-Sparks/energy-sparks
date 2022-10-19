@@ -5,8 +5,8 @@ cy:
       timescale: wythnos diwethaf o gymharu â'r cyfartaledd dros y flwyddyn ddiwethaf
     alert_electricity_baseload_versus_benchmark:
       summary:
-        high: Mae dy lwyth sylfaenol yn uchel, a gallai ei leihau arbed %{saving}pa
-        ok: Rydych chi'i gwneud yn dda - mae'ch ysgol yn enghraifft dda
+        high: Mae eich llwyth sylfaenol yn uchel, a gallai ei leihau arbed %{saving}pa
+        ok: Rydych chi'n gwneud yn dda - mae'ch ysgol yn enghraifft dda
       timescale: y llynedd
     alert_intraweek_baseload_variation:
       timescale: dros y flwyddyn ddiwethaf
@@ -14,6 +14,6 @@ cy:
       timescale: dros y flwyddyn ddiwethaf
     alert_summer_holiday_refrigeration_analysis:
       summary:
-        high: Mae gen ti y potensial i arbed %{saving}pa gan ddefnyddio rheweiddio mwy effeithlon
-        ok: Naill ai dwyt ti ddim yn diffodd dy oergelloedd dros yr haf neu maen nhw'n effeithlon iawn
+        high: Mae gennych y potensial i arbed %{saving}pa gan ddefnyddio rheweiddio mwy effeithlon
+        ok: Naill ai dydych chi ddim yn diffodd eich oergelloedd dros yr haf neu maen nhw'n effeithlon iawn
       timescale: o leiaf un gwyliau haf

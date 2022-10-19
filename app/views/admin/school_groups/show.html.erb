@@ -5,7 +5,7 @@
   </div>
 </div>
 <p>Pupils in active schools: <span class="badge badge-success"><%= number_with_delimiter @school_group.schools.visible.map(&:number_of_pupils).compact.sum %></span></p>
-<div class="row">
+<div class="row pb-2">
   <div class="col-lg-12">
     <div class="card-deck">
       <div class="card">
@@ -28,6 +28,8 @@
   </div>
 </div>
 
+<%= render 'admin/shared/dashboard_message', object: @school_group %>
+
 <div class="bg-light p-2 my-2 d-flex justify-content-between">
   <%= link_to 'View', school_group_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Edit', edit_admin_school_group_path(@school_group), class: 'btn btn-sm' %>
@@ -37,5 +39,31 @@
   <%= link_to 'Download meter report', admin_school_group_meter_report_path(@school_group, format: :csv) , class: 'btn btn-sm' %>
   <div title="School groups can only be deleted if there are no associated schools or users" rel="tooltip">
     <%= link_to 'Delete', admin_school_group_path(@school_group), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm#{' disabled' unless @school_group.safe_to_destroy?}" %>
+  </div>
+</div>
+
+<%= render 'schools_tabs' %>
+
+<div class="tab-content" id="school-group-schools-content">
+  <div class="tab-pane fade show active" id="active-content" role="tabpanel" aria-labelledby="active-tab">
+    <% if @school_group.schools.visible.any? %>
+      <%= render 'active_schools', school_group: @school_group %>
+    <% else %>
+      <div class="bg-light p-2">No active schools for <%= @school_group.name %>.</div>
+    <% end %>
+  </div>
+  <div class="tab-pane fade" id="onboarding-content" role="tabpanel" aria-labelledby="onboarding-tab">
+    <% if @school_group.school_onboardings.select(&:incomplete?).any? %>
+      <%= render 'onboarding_schools', school_group: @school_group %>
+    <% else %>
+      <div class="bg-light p-2">No schools currently onboarding for <%= @school_group.name %>.</div>
+    <% end %>
+  </div>
+  <div class="tab-pane fade" id="removed-content" role="tabpanel" aria-labelledby="removed-tab">
+    <% if @school_group.schools.inactive.any? %>
+      <%= render 'removed_schools', school_group: @school_group %>
+    <% else %>
+      <div class="bg-light p-2">No removed schools for <%= @school_group.name %>.</div>
+    <% end %>
   </div>
 </div>

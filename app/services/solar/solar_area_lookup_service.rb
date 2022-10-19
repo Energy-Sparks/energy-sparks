@@ -19,7 +19,7 @@ module Solar
     def assign
       solar_area = lookup
       if solar_area
-        solar_area.update(active: true) unless solar_area.active
+        update_and_load_area(solar_area) unless solar_area.active
         @school.update(solar_pv_tuos_area: solar_area)
       else
         Rollbar.error('No solar area found', scope: :solar_area_lookup_service, school: @school_onboarding.school_name)
@@ -28,6 +28,11 @@ module Solar
     end
 
     private
+
+    def update_and_load_area(solar_area)
+      SolarAreaLoaderJob.perform_later solar_area unless solar_area.solar_pv_tuos_readings.any?
+      solar_area.update(active: true)
+    end
 
     def find_nearest_area
       #nearest is last in list

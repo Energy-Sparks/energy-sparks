@@ -13,7 +13,7 @@ cy:
         one: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> pwynt i'th ysgol!
         two: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> bwynt i'th ysgol!
         many: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> o bwyntiau i'th ysgol!
-        other: Cwblha'r weithred hon i sgorio <strong>%{count}</strong> o bwyntiau i dy ysgol!
+        other: Cwblhewch y weithred hon i sgorio <strong>%{count}</strong> o bwyntiau i'ch ysgol!
       record_this_action: Cofnodi'r weithred hon
     search:
       all_actions: Pob gweithred
