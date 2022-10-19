@@ -10,8 +10,11 @@ module Alerts
         @alert_generation_run = AlertGenerationRun.create!(school: @school)
 
         relevant_alert_types.each do |alert_type|
-          alert_type_run_result = GenerateAlertTypeRunResult.new(school: @school, aggregate_school: @aggregate_school, alert_type: alert_type).perform
-          process_alert_type_run_result(alert_type_run_result)
+          service = GenerateAlertTypeRunResult.new(school: @school, aggregate_school: @aggregate_school, alert_type: alert_type, use_max_meter_date_if_less_than_asof_date: true)
+          service.benchmark_dates(asof_date).each do |benchmark_date|
+            alert_type_run_result = service.perform(benchmark_date)
+            process_alert_type_run_result(alert_type_run_result)
+          end
         end
       end
     end
