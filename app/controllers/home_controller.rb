@@ -112,7 +112,7 @@ class HomeController < ApplicationController
   end
 
   def school_statistics
-    @school_groups = ComparisonService.new(current_user).list_school_groups
+    @report = Schools::ReportingStatisticsService.new
   end
 
   def team
