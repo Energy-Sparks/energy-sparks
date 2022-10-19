@@ -87,6 +87,7 @@ en:
         one: "%{count} hour"
         other: "%{count} hours"
       infinity: Infinity
+      infinity_negative: "-Infinity"
       minutes:
         one: "%{count} minute"
         other: "%{count} minutes"
