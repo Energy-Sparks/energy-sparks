@@ -532,6 +532,9 @@ en:
     group_by_week_gas_unlimited:
       title:
       - 'By Week: Gas (multi-year)'
+    group_by_week_gas_versus_benchmark:
+      title:
+      - 'By Week: Gas - compared with benchmark'
     group_by_year_gas_unlimited_meter_breakdown_heating_model_fitter:
       title:
       - Gas meter breakdown by year
@@ -622,6 +625,9 @@ en:
     intraday_line_school_days_6months_test_delete:
       title:
       - Intraday (Comparison 6 months apart)
+    intraday_line_school_days_gas_reduced_data_versus_benchmarks:
+      title:
+      - 'By Week: Gas - compared with benchmark - intraday'
     intraday_line_school_days_last5weeks:
       title:
       - Intraday (Last 5 weeks comparison - school day)

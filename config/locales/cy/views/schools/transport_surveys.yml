@@ -86,7 +86,7 @@ cy:
           summary_html: Ar gyfer eich taith %{time} o funudau i'r ysgol gan %{transport}
           time: 'Amser: Sawl munud gymerodd eich taith i gyd?'
           transport: 'Trafnidiaeth: Pa fath o drafnidiaeth wnest ti ei ddefnyddio i gyrraedd yr ysgol?'
-          weather: Dewisa'r tywydd heddiw
+          weather: Dewiswch y tywydd heddiw
         title: Arolwg teithio i'r ysgol
       equivalences:
         carnivore_dinner:
