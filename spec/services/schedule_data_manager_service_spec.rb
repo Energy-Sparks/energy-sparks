@@ -31,6 +31,47 @@ describe ScheduleDataManagerService do
     end
   end
 
+  describe '#uk_grid_carbon_intensity' do
+    let!(:school)           { create(:school, solar_pv_tuos_area: create(:solar_pv_tuos_area)) }
+    let!(:service)          { ScheduleDataManagerService.new(school) }
+
+    it 'loads the uk grid carbon intensity data' do
+      reading_1 = create(:carbon_intensity_reading, reading_date: Date.parse('2019-01-01'))
+      reading_2 = create(:carbon_intensity_reading, reading_date: Date.parse('2019-02-01'))
+      reading_3 = create(:carbon_intensity_reading, reading_date: Date.parse('2019-03-01'))
+      reading_4 = create(:carbon_intensity_reading, reading_date: Date.parse('2019-04-01'))
+      reading_5 = create(:carbon_intensity_reading, reading_date: Date.parse('2019-05-01'))
+
+      allow(school).to receive(:reading_date_bounds).and_return([])
+      uk_grid_carbon_intensity = service.uk_grid_carbon_intensity
+
+      # uk_grid_carbon_intensity is a Hash
+      expect(uk_grid_carbon_intensity.keys.sort).to eq(
+        [
+          Date.parse('2019-01-01'),
+          Date.parse('2019-02-01'),
+          Date.parse('2019-03-01'),
+          Date.parse('2019-04-01'),
+          Date.parse('2019-05-01')
+        ]
+      )
+    end
+
+    it 'loads the uk grid carbon intensity data but returns data only within the date ranges of a schools meter readings' do
+      reading_1 = create(:carbon_intensity_reading, reading_date: Date.parse('2019-01-01'))
+      reading_2 = create(:carbon_intensity_reading, reading_date: Date.parse('2019-02-01'))
+      reading_3 = create(:carbon_intensity_reading, reading_date: Date.parse('2019-03-01'))
+      reading_4 = create(:carbon_intensity_reading, reading_date: Date.parse('2019-04-01'))
+      reading_5 = create(:carbon_intensity_reading, reading_date: Date.parse('2019-05-01'))
+
+      allow(school).to receive(:reading_date_bounds).and_return([Date.parse('2019-02-01'), Date.parse('2019-04-01')])
+      uk_grid_carbon_intensity = service.uk_grid_carbon_intensity
+
+      # uk_grid_carbon_intensity is a Hash
+      expect(uk_grid_carbon_intensity.keys.sort).to eq([Date.parse('2019-02-01'), Date.parse('2019-03-01'), Date.parse('2019-04-01')])
+    end
+  end
+
   describe '#solar_pv' do
     let!(:school)           { create(:school, solar_pv_tuos_area: create(:solar_pv_tuos_area)) }
     let!(:service)          { ScheduleDataManagerService.new(school) }
