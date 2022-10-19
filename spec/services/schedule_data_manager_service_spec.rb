@@ -24,7 +24,7 @@ describe ScheduleDataManagerService do
     let!(:service)          { ScheduleDataManagerService.new(school) }
 
     it 'assigns school date periods for the analytics code' do
-      allow(school).to receive(:reading_date_bounds).and_return([])
+      allow(school).to receive(:minimum_reading_date).and_return(nil)
       results = ScheduleDataManagerService.new(school).holidays
       school_date_period = results.find_holiday(date_version_of_holiday_date_from_calendar)
       expect(school_date_period.start_date).to eq date_version_of_holiday_date_from_calendar
@@ -149,7 +149,7 @@ describe ScheduleDataManagerService do
 
     let!(:service)          { ScheduleDataManagerService.new(school) }
 
-    before { allow(school).to receive(:reading_date_bounds).and_return([]) }
+    before { allow(school).to receive(:minimum_reading_date).and_return(nil) }
 
     it 'loads dark_sky data' do
       reading_1 = create(:dark_sky_temperature_reading, dark_sky_area: area, reading_date: '2019-01-01')
