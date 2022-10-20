@@ -6,6 +6,7 @@ module Alerts
     let(:aggregate_school)        { double(:aggregate_school) }
     let(:asof_date)               { Date.parse('01/01/2019') }
     let(:alert_type)              { create(:alert_type, fuel_type: nil, frequency: :weekly, source: :analytics) }
+    let(:benchmark_result_generation_run) { BenchmarkResultGenerationRun.create! }
 
     let(:alert_report_attributes) {{
       valid: true,
