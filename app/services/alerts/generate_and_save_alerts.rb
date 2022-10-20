@@ -7,8 +7,12 @@ module Alerts
 
     def perform
       ActiveRecord::Base.transaction do
-        alert_type_run_result = GenerateAlertTypeRunResult.new(school: @school, aggregate_school: @aggregate_school, alert_type: alert_type).perform
-        process_alert_type_run_result(alert_type_run_result)
+        @alert_generation_run = AlertGenerationRun.create!(school: @school)
+
+        relevant_alert_types.each do |alert_type|
+          alert_type_run_result = GenerateAlertTypeRunResult.new(school: @school, aggregate_school: @aggregate_school, alert_type: alert_type).perform
+          process_alert_type_run_result(alert_type_run_result)
+        end
       end
     end
 
