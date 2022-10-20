@@ -10,7 +10,7 @@ module Alerts
       @benchmark_result_generation_run = benchmark_result_generation_run
     end
 
-    def perform
+    def perform(asof_date = Time.zone.today)
       ActiveRecord::Base.transaction do
         @alert_generation_run = AlertGenerationRun.create!(school: @school)
         @benchmark_result_school_generation_run = BenchmarkResultSchoolGenerationRun.create!(school: @school, benchmark_result_generation_run: @benchmark_result_generation_run)
