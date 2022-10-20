@@ -9,10 +9,16 @@ module Alerts
       ActiveRecord::Base.transaction do
         create_a_new_school_alert_generation_run
         generate_alert_type_run_results_for_relevant_alert_types
+        # generate_benchmarks
       end
     end
 
     private
+
+    # def generate_benchmarks
+    #   @benchmark_result_generation_run = benchmark_result_generation_run
+    #   @benchmark_result_school_generation_run = BenchmarkResultSchoolGenerationRun.create!(school: @school, benchmark_result_generation_run: @benchmark_result_generation_run)
+    # end
 
     def create_new_aggregate_school_service_for(school)
       AggregateSchoolService.new(school).aggregate_school
@@ -23,13 +29,10 @@ module Alerts
     end
 
     def generate_alert_type_run_results_for(alert_type)
-      alert_type_run_result = GenerateAlertTypeRunResult.new(
-        school: @school,
-        aggregate_school: @aggregate_school,
-        alert_type: alert_type
-                              ).perform
+      alert_type_run_result = GenerateAlertTypeRunResult.new(school: @school, aggregate_school: @aggregate_school, alert_type: alert_type).perform
 
       process_alert_type_run_result(alert_type_run_result)
+      alert_type_run_result
     end
 
     def create_a_new_school_alert_generation_run
@@ -42,10 +45,14 @@ module Alerts
 
     def process_alert_type_run_result(alert_type_run_result)
       # Create error messages
-      alert_type_run_result.error_messages.each { |error_message| create_alert_error_for(alert_type_run_result.asof_date, error_message, alert_type_run_result.alert_type) }
+      alert_type_run_result.error_messages.each do |error_message|
+        create_alert_error_for(alert_type_run_result.asof_date, error_message, alert_type_run_result.alert_type)
+      end
 
       # Process alert type run reports
-      alert_type_run_result.reports.each { |alert_report| process_alert_report(alert_type_run_result.alert_type, alert_report, alert_type_run_result.asof_date) }
+      alert_type_run_result.reports.each do |alert_report|
+        process_alert_report(alert_type_run_result.alert_type, alert_report, alert_type_run_result.asof_date)
+      end
     end
 
     def create_alert_error_for(asof_date, error_message, alert_type)
