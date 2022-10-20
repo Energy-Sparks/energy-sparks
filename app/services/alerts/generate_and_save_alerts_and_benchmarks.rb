@@ -1,28 +1,22 @@
 module Alerts
   class GenerateAndSaveAlertsAndBenchmarks
-    def initialize(
-          school:,
-          aggregate_school: AggregateSchoolService.new(school).aggregate_school,
-          benchmark_result_generation_run: BenchmarkResultGenerationRun.latest
-        )
+    def initialize(school, aggregate_school, benchmark_result_generation_run)
       @school = school
-      @aggregate_school = aggregate_school
-      @benchmark_result_generation_run = benchmark_result_generation_run
+      @aggregate_school = aggregate_school || AggregateSchoolService.new(school).aggregate_school
+      @benchmark_result_generation_run = benchmark_result_generation_run || BenchmarkResultGenerationRun.latest
     end
 
-    def perform(asof_date = Time.zone.today)
+    def perform
       ActiveRecord::Base.transaction do
-        @alert_generation_run = AlertGenerationRun.create!(school: @school)
-        @benchmark_result_school_generation_run = BenchmarkResultSchoolGenerationRun.create!(school: @school, benchmark_result_generation_run: @benchmark_result_generation_run)
+        build_alerts_and_alert_types
+      end
+    end
 
-        relevant_alert_types.each do |alert_type|
-          service = alert_type_run_result = GenerateAlertTypeRunResult.new(school: @school, aggregate_school: @aggregate_school, alert_type: alert_type, use_max_meter_date_if_less_than_asof_date: true).perform
+    def build_alerts_and_alert_types
+      # Run though all of the schools alerts
+      @alert_generation_run = AlertGenerationRun.create!(school: @school)
 
-          service.benchmark_dates(asof_date).each do |benchmark_date|
-            alert_type_run_result = service.perform(benchmark_date)
-            process_alert_type_run_result(alert_type_run_result)
-          end
-        end
+      relevant_alert_types.each do |alert_type|
       end
     end
 
@@ -31,6 +25,22 @@ module Alerts
     def relevant_alert_types
       RelevantAlertTypes.new(@school).list
     end
+
+    # def perform(asof_date = Time.zone.today)
+    #   ActiveRecord::Base.transaction do
+    #     @alert_generation_run = AlertGenerationRun.create!(school: @school)
+    #     @benchmark_result_school_generation_run = BenchmarkResultSchoolGenerationRun.create!(school: @school, benchmark_result_generation_run: @benchmark_result_generation_run)
+
+    #     relevant_alert_types.each do |alert_type|
+    #       service = alert_type_run_result = GenerateAlertTypeRunResult.new(school: @school, aggregate_school: @aggregate_school, alert_type: alert_type, use_max_meter_date_if_less_than_asof_date: true).perform
+
+    #       service.benchmark_dates(asof_date).each do |benchmark_date|
+    #         alert_type_run_result = service.perform(benchmark_date)
+    #         process_alert_type_run_result(alert_type_run_result)
+    #       end
+    #     end
+    #   end
+    # end
 
     def process_alert_type_run_result(alert_type_run_result)
       asof_date = alert_type_run_result.asof_date
