@@ -1,8 +1,10 @@
 require 'dashboard'
 
 class ScheduleDataManagerService
-  def initialize(school)
+  def initialize(school, meter_data_type: :validated_meter_data)
     @school = school
+    @meter_data_type = meter_data_type
+    raise 'Invalid meter data type' unless [:validated_meter_data, :unvalidated_meter_data].include?(meter_data_type)
     @calendar = school.calendar
     @solar_pv_tuos_area_id = school.solar_pv_tuos_area_id
     @dark_sky_area_id = school.dark_sky_area_id
@@ -35,6 +37,14 @@ class ScheduleDataManagerService
 
   private
 
+  def use_date_bounded_schedule_data
+    @use_date_bounded_schedule_data ||= if @meter_data_type == :validated_meter_data && @school.minimum_reading_date.present? && ENV['DATE_BOUND_SCHEDULE_DATA'] != false
+                                          true
+                                        else
+                                          false
+                                        end
+  end
+
   def find_solar_pv
     cache_key = "#{@solar_pv_tuos_area_id}-solar-pv-2-tuos"
     cached_solar_pv ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
@@ -46,7 +56,7 @@ class ScheduleDataManagerService
     end
 
     # Only use solar pv data within lower datetime bounds of school meter readings
-    return cached_solar_pv unless @school.minimum_reading_date.present?
+    return cached_solar_pv unless use_date_bounded_schedule_data
 
     dates_to_remove = cached_solar_pv.keys.select { |date| date < @school.minimum_reading_date }
     cached_solar_pv.remove_dates!(*dates_to_remove)
@@ -63,7 +73,7 @@ class ScheduleDataManagerService
     end
 
     # Only use uk grid carbon intensity data within lower datetime bounds of school meter readings
-    return cached_uk_grid_carbon_intensity unless @school.minimum_reading_date.present?
+    return cached_uk_grid_carbon_intensity unless use_date_bounded_schedule_data
 
     dates_to_remove = cached_uk_grid_carbon_intensity.keys.select { |date| date < @school.minimum_reading_date }
     cached_uk_grid_carbon_intensity.remove_dates!(*dates_to_remove)
@@ -87,7 +97,7 @@ class ScheduleDataManagerService
     end
 
     # Only use temperature data within lower datetime bounds of school meter readings
-    return cached_temperatures unless @school.minimum_reading_date.present?
+    return cached_temperatures unless use_date_bounded_schedule_data
 
     dates_to_remove = cached_temperatures.keys.select { |date| date < @school.minimum_reading_date }
     cached_temperatures.remove_dates!(*dates_to_remove)

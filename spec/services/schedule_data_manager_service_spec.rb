@@ -21,7 +21,7 @@ describe ScheduleDataManagerService do
   describe '#holidays' do
     let!(:school)                                    { create(:school, calendar: calendar) }
     let(:date_version_of_holiday_date_from_calendar) { Date.parse(random_before_holiday_start_date) }
-    let!(:service)          { ScheduleDataManagerService.new(school) }
+    let!(:service)                                   { ScheduleDataManagerService.new(school) }
 
     it 'assigns school date periods for the analytics code' do
       allow(school).to receive(:minimum_reading_date).and_return(nil)
