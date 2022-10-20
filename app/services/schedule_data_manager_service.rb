@@ -37,7 +37,7 @@ class ScheduleDataManagerService
 
   private
 
-  def use_date_bounded_schedule_data
+  def use_date_bounded_schedule_data?
     return false unless EnergySparks::FeatureFlags.active?(:date_bound_schedule_data)
     return false unless school_minimum_reading_date_present
     return false unless @meter_data_type == :validated_meter_data
@@ -60,7 +60,7 @@ class ScheduleDataManagerService
     end
 
     # Only use solar pv data within lower datetime bounds of school meter readings
-    return cached_solar_pv unless use_date_bounded_schedule_data
+    return cached_solar_pv unless use_date_bounded_schedule_data?
 
     dates_to_remove = cached_solar_pv.keys.select { |date| date < @school.minimum_reading_date }
     cached_solar_pv.remove_dates!(*dates_to_remove)
@@ -77,7 +77,7 @@ class ScheduleDataManagerService
     end
 
     # Only use uk grid carbon intensity data within lower datetime bounds of school meter readings
-    return cached_uk_grid_carbon_intensity unless use_date_bounded_schedule_data
+    return cached_uk_grid_carbon_intensity unless use_date_bounded_schedule_data?
 
     dates_to_remove = cached_uk_grid_carbon_intensity.keys.select { |date| date < @school.minimum_reading_date }
     cached_uk_grid_carbon_intensity.remove_dates!(*dates_to_remove)
@@ -101,7 +101,7 @@ class ScheduleDataManagerService
     end
 
     # Only use temperature data within lower datetime bounds of school meter readings
-    return cached_temperatures unless use_date_bounded_schedule_data
+    return cached_temperatures unless use_date_bounded_schedule_data?
 
     dates_to_remove = cached_temperatures.keys.select { |date| date < @school.minimum_reading_date }
     cached_temperatures.remove_dates!(*dates_to_remove)

@@ -18,23 +18,23 @@ describe ScheduleDataManagerService do
     end
   end
 
-  describe '#use_date_bounded_schedule_data' do
+  describe '#use_date_bounded_schedule_data?' do
     let!(:school) { create(:school, calendar: calendar) }
     it 'returns false' do
       ClimateControl.modify FEATURE_FLAG_DATE_BOUND_SCHEDULE_DATA: 'false' do
         allow(school).to receive(:minimum_reading_date).and_return(Date.today)
-        expect(ScheduleDataManagerService.new(school, :validated_meter_data).send(:use_date_bounded_schedule_data)).to eq(false)
+        expect(ScheduleDataManagerService.new(school, :validated_meter_data).send(:use_date_bounded_schedule_data?)).to eq(false)
         allow(school).to receive(:minimum_reading_date).and_return(nil)
-        expect(ScheduleDataManagerService.new(school, :validated_meter_data).send(:use_date_bounded_schedule_data)).to eq(false)
+        expect(ScheduleDataManagerService.new(school, :validated_meter_data).send(:use_date_bounded_schedule_data?)).to eq(false)
         allow(school).to receive(:minimum_reading_date).and_return(nil)
-        expect(ScheduleDataManagerService.new(school, :unvalidated_meter_data).send(:use_date_bounded_schedule_data)).to eq(false)
+        expect(ScheduleDataManagerService.new(school, :unvalidated_meter_data).send(:use_date_bounded_schedule_data?)).to eq(false)
       end
       ClimateControl.modify FEATURE_FLAG_DATE_BOUND_SCHEDULE_DATA: 'true' do
         expect(EnergySparks::FeatureFlags.active?(:date_bound_schedule_data)).to eq(true)
         allow(school).to receive(:minimum_reading_date).and_return(nil)
-        expect(ScheduleDataManagerService.new(school, :validated_meter_data).send(:use_date_bounded_schedule_data)).to eq(false)
+        expect(ScheduleDataManagerService.new(school, :validated_meter_data).send(:use_date_bounded_schedule_data?)).to eq(false)
         allow(school).to receive(:minimum_reading_date).and_return(nil)
-        expect(ScheduleDataManagerService.new(school, :unvalidated_meter_data).send(:use_date_bounded_schedule_data)).to eq(false)
+        expect(ScheduleDataManagerService.new(school, :unvalidated_meter_data).send(:use_date_bounded_schedule_data?)).to eq(false)
       end
     end
 
@@ -42,7 +42,7 @@ describe ScheduleDataManagerService do
       ClimateControl.modify FEATURE_FLAG_DATE_BOUND_SCHEDULE_DATA: 'true' do
         expect(EnergySparks::FeatureFlags.active?(:date_bound_schedule_data)).to eq(true)
         allow(school).to receive(:minimum_reading_date).and_return(Date.today)
-        expect(ScheduleDataManagerService.new(school, :validated_meter_data).send(:use_date_bounded_schedule_data)).to eq(true)
+        expect(ScheduleDataManagerService.new(school, :validated_meter_data).send(:use_date_bounded_schedule_data?)).to eq(true)
       end
     end
   end
