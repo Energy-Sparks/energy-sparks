@@ -1,7 +1,7 @@
 require 'dashboard'
 
 class ScheduleDataManagerService
-  def initialize(school, meter_data_type: :validated_meter_data)
+  def initialize(school, meter_data_type = :unvalidated_meter_data)
     @school = school
     @meter_data_type = meter_data_type
     raise 'Invalid meter data type' unless [:validated_meter_data, :unvalidated_meter_data].include?(meter_data_type)
@@ -38,11 +38,15 @@ class ScheduleDataManagerService
   private
 
   def use_date_bounded_schedule_data
-    @use_date_bounded_schedule_data ||= if @meter_data_type == :validated_meter_data && @school.minimum_reading_date.present? && ENV['DATE_BOUND_SCHEDULE_DATA'] != false
-                                          true
-                                        else
-                                          false
-                                        end
+    return false unless EnergySparks::FeatureFlags.active?(:date_bound_schedule_data)
+    return false unless school_minimum_reading_date_present
+    return false unless @meter_data_type == :validated_meter_data
+
+    true
+  end
+
+  def school_minimum_reading_date_present
+    @school_minimum_reading_date_present ||= @school.minimum_reading_date.present?
   end
 
   def find_solar_pv
