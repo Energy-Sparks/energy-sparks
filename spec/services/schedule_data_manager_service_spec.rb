@@ -122,7 +122,6 @@ describe ScheduleDataManagerService do
         allow(school).to receive(:minimum_reading_date).and_return(Date.parse('2019-02-01'))
         uk_grid_carbon_intensity = service.uk_grid_carbon_intensity
 
-        # uk_grid_carbon_intensity is a Hash
         expect(uk_grid_carbon_intensity.keys.sort).to eq([Date.parse('2019-02-01'), Date.parse('2019-03-01'), Date.parse('2019-04-01'), Date.parse('2019-05-01')])
         expect(uk_grid_carbon_intensity.class).to eq(GridCarbonIntensity)
       end
