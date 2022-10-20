@@ -29,27 +29,30 @@ describe ScheduleDataManagerService do
       school_date_period = results.find_holiday(date_version_of_holiday_date_from_calendar)
       expect(school_date_period.start_date).to eq date_version_of_holiday_date_from_calendar
       expect(school_date_period.type).to_not be_nil
+      expect(results.class).to eq(Holidays)
     end
 
     it 'loads holiday data' do
       allow(school).to receive(:minimum_reading_date).and_return(nil)
-      holidays = service.holidays
-      expect(holidays.holidays.map { |holiday| [holiday.start_date, holiday.end_date].sort }).to eq([
+      results = service.holidays
+      expect(results.holidays.map { |holiday| [holiday.start_date, holiday.end_date].sort }).to eq([
         [Date.parse('01-01-2017'),Date.parse('01-02-2017')],
         [Date.parse('21-10-2017'), Date.parse('29-10-2017')],
         [Date.parse('16-12-2017'), Date.parse('20-12-2017')]
       ])
+      expect(results.class).to eq(Holidays)
     end
 
     it 'loads all holiday data even if date bounds of school meter data is set' do
       allow(school).to receive(:minimum_reading_date).and_return(Date.parse('2017-06-01'))
 
-      holidays = service.holidays
-      expect(holidays.holidays.map { |holiday| [holiday.start_date, holiday.end_date].sort }).to eq([
+      results = service.holidays
+      expect(results.holidays.map { |holiday| [holiday.start_date, holiday.end_date].sort }).to eq([
         [Date.parse('01-01-2017'),Date.parse('01-02-2017')],
         [Date.parse('21-10-2017'), Date.parse('29-10-2017')],
         [Date.parse('16-12-2017'), Date.parse('20-12-2017')]
       ])
+      expect(results.class).to eq(Holidays)
     end
   end
 
@@ -77,6 +80,7 @@ describe ScheduleDataManagerService do
           Date.parse('2019-05-01')
         ]
       )
+      expect(uk_grid_carbon_intensity.class).to eq(GridCarbonIntensity)
     end
 
     it 'loads the uk grid carbon intensity data but returns data only within the date ranges of a schools meter readings' do
@@ -91,6 +95,7 @@ describe ScheduleDataManagerService do
 
       # uk_grid_carbon_intensity is a Hash
       expect(uk_grid_carbon_intensity.keys.sort).to eq([Date.parse('2019-02-01'), Date.parse('2019-03-01'), Date.parse('2019-04-01'), Date.parse('2019-05-01')])
+      expect(uk_grid_carbon_intensity.class).to eq(GridCarbonIntensity)
     end
   end
 
@@ -118,6 +123,7 @@ describe ScheduleDataManagerService do
           Date.parse('2019-05-01')
         ]
       )
+      expect(solar_pv.class).to eq(SolarPV)
     end
 
     it 'loads the solar pv data but returns solar pv data only within the date ranges of a schools meter readings' do
@@ -139,6 +145,7 @@ describe ScheduleDataManagerService do
           Date.parse('2019-05-01')
         ]
       )
+      expect(solar_pv.class).to eq(SolarPV)
     end
   end
 
@@ -158,6 +165,7 @@ describe ScheduleDataManagerService do
 
       expect(temperatures.start_date).to eql reading_1.reading_date
       expect(temperatures.end_date).to eql reading_2.reading_date
+      expect(temperatures.class).to eq(Temperatures)
     end
 
     it 'loads dark sky data, with feature flag set off' do
@@ -167,6 +175,7 @@ describe ScheduleDataManagerService do
         temperatures = service.temperatures
         expect(temperatures.start_date).to eql reading_1.reading_date
         expect(temperatures.end_date).to eql reading_2.reading_date
+        expect(temperatures.class).to eq(Temperatures)
       end
     end
 
@@ -177,6 +186,7 @@ describe ScheduleDataManagerService do
         temperatures = service.temperatures
         expect(temperatures.start_date).to eql obs_1.reading_date
         expect(temperatures.end_date).to eql obs_2.reading_date
+        expect(temperatures.class).to eq(Temperatures)
       end
     end
 
@@ -203,6 +213,7 @@ describe ScheduleDataManagerService do
             Date.parse('2020-02-01')
           ]
         )
+        expect(temperatures.class).to eq(Temperatures)
       end
     end
 
@@ -215,6 +226,7 @@ describe ScheduleDataManagerService do
         expect(temperatures.date_exists?(reading_2.reading_date)).to eql true
         expect(temperatures.start_date).to eql reading_1.reading_date
         expect(temperatures.end_date).to eql reading_2.reading_date
+        expect(temperatures.class).to eq(Temperatures)
       end
     end
 
@@ -257,6 +269,7 @@ describe ScheduleDataManagerService do
             Date.parse('2020-04-01')
           ]
         )
+        expect(temperatures.class).to eq(Temperatures)
       end
     end
   end

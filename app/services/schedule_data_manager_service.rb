@@ -35,10 +35,6 @@ class ScheduleDataManagerService
 
   private
 
-  def school_reading_date_bounds_present?
-    school_reading_date_bounds.present? && school_reading_date_bounds.uniq.size == 2
-  end
-
   def find_solar_pv
     cache_key = "#{@solar_pv_tuos_area_id}-solar-pv-2-tuos"
     cached_solar_pv ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
@@ -69,7 +65,8 @@ class ScheduleDataManagerService
     # Only use uk grid carbon intensity data within lower datetime bounds of school meter readings
     return cached_uk_grid_carbon_intensity unless @school.minimum_reading_date.present?
 
-    cached_uk_grid_carbon_intensity.select { |date, _v| date >= @school.minimum_reading_date }
+    dates_to_remove = cached_uk_grid_carbon_intensity.keys.select { |date| date < @school.minimum_reading_date }
+    cached_uk_grid_carbon_intensity.remove_dates!(*dates_to_remove)
   end
 
   def find_temperatures
