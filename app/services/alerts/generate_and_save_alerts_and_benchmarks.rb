@@ -1,38 +1,48 @@
 module Alerts
   class GenerateAndSaveAlertsAndBenchmarks
-    def initialize(school:, aggregate_school: nil)
+    def initialize(school:, aggregate_school: nil, benchmark_result_generation_run: nil)
       @school = school
       @aggregate_school = aggregate_school || create_new_aggregate_school_service_for(school)
+      @benchmark_result_generation_run = benchmark_result_generation_run || BenchmarkResultGenerationRun.latest
     end
 
     def perform
       ActiveRecord::Base.transaction do
         create_a_new_school_alert_generation_run
         generate_alert_type_run_results_for_relevant_alert_types
-        # generate_benchmarks
       end
     end
 
     private
-
-    # def generate_benchmarks
-    #   @benchmark_result_generation_run = benchmark_result_generation_run
-    #   @benchmark_result_school_generation_run = BenchmarkResultSchoolGenerationRun.create!(school: @school, benchmark_result_generation_run: @benchmark_result_generation_run)
-    # end
 
     def create_new_aggregate_school_service_for(school)
       AggregateSchoolService.new(school).aggregate_school
     end
 
     def generate_alert_type_run_results_for_relevant_alert_types
-      find_relevant_alert_types.each { |alert_type| generate_alert_type_run_results_for(alert_type) }
+      find_relevant_alert_types.each do |alert_type|
+        if alert_type.benchmark
+          generate_alert_type_and_benchmark_run_results_for(alert_type)
+        else
+          generate_alert_type_run_results_for(alert_type)
+        end
+      end
+    end
+
+    def generate_alert_type_and_benchmark_run_results_for(alert_type)
+      asof_date = Time.zone.today # placeholder until we know what to do with asof dates
+
+      service = GenerateAlertTypeRunResult.new(school: @school, aggregate_school: @aggregate_school, alert_type: alert_type, use_max_meter_date_if_less_than_asof_date: true)
+      service.benchmark_dates(asof_date).each do |benchmark_date|
+        alert_type_run_result = service.perform(benchmark_date)
+        process_alert_type_run_result(alert_type_run_result)
+      end
     end
 
     def generate_alert_type_run_results_for(alert_type)
       alert_type_run_result = GenerateAlertTypeRunResult.new(school: @school, aggregate_school: @aggregate_school, alert_type: alert_type).perform
 
       process_alert_type_run_result(alert_type_run_result)
-      alert_type_run_result
     end
 
     def create_a_new_school_alert_generation_run
@@ -40,7 +50,7 @@ module Alerts
     end
 
     def find_relevant_alert_types
-      RelevantAlertTypes.new(@school).list
+      Alerts::RelevantAlertTypes.new(@school).list
     end
 
     def process_alert_type_run_result(alert_type_run_result)

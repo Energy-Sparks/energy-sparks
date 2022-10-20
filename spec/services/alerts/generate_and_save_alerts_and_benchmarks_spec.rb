@@ -53,7 +53,7 @@ module Alerts
       it 'handles empty results' do
         expect_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(AlertTypeRunResult.new(alert_type: alert_type, asof_date: asof_date))
 
-        service = GenerateAndSaveAlerts.new(school: school, aggregate_school: aggregate_school)
+        service = GenerateAndSaveAlertsAndBenchmarks.new(school: school, aggregate_school: aggregate_school)
         expect { service.perform }.to change { Alert.count }.by(0).and change { AlertError.count }.by(0)
       end
 
