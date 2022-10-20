@@ -17,6 +17,7 @@ module Alerts
             service = GenerateAlertTypeRunResult.new(school: @school, aggregate_school: @aggregate_school, alert_type: alert_type, use_max_meter_date_if_less_than_asof_date: true)
             service.benchmark_dates(asof_date).each do |benchmark_date|
               alert_type_run_result = service.perform(benchmark_date)
+              process_alert_type_run_result(alert_type_run_result)
               process_benchmark_type_run_result(alert_type_run_result)
             end
           else
@@ -29,7 +30,7 @@ module Alerts
 
     private
 
-    def process_alert_benchmark_type_run_result(alert_type_run_result)
+    def process_benchmark_type_run_result(alert_type_run_result)
       asof_date = alert_type_run_result.asof_date
       alert_type = alert_type_run_result.alert_type
 
@@ -42,7 +43,7 @@ module Alerts
       end
     end
 
-    def process_benchmark_report(alert_type, alert_report, asof_date)
+    def process_alert_benchmark_report(alert_type, alert_report, asof_date)
       if alert_report.valid
         if alert_report.benchmark_data.present?
           BenchmarkResult.create!(benchmark_result_school_generation_run: @benchmark_result_school_generation_run, asof: asof_date, alert_type: alert_type, data: alert_report.benchmark_data, results: BenchmarkResult.convert_for_storage(alert_report.benchmark_data))
