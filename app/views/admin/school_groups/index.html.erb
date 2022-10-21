@@ -24,7 +24,7 @@
               <span class="badge badge-info" title="Dashboard message is shown for schools in this group: <%= school_group.dashboard_message.message %>"><%= fa_icon(:info) %></span>
             <% end %>
           </td>
-          <td><%= school_group.school_onboardings.select(&:incomplete?).count %></td>
+          <td><%= school_group.school_onboardings.incomplete.count %></td>
           <td><%= school_group.schools.visible.count %></td>
           <td><%= school_group.schools.visible.data_enabled.count %></td>
           <td><%= school_group.schools.not_visible.count %></td>
@@ -34,7 +34,7 @@
       <% end %>
       <tr class="font-weight-bold">
         <td>All Energy Sparks Schools</td>
-        <td><%= SchoolOnboarding.all.select(&:incomplete?).count %></td>
+        <td><%= SchoolOnboarding.incomplete.count %></td>
         <td><%= School.visible.count %></td>
         <td><%= School.visible.data_enabled.count %></td>
         <td><%= School.not_visible.count %></td>

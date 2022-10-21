@@ -17,7 +17,7 @@ module Admin
     end
 
     def completed
-      @completed_schools = @school_onboardings.order(:updated_at).select(&:complete?)
+      @completed_schools = @school_onboardings.complete.order(:updated_at)
     end
 
     def create
@@ -54,7 +54,7 @@ module Admin
       CSV.generate do |csv|
         csv << ['School name', 'School Group Name', 'Contact email', 'Notes', 'Last event']
 
-        @school_onboardings.order(:school_group_id).select(&:incomplete?).each do |school_onboarding|
+        @school_onboardings.order(:school_group_id).incomplete.each do |school_onboarding|
           last_event = school_onboarding.events.order(event: :desc).first.event.to_s.humanize
           csv << [school_onboarding.school_name, school_onboarding.school_group.name, school_onboarding.contact_email, school_onboarding.notes, last_event]
         end

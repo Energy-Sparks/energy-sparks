@@ -23,8 +23,8 @@
   <br/>
   <br/>
 
-  <% if school_group.school_onboardings.select(&:incomplete?).any? %>
-    <p>Schools onboarding: <%= school_group.school_onboardings.select(&:incomplete?).count %>
+  <% if school_group.school_onboardings.incomplete.any? %>
+    <p>Schools onboarding: <%= school_group.school_onboardings.incomplete.count %>
     <%= render 'admin/school_groups/onboarding_schools', school_group: school_group %>
   <% else %>
     <p>No schools are onboarding for <%= school_group.name %></p>
