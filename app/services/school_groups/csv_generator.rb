@@ -8,6 +8,10 @@ module SchoolGroups
       def count_fields
         [:active, :data_visible, :invisible, :removed]
       end
+
+      def filename
+        "#{SchoolGroup.model_name.human.pluralize}-#{Time.zone.now.iso8601}".parameterize + '.csv'
+      end
     end
 
     def initialize(school_groups)

@@ -156,4 +156,5 @@ group :test do
   gem 'webdrivers'
   gem 'simplecov', :require => false, :group => :test
   gem 'shoulda-matchers'
+  gem 'timecop'
 end

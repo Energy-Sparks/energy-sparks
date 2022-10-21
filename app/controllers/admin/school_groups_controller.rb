@@ -7,7 +7,7 @@ module Admin
         format.html { @school_groups = @school_groups.by_name }
         format.csv do
           send_data ::SchoolGroups::CsvGenerator.new(@school_groups.by_name).export_detail,
-          filename: "#{SchoolGroup.model_name.human.pluralize}-#{Time.zone.now.iso8601}".parameterize + '.csv'
+          filename: ::SchoolGroups::CsvGenerator.filename
         end
       end
     end

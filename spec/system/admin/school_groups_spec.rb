@@ -56,6 +56,26 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           end
           it { expect(page).to have_current_path(admin_school_group_path(school_groups.first)) }
         end
+
+        it "displays a link to export detail" do
+          expect(page).to have_link('Export detail')
+        end
+        context "and exporting detail" do
+          before do
+            click_link('Export detail')
+          end
+          it "shows csv contents" do
+            expect(page.body).to eq SchoolGroups::CsvGenerator.new(SchoolGroup.all.by_name).export_detail
+          end
+          it "has csv content type" do
+            expect(response_headers['Content-Type']).to eq 'text/csv'
+          end
+          it "has expected file name" do
+            Timecop.freeze do
+              expect(response_headers['Content-Disposition']).to include(SchoolGroups::CsvGenerator.filename)
+            end
+          end
+        end
       end
     end
 

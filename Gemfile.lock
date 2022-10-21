@@ -613,6 +613,7 @@ GEM
     thor (1.2.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
+    timecop (0.9.5)
     trix-rails (2.3.0)
       rails (> 4.1, < 7.0)
     twilio-ruby (5.61.2)
@@ -748,6 +749,7 @@ DEPENDENCIES
   terminal-notifier
   terminal-notifier-guard
   test-prof
+  timecop
   trix-rails
   twilio-ruby
   tzinfo-data
