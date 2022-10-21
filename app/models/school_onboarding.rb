@@ -63,6 +63,7 @@ class SchoolOnboarding < ApplicationRecord
   scope :by_name, -> { order(school_name: :asc) }
   scope :complete, -> { joins(:events).where(school_onboarding_events: { event: SchoolOnboardingEvent.events[:onboarding_complete] }) }
   scope :incomplete, ->(parent = nil) { where.not(id: parent ? parent.school_onboardings.complete : complete) }
+  scope :for_school_type, ->(school_type) { joins(:school).where(schools: { school_type: school_type }) }
 
   enum default_chart_preference: [:default, :carbon, :usage, :cost]
 
