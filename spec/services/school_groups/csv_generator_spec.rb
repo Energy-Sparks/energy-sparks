@@ -39,4 +39,13 @@ RSpec.describe SchoolGroups::CsvGenerator do
       expect(data.lines[i].chomp).to eq(['All Energy Sparks schools','All school types', 14, 14, 14, 14, 14].join(","))
     end
   end
+
+  describe ".filename" do
+    subject(:filename) { SchoolGroups::CsvGenerator.filename }
+    it "should include school-groups and time" do
+      Timecop.freeze do
+        expect(filename).to eq "school-groups-#{Time.zone.now.iso8601.parameterize}.csv"
+      end
+    end
+  end
 end
