@@ -8,10 +8,8 @@ module Alerts
     end
 
     def delete!
-      ActiveRecord::Base.transaction do
-        content_generation_runs = ContentGenerationRun.where("created_at <= ?", @older_than)
-        content_generation_runs.destroy_all
-      end
+      content_generation_runs = ContentGenerationRun.where("created_at <= ?", @older_than)
+      content_generation_runs.destroy_all
     end
   end
 end

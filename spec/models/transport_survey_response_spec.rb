@@ -69,7 +69,7 @@ describe TransportSurveyResponse do
   describe ".to_csv" do
     let(:transport_survey) { create(:transport_survey) }
     subject { transport_survey.responses.to_csv }
-    let('header') { 'Id,Run identifier,Weather,Weather image,Journey minutes,Transport type name,Transport type image,Passengers,Surveyed at' }
+    let(:header) { 'Id,Run identifier,Weather,Weather image,Journey minutes,Transport type name,Transport type image,Passengers,Surveyed at' }
 
     context "with responses" do
       let!(:responses) do
