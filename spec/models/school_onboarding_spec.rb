@@ -35,6 +35,32 @@ describe SchoolOnboarding, type: :model do
       expect(onboarding.incomplete?).to be true
       expect(onboarding.complete?).to be false
     end
+  end
 
+  describe ".incomplete" do
+    context "when there is an onboarding with no events" do
+      let!(:incomplete) { create :school_onboarding }
+      it "returns onboarding" do
+        expect(SchoolOnboarding.incomplete).to eq([incomplete])
+      end
+    end
+    context "when an onboarding has events" do
+      let!(:complete) { create :school_onboarding, :with_events, event_names: [:onboarding_complete] }
+      let!(:incomplete) { create :school_onboarding, :with_events, event_names: [:email_sent] }
+      it "returns all incomplete onboardings only" do
+        expect(SchoolOnboarding.incomplete).to eq([incomplete])
+      end
+      context "scoped to school group" do
+        let(:school_group) { create :school_group }
+        let!(:group_complete) { create :school_onboarding, :with_events, event_names: [:onboarding_complete], school_group: school_group }
+        let!(:group_incomplete) { create :school_onboarding, :with_events, event_names: [:email_sent], school_group: school_group }
+        it "returns incomplete onboardings scoped to group only" do
+          expect(school_group.school_onboardings.incomplete).to eq([group_incomplete])
+        end
+        it "returns all incomplete onboardings" do
+          expect(SchoolOnboarding.incomplete).to eq([incomplete, group_incomplete])
+        end
+      end
+    end
   end
 end
