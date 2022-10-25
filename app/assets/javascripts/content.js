@@ -69,10 +69,12 @@ $(document).ready(function() {
     chart = $(e.target.hash + '-chart')
     chartId = chart[0].children[0].id
     chart = $('#' + chartId)
-    chart.data('autoload-chart', true)
-    chartConfig = chart.data('chart-config');
-    processAnalysisChart(chart[0], chartConfig);
-    setupAnalysisControls(chart[0], chartConfig);
-    setupAxisControls(chart[0], chartConfig);
+    if (chart.data('autoload-chart') === false) {
+      chart.data('autoload-chart', true)
+      chartConfig = chart.data('chart-config');
+      processAnalysisChart(chart[0], chartConfig);
+      setupAnalysisControls(chart[0], chartConfig);
+      setupAxisControls(chart[0], chartConfig);
+    }
   });
 });
