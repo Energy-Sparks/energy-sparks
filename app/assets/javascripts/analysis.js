@@ -110,9 +110,12 @@ function processAnalysisCharts(){
   if ($("div.analysis-chart").length ) {
     $("div.analysis-chart").each(function(){
       var chartConfig = $(this).data('chart-config');
-      processAnalysisChart(this, chartConfig);
-      setupAnalysisControls(this, chartConfig);
-      setupAxisControls(this, chartConfig);
+      var autoLoadChart = $(this).data('autoload-chart');
+      if (autoLoadChart === true) {
+        processAnalysisChart(this, chartConfig);
+        setupAnalysisControls(this, chartConfig);
+        setupAxisControls(this, chartConfig);
+      }
     });
   }
 
