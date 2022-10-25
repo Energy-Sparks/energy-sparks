@@ -167,13 +167,24 @@ class School < ApplicationRecord
   validates :country, inclusion: { in: countries }
   validates :funding_status, inclusion: { in: funding_statuses }
 
+  validates :percentage_free_school_meals, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true }
+  #simplified pattern from: https://stackoverflow.com/questions/164979/regex-for-matching-uk-postcodes
+  #adjusted to use \A and \z
+  validates :postcode, format: { with: /\A[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}\z/i }
+
   validates_associated :school_times, on: :school_time_update
 
   accepts_nested_attributes_for :school_times, reject_if: proc {|attributes| attributes['day'].blank? }, allow_destroy: true
 
   auto_strip_attributes :name, :website, :postcode, squish: true
 
-  geocoded_by :postcode
+  geocoded_by :postcode do |obj, results|
+    if (geo = results.first)
+      obj.latitude = geo.data['latitude']
+      obj.longitude = geo.data['longitude']
+      obj.country = geo.data['country'].downcase
+    end
+  end
 
   after_validation :geocode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
 
@@ -257,11 +268,11 @@ class School < ApplicationRecord
   end
 
   def meters_with_readings(supply = Meter.meter_types.keys)
-    active_meters.includes(:amr_data_feed_readings).where(meter_type: supply).where.not(amr_data_feed_readings: { meter_id: nil })
+    active_meters.joins(:amr_data_feed_readings).where(meter_type: supply).where.not(amr_data_feed_readings: { meter_id: nil }).distinct
   end
 
   def meters_with_validated_readings(supply = Meter.meter_types.keys)
-    active_meters.includes(:amr_validated_readings).where(meter_type: supply).where.not(amr_validated_readings: { meter_id: nil })
+    active_meters.joins(:amr_validated_readings).where(meter_type: supply).where.not(amr_validated_readings: { meter_id: nil }).distinct
   end
 
   def fuel_types
@@ -500,6 +511,10 @@ class School < ApplicationRecord
 
   def community_use_times_to_analytics
     school_times.community_use.map(&:to_analytics)
+  end
+
+  def self.status_counts
+    { active: self.visible.count, data_visible: self.visible.data_enabled.count, invisible: self.not_visible.count, removed: self.inactive.count }
   end
 
   private

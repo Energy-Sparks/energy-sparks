@@ -1,7 +1,5 @@
 module Onboarding
   class AccountController < BaseController
-    include NewsletterSubscriber
-
     skip_before_action :authenticate_user!, only: [:new, :create]
     before_action :redirect_if_logged_in, only: [:new]
     before_action only: [:new, :create] do
@@ -19,7 +17,6 @@ module Onboarding
         @school_onboarding.events.create!(event: :onboarding_user_created)
         @school_onboarding.events.create!(event: :privacy_policy_agreed)
         sign_in(@user, scope: :user)
-        change_user_subscribed_to_newsletter(@school_onboarding, @user, newsletter_params[:subscribe_to_newsletter])
         redirect_to new_onboarding_school_details_path(@school_onboarding)
       else
         render :new
@@ -32,7 +29,6 @@ module Onboarding
     def update
       if current_user.update(user_params.reject {|key, value| key =~ /password/ && value.blank?})
         @school_onboarding.events.create!(event: :onboarding_user_updated)
-        change_user_subscribed_to_newsletter(@school_onboarding, current_user, newsletter_params[:subscribe_to_newsletter])
         bypass_sign_in(current_user)
         redirect_to new_onboarding_completion_path(@school_onboarding)
       else
@@ -50,10 +46,6 @@ module Onboarding
 
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation, :staff_role_id)
-    end
-
-    def newsletter_params
-      params.require(:newsletter).permit(:subscribe_to_newsletter).transform_values {|v| ActiveModel::Type::Boolean.new.cast(v)}
     end
   end
 end

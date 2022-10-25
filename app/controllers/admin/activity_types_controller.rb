@@ -18,6 +18,9 @@ module Admin
 
     def new
       add_activity_type_suggestions
+      3.times do
+        @activity_type.link_rewrites.build
+      end
     end
 
     def edit
@@ -27,6 +30,9 @@ module Admin
       else
         # Top up to 8
         add_activity_type_suggestions(number_of_suggestions_so_far)
+      end
+      3.times do
+        @activity_type.link_rewrites.build
       end
     end
 
@@ -41,7 +47,10 @@ module Admin
 
     def update
       if @activity_type.update(activity_type_params)
-        redirect_to admin_activity_types_path, notice: 'Activity type was successfully updated.'
+        #Rewrite links in Welsh text
+        rewritten = @activity_type.update(@activity_type.rewrite_all)
+        notice = rewritten ? 'Activity type was successfully updated.' : 'Activity type was saved, but failed to rewrite links.'
+        redirect_to admin_activity_types_path, notice: notice
       else
         render :edit
       end
@@ -79,11 +88,16 @@ module Admin
           subject_ids: [],
           topic_ids: [],
           activity_timing_ids: [],
+          link_rewrites_attributes: link_rewrites_params,
           activity_type_suggestions_attributes: suggestions_params)
     end
 
     def suggestions_params
       [:id, :suggested_type_id, :_destroy]
+    end
+
+    def link_rewrites_params
+      [:id, :source, :target, :_destroy]
     end
 
     def load_filters

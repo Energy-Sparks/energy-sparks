@@ -1,14 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe 'school groups', :school_groups, type: :system do
+RSpec.describe 'school groups', :school_groups, type: :system, include_application_helper: true do
   let!(:admin)                  { create(:admin) }
   let!(:setup_data)             {}
 
   def create_data_for_school_groups(school_groups)
     school_groups.each do |school_group|
       onboarding = create :school_onboarding, created_by: admin, school_group: school_group
-      visble = create :school, visible: true, data_enabled: false, school_group: school_group
-      data_visible = create :school, visible: true, data_enabled: true, school_group: school_group
+      active_and_data_visible = create :school, visible: true, data_enabled: true, school_group: school_group
       invisible = create :school, visible: false, school_group: school_group
       removed = create :school, active: false, school_group: school_group
     end
@@ -34,13 +33,13 @@ RSpec.describe 'school groups', :school_groups, type: :system do
         it "displays totals for each group" do
           within('table') do
             school_groups.each do |school_group|
-              expect(page).to have_selector(:table_row, { "Name" => school_group.name, "Onboarding" => 1 , "Active" => 2, "Data visible" => 1, "Invisible" => 1, "Removed" => 1 })
+              expect(page).to have_selector(:table_row, { "Name" => school_group.name, "Onboarding" => 1 , "Active" => 1, "Data visible" => 1, "Invisible" => 1, "Removed" => 1 })
             end
           end
         end
         it "displays a grand total" do
           within('table') do
-            expect(page).to have_selector(:table_row, { "Name" => "All Energy Sparks Schools", "Onboarding" => 2 , "Active" => 4, "Data visible" => 2, "Invisible" => 2, "Removed" => 2 })
+            expect(page).to have_selector(:table_row, { "Name" => "All Energy Sparks Schools", "Onboarding" => 2 , "Active" => 2, "Data visible" => 2, "Invisible" => 2, "Removed" => 2 })
           end
         end
         it "has a link to manage school group" do
@@ -55,6 +54,26 @@ RSpec.describe 'school groups', :school_groups, type: :system do
             end
           end
           it { expect(page).to have_current_path(admin_school_group_path(school_groups.first)) }
+        end
+
+        it "displays a link to export detail" do
+          expect(page).to have_link('Export detail')
+        end
+        context "and exporting detail" do
+          before do
+            click_link('Export detail')
+          end
+          it "shows csv contents" do
+            expect(page.body).to eq SchoolGroups::CsvGenerator.new(SchoolGroup.all.by_name).export_detail
+          end
+          it "has csv content type" do
+            expect(response_headers['Content-Type']).to eq 'text/csv'
+          end
+          it "has expected file name" do
+            Timecop.freeze do
+              expect(response_headers['Content-Disposition']).to include(SchoolGroups::CsvGenerator.filename)
+            end
+          end
         end
       end
     end
@@ -115,7 +134,7 @@ RSpec.describe 'school groups', :school_groups, type: :system do
 
       describe "School counts by status panel" do
         let!(:setup_data) { create_data_for_school_groups([school_group]) }
-        it { expect(page).to have_content("Active 2") }
+        it { expect(page).to have_content("Active 1") }
         it { expect(page).to have_content("Active (with data visible) 1") }
         it { expect(page).to have_content("Invisible 1") }
         it { expect(page).to have_content("Onboarding 1") }
@@ -170,6 +189,113 @@ RSpec.describe 'school groups', :school_groups, type: :system do
         context "clicking 'Delete'" do
           before { click_link 'Delete' }
           it { expect(page).to have_current_path(admin_school_groups_path) }
+        end
+      end
+
+      describe "Dashboard message panel" do
+        it_behaves_like "admin dashboard messages" do
+          let(:object) { school_group }
+        end
+      end
+
+      describe "Active schools tab" do
+        context "when there are active schools" do
+          let(:school_onboarding) { create :school_onboarding, school_group: school_group }
+          let!(:school) { create(:school, active: true, name: "A School", school_group: school_group, school_onboarding: school_onboarding) }
+          let!(:setup_data) { school }
+
+          it "lists school in active tab" do
+            within '#active-content' do
+              expect(page).to have_link(school.name, href: edit_admin_school_onboarding_configuration_path(school.school_onboarding))
+            end
+          end
+
+          it "has an action buttons" do
+            within '#active-content' do
+              expect(page).to have_link('Edit')
+              expect(page).to have_link('Users')
+              expect(page).to have_link('Meters')
+            end
+          end
+          it "has status pill buttons" do
+            within '#active-content' do
+              expect(page).to have_link('Visible')
+              expect(page).to have_link('Public')
+              expect(page).to have_link('Process data')
+              expect(page).to have_link('Data visible')
+              expect(page).to have_link('Regenerate')
+            end
+          end
+          context "and clicking 'Edit'" do
+            before do
+              within '#active-content' do
+                click_link 'Edit'
+              end
+            end
+            it { expect(page).to have_current_path(edit_school_path(school)) }
+          end
+          context "and clicking 'Users'" do
+            before do
+              within '#active-content' do
+                click_link 'User'
+              end
+            end
+            it { expect(page).to have_current_path(school_users_path(school)) }
+          end
+          context "and clicking 'Meters'" do
+            before do
+              within '#active-content' do
+                click_link 'Meters'
+              end
+            end
+            it { expect(page).to have_current_path(school_meters_path(school)) }
+          end
+        end
+        context "when there are inactive schools only" do
+          let!(:school) { create(:school, active: false, name: "A School", school_group: school_group) }
+          let!(:setup_data) { school }
+          it "doesn't show school active tab" do
+            within '#active-content' do
+              expect(page).to_not have_link(school.name)
+              expect(page).to have_content("No active schools for #{school_group.name}.")
+            end
+          end
+        end
+      end
+
+      describe "Onboarding schools tab" do
+        before do
+          click_on "Onboarding"
+        end
+        it "displays a message when there are no onboarding schools" do
+            within '#onboarding-content' do
+              expect(page).to have_content("No schools currently onboarding for #{school_group.name}.")
+            end
+        end
+        it_behaves_like "admin school group onboardings"
+      end
+
+      describe "Removed schools tab" do
+        context "when there are inactive schools" do
+          let!(:school) { create(:school, active: false, name: "A School", school_group: school_group, removal_date: Time.now) }
+          let!(:setup_data) { school }
+          it "lists school in removed tab" do
+            within '#removed-content' do
+              expect(page).to have_link(school.name, href: school_path(school))
+              expect(page).to have_content(nice_dates(school.removal_date))
+              expect(page).to have_link("Meters")
+            end
+          end
+        end
+        context "when there are only active schools" do
+          let!(:school) { create(:school, active: true, name: "A School", school_group: school_group) }
+          let!(:setup_data) { school }
+          it "doesn't show school in removed tab" do
+            within '#removed-content' do
+              expect(page).to_not have_link(school.name)
+              expect(page).to have_content("No removed schools for #{school_group.name}.")
+            end
+          end
         end
       end
     end

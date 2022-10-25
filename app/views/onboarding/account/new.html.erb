@@ -19,14 +19,6 @@
       <%= f.input :password_confirmation, required: true %>
       <%= f.input :staff_role_id, label: 'Role', required: :true, collection: StaffRole.order(:title), label_method: :translated_title, hint: 'What is your primary role in relation to Energy Sparks?'%>
 
-      <p>
-      Our newsletters share best practice at participating schools, provide pupil activity prompts, invitations to join free training, volunteer support opportunities and free energy audits and educational workshops.
-      </p>
-
-      <%= simple_fields_for :newsletter do |n| %>
-        <%= n.input :subscribe_to_newsletter, label: "Subscribe to newsletters", class: "custom-control-input", as: :boolean, input_html: { checked: @user.persisted? ? user_subscribed_to_newsletter?(@school_onboarding, @user) : true } %>
-      <% end %>
-
       <%= render 'shared/agree_terms_checkbox' %>
       <%= f.button :submit, 'Create my account' %>
     <% end %>

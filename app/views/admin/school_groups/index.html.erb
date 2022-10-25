@@ -1,5 +1,6 @@
 <h1>Manage School Groups</h1>
 <%= link_to 'New school group', new_admin_school_group_path, class: 'btn btn-primary' %>
+<%= link_to "Export detail", admin_school_groups_path(format: :csv), class: 'btn' %>
 <p></p>
 <% if @school_groups.any? %>
   <table class="table table-condensed table-sorted">
@@ -18,8 +19,12 @@
     <tbody>
       <% @school_groups.each do |school_group| %>
         <tr>
-          <td><%= school_group.name %></td>
-          <td><%= school_group.school_onboardings.select(&:incomplete?).count %></td>
+          <td><%= school_group.name %>
+            <% if school_group.dashboard_message %>
+              <span class="badge badge-info" title="Dashboard message is shown for schools in this group: <%= school_group.dashboard_message.message %>"><%= fa_icon(:info) %></span>
+            <% end %>
+          </td>
+          <td><%= school_group.school_onboardings.incomplete.count %></td>
           <td><%= school_group.schools.visible.count %></td>
           <td><%= school_group.schools.visible.data_enabled.count %></td>
           <td><%= school_group.schools.not_visible.count %></td>
@@ -29,7 +34,7 @@
       <% end %>
       <tr class="font-weight-bold">
         <td>All Energy Sparks Schools</td>
-        <td><%= SchoolOnboarding.all.select(&:incomplete?).count %></td>
+        <td><%= SchoolOnboarding.incomplete.count %></td>
         <td><%= School.visible.count %></td>
         <td><%= School.visible.data_enabled.count %></td>
         <td><%= School.not_visible.count %></td>
