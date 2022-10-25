@@ -192,6 +192,15 @@ class School < ApplicationRecord
   # https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Dirty.html#method-i-will_save_change_to_attribute-3F
   after_save :add_joining_observation, if: proc { saved_change_to_activation_date?(from: nil) }
 
+  def minimum_reading_date
+    return unless amr_validated_readings.present?
+
+    # Ideally, we'd also use the minimum amr_data_feed_readings reading_date here, however, those reading dates are
+    # currently stored as strings (and in an inconsistent date format as defined in the associated meter's amr data feed
+    # config) so we instead use the minimum validated reading date minus 1 year.
+    amr_validated_readings.minimum(:reading_date) - 1.year
+  end
+
   def find_user_or_cluster_user_by_id(id)
     users.find_by_id(id) || cluster_users.find_by_id(id)
   end
