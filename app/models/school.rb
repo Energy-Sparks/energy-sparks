@@ -513,6 +513,10 @@ class School < ApplicationRecord
     school_times.community_use.map(&:to_analytics)
   end
 
+  def self.status_counts
+    { active: self.visible.count, data_visible: self.visible.data_enabled.count, invisible: self.not_visible.count, removed: self.inactive.count }
+  end
+
   private
 
   def add_joining_observation

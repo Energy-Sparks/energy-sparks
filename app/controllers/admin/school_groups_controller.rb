@@ -3,7 +3,13 @@ module Admin
     load_and_authorize_resource
 
     def index
-      @school_groups = @school_groups.order(:name)
+      respond_to do |format|
+        format.html { @school_groups = @school_groups.by_name }
+        format.csv do
+          send_data ::SchoolGroups::CsvGenerator.new(@school_groups.by_name).export_detail,
+          filename: ::SchoolGroups::CsvGenerator.filename
+        end
+      end
     end
 
     def new
