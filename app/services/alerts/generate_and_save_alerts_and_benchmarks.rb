@@ -7,23 +7,16 @@ module Alerts
       @framework_adapter = framework_adapter
     end
 
-    def perform(asof_date = Time.zone.today)
+    def perform
       ActiveRecord::Base.transaction do
         @alert_generation_run = AlertGenerationRun.create!(school: @school)
         @benchmark_result_school_generation_run = BenchmarkResultSchoolGenerationRun.create!(school: @school, benchmark_result_generation_run: @benchmark_result_generation_run)
 
         relevant_alert_types.each do |alert_type|
-          if alert_type.benchmark == true
-            service = GenerateAlertTypeRunResult.new(school: @school, aggregate_school: @aggregate_school, alert_type: alert_type, use_max_meter_date_if_less_than_asof_date: true)
-            service.benchmark_dates(asof_date).each do |benchmark_date|
-              alert_type_run_result = service.perform(benchmark_date)
-              process_alert_type_run_result(alert_type_run_result)
-              process_benchmark_type_run_result(alert_type_run_result)
-            end
-          else
-            alert_type_run_result = GenerateAlertTypeRunResult.new(school: @school, aggregate_school: @aggregate_school, alert_type: alert_type).perform
-            process_alert_type_run_result(alert_type_run_result)
-          end
+          service = GenerateAlertTypeRunResult.new(school: @school, aggregate_school: @aggregate_school, alert_type: alert_type, use_max_meter_date_if_less_than_asof_date: true)
+          alert_type_run_result = service.perform
+          process_alert_type_run_result(alert_type_run_result)
+          process_benchmark_type_run_result(alert_type_run_result) if alert_type.benchmark == true
         end
       end
     end
