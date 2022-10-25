@@ -70,16 +70,9 @@ $(document).ready(function() {
     chartId = chart[0].children[0].id
     chart = $('#' + chartId)
     chart.data('autoload-chart', true)
-    // console.log(chart.data('autoload-chart'))
-
-      var chartConfig = chart.data('chart-config');
-
-      console.log(chartConfig)
-      console.log(chart[0].id)
-
-      processAnalysisChart(chart[0], chartConfig);
-        setupAnalysisControls(chart[0], chartConfig);
-        setupAxisControls(chart[0], chartConfig);
-
+    chartConfig = chart.data('chart-config');
+    processAnalysisChart(chart[0], chartConfig);
+    setupAnalysisControls(chart[0], chartConfig);
+    setupAxisControls(chart[0], chartConfig);
   });
 });
