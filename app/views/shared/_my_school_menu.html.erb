@@ -1,7 +1,23 @@
 <li class="nav-item dropdown" id="my_school_menu">
   <a class="nav-link dropdown-toggle" href="#" id="my_school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= t('my_school_menu.my_school') %></a>
   <div class="dropdown-menu" aria-labelledby="my_school">
+
+    <!--School X -->
     <%= link_to current_user.school.name, school_path(current_user.school), class: 'dropdown-item' %>
+
+    <!-- Electricity and solar usage -->
+    <!-- Gas usage -->
+    <!-- Energy analysis -->
+    <!-- Review targets -->
+    <!-- Compare schools -->
+    <!-- Complete pupil activities -->
+    <!-- Energy saving actions -->
+    <!-- School programmes -->
+    <!-- Scoreboard -->
+    <!-- My alerts -->
+    <!-- Download our data -->
+    <!-- My school group -->
+
     <% if current_user.school.data_enabled? %>
       <% if current_user.school.has_solar_pv? %>
         <%= link_to t('my_school_menu.electricity_and_solar_usage'), pupils_school_analysis_path(current_user.school, category: :solar), class: 'dropdown-item' %>
