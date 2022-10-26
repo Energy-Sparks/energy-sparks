@@ -19,7 +19,7 @@ module Alerts
             alert_type: alert_type,
             use_max_meter_date_if_less_than_asof_date: alert_type.fuel_type.present? ? true : false
           )
-          alert_type_run_result = service.perform
+          alert_type_run_result = service.perform(Time.zone.today)
           process_alert_type_run_result(alert_type_run_result)
           process_benchmark_type_run_result(alert_type_run_result) if alert_type.benchmark == true
         end
