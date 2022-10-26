@@ -69,6 +69,7 @@ $(document).ready(function() {
     chart = $(e.target.hash + '-chart')
     chartId = chart[0].children[0].id
     chart = $('#' + chartId)
+    // Only re/load chart if autoload chart is false (first tab is true)
     if (chart.data('autoload-chart') === false) {
       chart.data('autoload-chart', true)
       chartConfig = chart.data('chart-config');
