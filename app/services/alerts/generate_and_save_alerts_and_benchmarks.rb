@@ -13,7 +13,12 @@ module Alerts
         @benchmark_result_school_generation_run = BenchmarkResultSchoolGenerationRun.create!(school: @school, benchmark_result_generation_run: @benchmark_result_generation_run)
 
         relevant_alert_types.each do |alert_type|
-          service = GenerateAlertTypeRunResult.new(school: @school, aggregate_school: @aggregate_school, alert_type: alert_type, use_max_meter_date_if_less_than_asof_date: true)
+          service = GenerateAlertTypeRunResult.new(
+            school: @school,
+            aggregate_school: @aggregate_school,
+            alert_type: alert_type,
+            use_max_meter_date_if_less_than_asof_date: alert_type.fuel_type.present? ? true : false
+          )
           alert_type_run_result = service.perform
           process_alert_type_run_result(alert_type_run_result)
           process_benchmark_type_run_result(alert_type_run_result) if alert_type.benchmark == true
