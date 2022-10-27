@@ -29,8 +29,10 @@
       <%= link_to t('my_school_menu.review_targets'), school_school_targets_path(current_user.school), class: 'dropdown-item' if Targets::SchoolTargetService.targets_enabled?(current_user.school) && can?(:manage, SchoolTarget) && Targets::SchoolTargetService.new(current_user.school).enough_data? %>
     <% end %>
 
-    <!-- Compare schools -->
-    <%= link_to t('schools.school_group.compare_schools'), benchmarks_path(benchmark: {school_group_ids: [current_user.school.school_group.id]}), class: 'dropdown-item' %>
+    <% if current_user.school&.school_group&.present? %>
+      <!-- Compare schools -->
+      <%= link_to t('schools.school_group.compare_schools'), benchmarks_path(benchmark: {school_group_ids: [current_user.school.school_group.id]}), class: 'dropdown-item' %>
+    <% end %>
 
     <!-- Complete pupil activities -->
     <%= link_to t('my_school_menu.complete_pupil_activities'), activity_categories_path, class: 'dropdown-item' %>
