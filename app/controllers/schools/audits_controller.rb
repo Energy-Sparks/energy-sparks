@@ -5,6 +5,7 @@ module Schools
 
     def index
       @audits = can?(:manage, Audit) ? @audits.by_date : @audits.published.by_date
+      redirect_to energy_audits_path unless @audits.any?
     end
 
     def show
