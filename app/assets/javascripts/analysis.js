@@ -132,6 +132,7 @@ function processAnalysisChartAjax(chartId, chartConfig, highchartsChart) {
   var dateRanges = chartConfig.date_ranges;
   var dataPath = chartConfig.jsonUrl;
   var transformations = chartConfig.transformations;
+  var noAdvice = chartConfig.no_advice;
   var requestData = {
     chart_type: chartType,
     chart_y_axis_units: yAxisUnits,
@@ -140,6 +141,10 @@ function processAnalysisChartAjax(chartId, chartConfig, highchartsChart) {
     series_breakdown: seriesBreakdown,
     date_ranges: dateRanges
   };
+
+  if (! noAdvice) {
+    requestData['provide_advice'] = true
+  }
 
   highchartsChart.showLoading();
 
