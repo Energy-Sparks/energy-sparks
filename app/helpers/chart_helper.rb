@@ -1,5 +1,5 @@
 module ChartHelper
-  def chart_tag(school, chart_type, wrap: true, show_advice: true, no_zoom: false, chart_config: {}, html_class: 'analysis-chart', autoload_chart: true)
+  def chart_tag(school, chart_type, wrap: true, show_advice: false, no_zoom: false, chart_config: {}, html_class: 'analysis-chart', autoload_chart: true)
     chart_config[:no_advice] = !show_advice
     chart_config[:no_zoom] = no_zoom
     chart_container = content_tag(
