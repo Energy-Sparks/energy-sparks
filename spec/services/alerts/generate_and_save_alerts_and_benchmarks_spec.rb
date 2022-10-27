@@ -35,7 +35,7 @@ module Alerts
     let(:example_invalid_report) do
       invalid_alert_report_attributes = alert_report_attributes.clone
       invalid_alert_report_attributes[:valid] = false
-      invalid_alert_report_attributes[:template_data] = { template: 'invalid'}
+      invalid_alert_report_attributes[:template_data] = { template: 'invalid' }
       Adapters::Report.new(**invalid_alert_report_attributes)
     end
 
@@ -85,9 +85,9 @@ module Alerts
 
         service = GenerateAndSaveAlertsAndBenchmarks.new(school: school, aggregate_school: aggregate_school)
         expect { service.perform }.to change { Alert.count }.by(0) &&
-                                      change { AlertError.count }.by(1)
-        change { BenchmarkResult.count }.by(0) &&
-          change { BenchmarkResultError.count }.by(0)
+                                      change { AlertError.count }.by(1) &&
+                                      change { BenchmarkResult.count }.by(0) &&
+                                      change { BenchmarkResultError.count }.by(0)
       end
 
       it 'handles alert and benchmark reports' do
@@ -115,10 +115,10 @@ module Alerts
 
         service = GenerateAndSaveAlertsAndBenchmarks.new(school: school, aggregate_school: aggregate_school)
         expect { service.perform }.to change { Alert.count }.by(0) &&
-                                      change { AlertError.count }.by(1)
-        change { BenchmarkResult.count }.by(0) &&
-          change { BenchmarkResultError.count }.by(2) &&
-          change { BenchmarkResultSchoolGenerationRun.count }.by(1)
+                                      change { AlertError.count }.by(1) &&
+                                      change { BenchmarkResult.count }.by(0) &&
+                                      change { BenchmarkResultError.count }.by(2) &&
+                                      change { BenchmarkResultSchoolGenerationRun.count }.by(1)
 
         expect(BenchmarkResultSchoolGenerationRun.first.benchmark_result_error_count).to be 1
         expect(BenchmarkResultSchoolGenerationRun.first.benchmark_result_count).to be 0
