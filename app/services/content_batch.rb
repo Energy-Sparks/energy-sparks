@@ -33,15 +33,16 @@ class ContentBatch
 
       @logger.info "Generated configuration"
 
-      # Generate alerts
-      suppress_output { Alerts::GenerateAndSaveAlerts.new(school: school, aggregate_school: aggregate_school).perform }
+      # Generate alerts & benchmarks
+      suppress_output do
+        Alerts::GenerateAndSaveAlertsAndBenchmarks.new(
+          school: school,
+          aggregate_school: aggregate_school,
+          benchmark_result_generation_run: benchmark_result_generation_run
+        ).perform
+      end
 
-      @logger.info "Generated alerts"
-
-      # Generate benchmarks
-      suppress_output { Alerts::GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school, benchmark_result_generation_run: benchmark_result_generation_run).perform }
-
-      @logger.info "Generated benchmarks"
+      @logger.info "Generated alerts & benchmarks"
 
       # Generate equivalences
       suppress_output { Equivalences::GenerateEquivalences.new(school: school, aggregate_school: aggregate_school).perform }
