@@ -12,21 +12,48 @@ module Alerts
         @alert_generation_run = AlertGenerationRun.create!(school: @school)
         @benchmark_result_school_generation_run = BenchmarkResultSchoolGenerationRun.create!(school: @school, benchmark_result_generation_run: @benchmark_result_generation_run)
 
-        relevant_alert_types.each do |alert_type|
-          service = GenerateAlertTypeRunResult.new(
-            school: @school,
-            aggregate_school: @aggregate_school,
-            alert_type: alert_type,
-            use_max_meter_date_if_less_than_asof_date: alert_type.fuel_type.present? ? true : false
-          )
-          alert_type_run_result = service.perform(Time.zone.today)
-          process_alert_type_run_result(alert_type_run_result)
-          process_benchmark_type_run_result(alert_type_run_result) if alert_type.benchmark == true
-        end
+        relevant_alert_types.each { |alert_type| process_alert_and_benchmarks_for(alert_type) }
       end
     end
 
     private
+
+    def process_alert_and_benchmarks_for(alert_type)
+      if alert_type.class_name == 'AlertImpendingHoliday'
+        # AlertImpendingHoliday is a special case where different
+        # dates for alert and benchmarks are used
+        service = generate_alert_type_run_result_service(
+          alert_type: alert_type,
+          use_max_meter_date_if_less_than_asof_date: false
+        )
+        alert_type_run_result = service.perform(Time.zone.today)
+        process_alert_type_run_result(alert_type_run_result)
+
+        service = generate_alert_type_run_result_service(
+          alert_type: alert_type,
+          use_max_meter_date_if_less_than_asof_date: true
+        )
+        alert_type_run_result = service.perform(Time.zone.today)
+        process_benchmark_type_run_result(alert_type_run_result)
+      else
+        service = generate_alert_type_run_result_service(
+          alert_type: alert_type,
+          use_max_meter_date_if_less_than_asof_date: alert_type.fuel_type.present? ? true : false
+        )
+        alert_type_run_result = service.perform(Time.zone.today)
+        process_alert_type_run_result(alert_type_run_result)
+        process_benchmark_type_run_result(alert_type_run_result) if alert_type.benchmark == true
+      end
+    end
+
+    def generate_alert_type_run_result_service(alert_type:, use_max_meter_date_if_less_than_asof_date:)
+      GenerateAlertTypeRunResult.new(
+        school: @school,
+        aggregate_school: @aggregate_school,
+        alert_type: alert_type,
+        use_max_meter_date_if_less_than_asof_date: use_max_meter_date_if_less_than_asof_date
+      )
+    end
 
     def process_benchmark_type_run_result(alert_type_run_result)
       asof_date = alert_type_run_result.asof_date
