@@ -33,16 +33,25 @@ class ContentBatch
 
       @logger.info "Generated configuration"
 
-      # Generate alerts & benchmarks
-      suppress_output do
-        Alerts::GenerateAndSaveAlertsAndBenchmarks.new(
-          school: school,
-          aggregate_school: aggregate_school,
-          benchmark_result_generation_run: benchmark_result_generation_run
-        ).perform
-      end
+      if EnergySparks::FeatureFlags.active?(:combined_alert_and_benchmark_generation)
+        # Generate alerts & benchmarks
+        suppress_output do
+          Alerts::GenerateAndSaveAlertsAndBenchmarks.new(
+            school: school,
+            aggregate_school: aggregate_school,
+            benchmark_result_generation_run: benchmark_result_generation_run
+          ).perform
+        end
+        @logger.info "Generated alerts & benchmarks"
+      else
+        # Generate alerts
+        suppress_output { Alerts::GenerateAndSaveAlerts.new(school: school, aggregate_school: aggregate_school).perform }
+        @logger.info "Generated alerts"
 
-      @logger.info "Generated alerts & benchmarks"
+        # Generate benchmarks
+        suppress_output { Alerts::GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school, benchmark_result_generation_run: benchmark_result_generation_run).perform }
+        @logger.info "Generated benchmarks"
+      end
 
       # Generate equivalences
       suppress_output { Equivalences::GenerateEquivalences.new(school: school, aggregate_school: aggregate_school).perform }
