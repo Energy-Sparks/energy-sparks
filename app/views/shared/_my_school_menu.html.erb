@@ -30,7 +30,7 @@
     <% end %>
 
     <!-- Compare schools -->
-    <%= link_to t('schools.school_group.compare_schools'), benchmarks_path(benchmark: {school_group_ids: [current_user.school.school_group.id]}), class: 'btn nav-link' %>
+    <%= link_to t('schools.school_group.compare_schools'), benchmarks_path(benchmark: {school_group_ids: [current_user.school.school_group.id]}), class: 'dropdown-item' %>
 
     <!-- Complete pupil activities -->
     <%= link_to t('my_school_menu.complete_pupil_activities'), activity_categories_path, class: 'dropdown-item' %>
