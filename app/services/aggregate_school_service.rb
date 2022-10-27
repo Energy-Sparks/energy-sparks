@@ -38,6 +38,8 @@ class AggregateSchoolService
       meter_collection.aggregated_heat_meters.amr_data.end_date
     elsif fuel_type == :electricity
       meter_collection.aggregated_electricity_meters.amr_data.end_date
+    elsif fuel_type == :storage_heater
+      meter_collection.aggregated_electricity_meters.amr_data.end_date
     else
       Time.zone.today
     end
