@@ -7,8 +7,8 @@ module ChartHelper
       '',
       id: chart_config[:mpan_mprn].present? ? "chart_#{chart_type}_#{chart_config[:mpan_mprn]}" : "chart_#{chart_type}",
       class: html_class,
-      "data-autoload-chart": autoload_chart,
       data: {
+        autoload_chart: autoload_chart,
         chart_config: chart_config.merge(
           type: chart_type,
           annotations: school_annotations_path(school),
