@@ -64,4 +64,18 @@ $(document).ready(function() {
     var tab = $('#' + tab_pane.attr('aria-labelledby'));
     tab.find('.text-danger').removeClass('d-none');
   });
+
+  $('#management-energy-overview').on('show.bs.tab', function (e) {
+    chart = $(e.target.hash + '-chart')
+    chartId = chart[0].children[0].id
+    chart = $('#' + chartId)
+    // Only re/load chart if autoload chart is false (first tab is true)
+    if (chart.data('autoload-chart') === false) {
+      chart.data('autoload-chart', true)
+      chartConfig = chart.data('chart-config');
+      processAnalysisChart(chart[0], chartConfig);
+      setupAnalysisControls(chart[0], chartConfig);
+      setupAxisControls(chart[0], chartConfig);
+    }
+  });
 });

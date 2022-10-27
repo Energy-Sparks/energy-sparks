@@ -196,9 +196,9 @@ class School < ApplicationRecord
     return unless amr_validated_readings.present?
 
     # Ideally, we'd also use the minimum amr_data_feed_readings reading_date here, however, those reading dates are
-    # currently stored as strings (and in an inconsistent date format as defined in the associated meter's amr data feed
-    # config) so we instead use the minimum validated reading date minus 1 year.
-    amr_validated_readings.minimum(:reading_date) - 1.year
+    # currently stored as strings (and in an inconsistent date format as defined in the associated meter's amr data
+    # feed config).
+    amr_validated_readings.minimum(:reading_date)
   end
 
   def find_user_or_cluster_user_by_id(id)
