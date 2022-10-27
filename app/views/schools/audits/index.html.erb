@@ -6,13 +6,14 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-12">
-    <p>The Energy Sparks team have carried out the following audits at this school.
-    </p>
+<% if @audits.any? %>
+  <div class="row">
+    <div class="col-md-12">
+      <p>The Energy Sparks team have carried out the following audits at this school.
+      </p>
 
-    <table class="table" id="audits">
-      <thead>
+      <table class="table" id="audits">
+        <thead>
         <tr>
           <th>Name</th>
           <th>Completed on</th>
@@ -20,8 +21,8 @@
             <th>Actions</th>
           <% end %>
         </tr>
-      </thead>
-      <tbody>
+        </thead>
+        <tbody>
         <% @audits.each do |audit| %>
           <tr class="<%= can?(:manage, audit) ? active(audit.published) : '' %>" scope="row">
             <td><%= link_to audit.title, school_audit_path(@school, audit) %></td>
@@ -36,17 +37,23 @@
             <% end %>
           </tr>
         <% end %>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
+  <div class="row mt-2">
+    <%= link_to 'Book another audit', energy_audits_path, class: 'btn btn-primary btn-sm'%>
+  </div>
+<% else %>
+  <div class="row">
+    <div class="col-md-12">
+      <p>No audits exist for this school.</p>
+    </div>
+  </div>
+<% end %>
 
 <% if can? :manage, Audit %>
   <div class="row mt-2">
     <%= link_to 'New audit', new_school_audit_path(@school), class: 'btn btn-primary btn-sm'%>
   </div>
 <% end %>
-
-<div class="row mt-2">
-  <%= link_to 'Book another audit', energy_audits_path, class: 'btn btn-primary btn-sm'%>
-</div>

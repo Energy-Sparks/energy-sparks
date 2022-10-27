@@ -4,8 +4,12 @@ module Schools
     load_and_authorize_resource through: :school
 
     def index
-      @audits = can?(:manage, Audit) ? @audits.by_date : @audits.published.by_date
-      redirect_to energy_audits_path unless @audits.any?
+      if can?(:manage, Audit)
+        @audits = @audits.by_date
+      else
+        @audits = @audits.published.by_date
+        redirect_to energy_audits_path if @audits.none?
+      end
     end
 
     def show
