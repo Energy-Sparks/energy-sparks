@@ -1,4 +1,4 @@
-<%= simple_form_for :activity_type, url: for_school_activity_type_path(activity_type), method: :get do |f| %>
+<%= simple_form_for :activity_type, url: for_school_activity_type_path(activity_type), html: { id: 'activity_type_form' }, method: :get do |f| %>
   <div class="col-md-9">
     <div class="row alert info-bar text-dark bg-neutral" role="alert">
       <div class="col-lg-1 d-none d-lg-block align-self-center">
@@ -7,7 +7,7 @@
       <div class="col-lg-7 col-sm-12 align-self-center">
         <%= t('activity_types.show.complete_this_activity_for_group_html', count: activity_type.score) %>
         <div class="w-75 pt-3">
-          <%= select_tag :school_id, options_from_collection_for_select(schools, :id, :name), include_blank: t('activity_types.show.select_school'), class: 'form-control select2' %>
+          <%= select_tag :school_id, options_from_collection_for_select(schools, :id, :name), include_blank: t('activity_types.show.select_school'), class: 'form-control select2 must-select' %>
         </div>
       </div>
       <div class="col-lg-4 col-sm-12">
@@ -16,9 +16,3 @@
     </div>
   </div>
 <% end %>
-
-<script>
-  $(document).ready(function() {
-    $('select.form-control.select2').select2({theme: 'bootstrap'});
-  });
-</script>
