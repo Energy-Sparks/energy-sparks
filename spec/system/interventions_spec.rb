@@ -56,7 +56,7 @@ describe 'viewing and recording action', type: :system do
         visit intervention_type_path(intervention_type)
       end
 
-      it 'should redirect back to activity after login' do
+      it 'should redirect back to intervention after login' do
         click_on "Sign in to record action"
         fill_in 'Email', with: staff.email
         fill_in 'Password', with: staff.password
@@ -65,6 +65,77 @@ describe 'viewing and recording action', type: :system do
         end
         expect(page).to have_content(intervention_type.name)
         expect(page).to have_content("Complete this action to score your school #{intervention_type.score} points!")
+      end
+    end
+  end
+
+  context 'as a group admin' do
+    let!(:group_admin)    { create(:group_admin, school: school)}
+    let!(:other_school)   { create(:school, name: 'Other School', school_group: group_admin.school_group)}
+
+    before(:each) do
+      school.update(school_group: group_admin.school_group)
+      sign_in(group_admin)
+      visit intervention_type_path(intervention_type)
+    end
+
+    context 'viewing an intervention type' do
+      it 'should see prompt to record it' do
+        expect(page).to have_content("Complete this action on behalf of a school to score #{intervention_type.score} points!")
+        expect(page).to have_button("Record this action")
+      end
+
+      it 'should redirect to new intervention recording page' do
+        select other_school.name, from: :school_id
+        click_on "Record this action"
+        expect(page).to have_content("Record an energy saving action for your school")
+        expect(page).to have_content(other_school.name)
+      end
+    end
+
+    context 'recording an intervention' do
+      it 'should associate intervention with correct school from group' do
+        select other_school.name, from: :school_id
+        click_on "Record this action"
+        fill_in :observation_at, with: Date.today.strftime("%d/%m/%Y")
+        click_on 'Record action'
+        expect(page).to have_content("Congratulations! We've recorded your action")
+        expect(other_school.observations.count).to eq(1)
+      end
+    end
+
+    context 'when school is not in group' do
+      let(:school_not_in_group)   { create(:school)}
+
+      it 'should not allow recording an intervention' do
+        visit new_school_intervention_path(school_not_in_group, intervention_type_id: intervention_type.id)
+        expect(page).to have_content("You are not authorized to access this page")
+        expect(page).not_to have_button("Record action")
+      end
+    end
+  end
+
+  context 'as an admin' do
+    let(:admin)             { create(:admin)}
+    let!(:school_1)   { create(:school)}
+    let!(:school_2)   { create(:school)}
+
+    before(:each) do
+      sign_in(admin)
+      visit intervention_type_path(intervention_type)
+    end
+
+    context 'viewing an intervention type' do
+      it 'should see prompt to record it' do
+        expect(page).to have_content("Complete this action on behalf of a school to score #{intervention_type.score} points!")
+        expect(page).to have_button("Record this action")
+      end
+
+      it 'should redirect to new activity recording page' do
+        select school_1.name, from: :school_id
+        click_on "Record this action"
+        expect(page).to have_content("Record an energy saving action for your school")
+        expect(page).to have_content(school_1.name)
       end
     end
   end
@@ -99,7 +170,7 @@ describe 'viewing and recording action', type: :system do
         expect(page).to have_content("once")
       end
 
-      it 'should link to the activity' do
+      it 'should link to the intervention' do
         expect(page).to have_link(href: school_intervention_path(school, observation))
       end
     end
