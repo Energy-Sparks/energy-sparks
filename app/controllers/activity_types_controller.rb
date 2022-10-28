@@ -1,7 +1,7 @@
 class ActivityTypesController < ApplicationController
   include Pagy::Backend
   load_and_authorize_resource
-  skip_before_action :authenticate_user!, only: [:show, :search]
+  skip_before_action :authenticate_user!, only: [:show, :search, :for_school]
 
   def search
     @key_stages = key_stages
@@ -23,16 +23,29 @@ class ActivityTypesController < ApplicationController
       if show_data_enabled_activity_type?(@activity_type, current_user_school)
         @activity_type_content = @activity_type_content.body.to_html.html_safe
       end
-      @can_be_completed = can_be_completed(@activity_type, current_user_school)
+      @can_be_completed = can_be_completed(@activity_type, [current_user_school])
     else
       @activity_type_content = @activity_type.description
     end
+    if current_user.school_group
+      @can_be_completed_for_group = can_be_completed(@activity_type, current_user.school_group.schools)
+    end
+  end
+
+  def for_school
+    school = School.find(params[:school_id])
+    redirect_to new_school_activity_path(school, activity_type_id: @activity_type.id)
   end
 
   private
 
-  def can_be_completed(activity_type, school)
-    ActivityTypeFilter.new(school: school).activity_types.include?(activity_type)
+  def can_be_completed(activity_type, schools)
+    # schools.any? {|school| ActivityTypeFilter.new(school: school).activity_types.include?(activity_type)}
+    schools.each do |school|
+      pp school
+      return true if ActivityTypeFilter.new(school: school).activity_types.include?(activity_type)
+    end
+    false
   end
 
   def show_data_enabled_activity_type?(activity_type, school)

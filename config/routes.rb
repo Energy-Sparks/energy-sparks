@@ -59,7 +59,11 @@ Rails.application.routes.draw do
     collection do
       get :search
     end
+    member do
+      get :for_school
+    end
   end
+
   resources :activity_categories, only: [:index, :show] do
     collection do
       get :recommended
