@@ -90,7 +90,6 @@ class School < ApplicationRecord
   has_many :consent_grants,                     inverse_of: :school
   has_many :meter_reviews,                      inverse_of: :school
   has_many :user_tariffs,                       inverse_of: :school
-  has_many :school_alternative_heating_sources, inverse_of: :school
   has_many :school_targets,                     inverse_of: :school
   has_many :school_target_events,               inverse_of: :school
   has_many :audits,                             inverse_of: :school
@@ -116,6 +115,8 @@ class School < ApplicationRecord
   has_many :simulations, inverse_of: :school
 
   has_many :estimated_annual_consumptions
+
+  has_many :alternative_heating_sources
 
   has_many :amr_data_feed_readings,       through: :meters
   has_many :amr_validated_readings,       through: :meters

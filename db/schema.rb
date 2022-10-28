@@ -315,6 +315,14 @@ ActiveRecord::Schema.define(version: 2022_10_28_103221) do
     t.index ["school_id"], name: "index_alerts_on_school_id"
   end
 
+  create_table "alternative_heating_sources", force: :cascade do |t|
+    t.bigint "school_id"
+    t.integer "source"
+    t.decimal "percent_of_overall_use"
+    t.text "notes"
+    t.index ["school_id"], name: "index_alternative_heating_sources_on_school_id"
+  end
+
   create_table "amr_data_feed_configs", force: :cascade do |t|
     t.text "description", null: false
     t.text "identifier", null: false
@@ -1150,14 +1158,6 @@ ActiveRecord::Schema.define(version: 2022_10_28_103221) do
     t.index ["school_id"], name: "index_school_alert_type_exclusions_on_school_id"
   end
 
-  create_table "school_alternative_heating_sources", force: :cascade do |t|
-    t.bigint "school_id"
-    t.text "notes"
-    t.decimal "percent_of_overall_use"
-    t.integer "alternative_heating_source"
-    t.index ["school_id"], name: "index_school_alternative_heating_sources_on_school_id"
-  end
-
   create_table "school_batch_run_log_entries", force: :cascade do |t|
     t.bigint "school_batch_run_id"
     t.string "message"
@@ -1733,6 +1733,7 @@ ActiveRecord::Schema.define(version: 2022_10_28_103221) do
   add_foreign_key "alerts", "alert_generation_runs", on_delete: :cascade
   add_foreign_key "alerts", "alert_types", on_delete: :cascade
   add_foreign_key "alerts", "schools", on_delete: :cascade
+  add_foreign_key "alternative_heating_sources", "schools"
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "meters", on_delete: :nullify
@@ -1819,7 +1820,6 @@ ActiveRecord::Schema.define(version: 2022_10_28_103221) do
   add_foreign_key "rtone_variant_installations", "schools"
   add_foreign_key "school_alert_type_exclusions", "alert_types", on_delete: :cascade
   add_foreign_key "school_alert_type_exclusions", "schools", on_delete: :cascade
-  add_foreign_key "school_alternative_heating_sources", "schools"
   add_foreign_key "school_batch_run_log_entries", "school_batch_runs", on_delete: :cascade
   add_foreign_key "school_batch_runs", "schools", on_delete: :cascade
   add_foreign_key "school_group_meter_attributes", "school_group_meter_attributes", column: "replaced_by_id", on_delete: :nullify
