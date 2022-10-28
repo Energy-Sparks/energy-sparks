@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_13_104708) do
+ActiveRecord::Schema.define(version: 2022_10_28_103221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1150,6 +1150,9 @@ ActiveRecord::Schema.define(version: 2022_10_13_104708) do
     t.index ["school_id"], name: "index_school_alert_type_exclusions_on_school_id"
   end
 
+# Could not dump table "school_alternative_heating_sources" because of following StandardError
+#   Unknown type 'alternative_heating_source_types' for column 'alternative_heating_source_type'
+
   create_table "school_batch_run_log_entries", force: :cascade do |t|
     t.bigint "school_batch_run_id"
     t.string "message"
@@ -1811,6 +1814,7 @@ ActiveRecord::Schema.define(version: 2022_10_13_104708) do
   add_foreign_key "rtone_variant_installations", "schools"
   add_foreign_key "school_alert_type_exclusions", "alert_types", on_delete: :cascade
   add_foreign_key "school_alert_type_exclusions", "schools", on_delete: :cascade
+  add_foreign_key "school_alternative_heating_sources", "schools"
   add_foreign_key "school_batch_run_log_entries", "school_batch_runs", on_delete: :cascade
   add_foreign_key "school_batch_runs", "schools", on_delete: :cascade
   add_foreign_key "school_group_meter_attributes", "school_group_meter_attributes", column: "replaced_by_id", on_delete: :nullify

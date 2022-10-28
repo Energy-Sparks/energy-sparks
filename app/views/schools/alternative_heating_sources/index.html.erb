@@ -1,0 +1,25 @@
+<h1>School alternative heating sources</h1>
+
+<div class='pb-6'>
+<%= link_to 'New alternative heating source', new_school_alternative_heating_source_path(@school), class: 'btn btn-primary' %>
+</div>
+<br />
+
+<table class="table table-condensed school_admin">
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Percent of overall use</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @school_alternative_heating_sources.each do |alternative_heating_source| %>
+    <tr>
+      <td><%= alternative_heating_source.alternative_heating_source_type %></td>
+      <td><%= alternative_heating_source.percent_of_overall_use %></td>
+      <td><%= alternative_heating_source.notes %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
