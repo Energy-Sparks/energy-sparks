@@ -40,9 +40,7 @@ class ActivityTypesController < ApplicationController
   private
 
   def can_be_completed(activity_type, schools)
-    # schools.any? {|school| ActivityTypeFilter.new(school: school).activity_types.include?(activity_type)}
     schools.each do |school|
-      pp school
       return true if ActivityTypeFilter.new(school: school).activity_types.include?(activity_type)
     end
     false

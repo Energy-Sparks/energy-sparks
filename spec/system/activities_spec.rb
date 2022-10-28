@@ -233,6 +233,31 @@ describe 'viewing and recording activities', type: :system do
     end
   end
 
+  context 'as a group admin' do
+    let!(:group_admin)    { create(:group_admin, school: school)}
+    let!(:other_school)   { create(:school, name: 'Other School', school_group: group_admin.school_group)}
+
+    before(:each) do
+      school.update(school_group: group_admin.school_group)
+      sign_in(group_admin)
+      visit activity_type_path(activity_type)
+    end
+
+    context 'viewing an activity type' do
+      it 'should see prompt to record it' do
+        expect(page).to have_content("Complete this activity on behalf of a school to score #{activity_type.score} points!")
+        expect(page).to have_button("Record this activity")
+      end
+
+      it 'should redirect to new activity recording page' do
+        select other_school.name, from: :school_id
+        click_on "Record this activity"
+        expect(page).to have_content("Record a new energy saving activity for your school")
+        expect(page).to have_content(other_school.name)
+      end
+    end
+  end
+
   context 'as a pupil' do
     let(:pupil) { create(:pupil, school: school)}
 
