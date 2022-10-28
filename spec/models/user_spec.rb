@@ -172,6 +172,27 @@ describe User do
     end
   end
 
+  describe '#schools' do
+    context 'for normal user' do
+      let(:school)  { create(:school) }
+      let(:user)    { create(:user, school: school)}
+      it 'returns schools' do
+        expect(user.schools).to match_array([school])
+      end
+    end
+
+    context 'for group admin' do
+      let(:school_1)        { create(:school) }
+      let(:school_2)        { create(:school) }
+      let(:school_group)    { create(:school_group, schools: [school_1, school_2]) }
+      let(:user)            { create(:user, role: :group_admin, school_group: school_group)}
+
+      it 'returns schools' do
+        expect(user.schools).to match_array([school_1, school_2])
+      end
+    end
+  end
+
   describe 'welcome email' do
     let(:school) { create(:school) }
     let(:user) { create(:staff, school: school, confirmed_at: nil) }

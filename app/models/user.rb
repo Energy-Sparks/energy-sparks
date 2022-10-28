@@ -124,6 +124,10 @@ class User < ApplicationRecord
     end
   end
 
+  def schools
+    school_group ? school_group.schools : [school]
+  end
+
   def self.new_pupil(school, attributes)
     new(
       attributes.merge(

@@ -7,7 +7,7 @@
       <div class="col-lg-7 col-sm-12 align-self-center">
         <%= t('activity_types.show.complete_this_activity_for_group_html', count: activity_type.score) %>
         <p></p>
-        <%= select_tag :school_id, options_from_collection_for_select(current_user.school_group.schools, :id, :name), include_blank: t('activity_types.show.select_school'), class: 'form-control select2' %>
+        <%= select_tag :school_id, options_from_collection_for_select(schools, :id, :name), include_blank: t('activity_types.show.select_school'), class: 'form-control select2' %>
       </div>
       <div class="col-lg-4 col-sm-12">
         <%= f.submit t('activity_types.show.record_this_activity'), class: 'btn btn-primary' %>

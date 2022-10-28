@@ -23,13 +23,10 @@ class ActivityTypesController < ApplicationController
       if show_data_enabled_activity_type?(@activity_type, current_user_school)
         @activity_type_content = @activity_type_content.body.to_html.html_safe
       end
-      @can_be_completed = can_be_completed(@activity_type, [current_user_school])
     else
       @activity_type_content = @activity_type.description
     end
-    if current_user.school_group
-      @can_be_completed_for_group = can_be_completed(@activity_type, current_user.school_group.schools)
-    end
+    @can_be_completed_for_schools = can_be_completed_for_schools(@activity_type, current_user.schools) if current_user
   end
 
   def for_school
@@ -39,11 +36,10 @@ class ActivityTypesController < ApplicationController
 
   private
 
-  def can_be_completed(activity_type, schools)
-    schools.each do |school|
-      return true if ActivityTypeFilter.new(school: school).activity_types.include?(activity_type)
+  def can_be_completed_for_schools(activity_type, schools)
+    schools.select do |school|
+      ActivityTypeFilter.new(school: school).activity_types.include?(activity_type)
     end
-    false
   end
 
   def show_data_enabled_activity_type?(activity_type, school)
