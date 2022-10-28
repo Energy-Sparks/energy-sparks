@@ -1150,8 +1150,13 @@ ActiveRecord::Schema.define(version: 2022_10_28_103221) do
     t.index ["school_id"], name: "index_school_alert_type_exclusions_on_school_id"
   end
 
-# Could not dump table "school_alternative_heating_sources" because of following StandardError
-#   Unknown type 'alternative_heating_source_types' for column 'alternative_heating_source_type'
+  create_table "school_alternative_heating_sources", force: :cascade do |t|
+    t.bigint "school_id"
+    t.text "notes"
+    t.decimal "percent_of_overall_use"
+    t.integer "alternative_heating_source"
+    t.index ["school_id"], name: "index_school_alternative_heating_sources_on_school_id"
+  end
 
   create_table "school_batch_run_log_entries", force: :cascade do |t|
     t.bigint "school_batch_run_id"
