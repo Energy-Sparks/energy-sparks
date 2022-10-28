@@ -177,11 +177,11 @@ describe 'Audits', type: :system do
       before(:each) do
         visit school_audits_path(school)
       end
-      it 'says there are none' do
-        expect(page).to have_content("The Energy Sparks team have not carried out an energy audit for your school")
+      it 'shows introductory page' do
+        expect(page).to have_content("Energy Sparks offers two types of energy audits")
       end
       it 'offers an audit' do
-        expect(page).to have_content("We are currently offering audits to a limited number of schools")
+        expect(page).to have_link("Book an audit")
       end
     end
 
@@ -205,6 +205,12 @@ describe 'Audits', type: :system do
       it 'doesnt show unpublished audits' do
         visit school_audits_path(school)
         expect(page).to_not have_content("Unpublished")
+      end
+
+      it 'gives link to book another audit' do
+        visit school_audits_path(school)
+        click_link "Book another audit"
+        expect(page).to have_content("Energy Sparks offers two types of energy audits")
       end
 
       it 'doesnt show admin options on list of audits' do
