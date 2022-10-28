@@ -125,8 +125,8 @@ class User < ApplicationRecord
   end
 
   def schools
-    return School.by_name if self.admin?
-    return school_group.schools.by_name if self.school_group
+    return School.visible.by_name if self.admin?
+    return school_group.schools.visible.by_name if self.school_group
     [school].compact
   end
 
