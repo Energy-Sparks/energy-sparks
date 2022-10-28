@@ -125,7 +125,9 @@ class User < ApplicationRecord
   end
 
   def schools
-    school_group ? school_group.schools : [school]
+    return School.by_name if self.admin?
+    return school_group.schools.by_name if self.school_group
+    [school].compact
   end
 
   def self.new_pupil(school, attributes)
