@@ -256,6 +256,17 @@ describe 'viewing and recording activities', type: :system do
         expect(page).to have_content(other_school.name)
       end
     end
+
+    context 'recording an activity' do
+      it 'should associate activity with correct school from group' do
+        select other_school.name, from: :school_id
+        click_on "Record this activity"
+        fill_in :activity_happened_on, with: Date.today.strftime("%d/%m/%Y")
+        click_on 'Save activity'
+        expect(page).to have_content("Congratulations! We've recorded your activity")
+        expect(other_school.activities.count).to eq(1)
+      end
+    end
   end
 
   context 'as an admin' do
