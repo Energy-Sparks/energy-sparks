@@ -26,6 +26,7 @@ module Schools
 
     def update
       @alternative_heating_source = @school.alternative_heating_sources.find(params[:id])
+
       if @alternative_heating_source.update(alternative_heating_source_params)
         redirect_to(school_alternative_heating_sources_url(@school.slug), notice: "Alternative heating source was successfully updated.")
       else
