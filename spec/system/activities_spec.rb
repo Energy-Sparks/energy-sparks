@@ -267,6 +267,16 @@ describe 'viewing and recording activities', type: :system do
         expect(other_school.activities.count).to eq(1)
       end
     end
+
+    context 'when school is not in group' do
+      let(:school_not_in_group)   { create(:school)}
+
+      it 'should not allow recording an activity' do
+        visit new_school_activity_path(school_not_in_group, activity_type_id: activity_type.id)
+        expect(page).to have_content("You are not authorized to access this page")
+        expect(page).not_to have_button("Save activity")
+      end
+    end
   end
 
   context 'as an admin' do
