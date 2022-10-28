@@ -10,7 +10,6 @@ module Schools
 
     def new
       @intervention_type = InterventionType.find(params[:intervention_type_id])
-      @intervention_type_group = @intervention_type.intervention_type_group
       @observation = @school.observations.new(intervention_type_id: @intervention_type.id)
       authorize! :create, @observation
     end
