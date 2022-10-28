@@ -22,8 +22,12 @@
   <%= render 'shared/activities/prompt_login_to_record', label: 'action', score: @intervention_type.score, return_path: intervention_type_path(@intervention_type) %>
 <% end %>
 
-<% if current_user_school && can?(:create, Observation) %>
-  <%= render 'intervention_types/prompt_score', intervention_type: @intervention_type, school: current_user_school %>
+<% if can?(:create, Observation) && @can_be_completed_for_schools.present? %>
+  <% if @can_be_completed_for_schools.one? %>
+    <%= render 'intervention_types/prompt_score', intervention_type: @intervention_type, school: @can_be_completed_for_schools.first %>
+  <% else %>
+    <%= render 'intervention_types/prompt_score_for_group', intervention_type: @intervention_type, schools: @can_be_completed_for_schools %>
+  <% end %>
 <% end %>
 
 <% if current_user_school && @intervention_type.actions_for_school(current_user_school).any? %>

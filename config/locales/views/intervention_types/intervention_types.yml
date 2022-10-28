@@ -11,6 +11,9 @@ en:
       complete_this_action_html:
         one: Complete this action to score your school <strong>%{count}</strong> point!
         other: Complete this action to score your school <strong>%{count}</strong> points!
+      complete_this_action_for_group_html:
+        one: Complete this action on behalf of a school to score <strong>%{count}</strong> point!
+        other: Complete this action on behalf of a school to score <strong>%{count}</strong> points!
       record_this_action: Record this action
     search:
       all_actions: All actions

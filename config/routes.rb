@@ -80,6 +80,9 @@ Rails.application.routes.draw do
     collection do
       get :search
     end
+    member do
+      get :for_school
+    end
   end
   resources :interventions, only: [:new, :create, :edit, :update, :destroy]
 
@@ -197,7 +200,7 @@ Rails.application.routes.draw do
       resources :alerts, only: [:show]
       resources :find_out_more, controller: :find_out_more
 
-      resources :interventions, only: [:index, :show, :destroy] do
+      resources :interventions do
         member do
           get :completed
         end

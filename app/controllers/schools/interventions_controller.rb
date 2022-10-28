@@ -4,10 +4,36 @@ module Schools
     load_resource :school
     load_and_authorize_resource :observation, through: :school, parent: false
 
-    before_action :load_intervention_types, except: [:index, :destroy]
+    # before_action :load_intervention_types, except: [:index, :destroy]
 
     def index
       @interventions = @observations.intervention.visible.order('at DESC')
+    end
+
+    def new
+      @intervention_type = InterventionType.find(params[:intervention_type_id])
+      @intervention_type_group = @intervention_type.intervention_type_group
+      @observation = @school.observations.new(intervention_type_id: @intervention_type.id)
+      authorize! :create, @observation
+    end
+
+    def create
+      if InterventionCreator.new(@observation).process
+        redirect_to completed_school_intervention_path(@school, @observation)
+      else
+        render :new
+      end
+    end
+
+    def edit
+    end
+
+    def update
+      if @observation.update(observation_params)
+        redirect_to school_interventions_path(@school)
+      else
+        render :edit
+      end
     end
 
     def destroy
@@ -34,6 +60,10 @@ module Schools
                                    InterventionTypeGroup.find(params[:intervention_type_group_id])
                                  end
       @intervention_types = @intervention_type_group.intervention_types.display_order
+    end
+
+    def observation_params
+      params.require(:observation).permit(:description, :at, :intervention_type_id)
     end
 
     def load_suggested_actions(school)

@@ -2,7 +2,7 @@ class InterventionTypesController < ApplicationController
   include Pagy::Backend
   load_and_authorize_resource
 
-  skip_before_action :authenticate_user!, only: [:search, :show]
+  skip_before_action :authenticate_user!, only: [:search, :show, :for_school]
 
   def search
     if params[:query]
@@ -17,5 +17,11 @@ class InterventionTypesController < ApplicationController
     if current_user_school
       @interventions = current_user_school.observations.includes(:intervention_type).intervention.where(intervention_type: @intervention_type).visible.by_date
     end
+    @can_be_completed_for_schools = current_user.schools if current_user
+  end
+
+  def for_school
+    school = School.find(params[:school_id])
+    redirect_to new_school_intervention_path(school, intervention_type_id: @intervention_type.id)
   end
 end
