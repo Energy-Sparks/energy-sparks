@@ -318,7 +318,7 @@ ActiveRecord::Schema.define(version: 2022_10_28_103221) do
   create_table "alternative_heating_sources", force: :cascade do |t|
     t.bigint "school_id"
     t.integer "source"
-    t.decimal "percent_of_overall_use"
+    t.integer "percent_of_overall_use"
     t.text "notes"
     t.index ["school_id"], name: "index_alternative_heating_sources_on_school_id"
   end
