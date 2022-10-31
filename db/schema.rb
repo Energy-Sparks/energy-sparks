@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_28_103221) do
+ActiveRecord::Schema.define(version: 2022_10_31_115646) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1052,6 +1052,22 @@ ActiveRecord::Schema.define(version: 2022_10_28_103221) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "notes", force: :cascade do |t|
+    t.string "type", default: "Note", null: false
+    t.string "title", null: false
+    t.text "description", null: false
+    t.integer "fuel_type"
+    t.integer "status"
+    t.bigint "school_id"
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["created_by_id"], name: "index_notes_on_created_by_id"
+    t.index ["school_id"], name: "index_notes_on_school_id"
+    t.index ["updated_by_id"], name: "index_notes_on_updated_by_id"
+  end
+
   create_table "observations", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.datetime "at", null: false
@@ -1808,6 +1824,8 @@ ActiveRecord::Schema.define(version: 2022_10_28_103221) do
   add_foreign_key "meters", "meter_reviews"
   add_foreign_key "meters", "schools", on_delete: :cascade
   add_foreign_key "meters", "solar_edge_installations", on_delete: :cascade
+  add_foreign_key "notes", "users", column: "created_by_id"
+  add_foreign_key "notes", "users", column: "updated_by_id"
   add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "audits"
   add_foreign_key "observations", "intervention_types", on_delete: :restrict
