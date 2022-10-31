@@ -1057,7 +1057,7 @@ ActiveRecord::Schema.define(version: 2022_10_31_115646) do
     t.string "title", null: false
     t.text "description", null: false
     t.integer "fuel_type"
-    t.integer "status"
+    t.integer "status", default: 0
     t.bigint "school_id"
     t.bigint "created_by_id"
     t.bigint "updated_by_id"
