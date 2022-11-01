@@ -22,9 +22,10 @@ module Schools
         analysis_date: @page.alert.run_on,
         aggregate_school: aggregate_school
       )
-      @content = framework_adapter.content(user_type_hash)
-      @structured_content = framework_adapter.structured_content if framework_adapter.has_structured_content?
-
+      I18n.with_locale(:en) do
+        @content = framework_adapter.content(user_type_hash)
+        @structured_content = framework_adapter.structured_content if framework_adapter.has_structured_content?
+      end
       @title = page_title(@content, @school)
     rescue ActiveRecord::RecordNotFound
       if /\d/.match?(params[:id])
