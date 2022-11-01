@@ -206,7 +206,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
           it "lists school in active tab" do
             within '#active-content' do
-              expect(page).to have_link(school.name, href: edit_admin_school_onboarding_configuration_path(school.school_onboarding))
+              expect(page).to have_link(school.name, href: school_url(school))
             end
           end
 
