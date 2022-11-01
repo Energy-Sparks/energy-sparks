@@ -50,7 +50,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         context "clicking 'Manage'" do
           before do
             within "table" do
-              click_on "Manage", match: :first
+              click_on "Manage", id: school_groups.first.slug
             end
           end
           it { expect(page).to have_current_path(admin_school_group_path(school_groups.first)) }
@@ -206,7 +206,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
           it "lists school in active tab" do
             within '#active-content' do
-              expect(page).to have_link(school.name, href: school_url(school))
+              expect(page).to have_link(school.name, href: school_path(school))
             end
           end
 
