@@ -1,7 +1,7 @@
 <table class="table table-striped">
   <% school_group.schools.visible.by_name.each do |school| %>
     <tr>
-      <td><%= link_to_if school.school_onboarding, school.name, [:edit, :admin, school.school_onboarding, :configuration] %></td>
+      <td><%= link_to school.name, school_url(school) %></td>
       <td><%= render 'shared/school_status_buttons', school: school %></td>
       <td class="nowrap text-right">
         <%= link_to 'Edit', edit_school_path(school), class: "btn btn-sm" %>
