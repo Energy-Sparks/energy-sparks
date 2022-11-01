@@ -160,11 +160,15 @@ describe 'targets', type: :system do
     end
 
     context 'with partial data' do
+
+      let(:start_date)  { (Date.today-6.months).iso8601 }
+      let(:end_date)  { (Date.today-1.day).iso8601 }
+
       before(:each) do
         sign_in(admin)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
-        school.configuration.update!(suggest_estimates_fuel_types: ["electricity"], aggregate_meter_dates: {"electricity"=>{"start_date"=>"2022-02-01", "end_date"=>"2022-03-21"}})
+        school.configuration.update!(suggest_estimates_fuel_types: ["electricity"], aggregate_meter_dates: {"electricity"=>{"start_date"=>start_date, "end_date"=>end_date}})
       end
 
       context 'and there is missing actual consumption' do
@@ -182,7 +186,7 @@ describe 'targets', type: :system do
 
         it 'describes why some consumption data is missing' do
           visit electricity_school_progress_index_path(school)
-          expect(page).to have_content("We only have data on your electricity consumption from Feb 2022")
+          expect(page).to have_content("We only have data on your electricity consumption from #{Date.parse(start_date).strftime("%b %Y")}")
         end
 
         it 'shows prompt to add estimate' do

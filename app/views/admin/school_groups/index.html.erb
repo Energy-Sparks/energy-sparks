@@ -29,7 +29,7 @@
           <td><%= school_group.schools.visible.data_enabled.count %></td>
           <td><%= school_group.schools.not_visible.count %></td>
           <td><%= school_group.schools.inactive.count %></td>
-          <td><%= link_to 'Manage', admin_school_group_path(school_group), class: 'btn btn-sm' %></td>
+          <td><%= link_to 'Manage', admin_school_group_path(school_group), class: 'btn btn-sm', id: school_group.slug %></td>
         </tr>
       <% end %>
       <tr class="font-weight-bold">
