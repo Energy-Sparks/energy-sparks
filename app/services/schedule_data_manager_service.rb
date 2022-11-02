@@ -115,6 +115,9 @@ class ScheduleDataManagerService
   end
 
   def temperature_days_offset
+    # The projected future temperature is calculated from an average of the past temperatures at the same time
+    # of year in previous years, the number needs to be smooth and not too noisy, '4 days either side' provides
+    # this averaging, otherwise you get a much more volatile temperature adjustment.
     if TargetMeterTemperatureCompensatedDailyDayTypeBase.const_defined?('TARGET_TEMPERATURE_DAYS_EITHER_SIDE')
        TargetMeterTemperatureCompensatedDailyDayTypeBase::TARGET_TEMPERATURE_DAYS_EITHER_SIDE
     else
