@@ -50,7 +50,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         context "clicking 'Manage'" do
           before do
             within "table" do
-              click_on "Manage", match: :first
+              click_on "Manage", id: school_groups.first.slug
             end
           end
           it { expect(page).to have_current_path(admin_school_group_path(school_groups.first)) }
@@ -61,7 +61,11 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         end
         context "and exporting detail" do
           before do
+            Timecop.freeze
             click_link('Export detail')
+          end
+          after do
+            Timecop.return
           end
           it "shows csv contents" do
             expect(page.body).to eq SchoolGroups::CsvGenerator.new(SchoolGroup.all.by_name).export_detail
@@ -70,9 +74,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
             expect(response_headers['Content-Type']).to eq 'text/csv'
           end
           it "has expected file name" do
-            Timecop.freeze do
-              expect(response_headers['Content-Disposition']).to include(SchoolGroups::CsvGenerator.filename)
-            end
+            expect(response_headers['Content-Disposition']).to include(SchoolGroups::CsvGenerator.filename)
           end
         end
       end
@@ -206,7 +208,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
           it "lists school in active tab" do
             within '#active-content' do
-              expect(page).to have_link(school.name, href: edit_admin_school_onboarding_configuration_path(school.school_onboarding))
+              expect(page).to have_link(school.name, href: school_path(school))
             end
           end
 
