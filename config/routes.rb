@@ -71,17 +71,21 @@ Rails.application.routes.draw do
   end
 
   resources :programme_types, only: [:index, :show]
+
   resources :intervention_type_groups, only: [:index, :show] do
     collection do
       get :recommended
     end
   end
+
   resources :intervention_types, only: [:show] do
     collection do
       get :search
     end
+    member do
+      get :for_school
+    end
   end
-  resources :interventions, only: [:new, :create, :edit, :update, :destroy]
 
   resources :calendars, only: [:show, :destroy] do
     scope module: :calendars do
@@ -197,7 +201,7 @@ Rails.application.routes.draw do
       resources :alerts, only: [:show]
       resources :find_out_more, controller: :find_out_more
 
-      resources :interventions, only: [:index, :show, :destroy] do
+      resources :interventions do
         member do
           get :completed
         end

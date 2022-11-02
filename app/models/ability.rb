@@ -9,7 +9,7 @@ class Ability
     can :read, Activity, school: { visible: true }
     can [:read, :recommended], ActivityCategory
     can [:read, :recommended], InterventionTypeGroup
-    can [:read, :search], InterventionType
+    can [:read, :search, :for_school], InterventionType
     can [:read, :search, :for_school], ActivityType
 
     can :read, SchoolGroup
