@@ -1,6 +1,8 @@
 require 'dashboard'
 
 class ScheduleDataManagerService
+  DEFAULT_TARGET_TEMPERATURE_DAYS_EITHER_SIDE = 4
+
   def initialize(school, meter_data_type = :unvalidated_meter_data)
     @school = school
     @meter_data_type = meter_data_type
@@ -103,8 +105,24 @@ class ScheduleDataManagerService
     # Only use temperature data within lower datetime bounds of school meter readings
     return cached_temperatures unless use_date_bounded_schedule_data?
 
-    dates_to_remove = cached_temperatures.keys.select { |date| date < @school.minimum_reading_date }
+    school_minimum_reading_date = school_minimum_reading_date_with_temperature_days_offset
+    dates_to_remove = cached_temperatures.keys.select { |date| date < school_minimum_reading_date }
     cached_temperatures.remove_dates!(*dates_to_remove)
+  end
+
+  def school_minimum_reading_date_with_temperature_days_offset
+    @school.minimum_reading_date - temperature_days_offset.days
+  end
+
+  def temperature_days_offset
+    # The projected future temperature is calculated from an average of the past temperatures at the same time
+    # of year in previous years, the number needs to be smooth and not too noisy, '4 days either side' provides
+    # this averaging, otherwise you get a much more volatile temperature adjustment.
+    if TargetMeterTemperatureCompensatedDailyDayTypeBase.const_defined?('TARGET_TEMPERATURE_DAYS_EITHER_SIDE')
+       TargetMeterTemperatureCompensatedDailyDayTypeBase::TARGET_TEMPERATURE_DAYS_EITHER_SIDE
+    else
+       DEFAULT_TARGET_TEMPERATURE_DAYS_EITHER_SIDE
+    end
   end
 
   def find_holidays

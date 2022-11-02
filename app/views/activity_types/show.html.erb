@@ -24,8 +24,12 @@
   <%= render 'shared/activities/prompt_login_to_record', label: 'activity', score: @activity_type.score, return_path: activity_type_path(@activity_type) %>
 <% end %>
 
-<% if @can_be_completed && can?(:create, Activity) %>
-  <%= render 'activity_types/prompt_score', activity_type: @activity_type, school: current_user_school %>
+<% if can?(:create, Activity) && @can_be_completed_for_schools.present? %>
+  <% if @can_be_completed_for_schools.one? %>
+    <%= render 'activity_types/prompt_score', activity_type: @activity_type, school: @can_be_completed_for_schools.first %>
+  <% else %>
+    <%= render 'activity_types/prompt_score_for_group', activity_type: @activity_type, schools: @can_be_completed_for_schools %>
+  <% end %>
 <% end %>
 
 <% unless @activity_type.activities_for_school(current_user_school).empty? %>
