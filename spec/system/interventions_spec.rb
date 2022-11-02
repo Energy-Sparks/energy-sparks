@@ -70,7 +70,7 @@ describe 'viewing and recording action', type: :system do
   end
 
   context 'as a group admin' do
-    let!(:group_admin)    { create(:group_admin, school: school)}
+    let!(:group_admin)    { create(:group_admin)}
     let!(:other_school)   { create(:school, name: 'Other School', school_group: group_admin.school_group)}
 
     before(:each) do
