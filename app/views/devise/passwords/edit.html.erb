@@ -32,12 +32,14 @@
       <% end %>
     </div>
 
-    <% if @allow_subscriptions %>
+    <% if @allow_alerts %>
       <hr/>
       <%= render 'schools/users/auto_create_alert_contact', f: f, school: resource.school, user: resource, checked: @subscribe_alerts %>
+    <% end %>
+
+    <% if @allow_newsletters %>
       <hr/>
       <%= render 'schools/users/auto_subscribe_newsletter', checked: @subscribe_newsletters %>
-      <hr/>
     <% end %>
 
     <% if @confirmed %>
