@@ -1,0 +1,32 @@
+<div class="d-flex justify-content-between align-items-center">
+  <h1><%= @school.name %> Notes & Issues</h1>
+  <div>
+    <%= header_nav_link 'School group', admin_school_group_url(@school.school_group) if @school.school_group %>
+  </div>
+</div>
+<p>
+  <%= link_to 'New Note', new_admin_school_note_path(@school), class: 'btn btn-primary' %>
+  <%= link_to 'New Issue', new_admin_school_note_path(@school, note_type: :issue), class: 'btn btn-primary' %>
+</p>
+
+<% @notes.each do |note| %>
+  <div class="row padded-row">
+    <div class="col-md-11 bg-light">
+      <h3><%= note.title %></h3>
+      <span class="badge badge-pill <%= note.issue? ? "badge-danger" : "badge-success" %>"><%= note.note_type.capitalize %></span>
+      <% if note.fuel_type %>
+        <span class="badge badge-secondary"><%= note.fuel_type.capitalize %></span>
+      <% end %>
+      <% if note.issue? %>
+        <span class="badge badge-secondary"><%= note.status.capitalize %></span>
+      <% end %>
+      <div class="bg-white my-2 p-2"><%= note.description %></div>
+      <div><strong>Created</strong> by <span class="badge badge-secondary"><%= note.created_by.email %></span> <strong><%= nice_date_times_today(note.created_at) %></strong></div>
+      <div><strong>Updated</strong> by <span class="badge badge-secondary"><%= note.updated_by.email %></span> <strong><%= nice_date_times_today(note.updated_at) %></strong></div>
+    </div>
+    <div class="col-md-1">
+      <%= link_to 'Edit', edit_admin_school_note_path(@school, note), class: 'btn btn-info' %>
+      <%= link_to 'Delete', admin_school_note_path(@school, note), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+    </div>
+  </div>
+<% end %>

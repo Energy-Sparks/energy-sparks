@@ -3,6 +3,8 @@ class Note < ApplicationRecord
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
 
+  scope :by_updated_at, -> { order(updated_at: :desc) }
+
   has_rich_text :description
   enum note_type: { note: 0, issue: 1 }
   enum fuel_type: [:electricity, :gas, :solar]
