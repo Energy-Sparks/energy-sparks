@@ -6,6 +6,15 @@ RSpec.describe Note, type: :model do
     it { is_expected.to be_valid }
   end
 
+  context "#note_type" do
+    it "is note by default" do
+      expect(create(:note, note_type: nil).note_type).to eq('note')
+    end
+    it "can be set" do
+      expect(create(:note, note_type: :issue).note_type).to eq('issue')
+    end
+  end
+
   context "#status" do
     it "is open by default" do
       expect(create(:note, status: nil).status).to eq('open')

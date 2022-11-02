@@ -1053,11 +1053,10 @@ ActiveRecord::Schema.define(version: 2022_10_31_115646) do
   end
 
   create_table "notes", force: :cascade do |t|
-    t.boolean "note_type", default: false, null: false
+    t.integer "note_type", default: 0, null: false
     t.string "title", null: false
-    t.text "description", null: false
     t.integer "fuel_type"
-    t.integer "status", default: 0
+    t.integer "status", default: 0, null: false
     t.bigint "school_id"
     t.bigint "created_by_id"
     t.bigint "updated_by_id"
