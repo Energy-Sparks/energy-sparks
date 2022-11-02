@@ -34,7 +34,7 @@ class PasswordsController < Devise::PasswordsController
   end
 
   def allow_newletters?(user)
-    @confirmed && user.present?
+    @confirmed && (user.school.present? || user.school_group.present?)
   end
 
   def allow_alerts?(user)
