@@ -1,7 +1,7 @@
 class CreateNotes < ActiveRecord::Migration[6.0]
   def change
     create_table :notes do |t|
-      t.boolean :issue, default: false
+      t.boolean :note_type, default: 0, null: false
       t.string :title, null: false
       t.text :description, null: false
       t.integer :fuel_type

@@ -3,6 +3,7 @@ class Note < ApplicationRecord
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
 
+  enum note_type: { note: 0, issue: 1 }
   enum fuel_type: [:electricity, :gas, :solar]
   enum status: { open: 0, closed: 1 }
 
@@ -10,7 +11,7 @@ class Note < ApplicationRecord
   # But until then we have to do this:
   before_create :set_default_status
 
-  validates :title, :description, presence: true
+  validates :note_type, :title, :description, presence: true
 
   private
 
