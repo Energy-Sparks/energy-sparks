@@ -249,6 +249,12 @@ describe 'viewing and recording activities', type: :system do
         expect(page).to have_button("Record this activity")
       end
 
+      it 'should use the Activity Type Filter to check for appropriate schools' do
+        expect(ActivityTypeFilter).to receive(:new).with(school: school).and_call_original
+        expect(ActivityTypeFilter).to receive(:new).with(school: other_school).and_call_original
+        visit activity_type_path(activity_type)
+      end
+
       it 'should redirect to new activity recording page' do
         select other_school.name, from: :school_id
         click_on "Record this activity"
@@ -280,7 +286,7 @@ describe 'viewing and recording activities', type: :system do
   end
 
   context 'as an admin' do
-    let(:admin)             { create(:admin)}
+    let(:admin)       { create(:admin)}
     let!(:school_1)   { create(:school)}
     let!(:school_2)   { create(:school)}
 
@@ -293,6 +299,11 @@ describe 'viewing and recording activities', type: :system do
       it 'should see prompt to record it' do
         expect(page).to have_content("Complete this activity on behalf of a school to score #{activity_type.score} points!")
         expect(page).to have_button("Record this activity")
+      end
+
+      it 'should not use the Activity Type Filter to check for appropriate schools' do
+        expect(ActivityTypeFilter).not_to receive(:new)
+        visit activity_type_path(activity_type)
       end
 
       it 'should redirect to new activity recording page' do
