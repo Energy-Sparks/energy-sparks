@@ -438,6 +438,8 @@ Rails.application.routes.draw do
     authenticate :user, ->(user) { user.admin? } do
       mount GoodJob::Engine => 'good_job'
     end
+
+    resource :price_configuration
   end # Admin name space
 
   #redirect from old teacher dashboard
