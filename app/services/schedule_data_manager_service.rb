@@ -105,19 +105,21 @@ class ScheduleDataManagerService
     # Only use temperature data within lower datetime bounds of school meter readings
     return cached_temperatures unless use_date_bounded_schedule_data?
 
-    school_minimum_reading_date = school_minimum_reading_date_with_temperature_day_offset
+    school_minimum_reading_date = school_minimum_reading_date_with_temperature_days_offset
     dates_to_remove = cached_temperatures.keys.select { |date| date < school_minimum_reading_date }
     cached_temperatures.remove_dates!(*dates_to_remove)
   end
 
-  def school_minimum_reading_date_with_temperature_day_offset
-    day_offset = if TargetMeterTemperatureCompensatedDailyDayTypeBase.const_defined?('TARGET_TEMPERATURE_DAYS_EITHER_SIDE')
-                    TargetMeterTemperatureCompensatedDailyDayTypeBase::TARGET_TEMPERATURE_DAYS_EITHER_SIDE
-                 else
-                    DEFAULT_TARGET_TEMPERATURE_DAYS_EITHER_SIDE
-                 end
+  def school_minimum_reading_date_with_temperature_days_offset
+    @school.minimum_reading_date - temperature_days_offset.days
+  end
 
-    @school.minimum_reading_date - day_offset.days
+  def temperature_days_offset
+    if TargetMeterTemperatureCompensatedDailyDayTypeBase.const_defined?('TARGET_TEMPERATURE_DAYS_EITHER_SIDE')
+       TargetMeterTemperatureCompensatedDailyDayTypeBase::TARGET_TEMPERATURE_DAYS_EITHER_SIDE
+    else
+       DEFAULT_TARGET_TEMPERATURE_DAYS_EITHER_SIDE
+    end
   end
 
   def find_holidays
