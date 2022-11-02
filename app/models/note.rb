@@ -3,7 +3,6 @@ class Note < ApplicationRecord
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
 
-  enum type: [:note, :issue]
   enum fuel_type: [:electricity, :gas, :solar]
   enum status: { open: 0, closed: 1 }
 

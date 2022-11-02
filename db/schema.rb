@@ -1053,7 +1053,7 @@ ActiveRecord::Schema.define(version: 2022_10_31_115646) do
   end
 
   create_table "notes", force: :cascade do |t|
-    t.integer "type", default: 0, null: false
+    t.boolean "issue", default: false
     t.string "title", null: false
     t.text "description", null: false
     t.integer "fuel_type"
