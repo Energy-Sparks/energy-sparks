@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :note do
     school
-    type { "Note" }
+    type { :note }
     title { "A title" }
     description { "A description" }
     status { :open }
