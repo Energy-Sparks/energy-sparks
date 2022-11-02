@@ -30,7 +30,7 @@ module Schools
       if @alternative_heating_source.update(alternative_heating_source_params)
         redirect_to(school_alternative_heating_sources_url(@school.slug), notice: "Alternative heating source was successfully updated.")
       else
-        render(:new, status: :unprocessable_entity)
+        render(:edit, status: :unprocessable_entity)
       end
     end
 
@@ -38,7 +38,7 @@ module Schools
       if @school.alternative_heating_sources.find(params[:id]).delete
         redirect_to(school_alternative_heating_sources_url(@school.slug), notice: "Alternative heating source was successfully deleted.")
       else
-        render(:new, status: :unprocessable_entity)
+        render(:index, status: :unprocessable_entity)
       end
     end
 
