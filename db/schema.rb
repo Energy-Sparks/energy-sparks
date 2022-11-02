@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_13_104708) do
+ActiveRecord::Schema.define(version: 2022_10_28_103221) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -313,6 +313,14 @@ ActiveRecord::Schema.define(version: 2022_10_13_104708) do
     t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"
     t.index ["run_on"], name: "index_alerts_on_run_on"
     t.index ["school_id"], name: "index_alerts_on_school_id"
+  end
+
+  create_table "alternative_heating_sources", force: :cascade do |t|
+    t.bigint "school_id"
+    t.integer "source"
+    t.integer "percent_of_overall_use"
+    t.text "notes"
+    t.index ["school_id"], name: "index_alternative_heating_sources_on_school_id"
   end
 
   create_table "amr_data_feed_configs", force: :cascade do |t|
@@ -1725,6 +1733,7 @@ ActiveRecord::Schema.define(version: 2022_10_13_104708) do
   add_foreign_key "alerts", "alert_generation_runs", on_delete: :cascade
   add_foreign_key "alerts", "alert_types", on_delete: :cascade
   add_foreign_key "alerts", "schools", on_delete: :cascade
+  add_foreign_key "alternative_heating_sources", "schools"
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "meters", on_delete: :nullify
