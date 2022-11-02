@@ -22,11 +22,15 @@ en:
         zero: No results found
       title: Find pupil activities
     show:
+      complete_this_activity_for_group_html:
+        one: Complete this activity on behalf of a school to score <strong>1</strong> point!
+        other: Complete this activity on behalf of a school to score <strong>%{count}</strong> points!
       complete_this_activity_html:
         one: Complete this activity to score your school <strong>1</strong> point!
         other: Complete this activity to score your school <strong>%{count}</strong> points!
       download_resources: Download resources
       record_this_activity: Record this activity
+      select_school: Select a school...
       view_related_activities:
         one: View 1 related activity
         other: View %{count} related activities
