@@ -172,6 +172,52 @@ describe User do
     end
   end
 
+  describe '#schools' do
+    context 'for user without school' do
+      let(:user)    { create(:user)}
+      it 'returns empty' do
+        expect(user.schools).to eq([])
+      end
+    end
+
+    context 'for user with school' do
+      let(:school)  { create(:school) }
+      let(:user)    { create(:user, school: school)}
+      it 'returns schools' do
+        expect(user.schools).to match_array([school])
+      end
+    end
+
+    context 'for group admin' do
+      let(:school_group)    { create(:school_group) }
+      let(:user)            { create(:user, role: :group_admin, school_group: school_group)}
+
+      context 'without schools in group' do
+        it 'returns empty' do
+          expect(user.schools).to eq([])
+        end
+      end
+      context 'with schools in group' do
+        let(:school_1)        { create(:school, school_group: school_group) }
+        let(:school_2)        { create(:school, school_group: school_group) }
+        let(:school_3)        { create(:school) }
+        it 'returns schools from group' do
+          expect(user.schools).to match_array([school_1, school_2])
+        end
+      end
+    end
+
+    context 'for admin' do
+      let(:school_1)        { create(:school) }
+      let(:school_2)        { create(:school) }
+      let(:user)            { create(:user, role: :admin)}
+
+      it 'returns all schools' do
+        expect(user.schools).to match_array([school_1, school_2])
+      end
+    end
+  end
+
   describe 'welcome email' do
     let(:school) { create(:school) }
     let(:user) { create(:staff, school: school, confirmed_at: nil) }

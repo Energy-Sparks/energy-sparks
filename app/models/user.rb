@@ -124,6 +124,12 @@ class User < ApplicationRecord
     end
   end
 
+  def schools
+    return School.visible.by_name if self.admin?
+    return school_group.schools.visible.by_name if self.school_group
+    [school].compact
+  end
+
   def self.new_pupil(school, attributes)
     new(
       attributes.merge(
