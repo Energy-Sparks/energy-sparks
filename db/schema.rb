@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_28_103221) do
+ActiveRecord::Schema.define(version: 2022_11_02_141923) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1379,6 +1379,14 @@ ActiveRecord::Schema.define(version: 2022_10_28_103221) do
     t.bigint "academic_year_calendar_id"
     t.boolean "public", default: true
     t.index ["academic_year_calendar_id"], name: "index_scoreboards_on_academic_year_calendar_id"
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.string "var", null: false
+    t.text "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["var"], name: "index_settings_on_var", unique: true
   end
 
   create_table "simulations", force: :cascade do |t|

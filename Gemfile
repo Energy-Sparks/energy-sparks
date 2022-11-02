@@ -107,6 +107,9 @@ gem 'mobility-actiontext', '~> 1.1.1'
 # Background jobs
 gem "good_job", "~> 3.4.6"
 
+# Admin
+gem 'rails-settings-cached'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri

@@ -460,6 +460,8 @@ GEM
     rails-i18n (7.0.3)
       i18n (>= 0.7, < 2)
       railties (>= 6.0.0, < 8)
+    rails-settings-cached (2.8.2)
+      rails (>= 5.0.0)
     railties (6.0.4.8)
       actionpack (= 6.0.4.8)
       activesupport (= 6.0.4.8)
@@ -731,6 +733,7 @@ DEPENDENCIES
   rack-canonical-host
   rails (~> 6.0.4)
   rails-controller-testing
+  rails-settings-cached
   rb-readline
   rgeo-geojson
   rollbar
