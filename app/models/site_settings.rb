@@ -23,8 +23,4 @@ class SiteSettings < ApplicationRecord
   def temperature_recording_month_numbers
     temperature_recording_months.reject(&:blank?).map(&:to_i)
   end
-
-  def all_prices
-    OpenStruct.new(prices)
-  end
 end
