@@ -13,6 +13,12 @@
 #
 
 class SiteSettings < ApplicationRecord
+  store_accessor :prices, :electricity_price, :solar_export_price, :gas_price, :oil_price
+  validates :electricity_price, numericality: { only_float: true }
+  validates :solar_export_price, numericality: { only_float: true }
+  validates :gas_price, numericality: { only_float: true }
+  validates :oil_price, numericality: { only_float: true }
+
   def self.current
     order('created_at DESC').first || new
   end
