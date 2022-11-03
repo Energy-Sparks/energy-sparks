@@ -3,13 +3,13 @@ module ApplicationHelper
 
   def nice_date_times(datetime, options = {})
     return '' if datetime.nil?
+
     datetime = datetime.in_time_zone(Rails.application.config.display_timezone) if options[:localtime] && Rails.application.config.display_timezone
     "#{nice_dates(datetime)} #{nice_times_only(datetime)}"
   end
 
   def nice_times_only(datetime)
     return "" if datetime.nil?
-
     datetime.strftime('%H:%M')
   end
 
