@@ -35,13 +35,17 @@ class SchoolTarget < ApplicationRecord
 
   scope :by_date, -> { order(created_at: :desc) }
   scope :by_start_date, -> { order(start_date: :desc) }
-
+  scope :expired, -> { where(":now >= start_date and :now >= target_date", now: Time.zone.today) }
   scope :currently_active, -> { where('start_date <= ? and target_date <= ?', Time.zone.today, Time.zone.today.next_year) }
 
   before_save :adjust_target_date
 
   def current?
     Time.zone.now >= start_date && Time.zone.now <= target_date
+  end
+
+  def expired?
+    Time.zone.now >= start_date && Time.zone.now >= target_date
   end
 
   def meter_attributes_by_meter_type

@@ -124,6 +124,7 @@ en:
       review_progress: Review progress
       review_target: Review your target
       revisit_targets: The configuration of your school has changed, you may need to revisit your targets for this year.
+      set_new_target: Your school set a target to reduce its energy usage by %{target_date}. It's time to review your progress and set a new target for the year ahead.
       set_target: Set energy saving target
       set_targets: Set targets to reduce your school's energy consumption over the next year. Energy Sparks will provide you with a recommended set of steps to help you achieve your targets and reduce your school's carbon footprint.
       setup_alert_contacts: Sign-up for Energy Sparks email or text alerts. Energy Sparks alerts give you early warning of changes in your school's energy use and highlight long term problems with your energy consumption with focused recommendations to save energy.

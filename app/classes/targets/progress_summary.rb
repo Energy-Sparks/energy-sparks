@@ -13,6 +13,10 @@ module Targets
       electricity_progress.present? || gas_progress.present? || storage_heater_progress.present?
     end
 
+    def current_target?
+      @school_target.current?
+    end
+
     def out_of_date_fuel_types
       out_of_date = []
       out_of_date << :electricity if electricity_progress.present? && !electricity_progress.recent_data?

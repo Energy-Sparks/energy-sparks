@@ -563,6 +563,8 @@ describe School do
         expect(subject.has_current_target?).to eql true
         expect(subject.current_target).to eql target
         expect(subject.most_recent_target).to eql target
+        expect(subject.expired_target).to be_nil
+        expect(subject.has_expired_target?).to eql false
       end
 
       it "the target should add meter attributes" do
@@ -577,6 +579,8 @@ describe School do
           expect(subject.has_current_target?).to be true
           expect(subject.current_target).to eql target
           expect(subject.most_recent_target).to eql future_target
+          expect(subject.expired_target).to be_nil
+          expect(subject.has_expired_target?).to eql false
         end
       end
 
@@ -590,6 +594,8 @@ describe School do
           expect(subject.has_current_target?).to be false
           expect(subject.current_target).to eql nil
           expect(subject.most_recent_target).to eql target
+          expect(subject.expired_target).to eq target
+          expect(subject.has_expired_target?).to eql true
         end
 
         it "should still produce meter attributes" do
