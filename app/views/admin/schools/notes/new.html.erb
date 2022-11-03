@@ -1,4 +1,4 @@
-<h1>New <%= @note.note_type.capitalize %> for <%= @school.name %></h1>
+<%= render 'header', title: "New #{@note.note_type.capitalize} for #{@school.name}" %>
 
 <div class="row">
   <div class="col-sm-8">

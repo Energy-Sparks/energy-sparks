@@ -1,9 +1,7 @@
-<div class="d-flex justify-content-between align-items-center header-fix">
-  <h1><%= @school.name %> Notes & Issues</h1>
-  <div>
-    <%= header_nav_link 'School group', admin_school_group_url(@school.school_group) if @school.school_group %>
-  </div>
-</div>
+<%= render 'header', title: "#{@school.name} Notes & Issues" do %>
+  <%= header_nav_link 'School group', admin_school_group_url(@school.school_group) if @school.school_group %>
+<% end %>
+
 <p>
   <%= link_to 'New Note', new_admin_school_note_path(@school), class: 'btn btn-primary btn-sm' %>
   <%= link_to 'New Issue', new_admin_school_note_path(@school, note_type: :issue), class: 'btn btn-primary btn-sm' %>
