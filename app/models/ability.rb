@@ -9,8 +9,8 @@ class Ability
     can :read, Activity, school: { visible: true }
     can [:read, :recommended], ActivityCategory
     can [:read, :recommended], InterventionTypeGroup
-    can [:read, :search], InterventionType
-    can [:read, :search], ActivityType
+    can [:read, :search, :for_school], InterventionType
+    can [:read, :search, :for_school], ActivityType
 
     can :read, SchoolGroup
     can :compare, SchoolGroup, public: true
@@ -79,7 +79,7 @@ class Ability
       end
       can [
         :show, :usage, :show_pupils_dash,
-        :update, :manage_school_times, :suggest_activity, :manage_users,
+        :update, :manage_school_times, :manage_alternative_heating_sources, :suggest_activity, :manage_users,
         :show_management_dash,
         :read, :start_programme, :read_restricted_analysis
       ], School, school_scope

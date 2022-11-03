@@ -110,9 +110,13 @@ function processAnalysisCharts(){
   if ($("div.analysis-chart").length ) {
     $("div.analysis-chart").each(function(){
       var chartConfig = $(this).data('chart-config');
-      processAnalysisChart(this, chartConfig);
-      setupAnalysisControls(this, chartConfig);
-      setupAxisControls(this, chartConfig);
+      var autoLoadChart = $(this).data('autoload-chart');
+      // Autoload charts will only be set false for tabbed content (with the first tab being set true)
+      if (autoLoadChart === true) {
+        processAnalysisChart(this, chartConfig);
+        setupAnalysisControls(this, chartConfig);
+        setupAxisControls(this, chartConfig);
+      }
     });
   }
 
@@ -128,6 +132,7 @@ function processAnalysisChartAjax(chartId, chartConfig, highchartsChart) {
   var dateRanges = chartConfig.date_ranges;
   var dataPath = chartConfig.jsonUrl;
   var transformations = chartConfig.transformations;
+  var noAdvice = chartConfig.no_advice;
   var requestData = {
     chart_type: chartType,
     chart_y_axis_units: yAxisUnits,
@@ -136,6 +141,10 @@ function processAnalysisChartAjax(chartId, chartConfig, highchartsChart) {
     series_breakdown: seriesBreakdown,
     date_ranges: dateRanges
   };
+
+  if (! noAdvice) {
+    requestData['provide_advice'] = true
+  }
 
   highchartsChart.showLoading();
 

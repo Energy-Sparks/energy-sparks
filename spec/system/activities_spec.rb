@@ -233,6 +233,88 @@ describe 'viewing and recording activities', type: :system do
     end
   end
 
+  context 'as a group admin' do
+    let!(:group_admin)    { create(:group_admin)}
+    let!(:other_school)   { create(:school, name: 'Other School', school_group: group_admin.school_group)}
+
+    before(:each) do
+      school.update(school_group: group_admin.school_group)
+      sign_in(group_admin)
+      visit activity_type_path(activity_type)
+    end
+
+    context 'viewing an activity type' do
+      it 'should see prompt to record it' do
+        expect(page).to have_content("Complete this activity on behalf of a school to score #{activity_type.score} points!")
+        expect(page).to have_button("Record this activity")
+      end
+
+      it 'should use the Activity Type Filter to check for appropriate schools' do
+        expect(ActivityTypeFilter).to receive(:new).with(school: school).and_call_original
+        expect(ActivityTypeFilter).to receive(:new).with(school: other_school).and_call_original
+        visit activity_type_path(activity_type)
+      end
+
+      it 'should redirect to new activity recording page' do
+        select other_school.name, from: :school_id
+        click_on "Record this activity"
+        expect(page).to have_content("Record a new energy saving activity for your school")
+        expect(page).to have_content(other_school.name)
+      end
+    end
+
+    context 'recording an activity' do
+      it 'should associate activity with correct school from group' do
+        select other_school.name, from: :school_id
+        click_on "Record this activity"
+        fill_in :activity_happened_on, with: Date.today.strftime("%d/%m/%Y")
+        click_on 'Save activity'
+        expect(page).to have_content("Congratulations! We've recorded your activity")
+        expect(other_school.activities.count).to eq(1)
+      end
+    end
+
+    context 'when school is not in group' do
+      let(:school_not_in_group)   { create(:school)}
+
+      it 'should not allow recording an activity' do
+        visit new_school_activity_path(school_not_in_group, activity_type_id: activity_type.id)
+        expect(page).to have_content("You are not authorized to access this page")
+        expect(page).not_to have_button("Save activity")
+      end
+    end
+  end
+
+  context 'as an admin' do
+    let(:admin)       { create(:admin)}
+    let!(:school_1)   { create(:school)}
+    let!(:school_2)   { create(:school)}
+
+    before(:each) do
+      sign_in(admin)
+      visit activity_type_path(activity_type)
+    end
+
+    context 'viewing an activity type' do
+      it 'should see prompt to record it' do
+        expect(page).to have_content("Complete this activity on behalf of a school to score #{activity_type.score} points!")
+        expect(page).to have_button("Record this activity")
+      end
+
+      it 'should not use the Activity Type Filter to check for appropriate schools' do
+        expect(ActivityTypeFilter).not_to receive(:new)
+        visit activity_type_path(activity_type)
+      end
+
+      it 'should redirect to new activity recording page' do
+        select school_1.name, from: :school_id
+        click_on "Record this activity"
+        expect(page).to have_content("Record a new energy saving activity for your school")
+        expect(page).to have_content(school_1.name)
+      end
+    end
+  end
+
   context 'as a pupil' do
     let(:pupil) { create(:pupil, school: school)}
 

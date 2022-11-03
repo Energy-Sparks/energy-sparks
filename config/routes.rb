@@ -59,7 +59,11 @@ Rails.application.routes.draw do
     collection do
       get :search
     end
+    member do
+      get :for_school
+    end
   end
+
   resources :activity_categories, only: [:index, :show] do
     collection do
       get :recommended
@@ -67,17 +71,21 @@ Rails.application.routes.draw do
   end
 
   resources :programme_types, only: [:index, :show]
+
   resources :intervention_type_groups, only: [:index, :show] do
     collection do
       get :recommended
     end
   end
+
   resources :intervention_types, only: [:show] do
     collection do
       get :search
     end
+    member do
+      get :for_school
+    end
   end
-  resources :interventions, only: [:new, :create, :edit, :update, :destroy]
 
   resources :calendars, only: [:show, :destroy] do
     scope module: :calendars do
@@ -184,6 +192,7 @@ Rails.application.routes.draw do
       resource :configuration, controller: :configuration
       resource :school_group, controller: :school_group
       resource :times, only: [:edit, :update]
+      resources :alternative_heating_sources, except: [:show]
 
       get 'simulations/:id/simulation_detail', to: 'simulations#show_detailed', as: :simulation_detail
       get 'simulations/new_fitted', to: 'simulations#new_fitted', as: :new_fitted_simulation
@@ -193,7 +202,7 @@ Rails.application.routes.draw do
       resources :alerts, only: [:show]
       resources :find_out_more, controller: :find_out_more
 
-      resources :interventions, only: [:index, :show, :destroy] do
+      resources :interventions do
         member do
           get :completed
         end
