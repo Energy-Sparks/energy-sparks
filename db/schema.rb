@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_31_115646) do
+ActiveRecord::Schema.define(version: 2022_11_03_112116) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1396,6 +1396,14 @@ ActiveRecord::Schema.define(version: 2022_10_31_115646) do
     t.index ["academic_year_calendar_id"], name: "index_scoreboards_on_academic_year_calendar_id"
   end
 
+  create_table "settings", force: :cascade do |t|
+    t.string "var", null: false
+    t.text "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["var"], name: "index_settings_on_var", unique: true
+  end
+
   create_table "simulations", force: :cascade do |t|
     t.text "title"
     t.text "notes"
@@ -1417,6 +1425,7 @@ ActiveRecord::Schema.define(version: 2022_10_31_115646) do
     t.integer "management_priorities_page_limit", default: 10
     t.boolean "message_for_no_pupil_accounts", default: true
     t.jsonb "temperature_recording_months", default: ["10", "11", "12", "1", "2", "3", "4"]
+    t.jsonb "prices"
   end
 
   create_table "sms_records", force: :cascade do |t|
