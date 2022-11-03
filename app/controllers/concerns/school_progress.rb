@@ -16,7 +16,7 @@ private
   end
 
   def prompt_to_set_new_target?
-    Targets::SchoolTargetService.targets_enabled?(@school) && can?(:manage, SchoolTarget) && @school.has_expired_target?
+    Targets::SchoolTargetService.targets_enabled?(@school) && can?(:manage, SchoolTarget) && @school.has_expired_target? && !@school.has_current_target?
   end
 
   def suggest_estimates_for_fuel_types(check_data: false)
