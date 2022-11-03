@@ -29,6 +29,7 @@
 //= require bullet_charts
 //= require schools
 //= require users
+//= require header_fix
 
 // from https://github.com/neivars/bootstrap-year-calendar
 //= require bootstrap-year-calendar

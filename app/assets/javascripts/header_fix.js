@@ -11,8 +11,9 @@ $(document).ready(function() {
     return height;
   }
 
-  $('#ts-header-nav').css('margin-top', getNavHeight());
+  // For the element which is disappearing under the header, give it a class of header-fix
+  $('.header-fix').css('margin-top', getNavHeight());
   $(window).resize(function() {
-    $('#ts-header-nav').css('margin-top', getNavHeight());
+    $('.header-fix').css('margin-top', getNavHeight());
   });
 });
