@@ -10,7 +10,7 @@
 <% @notes.each do |note| %>
   <div class="row padded-row">
     <div class="col-md-11 bg-light">
-      <h4><%= fa_icon(note.issue? ? 'exclamation-circle' : 'sticky-note') %> <%= note.title %></h4>
+      <h4><%= fa_icon(note.issue? ? 'exclamation-circle text-secondary' : 'sticky-note text-secondary') %> <%= note.title %></h4>
       <span class="badge badge-pill <%= note.issue? ? "badge-danger" : "badge-success" %>"><%= note.note_type.capitalize %></span>
       <% if note.fuel_type %>
         <span class="badge badge-secondary"><%= note.fuel_type.capitalize %></span>

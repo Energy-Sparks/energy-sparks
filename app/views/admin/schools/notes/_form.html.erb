@@ -1,8 +1,8 @@
 <%= simple_form_for([:admin, school, note]) do |f| %>
-  <%= f.input :note_type, collection: Note.note_types.keys, include_blank: false %>
   <%= f.input :title %>
   <%= f.input :description, as: :rich_text_area %>
-  <%= f.input :fuel_type, collection: Note.fuel_types.keys %>
-  <%= f.input :status, collection: Note.statuses.keys, include_blank: false unless note.new_record? %>
+  <%= f.input :fuel_type, collection: Note.fuel_types.keys, label_method: lambda {|k| k.humanize} %>
+  <%= f.input :status, collection: Note.statuses.keys, label_method: lambda {|k| k.humanize}, include_blank: false unless note.new_record? %>
+  <%= f.input :note_type, collection: Note.note_types.keys, label_method: lambda {|k| k.humanize}, include_blank: false %>
   <%= f.submit 'Save', class: 'btn btn-primary' %>
 <% end %>
