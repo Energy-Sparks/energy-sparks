@@ -68,7 +68,7 @@
       <td>
         <%= link_to school_intervention_url(observation.school, observation) do %>
           <% if observation.description.present? %>
-            <%= observation.intervention_type.name %>
+            <%= observation.description %>
           <% else %>
             <%= observation.intervention_type.name %>
           <% end %>
