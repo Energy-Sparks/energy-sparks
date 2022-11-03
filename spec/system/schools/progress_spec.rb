@@ -11,7 +11,9 @@ describe 'targets', type: :system do
   let(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true) }
   let(:school_target_fuel_types)  { ["electricity"] }
 
-  let(:months)                    { ['jan', 'feb'] }
+  let(:january)                   { Date.new(Date.today.year, 1, 1) }
+  let(:february)                  { Date.new(Date.today.year, 2, 1) }
+  let(:months)                    { [january, february] }
   let(:fuel_type)                 { :electricity }
 
   let(:monthly_usage_kwh)         { [10,20] }
@@ -77,8 +79,8 @@ describe 'targets', type: :system do
       it 'shows electricity progress' do
         visit electricity_school_progress_index_path(school)
         expect(page).to have_content('Tracking progress')
-        expect(page).to have_content('jan')
-        expect(page).to have_content('feb')
+        expect(page).to have_content('Jan')
+        expect(page).to have_content('Feb')
         expect(page).to have_content('-25%')
         expect(page).to have_content('+35%')
         expect(page).to have_content('-99%')
@@ -178,8 +180,8 @@ describe 'targets', type: :system do
         it 'renders the other data' do
           visit electricity_school_progress_index_path(school)
           expect(page).to have_content('Tracking progress')
-          expect(page).to have_content('jan')
-          expect(page).to have_content('feb')
+          expect(page).to have_content('Jan')
+          expect(page).to have_content('Feb')
           expect(page).to have_content('20')
           expect(page).to have_content('30')
         end

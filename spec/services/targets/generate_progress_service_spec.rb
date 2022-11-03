@@ -13,7 +13,7 @@ describe Targets::GenerateProgressService do
 
   let!(:service)                  { Targets::GenerateProgressService.new(school, aggregated_school) }
 
-  let(:months)                    { [Date.today.last_month.strftime("%b"), Date.today.strftime("%b")] }
+  let(:months)                    { [Date.today.last_month.beginning_of_month, Date.today.beginning_of_month] }
   let(:fuel_type)                 { :electricity }
   let(:monthly_targets_kwh)       { [10,10] }
   let(:monthly_usage_kwh)         { [10,5] }
@@ -21,7 +21,7 @@ describe Targets::GenerateProgressService do
   let(:cumulative_targets_kwh)    { [10,20] }
   let(:cumulative_usage_kwh)      { [10,15] }
   let(:cumulative_performance)    { [-0.99,0.99] }
-  let(:partial_months)            { [Date.today.strftime("%b")] }
+  let(:partial_months)            { [Date.today.beginning_of_month] }
   let(:percentage_synthetic)      { [0, 0]}
 
   let(:progress) do
