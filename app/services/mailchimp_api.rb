@@ -25,7 +25,7 @@ class MailchimpApi
 
   def interests(list_id, category_id)
     interests = client.lists.list_interest_category_interests(list_id, category_id, count: MAX_RESULTS)
-    interests['interests'].map { |interest| OpenStruct.new(interest) }
+    interests['interests'].map { |interest| OpenStruct.new(interest) }.sort_by(&:name)
   end
 
   def list_with_interests
