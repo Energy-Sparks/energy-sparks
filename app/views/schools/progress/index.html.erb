@@ -58,17 +58,17 @@
       <th>
         Month
       </th>
-      <% @progress.months.each do |month| %>
+      <% @reporting_months.each do |month| %>
         <th class="text-right">
-          <%= month %>
+          <%= month.strftime('%b') %>
         </th>
       <% end %>
     </tr>
     </thead>
     <tbody>
-    <%= render 'row', title: 'Target Consumption (kWh)', progress: @progress, data: @progress.monthly_targets_kwh, keys: @progress.months, partial_months: {}, percentage_synthetic: @progress.percentage_synthetic, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Actual Consumption (kWh)', progress: @progress, data: @progress.monthly_usage_kwh, keys: @progress.months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Overall change since last year', progress: @progress, data: @progress.monthly_performance_versus_synthetic_last_year, keys: @progress.months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :relative_percent, final_row: true %>
+    <%= render 'row', title: 'Target Consumption (kWh)', progress: @progress, data: @progress.monthly_targets_kwh, keys: @reporting_months, partial_months: {}, percentage_synthetic: @progress.percentage_synthetic, units: :kwh, final_row: false %>
+    <%= render 'row', title: 'Actual Consumption (kWh)', progress: @progress, data: @progress.monthly_usage_kwh, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :kwh, final_row: false %>
+    <%= render 'row', title: 'Overall change since last year', progress: @progress, data: @progress.monthly_performance_versus_synthetic_last_year, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :relative_percent, final_row: true %>
     </tbody>
   </table>
 
@@ -80,17 +80,17 @@
       <th>
         Month
       </th>
-      <% @progress.months.each do |month| %>
+      <% @reporting_months.each do |month| %>
         <th class="text-right">
-          <%= month %>
+          <%= month.strftime('%b') %>
         </th>
       <% end %>
     </tr>
     </thead>
     <tbody>
-    <%= render 'row', title: 'Target Consumption (kWh)', data: @progress.cumulative_targets_kwh, keys: @progress.months, partial_months: {}, percentage_synthetic: @progress.percentage_synthetic, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Actual Consumption (kWh)', data: @progress.cumulative_usage_kwh, keys: @progress.months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Overall performance since last year', data: @progress.cumulative_performance_versus_synthetic_last_year, keys: @progress.months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :relative_percent, final_row: true %>
+    <%= render 'row', title: 'Target Consumption (kWh)', data: @progress.cumulative_targets_kwh, keys: @reporting_months, partial_months: {}, percentage_synthetic: @progress.percentage_synthetic, units: :kwh, final_row: false %>
+    <%= render 'row', title: 'Actual Consumption (kWh)', data: @progress.cumulative_usage_kwh, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :kwh, final_row: false %>
+    <%= render 'row', title: 'Overall performance since last year', data: @progress.cumulative_performance_versus_synthetic_last_year, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :relative_percent, final_row: true %>
     </tbody>
   </table>
 
@@ -104,7 +104,7 @@
     <% end %>
 
     <p>
-    We use colour coding to indicate when you have <span class="bg-positive-dark">met your target</span> or <span class="bg-negative-dark">exceeded your target</span> in a given month
+    We use colour coding to indicate when you have <span class="bg-positive-dark">met your target</span> or <span class="bg-negative-dark">failed to meet your target</span> in a given month
     </p>
 
     <% if @progress.partial_consumption_data? %>
