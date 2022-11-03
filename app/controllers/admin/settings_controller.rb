@@ -6,11 +6,21 @@ module Admin
     end
 
     def update
-      SiteSettings.create!(settings_params)
+      SiteSettings.create!(site_settings_params)
       redirect_to admin_settings_path, notice: 'Settings updated'
     end
 
   private
+
+    def site_settings_params
+      new_settings_params = settings_params
+      SiteSettings.stored_attributes[:prices].each do |price_type|
+        next unless settings_params[price_type]
+
+        new_settings_params[price_type] = settings_params[price_type].to_f
+      end
+      new_settings_params
+    end
 
     def settings_params
       params.require(:site_settings).permit(
