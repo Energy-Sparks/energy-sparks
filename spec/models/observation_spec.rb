@@ -17,6 +17,22 @@ describe Observation do
     expect(Observation.new(at: Date.tomorrow, school: school).valid?).to be false
   end
 
+  describe '#recorded_in_last_week' do
+    let(:observation_too_old)      { create(:observation, observation_type: :temperature) }
+    let(:observation_last_week_1)  { create(:observation, observation_type: :temperature) }
+    let(:observation_last_week_2)  { create(:observation, observation_type: :temperature) }
+
+    before :each do
+      observation_too_old.update!(created_at: (7.days.ago - 1.minute))
+      observation_last_week_1.update!(created_at: (7.days.ago + 1.minute))
+      observation_last_week_2.update!(created_at: 1.minute.ago)
+    end
+
+    it 'should exclude older observations' do
+      expect( Observation.recorded_in_last_week ).to match_array([observation_last_week_1, observation_last_week_2])
+    end
+  end
+
   context 'interventions' do
     let!(:intervention_type){ create(:intervention_type, score: 50) }
 
