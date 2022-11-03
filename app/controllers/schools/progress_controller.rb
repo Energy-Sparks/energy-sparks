@@ -58,7 +58,7 @@ module Schools
     end
 
     def this_month
-      Time.zone.now.strftime("%b")
+      Time.zone.today.beginning_of_month
     end
 
     def bad_estimate?(type)

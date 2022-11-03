@@ -85,7 +85,7 @@ module Targets
     end
 
     def this_month
-      Time.zone.now.strftime("%b")
+      Time.zone.today.beginning_of_month
     end
 
     def target_progress(fuel_type)

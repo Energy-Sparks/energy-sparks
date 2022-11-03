@@ -60,7 +60,7 @@
       </th>
       <% @progress.months.each do |month| %>
         <th class="text-right">
-          <%= month %>
+          <%= month.strftime('%b') %>
         </th>
       <% end %>
     </tr>
