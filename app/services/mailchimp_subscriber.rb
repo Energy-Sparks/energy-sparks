@@ -5,10 +5,10 @@ class MailchimpSubscriber
     @mailchimp_api = mailchimp_api
   end
 
-  def subscribe(school, user)
+  def subscribe(user)
     list = @mailchimp_api.list_with_interests
     if list
-      config = mailchimp_signup_params(school, user, list)
+      config = mailchimp_signup_params(user, list)
       if config.valid?
         @mailchimp_api.subscribe(list.id, config)
       else
@@ -21,22 +21,25 @@ class MailchimpSubscriber
     raise MailchimpSubscriber::Error.new(e)
   end
 
-  def mailchimp_signup_params(school, user, list)
-    MailchimpSignupParams.new(
-      email_address: user.email,
-      tags: MailchimpTags.new(school).tags,
-      interests: find_interests(school, user, list),
-      merge_fields: {
-        'FULLNAME' => user.name,
-        'SCHOOL' => school.name,
-      }
-    )
+  def mailchimp_signup_params(user, list)
+    params = MailchimpSignupParams.new(email_address: user.email)
+    params.interests = find_interests(user, list)
+    params.merge_fields = merge_fields(user)
+    params.tags = MailchimpTags.new(user.school).tags if user.school
+    params
   end
 
-  def find_interests(school, user, list)
+  def merge_fields(user)
+    fields = {}
+    fields['FULLNAME'] = user.name if user
+    fields['SCHOOL'] = user.school.name if user.school
+    fields
+  end
+
+  def find_interests(user, list)
     ret = {}
     items = []
-    items << school.school_group.name if school.school_group
+    items << user.school_group_name if user.school_group_name
     items << user.staff_role.title if user.staff_role
     unless items.empty?
       list.categories.each do |category|

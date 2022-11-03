@@ -12,7 +12,28 @@ describe User do
 
     user = create(:user, name: "")
     expect(user.display_name).to eql user.email
+  end
 
+  it 'returns school name' do
+    user = create(:user)
+    expect(user.school_name).to be_nil
+
+    school = create(:school, name: 'Big School')
+    user = create(:user, school: school)
+    expect(user.school_name).to eq('Big School')
+  end
+
+  it 'returns school group name' do
+    user = create(:user)
+    expect(user.school_group_name).to be_nil
+
+    school_group = create(:school_group, name: 'Big Group')
+    user = create(:user, school_group: school_group)
+    expect(user.school_group_name).to eq('Big Group')
+
+    school = create(:school, name: 'Big School', school_group: school_group)
+    user = create(:user, school: school)
+    expect(user.school_group_name).to eq('Big Group')
   end
 
   describe 'pupil validation' do
