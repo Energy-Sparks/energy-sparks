@@ -44,6 +44,10 @@ class SchoolTarget < ApplicationRecord
     Time.zone.now >= start_date && Time.zone.now <= target_date
   end
 
+  def expired?
+    Time.zone.now >= start_date && Time.zone.now >= target_date
+  end
+
   def meter_attributes_by_meter_type
     attributes = {}
     attributes[:aggregated_electricity] = [meter_attribute_for_electricity_target] if electricity.present?

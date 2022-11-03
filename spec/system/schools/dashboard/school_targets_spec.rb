@@ -32,6 +32,25 @@ RSpec.shared_examples "target prompts" do
       end
     end
   end
+  context 'when target is expired' do
+    let(:feature_active)    { true }
+    let(:enough_data)       { true }
+    let(:enable_for_school) { true }
+
+    let!(:school_target)    { create(:school_target, school: school, start_date: 1.year.ago, target_date: Date.yesterday) }
+
+    before(:each) do
+      allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(feature_active)
+      allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(enough_data)
+      test_school.update!(enable_targets_feature: enable_for_school)
+      visit school_path(test_school, switch: true)
+    end
+
+    it 'prompts to set a new target' do
+      expect(page).to have_link("Review progress", href: school_school_targets_path(school))
+      expect(page).to have_content("It's time to review your progress and set a new target for the year ahead")
+    end
+  end
 end
 
 RSpec.shared_examples "progress reports" do
@@ -77,6 +96,15 @@ RSpec.shared_examples "progress reports" do
 
       it 'links to target page' do
         expect(page).to have_link("Review progress", href: school_school_targets_path(school))
+      end
+    end
+
+    context 'with expired target' do
+      let!(:school_target)    { create(:school_target, school: school, start_date: 1.year.ago, target_date: Date.yesterday) }
+      let(:progress_summary)  { build(:progress_summary, school_target: school_target) }
+
+      it 'does not display a progress notice' do
+        expect(page).to_not have_content("Well done, you are making progress towards achieving your target")
       end
     end
 

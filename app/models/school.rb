@@ -425,6 +425,14 @@ class School < ApplicationRecord
     school_targets.by_start_date.first
   end
 
+  def expired_target
+    school_targets.by_start_date.select(&:expired?).first
+  end
+
+  def has_expired_target?
+    expired_target.present?
+  end
+
   def has_school_target_event?(event_name)
     school_target_events.where(event: event_name).any?
   end
