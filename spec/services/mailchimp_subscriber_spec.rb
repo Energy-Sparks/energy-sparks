@@ -3,9 +3,7 @@ require 'rails_helper'
 describe MailchimpSubscriber do
 
   let(:school_group) { create(:school_group, name: 'Sussex') }
-  let(:school) { create(:school, school_group: school_group, percentage_free_school_meals: 25) }
   let(:staff_role) { create(:staff_role, title: 'Governor') }
-  let(:user) { create(:user, name: 'Harry', staff_role: staff_role) }
 
   let(:lists_api) { double(MailchimpMarketing::ListsApi) }
   let(:client) { double(MailchimpMarketing::Client, lists: lists_api) }
@@ -18,21 +16,37 @@ describe MailchimpSubscriber do
   let(:list_with_interests) { OpenStruct.new(id: 'list_with_interests', categories: [category_1, category_2]) }
 
   context 'when subscribing' do
+    context 'with school' do
+      let(:school) { create(:school, school_group: school_group, percentage_free_school_meals: 25) }
+      let(:user) { create(:user, name: 'Harry', staff_role: staff_role, school: school) }
 
-    it 'calls api with subscribe params' do
-      expect(api).to receive(:list_with_interests).and_return(list_with_interests)
-      expect(api).to receive(:subscribe).and_return(true)
-      MailchimpSubscriber.new(api).subscribe(school, user)
+      it 'calls api with subscribe params' do
+        expect(api).to receive(:list_with_interests).and_return(list_with_interests)
+        expect(api).to receive(:subscribe).and_return(true)
+        MailchimpSubscriber.new(api).subscribe(user)
+      end
+
+      it 'builds params' do
+        params = MailchimpSubscriber.new(api).mailchimp_signup_params(user, list_with_interests)
+        expect(params.email_address).to eq(user.email)
+        expect(params.tags).to eq('FSM25')
+        expect(params.interests).to eq({'interests_1_2' => 'interests_1_2', 'interests_2_2' => 'interests_2_2'})
+        expect(params.merge_fields['SCHOOL']).to eq(school.name)
+        expect(params.merge_fields['FULLNAME']).to eq(user.name)
+      end
     end
 
-    it 'builds params' do
-      params = MailchimpSubscriber.new(api).mailchimp_signup_params(school, user, list_with_interests)
-      expect(params.email_address).to eq(user.email)
-      expect(params.tags).to eq('FSM25')
-      expect(params.interests).to eq({'interests_1_2' => 'interests_1_2', 'interests_2_2' => 'interests_2_2'})
-      expect(params.merge_fields['SCHOOL']).to eq(school.name)
-      expect(params.merge_fields['FULLNAME']).to eq(user.name)
-    end
+    context 'without school but with school group' do
+      let(:school) { nil }
+      let(:user) { create(:user, name: 'Harry', staff_role: staff_role, school_group: school_group) }
 
+      it 'builds params' do
+        params = MailchimpSubscriber.new(api).mailchimp_signup_params(user, list_with_interests)
+        expect(params.email_address).to eq(user.email)
+        expect(params.tags).to eq('')
+        expect(params.interests).to eq({'interests_1_2' => 'interests_1_2', 'interests_2_2' => 'interests_2_2'})
+        expect(params.merge_fields.keys).to eq(['FULLNAME'])
+      end
+    end
   end
 end
