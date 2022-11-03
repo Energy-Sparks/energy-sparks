@@ -47,6 +47,10 @@
   <%= render 'management/schools/targets/review_targets', school: @school %>
 <% end %>
 
+<% if @set_new_target %>
+  <%= render 'management/schools/targets/set_new_target', school: @school %>
+<% end %>
+
 <% if @show_standard_prompts %>
   <%= render 'management/schools/complete_programmes', school: @school %>
 
