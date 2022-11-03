@@ -426,7 +426,7 @@ class School < ApplicationRecord
   end
 
   def expired_target
-    school_targets.by_start_date.select(&:expired?).first
+    school_targets.by_start_date.expired.first
   end
 
   def has_expired_target?
