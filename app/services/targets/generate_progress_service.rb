@@ -8,17 +8,17 @@ module Targets
 
     def cumulative_progress(fuel_type)
       target_progress = target_progress(fuel_type)
-      target_progress.present? ? target_progress.current_cumulative_performance_versus_synthetic_last_year : nil
+      target_progress.present? ? target_progress.cumulative_performance_versus_synthetic_last_year[reporting_month] : nil
     end
 
     def current_monthly_target(fuel_type)
       target_progress = target_progress(fuel_type)
-      target_progress.present? ? target_progress.cumulative_targets_kwh[this_month] : nil
+      target_progress.present? ? target_progress.cumulative_targets_kwh[reporting_month] : nil
     end
 
     def current_monthly_usage(fuel_type)
       target_progress = target_progress(fuel_type)
-      target_progress.present? ? target_progress.current_cumulative_usage_kwh : nil
+      target_progress.present? ? target_progress.cumulative_usage_kwh[reporting_month] : nil
     end
 
     def generate!
@@ -84,8 +84,14 @@ module Targets
       end
     end
 
-    def this_month
-      Time.zone.today.beginning_of_month
+    def reporting_month
+      #if target is expired, then use the final month, otherwise report on
+      #current progress
+      if target.expired?
+        target.target_date.prev_month.beginning_of_month
+      else
+        Time.zone.today.beginning_of_month
+      end
     end
 
     def target_progress(fuel_type)

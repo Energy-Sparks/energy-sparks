@@ -61,7 +61,13 @@ module Schools
     end
 
     def this_month
-      Time.zone.today.beginning_of_month
+      #if target is expired, then use the final month, otherwise report on
+      #current progress
+      if @school_target.expired?
+        @school_target.target_date.prev_month.beginning_of_month
+      else
+        Time.zone.today.beginning_of_month
+      end
     end
 
     def bad_estimate?(type)
