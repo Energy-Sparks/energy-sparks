@@ -434,6 +434,7 @@ Rails.application.routes.draw do
         resources :consent_requests
         resources :bill_requests
         resource :target_data, only: :show
+        resources :notes
       end
       member do
         get :removal

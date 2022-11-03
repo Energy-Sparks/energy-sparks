@@ -21,6 +21,10 @@ module ApplicationHelper
     date ? date.to_s(:es_short) : ""
   end
 
+  def nice_date_times_today(datetime)
+    datetime.today? ? "at #{nice_times_only(datetime)}" : "on #{short_dates(datetime)}"
+  end
+
   def human_counts(collection)
     case collection.count
     when 0
