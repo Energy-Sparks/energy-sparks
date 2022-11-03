@@ -13,13 +13,13 @@ module Admin
   private
 
     def site_settings_params
-      new_settings_params = settings_params
+      formatted_settings_params = settings_params
       SiteSettings.stored_attributes[:prices].each do |price_type|
         next unless settings_params[price_type]
 
-        new_settings_params[price_type] = settings_params[price_type].to_f
+        formatted_settings_params[price_type] = formatted_settings_params[price_type].to_f
       end
-      new_settings_params
+      formatted_settings_params
     end
 
     def settings_params
