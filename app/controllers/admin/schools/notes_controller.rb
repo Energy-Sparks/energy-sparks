@@ -7,7 +7,7 @@ module Admin
       load_and_authorize_resource through: :school
 
       def index
-        @notes = @notes.by_updated_at
+        @pagy, @notes = pagy(@notes.by_updated_at)
       end
 
       def new
