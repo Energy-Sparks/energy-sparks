@@ -36,6 +36,14 @@ module Admin
         redirect_to admin_school_notes_path(@school), notice: "#{@note.note_type.capitalize} was successfully deleted."
       end
 
+      def resolve
+        notice = "#{@note.note_type.capitalize} was successfully resolved."
+        unless @note.resolve!
+          notice = "Can only resolve issues (and not notes)."
+        end
+        redirect_to admin_school_notes_path(@school), notice: notice
+      end
+
       private
 
       def note_params

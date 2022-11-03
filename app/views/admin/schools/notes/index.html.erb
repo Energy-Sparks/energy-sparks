@@ -12,7 +12,7 @@
 <% @notes.each do |note| %>
   <div class="row padded-row">
     <div class="col-md-11 bg-light">
-      <h3><%= note.title %></h3>
+      <h3><%= fa_icon(note.issue? ? 'bell' : 'sticky-note') %> <%= note.title %></h3>
       <span class="badge badge-pill <%= note.issue? ? "badge-danger" : "badge-success" %>"><%= note.note_type.capitalize %></span>
       <% if note.fuel_type %>
         <span class="badge badge-secondary"><%= note.fuel_type.capitalize %></span>
@@ -26,6 +26,7 @@
     </div>
     <div class="col-md-1">
       <%= link_to 'Edit', edit_admin_school_note_path(@school, note), class: 'btn btn-info' %>
+      <%= link_to 'Resolve', resolve_admin_school_note_path(@school, note), class: 'btn btn-info' if note.resolvable? %>
       <%= link_to 'Delete', admin_school_note_path(@school, note), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
     </div>
   </div>
