@@ -130,6 +130,15 @@ class User < ApplicationRecord
     [school].compact
   end
 
+  def school_name
+    school.name if school
+  end
+
+  def school_group_name
+    return school.school_group.name if school && school.school_group
+    return school_group.name if school_group
+  end
+
   def self.new_pupil(school, attributes)
     new(
       attributes.merge(
