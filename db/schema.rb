@@ -1396,14 +1396,6 @@ ActiveRecord::Schema.define(version: 2022_11_03_112116) do
     t.index ["academic_year_calendar_id"], name: "index_scoreboards_on_academic_year_calendar_id"
   end
 
-  create_table "settings", force: :cascade do |t|
-    t.string "var", null: false
-    t.text "value"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["var"], name: "index_settings_on_var", unique: true
-  end
-
   create_table "simulations", force: :cascade do |t|
     t.text "title"
     t.text "notes"
