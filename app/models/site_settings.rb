@@ -14,10 +14,7 @@
 
 class SiteSettings < ApplicationRecord
   store_accessor :prices, :electricity_price, :solar_export_price, :gas_price, :oil_price
-  validates :electricity_price, numericality: { only_float: true }
-  validates :solar_export_price, numericality: { only_float: true }
-  validates :gas_price, numericality: { only_float: true }
-  validates :oil_price, numericality: { only_float: true }
+  validates :electricity_price, :solar_export_price, :gas_price, :oil_price, numericality: { only_float: true, allow_blank: true }
 
   def self.current
     order('created_at DESC').first || new
@@ -25,5 +22,9 @@ class SiteSettings < ApplicationRecord
 
   def temperature_recording_month_numbers
     temperature_recording_months.reject(&:blank?).map(&:to_i)
+  end
+
+  def all_prices
+    OpenStruct.new(prices)
   end
 end
