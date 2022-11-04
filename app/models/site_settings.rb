@@ -14,7 +14,10 @@
 
 class SiteSettings < ApplicationRecord
   store_accessor :prices, :electricity_price, :solar_export_price, :gas_price, :oil_price
-  validates :electricity_price, :solar_export_price, :gas_price, :oil_price, numericality: { only_float: true, allow_blank: true }
+  validates :electricity_price, :solar_export_price, :gas_price, :oil_price, presence: true, numericality: { only_float: true, allow_blank: true }
+  after_create :invalidate_current_prices_cache
+
+  SITE_SETTINGS_CURRENT_PRICE_CACHE_KEY = 'site_settings_current_prices'.freeze
 
   def self.current
     order('created_at DESC').first || new
@@ -25,6 +28,14 @@ class SiteSettings < ApplicationRecord
   end
 
   def self.current_prices
-    OpenStruct.new(current.prices)
+    Rails.cache.fetch(SITE_SETTINGS_CURRENT_PRICE_CACHE_KEY) do
+      OpenStruct.new(current.prices)
+    end
+  end
+
+  private
+
+  def invalidate_current_prices_cache
+    Rails.cache.delete(SITE_SETTINGS_CURRENT_PRICE_CACHE_KEY)
   end
 end

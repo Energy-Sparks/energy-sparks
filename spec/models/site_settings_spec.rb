@@ -54,8 +54,8 @@ describe SiteSettings do
     it 'returns an openstruct of all current price values' do
       (1..3).each { |i| SiteSettings.create!(electricity_price: i.to_f, solar_export_price: i.to_f, gas_price: i.to_f, oil_price: i.to_f) }
       expect(SiteSettings.current).to eq(SiteSettings.order(:created_at).last)
-      expect(SiteSettings.current_prices.class).to eq(OpenStruct)
-      expect(SiteSettings.current_prices.to_h).to eq({ gas_price: 3.0, oil_price: 3.0, electricity_price: 3.0, solar_export_price: 3.0 })
+      expect(SiteSettings.current_prices.class).to eq(Hash)
+      expect(SiteSettings.current_prices).to eq(gas_price: 3.0, oil_price: 3.0, electricity_price: 3.0, solar_export_price: 3.0)
     end
   end
 end
