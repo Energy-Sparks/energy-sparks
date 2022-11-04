@@ -1,5 +1,5 @@
 module ChartHelper
-  def chart_tag(school, chart_type, wrap: true, show_advice: false, no_zoom: false, chart_config: {}, html_class: 'analysis-chart')
+  def chart_tag(school, chart_type, wrap: true, show_advice: false, no_zoom: false, chart_config: {}, html_class: 'analysis-chart', autoload_chart: true)
     chart_config[:no_advice] = !show_advice
     chart_config[:no_zoom] = no_zoom
     chart_container = content_tag(
@@ -8,6 +8,7 @@ module ChartHelper
       id: chart_config[:mpan_mprn].present? ? "chart_#{chart_type}_#{chart_config[:mpan_mprn]}" : "chart_#{chart_type}",
       class: html_class,
       data: {
+        autoload_chart: autoload_chart,
         chart_config: chart_config.merge(
           type: chart_type,
           annotations: school_annotations_path(school),
