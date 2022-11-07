@@ -1,0 +1,24 @@
+<% content_for :page_title do %>Benchmark run reports for <%= @school.name %><% end %>
+
+<h1>Benchmark result generation runs</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Successful results</th>
+      <th>Errors</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @benchmark_result_school_generation_runs.each do |run| %>
+      <tr>
+        <td><%= nice_date_times(run.created_at) %></td>
+        <td><%= run.benchmark_results.count %></td>
+        <td><%= run.benchmark_result_errors.count %></td>
+        <td><%= link_to 'View', school_benchmark_report_path(@school, run), class: 'btn' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

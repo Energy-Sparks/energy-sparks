@@ -5,18 +5,6 @@ describe Observation do
   let(:school_name) { 'Active school'}
   let!(:school)     { create(:school, name: school_name) }
 
-  it 'can have a date in the past' do
-    expect(Observation.new(at: Date.yesterday, school: school).valid?).to be true
-  end
-
-  it 'can have a date today' do
-    expect(Observation.new(at: DateTime.now, school: school).valid?).to be true
-  end
-
-  it 'cannot have a date in the future' do
-    expect(Observation.new(at: Date.tomorrow, school: school).valid?).to be false
-  end
-
   describe '#recorded_in_last_week' do
     let(:observation_too_old)      { create(:observation, observation_type: :temperature) }
     let(:observation_last_week_1)  { create(:observation, observation_type: :temperature) }
@@ -73,6 +61,5 @@ describe Observation do
       observation.reload
       expect(observation.points).to eq(50)
     end
-
   end
 end
