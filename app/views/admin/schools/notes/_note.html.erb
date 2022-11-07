@@ -1,7 +1,7 @@
 <div class="row p-2">
   <div class="col-md-12 bg-light">
     <div>
-      <h5><%= fa_icon(note.issue? ? 'exclamation-circle text-secondary' : 'sticky-note text-secondary') %> <%= link_to_if index, note.title, admin_school_note_path(@school,note) %>
+      <h5><%= fa_icon(note.issue? ? 'exclamation-circle text-secondary' : 'sticky-note text-secondary') %> <%= note.title %>
         <div class="float-right"><small> <span class="badge badge-secondary"><%= note.updated_by.email %></span> <%= nice_date_times_today(note.updated_at) %></small></div>
       </h5>
     </div>
