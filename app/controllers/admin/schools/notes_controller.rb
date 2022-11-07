@@ -16,7 +16,7 @@ module Admin
 
       def create
         @note.assign_attributes(created_by: current_user, updated_by: current_user)
-        if @note.save!
+        if @note.save
           redirect_to admin_school_notes_path(@school), notice: "#{@note.note_type.capitalize} was successfully created."
         else
           render :new

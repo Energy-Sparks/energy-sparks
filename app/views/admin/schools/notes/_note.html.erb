@@ -13,7 +13,8 @@
       <span class="badge badge-secondary"><%= note.fuel_type.capitalize %></span>
     <% end %>
     <div class="bg-white my-2 p-2"><%= note.description %></div>
-    <div><small><strong>Created</strong> by <span class="badge badge-secondary"><%= note.created_by.email %></span> <%= on_or_at(note.created_at) %> <strong><%= nice_date_times_today(note.created_at) %></strong></small>
+    <div>
+      <small><strong>Created</strong> by <span class="badge badge-secondary"><%= note.created_by.email %></span> <%= on_or_at(note.created_at) %> <strong><%= nice_date_times_today(note.created_at) %></strong></small>
       <div class='float-right pb-2'>
         <%= link_to 'Resolve', resolve_admin_school_note_path(@school, note), class: 'btn btn-info btn-sm' if note.resolvable? %>
         <% if index %>
