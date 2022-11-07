@@ -66,9 +66,9 @@ $(document).ready(function() {
   });
 
   $('#management-energy-overview').on('show.bs.tab', function (e) {
-    chart = $(e.target.hash + '-chart')
-    chartId = chart[0].children[0].id
-    chart = $('#' + chartId)
+    // Find the chart by matching the class
+    chart = $('.' + e.target.hash.replace('#','') + '-analysis-chart')
+
     // Only re/load chart if autoload chart is false (first tab is true)
     if (chart.data('autoload-chart') === false) {
       chart.data('autoload-chart', true)
