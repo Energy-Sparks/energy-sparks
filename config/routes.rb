@@ -209,6 +209,8 @@ Rails.application.routes.draw do
       end
 
       resources :alert_reports, only: [:index, :show]
+      resources :benchmark_reports, only: [:index, :show]
+      resources :benchmark_results, only: [:show]
       resources :content_reports, only: [:index, :show]
       resources :equivalence_reports, only: [:index, :show]
       get :chart, to: 'charts#show'
