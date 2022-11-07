@@ -41,7 +41,6 @@ class Observation < ApplicationRecord
   enum observation_type: [:temperature, :intervention, :activity, :event, :audit]
 
   validates_presence_of :at, :school
-  validate :at_date_cannot_be_in_the_future
   validates_associated :temperature_recordings
 
   validates :intervention_type_id, presence: { message: 'please select an option' }, if: :intervention?
@@ -60,10 +59,6 @@ class Observation < ApplicationRecord
   has_rich_text :description
 
   before_save :add_points_for_interventions
-
-  def at_date_cannot_be_in_the_future
-    errors.add(:at, "can't be in the future") if at.present? && at > Time.zone.today.end_of_day
-  end
 
 private
 
