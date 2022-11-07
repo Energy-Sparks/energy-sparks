@@ -22,7 +22,11 @@ module ApplicationHelper
   end
 
   def nice_date_times_today(datetime)
-    datetime.today? ? "at #{nice_times_only(datetime)}" : "on #{short_dates(datetime)}"
+    datetime.today? ? nice_times_only(datetime) : short_dates(datetime)
+  end
+
+  def on_or_at(datetime)
+    datetime.today? ? 'at' : 'on'
   end
 
   def human_counts(collection)
