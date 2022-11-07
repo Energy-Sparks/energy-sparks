@@ -14,7 +14,7 @@ module ChartHelper
           annotations: school_annotations_path(school),
           jsonUrl: school_chart_path(school, format: :json),
           transformations: []
-        ),
+        )
       }
     )
     chart_container += "<div id='chart-error' class='d-none'>#{I18n.t('chart_data_values.standard_error_message')}</div>".html_safe
