@@ -12,7 +12,8 @@ class Note < ApplicationRecord
 
   validates :note_type, :status, :title, :description, presence: true
 
-  def resolve!
+  def resolve!(attrs = {})
+    self.attributes = attrs
     closed! if issue?
   end
 

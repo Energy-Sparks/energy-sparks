@@ -25,21 +25,24 @@ RSpec.describe Note, type: :model do
   end
 
   context "#resolve!" do
+    let!(:user) { create(:admin) }
     context "when note is a note" do
       subject(:note) { create(:note) }
-      it { expect(note.resolve!).to be_falsey }
-      it "has a status of open" do
-        note.resolve!
-        expect(note).to be_open
+      it { expect(note.resolve!(updated_by: user)).to be_falsey }
+      before do
+        note.resolve!(updated_by: user)
       end
+      it { expect(note).to be_open }
+      it { expect(note.updated_by).to eq(user) }
     end
     context "when note is an issue" do
       subject(:note) { create(:note, note_type: :issue) }
-      it { expect(note.resolve!).to be_truthy }
-      it "has a status of closed" do
-        note.resolve!
-        expect(note).to be_closed
+      it { expect(note.resolve!(updated_by: user)).to be_truthy }
+      before do
+        note.resolve!(updated_by: user)
       end
+      it { expect(note).to be_closed }
+      it { expect(note.updated_by).to eq(user) }
     end
   end
 end

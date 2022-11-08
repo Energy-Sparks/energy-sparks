@@ -15,7 +15,7 @@ module Admin
       end
 
       def create
-        @note.assign_attributes(created_by: current_user, updated_by: current_user)
+        @note.attributes = { created_by: current_user, updated_by: current_user }
         if @note.save
           redirect_to admin_school_notes_path(@school), notice: "#{@note.note_type.capitalize} was successfully created."
         else
@@ -38,10 +38,10 @@ module Admin
 
       def resolve
         notice = "#{@note.note_type.capitalize} was successfully resolved."
-        unless @note.resolve!
+        unless @note.resolve!(updated_by: current_user)
           notice = "Can only resolve issues (and not notes)."
         end
-        redirect_to admin_school_notes_path(@school), notice: notice
+        redirect_back fallback_location: admin_school_notes_path(@school), notice: notice
       end
 
       private

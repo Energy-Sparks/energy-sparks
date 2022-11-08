@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe 'school notes', :notes, type: :system, include_application_helper: true do
   let!(:school) { create(:school) }
   let!(:note)   {}
-  let!(:notes)  { [] }
   let!(:user)   {}
 
   describe "Viewing school notes admin page" do
@@ -106,9 +105,63 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
                 expect(page).to have_content "Gas"
                 expect(page).to have_content "#{user.email} #{nice_date_times_today(frozen_time)}"
                 expect(page).to have_content "Created by #{user.email} at #{nice_date_times_today(note.created_at)}"
+                expect(page).to have_content "Open" if note_type == "issue"
               end
               after { Timecop.return }
             end
+          end
+        end
+      end
+
+      context "and viewing index" do
+        let!(:note) { create(:note, school: school, note_type: :issue, fuel_type: :gas, created_by: user, updated_by: user) }
+
+        it "displays note" do
+          expect(page).to have_content note.note_type.capitalize
+          expect(page).to have_content note.title
+          expect(page).to have_content note.description.to_plain_text
+          expect(page).to have_content note.fuel_type.capitalize
+          expect(page).to have_content "#{user.email} #{nice_date_times_today(note.updated_at)}"
+          expect(page).to have_content "Created by #{user.email} at #{nice_date_times_today(note.created_at)}"
+          expect(page).to have_content note.status.capitalize
+        end
+
+        it { expect(page).to have_link('Delete') }
+        context "and deleting a note" do
+          before do
+            click_link("Delete")
+          end
+          it { expect(page).to have_current_path(admin_school_notes_path(school)) }
+          it "does not show removed note" do
+            expect(page).to_not have_content note.title
+          end
+        end
+
+        it { expect(page).to have_link('View') }
+        context "and clicking 'View'" do
+          before do
+            click_link("View")
+          end
+          it { expect(page).to have_current_path(admin_school_note_path(school, note)) }
+          it "displays note" do
+            expect(page).to have_content note.note_type.capitalize
+            expect(page).to have_content note.title
+            expect(page).to have_content note.description.to_plain_text
+            expect(page).to have_content note.fuel_type.capitalize
+            expect(page).to have_content "#{user.email} #{nice_date_times_today(note.updated_at)}"
+            expect(page).to have_content "Created by #{user.email} at #{nice_date_times_today(note.created_at)}"
+            expect(page).to have_content note.status.capitalize
+          end
+        end
+
+        it { expect(page).to have_link('Resolve') }
+        context "and clicking 'Resolve'" do
+          before do
+            click_link("Resolve")
+          end
+          it { expect(page).to have_current_path(admin_school_notes_path(school)) }
+          it "displays note as closed" do
+            expect(page).to have_content "Closed"
           end
         end
       end
