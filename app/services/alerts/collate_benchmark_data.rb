@@ -23,14 +23,15 @@ module Alerts
       latest_school_runs.each do |benchmark_result_school_generation_run|
         school_id = benchmark_result_school_generation_run.school_id
 
-        benchmark_result_school_generation_run.benchmark_results.pluck(:asof, result_column).each do |benchmark_result|
-          unless benchmarks.key?(benchmark_result[0])
-            benchmarks[benchmark_result[0]] = { school_id => {} }
+        benchmark_result_school_generation_run.benchmark_results.pluck(result_column).each do |benchmark_result|
+          # When collating results we need to collate around benchmark run date (created_at) not analysis (asof) date
+          unless benchmarks.key?(@benchmark_run.created_at)
+            benchmarks[@benchmark_run.created_at] = { school_id => {} }
           end
-          unless benchmarks[benchmark_result[0]].key?(school_id)
-            benchmarks[benchmark_result[0]][school_id] = {}
+          unless benchmarks[@benchmark_run.created_at].key?(school_id)
+            benchmarks[@benchmark_run.created_at][school_id] = {}
           end
-          benchmarks[benchmark_result[0]][school_id] = benchmarks[benchmark_result[0]][school_id].merge!(BenchmarkResult.convert_for_processing(benchmark_result[1]))
+          benchmarks[@benchmark_run.created_at][school_id] = benchmarks[@benchmark_run.created_at][school_id].merge!(BenchmarkResult.convert_for_processing(benchmark_result))
         end
       end
     end
