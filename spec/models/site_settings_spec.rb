@@ -23,28 +23,28 @@ describe SiteSettings do
       site_setting.electricity_price = 'not a float'
       expect(site_setting.valid?).to be_falsy
       site_setting.electricity_price = nil
-      expect(site_setting.valid?).to be_truthy
+      expect(site_setting.valid?).to be_falsy
       site_setting.electricity_price = 1.0
       expect(site_setting.valid?).to be_truthy
 
       site_setting.solar_export_price = 'not a float'
       expect(site_setting.valid?).to be_falsy
       site_setting.solar_export_price = nil
-      expect(site_setting.valid?).to be_truthy
+      expect(site_setting.valid?).to be_falsy
       site_setting.solar_export_price = 1.0
       expect(site_setting.valid?).to be_truthy
 
       site_setting.gas_price = 'not a float'
       expect(site_setting.valid?).to be_falsy
       site_setting.gas_price = nil
-      expect(site_setting.valid?).to be_truthy
+      expect(site_setting.valid?).to be_falsy
       site_setting.gas_price = 1.0
       expect(site_setting.valid?).to be_truthy
 
       site_setting.oil_price = 'not a float'
       expect(site_setting.valid?).to be_falsy
       site_setting.oil_price = nil
-      expect(site_setting.valid?).to be_truthy
+      expect(site_setting.valid?).to be_falsy
       site_setting.oil_price = 1.0
       expect(site_setting.valid?).to be_truthy
     end
