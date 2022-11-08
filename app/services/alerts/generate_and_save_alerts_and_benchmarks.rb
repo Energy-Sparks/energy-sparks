@@ -56,7 +56,7 @@ module Alerts
     end
 
     def process_benchmark_type_run_result(alert_type_run_result)
-      asof_date = alert_type_run_result.asof_date
+      asof_date = Time.zone.today
       alert_type = alert_type_run_result.alert_type
 
       alert_type_run_result.error_messages.each do |error_message|
