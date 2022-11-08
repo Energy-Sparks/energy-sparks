@@ -8,6 +8,9 @@
     <li><%= link_to 'Alert reports', school_alert_reports_path(@school) %> -- view summary of recent alert runs</li>
   <% end %>
   <% if can? :view_content_reports, @school %>
+    <li><%= link_to 'Benchmark reports', school_benchmark_reports_path(@school) %> -- view summary of recent benchmark runs</li>
+  <% end %>
+  <% if can? :view_content_reports, @school %>
     <li><%= link_to 'Equivalences', school_equivalence_reports_path(@school) %> -- view details of generated equivalences</li>
   <% end %>
   <% if can? :view_content_reports, @school %>
