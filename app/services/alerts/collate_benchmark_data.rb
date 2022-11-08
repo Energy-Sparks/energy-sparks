@@ -19,19 +19,23 @@ module Alerts
       EnergySparks::FeatureFlags.active?(:json_benchmarks) ? :results : :data
     end
 
+    def benchmark_run_date
+      @benchmark_run_date ||= @benchmark_run.run_date
+    end
+
     def get_benchmarks_for_latest_run(latest_school_runs, benchmarks)
       latest_school_runs.each do |benchmark_result_school_generation_run|
         school_id = benchmark_result_school_generation_run.school_id
 
         benchmark_result_school_generation_run.benchmark_results.pluck(result_column).each do |benchmark_result|
-          # When collating results we need to collate around benchmark run date (created_at) not analysis (asof) date
-          unless benchmarks.key?(@benchmark_run.created_at)
-            benchmarks[@benchmark_run.created_at] = { school_id => {} }
+          # When collating results we need to collate around benchmark run date not analysis (asof) date
+          unless benchmarks.key?(benchmark_run_date)
+            benchmarks[benchmark_run_date] = { school_id => {} }
           end
-          unless benchmarks[@benchmark_run.created_at].key?(school_id)
-            benchmarks[@benchmark_run.created_at][school_id] = {}
+          unless benchmarks[benchmark_run_date].key?(school_id)
+            benchmarks[benchmark_run_date][school_id] = {}
           end
-          benchmarks[@benchmark_run.created_at][school_id] = benchmarks[@benchmark_run.created_at][school_id].merge!(BenchmarkResult.convert_for_processing(benchmark_result))
+          benchmarks[benchmark_run_date][school_id] = benchmarks[benchmark_run_date][school_id].merge!(BenchmarkResult.convert_for_processing(benchmark_result))
         end
       end
     end
