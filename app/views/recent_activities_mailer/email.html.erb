@@ -1,0 +1,22 @@
+<h1>Recently recorded activities</h1>
+
+<br/>
+
+<p>The following is a list of all activities by schools in the last 7 days (since <%= nice_dates(1.week.ago) %>).</p>
+
+<br/>
+
+<%= render 'shared/activities', activities: @activities %>
+
+<br/>
+<br/>
+
+<h1>Recently recorded interventions</h1>
+
+<br/>
+
+<p>The following is a list of all energy saving actions recorded by school in the last 7 days (since <%= nice_dates(1.week.ago) %>).</p>
+
+<br/>
+
+<%= render 'shared/observations', observations: @observations %>
