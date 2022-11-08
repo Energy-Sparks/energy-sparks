@@ -3,7 +3,7 @@
 <% end %>
 
 <p>
-  <%= link_to "#{((fa_icon('sticky-note text-secondary')))} New Note".html_safe, new_admin_school_note_path(@school), class: 'btn btn-primary btn-sm' %>
+  <%= link_to "#{((fa_icon('sticky-note text-secondary')))} New Note".html_safe, new_admin_school_note_path(@school, note_type: :note), class: 'btn btn-primary btn-sm' %>
   <%= link_to "#{((fa_icon('exclamation-circle text-secondary')))} New Issue".html_safe, new_admin_school_note_path(@school, note_type: :issue), class: 'btn btn-primary btn-sm' %>
 </p>
 
