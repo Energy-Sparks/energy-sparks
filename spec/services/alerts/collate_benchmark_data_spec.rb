@@ -3,11 +3,11 @@ require 'rails_helper'
 module Alerts
   describe CollateBenchmarkData do
 
-    let(:date_1)              { Date.parse('01/01/2019') }
-    let(:date_2)              { Date.parse('01/01/2018') }
     let(:school_1)            { create(:school) }
     let(:school_2)            { create(:school) }
     let(:run)                 { BenchmarkResultGenerationRun.create! }
+    let(:date_1)              { run.run_date }
+    let(:date_2)              { run.run_date }
 
     let(:school_run_1)        { BenchmarkResultSchoolGenerationRun.create(school: school_1, benchmark_result_generation_run: run ) }
     let(:school_run_2_old)    { BenchmarkResultSchoolGenerationRun.create(school: school_2, benchmark_result_generation_run: run ) }
