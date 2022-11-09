@@ -1,12 +1,12 @@
 <%= simple_form_for school_group, html: { class: 'form-group', method: 'post' } do |f| %>
-  <table class="table table-sorted table-striped">
+  <table class="table table-sorted table-striped" style="width:100%">
     <thead>
       <tr>
         <th class="no-sort"><%= check_box_tag "check-all-#{school_group.id}", false, false, { class: 'check-all' } %></th>
-        <th>School name</th>
+        <th>School</th>
         <th>Contact email</th>
         <th>Last activity</th>
-        <th>last event</th>
+        <th>Last event</th>
         <th class="no-sort"></th>
       </tr>
     </thead>
@@ -15,9 +15,9 @@
         <tr>
           <td><%= f.check_box :school_onboarding_ids, { multiple: true, checked: false }, onboarding.id, nil %></td>
           <td><%= link_to onboarding.school_name, onboarding_path(onboarding) %></td>
-          <td><%= onboarding.contact_email %> <%= link_to 'Change', edit_admin_school_onboarding_email_path(onboarding), class: 'btn btn-warning btn-sm' if onboarding.has_only_sent_email_or_reminder? %></td>
-          <td data-order="<%= onboarding.events.maximum(:created_at) %>"><%= nice_date_times(onboarding.events.maximum(:created_at)) %></td>
-          <td><%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)).try(:humanize) %></td>
+          <td class="wrap"><%= onboarding.contact_email %> <%= link_to fa_icon('edit'), edit_admin_school_onboarding_email_path(onboarding), class: "", title: "Change email address" if onboarding.has_only_sent_email_or_reminder? %></td>
+          <td class="nowrap" data-order="<%= onboarding.events.maximum(:created_at) %>"><%= nice_date_times(onboarding.events.maximum(:created_at)) %></td>
+          <td class="nowrap"><span class="badge badge-secondary"><%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)).try(:humanize) %></span></td>
           <td class="nowrap text-right">
             <%= link_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding), class: 'btn btn-warning btn-sm', method: :post %>
             <% if onboarding.school && onboarding.school.consent_grants.any? %>

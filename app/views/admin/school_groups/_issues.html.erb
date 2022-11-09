@@ -1,11 +1,11 @@
-<table class="table table-sorted table-striped">
+<table class="table table-sorted table-striped" style="width: 100%">
   <thead>
     <tr>
       <th class="no-sort"></th>
       <th>Issue</th>
       <th>Fuel type</th>
-      <th>Updated</th>
       <th>Updated by</th>
+      <th>Updated</th>
       <th class="no-sort"></th>
     </tr>
   </thead>
@@ -18,8 +18,8 @@
             <span class="badge badge-secondary"><%= issue.fuel_type.capitalize %></span>
           <% end %>
         </td>
-        <td><%= nice_date_times(issue.updated_at) %></td>
         <td><%= issue.updated_by.email %></td>
+        <td><%= nice_date_times(issue.updated_at) %></td>
         <td class="nowrap text-right">
           <%= link_to 'View', admin_school_note_path(issue.school, issue), class: "btn btn-sm" %>
         </td>
