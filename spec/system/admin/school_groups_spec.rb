@@ -207,13 +207,13 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           let!(:setup_data) { school }
 
           it "lists school in active tab" do
-            within '#active-content' do
+            within '#active' do
               expect(page).to have_link(school.name, href: school_path(school))
             end
           end
 
           it "has an action buttons" do
-            within '#active-content' do
+            within '#active' do
               expect(page).to have_link('Issues')
               expect(page).to have_link('Edit')
               expect(page).to have_link('Users')
@@ -221,7 +221,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
             end
           end
           it "has status pill buttons" do
-            within '#active-content' do
+            within '#active' do
               expect(page).to have_link('Visible')
               expect(page).to have_link('Public')
               expect(page).to have_link('Process data')
@@ -231,7 +231,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           end
           context "and clicking 'Issues'" do
             before do
-              within '#active-content' do
+              within '#active' do
                 click_link 'Issues'
               end
             end
@@ -239,7 +239,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           end
           context "and clicking 'Edit'" do
             before do
-              within '#active-content' do
+              within '#active' do
                 click_link 'Edit'
               end
             end
@@ -247,7 +247,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           end
           context "and clicking 'Users'" do
             before do
-              within '#active-content' do
+              within '#active' do
                 click_link 'User'
               end
             end
@@ -255,7 +255,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           end
           context "and clicking 'Meters'" do
             before do
-              within '#active-content' do
+              within '#active' do
                 click_link 'Meters'
               end
             end
@@ -266,7 +266,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           let!(:school) { create(:school, active: false, name: "A School", school_group: school_group) }
           let!(:setup_data) { school }
           it "doesn't show school active tab" do
-            within '#active-content' do
+            within '#active' do
               expect(page).to_not have_link(school.name)
               expect(page).to have_content("No active schools for #{school_group.name}.")
             end
@@ -279,9 +279,9 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           click_on "Onboarding"
         end
         it "displays a message when there are no onboarding schools" do
-            within '#onboarding-content' do
-              expect(page).to have_content("No schools currently onboarding for #{school_group.name}.")
-            end
+          within '#onboarding' do
+            expect(page).to have_content("No schools currently onboarding for #{school_group.name}.")
+          end
         end
         it_behaves_like "admin school group onboardings"
       end
@@ -291,7 +291,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           let!(:school) { create(:school, active: false, name: "A School", school_group: school_group, removal_date: Time.now) }
           let!(:setup_data) { school }
           it "lists school in removed tab" do
-            within '#removed-content' do
+            within '#removed' do
               expect(page).to have_link(school.name, href: school_path(school))
               expect(page).to have_content(nice_dates(school.removal_date))
               expect(page).to have_link("Meters")
@@ -302,7 +302,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           let!(:school) { create(:school, active: true, name: "A School", school_group: school_group) }
           let!(:setup_data) { school }
           it "doesn't show school in removed tab" do
-            within '#removed-content' do
+            within '#removed' do
               expect(page).to_not have_link(school.name)
               expect(page).to have_content("No removed schools for #{school_group.name}.")
             end
