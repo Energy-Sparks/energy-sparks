@@ -1,5 +1,5 @@
 <div class="row p-2">
-  <div class="col-md-12 bg-light">
+  <div class="col-md-12 bg-light border-left rounded border-6 <%= note.issue? ? "border-danger" : "border-warning" %>">
     <h4>
       <%= fa_icon(note.issue? ? 'exclamation-circle text-secondary' : 'sticky-note text-secondary') %> <%= note.title %>
       <div class="float-right">
