@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_31_115646) do
+ActiveRecord::Schema.define(version: 2022_11_09_172835) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1378,6 +1378,10 @@ ActiveRecord::Schema.define(version: 2022_10_31_115646) do
     t.integer "chart_preference", default: 0, null: false
     t.integer "country", default: 0, null: false
     t.integer "funding_status", default: 0, null: false
+    t.boolean "alternative_heating_oil", default: false, null: false
+    t.boolean "alternative_heating_llpg", default: false, null: false
+    t.boolean "alternative_heating_biomass", default: false, null: false
+    t.boolean "alternative_heating_district_heating", default: false, null: false
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
@@ -1417,6 +1421,7 @@ ActiveRecord::Schema.define(version: 2022_10_31_115646) do
     t.integer "management_priorities_page_limit", default: 10
     t.boolean "message_for_no_pupil_accounts", default: true
     t.jsonb "temperature_recording_months", default: ["10", "11", "12", "1", "2", "3", "4"]
+    t.jsonb "prices"
   end
 
   create_table "sms_records", force: :cascade do |t|
