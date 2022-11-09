@@ -21,7 +21,7 @@
         <td><%= nice_date_times(issue.updated_at) %></td>
         <td><%= issue.updated_by.email %></td>
         <td class="nowrap text-right">
-          <%= link_to 'show', admin_school_note_path(issue.school, issue), class: "btn btn-sm" %>
+          <%= link_to 'View', admin_school_note_path(issue.school, issue), class: "btn btn-sm" %>
         </td>
       </tr>
     <% end %>
