@@ -225,12 +225,6 @@ RSpec.describe 'school targets', type: :system do
         expect(page).to have_link("View report", href: electricity_school_progress_index_path(school))
       end
 
-      it 'shows the bullet charts' do
-        expect(page).to have_css('#bullet-chart-electricity')
-        expect(page).to have_css('#bullet-chart-gas')
-        expect(page).to_not have_css('#bullet-chart-storage_heater')
-      end
-
       it 'does not show limited data' do
         expect(page).to_not have_content("against target reduction")
         expect(page).to_not have_content("last week")
@@ -243,11 +237,6 @@ RSpec.describe 'school targets', type: :system do
           school.configuration.update!(suggest_estimates_fuel_types: ["electricity"])
           refresh
         end
-        it 'doesnt show the electricity bullet chart' do
-          expect(page).to_not have_css('#bullet-chart-electricity')
-          expect(page).to have_css('#bullet-chart-gas')
-        end
-
         it 'shows limited data' do
           expect(page).to have_content("Target reduction")
           expect(page).to_not have_content("last week")
