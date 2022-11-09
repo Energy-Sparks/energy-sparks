@@ -36,7 +36,7 @@ module Maps
       fuel_type_icons
     end
 
-    def build_tooltip_html_for(school)
+    def build_popup_html_for(school)
       <<-HTML
         <a href='#{school_path(school)}'>#{school.name}</a>
         <br/>
@@ -47,7 +47,8 @@ module Maps
     end
 
     def school_details(school)
-      { tooltipHtml: build_tooltip_html_for(school) }
+      school_popup_html = ActionController::Base.helpers.sanitize(build_popup_html_for(school))
+      { schoolPopupHtml: school_popup_html }
     end
   end
 end

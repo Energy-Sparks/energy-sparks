@@ -27,7 +27,7 @@ function fireRequestForJson(mapDiv) {
   });
 
   function onEachFeature(feature, layer) {
-    layer.bindPopup(feature.properties.tooltipHtml);
+    layer.bindPopup(feature.properties.schoolPopupHtml);
   }
 
   function makeMap() {
