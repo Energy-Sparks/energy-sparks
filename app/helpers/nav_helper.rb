@@ -54,6 +54,10 @@ module NavHelper
     school.present? && school.id && hide_subnav.nil?
   end
 
+  def header_fix_enabled?
+    !!@header_fix_enabled
+  end
+
   def show_partner_footer?(school)
     school.present? && school.id && school.all_partners.any?
   end
