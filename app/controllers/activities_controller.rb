@@ -14,10 +14,10 @@ class ActivitiesController < ApplicationController
     interpolator = TemplateInterpolation.new(@activity.activity_type, render_with: SchoolTemplate.new(@school))
     if show_data_enabled_activity?(@activity, @school)
       @activity_type_content = interpolator.interpolate(:description).description
-      @activity_type_content = @activity_type_content.body.to_html.html_safe
     else
       @activity_type_content = interpolator.interpolate(:school_specific_description_or_fallback).school_specific_description_or_fallback
     end
+    @activity_type_content = @activity_type_content.body.to_html.html_safe
   end
 
   def completed
