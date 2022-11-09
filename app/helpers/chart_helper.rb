@@ -43,6 +43,7 @@ module ChartHelper
       class: 'analysis-chart',
       style: "height:#{chart_height}px;",
       data: {
+        autoload_chart: true,
         chart_config: chart_config.merge(
           type: chart_type,
           jsonData: formatted_json_data,
