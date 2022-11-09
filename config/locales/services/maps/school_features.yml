@@ -2,6 +2,6 @@
 en:
   maps:
     school_features:
-      school_type: School type
       fuel_types: Fuel types
       pupils: Pupils
+      school_type: School type
