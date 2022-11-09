@@ -13,6 +13,7 @@ $(document).ready(function() {
 
   // For the element which is disappearing under the header, give it a class of header-fix
   $('.header-fix').css('margin-top', getNavHeight());
+
   $(window).resize(function() {
     $('.header-fix').css('margin-top', getNavHeight());
   });
