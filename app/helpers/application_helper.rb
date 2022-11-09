@@ -25,10 +25,6 @@ module ApplicationHelper
     datetime.today? ? nice_times_only(datetime) : short_dates(datetime)
   end
 
-  def on_or_at(datetime)
-    datetime.today? ? 'at' : 'on'
-  end
-
   def human_counts(collection)
     case collection.count
     when 0
