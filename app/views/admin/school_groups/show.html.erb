@@ -67,7 +67,7 @@
     <% end %>
   </div>
   <div class="tab-pane fade" id="issues" role="tabpanel" aria-labelledby="issues-tab">
-    <% if true #@school_group.issues.any? %>
+    <% if @school_group.notes.issue.open.any? %>
       <%= render 'issues', school_group: @school_group %>
     <% else %>
       <div class="bg-light p-2">No notes or issues for <%= @school_group.name %>.</div>

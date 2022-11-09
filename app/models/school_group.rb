@@ -38,6 +38,7 @@ class SchoolGroup < ApplicationRecord
   has_many :schools
   has_many :school_onboardings
   has_many :calendars, through: :schools
+  has_many :notes, through: :schools
   has_many :users
 
   has_many :school_group_partners, -> { order(position: :asc) }
