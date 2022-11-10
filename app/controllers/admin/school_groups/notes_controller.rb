@@ -7,7 +7,6 @@ module Admin
       def index
         @notes = @notes.issue.status_open.by_updated_at
         respond_to do |format|
-          # format.html { @pagy, @responses = pagy(@responses) }
           format.csv do
             send_data @notes.to_csv,
             filename: "#{t('common.application')}-issues-#{@school_group.slug}-#{Time.zone.now.iso8601}".parameterize + '.csv'
