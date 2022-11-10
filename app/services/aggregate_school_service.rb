@@ -15,6 +15,12 @@ class AggregateSchoolService
     end
   end
 
+  def aggregate_school_file
+    # ensure aggregate school is in the cache
+    aggregate_school
+    FileFinder.find(Rails.cache.cache_path, cache_key)
+  end
+
   def invalidate_cache
     Rails.cache.delete(cache_key)
   end
