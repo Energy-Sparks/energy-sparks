@@ -1,5 +1,5 @@
 <div class="row p-2">
-  <div class="col-md-12 bg-light border-left rounded border-6 <%= note.issue? ? "border-danger" : "border-warning" %>">
+  <div class="admin-note col-md-12 bg-light border-left rounded border-6 <%= note.issue? ? "border-danger" : "border-warning" %>">
     <h4>
       <%= fa_icon(note.issue? ? 'exclamation-circle text-secondary' : 'sticky-note text-secondary') %> <%= note.title %>
       <div class="float-right">
@@ -25,7 +25,7 @@
         <%= link_to 'Delete', admin_school_note_path(@school, note), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
       </span>
     </div>
-    <div class="bg-white p-2 my-2 note"><%= note.description %></div>
+    <div class="bg-white p-2 my-2"><%= note.description %></div>
     <div class="pb-2">
       <div class="badge badge-pill bg-white text-dark font-weight-normal">Created • <%= note.created_by.email %> • <%= nice_date_times_today(note.created_at) %></div>
       <div class="badge badge-pill bg-white text-dark font-weight-normal">Updated • <%= note.updated_by.email %> • <%= nice_date_times_today(note.updated_at) %></div>
