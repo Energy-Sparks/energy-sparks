@@ -81,7 +81,23 @@ class SchoolTarget < ApplicationRecord
     )
   end
 
+  def saved_progress_report_for(fuel_type)
+    raise "Invalid fuel type" unless [:electricity, :gas, :storage_heaters].include?(fuel_type)
+    report = self["#{fuel_type}_report".to_sym]
+    return nil unless report&.any?
+    TargetsProgress.new(reformat_saved_report(report))
+  end
+
   private
+
+  #ensure TargetsProgress is round-tripped properly
+  def reformat_saved_report(report)
+    report.symbolize_keys!
+    report[:fuel_type] = report[:fuel_type].to_sym
+    #reparse to Dates from yyyy-mm-dd format
+    report[:months].map! {|m| Date.parse(m)}
+    report
+  end
 
   def target_to_hash(target)
     {
