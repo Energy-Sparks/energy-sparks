@@ -32,7 +32,7 @@ RSpec.describe Note, type: :model do
       before do
         note.resolve!(updated_by: user)
       end
-      it { expect(note).to be_open }
+      it { expect(note).to be_status_open }
       it { expect(note.updated_by).to eq(user) }
     end
     context "when note is an issue" do
@@ -41,7 +41,7 @@ RSpec.describe Note, type: :model do
       before do
         note.resolve!(updated_by: user)
       end
-      it { expect(note).to be_closed }
+      it { expect(note).to be_status_closed }
       it { expect(note.updated_by).to eq(user) }
     end
   end

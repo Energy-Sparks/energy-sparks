@@ -1,4 +1,6 @@
 class Note < ApplicationRecord
+  include CsvExportable
+
   belongs_to :school
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
@@ -8,7 +10,7 @@ class Note < ApplicationRecord
   has_rich_text :description
   enum note_type: { note: 0, issue: 1 }
   enum fuel_type: [:electricity, :gas, :solar]
-  enum status: { open: 0, closed: 1 }
+  enum status: { open: 0, closed: 1 }, prefix: true
 
   validates :note_type, :status, :title, :description, presence: true
 
@@ -18,7 +20,19 @@ class Note < ApplicationRecord
   end
 
   def resolvable?
-    issue? && open?
+    issue? && status_open?
+  end
+
+  def self.csv_headers
+    ["School name", "Title", "Description", "Created by", "Created at", "Updated by", "Updated at"]
+  end
+
+  def self.csv_attributes
+    %w{school.name title description.to_plain_text created_by.name created_at updated_by.name updated_at}
+  end
+
+  def plaintext_description
+    description.to_plain_text
   end
 
   # From rails 6.1 onwards, a default for enums can be specified by setting by _default: :open or rails 7: default: :open on the enum definition

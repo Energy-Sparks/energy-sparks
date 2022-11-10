@@ -305,6 +305,7 @@ Rails.application.routes.draw do
         resource :partners, only: [:show, :update]
         resource :meter_report, only: [:show]
         resource :dashboard_message, only: [:update, :edit, :destroy], controller: '/admin/dashboard_messages'
+        resource :notes, only: [:index]
       end
     end
 
