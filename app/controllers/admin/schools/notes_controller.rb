@@ -15,8 +15,8 @@ module Admin
       end
 
       def create
-        @note.assign_attributes(created_by: current_user, updated_by: current_user)
-        if @note.save!
+        @note.attributes = { created_by: current_user, updated_by: current_user }
+        if @note.save
           redirect_to admin_school_notes_path(@school), notice: "#{@note.note_type.capitalize} was successfully created."
         else
           render :new
@@ -34,6 +34,14 @@ module Admin
       def destroy
         @note.destroy
         redirect_to admin_school_notes_path(@school), notice: "#{@note.note_type.capitalize} was successfully deleted."
+      end
+
+      def resolve
+        notice = "#{@note.note_type.capitalize} was successfully resolved."
+        unless @note.resolve!(updated_by: current_user)
+          notice = "Can only resolve issues (and not notes)."
+        end
+        redirect_back fallback_location: admin_school_notes_path(@school), notice: notice
       end
 
       private

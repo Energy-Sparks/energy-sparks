@@ -214,6 +214,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
           it "has an action buttons" do
             within '#active-content' do
+              expect(page).to have_link('Issues')
               expect(page).to have_link('Edit')
               expect(page).to have_link('Users')
               expect(page).to have_link('Meters')
@@ -227,6 +228,14 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
               expect(page).to have_link('Data visible')
               expect(page).to have_link('Regenerate')
             end
+          end
+          context "and clicking 'Issues'" do
+            before do
+              within '#active-content' do
+                click_link 'Issues'
+              end
+            end
+            it { expect(page).to have_current_path(admin_school_notes_path(school)) }
           end
           context "and clicking 'Edit'" do
             before do

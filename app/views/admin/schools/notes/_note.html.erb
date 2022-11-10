@@ -1,0 +1,30 @@
+<div class="row p-2">
+  <div class="col-md-12 bg-light">
+    <h5><%= fa_icon(note.issue? ? 'exclamation-circle text-secondary' : 'sticky-note text-secondary') %> <%= note.title %>
+      <div class="float-right">
+        <small>
+          <% if note.issue? %>
+            <span class="badge <%= note.open? ? 'badge-primary' : 'badge-secondary' %>"><%= note.status.capitalize %></span>
+          <% end %>
+          <%= nice_date_times_today(note.updated_at) %>
+        </small>
+      </div>
+    </h5>
+    <span class="badge badge-pill <%= note.issue? ? "badge-danger" : "badge-warning" %>"><%= note.note_type.capitalize %></span>
+    <% if note.fuel_type %>
+      <span class="badge badge-secondary"><%= note.fuel_type.capitalize %></span>
+    <% end %>
+    <span class='float-right'>
+      <%= link_to 'Resolve', resolve_admin_school_note_path(@school, note), method: :post, class: 'btn btn-info btn-xs' if note.resolvable? %>
+      <% if index %>
+      <%= link_to 'View', admin_school_note_path(@school, note), class: 'btn btn-info btn-xs' %>
+      <% end %>
+      <%= link_to 'Edit', edit_admin_school_note_path(@school, note), class: 'btn btn-info btn-xs' %>
+      <%= link_to 'Delete', admin_school_note_path(@school, note), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-xs" %>
+    </span>
+    <div class="bg-white my-2 p-2"><%= note.description %>
+      <div class="badge badge-light"><small>Created • <%= note.created_by.email %> • <%= nice_date_times_today(note.created_at) %></small></div>
+      <div class="badge badge-light"><small>Updated • <%= note.updated_by.email %> • <%= nice_date_times_today(note.updated_at) %></small></div>
+    </div>
+  </div>
+</div>

@@ -12,6 +12,15 @@ class Note < ApplicationRecord
 
   validates :note_type, :status, :title, :description, presence: true
 
+  def resolve!(attrs = {})
+    self.attributes = attrs
+    closed! if issue?
+  end
+
+  def resolvable?
+    issue? && open?
+  end
+
   # From rails 6.1 onwards, a default for enums can be specified by setting by _default: :open or rails 7: default: :open on the enum definition
   # But until then we have to do this:
   after_initialize do
