@@ -2,7 +2,7 @@ module Admin
   module SchoolGroups
     class NotesController < AdminController
       load_and_authorize_resource :school_group
-      load_and_authorize_resource through: :school_group
+      load_and_authorize_resource :note, through: :school_group
 
       def index
         @notes = @notes.issue.status_open.by_updated_at
