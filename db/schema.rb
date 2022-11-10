@@ -1378,8 +1378,9 @@ ActiveRecord::Schema.define(version: 2022_11_09_172835) do
     t.integer "chart_preference", default: 0, null: false
     t.integer "country", default: 0, null: false
     t.integer "funding_status", default: 0, null: false
+    t.boolean "swimming_pool", default: false, null: false
     t.boolean "alternative_heating_oil", default: false, null: false
-    t.boolean "alternative_heating_llpg", default: false, null: false
+    t.boolean "alternative_heating_lpg", default: false, null: false
     t.boolean "alternative_heating_biomass", default: false, null: false
     t.boolean "alternative_heating_district_heating", default: false, null: false
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
