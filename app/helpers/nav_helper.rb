@@ -55,7 +55,14 @@ module NavHelper
   end
 
   def header_fix_enabled?
-    !!@header_fix_enabled
+    @header_fix_enabled == true
+  end
+
+  def conditional_application_container_classes
+    classes = ''
+    classes += ' extra-padding' unless show_sub_nav?(@school, @hide_subnav)
+    classes += ' header-fix' if header_fix_enabled?
+    classes
   end
 
   def show_partner_footer?(school)
