@@ -20,6 +20,7 @@ module EnergySparks
         client.put_object(
           bucket: bucket,
           key: key,
+          content_type: 'application/x-binary',
           body: file
         )
       end
