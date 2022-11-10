@@ -114,7 +114,15 @@ class ChartDataValues
 
     # Temporary TOFIX TODO as analytics should not return negative values
     @series_data.map do |series|
-      series[:data] = series[:data].map { |v| v.is_a?(Float) ? v.round(8) : v }
+      series[:data] = series[:data].map do |v|
+        if v.is_a?(Float)
+          # Convert infinity values to the Maximum representable finite float so it's not
+          # converted to null in the chart json
+          v.infinite? ? Float::MAX : v.round(8)
+        else
+          v
+        end
+      end
       series
     end
   end
