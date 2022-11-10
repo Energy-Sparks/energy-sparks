@@ -203,7 +203,6 @@ private
       :cooks_dinners_onsite,
       :cooks_dinners_for_other_schools,
       :cooks_dinners_for_other_schools_count,
-      :swimming_pool,
       :alternative_heating_oil,
       :alternative_heating_lpg,
       :alternative_heating_biomass,
