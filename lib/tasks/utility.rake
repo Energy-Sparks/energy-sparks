@@ -47,7 +47,7 @@ namespace :utility do
       target_bucket = ENV['AGGREGATE_SCHOOL_CACHE_BUCKET']
       abort("No S3 bucket configured") if target_bucket.blank?
 
-      School.process_data.order(:name).first(3).each do |school|
+      School.process_data.order(:name).each do |school|
         Rails.logger.info "Uploading aggregated #{school.name} to S3"
         aggregate_school_file = AggregateSchoolService.new(school).aggregate_school_file
         EnergySparks::S3Yaml.upload(aggregate_school_file, school.name, data_type: 'cached-aggregated-meter-collection', bucket: target_bucket) if aggregate_school_file

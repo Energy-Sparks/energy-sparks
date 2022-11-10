@@ -5,7 +5,7 @@ class FileFinder
 
   def find(name)
     search_dir(@path) do |filename|
-      return filename if filename.include?(name)
+      return filename if filename.end_with?(name)
     end
   end
 
