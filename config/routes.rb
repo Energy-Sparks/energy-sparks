@@ -302,10 +302,10 @@ Rails.application.routes.draw do
             post :make_visible
           end
         end
+        resources :notes, only: [:index]
         resource :partners, only: [:show, :update]
         resource :meter_report, only: [:show]
         resource :dashboard_message, only: [:update, :edit, :destroy], controller: '/admin/dashboard_messages'
-        resource :notes, only: [:index]
       end
     end
 
