@@ -176,6 +176,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:services-maps-school_features-yml]
+file_filter  = config/locales/<lang>/services/maps/school_features.yml
+source_file  = config/locales/services/maps/school_features.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-activities-activities-yml]
 file_filter  = config/locales/<lang>/views/activities/activities.yml
 source_file  = config/locales/views/activities/activities.yml
