@@ -309,6 +309,26 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           end
         end
       end
+
+      describe "Issues tab" do
+        context "when there are open issues for the school group" do
+          let!(:school) { create(:school, school_group: school_group)}
+          let!(:issue) { create(:note, note_type: :issue, status: :open, updated_by: admin, school: school, fuel_type: :gas) }
+          let!(:setup_data) { issue }
+          it "lists issue in issues tab" do
+            within '#issues' do
+              expect(page).to have_content issue.title
+              expect(page).to have_content issue.fuel_type.capitalize
+              expect(page).to have_content admin.email
+              expect(page).to have_content nice_date_times_today(issue.updated_at)
+              expect(page).to have_link("View", href: admin_school_note_path(school, issue))
+            end
+          end
+        end
+        context "when there are no issues" do
+          it { expect(page).to have_content("No notes or issues for #{school_group.name}")}
+        end
+      end
     end
 
     describe "Editing a school group" do
