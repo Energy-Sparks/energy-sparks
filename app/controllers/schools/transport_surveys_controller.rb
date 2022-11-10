@@ -7,6 +7,7 @@ module Schools
     load_resource :transport_survey, find_by: :run_on, id_param: :run_on, through: :school, except: [:update]
 
     authorize_resource :transport_survey
+    before_action :header_fix_enabled
     before_action :load_or_create, only: [:update]
 
     def index
