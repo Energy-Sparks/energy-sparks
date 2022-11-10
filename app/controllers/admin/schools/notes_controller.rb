@@ -5,7 +5,7 @@ module Admin
       before_action :header_fix_enabled
 
       load_and_authorize_resource :school
-      load_and_authorize_resource through: :school
+      load_and_authorize_resource :note, through: :school
 
       def index
         @pagy, @notes = pagy(@notes.by_updated_at)
