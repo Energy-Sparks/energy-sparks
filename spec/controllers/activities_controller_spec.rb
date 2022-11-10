@@ -40,6 +40,48 @@ RSpec.describe ActivitiesController, type: :controller do
       get :show, params: { school_id: school.id, id: activity.to_param }
       expect(assigns(:activity)).to eq(activity)
     end
+    context 'when school not data enabled' do
+      before :each do
+        school.update(data_enabled: false)
+      end
+      it "with data-driven activity, it shows the generic description" do
+        activity_type = create :activity_type, data_driven: true
+        activity = create :activity, school_id: school.id, activity_type: activity_type
+        get :show, params: { school_id: school.id, id: activity.to_param }
+        expect(assigns(:activity_type_content)).to include('generic description')
+        expect(assigns(:activity_type_content)).not_to include('school specific description')
+      end
+      it "with non-data-driven activity, it shows the school specific description if present" do
+        activity_type = create :activity_type, data_driven: false
+        activity = create :activity, school_id: school.id, activity_type: activity_type
+        get :show, params: { school_id: school.id, id: activity.to_param }
+        expect(assigns(:activity_type_content)).not_to include('generic description')
+        expect(assigns(:activity_type_content)).to include('school specific description')
+      end
+      it "with non-data-driven activity, it shows the description if school specific description not present, but does not make html safe" do
+        activity_type = create :activity_type, data_driven: false, school_specific_description: nil
+        activity = create :activity, school_id: school.id, activity_type: activity_type
+        get :show, params: { school_id: school.id, id: activity.to_param }
+        expect(assigns(:activity_type_content).to_plain_text).to include('generic description')
+      end
+    end
+    context 'when school is data enabled' do
+      before :each do
+        school.update(data_enabled: true)
+      end
+      it "it shows the school specific description if present" do
+        activity = create :activity, school_id: school.id
+        get :show, params: { school_id: school.id, id: activity.to_param }
+        expect(assigns(:activity_type_content)).not_to include('generic description')
+        expect(assigns(:activity_type_content)).to include('school specific description')
+      end
+      it "it shows the generic description if school specific description not present, but does not make html safe" do
+        activity_type = create :activity_type, data_driven: false, school_specific_description: nil
+        activity = create :activity, school_id: school.id, activity_type: activity_type
+        get :show, params: { school_id: school.id, id: activity.to_param }
+        expect(assigns(:activity_type_content).to_plain_text).to include('generic description')
+      end
+    end
   end
 
   describe "GET #new" do

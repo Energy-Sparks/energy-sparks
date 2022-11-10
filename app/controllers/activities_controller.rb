@@ -12,12 +12,15 @@ class ActivitiesController < ApplicationController
 
   def show
     interpolator = TemplateInterpolation.new(@activity.activity_type, render_with: SchoolTemplate.new(@school))
-    if show_data_enabled_activity?(@activity, @school)
+    if @activity.activity_type.data_driven? && !@school.data_enabled?
       @activity_type_content = interpolator.interpolate(:description).description
+      @activity_type_content = @activity_type_content.body.to_html.html_safe
+    elsif @activity.activity_type.school_specific_description.present?
+      @activity_type_content = interpolator.interpolate(:school_specific_description).school_specific_description
+      @activity_type_content = @activity_type_content.body.to_html.html_safe
     else
-      @activity_type_content = interpolator.interpolate(:school_specific_description_or_fallback).school_specific_description_or_fallback
+      @activity_type_content = interpolator.interpolate(:description).description
     end
-    @activity_type_content = @activity_type_content.body.to_html.html_safe
   end
 
   def completed
@@ -75,10 +78,6 @@ private
 
   def activity_params
     params.require(:activity).permit(:school_id, :activity_type_id, :title, :description, :happened_on, :content)
-  end
-
-  def show_data_enabled_activity?(activity, school)
-    activity.activity_type.data_driven? && !school.data_enabled?
   end
 
   def load_suggested_activities(school)
