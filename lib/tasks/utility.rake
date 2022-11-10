@@ -42,7 +42,7 @@ namespace :utility do
   desc 'Save aggregate schools to S3'
   task save_aggregate_schools_to_s3: :environment do
     puts "#{DateTime.now.utc} save_aggregate_schools_to_s3 start"
-    if ENV['ENVIRONMENT_IDENTIFIER'] != "production"
+    if ENV['ENVIRONMENT_IDENTIFIER'] == "production"
       require 'energy_sparks/s3_yaml'
       target_bucket = ENV['AGGREGATE_SCHOOL_CACHE_BUCKET']
       abort("No S3 bucket configured") if target_bucket.blank?
