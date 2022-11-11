@@ -11,7 +11,6 @@ class AmrReadingData
   WARNING_MISSING_READINGS = 'Missing readings (should be 48)'.freeze
   WARNING_DUPLICATE_READING = 'Another reading exists for the same Mpan or MPRN for the same date'.freeze
 
-
   ERROR_UNABLE_TO_PARSE_FILE = 'Unable to parse the file'.freeze
 
   WARNINGS = {
