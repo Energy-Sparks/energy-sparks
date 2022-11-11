@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_31_115646) do
+ActiveRecord::Schema.define(version: 2022_11_11_103603) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -313,14 +313,6 @@ ActiveRecord::Schema.define(version: 2022_10_31_115646) do
     t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"
     t.index ["run_on"], name: "index_alerts_on_run_on"
     t.index ["school_id"], name: "index_alerts_on_school_id"
-  end
-
-  create_table "alternative_heating_sources", force: :cascade do |t|
-    t.bigint "school_id"
-    t.integer "source"
-    t.integer "percent_of_overall_use"
-    t.text "notes"
-    t.index ["school_id"], name: "index_alternative_heating_sources_on_school_id"
   end
 
   create_table "amr_data_feed_configs", force: :cascade do |t|
@@ -1378,6 +1370,18 @@ ActiveRecord::Schema.define(version: 2022_10_31_115646) do
     t.integer "chart_preference", default: 0, null: false
     t.integer "country", default: 0, null: false
     t.integer "funding_status", default: 0, null: false
+    t.boolean "alternative_heating_oil", default: false, null: false
+    t.integer "alternative_heating_oil_percent", default: 0
+    t.text "alternative_heating_oil_notes"
+    t.boolean "alternative_heating_lpg", default: false, null: false
+    t.integer "alternative_heating_lpg_percent", default: 0
+    t.text "alternative_heating_lpg_notes"
+    t.boolean "alternative_heating_biomass", default: false, null: false
+    t.integer "alternative_heating_biomass_percent", default: 0
+    t.text "alternative_heating_biomass_notes"
+    t.boolean "alternative_heating_district_heating", default: false, null: false
+    t.integer "alternative_heating_district_heating_percent", default: 0
+    t.text "alternative_heating_district_heating_notes"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
@@ -1417,6 +1421,7 @@ ActiveRecord::Schema.define(version: 2022_10_31_115646) do
     t.integer "management_priorities_page_limit", default: 10
     t.boolean "message_for_no_pupil_accounts", default: true
     t.jsonb "temperature_recording_months", default: ["10", "11", "12", "1", "2", "3", "4"]
+    t.jsonb "prices"
   end
 
   create_table "sms_records", force: :cascade do |t|
@@ -1748,7 +1753,6 @@ ActiveRecord::Schema.define(version: 2022_10_31_115646) do
   add_foreign_key "alerts", "alert_generation_runs", on_delete: :cascade
   add_foreign_key "alerts", "alert_types", on_delete: :cascade
   add_foreign_key "alerts", "schools", on_delete: :cascade
-  add_foreign_key "alternative_heating_sources", "schools"
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "meters", on_delete: :nullify
