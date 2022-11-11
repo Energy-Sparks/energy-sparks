@@ -10,7 +10,7 @@
     </tr>
   </thead>
   <tbody>
-    <% school_group.notes.issue.open.by_updated_at.each do |issue| %>
+    <% school_group.notes.issue.status_open.by_updated_at.each do |issue| %>
       <tr>
         <td><%= fa_icon('exclamation-circle text-secondary') %></td>
         <td><%= link_to issue.title, admin_school_note_path(issue.school, issue) %></td>
