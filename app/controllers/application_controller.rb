@@ -75,4 +75,8 @@ class ApplicationController < ActionController::Base
   def pagy_locale
     @pagy_locale = I18n.locale.to_s
   end
+
+  def header_fix_enabled
+    @header_fix_enabled = true
+  end
 end

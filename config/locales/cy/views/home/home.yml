@@ -10,7 +10,7 @@ cy:
       message_2: Dangoswch i'ch ysgol faint a phryd rydych yn defnyddio ynni.
       message_3: Cael cyngor arbed ynni wedi'i deilwra ar gyfer eich ysgol chi yn unig.
       message_4: Cael rhybuddion awtomataidd i roi gwybod i chi pan fydd eich defnydd o ynni yn newid.
-      message_5: Archwilia weithgareddau tîm eco a dosbarth ar gyfer disgyblion.
+      message_5: Archwiliwch weithgareddau tîm eco a dosbarth ar gyfer disgyblion.
       message_6: Rhannu syniadau arbed ynni a chystadlu yn erbyn ysgolion eraill.
     enrol_your_school: Cofrestru eich ysgol
     funnels:

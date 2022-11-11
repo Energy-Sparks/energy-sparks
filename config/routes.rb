@@ -302,6 +302,7 @@ Rails.application.routes.draw do
             post :make_visible
           end
         end
+        resources :notes, only: [:index]
         resource :partners, only: [:show, :update]
         resource :meter_report, only: [:show]
         resource :dashboard_message, only: [:update, :edit, :destroy], controller: '/admin/dashboard_messages'
@@ -436,7 +437,11 @@ Rails.application.routes.draw do
         resources :consent_requests
         resources :bill_requests
         resource :target_data, only: :show
-        resources :notes
+        resources :notes do
+          member do
+            post :resolve
+          end
+        end
       end
       member do
         get :removal

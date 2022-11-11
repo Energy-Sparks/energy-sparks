@@ -2,9 +2,10 @@ module Admin
   module Schools
     class NotesController < AdminController
       include Pagy::Backend
+      before_action :header_fix_enabled
 
       load_and_authorize_resource :school
-      load_and_authorize_resource through: :school
+      load_and_authorize_resource :note, through: :school
 
       def index
         @pagy, @notes = pagy(@notes.by_updated_at)
@@ -15,8 +16,8 @@ module Admin
       end
 
       def create
-        @note.assign_attributes(created_by: current_user, updated_by: current_user)
-        if @note.save!
+        @note.attributes = { created_by: current_user, updated_by: current_user }
+        if @note.save
           redirect_to admin_school_notes_path(@school), notice: "#{@note.note_type.capitalize} was successfully created."
         else
           render :new
@@ -34,6 +35,14 @@ module Admin
       def destroy
         @note.destroy
         redirect_to admin_school_notes_path(@school), notice: "#{@note.note_type.capitalize} was successfully deleted."
+      end
+
+      def resolve
+        notice = "#{@note.note_type.capitalize} was successfully resolved."
+        unless @note.resolve!(updated_by: current_user)
+          notice = "Can only resolve issues (and not notes)."
+        end
+        redirect_back fallback_location: admin_school_notes_path(@school), notice: notice
       end
 
       private
