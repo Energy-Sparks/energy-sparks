@@ -80,8 +80,8 @@ class AmrReadingData
       warnings << :duplicate_reading if duplicate_reading?(reading, @reading_data[index + 1..-1])
 
       if reading_date.present? && valid_reading_date?(reading_date)
-        warnings << :inconsistent_reading_date_format if inconsistent_reading_date_format?(reading_date)
         warnings << :future_reading_date if future_reading_date?(reading_date)
+        warnings << :inconsistent_reading_date_format if inconsistent_reading_date_format?(reading_date)
       else
         warnings << :invalid_reading_date
       end
@@ -92,7 +92,7 @@ class AmrReadingData
 
   def inconsistent_reading_date_format?(reading_date)
     formatted_date = Date.strptime(reading_date, @date_format)
-    return false unless formatted_date.strftime(@date_format) != reading_date
+    return false if formatted_date.strftime(@date_format) == reading_date
 
     true
   end

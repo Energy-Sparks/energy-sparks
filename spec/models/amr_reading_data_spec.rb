@@ -6,8 +6,8 @@ describe AmrReadingData do
 
   describe 'handles when reading date is a date' do
     let(:amr_reading) { AmrReadingData.new(reading_data: [
-                                                      { :mpan_mprn => 123, :reading_date => Date.parse('2019-01-01'), readings: Array.new(48, '0.0')  },
-                                                      { :mpan_mprn => 123, :reading_date => Date.parse('2019-01-02'), readings: Array.new(48, '0.0')  },
+                                                      { :mpan_mprn => 123, :reading_date => '2019-01-01', readings: Array.new(48, '0.0')  },
+                                                      { :mpan_mprn => 123, :reading_date => '2019-01-02', readings: Array.new(48, '0.0')  },
                                                       ],
                                             date_format: date_format) }
 
@@ -50,11 +50,11 @@ describe AmrReadingData do
   end
 
   describe 'handles when reading date is a string' do
-    let(:date_format) { '%e %b %Y %H:%M:%S' }
+    let(:date_format) { '%Y-%m-%d' }
     let(:amr_reading_data) {{
                               reading_data: [
-                                { :mpan_mprn => 123, :reading_date => '2019-01-01', readings: Array.new(48, '0.0')  },
-                                { :mpan_mprn => 123, :reading_date => '2019-01-02', readings: Array.new(48, '0.0')  },
+                                { :mpan_mprn => 123, :reading_date => '2022-01-01', readings: Array.new(48, '0.0')  },
+                                { :mpan_mprn => 123, :reading_date => '2022-01-02', readings: Array.new(48, '0.0')  },
                               ],
                               date_format: date_format
                             }}
@@ -163,6 +163,19 @@ describe AmrReadingData do
         expect(amr_reading.valid_reading_count).to be 1
         expect(amr_reading.warnings.count).to be 1
         expect(amr_reading.warnings.first[:warnings]).to include(:invalid_reading_date)
+      end
+
+      it 'with reading date in a format that does not match the configuration format' do
+        amr_reading_data[:reading_data].first[:reading_date] = '31-01-2022'
+        amr_reading_data[:reading_data].second[:reading_date] = '31-01-2022'
+        amr_reading_data[:date_format] = '%d-%m-%y'
+        amr_reading = AmrReadingData.new(**amr_reading_data)
+
+        expect(amr_reading.valid?).to be false
+        expect(amr_reading.warnings?).to be true
+        expect(amr_reading.valid_reading_count).to be 0
+        expect(amr_reading.warnings.count).to be 2
+        expect(amr_reading.warnings.first[:warnings]).to include(:inconsistent_reading_date_format)
       end
 
       it 'when there are duplicate rows' do
