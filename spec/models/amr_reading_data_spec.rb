@@ -168,6 +168,8 @@ describe AmrReadingData do
       it 'with reading date in a format that does not match the configuration format' do
         amr_reading_data[:reading_data].first[:reading_date] = '31-01-2022'
         amr_reading_data[:reading_data].second[:reading_date] = '31-01-2022'
+        # There should be a warning here where Date.strptime('31-01-2022', '%d-%m-%y')
+        # converts to the date 'Wed, 31 Jan 2020' (2020 instead of 2022)
         amr_reading_data[:date_format] = '%d-%m-%y'
         amr_reading = AmrReadingData.new(**amr_reading_data)
 
