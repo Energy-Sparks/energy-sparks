@@ -94,6 +94,8 @@ class AmrReadingData
     return false if formatted_date.strftime(@date_format) == reading_date
 
     true
+  rescue ArgumentError
+    false
   end
 
   def missing_readings?(readings)
