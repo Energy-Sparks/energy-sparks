@@ -90,12 +90,14 @@ class AmrReadingData
   end
 
   def inconsistent_reading_date_format?(reading_date)
+    return false if reading_date.is_a? Date
+
     formatted_date = Date.strptime(reading_date, @date_format)
     return false if formatted_date.strftime(@date_format) == reading_date
 
     true
   rescue ArgumentError
-    false
+    true
   end
 
   def missing_readings?(readings)
