@@ -1429,7 +1429,6 @@ ActiveRecord::Schema.define(version: 2022_11_09_172835) do
     t.integer "management_priorities_page_limit", default: 10
     t.boolean "message_for_no_pupil_accounts", default: true
     t.jsonb "temperature_recording_months", default: ["10", "11", "12", "1", "2", "3", "4"]
-    t.jsonb "prices"
   end
 
   create_table "sms_records", force: :cascade do |t|
