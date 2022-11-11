@@ -1,7 +1,7 @@
 module Schools
   class YourSchoolEstatesController < ApplicationController
     load_and_authorize_resource :school
-    before_action :return_unless_feature_enabled
+    before_action :return_to_school_unless_feature_enabled
 
     def edit
     end
@@ -19,7 +19,7 @@ module Schools
 
     private
 
-    def return_unless_feature_enabled
+    def return_to_school_unless_feature_enabled
       redirect_to school_path(@school) and return unless EnergySparks::FeatureFlags.active?(:your_school_estates)
     end
 
