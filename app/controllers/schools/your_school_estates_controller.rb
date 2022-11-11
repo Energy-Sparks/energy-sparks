@@ -26,7 +26,15 @@ module Schools
         :alternative_heating_oil,
         :alternative_heating_lpg,
         :alternative_heating_biomass,
-        :alternative_heating_district_heating
+        :alternative_heating_district_heating,
+        :alternative_heating_oil_percent,
+        :alternative_heating_lpg_percent,
+        :alternative_heating_biomass_percent,
+        :alternative_heating_district_heating_percent,
+        :alternative_heating_oil_notes,
+        :alternative_heating_lpg_notes,
+        :alternative_heating_biomass_notes,
+        :alternative_heating_district_heating_notes
       )
     end
   end
