@@ -37,6 +37,21 @@ describe School do
     end
   end
 
+  it 'validates alternative heating percents' do
+    [:alternative_heating_oil_percent, :alternative_heating_lpg_percent, :alternative_heating_biomass_percent, :alternative_heating_district_heating_percent].each do |field|
+      subject[field] = 100
+      expect(subject).to be_valid
+      subject[field] = 0
+      expect(subject).to be_valid
+      subject[field] = -1
+      expect(subject).not_to be_valid
+      subject[field] = 101
+      expect(subject).not_to be_valid
+      subject[field] = nil
+      expect(subject).to be_valid
+    end
+  end
+
   it 'validates postcodes' do
     ["BA2 £3Z", "BA14 9 DU", "TS11 7B"].each do |invalid|
       subject.postcode=invalid
