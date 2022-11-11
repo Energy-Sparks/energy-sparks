@@ -1370,18 +1370,6 @@ ActiveRecord::Schema.define(version: 2022_11_11_103603) do
     t.integer "chart_preference", default: 0, null: false
     t.integer "country", default: 0, null: false
     t.integer "funding_status", default: 0, null: false
-    t.boolean "alternative_heating_oil", default: false, null: false
-    t.integer "alternative_heating_oil_percent", default: 0
-    t.text "alternative_heating_oil_notes"
-    t.boolean "alternative_heating_lpg", default: false, null: false
-    t.integer "alternative_heating_lpg_percent", default: 0
-    t.text "alternative_heating_lpg_notes"
-    t.boolean "alternative_heating_biomass", default: false, null: false
-    t.integer "alternative_heating_biomass_percent", default: 0
-    t.text "alternative_heating_biomass_notes"
-    t.boolean "alternative_heating_district_heating", default: false, null: false
-    t.integer "alternative_heating_district_heating_percent", default: 0
-    t.text "alternative_heating_district_heating_notes"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
@@ -1421,7 +1409,6 @@ ActiveRecord::Schema.define(version: 2022_11_11_103603) do
     t.integer "management_priorities_page_limit", default: 10
     t.boolean "message_for_no_pupil_accounts", default: true
     t.jsonb "temperature_recording_months", default: ["10", "11", "12", "1", "2", "3", "4"]
-    t.jsonb "prices"
   end
 
   create_table "sms_records", force: :cascade do |t|
