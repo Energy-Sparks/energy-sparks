@@ -61,6 +61,11 @@
         <% end %>
       </div>
 
+      <div class="form-group">
+        <%= f.label :default_notes_admin_user_id, 'Default notes & issues admin user' %>
+        <%= f.select :default_notes_admin_user_id, options_from_collection_for_select(User.admin, 'id', 'display_name', (@school_group.default_notes_admin_user_id)), {include_blank: true}, { class: 'form-control' } %>
+      </div>
+
     </div>
   </div>
 

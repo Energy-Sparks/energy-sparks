@@ -101,12 +101,14 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           fill_in 'Description', with: 'Bath & North East Somerset'
           select 'BANES and Frome', from: 'Default scoreboard'
           select 'BANES dark sky weather', from: 'Default Dark Sky Weather Data Feed Area'
+          select 'Admin', from: 'Default notes & issues admin user'
           choose 'Display chart data in kwh, where available'
           click_on 'Create School group'
         end
         it "is created" do
           expect(SchoolGroup.where(name: 'BANES').count).to eq(1)
         end
+        it { expect(SchoolGroup.where(name: 'BANES').first.default_notes_admin_user).to eq(admin) }
       end
     end
 
@@ -346,11 +348,13 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         click_on 'Edit'
         fill_in 'Name', with: 'B & NES'
         uncheck 'Public'
+        select 'Admin', from: 'Default notes & issues admin user'
         click_on 'Update School group'
         school_group.reload
       end
       it { expect(school_group.name).to eq('B & NES') }
       it { expect(school_group).to_not be_public }
+      it { expect(school_group.default_notes_admin_user).to eq(admin)}
     end
 
     describe "Deleting a school group" do
