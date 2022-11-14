@@ -95,7 +95,7 @@ class SchoolTarget < ApplicationRecord
     report.symbolize_keys!
     report[:fuel_type] = report[:fuel_type].to_sym
     #reparse to Dates from yyyy-mm-dd format
-    report[:months].map! {|m| Date.parse(m)}
+    report[:months].map! {|m| Date.strptime(m, '%Y-%m-%d')}
     report
   end
 
