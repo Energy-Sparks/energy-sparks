@@ -4,21 +4,22 @@
       <%= fa_icon(note.issue? ? 'exclamation-circle text-secondary' : 'sticky-note text-secondary') %> <%= note.title %>
       <div class="float-right">
         <small>
-          <% if note.fuel_type %>
-            <span class="badge badge-secondary"><%= note.fuel_type.capitalize %></span>
-          <% end %>
-          <% if note.issue? %>
-            <span class="badge <%= note.status_open? ? 'badge-primary' : 'badge-secondary' %>"><%= note.status.capitalize %></span>
+          <% if note.owned_by %>
+            <span class="badge badge-pill badge-secondary font-weight-normal"><%= note.owned_by == current_user ? "You" : note.owned_by.display_name %></span>
           <% end %>
           <%= nice_date_times_today(note.updated_at) %>
         </small>
       </div>
     </h4>
     <div class="clearfix">
-      <span class="badge badge-pill <%= note.issue? ? "badge-danger" : "badge-warning" %>"><%= note.note_type.capitalize %></span>
-      <% if note.owned_by %>
-        <span class="badge badge-pill badge-secondary font-weight-normal">Assigned to • <%= note.owned_by.display_name %></span>
+      <span class="badge <%= note.issue? ? "badge-danger" : "badge-warning" %>"><%= note.note_type.capitalize %></span>
+      <% if note.fuel_type %>
+        <span class="badge badge-secondary"><%= note.fuel_type.capitalize %></span>
       <% end %>
+      <% if note.issue? %>
+        <span class="badge <%= note.status_open? ? 'badge-primary' : 'badge-secondary' %>"><%= note.status.capitalize %></span>
+      <% end %>
+
       <span class='float-right'>
         <%= link_to 'Resolve', resolve_admin_school_note_path(@school, note), method: :post, class: 'btn btn-info btn-sm' if note.resolvable? %>
         <% if index %>

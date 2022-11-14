@@ -4,6 +4,7 @@
       <th class="no-sort"></th>
       <th>Issue</th>
       <th>Fuel</th>
+      <th>Assigned to</th>
       <th>Updated by</th>
       <th>Updated</th>
       <th class="no-sort"></th>
@@ -18,6 +19,7 @@
             <span class="badge badge-secondary"><%= issue.fuel_type.capitalize %></span>
           <% end %>
         </td>
+        <td><%= issue.owned_by.display_name %></td>
         <td><%= issue.updated_by.display_name %></td>
         <td class="nowrap"><%= nice_date_times(issue.updated_at) %></td>
         <td class="nowrap text-right">
