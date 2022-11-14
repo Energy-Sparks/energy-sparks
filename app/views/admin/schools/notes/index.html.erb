@@ -1,4 +1,4 @@
-<%= render 'header', title: "#{@school.name} Notes & Issues" do %>
+<%= render 'header', title: "#{@school.name} Notes & Issues", note: nil do %>
   <%= header_nav_link 'School group', admin_school_group_url(@school.school_group) if @school.school_group %>
 <% end %>
 

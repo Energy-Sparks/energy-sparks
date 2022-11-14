@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_14_113102) do
+ActiveRecord::Schema.define(version: 2022_11_14_133851) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1054,7 +1054,9 @@ ActiveRecord::Schema.define(version: 2022_11_14_113102) do
     t.bigint "updated_by_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "owned_by_id"
     t.index ["created_by_id"], name: "index_notes_on_created_by_id"
+    t.index ["owned_by_id"], name: "index_notes_on_owned_by_id"
     t.index ["school_id"], name: "index_notes_on_school_id"
     t.index ["updated_by_id"], name: "index_notes_on_updated_by_id"
   end
@@ -1832,6 +1834,7 @@ ActiveRecord::Schema.define(version: 2022_11_14_113102) do
   add_foreign_key "meters", "schools", on_delete: :cascade
   add_foreign_key "meters", "solar_edge_installations", on_delete: :cascade
   add_foreign_key "notes", "users", column: "created_by_id"
+  add_foreign_key "notes", "users", column: "owned_by_id"
   add_foreign_key "notes", "users", column: "updated_by_id"
   add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "audits"
