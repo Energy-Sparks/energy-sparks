@@ -270,10 +270,12 @@ describe ScheduleDataManagerService do
     end
 
     it 'merges across sources where available but returns temperature data only within the date ranges of a schools meter readings' do
-      reading_1 = create(:dark_sky_temperature_reading, dark_sky_area: area, reading_date: '2019-01-01')
-      reading_2 = create(:dark_sky_temperature_reading, dark_sky_area: area, reading_date: '2019-02-01')
-      reading_3 = create(:dark_sky_temperature_reading, dark_sky_area: area, reading_date: '2019-03-01')
-      reading_4 = create(:dark_sky_temperature_reading, dark_sky_area: area, reading_date: '2019-04-01')
+      reading_1 = create(:dark_sky_temperature_reading, dark_sky_area: area, reading_date: '2017-01-01')
+      reading_2 = create(:dark_sky_temperature_reading, dark_sky_area: area, reading_date: '2018-01-01')
+      reading_3 = create(:dark_sky_temperature_reading, dark_sky_area: area, reading_date: '2019-01-01')
+      reading_4 = create(:dark_sky_temperature_reading, dark_sky_area: area, reading_date: '2019-02-01')
+      reading_5 = create(:dark_sky_temperature_reading, dark_sky_area: area, reading_date: '2019-03-01')
+      reading_6 = create(:dark_sky_temperature_reading, dark_sky_area: area, reading_date: '2019-04-01')
       obs_1 = create(:weather_observation, weather_station: station, reading_date: '2020-01-01')
       obs_2 = create(:weather_observation, weather_station: station, reading_date: '2020-02-01')
       obs_3 = create(:weather_observation, weather_station: station, reading_date: '2020-03-01')
@@ -286,6 +288,8 @@ describe ScheduleDataManagerService do
         expect(temperatures.date_exists?(reading_2.reading_date)).to eql false
         expect(temperatures.date_exists?(reading_3.reading_date)).to eql true
         expect(temperatures.date_exists?(reading_4.reading_date)).to eql true
+        expect(temperatures.date_exists?(reading_5.reading_date)).to eql true
+        expect(temperatures.date_exists?(reading_6.reading_date)).to eql true
         expect(temperatures.date_exists?(obs_1.reading_date)).to eql true
         expect(temperatures.date_exists?(obs_2.reading_date)).to eql true
         expect(temperatures.date_exists?(obs_3.reading_date)).to eql true
@@ -294,6 +298,8 @@ describe ScheduleDataManagerService do
         expect(temperatures.end_date).to eql obs_4.reading_date
         expect(temperatures.keys.sort).to eq(
           [
+            Date.parse('2019-01-01'),
+            Date.parse('2019-02-01'),
             Date.parse('2019-03-01'),
             Date.parse('2019-04-01'),
             Date.parse('2020-01-01'),
