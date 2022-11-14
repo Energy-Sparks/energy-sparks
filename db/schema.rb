@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_11_103603) do
+ActiveRecord::Schema.define(version: 2022_11_14_113102) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1218,6 +1218,8 @@ ActiveRecord::Schema.define(version: 2022_11_11_103603) do
     t.bigint "default_weather_station_id"
     t.boolean "public", default: true
     t.integer "default_chart_preference", default: 0, null: false
+    t.bigint "default_notes_admin_user_id"
+    t.index ["default_notes_admin_user_id"], name: "index_school_groups_on_default_notes_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
     t.index ["default_template_calendar_id"], name: "index_school_groups_on_default_template_calendar_id"
@@ -1852,6 +1854,7 @@ ActiveRecord::Schema.define(version: 2022_11_11_103603) do
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
   add_foreign_key "school_groups", "calendars", column: "default_template_calendar_id", on_delete: :nullify
   add_foreign_key "school_groups", "scoreboards", column: "default_scoreboard_id"
+  add_foreign_key "school_groups", "users", column: "default_notes_admin_user_id", on_delete: :nullify
   add_foreign_key "school_key_stages", "key_stages", on_delete: :restrict
   add_foreign_key "school_key_stages", "schools", on_delete: :cascade
   add_foreign_key "school_meter_attributes", "school_meter_attributes", column: "replaced_by_id", on_delete: :nullify
