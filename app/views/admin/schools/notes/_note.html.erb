@@ -27,8 +27,8 @@
     </div>
     <div class="bg-white p-2 my-2"><%= note.description %></div>
     <div class="pb-2">
-      <div class="badge badge-pill bg-white text-dark font-weight-normal">Created • <%= note.created_by.email %> • <%= nice_date_times_today(note.created_at) %></div>
-      <div class="badge badge-pill bg-white text-dark font-weight-normal">Updated • <%= note.updated_by.email %> • <%= nice_date_times_today(note.updated_at) %></div>
+      <div class="badge badge-pill bg-white text-dark font-weight-normal">Created • <%= note.created_by.display_name %> • <%= nice_date_times_today(note.created_at) %></div>
+      <div class="badge badge-pill bg-white text-dark font-weight-normal">Updated • <%= note.updated_by.display_name %> • <%= nice_date_times_today(note.updated_at) %></div>
     </div>
   </div>
 </div>

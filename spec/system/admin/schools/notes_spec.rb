@@ -64,8 +64,8 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
                 expect(page).to have_content "#{note_type} title"
                 expect(page).to have_content "#{note_type} desc"
                 expect(page).to have_content "Gas"
-                expect(page).to have_content "Updated • #{user.email} • #{nice_date_times_today(frozen_time)}"
-                expect(page).to have_content "Created • #{user.email} • #{nice_date_times_today(frozen_time)}"
+                expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
+                expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
               end
               after { Timecop.return }
             end
@@ -103,8 +103,8 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
                 expect(page).to have_content "#{note_type} title"
                 expect(page).to have_content "#{note_type} desc"
                 expect(page).to have_content "Gas"
-                expect(page).to have_content "Updated • #{user.email} • #{nice_date_times_today(frozen_time)}"
-                expect(page).to have_content "Created • #{user.email} • #{nice_date_times_today(note.created_at)}"
+                expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
+                expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(note.created_at)}"
                 expect(page).to have_content "Open" if note_type == "issue"
               end
               after { Timecop.return }
@@ -121,8 +121,8 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
           expect(page).to have_content note.title
           expect(page).to have_content note.description.to_plain_text
           expect(page).to have_content note.fuel_type.capitalize
-          expect(page).to have_content "Updated • #{user.email} • #{nice_date_times_today(note.updated_at)}"
-          expect(page).to have_content "Created • #{user.email} • #{nice_date_times_today(note.created_at)}"
+          expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(note.updated_at)}"
+          expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(note.created_at)}"
           expect(page).to have_content note.status.capitalize
         end
 
@@ -148,8 +148,8 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
             expect(page).to have_content note.title
             expect(page).to have_content note.description.to_plain_text
             expect(page).to have_content note.fuel_type.capitalize
-            expect(page).to have_content "Updated • #{user.email} • #{nice_date_times_today(note.updated_at)}"
-            expect(page).to have_content "Created • #{user.email} • #{nice_date_times_today(note.created_at)}"
+            expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(note.updated_at)}"
+            expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(note.created_at)}"
             expect(page).to have_content note.status.capitalize
           end
         end

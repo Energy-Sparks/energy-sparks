@@ -326,7 +326,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
             within '#issues' do
               expect(page).to have_content issue.title
               expect(page).to have_content issue.fuel_type.capitalize
-              expect(page).to have_content admin.email
+              expect(page).to have_content admin.display_name
               expect(page).to have_content nice_date_times_today(issue.updated_at)
               expect(page).to have_link("View", href: admin_school_note_path(school, issue))
             end
