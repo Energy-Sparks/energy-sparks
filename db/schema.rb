@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_31_115646) do
+ActiveRecord::Schema.define(version: 2022_11_10_133928) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1320,6 +1320,9 @@ ActiveRecord::Schema.define(version: 2022_10_31_115646) do
     t.json "electricity_progress", default: {}
     t.json "gas_progress", default: {}
     t.json "storage_heaters_progress", default: {}
+    t.jsonb "electricity_report", default: {}
+    t.jsonb "gas_report", default: {}
+    t.jsonb "storage_heaters_report", default: {}
     t.index ["school_id"], name: "index_school_targets_on_school_id"
   end
 

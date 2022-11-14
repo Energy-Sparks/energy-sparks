@@ -25,8 +25,11 @@ module Targets
       if Targets::SchoolTargetService.targets_enabled?(@school) && target.present?
         target.update!(
           electricity_progress: fuel_type_progress(:electricity),
+          electricity_report: target_progress(:electricity),
           gas_progress: fuel_type_progress(:gas),
+          gas_report: target_progress(:gas),
           storage_heaters_progress: fuel_type_progress(:storage_heaters),
+          storage_heaters_report: target_progress(:storage_heaters),
           report_last_generated: Time.zone.now
         )
         return target
@@ -36,12 +39,7 @@ module Targets
     private
 
     def can_generate_fuel_type?(fuel_type)
-      if EnergySparks::FeatureFlags.active?(:school_targets_v2)
-        has_fuel_type_and_target?(fuel_type)
-      else
-        has_fuel_type_and_target?(fuel_type) &&
-          @school.configuration.enough_data_to_set_target_for_fuel_type?(fuel_type)
-      end
+      has_fuel_type_and_target?(fuel_type)
     end
 
     def fuel_type_progress(fuel_type)
