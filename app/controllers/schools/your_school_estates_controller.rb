@@ -9,7 +9,6 @@ module Schools
     def update
       respond_to do |format|
         if @school.update(school_params)
-          # Schools::SchoolUpdater.new(@school).after_update!
           format.html { render :edit, notice: 'School was successfully updated.' }
         else
           format.html { render :edit }
