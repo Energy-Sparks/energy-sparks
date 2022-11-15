@@ -1312,6 +1312,9 @@ ActiveRecord::Schema.define(version: 2022_11_11_103603) do
     t.json "electricity_progress", default: {}
     t.json "gas_progress", default: {}
     t.json "storage_heaters_progress", default: {}
+    t.jsonb "electricity_report", default: {}
+    t.jsonb "gas_report", default: {}
+    t.jsonb "storage_heaters_report", default: {}
     t.index ["school_id"], name: "index_school_targets_on_school_id"
   end
 
@@ -1370,6 +1373,18 @@ ActiveRecord::Schema.define(version: 2022_11_11_103603) do
     t.integer "chart_preference", default: 0, null: false
     t.integer "country", default: 0, null: false
     t.integer "funding_status", default: 0, null: false
+    t.boolean "alternative_heating_oil", default: false, null: false
+    t.integer "alternative_heating_oil_percent", default: 0
+    t.text "alternative_heating_oil_notes"
+    t.boolean "alternative_heating_lpg", default: false, null: false
+    t.integer "alternative_heating_lpg_percent", default: 0
+    t.text "alternative_heating_lpg_notes"
+    t.boolean "alternative_heating_biomass", default: false, null: false
+    t.integer "alternative_heating_biomass_percent", default: 0
+    t.text "alternative_heating_biomass_notes"
+    t.boolean "alternative_heating_district_heating", default: false, null: false
+    t.integer "alternative_heating_district_heating_percent", default: 0
+    t.text "alternative_heating_district_heating_notes"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"

@@ -93,4 +93,63 @@ RSpec.describe SchoolTarget, type: :model do
     end
   end
 
+  context '#saved_progress_report_for' do
+    let(:january)                   { Date.new(Date.today.year, 1, 1) }
+    let(:february)                  { Date.new(Date.today.year, 2, 1) }
+    let(:months)                    { [january, february] }
+    let(:fuel_type)                 { :electricity }
+
+    let(:monthly_usage_kwh)         { [10,20] }
+    let(:monthly_targets_kwh)       { [8,15] }
+    let(:monthly_performance)       { [-0.25,0.35] }
+
+    let(:cumulative_usage_kwh)      { [10,30] }
+    let(:cumulative_targets_kwh)    { [8,25] }
+    let(:cumulative_performance)    { [-0.99,0.99] }
+
+    let(:partial_months)            { [false, true] }
+    let(:percentage_synthetic)      { [0.0, 0.5]}
+
+    let(:progress) do
+      TargetsProgress.new(
+          fuel_type: fuel_type,
+          months: months,
+          monthly_targets_kwh: monthly_targets_kwh,
+          monthly_usage_kwh: monthly_usage_kwh,
+          monthly_performance: monthly_performance,
+          cumulative_targets_kwh: cumulative_targets_kwh,
+          cumulative_usage_kwh: cumulative_usage_kwh,
+          cumulative_performance: cumulative_performance,
+          cumulative_performance_versus_synthetic_last_year: cumulative_performance,
+          monthly_performance_versus_synthetic_last_year: monthly_performance,
+          partial_months: partial_months,
+          percentage_synthetic: percentage_synthetic
+      )
+    end
+
+    before(:each) do
+      school.school_targets.create!(start_date: start_date, target_date: target_date, electricity: 10, electricity_report: progress)
+    end
+
+    it 'returns nil if no there is no saved report' do
+      expect(SchoolTarget.first.saved_progress_report_for(:gas)).to be_nil
+    end
+
+    it 'returns a progress report' do
+      report = SchoolTarget.first.saved_progress_report_for(:electricity)
+      expect(report.fuel_type).to eql(progress.fuel_type)
+      expect(report.months).to eql(progress.months)
+      expect(report.monthly_targets_kwh).to eql(progress.monthly_targets_kwh)
+      expect(report.monthly_usage_kwh).to eql(progress.monthly_usage_kwh)
+      expect(report.monthly_performance).to eql(progress.monthly_performance)
+      expect(report.cumulative_targets_kwh).to eql(progress.cumulative_targets_kwh)
+      expect(report.cumulative_usage_kwh).to eql(progress.cumulative_usage_kwh)
+      expect(report.cumulative_performance).to eql(progress.cumulative_performance)
+      expect(report.cumulative_performance_versus_synthetic_last_year).to eql(progress.cumulative_performance_versus_synthetic_last_year)
+      expect(report.monthly_performance_versus_synthetic_last_year).to eql(progress.monthly_performance_versus_synthetic_last_year)
+      expect(report.partial_months).to eql(progress.partial_months)
+      expect(report.percentage_synthetic).to eql(progress.percentage_synthetic)
+    end
+  end
+
 end
