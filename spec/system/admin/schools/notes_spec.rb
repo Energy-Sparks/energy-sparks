@@ -1,7 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'school notes', :notes, type: :system, include_application_helper: true do
-  let!(:school) { create(:school) }
+  let!(:school_group_notes_admin) { create(:admin, name: "Group Notes Admin") }
+  let!(:school_group) { create(:school_group, default_notes_admin_user: school_group_notes_admin )}
+  let!(:school) { create(:school, school_group: school_group) }
+  let!(:other_notes_admin) { create(:admin, name: "Other Notes Admin") }
   let!(:note)   {}
   let!(:user)   {}
 
@@ -11,7 +14,7 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
       expect(page).to have_content note.title
       expect(page).to have_content note.description.to_plain_text
       expect(page).to have_content note.fuel_type.capitalize
-      expect(page).to have_content note.owned_by.display_name
+      expect(page).to have_content note_admin.display_name
       expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(note.updated_at)}"
       expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(note.created_at)}"
       expect(page).to have_content note.status.capitalize
@@ -52,6 +55,7 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
               expect(find('trix-editor#note_description')).to have_text('')
               expect(page).to have_select('Fuel type', selected: [])
               expect(page).to have_select('Note type', selected: note_type.capitalize)
+              expect(page).to have_select('Assigned to', selected: school_group.default_notes_admin_user.display_name)
             end
 
             context "with required values missing" do
@@ -70,6 +74,7 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
                 fill_in 'Title', with: "#{note_type} title"
                 fill_in_trix 'trix-editor#note_description', with: "#{note_type} desc"
                 select 'Gas', from: 'Fuel type'
+                select 'Other Notes Admin', from: 'Assigned to'
                 click_button 'Save'
               end
 
@@ -78,6 +83,7 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
                 expect(page).to have_content "#{note_type} title"
                 expect(page).to have_content "#{note_type} desc"
                 expect(page).to have_content "Gas"
+                expect(page).to have_content "Other Notes Admin"
                 expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                 expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
               end
@@ -90,7 +96,7 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
       context "and editing a note" do
         Note.note_types.keys.each do |note_type|
           context "of type #{note_type}" do
-            let!(:note) { create(:note, school: school, note_type: note_type, fuel_type: :electricity, created_by: user) }
+            let!(:note) { create(:note, school: school, note_type: note_type, fuel_type: :electricity, created_by: user, owned_by: school_group_notes_admin) }
             it { expect(page).to have_link('Edit') }
             before do
               click_link("Edit")
@@ -100,6 +106,7 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
               expect(find_field('note[description]', type: :hidden).value).to eq(note.description.to_plain_text)
               expect(page).to have_select('Fuel type', selected: note.fuel_type.capitalize)
               expect(page).to have_select('Note type', selected: note_type.capitalize)
+              expect(page).to have_select('Assigned to', selected: school_group_notes_admin.display_name)
             end
             context "and saving new values" do
               let(:frozen_time) { Time.now }
@@ -110,6 +117,8 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
                 fill_in_trix 'trix-editor#note_description', with: "#{note_type} desc"
                 select 'Gas', from: 'Fuel type'
                 select new_note_type, from: 'Note type'
+                select 'Other Notes Admin', from: 'Assigned to'
+
                 click_button 'Save'
               end
 
@@ -118,6 +127,7 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
                 expect(page).to have_content "#{note_type} title"
                 expect(page).to have_content "#{note_type} desc"
                 expect(page).to have_content "Gas"
+                expect(page).to have_content "Other Notes Admin"
                 expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                 expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(note.created_at)}"
                 expect(page).to have_content "Open" if note_type == "issue"
@@ -129,9 +139,11 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
       end
 
       context "and viewing index" do
-        let!(:note) { create(:note, school: school, note_type: :issue, fuel_type: :gas, created_by: user, updated_by: user, owned_by: user) }
+        let!(:note) { create(:note, school: school, note_type: :issue, fuel_type: :gas, created_by: user, updated_by: user, owned_by: other_notes_admin) }
 
-        it_behaves_like "a displayed note"
+        it_behaves_like "a displayed note" do
+          let(:note_admin) { other_notes_admin }
+        end
 
         it { expect(page).to have_link('Delete') }
         context "and deleting a note" do
@@ -150,7 +162,9 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
             click_link("View")
           end
           it { expect(page).to have_current_path(admin_school_note_path(school, note)) }
-          it_behaves_like "a displayed note"
+          it_behaves_like "a displayed note" do
+            let(:note_admin) { other_notes_admin }
+          end
         end
 
         it { expect(page).to have_link('Resolve') }
