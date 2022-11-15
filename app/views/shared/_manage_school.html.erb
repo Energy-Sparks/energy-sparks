@@ -21,6 +21,7 @@
     <%= link_to t('manage_school_menu.manage_audits'), school_audits_path(school), class: 'dropdown-item' if can? :manage, Audit %>
     <%= link_to t('manage_school_menu.manage_partners'), admin_school_partners_path(school), class: 'dropdown-item' if can? :manage, SchoolPartner %>
     <%= link_to t('manage_school_menu.manage_cads'), school_cads_path(school), class: 'dropdown-item' if can? :manage, Cad %>
+    <%= link_to t('manage_school_menu.manage_issues'), admin_school_notes_path(school), class: 'dropdown-item' if can? :manage, Note %>
     <%= link_to t('manage_school_menu.batch_reports'), school_reports_path(school), class: 'dropdown-item' if can? :view_content_reports, school %>
     <%= link_to t('manage_school_menu.review_targets'), school_school_targets_path(school), class: 'dropdown-item' if current_user.admin? && Targets::SchoolTargetService.targets_enabled?(school) && can?(:manage, SchoolTarget) && Targets::SchoolTargetService.new(school).enough_data? %>
     <%= link_to t('manage_school_menu.expert_analysis'), admin_school_analysis_path(school), class: 'dropdown-item' if can? :expert_analyse, school %>

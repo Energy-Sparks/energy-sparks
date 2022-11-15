@@ -28,11 +28,11 @@ cy:
       show:
         compare_message:
           other:
-            daily_html: Cymhara ddefnydd <strong>%{supply}</strong> dy ysgol rhwng dau ddiwrnod gwahanol
-            weekly_html: Cymhara ddefnydd <strong>%{supply}</strong> dy ysgol rhwng dwy wythnos wahanol
+            daily_html: Cymharwch ddefnydd <strong>%{supply}</strong> eich ysgol rhwng dau ddiwrnod gwahanol
+            weekly_html: Cymharwch ddefnydd <strong>%{supply}</strong> eich ysgol rhwng dwy wythnos wahanol
           split_meter:
-            daily_html: Cymhara ddefnydd dyddiol o <strong>%{supply}</strong> dy ysgol rhwng gwahanol fesuryddion
-            weekly_html: Cymhara ddefnydd wythnosol o <strong>%{supply}</strong> dy ysgol rhwng gwahanol fesuryddion
+            daily_html: Cymharwch ddefnydd dyddiol o <strong>%{supply}</strong> eich ysgol rhwng gwahanol fesuryddion
+            weekly_html: Cymharwch ddefnydd wythnosol o <strong>%{supply}</strong> eich ysgol rhwng gwahanol fesuryddion
         data_available: "Mae data %{supply} ar gael o %{from_date} i %{to_date}"
         explore_data: Archwilio data
       titles:
@@ -79,10 +79,15 @@ cy:
           other: '%{count} o weithredoedd'
         activity:
           completed_an_activity: Cwblhawyd gweithgaredd
+        audit:
+          received_an_audit: Wedi cael archwiliad ynni
+        temperatures:
+          recorded_temperatures_in: Tymheredd a gofnodwyd yn
     school_group:
       compare_schools: Cymharu ysgolion
       view_schools: Gweld ysgolion
     schools:
+      carbon_emissions: Allyriadau carbon
       compare_schools: Cymharu ysgolion
       explore_data: Archwilio data
       review_energy_analysis: Adolygu dadansoddiad ynni

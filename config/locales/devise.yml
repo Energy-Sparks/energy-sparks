@@ -58,6 +58,8 @@ en:
     sessions:
       new:
         email_address_and_password: email address and password
+        log_in_with_your_email_address_and_password: Log in with your email address and password
+        log_in_with_your_pupil_password: Log in with your pupil password
         not_your_school: Not your school?
         page_title: Sign In to Energy Sparks
         pupil_password: pupil password

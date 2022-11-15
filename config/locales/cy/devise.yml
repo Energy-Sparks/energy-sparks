@@ -43,6 +43,8 @@ cy:
     passwords:
       edit:
         characters_minimum: lleiafswm nodau
+        complete_registration: Cwblhau cofrestru
+        complete_your_registration: Cwblhau eich cofrestriad
         confirm_new_password: Cadarnhau cyfrinair newydd
         new_password: Cyfrinair newydd
         page_title: Newid eich cyfrinair
@@ -55,20 +57,20 @@ cy:
     sessions:
       new:
         email_address_and_password: cyfeiriad e-bost a chyfrinair
-        not_your_school: Nid dy ysgol di?
+        not_your_school: Nid eich ysgol chi?
         page_title: Mewngofnodi i Energy Sparks
         pupil_password: cyfrinair disgybl
         pupil_sign_in_for: Mewngofnodi disgybl ar gyfer
         remember_me: Cofio fi
-        select_your_school: Dewisa dy ysgol
+        select_your_school: Dewiswch eich ysgol
         sign_in: Mewngofnodi
-        title: Mewngofnoda i Energy Sparks gyda dy
-        your_pupil_password: Dy gyfrinair disgybl
+        title: Mewngofnodwch i Energy Sparks gyda'ch
+        your_pupil_password: Eich cyfrinair disgybl
     shared:
       links:
         didnt_receive_confirmation_instructions: Heb dderbyn cyfarwyddiadau cadarnhau?
         didnt_receive_unlock_instructions: Heb dderbyn cyfarwyddiadau datgloi
-        forgot_your_password: Wedi anghofio dy gyfrinair
+        forgot_your_password: Wedi anghofio'ch cyfrinair
         sign_in: Mewngofnodi
         sign_in_with: Mewngofnodi gyda
         sign_up: Cofrestru
@@ -78,8 +80,8 @@ cy:
         title: Ail-anfon cyfarwyddiadau datgloi
   errors:
     messages:
-      already_confirmed: wedi'i gadarnhau eisoes, rho gynnig ar fewngofnodi
-      confirmation_period_expired: angen ei gadarnhau o fewn %{period}, gofynna am un newydd
+      already_confirmed: wedi'i gadarnhau eisoes, rhowch gynnig ar fewngofnodi
+      confirmation_period_expired: angen ei gadarnhau o fewn %{period}, gofynnwch am un newydd
       expired: wedi darfod, gofynna am un newydd
       not_found: heb ei ganfod
       not_locked: heb ei gloi

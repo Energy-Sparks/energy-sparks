@@ -3,7 +3,8 @@ cy:
   common:
     application: Energy Sparks
     bar_charts: Siartiau bar
-    confirm: Wyt ti'n siŵr?
+    confirm: Ydych chi'n siŵr?
+    data: data
     electricity: Trydan
     electricity_and_solar_pv: Trydan a Solar PV
     gas: Nwy
