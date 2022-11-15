@@ -23,6 +23,8 @@ describe AmrDataFeedImportLog, type: :system, include_application_helper: true d
     expect(page).to have_content(nice_date_times(log_2.import_time))
 
     expect(page).to have_content(200)
-    expect(page).to have_content(error_messages)
+    expect(page).to have_content('Successes 1')
+    expect(page).to have_content('Warnings 0')
+    expect(page).to have_content('Errors 1')
   end
 end
