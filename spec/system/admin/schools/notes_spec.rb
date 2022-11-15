@@ -5,6 +5,19 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
   let!(:note)   {}
   let!(:user)   {}
 
+  shared_examples_for "a displayed note" do
+    it "displays note" do
+      expect(page).to have_content note.note_type.capitalize
+      expect(page).to have_content note.title
+      expect(page).to have_content note.description.to_plain_text
+      expect(page).to have_content note.fuel_type.capitalize
+      expect(page).to have_content note.owned_by.display_name
+      expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(note.updated_at)}"
+      expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(note.created_at)}"
+      expect(page).to have_content note.status.capitalize
+    end
+  end
+
   describe "Viewing school notes admin page" do
     before do
       sign_in(user) if user
@@ -59,6 +72,7 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
                 select 'Gas', from: 'Fuel type'
                 click_button 'Save'
               end
+
               it "creates new note" do
                 expect(page).to have_content "#{note_type.capitalize}"
                 expect(page).to have_content "#{note_type} title"
@@ -98,6 +112,7 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
                 select new_note_type, from: 'Note type'
                 click_button 'Save'
               end
+
               it "saves new values" do
                 expect(page).to have_content new_note_type
                 expect(page).to have_content "#{note_type} title"
@@ -114,17 +129,9 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
       end
 
       context "and viewing index" do
-        let!(:note) { create(:note, school: school, note_type: :issue, fuel_type: :gas, created_by: user, updated_by: user) }
+        let!(:note) { create(:note, school: school, note_type: :issue, fuel_type: :gas, created_by: user, updated_by: user, owned_by: user) }
 
-        it "displays note" do
-          expect(page).to have_content note.note_type.capitalize
-          expect(page).to have_content note.title
-          expect(page).to have_content note.description.to_plain_text
-          expect(page).to have_content note.fuel_type.capitalize
-          expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(note.updated_at)}"
-          expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(note.created_at)}"
-          expect(page).to have_content note.status.capitalize
-        end
+        it_behaves_like "a displayed note"
 
         it { expect(page).to have_link('Delete') }
         context "and deleting a note" do
@@ -143,15 +150,7 @@ RSpec.describe 'school notes', :notes, type: :system, include_application_helper
             click_link("View")
           end
           it { expect(page).to have_current_path(admin_school_note_path(school, note)) }
-          it "displays note" do
-            expect(page).to have_content note.note_type.capitalize
-            expect(page).to have_content note.title
-            expect(page).to have_content note.description.to_plain_text
-            expect(page).to have_content note.fuel_type.capitalize
-            expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(note.updated_at)}"
-            expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(note.created_at)}"
-            expect(page).to have_content note.status.capitalize
-          end
+          it_behaves_like "a displayed note"
         end
 
         it { expect(page).to have_link('Resolve') }
