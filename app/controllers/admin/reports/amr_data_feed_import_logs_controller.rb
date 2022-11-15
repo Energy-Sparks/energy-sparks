@@ -5,18 +5,24 @@ module Admin
       before_action :set_log_counts
 
       def warnings
-        @pagy, @logs = pagy(AmrReadingWarning.order(created_at: :desc))
+        render_for(:with_warnings)
       end
 
       def errors
-        @pagy, @logs = pagy(AmrDataFeedImportLog.errored.order(import_time: :desc))
+        render_for(:errored)
       end
 
       def index
-        @pagy, @logs = pagy(AmrDataFeedImportLog.successful.order(import_time: :desc))
+        render_for(:successful)
       end
 
       private
+
+      def render_for(page)
+        @amr_data_feed_import_logs = AmrDataFeedImportLog.send(page).order(import_time: :desc)
+        @amr_data_feed_import_logs = @amr_data_feed_import_logs.where("file_name ILIKE '%#{params[:search]}%'") if params[:search]
+        @pagy, @logs = pagy(@amr_data_feed_import_logs)
+      end
 
       def set_log_counts
         @successes_count = AmrDataFeedImportLog.successful.count
