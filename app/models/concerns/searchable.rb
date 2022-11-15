@@ -3,6 +3,8 @@ module Searchable
 
   class_methods do
     def search(query:, locale:)
+      query = query.gsub("'", '\"')
+
       ids = select("DISTINCT #{name.underscore.pluralize}.id, search_type_results.rank").joins(sanitized_sql_for(locale, query)).pluck(:id)
       where(id: ids)
     end
