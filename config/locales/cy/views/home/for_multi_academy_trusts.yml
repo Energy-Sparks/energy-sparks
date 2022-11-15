@@ -1,7 +1,8 @@
+---
 cy:
   for_multi_academy_trusts:
     enrol_our_mat: Cofrestru ein Hymddiriedolaeth Aml-Academi
-    intro: Mae Energy Sparks yn darparu offeryn dadansoddi ynni ar-lein a rhaglen addysg ynni sydd wedi’u cynllunio’n benodol i helpu ysgolion i leihau eu defnydd o drydan a nwy drwy ddadansoddi data mesuryddion clyfar. Gall Energy Sparks helpu Ymddiriedolaethau Aml-Academi i gyrraedd eu targedau arbed carbon, democrateiddio mynediad at ddata ynni ysgolion a grymuso staff a myfyrwyr ysgol i gymryd camau rhad ac am ddim i leihau ôl troed carbon eu hysgol.
+    intro: "Mae Energy Sparks yn darparu offeryn dadansoddi ynni ar-lein a rhaglen addysg ynni sydd wedi’u cynllunio’n benodol i helpu ysgolion i leihau eu defnydd o drydan a nwy drwy ddadansoddi data mesuryddion clyfar. Gall Energy Sparks helpu Ymddiriedolaethau Aml-Academi i gyrraedd eu targedau arbed carbon, democrateiddio mynediad at ddata ynni ysgolion a grymuso staff a myfyrwyr ysgol i gymryd camau rhad ac am ddim i leihau ôl troed carbon eu hysgol."
     quote_1:
       job_title: Pennaeth
       text_html: '“Mae gwefan Energy Sparks yn hawdd iawn i’w defnyddio, ac mae’r plant wedi ei chael yn ddiddorol i fesur sut mae ynni’n cael ei ddefnyddio’n wahanol mewn gwahanol rannau o’r ysgol… Mae’r plant yn cael eu hysgogi gan yr elfen gystadleuol yn ogystal â’r awydd i arbed arian ac ynni …"'
@@ -10,7 +11,7 @@ cy:
       <ul>
         <li>Offeryn rheoli ynni ar-lein sy'n dangos i ysgolion pryd a faint o ynni y maent yn ei ddefnyddio</li>
         <li>Dadansoddiad ynni ysgol-benodol wedi'i deilwra</li>
-        <li>Gweithgareddau tîm eco a dosbarth i ddisgyblion yn gysylltiedig â dadansoddi egni</li>
+        <li>Gweithgareddau tîm eco a dosbarth i ddisgyblion yn gysylltiedig â dadansoddi ynni</li>
         <li>Cyngor i staff ysgol ar gymryd camau effeithiol</li>
         <li>Rhybuddion awtomataidd i roi gwybod i ysgolion pan fydd defnydd ynni yn newid</li>
         <li>Gwell llythrennedd ynni a charbon ymhlith disgyblion a staff a datblygiad sgiliau bywyd trosglwyddadwy</li>

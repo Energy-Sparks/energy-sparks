@@ -1,8 +1,9 @@
+---
 cy:
   for_schools:
     enrol_our_school: Cofrestru ein hysgol
     find_out_more: Dysgu rhagor
-    intro: Offeryn dadansoddi ynni ar-lein a rhaglen addysg ynni yw Energy Sparks sydd wedi’u cynllunio’n benodol i helpu ysgolion i leihau eu defnydd o drydan a nwy drwy ddadansoddi data mesuryddion clyfar. Mae Energy Sparks yn helpu ysgolion i leihau eu hallyriadau carbon, a gwneud cyfraniad gwirioneddol at fynd i’r afael â’r ‘argyfwng hinsawdd’.
+    intro: "Offeryn dadansoddi ynni ar-lein a rhaglen addysg ynni yw Energy Sparks sydd wedi’u cynllunio’n benodol i helpu ysgolion i leihau eu defnydd o drydan a nwy drwy ddadansoddi data mesuryddion clyfar. Mae Energy Sparks yn helpu ysgolion i leihau eu hallyriadau carbon, a gwneud cyfraniad gwirioneddol at fynd i’r afael â’r ‘argyfwng hinsawdd’."
     quote_1:
       job_title: Prifathro
       text_html: |-
@@ -18,7 +19,7 @@ cy:
         Mae Energy Sparks yn darparu dangosfyrddau i oedolion a disgyblion wedi'u teilwra i ddiwallu anghenion penodol myfyrwyr a staff ysgol.
       </p>
     section_2_html: |-
-      <h4><strong>Gweithgareddau tîm eco a dosbarth i ddisgyblion yn gysylltiedig â dadansoddi egni</strong></h4>
+      <h4><strong>Gweithgareddau tîm eco a dosbarth i ddisgyblion yn gysylltiedig â dadansoddi ynni</strong></h4>
       <p>
         Mae gan Energy Sparks %{activity_count} o <a href="/activity_categories">weithgareddau</a> addysg ynni a chynaliadwyedd ac adnoddau cysylltiedig y gall disgyblion gymryd rhan ynddynt drwy dimau eco neu ddysgu'r cwricwlwm. Mae’r gweithgareddau hyn yn cefnogi dysgu am newid hinsawdd ac ynni, ymchwilio i’r defnydd o ynni o amgylch safle’r ysgol, cymryd camau i leihau’r defnydd o ynni a lledaenu’r neges arbed ynni a lleihau carbon ar draws cymuned ehangach yr ysgol. Anogir ysgolion i gofnodi gweithgareddau sydd wedi'u cwblhau ar Energy Sparks, gan <a href="/scoreboards">ennill pwyntiau</a> a rhannu arfer orau ag ysgolion eraill.
       </p>
