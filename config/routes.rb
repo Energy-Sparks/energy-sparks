@@ -193,7 +193,6 @@ Rails.application.routes.draw do
       resource :school_group, controller: :school_group
       resource :times, only: [:edit, :update]
       resource :your_school_estate, only: [:edit, :update]
-      resources :alternative_heating_sources, except: [:show]
 
       get 'simulations/:id/simulation_detail', to: 'simulations#show_detailed', as: :simulation_detail
       get 'simulations/new_fitted', to: 'simulations#new_fitted', as: :new_fitted_simulation
