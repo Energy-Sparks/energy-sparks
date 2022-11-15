@@ -19,7 +19,7 @@
 </div>
 
 <% if @school_target.report_last_generated.present? %>
-  <%= render "target_table", school_target: @school_target, progress_summary: @progress_summary %>
+  <%= render "target_table", school_target: @school_target, progress_summary: @progress_summary, overview_data: @overview_data %>
 <% end %>
   <div class="pt-4"></div>
 
