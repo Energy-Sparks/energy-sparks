@@ -4,7 +4,7 @@
       <th class="no-sort"></th>
       <th>Issue</th>
       <th>Fuel</th>
-      <th>Updated by</th>
+      <th class="nowrap">Assigned to</th>
       <th>Updated</th>
       <th class="no-sort"></th>
     </tr>
@@ -14,12 +14,9 @@
       <tr>
         <td><%= fa_icon('exclamation-circle text-secondary') %></td>
         <td><%= link_to issue.title, admin_school_note_path(issue.school, issue) %></td>
-        <td><% if issue.fuel_type %>
-            <span class="badge badge-secondary"><%= issue.fuel_type.capitalize %></span>
-          <% end %>
-        </td>
-        <td><%= issue.updated_by.email %></td>
-        <td class="nowrap"><%= nice_date_times(issue.updated_at) %></td>
+        <td><%= render 'admin/schools/notes/fuel_type', note: issue %></td>
+        <td><%= render 'admin/schools/notes/owned_by', note: issue %></td>
+        <td data-order="<%= issue.updated_at %>"><div class="badge badge-pill bg-white text-dark font-weight-normal nowrap"><%= issue.updated_by.display_name %> • <%= nice_date_times_today(issue.updated_at) %></div></td>
         <td class="nowrap text-right">
           <%= link_to 'View', admin_school_note_path(issue.school, issue), class: "btn btn-sm" %>
         </td>

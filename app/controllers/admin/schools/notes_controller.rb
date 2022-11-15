@@ -48,7 +48,7 @@ module Admin
       private
 
       def note_params
-        params.require(:note).permit(:note_type, :title, :description, :fuel_type, :status)
+        params.require(:note).permit(:note_type, :title, :description, :fuel_type, :status, :owned_by_id)
       end
     end
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_11_103603) do
+ActiveRecord::Schema.define(version: 2022_11_14_133851) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1054,7 +1054,9 @@ ActiveRecord::Schema.define(version: 2022_11_11_103603) do
     t.bigint "updated_by_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "owned_by_id"
     t.index ["created_by_id"], name: "index_notes_on_created_by_id"
+    t.index ["owned_by_id"], name: "index_notes_on_owned_by_id"
     t.index ["school_id"], name: "index_notes_on_school_id"
     t.index ["updated_by_id"], name: "index_notes_on_updated_by_id"
   end
@@ -1218,6 +1220,8 @@ ActiveRecord::Schema.define(version: 2022_11_11_103603) do
     t.bigint "default_weather_station_id"
     t.boolean "public", default: true
     t.integer "default_chart_preference", default: 0, null: false
+    t.bigint "default_notes_admin_user_id"
+    t.index ["default_notes_admin_user_id"], name: "index_school_groups_on_default_notes_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
     t.index ["default_template_calendar_id"], name: "index_school_groups_on_default_template_calendar_id"
@@ -1830,6 +1834,7 @@ ActiveRecord::Schema.define(version: 2022_11_11_103603) do
   add_foreign_key "meters", "schools", on_delete: :cascade
   add_foreign_key "meters", "solar_edge_installations", on_delete: :cascade
   add_foreign_key "notes", "users", column: "created_by_id"
+  add_foreign_key "notes", "users", column: "owned_by_id"
   add_foreign_key "notes", "users", column: "updated_by_id"
   add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "audits"
@@ -1852,6 +1857,7 @@ ActiveRecord::Schema.define(version: 2022_11_11_103603) do
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
   add_foreign_key "school_groups", "calendars", column: "default_template_calendar_id", on_delete: :nullify
   add_foreign_key "school_groups", "scoreboards", column: "default_scoreboard_id"
+  add_foreign_key "school_groups", "users", column: "default_notes_admin_user_id", on_delete: :nullify
   add_foreign_key "school_key_stages", "key_stages", on_delete: :restrict
   add_foreign_key "school_key_stages", "schools", on_delete: :cascade
   add_foreign_key "school_meter_attributes", "school_meter_attributes", column: "replaced_by_id", on_delete: :nullify
