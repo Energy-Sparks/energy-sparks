@@ -1,0 +1,13 @@
+<div class="d-flex justify-content-between align-items-center">
+  <% if school_target.report_last_generated.nil? %>
+    <h1>We are calculating your progress</h1>
+  <% else %>
+    <h1>Reducing your energy usage by <%= school_target.target_date.strftime("%B %Y") %></h1>
+  <% end %>
+  <div>
+    <% if can?(:manage, school_target) %>
+      <%= link_to "Revise your target", edit_school_school_target_path(school_target.school, school_target), class: "btn btn-outline-dark font-weight-bold" %>
+    <% end %>
+    <%= link_to_help_for_feature :school_targets, css: "btn btn-outline-dark font-weight-bold" %>
+  </div>
+</div>
