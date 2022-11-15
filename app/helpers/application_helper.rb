@@ -181,6 +181,21 @@ module ApplicationHelper
     end
   end
 
+  def fuel_type_class(fuel_type)
+    case fuel_type.to_sym
+    when :electricity
+      'text-electricity'
+    when :gas
+      'text-gas'
+    when :solar_pv
+      'text-solar'
+    when :storage_heater, :storage_heaters
+      'text-storage'
+    when :exported_solar_pv
+      'text-solar'
+    end
+  end
+
   def label_is_energy_plus?(label)
     label.is_a?(String) && label.start_with?('Energy') && label.length > 6
   end
