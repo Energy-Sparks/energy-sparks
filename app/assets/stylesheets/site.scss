@@ -21,3 +21,12 @@
 .text-solar {
   color: $solar-dark;
 }
+
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.curved-border {
+  border-radius: 0.75rem;
+}
