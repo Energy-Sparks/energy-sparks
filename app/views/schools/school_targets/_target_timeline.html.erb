@@ -1,0 +1,15 @@
+<% unless observations.empty? %>
+  <div class="row justify-content-between">
+    <div class="col-8">
+      <h3>What happened during your target period?</h3>
+      <p>
+        A reminder of the energy saving activities and actions you recorded between <%= nice_dates(@school_target.start_date) %> and <%= nice_dates(@school_target.target_date) %>.
+      </p>
+    </div>
+  </div>
+  <div class="row justify-content-md-center">
+    <div class="col col-md-10">
+      <%= render 'schools/observations/timeline', observations: observations, show_actions: false%>
+    </div>
+  </div>
+<% end %>

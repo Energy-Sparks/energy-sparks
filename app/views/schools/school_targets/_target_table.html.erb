@@ -1,0 +1,54 @@
+<div class="table-responsive-sm mt-4">
+  <table class="table management-overview">
+    <thead class="thead-dark">
+      <th class="icon"></th>
+      <th></th>
+      <th class="text-right">Target Reduction</th>
+      <th class="text-right">
+        <% if school_target.current? %>
+          Current progress
+        <% else %>
+          Final result
+        <% end %>
+      </th>
+      <th class="text-right"></th>
+    </thead>
+    <tbody>
+      <% if progress_summary.electricity_progress.present? && progress_summary.electricity_progress.can_chart? %>
+        <tr>
+          <td class="icon"><span class="text-electricity"><%= fa_icon fuel_type_icon(:electricity) %></span></td>
+          <td>Electricity</td>
+          <td class="text-right"><%= -school_target.electricity %>%</td>
+          <td class="text-right"><%= up_downify(format_target(progress_summary.electricity_progress.progress, :relative_percent)) %></td>
+          <td class="text-right"><%= link_to "View report", electricity_school_progress_index_path(school_target.school), class: "btn btn-outline-dark font-weight-bold" %></td>
+        </tr>
+      <% end %>
+      <% if progress_summary.gas_progress.present? && progress_summary.gas_progress.can_chart? %>
+        <tr>
+          <td class="icon"><span class="text-gas"><%= fa_icon fuel_type_icon(:gas) %></span></td>
+          <td>Gas</td>
+          <td class="text-right"><%= -school_target.gas %>%</td>
+          <td class="text-right"><%= up_downify(format_target(progress_summary.gas_progress.progress, :relative_percent)) %></td>
+          <td class="text-right"><%= link_to "View report", gas_school_progress_index_path(school_target.school), class: "btn btn-outline-dark font-weight-bold" %></td>
+        </tr>
+      <% end %>
+      <% if progress_summary.storage_heater_progress.present? && progress_summary.storage_heater_progress.can_chart? %>
+        <tr>
+          <td class="icon"><span class="text-storage"><%= fa_icon fuel_type_icon(:storage_heaters) %></span></td>
+          <td>Storage heaters</td>
+          <td class="text-right"><%= -school_target.storage_heaters %>%</td>
+          <td class="text-right"><%= up_downify(format_target(progress_summary.storage_heater_progress.progress, :relative_percent)) %></td>
+          <td class="text-right"><%= link_to "View report", storage_heater_school_progress_index_path(school_target.school), class: "btn btn-outline-dark font-weight-bold" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div class="text-right management-overview-caption">
+    Reporting change in energy usage between
+    <% if school_target.current? %>
+      <%= school_target.start_date.strftime("%B %Y") %> and <%= school_target.report_last_generated.strftime("%B %Y") %>
+    <% else %>
+      <%= school_target.start_date.strftime("%B %Y") %> and <%= school_target.target_date.strftime("%B %Y") %>
+    <% end %>. <%= link_to_help_for_feature :school_targets, title: "#{t('schools.show.more_information')} #{fa_icon('info-circle')}".html_safe %>
+</div>

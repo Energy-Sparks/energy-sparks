@@ -384,29 +384,35 @@ RSpec.describe 'school targets', type: :system do
 
     end
 
-    context "with expired target" do
+    context "with an expired target" do
       let!(:target)          { create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday) }
 
       before(:each) do
         visit school_school_targets_path(school)
       end
 
-      it "prompts to create new target" do
-        expect(page).to have_content("Review and set your next energy saving target")
+      context "it displays a summary" do
+          it "says the target is expired"
+          it "does not show bottom panels"
+          it "shows summary of activities and interventions"
+          it "prompts to create a new target"
+#          it "prompts to create new target" do
+#            expect(page).to have_content("Review and set your next energy saving target")
+#          end
+          context 'and allows me to create a new target' do
+            it "which defaults to the old target values" do
+              expect( find_field("Reducing electricity usage by").value ).to eq target.electricity.to_s
+
+              fill_in "Reducing electricity usage by", with: 15
+
+              click_on 'Set this target'
+
+              expect(school.current_target.electricity).to eql 15.0
+              expect(school.current_target.gas).to eql target.gas
+              expect(school.current_target.storage_heaters).to eql target.storage_heaters
+            end
+          end
       end
-
-      it "creates new target from old" do
-        expect( find_field("Reducing electricity usage by").value ).to eq target.electricity.to_s
-
-        fill_in "Reducing electricity usage by", with: 15
-
-        click_on 'Set this target'
-
-        expect(school.current_target.electricity).to eql 15.0
-        expect(school.current_target.gas).to eql target.gas
-        expect(school.current_target.storage_heaters).to eql target.storage_heaters
-      end
-
     end
   end
 
@@ -457,6 +463,8 @@ RSpec.describe 'school targets', type: :system do
       expect(page).to_not have_link("Choose another activity")
       expect(page).to_not have_link("Record an energy saving action")
     end
+
+    it 'does not allow me to set new one if expired'
   end
 
   context 'as a pupil' do
@@ -480,6 +488,7 @@ RSpec.describe 'school targets', type: :system do
     it 'doesnt have action links' do
       expect(page).to have_link("Choose another activity")
     end
+    it 'allows me to set new one if expired'
   end
 
   context 'as a staff user' do

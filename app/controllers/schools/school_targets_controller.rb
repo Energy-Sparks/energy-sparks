@@ -6,6 +6,7 @@ module Schools
     include SchoolAggregation
     include SchoolProgress
     include ActivityTypeFilterable
+    include DashboardTimeline
 
     skip_before_action :authenticate_user!, only: [:index, :show]
 
@@ -22,17 +23,24 @@ module Schools
 
     def show
       authorize! :show, @school_target
-      setup_activity_suggestions
-      @actions = Interventions::SuggestAction.new(@school).suggest
 
       unless @school_target.report_last_generated.nil?
         @progress_summary = progress_service.progress_summary
-        @prompt_to_review_target = prompt_to_review_target?
-        @fuel_types_changed = fuel_types_changed
         @overview_data = Schools::ManagementTableService.new(@school).management_data
       end
-      #list of fuel types to suggest estimates
-      @suggest_estimates_for_fuel_types = suggest_estimates_for_fuel_types(check_data: true)
+
+      if @school_target.current?
+        setup_activity_suggestions
+        @actions = Interventions::SuggestAction.new(@school).suggest
+        #list of fuel types to suggest estimates
+        @suggest_estimates_for_fuel_types = suggest_estimates_for_fuel_types(check_data: true)
+        @prompt_to_review_target = prompt_to_review_target?
+        @fuel_types_changed = fuel_types_changed
+        render :current
+      else
+        @observations = setup_target_timeline(@school_target)
+        render :expired
+      end
     end
 
     #create first or new target if current has expired
