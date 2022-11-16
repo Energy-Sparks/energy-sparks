@@ -54,7 +54,6 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
               expect(find_field('Title').text).to be_blank
               expect(find('trix-editor#issue_description')).to have_text('')
               expect(page).to have_select('Fuel type', selected: [])
-              expect(page).to have_select('Issue type', selected: issue_type.capitalize)
               expect(page).to have_select('Assigned to', selected: school_group.default_issues_admin_user.display_name)
             end
 
@@ -105,7 +104,6 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
               expect(page).to have_field('Title', with: issue.title)
               expect(find_field('issue[description]', type: :hidden).value).to eq(issue.description.to_plain_text)
               expect(page).to have_select('Fuel type', selected: issue.fuel_type.capitalize)
-              expect(page).to have_select('Issue type', selected: issue_type.capitalize)
               expect(page).to have_select('Assigned to', selected: school_group_issues_admin.display_name)
             end
             context "and saving new values" do
