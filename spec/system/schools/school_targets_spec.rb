@@ -30,7 +30,6 @@ RSpec.describe 'school targets', type: :system do
     allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
 
     allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-    allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(false)
 
     #Update the configuration rather than creating one, as the school factory builds one
     #and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
@@ -48,28 +47,8 @@ RSpec.describe 'school targets', type: :system do
       visit school_path(school)
     end
 
-    it 'doesnt let me view target data' do
-      expect(page).to_not have_link("View target data", href: admin_school_target_data_path(school))
-    end
-
-    context 'when displaying menu links' do
-      it 'has a link to review targets when I can set one' do
-        expect(page).to have_link("Review targets", href: school_school_targets_path(school))
-      end
-
-      it 'has no link if not enough data' do
-        school.configuration.update!(school_target_fuel_types: [])
-        refresh
-        expect(page).to_not have_link("Review targets", href: school_school_targets_path(school))
-      end
-
-      it 'does have a link if v2 of targets is active' do
-        school.configuration.update!(school_target_fuel_types: [])
-        allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(true)
-        refresh
-        expect(page).to have_link("Review targets", href: school_school_targets_path(school))
-      end
-
+    it 'has a link to review targets when I can set one' do
+      expect(page).to have_link("Review targets", href: school_school_targets_path(school))
     end
 
     context 'with targets disabled' do
@@ -160,25 +139,24 @@ RSpec.describe 'school targets', type: :system do
         end
       end
 
-      context "and only enough data for electricity" do
+      context "and all fuel types" do
 
         before(:each) do
           school.configuration.update!(fuel_configuration: fuel_configuration, school_target_fuel_types: ["electricity"])
           visit school_school_targets_path(school)
         end
 
-        it "allows electricity target to be created" do
-          expect(page).to_not have_content("Reducing gas usage by")
-          expect(page).to_not have_content("Reducing storage heater usage by")
-
+        it "allows just gas and electricity target to be created" do
           fill_in "Reducing electricity usage by", with: 15
+          fill_in "Reducing storage heater usage by", with: ''
+
           click_on 'Set this target'
 
           expect(page).to have_content('Target successfully created')
           expect(page).to have_content("We are calculating your progress")
           expect(school.has_current_target?).to eql(true)
           expect(school.current_target.electricity).to eql 15.0
-          expect(school.current_target.gas).to eql nil
+          expect(school.current_target.gas).to eql 5.0
           expect(school.current_target.storage_heaters).to eql nil
         end
       end
@@ -230,9 +208,8 @@ RSpec.describe 'school targets', type: :system do
         expect(page).to_not have_content("last week")
       end
 
-      context "and v2 is active and limited data is available" do
+      context "and limited data is available" do
         before(:each) do
-          allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(true)
           target.update!(electricity_progress: {})
           school.configuration.update!(suggest_estimates_fuel_types: ["electricity"])
           refresh
@@ -415,6 +392,10 @@ RSpec.describe 'school targets', type: :system do
     end
   end
 
+
+  #Admins can delete
+  #Admins can view debugging data
+  #otherwise same as school admin
   context 'as an admin' do
     let(:admin)           { create(:admin) }
 
@@ -443,6 +424,7 @@ RSpec.describe 'school targets', type: :system do
     end
   end
 
+  #View targets only
   context 'as a guest user' do
     let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
     let!(:target)               { create(:school_target, school: school, electricity_progress: electricity_progress) }
@@ -466,6 +448,7 @@ RSpec.describe 'school targets', type: :system do
     it 'does not allow me to set new one if expired'
   end
 
+  #Currently view only, soon: same as school admin
   context 'as a pupil' do
     let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
     let!(:target)               { create(:school_target, school: school, electricity_progress: electricity_progress) }
@@ -490,6 +473,7 @@ RSpec.describe 'school targets', type: :system do
     it 'allows me to set new one if expired'
   end
 
+  #Same as school admin
   context 'as a staff user' do
     let!(:staff)      { create(:staff, school: school) }
 
