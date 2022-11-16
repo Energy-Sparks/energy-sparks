@@ -1,7 +1,7 @@
 FactoryBot.define do
-  factory :note do
+  factory :issue do
     school
-    note_type { :note }
+    issue_type { :issue }
     sequence(:title) {|n| "Title #{n}"}
     sequence(:description) {|n| "Description #{n}"}
     status { :open }
