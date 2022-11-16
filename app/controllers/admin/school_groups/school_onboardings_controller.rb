@@ -22,7 +22,7 @@ module Admin
           SchoolCreator.new(onboarding.school).make_visible! if onboarding.school
         end
       rescue SchoolCreator::Error => e
-        redirect_back school_group: @school_group.slug, fallback_location: admin_school_onboardings_path(school_group: @school_group.slug), notice: e.message
+        redirect_to redirect_location, notice: e.message
       end
 
       private
@@ -86,7 +86,15 @@ module Admin
         else
           notice = "Nothing selected"
         end
-        redirect_back fallback_location: admin_school_onboardings_path, notice: "#{@school_group.name} schools #{notice}"
+        redirect_to redirect_location, notice: "Selected #{@school_group.name} schools #{notice}"
+      end
+
+      def redirect_location
+        if params[:anchor] == "onboarding"
+          admin_school_group_path(@school_group, anchor: 'onboarding')
+        else
+          admin_school_onboardings_path(anchor: @school_group.slug)
+        end
       end
     end
   end
