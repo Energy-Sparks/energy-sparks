@@ -326,6 +326,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           it "lists issue in issues tab" do
             within '#issues' do
               expect(page).to have_content issue.title
+              expect(page).to have_content issue.school.name
               expect(page).to have_content issue.fuel_type.capitalize
               expect(page).to have_content admin.display_name
               expect(page).to have_content nice_date_times_today(issue.updated_at)
