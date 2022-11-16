@@ -26,7 +26,7 @@
   <tbody>
   <% @amr_data_feed_configs.each do |config| %>
     <tr>
-    <% import_logs = config.amr_data_feed_import_logs.where('import_time < ?', Date.today - Admin::Reports::AmrDataFeedImportLogsController::SUMMARY_PERIOD_IN_DAYS.days) %>
+    <% import_logs = config.amr_data_feed_import_logs.where('import_time >= ?', Date.today - Admin::Reports::AmrDataFeedImportLogsController::SUMMARY_PERIOD_IN_DAYS.days) %>
     <td class='text-left'><%= config.description %></td>
     <td><%= import_logs.count %></td>
     <td><%= link_to import_logs.successful.count, admin_reports_amr_data_feed_import_logs_successes_path({config: {config_id: config.id}}) %></td>
