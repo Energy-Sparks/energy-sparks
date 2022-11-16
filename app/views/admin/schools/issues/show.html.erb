@@ -1,0 +1,5 @@
+<%= render 'header', issue: @issue, title: "View #{@issue.issue_type.capitalize} for #{@school.name}" do %>
+  <%= header_nav_link 'All school issues & notes', admin_school_issues_url(@school) %>
+<% end %>
+
+<%= render 'issue', issue: @issue, index: false %>
