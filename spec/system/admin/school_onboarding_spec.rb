@@ -38,7 +38,7 @@ RSpec.describe "onboarding", :schools, type: :system do
     end
 
     context "selectable actions" do
-      let!(:setup_data)  { } # call to create all objects required by tests before page is loaded, overriden in contexts
+      let!(:setup_data) {} # call to create all objects required by tests before page is loaded, overriden in contexts
       before do
         click_on 'Manage school onboarding'
       end

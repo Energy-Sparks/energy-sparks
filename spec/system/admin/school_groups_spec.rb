@@ -302,6 +302,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
               expect(page).to have_link(school.name, href: school_path(school))
               expect(page).to have_content(nice_dates(school.removal_date))
               expect(page).to have_link("Meters")
+              expect(page).to have_link("Issues")
             end
           end
         end
