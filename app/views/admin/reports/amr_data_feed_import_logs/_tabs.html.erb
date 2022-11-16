@@ -1,6 +1,11 @@
 <ul class="nav nav-tabs">
   <li class="nav-item">
     <%= link_to admin_reports_amr_data_feed_import_logs_path, class: 'nav-link ' + (action_name == 'index' ? 'active' : '') do %>
+      Summary
+    <% end %>
+  </li>
+  <li class="nav-item">
+    <%= link_to admin_reports_amr_data_feed_import_logs_successes_path, class: 'nav-link ' + (action_name == 'successes' ? 'active' : '') do %>
       Successes <span class="badge badge-pill badge-success"><%= @successes_count %></span>
     <% end %>
   </li>

@@ -12,8 +12,11 @@ module Admin
         render_for(:errored)
       end
 
-      def index
+      def successes
         render_for(:successful)
+      end
+
+      def index
       end
 
       private

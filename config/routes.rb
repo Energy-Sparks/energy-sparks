@@ -405,6 +405,7 @@ Rails.application.routes.draw do
       resources :amr_data_feed_import_logs, only: [:index]
       get "amr_data_feed_import_logs/errors" => "amr_data_feed_import_logs#errors"
       get "amr_data_feed_import_logs/warnings" => "amr_data_feed_import_logs#warnings"
+      get "amr_data_feed_import_logs/successes" => "amr_data_feed_import_logs#successes"
 
       resources :tariff_import_logs, only: [:index]
       resources :amr_reading_warnings, only: [:index]
