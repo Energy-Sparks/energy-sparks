@@ -237,8 +237,7 @@ RSpec.describe 'school targets', type: :system do
           school.configuration.update!(suggest_estimates_fuel_types: ["electricity"])
           refresh
         end
-        it 'shows limited data' do
-          expect(page).to have_content("Target reduction")
+        it 'cannot show progress with no recent data' do
           expect(page).to_not have_content("last week")
         end
 
@@ -272,10 +271,10 @@ RSpec.describe 'school targets', type: :system do
       end
 
       it "includes achieving your targets section" do
-        expect(page).to have_content("Working with the pupils")
+        expect(page).to have_content("Work with the pupils")
         expect(page).to have_link("Choose another activity", href: activity_categories_path)
 
-        expect(page).to have_content("Taking action around the school")
+        expect(page).to have_content("Take action around the school")
         expect(page).to have_link('Record an energy saving action', href: intervention_type_groups_path)
 
         expect(page).to have_content("Explore your data")
