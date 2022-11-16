@@ -1,25 +1,41 @@
 <h1>Data Feed Import Logs</h1>
 <%= render 'tabs' %>
 
-<table class="table">
+<h4>Summary of the last <%= Admin::Reports::AmrDataFeedImportLogsController::SUMMARY_PERIOD_IN_DAYS %> days</h4>
+
+<table class="table table-bordered text-center">
   <thead>
+    <tr>
+      <th colspan=2></th>
+      <th>Successes</th>
+      <th colspan=3>Warnings</th>
+      <th colspan=3>Errors</th>
+    </tr>
     <tr>
       <th>Feed</th>
       <th>Imports</th>
-      <th>Successes</th>
-      <th>Warnings</th>
-      <th>Errors</th>
+      <th>Count</th>
+      <th>Count</th>
+      <th>Last 24 hours</th>
+      <th>Previous 24 hours</th>
+      <th>Count</th>
+      <th>Last 24 hours</th>
+      <th>Previous 24 hours</th>
     </tr>
   </thead>
   <tbody>
   <% @amr_data_feed_configs.each do |config| %>
     <tr>
-    <% import_logs = config.amr_data_feed_import_logs.where('import_time < ?', Date.today - 7.days) %>
-    <td><%= config.description %></td>
+    <% import_logs = config.amr_data_feed_import_logs.where('import_time < ?', Date.today - Admin::Reports::AmrDataFeedImportLogsController::SUMMARY_PERIOD_IN_DAYS.days) %>
+    <td class='text-left'><%= config.description %></td>
     <td><%= import_logs.count %></td>
-    <td><%= import_logs.successful.count %></td>
-    <td><%= import_logs.with_warnings.count %></td>
-    <td><%= import_logs.where.not(error_messages: nil).count %></td>
+    <td><%= link_to import_logs.successful.count, admin_reports_amr_data_feed_import_logs_successes_path({config: {config_id: config.id}}) %></td>
+    <td><%= link_to import_logs.with_warnings.count, admin_reports_amr_data_feed_import_logs_warnings_path({config: {config_id: config.id}}) %></td>
+    <td><%= import_logs.with_warnings.where(import_time: 24.hours.ago..Time.now).count %></td>
+    <td><%= import_logs.with_warnings.where(import_time: 48.hours.ago..24.hours.ago).count %></td>
+    <td><%= link_to import_logs.where.not(error_messages: nil).count, admin_reports_amr_data_feed_import_logs_errors_path({config: {config_id: config.id}}) %></td>
+    <td><%= import_logs.where.not(error_messages: nil).where(import_time: 24.hours.ago..Time.now).count %></td>
+    <td><%= import_logs.where.not(error_messages: nil).where(import_time: 48.hours.ago..24.hours.ago).count %></td>
     </tr>
   <% end %>
   </tbody>
