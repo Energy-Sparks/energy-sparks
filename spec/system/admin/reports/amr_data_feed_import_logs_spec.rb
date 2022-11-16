@@ -18,7 +18,7 @@ describe AmrDataFeedImportLog, type: :system, include_application_helper: true d
     log_2 = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago)
 
     click_on 'AMR File imports report'
-    expect(page).to have_content('Amr Data Feed Import Logs')
+    expect(page).to have_content('Data Feed Import Logs')
     expect(page).to have_content(nice_date_times(log_1.import_time))
     expect(page).to have_content(nice_date_times(log_2.import_time))
 
