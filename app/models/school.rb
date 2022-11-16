@@ -175,6 +175,8 @@ class School < ApplicationRecord
 
   validates_associated :school_times, on: :school_time_update
 
+  validates :alternative_heating_oil_percent, :alternative_heating_lpg_percent, :alternative_heating_biomass_percent, :alternative_heating_district_heating_percent, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true }
+
   accepts_nested_attributes_for :school_times, reject_if: proc {|attributes| attributes['day'].blank? }, allow_destroy: true
 
   auto_strip_attributes :name, :website, :postcode, squish: true
