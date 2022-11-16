@@ -1,2 +1,26 @@
 <h1>Data Feed Import Logs</h1>
 <%= render 'tabs' %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Feed</th>
+      <th>Imports</th>
+      <th>Successes</th>
+      <th>Warnings</th>
+      <th>Errors</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @amr_data_feed_configs.each do |config| %>
+    <tr>
+    <% import_logs = config.amr_data_feed_import_logs.where('import_time < ?', Date.today - 7.days) %>
+    <td><%= config.description %></td>
+    <td><%= import_logs.count %></td>
+    <td><%= import_logs.successful.count %></td>
+    <td><%= import_logs.with_warnings.count %></td>
+    <td><%= import_logs.where.not(error_messages: nil).count %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

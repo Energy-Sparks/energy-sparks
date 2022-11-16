@@ -1,7 +1,11 @@
 <div class="pb-2">
   <%= form_tag request.path, method: :get do %>
     <div class="row">
-      <div class="col-md-11">
+
+      <div class="col-md-4">
+        <%= select("config", "config_id", AmrDataFeedConfig.all.collect { |c| [c.description, c.id] }, { include_blank: "All Configs", selected: params.dig(:config,:config_id) }, { class: 'form-control' } ) %>
+      </div>
+      <div class="col-md-7">
         <%= text_field_tag :search, params[:search], class: 'form-control' %>
       </div>
       <div class="col-md-1">
@@ -11,9 +15,16 @@
   <% end %>
   <div class="row">
     <div class="col-md-12">
-      <%= @amr_data_feed_import_logs.count %> results shown
-      <% if params[:search] %>
-        for '<%= params[:search] %>'  <%= link_to 'Clear', request.path %>
+      <%= @amr_data_feed_import_logs.count %> results
+      <% if params[:search].present? || params.dig(:config,:config_id).present? %>
+        for:
+        <% if params[:config][:config_id] %>
+          '<%= AmrDataFeedConfig.find_by(id: params[:config][:config_id]).description %>'
+        <% end %>
+        <% if params[:search] %>
+          with '<%= params[:search] %>' in the filename
+        <% end %>
+        <%= link_to 'Clear', request.path %>
       <% end %>
     </div>
   </div>
