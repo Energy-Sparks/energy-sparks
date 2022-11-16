@@ -40,7 +40,7 @@ module Admin
       def resolve
         notice = "#{@issue.issue_type.capitalize} was successfully resolved."
         unless @issue.resolve!(updated_by: current_user)
-          notice = "Can only resolve issues (and not issues)."
+          notice = "Can only resolve issues (and not notes)."
         end
         redirect_back fallback_location: admin_school_issues_path(@school), notice: notice
       end
