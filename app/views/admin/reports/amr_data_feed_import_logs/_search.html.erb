@@ -1,4 +1,21 @@
-<%= form_tag request.path, method: :get do %>
-  <%= text_field_tag :search, params[:search] %>
-  <%= submit_tag 'Search' %>
-<% end %>
+<div class="pb-2">
+  <%= form_tag request.path, method: :get do %>
+    <div class="row">
+      <div class="col-md-10">
+        <%= text_field_tag :search, params[:search], class: 'form-control' %>
+      </div>
+      <div class="col-md-2">
+        <%= submit_tag 'Search', class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+  <div class="row">
+    <div class="col-md-12">
+      <%= @amr_data_feed_import_logs.count %> results shown
+      <% if params[:search] %>
+        for '<%= params[:search] %>'  <%= link_to 'Clear', request.path %>
+      <% end %>
+    </div>
+  </div>
+</div>
+

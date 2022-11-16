@@ -26,7 +26,7 @@ module Admin
 
       def set_log_counts
         @successes_count = AmrDataFeedImportLog.successful.count
-        @warnings_count = AmrReadingWarning.count
+        @warnings_count = AmrDataFeedImportLog.with_warnings.count
         @errors_count = AmrDataFeedImportLog.errored.count
       end
     end
