@@ -4,5 +4,6 @@
   <%= f.input :fuel_type, collection: Note.fuel_types.keys, label_method: lambda {|k| k.humanize} %>
   <%= f.input :status, collection: Note.statuses.keys, label_method: lambda {|k| k.humanize}, include_blank: false unless note.new_record? %>
   <%= f.input :note_type, collection: Note.note_types.keys, label_method: lambda {|k| k.humanize}, include_blank: false %>
+  <%= f.input :owned_by_id, collection: User.admin, label: "Assigned to", label_method: lambda {|k| k.display_name}, include_blank: true, selected: (f.object.new_record? && params.dig(:note,:owned_by_id).nil? ? school.school_group.try(:default_notes_admin_user_id) : f.object.owned_by_id) %>
   <%= f.submit 'Save', class: 'btn btn-primary' %>
 <% end %>

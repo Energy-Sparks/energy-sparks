@@ -64,7 +64,7 @@ RSpec.describe Note, type: :model do
       it { expect(subject.lines.count).to eq(3) }
       it { expect(subject.lines.first.chomp).to eq(header) }
       2.times do |i|
-        it { expect(subject.lines[i+1].chomp).to eq([notes[i].school.name, notes[i].title, notes[i].description.to_plain_text, notes[i].fuel_type, notes[i].created_by.email, notes[i].created_at, notes[i].updated_by.email, notes[i].updated_at].join(',')) }
+        it { expect(subject.lines[i+1].chomp).to eq([notes[i].school.name, notes[i].title, notes[i].description.to_plain_text, notes[i].fuel_type, notes[i].created_by.display_name, notes[i].created_at, notes[i].updated_by.display_name, notes[i].updated_at].join(',')) }
       end
     end
 

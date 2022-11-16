@@ -1,4 +1,4 @@
-<%= render 'header', title: "Edit #{@note.note_type.capitalize} for #{@school.name}" do %>
+<%= render 'header', note: @note, title: "Edit #{@school.name} #{@note.note_type.capitalize}" do %>
   <%= header_nav_link 'All school notes & issues', admin_school_notes_url(@school) %>
 <% end %>
 

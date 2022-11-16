@@ -4,6 +4,7 @@ class Note < ApplicationRecord
   belongs_to :school
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
+  belongs_to :owned_by, class_name: 'User', optional: true
 
   scope :by_updated_at, -> { order(updated_at: :desc) }
 
@@ -28,7 +29,7 @@ class Note < ApplicationRecord
   end
 
   def self.csv_attributes
-    %w{school.name title description.to_plain_text fuel_type created_by.email created_at updated_by.email updated_at}
+    %w{school.name title description.to_plain_text fuel_type created_by.display_name created_at updated_by.display_name updated_at}
   end
 
   # From rails 6.1 onwards, a default for enums can be specified by setting by _default: :open or rails 7: default: :open on the enum definition
