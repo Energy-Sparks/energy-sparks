@@ -1,5 +1,0 @@
-<%= render 'header', note: @note, title: "New #{@note.note_type.capitalize} for #{@school.name}" do %>
-  <%= header_nav_link 'All school notes & issues', admin_school_notes_url(@school) %>
-<% end %>
-
-<%= render 'form', school: @school, note: @note %>
