@@ -52,6 +52,7 @@ module Admin
         :default_solar_pv_tuos_area_id,
         :default_weather_station_id,
         :default_chart_preference,
+        :default_issues_admin_user_id,
         :public
       )
     end

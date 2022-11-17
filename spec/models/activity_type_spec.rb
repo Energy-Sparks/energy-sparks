@@ -44,6 +44,12 @@ describe 'ActivityType' do
       expect(ActivityType.search(query: 'bar', locale: 'en')).to eq([activity_type_2])
     end
 
+    it 'finds activities by names with apostrophes' do
+      activity_type_1 = create(:activity_type, name: "Investigate whether the school's heating is on")
+
+      expect(ActivityType.search(query: "Investigate whether the school's heating", locale: 'en')).to eq([activity_type_1])
+    end
+
     it 'applies search variants' do
       activity_type_1 = create(:activity_type, name: 'time')
       activity_type_2 = create(:activity_type, name: 'timing')

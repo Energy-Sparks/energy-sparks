@@ -20,6 +20,9 @@
             <span class="badge badge-secondary"><%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)).try(:humanize) %></span>
           </td>
           <td class="nowrap text-right">
+            <% if onboarding.school %>
+              <%= link_to 'Issues', admin_school_issues_path(onboarding.school), class: "btn btn-sm" %>
+            <% end %>
             <%= link_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding), class: 'btn btn-warning btn-sm', method: :post %>
             <% if onboarding.school && onboarding.school.consent_grants.any? %>
               <%= link_to 'Make visible', school_visibility_path(onboarding.school), class: 'btn btn-sm', method: :post %>
@@ -32,6 +35,7 @@
       <% end %>
     </tbody>
   </table>
+  <%= hidden_field_tag :anchor, anchor %>
   <%= f.button :submit, "Make selected visible", data: {confirm: 'Are you sure?'}, formaction: make_visible_admin_school_group_school_onboardings_path(school_group) %>
   <%= f.button :submit, "Send reminders to selected", data: {confirm: 'Are you sure?'}, formaction: reminders_admin_school_group_school_onboardings_url(school_group) %>
 <% end %>

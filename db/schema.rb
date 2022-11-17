@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_10_133928) do
+ActiveRecord::Schema.define(version: 2022_11_16_112357) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -313,14 +313,6 @@ ActiveRecord::Schema.define(version: 2022_11_10_133928) do
     t.index ["alert_type_id"], name: "index_alerts_on_alert_type_id"
     t.index ["run_on"], name: "index_alerts_on_run_on"
     t.index ["school_id"], name: "index_alerts_on_school_id"
-  end
-
-  create_table "alternative_heating_sources", force: :cascade do |t|
-    t.bigint "school_id"
-    t.integer "source"
-    t.integer "percent_of_overall_use"
-    t.text "notes"
-    t.index ["school_id"], name: "index_alternative_heating_sources_on_school_id"
   end
 
   create_table "amr_data_feed_configs", force: :cascade do |t|
@@ -877,6 +869,23 @@ ActiveRecord::Schema.define(version: 2022_11_10_133928) do
     t.index ["intervention_type_group_id"], name: "index_intervention_types_on_intervention_type_group_id"
   end
 
+  create_table "issues", force: :cascade do |t|
+    t.integer "issue_type", default: 0, null: false
+    t.string "title", null: false
+    t.integer "fuel_type"
+    t.integer "status", default: 0, null: false
+    t.bigint "school_id"
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "owned_by_id"
+    t.index ["created_by_id"], name: "index_issues_on_created_by_id"
+    t.index ["owned_by_id"], name: "index_issues_on_owned_by_id"
+    t.index ["school_id"], name: "index_issues_on_school_id"
+    t.index ["updated_by_id"], name: "index_issues_on_updated_by_id"
+  end
+
   create_table "jobs", force: :cascade do |t|
     t.string "title", null: false
     t.boolean "voluntary", default: false
@@ -1052,21 +1061,6 @@ ActiveRecord::Schema.define(version: 2022_11_10_133928) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "notes", force: :cascade do |t|
-    t.integer "note_type", default: 0, null: false
-    t.string "title", null: false
-    t.integer "fuel_type"
-    t.integer "status", default: 0, null: false
-    t.bigint "school_id"
-    t.bigint "created_by_id"
-    t.bigint "updated_by_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["created_by_id"], name: "index_notes_on_created_by_id"
-    t.index ["school_id"], name: "index_notes_on_school_id"
-    t.index ["updated_by_id"], name: "index_notes_on_updated_by_id"
-  end
-
   create_table "observations", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.datetime "at", null: false
@@ -1226,6 +1220,8 @@ ActiveRecord::Schema.define(version: 2022_11_10_133928) do
     t.bigint "default_weather_station_id"
     t.boolean "public", default: true
     t.integer "default_chart_preference", default: 0, null: false
+    t.bigint "default_issues_admin_user_id"
+    t.index ["default_issues_admin_user_id"], name: "index_school_groups_on_default_issues_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
     t.index ["default_template_calendar_id"], name: "index_school_groups_on_default_template_calendar_id"
@@ -1381,6 +1377,18 @@ ActiveRecord::Schema.define(version: 2022_11_10_133928) do
     t.integer "chart_preference", default: 0, null: false
     t.integer "country", default: 0, null: false
     t.integer "funding_status", default: 0, null: false
+    t.boolean "alternative_heating_oil", default: false, null: false
+    t.integer "alternative_heating_oil_percent", default: 0
+    t.text "alternative_heating_oil_notes"
+    t.boolean "alternative_heating_lpg", default: false, null: false
+    t.integer "alternative_heating_lpg_percent", default: 0
+    t.text "alternative_heating_lpg_notes"
+    t.boolean "alternative_heating_biomass", default: false, null: false
+    t.integer "alternative_heating_biomass_percent", default: 0
+    t.text "alternative_heating_biomass_notes"
+    t.boolean "alternative_heating_district_heating", default: false, null: false
+    t.integer "alternative_heating_district_heating_percent", default: 0
+    t.text "alternative_heating_district_heating_notes"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
@@ -1751,7 +1759,6 @@ ActiveRecord::Schema.define(version: 2022_11_10_133928) do
   add_foreign_key "alerts", "alert_generation_runs", on_delete: :cascade
   add_foreign_key "alerts", "alert_types", on_delete: :cascade
   add_foreign_key "alerts", "schools", on_delete: :cascade
-  add_foreign_key "alternative_heating_sources", "schools"
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "meters", on_delete: :nullify
@@ -1803,6 +1810,9 @@ ActiveRecord::Schema.define(version: 2022_11_10_133928) do
   add_foreign_key "global_meter_attributes", "users", column: "deleted_by_id", on_delete: :restrict
   add_foreign_key "intervention_type_suggestions", "intervention_types", on_delete: :cascade
   add_foreign_key "intervention_types", "intervention_type_groups", on_delete: :cascade
+  add_foreign_key "issues", "users", column: "created_by_id"
+  add_foreign_key "issues", "users", column: "owned_by_id"
+  add_foreign_key "issues", "users", column: "updated_by_id"
   add_foreign_key "locations", "schools", on_delete: :cascade
   add_foreign_key "low_carbon_hub_installations", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "low_carbon_hub_installations", "schools", on_delete: :cascade
@@ -1826,8 +1836,6 @@ ActiveRecord::Schema.define(version: 2022_11_10_133928) do
   add_foreign_key "meters", "meter_reviews"
   add_foreign_key "meters", "schools", on_delete: :cascade
   add_foreign_key "meters", "solar_edge_installations", on_delete: :cascade
-  add_foreign_key "notes", "users", column: "created_by_id"
-  add_foreign_key "notes", "users", column: "updated_by_id"
   add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "audits"
   add_foreign_key "observations", "intervention_types", on_delete: :restrict
@@ -1849,6 +1857,7 @@ ActiveRecord::Schema.define(version: 2022_11_10_133928) do
   add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
   add_foreign_key "school_groups", "calendars", column: "default_template_calendar_id", on_delete: :nullify
   add_foreign_key "school_groups", "scoreboards", column: "default_scoreboard_id"
+  add_foreign_key "school_groups", "users", column: "default_issues_admin_user_id", on_delete: :nullify
   add_foreign_key "school_key_stages", "key_stages", on_delete: :restrict
   add_foreign_key "school_key_stages", "schools", on_delete: :cascade
   add_foreign_key "school_meter_attributes", "school_meter_attributes", column: "replaced_by_id", on_delete: :nullify

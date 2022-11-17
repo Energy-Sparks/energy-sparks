@@ -1,11 +1,12 @@
+---
 cy:
   helpers:
     select:
       prompt: Dewiswch
     submit:
-      create: Creu %{model}
-      submit: Cadw %{model}
-      update: Diweddaru %{model}
+      create: "Creu %{model}"
+      submit: "Cadw %{model}"
+      update: "Diweddaru %{model}"
   languages:
     cy: Cymraeg
     en: Saesneg

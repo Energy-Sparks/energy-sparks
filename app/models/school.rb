@@ -111,13 +111,11 @@ class School < ApplicationRecord
   has_many :equivalences
 
   has_many :locations
-  has_many :notes
+  has_many :issues
 
   has_many :simulations, inverse_of: :school
 
   has_many :estimated_annual_consumptions
-
-  has_many :alternative_heating_sources
 
   has_many :amr_data_feed_readings,       through: :meters
   has_many :amr_validated_readings,       through: :meters
@@ -176,6 +174,8 @@ class School < ApplicationRecord
   validates :postcode, format: { with: /\A[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}\z/i }
 
   validates_associated :school_times, on: :school_time_update
+
+  validates :alternative_heating_oil_percent, :alternative_heating_lpg_percent, :alternative_heating_biomass_percent, :alternative_heating_district_heating_percent, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true }
 
   accepts_nested_attributes_for :school_times, reject_if: proc {|attributes| attributes['day'].blank? }, allow_destroy: true
 
