@@ -1,10 +1,16 @@
 RSpec.shared_examples "admin school group onboardings" do
 
+  before do
+    setup_data
+    after_setup_data
+  end
+
   context "selectable actions" do
 
+    let(:school_group_onboardings) { 3.times.collect { create :school_onboarding, :with_school, school_group: school_group, created_by: admin } }
+    let(:setup_data) { school_group_onboardings }
+
     context 'for selected' do
-      let(:school_group_onboardings) { 3.times.collect { create :school_onboarding, :with_school, school_group: school_group, created_by: admin } }
-      let(:setup_data) { school_group_onboardings }
 
       describe "first onboarding checked" do
         let(:onboarding) { school_group_onboardings.first }
@@ -115,12 +121,20 @@ RSpec.shared_examples "admin school group onboardings" do
 
   context 'linking to issues' do
     context "when there is an associated school" do
-      let!(:setup_data) { create :school_onboarding, :with_school }
-      it { expect(page).to have_link('Issues') }
+      let(:setup_data) { create :school_onboarding, :with_school, school_group: school_group }
+      it "has issues link" do
+        within "table" do
+          expect(page).to have_link('Issues')
+        end
+      end
     end
     context "without an associated school" do
-      let!(:setup_data) { create :school_onboarding }
-      it { expect(page).to_not have_link('Issues') }
+      let(:setup_data) { create :school_onboarding, school_group: school_group }
+      it "does not have issues link" do
+        within "table" do
+          expect(page).to_not have_link('Issues')
+        end
+      end
     end
   end
 end

@@ -2,7 +2,11 @@ require 'rails_helper'
 
 RSpec.describe 'school groups', :school_groups, type: :system, include_application_helper: true do
   let!(:admin)                  { create(:admin) }
-  let!(:setup_data)             {}
+  let(:setup_data)             {}
+
+  before do
+    setup_data
+  end
 
   def create_data_for_school_groups(school_groups)
     school_groups.each do |school_group|
@@ -22,7 +26,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
     end
 
     describe "Viewing school groups index page" do
-      let!(:setup_data) { create_data_for_school_groups(school_groups) }
+      let(:setup_data) { create_data_for_school_groups(school_groups) }
       before do
         click_on 'Edit School Groups'
       end
@@ -115,7 +119,6 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
     describe "Viewing school group page" do
       let!(:school_group) { create :school_group }
       before do
-        setup_data
         click_on 'Edit School Groups'
         within "table" do
           click_on 'Manage'
@@ -137,7 +140,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       end
 
       describe "School counts by status panel" do
-        let!(:setup_data) { create_data_for_school_groups([school_group]) }
+        let(:setup_data) { create_data_for_school_groups([school_group]) }
         it { expect(page).to have_content("Active 1") }
         it { expect(page).to have_content("Active (with data visible) 1") }
         it { expect(page).to have_content("Invisible 1") }
@@ -210,8 +213,8 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       describe "Active schools tab" do
         context "when there are active schools" do
           let(:school_onboarding) { create :school_onboarding, school_group: school_group }
-          let!(:school) { create(:school, active: true, name: "A School", school_group: school_group, school_onboarding: school_onboarding) }
-          let!(:setup_data) { school }
+          let(:school) { create(:school, active: true, name: "A School", school_group: school_group, school_onboarding: school_onboarding) }
+          let(:setup_data) { school }
 
           it "lists school in active tab" do
             within '#active' do
@@ -270,8 +273,8 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           end
         end
         context "when there are inactive schools only" do
-          let!(:school) { create(:school, active: false, name: "A School", school_group: school_group) }
-          let!(:setup_data) { school }
+          let(:school) { create(:school, active: false, name: "A School", school_group: school_group) }
+          let(:setup_data) { school }
           it "doesn't show school active tab" do
             within '#active' do
               expect(page).to_not have_link(school.name)
@@ -282,15 +285,21 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       end
 
       describe "Onboarding schools tab" do
-        before do
-          click_on "Onboarding"
-        end
-        it "displays a message when there are no onboarding schools" do
-          within '#onboarding' do
-            expect(page).to have_content("No schools currently onboarding for #{school_group.name}.")
+        context "with no onboarding schools" do
+          before do
+            click_on "Onboarding"
+          end
+          it "displays a message" do
+            within '#onboarding' do
+              expect(page).to have_content("No schools currently onboarding for #{school_group.name}.")
+            end
           end
         end
-        it_behaves_like "admin school group onboardings"
+        it_behaves_like "admin school group onboardings" do
+          def after_setup_data
+            click_on "Onboarding"
+          end
+        end
       end
 
       describe "Removed schools tab" do
@@ -379,7 +388,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         end
       end
       context "when the school group can not be deleted" do
-        let!(:setup_data) { create(:school, school_group: school_group) }
+        let(:setup_data) { create(:school, school_group: school_group) }
         it "has a disabled delete button" do
           expect(page).to have_link('Delete', class: 'disabled')
         end
