@@ -20,6 +20,9 @@
             <span class="badge badge-secondary"><%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)).try(:humanize) %></span>
           </td>
           <td class="nowrap text-right">
+            <% if onboarding.school %>
+              <%= link_to 'Issues', admin_school_issues_path(onboarding.school), class: "btn btn-sm" %>
+            <% end %>
             <%= link_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding), class: 'btn btn-warning btn-sm', method: :post %>
             <% if onboarding.school && onboarding.school.consent_grants.any? %>
               <%= link_to 'Make visible', school_visibility_path(onboarding.school), class: 'btn btn-sm', method: :post %>
