@@ -2,13 +2,6 @@
 #
 # Table name: alert_type_rating_content_versions
 #
-#  _email_content                        :text
-#  _find_out_more_content                :text
-#  _management_dashboard_title           :string
-#  _management_priorities_title          :string
-#  _public_dashboard_title               :string
-#  _pupil_dashboard_title                :string
-#  _teacher_dashboard_title              :string
 #  alert_type_rating_id                  :bigint(8)        not null
 #  analysis_end_date                     :date
 #  analysis_start_date                   :date
@@ -38,9 +31,6 @@
 #  management_priorities_end_date        :date
 #  management_priorities_start_date      :date
 #  management_priorities_weighting       :decimal(, )      default(5.0)
-#  public_dashboard_alert_end_date       :date
-#  public_dashboard_alert_start_date     :date
-#  public_dashboard_alert_weighting      :decimal(, )      default(5.0)
 #  pupil_dashboard_alert_end_date        :date
 #  pupil_dashboard_alert_start_date      :date
 #  pupil_dashboard_alert_weighting       :decimal(, )      default(5.0)
@@ -49,9 +39,6 @@
 #  sms_end_date                          :date
 #  sms_start_date                        :date
 #  sms_weighting                         :decimal(, )      default(5.0)
-#  teacher_dashboard_alert_end_date      :date
-#  teacher_dashboard_alert_start_date    :date
-#  teacher_dashboard_alert_weighting     :decimal(, )      default(5.0)
 #  updated_at                            :datetime         not null
 #
 # Indexes
@@ -64,31 +51,40 @@
 #
 
 class AlertTypeRatingContentVersion < ApplicationRecord
+  extend Mobility
+  include TransifexSerialisable
+
   belongs_to :alert_type_rating
   belongs_to :replaced_by, class_name: 'AlertTypeRatingContentVersion', foreign_key: :replaced_by_id, optional: true
 
   enum colour: [:negative, :neutral, :positive]
 
+  translates :pupil_dashboard_title, backend: :action_text
+  translates :management_dashboard_title, backend: :action_text
+  translates :management_priorities_title, backend: :action_text
+  translates :analysis_title, type: :string, fallbacks: { cy: :en }
+
   has_rich_text :email_content
   has_rich_text :find_out_more_content
-  has_rich_text :pupil_dashboard_title
-  has_rich_text :public_dashboard_title
-  has_rich_text :teacher_dashboard_title
-  has_rich_text :management_dashboard_title
-  has_rich_text :management_priorities_title
+
+  TX_ATTRIBUTE_MAPPING = {
+    pupil_dashboard_title: { templated: true },
+    management_dashboard_title: { templated: true },
+    management_priorities_title: { templated: true },
+  }.freeze
 
   def self.functionality
     [
-      :teacher_dashboard_alert, :pupil_dashboard_alert,
-      :public_dashboard_alert, :management_dashboard_alert,
+      :pupil_dashboard_alert,
+      :management_dashboard_alert,
       :management_priorities, :sms, :email, :analysis
     ]
   end
 
   def self.template_fields
     [
-      :pupil_dashboard_title, :teacher_dashboard_title,
-      :public_dashboard_title, :management_dashboard_title,
+      :pupil_dashboard_title,
+      :management_dashboard_title,
       :find_out_more_title, :find_out_more_content,
       :email_title, :email_content, :sms_content,
       :find_out_more_chart_variable, :find_out_more_chart_title,
@@ -96,6 +92,33 @@ class AlertTypeRatingContentVersion < ApplicationRecord
       :analysis_title, :analysis_subtitle,
       :find_out_more_table_variable
     ]
+  end
+
+  def resource_key
+    "#{self.class.model_name.i18n_key}_#{alert_type_rating.id}"
+  end
+
+  def tx_name
+    "#{alert_type_rating.alert_type.title} - #{alert_type_rating.description}"
+  end
+
+  def tx_categories
+    ['alert_rating']
+  end
+
+  def tx_valid_attribute(attr)
+    case attr.to_sym
+    when :pupil_dashboard_title
+      return alert_type_rating.pupil_dashboard_alert_active?
+    when :management_dashboard_title
+      return alert_type_rating.management_dashboard_alert_active?
+    when :management_priorities_title
+      return alert_type_rating.management_priorities_active?
+    end
+  end
+
+  def self.tx_resources
+    AlertTypeRating.with_dashboard_alerts.map(&:current_content)
   end
 
   def self.timing_fields
@@ -108,10 +131,6 @@ class AlertTypeRatingContentVersion < ApplicationRecord
 
   validates :colour, presence: true
 
-  validates :teacher_dashboard_title,
-    presence: true,
-    if: ->(content) { content.alert_type_rating && content.alert_type_rating.teacher_dashboard_alert_active?},
-    on: :create
   validates :pupil_dashboard_title,
     presence: true,
     if: ->(content) { content.alert_type_rating && content.alert_type_rating.pupil_dashboard_alert_active?},

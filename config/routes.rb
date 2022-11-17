@@ -21,7 +21,6 @@ Rails.application.routes.draw do
   get 'home-page', to: 'home#show'
   get 'map', to: 'map#index'
   get 'school_statistics', to: 'home#school_statistics'
-  get 'list', to: 'schools#list'
 
   get 'contact', to: 'home#contact'
   get 'enrol', to: 'home#enrol'
@@ -60,7 +59,11 @@ Rails.application.routes.draw do
     collection do
       get :search
     end
+    member do
+      get :for_school
+    end
   end
+
   resources :activity_categories, only: [:index, :show] do
     collection do
       get :recommended
@@ -68,17 +71,21 @@ Rails.application.routes.draw do
   end
 
   resources :programme_types, only: [:index, :show]
+
   resources :intervention_type_groups, only: [:index, :show] do
     collection do
       get :recommended
     end
   end
+
   resources :intervention_types, only: [:show] do
     collection do
       get :search
     end
+    member do
+      get :for_school
+    end
   end
-  resources :interventions, only: [:new, :create, :edit, :update, :destroy]
 
   resources :calendars, only: [:show, :destroy] do
     scope module: :calendars do
@@ -92,7 +99,7 @@ Rails.application.routes.draw do
 
   resource :school_switcher, only: [:create], controller: :school_switcher
 
-  resources :school_groups, only: [:show, :index]
+  resources :school_groups, only: [:show]
   resources :scoreboards, only: [:show, :index]
   resources :transport_types, only: [:index]
 
@@ -185,6 +192,7 @@ Rails.application.routes.draw do
       resource :configuration, controller: :configuration
       resource :school_group, controller: :school_group
       resource :times, only: [:edit, :update]
+      resources :alternative_heating_sources, except: [:show]
 
       get 'simulations/:id/simulation_detail', to: 'simulations#show_detailed', as: :simulation_detail
       get 'simulations/new_fitted', to: 'simulations#new_fitted', as: :new_fitted_simulation
@@ -194,14 +202,17 @@ Rails.application.routes.draw do
       resources :alerts, only: [:show]
       resources :find_out_more, controller: :find_out_more
 
-      resources :interventions, only: [:index, :show, :destroy] do
+      resources :interventions do
         member do
           get :completed
         end
       end
 
       resources :alert_reports, only: [:index, :show]
+      resources :benchmark_reports, only: [:index, :show]
+      resources :benchmark_results, only: [:show]
       resources :content_reports, only: [:index, :show]
+      resources :equivalence_reports, only: [:index, :show]
       get :chart, to: 'charts#show'
       get :annotations, to: 'annotations#show'
 
@@ -255,7 +266,7 @@ Rails.application.routes.draw do
 
   resource :email_unsubscription, only: [:new, :create, :show], controller: :email_unsubscription
 
-  devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions' }
+  devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions', passwords: 'passwords' }
 
   devise_for :users, skip: :sessions
 
@@ -285,11 +296,19 @@ Rails.application.routes.draw do
     resources :school_groups do
       scope module: :school_groups do
         resources :meter_attributes
-        resources :school_onboardings, only: [:index]
+        resources :school_onboardings, only: [:index] do
+          collection do
+            post :reminders
+            post :make_visible
+          end
+        end
+        resources :notes, only: [:index]
         resource :partners, only: [:show, :update]
         resource :meter_report, only: [:show]
+        resource :dashboard_message, only: [:update, :edit, :destroy], controller: '/admin/dashboard_messages'
       end
     end
+
     resources :help_pages do
       member do
         put :publish
@@ -329,7 +348,7 @@ Rails.application.routes.draw do
 
     resources :alert_types, only: [:index, :show, :edit, :update] do
       scope module: :alert_types do
-        resources :ratings, only: [:index, :new, :create, :edit, :update] do
+        resources :ratings, only: [:index, :new, :edit, :create, :update, :destroy] do
           resource :activity_types, only: [:show, :update]
           resource :intervention_types, only: [:show, :update]
         end
@@ -342,7 +361,7 @@ Rails.application.routes.draw do
 
     resources :amr_data_feed_configs, only: [:index, :show, :edit, :update] do
       resources :amr_uploaded_readings, only: [:index, :show, :new, :create] do
-        resources :manual_data_load_runs, only: [:show, :create]
+        resources :manual_data_load_runs, only: [:show, :create, :destroy]
       end
     end
 
@@ -369,8 +388,11 @@ Rails.application.routes.draw do
         get 'completed'
       end
     end
+
     resources :activations, only: :index
     namespace :reports do
+      resources :good_jobs, only: :index
+      get 'good_jobs/export', to: 'good_jobs#export'
       resources :alert_subscribers, only: :index
       get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
       get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
@@ -389,6 +411,7 @@ Rails.application.routes.draw do
       resources :meter_reports, only: :index
       resources :data_loads, only: :index
       resources :transifex_loads, only: [:index, :show]
+      resources :activity_types, only: [:index, :show]
     end
 
     resource :settings, only: [:show, :update]
@@ -414,6 +437,11 @@ Rails.application.routes.draw do
         resources :consent_requests
         resources :bill_requests
         resource :target_data, only: :show
+        resources :notes do
+          member do
+            post :resolve
+          end
+        end
       end
       member do
         get :removal
@@ -423,8 +451,9 @@ Rails.application.routes.draw do
       end
     end
 
-    post 'amr_data_feed_readings/:amr_uploaded_reading_id', to: 'amr_data_feed_readings#create', as: :create_amr_data_feed_readings
-
+    authenticate :user, ->(user) { user.admin? } do
+      mount GoodJob::Engine => 'good_job'
+    end
   end # Admin name space
 
   #redirect from old teacher dashboard

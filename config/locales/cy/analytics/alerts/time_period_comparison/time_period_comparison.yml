@@ -1,0 +1,15 @@
+cy:
+  analytics:
+    alert_previous_holiday_comparison_electricity:
+      timescale: 2 o wyliau ysgol llawn diwethaf (gan gynnwys y rhai cyfredol os yn ystod y gwyliau)
+    alert_previous_holiday_comparison_gas:
+      timescale: 2 o wyliau ysgol llawn diwethaf (gan gynnwys y rhai cyfredol os yn ystod y gwyliau)
+    alert_previous_year_holiday_comparison_electricity:
+      timescale: y gwyliau hwn, a'r un un y flwyddyn flaenorol
+    alert_previous_year_holiday_comparison_gas:
+      timescale: y gwyliau hwn, a'r un un y flwyddyn flaenorol
+    alert_school_week_comparison_electricity:
+      timescale: 2 wythnos ysgol lawn diwethaf
+    alert_school_week_comparison_gas:
+      timescale: 2 wythnos ysgol lawn diwethaf
+    time_period_comparison: "%{difference} %{adjective} ers y %{period_type} diwethaf, %{relative_percent}"

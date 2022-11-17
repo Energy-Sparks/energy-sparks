@@ -7,6 +7,7 @@ module Schools
     load_resource :transport_survey, find_by: :run_on, id_param: :run_on, through: :school, except: [:update]
 
     authorize_resource :transport_survey
+    before_action :header_fix_enabled
     before_action :load_or_create, only: [:update]
 
     def index
@@ -36,7 +37,7 @@ module Schools
 
     def destroy
       @transport_survey.destroy
-      redirect_to school_transport_surveys_url(@school), notice: "Transport survey was successfully destroyed."
+      redirect_to school_transport_surveys_url(@school), notice: t('schools.transport_surveys.destroy.notice')
     end
 
     private

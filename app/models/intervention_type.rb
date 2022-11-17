@@ -3,12 +3,14 @@
 # Table name: intervention_types
 #
 #  active                     :boolean          default(TRUE)
+#  created_at                 :datetime         not null
 #  custom                     :boolean          default(FALSE)
 #  id                         :bigint(8)        not null, primary key
 #  intervention_type_group_id :bigint(8)        not null
-#  name                       :string           not null
+#  name                       :string
 #  score                      :integer
 #  summary                    :string
+#  updated_at                 :datetime         not null
 #
 # Indexes
 #
@@ -22,22 +24,14 @@
 class InterventionType < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
+  include Searchable
+
+  TX_REWRITEABLE_FIELDS = [:description_cy, :download_links_cy].freeze
+
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :summary, type: :string, fallbacks: { cy: :en }
   translates :description, backend: :action_text
   translates :download_links, backend: :action_text
-
-  include PgSearch::Model
-  pg_search_scope :search,
-                  against: [:name],
-                  associated_against: {
-                    rich_text_description: [:body]
-                  },
-                  using: {
-                    tsearch: {
-                      dictionary: 'english'
-                    }
-                  }
 
   belongs_to :intervention_type_group
   has_many :observations
@@ -47,6 +41,10 @@ class InterventionType < ApplicationRecord
 
   has_one_attached :image
 
+  has_many :link_rewrites, as: :rewriteable
+
+  accepts_nested_attributes_for :link_rewrites, reject_if: proc { |attributes| attributes[:source].blank? }, allow_destroy: true
+
   accepts_nested_attributes_for :intervention_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
 
   validates :intervention_type_group, :name, presence: true
@@ -54,6 +52,7 @@ class InterventionType < ApplicationRecord
   validates :score, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   scope :by_name,               -> { order(name: :asc) }
+  scope :by_id,                 -> { order(id: :asc) }
   scope :active,                -> { where(active: true) }
   scope :display_order,         -> { order(:custom, :name) }
   scope :not_custom,            -> { where(custom: false) }
@@ -68,6 +67,10 @@ class InterventionType < ApplicationRecord
   #override default name for this resource in transifex
   def tx_name
     name
+  end
+
+  def self.tx_resources
+    active.order(:id)
   end
 
   private

@@ -1,27 +1,34 @@
 module Transifex
   class Loader
-    def initialize(locale = :cy, logger = Rails.logger)
+    def initialize(locale = :cy, logger = Rails.logger, full_sync = true)
       @locale = locale
       @logger = logger
+      @full_sync = full_sync
     end
 
     def perform
       transifex_load = TransifexLoad.create!(status: :running)
       begin
         log("Synchronising Activity Types")
-        synchronise_resources(transifex_load, ActivityType.active.order(:id))
+        synchronise_resources(transifex_load, ActivityType.tx_resources)
         log("Synchronising Intervention Types")
-        synchronise_resources(transifex_load, InterventionType.active.order(:id))
+        synchronise_resources(transifex_load, InterventionType.tx_resources)
         log("Synchronising Activity Categories")
-        synchronise_resources(transifex_load, ActivityCategory.all.order(:id))
+        synchronise_resources(transifex_load, ActivityCategory.tx_resources)
         log("Synchronising Intervention Type Groups")
-        synchronise_resources(transifex_load, InterventionTypeGroup.all.order(:id))
+        synchronise_resources(transifex_load, InterventionTypeGroup.tx_resources)
         log("Synchronising Programme Types")
-        synchronise_resources(transifex_load, ProgrammeType.active.order(:id))
+        synchronise_resources(transifex_load, ProgrammeType.tx_resources)
         log("Synchronising Help Pages")
-        synchronise_resources(transifex_load, HelpPage.all.order(:id))
+        synchronise_resources(transifex_load, HelpPage.tx_resources)
         log("Synchronising Case Studies")
-        synchronise_resources(transifex_load, CaseStudy.all.order(:id))
+        synchronise_resources(transifex_load, CaseStudy.tx_resources)
+        log("Synchronising Transport Types")
+        synchronise_resources(transifex_load, TransportType.tx_resources)
+        log("Synchronising Alert Type Rating Content Versions")
+        synchronise_resources(transifex_load, AlertTypeRatingContentVersion.tx_resources)
+        log("Synchronising Equivalence Type Content Versions")
+        synchronise_resources(transifex_load, EquivalenceTypeContentVersion.tx_resources)
       rescue => error
         #ensure all errors are caught and logged
         log_error(transifex_load, error)
@@ -48,7 +55,9 @@ module Transifex
         synchroniser = Synchroniser.new(tx_serialisable, @locale)
         log("processing #{tx_serialisable.resource_key}")
         counter.total_pulled += 1 if synchroniser.pull
-        counter.total_pushed += 1 if synchroniser.push
+        if @full_sync
+          counter.total_pushed += 1 if synchroniser.push
+        end
       rescue => error
         log("error processing #{tx_serialisable.resource_key}")
         log_error(transifex_load, error, tx_serialisable)

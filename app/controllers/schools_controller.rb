@@ -1,6 +1,5 @@
 class SchoolsController < ApplicationController
   include SchoolAggregation
-  include ActivityTypeFilterable
   include AnalysisPages
   include DashboardEnergyCharts
   include DashboardAlerts
@@ -17,11 +16,24 @@ class SchoolsController < ApplicationController
 
   before_action :check_aggregated_school_in_cache, only: [:show]
 
+  #If this isn't a publicly visible school, then redirect away if user can't
+  #view this school
   before_action only: [:show] do
     redirect_unless_permitted :show
   end
 
-  # GET /schools
+  #Redirect users associated with this school to a holding page, if its not
+  #visible yet. Other users will end up getting an access denied error
+  before_action :redirect_if_not_visible, only: [:show]
+
+  #Redirect pupil accounts associated with this school to the pupil dashboard
+  #(unless they should see the adult dashboard)
+  before_action :redirect_pupils, only: [:show]
+
+  #Redirect guest / not logged in users to the pupil dashboard if not
+  #data enabled to offer a better initial user experience
+  before_action :redirect_to_pupil_dash_if_not_data_enabled, only: [:show]
+
   def index
     @schools = School.visible.by_name
     @school_groups = SchoolGroup.by_name.select(&:has_visible_schools?)
@@ -29,23 +41,20 @@ class SchoolsController < ApplicationController
     @schools_not_visible = School.not_visible.by_name
   end
 
-  # retain the original index page
-  def list
-    @school_groups = SchoolGroup.by_name
-    @ungrouped_visible_schools = School.visible.without_group.by_name
-    @schools_not_visible = School.not_visible.by_name
-  end
-
-  # GET /schools/1
   def show
-    if go_to_specific_dashboard?
-      redirect_to_specific_dashboard
+    #The before_actions will redirect users away in certain scenarios
+    #If we reach this action, then the current user will be:
+    #Not logged in, a guest, an admin, or any other user not directly linked to this school
+    #OR an adult user for this school, or a pupil that is trying to view the adult dashboard
+    authorize! :show, @school
+    @show_data_enabled_features = show_data_enabled_features?
+    setup_default_features
+    setup_data_enabled_features if @show_data_enabled_features
+
+    if params[:report] && @show_data_enabled_features
+      render template: "management/schools/report", layout: 'report'
     else
-      redirect_to pupils_school_path(@school) unless @school.data_enabled
-      authorize! :show, @school
-      @show_data_enabled_features = show_data_enabled_features?
-      setup_default_features
-      setup_data_enabled_features if @show_data_enabled_features
+      render :show
     end
   end
 
@@ -101,25 +110,70 @@ class SchoolsController < ApplicationController
 
 private
 
+  def user_signed_in_and_linked_to_school?
+    user_signed_in? && (current_user.school_id == @school.id)
+  end
+
+  def not_signed_in?
+    !user_signed_in? || current_user.guest?
+  end
+
+  def redirect_if_not_visible
+    redirect_to school_inactive_path(@school) if user_signed_in_and_linked_to_school? && !@school.visible?
+  end
+
+  def redirect_pupils
+    redirect_to pupils_school_path(@school) if user_signed_in_and_linked_to_school? && current_user.pupil? && !switch_dashboard?
+  end
+
+  def switch_dashboard?
+    params[:switch].present? && params[:switch] == "true"
+  end
+
+  def redirect_to_pupil_dash_if_not_data_enabled
+    redirect_to pupils_school_path(@school) if not_signed_in? && !@school.data_enabled
+  end
+
+  def show_standard_prompts?
+    if user_signed_in? && current_user.admin?
+      true
+    elsif user_signed_in_and_linked_to_school? && can?(:show_management_dash, @school)
+      true
+    else
+      false
+    end
+  end
+
   def setup_default_features
     @observations = setup_timeline(@school.observations)
+    #Setup management dashboard features if users has permission
+    #to do that
+    @show_standard_prompts = show_standard_prompts?
+    if can?(:show_management_dash, @school)
+      @add_contacts = site_settings.message_for_no_contacts && @school.contacts.empty? && can?(:manage, Contact)
+      @add_pupils = site_settings.message_for_no_pupil_accounts && @school.users.pupil.empty? && can?(:manage_users, @school)
+      @prompt_training = !@show_data_enabled_features || current_user.confirmed_at < 60.days.ago
+      @prompt_for_bill = @school.bill_requested && can?(:index, ConsentDocument)
+    end
   end
 
   def setup_data_enabled_features
-    @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.public_dashboard, :public_dashboard_title)
+    @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.management_dashboard, :management_dashboard_title)
     @management_priorities = setup_priorities(@school.latest_management_priorities, limit: site_settings.management_priorities_dashboard_limit)
     @overview_charts = setup_energy_overview_charts(@school.configuration)
-    if EnergySparks::FeatureFlags.active?(:use_management_data)
-      @overview_data = Schools::ManagementTableService.new(@school).management_data
-    else
-      @overview_table = Schools::ManagementTableService.new(@school).management_table
-    end
+    @overview_data = Schools::ManagementTableService.new(@school).management_data
     @progress_summary = progress_service.progress_summary
     @co2_pages = setup_co2_pages(@school.latest_analysis_pages)
-  end
 
-  def go_to_specific_dashboard?
-    current_user && (current_user.school_id == @school.id || can?(:manage, :admin_functions))
+    #Setup management dashboard features if users has permission
+    #to do that
+    if can?(:show_management_dash, @school)
+      @add_targets = prompt_for_target?
+      @set_new_target = prompt_to_set_new_target?
+      @review_targets = prompt_to_review_target?
+      @recent_audit = Audits::AuditService.new(@school).recent_audit
+      @suggest_estimates_for_fuel_types = suggest_estimates_for_fuel_types(check_data: true)
+    end
   end
 
   def set_key_stages
@@ -154,21 +208,5 @@ private
       :chart_preference,
       key_stage_ids: []
     )
-  end
-
-  def redirect_to_specific_dashboard
-    if @school.visible? || can?(:manage, :admin_functions)
-      redirect_for_active_school_or_admin
-    else
-      redirect_to school_inactive_path(@school)
-    end
-  end
-
-  def redirect_for_active_school_or_admin
-    if current_user.pupil?
-      redirect_to pupils_school_path(@school), status: :found
-    else
-      redirect_to management_school_path(@school), status: :found
-    end
   end
 end

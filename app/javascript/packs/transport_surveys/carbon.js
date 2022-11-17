@@ -2,69 +2,41 @@ import { pluralise } from './helpers';
 
 export const carbon = ( function() {
 
-  var rates = {};
 
-  function init(cfg) {
-    rates = cfg;
+  var local = {
+    neutral: '',
+    equivalences: '',
+    parkAndStrideMins: ''
   }
 
-  const equivalences = [
-    {
-      name: 'tree',
-      emoji: '🌳',
-      unit: 'day',
-      rate: () => rates.tree / 365,
-      statement: (amount, unit, emoji) => `1 tree would absorb this amount of CO2 in ${amount} ${unit} ${emoji}!`,
-    }, {
-      name: 'tv',
-      emoji: '📺',
-      unit: 'hour',
-      rate: () => rates.tv,
-      statement: (amount, unit, emoji) => `That\'s the same as ${amount} ${unit} of TV ${emoji}!`,
-    }, {
-      name: 'computer_console',
-      emoji: '🎮',
-      unit: 'hour',
-      rate: () => rates.computerConsole,
-      statement: (amount, unit, emoji) => `That\'s the same as playing ${amount} ${unit} of computer games ${emoji}!`,
-    }, {
-      name: 'smartphone',
-      emoji: '📱',
-      unit: 'smart phone',
-      rate: () => rates.smartphone,
-      statement: (amount, unit, emoji) => `That\'s the same as charging ${amount} ${unit} ${emoji}!`,
-    } , {
-      name: 'carnivore_dinner',
-      emoji: '🍲',
-      unit: 'meat dinner',
-      rate: () => rates.carnivoreDinner,
-      statement: (amount, unit, emoji) => `That\'s the same as ${amount} ${unit} ${emoji}!`,
-    }, {
-      name: 'vegetarian_dinner',
-      emoji: '🥗',
-      unit: 'veggie dinner',
-      rate: () => rates.vegetarianDinner,
-      statement: (amount, unit, emoji) => `That\'s the same as ${amount} ${unit} ${emoji}!`,
-    }
-  ];
+  // private methods
+  function init(cfg) {
+    local = cfg;
+  }
+
+  function statement(statement, amount, image) {
+    return statement.replace(/%{count}/, amount).replace(/(%{image})/, image);
+  }
 
   function parkAndStrideTimeMins(timeMins) {
-    // take 15 mins off a park and stride journey
-    return (timeMins > 15 ? timeMins - 15 : 0);
+    // take 10 mins off a park and stride journey
+    return (timeMins > local.parkAndStrideMins ? timeMins - local.parkAndStrideMins : 0);
   }
 
   function equivalence(carbonKgs) {
     if (carbonKgs === 0) {
-      return "That's Carbon Neutral 🌳!";
+      return local.neutral;
     } else {
       // pick random equivalence until one returning a non-zero amount is found
-      let tried = [...equivalences.keys()];
+      let tried = [...local.equivalences.keys()];
       while (tried.length > 0) {
         let i = Math.floor(Math.random() * tried.length);
-        let example = equivalences[tried[i]];
-        let amount = Math.round(carbonKgs / example.rate());
-        if (amount >= 1) {
-          return example.statement(amount, pluralise(example.unit, amount), example.emoji);
+        let example = local.equivalences[tried[i]];
+        let amount = Math.round(carbonKgs / example.rate);
+        if (amount > 1) {
+          return statement(example.statement.other, amount, example.image);
+        } else if (amount == 1) {
+          return statement(example.statement.one, amount, example.image);
         } else {
           tried.splice(i, 1); // remove as tried this example
         }

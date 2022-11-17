@@ -3,19 +3,19 @@
 <div class="d-flex justify-content-between align-items-center">
   <% if @split_meters %>
     <% if @period == :daily %>
-      <h1>Compare your school's <strong><%= @supply.to_s %></strong> daily usage between different meters</h1>
+      <h1><%= t('charts.usage.show.compare_message.split_meter.daily_html', supply: @supply.to_s) %></h1>
     <% else %>
-      <h1>Compare your school's <strong><%= @supply.to_s %></strong> weekly usage between different meters</h1>
+      <h1><%= t('charts.usage.show.compare_message.split_meter.weekly_html', supply: @supply.to_s) %></h1>
     <% end %>
   <% else %>
     <% if @period == :daily %>
-      <h1>Compare your school's <strong><%= @supply.to_s %></strong> usage between two different days</h1>
+      <h1><%= t('charts.usage.show.compare_message.other.daily_html', supply: @supply.to_s) %></h1>
     <% else %>
-      <h1>Compare your school's <strong><%= @supply.to_s %></strong> usage between two different weeks</h1>
+      <h1><%= t('charts.usage.show.compare_message.other.weekly_html', supply: @supply.to_s) %></h1>
     <% end %>
   <% end %>
   <div>
-    <%= link_to 'Explore data', pupils_school_analysis_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+    <%= link_to t('charts.usage.show.explore_data'), pupils_school_analysis_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
   </div>
 </div>
 
@@ -27,7 +27,7 @@
   <div class="row">
     <div class="col-md-12 chart-wrapper" id="chart_wrapper_<%=@chart_config[@period]%>">
       <%= render 'shared/analysis_controls', chart_type: @chart_config[@period].to_s, analysis_controls: false, axis_controls: @show_measurements %>
-      <%= chart_tag(@school, @chart_config[@period], show_advice: false, no_zoom: true, wrap: false, html_class: 'usage-chart', chart_config: create_chart_config(@school, @chart_config[@period])) %>
+      <%= chart_tag(@school, @chart_config[@period], no_zoom: true, wrap: false, html_class: 'usage-chart', chart_config: create_chart_config(@school, @chart_config[@period])) %>
     </div>
   </div>
 
@@ -37,8 +37,7 @@
     <%= hidden_field_tag :configuration, nil, data: {configuration: @chart_config} %>
 
     <div class="row justify-content-md-center">
-
-      <div class="col-12 col-lg-3 col-md-4">
+      <div class="col-12 col-lg-4 col-md-4">
         <div class="<%= @supply %>-dark <%= @supply %>-dark-<%= @period %> p-2 mb-2">
           <%= label_tag 'first-date-picker', t("charts.usage.date_picker.#{@period}.first")%>
 
@@ -57,7 +56,7 @@
       </div>
 
       <% unless @split_meters %>
-        <div class="col-12 col-lg-3 col-md-4">
+        <div class="col-12 col-lg-4 col-md-4">
           <div class="<%= @supply %>-light <%= @supply %>-light-<%= @period %> p-2 mb-2">
             <%= label_tag 'second-date-picker', t("charts.usage.date_picker.#{@period}.second")%>
 
@@ -80,9 +79,9 @@
         <% if @meters.count > 1 %>
           <div class="col-12 col-lg-3 col-md-4">
             <div class="<%= @supply %>-dark p-2 mb-2">
-              <%= label_tag :meter, 'Which meter?'%>
+              <%= label_tag :meter, t('charts.usage.select_meter.title') %>
               <div class="form-group">
-                <%= select_tag :meter, content_tag(:option,'All Meters', value: "all") + options_from_collection_for_select(@meters, :mpan_mprn, :display_name, nil), class: "form-control" %>
+                <%= select_tag :meter, content_tag(:option, t('charts.usage.select_meter.all_meters'), value: "all") + options_from_collection_for_select(@meters, :mpan_mprn, :display_name, nil), class: "form-control" %>
               </div>
             </div>
           </div>
@@ -95,7 +94,7 @@
 
   <div class="row justify-content-md-center">
     <div class="col-md-auto mt-2">
-      <%= @supply.to_s.titleize %> data is available from <%= nice_dates(@chart_config[:earliest_reading]) %> to <%= nice_dates(@chart_config[:last_reading]) %>
+      <%= I18n.t('charts.usage.show.data_available', supply: @supply.to_s.titleize, from_date: nice_dates(@chart_config[:earliest_reading]), to_date: nice_dates(@chart_config[:last_reading])) %>
     </div>
   </div>
 </div>

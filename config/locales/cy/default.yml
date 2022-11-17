@@ -1,4 +1,3 @@
----
 cy:
   helpers:
     select:
@@ -8,10 +7,15 @@ cy:
       submit: Cadw %{model}
       update: Diweddaru %{model}
   languages:
-    en: Saesneg
     cy: Cymraeg
-  support:
-    array:
-      last_word_connector: ", a "
-      two_words_connector: " a "
-      words_connector: ", "
+    en: Saesneg
+    mirror: Adlewyrchu
+  name: Saesneg
+  simple_form:
+    labels:
+      defaults:
+        find_out_more_chart_title: Teitl y siart
+        find_out_more_chart_variable: Newidyn siart
+        find_out_more_content: Cynnwys tudalen
+        find_out_more_table_variable: Newidyn tabl
+        find_out_more_title: Teitl y dudalen

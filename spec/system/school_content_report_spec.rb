@@ -21,7 +21,7 @@ RSpec.describe "school content report", type: :system do
         rating_from: 0,
         rating_to: 10,
         find_out_more_active: true,
-        teacher_dashboard_alert_active: true,
+        management_dashboard_alert_active: true,
         pupil_dashboard_alert_active: true,
       )
     end
@@ -29,7 +29,7 @@ RSpec.describe "school content report", type: :system do
       create(
         :alert_type_rating_content_version,
         alert_type_rating: alert_type_rating,
-        teacher_dashboard_title: 'Your heating is on!',
+        management_dashboard_title: 'Your heating is on!',
         pupil_dashboard_title: 'It is too warm'
       )
     end

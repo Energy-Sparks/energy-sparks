@@ -17,7 +17,6 @@
 #  rating_from                       :decimal(, )      not null
 #  rating_to                         :decimal(, )      not null
 #  sms_active                        :boolean          default(FALSE)
-#  teacher_dashboard_alert_active    :boolean          default(FALSE)
 #  updated_at                        :datetime         not null
 #
 # Indexes
@@ -39,6 +38,11 @@ class AlertTypeRating < ApplicationRecord
   has_many :intervention_types, through: :alert_type_rating_intervention_types
 
   scope :for_rating, ->(rating) { where('rating_from <= ? AND rating_to >= ?', rating, rating) }
+
+  scope :pupil_dashboard_alert, -> { where(pupil_dashboard_alert_active: true) }
+  scope :management_dashboard_alert, -> { where(management_dashboard_alert_active: true) }
+  scope :management_priorities_title, -> { where(management_priorities_active: true) }
+  scope :with_dashboard_alerts, -> { pupil_dashboard_alert.or(management_dashboard_alert).or(management_priorities_title) }
 
   validates :rating_from, :rating_to, :description, presence: true
   validates :rating_from, :rating_to, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10 }

@@ -36,6 +36,8 @@ RSpec.describe 'school targets', type: :system do
     #and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
     #relationship
     school.configuration.update!(fuel_configuration: fuel_configuration, school_target_fuel_types: school_target_fuel_types, aggregate_meter_dates: aggregate_meter_dates)
+    # So tests for 'prompts always show on dashboard' we need to set months_between to always be below the threshold for filtering
+    allow_any_instance_of(Targets::SuggestEstimatesService).to receive(:months_between) { Targets::SuggestEstimatesService::THRESHOLD_FOR_FILTERING - 1 }
   end
 
   context 'as a school admin' do
@@ -83,7 +85,7 @@ RSpec.describe 'school targets', type: :system do
 
       it 'doesnt let me navigate there' do
         visit school_school_targets_path(school)
-        expect(page).to have_current_path(management_school_path(school))
+        expect(page).to have_current_path(school_path(school))
       end
     end
 
@@ -223,12 +225,6 @@ RSpec.describe 'school targets', type: :system do
         expect(page).to have_link("View report", href: electricity_school_progress_index_path(school))
       end
 
-      it 'shows the bullet charts' do
-        expect(page).to have_css('#bullet-chart-electricity')
-        expect(page).to have_css('#bullet-chart-gas')
-        expect(page).to_not have_css('#bullet-chart-storage_heater')
-      end
-
       it 'does not show limited data' do
         expect(page).to_not have_content("against target reduction")
         expect(page).to_not have_content("last week")
@@ -241,11 +237,6 @@ RSpec.describe 'school targets', type: :system do
           school.configuration.update!(suggest_estimates_fuel_types: ["electricity"])
           refresh
         end
-        it 'doesnt show the electricity bullet chart' do
-          expect(page).to_not have_css('#bullet-chart-electricity')
-          expect(page).to have_css('#bullet-chart-gas')
-        end
-
         it 'shows limited data' do
           expect(page).to have_content("Target reduction")
           expect(page).to_not have_content("last week")
@@ -288,7 +279,7 @@ RSpec.describe 'school targets', type: :system do
         expect(page).to have_link('Record an energy saving action', href: intervention_type_groups_path)
 
         expect(page).to have_content("Explore your data")
-        expect(page).to have_link("View dashboard", href: management_school_path(school))
+        expect(page).to have_link("View dashboard", href: school_path(school))
       end
 
       it "includes links to activities" do

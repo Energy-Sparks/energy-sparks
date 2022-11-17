@@ -1,0 +1,11 @@
+cy:
+  analytics:
+    alert_electricity_annual_versus_benchmark:
+      timescale: y llynedd
+    alert_electricity_peak_kw_versus_benchmark:
+      timescale: hyd at flwyddyn
+    alert_electricity_usage_during_current_holiday:
+      holiday_cost_to_date: Mae eich defnydd trydan yn ystod gwyliau'r %{holiday_name} hyd at %{date} wedi costio %{cost_to_date}.
+      holiday_predicted_cost: Erbyn diwedd y gwyliau bydd hyn yn costio %{predicted_cost} i ti.
+      timescale: y gwyliau yma
+    annual_cost_with_adjective: "%{cost}y flwyddyn %{relative_percent} %{adjective} ar gyfartaledd"

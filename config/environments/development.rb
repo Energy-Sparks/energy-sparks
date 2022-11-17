@@ -73,7 +73,7 @@ Rails.application.configure do
   config.log_level = :debug
 
   # Raises error for missing translations
-  # config.action_view.raise_on_missing_translations = true
+  config.action_view.raise_on_missing_translations = true
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
@@ -89,6 +89,24 @@ Rails.application.configure do
   config.action_mailer.asset_host = ENV.fetch('ASSET_HOST'){ "http://#{ENV['APPLICATION_HOST']}" }
 
   config.mailchimp_client = MailchimpMarketing::Client.new({ api_key: ENV['MAILCHIMP_API_KEY'], server: ENV['MAILCHIMP_SERVER'] })
+
+  # Uncomment to pull in locale files when testing with a local version of the Energy Sparks Analytics gem
+  # config.i18n.load_path += Dir[Gem.loaded_specs['energy-sparks_analytics'].full_gem_path + '/config/locales/**/*.{rb,yml}']
+
+  # Default good job execution mode configuration for development
+  # See https://github.com/bensheldon/good_job#configuration-options
+  config.active_job.queue_adapter = :good_job
+  config.good_job.execution_mode = :async
+
+  # This adds a 'mirror' locale that turns all translated text upside down so we can visually check for any
+  # untranslated text in the erb templates.
+  config.i18n.available_locales << :mirror
+  I18n::Backend::Simple.include(I18n::Backend::Mirror)
+
+  # Add these to your /etc/hosts file
+  config.hosts << "energysparks.development"
+  config.hosts << "cy.energysparks.development"
+  config.hosts << "mirror.energysparks.development"
 end
 
 class MyAppFormatter < Logger::Formatter

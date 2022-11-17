@@ -1,11 +1,11 @@
-require 'pagy/extras/bootstrap'
-
 module ApplicationHelper
   include Pagy::Frontend
 
-  def nice_date_times(datetime)
-    return "" if datetime.nil?
-    "#{datetime.strftime('%a')} #{datetime.day.ordinalize} #{datetime.strftime('%b %Y %H:%M')} "
+  def nice_date_times(datetime, options = {})
+    return '' if datetime.nil?
+
+    datetime = datetime.in_time_zone(Rails.application.config.display_timezone) if options[:localtime] && Rails.application.config.display_timezone
+    "#{nice_dates(datetime)} #{nice_times_only(datetime)}"
   end
 
   def nice_times_only(datetime)
@@ -21,16 +21,20 @@ module ApplicationHelper
     date ? date.to_s(:es_short) : ""
   end
 
+  def nice_date_times_today(datetime)
+    datetime.today? ? nice_times_only(datetime) : short_dates(datetime)
+  end
+
   def human_counts(collection)
     case collection.count
     when 0
-      'no times'
+      t('application_helper.human_counts.no_times')
     when 1
-      'once'
+      t('application_helper.human_counts.once')
     when 2
-      'twice'
+      t('application_helper.human_counts.twice')
     else
-      'several times'
+      t('application_helper.human_counts.several_times')
     end
   end
 
@@ -358,5 +362,22 @@ module ApplicationHelper
 
   def calendar_event_status(calendar_event)
     calendar_event.based_on ? 'inherited' : ''
+  end
+
+  def current_locale?(locale)
+    locale.to_s == I18n.locale.to_s
+  end
+
+  def path_with_locale(preview_url, locale)
+    if preview_url.include?('?')
+      preview_url += '&'
+    else
+      preview_url += '?'
+    end
+    preview_url + "locale=#{locale}"
+  end
+
+  def i18n_key_from(str)
+    str.gsub('+', ' And ').delete(' ').underscore
   end
 end

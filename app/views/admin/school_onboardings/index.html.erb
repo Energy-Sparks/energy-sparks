@@ -15,49 +15,17 @@
   <div class="nav-anchor">
     <a name="<%= school_group.slug %>"> </a>
   </div>
-
   <br/>
 
   <h3><%= school_group.name %></h3>
+
   <%= link_to 'Download as CSV', admin_school_group_school_onboardings_path(school_group, format: :csv), class: 'btn' %>
-
   <br/>
   <br/>
 
-  <% if school_group.school_onboardings.select(&:incomplete?).any? %>
-    <p>Schools onboarding: <%= school_group.school_onboardings.select(&:incomplete?).count %>
-    <table class="table table-sorted">
-      <thead>
-        <tr>
-          <th>School name</th>
-          <th>Contact email</th>
-          <th>Last activity</th>
-          <th>last event</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% school_group.school_onboardings.by_name.select(&:incomplete?).each do |onboarding| %>
-          <tr>
-            <td><%= link_to onboarding.school_name, onboarding_path(onboarding) %></td>
-            <td><%= onboarding.contact_email %> <%= link_to 'Change', edit_admin_school_onboarding_email_path(onboarding), class: 'btn btn-warning btn-sm' if onboarding.has_only_sent_email_or_reminder? %></td>
-            <td data-order="<%= onboarding.events.maximum(:created_at) %>"><%= nice_date_times(onboarding.events.maximum(:created_at)) %></td>
-            <td><%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)).try(:humanize) %></td>
-            <td>
-              <div class="btn-group">
-                <%= button_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding), class: 'btn btn-warning btn-sm' %>
-                <% if onboarding.school && onboarding.school.consent_grants.any? %>
-                  <%= button_to 'Make visible', school_visibility_path(onboarding.school), class: 'btn btn-sm', method: :post %>
-                <% else %>
-                  <%= link_to 'Edit', edit_admin_school_onboarding_path(onboarding), class: 'btn btn-sm' %>
-                <% end %>
-                <%= button_to 'Delete', admin_school_onboarding_path(onboarding), class: 'btn btn-sm', method: :delete, data: {confirm: 'Are you sure?'} %>
-              </div>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+  <% if school_group.school_onboardings.incomplete.any? %>
+    <p>Schools onboarding: <%= school_group.school_onboardings.incomplete.count %>
+    <%= render 'admin/school_groups/onboarding_schools', school_group: school_group %>
   <% else %>
     <p>No schools are onboarding for <%= school_group.name %></p>
   <% end %>

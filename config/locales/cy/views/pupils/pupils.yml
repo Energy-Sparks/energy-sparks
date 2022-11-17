@@ -1,0 +1,87 @@
+cy:
+  pupils:
+    analysis:
+      compare_electricity_in_2_weeks: cymharu'r trydan a ddefnyddir mewn dwy wythnos wahanol
+      compare_electricity_on_2_days: cymharu'r trydan a ddefnyddir ar ddau ddiwrnod gwahanol
+      compare_electricity_use_by_meters: cymharu'r defnydd o drydan gan wahanol fesuryddion
+      compare_gas_in_2_weeks: cymharu'r nwy a ddefnyddir mewn dwy wythnos wahanol
+      compare_gas_on_2_days: cymharu'r nwy a ddefnyddir ar ddau ddiwrnod gwahanol
+      compare_gas_use_by_meters: cymharu'r defnydd o nwy gan wahanol fesuryddion
+      electricity_and_solar_data_html: Dyma'r data <strong>trydan a solar</strong> ar gyfer eich ysgol
+      electricity_data_html: Dyma'r data <strong>trydan</strong> ar gyfer eich ysgol
+      explore_data: Archwilio data
+      explore_energy_data_html: Archwiliwch y data <strong>%{fuel_type}</strong> ar gyfer eich ysgol
+      find_electricity_comparison: darganfod sut mae defnydd trydan fy ysgol yn cymharu ag ysgolion eraill
+      find_electricity_use_7days: darganfod faint o drydan a ddefnyddiwyd yn ystod y 7 diwrnod diwethaf
+      find_electricity_use_last_year: darganfod faint o drydan a ddefnyddiwyd y llynedd
+      find_electricity_use_lights: darganfod faint o drydan oedd yn cael ei ddefnyddio gan oleuadau ac offer yn rhedeg drwy'r amser
+      find_electricity_use_long_term: darganfod sut mae defnydd trydan wedi newid yn y tymor hir
+      find_gas_comparison: darganfod sut mae defnydd nwy fy ysgol yn cymharu ag ysgolion eraill
+      find_gas_use_7days: darganfod faint o nwy a ddefnyddiwyd yn ystod y 7 diwrnod diwethaf
+      find_gas_use_last_year: darganfod faint o nwy a ddefnyddiwyd y llynedd
+      find_gas_use_long_term: darganfod sut mae defnydd nwy wedi newid yn y tymor hir
+      find_how_much_co2_generated_html: darganfod faint o <strong>garbon deuocsid</strong> a gynhyrchwyd
+      find_how_much_electricity_cost_html: darganfod <strong>faint</strong> oedd cost y trydan
+      find_how_much_gas_cost_html: darganfod <strong>faint</strong> oedd cost y nwy
+      find_how_much_storage_heaters_cost_html: darganfod <strong>faint</strong> oedd cost y stôr-wresogyddion
+      find_out_about_solar_html: darganfod am <strong>solar</strong>
+      find_storage_heaters_comparison: darganfod sut mae defnydd stôr-wresogyddion fy ysgol yn cymharu ag ysgolion eraill
+      find_storage_heaters_use_last_year: darganfod faint o drydan a ddefnyddiwyd gan stôr-wresogyddion y llynedd
+      find_storage_heaters_use_long_term: darganfod sut mae defnydd trydan stôr-wresogyddion wedi newid yn y tymor hir
+      find_when_electricity_used_html: darganfod <strong>pryd</strong> y defnyddiwyd y trydan
+      find_when_gas_used_html: darganfod <strong>pryd</strong> y defnyddiwyd y nwy
+      find_when_storage_heaters_used_html: darganfod <strong>pryd</strong> roedd y stôr-wresogyddion yn defnyddio trydan
+      gas_data_html: Dyma'r data <strong>nwy</strong> ar gyfer eich ysgol
+      i_want_to: Rydw i eisiau…
+      i_want_to_look_at: Rydyw i eisiau edrych ar…
+      live_energy_data: Data ynni byw
+      look_at_energy_use: Gad i ni edrych ar y data defnydd ynni ar gyfer dy ysgol
+      review_energy_analysis: Adolygu dadansoddiad ynni
+      storage_heater_data_html: Dyma'r data <strong>stôr-wresogyddion</strong> ar gyfer eich ysgol
+      without_storage_heaters: heb stôr-wresogyddion
+    default_equivalences:
+      equivalence_1:
+        equivalence: Dyna'r ynni a gynhyrchir gan dyrbin gwynt ar y tir yn y DU mewn 3 wythnos
+        measure_html: Yr wythnos diwethaf defnyddiodd yr ysgol gyffredin 1,300 kWh o <strong>drydan</strong>
+      equivalence_2:
+        equivalence: Dyna'r ynni a gynhyrchir gan dyrbin gwynt ar y tir yn y DU mewn 3 wythnos
+        measure_html: Y llynedd defnyddiodd yr ysgol gyffredin 68,000 kWh o <strong>drydan</strong>
+      equivalence_3:
+        equivalence: Bydd yn cymryd 76 o goed, pob un yn byw 40 mlynedd, i amsugno'r carbon deuocsid a ryddhawyd pan losgwyd y nwy hwn.
+        measure_html: Y llynedd, defnyddiodd yr ysgol gyffredin 320,000 kWh o <strong>nwy</strong>.
+      equivalence_4:
+        equivalence: Mae hynny'n ddigon i dalu am 90 cinio ysgol.
+        measure_html: Y mis diwethaf costiodd defnydd <strong>nwy</strong> ysgol gyffredin £230.
+      equivalence_5:
+        equivalence: Dyna'r nwy a ddefnyddir gan 23 o gartrefi yn y DU mewn blwyddyn.
+        measure_html: Y llynedd, defnyddiodd yr ysgol gyffredin 320,000 kWh o <strong>nwy</strong>.
+    schools:
+      show:
+        activities_completed: Rwyt ti wedi cwblhau %{count} o weithgareddau
+        admin_view: Gwedd weinyddol
+        choose_another_activity: Dewisa weithgaredd arall
+        complete_an_activity: Cwblha weithgaredd i sgorio pwyntiau ar Energy Sparks
+        enter_temperatures: Rho dymereddau
+        find_how_much_energy_used: Darganfod faint o ynni a ddefnyddiwyd
+        find_out_more: Dysgu rhagor&hellip;
+        how_will_school_compare: Sut bydd dy ysgol yn cymharu? Byddi di'n gallu darganfod yn fuan!
+        look_at_the_energy_use: Gad i ni edrych ar y data defnydd ynni ar gyfer dy ysgol
+        measure_temperatures: Mesura dymhereddau ystafell ddosbarth i ddarganfod a ddylet ti droi'r gwres i lawr i arbed ynni
+        no_activities_completed: Dim gweithgareddau wedi'u cwblhau, dechreua!
+        no_points_this_year: Nid yw dy ysgol wedi sgorio unrhyw bwyntiau eto y flwyddyn ysgol hon
+        points: pwyntiau
+        points_needed_to_overtake: Dim ond %{points} o bwyntiau sydd angen i chi eu sgorio i gael mwy nag yr ysgol nesaf!
+        previous_temperatures: Tymhereddau blaenorol
+        school_podium_position_html: Mae dy ysgol yn <strong>%{position_ordinal}</strong>
+        see_scoreboard: Gweler y bwrdd sgorio
+        setting_up: Rydym yn sefydlu data ynni'r ysgol hon a byddwn yn diweddaru'r dudalen hon pan fydd yn barod i'w harchwilio
+        start_transport_survey: Dechrau arolygu
+        things_to_do: Pethau i'w gwneud
+        title: Dangosfwrdd disgyblion ar gyfer %{school_name}
+        transport_surveys: Dechreuwch arolwg trafnidiaeth fel y gallwch ddarganfod faint o garbon y mae cymuned eich ysgol yn ei ddefnyddio trwy deithio i'r ysgol
+        try_this_first: Rho gynnig ar yr un hwn yn gyntaf
+        try_this_next: Rho gynnig ar hwn nesaf
+        update_temperatures: Diweddaru tymereddau
+        updating_temperatures: Diweddara dymereddau dy ystafell ddosbarth i weld a wyt ti'n arbed ynni
+        user_view: Gwedd y defnyddiwr
+        view_transport_surveys: Gweld arolygon

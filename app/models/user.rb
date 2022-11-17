@@ -55,7 +55,7 @@ class User < ApplicationRecord
   belongs_to :school_group, optional: true
   has_many :contacts
   has_many :simulations, dependent: :destroy
-  has_many :consent_grants, inverse_of: :user
+  has_many :consent_grants, inverse_of: :user, dependent: :nullify
 
   has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
 
@@ -102,7 +102,7 @@ class User < ApplicationRecord
   end
 
   def cluster_schools_for_switching
-    cluster_schools.visible.excluding(school)
+    cluster_schools.visible.by_name.excluding(school)
   end
 
   def add_cluster_school(school)
@@ -122,6 +122,21 @@ class User < ApplicationRecord
         update!(school: nil, role: :school_onboarding)
       end
     end
+  end
+
+  def schools
+    return School.visible.by_name if self.admin?
+    return school_group.schools.visible.by_name if self.school_group
+    [school].compact
+  end
+
+  def school_name
+    school.name if school
+  end
+
+  def school_group_name
+    return school.school_group.name if school && school.school_group
+    return school_group.name if school_group
   end
 
   def self.new_pupil(school, attributes)

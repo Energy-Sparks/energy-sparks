@@ -4,7 +4,6 @@ module Schools
     skip_before_action :authenticate_user!
 
     def post
-      authorize! :show, @school
       # JSON request to load cache
       service = AggregateSchoolService.new(@school)
       service.aggregate_school unless service.in_cache?
@@ -15,7 +14,7 @@ module Schools
     rescue => e
       Rollbar.error(e)
       respond_to do |format|
-        format.json { render json: { status: 'error', message: e.message }, status: :unauthorized}
+        format.json { render json: { status: 'error', message: e.message }, status: :bad_request}
       end
     end
   end

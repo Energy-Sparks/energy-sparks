@@ -1,16 +1,16 @@
-<% if progress_summary.present? && progress_summary.any_failing_targets? %>
+<% if reportable_progress?(progress_summary) && progress_summary.any_failing_targets? %>
     <%= render 'schools/dashboard/info_bar',
       colour: 'bg-negative',
       icon: 'tachometer-alt fa-3x',
-      content: "Unfortunately you are not meeting your target to reduce your #{progress_summary.failing_fuel_targets_as_sentence} usage",
-      buttons: {'Review progress' => school_school_targets_path(school)}
+      content: t('schools.show.not_meeting_target', fuels: t_fuels_as_sentence(progress_summary.failing_fuel_targets)),
+      buttons: {t('schools.show.review_progress') => school_school_targets_path(school)}
     %>
 <% end %>
-<% if progress_summary.present? && progress_summary.any_passing_targets? %>
+<% if reportable_progress?(progress_summary) && progress_summary.any_passing_targets? %>
   <%= render 'schools/dashboard/info_bar',
     colour: 'bg-positive',
     icon: 'tachometer-alt fa-3x',
-    content: "Well done, you are making progress towards achieving your target to reduce your #{progress_summary.passing_fuel_targets_as_sentence} usage!",
-    buttons: {'Review progress' => school_school_targets_path(school)}
+    content: t('schools.show.making_progress', fuels: t_fuels_as_sentence(progress_summary.passing_fuel_targets)),
+    buttons: {t('schools.show.review_progress') => school_school_targets_path(school)}
   %>
 <% end %>

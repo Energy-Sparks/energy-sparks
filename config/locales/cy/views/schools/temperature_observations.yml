@@ -1,0 +1,67 @@
+cy:
+  schools:
+    temperature_observations:
+      index:
+        actions: Gweithredoedd
+        add_new_temperature_recordings: Ychwanegu recordiadau tymheredd newydd
+        are_you_sure: Ydych chi'n siŵr?
+        change_room_names: Newid enwau ystafelloedd
+        date: Dyddiad
+        delete: Dileu
+        good_temperature_message: Mae hwn yn dymheredd da ar gyfer ysgolion ynni effeithlon. Da iawn!
+        no_observations_message: Nid oes unrhyw arsylwadau wedi'u cofnodi ar hyn o bryd
+        page_title: Cofnodion tymheredd
+        roof_and_wall_insulation_message: Efallai bod hyn ychydig yn oer. A allai eich ysgol ychwanegu mwy o insiwleiddio to a wal i helpu i gadw'r ysgol yn gynhesach heb ddefnyddio mwy o ynni?
+        time: Amser
+        try_turning_down_your_heating_message: Mae Energy Sparks yn argymell nad yw tymheredd ystafelloedd dosbarth yn uwch na 18C. Rhowch gynnig ar droi y gwres i lawr i arbed ynni ac arian.
+        what_to_do_next_message_html: |
+          <h3>Beth i'w wneud nesaf</h3>
+          <ul>
+            <li>Os yw unrhyw un o'ch ystafelloedd dosbarth yn rhy boeth, gofynnwch i'ch athro allwch chi addasu'r tymheredd, gan ddefnyddio'r thermostat neu falfiau rheoli rheiddiaduron unigol.</li>
+            <li>Mae falfiau rheoli rheiddiadur wedi'u rhifo fel arfer, mae nifer fwy yn golygu tymheredd uwch, nifer llai yn dymheredd is.</li>
+            <li>Weithiau mae falfiau rheoli rheiddiaduron yn mynd yn sownd, felly os na allwch chi eu troi’n hawdd gofynnwch i'ch athro/athrawes helpu.</li>
+            <li>Os yw falf wedi torri neu ar goll, gofynnwch i'r gofalwr ei thrwsio.</li>
+            <li>Mae'r thermostat yn aml yn ddeial neu arddangosfa ddigidol ar y wal sy'n dangos y tymheredd. Yn aml dim ond un thermostat sydd ar gyfer yr ysgol gyfan. A allwch chi ddarganfod ble mae wedi'i leoli, a beth yw ei fwriad?</li>
+            <li>Weithiau mae athrawon yn poeni am ddiffodd thermostatau rhag ofn i bawb deimlo'n oer. Gallech chi gytuno i ostwng y thermostat 1C yn gyntaf, neu droi falf y rheiddiadur i lawr o un rhif, ac yna parhau i wirio tymheredd a lefelau cysur disgyblion a staff. Gofynnwch iddynt a ydynt teimlo'n rhy boeth neu'n rhy oer neu'n iawn. Os ydynt yn teimlo'n boeth neu'n gyfforddus, gallech chi geisio gostwng y tymheredd ychydig yn fwy.</li>
+          </ul>
+      introduction:
+        change_room_names: Newid enwau ystafelloedd
+        how_to_carry_out_this_activity_html: |
+          <h3>Sut i gynnal y gweithgaredd hwn</h3>
+          <ol>
+          <li>Mae angen gwneud y gweithgaredd hwn pan fydd gwres eich ysgol yn rhedeg. Ar gyfer y rhan fwyaf o ysgolion mae hyn o fis Hydref i fis Ebrill.</li>
+          <li>Cofnodwch yr ystafell ddosbarth neu ardal o'r ysgol lle rydych chi'n mesur y tymheredd.</li>
+          <li>Nawr cofnodwch y tymheredd yn yr ystafell honno.</li>
+          <li>Efallai y gwelwch chi fod y tymheredd yn yr ysgol yn cynyddu yn ystod y dydd wrth i’r ysgol gynhesu o’r gwres a’r cyrff poeth yn yr ystafelloedd dosbarth. Gallech chi geisio cofnodi tymheredd yn y bore, amser cinio ac yn y prynhawn i weld sut mae'r tymheredd yn newid yn ystod y dydd.</li>
+          </ol>
+        locations_you_can_add_temperatures: Lleoliadau neu ystafelloedd y galli di ychwanegu tymereddau atynt
+        name: Enw
+        next: Nesaf
+        ready_to_record_your_temperatures: Barod i gofnodi eich tymereddau?
+        recording_temperatures_for_a_new_location: Cofnodi tymereddau ar gyfer lleoliad neu ystafell newydd?
+        temperature_recording_tips_html: |
+          <h3>Syniadau ar gyfer cofnodi tymheredd</h3>
+          <ul>
+          <li>Y ffordd orau o fesur y tymheredd yw rhoi'r thermomedr i lawr ar fwrdd neu silff, ac aros nes bod y darlleniad tymheredd yn stopio newid.</li>
+          <li>I gael mesuriad da o dymheredd cyffredinol yr ystafell, dylech chi gadw'r thermomedr i ffwrdd o unrhyw reiddiaduron neu wresogyddion, sbotoleuadau, offer trydanol fel byrddau gwyn neu gyfrifiaduron, fentiau aerdymheru, ffenestri, waliau allanol a golau haul uniongyrchol.</li>
+          <li>Dylech chi fod yn ofalus i beidio â dal y thermomedr wrth gymryd eich mesuriad gan y bydd gwres eich corff yn cynhesu'r thermomedr.</li>
+          </ul>
+        temperatures_recorded: Tymereddau a gofnodwyd
+        title: Cofnodwch tymheredd eich ysgol
+        why_are_we_doing_this_html: |
+          <h3>Pam ydyn ni'n gwneud hyn?</h3>
+          <p>Mae cael y tymheredd yn iawn yn eich ysgol yn bwysig. Mae ystafell ddosbarth boeth yn ddrud gan fod angen mwy o wresogi, ac mae gwresogi yn costio arian. Y tymheredd gorau ar gyfer ysgolion yw 18C, ond gall coridorau a neuaddau chwaraeon fod yn 15C. Os yw rhai rhannau o'ch ysgol yn boethach na hyn, rydych chi'n gwastraffu ynni ac arian. Am bob 1C rydych chi'n gostwng y tymheredd, byddwch yn arbed tua 10% o gostau gwresogi'r ysgol.</p>
+          <p>Bob dydd y byddwch chi'n cofnodi tymheredd eich ystafell ddosbarth, byddwch chi'n ennill 5 pwynt Energy Sparks!</p>
+        you_havent_created_any_locations_yet: Nid ydych chi wedi creu unrhyw leoliadau eto. Ychwanegwch ychydig mwy isod.
+        you_will_earn_five_points: Byddwch chi'n ennill 5 pwynt am bob diwrnod y byddwch chi'n mesur ac yn cofnodi tymheredd eich ystafell ddosbarth
+      new:
+        create_temperature_recordings: Creu cofnodion tymheredd
+        enter_temperatures: Rhowch dymereddau
+        leave_locations_blank: Gadewch unrhyw ystafelloedd neu leoliadau nad oes gennych ddarlleniadau ar eu cyfer yn wag
+        title: Cofnodwch dymereddau eich ysgol
+      show:
+        observations: Arsylwadau
+        observations_for: Arsylwadau ar gyfer
+      temperature_recording_fields:
+        temperature: Tymheredd
+        temperature_in_centigrade_message: Rhowch y tymheredd mewn canradd fel un rhif rhwng 0 a 50

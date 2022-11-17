@@ -9,6 +9,7 @@
 #  created_at           :datetime         not null
 #  id                   :bigint(8)        not null, primary key
 #  intervention_type_id :bigint(8)
+#  involved_pupils      :boolean          default(FALSE), not null
 #  observation_type     :integer          not null
 #  points               :integer
 #  school_id            :bigint(8)        not null
@@ -40,7 +41,6 @@ class Observation < ApplicationRecord
   enum observation_type: [:temperature, :intervention, :activity, :event, :audit]
 
   validates_presence_of :at, :school
-  validate :at_date_cannot_be_in_the_future
   validates_associated :temperature_recordings
 
   validates :intervention_type_id, presence: { message: 'please select an option' }, if: :intervention?
@@ -53,14 +53,24 @@ class Observation < ApplicationRecord
   scope :by_date, -> { order(at: :desc) }
   scope :for_school, ->(school) { where(school: school) }
   scope :between, ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
+  scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago)}
+  scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago)}
+
 
   has_rich_text :description
 
-  def at_date_cannot_be_in_the_future
-    errors.add(:at, "can't be in the future") if at.present? && at > Time.zone.today.end_of_day
-  end
+  before_save :add_points_for_interventions
 
 private
+
+  def add_points_for_interventions
+    if intervention?
+      academic_year = school.academic_year_for(at)
+      if academic_year&.current? && involved_pupils?
+        self.points = intervention_type.score
+      end
+    end
+  end
 
   def reject_temperature_recordings(attributes)
     attributes['centigrade'].blank?

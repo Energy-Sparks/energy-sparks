@@ -32,7 +32,7 @@ describe ActivityTypeSearchService do
 
       expect(ActivityTypeSearchService.search('foo bar')).to eq([])
       expect(ActivityTypeSearchService.search('foo baz')).to eq([activity_type_1])
-      expect(ActivityTypeSearchService.search('baz')).to eq([activity_type_1, activity_type_2])
+      expect(ActivityTypeSearchService.search('baz')).to match_array([activity_type_1, activity_type_2])
     end
 
     it 'ignores school specific description' do
@@ -86,7 +86,7 @@ describe ActivityTypeSearchService do
       activity_type_1 = create(:activity_type, name: 'foo one', key_stages: [key_stage_1])
       activity_type_2 = create(:activity_type, name: 'foo two', key_stages: [key_stage_2])
 
-      expect(ActivityTypeSearchService.search('foo')).to eq([activity_type_1, activity_type_2])
+      expect(ActivityTypeSearchService.search('foo')).to match_array([activity_type_1, activity_type_2])
       expect(ActivityTypeSearchService.search('foo', [key_stage_1])).to eq([activity_type_1])
       expect(ActivityTypeSearchService.search('foo', [key_stage_2])).to eq([activity_type_2])
     end
@@ -106,8 +106,8 @@ describe ActivityTypeSearchService do
       subject_2 = create(:subject)
       activity_type_1 = create(:activity_type, name: 'foo one', subjects: [subject_1])
       activity_type_2 = create(:activity_type, name: 'foo two', subjects: [subject_2])
-
-      expect(ActivityTypeSearchService.search('foo')).to eq([activity_type_1, activity_type_2])
+      activity_types = ActivityType.where(id: [activity_type_1.id, activity_type_2.id])
+      expect(ActivityTypeSearchService.search('foo')).to eq(activity_types)
       expect(ActivityTypeSearchService.search('foo', [], [subject_1])).to eq([activity_type_1])
       expect(ActivityTypeSearchService.search('foo', [], [subject_2])).to eq([activity_type_2])
     end

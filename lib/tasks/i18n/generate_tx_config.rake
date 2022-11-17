@@ -8,7 +8,7 @@ namespace :i18n do
       f.puts "[main]"
       f.puts "host = https://www.transifex.com"
       f.puts
-      yaml = Dir["**/*.yml", base: Rails.root.join("config", "locales")].reject {|f| f.match /cy/}.sort
+      yaml = Dir["**/*.yml", base: Rails.root.join("config", "locales")].reject {|f| f.match /^cy/}.sort
       yaml.each do |yml|
         slug = yml.gsub(/\.|\//, '-')
         f.puts "[o:energy-sparks:p:energy-sparks:r:#{slug}]"
@@ -16,7 +16,7 @@ namespace :i18n do
         f.puts "source_file  = config/locales/#{yml}"
         f.puts "source_lang  = en"
         f.puts "type         = YML"
-        f.puts "minimum_perc = 0"
+        f.puts "minimum_perc = 100"
         f.puts
       end
     end

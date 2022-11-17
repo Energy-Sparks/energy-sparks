@@ -59,10 +59,13 @@ describe "admin transport type", type: :system, include_application_helper: true
       'Note' => 'Why not?'
     } }
 
-    let(:checkbox_attributes) { ['Can share', 'Park and stride'] }
-    let(:select_attributes) { ['Category'] }
-    let(:display_attributes) { attributes.except('Created at', 'Updated at') }
-    let(:form_attributes) { attributes.except('Created at', 'Updated at') }
+    let(:translated_fields) { {'Name' => :transport_type_name_en} }
+    let(:checkbox_fields) { ['Can share', 'Park and stride'] }
+    let(:select_fields) { ['Category'] }
+    let(:date_fields) { ['Created at', 'Updated at'] }
+    let(:text_fields) { attributes.keys.excluding(translated_fields.keys + checkbox_fields + select_fields + date_fields) }
+
+    let(:display_attributes) { attributes.slice(*attributes.keys.excluding(date_fields)) }
 
     describe "Viewing the index" do
       before(:each) do
@@ -129,8 +132,10 @@ describe "admin transport type", type: :system, include_application_helper: true
 
       it "shows all attributes" do
         within('dl') do
-          attributes.values.each do |value|
-            expect(page).to have_content(value)
+          expect(page).to have_content("Name (English) #{attributes['Name']}")
+          expect(page).to have_content("Name (Welsh) No name present")
+          attributes.except(*translated_fields.keys).each do |key, value|
+            expect(page).to have_content("#{key} #{value}")
           end
         end
       end
@@ -179,13 +184,16 @@ describe "admin transport type", type: :system, include_application_helper: true
 
       it "shows prefilled form elements" do
         within('form') do
-          form_attributes.excluding(checkbox_attributes + select_attributes).each do |key, value|
+          attributes.slice(*text_fields).each do |key, value|
             expect(page).to have_field(key, with: value)
           end
-          form_attributes.slice(*select_attributes).each do |key, value|
+          attributes.slice(*translated_fields.keys).each do |key, value|
+            expect(page).to have_field(translated_fields[key], with: value)
+          end
+          attributes.slice(*select_fields).each do |key, value|
             expect(page).to have_select(key, selected: value)
           end
-          checkbox_attributes.each do |field_name|
+          checkbox_fields.each do |field_name|
             expect(page).to have_unchecked_field(field_name)
           end
         end
@@ -194,13 +202,16 @@ describe "admin transport type", type: :system, include_application_helper: true
       context "when entering new values" do
         context "with valid attributes" do
           before(:each) do
-            new_valid_attributes.excluding(checkbox_attributes + select_attributes).each do |key, value|
+            new_valid_attributes.slice(*text_fields).each do |key, value|
               fill_in key, with: value
             end
-            new_valid_attributes.slice(*select_attributes).each do |key, value|
+            new_valid_attributes.slice(*translated_fields.keys).each do |key, value|
+              fill_in translated_fields[key], with: value
+            end
+            new_valid_attributes.slice(*select_fields).each do |key, value|
               select value, from: key
             end
-            checkbox_attributes.each do |field_name|
+            checkbox_fields.each do |field_name|
               check field_name
             end
             click_button 'Save'
@@ -223,7 +234,7 @@ describe "admin transport type", type: :system, include_application_helper: true
 
         context 'when the form has an invalid entry' do
           before(:each) do
-            fill_in 'Name', with: ""
+            fill_in 'transport_type_name_en', with: ""
             click_button 'Save'
           end
 
@@ -234,7 +245,7 @@ describe "admin transport type", type: :system, include_application_helper: true
           end
 
           it "has error message on field" do
-            expect(page).to have_content "Name *\ncan't be blank"
+            expect(page).to have_content "Name\ncan't be blank"
           end
         end
       end
@@ -247,7 +258,7 @@ describe "admin transport type", type: :system, include_application_helper: true
 
       it "shows a blank form" do
         within('form') do
-          ["Name", "Image", "Note"].each do |field_name|
+          [:transport_type_name_en, "Image", "Note"].each do |field_name|
             expect(find_field(field_name).text).to be_blank
           end
           ['Speed (km/h)', 'Carbon (kg co2e/km)'].each do |field_name|
@@ -256,10 +267,10 @@ describe "admin transport type", type: :system, include_application_helper: true
           ['Position'].each do |field_name|
             expect(page).to have_field(field_name, with: 0)
           end
-          select_attributes.each do |field_name|
+          select_fields.each do |field_name|
             expect(page).to have_select(field_name, selected: [])
           end
-          checkbox_attributes.each do |field_name|
+          checkbox_fields.each do |field_name|
             expect(page).to have_unchecked_field(field_name)
           end
         end
@@ -268,13 +279,16 @@ describe "admin transport type", type: :system, include_application_helper: true
       context "when entering new values" do
         context "with valid attributes" do
           before(:each) do
-            new_valid_attributes.excluding(checkbox_attributes + select_attributes).each do |key, value|
+            new_valid_attributes.slice(*text_fields).each do |key, value|
               fill_in key, with: value
             end
-            new_valid_attributes.slice(*select_attributes).each do |key, value|
+            new_valid_attributes.slice(*translated_fields.keys).each do |key, value|
+              fill_in translated_fields[key], with: value
+            end
+            new_valid_attributes.slice(*select_fields).each do |key, value|
               select value, from: key
             end
-            checkbox_attributes.each do |field_name|
+            checkbox_fields.each do |field_name|
               check field_name
             end
             click_button 'Save'
@@ -297,7 +311,7 @@ describe "admin transport type", type: :system, include_application_helper: true
 
         context 'when the form has an invalid entry' do
           before(:each) do
-            fill_in 'Name', with: ""
+            fill_in 'transport_type_name_en', with: ""
             click_button 'Save'
           end
 
@@ -308,7 +322,7 @@ describe "admin transport type", type: :system, include_application_helper: true
           end
 
           it "has error message on field" do
-            expect(page).to have_content "Name *\ncan't be blank"
+            expect(page).to have_content "Name\ncan't be blank"
           end
         end
       end
@@ -395,5 +409,6 @@ describe "admin transport type", type: :system, include_application_helper: true
         end
       end
     end
+
   end
 end

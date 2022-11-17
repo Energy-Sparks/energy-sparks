@@ -24,6 +24,9 @@
 #  fk_rails_...  (transport_type_id => transport_types.id)
 #
 class TransportSurveyResponse < ApplicationRecord
+  extend ActiveModel::Translation
+  include CsvExportable
+
   belongs_to :transport_survey
   belongs_to :transport_type, inverse_of: :responses
 
@@ -43,23 +46,31 @@ class TransportSurveyResponse < ApplicationRecord
 
   enum weather: [:sun, :cloud, :rain, :snow]
 
-  def self.weather_symbols
+  def self.weather_images
     { sun: '☀️', cloud: '⛅', rain: '🌧️', snow: '❄️' }
   end
 
-  def weather_symbol
-    self.class.weather_symbols[weather.to_sym]
+  def weather_image
+    self.class.weather_images[weather.to_sym]
+  end
+
+  def weather_name
+    self.class.human_enum_name(:weather, weather)
   end
 
   def self.passenger_symbol
     '👤'
   end
 
-  def carbon
-    transport_type.can_share? ? carbon_calc : (carbon_calc * passengers)
+  def self.park_and_stride_mins
+    10
   end
 
-  def carbon_per_passenger
+  def self.csv_attributes
+    %w{id run_identifier weather_name weather_image journey_minutes transport_type.name transport_type.image passengers surveyed_at}
+  end
+
+  def carbon
     transport_type.can_share? ? (carbon_calc / passengers) : carbon_calc
   end
 
@@ -69,10 +80,10 @@ class TransportSurveyResponse < ApplicationRecord
     ((transport_type.speed_km_per_hour * journey_mins_ps) / 60) * transport_type.kg_co2e_per_km
   end
 
-  # take 15 minutes off journey time for park and stride transport types
+  # take specified amount of minutes off journey time for park and stride transport types
   def journey_mins_ps
     if transport_type.park_and_stride == true
-      (journey_minutes > 15 ? journey_minutes - 15 : 0)
+      (journey_minutes > self.class.park_and_stride_mins ? journey_minutes - self.class.park_and_stride_mins : 0)
     else
       journey_minutes
     end

@@ -34,6 +34,10 @@ FactoryBot.define do
       role { :admin }
     end
 
+    factory :guest do
+      role { :guest }
+    end
+
     factory :group_admin do
       role { :group_admin }
       school_group

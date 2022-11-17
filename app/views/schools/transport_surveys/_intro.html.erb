@@ -1,13 +1,8 @@
-<h4>Why are we doing this?</h4>
-<p>Transport accounts for around one-fifth of global carbon dioxide (CO2) emissions. Some modes of transport, emit more carbon than others! For example, petrol or diesel cars emit, on average, about 3 times more than electric cars. Some modes emit no carbon whatsoever - can you guess what they are? Find out how much carbon your school community uses by travelling to school.</p>
+<h4><%= t('schools.transport_surveys.edit.intro.why_title') %></h4>
+<p><%= t('schools.transport_surveys.edit.intro.why') %></p>
 
-<h4>How to carry out this activity</h4>
+<h4><%= t('schools.transport_surveys.edit.intro.how_title') %></h4>
 
 <ol>
-<li>This can be carried out by a group of pupils with ipads or tablets at the school gate or by a teacher at registration time.</li>
-<li>Click "Launch survey app" and then select today's weather.</li>
-<li>Once the app is launched you can go out of WiFi range, so you can survey pupils arriving at the school gate.</li>
-<li>Ask members of the school community the questions presented in the survey.</li>
-<li>When you have finished, make sure you are connected to the internet before submitting the results.</li>
-<li>You could try conducting a transport survey on a different day to see if you have reduced your carbon.</li>
+  <%= t('schools.transport_surveys.edit.intro.how_html', park_and_stride_mins: TransportSurveyResponse.park_and_stride_mins) %>
 </ol>

@@ -1,0 +1,10 @@
+<% content_for :page_title, t('interventions.new.page_title') %>
+
+<div class="row justify-content-md-center mt-2">
+  <div class="col col-lg-8">
+    <h2><%= t('interventions.new.title') %></h2>
+    <%= simple_form_for([@observation], url: school_interventions_path(@school), html: {class: 'activity-form'}) do |f| %>
+      <%= render 'form', f: f, observation: @observation, intervention_type: @intervention_type %>
+    <% end %>
+  </div>
+</div>

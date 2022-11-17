@@ -1,6 +1,18 @@
-<p>You can also add the new user to the mailing list for newsletters (we'll never share your email address with anyone else).</p>
-
-<div class="custom-control custom-checkbox pb-3">
-  <input type="checkbox" class="custom-control-input" id="user_auto_subscribe_newsletter" name="user[auto_subscribe_newsletter]" checked >
-  <label class="custom-control-label" for="user_auto_subscribe_newsletter">Subscribe to newsletters</label>
+<div class="row">
+  <div class="col-md-3">
+    <div class="custom-control custom-checkbox pb-3">
+      <input type="checkbox" class="custom-control-input" id="user_auto_subscribe_newsletter" name="user[auto_subscribe_newsletter]" <%= "checked" if checked %> >
+      <label class="custom-control-label" for="user_auto_subscribe_newsletter">Subscribe to newsletters</label>
+    </div>
+  </div>
+  <div class="col-md-9">
+    <p>Newsletters are our main communication channel for:</p>
+    <ul>
+      <li>highlighting new resources</li>
+      <li>sharing featured activities</li>
+      <li>celebrating best practice and success stories at participating schools</li>
+      <li>promoting supporting services such as workshops, training and audits</li>
+    </ul>
+    <p>We strongly recommend you sign up to get the most from Energy Sparks (we'll never share your email address with anyone else).</p>
+  </div>
 </div>

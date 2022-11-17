@@ -39,6 +39,9 @@ module Schools
         @recent_data = service.recent_data?
         @progress = service.progress
         @this_month_target = @progress.cumulative_targets_kwh[this_month]
+        #the analytics can return a report with >12 months
+        #but we only want to report on a year at a time
+        @reporting_months = @progress.months[0..11]
         @suggest_estimate_important = suggest_estimate_for_fuel_type?(@fuel_type, check_data: true)
         @debug_content = service.analytics_debug_info if current_user.present? && current_user.analytics?
       rescue => e
@@ -58,7 +61,13 @@ module Schools
     end
 
     def this_month
-      Time.zone.now.strftime("%b")
+      #if target is expired, then use the final month, otherwise report on
+      #current progress
+      if @school_target.expired?
+        @school_target.target_date.prev_month.beginning_of_month
+      else
+        Time.zone.today.beginning_of_month
+      end
     end
 
     def bad_estimate?(type)

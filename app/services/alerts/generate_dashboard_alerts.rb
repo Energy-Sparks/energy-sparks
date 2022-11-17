@@ -6,9 +6,7 @@ module Alerts
 
     def perform(alerts)
       alerts.each do |alert|
-        process_dashboard_alerts(alert, :teacher)
         process_dashboard_alerts(alert, :pupil)
-        process_dashboard_alerts(alert, :public)
         process_dashboard_alerts(alert, :management)
       end
       @content_generation_run.dashboard_alerts

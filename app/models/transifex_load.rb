@@ -4,8 +4,9 @@
 #
 #  created_at :datetime         not null
 #  id         :bigint(8)        not null, primary key
-#  pulled     :integer
-#  pushed     :integer
+#  pulled     :integer          default(0), not null
+#  pushed     :integer          default(0), not null
+#  status     :integer          default("running"), not null
 #  updated_at :datetime         not null
 #
 class TransifexLoad < ApplicationRecord

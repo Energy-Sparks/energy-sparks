@@ -1,5 +1,5 @@
 module ChartHelper
-  def chart_tag(school, chart_type, wrap: true, show_advice: true, no_zoom: false, chart_config: {}, html_class: 'analysis-chart')
+  def chart_tag(school, chart_type, wrap: true, show_advice: false, no_zoom: false, chart_config: {}, html_class: 'analysis-chart', autoload_chart: true)
     chart_config[:no_advice] = !show_advice
     chart_config[:no_zoom] = no_zoom
     chart_container = content_tag(
@@ -8,6 +8,7 @@ module ChartHelper
       id: chart_config[:mpan_mprn].present? ? "chart_#{chart_type}_#{chart_config[:mpan_mprn]}" : "chart_#{chart_type}",
       class: html_class,
       data: {
+        autoload_chart: autoload_chart,
         chart_config: chart_config.merge(
           type: chart_type,
           annotations: school_annotations_path(school),
@@ -16,6 +17,7 @@ module ChartHelper
         )
       }
     )
+    chart_container += "<div id='chart-error' class='d-none'>#{I18n.t('chart_data_values.standard_error_message')}</div>".html_safe
     if wrap
       content_tag :div, chart_container, id: "chart_wrapper_#{chart_type}", class: 'chart-wrapper'
     else
@@ -41,6 +43,7 @@ module ChartHelper
       class: 'analysis-chart',
       style: "height:#{chart_height}px;",
       data: {
+        autoload_chart: true,
         chart_config: chart_config.merge(
           type: chart_type,
           jsonData: formatted_json_data,

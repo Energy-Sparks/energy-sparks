@@ -1,74 +1,30 @@
-<% content_for :page_title, 'Scoreboard' %>
+<% content_for :page_title, @scoreboard.name %>
 
+<div class="row padded-row">
+  <div class="col-lg-3">
+    <%= image_tag("actions/podium.png", class: "img-fluid ") %>
+  </div>
+  <div class="col-lg-9">
+    <h1 class="display-3"><strong><%= @scoreboard.name %></strong></h1>
+    <p>
+      <%= t('scoreboards.intro_para_1') %>
+    </p>
+    <p>
+      <%= t('scoreboard.intro_para_1', count: @schools.count) %>
+    </p>
+    <p>
+      <% if @academic_year == @current_year %>
+        <%= t('scoreboard.current_scores') %>. <%= link_to t('scoreboard.previous_scoreboard'), scoreboard_path(@scoreboard, academic_year: @previous_year) %>.
+      <% else %>
+        <%= t('scoreboard.previous_scores') %>. <strong><%= link_to t('scoreboard.current_scoreboard'), scoreboard_path(@scoreboard) %></strong>
+      <% end %>
+    </p>
+  </div>
+</div>
 <div class="container mt-2">
   <div class="row">
-    <div class="col-md-8">
-      <h1>Scoreboard <%= @academic_year.title %>: <%= @scoreboard.name %></h1>
+    <div class="col">
+      <%= render 'table', schools: @schools %>
     </div>
-    <div class="col-md-4">
-      <div class='btn-group float-right mt-4'>
-      </div>
-    </div>
-    <div class="col-md-12">
-      <p>
-        See how well each of our <%= @scoreboard.name%> Energy Sparks schools are recording their energy saving <%= link_to 'activities', activity_categories_path %>!
-        Scoreboard points are earned from recording <%= link_to 'activities', activity_categories_path %> investigating energy use, learning about energy and taking energy saving action around their school.
-      </p>
-    </div>
-  </div>
-
-
-  <ul class="nav nav-pills mb-3">
-    <% @active_academic_years.each do |academic_year| %>
-      <li class="nav-item">
-        <%= link_to academic_year.title, scoreboard_path(@scoreboard, academic_year: academic_year), class: "nav-link #{'active' if academic_year == @academic_year}"%>
-      </li>
-    <% end %>
-  </ul>
-
-
-  <div class="row">
-    <table id='scoreboard' class='table'>
-      <thead>
-        <tr>
-          <th><h4>Position</h4></th>
-          <th><h4>School</h4></th>
-          <th><h4>Score</h4></th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <% @schools.with_points.schools_with_positions.each do |position, schools| %>
-          <% schools.each do |school|%>
-            <tr>
-              <td scope="row">
-                <h2><span class="badge badge-primary"><%= '=' if schools.size > 1 %><%= position %></span></h2>
-              </td>
-              <td>
-                <h2><%= link_to school.name, school_path(school) %></h2>
-              </td>
-              <td>
-                <h2>
-                  <%= link_to school.sum_points, school_timeline_path(school, academic_year: @academic_year), class: 'badge badge-success' %>
-                  &nbsp;
-                  <% if school.recent_points && school.recent_points > 0 %>
-                    <i class="fa fa-arrow-up" data-toggle="tooltip" title="School has scored points in the last month"></i>
-                  <% end %>
-                </h2>
-              </td>
-            </tr>
-          <% end %>
-        <% end %>
-        <% @schools.without_points.each do |school| %>
-          <tr>
-            <td />
-            <td>
-              <h2><%= link_to school.name, school_path(school) %></h2>
-            </td>
-            <td />
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
   </div>
 </div>

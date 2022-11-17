@@ -37,6 +37,14 @@ RSpec.describe "onboarding", :schools, type: :system do
       click_on 'Admin'
     end
 
+    context "selectable actions" do
+      let!(:setup_data)  { } # call to create all objects required by tests before page is loaded, overriden in contexts
+      before do
+        click_on 'Manage school onboarding'
+      end
+      it_behaves_like "admin school group onboardings"
+    end
+
     it 'allows a new onboarding to be setup and sends an email to the school' do
       click_on 'Manage school onboarding'
       click_on 'New Automatic School Setup'
@@ -62,7 +70,6 @@ RSpec.describe "onboarding", :schools, type: :system do
       click_on "Send setup email"
 
       onboarding = SchoolOnboarding.first
-      expect(onboarding.subscribe_to_newsletter).to be_truthy
       expect(onboarding.school_will_be_public).to be_falsey
       expect(onboarding.default_chart_preference).to eq "carbon"
 
@@ -74,7 +81,7 @@ RSpec.describe "onboarding", :schools, type: :system do
     it 'sends reminder emails when requested' do
       onboarding = create :school_onboarding, :with_events
       click_on 'Manage school onboarding'
-      click_on 'Send reminder'
+      click_on 'Send reminder email'
 
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to include("Don't forget to set up your school on Energy Sparks")

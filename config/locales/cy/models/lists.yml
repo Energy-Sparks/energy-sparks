@@ -1,0 +1,55 @@
+cy:
+  calendar_event_type:
+    bank_holiday:
+      description: Gŵyl y Banc
+      title: Gŵyl y Banc
+    holiday:
+      description: Gwyliau
+      title: Gwyliau
+    in_school_inset_day:
+      description: Diwrnod hyfforddi yn yr ysgol
+      title: Diwrnod HMS yn yr ysgol
+    out_of_school_inset_day:
+      description: Diwrnod hyfforddi y tu allan i'r ysgol
+      title: Diwrnod HMS y Tu Allan i'r Ysgol
+    term_1:
+      description: Hanner Tymor yr Hydref 1
+      title: Tymor 1
+    term_2:
+      description: Hanner Tymor yr Hydref 2
+      title: Tymor 2
+    term_3:
+      description: Hanner Tymor y Gwanwyn 1
+      title: Tymor 3
+    term_4:
+      description: Hanner Tymor y Gwanwyn 2
+      title: Tymor 4
+    term_5:
+      description: Hanner Tymor yr Haf 1
+      title: Tymor 5
+    term_6:
+      description: Hanner Tymor yr Haf 2
+      title: Tymor 6
+  key_stage:
+    ks1: CA1
+    ks2: CA2
+    ks3: CA3
+    ks4: CA4
+    ks5: CA5
+  staff_role:
+    building_site_manager_or_caretaker: Rheolwr adeilad/safle neu ofalwr
+    business_manager: Rheolwr busnes
+    council_or_mat_staff: Cyngor neu staff MAT
+    governor: Llywodraethwr
+    headteacher_or_deputy_head: Pennaeth neu Ddirprwy Bennaeth
+    parent_or_volunteer: Rhiant neu wirfoddolwr
+    public: Cyhoedd
+    teacher: Athro
+    teacher_or_teaching_assistant: Athro neu gynorthwyydd addysgu
+  subject:
+    citizenship: Dinasyddiaeth
+    design_and_technology: Dylunio a Thechnoleg
+    english: Saesneg
+    geography: Daearyddiaeth
+    maths: Mathemateg
+    science: Gwyddoniaeth

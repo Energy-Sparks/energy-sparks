@@ -29,6 +29,8 @@
 //= require bullet_charts
 //= require schools
 //= require users
+//= require header_fix
+//= require nav_tabs_url_aware
 
 // from https://github.com/neivars/bootstrap-year-calendar
 //= require bootstrap-year-calendar
@@ -39,6 +41,8 @@
 //= require simulator
 
 //= require moment
+//= require moment/cy.js
+
 //= require tempusdominus-bootstrap-4.js
 
 //= require content
@@ -46,6 +50,7 @@
 //= require aggregated_meter_collection
 //= require date_pickers
 //= require checkboxes
+//= require select
 
 //= require observations
 //= require form_wizard

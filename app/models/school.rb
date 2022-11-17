@@ -38,7 +38,6 @@
 #  scoreboard_id                         :bigint(8)
 #  serves_dinners                        :boolean          default(FALSE), not null
 #  slug                                  :string
-#  solar_irradiance_area_id              :bigint(8)
 #  solar_pv_tuos_area_id                 :bigint(8)
 #  temperature_area_id                   :bigint(8)
 #  template_calendar_id                  :integer
@@ -112,10 +111,13 @@ class School < ApplicationRecord
   has_many :equivalences
 
   has_many :locations
+  has_many :notes
 
   has_many :simulations, inverse_of: :school
 
   has_many :estimated_annual_consumptions
+
+  has_many :alternative_heating_sources
 
   has_many :amr_data_feed_readings,       through: :meters
   has_many :amr_validated_readings,       through: :meters
@@ -168,19 +170,39 @@ class School < ApplicationRecord
   validates :country, inclusion: { in: countries }
   validates :funding_status, inclusion: { in: funding_statuses }
 
+  validates :percentage_free_school_meals, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true }
+  #simplified pattern from: https://stackoverflow.com/questions/164979/regex-for-matching-uk-postcodes
+  #adjusted to use \A and \z
+  validates :postcode, format: { with: /\A[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}\z/i }
+
   validates_associated :school_times, on: :school_time_update
 
   accepts_nested_attributes_for :school_times, reject_if: proc {|attributes| attributes['day'].blank? }, allow_destroy: true
 
   auto_strip_attributes :name, :website, :postcode, squish: true
 
-  geocoded_by :postcode
+  geocoded_by :postcode do |obj, results|
+    if (geo = results.first)
+      obj.latitude = geo.data['latitude']
+      obj.longitude = geo.data['longitude']
+      obj.country = geo.data['country'].downcase
+    end
+  end
 
   after_validation :geocode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
 
   # Note that saved_change_to_activation_date? is a magic ActiveRecord method
   # https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Dirty.html#method-i-will_save_change_to_attribute-3F
   after_save :add_joining_observation, if: proc { saved_change_to_activation_date?(from: nil) }
+
+  def minimum_reading_date
+    return unless amr_validated_readings.present?
+
+    # Ideally, we'd also use the minimum amr_data_feed_readings reading_date here, however, those reading dates are
+    # currently stored as strings (and in an inconsistent date format as defined in the associated meter's amr data feed
+    # config) so we instead use the minimum validated reading date minus 1 year.
+    amr_validated_readings.minimum(:reading_date) - 1.year
+  end
 
   def find_user_or_cluster_user_by_id(id)
     users.find_by_id(id) || cluster_users.find_by_id(id)
@@ -258,11 +280,11 @@ class School < ApplicationRecord
   end
 
   def meters_with_readings(supply = Meter.meter_types.keys)
-    active_meters.includes(:amr_data_feed_readings).where(meter_type: supply).where.not(amr_data_feed_readings: { meter_id: nil })
+    active_meters.joins(:amr_data_feed_readings).where(meter_type: supply).where.not(amr_data_feed_readings: { meter_id: nil }).distinct
   end
 
   def meters_with_validated_readings(supply = Meter.meter_types.keys)
-    active_meters.includes(:amr_validated_readings).where(meter_type: supply).where.not(amr_validated_readings: { meter_id: nil })
+    active_meters.joins(:amr_validated_readings).where(meter_type: supply).where.not(amr_validated_readings: { meter_id: nil }).distinct
   end
 
   def fuel_types
@@ -403,6 +425,14 @@ class School < ApplicationRecord
     school_targets.by_start_date.first
   end
 
+  def expired_target
+    school_targets.by_start_date.expired.first
+  end
+
+  def has_expired_target?
+    expired_target.present?
+  end
+
   def has_school_target_event?(event_name)
     school_target_events.where(event: event_name).any?
   end
@@ -501,6 +531,10 @@ class School < ApplicationRecord
 
   def community_use_times_to_analytics
     school_times.community_use.map(&:to_analytics)
+  end
+
+  def self.status_counts
+    { active: self.visible.count, data_visible: self.visible.data_enabled.count, invisible: self.not_visible.count, removed: self.inactive.count }
   end
 
   private

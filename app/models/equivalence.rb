@@ -4,6 +4,7 @@
 #
 #  created_at                          :datetime         not null
 #  data                                :json
+#  data_cy                             :json
 #  equivalence_type_content_version_id :bigint(8)        not null
 #  from_date                           :date
 #  id                                  :bigint(8)        not null, primary key
@@ -27,11 +28,17 @@ class Equivalence < ApplicationRecord
   belongs_to :school
   belongs_to :content_version, class_name: 'EquivalenceTypeContentVersion', foreign_key: :equivalence_type_content_version_id
 
-  def formatted_variables
-    variables.inject({}) do |formatted, (name, values)|
+  delegate :equivalence_type, to: :content_version
+
+  def formatted_variables(locale = I18n.locale)
+    variables(locale).inject({}) do |formatted, (name, values)|
       formatted[name] = values[:formatted_equivalence]
       formatted
     end
+  end
+
+  def via_unit
+    data_via_units.compact.join(' ')
   end
 
   def hide_preview?
@@ -40,8 +47,21 @@ class Equivalence < ApplicationRecord
 
 private
 
-  def variables
-    data.deep_transform_keys do |key|
+  def data_via_units
+    energy_conversion_units.map { |unit| data.dig(unit.to_s, 'via') }
+  end
+
+  def energy_conversion_units
+    EnergyConversions.additional_frontend_only_variable_descriptions.map { |unit| unit.last[:via] }
+  end
+
+  def variables(locale)
+    if locale == :cy
+      variables = data_cy&.any? ? data_cy : data
+    else
+      variables = data
+    end
+    variables.deep_transform_keys do |key|
       :"#{key.to_s.gsub('£', 'gbp')}"
     end
   end

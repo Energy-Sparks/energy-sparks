@@ -13,7 +13,7 @@ describe Targets::GenerateProgressService do
 
   let!(:service)                  { Targets::GenerateProgressService.new(school, aggregated_school) }
 
-  let(:months)                    { [Date.today.last_month.strftime("%b"), Date.today.strftime("%b")] }
+  let(:months)                    { [Date.today.last_month.beginning_of_month, Date.today.beginning_of_month] }
   let(:fuel_type)                 { :electricity }
   let(:monthly_targets_kwh)       { [10,10] }
   let(:monthly_usage_kwh)         { [10,5] }
@@ -21,7 +21,7 @@ describe Targets::GenerateProgressService do
   let(:cumulative_targets_kwh)    { [10,20] }
   let(:cumulative_usage_kwh)      { [10,15] }
   let(:cumulative_performance)    { [-0.99,0.99] }
-  let(:partial_months)            { [Date.today.strftime("%b")] }
+  let(:partial_months)            { [false, true] }
   let(:percentage_synthetic)      { [0, 0]}
 
   let(:progress) do
@@ -117,6 +117,10 @@ describe Targets::GenerateProgressService do
         expect( target ).to eql school_target
       end
 
+      it 'saved the progress report' do
+        expect( target.saved_progress_report_for(:electricity).to_json ).to eq(progress.to_json)
+      end
+
       it 'records when last run' do
         expect( target.report_last_generated ).to_not be_nil
       end
@@ -137,23 +141,13 @@ describe Targets::GenerateProgressService do
     context 'and not enough data' do
       let(:school_target_fuel_types)  { [] }
 
-      context 'v1' do
-        before(:each) do
-          allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(false)
-        end
-        it 'does nothing' do
-          expect( service.generate! ).to eq school_target
-        end
+      before(:each) do
+        allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(true)
+        allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
+        allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
       end
-      context 'v2' do
-        before(:each) do
-          allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(true)
-          allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
-          allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
-        end
-        it 'generates' do
-          expect( service.generate! ).to eq school_target
-        end
+      it 'generates' do
+        expect( service.generate! ).to eq school_target
       end
     end
   end

@@ -19,15 +19,19 @@ module Equivalences
 
     def perform(equivalence_type, content = equivalence_type.current_content)
       variables = TemplateInterpolation.new(content).variables(:equivalence).map(&:to_sym)
+      data_cy = {}
       data = variables.inject({}) do |data_collection, variable|
         time_period = TIME_PERIODS.fetch(equivalence_type.time_period.to_sym)
         data_collection[variable] = @analytics.front_end_convert(variable, time_period, equivalence_type.meter_type.to_sym)
+        I18n.with_locale(:cy) do
+          data_cy[variable] = @analytics.front_end_convert(variable, time_period, equivalence_type.meter_type.to_sym)
+        end
         data_collection
       end
       relevant = data.values.all? {|values| values[:show_equivalence]}
       from_date = data.values.map {|values| values[:from_date]}.min
       to_date = data.values.map {|values| values[:to_date]}.max
-      Equivalence.new(school: @school, content_version: content, data: data, relevant: relevant, from_date: from_date, to_date: to_date)
+      Equivalence.new(school: @school, content_version: content, data: data, data_cy: data_cy, relevant: relevant, from_date: from_date, to_date: to_date)
     rescue EnergySparksNotEnoughDataException, EnergySparksNoMeterDataAvailableForFuelType, EnergySparksMissingPeriodForSpecifiedPeriodChart => e
       raise CalculationError, e.message
     end

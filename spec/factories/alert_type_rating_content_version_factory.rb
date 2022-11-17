@@ -2,8 +2,6 @@ FactoryBot.define do
   factory :alert_type_rating_content_version do
     alert_type_rating
     pupil_dashboard_title {'a thing has happened'}
-    teacher_dashboard_title {'a thing has happened'}
-    public_dashboard_title {'a thing has happened'}
     management_dashboard_title {'a thing has happened'}
     management_priorities_title {'a thing has happened'}
     find_out_more_title {'A thing has happened' }

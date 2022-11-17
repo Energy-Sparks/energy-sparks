@@ -28,6 +28,9 @@ module EnergySparks
     # HAS to be UTC for group by date to work
     config.active_record.default_timezone = :utc
 
+    # For our application date helpers to use to optionally display times in configured zone
+    config.display_timezone = 'London'
+
     config.middleware.use Rack::Attack
     config.middleware.use Rack::XRobotsTag
 
@@ -42,6 +45,13 @@ module EnergySparks
       ActionText::ContentHelper.allowed_attributes.add 'id'
       ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'
     end
+
+    config.active_job.queue_adapter = :good_job
+    config.good_job.retry_on_unhandled_error = false
+    config.good_job.max_threads = 5
+    config.good_job.enable_cron = false
+    config.good_job.cleanup_preserved_jobs_before_seconds_ago = 30.days.to_i
+    config.good_job.logger = Logger.new(File.join(Rails.root, 'log', 'good_job.log'))
 
     config.i18n.available_locales = [:en, :cy]
     config.i18n.default_locale = :en

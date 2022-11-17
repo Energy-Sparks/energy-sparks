@@ -1,0 +1,17 @@
+cy:
+  management:
+    priorities:
+      alert: Rhybudd
+      cost_saving_html: Arbed costau<br>fesul blwyddyn
+      delivery_cost_html: Cost anfon<br>&nbsp;
+      find_out_more: Dysgu rhagor
+      more_opportunities: Gweld rhagor o gyfleoedd
+      priority: Blaenoriaeth
+      reduced_emissions_html: Llai o allyriadau<br>fesul blwyddyn
+    schools:
+      overview_charts:
+        overview:
+          electricity: Trosolwg trydan
+          gas: Trosolwg nwy
+          solar: Trosolwg solar
+          storage_heater: Trosolwg stôr-wresogyddion

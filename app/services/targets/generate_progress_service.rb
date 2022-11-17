@@ -8,25 +8,28 @@ module Targets
 
     def cumulative_progress(fuel_type)
       target_progress = target_progress(fuel_type)
-      target_progress.present? ? target_progress.current_cumulative_performance_versus_synthetic_last_year : nil
+      target_progress.present? ? target_progress.cumulative_performance_versus_synthetic_last_year[reporting_month] : nil
     end
 
     def current_monthly_target(fuel_type)
       target_progress = target_progress(fuel_type)
-      target_progress.present? ? target_progress.cumulative_targets_kwh[this_month] : nil
+      target_progress.present? ? target_progress.cumulative_targets_kwh[reporting_month] : nil
     end
 
     def current_monthly_usage(fuel_type)
       target_progress = target_progress(fuel_type)
-      target_progress.present? ? target_progress.current_cumulative_usage_kwh : nil
+      target_progress.present? ? target_progress.cumulative_usage_kwh[reporting_month] : nil
     end
 
     def generate!
       if Targets::SchoolTargetService.targets_enabled?(@school) && target.present?
         target.update!(
           electricity_progress: fuel_type_progress(:electricity),
+          electricity_report: target_progress(:electricity),
           gas_progress: fuel_type_progress(:gas),
+          gas_report: target_progress(:gas),
           storage_heaters_progress: fuel_type_progress(:storage_heaters),
+          storage_heaters_report: target_progress(:storage_heaters),
           report_last_generated: Time.zone.now
         )
         return target
@@ -36,12 +39,7 @@ module Targets
     private
 
     def can_generate_fuel_type?(fuel_type)
-      if EnergySparks::FeatureFlags.active?(:school_targets_v2)
-        has_fuel_type_and_target?(fuel_type)
-      else
-        has_fuel_type_and_target?(fuel_type) &&
-          @school.configuration.enough_data_to_set_target_for_fuel_type?(fuel_type)
-      end
+      has_fuel_type_and_target?(fuel_type)
     end
 
     def fuel_type_progress(fuel_type)
@@ -84,8 +82,14 @@ module Targets
       end
     end
 
-    def this_month
-      Time.zone.now.strftime("%b")
+    def reporting_month
+      #if target is expired, then use the final month, otherwise report on
+      #current progress
+      if target.expired?
+        target.target_date.prev_month.beginning_of_month
+      else
+        Time.zone.today.beginning_of_month
+      end
     end
 
     def target_progress(fuel_type)

@@ -55,9 +55,6 @@ describe 'temperature recordings as school admin' do
           fill_in 'The Hall', with: 20
           fill_in 'At', with: ''
           expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0)
-
-          fill_in 'At', with: Date.tomorrow
-          expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0)
           fill_in 'At', with: Date.yesterday
           expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(1).and change { TemperatureRecording.count }.by(1)
         end
@@ -89,7 +86,7 @@ describe 'temperature recordings as school admin' do
         end
 
         it 'deletes an assocated temperature recording if location is nobbled' do
-          observation = create(:observation).tap do |obs|
+          observation = create(:observation, :temperature).tap do |obs|
             create(:temperature_recording, observation: obs, location: the_hall)
           end
           click_on 'Change room names'
@@ -104,7 +101,7 @@ describe 'temperature recordings as school admin' do
 
     let!(:user)       { create(:school_admin, school: school)}
     let!(:observation) do
-      create(:observation, school: school).tap do |obs|
+      create(:observation, :temperature, school: school).tap do |obs|
         create(:temperature_recording, observation: obs, location: the_hall)
       end
     end

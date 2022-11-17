@@ -27,27 +27,19 @@
 class ActivityType < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
+  include Searchable
+
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :summary, type: :string, fallbacks: { cy: :en }
   translates :description, backend: :action_text
   translates :school_specific_description, backend: :action_text
   translates :download_links, backend: :action_text
 
-  include PgSearch::Model
-  pg_search_scope :search,
-                  against: [:name],
-                  associated_against: {
-                    rich_text_description: [:body]
-                  },
-                  using: {
-                    tsearch: {
-                      dictionary: 'english'
-                    }
-                  }
-
   TX_ATTRIBUTE_MAPPING = {
     school_specific_description: { templated: true },
   }.freeze
+
+  TX_REWRITEABLE_FIELDS = [:description_cy, :school_specific_description_cy, :download_links_cy].freeze
 
   belongs_to :activity_category
 
@@ -67,6 +59,7 @@ class ActivityType < ApplicationRecord
   scope :random_suggestions, -> { active }
   scope :custom_last, -> { order(:custom) }
   scope :by_name, -> { order(name: :asc) }
+  scope :by_id, -> { order(id: :asc) }
   scope :live_data, -> { joins(:activity_category).merge(ActivityCategory.live_data) }
   scope :for_key_stages, ->(key_stages) { joins(:key_stages).where(key_stages: { id: key_stages.map(&:id) }).distinct }
   scope :for_subjects, ->(subjects) { joins(:subjects).where(subjects: { id: subjects.map(&:id) }).distinct }
@@ -86,9 +79,21 @@ class ActivityType < ApplicationRecord
   has_many :audit_activity_types
   has_many :audits, through: :audit_activity_types
 
+  has_many :link_rewrites, as: :rewriteable
+
+  accepts_nested_attributes_for :link_rewrites, reject_if: proc { |attributes| attributes[:source].blank? }, allow_destroy: true
+
   accepts_nested_attributes_for :activity_type_suggestions, reject_if: proc { |attributes| attributes[:suggested_type_id].blank? }, allow_destroy: true
 
   before_save :copy_searchable_attributes
+
+  def suggested_from
+    ActivityType.joins(:activity_type_suggestions).where("activity_type_suggestions.suggested_type_id = ?", id)
+  end
+
+  def referenced_from_find_out_mores
+    AlertTypeRating.joins(:alert_type_rating_activity_types).where("alert_type_rating_activity_types.activity_type_id = ?", id)
+  end
 
   def key_stage_list
     key_stages.map(&:name).sort.join(', ')
@@ -106,9 +111,21 @@ class ActivityType < ApplicationRecord
     activities.for_school(school)
   end
 
+  def grouped_school_count
+    activities.group(:school).count
+  end
+
+  def unique_school_count
+    activities.select(:school_id).distinct.count
+  end
+
   #override default name for this resource in transifex
   def tx_name
     name
+  end
+
+  def self.tx_resources
+    active.order(:id)
   end
 
   private

@@ -44,7 +44,15 @@ Rails.application.configure do
   config.active_support.deprecation = :stderr
 
   # Raises error for missing translations
-  # config.action_view.raise_on_missing_translations = true
+  config.action_view.raise_on_missing_translations = true
 
   config.mailchimp_client = MailchimpMarketing::MockClient.new
+
+  # Default good job execution mode configuration for test
+  # See https://github.com/bensheldon/good_job#configuration-options
+  config.active_job.queue_adapter = :good_job
+  config.good_job.execution_mode = :async
+
+  # Uncomment to pull in locale files when testing with a local version of the Energy Sparks Analytics gem
+  # config.i18n.load_path += Dir[Gem.loaded_specs['energy-sparks_analytics'].full_gem_path + '/config/locales/**/*.{rb,yml}']
 end

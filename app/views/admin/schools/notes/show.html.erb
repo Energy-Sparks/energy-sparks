@@ -1,0 +1,5 @@
+<%= render 'header', title: "View #{@note.note_type.capitalize} for #{@school.name}" do %>
+  <%= header_nav_link 'All school notes & issues', admin_school_notes_url(@school) %>
+<% end %>
+
+<%= render 'note', note: @note, index: false %>

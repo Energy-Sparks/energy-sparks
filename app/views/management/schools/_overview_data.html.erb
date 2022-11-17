@@ -5,19 +5,19 @@
         <th class="icon"></th>
         <th class="text-left"></th>
         <th class="text-left"></th>
-        <th class="text-right">Use (kWh)</th>
-        <th class="text-right">CO2 (kg)</th>
-        <th class="text-right">Cost (£)</th>
-        <th class="text-right">Potential savings</th>
-        <th class="text-right">% Change</th>
+        <th class="text-right"><%= t('schools.show.use_kwh') %></th>
+        <th class="text-right"><%= t('schools.show.co2_kg') %></th>
+        <th class="text-right"><%= t('schools.show.cost_£') %></th>
+        <th class="text-right"><%= t('schools.show.potential_savings') %></th>
+        <th class="text-right"><%= t('schools.show.percentage_change') %></th>
       </tr>
     </thead>
     <tbody>
     <% overview_data.by_fuel_type.each do |data| %>
       <tr>
-        <% if data.period == 'Last week' %>
+        <% if data.period == I18n.t('classes.tables.summary_table_data.last_week') %>
           <td class="icon"><%= fa_icon fuel_type_icon(data.fuel_type) %></td>
-          <td class="text-left"><%= data.fuel_type.to_s.humanize %></td>
+          <td class="text-left"><%= t('common.' + data.fuel_type.to_s) %></td>
         <% else %>
           <td></td>
           <td></td>

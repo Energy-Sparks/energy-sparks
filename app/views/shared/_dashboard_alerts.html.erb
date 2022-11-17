@@ -10,13 +10,15 @@
         colour: class_for_alert_colour(alert_content.colour),
         icon: alert_icon(alert_content.alert, 'fa-3x'),
         content: alert_content.send(content_field),
-        buttons: alert_content.find_out_more ? {'Find out more' => school_find_out_more_path(school, alert_content.find_out_more)} : {}
+        buttons: alert_content.find_out_more ? {t('for_schools.find_out_more') => school_find_out_more_path(school, alert_content.find_out_more)} : {}
       %>
   <% end %>
   <% if dashboard_alerts.size > 1 && !local_assigns[:show_all] %>
     <div class="row">
       <div class="col text-center">
-        <a href="#" class="btn btn-rounded more-alerts">Show <%= pluralize((dashboard_alerts.size - 1), 'more alert')%></a>
+        <a href="#" class="btn btn-rounded more-alerts">
+          <%= t('dashboard_alerts.show_more_alerts', count: dashboard_alerts.size - 1) %>
+        </a>
       </div>
     </div>
   <% end %>

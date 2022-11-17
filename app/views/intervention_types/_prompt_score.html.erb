@@ -5,10 +5,10 @@
         <i class="fas fa-tasks fa-3x"></i>
       </div>
       <div class="col-lg-7 col-sm-12 align-self-center">
-        Complete this action to score your school <strong><%= intervention_type.score %></strong> points!
+        <%= t('intervention_types.prompt_score.complete_this_action_html', count: intervention_type.score) %><br />
       </div>
       <div class="col-lg-4 col-sm-12">
-        <%= link_to 'Record this action', new_intervention_path(intervention_type_id: intervention_type.id), class: 'btn btn-primary' %>
+        <%= link_to t('intervention_types.prompt_score.record_this_action'), new_school_intervention_path(school, intervention_type_id: intervention_type.id), class: 'btn btn-primary' %>
       </div>
     </div>
   </div>

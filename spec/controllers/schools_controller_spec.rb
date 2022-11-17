@@ -30,7 +30,7 @@ RSpec.describe SchoolsController, type: :controller do
       school = FactoryBot.create :school
       get :show, params: {id: school.to_param}
       expect(assigns(:school)).to eq(school)
-      expect(response).to_not redirect_to(management_school_path(school))
+      expect(response).to_not redirect_to(school_pupils_path(school))
     end
   end
 

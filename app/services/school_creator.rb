@@ -63,6 +63,8 @@ class SchoolCreator
 private
 
   def add_school(user, school)
+    return if user.group_admin?
+
     user.add_cluster_school(school)
     user.update!(school: school, role: :school_admin) unless user.school
   end
@@ -71,16 +73,17 @@ private
       @school.update!(
         school_group: onboarding.school_group,
         template_calendar: onboarding.template_calendar,
-        solar_pv_tuos_area: onboarding.solar_pv_tuos_area,
         dark_sky_area: onboarding.dark_sky_area,
         scoreboard: onboarding.scoreboard,
         weather_station: onboarding.weather_station,
         public: onboarding.school_will_be_public,
         chart_preference: onboarding.default_chart_preference
       )
+      Solar::SolarAreaLookupService.new(@school, onboarding).assign
   end
 
   def create_default_contact(onboarding)
+    return if onboarding.created_user.group_admin?
     onboarding_service.record_event(onboarding, :alert_contact_created) do
       @school.contacts.create!(
         user: onboarding.created_user,

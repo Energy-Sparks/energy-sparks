@@ -3,39 +3,57 @@
 <% end %>
 
 <%= render 'header_nav' %>
-<%= render 'nav' %>
+<%= render 'tab_nav' %>
 
 <% if @transport_survey.responses.any? %>
-  <div class="mb-3">
-    <div><strong><%= @transport_survey.total_passengers %> pupils</strong> were surveyed on <strong><%= nice_dates @transport_survey.run_on %></strong>.</div>
-    <div>Their travel to school generated <strong><%= @transport_survey.total_carbon.round(2) %>kg CO2</strong>.</div>
-    <div> <strong><%= @transport_survey.percentage_per_category["active_travel"].round %>%</strong> used active travel, generating zero CO2,
-          <strong><%= @transport_survey.percentage_per_category["public_transport"].round %>%</strong> travelled by public transport,
-          <strong><%= @transport_survey.percentage_per_category["park_and_stride"].round %>%</strong> used park and stride and
-          <strong><%= @transport_survey.percentage_per_category["car"].round %>%</strong> travelled by car.</div>
-  </div>
 
-  <div id="transport_surveys_pie" class="mb-3"></div>
+  <%= render 'equivalences' %>
 
-  <table class="table">
+  <h2 class="mt-3"><%= t('schools.transport_surveys.show.more_detail') %></h2>
+
+  <div id="transport_surveys_pie" class="mb-3" data-error="<%= t('schools.transport_surveys.show.chart_load_error') %>"></div>
+
+  <h4><%= t('schools.transport_surveys.show.transport_categories_title') %></h4>
+
+  <table class="table" id="responses_per_category">
     <thead class="thead-light">
       <tr>
-        <th>Transport category</th>
-        <th>Total pupils</th>
-        <th>Percentage pupils</th>
+        <th class="col-md-4"><%= t('schools.transport_surveys.common.transport_category') %></th>
+        <th class="col-md-4"><%= t('schools.transport_surveys.common.total_pupils_and_staff') %></th>
+        <th class="col-md-4"><%= t('schools.transport_surveys.common.percentage_pupils_and_staff') %></th>
       </tr>
     </thead>
     <tbody>
       <% TransportType.categories_with_other.each do |cat, value| %>
         <tr>
-          <td><%= cat.humanize %></td>
-          <td><%= @transport_survey.passengers_per_category[cat] %></td>
-          <td><%= @transport_survey.percentage_per_category[cat].round %>%</td>
+          <td class="col-md-4"><%= TransportType.human_enum_name(:category, cat) %></td>
+          <td class="col-md-4"><%= @transport_survey.responses_per_category[cat] %></td>
+          <td class="col-md-4"><%= @transport_survey.percentage_per_category[cat].round %>%</td>
         </tr>
       <% end %>
     </tbody>
   </table>
 
+  <h4><%= t('schools.transport_surveys.show.cars_title') %></h4>
+  <p><%= t('schools.transport_surveys.show.cars_summary') %></p>
+
+  <table class="table" id='time_travelled_by_car'>
+    <thead class="thead-light">
+      <tr>
+        <th class="col-md-8"><%= t('schools.transport_surveys.show.time_travelled_by_car') %></th>
+        <th class="col-md-4"><%= t('schools.transport_surveys.common.total_pupils_and_staff') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @transport_survey.responses_per_time_for_category_car.each do |time, value| %>
+        <tr>
+          <td class="col-md-8">
+            <%= time == '30+' ? t('schools.transport_surveys.show.30_or_more_minutes') : t('common.units.minutes', count: time) %></td>
+          <td class="col-md-4"><%= value %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 <% else %>
-  <h4>No responses have been collected</h4>
+  <h4><%= t('schools.transport_surveys.common.no_responses') %></h4>
 <% end %>

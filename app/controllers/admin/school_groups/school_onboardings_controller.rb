@@ -10,6 +10,21 @@ module Admin
         end
       end
 
+      def reminders
+        for_selected "reminders sent" do |onboarding|
+          OnboardingMailer.with(school_onboarding: onboarding).reminder_email.deliver_now
+          onboarding.events.create!(event: :reminder_sent)
+        end
+      end
+
+      def make_visible
+        for_selected "made visible" do |onboarding|
+          SchoolCreator.new(onboarding.school).make_visible! if onboarding.school
+        end
+      rescue SchoolCreator::Error => e
+        redirect_back school_group: @school_group.slug, fallback_location: admin_school_onboardings_path(school_group: @school_group.slug), notice: e.message
+      end
+
       private
 
       def filename(school_group)
@@ -20,11 +35,11 @@ module Admin
         CSV.generate do |csv|
           csv << ['School name', 'State', 'Contact email', 'Notes', 'Last event', 'Last event date', 'Public', 'Visible', 'Active']
 
-          school_group.school_onboardings.by_name.select(&:incomplete?).each do |school_onboarding|
+          school_group.school_onboardings.by_name.incomplete.each do |school_onboarding|
             csv << produce_csv_row_automatic(school_onboarding, 'In progress')
           end
 
-          school_group.school_onboardings.by_name.select(&:complete?).each do |school_onboarding|
+          school_group.school_onboardings.by_name.complete.each do |school_onboarding|
             csv << produce_csv_row_automatic(school_onboarding, 'Complete')
           end
 
@@ -61,6 +76,17 @@ module Admin
           helpers.y_n(school.visible),
           helpers.y_n(school.active)
         ]
+      end
+
+      def for_selected(notice)
+        if (ids = params.dig(:school_group, :school_onboarding_ids))
+          @school_group.school_onboardings.find(ids).each do |onboarding|
+            yield onboarding
+          end
+        else
+          notice = "Nothing selected"
+        end
+        redirect_back fallback_location: admin_school_onboardings_path, notice: "#{@school_group.name} schools #{notice}"
       end
     end
   end

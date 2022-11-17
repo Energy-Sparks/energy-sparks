@@ -9,10 +9,6 @@
       <%= f.input :password_confirmation %>
       <%= f.input :staff_role_id, label: 'Role', required: :true, collection: StaffRole.order(:title), label_method: :translated_title, hint: 'What is your primary role in relation to Energy Sparks?'%>
 
-      <%= simple_fields_for :newsletter do |n| %>
-        <%= n.input :subscribe_to_newsletter, label: "Subscribe to newsletters", class: "custom-control-input", as: :boolean, input_html: { checked: @school_onboarding.subscribe_to_newsletter} %>
-      <% end %>
-
       <%= f.button :submit, 'Update my account' %>
       <%= link_to 'Back', new_onboarding_completion_path(@school_onboarding, anchor: 'your-account', show: 'account'), class: 'btn' %>
     <% end %>

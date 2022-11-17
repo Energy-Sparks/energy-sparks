@@ -6,6 +6,7 @@ $(document).ready(function() {
     var options = {
       format: 'DD/MM/YYYY',
       allowInputToggle: true,
+      locale: moment.locale()
     };
     var maxDate = date_picker.children('input').data('maxDate');
     if (maxDate) {
@@ -20,7 +21,8 @@ $(document).ready(function() {
     var options = {
       format: 'DD/MM/YYYY HH:mm',
       allowInputToggle: true,
-      sideBySide: true
+      sideBySide: true,
+      locale: moment.locale()
     }
 
     if (maxDateTime.length) {

@@ -5,7 +5,7 @@ namespace :data_feeds do
 
     MINIMUM_READINGS_PER_YEAR = 365
 
-    SolarPvTuosArea.by_title.each do |solar_pv_tuos_area|
+    SolarPvTuosArea.active.by_title.each do |solar_pv_tuos_area|
 
       unless solar_pv_tuos_area.has_sufficient_readings?(Date.yesterday, MINIMUM_READINGS_PER_YEAR)
 

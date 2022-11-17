@@ -1,0 +1,19 @@
+<%= render 'header', title: "#{@school.name} Notes & Issues" do %>
+  <%= header_nav_link 'School group', admin_school_group_url(@school.school_group) if @school.school_group %>
+<% end %>
+
+<p>
+  <%= link_to "#{fa_icon('sticky-note text-secondary')} New Note".html_safe, new_admin_school_note_path(@school, note_type: :note), class: 'btn btn-primary btn-sm' %>
+  <%= link_to "#{fa_icon('exclamation-circle text-secondary')} New Issue".html_safe, new_admin_school_note_path(@school, note_type: :issue), class: 'btn btn-primary btn-sm' %>
+</p>
+
+<% if @notes.any? %>
+  <div class="container">
+  <% @notes.each do |note| %>
+    <%= render 'note', note: note, index: true %>
+  <% end %>
+  </div>
+  <%= render "shared/pagy_footer" %>
+<% else %>
+  <p>No notes or issues to display.</p>
+<% end %>

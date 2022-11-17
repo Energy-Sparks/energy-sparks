@@ -1,0 +1,9 @@
+cy:
+  classes:
+    tables:
+      summary_table_data:
+        data_available_from: Data ar gael o %{date}
+        last_week: Wythnos ddiwethaf
+        last_year: Y llynedd
+        no_recent_data: dim data diweddar
+        none: dim

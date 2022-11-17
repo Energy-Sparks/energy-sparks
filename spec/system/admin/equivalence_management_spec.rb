@@ -2,14 +2,21 @@ require 'rails_helper'
 
 RSpec.describe 'equivalence type management', type: :system do
 
-  let!(:admin)  { create(:admin)}
+  let!(:school)   { create(:school)}
+  let!(:admin)    { create(:admin)}
+
+  let!(:kwh_value)          { "2,600 kWh" }
+  let!(:equivalence_calc)   { double(from_date: Date.parse('20200101'), to_date: Date.parse('20210101'), formatted_variables: {kwh: kwh_value}, :hide_preview? => false) }
 
   before do
     sign_in(admin)
     visit root_path
   end
 
-  it 'allows the creation and editing of equivalences' do
+  it 'allows the creation and editing of equivalences', js: true do
+
+    allow_any_instance_of(Equivalences::Calculator).to receive(:perform).and_return(equivalence_calc)
+
     click_on 'Manage'
     click_on 'Admin'
     click_on 'Equivalence Types'
@@ -36,10 +43,13 @@ RSpec.describe 'equivalence type management', type: :system do
 
     click_on 'Edit'
 
-    fill_in_trix with: 'You used lots of electricity in the last week, that is like driving {{ice_car_kwh_km}} in a car!'
     select 'Petrol car', from: 'Image name'
-
     select 'Gas', from: 'Meter type'
+
+    fill_in_trix with: 'You used {{kwh}} of electricity'
+    click_on 'Preview (English)'
+    expect(page).to have_content("You used #{kwh_value} of electricity")
+
     click_on 'Update equivalence type'
 
     equivalence_type.reload
@@ -85,13 +95,13 @@ RSpec.describe 'equivalence type management', type: :system do
       analytics = double :analytics
 
       expect(analytics).to receive(:new).and_return(analytics)
-      expect(analytics).to receive(:front_end_convert).with(:kwh, {month: -1}, :electricity).and_return(
+      expect(analytics).to receive(:front_end_convert).at_least(:once).with(:kwh, {month: -1}, :electricity).and_return(
         {
           formatted_equivalence: '100 kwh',
           show_equivalence: true
         }
       )
-      expect(analytics).to receive(:front_end_convert).with(:number_trees, {month: -1}, :electricity).and_return(
+      expect(analytics).to receive(:front_end_convert).at_least(:once).with(:number_trees, {month: -1}, :electricity).and_return(
         {
           formatted_equivalence: '200,000',
           show_equivalence: true

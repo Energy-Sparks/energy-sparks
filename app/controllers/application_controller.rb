@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   around_action :switch_locale
   before_action :authenticate_user!
   before_action :analytics_code
+  before_action :pagy_locale
+  before_action :check_admin_mode
   helper_method :site_settings, :current_school_podium, :current_user_school
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -42,9 +44,39 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def current_ip_address
+    request.remote_ip
+  end
+
   private
+
+  def check_admin_mode
+    if admin_mode? && !current_user_admin? && !login_page?
+      render 'home/maintenance', layout: false
+    end
+  end
+
+  def admin_mode?
+    ENV["ADMIN_MODE"] == 'true'
+  end
+
+  def current_user_admin?
+    current_user.present? && current_user.admin?
+  end
+
+  def login_page?
+    controller_name == 'sessions'
+  end
 
   def analytics_code
     @analytics_code ||= ENV['GOOGLE_ANALYTICS_CODE']
+  end
+
+  def pagy_locale
+    @pagy_locale = I18n.locale.to_s
+  end
+
+  def header_fix_enabled
+    @header_fix_enabled = true
   end
 end

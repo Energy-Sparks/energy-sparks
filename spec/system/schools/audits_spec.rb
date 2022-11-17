@@ -27,10 +27,14 @@ describe 'Audits', type: :system do
       attach_file("audit[file]", Rails.root + "spec/fixtures/images/newsletter-placeholder.png")
       click_on("Create")
       expect(page).to have_content("Audit created")
+      expect(Observation.count).to eql 1
+      expect(Observation.first.points).to eql 0
       expect(page).to have_content("New audit")
       click_on("Edit")
       fill_in_trix with: 'Summary of the audit'
+      check "Involved pupils"
       click_on("Update")
+      expect(Observation.first.points).to eql Audits::AuditService::AUDIT_POINTS
       expect(page).to have_content("Summary of the audit")
       click_on("Remove")
       expect(page).to have_content("Audit was successfully deleted.")
@@ -173,11 +177,11 @@ describe 'Audits', type: :system do
       before(:each) do
         visit school_audits_path(school)
       end
-      it 'says there are none' do
-        expect(page).to have_content("The Energy Sparks team have not carried out an energy audit for your school")
+      it 'shows introductory page' do
+        expect(page).to have_content("Energy Sparks offers two types of energy audits")
       end
       it 'offers an audit' do
-        expect(page).to have_content("We are currently offering audits to a limited number of schools")
+        expect(page).to have_link("Book an audit")
       end
     end
 
@@ -201,6 +205,12 @@ describe 'Audits', type: :system do
       it 'doesnt show unpublished audits' do
         visit school_audits_path(school)
         expect(page).to_not have_content("Unpublished")
+      end
+
+      it 'gives link to book another audit' do
+        visit school_audits_path(school)
+        click_link "Book another audit"
+        expect(page).to have_content("Energy Sparks offers two types of energy audits")
       end
 
       it 'doesnt show admin options on list of audits' do

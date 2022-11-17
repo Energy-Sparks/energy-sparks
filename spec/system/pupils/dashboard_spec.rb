@@ -7,11 +7,11 @@ describe 'Pupil dashboard' do
   let!(:regional_calendar)  { create(:regional_calendar) }
   let!(:calendar)           { create(:school_calendar, based_on: regional_calendar) }
   let!(:school)             { create(:school, :with_feed_areas, calendar: calendar, name: school_name, school_group: school_group) }
-  let!(:intervention)       { create(:observation, school: school) }
+  let!(:intervention)       { create(:observation, :temperature, school: school) }
 
   let(:equivalence_type)          { create(:equivalence_type, time_period: :last_week )}
-  let(:equivalence_type_content)  { create(:equivalence_type_content_version, equivalence_type: equivalence_type, equivalence: 'Your school spent {{gbp}} on electricity last year!')}
-  let!(:equivalence)              { create(:equivalence, school: school, content_version: equivalence_type_content, data: {'gbp' => {'formatted_equivalence' => '£2.00'}}, to_date: Date.today ) }
+  let(:equivalence_type_content)  { create(:equivalence_type_content_version, equivalence_type: equivalence_type, equivalence_en: 'Your school spent {{gbp}} on electricity last year!', equivalence_cy: 'Gwariodd eich ysgol {{gbp}} ar drydan y llynedd!')}
+  let!(:equivalence)              { create(:equivalence, school: school, content_version: equivalence_type_content, data: {'gbp' => {'formatted_equivalence' => '£2.00'}}, data_cy: {'gbp' => {'formatted_equivalence' => '£9.00'}}, to_date: Date.today ) }
 
   let(:pupil) { create(:pupil, school: school)}
 
@@ -58,8 +58,14 @@ describe 'Pupil dashboard' do
       expect(page).to have_content('Your school spent £2.00 on electricity last year!')
     end
 
+    it 'shows Welsh equivalences' do
+      visit pupils_school_path(school, locale: 'cy')
+      expect(page).to have_content('Gwariodd eich ysgol £9.00 ar drydan y llynedd')
+    end
+
     it 'has navigation to adult dashboard' do
       expect(page).to have_content("#{school.name}")
+      expect(page).to have_link("Adult dashboard", href: school_path(school, switch: true))
       click_on 'Adult dashboard'
       expect(page).to have_title("Adult dashboard")
       click_on 'Pupil dashboard'

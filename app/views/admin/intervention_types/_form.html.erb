@@ -37,6 +37,8 @@
     </div>
   <% end %>
 
+  <%= render 'admin/activity_types/link_rewrites', f: f %>
+
   <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
     <div class="description-trix-editor <%= locale %>">
       <%= f.label InterventionType.human_attribute_name(:description) %>

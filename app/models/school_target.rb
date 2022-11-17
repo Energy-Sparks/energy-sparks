@@ -35,13 +35,17 @@ class SchoolTarget < ApplicationRecord
 
   scope :by_date, -> { order(created_at: :desc) }
   scope :by_start_date, -> { order(start_date: :desc) }
-
+  scope :expired, -> { where(":now >= start_date and :now >= target_date", now: Time.zone.today) }
   scope :currently_active, -> { where('start_date <= ? and target_date <= ?', Time.zone.today, Time.zone.today.next_year) }
 
   before_save :adjust_target_date
 
   def current?
     Time.zone.now >= start_date && Time.zone.now <= target_date
+  end
+
+  def expired?
+    Time.zone.now >= start_date && Time.zone.now >= target_date
   end
 
   def meter_attributes_by_meter_type
@@ -77,7 +81,23 @@ class SchoolTarget < ApplicationRecord
     )
   end
 
+  def saved_progress_report_for(fuel_type)
+    raise "Invalid fuel type" unless [:electricity, :gas, :storage_heaters].include?(fuel_type)
+    report = self["#{fuel_type}_report".to_sym]
+    return nil unless report&.any?
+    TargetsProgress.new(reformat_saved_report(report))
+  end
+
   private
+
+  #ensure TargetsProgress is round-tripped properly
+  def reformat_saved_report(report)
+    report.symbolize_keys!
+    report[:fuel_type] = report[:fuel_type].to_sym
+    #reparse to Dates from yyyy-mm-dd format
+    report[:months].map! {|m| Date.strptime(m, '%Y-%m-%d')}
+    report
+  end
 
   def target_to_hash(target)
     {

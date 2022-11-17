@@ -6,7 +6,7 @@ class MailchimpSignupParams
   validates_presence_of :email_address
   validate :interests_specified?
 
-  def initialize(email_address:, tags: '', interests: [], merge_fields: {})
+  def initialize(email_address:, tags: '', interests: {}, merge_fields: {})
     @email_address = email_address
     @tags = tags || ''
     @interests = interests || {}

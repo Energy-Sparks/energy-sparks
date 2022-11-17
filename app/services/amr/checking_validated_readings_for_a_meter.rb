@@ -11,9 +11,11 @@ module Amr
       amr_data = @dashboard_meter.amr_data
 
       readings_to_delete = AmrValidatedReading.where(meter_id: @dashboard_meter.external_meter_id).where.not(reading_date: amr_data.keys)
-      deleted_count = readings_to_delete.count
-      readings_to_delete.delete_all
+
+      #this returns the number of rows affected, so no need for the count
+      deleted_count = readings_to_delete.delete_all
       pp "Checked: #{@dashboard_meter} - deleted: #{deleted_count}"
+      deleted_count
     end
   end
 end

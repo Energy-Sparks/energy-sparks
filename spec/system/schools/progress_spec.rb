@@ -11,7 +11,9 @@ describe 'targets', type: :system do
   let(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true) }
   let(:school_target_fuel_types)  { ["electricity"] }
 
-  let(:months)                    { ['jan', 'feb'] }
+  let(:january)                   { Date.new(Date.today.year, 1, 1) }
+  let(:february)                  { Date.new(Date.today.year, 2, 1) }
+  let(:months)                    { [january, february] }
   let(:fuel_type)                 { :electricity }
 
   let(:monthly_usage_kwh)         { [10,20] }
@@ -71,14 +73,14 @@ describe 'targets', type: :system do
       it 'redirects to management dashboard if disabled' do
         school.update!(enable_targets_feature: false)
         visit school_progress_index_path(school)
-        expect(page).to have_current_path(management_school_path(school))
+        expect(page).to have_current_path(school_path(school))
       end
 
       it 'shows electricity progress' do
         visit electricity_school_progress_index_path(school)
         expect(page).to have_content('Tracking progress')
-        expect(page).to have_content('jan')
-        expect(page).to have_content('feb')
+        expect(page).to have_content('Jan')
+        expect(page).to have_content('Feb')
         expect(page).to have_content('-25%')
         expect(page).to have_content('+35%')
         expect(page).to have_content('-99%')
@@ -160,11 +162,15 @@ describe 'targets', type: :system do
     end
 
     context 'with partial data' do
+
+      let(:start_date)  { (Date.today-6.months).iso8601 }
+      let(:end_date)  { (Date.today-1.day).iso8601 }
+
       before(:each) do
         sign_in(admin)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
-        school.configuration.update!(suggest_estimates_fuel_types: ["electricity"], aggregate_meter_dates: {"electricity"=>{"start_date"=>"2022-02-01", "end_date"=>"2022-03-21"}})
+        school.configuration.update!(suggest_estimates_fuel_types: ["electricity"], aggregate_meter_dates: {"electricity"=>{"start_date"=>start_date, "end_date"=>end_date}})
       end
 
       context 'and there is missing actual consumption' do
@@ -174,15 +180,15 @@ describe 'targets', type: :system do
         it 'renders the other data' do
           visit electricity_school_progress_index_path(school)
           expect(page).to have_content('Tracking progress')
-          expect(page).to have_content('jan')
-          expect(page).to have_content('feb')
+          expect(page).to have_content('Jan')
+          expect(page).to have_content('Feb')
           expect(page).to have_content('20')
           expect(page).to have_content('30')
         end
 
         it 'describes why some consumption data is missing' do
           visit electricity_school_progress_index_path(school)
-          expect(page).to have_content("We only have data on your electricity consumption from Feb 2022")
+          expect(page).to have_content("We only have data on your electricity consumption from #{Date.parse(start_date).strftime("%b %Y")}")
         end
 
         it 'shows prompt to add estimate' do

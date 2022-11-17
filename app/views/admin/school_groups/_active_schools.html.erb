@@ -1,0 +1,14 @@
+<table class="table table-striped">
+  <% school_group.schools.visible.by_name.each do |school| %>
+    <tr>
+      <td><%= link_to school.name, school_path(school) %></td>
+      <td><%= render 'shared/school_status_buttons', school: school %></td>
+      <td class="nowrap text-right">
+        <%= link_to 'Issues', admin_school_notes_path(school), class: "btn btn-sm" %>
+        <%= link_to 'Edit', edit_school_path(school), class: "btn btn-sm" %>
+        <%= link_to 'Users', school_users_path(school), class: "btn btn-sm" %>
+        <%= link_to 'Meters', school_meters_path(school), class: "btn btn-sm" %>
+      </td>
+    </tr>
+  <% end %>
+</table>

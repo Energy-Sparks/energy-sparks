@@ -30,6 +30,9 @@
   <%= f.input :published %>
   <p class="small">Unpublished audits will not be viewable by the user, but will still score points and be visible in the school timeline.</p>
 
+  <%= f.input :involved_pupils %>
+  <p class="small">If pupils were involved when you carried out your audit then the school will score <span class="badge badge-success"><%= Audits::AuditService::AUDIT_POINTS %></span> points</p>
+
   <h2>Activities</h2>
   <p class="small">
     Add any number of pupil-lead activities. The full list can be explored from the

@@ -23,6 +23,19 @@ en:
         weekly:
           first: Select week (beginning)
           second: Compare to
+      select_meter:
+        all_meters: All Meters
+        title: Which meter?
+      show:
+        compare_message:
+          other:
+            daily_html: Compare your school's <strong>%{supply}</strong> usage between two different days
+            weekly_html: Compare your school's <strong>%{supply}</strong> usage between two different weeks
+          split_meter:
+            daily_html: Compare your school's <strong>%{supply}</strong> daily usage between different meters
+            weekly_html: Compare your school's <strong>%{supply}</strong> weekly usage between different meters
+        data_available: "%{supply} data is available from %{from_date} to %{to_date}"
+        explore_data: Explore data
       titles:
         electricity:
           daily:
@@ -47,3 +60,79 @@ en:
       explanation: Choose a default option for how energy usage data is displayed in charts
       form_group: Preferred units for chart data
       usage: Prefer the display of chart data in kwh, where available
+    index:
+      a_to_z_of_all_energy_sparks_schools: A to Z of all Energy Sparks schools
+      introduction_1: Discover which schools are using Energy Sparks to reduce their energy usage
+      introduction_2: We have %{count} schools across England, Wales, and Scotland including state primary and secondary schools, independent schools, special schools and nursery schools
+      introduction_3: Explore their electricity and gas consumption data, find out how much energy they generate from their solar panels and learn about their energy saving activities
+      introduction_4: We’re proud to have a great network of schools all working hard to save energy and help fight climate change
+      not_visible_schools: Not visible schools
+      page_title: Map
+      title: Energy Sparks schools across the UK
+      view_all_energy_sparks_schools: View all Energy Sparks schools
+      view_energy_sparks_schools_by_group: View Energy Sparks schools by group
+    observations:
+      timeline:
+        action:
+          one: "%{count} action"
+          other: "%{count} actions"
+        activity:
+          completed_an_activity: Completed an activity
+        audit:
+          received_an_audit: Received an energy audit
+        temperatures:
+          recorded_temperatures_in: Recorded temperatures in
+    school_group:
+      compare_schools: Compare schools
+      view_schools: View schools
+    schools:
+      carbon_emissions: Carbon emissions
+      compare_schools: Compare schools
+      explore_data: Explore data
+      review_energy_analysis: Review energy analysis
+    show:
+      act_on_energy_usage: Act on energy usage
+      add_alert_contacts: Add alert contacts
+      add_consumption_estimate: Add an estimate of your annual %{fuels} consumption so we can provide you with a more detailed progress report to help you achieve your targets
+      add_estimate: Add an estimate
+      adult_dashboard: Adult Dashboard
+      co2_kg: CO2 (kg)
+      coming_soon: Coming Soon
+      complete_activities: Teach pupils about energy and climate change within the context of your own school by completing our freely available activities
+      complete_interventions: Record energy saving actions made by school staff and facilities management to help to track whether your interventions have saved energy.
+      complete_short_programme: Take the next step towards completing one of our short programmes of activity to increase your impact and score points for your school
+      configuring_data_access: We're configuring access to your energy data and will notify you when it's ready to explore
+      cost_£: Cost (£)
+      create_pupil_account: Create a pupil account
+      dashboard_title: Adult dashboard for %{school_name}
+      download_data: Download your data
+      energy_bill_required: We need you to provide a recent energy bill for your school to confirm your meter numbers. This will help ensure that we can collect, process and display your school data.
+      energy_saving_opportunities: Energy saving opportunities
+      find_training: Find training
+      making_progress: Well done, you are making progress towards achieving your target to reduce your %{fuels} usage!
+      more_information: More information
+      not_meeting_target: Unfortunately you are not meeting your target to reduce your %{fuels} usage
+      online_training_signup: New to Energy Sparks? Sign up to one of our upcoming free online training courses to help you get the most from the service.
+      percentage_change: "% Change"
+      potential_savings: Potential savings
+      print_view: Print view
+      recent_energy_audit: The Energy Sparks team have recently completed an energy audit for this school
+      recent_energy_usage: Recent energy usage
+      record_action: Record an action
+      record_pupil_activity: Record a pupil activity
+      review_audit: Review audit
+      review_progress: Review progress
+      review_target: Review your target
+      revisit_targets: The configuration of your school has changed, you may need to revisit your targets for this year.
+      set_new_target: Your school set a target to reduce its energy usage by %{target_date}. It's time to review your progress and set a new target for the year ahead.
+      set_target: Set energy saving target
+      set_targets: Set targets to reduce your school's energy consumption over the next year. Energy Sparks will provide you with a recommended set of steps to help you achieve your targets and reduce your school's carbon footprint.
+      setup_alert_contacts: Sign-up for Energy Sparks email or text alerts. Energy Sparks alerts give you early warning of changes in your school's energy use and highlight long term problems with your energy consumption with focused recommendations to save energy.
+      setup_pupil_account: Set up a pupil account for your school to give your pupils direct access to the pupil dashboard. No email address is needed for a pupil account.
+      summary_of_recent_energy_usage: Summary of recent energy usage
+      upload_energy_bill: Upload a bill
+      use_kwh: Use (kWh)
+      view_programmes: View your programmes
+    timeline:
+      no_events: No events to show
+      title: What's been going on?

@@ -146,6 +146,25 @@ module Alerts
       end
     end
 
+    class DummyAlertWithTranslatedData < DummyAnalyticsAlertClass
+
+      def front_end_template_data
+        if I18n.locale == :cy
+          {template: 'welsh variables'}
+        else
+          {template: 'variables'}
+        end
+      end
+
+      def self.alert_type
+        FactoryBot.create :alert_type,
+          class_name: 'Alerts::DummyAlertWithTranslatedData',
+          source: :analytics
+      end
+
+    end
+
+
     let(:school) { build(:school) }
     let(:aggregate_school) { double :aggregate_school  }
 
@@ -210,5 +229,18 @@ module Alerts
       end
     end
 
+
+    context 'when generating multi-lingual template data' do
+      it 'returns Welsh and English' do
+        normalised_report = Alerts::Adapters::AnalyticsAdapter.new(alert_type: Alerts::DummyAlertWithTranslatedData.alert_type, school: school, analysis_date: analysis_date, aggregate_school: aggregate_school).report
+        expect(normalised_report.valid).to eq true
+        expect(normalised_report.template_data).to eq({template: 'variables'})
+        expect(normalised_report.template_data_cy).to eq({template: 'welsh variables'})
+        expect(normalised_report.chart_data).to eq({chart: 'variables'})
+        expect(normalised_report.table_data).to eq({table: 'variables'})
+        expect(normalised_report.priority_data).to eq({priority: 'variables'})
+        expect(normalised_report.benchmark_data).to eq({benchmark: 'data'})
+      end
+    end
   end
 end

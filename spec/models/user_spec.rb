@@ -12,7 +12,28 @@ describe User do
 
     user = create(:user, name: "")
     expect(user.display_name).to eql user.email
+  end
 
+  it 'returns school name' do
+    user = create(:user)
+    expect(user.school_name).to be_nil
+
+    school = create(:school, name: 'Big School')
+    user = create(:user, school: school)
+    expect(user.school_name).to eq('Big School')
+  end
+
+  it 'returns school group name' do
+    user = create(:user)
+    expect(user.school_group_name).to be_nil
+
+    school_group = create(:school_group, name: 'Big Group')
+    user = create(:user, school_group: school_group)
+    expect(user.school_group_name).to eq('Big Group')
+
+    school = create(:school, name: 'Big School', school_group: school_group)
+    user = create(:user, school: school)
+    expect(user.school_group_name).to eq('Big Group')
   end
 
   describe 'pupil validation' do
@@ -120,10 +141,9 @@ describe User do
     end
 
     context "when a group admin" do
-      let(:public)       { true }
-      let(:school_group) { create(:school_group, public: public) }
-      let(:user)         { create(:user, role: :group_admin, school_group: school_group)}
-
+      let(:public)              { true }
+      let(:school_group)        { create(:school_group, public: public) }
+      let(:user)                { create(:user, role: :group_admin, school_group: school_group)}
       it { is_expected.to be_able_to(:compare, school_group) }
 
       context 'and group is private' do
@@ -136,8 +156,26 @@ describe User do
           let(:user)    {  create(:user, role: :group_admin, school_group: my_group) }
           it { is_expected.to be_able_to(:compare, my_group) }
           it { is_expected.to_not be_able_to(:compare, school_group) }
-
         end
+      end
+
+      context 'is onboarding' do
+
+        context 'a school in their group' do
+          let(:school_onboarding)   { create(:school_onboarding, school_group: school_group)}
+          it { is_expected.to be_able_to(:manage, school_onboarding)}
+        end
+
+        context 'but not for their group' do
+          let(:school_onboarding)   { create(:school_onboarding, school_group: create(:school_group)) }
+          it { is_expected.to_not be_able_to(:manage, school_onboarding)}
+        end
+
+        context 'for a different school' do
+          let(:school_onboarding)  { create(:school_onboarding, school: create(:school) ) }
+          it { is_expected.to_not be_able_to(:manage, school_onboarding) }
+        end
+
       end
     end
   end
@@ -152,6 +190,52 @@ describe User do
       staff_role_title = 'Awkward/Tricky and space'
       staff = build(:user, staff_role: build(:staff_role, title: staff_role_title))
       expect(staff.staff_role_as_symbol).to be :awkward_tricky_and_space
+    end
+  end
+
+  describe '#schools' do
+    context 'for user without school' do
+      let(:user)    { create(:user)}
+      it 'returns empty' do
+        expect(user.schools).to eq([])
+      end
+    end
+
+    context 'for user with school' do
+      let(:school)  { create(:school) }
+      let(:user)    { create(:user, school: school)}
+      it 'returns schools' do
+        expect(user.schools).to match_array([school])
+      end
+    end
+
+    context 'for group admin' do
+      let(:school_group)    { create(:school_group) }
+      let(:user)            { create(:user, role: :group_admin, school_group: school_group)}
+
+      context 'without schools in group' do
+        it 'returns empty' do
+          expect(user.schools).to eq([])
+        end
+      end
+      context 'with schools in group' do
+        let(:school_1)        { create(:school, school_group: school_group) }
+        let(:school_2)        { create(:school, school_group: school_group) }
+        let(:school_3)        { create(:school) }
+        it 'returns schools from group' do
+          expect(user.schools).to match_array([school_1, school_2])
+        end
+      end
+    end
+
+    context 'for admin' do
+      let(:school_1)        { create(:school) }
+      let(:school_2)        { create(:school) }
+      let(:user)            { create(:user, role: :admin)}
+
+      it 'returns all schools' do
+        expect(user.schools).to match_array([school_1, school_2])
+      end
     end
   end
 

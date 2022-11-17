@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '~> 2.7.4'
+ruby '~> 2.7.6'
 
 # Rails/Core
 gem 'rails', '~> 6.0.4' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -10,8 +10,7 @@ gem 'rack-canonical-host' # Redirect www to root
 gem 'webpacker'
 gem "image_processing", "~> 1.12"
 
-# Bumped from 4.3.9 for ElasticBeanstalk platform upgrade
-gem 'puma', '5.5.2' # Use Puma as the app server
+gem 'puma', '5.6.4' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
 
@@ -21,9 +20,10 @@ gem 'after_party' # load data after deploy
 gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 gem 'pg_search'
+gem 'calculate_in_group'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '1.50.5.1'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '2.1.2'
 #gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'aws-eb-test'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
@@ -99,9 +99,13 @@ gem 'wisper', '2.0.0'
 gem 'stateful_enum', '0.6.0'
 gem 'cocoon'
 
+# Internationalisation
 gem 'i18n-tasks', '~> 1.0.10'
 gem 'mobility', '~> 1.2.6'
 gem 'mobility-actiontext', '~> 1.1.1'
+
+# Background jobs
+gem "good_job", "~> 3.4.6"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -153,4 +157,5 @@ group :test do
   gem 'webdrivers'
   gem 'simplecov', :require => false, :group => :test
   gem 'shoulda-matchers'
+  gem 'timecop'
 end

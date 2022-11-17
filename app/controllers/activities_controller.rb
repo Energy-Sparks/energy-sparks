@@ -21,10 +21,8 @@ class ActivitiesController < ApplicationController
   end
 
   def completed
-    if current_user_school
-      @suggested_activities = load_suggested_activities(current_user_school)
-      @completed_activities = load_completed_activities(current_user_school)
-    end
+    @suggested_activities = load_suggested_activities(@school)
+    @completed_activities = load_completed_activities(@school)
   end
 
   def new

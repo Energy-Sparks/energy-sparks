@@ -1,6 +1,7 @@
 module Admin
   module AlertTypes
     class RatingsController < AdminController
+      include LocaleHelper
       load_and_authorize_resource :alert_type
 
       before_action :set_template_variables, except: [:index]
@@ -45,21 +46,42 @@ module Admin
         end
       end
 
+      def destroy
+        raise unless @alert_type.class_name == 'Alerts::System::ContentManaged'
+
+        ActiveRecord::Base.transaction do
+          @rating = @alert_type.ratings.find(params[:id])
+          alert_type_rating_content_version = AlertTypeRatingContentVersion.where(alert_type_rating_id: @rating.id)
+          dashboard_alerts = DashboardAlert.where(alert_type_rating_content_version_id: alert_type_rating_content_version.ids)
+          dashboard_alerts.delete_all
+          alert_type_rating_content_version.delete_all
+          @rating.delete
+          redirect_to admin_alert_type_ratings_path(@alert_type), notice: 'Rating deleted'
+        end
+      rescue ActiveRecord::RecordInvalid
+        redirect_to admin_alert_type_ratings_path(@alert_type), notice: 'Rating deletion failed'
+      end
+
     private
 
       def rating_params
         params.require(:alert_type_rating).permit(
           :description, :rating_from, :rating_to,
           :sms_active, :email_active, :find_out_more_active,
-          :teacher_dashboard_alert_active, :pupil_dashboard_alert_active,
-          :public_dashboard_alert_active, :management_dashboard_alert_active,
+          :pupil_dashboard_alert_active,
+          :management_dashboard_alert_active,
           :management_priorities_active, :analysis_active
         )
       end
 
       def content_params
+        translated_params = t_params(AlertTypeRatingContentVersion.mobility_attributes)
         params.require(:alert_type_rating).permit(
-          content: [:colour] + AlertTypeRatingContentVersion.template_fields + AlertTypeRatingContentVersion.timing_fields + AlertTypeRatingContentVersion.weighting_fields
+          content: [:colour] +
+          AlertTypeRatingContentVersion.template_fields +
+          AlertTypeRatingContentVersion.timing_fields +
+          AlertTypeRatingContentVersion.weighting_fields +
+          translated_params
         )
       end
 

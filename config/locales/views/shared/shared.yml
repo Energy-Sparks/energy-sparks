@@ -1,3 +1,122 @@
 ---
 en:
-  more_information: More information
+  about_menu:
+    about_us: About us
+    blog: Blog
+    child_safeguarding: Child safeguarding
+    contact: Contact
+    datasets: Datasets
+    jobs: Jobs
+    open_data: Open data
+    partners: Partners
+    privacy_policy: Privacy policy
+    school_statistics: School statistics
+    team: Team
+    terms_and_conditions: Terms and conditions
+  activities:
+    previous_records:
+      completed_most_recently_on: most recently on
+      completed_on: 'on'
+      previously_completed: "%{label} previously completed"
+    prompt_login_to_record:
+      are_you_an_energy_sparks_user: Are you an Energy Sparks user?
+      sign_in_html:
+        one: Sign in now to record this %{label} and score your school <strong>1</strong> point!
+        other: Sign in now to record this %{label} and score your school <strong>%{count}</strong> points!
+      sign_in_to_record_html: Sign in to record %{label}
+  analysis_controls:
+    back_one: Back 1
+    change_units: Change units
+    explore: Explore
+    forward_one: Forward 1
+    period: period
+    up_to: Up to
+    view: view
+  common_nav_bar_menus:
+    actions: Actions
+    activities: Activities
+  dashboard_alerts:
+    show_more_alerts:
+      one: Show 1 more alert
+      other: Show %{count} more alerts
+  dashboards:
+    adult_dashboard: Adult dashboard
+    pupil_dashboard: Pupil dashboard
+  footer:
+    cc_licence_notice_html: Content on this website is published under <a href="https://creativecommons.org/licenses/by/4.0/">a Creative Commons Attribution 4.0 Licence</a>
+    child_safeguarding_policy: Child safeguarding policy
+    follow_energy_sparks: Follow Energy Sparks
+    more_information: More information
+    privacy_and_cookie_policy: Privacy and cookie policy
+    registered_charity_notice: Energy Sparks is a registered charity in England and Wales, registration 1189273
+    terms_and_conditions: Terms and conditions
+  manage_menu:
+    admin: Admin
+    manage: Manage
+    reports: Reports
+  manage_school_menu:
+    batch_reports: Batch reports
+    edit_school_details: Edit school details
+    edit_school_times: Edit school times
+    expert_analysis: Expert analysis
+    manage_alert_contacts: Manage alert contacts
+    manage_audits: Manage Audits
+    manage_cads: Manage CADs
+    manage_issues: Manage issues
+    manage_meters: Manage meters
+    manage_partners: Manage partners
+    manage_school: Manage School
+    manage_tariffs: Manage tariffs
+    manage_usage_estimate: Manage usage estimate
+    manage_users: Manage users
+    meter_attributes: Meter attributes
+    remove_school: Remove school
+    review_targets: Review targets
+    school_calendar: School calendar
+    school_configuration: School configuration
+  my_school_menu:
+    complete_pupil_activities: Complete pupil activities
+    download_our_data: Download our data
+    electricity_and_solar_usage: Electricity and solar usage
+    electricity_usage: Electricity usage
+    energy_analysis: Energy analysis
+    energy_audits: Energy audits
+    energy_saving_actions: Energy saving actions
+    gas_usage: Gas usage
+    live_energy_data: Live energy data
+    my_alerts: My alerts
+    my_school: My school
+    my_school_group: My school group
+    review_targets: Review targets
+    school_programmes: School programmes
+    scoreboard: Scoreboard
+    storage_heater_usage: Storage heater usage
+  nav:
+    enrol: Enrol
+    sign_in: Sign In
+    sign_out: Sign Out
+  our_schools_menu:
+    compare_schools: Compare schools
+    our_schools: Our schools
+    scoreboards: Scoreboards
+    view_schools: View schools
+  our_services_menu:
+    case_studies: Case Studies
+    educational_workshops: Educational workshops
+    energy_audits: Energy audits
+    for_local_authorities: For Local Authorities
+    for_multi_academy_trusts: For Multi-Academy Trusts
+    for_schools: For Schools
+    newsletters: Newsletters
+    our_services: Our services
+    training: Training
+    videos: Videos
+  partners:
+    supports_in_partnership_with: Energy Sparks supports %{school_name} in partnership with
+  switch_schools_menu:
+    switch_school: Switch school
+  timeline:
+    view_all_events: View all events
+    whats_been_going_on: What's been going on?
+  translation_coming_soon:
+    message: We're still working towards having Energy Sparks fully translated into Welsh. We've prioritised translating our educational activities and pupil facing activities. Translating this section of the site is still in progress, so for now we are defaulting to English.

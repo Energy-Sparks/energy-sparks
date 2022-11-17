@@ -108,7 +108,7 @@ RSpec.describe 'alert type management', type: :system do
 
           click_on 'Preview'
 
-          within '#analysis-preview .content' do
+          within '#analysis-preview-en .content' do
             expect(page).to have_content('Carbon report')
             expect(page).to have_content('You are producing 100 tonnes of carbon')
           end
@@ -153,54 +153,31 @@ RSpec.describe 'alert type management', type: :system do
 
         select 'Negative', from: 'Colour'
 
-        check 'Teacher dashboard alert'
-        fill_in_trix  with: 'Your gas usage is too high'
-
-
-        within '.teacher_dashboard_alert_active' do
-
-          click_on 'Timings'
-          find_field('Start date').click
-          fill_in 'Start date', with: '01/12/2019'
-
-          click_on 'Priority weighting'
-          fill_in 'Weighting', with: '1.3'
-
-          click_on 'Preview'
-          within '#teacher_dashboard_alert-preview .content' do
-            expect(page).to have_content(gas_fuel_alert_type_title)
-          end
-
-
-        end
-
         check 'Pupil dashboard alert'
         fill_in_trix with: gas_fuel_alert_type_title
 
         within '.pupil_dashboard_alert_active' do
-          click_on 'Preview'
-          within '#pupil_dashboard_alert-preview .content' do
+          click_on 'Preview (English)'
+          within '#pupil_dashboard_alert-preview-en .content' do
             expect(page).to have_content(gas_fuel_alert_type_title)
           end
         end
 
-        check 'Public dashboard alert'
-        fill_in_trix with: 'PUBLIC - This school is using gas'
-
-        within '.public_dashboard_alert_active' do
-          click_on 'Preview'
-          within '#public_dashboard_alert-preview .content' do
-            expect(page).to have_content('PUBLIC - This school is using gas')
-          end
+        check 'Adult dashboard alert'
+        within('#management_dashboard_alert-en-content') do
+          fill_in_trix with: 'MDASH - Your school is using gas'
+        end
+        within '.management_dashboard_alert_active' do
+          click_on 'Content (Welsh)'
+        end
+        within('#management_dashboard_alert-cy-content') do
+          fill_in_trix with: 'MDASH WELSH - Your school is using gas'
         end
 
-        check 'Adult dashboard alert'
-        fill_in_trix with: 'MDASH - Your school is using gas'
-
         within '.management_dashboard_alert_active' do
-          click_on 'Preview'
-          within '#management_dashboard_alert-preview .content' do
-            expect(page).to have_content('MDASH - Your school is using gas')
+          click_on 'Preview (Welsh)'
+          within '#management_dashboard_alert-preview-cy .content' do
+            expect(page).to have_content('MDASH WELSH - Your school is using gas')
           end
         end
 
@@ -208,8 +185,8 @@ RSpec.describe 'alert type management', type: :system do
         fill_in_trix with: 'Your school is spending too much on gas'
 
         within '.management_priorities_active' do
-          click_on 'Preview'
-          within '#management_priorities-preview .content' do
+          click_on 'Preview (English)'
+          within '#management_priorities-preview-en .content' do
             expect(page).to have_content('Your school is spending too much on gas')
           end
         end
@@ -241,7 +218,7 @@ RSpec.describe 'alert type management', type: :system do
 
           click_on 'Preview'
 
-          within '#find_out_more-preview .content' do
+          within '#find_out_more-preview-en .content' do
             expect(page).to have_content('You are using 10% too much gas!')
           end
         end
@@ -252,7 +229,7 @@ RSpec.describe 'alert type management', type: :system do
         within '.sms_active' do
           click_on 'Preview'
 
-          within '#sms-preview .content' do
+          within '#sms-preview-en .content' do
             expect(page).to have_content(gas_fuel_alert_type_title)
           end
         end
@@ -265,7 +242,7 @@ RSpec.describe 'alert type management', type: :system do
 
           click_on 'Preview'
 
-          within '#email-preview .content' do
+          within '#email-preview-en .content' do
             expect(page).to have_content('You are using 10% too much gas!')
           end
         end
@@ -278,10 +255,8 @@ RSpec.describe 'alert type management', type: :system do
         first_content = alert_type_rating.current_content
         expect(first_content.find_out_more_title).to eq('You are using too much gas!')
         expect(first_content.sms_content).to eq(gas_fuel_alert_type_title)
-        expect(first_content.teacher_dashboard_alert_start_date).to eq(Date.new(2019, 12, 1))
-        expect(first_content.teacher_dashboard_alert_weighting).to eq(1.3)
-        expect(first_content.public_dashboard_title.to_plain_text).to eq('PUBLIC - This school is using gas')
         expect(first_content.management_dashboard_title.to_plain_text).to eq('MDASH - Your school is using gas')
+        expect(first_content.management_dashboard_title(locale: :cy).to_plain_text).to eq('MDASH WELSH - Your school is using gas')
         expect(first_content.management_priorities_title.to_plain_text).to eq('Your school is spending too much on gas')
 
         click_on 'Edit'

@@ -82,32 +82,60 @@ describe 'SchoolTime' do
     before(:each) do
       school.school_times.destroy_all
     end
-    context 'of community use' do
+
+    context 'of multiple new records' do
+      it 'rejects overlaps' do
+        #simulate what happens with form submission
+        params = {
+          "school_times_attributes" => {
+            "123" => { day: :monday, opening_time: 1721, closing_time: 1800, usage_type: :community_use, calendar_period: :term_times },
+            "456" => { day: :monday, opening_time: 1721, closing_time: 1800, usage_type: :community_use, calendar_period: :all_year}
+          }
+        }
+        school.attributes = params
+        expect( school.save(context: :school_time_update) ).to be false
+        expect( school.school_times.count).to eql 0
+      end
+    end
+
+    context 'of community use periods' do
       let(:day)              { :monday }
       let(:usage_type)       { :community_use }
       let(:calendar_period)  { :term_times }
       let(:opening_time)     { 800 }
       let(:closing_time)     { 1200 }
 
-      let!(:time)  { create(:school_time, school: school, day: day, usage_type: usage_type,
+      let!(:time)  { school.school_times.create(day: day, usage_type: usage_type,
         calendar_period: calendar_period, opening_time: opening_time, closing_time: closing_time)}
 
-      context 'ranges' do
+      context 'with other community use periods' do
         before(:each) do
           school.reload
         end
 
-        it 'checks all ranges' do
+        it 'should be valid when there are no overlaps' do
           #13-14, no overlap. OK
           expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 1300, closing_time: 1400) ).to be_valid
-          #7-10, overlapping first part of range
-          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1000) ).to_not be_valid
-          #9-1, overlapping second part
-          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1300) ).to_not be_valid
-          #8-12, identical
-          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 800, closing_time: 1200) ).to_not be_valid
+        end
+        it 'should not allow longer periods' do
           #7-2, longer period
           expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1400) ).to_not be_valid
+        end
+        it 'should not allow shorter periods' do
+          #9-11, longer period
+          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1100) ).to_not be_valid
+        end
+        it 'should not allow identical periods' do
+          #8-12, identical
+          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 800, closing_time: 1200) ).to_not be_valid
+        end
+        it 'should reject overlaps on first part of period' do
+          #7-10, overlapping first part of range
+          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1000) ).to_not be_valid
+        end
+        it 'should reject overlaps on the end of the period' do
+          #9-1, overlapping second part
+          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1300) ).to_not be_valid
         end
         it 'allows same times on different days' do
           expect( school.school_times.create(day: :tuesday, usage_type: :community_use, opening_time: 700, closing_time: 1000) ).to be_valid
@@ -118,24 +146,35 @@ describe 'SchoolTime' do
         end
       end
 
-      context 'and school day' do
+      context 'with the school day' do
         let(:usage_type) { :school_day }
-        it 'should not allow overlaps' do
+        it 'should be valid when there are no overlaps' do
           #13-14, no overlap. OK
           expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 1300, closing_time: 1400) ).to be_valid
-          #7-10, overlapping first part of range
-          #pry
-          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1000) ).to_not be_valid
-          #9-1, overlapping second part
-          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1300) ).to_not be_valid
-          #8-12, identical
-          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 800, closing_time: 1200) ).to_not be_valid
+        end
+        it 'should not allow longer periods' do
           #7-2, longer period
           expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1400) ).to_not be_valid
         end
+        it 'should not allow shorter periods' do
+          #9-11, longer period
+          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1100) ).to_not be_valid
+        end
+        it 'should not allow identical periods' do
+          #8-12, identical
+          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 800, closing_time: 1200) ).to_not be_valid
+        end
+        it 'should reject overlaps on first part of period' do
+          #7-10, overlapping first part of range
+          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 700, closing_time: 1000) ).to_not be_valid
+        end
+        it 'should reject overlaps on the end of the period' do
+          #9-1, overlapping second part
+          expect( school.school_times.create(day: day, usage_type: :community_use, opening_time: 900, closing_time: 1300) ).to_not be_valid
+        end
       end
 
-      context 'named days and ranges' do
+      context 'across named days and ranges' do
         let(:day) { :weekdays }
         it 'should allow saturday to overlap with weekday' do
           #week day and weekends dont overlap

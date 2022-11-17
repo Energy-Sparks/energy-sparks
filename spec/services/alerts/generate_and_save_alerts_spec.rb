@@ -13,6 +13,7 @@ module Alerts
       enough_data: :enough,
       relevance: :relevant,
       template_data: {template: 'variables'},
+      template_data_cy: {template: 'welsh variables'},
       chart_data: {chart: 'variables'},
       table_data: {table: 'variables'},
       priority_data: {priority: 'variables'},
@@ -62,6 +63,8 @@ module Alerts
         service = GenerateAndSaveAlerts.new(school: school, aggregate_school: aggregate_school)
         expect { service.perform }.to change { Alert.count }.by(2).and change { AlertError.count }.by(1)
         expect(Alert.first.run_on).to_not be_nil
+        expect(Alert.first.template_data).to_not be_nil
+        expect(Alert.first.template_data_cy).to_not be_nil
       end
 
       it 'handles just errors' do
@@ -70,6 +73,7 @@ module Alerts
         service = GenerateAndSaveAlerts.new(school: school, aggregate_school: aggregate_school)
         expect { service.perform }.to change { Alert.count }.by(0).and  change { AlertError.count }.by(1)
       end
+
     end
 
   end

@@ -1,0 +1,34 @@
+cy:
+  co2: CO2
+  common:
+    application: Energy Sparks
+    bar_charts: Siartiau bar
+    confirm: Ydych chi'n siŵr?
+    data: data
+    electricity: Trydan
+    electricity_and_solar_pv: Trydan a Solar PV
+    gas: Nwy
+    labels:
+      actions: Gweithredoedd
+      back: Yn ôl
+      delete: Dileu
+      edit: Golygu
+      manage: Rheoli
+      next: Nesaf
+      previous: Blaenorol
+      view_results: Gweld canlyniadau
+    line_graphs: Graffiau llinell
+    pie_charts: Siartiau cylch
+    school: Ysgol
+    storage_heater: Stôr-wresogydd
+    storage_heaters: Stôr-wresogyddion
+    units:
+      minutes:
+        one: '%{count} funud'
+        two: '%{count} funud'
+        many: '%{count} o funudau'
+        other: '%{count} o funudau'
+  kwh: kWh
+  school_types:
+    mixed_primary_and_secondary: 'Cymysg: Cynradd ac Uwchradd'
+  £: "£"

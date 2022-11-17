@@ -3,38 +3,48 @@
   <%= render 'shared/errors', subject: activity, subject_name: 'activity' %>
 
   <fieldset class="form-group">
-    <label>The activity you completed</label>
+    <label><%= t('activities.form.the_activity_you_completed') %></label>
     <p><%= activity.activity_type.name %></p>
     <% if !activity.persisted? %>
-      <small class="form-text text-muted">Completing this activity will earn you <%= activity.activity_type.score %> points</small>
+      <small class="form-text text-muted">
+        <%= t('activities.form.completing_this_activity', count: activity.activity_type.score) %>
+      </small>
     <% end %>
   </fieldset>
 
   <% if activity.activity_type.custom %>
     <div class="form-group mt-4" id="title-field">
-      <%= f.label 'How would you describe this activity?' %>
-      <p class="small">As you're not recording one of our standard activities, you need to supply a title. Choose a clear title which will make others want to read about your activity.</p>
-      <%= f.text_field :title, class: 'form-control', value: "Other"  %>
+      <%= f.label t('activities.form.how_would_you_describe_this_activity') %>
+      <p class="small">
+        <%= t('activities.form.not_a_standard_activity_message') %>.
+      </p>
+      <%= f.text_field :title, class: 'form-control', value: t('activities.form.other')  %>
     </div>
   <% end %>
 
   <div class="form-group mt-4">
-    <%= f.label "When did you complete this activity?", for: :happened_on %>
-    <p class="small">You can record a recent activity and older activities to build up a record of all of the energy saving activities you've carried out as a school.</p>
-    <%= f.input :happened_on, label: false, as: :tempus_dominus_date, default_date: Time.zone.today %>
+    <%= f.label t('activities.form.when_did_you_complete_this_activity'), for: :happened_on %>
+    <p class="small">
+      <%= t('activities.form.build_a_record_message') %>.
+    </p>
+    <%= f.input :happened_on, label: false, as: :tempus_dominus_date %>
   </div>
 
   <%= f.hidden_field :activity_type_id, value: activity.activity_type.id, required: true %>
 
   <div class="form-group mt-4">
-    <%= f.label :description, "Tell us more about what you did" %>
-    <small class="form-text text-muted">Tell us a bit more about your activity. What did you do? What did you learn? What could you do next to build on this task?</small>
-    <small class="form-text text-muted">You can add formatting, links to your school website and attach images using the toolbar below. Hover over each icon to learn what it does.</small>
+    <%= f.label :description, t('activities.form.tell_us_more_label') %>
+    <small class="form-text text-muted">
+      <%= t('activities.form.tell_us_more_message') %>
+    </small>
+    <small class="form-text text-muted">
+      <%= t('activities.form.tell_us_more_formatting_message') %>.
+    </small>
     <%= f.rich_text_area :description, required: true %>
   </div>
 
   <div class="actions">
-    <%= f.submit activity.persisted? ? "Update activity" : "Save activity", class: 'btn btn-primary' %>
-    <%= link_to 'Cancel', activity_type_path(activity.activity_type), class: 'btn btn-secondary' %>
+    <%= f.submit activity.persisted? ? t('activities.form.update_activity') : t('activities.form.save_activity'), class: 'btn btn-primary' %>
+    <%= link_to t('activities.form.cancel'), activity_type_path(activity.activity_type), class: 'btn btn-secondary' %>
   </div>
 <% end %>

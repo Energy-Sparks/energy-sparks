@@ -20,6 +20,14 @@ describe MailchimpSignupParams do
     end
   end
 
+  context 'when parameters specified individually' do
+    it 'is valid' do
+      params = MailchimpSignupParams.new(email_address: email_address)
+      params.interests = { '1' => 'b' }
+      expect(params.valid?).to be true
+    end
+  end
+
   context 'when no interest specified' do
     let(:interests) { { '123' => '', '456' => ''} }
     it 'is not valid' do

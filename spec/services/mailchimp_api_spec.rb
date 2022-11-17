@@ -48,10 +48,10 @@ describe MailchimpApi do
     it 'returns interests' do
       interests = api.interests('123', '456')
       expect(interests.count).to eq(8)
-      expect(interests.first.id).to eq('be32b53ee1')
-      expect(interests.first.name).to eq('Council /MAT')
-      expect(interests.last.id).to eq('85bb2d8115')
-      expect(interests.last.name).to eq('Building/ Site Manager or Caretaker')
+      expect(interests.first.id).to eq('85bb2d8115')
+      expect(interests.first.name).to eq('Building/ Site Manager or Caretaker')
+      expect(interests.last.id).to eq('f407e4857e')
+      expect(interests.last.name).to eq('Teacher or Teaching Assistant')
     end
 
     it 'returns list with categories and interests' do
@@ -60,7 +60,7 @@ describe MailchimpApi do
       expect(list.categories.count).to eq(2)
       expect(list.categories.first.id).to eq('908f880968')
       expect(list.categories.first.interests.count).to eq(8)
-      expect(list.categories.first.interests.first.id).to eq('be32b53ee1')
+      expect(list.categories.first.interests.first.id).to eq('85bb2d8115')
     end
   end
 

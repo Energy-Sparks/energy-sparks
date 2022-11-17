@@ -1,12 +1,11 @@
 FactoryBot.define do
   factory :staff_role do
     trait :management do
-      sequence(:title) {|n| "Management#{n}"}
+      title { 'Business Manager' }
     end
 
     trait :teacher do
-      sequence(:title) {|n| "Teacher#{n}"}
+      title { 'Teacher' }
     end
-
   end
 end

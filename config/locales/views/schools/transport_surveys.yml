@@ -1,0 +1,136 @@
+---
+en:
+  schools:
+    transport_surveys:
+      app:
+        buttons:
+          remove: Remove
+          save: Save
+        notifications:
+          confirm_remove:
+            one: Are you sure you want to remove 1 unsaved response from %{date}?
+            other: Are you sure you want to remove %{count} unsaved responses from %{date}?
+          confirm_save:
+            one: Are you sure you want to save 1 unsaved response from %{date}?
+            other: Are you sure you want to save %{count} unsaved responses from %{date}?
+          no_connection: Error saving responses - please make sure you have a wifi connection before saving!
+          no_local_storage: Your browser does not support a feature required by our survey tool. Either upgrade your browser, use an alternative or enable 'localStorage'
+          no_responses: Nothing to save - please collect some survey responses first!
+          responses_removed: Unsaved responses removed!
+          responses_saved: Responses saved!
+          unsaved_responses_html:
+            one: There is <strong>1</strong> unsaved survey response from <strong>%{date}</strong>. Do you want to save or remove it?
+            other: There are <strong>%{count}</strong> unsaved survey responses from <strong>%{date}</strong>. Do you want to save or remove them?
+        today: today
+      common:
+        carbon: Carbon
+        download_responses: Download responses
+        journey_time: Journey time
+        mins: mins
+        no_responses: No responses have been collected
+        percentage_pupils_and_staff: Percentage pupils & staff
+        pupils_and_staff_sharing: Pupils & staff sharing
+        survey_date: Survey date
+        survey_time: Survey time
+        total_carbon: Total carbon
+        total_pupils_and_staff: Total pupils & staff
+        transport_category: Transport category
+        transport_method: Transport method
+        weather: Weather
+      destroy:
+        notice: Transport survey was successfully removed
+      edit:
+        buttons:
+          back: Back
+          confirm: Confirm
+          finish_and_save: Finish & save results
+          launch_survey_app: Launch survey app
+          next_pupil: Next pupil
+        intro:
+          how_html: |
+            <li>This can be carried out by a group of pupils with ipads or tablets at the school gate or by a teacher at registration time</li>
+            <li>Click "Launch survey app" and then select today's weather</li>
+            <li>Once the app is launched you can go out of WiFi range, so you can survey pupils arriving at the school gate</li>
+            <li>Ask members of the school community the questions presented in the survey. Park and Stride should be ticked if pupils are dropped off at least %{park_and_stride_mins} minutes walk from school and walk the last part of their journey</li>
+            <li>When you have finished, make sure you are connected to the internet before submitting the results</li>
+            <li>You could try conducting a transport survey on a different day to see if you have reduced your carbon</li>
+          how_title: How to carry out this activity
+          why: Transport accounts for around one-fifth of global carbon dioxide (CO2) emissions. Some modes of transport, emit more carbon than others! For example, petrol or diesel cars emit, on average, about 3 times more than electric cars. Some modes emit no carbon whatsoever - can you guess what they are? Find out how much carbon your school community uses by travelling to school
+          why_title: Why are we doing this?
+        labels:
+          minutes: Minutes
+          pupils: Pupil(s)
+          transport: Transport
+        no_javascript_warning: Javascript must be enabled to use this functionality
+        progress:
+          confirm: Confirm
+          sharing: Sharing
+          summary: Summary
+          time: Time
+          transport: Transport
+        pupils:
+          one: Just me
+          other: "%{count} pupils"
+        steps:
+          carbon_html: You used %{carbon} of carbon!
+          confirm: Confirm your selection
+          sharing_html: 'Sharing: How many pupils at this school shared your %{transport} journey?'
+          sharing_note: Don’t include your parents or carers or children who attend different schools or nurseries
+          summary_html: For your %{time} minute journey to school by %{transport}
+          time: 'Time: How many minutes did your journey take in total?'
+          transport: 'Transport: What mode of transport did you use to get to school?'
+          weather: Please select today's weather
+        title: Travel to school survey
+      equivalences:
+        carnivore_dinner:
+          one: That's the same as 1 meat dinner %{image}!
+          other: That's the same as %{count} meat dinners %{image}!
+        computer_console:
+          one: That's the same as playing 1 hour of computer games %{image}!
+          other: That's the same as playing %{count} hours of computer games %{image}!
+        neutral: "That's Carbon Neutral 🌳!"
+        smartphone:
+          one: That's the same as charging 1 smart phone %{image}!
+          other: That's the same as charging %{count} smart phones %{image}!
+        tree:
+          one: 1 tree would absorb this amount of CO2 in 1 day %{image}!
+          other: 1 tree would absorb this amount of CO2 in %{count} days %{image}!
+        tv:
+          one: That's the same as 1 hour of TV %{image}!
+          other: That's the same as %{count} hours of TV %{image}!
+        vegetarian_dinner:
+          one: That's the same as 1 veggie dinner %{image}!
+          other: That's the same as %{count} veggie dinners %{image}!
+      header_nav:
+        survey_today: Survey today
+        view_all: View all transport surveys
+      index:
+        no_surveys: No surveys have been completed yet
+        start_surveying: Start surveying today
+      responses:
+        destroy:
+          notice: Transport survey response was successfully removed
+      show:
+        30_or_more_minutes: 30 or more minutes
+        cars_summary: Persuading people who travel only 5 minutes by car to switch to coming to school by foot or bike is a great first step to reducing the school's carbon footprint from travel.
+        cars_title: Breakdown of journeys by car
+        chart_load_error: There was a problem loading this chart
+        more_detail: 'Let''s look at this in more detail:'
+        percentages:
+          car_html: "%{amount} travelled by car"
+          park_and_stride_html: "%{amount} used park and stride"
+          public_transport_html: "%{amount} travelled by public transport"
+          walking_and_cycling_html: "%{amount} walked or cycled, generating zero CO2"
+        summary_html:
+          one: "<strong>1 pupil or staff member</strong> included in this survey generated <strong>%{carbon}kg</strong> carbon by travelling to school"
+          other: "<strong>%{count} pupils and staff</strong> included in this survey generated <strong>%{carbon}kg</strong> carbon by travelling to school"
+        time_travelled_by_car: Time travelled by car
+        transport_categories_title: Breakdown of journeys by transport category
+      tab_nav:
+        manage_responses: Manage responses
+        results: Results
+        survey_today: Survey today
+      title:
+        dated: Travel to school survey on %{date}
+        default: Travel to school surveys
+        today: Today's travel to school survey
