@@ -39,7 +39,7 @@ RSpec.describe "case_studies", type: :system do
     end
 
     it 'shows the welsh link' do
-      expect(page).to have_link I18n.t('case_studies.download', :locale => :cy), href: "/case_studies/#{case_study.id}/download?locale=cy"
+      expect(page).to have_link I18n.t('case_studies.download'), href: "/case_studies/#{case_study.id}/download?locale=cy"
     end
 
     it 'serves the file' do
