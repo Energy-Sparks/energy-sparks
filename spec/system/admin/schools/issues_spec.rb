@@ -14,6 +14,7 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
       expect(page).to have_content issue.title
       expect(page).to have_content issue.description.to_plain_text
       expect(page).to have_content issue.fuel_type.capitalize
+      expect(page).to have_content issue.status.capitalize if issue.issue_type == 'issue'
       expect(page).to have_content issue_admin.display_name
       expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(issue.updated_at)}"
       expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(issue.created_at)}"
@@ -54,7 +55,9 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
               expect(find_field('Title').text).to be_blank
               expect(find('trix-editor#issue_description')).to have_text('')
               expect(page).to have_select('Fuel type', selected: [])
+              expect(page).to have_select('Status', selected: 'Open') if issue_type == 'issue'
               expect(page).to have_select('Assigned to', selected: school_group.default_issues_admin_user.display_name)
+              expect(page).to have_unchecked_field('Pinned')
             end
 
             context "with required values missing" do
@@ -74,6 +77,7 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
                 fill_in_trix 'trix-editor#issue_description', with: "#{issue_type} desc"
                 select 'Gas', from: 'Fuel type'
                 select 'Other Issues Admin', from: 'Assigned to'
+                check 'Pinned'
                 click_button 'Save'
               end
 
@@ -95,7 +99,7 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
       context "and editing a issue" do
         Issue.issue_types.keys.each do |issue_type|
           context "of type #{issue_type}" do
-            let!(:issue) { create(:issue, school: school, issue_type: issue_type, fuel_type: :electricity, created_by: user, owned_by: school_group_issues_admin) }
+            let!(:issue) { create(:issue, school: school, issue_type: issue_type, fuel_type: :electricity, created_by: user, owned_by: school_group_issues_admin, pinned: true) }
             it { expect(page).to have_link('Edit') }
             before do
               click_link("Edit")
@@ -104,7 +108,10 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
               expect(page).to have_field('Title', with: issue.title)
               expect(find_field('issue[description]', type: :hidden).value).to eq(issue.description.to_plain_text)
               expect(page).to have_select('Fuel type', selected: issue.fuel_type.capitalize)
+              expect(page).to have_select('Status', selected: issue.status.capitalize) if issue_type == 'issue'
+              expect(page).to have_select('Issue type', selected: issue.issue_type.capitalize)
               expect(page).to have_select('Assigned to', selected: school_group_issues_admin.display_name)
+              expect(page).to have_checked_field('Pinned')
             end
             context "and saving new values" do
               let(:frozen_time) { Time.now }
@@ -114,9 +121,10 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
                 fill_in 'Title', with: "#{issue_type} title"
                 fill_in_trix 'trix-editor#issue_description', with: "#{issue_type} desc"
                 select 'Gas', from: 'Fuel type'
+                select 'Closed', from: 'Status' if issue_type == 'issue'
                 select new_issue_type, from: 'Issue type'
                 select 'Other Issues Admin', from: 'Assigned to'
-
+                uncheck 'Pinned'
                 click_button 'Save'
               end
 
@@ -125,10 +133,11 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
                 expect(page).to have_content "#{issue_type} title"
                 expect(page).to have_content "#{issue_type} desc"
                 expect(page).to have_content "Gas"
+                expect(page).to have_content "Closed" if new_issue_type == 'issue'
                 expect(page).to have_content "Other Issues Admin"
                 expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                 expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(issue.created_at)}"
-                expect(page).to have_content "Open" if issue_type == "issue"
+                expect(page).to have_content "Open" if issue_type == 'issue'
               end
               after { Timecop.return }
             end

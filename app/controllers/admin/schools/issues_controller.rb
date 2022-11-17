@@ -48,7 +48,7 @@ module Admin
       private
 
       def issue_params
-        params.require(:issue).permit(:issue_type, :title, :description, :fuel_type, :status, :owned_by_id)
+        params.require(:issue).permit(:issue_type, :title, :description, :fuel_type, :status, :owned_by_id, :pinned)
       end
     end
   end
