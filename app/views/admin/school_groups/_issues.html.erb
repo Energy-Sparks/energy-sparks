@@ -11,10 +11,10 @@
     </tr>
   </thead>
   <tbody>
-    <% school_group.issues.issue.status_open.by_updated_at.each do |issue| %>
+    <% school_group.issues.issue.status_open.by_pinned.by_updated_at.each do |issue| %>
       <tr>
         <td><%= fa_icon('exclamation-circle text-secondary') %></td>
-        <td><%= link_to issue.title, admin_school_issue_path(issue.school, issue) %></td>
+        <td><%= link_to issue.title, admin_school_issue_path(issue.school, issue) %> <%= fa_icon('thumbtack text-secondary') if issue.pinned? %></td>
         <td><%= link_to issue.school.name, admin_school_issues_path(issue.school) %></td>
         <td><%= render 'admin/schools/issues/fuel_type', issue: issue %></td>
         <td><%= render 'admin/schools/issues/owned_by', issue: issue %></td>

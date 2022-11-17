@@ -6,6 +6,7 @@
         <small>
           <%= render 'owned_by', issue: issue %>
           <%= nice_date_times_today(issue.updated_at) %>
+          <%= fa_icon('thumbtack text-secondary') if issue.pinned? %>
         </small>
       </div>
     </h4>
