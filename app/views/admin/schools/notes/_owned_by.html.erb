@@ -1,3 +1,0 @@
-<% if note.owned_by %>
-  <span class="badge badge-pill badge-secondary font-weight-normal"><%= note.owned_by == current_user ? "You" : note.owned_by.display_name %></span>
-<% end %>

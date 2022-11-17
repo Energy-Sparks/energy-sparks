@@ -38,7 +38,7 @@ class SchoolGroup < ApplicationRecord
   has_many :schools
   has_many :school_onboardings
   has_many :calendars, through: :schools
-  has_many :notes, through: :schools
+  has_many :issues, through: :schools
   has_many :users
 
   has_many :school_group_partners, -> { order(position: :asc) }
@@ -52,7 +52,7 @@ class SchoolGroup < ApplicationRecord
   belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true
   belongs_to :default_weather_station, class_name: 'WeatherStation', foreign_key: 'default_weather_station_id', optional: true
   belongs_to :default_scoreboard, class_name: 'Scoreboard', optional: true
-  belongs_to :default_notes_admin_user, class_name: 'User', foreign_key: 'default_notes_admin_user_id', optional: true
+  belongs_to :default_issues_admin_user, class_name: 'User', foreign_key: 'default_issues_admin_user_id', optional: true
 
   has_many :meter_attributes, inverse_of: :school_group, class_name: 'SchoolGroupMeterAttribute'
 

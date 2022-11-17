@@ -302,7 +302,7 @@ Rails.application.routes.draw do
             post :make_visible
           end
         end
-        resources :notes, only: [:index]
+        resources :issues, only: [:index]
         resource :partners, only: [:show, :update]
         resource :meter_report, only: [:show]
         resource :dashboard_message, only: [:update, :edit, :destroy], controller: '/admin/dashboard_messages'
@@ -403,6 +403,10 @@ Rails.application.routes.draw do
       get 'tariffs/:meter_id', to: 'tariffs#show', as: :tariff
       resources :benchmark_result_generation_runs, only: [:index, :show]
       resources :amr_data_feed_import_logs, only: [:index]
+      get "amr_data_feed_import_logs/errors" => "amr_data_feed_import_logs#errors"
+      get "amr_data_feed_import_logs/warnings" => "amr_data_feed_import_logs#warnings"
+      get "amr_data_feed_import_logs/successes" => "amr_data_feed_import_logs#successes"
+
       resources :tariff_import_logs, only: [:index]
       resources :amr_reading_warnings, only: [:index]
       resources :activities, only: :index
@@ -437,7 +441,7 @@ Rails.application.routes.draw do
         resources :consent_requests
         resources :bill_requests
         resource :target_data, only: :show
-        resources :notes do
+        resources :issues do
           member do
             post :resolve
           end
