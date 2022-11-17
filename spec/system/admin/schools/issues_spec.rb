@@ -18,7 +18,7 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
       expect(page).to have_content issue_admin.display_name
       expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(issue.updated_at)}"
       expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(issue.created_at)}"
-      expect(page).to have_content issue.status.capitalize
+      expect(page).to have_css("i[class*='fa-thumbtack']") if issue.pinned?
     end
   end
 
@@ -89,6 +89,7 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
                 expect(page).to have_content "Other Issues Admin"
                 expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                 expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
+                expect(page).to have_css("i[class*='fa-thumbtack']")
               end
               after { Timecop.return }
             end
@@ -137,7 +138,7 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
                 expect(page).to have_content "Other Issues Admin"
                 expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                 expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(issue.created_at)}"
-                expect(page).to have_content "Open" if issue_type == 'issue'
+                expect(page).to_not have_css("i[class*='fa-thumbtack']")
               end
               after { Timecop.return }
             end
