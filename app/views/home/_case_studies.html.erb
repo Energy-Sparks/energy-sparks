@@ -22,12 +22,12 @@
             </div>
             <div class="card-footer case-studies-download-links" data-event-value="<%= case_study.id %>">
               <%= link_to url_for( controller: :case_studies, action: :download, serve: :download, id: case_study.id ), class: 'btn' do %>
-                <%= t('case_studies.download', :locale => :en) %>
+                <%= t('case_studies.download') %>
                 <i class="fas fa-file-download"></i>
               <% end %>
               <% if case_study.t_attached(:file, :cy).present? %>
                 <%= link_to url_for( controller: :case_studies, action: :download, serve: :download, id: case_study.id, :locale => :cy ), class: 'btn' do %>
-                  <%= t('case_studies.download', :locale => :cy) %>
+                  <%= t('case_studies.download') %>
                   <i class="fas fa-file-download"></i>
                 <% end %>
               <% end %>
