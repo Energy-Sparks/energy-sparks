@@ -46,18 +46,6 @@ module EnergySparks
       ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'
     end
 
-    config.action_view.sanitized_allowed_attributes = Rails::Html::SafeListSanitizer.allowed_attributes.add('type')
-    config.action_view.sanitized_allowed_attributes = Rails::Html::SafeListSanitizer.allowed_attributes.add('for')
-    config.action_view.sanitized_allowed_attributes = Rails::Html::SafeListSanitizer.allowed_attributes.add('data-autoload-chart')
-    config.action_view.sanitized_allowed_attributes = Rails::Html::SafeListSanitizer.allowed_attributes.add('data-unit')
-    config.action_view.sanitized_allowed_attributes = Rails::Html::SafeListSanitizer.allowed_attributes.add('data-toggle')
-    config.action_view.sanitized_allowed_attributes = Rails::Html::SafeListSanitizer.allowed_attributes.add('data-placement')
-    config.action_view.sanitized_allowed_attributes = Rails::Html::SafeListSanitizer.allowed_attributes.add('data-original-title')
-    config.action_view.sanitized_allowed_tags = Rails::Html::SafeListSanitizer.allowed_tags.add('button')
-    config.action_view.sanitized_allowed_tags = Rails::Html::SafeListSanitizer.allowed_tags.add('input')
-    config.action_view.sanitized_allowed_tags = Rails::Html::SafeListSanitizer.allowed_tags.add('radio')
-    config.action_view.sanitized_allowed_tags = Rails::Html::SafeListSanitizer.allowed_tags.add('label')
-
     config.active_job.queue_adapter = :good_job
     config.good_job.retry_on_unhandled_error = false
     config.good_job.max_threads = 5

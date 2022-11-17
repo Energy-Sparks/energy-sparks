@@ -49,10 +49,11 @@ RSpec.describe ActivitiesController, type: :controller do
         activity.activity_type.update(school_specific_description: "Embedded chart: #{embedded_chart}")
       end
 
-      it 'should include button and radio tags' do
+      it 'should include button and radio tags, and data attributes' do
         get :show, params: { school_id: school.id, id: activity.to_param }
         expect(assigns(:activity_type_content).to_s).to include('<button class="btn ')
         expect(assigns(:activity_type_content).to_s).to include('<input type="radio" ')
+        expect(assigns(:activity_type_content).to_s).to include('data-autoload-chart="true"')
       end
     end
 
