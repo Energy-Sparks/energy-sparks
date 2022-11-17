@@ -14,8 +14,8 @@ module Schools
     before_action :redirect_if_disabled
 
     def index
-      if @school.has_current_target?
-        redirect_to school_school_target_path(@school, @school.current_target)
+      if @school.has_target?
+        redirect_to school_school_target_path(@school, @school.most_recent_target)
       else
         redirect_to new_school_school_target_path(@school)
       end

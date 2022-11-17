@@ -161,6 +161,10 @@ RSpec.shared_examples "managing targets" do
       expect(page).to have_link("Help")
     end
 
+    it 'includes table footer' do
+      expect(page).to have_content("Reporting change in energy usage between #{target.start_date.strftime('%B %Y')} and #{Date.today.strftime('%B %Y')}")
+    end
+
     it "includes achieving your targets section" do
       expect(page).to have_content("Work with the pupils")
       expect(page).to have_link("Choose another activity", href: activity_categories_path)
@@ -275,7 +279,7 @@ RSpec.shared_examples "managing targets" do
           #Extra check for debugging flickering test
           expect(Schools::Configuration.count).to eql 1
           expect(School.first.has_electricity?).to be true
-          expect(page).to have_link("View report", href: electricity_school_progress_index_path(test_school))
+          expect(page).to have_link("View monthly report", href: electricity_school_progress_index_path(test_school))
         end
 
         it 'shows detailed progress data' do
@@ -351,33 +355,98 @@ RSpec.shared_examples "managing targets" do
   end
 
   context "viewing an expired target" do
-    let!(:target)          { create(:school_target, school: test_school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday) }
+    let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
+    let!(:gas_progress)         { build(:fuel_progress, fuel_type: :gas, progress: 0.59, target: 19, usage: 17) }
+    let!(:last_generated)       { Date.yesterday }
+    let!(:start_date)           { Date.yesterday.prev_year }
+    let!(:target_date)          { Date.yesterday }
+    let!(:target)          { create(:school_target, school: test_school, start_date: start_date, target_date: target_date, electricity_progress: electricity_progress, gas_progress: gas_progress, report_last_generated: last_generated) }
 
     before(:each) do
-      visit school_school_targets_path(test_school)
+      visit school_school_target_path(test_school, target)
     end
 
-    context "it displays a summary" do
-        it "says the target is expired"
-        it "does not show bottom panels"
-        it "shows summary of activities and interventions"
-        it "prompts to create a new target"
-#          it "prompts to create new target" do
-#            expect(page).to have_content("Review and set your next energy saving target")
-#          end
-        context 'and allows me to create a new target' do
-          it "which defaults to the old target values" do
-            expect( find_field("Reducing electricity usage by").value ).to eq target.electricity.to_s
+    it "displays a different title" do
+      expect(page).to have_title("Results of reducing your energy usage")
+    end
 
-            fill_in "Reducing electricity usage by", with: 15
+    it 'says target is expired' do
+      expect(page).to have_content("It's now time to review your progress")
+    end
 
-            click_on 'Set this target'
+    it 'includes table footer' do
+      expect(page).to have_content("Reporting change in energy usage between #{start_date.strftime("%B %Y")} and #{target_date.strftime("%B %Y")}")
+    end
 
-            expect(school.current_target.electricity).to eql 15.0
-            expect(school.current_target.gas).to eql target.gas
-            expect(school.current_target.storage_heaters).to eql target.storage_heaters
-          end
-        end
+    it 'redirects to this target from index' do
+      visit school_school_targets_path(test_school)
+      expect(page).to have_content("It's now time to review your progress")
+    end
+
+    it 'shows timeline' do
+      expect(page).to have_content('How did you achieve your target?')
+      expect(page).to have_content("You didn't record any energy saving activities or actions")
+    end
+
+    context 'with activities' do
+      let!(:intervention_type)  { create(:intervention_type, name: 'Upgraded insulation') }
+      let!(:activity_type)      { create(:activity_type) }
+      let!(:intervention)       { create(:observation, :intervention, school: test_school, intervention_type: intervention_type, at: start_date + 1.day)}
+      let!(:activity)           { create(:activity, school: test_school, activity_type: activity_type, happened_on: target_date - 1.day) }
+
+      before(:each) do
+        refresh
+      end
+
+      it 'shows timeline' do
+        expect(page).to have_content("A reminder of the energy saving activities and actions you recorded")
+        expect(page).to have_content('Completed an activity')
+        expect(page).to have_content('Upgraded insulation')
+      end
+    end
+
+    it "prompts to create a new target" do
+      expect(page).to_not have_link("Revise your target")
+      expect(page).to have_link("Set a new target")
+      click_on "Set a new target"
+      expect(page).to have_content("Review and set your next energy saving target")
+    end
+
+    it 'links to archived version of progress report'
+
+    context 'it allows me to create a new target' do
+      before(:each) do
+        click_on "Set a new target"
+      end
+
+      it 'saves a new target' do
+        expect( find_field("Reducing electricity usage by").value ).to eq target.electricity.to_s
+        fill_in "Reducing electricity usage by", with: 15
+        click_on 'Set this target'
+        expect(school.current_target.electricity).to eql 15.0
+        expect(school.current_target.gas).to eql target.gas
+        expect(school.current_target.storage_heaters).to eql target.storage_heaters
+        expect(page).to have_content('Target successfully created')
+        expect(page).to have_content("We are calculating your progress")
+      end
+
+      it 'redirects from the index to the new target when set' do
+        click_on 'Set this target'
+        #should now redirect here not old target
+        visit school_school_targets_path(test_school)
+        expect(page).to have_content("We are calculating your progress")
+      end
+
+      it 'allows me to still view the old target' do
+        click_on 'Set this target'
+        expect(page).to have_content("We are calculating your progress")
+        visit school_school_target_path(test_school, target)
+        expect(page).to have_content("It's now time to review your progress")
+      end
+
+      it 'doesnt prompt for another new target if I look at the old one'
+      it 'disallows me from editing an old target'
+
     end
   end
 
