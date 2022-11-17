@@ -40,6 +40,36 @@ RSpec.describe ActivitiesController, type: :controller do
       get :show, params: { school_id: school.id, id: activity.to_param }
       expect(assigns(:activity)).to eq(activity)
     end
+
+    context 'when school specific description includes charts' do
+      let(:embedded_chart) { "{{#chart}}daytype_breakdown_gas{{/chart}}" }
+      let(:activity) { create :activity, school_id: school.id }
+
+      before :each do
+        activity.activity_type.update(school_specific_description: "Embedded chart: #{embedded_chart}")
+      end
+
+      it 'should include button and radio tags' do
+        get :show, params: { school_id: school.id, id: activity.to_param }
+        expect(assigns(:activity_type_content).to_s).to include('<button class="btn ')
+        expect(assigns(:activity_type_content).to_s).to include('<input type="radio" ')
+      end
+    end
+
+    context 'when school specific description includes images' do
+      let(:action_text_attachment) { "<action-text-attachment sgid=\"abc123\" content-type=\"image/jpeg\" url=\"http://test.com/rails/active_storage/blobs/pic.jpg\" filename=\"pic.jpg\" filesize=\"18205\" width=\"350\" height=\"450\" previewable=\"true\" presentation=\"gallery\">" }
+      let(:activity) { create :activity, school_id: school.id }
+
+      before :each do
+        activity.activity_type.update(school_specific_description: "Embedded image: #{action_text_attachment}")
+      end
+
+      it 'should include figure tag' do
+        get :show, params: { school_id: school.id, id: activity.to_param }
+        expect(assigns(:activity_type_content).to_s).to include('<figure class="attachment attachment--preview')
+      end
+    end
+
     context 'when school not data enabled' do
       before :each do
         school.update(data_enabled: false)
@@ -48,23 +78,25 @@ RSpec.describe ActivitiesController, type: :controller do
         activity_type = create :activity_type, data_driven: true
         activity = create :activity, school_id: school.id, activity_type: activity_type
         get :show, params: { school_id: school.id, id: activity.to_param }
-        expect(assigns(:activity_type_content)).to include('generic description')
-        expect(assigns(:activity_type_content)).not_to include('school specific description')
+        expect(assigns(:activity_type_content).to_s).to include('generic description')
+        expect(assigns(:activity_type_content).to_s).not_to include('school specific description')
       end
       it "with non-data-driven activity, it shows the school specific description if present" do
         activity_type = create :activity_type, data_driven: false
         activity = create :activity, school_id: school.id, activity_type: activity_type
         get :show, params: { school_id: school.id, id: activity.to_param }
-        expect(assigns(:activity_type_content)).not_to include('generic description')
-        expect(assigns(:activity_type_content)).to include('school specific description')
+        expect(assigns(:activity_type_content).to_s).not_to include('generic description')
+        expect(assigns(:activity_type_content).to_s).to include('school specific description')
       end
-      it "with non-data-driven activity, it shows the description if school specific description not present, but does not make html safe" do
+      it "with non-data-driven activity, it shows the description if school specific description not present" do
         activity_type = create :activity_type, data_driven: false, school_specific_description: nil
         activity = create :activity, school_id: school.id, activity_type: activity_type
         get :show, params: { school_id: school.id, id: activity.to_param }
-        expect(assigns(:activity_type_content).to_plain_text).to include('generic description')
+        expect(assigns(:activity_type_content).to_s).to include('generic description')
+        expect(assigns(:activity_type_content).to_s).not_to include('school specific description')
       end
     end
+
     context 'when school is data enabled' do
       before :each do
         school.update(data_enabled: true)
@@ -72,14 +104,15 @@ RSpec.describe ActivitiesController, type: :controller do
       it "it shows the school specific description if present" do
         activity = create :activity, school_id: school.id
         get :show, params: { school_id: school.id, id: activity.to_param }
-        expect(assigns(:activity_type_content)).not_to include('generic description')
-        expect(assigns(:activity_type_content)).to include('school specific description')
+        expect(assigns(:activity_type_content).to_s).not_to include('generic description')
+        expect(assigns(:activity_type_content).to_s).to include('school specific description')
       end
       it "it shows the generic description if school specific description not present, but does not make html safe" do
         activity_type = create :activity_type, data_driven: false, school_specific_description: nil
         activity = create :activity, school_id: school.id, activity_type: activity_type
         get :show, params: { school_id: school.id, id: activity.to_param }
-        expect(assigns(:activity_type_content).to_plain_text).to include('generic description')
+        expect(assigns(:activity_type_content).to_s).to include('generic description')
+        expect(assigns(:activity_type_content).to_s).not_to include('school specific description')
       end
     end
   end
