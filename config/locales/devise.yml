@@ -77,9 +77,6 @@ en:
         sign_in: Sign in
         sign_in_with: Sign in with
         sign_up: Sign up
-      login:
-        email: Email
-        password: Password
     unlocks:
       new:
         resend_unlock_instructions: Resend unlock instructions
