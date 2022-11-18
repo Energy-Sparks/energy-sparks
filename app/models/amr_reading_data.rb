@@ -80,7 +80,7 @@ class AmrReadingData
 
       if reading_date.present? && valid_reading_date?(reading_date)
         warnings << :future_reading_date if future_reading_date?(reading_date)
-        warnings << :inconsistent_reading_date_format if inconsistent_reading_date_format?(reading_date)
+        # warnings << :inconsistent_reading_date_format if inconsistent_reading_date_format?(reading_date)
       else
         warnings << :invalid_reading_date
       end
@@ -93,7 +93,7 @@ class AmrReadingData
     return false if reading_date.is_a? Date
 
     formatted_date = Date.strptime(reading_date, @date_format)
-    return false if formatted_date.strftime(@date_format) == reading_date
+    return false if formatted_date.strftime(@date_format).gsub(/\D/, '') == reading_date.gsub(/\D/, '')
 
     true
   rescue ArgumentError
