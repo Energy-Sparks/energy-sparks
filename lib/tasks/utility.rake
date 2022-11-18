@@ -69,7 +69,7 @@ namespace :utility do
       target_bucket = ENV['UNVALIDATED_SCHOOL_CACHE_BUCKET']
       abort("No S3 bucket configured") if target_bucket.blank?
       filepath = Rails.root.join("config/unvalidated_data_schools.yml")
-      UnvalidatedDataSchoolsLoader.new(filepath).schools.each do |school|
+      SchoolsLoader.new(filepath).schools.each do |school|
         Rails.logger.info "Uploading unvalidated #{school.name} to S3"
         data = Amr::AnalyticsMeterCollectionFactory.new(school).unvalidated_data
         EnergySparks::S3Yaml.save(data, school.name, data_type: 'unvalidated-data', bucket: target_bucket)

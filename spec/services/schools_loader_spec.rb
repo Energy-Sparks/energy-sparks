@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe UnvalidatedDataSchoolsLoader, type: :service do
+describe SchoolsLoader, type: :service do
 
-  let(:service) { UnvalidatedDataSchoolsLoader.new(filepath) }
+  let(:service) { SchoolsLoader.new(filepath) }
 
   describe '#schools' do
 

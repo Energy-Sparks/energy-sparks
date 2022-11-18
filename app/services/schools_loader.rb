@@ -1,4 +1,4 @@
-class UnvalidatedDataSchoolsLoader
+class SchoolsLoader
   def initialize(filepath)
     @filepath = filepath
   end
