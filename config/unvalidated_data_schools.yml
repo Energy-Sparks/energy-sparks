@@ -1,0 +1,4 @@
+- name: 'cefn-hengoed*'
+  description: 'multiple solar production meters'
+- name: 'green-lane*'
+  description: 'vanilla primary with electric and gas meters'
