@@ -93,7 +93,7 @@ class AmrReadingData
     return false if reading_date.is_a? Date
 
     formatted_date = Date.strptime(reading_date, @date_format)
-    return false if formatted_date.strftime(@date_format).gsub(/\D/, '') == reading_date.gsub(/\D/, '')
+    return false if formatted_date.strftime(@date_format) == reading_date
 
     true
   rescue ArgumentError
