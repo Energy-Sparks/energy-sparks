@@ -17,7 +17,7 @@
           <%= render "devise/shared/error_messages", resource: resource %>
 
           <div class="form-group row">
-            <%= f.label :email, class: "col-sm-4 col-form-label" %>
+            <%= f.label t('devise.shared.login.email'), class: "col-sm-4 col-form-label" %>
             <div class="col-sm-6">
               <%= f.email_field :email, autofocus: true, class: "form-control" %>
             </div>

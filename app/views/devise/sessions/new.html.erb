@@ -19,14 +19,14 @@
         <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'form-horizontal mt-3'}) do |f| %>
           <%= render "devise/shared/error_messages", resource: resource %>
           <div class="form-group row">
-            <%= f.label :email, class: "col-sm-4 col-form-label" %>
+            <%= f.label t('devise.shared.login.email'), class: "col-sm-4 col-form-label" %>
             <div class="col-sm-6">
               <%= f.email_field :email, autofocus: true , class: "form-control" %>
             </div>
           </div>
 
           <div class="form-group row">
-            <%= f.label :password, class: "col-sm-4 col-form-label" %>
+            <%= f.label t('devise.shared.login.password'), class: "col-sm-4 col-form-label" %>
             <div class="col-sm-6">
               <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
             </div>

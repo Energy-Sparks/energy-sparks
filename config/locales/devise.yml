@@ -62,6 +62,7 @@ en:
         log_in_with_your_pupil_password: Log in with your pupil password
         not_your_school: Not your school?
         page_title: Sign In to Energy Sparks
+        password: Password
         pupil_password: pupil password
         pupil_sign_in_for: Pupil sign in for
         remember_me: Remember me
@@ -77,6 +78,9 @@ en:
         sign_in: Sign in
         sign_in_with: Sign in with
         sign_up: Sign up
+      login:
+        email: Email
+        password: Password
     unlocks:
       new:
         resend_unlock_instructions: Resend unlock instructions
