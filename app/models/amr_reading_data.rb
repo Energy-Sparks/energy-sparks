@@ -80,7 +80,7 @@ class AmrReadingData
 
       if reading_date.present? && valid_reading_date?(reading_date)
         warnings << :future_reading_date if future_reading_date?(reading_date)
-        # warnings << :inconsistent_reading_date_format if inconsistent_reading_date_format?(reading_date)
+        warnings << :inconsistent_reading_date_format if inconsistent_reading_date_format?(reading_date)
       else
         warnings << :invalid_reading_date
       end

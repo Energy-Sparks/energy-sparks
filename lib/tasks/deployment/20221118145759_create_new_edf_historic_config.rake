@@ -1,7 +1,7 @@
 namespace :after_party do
-  desc 'Deployment task: task_name'
-  task task_name: :environment do
-    puts "Running deploy task 'task_name'"
+  desc 'Deployment task: create_new_edf_historic_config'
+  task create_new_edf_historic_config: :environment do
+    puts "Running deploy task 'create_new_edf_historic_config'"
 
     AmrDataFeedConfig.find_by(identifier: 'edf-historic').update(description: 'EDF Historic (%d/%m/%Y date format)')
 
