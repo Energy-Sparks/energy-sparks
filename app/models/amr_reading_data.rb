@@ -80,7 +80,9 @@ class AmrReadingData
 
       if reading_date.present? && valid_reading_date?(reading_date)
         warnings << :future_reading_date if future_reading_date?(reading_date)
-        warnings << :inconsistent_reading_date_format if inconsistent_reading_date_format?(reading_date)
+        if EnergySparks::FeatureFlags.active?(:inconsistent_reading_date_format_warning)
+          warnings << :inconsistent_reading_date_format if inconsistent_reading_date_format?(reading_date)
+        end
       else
         warnings << :invalid_reading_date
       end
