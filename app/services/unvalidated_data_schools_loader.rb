@@ -8,6 +8,6 @@ class UnvalidatedDataSchoolsLoader
   end
 
   def school_slugs
-    YAML.load_file(@filepath).map { |entry| entry['name'] }
+    YAML.load_file(@filepath)['schools'].map { |entry| entry['name'] }
   end
 end

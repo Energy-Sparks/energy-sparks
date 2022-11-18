@@ -9,7 +9,7 @@ describe UnvalidatedDataSchoolsLoader, type: :service do
     let!(:school_1) { create(:school) }
     let!(:school_2) { create(:school) }
 
-    let(:data)        { [ { 'name' => school_1.slug, 'description' => 'foo' }, { 'name' => school_2.slug, 'description' => 'bar' } ] }
+    let(:data)        { { 'schools' => [ { 'name' => school_1.slug, 'description' => 'foo' }, { 'name' => school_2.slug, 'description' => 'bar' } ] } }
     let(:filepath)    { Tempfile.new.tap {|f| f << data.to_yaml; f.close } }
 
     it 'loads the named schools' do
