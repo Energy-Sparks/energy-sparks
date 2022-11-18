@@ -11,7 +11,7 @@ RSpec.describe 'AlertMailer', type: :system do
       visit admin_emails_alert_mailer_path(email)
     end
 
-    it 'is visible by admin' do
+    it 'renders email' do
       expect(page).to have_content('Your weekly alerts')
       expect(page).to have_content('Why am I receiving these emails?')
     end
