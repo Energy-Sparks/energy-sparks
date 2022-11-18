@@ -19,7 +19,7 @@ describe SchoolsLoader, type: :service do
   end
 
   describe '#school_slugs' do
-    let(:filepath)    { Rails.root.join('config/unvalidated_data_schools.yml') }
+    let(:filepath)    { Rails.root.join('config/test_schools.yml') }
     it 'gets valid list of schools' do
       slugs = service.school_slugs
       expect(slugs).not_to be_empty
