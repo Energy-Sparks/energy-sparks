@@ -11,6 +11,8 @@ class SchoolsLoader
     school_slugs_from_file + school_slugs_from_groups
   end
 
+  private
+
   def school_slugs_from_groups
     group_schools = SchoolGroup.all.map { |school_group| school_group.schools.by_name.limit(2) }.flatten
     group_schools.map(&:slug)
