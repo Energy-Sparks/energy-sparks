@@ -8,6 +8,18 @@ class SchoolsLoader
   end
 
   def school_slugs
-    YAML.load_file(@filepath)['schools'].map { |entry| entry['name'] }
+    school_slugs_from_file + school_slugs_from_groups
+  end
+
+  def school_slugs_from_groups
+    group_schools = SchoolGroup.all.map { |school_group| school_group.schools.by_name.limit(2) }.flatten
+    group_schools.map(&:slug)
+  end
+
+  def school_slugs_from_file
+    data = YAML.load_file(@filepath) || {}
+    data.fetch('schools', {}).map { |entry| entry['name'] }
+  rescue
+    []
   end
 end
