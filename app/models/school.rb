@@ -123,7 +123,7 @@ class School < ApplicationRecord
   has_many :equivalences
 
   has_many :locations
-  has_many :issues
+  has_many :issues, as: :issueable, dependent: :destroy
 
   has_many :simulations, inverse_of: :school
 

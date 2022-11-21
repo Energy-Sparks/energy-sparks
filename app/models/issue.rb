@@ -31,7 +31,7 @@
 class Issue < ApplicationRecord
   include CsvExportable
 
-  belongs_to :school
+  belongs_to :issueable, polymorphic: true
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
   belongs_to :owned_by, class_name: 'User', optional: true
@@ -56,11 +56,11 @@ class Issue < ApplicationRecord
   end
 
   def self.csv_headers
-    ["School name", "Title", "Description", "Fuel type", "Created by", "Created at", "Updated by", "Updated at"]
+    ["Issue type", "Name", "Title", "Description", "Fuel type", "Created by", "Created at", "Updated by", "Updated at"]
   end
 
   def self.csv_attributes
-    %w{school.name title description.to_plain_text fuel_type created_by.display_name created_at updated_by.display_name updated_at}
+    %w{issueable_type issueable.name title description.to_plain_text fuel_type created_by.display_name created_at updated_by.display_name updated_at}
   end
 
   # From rails 6.1 onwards, a default for enums can be specified by setting by _default: :open or rails 7: default: :open on the enum definition
