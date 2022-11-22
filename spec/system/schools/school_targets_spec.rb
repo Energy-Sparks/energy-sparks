@@ -366,12 +366,34 @@ RSpec.shared_examples "managing targets" do
       visit school_school_target_path(test_school, target)
     end
 
+    context 'and there is a newer target' do
+      let!(:newer_target)          { create(:school_target, school: test_school, start_date: target_date, target_date: target_date + 1.year, electricity_progress: electricity_progress, gas_progress: gas_progress, report_last_generated: last_generated) }
+
+      it "does not prompt to create another new target" do
+        expect(page).to have_link("View current target")
+        click_on "View current target"
+        expect(page).to have_title("Your current energy saving targets")
+      end
+
+      it 'includes clear summary of the target dates'
+    end
+
     it "displays a different title" do
       expect(page).to have_title("Results of reducing your energy usage")
     end
 
-    it 'says target is expired' do
+    it 'prompts to review says target is expired' do
       expect(page).to have_content("It's now time to review your progress")
+    end
+
+    it 'includes clear summary of the target dates'
+
+    it "prompts to create a new target" do
+      expect(page).to_not have_link("Revise your target")
+      expect(page).to have_link("Set a new target")
+      expect(page).to have_content("It's now time to review your progress")
+      click_on "Set a new target"
+      expect(page).to have_content("Review and set your next energy saving target")
     end
 
     it 'includes table footer' do
@@ -403,13 +425,6 @@ RSpec.shared_examples "managing targets" do
         expect(page).to have_content('Completed an activity')
         expect(page).to have_content('Upgraded insulation')
       end
-    end
-
-    it "prompts to create a new target" do
-      expect(page).to_not have_link("Revise your target")
-      expect(page).to have_link("Set a new target")
-      click_on "Set a new target"
-      expect(page).to have_content("Review and set your next energy saving target")
     end
 
     it 'links to archived version of progress report'
