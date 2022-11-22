@@ -1,9 +1,11 @@
 <%= render 'header', title: "Issues & Notes" + (@issueable ? " for #{@issueable.name}" : ''), issue: nil, issueable: @issueable %>
 
-<p>
-  <%= link_to "#{fa_icon('exclamation-circle text-secondary')} New Issue".html_safe, url_for([:new, :admin, @issueable, :issue, issue_type: :issue]), class: 'btn btn-primary btn-sm' %>
-  <%= link_to "#{fa_icon('sticky-note text-secondary')} New Note".html_safe, url_for([:new, :admin, @issueable, :issue, issue_type: :note]), class: 'btn btn-primary btn-sm' %>
-</p>
+<% if @issueable %>
+  <p>
+    <%= link_to "#{fa_icon('exclamation-circle text-secondary')} New Issue".html_safe, url_for([:new, :admin, @issueable, :issue, issue_type: :issue]), class: 'btn btn-primary btn-sm' %>
+    <%= link_to "#{fa_icon('sticky-note text-secondary')} New Note".html_safe, url_for([:new, :admin, @issueable, :issue, issue_type: :note]), class: 'btn btn-primary btn-sm' %>
+  </p>
+<% end %>
 
 <% if @issues.any? %>
   <div class="container">
