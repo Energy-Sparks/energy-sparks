@@ -7,6 +7,7 @@ class Issue < ApplicationRecord
   belongs_to :owned_by, class_name: 'User', optional: true
 
   scope :by_updated_at, -> { order(updated_at: :desc) }
+  scope :by_pinned, -> { order(pinned: :desc) }
 
   has_rich_text :description
   enum issue_type: { issue: 0, note: 1 }
