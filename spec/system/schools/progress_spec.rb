@@ -48,6 +48,22 @@ describe 'targets', type: :system do
     allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
   end
 
+  context 'as a school admin' do
+
+    context 'with current target' do
+      it 'says whether I am achieving my target'
+      it 'links to this school target'
+    end
+
+    context 'with expired target' do
+      it 'says whether I achieved my target'
+      it 'has a foot note to indicate this is a snapshot'
+      it 'links to this school target'
+      it 'does not show warning about old data'
+      it 'does not show charts'
+    end
+  end
+
   context 'as an admin' do
 
     let(:fuel_electricity) { Schools::FuelConfiguration.new(has_electricity: true, has_storage_heaters: false) }
