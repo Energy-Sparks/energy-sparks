@@ -11,7 +11,7 @@
     </tr>
   </thead>
   <tbody>
-    <% school_group.issues.issue.status_open.by_pinned.by_updated_at.each do |issue| %>
+    <% school_group.school_issues.issue.status_open.by_pinned.by_updated_at.each do |issue| %>
       <tr>
         <td><%= fa_icon('exclamation-circle text-secondary') %></td>
         <td><%= link_to issue.title, admin_school_issue_path(issue.school, issue) %> <%= fa_icon('thumbtack text-secondary') if issue.pinned? %></td>

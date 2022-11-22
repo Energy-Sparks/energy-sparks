@@ -1,4 +1,9 @@
-<%= render 'header', title: "Issues & Notes" + (@issueable ? " for #{@issueable.name}" : ''), issue: nil, issueable: @issueable %>
+<%= render 'header', title: "Issues & Notes" + (@issueable ? " for #{@issueable.name}" : ''), issue: nil, issueable: @issueable do %>
+  <% if @issueable %>
+    <% school_group = @issueable.school_group || @issueable %>
+    <%= header_nav_link "#{school_group.name} group", url_for([:admin, school_group]) %>
+  <% end %>
+<% end %>
 
 <% if @issueable %>
   <p>
