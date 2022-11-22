@@ -366,18 +366,6 @@ RSpec.shared_examples "managing targets" do
       visit school_school_target_path(test_school, target)
     end
 
-    context 'and there is a newer target' do
-      let!(:newer_target)          { create(:school_target, school: test_school, start_date: target_date, target_date: target_date + 1.year, electricity_progress: electricity_progress, gas_progress: gas_progress, report_last_generated: last_generated) }
-
-      it "does not prompt to create another new target" do
-        expect(page).to have_link("View current target")
-        click_on "View current target"
-        expect(page).to have_title("Your current energy saving targets")
-      end
-
-      it 'includes clear summary of the target dates'
-    end
-
     it "displays a different title" do
       expect(page).to have_title("Results of reducing your energy usage")
     end
@@ -386,13 +374,15 @@ RSpec.shared_examples "managing targets" do
       expect(page).to have_content("It's now time to review your progress")
     end
 
-    it 'includes clear summary of the target dates'
+    it 'includes summary of the target dates' do
+      expect(page).to have_content("Your school set a target to reduce its energy usage between between #{target.start_date.to_s(:es_full)} and #{target.target_date.to_s(:es_full)}")
+    end
 
     it "prompts to create a new target" do
       expect(page).to_not have_link("Revise your target")
       expect(page).to have_link("Set a new target")
       expect(page).to have_content("It's now time to review your progress")
-      click_on "Set a new target"
+      click_on("Set a new target", match: :first)
       expect(page).to have_content("Review and set your next energy saving target")
     end
 
@@ -408,6 +398,11 @@ RSpec.shared_examples "managing targets" do
     it 'shows timeline' do
       expect(page).to have_content('How did you achieve your target?')
       expect(page).to have_content("You didn't record any energy saving activities or actions")
+    end
+
+    it 'disallows me from editing an old target' do
+      visit edit_school_school_target_path(test_school, target)
+      expect(page).to have_content("Cannot edit an expired target")
     end
 
     context 'with activities' do
@@ -427,11 +422,9 @@ RSpec.shared_examples "managing targets" do
       end
     end
 
-    it 'links to archived version of progress report'
-
     context 'it allows me to create a new target' do
       before(:each) do
-        click_on "Set a new target"
+        click_on("Set a new target", match: :first)
       end
 
       it 'saves a new target' do
@@ -456,13 +449,27 @@ RSpec.shared_examples "managing targets" do
         click_on 'Set this target'
         expect(page).to have_content("We are calculating your progress")
         visit school_school_target_path(test_school, target)
-        expect(page).to have_content("It's now time to review your progress")
+        expect(page).to_not have_content("It's now time to review your progress")
       end
 
-      it 'doesnt prompt for another new target if I look at the old one'
-      it 'disallows me from editing an old target'
-
     end
+
+    context 'and there is a newer target' do
+      let!(:newer_target)          { create(:school_target, school: test_school, start_date: target_date, target_date: target_date + 1.year, electricity_progress: electricity_progress, gas_progress: gas_progress, report_last_generated: last_generated) }
+
+      it "does not prompt to create another new target" do
+        refresh
+        expect(page).to have_link("View current target")
+        click_on "View current target"
+        expect(page).to have_title("Your current energy saving targets")
+      end
+
+      it 'includes summary of the target dates' do
+        refresh
+        expect(page).to have_content("Your school set a target to reduce its energy usage between between #{target.start_date.to_s(:es_full)} and #{target.target_date.to_s(:es_full)}")
+      end
+    end
+
   end
 
 end
