@@ -142,7 +142,10 @@ class School < ApplicationRecord
   belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, optional: true
   belongs_to :weather_station, optional: true
+
   belongs_to :school_group, optional: true
+  delegate :default_issues_admin_user, to: :school_group
+
   belongs_to :scoreboard, optional: true
 
   has_one :school_onboarding

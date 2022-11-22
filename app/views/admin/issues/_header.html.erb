@@ -1,0 +1,15 @@
+<div class="d-flex justify-content-between align-items-center">
+  <h1>
+    <% unless issue.nil? %>
+      <%= fa_icon(issue.issue? ? 'exclamation-circle text-secondary' : 'sticky-note text-secondary') %>
+    <% end %>
+     <%= title %>
+   </h1>
+  <div>
+    <% if issueable %>
+      <%= header_nav_link "Issues & notes for #{issueable.model_name.to_s.downcase}", url_for([:admin, issueable, :issues]) %>
+    <% else %>
+      <%= header_nav_link 'All issues & notes', admin_issues_url %>
+    <% end %>
+  </div>
+</div>
