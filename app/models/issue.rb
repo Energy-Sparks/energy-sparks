@@ -31,7 +31,7 @@
 class Issue < ApplicationRecord
   include CsvExportable
 
-  belongs_to :issueable, polymorphic: true, optional: true
+  belongs_to :issueable, polymorphic: true #, optional: true
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
   belongs_to :owned_by, class_name: 'User', optional: true
