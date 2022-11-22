@@ -146,6 +146,7 @@ group :development do
   gem 'scout_apm'
 #  gem 'rack-mini-profiler'
 #  gem 'memory_profiler'
+#  gem 'i18n-debug'
 end
 
 group :test do

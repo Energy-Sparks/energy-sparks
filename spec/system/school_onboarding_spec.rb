@@ -170,7 +170,7 @@ RSpec.describe "onboarding", :schools, type: :system do
             expect(page).to have_content("Step 1: Confirm your administrator account")
             expect(page).to have_content("Do you want to complete onboarding for Oldfield Park Infants using this school group admin account?")
           end
-          it 'allows them to complete onboarding' do
+          it 'allows them to complete onboarding', js: true do
             click_on 'Yes, use this account'
 
             #School details
@@ -185,10 +185,21 @@ RSpec.describe "onboarding", :schools, type: :system do
             fill_in 'Name', with: 'Boss user'
             fill_in 'Job title', with: 'Boss'
             fill_in 'School name', with: 'Boss school'
+            check :privacy, allow_label_click: true
             click_on 'Grant consent'
 
-            #Additional school accounts
-            click_on 'Skip for now'
+            # #Additional school accounts
+            click_on 'Add new account'
+            fill_in 'Name', with: "Extra user"
+            fill_in 'Email', with: 'extra+user@example.org'
+            select 'Staff', from: 'Type'
+            select 'Headteacher', from: 'Role'
+            click_on 'Create account'
+
+            expect(page).to have_content("extra+user@example.org")
+            expect(page).to have_content("Headteacher")
+
+            click_on 'Continue'
 
             #Pupils
             fill_in 'Name', with: 'The energy savers'

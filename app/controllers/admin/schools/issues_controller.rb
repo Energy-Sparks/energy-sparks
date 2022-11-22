@@ -8,7 +8,7 @@ module Admin
       load_and_authorize_resource :issue, through: :school
 
       def index
-        @pagy, @issues = pagy(@issues.by_updated_at)
+        @pagy, @issues = pagy(@issues.by_pinned.by_updated_at)
       end
 
       def new
@@ -48,7 +48,7 @@ module Admin
       private
 
       def issue_params
-        params.require(:issue).permit(:issue_type, :title, :description, :fuel_type, :status, :owned_by_id)
+        params.require(:issue).permit(:issue_type, :title, :description, :fuel_type, :status, :owned_by_id, :pinned)
       end
     end
   end

@@ -166,18 +166,20 @@ describe AmrReadingData do
       end
 
       it 'with reading date in a format that does not match the configuration format' do
-        amr_reading_data[:reading_data].first[:reading_date] = '31-01-2022'
-        amr_reading_data[:reading_data].second[:reading_date] = '31-01-2022'
-        # There should be a warning here where Date.strptime('31-01-2022', '%d-%m-%y')
-        # converts to the date 'Wed, 31 Jan 2020' (2020 instead of 2022)
-        amr_reading_data[:date_format] = '%d-%m-%y'
-        amr_reading = AmrReadingData.new(**amr_reading_data)
+        ClimateControl.modify FEATURE_FLAG_INCONSISTENT_READING_DATE_FORMAT_WARNING: 'true' do
+          amr_reading_data[:reading_data].first[:reading_date] = '31-01-2022'
+          amr_reading_data[:reading_data].second[:reading_date] = '31-01-2022'
+          # There should be a warning here where Date.strptime('31-01-2022', '%d-%m-%y')
+          # converts to the date 'Wed, 31 Jan 2020' (2020 instead of 2022)
+          amr_reading_data[:date_format] = '%d-%m-%y'
+          amr_reading = AmrReadingData.new(**amr_reading_data)
 
-        expect(amr_reading.valid?).to be false
-        expect(amr_reading.warnings?).to be true
-        expect(amr_reading.valid_reading_count).to be 0
-        expect(amr_reading.warnings.count).to be 2
-        expect(amr_reading.warnings.first[:warnings]).to include(:inconsistent_reading_date_format)
+          expect(amr_reading.valid?).to be false
+          expect(amr_reading.warnings?).to be true
+          expect(amr_reading.valid_reading_count).to be 0
+          expect(amr_reading.warnings.count).to be 2
+          expect(amr_reading.warnings.first[:warnings]).to include(:inconsistent_reading_date_format)
+        end
       end
 
       it 'when there are duplicate rows' do

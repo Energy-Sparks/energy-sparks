@@ -330,7 +330,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       describe "Issues tab" do
         context "when there are open issues for the school group" do
           let!(:school) { create(:school, school_group: school_group)}
-          let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, school: school, fuel_type: :gas) }
+          let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, school: school, fuel_type: :gas, pinned: true) }
           let!(:setup_data) { issue }
           it "lists issue in issues tab" do
             within '#issues' do
@@ -340,6 +340,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
               expect(page).to have_content admin.display_name
               expect(page).to have_content nice_date_times_today(issue.updated_at)
               expect(page).to have_link("View", href: admin_school_issue_path(school, issue))
+              expect(page).to have_css("i[class*='fa-thumbtack']")
             end
           end
         end
