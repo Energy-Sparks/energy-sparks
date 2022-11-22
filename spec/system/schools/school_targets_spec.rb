@@ -36,29 +36,11 @@ RSpec.shared_examples "managing targets" do
   end
 
   it 'has a link to review targets from my school menu' do
-    visit school_path(test_school)
-    within '#my_school_menu' do
-      expect(page).to have_link("Review targets", href: school_school_targets_path(test_school))
-    end
-  end
-
-  context 'with targets disabled for school' do
-    before(:each) do
-      school.update!(enable_targets_feature: false)
+    unless user.admin?
       visit school_path(test_school)
-    end
-
-    it 'doesnt have a link to review targets' do
-      visit school_path(school)
-      expect( Targets::SchoolTargetService.targets_enabled?(school) ).to be false
       within '#my_school_menu' do
-        expect(page).to_not have_link("Review targets", href: school_school_targets_path(school))
+        expect(page).to have_link("Review targets", href: school_school_targets_path(test_school))
       end
-    end
-
-    it 'redirects from target page' do
-      visit school_school_targets_path(school)
-      expect(page).to have_current_path(school_path(school))
     end
   end
 
@@ -211,7 +193,7 @@ RSpec.shared_examples "managing targets" do
         end
 
         it "does not show a delete button" do
-          expect(page).to_not have_link("Delete")
+          expect(page).to_not have_link("Delete") unless user.admin?
         end
 
         it "validates target values" do
@@ -483,125 +465,146 @@ RSpec.describe 'school targets', type: :system do
     include_examples "managing targets" do
       let(:test_school) { school }
     end
+
+    context 'with targets disabled for school' do
+      before(:each) do
+        school.update!(enable_targets_feature: false)
+      end
+
+      it 'doesnt have a link to review targets' do
+        visit school_path(school)
+        expect( Targets::SchoolTargetService.targets_enabled?(school) ).to be false
+        within '#my_school_menu' do
+          expect(page).to_not have_link("Review targets", href: school_school_targets_path(school))
+        end
+      end
+
+      it 'redirects from target page' do
+        visit school_school_targets_path(school)
+        expect(page).to have_current_path(school_path(school))
+      end
+    end
+
+  end
+
+  context 'as staff' do
+    let!(:user)              { create(:staff, school: school) }
+
+    include_examples "managing targets" do
+      let(:test_school) { school }
+    end
+
+    context 'with targets disabled for school' do
+      before(:each) do
+        school.update!(enable_targets_feature: false)
+      end
+
+      it 'doesnt have a link to review targets' do
+        visit school_path(school)
+        expect( Targets::SchoolTargetService.targets_enabled?(school) ).to be false
+        within '#my_school_menu' do
+          expect(page).to_not have_link("Review targets", href: school_school_targets_path(school))
+        end
+      end
+
+      it 'redirects from target page' do
+        visit school_school_targets_path(school)
+        expect(page).to have_current_path(school_path(school))
+      end
+    end
+
   end
 
   #Admins can delete
   #Admins can view debugging data
   #otherwise same as school admin
-  # context 'as an admin' do
-  #   let(:admin)           { create(:admin) }
-  #
-  #   before(:each) do
-  #     sign_in(admin)
-  #   end
-  #
-  #   it 'lets me view target data' do
-  #     visit school_meters_path(school)
-  #     expect(page).to have_link("View target data", href: admin_school_target_data_path(school))
-  #   end
-  #
-  #   context 'when viewing a target' do
-  #     let!(:target)          { create(:school_target, school: school) }
-  #
-  #     before(:each) do
-  #       visit school_school_targets_path(school)
-  #       click_on "Revise your target"
-  #     end
-  #
-  #     it 'allows target to be deleted' do
-  #       click_on "Delete"
-  #       expect(page).to have_content("Target successfully removed")
-  #       expect(SchoolTarget.count).to eql 0
-  #     end
-  #   end
-  # end
+  context 'as an admin' do
+    let(:user)           { create(:admin) }
+    include_examples "managing targets" do
+      let(:test_school) { school }
+    end
+
+    it 'lets me view target data' do
+       visit school_meters_path(school)
+       expect(page).to have_link("View target data", href: admin_school_target_data_path(school))
+    end
+
+    context 'when viewing a target' do
+       let!(:target)          { create(:school_target, school: school) }
+
+       before(:each) do
+         visit school_school_targets_path(school)
+         click_on "Revise your target"
+       end
+
+       it 'allows target to be deleted' do
+         click_on "Delete"
+         expect(page).to have_content("Target successfully removed")
+         expect(SchoolTarget.count).to eql 0
+       end
+     end
+   end
 
   #View targets only
-  # context 'as a guest user' do
-  #   let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
-  #   let!(:target)               { create(:school_target, school: school, electricity_progress: electricity_progress) }
-  #   before(:each) do
-  #     visit school_school_targets_path(school)
-  #   end
-  #   it 'lets me view a target' do
-  #     expect(page).to have_content("Reducing your energy usage by")
-  #   end
-  #   it 'shows me a link to the report' do
-  #     expect(page).to have_link("View report", href: electricity_school_progress_index_path(school))
-  #   end
-  #   it 'doesnt have a revise link' do
-  #     expect(page).to_not have_link("Revise your target")
-  #   end
-  #   it 'doesnt have action links' do
-  #     expect(page).to_not have_link("Choose another activity")
-  #     expect(page).to_not have_link("Record an energy saving action")
-  #   end
-  #
-  #   it 'does not allow me to set new one if expired'
-  # end
+  context 'as a guest user' do
+     let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
+     let!(:target)               { create(:school_target, school: school, electricity_progress: electricity_progress) }
+     before(:each) do
+       visit school_school_targets_path(school)
+     end
+     it 'lets me view a target' do
+       expect(page).to have_content("Reducing your energy usage by")
+     end
+     it 'shows me a link to the report' do
+       expect(page).to have_link("View monthly report", href: electricity_school_progress_index_path(school))
+     end
+     it 'doesnt have a revise link' do
+       expect(page).to_not have_link("Revise your target")
+     end
+     it 'doesnt have action links' do
+       expect(page).to_not have_link("Choose another activity")
+       expect(page).to_not have_link("Record an energy saving action")
+     end
+   end
 
   #Currently view only, soon: same as school admin
-  # context 'as a pupil' do
-  #   let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
-  #   let!(:target)               { create(:school_target, school: school, electricity_progress: electricity_progress) }
-  #
-  #   let(:pupil)            { create(:pupil, school: school)}
-  #   before(:each) do
-  #     sign_in(pupil)
-  #     visit school_school_targets_path(school)
-  #   end
-  #   it 'lets me view a target' do
-  #     expect(page).to have_content("Reducing your energy usage by")
-  #   end
-  #   it 'shows me a link to the report' do
-  #     expect(page).to have_link("View report", href: electricity_school_progress_index_path(school))
-  #   end
-  #   it 'doesnt have a revise link' do
-  #     expect(page).to_not have_link("Revise your target")
-  #   end
-  #   it 'doesnt have action links' do
-  #     expect(page).to have_link("Choose another activity")
-  #   end
-  #   it 'allows me to set new one if expired'
-  # end
+   context 'as a pupil' do
+     let!(:electricity_progress) { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
+     let!(:target)               { create(:school_target, school: school, electricity_progress: electricity_progress) }
 
-  #Same as school admin
-  # context 'as a staff user' do
-  #   let!(:staff)      { create(:staff, school: school) }
-  #
-  #   before(:each) do
-  #     sign_in(staff)
-  #     visit school_path(school)
-  #   end
-  #
-  #   context "with no target" do
-  #
-  #     context "with all fuel types" do
-  #       before(:each) do
-  #         visit school_school_targets_path(school)
-  #       end
-  #
-  #       it "prompts to create first target" do
-  #         expect(page).to have_content("Set your first energy saving target")
-  #       end
-  #
-  #       context "and all fuel types" do
-  #         it "allows all targets to be set" do
-  #           fill_in "Reducing electricity usage by", with: 15
-  #           fill_in "Reducing gas usage by", with: 15
-  #           fill_in "Reducing storage heater usage by", with: 25
-  #
-  #           click_on 'Set this target'
-  #
-  #           expect(page).to have_content('Target successfully created')
-  #           expect(page).to have_content("We are calculating your progress")
-  #           expect(school.has_current_target?).to eql(true)
-  #           expect(school.current_target.electricity).to eql 15.0
-  #           expect(school.current_target.gas).to eql 15.0
-  #           expect(school.current_target.storage_heaters).to eql 25.0
-  #         end
-  #       end
-  #     end
-  #   end
-  # end
+     let(:pupil)            { create(:pupil, school: school)}
+     before(:each) do
+       sign_in(pupil)
+       visit school_school_targets_path(school)
+     end
+     it 'lets me view a target' do
+       expect(page).to have_content("Reducing your energy usage by")
+     end
+     it 'shows me a link to the report' do
+       expect(page).to have_link("View monthly report", href: electricity_school_progress_index_path(school))
+     end
+     it 'doesnt have a revise link' do
+       expect(page).to_not have_link("Revise your target")
+     end
+     it 'doesnt have action links' do
+       expect(page).to have_link("Choose another activity")
+     end
+     context 'with targets disabled for school' do
+       before(:each) do
+         school.update!(enable_targets_feature: false)
+       end
+
+       it 'doesnt have a link to review targets' do
+         expect( Targets::SchoolTargetService.targets_enabled?(school) ).to be false
+         within '#my_school_menu' do
+           expect(page).to_not have_link("Review targets", href: school_school_targets_path(school))
+         end
+       end
+
+       it 'redirects from target page' do
+         visit school_school_targets_path(school)
+         expect(page).to have_current_path(pupils_school_path(school))
+       end
+     end
+   end
 end
