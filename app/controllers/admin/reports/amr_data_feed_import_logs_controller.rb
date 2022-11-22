@@ -18,7 +18,7 @@ module Admin
       end
 
       def index
-        @amr_data_feed_configs = AmrDataFeedConfig.all
+        @amr_data_feed_configs = AmrDataFeedConfig.all.order(:description)
       end
 
       private
