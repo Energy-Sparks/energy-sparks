@@ -21,6 +21,10 @@
 #
 
 class Scoreboard < ApplicationRecord
+  extend Mobility
+  include TransifexSerialisable
+  translates :name, type: :string, fallbacks: { cy: :en }
+
   extend FriendlyId
 
   scope :is_public, -> { where(public: true) }
