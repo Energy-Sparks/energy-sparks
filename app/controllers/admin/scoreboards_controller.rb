@@ -42,7 +42,7 @@ module Admin
   private
 
     def scoreboard_params
-      params.require(:scoreboard).permit(:name, :description, :academic_year_calendar_id, :public)
+      params.require(:scoreboard).permit(:name, :name_en, :name_cy, :description, :academic_year_calendar_id, :public)
     end
   end
 end

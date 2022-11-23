@@ -1,7 +1,8 @@
 <%= simple_form_for([:admin, scoreboard]) do |f| %>
 
   <%= f.input :academic_year_calendar_id, as: :select, collection: Calendar.national, include_blank: false, hint: 'Used for scoreboard academic years'%>
-  <%= f.input :name %>
+  <%= f.input :name_en %>
+  <%= f.input :name_cy %>
   <%= f.input :description %>
   <%= f.input :public, as: :boolean %>
   <%= f.submit class: 'btn btn-primary' %>
