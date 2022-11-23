@@ -24,6 +24,24 @@ RSpec.describe Issue, type: :model do
     end
   end
 
+  context "before_save :set_note_status" do
+    before do
+      issue.save
+    end
+    context "issue is a note" do
+      subject(:issue) { build(:issue, issue_type: :note, status: :closed) }
+      it "is sets status to open when saved" do
+        expect(issue).to be_status_open
+      end
+    end
+    context "issue is an issue" do
+      subject(:issue) { build(:issue, issue_type: :issue, status: :closed) }
+      it "is does not change status" do
+        expect(issue).to be_status_closed
+      end
+    end
+  end
+
   context "#resolve!" do
     let!(:user) { create(:admin) }
     context "when issue is of type note" do
