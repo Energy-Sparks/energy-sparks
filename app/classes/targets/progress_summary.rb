@@ -57,23 +57,17 @@ module Targets
     private
 
     def passing?(fuel_progress, check_recent = true)
-      if fuel_progress.present? && fuel_progress.achieving_target?
-        if check_recent
-          true if fuel_progress.recent_data?
-        else
-          true
-        end
-      end
+      return false unless fuel_progress.present? && fuel_progress.achieving_target?
+      return true unless check_recent
+      return true if fuel_progress.recent_data?
+      false
     end
 
     def failing?(fuel_progress, check_recent = true)
-      if fuel_progress.present? && !fuel_progress.achieving_target?
-        if check_recent
-          true if fuel_progress.recent_data?
-        else
-          true
-        end
-      end
+      return false unless fuel_progress.present? && !fuel_progress.achieving_target?
+      return true unless check_recent
+      return true if fuel_progress.recent_data?
+      false
     end
   end
 end
