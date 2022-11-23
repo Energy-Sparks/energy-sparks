@@ -11,14 +11,13 @@
       Your school set a target to reduce its energy usage between between <strong><%= nice_dates(@school_target.start_date) %></strong> and <strong><%= nice_dates(@school_target.target_date) %></strong>. This page summarises your results.
     </p>
 
-    <% if @progress_summary.present? %>
-      <% if @progress_summary.any_passing_targets?(check_recent: false) %>
-      Well done! You achieved your goal to reduce your <%= t_fuels_as_sentence(@progress_summary.passing_fuel_targets(check_recent: false)) %> usage.
-      <% end %>
-      <% if @progress_summary.any_failing_targets?(check_recent: false) %>
-      Unfortunately you didn't meet your target to reduce your <%= t_fuels_as_sentence(@progress_summary.failing_fuel_targets(check_recent: false)) %> usage.
-      <% end %>
+    <% if @progress_summary&.any_passing_targets?(check_recent: false) %>
+    Well done! You achieved your goal to reduce your <%= t_fuels_as_sentence(@progress_summary.passing_fuel_targets(check_recent: false)) %> usage.
     <% end %>
+    <% if @progress_summary&.any_failing_targets?(check_recent: false) %>
+    Unfortunately you didn't meet your target to reduce your <%= t_fuels_as_sentence(@progress_summary.failing_fuel_targets(check_recent: false)) %> usage.
+    <% end %>
+
   </div>
 </div>
 
