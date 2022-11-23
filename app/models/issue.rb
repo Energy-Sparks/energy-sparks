@@ -68,8 +68,13 @@ class Issue < ApplicationRecord
   end
 
   def issueable_image
-    issueable ? self.class.issueable_images[issueable.model_name.to_s.downcase.to_sym] : ''
+    issueable ? self.class.issueable_image(issueable) : ''
   end
+
+  def self.issueable_image(issueable)
+    issueable_images[issueable.model_name.to_s.downcase.to_sym]
+  end
+
 
   # From rails 6.1 onwards, a default for enums can be specified by setting by _default: :open or rails 7: default: :open on the enum definition
   # But until then we have to do this:

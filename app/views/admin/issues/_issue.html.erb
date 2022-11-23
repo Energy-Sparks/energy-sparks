@@ -1,7 +1,7 @@
 <div class="row p-2">
   <div class="admin-issue col-md-12 bg-light border-left rounded border-6 <%= issue.issue? ? "border-danger" : "border-warning" %>">
     <h4>
-      <%= fa_icon(issue.issue? ? 'exclamation-circle text-secondary' : 'sticky-note text-secondary') %> <%= issue.title %>
+      <%= render 'issue_type_icon', issue: issue %> <%= issue.title %>
       <div class="float-right">
         <small>
           <%= render 'owned_by', issue: issue %>
@@ -12,16 +12,11 @@
     </h4>
     <div class="clearfix">
       <span class="badge <%= issue.issue? ? "badge-danger" : "badge-warning" %>"><%= issue.issue_type.capitalize %></span>
-       <% if issue.issueable %>
-        <span class="badge badge-secondary text-white" %>
-          <%= fa_icon(issue.issueable_image) %>
-          <%= link_to issue.issueable.name, url_for([:admin, issue.issueable, :issues]), class: 'text-white text-decoration-none' %>
-        </span>
-       <% end %>
-      <%= render 'fuel_type', issue: issue %>
-      <% if issue.issue? %>
-        <span class="badge <%= issue.status_open? ? 'badge-primary' : 'badge-secondary' %>"><%= issue.status.capitalize %></span>
+      <% unless @issueable %>
+        <%= render 'issueable', issue: issue %>
       <% end %>
+      <%= render 'fuel_type', issue: issue %>
+      <%= render 'status', issue: issue %>
       <span class='float-right'>
           <%= link_to 'Resolve', admin_issue_resolve_path(issue), method: :post, class: 'btn btn-info btn-sm' if issue.resolvable? %>
         <% if index %>

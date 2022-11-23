@@ -1,7 +1,7 @@
 <div class="row p-2">
   <div class="admin-issue col-md-12 bg-light border-left rounded border-6 pb-2 <%= issue.issue? ? "border-danger" : "border-warning" %>">
 
-  <%= render 'header', title: title, issue: issue, issueable: issue.try(:issueable) do %>
+  <%= render 'header', title: "#{issue_type_icon(@issue)} #{title}".html_safe do %>
     <% if issue.issueable %>
       <%= header_nav_link "Issues & notes for #{issue.issueable.model_name.to_s.downcase}", url_for([:admin, issue.issueable, :issues]) %>
     <% else %>

@@ -1,7 +1,7 @@
-<%= render 'header', title: "Issues & Notes" + (@issueable ? " for #{@issueable.name}" : ''), issue: nil, issueable: @issueable do %>
+<%= render 'header', title: issueable_icon(@issueable).html_safe + (@issueable ? " #{@issueable.name}" : '') + " Issues & Notes", issue: nil, issueable: @issueable do %>
   <% if @issueable %>
     <% school_group = @issueable.school_group || @issueable %>
-    <%= header_nav_link "#{school_group.name} group", url_for([:admin, school_group]) %>
+    <%= header_nav_link "#{school_group.name} group", admin_school_group_path(school_group) %>
   <% end %>
 <% end %>
 
@@ -15,7 +15,7 @@
 <% if @issues.any? %>
   <div class="container">
   <% @issues.each do |issue| %>
-    <%= render 'issue', issue: issue, index: true %>
+    <%= render 'issue', issue: issue, index: true, issueable: @issueable %>
   <% end %>
   </div>
   <%= render "shared/pagy_footer" %>
