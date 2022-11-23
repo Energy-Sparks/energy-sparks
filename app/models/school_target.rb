@@ -139,8 +139,6 @@ class SchoolTarget < ApplicationRecord
   end
 
   def ensure_observation_date_is_correct
-    observations.each do |observation|
-      observation.update!(at: start_date)
-    end
+    observations.update_all(at: start_date)
   end
 end
