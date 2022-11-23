@@ -72,10 +72,11 @@ module Schools
       authorize! :edit, @school_target
       if @school_target.expired?
         redirect_to school_school_target_path(@school, @school_target), notice: 'Cannot edit an expired target'
+      else
+        target_service.refresh_target(@school_target)
+        @prompt_to_review_target = prompt_to_review_target?
+        @fuel_types_changed = fuel_types_changed
       end
-      target_service.refresh_target(@school_target)
-      @prompt_to_review_target = prompt_to_review_target?
-      @fuel_types_changed = fuel_types_changed
     end
 
     def update
