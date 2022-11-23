@@ -63,18 +63,29 @@ class Issue < ApplicationRecord
     %w{issueable_type issueable.name title description.to_plain_text fuel_type created_by.display_name created_at updated_by.display_name updated_at}
   end
 
+  def self.issue_type_images
+    { issue: 'exclamation-circle', note: 'sticky-note' }
+  end
+
   def self.issueable_images
     { school_group: 'users-class', school: 'school' }
+  end
+
+  def issue_type_image
+    self.class.issue_type_image(issue_type)
   end
 
   def issueable_image
     issueable ? self.class.issueable_image(issueable) : ''
   end
 
+  def self.issue_type_image(issue_type)
+    issue_type_images[issue_type.to_sym]
+  end
+
   def self.issueable_image(issueable)
     issueable_images[issueable.model_name.to_s.downcase.to_sym]
   end
-
 
   # From rails 6.1 onwards, a default for enums can be specified by setting by _default: :open or rails 7: default: :open on the enum definition
   # But until then we have to do this:

@@ -35,30 +35,35 @@ module Admin
 
     def destroy
       @issue.destroy
-      redirect_index notice: 'was successfully deleted'
+      redirect_back_or_index notice: 'was successfully deleted'
     end
 
     def resolve
-      notice = "#{@issue.issue_type.capitalize} was successfully resolved."
+      @issue = Issue.find(params[:issue_id]) # Shouldn't have to do this
+      notice = "was successfully resolved"
       unless @issue.resolve!(updated_by: current_user)
         notice = "Can only resolve issues (and not notes)."
       end
-      redirect_back fallback_location: issueable_index, notice: notice
+      redirect_back_or_index notice: notice
     end
 
     private
 
     def redirect_index(notice:)
-      redirect_to issueable_url, notice: issueable_notice(notice)
+      redirect_to issueable_index_url, notice: issueable_notice(notice)
     end
 
-    def issueable_index
-      @issueable ? url_for([:admin, @issueable, :issues]) : url_for([:admin, :issues])
+    def redirect_back_or_index(notice:)
+      redirect_back fallback_location: issueable_index_url, notice: issueable_notice(notice)
     end
 
-    def issueable_notice(notice: '')
+    def issueable_index_url
+      @issue.issueable ? polymorphic_url([:admin, @issue.issueable, Issue]) : polymorphic_url([:admin, Issue])
+    end
+
+    def issueable_notice(notice)
       issueable_notice = "#{@issue.issue_type.capitalize} #{notice}"
-      issueable_notice = "#{@issueable.model_name.human} #{issueable_notice}" if @issueable
+      issueable_notice = "#{@issue.issueable.model_name.human} #{issueable_notice}" if @issue.issueable
       return issueable_notice
     end
 

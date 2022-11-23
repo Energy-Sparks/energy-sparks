@@ -1,4 +1,4 @@
-<%= render 'header', title: issueable_icon(@issueable).html_safe + (@issueable ? " #{@issueable.name}" : '') + " Issues & Notes", issue: nil, issueable: @issueable do %>
+<%= render 'header', title: issueable_icon(@issueable).html_safe + ' ' + (@issueable.try(:name) || ' All') + " Issues & Notes" do %>
   <% if @issueable %>
     <% school_group = @issueable.school_group || @issueable %>
     <%= header_nav_link "#{school_group.name} group", admin_school_group_path(school_group) %>
@@ -7,8 +7,8 @@
 
 <% if @issueable %>
   <p>
-    <%= link_to "#{fa_icon('exclamation-circle text-secondary')} New Issue".html_safe, url_for([:new, :admin, @issueable, :issue, issue_type: :issue]), class: 'btn btn-primary btn-sm' %>
-    <%= link_to "#{fa_icon('sticky-note text-secondary')} New Note".html_safe, url_for([:new, :admin, @issueable, :issue, issue_type: :note]), class: 'btn btn-primary btn-sm' %>
+    <%= link_to "#{issue_type_icon(:issue)} New Issue".html_safe, new_polymorphic_path([:admin, @issueable, :issue], issue_type: :issue), class: 'btn btn-primary btn-sm' %>
+    <%= link_to "#{issue_type_icon(:note)} New Note".html_safe, new_polymorphic_path([:admin, @issueable, :issue], issue_type: :note), class: 'btn btn-primary btn-sm' %>
   </p>
 <% end %>
 

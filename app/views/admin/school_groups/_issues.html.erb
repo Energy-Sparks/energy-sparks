@@ -13,7 +13,7 @@
   <tbody>
     <% school_group.school_issues.issue.status_open.by_pinned.by_updated_at.each do |issue| %>
       <tr>
-        <td><%= issue_type_icon(issue) %></td>
+        <td><%= issue_type_icon(issue.issue_type) %></td>
         <td><%= link_to issue.title, polymorphic_path([:admin, issue.issueable, issue]) %> <%= fa_icon('thumbtack text-secondary') if issue.pinned? %></td>
         <td><%= link_to issue.issueable.name, polymorphic_path([:admin, issue.issueable, Issue]) %></td>
         <td><%= render 'admin/issues/fuel_type', issue: issue %></td>

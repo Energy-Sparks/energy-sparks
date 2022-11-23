@@ -1,7 +1,7 @@
 <div class="row p-2">
   <div class="admin-issue col-md-12 bg-light border-left rounded border-6 <%= issue.issue? ? "border-danger" : "border-warning" %>">
     <h4>
-      <%= issue_type_icon(issue) %> <%= issue.title %>
+      <%= issue_type_icon(issue.issue_type) %> <%= issue.title %>
       <div class="float-right">
         <small>
           <%= render 'owned_by', issue: issue %>
@@ -18,12 +18,12 @@
       <%= render 'fuel_type', issue: issue %>
       <%= render 'status', issue: issue %>
       <span class='float-right'>
-          <%= link_to 'Resolve', admin_issue_resolve_path(issue), method: :post, class: 'btn btn-info btn-sm' if issue.resolvable? %>
+          <%= link_to 'Resolve', polymorphic_path([:admin, @issueable, issue, :resolve]), method: :post, class: 'btn btn-info btn-sm' if issue.resolvable? %>
         <% if index %>
-          <%= link_to 'View', admin_issue_path(issue), class: 'btn btn-info btn-sm' %>
+          <%= link_to 'View', polymorphic_path([:admin, @issueable, issue]), class: 'btn btn-info btn-sm' %>
         <% end %>
-        <%= link_to 'Edit', edit_admin_issue_path(issue), class: 'btn btn-info btn-sm' %>
-        <%= link_to 'Delete', admin_issue_path(issue), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
+        <%= link_to 'Edit', edit_polymorphic_path([:admin, @issueable, issue]), class: 'btn btn-info btn-sm' %>
+        <%= link_to 'Delete', polymorphic_path([:admin, @issueable, issue]), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
       </span>
     </div>
     <div class="bg-white p-2 my-2"><%= issue.description %></div>
