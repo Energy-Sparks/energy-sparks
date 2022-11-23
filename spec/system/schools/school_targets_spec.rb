@@ -98,6 +98,15 @@ RSpec.shared_examples "managing targets" do
         expect(school.most_recent_target.target_date).to eql last_year.next_year
       end
 
+      it 'adds observation for target' do
+        click_on 'Set this target'
+        school.reload
+        expect(school.current_target.observations.size).to eql 1
+        expect(school.current_target.observations.first.observation_type).to eql "school_target"
+        expect(school.current_target.observations.first.school).to eql school
+        expect(school.current_target.observations.first.points).to eql 0
+      end
+
     end
 
     context "with only electricity meters" do

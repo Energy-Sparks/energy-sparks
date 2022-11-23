@@ -5,8 +5,10 @@
 #  created_at               :datetime         not null
 #  electricity              :float
 #  electricity_progress     :json
+#  electricity_report       :jsonb
 #  gas                      :float
 #  gas_progress             :json
+#  gas_report               :jsonb
 #  id                       :bigint(8)        not null, primary key
 #  report_last_generated    :datetime
 #  revised_fuel_types       :string           default([]), not null, is an Array
@@ -14,6 +16,7 @@
 #  start_date               :date
 #  storage_heaters          :float
 #  storage_heaters_progress :json
+#  storage_heaters_report   :jsonb
 #  target_date              :date
 #  updated_at               :datetime         not null
 #
@@ -28,6 +31,9 @@
 class SchoolTarget < ApplicationRecord
   belongs_to :school
 
+  #for timeline entry
+  has_many :observations, dependent: :destroy
+
   validates_presence_of :school, :target_date, :start_date
   validate :must_have_one_target
 
@@ -39,6 +45,7 @@ class SchoolTarget < ApplicationRecord
   scope :currently_active, -> { where('start_date <= ? and target_date <= ?', Time.zone.today, Time.zone.today.next_year) }
 
   before_save :adjust_target_date
+  after_save :add_observation
 
   def current?
     Time.zone.now >= start_date && Time.zone.now <= target_date
@@ -118,5 +125,15 @@ class SchoolTarget < ApplicationRecord
 
   def adjust_target_date
     self.target_date = self.start_date.next_year
+  end
+
+  def add_observation
+    Observation.create!(
+      school: school,
+      observation_type: :school_target,
+      school_target: self,
+      at: start_date,
+      points: 0
+    )
   end
 end
