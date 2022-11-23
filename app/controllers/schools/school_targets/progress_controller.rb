@@ -40,7 +40,7 @@ module Schools
           begin
             @recent_data = service.recent_data?
             @progress = service.progress
-            @this_month_target = @progress.cumulative_targets_kwh[this_month]
+            @latest_progress = latest_progress
             #the analytics can return a report with >12 months
             #but we only want to report on a year at a time
             @reporting_months = @progress.months[0..11]
@@ -62,7 +62,7 @@ module Schools
           render :current
         else
           @progress = @school_target.saved_progress_report_for(@fuel_type)
-          @this_month_target = @progress.cumulative_targets_kwh[this_month]
+          @latest_progress = latest_progress
 
           #the analytics can return a report with >12 months
           #but we only want to report on a year at a time
@@ -71,13 +71,14 @@ module Schools
         end
       end
 
-      def this_month
-        #if target is expired, then use the final month, otherwise report on
-        #current progress
+      #if target is expired, then use the final month, otherwise report on
+      #latest current progress
+      def latest_progress
         if @school_target.expired?
-          @school_target.target_date.prev_month.beginning_of_month
+          final_month = @school_target.target_date.prev_month.beginning_of_month
+          @progress.cumulative_performance[final_month]
         else
-          Time.zone.today.beginning_of_month
+          @progress.current_cumulative_performance_versus_synthetic_last_year
         end
       end
 

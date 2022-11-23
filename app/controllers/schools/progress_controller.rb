@@ -22,7 +22,7 @@ module Schools
 
     def storage_heater
       @school_target = @school.most_recent_target
-      redirect_to storage_heater_school_school_target_progress_index_path
+      redirect_to storage_heater_school_school_target_progress_index_path(@school, @school_target)
     end
   end
 end
