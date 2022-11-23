@@ -48,15 +48,15 @@ module Targets
     end
 
     def enough_data_for_electricity?
-      return @school.has_electricity?
+      @school.has_electricity?
     end
 
     def enough_data_for_gas?
-      return @school.has_gas?
+      @school.has_gas?
     end
 
     def enough_data_for_storage_heater?
-      return @school.has_storage_heaters?
+      @school.has_storage_heaters?
     end
 
     private
