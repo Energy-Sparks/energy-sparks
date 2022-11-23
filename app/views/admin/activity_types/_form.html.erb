@@ -12,7 +12,6 @@
 
   <%= f.input :activity_category_id, as: :select, collection: ActivityCategory.all, include_blank: false %>
 
-
   <%= render 'admin/shared/locale_tabs', f: f, field: :image do |locale| %>
     <%= f.label 'Image' %>
     <p class="small">This image will appear in the right-hand panel next to both non-specific and school-specific descriptions.</p>
@@ -23,9 +22,10 @@
           <%= image_tag f.object.send(t_image), width: '300px' %>
         <% else %>
           <%= image_tag '1x1.png' %>
-        <% end %>      </div>
+        <% end %>
+      </div>
     </div>
-    <%= f.input :image, label: false %>
+    <%= f.input t_field(:image, locale), label: false %>
   <% end %>
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :summary do |locale| %>
