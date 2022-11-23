@@ -15,7 +15,6 @@
 class ActivityCategory < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
-  include TranslatableAttachment
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :description, type: :string, fallbacks: { cy: :en }
 
@@ -23,7 +22,7 @@ class ActivityCategory < ApplicationRecord
   validates_presence_of :name
   validates_uniqueness_of :name
 
-  t_has_one_attached :image
+  has_one_attached :image
 
   scope :by_name, -> { i18n.order(name: :asc) }
   scope :featured, -> { where(featured: true) }
