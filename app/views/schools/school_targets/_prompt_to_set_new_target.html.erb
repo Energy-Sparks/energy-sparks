@@ -1,0 +1,10 @@
+<% if !school_target.school.has_current_target? %>
+  <div class="flex-wrap curved-border alert text-dark bg-neutral">
+    <div class="col-md-2">
+      <%= link_to "Set a new target", new_school_school_target_path(school_target.school), class: "btn btn-light rounded-pill" %>
+    </div>
+    <div class="col">
+      <span class="align-middle">You set a target to reduce your energy usage by <%= school_target.target_date.strftime("%B %Y") %>. It's now time to review your progress and set a new target.</span>
+    </div>
+  </div>
+<% end %>
