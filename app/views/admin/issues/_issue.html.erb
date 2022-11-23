@@ -1,7 +1,7 @@
 <div class="row p-2">
   <div class="admin-issue col-md-12 bg-light border-left rounded border-6 <%= issue.issue? ? "border-danger" : "border-warning" %>">
     <h4>
-      <%= render 'issue_type_icon', issue: issue %> <%= issue.title %>
+      <%= issue_type_icon(issue) %> <%= issue.title %>
       <div class="float-right">
         <small>
           <%= render 'owned_by', issue: issue %>
