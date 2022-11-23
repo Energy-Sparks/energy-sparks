@@ -63,7 +63,6 @@ module Schools
         else
           @progress = @school_target.saved_progress_report_for(@fuel_type)
           @latest_progress = latest_progress
-
           #the analytics can return a report with >12 months
           #but we only want to report on a year at a time
           @reporting_months = @progress.months[0..11]
@@ -76,7 +75,7 @@ module Schools
       def latest_progress
         if @school_target.expired?
           final_month = @school_target.target_date.prev_month.beginning_of_month
-          @progress.cumulative_performance[final_month]
+          @progress.cumulative_performance_versus_synthetic_last_year[final_month]
         else
           @progress.current_cumulative_performance_versus_synthetic_last_year
         end

@@ -10,9 +10,9 @@ describe 'target progress report', type: :system do
   let!(:electricity_progress)     { build(:fuel_progress, fuel_type: :electricity, progress: 0.99, target: 20, usage: 15) }
   let!(:school_target)            { create(:school_target, school: school, electricity_progress: electricity_progress) }
 
-  let(:january)                   { Date.new(Date.today.year, 1, 1) }
-  let(:february)                  { Date.new(Date.today.year, 2, 1) }
-  let(:months)                    { [january, february] }
+  let(:first)                   { Date.new(Date.today.year, 1, 1) }
+  let(:second)                  { Date.new(Date.today.year, 2, 1) }
+  let(:months)                    { [first, second] }
   let(:fuel_type)                 { :electricity }
 
   let(:monthly_usage_kwh)         { [10,20] }
@@ -76,6 +76,16 @@ describe 'target progress report', type: :system do
       expect(page).to have_current_path(school_path(school))
     end
 
+    context 'with error from analytics' do
+      before(:each) do
+        allow_any_instance_of(TargetsService).to receive(:progress).and_raise(StandardError.new('test requested'))
+      end
+      it 'handles errors' do
+        visit electricity_school_progress_index_path(school)
+        expect(page).to have_content("Unfortunately due to an error we are currently unable to display your detailed progress report")
+      end
+    end
+
     context 'with current target' do
       before(:each) do
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
@@ -84,18 +94,29 @@ describe 'target progress report', type: :system do
         visit electricity_school_school_target_progress_index_path(school, school_target)
       end
 
+      it 'includes summary of the target dates' do
+        expect(page).to have_content("Your school has set a target to reduce its electricity usage by #{school_target.electricity}% between #{school_target.start_date.to_s(:es_full)} and #{school_target.target_date.to_s(:es_full)}")
+      end
+
       it 'shows the electricity progress report with expected data' do
         expect(page).to have_content('Tracking progress')
-        expect(page).to have_content('Jan')
-        expect(page).to have_content('Feb')
+        expect(page).to have_content(first.strftime("%b"))
+        expect(page).to have_content(second.strftime("%b"))
         expect(page).to have_content('-25%')
         expect(page).to have_content('+35%')
         expect(page).to have_content('-99%')
         expect(page).to have_content('+99%')
       end
 
-      it 'says whether I am achieving my target' do
-        pry
+      it 'says I am not achieving my target' do
+        expect(page).to have_content("Unfortunately you are using +99% more electricity than last year")
+      end
+
+      context 'if I am achieving my target' do
+        let(:cumulative_performance)    { [-0.99,-0.99] }
+        it 'says I am' do
+          expect(page).to have_content("Well done, you are using -99% less electricity than last year")
+        end
       end
 
       it 'links to this school target' do
@@ -130,6 +151,9 @@ describe 'target progress report', type: :system do
         let(:recent_data)   { false }
         it 'displays a warning electricity progress' do
           expect(page).to have_content("We have not received data for your electricity usage for over thirty days")
+        end
+        it 'does not say whether I am achieving my target' do
+          expect(page).to_not have_content("Unfortunately you are using +99% more electricity than last year")
         end
       end
 
@@ -216,24 +240,52 @@ describe 'target progress report', type: :system do
     end
 
     context 'with expired target' do
-      it 'says whether I achieved my target'
-      it 'has a foot note to indicate this is a snapshot'
-      it 'links to this school target'
-      it 'does not show warning about old data'
-      it 'does not show charts'
-    end
-  end
+      let(:start_date)      { Date.today.last_year.beginning_of_month}
+      let(:target_date)     { Date.today.beginning_of_month}
 
-  context 'as an admin' do
-    let(:user)                     { create(:admin) }
-    context 'with error from analytics' do
+      let(:first)                   { start_date }
+      let(:second)                  { target_date.prev_month.beginning_of_month }
+
+      #version of the target with a saved progress report
+      let!(:school_target)  { create(:school_target, school: school, electricity_progress: electricity_progress, electricity_report: progress, start_date: start_date, target_date: target_date) }
+
       before(:each) do
-        allow_any_instance_of(TargetsService).to receive(:progress).and_raise(StandardError.new('test requested'))
+        visit electricity_school_school_target_progress_index_path(school, school_target)
       end
-      it 'handles errors' do
-        visit electricity_school_progress_index_path(school)
-        expect(page).to have_content("Unfortunately due to an error we are currently unable to display your detailed progress report")
+
+      it 'includes summary of the target dates' do
+        expect(page).to have_content("Your school set a target to reduce its electricity usage by #{school_target.electricity}% between #{school_target.start_date.to_s(:es_full)} and #{school_target.target_date.to_s(:es_full)}")
       end
+
+      it 'shows the electricity progress report with expected data' do
+        expect(page).to have_content('Results of reducing')
+        expect(page).to have_content(first.strftime("%b"))
+        expect(page).to have_content(second.strftime("%b"))
+        expect(page).to have_content('-25%')
+        expect(page).to have_content('+35%')
+        expect(page).to have_content('-99%')
+        expect(page).to have_content('+99%')
+      end
+
+      it 'says I am not achieving my target' do
+        expect(page).to have_content("Unfortunately you didn't achieve your goal to reduce your electricity usage")
+      end
+
+      context 'if I am achieving my target' do
+        let(:cumulative_performance)    { [-0.99,-0.99] }
+        it 'says I am' do
+          expect(page).to have_content("Well done! You managed to reduce your electricity usage by -99%")
+        end
+      end
+
+      it 'does not show the charts' do
+        expect(page).to_not have_content("Progress charts")
+      end
+
+      it 'has a footnote to indicate this is a snapshot' do
+        expect(page).to have_content("Any later updates to your school configuration or data will not be reflected in these historical results.")
+      end
+
     end
   end
 end

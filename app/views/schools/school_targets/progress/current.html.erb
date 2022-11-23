@@ -14,17 +14,17 @@
   <% if @latest_progress %>
     <% if @latest_progress == 0.0 %>
       <p>
-        Unfortunately you are currently using as much <%= human_fuel_type(@fuel_type) %> as you did last year.
+        Unfortunately you are using as much <%= human_fuel_type(@fuel_type) %> as you did last year.
       </p>
     <% elsif @latest_progress > 0.0 %>
       <%= @latest_progress %>
       <p>
-        Unfortunately you are currently using
+        Unfortunately you are using
         <%= format_target(@latest_progress, :relative_percent) %> more <%= human_fuel_type(@fuel_type) %> than last year.
       </p>
     <% else %>
       <p>
-        Well done, you are currently using
+        Well done, you are using
         <%= format_target(@latest_progress, :relative_percent) %> less <%= human_fuel_type(@fuel_type) %> than last year.
       </p>
     <% end %>
@@ -87,44 +87,7 @@
     </tbody>
   </table>
 
-  <h5 class="font-weight-bold">Footnotes</h5>
-
-  <div class="ml-2">
-    <% if @show_storage_heater_notes %>
-      <p>
-        This report only shows progress on reducing your electricity usage. Your <%= link_to 'storage heater progress report', storage_heater_school_progress_index_path(@school) %> can be viewed separately.
-      </p>
-    <% end %>
-
-    <p>
-    We use colour coding to indicate when you have <span class="bg-positive-dark">met your target</span> or <span class="bg-negative-dark">failed to meet your target</span> in a given month
-    </p>
-
-    <% if @progress.partial_consumption_data? %>
-      <p>Consumption data <span class="partial-month">shown in red</span> indicates a month in which we have only partial data. Your consumption and performance figures will not be accurate until the end of the month. Or until we receive additional historical data.</p>
-    <% end %>
-
-    <% if @progress.reporting_period_before_consumption_data? %>
-      <% if @school.configuration.meter_start_date(@fuel_type).present? %>
-        <p>We only have data on your <%= @fuel_type.to_s.humanize(capitalize: false) %> consumption from <%= @school.configuration.meter_start_date(@fuel_type).strftime("%b %Y") %>. The report will only show your consumption for a portion of your target period.</p>
-      <% else %>
-        <p>We only have limited data on your actual <%= @fuel_type.to_s.humanize(capitalize: false) %> consumption. The report will only show your consumption for a portion of your target period.</p>
-      <% end %>
-    <% end %>
-
-    <% if @progress.targets_derived_from_synthetic_data? %>
-      <p>
-        Monthly targets <i>shown in italics</i> have been created from the <%= link_to 'annual estimate', school_estimated_annual_consumptions_path(@school) %> you provided, rather than your historical data. Their accuracy will depend on the quality of your estimate.
-      </p>
-    <% end %>
-
-    <% if @progress.partial_target_data? %>
-      <p>
-        We only have limited historical consumption data for your school, so we cannot currently calculate a full set of monthly targets or progress.
-        You can <%= link_to 'provide us with an annual estimate', school_estimated_annual_consumptions_path(@school) %> to see more detail.
-      </p>
-    <% end %>
-  </div>
+  <%= render 'footnotes', fuel_type: @fuel_type, school_target: @school_target, show_storage_heater_notes: @show_storage_heater_notes, progress: @progress %>
 
   <h3>Progress charts</h3>
 

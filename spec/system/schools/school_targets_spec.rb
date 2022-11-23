@@ -357,7 +357,7 @@ RSpec.shared_examples "managing targets" do
     end
 
     it 'includes summary of the target dates' do
-      expect(page).to have_content("Your school set a target to reduce its energy usage between between #{target.start_date.to_s(:es_full)} and #{target.target_date.to_s(:es_full)}")
+      expect(page).to have_content("Your school set a target to reduce its energy usage between #{target.start_date.to_s(:es_full)} and #{target.target_date.to_s(:es_full)}")
     end
 
     it "prompts to create a new target" do
