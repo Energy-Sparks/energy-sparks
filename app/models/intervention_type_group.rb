@@ -13,7 +13,6 @@
 class InterventionTypeGroup < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
-
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :description, type: :string, fallbacks: { cy: :en }
 
