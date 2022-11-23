@@ -46,6 +46,7 @@ class SchoolTarget < ApplicationRecord
 
   before_save :adjust_target_date
   after_save :add_observation
+  after_update :ensure_observation_date_is_correct
 
   def current?
     Time.zone.now >= start_date && Time.zone.now <= target_date
@@ -135,5 +136,11 @@ class SchoolTarget < ApplicationRecord
       at: start_date,
       points: 0
     )
+  end
+
+  def ensure_observation_date_is_correct
+    observations.each do |observation|
+      observation.update!(at: start_date)
+    end
   end
 end

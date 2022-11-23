@@ -102,9 +102,6 @@ RSpec.shared_examples "managing targets" do
         click_on 'Set this target'
         school.reload
         expect(school.current_target.observations.size).to eql 1
-        expect(school.current_target.observations.first.observation_type).to eql "school_target"
-        expect(school.current_target.observations.first.school).to eql school
-        expect(school.current_target.observations.first.points).to eql 0
       end
 
     end
