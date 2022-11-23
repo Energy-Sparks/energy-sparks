@@ -36,38 +36,46 @@ module Schools
         @show_storage_heater_notes = show_storage_heater_notes(@school, @school_target, @fuel_type)
 
         if @school_target.current?
-          service = TargetsService.new(aggregate_school, @fuel_type)
-          begin
-            @recent_data = service.recent_data?
-            @progress = service.progress
-            @latest_progress = latest_progress
-            #the analytics can return a report with >12 months
-            #but we only want to report on a year at a time
-            @reporting_months = @progress.months[0..11]
-            @suggest_estimate_important = suggest_estimate_for_fuel_type?(@fuel_type, check_data: true)
-            @debug_content = service.analytics_debug_info if current_user.present? && current_user.analytics?
-          rescue => e
-            Rails.logger.error e
-            Rails.logger.error e.backtrace.join("\n")
-            Rollbar.error(e, scope: :progress_report, school_id: @school.id, school: @school.name, fuel_type: @fuel_type)
-            @debug_error = e.message
-            begin
-              @debug_problem = TargetsService.new(aggregate_school, @fuel_type).target_meter_calculation_problem
-              @bad_estimate = bad_estimate?(@debug_problem[:type])
-            rescue => ex
-              Rails.logger.error ex
-              Rollbar.error(ex, scope: :target_meter_calculation_problem, school_id: @school.id, school: @school.name, fuel_type: @fuel_type)
-            end
-          end
-          render :current
+          render_school_target_current
         else
-          @progress = @school_target.saved_progress_report_for(@fuel_type)
+          render_school_target_expired
+        end
+      end
+
+      def render_school_target_current
+        service = TargetsService.new(aggregate_school, @fuel_type)
+        begin
+          @recent_data = service.recent_data?
+          @progress = service.progress
           @latest_progress = latest_progress
           #the analytics can return a report with >12 months
           #but we only want to report on a year at a time
           @reporting_months = @progress.months[0..11]
-          render :expired
+          @suggest_estimate_important = suggest_estimate_for_fuel_type?(@fuel_type, check_data: true)
+          @debug_content = service.analytics_debug_info if current_user.present? && current_user.analytics?
+        rescue => e
+          Rails.logger.error e
+          Rails.logger.error e.backtrace.join("\n")
+          Rollbar.error(e, scope: :progress_report, school_id: @school.id, school: @school.name, fuel_type: @fuel_type)
+          @debug_error = e.message
+          begin
+            @debug_problem = TargetsService.new(aggregate_school, @fuel_type).target_meter_calculation_problem
+            @bad_estimate = bad_estimate?(@debug_problem[:type])
+          rescue => ex
+            Rails.logger.error ex
+            Rollbar.error(ex, scope: :target_meter_calculation_problem, school_id: @school.id, school: @school.name, fuel_type: @fuel_type)
+          end
         end
+        render :current
+      end
+
+      def render_school_target_expired
+        @progress = @school_target.saved_progress_report_for(@fuel_type)
+        @latest_progress = latest_progress
+        #the analytics can return a report with >12 months
+        #but we only want to report on a year at a time
+        @reporting_months = @progress.months[0..11]
+        render :expired
       end
 
       #if target is expired, then use the final month, otherwise report on
