@@ -5,6 +5,7 @@
 #  created_at                    :datetime         not null
 #  default_chart_preference      :integer          default("default"), not null
 #  default_dark_sky_area_id      :bigint(8)
+#  default_issues_admin_user_id  :bigint(8)
 #  default_scoreboard_id         :bigint(8)
 #  default_solar_pv_tuos_area_id :bigint(8)
 #  default_template_calendar_id  :bigint(8)
@@ -18,12 +19,14 @@
 #
 # Indexes
 #
+#  index_school_groups_on_default_issues_admin_user_id   (default_issues_admin_user_id)
 #  index_school_groups_on_default_scoreboard_id          (default_scoreboard_id)
 #  index_school_groups_on_default_solar_pv_tuos_area_id  (default_solar_pv_tuos_area_id)
 #  index_school_groups_on_default_template_calendar_id   (default_template_calendar_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (default_issues_admin_user_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (default_scoreboard_id => scoreboards.id)
 #  fk_rails_...  (default_solar_pv_tuos_area_id => areas.id)
 #  fk_rails_...  (default_template_calendar_id => calendars.id) ON DELETE => nullify

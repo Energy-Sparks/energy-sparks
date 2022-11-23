@@ -1075,10 +1075,12 @@ ActiveRecord::Schema.define(version: 2022_11_23_164247) do
     t.boolean "visible", default: true
     t.bigint "audit_id"
     t.boolean "involved_pupils", default: false, null: false
+    t.bigint "school_target_id"
     t.index ["activity_id"], name: "index_observations_on_activity_id"
     t.index ["audit_id"], name: "index_observations_on_audit_id"
     t.index ["intervention_type_id"], name: "index_observations_on_intervention_type_id"
     t.index ["school_id"], name: "index_observations_on_school_id"
+    t.index ["school_target_id"], name: "index_observations_on_school_target_id"
   end
 
   create_table "partners", force: :cascade do |t|
@@ -1840,6 +1842,7 @@ ActiveRecord::Schema.define(version: 2022_11_23_164247) do
   add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "audits"
   add_foreign_key "observations", "intervention_types", on_delete: :restrict
+  add_foreign_key "observations", "school_targets"
   add_foreign_key "observations", "schools", on_delete: :cascade
   add_foreign_key "programmes", "programme_types", on_delete: :cascade
   add_foreign_key "programmes", "schools", on_delete: :cascade

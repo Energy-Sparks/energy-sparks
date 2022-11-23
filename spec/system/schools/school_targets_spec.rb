@@ -98,6 +98,12 @@ RSpec.shared_examples "managing targets" do
         expect(school.most_recent_target.target_date).to eql last_year.next_year
       end
 
+      it 'adds observation for target' do
+        click_on 'Set this target'
+        school.reload
+        expect(school.current_target.observations.size).to eql 1
+      end
+
     end
 
     context "with only electricity meters" do
@@ -261,7 +267,7 @@ RSpec.shared_examples "managing targets" do
           #Extra check for debugging flickering test
           expect(Schools::Configuration.count).to eql 1
           expect(School.first.has_electricity?).to be true
-          expect(page).to have_link("View monthly report", href: electricity_school_progress_index_path(test_school))
+          expect(page).to have_link("View monthly report", href: electricity_school_school_target_progress_index_path(test_school, target))
         end
 
         it 'shows detailed progress data' do
@@ -357,7 +363,7 @@ RSpec.shared_examples "managing targets" do
     end
 
     it 'includes summary of the target dates' do
-      expect(page).to have_content("Your school set a target to reduce its energy usage between between #{target.start_date.to_s(:es_full)} and #{target.target_date.to_s(:es_full)}")
+      expect(page).to have_content("Your school set a target to reduce its energy usage between #{target.start_date.to_s(:es_full)} and #{target.target_date.to_s(:es_full)}")
     end
 
     it "prompts to create a new target" do
@@ -448,7 +454,7 @@ RSpec.shared_examples "managing targets" do
 
       it 'includes summary of the target dates' do
         refresh
-        expect(page).to have_content("Your school set a target to reduce its energy usage between between #{target.start_date.to_s(:es_full)} and #{target.target_date.to_s(:es_full)}")
+        expect(page).to have_content("Your school set a target to reduce its energy usage between #{target.start_date.to_s(:es_full)} and #{target.target_date.to_s(:es_full)}")
       end
     end
 
@@ -556,7 +562,7 @@ RSpec.describe 'school targets', type: :system do
        expect(page).to have_content("Reducing your energy usage by")
      end
      it 'shows me a link to the report' do
-       expect(page).to have_link("View monthly report", href: electricity_school_progress_index_path(school))
+       expect(page).to have_link("View monthly report", href: electricity_school_school_target_progress_index_path(school, target))
      end
      it 'doesnt have a revise link' do
        expect(page).to_not have_link("Revise your target")
@@ -581,7 +587,7 @@ RSpec.describe 'school targets', type: :system do
        expect(page).to have_content("Reducing your energy usage by")
      end
      it 'shows me a link to the report' do
-       expect(page).to have_link("View monthly report", href: electricity_school_progress_index_path(school))
+       expect(page).to have_link("View monthly report", href: electricity_school_school_target_progress_index_path(school, target))
      end
      it 'doesnt have a revise link' do
        expect(page).to_not have_link("Revise your target")
