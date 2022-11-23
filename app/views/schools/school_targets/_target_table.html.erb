@@ -18,15 +18,15 @@
         <tbody>
           <% if school_target.electricity.present? %>
             <%= render "target_table_row", fuel_type: :electricity, school_target: school_target, fuel_progress: progress_summary.electricity_progress, overview_data: overview_data,
-            report_link: electricity_school_progress_index_path(school_target.school) %>
+            report_link: electricity_school_school_target_progress_index_path(school_target.school, school_target) %>
           <% end %>
           <% if school_target.gas.present? %>
             <%= render "target_table_row", fuel_type: :gas, school_target: school_target, fuel_progress: progress_summary.gas_progress, overview_data: overview_data,
-            report_link: gas_school_progress_index_path(school_target.school) %>
+            report_link: gas_school_school_target_progress_index_path(school_target.school, school_target) %>
           <% end %>
           <% if school_target.storage_heaters.present? %>
             <%= render "target_table_row", fuel_type: :storage_heaters, school_target: school_target, fuel_progress: progress_summary.storage_heater_progress, overview_data: overview_data,
-            report_link: storage_heater_school_progress_index_path(school_target.school) %>
+            report_link: storage_heater_school_school_target_progress_index_path(school_target.school, school_target) %>
           <% end %>
         </tbody>
       </table>
