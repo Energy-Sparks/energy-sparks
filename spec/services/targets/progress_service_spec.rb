@@ -7,9 +7,8 @@ RSpec.describe Targets::ProgressService do
   let!(:school_target)            { create(:school_target, school: school, electricity_progress: electricity_progress) }
 
   let(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true) }
-  let(:school_target_fuel_types)  { ["electricity"] }
 
-  let!(:school_config)            { create(:configuration, school: school, fuel_configuration: fuel_electricity, school_target_fuel_types: school_target_fuel_types) }
+  let!(:school_config)            { create(:configuration, school: school, fuel_configuration: fuel_electricity) }
 
   let!(:service)                  { Targets::ProgressService.new(school) }
 
@@ -41,25 +40,12 @@ RSpec.describe Targets::ProgressService do
   end
 
   context '#display_progress_for_fuel_type' do
-    it 'checks for fuel type and enough data' do
+    it 'checks only for fuel type' do
       expect( service.display_progress_for_fuel_type?(:electricity) ).to be true
       expect( service.display_progress_for_fuel_type?(:gas) ).to be false
       expect( service.display_progress_for_fuel_type?(:storage_heaters) ).to be false
     end
 
-    context 'and v2 school targets are active' do
-      before(:each) do
-        expect(EnergySparks::FeatureFlags).to receive(:active?).at_least(:once).with(:school_targets_v2).and_return(true)
-        school.configuration.update(school_target_fuel_types: [])
-      end
-
-      it 'checks only for fuel type' do
-        expect( service.display_progress_for_fuel_type?(:electricity) ).to be true
-        expect( service.display_progress_for_fuel_type?(:gas) ).to be false
-        expect( service.display_progress_for_fuel_type?(:storage_heaters) ).to be false
-      end
-
-    end
   end
 
 end

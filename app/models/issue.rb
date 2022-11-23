@@ -1,3 +1,33 @@
+# == Schema Information
+#
+# Table name: issues
+#
+#  created_at    :datetime         not null
+#  created_by_id :bigint(8)
+#  fuel_type     :integer
+#  id            :bigint(8)        not null, primary key
+#  issue_type    :integer          default("issue"), not null
+#  owned_by_id   :bigint(8)
+#  pinned        :boolean          default(FALSE)
+#  school_id     :bigint(8)
+#  status        :integer          default("open"), not null
+#  title         :string           not null
+#  updated_at    :datetime         not null
+#  updated_by_id :bigint(8)
+#
+# Indexes
+#
+#  index_issues_on_created_by_id  (created_by_id)
+#  index_issues_on_owned_by_id    (owned_by_id)
+#  index_issues_on_school_id      (school_id)
+#  index_issues_on_updated_by_id  (updated_by_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (created_by_id => users.id)
+#  fk_rails_...  (owned_by_id => users.id)
+#  fk_rails_...  (updated_by_id => users.id)
+#
 class Issue < ApplicationRecord
   include CsvExportable
 
