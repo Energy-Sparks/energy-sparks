@@ -1,4 +1,13 @@
-<% unless observations.empty? %>
+<% if observations.empty? %>
+  <div class="row justify-content-between">
+    <div class="col-8">
+      <h3>How did you achieve your target?</h3>
+      <p>
+        You didn't record any energy saving activities or actions between <%= nice_dates(@school_target.start_date) %> and <%= nice_dates(@school_target.target_date) %>.
+      </p>
+    </div>
+  </div>
+<% else %>
   <div class="row justify-content-between">
     <div class="col-8">
       <h3>How did you try to achieve your target?</h3>
@@ -12,13 +21,4 @@
       <%= render 'schools/observations/timeline', observations: observations, show_actions: false%>
     </div>
   </div>
-<% else %>
-<div class="row justify-content-between">
-  <div class="col-8">
-    <h3>How did you achieve your target?</h3>
-    <p>
-      You didn't record any energy saving activities or actions between <%= nice_dates(@school_target.start_date) %> and <%= nice_dates(@school_target.target_date) %>.
-    </p>
-  </div>
-</div>
 <% end %>
