@@ -19,4 +19,9 @@ module TargetsHelper
     return '' unless estimate.present? && value.present?
     value < estimate ? 'text-danger' : ''
   end
+
+  def human_fuel_type(fuel_type, include_storage_heaters: false)
+    return fuel_type.to_s.humanize(capitalize: false) if include_storage_heaters
+    fuel_type == :storage_heaters ? "electricity" : fuel_type.to_s.humanize(capitalize: false)
+  end
 end
