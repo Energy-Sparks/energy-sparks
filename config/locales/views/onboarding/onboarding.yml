@@ -1,0 +1,19 @@
+---
+en:
+  onboarding:
+    show:
+      continue: Continue
+      get_started: To get started, we need to complete the following steps
+      introducing: We are excited to be introducing Energy Sparks to your school, and look forward to working with you to save energy.
+      more_steps: You have a few more steps to complete before we can setup your school
+      start: Start
+      step_1: Create your school administrator account
+      step_2: Gather some information about your school
+      step_3: Get your permission to collect, store, analyse and publish your school's energy data
+      step_4: Add any additional staff or school administrator accounts
+      step_5: Create a pupil account
+      step_6: Final review
+      thanks_for_enrolling_html: Thank you for enrolling <strong>%{school_name}</strong> with Energy Sparks!
+      time_to_complete: The setup process should take less than 10 minutes
+      title: Set up your school on Energy Sparks
+
