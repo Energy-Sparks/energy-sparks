@@ -25,6 +25,7 @@ class InterventionType < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
   include Searchable
+  include TranslatableAttachment
 
   TX_REWRITEABLE_FIELDS = [:description_cy, :download_links_cy].freeze
 
@@ -39,7 +40,7 @@ class InterventionType < ApplicationRecord
   has_many :intervention_type_suggestions
   has_many :suggested_types, through: :intervention_type_suggestions
 
-  has_one_attached :image
+  t_has_one_attached :image
 
   has_many :link_rewrites, as: :rewriteable
 
