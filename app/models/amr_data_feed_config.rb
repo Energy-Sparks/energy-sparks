@@ -43,6 +43,8 @@ class AmrDataFeedConfig < ApplicationRecord
   has_many :amr_data_feed_import_logs
   has_many :meters, -> { distinct }, through: :amr_data_feed_import_logs
 
+  has_rich_text :notes
+
   validates :identifier, :description, uniqueness: true
 
   def map_of_fields_to_indexes(header = nil)
