@@ -62,9 +62,7 @@ module Admin
     end
 
     def issueable_notice(notice)
-      issueable_notice = "#{@issue.issue_type.capitalize} #{notice}"
-      issueable_notice = "#{@issue.issueable.model_name.human} #{issueable_notice}" if @issue.issueable
-      return issueable_notice
+      [@issue.issueable.try(:model_name).try(:human), @issue.issue_type, notice].compact.join(" ").capitalize
     end
 
     def issue_params
