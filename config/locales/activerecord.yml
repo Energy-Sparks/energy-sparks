@@ -40,7 +40,7 @@ en:
       user:
         email: Email
         password: Password
-        password_confirmation: Password Confirmation
+        password_confirmation: Password confirmation
         staff_role_id: Role
     errors:
       messages:
