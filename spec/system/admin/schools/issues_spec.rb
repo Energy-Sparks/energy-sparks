@@ -25,7 +25,7 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
   describe "Viewing school issues admin page" do
     before do
       sign_in(user) if user
-      visit admin_school_issues_url(school)
+      visit url_for([:admin, school, :issues])
     end
 
     context 'when not logged in' do
@@ -48,7 +48,7 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
             before do
               click_link text: /New #{issue_type.capitalize}/
             end
-            it { expect(page).to have_current_path(new_admin_school_issue_path(school, issue_type: issue_type)) }
+            it { expect(page).to have_current_path(new_polymorphic_path([:admin, school, Issue], issue_type: issue_type)) }
             it { expect(page).to have_content("New #{issue_type.capitalize} for #{school.name}")}
 
             it "has default values" do
@@ -97,11 +97,10 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
         end
       end
 
-      context "and editing a issue" do
+      context "and editing an issue" do
         Issue.issue_types.keys.each do |issue_type|
           context "of type #{issue_type}" do
-            let!(:issue) { create(:issue, school: school, issue_type: issue_type, fuel_type: :electricity, created_by: user, owned_by: school_group_issues_admin, pinned: true) }
-            it { expect(page).to have_link('Edit') }
+            let!(:issue) { create(:issue, issueable: school, issue_type: issue_type, fuel_type: :electricity, created_by: user, owned_by: school_group_issues_admin, pinned: true) }
             before do
               click_link("Edit")
             end
@@ -147,7 +146,7 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
       end
 
       context "and viewing index" do
-        let!(:issue) { create(:issue, school: school, issue_type: :issue, fuel_type: :gas, created_by: user, updated_by: user, owned_by: other_issues_admin) }
+        let(:issue) { create(:issue, issueable: school, issue_type: :issue, fuel_type: :gas, created_by: user, updated_by: user, owned_by: other_issues_admin) }
 
         it_behaves_like "a displayed issue" do
           let(:issue_admin) { other_issues_admin }
@@ -158,7 +157,7 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
           before do
             click_link("Delete")
           end
-          it { expect(page).to have_current_path(admin_school_issues_path(school)) }
+          it { expect(page).to have_current_path(polymorphic_path([:admin, school, Issue])) }
           it "does not show removed issue" do
             expect(page).to_not have_content issue.title
           end
@@ -169,7 +168,7 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
           before do
             click_link("View")
           end
-          it { expect(page).to have_current_path(admin_school_issue_path(school, issue)) }
+          it { expect(page).to have_current_path(polymorphic_path([:admin, school, issue])) }
           it_behaves_like "a displayed issue" do
             let(:issue_admin) { other_issues_admin }
           end
@@ -180,7 +179,7 @@ RSpec.describe 'school issues', :issues, type: :system, include_application_help
           before do
             click_link("Resolve")
           end
-          it { expect(page).to have_current_path(admin_school_issues_path(school)) }
+          it { expect(page).to have_current_path(polymorphic_path([:admin, school, Issue])) }
           it "displays issue as closed" do
             expect(page).to have_content "Closed"
           end
