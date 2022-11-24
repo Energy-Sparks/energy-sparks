@@ -35,8 +35,8 @@ module Admin
   private
 
     def intervention_type_group_params
-      translated_params = t_params(InterventionTypeGroup.mobility_attributes)
-      params.require(:intervention_type_group).permit(translated_params, :name, :description, :image, :active, :icon)
+      translated_params = t_params(InterventionTypeGroup.mobility_attributes + InterventionTypeGroup.t_attached_attributes)
+      params.require(:intervention_type_group).permit(translated_params, :name, :description, :active, :icon)
     end
   end
 end
