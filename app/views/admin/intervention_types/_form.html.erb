@@ -25,21 +25,6 @@
     <%= f.input t_field(:image, locale), label: false %>
   <% end %>
 
-
-  <div class="upload-preview">
-    <div class="col-md-3">
-      <% if !f.object.image.blank? %>
-        <%= image_tag f.object.image, width: '300px' %>
-      <% else %>
-        <%= image_tag '1x1.png' %>
-      <% end %>
-    </div>
-  </div>
-
-  <p>
-    <%= f.input :image, label: false %>
-  </p>
-
   <%= render 'admin/shared/locale_tabs', f: f, field: :summary do |locale| %>
     <%= f.input t_field(:summary, locale), label: InterventionType.human_attribute_name(:summary), as: :string %>
     <p class="small">The summary text will appear on lists of intervention types.</p>
