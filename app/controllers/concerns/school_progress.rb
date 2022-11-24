@@ -20,7 +20,7 @@ private
   end
 
   def suggest_estimates_for_fuel_types(check_data: false)
-    if EnergySparks::FeatureFlags.active?(:school_targets_v2) && can?(:manage, EstimatedAnnualConsumption)
+    if can?(:manage, EstimatedAnnualConsumption)
       Targets::SuggestEstimatesService.new(@school).suggestions(check_data: check_data)
     else
       []
@@ -28,7 +28,7 @@ private
   end
 
   def suggest_estimate_for_fuel_type?(fuel_type, check_data: false)
-    if EnergySparks::FeatureFlags.active?(:school_targets_v2) && can?(:manage, EstimatedAnnualConsumption)
+    if can?(:manage, EstimatedAnnualConsumption)
       Targets::SuggestEstimatesService.new(@school).suggest_for_fuel_type?(fuel_type, check_data: check_data)
     else
       false

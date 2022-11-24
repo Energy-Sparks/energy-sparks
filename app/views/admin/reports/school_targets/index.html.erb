@@ -7,6 +7,7 @@ Listing <strong><%= @currently_active %></strong> currently active school target
     <tr>
       <th>School</th>
       <th>Start Date</th>
+      <th>Expired?</th>
       <th>Electricity</th>
       <th>Gas</th>
       <th>Storage heater</th>
@@ -18,6 +19,7 @@ Listing <strong><%= @currently_active %></strong> currently active school target
       <tr>
         <td><%= school_target.school.name %></td>
         <td><%= school_target.start_date %></td>
+        <td><%= y_n(school_target.expired?) %></td>
         <td><%= school_target.electricity %></td>
         <td><%= school_target.gas %></td>
         <td><%= school_target.storage_heaters %></td>
