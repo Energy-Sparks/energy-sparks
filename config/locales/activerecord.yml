@@ -37,6 +37,11 @@ en:
           walking_and_cycling: Walking and cycling
         image: Image
         name: Name
+      user:
+        email: Email
+        password: Password
+        password_confirmation: Password Confirmation
+        staff_role_id: Role
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'
