@@ -32,6 +32,7 @@
         <th>Name</th>
         <th>Email</th>
         <th>Role</th>
+        <th>Staff Role</td>
         <th>Last signed in</th>
         <th>Confirmed?</th>
         <th>Locked?</th>
@@ -46,6 +47,7 @@
             <td><%= user.name %></td>
             <td><%= user.pupil? ? "N/A" : user.email %></td>
             <td><%= user.role.titleize %></td>
+            <td><%= user.staff_role&.title %></td>
             <td><%= display_last_signed_in_as(user) %></td>
             <td><%= user.confirmed? ? 'Y' : 'N' %></td>
             <td><%= user.access_locked? ? 'Y' : '' %></td>

@@ -1,12 +1,10 @@
 ---
 en:
   helpers:
-    select:
-      prompt: Please select
-    submit:
-      create: Create %{model}
-      submit: Save %{model}
-      update: Update %{model}
+    label:
+      user:
+        email: Email
+        password: Password
   languages:
     cy: Welsh
     en: English

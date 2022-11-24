@@ -23,7 +23,7 @@ gem 'pg_search'
 gem 'calculate_in_group'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '2.1.3'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '2.2'
 #gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'aws-eb-test'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
@@ -146,6 +146,7 @@ group :development do
   gem 'scout_apm'
 #  gem 'rack-mini-profiler'
 #  gem 'memory_profiler'
+#  gem 'i18n-debug'
 end
 
 group :test do
