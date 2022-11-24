@@ -117,8 +117,8 @@ en:
   switch_schools_menu:
     switch_school: Switch school
   terms_and_conditions:
+    links_html: "<a href='%{terms_and_conditions_path}' target='_blank'>terms and conditions</a> and <a href='%{privacy_and_cookie_policy_path}' target='_blank'>privacy and cookie policy</a>"
     message: I confirm agreement with the Energy Sparks
-    links_html: <a href='%{terms_and_conditions_path}' target='_blank'>terms and conditions</a> and <a href='%{privacy_and_cookie_policy_path}' target='_blank'>privacy and cookie policy</a>
   timeline:
     view_all_events: View all events
     whats_been_going_on: What's been going on?
