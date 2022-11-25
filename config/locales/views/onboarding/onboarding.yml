@@ -25,6 +25,20 @@ en:
       new:
         add_inset_day: Add inset day
         title: New inset day
+    pupil_account:
+      create: Create pupil account
+      message_1: Pupil accounts allow your pupils to log into Energy Sparks using only a password. No email address is required.
+      message_2: The accounts can be created to be used in classrooms or with eco-teams, one account per classroom or team and the passwords can then be shared with the pupils.
+      message_3: You can create more pupil accounts once your school is activated.
+      name: Name
+      name_hint: This could be the name of a classroom or an eco-team
+      name_placeholder: e.g. %{school_name} classroom password
+      pupil_password: Pupil password
+      pupil_password_hint: Make it memorable and easy for pupils to type
+      pupil_password_placeholder: e.g. superenergysavers
+      title: 'Step 5: Create your pupil account'
+      title_for_update: Update your pupil account
+      update: Update pupil account
     school_details:
       create: Save school details
       message: Tell us about your school so that we can tailor the activities and insights we provide to you and your pupils, so that you can get the best from our service.

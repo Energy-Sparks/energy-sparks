@@ -1,12 +1,12 @@
 <p>
-  Pupil accounts allow your pupils to log into Energy Sparks using only a password. No email address is required.
+  <%= t('onboarding.pupil_account.message_1') %>
 </p>
 <p>
-  The accounts can be created to be used in classrooms or with eco-teams, one account per classroom or team and the passwords can then be shared with the pupils.
+  <%= t('onboarding.pupil_account.message_2') %>
 </p>
 <p>
-  You can create more pupil accounts once your school is activated.
+  <%= t('onboarding.pupil_account.message_3') %>
 </p>
 
-<%= f.input :name, required: :true, hint: 'This could be the name of a classroom or an eco-team', placeholder: "e.g. #{school.name} classroom password" %>
-<%= f.input :pupil_password, as: :string, required: true, placeholder: 'e.g. superenergysavers', hint: 'Make it memorable and easy for pupils to type'%>
+<%= f.input :name, label: t('onboarding.pupil_account.name'), required: :true, hint: t('onboarding.pupil_account.name_hint'), placeholder: t('onboarding.pupil_account.name_placeholder', school_name: school.name) %>
+<%= f.input :pupil_password, label: t('onboarding.pupil_account.pupil_password'), as: :string, required: true, placeholder: t('onboarding.pupil_account.pupil_password_placeholder'), hint: t('onboarding.pupil_account.pupil_password_hint') %>
