@@ -35,13 +35,13 @@ en:
         title: Edit account
         update_account: Update account
       form:
-        staff_accounts_have_access_hint: Staff accounts have access to all teacher and pupil functionality. School administrators can manage users and school details
-        what_is_the_users_relationship_hint: What is the users relationship with the school?
-        type: Type
         role: Role
+        staff_accounts_have_access_hint: Staff accounts have access to all teacher and pupil functionality. School administrators can manage users and school details
+        type: Type
+        what_is_the_users_relationship_hint: What is the users relationship with the school?
       new:
-        title: Add a new account
         create_account: Create account
+        title: Add a new account
       skip_for_now: Skip for now
       staff_accounts_have_access_message: Staff accounts have access to teacher, management and pupil Energy Sparks functionality and alerts but cannot manage other accounts. Administrator accounts can also manage other users and update your school details.
       step_4: 'Step 4: Add additional accounts'
