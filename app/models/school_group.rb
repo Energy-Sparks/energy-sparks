@@ -104,6 +104,6 @@ class SchoolGroup < ApplicationRecord
   end
 
   def open_issues_csv
-    issues.status_open.issue.to_csv(header: true) + school_issues.status_open.issue.to_csv(header: false)
+    Issue.for_school_group(self).status_open.issue.by_pinned.by_updated_at.to_csv
   end
 end

@@ -333,7 +333,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas, pinned: true) }
           let!(:setup_data) { issue }
           it "lists issue in issues tab" do
-            within '#issues' do
+            within '#school-issues' do
               expect(page).to have_content issue.title
               expect(page).to have_content issue.issueable.name
               expect(page).to have_content issue.fuel_type.capitalize

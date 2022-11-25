@@ -32,7 +32,17 @@
 class Issue < ApplicationRecord
   include CsvExportable
 
-  belongs_to :issueable, polymorphic: true
+  delegated_type :issueable, types: %w[School SchoolGroup]
+  delegate :name, to: :issueable
+
+  belongs_to :school_group, -> { where(issues: { issueable_type: 'SchoolGroup' }) }, foreign_key: 'issueable_id', optional: true
+  belongs_to :school, -> { where(issues: { issueable_type: 'School' }) }, foreign_key: 'issueable_id', optional: true
+
+  scope :for_school_group, ->(school_group) do
+    where(schools: { school_group: school_group }).or(
+      where(school_group: school_group)).left_joins(:school)
+  end
+
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
   belongs_to :owned_by, class_name: 'User', optional: true
@@ -72,7 +82,7 @@ class Issue < ApplicationRecord
   end
 
   def self.issueable_images
-    { school_group: 'users-class', school: 'school' }
+    { school_group: 'users', school: 'school' }
   end
 
   def issue_type_image

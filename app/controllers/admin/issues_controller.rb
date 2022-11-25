@@ -19,7 +19,7 @@ module Admin
     def create
       @issue.attributes = { created_by: current_user, updated_by: current_user }
       if @issue.save
-        redirect_index notice: 'was successfully created'
+        redirect_to params[:previous_request], notice: issueable_notice('was successfully created')
       else
         render :new
       end
@@ -27,7 +27,7 @@ module Admin
 
     def update
       if @issue.update(issue_params.merge(updated_by: current_user))
-        redirect_index notice: 'was successfully updated'
+        redirect_to params[:previous_request], notice: issueable_notice('was successfully updated')
       else
         render :edit
       end
