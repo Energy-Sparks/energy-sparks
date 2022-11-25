@@ -5,6 +5,7 @@
 #  created_at                    :datetime         not null
 #  default_chart_preference      :integer          default("default"), not null
 #  default_dark_sky_area_id      :bigint(8)
+#  default_issues_admin_user_id  :bigint(8)
 #  default_scoreboard_id         :bigint(8)
 #  default_solar_pv_tuos_area_id :bigint(8)
 #  default_template_calendar_id  :bigint(8)
@@ -18,12 +19,14 @@
 #
 # Indexes
 #
+#  index_school_groups_on_default_issues_admin_user_id   (default_issues_admin_user_id)
 #  index_school_groups_on_default_scoreboard_id          (default_scoreboard_id)
 #  index_school_groups_on_default_solar_pv_tuos_area_id  (default_solar_pv_tuos_area_id)
 #  index_school_groups_on_default_template_calendar_id   (default_template_calendar_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (default_issues_admin_user_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (default_scoreboard_id => scoreboards.id)
 #  fk_rails_...  (default_solar_pv_tuos_area_id => areas.id)
 #  fk_rails_...  (default_template_calendar_id => calendars.id) ON DELETE => nullify
@@ -38,7 +41,6 @@ class SchoolGroup < ApplicationRecord
   has_many :schools
   has_many :school_onboardings
   has_many :calendars, through: :schools
-  has_many :issues, through: :schools
   has_many :users
 
   has_many :school_group_partners, -> { order(position: :asc) }
@@ -46,6 +48,8 @@ class SchoolGroup < ApplicationRecord
   accepts_nested_attributes_for :school_group_partners, reject_if: proc {|attributes| attributes['position'].blank?}
 
   has_one :dashboard_message, as: :messageable, dependent: :destroy
+  has_many :issues, as: :issueable, dependent: :destroy
+  has_many :school_issues, through: :schools, source: :issues
 
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
   belongs_to :default_solar_pv_tuos_area, class_name: 'SolarPvTuosArea', optional: true
@@ -97,5 +101,9 @@ class SchoolGroup < ApplicationRecord
 
   def self.with_active_schools
     joins(:schools).where('schools.active = true').distinct
+  end
+
+  def open_issues_csv
+    issues.status_open.issue.to_csv(header: true) + school_issues.status_open.issue.to_csv(header: false)
   end
 end
