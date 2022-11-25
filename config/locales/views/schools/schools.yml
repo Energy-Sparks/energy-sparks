@@ -153,3 +153,9 @@ en:
     timeline:
       no_events: No events to show
       title: What's been going on?
+    times:
+      message_1: Enter the times when pupils are arriving and leaving the school. Including the times of any before or after school clubs.
+      message_2: Times should be entered in 24 hour format.
+      day: Day
+      opening_time: Opening Time
+      closing_time: Closing Time
