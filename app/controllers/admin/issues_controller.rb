@@ -8,8 +8,16 @@ module Admin
     load_and_authorize_resource :issue, through: :issueable, shallow: true
 
     def index
-      @issues = @issueable ? @issueable.issues : Issue.all
-      @pagy, @issues = pagy(@issues.by_pinned.by_updated_at)
+      respond_to do |format|
+        format.html do
+          @pagy, @issues = pagy(@issues.by_pinned.by_updated_at)
+        end
+        format.csv do
+          @issues = @issueable.all_issues if @issueable && @issueable.is_a?(SchoolGroup)
+          send_data @issues.issue.status_open.by_updated_at.to_csv,
+          filename: "#{t('common.application')}-issues-#{Time.zone.now.iso8601}".parameterize + '.csv'
+        end
+      end
     end
 
     def new

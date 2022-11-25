@@ -80,7 +80,7 @@ describe SchoolGroup, :school_groups, type: :model do
 
   end
 
-  describe ".open_issues_csv" do
+  describe "open issues csv" do
     def issue_csv_line(issue)
       [issue.issueable_type, issue.issueable.name, issue.title, issue.description.to_plain_text, issue.fuel_type, issue.created_by.display_name, issue.created_at, issue.updated_by.display_name, issue.updated_at].join(',')
     end
@@ -88,7 +88,7 @@ describe SchoolGroup, :school_groups, type: :model do
     let(:header) { "Issue type,Name,Title,Description,Fuel type,Created by,Created at,Updated by,Updated at" }
     let(:user) { create(:admin) }
     let(:school_group) { create(:school_group) }
-    subject(:csv) { school_group.open_issues_csv }
+    subject(:csv) { school_group.all_issues.status_open.issue.to_csv }
 
     context "with issues" do
       let(:school) { create(:school, school_group: school_group) }
