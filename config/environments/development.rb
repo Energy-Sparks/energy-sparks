@@ -98,6 +98,9 @@ Rails.application.configure do
   config.active_job.queue_adapter = :good_job
   config.good_job.execution_mode = :async
 
+
+  config.action_dispatch.tld_length = 0
+
   # This adds a 'mirror' locale that turns all translated text upside down so we can visually check for any
   # untranslated text in the erb templates.
   config.i18n.available_locales << :mirror
