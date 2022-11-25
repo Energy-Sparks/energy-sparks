@@ -12,6 +12,16 @@ en:
       update: Update my account
       use_existing_account: Use an existing account
       your_name: Your name
+    inset_days:
+      edit:
+        title: Edit inset day
+        update_inset_day: Update inset day
+      form:
+        date: Date
+        type: Type
+      new:
+        add_inset_day: Add inset day
+        title: New inset day
     school_details:
       create: Save school details
       message: Tell us about your school so that we can tailor the activities and insights we provide to you and your pupils, so that you can get the best from our service.
