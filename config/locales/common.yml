@@ -10,6 +10,7 @@ en:
     electricity_and_solar_pv: Electricity and Solar PV
     gas: Gas
     labels:
+      are_you_sure: Are you sure?
       actions: Actions
       back: Back
       delete: Delete

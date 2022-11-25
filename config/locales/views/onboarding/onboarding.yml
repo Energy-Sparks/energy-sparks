@@ -1,6 +1,28 @@
 ---
 en:
   onboarding:
+    users:
+      new:
+        create_account: Create account
+      edit:
+        title: Edit account
+        update_account: Update account
+      form:
+        staff_accounts_have_access_hint: Staff accounts have access to all teacher and pupil functionality. School administrators can manage users and school details
+        what_is_the_users_relationship_hint: What is the users relationship with the school?
+      title: Manage your school accounts
+      step_4: "Step 4: Add additional accounts"
+      adult_users_additional_accounts_message: You can add any number of additional accounts for the adult users at your school.
+      when_you_have_finished_onboarding_message: When you have finished onboarding your school, new users will be sent an email to confirm their account and will then be asked to set a password for their account before it can be accessed.
+      staff_accounts_have_access_message: Staff accounts have access to teacher, management and pupil Energy Sparks functionality and alerts but cannot manage other accounts. Administrator accounts can also manage other users and update your school details.
+      table:
+        name: Name
+        email: Email
+        admin: Admin?
+        role: Role
+      continue: Continue
+      skip_for_now: Skip for now
+      add_new_account: Add new account
     account:
       create: Create my account
       message_1: Your administrator login will allow you to manage your school on Energy Sparks
