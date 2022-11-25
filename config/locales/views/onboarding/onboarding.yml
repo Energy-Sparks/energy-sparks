@@ -1,6 +1,17 @@
 ---
 en:
   onboarding:
+    account:
+      create: Create my account
+      message_1: Your administrator login will allow you to manage your school on Energy Sparks
+      message_2: You can use an existing administrator account if you have one
+      message_3: Use the form below to create a new account
+      role_hint: What is your primary role in relation to Energy Sparks?
+      title: 'Step 1: Create your school administrator account'
+      title_for_update: Update your school adminstrator account details
+      update: Update my account
+      use_existing_account: Use an existing account
+      your_name: Your name
     show:
       continue: Continue
       get_started: To get started, we need to complete the following steps
