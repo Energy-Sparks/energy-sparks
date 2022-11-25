@@ -41,7 +41,6 @@ class SchoolGroup < ApplicationRecord
   has_many :schools
   has_many :school_onboardings
   has_many :calendars, through: :schools
-  has_many :issues, through: :schools
   has_many :users
 
   has_many :school_group_partners, -> { order(position: :asc) }
@@ -49,6 +48,8 @@ class SchoolGroup < ApplicationRecord
   accepts_nested_attributes_for :school_group_partners, reject_if: proc {|attributes| attributes['position'].blank?}
 
   has_one :dashboard_message, as: :messageable, dependent: :destroy
+  has_many :issues, as: :issueable, dependent: :destroy
+  has_many :school_issues, through: :schools, source: :issues
 
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
   belongs_to :default_solar_pv_tuos_area, class_name: 'SolarPvTuosArea', optional: true
@@ -100,5 +101,9 @@ class SchoolGroup < ApplicationRecord
 
   def self.with_active_schools
     joins(:schools).where('schools.active = true').distinct
+  end
+
+  def open_issues_csv
+    issues.status_open.issue.to_csv(header: true) + school_issues.status_open.issue.to_csv(header: false)
   end
 end
