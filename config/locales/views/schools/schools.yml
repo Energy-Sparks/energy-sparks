@@ -82,6 +82,23 @@ en:
           received_an_audit: Received an energy audit
         temperatures:
           recorded_temperatures_in: Recorded temperatures in
+    school_details:
+      activation_date_hint: This is the date when the school becomes active on Energy Sparks
+      address: Address
+      admin_options: Admin options
+      analysis_preferences: Analysis Preferences
+      basic_details: Basic details
+      created: "%{school_name} was created on %{created_at}"
+      floor_area_hint: If you don't know this please leave it blank and we will try to obtain this information from your Local Authority or MAT
+      geocode_message: Leave these blank to have them set from the postcode
+      key_stage: Key stages
+      key_stage_message: If you are in Scotland, KS1 covers P2 and P3, KS2 covers P4 to P7, KS3 covers S1 to S3, KS4 covers S4 and S5, KS5 is S6
+      location: Location
+      percentage_free_school_meals_hint: If you don't know, please leave this field blank.
+      school_features: School features
+      stage_of_education: Stage of education
+      urn_hint: This is your URN in England, SEED in Scotland
+      view_on_map: View on map
     school_group:
       compare_schools: Compare schools
       view_schools: View schools

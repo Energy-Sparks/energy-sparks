@@ -12,6 +12,15 @@ en:
       update: Update my account
       use_existing_account: Use an existing account
       your_name: Your name
+    consent:
+      create: Grant consent
+      title: 'Step 3: Grant consent to access and use data'
+    school_details:
+      create: Save school details
+      message: Tell us about your school so that we can tailor the activities and insights we provide to you and your pupils, so that you can get the best from our service.
+      title: 'Step 2: Tell us about your school'
+      title_for_update: Update your school information
+      update: Update school details
     show:
       continue: Continue
       get_started: To get started, we need to complete the following steps
