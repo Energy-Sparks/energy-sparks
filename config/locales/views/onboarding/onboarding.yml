@@ -35,6 +35,9 @@ en:
       title: 'Step 2: Tell us about your school'
       title_for_update: Update your school information
       update: Update school details
+    school_times:
+      title: Update opening times
+      update: Update school times
     show:
       continue: Continue
       get_started: To get started, we need to complete the following steps
