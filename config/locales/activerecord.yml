@@ -8,6 +8,10 @@ en:
         name: Name
         school_specific_description: School specific description
         summary: Summary
+      consent_grant:
+        job_title: Job title
+        name: Name
+        school_name: School name
       intervention_type:
         description: Description
         download_links: Download links
