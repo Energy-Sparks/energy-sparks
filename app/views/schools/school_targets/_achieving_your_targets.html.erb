@@ -1,7 +1,13 @@
+<div class="row">
+  <div class="col">
+    <h3>Achieving your targets</h3>
+  </div>
+</div>
+
 <div class="card-deck activities">
   <div class="card activity">
     <div class="card-body">
-      <h4 class="card-title">Working with the pupils</h4>
+      <h4 class="card-title">Work with the pupils</h4>
       <p>Here are some suggested activities that can be undertaken
         with pupils</p>
         <ul>
@@ -20,7 +26,7 @@
 
   <div class="card activity">
     <div class="card-body">
-      <h4 class="card-title">Taking action around the school</h4>
+      <h4 class="card-title">Take action around the school</h4>
       <p>Some suggested activities you can take around the school</p>
       <ul>
         <% actions.each do |intervention_type| %>
@@ -42,10 +48,10 @@
       <p>We analyse your data to provide insights and weekly alerts</p>
       <ul>
         <li>
-          <%= link_to "Explore your data", pupils_school_analysis_path(school) %>
+          <%= link_to "Review your energy analysis", school_analysis_index_path(school) %>
         </li>
         <li>
-          <%= link_to "Review your energy analysis", school_analysis_index_path(school) %>
+          <%= link_to "Explore your data", pupils_school_analysis_path(school) %>
         </li>
         <li>
           <%= link_to 'View energy saving opportunities', management_school_management_priorities_path(school)  %>
@@ -73,3 +79,21 @@
     </div>
   </div>
 </div>
+
+<% if can?(:manage, Activity) || can?(:create, Observation) %>
+  <div class="card-deck actions">
+    <% if can?(:manage, Activity) %>
+      <div class="card mb-2 text-center">
+        <%= link_to 'Choose another activity', activity_categories_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+      </div>
+    <% end %>
+    <% if can?(:create, Observation) %>
+      <div class="card mb-2">
+        <%= link_to 'Record an energy saving action', intervention_type_groups_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+      </div>
+    <% end %>
+      <div class="card mb-2">
+        <%= link_to 'View dashboard', school_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+      </div>
+  </div>
+<% end %>

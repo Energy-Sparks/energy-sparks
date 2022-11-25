@@ -38,7 +38,8 @@ class Observation < ApplicationRecord
   belongs_to :intervention_type, optional: true
   belongs_to :activity, optional: true
   belongs_to :audit, optional: true
-  enum observation_type: [:temperature, :intervention, :activity, :event, :audit]
+  belongs_to :school_target, optional: true
+  enum observation_type: [:temperature, :intervention, :activity, :event, :audit, :school_target]
 
   validates_presence_of :at, :school
   validates_associated :temperature_recordings
@@ -46,6 +47,7 @@ class Observation < ApplicationRecord
   validates :intervention_type_id, presence: { message: 'please select an option' }, if: :intervention?
   validates :activity_id, presence: true, if: :activity?
   validates :audit_id, presence: true, if: :audit?
+  validates :school_target_id, presence: true, if: :school_target?
 
   accepts_nested_attributes_for :temperature_recordings, reject_if: :reject_temperature_recordings
 

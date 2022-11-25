@@ -330,12 +330,12 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       describe "Issues tab" do
         context "when there are open issues for the school group" do
           let!(:school) { create(:school, school_group: school_group)}
-          let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, school: school, fuel_type: :gas, pinned: true) }
+          let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas, pinned: true) }
           let!(:setup_data) { issue }
           it "lists issue in issues tab" do
             within '#issues' do
               expect(page).to have_content issue.title
-              expect(page).to have_content issue.school.name
+              expect(page).to have_content issue.issueable.name
               expect(page).to have_content issue.fuel_type.capitalize
               expect(page).to have_content admin.display_name
               expect(page).to have_content nice_date_times_today(issue.updated_at)
@@ -399,7 +399,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
     describe "Downloading issues csv" do
       let!(:school_group) { create(:school_group) }
       let!(:school) { create(:school, school_group: school_group)}
-      let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, school: school, fuel_type: :gas) }
+      let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas) }
       before do
         Timecop.freeze
         click_on 'Edit School Groups'

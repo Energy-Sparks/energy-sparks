@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :issue do
-    school
+    issueable { create(:school) }
     issue_type { :issue }
     sequence(:title) {|n| "Title #{n}"}
     sequence(:description) {|n| "Description #{n}"}

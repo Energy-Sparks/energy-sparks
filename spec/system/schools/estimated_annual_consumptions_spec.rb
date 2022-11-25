@@ -9,8 +9,6 @@ RSpec.describe 'estimated annual consumption', type: :system do
 
   before(:each) do
     allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-    allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(true)
-
     school.configuration.update!(fuel_configuration: fuel_configuration, suggest_estimates_fuel_types: suggest_estimates)
   end
 

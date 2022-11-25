@@ -142,7 +142,6 @@ describe Targets::GenerateProgressService do
       let(:school_target_fuel_types)  { [] }
 
       before(:each) do
-        allow(EnergySparks::FeatureFlags).to receive(:active?).with(:school_targets_v2).and_return(true)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
       end

@@ -16,6 +16,12 @@ RSpec.describe SchoolTarget, type: :model do
       expect(SchoolTarget.first.target_date).to eq target_date
     end
 
+    it 'creates an observation' do
+      expect(Observation.first.observation_type).to eq "school_target"
+      expect(Observation.first.school).to eq school
+      expect(Observation.first.points).to eq 0
+    end
+
     context "and dates are mismatched" do
       let(:start_date) { Date.today.last_year }
 
@@ -23,6 +29,18 @@ RSpec.describe SchoolTarget, type: :model do
         expect(SchoolTarget.first.start_date).to eq start_date
         expect(SchoolTarget.first.target_date).to eq start_date.next_year
       end
+    end
+  end
+
+  context "when updating" do
+    before(:each) do
+      school.school_targets.create!(start_date: start_date, target_date: target_date, electricity: 10)
+    end
+
+    it 'updates the observation date' do
+      expect(Observation.first.at.to_date).to eql SchoolTarget.first.start_date
+      SchoolTarget.first.update!(start_date: Date.today.beginning_of_month.prev_month)
+      expect(Observation.first.at.to_date).to eql SchoolTarget.first.start_date
     end
   end
 

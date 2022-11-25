@@ -26,7 +26,6 @@
 
 //= require activity_types
 //= require usage_charts
-//= require bullet_charts
 //= require schools
 //= require users
 //= require header_fix
