@@ -8,7 +8,7 @@
     <%= render "prompt_to_set_new_target", school_target: @school_target %>
 
     <p>
-      Your school set a target to reduce its energy usage between between <strong><%= nice_dates(@school_target.start_date) %></strong> and <strong><%= nice_dates(@school_target.target_date) %></strong>. This page summarises your results.
+      Your school set a target to reduce its energy usage between <strong><%= nice_dates(@school_target.start_date) %></strong> and <strong><%= nice_dates(@school_target.target_date) %></strong>. This page summarises your results.
     </p>
 
     <% if @progress_summary&.any_passing_targets?(check_recent: false) %>

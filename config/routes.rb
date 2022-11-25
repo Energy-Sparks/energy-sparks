@@ -146,7 +146,19 @@ Rails.application.routes.draw do
           get :storage_heater
         end
       end
-      resources :school_targets
+
+      resources :school_targets do
+        scope module: :school_targets do
+          resources :progress do
+            collection do
+              get :electricity
+              get :gas
+              get :storage_heater
+            end
+          end
+        end
+      end
+
       resources :estimated_annual_consumptions, except: [:show]
 
       resources :programmes, only: [:create]
@@ -272,7 +284,14 @@ Rails.application.routes.draw do
 
   get '/admin', to: 'admin#index'
 
+  concern :issueable do
+    resources :issues, controller: '/admin/issues' do
+      post :resolve
+    end
+  end
+
   namespace :admin do
+    concerns :issueable
     resources :users do
       scope module: :users do
         resource :confirmation, only: [:create], controller: 'confirmation'
@@ -302,6 +321,7 @@ Rails.application.routes.draw do
             post :make_visible
           end
         end
+        # concerns :issueable
         resources :issues, only: [:index]
         resource :partners, only: [:show, :update]
         resource :meter_report, only: [:show]
@@ -441,11 +461,6 @@ Rails.application.routes.draw do
         resources :consent_requests
         resources :bill_requests
         resource :target_data, only: :show
-        resources :issues do
-          member do
-            post :resolve
-          end
-        end
       end
       member do
         get :removal
@@ -453,6 +468,7 @@ Rails.application.routes.draw do
         post :deactivate_users
         post :deactivate
       end
+      concerns :issueable
     end
 
     authenticate :user, ->(user) { user.admin? } do
