@@ -34,6 +34,7 @@ en:
         longitude: Longitude
         name: School name
         number_of_pupils: Number of pupils
+        percentage_free_school_meals: Percentage of pupils eligible for free school meals at any time during the past 6 years
         postcode: Postcode
         public: Public
         serves_dinners: Our school serves school dinners on site
