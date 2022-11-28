@@ -214,7 +214,8 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         context "when there are active schools" do
           let(:school_onboarding) { create :school_onboarding, school_group: school_group }
           let(:school) { create(:school, active: true, name: "A School", school_group: school_group, school_onboarding: school_onboarding) }
-          let(:setup_data) { school }
+          let(:issues) { [ create(:issue, issue_type: :note, school: school), create(:issue, issue_type: :issue, school: school)] }
+          let(:setup_data) { [school, issues] }
 
           it "lists school in active tab" do
             within '#active' do
@@ -224,7 +225,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
           it "has an action buttons" do
             within '#active' do
-              expect(page).to have_link('Issues')
+              expect(page).to have_link('Issues 1 1')
               expect(page).to have_link('Edit')
               expect(page).to have_link('Users')
               expect(page).to have_link('Meters')
