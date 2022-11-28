@@ -331,6 +331,9 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         context "when there are open issues for the school group" do
           let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school_group, fuel_type: :gas, pinned: true) }
           let!(:setup_data) { issue }
+          it "displays a count of school group issues" do
+            expect(page).to have_content "School Group Issues 1"
+          end
           it "lists issue in issues tab" do
             within '#school-group-issues' do
               expect(page).to have_content issue.title
@@ -357,6 +360,9 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           let!(:school) { create(:school, school_group: school_group)}
           let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas, pinned: true) }
           let!(:setup_data) { issue }
+          it "displays a count of school group issues" do
+            expect(page).to have_content "School Issues 1"
+          end
           it "lists issue in issues tab" do
             within '#school-issues' do
               expect(page).to have_content issue.title
