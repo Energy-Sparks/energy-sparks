@@ -3,7 +3,9 @@
     <tr>
       <th class="no-sort"></th>
       <th>Issue</th>
-      <th>School</th>
+      <% unless issueable_type == SchoolGroup %>
+        <th><%= issueable_type %></th>
+      <% end %>
       <th>Fuel</th>
       <th class="nowrap">Assigned to</th>
       <th>Updated</th>
@@ -15,7 +17,9 @@
       <tr>
         <td><%= issue_type_icon(issue.issue_type) %></td>
         <td><%= link_to issue.title, polymorphic_path([:admin, issue.issueable, issue]) %> <%= fa_icon('thumbtack text-secondary') if issue.pinned? %></td>
-        <td><%= link_to issue.issueable.name, polymorphic_path([:admin, issue.issueable, Issue]) %></td>
+        <% unless issueable_type == SchoolGroup %>
+          <td><%= link_to issue.issueable.name, polymorphic_path([:admin, issue.issueable, Issue]) %></td>
+        <% end %>
         <td><%= render 'admin/issues/fuel_type', issue: issue %></td>
         <td><%= render 'admin/issues/owned_by', issue: issue %></td>
         <td data-order="<%= issue.updated_at %>"><div class="badge badge-pill bg-white text-dark font-weight-normal nowrap"><%= issue.updated_by.display_name %> • <%= nice_date_times_today(issue.updated_at) %></div></td>
