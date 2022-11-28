@@ -1,5 +1,5 @@
 <div class="row p-2">
-  <div class="admin-issue col-md-12 bg-light border-left rounded border-6 pb-2 <%= issue.issue? ? "border-danger" : "border-warning" %>">
+  <div class="admin-issue col-md-12 bg-light border-left rounded pb-2 <%= issue.issue_type %>">
 
   <%= render 'header', title: "#{issue_type_icon(issue.issue_type)} #{title}".html_safe do %>
     <% if issue.issueable %>

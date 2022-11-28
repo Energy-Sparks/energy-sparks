@@ -1,0 +1,9 @@
+<%= link_to path, class: "btn btn-sm" do %>
+  Issues
+  <% if issues > 0 %>
+    <span class="badge badge-danger"><%= issues %></span>
+  <% end %>
+  <% if notes > 0 %>
+    <span class="badge badge-warning"><%= notes %></span>
+  <% end %>
+<% end %>

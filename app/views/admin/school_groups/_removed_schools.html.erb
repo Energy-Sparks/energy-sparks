@@ -1,4 +1,4 @@
-<table class="table table-sorted table-striped" style="width:100%">
+<table class="table table-sorted" style="width:100%">
   <thead>
     <tr>
       <th>Name</th>
@@ -8,10 +8,11 @@
   </thead>
   <tbody>
     <% school_group.schools.inactive.by_name.each do |school| %>
-      <tr>
+      <tr class="bg-light">
         <td><%= link_to school.name, school_path(school) %></td>
         <td><%= nice_dates(school.removal_date) %></td>
         <td class="nowrap text-right">
+          <%= render 'issues_link', path: admin_school_issues_path(school), issues: school.issues.issue.status_open.count, notes: school.issues.note.count %>
           <%= link_to 'Issues', admin_school_issues_path(school), class: "btn btn-sm" %>
           <%= link_to 'Meters', school_meters_path(school), class: "btn btn-sm" %>
         </td>

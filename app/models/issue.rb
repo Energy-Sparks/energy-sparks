@@ -47,8 +47,10 @@ class Issue < ApplicationRecord
   belongs_to :updated_by, class_name: 'User'
   belongs_to :owned_by, class_name: 'User', optional: true
 
-  scope :by_updated_at, -> { order(updated_at: :desc) }
   scope :by_pinned, -> { order(pinned: :desc) }
+  scope :by_status, -> { order(status: :asc) }
+  scope :by_updated_at, -> { order(updated_at: :desc) }
+  scope :by_priority_order, -> { by_pinned.by_status.by_updated_at }
 
   has_rich_text :description
   enum issue_type: { issue: 0, note: 1 }
@@ -98,7 +100,7 @@ class Issue < ApplicationRecord
   end
 
   def self.issueable_image(issueable)
-    issueable_images[issueable.model_name.to_s.downcase.to_sym]
+    issueable_images[issueable.model_name.to_s.underscore.to_sym]
   end
 
   private
