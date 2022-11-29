@@ -15,6 +15,16 @@ en:
     consent:
       create: Grant consent
       title: 'Step 3: Grant consent to access and use data'
+    inset_days:
+      edit:
+        title: Edit inset day
+        update_inset_day: Update inset day
+      form:
+        date: Date
+        type: Type
+      new:
+        add_inset_day: Add inset day
+        title: New inset day
     pupil_account:
       create: Create pupil account
       message_1: Pupil accounts allow your pupils to log into Energy Sparks using only a password. No email address is required.
