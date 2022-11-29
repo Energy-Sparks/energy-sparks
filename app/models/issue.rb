@@ -72,11 +72,11 @@ class Issue < ApplicationRecord
   end
 
   def self.csv_headers
-    ["Issue type", "Name", "Title", "Description", "Fuel type", "Created by", "Created at", "Updated by", "Updated at"]
+    ["Issue type", "Name", "Title", "Description", "Fuel type", "Owned by", "Created by", "Created at", "Updated by", "Updated at"]
   end
 
   def self.csv_attributes
-    %w{issueable_type issueable.name title description.to_plain_text fuel_type created_by.display_name created_at updated_by.display_name updated_at}
+    %w{issueable_type.titleize issueable.name title description.to_plain_text fuel_type owned_by.display_name created_by.display_name created_at updated_by.display_name updated_at}
   end
 
   def self.issue_type_images
