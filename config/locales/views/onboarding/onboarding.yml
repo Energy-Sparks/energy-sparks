@@ -25,6 +25,19 @@ en:
       new:
         add_inset_day: Add inset day
         title: New inset day
+    meters:
+      description_paragraph_1: The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters)
+      description_paragraph_2: 'Your MPAN should be printed on your electricity bill. It is a 13 digit number, and can be referred to as a ‘Supply Number’. An example number is: 20 0001 5001 165. Do not confuse your MPAN with your electricity supplier account number or the meter serial number printed on your electricity meter'
+      description_paragraph_3: Your MPRN should be printed on your gas bill. The format of a MPRN is standard. It is between 6-10 numerical digits long. Do not confuse your MPRN with your gas supplier account number or the meter serial number printed on your gas meter
+      edit:
+        title: Update meter
+      form:
+        hints:
+          meter_name: You can give your meter a name to describe the area of the school is supplies with energy, for example, Kitchen gas. This will help pupils and staff interpret the energy data in Energy Sparks. If you only have one meter this is not necessary.
+        labels:
+          meter_name: Meter Name
+          meter_point_number: Meter Point Number
+          serial_number: Serial number
     pupil_account:
       create: Create pupil account
       message_1: Pupil accounts allow your pupils to log into Energy Sparks using only a password. No email address is required.
