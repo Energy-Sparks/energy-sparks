@@ -1,7 +1,7 @@
 <%= render 'header', title: issueable_icon(@issueable).html_safe + ' ' + (@issueable.try(:name) || ' All') + " Issues & Notes" do %>
   <% if @issueable %>
     <% school_group = @issueable.try(:school_group) || @issueable %>
-    <%= header_nav_link "#{school_group.name} group", admin_school_group_path(school_group) %>
+    <%= header_nav_link "#{school_group.name} school group", admin_school_group_path(school_group) %>
   <% end %>
 <% end %>
 

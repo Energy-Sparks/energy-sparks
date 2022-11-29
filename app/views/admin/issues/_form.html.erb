@@ -3,7 +3,7 @@
 
   <%= render 'header', title: "#{issue_type_icon(issue.issue_type)} #{title}".html_safe do %>
     <% if issue.issueable %>
-      <%= header_nav_link "Issues & notes for #{issue.issueable.model_name.to_s.downcase}", url_for([:admin, issue.issueable, :issues]) %>
+      <%= header_nav_link "All #{issue.issueable.model_name.human.downcase} issues & notes", url_for([:admin, issue.issueable, :issues]) %>
     <% else %>
       <%= header_nav_link 'All issues & notes', admin_issues_url %>
     <% end %>
