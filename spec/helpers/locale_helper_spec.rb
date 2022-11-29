@@ -42,4 +42,15 @@ describe LocaleHelper do
       end
     end
   end
+
+  describe '.t_day' do
+    it 'returns day name' do
+      expect(helper.t_day('monday')).to eq('Monday')
+    end
+    it 'translates day name' do
+      I18n.with_locale(:cy) do
+        expect(helper.t_day('monday')).to eq('Dydd Llun')
+      end
+    end
+  end
 end
