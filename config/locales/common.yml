@@ -12,7 +12,9 @@ en:
     gas: Gas
     labels:
       actions: Actions
+      are_you_sure: Are you sure?
       back: Back
+      cancel: Cancel
       delete: Delete
       edit: Edit
       manage: Manage

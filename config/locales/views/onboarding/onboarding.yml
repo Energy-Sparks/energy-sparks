@@ -53,3 +53,28 @@ en:
       thanks_for_enrolling_html: Thank you for enrolling <strong>%{school_name}</strong> with Energy Sparks!
       time_to_complete: The setup process should take less than 10 minutes
       title: Set up your school on Energy Sparks
+    users:
+      add_new_account: Add new account
+      adult_users_additional_accounts_message: You can add any number of additional accounts for the adult users at your school.
+      continue: Continue
+      edit:
+        title: Edit account
+        update_account: Update account
+      form:
+        role: Role
+        staff_accounts_have_access_hint: Staff accounts have access to all teacher and pupil functionality. School administrators can manage users and school details
+        type: Type
+        what_is_the_users_relationship_hint: What is the users relationship with the school?
+      new:
+        create_account: Create account
+        title: Add a new account
+      skip_for_now: Skip for now
+      staff_accounts_have_access_message: Staff accounts have access to teacher, management and pupil Energy Sparks functionality and alerts but cannot manage other accounts. Administrator accounts can also manage other users and update your school details.
+      step_4: 'Step 4: Add additional accounts'
+      table:
+        admin: Admin?
+        email: Email
+        name: Name
+        role: Role
+      title: Manage your school accounts
+      when_you_have_finished_onboarding_message: When you have finished onboarding your school, new users will be sent an email to confirm their account and will then be asked to set a password for their account before it can be accessed.
