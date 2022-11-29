@@ -19,8 +19,11 @@ en:
       edit: Edit
       manage: Manage
       next: Next
+      no_label: 'No'
       previous: Previous
+      view: View
       view_results: View results
+      yes_label: 'Yes'
     line_graphs: Line graphs
     pie_charts: Pie charts
     privacy_policy: privacy policy

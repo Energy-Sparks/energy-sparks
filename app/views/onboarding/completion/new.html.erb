@@ -1,19 +1,16 @@
 <div class="row justify-content-md-center">
   <div class="col col-md-10 col-lg-8">
-    <h1>Final step: review your answers</h1>
+    <h1><%= t('onboarding.completion.new.title') %></h1>
 
-    <p>
-    Review and update your answers before completing setup.
-    </p>
+    <p><%= t('onboarding.completion.new.review_and_update_your_answers') %>.</p>
 
     <div id="accordion">
       <div class="card mb-3" id="your-account">
         <div class="card-header">
           <h4>
-            1.
-              Your school administrator account
+            <%= t('onboarding.completion.new.section_1.title') %>
             <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-account"
-              aria-expanded="<%= params[:show]=='account' ? 'true' : 'false' %>" aria-controls="collapse-account">View</button></span>
+              aria-expanded="<%= params[:show]=='account' ? 'true' : 'false' %>" aria-controls="collapse-account"><%= t('common.labels.view') %></button></span>
           </h4>
 
         </div>
@@ -22,36 +19,36 @@
             <table class="table table-borderless">
               <tbody>
                 <tr>
-                  <th>Name:</th>
+                  <th><%= t('onboarding.completion.new.name') %>:</th>
                   <td><%=@school_onboarding.created_user.name%></td>
                 </tr>
                 <tr>
-                  <th>Email:</th>
+                  <th><%= t('onboarding.completion.new.email') %>:</th>
                   <td><%=@school_onboarding.created_user.email%></td>
                 </tr>
                 <% if @school_onboarding.created_user.staff_role.present? %>
                   <tr>
-                    <th>Role:</th>
+                    <th><%= t('onboarding.completion.new.role') %>:</th>
                     <td><%= t(@school_onboarding.created_user.staff_role.i18n_key) %></td>
                   </tr>
                 <% end %>
                 <tr>
-                  <th>Password:</th>
+                  <th><%= t('onboarding.completion.new.password') %>:</th>
                   <td>***********</td>
                 </tr>
               </tbody>
             </table>
-            <%= link_to 'Edit your account', edit_onboarding_account_path(@school_onboarding), class: 'btn btn-primary' %>
+            <%= link_to t('onboarding.completion.new.section_1.edit_your_account'), edit_onboarding_account_path(@school_onboarding), class: 'btn btn-primary' %>
           </div>
         </div>
       </div>
 
       <div class="card mb-3" id="school-details">
         <div class="card-header">
-          <h4>2.
-              Your school details
+          <h4>
+            <%= t('onboarding.completion.new.section_2.title') %>
             <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-school-details"
-              aria-expanded="<%= params[:show]=='school-details' ? 'true' : 'false' %>" aria-controls="collapse-school-details">View</button></span>
+              aria-expanded="<%= params[:show]=='school-details' ? 'true' : 'false' %>" aria-controls="collapse-school-details"><%= t('common.labels.view') %></button></span>
           </h4>
         </div>
         <div id="collapse-school-details" class="collapse <%= 'show' if params[:show]=='school-details' %>">
@@ -59,104 +56,104 @@
             <table class="table table-borderless">
               <tbody>
                 <tr>
-                  <th>School name:</th>
+                  <th><%= t('onboarding.completion.new.section_2.school_name') %>:</th>
                   <td><%=@school.name%></td>
                 </tr>
                 <tr>
-                  <th>URN:</th>
+                  <th><%= t('onboarding.completion.new.section_2.urn') %>:</th>
                   <td><%=@school.urn%></td>
                 </tr>
                 <tr>
-                  <th>School address:</th>
+                  <th><%= t('onboarding.completion.new.section_2.school_address') %>:</th>
                   <td><%=@school.address %></td>
                 </tr>
                 <tr>
-                  <th>Postcode:</th>
+                  <th><%= t('onboarding.completion.new.section_2.postcode') %>:</th>
                   <td><%=@school.postcode %></td>
                 </tr>
                 <tr>
-                  <th>Website:</th>
+                  <th><%= t('onboarding.completion.new.section_2.website') %>:</th>
                   <td><%=@school.website %></td>
                 </tr>
                 <tr>
-                  <th>Stage of education:</th>
+                  <th><%= t('onboarding.completion.new.section_2.stage_of_education') %>:</th>
                   <td>
                     <% if @school.school_type.present? %>
                       <%= @school.school_type.try(:humanize) %>
                     <% else %>
-                      <%= link_to 'Edit', edit_onboarding_school_details_path(@school_onboarding, anchor: 'basic-details') %>
+                      <%= link_to t('common.labels.edit'), edit_onboarding_school_details_path(@school_onboarding, anchor: 'basic-details') %>
                     <% end %>
                   </td>
                 </tr>
                 <tr>
-                  <th>Key stages:</th>
+                  <th><%= t('onboarding.completion.new.section_2.key_stages') %>:</th>
                   <td>
                     <% if @school.key_stages.present? %>
                       <%= @school.key_stages.map {|ks| t(ks.i18n_key) }.to_sentence %>
                     <% else %>
-                      <%= link_to 'Edit', edit_onboarding_school_details_path(@school_onboarding, anchor: 'basic-details') %>
+                      <%= link_to t('common.labels.edit'), edit_onboarding_school_details_path(@school_onboarding, anchor: 'basic-details') %>
                     <% end %>
                   </td>
                 </tr>
                 <tr>
-                  <th>Number of pupils:</th>
+                  <th><%= t('onboarding.completion.new.section_2.number_of_pupils') %>:</th>
                   <td>
                     <% if @school.number_of_pupils.present? %>
                       <%=@school.number_of_pupils %>
                     <% else %>
-                      <%= link_to 'Edit', edit_onboarding_school_details_path(@school_onboarding, anchor: 'basic-details') %>
+                      <%= link_to t('common.labels.edit'), edit_onboarding_school_details_path(@school_onboarding, anchor: 'basic-details') %>
                     <% end %>
                   </td>
                 </tr>
                 <tr>
-                  <th>Percentage of free school meals:</th>
+                  <th><%= t('onboarding.completion.new.section_2.percentage_of_free_school_meals') %>:</th>
                   <td>
                     <% if @school.percentage_free_school_meals.present? %>
                       <%=@school.percentage_free_school_meals %>
                     <% else %>
-                      <%= link_to 'Edit', edit_onboarding_school_details_path(@school_onboarding, anchor: 'basic-details') %>
+                      <%= link_to t('common.labels.edit'), edit_onboarding_school_details_path(@school_onboarding, anchor: 'basic-details') %>
                     <% end %>
                   </td>
                 </tr>
                 <tr>
-                  <th>Floor area:</th>
+                  <th><%= t('onboarding.completion.new.section_2.floor_area') %>:</th>
                   <td>
                     <% if @school.floor_area.present? %>
                       <%=@school.floor_area %>
                     <% else %>
-                      <%= link_to 'Edit', edit_onboarding_school_details_path(@school_onboarding, anchor: 'school-features') %>
+                      <%= link_to t('common.labels.edit'), edit_onboarding_school_details_path(@school_onboarding, anchor: 'school-features') %>
                     <% end %>
                   </td>
                 </tr>
                 <tr>
-                  <th>School has solar PV panels?</th>
-                  <td><%= @school.indicated_has_solar_panels ? 'Yes' : 'No' %></td>
+                  <th><%= t('onboarding.completion.new.section_2.school_has_solar_pv_panels') %>?</th>
+                  <td><%= @school.indicated_has_solar_panels ? t('common.labels.yes_label') : t('common.labels.no_label') %></td>
                 </tr>
                 <tr>
-                  <th>School has night storage heaters?</th>
-                  <td><%= @school.indicated_has_storage_heaters ? 'Yes' : 'No' %></td>
+                  <th><%= t('onboarding.completion.new.section_2.school_has_night_storage_heaters') %>?</th>
+                  <td><%= @school.indicated_has_storage_heaters ? t('common.labels.yes_label') : t('common.labels.no_label') %></td>
                 </tr>
                 <tr>
-                  <th>School has its own swimming pool?</th>
-                  <td><%= @school.has_swimming_pool ? 'Yes' : 'No' %></td>
+                  <th><%= t('onboarding.completion.new.section_2.school_has_its_own_swimming_pool') %>?</th>
+                  <td><%= @school.has_swimming_pool ? t('common.labels.yes_label') : t('common.labels.no_label') %></td>
                 </tr>
                 <tr>
-                  <th>School serves school dinners on site?</th>
-                  <td><%= @school.serves_dinners ? 'Yes' : 'No' %></td>
+                  <th><%= t('onboarding.completion.new.section_2.school_serves_school_dinners_on_site') %>?</th>
+                  <td><%= @school.serves_dinners ? t('common.labels.yes_label') : t('common.labels.no_label') %></td>
                 </tr>
                 <% if @school.serves_dinners %>
                   <tr>
-                    <th>Dinners are cooked on site?</th>
-                    <td><%= @school.cooks_dinners_onsite ? 'Yes' : 'No' %></td>
+                    <th><%= t('onboarding.completion.new.section_2.dinners_are_cooked_on_site') %>?</th>
+                    <td><%= @school.cooks_dinners_onsite ? t('common.labels.yes_label') : t('common.labels.no_label') %></td>
                   </tr>
                   <% if @school.cooks_dinners_onsite %>
                     <tr>
-                      <th>Kitchen cooks dinners for other schools?</th>
-                      <td><%= @school.cooks_dinners_for_other_schools ? 'Yes' : 'No' %></td>
+                      <th><%= t('onboarding.completion.new.section_2.kitchen_cooks_dinners_for_other_schools') %>?</th>
+                      <td><%= @school.cooks_dinners_for_other_schools ? t('common.labels.yes_label') : t('common.labels.no_label') %></td>
                     </tr>
                     <% if @school.cooks_dinners_for_other_schools %>
                       <tr>
-                        <th>Number of schools:</th>
+                        <th><%= t('onboarding.completion.new.section_2.number_of_schools') %>:</th>
                         <td><%= @school.cooks_dinners_for_other_schools_count %></td>
                       </tr>
                     <% end %>
@@ -165,23 +162,23 @@
               </tbody>
             </table>
 
-            <%= link_to 'Edit school details', edit_onboarding_school_details_path(@school_onboarding), class: 'btn btn-primary' %>
+            <%= link_to t('onboarding.completion.new.section_2.edit_school_details'), edit_onboarding_school_details_path(@school_onboarding), class: 'btn btn-primary' %>
           </div>
         </div>
       </div>
 
       <div class="card mb-3" id="consent">
         <div class="card-header">
-          <h4>3.
-            Consent
+          <h4>
+            <%= t('onboarding.completion.new.section_3.title') %>
             <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-consent"
-              aria-expanded="false" aria-controls="collapse-consent">View</button></span>
+              aria-expanded="false" aria-controls="collapse-consent"><%= t('common.labels.view') %></button></span>
           </h4>
         </div>
         <div id="collapse-consent" class="collapse">
           <div class="card-body">
             <% if @school.consent_up_to_date? %>
-            You have given us consent to collect, store, analyse and publish your school's energy data
+              <%= t('onboarding.completion.new.section_3.consent_up_to_date_message') %>
             <% end %>
           </div>
         </div>
@@ -189,10 +186,10 @@
 
       <div class="card mb-3" id="school-users">
         <div class="card-header">
-          <h4>4.
-            Additional school accounts
+          <h4>
+            <%= t('onboarding.completion.new.section_4.title') %>
           <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-school-users"
-            aria-expanded="<%= params[:show]=='school-users' ? 'true' : 'false' %>" aria-controls="collapse-school-users">View</button></span>
+            aria-expanded="<%= params[:show]=='school-users' ? 'true' : 'false' %>" aria-controls="collapse-school-users"><%= t('common.labels.view') %></button></span>
           </h4>
         </div>
         <div id="collapse-school-users" class="collapse <%= 'show' if params[:show]=='school-users' %>">
@@ -201,10 +198,10 @@
               <table class="table table-condensed table-borderless">
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Admin?</th>
-                    <th>Role</th>
+                    <th><%= t('onboarding.completion.new.name') %></th>
+                    <th><%= t('onboarding.completion.new.email') %></th>
+                    <th><%= t('onboarding.completion.new.admin') %>?</th>
+                    <th><%= t('onboarding.completion.new.role') %></th>
                     <th></th>
                   </tr>
                 </thead>
@@ -221,10 +218,9 @@
                 </tbody>
               </table>
             <% else %>
-              <p>You have not added any additional school accounts. You will be able to add new accounts later, but doing so
-              now will help you and the staff get setup sooner.</p>
+              <p><%= t('onboarding.completion.new.section_4.you_have_not_added_additional_school_accounts_message') %>.</p>
             <% end %>
-            <%= link_to 'Manage users', onboarding_users_path(@school_onboarding), class: 'btn btn-primary' %>
+            <%= link_to t('onboarding.completion.new.section_4.manage_users'), onboarding_users_path(@school_onboarding), class: 'btn btn-primary' %>
           </div>
         </div>
       </div>
@@ -232,10 +228,13 @@
       <% if @pupil %>
         <div class="card mb-3" id="pupil-password">
           <div class="card-header">
-            <h4>5.
-              Pupil account
-            <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-pupil-password"
-              aria-expanded="<%= params[:show]=='pupil-password' ? 'true' : 'false' %>" aria-controls="collapse-pupil-password">View</button></span>
+            <h4>
+              <%= t('onboarding.completion.new.section_5.title') %>
+              <span class="float-right">
+                <button class="btn" data-toggle="collapse" data-target="#collapse-pupil-password"
+              aria-expanded="<%= params[:show]=='pupil-password' ? 'true' : 'false' %>" aria-controls="collapse-pupil-password"><%= t('common.labels.view') %>
+                </button>
+              </span>
             </h4>
           </div>
           <div id="collapse-pupil-password" class="collapse <%= 'show' if params[:show]=='pupil-password' %>">
@@ -243,55 +242,52 @@
               <table class="table table-borderless">
                 <tbody>
                   <tr>
-                    <th>Pupil account name:</th>
+                    <th><%= t('onboarding.completion.new.section_5.pupil_account_name') %>:</th>
                     <td><%=@pupil.name%></td>
                   </tr>
                   <tr>
-                    <th>Pupil password:</th>
+                    <th><%= t('onboarding.completion.new.section_5.pupil_password') %>:</th>
                     <td><%= @pupil.pupil_password %></td>
                   </tr>
                 </tbody>
               </table>
-              <%= link_to 'Edit pupil account', edit_onboarding_pupil_account_path(@school_onboarding), class: 'btn btn-primary' %>
+              <%= link_to t('onboarding.completion.new.section_5.edit_pupil_account'), edit_onboarding_pupil_account_path(@school_onboarding), class: 'btn btn-primary' %>
             </div>
           </div>
         </div>
       <% end %>
     </div>
 
-    <%= button_to "Complete setup", onboarding_completion_path(@school_onboarding), method: :post, class: 'btn btn-primary btn-success' %>
-
+    <%= button_to t('onboarding.completion.new.complete_setup'), onboarding_completion_path(@school_onboarding), method: :post, class: 'btn btn-primary btn-success' %>
     <hr>
 
-    <h2>Optional steps</h2>
+    <h2><%= t('onboarding.completion.new.optional_steps') %></h2>
 
-    <p>
-    It's not necessary for you to fill in the following sections to complete the sign-up process,
-    but the more information you provide the quicker your school can start using Energy Sparks
-    and our energy calculations will become more accurate.
-    <p>
+    <p><%= t('onboarding.completion.new.optional_steps_message') %><p>
 
     <div id="accordion-optional-steps">
       <div class="card mb-3" id="meters">
         <div class="card-header">
           <h4>
-            Configure energy meters
+            <%= t('onboarding.completion.new.configure_energy_meters') %>
             <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-meters"
-              aria-expanded="<%= params[:show]=='meters' ? 'true' : 'false' %>" aria-controls="collapse-meters">View</button></span>
+              aria-expanded="<%= params[:show]=='meters' ? 'true' : 'false' %>" aria-controls="collapse-meters"><%= t('common.labels.view') %></button></span>
           </h4>
         </div>
         <div id="collapse-meters" class="collapse <%= 'show' if params[:show]=='meters' %>">
           <div class="card-body">
             <% if @school.meters.empty? %>
-              <p>If you have the details of your energy meters to hand then you can input them here. If not, we can get your meter details from your Local Authority, Multi-academy Trust or school group.</p>
+              <p>
+                <%= t('onboarding.completion.new.school_meters_empty_message') %>
+              </p>
             <% else %>
               <table class="table table-borderless mb-3">
                 <thead>
                   <tr>
-                    <th>Type</th>
-                    <th>MPAN/MPRN</th>
-                    <th>Name</th>
-                    <th>Actions</th>
+                    <th><%= t('onboarding.completion.new.type') %></th>
+                    <th><%= t('onboarding.completion.new.mpan_mprn') %></th>
+                    <th><%= t('onboarding.completion.new.name') %></th>
+                    <th><%= t('onboarding.completion.new.actions') %></th>
                   </tr>
                 </thead>
                 <% @school.meters.each do |meter|%>
@@ -300,7 +296,7 @@
                     <td><%= meter.mpan_mprn %></td>
                     <td><%= meter.name %></td>
                     <td>
-                      <%= link_to 'Edit', edit_onboarding_meter_path(@school_onboarding, meter), class: 'btn btn-sm btn-warning' %>
+                      <%= link_to t('common.labels.edit'), edit_onboarding_meter_path(@school_onboarding, meter), class: 'btn btn-sm btn-warning' %>
                     </td>
                   </tr>
                 <% end %>
@@ -308,7 +304,7 @@
                 </tbody>
               </table>
             <% end %>
-            <%= link_to 'Add a meter', new_onboarding_meter_path(@school_onboarding), class: 'btn btn-primary' %>
+            <%= link_to t('onboarding.completion.new.add_a_meter'), new_onboarding_meter_path(@school_onboarding), class: 'btn btn-primary' %>
           </div>
         </div>
       </div>
@@ -318,19 +314,20 @@
     <div class="card mb-3" id="opening-times">
       <div class="card-header">
         <h4>
-          Set your school opening times
+          <%= t('onboarding.completion.new.set_your_school_opening_times') %>
           <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-opening-times"
-            aria-expanded="<%= params[:show]=='opening-times' ? 'true' : 'false' %>" aria-controls="collapse-opening-times">View</button></span>
+            aria-expanded="<%= params[:show]=='opening-times' ? 'true' : 'false' %>" aria-controls="collapse-opening-times"><%= t('common.labels.view') %></button></span>
         </h4>
       </div>
       <div id="collapse-opening-times" class="collapse <%= 'show' if params[:show]=='opening-times' %>">
         <div class="card-body">
-          <p>We've set some default school opening times. If your school has different opening times then you can update them here:</p>
+          <p><%= t('onboarding.completion.new.set_your_school_opening_times_message') %>:
+          </p>
           <table class="table table-borderless mb-3">
             <thead>
               <tr>
-                <th>Day</th>
-                <th>Opening times</th>
+                <th><%= t('onboarding.completion.new.day') %></th>
+                <th><%= t('onboarding.completion.new.opening_times') %></th>
               </tr>
             </thead>
             <tbody>
@@ -344,7 +341,7 @@
               <% end %>
             </tbody>
           </table>
-          <%= link_to 'Set opening times', edit_onboarding_school_times_path(@school_onboarding), class: 'btn btn-primary' %>
+          <%= link_to t('onboarding.completion.new.set_opening_times'), edit_onboarding_school_times_path(@school_onboarding), class: 'btn btn-primary' %>
         </div>
       </div>
     </div>
@@ -352,22 +349,20 @@
     <% if @inset_days %>
       <div class="card mb-3" id="inset-days">
         <div class="card-header">
-          <h4>Configure inset days
+          <h4><%= t('onboarding.completion.new.configure_inset_days') %>
           <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-inset-days"
-            aria-expanded="<%= params[:show]=='inset-days' ? 'true' : 'false' %>" aria-controls="collapse-inset-days">View</button></span>
+            aria-expanded="<%= params[:show]=='inset-days' ? 'true' : 'false' %>" aria-controls="collapse-inset-days"><%= t('common.labels.view') %></button></span>
           </h4>
         </div>
         <div id="collapse-inset-days" class="collapse <%= 'show' if params[:show]=='inset-days' %>">
           <div class="card-body">
-            <p>We've created a calendar for your school based on your school area's term times and national bank holidays.</p>
-            <p>Adding your school's inset days helps us make our energy calculations more accurate for days where the school may be closed.</p>
-            <p>Once your account is activated, you will be able to add any other dates where your school terms differ from your Local Authority recommended dates.</p>
+            <%= t('onboarding.completion.new.configure_inset_days_message_html') %>
             <table class="table table-borderless mb-3">
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Type</th>
-                  <th>Actions</th>
+                  <th><%= t('onboarding.completion.new.date') %></th>
+                  <th><%= t('onboarding.completion.new.type') %></th>
+                  <th><%= t('onboarding.completion.new.actions') %></th>
                 </tr>
               </thead>
               <tbody>
@@ -377,20 +372,20 @@
                     <td><%= I18n.t(inset_day.calendar_event_type.i18n_key("title")) %></td>
                     <td>
                       <div class="btn-group">
-                        <%= link_to 'Edit', edit_onboarding_inset_day_path(@school_onboarding, inset_day), class: 'btn btn-sm btn-warning' %>
-                        <%= link_to 'Delete', onboarding_inset_day_path(@school_onboarding, inset_day), method: :delete, class: 'btn btn-sm btn-danger' %>
+                        <%= link_to t('common.labels.edit'), edit_onboarding_inset_day_path(@school_onboarding, inset_day), class: 'btn btn-sm btn-warning' %>
+                        <%= link_to t('common.labels.delete'), onboarding_inset_day_path(@school_onboarding, inset_day), method: :delete, class: 'btn btn-sm btn-danger' %>
                       </div>
                     </td>
                   </tr>
                 <% end %>
               </tbody>
             </table>
-            <%= link_to 'Add an inset day', new_onboarding_inset_day_path(@school_onboarding), class: 'btn btn-primary' %>
+            <%= link_to t('onboarding.completion.new.add_an_inset_day'), new_onboarding_inset_day_path(@school_onboarding), class: 'btn btn-primary' %>
           </div>
         </div>
       </div>
     <% end %>
 
-    <%= button_to "Complete setup", onboarding_completion_path(@school_onboarding), method: :post, class: 'btn btn-primary btn-success' %>
+    <%= button_to t('onboarding.completion.new.complete_setup'), onboarding_completion_path(@school_onboarding), method: :post, class: 'btn btn-primary btn-success' %>
   </div>
 </div>
