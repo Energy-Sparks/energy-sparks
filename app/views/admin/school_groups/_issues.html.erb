@@ -1,4 +1,4 @@
-<table class="table table-sorted table-striped" style="width: 100%">
+<table class="table table-sorted" style="width: 100%">
   <thead>
     <tr>
       <th class="no-sort"></th>
@@ -13,9 +13,9 @@
     </tr>
   </thead>
   <tbody>
-    <% issues.by_pinned.by_updated_at.each do |issue| %>
-      <tr>
-        <td><%= issue_type_icon(issue.issue_type) %></td>
+    <% issues.by_priority_order.each do |issue| %>
+      <tr class="bg-light admin-issue">
+        <td class="<%= issue.issue_type %>"><%= issue_type_icon(issue.issue_type) %></td>
         <td><%= link_to issue.title, polymorphic_path([:admin, issue.issueable, issue]) %> <%= fa_icon('thumbtack text-secondary') if issue.pinned? %></td>
         <% unless issueable_type == SchoolGroup %>
           <td><%= link_to issue.issueable.name, polymorphic_path([:admin, issue.issueable, Issue]) %></td>

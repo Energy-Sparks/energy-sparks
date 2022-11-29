@@ -10,7 +10,7 @@ module Admin
     def index
       respond_to do |format|
         format.html do
-          @pagy, @issues = pagy(@issues.by_pinned.by_updated_at)
+          @pagy, @issues = pagy(@issues.by_priority_order)
         end
         format.csv do
           @issues = @issueable.all_issues if @issueable && @issueable.is_a?(SchoolGroup)
