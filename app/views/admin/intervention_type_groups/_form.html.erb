@@ -11,24 +11,6 @@
   <%= f.input :icon, as: :string %>
   <p class="small">This icon is used to mark the interventions on some pages. See <a href="https://fontawesome.com/v5.15/icons?d=gallery&p=2" target="_new">fontawesome</a> for icon names
 
-  <%= render 'admin/shared/locale_tabs', f: f, field: :image do |locale| %>
-    <%= f.label 'Image' %>
-
-    <p class="small">This image will appear in the list of categories.</p>
-    <div class="upload-preview">
-      <div class="col-md-3">
-        <% t_image = ('image_' + locale.to_s).to_sym %>
-        <% if !f.object.send(t_image).blank? %>
-          <%= image_tag f.object.send(t_image), width: '300px' %>
-        <% else %>
-          <%= image_tag '1x1.png' %>
-        <% end %>
-      </div>
-    </div>
-
-    <%= f.input t_field(:image, locale), label: false %>
-  <% end %>
-
   <%= f.input :active, as: :boolean %>
 
   <%= f.submit class: 'btn' %>
