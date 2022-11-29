@@ -21,7 +21,7 @@
           </td>
           <td class="nowrap text-right">
             <% if onboarding.school %>
-              <%= render 'admin/school_groups/issues_link', path: admin_school_issues_path(onboarding.school), issues: onboarding.school.issues.issue.status_open.count, notes: onboarding.school.issues.note.count %>
+              <%= render 'admin/school_groups/issues_link', path: admin_school_issues_path(onboarding.school), issues_count: onboarding.school.issues.issue.status_open.count, notes_count: onboarding.school.issues.note.count %>
             <% end %>
             <%= link_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding), class: 'btn btn-warning btn-sm', method: :post %>
             <% if onboarding.school && onboarding.school.consent_grants.any? %>

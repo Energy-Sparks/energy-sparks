@@ -4,7 +4,7 @@
       <td><%= link_to school.name, school_path(school) %></td>
       <td><%= render 'shared/school_status_buttons', school: school %></td>
       <td class="nowrap text-right">
-        <%= render 'issues_link', path: admin_school_issues_path(school), issues: school.issues.issue.status_open.count, notes: school.issues.note.count %>
+        <%= render 'issues_link', path: admin_school_issues_path(school), issues_count: school.issues.issue.status_open.count, notes_count: school.issues.note.count %>
         <%= link_to 'Edit', edit_school_path(school), class: "btn btn-sm" %>
         <%= link_to 'Users', school_users_path(school), class: "btn btn-sm" %>
         <%= link_to 'Meters', school_meters_path(school), class: "btn btn-sm" %>
