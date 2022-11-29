@@ -4,7 +4,7 @@
 
   <%= form.input :mpan_mprn, as: :string, label: t('onboarding.meters.form.labels.meter_point_number') %>
   <%= form.input :name, label: t('onboarding.meters.form.labels.meter_name'), hint: t('onboarding.meters.form.hints.meter_name') %>
-  <%= form.input :meter_serial_number, labeL:  t('onboarding.meters.form.labels.serial_number'), as: :string %>
+  <%= form.input :meter_serial_number, label:  t('onboarding.meters.form.labels.serial_number'), as: :string %>
   <%= form.button :submit %>
   <%= link_to t('common.labels.back'), new_onboarding_completion_path(school_onboarding, anchor: 'meters', show: 'meters'), class: 'btn' %>
 <% end %>
