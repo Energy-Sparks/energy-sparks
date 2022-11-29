@@ -80,6 +80,57 @@ describe SchoolGroup, :school_groups, type: :model do
 
   end
 
+
+  describe ".open_issues_csv" do
+
+    shared_examples_for "issue csv row" do
+      it { expect(line.chomp).to eq([issue.issueable_type, issue.issueable.name, issue.title, issue.description.to_plain_text, issue.fuel_type, issue.created_by.display_name, issue.created_at, issue.updated_by.display_name, issue.updated_at].join(',')) }
+    end
+
+    let(:header) { "Issue type,Name,Title,Description,Fuel type,Created by,Created at,Updated by,Updated at" }
+    let(:user) { create(:admin) }
+    let(:school_group) { create(:school_group) }
+    subject(:csv) { school_group.open_issues_csv }
+
+    context "with issues" do
+      let(:school) { create(:school, school_group: school_group) }
+      let!(:school_issues) do
+        [ create(:issue, issue_type: :issue, status: :open, updated_by: user, issueable: school, fuel_type: nil),
+          create(:issue, issue_type: :issue, status: :open, updated_by: user, issueable: school, fuel_type: :electricity),
+          create(:issue, issue_type: :issue, status: :closed, updated_by: user, issueable: school, fuel_type: :gas) ]
+      end
+      let!(:school_group_issues) do
+          [ create(:issue, issue_type: :issue, status: :open, updated_by: user, issueable: school_group, fuel_type: :electricity) ]
+      end
+
+      it { expect(csv.lines.count).to eq(4) }
+      it { expect(csv.lines.first.chomp).to eq(header) }
+
+      context "school group rows" do
+        it_behaves_like "issue csv row" do
+          let(:line) { csv.lines[1] }
+          let(:issue) { school_group_issues.first }
+        end
+      end
+      context "school rows" do
+        it_behaves_like "issue csv row" do
+          let(:line) { csv.lines[2] }
+          let(:issue) { school_issues.first }
+        end
+        it_behaves_like "issue csv row" do
+          let(:line) { csv.lines[3] }
+          let(:issue) { school_issues.second }
+        end
+      end
+    end
+
+    context "with no issues" do
+      it { expect(csv.lines.count).to eq(1) }
+      it { expect(csv.lines.first.chomp).to eq(header) }
+    end
+  end
+
+
   describe 'abilities' do
     let(:ability) { Ability.new(user) }
     let(:user) { nil }
