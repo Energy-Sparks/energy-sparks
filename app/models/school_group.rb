@@ -103,7 +103,7 @@ class SchoolGroup < ApplicationRecord
     joins(:schools).where('schools.active = true').distinct
   end
 
-  def open_issues_csv
-    issues.status_open.issue.to_csv(header: true) + school_issues.status_open.issue.to_csv(header: false)
+  def all_issues
+    Issue.for_school_group(self)
   end
 end

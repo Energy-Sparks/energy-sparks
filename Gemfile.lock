@@ -214,6 +214,8 @@ GEM
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
     debug_inspector (1.1.0)
+    delegated_type (0.1.0)
+      activerecord (>= 5.0, < 6.1)
     devise (4.8.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -693,6 +695,7 @@ DEPENDENCIES
   closed_struct
   cocoon
   database_cleaner
+  delegated_type
   devise
   dotenv-rails (~> 2.7.4)
   energy-sparks_analytics!

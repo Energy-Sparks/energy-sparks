@@ -4,6 +4,11 @@ module IssuesHelper
   end
 
   def issueable_icon(issueable)
-    issueable ? fa_icon(Issue.issueable_image(issueable)) : ''
+    return '' if issueable.nil?
+    if issueable.is_a?(Symbol)
+      fa_icon(Issue.issueable_images[issueable])
+    else
+      fa_icon(Issue.issueable_image(issueable))
+    end
   end
 end
