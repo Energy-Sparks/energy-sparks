@@ -24,6 +24,24 @@ RSpec.describe Issue, type: :model do
     end
   end
 
+  context "before_save :set_note_status" do
+    before do
+      issue.save
+    end
+    context "issue is a note" do
+      subject(:issue) { build(:issue, issue_type: :note, status: :closed) }
+      it "is sets status to open when saved" do
+        expect(issue).to be_status_open
+      end
+    end
+    context "issue is an issue" do
+      subject(:issue) { build(:issue, issue_type: :issue, status: :closed) }
+      it "is does not change status" do
+        expect(issue).to be_status_closed
+      end
+    end
+  end
+
   context "#resolve!" do
     let!(:user) { create(:admin) }
     context "when issue is of type note" do
@@ -46,31 +64,4 @@ RSpec.describe Issue, type: :model do
     end
   end
 
-  describe ".to_csv" do
-    let(:header) { "School name,Title,Description,Fuel type,Created by,Created at,Updated by,Updated at" }
-
-    let!(:user) { create(:admin) }
-    let!(:school_group) { create(:school_group) }
-
-    subject { school_group.issues.issue.status_open.to_csv }
-
-    context "with issues" do
-      let!(:school) { create(:school, school_group: school_group)}
-      let!(:issues) do
-        [ create(:issue, issue_type: :issue, status: :open, updated_by: user, school: school, fuel_type: nil),
-          create(:issue, issue_type: :issue, status: :open, updated_by: user, school: school, fuel_type: :electricity) ]
-      end
-
-      it { expect(subject.lines.count).to eq(3) }
-      it { expect(subject.lines.first.chomp).to eq(header) }
-      2.times do |i|
-        it { expect(subject.lines[i+1].chomp).to eq([issues[i].school.name, issues[i].title, issues[i].description.to_plain_text, issues[i].fuel_type, issues[i].created_by.display_name, issues[i].created_at, issues[i].updated_by.display_name, issues[i].updated_at].join(',')) }
-      end
-    end
-
-    context "with no issues" do
-      it { expect(subject.lines.count).to eq(1) }
-      it { expect(subject.lines.first.chomp).to eq(header) }
-    end
-  end
 end

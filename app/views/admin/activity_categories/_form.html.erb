@@ -8,23 +8,22 @@
     <%= f.input t_field(:description, locale), label: ActivityCategory.human_attribute_name(:description), as: :string %>
   <% end %>
 
+  <%= render 'admin/shared/locale_tabs', f: f, field: :image do |locale| %>
+    <%= f.label 'Image' %>
 
-  <%= f.label 'Image' %>
-  <p class="small">This image will appear in the list of categories.</p>
-
-  <div class="upload-preview">
-    <div class="col-md-3">
-      <% if !f.object.image.blank? %>
-        <%= image_tag f.object.image, width: '300px' %>
-      <% else %>
-        <%= image_tag '1x1.png' %>
-      <% end %>
+    <p class="small">This image will appear in the list of categories.</p>
+    <div class="upload-preview">
+      <div class="col-md-3">
+        <% t_image = ('image_' + locale.to_s).to_sym %>
+        <% if !f.object.send(t_image).blank? %>
+          <%= image_tag f.object.send(t_image), width: '300px' %>
+        <% else %>
+          <%= image_tag '1x1.png' %>
+        <% end %>
+      </div>
     </div>
-  </div>
-
-  <p>
-    <%= f.input :image, label: false %>
-  </p>
+    <%= f.input t_field(:image, locale), label: false %>
+  <% end %>
 
   <%= f.input :featured, as: :boolean %>
   <%= f.input :pupil, as: :boolean %>

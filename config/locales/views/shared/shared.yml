@@ -116,6 +116,8 @@ en:
     supports_in_partnership_with: Energy Sparks supports %{school_name} in partnership with
   switch_schools_menu:
     switch_school: Switch school
+  terms_and_conditions:
+    message_html: I confirm agreement with the Energy Sparks %{terms_and_conditions_link} and %{privacy_policy_link}
   timeline:
     view_all_events: View all events
     whats_been_going_on: What's been going on?

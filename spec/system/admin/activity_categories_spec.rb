@@ -24,12 +24,14 @@ RSpec.describe 'Activity categories', :scoreboards, type: :system do
       click_on 'Update Activity category'
       expect(page).to have_content("can't be blank")
       fill_in :activity_category_name_en, with: new_name
+      attach_file(:activity_category_image_en, Rails.root + "spec/fixtures/images/placeholder.png")
 
       click_on 'Update Activity category'
 
       expect(page).to have_content('Activity Categories')
       expect(page).to have_content(new_name)
       expect(page).to have_content(new_description)
+      expect(ActivityCategory.last.image_en.filename).to eq('placeholder.png')
     end
 
     it 'I can create a new activity category' do
@@ -44,6 +46,7 @@ RSpec.describe 'Activity categories', :scoreboards, type: :system do
       expect { click_on 'Create Activity category' }.to change { ActivityCategory.count }.by(0)
       expect(page).to have_content("can't be blank")
       fill_in :activity_category_name_en, with: new_name
+      attach_file(:activity_category_image_en, Rails.root + "spec/fixtures/images/placeholder.png")
       expect { click_on 'Create Activity category' }.to change { ActivityCategory.count }.by(1)
       expect(page).to have_content('Activity Categories')
       expect(page).to have_content(activity_category.name)
@@ -53,6 +56,7 @@ RSpec.describe 'Activity categories', :scoreboards, type: :system do
       expect(new_activity_category.featured).to be_truthy
       expect(new_activity_category.pupil).to be_truthy
       expect(new_activity_category.live_data).to be_truthy
+      expect(new_activity_category.image_en.filename).to eq('placeholder.png')
     end
 
     it 'rejects duplicate name' do
