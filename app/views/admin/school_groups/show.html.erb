@@ -67,11 +67,20 @@
       <div class="bg-light p-2">No removed schools for <%= @school_group.name %>.</div>
     <% end %>
   </div>
-  <div class="tab-pane fade" id="issues" role="tabpanel" aria-labelledby="issues-tab">
-    <% if @school_group.school_issues.issue.status_open.any? %>
-      <%= render 'issues', school_group: @school_group %>
+  <div class="tab-pane fade" id="school-group-issues" role="tabpanel" aria-labelledby="school-group-issues-tab">
+    <% if @school_group.issues.issue.status_open.any? %>
+      <%= render 'issues', issues: @school_group.issues.status_open, issueable_type: SchoolGroup %>
     <% else %>
-      <div class="bg-light p-2">No issues for <%= @school_group.name %>.</div>
+      <div class="bg-light p-2">No school group issues for <%= @school_group.name %>.</div>
+    <% end %>
+    <%= render 'admin/issues/new_issues_links', issueable: @school_group %>
+
+  </div>
+  <div class="tab-pane fade" id="school-issues" role="tabpanel" aria-labelledby="school-issues-tab">
+    <% if @school_group.school_issues.issue.status_open.any? %>
+      <%= render 'issues', issues: @school_group.school_issues.status_open, issueable_type: School %>
+    <% else %>
+      <div class="bg-light p-2">No school issues for <%= @school_group.name %>.</div>
     <% end %>
   </div>
 </div>

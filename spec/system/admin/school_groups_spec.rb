@@ -327,25 +327,50 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         end
       end
 
-      describe "Issues tab" do
+      describe "School Group Issues tab" do
         context "when there are open issues for the school group" do
-          let!(:school) { create(:school, school_group: school_group)}
-          let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas, pinned: true) }
+          let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school_group, fuel_type: :gas, pinned: true) }
           let!(:setup_data) { issue }
           it "lists issue in issues tab" do
-            within '#issues' do
+            within '#school-group-issues' do
               expect(page).to have_content issue.title
-              expect(page).to have_content issue.issueable.name
+              expect(page).to_not have_content issue.issueable.name
               expect(page).to have_content issue.fuel_type.capitalize
               expect(page).to have_content admin.display_name
               expect(page).to have_content nice_date_times_today(issue.updated_at)
-              expect(page).to have_link("View", href: admin_school_issue_path(school, issue))
+              expect(page).to have_link("View", href: polymorphic_path([:admin, school_group, issue]))
               expect(page).to have_css("i[class*='fa-thumbtack']")
             end
           end
         end
         context "when there are no issues" do
-          it { expect(page).to have_content("No issues for #{school_group.name}")}
+          it { expect(page).to have_content("No school group issues for #{school_group.name}")}
+        end
+        context "with buttons" do
+          it { expect(page).to have_link("New Issue") }
+          it { expect(page).to have_link("New Note") }
+        end
+      end
+
+      describe "School Issues tab" do
+        context "when there are open issues for schools in the school group" do
+          let!(:school) { create(:school, school_group: school_group)}
+          let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas, pinned: true) }
+          let!(:setup_data) { issue }
+          it "lists issue in issues tab" do
+            within '#school-issues' do
+              expect(page).to have_content issue.title
+              expect(page).to have_content issue.issueable.name
+              expect(page).to have_content issue.fuel_type.capitalize
+              expect(page).to have_content admin.display_name
+              expect(page).to have_content nice_date_times_today(issue.updated_at)
+              expect(page).to have_link("View", href: polymorphic_path([:admin, school, issue]))
+              expect(page).to have_css("i[class*='fa-thumbtack']")
+            end
+          end
+        end
+        context "when there are no issues" do
+          it { expect(page).to have_content("No school issues for #{school_group.name}")}
         end
       end
     end
@@ -410,13 +435,13 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       end
       after { Timecop.return }
       it "shows csv contents" do
-        expect(page.body).to eq school_group.issues.issue.status_open.to_csv
+        expect(page.body).to eq school_group.all_issues.issue.status_open.to_csv
       end
       it "has csv content type" do
         expect(response_headers['Content-Type']).to eq 'text/csv'
       end
       it "has expected file name" do
-        expect(response_headers['Content-Disposition']).to include("energy-sparks-issues-#{school_group.slug}-#{Time.zone.now.iso8601}".parameterize + '.csv')
+        expect(response_headers['Content-Disposition']).to include("energy-sparks-issues-#{Time.zone.now.iso8601}".parameterize + '.csv')
       end
     end
 
