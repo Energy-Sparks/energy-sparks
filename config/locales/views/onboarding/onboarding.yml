@@ -74,6 +74,14 @@ en:
         set_your_school_opening_times_message: We've set some default school opening times. If your school has different opening times then you can update them here
         title: 'Final step: review your answers'
         type: Type
+      show:
+        before_your_school_goes_live_message: Before your school goes live on Energy Sparks we will review the information you've provided and ensure we have access to your energy data
+        eager_to_get_started: Eager to get started
+        in_the_meantime_you_can: In the meantime you can
+        school_successfully_set_up: "%{school_name} has been successfully set up on Energy Sparks. Thank you"
+        this_normally_takes_24_hours_message: This normally takes about 24 hours. We will email you when we've completed our final checks
+        title: Setup completed
+        what_happens_next: What happens next
     consent:
       create: Grant consent
       title: 'Step 3: Grant consent to access and use data'
