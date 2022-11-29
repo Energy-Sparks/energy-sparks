@@ -12,7 +12,7 @@
 <% if @issues.any? %>
   <div class="container">
   <% @issues.each do |issue| %>
-    <%= render 'issue', issue: issue, index: true, issueable: @issueable %>
+    <%= render 'issue', issue: issue, single: false, issueable: @issueable %>
   <% end %>
   </div>
   <%= render "shared/pagy_footer" %>
