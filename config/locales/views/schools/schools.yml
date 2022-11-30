@@ -54,20 +54,10 @@ en:
     weekly-usage-link: View usage by week
   schools:
     audits:
-      new:
-        title: New Audit
+      created: Audit created
+      deleted: Audit was successfully deleted
       edit:
         title: Edit Audit
-      index:
-        new_audit: New audit
-        no_audits_exist_for_this_school: No audits exist for this school
-        book_another_audit: Book another audit
-        title: Audits
-        energy_audits: Energy audits
-        message: The Energy Sparks team have carried out the following audits at this school
-        name: Name
-        completed_on: Completed on
-        actions: Actions
       form:
         action_type: Action Type
         actions: Actions
@@ -87,6 +77,27 @@ en:
         notes: Notes
         report: Report
         unpublished_audits_message: Unpublished audits will not be viewable by the user, but will still score points and be visible in the school timeline
+      index:
+        actions: Actions
+        book_another_audit: Book another audit
+        completed_on: Completed on
+        energy_audits: Energy audits
+        message: The Energy Sparks team have carried out the following audits at this school
+        name: Name
+        new_audit: New audit
+        no_audits_exist_for_this_school: No audits exist for this school
+        title: Audits
+      new:
+        title: New Audit
+      show:
+        completed_on: Completed on
+        download_report: Download report
+        recommended_energy_saving_actions: Recommended energy saving actions
+        recommended_pupil_lead_activities: Recommended pupil-lead activities
+        title: Audit
+        view_all_audits: View all audits
+        visibility_note_html: "<strong>Note</strong>: this audit is not visible to users"
+      updated: Audit updated
     chart_preference:
       carbon: Prefer the display of chart data in kg CO2, where available
       cost: Prefer the display of chart data in £, where available
