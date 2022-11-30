@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   get 'case_studies/:id/:serve', to: 'case_studies#download'
   get 'newsletters', to: 'newsletters#index', as: :newsletters
   get 'resources', to: 'resource_files#index', as: :resources
-  get 'resources/:id/:serve', to: 'resource_files#download'
+  get 'resources/:id/:serve', to: 'resource_files#download', as: :serve_resource
   get 'jobs', to: 'jobs#index', as: :jobs
   get 'jobs/:id/:serve', to: 'jobs#download'
   get 'home-page', to: 'home#show'
