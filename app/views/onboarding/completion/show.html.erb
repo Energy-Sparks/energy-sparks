@@ -29,7 +29,7 @@
         <% if @school_onboarding.school.school_group.present? %>
           <%= t('onboarding.completion.show.schools_in_your_area_html', school_group_path: school_group_path(@school_onboarding.school.school_group)) %>
         <% else %>
-          <%= link_to t('onboarding.completion.show.other_schools', schools_path: schools_path) %>
+          <%= link_to t('onboarding.completion.show.other_schools_html', schools_path: schools_path) %>
         <% end %>
       </li>
     </ul>
