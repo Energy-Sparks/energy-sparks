@@ -22,6 +22,7 @@ en:
       next: Next
       previous: Previous
       remove: Remove
+      save: Save
       update: Update
       view_results: View results
     line_graphs: Line graphs
