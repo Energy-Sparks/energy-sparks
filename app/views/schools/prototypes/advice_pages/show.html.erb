@@ -7,11 +7,68 @@
   </div>
 </div>
 
-<h1>Baseload analysis and advice</h1>
+<h1><i class="fa fa-bolt"></i> Baseload analysis and advice</h1>
 
-<div class="row padded-row">
+<div class="row">
   <div class="col-2">
+    <style>
+      .side-section {
+        color: black;
+        display: block;
+        text-decoration: none;
+      }
+      .pages li a {
+        text-decoration: none;
+      }
+      .pages li a:hover {
+        text-decoration: underline;
+      }
+      .pages li {
+        margin-top: 2px;
+        display: block;
+      }
+      .pages li:not(:last-child) {
+        display: block;
+        border-bottom: 1px solid #dee2e6;
+      }
+    </style>
+
     <!-- left menu -->
+    <div class="analysis-sidebar">
+      <ul class="list-unstyled components" style="border: 1px solid grey;">
+        <p class="f5 p-1" style="background-color: #232b49; color: white; display: block; margin-bottom: 0px; padding-bottom: 0px;"><i class="fa fa-bars"></i> Analysis</p>
+        <li class="active">
+          <a href="#electricity-pages" data-toggle="collapse" aria-expanded="false" class="side-section p-1" style="background-color: #93e1f6;"><i class="fa fa-bolt"></i> Electricity</a>
+          <ul class="list-unstyled pages" id="electricity-pages">
+            <li class="pl-3" style="flex: 1"><a href="">Annual</a></li>
+            <li class="pl-3" style="flex: 1"><a href="">Baseload</a></li>
+            <li class="pl-3" style="flex: 1"><a href="">Weekend</a></li>
+          </ul>
+        </li>
+        <li class="pt-2">
+          <a href="#gas-pages" data-toggle="collapse" aria-expanded="false" class="side-section p-1" style="background-color: #FF8438;"><i class="fa fa-fire"></i> Gas</a>
+          <ul class="list-unstyled p-1 pages" id="gas-pages">
+            <li class="pl-3" style="flex: 1"><a href="">Annual</a></li>
+            <li class="pl-3" style="flex: 1"><a href="">Overnight and weekend</a></li>
+            <li class="pl-3" style="flex: 1"><a href="">Heating controls</a></li>
+          </ul>
+        </li>
+        <li class="pt-2">
+          <a href="#solar-pages" data-toggle="collapse" aria-expanded="false" class="side-section p-1" style="background-color: #50E3C2"><i class="fa fa-sun"></i> Solar</a>
+          <ul class="list-unstyled p-1 pages" id="solar-pages">
+            <li class="pl-3" style="flex: 1"><a href="">Annual</a></li>
+          </ul>
+        </li>
+        <li class="pt-2">
+          <a href="#co2-pages" data-toggle="collapse" aria-expanded="false" class="side-section p-1" style="background-color: #e6e6e6"><i class="fa fa-circle"></i> Carbon</a>
+          <ul class="list-unstyled p-1 pages" id="co2-pages">
+            <li class="pl-3" style="flex: 1"><a href="">Emissions</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+
   </div>
   <div class="col-10">
     <style>
@@ -52,7 +109,7 @@
           </div>
         </div>
 
-        <table class="table management-overview">
+        <table class="mt-2 table management-overview">
             <thead class="thead-dark">
               <th>Period</th>
               <th class="text-right">Use (kW)</th>
