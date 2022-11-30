@@ -55,7 +55,7 @@ en:
   schools:
     audits:
       created: Audit created
-      deleted: Audit was successfully deleted
+      deleted: Audit was successfully deleted.
       edit:
         title: Edit Audit
       form:
