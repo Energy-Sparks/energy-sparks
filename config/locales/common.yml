@@ -21,6 +21,7 @@ en:
       next: Next
       no_label: 'No'
       previous: Previous
+      save: Save
       view: View
       view_results: View results
       yes_label: 'Yes'

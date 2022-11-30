@@ -1,5 +1,5 @@
 <div class="row p-2">
-  <div class="admin-issue col-md-12 bg-light border-left rounded border-6 <%= issue.issue? ? "border-danger" : "border-warning" %>">
+  <div class="admin-issue <%= issue.issue_type %> col-md-12 rounded">
     <h4>
       <%= issue_type_icon(issue.issue_type) %> <%= issue.title %>
       <div class="float-right">

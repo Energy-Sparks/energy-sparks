@@ -47,8 +47,10 @@ class Issue < ApplicationRecord
   belongs_to :updated_by, class_name: 'User'
   belongs_to :owned_by, class_name: 'User', optional: true
 
-  scope :by_updated_at, -> { order(updated_at: :desc) }
   scope :by_pinned, -> { order(pinned: :desc) }
+  scope :by_status, -> { order(status: :asc) }
+  scope :by_updated_at, -> { order(updated_at: :desc) }
+  scope :by_priority_order, -> { by_pinned.by_status.by_updated_at }
 
   has_rich_text :description
   enum issue_type: { issue: 0, note: 1 }
@@ -70,11 +72,11 @@ class Issue < ApplicationRecord
   end
 
   def self.csv_headers
-    ["Issue type", "Name", "Title", "Description", "Fuel type", "Created by", "Created at", "Updated by", "Updated at"]
+    ["Issue type", "Name", "Title", "Description", "Fuel type", "Owned by", "Created by", "Created at", "Updated by", "Updated at"]
   end
 
   def self.csv_attributes
-    %w{issueable_type issueable.name title description.to_plain_text fuel_type created_by.display_name created_at updated_by.display_name updated_at}
+    %w{issueable_type.titleize issueable.name title description.to_plain_text fuel_type owned_by.display_name created_by.display_name created_at updated_by.display_name updated_at}
   end
 
   def self.issue_type_images
@@ -98,7 +100,7 @@ class Issue < ApplicationRecord
   end
 
   def self.issueable_image(issueable)
-    issueable_images[issueable.model_name.to_s.downcase.to_sym]
+    issueable_images[issueable.model_name.to_s.underscore.to_sym]
   end
 
   private
