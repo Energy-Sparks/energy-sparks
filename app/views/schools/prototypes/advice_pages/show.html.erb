@@ -1,0 +1,347 @@
+<% content_for :page_title, 'Advice Page Prototype' %>
+
+<!-- breadcrumb -->
+<div class="row pt-3">
+  <div class="col">
+    <small><%= link_to 'Schools', schools_path %> > <%= link_to @school.school_group.name, school_group_path(@school.school_group) %> > <%= link_to @school.name, school_path(@school) %> > <%= link_to "Analysis", school_analysis_index_path(@school) %> > Baseload Advice</small>
+  </div>
+</div>
+
+<h1>Baseload analysis and advice</h1>
+
+<div class="row padded-row">
+  <div class="col-2">
+    <!-- left menu -->
+  </div>
+  <div class="col-10">
+    <style>
+      .custom-nav-link.active { font-weight: bold;}
+    </style>
+    <!-- advice page tabs -->
+    <ul class="nav nav-tabs" id="advice-page-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="custom-nav-link nav-link f4 active" id="insights-tab" data-toggle="tab" href="#insights-overview" role="tab" aria-controls="insights-overview" aria-selected="true">Insights</a>
+      </li>
+      <li class="nav-item">
+        <a class="custom-nav-link nav-link f4" id="causes-tab" data-toggle="tab" href="#causes-overview" role="tab" aria-controls="causes-overview" aria-selected="true">Background</a>
+      </li>
+      <li class="nav-item">
+        <a class="custom-nav-link nav-link f4" id="analysis-tab" data-toggle="tab" href="#analysis-overview" role="tab" aria-controls="analysis-overview" aria-selected="true">Analysis</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="advice-page-content-tabs">
+      <div class="tab-pane active show mt-4" id="insights-overview" role="tabpanel" aria-labelledby="insights-tab">
+        <style>
+          .collapse-definition .fa {
+             transform: rotate(90deg);
+          }
+          .collapse-definition.collapsed .fa {
+             transform: rotate(0deg);
+          }
+        </style>
+
+        <h2>Your current baseload</h2>
+
+        <div class="baseload-definition pb-2">
+          <a class="collapse-definition collapsed" data-toggle="collapse" href="#definition" aria-expanded="false" aria-controls="#definition"><i class="fa fa-chevron-right"></i> What is baseload?</a>
+
+          <div class="collapse p-4" id="definition" style="border-left: 5px solid #b1b4b6;">
+            <p>
+              Electricity baseload is the electricity needed to provide power to appliances that keep running at all times. It can be measured by looking at your school's out of hours electricity consumption.
+            </p>
+          </div>
+        </div>
+
+        <table class="table management-overview">
+            <thead class="thead-dark">
+              <th>Period</th>
+              <th class="text-right">Use (kW)</th>
+              <th class="text-right">% Change</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Last week</td>
+                <td class="text-right">1.2</td>
+                <td class="text-right"><%= up_downify("+10%") %></td>
+              </tr>
+              <tr>
+                <td>Last year (average)</td>
+                <td class="text-right">1.1</td>
+                <td class="text-right">-</td>
+              </tr>
+            </tbody>
+        </table>
+        <div class="text-right management-overview-caption">
+          Baseload calculation based on data from 1 March 2020 to 21 August 2022
+        </div>
+
+        <h2>How do you compare?</h2>
+
+        <p>
+          How does your baseload compare to other primary schools on Energy Sparks, with a similar number of pupils?
+        </p>
+
+        <p>For more detail, <a href="/benchmark?benchmark%5Bschool_types%5D%5B%5D=0&benchmark%5Bschool_types%5D%5B%5D=1&benchmark%5Bschool_types%5D%5B%5D=2&benchmark%5Bschool_types%5D%5B%5D=3&benchmark%5Bschool_types%5D%5B%5D=4&benchmark%5Bschool_types%5D%5B%5D=5&benchmark%5Bschool_types%5D%5B%5D=6&benchmark_type=baseload_per_pupil">compare with other schools in your group</a></p>
+
+        <table class="table management-overview">
+            <thead class="thead-dark">
+              <th>Category</th>
+              <th class="text-right">Average baseload</th>
+              <th class="text-right">Your baseload</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Exemplar</td>
+                <td class="text-right">1.2kW</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr style="border-left: 5px solid #5cb85c;">
+                <td>Well managed</td>
+                <td class="text-right">2.5kW</td>
+                <td class="text-right">1.5kW</td>
+                <td class="text-right">You are doing well but there should still be opportunities to improve further.</td>
+              </tr>
+              <tr>
+                <td>Improving</td>
+                <td class="text-right">>2.5kW</td>
+                <td class=""></td>
+                <td class=""></td>
+              </tr>
+            </tbody>
+        </table>
+        <div class="text-right management-overview-caption">
+          Exemplar schools are in the top 17.5% and well-managed schools are in the top 30% of schools.
+        </div>
+
+        <h2>What should you do next?</h2>
+
+        <p>Here are some suggested activities that can be undertaken with pupils</p>
+        <ul>
+          <li><a href="">Introduce a policy on switching off lights, computers, and other information technology equipment</a></li>
+          <li><a href="">Label lights and appliances to show which should be left on or turned off</a></li>
+          <li><a href="">Run a campaign to switch off electrical equipment overnight</a></li>
+        </ul>
+
+        <p>Here are some suggested activities that you can undertake around the school</p>
+        <ul>
+          <li><a href="">
+Switched off lights and IT equipment after school</a></li>
+        </ul>
+
+      </div>
+      <div class="tab-pane mt-4" id="causes-overview" role="tabpanel" aria-labelledby="causes-tab">
+        <h2>How to reduce your baseload</h2>
+        <p>
+          Reducing a school's baseload is often the fastest way of reducing a school's energy costs and reducing its carbon footprint. At a well-managed school the baseload should remain the same throughout the year. Every 1 kW of baseload reduced will save a school £1,300 per year, and reduce its carbon footprint by 1,800 kg.
+        </p>
+        <h3>Common causes</h3>
+        <ul>
+          <li>Old freezers and fridges running constantly</li>
+          <li>Inefficient IT servers</li>
+          <li>Security lights</li>
+          <li>Electric water heaters</li>
+          <li>Water chillers</li>
+          <li>Air conditioning</li>
+          <li>Computers, whiteboards and other electrical equipment left running when the school is closed.</li>
+        </ul>
+        <h3>What you should do</h3>
+        <p>
+          To fully determine the causes of your baseload usage you need to do a survey of what appliances are being left on overnight and their power consumption.
+        </p>
+        <p>
+          A more detailed explanation of how to interpret the charts and the analysis, and what to do next is available here.
+        </p>
+      </div>
+      <div class="tab-pane mt-4" id="analysis-overview" role="tabpanel" aria-labelledby="analysis-tab" style="scroll-margin-top: 100px;">
+        <h2>Baseload Analysis</h2>
+
+        <p>
+          The following sections provide more background and analysis on your
+          electricity baseload
+        </p>
+
+        <ul>
+          <li><a href="#last-year">Last 12 months</a></li>
+          <li><a href="#annual-trends">Annual trends</a></li>
+          <li><a href="#long-term-trends">Long term trends</a></li>
+          <li><a href="#meter-breakdown">Baseload breakdown by meter</a></li>
+          <li><a href="#meter-analysis">Meter specific analysis</a></li>
+        </ul>
+
+        <div id="last-year" class="advice-page-section pt-2 pb-2" style="scroll-margin-top: 50px;">
+          <hr/>
+          <div class="d-flex justify-content-between align-items-top">
+            <div>
+              <h3>Last 12 months</h3>
+            </div>
+            <div>
+              <a href="#analysis-overview">Back to top <i class="fa fa-arrow-up"></i></a>
+            </div>
+          </div>
+
+          <div>
+            <span class="font-weight-bold f4">Your electricity baseload for the last 12 months</span><br/>
+            <span>Electricity baseload from August 2021 to August 2022</span>
+            <div id="chart_wrapper_baseload_lastyear" class="chart-wrapper">
+              <%= render 'shared/analysis_controls', chart_type: :baseload_lastyear, axis_controls: true, analysis_controls: true %>
+              <%= chart_tag(@school, :baseload_lastyear, no_zoom: true, wrap: false, chart_config: create_chart_config(@school, :baseload_lastyear, nil)) %>
+            </div>
+          </div>
+        </div>
+
+        <div id="annual-trends" class="advice-page-section pt-2 pb-2" style="scroll-margin-top: 50px;">
+          <hr/>
+          <div class="d-flex justify-content-between align-items-top">
+            <div>
+              <h3>Annual Trends</h3>
+            </div>
+            <div>
+              <a href="#analysis-overview">Back to top <i class="fa fa-arrow-up"></i></a>
+            </div>
+          </div>
+          <div>
+            <p>
+              The following table shows the trend in your annual baseload.
+            </p>
+            <table class="table table-sm">
+              <thead class="thead-dark">
+                <th>Year</th>
+                <th class="text-right">Average annual consumption (kW)</th>
+                <th class="text-right">Average annual cost (£)</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2020</td>
+                  <td class="text-right">1.0</td>
+                  <td class="text-right">£1200</td>
+                </tr>
+                <tr>
+                  <td>2021</td>
+                  <td class="text-right">1.1</td>
+                  <td class="text-right">£1440</td>
+                </tr>
+                <tr>
+                  <td>2022</td>
+                  <td class="text-right">1.1</td>
+                  <td class="text-right">£1440</td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+
+        <div id="long-term-trends" class="advice-page-section pt-2 pb-2" style="scroll-margin-top: 50px;">
+          <hr/>
+          <div class="d-flex justify-content-between align-items-top">
+            <div>
+              <h3>Long Term Trends</h3>
+            </div>
+            <div>
+              <a href="#analysis-overview">Back to top <i class="fa fa-arrow-up"></i></a>
+            </div>
+          </div>
+          <div>
+            <span class="font-weight-bold f4">Long term trends in your electricity baseload</span><br/>
+            <span>Electricity baseload between March 2020 to August 2022 with a comparison against Benchmark and Exemplar schools</span>
+            <div id="chart_wrapper_baseload_versus_benchmarks" class="chart-wrapper">
+              <%= render 'shared/analysis_controls', chart_type: :baseload_versus_benchmarks, axis_controls: true, analysis_controls: true %>
+              <%= chart_tag(@school, :baseload_versus_benchmarks, no_zoom: true, wrap: false, chart_config: create_chart_config(@school, :baseload_versus_benchmarks, nil)) %>
+            </div>
+          </div>
+        </div>
+
+        <div id="meter-breakdown" class="advice-page-section pt-2 pb-2" style="scroll-margin-top: 50px;">
+          <hr/>
+          <div class="d-flex justify-content-between align-items-top">
+            <div>
+              <h3>Baseload breakdown by meter</h3>
+            </div>
+            <div>
+              <a href="#analysis-overview">Back to top <i class="fa fa-arrow-up"></i></a>
+            </div>
+          </div>
+          <div>
+            <p>
+              This table shows how much of your overall baseload usage is associated with the
+              individual meters in your school.
+            </p>
+
+            <p>
+              If you are trying to reduce your baseload, focus on those meters that are
+              responsible for a higher percentage of your overall consumption.
+            </p>
+
+            <table class="table table-sm">
+              <thead class="thead-dark">
+                <th>Meter</th>
+                <th class="text-right">Average annual consumption (kW)</th>
+                <th class="text-right">Average annual cost (£)</th>
+                <th class="text-right">% of total baseload</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>92000051383834</td>
+                  <td class="text-right">0.73</td>
+                  <td class="text-right">£960</td>
+                  <td class="text-right">66%</td>
+                </tr>
+                <tr>
+                  <td>Old building</td>
+                  <td class="text-right">0.37</td>
+                  <td class="text-right">£480</td>
+                  <td class="text-right">34%</td>
+                </tr>
+                <tr class="table-success">
+                  <td>Total</td>
+                  <td class="text-right">1.1</td>
+                  <td class="text-right">£1440</td>
+                  <td class="text-right">100%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="meter-analysis" class="advice-page-section pt-2 pb-2" style="scroll-margin-top: 50px;">
+          <hr/>
+          <div class="d-flex justify-content-between align-items-top">
+            <div>
+              <h3>Meter analysis</h3>
+            </div>
+            <div>
+              <a href="#analysis-overview">Back to top <i class="fa fa-arrow-up"></i></a>
+            </div>
+          </div>
+          <div>
+            <div class="d-flex justify-content-between">
+              <span>Select a meter to view its baseload.</span>
+              <select class="form-control w-50" id="exampleFormControlSelect1">
+                   <option>2000006183919</option>
+                   <option>Old building</option>
+              </select>
+            </div>
+            <br/>
+            <span class="font-weight-bold f4">Long term trends in your electricity baseload for a single meter</span><br/>
+            <span>Electricity baseload from June 2020 to July 2022 for 2000006183919</span>
+            <div id="chart_wrapper_baseload" class="chart-wrapper">
+              <%= render 'shared/analysis_controls', chart_type: :baseload, axis_controls: true, analysis_controls: true %>
+              <%= chart_tag(@school, :baseload, no_zoom: true, wrap: false, chart_config: create_chart_config(@school, :baseload, "2000006183919")) %>
+            </div>
+          </div>
+        </div>
+
+        <hr/>
+        <div class="d-flex justify-content-between align-items-top pt-2 pb-2">
+          <div>
+          </div>
+          <div>
+            <a href="#analysis-overview">Back to top <i class="fa fa-arrow-up"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
