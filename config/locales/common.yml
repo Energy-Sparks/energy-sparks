@@ -15,11 +15,14 @@ en:
       are_you_sure: Are you sure?
       back: Back
       cancel: Cancel
+      create: Create
       delete: Delete
       edit: Edit
       manage: Manage
       next: Next
       previous: Previous
+      remove: Remove
+      update: Update
       view_results: View results
     line_graphs: Line graphs
     pie_charts: Pie charts

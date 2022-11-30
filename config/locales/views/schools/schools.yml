@@ -53,6 +53,26 @@ en:
             split: Your school's daily gas use in your chosen week recorded by meter
     weekly-usage-link: View usage by week
   schools:
+    audits:
+      form:
+        action_type: Action Type
+        actions: Actions
+        actions_message_1_html: Add any number of adult energy saving actions. The full list can be explored from the public <a href='%{intervention_type_groups_path}'>energy saving action pages</a>
+        actions_message_2: To add a custom action, choose "Other" from the appropriate category and include some notes for the user
+        activities: Activities
+        activities_message_html: Add any number of pupil-lead activities. The full list can be explored from the public <a href='%{activity_categories_path}'>activity pages</a>
+        activity_type: Activity Type
+        add_a_custom_activity_message: To add a custom activity, choose "Other" from the appropriate category and include some notes for the user
+        add_action: Add action
+        add_activity: Add activity
+        audit_points_message: 'Note: once created the school will automatically be awarded points for having received this audit.'
+        audit_points_message_html: If pupils were involved when you carried out your audit then the school will score <span class="badge badge-success">%{audit_points}</span> points
+        current_file: Current file
+        description: Description
+        no_file_attached_yet: No file attached yet
+        notes: Notes
+        report: Report
+        unpublished_audits_message: Unpublished audits will not be viewable by the user, but will still score points and be visible in the school timeline
     chart_preference:
       carbon: Prefer the display of chart data in kg CO2, where available
       cost: Prefer the display of chart data in £, where available
