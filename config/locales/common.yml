@@ -15,13 +15,16 @@ en:
       are_you_sure: Are you sure?
       back: Back
       cancel: Cancel
+      create: Create
       delete: Delete
       edit: Edit
       manage: Manage
       next: Next
       no_label: 'No'
       previous: Previous
+      remove: Remove
       save: Save
+      update: Update
       view: View
       view_results: View results
       yes_label: 'Yes'

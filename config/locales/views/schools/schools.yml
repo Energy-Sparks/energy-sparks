@@ -53,6 +53,49 @@ en:
             split: Your school's daily gas use in your chosen week recorded by meter
     weekly-usage-link: View usage by week
   schools:
+    audits:
+      created: Audit created
+      deleted: Audit was successfully deleted.
+      edit:
+        title: Edit Audit
+      form:
+        action_type: Action Type
+        actions_message_1_html: Add any number of adult energy saving actions. The full list can be explored from the public <a href='%{intervention_type_groups_path}'>energy saving action pages</a>
+        actions_message_2: To add a custom action, choose "Other" from the appropriate category and include some notes for the user
+        activities: Activities
+        activities_message_html: Add any number of pupil-lead activities. The full list can be explored from the public <a href='%{activity_categories_path}'>activity pages</a>
+        activity_type: Activity Type
+        add_a_custom_activity_message: To add a custom activity, choose "Other" from the appropriate category and include some notes for the user
+        add_action: Add action
+        add_activity: Add activity
+        audit_points_message: 'Note: once created the school will automatically be awarded points for having received this audit.'
+        audit_points_message_html: If pupils were involved when you carried out your audit then the school will score <span class="badge badge-success">%{audit_points}</span> points
+        current_file: Current file
+        description: Description
+        no_file_attached_yet: No file attached yet
+        notes: Notes
+        report: Report
+        unpublished_audits_message: Unpublished audits will not be viewable by the user, but will still score points and be visible in the school timeline
+      index:
+        book_another_audit: Book another audit
+        completed_on: Completed on
+        energy_audits: Energy audits
+        message: The Energy Sparks team have carried out the following audits at this school
+        name: Name
+        new_audit: New audit
+        no_audits_exist_for_this_school: No audits exist for this school
+        title: Audits
+      new:
+        title: New Audit
+      show:
+        completed_on: Completed on
+        download_report: Download report
+        recommended_energy_saving_actions: Recommended energy saving actions
+        recommended_pupil_lead_activities: Recommended pupil-lead activities
+        title: "%{school_name} Audits - %{audit_title}"
+        view_all_audits: View all audits
+        visibility_note_html: "<strong>Note</strong>: this audit is not visible to users"
+      updated: Audit updated
     chart_preference:
       carbon: Prefer the display of chart data in kg CO2, where available
       cost: Prefer the display of chart data in £, where available
@@ -60,6 +103,38 @@ en:
       explanation: Choose a default option for how energy usage data is displayed in charts
       form_group: Preferred units for chart data
       usage: Prefer the display of chart data in kwh, where available
+    contacts:
+      edit:
+        disable_alerts: Disable alerts
+        update_contact_details: Update contact details
+        update_contact_details_for: Update contact details for %{user_name}
+        update_contact_details_for_email_or_text_alerts: Update contact details for email or text alerts
+        update_details: Update details
+      form:
+        enter_at_least_one_method_message: Please enter at least one method of communication
+        labels:
+          email: Email address
+          mobile_phone_number: Mobile phone number
+          name: Name
+          role: Role
+      index:
+        account_contacts: Account contacts
+        actions: Actions
+        alert_contacts: Alert Contacts
+        alert_contacts_message: The alerts can be sent to people with an Energy Sparks account or directly by email or text message to a mobile phone.
+        email_address: Email Address
+        enable_alerts_for: 'Enable alerts for:'
+        enable_alerts_for_an_email_or_phone_number: Enable alerts for an email or phone number
+        mobile_phone_number: Mobile Phone Number
+        name: Name
+        next: Next
+        role: Role
+        standalone_contacts: Standalone contacts
+        title: "%{school_name} Alert Contacts"
+      new:
+        enable_alerts: Enable alerts
+        enable_alerts_for: Enable alerts for %{user_name}
+        sign_up_for_email_or_text_alerts: Sign up for email or text alerts
     index:
       a_to_z_of_all_energy_sparks_schools: A to Z of all Energy Sparks schools
       introduction_1: Discover which schools are using Energy Sparks to reduce their energy usage
