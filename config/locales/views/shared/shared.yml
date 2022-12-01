@@ -36,18 +36,14 @@ en:
     actions: Actions
     activities: Activities
   contact_explainer:
-    body_html: |-
-      <p>
-        Energy Sparks alerts:
-      </p>
+    alerts_message: Short term consumption change alerts are sent weekly. Alerts telling you about your long term energy use are sent termly.
+    list_html: |-
       <ul>
         <li>give you warning of changes in your school's energy use</li>
         <li>highlight long term problems with your energy consumption with focused recommendations to save energy</li>
         <li>let you know if you are doing well compared to other schools and your past performance</li>
       </ul>
-      <p>
-        Short term consumption change alerts are sent weekly. Alerts telling you about your long term energy use are sent termly.
-      </p>
+    title: 'Energy Sparks alerts:'
   dashboard_alerts:
     show_more_alerts:
       one: Show 1 more alert
