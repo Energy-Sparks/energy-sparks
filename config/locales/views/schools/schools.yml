@@ -60,6 +60,38 @@ en:
       explanation: Choose a default option for how energy usage data is displayed in charts
       form_group: Preferred units for chart data
       usage: Prefer the display of chart data in kwh, where available
+    contacts:
+      edit:
+        disable_alerts: Disable alerts
+        update_contact_details: Update contact details
+        update_contact_details_for: Update contact details for %{user_name}
+        update_contact_details_for_email_or_text_alerts: Update contact details for email or text alerts
+        update_details: Update details
+      form:
+        enter_at_least_one_method_message: Please enter at least one method of communication
+        labels:
+          email: Email address
+          mobile_phone_number: Mobile phone number
+          name: Name
+          role: Role
+      index:
+        account_contacts: Account contacts
+        actions: Actions
+        alert_contacts: Alert Contacts
+        alert_contacts_message: The alerts can be sent to people with an Energy Sparks account or directly by email or text message to a mobile phone.
+        email_address: Email Address
+        enable_alerts_for: 'Enable alerts for:'
+        enable_alerts_for_an_email_or_phone_number: Enable alerts for an email or phone number
+        mobile_phone_number: Mobile Phone Number
+        name: Name
+        next: Next
+        role: Role
+        standalone_contacts: Standalone contacts
+        title: "%{school_name} Alert Contacts"
+      new:
+        enable_alerts: Enable alerts
+        enable_alerts_for: Enable alerts for %{user_name}
+        sign_up_for_email_or_text_alerts: Sign up for email or text alerts
     index:
       a_to_z_of_all_energy_sparks_schools: A to Z of all Energy Sparks schools
       introduction_1: Discover which schools are using Energy Sparks to reduce their energy usage

@@ -2,18 +2,21 @@
 
 <% if @contact.user == current_user %>
   <h2>
-    Sign up for email or text alerts
+    <%= t('schools.contacts.new.sign_up_for_email_or_text_alerts') %>
   </h2>
   <%= render 'shared/contact_explainer' %>
 <% else %>
   <h2>
-    Enable alerts <%= "for #{@contact.user.name}" if @contact.user %>
+    <% if @contact.user %>
+      <%= t('schools.contacts.new.enable_alerts_for', user_name: @contact.user.name) %>
+    <% else %>
+      <%= t('schools.contacts.new.enable_alerts') %>
+    <% end %>
   </h2>
 <% end %>
 
 <div class="row col-md-12">
   <%= simple_form_for([@school, @contact]) do |f| %>
-    <%= render 'form', f: f, submit: 'Enable alerts'%>
+    <%= render 'form', f: f, submit: t('schools.contacts.new.enable_alerts') %>
   <% end %>
 </div>
-
