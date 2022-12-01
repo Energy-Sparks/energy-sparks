@@ -3,20 +3,19 @@
 
     <%= render 'shared/errors', subject: @school, subject_name: 'school' %>
 
+    <h1><%= t('schools.your_school_estates.edit.title') %></h1>
 
-    <h1>Your School Estate</h1>
-
-    <p>EnergySparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you</p>
+    <p><%= t('schools.your_school_estates.edit.description') %></p>
 
     <%= simple_form_for(@school, url: school_your_school_estate_url(@school)) do |f| %>
-      <h3>Solar panels</h3>
-      <%= f.input :indicated_has_solar_panels, label: 'Our school has solar PV panels' %>
+      <h3><%= t('schools.your_school_estates.edit.solar_panels') %></h3>
+      <%= f.input :indicated_has_solar_panels, label: t('schools.your_school_estates.edit.solar_panels') %>
 
-      <h3>Storage heaters</h3>
-      <%= f.input :indicated_has_storage_heaters, label: 'Our school has night storage heaters' %>
+      <h3><%= t('schools.your_school_estates.edit.storage_heaters') %></h3>
+      <%= f.input :indicated_has_storage_heaters, label: t('schools.your_school_estates.edit.storage_heaters_labels') %>
 
-      <h3>Swimming pool</h3>
-      <%= f.input :has_swimming_pool, label: 'Our school has its own swimming pool' %>
+      <h3><%= t('schools.your_school_estates.edit.swimming_pool') %></h3>
+      <%= f.input :has_swimming_pool, label: t('schools.your_school_estates.edit.swimming_pool_label') %>
 
       <h3>Alternative heating sources</h3>
       <p>Tell us about any alternative sources of heating that you use in your school.</p>

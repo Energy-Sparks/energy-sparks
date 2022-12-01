@@ -53,6 +53,16 @@ en:
             split: Your school's daily gas use in your chosen week recorded by meter
     weekly-usage-link: View usage by week
   schools:
+    your_school_estates:
+      edit:
+        title: Your School Estate
+        description: EnergySparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you
+        solar_panels: Solar panels
+        solar_panels_label: Our school has solar PV panels
+        storage_heaters: Storage heaters
+        storage_heaters_label: Our school has night storage heaters
+        swimming_pool: Swimming pool
+        swimming_pool_label: Our school has its own swimming pool
     audits:
       created: Audit created
       deleted: Audit was successfully deleted.
