@@ -7,7 +7,11 @@
   <%= render 'shared/contact_explainer' %>
 <% else %>
   <h2>
-    <%= t('schools.contacts.new.enable_alerts_for', user_name: @contact.user.name) if @contact.user %>
+    <% if @contact.user %>
+      <%= t('schools.contacts.new.enable_alerts_for', user_name: @contact.user.name) %>
+    <% else %>
+      <%= t('schools.contacts.new.enable_alerts') %>
+    <% end %>
   </h2>
 <% end %>
 
@@ -16,4 +20,3 @@
     <%= render 'form', f: f, submit: t('schools.contacts.new.enable_alerts') %>
   <% end %>
 </div>
-

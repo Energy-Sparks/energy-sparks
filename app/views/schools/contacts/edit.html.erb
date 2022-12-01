@@ -7,7 +7,11 @@
   <%= render 'shared/contact_explainer' %>
 <% else %>
   <h2>
-    <%= t('schools.contacts.edit.update_contact_details_for', user_name: @contact.user.name) if @contact.user %>
+    <% if  @contact.user %>
+      <%= t('schools.contacts.edit.update_contact_details_for', user_name: @contact.user.name) %>
+    <% else %>
+      <%= t('schools.contacts.edit.update_contact_details') %>
+    <% end %>
   </h2>
 <% end %>
 

@@ -63,7 +63,8 @@ en:
     contacts:
       edit:
         disable_alerts: Disable alerts
-        update_contact_details_for: Update contact details %{user_name}
+        update_contact_details: Update contact details
+        update_contact_details_for: Update contact details for %{user_name}
         update_contact_details_for_email_or_text_alerts: Update contact details for email or text alerts
         update_details: Update details
       form:
