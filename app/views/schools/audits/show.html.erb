@@ -1,4 +1,4 @@
-<% content_for :page_title, "#{@school.name} #{t('schools.audits.show.title')} - #{@audit.title}" %>
+<% content_for :page_title, t('schools.audits.show.title', school_name: @school.name, audit_title: @audit.title) %>
 
 <div class="row padded-row">
   <div class="col-md-3">

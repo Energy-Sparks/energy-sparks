@@ -60,7 +60,6 @@ en:
         title: Edit Audit
       form:
         action_type: Action Type
-        actions: Actions
         actions_message_1_html: Add any number of adult energy saving actions. The full list can be explored from the public <a href='%{intervention_type_groups_path}'>energy saving action pages</a>
         actions_message_2: To add a custom action, choose "Other" from the appropriate category and include some notes for the user
         activities: Activities
@@ -78,7 +77,6 @@ en:
         report: Report
         unpublished_audits_message: Unpublished audits will not be viewable by the user, but will still score points and be visible in the school timeline
       index:
-        actions: Actions
         book_another_audit: Book another audit
         completed_on: Completed on
         energy_audits: Energy audits
@@ -94,7 +92,7 @@ en:
         download_report: Download report
         recommended_energy_saving_actions: Recommended energy saving actions
         recommended_pupil_lead_activities: Recommended pupil-lead activities
-        title: Audit
+        title: "%{school_name} Audits - %{audit_title}"
         view_all_audits: View all audits
         visibility_note_html: "<strong>Note</strong>: this audit is not visible to users"
       updated: Audit updated
