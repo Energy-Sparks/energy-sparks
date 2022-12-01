@@ -20,7 +20,7 @@ module Schools
 
     def create
       if Audits::AuditService.new(@school).process(@audit)
-        redirect_to school_audit_path(@school, @audit), notice: 'Audit created'
+        redirect_to school_audit_path(@school, @audit), notice: I18n.t('schools.audits.created')
       else
         render :new
       end
@@ -29,7 +29,7 @@ module Schools
     def update
       if @audit.update(audit_params)
         Audits::AuditService.new(@school).update_points(@audit)
-        redirect_to school_audit_path(@school, @audit), notice: 'Audit updated'
+        redirect_to school_audit_path(@school, @audit), notice: I18n.t('schools.audits.updated')
       else
         render :edit
       end
@@ -37,7 +37,7 @@ module Schools
 
     def destroy
       @audit.destroy
-      redirect_to school_audits_path(@school), notice: "Audit was successfully deleted."
+      redirect_to school_audits_path(@school), notice: I18n.t('schools.audits.deleted')
     end
 
   private
