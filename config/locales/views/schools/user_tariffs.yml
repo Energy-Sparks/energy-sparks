@@ -2,6 +2,8 @@
 en:
   schools:
     user_tariffs:
+      edit:
+        title: Editing School
       index:
         changes_to_cost_calculations_message: Changes to the cost calculations based on these tariffs will update overnight
         electricity:
