@@ -34,18 +34,19 @@ class Issue < ApplicationRecord
 
   delegated_type :issueable, types: %w[School SchoolGroup]
   delegate :name, to: :issueable
-
   belongs_to :school_group, -> { where(issues: { issueable_type: 'SchoolGroup' }) }, foreign_key: 'issueable_id', optional: true
   belongs_to :school, -> { where(issues: { issueable_type: 'School' }) }, foreign_key: 'issueable_id', optional: true
+  belongs_to :created_by, class_name: 'User'
+  belongs_to :updated_by, class_name: 'User'
+  belongs_to :owned_by, class_name: 'User', optional: true
 
   scope :for_school_group, ->(school_group) do
     where(schools: { school_group: school_group }).or(
       where(school_group: school_group)).left_joins(:school)
   end
 
-  belongs_to :created_by, class_name: 'User'
-  belongs_to :updated_by, class_name: 'User'
-  belongs_to :owned_by, class_name: 'User', optional: true
+  scope :by_issue_types, ->(issue_types) { where(issue_type: issue_types) }
+  scope :by_owned_by, ->(owned_by) { where(owned_by: owned_by) }
 
   scope :by_pinned, -> { order(pinned: :desc) }
   scope :by_status, -> { order(status: :asc) }
@@ -85,6 +86,10 @@ class Issue < ApplicationRecord
 
   def self.issueable_images
     { school_group: 'users', school: 'school' }
+  end
+
+  def self.issue_type_classes
+    { issue: 'danger', note: 'warning' }
   end
 
   def issue_type_image

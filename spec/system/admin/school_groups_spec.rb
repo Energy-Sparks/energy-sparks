@@ -340,7 +340,6 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
               expect(page).to have_content issue.title
               expect(page).to_not have_content issue.issueable.name
               expect(page).to have_content issue.fuel_type.capitalize
-              expect(page).to have_content admin.display_name
               expect(page).to have_content nice_date_times_today(issue.updated_at)
               expect(page).to have_link("View", href: polymorphic_path([:admin, school_group, issue]))
               expect(page).to have_css("i[class*='fa-thumbtack']")
@@ -369,7 +368,6 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
               expect(page).to have_content issue.title
               expect(page).to have_content issue.issueable.name
               expect(page).to have_content issue.fuel_type.capitalize
-              expect(page).to have_content admin.display_name
               expect(page).to have_content nice_date_times_today(issue.updated_at)
               expect(page).to have_link("View", href: polymorphic_path([:admin, school, issue]))
               expect(page).to have_css("i[class*='fa-thumbtack']")

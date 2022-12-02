@@ -1,20 +1,42 @@
-<%= render 'header', title: issueable_icon(@issueable).html_safe + ' ' + (@issueable.try(:name) || ' All') + " Issues & Notes" do %>
+<%= render 'header', title: "Issues & Notes" do %>
   <% if @issueable %>
     <% school_group = @issueable.try(:school_group) || @issueable %>
     <%= header_nav_link "#{school_group.name} school group", admin_school_group_path(school_group) %>
   <% end %>
 <% end %>
-
 <% if @issueable %>
-  <%= render 'new_issues_links', issueable: @issueable %>
+  <div class="clearfix">
+    <%= link_to "Issues & Notes", admin_issues_path %> > <%= @issueable.model_name.human.capitalize %> > <%= @issueable.try(:name) %>
+    <span class="float-right"><%= render 'new_issues_links', issueable: @issueable %></span>
+  </div>
 <% end %>
+<div class="clearfix bg-light py-2 px-2 my-2 border rounded">
+  <%= form_tag polymorphic_path(@issueable ? [:filter, :admin, @issueable, Issue] : [:filter, :admin, Issue]), method: :get do %>
+    User
+    <%= select_tag :user, options_from_collection_for_select(User.admin,:id, :display_name, params[:user]), include_blank: "All admin users", onchange: "this.form.submit();", class: "form-control-sm" %>
+    <% (params[:issue_types] ||= []).each do |issue_type| %>
+      <%= hidden_field_tag("issue_types[]", issue_type) %>
+    <% end %>
+    <span class="float-right">
+      <% Issue.issue_types.keys.each do |issue_type| %>
+        <%= link_to issue_type.capitalize.pluralize, issues_toggle_link(params, issue_type, issueable: @issueable),
+          class: selected_badge_class(params[:issue_types], issue_type, Issue.issue_type_classes[issue_type.to_sym]),
+          data: { disable_with: spinner_icon } %>
+      <% end %>
+    </span>
+  <% end %>
+</div>
 
 <% if @issues.any? %>
-  <div class="container">
-  <% @issues.each do |issue| %>
-    <%= render 'issue', issue: issue, single: false, issueable: @issueable %>
+  <% if @issueable %>
+    <div class="container">
+      <% @issues.each do |issue| %>
+        <%= render 'issue', issue: issue, single: false, issueable: @issueable %>
+      <% end %>
+    </div>
+  <% else %>
+    <%= render 'issues_list', issues: @issues, show_issueable: true %>
   <% end %>
-  </div>
   <%= render "shared/pagy_footer" %>
 <% else %>
   <p>No issues or notes to display.</p>

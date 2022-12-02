@@ -1,3 +1,7 @@
 <% if issue.owned_by %>
-  <span class="badge badge-pill badge-secondary font-weight-normal"><%= issue.owned_by == current_user ? "You" : issue.owned_by.display_name %></span>
+  <span class="badge badge-pill badge-secondary font-weight-normal">
+    <%= link_to (issue.owned_by == current_user ? "You" : issue.owned_by.display_name),
+        issues_index_link(@issueable, params[:issue_types], user: issue.owned_by_id),
+        class: 'text-white text-decoration-none' %>
+  </span>
 <% end %>

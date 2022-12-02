@@ -347,9 +347,15 @@ module ApplicationHelper
     }
   end
 
+  def toggle_item(array, item)
+    array ||= []
+    array.include?(item) ? array.delete(item) : array.append(item)
+    array
+  end
+
   def add_or_remove(list, item)
     arr = list ? list.split(',').map(&:strip) : []
-    arr.include?(item) ? arr.delete(item) : arr.append(item)
+    arr = toggle_item(arr, item)
     arr.join(',')
   end
 
@@ -360,7 +366,7 @@ module ApplicationHelper
     search_activity_types_path(query: query, key_stages: add_or_remove(key_stages, key_stage), subjects: add_or_remove(subjects, subject))
   end
 
-  def activity_types_badge_class(list, item, color = 'info')
+  def selected_badge_class(list, item, color = 'info')
     list && list.include?(item) ? "badge badge-#{color}" : "badge badge-light outline"
   end
 

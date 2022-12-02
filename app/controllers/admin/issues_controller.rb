@@ -8,16 +8,12 @@ module Admin
     load_and_authorize_resource :issue, through: :issueable, shallow: true
 
     def index
-      respond_to do |format|
-        format.html do
-          @pagy, @issues = pagy(@issues.by_priority_order)
-        end
-        format.csv do
-          @issues = @issueable.all_issues if @issueable && @issueable.is_a?(SchoolGroup)
-          send_data @issues.issue.status_open.by_updated_at.to_csv,
-          filename: "#{t('common.application')}-issues-#{Time.zone.now.iso8601}".parameterize + '.csv'
-        end
-      end
+      params[:issue_types] ||= Issue.issue_types.keys
+      list
+    end
+
+    def filter
+      list
     end
 
     def new
@@ -47,7 +43,6 @@ module Admin
     end
 
     def resolve
-      @issue = Issue.find(params[:issue_id]) # Shouldn't have to do this
       notice = "was successfully resolved"
       unless @issue.resolve!(updated_by: current_user)
         notice = "Can only resolve issues (and not notes)."
@@ -56,6 +51,22 @@ module Admin
     end
 
     private
+
+    def list
+      respond_to do |format|
+        format.html do
+          @issues = @issues.by_issue_types(params[:issue_types])
+          @issues = @issues.by_owned_by(params[:user]) if params[:user]
+          @pagy, @issues = pagy(@issues.by_priority_order)
+          render :index
+        end
+        format.csv do
+          @issues = @issueable.all_issues if @issueable && @issueable.is_a?(SchoolGroup)
+          send_data @issues.issue.status_open.by_updated_at.to_csv,
+          filename: "#{t('common.application')}-issues-#{Time.zone.now.iso8601}".parameterize + '.csv'
+        end
+      end
+    end
 
     def redirect_index(notice:)
       redirect_to issueable_index_url, notice: issueable_notice(notice)
