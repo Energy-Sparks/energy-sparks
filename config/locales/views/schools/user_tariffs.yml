@@ -2,8 +2,6 @@
 en:
   schools:
     user_tariffs:
-      show:
-        title: Tariff details
       index:
         changes_to_cost_calculations_message: Changes to the cost calculations based on these tariffs will update overnight
         electricity:
@@ -14,5 +12,11 @@ en:
           add_label: Add gas tariff
           header: Gas
           there_are_no_gas_tariffs_set_up_yet: There are no gas tariffs set up yet
-        introduction_html: "Add meter tariffs from your electricity and gas bills here, to improve the accuracy of the cost calculations displayed \non your <a href='%{electricity_analysis_path}'>electricity cost analysis</a> and <a href='%{gas_analysis_path}'>gas cost analysis</> pages"
+        introduction_html: Add meter tariffs from your electricity and gas bills here, to improve the accuracy of the cost calculations displayed on your <a href='%{electricity_analysis_path}'>electricity cost analysis</a> and <a href='%{gas_analysis_path}'>gas cost analysis</> pages
         title: Manage tariffs
+      show:
+        consumption_charges: Consumption charges
+        introduction_html: Any changes to the tariff will be reflected in the <a href='%{electricity_analysis_path}'>electricity cost analysis</a> and <a href='%{gas_analysis_path}'>gas cost analysis</a> pages which will update overnight
+        meter_attribute_view: Meter attribute view (admin only)
+        standing_charges: Standing charges
+        title: Tariff details
