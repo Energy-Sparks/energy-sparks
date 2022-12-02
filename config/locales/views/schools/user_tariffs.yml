@@ -14,6 +14,8 @@ en:
           there_are_no_gas_tariffs_set_up_yet: There are no gas tariffs set up yet
         introduction_html: Add meter tariffs from your electricity and gas bills here, to improve the accuracy of the cost calculations displayed on your <a href='%{electricity_analysis_path}'>electricity cost analysis</a> and <a href='%{gas_analysis_path}'>gas cost analysis</> pages
         title: Manage tariffs
+      new:
+        title: New School
       show:
         consumption_charges: Consumption charges
         introduction_html: Any changes to the tariff will be reflected in the <a href='%{electricity_analysis_path}'>electricity cost analysis</a> and <a href='%{gas_analysis_path}'>gas cost analysis</a> pages which will update overnight
