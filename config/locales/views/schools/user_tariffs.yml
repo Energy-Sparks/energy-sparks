@@ -32,4 +32,16 @@ en:
         meter_attribute_view: Meter attribute view (admin only)
         standing_charges: Standing charges
         title: Tariff details
+      tariff_partial:
+        day_night_tariff: Day/night tariff
+        end_date: End date
+        full_details: Full details
+        no_consumption_charges_have_been_set_yet: No consumption charges have been set yet
+        per_kwh: per kWh
+        price_from_to: "%{price_start_time} to %{price_end_time} : "
+        simple_tariff: Simple tariff
+        start_date: Start date
+        type: Type
       there_should_only_be_one_tariff_message: There should only be one tariff for each date period, for each meter
+      title_partial:
+        heading: Tariff

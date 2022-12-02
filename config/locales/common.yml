@@ -25,6 +25,7 @@ en:
       remove: Remove
       save: Save
       update: Update
+      view: View
       view_results: View results
     line_graphs: Line graphs
     pie_charts: Pie charts
