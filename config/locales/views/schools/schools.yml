@@ -254,6 +254,7 @@ en:
             label: Our school uses Oil for heating
             percentage: What percentage of the school is heated by Oil Heating?
         description: EnergySparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you
+        school_was_successfully_updated: School was successfully updated
         solar_panels: Solar panels
         solar_panels_label: Our school has solar PV panels
         storage_heaters: Storage heaters
