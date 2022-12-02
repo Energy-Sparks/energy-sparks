@@ -2,6 +2,14 @@
 en:
   schools:
     user_tariffs:
+      choose_meters:
+        title: Select meters for this tariff
+        which_meters_will_this_tariff_apply_to: Which meters will this tariff apply to?
+      choose_type:
+        day_night_tariff: Day/Night tariff
+        is_this_a_simple_flat_rate: Is this a simple flat rate?
+        simple: Simple
+        title: Choose the type of this tariff
       edit:
         title: Edit the name and date range for this %{fuel_type} tariff
       index:
