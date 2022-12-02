@@ -9,11 +9,23 @@ module Admin
 
     def index
       params[:issue_types] ||= Issue.issue_types.keys
-      list
+      filter
     end
 
     def filter
-      list
+      respond_to do |format|
+        format.html do
+          @issues = @issues.by_issue_types(params[:issue_types])
+          @issues = @issues.by_owned_by(params[:user]) if params[:user].present?
+          @pagy, @issues = pagy(@issues.by_priority_order)
+          render :index
+        end
+        format.csv do
+          @issues = @issueable.all_issues if @issueable && @issueable.is_a?(SchoolGroup)
+          send_data @issues.issue.status_open.by_updated_at.to_csv,
+          filename: "#{t('common.application')}-issues-#{Time.zone.now.iso8601}".parameterize + '.csv'
+        end
+      end
     end
 
     def new
@@ -51,22 +63,6 @@ module Admin
     end
 
     private
-
-    def list
-      respond_to do |format|
-        format.html do
-          @issues = @issues.by_issue_types(params[:issue_types])
-          @issues = @issues.by_owned_by(params[:user]) if params[:user]
-          @pagy, @issues = pagy(@issues.by_priority_order)
-          render :index
-        end
-        format.csv do
-          @issues = @issueable.all_issues if @issueable && @issueable.is_a?(SchoolGroup)
-          send_data @issues.issue.status_open.by_updated_at.to_csv,
-          filename: "#{t('common.application')}-issues-#{Time.zone.now.iso8601}".parameterize + '.csv'
-        end
-      end
-    end
 
     def redirect_index(notice:)
       redirect_to issueable_index_url, notice: issueable_notice(notice)
