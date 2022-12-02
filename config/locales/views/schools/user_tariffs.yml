@@ -1,0 +1,16 @@
+---
+en:
+  schools:
+    user_tariffs:
+      index:
+        changes_to_cost_calculations_message: Changes to the cost calculations based on these tariffs will update overnight
+        electricity:
+          add_label: Add electricity tariff
+          header: Electricity
+          there_are_no_electricity_tariffs_set_up_yet: There are no electricity tariffs set up yet
+        gas:
+          add_label: Add gas tariff
+          header: Gas
+          there_are_no_gas_tariffs_set_up_yet: There are no gas tariffs set up yet
+        introduction_html: "Add meter tariffs from your electricity and gas bills here, to improve the accuracy of the cost calculations displayed \non your <a href='%{electricity_analysis_path}'>electricity cost analysis</a> and <a href='%{gas_analysis_path}'>gas cost analysis</> pages"
+        title: Manage tariffs
