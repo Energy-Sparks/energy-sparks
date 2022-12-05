@@ -12,18 +12,18 @@
 <% end %>
 <div class="clearfix bg-light py-2 px-2 my-2 border rounded">
   <%= form_tag polymorphic_path(@issueable ? [:filter, :admin, @issueable, Issue] : [:filter, :admin, Issue]), method: :get do %>
-    <span>
+    <span class="nowrap">
       <%= label_tag :user, nil, class: 'small' %>
       <%= select_tag :user, options_from_collection_for_select(User.admin,:id, :display_name, params[:user]), include_blank: "Any Admin User", class: "form-control-sm" %>
     </span>
-    <span class="ml-4">
+    <span class="ml-4 nowrap">
       <%= label_tag :issue_types, nil, class: 'small' %>
       <% Issue.issue_types.keys.each do |issue_type, issue_type_id| %>
         <%= check_box_tag('issue_types[]', issue_type, (params[:issue_types] ||= []).include?(issue_type), id: issue_type, class: "badge-toggle-#{Issue.issue_type_classes[issue_type.to_sym]}") %>
         <%= label_tag issue_type, issue_type.capitalize.pluralize %>
       <% end %>
     </span>
-    <span class="ml-4">
+    <span class="ml-4 nowrap">
       <%= label_tag :statuses, nil, class: 'small' %>
       <% Issue.statuses.keys.each do |status, status_id| %>
         <%= check_box_tag('statuses[]', status, (params[:statuses] ||= []).include?(status), id: status, class: "badge badge-pill-toggle-#{Issue.status_classes[status.to_sym]}") %>
