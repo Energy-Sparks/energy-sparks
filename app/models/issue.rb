@@ -45,8 +45,9 @@ class Issue < ApplicationRecord
       where(school_group: school_group)).left_joins(:school)
   end
 
-  scope :by_issue_types, ->(issue_types) { where(issue_type: issue_types) }
-  scope :by_owned_by, ->(owned_by) { where(owned_by: owned_by) }
+  scope :for_issue_types, ->(issue_types) { where(issue_type: issue_types) }
+  scope :for_owned_by, ->(owned_by) { where(owned_by: owned_by) }
+  scope :for_statuses, ->(statuses) { where(status: statuses) }
 
   scope :by_pinned, -> { order(pinned: :desc) }
   scope :by_status, -> { order(status: :asc) }
@@ -90,6 +91,10 @@ class Issue < ApplicationRecord
 
   def self.issue_type_classes
     { issue: 'danger', note: 'warning' }
+  end
+
+  def self.status_classes
+    { open: 'info', closed: 'secondary' }
   end
 
   def issue_type_image

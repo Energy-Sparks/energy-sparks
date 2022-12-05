@@ -12,17 +12,26 @@
 <% end %>
 <div class="clearfix bg-light py-2 px-2 my-2 border rounded">
   <%= form_tag polymorphic_path(@issueable ? [:filter, :admin, @issueable, Issue] : [:filter, :admin, Issue]), method: :get do %>
-    User
-    <%= select_tag :user, options_from_collection_for_select(User.admin,:id, :display_name, params[:user]), include_blank: "All admin users", onchange: "this.form.submit();", class: "form-control-sm" %>
-    <% (params[:issue_types] ||= []).each do |issue_type| %>
-      <%= hidden_field_tag("issue_types[]", issue_type) %>
-    <% end %>
-    <span class="float-right">
-      <% Issue.issue_types.keys.each do |issue_type| %>
-        <%= link_to issue_type.capitalize.pluralize, issues_toggle_link(params, issue_type, issueable: @issueable),
-          class: selected_badge_class(params[:issue_types], issue_type, Issue.issue_type_classes[issue_type.to_sym]),
-          data: { disable_with: spinner_icon } %>
+    <span>
+      <%= label_tag :user, nil, class: 'small' %>
+      <%= select_tag :user, options_from_collection_for_select(User.admin,:id, :display_name, params[:user]), include_blank: "Any Admin User", class: "form-control-sm" %>
+    </span>
+    <span class="ml-4">
+      <%= label_tag :issue_types, nil, class: 'small' %>
+      <% Issue.issue_types.keys.each do |issue_type, issue_type_id| %>
+        <%= check_box_tag('issue_types[]', issue_type, (params[:issue_types] ||= []).include?(issue_type), id: issue_type, class: "badge-toggle-#{Issue.issue_type_classes[issue_type.to_sym]}") %>
+        <%= label_tag issue_type, issue_type.capitalize.pluralize %>
       <% end %>
+    </span>
+    <span class="ml-4">
+      <%= label_tag :statuses, nil, class: 'small' %>
+      <% Issue.statuses.keys.each do |status, status_id| %>
+        <%= check_box_tag('statuses[]', status, (params[:statuses] ||= []).include?(status), id: status, class: "badge badge-pill-toggle-#{Issue.status_classes[status.to_sym]}") %>
+        <%= label_tag status, status.capitalize %>
+      <% end %>
+    </span>
+    <span class="float-right">
+      <%= submit_tag 'Filter', class: 'btn btn-sm' %>
     </span>
   <% end %>
 </div>
