@@ -3,10 +3,6 @@
     <tr>
       <th class="no-sort"></th>
       <th>Title</th>
-      <% if show_issueable %>
-        <th>For</th>
-      <% end %>
-      <th>Fuel</th>
       <th class="nowrap">Assigned to</th>
       <th>Status</th>
       <th>Updated</th>
@@ -17,11 +13,11 @@
     <% issues.by_priority_order.each do |issue| %>
       <tr class="bg-light admin-issue">
         <td class="<%= issue.issue_type %>"><%= issue_type_icon(issue.issue_type) %></td>
-        <td><%= issue.title %> <%= fa_icon('thumbtack text-secondary') if issue.pinned? %></td>
+        <td class="nowrap"><%= issue.title %><%= render 'admin/issues/pinned', issue: issue %>
         <% if show_issueable %>
-          <td><%= render 'admin/issues/issueable', issue: issue %></td>
-        <% end %>
-        <td><%= render 'admin/issues/fuel_type', issue: issue %></td>
+          <br /><%= render 'admin/issues/issueable', issue: issue %>
+        <% end %><%= render 'admin/issues/fuel_type', issue: issue %>
+        </td>
         <td><%= render 'admin/issues/owned_by', issue: issue %></td>
         <td><%= render 'admin/issues/status', issue: issue %></td>
         <td data-order="<%= issue.updated_at %>"><div class="badge badge-pill bg-white text-dark font-weight-normal nowrap"><%= nice_date_times_today(issue.updated_at) %></div></td>
