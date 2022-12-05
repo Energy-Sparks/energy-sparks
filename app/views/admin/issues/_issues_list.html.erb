@@ -13,10 +13,11 @@
     <% issues.by_priority_order.each do |issue| %>
       <tr class="bg-light admin-issue">
         <td class="<%= issue.issue_type %>"><%= issue_type_icon(issue.issue_type) %></td>
-        <td class="nowrap"><%= issue.title %><%= render 'admin/issues/pinned', issue: issue %>
+        <td class="nowrap"><%= issue.title %> <%= render 'admin/issues/pinned', issue: issue %>
         <% if show_issueable %>
           <br /><%= render 'admin/issues/issueable', issue: issue %>
-        <% end %><%= render 'admin/issues/fuel_type', issue: issue %>
+        <% end %>
+        <%= render 'admin/issues/fuel_type', issue: issue %>
         </td>
         <td><%= render 'admin/issues/owned_by', issue: issue %></td>
         <td><%= render 'admin/issues/status', issue: issue %></td>
