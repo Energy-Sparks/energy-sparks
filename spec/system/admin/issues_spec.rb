@@ -232,8 +232,8 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         end
 
         it { expect(page).to have_select('User', selected: []) }
-        it { expect(page).to have_checked_field('Issues') }
-        it { expect(page).to have_checked_field('Notes') }
+        it { expect(page).to have_checked_field('Issue') }
+        it { expect(page).to have_checked_field('Note') }
         it { expect(page).to have_checked_field('Open') }
         it { expect(page).to have_checked_field('Closed') }
 
@@ -252,7 +252,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
 
         context "and deselecting notes" do
           before do
-            uncheck 'Notes'
+            uncheck 'Note'
             click_button 'Filter'
           end
           it "should only show issues" do
@@ -262,7 +262,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         end
         context "and deselecting issues" do
           before do
-            uncheck 'Issues'
+            uncheck 'Issue'
             click_button 'Filter'
           end
           it "should only show notes" do
