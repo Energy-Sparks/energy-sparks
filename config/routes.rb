@@ -289,9 +289,6 @@ Rails.application.routes.draw do
       member do
         post :resolve
       end
-      collection do
-        get :filter
-      end
     end
   end
 
