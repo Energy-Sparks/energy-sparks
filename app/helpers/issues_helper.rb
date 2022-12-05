@@ -12,10 +12,6 @@ module IssuesHelper
     end
   end
 
-  def issues_toggle_link(params, issue_type, issueable:)
-    polymorphic_path([:filter, :admin, issueable, Issue], user: params[:user], issue_types: toggle_item(params[:issue_types].dup, issue_type))
-  end
-
   def issues_index_link(issueable, issue_types, query = {})
     polymorphic_path([:admin, issueable, Issue], query.merge(issue_types: issue_types))
   end

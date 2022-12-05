@@ -98,10 +98,10 @@ describe ApplicationHelper do
 
   describe 'selected_badge_class' do
     it 'has the non-selected class' do
-      expect(helper.selected_badge_class('KS1, KS2', 'KS3', 'info')).to include('badge-light')
+      expect(helper.activity_types_badge_class('KS1, KS2', 'KS3', 'info')).to include('badge-light')
     end
     it 'has the selected class' do
-      expect(helper.selected_badge_class('KS1, KS2', 'KS1', 'info')).to include('badge-info')
+      expect(helper.activity_types_badge_class('KS1, KS2', 'KS1', 'info')).to include('badge-info')
     end
   end
 
