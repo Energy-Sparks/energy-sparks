@@ -286,7 +286,9 @@ Rails.application.routes.draw do
 
   concern :issueable do
     resources :issues, controller: '/admin/issues' do
-      post :resolve
+      member do
+        post :resolve
+      end
     end
   end
 

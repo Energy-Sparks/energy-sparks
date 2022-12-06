@@ -25,3 +25,17 @@ tr.admin-issue .issue {
   padding-bottom: 0px;
   margin-bottom: 0px;
 }
+
+.toggler.collapsed .fa-chevron-down,
+.toggler .fa-chevron-right {
+  display: none;
+}
+
+.toggler.collapsed .fa-chevron-right,
+.toggler .fa-chevron-down {
+  display: inline-block;
+}
+
+.toggler i.fas {
+  cursor: pointer;
+}
