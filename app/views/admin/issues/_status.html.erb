@@ -1,3 +1,1 @@
-<% if issue.issue? %>
-  <span class="badge <%= issue.status_open? ? 'badge-primary' : 'badge-secondary' %>"><%= issue.status.capitalize %></span>
-<% end %>
+<span class="badge badge-pill border <%= issue.status_open? ? 'border-info text-info' : 'border-secondary text-secondary' %>"><%= issue.status.capitalize %></span>

@@ -82,10 +82,10 @@ describe SchoolGroup, :school_groups, type: :model do
 
   describe "open issues csv" do
     def issue_csv_line(issue)
-      [issue.issueable_type, issue.issueable.name, issue.title, issue.description.to_plain_text, issue.fuel_type, issue.created_by.display_name, issue.created_at, issue.updated_by.display_name, issue.updated_at].join(',')
+      [issue.issueable_type.titleize, issue.issueable.name, issue.title, issue.description.to_plain_text, issue.fuel_type, issue.owned_by.try(:display_name), issue.created_by.display_name, issue.created_at, issue.updated_by.display_name, issue.updated_at].join(',')
     end
 
-    let(:header) { "Issue type,Name,Title,Description,Fuel type,Created by,Created at,Updated by,Updated at" }
+    let(:header) { "Issue type,Name,Title,Description,Fuel type,Owned by,Created by,Created at,Updated by,Updated at" }
     let(:user) { create(:admin) }
     let(:school_group) { create(:school_group) }
     subject(:csv) { school_group.all_issues.status_open.issue.to_csv }
@@ -93,7 +93,7 @@ describe SchoolGroup, :school_groups, type: :model do
     context "with issues" do
       let(:school) { create(:school, school_group: school_group) }
 
-      let!(:school_in_school_group_issue) { create(:issue, updated_by: user, issueable: school, fuel_type: nil) }
+      let!(:school_in_school_group_issue) { create(:issue, updated_by: user, owned_by: user, issueable: school, fuel_type: nil) }
       let!(:school_group_issue) {           create(:issue, updated_by: user, issueable: school_group, fuel_type: :electricity) }
       let!(:different_school_in_school_group_issue) { create(:issue, updated_by: user, issueable: create(:school, school_group: school_group), fuel_type: :gas) }
 

@@ -1,24 +1,23 @@
-<% content_for :page_title, "#{@school.name} Audits" %>
+<% content_for :page_title, "#{@school.name} " + t('schools.audits.index.title') %>
 
 <div class="row">
   <div class="col-md-12">
-    <h1>Energy audits</h1>
+    <h1><%= t('schools.audits.index.energy_audits') %></h1>
   </div>
 </div>
 
 <% if @audits.any? %>
   <div class="row">
     <div class="col-md-12">
-      <p>The Energy Sparks team have carried out the following audits at this school.
-      </p>
+      <p><%= t('schools.audits.index.message') %>.</p>
 
       <table class="table" id="audits">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Completed on</th>
+            <th><%= t('schools.audits.index.name') %></th>
+            <th><%= t('schools.audits.index.completed_on') %></th>
             <% if can? :manage, @activity %>
-              <th>Actions</th>
+              <th><%= t('common.labels.actions') %></th>
             <% end %>
           </tr>
         </thead>
@@ -30,8 +29,8 @@
               <% if can? :manage, audit %>
                 <td>
                   <div class="btn-group">
-                    <%= link_to 'Edit', edit_school_audit_path(@school, audit), class: 'btn btn-warning btn-sm' %>
-                    <%= link_to 'Remove', school_audit_path(@school, audit), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-warning btn-sm' %>
+                    <%= link_to t('common.labels.edit'), edit_school_audit_path(@school, audit), class: 'btn btn-warning btn-sm' %>
+                    <%= link_to t('common.labels.remove'), school_audit_path(@school, audit), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-warning btn-sm' %>
                   </div>
                 </td>
               <% end %>
@@ -42,18 +41,18 @@
     </div>
   </div>
   <div class="row mt-2">
-    <%= link_to 'Book another audit', energy_audits_path, class: 'btn btn-primary btn-sm'%>
+    <%= link_to t('schools.audits.index.book_another_audit'), energy_audits_path, class: 'btn btn-primary btn-sm'%>
   </div>
 <% else %>
   <div class="row">
     <div class="col-md-12">
-      <p>No audits exist for this school.</p>
+      <p><%= t('schools.audits.index.no_audits_exist_for_this_school') %>.</p>
     </div>
   </div>
 <% end %>
 
 <% if can? :manage, Audit %>
   <div class="row mt-2">
-    <%= link_to 'New audit', new_school_audit_path(@school), class: 'btn btn-primary btn-sm'%>
+    <%= link_to t('schools.audits.index.new_audit'), new_school_audit_path(@school), class: 'btn btn-primary btn-sm'%>
   </div>
 <% end %>

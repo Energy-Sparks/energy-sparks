@@ -247,7 +247,7 @@ module ApplicationHelper
   end
 
   def y_n(boolean)
-    boolean ? 'Yes' : 'No'
+    boolean ? I18n.t('common.labels.yes_label') : I18n.t('common.labels.no_label')
   end
 
   def checkmark(boolean)

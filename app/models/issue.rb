@@ -34,21 +34,25 @@ class Issue < ApplicationRecord
 
   delegated_type :issueable, types: %w[School SchoolGroup]
   delegate :name, to: :issueable
-
   belongs_to :school_group, -> { where(issues: { issueable_type: 'SchoolGroup' }) }, foreign_key: 'issueable_id', optional: true
   belongs_to :school, -> { where(issues: { issueable_type: 'School' }) }, foreign_key: 'issueable_id', optional: true
+  belongs_to :created_by, class_name: 'User'
+  belongs_to :updated_by, class_name: 'User'
+  belongs_to :owned_by, class_name: 'User', optional: true
 
   scope :for_school_group, ->(school_group) do
     where(schools: { school_group: school_group }).or(
       where(school_group: school_group)).left_joins(:school)
   end
 
-  belongs_to :created_by, class_name: 'User'
-  belongs_to :updated_by, class_name: 'User'
-  belongs_to :owned_by, class_name: 'User', optional: true
+  scope :for_issue_types, ->(issue_types) { where(issue_type: issue_types) }
+  scope :for_owned_by, ->(owned_by) { where(owned_by: owned_by) }
+  scope :for_statuses, ->(statuses) { where(status: statuses) }
 
-  scope :by_updated_at, -> { order(updated_at: :desc) }
   scope :by_pinned, -> { order(pinned: :desc) }
+  scope :by_status, -> { order(status: :asc) }
+  scope :by_updated_at, -> { order(updated_at: :desc) }
+  scope :by_priority_order, -> { by_pinned.by_status.by_updated_at }
 
   has_rich_text :description
   enum issue_type: { issue: 0, note: 1 }
@@ -70,11 +74,11 @@ class Issue < ApplicationRecord
   end
 
   def self.csv_headers
-    ["Issue type", "Name", "Title", "Description", "Fuel type", "Created by", "Created at", "Updated by", "Updated at"]
+    ["Issue type", "Name", "Title", "Description", "Fuel type", "Owned by", "Created by", "Created at", "Updated by", "Updated at"]
   end
 
   def self.csv_attributes
-    %w{issueable_type issueable.name title description.to_plain_text fuel_type created_by.display_name created_at updated_by.display_name updated_at}
+    %w{issueable_type.titleize issueable.name title description.to_plain_text fuel_type owned_by.display_name created_by.display_name created_at updated_by.display_name updated_at}
   end
 
   def self.issue_type_images
@@ -83,6 +87,14 @@ class Issue < ApplicationRecord
 
   def self.issueable_images
     { school_group: 'users', school: 'school' }
+  end
+
+  def self.issue_type_classes
+    { issue: 'danger', note: 'warning' }
+  end
+
+  def self.status_classes
+    { open: 'info', closed: 'secondary' }
   end
 
   def issue_type_image
@@ -98,7 +110,7 @@ class Issue < ApplicationRecord
   end
 
   def self.issueable_image(issueable)
-    issueable_images[issueable.model_name.to_s.downcase.to_sym]
+    issueable_images[issueable.model_name.to_s.underscore.to_sym]
   end
 
   private

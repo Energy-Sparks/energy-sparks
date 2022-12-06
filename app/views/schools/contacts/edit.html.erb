@@ -2,21 +2,25 @@
 
 <% if @contact.user == current_user %>
   <h2>
-    Update contact details for email or text alerts
+    <%= t('schools.contacts.edit.update_contact_details_for_email_or_text_alerts') %>
   </h2>
   <%= render 'shared/contact_explainer' %>
 <% else %>
   <h2>
-    Update contact details <%= "for #{@contact.user.name}" if @contact.user %>
+    <% if  @contact.user %>
+      <%= t('schools.contacts.edit.update_contact_details_for', user_name: @contact.user.name) %>
+    <% else %>
+      <%= t('schools.contacts.edit.update_contact_details') %>
+    <% end %>
   </h2>
 <% end %>
 
 <div class="row col-md-12">
   <%= simple_form_for([@school, @contact]) do |f| %>
-    <%= render 'form', f: f, submit: 'Update details'%>
+    <%= render 'form', f: f, submit: t('schools.contacts.edit.update_details') %>
   <% end %>
 </div>
 
 <div class="other-actions">
-  <%= link_to 'Disable alerts', school_contact_path(@school, @contact), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+  <%= link_to t('schools.contacts.edit.disable_alerts'), school_contact_path(@school, @contact), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
 </div>
