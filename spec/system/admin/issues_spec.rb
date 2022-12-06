@@ -216,26 +216,30 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
 
   context 'as an admin' do
     let!(:user) { create(:admin) }
+    let!(:setup_data) {}
+
     before do
       sign_in(user)
     end
 
     describe 'index' do
+      before do
+        setup_data
+        visit admin_issues_url
+      end
+
+      it { expect(page).to have_select('User', selected: []) }
+      it { expect(page).to have_checked_field('Issue') }
+      it { expect(page).to have_checked_field('Note') }
+      it { expect(page).to have_checked_field('Open') }
+      it { expect(page).to have_checked_field('Closed') }
+
       context "showing defaults" do
-        let!(:open_issue) { create :issue, status: :open }
-        let!(:closed_issue) { create :issue, status: :closed }
-        let!(:issue_issue) { create :issue }
-        let!(:note_issue) { create :issue, issue_type: :note, pinned: true}
-
-        before do
-          visit admin_issues_url
-        end
-
-        it { expect(page).to have_select('User', selected: []) }
-        it { expect(page).to have_checked_field('Issue') }
-        it { expect(page).to have_checked_field('Note') }
-        it { expect(page).to have_checked_field('Open') }
-        it { expect(page).to have_checked_field('Closed') }
+        let(:open_issue) { create :issue, status: :open }
+        let(:closed_issue) { create :issue, status: :closed }
+        let(:issue_issue) { create :issue }
+        let(:note_issue) { create :issue, issue_type: :note, pinned: true}
+        let(:setup_data) { [open_issue, closed_issue, issue_issue, note_issue]}
 
         it_behaves_like "a displayed list issue" do
           let(:issue) { open_issue }
@@ -295,8 +299,9 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
       context "and selecting a user" do
         let!(:user_issue) { create(:issue, owned_by: user)}
         let!(:other_user_issue) { create(:issue, owned_by: create(:admin, name: "Not you"))}
+        let(:setup_data) { [user_issue, other_user_issue] }
+
         before do
-          visit admin_issues_url
           select user.display_name, from: 'User'
           click_button 'Filter'
         end
@@ -309,9 +314,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
       end
 
       context "when there are no issues" do
-        before do
-          visit admin_issues_url
-        end
+        let(:setup_data) {}
         it { expect(page).to have_content("No issues or notes to display")}
       end
     end
