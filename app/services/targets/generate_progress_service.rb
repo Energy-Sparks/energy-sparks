@@ -8,17 +8,17 @@ module Targets
 
     def cumulative_progress(fuel_type)
       target_progress = progress_report(fuel_type)
-      target_progress.present? ? target_progress.cumulative_performance_versus_synthetic_last_year[reporting_month] : nil
+      target_progress.present? ? fetch_latest_figures(target_progress.cumulative_performance_versus_synthetic_last_year) : nil
     end
 
     def current_monthly_target(fuel_type)
       target_progress = progress_report(fuel_type)
-      target_progress.present? ? target_progress.cumulative_targets_kwh[reporting_month] : nil
+      target_progress.present? ? fetch_latest_figures(target_progress.cumulative_targets_kwh) : nil
     end
 
     def current_monthly_usage(fuel_type)
       target_progress = progress_report(fuel_type)
-      target_progress.present? ? target_progress.cumulative_usage_kwh[reporting_month] : nil
+      target_progress.present? ? fetch_latest_figures(target_progress.cumulative_usage_kwh) : nil
     end
 
     def generate!
@@ -80,6 +80,16 @@ module Targets
 
     def target
       @school.most_recent_target
+    end
+
+    def fetch_latest_figures(hash_of_months_to_values)
+      val = hash_of_months_to_values[reporting_month]
+      #sometimes the schools meter data may be lagging only a few days or a week
+      #behind. this means that the progress report does not have data for this month,
+      #it only has data for the previous month. So if there's no entry for the reporting
+      #month, look for earlier data. This typically only happens around the beginning of
+      #month when we're running a little behind on data
+      val.present? ? val : hash_of_months_to_values[reporting_month.prev_month]
     end
 
     def reporting_month
