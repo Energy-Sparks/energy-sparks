@@ -1,26 +1,26 @@
 <div class="row justify-content-md-center">
   <div class="col col-md-10 col-lg-8">
-    <h1>Step 1: Create your school administrator account</h1>
+    <h1><%= t('onboarding.account.title') %></h1>
 
-    <p>Your administrator login will allow you to manage your school on Energy Sparks.</p>
+    <p><%= t('onboarding.account.message_1') %>.</p>
 
-    <p>You can use an existing administrator account if you have one:</p>
+    <p><%= t('onboarding.account.message_2') %>:</p>
 
     <p>
-      <%= link_to "Use an existing account", new_onboarding_sessions_path(@school_onboarding), class: :btn %>
+      <%= link_to t('onboarding.account.use_existing_account'), new_onboarding_sessions_path(@school_onboarding), class: :btn %>
     </p>
 
-    <p>Use the form below to create a new account:</p>
+    <p><%= t('onboarding.account.message_3') %>:</p>
 
     <%= simple_form_for(@user, url: onboarding_account_path(@school_onboarding)) do |f| %>
-      <%= f.input :name, label: 'Your name'%>
+      <%= f.input :name, label: t('onboarding.account.your_name') %>
       <%= f.input :email %>
       <%= f.input :password, required: true %>
       <%= f.input :password_confirmation, required: true %>
-      <%= f.input :staff_role_id, label: 'Role', required: :true, collection: StaffRole.order(:title), label_method: :translated_title, hint: 'What is your primary role in relation to Energy Sparks?'%>
+      <%= f.input :staff_role_id, required: :true, collection: StaffRole.order(:title), label_method: :translated_title, hint: t('onboarding.account.role_hint') %>
 
       <%= render 'shared/agree_terms_checkbox' %>
-      <%= f.button :submit, 'Create my account' %>
+      <%= f.button :submit, t('onboarding.account.create') %>
     <% end %>
   </div>
 </div>

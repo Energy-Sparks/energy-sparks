@@ -3,50 +3,49 @@
 
     <%= render 'shared/errors', subject: @school, subject_name: 'school' %>
 
+    <h1><%= t('schools.your_school_estates.edit.title') %></h1>
 
-    <h1>Your School Estate</h1>
-
-    <p>EnergySparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you</p>
+    <p><%= t('schools.your_school_estates.edit.description') %></p>
 
     <%= simple_form_for(@school, url: school_your_school_estate_url(@school)) do |f| %>
-      <h3>Solar panels</h3>
-      <%= f.input :indicated_has_solar_panels, label: 'Our school has solar PV panels' %>
+      <h3><%= t('schools.your_school_estates.edit.solar_panels') %></h3>
+      <%= f.input :indicated_has_solar_panels, label: t('schools.your_school_estates.edit.solar_panels_label') %>
 
-      <h3>Storage heaters</h3>
-      <%= f.input :indicated_has_storage_heaters, label: 'Our school has night storage heaters' %>
+      <h3><%= t('schools.your_school_estates.edit.storage_heaters') %></h3>
+      <%= f.input :indicated_has_storage_heaters, label: t('schools.your_school_estates.edit.storage_heaters_label') %>
 
-      <h3>Swimming pool</h3>
-      <%= f.input :has_swimming_pool, label: 'Our school has its own swimming pool' %>
+      <h3><%= t('schools.your_school_estates.edit.swimming_pool') %></h3>
+      <%= f.input :has_swimming_pool, label: t('schools.your_school_estates.edit.swimming_pool_label') %>
 
-      <h3>Alternative heating sources</h3>
-      <p>Tell us about any alternative sources of heating that you use in your school.</p>
-      <p>At the moment we only analyse your gas data. But by letting us know about other sources, we can qualify any potential cost savings or recommendations.</p>
+      <h3><%= t('schools.your_school_estates.edit.alternative_heating_sources.header') %></h3>
+      <p><%= t('schools.your_school_estates.edit.alternative_heating_sources.description_1') %>.</p>
+      <p><%= t('schools.your_school_estates.edit.alternative_heating_sources.description_2') %>.</p>
 
-      <%= f.input :alternative_heating_oil, label: 'Our school uses Oil for heating', input_html: {data: {reveals: '.school_alternative_heating_oil_fields' }} %>
+      <%= f.input :alternative_heating_oil, label: t('schools.your_school_estates.edit.alternative_heating_sources.oil.label'), input_html: {data: {reveals: '.school_alternative_heating_oil_fields' }} %>
       <div class='school_alternative_heating_oil_fields' data-revealed-by=".school_alternative_heating_oil">
-        <%= f.input :alternative_heating_oil_percent, label: 'What percentage of the school is heated by Oil Heating?' %>
-        <%= f.input :alternative_heating_oil_notes, label: 'Is there anything else we should know?' %>
+        <%= f.input :alternative_heating_oil_percent, label: t('schools.your_school_estates.edit.alternative_heating_sources.oil.percentage') %>
+        <%= f.input :alternative_heating_oil_notes, label: t('schools.your_school_estates.edit.alternative_heating_sources.notes') %>
       </div>
 
-      <%= f.input :alternative_heating_lpg, label: 'Our school is using LPG for heating', input_html: {data: {reveals: '.school_alternative_lpg_fields' }} %>
+      <%= f.input :alternative_heating_lpg, label: t('schools.your_school_estates.edit.alternative_heating_sources.lpg.label'), input_html: {data: {reveals: '.school_alternative_lpg_fields' }} %>
       <div class='school_alternative_lpg_fields' data-revealed-by=".school_alternative_heating_lpg">
-        <%= f.input :alternative_heating_lpg_percent, label: 'What percentage of the school using LPG for heating?' %>
-        <%= f.input :alternative_heating_lpg_notes, label: 'Is there anything else we should know?' %>
+        <%= f.input :alternative_heating_lpg_percent, label: t('schools.your_school_estates.edit.alternative_heating_sources.lpg.percentage') %>
+        <%= f.input :alternative_heating_lpg_notes, label: t('schools.your_school_estates.edit.alternative_heating_sources.notes') %>
       </div>
 
-      <%= f.input :alternative_heating_biomass, label: 'Our school has a Biomass boiler', input_html: {data: {reveals: '.school_alternative_biomass_fields' }} %>
+      <%= f.input :alternative_heating_biomass, label: t('schools.your_school_estates.edit.alternative_heating_sources.biomass.label'), input_html: {data: {reveals: '.school_alternative_biomass_fields' }} %>
       <div class='school_alternative_biomass_fields' data-revealed-by=".school_alternative_heating_biomass">
-        <%= f.input :alternative_heating_biomass_percent, label: 'What percentage of the school using a Biomass boiler for heating?' %>
-        <%= f.input :alternative_heating_biomass_notes, label: 'Is there anything else we should know?' %>
+        <%= f.input :alternative_heating_biomass_percent, label: t('schools.your_school_estates.edit.alternative_heating_sources.biomass.percentage') %>
+        <%= f.input :alternative_heating_biomass_notes, label: t('schools.your_school_estates.edit.alternative_heating_sources.notes') %>
       </div>
 
-      <%= f.input :alternative_heating_district_heating, label: 'Our school has District Heating', input_html: {data: {reveals: '.school_alternative_district_heating_fields' }} %>
+      <%= f.input :alternative_heating_district_heating, label: t('schools.your_school_estates.edit.alternative_heating_sources.district_heating.label'), input_html: {data: {reveals: '.school_alternative_district_heating_fields' }} %>
       <div class='school_alternative_district_heating_fields' data-revealed-by=".school_alternative_heating_district_heating">
-        <%= f.input :alternative_heating_district_heating_percent, label: 'What percentage of the school using District Heating for heating?' %>
-        <%= f.input :alternative_heating_district_heating_notes, label: 'Is there anything else we should know?' %>
+        <%= f.input :alternative_heating_district_heating_percent, label: t('schools.your_school_estates.edit.alternative_heating_sources.district_heating.percentage') %>
+        <%= f.input :alternative_heating_district_heating_notes, label: t('schools.your_school_estates.edit.alternative_heating_sources.notes') %>
       </div>
 
-      <%= f.submit 'Save', class: 'btn btn-primary pt-6' %>
+      <%= f.submit t('common.labels.save'), class: 'btn btn-primary pt-6' %>
     <% end %>
   </div>
 </div>

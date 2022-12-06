@@ -1,3 +1,0 @@
-<% if issue.owned_by %>
-  <span class="badge badge-pill badge-secondary font-weight-normal"><%= issue.owned_by == current_user ? "You" : issue.owned_by.display_name %></span>
-<% end %>

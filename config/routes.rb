@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   get 'case_studies/:id/:serve', to: 'case_studies#download'
   get 'newsletters', to: 'newsletters#index', as: :newsletters
   get 'resources', to: 'resource_files#index', as: :resources
-  get 'resources/:id/:serve', to: 'resource_files#download'
+  get 'resources/:id/:serve', to: 'resource_files#download', as: :serve_resource
   get 'jobs', to: 'jobs#index', as: :jobs
   get 'jobs/:id/:serve', to: 'jobs#download'
   get 'home-page', to: 'home#show'
@@ -284,7 +284,16 @@ Rails.application.routes.draw do
 
   get '/admin', to: 'admin#index'
 
+  concern :issueable do
+    resources :issues, controller: '/admin/issues' do
+      member do
+        post :resolve
+      end
+    end
+  end
+
   namespace :admin do
+    concerns :issueable
     resources :users do
       scope module: :users do
         resource :confirmation, only: [:create], controller: 'confirmation'
@@ -314,10 +323,10 @@ Rails.application.routes.draw do
             post :make_visible
           end
         end
-        resources :issues, only: [:index]
         resource :partners, only: [:show, :update]
         resource :meter_report, only: [:show]
         resource :dashboard_message, only: [:update, :edit, :destroy], controller: '/admin/dashboard_messages'
+        concerns :issueable
       end
     end
 
@@ -453,11 +462,6 @@ Rails.application.routes.draw do
         resources :consent_requests
         resources :bill_requests
         resource :target_data, only: :show
-        resources :issues do
-          member do
-            post :resolve
-          end
-        end
       end
       member do
         get :removal
@@ -465,6 +469,7 @@ Rails.application.routes.draw do
         post :deactivate_users
         post :deactivate
       end
+      concerns :issueable
     end
 
     authenticate :user, ->(user) { user.admin? } do

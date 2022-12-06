@@ -107,6 +107,9 @@ gem 'mobility-actiontext', '~> 1.1.1'
 # Background jobs
 gem "good_job", "~> 3.4.6"
 
+# Rails 6.1 functionality. Can be removed when we upgrade.
+gem 'delegated_type'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
@@ -155,7 +158,7 @@ group :test do
   gem 'capybara-email'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
-  gem 'webdrivers'
+  gem "webdrivers", '>= 5.2.0'
   gem 'simplecov', :require => false, :group => :test
   gem 'shoulda-matchers'
   gem 'timecop'

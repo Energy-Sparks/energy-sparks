@@ -8,21 +8,34 @@ en:
     data: data
     electricity: Electricity
     electricity_and_solar_pv: Electricity and Solar PV
+    email_us: email us
     gas: Gas
     labels:
       actions: Actions
+      are_you_sure: Are you sure?
       back: Back
+      cancel: Cancel
+      create: Create
       delete: Delete
       edit: Edit
+      home: Home
       manage: Manage
       next: Next
+      no_label: 'No'
       previous: Previous
+      remove: Remove
+      save: Save
+      update: Update
+      view: View
       view_results: View results
+      yes_label: 'Yes'
     line_graphs: Line graphs
     pie_charts: Pie charts
+    privacy_policy: privacy policy
     school: School
     storage_heater: Storage heater
     storage_heaters: Storage heaters
+    terms_and_conditions: terms and conditions
     units:
       minutes:
         one: "%{count} minute"
