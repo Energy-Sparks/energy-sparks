@@ -67,8 +67,6 @@ class ContentBatch
       Targets::GenerateProgressService.new(school, aggregate_school).generate!
 
       @logger.info "Generated target data"
-
-      broadcast(:school_content_generated, school)
     rescue StandardError => e
       @logger.error "There was an error for #{school.name} - #{e.message}"
       Rollbar.error(e, job: :content_batch, school_id: school.id, school: school.name)
