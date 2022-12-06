@@ -83,13 +83,12 @@ module Targets
     end
 
     def fetch_latest_figures(hash_of_months_to_values)
-      val = hash_of_months_to_values[reporting_month]
       #sometimes the schools meter data may be lagging only a few days or a week
       #behind. this means that the progress report does not have data for this month,
       #it only has data for the previous month. So if there's no entry for the reporting
       #month, look for earlier data. This typically only happens around the beginning of
       #month when we're running a little behind on data
-      val.present? ? val : hash_of_months_to_values[reporting_month.prev_month]
+      hash_of_months_to_values[reporting_month] || hash_of_months_to_values[reporting_month.prev_month]
     end
 
     def reporting_month
