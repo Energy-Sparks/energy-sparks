@@ -169,6 +169,11 @@ en:
       title: Energy Sparks schools across the UK
       view_all_energy_sparks_schools: View all Energy Sparks schools
       view_energy_sparks_schools_by_group: View Energy Sparks schools by group
+    meters:
+      active_meters:
+        attributes: Attributes
+        details: Details
+        report: Report
     observations:
       timeline:
         action:
