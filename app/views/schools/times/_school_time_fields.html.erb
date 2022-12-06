@@ -35,7 +35,7 @@
           <%= f.select :calendar_period, options_for_select(SchoolTime.calendar_periods.map {|key, value| [key.titleize, SchoolTime.calendar_periods.key(value)]}, f.object.calendar_period), {required: :true}, { class: 'form-control' } %>
         </div>
         <div class="col-md-2 mb-3">
-          <%= link_to_remove_association 'Remove time', f, class: 'btn' %>
+          <%= link_to_remove_association t('schools.times.school_time_fields.remove_time'), f, class: 'btn' %>
         </div>
         <% if f.object.errors.has_key?(:overlapping_time) %>
           <div class="alert alert-danger" style="border: 0px;"><%= f.object.errors[:overlapping_time].join(", ") %></div>
