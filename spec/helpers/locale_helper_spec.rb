@@ -55,9 +55,16 @@ describe LocaleHelper do
   describe '.t_day' do
     it 'returns day name' do
       expect(helper.t_day('monday')).to eq('Monday')
+      expect(helper.t_day('tuesday')).to eq('Tuesday')
+      expect(helper.t_day('wednesday')).to eq('Wednesday')
+      expect(helper.t_day('thursday')).to eq('Thursday')
+      expect(helper.t_day('friday')).to eq('Friday')
+      expect(helper.t_day('saturday')).to eq('Saturday')
+      expect(helper.t_day('sunday')).to eq('Sunday')
       expect(helper.t_day('weekdays')).to eq('Weekdays')
       expect(helper.t_day('weekends')).to eq('Weekends')
       expect(helper.t_day('everyday')).to eq('Everyday')
+      expect(helper.t_day('notaday')).to eq('')
     end
     it 'translates day name' do
       I18n.with_locale(:cy) do
