@@ -96,7 +96,7 @@ describe ApplicationHelper do
     end
   end
 
-  describe 'selected_badge_class' do
+  describe 'activity_types_badge_class' do
     it 'has the non-selected class' do
       expect(helper.activity_types_badge_class('KS1, KS2', 'KS3', 'info')).to include('badge-light')
     end
