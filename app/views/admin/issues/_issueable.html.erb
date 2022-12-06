@@ -2,7 +2,7 @@
   <span class="badge badge-secondary text-white" %>
     <%= issueable_icon(issue.issueable) %>
     <%= link_to issue.issueable.name,
-      issues_index_link(issue.issueable, params[:issue_types]),
+      polymorphic_path([:admin, issue.issueable, Issue]),
       class: 'text-white text-decoration-none'
     %>
   </span>

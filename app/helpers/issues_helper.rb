@@ -11,8 +11,4 @@ module IssuesHelper
       fa_icon(Issue.issueable_image(issueable))
     end
   end
-
-  def issues_index_link(issueable, issue_types, query = {})
-    polymorphic_path([:admin, issueable, Issue], query.merge(issue_types: issue_types))
-  end
 end
