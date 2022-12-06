@@ -80,6 +80,16 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   expect(page).to have_content "Title *\ncan't be blank"
                   expect(page).to have_content "Description *\ncan't be blank"
                 end
+                context "and then saving with correct values" do
+                  before do
+                    fill_in 'Title', with: "#{issue_type} title"
+                    fill_in_trix 'trix-editor#issue_description', with: "#{issue_type} desc"
+                    click_button 'Save'
+                  end
+                  it "should redirect back to the calling page" do
+                    expect(page).to have_current_path(url_for([:admin, issueable, :issues]))
+                  end
+                end
               end
               context "with fields filled in" do
                 let(:frozen_time) { Time.now }

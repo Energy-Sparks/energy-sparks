@@ -26,6 +26,10 @@ tr.admin-issue .issue {
   margin-bottom: 0px;
 }
 
+.admin-issue trix-editor.form-control {
+  height: auto;
+}
+
 .toggler.collapsed .fa-chevron-down,
 .toggler .fa-chevron-right {
   display: none;
