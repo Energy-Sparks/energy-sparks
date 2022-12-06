@@ -45,9 +45,9 @@ describe LocaleHelper do
 
   describe '.t_period' do
     it 'returns period name' do
-      expect(helper.t_period(:term_times)).to eq('Term times')
-      expect(helper.t_period(:only_holidays)).to eq('Only holidays')
-      expect(helper.t_period(:all_year)).to eq('All year')
+      expect(helper.t_period(:term_times)).to eq('Term Times')
+      expect(helper.t_period(:only_holidays)).to eq('Only Holidays')
+      expect(helper.t_period(:all_year)).to eq('All Year')
       expect(helper.t_period(:something_else)).to eq('')
     end
   end
@@ -55,6 +55,9 @@ describe LocaleHelper do
   describe '.t_day' do
     it 'returns day name' do
       expect(helper.t_day('monday')).to eq('Monday')
+      expect(helper.t_day('weekdays')).to eq('Weekdays')
+      expect(helper.t_day('weekends')).to eq('Weekends')
+      expect(helper.t_day('everyday')).to eq('Everyday')
     end
     it 'translates day name' do
       I18n.with_locale(:cy) do
