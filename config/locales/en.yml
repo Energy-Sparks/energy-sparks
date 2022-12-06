@@ -45,6 +45,14 @@ en:
     - October
     - November
     - December
+    other:
+      weekdays: Weekdays
+      weekends: Weekends
+      everyday: Everyday
+    calendar_period:
+      term_times: Term Times
+      only_holidays: Only Holidays
+      all_year: All Year
   support:
     array:
       last_word_connector: ", and "

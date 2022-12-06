@@ -30,7 +30,13 @@ module LocaleHelper
     safe_join output, char
   end
 
+  def t_period(period)
+    I18n.t("date.calendar_period.#{period}", default: '')
+  end
+
   def t_day(day)
     I18n.t('date.day_names')[Date.parse(day).wday]
+  rescue
+    I18n.t("date.other.#{day}", default: '')
   end
 end
