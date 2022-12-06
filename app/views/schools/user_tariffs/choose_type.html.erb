@@ -14,7 +14,7 @@
   <br/>
   <br/>
 
-  <p>Or a rate which varies by time of day (e.g. Day/Night tariff, Economy7)</p>
+  <p><%= t('schools.user_tariffs.choose_type.or_a_rate_which_varies_by_time_of_day') %></p>
 
   <%= simple_form_for [@school, @user_tariff] do |f| %>
     <%= f.hidden_field :flat_rate, value: false %>
