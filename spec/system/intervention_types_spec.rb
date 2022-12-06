@@ -5,7 +5,7 @@ describe 'intervention types', type: :system do
   context 'intervention types search page' do
 
     let!(:intervention_type_1) { create(:intervention_type, name: 'foo', description: 'intervention') }
-    let!(:intervention_type_2) { create(:intervention_type, name: 'bar', description: 'intervention') }
+    let!(:intervention_type_2) { create(:intervention_type, name: 'bar', description: 'second intervention') }
 
     it 'links from intervention groups page and shows empty page' do
       ClimateControl.modify FEATURE_FLAG_INTERVENTION_TYPE_SEARCH: 'true' do
