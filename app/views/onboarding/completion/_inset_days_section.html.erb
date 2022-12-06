@@ -1,0 +1,37 @@
+<div class="card mb-3" id="inset-days">
+  <div class="card-header">
+    <h4><%= t('onboarding.completion.new.inset_days_section.configure_inset_days') %>
+    <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-inset-days"
+      aria-expanded="<%= params[:show]=='inset-days' ? 'true' : 'false' %>" aria-controls="collapse-inset-days"><%= t('common.labels.view') %></button></span>
+    </h4>
+  </div>
+  <div id="collapse-inset-days" class="collapse <%= 'show' if params[:show]=='inset-days' %>">
+    <div class="card-body">
+      <%= t('onboarding.completion.new.inset_days_section.configure_inset_days_message_html') %>
+      <table class="table table-borderless mb-3">
+        <thead>
+          <tr>
+            <th><%= t('onboarding.completion.new.inset_days_section.date') %></th>
+            <th><%= t('onboarding.completion.new.inset_days_section.type') %></th>
+            <th><%= t('onboarding.completion.new.inset_days_section.actions') %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @inset_days.each do |inset_day| %>
+            <tr>
+              <td><%= inset_day.start_date %></td>
+              <td><%= I18n.t(inset_day.calendar_event_type.i18n_key("title")) %></td>
+              <td>
+                <div class="btn-group">
+                  <%= link_to t('common.labels.edit'), edit_onboarding_inset_day_path(@school_onboarding, inset_day), class: 'btn btn-sm btn-warning' %>
+                  <%= link_to t('common.labels.delete'), onboarding_inset_day_path(@school_onboarding, inset_day), method: :delete, class: 'btn btn-sm btn-danger' %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= link_to t('onboarding.completion.new.inset_days_section.add_an_inset_day'), new_onboarding_inset_day_path(@school_onboarding), class: 'btn btn-primary' %>
+    </div>
+  </div>
+</div>

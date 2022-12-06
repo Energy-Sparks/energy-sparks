@@ -21,7 +21,7 @@ module Onboarding
 
     def show
       if @school_onboarding.school.visible?
-        redirect_to school_path(@school_onboarding.school), notice: 'Your school is now active!'
+        redirect_to school_path(@school_onboarding.school), notice: I18n.t('onboarding.completion.show.school_active_notice')
       else
         :show
       end

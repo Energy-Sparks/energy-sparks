@@ -158,7 +158,7 @@ group :test do
   gem 'capybara-email'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
-  gem 'webdrivers'
+  gem "webdrivers", '>= 5.2.0'
   gem 'simplecov', :require => false, :group => :test
   gem 'shoulda-matchers'
   gem 'timecop'

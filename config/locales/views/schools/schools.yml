@@ -135,6 +135,29 @@ en:
         enable_alerts: Enable alerts
         enable_alerts_for: Enable alerts for %{user_name}
         sign_up_for_email_or_text_alerts: Sign up for email or text alerts
+    downloads:
+      index:
+        aggregated_meter_collection: Aggregated meter collection
+        back_to_school_dashboard: Back to school dashboard
+        carbon_intensity_data: Carbon intensity data
+        carbon_intensity_data_csv: Carbon intensity data CSV
+        dark_sky_data: Dark Sky Data
+        darksky_product_message_html: We use the <a href="https://darksky.net/">Dark Sky</a> product for temperature data, you can download the temperature data we have for your school here
+        darksky_weather_data_csv_for_your_area: Dark Sky Weather data CSV for your area, %{dark_sky_area_title}
+        download_meter_data_for_all_meters_combined: Download meter data for all meters combined
+        download_the_data_for_each_active_meter: Download the data for each active meter
+        download_the_data_for_each_inactive_meter: Download the data for each inactive meter
+        downloads_for: Downloads for %{school_name}
+        email_contact_message_html: Please contact <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a> for further information
+        meters: Meters
+        solar_pv_data: Solar PV Data
+        solar_pv_data_csv_for_your_area: Solar PV data CSV for your area, %{solar_pv_tuos_area_title}
+        temperature_carbon_intensity_and_solar_pv_message: Temperature, Carbon intensity and solar pv data might be available on request depending on the end use
+        title: "%{school_name} Downloads"
+        unvalidated_meter_data: Unvalidated meter data
+        unvalidated_meter_data_as_csv: Unvalidated meter data as CSV
+        validated_meter_data: Validated meter data
+        we_use_sheffield_solar_pv_api_message_html: We use the <a href="https://www.solar.sheffield.ac.uk/pvlive/">University of Sheffield Solar PV</a> API for solar pv generation data, you can download the data we have for your school here
     index:
       a_to_z_of_all_energy_sparks_schools: A to Z of all Energy Sparks schools
       introduction_1: Discover which schools are using Energy Sparks to reduce their energy usage
@@ -234,3 +257,31 @@ en:
       message_1: Enter the times when pupils are arriving and leaving the school. Including the times of any before or after school clubs.
       message_2: Times should be entered in 24 hour format.
       opening_time: Opening Time
+    your_school_estates:
+      edit:
+        alternative_heating_sources:
+          biomass:
+            label: Our school has a Biomass boiler
+            percentage: What percentage of the school using a Biomass boiler for heating?
+          description_1: Tell us about any alternative sources of heating that you use in your school
+          description_2: At the moment we only analyse your gas data. But by letting us know about other sources, we can qualify any potential cost savings or recommendations
+          district_heating:
+            label: Our school has District Heating
+            percentage: What percentage of the school using District Heating for heating?
+          header: Alternative heating sources
+          lpg:
+            label: Our school is using LPG for heating
+            percentage: What percentage of the school using LPG for heating?
+          notes: Is there anything else we should know?
+          oil:
+            label: Our school uses Oil for heating
+            percentage: What percentage of the school is heated by Oil Heating?
+        description: EnergySparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you
+        school_was_successfully_updated: School was successfully updated
+        solar_panels: Solar panels
+        solar_panels_label: Our school has solar PV panels
+        storage_heaters: Storage heaters
+        storage_heaters_label: Our school has night storage heaters
+        swimming_pool: Swimming pool
+        swimming_pool_label: Our school has its own swimming pool
+        title: Your School Estate
