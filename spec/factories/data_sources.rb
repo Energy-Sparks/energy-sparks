@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :data_source do
-    name { "MyString" }
+    name { "Data source name" }
     organisation_type { :energy_supplier }
     contact_name { "Contact name" }
     contact_email { "contact@email.com" }
