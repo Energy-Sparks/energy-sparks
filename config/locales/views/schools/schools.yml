@@ -304,6 +304,10 @@ en:
         staff_accounts: Staff accounts
         staff_accounts_have_access_message: Staff accounts have access to teacher, management and pupil Energy Sparks functionality and alerts but cannot manage other accounts
         title: School admin accounts
+      new:
+        create_account: Create account
+        introduction: New users will be sent an email to confirm their account and will then be asked to set a password for their account before it can be accessed
+        title: New %{user_role} account
     your_school_estates:
       edit:
         alternative_heating_sources:
