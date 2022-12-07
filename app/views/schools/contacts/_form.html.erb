@@ -4,7 +4,7 @@
 
 
 <% if f.object.user.nil? %>
-  <%= f.input :staff_role_id, label: t('schools.contacts.form.labels.role'), collection: StaffRole.order(:title).map { |staff_role| [staff_role.translated_title, staff_role.id] } %>
+  <%= f.input :staff_role_id, label: t('schools.contacts.form.labels.role'), collection: StaffRole.map { |staff_role| [staff_role.translated_title, staff_role.id] }.sort %>
 
   <p><%= t('schools.contacts.form.enter_at_least_one_method_message') %></p>
 <% end %>
