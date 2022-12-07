@@ -234,6 +234,30 @@ en:
         title: Inventory
       meter_notes:
         meter_notes_mpan_mprn: Meter Notes (%{meter_mpan_mprn})
+      show:
+        admin_notes: Admin notes
+        basic_information: Basic information
+        dcc_consented: DCC Consented
+        dcc_information: DCC information
+        dcc_last_checked: DCC last checked
+        download_readings: Download readings
+        earliest_available_data: Earliest Available Data
+        grant_consent: Grant consent
+        inventory: Inventory
+        meter: Meter
+        meter_elements: Meter Elements
+        mpan_mprn: MPAN/MPRN
+        n3rgy_api_status: n3rgy API Status
+        not_configured_as_a_dcc_meter: Not configured as a DCC meter
+        sandbox: Sandbox
+        school_meter_management: School meter management
+        serial_number: Serial Number
+        status: Status
+        tariff_report: Tariff Report
+        title: "%{meter_name} (%{meter_mpan_mprn})"
+        type: Type
+        user_consented: User Consented
+        withdraw_consent: Withdraw consent
     observations:
       timeline:
         action:

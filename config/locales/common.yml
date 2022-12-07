@@ -13,21 +13,27 @@ en:
     labels:
       actions: Actions
       activate: Activate
+      active: Active
       are_you_sure: Are you sure?
+      attributes: Attributes
       back: Back
       cancel: Cancel
       close: Close
       create: Create
+      created: Created
       deactivate: Deactivate
       delete: Delete
       edit: Edit
       finished: Finished
       home: Home
+      inactive: Inactive
+      last_updated: Last updated
       manage: Manage
       next: Next
       no_label: 'No'
       previous: Previous
       remove: Remove
+      report: Report
       save: Save
       update: Update
       view: View
