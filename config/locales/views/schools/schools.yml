@@ -257,6 +257,21 @@ en:
       message_1: Enter the times when pupils are arriving and leaving the school. Including the times of any before or after school clubs.
       message_2: Times should be entered in 24 hour format.
       opening_time: Opening Time
+    users:
+      auto_create_alert_contact:
+        energy_sparks_alerts: Energy Sparks alerts
+        energy_sparks_alerts_list_item_1: give you warning of changes in your school's energy use
+        energy_sparks_alerts_list_item_2: highlight long term problems with your energy consumption with focused recommendations to save energy
+        energy_sparks_alerts_list_item_3: let you know if you are doing well compared to other schools and your past performance
+        subscribe_to_school_alerts: Subscribe to school alerts
+      auto_subscribe_newsletter:
+        newsletters_main_communication_channel: Newsletters are our main communication channel for
+        newsletters_main_communication_channel_list_item_1: highlighting new resources
+        newsletters_main_communication_channel_list_item_2: sharing featured activities
+        newsletters_main_communication_channel_list_item_3: celebrating best practice and success stories at participating schools
+        newsletters_main_communication_channel_list_item_4: promoting supporting services such as workshops, training and audits
+        subscribe_to_newsletters: Subscribe to newsletters
+        we_strongly_recommend_you_sign_up: We strongly recommend you sign up to get the most from Energy Sparks (we'll never share your email address with anyone else)
     your_school_estates:
       edit:
         alternative_heating_sources:
