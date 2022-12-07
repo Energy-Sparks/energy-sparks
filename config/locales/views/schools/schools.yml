@@ -229,6 +229,9 @@ en:
         validated_readings: Validated Readings
         view_target_data: View target data
         zero_days: Zero days
+      inventory:
+        meter_title: 'Meter: %{meter_mpan_mprn}'
+        title: Inventory
       meter_notes:
         meter_notes_mpan_mprn: Meter Notes (%{meter_mpan_mprn})
     observations:
