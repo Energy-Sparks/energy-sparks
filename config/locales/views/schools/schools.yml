@@ -179,6 +179,8 @@ en:
         exported_solar_pv: Exported solar pv
         gas: Gas
         solar_pv: Solar pv
+      edit:
+        edit_meter: Edit meter
       form:
         admin_notes: Admin notes
         admin_only_features_for_n3rgy_integration: Admin only features for n3rgy integration
@@ -195,6 +197,40 @@ en:
         title: The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters)
         type: Type
         update_meter: Update Meter
+      index:
+        active_meters: Active meters
+        active_pseudo_meters: Active pseudo meters
+        add_meter: Add meter
+        data_processing_turned_on_message: Data processing must be turned on for this school before meter readings can be validated
+        details: Details
+        first: First
+        imported: Imported
+        inactive_meters: Inactive meters
+        large_gaps: Large gaps
+        latest: Latest
+        manage_solar_api_feeds: Manage Solar API feeds
+        manage_tariffs: Manage tariffs
+        meter: Meter
+        meter_reviews: Meter reviews
+        mpan_warning_message: There are electricity meters with MPANs that don't appear to have the correct check digit
+        name: Name
+        no_active_meters: No active meters
+        only_admins_message: Only admins can delete meters with meter readings
+        readings: Readings
+        report: Report
+        review_meters: Review meters
+        school_downloads: School downloads
+        school_enough_data_message: This school has enough data for at least one fuel type to generate targets
+        school_not_enough_data_message: This school does not have enough data to generate targets
+        this_may_take_some_time: This may take some time!
+        title: Meters
+        validate_meter_readings: Validate meter readings
+        validated: Validated
+        validated_readings: Validated Readings
+        view_target_data: View target data
+        zero_days: Zero days
+      meter_notes:
+        meter_notes_mpan_mprn: Meter Notes (%{meter_mpan_mprn})
     observations:
       timeline:
         action:

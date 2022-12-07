@@ -12,9 +12,11 @@ en:
     gas: Gas
     labels:
       actions: Actions
+      activate: Activate
       are_you_sure: Are you sure?
       back: Back
       cancel: Cancel
+      close: Close
       create: Create
       deactivate: Deactivate
       delete: Delete
