@@ -68,6 +68,7 @@
   </div>
 
   <div class="actions">
-    <%= form.submit t('schools.meters.form.create_meter'), class: 'btn btn-primary'%>
+    <% submit_label = action_name == 'edit' ? t('schools.meters.form.update_meter') : t('schools.meters.form.create_meter') %>
+    <%= form.submit submit_label, class: 'btn btn-primary'%>
   </div>
 <% end %>
