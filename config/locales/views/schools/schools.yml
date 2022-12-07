@@ -272,6 +272,11 @@ en:
         newsletters_main_communication_channel_list_item_4: promoting supporting services such as workshops, training and audits
         subscribe_to_newsletters: Subscribe to newsletters
         we_strongly_recommend_you_sign_up: We strongly recommend you sign up to get the most from Energy Sparks (we'll never share your email address with anyone else)
+      form:
+        email: Email
+        name: Name
+        role: Role
+        what_is_their_primary_role: What is their primary role in relation to Energy Sparks?
     your_school_estates:
       edit:
         alternative_heating_sources:
