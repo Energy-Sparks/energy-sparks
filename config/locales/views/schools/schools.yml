@@ -280,6 +280,30 @@ en:
         name: Name
         role: Role
         what_is_their_primary_role: What is their primary role in relation to Energy Sparks?
+      index:
+        account_confirmed: Account confirmed?
+        add_existing_user_as_admin: Add an existing Energy Sparks user as a school admin
+        could_not_decrypt: "(could not decrypt)"
+        email: Email
+        introduction: School admin accounts have access to all Energy Sparks functionality and can manage other users and update school details
+        make_school_admin: Make school admin
+        name: Name
+        new_pupil_account: New pupil account
+        new_school_admin_account: New school admin account
+        new_staff_account: New staff account
+        no_pupil_accounts: There are no pupil accounts for this school
+        no_school_admin_accounts: There are no school admin accounts for this school
+        no_staff_accounts: There are no staff accounts for this school
+        password: Password
+        pupil_accounts: Pupil accounts
+        pupil_accounts_message_1: Pupil accounts allow your school's pupils to log into Energy Sparks using only a password, no email address is required
+        pupil_accounts_message_2: These accounts can be created to be used in classrooms or with eco-teams, one account per classroom or team and the passwords can then be shared with the pupils
+        receives_alerts: Receives alerts?
+        resend_confirmation: Resend confirmation
+        role: Role
+        staff_accounts: Staff accounts
+        staff_accounts_have_access_message: Staff accounts have access to teacher, management and pupil Energy Sparks functionality and alerts but cannot manage other accounts
+        title: School admin accounts
     your_school_estates:
       edit:
         alternative_heating_sources:
