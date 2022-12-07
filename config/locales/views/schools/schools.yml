@@ -170,10 +170,6 @@ en:
       view_all_energy_sparks_schools: View all Energy Sparks schools
       view_energy_sparks_schools_by_group: View Energy Sparks schools by group
     meters:
-      active_meters:
-        attributes: Attributes
-        details: Details
-        report: Report
       creatable_meter_types:
         electricity: Electricity
         exported_solar_pv: Exported solar pv

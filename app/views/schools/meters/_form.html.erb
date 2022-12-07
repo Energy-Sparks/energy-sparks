@@ -62,7 +62,7 @@
 
       <div class="form-group">
         <%= form.label :earliest_available_data, t('schools.meters.form.earliest_available_data') %>
-        <%= date_field(:meter, :earliest_available_data, max: Time.zone.today, min: Date.parse("2012-01-01", locale: I18n.locale)) %>
+        <%= date_field(:meter, :earliest_available_data, max: Time.zone.today, min: Date.parse("2012-01-01")) %>
       </div>
     <% end %>
   </div>
