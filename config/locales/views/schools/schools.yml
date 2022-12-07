@@ -182,6 +182,7 @@ en:
       form:
         admin_notes: Admin notes
         admin_only_features_for_n3rgy_integration: Admin only features for n3rgy integration
+        create_meter: Create meter
         dcc_smart_meter: DCC Smart Meter
         earliest_available_data: Earliest available data
         editing_disabled_for_pseudo_meters: Editing disabled for pseudo meters
