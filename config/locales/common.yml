@@ -36,6 +36,8 @@ en:
       remove: Remove
       report: Report
       save: Save
+      status: Status
+      type: Type
       update: Update
       view: View
       view_results: View results

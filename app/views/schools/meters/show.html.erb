@@ -46,13 +46,13 @@
   <div class="col-md-6">
     <h3><%= t('schools.meters.show.basic_information') %></h3>
     <dl class="row">
-      <dt class="col-sm-3"><%= t('schools.meters.show.mpan_mprn') %></dt>
+      <dt class="col-sm-3">MPAN/MPRN</dt>
       <dd class="col-sm-9"><%= @meter.mpan_mprn %></dd>
       <dt class="col-sm-3"><%= t('schools.meters.show.serial_number') %></dt>
       <dd class="col-sm-9"><%= @meter.meter_serial_number %></dd>
-      <dt class="col-sm-3"><%= t('schools.meters.show.type') %></dt>
+      <dt class="col-sm-3"><%= t('common.labels.type') %></dt>
       <dd class="col-sm-9"><%= @meter.meter_type.capitalize %></dd>
-      <dt class="col-sm-3"><%= t('schools.meters.show.status') %></dt>
+      <dt class="col-sm-3"><%= t('common.labels.status') %></dt>
       <dd class="col-sm-9"><%= @meter.active ? t('common.labels.active') : t('common.labels.inactive') %></dd>
       <dt class="col-sm-3"><%= t('common.labels.created') %></dt>
       <dd class="col-sm-9"><%= nice_date_times @meter.created_at %></dd>
