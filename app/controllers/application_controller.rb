@@ -5,11 +5,19 @@ class ApplicationController < ActionController::Base
   before_action :analytics_code
   before_action :pagy_locale
   before_action :check_admin_mode
-  before_action :redirect_to_current_user_preferred_locale, if: -> { current_user }
   helper_method :site_settings, :current_school_podium, :current_user_school
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
+  end
+
+  def after_sign_in_path_for(user)
+    if EnergySparks::FeatureFlags.active?(:redirect_to_preferred_locale)
+      subdomain = ApplicationController.helpers.subdomain_for(user.preferred_locale)
+      url_for(subdomain: subdomain, only_path: false, params: {}, controller: 'home', action: 'index')
+    else
+      root_path
+    end
   end
 
   def switch_locale(&action)
@@ -37,15 +45,6 @@ class ApplicationController < ActionController::Base
     if @school && @school.scoreboard
       @school_podium ||= Podium.create(school: @school, scoreboard: @school.scoreboard)
     end
-  end
-
-  def redirect_to_current_user_preferred_locale
-    return unless current_user
-    return if I18n.locale == current_user.preferred_locale.to_sym
-
-    subdomain = ApplicationController.helpers.subdomain_for(current_user.preferred_locale)
-    secondary_presentation = request.params['secondary_presentation'] ? "/#{request.params['secondary_presentation']}" : ''
-    redirect_to url_for(subdomain: subdomain, only_path: false, params: request.query_parameters) + secondary_presentation
   end
 
   def current_user_school
