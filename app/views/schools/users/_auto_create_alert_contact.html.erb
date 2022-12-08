@@ -1,15 +1,15 @@
 <div class="row">
   <div class="col-md-3">
     <%= simple_fields_for :contact do |n| %>
-      <%= n.input :auto_create_alert_contact, label: "Subscribe to school alerts", as: :boolean, class: "custom-checkbox pb-3", wrapper_html: { id: "test", class: "custom-checkbox pb-3"}, label_html: {class: "custom-control-label"}, input_html: { class: "custom-control-input", checked: checked } %>
+      <%= n.input :auto_create_alert_contact, label: t('schools.users.auto_create_alert_contact.subscribe_to_school_alerts'), as: :boolean, class: "custom-checkbox pb-3", wrapper_html: { id: "test", class: "custom-checkbox pb-3"}, label_html: {class: "custom-control-label"}, input_html: { class: "custom-control-input", checked: checked } %>
     <% end %>
   </div>
   <div class="col-md-9">
-    <p>Energy Sparks alerts:</p>
+    <p><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts') %>:</p>
     <ul>
-      <li>give you warning of changes in your school's energy use</li>
-      <li>highlight long term problems with your energy consumption with focused recommendations to save energy</li>
-      <li>let you know if you are doing well compared to other schools and your past performance</li>
+      <li><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts_list_item_1') %></li>
+      <li><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts_list_item_2') %></li>
+      <li><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts_list_item_3') %></li>
     </ul>
   </div>
 </div>
