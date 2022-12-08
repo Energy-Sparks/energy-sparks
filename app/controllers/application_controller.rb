@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_action :analytics_code
   before_action :pagy_locale
   before_action :check_admin_mode
+  before_action :redirect_to_current_user_preferred_locale, if: -> { current_user }
   helper_method :site_settings, :current_school_podium, :current_user_school
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -36,6 +37,14 @@ class ApplicationController < ActionController::Base
     if @school && @school.scoreboard
       @school_podium ||= Podium.create(school: @school, scoreboard: @school.scoreboard)
     end
+  end
+
+  def redirect_to_current_user_preferred_locale
+    return unless current_user
+    return if I18n.locale == current_user.preferred_locale.to_sym
+
+    subdomain = ApplicationController.helpers.subdomain_for(current_user.preferred_locale)
+    redirect_to url_for(subdomain: subdomain, only_path: false, params: {})
   end
 
   def current_user_school
