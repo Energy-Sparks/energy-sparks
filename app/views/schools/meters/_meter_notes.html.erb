@@ -6,7 +6,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="meter-notes-<%= meter.id %>-title">Meter Notes (<%= meter.mpan_mprn %>)</h5>
+          <h5 class="modal-title" id="meter-notes-<%= meter.id %>-title"><%= t('schools.meters.meter_notes.meter_notes_mpan_mprn', meter_mpan_mprn: meter.mpan_mprn) %></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -15,7 +15,7 @@
           <%= meter.notes %>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><%= t('common.labels.close') %></button>
         </div>
       </div>
     </div>
