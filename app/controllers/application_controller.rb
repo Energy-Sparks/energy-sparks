@@ -44,7 +44,8 @@ class ApplicationController < ActionController::Base
     return if I18n.locale == current_user.preferred_locale.to_sym
 
     subdomain = ApplicationController.helpers.subdomain_for(current_user.preferred_locale)
-    redirect_to url_for(subdomain: subdomain, only_path: false, params: {})
+    secondary_presentation = request.params['secondary_presentation'] ? "/#{request.params['secondary_presentation']}" : ''
+    redirect_to url_for(subdomain: subdomain, only_path: false, params: request.query_parameters) + secondary_presentation
   end
 
   def current_user_school
