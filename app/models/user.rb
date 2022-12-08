@@ -16,6 +16,7 @@
 #  last_sign_in_ip        :inet
 #  locked_at              :datetime
 #  name                   :string
+#  preferred_locale       :string           default("en"), not null
 #  pupil_password         :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
@@ -81,6 +82,8 @@ class User < ApplicationRecord
   validates :school_id, presence: true, if: :pupil?
 
   validates :school_group_id, presence: true, if: :group_admin?
+
+  validate :preferred_locale_presence_in_available_locales
 
   after_save :update_contact
 
@@ -187,6 +190,12 @@ class User < ApplicationRecord
   end
 
 protected
+
+  def preferred_locale_presence_in_available_locales
+    return if I18n.available_locales.include? preferred_locale&.to_sym
+
+    errors.add(:preferred_locale, "must be present in the list of availale locales")
+  end
 
   def password_required?
     confirmed? ? super : false
