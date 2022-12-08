@@ -10,6 +10,7 @@
         <th><%= t('schools.users.index.account_confirmed') %></th>
         <th><%= t('schools.users.index.receives_alerts') %></th>
         <th><%= t('schools.users.index.role') %></th>
+        <th><%= t('schools.users.index.preferred_locale') %></th>
         <th></th>
       </tr>
     </thead>
@@ -22,6 +23,7 @@
             <td><%= y_n(user.confirmed?) %></td>
             <td><%= y_n(user.contact_for_school) %></td>
             <td><%= user.staff_role.try(:translated_title) %></td>
+            <td><%= I18n.t("languages.#{user.preferred_locale}") %></td>
             <td>
               <div class="btn-group">
                 <%= link_to(t('common.labels.edit'), edit_school_user_path(@school, user), class: 'btn btn-primary btn-sm') if can?(:edit, user) %>
