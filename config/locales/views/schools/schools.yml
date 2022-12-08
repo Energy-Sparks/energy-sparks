@@ -336,9 +336,26 @@ en:
     times:
       closing_time: Closing Time
       day: Day
+      edit:
+        community_use:
+          add_time: Add time
+          closing_time: Closing Time
+          day: Day
+          opening_time: Opening Time
+          save_community_use_times: Save community use times
+          school_premises_message: School premises are often used outside of school hours by your community. For example to host events, clubs or other private lettings
+          time_of_year: Time of year
+          title: Community use times
+          twenty_four_hour_format_message: Times should be entered in 24 hour format
+          use_the_form_message: Use the form below to add regular community use times at your school. We can use this information to provide extra insights into your energy usage outside of school hours
+        introduction_message: Please note that while we will immediately save any changes made to your school opening hours or community use times, any of our energy analysis that relies on these time periods will only update overnight.
+        save_school_times: Save school times
+        title: School opening hours
       message_1: Enter the times when pupils are arriving and leaving the school. Including the times of any before or after school clubs.
       message_2: Times should be entered in 24 hour format.
       opening_time: Opening Time
+      school_time_fields:
+        remove_time: Remove time
     your_school_estates:
       edit:
         alternative_heating_sources:
