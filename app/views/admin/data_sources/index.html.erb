@@ -9,8 +9,6 @@
     <tr>
       <th>Organisation name</th>
       <th>Organisation type</th>
-      <th>Created</th>
-      <th>Updated</th>
       <th class="no-sort text-right">Actions</th>
     </tr>
   </thead>
@@ -19,8 +17,6 @@
       <tr>
         <td class="nowrap"><%= data_source.name %></td>
         <td><%= data_source.organisation_type.humanize %></td>
-        <td><%= nice_date_times(data_source.created_at) %></span>
-        <td><%= nice_date_times(data_source.updated_at) %></td>
         <td class="nowrap text-right">
           <%= link_to 'Manage', admin_data_source_path(data_source), class: "btn btn-sm" %>
         </td>
