@@ -46,7 +46,27 @@ en:
       subject: "%{school} has completed the onboarding process"
       title: "%{school_name} has completed the automatic setup process"
     data_enabled_email:
+      get_in_touch_html: "<a href='%{contact_url}'>Get in touch</a> if you have any further questions."
+      join_a_webinar: Join a webinar
+      need_some_help: Need some help?
+      paragraph_1_html: You can now use Energy Sparks to <strong><a href='%{school_url}'>see how much energy your school is using</a></strong>.
+      paragraph_2: |-
+        Your school and pupil dashboards now includes a range of insights, charts and analysis that will help you understand how your school consumes energy,
+        and recommendations of how to reduce your carbon footprint. You will now also receive alerts to warn you about high energy usage.
+      paragraph_3_html: |-
+        Alongside these new features you can continue to
+        <strong><a href='%{activity_categories_url}'>explore our activities and educational resources</a></strong>
+        designed to teach your pupils about energy whilst saving money for their school.
+      paragraph_4_html: |-
+        For help using Energy Sparks please read our <a href="https://energysparks.uk/resources/12/download">User Guide</a>,
+        watch our <a href='%{user_guide_videos_url}'>Training Videos</a>
+        or join one of our <a href='%{training_url}'>live webinar training</a> sessions.
+      paragraph_5: We hope Energy Sparks will empower your pupils, school staff, and wider school community to take action to make your school more energy efficient.
+      set_your_first_targets: Set your first targets
       subject: "%{school} energy data is now available on Energy Sparks"
+      thanks_for_joining: Thanks for joining!
+      the_energy_sparks_team: The Energy Sparks Team
+      title: "%{school_name} energy data is now available on Energy Sparks"
     onboarded_email:
       subject: "%{school} is now live on Energy Sparks"
     onboarding_email:
