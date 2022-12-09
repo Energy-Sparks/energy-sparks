@@ -10,6 +10,8 @@ en:
       </ul>
     document_description: Description
     document_title: Title
+    edit:
+      title: Edit Bill
     index:
       description: You have provided us with the following bills as proof of which meters are installed at your school.
       document_link: Link
