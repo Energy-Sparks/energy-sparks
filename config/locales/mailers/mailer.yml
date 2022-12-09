@@ -3,7 +3,7 @@ en:
   bill_request_mailer:
     request_bill:
       description: Energy Sparks needs you to provide a recent energy bill for your school to confirm your meter numbers and Energy Sparks' authority to collect, process and display the data for those meters.
-      document_details_html:  |-
+      document_details_html: |-
         <p>The bill(s) needs to be dated within the last 3 months, and show:</p>
         <ul>
           <li>your school name</li>

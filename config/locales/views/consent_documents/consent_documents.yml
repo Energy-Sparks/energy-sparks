@@ -1,6 +1,7 @@
 ---
 en:
   consent_documents:
+    document_description: Description
     document_details_html: |-
       <p>A bill needs to be dated within the last 3 months, and show:</p>
       <ul>
@@ -8,7 +9,6 @@ en:
         <li>school address</li>
         <li>electricity meter MPAN or electricity supply number and/or gas meter MPR or meter point reference number</li>
       </ul>
-    document_description: Description
     document_title: Title
     edit:
       description: Revise the details for a previously uploaded bill. Use the description field to add notes if useful.
@@ -33,4 +33,3 @@ en:
       uploaded_file: Uploaded File
       view_bill: View Bill
       view_bills: View bills
-
