@@ -1,3 +1,3 @@
 <%= f.input :name, required: :true, label: t('schools.users.form.name') %>
 <%= f.input :email, required: :true, label: t('schools.users.form.email') %>
-<%= f.input :staff_role_id, label: t('schools.users.form.role'), required: :true, collection: StaffRole.all.map { |staff_role| [staff_role.translated_title, staff_role.id] }.sort, hint: t('schools.users.form.what_is_their_primary_role') %>
+<%= f.input :staff_role_id, label: t('schools.users.form.role'), required: :true, collection: StaffRole.translated_names_and_ids, hint: t('schools.users.form.what_is_their_primary_role') %>
