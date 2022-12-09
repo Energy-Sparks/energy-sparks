@@ -3,8 +3,12 @@
   <%= render 'shared/errors', subject: consent_statement, subject_name: 'consent statement' %>
 
   <%= f.input :title %>
-  <%= f.label 'Content', for: :content %>
-  <%= f.rich_text_area :content %>
+
+  <%= render 'admin/shared/locale_tabs', f: f, field: :content do |locale| %>
+    <div class="content-trix-editor <%= locale %>">
+      <%= f.rich_text_area t_field(:content, locale) %>
+    </div>
+  <% end %>
 
   <%= f.button :submit, 'Create consent statement' %>
 
