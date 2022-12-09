@@ -42,7 +42,9 @@ en:
       thanks_for_joining: Thanks for joining!
       the_energy_sparks_team: The Energy Sparks Team
     completion_email:
+      find_them_on_energy_sparks: Find them on Energy Sparks
       subject: "%{school} has completed the onboarding process"
+      title: "%{school_name} has completed the automatic setup process"
     data_enabled_email:
       subject: "%{school} energy data is now available on Energy Sparks"
     onboarded_email:
