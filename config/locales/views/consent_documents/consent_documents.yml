@@ -11,6 +11,8 @@ en:
     document_description: Description
     document_title: Title
     edit:
+      description: Revise the details for a previously uploaded bill. Use the description field to add notes if useful.
+      header: Edit a bill
       title: Edit Bill
     index:
       description: You have provided us with the following bills as proof of which meters are installed at your school.
