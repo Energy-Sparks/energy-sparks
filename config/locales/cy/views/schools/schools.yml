@@ -1,3 +1,4 @@
+---
 cy:
   charts:
     dashboard:
@@ -24,15 +25,15 @@ cy:
           second: Cymharu â
       select_meter:
         all_meters: Pob Mesurydd
-        title: Pa fesurydd?
+        title: "Pa fesurydd?"
       show:
         compare_message:
           other:
-            daily_html: Cymharwch ddefnydd <strong>%{supply}</strong> eich ysgol rhwng dau ddiwrnod gwahanol
-            weekly_html: Cymharwch ddefnydd <strong>%{supply}</strong> eich ysgol rhwng dwy wythnos wahanol
+            daily_html: "Cymharwch ddefnydd <strong>%{supply}</strong> eich ysgol rhwng dau ddiwrnod gwahanol"
+            weekly_html: "Cymharwch ddefnydd <strong>%{supply}</strong> eich ysgol rhwng dwy wythnos wahanol"
           split_meter:
-            daily_html: Cymharwch ddefnydd dyddiol o <strong>%{supply}</strong> eich ysgol rhwng gwahanol fesuryddion
-            weekly_html: Cymharwch ddefnydd wythnosol o <strong>%{supply}</strong> eich ysgol rhwng gwahanol fesuryddion
+            daily_html: "Cymharwch ddefnydd dyddiol o <strong>%{supply}</strong> eich ysgol rhwng gwahanol fesuryddion"
+            weekly_html: "Cymharwch ddefnydd wythnosol o <strong>%{supply}</strong> eich ysgol rhwng gwahanol fesuryddion"
         data_available: "Mae data %{supply} ar gael o %{from_date} i %{to_date}"
         explore_data: Archwilio data
       titles:
@@ -53,17 +54,17 @@ cy:
     weekly-usage-link: Gweld defnydd fesul wythnos
   schools:
     chart_preference:
-      carbon: Dewis arddangos data siart mewn kg CO2, pan fo ar gael
-      cost: Dewis arddangos data siartiau mewn £, pan fo ar gael
+      carbon: "Dewis arddangos data siart mewn kg CO2, pan fo ar gael"
+      cost: "Dewis arddangos data siartiau mewn £, pan fo ar gael"
       default: Dewis uned ddiofyn synhwyrol ar gyfer pob siart yn awtomatig
       explanation: Dewis opsiwn diofyn ar gyfer sut mae data defnydd ynni yn cael eu harddangos mewn siartiau
       form_group: Unedau a ffefrir ar gyfer data siart
-      usage: Dewis arddangos data siart mewn kwh, pan fo ar gael
+      usage: "Dewis arddangos data siart mewn kwh, pan fo ar gael"
     index:
       a_to_z_of_all_energy_sparks_schools: A i Y o holl ysgolion Energy Sparks
       introduction_1: Darganfod pa ysgolion sy'n defnyddio Energy Sparks i leihau eu defnydd o ynni
-      introduction_2: Mae gennym %{count} o ysgolion ar draws Cymru, Lloegr a'r Alban gan gynnwys ysgolion cynradd ac uwchradd y wladwriaeth, ysgolion annibynnol, ysgolion arbennig ac ysgolion meithrin
-      introduction_3: Archwiliwch eu data defnydd trydan a nwy, darganfod faint o ynni maen nhw'n ei gynhyrchu o'u paneli solar a dysgu am eu gweithgareddau arbed ynni
+      introduction_2: "Mae gennym %{count} o ysgolion ar draws Cymru, Lloegr a'r Alban gan gynnwys ysgolion cynradd ac uwchradd y wladwriaeth, ysgolion annibynnol, ysgolion arbennig ac ysgolion meithrin"
+      introduction_3: "Archwiliwch eu data defnydd trydan a nwy, darganfod faint o ynni maen nhw'n ei gynhyrchu o'u paneli solar a dysgu am eu gweithgareddau arbed ynni"
       introduction_4: Rydym yn falch o gael rhwydwaith gwych o ysgolion i gyd yn gweithio’n galed i arbed ynni a helpu i frwydro yn erbyn newid hinsawdd
       not_visible_schools: Ysgolion nad ydynt yn weladwy
       page_title: Map
@@ -73,16 +74,33 @@ cy:
     observations:
       timeline:
         action:
-          one: '%{count} weithred'
-          two: '%{count} weithred'
-          many: '%{count} o weithredoedd'
-          other: '%{count} o weithredoedd'
+          one: "%{count} weithred"
+          two: "%{count} weithred"
+          many: "%{count} o weithredoedd"
+          other: "%{count} o weithredoedd"
         activity:
           completed_an_activity: Cwblhawyd gweithgaredd
         audit:
           received_an_audit: Wedi cael archwiliad ynni
         temperatures:
           recorded_temperatures_in: Tymheredd a gofnodwyd yn
+    school_details:
+      activation_date_hint: Dyma'r dyddiad pan fydd yr ysgol yn dod yn weithredol ar Energy Sparks
+      address: Cyfeiriad
+      admin_options: Opsiynau gweinyddol
+      analysis_preferences: Dewisiadau Dadansoddiad
+      basic_details: Manylion sylfaenol
+      created: "Crëwyd %{school_name} ar %{created_at}"
+      floor_area_hint: "Os nad ydych yn gwybod hyn, gadewch ef yn wag a byddwn yn ceisio cael y wybodaeth hon gan eich Awdurdod Lleol neu MAT"
+      geocode_message: Gadewch y rhain yn wag i gael eu gosod o'r cod post
+      key_stage: Cyfnodau allweddol
+      key_stage_message: "Os ydych yn yr Alban, mae CA1 yn cwmpasu P2 a P3, mae CA2 yn cwmpasu P4 i P7, mae CA3 yn cwmpasu S1 i S3, mae CA4 yn cwmpasu S4 a S5, mae CA5 yn cwmpasu S6"
+      location: Lleoliad
+      percentage_free_school_meals_hint: "Os nad ydych yn gwybod, gadewch y maes hwn yn wag."
+      school_features: Nodweddion yr ysgol
+      stage_of_education: Cyfnod addysg
+      urn_hint: "Bydd hyn eich URN yn Lloegr, SEED yn yr Alban"
+      view_on_map: Gweld ar y map
     school_group:
       compare_schools: Cymharu ysgolion
       view_schools: Gweld ysgolion
@@ -94,7 +112,7 @@ cy:
     show:
       act_on_energy_usage: Gweithredu ar y defnydd o ynni
       add_alert_contacts: Ychwanegu cysylltiadau rhybuddio
-      add_consumption_estimate: Ychwanegwch amcangyfrif o'ch defnydd %{fuels} blynyddol fel y gallwn ddarparu adroddiad cynnydd manylach i'ch helpu i gyrraedd eich targedau
+      add_consumption_estimate: "Ychwanegwch amcangyfrif o'ch defnydd %{fuels} blynyddol fel y gallwn ddarparu adroddiad cynnydd manylach i'ch helpu i gyrraedd eich targedau"
       add_estimate: Ychwanegu amcangyfrif
       adult_dashboard: Dangosfwrdd Oedolion
       co2_kg: CO2 (kg)
@@ -105,15 +123,15 @@ cy:
       configuring_data_access: Rydym yn ffurfweddu mynediad at eich data ynni a byddwn yn eich hysbysu pan fydd yn barod i'w archwilio
       cost_£: Cost (£)
       create_pupil_account: Creu cyfrif disgybl
-      dashboard_title: Dangosfwrdd oedolion ar gyfer %{school_name}
+      dashboard_title: "Dangosfwrdd oedolion ar gyfer %{school_name}"
       download_data: Lawrlwytho'ch data
-      energy_bill_required: Rydym angen i chi ddarparu bil ynni diweddar ar gyfer eich ysgol i gadarnhau rhifau eich mesurydd. Bydd hyn yn helpu i sicrhau y gallwn gasglu, prosesu ac arddangos data eich ysgol.
+      energy_bill_required: "Rydym angen i chi ddarparu bil ynni diweddar ar gyfer eich ysgol i gadarnhau rhifau eich mesurydd. Bydd hyn yn helpu i sicrhau y gallwn gasglu, prosesu ac arddangos data eich ysgol."
       energy_saving_opportunities: Cyfleoedd arbed ynni
       find_training: Dod o hyd i hyfforddiant
-      making_progress: Da iawn, rydych yn gwneud cynnydd tuag at gyrraedd eich targed i leihau eich defnydd %{fuels}!
+      making_progress: "Da iawn, rydych yn gwneud cynnydd tuag at gyrraedd eich targed i leihau eich defnydd %{fuels}!"
       more_information: Rhagor o wybodaeth
-      not_meeting_target: Yn anffodus nid ydych yn cyrraedd eich targed i leihau eich defnydd %{fuels}
-      online_training_signup: Newydd i Energy Sparks? Cofrestrwch ar gyfer un o'n cyrsiau hyfforddi ar-lein rhad ac am ddim sydd ar ddod i'ch helpu i gael y gorau o'r gwasanaeth.
+      not_meeting_target: "Yn anffodus nid ydych yn cyrraedd eich targed i leihau eich defnydd %{fuels}"
+      online_training_signup: "Newydd i Energy Sparks? Cofrestrwch ar gyfer un o'n cyrsiau hyfforddi ar-lein rhad ac am ddim sydd ar ddod i'ch helpu i gael y gorau o'r gwasanaeth."
       percentage_change: "% Newid"
       potential_savings: Arbedion posib
       print_view: Gwedd argraffu
@@ -124,7 +142,8 @@ cy:
       review_audit: Adolygu archwiliad
       review_progress: Adolygu cynnydd
       review_target: Adolygu eich targed
-      revisit_targets: Mae ffurfweddiad eich ysgol wedi newid, efallai y bydd angen i chi ailedrych ar eich targedau ar gyfer eleni.
+      revisit_targets: "Mae ffurfweddiad eich ysgol wedi newid, efallai y bydd angen i chi ailedrych ar eich targedau ar gyfer eleni."
+      set_new_target: "Gwnaeth eich ysgol osod targed i leihau ei defnydd o ynni erbyn %{target_date}. Mae'n bryd adolygu eich cynnydd a gosod targed newydd ar gyfer y flwyddyn i ddod."
       set_target: Gosod targed arbed ynni
       set_targets: Gosodwch dargedau i leihau defnydd eich ysgol o ynni dros y flwyddyn nesaf. Bydd Energy Sparks yn rhoi cyfres o gamau a argymhellir i chi i'ch helpu i gyrraedd eich targedau a lleihau ôl troed carbon eich ysgol.
       setup_alert_contacts: Cofrestrwch ar gyfer rhybuddion e-bost neu neges destun Energy Sparks. Mae rhybuddion Energy Sparks yn rhoi rhybudd cynnar i chi o newidiadau yn nefnydd ynni eich ysgol ac yn amlygu problemau hirdymor gyda'ch defnydd o ynni gydag argymhellion penodol i arbed ynni.
@@ -135,4 +154,10 @@ cy:
       view_programmes: Gweld eich rhaglenni
     timeline:
       no_events: Dim digwyddiadau i'w dangos
-      title: Beth sydd wedi bod yn digwydd?
+      title: "Beth sydd wedi bod yn digwydd?"
+    times:
+      closing_time: Amser Cau
+      day: Diwrnod
+      message_1: Rhowch yr amseroedd pan fydd disgyblion yn cyrraedd ac yn gadael yr ysgol. Gan gynnwys amseroedd unrhyw glybiau cyn neu ar ôl ysgol.
+      message_2: Dylid rhoi amseroedd mewn fformat 24 awr.
+      opening_time: Amser Agor

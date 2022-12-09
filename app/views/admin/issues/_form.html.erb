@@ -10,7 +10,7 @@
   <% end %>
 
   <%= simple_form_for(issue.issueable ? [:admin, issue.issueable, issue] : [:admin, issue]) do |f| %>
-    <%= hidden_field_tag :previous_request, request.referer %>
+    <%= hidden_field_tag :previous_request, params[:previous_request].blank? ? request.referer : params[:previous_request] %>
     <%= f.input :title %>
     <%= f.input :description, as: :rich_text_area %>
     <%= f.input :fuel_type, collection: Issue.fuel_types.keys, label_method: lambda {|k| k.humanize}, include_blank: "Not applicable" %>

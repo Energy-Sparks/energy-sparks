@@ -1,12 +1,11 @@
-<h1>Select meters for this tariff</h1>
+<h1><%= t('schools.user_tariffs.choose_meters.title') %></h1>
 
 <div class="user_tariff">
-
   <%= simple_form_for :user_tariff, url: new_school_user_tariff_path(@school), method: :get do |f| %>
     <%= f.hidden_field :fuel_type, value: params[:fuel_type] %>
     <div class="row">
       <div class="col-md-4">
-        <p>Which meters will this tariff apply to?</p>
+        <p><%= t('schools.user_tariffs.choose_meters.which_meters_will_this_tariff_apply_to') %></p>
       </div>
       <div class="col-md-3 right">
         <div class="form-check">
@@ -22,8 +21,7 @@
       </div>
     </div>
     <br/>
-    <%= submit_tag "Next", class: 'btn btn-info' %>
+    <%= submit_tag t('common.labels.next'), class: 'btn btn-info' %>
   <% end %>
-
 </div>
 
