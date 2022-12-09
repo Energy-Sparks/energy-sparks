@@ -1,6 +1,16 @@
 ---
 en:
   schools:
+    user_tariff_differential_prices:
+      form:
+        labels:
+          end_time: End time
+          start_time: Start time
+          value: Rate in £/kWh
+      index:
+        consumption_charges: Consumption charges
+        title: Add consumption charges for each time period for this tariff
+        using_your_bill_introduction: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
     user_tariffs:
       charges_table:
         climate_charge_levy: Climate charge levy
