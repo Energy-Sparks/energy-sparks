@@ -395,4 +395,12 @@ module ApplicationHelper
   def i18n_key_from(str)
     str.gsub('+', ' And ').delete(' ').underscore
   end
+
+  def redirect_back_url(params)
+    params[:redirect_back].blank? ? request.referer : params[:redirect_back]
+  end
+
+  def redirect_back_tag(params)
+    tag.input type: 'hidden', name: :redirect_back, value: redirect_back_url(params)
+  end
 end
