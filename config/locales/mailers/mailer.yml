@@ -1,5 +1,19 @@
 ---
 en:
+  bill_request_mailer:
+    request_bill:
+      description: Energy Sparks needs you to provide a recent energy bill for your school to confirm your meter numbers and Energy Sparks' authority to collect, process and display the data for those meters.
+      document_details_html:  |-
+        <p>The bill(s) needs to be dated within the last 3 months, and show:</p>
+        <ul>
+          <li>your school name</li>
+          <li>school address</li>
+          <li>electricity meter MPAN or electricity supply number and/or gas meter MPR or meter point reference number</li>
+        </ul>
+      sample_bills_needed: Energy Sparks needs to see a sample bill for the following meter numbers
+      subject: Please upload a recent energy bill to Energy Sparks
+      title: Please upload an energy bill for %{school_name}
+      upload_bill: Upload your bill
   consent_grant_mailer:
     email_consent:
       description: Your grant of consent to Energy Sparks
