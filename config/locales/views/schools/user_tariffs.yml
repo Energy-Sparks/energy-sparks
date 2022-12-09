@@ -1,6 +1,20 @@
 ---
 en:
   schools:
+    user_tariff_charges:
+      charge_vat:
+        rate: Rate
+      charges_edit_electricity:
+        consumption_and_supply_charges: Consumption and supply charges
+        distribution_charges: Distribution charges
+        other_charges: Other charges
+        transmission_charges: Transmission charges
+      charges_edit_gas:
+        consumption_and_supply_charges: Consumption and supply charges
+        other_charges: Other charges
+      index:
+        title: Add standing charges for this tariff
+        using_your_bill_introduction: Using your bill, please provide as much detail as you can about the standing charges associated with this tariff
     user_tariff_differential_prices:
       form:
         labels:
@@ -11,6 +25,13 @@ en:
         consumption_charges: Consumption charges
         title: Add consumption charges for each time period for this tariff
         using_your_bill_introduction: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
+    user_tariff_flat_prices:
+      edit:
+        introduction: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
+        title: Edit the consumption charges for this tariff
+      new:
+        introduction: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
+        title: Add consumption charges for this tariff
     user_tariffs:
       charges_table:
         climate_charge_levy: Climate charge levy
