@@ -7,6 +7,7 @@ RSpec.describe "meter management", :meters, type: :system do
   let!(:admin)        { create(:admin)}
   let!(:teacher)      { create(:staff)}
   let!(:school_admin) { create(:school_admin, school_id: school.id) }
+  let!(:setup_data)   { }
 
   context 'as school admin' do
     before(:each) do
@@ -56,7 +57,11 @@ RSpec.describe "meter management", :meters, type: :system do
         click_on 'Details'
         expect(page).not_to have_button('Attributes')
       end
+    end
 
+    context "Dashboard message panel" do
+      before { visit school_meters_path(school) }
+      it_behaves_like "admin dashboard messages", permitted: false
     end
   end
 
@@ -64,7 +69,6 @@ RSpec.describe "meter management", :meters, type: :system do
     before(:each) do
       sign_in(teacher)
       visit school_meters_path(school)
-
     end
 
     it 'does not see things it should not' do
@@ -73,15 +77,22 @@ RSpec.describe "meter management", :meters, type: :system do
       expect(page).to_not have_content('Activate')
       expect(page).to_not have_content('Deactivate')
     end
+    it_behaves_like "admin dashboard messages", permitted: false
   end
 
   context 'as admin' do
-
     before(:each) do
       sign_in(admin)
       visit root_path
       click_on('View schools')
       click_on('Oldfield Park Infants')
+    end
+
+    describe "Dashboard message panel" do
+      before { click_on 'Manage meters' }
+      it_behaves_like "admin dashboard messages" do
+        let(:messageable) { school }
+      end
     end
 
     context 'when the school has a DCC meter' do
@@ -143,7 +154,6 @@ RSpec.describe "meter management", :meters, type: :system do
         expect(page).to have_content("These are my notes")
       end
     end
-
 
     context 'when the school has a meter' do
 
@@ -243,6 +253,5 @@ RSpec.describe "meter management", :meters, type: :system do
         end
       end
     end
-
   end
 end
