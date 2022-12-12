@@ -9,7 +9,7 @@ RSpec.shared_examples "admin dashboard messages" do | permitted: true |
       it { expect(page).to have_link('Set message') }
       context "Clicking on 'Set message'" do
         before { click_link "Set message" }
-        it { expect(page).to have_content("Dashboard Message for #{messageable.name} #{messageable.model_name.to_s.titleize}") }
+        it { expect(page).to have_content("Dashboard Message for #{messageable.name}") }
         it { expect(page).to have_link("View #{messageable.model_name.human.downcase}") }
         context "and clicking link back" do
           before { click_link "Back" }

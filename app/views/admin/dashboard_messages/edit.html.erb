@@ -1,4 +1,4 @@
-<h1>Dashboard Message for <%= "#{@messageable.name} #{@messageable.model_name.to_s.titleize}" %></h1>
+<h1>Dashboard Message for <%= @messageable.name %></h1>
 
 <%= simple_form_for(@dashboard_message, url: [:admin, @messageable, :dashboard_message], method: :put) do |f| %>
   <%= redirect_back_tag params %>
