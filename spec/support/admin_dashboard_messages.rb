@@ -1,15 +1,15 @@
 RSpec.shared_examples "admin dashboard messages" do
   let(:message) { 'Hello message' }
   context "No message set" do
-    it { expect(page).to have_content "No message is currently set to display on dashboards for this #{object.model_name.human.downcase}" }
+    it { expect(page).to have_content "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}" }
     it { expect(page).to have_link('Set message') }
     context "Clicking on 'Set message'" do
       before { click_link "Set message" }
-      it { expect(page).to have_content("Dashboard Message for #{object.name} #{object.model_name.to_s.titleize}") }
-      it { expect(page).to have_link("View #{object.model_name.human.downcase}") }
+      it { expect(page).to have_content("Dashboard Message for #{messageable.name} #{messageable.model_name.to_s.titleize}") }
+      it { expect(page).to have_link("View #{messageable.model_name.human.downcase}") }
       context "and clicking link back" do
-        before { click_link "View #{object.model_name.human.downcase}" }
-        it { expect(page).to have_content "#{object.name.to_s.capitalize} #{object.model_name.to_s.titleize}"}
+        before { click_link "View #{messageable.model_name.human.downcase}" }
+        it { expect(page).to have_content "#{messageable.name.to_s.capitalize} #{messageable.model_name.to_s.titleize}"}
       end
       it { expect(page).to have_field('Message', with: '') }
       it { expect(page).to_not have_link('Delete') }
@@ -20,7 +20,7 @@ RSpec.shared_examples "admin dashboard messages" do
         end
         it { expect(page).to have_content message }
         context "visiting a school dashboard" do
-          let!(:school) { object.is_a?(School) ? object : create(:school, school_group: school_group) }
+          let!(:school) { messageable.is_a?(School) ? messageable : create(:school, school_group: school_group) }
           before { visit school_path(school, switch: true) }
           it { expect(page).to have_content message }
         end
@@ -35,7 +35,7 @@ RSpec.shared_examples "admin dashboard messages" do
     end
   end
   context "a message is already set" do
-    let(:setup_data) { object.create_dashboard_message(message: message) }
+    let(:setup_data) { messageable.create_dashboard_message(message: message) }
     it { expect(page).to have_content message }
     it { expect(page).to have_link('Set message') }
     context "Clicking on 'Set message'" do
@@ -53,9 +53,9 @@ RSpec.shared_examples "admin dashboard messages" do
         before do
           click_on 'Delete'
         end
-        it { expect(page).to have_content "No message is currently set to display on dashboards for this #{object.model_name.human.downcase}" }
+        it { expect(page).to have_content "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}" }
         context "visiting a school dashboard" do
-          let!(:school) { object.is_a?(School) ? object : create(:school, school_group: school_group) }
+          let!(:school) { messageable.is_a?(School) ? messageable : create(:school, school_group: school_group) }
           before { visit school_path(school, switch: true) }
           it { expect(page).to_not have_content message }
         end
