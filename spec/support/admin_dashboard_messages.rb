@@ -10,7 +10,7 @@ RSpec.shared_examples "admin dashboard messages" do | permitted: true |
       context "Clicking on 'Set message'" do
         before { click_link "Set message" }
         it { expect(page).to have_content("Dashboard Message for #{messageable.name}") }
-        it { expect(page).to have_link("View #{messageable.model_name.human.downcase}") }
+        it { expect(page).to have_link("Back") }
         context "and clicking link back" do
           before { click_link "Back" }
           it { expect(page).to have_content "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}" }
@@ -71,7 +71,6 @@ RSpec.shared_examples "admin dashboard messages" do | permitted: true |
       end
     end
   end
-
   context "when not permitted", unless: permitted do
     it "panel is not shown" do
       expect(page).to_not have_content('Set message')
