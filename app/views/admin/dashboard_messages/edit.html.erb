@@ -6,13 +6,10 @@
 </div>
 
 <%= simple_form_for(@dashboard_message, url: [:admin, @messageable, :dashboard_message], method: :put) do |f| %>
-  <%= hidden_field_tag :previous_request, params[:previous_request].blank? ? request.referer : params[:previous_request] %>
+  <%= redirect_back_tag params %>
   <%= f.input :message %>
   <%= f.submit 'Save', class: "btn" %>
   <% unless @dashboard_message.new_record? %>
-   <%= link_to 'Delete',
-   polymorphic_url([:admin, @messageable, :dashboard_message],
-                    previous_request: (params[:previous_request].blank? ? request.referer : params[:previous_request])),
-   method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn' %>
+   <%= link_to 'Delete', polymorphic_url([:admin, @messageable, :dashboard_message], redirect_back_params(params)), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn' %>
   <% end %>
 <% end %>

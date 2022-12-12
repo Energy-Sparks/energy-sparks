@@ -403,4 +403,8 @@ module ApplicationHelper
   def redirect_back_tag(params)
     tag.input type: 'hidden', name: :redirect_back, value: redirect_back_url(params)
   end
+
+  def redirect_back_params(params)
+    { redirect_back: redirect_back_url(params) }
+  end
 end

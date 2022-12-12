@@ -11,7 +11,7 @@ module Admin
       @dashboard_message = @messageable.dashboard_message || @messageable.build_dashboard_message
       @dashboard_message.attributes = dashboard_message_params
       if @dashboard_message.save
-        redirect_to params[:previous_request], notice: "#{@messageable.model_name.human} dashboard message saved"
+        redirect_to params[:redirect_back], notice: "#{@messageable.model_name.human} dashboard message saved"
       else
         render :edit
       end
@@ -20,7 +20,7 @@ module Admin
     def destroy
       @dashboard_message = @messageable.dashboard_message
       @dashboard_message.destroy!
-      redirect_to params[:previous_request], notice: "#{@messageable.model_name.human} dashboard message removed"
+      redirect_to params[:redirect_back], notice: "#{@messageable.model_name.human} dashboard message removed"
     end
 
   private
