@@ -94,7 +94,7 @@ en:
         solar_irradiance: Solar Irradiance
         solar_pv: Solar PV (consumed onsite)
         storage_heater_charge: Storage heater charge (school day)
-        storage_heaters: storage heaters
+        storage_heaters: Storage heaters
         target_degree_days: Target degree days
         temperature: Temperature
         useful_hot_water_usage: Hot Water Usage
