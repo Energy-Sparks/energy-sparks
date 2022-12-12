@@ -1,8 +1,9 @@
 <h1><%= t('schools.meters.index.title') %></h1>
 
-<%= render 'admin/shared/dashboard_message', messageable: @school %>
-
 <% if current_user.admin? %>
+  <% if can? :manage, DashboardMessage %>
+    <%= render 'admin/shared/dashboard_message', messageable: @school %>
+  <% end %>
 <div class="mb-2 alert alert-secondary">
   <%= link_to t('schools.meters.index.school_downloads'), school_downloads_path(@school), class: 'btn' %>
   <% if can? :manage_solar_feed_configuration, School %>

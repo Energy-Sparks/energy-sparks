@@ -30,7 +30,7 @@
 
 <%= render 'admin/shared/dashboard_message', messageable: @school_group %>
 
-<div class="bg-light p-2 my-2 d-flex justify-content-between border rounded">
+<div class="bg-light p-2 mb-2 d-flex justify-content-between border rounded">
   <%= link_to 'View', school_group_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Edit', edit_admin_school_group_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Manage partners', admin_school_group_partners_path(@school_group), class: 'btn btn-sm' %>
