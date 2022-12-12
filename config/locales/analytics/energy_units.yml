@@ -45,6 +45,7 @@ en:
       opt_start_standard_deviation: "%{value} standard deviation (hours)"
       optimum_start_sensitivity: "%{value} hours/C"
       p: "%{value}p"
+      p_per_kwh: "%{value}p/kWh"
       panels: "%{value} solar PV panels"
       percent: "%{value}%"
       percent_0dp: "%{value}%"
@@ -79,6 +80,7 @@ en:
       "£_per_kwh": "%{sign}£%{value}/kWh"
       "£_per_kwh_html": "%{sign}&pound;%{value}/kWh"
       "£_range": "%{low} to %{high}"
+      "£current": "%{sign}£%{value}"
     units:
       days:
         one: "%{count} day"
