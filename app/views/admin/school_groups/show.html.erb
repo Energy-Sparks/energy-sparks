@@ -28,7 +28,7 @@
   </div>
 </div>
 
-<%= render 'admin/shared/dashboard_message', object: @school_group %>
+<%= render 'admin/shared/dashboard_message', messageable: @school_group %>
 
 <div class="bg-light p-2 my-2 d-flex justify-content-between">
   <%= link_to 'View', school_group_path(@school_group), class: 'btn btn-sm' %>

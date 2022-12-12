@@ -1,14 +1,18 @@
 <div class="d-flex justify-content-between align-items-center">
-  <h1>Dashboard Message for <%= "#{@object.name} #{@object.model_name.to_s.titleize}" %></h1>
+  <h1>Dashboard Message for <%= "#{@messageable.name} #{@messageable.model_name.to_s.titleize}" %></h1>
   <div>
-    <%= header_nav_link "View #{@object.model_name.human.downcase}", url_for( [:admin, @object] ) %>
+    <%= header_nav_link "View #{@messageable.model_name.human.downcase}", url_for( [:admin, @messageable] ) %>
   </div>
 </div>
 
-<%= simple_form_for(@dashboard_message, url: [:admin, @object, :dashboard_message], method: :put) do |f| %>
+<%= simple_form_for(@dashboard_message, url: [:admin, @messageable, :dashboard_message], method: :put) do |f| %>
+  <%= hidden_field_tag :previous_request, params[:previous_request].blank? ? request.referer : params[:previous_request] %>
   <%= f.input :message %>
   <%= f.submit 'Save', class: "btn" %>
   <% unless @dashboard_message.new_record? %>
-    <%= link_to 'Delete', url_for([:admin, @object, :dashboard_message]), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn' %>
+   <%= link_to 'Delete',
+   polymorphic_url([:admin, @messageable, :dashboard_message],
+                    previous_request: (params[:previous_request].blank? ? request.referer : params[:previous_request])),
+   method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn' %>
   <% end %>
 <% end %>
