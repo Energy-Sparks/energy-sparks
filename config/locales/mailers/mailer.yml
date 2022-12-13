@@ -101,7 +101,12 @@ en:
       the_energy_sparks_team: The Energy Sparks Team
       title: Set up your school on Energy Sparks
     reminder_email:
+      paragraph_1_html: Thank you for enrolling %{school_name} with <a href="https://energysparks.uk">Energy Sparks</a>
+      paragraph_2: We need some details from you about your school and your consent to publish your meter data on Energy Sparks.
+      paragraph_3: Set up your school on Energy Sparks
       subject: Don't forget to set up your school on Energy Sparks
+      the_energy_sparks_team: The Energy Sparks Team
+      title: Don't forget to set up your school on Energy Sparks
     welcome_email:
       subject: Welcome to Energy Sparks
   target_mailer:
