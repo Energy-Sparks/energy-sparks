@@ -3,15 +3,15 @@ cy:
     content_html: |-
       <div class="row padded-row">
         <div class="col-md-12">
-          <h1 id="intro">Data a ddefnyddir yn Energy Sparks</h1>
+          <h1 id="intro">Data a ddefnyddir yn Sbarcynni</h1>
         </div>
       </div>
       <div class="row">
         <div class="col-md-3 callout-text">
-          <p><strong>Mae Energy Sparks yn defnyddio data agored a gyhoeddir gan ysgolion lleol</strong></p>
+          <p><strong>Mae Sbarcynni yn defnyddio data agored a gyhoeddir gan ysgolion lleol</strong></p>
         </div>
         <div class="col-md-8">
-          <p>Mae Energy Sparks wedi'i adeiladu ar ddata agored. Mae'r holl ddata y gallwch eu gweld yn y cais wedi'u cyhoeddi o dan drwydded agored. Rydych chi'n rhydd i ailddefnyddio'r data at eich dibenion eich hun. Os byddwch chi'n dod o hyd i fewnwelediadau defnyddiol, yna <a href='%{contact_path}'>rhannwch nhw gyda ni</a> fel y gallwn helpu i wella'r gwasanaeth.</p>
+          <p>Mae Sbarcynni wedi'i adeiladu ar ddata agored. Mae'r holl ddata y gallwch eu gweld yn y cais wedi'u cyhoeddi o dan drwydded agored. Rydych chi'n rhydd i ailddefnyddio'r data at eich dibenion eich hun. Os byddwch chi'n dod o hyd i fewnwelediadau defnyddiol, yna <a href='%{contact_path}'>rhannwch nhw gyda ni</a> fel y gallwn helpu i wella'r gwasanaeth.</p>
           <p>Os ydych yn  <a href="#data-sources">ailddefnyddio'r data</a> yna  <a href="#use-responsibly">defnyddiwch nhw'n gyfrifol</a>.</p>
         </div>
       </div>
@@ -27,7 +27,7 @@ cy:
         <div class="col-md-8">
           <p>Cyflenwr ynni'r ysgol sy'n berchen ar y mesuryddion ac yn eu gweithredu. Mewn llawer o Awdurdodau Lleol, mae'r ysgolion lleol yn rhan o gynllun ynni'r cyngor ac yn defnyddio un cyflenwr.</p>
           <p>Gall fod gan ysgol sawl mesurydd nwy a thrydan. Gellir gosod y rhain mewn adeiladau gwahanol neu i wasanaethu gwahanol rannau o'u heiddo. Ar hyn o bryd nid oes gan bob ysgol fesuryddion clyfar ar gyfer eu mesuryddion nwy a thrydan.</p>
-          <p>Mae'r darlleniadau mesurydd yn cael eu trosglwyddo i'n storfa ddata ac yna'n cael eu mewnforio i Energy Sparks i greu siartiau a chrynodebau.</p>
+          <p>Mae'r darlleniadau mesurydd yn cael eu trosglwyddo i'n storfa ddata ac yna'n cael eu mewnforio i Sbarcynni i greu siartiau a chrynodebau.</p>
           <p>Gan fod sawl cam ynghlwm wrth gyhoeddi'r darlleniadau fel data agored, gall fod oedi cyn i'r data fod ar gael. Rydym yn amcangyfrif y bydd yn cymryd rhwng 24-48 awr ar gyfartaledd cyn cyhoeddi’r data.</p>
         </div>
       </div>
@@ -41,8 +41,8 @@ cy:
           <p><strong>Rhowch wybod am broblem data fel y gallwn gywiro'r data a'r rhaglen</strong></p>
         </div>
         <div class="col-md-8">
-          <p>Os sylwch ar rywbeth anarferol neu a allai fod yn anghywir yn y data a ddangosir yn Energy Sparks, rhowch wybod i ni yn uniongyrchol yn y lle cyntaf. Gallwn nodi a yw'r broblem yn ymwneud â sut mae'r data wedi'u mewnforio i'r rhaglen, ein dadansoddeg neu a yw'n broblem gyda'r data crai.</p>
-          <p>Os ydych yn ysgol sy’n defnyddio Energy Sparks ac nad ydych bellach yn dymuno bod yn rhan o’r gwasanaeth, rhowch wybod i ni a byddwn yn tynnu eich data oddi ar Energy Sparks.</p>
+          <p>Os sylwch ar rywbeth anarferol neu a allai fod yn anghywir yn y data a ddangosir yn Sbarcynni, rhowch wybod i ni yn uniongyrchol yn y lle cyntaf. Gallwn nodi a yw'r broblem yn ymwneud â sut mae'r data wedi'u mewnforio i'r rhaglen, ein dadansoddeg neu a yw'n broblem gyda'r data crai.</p>
+          <p>Os ydych yn ysgol sy’n defnyddio Sbarcynni ac nad ydych bellach yn dymuno bod yn rhan o’r gwasanaeth, rhowch wybod i ni a byddwn yn tynnu eich data oddi ar Sbarcynni.</p>
         </div>
       </div>
       <div class="row padded-row">
@@ -55,7 +55,7 @@ cy:
           <p><strong>Rydym yn argymell meddwl yn ofalus am sut yr ydych yn dehongli'r data</strong></p>
         </div>
         <div class="col-md-8">
-          <p>Mae data agored yn galluogi unrhyw un i gyrchu ac archwilio set ddata. Ond mae'n bwysig deall sut mae set ddata'n cael ei chasglu a beth mae'n ei fesur cyn dechrau ei defnyddio. Mae'r dudalen hon yn rhoi cefndir ychwanegol ar y data a ddefnyddir yn Energy Sparks.</p>
+          <p>Mae data agored yn galluogi unrhyw un i gyrchu ac archwilio set ddata. Ond mae'n bwysig deall sut mae set ddata'n cael ei chasglu a beth mae'n ei fesur cyn dechrau ei defnyddio. Mae'r dudalen hon yn rhoi cefndir ychwanegol ar y data a ddefnyddir yn Sbarcynni.</p>
           <p>Mae'r graddau y gall ysgol unigol leihau neu wella ei defnydd o ynni yn dibynnu ar nifer o ffactorau gwahanol. Gall y rhain i gyd effeithio ar sut y gellid neu y dylid dehongli'r data. Os ydych yn ailddefnyddio'r data ynni dylech ystyried beth allai'r ffactorau hyn fod. Er enghraifft:</p>
           <ul>
             <li>Efallai bod ysgol eisoes wedi cyflawni gostyngiadau sylweddol yn y gorffennol, e.e. fel rhan o gael statws Eco-ysgolion. Efallai y bydd yn rhaid i'r ysgolion hyn weithio'n galetach o lawer i weld gostyngiadau sylweddol. Iddyn nhw y nod yw cadw defnydd yn isel ac yn sefydlog.</li>
@@ -64,7 +64,7 @@ cy:
           </ul>
           <p>Gall y tywydd effeithio hefyd ar faint o ynni a ddefnyddir gan yr ysgol dros gyfnod o ddiwrnod neu wythnos.</p>
           <p>Yn fyr, mae angen cymryd peth gofal wrth gymharu defnydd ynni hyd yn oed yr un ysgol ar draws gwahanol ddyddiau ac adegau o'r flwyddyn. Mae cymharu ysgolion yn erbyn ei gilydd hefyd yn anodd iawn ac nid yw'n cael ei argymell oni bai eich bod wedi ystyried gwahaniaethau mewn seilwaith, maint a phroffil defnydd yr adeiladau.</p>
-          <p>Dyma pam rydym wedi canolbwyntio Energy Sparks ar annog ysgolion i ddod yn ynni effeithlon, yn hytrach na chreu rhestr rheng o ysgolion lleol. Mae ein helfennau hapchwarae yn mesur newid ymddygiad yn bennaf, nid defnydd absoliwt o ynni.</p>
+          <p>Dyma pam rydym wedi canolbwyntio Sbarcynni ar annog ysgolion i ddod yn ynni effeithlon, yn hytrach na chreu rhestr rheng o ysgolion lleol. Mae ein helfennau hapchwarae yn mesur newid ymddygiad yn bennaf, nid defnydd absoliwt o ynni.</p>
           <p>
            Os hoffech gael cymorth i ddehongli'r data, <a href='%{contact_path}'>rhowch wybod i ni</a>.
           </p>
