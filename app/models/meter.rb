@@ -5,6 +5,7 @@
 #  active                         :boolean          default(TRUE)
 #  consent_granted                :boolean          default(FALSE)
 #  created_at                     :datetime         not null
+#  data_source_id                 :bigint(8)
 #  dcc_checked_at                 :datetime
 #  dcc_meter                      :boolean          default(FALSE)
 #  earliest_available_data        :date
@@ -23,6 +24,7 @@
 #
 # Indexes
 #
+#  index_meters_on_data_source_id                  (data_source_id)
 #  index_meters_on_low_carbon_hub_installation_id  (low_carbon_hub_installation_id)
 #  index_meters_on_meter_review_id                 (meter_review_id)
 #  index_meters_on_meter_type                      (meter_type)
@@ -42,17 +44,17 @@ class Meter < ApplicationRecord
   belongs_to :school, inverse_of: :meters
   belongs_to :low_carbon_hub_installation, optional: true
   belongs_to :solar_edge_installation, optional: true
+  belongs_to :meter_review, optional: true
+  belongs_to :data_source, optional: true
+
   has_one :rtone_variant_installation, required: false
 
   has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :destroy
   has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy
-
   has_many :tariff_prices,              inverse_of: :meter, dependent: :destroy
   has_many :tariff_standing_charges,    inverse_of: :meter, dependent: :destroy
-
   has_many :meter_attributes
 
-  belongs_to :meter_review, optional: true
   has_and_belongs_to_many :user_tariffs, inverse_of: :meters
 
   has_rich_text :notes
