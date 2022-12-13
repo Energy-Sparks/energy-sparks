@@ -24,4 +24,8 @@ class StaffRole < ApplicationRecord
   def as_symbol
     title.parameterize.underscore.to_sym
   end
+
+  def self.translated_names_and_ids
+    all.map { |staff_role| [staff_role.translated_title, staff_role.id] }.sort
+  end
 end

@@ -1,24 +1,24 @@
 <% content_for :page_title do %>
-  <%= @school.name %> Uploaded Bills
+  <%= @school.name %><%= t('consent_documents.index.title') %>
 <% end %>
 
-<h1>Uploaded Bills</h1>
+<h1><%= t('consent_documents.index.title') %></h1>
 
 <% if @consent_documents.any? %>
   <p>
-  You have provided us with the following bills as proof of which meters are installed at your school.
+    <%= t('consent_documents.index.description') %>
   </p>
 
   <p>
-    <%= link_to "Upload a new bill", new_school_consent_document_path(@school), class: 'btn btn-primary' %>
+    <%= link_to t('consent_documents.index.upload_new_bill'), new_school_consent_document_path(@school), class: 'btn btn-primary' %>
   </p>
 
   <table class="table">
     <thead>
       <tr>
-        <th class="w-25">Uploaded date</th>
-        <th class="w-50">Title</th>
-        <th class="w-25">Link</th>
+        <th class="w-25"><%= t('consent_documents.index.document_uploaded_date') %></th>
+        <th class="w-50"><%= t('consent_documents.document_title') %></th>
+        <th class="w-25"><%= t('consent_documents.index.document_link') %></th>
       </tr>
     </thead>
     <tbody>
@@ -28,11 +28,11 @@
           <td><%= link_to bill.title, school_consent_document_path(@school, bill) %></td>
           <td>
             <%= link_to url_for(bill.file), class: 'btn btn-primary' do %>
-              Download <i class="fas fa-file-download"></i>
+              <%= t('common.labels.download') %> <i class="fas fa-file-download"></i>
             <% end%>
-            <%= link_to "Edit", edit_school_consent_document_path(@school, bill), class: 'btn' %>
+            <%= link_to t('common.labels.edit'), edit_school_consent_document_path(@school, bill), class: 'btn' %>
             <% if can?(:delete, bill) %>
-              <%= link_to "Delete", school_consent_document_path(@school, bill), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger'  %>
+              <%= link_to t('common.labels.delete'), school_consent_document_path(@school, bill), method: :delete, data: {confirm: t('common.confirm')}, class: 'btn btn-danger'  %>
             <% end %>
           </td>
         </tr>
@@ -42,22 +42,16 @@
 
 <% else %>
   <p>
-    You have not yet provided us with any energy bills to demonstrate you have access to the meters installed at your school.
+    <%= t('consent_documents.index.no_documents_provided') %>
   </p>
 
   <p>
-   A copy of a recent bill will help ensure that we have authority to collect, process and display the data on your behalf.
+    <%= t('consent_documents.index.document_required') %>
   </p>
 
-  <p>A bill needs to be dated within the last 3 months, and show:</p>
-
-  <ul>
-  <li>your school name</li>
-  <li>school address</li>
-  <li>electricity meter MPAN or electricity supply number and/or gas meter MPR or meter point reference number</li>
-  </ul>
+  <%= t('consent_documents.document_details_html') %>
 
   <p>
-    <%= link_to "Upload a bill", new_school_consent_document_path(@school), class: 'btn btn-primary' %>
+    <%= link_to t('consent_documents.index.upload_bill'), new_school_consent_document_path(@school), class: 'btn btn-primary' %>
   </p>
 <% end %>

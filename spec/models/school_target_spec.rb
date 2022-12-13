@@ -20,6 +20,10 @@ RSpec.describe SchoolTarget, type: :model do
       expect(Observation.first.observation_type).to eq "school_target"
       expect(Observation.first.school).to eq school
       expect(Observation.first.points).to eq 0
+
+      #creates only a single Observation
+      SchoolTarget.first.update!(electricity: 22)
+      expect(Observation.count).to eq 1
     end
 
     context "and dates are mismatched" do

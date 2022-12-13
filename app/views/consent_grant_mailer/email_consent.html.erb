@@ -1,11 +1,11 @@
-<h1 class="mb-3">Your grant of consent to Energy Sparks</h1>
+<h1 class="mb-3"><%= t('consent_grant_mailer.email_consent.description') %></h1>
 
 <p>
-  Thank you for granting permission for Energy Sparks to access data for <%= @consent_grant.school.name %>.
+  <%= t('consent_grant_mailer.email_consent.message_1', school_name: @consent_grant.school.name) %>.
 </p>
 
 <p>
-  For your records, here is a record of the consent that you gave us:
+  <%= t('consent_grant_mailer.email_consent.message_2') %>:
 </p>
 
 <blockquote class="card bg-light">
@@ -15,5 +15,5 @@
 </blockquote>
 
 <p>
-You can view our full <%= link_to 'terms and conditions', terms_and_conditions_url %> on our website.
+  <%= t('consent_grant_mailer.email_consent.footer_html', terms_and_conditions_link: link_to(t('common.terms_and_conditions'), terms_and_conditions_url)) %>
 </p>
