@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe OnboardingMailer do
   let(:user){ create(:onboarding_user) }
-  let(:school){ create(:school) }
+  let(:school){ create(:school, name: 'Test School') }
   let(:school_onboarding) { create(:school_onboarding, school_name: 'Test School', created_by: user, school: school) }
 
   describe '#onboarding_email' do
@@ -28,9 +28,34 @@ RSpec.describe OnboardingMailer do
   end
 
   describe '#reminder_email' do
+    it 'sends the reminder email' do
+      OnboardingMailer.with(emails: ['test@blah.com'], school_onboarding: school_onboarding).reminder_email.deliver_now
+      email = ActionMailer::Base.deliveries.last
+      expect(email.subject).to eq("Don't forget to set up your school on Energy Sparks")
+      I18n.t('onboarding_mailer.reminder_email').except(:subject).values.each do |email_content|
+        expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(email_content.gsub('%{school_name}', 'Test School'))
+      end
+    end
   end
 
   describe '#activation_email' do
+    it 'sends the activation email' do
+      OnboardingMailer.with(to: 'test@blah.com', emails: ['test@blah.com'], school: school).activation_email.deliver_now
+      email = ActionMailer::Base.deliveries.last
+      expect(email.subject).to eq("Test School is live on Energy Sparks")
+      I18n.t('onboarding_mailer.activation_email').except(:subject, :set_your_first_targets).values.each do |email_content|
+        expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
+          email_content.gsub('%{school_name}', 'Test School')
+                       .gsub('%{contact_url}', 'http://localhost/contact')
+                       .gsub('%{activity_categories_url}', 'http://localhost/activity_categories')
+                       .gsub('%{intervention_type_groups_url}', 'http://localhost/intervention_type_groups')
+                       .gsub('%{intervention_type_groups_url}', 'http://localhost/intervention_type_groups')
+                       .gsub('%{school_url}', 'http://localhost/schools/test-school')
+                       .gsub('%{user_guide_videos_url}', 'http://localhost/user-guide-videos')
+                       .gsub('%{training_url}', 'http://localhost/training')
+        )
+      end
+    end
   end
 
   describe '#onboarded_email' do
