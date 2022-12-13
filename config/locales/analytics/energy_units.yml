@@ -77,6 +77,8 @@ en:
       "£_html": "%{sign}&pound;%{value}"
       "£_per_kva": "%{sign}£%{value}/kVA"
       "£_per_kva_html": "%{sign}&pound;%{value}/kVA"
+      "£_per_kw": "%{sign}£%{value}/kW"
+      "£_per_kw_html": "%{sign}£%{value}/kW"
       "£_per_kwh": "%{sign}£%{value}/kWh"
       "£_per_kwh_html": "%{sign}&pound;%{value}/kWh"
       "£_range": "%{low} to %{high}"
