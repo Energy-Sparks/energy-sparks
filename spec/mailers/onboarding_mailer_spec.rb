@@ -8,7 +8,9 @@ RSpec.describe OnboardingMailer do
       OnboardingMailer.with(emails: ['test@blah.com'], school_onboarding: school_onboarding).onboarding_email.deliver_now
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to eq("Set up your school on Energy Sparks")
-      expect(email.body.to_s).to include("Thank you for enrolling Test School onto the Energy Sparks programme (www.energysparks.uk).")
+      I18n.t('onboarding_mailer.onboarding_email').except(:subject).values.each do |email_content|
+        expect(email.body.to_s).to include(email_content.gsub('%{school_name}', 'Test School'))
+      end
     end
   end
 
