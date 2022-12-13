@@ -93,7 +93,13 @@ en:
       we_are_working_message: We are working to get access to your school's energy data.
       we_will_be_in_touch_shortly_message: We will be in touch shortly to confirm when we have completed getting access to your energy data.
     onboarding_email:
+      paragraph_1_html: Thank you for enrolling %{school_name} onto the Energy Sparks programme (www.energysparks.uk).
+      paragraph_2: We are excited to be introducing Energy Sparks to your school, and look forward to working with you to save energy.
+      paragraph_3: We need some details from you about your school and your consent to publish your meter data on Energy Sparks.
+      set_up_your_school_on_energy_sparks: Set up your school on Energy Sparks
       subject: Set up your school on Energy Sparks
+      the_energy_sparks_team: The Energy Sparks Team
+      title: Set up your school on Energy Sparks
     reminder_email:
       subject: Don't forget to set up your school on Energy Sparks
     welcome_email:
