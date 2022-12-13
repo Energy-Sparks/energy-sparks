@@ -4,11 +4,11 @@
     <%= f.input :title, as: :hidden %>
   <% else %>
     <div class="form-group">
-      <%= f.label :title %>
+      <%= f.label t('consent_documents.document_title') %>
       <%= f.text_field :title, class: 'form-control' %>
     </div>
     <div class="form-group">
-      <%= f.label 'Description', for: :description %>
+      <%= f.label t('consent_documents.document_description'), for: :description %>
       <%= f.rich_text_area :description %>
     </div>
   <% end %>

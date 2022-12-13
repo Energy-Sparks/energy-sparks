@@ -1,28 +1,28 @@
 <% content_for :page_title do %>
-  View Bill <%= @consent_document.title %>
+  <%= t('consent_documents.show.view_bill') %> <%= @consent_document.title %>
 <% end %>
 
-<h1>View bill</h1>
+<h1><%= t('consent_documents.show.view_bill') %></h1>
 
 <p>
-The following bill for <%= @school.name %> was uploaded on <%= nice_date_times(@consent_document.created_at) %>
+  <%= t('consent_documents.show.bill_description', school_name: @school.name, uploaded_date: nice_date_times(@consent_document.created_at)) %>
 </p>
 
 <table class="table">
  <tbody>
    <tr>
-     <td>Title</td>
+     <td><%= t('consent_documents.document_title') %></td>
      <td><%= @consent_document.title %>
    </tr>
    <tr>
-     <td>Description</td>
+     <td><%= t('consent_documents.document_description') %></td>
      <td><%= @consent_document.description %></td>
    </tr>
    <tr>
-     <td>Uploaded file</td>
+     <td><%= t('consent_documents.show.uploaded_file') %></td>
      <td>
        <%= link_to url_for(@consent_document.file), class: 'btn btn-primary' do %>
-         Download <i class="fas fa-file-download"></i>
+         <%= t('common.labels.download') %> <i class="fas fa-file-download"></i>
        <% end %>
      </td>
    </tr>
@@ -30,9 +30,9 @@ The following bill for <%= @school.name %> was uploaded on <%= nice_date_times(@
 </table>
 
 <div class="other-actions">
-  <%= link_to "Edit", edit_school_consent_document_path(@school, @consent_document), class: 'btn' %>
+  <%= link_to t('common.labels.edit'), edit_school_consent_document_path(@school, @consent_document), class: 'btn' %>
   <% if can?(:delete, @consent_document) %>
-    <%= link_to "Delete", school_consent_document_path(@school, @consent_document), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger'  %>
+    <%= link_to t('common.labels.delete'), school_consent_document_path(@school, @consent_document), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger'  %>
   <% end %>
-  <%= link_to 'View bills', school_consent_documents_path(@school), class: 'btn' %>
+  <%= link_to t('consent_documents.show.view_bills'), school_consent_documents_path(@school), class: 'btn' %>
 </div>
