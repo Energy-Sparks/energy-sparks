@@ -291,6 +291,9 @@ Rails.application.routes.draw do
       end
     end
   end
+  concern :messageable do
+    resource :dashboard_message, only: [:update, :edit, :destroy], controller: '/admin/dashboard_messages'
+  end
 
   namespace :admin do
     concerns :issueable
@@ -325,7 +328,7 @@ Rails.application.routes.draw do
         end
         resource :partners, only: [:show, :update]
         resource :meter_report, only: [:show]
-        resource :dashboard_message, only: [:update, :edit, :destroy], controller: '/admin/dashboard_messages'
+        concerns :messageable
         concerns :issueable
       end
     end
@@ -351,6 +354,9 @@ Rails.application.routes.draw do
     resources :schools, only: [] do
       get :analysis, to: 'analysis#analysis'
       get 'analysis/:tab', to: 'analysis#show', as: :analysis_tab
+      scope module: :schools do
+        concerns :messageable
+      end
     end
 
     namespace :emails do
