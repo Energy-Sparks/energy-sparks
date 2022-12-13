@@ -3,6 +3,17 @@ en:
   calendars:
     calendar_actions:
       add_new_event: Add new event
+    calendar_events:
+      edit:
+        title: Edit an event
+      form:
+        event_type: Event Type
+      index:
+        add_new_event: Add new event
+        calendar_events_list: This shows the calendar events in a list - click on the title to edit the event
+        calendar_view: Calendar view
+      new:
+        title: Create a new event
     calendar_links:
       view_older_events: View all older events
       view_older_events_and_bank_holidays: View all older events and bank holidays
