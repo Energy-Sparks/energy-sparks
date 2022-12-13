@@ -129,13 +129,15 @@ class SchoolTarget < ApplicationRecord
   end
 
   def add_observation
-    Observation.create!(
-      school: school,
-      observation_type: :school_target,
-      school_target: self,
-      at: start_date,
-      points: 0
-    )
+    unless observations.any?
+      Observation.create!(
+        school: school,
+        observation_type: :school_target,
+        school_target: self,
+        at: start_date,
+        points: 0
+      )
+    end
   end
 
   def ensure_observation_date_is_correct
