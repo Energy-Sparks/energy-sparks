@@ -4,7 +4,7 @@
 
 
 <% if f.object.user.nil? %>
-  <%= f.input :staff_role_id, label: t('schools.contacts.form.labels.role'), collection: StaffRole.order(:title) %>
+  <%= f.input :staff_role_id, label: t('schools.contacts.form.labels.role'), collection: StaffRole.translated_names_and_ids %>
 
   <p><%= t('schools.contacts.form.enter_at_least_one_method_message') %></p>
 <% end %>

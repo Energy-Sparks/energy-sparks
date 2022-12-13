@@ -1,0 +1,24 @@
+<div class="row p-2">
+  <div class="col-md-12 border rounded bg-light pb-2">
+    <%= render 'header', title: title do %>
+      <%= header_nav_link 'All data sources', admin_data_sources_url %>
+    <% end %>
+    <%= simple_form_for [:admin, data_source] do |f| %>
+      <%= redirect_back_tag params %>
+      <%= f.input :name, label: "Organisation name" %>
+      <%= f.input :organisation_type, collection: DataSource.organisation_types.keys, label_method: lambda {|k| k.humanize} %>
+      <%= f.input :contact_name %>
+      <%= f.input :contact_email %>
+      <%= f.input :loa_contact_details, label: "Who to send LOA to" %>
+      <%= f.input :data_prerequisites %>
+      <%= f.input :data_feed_type, label: "Type of data feed" %>
+      <%= f.input :new_area_data_feed, label: "How to setup data feed for a new area" %>
+      <%= f.input :add_existing_data_feed, label: "How to add to an existing data feed" %>
+      <%= f.input :data_issues_contact_details, label: "Who to contact about data issues" %>
+      <%= f.input :historic_data %>
+      <%= f.input :loa_expiry_procedure, label: "What to do when LOA is about expire" %>
+      <%= f.input :comments %>
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+</div>

@@ -4,8 +4,8 @@
       <%= issue_type_icon(issue.issue_type) %> <%= issue.title %>
       <div class="float-right">
         <small>
-          <%= render 'status', issue: issue %>
           <%= render 'owned_by', issue: issue %>
+          <%= render 'status', issue: issue %>
           <%= nice_date_times_today(issue.updated_at) %>
           <%= render 'pinned', issue: issue %>
         </small>

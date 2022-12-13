@@ -20,7 +20,7 @@
         <tbody>
           <% @school_times.each do |school_time| %>
             <tr>
-              <td><%= school_time.day.humanize %></td>
+              <td><%= t_day(school_time.day) %></td>
               <td>
                 <%= format_school_time(school_time.opening_time) %> - <%= format_school_time(school_time.closing_time) %>
               </td>

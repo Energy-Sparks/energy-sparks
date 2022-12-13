@@ -29,6 +29,8 @@ module Transifex
         synchronise_resources(transifex_load, AlertTypeRatingContentVersion.tx_resources)
         log("Synchronising Equivalence Type Content Versions")
         synchronise_resources(transifex_load, EquivalenceTypeContentVersion.tx_resources)
+        log("Synchronising Consent Statements")
+        synchronise_resources(transifex_load, ConsentStatement.tx_resources)
       rescue => error
         #ensure all errors are caught and logged
         log_error(transifex_load, error)

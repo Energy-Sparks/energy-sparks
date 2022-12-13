@@ -1,28 +1,21 @@
 <% content_for :page_title do %>
-  <%= @school.name %> Upload Bill
+  <%= @school.name %><%= t('consent_documents.new.title') %>
 <% end %>
 
-<h1>Upload an energy bill</h1>
+<h1><%= t('consent_documents.new.header') %></h1>
 
 <p>
-  Upload an energy bill for your school as proof that you have access to
-  your energy meters.
+  <%= t('consent_documents.new.description') %>
 </p>
 
 <p>
- We need this proof before we are able to get permission to access and process your data.
+  <%= t('consent_documents.new.message') %>
 </p>
 
-<p>The bill needs to be dated within the last 3 months, and show:</p>
+<%= t('consent_documents.document_details_html') %>
 
-<ul>
-<li>your school name</li>
-<li>school address</li>
-<li>electricity meter MPAN or electricity supply number and/or gas meter MPR or meter point reference number</li>
-</ul>
-
-<%= render 'form', label: "Upload", school: @school, consent_document: @consent_document %>
+<%= render 'form', label: t('common.labels.upload'), school: @school, consent_document: @consent_document %>
 
 <div class="other-actions">
-  <%= link_to 'Cancel', school_consent_documents_path, class: 'btn' %>
+  <%= link_to t('common.labels.cancel'), school_consent_documents_path, class: 'btn' %>
 </div>

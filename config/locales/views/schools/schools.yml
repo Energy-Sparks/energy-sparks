@@ -169,6 +169,88 @@ en:
       title: Energy Sparks schools across the UK
       view_all_energy_sparks_schools: View all Energy Sparks schools
       view_energy_sparks_schools_by_group: View Energy Sparks schools by group
+    meters:
+      creatable_meter_types:
+        electricity: Electricity
+        exported_solar_pv: Exported solar pv
+        gas: Gas
+        solar_pv: Solar pv
+      edit:
+        edit_meter: Edit meter
+      form:
+        admin_notes: Admin notes
+        admin_only_features_for_n3rgy_integration: Admin only features for n3rgy integration
+        create_meter: Create Meter
+        dcc_smart_meter: DCC Smart Meter
+        earliest_available_data: Earliest available data
+        editing_disabled_for_pseudo_meters: Editing disabled for pseudo meters
+        leave_this_blank_message: Leave this blank for new meters and system will check it is registered with n3rgy
+        meter_point_number: Meter Point Number
+        name: Name
+        only_check_if_adding_an_n3rgy_test_meter: Only check if you're adding an n3rgy test meter, not used for live schools
+        sandbox: Sandbox
+        serial_number: Serial number
+        title: The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters)
+        type: Type
+        update_meter: Update Meter
+      index:
+        active_meters: Active meters
+        active_pseudo_meters: Active pseudo meters
+        add_meter: Add meter
+        data_processing_turned_on_message: Data processing must be turned on for this school before meter readings can be validated
+        details: Details
+        first: First
+        imported: Imported
+        inactive_meters: Inactive meters
+        large_gaps: Large gaps
+        latest: Latest
+        manage_solar_api_feeds: Manage Solar API feeds
+        manage_tariffs: Manage tariffs
+        meter: Meter
+        meter_reviews: Meter reviews
+        mpan_warning_message: There are electricity meters with MPANs that don't appear to have the correct check digit
+        name: Name
+        no_active_meters: No active meters
+        only_admins_message: Only admins can delete meters with meter readings
+        readings: Readings
+        report: Report
+        review_meters: Review meters
+        school_downloads: School downloads
+        school_enough_data_message: This school has enough data for at least one fuel type to generate targets
+        school_not_enough_data_message: This school does not have enough data to generate targets
+        this_may_take_some_time: This may take some time!
+        title: Meters
+        validate_meter_readings: Validate meter readings
+        validated: Validated
+        validated_readings: Validated Readings
+        view_target_data: View target data
+        zero_days: Zero days
+      inventory:
+        meter_title: 'Meter: %{meter_mpan_mprn}'
+        title: Inventory
+      meter_notes:
+        meter_notes_mpan_mprn: Meter Notes (%{meter_mpan_mprn})
+      show:
+        admin_notes: Admin notes
+        basic_information: Basic information
+        dcc_consented: DCC Consented
+        dcc_information: DCC information
+        dcc_last_checked: DCC last checked
+        download_readings: Download readings
+        earliest_available_data: Earliest Available Data
+        grant_consent: Grant consent
+        inventory: Inventory
+        meter: Meter
+        meter_elements: Meter Elements
+        n3rgy_api_status: n3rgy API Status
+        not_configured_as_a_dcc_meter: Not configured as a DCC meter
+        sandbox: Sandbox
+        school_meter_management: School meter management
+        serial_number: Serial Number
+        tariff_report: Tariff Report
+        title: "%{meter_name} (%{meter_mpan_mprn})"
+        user_consented: User Consented
+        withdraw_consent: Withdraw consent
     observations:
       timeline:
         action:
@@ -254,9 +336,77 @@ en:
     times:
       closing_time: Closing Time
       day: Day
+      edit:
+        community_use:
+          add_time: Add time
+          closing_time: Closing Time
+          day: Day
+          opening_time: Opening Time
+          save_community_use_times: Save community use times
+          school_premises_message: School premises are often used outside of school hours by your community. For example to host events, clubs or other private lettings
+          time_of_year: Time of year
+          title: Community use times
+          twenty_four_hour_format_message: Times should be entered in 24 hour format
+          use_the_form_message: Use the form below to add regular community use times at your school. We can use this information to provide extra insights into your energy usage outside of school hours
+        introduction_message: Please note that while we will immediately save any changes made to your school opening hours or community use times, any of our energy analysis that relies on these time periods will only update overnight.
+        save_school_times: Save school times
+        title: School opening hours
       message_1: Enter the times when pupils are arriving and leaving the school. Including the times of any before or after school clubs.
       message_2: Times should be entered in 24 hour format.
       opening_time: Opening Time
+      school_time_fields:
+        remove_time: Remove time
+    users:
+      auto_create_alert_contact:
+        energy_sparks_alerts: Energy Sparks alerts
+        energy_sparks_alerts_list_item_1: give you warning of changes in your school's energy use
+        energy_sparks_alerts_list_item_2: highlight long term problems with your energy consumption with focused recommendations to save energy
+        energy_sparks_alerts_list_item_3: let you know if you are doing well compared to other schools and your past performance
+        subscribe_to_school_alerts: Subscribe to school alerts
+      auto_subscribe_newsletter:
+        newsletters_main_communication_channel: Newsletters are our main communication channel for
+        newsletters_main_communication_channel_list_item_1: highlighting new resources
+        newsletters_main_communication_channel_list_item_2: sharing featured activities
+        newsletters_main_communication_channel_list_item_3: celebrating best practice and success stories at participating schools
+        newsletters_main_communication_channel_list_item_4: promoting supporting services such as workshops, training and audits
+        subscribe_to_newsletters: Subscribe to newsletters
+        we_strongly_recommend_you_sign_up: We strongly recommend you sign up to get the most from Energy Sparks (we'll never share your email address with anyone else)
+      edit:
+        title: Edit %{user_role} account
+        update_account: Update account
+      form:
+        email: Email
+        name: Name
+        role: Role
+        what_is_their_primary_role: What is their primary role in relation to Energy Sparks?
+      index:
+        account_confirmed: Account confirmed?
+        add_existing_user_as_admin: Add an existing Energy Sparks user as a school admin
+        could_not_decrypt: "(could not decrypt)"
+        email: Email
+        introduction: School admin accounts have access to all Energy Sparks functionality and can manage other users and update school details
+        make_school_admin: Make school admin
+        name: Name
+        new_pupil_account: New pupil account
+        new_school_admin_account: New school admin account
+        new_staff_account: New staff account
+        no_pupil_accounts: There are no pupil accounts for this school
+        no_school_admin_accounts: There are no school admin accounts for this school
+        no_staff_accounts: There are no staff accounts for this school
+        password: Password
+        pupil_accounts: Pupil accounts
+        pupil_accounts_message_1: Pupil accounts allow your school's pupils to log into Energy Sparks using only a password, no email address is required
+        pupil_accounts_message_2: These accounts can be created to be used in classrooms or with eco-teams, one account per classroom or team and the passwords can then be shared with the pupils
+        receives_alerts: Receives alerts?
+        resend_confirmation: Resend confirmation
+        role: Role
+        staff_accounts: Staff accounts
+        staff_accounts_have_access_message: Staff accounts have access to teacher, management and pupil Energy Sparks functionality and alerts but cannot manage other accounts
+        title: School admin accounts
+      new:
+        create_account: Create account
+        introduction: New users will be sent an email to confirm their account and will then be asked to set a password for their account before it can be accessed
+        title: New %{user_role} account
     your_school_estates:
       edit:
         alternative_heating_sources:

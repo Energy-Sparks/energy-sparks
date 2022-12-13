@@ -37,7 +37,7 @@
       <% @account_contacts.each do |contact| %>
         <tr scope="row">
           <td><%= contact.name %></td>
-          <td><%= contact.staff_role.try(:title) %></td>
+          <td><%= contact.staff_role.try(:translated_title) %></td>
           <td><%= contact.mobile_phone_number %></td>
           <td><%= contact.email_address %></td>
           <td>
@@ -70,7 +70,7 @@
       <% @standalone_contacts.each do |contact| %>
         <tr scope="row">
           <td><%= contact.name %></td>
-          <td><%= contact.staff_role.try(:title) %></td>
+          <td><%= contact.staff_role.try(:translated_title) %></td>
           <td><%= contact.mobile_phone_number %></td>
           <td><%= contact.email_address %></td>
           <td>

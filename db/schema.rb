@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_29_101025) do
+ActiveRecord::Schema.define(version: 2022_12_06_192018) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -694,6 +694,24 @@ ActiveRecord::Schema.define(version: 2022_11_29_101025) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["messageable_type", "messageable_id"], name: "index_dashboard_messages_on_messageable_type_and_messageable_id", unique: true
+  end
+
+  create_table "data_sources", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "organisation_type"
+    t.string "contact_name"
+    t.string "contact_email"
+    t.text "loa_contact_details"
+    t.text "data_prerequisites"
+    t.string "data_feed_type"
+    t.text "new_area_data_feed"
+    t.text "add_existing_data_feed"
+    t.text "data_issues_contact_details"
+    t.text "historic_data"
+    t.text "loa_expiry_procedure"
+    t.text "comments"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "emails", force: :cascade do |t|
