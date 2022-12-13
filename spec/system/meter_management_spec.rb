@@ -79,6 +79,7 @@ RSpec.describe "meter management", :meters, type: :system do
       sign_in(teacher)
       visit school_meters_path(school)
     end
+
     it 'does not see things it should not' do
       expect(page).to_not have_content('Delete')
       expect(page).to_not have_content('Create Meter')
@@ -90,6 +91,7 @@ RSpec.describe "meter management", :meters, type: :system do
       expect(page).to_not have_content('Data source')
       expect(page).to_not have_content('Admin notes')
     end
+
     it_behaves_like "admin dashboard messages", permitted: false
   end
 
