@@ -1,0 +1,15 @@
+---
+en:
+  calendars:
+    calendar_actions:
+      add_new_event: Add new event
+    calendar_links:
+      view_older_events: View all older events
+      view_older_events_and_bank_holidays: View all older events and bank holidays
+    current_events:
+      actions: Actions
+      end_date: End Date
+      last_updated: Last Updated
+      start_date: Start Date
+      status: Status
+      type: Type
