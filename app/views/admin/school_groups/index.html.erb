@@ -20,9 +20,7 @@
       <% @school_groups.each do |school_group| %>
         <tr>
           <td><%= school_group.name %>
-            <% if school_group.dashboard_message %>
-              <span class="badge badge-info" title="Dashboard message is shown for schools in this group: <%= school_group.dashboard_message.message %>"><%= fa_icon(:info) %></span>
-            <% end %>
+            <%= dashboard_message_icon(school_group) %>
           </td>
           <td><%= school_group.school_onboardings.incomplete.count %></td>
           <td><%= school_group.schools.visible.count %></td>
