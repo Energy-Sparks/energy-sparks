@@ -108,7 +108,19 @@ en:
       the_energy_sparks_team: The Energy Sparks Team
       title: Don't forget to set up your school on Energy Sparks
     welcome_email:
+      paragraph_1: |-
+        You can now use Energy Sparks to see how much energy your school is using,
+        find out about the greatest energy saving opportunities and explore our
+        activities and educational resources designed to teach your pupils about
+        energy whilst saving money for their school.
+      paragraph_2_html: |-
+        For help using Energy Sparks please read our <a href="https://energysparks.uk/resources/12/download">User Guide</a>,
+        watch our <a href="https://energysparks.uk/user-guide-videos">Training Videos</a> or
+        join one of our <a href="https://energysparks.uk/training">live webinar training</a> sessions.
+      paragraph_3: We hope Energy Sparks will empower your pupils, school staff, and wider school community to take action to make your school more energy efficient.
       subject: Welcome to Energy Sparks
+      title: Thanks for confirming your Energy Sparks user account.
+      view_your_school: View your school
   target_mailer:
     admin_target_report:
       subject: Target Progress and Data Report
