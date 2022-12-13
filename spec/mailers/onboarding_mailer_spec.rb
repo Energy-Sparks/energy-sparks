@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe OnboardingMailer do
-  let(:user){ create(:onboarding_user) }
   let(:school){ create(:school, name: 'Test School') }
+  let(:user){ create(:onboarding_user, school: school) }
   let(:school_onboarding) { create(:school_onboarding, school_name: 'Test School', created_by: user, school: school) }
 
   describe '#onboarding_email' do
@@ -59,11 +59,57 @@ RSpec.describe OnboardingMailer do
   end
 
   describe '#onboarded_email' do
+    it 'sends the onboarded email' do
+      OnboardingMailer.with(emails: ['test@blah.com'], school: school, to: 'test@blah.com').onboarded_email.deliver_now
+      email = ActionMailer::Base.deliveries.last
+      expect(email.subject).to eq("Test School is now live on Energy Sparks")
+      I18n.t('onboarding_mailer.onboarded_email').except(:subject).values.each do |email_content|
+        expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
+          email_content.gsub('%{school_name}', 'Test School').gsub('%{contact_url}', 'http://localhost/contact')
+                       .gsub('%{activity_categories_url}', 'http://localhost/activity_categories')
+                       .gsub('%{intervention_type_groups_url}', 'http://localhost/intervention_type_groups')
+                       .gsub('%{school_url}', 'http://localhost/schools/test-school')
+                       .gsub('%{user_guide_videos_url}', 'http://localhost/user-guide-videos')
+                       .gsub('%{training_url}', 'http://localhost/training')
+        )
+      end
+    end
   end
 
   describe '#data_enabled_email' do
+    it 'sends the data enabled_email' do
+      OnboardingMailer.with(emails: ['test@blah.com'], school: school, to: 'test@blah.com').data_enabled_email.deliver_now
+      email = ActionMailer::Base.deliveries.last
+      expect(email.subject).to eq("Test School energy data is now available on Energy Sparks")
+      I18n.t('onboarding_mailer.data_enabled_email').except(:subject, :set_your_first_targets).values.each do |email_content|
+        expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
+          email_content.gsub('%{school_name}', 'Test School').gsub('%{contact_url}', 'http://localhost/contact')
+                       .gsub('%{contact_url}', 'http://localhost/contact')
+                       .gsub('%{activity_categories_url}', 'http://localhost/activity_categories')
+                       .gsub('%{school_url}', 'http://localhost/schools/test-school')
+                       .gsub('%{user_guide_videos_url}', 'http://localhost/user-guide-videos')
+                       .gsub('%{training_url}', 'http://localhost/training')
+        )
+      end
+    end
   end
 
   describe '#welcome_email' do
+    it 'sends the welcome email' do
+      OnboardingMailer.with(emails: ['test@blah.com'], user: user).welcome_email.deliver_now
+      email = ActionMailer::Base.deliveries.last
+      expect(email.subject).to eq("Welcome to Energy Sparks")
+      I18n.t('onboarding_mailer.welcome_email').except(:subject).values.each do |email_content|
+        expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
+          email_content.gsub('%{school_name}', 'Test School').gsub('%{contact_url}', 'http://localhost/contact')
+                       .gsub('%{contact_url}', 'http://localhost/contact')
+                       .gsub('%{activity_categories_url}', 'http://localhost/activity_categories')
+                       # .gsub('%{intervention_type_groups_url}', 'http://localhost/intervention_type_groups')
+                       .gsub('%{school_url}', 'http://localhost/schools/test-school')
+                       .gsub('%{user_guide_videos_url}', 'http://localhost/user-guide-videos')
+                       .gsub('%{training_url}', 'http://localhost/training')
+        )
+      end
+    end
   end
 end
