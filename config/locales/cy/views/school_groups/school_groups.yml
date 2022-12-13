@@ -1,4 +1,3 @@
----
 cy:
   school_groups:
     header:
@@ -10,12 +9,12 @@ cy:
         one: Mae Energy Sparks yn gweithio gydag %{count} ysgol ar hyn o bryd
         two: Mae Energy Sparks yn gweithio gyda %{count} ysgol ar hyn o bryd
         many: Mae Energy Sparks yn gweithio gyda %{count} ysgol ar hyn o bryd
-        other: Ar hyn o bryd mae Energy Sparks yn gweithio gyda %{count} ysgol o
+        other: Ar hyn o bryd mae Sbarcynni yn gweithio gyda %{count} ysgol o
       currently_works_with_schools_from:
         one: Mae Energy Sparks yn gweithio gydag 1 ysgol ar hyn o bryd
         two: Mae Energy Sparks yn gweithio gyda %{count} ysgol ar hyn o bryd
         many: Mae Energy Sparks yn gweithio gyda %{count} ysgol ar hyn o bryd
-        other: Ar hyn o bryd mae Energy Sparks yn gweithio gyda %{count} ysgol o
-      if_you_would_like_support_enrol_here_html: "Os hoffech i Energy Sparks gefnogi eich ysgol i leihau ei hallyriadau carbon, cofrestrwch <a href='%{enrol_path}'>yma</a>"
+        other: Ar hyn o bryd mae Sbarcynni yn gweithio gyda %{count} ysgol o
+      if_you_would_like_support_enrol_here_html: Os hoffech i Sbarcynni gefnogi eich ysgol i leihau ei hallyriadau carbon, cofrestrwch <a href='%{enrol_path}'>yma</a>
       in_partnership_with: mewn partneriaeth â
       not_visible_schools: Dim ysgolion gweladwy

@@ -13,7 +13,6 @@
         <td><%= nice_dates(school.removal_date) %></td>
         <td class="nowrap text-right">
           <%= render 'issues_link', path: admin_school_issues_path(school), issues_count: school.issues.issue.status_open.count, notes_count: school.issues.note.count %>
-          <%= link_to 'Issues', admin_school_issues_path(school), class: "btn btn-sm" %>
           <%= link_to 'Meters', school_meters_path(school), class: "btn btn-sm" %>
         </td>
       </tr>

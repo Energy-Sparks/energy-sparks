@@ -211,6 +211,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-consent_documents-consent_documents-yml]
+file_filter  = config/locales/<lang>/views/consent_documents/consent_documents.yml
+source_file  = config/locales/views/consent_documents/consent_documents.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-consents-consents-yml]
 file_filter  = config/locales/<lang>/views/consents/consents.yml
 source_file  = config/locales/views/consents/consents.yml
@@ -365,6 +372,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-mailchimp_signups-mailchimp_signups-yml]
+file_filter  = config/locales/<lang>/views/mailchimp_signups/mailchimp_signups.yml
+source_file  = config/locales/views/mailchimp_signups/mailchimp_signups.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-management-management-yml]
 file_filter  = config/locales/<lang>/views/management/management.yml
 source_file  = config/locales/views/management/management.yml
@@ -417,6 +431,13 @@ minimum_perc = 100
 [o:energy-sparks:p:energy-sparks:r:views-schools-transport_surveys-yml]
 file_filter  = config/locales/<lang>/views/schools/transport_surveys.yml
 source_file  = config/locales/views/schools/transport_surveys.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-schools-user_tariffs-yml]
+file_filter  = config/locales/<lang>/views/schools/user_tariffs.yml
+source_file  = config/locales/views/schools/user_tariffs.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100

@@ -18,7 +18,7 @@ cy:
         terms: <a href="https://opendatacommons.org/licenses/odbl/" target="_new">ODbL</a>
       - name: Rhagolygon y tywydd
         source: <a href="https://darksky.net/poweredby/" target="_new">Wedi'i bweru gan Dark Sky</a>.
-    introduction: Mae Energy Sparks yn dibynnu ar nifer o setiau data cyhoeddus ac agored. Dyma restr o'r setiau data trydydd parti rydym yn eu mewnforio a'u defnyddio ar y wefan
+    introduction: Mae Sbarcynni yn dibynnu ar nifer o setiau data cyhoeddus ac agored. Dyma restr o'r setiau data trydydd parti rydym yn eu mewnforio a'u defnyddio ar y wefan
     read_more_html: Gallwch hefyd ddarllen rhagor am y <a href='%{datasets_path}'>data cynhyrchu ynni a defnydd ysgolion</a> rydym yn eu defnyddio ac yn sicrhau eu bod ar gael
     source: Ffynhonnell
     terms: Telerau

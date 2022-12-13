@@ -1,7 +1,7 @@
 <table class="table">
   <% school_group.schools.visible.by_name.each do |school| %>
     <tr class="bg-light">
-      <td><%= link_to school.name, school_path(school) %></td>
+      <td><%= link_to school.name, school_path(school) %> <%= dashboard_message_icon(school) %></td>
       <td><%= render 'shared/school_status_buttons', school: school %></td>
       <td class="nowrap text-right">
         <%= render 'issues_link', path: admin_school_issues_path(school), issues_count: school.issues.issue.status_open.count, notes_count: school.issues.note.count %>
