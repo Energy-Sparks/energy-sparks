@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe OnboardingMailer do
-  let(:school_onboarding) { create(:school_onboarding, school_name: 'Test School') }
+  let(:user){ create(:onboarding_user) }
+  let(:school){ create(:school) }
+  let(:school_onboarding) { create(:school_onboarding, school_name: 'Test School', created_by: user, school: school) }
 
   describe '#onboarding_email' do
     it 'sends the onboarding email' do
@@ -15,6 +17,14 @@ RSpec.describe OnboardingMailer do
   end
 
   describe '#completion_email' do
+    it 'sends the completion email' do
+      OnboardingMailer.with(emails: ['test@blah.com'], school_onboarding: school_onboarding).completion_email.deliver_now
+      email = ActionMailer::Base.deliveries.last
+      expect(email.subject).to eq("Test School has completed the onboarding process")
+      I18n.t('onboarding_mailer.completion_email').except(:subject).values.each do |email_content|
+        expect(email.body.to_s).to include(email_content.gsub('%{school_name}', 'Test School'))
+      end
+    end
   end
 
   describe '#reminder_email' do
