@@ -22,4 +22,5 @@
 class DataSource < ApplicationRecord
   enum organisation_type: { energy_supplier: 0, procurement_organisation: 1, meter_operator: 2, council: 3, solar_monitoring_provider: 4 }
   validates :name, presence: true
+  has_many :meters
 end

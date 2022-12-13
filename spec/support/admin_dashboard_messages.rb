@@ -25,10 +25,10 @@ RSpec.shared_examples "admin dashboard messages" do | permitted: true |
           it { expect(page).to have_content message }
           context "visiting a school dashboard" do
             before { visit school_path(messageable_school, switch: true) }
-            it { expect(page).to have_content(message) if messageable.is_a?(SchoolGroup) } # remove this constraint once frontend is implemented
+            it { expect(page).to have_content(message) }
           end
           context "visiting a non-messageable school dashboard" do
-            let!(:non_messageable_school) { messageable.is_a?(SchoolGroup) ? create(:school) : create(:school, school_group: messageable.school_group) }
+            let!(:non_messageable_school) { messageable.is_a?(SchoolGroup) ? create(:school, :with_school_group) : create(:school, school_group: messageable.school_group) }
             before { visit school_path(non_messageable_school, switch: true) }
             it { expect(page).to_not have_content(message) }
           end
