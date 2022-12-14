@@ -169,6 +169,17 @@ en:
       title: Energy Sparks schools across the UK
       view_all_energy_sparks_schools: View all Energy Sparks schools
       view_energy_sparks_schools_by_group: View Energy Sparks schools by group
+    live_data:
+      show:
+        choose_another_activity: Choose another activity
+        record_an_energy_saving_action: Record an energy saving action
+        title: Your live electricity data
+        understanding_your_energy_consumption: Understanding your energy consumption
+        view_pupil_dashboard: View pupil dashboard
+        what_can_you_switch_off: What can you switch off to reduce your consumption below your normal use?
+      timeout_modal:
+        still_watching_your_live_data_usage: Still watching your live data usage?
+        temporarily_paused_message_html: You've been viewing your live data for %{timeout_interval} minutes. We've temporarily paused updates. Click Restart to continue viewing
     meters:
       creatable_meter_types:
         electricity: Electricity
@@ -181,6 +192,7 @@ en:
         admin_notes: Admin notes
         admin_only_features_for_n3rgy_integration: Admin only features for n3rgy integration
         create_meter: Create Meter
+        data_source: Data source
         dcc_smart_meter: DCC Smart Meter
         earliest_available_data: Earliest available data
         editing_disabled_for_pseudo_meters: Editing disabled for pseudo meters
