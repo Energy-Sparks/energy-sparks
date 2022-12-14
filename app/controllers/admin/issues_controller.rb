@@ -5,6 +5,7 @@ module Admin
 
     load_and_authorize_resource :school, instance_name: 'issueable'
     load_and_authorize_resource :school_group, instance_name: 'issueable'
+    load_and_authorize_resource :data_source, instance_name: 'issueable'
     load_and_authorize_resource :issue, through: :issueable, shallow: true
 
     def index
