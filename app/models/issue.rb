@@ -56,7 +56,7 @@ class Issue < ApplicationRecord
 
   has_rich_text :description
   enum issue_type: { issue: 0, note: 1 }
-  enum fuel_type: [:electricity, :gas, :solar]
+  enum fuel_type: [:electricity, :gas, :solar, :gas_and_electricity, :alternative_heating]
   enum status: { open: 0, closed: 1 }, _prefix: true
 
   validates :issue_type, :status, :title, :description, presence: true
