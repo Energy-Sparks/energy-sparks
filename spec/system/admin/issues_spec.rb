@@ -176,6 +176,12 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
           end
 
           it { expect(page).to have_link('Delete') }
+
+          context "displaying school context menu" do
+            it { expect(page).to have_link("Manage School") if issueable.is_a?(School) }
+            it { expect(page).to_not have_link("Manage School") unless issueable.is_a?(School) }
+          end
+
           context "and deleting a issue" do
             before do
               click_link("Delete")
