@@ -7,24 +7,21 @@
         <tr>
           <th><%= t('school_statistics.country') %></th>
           <th class="text-right"><%= t('school_statistics.count') %></th>
+          <th class="text-right"><%= t('school_statistics.pupil_numbers') %></th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td><%= t('school_statistics.england') %></td>
-          <td class="text-right"><%= report.country_summary["england"] %></td>
-        </tr>
-        <tr>
-          <td><%= t('school_statistics.scotland') %></td>
-          <td class="text-right"><%= report.country_summary["scotland"] %></td>
-        </tr>
-        <tr>
-          <td><%= t('school_statistics.wales') %></td>
-          <td class="text-right"><%= report.country_summary["wales"] %></td>
-        </tr>
+        <% report.country_summary.each do |row| %>
+          <tr>
+            <td><%= row.country %></td>
+            <td class="text-right"><%= row.school_count %></td>
+            <td class="text-right"><%= row.user_count %></td>
+          </tr>
+        <% end %>
         <tr>
           <td><strong><%= t('school_statistics.total') %></strong></td>
           <td class="text-right"><%= School.visible.count %></td>
+          <td class="text-right"><%= School.visible.joins(:users).count('users.*') %></td>
         </tr>
       </tbody>
     </table>

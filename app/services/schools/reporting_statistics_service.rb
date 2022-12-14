@@ -11,7 +11,7 @@ module Schools
     end
 
     def country_summary
-      @country_summary ||= School.visible.group(:country).count
+      @country_summary ||= country_summary_query
     end
 
     def onboarding_status
@@ -28,6 +28,23 @@ module Schools
     end
 
     private
+
+    def country_summary_query
+      sql = <<-SQL.squish
+        select country, count(distinct(schools.id)) as school_count, count(distinct(users.id)) as user_count
+        from users left join schools on schools.id = users.school_id
+        WHERE schools.active = true and schools.visible = true
+        group by schools.country;
+      SQL
+      results = ActiveRecord::Base.connection.execute(sql)
+      results.map do |result|
+        OpenStruct.new(
+          result.merge(
+            'country' => I18n.t("school_statistics.#{School.countries.key(result['country'])}")
+          )
+        )
+      end
+    end
 
     def active_only
       School.visible.where(data_enabled: false).count
