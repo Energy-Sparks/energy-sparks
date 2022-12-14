@@ -21,6 +21,8 @@ module Schools
     def create
       authorize! :manage_users, @school
       @user = User.new(user_params.merge(school: @school))
+      @user.skip_confirmation_notification! unless Rails.env.production?
+
       if @user.save
         redirect_to school_users_path(@school)
       else
