@@ -1,6 +1,6 @@
 cy:
   energy_audits:
-    availability: Mae Energy Sparks yn cynnig dau fath o archwiliadau ynni, archwiliadau ynni rhithwir ar-lein ac archwiliadau ynni ar y safle. Dim ond i ysgolion sydd â chyfrifon Energy Sparks gweithredol y cynigir y gwasanaethau hyn ar hyn o bryd.
+    availability: Mae Sbarcynni yn cynnig dau fath o archwiliadau ynni, archwiliadau ynni rhithwir ar-lein ac archwiliadau ynni ar y safle. Dim ond i ysgolion sydd â chyfrifon Sbarcynni gweithredol y cynigir y gwasanaethau hyn ar hyn o bryd.
     book: Archebu archwiliad
     onsite:
       intro_html: |-
@@ -23,10 +23,10 @@ cy:
       intro_html: |-
         <h4 id="virtual-energy-audits"><strong>Archwiliadau ynni rhithwir</h4>
         <p>
-          Cynhelir archwiliadau ynni rhithwir heb ymweliad â'r ysgol ac maent yn seiliedig ar asesiad yr archwilydd ynni o ddata defnydd ynni eich ysgol fel y'i cyflwynir ar Energy Sparks. Mae’r archwiliad yn cynnwys awr o gyfarfod ar-lein gyda chynrychiolwyr ysgolion, fel arfer y rheolwr ystad neu ofalwr, rheolwr busnes, arweinydd tîm eco ac un neu ddau o gynrychiolwyr myfyrwyr.
+          Cynhelir archwiliadau ynni rhithwir heb ymweliad â'r ysgol ac maent yn seiliedig ar asesiad yr archwilydd ynni o ddata defnydd ynni eich ysgol fel y'i cyflwynir ar Sbarcynni. Mae’r archwiliad yn cynnwys awr o gyfarfod ar-lein gyda chynrychiolwyr ysgolion, fel arfer y rheolwr ystad neu ofalwr, rheolwr busnes, arweinydd tîm eco ac un neu ddau o gynrychiolwyr myfyrwyr.
         </p>
         <p>
-          Yn ystod y cyfarfod ar-lein, byddem yn disgwyl i chi ddarparu gwybodaeth am eich ysgol, ei ffabrig, ei system wresogi, systemau dŵr poeth, TGCh a goleuo i helpu gyda’r broses archwilio. Yna bydd ein harchwilydd yn mynd â chi drwy unrhyw faterion a amlygwyd yn y dadansoddiad Energy Sparks ac yn rhoi cyngor ar y ffordd orau o leihau defnydd.
+          Yn ystod y cyfarfod ar-lein, byddem yn disgwyl i chi ddarparu gwybodaeth am eich ysgol, ei ffabrig, ei system wresogi, systemau dŵr poeth, TGCh a goleuo i helpu gyda’r broses archwilio. Yna bydd ein harchwilydd yn mynd â chi drwy unrhyw faterion a amlygwyd yn y dadansoddiad Sbarcynni ac yn rhoi cyngor ar y ffordd orau o leihau defnydd.
         </p>
         <p>
           Mae'r prif ffocws, i ddechrau, ar enillion cost isel cyflym, fel edrych ar newid amserau boeleri. Gall y sesiwn hefyd adolygu buddsoddiadau cyfalaf strategol, er enghraifft, edrych ar fanteision uwchraddio i oleuadau LED.

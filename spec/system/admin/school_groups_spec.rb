@@ -206,7 +206,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
       describe "Dashboard message panel" do
         it_behaves_like "admin dashboard messages" do
-          let(:object) { school_group }
+          let(:messageable) { school_group }
         end
       end
 

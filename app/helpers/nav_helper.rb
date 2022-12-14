@@ -2,7 +2,7 @@ module NavHelper
   def navbar_image_link
     title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
     link_to '/home-page', class: 'navbar-brand', title: title do
-      image_tag('nav-brand-transparent.png', class: "d-inline-block align-top")
+      image_tag("nav-brand-transparent-#{I18n.locale}.png", class: "d-inline-block align-top")
     end
   end
 

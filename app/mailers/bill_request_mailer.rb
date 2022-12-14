@@ -4,7 +4,7 @@ class BillRequestMailer < ApplicationMailer
     @title = @school.name
     @electricity_meters = params[:electricity_meters]
     @gas_meters = params[:gas_meters]
-    make_bootstrap_mail(to: params[:emails], subject: params[:subject])
+    make_bootstrap_mail_en(to: params[:emails])
   end
 
   def notify_admin

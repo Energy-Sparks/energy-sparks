@@ -48,19 +48,16 @@ describe Transifex::Loader, type: :service do
   context 'when there are no errors' do
     let!(:activity_category)        { create(:activity_category) }
     let!(:intervention_type_group)  { create(:intervention_type_group) }
-
-    let!(:activity_type)        { create(:activity_type, active: true, activity_category: activity_category) }
-    let!(:activity_type2)        { create(:activity_type, active: false, activity_category: activity_category) }
-
-    let!(:intervention_type)    { create(:intervention_type, active: true, intervention_type_group: intervention_type_group) }
-    let!(:intervention_type2)    { create(:intervention_type, active: false, intervention_type_group: intervention_type_group) }
-    let!(:help_page)            { create(:help_page) }
-    let!(:case_study)           { create(:case_study) }
-
+    let!(:activity_type)            { create(:activity_type, active: true, activity_category: activity_category) }
+    let!(:activity_type2)           { create(:activity_type, active: false, activity_category: activity_category) }
+    let!(:intervention_type)        { create(:intervention_type, active: true, intervention_type_group: intervention_type_group) }
+    let!(:intervention_type2)       { create(:intervention_type, active: false, intervention_type_group: intervention_type_group) }
+    let!(:help_page)                { create(:help_page) }
+    let!(:case_study)               { create(:case_study) }
     let!(:programme_type)           { create(:programme_type) }
-    let!(:programme_type2)           { create(:programme_type, active: false) }
-
+    let!(:programme_type2)          { create(:programme_type, active: false) }
     let!(:transport_type)           { create(:transport_type) }
+    let!(:consent_statement)        { create(:consent_statement) }
 
     before(:each) do
       allow_any_instance_of(Transifex::Synchroniser).to receive(:pull).and_return(true)
@@ -69,11 +66,11 @@ describe Transifex::Loader, type: :service do
     end
 
     it 'updates the pull count' do
-      expect(TransifexLoad.first.pulled).to eq 8
+      expect(TransifexLoad.first.pulled).to eq 9
     end
 
     it 'updates the push count' do
-      expect(TransifexLoad.first.pushed).to eq 8
+      expect(TransifexLoad.first.pushed).to eq 9
     end
   end
 

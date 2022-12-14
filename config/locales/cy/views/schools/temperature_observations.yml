@@ -13,7 +13,7 @@ cy:
         page_title: Cofnodion tymheredd
         roof_and_wall_insulation_message: Efallai bod hyn ychydig yn oer. A allai eich ysgol ychwanegu mwy o insiwleiddio to a wal i helpu i gadw'r ysgol yn gynhesach heb ddefnyddio mwy o ynni?
         time: Amser
-        try_turning_down_your_heating_message: Mae Energy Sparks yn argymell nad yw tymheredd ystafelloedd dosbarth yn uwch na 18C. Rhowch gynnig ar droi y gwres i lawr i arbed ynni ac arian.
+        try_turning_down_your_heating_message: Mae Sbarcynni yn argymell nad yw tymheredd ystafelloedd dosbarth yn uwch na 18C. Rhowch gynnig ar droi y gwres i lawr i arbed ynni ac arian.
         what_to_do_next_message_html: |
           <h3>Beth i'w wneud nesaf</h3>
           <ul>
