@@ -1,14 +1,33 @@
 require 'rails_helper'
 
-RSpec.describe "meter management", :meters, type: :system do
+RSpec.shared_examples_for "a listed meter" do |admin: true|
+  it "displays list heading" do
+    if meter.active
+      expect(page).to have_content("Active meters")
+    else
+      expect(page).to have_content("Inactive meters")
+    end
+  end
+  it { expect(page).to have_content(meter.mpan_mprn) }
+  it { expect(page).to have_content(meter.name) }
+  it { expect(page).to have_link(meter.data_source.name) } if admin
+  it { expect(page).to have_content(short_dates(meter.first_validated_reading)) }
+  it { expect(page).to have_content(short_dates(meter.last_validated_reading)) }
+  it { expect(page).to have_content(meter.zero_reading_days.count) }
+  it { expect(page).to have_content(meter.gappy_validated_readings.count) }
+end
 
-  let(:school_name)   { 'Oldfield Park Infants'}
-  let!(:school)       { create_active_school(name: school_name)}
-  let!(:admin)        { create(:admin)}
-  let!(:teacher)      { create(:staff)}
-  let!(:school_admin) { create(:school_admin, school_id: school.id) }
-  let!(:data_source)  { create(:data_source, name: 'Data Co') }
-  let!(:setup_data)   { }
+RSpec.describe "meter management", :meters, type: :system, include_application_helper: true do
+
+  let(:school_name)     { 'Oldfield Park Infants'}
+  let!(:school)         { create_active_school(name: school_name)}
+  let!(:admin)          { create(:admin)}
+  let!(:teacher)        { create(:staff)}
+  let!(:school_admin)   { create(:school_admin, school_id: school.id) }
+  let!(:data_source)    { create(:data_source, name: 'Data Co') }
+  let(:active_meter)    { create(:gas_meter_with_validated_reading_dates, name: 'meter', school: school, data_source: data_source) }
+  let(:inactive_meter)  { create(:gas_meter_with_validated_reading_dates, name: 'meter', school: school, data_source: data_source, active: false) }
+  let!(:setup_data)     { }
 
   context 'as school admin' do
     before(:each) do
@@ -60,16 +79,26 @@ RSpec.describe "meter management", :meters, type: :system do
       end
     end
 
-    context "Dashboard message panel" do
+    context "Manage meters page" do
       before { visit school_meters_path(school) }
       it_behaves_like "admin dashboard messages", permitted: false
-    end
 
-    context "Add meter form" do
-      before { visit school_meters_path(school) }
-      it "does not display admin only fields" do
-        expect(page).to_not have_content('Data source')
-        expect(page).to_not have_content('Admin notes')
+      context "Add meter form" do
+        it "does not display admin only fields" do
+          expect(page).to_not have_content('Data source')
+          expect(page).to_not have_content('Admin notes')
+        end
+      end
+
+      context "listing meters" do
+        let!(:setup_data) { meter }
+
+        it_behaves_like "a listed meter", admin: false do
+          let(:meter) { active_meter }
+        end
+        it_behaves_like "a listed meter", admin: false do
+          let(:meter) { inactive_meter }
+        end
       end
     end
   end
@@ -87,12 +116,25 @@ RSpec.describe "meter management", :meters, type: :system do
       expect(page).to_not have_content('Deactivate')
     end
 
-    it "does not display admin only fields" do
-      expect(page).to_not have_content('Data source')
-      expect(page).to_not have_content('Admin notes')
+    it_behaves_like "admin dashboard messages", permitted: false
+
+    context "Add meter form" do
+      it "does not display admin only fields" do
+        expect(page).to_not have_content('Data source')
+        expect(page).to_not have_content('Admin notes')
+      end
     end
 
-    it_behaves_like "admin dashboard messages", permitted: false
+    context "listing meters" do
+      let(:setup_data) { meter }
+
+      it_behaves_like "a listed meter", admin: false do
+        let(:meter) { active_meter }
+      end
+      it_behaves_like "a listed meter", admin: false do
+        let(:meter) { inactive_meter }
+      end
+    end
   end
 
   context 'as admin' do
@@ -103,10 +145,22 @@ RSpec.describe "meter management", :meters, type: :system do
       click_on('Oldfield Park Infants')
     end
 
-    describe "Dashboard message panel" do
+    context "Manage meters page" do
       before { click_on 'Manage meters' }
+
       it_behaves_like "admin dashboard messages" do
         let(:messageable) { school }
+      end
+
+      context "listing meters" do
+        let!(:setup_data) { meter }
+
+        it_behaves_like "a listed meter", admin: true do
+          let(:meter) { active_meter }
+        end
+        it_behaves_like "a listed meter", admin: true do
+          let(:meter) { inactive_meter }
+        end
       end
     end
 

@@ -4,7 +4,7 @@
     <td><%= meter.mpan_mprn %></td>
     <td><%= meter.name %></td>
     <% if current_user.admin? %>
-      <td><%= meter.data_source.try(:name) %></td>
+      <td><%= link_to meter.data_source.try(:name), admin_data_source_path(meter.data_source) if meter.data_source %></td>
     <% end %>
     <td><%= meter.amr_data_feed_readings.count %></td>
     <td><%= meter.amr_validated_readings.count %></td>
