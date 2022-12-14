@@ -64,13 +64,16 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   translates :management_priorities_title, backend: :action_text
   translates :analysis_title, type: :string, fallbacks: { cy: :en }
 
-  has_rich_text :email_content
+  translates :email_title, type: :string, fallbacks: { cy: :en }
+  translates :email_content, backend: :action_text
+
   has_rich_text :find_out_more_content
 
   TX_ATTRIBUTE_MAPPING = {
     pupil_dashboard_title: { templated: true },
     management_dashboard_title: { templated: true },
     management_priorities_title: { templated: true },
+    email_content: { templated: true }
   }.freeze
 
   def self.functionality
