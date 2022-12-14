@@ -12,9 +12,12 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(user)
-    # if EnergySparks::FeatureFlags.active?(:redirect_to_preferred_locale)
-    subdomain = ApplicationController.helpers.subdomain_for(user.preferred_locale)
-    root_url(subdomain: subdomain) + (session[:user_return_to] || home_page_path)
+    if EnergySparks::FeatureFlags.active?(:redirect_to_preferred_locale)
+      subdomain = ApplicationController.helpers.subdomain_for(user.preferred_locale)
+      root_url(subdomain: subdomain) + (session[:user_return_to] || root_url)
+    else
+      session[:user_return_to] || root_url
+    end
   end
 
   def switch_locale(&action)
