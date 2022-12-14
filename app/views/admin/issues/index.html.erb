@@ -1,7 +1,8 @@
 <%= render 'header', title: "Issues & Notes" do %>
-  <% if @issueable %>
-    <% school_group = @issueable.try(:school_group) || @issueable %>
-    <%= header_nav_link "#{school_group.name} school group", admin_school_group_path(school_group) %>
+  <% if @issueable.try(:school_group) %>
+    <%= header_nav_link "#{@issueable.school_group.name} school group", admin_school_group_path(@issueable.school_group) %>
+  <% elsif @issueable %>
+      <%= header_nav_link "#{@issueable.name} #{@issueable.model_name.human.downcase}", [:admin, @issueable] %>
   <% end %>
 <% end %>
 <% if @issueable %>
