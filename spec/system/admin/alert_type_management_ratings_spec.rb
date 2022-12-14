@@ -235,12 +235,12 @@ RSpec.describe 'alert type management', type: :system do
         end
 
         check 'Email content'
-        fill_in 'Email title', with: 'Gas usage'
+        fill_in 'Email title en', with: 'Gas usage'
 
         within '.email_active' do
           fill_in_trix with: 'You are using {{gas_percentage}} too much gas! You need to do something about it.'
 
-          click_on 'Preview'
+          click_on 'Preview (English)'
 
           within '#email-preview-en .content' do
             expect(page).to have_content('You are using 10% too much gas!')
