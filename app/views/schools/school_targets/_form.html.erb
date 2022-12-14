@@ -65,11 +65,26 @@
     <div class="col-sm-6">
       <%= f.label :start_date, "Start date", class: "form-label" %>
     </div>
-    <div class="col-sm-3">
-      <%= f.date_field :start_date, class: 'form-control', value: school_target.start_date %>
+    <div class="col-sm-4">
+      <div class="input-group date" id="datetimepickerform" data-target-input="nearest">
+        <%= f.text_field  :start_date, class: 'form-control datetimepicker-input', data: { target: "#datetimepickerform" }, value: school_target.start_date&.strftime('%d/%m/%Y') %>
+        <div class="input-group-append" data-target="#datetimepickerform" data-toggle="datetimepicker">
+          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+        </div>
+      </div>
     </div>
   </div>
 
   <%= f.submit school_target.persisted? ? "Update our target" : "Set this target", class: "btn btn-primary" %>
 
 <% end %>
+
+<script type="text/javascript">
+  $(function () {
+    $('#datetimepickerform').datetimepicker({
+      format: 'DD/MM/YYYY',
+      allowInputToggle: true,
+      locale: moment.locale()
+    });
+  });
+</script>
