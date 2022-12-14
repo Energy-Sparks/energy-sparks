@@ -344,79 +344,92 @@
         <h2>Baseload Analysis</h2>
 
         <p>
-          The following sections provide more background and analysis on your
-          electricity baseload
+          This section gives a more detailed analysis of your school’s electricity baseload and some things to look out for.
         </p>
 
         <ul>
-          <li><a href="#last-year">Last 12 months</a></li>
-          <li><a href="#annual-trends">Annual trends</a></li>
+          <li><a href="#last-year">Recent trend</a></li>
+          <li><a href="#seasonal">Seasonal and weekday variation</a></li>
           <li><a href="#long-term-trends">Long term trends</a></li>
           <li><a href="#meter-breakdown">Baseload breakdown by meter</a></li>
-          <li><a href="#meter-analysis">Meter specific analysis</a></li>
         </ul>
 
         <div id="last-year" class="advice-page-section pt-2 pb-2" style="scroll-margin-top: 50px;">
           <hr/>
           <div class="d-flex justify-content-between align-items-top">
             <div>
-              <h3>Last 12 months</h3>
+              <h3>Recent trend</h3>
             </div>
             <div>
               <a href="#analysis-overview">Back to top <i class="fa fa-arrow-up"></i></a>
             </div>
           </div>
 
+          <div class="p-4 bg-light" style="border-left: 5px solid #FF3A5B">
+            <p>
+              Your electricity baseload over the last 12 months was XX kW. Other schools with a similar number of pupils have a baseload of YY kW.
+            </p>
+
+            <p>
+              If you matched the baseload of other schools of the same size you would save £1234.
+            </p>
+          </div>
+
           <div>
-            <span class="font-weight-bold f4">Your electricity baseload for the last 12 months</span><br/>
-            <span>Electricity baseload from August 2021 to August 2022</span>
+            <span class="font-weight-bold f4">Electricity baseload for the last 12 months</span><br/>
+            <span>This chart shows the electricity baseload for your school between August 2021 to August 2022</span>
             <div id="chart_wrapper_baseload_lastyear" class="chart-wrapper">
               <%= render 'shared/analysis_controls', chart_type: :baseload_lastyear, axis_controls: true, analysis_controls: true %>
               <%= chart_tag(@school, :baseload_lastyear, no_zoom: true, wrap: false, chart_config: create_chart_config(@school, :baseload_lastyear, nil)) %>
             </div>
           </div>
+          <p>
+            Each point on this chart represents the average over the hours a school is closed on that day. You can click on a point in the chart and it will drill down to show you the usage on that day. Ideally, there should be little variation between different days and seasons.
+          </p>
+          <p>
+            If you notice unusual changes or very high baseload, you might be able to narrow down what is causing it by looking at the <a href="#meter-breakdown">meter breakdown</a> below.
+          </p>
+          <p>
+            Consider the following things when observing this chart:
+          </p>
+            <ul>
+            <li>If your baseload has changed, for example suddenly increasing or decreasing, you should be able to track down and explain the cause of this change. Consider whether the school has recently purchased new equipment. Remember a high baseload is often caused by:
+              <ul>
+              <li>Old freezers and fridges running constantly</li>
+              <li>Inefficient IT servers</li>
+              <li>Security lights</li>
+              <li>Electric water heaters</li>
+              <li>Water chillers</li>
+              <li>Air conditioning</li>
+              <li>Computers, whiteboards and other electrical equipment left running when the school is closed.</li>
+              </ul>
+            </li>
+            <li>
+            A very large decrease over the summer holidays is good, it shows that appliances and equipment have been switched off. Perhaps fridges and freezers in the kitchen were emptied or consolidated. Consider how significant that drop is - if caused by switching off fridges and freezers, they might be inefficient enough to require replacement. Think about whether your school can replicate that decrease for other holidays, or even weekends.
+            </li>
+            </ul>
         </div>
 
-        <div id="annual-trends" class="advice-page-section pt-2 pb-2" style="scroll-margin-top: 50px;">
+        <div id="seasonal" class="advice-page-section pt-2 pb-2" style="scroll-margin-top: 50px;">
           <hr/>
           <div class="d-flex justify-content-between align-items-top">
             <div>
-              <h3>Annual Trends</h3>
+              <h3>Seasonal and weekday variation</h3>
             </div>
             <div>
               <a href="#analysis-overview">Back to top <i class="fa fa-arrow-up"></i></a>
             </div>
           </div>
-          <div>
-            <p>
-              The following table shows the trend in your annual baseload.
-            </p>
-            <table class="table table-sm">
-              <thead class="thead-dark">
-                <th>Year</th>
-                <th class="text-right">Average annual consumption (kW)</th>
-                <th class="text-right">Average annual cost (£)</th>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>2020</td>
-                  <td class="text-right">1.0</td>
-                  <td class="text-right">£1200</td>
-                </tr>
-                <tr>
-                  <td>2021</td>
-                  <td class="text-right">1.1</td>
-                  <td class="text-right">£1440</td>
-                </tr>
-                <tr>
-                  <td>2022</td>
-                  <td class="text-right">1.1</td>
-                  <td class="text-right">£1440</td>
-                </tr>
-              </tbody>
-            </table>
+            <p>At a well-managed school the baseload should remain the same throughout the year, there
+            should be no reason why the electricity consumption at midnight on a school day should be
+            higher than at midnight in the winter than in the summer.</p>
+            <p>The most common causes of high seasonal variation are electric heating or inefficient security lights being left on overnight in winter. The most common cause of weekday variation is a high energy consuming appliance which is turned on on a Monday and off again on a Friday.</p>
+        </div>
 
-          </div>
+        <div class="p-4 bg-light" style="border-left: 5px solid #FF3A5B">
+          <p>
+            There is a large variation in your school's seasonal overnight electricity usage from X kw in the winter to Y kw in the summer. This suggests electric heating is left running overnight during the winter or the school has inefficient security or flood lights. Talk to the site manager to change electric heater settings and improve lighting efficiency to save £1234 and X kg CO2 annually.
+          </p>
         </div>
 
         <div id="long-term-trends" class="advice-page-section pt-2 pb-2" style="scroll-margin-top: 50px;">
@@ -430,12 +443,51 @@
             </div>
           </div>
           <div>
-            <span class="font-weight-bold f4">Long term trends in your electricity baseload</span><br/>
-            <span>Electricity baseload between March 2020 to August 2022 with a comparison against Benchmark and Exemplar schools</span>
+            <p>
+            Unless the school has physically increased in size, if you are managing your baseload electricity consumption well you would expect baseload to reduce over time as appliances and computers have become more power efficient with lower standby power requirements. If this is not the case then you should look to identify the cause of the increase.
+            </p>
+
+            <p>
+              The table below shows the annual average baseload for all of the years we have data for your school.
+            </p>
+            <table class="table table-sm">
+              <thead class="thead-dark">
+                <th>Year</th>
+                <th class="text-right">Average annual consumption (kW)</th>
+                <th class="text-right">Average annual cost (£)</th>
+                <th class="text-right">Average annual CO2 (kg)</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2020</td>
+                  <td class="text-right">1.0</td>
+                  <td class="text-right">£1200</td>
+                  <td class="text-right">X</td>
+                </tr>
+                <tr>
+                  <td>2021</td>
+                  <td class="text-right">1.1</td>
+                  <td class="text-right">£1440</td>
+                  <td class="text-right">X</td>
+                </tr>
+                <tr>
+                  <td>2022</td>
+                  <td class="text-right">1.1</td>
+                  <td class="text-right">£1440</td>
+                  <td class="text-right">X</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <span class="font-weight-bold f4">Long term baseload comparison with benchmark and exemplar schools</span><br/>
+            <span>This chart shows the long term trend in your school’s baseload between March 2020 to August 2022 with a comparison with 'benchmark' and 'exemplar' schools</span>
             <div id="chart_wrapper_baseload_versus_benchmarks" class="chart-wrapper">
               <%= render 'shared/analysis_controls', chart_type: :baseload_versus_benchmarks, axis_controls: true, analysis_controls: true %>
               <%= chart_tag(@school, :baseload_versus_benchmarks, no_zoom: true, wrap: false, chart_config: create_chart_config(@school, :baseload_versus_benchmarks, nil)) %>
             </div>
+            <p>
+              You can click on the chart to drill down to individual days and work out at what times of day and year your school is doing either better or worse than these schools.
+            </p>
           </div>
         </div>
 
@@ -451,13 +503,11 @@
           </div>
           <div>
             <p>
-              This table shows how much of your overall baseload usage is associated with the
-              individual meters in your school.
+            Your school has multiple electricity meters. This section below shows analysis of the baseload electricity use for each meter. You might be able to use this information to identify high or unusual energy consumption in certain parts of your school.
             </p>
 
             <p>
-              If you are trying to reduce your baseload, focus on those meters that are
-              responsible for a higher percentage of your overall consumption.
+              The table below shows a breakdown of the annual average baseload for your school by meter.
             </p>
 
             <table class="table table-sm">
@@ -489,20 +539,10 @@
               </tbody>
             </table>
           </div>
-        </div>
-
-        <div id="meter-analysis" class="advice-page-section pt-2 pb-2" style="scroll-margin-top: 50px;">
-          <hr/>
-          <div class="d-flex justify-content-between align-items-top">
-            <div>
-              <h3>Meter analysis</h3>
-            </div>
-            <div>
-              <a href="#analysis-overview">Back to top <i class="fa fa-arrow-up"></i></a>
-            </div>
-          </div>
           <div>
-            <div class="d-flex justify-content-between">
+            <span class="font-weight-bold f4">Long term trends in your electricity baseload for a single meter</span><br/>
+            <span>Electricity baseload from June 2020 to July 2022 for 2000006183919</span>
+            <div class="d-flex justify-content-between pt-2">
               <span>Select a meter to view its baseload.</span>
               <select class="form-control w-50" id="exampleFormControlSelect1">
                    <option>2000006183919</option>
@@ -510,8 +550,7 @@
               </select>
             </div>
             <br/>
-            <span class="font-weight-bold f4">Long term trends in your electricity baseload for a single meter</span><br/>
-            <span>Electricity baseload from June 2020 to July 2022 for 2000006183919</span>
+
             <div id="chart_wrapper_baseload" class="chart-wrapper">
               <%= render 'shared/analysis_controls', chart_type: :baseload, axis_controls: true, analysis_controls: true %>
               <%= chart_tag(@school, :baseload, no_zoom: true, wrap: false, chart_config: create_chart_config(@school, :baseload, "2000006183919")) %>
