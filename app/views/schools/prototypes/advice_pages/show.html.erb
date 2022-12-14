@@ -150,6 +150,14 @@
         </div>
 -->
 
+        <p>
+          Last week, your school's electricity baseload was 10% more than the average over the last year. If this continues it will cost £1234 more over the next year.
+        </p>
+
+        <p>
+          Over the last 12 months, your school’s electricity baseload was 2% more than the average over the previous 12 months. This increase cost £1234 and 1234 kg CO2 more than last year.
+        </p>
+
         <table class="mt-2 table management-overview">
             <thead class="thead-dark">
               <th>Period</th>
@@ -159,13 +167,13 @@
             <tbody>
               <tr>
                 <td>Last week</td>
-                <td class="text-right">1.2</td>
+                <td class="text-right">1.7</td>
                 <td class="text-right"><%= up_downify("+10%") %></td>
               </tr>
               <tr>
                 <td>Last year (average)</td>
                 <td class="text-right">1.5</td>
-                <td class="text-right">-</td>
+                <td class="text-right"><%= up_downify("+2%") %></td>
               </tr>
             </tbody>
         </table>
@@ -215,18 +223,51 @@
 
         <h2>What should you do next?</h2>
 
-        <p>Here are some suggested activities that can be undertaken with pupils</p>
-        <ul>
-          <li><a href="">Introduce a policy on switching off lights, computers, and other information technology equipment</a></li>
-          <li><a href="">Label lights and appliances to show which should be left on or turned off</a></li>
-          <li><a href="">Run a campaign to switch off electrical equipment overnight</a></li>
-        </ul>
+        <p>
+        To fully determine the causes of your baseload usage you need to do a survey of what appliances are being left on overnight and their power consumption.
+        </p>
 
-        <p>Here are some suggested activities that you can undertake around the school</p>
-        <ul>
-          <li><a href="">
-Switched off lights and IT equipment after school</a></li>
-        </ul>
+        <h4><strong>Work with the pupils</strong></h4>
+        <div class="row activities-deck">
+          <% activity_types = [ActivityType.find(38), ActivityType.find(11), ActivityType.find(10)] %>
+          <% activity_types.each do |activity_type| %>
+            <div class="col-sm-4">
+              <div class="card pr-1 h-100">
+                <%= link_to activity_type_path(activity_type) do %>
+                  <%= render 'activity_types/image', activity_type: activity_type, css_class: "activity-card-img" %>
+                <% end %>
+                <div class="card-body">
+                  <p class="card-text">
+                    <%= link_to activity_type.name, activity_type_path(activity_type) %>
+                  </p>
+                </div>
+                <div class="card-footer" style="border-top: none; background-color: white;">
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <h4 class="pt-3"><strong>Take action around the school</strong></h4>
+        <div class="row activities-deck">
+          <% activity_types = [InterventionType.find(60), InterventionType.find(33), InterventionType.find(8)] %>
+          <% activity_types.each do |activity_type| %>
+            <div class="col-sm-4">
+              <div class="card pr-1 h-100">
+                <%= link_to activity_type_path(activity_type) do %>
+                  <%= render 'activity_types/image', activity_type: activity_type, css_class: "activity-card-img" %>
+                <% end %>
+                <div class="card-body">
+                  <p class="card-text">
+                    <%= link_to activity_type.name, activity_type_path(activity_type) %>
+                  </p>
+                </div>
+                <div class="card-footer" style="border-top: none; background-color: white;">
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
 
       </div>
       <div class="tab-pane mt-4" id="causes-overview" role="tabpanel" aria-labelledby="causes-tab">
