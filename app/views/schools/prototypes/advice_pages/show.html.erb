@@ -139,7 +139,7 @@
           </div>
         </div>
 
-        <h2>Your current baseload</h2>
+        <h2 class="pt-4">Your current baseload</h2>
 
 <!--
         <div class="baseload-definition pb-2">
@@ -150,13 +150,17 @@
         </div>
 -->
 
-        <p>
-          Last week, your school's electricity baseload was 10% more than the average over the last year. If this continues it will cost £1234 more over the next year.
-        </p>
+        <div class="p-4 bg-light" style="border-left: 5px solid #FF3A5B">
+          <p>
+            Last week, your school's electricity baseload was 10% more than the average over the last year. If this continues it will cost £1234 more over the next year.
+          </p>
+        </div>
 
-        <p>
-          Over the last 12 months, your school’s electricity baseload was 2% more than the average over the previous 12 months. This increase cost £1234 and 1234 kg CO2 more than last year.
-        </p>
+        <div class="mt-1 p-4 bg-light" style="border-left: 5px solid #FF3A5B">
+          <p>
+            Over the last 12 months, your school’s electricity baseload was 2% more than the average over the previous 12 months. This increase cost £1234 and 1234 kg CO2 more than last year.
+          </p>
+        </div>
 
         <table class="mt-2 table management-overview">
             <thead class="thead-dark">
@@ -181,44 +185,67 @@
           Baseload calculation based on data from 1 March 2020 to 21 August 2022
         </div>
 
+        <div class="pt-2">
+          <p>
+            For more detail,
+            <a class="" data-toggle="tab" href="#analysis-overview" aria-controls="analysis-overview" aria-selected="true">review our detailed analysis</a>
+          </p>
+        </div>
+
         <h2>How do you compare?</h2>
 
         <p>
           How does your baseload compare to other primary schools on Energy Sparks, with a similar number of pupils?
         </p>
 
+        <div class="row">
+          <div class="col-6">
+            <div class="card h-100" style="border: 1px solid #5cb85c;">
+              <div class="card-body mt-2">
+                <h3 class="card-title">
+                  <strong>Your baseload is well managed</strong>
+                </h3>
+                <h4 class="card-subtitle">
+                  You are doing well but there should still be opportunities to improve further.
+                </h4>
+                <p>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <table class="table management-overview">
+                <thead class="thead-dark">
+                  <th>Category</th>
+                  <th class="text-right">Average baseload</th>
+                  <th class="text-right">Your baseload</th>
+                  <th></th>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Exemplar</td>
+                    <td class="text-right">1.2kW</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr style="border-left: 5px solid #5cb85c;">
+                    <td>Well managed</td>
+                    <td class="text-right">2.5kW</td>
+                    <td class="text-right">1.5kW</td>
+                    <td class="text-right"></td>
+                  </tr>
+                  <tr>
+                    <td>Improving</td>
+                    <td class="text-right">>2.5kW</td>
+                    <td class=""></td>
+                    <td class=""></td>
+                  </tr>
+                </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="pt-2">
         <p>For more detail, <a href="/benchmark?benchmark%5Bschool_types%5D%5B%5D=0&benchmark%5Bschool_types%5D%5B%5D=1&benchmark%5Bschool_types%5D%5B%5D=2&benchmark%5Bschool_types%5D%5B%5D=3&benchmark%5Bschool_types%5D%5B%5D=4&benchmark%5Bschool_types%5D%5B%5D=5&benchmark%5Bschool_types%5D%5B%5D=6&benchmark_type=baseload_per_pupil">compare with other schools in your group</a></p>
-
-        <table class="table management-overview">
-            <thead class="thead-dark">
-              <th>Category</th>
-              <th class="text-right">Average baseload</th>
-              <th class="text-right">Your baseload</th>
-              <th></th>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Exemplar</td>
-                <td class="text-right">1.2kW</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr style="border-left: 5px solid #5cb85c;">
-                <td>Well managed</td>
-                <td class="text-right">2.5kW</td>
-                <td class="text-right">1.5kW</td>
-                <td class="text-right">You are doing well but there should still be opportunities to improve further.</td>
-              </tr>
-              <tr>
-                <td>Improving</td>
-                <td class="text-right">>2.5kW</td>
-                <td class=""></td>
-                <td class=""></td>
-              </tr>
-            </tbody>
-        </table>
-        <div class="text-right management-overview-caption">
-          Exemplar schools are in the top 17.5% and well-managed schools are in the top 30% of schools.
         </div>
 
         <h2>What should you do next?</h2>
