@@ -66,6 +66,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
 
   translates :email_title, type: :string, fallbacks: { cy: :en }
   translates :email_content, backend: :action_text
+  translates :sms_content, type: :string, fallbacks: { cy: :en }
 
   has_rich_text :find_out_more_content
 

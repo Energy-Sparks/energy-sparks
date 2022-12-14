@@ -27,8 +27,8 @@
   <% end %>
 
   <%= render 'content_section', form: form, content: content, field: :sms_active, field_name: 'SMS content' do %>
-    <%= render 'admin/shared/preview_section', content: content, scope: 'sms', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :sms) do %>
-      <%= content.input :sms_content, label: 'SMS content' %>
+    <%= render 'admin/shared/preview_section', content: content, scope: 'sms', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :sms), locales: I18n.available_locales do |locale| %>
+      <%= content.input t_field(:sms_content, locale), label: 'SMS content' %>
     <% end %>
   <% end %>
 
