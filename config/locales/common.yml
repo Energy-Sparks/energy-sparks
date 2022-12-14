@@ -24,6 +24,7 @@ en:
       deactivate: Deactivate
       delete: Delete
       details: Details
+      download: Download
       edit: Edit
       finished: Finished
       home: Home
@@ -35,10 +36,12 @@ en:
       previous: Previous
       remove: Remove
       report: Report
+      restart: Restart
       save: Save
       status: Status
       type: Type
       update: Update
+      upload: Upload
       view: View
       view_results: View results
       yes_label: 'Yes'

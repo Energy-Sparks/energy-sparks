@@ -1,4 +1,4 @@
-<h4>Consumption and supply charges</h4>
+<h4><%= t('schools.user_tariff_charges.charges_edit_electricity.consumption_and_supply_charges') %></h4>
 
 <%= f.fields_for :fixed_charge do |ff| %>
   <%= render 'charge_basic', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :fixed_charge), f: ff %>
@@ -11,7 +11,7 @@
 
 <br/>
 
-<h4>Distribution charges</h4>
+<h4><%= t('schools.user_tariff_charges.charges_edit_electricity.distribution_charges') %></h4>
 
 <%= render 'charge_duos', user_tariff_charges: user_tariff_charges, f: f %>
 
@@ -31,7 +31,7 @@
 
 <br/>
 
-<h4>Transmission charges</h4>
+<h4><%= t('schools.user_tariff_charges.charges_edit_electricity.transmission_charges') %></h4>
 
 <%= f.fields_for :user_tariff do |ff| %>
   <%= render 'charge_tnuos', user_tariff: user_tariff, f: ff %>
@@ -59,7 +59,7 @@
 
 <br/>
 
-<h4>Other charges</h4>
+<h4><%= t('schools.user_tariff_charges.charges_edit_electricity.other_charges') %></h4>
 
 <%= f.fields_for :user_tariff do |ff| %>
   <%= render 'charge_vat', user_tariff: user_tariff, f: ff %>

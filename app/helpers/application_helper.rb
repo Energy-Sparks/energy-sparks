@@ -403,4 +403,18 @@ module ApplicationHelper
   def redirect_back_tag(params)
     tag.input type: 'hidden', name: :redirect_back, value: redirect_back_url(params)
   end
+
+  def redirect_back_params(params)
+    { redirect_back: redirect_back_url(params) }
+  end
+
+  def dashboard_message_icon(messageable)
+    if messageable.dashboard_message
+      title = "Dashboard message is shown for "
+      title += messageable.is_a?(SchoolGroup) ? "schools in this group" : "school"
+      tag.span class: 'badge badge-info', title: "#{title}: #{messageable.dashboard_message.message}" do
+        fa_icon(:info)
+      end
+    end
+  end
 end

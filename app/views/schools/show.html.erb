@@ -20,7 +20,8 @@
 <% end %>
 
 <% if @show_standard_prompts %>
-  <%= render 'management/schools/dashboard_message', school: @school %>
+  <%= render 'management/schools/dashboard_message', messageable: @school %>
+  <%= render 'management/schools/dashboard_message', messageable: @school.try(:school_group) %>
 <% end %>
 
 <% if @suggest_estimates_for_fuel_types.present? && @suggest_estimates_for_fuel_types.any? %>
