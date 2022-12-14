@@ -68,7 +68,8 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 expect(find('trix-editor#issue_description')).to have_text('')
                 expect(page).to have_select('Fuel type', selected: [])
                 expect(page).to have_select('Status', selected: 'Open') if issue_type == 'issue'
-                expect(page).to have_select('Assigned to', selected: issueable.default_issues_admin_user.display_name)
+                assigned_to = issueable.is_a?(DataSource) ? [] : issueable.default_issues_admin_user.display_name
+                expect(page).to have_select('Assigned to', selected: assigned_to)
                 expect(page).to have_unchecked_field('Pinned')
               end
 
@@ -220,6 +221,12 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
     context "school group" do
       it_behaves_like "an adminable issueable type" do
         let(:issueable) { school_group }
+      end
+    end
+    context "data source" do
+      let(:data_source) { create(:data_source) }
+      it_behaves_like "an adminable issueable type" do
+        let(:issueable) { data_source }
       end
     end
   end
