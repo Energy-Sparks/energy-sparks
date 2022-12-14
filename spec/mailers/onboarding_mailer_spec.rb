@@ -9,9 +9,9 @@ RSpec.describe OnboardingMailer do
     it 'sends the onboarding email' do
       OnboardingMailer.with(emails: ['test@blah.com'], school_onboarding: school_onboarding).onboarding_email.deliver_now
       email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to eq("Set up your school on Energy Sparks")
+      expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarding_email.subject'))
       I18n.t('onboarding_mailer.onboarding_email').except(:subject).values.each do |email_content|
-        expect(email.body.to_s).to include(email_content.gsub('%{school_name}', 'Test School'))
+        expect(email.body.to_s).to include(email_content.gsub('%{school_name}', school.name))
       end
     end
   end
@@ -20,9 +20,9 @@ RSpec.describe OnboardingMailer do
     it 'sends the completion email' do
       OnboardingMailer.with(emails: ['test@blah.com'], school_onboarding: school_onboarding).completion_email.deliver_now
       email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to eq("Test School has completed the onboarding process")
+      expect(email.subject).to eq(I18n.t('onboarding_mailer.completion_email.subject').gsub('%{school}', school.name))
       I18n.t('onboarding_mailer.completion_email').except(:subject).values.each do |email_content|
-        expect(email.body.to_s).to include(email_content.gsub('%{school_name}', 'Test School'))
+        expect(email.body.to_s).to include(email_content.gsub('%{school_name}', school.name))
       end
     end
   end
@@ -31,9 +31,9 @@ RSpec.describe OnboardingMailer do
     it 'sends the reminder email' do
       OnboardingMailer.with(emails: ['test@blah.com'], school_onboarding: school_onboarding).reminder_email.deliver_now
       email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to eq("Don't forget to set up your school on Energy Sparks")
+      expect(email.subject).to eq(I18n.t('onboarding_mailer.reminder_email.subject'))
       I18n.t('onboarding_mailer.reminder_email').except(:subject).values.each do |email_content|
-        expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(email_content.gsub('%{school_name}', 'Test School'))
+        expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(email_content.gsub('%{school_name}', school.name))
       end
     end
   end
@@ -42,10 +42,10 @@ RSpec.describe OnboardingMailer do
     it 'sends the activation email' do
       OnboardingMailer.with(to: 'test@blah.com', emails: ['test@blah.com'], school: school).activation_email.deliver_now
       email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to eq("Test School is live on Energy Sparks")
+      expect(email.subject).to eq(I18n.t('onboarding_mailer.activation_email.subject').gsub('%{school}', school.name))
       I18n.t('onboarding_mailer.activation_email').except(:subject, :set_your_first_targets).values.each do |email_content|
         expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
-          email_content.gsub('%{school_name}', 'Test School')
+          email_content.gsub('%{school_name}', school.name)
                        .gsub('%{contact_url}', 'http://localhost/contact')
                        .gsub('%{activity_categories_url}', 'http://localhost/activity_categories')
                        .gsub('%{intervention_type_groups_url}', 'http://localhost/intervention_type_groups')
@@ -62,10 +62,11 @@ RSpec.describe OnboardingMailer do
     it 'sends the onboarded email' do
       OnboardingMailer.with(emails: ['test@blah.com'], school: school, to: 'test@blah.com').onboarded_email.deliver_now
       email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to eq("Test School is now live on Energy Sparks")
+      expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarded_email.subject').gsub('%{school}', school.name))
       I18n.t('onboarding_mailer.onboarded_email').except(:subject).values.each do |email_content|
         expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
-          email_content.gsub('%{school_name}', 'Test School').gsub('%{contact_url}', 'http://localhost/contact')
+          email_content.gsub('%{school_name}', school.name)
+                       .gsub('%{contact_url}', 'http://localhost/contact')
                        .gsub('%{activity_categories_url}', 'http://localhost/activity_categories')
                        .gsub('%{intervention_type_groups_url}', 'http://localhost/intervention_type_groups')
                        .gsub('%{school_url}', 'http://localhost/schools/test-school')
@@ -80,10 +81,11 @@ RSpec.describe OnboardingMailer do
     it 'sends the data enabled_email' do
       OnboardingMailer.with(emails: ['test@blah.com'], school: school, to: 'test@blah.com').data_enabled_email.deliver_now
       email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to eq("Test School energy data is now available on Energy Sparks")
+      expect(email.subject).to eq(I18n.t('onboarding_mailer.data_enabled_email.subject').gsub('%{school}', school.name))
       I18n.t('onboarding_mailer.data_enabled_email').except(:subject, :set_your_first_targets).values.each do |email_content|
         expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
-          email_content.gsub('%{school_name}', 'Test School').gsub('%{contact_url}', 'http://localhost/contact')
+          email_content.gsub('%{school_name}', school.name)
+                       .gsub('%{contact_url}', 'http://localhost/contact')
                        .gsub('%{contact_url}', 'http://localhost/contact')
                        .gsub('%{activity_categories_url}', 'http://localhost/activity_categories')
                        .gsub('%{school_url}', 'http://localhost/schools/test-school')
@@ -98,13 +100,13 @@ RSpec.describe OnboardingMailer do
     it 'sends the welcome email' do
       OnboardingMailer.with(emails: ['test@blah.com'], user: user).welcome_email.deliver_now
       email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to eq("Welcome to Energy Sparks")
+      expect(email.subject).to eq(I18n.t('onboarding_mailer.welcome_email.subject'))
       I18n.t('onboarding_mailer.welcome_email').except(:subject).values.each do |email_content|
         expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
-          email_content.gsub('%{school_name}', 'Test School').gsub('%{contact_url}', 'http://localhost/contact')
+          email_content.gsub('%{school_name}', school.name)
+                       .gsub('%{contact_url}', 'http://localhost/contact')
                        .gsub('%{contact_url}', 'http://localhost/contact')
                        .gsub('%{activity_categories_url}', 'http://localhost/activity_categories')
-                       # .gsub('%{intervention_type_groups_url}', 'http://localhost/intervention_type_groups')
                        .gsub('%{school_url}', 'http://localhost/schools/test-school')
                        .gsub('%{user_guide_videos_url}', 'http://localhost/user-guide-videos')
                        .gsub('%{training_url}', 'http://localhost/training')
