@@ -7,6 +7,7 @@ RSpec.describe "meter management", :meters, type: :system do
   let!(:admin)        { create(:admin)}
   let!(:teacher)      { create(:staff)}
   let!(:school_admin) { create(:school_admin, school_id: school.id) }
+  let!(:data_source)  { create(:data_source, name: 'Data Co') }
   let!(:setup_data)   { }
 
   context 'as school admin' do
@@ -63,6 +64,14 @@ RSpec.describe "meter management", :meters, type: :system do
       before { visit school_meters_path(school) }
       it_behaves_like "admin dashboard messages", permitted: false
     end
+
+    context "Add meter form" do
+      before { visit school_meters_path(school) }
+      it "does not display admin only fields" do
+        expect(page).to_not have_content('Data source')
+        expect(page).to_not have_content('Admin notes')
+      end
+    end
   end
 
   context 'as teacher' do
@@ -77,6 +86,12 @@ RSpec.describe "meter management", :meters, type: :system do
       expect(page).to_not have_content('Activate')
       expect(page).to_not have_content('Deactivate')
     end
+
+    it "does not display admin only fields" do
+      expect(page).to_not have_content('Data source')
+      expect(page).to_not have_content('Admin notes')
+    end
+
     it_behaves_like "admin dashboard messages", permitted: false
   end
 
@@ -145,10 +160,12 @@ RSpec.describe "meter management", :meters, type: :system do
         fill_in 'Name', with: 'Gas'
         fill_in_trix '#meter_notes', with: "These are my notes"
         choose 'Gas'
+        select 'Data Co', from: 'Data source'
         click_on 'Create Meter'
 
         expect(school.meters.count).to eq(1)
         expect(school.meters.first.mpan_mprn).to eq(123543)
+        expect(school.meters.first.data_source.name).to eq('Data Co')
 
         click_on "Details"
         expect(page).to have_content("These are my notes")
@@ -156,9 +173,7 @@ RSpec.describe "meter management", :meters, type: :system do
     end
 
     context 'when the school has a meter' do
-
       let!(:gas_meter) { create :gas_meter, name: 'Gas meter', school: school }
-
       before(:each) {
         click_on 'Manage meters'
       }
@@ -166,9 +181,11 @@ RSpec.describe "meter management", :meters, type: :system do
       it 'allows editing' do
         click_on 'Edit'
         fill_in 'Name', with: 'Natural Gas Meter'
+        select 'Data Co', from: 'Data source'
         click_on 'Update Meter'
         gas_meter.reload
         expect(gas_meter.name).to eq('Natural Gas Meter')
+        expect(gas_meter.data_source.name).to eq('Data Co')
       end
 
       it 'allows deactivation and reactivation of a meter' do
