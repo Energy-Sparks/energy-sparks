@@ -54,17 +54,20 @@
   </div>
 <% end %>
 
+<% colspan = current_user.admin? ? 12 : 11 %>
+<% first_colspan = current_user.admin? ? 3 : 2 %>
+
 <div class="table-responsive">
 <table class="table table-sm">
   <col>
-  <colgroup span="2"></colgroup>
+  <colgroup span="<%= first_colspan %>"></colgroup>
   <colgroup span="2"></colgroup>
   <colgroup span="4"></colgroup>
   <colgroup span="2"></colgroup>
   <thead>
     <tr>
       <th></th>
-      <th colspan="2"></th>
+      <th colspan="<%= first_colspan %>"></th>
       <th colspan="2"><%= t('schools.meters.index.readings') %></th>
       <th colspan="4"><%= t('schools.meters.index.validated_readings') %></th>
       <th colspan="1"></th>
@@ -74,6 +77,9 @@
       <th scope="col"></th>
       <th scope="col"><%= t('schools.meters.index.meter') %></th>
       <th scope="col"><%= t('schools.meters.index.name') %></th>
+      <% if current_user.admin? %>
+        <th scope="col"><%= t('schools.meters.index.data_source') %></th>
+      <% end %>
       <th scope="col"><%= t('schools.meters.index.imported') %></th>
       <th scope="col"><%= t('schools.meters.index.validated') %></th>
       <th scope="col"><%= t('schools.meters.index.first') %></th>
@@ -86,7 +92,7 @@
   </thead>
   <thead>
     <tr class="bg-light">
-      <th colspan="11"><%= t('schools.meters.index.active_meters') %></th>
+      <th colspan="<%= colspan %>"><%= t('schools.meters.index.active_meters') %></th>
     </tr>
   </thead>
   <tbody>
@@ -94,14 +100,14 @@
       <%= render 'active_meters', active_meters: @active_meters %>
     <% else %>
       <tr>
-        <td colspan="11"><%= t('schools.meters.index.no_active_meters') %></td>
+        <td colspan="<%= colspan %>"><%= t('schools.meters.index.no_active_meters') %></td>
       </tr>
     <% end %>
   </tbody>
   <% if @active_pseudo_meters.any? %>
   <thead>
     <tr class="bg-light">
-      <th colspan="11"><%= t('schools.meters.index.active_pseudo_meters') %></th>
+      <th colspan="<%= colspan %>"><%= t('schools.meters.index.active_pseudo_meters') %></th>
     </tr>
   </thead>
   <tbody>
@@ -112,7 +118,7 @@
   <% if @inactive_meters.any? %>
     <thead>
       <tr class="bg-light">
-        <th colspan="11"><%= t('schools.meters.index.inactive_meters') %></th>
+        <th colspan="<%= colspan %>"><%= t('schools.meters.index.inactive_meters') %></th>
       </tr>
     </thead>
     <tbody>
@@ -121,10 +127,13 @@
           <td title="<%= (meter.meter_type.to_s.humanize) %>"><%= fa_icon(fuel_type_icon(meter.meter_type)) %></td>
           <td><%= meter.mpan_mprn %></td>
           <td><%= meter.name %></td>
+          <% if current_user.admin? %>
+            <td><%= meter.data_source.try(:name) %></td>
+          <% end %>
           <td><%= meter.amr_data_feed_readings.count %></td>
           <td><%= meter.amr_validated_readings.count %></td>
-          <td><%= nice_dates meter.first_validated_reading %></td>
-          <td><%= nice_dates meter.last_validated_reading %></td>
+          <td><%= short_dates meter.first_validated_reading %></td>
+          <td><%= short_dates meter.last_validated_reading %></td>
           <td><%= meter.zero_reading_days.count %></td>
           <td><%= meter.gappy_validated_readings.count %></td>
           <td>

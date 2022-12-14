@@ -3,10 +3,13 @@
     <td title="<%= (meter.meter_type.to_s.humanize) %>"><%= fa_icon(fuel_type_icon(meter.meter_type)) %></td>
     <td><%= meter.mpan_mprn %></td>
     <td><%= meter.name %></td>
+    <% if current_user.admin? %>
+      <td><%= meter.data_source.try(:name) %></td>
+    <% end %>
     <td><%= meter.amr_data_feed_readings.count %></td>
     <td><%= meter.amr_validated_readings.count %></td>
-    <td><%= nice_dates meter.first_validated_reading %></td>
-    <td><%= nice_dates meter.last_validated_reading %></td>
+    <td><%= short_dates meter.first_validated_reading %></td>
+    <td><%= short_dates meter.last_validated_reading %></td>
     <td><%= meter.zero_reading_days.count %></td>
     <td><%= meter.gappy_validated_readings.count %></td>
     <td>
