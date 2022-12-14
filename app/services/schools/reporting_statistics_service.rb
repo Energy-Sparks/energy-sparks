@@ -11,7 +11,13 @@ module Schools
     end
 
     def country_summary
-      @country_summary ||= country_summary_query
+      @country_summary ||= country_summary_query.map do |result|
+                             OpenStruct.new(
+                               result.merge(
+                                 'country' => I18n.t("school_statistics.#{School.countries.key(result['country'])}")
+                               )
+                             )
+      end
     end
 
     def onboarding_status
@@ -36,14 +42,7 @@ module Schools
         WHERE schools.active = true and schools.visible = true
         group by schools.country;
       SQL
-      results = ActiveRecord::Base.connection.execute(sql)
-      results.map do |result|
-        OpenStruct.new(
-          result.merge(
-            'country' => I18n.t("school_statistics.#{School.countries.key(result['country'])}")
-          )
-        )
-      end
+      ActiveRecord::Base.connection.execute(ActiveRecord::Base.sanitize_sql(sql))
     end
 
     def active_only
