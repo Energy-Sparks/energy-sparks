@@ -32,7 +32,8 @@ module Schools
     def find_country_summary_counts
       sql = <<-SQL.squish
         select country, count(distinct(schools.id)) as school_count, count(distinct(users.id)) as user_count
-        from users left join schools on schools.id = users.school_id
+        from users
+        right join schools on schools.id = users.school_id
         WHERE schools.active = true and schools.visible = true
         group by schools.country;
       SQL
