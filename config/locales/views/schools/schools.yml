@@ -389,7 +389,7 @@ en:
         email: Email
         name: Name
         preferred_locale: Preferred language
-        preferred_locale_hint: This will be the language website and email content will be in for this user
+        preferred_locale_hint: Set the user's preferred language for using the website and receiving emails
         role: Role
         what_is_their_primary_role: What is their primary role in relation to Energy Sparks?
       index:
