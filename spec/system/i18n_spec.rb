@@ -47,6 +47,7 @@ RSpec.describe "i18n", type: :system do
         click_on 'Sign in'
       end
       expect(page).to have_content(activity_type.name_en)
+      expect(page).not_to have_content(activity_type.name_cy)
       expect(current_url).to eq("http://energysparks.test/activity_types/#{activity_type.id}")
     end
 
@@ -60,6 +61,7 @@ RSpec.describe "i18n", type: :system do
         click_on 'Sign in'
       end
       expect(page).to have_content(activity_type.name_en)
+      expect(page).not_to have_content(activity_type.name_cy)
       expect(current_url).to eq("http://energysparks.test/activity_types/#{activity_type.id}")
     end
 
