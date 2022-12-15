@@ -216,7 +216,7 @@ RSpec.describe 'alert type management', type: :system do
 
           choose 'table description B'
 
-          click_on 'Preview'
+          click_on 'Preview (English)'
 
           within '#find_out_more-preview-en .content' do
             expect(page).to have_content('You are using 10% too much gas!')
@@ -227,7 +227,7 @@ RSpec.describe 'alert type management', type: :system do
         fill_in 'SMS content', with: gas_fuel_alert_type_title
 
         within '.sms_active' do
-          click_on 'Preview'
+          click_on 'Preview (English)'
 
           within '#sms-preview-en .content' do
             expect(page).to have_content(gas_fuel_alert_type_title)
