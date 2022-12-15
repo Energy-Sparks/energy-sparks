@@ -1,97 +1,38 @@
-<%= render 'header', title: "Manage data source" do %>
+<%= render 'header', title: "#{@data_source.name} data source" do %>
   <%= header_nav_link 'All data sources', admin_data_sources_url %>
 <% end %>
-<% default = "&nbsp;".html_safe %>
-<div class="col-md-12 bg-light border rounded">
-  <h4>
-    <%= @data_source.name %>
-    <div class="float-right">
-      <small>
-        <span class="badge badge-info"><%= @data_source.organisation_type.humanize %></span>
-        <span data-toggle="collapse" href="#data-source" role="button" aria-expanded="true" aria-controls="data-source" class="badge badge-light toggler text-decoration-none collapsed">
-          <%= fa_icon("chevron-down") %><%= fa_icon("chevron-right") %>
-        </span>
-      </small>
-    </div>
-  </h4>
-  <div class="collapse" id="data-source">
-    <div class="row">
-      <div class="col-6 mb-2">
-        <div class="font-weight-bolder ml-1">Contact name</div>
-        <div class="bg-white p-1 border"><%= @data_source.contact_name.presence || default %></div>
-      </div>
-      <div class="col-6">
-        <div class="font-weight-bolder ml-1">Contact email</div>
-        <div class="bg-white p-1 border"><%= @data_source.contact_email.presence || default %></div>
-      </div>
-    </div>
-    <div class="row pb-2">
-      <div class="col-12">
-        <div class="font-weight-bolder ml-1">Who to send LOA to</div>
-        <div class="bg-white p-1 border"><%= @data_source.loa_contact_details.presence || default %></div>
-      </div>
-    </div>
-    <div class="row pb-2">
-      <div class="col-12">
-        <div class="font-weight-bolder ml-1">Data prerequisites</div>
-        <div class="bg-white p-1 border text-break"><%= @data_source.data_prerequisites.presence || default %></div>
-      </div>
-    </div>
-    <div class="row pb-2">
-      <div class="col-12">
-        <div class="font-weight-bolder ml-1">Type of data feed</div>
-        <div class="bg-white p-1 border text-break"><%= @data_source.data_feed_type.presence || default %></div>
-      </div>
-    </div>
-    <div class="row pb-2">
-      <div class="col-12">
-        <div class="font-weight-bolder ml-1">How to setup data feed for a new area</div>
-        <div class="bg-white p-1 border text-break"><%= @data_source.new_area_data_feed.presence || default %></div>
-      </div>
-    </div>
-    <div class="row pb-2">
-      <div class="col-12">
-        <div class="font-weight-bolder ml-1">How to add to an existing data feed</div>
-        <div class="bg-white p-1 border text-break"><%= @data_source.add_existing_data_feed.presence || default %></div>
-      </div>
-    </div>
-    <div class="row pb-2">
-      <div class="col-12">
-        <div class="font-weight-bolder ml-1">Who to contact about data issues</div>
-        <div class="bg-white p-1 border text-break"><%= @data_source.data_issues_contact_details.presence || default %></div>
-      </div>
-    </div>
-    <div class="row pb-2">
-      <div class="col-12">
-        <div class="font-weight-bolder ml-1">Historic data</div>
-        <div class="bg-white p-1 border text-break"><%= @data_source.historic_data.presence || default %></div>
-      </div>
-    </div>
-    <div class="row pb-2">
-      <div class="col-12">
-        <div class="font-weight-bolder ml-1">What to do when LOA is about expire</div>
-        <div class="bg-white p-1 border text-break"><%= @data_source.loa_expiry_procedure.presence || default %></div>
-      </div>
-    </div>
-    <div class="row pb-2">
-      <div class="col-12">
-        <div class="font-weight-bolder ml-1">Comments</div>
-        <div class="bg-white p-1 border text-break"><%= @data_source.comments.presence || default %></div>
-      </div>
-    </div>
 
-    <div class="row pb-2">
-      <div class="col-12">
-        <div class="badge badge-pill bg-white text-dark font-weight-normal">Created • <%= nice_date_times_today(@data_source.created_at) %></div>
-        <div class="badge badge-pill bg-white text-dark font-weight-normal">Updated • <%= nice_date_times_today(@data_source.updated_at) %></div>
+<div class="row pb-2">
+  <div class="col-12">
+    <div class="card-deck">
+      <div class="card">
+        <div class="card-body">
+          <div>Active meters<span class="float-right badge badge-success"><%= @data_source.meters.active.count %></span></div>
+          <div>Inactive meters<span class="float-right badge badge-secondary"><%= @data_source.meters.inactive.count %></span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div>Associated schools <span class="float-right badge badge-success"><%=  @data_source.schools.count %></span></div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="bg-light p-2 my-2 d-flex justify-content-between border rounded">
-  <%= link_to 'Edit', edit_admin_data_source_path(@data_source), class: "btn btn-sm" %>
-  <%= link_to 'Delete', admin_data_source_path(@data_source), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger" %>
+<div class="bg-light border rounded py-2 mb-2">
+  <div class="col-12 clearfix">
+    <span data-toggle="collapse" href="#data-source" role="button" aria-expanded="true" aria-controls="data-source" class="badge badge-light toggler text-decoration-none collapsed">
+      <%= fa_icon("chevron-down") %><%= fa_icon("chevron-right") %>
+    </span>
+    <%= render 'admin/issues/issueable', issueable: @data_source %>
+    <span class="badge badge-info"><%= @data_source.organisation_type.humanize %></span>
+    <span class='float-right'>
+      <%= link_to 'Edit', edit_admin_data_source_path(@data_source), class: "btn btn-sm" %>
+      <%= link_to 'Delete', admin_data_source_path(@data_source), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger" %>
+    </span>
+  </div>
+  <%= render 'data_source', data_source: @data_source %>
 </div>
 
 <ul class="nav nav-tabs url-aware" id="data-source-tabs" role="tablist">
