@@ -13,9 +13,10 @@
       <tbody>
         <% report.country_summary.each do |row| %>
           <tr>
-            <td><%= row.country %></td>
-            <td class="text-right"><%= row.school_count %></td>
-            <td class="text-right"><%= row.user_count %></td>
+            <% country = School.countries.key(row['country']) %>
+            <td><%= I18n.t("school_statistics.#{country}") %></td>
+            <td class="text-right"><%= row['school_count'] %></td>
+            <td class="text-right"><%= row['user_count'] %></td>
           </tr>
         <% end %>
         <tr>

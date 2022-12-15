@@ -11,13 +11,7 @@ module Schools
     end
 
     def country_summary
-      @country_summary ||= country_summary_query.map do |result|
-                             OpenStruct.new(
-                               result.merge(
-                                 'country' => I18n.t("school_statistics.#{School.countries.key(result['country'])}")
-                               )
-                             )
-      end
+      @country_summary ||= find_country_summary_counts
     end
 
     def onboarding_status
@@ -35,7 +29,7 @@ module Schools
 
     private
 
-    def country_summary_query
+    def find_country_summary_counts
       sql = <<-SQL.squish
         select country, count(distinct(schools.id)) as school_count, count(distinct(users.id)) as user_count
         from users left join schools on schools.id = users.school_id
