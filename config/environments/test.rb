@@ -53,9 +53,6 @@ Rails.application.configure do
   config.active_job.queue_adapter = :good_job
   config.good_job.execution_mode = :async
 
-  # config.hosts << "energysparks.testing"
-  # config.hosts << "cy.energysparks.testing"
-
   # Uncomment to pull in locale files when testing with a local version of the Energy Sparks Analytics gem
   # config.i18n.load_path += Dir[Gem.loaded_specs['energy-sparks_analytics'].full_gem_path + '/config/locales/**/*.{rb,yml}']
 end
