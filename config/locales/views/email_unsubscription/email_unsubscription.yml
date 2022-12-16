@@ -1,0 +1,6 @@
+---
+en:
+  email_unsubscription:
+    show:
+      paragraph_1: You shouldn't receive alerts like that in your emails again. We'll use the information you've given us to improve our alerts functionality and send more relevant alerts in future
+      title: Thank you for your feedback
