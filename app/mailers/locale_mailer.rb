@@ -1,6 +1,6 @@
 class LocaleMailer < ApplicationMailer
   def self.with(params)
-    locales = I18n.available_locales
+    locales = params[:locales] || I18n.available_locales
     MethodRepeater.new(locales.map {|l| super(params.merge(locale: l))})
   end
 

@@ -12,7 +12,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def make_bootstrap_mail_for_locale(locale, *args)
-    I18n.with_locale(locale) do
+    I18n.with_locale(valid_locale(locale)) do
       make_bootstrap_mail(*args)
     end
   end
@@ -27,5 +27,13 @@ class ApplicationMailer < ActionMailer::Base
 
   def set_title
     @title = params[:title] || ""
+  end
+
+  def valid_locale(locale)
+    if EnergySparks::FeatureFlags.active?(:emails_with_preferred_locale)
+      locale
+    else
+      :en
+    end
   end
 end
