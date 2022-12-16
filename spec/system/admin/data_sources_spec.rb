@@ -142,6 +142,33 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             it { expect(page).to_not have_content(existing_data_source.name) }
             it { expect(page).to have_content("Data source was successfully deleted") }
           end
+          describe "Issues tab" do
+            context "when there are open issues for the data source" do
+              let(:admin) { create(:admin) }
+              let(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: existing_data_source, fuel_type: :gas, pinned: true) }
+              let(:setup_data) { issue }
+              it "displays a count of issues" do
+                expect(page).to have_content "Issues 1"
+              end
+              it "lists issue in issues tab" do
+                within '#issues' do
+                  expect(page).to have_content issue.title
+                  expect(page).to_not have_content issue.issueable.name
+                  expect(page).to have_content issue.fuel_type.capitalize
+                  expect(page).to have_content nice_date_times_today(issue.updated_at)
+                  expect(page).to have_link("View", href: polymorphic_path([:admin, existing_data_source, issue]))
+                  expect(page).to have_css("i[class*='fa-thumbtack']")
+                end
+              end
+            end
+            context "when there are no issues" do
+              it { expect(page).to have_content("No issues for #{existing_data_source.name}")}
+            end
+            context "with buttons" do
+              it { expect(page).to have_link("New Issue") }
+              it { expect(page).to have_link("New Note") }
+            end
+          end
         end
       end
 

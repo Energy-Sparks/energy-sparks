@@ -5,7 +5,9 @@ module Admin
 
     load_and_authorize_resource :school, instance_name: 'issueable'
     load_and_authorize_resource :school_group, instance_name: 'issueable'
+    load_and_authorize_resource :data_source, instance_name: 'issueable'
     load_and_authorize_resource :issue, through: :issueable, shallow: true
+    load_and_authorize_resource :school # For school context menu if school available
 
     def index
       params[:issue_types] ||= Issue.issue_types.keys
