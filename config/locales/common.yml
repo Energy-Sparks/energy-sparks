@@ -39,6 +39,7 @@ en:
       restart: Restart
       save: Save
       status: Status
+      submit: Submit
       type: Type
       update: Update
       upload: Upload
