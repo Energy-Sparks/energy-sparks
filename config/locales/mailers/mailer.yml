@@ -1,5 +1,20 @@
 ---
 en:
+  alert_mailer:
+    alert_email:
+      do_not_show_me_alerts_like_this: Don't show me alerts like this
+      find_out_more: Find out more
+      if_you_have_any_feedback: If you have any feedback on these emails, please contact us at
+      if_you_wish_to_completely_unsubscribe: If you wish to completely unsubscribe from these emails then contact your school administrator(s)
+      paragraph_1_html: We analyse <a href='%{school_url}'>your school's</a> energy data to highlight where you are making progress or where you may be able to take steps to reduce your usage to save money and reduce carbon emissions
+      set_a_new_target: Set a new target
+      stay_up_to_date: Stay up to date
+      subject: Energy Sparks alerts
+      title: Your weekly alerts
+      view_your_school_dashboard: View your school dashboard
+      why_am_i_receiving_these_emails: Why am I receiving these emails?
+      you_can_stop_receiving: You can stop receiving, or temporarily pause individual alerts by clicking the links provided in this email
+      you_have_been_signed_up: You have been signed up to receive energy alerts for your school
   bill_request_mailer:
     request_bill:
       description: Energy Sparks needs you to provide a recent energy bill for your school to confirm your meter numbers and Energy Sparks' authority to collect, process and display the data for those meters.
