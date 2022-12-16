@@ -87,6 +87,10 @@ class User < ApplicationRecord
 
   after_save :update_contact
 
+  def preferred_locale
+    :en
+  end
+
   def default_scoreboard
     if group_admin? && school_group.default_scoreboard
       school_group.default_scoreboard

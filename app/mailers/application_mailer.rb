@@ -11,6 +11,12 @@ class ApplicationMailer < ActionMailer::Base
     end
   end
 
+  def make_bootstrap_mail_for_locale(locale, *args)
+    I18n.with_locale(locale) do
+      make_bootstrap_mail(*args)
+    end
+  end
+
   def default_url_options
     if Rails.env.production?
       { host: I18n.locale == :cy ? ENV['WELSH_APPLICATION_HOST'] : ENV['APPLICATION_HOST'] }
