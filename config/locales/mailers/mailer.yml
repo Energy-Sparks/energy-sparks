@@ -11,10 +11,13 @@ en:
       stay_up_to_date: Stay up to date
       subject: Energy Sparks alerts
       title: Your weekly alerts
+      view_your_progress_report: View your progress report
       view_your_school_dashboard: View your school dashboard
       why_am_i_receiving_these_emails: Why am I receiving these emails?
       you_can_stop_receiving: You can stop receiving, or temporarily pause individual alerts by clicking the links provided in this email
       you_have_been_signed_up: You have been signed up to receive energy alerts for your school
+      your_school_has_current_target_html: Your school has set a target to reduce its energy usage by %{target_date}. <strong><a href='%{school_school_targets_url}'>Your school's progress report</a></strong> will help you monitor progress and suggest ways to take action
+      your_school_has_target_html: Your school set a target to reduce its energy usage by %{target_date}. Its time to <a href='%{school_targets_url}'>review your progress</a> and set a new target for the year ahead
   bill_request_mailer:
     request_bill:
       description: Energy Sparks needs you to provide a recent energy bill for your school to confirm your meter numbers and Energy Sparks' authority to collect, process and display the data for those meters.

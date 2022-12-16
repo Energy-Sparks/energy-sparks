@@ -14,16 +14,12 @@
 <% if @target_prompt %>
   <% if @school.has_current_target? %>
     <p>
-     Your school has set a target to reduce its energy usage by <%= nice_dates(@school.current_target.target_date) %>.
-     <strong><%= link_to "Your school's progress report", school_school_targets_url(@school, params: targets_utm_parameters) %></strong> will help you
-      monitor progress and suggest ways to take action.
+      <%= t('alert_mailer.alert_email.your_school_has_current_target_html', target_date: nice_dates(@school.current_target.target_date), school_targets_url: school_school_targets_url(@school, params: targets_utm_parameters)) %>.
     </p>
-    <%= link_to 'View your progress report', school_school_targets_url(@school, params: targets_utm_parameters), class: 'btn btn-primary mt-3 mb-3 float-right'%>
+    <%= link_to t('alert_mailer.alert_email.view_your_progress_report'), school_school_targets_url(@school, params: targets_utm_parameters), class: 'btn btn-primary mt-3 mb-3 float-right'%>
   <% elsif @school.has_target? %>
     <p>
-     Your school set a target to reduce its energy usage by <%= nice_dates(@school.most_recent_target.target_date) %>.
-     Its time to <%= link_to "review your progress", school_school_target_url(@school, @school.most_recent_target, params: targets_utm_parameters) %> and set a new target
-     for the year ahead.
+      <%= t('alert_mailer.alert_email.your_school_has_target_html', target_date: nice_dates(@school.most_recent_target.target_date), school_targets_url: school_school_target_url(@school, @school.most_recent_target, params: targets_utm_parameters)) %>.
     </p>
     <%= link_to t('alert_mailer.alert_email.set_a_new_target'), school_school_targets_url(@school, params: targets_utm_parameters), class: 'btn btn-primary mt-3 mb-3 float-right'%>
   <% else %>
