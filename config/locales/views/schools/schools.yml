@@ -159,9 +159,11 @@ en:
         validated_meter_data: Validated meter data
         we_use_sheffield_solar_pv_api_message_html: We use the <a href="https://www.solar.sheffield.ac.uk/pvlive/">University of Sheffield Solar PV</a> API for solar pv generation data, you can download the data we have for your school here
     estimated_annual_consumptions:
+      new:
+        page_title: Add an annual usage estimate
       edit:
         check_our_energy_bill: Check our energy bill
-        estimate_was_successfully_updated: Estimate was successfully
+        estimate_was_successfully_updated: Estimate was successfully updated
         note: Note
         page_title: Update an annual usage estimate
         paragraph_1: When we have limited information about your historical energy consumption we are unable to provide you with a detailed progress report that will help you <a href='%{school_school_targets_path}'>achieve your energy saving targets</a>
