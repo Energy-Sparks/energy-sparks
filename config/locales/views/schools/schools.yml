@@ -315,6 +315,11 @@ en:
         view_recent_alerts: View recent alerts
         we_analyse_your_data: We analyse your data to provide insights and weekly alerts
         work_with_the_pupils: Work with the pupils
+      current:
+        page_title: Your current energy saving targets
+      edit:
+        page_title: Update your energy saving target
+        update_your_energy_saving_target: Update your energy saving target
       form:
         reducing_electricity_usage_by: Reducing electricity usage by
         reducing_gas_usage_by: Reducing gas usage by
@@ -356,6 +361,17 @@ en:
         how_did_you_achieve_your_target: How did you achieve your target?
         how_did_you_try_to_achieve_your_target: How did you try to achieve your target?
         you_didnt_record_any_energy_saving: You didn't record any energy saving activities or actions between %{start_date} and %{target_date}
+      title:
+        reducing_your_energy_usage_by: Reducing your energy usage by %{target_date}
+        results_of_reducing_your_energy_usage: Results of reducing your energy usage
+        revise_your_target: Revise your target
+        set_a_new_target: Set a new target
+        view_current_target: View current target
+        we_are_calculating_your_progress: We are calculating your progress
+      warn_recent_data:
+        we_have_not_received_data:
+          one: We have not received data for your %{out_of_date_fuel_types} usage for over thirty days. As a result your progress report will be out of date
+          other: We have not received data for your %{out_of_date_fuel_types} usage for over thirty days. As a result your progress report will be out of date
     schools:
       carbon_emissions: Carbon emissions
       compare_schools: Compare schools
