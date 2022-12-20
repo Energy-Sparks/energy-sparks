@@ -330,6 +330,17 @@ en:
       generating_report:
         get_started_with_the_activities: Get started with the activities below to start working towards your goal
         we_need_to_process_your_data: We need to process your data to create a more detailed progress report that will show progress against your targets. Check back tomorrow to see the results
+      prompt_to_add_estimate:
+        add_an_estimate: Add an estimate
+        if_you_can_supply_an_estimate:
+          one: If you can supply an estimate of your annual consumption then we can generate a more detailed progress report for your %{fuel_types} target
+          other: If you can supply an estimate of your annual consumption then we can generate a more detailed progress report for your %{fuel_types} targets
+      prompt_to_review_target:
+        review_your_target: Review your target
+        your_fuel_types_configuration_has_changed: Your %{fuel_types_changed} configuration has changed, which means you may want to revisit your targets for this year
+      prompt_to_set_new_target:
+        set_a_new_target: Set a new target
+        you_set_a_target_to_reduce: You set a target to reduce your energy usage by %{target_date}. It's now time to review your progress and set a new target
     schools:
       carbon_emissions: Carbon emissions
       compare_schools: Compare schools
