@@ -4,7 +4,7 @@
   </div>
   <div class="col">
     <span class="align-middle">
-      <%= link_to t('schools.school_targets.prompt_to_add_estimate.if_you_can_supply_an_estimate', fuel_types: fuel_types.map{ |s| s.humanize(capitalize: false) }, count: fuel_types.size) %>.
+      <%= link_to t('schools.school_targets.prompt_to_add_estimate.if_you_can_supply_an_estimate', fuel_types: fuel_types.map { |s| s.humanize(capitalize: false) }.to_sentence, count: fuel_types.size) %>.
     </span>
   </div>
 </div>
