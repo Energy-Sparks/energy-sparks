@@ -83,6 +83,7 @@ en:
       "£_per_kwh_html": "%{sign}&pound;%{value}/kWh"
       "£_range": "%{low} to %{high}"
       "£current": "%{sign}£%{value}"
+      "£current_html": "%{sign}&pound;%{value}"
     units:
       days:
         one: "%{count} day"
