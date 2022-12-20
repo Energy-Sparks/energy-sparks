@@ -1,0 +1,15 @@
+---
+en:
+  email_unsubscription:
+    new:
+      please_let_us_know_why_message: Please let us know why and we'll use this information to improve our service
+      unsubscribe: Unsubscribe
+      unsubscription_period:
+        forever: I don't want to see them again
+        label: 'Don''t show me alerts like this for:'
+        one_month: One month
+        six_months: 6 months
+      were_sorry_message: We're sorry you don't want to receive alerts like this one by email
+    show:
+      paragraph_1: You shouldn't receive alerts like that in your emails again. We'll use the information you've given us to improve our alerts functionality and send more relevant alerts in future
+      title: Thank you for your feedback
