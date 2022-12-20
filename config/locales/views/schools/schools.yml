@@ -341,6 +341,21 @@ en:
       prompt_to_set_new_target:
         set_a_new_target: Set a new target
         you_set_a_target_to_reduce: You set a target to reduce your energy usage by %{target_date}. It's now time to review your progress and set a new target
+      target_table:
+        current_progress: Current progress
+        final_result: Final result
+        reporting_change_in_energy_usage_between: Reporting change in energy usage between
+        start_date_and_end_date: "%{start_date} and % {end_date}"
+        target_reduction: Target Reduction
+      target_table_row:
+        last_week: last week
+        not_applicable: N/A
+        view_monthly_report: View monthly report
+      target_timeline:
+        a_reminder_of_the_energy_saving: A reminder of the energy saving activities and actions you recorded between %{start_date} and %{target_date}
+        how_did_you_achieve_your_target: How did you achieve your target?
+        how_did_you_try_to_achieve_your_target: How did you try to achieve your target?
+        you_didnt_record_any_energy_saving: You didn't record any energy saving activities or actions between %{start_date} and %{target_date}
     schools:
       carbon_emissions: Carbon emissions
       compare_schools: Compare schools
