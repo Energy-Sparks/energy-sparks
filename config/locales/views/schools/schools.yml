@@ -295,6 +295,26 @@ en:
     school_group:
       compare_schools: Compare schools
       view_schools: View schools
+    school_targets:
+      achieving_your_targets:
+        be_sure_to_regularly_check: Be sure to regularly check your dashboard and weekly alerts for our latest advice
+        choose_another_activity: Choose another activity
+        compare_usage_with_schools_in_your_group: Compare usage with schools in your group
+        daily_variation_in_use: Daily variation in use
+        engaging_with_pupils: Engaging with pupils is an important part of the Energy Sparks programme.  Recording activities will score you points
+        explore_your_data: Explore your data
+        here_are_some_suggested_activities: Here are some suggested activities that can be undertaken with pupils
+        logging_activities: Logging activities will help you monitor progress. We'll display these actions on your usage charts
+        record_an_energy_saving_action: Record an energy saving action
+        review_your_energy_analysis: Review your energy analysis
+        some_suggested_activities: Some suggested activities you can take around the school
+        take_action_around_the_school: Take action around the school
+        title: Achieving your targets
+        view_dashboard: View dashboard
+        view_energy_saving_opportunities: View energy saving opportunities
+        view_recent_alerts: View recent alerts
+        we_analyse_your_data: We analyse your data to provide insights and weekly alerts
+        work_with_the_pupils: Work with the pupils
     schools:
       carbon_emissions: Carbon emissions
       compare_schools: Compare schools
