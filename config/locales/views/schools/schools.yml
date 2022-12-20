@@ -315,6 +315,16 @@ en:
         view_recent_alerts: View recent alerts
         we_analyse_your_data: We analyse your data to provide insights and weekly alerts
         work_with_the_pupils: Work with the pupils
+      form:
+        reducing_electricity_usage_by: Reducing electricity usage by
+        reducing_gas_usage_by: Reducing gas usage by
+        reducing_storage_heater_usage_by: Reducing storage heater usage by
+        school_target: School target
+        set_this_target: Set this target
+        start_date: Start date
+        update_our_target: Update our target
+        you_are_currently_aiming_to_achieve_your_target_by_html: You are currenly aiming to achieve your target by <strong>%{target_date}</strong>.<br>You can revise the start of the 12 month period
+        your_new_target_will_run_for_12_months: Your new target will run for 12 months from the date you specify
     schools:
       carbon_emissions: Carbon emissions
       compare_schools: Compare schools
