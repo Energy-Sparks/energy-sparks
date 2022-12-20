@@ -355,6 +355,15 @@ en:
       generating_report:
         get_started_with_the_activities: Get started with the activities below to start working towards your goal
         we_need_to_process_your_data: We need to process your data to create a more detailed progress report that will show progress against your targets. Check back tomorrow to see the results
+      new:
+        before_setting_your_new_target: Before setting your new target, check our recommendations to help inform your planning
+        carried_forward: By default we've carried forward your targets from last year. You can amend them below
+        page_title: Update your energy saving target
+        review_and_set_your_next_energy_saving_target: Review and set your next energy saving target
+        review_your_dashboard: Review your dashboard
+        target_date_reached: The target date for your previous target has been reached. Its time to <a href='%{school_target_path}'>review your progress</a> and set a new target
+        tip: Tip
+        your_new_target: Your new target
       prompt_to_add_estimate:
         add_an_estimate: Add an estimate
         if_you_can_supply_an_estimate:
