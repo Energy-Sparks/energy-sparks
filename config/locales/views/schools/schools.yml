@@ -350,7 +350,7 @@ en:
         current_progress: Current progress
         final_result: Final result
         reporting_change_in_energy_usage_between: Reporting change in energy usage between
-        start_date_and_end_date: "%{start_date} and % {end_date}"
+        start_date_and_end_date: "%{start_date} and %{end_date}"
         target_reduction: Target Reduction
       target_table_row:
         last_week: last week
