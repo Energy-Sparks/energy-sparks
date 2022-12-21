@@ -182,19 +182,19 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           before { click_link 'Meter attributes' }
           it { expect(page).to have_current_path(admin_school_group_meter_attributes_path(school_group)) }
         end
-        it { expect(page).to have_link('Meter report') }
+        it { expect(page).to have_link('Meter report', href: admin_school_group_meter_report_path(school_group)) }
         context "clicking 'Meter report'" do
-          before { click_link 'Meter report' }
+          before { click_link 'Meter report', href: admin_school_group_meter_report_path(school_group) }
           it { expect(page).to have_current_path(admin_school_group_meter_report_path(school_group)) }
         end
-        it { expect(page).to have_link('Download meter report') }
-        context "clicking 'Download meter report'" do
-          before { click_link 'Download meter report' }
+        it { expect(page).to have_link('Meter report', href: admin_school_group_meter_report_path(school_group, format: :csv)) }
+        context "clicking 'Download meter report' button" do
+          before { click_link 'Meter report', href: admin_school_group_meter_report_path(school_group, format: :csv) }
           it { expect(page).to have_current_path(admin_school_group_meter_report_path(school_group, format: :csv)) }
         end
-        it { expect(page).to have_link('Download issues') }
-        context "clicking 'Download issues'" do
-          before { click_link 'Download issues' }
+        it { expect(page).to have_link('Issues') }
+        context "clicking 'Download issues' button" do
+          before { click_link 'Issues' }
           it { expect(page).to have_current_path(admin_school_group_issues_path(school_group, format: :csv)) }
         end
         it { expect(page).to have_link('Delete') }
@@ -436,7 +436,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         within "table" do
           click_on 'Manage'
         end
-        click_link('Download issues')
+        click_on 'Issues'
       end
       after { Timecop.return }
       it "shows csv contents" do
