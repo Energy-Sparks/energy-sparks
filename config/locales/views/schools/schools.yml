@@ -381,6 +381,9 @@ en:
           this_report_only_shows_message_html: This report only shows progress on reducing your electricity usage. Your <a href='%{storage_heater_path}'>storage heater progress report</a> can be viewed separately
           title: Footnotes
           we_use_colour_coding_message_html: We use colour coding to indicate when you have <span class="bg-positive-dark">met your target</span> or <span class="bg-negative-dark">failed to meet your target</span> in a given month
+        missing:
+          tracking_progress_to_reduce_usage: Tracking progress to reduce your %{fuel_type} energy usage
+          we_dont_have_a_record_of: We don't have a record of %{fuel_type} being used at your school
     schools:
       carbon_emissions: Carbon emissions
       compare_schools: Compare schools
