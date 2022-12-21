@@ -335,7 +335,15 @@ en:
           weekly_progress: Weekly progress
           weekly_progress_to_date: Weekly progress to date
         footnotes:
+          consumption_data_message_html: <p>Consumption data <span class="partial-month">shown in red</span> indicates a month in which we have only partial data. Your consumption and performance figures will not be accurate until the end of the month. Or until we receive additional historical data.</p>
+          expired_message_html: The values in the table above are a snapshot of your usage data taken on %{report_last_generated_date}. Any later updates to your school configuration or data will not be reflected in these historical results
+          partial_target_data_message_html: We only have limited historical consumption data for your school, so we cannot currently calculate a full set of monthly targets or progress. You can <a href='%{estimated_annual_consumptions_path}'>provide us with an annual estimate</a> to see more detail
+          reporting_period_before_consumption_data_no_start_date_message: We only have limited data on your actual %{fuel_type} consumption. The report will only show your consumption for a portion of your target period
+          reporting_period_before_consumption_data_start_date_message: We only have data on your %{fuel_type} consumption from %{meter_start_date}. The report will only show your consumption for a portion of your target period
+          targets_derived_from_synthetic_data_message_html: Monthly targets <i>shown in italics</i> have been created from the <a href='%{school_estimated_annual_consumptions_path}'>annual estimate</a> you provided, rather than your historical data. Their accuracy will depend on the quality of your estimate
+          this_report_only_shows_message_html: This report only shows progress on reducing your electricity usage. Your <a href='%{storage_heater_path}'>storage heater progress report</a> can be viewed separately
           title: Footnotes
+          we_use_colour_coding_message_html: We use colour coding to indicate when you have <span class="bg-positive-dark">met your target</span> or <span class="bg-negative-dark">failed to meet your target</span> in a given month
     schools:
       carbon_emissions: Carbon emissions
       compare_schools: Compare schools
