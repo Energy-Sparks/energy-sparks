@@ -2,6 +2,14 @@
 en:
   alert_mailer:
     alert_email:
+      book_an_audit: Book an audit
+      need_more_help_message: Energy Sparks offers online virtual energy audits and on-site energy audits to support you to develop your school's energy action plan
+      need_more_help: Need more help
+      book_a_workshop: Book a workshop
+      education_workshops_message: Energy Sparks offers in-person and virtual half day education workshops and assemblies to participating schools across the UK
+      get_your_pupils_involved: Get your pupils involved
+      dashboard_and_analysis_message_html: Your <strong><a href='%{school_url}'>school dashboard</a></strong> always shows your latest alerts and our <strong><a href='%{school_analysis_index_url}'>detailed analysis</a></strong> of your energy usage will provide further insights
+      latest_updates: Latest updates
       do_not_show_me_alerts_like_this: Don't show me alerts like this
       find_out_more: Find out more
       if_you_have_any_feedback: If you have any feedback on these emails, please contact us at
