@@ -328,6 +328,14 @@ en:
     school_group:
       compare_schools: Compare schools
       view_schools: View schools
+    school_targets:
+      progress:
+        charts:
+          cumulative_progress: Cumulative progress
+          weekly_progress: Weekly progress
+          weekly_progress_to_date: Weekly progress to date
+        footnotes:
+          title: Footnotes
     schools:
       carbon_emissions: Carbon emissions
       compare_schools: Compare schools
