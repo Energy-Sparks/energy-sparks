@@ -14,6 +14,8 @@ require 'webdrivers'
 require 'capybara/email/rspec'
 require 'cancan/matchers'
 require 'wisper/rspec/matchers'
+require "view_component/test_helpers"
+
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -70,6 +72,7 @@ RSpec.configure do |config|
 
   # Wisper gem helpers
   config.include(Wisper::RSpec::BroadcastMatcher)
+  config.include ViewComponent::TestHelpers, type: :component
 end
 
 Shoulda::Matchers.configure do |config|
