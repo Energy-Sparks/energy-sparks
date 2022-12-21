@@ -1,38 +1,37 @@
 <div class="d-flex justify-content-between align-items-center">
   <h1>
-    Results of reducing your <%= @fuel_type.to_s.humanize(capitalize: false) %> usage by <%= @school_target.target_date.strftime("%b %Y") %>
+    <%= t('schools.school_targets.progress.expired.results_of_reducing_your_usage', fuel_type: @fuel_type.to_s.humanize(capitalize: false), target_date: I18n.l(@school_target.target_date, format: '%b %Y')) %>
   </h1>
   <div>
-    <%= link_to "Review targets", school_school_target_path(@school, @school_target), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+    <%= link_to t('schools.school_targets.progress.expired.review_targets'), school_school_target_path(@school, @school_target), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
     <%= link_to_help_for_feature :school_targets, css: "btn btn-outline-dark rounded-pill font-weight-bold" %>
   </div>
 </div>
 
 <p>
-  Your school set a target to reduce its <%= @fuel_type.to_s.humanize(capitalize: false) %> usage by <%= @school_target.attributes[@fuel_type.to_s] %>% between <strong><%= nice_dates(@school_target.start_date) %></strong> and <strong><%= nice_dates(@school_target.target_date) %></strong>.
+  <%= t('schools.school_targets.progress.expired.your_school_set_a_target_to_reduce_its_usage_html', fuel_type: @fuel_type.to_s.humanize(capitalize: false), school_target_attributes: @school_target.attributes[@fuel_type.to_s], start_date: nice_dates(@school_target.start_date), target_date: nice_dates(@school_target.target_date)) %>.
 </p>
 
 <% if @latest_progress %>
   <% if @latest_progress >= 0.0 %>
     <p>
-      Unfortunately you didn't achieve your goal to reduce your <%= human_fuel_type(@fuel_type) %> usage.
+      <%= t('schools.school_targets.progress.expired.you_didnt_achieve_your_goal_to_reduce', fuel_type: human_fuel_type(@fuel_type)) %>
     </p>
   <% else %>
     <p>
-      Well done! You managed to reduce your <%= human_fuel_type(@fuel_type) %> usage by
-      <%= format_target(@latest_progress, :relative_percent) %>.
+      <%= t('schools.school_targets.progress.expired.you_managed_to_reduce_your_usage', fuel_type: human_fuel_type(@fuel_type), relative_percent: format_target(@latest_progress, :relative_percent)) %>.
     </p>
   <% end %>
 <% end %>
 
 <% if @progress %>
-  <h3>Month by month progress</h3>
+  <h3><%= t('schools.school_targets.progress.expired.month_by_month_progress') %></h3>
 
   <table class="table table-bordered table-hover table-sm">
     <thead class="thead-dark">
     <tr>
       <th>
-        Month
+        <%= t('schools.school_targets.progress.expired.month') %>
       </th>
       <% @reporting_months.each do |month| %>
         <th class="text-right">
@@ -42,19 +41,19 @@
     </tr>
     </thead>
     <tbody>
-    <%= render 'row', title: 'Target Consumption (kWh)', progress: @progress, data: @progress.monthly_targets_kwh, keys: @reporting_months, partial_months: {}, percentage_synthetic: @progress.percentage_synthetic, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Actual Consumption (kWh)', progress: @progress, data: @progress.monthly_usage_kwh, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Overall change since last year', progress: @progress, data: @progress.monthly_performance_versus_synthetic_last_year, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :relative_percent, final_row: true %>
+    <%= render 'row', title: t('schools.school_targets.progress.expired.target_consumption_kwh'), progress: @progress, data: @progress.monthly_targets_kwh, keys: @reporting_months, partial_months: {}, percentage_synthetic: @progress.percentage_synthetic, units: :kwh, final_row: false %>
+    <%= render 'row', title: t('schools.school_targets.progress.expired.actual_consumption_kwh'), progress: @progress, data: @progress.monthly_usage_kwh, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :kwh, final_row: false %>
+    <%= render 'row', title: t('schools.school_targets.progress.expired.overall_change_since_last_year'), progress: @progress, data: @progress.monthly_performance_versus_synthetic_last_year, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :relative_percent, final_row: true %>
     </tbody>
   </table>
 
-  <h3>Cumulative progress</h3>
+  <h3><%= t('schools.school_targets.progress.expired.cumulative_progress') %></h3>
 
   <table class="table table-bordered table-hover table-sm">
     <thead class="thead-dark">
     <tr>
       <th>
-        Month
+        <%= t('schools.school_targets.progress.expired.month') %>
       </th>
       <% @reporting_months.each do |month| %>
         <th class="text-right">
@@ -64,9 +63,9 @@
     </tr>
     </thead>
     <tbody>
-    <%= render 'row', title: 'Target Consumption (kWh)', data: @progress.cumulative_targets_kwh, keys: @reporting_months, partial_months: {}, percentage_synthetic: @progress.percentage_synthetic, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Actual Consumption (kWh)', data: @progress.cumulative_usage_kwh, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :kwh, final_row: false %>
-    <%= render 'row', title: 'Overall performance since last year', data: @progress.cumulative_performance_versus_synthetic_last_year, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :relative_percent, final_row: true %>
+    <%= render 'row', title: t('schools.school_targets.progress.expired.target_consumption_kwh'), data: @progress.cumulative_targets_kwh, keys: @reporting_months, partial_months: {}, percentage_synthetic: @progress.percentage_synthetic, units: :kwh, final_row: false %>
+    <%= render 'row', title: t('schools.school_targets.progress.expired.actual_consumption_kwh'), data: @progress.cumulative_usage_kwh, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :kwh, final_row: false %>
+    <%= render 'row', title: t('schools.school_targets.progress.expired.overall_performance_since_last_year'), data: @progress.cumulative_performance_versus_synthetic_last_year, keys: @reporting_months, partial_months: @progress.partial_months, percentage_synthetic: {}, units: :relative_percent, final_row: true %>
     </tbody>
   </table>
 
