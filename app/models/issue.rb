@@ -32,7 +32,7 @@
 class Issue < ApplicationRecord
   include CsvExportable
 
-  delegated_type :issueable, types: %w[School SchoolGroup]
+  delegated_type :issueable, types: %w[School SchoolGroup DataSource]
   delegate :name, to: :issueable
   belongs_to :school_group, -> { where(issues: { issueable_type: 'SchoolGroup' }) }, foreign_key: 'issueable_id', optional: true
   belongs_to :school, -> { where(issues: { issueable_type: 'School' }) }, foreign_key: 'issueable_id', optional: true
@@ -56,7 +56,7 @@ class Issue < ApplicationRecord
 
   has_rich_text :description
   enum issue_type: { issue: 0, note: 1 }
-  enum fuel_type: [:electricity, :gas, :solar]
+  enum fuel_type: [:electricity, :gas, :solar, :gas_and_electricity, :alternative_heating]
   enum status: { open: 0, closed: 1 }, _prefix: true
 
   validates :issue_type, :status, :title, :description, presence: true
@@ -86,7 +86,7 @@ class Issue < ApplicationRecord
   end
 
   def self.issueable_images
-    { school_group: 'users', school: 'school' }
+    { school_group: 'users', school: 'school', data_source: 'download' }
   end
 
   def self.issue_type_classes

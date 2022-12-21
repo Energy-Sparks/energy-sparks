@@ -1,0 +1,75 @@
+<% default = "&nbsp;".html_safe %>
+
+<div class="collapse p-4" id="data-source">
+  <div class="row">
+    <div class="col-6 mb-2">
+      <div class="font-weight-bolder ml-1">Contact name</div>
+      <div class="bg-white p-1 border"><%= data_source.contact_name.presence || default %></div>
+    </div>
+    <div class="col-6">
+      <div class="font-weight-bolder ml-1">Contact email</div>
+      <div class="bg-white p-1 border"><%= data_source.contact_email.presence || default %></div>
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-12">
+      <div class="font-weight-bolder ml-1">Who to send LOA to</div>
+      <div class="bg-white p-1 border"><%= data_source.loa_contact_details.presence || default %></div>
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-12">
+      <div class="font-weight-bolder ml-1">Data prerequisites</div>
+      <div class="bg-white p-1 border text-break"><%= data_source.data_prerequisites.presence || default %></div>
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-12">
+      <div class="font-weight-bolder ml-1">Type of data feed</div>
+      <div class="bg-white p-1 border text-break"><%= data_source.data_feed_type.presence || default %></div>
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-12">
+      <div class="font-weight-bolder ml-1">How to setup data feed for a new area</div>
+      <div class="bg-white p-1 border text-break"><%= data_source.new_area_data_feed.presence || default %></div>
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-12">
+      <div class="font-weight-bolder ml-1">How to add to an existing data feed</div>
+      <div class="bg-white p-1 border text-break"><%= data_source.add_existing_data_feed.presence || default %></div>
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-12">
+      <div class="font-weight-bolder ml-1">Who to contact about data issues</div>
+      <div class="bg-white p-1 border text-break"><%= data_source.data_issues_contact_details.presence || default %></div>
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-12">
+      <div class="font-weight-bolder ml-1">Historic data</div>
+      <div class="bg-white p-1 border text-break"><%= data_source.historic_data.presence || default %></div>
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-12">
+      <div class="font-weight-bolder ml-1">What to do when LOA is about expire</div>
+      <div class="bg-white p-1 border text-break"><%= data_source.loa_expiry_procedure.presence || default %></div>
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-12">
+      <div class="font-weight-bolder ml-1">Comments</div>
+      <div class="bg-white p-1 border text-break"><%= data_source.comments.presence || default %></div>
+    </div>
+  </div>
+
+  <div class="row pb-2">
+    <div class="col-12">
+      <div class="badge badge-pill bg-white text-dark font-weight-normal">Created • <%= nice_date_times_today(data_source.created_at) %></div>
+      <div class="badge badge-pill bg-white text-dark font-weight-normal">Updated • <%= nice_date_times_today(data_source.updated_at) %></div>
+    </div>
+  </div>
+</div>

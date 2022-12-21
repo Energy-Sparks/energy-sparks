@@ -8,7 +8,12 @@
 
   <div class="form-group">
     <%= f.label :closing_date, "Closing date", class: "form-label" %>
-    <%= f.date_field :closing_date, class: 'form-control' %>
+    <div class="input-group date" id="datetimepickerform" data-target-input="nearest">
+      <%= f.text_field  :closing_date, class: 'form-control datetimepicker-input', data: { target: "#datetimepickerform" }, value: job.closing_date&.strftime('%d/%m/%Y') %>
+      <div class="input-group-append" data-target="#datetimepickerform" data-toggle="datetimepicker">
+        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+      </div>
+    </div>
   </div>
 
   <div class="description-trix-editor form-group">
@@ -31,3 +36,13 @@
   <%= f.submit job.persisted? ? "Update" : "Create", class: "btn btn-primary" %>
   <%= link_to "View all jobs", admin_jobs_path, class: "btn btn-primary" %>
 <% end %>
+
+<script type="text/javascript">
+  $(function () {
+    $('#datetimepickerform').datetimepicker({
+      format: 'DD/MM/YYYY',
+      allowInputToggle: true,
+      locale: moment.locale()
+    });
+  });
+</script>
