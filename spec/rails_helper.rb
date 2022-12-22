@@ -72,7 +72,6 @@ RSpec.configure do |config|
 
   # Wisper gem helpers
   config.include(Wisper::RSpec::BroadcastMatcher)
-  config.include ViewComponent::TestHelpers, type: :component
 end
 
 Shoulda::Matchers.configure do |config|

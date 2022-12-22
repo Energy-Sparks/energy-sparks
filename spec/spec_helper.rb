@@ -97,6 +97,9 @@ RSpec.configure do |config|
   # test failures related to randomization by passing the same `--seed` value
   # as the one that triggered the failure.
   Kernel.srand config.seed
+
+  config.include ViewComponent::TestHelpers, type: :component
+
 end
 
 RSpec::Matchers.define_negated_matcher :not_change, :change
