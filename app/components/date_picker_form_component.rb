@@ -6,7 +6,7 @@ class DatePickerFormComponent < ViewComponent::Base
   def initialize(form:, field_name:, value: nil)
     @form_object_name = form.object_name
     @field_name = field_name
-    @value = value
+    @value = value || DateTime.now.strftime('%d/%m/%Y')
   end
 
   def id
