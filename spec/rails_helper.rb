@@ -67,20 +67,24 @@ RSpec.configure do |config|
   #
   config.before { ActionMailer::Base.deliveries.clear }
 
+
+
+  config.include ViewComponent::TestHelpers, type: :component
+  config.include Capybara::RSpecMatchers, type: :component
+
+
   config.include ApplicationHelper, include_application_helper: true
 
   # Wisper gem helpers
   config.include(Wisper::RSpec::BroadcastMatcher)
 
 
-  config.include ViewComponent::TestHelpers, type: :component
-  config.include Capybara::RSpecMatchers, type: :component
-
   config.include Devise::Test::ControllerHelpers, type: :component
 
   config.before(:each, type: :component) do
     @request = controller.request
   end
+
 
 
 end
