@@ -28,13 +28,23 @@
 <% end %>
 
 <p>
-  Your <strong><%= link_to 'school dashboard', school_url(@school, params: weekly_alert_utm_parameters) %></strong> always shows your latest alerts and
-  our <strong><%= link_to 'detailed analysis', school_analysis_index_url(@school, params: weekly_alert_utm_parameters) %></strong> of your energy usage will provide further insights.
+  <%= t('alert_mailer.alert_email.dashboard_and_analysis_message_html', school_url: school_url(@school, params: weekly_alert_utm_parameters), school_analysis_index_url: school_analysis_index_url(@school, params: weekly_alert_utm_parameters)) %>.
 </p>
 
 <%= link_to t('alert_mailer.alert_email.view_your_school_dashboard'), school_url(@school, params: weekly_alert_utm_parameters), class: 'btn btn-primary mt-3 mb-3 float-right'%>
 
-<h3>Latest updates</h3>
+<div class="s-3"></div>
+
+<h3><%= t('alert_mailer.alert_email.get_your_pupils_involved') %></h3>
+<div class="s-3"></div>
+
+<%= t('alert_mailer.alert_email.education_workshops_message') %>.
+
+<%= link_to t('alert_mailer.alert_email.book_a_workshop'), education_workshops_url, class: 'btn btn-primary mt-3 mb-3 float-right'%>
+
+<div class="s-3"></div>
+
+<h3><%= t('alert_mailer.alert_email.latest_updates') %></h3>
 <div class="s-3"></div>
 
 <% @alert_content.each do |alert_content| %>
@@ -63,6 +73,13 @@
   </div>
   <div class="s-5"></div>
 <% end %>
+
+<h3><%= t('alert_mailer.alert_email.need_more_help') %></h3>
+<div class="s-3"></div>
+
+<%= t('alert_mailer.alert_email.need_more_help_message') %>.
+
+<%= link_to t('alert_mailer.alert_email.book_an_audit'), energy_audits_url, class: 'btn btn-primary mt-3 mb-3 float-right'%>
 
 <hr/>
 
