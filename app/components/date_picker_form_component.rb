@@ -1,17 +1,23 @@
 # frozen_string_literal: true
 
 class DatePickerFormComponent < ViewComponent::Base
-  attr_reader :form, :field, :label, :value, :date_format
+  attr_reader :form_object_name, :field_name, :value
 
-  def initialize(form:, field:, label: nil, value: nil, date_format: 'DD/MM/YYYY')
-    @form = form
-    @field = field
-    @label = label
+  def initialize(form:, field_name:, value: nil)
+    @form_object_name = form.object_name
+    @field_name = field_name
     @value = value
-    @date_format = date_format
   end
 
   def id
-   "datetimepickerform_#{field}"
+    "#{form_object_name}_#{field_name}"
+  end
+
+  def name
+    "#{form_object_name}[#{field_name}]"
+  end
+
+  def datetime_picker_id
+   "datetimepickerform_#{field_name}"
   end
 end

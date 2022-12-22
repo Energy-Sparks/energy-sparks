@@ -1,17 +1,14 @@
-<div class="form-group">
-  <%= form.label field, label, class: "form-label" if label %>
-  <div class="input-group date" id="<%= id %>" data-target-input="nearest">
-    <%= form.text_field field, class: 'form-control datetimepicker-input', data: { target: '#' + id }, value: value %>
-    <div class="input-group-append" data-target="#<%= id %>" data-toggle="datetimepicker">
-      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-    </div>
+<div class="input-group date" id="<%= datetime_picker_id %>" data-target-input="nearest">
+  <input class="form-control datetimepicker-input" data-target="#<%= datetime_picker_id %>" type="text" name="<%= name %>" id="<%= id %>" value="<%= value %>" />
+  <div class="input-group-append" data-target="#<%= datetime_picker_id %>" data-toggle="datetimepicker">
+    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
   </div>
 </div>
 
 <script type="text/javascript">
   $(function () {
-    $('#<%= id %>').datetimepicker({
-      format: '<%= date_format %>',
+    $('#<%= datetime_picker_id %>').datetimepicker({
+      format: 'DD/MM/YYYY',
       allowInputToggle: true,
       locale: moment.locale()
     });
