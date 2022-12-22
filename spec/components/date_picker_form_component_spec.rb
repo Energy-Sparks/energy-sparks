@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
 require "rails_helper"
-include ActionView::Helpers::FormHelper
 
 RSpec.describe DatePickerFormComponent, type: :component do
   it "renders a datepicker form component" do
-    form = ActionView::Helpers::FormBuilder.new(:job, OpenStruct.new(start_date: nil), nil, {})
     expect(
-      ActionController::Base.render DatePickerFormComponent.new(form: form, field_name: :start_date, value: '01/12/2022')
+      ActionController::Base.render DatePickerFormComponent.new(form: OpenStruct.new(object_name: 'job'), field_name: :start_date, value: '01/12/2022')
     ).to eq(
       <<~HTML.chomp
         <div class="input-group date" id="datetimepickerform_start_date" data-target-input="nearest">
