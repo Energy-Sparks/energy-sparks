@@ -21,12 +21,12 @@ cy:
         activation_date: Dyddiad gweithredu
         address: Cyfeiriad
         alternative_heating_biomass: Mae gan ein hysgol foeler Biomas
-        alternative_heating_district_heating: Mae gan ein hysgol Gwresogi Ardal
+        alternative_heating_district_heating: Mae gan ein hysgol Wresogi Ardal
         alternative_heating_lpg: Mae ein hysgol yn defnyddio LPG ar gyfer gwresogi
         alternative_heating_oil: Mae ein hysgol yn defnyddio Olew ar gyfer gwresogi
         cooks_dinners_for_other_schools: Mae'r gegin yn coginio ciniawau ar gyfer ysgolion eraill
         cooks_dinners_for_other_schools_count: "Ar gyfer faint o ysgolion mae eich ysgol yn coginio cinio?"
-        cooks_dinners_onsite: Cinio yn cael eu coginio ar y safle
+        cooks_dinners_onsite: Ciniawau yn cael eu coginio ar y safle
         country: Gwlad
         enable_targets_feature: Galluogi nodwedd targedau
         floor_area: Arwynebedd llawr mewn metrau sgwâr

@@ -1,24 +1,51 @@
+---
 cy:
+  bill_request_mailer:
+    request_bill:
+      description: "Mae Sbarcynni angen i chi ddarparu bil ynni diweddar ar gyfer eich ysgol i gadarnhau rhifau eich mesurydd ac awdurdod Energy Sparks i gasglu, prosesu ac arddangos y data ar gyfer y mesuryddion hynny."
+      document_details_html: |-
+        <p>Rhaid i'r bil(iau) fod gyda dyddiad o fewn y 3 mis diwethaf, a dangos:</p>
+        <ul>
+          <li>enw eich ysgol</li>
+          <li>cyfeiriad yr ysgol</li>
+          <li>MPAN mesurydd trydan neu rif cyflenwad trydan a/neu MPR mesurydd nwy neu gyfeirnod pwynt mesurydd</li>
+        </ul>
+      sample_bills_needed: Rhaid i Energy Sparks weld bil sampl ar gyfer y rhifau mesurydd canlynol
+      subject: Uwchlwythwch fil ynni diweddar i Sbarcynni
+      title: "Uwchlwythwch fil ynni ar gyfer %{school_name}"
+      upload_bill: Uwchlwythwch eich bil
   consent_grant_mailer:
     email_consent:
-      subject: Eich caniatâd i Energy Sparks
+      description: Eich caniatâd i Sbarcynni
+      footer_html: "Gallwch weld ein %{terms_and_conditions_link} llawn ar ein gwefan."
+      message_1: "Diolch am roi caniatâd i Sbarcynni gael mynediad at ddata ar gyfer %{school_name}"
+      message_2: "Ar gyfer eich cofnodion, dyma gofnod o'r caniatâd a roesoch i ni"
+      subject: Eich caniatâd i Sbarcynni
+  consent_request_mailer:
+    request_consent:
+      description: "Rhowch ganiatâd i Energy Sparks gael mynediad at ddata ar gyfer %{school_name}"
+      footer_html: "Gallwch %{view_school_account_link} os ydych am adolygu sut mae eich ysgol wedi'i sefydlu ar ein gwasanaeth."
+      give_consent: Rhoi caniatâd
+      message: "Rhaid i'ch ysgol ddiweddaru ei chaniatâd i ganiatáu i Energy Sparks barhau i gasglu, prosesu ac arddangos eich data ynni."
+      subject: Mae angen caniatâd arnom i gael mynediad at ddata ynni eich ysgol
+      view_school_account: gweld eich cyfrif ysgol
   mailer:
     get_in_touch: Cysylltwch
   onboarding_mailer:
     activation_email:
-      subject: "Mae %{school} yn fyw ar Energy Sparks"
+      subject: "Mae %{school} yn fyw ar Sbarcynni"
     completion_email:
       subject: "Mae %{school} wedi cwblhau'r broses ymuno"
     data_enabled_email:
-      subject: "Mae data ynni %{school} bellach ar gael ar Energy Sparks"
+      subject: "Mae data ynni %{school} bellach ar gael ar Sbarcynni"
     onboarded_email:
-      subject: "Mae %{school} bellach yn fyw ar Energy Sparks"
+      subject: "Mae %{school} bellach yn fyw ar Sbarcynni"
     onboarding_email:
-      subject: Sefydlwch eich ysgol ar Energy Sparks
+      subject: Sefydlwch eich ysgol ar Sbarcynni
     reminder_email:
-      subject: Peidiwch ag anghofio sefydlu eich ysgol ar Energy Sparks
+      subject: Peidiwch ag anghofio sefydlu eich ysgol ar Sbarcynni
     welcome_email:
-      subject: Croeso i Energy Sparks
+      subject: Croeso i Sbarcynni
   target_mailer:
     admin_target_report:
       subject: Cynnydd Targed ac Adroddiad Data

@@ -97,6 +97,17 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             end
           end
 
+          context "Summary panel" do
+            let(:school) { create(:school) }
+            let(:active_meters) { 3.times { create(:gas_meter, active: true, data_source: existing_data_source, school: school) } }
+            let(:inactive_meters) { 2.times { create(:gas_meter, active: false, data_source: existing_data_source) } }
+            let(:setup_data) { [active_meters, inactive_meters] }
+
+            it { expect(page).to have_content("Active meters 3") }
+            it { expect(page).to have_content("Inactive meters 2") }
+            it { expect(page).to have_content("Associated schools 3") }
+          end
+
           it_behaves_like "a displayed data source" do
             let(:data_source) { existing_data_source }
           end
@@ -167,6 +178,27 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             context "with buttons" do
               it { expect(page).to have_link("New Issue") }
               it { expect(page).to have_link("New Note") }
+            end
+          end
+
+          it "has a download meters button" do
+            expect(page).to have_link('Meters')
+          end
+
+          describe "Downloading meters csv" do
+            before do
+              Timecop.freeze
+              click_on 'Meters'
+            end
+            after { Timecop.return }
+            it "shows csv contents" do
+              expect(page.body).to eq existing_data_source.meters.to_csv
+            end
+            it "has csv content type" do
+              expect(response_headers['Content-Type']).to eq 'text/csv'
+            end
+            it "has expected file name" do
+              expect(response_headers['Content-Disposition']).to include("energy-sparks-#{existing_data_source.name}-meters-#{Time.zone.now.iso8601}".parameterize + '.csv')
             end
           end
         end

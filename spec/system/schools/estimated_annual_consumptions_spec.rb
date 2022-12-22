@@ -44,7 +44,7 @@ RSpec.describe 'estimated annual consumption', type: :system do
 
       it 'captures all fuel types' do
         click_on("Manage usage estimate")
-        fill_in "Which is year is your estimate based on?", with: 2021
+        fill_in "Which year is your estimate based on?", with: 2021
         fill_in "Annual electricity consumption", with: 1000
         fill_in "Annual gas consumption", with: 2000
         fill_in "Annual storage heater electricity consumption", with: 3000

@@ -24,4 +24,5 @@ class DataSource < ApplicationRecord
   validates :name, presence: true
   has_many :meters
   has_many :issues, as: :issueable, dependent: :destroy
+  has_many :schools, -> { distinct }, through: :meters
 end

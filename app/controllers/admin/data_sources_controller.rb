@@ -1,8 +1,17 @@
 module Admin
   class DataSourcesController < AdminController
-    include Pagy::Backend
     before_action :header_fix_enabled
     load_and_authorize_resource
+
+    def show
+      respond_to do |format|
+        format.html
+        format.csv do
+          send_data @data_source.meters.to_csv,
+          filename: "#{t('common.application')}-#{@data_source.name}-meters-#{Time.zone.now.iso8601}".parameterize + '.csv'
+        end
+      end
+    end
 
     def create
       if @data_source.save

@@ -47,7 +47,7 @@ module Schools
     def destroy
       authorize! :delete, @estimated_annual_consumption
       @estimated_annual_consumption.destroy
-      redirect_to school_path(@school), notice: 'Estimate successfully removed'
+      redirect_to school_path(@school), notice: I18n.t('schools.estimated_annual_consumptions.destroy.estimate_successfully_removed')
     end
 
     private

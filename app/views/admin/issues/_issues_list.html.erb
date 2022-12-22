@@ -15,7 +15,7 @@
         <td class="<%= issue.issue_type %>"><%= issue_type_icon(issue.issue_type) %></td>
         <td class="nowrap"><%= issue.title %> <%= render 'admin/issues/pinned', issue: issue %>
         <% if show_issueable %>
-          <br /><%= render 'admin/issues/issueable', issue: issue %>
+          <br /><%= render 'admin/issues/issueable', issueable: issue.try(:issueable) %>
         <% end %>
         <%= render 'admin/issues/fuel_type', issue: issue %>
         </td>

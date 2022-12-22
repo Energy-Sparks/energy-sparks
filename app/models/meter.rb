@@ -41,6 +41,8 @@
 #
 
 class Meter < ApplicationRecord
+  include CsvExportable
+
   belongs_to :school, inverse_of: :meters
   belongs_to :low_carbon_hub_installation, optional: true
   belongs_to :solar_edge_installation, optional: true
@@ -184,6 +186,14 @@ class Meter < ApplicationRecord
 
   def can_withdraw_consent?
     consent_granted
+  end
+
+  def self.csv_headers
+    ["School group", "School", "MPAN/MPRN", "Meter type", "Active", "Created at", "Updated at"]
+  end
+
+  def self.csv_attributes
+    %w{school.school_group.name school.name mpan_mprn meter_type.humanize active created_at updated_at}
   end
 
   private
