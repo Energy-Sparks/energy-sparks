@@ -18,7 +18,7 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 #
 
-require "view_component/test_helpers"
+# require "view_component/test_helpers"
 
 
 RSpec.configure do |config|
@@ -101,7 +101,7 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 
-  config.include ViewComponent::TestHelpers, type: :component
+  # config.include ViewComponent::TestHelpers, type: :component
 
 end
 
