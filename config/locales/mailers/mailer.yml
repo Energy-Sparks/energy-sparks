@@ -133,6 +133,7 @@ en:
       subject: Target Progress and Data Report
     first_target:
       subject: Set your first energy saving target
+      title: Set your first energy saving target
     first_target_reminder:
       subject: Reminder to set your first energy saving target
     review_target:
