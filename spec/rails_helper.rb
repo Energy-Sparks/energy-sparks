@@ -14,7 +14,6 @@ require 'webdrivers'
 require 'capybara/email/rspec'
 require 'cancan/matchers'
 require 'wisper/rspec/matchers'
-require "view_component/test_helpers"
 
 # Add additional requires below this line. Rails is not loaded until this point!
 
