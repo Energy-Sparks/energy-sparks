@@ -8,6 +8,7 @@ class TargetMailerPreview < ActionMailer::Preview
   end
 
   def review_target
-    TargetMailer.with(to: 'test@blah.com', school: School.first).review_target
+
+    TargetMailer.with(to: 'test@blah.com', school: SchoolTarget.last.school).review_target
   end
 end

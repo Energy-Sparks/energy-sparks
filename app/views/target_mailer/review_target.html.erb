@@ -1,10 +1,9 @@
-<h1 class="mb-3">Set your next energy saving target</h1>
+<h1 class="mb-3"><%= t('target_mailer.review_target.title') %></h1>
 <div class="s-3"></div>
 
 <p>
- Your school set a target to reduce its energy usage by <%= nice_dates(@school.most_recent_target.target_date) %>.
- It's time to <%= link_to "review your progress", school_school_target_url(@school, @school.most_recent_target, params: targets_utm_parameters(source: "review")) %> and set a new target
- for the year ahead.
+  <%= t('target_mailer.review_target.your_school_set_a_target_to_reduce_its_energy_usage_by', target_date: nice_dates(@school.most_recent_target.target_date)) %>
+  <%= t('target_mailer.review_target.its_time_html', school_target_url: school_school_target_url(@school, @school.most_recent_target, params: targets_utm_parameters(source: "review"))) %>.
 </p>
 
-<%= link_to 'Set a new target', school_school_targets_url(@school, params: targets_utm_parameters(source: "review")), class: 'btn btn-primary mt-3 mb-3 float-right'%>
+<%= link_to t('target_mailer.review_target.set_a_new_target'), school_school_targets_url(@school, params: targets_utm_parameters(source: "review")), class: 'btn btn-primary mt-3 mb-3 float-right'%>
