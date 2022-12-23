@@ -18,6 +18,6 @@ class DatePickerFormComponent < ViewComponent::Base
   end
 
   def datetime_picker_id
-   "datetimepickerform_#{field_name}"
+    "datepickerformcomponent_#{field_name}"
   end
 end

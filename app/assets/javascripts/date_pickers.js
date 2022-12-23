@@ -31,4 +31,13 @@ $(document).ready(function() {
 
     date_picker.datetimepicker(options);
   });
+
+  // This is used by the DatePickerFormComponent
+  document.querySelectorAll(`[id^="datepickerformcomponent"]`).forEach(element => {
+    $('#' + element.id).datetimepicker({
+      format: 'DD/MM/YYYY',
+      allowInputToggle: true,
+      locale: moment.locale()
+    });
+  })
 });
