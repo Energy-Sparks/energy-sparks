@@ -328,6 +328,112 @@ en:
     school_group:
       compare_schools: Compare schools
       view_schools: View schools
+    school_targets:
+      achieving_your_targets:
+        be_sure_to_regularly_check: Be sure to regularly check your dashboard and weekly alerts for our latest advice
+        choose_another_activity: Choose another activity
+        compare_usage_with_schools_in_your_group: Compare usage with schools in your group
+        daily_variation_in_use: Daily variation in use
+        engaging_with_pupils: Engaging with pupils is an important part of the Energy Sparks programme.  Recording activities will score you points
+        explore_your_data: Explore your data
+        here_are_some_suggested_activities: Here are some suggested activities that can be undertaken with pupils
+        logging_activities: Logging activities will help you monitor progress. We'll display these actions on your usage charts
+        record_an_energy_saving_action: Record an energy saving action
+        review_your_energy_analysis: Review your energy analysis
+        some_suggested_activities: Some suggested activities you can take around the school
+        take_action_around_the_school: Take action around the school
+        title: Achieving your targets
+        view_dashboard: View dashboard
+        view_energy_saving_opportunities: View energy saving opportunities
+        view_recent_alerts: View recent alerts
+        we_analyse_your_data: We analyse your data to provide insights and weekly alerts
+        work_with_the_pupils: Work with the pupils
+      current:
+        page_title: Your current energy saving targets
+      edit:
+        before_changing_your_targets: Before changing your targets, check our recommendations to see what you can do to reduce costs and emissions
+        if_you_do_revise_your_targets: If you do revise your targets we will update your progress report to apply that target to all of your energy usage this year
+        page_title: Update your energy saving target
+        review_your_dashboard: Review your dashboard
+        review_your_targets: Review your targets
+        suggestion: Suggestion
+        tip: Tip
+        update_your_energy_saving_target: Update your energy saving target
+        your_configuration_has_changed: Your %{fuel_types_changed} configuration has changed, which means you may need to revisit your targets for this year. You may be able to set additional targets
+        your_current_target: Your current target
+      expired:
+        page_title: Results of reducing your energy usage
+        your_school_set_a_target_to_reduce_html: Your school set a target to reduce its energy usage between <strong>%{start_date}</strong> and <strong>%{target_date}</strong>. This page summarises your results
+      first:
+        careful_planning: Reducing your energy costs and carbon emissions involves careful planning. Energy Sparks provides you with a recommended set of steps to help you achieve your targets by
+        its_time: It's time to set your first target to reduce your energy consumption
+        page_title: Set your first energy saving target
+        providing_more_insight: providing more insight through our detailed analysis of your energy usage
+        providing_reports: providing reports to monitor your progress
+        set_your_first_energy_saving_target: Set your first energy saving target
+        suggesting_activities_for_pupils: suggesting activities for pupils to help you engage the whole school
+        suggesting_ways_to_reduce_consumption: suggesting ways to reduce consumption via your dashboard, weekly alerts and reminders
+      form:
+        reducing_electricity_usage_by: Reducing electricity usage by
+        reducing_gas_usage_by: Reducing gas usage by
+        reducing_storage_heater_usage_by: Reducing storage heater usage by
+        school_target: School target
+        set_this_target: Set this target
+        start_date: Start date
+        update_our_target: Update our target
+        you_are_currently_aiming_to_achieve_your_target_by_html: You are currenly aiming to achieve your target by <strong>%{target_date}</strong>.<br>You can revise the start of the 12 month period
+        your_new_target_will_run_for_12_months: Your new target will run for 12 months from the date you specify
+      fuel_type_note:
+        where_we_have_enough_data_note: Where we have enough data to assess your performance you will be able to set a target for electricity, gas or storage heater usage. If we receive additional data, we'll prompt you to review your targets
+      generating_report:
+        get_started_with_the_activities: Get started with the activities below to start working towards your goal
+        we_need_to_process_your_data: We need to process your data to create a more detailed progress report that will show progress against your targets. Check back tomorrow to see the results
+      new:
+        before_setting_your_new_target: Before setting your new target, check our recommendations to help inform your planning
+        carried_forward: By default we've carried forward your targets from last year. You can amend them below
+        page_title: Update your energy saving target
+        review_and_set_your_next_energy_saving_target: Review and set your next energy saving target
+        review_your_dashboard: Review your dashboard
+        target_date_reached: The target date for your previous target has been reached. Its time to <a href='%{school_target_path}'>review your progress</a> and set a new target
+        tip: Tip
+        your_new_target: Your new target
+      prompt_to_add_estimate:
+        add_an_estimate: Add an estimate
+        if_you_can_supply_an_estimate:
+          one: If you can supply an estimate of your annual consumption then we can generate a more detailed progress report for your %{fuel_types} target
+          other: If you can supply an estimate of your annual consumption then we can generate a more detailed progress report for your %{fuel_types} targets
+      prompt_to_review_target:
+        review_your_target: Review your target
+        your_fuel_types_configuration_has_changed: Your %{fuel_types_changed} configuration has changed, which means you may want to revisit your targets for this year
+      prompt_to_set_new_target:
+        set_a_new_target: Set a new target
+        you_set_a_target_to_reduce: You set a target to reduce your energy usage by %{target_date}. It's now time to review your progress and set a new target
+      target_table:
+        current_progress: Current progress
+        final_result: Final result
+        reporting_change_in_energy_usage_between: Reporting change in energy usage between
+        start_date_and_end_date: "%{start_date} and %{end_date}"
+        target_reduction: Target Reduction
+      target_table_row:
+        last_week: last week
+        not_applicable: N/A
+        view_monthly_report: View monthly report
+      target_timeline:
+        a_reminder_of_the_energy_saving: A reminder of the energy saving activities and actions you recorded between %{start_date} and %{target_date}
+        how_did_you_achieve_your_target: How did you achieve your target?
+        how_did_you_try_to_achieve_your_target: How did you try to achieve your target?
+        you_didnt_record_any_energy_saving: You didn't record any energy saving activities or actions between %{start_date} and %{target_date}
+      title:
+        reducing_your_energy_usage_by: Reducing your energy usage by %{target_date}
+        results_of_reducing_your_energy_usage: Results of reducing your energy usage
+        revise_your_target: Revise your target
+        set_a_new_target: Set a new target
+        view_current_target: View current target
+        we_are_calculating_your_progress: We are calculating your progress
+      warn_recent_data:
+        we_have_not_received_data:
+          one: We have not received data for your %{out_of_date_fuel_types} usage for over thirty days. As a result your progress report will be out of date
+          other: We have not received data for your %{out_of_date_fuel_types} usage for over thirty days. As a result your progress report will be out of date
     schools:
       carbon_emissions: Carbon emissions
       compare_schools: Compare schools
