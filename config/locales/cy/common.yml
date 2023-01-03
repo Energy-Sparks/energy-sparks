@@ -2,7 +2,7 @@
 cy:
   co2: CO2
   common:
-    application: Energy Sparks
+    application: Sbarcynni
     bar_charts: Siartiau bar
     confirm: "Ydych chi'n siŵr?"
     data: data
@@ -12,15 +12,38 @@ cy:
     gas: Nwy
     labels:
       actions: Gweithredoedd
+      activate: Gweithredu
+      active: Gweithredol
       are_you_sure: "Ydych chi'n siŵr?"
+      attributes: Priodweddau
       back: Yn ôl
       cancel: Canslo
+      close: Cau
+      create: Creu
+      created: Crëwyd
+      deactivate: Dadweithredu
       delete: Dileu
+      details: Manylion
+      download: Lawrlwytho
       edit: Golygu
+      finished: Wedi gorffen
+      home: Hafan
+      inactive: Anweithredol
+      last_updated: Diweddarwyd ddiwethaf
       manage: Rheoli
       next: Nesaf
+      no_label: 'Na'
       previous: Blaenorol
+      remove: Tynnu
+      report: Adrodd
+      save: Cadw
+      status: Statws
+      type: Math
+      update: Diweddaru
+      upload: Uwchlwytho
+      view: Gweld
       view_results: Gweld canlyniadau
+      yes_label: 'Ie'
     line_graphs: Graffiau llinell
     pie_charts: Siartiau cylch
     privacy_policy: polisi preifatrwydd
