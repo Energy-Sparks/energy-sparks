@@ -11,6 +11,16 @@ class ApplicationController < ActionController::Base
     redirect_to root_url, alert: exception.message
   end
 
+  def after_sign_in_path_for(user)
+    if EnergySparks::FeatureFlags.active?(:redirect_to_preferred_locale)
+      subdomain = ApplicationController.helpers.subdomain_for(user.preferred_locale)
+      I18n.locale = user.preferred_locale
+      root_url(subdomain: subdomain) + (session[:user_return_to][1..-1] || '')
+    else
+      session[:user_return_to] || root_url
+    end
+  end
+
   def switch_locale(&action)
     locale = LocaleFinder.new(params, request).locale
     I18n.with_locale(locale, &action)
