@@ -54,6 +54,7 @@ gem 'bootstrap-email'
 # Frontend
 gem 'bootstrap', '~> 4.3.0' # Use bootstrap for responsive layout
 gem 'simple_form'
+gem 'view_component'
 
 # JS Templating
 gem 'handlebars_assets'
