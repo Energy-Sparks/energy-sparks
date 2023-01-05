@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_13_140853) do
+ActiveRecord::Schema.define(version: 2023_01_05_114127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -144,6 +144,14 @@ ActiveRecord::Schema.define(version: 2022_12_13_140853) do
     t.string "summary"
     t.index ["active"], name: "index_activity_types_on_active"
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
+  end
+
+  create_table "advice_pages", force: :cascade do |t|
+    t.string "key", null: false
+    t.boolean "restricted", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["key"], name: "index_advice_pages_on_key", unique: true
   end
 
   create_table "alert_errors", force: :cascade do |t|
