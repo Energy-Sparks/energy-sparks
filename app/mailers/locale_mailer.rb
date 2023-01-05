@@ -11,6 +11,6 @@ class LocaleMailer < ApplicationMailer
 
   def email_addresses_for_locale(users)
     locale = params[:locale]
-    users.select {|u| u.preferred_locale == locale}.map(&:email)
+    users.select {|u| u.preferred_locale.to_sym == locale.to_sym}.map(&:email)
   end
 end

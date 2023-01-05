@@ -4,30 +4,14 @@ RSpec.describe ConsentRequestMailer do
 
   let(:school)        { create(:school, name: 'Test School') }
   let(:user)          { create(:user, school: school, email: 'en@example.com') }
-  let(:user_cy)       { create(:user, school: school, email: 'cy@example.com') }
+  let(:user_cy)       { create(:user, school: school, email: 'cy@example.com', preferred_locale: 'cy') }
 
   describe '#request_consent' do
 
     context 'when locale is cy' do
 
-      let(:cy_translations) do
-        {
-          consent_request_mailer:
-            {
-              request_consent:
-                {
-                  subject: "Welsh subject line should not be used (yet)",
-                  description: "Welsh description for %{school_name} should not be used (yet)"
-                }
-            }
-        }
-      end
-
       before do
         I18n.locale = 'cy'
-        I18n.backend.store_translations("cy", cy_translations)
-        # TODO replace this once the user model is updated to have preferred_locale attribute
-        allow(user_cy).to receive(:preferred_locale).at_least(:once).and_return(:cy)
       end
 
       after do
@@ -77,8 +61,8 @@ RSpec.describe ConsentRequestMailer do
           expect(email.subject).to eql ("We need permission to access your school's energy data")
           expect(email.body.to_s).to include("Please provide permission for Energy Sparks to access data for Test School")
           email = ActionMailer::Base.deliveries.last
-          expect(email.subject).to eql ("Welsh subject line should not be used (yet)")
-          expect(email.body.to_s).to include("Welsh description for Test School should not be used (yet)")
+          expect(email.subject).to eql ("Mae angen caniatâd arnom i gael mynediad at ddata ynni eich ysgol")
+          expect(email.body.to_s).to include("Rhowch ganiat&#226;d i Energy Sparks gael mynediad at ddata ar gyfer Test School")
         end
       end
     end
