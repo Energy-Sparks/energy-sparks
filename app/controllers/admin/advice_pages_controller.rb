@@ -13,6 +13,11 @@ module Admin
     end
 
     def update
+      if @advice_page.update(advice_page_params)
+        redirect_to admin_advice_pages_path, notice: 'Advice Page updated'
+      else
+        render :edit
+      end
     end
 
   private
