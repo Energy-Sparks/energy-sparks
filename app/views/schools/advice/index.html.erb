@@ -1,0 +1,7 @@
+<%= render(BreadcrumbsComponent.new) do |c| %>
+  <% c.with_school(school: @school) %>
+  <% c.with_items([
+    { name: "Advice", href: school_advice_index_url(@school) },
+    { name: "Baseload Advice", href: school_advice_url(@school, :baseload) },
+  ]) %>
+<% end %>

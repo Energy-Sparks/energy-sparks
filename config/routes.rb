@@ -139,6 +139,8 @@ Rails.application.routes.draw do
       end
 
       resources :analysis, controller: :analysis, only: [:index, :show]
+      resources :advice, controller: :advice, only: [:index, :show]
+
       resources :progress, controller: :progress, only: [:index] do
         collection do
           get :electricity
