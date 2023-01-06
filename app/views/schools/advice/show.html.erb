@@ -1,12 +1,14 @@
 <h1>Advice page: <%= @advice_page.key.humanize %></h1>
 
-<%= render 'breadcrumb', school: @school, advice_page: @advice_page, tab: @tab %>
+<div class="advice-page-breadcrumb">
+  <%= render 'breadcrumb', school: @school, advice_page: @advice_page, tab: @tab %>
+</div>
 
 <div class="row">
-  <div class="col-md-2">
+  <div class="col-md-2 advice-page-nav">
     <%= render 'nav', school: @school %>
   </div>
-  <div class="col-md-10">
+  <div class="col-md-10 advice-page-tabs">
     <%= render @tab, school: @school, advice_page: @advice_page, tab: @tab %>
   </div>
 </div>
