@@ -7,6 +7,7 @@ module Schools
     end
 
     def show
+      @advice_pages = AdvicePage.all
       @advice_page = AdvicePage.find_by_key(params[:key])
       @tab = params[:tab] || 'insights'
     end

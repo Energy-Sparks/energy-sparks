@@ -11,11 +11,11 @@ describe 'advice page management', type: :system do
 
     before do
       sign_in(admin)
+      visit admin_path
+      click_on 'Advice Pages'
     end
 
     it 'allows the user to list and edit the advice pages' do
-      visit admin_advice_pages_path
-
       expect(page).to have_content('Manage advice pages')
       expect(page).to have_content('baseload-summary')
 
