@@ -1,8 +1,17 @@
 <h1>Advice Pages</h1>
+
 <%= render(BreadcrumbsComponent.new) do |c| %>
   <% c.with_school(@school) %>
   <% c.with_items([
     { name: "Advice", href: school_advice_index_url(@school) },
     { name: "Baseload Advice", href: school_advice_url(@school, :baseload) },
   ]) %>
+<% end %>
+
+<% if @advice_pages.any? %>
+  <% @advice_pages.each do |advice_page| %>
+    <li><%= link_to advice_page.key, school_advice_tab_path(@school, advice_page.key) %></li>
+  <% end %>
+<% else %>
+  <p>No advice pages</p>
 <% end %>
