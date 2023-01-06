@@ -34,7 +34,7 @@ class BreadcrumbsComponent < ViewComponent::Base
       args = { class: 'breadcrumb-item' }
       if selected
         args[:class] += " active"
-        args[:"aria-current"] = "page" if selected
+        args[:"aria-current"] = "page"
       end
       content_tag(:li, link_to_unless(selected, name, href), args)
     end
