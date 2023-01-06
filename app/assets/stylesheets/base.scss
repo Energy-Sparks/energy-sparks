@@ -224,3 +224,12 @@ dl dt {
 .text-break {
   white-space: pre-line;
 }
+
+.main-breadcrumbs .breadcrumb-item+.breadcrumb-item::before {
+  content: quote(">");
+}
+
+.main-breadcrumbs {
+  background-color: transparent;
+  padding: 0;
+}
