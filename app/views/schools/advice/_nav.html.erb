@@ -1,0 +1,8 @@
+<h2>Pages</h2>
+<% if AdvicePage.all.any? %>
+  <% AdvicePage.all.each do |advice_page| %>
+    <li><%= link_to advice_page.key, school_advice_tab_path(school, advice_page.key) %></li>
+  <% end %>
+<% else %>
+  <p>No advice pages</p>
+<% end %>
