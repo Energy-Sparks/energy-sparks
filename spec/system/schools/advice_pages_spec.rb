@@ -50,6 +50,7 @@ RSpec.describe "advice page", type: :system do
         expect(page).to have_link('Schools')
         expect(page).to have_link(school.name)
         expect(page).to have_link('Advice')
+        expect(page).to have_text(key)
       end
     end
 
