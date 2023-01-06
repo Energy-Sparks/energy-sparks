@@ -1,12 +1,9 @@
-<div class="padded-row small">
-  <div class="col-md-12">
-    <%= link_to 'Schools', schools_path %>
-    > <%= link_to school.name, school_path(school) %>
-    > <%= link_to 'Advice', school_advice_path(school) %>
-    <% if advice_page %>
-      > <%= link_to advice_page.key.humanize, school_advice_tab_path(school, advice_page.key) %>
-    <% end %>
-  </div>
+<div class="advice-page-breadcrumb">
+  <%= render(BreadcrumbsComponent.new) do |c| %>
+    <% c.with_school(@school) %>
+    <% c.with_items([
+                      { name: "Advice", href: school_advice_path(school) },
+                      { name: advice_page.key, href: school_advice_tab_path(school, advice_page.key) },
+                    ]) %>
+  <% end %>
 </div>
-
-<br/>
