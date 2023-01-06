@@ -1,5 +1,7 @@
 <h1>Advice page: <%= @advice_page.key.humanize %></h1>
 
+<%= render 'breadcrumb', school: @school, advice_page: @advice_page, tab: @tab %>
+
 <div class="row">
   <div class="col-md-2">
     <%= render 'nav', school: @school %>
