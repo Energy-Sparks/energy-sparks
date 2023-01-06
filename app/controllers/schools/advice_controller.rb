@@ -3,6 +3,7 @@ module Schools
     load_and_authorize_resource :school
 
     def index
+      @advice_pages = AdvicePage.all
     end
 
     def show

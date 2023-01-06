@@ -18,7 +18,7 @@ RSpec.describe "advice page", type: :system do
     end
 
     it 'shows the advice pages index' do
-      expect(page).to have_content('Advice')
+      expect(page).to have_content('Advice Pages')
       expect(page).to have_link(key)
     end
 
@@ -60,6 +60,5 @@ RSpec.describe "advice page", type: :system do
         expect(page).to have_content(learn_more)
       end
     end
-
   end
 end
