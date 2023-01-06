@@ -7,7 +7,7 @@ class BreadcrumbsComponent < ViewComponent::Base
   class SchoolComponent < ViewComponent::Base
     attr_accessor :selected, :school
 
-    def initialize(school:)
+    def initialize(school)
       @school = school
       @selected = false
     end

@@ -16,7 +16,7 @@ RSpec.describe BreadcrumbsComponent, type: :component do
   context "when there is a school and no items" do
     let(:list_items) do
       render_inline(BreadcrumbsComponent.new()) do |c|
-        c.with_school(school: school)
+        c.with_school(school)
       end.css("li")
     end
 
@@ -70,7 +70,7 @@ RSpec.describe BreadcrumbsComponent, type: :component do
     let(:school) { create(:school, :with_school_group) }
     let(:list_items) do
       render_inline(BreadcrumbsComponent.new()) do |c|
-        c.with_school( school: school )
+        c.with_school(school)
         c.with_items([
           { name: "Advice", href: 'school_advice_url' },
           { name: "Baseload", href: 'school_advice_baseload_url' },
