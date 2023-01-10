@@ -122,7 +122,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   end
 
   def self.tx_resources
-    AlertTypeRating.with_dashboard_alerts.map(&:current_content)
+    AlertTypeRating.with_dashboard_email_sms_alerts.map(&:current_content)
   end
 
   def self.timing_fields
