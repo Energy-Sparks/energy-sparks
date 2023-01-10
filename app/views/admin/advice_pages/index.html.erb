@@ -1,0 +1,22 @@
+<% content_for :page_title, "Manage Advice Pages" %>
+
+<h1>Manage advice pages</h1>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Key</th>
+    <th>Restricted?</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @advice_pages.each do |advice_page| %>
+    <tr>
+      <td><%= advice_page.key %></td>
+      <td><%= y_n(advice_page.restricted) %></td>
+      <td><%= link_to 'Edit', edit_admin_advice_page_path(advice_page), class: 'btn'%></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

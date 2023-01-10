@@ -1,7 +1,7 @@
-<% content_for :page_title, 'Update your energy saving target' %>
+<% content_for :page_title, t('schools.school_targets.new.page_title') %>
 
 <div class="d-flex justify-content-between align-items-center">
-  <h1>Review and set your next energy saving target</h1>
+  <h1><%= t('schools.school_targets.new.review_and_set_your_next_energy_saving_target') %></h1>
   <div>
     <%= link_to_help_for_feature :school_targets, css: "btn btn-outline-dark rounded-pill font-weight-bold" %>
   </div>
@@ -10,28 +10,27 @@
 <div class="row">
   <div class="col-md-8">
     <p>
-      The target date for your previous target has been reached. Its time to
-      <%= link_to "review your progress", school_school_target_path(@school, @previous_school_target) %> and set a new target.
+      <%= t('schools.school_targets.new.target_date_reached', school_target_path: school_school_target_path(@school, @previous_school_target)) %>.
     </p>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-8">
-    <h3>Your new target</h3>
+    <h3><%= t('schools.school_targets.new.your_new_target') %></h3>
 
     <div class="alert alert-info">
       <p>
         <%= far_icon("lightbulb fa-lg") %>
-        <strong>Tip</strong>: Review your dashboard.<br>
-        Before setting your new target, check our recommendations to help inform your planning
+        <strong><%= t('schools.school_targets.new.tip') %></strong>: <%= t('schools.school_targets.new.review_your_dashboard') %>.<br>
+        <%= t('schools.school_targets.new.before_setting_your_new_target') %>
       </p>
     </div>
 
     <%= render 'fuel_type_note' %>
 
     <p>
-      By default we've carried forward your targets from last year. You can amend them below.
+      <%= t('schools.school_targets.new.carried_forward') %>.
     </p>
 
     <%= render "form", target_service: @target_service, school_target: @school_target %>
