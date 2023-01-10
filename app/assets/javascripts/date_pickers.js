@@ -31,5 +31,4 @@ $(document).ready(function() {
 
     date_picker.datetimepicker(options);
   });
-
 });
