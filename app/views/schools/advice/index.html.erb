@@ -3,16 +3,22 @@
 <div class="advice-page-breadcrumb">
   <%= render(BreadcrumbsComponent.new) do |c| %>
     <% c.with_school(@school) %>
-    <% c.with_items([
-                      { name: "Advice", href: school_advice_path(@school) },
-                    ]) %>
+    <% c.with_items([{ name: "Advice", href: school_advice_path(@school) }]) %>
   <% end %>
 </div>
 
-<% if @advice_pages.any? %>
-  <% @advice_pages.each do |advice_page| %>
-    <li><%= link_to advice_page.key, school_advice_tab_path(@school, advice_page.key) %></li>
-  <% end %>
-<% else %>
-  <p>No advice pages</p>
-<% end %>
+<div class="row">
+  <div class="col-md-2 advice-page-nav">
+    <%= render 'nav', school: @school, advice_pages: @advice_pages %>
+  </div>
+  <div class="col-md-10">
+    <h2>All pages</h2>
+    <% if @advice_pages.any? %>
+      <% @advice_pages.each do |advice_page| %>
+        <li><%= link_to advice_page.key, school_advice_tab_path(@school, advice_page.key) %></li>
+      <% end %>
+    <% else %>
+      <p>No advice pages</p>
+    <% end %>
+  </div>
+</div>

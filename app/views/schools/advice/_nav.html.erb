@@ -1,8 +1,28 @@
-<h2>Pages</h2>
-<% if advice_pages.any? %>
-  <% advice_pages.each do |advice_page| %>
-    <li><%= link_to advice_page.key, school_advice_tab_path(school, advice_page.key) %></li>
+<%= render(PageNavComponent.new(name:'Menu', icon: 'bars', bgcolor: '#232b49')) do |c| %>
+  <% c.with_section do |s| %>
+    <% s.with_item(name: 'Total energy use', href: '#') %>
   <% end %>
-<% else %>
-  <p>No advice pages</p>
+  <% c.with_section(name: "Electicity", icon: 'bolt', bgcolor: '#93e1f6') do |s| %>
+    <% s.with_item(name: 'Overnight/standby use', href: '#') %>
+    <% s.with_item(name: 'Out of school hours', href: '#') %>
+    <% s.with_item(name: 'Recent progress', href: '#') %>
+    <% s.with_item(name: 'Progress since last year', href: '#') %>
+    <% s.with_item(name: 'Annual use', href: '#') %>
+    <% s.with_item(name: 'Daily variation in use', href: '#') %>
+    <% s.with_item(name: 'Cost advice', href: '#') %>
+    <% s.with_item(name: 'Meter breakdown', href: '#') %>
+  <% end %>
+  <% c.with_section(name: "Gas", icon: 'fire', bgcolor: '#FF8438') do |s| %>
+    <% s.with_item(name: 'Overnight and weekends', href: '#') %>
+    <% s.with_item(name: 'Heating controls', href: '#') %>
+  <% end %>
+  <% c.with_section(name: "Storage heaters", icon: 'sun', bgcolor: '#E097FC') do |s| %>
+    <% s.with_item(name: 'Annual use', href: '#') %>
+  <% end %>
+  <% c.with_section(name: "Solar", icon: 'fire-alt', bgcolor: '#50E3C2') do |s| %>
+    <% s.with_item(name: 'Solar generation', href: '#') %>
+  <% end %>
+  <% c.with_section(name: "Carbon", icon: 'circle', bgcolor: '#e6e6e6') do |s| %>
+    <% s.with_item(name: 'Carbon emissions', href: '#') %>
+  <% end %>
 <% end %>

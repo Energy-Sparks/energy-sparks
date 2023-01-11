@@ -3,10 +3,8 @@
 <div class="advice-page-breadcrumb">
   <%= render(BreadcrumbsComponent.new) do |c| %>
     <% c.with_school(@school) %>
-    <% c.with_items([
-                      { name: "Advice", href: school_advice_path(@school) },
-                      { name: @advice_page.key, href: school_advice_tab_path(@school, @advice_page.key) },
-                    ]) %>
+    <% c.with_items([ { name: "Advice", href: school_advice_path(@school) },
+                      { name: @advice_page.key, href: school_advice_tab_path(@school, @advice_page.key) }]) %>
   <% end %>
 </div>
 
