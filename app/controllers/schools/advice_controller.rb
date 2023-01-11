@@ -3,7 +3,7 @@ module Schools
     load_and_authorize_resource :school
     skip_before_action :authenticate_user!
 
-    before_action :find_advice_page, only: :show
+    before_action :load_advice_page, only: :show
     before_action :check_authorisation, only: :show
 
     def index
@@ -17,7 +17,7 @@ module Schools
 
     private
 
-    def find_advice_page
+    def load_advice_page
       @advice_page = AdvicePage.find_by_key(params[:key])
     end
 
