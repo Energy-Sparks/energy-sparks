@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.11.2",
+    "@fortawesome/fontawesome-free": "^6.2.1",
     "@rails/actiontext": "^6.0.3-2",
     "@rails/activestorage": "^6.0.3-2",
     "@rails/webpacker": "^5.2.1",
