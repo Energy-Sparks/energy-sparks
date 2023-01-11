@@ -67,12 +67,7 @@
       <div class="form-group">
         <%= meter.earliest_available_data %>
         <%= form.label :earliest_available_data, t('schools.meters.form.earliest_available_data') %>
-        <div class="input-group date" id="datetimepickerform" data-target-input="nearest">
-          <%= form.text_field  :earliest_available_data, class: 'form-control datetimepicker-input', data: { target: "#datetimepickerform" }, value: meter.earliest_available_data&.strftime('%d/%m/%Y') %>
-          <div class="input-group-append" data-target="#datetimepickerform" data-toggle="datetimepicker">
-            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-          </div>
-        </div>
+        <%= render(DatePickerFormComponent.new(form: form, field_name: :earliest_available_data, value: meter.earliest_available_data&.strftime('%d/%m/%Y'))) %>
       </div>
     <% end %>
   </div>
@@ -82,13 +77,3 @@
     <%= form.submit submit_label, class: 'btn btn-primary'%>
   </div>
 <% end %>
-
-<script type="text/javascript">
-  $(function () {
-    $('#datetimepickerform').datetimepicker({
-      format: 'DD/MM/YYYY',
-      allowInputToggle: true,
-      locale: moment.locale()
-    });
-  });
-</script>
