@@ -33,7 +33,7 @@ gem 'statsample', git: 'https://github.com/Energy-Sparks/statsample', tag: '2.1.
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
-gem 'sass-rails'# Use SCSS for stylesheets
+#gem 'sass-rails'# Use SCSS for stylesheets
 gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
 gem 'momentjs-rails'
@@ -164,3 +164,6 @@ group :test do
   gem 'shoulda-matchers'
   gem 'timecop'
 end
+
+gem 'sprockets', '3.7.2'
+gem 'sass-rails', '5.1.0'
