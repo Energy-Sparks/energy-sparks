@@ -4,9 +4,35 @@ RSpec.describe "advice page", type: :system do
 
   let(:school) { create(:school) }
   let(:key) { 'baseload-tester' }
+  let(:key_restricted) { 'baseload-tester-restricted' }
   let(:learn_more) { 'here is some more explanation' }
 
-  let!(:advice_page) { create(:advice_page, key: key, learn_more: learn_more) }
+  let!(:advice_page)            { create(:advice_page, key: key, restricted: false, learn_more: learn_more) }
+  let!(:advice_page_restricted) { create(:advice_page, key: key_restricted, restricted: true) }
+
+  context 'as non-logged in user' do
+
+    before do
+      visit school_advice_path(school)
+    end
+
+    it 'shows the advice pages index' do
+      expect(page).to have_content('Advice Pages')
+      expect(page).to have_link(key)
+      expect(page).to have_link(key_restricted)
+    end
+
+    it 'shows the advice page' do
+      click_on key
+      expect(page).to have_content("Advice page: #{key.humanize}")
+    end
+
+    it 'does not show the restricted advice page' do
+      click_on key_restricted
+      expect(page).to have_content('Advice Pages')
+      expect(page).to have_content("Only an admin or staff user for this school can access this content")
+    end
+  end
 
   context 'as admin' do
 
@@ -20,11 +46,17 @@ RSpec.describe "advice page", type: :system do
     it 'shows the advice pages index' do
       expect(page).to have_content('Advice Pages')
       expect(page).to have_link(key)
+      expect(page).to have_link(key_restricted)
     end
 
     it 'shows the advice page' do
       click_on key
       expect(page).to have_content("Advice page: #{key.humanize}")
+    end
+
+    it 'shows the restricted advice page' do
+      click_on key_restricted
+      expect(page).to have_content("Advice page: #{key_restricted.humanize}")
     end
 
     it 'shows the nav bar' do
