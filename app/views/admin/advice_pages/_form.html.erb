@@ -1,0 +1,17 @@
+<%= render 'shared/errors', subject: advice_page, subject_name: 'advice page' %>
+
+<%= simple_form_for([:admin, advice_page]) do |f| %>
+
+  <%= render 'admin/shared/locale_tabs', f: f, field: :learn_more do |locale| %>
+    <div class="learn-more-trix-editor <%= locale %>">
+      <%= f.label AdvicePage.human_attribute_name(:learn_more) %>
+      <%= f.rich_text_area t_field(:learn_more, locale) %>
+    </div>
+  <% end %>
+
+  <%= f.input :restricted %>
+
+  <div class="actions">
+    <%= f.submit 'Save', class: 'btn btn-primary' %>
+  </div>
+<% end %>
