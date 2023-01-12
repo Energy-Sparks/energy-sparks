@@ -29,7 +29,7 @@ class PageNavComponent < ViewComponent::Base
     def call
       args = { class: 'p-1', 'data-toggle': 'collapse', 'aria-expanded': "true" }
       args[:style] = "background-color: #{bgcolor};" if bgcolor
-      output = link_to_if(name, name_text.html_safe, "##{id}", args)
+      output = link_to(name_text.html_safe, "##{id}", args)
       output
     end
 
@@ -56,7 +56,7 @@ class PageNavComponent < ViewComponent::Base
 
     def call
       args = { class: 'pl-4', style: "flex: 1" }
-      content_tag(:li, link_to(name, href), args)
+      content_tag(:li, link_to_unless_current(name, href), args)
     end
 
     def render?
