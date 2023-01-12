@@ -149,3 +149,28 @@
   margin-top: 3px;
   margin-bottom: 3px;
 }
+
+
+/* to be moved to PageNav component */
+.page-nav .header {
+  color: white;
+  display: block;
+}
+.page-nav a {
+  text-decoration: none;
+}
+.page-nav a:hover {
+  text-decoration: underline;
+}
+.page-nav .section a {
+  color: black;
+  display: block;
+}
+.page-nav li {
+  margin-top: 2px;
+  display: block;
+}
+.page-nav li:not(:last-child) {
+  display: block;
+  border-bottom: 1px solid #dee2e6;
+}
