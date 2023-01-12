@@ -16,25 +16,13 @@
   <p><%= t('advice_pages.baseload.analysis_baseload_low_details_html', estimated_savings: format_target(@estimated_savings.£.abs, :£)) %></p>
 <% end %>
 
+<h3><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_title') %></h3>
 
-<h2>Chart: Electricity baseload for the last 12 months</h2>
-
-<br/>
-
-Chart subtitle: This chart shows the electricity baseload for your school between Month Year and Month Year for every day of the last year.
-
-<br/>
-
-Chart id: baseload_lastyear
-
-<br/>
+<h4><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_subtitle') %></h4>
 
 <%= chart_tag(@school, @chart_name) %>
 
-
-<p>Each point on this chart represents the average over the hours a school is closed on that day. You can click on a point in the chart and it will drill down to show you the usage on that day.
-Ideally, there should be little variation between different days and seasons.</p>
-
+<p><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_explanation') %></p>
 
 <h2><%= t('advice_pages.baseload.analysis_long_term_trends') %></h2>
 
