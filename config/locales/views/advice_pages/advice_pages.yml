@@ -6,9 +6,9 @@ en:
       analysis_baseload_high_details_html: If you matched the baseload of other schools of the same size you would save %{estimated_savings}.
       analysis_baseload_low: Your baseload is low.
       analysis_baseload_low_details_html: Your school's baseload is low, which is good and as a result you are saving %{estimated_savings} per year versus the average of other schools of a similar size.
-      analysis_electricity_baseload_chart_title: Electricity baseload for the last 12 months
       analysis_electricity_baseload_chart_explanation: Each point on this chart represents the average over the hours a school is closed on that day. You can click on a point in the chart and it will drill down to show you the usage on that day. Ideally, there should be little variation between different days and seasons.
       analysis_electricity_baseload_chart_subtitle: This chart shows the electricity baseload for your school between Month Year and Month Year for every day of the last year.
+      analysis_electricity_baseload_chart_title: Electricity baseload for the last 12 months
       analysis_long_term_trends: Long term trends
       analysis_meter_breakdown: Baseload breakdown by meter
       analysis_recent_trend: Recent trend

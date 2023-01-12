@@ -10,7 +10,7 @@ module Schools
 
       def insights
         @tab = :insights
-        render :show
+        render :page
       end
 
       def analysis
@@ -24,14 +24,14 @@ module Schools
         @chart_name = :baseload_lastyear
 
         @tab = :analysis
-        render :show
+        render :page
       end
 
       def learn_more
         @content = @advice_page.learn_more
 
         @tab = :learn_more
-        render :show
+        render :page
       end
 
       private
