@@ -5,7 +5,7 @@ module Admin
         @advice_page = AdvicePage.find(params[:advice_page_id])
         @activity_categories_and_types = ActivityCategory.listed_with_activity_types
         @positions = @advice_page.advice_page_activity_types.inject({}) do |positions, advice_page_activity_types|
-          positions[advice_page_activity_types.activity_type_id] = advive_page_activity_types.position
+          positions[advice_page_activity_types.activity_type_id] = advice_page_activity_types.position
           positions
         end
       end

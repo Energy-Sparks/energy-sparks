@@ -7,10 +7,12 @@ describe 'advice page management', type: :system do
 
   let!(:advice_page)   { create(:advice_page, key: 'baseload-summary') }
 
-  describe 'managing' do
+  before do
+    sign_in(admin)
+  end
 
+  describe 'managing the advice pages' do
     before do
-      sign_in(admin)
       visit admin_path
       click_on 'Advice Pages'
     end
@@ -36,6 +38,35 @@ describe 'advice page management', type: :system do
       expect(advice_page.learn_more.to_s).to include('english text here')
       expect(advice_page.learn_more_en.to_s).to include('english text here')
       expect(advice_page.learn_more_cy.to_s).to include('welsh text here')
+    end
+  end
+
+  describe 'managing associated activities' do
+    let!(:activity_category) { create(:activity_category)}
+    let!(:activity_type_1) { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category)}
+    let!(:activity_type_2) { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category)}
+
+    before do
+      visit admin_path
+      click_on 'Advice Pages'
+    end
+
+    it 'allows admin user to manage the activities' do
+      click_on 'Activity types (0)'
+
+      expect(page.find_field('Turn off the lights').value).to be_blank
+      expect(page.find_field('Turn down the heating').value).to be_blank
+
+      fill_in 'Turn down the heating', with: '1'
+
+      click_on 'Update associated activity type', match: :first
+      click_on 'Activity types'
+
+      expect(page.find_field('Turn off the lights').value).to be_blank
+      expect(page.find_field('Turn down the heating').value).to eq('1')
+
+      expect(advice_page.activity_types).to match_array([activity_type_2])
+      expect(advice_page.advice_page_activity_types.first.position).to eq(1)
     end
   end
 end
