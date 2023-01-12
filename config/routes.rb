@@ -317,6 +317,7 @@ Rails.application.routes.draw do
     resources :advice_pages, only: [:index, :edit, :update] do
       scope module: :advice_pages do
         resource :activity_types, only: [:show, :update]
+        resource :intervention_types, only: [:show, :update]
       end
     end
     resources :case_studies
