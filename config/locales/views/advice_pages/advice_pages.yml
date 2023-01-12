@@ -10,7 +10,14 @@ en:
       analysis_meter_breakdown: Baseload breakdown by meter
       analysis_recent_trend: Recent trend
       analysis_seasonal_variation: Seasonal variation
-      analysis_sections_html: "<p>The following sections provide more background and analysis on your electricity baseload</p>        \n<ul>\n  <li>Recent trend</li>\n  <li>Seasonal and weekday variation</li>\n  <li>Long term trends</li>\n  <li>Baseload breakdown by meter</li>\n</ul>"
+      analysis_sections_html: |-
+        <p>The following sections provide more background and analysis on your electricity baseload</p>
+        <ul>
+          <li>Recent trend</li>
+          <li>Seasonal and weekday variation</li>
+          <li>Long term trends</li>
+          <li>Baseload breakdown by meter</li>
+        </ul>
       analysis_summary: This section gives a more detailed analysis of your school’s electricity baseload and some things to look out for.
       analysis_title: Baseload Analysis
       analysis_usage: Your electricity baseload over the last 12 months was %{baseload_usage} kW. Other schools with a similar number of pupils have a baseload of %{benchmark_usage} kW.
