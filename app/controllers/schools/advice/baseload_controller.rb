@@ -12,11 +12,14 @@ module Schools
       end
 
       def analysis
-        @tab = 'analysis'
-        service = Baseload::BaseloadBenchmarkingService.new(aggregate_school)
-        @estimated_savings = service.estimated_savings(versus: :benchmark_school)
+        baseload_service = Baseload::BaseloadCalculationService.new(aggregate_school.aggregated_electricity_meters)
+        @baseload_usage = baseload_service.annual_baseload_usage
+
+        benchmark_service = Baseload::BaseloadBenchmarkingService.new(aggregate_school)
+        @benchmark_usage = benchmark_service.baseload_usage
+        @estimated_savings = benchmark_service.estimated_savings
+
         @chart_name = :baseload_lastyear
-        @chart_config = ChartManager.build_chart_config(ChartManager::STANDARD_CHART_CONFIGURATION[@chart_name])
       end
 
       def learn_more

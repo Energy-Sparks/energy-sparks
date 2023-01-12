@@ -1,26 +1,19 @@
 <h2><%= t('advice_pages.baseload.analysis_title') %></h2>
 
-<p>This section gives a more detailed analysis of your school’s electricity baseload and some things to look out for.</p>
+<p><%= t('advice_pages.baseload.analysis_summary') %></p>
 
-<p>The following sections provide more background and analysis on your electricity baseload</p>
+<%= t('advice_pages.baseload.analysis_sections_html') %>
 
-<ul>
-  <li>Recent trend</li>
-  <li>Seasonal and weekday variation</li>
-  <li>Long term trends</li>
-  <li>Baseload breakdown by meter</li>
-</ul>
+<h2><%= t('advice_pages.baseload.analysis_recent_trend') %></h2>
 
-<h2>Recent trend</h2>
+<p><%= t('advice_pages.baseload.analysis_usage', baseload_usage: format_target(@baseload_usage.kwh, :kw), benchmark_usage: format_target(@benchmark_usage.kwh, :kw)) %></p>
 
-<p>Your electricity baseload over the last 12 months was <%= @estimated_savings.kwh %> kW. Other schools with a similar number of pupils have a baseload of YY kW.</p>
-
-<% if @estimated_savings.£ > 0.0 %>
-  <p>Your baseload is high:</p>
-  <p>If you matched the baseload of other schools of the same size you would save <%= @estimated_savings.£ %></p>
+<% if advice_baseload_high?(@estimated_savings.£) %>
+  <p><%= t('advice_pages.baseload.analysis_baseload_high') %></p>
+  <p><%= t('advice_pages.baseload.analysis_baseload_high_details_html', estimated_savings: format_target(@estimated_savings.£, :£)) %></p>
 <% else %>
-  <p>Your baseload is low:</p>
-  <p>Your school's baseload is low, which is good and as a result you are saving <%= @estimated_savings.£ %> per year versus the average of other schools of a similar size</p>
+  <p><%= t('advice_pages.baseload.analysis_baseload_low') %></p>
+  <p><%= t('advice_pages.baseload.analysis_baseload_low_details_html', estimated_savings: format_target(@estimated_savings.£.abs, :£)) %></p>
 <% end %>
 
 
@@ -36,17 +29,17 @@ Chart id: baseload_lastyear
 
 <br/>
 
-<%= chart_tag(@school, @chart_name.to_s, chart_config: @chart_config, wrap: false, show_advice: false) %>
+<%= chart_tag(@school, @chart_name) %>
 
 
 <p>Each point on this chart represents the average over the hours a school is closed on that day. You can click on a point in the chart and it will drill down to show you the usage on that day.
 Ideally, there should be little variation between different days and seasons.</p>
 
 
-<h2>Long term trends</h2>
+<h2><%= t('advice_pages.baseload.analysis_long_term_trends') %></h2>
 
-<h2>Baseload breakdown by meter</h2>
+<h2><%= t('advice_pages.baseload.analysis_meter_breakdown') %></h2>
 
-<h2>Seasonal variation</h2>
+<h2><%= t('advice_pages.baseload.analysis_seasonal_variation') %></h2>
 
-<h2>Weekday variation</h2>
+<h2><%= t('advice_pages.baseload.analysis_weekday_variation') %></h2>
