@@ -1,4 +1,4 @@
-<h2><%= t('advice_pages.baseload.title') %></h2>
+<h2><%= t('advice_pages.baseload.analysis_title') %></h2>
 
 <p>This section gives a more detailed analysis of your school’s electricity baseload and some things to look out for.</p>
 
@@ -36,7 +36,7 @@ Chart id: baseload_lastyear
 
 <br/>
 
-<%= chart_tag(school, @chart_name.to_s, chart_config: @chart_config, wrap: false, show_advice: false) %>
+<%= chart_tag(@school, @chart_name.to_s, chart_config: @chart_config, wrap: false, show_advice: false) %>
 
 
 <p>Each point on this chart represents the average over the hours a school is closed on that day. You can click on a point in the chart and it will drill down to show you the usage on that day.

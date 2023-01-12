@@ -2,4 +2,7 @@
 en:
   advice_pages:
     baseload:
-      title: Baseload Analysis
+      analysis_title: Baseload Analysis
+      learn_more_title: What is baseload?
+      insights_title: What is baseload?
+

@@ -1,10 +1,9 @@
-<h1>Advice page: <%= @advice_page.key.humanize if @advice_page %></h1>
+<h1>Advice Pages</h1>
 
 <div class="advice-page-breadcrumb">
   <%= render(BreadcrumbsComponent.new) do |c| %>
     <% c.with_school(@school) %>
-    <% c.with_items([ { name: "Advice", href: school_advice_path(@school) },
-                      { name: @advice_page.key, href: school_advice_tab_path(@school, @advice_page.key) }]) %>
+    <% c.with_items([{ name: "Advice", href: school_advice_path(@school) }]) %>
   <% end %>
 </div>
 
@@ -12,7 +11,14 @@
   <div class="col-md-2 advice-page-nav">
     <%= render 'nav', school: @school, advice_pages: @advice_pages %>
   </div>
-  <div class="col-md-10 advice-page-tabs">
-    <%= render @tab, school: @school, advice_page: @advice_page, tab: @tab %>
+  <div class="col-md-10">
+    <h2>All pages</h2>
+    <% if @advice_pages.any? %>
+      <% @advice_pages.each do |advice_page| %>
+        <li><%= link_to advice_page.key, school_advice_tab_path(@school, advice_page.key) %></li>
+      <% end %>
+    <% else %>
+      <p>No advice pages</p>
+    <% end %>
   </div>
 </div>

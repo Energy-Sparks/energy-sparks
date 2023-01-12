@@ -1,16 +1,16 @@
 <ul class="nav nav-tabs locales">
   <li class="nav-item">
-    <a class="nav-link <%= 'active' if tab == 'insights' %>" href="<%= school_advice_tab_path(school, advice_page.key, 'insights') %>">
+    <a class="nav-link <%= 'active' if tab == 'insights' %>" href="<%= insights_school_advice_baseload_path(school) %>">
       Insights
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link <%= 'active' if tab == 'analysis' %>" href="<%= school_advice_tab_path(school, advice_page.key, 'analysis') %>">
+    <a class="nav-link <%= 'active' if tab == 'analysis' %>" href="<%= analysis_school_advice_baseload_path(school) %>">
       Analysis
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link <%= 'active' if tab == 'learn_more' %>" href="<%= school_advice_tab_path(school, advice_page.key, 'learn_more') %>">
+    <a class="nav-link <%= 'active' if tab == 'learn_more' %>" href="<%= learn_more_school_advice_baseload_path(school) %>">
       Learn More
     </a>
   </li>
