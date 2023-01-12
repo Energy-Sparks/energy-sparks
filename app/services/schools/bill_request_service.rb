@@ -6,7 +6,8 @@ module Schools
 
     def users
       users = @school.all_adult_school_users
-      users.sort_by(&:staff_role)
+      # sort by staff role, with missing staff roles last in the list
+      users.sort_by { |u| [u.staff_role ? 0 : 1, u.staff_role] }
     end
 
     def request_documentation!(users, meters = [])

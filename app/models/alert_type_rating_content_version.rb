@@ -64,13 +64,17 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   translates :management_priorities_title, backend: :action_text
   translates :analysis_title, type: :string, fallbacks: { cy: :en }
 
-  has_rich_text :email_content
+  translates :email_title, type: :string, fallbacks: { cy: :en }
+  translates :email_content, backend: :action_text
+  translates :sms_content, type: :string, fallbacks: { cy: :en }
+
   has_rich_text :find_out_more_content
 
   TX_ATTRIBUTE_MAPPING = {
     pupil_dashboard_title: { templated: true },
     management_dashboard_title: { templated: true },
     management_priorities_title: { templated: true },
+    email_content: { templated: true }
   }.freeze
 
   def self.functionality
@@ -118,7 +122,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   end
 
   def self.tx_resources
-    AlertTypeRating.with_dashboard_alerts.map(&:current_content)
+    AlertTypeRating.with_dashboard_email_sms_alerts.map(&:current_content)
   end
 
   def self.timing_fields

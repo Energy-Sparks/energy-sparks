@@ -1,8 +1,8 @@
-<h1 class="mb-3">Don't forget to set up your school on Energy Sparks</h1>
+<h1 class="mb-3"><%= t('onboarding_mailer.reminder_email.title') %></h1>
 
-<p>Thank you for enrolling <%=@school_onboarding.school_name%> with <a href="https://energysparks.uk">Energy Sparks</a>.</p>
-<p>We need some details from you about your school and your consent to publish your meter data on Energy Sparks.<p>
+<p><%= t('onboarding_mailer.reminder_email.paragraph_1_html', school_name: @school_onboarding.school_name) %></p>
+<p><%= t('onboarding_mailer.reminder_email.paragraph_2') %><p>
 
-<%= link_to 'Set up your school on Energy Sparks', onboarding_url(@school_onboarding), class: 'btn btn-primary mb-3 mt-3'%>
+<%= link_to t('onboarding_mailer.reminder_email.paragraph_3'), onboarding_url(@school_onboarding), class: 'btn btn-primary mb-3 mt-3'%>
 
-<p class="small">The Energy Sparks Team<p>
+<p class="small"><%= t('onboarding_mailer.reminder_email.the_energy_sparks_team') %><p>

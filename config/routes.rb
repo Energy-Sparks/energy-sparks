@@ -138,7 +138,12 @@ Rails.application.routes.draw do
         get "/#{tab}", to: redirect("/schools/%{school_id}/analysis")
       end
 
+      get 'advice', to: 'advice#index'
+      get 'advice/:key(/:tab)', to: 'advice#show', as: :advice_tab
+
       resources :analysis, controller: :analysis, only: [:index, :show]
+      resources :advice, controller: :advice, only: [:index, :show]
+
       resources :progress, controller: :progress, only: [:index] do
         collection do
           get :electricity
@@ -302,6 +307,7 @@ Rails.application.routes.draw do
         resource :confirmation, only: [:create], controller: 'confirmation'
       end
     end
+    resources :advice_pages, only: [:index, :edit, :update]
     resources :case_studies
     resources :dcc_consents, only: [:index]
     post 'dcc_consents/:mpxn/withdraw', to: 'dcc_consents#withdraw', as: :withdraw_dcc_consent
@@ -403,7 +409,12 @@ Rails.application.routes.draw do
     resources :global_meter_attributes
     resources :consents
     resources :transport_types
-    resources :data_sources
+    resources :data_sources do
+      scope module: :data_sources do
+        concerns :issueable
+      end
+    end
+
     resource :content_generation_run, controller: :content_generation_run
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index, :edit, :update, :destroy] do
       scope module: :school_onboardings do

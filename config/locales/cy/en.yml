@@ -1,49 +1,58 @@
+---
 cy:
   date:
     abbr_day_names:
-      - Sul
-      - Llun
-      - Maw
-      - Mer
-      - Iau
-      - Gwe
-      - Sad
+    - Sul
+    - Llun
+    - Maw
+    - Mer
+    - Iau
+    - Gwe
+    - Sad
     abbr_month_names:
-      - ''
-      - Ion
-      - Chwe
-      - Maw
-      - Ebr
-      - Mai
-      - Meh
-      - Gorff
-      - Awst
-      - Medi
-      - Hyd
-      - Tach
-      - Rhag
+    - ''
+    - Ion
+    - Chwe
+    - Maw
+    - Ebr
+    - Mai
+    - Meh
+    - Gorff
+    - Awst
+    - Medi
+    - Hyd
+    - Tach
+    - Rhag
+    calendar_period:
+      all_year: Trwy'r Flwyddyn
+      only_holidays: Gwyliau yn unig
+      term_times: Yn Ystod y Tmhorau
     day_names:
-      - Dydd Sul
-      - Dydd Llun
-      - Dydd Mawrth
-      - Dydd Mercher
-      - Dydd Iau
-      - Dydd Gwener
-      - Dydd Sadwrn
+    - Dydd Sul
+    - Dydd Llun
+    - Dydd Mawrth
+    - Dydd Mercher
+    - Dydd Iau
+    - Dydd Gwener
+    - Dydd Sadwrn
     month_names:
-      - ''
-      - Ionawr
-      - Chwefror
-      - Mawrth
-      - Ebrill
-      - Mai
-      - Mehefin
-      - Gorffennaf
-      - Awst
-      - Medi
-      - Hydref
-      - Tachwedd
-      - Rhagfyr
+    - ''
+    - Ionawr
+    - Chwefror
+    - Mawrth
+    - Ebrill
+    - Mai
+    - Mehefin
+    - Gorffennaf
+    - Awst
+    - Medi
+    - Hydref
+    - Tachwedd
+    - Rhagfyr
+    other:
+      everyday: Pob dydd
+      weekdays: Dyddiau'r wythnos
+      weekends: Penwythnosau
   support:
     array:
       last_word_connector: ", a "

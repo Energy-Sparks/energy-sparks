@@ -23,7 +23,7 @@ gem 'pg_search'
 gem 'calculate_in_group'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '2.1.3'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '2.3.8.2'
 #gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'aws-eb-test'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
@@ -33,7 +33,7 @@ gem 'statsample', git: 'https://github.com/Energy-Sparks/statsample', tag: '2.1.
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
-gem 'sass-rails'# Use SCSS for stylesheets
+#gem 'sass-rails'# Use SCSS for stylesheets
 gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
 gem 'momentjs-rails'
@@ -54,6 +54,7 @@ gem 'bootstrap-email'
 # Frontend
 gem 'bootstrap', '~> 4.3.0' # Use bootstrap for responsive layout
 gem 'simple_form'
+gem 'view_component'
 
 # JS Templating
 gem 'handlebars_assets'
@@ -163,3 +164,6 @@ group :test do
   gem 'shoulda-matchers'
   gem 'timecop'
 end
+
+gem 'sprockets', '3.7.2'
+gem 'sass-rails', '5.1.0'

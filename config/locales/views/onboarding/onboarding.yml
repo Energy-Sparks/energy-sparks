@@ -171,6 +171,8 @@ en:
         title: Edit account
         update_account: Update account
       form:
+        preferred_locale: Preferred language
+        preferred_locale_hint: Set your preferred language for using the website and receiving emails
         role: Role
         staff_accounts_have_access_hint: Staff accounts have access to all teacher and pupil functionality. School administrators can manage users and school details
         type: Type
@@ -185,6 +187,7 @@ en:
         admin: Admin?
         email: Email
         name: Name
+        preferred_locale: Preferred language
         role: Role
       title: Manage your school accounts
       when_you_have_finished_onboarding_message: When you have finished onboarding your school, new users will be sent an email to confirm their account and will then be asked to set a password for their account before it can be accessed.

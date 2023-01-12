@@ -25,6 +25,19 @@ RSpec.describe Schools::BillRequestService do
 
     end
 
+    context 'with group admin cluster user (without staff role)' do
+      let!(:school_admin)   { create(:school_admin, school: school)}
+      let!(:group_admin)    { create(:group_admin, school: school)}
+
+      before :each do
+        school.cluster_users << group_admin
+      end
+
+      it 'should return users with empty staff roles last' do
+        expect(service.users).to eq([school_admin, group_admin])
+      end
+    end
+
   end
 
   context '#request_documentation!' do

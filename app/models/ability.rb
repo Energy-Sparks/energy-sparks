@@ -81,7 +81,7 @@ class Ability
         :show, :usage, :show_pupils_dash,
         :update, :manage_school_times, :suggest_activity, :manage_users,
         :show_management_dash,
-        :read, :start_programme, :read_restricted_analysis
+        :read, :start_programme, :read_restricted_analysis, :read_restricted_advice
       ], School, school_scope
       can :manage, EstimatedAnnualConsumption, related_school_scope
       can :manage, SchoolTarget, related_school_scope
@@ -143,9 +143,11 @@ class Ability
       #pupils and volunteers can only read real cost data if their school is public
       if user.volunteer? || user.pupil?
         can :read_restricted_analysis, School, { id: user.school_id, visible: true, public: true }
+        can :read_restricted_advice, School, { id: user.school_id, visible: true, public: true }
       else
         #but staff can read it regardless
         can :read_restricted_analysis, School, { id: user.school_id, visible: true }
+        can :read_restricted_advice, School, { id: user.school_id, visible: true }
       end
       if user.staff? || user.volunteer?
         can :manage, SchoolTarget, school: { id: user.school_id, visible: true }
