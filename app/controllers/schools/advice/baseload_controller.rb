@@ -10,7 +10,6 @@ module Schools
 
       def insights
         @tab = :insights
-        render :page
       end
 
       def analysis
@@ -22,16 +21,13 @@ module Schools
         @estimated_savings = benchmark_service.estimated_savings
 
         @chart_name = :baseload_lastyear
-
         @tab = :analysis
-        render :page
       end
 
       def learn_more
         @content = @advice_page.learn_more
 
         @tab = :learn_more
-        render :page
       end
 
       private
