@@ -15,7 +15,7 @@
     <h2>All pages</h2>
     <% if @advice_pages.any? %>
       <% @advice_pages.each do |advice_page| %>
-        <li><%= link_to advice_page.key, advice_page_path(@school, advice_page) %></li>
+        <li><%= link_to advice_page.key.humanize, advice_page_path(@school, advice_page) %></li>
       <% end %>
     <% else %>
       <p>No advice pages</p>

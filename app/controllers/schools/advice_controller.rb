@@ -2,7 +2,11 @@ module Schools
   class AdviceController < ApplicationController
     load_and_authorize_resource :school
     skip_before_action :authenticate_user!
+
     before_action :load_advice_pages
+    before_action :load_advice_page, only: [:insights, :analysis, :learn_more]
+    before_action :set_tab_name, only: [:insights, :analysis, :learn_more]
+    before_action :check_authorisation, only: [:insights, :analysis, :learn_more]
 
     include SchoolAggregation
 
@@ -11,10 +15,13 @@ module Schools
 
     def learn_more
       @learn_more = @advice_page.learn_more
-      @tab = :learn_more
     end
 
     private
+
+    def set_tab_name
+      @tab = action_name.to_sym
+    end
 
     def load_advice_pages
       @advice_pages = AdvicePage.all

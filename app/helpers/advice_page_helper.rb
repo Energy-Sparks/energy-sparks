@@ -1,5 +1,5 @@
 module AdvicePageHelper
-  def advice_page_path(school, advice_page, tab = nil)
+  def advice_page_path(school, advice_page, tab = :insights)
     polymorphic_path([tab, school, :advice, advice_page.key.to_sym])
   end
 

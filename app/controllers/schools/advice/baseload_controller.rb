@@ -1,15 +1,8 @@
 module Schools
   module Advice
     class BaseloadController < AdviceController
-      before_action :load_advice_page, only: [:insights, :analysis, :learn_more]
-      before_action :check_authorisation, only: [:insights, :analysis, :learn_more]
-
       def show
         redirect_to insights_school_advice_baseload_path(@school)
-      end
-
-      def insights
-        @tab = :insights
       end
 
       def analysis
@@ -21,7 +14,6 @@ module Schools
         @estimated_savings = benchmark_service.estimated_savings
 
         @chart_name = :baseload_lastyear
-        @tab = :analysis
       end
 
       private
