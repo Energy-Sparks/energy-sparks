@@ -21,7 +21,7 @@ RSpec.describe "advice page", type: :system do
 
     it 'shows the advice page' do
       click_on key
-      expect(page).to have_content("Advice page: #{key.humanize}")
+      expect(page).to have_content("#{key.humanize} analysis and advice")
     end
 
     context 'when page is restricted' do
@@ -52,7 +52,7 @@ RSpec.describe "advice page", type: :system do
 
     it 'shows the advice page' do
       click_on key
-      expect(page).to have_content("Advice page: #{key.humanize}")
+      expect(page).to have_content("#{key.humanize} analysis and advice")
     end
 
     it 'shows the nav bar' do
@@ -114,7 +114,7 @@ RSpec.describe "advice page", type: :system do
       end
       it 'shows the restricted advice page' do
         click_on key
-        expect(page).to have_content("Advice page: #{key.humanize}")
+        expect(page).to have_content("#{key.humanize} analysis and advice")
       end
     end
   end
