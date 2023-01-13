@@ -4,9 +4,17 @@
 
   <p><%= t('advice_pages.baseload.analysis_summary') %></p>
 
-  <%= t('advice_pages.baseload.analysis_sections_html') %>
+  <p><%= t('advice_pages.baseload.analysis_sections') %></p>
 
-  <h2><%= t('advice_pages.baseload.analysis_recent_trend') %></h2>
+  <ul>
+    <li><%= link_to(t('advice_pages.baseload.analysis_recent_trend_title'), '#recent-trend') %></li>
+    <li><%= link_to(t('advice_pages.baseload.analysis_long_term_trends_title'), '#long-term-trends') %></li>
+    <li><%= link_to(t('advice_pages.baseload.analysis_meter_breakdown_title'), '#meter-breakdown') %></li>
+    <li><%= link_to(t('advice_pages.baseload.analysis_seasonal_variation_title'), '#seasonal-variation') %></li>
+    <li><%= link_to(t('advice_pages.baseload.analysis_weekday_variation_title'), '#weekday-variation') %></li>
+  </ul>
+
+  <h2 id="recent-trend" class="scrollable"><%= t('advice_pages.baseload.analysis_recent_trend_title') %></h2>
 
   <p><%= t('advice_pages.baseload.analysis_usage', baseload_usage: format_target(@baseload_usage.kwh, :kw), benchmark_usage: format_target(@benchmark_usage.kwh, :kw)) %></p>
 
@@ -20,18 +28,24 @@
 
   <h3><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_title') %></h3>
 
-  <h4><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_subtitle') %></h4>
+  <h4><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_subtitle', start_month_year: chart_start_month_year, end_month_year: chart_end_month_year) %></h4>
 
   <%= chart_tag(@school, @chart_name) %>
 
   <p><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_explanation') %></p>
 
-  <h2><%= t('advice_pages.baseload.analysis_long_term_trends') %></h2>
+  <% if !@multiple_meters %>
+    <p><%= t('advice_pages.baseload.analysis_multiple_meters_suggestion_html', link: link_to(t('advice_pages.baseload.analysis_meter_breakdown'), '#meter-breakdown')) %></p>
+  <% end %>
 
-  <h2><%= t('advice_pages.baseload.analysis_meter_breakdown') %></h2>
+  <%= t('advice_pages.baseload.analysis_baseload_chart_considerations_html') %>
 
-  <h2><%= t('advice_pages.baseload.analysis_seasonal_variation') %></h2>
+  <h2 id="long-term-trends"><%= t('advice_pages.baseload.analysis_long_term_trends_title') %></h2>
 
-  <h2><%= t('advice_pages.baseload.analysis_weekday_variation') %></h2>
+  <h2 id="meter-breakdown"><%= t('advice_pages.baseload.analysis_meter_breakdown_title') %></h2>
+
+  <h2 id="seasonal-variation"><%= t('advice_pages.baseload.analysis_seasonal_variation_title') %></h2>
+
+  <h2 id="weekday-variation"><%= t('advice_pages.baseload.analysis_weekday_variation_title') %></h2>
 
 <% end %>
