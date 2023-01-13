@@ -5,6 +5,9 @@ module Schools
         redirect_to insights_school_advice_baseload_path(@school)
       end
 
+      def insights
+      end
+
       def analysis
         baseload_service = Baseload::BaseloadCalculationService.new(aggregate_school.aggregated_electricity_meters)
         @baseload_usage = baseload_service.annual_baseload_usage
