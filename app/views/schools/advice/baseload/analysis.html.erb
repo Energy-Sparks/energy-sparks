@@ -14,7 +14,7 @@
     <li><%= link_to(t('advice_pages.baseload.analysis_weekday_variation_title'), '#weekday-variation') %></li>
   </ul>
 
-  <h2 id="recent-trend" class="scrollable"><%= t('advice_pages.baseload.analysis_recent_trend_title') %></h2>
+  <%= render 'schools/advice/section_title', section_id: 'recent-trend', section_title: t('advice_pages.baseload.analysis_recent_trend_title') %>
 
   <p><%= t('advice_pages.baseload.analysis_usage', baseload_usage: format_target(@baseload_usage.kwh, :kw), benchmark_usage: format_target(@benchmark_usage.kwh, :kw)) %></p>
 
@@ -40,12 +40,12 @@
 
   <%= t('advice_pages.baseload.analysis_baseload_chart_considerations_html') %>
 
-  <h2 id="long-term-trends"><%= t('advice_pages.baseload.analysis_long_term_trends_title') %></h2>
+  <%= render 'schools/advice/section_title', section_id: 'long-term-trends', section_title: t('advice_pages.baseload.analysis_long_term_trends_title') %>
 
-  <h2 id="meter-breakdown"><%= t('advice_pages.baseload.analysis_meter_breakdown_title') %></h2>
+  <%= render 'schools/advice/section_title', section_id: 'meter-breakdown', section_title: t('advice_pages.baseload.analysis_meter_breakdown_title') %>
 
-  <h2 id="seasonal-variation"><%= t('advice_pages.baseload.analysis_seasonal_variation_title') %></h2>
+  <%= render 'schools/advice/section_title', section_id: 'seasonal-variation', section_title: t('advice_pages.baseload.analysis_seasonal_variation_title') %>
 
-  <h2 id="weekday-variation"><%= t('advice_pages.baseload.analysis_weekday_variation_title') %></h2>
+  <%= render 'schools/advice/section_title', section_id: 'weekday-variation', section_title: t('advice_pages.baseload.analysis_weekday_variation_title') %>
 
 <% end %>
