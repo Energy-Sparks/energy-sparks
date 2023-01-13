@@ -18,6 +18,18 @@ describe AdvicePageHelper do
     end
   end
 
+  describe '.chart_start_month_year' do
+    it 'returns month and year' do
+      expect(helper.chart_start_month_year(Date.parse('20210101'))).to eq('December 2019')
+    end
+  end
+
+  describe '.chart_end_month_year' do
+    it 'returns month and year' do
+      expect(helper.chart_end_month_year(Date.parse('20210101'))).to eq('December 2020')
+    end
+  end
+
   describe '.advice_page_path' do
 
     it 'returns path to insights by default' do

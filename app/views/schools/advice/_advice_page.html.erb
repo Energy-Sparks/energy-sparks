@@ -1,5 +1,3 @@
-<h1><%= "Advice page: #{advice_page.key.humanize}" %></h1>
-
 <div class="advice-page-breadcrumb">
   <%= render(BreadcrumbsComponent.new) do |c| %>
     <% c.with_school(school) %>
@@ -14,6 +12,7 @@
     <%= render 'schools/advice/nav', school: school, advice_pages: advice_pages %>
   </div>
   <div class="col-md-10 advice-page-tabs">
+    <h1><%= "#{advice_page.key.humanize} #{t('advice_pages.analysis_and_advice')}" %></h1>
     <%= render 'schools/advice/advice_tabs', school: school, advice_page: advice_page, tab: tab %>
     <%= yield %>
   </div>
