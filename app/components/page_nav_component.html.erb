@@ -2,13 +2,14 @@
   <ul class="list-unstyled components" style="border: 1px solid grey;">
     <span class="header p-1" style="background-color: <%= bgcolor %>;"><%= icon %> <%= name %></span>
     <% sections.each do |section| %>
-    <li class="section">
-      <%= section %>
-      <ul class="list-unstyled collapse show" id="<%= section.id %>">
-        <% section.items.each do |item| %>
-          <%= item %>
-        <% end %>
-      </ul>
+      <li class="section">
+        <%= section %>
+        <ul class="list-unstyled collapse show" id="<%= section.id %>">
+          <% section.items.each do |item| %>
+            <%= item %>
+          <% end %>
+        </ul>
+      </li>
     <% end %>
   </ul>
 </div>

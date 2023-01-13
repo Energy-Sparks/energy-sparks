@@ -3,7 +3,7 @@
 class PageNavComponent < ViewComponent::Base
   renders_many :sections, 'SectionComponent'
 
-  attr_accessor :name, :bgcolor
+  attr_reader :name, :bgcolor
 
   def initialize(name: "Menu", icon: 'bars', bgcolor: '#232b49')
     @name = name
@@ -18,12 +18,13 @@ class PageNavComponent < ViewComponent::Base
   class SectionComponent < ViewComponent::Base
     renders_many :items, 'PageNavComponent::ItemComponent'
 
-    attr_accessor :bgcolor, :icon, :name
+    attr_reader :bgcolor, :icon, :name, :visible
 
-    def initialize(name: nil, bgcolor: nil, icon: nil)
+    def initialize(name: nil, bgcolor: nil, icon: nil, visible: true)
       @name = name
       @bgcolor = bgcolor
       @icon = icon
+      @visible = visible
     end
 
     def call
@@ -42,12 +43,12 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def render?
-      name
+      visible && name
     end
   end
 
   class ItemComponent < ViewComponent::Base
-    attr_accessor :name, :href
+    attr_reader :name, :href
 
     def initialize(name:, href:)
       @name = name

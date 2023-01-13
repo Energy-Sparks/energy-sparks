@@ -2,14 +2,14 @@
   <% c.with_section do |s| %>
     <% s.with_item(name: 'Total energy use', href: '#') %>
   <% end %>
-  <% c.with_section(name: "Electricity", icon: 'bolt', bgcolor: '#93e1f6') do |s| %>
+  <% c.with_section(name: "Electricity", icon: 'bolt', bgcolor: '#93e1f6', visible: @school.has_electricity?) do |s| %>
     <% s.with_item(name: 'Baseload', href: school_advice_baseload_path(@school)) %>
   <% end %>
-  <% c.with_section(name: "Gas", icon: 'fire', bgcolor: '#FF8438') do |s| %>
+  <% c.with_section(name: "Gas", icon: 'fire', bgcolor: '#FF8438', visible: @school.has_gas?) do |s| %>
   <% end %>
-  <% c.with_section(name: "Storage heaters", icon: 'sun', bgcolor: '#E097FC') do |s| %>
+  <% c.with_section(name: "Storage heaters", icon: 'sun', bgcolor: '#E097FC', visible: @school.has_storage_heaters?) do |s| %>
   <% end %>
-  <% c.with_section(name: "Solar", icon: 'fire-alt', bgcolor: '#50E3C2') do |s| %>
+  <% c.with_section(name: "Solar", icon: 'fire-alt', bgcolor: '#50E3C2', visible: @school.has_solar_pv?) do |s| %>
   <% end %>
   <% c.with_section(name: "Carbon", icon: 'circle', bgcolor: '#e6e6e6') do |s| %>
   <% end %>
