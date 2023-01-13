@@ -20,8 +20,8 @@ describe AdvicePageHelper do
 
   describe '.advice_page_path' do
 
-    it 'returns path to show' do
-      expect(helper.advice_page_path(school, advice_page)).to end_with("/schools/#{school.slug}/advice/baseload")
+    it 'returns path to insights by default' do
+      expect(helper.advice_page_path(school, advice_page)).to end_with("/schools/#{school.slug}/advice/baseload/insights")
     end
 
     it 'returns path to insights tab' do
