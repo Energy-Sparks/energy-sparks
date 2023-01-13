@@ -24,12 +24,6 @@ module Schools
         @tab = :analysis
       end
 
-      def learn_more
-        @content = @advice_page.learn_more
-
-        @tab = :learn_more
-      end
-
       private
 
       def load_advice_page

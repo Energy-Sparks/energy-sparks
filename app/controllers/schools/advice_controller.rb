@@ -2,12 +2,16 @@ module Schools
   class AdviceController < ApplicationController
     load_and_authorize_resource :school
     skip_before_action :authenticate_user!
-
     before_action :load_advice_pages
 
     include SchoolAggregation
 
     def show
+    end
+
+    def learn_more
+      @learn_more = @advice_page.learn_more
+      @tab = :learn_more
     end
 
     private
