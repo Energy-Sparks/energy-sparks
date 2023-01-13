@@ -1,6 +1,7 @@
 ---
 en:
   advice_pages:
+    analysis_and_advice: analysis and advice
     baseload:
       analysis_baseload_chart_considerations_html: |-
         <p>Consider the following things when observing this chart:</p>
