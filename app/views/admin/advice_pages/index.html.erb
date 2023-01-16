@@ -2,12 +2,16 @@
 
 <h1>Manage advice pages</h1>
 
+<p>
+ Use this page to manage the configuration of the new school advice pages.
+</p>
+
 <table class="table table-striped">
   <thead>
   <tr>
     <th>Key</th>
     <th>Restricted?</th>
-    <th></th>
+    <th>Manage</th>
   </tr>
   </thead>
   <tbody>
@@ -15,7 +19,10 @@
     <tr>
       <td><%= advice_page.key %></td>
       <td><%= y_n(advice_page.restricted) %></td>
-      <td><%= link_to 'Edit', edit_admin_advice_page_path(advice_page), class: 'btn'%></td>
+      <td>
+        <%= link_to 'Edit', edit_admin_advice_page_path(advice_page), class: 'btn'%>
+        <%= link_to "Activity types (#{advice_page.activity_types.count})", admin_advice_page_activity_types_path(advice_page), class: 'btn' %>
+      </td>
     </tr>
   <% end %>
   </tbody>

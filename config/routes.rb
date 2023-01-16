@@ -314,7 +314,11 @@ Rails.application.routes.draw do
         resource :confirmation, only: [:create], controller: 'confirmation'
       end
     end
-    resources :advice_pages, only: [:index, :edit, :update]
+    resources :advice_pages, only: [:index, :edit, :update] do
+      scope module: :advice_pages do
+        resource :activity_types, only: [:show, :update]
+      end
+    end
     resources :case_studies
     resources :dcc_consents, only: [:index]
     post 'dcc_consents/:mpxn/withdraw', to: 'dcc_consents#withdraw', as: :withdraw_dcc_consent
