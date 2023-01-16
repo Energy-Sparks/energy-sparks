@@ -3,12 +3,13 @@
 class PageNavComponent < ViewComponent::Base
   renders_many :sections, 'SectionComponent'
 
-  attr_reader :name, :bgcolor
+  attr_reader :name, :bgcolor, :href
 
-  def initialize(name: "Menu", icon: 'bars', bgcolor: '#232b49')
+  def initialize(name: "Menu", icon: 'home', bgcolor: nil, href: nil)
     @name = name
     @icon = icon
     @bgcolor = bgcolor
+    @href = href
   end
 
   def icon
@@ -28,10 +29,9 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def call
-      args = { class: 'p-1', 'data-toggle': 'collapse', 'aria-expanded': "true" }
+      args = { class: 'small nav-link toggler', 'data-toggle': 'collapse', 'data-target': "##{id}" }
       args[:style] = "background-color: #{bgcolor};" if bgcolor
-      output = link_to(name_text.html_safe, "##{id}", args)
-      output
+      link_to(name_text.html_safe, "##{id}", args)
     end
 
     def id
@@ -39,7 +39,9 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def name_text
-      icon ? "#{helpers.fa_icon(icon)} #{name}" : name
+      output = icon ? "#{helpers.fa_icon(icon)} #{name}" : name
+      output += content_tag(:span, helpers.toggler, class: 'pl-1 float-right')
+      output
     end
 
     def render?
@@ -56,8 +58,9 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def call
-      args = { class: 'pl-4', style: "flex: 1" }
-      content_tag(:li, link_to_unless_current(name, href), args)
+      args = { class: "small nav-link" }
+      args[:class] += ' current' if current_page?(href)
+      link_to(name, href, args)
     end
 
     def render?

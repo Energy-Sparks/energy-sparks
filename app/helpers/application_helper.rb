@@ -417,4 +417,8 @@ module ApplicationHelper
       end
     end
   end
+
+  def toggler
+    fa_icon("chevron-down") + fa_icon("chevron-right")
+  end
 end

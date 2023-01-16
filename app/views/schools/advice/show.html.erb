@@ -8,10 +8,10 @@
 </div>
 
 <div class="row">
-  <div class="col-md-2 advice-page-nav">
+  <div class="advice-page-nav">
     <%= render 'nav', school: @school, advice_pages: @advice_pages %>
   </div>
-  <div class="col-md-10">
+  <div class="advice-page-tabs col">
     <h2>All pages</h2>
     <% if @advice_pages.any? %>
       <% @advice_pages.each do |advice_page| %>

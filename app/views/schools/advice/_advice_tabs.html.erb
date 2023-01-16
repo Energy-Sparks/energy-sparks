@@ -1,4 +1,7 @@
 <ul class="nav nav-tabs locales">
+  <li class="nav-item d-md-none">
+    <a class="nav-link" href="" data-target="#page-nav" data-toggle="collapse"><%= fa_icon("bars") %></a>
+  </li>
   <li class="nav-item">
     <a class="nav-link <%= 'active' if tab == :insights %>" href="<%= advice_page_path(school, advice_page, :insights) %>">
       Insights

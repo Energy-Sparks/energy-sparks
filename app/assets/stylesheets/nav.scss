@@ -150,27 +150,20 @@
   margin-bottom: 3px;
 }
 
-
 /* to be moved to PageNav component */
-.page-nav .header {
-  color: white;
-  display: block;
+
+.page-nav .nav-item {
+  overflow: hidden;
 }
-.page-nav a {
-  text-decoration: none;
+
+.page-nav a.nav-link {
+  border-bottom: 1px solid $gray-300;
 }
-.page-nav a:hover {
-  text-decoration: underline;
+
+.page-nav a.nav-link:hover {
+  background-color: $light;
 }
-.page-nav .section a {
-  color: black;
-  display: block;
-}
-.page-nav li {
-  margin-top: 2px;
-  display: block;
-}
-.page-nav li:not(:last-child) {
-  display: block;
-  border-bottom: 1px solid #dee2e6;
+
+.page-nav a.nav-link.current {
+  font-weight: bolder;
 }
