@@ -1,4 +1,4 @@
-<%= render(PageNavComponent.new(name:'Advice Home', icon: 'home', href: school_advice_path(@school))) do |c| %>
+<%= render(PageNavComponent.new(name:'Advice Home', icon: 'home', href: school_advice_path(@school), options: { match_controller: true })) do |c| %>
   <% c.with_section do |s| %>
     <% s.with_item(name: 'Total energy use', href: '#') %>
   <% end %>
@@ -12,6 +12,6 @@
   <% end %>
   <% c.with_section(name: "Solar", icon: 'sun', bgcolor: '#ffc107', visible: @school.has_solar_pv?) do |s| %>
   <% end %>
-  <% c.with_section(name: "Carbon", icon: 'circle', bgcolor: '#e6e6e6') do |s| %>
+  <% c.with_section(name: "Carbon", icon: 'cloud-download-alt', bgcolor: '#e6e6e6') do |s| %>
   <% end %>
 <% end %>
