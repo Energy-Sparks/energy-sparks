@@ -176,7 +176,6 @@ describe NextActivitySuggesterWithFilter do
 
     it 'suggests other activities as a fallback' do
       suggestions = subject.suggest_for_school_targets(3)
-      #pry
       expect(suggestions).to match_array(programme_type.activity_types)
     end
 
