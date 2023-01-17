@@ -27,8 +27,6 @@ class ActivityTypeFilter
   def selected_key_stages
     if @query[:key_stage_ids].present?
       KeyStage.where(id: @query[:key_stage_ids])
-    elsif @school
-      @school.key_stages
     else
       KeyStage.none
     end
