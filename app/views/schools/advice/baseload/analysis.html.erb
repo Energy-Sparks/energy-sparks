@@ -30,7 +30,7 @@
   <% end %>
 
   <h4><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_title') %></h4>
-  <h5><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_subtitle', start_month_year: chart_start_month_year, end_month_year: chart_end_month_year) %></h5>
+  <h5><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_subtitle', start_month_year: chart_start_month_year(@end_date - 1.year), end_month_year: chart_end_month_year(@end_date)) %></h5>
 
   <div id="chart_wrapper_baseload_lastyear" class="chart-wrapper">
     <%= render 'shared/analysis_controls', chart_type: :baseload_lastyear, axis_controls: true, analysis_controls: true %>
@@ -53,7 +53,7 @@
   <p><%= t('advice_pages.baseload.analysis_long_term_trends_intro') %></p>
   <p><%= t('advice_pages.baseload.analysis_long_term_trends_table_description') %></p>
 
-  <%= render 'long_term_trends_table' %>
+  <%= render 'long_term_trends_table', annual_average_baseloads: @annual_average_baseloads %>
 
   <h4><%= t('advice_pages.baseload.analysis_electricity_long_term_baseload_chart_title') %></h4>
   <h5><%= t('advice_pages.baseload.analysis_electricity_long_term_baseload_chart_subtitle', start_month_year: chart_start_month_year, end_month_year: chart_end_month_year) %></h5>

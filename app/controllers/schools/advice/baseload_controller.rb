@@ -9,6 +9,10 @@ module Schools
       end
 
       def analysis
+        @start_date = aggregate_school.aggregated_electricity_meters.amr_data.start_date
+        @end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
+        @multiple_meters = @school.meters.electricity.count > 1
+
         baseload_service = Baseload::BaseloadCalculationService.new(aggregate_school.aggregated_electricity_meters)
         @baseload_usage = baseload_service.annual_baseload_usage
 
@@ -16,10 +20,21 @@ module Schools
         @benchmark_usage = benchmark_service.baseload_usage
         @estimated_savings = benchmark_service.estimated_savings
 
-        @multiple_meters = @school.meters.electricity.count > 1
+        @annual_average_baseloads = annual_average_baseloads(@start_date, @end_date)
       end
 
       private
+
+      def annual_average_baseloads(start_date, end_date)
+        (start_date.year..end_date.year).map do |year|
+          end_of_year = Date.new(year).end_of_year
+          baseload_service = Baseload::BaseloadCalculationService.new(aggregate_school.aggregated_electricity_meters, end_of_year)
+          {
+            year: year,
+            baseload_usage: baseload_service.annual_baseload_usage
+          }
+        end
+      end
 
       def load_advice_page
         @advice_page = AdvicePage.find_by_key(:baseload)
