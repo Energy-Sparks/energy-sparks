@@ -290,7 +290,7 @@ function enableAxisControls(chartContainer, chartData) {
         } else {
           $(this).prop('disabled', true);
         }
-        label = $("label[for='" + $(this).attr("id") + "']");
+        var label = $("label[for='" + $(this).attr("id") + "']");
         if(label) {
           if ($(label).text() == chartData.y_axis_label) {
             $(this).prop('checked', true);
