@@ -1,4 +1,4 @@
-<%= render(PageNavComponent.new(name:'Advice Home', icon: 'home', href: school_advice_path(@school), options: { match_controller: true })) do |c| %>
+<%= render(PageNavComponent.new(name:'Advice', icon: 'home', href: school_advice_path(@school), options: { match_controller: true })) do |c| %>
   <% c.with_section do |s| %>
     <% s.with_item(name: 'Total energy use', href: '#') %>
   <% end %>
