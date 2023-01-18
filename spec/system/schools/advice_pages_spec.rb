@@ -89,22 +89,39 @@ RSpec.describe "advice page", type: :system do
       end
     end
 
-    it 'shows analysis content' do
-      annual_baseload_usage = double(kwh: 123.0, £: 1.0, co2: 1.0)
-      baseload_usage = double(kwh: 1.0, £: 1.0, co2: 1.0)
-      estimated_savings = double(kwh: 1.0, £: 1.0, co2: 1.0)
+    context 'when showing analysis' do
 
-      baseload_calculation_service = double(annual_baseload_usage: annual_baseload_usage)
-      allow(Baseload::BaseloadCalculationService).to receive(:new).and_return(baseload_calculation_service)
+      let(:start_date)    { Date.new(2019,12,31)}
+      let(:end_date)    { Date.new(2020,12,31)}
+      let(:amr_data)    { double('amr-data') }
 
-      benchmark_calculation_service = double(baseload_usage: baseload_usage, estimated_savings: estimated_savings)
-      allow(Baseload::BaseloadBenchmarkingService).to receive(:new).and_return(benchmark_calculation_service)
+      let(:electricity_aggregate_meter)   { double('electricity-aggregated-meter')}
+      let(:meter_collection)        { double('meter-collection') }
 
-      click_on key
-      click_on 'Analysis'
-      within '.advice-page-tabs' do
-        expect(page).to have_content('Recent trend')
-        expect(page).to have_content('baseload over the last 12 months was 123 kW')
+      it 'shows analysis content' do
+        allow(amr_data).to receive(:start_date).and_return(start_date)
+        allow(amr_data).to receive(:end_date).and_return(end_date)
+        allow(electricity_aggregate_meter).to receive(:amr_data).and_return(amr_data)
+        allow(meter_collection).to receive(:aggregated_electricity_meters).and_return(electricity_aggregate_meter)
+
+        allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(meter_collection)
+
+        annual_baseload_usage = double(kwh: 123.0, £: 1.0, co2: 1.0)
+        baseload_usage = double(kwh: 1.0, £: 1.0, co2: 1.0)
+        estimated_savings = double(kwh: 1.0, £: 1.0, co2: 1.0)
+
+        baseload_calculation_service = double(annual_baseload_usage: annual_baseload_usage)
+        allow(Baseload::BaseloadCalculationService).to receive(:new).and_return(baseload_calculation_service)
+
+        benchmark_calculation_service = double(baseload_usage: baseload_usage, estimated_savings: estimated_savings)
+        allow(Baseload::BaseloadBenchmarkingService).to receive(:new).and_return(benchmark_calculation_service)
+
+        click_on key
+        click_on 'Analysis'
+        within '.advice-page-tabs' do
+          expect(page).to have_content('Recent trend')
+          expect(page).to have_content('baseload over the last 12 months was 123 kW')
+        end
       end
     end
 
