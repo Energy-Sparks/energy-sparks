@@ -105,8 +105,10 @@
 
   <% if @multiple_meters %>
     <p><%= t('advice_pages.baseload.analysis_weekday_variation_table_description') %></p>
+    <%= render 'weekday_variation_breakdown_table', intraweek_variation: @intraweek_variation, intraweek_variation_by_meter: @intraweek_variation_by_meter %>
+  <% else %>
+    <%= render 'weekday_variation_table', intraweek_variation: @intraweek_variation %>
   <% end %>
 
-  <%= render 'weekday_variation_table', intraweek_variation: @intraweek_variation %>
 
 <% end %>

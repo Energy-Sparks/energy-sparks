@@ -38,6 +38,14 @@ module Schools
 
         intraweek_baseload_service = Baseload::IntraweekBaseloadService.new(aggregate_school.aggregated_electricity_meters, @end_date)
         @intraweek_variation = intraweek_baseload_service.intraweek_variation
+
+        @intraweek_variation_by_meter = {}
+        if @multiple_meters
+          aggregate_school.electricity_meters.each do |meter|
+            intraweek_baseload_service = Baseload::IntraweekBaseloadService.new(meter, meter.amr_data.end_date)
+            @intraweek_variation_by_meter[meter.mpan_mprn] = intraweek_baseload_service.intraweek_variation
+          end
+        end
       end
 
       private
