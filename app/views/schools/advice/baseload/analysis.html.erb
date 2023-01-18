@@ -103,6 +103,6 @@
     <p><%= t('advice_pages.baseload.analysis_weekday_variation_table_description') %></p>
   <% end %>
 
-  <%= render 'weekday_variation_table' %>
+  <%= render 'weekday_variation_table', intraweek_variation: @intraweek_variation %>
 
 <% end %>

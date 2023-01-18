@@ -124,6 +124,10 @@ RSpec.describe "advice page", type: :system do
         seasonal_baseload_service = double(seasonal_variation: seasonal_variation)
         allow(Baseload::SeasonalBaseloadService).to receive(:new).and_return(seasonal_baseload_service)
 
+        intraweek_variation = double(max_day_kw: 1, min_day_kw: 2, percent_intraday_variation: 3, week_saving_kwh: 4)
+        intraweek_baseload_service = double(intraweek_variation: intraweek_variation)
+        allow(Baseload::IntraweekBaseloadService).to receive(:new).and_return(intraweek_baseload_service)
+
         click_on key
         click_on 'Analysis'
         within '.advice-page-tabs' do

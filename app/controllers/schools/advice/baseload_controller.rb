@@ -27,6 +27,9 @@ module Schools
 
         seasonal_baseload_service = Baseload::SeasonalBaseloadService.new(aggregate_school.aggregated_electricity_meters, @end_date)
         @seasonal_baseload_variation = seasonal_baseload_service.seasonal_variation
+
+        intraweek_baseload_service = Baseload::IntraweekBaseloadService.new(aggregate_school.aggregated_electricity_meters, @end_date)
+        @intraweek_variation = intraweek_baseload_service.intraweek_variation
       end
 
       private
