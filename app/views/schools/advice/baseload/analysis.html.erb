@@ -9,7 +9,9 @@
   <ul>
     <li><%= link_to(t('advice_pages.baseload.analysis_recent_trend_title'), '#recent-trend') %></li>
     <li><%= link_to(t('advice_pages.baseload.analysis_long_term_trends_title'), '#long-term-trends') %></li>
-    <li><%= link_to(t('advice_pages.baseload.analysis_meter_breakdown_title'), '#meter-breakdown') %></li>
+    <% if @multiple_meters %>
+      <li><%= link_to(t('advice_pages.baseload.analysis_meter_breakdown_title'), '#meter-breakdown') %></li>
+    <% end %>
     <li><%= link_to(t('advice_pages.baseload.analysis_seasonal_variation_title'), '#seasonal-variation') %></li>
     <li><%= link_to(t('advice_pages.baseload.analysis_weekday_variation_title'), '#weekday-variation') %></li>
   </ul>
@@ -30,7 +32,7 @@
   <% end %>
 
   <h4><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_title') %></h4>
-  <h5><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_subtitle', start_month_year: chart_start_month_year(@end_date - 1.year), end_month_year: chart_end_month_year(@end_date)) %></h5>
+  <h5><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_subtitle', start_month_year: month_year(@end_date - 1.year), end_month_year: month_year(@end_date)) %></h5>
 
   <div id="chart_wrapper_baseload_lastyear" class="chart-wrapper">
     <%= render 'shared/analysis_controls', chart_type: :baseload_lastyear, axis_controls: true, analysis_controls: true %>
@@ -56,7 +58,7 @@
   <%= render 'long_term_trends_table', annual_average_baseloads: @annual_average_baseloads %>
 
   <h4><%= t('advice_pages.baseload.analysis_electricity_long_term_baseload_chart_title') %></h4>
-  <h5><%= t('advice_pages.baseload.analysis_electricity_long_term_baseload_chart_subtitle', start_month_year: chart_start_month_year, end_month_year: chart_end_month_year) %></h5>
+  <h5><%= t('advice_pages.baseload.analysis_electricity_long_term_baseload_chart_subtitle', start_month_year: month_year(@start_date), end_month_year: month_year(@end_date.last_month)) %></h5>
 
   <div id="chart_wrapper_baseload_versus_benchmarks" class="chart-wrapper">
     <%= render 'shared/analysis_controls', chart_type: :baseload_versus_benchmarks, axis_controls: true, analysis_controls: true %>

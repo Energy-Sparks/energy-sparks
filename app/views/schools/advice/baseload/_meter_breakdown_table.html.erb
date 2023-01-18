@@ -1,8 +1,9 @@
 <table class="table table-sm">
   <thead class="thead-dark">
   <tr><th>Meter</th>
-    <th class="text-right">Average annual consumption (kW)</th>
+    <th class="text-right">Average annual baseload (kW)</th>
     <th class="text-right">Average annual cost (£)</th>
+    <th class="text-right">Change since previous year (show kW and % if possible)</th>
     <th class="text-right">% of total baseload</th>
   </tr></thead>
   <tbody>
@@ -11,6 +12,7 @@
       <td><%= mpan_mprn %></td>
       <td class="text-right"><%= format_target(baseload_meter_breakdown.baseload_kw(mpan_mprn), :kwh) %></td>
       <td class="text-right"><%= format_target(baseload_meter_breakdown.baseload_cost_£(mpan_mprn), :£) %></td>
+      <td class="text-right"></td>
       <td class="text-right"><%= format_target(baseload_meter_breakdown.percentage_baseload(mpan_mprn), :percent) %></td>
     </tr>
     <% end %>
