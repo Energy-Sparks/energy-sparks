@@ -6,23 +6,19 @@
     <th class="text-right">% of total baseload</th>
   </tr></thead>
   <tbody>
-  <tr>
-    <td>92000051383834</td>
-    <td class="text-right">0.73</td>
-    <td class="text-right">£960</td>
-    <td class="text-right">66%</td>
-  </tr>
-  <tr>
-    <td>Old building</td>
-    <td class="text-right">0.37</td>
-    <td class="text-right">£480</td>
-    <td class="text-right">34%</td>
-  </tr>
-  <tr class="table-success">
-    <td>Total</td>
-    <td class="text-right">1.1</td>
-    <td class="text-right">£1440</td>
-    <td class="text-right">100%</td>
-  </tr>
+    <% baseload_meter_breakdown.meters.each do |mpan_mprn| %>
+    <tr>
+      <td><%= mpan_mprn %></td>
+      <td class="text-right"><%= format_target(baseload_meter_breakdown.baseload_kw(mpan_mprn), :kwh) %></td>
+      <td class="text-right"><%= format_target(baseload_meter_breakdown.baseload_cost_£(mpan_mprn), :£) %></td>
+      <td class="text-right"><%= format_target(baseload_meter_breakdown.percentage_baseload(mpan_mprn), :percent) %></td>
+    </tr>
+    <% end %>
+    <tr class="table-success">
+      <td>Total</td>
+      <td class="text-right"><%= format_target(baseload_meter_breakdown.total_baseload_kw, :kwh) %></td>
+      <td class="text-right"></td>
+      <td class="text-right">100%</td>
+    </tr>
   </tbody>
 </table>

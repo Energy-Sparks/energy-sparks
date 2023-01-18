@@ -75,7 +75,7 @@
     <p><%= t('advice_pages.baseload.analysis_meter_breakdown_intro') %></p>
     <p><%= t('advice_pages.baseload.analysis_meter_breakdown_table_description') %></p>
 
-    <%= render 'meter_breakdown_table' %>
+    <%= render 'meter_breakdown_table', baseload_meter_breakdown: @baseload_meter_breakdown %>
 
   <% end %>
 
@@ -90,7 +90,7 @@
     <p><%= t('advice_pages.baseload.analysis_seasonal_variation_table_description') %></p>
   <% end %>
 
-  <%= render 'seasonal_variation_table' %>
+  <%= render 'seasonal_variation_table', seasonal_baseload_variation: @seasonal_baseload_variation %>
 
 
   <!--  WEEKDAY VARIATION -->

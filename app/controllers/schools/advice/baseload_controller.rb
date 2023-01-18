@@ -13,14 +13,20 @@ module Schools
         @end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
         @multiple_meters = @school.meters.electricity.count > 1
 
-        baseload_service = Baseload::BaseloadCalculationService.new(aggregate_school.aggregated_electricity_meters)
+        baseload_service = Baseload::BaseloadCalculationService.new(aggregate_school.aggregated_electricity_meters, @end_date)
         @baseload_usage = baseload_service.annual_baseload_usage
 
-        benchmark_service = Baseload::BaseloadBenchmarkingService.new(aggregate_school)
+        benchmark_service = Baseload::BaseloadBenchmarkingService.new(aggregate_school, @end_date)
         @benchmark_usage = benchmark_service.baseload_usage
         @estimated_savings = benchmark_service.estimated_savings
 
         @annual_average_baseloads = annual_average_baseloads(@start_date, @end_date)
+
+        baseload_meter_breakdown_service = Baseload::BaseloadMeterBreakdownService.new(aggregate_school)
+        @baseload_meter_breakdown = baseload_meter_breakdown_service.calculate_breakdown
+
+        seasonal_baseload_service = Baseload::SeasonalBaseloadService.new(aggregate_school.aggregated_electricity_meters, @end_date)
+        @seasonal_baseload_variation = seasonal_baseload_service.seasonal_variation
       end
 
       private

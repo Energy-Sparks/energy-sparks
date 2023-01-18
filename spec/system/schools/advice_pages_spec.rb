@@ -116,6 +116,14 @@ RSpec.describe "advice page", type: :system do
         benchmark_calculation_service = double(baseload_usage: baseload_usage, estimated_savings: estimated_savings)
         allow(Baseload::BaseloadBenchmarkingService).to receive(:new).and_return(benchmark_calculation_service)
 
+        meter_breakdown = double(meters: ['123'], baseload_kw: 1, baseload_cost_£: 2, percentage_baseload: 3, total_baseload_kw: 4)
+        baseload_breakdown_service = double(calculate_breakdown: meter_breakdown)
+        allow(Baseload::BaseloadMeterBreakdownService).to receive(:new).and_return(baseload_breakdown_service)
+
+        seasonal_variation = double(winter_kw: 1, summer_kw: 2, percentage: 3)
+        seasonal_baseload_service = double(seasonal_variation: seasonal_variation)
+        allow(Baseload::SeasonalBaseloadService).to receive(:new).and_return(seasonal_baseload_service)
+
         click_on key
         click_on 'Analysis'
         within '.advice-page-tabs' do
