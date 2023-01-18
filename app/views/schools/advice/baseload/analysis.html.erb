@@ -68,13 +68,16 @@
 
   <!--  METER BREAKDOWN -->
 
-  <%= render 'schools/advice/section_title', section_id: 'meter-breakdown', section_title: t('advice_pages.baseload.analysis_meter_breakdown_title') %>
+  <% if @multiple_meters %>
 
-  <p><%= t('advice_pages.baseload.analysis_meter_breakdown_intro') %></p>
-  <p><%= t('advice_pages.baseload.analysis_meter_breakdown_table_description') %></p>
+    <%= render 'schools/advice/section_title', section_id: 'meter-breakdown', section_title: t('advice_pages.baseload.analysis_meter_breakdown_title') %>
 
-  <%= render 'meter_breakdown_table' %>
+    <p><%= t('advice_pages.baseload.analysis_meter_breakdown_intro') %></p>
+    <p><%= t('advice_pages.baseload.analysis_meter_breakdown_table_description') %></p>
 
+    <%= render 'meter_breakdown_table' %>
+
+  <% end %>
 
   <!--  SEASONAL VARIATION -->
 
@@ -82,7 +85,11 @@
   <p><%= t('advice_pages.baseload.analysis_seasonal_variation_intro_1') %></p>
   <p><%= t('advice_pages.baseload.analysis_seasonal_variation_intro_2') %></p>
 
-  <p><%= t('advice_pages.baseload.analysis_seasonal_variation_table_description') %></p>
+
+  <% if @multiple_meters %>
+    <p><%= t('advice_pages.baseload.analysis_seasonal_variation_table_description') %></p>
+  <% end %>
+
   <%= render 'seasonal_variation_table' %>
 
 
@@ -92,7 +99,10 @@
   <p><%= t('advice_pages.baseload.analysis_weekday_variation_intro_1') %></p>
   <p><%= t('advice_pages.baseload.analysis_weekday_variation_intro_2') %></p>
 
-  <p><%= t('advice_pages.baseload.analysis_weekday_variation_table_description') %></p>
+  <% if @multiple_meters %>
+    <p><%= t('advice_pages.baseload.analysis_weekday_variation_table_description') %></p>
+  <% end %>
+
   <%= render 'weekday_variation_table' %>
 
 <% end %>
