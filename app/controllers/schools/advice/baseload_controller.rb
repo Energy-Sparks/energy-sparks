@@ -16,7 +16,6 @@ module Schools
         @benchmark_usage = benchmark_service.baseload_usage
         @estimated_savings = benchmark_service.estimated_savings
 
-        @chart_name = :baseload_lastyear
         @multiple_meters = @school.meters.electricity.count > 1
       end
 
