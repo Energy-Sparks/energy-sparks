@@ -14,6 +14,9 @@
     <li><%= link_to(t('advice_pages.baseload.analysis_weekday_variation_title'), '#weekday-variation') %></li>
   </ul>
 
+
+  <!--  RECENT TREND -->
+
   <%= render 'schools/advice/section_title', section_id: 'recent-trend', section_title: t('advice_pages.baseload.analysis_recent_trend_title') %>
 
   <p><%= t('advice_pages.baseload.analysis_usage', baseload_usage: format_target(@baseload_usage.kwh, :kw), benchmark_usage: format_target(@benchmark_usage.kwh, :kw)) %></p>
@@ -26,26 +29,70 @@
     <p><%= t('advice_pages.baseload.analysis_baseload_low_details_html', estimated_savings: format_target(@estimated_savings.£.abs, :£)) %></p>
   <% end %>
 
-  <h3><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_title') %></h3>
+  <h4><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_title') %></h4>
+  <h5><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_subtitle', start_month_year: chart_start_month_year, end_month_year: chart_end_month_year) %></h5>
 
-  <h4><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_subtitle', start_month_year: chart_start_month_year, end_month_year: chart_end_month_year) %></h4>
-
-  <%= chart_tag(@school, @chart_name) %>
+  <div id="chart_wrapper_baseload_lastyear" class="chart-wrapper">
+    <%= render 'shared/analysis_controls', chart_type: :baseload_lastyear, axis_controls: true, analysis_controls: true %>
+    <%= chart_tag(@school, :baseload_lastyear, no_zoom: true, wrap: false, chart_config: create_chart_config(@school, :baseload_lastyear, nil)) %>
+  </div>
 
   <p><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_explanation') %></p>
 
-  <% if !@multiple_meters %>
+  <% if @multiple_meters %>
     <p><%= t('advice_pages.baseload.analysis_multiple_meters_suggestion_html', link: link_to(t('advice_pages.baseload.analysis_meter_breakdown'), '#meter-breakdown')) %></p>
   <% end %>
 
   <%= t('advice_pages.baseload.analysis_baseload_chart_considerations_html') %>
 
+
+  <!--  LONG TERM TRENDS -->
+
   <%= render 'schools/advice/section_title', section_id: 'long-term-trends', section_title: t('advice_pages.baseload.analysis_long_term_trends_title') %>
+
+  <p><%= t('advice_pages.baseload.analysis_long_term_trends_intro') %></p>
+  <p><%= t('advice_pages.baseload.analysis_long_term_trends_table_description') %></p>
+
+  <%= render 'long_term_trends_table' %>
+
+  <h4><%= t('advice_pages.baseload.analysis_electricity_long_term_baseload_chart_title') %></h4>
+  <h5><%= t('advice_pages.baseload.analysis_electricity_long_term_baseload_chart_subtitle', start_month_year: chart_start_month_year, end_month_year: chart_end_month_year) %></h5>
+
+  <div id="chart_wrapper_baseload_versus_benchmarks" class="chart-wrapper">
+    <%= render 'shared/analysis_controls', chart_type: :baseload_versus_benchmarks, axis_controls: true, analysis_controls: true %>
+    <%= chart_tag(@school, :baseload_versus_benchmarks, no_zoom: true, wrap: false, chart_config: create_chart_config(@school, :baseload_versus_benchmarks, nil)) %>
+  </div>
+
+  <p><%= t('advice_pages.baseload.analysis_electricity_long_term_baseload_chart_explanation') %></p>
+
+
+  <!--  METER BREAKDOWN -->
 
   <%= render 'schools/advice/section_title', section_id: 'meter-breakdown', section_title: t('advice_pages.baseload.analysis_meter_breakdown_title') %>
 
+  <p><%= t('advice_pages.baseload.analysis_meter_breakdown_intro') %></p>
+  <p><%= t('advice_pages.baseload.analysis_meter_breakdown_table_description') %></p>
+
+  <%= render 'meter_breakdown_table' %>
+
+
+  <!--  SEASONAL VARIATION -->
+
   <%= render 'schools/advice/section_title', section_id: 'seasonal-variation', section_title: t('advice_pages.baseload.analysis_seasonal_variation_title') %>
+  <p><%= t('advice_pages.baseload.analysis_seasonal_variation_intro_1') %></p>
+  <p><%= t('advice_pages.baseload.analysis_seasonal_variation_intro_2') %></p>
+
+  <p><%= t('advice_pages.baseload.analysis_seasonal_variation_table_description') %></p>
+  <%= render 'seasonal_variation_table' %>
+
+
+  <!--  WEEKDAY VARIATION -->
 
   <%= render 'schools/advice/section_title', section_id: 'weekday-variation', section_title: t('advice_pages.baseload.analysis_weekday_variation_title') %>
+  <p><%= t('advice_pages.baseload.analysis_weekday_variation_intro_1') %></p>
+  <p><%= t('advice_pages.baseload.analysis_weekday_variation_intro_2') %></p>
+
+  <p><%= t('advice_pages.baseload.analysis_weekday_variation_table_description') %></p>
+  <%= render 'weekday_variation_table' %>
 
 <% end %>
