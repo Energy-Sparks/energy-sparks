@@ -74,7 +74,9 @@ class AlertTypeRatingContentVersion < ApplicationRecord
     pupil_dashboard_title: { templated: true },
     management_dashboard_title: { templated: true },
     management_priorities_title: { templated: true },
-    email_content: { templated: true }
+    email_content: { templated: true },
+    email_title: { templated: true },
+    sms_content: { templated: true }
   }.freeze
 
   def self.functionality
@@ -118,6 +120,12 @@ class AlertTypeRatingContentVersion < ApplicationRecord
       return alert_type_rating.management_dashboard_alert_active?
     when :management_priorities_title
       return alert_type_rating.management_priorities_active?
+    when :email_title
+      return alert_type_rating.email_active?
+    when :email_content
+      return alert_type_rating.email_active?
+    when :sms_content
+      return alert_type_rating.sms_active?
     end
   end
 

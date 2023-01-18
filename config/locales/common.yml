@@ -3,6 +3,7 @@ en:
   co2: CO2
   common:
     application: Energy Sparks
+    back_to_top: Back to top
     bar_charts: Bar charts
     confirm: Are you sure?
     data: data
