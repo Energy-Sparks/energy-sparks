@@ -121,7 +121,8 @@ RSpec.describe "advice page", type: :system do
         allow(Baseload::BaseloadMeterBreakdownService).to receive(:new).and_return(baseload_breakdown_service)
 
         seasonal_variation = double(winter_kw: 1, summer_kw: 2, percentage: 3)
-        seasonal_baseload_service = double(seasonal_variation: seasonal_variation)
+        estimated_costs = double(£: 1, co2: 2)
+        seasonal_baseload_service = double(seasonal_variation: seasonal_variation, estimated_costs: estimated_costs)
         allow(Baseload::SeasonalBaseloadService).to receive(:new).and_return(seasonal_baseload_service)
 
         intraweek_variation = double(max_day_kw: 1, min_day_kw: 2, percent_intraday_variation: 3, week_saving_kwh: 4)

@@ -61,7 +61,19 @@ module Schools
 
       def seasonal_baseload_variation(meter_collection, end_date)
         seasonal_baseload_service = Baseload::SeasonalBaseloadService.new(meter_collection.aggregated_electricity_meters, end_date)
-        seasonal_baseload_service.seasonal_variation
+        variation = seasonal_baseload_service.seasonal_variation
+        saving = seasonal_baseload_service.estimated_costs
+        build_seasonal_variation(variation, saving)
+      end
+
+      def build_seasonal_variation(variation, saving)
+        OpenStruct.new(
+          winter_kw: variation.winter_kw,
+          summer_kw: variation.summer_kw,
+          percentage: variation.percentage,
+          estimated_saving_£: saving.£,
+          estimated_saving_co2: saving.co2
+        )
       end
 
       def seasonal_baseload_variation_by_meter(meter_collection)
@@ -69,7 +81,9 @@ module Schools
         if meter_collection.electricity_meters.count > 1
           meter_collection.electricity_meters.each do |meter|
             seasonal_baseload_service = Baseload::SeasonalBaseloadService.new(meter, meter.amr_data.end_date)
-            variation_by_meter[meter.mpan_mprn] = seasonal_baseload_service.seasonal_variation
+            variation = seasonal_baseload_service.seasonal_variation
+            saving = seasonal_baseload_service.estimated_costs
+            variation_by_meter[meter.mpan_mprn] = build_seasonal_variation(variation, saving)
           end
         end
         variation_by_meter

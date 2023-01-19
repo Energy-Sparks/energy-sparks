@@ -24,6 +24,9 @@ require:
 
 
 # Rails cops
+Naming/AsciiIdentifiers:
+  Exclude:
+    - 'app/controllers/schools/advice/baseload_controller.rb'
 Security/Eval:
   Exclude:
     - 'app/services/mailchimp_api.rb'

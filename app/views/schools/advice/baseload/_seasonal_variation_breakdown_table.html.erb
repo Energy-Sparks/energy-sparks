@@ -16,8 +16,8 @@
       <td class="text-right"><%= format_target(baseload_variation.winter_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(baseload_variation.summer_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(baseload_variation.percentage, :percent) %></td>
-      <td class="text-right"></td>
-      <td class="text-right"></td>
+      <td class="text-right"><%= format_target(baseload_variation.estimated_saving_£, :£) %></td>
+      <td class="text-right"><%= format_target(baseload_variation.estimated_saving_co2, :kg) %></td>
     </tr>
     <% end %>
     <tr class="table-success">
@@ -25,8 +25,8 @@
       <td class="text-right"><%= format_target(seasonal_baseload_variation.winter_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(seasonal_baseload_variation.summer_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(seasonal_baseload_variation.percentage, :percent) %></td>
-      <td class="text-right"></td>
-      <td class="text-right"></td>
+      <td class="text-right"><%= format_target(seasonal_baseload_variation.estimated_saving_£, :£) %></td>
+      <td class="text-right"><%= format_target(seasonal_baseload_variation.estimated_saving_co2, :kg) %></td>
     </tr>
   </tbody>
 </table>
