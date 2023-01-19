@@ -89,9 +89,21 @@ module Schools
         variation_by_meter
       end
 
+      def build_intraweek_variation(variation, saving)
+        OpenStruct.new(
+          max_day_kw: variation.max_day_kw,
+          min_day_kw: variation.min_day_kw,
+          percent_intraday_variation: variation.percent_intraday_variation,
+          estimated_saving_£: saving.£,
+          estimated_saving_co2: saving.co2
+        )
+      end
+
       def intraweek_variation(meter_collection, end_date)
         intraweek_baseload_service = Baseload::IntraweekBaseloadService.new(meter_collection.aggregated_electricity_meters, end_date)
-        intraweek_baseload_service.intraweek_variation
+        variation = intraweek_baseload_service.intraweek_variation
+        saving = intraweek_baseload_service.estimated_costs
+        build_intraweek_variation(variation, saving)
       end
 
       def intraweek_variation_by_meter(meter_collection)
@@ -99,7 +111,9 @@ module Schools
         if meter_collection.electricity_meters.count > 1
           meter_collection.electricity_meters.each do |meter|
             intraweek_baseload_service = Baseload::IntraweekBaseloadService.new(meter, meter.amr_data.end_date)
-            variation_by_meter[meter.mpan_mprn] = intraweek_baseload_service.intraweek_variation
+            variation = intraweek_baseload_service.intraweek_variation
+            saving = intraweek_baseload_service.estimated_costs
+            variation_by_meter[meter.mpan_mprn] = build_intraweek_variation(variation, saving)
           end
         end
         variation_by_meter

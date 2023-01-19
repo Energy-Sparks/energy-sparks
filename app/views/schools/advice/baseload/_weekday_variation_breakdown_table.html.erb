@@ -5,7 +5,8 @@
       <th class="text-right">Highest day baseload (kW)</th>
       <th class="text-right">Lowest day baseload (kW)</th>
       <th class="text-right">Percentage difference (%)</th>
-      <th class="text-right">Potential saving (kWh)</th>
+      <th class="text-right">Potential saving (£)</th>
+      <th class="text-right">CO2 reduction (kg)</th>
     </tr>
   </thead>
   <tbody>
@@ -15,7 +16,8 @@
       <td class="text-right"><%= format_target(variation.max_day_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(variation.min_day_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(variation.percent_intraday_variation, :percent) %></td>
-      <td class="text-right"><%= format_target(variation.week_saving_kwh, :kwh) %></td>
+      <td class="text-right"><%= format_target(variation.estimated_saving_£, :£) %></td>
+      <td class="text-right"><%= format_target(variation.estimated_saving_co2, :kg) %></td>
     </tr>
     <% end %>
     <tr class="table-success">
@@ -23,7 +25,8 @@
       <td class="text-right"><%= format_target(intraweek_variation.max_day_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(intraweek_variation.min_day_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(intraweek_variation.percent_intraday_variation, :percent) %></td>
-      <td class="text-right"><%= format_target(intraweek_variation.week_saving_kwh, :kwh) %></td>
+      <td class="text-right"><%= format_target(intraweek_variation.estimated_saving_£, :£) %></td>
+      <td class="text-right"><%= format_target(intraweek_variation.estimated_saving_co2, :kg) %></td>
     </tr>
   </tbody>
 </table>
