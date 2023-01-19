@@ -18,4 +18,8 @@ module AdvicePageHelper
   def advice_baseload_high?(val)
     val > 0.0
   end
+
+  def format_rating(rating)
+    rating > 4 ? "Limited variation" : "Large variation"
+  end
 end

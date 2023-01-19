@@ -1,6 +1,7 @@
 <table class="table table-sm">
   <thead class="thead-dark">
     <tr>
+      <th class="text-right">Assessment</th>
       <th class="text-right">Highest day baseload (kW)</th>
       <th class="text-right">Lowest day baseload (kW)</th>
       <th class="text-right">Percentage difference (%)</th>
@@ -10,8 +11,10 @@
   </thead>
   <tbody>
     <tr>
+      <td class="text-right"><%= format_rating(intraweek_variation.variation_rating) %></td>
       <td class="text-right"><%= format_target(intraweek_variation.max_day_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(intraweek_variation.min_day_kw, :kwh) %></td>
+      <td class="text-right"><%= format_target(intraweek_variation.percent_intraday_variation, :r2) %></td>
       <td class="text-right"><%= format_target(intraweek_variation.percent_intraday_variation, :percent) %></td>
       <td class="text-right"><%= format_target(intraweek_variation.estimated_saving_£, :£) %></td>
       <td class="text-right"><%= format_target(intraweek_variation.estimated_saving_co2, :kg) %></td>

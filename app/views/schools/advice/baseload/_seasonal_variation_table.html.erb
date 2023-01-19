@@ -1,20 +1,22 @@
 <table class="pt-4 table table-sm">
   <thead class="thead-dark">
     <tr>
+      <th class="text-right">Assessment</th>
       <th class="text-right">Baseload in winter (kW)</th>
       <th class="text-right">Baseload in summer (kW)</th>
-      <th class="text-right">Percentage</th>
+      <th class="text-right">Percentage difference (%)</th>
       <th class="text-right">Potential saving (£)</th>
       <th class="text-right">CO2 reduction (kg)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td class="text-right"><%= format_target(seasonal_baseload_variation.winter_kw, :kwh) %></td>
-      <td class="text-right"><%= format_target(seasonal_baseload_variation.summer_kw, :kwh) %></td>
-      <td class="text-right"><%= format_target(seasonal_baseload_variation.percentage, :percent) %></td>
-      <td class="text-right"><%= format_target(seasonal_baseload_variation.estimated_saving_£, :£) %></td>
-      <td class="text-right"><%= format_target(seasonal_baseload_variation.estimated_saving_co2, :kg) %></td>
+      <td class="text-right"><%= format_rating(seasonal_variation.variation_rating) %></td>
+      <td class="text-right"><%= format_target(seasonal_variation.winter_kw, :kwh) %></td>
+      <td class="text-right"><%= format_target(seasonal_variation.summer_kw, :kwh) %></td>
+      <td class="text-right"><%= format_target(seasonal_variation.percentage, :r2) %></td>
+      <td class="text-right"><%= format_target(seasonal_variation.estimated_saving_£, :£) %></td>
+      <td class="text-right"><%= format_target(seasonal_variation.estimated_saving_co2, :kg) %></td>
     </tr>
   </tbody>
 </table>

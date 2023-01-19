@@ -19,8 +19,8 @@ module Schools
         @annual_average_baseloads = annual_average_baseloads(aggregate_school, @start_date, @end_date)
         @baseload_meter_breakdown = baseload_meter_breakdown(aggregate_school)
 
-        @seasonal_baseload_variation = seasonal_baseload_variation(aggregate_school, @end_date)
-        @seasonal_baseload_variation_by_meter = seasonal_baseload_variation_by_meter(aggregate_school)
+        @seasonal_variation = seasonal_variation(aggregate_school, @end_date)
+        @seasonal_variation_by_meter = seasonal_variation_by_meter(aggregate_school)
 
         @intraweek_variation = intraweek_variation(aggregate_school, @end_date)
         @intraweek_variation_by_meter = intraweek_variation_by_meter(aggregate_school)
@@ -59,14 +59,14 @@ module Schools
         baseload_meter_breakdown_service.calculate_breakdown
       end
 
-      def seasonal_baseload_variation(meter_collection, end_date)
+      def seasonal_variation(meter_collection, end_date)
         seasonal_baseload_service = Baseload::SeasonalBaseloadService.new(meter_collection.aggregated_electricity_meters, end_date)
         variation = seasonal_baseload_service.seasonal_variation
         saving = seasonal_baseload_service.estimated_costs
         build_seasonal_variation(variation, saving)
       end
 
-      def seasonal_baseload_variation_by_meter(meter_collection)
+      def seasonal_variation_by_meter(meter_collection)
         variation_by_meter = {}
         if meter_collection.electricity_meters.count > 1
           meter_collection.electricity_meters.each do |meter|
@@ -99,13 +99,23 @@ module Schools
         variation_by_meter
       end
 
+      def variation_rating(variation_percentage)
+        calculate_rating_from_range(0, 0.50, variation_percentage.abs)
+      end
+
+      # from analytics: lib/dashboard/charting_and_reports/content_base.rb
+      def calculate_rating_from_range(good_value, bad_value, actual_value)
+        [10.0 * [(actual_value - bad_value) / (good_value - bad_value), 0.0].max, 10.0].min.round(1)
+      end
+
       def build_seasonal_variation(variation, saving)
         OpenStruct.new(
           winter_kw: variation.winter_kw,
           summer_kw: variation.summer_kw,
           percentage: variation.percentage,
           estimated_saving_£: saving.£,
-          estimated_saving_co2: saving.co2
+          estimated_saving_co2: saving.co2,
+          variation_rating: variation_rating(variation.percentage)
         )
       end
 
@@ -115,7 +125,8 @@ module Schools
           min_day_kw: variation.min_day_kw,
           percent_intraday_variation: variation.percent_intraday_variation,
           estimated_saving_£: saving.£,
-          estimated_saving_co2: saving.co2
+          estimated_saving_co2: saving.co2,
+          variation_rating: variation_rating(variation.percent_intraday_variation)
         )
       end
 
