@@ -1,8 +1,16 @@
-<h2>Pages</h2>
-<% if advice_pages.any? %>
-  <% advice_pages.each do |advice_page| %>
-    <li><%= link_to advice_page.key, school_advice_tab_path(school, advice_page.key) %></li>
+<%= render(PageNavComponent.new(name:'Menu', icon: 'bars', bgcolor: '#232b49')) do |c| %>
+  <% c.with_section do |s| %>
+    <% s.with_item(name: 'Total energy use', href: '#') %>
   <% end %>
-<% else %>
-  <p>No advice pages</p>
+  <% c.with_section(name: "Electricity", icon: 'bolt', bgcolor: '#93e1f6') do |s| %>
+    <% s.with_item(name: 'Baseload', href: school_advice_baseload_path(@school)) %>
+  <% end %>
+  <% c.with_section(name: "Gas", icon: 'fire', bgcolor: '#FF8438') do |s| %>
+  <% end %>
+  <% c.with_section(name: "Storage heaters", icon: 'sun', bgcolor: '#E097FC') do |s| %>
+  <% end %>
+  <% c.with_section(name: "Solar", icon: 'fire-alt', bgcolor: '#50E3C2') do |s| %>
+  <% end %>
+  <% c.with_section(name: "Carbon", icon: 'circle', bgcolor: '#e6e6e6') do |s| %>
+  <% end %>
 <% end %>

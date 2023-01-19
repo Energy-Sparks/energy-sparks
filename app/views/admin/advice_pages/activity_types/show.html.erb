@@ -1,0 +1,18 @@
+<h2>Recommended activities for the <%= @advice_page.key %> advice page</h2>
+
+<%= form_tag admin_advice_page_activity_types_path(@advice_page), method: :put do %>
+  <%= submit_tag 'Update associated activity types', class: 'btn btn-primary mb-3'%>
+  <% @activity_categories_and_types.each do |activity_category, activity_types| %>
+    <h3><%= activity_category.name %></h3>
+    <ul class="list-unstyled advice-page-activities">
+      <%- activity_types.each do |activity_type| %>
+        <li>
+          <%= number_field_tag "activity_types[#{activity_type.id}][position]", @positions[activity_type.id], min: 0, max: 99, step: 1 %>
+          <%= label_tag "activity_types[#{activity_type.id}][position]", activity_type.name %>
+          <%= hidden_field_tag  "activity_types[#{activity_type.id}][activity_type_id]", activity_type.id %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+  <%= submit_tag 'Update associated activity types', class: 'btn btn-primary'%>
+<% end %>

@@ -1,0 +1,20 @@
+<table class="pt-4 table table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th class="text-right">Baseload in winter (kW)</th>
+      <th class="text-right">Baseload in summer (kW)</th>
+      <th class="text-right">Percentage</th>
+      <th class="text-right">Potential saving (£)</th>
+      <th class="text-right">CO2 reduction (kg)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="text-right"><%= format_target(seasonal_baseload_variation.winter_kw, :kwh) %></td>
+      <td class="text-right"><%= format_target(seasonal_baseload_variation.summer_kw, :kwh) %></td>
+      <td class="text-right"><%= format_target(seasonal_baseload_variation.percentage, :percent) %></td>
+      <td class="text-right"></td>
+      <td class="text-right"></td>
+    </tr>
+  </tbody>
+</table>
