@@ -1,7 +1,7 @@
 <table class="table table-sm">
   <thead class="thead-dark">
     <tr>
-      <th class="text-right">Assessment</th>
+      <th class="text-right">Meter</th>
       <th class="text-right">Highest day baseload (kW)</th>
       <th class="text-right">Lowest day baseload (kW)</th>
       <th class="text-right">Percentage difference (%)</th>
@@ -9,8 +9,17 @@
     </tr>
   </thead>
   <tbody>
+    <% intraweek_variation_by_meter.each do |mpan_mprn, variation| %>
     <tr>
-      <td class="text-right"></td>
+      <td class="text-right"><%= mpan_mprn %></td>
+      <td class="text-right"><%= format_target(variation.max_day_kw, :kwh) %></td>
+      <td class="text-right"><%= format_target(variation.min_day_kw, :kwh) %></td>
+      <td class="text-right"><%= format_target(variation.percent_intraday_variation, :percent) %></td>
+      <td class="text-right"><%= format_target(variation.week_saving_kwh, :kwh) %></td>
+    </tr>
+    <% end %>
+    <tr class="table-success">
+      <td class="text-right">Whole school, aggregated meters</td>
       <td class="text-right"><%= format_target(intraweek_variation.max_day_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(intraweek_variation.min_day_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(intraweek_variation.percent_intraday_variation, :percent) %></td>
