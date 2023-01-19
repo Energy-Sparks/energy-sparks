@@ -96,7 +96,7 @@ RSpec.describe "advice page", type: :system do
       let(:amr_data)    { double('amr-data') }
 
       let(:electricity_aggregate_meter)   { double('electricity-aggregated-meter')}
-      let(:meter_collection)        { double('meter-collection') }
+      let(:meter_collection)        { double('meter-collection', electricity_meters: []) }
 
       it 'shows analysis content' do
         allow(amr_data).to receive(:start_date).and_return(start_date)

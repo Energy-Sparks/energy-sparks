@@ -13,52 +13,82 @@ module Schools
         @end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
         @multiple_meters = @school.meters.electricity.count > 1
 
-        baseload_service = Baseload::BaseloadCalculationService.new(aggregate_school.aggregated_electricity_meters, @end_date)
-        @baseload_usage = baseload_service.annual_baseload_usage
+        @baseload_usage = baseload_usage(aggregate_school, @end_date)
+        @benchmark_usage = benchmark_usage(aggregate_school, @end_date)
+        @estimated_savings = estimated_savings(aggregate_school, @end_date)
+        @annual_average_baseloads = annual_average_baseloads(aggregate_school, @start_date, @end_date)
+        @baseload_meter_breakdown = baseload_meter_breakdown(aggregate_school)
 
-        benchmark_service = Baseload::BaseloadBenchmarkingService.new(aggregate_school, @end_date)
-        @benchmark_usage = benchmark_service.baseload_usage
-        @estimated_savings = benchmark_service.estimated_savings
+        @seasonal_baseload_variation = seasonal_baseload_variation(aggregate_school, @end_date)
+        @seasonal_baseload_variation_by_meter = seasonal_baseload_variation_by_meter(aggregate_school)
 
-        @annual_average_baseloads = annual_average_baseloads(@start_date, @end_date)
-
-        baseload_meter_breakdown_service = Baseload::BaseloadMeterBreakdownService.new(aggregate_school)
-        @baseload_meter_breakdown = baseload_meter_breakdown_service.calculate_breakdown
-
-        seasonal_baseload_service = Baseload::SeasonalBaseloadService.new(aggregate_school.aggregated_electricity_meters, @end_date)
-        @seasonal_baseload_variation = seasonal_baseload_service.seasonal_variation
-
-        @seasonal_baseload_variation_by_meter = {}
-        if @multiple_meters
-          aggregate_school.electricity_meters.each do |meter|
-            seasonal_baseload_service = Baseload::SeasonalBaseloadService.new(meter, meter.amr_data.end_date)
-            @seasonal_baseload_variation_by_meter[meter.mpan_mprn] = seasonal_baseload_service.seasonal_variation
-          end
-        end
-
-        intraweek_baseload_service = Baseload::IntraweekBaseloadService.new(aggregate_school.aggregated_electricity_meters, @end_date)
-        @intraweek_variation = intraweek_baseload_service.intraweek_variation
-
-        @intraweek_variation_by_meter = {}
-        if @multiple_meters
-          aggregate_school.electricity_meters.each do |meter|
-            intraweek_baseload_service = Baseload::IntraweekBaseloadService.new(meter, meter.amr_data.end_date)
-            @intraweek_variation_by_meter[meter.mpan_mprn] = intraweek_baseload_service.intraweek_variation
-          end
-        end
+        @intraweek_variation = intraweek_variation(aggregate_school, @end_date)
+        @intraweek_variation_by_meter = intraweek_variation_by_meter(aggregate_school)
       end
 
       private
 
-      def annual_average_baseloads(start_date, end_date)
+      def baseload_usage(meter_collection, end_date)
+        baseload_service = Baseload::BaseloadCalculationService.new(meter_collection.aggregated_electricity_meters, end_date)
+        baseload_service.annual_baseload_usage
+      end
+
+      def benchmark_usage(meter_collection, end_date)
+        benchmark_service = Baseload::BaseloadBenchmarkingService.new(meter_collection, end_date)
+        benchmark_service.baseload_usage
+      end
+
+      def estimated_savings(meter_collection, end_date)
+        benchmark_service = Baseload::BaseloadBenchmarkingService.new(meter_collection, end_date)
+        benchmark_service.estimated_savings
+      end
+
+      def annual_average_baseloads(meter_collection, start_date, end_date)
         (start_date.year..end_date.year).map do |year|
           end_of_year = Date.new(year).end_of_year
-          baseload_service = Baseload::BaseloadCalculationService.new(aggregate_school.aggregated_electricity_meters, end_of_year)
+          baseload_service = Baseload::BaseloadCalculationService.new(meter_collection.aggregated_electricity_meters, end_of_year)
           {
             year: year,
             baseload_usage: baseload_service.annual_baseload_usage
           }
         end
+      end
+
+      def baseload_meter_breakdown(meter_collection)
+        baseload_meter_breakdown_service = Baseload::BaseloadMeterBreakdownService.new(meter_collection)
+        baseload_meter_breakdown_service.calculate_breakdown
+      end
+
+      def seasonal_baseload_variation(meter_collection, end_date)
+        seasonal_baseload_service = Baseload::SeasonalBaseloadService.new(meter_collection.aggregated_electricity_meters, end_date)
+        seasonal_baseload_service.seasonal_variation
+      end
+
+      def seasonal_baseload_variation_by_meter(meter_collection)
+        variation_by_meter = {}
+        if meter_collection.electricity_meters.count > 1
+          meter_collection.electricity_meters.each do |meter|
+            seasonal_baseload_service = Baseload::SeasonalBaseloadService.new(meter, meter.amr_data.end_date)
+            variation_by_meter[meter.mpan_mprn] = seasonal_baseload_service.seasonal_variation
+          end
+        end
+        variation_by_meter
+      end
+
+      def intraweek_variation(meter_collection, end_date)
+        intraweek_baseload_service = Baseload::IntraweekBaseloadService.new(meter_collection.aggregated_electricity_meters, end_date)
+        intraweek_baseload_service.intraweek_variation
+      end
+
+      def intraweek_variation_by_meter(meter_collection)
+        variation_by_meter = {}
+        if meter_collection.electricity_meters.count > 1
+          meter_collection.electricity_meters.each do |meter|
+            intraweek_baseload_service = Baseload::IntraweekBaseloadService.new(meter, meter.amr_data.end_date)
+            variation_by_meter[meter.mpan_mprn] = intraweek_baseload_service.intraweek_variation
+          end
+        end
+        variation_by_meter
       end
 
       def load_advice_page
