@@ -66,16 +66,6 @@ module Schools
         build_seasonal_variation(variation, saving)
       end
 
-      def build_seasonal_variation(variation, saving)
-        OpenStruct.new(
-          winter_kw: variation.winter_kw,
-          summer_kw: variation.summer_kw,
-          percentage: variation.percentage,
-          estimated_saving_£: saving.£,
-          estimated_saving_co2: saving.co2
-        )
-      end
-
       def seasonal_baseload_variation_by_meter(meter_collection)
         variation_by_meter = {}
         if meter_collection.electricity_meters.count > 1
@@ -87,16 +77,6 @@ module Schools
           end
         end
         variation_by_meter
-      end
-
-      def build_intraweek_variation(variation, saving)
-        OpenStruct.new(
-          max_day_kw: variation.max_day_kw,
-          min_day_kw: variation.min_day_kw,
-          percent_intraday_variation: variation.percent_intraday_variation,
-          estimated_saving_£: saving.£,
-          estimated_saving_co2: saving.co2
-        )
       end
 
       def intraweek_variation(meter_collection, end_date)
@@ -117,6 +97,26 @@ module Schools
           end
         end
         variation_by_meter
+      end
+
+      def build_seasonal_variation(variation, saving)
+        OpenStruct.new(
+          winter_kw: variation.winter_kw,
+          summer_kw: variation.summer_kw,
+          percentage: variation.percentage,
+          estimated_saving_£: saving.£,
+          estimated_saving_co2: saving.co2
+        )
+      end
+
+      def build_intraweek_variation(variation, saving)
+        OpenStruct.new(
+          max_day_kw: variation.max_day_kw,
+          min_day_kw: variation.min_day_kw,
+          percent_intraday_variation: variation.percent_intraday_variation,
+          estimated_saving_£: saving.£,
+          estimated_saving_co2: saving.co2
+        )
       end
 
       def load_advice_page
