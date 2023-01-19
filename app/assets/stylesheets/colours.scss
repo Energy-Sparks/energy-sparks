@@ -50,3 +50,17 @@ $gas-light: #ffdd4b;
 
 $live-data-dark: $green;
 $live-data-light: $light-grey;
+
+$colours-light: (
+  "electric" : $electric-light,
+  "gas"      : $gas-light,
+  "storage"  : $storage-light,
+  "solar"    : $solar-light,
+  "carbon"   : $light-grey
+);
+
+@each $tag, $colour in $colours-light {
+  .bg-#{$tag}-light {
+    background-color: $colour;
+  }
+}

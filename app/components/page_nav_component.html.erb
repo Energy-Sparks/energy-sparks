@@ -1,21 +1,21 @@
 <div class="collapse d-md-flex border rounded page-nav" id="page-nav">
   <ul class="nav flex-column flex-nowrap w-100">
-    <li class="nav-item header">
-      <a class="nav-link" style="background-color: <%= bgcolor %>;" href="<%= href %>"><%= icon %> <%= name %></a>
-    </li>
+    <li class="nav-item header"><%= header %></li>
     <% sections.each do |section| %>
-      <li class="nav-item section">
-        <%= section %>
-        <div class="collapse show" id="<%= section.id %>" aria-expanded="false">
-          <ul class="flex-column pl-0">
-            <% section.items.each do |item| %>
-              <li class="nav-item">
-                <%= item %>
-              </li>
-            <% end %>
-          </ul>
-        </div>
-      </li>
+      <% if section.visible %>
+        <li class="nav-item section">
+          <%= section %>
+          <div class="collapse show" id="<%= section.id %>" aria-expanded="false">
+            <ul class="flex-column pl-0">
+              <% section.items.each do |item| %>
+                <li class="nav-item">
+                  <%= item %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </li>
+      <% end %>
     <% end %>
   </ul>
 </div>

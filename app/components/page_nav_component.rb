@@ -6,75 +6,77 @@ class PageNavComponent < ViewComponent::Base
     SectionComponent.new(**args)
   end
 
-  attr_reader :name, :bgcolor, :href, :options
+  attr_reader :name, :icon, :classes, :href, :options
 
-  def initialize(name: "Menu", icon: 'home', bgcolor: nil, href: nil, options: {})
+  def initialize(name: "Menu", icon: 'home', href:, classes: nil, options: {})
     @name = name
     @icon = icon
-    @bgcolor = bgcolor
+    @classes = classes
     @href = href
     @options = options
   end
 
-  def icon
-    @icon ? helpers.fa_icon(@icon) : ''
+  def header
+    args = { class: 'nav-link' }
+    args[:class] += " #{classes}" if classes
+    link_to(helpers.text_with_icon(name, icon), href, args)
   end
 
   class SectionComponent < ViewComponent::Base
     renders_many :items, ->(**args) do
-      args[:options] = options
+      args[:match_controller] ||= options[:match_controller]
       PageNavComponent::ItemComponent.new(**args)
     end
 
-    attr_reader :bgcolor, :icon, :name, :visible, :options
+    attr_reader :name, :icon, :visible, :classes, :options
 
-    def initialize(name: nil, bgcolor: nil, icon: nil, visible: true, options: {})
+    def initialize(name: nil, icon: nil, visible: true, classes: nil, options: {})
       @name = name
-      @bgcolor = bgcolor
+      @classes = classes
       @icon = icon
       @visible = visible
       @options = options
-    end
-
-    def call
-      args = { class: 'nav-link small toggler', 'data-toggle': 'collapse', 'data-target': "##{id}" }
-      args[:style] = "background-color: #{bgcolor};" if bgcolor
-      link_to(name_text.html_safe, "##{id}", args)
     end
 
     def id
       name.try(:parameterize)
     end
 
-    def name_text
-      output = icon ? "#{helpers.fa_icon(icon)} #{name}" : name
-      output += content_tag(:span, helpers.toggler, class: 'pl-1 float-right')
-      output
+    def link_text
+      helpers.text_with_icon(name, icon) + content_tag(:span, helpers.toggler, class: 'pl-1 float-right')
     end
 
     def render?
-      visible && name
+      name
+    end
+
+    def call
+      args = { class: 'nav-link small toggler', 'data-toggle': 'collapse', 'data-target': "##{id}" }
+      args[:class] += " #{classes}" if classes
+      link_to(link_text, "##{id}", args)
     end
   end
 
   class ItemComponent < ViewComponent::Base
-    attr_reader :name, :href, :options
+    attr_reader :name, :href, :match_controller
 
-    def initialize(name:, href:, options: { match_controller: false })
+    def initialize(name:, href:, match_controller: false)
       @name = name
       @href = href
-      @options = options
+      @match_controller = match_controller
     end
 
     def current_controller?(href)
       controller_path == Rails.application.routes.recognize_path(href)[:controller]
     end
 
+    def current_item?(href)
+      match_controller ? current_controller?(href) : current_page?(href)
+    end
+
     def call
       args = { class: "nav-link small" }
-      if (options[:match_controller] && current_controller?(href)) || !options[:match_controller] && current_page?(href)
-        args[:class] += ' current'
-      end
+      args[:class] += ' current' if current_item?(href)
       link_to(name, href, args)
     end
 
