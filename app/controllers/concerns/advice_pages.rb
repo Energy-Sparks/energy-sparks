@@ -10,6 +10,24 @@ module AdvicePages
     [10.0 * [(actual_value - bad_value) / (good_value - bad_value), 0.0].max, 10.0].min.round(1)
   end
 
+  def build_meter_breakdown(mpan_mprn, breakdown, previous_year_baseload)
+    OpenStruct.new(
+      baseload_kw: breakdown.baseload_kw(mpan_mprn),
+      baseload_cost_£: breakdown.baseload_cost_£(mpan_mprn),
+      percentage_baseload: breakdown.percentage_baseload(mpan_mprn),
+      baseload_previous_year_kw: previous_year_baseload
+    )
+  end
+
+  def build_meter_breakdown_totals(breakdowns, previous_year_baseload)
+    OpenStruct.new(
+      baseload_kw: breakdowns.values.map(&:baseload_kw).sum,
+      baseload_cost_£: breakdowns.values.map(&:baseload_cost_£).sum,
+      percentage_baseload: breakdowns.values.map(&:percentage_baseload).sum,
+      baseload_previous_year_kw: previous_year_baseload
+    )
+  end
+
   def build_seasonal_variation(variation, saving)
     OpenStruct.new(
       winter_kw: variation.winter_kw,

@@ -19,7 +19,7 @@ module Schools
         @benchmark_usage = benchmark_usage(aggregate_school, @end_date)
         @estimated_savings = estimated_savings(aggregate_school, @end_date)
         @annual_average_baseloads = annual_average_baseloads(aggregate_school, @start_date, @end_date)
-        @baseload_meter_breakdown = baseload_meter_breakdown(aggregate_school)
+        @baseload_meter_breakdown = baseload_meter_breakdown(aggregate_school, @end_date)
 
         @seasonal_variation = seasonal_variation(aggregate_school, @end_date)
         @seasonal_variation_by_meter = seasonal_variation_by_meter(aggregate_school)
@@ -56,9 +56,26 @@ module Schools
         end
       end
 
-      def baseload_meter_breakdown(meter_collection)
+      def baseload_meter_breakdown(meter_collection, end_date)
         baseload_meter_breakdown_service = Baseload::BaseloadMeterBreakdownService.new(meter_collection)
-        baseload_meter_breakdown_service.calculate_breakdown
+        baseloads = baseload_meter_breakdown_service.calculate_breakdown
+
+        end_of_previous_year = end_date - 1.year
+        meter_breakdowns = {}
+        baseloads.meters.each do |mpan_mprn|
+          #
+          # find meter collection meter by mpan_mprn....
+          #
+          baseload_service = Baseload::BaseloadCalculationService.new(meter_collection.meter?(mpan_mprn), end_of_previous_year)
+          previous_year_baseload = baseload_service.average_baseload_kw
+          meter_breakdowns[mpan_mprn] = build_meter_breakdown(mpan_mprn, baseloads, previous_year_baseload)
+        end
+
+        baseload_service = Baseload::BaseloadCalculationService.new(meter_collection.aggregated_electricity_meters, end_of_previous_year)
+        previous_year_baseload = baseload_service.average_baseload_kw
+        meter_breakdowns['Total'] = build_meter_breakdown_totals(meter_breakdowns, previous_year_baseload)
+
+        meter_breakdowns
       end
 
       def seasonal_variation(meter_collection, end_date)
