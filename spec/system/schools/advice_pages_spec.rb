@@ -91,12 +91,12 @@ RSpec.describe "advice page", type: :system do
 
     context 'when showing analysis' do
 
-      let(:start_date)    { Date.new(2019,12,31)}
+      let(:start_date)  { Date.new(2019,12,31)}
       let(:end_date)    { Date.new(2020,12,31)}
       let(:amr_data)    { double('amr-data') }
 
       let(:electricity_aggregate_meter)   { double('electricity-aggregated-meter')}
-      let(:meter_collection)        { double('meter-collection', electricity_meters: []) }
+      let(:meter_collection)              { double('meter-collection', electricity_meters: []) }
 
       it 'shows analysis content' do
         allow(amr_data).to receive(:start_date).and_return(start_date)
@@ -116,9 +116,7 @@ RSpec.describe "advice page", type: :system do
         benchmark_calculation_service = double(baseload_usage: baseload_usage, estimated_savings: estimated_savings)
         allow(Baseload::BaseloadBenchmarkingService).to receive(:new).and_return(benchmark_calculation_service)
 
-        meter_breakdown = double(meters: ['123'], baseload_kw: 1, baseload_cost_£: 2, percentage_baseload: 3, total_baseload_kw: 4)
-        baseload_breakdown_service = double(calculate_breakdown: meter_breakdown)
-        allow(Baseload::BaseloadMeterBreakdownService).to receive(:new).and_return(baseload_breakdown_service)
+        allow_any_instance_of(Schools::Advice::BaseloadController).to receive(:baseload_meter_breakdown).and_return({})
 
         seasonal_variation = double(winter_kw: 1, summer_kw: 2, percentage: 3)
         estimated_costs_seasonal = double(£: 1, co2: 2)
@@ -129,6 +127,7 @@ RSpec.describe "advice page", type: :system do
         estimated_costs_intraweek = double(£: 1, co2: 2)
         intraweek_baseload_service = double(intraweek_variation: intraweek_variation, estimated_costs: estimated_costs_intraweek)
         allow(Baseload::IntraweekBaseloadService).to receive(:new).and_return(intraweek_baseload_service)
+
 
         click_on key
         click_on 'Analysis'

@@ -63,9 +63,6 @@ module Schools
         end_of_previous_year = end_date - 1.year
         meter_breakdowns = {}
         baseloads.meters.each do |mpan_mprn|
-          #
-          # find meter collection meter by mpan_mprn....
-          #
           baseload_service = Baseload::BaseloadCalculationService.new(meter_collection.meter?(mpan_mprn), end_of_previous_year)
           previous_year_baseload = baseload_service.average_baseload_kw
           meter_breakdowns[mpan_mprn] = build_meter_breakdown(mpan_mprn, baseloads, previous_year_baseload)
