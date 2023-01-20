@@ -17,7 +17,7 @@ class PageNavComponent < ViewComponent::Base
   end
 
   def header
-    args = { class: 'nav-link' }
+    args = { class: 'nav-link border-bottom' }
     args[:class] += " #{classes}" if classes
     link_to(helpers.text_with_icon(name, icon), href, args)
   end
@@ -51,7 +51,7 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def call
-      args = { class: 'nav-link small toggler', 'data-toggle': 'collapse', 'data-target': "##{id}" }
+      args = { class: 'nav-link border-bottom small toggler', 'data-toggle': 'collapse', 'data-target': "##{id}" }
       args[:class] += " #{classes}" if classes
       link_to(link_text, "##{id}", args)
     end
@@ -75,7 +75,7 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def call
-      args = { class: "nav-link small" }
+      args = { class: "nav-link border-bottom item small" }
       args[:class] += ' current' if current_item?(href)
       link_to(name, href, args)
     end
