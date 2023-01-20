@@ -1,4 +1,4 @@
-<table class="table table-sm">
+<table class="table table-sm table-with-totals">
   <thead class="thead-dark">
     <tr>
       <th>Meter</th>
@@ -10,7 +10,7 @@
   </thead>
   <tbody>
     <% baseload_meter_breakdown.each do |mpan_mprn, breakdown| %>
-    <tr class="<%= 'table-success' if mpan_mprn == 'Total'%>">
+    <tr>
       <td><%= mpan_mprn %></td>
       <td class="text-right"><%= format_target(breakdown.baseload_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(breakdown.baseload_cost_£, :£) %></td>

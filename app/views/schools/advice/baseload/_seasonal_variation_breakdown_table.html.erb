@@ -1,4 +1,4 @@
-<table class="pt-4 table table-sm">
+<table class="pt-4 table table-sm table-with-totals">
   <thead class="thead-dark">
     <tr>
       <th class="text-right">Meter</th>
@@ -22,7 +22,7 @@
       <td class="text-right"><%= format_target(variation.estimated_saving_co2, :kg) %></td>
     </tr>
     <% end %>
-    <tr class="table-success">
+    <tr>
       <td class="text-right">Whole school, aggregated meters</td>
       <td class="text-right"><%= format_target(seasonal_variation.variation_rating, :r2) %></td>
       <td class="text-right"><%= format_target(seasonal_variation.winter_kw, :kwh) %></td>
