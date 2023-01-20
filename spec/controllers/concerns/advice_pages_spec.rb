@@ -34,7 +34,8 @@ describe AdvicePages, type: :controller do
     end
   end
 
-  let(:meter_collection) { double(:meter_collection, electricity_meters: ['foo'], aggregated_electricity_meters: double(fuel_type: :electricity)) }
+  let(:electricity_meters) { ['electricity-meter'] }
+  let(:meter_collection) { double(:meter_collection, electricity_meters: electricity_meters, aggregated_electricity_meters: double(fuel_type: :electricity)) }
   let(:end_date) { Date.parse('20200101') }
   let(:usage) { 'usage' }
   let(:savings) { double(£: 1, co2: 2) }
@@ -113,6 +114,22 @@ describe AdvicePages, type: :controller do
     end
   end
 
+  describe '.seasonal_variation_by_meter' do
+    let(:electricity_meter_1) { double(mpan_mprn: 'meter1', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity) }
+    let(:electricity_meter_2) { double(mpan_mprn: 'meter2', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity) }
+    let(:electricity_meters) { [electricity_meter_1, electricity_meter_2] }
+
+    before do
+      allow_any_instance_of(Baseload::SeasonalBaseloadService).to receive(:seasonal_variation).and_return(seasonal_variation)
+      allow_any_instance_of(Baseload::SeasonalBaseloadService).to receive(:estimated_costs).and_return(savings)
+    end
+    it 'returns variation' do
+      result = subject.seasonal_variation_by_meter(meter_collection)
+      expect(result.keys).to match_array(['meter1', 'meter2'])
+      expect(result['meter1'].to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :percentage, :summer_kw, :variation_rating, :winter_kw])
+    end
+  end
+
   let(:intraweek_variation) { double(max_day_kw: 1, min_day_kw: 2, percent_intraday_variation: 3) }
 
   describe '.intraweek_variation' do
@@ -123,6 +140,21 @@ describe AdvicePages, type: :controller do
     it 'returns variation' do
       result = subject.intraweek_variation(meter_collection, end_date)
       expect(result.to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :max_day_kw, :min_day_kw, :percent_intraday_variation, :variation_rating])
+    end
+  end
+
+  describe '.intraweek_variation_by_meter' do
+    let(:electricity_meter_1) { double(mpan_mprn: 'meter1', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity) }
+    let(:electricity_meter_2) { double(mpan_mprn: 'meter2', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity) }
+    let(:electricity_meters) { [electricity_meter_1, electricity_meter_2] }
+    before do
+      allow_any_instance_of(Baseload::IntraweekBaseloadService).to receive(:intraweek_variation).and_return(intraweek_variation)
+      allow_any_instance_of(Baseload::IntraweekBaseloadService).to receive(:estimated_costs).and_return(savings)
+    end
+    it 'returns variation' do
+      result = subject.intraweek_variation_by_meter(meter_collection)
+      expect(result.keys).to match_array(['meter1', 'meter2'])
+      expect(result['meter1'].to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :max_day_kw, :min_day_kw, :percent_intraday_variation, :variation_rating])
     end
   end
 end
