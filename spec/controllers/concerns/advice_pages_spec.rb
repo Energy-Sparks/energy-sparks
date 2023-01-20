@@ -37,7 +37,7 @@ describe AdvicePages, type: :controller do
   let(:meter_collection) { double(:meter_collection, electricity_meters: ['foo'], aggregated_electricity_meters: double(fuel_type: :electricity)) }
   let(:end_date) { Date.parse('20200101') }
   let(:usage) { 'usage' }
-  let(:savings) { 'savings' }
+  let(:savings) { double(£: 1, co2: 2) }
 
   describe '.baseload_usage' do
     before do
@@ -79,6 +79,50 @@ describe AdvicePages, type: :controller do
       expect(result[0][:baseload_usage]).to eq(usage)
       expect(result[2][:year]).to eq(2021)
       expect(result[2][:baseload_usage]).to eq(usage)
+    end
+  end
+
+  let(:breakdown) { double(meters: []) }
+  let(:average_baseload_kw) { 123.0 }
+
+  describe '.baseload_meter_breakdown' do
+    let(:start_date) { Date.parse('20190101')}
+    let(:end_date) { Date.parse('20210101')}
+    before do
+      allow_any_instance_of(Baseload::BaseloadMeterBreakdownService).to receive(:calculate_breakdown).and_return(breakdown)
+      allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:average_baseload_kw).and_return(average_baseload_kw)
+    end
+    it 'returns usage by years' do
+      result = subject.baseload_meter_breakdown(meter_collection, end_date)
+
+      expect(result['Total'].to_h.keys).to match_array([:baseload_kw, :baseload_cost_£, :percentage_baseload, :baseload_previous_year_kw])
+      expect(result['Total'].baseload_previous_year_kw).to eq(123.0)
+    end
+  end
+
+  let(:seasonal_variation) { double(winter_kw: 1, summer_kw: 2, percentage: 3) }
+
+  describe '.seasonal_variation' do
+    before do
+      allow_any_instance_of(Baseload::SeasonalBaseloadService).to receive(:seasonal_variation).and_return(seasonal_variation)
+      allow_any_instance_of(Baseload::SeasonalBaseloadService).to receive(:estimated_costs).and_return(savings)
+    end
+    it 'returns variation' do
+      result = subject.seasonal_variation(meter_collection, end_date)
+      expect(result.to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :percentage, :summer_kw, :variation_rating, :winter_kw])
+    end
+  end
+
+  let(:intraweek_variation) { double(max_day_kw: 1, min_day_kw: 2, percent_intraday_variation: 3) }
+
+  describe '.intraweek_variation' do
+    before do
+      allow_any_instance_of(Baseload::IntraweekBaseloadService).to receive(:intraweek_variation).and_return(intraweek_variation)
+      allow_any_instance_of(Baseload::IntraweekBaseloadService).to receive(:estimated_costs).and_return(savings)
+    end
+    it 'returns variation' do
+      result = subject.intraweek_variation(meter_collection, end_date)
+      expect(result.to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :max_day_kw, :min_day_kw, :percent_intraday_variation, :variation_rating])
     end
   end
 end
