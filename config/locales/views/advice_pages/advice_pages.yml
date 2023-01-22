@@ -40,6 +40,8 @@ en:
       analysis_weekday_variation_table_description: The meter breakdown in the table below may help to identify where in the school, seasonal variation comes from.
       analysis_weekday_variation_title: Variation in baseload between days of week
       insights_title: What is baseload?
+    breadcrumbs:
+      root: Advice
     nav:
       carbon:
         name: Carbon
@@ -55,3 +57,5 @@ en:
         name: Storage Heaters
       top_section:
         total_energy_use: Total energy use
+    show:
+      title: Advice Pages
