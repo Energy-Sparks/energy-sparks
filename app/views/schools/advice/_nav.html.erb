@@ -1,16 +1,16 @@
-<%= render(PageNavComponent.new(name:'Advice', icon: 'home', href: school_advice_path(@school), options: { match_controller: true })) do |c| %>
+<%= render(PageNavComponent.new(name: t('advice_pages.nav.name'), icon: 'home', href: school_advice_path(@school), options: { match_controller: true })) do |c| %>
   <% c.with_section do |s| %>
-    <% s.with_item(name: 'Total energy use', href: '#') %>
+    <% s.with_item(name: t('advice_pages.nav.top_section.total_energy_use'), href: '#') %>
   <% end %>
-  <% c.with_section(name: "Electricity", icon: 'bolt', classes: 'bg-electric-light', visible: @school.has_electricity?) do |s| %>
-    <% s.with_item(name: 'Baseload', href: school_advice_baseload_path(@school)) %>
+  <% c.with_section(name: t('advice_pages.nav.electricity.name'), icon: 'bolt', classes: 'bg-electric-light', visible: @school.has_electricity?) do |s| %>
+    <% s.with_item(name: t('advice_pages.nav.electricity.baseload'), href: school_advice_baseload_path(@school)) %>
   <% end %>
-  <% c.with_section(name: "Gas", icon: 'fire', classes: 'bg-gas-light', visible: @school.has_gas?) do |s| %>
+  <% c.with_section(name: t('advice_pages.nav.gas.name'), icon: 'fire', classes: 'bg-gas-light', visible: @school.has_gas?) do |s| %>
   <% end %>
-  <% c.with_section(name: "Storage heaters", icon: 'window-maximize', classes: 'bg-storage-light', visible: @school.has_storage_heaters?) do |s| %>
+  <% c.with_section(name: t('advice_pages.nav.storage_heaters.name'), icon: 'window-maximize', classes: 'bg-storage-light', visible: @school.has_storage_heaters?) do |s| %>
   <% end %>
-  <% c.with_section(name: "Solar", icon: 'sun', classes: 'bg-solar-light', visible: @school.has_solar_pv?) do |s| %>
+  <% c.with_section(name: t('advice_pages.nav.solar.name'), icon: 'sun', classes: 'bg-solar-light', visible: @school.has_solar_pv?) do |s| %>
   <% end %>
-  <% c.with_section(name: "Carbon", icon: 'cloud-download-alt', classes: 'bg-carbon-light') do |s| %>
+  <% c.with_section(name: t('advice_pages.nav.carbon.name'), icon: 'cloud-download-alt', classes: 'bg-carbon-light') do |s| %>
   <% end %>
 <% end %>
