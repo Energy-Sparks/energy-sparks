@@ -3,10 +3,6 @@ module Schools
     class StorageHeatersController < AdviceController
       include AdvicePages
 
-      def show
-        redirect_to insights_school_advice_storage_heaters_path(@school)
-      end
-
       def insights
       end
 

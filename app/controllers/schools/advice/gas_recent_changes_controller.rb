@@ -3,10 +3,6 @@ module Schools
     class GasRecentChangesController < AdviceController
       include AdvicePages
 
-      def show
-        redirect_to insights_school_advice_gas_recent_changes_path(@school)
-      end
-
       def insights
       end
 

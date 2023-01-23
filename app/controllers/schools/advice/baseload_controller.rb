@@ -3,10 +3,6 @@ module Schools
     class BaseloadController < AdviceController
       include AdvicePages
 
-      def show
-        redirect_to insights_school_advice_baseload_path(@school)
-      end
-
       def insights
       end
 

@@ -11,6 +11,7 @@ module Schools
     include SchoolAggregation
 
     def show
+      redirect_to url_for([:insights, @school, :advice, advice_page_key])
     end
 
     def learn_more

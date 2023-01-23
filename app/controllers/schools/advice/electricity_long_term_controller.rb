@@ -3,10 +3,6 @@ module Schools
     class ElectricityLongTermController < AdviceController
       include AdvicePages
 
-      def show
-        redirect_to insights_school_advice_electricity_long_term_path(@school)
-      end
-
       def insights
       end
 

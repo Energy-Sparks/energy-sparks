@@ -3,10 +3,6 @@ module Schools
     class HotWaterController < AdviceController
       include AdvicePages
 
-      def show
-        redirect_to insights_school_advice_hot_water_path(@school)
-      end
-
       def insights
       end
 
