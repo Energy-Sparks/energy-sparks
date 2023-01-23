@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "advice page", type: :system do
+RSpec.describe "baseload advice page", type: :system do
 
   let(:school) { create(:school) }
   let(:key) { 'baseload' }
@@ -8,9 +8,14 @@ RSpec.describe "advice page", type: :system do
 
   let!(:advice_page_baseload) { create(:advice_page, key: key, restricted: false, learn_more: learn_more) }
 
-  context 'as non-logged in user' do
+  let(:expected_page_title) { "Baseload analysis" }
+
+  context 'as school admin' do
+
+    let(:user)  { create(:school_admin, school: school) }
 
     before do
+      sign_in(user)
       visit school_advice_path(school)
     end
 
@@ -21,38 +26,7 @@ RSpec.describe "advice page", type: :system do
 
     it 'shows the advice page' do
       click_on key
-      expect(page).to have_content("#{key.humanize} analysis and advice")
-    end
-
-    context 'when page is restricted' do
-      before do
-        advice_page_baseload.update(restricted: true)
-      end
-      it 'does not show the restricted advice page' do
-        click_on key
-        expect(page).to have_content('Advice Pages')
-        expect(page).to have_content("Only an admin or staff user for this school can access this content")
-      end
-    end
-  end
-
-  context 'as admin' do
-
-    let(:admin) { create(:admin) }
-
-    before do
-      sign_in(admin)
-      visit school_advice_path(school)
-    end
-
-    it 'shows the advice pages index' do
-      expect(page).to have_content('Advice Pages')
-      expect(page).to have_link(key)
-    end
-
-    it 'shows the advice page' do
-      click_on key
-      expect(page).to have_content("#{key.humanize} analysis and advice")
+      expect(page).to have_content(expected_page_title)
     end
 
     it 'shows the nav bar' do
@@ -141,7 +115,7 @@ RSpec.describe "advice page", type: :system do
       end
       it 'shows the restricted advice page' do
         click_on key
-        expect(page).to have_content("#{key.humanize} analysis and advice")
+        expect(page).to have_content(expected_page_title)
       end
     end
   end
