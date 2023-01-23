@@ -90,9 +90,9 @@
 
   <% if @multiple_meters %>
     <p><%= t('advice_pages.baseload.analysis_seasonal_variation_table_description') %></p>
-    <%= render 'seasonal_variation_breakdown_table', seasonal_baseload_variation: @seasonal_baseload_variation, seasonal_baseload_variation_by_meter: @seasonal_baseload_variation_by_meter %>
+    <%= render 'seasonal_variation_breakdown_table', seasonal_variation: @seasonal_variation, seasonal_variation_by_meter: @seasonal_variation_by_meter %>
   <% else %>
-    <%= render 'seasonal_variation_table', seasonal_baseload_variation: @seasonal_baseload_variation %>
+    <%= render 'seasonal_variation_table', seasonal_variation: @seasonal_variation %>
   <% end %>
 
 

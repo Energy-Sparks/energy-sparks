@@ -91,42 +91,40 @@ RSpec.describe "advice page", type: :system do
 
     context 'when showing analysis' do
 
-      let(:start_date)    { Date.new(2019,12,31)}
+      let(:start_date)  { Date.new(2019,12,31)}
       let(:end_date)    { Date.new(2020,12,31)}
       let(:amr_data)    { double('amr-data') }
 
       let(:electricity_aggregate_meter)   { double('electricity-aggregated-meter')}
-      let(:meter_collection)        { double('meter-collection') }
+      let(:meter_collection)              { double('meter-collection', electricity_meters: []) }
 
-      it 'shows analysis content' do
+      before do
         allow(amr_data).to receive(:start_date).and_return(start_date)
         allow(amr_data).to receive(:end_date).and_return(end_date)
         allow(electricity_aggregate_meter).to receive(:amr_data).and_return(amr_data)
         allow(meter_collection).to receive(:aggregated_electricity_meters).and_return(electricity_aggregate_meter)
-
         allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(meter_collection)
+      end
 
-        annual_baseload_usage = double(kwh: 123.0, £: 1.0, co2: 1.0)
-        baseload_usage = double(kwh: 1.0, £: 1.0, co2: 1.0)
-        estimated_savings = double(kwh: 1.0, £: 1.0, co2: 1.0)
+      it 'shows analysis content' do
+        usage = double(kwh: 123.0, £: 456.0, co2: 789.0)
+        savings = double(kwh: 11.0, £: 22.0, co2: 33.0)
+        annual_average_baseload = {year: 2020, baseload_usage: usage}
+        baseload_meter_breakdown = {}
+        seasonal_variation = double(winter_kw: 1, summer_kw: 2, percentage: 3, estimated_saving_£: 4, estimated_saving_co2: 5, variation_rating: 6)
+        seasonal_variation_by_meter = {}
+        intraweek_variation = double(max_day_kw: 1, min_day_kw: 2, percent_intraday_variation: 3, estimated_saving_£: 4, estimated_saving_co2: 5, variation_rating: 6)
+        intraweek_variation_by_meter = {}
 
-        baseload_calculation_service = double(annual_baseload_usage: annual_baseload_usage)
-        allow(Baseload::BaseloadCalculationService).to receive(:new).and_return(baseload_calculation_service)
-
-        benchmark_calculation_service = double(baseload_usage: baseload_usage, estimated_savings: estimated_savings)
-        allow(Baseload::BaseloadBenchmarkingService).to receive(:new).and_return(benchmark_calculation_service)
-
-        meter_breakdown = double(meters: ['123'], baseload_kw: 1, baseload_cost_£: 2, percentage_baseload: 3, total_baseload_kw: 4)
-        baseload_breakdown_service = double(calculate_breakdown: meter_breakdown)
-        allow(Baseload::BaseloadMeterBreakdownService).to receive(:new).and_return(baseload_breakdown_service)
-
-        seasonal_variation = double(winter_kw: 1, summer_kw: 2, percentage: 3)
-        seasonal_baseload_service = double(seasonal_variation: seasonal_variation)
-        allow(Baseload::SeasonalBaseloadService).to receive(:new).and_return(seasonal_baseload_service)
-
-        intraweek_variation = double(max_day_kw: 1, min_day_kw: 2, percent_intraday_variation: 3, week_saving_kwh: 4)
-        intraweek_baseload_service = double(intraweek_variation: intraweek_variation)
-        allow(Baseload::IntraweekBaseloadService).to receive(:new).and_return(intraweek_baseload_service)
+        allow_any_instance_of(Schools::Advice::BaseloadController).to receive(:baseload_usage).and_return(usage)
+        allow_any_instance_of(Schools::Advice::BaseloadController).to receive(:benchmark_usage).and_return(usage)
+        allow_any_instance_of(Schools::Advice::BaseloadController).to receive(:estimated_savings).and_return(savings)
+        allow_any_instance_of(Schools::Advice::BaseloadController).to receive(:annual_average_baseloads).and_return([annual_average_baseload])
+        allow_any_instance_of(Schools::Advice::BaseloadController).to receive(:baseload_meter_breakdown).and_return(baseload_meter_breakdown)
+        allow_any_instance_of(Schools::Advice::BaseloadController).to receive(:seasonal_variation).and_return(seasonal_variation)
+        allow_any_instance_of(Schools::Advice::BaseloadController).to receive(:seasonal_variation_by_meter).and_return(seasonal_variation_by_meter)
+        allow_any_instance_of(Schools::Advice::BaseloadController).to receive(:intraweek_variation).and_return(intraweek_variation)
+        allow_any_instance_of(Schools::Advice::BaseloadController).to receive(:intraweek_variation_by_meter).and_return(intraweek_variation_by_meter)
 
         click_on key
         click_on 'Analysis'

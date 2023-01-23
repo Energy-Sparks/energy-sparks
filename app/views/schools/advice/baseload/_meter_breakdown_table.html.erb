@@ -1,29 +1,22 @@
-<table class="table table-sm">
+<table class="table table-sm table-with-totals">
   <thead class="thead-dark">
     <tr>
       <th>Meter</th>
       <th class="text-right">Average annual baseload (kW)</th>
       <th class="text-right">Average annual cost (£)</th>
-      <th class="text-right">Change since previous year (show kW and % if possible)</th>
+      <th class="text-right">Change since previous year (kW)</th>
       <th class="text-right">% of total baseload</th>
     </tr>
   </thead>
   <tbody>
-    <% baseload_meter_breakdown.meters.each do |mpan_mprn| %>
+    <% baseload_meter_breakdown.each do |mpan_mprn, breakdown| %>
     <tr>
       <td><%= mpan_mprn %></td>
-      <td class="text-right"><%= format_target(baseload_meter_breakdown.baseload_kw(mpan_mprn), :kwh) %></td>
-      <td class="text-right"><%= format_target(baseload_meter_breakdown.baseload_cost_£(mpan_mprn), :£) %></td>
-      <td class="text-right"></td>
-      <td class="text-right"><%= format_target(baseload_meter_breakdown.percentage_baseload(mpan_mprn), :percent) %></td>
+      <td class="text-right"><%= format_target(breakdown.baseload_kw, :kwh) %></td>
+      <td class="text-right"><%= format_target(breakdown.baseload_cost_£, :£) %></td>
+      <td class="text-right"><%= format_target(breakdown.baseload_previous_year_kw, :kw) %></td>
+      <td class="text-right"><%= format_target(breakdown.percentage_baseload, :percent) %></td>
     </tr>
     <% end %>
-    <tr class="table-success">
-      <td>Total</td>
-      <td class="text-right"><%= format_target(baseload_meter_breakdown.total_baseload_kw, :kwh) %></td>
-      <td class="text-right"></td>
-      <td class="text-right"></td>
-      <td class="text-right">100%</td>
-    </tr>
   </tbody>
 </table>
