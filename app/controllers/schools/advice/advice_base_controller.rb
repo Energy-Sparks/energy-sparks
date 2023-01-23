@@ -4,7 +4,6 @@ module Schools
       load_and_authorize_resource :school
       skip_before_action :authenticate_user!
 
-      before_action :load_advice_pages
       before_action :load_advice_page, only: [:insights, :analysis, :learn_more]
       before_action :set_tab_name, only: [:insights, :analysis, :learn_more]
       before_action :check_authorisation, only: [:insights, :analysis, :learn_more]
@@ -28,10 +27,6 @@ module Schools
 
       def load_advice_page
         @advice_page = AdvicePage.find_by_key(advice_page_key)
-      end
-
-      def load_advice_pages
-        @advice_pages = AdvicePage.all
       end
 
       def check_authorisation
