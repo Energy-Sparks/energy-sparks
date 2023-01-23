@@ -58,7 +58,7 @@ RSpec.describe "advice page", type: :system do
     it 'shows the nav bar' do
       click_on key
       within '.advice-page-nav' do
-        expect(page).to have_content("Menu")
+        expect(page).to have_content("Advice")
       end
     end
 

@@ -13,7 +13,7 @@
     </h4>
     <div class="clearfix">
       <span data-toggle="collapse" href="#issue-<%= issue.id %>" role="button" aria-expanded="true" aria-controls="issue-<%= issue.id %>" class="badge badge-light toggler  text-decoration-none<%= " collapsed" unless single || @issueable %>">
-        <%= fa_icon("chevron-down") %><%= fa_icon("chevron-right") %>
+        <%= toggler %>
       </span>
       <span class="badge <%= issue.issue? ? "badge-danger" : "badge-warning" %>"><%= issue.issue_type.capitalize %></span>
       <%= render 'issueable', issueable: issue.try(:issueable) %>
