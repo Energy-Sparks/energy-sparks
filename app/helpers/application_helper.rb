@@ -320,6 +320,10 @@ module ApplicationHelper
     !field.required? && field.structure.any? { |_k, v| v.required? }
   end
 
+  def format_unit(value, units)
+    FormatEnergyUnit.format(units, value, :html, false, true).html_safe
+  end
+
   def format_target(value, units)
     FormatEnergyUnit.format(units, value, :html, false, true, :target).html_safe
   end

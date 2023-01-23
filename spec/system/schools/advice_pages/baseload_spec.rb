@@ -81,6 +81,10 @@ RSpec.describe "baseload advice page", type: :system do
       end
 
       it 'shows analysis content' do
+
+        average_baseload_kw = 2.4
+        average_baseload_kw_benchmark = 2.1
+
         usage = double(kwh: 123.0, £: 456.0, co2: 789.0)
         savings = double(kwh: 11.0, £: 22.0, co2: 33.0)
         annual_average_baseload = {year: 2020, baseload_usage: usage}
@@ -89,6 +93,9 @@ RSpec.describe "baseload advice page", type: :system do
         seasonal_variation_by_meter = {}
         intraweek_variation = double(max_day_kw: 1, min_day_kw: 2, percent_intraday_variation: 3, estimated_saving_£: 4, estimated_saving_co2: 5, variation_rating: 6)
         intraweek_variation_by_meter = {}
+
+        allow_any_instance_of(Schools::Advice::BaseloadController).to receive(:average_baseload_kw).and_return(average_baseload_kw)
+        allow_any_instance_of(Schools::Advice::BaseloadController).to receive(:average_baseload_kw_benchmark).and_return(average_baseload_kw_benchmark)
 
         allow_any_instance_of(Schools::Advice::BaseloadController).to receive(:baseload_usage).and_return(usage)
         allow_any_instance_of(Schools::Advice::BaseloadController).to receive(:benchmark_usage).and_return(usage)
@@ -104,7 +111,7 @@ RSpec.describe "baseload advice page", type: :system do
         click_on 'Analysis'
         within '.advice-page-tabs' do
           expect(page).to have_content('Recent trend')
-          expect(page).to have_content('baseload over the last 12 months was 123 kW')
+          expect(page).to have_content('baseload over the last 12 months was 2.4 kW')
         end
       end
     end

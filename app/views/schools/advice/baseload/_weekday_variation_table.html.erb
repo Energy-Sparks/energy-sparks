@@ -12,12 +12,11 @@
   <tbody>
     <tr>
       <td class="text-right"><%= format_rating(intraweek_variation.variation_rating) %></td>
-      <td class="text-right"><%= format_target(intraweek_variation.max_day_kw, :kwh) %></td>
-      <td class="text-right"><%= format_target(intraweek_variation.min_day_kw, :kwh) %></td>
-      <td class="text-right"><%= format_target(intraweek_variation.percent_intraday_variation, :r2) %></td>
-      <td class="text-right"><%= format_target(intraweek_variation.percent_intraday_variation, :percent) %></td>
-      <td class="text-right"><%= format_target(intraweek_variation.estimated_saving_£, :£) %></td>
-      <td class="text-right"><%= format_target(intraweek_variation.estimated_saving_co2, :kg) %></td>
+      <td class="text-right"><%= format_unit(intraweek_variation.max_day_kw, :kwh) %></td>
+      <td class="text-right"><%= format_unit(intraweek_variation.min_day_kw, :kwh) %></td>
+      <td class="text-right"><%= format_unit(intraweek_variation.percent_intraday_variation, :percent) %></td>
+      <td class="text-right"><%= format_unit(intraweek_variation.estimated_saving_£, :£) %></td>
+      <td class="text-right"><%= format_unit(intraweek_variation.estimated_saving_co2, :kg) %></td>
     </tr>
   </tbody>
 </table>

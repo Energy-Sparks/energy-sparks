@@ -11,6 +11,9 @@ module Schools
         @end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
         @multiple_meters = @school.meters.electricity.count > 1
 
+        @average_baseload_kw = average_baseload_kw(aggregate_school, @end_date, period: :year)
+        @average_baseload_kw_benchmark = average_baseload_kw_benchmark(aggregate_school, @end_date, compare: :benchmark_school)
+
         @baseload_usage = baseload_usage(aggregate_school, @end_date)
         @benchmark_usage = benchmark_usage(aggregate_school, @end_date)
         @estimated_savings = estimated_savings(aggregate_school, @end_date)

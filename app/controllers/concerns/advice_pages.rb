@@ -50,19 +50,24 @@ module AdvicePages
     )
   end
 
+  def average_baseload_kw(meter_collection, end_date, period: :year)
+    baseload_service(meter_collection, end_date).average_baseload_kw(period: period)
+  end
+
+  def average_baseload_kw_benchmark(meter_collection, end_date, compare: :benchmark_school)
+    benchmark_service(meter_collection, end_date).average_baseload_kw(compare: compare)
+  end
+
   def baseload_usage(meter_collection, end_date)
-    baseload_service = Baseload::BaseloadCalculationService.new(meter_collection.aggregated_electricity_meters, end_date)
-    baseload_service.annual_baseload_usage
+    baseload_service(meter_collection, end_date).annual_baseload_usage
   end
 
   def benchmark_usage(meter_collection, end_date)
-    benchmark_service = Baseload::BaseloadBenchmarkingService.new(meter_collection, end_date)
-    benchmark_service.baseload_usage
+    benchmark_service(meter_collection, end_date).baseload_usage
   end
 
   def estimated_savings(meter_collection, end_date)
-    benchmark_service = Baseload::BaseloadBenchmarkingService.new(meter_collection, end_date)
-    benchmark_service.estimated_savings
+    benchmark_service(meter_collection, end_date).estimated_savings
   end
 
   def annual_average_baseloads(meter_collection, start_date, end_date)
@@ -133,5 +138,13 @@ module AdvicePages
       end
     end
     variation_by_meter
+  end
+
+  def baseload_service(meter_collection, end_date)
+    @baseload_service ||= Baseload::BaseloadCalculationService.new(meter_collection.aggregated_electricity_meters, end_date)
+  end
+
+  def benchmark_service(meter_collection, end_date)
+    @benchmark_service ||= Baseload::BaseloadBenchmarkingService.new(meter_collection, end_date)
   end
 end
