@@ -8,4 +8,9 @@
 
   <%= render 'comparison', school: @school, benchmarked_baseload: @benchmarked_baseload %>
 
+
+  <h2>What should you do next?</h2>
+  <p>To fully determine the causes of your baseload usage you need to do a survey of what appliances are being left on overnight and their power consumption.</p>
+  <%= render(RecommendationsComponent.new(name: "Work with the pupils", recommendations: @activity_types)) %>
+  <%= render(RecommendationsComponent.new(name: "Take action around the school", recommendations: @intervention_types)) %>
 <% end %>
