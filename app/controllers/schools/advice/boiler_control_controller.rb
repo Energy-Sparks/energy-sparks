@@ -1,6 +1,6 @@
 module Schools
   module Advice
-    class BoilerControlController < AdviceController
+    class BoilerControlController < AdviceBaseController
       include AdvicePages
 
       def insights

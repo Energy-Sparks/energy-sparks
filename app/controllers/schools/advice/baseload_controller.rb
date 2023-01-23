@@ -1,6 +1,6 @@
 module Schools
   module Advice
-    class BaseloadController < AdviceController
+    class BaseloadController < AdviceBaseController
       include AdvicePages
 
       def insights

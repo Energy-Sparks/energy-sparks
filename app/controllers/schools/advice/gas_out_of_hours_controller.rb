@@ -1,6 +1,6 @@
 module Schools
   module Advice
-    class GasOutOfHoursController < AdviceController
+    class GasOutOfHoursController < AdviceBaseController
       include AdvicePages
 
       def insights

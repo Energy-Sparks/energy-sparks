@@ -1,6 +1,6 @@
 module Schools
   module Advice
-    class ElectricityIntradayController < AdviceController
+    class ElectricityIntradayController < AdviceBaseController
       include AdvicePages
 
       def insights

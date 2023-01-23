@@ -1,6 +1,6 @@
 module Schools
   module Advice
-    class StorageHeatersController < AdviceController
+    class StorageHeatersController < AdviceBaseController
       include AdvicePages
 
       def insights

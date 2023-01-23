@@ -1,6 +1,6 @@
 module Schools
   module Advice
-    class ThermostaticControlController < AdviceController
+    class ThermostaticControlController < AdviceBaseController
       include AdvicePages
 
       def insights

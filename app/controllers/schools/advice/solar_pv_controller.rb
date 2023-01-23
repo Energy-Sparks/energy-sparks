@@ -1,6 +1,6 @@
 module Schools
   module Advice
-    class SolarPvController < AdviceController
+    class SolarPvController < AdviceBaseController
       include AdvicePages
 
       def insights

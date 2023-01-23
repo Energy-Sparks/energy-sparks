@@ -1,6 +1,6 @@
 module Schools
   module Advice
-    class TotalEnergyUseController < AdviceController
+    class TotalEnergyUseController < AdviceBaseController
       include AdvicePages
 
       def insights

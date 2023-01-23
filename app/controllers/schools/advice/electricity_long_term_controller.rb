@@ -1,6 +1,6 @@
 module Schools
   module Advice
-    class ElectricityLongTermController < AdviceController
+    class ElectricityLongTermController < AdviceBaseController
       include AdvicePages
 
       def insights

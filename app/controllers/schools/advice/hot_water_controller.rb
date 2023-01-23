@@ -1,6 +1,6 @@
 module Schools
   module Advice
-    class HotWaterController < AdviceController
+    class HotWaterController < AdviceBaseController
       include AdvicePages
 
       def insights
