@@ -79,6 +79,19 @@
 
     <%= render 'meter_breakdown_table', baseload_meter_breakdown: @baseload_meter_breakdown %>
 
+
+    <h4><%= t('advice_pages.baseload.analysis_electricity_long_term_baseload_meter_chart_title') %></h4>
+
+    <%= simple_form_for :school, url: baseload_meter_school_advice_baseload_path(@school, format: :js), method: :get, remote: true do |f| %>
+      <div class="form-group">
+        <%= select_tag :mpan_mprn, options_from_collection_for_select(@meters, :mpan_mprn, :analytics_name, nil), class: "form-control", onchange: "this.form.submit();" %>
+      </div>
+    <% end %>
+
+    <div id="baseload-meter">
+      <%= render 'baseload_meter', mpan_mprn: @meters.first.mpan_mprn, start_month_year: month_year(@start_date.last_month), end_month_year: month_year(@end_date.last_month) %>
+    </div>
+
   <% end %>
 
   <!--  SEASONAL VARIATION -->

@@ -1,0 +1,5 @@
+<h5><%= t('advice_pages.baseload.analysis_electricity_long_term_baseload_meter_chart_subtitle', start_month_year: start_month_year, end_month_year: end_month_year, meter_name: mpan_mprn) %></h5>
+<div id="chart_wrapper_baseload_#{mpan_mprn}" class="chart-wrapper">
+  <%= render 'shared/analysis_controls', chart_type: :baseload, axis_controls: true, analysis_controls: true %>
+  <%= chart_tag(@school, :baseload, no_zoom: true, wrap: false, chart_config: create_chart_config(@school, :baseload, mpan_mprn)) %>
+</div>

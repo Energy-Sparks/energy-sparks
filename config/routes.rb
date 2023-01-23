@@ -144,6 +144,7 @@ Rails.application.routes.draw do
             get :insights
             get :analysis
             get :learn_more
+            get :baseload_meter
           end
         end
       end

@@ -11,9 +11,11 @@ module Schools
       end
 
       def analysis
+        @meters = aggregate_school.electricity_meters
+        @multiple_meters = @meters.count > 1
+
         @start_date = aggregate_school.aggregated_electricity_meters.amr_data.start_date
         @end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
-        @multiple_meters = @school.meters.electricity.count > 1
 
         @baseload_usage = baseload_usage(aggregate_school, @end_date)
         @benchmark_usage = benchmark_usage(aggregate_school, @end_date)
@@ -26,6 +28,15 @@ module Schools
 
         @intraweek_variation = intraweek_variation(aggregate_school, @end_date)
         @intraweek_variation_by_meter = intraweek_variation_by_meter(aggregate_school)
+      end
+
+      def baseload_meter
+        @mpan_mprn = params[:mpan_mprn]
+        @start_date = aggregate_school.aggregated_electricity_meters.amr_data.start_date
+        @end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
+        respond_to do |format|
+          format.js
+        end
       end
 
       private

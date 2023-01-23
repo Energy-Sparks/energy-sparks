@@ -41,6 +41,8 @@ module EnergySparks
     # session cookie config will be overridden in production.rb
     config.session_store :cookie_store, key: '_energy-sparks_session'
 
+    config.action_view.embed_authenticity_token_in_remote_forms = true
+
     config.after_initialize do
       ActionText::ContentHelper.allowed_attributes.add 'id'
       ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'

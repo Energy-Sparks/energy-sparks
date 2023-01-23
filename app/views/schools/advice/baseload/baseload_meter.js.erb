@@ -1,0 +1,1 @@
+$("#baseload-meter").html("<%= escape_javascript(render 'baseload_meter', mpan_mprn: @mpan_mprn, start_month_year: month_year(@start_date.last_month), end_month_year: month_year(@end_date.last_month))  %>");
