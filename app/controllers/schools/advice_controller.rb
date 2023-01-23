@@ -23,6 +23,10 @@ module Schools
       @tab = action_name.to_sym
     end
 
+    def load_advice_page
+      @advice_page = AdvicePage.find_by_key(advice_page_key)
+    end
+
     def load_advice_pages
       @advice_pages = AdvicePage.all
     end

@@ -30,8 +30,8 @@ module Schools
 
       private
 
-      def load_advice_page
-        @advice_page = AdvicePage.find_by_key(:baseload)
+      def advice_page_key
+        :baseload
       end
     end
   end
