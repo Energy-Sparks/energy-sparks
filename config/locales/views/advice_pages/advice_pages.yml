@@ -9,14 +9,29 @@ en:
         name: Carbon
       electricity:
         baseload: Baseload
+        costs: Costs
+        intraday: Intraday
+        long_term: Long term changes
         name: Electricity
+        out_of_hours: Out of school hours
+        recent_changes: Recent changes
       gas:
+        boiler_control: Boiler control
+        costs: Costs
+        hot_water: Hot water
+        intraday: Intraday
+        long_term: Long term changes
         name: Gas
+        out_of_hours: Out of school hours
+        recent_changes: Recent changes
+        thermostatic: Thermostatic
       name: Advice
       solar:
         name: Solar
+        solar_pv: Solar PV
       storage_heaters:
         name: Storage Heaters
+        storage_heaters: Storage heaters
       top_section:
         total_energy_use: Total energy use
     show:
