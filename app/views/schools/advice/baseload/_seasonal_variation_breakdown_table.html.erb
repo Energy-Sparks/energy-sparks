@@ -1,4 +1,4 @@
-<table class="table table-sm">
+<table class="table table-sm table-with-totals">
   <thead class="thead-dark">
     <tr>
       <th class="text-right">Meter</th>
@@ -24,7 +24,7 @@
     <% end %>
     <tr>
       <td class="text-right">All meters</td>
-      <td class="text-right"><%= format_target(seasonal_variation.variation_rating, :r2) %></td>
+      <td class="text-right"><%= format_rating(seasonal_variation.variation_rating) %></td>
       <td class="text-right"><%= format_target(seasonal_variation.winter_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(seasonal_variation.summer_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(seasonal_variation.percentage, :percent) %></td>

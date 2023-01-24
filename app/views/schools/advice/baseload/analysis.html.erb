@@ -77,7 +77,7 @@
     <p><%= t('advice_pages.baseload.analysis_meter_breakdown_intro') %></p>
     <p><%= t('advice_pages.baseload.analysis_meter_breakdown_table_description') %></p>
 
-    <%= render 'meter_breakdown_table', school: @school, baseload_meter_breakdown: @baseload_meter_breakdown %>
+    <%= render 'meter_breakdown_table', school: @school, baseload_meter_breakdown: @baseload_meter_breakdown, baseload_meter_breakdown_total: @baseload_meter_breakdown_total %>
 
   <% end %>
 

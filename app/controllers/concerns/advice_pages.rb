@@ -20,12 +20,14 @@ module AdvicePages
     )
   end
 
-  def build_meter_breakdown_totals(breakdowns, previous_year_baseload)
-    baseload_kw = breakdowns.values.map(&:baseload_kw).sum
+  def build_meter_breakdown_total(meter_collection, end_date)
+    baseload_usage = baseload_usage(meter_collection, end_date)
+    previous_year_baseload = previous_year_baseload_kw(meter_collection, end_date)
+    baseload_kw = average_baseload_kw(meter_collection, end_date)
     OpenStruct.new(
       baseload_kw: baseload_kw,
-      baseload_cost_£: breakdowns.values.map(&:baseload_cost_£).sum,
-      percentage_baseload: breakdowns.values.map(&:percentage_baseload).sum,
+      baseload_cost_£: baseload_usage.£,
+      percentage_baseload: 1.0,
       baseload_previous_year_kw: previous_year_baseload,
       baseload_change_kw: baseload_kw - previous_year_baseload
     )
@@ -85,6 +87,12 @@ module AdvicePages
     end
   end
 
+  def previous_year_baseload_kw(meter_collection, end_date)
+    end_of_previous_year = end_date - 1.year
+    baseload_service = Baseload::BaseloadCalculationService.new(meter_collection.aggregated_electricity_meters, end_of_previous_year)
+    baseload_service.average_baseload_kw
+  end
+
   def baseload_meter_breakdown(meter_collection, end_date)
     baseload_meter_breakdown_service = Baseload::BaseloadMeterBreakdownService.new(meter_collection)
     baseloads = baseload_meter_breakdown_service.calculate_breakdown
@@ -96,10 +104,6 @@ module AdvicePages
       previous_year_baseload = baseload_service.average_baseload_kw
       meter_breakdowns[mpan_mprn] = build_meter_breakdown(mpan_mprn, baseloads, previous_year_baseload)
     end
-
-    baseload_service = Baseload::BaseloadCalculationService.new(meter_collection.aggregated_electricity_meters, end_of_previous_year)
-    previous_year_baseload = baseload_service.average_baseload_kw
-    meter_breakdowns['All meters'] = build_meter_breakdown_totals(meter_breakdowns, previous_year_baseload)
     meter_breakdowns
   end
 

@@ -18,7 +18,9 @@ module Schools
         @benchmark_usage = benchmark_usage(aggregate_school, @end_date)
         @estimated_savings = estimated_savings(aggregate_school, @end_date)
         @annual_average_baseloads = annual_average_baseloads(aggregate_school, @start_date, @end_date)
+
         @baseload_meter_breakdown = baseload_meter_breakdown(aggregate_school, @end_date)
+        @baseload_meter_breakdown_total = build_meter_breakdown_total(aggregate_school, @end_date)
 
         @seasonal_variation = seasonal_variation(aggregate_school, @end_date)
         @seasonal_variation_by_meter = seasonal_variation_by_meter(aggregate_school)
