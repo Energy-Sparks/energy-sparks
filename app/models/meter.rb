@@ -140,6 +140,10 @@ class Meter < ApplicationRecord
     return true if fuel_type == :electricity && zero_reading_days.count > 0
   end
 
+  def name_or_mpan_mprn
+    name.present? ? name : mpan_mprn
+  end
+
   def display_name
     name.present? ? "#{display_meter_mpan_mprn} (#{name})" : display_meter_mpan_mprn
   end

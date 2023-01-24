@@ -99,8 +99,7 @@ module AdvicePages
 
     baseload_service = Baseload::BaseloadCalculationService.new(meter_collection.aggregated_electricity_meters, end_of_previous_year)
     previous_year_baseload = baseload_service.average_baseload_kw
-    meter_breakdowns['Total'] = build_meter_breakdown_totals(meter_breakdowns, previous_year_baseload)
-
+    meter_breakdowns['All meters'] = build_meter_breakdown_totals(meter_breakdowns, previous_year_baseload)
     meter_breakdowns
   end
 

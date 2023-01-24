@@ -77,7 +77,7 @@
     <p><%= t('advice_pages.baseload.analysis_meter_breakdown_intro') %></p>
     <p><%= t('advice_pages.baseload.analysis_meter_breakdown_table_description') %></p>
 
-    <%= render 'meter_breakdown_table', baseload_meter_breakdown: @baseload_meter_breakdown %>
+    <%= render 'meter_breakdown_table', school: @school, baseload_meter_breakdown: @baseload_meter_breakdown %>
 
   <% end %>
 
@@ -90,7 +90,7 @@
 
   <% if @multiple_meters %>
     <p><%= t('advice_pages.baseload.analysis_seasonal_variation_table_description') %></p>
-    <%= render 'seasonal_variation_breakdown_table', seasonal_variation: @seasonal_variation, seasonal_variation_by_meter: @seasonal_variation_by_meter %>
+    <%= render 'seasonal_variation_breakdown_table', school: @school, seasonal_variation: @seasonal_variation, seasonal_variation_by_meter: @seasonal_variation_by_meter %>
   <% else %>
     <%= render 'seasonal_variation_table', seasonal_variation: @seasonal_variation %>
   <% end %>
@@ -105,7 +105,7 @@
 
   <% if @multiple_meters %>
     <p><%= t('advice_pages.baseload.analysis_weekday_variation_table_description') %></p>
-    <%= render 'weekday_variation_breakdown_table', intraweek_variation: @intraweek_variation, intraweek_variation_by_meter: @intraweek_variation_by_meter %>
+    <%= render 'weekday_variation_breakdown_table', school: @school, intraweek_variation: @intraweek_variation, intraweek_variation_by_meter: @intraweek_variation_by_meter %>
   <% else %>
     <%= render 'weekday_variation_table', intraweek_variation: @intraweek_variation %>
   <% end %>

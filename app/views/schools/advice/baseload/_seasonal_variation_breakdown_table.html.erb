@@ -13,7 +13,7 @@
   <tbody>
     <% seasonal_variation_by_meter.each do |mpan_mprn, variation| %>
     <tr>
-      <td class="text-right"><%= mpan_mprn %></td>
+      <td class="text-right"><%= school.meters.find_by_mpan_mprn(mpan_mprn).name_or_mpan_mprn %></td>
       <td class="text-right"><%= format_rating(variation.variation_rating) %></td>
       <td class="text-right"><%= format_unit(variation.winter_kw, :kw) %></td>
       <td class="text-right"><%= format_unit(variation.summer_kw, :kw) %></td>
@@ -23,7 +23,7 @@
     </tr>
     <% end %>
     <tr>
-      <td class="text-right">Whole school</td>
+      <td class="text-right">All meters</td>
       <td class="text-right"><%= format_target(seasonal_variation.variation_rating, :r2) %></td>
       <td class="text-right"><%= format_target(seasonal_variation.winter_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(seasonal_variation.summer_kw, :kwh) %></td>
