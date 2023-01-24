@@ -19,7 +19,7 @@
     </tr>
     <% end %>
     <tr>
-      <td>All meters</td>
+      <td><%= t('advice_pages.baseload.tables.labels.all_meters') %></td>
       <td class="text-right"><%= format_unit(baseload_meter_breakdown_total.baseload_kw, :kw) %></td>
       <td class="text-right"><%= format_unit(baseload_meter_breakdown_total.baseload_cost_£, :£) %></td>
       <td class="text-right"><%= format_unit(baseload_meter_breakdown_total.baseload_change_kw, :kw) %></td>

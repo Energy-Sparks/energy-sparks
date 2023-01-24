@@ -1,7 +1,7 @@
 <table class="table table-sm">
   <thead class="thead-dark">
     <tr>
-      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.assessment') %></th>
+      <th class="text-left"><%= t('advice_pages.baseload.tables.columns.assessment') %></th>
       <th class="text-right"><%= t('advice_pages.baseload.tables.columns.baseload_in_winter') %></th>
       <th class="text-right"><%= t('advice_pages.baseload.tables.columns.baseload_in_summer') %></th>
       <th class="text-right"><%= t('advice_pages.baseload.tables.columns.percentage_difference') %></th>
@@ -11,7 +11,7 @@
   </thead>
   <tbody>
     <tr>
-      <td class="text-right"><%= format_rating(seasonal_variation.variation_rating) %></td>
+      <td class="text-left"><%= format_rating(seasonal_variation.variation_rating) %></td>
       <td class="text-right"><%= format_unit(seasonal_variation.winter_kw, :kw) %></td>
       <td class="text-right"><%= format_unit(seasonal_variation.summer_kw, :kw) %></td>
       <td class="text-right"><%= format_unit(seasonal_variation.percentage, :r2) %></td>

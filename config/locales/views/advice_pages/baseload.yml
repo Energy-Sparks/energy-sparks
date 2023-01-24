@@ -36,16 +36,18 @@ en:
       analysis_usage: Your electricity baseload over the last 12 months was %{baseload_usage} kW. Other schools with a similar number of pupils have a baseload of %{benchmark_usage} kW.
       analysis_weekday_variation_intro_1: At a well-managed school the baseload should remain the same throughout the week, there should be no reason why the electricity consumption at midnight on a weekday should be higher than during the weekend.
       analysis_weekday_variation_intro_2: The most common cause of weekday variation is a high energy consuming appliance which is turned on on a Monday and off again on a Friday.
-      analysis_weekday_variation_table_description: The meter breakdown in the table below may help to identify where in the school, seasonal variation comes from.
+      analysis_weekday_variation_table_description: The meter breakdown in the table below may help to identify where in the school, daily variation variation comes from.
       analysis_weekday_variation_title: Variation in baseload between days of week
       insights_title: What is baseload?
       page_title: Baseload analysis
       tables:
+        labels:
+          all_meters: All meters
         columns:
           assessment: Assessment
           average_annual_baseload_co2: Average annual CO2 (kg)
           average_annual_baseload_gbp: Average annual cost (£)
-          average_annual_baseload_kw: Average baseload (kW)
+          average_annual_baseload_kw: Average annual baseload (kW)
           baseload_in_summer: Baseload in summer (kW)
           baseload_in_winter: Baseload in winter (kW)
           change_since_previous_year: Change since previous year (kW)

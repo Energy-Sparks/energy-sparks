@@ -1,8 +1,8 @@
 <table class="table table-sm table-with-totals">
   <thead class="thead-dark">
     <tr>
-      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.meter') %></th>
-      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.assessment') %></th>
+      <th class="text-left"><%= t('advice_pages.baseload.tables.columns.meter') %></th>
+      <th class="text-left"><%= t('advice_pages.baseload.tables.columns.assessment') %></th>
       <th class="text-right"><%= t('advice_pages.baseload.tables.columns.highest_day_baseload') %></th>
       <th class="text-right"><%= t('advice_pages.baseload.tables.columns.lowest_day_baseload') %></th>
       <th class="text-right"><%= t('advice_pages.baseload.tables.columns.percentage_difference') %></th>
@@ -13,8 +13,8 @@
   <tbody>
     <% intraweek_variation_by_meter.each do |mpan_mprn, variation| %>
     <tr>
-      <td class="text-right"><%= school.meters.find_by_mpan_mprn(mpan_mprn).name_or_mpan_mprn %></td>
-      <td class="text-right"><%= format_rating(variation.variation_rating) %></td>
+      <td class="text-left"><%= school.meters.find_by_mpan_mprn(mpan_mprn).name_or_mpan_mprn %></td>
+      <td class="text-left"><%= format_rating(variation.variation_rating) %></td>
       <td class="text-right"><%= format_unit(variation.max_day_kw, :kw) %></td>
       <td class="text-right"><%= format_unit(variation.min_day_kw, :kw) %></td>
       <td class="text-right"><%= format_unit(variation.percent_intraday_variation, :percent) %></td>
@@ -23,8 +23,8 @@
     </tr>
     <% end %>
     <tr>
-      <td class="text-right">All meters</td>
-      <td class="text-right"><%= format_rating(intraweek_variation.variation_rating) %></td>
+      <td class="text-left"><%= t('advice_pages.baseload.tables.labels.all_meters') %></td>
+      <td class="text-left"><%= format_rating(intraweek_variation.variation_rating) %></td>
       <td class="text-right"><%= format_target(intraweek_variation.max_day_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(intraweek_variation.min_day_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(intraweek_variation.percent_intraday_variation, :percent) %></td>
