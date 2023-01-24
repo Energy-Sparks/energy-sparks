@@ -30,20 +30,35 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
   end
 
   describe '#has_electricity?' do
-    it 'checks the fuel types'
+    it 'checks the fuel types' do
+      expect(service.has_electricity?).to be true
+    end
   end
 
   describe '#multiple_meters?' do
-    it 'checks the meter count'
+    it 'checks the meter count' do
+      expect(service.multiple_meters?).to be false
+    end
   end
 
   describe '#average_baseload_kw' do
-    it 'returns the baseload'
+    before do
+      allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:average_baseload_kw).and_return(average_baseload_kw)
+    end
+
+    it 'returns the baseload' do
+      expect(service.average_baseload_kw).to eq average_baseload_kw
+    end
   end
 
   describe '#previous_year_average_baseload_kw' do
-    it 'returns the baseload'
+    before do
+      allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:average_baseload_kw).and_return(average_baseload_kw)
+    end
 
+    it 'returns the baseload' do
+      expect(service.previous_year_average_baseload_kw).to eq average_baseload_kw
+    end
   end
 
   describe '#annual_baseload_usage' do
@@ -56,7 +71,12 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
   end
 
   describe '#average_baseload_kw_benchmark' do
-    it 'returns the baseload vs benchmark'
+    before do
+      allow_any_instance_of(Baseload::BaseloadBenchmarkingService).to receive(:average_baseload_kw).and_return(average_baseload_kw)
+    end
+    it 'returns the baseload vs benchmark' do
+      expect(service.average_baseload_kw_benchmark).to eq(average_baseload_kw)
+    end
   end
 
   describe '#baseload_usage_benchmark' do
@@ -66,10 +86,6 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     it 'returns usage' do
       expect(service.baseload_usage_benchmark).to eq(usage)
     end
-  end
-
-  describe '#baseload_usage_benchmark' do
-    it 'returns the usage'
   end
 
   describe '#estimated_savings' do
@@ -99,11 +115,37 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
   end
 
   describe '#baseload_meter_breakdown' do
-    it 'returns the meter breakdown'
+    let(:meter_1)   { 1591058886735 }
+    let(:data)      { {meter_1 => {kw: 0, percent: 0, £: 0} } }
+    let(:breakdown) { Baseload::MeterBaseloadBreakdown.new(meter_breakdown: data) }
+
+    before do
+      allow_any_instance_of(Baseload::BaseloadMeterBreakdownService).to receive(:calculate_breakdown).and_return(breakdown)
+      allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:annual_baseload_usage).and_return(usage)
+      allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:average_baseload_kw).and_return(average_baseload_kw)
+      allow(meter_collection).to receive(:meter?).and_return( double('meter', fuel_type: :electricity) )
+    end
+    it 'returns usage by years' do
+      result = service.baseload_meter_breakdown
+      expect(result.keys).to match_array([meter_1])
+      expect(result[meter_1].to_h.keys).to match_array([:baseload_kw, :baseload_change_kw, :baseload_cost_£, :percentage_baseload, :baseload_previous_year_kw])
+      expect(result[meter_1].baseload_previous_year_kw).to eq(average_baseload_kw)
+    end
   end
 
   describe '#meter_breakdown_table_total' do
-    it 'returns the total'
+    before(:each) do
+      allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:average_baseload_kw).and_return(average_baseload_kw)
+      allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:annual_baseload_usage).and_return(usage)
+    end
+    it 'returns the total' do
+      result = service.meter_breakdown_table_total
+      expect(result.baseload_kw).to eq average_baseload_kw
+      expect(result.baseload_cost_£).to eq usage.£
+      expect(result.percentage_baseload).to eq 1.0
+      expect(result.baseload_previous_year_kw).to eq average_baseload_kw
+      expect(result.baseload_change_kw).to eq 0
+    end
   end
 
   describe '#seasonal_variation' do
