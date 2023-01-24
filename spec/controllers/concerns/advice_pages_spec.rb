@@ -38,6 +38,7 @@ describe AdvicePages, type: :controller do
   let(:meter_collection) { double(:meter_collection, electricity_meters: electricity_meters, aggregated_electricity_meters: double(fuel_type: :electricity)) }
   let(:end_date) { Date.parse('20200101') }
   let(:usage) { 'usage' }
+  let(:average_baseload_kw) { 2.1 }
   let(:savings) { double(£: 1, co2: 2) }
 
   describe '.baseload_usage' do
@@ -72,6 +73,7 @@ describe AdvicePages, type: :controller do
     let(:end_date) { Date.parse('20210101')}
     before do
       allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:annual_baseload_usage).and_return(usage)
+      allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:average_baseload_kw).and_return(average_baseload_kw)
     end
     it 'returns usage by years' do
       result = subject.annual_average_baseloads(meter_collection, start_date, end_date)
@@ -96,8 +98,8 @@ describe AdvicePages, type: :controller do
     it 'returns usage by years' do
       result = subject.baseload_meter_breakdown(meter_collection, end_date)
 
-      expect(result['Total'].to_h.keys).to match_array([:baseload_kw, :baseload_cost_£, :percentage_baseload, :baseload_previous_year_kw])
-      expect(result['Total'].baseload_previous_year_kw).to eq(123.0)
+      expect(result['All meters'].to_h.keys).to match_array([:baseload_kw, :baseload_change_kw, :baseload_cost_£, :percentage_baseload, :baseload_previous_year_kw])
+      expect(result['All meters'].baseload_previous_year_kw).to eq(123.0)
     end
   end
 
