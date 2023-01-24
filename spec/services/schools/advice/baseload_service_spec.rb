@@ -6,7 +6,7 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
   let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
 
   let(:electricity_meters) { ['electricity-meter'] }
-  let(:electricity_aggregate_meter)   { double('electricity-aggregated-meter')}
+  let(:electricity_aggregate_meter)   { double('electricity-aggregated-meter', aggregate_meter?: true)}
 
   let(:meter_collection) { double(:meter_collection, electricity_meters: electricity_meters, aggregated_electricity_meters: electricity_aggregate_meter) }
 
@@ -118,6 +118,7 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     let(:meter_1)   { 1591058886735 }
     let(:data)      { {meter_1 => {kw: 0, percent: 0, £: 0} } }
     let(:breakdown) { Baseload::MeterBaseloadBreakdown.new(meter_breakdown: data) }
+    let!(:db_meter)  { create(:electricity_meter, school: school, mpan_mprn: 1591058886735) }
 
     before do
       allow_any_instance_of(Baseload::BaseloadMeterBreakdownService).to receive(:calculate_breakdown).and_return(breakdown)
@@ -128,7 +129,8 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     it 'returns usage by years' do
       result = service.baseload_meter_breakdown
       expect(result.keys).to match_array([meter_1])
-      expect(result[meter_1].to_h.keys).to match_array([:baseload_kw, :baseload_change_kw, :baseload_cost_£, :percentage_baseload, :baseload_previous_year_kw])
+      expect(result[meter_1].to_h.keys).to match_array([:baseload_kw, :baseload_change_kw, :baseload_cost_£, :percentage_baseload, :baseload_previous_year_kw, :meter])
+      expect(result[meter_1].meter).to eq(db_meter)
       expect(result[meter_1].baseload_previous_year_kw).to eq(average_baseload_kw)
     end
   end
@@ -156,15 +158,15 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     end
     it 'returns variation' do
       result = service.seasonal_variation
-      expect(result.to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :percentage, :summer_kw, :variation_rating, :winter_kw])
+      expect(result.to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :percentage, :summer_kw, :variation_rating, :winter_kw, :meter])
     end
 
   end
 
   describe '#seasonal_variation_by_meter' do
     let(:seasonal_variation) { double(winter_kw: 1, summer_kw: 2, percentage: 3) }
-    let(:electricity_meter_1) { double(mpan_mprn: 'meter1', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity) }
-    let(:electricity_meter_2) { double(mpan_mprn: 'meter2', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity) }
+    let(:electricity_meter_1) { double(mpan_mprn: 'meter1', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity, aggregate_meter?: false) }
+    let(:electricity_meter_2) { double(mpan_mprn: 'meter2', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity, aggregate_meter?: false) }
     let(:electricity_meters) { [electricity_meter_1, electricity_meter_2] }
 
     before do
@@ -174,7 +176,7 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     it 'returns variation' do
       result = service.seasonal_variation_by_meter
       expect(result.keys).to match_array(['meter1', 'meter2'])
-      expect(result['meter1'].to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :percentage, :summer_kw, :variation_rating, :winter_kw])
+      expect(result['meter1'].to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :percentage, :summer_kw, :variation_rating, :winter_kw, :meter])
     end
   end
 
@@ -186,15 +188,15 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     end
     it 'returns variation' do
       result = service.intraweek_variation
-      expect(result.to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :max_day_kw, :min_day_kw, :percent_intraday_variation, :variation_rating])
+      expect(result.to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :max_day_kw, :min_day_kw, :percent_intraday_variation, :variation_rating, :meter])
     end
 
   end
 
   describe '#intraweek_variation_by_meter' do
     let(:intraweek_variation) { double(max_day_kw: 1, min_day_kw: 2, percent_intraday_variation: 3) }
-    let(:electricity_meter_1) { double(mpan_mprn: 'meter1', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity) }
-    let(:electricity_meter_2) { double(mpan_mprn: 'meter2', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity) }
+    let(:electricity_meter_1) { double(mpan_mprn: 'meter1', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity, aggregate_meter?: false) }
+    let(:electricity_meter_2) { double(mpan_mprn: 'meter2', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity, aggregate_meter?: false) }
     let(:electricity_meters) { [electricity_meter_1, electricity_meter_2] }
     before do
       allow_any_instance_of(Baseload::IntraweekBaseloadService).to receive(:intraweek_variation).and_return(intraweek_variation)
@@ -203,7 +205,7 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     it 'returns variation' do
       result = service.intraweek_variation_by_meter
       expect(result.keys).to match_array(['meter1', 'meter2'])
-      expect(result['meter1'].to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :max_day_kw, :min_day_kw, :percent_intraday_variation, :variation_rating])
+      expect(result['meter1'].to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :max_day_kw, :min_day_kw, :percent_intraday_variation, :variation_rating, :meter])
     end
 
   end

@@ -129,6 +129,7 @@ module Schools
 
       def build_meter_breakdown(mpan_mprn, breakdown, previous_year_baseload)
         OpenStruct.new(
+          meter: meter_for_mpan(mpan_mprn),
           baseload_kw: breakdown.baseload_kw(mpan_mprn),
           baseload_cost_£: breakdown.baseload_cost_£(mpan_mprn),
           percentage_baseload: breakdown.percentage_baseload(mpan_mprn),
@@ -141,11 +142,13 @@ module Schools
         seasonal_baseload_service = Baseload::SeasonalBaseloadService.new(meter, date)
         variation = seasonal_baseload_service.seasonal_variation
         saving = seasonal_baseload_service.estimated_costs
-        build_seasonal_variation(variation, saving)
+        mpan_mprn = meter.aggregate_meter? ? nil : meter.mpan_mprn
+        build_seasonal_variation(mpan_mprn, variation, saving)
       end
 
-      def build_seasonal_variation(variation, saving)
+      def build_seasonal_variation(mpan_mprn, variation, saving)
         OpenStruct.new(
+          meter: meter_for_mpan(mpan_mprn),
           winter_kw: variation.winter_kw,
           summer_kw: variation.summer_kw,
           percentage: variation.percentage,
@@ -163,11 +166,13 @@ module Schools
         intraweek_baseload_service = Baseload::IntraweekBaseloadService.new(meter, date)
         variation = intraweek_baseload_service.intraweek_variation
         saving = intraweek_baseload_service.estimated_costs
-        build_intraweek_variation(variation, saving)
+        mpan_mprn = meter.aggregate_meter? ? nil : meter.mpan_mprn
+        build_intraweek_variation(mpan_mprn, variation, saving)
       end
 
-      def build_intraweek_variation(variation, saving)
+      def build_intraweek_variation(mpan_mprn, variation, saving)
         OpenStruct.new(
+          meter: meter_for_mpan(mpan_mprn),
           max_day_kw: variation.max_day_kw,
           min_day_kw: variation.min_day_kw,
           percent_intraday_variation: variation.percent_intraday_variation,
