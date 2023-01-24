@@ -1,14 +1,13 @@
-<h4><strong><%= name %></strong></h4>
 <div class="row activities-deck">
   <% recommendations.each do |recommendation| %>
     <div class="col-sm-4">
       <div class="card pr-1 h-100">
-        <%= link_to activity_type_path(recommendation) do %>
+        <%= link_to url_for(recommendation) do %>
           <%= render(ImageComponent.new(recommendation, classes: 'activity-card-img')) %>
         <% end %>
         <div class="card-body">
           <p class="card-text">
-          <%= link_to recommendation.name, activity_type_path(recommendation) %>
+          <%= link_to recommendation.name, url_for(recommendation) %>
           </p>
         </div>
         <div class="card-footer" style="border-top: none; background-color: white;">

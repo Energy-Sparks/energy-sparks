@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 class RecommendationsComponent < ViewComponent::Base
-  attr_reader :name, :recommendations
+  attr_reader :recommendations
 
-  def initialize(name:, recommendations: [])
-    @name = name
+  def initialize(recommendations: [])
     @recommendations = recommendations
   end
 
