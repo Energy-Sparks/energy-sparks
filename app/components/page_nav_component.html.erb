@@ -1,14 +1,21 @@
-<div class="page-nav">
-  <ul class="list-unstyled components" style="border: 1px solid grey;">
-    <span class="header p-1" style="background-color: <%= bgcolor %>;"><%= icon %> <%= name %></span>
+<div class="collapse d-md-flex border rounded page-nav" id="page-nav">
+  <ul class="nav flex-column flex-nowrap w-100">
+    <li class="nav-item header"><%= header %></li>
     <% sections.each do |section| %>
-    <li class="section">
-      <%= section %>
-      <ul class="list-unstyled collapse show" id="<%= section.id %>">
-        <% section.items.each do |item| %>
-          <%= item %>
-        <% end %>
-      </ul>
+      <% if section.visible %>
+        <li class="nav-item overflow-hidden section">
+          <%= section %>
+          <div class="collapse show" id="<%= section.id %>" aria-expanded="false">
+            <ul class="flex-column pl-0">
+              <% section.items.each do |item| %>
+                <li class="nav-item">
+                  <%= item %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </li>
+      <% end %>
     <% end %>
   </ul>
 </div>

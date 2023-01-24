@@ -1,18 +1,18 @@
-<h1>Advice Pages</h1>
-
 <div class="advice-page-breadcrumb">
   <%= render(BreadcrumbsComponent.new) do |c| %>
     <% c.with_school(@school) %>
-    <% c.with_items([{ name: "Advice", href: school_advice_path(@school) }]) %>
+    <% c.with_items([{ name: t('advice_pages.breadcrumbs.root'), href: school_advice_path(@school) }]) %>
   <% end %>
 </div>
 
+<h1><%= t('advice_pages.show.title') %></h1>
+
 <div class="row">
-  <div class="col-md-2 advice-page-nav">
+  <div class="col-md-3 col-lg-3 col-xl-2 advice-page-nav">
     <%= render 'nav', school: @school, advice_pages: @advice_pages %>
   </div>
-  <div class="col-md-10">
-    <h2>All pages</h2>
+  <div class="col-md-9 col-lg-9 col-xl-10 advice-page-tabs">
+    <h2><%= render(PageNavComponent::CollapseButton.new(display: 'inline')) %> All pages</h2>
     <% if @advice_pages.any? %>
       <% @advice_pages.each do |advice_page| %>
         <li><%= link_to advice_page.key, advice_page_path(@school, advice_page) %></li>

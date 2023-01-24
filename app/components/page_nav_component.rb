@@ -1,44 +1,83 @@
 # frozen_string_literal: true
 
 class PageNavComponent < ViewComponent::Base
-  renders_many :sections, 'SectionComponent'
-
-  attr_accessor :name, :bgcolor
-
-  def initialize(name: "Menu", icon: 'bars', bgcolor: '#232b49')
-    @name = name
-    @icon = icon
-    @bgcolor = bgcolor
+  renders_many :sections, ->(**args) do
+    args[:options] = options
+    SectionComponent.new(**args)
   end
 
-  def icon
-    @icon ? helpers.fa_icon(@icon) : ''
+  attr_reader :name, :icon, :classes, :href, :options
+
+  def initialize(name: "Menu", icon: 'home', href:, classes: nil, options: {})
+    @name = name
+    @icon = icon
+    @classes = classes
+    @href = href
+    @options = options
+  end
+
+  def header
+    args = { class: 'nav-link border-bottom' }
+    args[:class] += " #{classes}" if classes
+    link_to(helpers.text_with_icon(name, icon), href, args)
   end
 
   class SectionComponent < ViewComponent::Base
-    renders_many :items, 'PageNavComponent::ItemComponent'
-
-    attr_accessor :bgcolor, :icon, :name
-
-    def initialize(name: nil, bgcolor: nil, icon: nil)
-      @name = name
-      @bgcolor = bgcolor
-      @icon = icon
+    renders_many :items, ->(**args) do
+      args[:match_controller] ||= options[:match_controller]
+      PageNavComponent::ItemComponent.new(**args)
     end
 
-    def call
-      args = { class: 'p-1', 'data-toggle': 'collapse', 'aria-expanded': "true" }
-      args[:style] = "background-color: #{bgcolor};" if bgcolor
-      output = link_to(name_text.html_safe, "##{id}", args)
-      output
+    attr_reader :name, :icon, :visible, :classes, :options
+
+    def initialize(name: nil, icon: nil, visible: true, classes: nil, options: {})
+      @name = name
+      @classes = classes
+      @icon = icon
+      @visible = visible
+      @options = options
     end
 
     def id
       name.try(:parameterize)
     end
 
-    def name_text
-      icon ? "#{helpers.fa_icon(icon)} #{name}" : name
+    def link_text
+      helpers.text_with_icon(name, icon) + content_tag(:span, helpers.toggler, class: 'pl-1 float-right')
+    end
+
+    def render?
+      name
+    end
+
+    def call
+      args = { class: 'nav-link border-bottom small toggler', 'data-toggle': 'collapse', 'data-target': "##{id}" }
+      args[:class] += " #{classes}" if classes
+      link_to(link_text, "##{id}", args)
+    end
+  end
+
+  class ItemComponent < ViewComponent::Base
+    attr_reader :name, :href, :match_controller
+
+    def initialize(name:, href:, match_controller: false)
+      @name = name
+      @href = href
+      @match_controller = match_controller
+    end
+
+    def current_controller?(href)
+      controller_path == Rails.application.routes.recognize_path(href)[:controller]
+    end
+
+    def current_item?(href)
+      match_controller ? current_controller?(href) : current_page?(href)
+    end
+
+    def call
+      args = { class: "nav-link border-bottom item small" }
+      args[:class] += ' current' if current_item?(href)
+      link_to(name, href, args)
     end
 
     def render?
@@ -46,21 +85,25 @@ class PageNavComponent < ViewComponent::Base
     end
   end
 
-  class ItemComponent < ViewComponent::Base
-    attr_accessor :name, :href
+  class CollapseButton < ViewComponent::Base
+    attr_reader :display
 
-    def initialize(name:, href:)
-      @name = name
-      @href = href
+    def initialize(icon: 'bars', display: 'block')
+      @icon = icon
+      @display = display
+    end
+
+    def id
+      'page-nav'
+    end
+
+    def icon
+      @icon ? helpers.fa_icon(@icon) : ''
     end
 
     def call
-      args = { class: 'pl-4', style: "flex: 1" }
-      content_tag(:li, link_to_unless_current(name, href), args)
-    end
-
-    def render?
-      name
+      args = { class: "nav-link d-md-none d-#{display}", 'data-toggle': 'collapse', 'data-target': "##{id}" }
+      link_to(icon, '', args)
     end
   end
 end

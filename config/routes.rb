@@ -139,11 +139,29 @@ Rails.application.routes.draw do
       end
 
       resource :advice, controller: 'advice', only: [:show] do
-        resource :baseload, controller: 'advice/baseload', only: [:show] do
-          member do
-            get :insights
-            get :analysis
-            get :learn_more
+        [:total_energy_use,
+         :baseload,
+         :electricity_costs,
+         :electricity_long_term,
+         :electricity_intraday,
+         :electricity_out_of_hours,
+         :electricity_recent_changes,
+         :boiler_control,
+         :thermostatic_control,
+         :gas_costs,
+         :gas_long_term,
+         :gas_intraday,
+         :gas_out_of_hours,
+         :gas_recent_changes,
+         :hot_water,
+         :solar_pv,
+         :storage_heaters].each do |page|
+          resource page, controller: "advice/#{page}", only: [:show] do
+            member do
+              get :insights
+              get :analysis
+              get :learn_more
+            end
           end
         end
       end
