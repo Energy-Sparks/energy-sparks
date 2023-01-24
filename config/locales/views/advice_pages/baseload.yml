@@ -40,3 +40,20 @@ en:
       analysis_weekday_variation_title: Variation in baseload between days of week
       insights_title: What is baseload?
       page_title: Baseload analysis
+      tables:
+        columns:
+          assessment: Assessment
+          average_annual_baseload_co2: Average annual CO2 (kg)
+          average_annual_baseload_gbp: Average annual cost (£)
+          average_annual_baseload_kw: Average baseload (kW)
+          baseload_in_summer: Baseload in summer (kW)
+          baseload_in_winter: Baseload in winter (kW)
+          change_since_previous_year: Change since previous year (kW)
+          highest_day_baseload: Highest day baseload (kW)
+          lowest_day_baseload: Lowest day baseload (kW)
+          meter: Meter
+          percentage_difference: "% difference"
+          percentage_of_total: "% of total baseload"
+          potential_saving_co2: CO2 reduction (kg)
+          potential_saving_gbp: Potential saving (£)
+          year: Year
