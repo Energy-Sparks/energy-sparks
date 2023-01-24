@@ -15,16 +15,19 @@ module AdvicePages
       baseload_kw: breakdown.baseload_kw(mpan_mprn),
       baseload_cost_£: breakdown.baseload_cost_£(mpan_mprn),
       percentage_baseload: breakdown.percentage_baseload(mpan_mprn),
-      baseload_previous_year_kw: previous_year_baseload
+      baseload_previous_year_kw: previous_year_baseload,
+      baseload_change_kw: breakdown.baseload_kw(mpan_mprn) - previous_year_baseload
     )
   end
 
   def build_meter_breakdown_totals(breakdowns, previous_year_baseload)
+    baseload_kw = breakdowns.values.map(&:baseload_kw).sum
     OpenStruct.new(
-      baseload_kw: breakdowns.values.map(&:baseload_kw).sum,
+      baseload_kw: baseload_kw,
       baseload_cost_£: breakdowns.values.map(&:baseload_cost_£).sum,
       percentage_baseload: breakdowns.values.map(&:percentage_baseload).sum,
-      baseload_previous_year_kw: previous_year_baseload
+      baseload_previous_year_kw: previous_year_baseload,
+      baseload_change_kw: baseload_kw - previous_year_baseload
     )
   end
 

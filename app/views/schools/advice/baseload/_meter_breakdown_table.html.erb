@@ -14,7 +14,7 @@
       <td><%= mpan_mprn %></td>
       <td class="text-right"><%= format_unit(breakdown.baseload_kw, :kwh) %></td>
       <td class="text-right"><%= format_unit(breakdown.baseload_cost_£, :£) %></td>
-      <td class="text-right"><%= format_unit(breakdown.baseload_previous_year_kw, :kw) %></td>
+      <td class="text-right"><%= format_unit(breakdown.baseload_change_kw, :kw) %></td>
       <td class="text-right"><%= format_unit(breakdown.percentage_baseload, :percent) %></td>
     </tr>
     <% end %>
