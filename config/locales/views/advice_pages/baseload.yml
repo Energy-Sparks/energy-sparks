@@ -41,8 +41,6 @@ en:
       insights_title: What is baseload?
       page_title: Baseload analysis
       tables:
-        labels:
-          all_meters: All meters
         columns:
           assessment: Assessment
           average_annual_baseload_co2: Average annual CO2 (kg)
@@ -59,3 +57,5 @@ en:
           potential_saving_co2: CO2 reduction (kg)
           potential_saving_gbp: Potential saving (£)
           year: Year
+        labels:
+          all_meters: All meters
