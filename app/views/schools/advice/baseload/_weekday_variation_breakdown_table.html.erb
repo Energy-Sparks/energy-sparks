@@ -15,8 +15,8 @@
     <tr>
       <td class="text-right"><%= mpan_mprn %></td>
       <td class="text-right"><%= format_rating(variation.variation_rating) %></td>
-      <td class="text-right"><%= format_unit(variation.max_day_kw, :kwh) %></td>
-      <td class="text-right"><%= format_unit(variation.min_day_kw, :kwh) %></td>
+      <td class="text-right"><%= format_unit(variation.max_day_kw, :kw) %></td>
+      <td class="text-right"><%= format_unit(variation.min_day_kw, :kw) %></td>
       <td class="text-right"><%= format_unit(variation.percent_intraday_variation, :percent) %></td>
       <td class="text-right"><%= format_unit(variation.estimated_saving_£, :£) %></td>
       <td class="text-right"><%= format_unit(variation.estimated_saving_co2, :kg) %></td>
