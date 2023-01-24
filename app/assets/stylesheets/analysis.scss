@@ -76,7 +76,7 @@ div.popover {
 }
 
 .table-with-totals {
-  tr:last-of-type  {
+  tbody tr:last-of-type  {
     @extend .table-success
   }
 }
