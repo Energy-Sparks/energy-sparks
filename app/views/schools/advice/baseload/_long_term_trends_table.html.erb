@@ -1,19 +1,19 @@
 <table class="table table-sm">
   <thead class="thead-dark">
     <tr>
-      <th>Year</th>
-      <th class="text-right">Average annual consumption (kW)</th>
-      <th class="text-right">Average annual cost (£)</th>
-      <th class="text-right">Average annual CO2 (kg)</th>
+      <th><%= t('advice_pages.baseload.tables.columns.year') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.average_annual_baseload_kw') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.average_annual_baseload_gbp') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.average_annual_baseload_co2') %></th>
     </tr>
   </thead>
   <tbody>
     <% annual_average_baseloads.each do |annual_average_baseload| %>
     <tr>
       <td><%= annual_average_baseload[:year] %></td>
-      <td class="text-right"><%= format_target(annual_average_baseload[:baseload_usage].kwh, :kwh) %></td>
-      <td class="text-right"><%= format_target(annual_average_baseload[:baseload_usage].£, :£) %></td>
-      <td class="text-right"><%= format_target(annual_average_baseload[:baseload_usage].co2, :co2) %></td>
+      <td class="text-right"><%= format_unit(annual_average_baseload[:baseload], :kw) %></td>
+      <td class="text-right"><%= format_unit(annual_average_baseload[:baseload_usage].£, :£) %></td>
+      <td class="text-right"><%= format_unit(annual_average_baseload[:baseload_usage].co2, :co2) %></td>
     </tr>
     <% end %>
   </tbody>

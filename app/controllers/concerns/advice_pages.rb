@@ -1,12 +1,9 @@
 module AdvicePages
   extend ActiveSupport::Concern
 
-  def variation_rating(variation_percentage)
-    calculate_rating_from_range(0, 0.50, variation_percentage.abs)
-  end
-
   # from analytics: lib/dashboard/charting_and_reports/content_base.rb
   def calculate_rating_from_range(good_value, bad_value, actual_value)
+    actual_value = actual_value.abs
     [10.0 * [(actual_value - bad_value) / (good_value - bad_value), 0.0].max, 10.0].min.round(1)
   end
 
@@ -15,16 +12,21 @@ module AdvicePages
       baseload_kw: breakdown.baseload_kw(mpan_mprn),
       baseload_cost_£: breakdown.baseload_cost_£(mpan_mprn),
       percentage_baseload: breakdown.percentage_baseload(mpan_mprn),
-      baseload_previous_year_kw: previous_year_baseload
+      baseload_previous_year_kw: previous_year_baseload,
+      baseload_change_kw: breakdown.baseload_kw(mpan_mprn) - previous_year_baseload
     )
   end
 
-  def build_meter_breakdown_totals(breakdowns, previous_year_baseload)
+  def build_meter_breakdown_total(meter_collection, end_date)
+    baseload_usage = baseload_usage(meter_collection, end_date)
+    previous_year_baseload = previous_year_baseload_kw(meter_collection, end_date)
+    baseload_kw = average_baseload_kw(meter_collection, end_date)
     OpenStruct.new(
-      baseload_kw: breakdowns.values.map(&:baseload_kw).sum,
-      baseload_cost_£: breakdowns.values.map(&:baseload_cost_£).sum,
-      percentage_baseload: breakdowns.values.map(&:percentage_baseload).sum,
-      baseload_previous_year_kw: previous_year_baseload
+      baseload_kw: baseload_kw,
+      baseload_cost_£: baseload_usage.£,
+      percentage_baseload: 1.0,
+      baseload_previous_year_kw: previous_year_baseload,
+      baseload_change_kw: baseload_kw - previous_year_baseload
     )
   end
 
@@ -35,7 +37,7 @@ module AdvicePages
       percentage: variation.percentage,
       estimated_saving_£: saving.£,
       estimated_saving_co2: saving.co2,
-      variation_rating: variation_rating(variation.percentage)
+      variation_rating: calculate_rating_from_range(0, 0.50, variation.percentage)
     )
   end
 
@@ -46,23 +48,28 @@ module AdvicePages
       percent_intraday_variation: variation.percent_intraday_variation,
       estimated_saving_£: saving.£,
       estimated_saving_co2: saving.co2,
-      variation_rating: variation_rating(variation.percent_intraday_variation)
+      variation_rating: calculate_rating_from_range(0.1, 0.3, variation.percent_intraday_variation)
     )
   end
 
+  def average_baseload_kw(meter_collection, end_date, period: :year)
+    baseload_service(meter_collection, end_date).average_baseload_kw(period: period)
+  end
+
+  def average_baseload_kw_benchmark(meter_collection, end_date, compare: :benchmark_school)
+    benchmark_service(meter_collection, end_date).average_baseload_kw(compare: compare)
+  end
+
   def baseload_usage(meter_collection, end_date)
-    baseload_service = Baseload::BaseloadCalculationService.new(meter_collection.aggregated_electricity_meters, end_date)
-    baseload_service.annual_baseload_usage
+    baseload_service(meter_collection, end_date).annual_baseload_usage
   end
 
   def benchmark_usage(meter_collection, end_date)
-    benchmark_service = Baseload::BaseloadBenchmarkingService.new(meter_collection, end_date)
-    benchmark_service.baseload_usage
+    benchmark_service(meter_collection, end_date).baseload_usage
   end
 
   def estimated_savings(meter_collection, end_date)
-    benchmark_service = Baseload::BaseloadBenchmarkingService.new(meter_collection, end_date)
-    benchmark_service.estimated_savings
+    benchmark_service(meter_collection, end_date).estimated_savings
   end
 
   def annual_average_baseloads(meter_collection, start_date, end_date)
@@ -71,9 +78,16 @@ module AdvicePages
       baseload_service = Baseload::BaseloadCalculationService.new(meter_collection.aggregated_electricity_meters, end_of_year)
       {
         year: year,
+        baseload: baseload_service.average_baseload_kw(period: :year),
         baseload_usage: baseload_service.annual_baseload_usage
       }
     end
+  end
+
+  def previous_year_baseload_kw(meter_collection, end_date)
+    end_of_previous_year = end_date - 1.year
+    baseload_service = Baseload::BaseloadCalculationService.new(meter_collection.aggregated_electricity_meters, end_of_previous_year)
+    baseload_service.average_baseload_kw
   end
 
   def baseload_meter_breakdown(meter_collection, end_date)
@@ -87,11 +101,6 @@ module AdvicePages
       previous_year_baseload = baseload_service.average_baseload_kw
       meter_breakdowns[mpan_mprn] = build_meter_breakdown(mpan_mprn, baseloads, previous_year_baseload)
     end
-
-    baseload_service = Baseload::BaseloadCalculationService.new(meter_collection.aggregated_electricity_meters, end_of_previous_year)
-    previous_year_baseload = baseload_service.average_baseload_kw
-    meter_breakdowns['Total'] = build_meter_breakdown_totals(meter_breakdowns, previous_year_baseload)
-
     meter_breakdowns
   end
 
@@ -133,5 +142,13 @@ module AdvicePages
       end
     end
     variation_by_meter
+  end
+
+  def baseload_service(meter_collection, end_date)
+    @baseload_service ||= Baseload::BaseloadCalculationService.new(meter_collection.aggregated_electricity_meters, end_date)
+  end
+
+  def benchmark_service(meter_collection, end_date)
+    @benchmark_service ||= Baseload::BaseloadBenchmarkingService.new(meter_collection, end_date)
   end
 end

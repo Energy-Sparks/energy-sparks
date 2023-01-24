@@ -11,17 +11,24 @@ module Schools
         @end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
         @multiple_meters = @school.meters.electricity.count > 1
 
+        @average_baseload_kw = average_baseload_kw(aggregate_school, @end_date, period: :year)
+        @average_baseload_kw_benchmark = average_baseload_kw_benchmark(aggregate_school, @end_date, compare: :benchmark_school)
+
         @baseload_usage = baseload_usage(aggregate_school, @end_date)
         @benchmark_usage = benchmark_usage(aggregate_school, @end_date)
         @estimated_savings = estimated_savings(aggregate_school, @end_date)
         @annual_average_baseloads = annual_average_baseloads(aggregate_school, @start_date, @end_date)
-        @baseload_meter_breakdown = baseload_meter_breakdown(aggregate_school, @end_date)
+
+        if @multiple_meters
+          @baseload_meter_breakdown = baseload_meter_breakdown(aggregate_school, @end_date)
+          @baseload_meter_breakdown_total = build_meter_breakdown_total(aggregate_school, @end_date)
+        end
 
         @seasonal_variation = seasonal_variation(aggregate_school, @end_date)
-        @seasonal_variation_by_meter = seasonal_variation_by_meter(aggregate_school)
+        @seasonal_variation_by_meter = seasonal_variation_by_meter(aggregate_school) if @multiple_meters
 
         @intraweek_variation = intraweek_variation(aggregate_school, @end_date)
-        @intraweek_variation_by_meter = intraweek_variation_by_meter(aggregate_school)
+        @intraweek_variation_by_meter = intraweek_variation_by_meter(aggregate_school) if @multiple_meters
       end
 
       private

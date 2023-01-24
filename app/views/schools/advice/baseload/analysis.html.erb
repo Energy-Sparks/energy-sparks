@@ -21,18 +21,18 @@
 
   <%= render 'schools/advice/section_title', section_id: 'recent-trend', section_title: t('advice_pages.baseload.analysis_recent_trend_title') %>
 
-  <p><%= t('advice_pages.baseload.analysis_usage', baseload_usage: format_target(@baseload_usage.kwh, :kw), benchmark_usage: format_target(@benchmark_usage.kwh, :kw)) %></p>
+  <p><%= t('advice_pages.baseload.analysis_usage', baseload_usage: format_unit(@average_baseload_kw, :kw), benchmark_usage: format_unit(@average_baseload_kw_benchmark, :kw)) %></p>
 
   <% if advice_baseload_high?(@estimated_savings.£) %>
     <p><%= t('advice_pages.baseload.analysis_baseload_high') %></p>
-    <p><%= t('advice_pages.baseload.analysis_baseload_high_details_html', estimated_savings: format_target(@estimated_savings.£, :£)) %></p>
+    <p><%= t('advice_pages.baseload.analysis_baseload_high_details_html', estimated_savings: format_unit(@estimated_savings.£, :£)) %></p>
   <% else %>
     <p><%= t('advice_pages.baseload.analysis_baseload_low') %></p>
-    <p><%= t('advice_pages.baseload.analysis_baseload_low_details_html', estimated_savings: format_target(@estimated_savings.£.abs, :£)) %></p>
+    <p><%= t('advice_pages.baseload.analysis_baseload_low_details_html', estimated_savings: format_unit(@estimated_savings.£.abs, :£)) %></p>
   <% end %>
 
-  <h4><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_title') %></h4>
-  <h5><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_subtitle', start_month_year: month_year(@end_date - 1.year), end_month_year: month_year(@end_date)) %></h5>
+  <h4 class="chart-title"><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_title') %></h4>
+  <h5 class="chart-subtitle"><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_subtitle', start_month_year: month_year(@end_date - 1.year), end_month_year: month_year(@end_date)) %></h5>
 
   <div id="chart_wrapper_baseload_lastyear" class="chart-wrapper">
     <%= render 'shared/analysis_controls', chart_type: :baseload_lastyear, axis_controls: true, analysis_controls: true %>
@@ -57,8 +57,8 @@
 
   <%= render 'long_term_trends_table', annual_average_baseloads: @annual_average_baseloads %>
 
-  <h4><%= t('advice_pages.baseload.analysis_electricity_long_term_baseload_chart_title') %></h4>
-  <h5><%= t('advice_pages.baseload.analysis_electricity_long_term_baseload_chart_subtitle', start_month_year: month_year(@start_date), end_month_year: month_year(@end_date.last_month)) %></h5>
+  <h4 class="chart-title"><%= t('advice_pages.baseload.analysis_electricity_long_term_baseload_chart_title') %></h4>
+  <h5 class="chart-subtitle"><%= t('advice_pages.baseload.analysis_electricity_long_term_baseload_chart_subtitle', start_month_year: month_year(@start_date), end_month_year: month_year(@end_date.last_month)) %></h5>
 
   <div id="chart_wrapper_baseload_versus_benchmarks" class="chart-wrapper">
     <%= render 'shared/analysis_controls', chart_type: :baseload_versus_benchmarks, axis_controls: true, analysis_controls: true %>
@@ -77,7 +77,7 @@
     <p><%= t('advice_pages.baseload.analysis_meter_breakdown_intro') %></p>
     <p><%= t('advice_pages.baseload.analysis_meter_breakdown_table_description') %></p>
 
-    <%= render 'meter_breakdown_table', baseload_meter_breakdown: @baseload_meter_breakdown %>
+    <%= render 'meter_breakdown_table', school: @school, baseload_meter_breakdown: @baseload_meter_breakdown, baseload_meter_breakdown_total: @baseload_meter_breakdown_total %>
 
   <% end %>
 
@@ -90,7 +90,7 @@
 
   <% if @multiple_meters %>
     <p><%= t('advice_pages.baseload.analysis_seasonal_variation_table_description') %></p>
-    <%= render 'seasonal_variation_breakdown_table', seasonal_variation: @seasonal_variation, seasonal_variation_by_meter: @seasonal_variation_by_meter %>
+    <%= render 'seasonal_variation_breakdown_table', school: @school, seasonal_variation: @seasonal_variation, seasonal_variation_by_meter: @seasonal_variation_by_meter %>
   <% else %>
     <%= render 'seasonal_variation_table', seasonal_variation: @seasonal_variation %>
   <% end %>
@@ -105,10 +105,9 @@
 
   <% if @multiple_meters %>
     <p><%= t('advice_pages.baseload.analysis_weekday_variation_table_description') %></p>
-    <%= render 'weekday_variation_breakdown_table', intraweek_variation: @intraweek_variation, intraweek_variation_by_meter: @intraweek_variation_by_meter %>
+    <%= render 'weekday_variation_breakdown_table', school: @school, intraweek_variation: @intraweek_variation, intraweek_variation_by_meter: @intraweek_variation_by_meter %>
   <% else %>
     <%= render 'weekday_variation_table', intraweek_variation: @intraweek_variation %>
   <% end %>
-
 
 <% end %>
