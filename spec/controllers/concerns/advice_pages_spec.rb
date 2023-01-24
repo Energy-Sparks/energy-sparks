@@ -13,24 +13,26 @@ describe AdvicePages, type: :controller do
 
   let(:subject) { TestAdvicePagesController.new }
 
-  describe '.variation_rating' do
+  describe '.calculate_rating_from_range' do
+    let(:good) {0.0}
+    let(:bad)  {0.5}
     it 'shows 0% as 10.0' do
-      expect(subject.variation_rating(0)).to eq(10.0)
+      expect(subject.calculate_rating_from_range(good, bad, 0)).to eq(10.0)
     end
     it 'shows 10% as 8.0' do
-      expect(subject.variation_rating(0.1)).to eq(8.0)
+      expect(subject.calculate_rating_from_range(good, bad, 0.1)).to eq(8.0)
     end
-    it 'shows -10% as 10.0' do
-      expect(subject.variation_rating(-0.1)).to eq(8.0)
+    it 'shows -10% as 8.0' do
+      expect(subject.calculate_rating_from_range(good, bad, -0.1.abs)).to eq(8.0)
     end
     it 'shows 40% as 2.0' do
-      expect(subject.variation_rating(0.4)).to eq(2.0)
+      expect(subject.calculate_rating_from_range(good, bad, 0.4)).to eq(2.0)
     end
     it 'shows -40% as 2.0' do
-      expect(subject.variation_rating(0.4)).to eq(2.0)
+      expect(subject.calculate_rating_from_range(good, bad, -0.4)).to eq(2.0)
     end
     it 'shows 50% as 0.0' do
-      expect(subject.variation_rating(0.5)).to eq(0.0)
+      expect(subject.calculate_rating_from_range(good, bad, 0.5)).to eq(0.0)
     end
   end
 

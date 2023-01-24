@@ -1,12 +1,9 @@
 module AdvicePages
   extend ActiveSupport::Concern
 
-  def variation_rating(variation_percentage)
-    calculate_rating_from_range(0, 0.50, variation_percentage.abs)
-  end
-
   # from analytics: lib/dashboard/charting_and_reports/content_base.rb
   def calculate_rating_from_range(good_value, bad_value, actual_value)
+    actual_value = actual_value.abs
     [10.0 * [(actual_value - bad_value) / (good_value - bad_value), 0.0].max, 10.0].min.round(1)
   end
 
@@ -40,7 +37,7 @@ module AdvicePages
       percentage: variation.percentage,
       estimated_saving_£: saving.£,
       estimated_saving_co2: saving.co2,
-      variation_rating: variation_rating(variation.percentage)
+      variation_rating: calculate_rating_from_range(0, 0.50, variation.percentage)
     )
   end
 
@@ -51,7 +48,7 @@ module AdvicePages
       percent_intraday_variation: variation.percent_intraday_variation,
       estimated_saving_£: saving.£,
       estimated_saving_co2: saving.co2,
-      variation_rating: variation_rating(variation.percent_intraday_variation)
+      variation_rating: calculate_rating_from_range(0.1, 0.3, variation.percent_intraday_variation)
     )
   end
 
