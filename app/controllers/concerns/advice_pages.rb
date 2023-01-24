@@ -76,6 +76,7 @@ module AdvicePages
       baseload_service = Baseload::BaseloadCalculationService.new(meter_collection.aggregated_electricity_meters, end_of_year)
       {
         year: year,
+        baseload: baseload_service.average_baseload_kw(period: :year),
         baseload_usage: baseload_service.annual_baseload_usage
       }
     end

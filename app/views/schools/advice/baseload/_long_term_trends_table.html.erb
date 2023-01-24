@@ -11,7 +11,7 @@
     <% annual_average_baseloads.each do |annual_average_baseload| %>
     <tr>
       <td><%= annual_average_baseload[:year] %></td>
-      <td class="text-right"><%= format_unit(annual_average_baseload[:baseload_usage].kwh, :kwh) %></td>
+      <td class="text-right"><%= format_unit(annual_average_baseload[:baseload], :kw) %></td>
       <td class="text-right"><%= format_unit(annual_average_baseload[:baseload_usage].£, :£) %></td>
       <td class="text-right"><%= format_unit(annual_average_baseload[:baseload_usage].co2, :co2) %></td>
     </tr>
