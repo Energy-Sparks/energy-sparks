@@ -8,6 +8,7 @@ $(document).ready(function() {
 
     var supply = $("#supply").val();
     var period = $("#period").val();
+    var series_breakdown = $("#series_breakdown").val();
     var config = $("#configuration").data('configuration');
 
     var chartContainer = $('.usage-chart').first();
@@ -17,7 +18,7 @@ $(document).ready(function() {
     var meter = $("#meter").val();
 
     if (meter) {
-      chartConfig.series_breakdown = 'none';
+      chartConfig.series_breakdown = series_breakdown;
       if (meter != 'all') {
         chartConfig.mpan_mprn = meter;
       } else {

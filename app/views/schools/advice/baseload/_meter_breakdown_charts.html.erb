@@ -1,5 +1,6 @@
 <div class="charts">
   <%= form_tag "", method: :get, id: "chart-filter" do %>
+    <%= hidden_field_tag :series_breakdown, :baseload %>
     <%= hidden_field_tag :configuration, nil, data: {configuration: create_chart_config(school, :baseload)} %>
     <div class="row">
       <div class="col-md-6">
