@@ -25,6 +25,7 @@ en:
       analysis_meter_breakdown_intro: Your school has multiple electricity meters. The section below shows analysis of the baseload electricity use for each meter. You might be able to use this information to identify high energy consumption in certain parts of your school.
       analysis_meter_breakdown_table_description: The table below shows a breakdown of the average baseload for your school for the last 12 months by meter.
       analysis_meter_breakdown_title: Baseload breakdown by meter
+      analysis_meter_charts_title: Baseload charts by meter
       analysis_multiple_meters_suggestion_html: If you notice unusual changes or very high baseload, you might be able to narrow down what is causing it by looking at the %{link} below.
       analysis_recent_trend_title: Recent trend
       analysis_seasonal_variation_intro_1: At a well-managed school the baseload should remain the same throughout the year, there should be no reason why the electricity consumption at midnight on a school day should be higher in the winter than in the summer.

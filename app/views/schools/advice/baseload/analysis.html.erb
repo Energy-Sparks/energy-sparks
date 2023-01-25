@@ -14,6 +14,9 @@
     <% end %>
     <li><%= link_to(t('advice_pages.baseload.analysis_seasonal_variation_title'), '#seasonal-variation') %></li>
     <li><%= link_to(t('advice_pages.baseload.analysis_weekday_variation_title'), '#weekday-variation') %></li>
+    <% if @multiple_meters %>
+      <li><%= link_to(t('advice_pages.baseload.analysis_meter_charts_title'), '#meter-charts') %></li>
+    <% end %>
   </ul>
 
 
@@ -68,7 +71,7 @@
   <p><%= t('advice_pages.baseload.analysis_electricity_long_term_baseload_chart_explanation') %></p>
 
 
-  <!--  METER BREAKDOWN -->
+  <!--  METER BREAKDOWN TABLE -->
 
   <% if @multiple_meters %>
 
@@ -78,7 +81,6 @@
     <p><%= t('advice_pages.baseload.analysis_meter_breakdown_table_description') %></p>
 
     <%= render 'meter_breakdown_table', school: @school, baseload_meter_breakdown: @baseload_meter_breakdown, baseload_meter_breakdown_total: @baseload_meter_breakdown_total %>
-    <%= render 'meter_breakdown_charts', school: @school, meters: @meters %>
 
   <% end %>
 
@@ -109,6 +111,18 @@
     <%= render 'weekday_variation_breakdown_table', school: @school, intraweek_variation: @intraweek_variation, intraweek_variation_by_meter: @intraweek_variation_by_meter %>
   <% else %>
     <%= render 'weekday_variation_table', intraweek_variation: @intraweek_variation %>
+  <% end %>
+
+  <!--  METER BREAKDOWN CHARTS -->
+
+  <% if @multiple_meters %>
+
+    <%= render 'schools/advice/section_title', section_id: 'meter-charts', section_title: t('advice_pages.baseload.analysis_meter_charts_title') %>
+
+    <h4><%= t('advice_pages.baseload.analysis_electricity_long_term_baseload_meter_chart_title') %></h4>
+
+    <%= render 'meter_breakdown_charts', school: @school, meters: @meters %>
+
   <% end %>
 
 <% end %>
