@@ -1,0 +1,24 @@
+<div class="charts">
+  <div>
+    <h4><%= t('advice_pages.baseload.analysis_electricity_long_term_baseload_meter_chart_title') %></h4>
+  </div>
+
+  <%= form_tag "", method: :get, id: "chart-filter" do %>
+    <%= hidden_field_tag :configuration, nil, data: {configuration: create_chart_config(school, :baseload)} %>
+    <div class="col-12 xcol-lg-3 xcol-md-4">
+      <div class="electricity-dark p-2 mb-2">
+        <%= label_tag :meter, t('charts.usage.select_meter.title') %>
+        <div class="form-group">
+          <%= select_tag :meter, content_tag(:option, options_from_collection_for_select(meters, :mpan_mprn, :analytics_name, meters.first.mpan_mprn)), class: "form-control" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-12 chart-wrapper" id="chart_wrapper_baseload">
+      <%= render 'shared/analysis_controls', chart_type: :baseload, axis_controls: false, analysis_controls: false %>
+      <%= chart_tag(school, :baseload, no_zoom: true, wrap: false, html_class: 'usage-chart', chart_config: create_chart_config(school, :baseload, @meters.first.mpan_mprn)) %>
+    </div>
+  </div>
+</div>
