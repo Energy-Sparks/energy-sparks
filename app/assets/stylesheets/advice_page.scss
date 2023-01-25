@@ -17,3 +17,23 @@
     padding-bottom: 0px !important;
   }
 }
+
+.advice-table {
+  thead {
+    background-color: $dark-blue !important;
+    color: white;
+  }
+  .fa-arrow-circle-down {
+    color: $green;
+  }
+  .fa-arrow-circle-up {
+    color: $new-red;
+  }
+  .icon {
+    width: 10px;
+  }
+}
+
+.advice-table-caption {
+  margin-bottom: 40px;
+}

@@ -1,3 +1,9 @@
 <%= render 'schools/advice/advice_page', school: @school, advice_pages: @advice_pages, advice_page: @advice_page, tab: @tab do %>
   <h2><%= t('advice_pages.baseload.insights_title') %></h2>
+
+  <%= render 'what_is_baseload', school: @school %>
+  <%= render 'current_baseload', school: @school, start_date: @start_date, end_date: @end_date,
+  average_baseload_kw_last_week: @average_baseload_kw_last_week, average_baseload_kw_last_year: @average_baseload_kw_last_year, percentage_change_year: @percentage_change_year, percentage_change_week: @percentage_change_week %>
+  <%= render 'comparison', school: @school %>
+
 <% end %>

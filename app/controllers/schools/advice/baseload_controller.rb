@@ -2,12 +2,23 @@ module Schools
   module Advice
     class BaseloadController < AdviceBaseController
       def insights
+        @start_date = aggregate_school.aggregated_electricity_meters.amr_data.start_date
+        @end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
+
+        baseload_service = baseload_service(aggregate_school)
+        @average_baseload_kw_last_year = baseload_service.average_baseload_kw(period: :year)
+        @average_baseload_kw_last_week = baseload_service.average_baseload_kw(period: :week)
+
+        @previous_year_average_baseload_kw = baseload_service.previous_period_average_baseload_kw(period: :year)
+        @percentage_change_year = (@average_baseload_kw_last_year - @previous_year_average_baseload_kw) / @average_baseload_kw_last_year
+        @previous_week_average_baseload_kw = baseload_service.previous_period_average_baseload_kw(period: :week)
+        @percentage_change_week = (@average_baseload_kw_last_week - @previous_week_average_baseload_kw) / @average_baseload_kw_last_year
       end
 
       def analysis
-        baseload_service = Schools::Advice::BaseloadService.new(@school, aggregate_school)
-        @start_date = aggregate_school.amr_data.start_date
-        @end_date = aggregate_school.amr_data.end_date
+        baseload_service = baseload_service(aggregate_school)
+        @start_date = aggregate_school.aggregated_electricity_meters.amr_data.start_date
+        @end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
         @multiple_meters = baseload_service.multiple_electricity_meters?
         @average_baseload_kw = baseload_service.average_baseload_kw
         @average_baseload_kw_benchmark = baseload_service.average_baseload_kw_benchmark
@@ -27,6 +38,10 @@ module Schools
       end
 
       private
+
+      def baseload_service(aggregate_school)
+        @baseload_service ||= Schools::Advice::BaseloadService.new(@school, aggregate_school)
+      end
 
       def advice_page_key
         :baseload

@@ -11,12 +11,21 @@ module Schools
       end
 
       def average_baseload_kw(period: :year)
-        @average_baseload_kw ||= baseload_service.average_baseload_kw(period: period)
+        @average_baseloads_period ||= {}
+        @average_baseloads_period[period] ||= baseload_service.average_baseload_kw(period: period)
       end
 
-      def previous_year_average_baseload_kw
-        baseload_service = Baseload::BaseloadCalculationService.new(aggregate_meter, end_of_previous_year)
-        @previous_year_average_baseload_kw ||= baseload_service.average_baseload_kw(period: :year)
+      def previous_period_average_baseload_kw(period: :year)
+        case period
+        when :year
+          baseload_service = Baseload::BaseloadCalculationService.new(aggregate_meter, end_of_previous_year)
+          @previous_year_average_baseload_kw ||= baseload_service.average_baseload_kw(period: period)
+        when :week
+          baseload_service = Baseload::BaseloadCalculationService.new(aggregate_meter, end_of_previous_week)
+          @previous_week_average_baseload_kw ||= baseload_service.average_baseload_kw(period: period)
+        else
+          raise "Invalid period"
+        end
       end
 
       def annual_baseload_usage
@@ -65,7 +74,7 @@ module Schools
       #helper for building "all meters" / total row for meter breakdown table
       def meter_breakdown_table_total
         baseload_usage = annual_baseload_usage
-        previous_year_baseload = previous_year_average_baseload_kw
+        previous_year_baseload = previous_period_average_baseload_kw(period: :year)
         baseload_kw = average_baseload_kw
         OpenStruct.new(
           baseload_kw: baseload_kw,
@@ -102,6 +111,17 @@ module Schools
 
       def asof_date
         @asof_date ||= aggregate_meter.amr_data.end_date
+      end
+
+      #the ElectricityBaseloadAnalysis class defines one_week_ago as
+      #6 days before the calculation date. So when we calculate last weeks
+      #baseload is asof_date - 6. This is apparently to address some issues
+      #with large intraweek variation.
+      #
+      #So for our comparison of last week and previous week, we want a week
+      #before that which is 13 days...
+      def end_of_previous_week
+        asof_date - 13
       end
 
       def end_of_previous_year

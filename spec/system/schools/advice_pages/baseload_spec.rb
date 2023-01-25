@@ -39,23 +39,18 @@ RSpec.describe "baseload advice page", type: :system do
 
     it 'shows the advice pages index' do
       expect(page).to have_content('Advice Pages')
-      expect(page).to have_link(key)
+      within '.advice-page-nav' do
+        expect(page).to have_content("Baseload")
+      end
     end
 
-    context 'when viewing the page' do
-
+    context 'when viewing the insights page' do
       before(:each) do
         click_on key
       end
 
       it 'shows the page title' do
         expect(page).to have_content(expected_page_title)
-      end
-
-      it 'shows a link to the page in the nav bar' do
-        within '.advice-page-nav' do
-          expect(page).to have_content("Baseload")
-        end
       end
 
       it 'shows tabs for insights, analysis, learn more' do
@@ -80,6 +75,10 @@ RSpec.describe "baseload advice page", type: :system do
         within '.advice-page-tabs' do
           expect(page).to have_content(advice_page.learn_more.body.to_html)
         end
+      end
+
+      it 'shows the definition of baseload' do
+        expect(page).to have_content("Electricity baseload is the electricity needed to provide power to appliances")
       end
     end
 

@@ -39,6 +39,30 @@ en:
       analysis_weekday_variation_table_description: The meter breakdown in the table below may help to identify where in the school, daily variation variation comes from.
       analysis_weekday_variation_title: Variation in baseload between days of week
       insights_title: What is baseload?
+      what_is_baseload_html: |-
+        <p>
+          Electricity baseload is the electricity needed to provide power to appliances that keep running at all times.
+        </p>
+        <p>
+          It can be the fastest way of reducing a school's energy costs and reducing its carbon footprint.
+        </p>
+        <p>
+          For each 1kW reduction in baseload, the school will save 8,760 kWh.
+        </p>
+      what_is_baseload_link: Learn more
+      current_baseload:
+        title: Your current baseload
+        review_our_analysis: Review our detailed analysis
+        calculation_dates: Calculation based on data from %{start_date} to %{end_date}
+        last_week: Last week
+        last_year: Last year
+        table:
+          columns:
+            period: Period
+            use: Use (kW)
+            percentage_change: "% Change"
+      current_baseload_title:
+      comparison_title: How do you compare?
       page_title: Baseload analysis
       tables:
         columns:
