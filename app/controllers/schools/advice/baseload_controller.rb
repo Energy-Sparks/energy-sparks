@@ -13,6 +13,9 @@ module Schools
         @percentage_change_year = (@average_baseload_kw_last_year - @previous_year_average_baseload_kw) / @average_baseload_kw_last_year
         @previous_week_average_baseload_kw = baseload_service.previous_period_average_baseload_kw(period: :week)
         @percentage_change_week = (@average_baseload_kw_last_week - @previous_week_average_baseload_kw) / @average_baseload_kw_last_year
+
+        @average_baseload_kw_benchmark = baseload_service.average_baseload_kw_benchmark(compare: :benchmark_school)
+        @average_baseload_kw_exemplar = baseload_service.average_baseload_kw_benchmark(compare: :exemplar_school)
       end
 
       def analysis
