@@ -7,6 +7,7 @@ module Schools
       before_action :load_advice_page, only: [:insights, :analysis, :learn_more]
       before_action :set_tab_name, only: [:insights, :analysis, :learn_more]
       before_action :check_authorisation, only: [:insights, :analysis, :learn_more]
+      before_action :load_recommendations, only: [:insights]
 
       include SchoolAggregation
 
@@ -23,7 +24,6 @@ module Schools
 
       def learn_more
         @learn_more = @advice_page.learn_more
-        render 'schools/advice/learn_more'
       end
 
       private
@@ -40,6 +40,11 @@ module Schools
         if @advice_page && @advice_page.restricted && cannot?(:read_restricted_advice, @school)
           redirect_to school_advice_path(@school), notice: 'Only an admin or staff user for this school can access this content'
         end
+      end
+
+      def load_recommendations
+        @activity_types = @advice_page.activity_types.limit(3)
+        @intervention_types = @advice_page.intervention_types.limit(3)
       end
     end
   end
