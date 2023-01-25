@@ -33,6 +33,7 @@ $(document).ready(function() {
 
     setupAxisControls(chartContainer[0], chartConfig);
     processAnalysisChart(chartContainer[0], chartConfig);
+    setupAnalysisControls(chartContainer[0], chartConfig);
   }
 
   function getDateRanges(){
