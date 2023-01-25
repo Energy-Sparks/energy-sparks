@@ -6,7 +6,7 @@ module Schools
 
       def analysis
         baseload_service = Schools::Advice::BaseloadService.new(@school, aggregate_school)
-        @meters = aggregate_school.electricity_meters
+        @meters = @school.meters.electricity
         @start_date = aggregate_school.aggregated_electricity_meters.amr_data.start_date
         @end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
         @multiple_meters = baseload_service.multiple_electricity_meters?

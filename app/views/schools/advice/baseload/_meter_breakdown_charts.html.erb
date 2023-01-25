@@ -9,7 +9,7 @@
       <div class="electricity-dark p-2 mb-2">
         <%= label_tag :meter, t('charts.usage.select_meter.title') %>
         <div class="form-group">
-          <%= select_tag :meter, content_tag(:option, options_from_collection_for_select(meters, :mpan_mprn, :analytics_name, meters.first.mpan_mprn)), class: "form-control" %>
+          <%= select_tag :meter, content_tag(:option, options_from_collection_for_select(meters, :mpan_mprn, :name_or_mpan_mprn, meters.first.mpan_mprn)), class: "form-control" %>
         </div>
       </div>
     </div>
