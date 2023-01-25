@@ -37,7 +37,8 @@ module Schools
 
       #Calculate the annual average baseload for every year
       def annual_average_baseloads
-        start_date, end_date = date_range
+        start_date = aggregate_meter.amr_data.start_date
+        end_date = aggregate_meter.amr_data.end_date
         (start_date.year..end_date.year).map do |year|
           end_of_year = Date.new(year).end_of_year
           baseload_service = Baseload::BaseloadCalculationService.new(aggregate_meter, end_of_year)
@@ -100,7 +101,7 @@ module Schools
       private
 
       def asof_date
-        @asof_date ||= date_range[1]
+        @asof_date ||= aggregate_meter.amr_data.end_date
       end
 
       def end_of_previous_year

@@ -6,10 +6,6 @@ module Schools
         @meter_collection = meter_collection
       end
 
-      def date_range(meter: aggregate_meter)
-        [meter.amr_data.start_date, meter.amr_data.end_date]
-      end
-
       # from analytics: lib/dashboard/charting_and_reports/content_base.rb
       # helper method that returns a rating out of 10, based on mapping
       # the provided value into an expected good/bad range.

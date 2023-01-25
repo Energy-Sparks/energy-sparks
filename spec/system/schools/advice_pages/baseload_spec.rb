@@ -23,6 +23,7 @@ RSpec.describe "baseload advice page", type: :system do
     allow(electricity_aggregate_meter).to receive(:fuel_type).and_return(:electricity)
     allow(electricity_aggregate_meter).to receive(:amr_data).and_return(amr_data)
     allow(meter_collection).to receive(:aggregated_electricity_meters).and_return(electricity_aggregate_meter)
+    allow(meter_collection).to receive(:amr_data).and_return(amr_data)
     allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(meter_collection)
   end
 
