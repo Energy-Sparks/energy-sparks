@@ -1,5 +1,7 @@
 <%= render 'schools/advice/advice_page', school: @school, advice_pages: @advice_pages, advice_page: @advice_page, tab: @tab do %>
 
+  <h2><%= t("advice_pages.#{@advice_page.key}.insights_title") %></h2>
+
   <%= render 'insights' %>
 
   <%= render 'what_is_baseload', school: @school %>
