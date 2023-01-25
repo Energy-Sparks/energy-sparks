@@ -35,9 +35,9 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     end
   end
 
-  describe '#multiple_meters?' do
+  describe '#multiple_electricity_meters?' do
     it 'checks the meter count' do
-      expect(service.multiple_meters?).to be false
+      expect(service.multiple_electricity_meters?).to be false
     end
   end
 

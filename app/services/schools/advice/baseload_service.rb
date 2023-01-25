@@ -6,7 +6,7 @@ module Schools
         @school.has_electricity?
       end
 
-      def multiple_meters?
+      def multiple_electricity_meters?
         @school.meters.electricity.count > 1
       end
 
@@ -14,8 +14,6 @@ module Schools
         @average_baseload_kw ||= baseload_service.average_baseload_kw(period: period)
       end
 
-      #This could be pushed down into the underlying service
-      #TODO cache results
       def previous_year_average_baseload_kw
         baseload_service = Baseload::BaseloadCalculationService.new(aggregate_meter, end_of_previous_year)
         @previous_year_average_baseload_kw ||= baseload_service.average_baseload_kw(period: :year)
@@ -82,13 +80,10 @@ module Schools
       end
 
       def seasonal_variation_by_meter
-        variation_by_meter = {}
-        if @meter_collection.electricity_meters.count > 1
-          @meter_collection.electricity_meters.each do |meter|
-            variation_by_meter[meter.mpan_mprn] = calculate_seasonal_variation(meter, meter.amr_data.end_date, true)
-          end
+        return {} unless electricity_meters.count > 1
+        electricity_meters.each_with_object({}) do |meter, variation_by_meter|
+          variation_by_meter[meter.mpan_mprn] = calculate_seasonal_variation(meter, meter.amr_data.end_date, true)
         end
-        variation_by_meter
       end
 
       def intraweek_variation
@@ -96,13 +91,10 @@ module Schools
       end
 
       def intraweek_variation_by_meter
-        variation_by_meter = {}
-        if @meter_collection.electricity_meters.count > 1
-          @meter_collection.electricity_meters.each do |meter|
-            variation_by_meter[meter.mpan_mprn] = calculate_intraweek_variation(meter, meter.amr_data.end_date, true)
-          end
+        return {} unless electricity_meters.count > 1
+        electricity_meters.each_with_object({}) do |meter, variation_by_meter|
+          variation_by_meter[meter.mpan_mprn] = calculate_intraweek_variation(meter, meter.amr_data.end_date, true)
         end
-        variation_by_meter
       end
 
       private
@@ -113,6 +105,10 @@ module Schools
 
       def end_of_previous_year
         @end_of_previous_year ||= asof_date - 1.year
+      end
+
+      def electricity_meters
+        @electricity_meters ||= @meter_collection.electricity_meters
       end
 
       def aggregate_meter
