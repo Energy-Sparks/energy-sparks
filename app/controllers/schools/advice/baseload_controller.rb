@@ -6,8 +6,8 @@ module Schools
 
       def analysis
         baseload_service = Schools::Advice::BaseloadService.new(@school, aggregate_school)
-        @start_date = aggregate_school.amr_data.start_date
-        @end_date = aggregate_school.amr_data.end_date
+        @start_date = aggregate_school.aggregated_electricity_meters.amr_data.start_date
+        @end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
         @multiple_meters = baseload_service.multiple_electricity_meters?
         @average_baseload_kw = baseload_service.average_baseload_kw
         @average_baseload_kw_benchmark = baseload_service.average_baseload_kw_benchmark
