@@ -5,7 +5,7 @@
 
   <%= form_tag "", method: :get, id: "chart-filter" do %>
     <%= hidden_field_tag :configuration, nil, data: {configuration: create_chart_config(school, :baseload)} %>
-    <div class="col-12 xcol-lg-3 xcol-md-4">
+    <div class="col-12">
       <div class="electricity-dark p-2 mb-2">
         <%= label_tag :meter, t('charts.usage.select_meter.title') %>
         <div class="form-group">
