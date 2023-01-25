@@ -11,7 +11,7 @@
   <tbody>
     <% baseload_meter_breakdown.each do |mpan_mprn, breakdown| %>
     <tr>
-      <td><%= school.meters.find_by_mpan_mprn(mpan_mprn).name_or_mpan_mprn %></td>
+      <td><%= breakdown.meter.present? ? breakdown.meter.name_or_mpan_mprn : mpan_mprn %></td>
       <td class="text-right"><%= format_unit(breakdown.baseload_kw, :kw) %></td>
       <td class="text-right"><%= format_unit(breakdown.baseload_cost_£, :£) %></td>
       <td class="text-right"><%= format_unit(breakdown.baseload_change_kw, :kw) %></td>

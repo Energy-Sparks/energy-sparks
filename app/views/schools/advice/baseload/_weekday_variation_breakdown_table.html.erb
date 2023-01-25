@@ -13,7 +13,7 @@
   <tbody>
     <% intraweek_variation_by_meter.each do |mpan_mprn, variation| %>
     <tr>
-      <td class="text-left"><%= school.meters.find_by_mpan_mprn(mpan_mprn).name_or_mpan_mprn %></td>
+      <td class="text-left"><%= variation.meter.present? ? variation.meter.name_or_mpan_mprn : mpan_mprn %></td>
       <td class="text-left"><%= format_rating(variation.variation_rating) %></td>
       <td class="text-right"><%= format_unit(variation.max_day_kw, :kw) %></td>
       <td class="text-right"><%= format_unit(variation.min_day_kw, :kw) %></td>
