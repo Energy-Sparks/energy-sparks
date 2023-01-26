@@ -19,7 +19,7 @@ RSpec.describe "advice pages", type: :system do
       visit school_advice_path(school)
       click_on key
       click_on 'Learn More'
-      expect(page).to have_content('Error')
+      expect(page).to have_content('Sorry, something has gone wrong')
       expect(page).to have_content('We encountered an error attempting to generate your analysis')
     end
   end

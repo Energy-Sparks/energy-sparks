@@ -13,7 +13,7 @@ module Schools
       before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
 
       rescue_from StandardError do |exception|
-        Rollbar.error(exception)
+        Rollbar.error(exception, advice_page: advice_page_key, school: @school.name, school_id: @school.id)
         render 'error'
       end
 

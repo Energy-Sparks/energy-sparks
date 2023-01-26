@@ -9,7 +9,7 @@ en:
       root: Advice
     error:
       message: We encountered an error attempting to generate your analysis. The Energy Sparks team have been notified of the problem.
-      title: Error
+      title: Sorry, something has gone wrong
     nav:
       carbon:
         name: Carbon
