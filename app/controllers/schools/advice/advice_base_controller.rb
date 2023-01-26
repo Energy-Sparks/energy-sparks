@@ -12,6 +12,11 @@ module Schools
 
       before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
 
+      rescue_from StandardError do |exception|
+        Rollbar.error(exception)
+        render 'error'
+      end
+
       def show
         redirect_to url_for([:insights, @school, :advice, advice_page_key])
       end
