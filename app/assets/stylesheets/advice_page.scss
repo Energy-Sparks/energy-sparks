@@ -32,6 +32,12 @@
   .icon {
     width: 10px;
   }
+  tr.positive-row {
+    border-left: 5px solid $green;
+  }
+  tr.negative-row {
+    border-left: 5px solid $new-red;
+  }
 }
 
 .advice-table-caption {

@@ -59,7 +59,7 @@ en:
         tables:
           columns:
             period: Period
-            use: Use (kW)
+            use: Average baseload (kW)
             percentage_change: "% Change"
       comparison:
         title: How do you compare?
