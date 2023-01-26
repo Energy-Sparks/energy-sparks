@@ -3,9 +3,9 @@
 
   <%= render 'what_is_baseload', school: @school %>
 
-  <%= render 'current_baseload', school: @school, start_date: @start_date, end_date: @end_date,
-  average_baseload_kw_last_week: @average_baseload_kw_last_week, average_baseload_kw_last_year: @average_baseload_kw_last_year, percentage_change_year: @percentage_change_year, percentage_change_week: @percentage_change_week, one_years_data: @one_years_data, recent_data: @recent_data %>
+  <%= render 'current_baseload', school: @school, analysis_dates: @analysis_dates,
+  current_baseload: @current_baseload %>
 
-  <%= render 'comparison', school: @school, category: @category, average_baseload_kw_last_year: @average_baseload_kw_last_year, average_baseload_kw_benchmark: @average_baseload_kw_benchmark, average_baseload_kw_exemplar: @average_baseload_kw_exemplar %>
+  <%= render 'comparison', school: @school, benchmarked_baseload: @benchmarked_baseload %>
 
 <% end %>

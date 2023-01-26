@@ -50,6 +50,10 @@ module AdvicePageHelper
     end
   end
 
+  def row_class_for_category(category, compare, row_class = 'positive-row')
+    row_class if category == compare
+  end
+
   #calculate relative % change of a current value from a base value
   def relative_percent(base, current)
     return 0.0 if base.nil? || current.nil? || base == current
