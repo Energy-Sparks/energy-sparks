@@ -28,13 +28,7 @@
 
   <p><%= t('advice_pages.baseload.analysis_usage', baseload_usage: format_unit(@average_baseload_kw, :kw), benchmark_usage: format_unit(@average_baseload_kw_benchmark, :kw), months_analysed: @analysis_dates.months_analysed) %></p>
 
-  <% if advice_baseload_high?(@estimated_savings.£) %>
-    <p><%= t('advice_pages.baseload.analysis_baseload_high') %></p>
-    <p><%= t('advice_pages.baseload.analysis_baseload_high_details_html', estimated_savings: format_unit(@estimated_savings.£, :£)) %></p>
-  <% else %>
-    <p><%= t('advice_pages.baseload.analysis_baseload_low') %></p>
-    <p><%= t('advice_pages.baseload.analysis_baseload_low_details_html', estimated_savings: format_unit(@estimated_savings.£.abs, :£)) %></p>
-  <% end %>
+  <%= render 'assessment', estimated_savings: @estimated_savings %>
 
   <h4 class="chart-title"><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_title', months_analysed: @analysis_dates.months_analysed) %></h4>
   <h5 class="chart-subtitle"><%= t('advice_pages.baseload.analysis_electricity_baseload_chart_subtitle', start_month_year: month_year(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: month_year(@analysis_dates.end_date)) %></h5>
