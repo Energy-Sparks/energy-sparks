@@ -3,3 +3,10 @@
   max-height: 150px;
   object-fit: contain;
 }
+
+/* for medium devices and up */
+@media(min-width:768px) {
+  .recommendations .card {
+    max-width: 300px;
+  }
+}

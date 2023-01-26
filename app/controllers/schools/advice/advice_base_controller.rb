@@ -43,7 +43,7 @@ module Schools
       end
 
       def load_recommendations
-        @activity_types = @advice_page.activity_types.limit(3)
+        @activity_types = @advice_page.activity_types
         @intervention_types = @advice_page.intervention_types.limit(3)
       end
     end
