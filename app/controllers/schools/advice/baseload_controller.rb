@@ -44,7 +44,8 @@ module Schools
           start_date: start_date,
           end_date: end_date,
           one_years_data: one_years_data?(start_date, end_date),
-          recent_data: recent_data?(end_date)
+          recent_data: recent_data?(end_date),
+          months_analysed: months_analysed(start_date, end_date)
         )
       end
 
