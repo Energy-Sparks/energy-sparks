@@ -31,8 +31,11 @@ module Transifex
         synchronise_resources(transifex_load, EquivalenceTypeContentVersion.tx_resources)
         log("Synchronising Consent Statements")
         synchronise_resources(transifex_load, ConsentStatement.tx_resources)
-        log("Synchronising Advice Pages")
-        synchronise_resources(transifex_load, AdvicePage.tx_resources)
+
+        if EnergySparks::FeatureFlags.active?(:sync_advice_page_translations)
+          log("Synchronising Advice Pages")
+          synchronise_resources(transifex_load, AdvicePage.tx_resources)
+        end
       rescue => error
         #ensure all errors are caught and logged
         log_error(transifex_load, error)

@@ -7,6 +7,12 @@ describe Transifex::Loader, type: :service do
   let(:full_sync)   { true }
   let(:service)     { Transifex::Loader.new(locale, logger, full_sync) }
 
+  around do |example|
+    ClimateControl.modify FEATURE_FLAG_SYNC_ADVICE_PAGE_TRANSLATIONS: 'false' do
+      example.run
+    end
+  end
+
   it 'creates a transifex load record' do
     expect{ service.perform }.to change(TransifexLoad, :count).by(1)
   end
@@ -67,12 +73,26 @@ describe Transifex::Loader, type: :service do
     end
 
     it 'updates the pull count' do
-      expect(TransifexLoad.first.pulled).to eq 10
+      expect(TransifexLoad.first.pulled).to eq 9
     end
 
     it 'updates the push count' do
-      expect(TransifexLoad.first.pushed).to eq 10
+      expect(TransifexLoad.first.pushed).to eq 9
+    end
+
+    context 'when advice page syncing is enabled' do
+      around do |example|
+        ClimateControl.modify FEATURE_FLAG_SYNC_ADVICE_PAGE_TRANSLATIONS: 'true' do
+          example.run
+        end
+      end
+
+      it 'updates the pull count' do
+        expect(TransifexLoad.first.pulled).to eq 10
+      end
+      it 'updates the pull count' do
+        expect(TransifexLoad.first.pushed).to eq 10
+      end
     end
   end
-
 end
