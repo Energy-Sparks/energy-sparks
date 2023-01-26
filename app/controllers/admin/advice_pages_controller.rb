@@ -4,6 +4,7 @@ module Admin
     load_and_authorize_resource
 
     def index
+      @advice_pages = @advice_pages.by_key
     end
 
     def edit

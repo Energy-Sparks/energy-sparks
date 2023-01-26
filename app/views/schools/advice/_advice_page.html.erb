@@ -15,6 +15,8 @@
   </div>
   <div class="col-md-9 col-lg-9 col-xl-10 advice-page-tabs">
     <%= render 'schools/advice/advice_tabs', school: school, advice_page: advice_page, tab: tab %>
-    <%= yield %>
+    <div class="mt-4" id="<%= advice_page.key %>-<%= tab %>">
+      <%= yield %>
+    </div>
   </div>
 </div>

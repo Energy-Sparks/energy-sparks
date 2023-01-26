@@ -93,6 +93,20 @@ RSpec.describe "advice pages", type: :system do
       end
     end
 
+    it 'links to advice pages from manage school menu' do
+      within '#manage_school_menu' do
+        click_on 'Advice pages'
+      end
+      expect(page).to have_content("Advice Pages")
+      expect(page).to have_content("All pages")
+    end
+
+    it 'links from admin page' do
+      visit admin_path
+      click_on 'Advice Pages'
+      expect(page).to have_content('Manage advice pages')
+    end
+
     context 'when page is restricted' do
       before do
         advice_page.update(restricted: true)

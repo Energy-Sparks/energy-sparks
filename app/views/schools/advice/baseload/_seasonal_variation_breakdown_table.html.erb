@@ -1,30 +1,30 @@
 <table class="table table-sm table-with-totals">
   <thead class="thead-dark">
     <tr>
-      <th class="text-right">Meter</th>
-      <th class="text-right">Assessment</th>
-      <th class="text-right">Baseload in winter (kW)</th>
-      <th class="text-right">Baseload in summer (kW)</th>
-      <th class="text-right">Percentage difference (%)</th>
-      <th class="text-right">Potential saving (£)</th>
-      <th class="text-right">CO2 reduction (kg)</th>
+      <th class="text-left"><%= t('advice_pages.baseload.tables.columns.meter') %></th>
+      <th class="text-left"><%= t('advice_pages.baseload.tables.columns.assessment') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.baseload_in_winter') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.baseload_in_summer') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.percentage_difference') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.potential_saving_gbp') %></th>
+      <th class="text-right"><%= t('advice_pages.baseload.tables.columns.potential_saving_co2') %></th>
     </tr>
   </thead>
   <tbody>
     <% seasonal_variation_by_meter.each do |mpan_mprn, variation| %>
     <tr>
-      <td class="text-right"><%= mpan_mprn %></td>
-      <td class="text-right"><%= format_rating(variation.variation_rating) %></td>
-      <td class="text-right"><%= format_target(variation.winter_kw, :kwh) %></td>
-      <td class="text-right"><%= format_target(variation.summer_kw, :kwh) %></td>
-      <td class="text-right"><%= format_target(variation.percentage, :percent) %></td>
-      <td class="text-right"><%= format_target(variation.estimated_saving_£, :£) %></td>
-      <td class="text-right"><%= format_target(variation.estimated_saving_co2, :kg) %></td>
+      <td class="text-left"><%= variation.meter.present? ? variation.meter.name_or_mpan_mprn : mpan_mprn %></td>
+      <td class="text-left"><%= format_rating(variation.variation_rating) %></td>
+      <td class="text-right"><%= format_unit(variation.winter_kw, :kw) %></td>
+      <td class="text-right"><%= format_unit(variation.summer_kw, :kw) %></td>
+      <td class="text-right"><%= format_unit(variation.percentage, :percent) %></td>
+      <td class="text-right"><%= format_unit(variation.estimated_saving_£, :£) %></td>
+      <td class="text-right"><%= format_unit(variation.estimated_saving_co2, :kg) %></td>
     </tr>
     <% end %>
     <tr>
-      <td class="text-right">Whole school, aggregated meters</td>
-      <td class="text-right"><%= format_target(seasonal_variation.variation_rating, :r2) %></td>
+      <td class="text-left"><%= t('advice_pages.baseload.tables.labels.all_meters') %></td>
+      <td class="text-left"><%= format_rating(seasonal_variation.variation_rating) %></td>
       <td class="text-right"><%= format_target(seasonal_variation.winter_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(seasonal_variation.summer_kw, :kwh) %></td>
       <td class="text-right"><%= format_target(seasonal_variation.percentage, :percent) %></td>
