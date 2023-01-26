@@ -206,6 +206,36 @@ RSpec.describe "Baseload advice page", type: :system do
           end
         end
       end
+
+      it 'shows the current baseload section' do
+        expect(page).to have_content("Your current baseload")
+        #check within table
+        within '#current-baseload' do
+          expect(page).to have_content("2.1")
+          expect(page).to have_content("2.2")
+        end
+      end
+
+      it 'shows the comparison section' do
+        expect(page).to have_content("How do you compare?")
+        #check within table
+        within '#comparison-baseload' do
+          expect(page).to have_content("1.1")
+          expect(page).to have_content("2.4")
+        end
+        expect(page).to have_content("compare with other schools in your group")
+      end
+
+      context 'when the page has been restricted' do
+        before do
+          advice_page.update(restricted: true)
+          visit insights_school_advice_baseload_path(school)
+        end
+        it 'still shows the analysis' do
+          expect(page).to have_content(expected_page_title)
+        end
+      end
+
     end
   end
 end
