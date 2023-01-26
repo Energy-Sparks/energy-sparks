@@ -8,8 +8,6 @@ en:
     breadcrumbs:
       root: Advice
     nav:
-      carbon:
-        name: Carbon
       electricity:
         baseload: Baseload
         costs: Costs
