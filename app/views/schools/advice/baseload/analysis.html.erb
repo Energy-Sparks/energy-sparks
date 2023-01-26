@@ -121,7 +121,7 @@
 
     <h4><%= t('advice_pages.baseload.analysis_electricity_long_term_baseload_meter_chart_title') %></h4>
 
-    <%= render 'meter_breakdown_charts', school: @school, meters: @meters %>
+    <%= render 'meter_breakdown_charts', school: @school, meters: @meters, date_ranges_by_meter: @date_ranges_by_meter %>
 
   <% end %>
 
