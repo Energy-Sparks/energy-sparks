@@ -25,6 +25,7 @@ module Schools
         @seasonal_variation_by_meter = baseload_service.seasonal_variation_by_meter
         @intraweek_variation = baseload_service.intraweek_variation
         @intraweek_variation_by_meter = baseload_service.intraweek_variation_by_meter
+        @date_ranges_by_meter = baseload_service.date_ranges_by_meter
       end
 
       private

@@ -9,6 +9,7 @@ $(document).ready(function() {
     var supply = $("#supply").val();
     var period = $("#period").val();
     var config = $("#configuration").data('configuration');
+    var descriptions = $("#descriptions").data('descriptions');
 
     var chartContainer = $('.usage-chart').first();
     var chartConfig = chartContainer.data('chart-config');
@@ -28,6 +29,14 @@ $(document).ready(function() {
     setupAxisControls(chartContainer[0], chartConfig);
     processAnalysisChart(chartContainer[0], chartConfig);
     setupAnalysisControls(chartContainer[0], chartConfig);
+    setupChartDescription(chartContainer[0], meter, descriptions);
+  }
+
+  function setupChartDescription(chartContainer, meter, descriptions) {
+    var description = $(chartContainer).closest('.charts').find('#chart-description');
+    if(description.length && meter && descriptions[meter]) {
+      description.text(descriptions[meter]);
+    }
   }
 
   function getDateRanges(){
