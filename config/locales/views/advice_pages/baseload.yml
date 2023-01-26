@@ -13,7 +13,7 @@ en:
       analysis_baseload_low_details_html: Your school's baseload is low, which is good and as a result you are saving %{estimated_savings} per year versus the average of other schools of a similar size.
       analysis_electricity_baseload_chart_explanation: Each point on this chart represents the average over the hours a school is closed on that day. You can click on a point in the chart and it will drill down to show you the usage on that day. Ideally, there should be little variation between different days and seasons.
       analysis_electricity_baseload_chart_subtitle: This chart shows the electricity baseload for your school between %{start_month_year} and %{end_month_year}.
-      analysis_electricity_baseload_chart_title: Electricity baseload for the last 12 months
+      analysis_electricity_baseload_chart_title: Electricity baseload for the last %{months_analysed} months
       analysis_electricity_long_term_baseload_chart_explanation: You can click on the chart to drill down to individual days and work out at what times of day and year your school is doing either better or worse than these schools.
       analysis_electricity_long_term_baseload_chart_subtitle: This chart shows the long term trend in your school’s baseload between %{start_month_year} and %{end_month_year}, and includes a comparison with 'benchmark' and 'exemplar' schools
       analysis_electricity_long_term_baseload_chart_title: Long term baseload comparison with benchmark and exemplar schools
@@ -24,7 +24,7 @@ en:
       analysis_long_term_trends_title: Long term trends
       analysis_meter_breakdown: meter breakdown
       analysis_meter_breakdown_intro: Your school has multiple electricity meters. The section below shows analysis of the baseload electricity use for each meter. You might be able to use this information to identify high energy consumption in certain parts of your school.
-      analysis_meter_breakdown_table_description: The table below shows a breakdown of the average baseload for your school for the last 12 months by meter.
+      analysis_meter_breakdown_table_description: The table below shows a breakdown of the average baseload for your school for the last %{months_analysed} months by meter.
       analysis_meter_breakdown_title: Baseload breakdown by meter
       analysis_meter_charts_title: Baseload charts by meter
       analysis_multiple_meters_suggestion_html: If you notice unusual changes or very high baseload, you might be able to narrow down what is causing it by looking at the %{link} below.
@@ -36,7 +36,7 @@ en:
       analysis_sections: The following sections provide more background and analysis on your electricity baseload
       analysis_summary: This section gives a more detailed analysis of your school’s electricity baseload and some things to look out for.
       analysis_title: Baseload Analysis
-      analysis_usage: Your electricity baseload over the last 12 months was %{baseload_usage} kW. Other schools with a similar number of pupils have a baseload of %{benchmark_usage} kW.
+      analysis_usage: Your electricity baseload over the last %{months_analysed} months was %{baseload_usage} kW. Other schools with a similar number of pupils have a baseload of %{benchmark_usage} kW.
       analysis_weekday_variation_intro_1: At a well-managed school the baseload should remain the same throughout the week, there should be no reason why the electricity consumption at midnight on a weekday should be higher than during the weekend.
       analysis_weekday_variation_intro_2: The most common cause of weekday variation is a high energy consuming appliance which is turned on on a Monday and off again on a Friday.
       analysis_weekday_variation_table_description: The meter breakdown in the table below may help to identify where in the school, daily variation variation comes from.

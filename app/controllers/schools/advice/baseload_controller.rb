@@ -6,6 +6,9 @@ module Schools
         @start_date = aggregate_school.aggregated_electricity_meters.amr_data.start_date
         @end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
 
+        @one_years_data = one_years_data?(@start_date, @end_date)
+        @months_analysed = months_analysed(@start_date, @end_date)
+
         baseload_service = baseload_service(aggregate_school)
         @average_baseload_kw_last_year = baseload_service.average_baseload_kw(period: :year)
         @average_baseload_kw_last_week = baseload_service.average_baseload_kw(period: :week)
@@ -26,6 +29,10 @@ module Schools
         @meters = @school.meters.electricity
         @start_date = aggregate_school.aggregated_electricity_meters.amr_data.start_date
         @end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
+
+        @one_years_data = one_years_data?(@start_date, @end_date)
+        @months_analysed = months_analysed(@start_date, @end_date)
+
         @multiple_meters = baseload_service.multiple_electricity_meters?
         @average_baseload_kw = baseload_service.average_baseload_kw
         @average_baseload_kw_benchmark = baseload_service.average_baseload_kw_benchmark
@@ -38,14 +45,31 @@ module Schools
           @baseload_meter_breakdown_total = baseload_service.meter_breakdown_table_total
         end
 
-        @seasonal_variation = baseload_service.seasonal_variation
-        @seasonal_variation_by_meter = baseload_service.seasonal_variation_by_meter
-        @intraweek_variation = baseload_service.intraweek_variation
-        @intraweek_variation_by_meter = baseload_service.intraweek_variation_by_meter
+        #need at least a years worth of data for this analysis
+        if @one_years_data
+          @seasonal_variation = baseload_service.seasonal_variation
+          @seasonal_variation_by_meter = baseload_service.seasonal_variation_by_meter
+          @intraweek_variation = baseload_service.intraweek_variation
+          @intraweek_variation_by_meter = baseload_service.intraweek_variation_by_meter
+        end
+
         @date_ranges_by_meter = baseload_service.date_ranges_by_meter
       end
 
       private
+
+      def one_years_data?(start_date, end_date)
+        return (end_date - 364) >= start_date
+      end
+
+      def months_analysed(start_date, end_date)
+        months = months_between(start_date, end_date)
+        months > 12 ? 12 : months
+      end
+
+      def months_between(start_date, end_date)
+        ((end_date - start_date).to_f / 365 * 12).round
+      end
 
       def baseload_service(aggregate_school)
         @baseload_service ||= Schools::Advice::BaseloadService.new(@school, aggregate_school)
