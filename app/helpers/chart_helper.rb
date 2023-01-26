@@ -69,4 +69,10 @@ module ChartHelper
     config[:y_axis_units] = y_axis if y_axis.present?
     config
   end
+
+  def create_chart_descriptions(date_ranges_by_meter)
+    date_ranges_by_meter.each_with_object({}) do |(mpan_mprn, dates), date_ranges|
+      date_ranges[mpan_mprn] = I18n.t('advice_pages.baseload.analysis_electricity_long_term_baseload_meter_chart_subtitle', month_year_start: month_year(dates[:start_date]), month_year_end: month_year(dates[:end_date]), meter: mpan_mprn)
+    end
+  end
 end

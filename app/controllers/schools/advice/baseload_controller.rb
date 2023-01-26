@@ -23,6 +23,7 @@ module Schools
 
       def analysis
         baseload_service = baseload_service(aggregate_school)
+        @meters = @school.meters.electricity
         @start_date = aggregate_school.aggregated_electricity_meters.amr_data.start_date
         @end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
         @multiple_meters = baseload_service.multiple_electricity_meters?
@@ -41,6 +42,7 @@ module Schools
         @seasonal_variation_by_meter = baseload_service.seasonal_variation_by_meter
         @intraweek_variation = baseload_service.intraweek_variation
         @intraweek_variation_by_meter = baseload_service.intraweek_variation_by_meter
+        @date_ranges_by_meter = baseload_service.date_ranges_by_meter
       end
 
       private
