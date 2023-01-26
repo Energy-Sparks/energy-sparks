@@ -18,12 +18,16 @@
         <td><%= t('advice_pages.baseload.current_baseload.last_year') %></td>
         <td class="text-right"><%= format_unit(average_baseload_kw_last_year, :kw) %></td>
         <td class="text-right">
-          <%= up_downify( format_unit(percentage_change_year, :relative_percent)) %>
+          <% if one_years_data %>
+            <%= up_downify( format_unit(percentage_change_year, :relative_percent)) %>
+          <% else %>
+            -
+          <% end %>
         </td>
       </tr>
     </tbody>
 </table>
 <div class="text-right advice-table-caption">
-  <%= t('advice_pages.baseload.current_baseload.calculation_dates', start_date: I18n.l(start_date, format: '%B %Y'), end_date: I18n.l(end_date, format: '%B %Y')) %>.
+  <%= t('advice_pages.baseload.current_baseload.calculation_dates', start_date: I18n.l(start_date, format: '%-d %B %Y'), end_date: I18n.l(end_date, format: '%-d %B %Y')) %>.
   <a href="<%= analysis_school_advice_baseload_path(school) %>"><%= t('advice_pages.baseload.current_baseload.review_our_analysis') %></a>
 </div>
