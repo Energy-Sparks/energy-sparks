@@ -66,7 +66,7 @@ module AdvicePageHelper
   end
 
   def one_years_data?(start_date, end_date)
-    return (end_date - 364) >= start_date
+    (end_date - 364) >= start_date
   end
 
   def months_analysed(start_date, end_date)

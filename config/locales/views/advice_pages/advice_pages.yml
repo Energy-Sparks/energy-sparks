@@ -1,6 +1,7 @@
 ---
 en:
   advice_pages:
+    no_recent_data: no recent data
     benchmarks:
       benchmark_school: Well managed
       exemplar_school: Exemplar
