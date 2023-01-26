@@ -13,26 +13,21 @@ $(document).ready(function() {
     var chartContainer = $('.usage-chart').first();
     var chartConfig = chartContainer.data('chart-config');
 
-//    var measurement = $('#measurement').val();
     var meter = $("#meter").val();
-
-    if (meter) {
-      chartConfig.series_breakdown = 'none';
-      if (meter != 'all') {
-        chartConfig.mpan_mprn = meter;
-      } else {
-        chartConfig.mpan_mprn = null;
-      }
-    } else {
-      chartConfig.mpan_mprn = null;
-      chartConfig.series_breakdown = 'meter';
+    if (meter && meter != 'all') {
+      chartConfig.mpan_mprn = meter;
     }
 
-//    chartConfig.y_axis_units = measurement;
+    var series_breakdown = $("#series_breakdown").val();
+    if (series_breakdown) {
+      chartConfig.series_breakdown = series_breakdown;
+    }
+
     chartConfig.date_ranges = getDateRanges();
 
     setupAxisControls(chartContainer[0], chartConfig);
     processAnalysisChart(chartContainer[0], chartConfig);
+    setupAnalysisControls(chartContainer[0], chartConfig);
   }
 
   function getDateRanges(){
