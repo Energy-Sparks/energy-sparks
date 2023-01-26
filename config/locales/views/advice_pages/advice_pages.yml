@@ -1,6 +1,10 @@
 ---
 en:
   advice_pages:
+    benchmarks:
+      benchmark_school: Well managed
+      exemplar_school: Exemplar
+      other: Improving
     breadcrumbs:
       root: Advice
     nav:

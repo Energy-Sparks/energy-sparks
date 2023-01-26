@@ -51,13 +51,13 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     end
   end
 
-  describe '#previous_year_average_baseload_kw' do
+  describe '#previous_period_average_baseload_kw' do
     before do
       allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:average_baseload_kw).and_return(average_baseload_kw)
     end
 
     it 'returns the baseload' do
-      expect(service.previous_year_average_baseload_kw).to eq average_baseload_kw
+      expect(service.previous_period_average_baseload_kw).to eq average_baseload_kw
     end
   end
 

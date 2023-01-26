@@ -1,11 +1,28 @@
 module Schools
   module Advice
     class BaseloadController < AdviceBaseController
+      include AdvicePageHelper
       def insights
+        @start_date = aggregate_school.aggregated_electricity_meters.amr_data.start_date
+        @end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
+
+        baseload_service = baseload_service(aggregate_school)
+        @average_baseload_kw_last_year = baseload_service.average_baseload_kw(period: :year)
+        @average_baseload_kw_last_week = baseload_service.average_baseload_kw(period: :week)
+
+        @previous_year_average_baseload_kw = baseload_service.previous_period_average_baseload_kw(period: :year)
+        @percentage_change_year = relative_percent(@previous_year_average_baseload_kw, @average_baseload_kw_last_year)
+
+        @previous_week_average_baseload_kw = baseload_service.previous_period_average_baseload_kw(period: :week)
+        @percentage_change_week = relative_percent(@previous_week_average_baseload_kw, @average_baseload_kw_last_week)
+
+        @average_baseload_kw_benchmark = baseload_service.average_baseload_kw_benchmark(compare: :benchmark_school)
+        @average_baseload_kw_exemplar = baseload_service.average_baseload_kw_benchmark(compare: :exemplar_school)
+        @category = categorise_school_vs_benchmark(@average_baseload_kw_last_year, @average_baseload_kw_benchmark, @average_baseload_kw_exemplar)
       end
 
       def analysis
-        baseload_service = Schools::Advice::BaseloadService.new(@school, aggregate_school)
+        baseload_service = baseload_service(aggregate_school)
         @meters = @school.meters.electricity
         @start_date = aggregate_school.aggregated_electricity_meters.amr_data.start_date
         @end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
@@ -29,6 +46,10 @@ module Schools
       end
 
       private
+
+      def baseload_service(aggregate_school)
+        @baseload_service ||= Schools::Advice::BaseloadService.new(@school, aggregate_school)
+      end
 
       def advice_page_key
         :baseload

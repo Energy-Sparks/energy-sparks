@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe "baseload advice page", type: :system do
+RSpec.describe "Baseload advice page", type: :system do
 
   let!(:advice_page) { create(:advice_page, key: key, restricted: false) }
   let(:key) { 'baseload' }
 
-  let(:school) { create(:school) }
+  let(:school) { create(:school, school_group: create(:school_group)) }
   let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
 
   let(:start_date)  { Date.new(2019,12,31)}
@@ -29,7 +29,7 @@ RSpec.describe "baseload advice page", type: :system do
 
   let(:expected_page_title) { "Baseload analysis" }
 
-  context 'as school admin' do
+  context 'as a school admin' do
     let(:user)  { create(:school_admin, school: school) }
 
     before do
@@ -37,25 +37,27 @@ RSpec.describe "baseload advice page", type: :system do
       visit school_advice_path(school)
     end
 
-    it 'shows the advice pages index' do
+    it 'the advice pages index has a link to the page in the navbar' do
       expect(page).to have_content('Advice Pages')
-      expect(page).to have_link(key)
+      within '.advice-page-nav' do
+        expect(page).to have_content("Baseload")
+      end
     end
 
-    context 'when viewing the page' do
-
+    context 'when viewing the learn more page' do
       before(:each) do
-        click_on key
+        visit learn_more_school_advice_baseload_path(school)
+      end
+
+      it 'shows the learn more content' do
+        click_on 'Learn More'
+        within '.advice-page-tabs' do
+          expect(page).to have_content(advice_page.learn_more.body.to_html)
+        end
       end
 
       it 'shows the page title' do
         expect(page).to have_content(expected_page_title)
-      end
-
-      it 'shows a link to the page in the nav bar' do
-        within '.advice-page-nav' do
-          expect(page).to have_content("Baseload")
-        end
       end
 
       it 'shows tabs for insights, analysis, learn more' do
@@ -72,13 +74,6 @@ RSpec.describe "baseload advice page", type: :system do
           expect(page).to have_link(school.name)
           expect(page).to have_link('Advice')
           expect(page).to have_text(key.humanize)
-        end
-      end
-
-      it 'shows the learn more content' do
-        click_on 'Learn More'
-        within '.advice-page-tabs' do
-          expect(page).to have_content(advice_page.learn_more.body.to_html)
         end
       end
     end
@@ -128,14 +123,65 @@ RSpec.describe "baseload advice page", type: :system do
       end
     end
 
-    context 'when page is restricted' do
-      before do
-        advice_page.update(restricted: true)
+    context 'when viewing the insights' do
+      let(:average_baseload_last_year_kw) {2.1}
+      let(:average_baseload_last_week_kw) {2.2}
+
+
+      let(:average_baseload_kw_exemplar) {1.1}
+      let(:average_baseload_kw_benchmark) {2.4}
+
+      let(:previous_year_average_baseload_kw) { 2.0 }
+      let(:previous_week_average_baseload_kw) { 1.9 }
+
+      before(:each) do
+        #current baseload
+        allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:average_baseload_kw).with(period: :year).and_return average_baseload_last_year_kw
+        allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:average_baseload_kw).with(period: :week).and_return average_baseload_last_week_kw
+
+        allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:previous_period_average_baseload_kw).with(period: :year).and_return previous_year_average_baseload_kw
+        allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:previous_period_average_baseload_kw).with(period: :week).and_return previous_week_average_baseload_kw
+
+        #comparison
+        allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:average_baseload_kw_benchmark).with(compare: :benchmark_school).and_return average_baseload_kw_benchmark
+        allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:average_baseload_kw_benchmark).with(compare: :exemplar_school).and_return average_baseload_kw_exemplar
+
         visit insights_school_advice_baseload_path(school)
       end
-      it 'shows the restricted advice page' do
-        expect(page).to have_content(expected_page_title)
+
+      it 'shows the definition of baseload' do
+        expect(page).to have_content("Electricity baseload is the electricity needed to provide power to appliances")
       end
+
+      it 'shows the current baseload section' do
+        expect(page).to have_content("Your current baseload")
+        #check within table
+        within '#current-baseload' do
+          expect(page).to have_content("2.1")
+          expect(page).to have_content("2.2")
+        end
+      end
+
+      it 'shows the comparison section' do
+        expect(page).to have_content("How do you compare?")
+        #check within table
+        within '#comparison-baseload' do
+          expect(page).to have_content("1.1")
+          expect(page).to have_content("2.4")
+        end
+        expect(page).to have_content("compare with other schools in your group")
+      end
+
+      context 'when the page has been restricted' do
+        before do
+          advice_page.update(restricted: true)
+          visit insights_school_advice_baseload_path(school)
+        end
+        it 'still shows the analysis' do
+          expect(page).to have_content(expected_page_title)
+        end
+      end
+
     end
   end
 end

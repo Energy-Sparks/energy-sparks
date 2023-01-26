@@ -1,0 +1,48 @@
+<h2 class="pt-4"><%= t('advice_pages.baseload.comparison.title') %></h2>
+
+<p>
+  <%= t('advice_pages.baseload.comparison.how_do_you_compare', school_type: t('analytics.school_types.' + school.school_type)) %>
+</p>
+
+<table class="table table-sm advice-table" id="comparison-baseload">
+  <thead>
+    <th><%= t('advice_pages.baseload.comparison.tables.columns.category') %></th>
+    <th class="text-right"><%= t('advice_pages.baseload.tables.columns.average_annual_baseload_kw') %></th>
+    <th class="text-right"><%= t('advice_pages.baseload.comparison.tables.columns.your_baseload') %></th>
+  </thead>
+  <tbody>
+    <tr class="<%= 'positive-row' if category == :exemplar %>">
+      <td><%= t('advice_pages.benchmarks.exemplar_school') %></td>
+      <td class="text-right"><%= format_unit(average_baseload_kw_exemplar, :kw) %></td>
+      <td class="text-right">
+        <% if category == :exemplar %>
+         <%= format_unit(average_baseload_kw_last_year, :kw) %>
+        <% end %>
+      </td>
+    </tr>
+    <tr class="<%= 'positive-row' if category == :benchmark %>">
+      <td><%= t('advice_pages.benchmarks.benchmark_school') %></td>
+      <td class="text-right"><%= format_unit(average_baseload_kw_benchmark, :kw) %></td>
+      <td class="text-right">
+        <% if category == :benchmark %>
+         <%= format_unit(average_baseload_kw_last_year, :kw) %>
+        <% end %>
+      </td>
+    </tr>
+    <tr class="<%= 'negative-row' if category == :other %>">
+      <td><%= t('advice_pages.benchmarks.other') %></td>
+      <td class="text-right">><%= format_unit(average_baseload_kw_benchmark, :kw) %></td>
+      <td class="text-right">
+        <% if category == :other %>
+          <%= format_unit(average_baseload_kw_last_year, :kw) %>
+        <% end %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+  <% if school.school_group.present? %>
+    <%= t('advice_pages.baseload.comparison.more_detail_html', link: benchmark_for_school_group_path(:baseload_per_pupil, school)) %>
+  <% end %>
+</p>
