@@ -154,6 +154,10 @@ module TransifexSerialisable
     rewritten
   end
 
+  def has_content?
+    tx_serialise["en"][resource_key].values.any?(&:present?)
+  end
+
   private
 
   def remove_newlines(value)
