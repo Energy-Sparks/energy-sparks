@@ -15,8 +15,8 @@ module AdvicePageHelper
     I18n.t('date.month_names')[date.month] + " " + date.year.to_s
   end
 
-  def advice_baseload_high?(val)
-    val > 0.0
+  def advice_baseload_high?(estimated_savings_vs_benchmark)
+    estimated_savings_vs_benchmark > 0.0
   end
 
   def format_rating(rating)

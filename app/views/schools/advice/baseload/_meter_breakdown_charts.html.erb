@@ -1,5 +1,5 @@
 <div class="charts">
-  <h5 id='chart-description'></h5>
+  <h5 id='chart-description' class='chart-subtitle'></h5>
   <%= form_tag "", method: :get, id: "chart-filter" do %>
     <%= hidden_field_tag :configuration, nil, data: {configuration: create_chart_config(school, :baseload)} %>
     <%= hidden_field_tag :descriptions, nil, data: {descriptions: create_chart_descriptions(date_ranges_by_meter)} %>
