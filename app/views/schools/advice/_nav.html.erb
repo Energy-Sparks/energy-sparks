@@ -26,6 +26,4 @@
   <% c.with_section(name: t('advice_pages.nav.solar.name'), icon: 'sun', classes: 'bg-solar-light', visible: @school.has_solar_pv?) do |s| %>
     <% s.with_item(name: t('advice_pages.nav.solar.solar_pv'), href: school_advice_solar_pv_path(@school)) %>
   <% end %>
-  <% c.with_section(name: t('advice_pages.nav.carbon.name'), icon: 'cloud-download-alt', classes: 'bg-carbon-light') do |s| %>
-  <% end %>
 <% end %>
