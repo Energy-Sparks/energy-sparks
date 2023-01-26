@@ -52,6 +52,7 @@ describe Transifex::Loader, type: :service do
   end
 
   context 'when there are no errors' do
+    let!(:advice_page_text)         { "advice page learn more" }
     let!(:activity_category)        { create(:activity_category) }
     let!(:intervention_type_group)  { create(:intervention_type_group) }
     let!(:activity_type)            { create(:activity_type, active: true, activity_category: activity_category) }
@@ -64,7 +65,7 @@ describe Transifex::Loader, type: :service do
     let!(:programme_type2)          { create(:programme_type, active: false) }
     let!(:transport_type)           { create(:transport_type) }
     let!(:consent_statement)        { create(:consent_statement) }
-    let!(:advice_page)              { create(:advice_page) }
+    let!(:advice_page)              { create(:advice_page, learn_more: advice_page_text) }
 
     before(:each) do
       allow_any_instance_of(Transifex::Synchroniser).to receive(:pull).and_return(true)
@@ -90,8 +91,18 @@ describe Transifex::Loader, type: :service do
       it 'updates the pull count' do
         expect(TransifexLoad.first.pulled).to eq 10
       end
-      it 'updates the pull count' do
+      it 'updates the push count' do
         expect(TransifexLoad.first.pushed).to eq 10
+      end
+
+      context 'when a record has no contents' do
+        let!(:advice_page_text)   { "" }
+        it 'skips the pull' do
+          expect(TransifexLoad.first.pulled).to eq 9
+        end
+        it 'skips the push' do
+          expect(TransifexLoad.first.pushed).to eq 9
+        end
       end
     end
   end
