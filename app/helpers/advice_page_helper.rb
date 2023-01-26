@@ -50,10 +50,31 @@ module AdvicePageHelper
     end
   end
 
+  def row_class_for_category(category, compare, row_class = 'positive-row')
+    row_class if category == compare
+  end
+
   #calculate relative % change of a current value from a base value
   def relative_percent(base, current)
     return 0.0 if base.nil? || current.nil? || base == current
     return 0.0 if base == 0.0
     (current - base) / base
+  end
+
+  def recent_data?(end_date)
+    end_date > (Time.zone.today - 30)
+  end
+
+  def one_years_data?(start_date, end_date)
+    (end_date - 364) >= start_date
+  end
+
+  def months_analysed(start_date, end_date)
+    months = months_between(start_date, end_date)
+    months > 12 ? 12 : months
+  end
+
+  def months_between(start_date, end_date)
+    ((end_date - start_date).to_f / 365 * 12).round
   end
 end

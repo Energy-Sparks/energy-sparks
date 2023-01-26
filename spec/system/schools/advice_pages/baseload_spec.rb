@@ -8,8 +8,8 @@ RSpec.describe "Baseload advice page", type: :system do
   let(:school) { create(:school, school_group: create(:school_group)) }
   let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
 
-  let(:start_date)  { Date.new(2019,12,31)}
-  let(:end_date)    { Date.new(2020,12,31)}
+  let(:start_date)  { Date.today - 365}
+  let(:end_date)    { Date.today - 1}
   let(:amr_data)    { double('amr-data') }
 
   let(:electricity_aggregate_meter)   { double('electricity-aggregated-meter')}
@@ -121,12 +121,22 @@ RSpec.describe "Baseload advice page", type: :system do
           expect(page).to have_content('baseload over the last 12 months was 2.4 kW')
         end
       end
+
+      context "with limited data" do
+        let(:start_date)  { Date.today - 8.months}
+        let(:end_date)    { Date.today - 1}
+        before do
+          visit analysis_school_advice_baseload_path(school)
+        end
+        it 'shows different message' do
+          expect(page).to have_content("8 months")
+        end
+      end
     end
 
     context 'when viewing the insights' do
       let(:average_baseload_last_year_kw) {2.1}
       let(:average_baseload_last_week_kw) {2.2}
-
 
       let(:average_baseload_kw_exemplar) {1.1}
       let(:average_baseload_kw_benchmark) {2.4}
@@ -151,6 +161,50 @@ RSpec.describe "Baseload advice page", type: :system do
 
       it 'shows the definition of baseload' do
         expect(page).to have_content("Electricity baseload is the electricity needed to provide power to appliances")
+      end
+
+      it 'shows the current baseload section' do
+        expect(page).to have_content("Your current baseload")
+        #check within table
+        within '#current-baseload' do
+          expect(page).to have_content("2.1")
+          expect(page).to have_content("2.2")
+        end
+      end
+
+      it 'shows the comparison section' do
+        expect(page).to have_content("How do you compare?")
+        #check within table
+        within '#comparison-baseload' do
+          expect(page).to have_content("1.1")
+          expect(page).to have_content("2.4")
+        end
+        expect(page).to have_content("compare with other schools in your group")
+      end
+
+      context 'when the page has been restricted' do
+        before do
+          advice_page.update(restricted: true)
+          visit insights_school_advice_baseload_path(school)
+        end
+        it 'still shows the analysis' do
+          expect(page).to have_content(expected_page_title)
+        end
+      end
+
+      context "with no recent data" do
+        let(:start_date)  { Date.today - 24.months}
+        let(:end_date)    { Date.today - 2.months}
+        before do
+          visit insights_school_advice_baseload_path(school)
+        end
+        it 'shows different message' do
+          #weekly baseload
+          within '#current-baseload' do
+            expect(page).to_not have_content("2.2")
+            expect(page).to have_content("no recent data")
+          end
+        end
       end
 
       it 'shows the current baseload section' do

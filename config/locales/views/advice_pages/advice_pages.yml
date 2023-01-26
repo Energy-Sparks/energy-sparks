@@ -37,5 +37,6 @@ en:
         storage_heaters: Storage heaters
       top_section:
         total_energy_use: Total energy use
+    no_recent_data: no recent data
     show:
       title: Advice Pages
