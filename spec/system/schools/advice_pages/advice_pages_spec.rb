@@ -11,6 +11,19 @@ RSpec.describe "advice pages", type: :system do
 
   let(:expected_page_title) { "Total energy use" }
 
+  context 'when error occurs' do
+    before do
+      allow_any_instance_of(Schools::Advice::AdviceBaseController).to receive(:learn_more).and_raise(StandardError.new('testing..'))
+    end
+    it 'shows the error page' do
+      visit school_advice_path(school)
+      click_on key
+      click_on 'Learn More'
+      expect(page).to have_content('Error')
+      expect(page).to have_content('We encountered an error attempting to generate your analysis')
+    end
+  end
+
   context 'as non-logged in user' do
 
     before do
