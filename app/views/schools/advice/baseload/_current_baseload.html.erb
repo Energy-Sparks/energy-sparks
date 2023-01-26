@@ -9,10 +9,17 @@
     <tbody>
       <tr>
         <td><%= t('advice_pages.baseload.current_baseload.last_week') %></td>
-        <td class="text-right"><%= format_unit(average_baseload_kw_last_week, :kw) %></td>
-        <td class="text-right">
-          <%= up_downify( format_unit(percentage_change_week, :relative_percent)) %>
-        </td>
+        <% if recent_data %>
+          <td class="text-right"><%= format_unit(average_baseload_kw_last_week, :kw) %></td>
+          <td class="text-right">
+            <%= up_downify( format_unit(percentage_change_week, :relative_percent)) %>
+          </td>
+        <% else %>
+          <td class="text-right old-data">
+            no recent data
+          </td>
+          <td class="text-right">-</td>
+        <% end %>
       </tr>
       <tr>
         <td><%= t('advice_pages.baseload.current_baseload.last_year') %></td>

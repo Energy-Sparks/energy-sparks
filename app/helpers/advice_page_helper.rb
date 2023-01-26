@@ -56,4 +56,21 @@ module AdvicePageHelper
     return 0.0 if base == 0.0
     (current - base) / base
   end
+
+  def recent_data?(end_date)
+    end_date > (Time.zone.today - 30)
+  end
+
+  def one_years_data?(start_date, end_date)
+    return (end_date - 364) >= start_date
+  end
+
+  def months_analysed(start_date, end_date)
+    months = months_between(start_date, end_date)
+    months > 12 ? 12 : months
+  end
+
+  def months_between(start_date, end_date)
+    ((end_date - start_date).to_f / 365 * 12).round
+  end
 end

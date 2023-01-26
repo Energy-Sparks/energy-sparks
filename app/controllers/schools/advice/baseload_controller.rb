@@ -7,7 +7,7 @@ module Schools
         @end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
 
         @one_years_data = one_years_data?(@start_date, @end_date)
-        @months_analysed = months_analysed(@start_date, @end_date)
+        @recent_data = recent_data?(@end_date)
 
         baseload_service = baseload_service(aggregate_school)
         @average_baseload_kw_last_year = baseload_service.average_baseload_kw(period: :year)
@@ -57,19 +57,6 @@ module Schools
       end
 
       private
-
-      def one_years_data?(start_date, end_date)
-        return (end_date - 364) >= start_date
-      end
-
-      def months_analysed(start_date, end_date)
-        months = months_between(start_date, end_date)
-        months > 12 ? 12 : months
-      end
-
-      def months_between(start_date, end_date)
-        ((end_date - start_date).to_f / 365 * 12).round
-      end
 
       def baseload_service(aggregate_school)
         @baseload_service ||= Schools::Advice::BaseloadService.new(@school, aggregate_school)
