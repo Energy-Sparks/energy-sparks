@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Baseload advice page", type: :system do
 
-  let!(:advice_page) { create(:advice_page, key: key, restricted: false) }
+  let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: :electricity) }
   let(:key) { 'baseload' }
 
   let(:school) { create(:school, school_group: create(:school_group)) }
@@ -203,6 +203,7 @@ RSpec.describe "Baseload advice page", type: :system do
           within '#current-baseload' do
             expect(page).to_not have_content("2.2")
             expect(page).to have_content("no recent data")
+            expect(page).to have_content("We have not received data for your electricity usage for over thirty days")
           end
         end
       end
