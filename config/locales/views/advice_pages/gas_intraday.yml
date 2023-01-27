@@ -2,6 +2,9 @@
 en:
   advice_pages:
     gas_intraday:
-      analysis_title: Analysis
-      insights_title: Insights
+      analysis:
+        title: Analysis
+      insights:
+        next_steps: Next steps
+        title: Insights
       page_title: Gas intraday usage analysis
