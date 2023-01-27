@@ -1,4 +1,4 @@
-<h2 class="pt-4"><%= t('advice_pages.baseload.comparison.title') %></h2>
+<%= render 'schools/advice/section_title', section_id: 'comparison', section_title: t('advice_pages.baseload.comparison.title') %>
 
 <p>
   <%= t('advice_pages.baseload.comparison.how_do_you_compare', school_type: t('analytics.school_types.' + school.school_type)) %>

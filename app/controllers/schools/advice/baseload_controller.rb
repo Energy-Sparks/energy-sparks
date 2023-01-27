@@ -1,7 +1,6 @@
 module Schools
   module Advice
     class BaseloadController < AdviceBaseController
-      include AdvicePageHelper
       def insights
         @analysis_dates = analysis_dates
         @current_baseload = current_baseload
@@ -17,7 +16,8 @@ module Schools
         @average_baseload_kw_benchmark = baseload_service.average_baseload_kw_benchmark
         @baseload_usage = baseload_service.annual_baseload_usage
         @benchmark_usage = baseload_service.baseload_usage_benchmark
-        @estimated_savings = baseload_service.estimated_savings
+        @estimated_savings_vs_benchmark = baseload_service.estimated_savings(versus: :benchmark_school)
+        @estimated_savings_vs_exemplar = baseload_service.estimated_savings(versus: :exemplar_school)
         @annual_average_baseloads = baseload_service.annual_average_baseloads
         if @multiple_meters
           @baseload_meter_breakdown = baseload_service.baseload_meter_breakdown

@@ -2,6 +2,9 @@
 en:
   advice_pages:
     boiler_control:
-      analysis_title: Analysis
-      insights_title: Insights
+      analysis:
+        title: Analysis
+      insights:
+        next_steps: Next steps
+        title: Insights
       page_title: Boiler control analysis

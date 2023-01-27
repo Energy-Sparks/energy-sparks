@@ -13,7 +13,7 @@ module Schools
     private
 
     def load_advice_pages
-      @advice_pages = AdvicePage.all
+      @advice_pages = AdvicePage.all.by_key
     end
   end
 end
