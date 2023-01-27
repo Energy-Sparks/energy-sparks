@@ -26,13 +26,13 @@
 
   <%= render 'assessment', estimated_savings_vs_benchmark: @estimated_savings_vs_benchmark, estimated_savings_vs_exemplar: @estimated_savings_vs_exemplar %>
 
-  <h4 class="chart-title"><%= t('advice_pages.baseload.analysis.charts.baseload_chart_title', months_analysed: @analysis_dates.months_analysed) %></h4>
-  <h5 class="chart-subtitle"><%= t('advice_pages.baseload.analysis.charts.baseload_chart_subtitle', start_month_year: month_year(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: month_year(@analysis_dates.end_date)) %></h5>
-
-  <div id="chart_wrapper_baseload_lastyear" class="chart-wrapper">
-    <%= render 'shared/analysis_controls', chart_type: :baseload_lastyear, axis_controls: true, analysis_controls: true %>
-    <%= chart_tag(@school, :baseload_lastyear, no_zoom: true, wrap: false, chart_config: create_chart_config(@school, :baseload_lastyear, nil)) %>
-  </div>
+  <%= render(ChartComponent.new(
+    chart_type: :baseload_lastyear,
+    school: @school,
+    title: t('advice_pages.baseload.analysis.charts.baseload_chart_title', months_analysed: @analysis_dates.months_analysed),
+    subtitle: t('advice_pages.baseload.analysis.charts.baseload_chart_subtitle', start_month_year: month_year(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: month_year(@analysis_dates.end_date)),
+    chart_config: create_chart_config(@school, :baseload_lastyear, nil)))
+  %>
 
   <p><%= t('advice_pages.baseload.analysis.charts.baseload_chart_explanation') %></p>
 
