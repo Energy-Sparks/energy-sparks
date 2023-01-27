@@ -203,8 +203,10 @@ RSpec.describe "Baseload advice page", type: :system do
           within '#current-baseload' do
             expect(page).to_not have_content("2.2")
             expect(page).to have_content("no recent data")
-            expect(page).to have_content("We have not received data for your electricity usage for over thirty days")
           end
+        end
+        it 'shows data warning' do
+          expect(page).to have_content("We have not received data for your electricity usage for over thirty days")
         end
       end
 
