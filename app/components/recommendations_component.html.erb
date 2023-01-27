@@ -5,11 +5,11 @@
   <% recommendations.each_with_index do |recommendation, i| %>
     <div class="card<%= hide_classes(i) %>">
       <%= link_to url_for(recommendation) do %>
-        <%= image_tag(recommendation.t_attached_or_default(:image, I18n.locale) || "placeholder300x200.png", class: 'card-img-top img-fluid activity-card-img') %>
+        <%= image_tag(recommendation.t_attached_or_default(:image) || default_image, class: 'card-img-top img-fluid activity-card-img') %>
       <% end %>
       <div class="card-body">
         <p class="card-text">
-        <%= link_to recommendation.name, url_for(recommendation), class: 'text-decoration-none' %>
+        <%= link_to recommendation.name, url_for(recommendation), class: 'text-decoration-none stretched-link' %>
         </p>
       </div>
       <% if footer %>

@@ -4,7 +4,7 @@
   object-fit: contain;
 }
 
-/* for medium devices and up */
+/* only have a max width for md and up */
 @media(min-width:768px) {
   .recommendations .card {
     max-width: 300px;

@@ -5,7 +5,7 @@ class RecommendationsComponent < ViewComponent::Base
 
   def initialize(title: nil, recommendations: [], classes: '', limit: 4, max_lg: 3)
     @title = title
-    @recommendations = recommendations.limit(limit)
+    @recommendations = recommendations.first(limit)
     @classes = classes
     @limit = limit
     @max_lg = max_lg
@@ -17,6 +17,10 @@ class RecommendationsComponent < ViewComponent::Base
 
   def hide_classes(index)
     " d-none d-xl-block" if index >= max_lg # limit to max_lg for screens less than XL
+  end
+
+  def default_image
+    'placeholder300x200.png'
   end
 
   # this is for when we add activity key stages etc
