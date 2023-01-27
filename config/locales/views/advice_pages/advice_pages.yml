@@ -12,6 +12,8 @@ en:
       title: Sorry, something has gone wrong
     insights:
       recommendations:
+        actions_title: Take action around the school
+        activities_title: Work with the pupils
         title: What should you do next?
     nav:
       electricity:
