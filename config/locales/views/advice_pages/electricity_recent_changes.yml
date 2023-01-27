@@ -2,6 +2,9 @@
 en:
   advice_pages:
     electricity_recent_changes:
-      analysis_title: Analysis
-      insights_title: Insights
+      analysis:
+        title: Analysis
+      insights:
+        next_steps: Next steps
+        title: Insights
       page_title: Electricity recent changes analysis

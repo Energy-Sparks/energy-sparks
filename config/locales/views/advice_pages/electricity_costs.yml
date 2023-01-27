@@ -2,6 +2,9 @@
 en:
   advice_pages:
     electricity_costs:
-      analysis_title: Analysis
-      insights_title: Insights
+      analysis:
+        title: Analysis
+      insights:
+        next_steps: Next steps
+        title: Insights
       page_title: Electricity cost analysis

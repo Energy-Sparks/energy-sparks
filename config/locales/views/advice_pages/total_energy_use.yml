@@ -2,6 +2,9 @@
 en:
   advice_pages:
     total_energy_use:
-      analysis_title: Total energy use analysis
-      insights_title: Total energy use insights
+      analysis:
+        title: Analysis
+      insights:
+        next_steps: Next steps
+        title: Insights
       page_title: Total energy use

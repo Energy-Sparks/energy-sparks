@@ -68,6 +68,7 @@ RSpec.configure do |config|
   config.before { ActionMailer::Base.deliveries.clear }
 
   config.include ApplicationHelper, include_application_helper: true
+  config.include Rails.application.routes.url_helpers, include_url_helpers: true
 
   # Wisper gem helpers
   config.include(Wisper::RSpec::BroadcastMatcher)

@@ -10,6 +10,9 @@ en:
     error:
       message: We encountered an error attempting to generate your analysis. The Energy Sparks team have been notified of the problem.
       title: Sorry, something has gone wrong
+    insights:
+      recommendations:
+        title: What should you do next?
     nav:
       electricity:
         baseload: Baseload
