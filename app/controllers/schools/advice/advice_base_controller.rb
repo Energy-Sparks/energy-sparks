@@ -19,10 +19,6 @@ module Schools
         render 'error'
       end
 
-      def set_data_warning
-        @data_warning = !recent_data?(advice_page_end_date)
-      end
-
       def show
         redirect_to url_for([:insights, @school, :advice, advice_page_key])
       end
@@ -32,6 +28,10 @@ module Schools
       end
 
       private
+
+      def set_data_warning
+        @data_warning = !recent_data?(advice_page_end_date)
+      end
 
       def advice_page_end_date
         @advice_page_end_date ||= AggregateSchoolService.analysis_date(aggregate_school, @advice_page.fuel_type)

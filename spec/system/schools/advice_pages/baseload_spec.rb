@@ -76,6 +76,14 @@ RSpec.describe "Baseload advice page", type: :system do
           expect(page).to have_text(key.humanize)
         end
       end
+
+      context "with no recent data" do
+        let(:start_date)  { Date.today - 24.months}
+        let(:end_date)    { Date.today - 2.months}
+        it 'shows NOT show data warning' do
+          expect(page).not_to have_content("We have not received data for your electricity usage for over thirty days")
+        end
+      end
     end
 
     context 'when viewing the analysis' do
@@ -130,6 +138,17 @@ RSpec.describe "Baseload advice page", type: :system do
         end
         it 'shows different message' do
           expect(page).to have_content("8 months")
+        end
+      end
+
+      context "with no recent data" do
+        let(:start_date)  { Date.today - 24.months}
+        let(:end_date)    { Date.today - 2.months}
+        before do
+          visit analysis_school_advice_baseload_path(school)
+        end
+        it 'shows data warning' do
+          expect(page).to have_content("We have not received data for your electricity usage for over thirty days")
         end
       end
     end
@@ -238,7 +257,6 @@ RSpec.describe "Baseload advice page", type: :system do
           expect(page).to have_content(expected_page_title)
         end
       end
-
     end
   end
 end
