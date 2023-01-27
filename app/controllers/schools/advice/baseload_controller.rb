@@ -85,6 +85,10 @@ module Schools
       def advice_page_key
         :baseload
       end
+
+      def advice_page_fuel_type
+        :electricity
+      end
     end
   end
 end

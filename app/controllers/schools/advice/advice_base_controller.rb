@@ -8,10 +8,11 @@ module Schools
       before_action :set_tab_name, only: [:insights, :analysis, :learn_more]
       before_action :check_authorisation, only: [:insights, :analysis, :learn_more]
       before_action :load_recommendations, only: [:insights]
+      before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
 
       include SchoolAggregation
 
-      before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
+      helper_method :advice_page_end_date, :advice_page_fuel_type
 
       rescue_from StandardError do |exception|
         Rollbar.error(exception, advice_page: advice_page_key, school: @school.name, school_id: @school.id)
@@ -26,7 +27,15 @@ module Schools
         @learn_more = @advice_page.learn_more
       end
 
+      def advice_page_end_date
+        @advice_page_end_date ||= AggregateSchoolService.analysis_date(aggregate_school, advice_page_fuel_type)
+      end
+
       private
+
+      def advice_page_fuel_type
+        # implement in subclass controller
+      end
 
       def set_tab_name
         @tab = action_name.to_sym

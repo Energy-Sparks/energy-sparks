@@ -12,6 +12,10 @@ module Schools
       def advice_page_key
         :solar_pv
       end
+
+      def advice_page_fuel_type
+        :electricity
+      end
     end
   end
 end
