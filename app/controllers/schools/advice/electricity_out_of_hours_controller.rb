@@ -12,10 +12,6 @@ module Schools
       def advice_page_key
         :electricity_out_of_hours
       end
-
-      def advice_page_fuel_type
-        :electricity
-      end
     end
   end
 end

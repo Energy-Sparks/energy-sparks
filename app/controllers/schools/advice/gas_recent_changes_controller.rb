@@ -12,10 +12,6 @@ module Schools
       def advice_page_key
         :gas_recent_changes
       end
-
-      def advice_page_fuel_type
-        :gas
-      end
     end
   end
 end

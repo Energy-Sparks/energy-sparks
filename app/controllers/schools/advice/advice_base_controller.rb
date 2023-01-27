@@ -12,7 +12,7 @@ module Schools
 
       include SchoolAggregation
 
-      helper_method :advice_page_end_date, :advice_page_fuel_type
+      helper_method :advice_page_end_date
 
       rescue_from StandardError do |exception|
         Rollbar.error(exception, advice_page: advice_page_key, school: @school.name, school_id: @school.id)
@@ -30,11 +30,7 @@ module Schools
       private
 
       def advice_page_end_date
-        @advice_page_end_date ||= AggregateSchoolService.analysis_date(aggregate_school, advice_page_fuel_type)
-      end
-
-      def advice_page_fuel_type
-        # implement in subclass controller
+        @advice_page_end_date ||= AggregateSchoolService.analysis_date(aggregate_school, @advice_page.fuel_type)
       end
 
       def set_tab_name

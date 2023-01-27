@@ -12,10 +12,6 @@ module Schools
       def advice_page_key
         :storage_heaters
       end
-
-      def advice_page_fuel_type
-        :storage_heater
-      end
     end
   end
 end
