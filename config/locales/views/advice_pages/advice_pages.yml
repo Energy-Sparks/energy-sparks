@@ -12,9 +12,9 @@ en:
       title: Sorry, something has gone wrong
     insights:
       recommendations:
-        title: What should you do next?
-        activities_title: Work with the pupils
         actions_title: Take action around the school
+        activities_title: Work with the pupils
+        title: What should you do next?
     nav:
       electricity:
         baseload: Baseload
