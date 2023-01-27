@@ -18,7 +18,7 @@ describe TranslatableAttachment do
   let(:t_attachments) {[:file, :other]}
   let(:attachments) { [:normal] }
 
-  describe "#t_has_one_attached" do
+  describe ".t_has_one_attached" do
     context "attachment_reflections" do
       subject { test.class.attachment_reflections }
 
@@ -74,6 +74,13 @@ describe TranslatableAttachment do
         it "serves current locale file by default" do
           expect(test.t_attached_or_default(:file).name).to eq("file_en")
         end
+      end
+
+      context "when only other locale file attached" do
+        before { test.file_cy.attach(**attachment) }
+
+        it { expect(test.t_attached_or_default(:file, :en)).to be_nil }
+        it { expect(test.t_attached_or_default(:file)).to be_nil }
       end
 
       context "when both locale files are attached" do
