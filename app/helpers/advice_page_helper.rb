@@ -61,10 +61,6 @@ module AdvicePageHelper
     (current - base) / base
   end
 
-  def show_data_warning?(end_date, tab)
-    !recent_data?(end_date) unless tab == :learn_more
-  end
-
   def recent_data?(end_date)
     end_date > (Time.zone.today - 30.days)
   end

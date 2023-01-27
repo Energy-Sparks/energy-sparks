@@ -9,7 +9,9 @@ module Schools
       before_action :check_authorisation, only: [:insights, :analysis, :learn_more]
       before_action :load_recommendations, only: [:insights]
       before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
+      before_action :set_data_warning, only: [:insights, :analysis]
 
+      include AdvicePageHelper
       include SchoolAggregation
 
       helper_method :advice_page_end_date
@@ -17,6 +19,10 @@ module Schools
       rescue_from StandardError do |exception|
         Rollbar.error(exception, advice_page: advice_page_key, school: @school.name, school_id: @school.id)
         render 'error'
+      end
+
+      def set_data_warning
+        @data_warning = !recent_data?(advice_page_end_date)
       end
 
       def show
