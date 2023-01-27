@@ -27,11 +27,11 @@ module Schools
         @learn_more = @advice_page.learn_more
       end
 
+      private
+
       def advice_page_end_date
         @advice_page_end_date ||= AggregateSchoolService.analysis_date(aggregate_school, advice_page_fuel_type)
       end
-
-      private
 
       def advice_page_fuel_type
         # implement in subclass controller
