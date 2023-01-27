@@ -62,7 +62,7 @@ module AdvicePageHelper
   end
 
   def recent_data?(end_date)
-    end_date > (Time.zone.today - 30)
+    end_date > (Time.zone.today - 30.days)
   end
 
   def one_years_data?(start_date, end_date)

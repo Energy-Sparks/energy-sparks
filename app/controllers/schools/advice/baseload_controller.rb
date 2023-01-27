@@ -1,7 +1,6 @@
 module Schools
   module Advice
     class BaseloadController < AdviceBaseController
-      include AdvicePageHelper
       def insights
         @analysis_dates = analysis_dates
         @current_baseload = current_baseload

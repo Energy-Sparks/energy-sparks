@@ -30,6 +30,8 @@ class AdvicePage < ApplicationRecord
 
   scope :by_key, -> { order(key: :asc) }
 
+  enum fuel_type: [:electricity, :gas, :storage_heater, :solar_pv]
+
   def update_activity_type_positions!(position_attributes)
     transaction do
       advice_page_activity_types.destroy_all
