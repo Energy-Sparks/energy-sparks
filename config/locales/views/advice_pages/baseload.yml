@@ -69,7 +69,9 @@ en:
             period: Period
             use: Average baseload (kW)
         title: Your current baseload
-      insights_title: What is baseload?
+      insights:
+        next_steps: To fully determine the causes of your baseload usage you need to do a survey of what appliances are being left on overnight and their power consumption
+        title: What is baseload?
       page_title: Baseload analysis
       tables:
         columns:
