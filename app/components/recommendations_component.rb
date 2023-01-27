@@ -15,7 +15,7 @@ class RecommendationsComponent < ViewComponent::Base
     " #{@classes}" if @classes
   end
 
-  def hide_classes(index)
+  def responsive_classes(index)
     " d-none d-xl-block" if index >= max_lg # limit to max_lg for screens less than XL
   end
 

@@ -3,7 +3,7 @@
 <% end %>
 <div class="card-deck recommendations<%= classes %>">
   <% recommendations.each_with_index do |recommendation, i| %>
-    <div class="card<%= hide_classes(i) %>">
+    <div class="card<%= responsive_classes(i) %>">
       <%= link_to url_for(recommendation) do %>
         <%= image_tag(recommendation.t_attached_or_default(:image) || default_image, class: 'card-img-top img-fluid activity-card-img') %>
       <% end %>
