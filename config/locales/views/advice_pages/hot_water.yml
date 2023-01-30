@@ -1,0 +1,10 @@
+---
+en:
+  advice_pages:
+    hot_water:
+      analysis:
+        title: Analysis
+      insights:
+        next_steps: Next steps
+        title: Insights
+      page_title: Hot water usage analysis

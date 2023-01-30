@@ -320,6 +320,10 @@ module ApplicationHelper
     !field.required? && field.structure.any? { |_k, v| v.required? }
   end
 
+  def format_unit(value, units)
+    FormatEnergyUnit.format(units, value, :html, false, true).html_safe
+  end
+
   def format_target(value, units)
     FormatEnergyUnit.format(units, value, :html, false, true, :target).html_safe
   end
@@ -416,5 +420,13 @@ module ApplicationHelper
         fa_icon(:info)
       end
     end
+  end
+
+  def toggler
+    (fa_icon("chevron-down") + fa_icon("chevron-right")).html_safe
+  end
+
+  def text_with_icon(text, icon)
+    (icon ? "#{fa_icon(icon)} #{text}" : text).html_safe
   end
 end

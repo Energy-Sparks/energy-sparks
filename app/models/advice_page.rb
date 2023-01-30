@@ -28,6 +28,10 @@ class AdvicePage < ApplicationRecord
 
   accepts_nested_attributes_for :advice_page_intervention_types, reject_if: proc {|attributes| attributes['position'].blank? }
 
+  scope :by_key, -> { order(key: :asc) }
+
+  enum fuel_type: [:electricity, :gas, :storage_heater, :solar_pv]
+
   def update_activity_type_positions!(position_attributes)
     transaction do
       advice_page_activity_types.destroy_all

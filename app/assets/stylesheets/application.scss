@@ -52,3 +52,5 @@
 @import "activations";
 @import "toggler";
 @import "advice_page";
+
+@import "../../components/*"; // loaded here so bootstrap SASS variables are available

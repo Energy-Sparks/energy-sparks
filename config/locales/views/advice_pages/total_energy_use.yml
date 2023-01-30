@@ -1,0 +1,10 @@
+---
+en:
+  advice_pages:
+    total_energy_use:
+      analysis:
+        title: Analysis
+      insights:
+        next_steps: Next steps
+        title: Insights
+      page_title: Total energy use

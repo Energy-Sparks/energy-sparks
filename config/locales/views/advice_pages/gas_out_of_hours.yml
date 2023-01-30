@@ -1,0 +1,10 @@
+---
+en:
+  advice_pages:
+    gas_out_of_hours:
+      analysis:
+        title: Analysis
+      insights:
+        next_steps: Next steps
+        title: Insights
+      page_title: Gas out of hours usage analysis

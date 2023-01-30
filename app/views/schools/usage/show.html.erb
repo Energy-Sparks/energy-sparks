@@ -34,6 +34,7 @@
   <%= form_tag "", method: :get, id: "chart-filter" do %>
     <%= hidden_field_tag :period, @period %>
     <%= hidden_field_tag :supply, @supply %>
+    <%= hidden_field_tag :series_breakdown, :none %>
     <%= hidden_field_tag :configuration, nil, data: {configuration: @chart_config} %>
 
     <div class="row justify-content-md-center">

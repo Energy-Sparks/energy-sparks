@@ -1,0 +1,10 @@
+---
+en:
+  advice_pages:
+    storage_heaters:
+      analysis:
+        title: Analysis
+      insights:
+        next_steps: Next steps
+        title: Insights
+      page_title: Storage heater usage analysis
