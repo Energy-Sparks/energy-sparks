@@ -4,8 +4,8 @@
   <%= render(BreadcrumbsComponent.new) do |c| %>
     <% c.with_school(school) %>
     <% c.with_items([ { name: t('advice_pages.breadcrumbs.root'), href: school_advice_path(school) },
-                      { name: t("advice_pages.nav.#{advice_page.fuel_type}.name"), visible: advice_page.fuel_type },
-                      { name: t("advice_pages.nav.#{advice_page.fuel_type}.#{advice_page.key}"), href: advice_page_path(school, advice_page) },
+                      { name: t("advice_pages.nav.sections.#{advice_page.fuel_type}"), visible: advice_page.fuel_type },
+                      { name: t("advice_pages.nav.pages.#{advice_page.key}"), href: advice_page_path(school, advice_page) },
                     ]) %>
   <% end %>
 </div>
