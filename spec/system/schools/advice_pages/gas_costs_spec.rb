@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "gas costs advice page", type: :system do
 
-  it_behaves_like "an advice page", key: :gas_costs
+  let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
 
   let(:school) { create(:school) }
   let(:key) { 'gas_costs' }
@@ -10,4 +10,5 @@ RSpec.describe "gas costs advice page", type: :system do
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, learn_more: learn_more) }
   let(:expected_page_title) { "Gas cost analysis" }
 
+  it_behaves_like "an advice page", key: 'gas_costs'
 end
