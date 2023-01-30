@@ -13,7 +13,7 @@ class BreadcrumbsComponent < ViewComponent::Base
     end
 
     def call
-      out  = render(ItemComponent.new(name: "Schools", href: schools_path))
+      out  = render(ItemComponent.new(name: t('components.breadcrumbs.schools'), href: schools_path))
       out += render(ItemComponent.new(name: school.school_group.name, href: school_group_path(school.school_group))) if school.school_group
       out += render(ItemComponent.new(name: school.name, href: school_path(school), selected: selected))
       out
