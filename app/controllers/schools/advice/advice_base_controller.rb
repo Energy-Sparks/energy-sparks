@@ -1,6 +1,8 @@
 module Schools
   module Advice
     class AdviceBaseController < ApplicationController
+      before_action :header_fix_enabled
+
       load_and_authorize_resource :school
       skip_before_action :authenticate_user!
 
