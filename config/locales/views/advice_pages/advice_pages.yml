@@ -18,29 +18,29 @@ en:
         title: What should you do next?
     nav:
       name: Advice
-      sections:
-        electricity: Electricity
-        gas: Gas
-        solar: Solar
-        storage_heater: Storage Heaters
       pages:
         baseload: Baseload
+        boiler_control: Boiler control
         electricity_costs: Costs
         electricity_intraday: Intraday
         electricity_long_term: Long term changes
         electricity_out_of_hours: Out of school hours
         electricity_recent_changes: Recent changes
-        boiler_control: Boiler control
         gas_costs: Costs
         gas_intraday: Intraday
         gas_long_term: Long term changes
         gas_out_of_hours: Out of school hours
         gas_recent_changes: Recent changes
         hot_water: Hot water
-        thermostatic_control: Thermostatic
         solar_pv: Solar PV
         storage_heaters: Storage heaters
+        thermostatic_control: Thermostatic
         total_energy_use: Total energy use
+      sections:
+        electricity: Electricity
+        gas: Gas
+        solar: Solar
+        storage_heater: Storage Heaters
     no_recent_data: no recent data
     show:
       title: Advice Pages

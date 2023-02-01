@@ -1,4 +1,4 @@
-RSpec.shared_context "an advice page" do
+RSpec.shared_context "advice page" do
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: :electricity, learn_more: "Learn more content") }
   let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
   let(:school) { create(:school, school_group: create(:school_group)) }
@@ -7,9 +7,9 @@ RSpec.shared_context "an advice page" do
   end
 end
 
-RSpec.shared_context "an electricity advice page" do
-  let!(:fuel_type) { :electricity }
-  include_context "an advice page"
+RSpec.shared_context "electricity advice page" do
+  let(:fuel_type) { :electricity }
+  include_context "advice page"
 
   let(:start_date)  { Date.today - 365}
   let(:end_date)    { Date.today - 1}
@@ -30,7 +30,9 @@ RSpec.shared_context "an electricity advice page" do
   end
 end
 
-RSpec.shared_context "a gas advice page" do
-  # let!(:fuel_type) { :gas }
-  include_context "an advice page"
+RSpec.shared_context "gas advice page" do
+  let(:fuel_type) { :gas }
+  include_context "advice page"
+  # creating page with no fuel type for now as this breaks gas pages. Assume other context is required.
+  let!(:advice_page) { create(:advice_page, key: key, restricted: false, learn_more: "Learn more content") }
 end

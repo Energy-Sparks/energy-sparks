@@ -4,7 +4,7 @@ RSpec.describe "gas costs advice page", type: :system do
 
   let(:key) { 'gas_costs' }
   let(:expected_page_title) { "Gas cost analysis" }
-  include_context "a gas advice page"
+  include_context "gas advice page"
 
   context 'as school admin' do
     let(:user)  { create(:school_admin, school: school) }
@@ -16,15 +16,15 @@ RSpec.describe "gas costs advice page", type: :system do
 
     it_behaves_like "an advice page tab", tab: "Insights"
 
-    context "visiting 'Insights' tab" do
+    context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
       it_behaves_like "an advice page tab", tab: "Insights"
     end
-    context "visiting 'Analysis' tab" do
+    context "clicking the 'Analysis' tab" do
       before { click_on 'Analysis' }
       it_behaves_like "an advice page tab", tab: "Analysis"
     end
-    context "visiting 'Learn More' tab" do
+    context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }
       it_behaves_like "an advice page tab", tab: "Learn More"
     end

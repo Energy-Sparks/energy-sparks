@@ -4,7 +4,7 @@ RSpec.describe "Baseload advice page", type: :system do
 
   let(:key) { 'baseload' }
   let(:expected_page_title) { "Baseload analysis" }
-  include_context "an electricity advice page"
+  include_context "electricity advice page"
 
   context 'as a school admin' do
     let(:user)  { create(:school_admin, school: school) }
