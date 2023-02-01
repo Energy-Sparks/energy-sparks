@@ -18,7 +18,7 @@ module Schools
 
       rescue_from StandardError do |exception|
         Rollbar.error(exception, advice_page: advice_page_key, school: @school.name, school_id: @school.id)
-        raise unless Rails.env.production?
+        raise if Rails.env.development?
         render 'error'
       end
 
