@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "gas costs advice page", type: :system do
-
   let(:key) { 'gas_costs' }
   let(:expected_page_title) { "Gas cost analysis" }
   include_context "gas advice page"

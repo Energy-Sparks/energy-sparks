@@ -1,6 +1,6 @@
 RSpec.shared_context "advice page" do
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: :electricity, learn_more: "Learn more content") }
-  let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
+  let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true, has_solar_pv: true)}
   let(:school) { create(:school, school_group: create(:school_group)) }
   before do
     school.configuration.update!(fuel_configuration: fuel_configuration)
@@ -34,5 +34,19 @@ RSpec.shared_context "gas advice page" do
   let(:fuel_type) { :gas }
   include_context "advice page"
   # creating page with no fuel type for now as this breaks gas pages. Assume other context is required.
+  let!(:advice_page) { create(:advice_page, key: key, restricted: false, learn_more: "Learn more content") }
+end
+
+RSpec.shared_context "solar advice page" do
+  let(:fuel_type) { :solar }
+  include_context "advice page"
+  # creating page with no fuel type for now as this breaks solar pages. Assume other context is required.
+  let!(:advice_page) { create(:advice_page, key: key, restricted: false, learn_more: "Learn more content") }
+end
+
+RSpec.shared_context "storage advice page" do
+  let(:fuel_type) { :storage }
+  include_context "advice page"
+  # creating page with no fuel type for now as this breaks storage pages. Assume other context is required.
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, learn_more: "Learn more content") }
 end
