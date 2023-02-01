@@ -12,7 +12,6 @@ RSpec.describe "gas costs advice page", type: :system do
     before do
       sign_in(user)
       visit school_advice_gas_costs_path(school)
-      save_and_open_page
     end
 
     it_behaves_like "an advice page tab", tab: "Insights"

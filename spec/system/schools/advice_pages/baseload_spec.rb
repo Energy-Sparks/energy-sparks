@@ -22,7 +22,13 @@ RSpec.describe "Baseload advice page", type: :system do
       end
 
       it_behaves_like "an advice page tab", tab: "Learn More"
-      it_behaves_like "an advice page NOT showing electricity data warning"
+
+      context "with no recent data" do
+        let(:start_date)  { Date.today - 24.months}
+        let(:end_date)    { Date.today - 2.months}
+        before { refresh }
+        it_behaves_like "an advice page NOT showing electricity data warning"
+      end
     end
 
     context 'when viewing the analysis' do
@@ -57,7 +63,6 @@ RSpec.describe "Baseload advice page", type: :system do
       end
 
       it_behaves_like "an advice page tab", tab: "Analysis"
-      it_behaves_like "an advice page showing electricity data warning"
 
       it 'has the expected sections' do
         expect(page).to have_content("Recent trend")
@@ -82,6 +87,14 @@ RSpec.describe "Baseload advice page", type: :system do
           expect(page).to have_content("8 months")
         end
       end
+
+      context "with no recent data" do
+        let(:start_date)  { Date.today - 24.months}
+        let(:end_date)    { Date.today - 2.months}
+        before { refresh }
+        it_behaves_like "an advice page showing electricity data warning"
+      end
+
     end
 
     context 'when viewing the insights' do
@@ -147,6 +160,7 @@ RSpec.describe "Baseload advice page", type: :system do
             expect(page).to have_content("no recent data")
           end
         end
+        it_behaves_like "an advice page showing electricity data warning"
       end
 
       it 'shows the current baseload section' do

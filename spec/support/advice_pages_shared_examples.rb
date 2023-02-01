@@ -70,18 +70,12 @@ RSpec.shared_examples "an advice page tab" do |tab:|
 end
 
 RSpec.shared_examples "an advice page NOT showing electricity data warning" do
-  let(:start_date)  { Date.today - 24.months}
-  let(:end_date)    { Date.today - 2.months}
-  before { refresh }
   it 'does NOT show data warning' do
     expect(page).not_to have_content("We have not received data for your electricity usage for over thirty days")
   end
 end
 
 RSpec.shared_examples "an advice page showing electricity data warning" do
-  let(:start_date)  { Date.today - 24.months}
-  let(:end_date)    { Date.today - 2.months}
-  before { refresh }
   it 'does show data warning' do
     expect(page).to have_content("We have not received data for your electricity usage for over thirty days")
   end
