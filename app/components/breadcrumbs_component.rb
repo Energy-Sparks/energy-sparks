@@ -13,7 +13,7 @@ class BreadcrumbsComponent < ViewComponent::Base
     end
 
     def call
-      out  = render(ItemComponent.new(name: "Schools", href: schools_path))
+      out  = render(ItemComponent.new(name: t('components.breadcrumbs.schools'), href: schools_path))
       out += render(ItemComponent.new(name: school.school_group.name, href: school_group_path(school.school_group))) if school.school_group
       out += render(ItemComponent.new(name: school.name, href: school_path(school), selected: selected))
       out
@@ -21,12 +21,13 @@ class BreadcrumbsComponent < ViewComponent::Base
   end
 
   class ItemComponent < ViewComponent::Base
-    attr_accessor :selected, :name, :href
+    attr_accessor :selected, :name, :href, :visible
 
-    def initialize(name:, href:, selected: false)
+    def initialize(name:, href: nil, selected: false, visible: true)
       @name = name
       @href = href
       @selected = selected
+      @visible = visible
     end
 
     def call
@@ -35,7 +36,11 @@ class BreadcrumbsComponent < ViewComponent::Base
         args[:class] += " active"
         args[:"aria-current"] = "page"
       end
-      content_tag(:li, link_to_unless(selected, name, href), args)
+      content_tag(:li, link_to_unless(selected || href.blank?, name, href), args)
+    end
+
+    def render?
+      visible
     end
   end
 end
