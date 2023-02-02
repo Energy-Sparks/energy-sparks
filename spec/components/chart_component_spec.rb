@@ -23,14 +23,14 @@ RSpec.describe ChartComponent, type: :component, include_url_helpers: true do
       render_inline ChartComponent.new(**params) do |c|
         c.with_title    { "I'm a title" }
         c.with_subtitle { "I'm a subtitle" }
-        c.with_header   { "I'm a header" }
-        c.with_footer   { "I'm a footer" }
+        c.with_header   { "<strong>I'm a header</strong>".html_safe }
+        c.with_footer   { "<small>I'm a footer</small>".html_safe }
       end
     end
     it { expect(html).to have_selector("h4", text: "I'm a title") }
     it { expect(html).to have_selector("h4", id: "chart_baseload_title") }
     it { expect(html).to have_selector("h5", text: "I'm a subtitle") }
-    it { expect(html).to have_selector("p", text: "I'm a header") }
-    it { expect(html).to have_selector("p", text: "I'm a footer") }
+    it { expect(html).to have_selector("strong", text: "I'm a header") }
+    it { expect(html).to have_selector("small", text: "I'm a footer") }
   end
 end
