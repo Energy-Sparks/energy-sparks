@@ -1,6 +1,8 @@
-<div class="p-4 advice-page-notice neutral">
+<div class="p-4 page-notice<%= classes %>">
   <%= content %>
-  <div class="text-right">
-    <%= link_to link_name, href %>
-  </div>
+  <% if link %>
+    <div class="text-right">
+      <%= link %>
+    </div>
+  <% end %>
 </div>

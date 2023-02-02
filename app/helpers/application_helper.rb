@@ -429,4 +429,9 @@ module ApplicationHelper
   def text_with_icon(text, icon)
     (icon ? "#{fa_icon(icon)} #{text}" : text).html_safe
   end
+
+  def component(name, *args, **kwargs, &block)
+    component = "#{name.to_s.camelize}Component".constantize
+    render(component.new(*args, **kwargs), &block)
+  end
 end

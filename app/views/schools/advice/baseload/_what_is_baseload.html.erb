@@ -1,6 +1,4 @@
-<%= render(NoticeComponent.new(
-    status: 'neutral',
-    link_name: t('advice_pages.baseload.what_is_baseload_link'),
-    href: learn_more_school_advice_baseload_path(school))) do %>
+<%= component 'notice', status: :neutral do |c| %>
+  <% c.with_link { link_to t('advice_pages.baseload.what_is_baseload_link'), learn_more_school_advice_baseload_path(school) } %>
   <%= t('advice_pages.baseload.what_is_baseload_html') %>
 <% end %>
