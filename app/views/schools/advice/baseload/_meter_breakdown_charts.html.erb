@@ -13,10 +13,10 @@
     </div>
   <% end %>
 
-  <div class="row">
-    <div class="col-md-12 chart-wrapper" id="chart_wrapper_baseload">
-      <%= render 'shared/analysis_controls', chart_type: :baseload, axis_controls: true, analysis_controls: true %>
-      <%= chart_tag(school, :baseload, no_zoom: true, wrap: false, html_class: 'usage-chart', chart_config: create_chart_config(school, :baseload, @meters.first.mpan_mprn)) %>
-    </div>
-  </div>
+  <%= render(ChartComponent.new(
+    chart_type: :baseload,
+    school: school,
+    html_class: 'usage-chart',
+    chart_config: create_chart_config(school, :baseload, meters.first.mpan_mprn)))
+  %>
 </div>
