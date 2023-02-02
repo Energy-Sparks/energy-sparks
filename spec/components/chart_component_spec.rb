@@ -20,6 +20,14 @@ RSpec.describe ChartComponent, type: :component, include_url_helpers: true do
     end
   end
 
+  context "with no params" do
+    let(:html) { render_inline(ChartComponent.new) }
+
+    it 'shows an error message' do
+      expect(html).to have_text("The chart can't be displayed")
+    end
+  end
+
   context "with title, subtitle, header and footer slots" do
     let(:html) do
       render_inline ChartComponent.new(**params) do |c|
