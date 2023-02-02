@@ -10,10 +10,10 @@ class ChartComponent < ViewComponent::Base
 
   include ChartHelper
 
-  def initialize(chart_type: '', school: nil, chart_config: {}, analysis_controls: false, no_zoom: true, html_class: 'analysis-chart')
+  def initialize(chart_type: '', school: nil, chart_config: nil, analysis_controls: false, no_zoom: true, html_class: 'analysis-chart')
     @chart_type = chart_type
     @school = school
-    @chart_config = chart_config
+    @chart_config = chart_config || create_chart_config(@school, @chart_type)
     @analysis_controls = analysis_controls
     @no_zoom = no_zoom
     @html_class = html_class
