@@ -50,7 +50,7 @@
   <%= render(ChartComponent.new(chart_type: :baseload_versus_benchmarks, school: @school)) do |c| %>
     <% c.with_title { t('advice_pages.baseload.analysis.charts.long_term_baseload_chart_title') } %>
     <% c.with_subtitle { t('advice_pages.baseload.analysis.charts.long_term_baseload_chart_subtitle', start_month_year: month_year(@analysis_dates.start_date), end_month_year: month_year(@analysis_dates.end_date.last_month)) } %>
-    <% c.with_footer { raw("<p>t('advice_pages.baseload.analysis.charts.long_term_baseload_chart_explanation')</p>") } %>
+    <% c.with_footer { raw("<p>#{t('advice_pages.baseload.analysis.charts.long_term_baseload_chart_explanation')}</p>") } %>
   <% end %>
 
   <!--  METER BREAKDOWN TABLE -->
