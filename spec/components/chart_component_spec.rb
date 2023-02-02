@@ -28,7 +28,7 @@ RSpec.describe ChartComponent, type: :component, include_url_helpers: true do
       end
     end
     it { expect(html).to have_selector("h4", text: "I'm a title") }
-    it { expect(html).to have_selector("h4", id: "chart_baseload_title") }
+    it { expect(html).to have_selector("h4", id: "chart-section-baseload") }
     it { expect(html).to have_selector("h5", text: "I'm a subtitle") }
     it { expect(html).to have_selector("strong", text: "I'm a header") }
     it { expect(html).to have_selector("small", text: "I'm a footer") }
