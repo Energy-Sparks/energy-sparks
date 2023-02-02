@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class ChartComponent < ViewComponent::Base
+  renders_one :header
+  renders_one :footer
+
   attr_reader :school, :title, :subtitle, :chart_type, :chart_config, :analysis_controls, :no_zoom, :html_class
 
   include ChartHelper
