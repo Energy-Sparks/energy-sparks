@@ -20,8 +20,8 @@ RSpec.describe ChartComponent, type: :component, include_url_helpers: true do
     end
   end
 
-  context "with no params" do
-    let(:html) { render_inline(ChartComponent.new) }
+  context "with bad chart type" do
+    let(:html) { render_inline(ChartComponent.new(school: school, chart_type: 'wibble')) }
 
     it 'shows an error message' do
       expect(html).to have_text("The chart can't be displayed")
