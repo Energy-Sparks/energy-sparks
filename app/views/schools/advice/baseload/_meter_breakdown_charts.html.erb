@@ -13,10 +13,5 @@
     </div>
   <% end %>
 
-  <%= render(ChartComponent.new(
-    chart_type: :baseload,
-    school: school,
-    html_class: 'usage-chart',
-    chart_config: create_chart_config(school, :baseload, meters.first.mpan_mprn)))
-  %>
+  <%= render(ChartComponent.new(chart_type: :baseload, school: school, html_class: 'usage-chart', chart_config: create_chart_config(school, :baseload, meters.first.mpan_mprn))) %>
 </div>
