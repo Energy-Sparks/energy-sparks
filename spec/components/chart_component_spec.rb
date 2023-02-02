@@ -10,6 +10,8 @@ RSpec.describe ChartComponent, type: :component, include_url_helpers: true do
   context "with all params" do
     let(:html) { render_inline(ChartComponent.new(**params)) }
 
+    it { expect(html).not_to have_selector("h4") }
+    it { expect(html).not_to have_selector("h5") }
     it { expect(html).to have_selector("div", id: "chart_wrapper_baseload") }
     it { expect(html).to have_selector("div", class: "usage-chart") }
 
