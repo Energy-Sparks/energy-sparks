@@ -43,16 +43,3 @@
 .advice-table-caption {
   margin-bottom: 40px;
 }
-
-.advice-page-notice {
-  background-color: #f8f9fa !important;
-  &.negative {
-    border-left: 5px solid $new-red;
-  }
-  &.positive {
-    border-left: 5px solid $green;
-  }
-  &.neutral {
-    border-left: 5px solid $electric-light;
-  }
-}
