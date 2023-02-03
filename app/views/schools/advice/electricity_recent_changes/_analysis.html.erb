@@ -23,8 +23,10 @@
     <% c.with_header do %>
       <p><%= t('advice_pages.electricity_recent_changes.analysis.compare_recent_weeks.chart_description') %></p>
     <% end %>
+    <% c.with_footer do %>
+      <%= render 'controls', chart_config: @chart_config, period: :weekly, supply: :electricity, split_meters: @split_meters, meters: @meters %>
+    <% end %>
   <% end %>
-  <%= render 'controls', chart_config: @chart_config, period: :weekly, supply: :electricity, split_meters: @split_meters, meters: @meters %>
 </div>
 
 <!--  COMPARISON OF ELECTRICITY USE OVER 2 RECENT DAYS -->
@@ -44,6 +46,8 @@
     <% c.with_header do %>
       <p><%= t('advice_pages.electricity_recent_changes.analysis.compare_recent_days.chart_description') %></p>
     <% end %>
+    <% c.with_footer do %>
+      <%= render 'controls', chart_config: @chart_config, period: :daily, supply: :electricity, split_meters: @split_meters, meters: @meters  %>
+    <% end %>
   <% end %>
-  <%= render 'controls', chart_config: @chart_config, period: :daily, supply: :electricity, split_meters: @split_meters, meters: @meters  %>
 </div>
