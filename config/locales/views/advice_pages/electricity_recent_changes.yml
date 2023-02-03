@@ -4,7 +4,7 @@ en:
     electricity_recent_changes:
       analysis:
         compare_recent_days:
-          chart_description: The chart automatically uses the two most recently available Wednesdays. Use the options below the chart to compare alternative weeks.
+          chart_description: The chart automatically uses the two most recently available days. Use the options below the chart to compare alternative days.
           chart_subtitle: A comparison between your school’s electricity use throughout the day on two recent days.
           chart_title: Your school's half hourly electricity use for two recent days
           title: Comparison of electricity use over 2 recent days
