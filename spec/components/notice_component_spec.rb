@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 require "rails_helper"
-include ActionView::Helpers::UrlHelper
 
 RSpec.describe NoticeComponent, type: :component, include_application_helper: true do
   let(:all_params) { { status: :neutral, classes: 'extra-classes' } }
   let(:params) { all_params }
   let(:content) { "<p>Content</p>" }
-  let(:link) { link_to 'Link text', 'href' }
+  let(:link) { ActionController::Base.helpers.link_to 'Link text', 'href' }
 
   context "with all params" do
     let(:html) do
