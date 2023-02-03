@@ -15,9 +15,9 @@ $(document).ready(function() {
       chartConfig.mpan_mprn = meter;
     }
 
-    var series_breakdown = $(chartDiv).find("input[name='series_breakdown']").val();
-    if (series_breakdown) {
-      chartConfig.series_breakdown = series_breakdown;
+    var seriesBreakdown = $(chartDiv).find("input[name='series_breakdown']").val();
+    if (seriesBreakdown) {
+      chartConfig.series_breakdown = seriesBreakdown;
     }
 
     chartConfig.date_ranges = getDateRanges(chartDiv);
@@ -46,13 +46,13 @@ $(document).ready(function() {
     }
 
     // maintain this order of range addition to match input order to chart order
-    var second_date = $(chartDiv).find("input[name='second-date-picker']").val();
-    if(second_date){
-      addRange(second_date, dateRanges, rangeExtension);
+    var secondDate = $(chartDiv).find("input[name='second-date-picker']").val();
+    if(secondDate){
+      addRange(secondDate, dateRanges, rangeExtension);
     }
 
-    var first_date = $(chartDiv).find("input[name='first-date-picker']").val();
-    addRange(first_date, dateRanges, rangeExtension);
+    var firstDate = $(chartDiv).find("input[name='first-date-picker']").val();
+    addRange(firstDate, dateRanges, rangeExtension);
 
     return dateRanges;
   }
