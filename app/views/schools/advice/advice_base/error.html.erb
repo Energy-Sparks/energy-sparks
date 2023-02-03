@@ -12,7 +12,7 @@
     <%= render 'schools/advice/nav', school: @school, advice_pages: @advice_pages %>
   </div>
   <div class="col-md-9 col-lg-9 col-xl-10 advice-page-tabs">
-    <h2><%= component 'page_nav::collapse_button', display: 'inline' %><%= t('advice_pages.error.title') %></h2>
+    <h2><%= component 'page_nav/collapse_button', display: 'inline' %><%= t('advice_pages.error.title') %></h2>
     <p><%= t('advice_pages.error.message') %></p>
   </div>
 </div>

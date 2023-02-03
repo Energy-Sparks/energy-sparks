@@ -431,7 +431,7 @@ module ApplicationHelper
   end
 
   def component(name, *args, **kwargs, &block)
-    component = "#{name.to_s.camelize}Component".constantize
+    component = name.to_s.sub(%r{(/|$)}, '_component\1').camelize.constantize
     render(component.new(*args, **kwargs), &block)
   end
 end
