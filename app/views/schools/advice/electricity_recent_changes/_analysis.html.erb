@@ -7,38 +7,39 @@
   <li><%= link_to(t('advice_pages.electricity_recent_changes.analysis.compare_recent_days.title'), '#compare-recent-days') %></li>
 </ul>
 
-
 <!--  COMPARISON OF ELECTRICITY USE OVER 2 RECENT WEEKS -->
 <%= render 'schools/advice/section_title', section_id: 'compare-recent-weeks', section_title: t('advice_pages.electricity_recent_changes.analysis.compare_recent_weeks.title') %>
 
 <div class="charts">
-
   <%= render(ChartComponent.new(
-    chart_type: :calendar_picker_electricity_week_example_comparison_chart,
+    chart_type: @chart_config[:weekly],
     school: @school,
     analysis_controls: false,
     no_zoom: true,
-    html_class: 'usage-chart'))
-  %>
-
+    chart_config: @chart_config,
+    html_class: 'usage-chart')) do |c| %>
+    <% c.with_title { t('advice_pages.electricity_recent_changes.analysis.compare_recent_weeks.chart_title') } %>
+    <% c.with_subtitle { t('advice_pages.electricity_recent_changes.analysis.compare_recent_weeks.chart_subtitle') } %>
+  <% end %>
+  <%= render 'controls', period: :weekly, supply: @supply, split_meters: @split_meters, meters: @meters %>
+  <p><%= t('advice_pages.electricity_recent_changes.analysis.compare_recent_weeks.chart_description') %></p>
 </div>
-
-<%= render 'controls_weekly' %>
 
 <!--  COMPARISON OF ELECTRICITY USE OVER 2 RECENT DAYS -->
 <%= render 'schools/advice/section_title', section_id: 'compare-recent-days', section_title: t('advice_pages.electricity_recent_changes.analysis.compare_recent_days.title') %>
 
 <div class="charts">
-
   <%= render(ChartComponent.new(
-    chart_type: :calendar_picker_electricity_day_example_comparison_chart,
+    chart_type: @chart_config[:daily],
     school: @school,
     analysis_controls: false,
     no_zoom: true,
+    chart_config: @chart_config,
     axis_controls: false,
-    html_class: 'usage-chart'))
-  %>
-
+    html_class: 'usage-chart')) do |c| %>
+    <% c.with_title { t('advice_pages.electricity_recent_changes.analysis.compare_recent_days.chart_title') } %>
+    <% c.with_subtitle { t('advice_pages.electricity_recent_changes.analysis.compare_recent_days.chart_subtitle') } %>
+  <% end %>
+  <%= render 'controls', period: :daily, supply: @supply, split_meters: @split_meters, meters: @meters  %>
+  <p><%= t('advice_pages.electricity_recent_changes.analysis.compare_recent_days.chart_description') %></p>
 </div>
-
-<%= render 'controls_daily' %>

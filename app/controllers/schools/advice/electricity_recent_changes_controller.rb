@@ -37,7 +37,8 @@ module Schools
       end
 
       def setup_meters(school, _supply)
-        school.filterable_meters.electricity
+        # school.filterable_meters.electricity
+        school.meters.electricity
       end
 
       def title_key(supply, period, split_meters)

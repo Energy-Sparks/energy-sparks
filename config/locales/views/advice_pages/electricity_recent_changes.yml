@@ -4,8 +4,14 @@ en:
     electricity_recent_changes:
       analysis:
         compare_recent_days:
+          chart_description: The chart automatically uses the two most recently available Wednesdays. Use the options below the chart to compare alternative weeks.
+          chart_subtitle: A comparison between your school’s electricity use throughout the day on two recent days.
+          chart_title: Your school's half hourly electricity use for two recent days
           title: Comparison of electricity use over 2 recent days
         compare_recent_weeks:
+          chart_description: The chart automatically uses the last two fully available weeks. Use the options below the chart to compare alternative weeks.
+          chart_subtitle: A comparison of  your school’s daily electricity use across two recent weeks.
+          chart_title: Your school's daily electricity use for two recent weeks
           title: Comparison of electricity use over 2 recent weeks
         sections: The following sections provide more background and analysis on your electricity baseload
         summary: This section gives a more detailed analysis of how your school’s electricity consumption has changed recently. It can be particularly useful if trying to investigate a change in electricity consumption or monitoring the impact of action taken in the school.
