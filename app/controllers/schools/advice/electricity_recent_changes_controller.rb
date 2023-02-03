@@ -1,8 +1,6 @@
 module Schools
   module Advice
     class ElectricityRecentChangesController < AdviceBaseController
-      include Measurements
-
       def insights
       end
 
