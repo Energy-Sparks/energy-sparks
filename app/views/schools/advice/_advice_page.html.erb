@@ -1,7 +1,7 @@
 <% content_for :page_title, "#{t("advice_pages.#{advice_page.key}.page_title")} | #{school.name}" %>
 
 <div class="advice-page-breadcrumb">
-  <%= render(BreadcrumbsComponent.new) do |c| %>
+  <%= component 'breadcrumbs' do |c| %>
     <% c.with_school(school) %>
     <% c.with_items([ { name: t('advice_pages.breadcrumbs.root'), href: school_advice_path(school) },
                       { name: t("advice_pages.nav.sections.#{advice_page.fuel_type}"), visible: advice_page.fuel_type },

@@ -1,5 +1,5 @@
 <div class="advice-page-breadcrumb">
-  <%= render(BreadcrumbsComponent.new) do |c| %>
+  <%= component 'breadcrumbs' do |c| %>
     <% c.with_school(@school) %>
     <% c.with_items([{ name: t('advice_pages.breadcrumbs.root'), href: school_advice_path(@school) }]) %>
   <% end %>
@@ -12,7 +12,7 @@
     <%= render 'nav', school: @school, advice_pages: @advice_pages %>
   </div>
   <div class="col-md-9 col-lg-9 col-xl-10 advice-page-tabs">
-    <h2><%= render(PageNavComponent::CollapseButton.new(display: 'inline')) %> All pages</h2>
+    <h2><%= component 'page_nav::collapse_button', display: 'inline' %> All pages</h2>
     <% if @advice_pages.any? %>
       <% @advice_pages.each do |advice_page| %>
         <li><%= link_to advice_page.key, advice_page_path(@school, advice_page) %></li>
