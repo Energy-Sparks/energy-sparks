@@ -1,0 +1,44 @@
+<p><%= t('advice_pages.electricity_recent_changes.analysis.summary') %></p>
+
+<p><%= t('advice_pages.electricity_recent_changes.analysis.sections') %></p>
+
+<ul>
+  <li><%= link_to(t('advice_pages.electricity_recent_changes.analysis.compare_recent_weeks.title'), '#compare-recent-weeks') %></li>
+  <li><%= link_to(t('advice_pages.electricity_recent_changes.analysis.compare_recent_days.title'), '#compare-recent-days') %></li>
+</ul>
+
+
+<!--  COMPARISON OF ELECTRICITY USE OVER 2 RECENT WEEKS -->
+<%= render 'schools/advice/section_title', section_id: 'compare-recent-weeks', section_title: t('advice_pages.electricity_recent_changes.analysis.compare_recent_weeks.title') %>
+
+<div class="charts">
+
+  <%= render(ChartComponent.new(
+    chart_type: :calendar_picker_electricity_week_example_comparison_chart,
+    school: @school,
+    analysis_controls: false,
+    no_zoom: true,
+    html_class: 'usage-chart'))
+  %>
+
+</div>
+
+<%= render 'controls_weekly' %>
+
+<!--  COMPARISON OF ELECTRICITY USE OVER 2 RECENT DAYS -->
+<%= render 'schools/advice/section_title', section_id: 'compare-recent-days', section_title: t('advice_pages.electricity_recent_changes.analysis.compare_recent_days.title') %>
+
+<div class="charts">
+
+  <%= render(ChartComponent.new(
+    chart_type: :calendar_picker_electricity_day_example_comparison_chart,
+    school: @school,
+    analysis_controls: false,
+    no_zoom: true,
+    axis_controls: false,
+    html_class: 'usage-chart'))
+  %>
+
+</div>
+
+<%= render 'controls_daily' %>

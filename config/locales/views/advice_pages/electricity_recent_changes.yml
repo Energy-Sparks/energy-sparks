@@ -3,6 +3,12 @@ en:
   advice_pages:
     electricity_recent_changes:
       analysis:
+        compare_recent_days:
+          title: Comparison of electricity use over 2 recent days
+        compare_recent_weeks:
+          title: Comparison of electricity use over 2 recent weeks
+        sections: The following sections provide more background and analysis on your electricity baseload
+        summary: This section gives a more detailed analysis of how your school’s electricity consumption has changed recently. It can be particularly useful if trying to investigate a change in electricity consumption or monitoring the impact of action taken in the school.
         title: Analysis
       insights:
         next_steps: Next steps
