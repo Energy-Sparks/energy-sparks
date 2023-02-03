@@ -4,27 +4,23 @@ $(document).ready(function() {
   //called by event handlers that need to update the graph
   //they should have already made any changes to the form we're using, so this just updates
   //the explanation and then triggers the data load
-  function updateChart(el) {
+  function updateChart(chartDiv) {
 
-    var supply = $("#supply").val();
-    var period = $("#period").val();
-    var config = $("#configuration").data('configuration');
-    var descriptions = $("#descriptions").data('descriptions');
-
-    var chartContainer = $('.usage-chart').first();
+    var descriptions = $(chartDiv).find("input[name='descriptions']").data('descriptions');
+    var chartContainer = $(chartDiv).find('.usage-chart').first();
     var chartConfig = chartContainer.data('chart-config');
 
-    var meter = $("#meter").val();
+    var meter = $(chartDiv).find("select[name='meter']").val();
     if (meter && meter != 'all') {
       chartConfig.mpan_mprn = meter;
     }
 
-    var series_breakdown = $("#series_breakdown").val();
+    var series_breakdown = $(chartDiv).find("input[name='series_breakdown']").val();
     if (series_breakdown) {
       chartConfig.series_breakdown = series_breakdown;
     }
 
-    chartConfig.date_ranges = getDateRanges();
+    chartConfig.date_ranges = getDateRanges(chartDiv);
 
     setupAxisControls(chartContainer[0], chartConfig);
     processAnalysisChart(chartContainer[0], chartConfig);
@@ -33,26 +29,30 @@ $(document).ready(function() {
   }
 
   function setupChartDescription(chartContainer, meter, descriptions) {
-    var description = $(chartContainer).closest('.charts').find('#chart-description');
+    var description = $(chartContainer).closest('.charts').find('.chart-subtitle');
     if(description.length && meter && descriptions[meter]) {
       description.text(descriptions[meter]);
     }
   }
 
-  function getDateRanges(){
+  function getDateRanges(chartDiv){
     var dateRanges = [];
 
-    if ($('#period').val() ==  'weekly') {
+    var period = $(chartDiv).find("input[name='period']").val();
+    if (period == 'weekly') {
       var rangeExtension = 6;
     } else {
       var rangeExtension = 0;
     }
 
     // maintain this order of range addition to match input order to chart order
-    if($('input#second-date-picker').val()){
-      addRange($('input#second-date-picker').val(), dateRanges, rangeExtension);
+    var second_date = $(chartDiv).find("input[name='second-date-picker']").val();
+    if(second_date){
+      addRange(second_date, dateRanges, rangeExtension);
     }
-    addRange($('input#first-date-picker').val(), dateRanges, rangeExtension);
+
+    var first_date = $(chartDiv).find("input[name='first-date-picker']").val();
+    addRange(first_date, dateRanges, rangeExtension);
 
     return dateRanges;
   }
@@ -68,8 +68,8 @@ $(document).ready(function() {
   //the dates may vary based on the supply
   //if the currently selected date is greater (or lower) than the new min/max
   //then the dates are updated. otherwise the control sets an empty value
-  function setMinMaxReadings() {
-    var config = $("#configuration").data('configuration');
+  function setMinMaxReadings(chartDiv) {
+    var config = $(chartDiv).find("input[name='configuration']").data('configuration');
     var min = moment(config.earliest_reading);
     var max = moment( config.last_reading );
 
@@ -81,7 +81,7 @@ $(document).ready(function() {
     return { min: min, max: max };
   }
 
-  function setUpDatePicker(divId, inputId, maxMin, defaultDate) {
+  function setUpDatePicker(divId, inputId, maxMin, defaultDate, period) {
     $(inputId).val(defaultDate.format('dddd, D MMMM YYYY'));
     $(divId).datetimepicker({
       format: 'dddd, D MMMM YYYY',
@@ -94,21 +94,21 @@ $(document).ready(function() {
 
     $(divId).on('change.datetimepicker', function() {
       var datePickerValue = $(inputId).val();
-      if ($("#period").val() == 'weekly') {
+      if (period == 'weekly') {
         datePickerValue = moment(datePickerValue, 'dddd, D MMMM YYYY').startOf('week').format('dddd, D MMMM YYYY');
         $(inputId).val(datePickerValue);
       }
       logEvent('datetimepicker', '');
-      updateChart(this);
+      updateChart($(this).closest('.charts'));
     });
   }
 
-  //Initialise this page
-  if ($(".charts").length > 0) {
-    var supply = $("#supply").val();
-    var period = $('#period').val();
+  function initChart(chartDiv) {
 
-    var minMaxReadings = setMinMaxReadings();
+    var supply = $(chartDiv).find("input[name='supply']").val();
+    var period = $(chartDiv).find("input[name='period']").val();
+
+    var minMaxReadings = setMinMaxReadings(chartDiv);
 
     if ( period == 'weekly') {
       var defaultDate = minMaxReadings.max.clone().startOf('week');
@@ -119,18 +119,30 @@ $(document).ready(function() {
       var defaultComparisonDate = defaultDate.clone().subtract(1, 'days');
     }
 
-    if ($('#datetimepicker1').length) {
-      setUpDatePicker('#datetimepicker1', 'input#first-date-picker', minMaxReadings, defaultDate);
+    var firstDataPicker = $(chartDiv).find("input[name='first-date-picker']");
+    var firstDataPickerWrapper = $(firstDataPicker).closest('.date');
+    if (firstDataPickerWrapper.length) {
+      setUpDatePicker(firstDataPickerWrapper, firstDataPicker, minMaxReadings, defaultDate, period);
     }
-    if ($('#datetimepicker2').length) {
-      setUpDatePicker('#datetimepicker2', 'input#second-date-picker', minMaxReadings, defaultComparisonDate);
+
+    var secondDataPicker = $(chartDiv).find("input[name='second-date-picker']");
+    var secondDataPickerWrapper = $(secondDataPicker).closest('.date');
+    if (secondDataPickerWrapper.length) {
+      setUpDatePicker(secondDataPickerWrapper, secondDataPicker, minMaxReadings, defaultComparisonDate, period);
     }
-    updateChart($('.charts').first());
+    updateChart(chartDiv);
   }
 
-  $(document).on('change', '#meter', function() {
+  //Initialise this page
+  if ($(".charts").length > 0) {
+    $(".charts").each(function(index, chartDiv) {
+      initChart(chartDiv);
+    });
+  }
+
+  $(document).on('change', "select[name='meter']", function() {
     logEvent('meter', '');
-    updateChart(this);
+    updateChart($(this).closest('.charts'));
   });
 
 });
