@@ -440,7 +440,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       end
       after { Timecop.return }
       it "shows csv contents" do
-        expect(page.body).to eq school_group.all_issues.issue.status_open.to_csv
+        expect(page.body).to eq school_group.all_issues.by_updated_at.to_csv
       end
       it "has csv content type" do
         expect(response_headers['Content-Type']).to eq 'text/csv'

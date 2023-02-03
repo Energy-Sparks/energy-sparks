@@ -1,17 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe "electricity costs advice page", type: :system do
-
-  let(:school) { create(:school) }
   let(:key) { 'electricity_costs' }
-  let(:learn_more) { 'here is some more explanation' }
-
-  let!(:advice_page) { create(:advice_page, key: key, restricted: false, learn_more: learn_more) }
-
   let(:expected_page_title) { "Electricity cost analysis" }
+  include_context "electricity advice page"
 
   context 'as school admin' do
-
     let(:user)  { create(:school_admin, school: school) }
 
     before do
@@ -19,44 +13,19 @@ RSpec.describe "electricity costs advice page", type: :system do
       visit school_advice_electricity_costs_path(school)
     end
 
-    it 'shows the nav bar' do
-      within '.advice-page-nav' do
-        expect(page).to have_content("Advice")
-      end
-    end
+    it_behaves_like "an advice page tab", tab: "Insights"
 
-    it 'shows tabs for insights, analysis, learn more' do
-      within '.advice-page-tabs' do
-        expect(page).to have_link('Insights')
-        expect(page).to have_link('Analysis')
-        expect(page).to have_link('Learn More')
-      end
+    context "clicking the 'Insights' tab" do
+      before { click_on 'Insights' }
+      it_behaves_like "an advice page tab", tab: "Insights"
     end
-
-    it 'shows breadcrumb' do
-      within '.advice-page-breadcrumb' do
-        expect(page).to have_link('Schools')
-        expect(page).to have_link(school.name)
-        expect(page).to have_link('Advice')
-        expect(page).to have_text(key.humanize)
-      end
+    context "clicking the 'Analysis' tab" do
+      before { click_on 'Analysis' }
+      it_behaves_like "an advice page tab", tab: "Analysis"
     end
-
-    it 'shows learn more content' do
-      click_on 'Learn More'
-      within '.advice-page-tabs' do
-        expect(page).to have_content(learn_more)
-      end
-    end
-
-    context 'when page is restricted' do
-      before do
-        advice_page.update(restricted: true)
-      end
-      it 'shows the restricted advice page' do
-        refresh
-        expect(page).to have_content(expected_page_title)
-      end
+    context "clicking the 'Learn More' tab" do
+      before { click_on 'Learn More' }
+      it_behaves_like "an advice page tab", tab: "Learn More"
     end
   end
 end

@@ -2,32 +2,9 @@ require 'rails_helper'
 
 RSpec.describe "Baseload advice page", type: :system do
 
-  let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: :electricity) }
   let(:key) { 'baseload' }
-
-  let(:school) { create(:school, school_group: create(:school_group)) }
-  let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
-
-  let(:start_date)  { Date.today - 365}
-  let(:end_date)    { Date.today - 1}
-  let(:amr_data)    { double('amr-data') }
-
-  let(:electricity_aggregate_meter)   { double('electricity-aggregated-meter')}
-  let(:meter_collection)              { double('meter-collection', electricity_meters: []) }
-
-  before do
-    school.configuration.update!(fuel_configuration: fuel_configuration)
-
-    allow(amr_data).to receive(:start_date).and_return(start_date)
-    allow(amr_data).to receive(:end_date).and_return(end_date)
-    allow(electricity_aggregate_meter).to receive(:fuel_type).and_return(:electricity)
-    allow(electricity_aggregate_meter).to receive(:amr_data).and_return(amr_data)
-    allow(meter_collection).to receive(:aggregated_electricity_meters).and_return(electricity_aggregate_meter)
-    allow(meter_collection).to receive(:amr_data).and_return(amr_data)
-    allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(meter_collection)
-  end
-
   let(:expected_page_title) { "Baseload analysis" }
+  include_context "electricity advice page"
 
   context 'as a school admin' do
     let(:user)  { create(:school_admin, school: school) }
@@ -37,52 +14,20 @@ RSpec.describe "Baseload advice page", type: :system do
       visit school_advice_path(school)
     end
 
-    it 'the advice pages index has a link to the page in the navbar' do
-      expect(page).to have_content('Advice Pages')
-      within '.advice-page-nav' do
-        expect(page).to have_content("Baseload")
-      end
-    end
+    it_behaves_like "an advice page"
 
     context 'when viewing the learn more page' do
       before(:each) do
         visit learn_more_school_advice_baseload_path(school)
       end
 
-      it 'shows the learn more content' do
-        click_on 'Learn More'
-        within '.advice-page-tabs' do
-          expect(page).to have_content(advice_page.learn_more.body.to_html)
-        end
-      end
-
-      it 'shows the page title' do
-        expect(page).to have_content(expected_page_title)
-      end
-
-      it 'shows tabs for insights, analysis, learn more' do
-        within '.advice-page-tabs' do
-          expect(page).to have_link('Insights')
-          expect(page).to have_link('Analysis')
-          expect(page).to have_link('Learn More')
-        end
-      end
-
-      it 'shows breadcrumb' do
-        within '.advice-page-breadcrumb' do
-          expect(page).to have_link('Schools')
-          expect(page).to have_link(school.name)
-          expect(page).to have_link('Advice')
-          expect(page).to have_text(key.humanize)
-        end
-      end
+      it_behaves_like "an advice page tab", tab: "Learn More"
 
       context "with no recent data" do
         let(:start_date)  { Date.today - 24.months}
         let(:end_date)    { Date.today - 2.months}
-        it 'shows NOT show data warning' do
-          expect(page).not_to have_content("We have not received data for your electricity usage for over thirty days")
-        end
+        before { refresh }
+        it_behaves_like "an advice page NOT showing electricity data warning"
       end
     end
 
@@ -117,6 +62,8 @@ RSpec.describe "Baseload advice page", type: :system do
         visit analysis_school_advice_baseload_path(school)
       end
 
+      it_behaves_like "an advice page tab", tab: "Analysis"
+
       it 'has the expected sections' do
         expect(page).to have_content("Recent trend")
         expect(page).to have_content("Long term trend")
@@ -144,13 +91,10 @@ RSpec.describe "Baseload advice page", type: :system do
       context "with no recent data" do
         let(:start_date)  { Date.today - 24.months}
         let(:end_date)    { Date.today - 2.months}
-        before do
-          visit analysis_school_advice_baseload_path(school)
-        end
-        it 'shows data warning' do
-          expect(page).to have_content("We have not received data for your electricity usage for over thirty days")
-        end
+        before { refresh }
+        it_behaves_like "an advice page showing electricity data warning"
       end
+
     end
 
     context 'when viewing the insights' do
@@ -178,6 +122,8 @@ RSpec.describe "Baseload advice page", type: :system do
         visit insights_school_advice_baseload_path(school)
       end
 
+      it_behaves_like "an advice page tab", tab: "Insights"
+
       it 'shows the definition of baseload' do
         expect(page).to have_content("Electricity baseload is the electricity needed to provide power to appliances")
       end
@@ -201,16 +147,6 @@ RSpec.describe "Baseload advice page", type: :system do
         expect(page).to have_content("compare with other schools in your group")
       end
 
-      context 'when the page has been restricted' do
-        before do
-          advice_page.update(restricted: true)
-          visit insights_school_advice_baseload_path(school)
-        end
-        it 'still shows the analysis' do
-          expect(page).to have_content(expected_page_title)
-        end
-      end
-
       context "with no recent data" do
         let(:start_date)  { Date.today - 24.months}
         let(:end_date)    { Date.today - 2.months}
@@ -224,9 +160,7 @@ RSpec.describe "Baseload advice page", type: :system do
             expect(page).to have_content("no recent data")
           end
         end
-        it 'shows data warning' do
-          expect(page).to have_content("We have not received data for your electricity usage for over thirty days")
-        end
+        it_behaves_like "an advice page showing electricity data warning"
       end
 
       it 'shows the current baseload section' do
@@ -246,16 +180,6 @@ RSpec.describe "Baseload advice page", type: :system do
           expect(page).to have_content("2.4")
         end
         expect(page).to have_content("compare with other schools in your group")
-      end
-
-      context 'when the page has been restricted' do
-        before do
-          advice_page.update(restricted: true)
-          visit insights_school_advice_baseload_path(school)
-        end
-        it 'still shows the analysis' do
-          expect(page).to have_content(expected_page_title)
-        end
       end
     end
   end

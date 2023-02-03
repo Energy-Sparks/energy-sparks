@@ -7,7 +7,7 @@
   <%= render 'schools/advice/section_title', section_id: 'recommendations', section_title: t('advice_pages.insights.recommendations.title') %>
   <p><%= t("advice_pages.#{@advice_page.key}.insights.next_steps") %></p>
 
-  <%= render(RecommendationsComponent.new(recommendations: @activity_types, title: t("advice_pages.insights.recommendations.activities_title"), classes: 'pb-4')) %>
+  <%= component 'recommendations', recommendations: @activity_types, title: t("advice_pages.insights.recommendations.activities_title"), classes: 'pb-4' %>
 
-  <%= render(RecommendationsComponent.new(recommendations: @intervention_types, title: t("advice_pages.insights.recommendations.actions_title"), classes: 'pb-4')) %>
+  <%= component 'recommendations', recommendations: @intervention_types, title: t("advice_pages.insights.recommendations.actions_title"), classes: 'pb-4' %>
 <% end %>
