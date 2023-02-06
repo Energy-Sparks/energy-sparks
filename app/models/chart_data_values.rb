@@ -45,7 +45,6 @@ class ChartDataValues
       @y2_chart_type      = chart[:y2_chart_type]
       @annotations        = []
       @y2_axis_label = '' # Set later
-      puts transformations.inspect
       @transformations = transformations
       @allowed_operations = allowed_operations
       @drilldown_available = drilldown_available
