@@ -1,6 +1,4 @@
-<div class="p-4 advice-page-notice neutral">
+<%= component 'notice', status: :neutral do |c| %>
+  <% c.with_link { link_to t('advice_pages.baseload.what_is_baseload_link'), learn_more_school_advice_baseload_path(school) } %>
   <%= t('advice_pages.baseload.what_is_baseload_html') %>
-  <div class="text-right">
-    <a href="<%= learn_more_school_advice_baseload_path(school) %>"><%= t('advice_pages.baseload.what_is_baseload_link') %></a>
-  </div>
-</div>
+<% end %>

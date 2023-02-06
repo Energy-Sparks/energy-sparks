@@ -1,16 +1,14 @@
 <% if advice_baseload_high?(estimated_savings_vs_benchmark.£) %>
-  <div class="p-4 advice-page-notice negative">
+  <%= component 'notice', status: :negative do %>
     <p><%= t('advice_pages.baseload.analysis.baseload_high') %></p>
     <p><%= t('advice_pages.baseload.analysis.baseload_high_details_html', estimated_savings: format_unit(estimated_savings_vs_benchmark.£, :£)) %></p>
-  </div>
+  <% end %>
 <% else %>
-  <div class="p-4 advice-page-notice positive">
+  <%= component 'notice', status: :positive do %>
     <p><%= t('advice_pages.baseload.analysis.baseload_low') %></p>
     <p><%= t('advice_pages.baseload.analysis.baseload_low_details_html', estimated_savings: format_unit(estimated_savings_vs_benchmark.£.abs, :£)) %></p>
-    <p>
     <% if estimated_savings_vs_exemplar.£ > 0.0 %>
-      <%= t('advice_pages.baseload.analysis.baseload_low_extra_savings_html', estimated_savings: format_unit(estimated_savings_vs_exemplar.£, :£)) %>
-    <% end %>
-    </p>
-  </div>
+      <p><%= t('advice_pages.baseload.analysis.baseload_low_extra_savings_html', estimated_savings: format_unit(estimated_savings_vs_exemplar.£, :£)) %>
+    <% end %></p>
+  <% end %>
 <% end %>

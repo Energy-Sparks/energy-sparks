@@ -5,6 +5,7 @@ require "rails_helper"
 RSpec.describe BreadcrumbsComponent, type: :component do
 
   let(:last) { list_items.last }
+  let(:first) { list_items.first }
 
   shared_examples_for "a selected last item" do
     it { expect(last).to have_text(text) }
@@ -93,5 +94,31 @@ RSpec.describe BreadcrumbsComponent, type: :component do
     it_behaves_like "a selected last item" do
       let(:text) { "Baseload" }
     end
+  end
+
+  context "conditional items" do
+    let(:href) { 'a_link' }
+    let(:list_items) do
+      render_inline(BreadcrumbsComponent.new()) do |c|
+        c.with_items([
+          { name: "Electricty", href: href, visible: visible },
+          { name: "First item", href: 'a_link' },
+        ])
+      end.css("li")
+    end
+    context "when item is visible" do
+      let(:visible) { true }
+      it { expect(first).to have_link('Electricty') }
+      context "and there is no link" do
+        let(:href) { nil }
+        it { expect(first).to have_text('Electricty') }
+        it { expect(first).to_not have_link('Electricty') }
+      end
+    end
+    context "when item is not visible" do
+      let(:visible) { false }
+      it { expect(first).to_not have_link('Electricty') }
+    end
+
   end
 end

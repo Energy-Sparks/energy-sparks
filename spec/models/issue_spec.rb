@@ -24,6 +24,22 @@ RSpec.describe Issue, type: :model do
     end
   end
 
+  describe "#status_summary" do
+    subject(:status_summary) { issue.status_summary }
+    context "closed issue" do
+      let(:issue) { build(:issue, issue_type: :issue, status: :closed) }
+      it { expect(status_summary).to eq("closed issue") }
+    end
+    context "open issue" do
+      let(:issue) { build(:issue, issue_type: :issue, status: :open) }
+      it { expect(status_summary).to eq("open issue") }
+    end
+    context "note" do
+      let(:issue) { build(:issue, issue_type: :note, status: :open) }
+      it { expect(status_summary).to eq("note") }
+    end
+  end
+
   describe "before_save :set_note_status" do
     before do
       issue.save

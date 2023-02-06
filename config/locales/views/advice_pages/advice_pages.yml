@@ -17,33 +17,30 @@ en:
         activities_title: Work with the pupils
         title: What should you do next?
     nav:
-      electricity:
-        baseload: Baseload
-        costs: Costs
-        intraday: Intraday
-        long_term: Long term changes
-        name: Electricity
-        out_of_hours: Out of school hours
-        recent_changes: Recent changes
-      gas:
-        boiler_control: Boiler control
-        costs: Costs
-        hot_water: Hot water
-        intraday: Intraday
-        long_term: Long term changes
-        name: Gas
-        out_of_hours: Out of school hours
-        recent_changes: Recent changes
-        thermostatic: Thermostatic
       name: Advice
-      solar:
-        name: Solar
+      pages:
+        baseload: Baseload
+        boiler_control: Boiler control
+        electricity_costs: Costs
+        electricity_intraday: Intraday
+        electricity_long_term: Long term changes
+        electricity_out_of_hours: Out of school hours
+        electricity_recent_changes: Recent changes
+        gas_costs: Costs
+        gas_intraday: Intraday
+        gas_long_term: Long term changes
+        gas_out_of_hours: Out of school hours
+        gas_recent_changes: Recent changes
+        hot_water: Hot water
         solar_pv: Solar PV
-      storage_heaters:
-        name: Storage Heaters
         storage_heaters: Storage heaters
-      top_section:
+        thermostatic_control: Thermostatic
         total_energy_use: Total energy use
+      sections:
+        electricity: Electricity
+        gas: Gas
+        solar: Solar
+        storage_heater: Storage Heaters
     no_recent_data: no recent data
     show:
       title: Advice Pages

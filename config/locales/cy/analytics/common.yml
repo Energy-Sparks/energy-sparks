@@ -1,3 +1,4 @@
+---
 cy:
   analytics:
     adjectives:
@@ -93,7 +94,7 @@ cy:
         solar_irradiance: Arbelydru solar
         solar_pv: Solar PV (a ddefnyddir ar y safle)
         storage_heater_charge: Tâl stôr-wresogydd (diwrnod ysgol)
-        storage_heaters: stôr-wresogyddion
+        storage_heaters: Stôr-wresogyddion
         target_degree_days: Diwrnodau gradd targed
         temperature: Tymheredd
         useful_hot_water_usage: Defnydd Dŵr Poeth
