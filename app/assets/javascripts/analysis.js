@@ -25,6 +25,14 @@ function chartSuccess(chartConfig, chartData, chart) {
   var titleH3 = $chartWrapper.find('h3');
   var titleH5 = $chartWrapper.find('h5');
 
+  //move elements in component within chart-wrapper
+  //ignore h5 that has a chart-subtitle
+
+  //add extra support for chart title/subtitle discovery
+  //find them within a custom div
+  //look within the subtitle for start/end dates
+  //if we have the dates in the response, then substitute them in.
+
   titleH3.text(chartData.title);
 
   if (chartData.subtitle) {

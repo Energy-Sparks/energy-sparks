@@ -168,4 +168,19 @@ describe ChartDataValues do
       expect(chart_data_values.send(:scatter_series_data_for, [6,2,5,4,3,0,1])).to eq([["Sunday", 6], ["Monday", 2], ["Tuesday", 5], ["Wednesday", 4], ["Thursday", 3], ["Friday", 0], ["Saturday", 1]])
     end
   end
+
+  context 'sub-title dates' do
+    context 'with no transformations' do
+      it 'includes the chart date range'
+    end
+    context 'with drill down' do
+      it 'does not include the chart date range'
+    end
+    context 'with drill down and move' do
+      it 'does not include the chart date range'
+    end
+    context 'with move back' do
+      it 'includes the chart date range'
+    end
+  end
 end
