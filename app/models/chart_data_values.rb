@@ -193,12 +193,12 @@ class ChartDataValues
   end
 
   def subtitle_start_date
-    return nil unless @x_axis_ranges.present? && !@x_axis_ranges.empty?
+    return nil unless x_axis_ranges_present?
     transformations_empty_or_only_move? ? format_subtitle_date(@x_axis_ranges.first.first) : nil
   end
 
   def subtitle_end_date
-    return nil unless @x_axis_ranges.present? && !@x_axis_ranges.empty?
+    return nil unless x_axis_ranges_present?
     transformations_empty_or_only_move? ? format_subtitle_date(@x_axis_ranges.last.last) : nil
   end
 
@@ -508,6 +508,10 @@ private
 
   def y2_is_rating?(y2_data_title)
     y2_data_title.casecmp('rating').zero?
+  end
+
+  def x_axis_ranges_present?
+    @x_axis_ranges.present? && !@x_axis_ranges.empty?
   end
 
   def transformations_empty_or_only_move?
