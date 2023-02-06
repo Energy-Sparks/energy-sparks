@@ -1,5 +1,32 @@
 "use strict";
 
+function updateDynamicTitles(titleWrapper, chartData) {
+  var titleH3 = titleWrapper.find('h3');
+  var titleH5 = titleWrapper.find('h5');
+
+  titleH3.text(chartData.title);
+  if (chartData.subtitle) {
+    titleH5.text(chartData.subtitle);
+  } else {
+    if (chartData.drilldown_available) {
+      titleH5.text(chartData.explore_message);
+    } else {
+      titleH5.text('');
+    }
+  }
+}
+
+function updateDatesInSubtitles(subTitleElement, chartData) {
+  if (chartData.subtitle_start_date) {
+    var startDateElement = $(subTitleElement).find('.start-date');
+    startDateElement.text(chartData.subtitle_start_date);
+  }
+  if (chartData.subtitle_end_date) {
+    var endDateElement = $(subTitleElement).find('.end-date');
+    endDateElement.text(chartData.subtitle_end_date);
+  }
+}
+
 function chartFailure(chart, title) {
   var $standardErrorMessage = document.getElementById('chart-error').textContent
   var $chartDiv = $(chart.renderTo);
@@ -22,27 +49,16 @@ function chartSuccess(chartConfig, chartData, chart) {
   var noAdvice = chartConfig.no_advice;
 
   var $chartWrapper = $chartDiv.parents('.chart-wrapper');
-  var titleH3 = $chartWrapper.find('h3');
-  var titleH5 = $chartWrapper.find('h5');
 
-  //move elements in component within chart-wrapper
-  //ignore h5 that has a chart-subtitle
-
-  //add extra support for chart title/subtitle discovery
-  //find them within a custom div
-  //look within the subtitle for start/end dates
-  //if we have the dates in the response, then substitute them in.
-
-  titleH3.text(chartData.title);
-
-  if (chartData.subtitle) {
-    titleH5.text(chartData.subtitle);
-  } else {
-    if (chartData.drilldown_available) {
-      titleH5.text(chartData.explore_message);
-    } else {
-      titleH5.text('');
-    }
+  //supports dynamic title elements, in which whole content is replaced
+  if ($chartWrapper.find('div.dynamic-titles').length) {
+    var $titleWrapper = $( $chartWrapper.find('div.dynamic-titles')[0] );
+    updateDynamicTitles($titleWrapper, chartData);
+  }
+  //supports injecting start/end dates from JSON response
+  if ($chartWrapper.find('.chart-subtitle').length) {
+    var $subTitle = $( $chartWrapper.find('.chart-subtitle')[0] );
+    updateDatesInSubtitles($subTitle, chartData);
   }
 
   if (! noAdvice) {
