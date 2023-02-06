@@ -4,11 +4,12 @@ describe ChartDataValues do
 
   let(:chart) { :management_dashboard_group_by_week_electricity }
   let(:chart_type)  { :column }
+  let(:x_axis_ranges) { [[Date.parse('Sun, 28 Apr 2019'), Date.parse('Sun, 28 Apr 2019')]] }
   let(:config) {
     {
       title: "Comparison of last 2 weeks gas consumption - adjusted for outside temperature £7.70",
       x_axis: %w[Sunday Monday Tuesday Wednesday Thursday Friday Saturday],
-      x_axis_ranges: [[Date.parse('Sun, 28 Apr 2019'), Date.parse('Sun, 28 Apr 2019')]],
+      x_axis_ranges: x_axis_ranges,
       x_data: { "Energy:Sun21Apr19-Sat27Apr19" => [], "Energy:Sun28Apr19-Sat04May19" => [] },
       chart1_type: chart_type,
       chart1_subtype: nil,
@@ -173,17 +174,41 @@ describe ChartDataValues do
   end
 
   context 'sub-title dates' do
+    let(:x_axis_ranges) { [[Date.new(2023,1,31), Date.new(2023,2,4)]] }
+
     context 'with no transformations' do
-      it 'includes the chart date range'
+      it 'includes the chart date range' do
+        expect(chart_data_values.subtitle_start_date).to eq "31 Jan 2023"
+        expect(chart_data_values.subtitle_end_date).to eq "04 Feb 2023"
+      end
     end
     context 'with drill down' do
-      it 'does not include the chart date range'
+      let(:transformations) { [[:drilldown, 293]] }
+      it 'does not include the chart date range' do
+        expect(chart_data_values.subtitle_start_date).to be_nil
+        expect(chart_data_values.subtitle_end_date).to be_nil
+      end
     end
-    context 'with drill down and move' do
-      it 'does not include the chart date range'
+    context 'with move then drill down' do
+      let(:transformations) { [[:move, -2], [:drilldown, 141]] }
+      it 'does not include the chart date range' do
+        expect(chart_data_values.subtitle_start_date).to be_nil
+        expect(chart_data_values.subtitle_end_date).to be_nil
+      end
+    end
+    context 'with drill down then move' do
+      let(:transformations) { [[:drilldown, 1], [:move, -1]] }
+      it 'does not include the chart date range' do
+        expect(chart_data_values.subtitle_start_date).to be_nil
+        expect(chart_data_values.subtitle_end_date).to be_nil
+      end
     end
     context 'with move back' do
-      it 'includes the chart date range'
+      let(:transformations) { [[:move, 1]] }
+      it 'includes the chart date range' do
+        expect(chart_data_values.subtitle_start_date).to eq "31 Jan 2023"
+        expect(chart_data_values.subtitle_end_date).to eq "04 Feb 2023"
+      end
     end
   end
 end
