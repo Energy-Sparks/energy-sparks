@@ -19,4 +19,13 @@
   <% end %>
 <% end %>
 
+<% if EnergySparks::FeatureFlags.active?(:scoreboard_prizes) %>
+  <div class="row info-bar bg-neutral text-center">
+    <p>
+      <%= t('activities.points.prizes') %> -
+       <%= link_to t('activities.points.prizes_link'), 'https://blog.energysparks.uk/fantastic-prizes-to-motivate-pupils-to-take-energy-saving-action/' %>
+    </p>
+  </div>
+<% end %>
+
 <h4 class="text-center"><%= t('activities.points.choose_your_next_activity') %></h4>
