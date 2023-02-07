@@ -55,8 +55,41 @@ module Schools
         end
       end
 
+      #Checks that the analysis can be run.
+      #Enforces check that school has the necessary fuel type
+      #and provides hook for controllers to plug in custom checks
       def check_can_run_analysis
-        true
+        unless school_has_fuel_type?
+          render 'no_fuel_type'
+          return #avoid chance of double render error
+        end
+        @analysable = create_analysable
+        if @analysable.present? && !@analysable.enough_data?
+          render 'not_enough_data'
+        end
+      end
+
+      def school_has_fuel_type?
+        case @advice_page.fuel_type.to_sym
+        when :gas
+          @school.has_gas?
+        when :electricity
+          @school.has_electricity?
+        when :storage_heater
+          @school.has_storage_heaters?
+        when :solar_pv
+          @school.has_solar_pv?
+        else
+          false
+        end
+      end
+
+      #Should return an object that conforms to interface described
+      #by the AnalysableMixin. Will be used to determine whether
+      #there's enough data and, optionally, identify when we think there
+      #will be enough data.
+      def create_analysable
+        nil
       end
 
       def load_recommendations
