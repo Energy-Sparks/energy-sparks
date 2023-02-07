@@ -1,3 +1,14 @@
-<%= render 'insights_what_is_out_of_hours_usage', school: @school %>
-<%= render 'insights_your_out_of_hours_usage', school: @school %>
-<%= render 'insights_how_do_you_compare', school: @school %>
+<%= component 'notice', status: :neutral do |c| %>
+  <% c.with_link { link_to t('advice_pages.electricity_out_of_hours.insights.what_is_out_of_hours_usage_link'), learn_more_school_advice_electricity_out_of_hours_path(@school) } %>
+  <%= t('advice_pages.electricity_out_of_hours.insights.what_is_out_of_hours_usage_html') %>
+<% end %>
+
+<%= render 'schools/advice/section_title', section_id: 'current', section_title: t('advice_pages.electricity_out_of_hours.insights.your_out_of_hours_usage_title') %>
+<%= t('advice_pages.electricity_out_of_hours.insights.your_out_of_hours_usage_html') %>
+
+<%= render 'schools/advice/section_title', section_id: 'current', section_title: t('advice_pages.electricity_out_of_hours.insights.how_do_you_compare_title') %>
+<%= t('advice_pages.electricity_out_of_hours.insights.how_do_you_compare_one_html') %>
+
+Table: comparison of school % out of hours usage vs benchmark and exemplar schools.
+
+<%= t('advice_pages.electricity_out_of_hours.insights.how_do_you_compare_two_html') %>

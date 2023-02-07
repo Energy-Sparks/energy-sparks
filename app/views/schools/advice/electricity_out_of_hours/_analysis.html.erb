@@ -1,36 +1,64 @@
 <p><%= t('advice_pages.electricity_out_of_hours.analysis.summary') %></p>
 <ul>
-  <li><a href='#last_twelve_months'>Last 12 months</a></li>
-  <li><a href='#usage_by_day_of_week'>Usage by day of week</a></li>
+  <li>
+    <a href='#last_twelve_months'>
+      <%= t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.title') %>
+    </a>
+  </li>
+  <li>
+    <a href='#usage_by_day_of_week'>
+      <%= t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.title') %>
+    </a>
+  </li>
 </ul>
 
-<%= render 'schools/advice/section_title', section_id: 'last_twelve_months', section_title: 'Last 12 months' %>
-
+<%= render 'schools/advice/section_title', section_id: 'last_twelve_months', section_title: t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.title') %>
 <% if @school.school_times.community_use.any? %>
-  <p>
-  Your school has identified that there is community use of the school outside of school hours. Over the last year, {community_kwh} of electricity has been used during these times which will have cost {community_gbp} and caused {community_co2} to be emitted.
-</p>
+  <p><%= t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.community_use') %></p>
 <% end %>
 
-<p>
-The table below shows how much electricity has been used when the school is open and closed on a school day as well as during weekends and holidays.
-</p>
+<p><%= t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.table_introduction') %></p>
 
-<p>Table show out of hours usage during last 12 months, one row per time period plus a total</p>
+<table class="table table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th class="text-left-">kWh</th>
+      <th class="text-right">£</th>
+      <th class="text-right">CO2 kg</th>
+      <th class="text-right">%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="text-right"></td>
+      <td class="text-right"></td>
+      <td class="text-right"></td>
+      <td class="text-right"></td>
+    </tr>
+  </tbody>
+</table>
 
-<%= render 'analysis_last_twelve_months_table' %>
+<%= component 'chart', chart_type: :daytype_breakdown_electricity_tolerant, school: @school do |c| %>
+  <% c.with_title do %>
+    <%= t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_electricity_tolerant_chart.title') %>
+  <% end %>
+  <% c.with_subtitle do %>
+    <%= t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_electricity_tolerant_chart.subtitle') %>
+  <% end %>
+<% end %>
 
-Chart title: Electricity usage breakdown
-Chart subtitle: This chart shows a breakdown of your electricity consumption by time of use
-Chart id: daytype_breakdown_electricity_tolerant
+<%= render 'schools/advice/section_title', section_id: 'usage_by_day_of_week', section_title: t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.title') %>
+<%= component 'chart', chart_type: :electricity_by_day_of_week_tolerant, school: @school do |c| %>
+  <% c.with_title do %>
+    <%= t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.electricity_by_day_of_week_tolerant_chart.title') %>
+  <% end %>
+  <% c.with_subtitle do %>
+    <%= t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.electricity_by_day_of_week_tolerant_chart.subtitle') %>
+  <% end %>
+  <% c.with_footer do %>
+    <%= t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.electricity_by_day_of_week_tolerant_chart.footer') %>
+  <% end %>
+<% end %>
 
-<%= render 'schools/advice/section_title', section_id: 'usage_by_day_of_week', section_title: 'Usage by day of week' %>
-
-Chart title: Electricity use by day of the week
-Chart subtitle: This chart shows the total amount of electricity used by your school over the last 12 months, broken down by day of the week and time of use
-chart_id: electricity_by_day_of_week_tolerant
 
 
-<p>
-There will be some electricity usage at weekends from appliances and devices left on, but the school should aim to minimise these. Schools with low weekend electricity consumption aim to switch as many appliances off as possible on a Friday afternoon, sometimes providing the caretaker or cleaning staff with a checklist as to what they should be turning off.
-</p>
