@@ -21,6 +21,9 @@
     </p>
   </div>
 </div>
+
+<%= render 'prizes' if EnergySparks::FeatureFlags.active?(:scoreboard_prizes) %>
+
 <div class="container mt-2">
   <div class="row">
     <div class="col">

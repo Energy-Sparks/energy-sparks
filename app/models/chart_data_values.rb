@@ -30,7 +30,7 @@ class ChartDataValues
       @title              = chart[:title]
       @subtitle           = chart[:subtitle]
       @x_axis_categories  = translate_categories_for(chart[:x_axis])
-      @x_axis_ranges      = chart[:x_axis_ranges] # Not actually used but range of actual dates
+      @x_axis_ranges      = chart[:x_axis_ranges]
       @x_max_value        = chart[:x_max_value]
       @x_min_value        = chart[:x_min_value]
       @chart1_type        = chart[:chart1_type]
@@ -183,11 +183,27 @@ class ChartDataValues
       :y1_axis_choices,
       :explore_message,
       :pinch_and_zoom_message,
-      :click_and_drag_message
+      :click_and_drag_message,
+      :subtitle_start_date,
+      :subtitle_end_date
     ].inject({}) do |json, field|
       json[field] = output.public_send(field)
       json
     end
+  end
+
+  def subtitle_start_date
+    return nil unless x_axis_ranges_present? && transformations_empty_or_only_move?
+    format_subtitle_date(@x_axis_ranges.first.first)
+  end
+
+  def subtitle_end_date
+    return nil unless x_axis_ranges_present? && transformations_empty_or_only_move?
+    format_subtitle_date(@x_axis_ranges.last.last)
+  end
+
+  def format_subtitle_date(date)
+    date.to_s(:es_short)
   end
 
   def translated_series_item_for(series_key_as_string)
@@ -492,5 +508,19 @@ private
 
   def y2_is_rating?(y2_data_title)
     y2_data_title.casecmp('rating').zero?
+  end
+
+  def x_axis_ranges_present?
+    @x_axis_ranges.present? && !@x_axis_ranges.empty?
+  end
+
+  def transformations_empty_or_only_move?
+    return true if @transformations.nil? || @transformations.empty?
+    return true if @transformations.length == 1 && transformation_type(@transformations[0]) == :move
+    false
+  end
+
+  def transformation_type(transformation)
+    transformation.first
   end
 end

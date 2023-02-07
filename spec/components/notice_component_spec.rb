@@ -15,10 +15,10 @@ RSpec.describe NoticeComponent, type: :component, include_application_helper: tr
       end
     end
     it "has the status class" do
-      expect(html).to have_css('div.page-notice.neutral')
+      expect(html).to have_css('div.notice-component.neutral')
     end
     it "has additional classes" do
-      expect(html).to have_css('div.page-notice.extra-classes')
+      expect(html).to have_css('div.notice-component.extra-classes')
     end
     it { expect(html).to have_link("Link text", href: 'href') }
     it { expect(html).to have_text(content) }
