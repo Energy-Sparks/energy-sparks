@@ -5,6 +5,7 @@ module Schools
       end
 
       def analysis
+        @annual_usage_breakdown = ::Usage::AnnualUsageBreakdownService.new(meter_collection: aggregate_school, fuel_type: :electricity).usage_breakdown
       end
 
       private

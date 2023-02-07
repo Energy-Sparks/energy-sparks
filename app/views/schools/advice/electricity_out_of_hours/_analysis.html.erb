@@ -22,19 +22,23 @@
 <table class="table table-sm">
   <thead class="thead-dark">
     <tr>
-      <th class="text-left-">kWh</th>
+      <th class="text-left-">Time of day</th>
+      <th class="text-right-">kWh</th>
       <th class="text-right">£</th>
       <th class="text-right">CO2 kg</th>
       <th class="text-right">%</th>
     </tr>
   </thead>
   <tbody>
+    <%= [:holidays, :weekends, :school_day_open, :school_day_closed, :community].each do |usage| %>
     <tr>
-      <td class="text-right"></td>
-      <td class="text-right"></td>
-      <td class="text-right"></td>
-      <td class="text-right"></td>
+      <td><%= usage %></td>
+      <td class="text-right"><%= @annual_usage_breakdown.send(usage).kwh %></td>
+      <td class="text-right"><%= @annual_usage_breakdown.send(usage).£ %></td>
+      <td class="text-right"><%= @annual_usage_breakdown.send(usage).co2 %></td>
+      <td class="text-right"><%= @annual_usage_breakdown.send(usage).percent %></td>
     </tr>
+    <% end %>
   </tbody>
 </table>
 
