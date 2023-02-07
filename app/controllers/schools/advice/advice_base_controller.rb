@@ -11,6 +11,7 @@ module Schools
       before_action :load_advice_page, only: [:insights, :analysis, :learn_more]
       before_action :check_authorisation, only: [:insights, :analysis, :learn_more]
       before_action :load_recommendations, only: [:insights]
+      before_action :check_has_fuel_type, only: [:insights, :analysis]
       before_action :check_can_run_analysis, only: [:insights, :analysis]
       before_action :set_data_warning, only: [:insights, :analysis]
 
@@ -55,14 +56,15 @@ module Schools
         end
       end
 
+      def check_has_fuel_type
+        render('no_fuel_type', status: :bad_request) and return unless school_has_fuel_type?
+        true
+      end
+
       #Checks that the analysis can be run.
       #Enforces check that school has the necessary fuel type
       #and provides hook for controllers to plug in custom checks
       def check_can_run_analysis
-        unless school_has_fuel_type?
-          render 'no_fuel_type', status: :bad_request
-          return #avoid chance of double render error
-        end
         @analysable = create_analysable
         if @analysable.present? && !@analysable.enough_data?
           render 'not_enough_data'
