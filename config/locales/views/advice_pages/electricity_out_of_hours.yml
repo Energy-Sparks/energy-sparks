@@ -4,7 +4,24 @@ en:
     electricity_out_of_hours:
       analysis:
         title: Analysis
+        summary: This section gives a more detailed analysis of your school’s out of hours electricity use and some things to look out for. For good energy management, you want most of your energy use to be when the school is open.
       insights:
         next_steps: Next steps
-        title: Insights
+        title: What is out of hours usage?
+        what_is_out_of_hours_usage_link: Learn more
+        what_is_out_of_hours_usage_html: |-
+          <p>
+            Out of hours electricity use is the amount of electricity used when the school is closed - overnight, at weekends and during the holidays.
+          </p>
+          <p>
+            Reducing out of hours electricity use is one of the easiest, and cheapest ways of saving lots of energy.
+          </p>
+          <p>
+            Note: The analysis within this page is based on the school opening hours set for your school. It is best to set these to be as accurate as you can so that you receive appropriate advice.
+          </p>
+        your_out_of_hours_usage_title: Your out of hours usage
+        your_out_of_hours_usage_html: Over the last year {{out_of_hours_percent}} of your electricity was used when the school was closed. This has cost you {{out_of_hours_gbp}} and led to emissions of xkg CO2.
+        how_do_you_compare_title: How do you compare?
+        how_do_you_compare_one_html: <p>How does your out of hours usage compare to other XXX schools on Energy Sparks, with a similar number of pupils?</p>
+        how_do_you_compare_two_html: <p>For more detail, compare with other schools in your group</p>
       page_title: Electricity out of hours usage analysis
