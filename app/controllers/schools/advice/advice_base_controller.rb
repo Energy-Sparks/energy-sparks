@@ -60,7 +60,7 @@ module Schools
       #and provides hook for controllers to plug in custom checks
       def check_can_run_analysis
         unless school_has_fuel_type?
-          render 'no_fuel_type'
+          render 'no_fuel_type', status: :bad_request
           return #avoid chance of double render error
         end
         @analysable = create_analysable
