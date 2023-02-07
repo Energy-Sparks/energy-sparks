@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "total energy use advice page", type: :system do
   let(:key) { 'total_energy_use' }
   let(:expected_page_title) { "Total energy use" }
-  include_context "advice page"
+  include_context "electricity advice page"
 
   context 'as school admin' do
     let(:user)  { create(:school_admin, school: school) }
