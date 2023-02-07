@@ -2,9 +2,24 @@
 en:
   advice_pages:
     electricity_long_term:
+      charts:
+        electricity_by_month_year:
+          title: Monthly electricity consumption comparison over the last two years
+          subtitle: This chart shows the difference in electricity consumption between the last 12 months and the previous 12 months for each month of the year
+          explanation: This chart can be a quick way to spot whether energy saving behaviour and lighting and equipment updates are having an impact on your electricity consumption. You need to be careful when comparing months with holidays, particularly Easter, which some years is in March and other times in April.
       analysis:
-        title: Analysis
+        title: Long term usage analysis
+        summary: This section gives a more detailed analysis of how your school’s electricity consumption has changed in the long term.
+        sections: The following sections provide more background and analysis on your electricity consumption
+        recent_trend:
+          title: Recent trend
+        long_term_trends:
+          title: Long term trends
+        comparison:
+          title: Comparison with other schools
+        meter_breakdown:
+          title: Electricity consumption breakdown by meter
       insights:
         next_steps: Next steps
         title: Insights
-      page_title: Electricity long term usage analysis
+      page_title: Long term changes in electricity consumption
