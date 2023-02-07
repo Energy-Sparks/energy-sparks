@@ -193,13 +193,13 @@ class ChartDataValues
   end
 
   def subtitle_start_date
-    return nil unless x_axis_ranges_present?
-    transformations_empty_or_only_move? ? format_subtitle_date(@x_axis_ranges.first.first) : nil
+    return nil unless x_axis_ranges_present? && transformations_empty_or_only_move?
+    format_subtitle_date(@x_axis_ranges.first.first)
   end
 
   def subtitle_end_date
-    return nil unless x_axis_ranges_present?
-    transformations_empty_or_only_move? ? format_subtitle_date(@x_axis_ranges.last.last) : nil
+    return nil unless x_axis_ranges_present? && transformations_empty_or_only_move?
+    format_subtitle_date(@x_axis_ranges.last.last)
   end
 
   def format_subtitle_date(date)
@@ -517,6 +517,7 @@ private
   def transformations_empty_or_only_move?
     return true if @transformations.nil? || @transformations.empty?
     return true if @transformations.length == 1 && transformation_type(@transformations[0]) == :move
+    false
   end
 
   def transformation_type(transformation)

@@ -7,12 +7,10 @@ function updateDynamicTitles(titleWrapper, chartData) {
   titleH3.text(chartData.title);
   if (chartData.subtitle) {
     titleH5.text(chartData.subtitle);
+  } else if (chartData.drilldown_available) {
+    titleH5.text(chartData.explore_message);
   } else {
-    if (chartData.drilldown_available) {
-      titleH5.text(chartData.explore_message);
-    } else {
-      titleH5.text('');
-    }
+    titleH5.text('');
   }
 }
 
