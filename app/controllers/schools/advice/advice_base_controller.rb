@@ -6,20 +6,21 @@ module Schools
       load_and_authorize_resource :school
       skip_before_action :authenticate_user!
 
-      before_action :load_advice_page, only: [:insights, :analysis, :learn_more]
+      before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
       before_action :set_tab_name, only: [:insights, :analysis, :learn_more]
+      before_action :load_advice_page, only: [:insights, :analysis, :learn_more]
       before_action :check_authorisation, only: [:insights, :analysis, :learn_more]
       before_action :load_recommendations, only: [:insights]
-      before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
+      before_action :check_can_run_analysis, only: [:insights, :analysis]
       before_action :set_data_warning, only: [:insights, :analysis]
 
       include AdvicePageHelper
       include SchoolAggregation
 
       rescue_from StandardError do |exception|
-        Rollbar.error(exception, advice_page: advice_page_key, school: @school.name, school_id: @school.id)
-        raise if Rails.env.development?
-        render 'error'
+        Rollbar.error(exception, advice_page: advice_page_key, school: @school.name, school_id: @school.id, tab: @tab)
+        raise if Rails.env.development? || @advice_page.nil?
+        render 'error', status: :internal_server_error
       end
 
       def show
@@ -52,6 +53,10 @@ module Schools
         if @advice_page && @advice_page.restricted && cannot?(:read_restricted_advice, @school)
           redirect_to school_advice_path(@school), notice: 'Only an admin or staff user for this school can access this content'
         end
+      end
+
+      def check_can_run_analysis
+        true
       end
 
       def load_recommendations

@@ -1,18 +1,4 @@
-<div class="advice-page-breadcrumb">
-  <%= component 'breadcrumbs' do |c| %>
-    <% c.with_school(@school) %>
-    <% c.with_items([{ name: t('advice_pages.breadcrumbs.root'), href: school_advice_path(@school) }]) %>
-  <% end %>
-</div>
-
-<h1><%= t('advice_pages.show.title') %></h1>
-
-<div class="row">
-  <div class="col-md-3 col-lg-3 col-xl-2 advice-page-nav">
-    <%= render 'schools/advice/nav', school: @school, advice_pages: @advice_pages %>
-  </div>
-  <div class="col-md-9 col-lg-9 col-xl-10 advice-page-tabs">
+<%= render 'schools/advice/advice_page', school: @school, advice_pages: @advice_pages, advice_page: @advice_page, tab: @tab, data_warning: @data_warning do %>
     <h2><%= component 'page_nav/collapse_button', display: 'inline' %><%= t('advice_pages.error.title') %></h2>
     <p><%= t('advice_pages.error.message') %></p>
-  </div>
-</div>
+<% end %>
