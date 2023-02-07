@@ -27,8 +27,7 @@ RSpec.shared_examples "an advice page tab" do |tab:|
   it 'shows page breadcrumb' do
     within '.advice-page-breadcrumb' do
       expect(page).to have_link('Advice')
-      expect(page).to have_text(I18n.t("advice_pages.nav.sections.#{advice_page.fuel_type}")) if advice_page.fuel_type
-      expect(page).to have_text(I18n.t("advice_pages.nav.pages.#{key}"))
+      expect(page).to have_text(I18n.t("advice_pages.#{key}.page_title"))
     end
   end
 

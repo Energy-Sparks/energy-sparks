@@ -65,10 +65,8 @@
       <%= f.label :start_date, t('schools.school_targets.form.start_date'), class: "form-label" %>
     </div>
     <div class="col-sm-4">
-      <%= render(DatePickerFormComponent.new(form: f, field_name: :start_date, value: school_target.start_date&.strftime('%d/%m/%Y'))) %>
+      <%= component 'date_picker_form', form: f, field_name: :start_date, value: school_target.start_date&.strftime('%d/%m/%Y') %>
     </div>
   </div>
-
   <%= f.submit school_target.persisted? ? t('schools.school_targets.form.update_our_target') : t('schools.school_targets.form.set_this_target'), class: "btn btn-primary" %>
-
 <% end %>
