@@ -7,14 +7,6 @@ en:
       other: Improving
     breadcrumbs:
       root: Advice
-    no_fuel_type:
-      title: Unable to run requested analysis
-      message: We don't currently have %{fuel_type} data for your school, so are unable to run this analysis
-    not_enough_data:
-      title: Not enough data to run analysis
-      message: We don't currently have enough %{fuel_type} data in order to run this analysis for your school.
-      available_from: Assuming we continue to regularly receive data we expect this analysis to be available after %{available_from}.
-      learn_more_html: In the meantime you can <a href="%{learn_more_link}">learn more</a> about this topic.
     error:
       data_warning: We have not received data for your %{fuel_type} usage for over thirty days. As a result your analysis will be out of date and may not reflect recent changes in your school.
       message: We encountered an error attempting to generate your analysis. The Energy Sparks team have been notified of the problem.
@@ -49,6 +41,14 @@ en:
         gas: Gas
         solar_pv: Solar
         storage_heater: Storage Heaters
+    no_fuel_type:
+      message: We don't currently have %{fuel_type} data for your school, so are unable to run this analysis
+      title: Unable to run requested analysis
     no_recent_data: no recent data
+    not_enough_data:
+      available_from: Assuming we continue to regularly receive data we expect this analysis to be available after %{available_from}.
+      learn_more_html: In the meantime you can <a href="%{learn_more_link}">learn more</a> about this topic.
+      message: We don't currently have enough %{fuel_type} data in order to run this analysis for your school.
+      title: Not enough data to run analysis
     show:
       title: Advice Pages
