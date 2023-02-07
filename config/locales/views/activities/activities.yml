@@ -56,6 +56,8 @@ en:
       you_just_scored:
         one: You've just scored 1 point!
         other: You've just scored %{count} points!
+      prizes: Our top scoring schools this year could win up to £1250 towards an energy saving improvement of your choice
+      prizes_link: read more
     show:
       activity_description: Activity description
       all_activities: All activities
