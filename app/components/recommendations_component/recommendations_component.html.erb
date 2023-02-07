@@ -1,7 +1,7 @@
 <% if title %>
   <h4><strong><%= title %></strong></h4>
 <% end %>
-<div class="card-deck recommendations<%= classes %>">
+<div class="card-deck recommendations-component<%= classes %>">
   <% recommendations.each_with_index do |recommendation, i| %>
     <div class="card<%= responsive_classes(i) %>">
       <%= link_to url_for(recommendation) do %>

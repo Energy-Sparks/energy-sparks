@@ -1,0 +1,7 @@
+.page-nav-component a.nav-link.item:hover {
+  background-color: $light;
+}
+
+.page-nav-component a.nav-link.current {
+  font-weight: bolder;
+}
