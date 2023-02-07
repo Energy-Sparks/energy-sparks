@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "advice pages", type: :system do
 
-  include_context "advice page base"
+  include_context "electricity advice page"
 
   let(:key) { 'total_energy_use' }
   let(:learn_more) { 'here is some more explanation' }

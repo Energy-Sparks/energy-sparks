@@ -47,7 +47,7 @@ en:
       sections:
         electricity: Electricity
         gas: Gas
-        solar: Solar
+        solar_pv: Solar
         storage_heater: Storage Heaters
     no_recent_data: no recent data
     show:
