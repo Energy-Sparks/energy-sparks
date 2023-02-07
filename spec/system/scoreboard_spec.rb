@@ -86,7 +86,7 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
       context "feature is active" do
         let(:feature_active) { true }
         it { expect(page).to have_content(prize_excerpt) }
-        it { expect(page).to have_link('Read more', href: 'https://blog.energysparks.uk/fantastic-prizes-to-motivate-pupils-to-take-energy-saving-action/') }
+        it { expect(page).to have_link('read more', href: 'https://blog.energysparks.uk/fantastic-prizes-to-motivate-pupils-to-take-energy-saving-action/') }
       end
     end
     context "on scoreboard page" do
@@ -95,7 +95,7 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
       context "feature is active" do
         let(:feature_active) { true }
         it { expect(page).to have_content(prize_excerpt) }
-        it { expect(page).to have_link('Read more', href: 'https://blog.energysparks.uk/fantastic-prizes-to-motivate-pupils-to-take-energy-saving-action/') }
+        it { expect(page).to have_link('read more', href: 'https://blog.energysparks.uk/fantastic-prizes-to-motivate-pupils-to-take-energy-saving-action/') }
       end
     end
   end
