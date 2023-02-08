@@ -23,7 +23,7 @@
   <% c.with_section(name: t('advice_pages.nav.sections.storage_heater'), icon: 'window-maximize', classes: 'bg-storage-light', visible: @school.has_storage_heaters?) do |s| %>
     <% s.with_item(name: t('advice_pages.nav.pages.storage_heaters'), href: school_advice_storage_heaters_path(@school)) %>
   <% end %>
-  <% c.with_section(name: t('advice_pages.nav.sections.solar'), icon: 'sun', classes: 'bg-solar-light', visible: @school.has_solar_pv?) do |s| %>
+  <% c.with_section(name: t('advice_pages.nav.sections.solar_pv'), icon: 'sun', classes: 'bg-solar-light', visible: @school.has_solar_pv?) do |s| %>
     <% s.with_item(name: t('advice_pages.nav.pages.solar_pv'), href: school_advice_solar_pv_path(@school)) %>
   <% end %>
 <% end %>
