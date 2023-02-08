@@ -9,7 +9,8 @@ RSpec.describe "electricity out of hours advice page", type: :system do
     let(:user)  { create(:school_admin, school: school) }
 
     before do
-      allow_any_instance_of(Usage::AnnualUsageBreakdownService).to receive(:usage_breakdown) { OpenStruct.new() }
+      allow_any_instance_of(Usage::AnnualUsageBreakdownService).to receive(:usage_breakdown) { nil }
+
       sign_in(user)
       visit school_advice_electricity_out_of_hours_path(school)
     end
