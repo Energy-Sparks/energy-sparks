@@ -30,7 +30,7 @@ RSpec.describe "gas recent changes advice page", type: :system do
       let(:aggregate_school)    { double('meter-collection') }
 
       before do
-        allow(aggregate_school).to receive(:aggregated_gas_meters).and_return(aggregate_meter)
+        allow(aggregate_school).to receive(:aggregated_heat_meters).and_return(aggregate_meter)
         allow(aggregate_school).to receive(:aggregate_meter).and_return(aggregate_meter)
         allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(aggregate_school)
         click_on 'Analysis'
