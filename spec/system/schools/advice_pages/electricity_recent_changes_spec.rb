@@ -40,6 +40,10 @@ RSpec.describe "electricity recent changes advice page", type: :system do
         expect(page).to have_content("Comparison of electricity use over 2 recent weeks")
         expect(page).to have_content("Comparison of electricity use over 2 recent days")
       end
+
+      it "shows start and end dates" do
+        expect(page).to have_content("Electricity data is available from Tue 1st Jan 2019 to Fri 1st Jan 2021")
+      end
     end
 
     context "clicking the 'Learn More' tab" do
