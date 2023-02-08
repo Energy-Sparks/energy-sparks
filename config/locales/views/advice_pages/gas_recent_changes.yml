@@ -10,7 +10,7 @@ en:
           compare_recent_weeks_chart_explanation: The chart automatically uses the last two fully available weeks. Use the options below the chart to compare alternative weeks.
           compare_recent_weeks_chart_subtitle: A comparison of your school’s gas use across two recent weeks.
           compare_recent_weeks_chart_title: Your school's daily gas use for two recent weeks
-          impact_of_temperature_chart_explanation_html: Degree days are the inverse of temperature. The higher the degree days the lower the temperature. See a more detailed explanation <a href="%{url}" target="_blank">here</a>. If the heating boiler is working well at your school, degree days should track the gas usage quite closely.
+          impact_of_temperature_chart_explanation_html: Degree days are the inverse of temperature. The higher the degree days the lower the temperature. %{more_detail_url}. If the heating boiler is working well at your school, degree days should track the gas usage quite closely.
           impact_of_temperature_chart_subtitle_html: This chart shows your schools’ gas use between <span class="start-date">%{start_date}</span> and <span class="end-date">%{end_date}</span>, including a comparison with degree days.
           impact_of_temperature_chart_title: Your school's gas use over the last two weeks
         compare_recent_days:
@@ -22,6 +22,7 @@ en:
           title: The impact of temperature on gas consumption
         optimal_start_control: If the boiler has 'optimal start control' configured, you might notice the start time of the boiler changing automatically ‐ from perhaps 6:30am in milder weather to earlier e.g. 4:30pm in colder weather. In very cold weather you might notice the heating coming on 'at random' - this is most likely frost protection - the boiler turning the heating system on to stop the school's pipework freezing.
         sections: The following sections provide more background and analysis on your gas baseload
+        see_more_detail: See a more detailed explanation
         summary: This section gives a more detailed analysis of how your school’s gas consumption has changed recently. It can be particularly useful if trying to investigate a change in gas consumption or monitoring the impact of action taken in the school.
         title: Analysis
       insights:
