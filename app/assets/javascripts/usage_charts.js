@@ -6,7 +6,6 @@ $(document).ready(function() {
   //the explanation and then triggers the data load
   function updateChart(chartDiv) {
 
-    var descriptions = $(chartDiv).find("input[name='descriptions']").data('descriptions');
     var chartContainer = $(chartDiv).find('.usage-chart').first();
     var chartConfig = chartContainer.data('chart-config');
 
@@ -25,12 +24,14 @@ $(document).ready(function() {
     setupAxisControls(chartContainer[0], chartConfig);
     processAnalysisChart(chartContainer[0], chartConfig);
     setupAnalysisControls(chartContainer[0], chartConfig);
-    setupChartDescription(chartContainer[0], meter, descriptions);
+    setupChartDescription(chartDiv, chartConfig);
   }
 
-  function setupChartDescription(chartContainer, meter, descriptions) {
-    var description = $(chartContainer).closest('.charts').find('.chart-subtitle');
-    if(description.length && meter && descriptions[meter]) {
+  function setupChartDescription(chartDiv, chartConfig) {
+    var descriptions = $(chartDiv).find("input[name='descriptions']").data('descriptions');
+    var description = $(chartDiv).find('.chart-subtitle');
+    var meter = chartConfig.mpan_mprn;
+    if(descriptions && description && meter && descriptions[meter]) {
       description.text(descriptions[meter]);
     }
   }
