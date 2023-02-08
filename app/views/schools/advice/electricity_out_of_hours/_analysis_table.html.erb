@@ -22,11 +22,21 @@
     <% @usage_categories.each do |usage_category| %>
       <tr>
         <td><%= usage_category %></td>
-        <td class="text-right"><%= @annual_usage_breakdown.send(usage_category).kwh %></td>
-        <td class="text-right"><%= @annual_usage_breakdown.send(usage_category).£ %></td>
-        <td class="text-right"><%= @annual_usage_breakdown.send(usage_category).co2 %></td>
-        <td class="text-right"><%= @annual_usage_breakdown.send(usage_category).percent %></td>
+        <td class="text-right">
+          <%= format_unit(@annual_usage_breakdown.send(usage_category).kwh, :kw) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(@annual_usage_breakdown.send(usage_category).£, :£) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(@annual_usage_breakdown.send(usage_category).co2, :co2) %>
+        </td>
+        <td class="text-right">
+          <%= format_unit(@annual_usage_breakdown.send(usage_category).percent, :percent) %>
+        </td>
       </tr>
     <% end %>
+    <tr>
+    </tr>
   </tbody>
 </table>
