@@ -24,7 +24,7 @@
       <p><%= t('advice_pages.electricity_recent_changes.analysis.charts.compare_recent_weeks_chart_explanation') %></p>
     <% end %>
     <% c.with_footer do %>
-      <%= render 'controls', chart_config: @chart_config, period: :weekly, supply: :electricity, split_meters: @split_meters, meters: @meters %>
+      <%= render 'shared/usage_controls', chart_config: @chart_config, period: :weekly, supply: :electricity, split_meters: false, meters: @meters %>
     <% end %>
   <% end %>
 </div>
@@ -47,7 +47,7 @@
       <p><%= t('advice_pages.electricity_recent_changes.analysis.charts.compare_recent_days_chart_explanation') %></p>
     <% end %>
     <% c.with_footer do %>
-      <%= render 'controls', chart_config: @chart_config, period: :daily, supply: :electricity, split_meters: @split_meters, meters: @meters  %>
+      <%= render 'shared/usage_controls', chart_config: @chart_config, period: :daily, supply: :electricity, split_meters: false, meters: @meters  %>
     <% end %>
   <% end %>
 </div>

@@ -25,7 +25,7 @@
       <p><%= t('advice_pages.gas_recent_changes.analysis.charts.compare_recent_weeks_chart_explanation') %></p>
     <% end %>
     <% c.with_footer do %>
-      <%= render 'controls', chart_config: @chart_config, period: :weekly, supply: :gas, split_meters: @split_meters, meters: @meters %>
+      <%= render 'shared/usage_controls', chart_config: @chart_config, period: :weekly, supply: :gas, split_meters: false, meters: @meters %>
     <% end %>
   <% end %>
 </div>
@@ -48,7 +48,7 @@
       <p><%= t('advice_pages.gas_recent_changes.analysis.charts.compare_recent_days_chart_explanation') %></p>
     <% end %>
     <% c.with_footer do %>
-      <%= render 'controls', chart_config: @chart_config, period: :daily, supply: :gas, split_meters: @split_meters, meters: @meters  %>
+      <%= render 'shared/usage_controls', chart_config: @chart_config, period: :daily, supply: :gas, split_meters: false, meters: @meters  %>
       <p><%= t('advice_pages.gas_recent_changes.analysis.expected_usage_patterns') %></p>
       <p><%= t('advice_pages.gas_recent_changes.analysis.optimal_start_control') %></p>
     <% end %>
