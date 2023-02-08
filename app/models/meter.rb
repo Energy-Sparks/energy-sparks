@@ -48,6 +48,7 @@ class Meter < ApplicationRecord
   belongs_to :solar_edge_installation, optional: true
   belongs_to :meter_review, optional: true
   belongs_to :data_source, optional: true
+  belongs_to :issue_meter
 
   has_one :rtone_variant_installation, required: false
 

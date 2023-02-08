@@ -3,6 +3,7 @@
 # Table name: advice_pages
 #
 #  created_at :datetime         not null
+#  fuel_type  :integer
 #  id         :bigint(8)        not null, primary key
 #  key        :string           not null
 #  restricted :boolean          default(FALSE)

@@ -36,9 +36,13 @@ class Issue < ApplicationRecord
   delegate :name, to: :issueable
   belongs_to :school_group, -> { where(issues: { issueable_type: 'SchoolGroup' }) }, foreign_key: 'issueable_id', optional: true
   belongs_to :school, -> { where(issues: { issueable_type: 'School' }) }, foreign_key: 'issueable_id', optional: true
+
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
   belongs_to :owned_by, class_name: 'User', optional: true
+
+  has_many :issue_meters
+  has_many :meters, through: :issue_meters
 
   scope :for_school_group, ->(school_group) do
     where(schools: { school_group: school_group }).or(
