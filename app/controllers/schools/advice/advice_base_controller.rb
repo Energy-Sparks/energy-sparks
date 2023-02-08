@@ -86,6 +86,13 @@ module Schools
         end
       end
 
+      def start_end_dates
+        {
+          earliest_reading:  aggregate_school.aggregate_meter(@advice_page.fuel_type.to_sym).amr_data.start_date,
+          last_reading:  aggregate_school.aggregate_meter(@advice_page.fuel_type.to_sym).amr_data.end_date,
+        }
+      end
+
       #Should return an object that conforms to interface described
       #by the AnalysableMixin. Will be used to determine whether
       #there's enough data and, optionally, identify when we think there

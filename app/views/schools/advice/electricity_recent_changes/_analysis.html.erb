@@ -12,7 +12,7 @@
 
 <div class="charts">
   <%= render(ChartComponent.new(
-    chart_type: @chart_config[:weekly],
+    chart_type: :calendar_picker_electricity_week_example_comparison_chart,
     school: @school,
     analysis_controls: false,
     no_zoom: true,
@@ -34,7 +34,7 @@
 
 <div class="charts">
   <%= render(ChartComponent.new(
-    chart_type: @chart_config[:daily],
+    chart_type: :calendar_picker_electricity_day_example_comparison_chart,
     school: @school,
     analysis_controls: false,
     no_zoom: true,

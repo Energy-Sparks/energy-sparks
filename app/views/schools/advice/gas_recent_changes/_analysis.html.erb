@@ -49,6 +49,7 @@
     <% end %>
     <% c.with_footer do %>
       <%= render 'shared/usage_controls', chart_config: @chart_config, period: :daily, supply: :gas, split_meters: false, meters: @meters  %>
+      <br/>
       <p><%= t('advice_pages.gas_recent_changes.analysis.expected_usage_patterns') %></p>
       <p><%= t('advice_pages.gas_recent_changes.analysis.optimal_start_control') %></p>
     <% end %>
