@@ -1,0 +1,21 @@
+<%= render 'schools/advice/section_title', section_id: 'long-term-trends', section_title: t('advice_pages.electricity_long_term.analysis.long_term_trends.title') %>
+
+<p><%= t('advice_pages.electricity_long_term.analysis.long_term_trends.summary') %></p>
+
+<% if analysis_dates.months_of_data > 23 %>
+  <%= component 'chart', chart_type: :electricity_longterm_trend, school: school do |c| %>
+    <% c.with_title { t('advice_pages.electricity_long_term.charts.electricity_longterm_trend.title') } %>
+    <% c.with_subtitle { t('advice_pages.electricity_long_term.charts.electricity_longterm_trend.subtitle') } %>
+    <% c.with_footer do %>
+      <p><%= t('advice_pages.electricity_long_term.charts.electricity_longterm_trend.explanation') %></p>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= component 'chart', chart_type: :group_by_week_electricity_unlimited, school: school do |c| %>
+  <% c.with_title { t('advice_pages.electricity_long_term.charts.group_by_week_electricity_unlimited.title') } %>
+  <% c.with_subtitle { t('advice_pages.electricity_long_term.charts.group_by_week_electricity_unlimited.subtitle') } %>
+  <% c.with_footer do %>
+    <p><%= t('advice_pages.electricity_long_term.charts.group_by_week_electricity_unlimited.explanation') %></p>
+  <% end %>
+<% end %>

@@ -1,0 +1,19 @@
+<%= render 'schools/advice/section_title', section_id: 'recent-trend', section_title: t('advice_pages.electricity_long_term.analysis.recent_trend.title') %>
+
+<%= component 'chart', chart_type: :group_by_week_electricity, school: school do |c| %>
+  <% c.with_title { t('advice_pages.electricity_long_term.charts.group_by_week_electricity.title') } %>
+  <% c.with_subtitle { t('advice_pages.electricity_long_term.charts.group_by_week_electricity.subtitle') } %>
+  <% c.with_footer do %>
+    <p><%= t('advice_pages.electricity_long_term.charts.group_by_week_electricity.explanation_html') %></p>
+  <% end %>
+<% end %>
+
+<% if analysis_dates.months_of_data > 23 %>
+  <%= component 'chart', chart_type: :electricity_by_month_year_0_1, school: school do |c| %>
+    <% c.with_title { t('advice_pages.electricity_long_term.charts.electricity_by_month_year.title') } %>
+    <% c.with_subtitle { t('advice_pages.electricity_long_term.charts.electricity_by_month_year.subtitle') } %>
+    <% c.with_footer do %>
+      <p><%= t('advice_pages.electricity_long_term.charts.electricity_by_month_year.explanation') %></p>
+    <% end %>
+  <% end %>
+<% end %>

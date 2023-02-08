@@ -20,7 +20,10 @@ RSpec.describe "electricity long term advice page", type: :system do
       it_behaves_like "an advice page tab", tab: "Insights"
     end
     context "clicking the 'Analysis' tab" do
-      before { click_on 'Analysis' }
+
+      before do
+        click_on 'Analysis'
+      end
       it_behaves_like "an advice page tab", tab: "Analysis"
     end
     context "clicking the 'Learn More' tab" do

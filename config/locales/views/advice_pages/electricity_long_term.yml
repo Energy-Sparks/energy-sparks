@@ -46,13 +46,33 @@ en:
           title: Long term trends
         comparison:
           title: Comparison with other schools
+          assessment:
+            high:
+              title: Your electricity usage is high.
+              percent_html: Your annual electricity usage is %{percent} higher than the best performing schools.
+              savings_html: If you matched the usage of those schools you could save %{estimated_savings_kwh} or %{estimated_savings_gbp} per year.
+            low:
+              title: Your electricity usage is low.
+              percent_html: Your annual electricity usage is %{percent} lower than the best performing schools.
           table_explanation: The following table outlines the potential benefits of reducing your electricity use to match %{school_type} schools with a similar number of pupils.
         meter_breakdown:
           summary: Your school has multiple electricity meters. The section below shows electricity use for each meter. You might be able to use this information to identify high or unusual energy consumption in certain parts of your school.
           title: Electricity consumption breakdown by meter
-          table_introduction: The table below covers the most recent 12 months from Month Year to Month Year.
+          table_introduction: The table below covers the most recent 12 months from %{start_date} to %{end_date}.
           table_explanation: Having multiple meters can help you understand your energy use better, however, there is a significant standing charge for each meter of more than £ 1,000 per year, so there is potential for saving by consolidating meters.
       insights:
         next_steps: Next steps
         title: Insights
       page_title: Long term changes in electricity consumption
+      tables:
+        columns:
+          meter: Meter
+          percent: Percent of total use
+          annual_change: Annual change in usage
+          annual_usage_kwh: Annual usage (kwh)
+          annual_usage_gbp: Annual cost (£)
+          annual_usage_co2: Annual co2 (kg/CO2)
+          estimated_savings_gbp: Estimated saving (£)
+        labels:
+          your_school: Your school
+          all_meters: All meters
