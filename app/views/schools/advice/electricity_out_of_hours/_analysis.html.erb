@@ -19,28 +19,7 @@
 
 <p><%= t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.table_introduction') %></p>
 
-<table class="table table-sm">
-  <thead class="thead-dark">
-    <tr>
-      <th class="text-left-">Time of day</th>
-      <th class="text-right-">kWh</th>
-      <th class="text-right">£</th>
-      <th class="text-right">CO2 kg</th>
-      <th class="text-right">%</th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= [:holidays, :weekends, :school_day_open, :school_day_closed, :community].each do |usage| %>
-    <tr>
-      <td><%= usage %></td>
-      <td class="text-right"><%= @annual_usage_breakdown.send(usage).kwh %></td>
-      <td class="text-right"><%= @annual_usage_breakdown.send(usage).£ %></td>
-      <td class="text-right"><%= @annual_usage_breakdown.send(usage).co2 %></td>
-      <td class="text-right"><%= @annual_usage_breakdown.send(usage).percent %></td>
-    </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= render 'analysis_table' %>
 
 <%= component 'chart', chart_type: :daytype_breakdown_electricity_tolerant, school: @school do |c| %>
   <% c.with_title do %>
