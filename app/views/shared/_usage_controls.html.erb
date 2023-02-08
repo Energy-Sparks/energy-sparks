@@ -42,17 +42,19 @@
       </div>
     </div>
 
-    <% if meters.count > 1 %>
-      <div class="col-12 col-lg-3 col-md-4">
-        <div class="<%= supply %>-dark p-2 mb-2">
-          <%= label_tag :meter, t('charts.usage.select_meter.title') %>
-          <div class="form-group">
-            <%= select_tag :meter, content_tag(:option, t('charts.usage.select_meter.all_meters'), value: "all") + options_from_collection_for_select(meters, :mpan_mprn, :display_name, nil), class: "form-control" %>
+    <% unless split_meters %>
+      <% if meters.count > 1 %>
+        <div class="col-12 col-lg-3 col-md-4">
+          <div class="<%= supply %>-dark p-2 mb-2">
+            <%= label_tag :meter, t('charts.usage.select_meter.title') %>
+            <div class="form-group">
+              <%= select_tag :meter, content_tag(:option, t('charts.usage.select_meter.all_meters'), value: "all") + options_from_collection_for_select(meters, :mpan_mprn, :display_name, nil), class: "form-control" %>
+            </div>
           </div>
         </div>
-      </div>
-    <% else %>
-      <%= hidden_field_tag :meter, 'all' %>
+      <% else %>
+        <%= hidden_field_tag :meter, 'all' %>
+      <% end %>
     <% end %>
   </div>
 <% end %>

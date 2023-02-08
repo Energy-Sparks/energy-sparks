@@ -5,6 +5,8 @@ module Schools
       end
 
       def analysis
+        @meters = @school.filterable_meters.gas
+        @chart_config = start_end_dates
       end
 
       private
