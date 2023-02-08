@@ -1,4 +1,4 @@
-<table class="table table-sm">
+<table class="table table-sm table-with-totals">
   <thead class="thead-dark">
     <tr>
       <th class="text-left-">
@@ -21,9 +21,11 @@
   <tbody>
     <% @usage_categories.each do |usage_category| %>
       <tr>
-        <td><%= usage_category %></td>
+        <td>
+          <%= t("analytics.series_data_manager.series_name.#{usage_category}") %>
+        </td>
         <td class="text-right">
-          <%= format_unit(@annual_usage_breakdown.send(usage_category).kwh, :kw) %>
+          <%= format_unit(@annual_usage_breakdown.send(usage_category).kwh, :kwh) %>
         </td>
         <td class="text-right">
           <%= format_unit(@annual_usage_breakdown.send(usage_category).£, :£) %>
@@ -37,6 +39,21 @@
       </tr>
     <% end %>
     <tr>
+      <td>
+        <%= t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.table.total') %>
+      </td>
+      <td class="text-right">
+        <%=  format_unit(usage_breakdown_totals_for(@annual_usage_breakdown, :kwh), :kwh) %>
+      </td>
+      <td class="text-right">
+        <%=  format_unit(usage_breakdown_totals_for(@annual_usage_breakdown, :£), :£) %>
+      </td>
+      <td class="text-right">
+        <%=  format_unit(usage_breakdown_totals_for(@annual_usage_breakdown, :co2), :co2) %>
+      </td>
+      <td class="text-right">
+        <%=  format_unit(usage_breakdown_totals_for(@annual_usage_breakdown, :percent), :percent) %>
+      </td>
     </tr>
   </tbody>
 </table>

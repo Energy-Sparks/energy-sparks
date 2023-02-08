@@ -5,6 +5,7 @@ en:
       analysis:
         last_twelve_months:
           table:
+            total: Total
             time_of_day: Time of day
             gbp_at_current_tariff: £ (at current tariff)
             percent: Percent

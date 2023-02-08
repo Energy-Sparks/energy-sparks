@@ -77,4 +77,12 @@ module AdvicePageHelper
   def months_between(start_date, end_date)
     ((end_date - start_date).to_f / 365 * 12).round
   end
+
+  def usage_breakdown_totals_for(annual_usage_breakdown, label = :kwh)
+      annual_usage_breakdown.holiday.send(label) +
+        annual_usage_breakdown.weekend.send(label) +
+        annual_usage_breakdown.school_day_open.send(label) +
+        annual_usage_breakdown.school_day_closed.send(label) +
+        annual_usage_breakdown.community.send(label)
+  end
 end
