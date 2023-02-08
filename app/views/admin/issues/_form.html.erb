@@ -14,6 +14,9 @@
     <%= f.input :title %>
     <%= f.input :description, as: :rich_text_area %>
     <%= f.input :fuel_type, collection: Issue.fuel_types.keys, label_method: lambda {|k| k.humanize}, include_blank: "Not applicable" %>
+    <% if issue.school %>
+      <%= f.input :meter_ids, as: :check_boxes, collection: issue.issueable.meters, label_method: lambda {|meter| "#{fa_icon(fuel_type_icon(meter.meter_type))} #{meter.mpan_mprn}".html_safe}, include_blank: false, input_html: { multiple: true}, label: "Affected meters" %>
+    <% end %>
     <% if issue.issue? %>
       <%= f.input :status, collection: Issue.statuses.keys, label_method: lambda {|k| k.humanize}, include_blank: false %>
     <% else %>

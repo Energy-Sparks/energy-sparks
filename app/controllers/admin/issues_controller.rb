@@ -43,6 +43,8 @@ module Admin
     end
 
     def update
+      logger.info "*************" + params.inspect
+
       if @issue.update(issue_params.merge(updated_by: current_user))
         redirect_to params[:redirect_back], notice: issueable_notice('was successfully updated')
       else
@@ -82,7 +84,7 @@ module Admin
     end
 
     def issue_params
-      params.require(:issue).permit(:issue_type, :title, :description, :fuel_type, :status, :owned_by_id, :pinned)
+      params.require(:issue).permit(:issue_type, :title, :description, :fuel_type, :status, :owned_by_id, :pinned, meter_ids: [])
     end
   end
 end
