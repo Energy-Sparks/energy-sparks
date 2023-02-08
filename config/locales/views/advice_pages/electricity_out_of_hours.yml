@@ -25,14 +25,14 @@ en:
             title: Electricity use by day of the week
           title: Usage by day of week
       insights:
-        how_do_you_compare_one_html: "<p>How does your out of hours usage compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?</p>"
-        how_do_you_compare_title: How do you compare?
-        how_do_you_compare_two_html: "<p>For more detail, compare with other schools in your group</p>"
         how_do_you_compare:
           table:
             category: Category
             exemplar_school: Exemplar
             your_kwh: Your kWh
+        how_do_you_compare_one_html: "<p>How does your out of hours usage compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?</p>"
+        how_do_you_compare_title: How do you compare?
+        how_do_you_compare_two_html: "<p>For more detail, compare with other schools in your group</p>"
         next_steps: Next steps
         title: What is out of hours usage?
         what_is_out_of_hours_usage_html: |-
