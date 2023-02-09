@@ -1,0 +1,34 @@
+<p><%= t('advice_pages.electricity_intraday.analysis.summary') %></p>
+
+<p><%= t('advice_pages.electricity_intraday.analysis.sections') %></p>
+
+<ul>
+  <li><%= link_to(t('advice_pages.electricity_intraday.analysis.comparison.title'), '#comparison') %></li>
+  <li><%= link_to(t('advice_pages.electricity_intraday.analysis.schooldays.title'), '#schooldays') %></li>
+  <li><%= link_to(t('advice_pages.electricity_intraday.analysis.holidays.title'), '#holidays') %></li>
+  <li><%= link_to(t('advice_pages.electricity_intraday.analysis.weekends.title'), '#weekends') %></li>
+  <li><%= link_to(t('advice_pages.electricity_intraday.analysis.trends.title'), '#trends') %></li>
+</ul>
+
+<!--  SCHOOL COMPARISON -->
+<%= render 'schools/advice/section_title', section_id: 'comparison', section_title: t('advice_pages.electricity_intraday.analysis.comparison.title') %>
+
+<%= component 'chart', chart_type: :intraday_line_school_days_reduced_data_versus_benchmarks, school: @school do |c| %>
+  <% c.with_title { t('advice_pages.electricity_intraday.analysis.charts.comparison_chart_title', months_analysed: @analysis_dates.months_analysed) } %>
+  <% c.with_subtitle { t('advice_pages.electricity_intraday.analysis.charts.comparison_chart_subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
+  <% c.with_footer do %>
+    <p><%= t('advice_pages.electricity_intraday.analysis.charts.comparison_chart_explanation_html') %></p>
+  <% end %>
+<% end %>
+
+<!--  SCHOOL DAYS -->
+<%= render 'schools/advice/section_title', section_id: 'schooldays', section_title: t('advice_pages.electricity_intraday.analysis.schooldays.title') %>
+
+<!--  HOLIDAYS -->
+<%= render 'schools/advice/section_title', section_id: 'holidays', section_title: t('advice_pages.electricity_intraday.analysis.holidays.title') %>
+
+<!--  WEEKDAYS -->
+<%= render 'schools/advice/section_title', section_id: 'weekends', section_title: t('advice_pages.electricity_intraday.analysis.weekends.title') %>
+
+<!--  RECENT TRENDS -->
+<%= render 'schools/advice/section_title', section_id: 'trends', section_title: t('advice_pages.electricity_intraday.analysis.trends.title') %>
