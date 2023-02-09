@@ -15,9 +15,9 @@ class ApplicationController < ActionController::Base
     if EnergySparks::FeatureFlags.active?(:redirect_to_preferred_locale)
       subdomain = ApplicationController.helpers.subdomain_for(user.preferred_locale)
       I18n.locale = user.preferred_locale
-      root_url(subdomain: subdomain) + (session[:user_return_to][1..-1] || '')
+      root_url(subdomain: subdomain).chomp('/') + session.fetch(:user_return_to, '/')
     else
-      session[:user_return_to] || root_url
+      session.fetch(:user_return_to, root_url)
     end
   end
 
