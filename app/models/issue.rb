@@ -64,6 +64,7 @@ class Issue < ApplicationRecord
   enum status: { open: 0, closed: 1 }, _prefix: true
 
   validates :issue_type, :status, :title, :description, presence: true
+  validate :school_issue_meters_only
 
   before_save :set_note_status
   after_initialize :set_enum_defaults
@@ -132,5 +133,11 @@ class Issue < ApplicationRecord
 
   def set_note_status
     self.status = :open if self.note?
+  end
+
+  def school_issue_meters_only
+    if meters.any? && !issueable.is_a?(School)
+      errors.add(:base, "Only school issues can have associated meters")
+    end
   end
 end
