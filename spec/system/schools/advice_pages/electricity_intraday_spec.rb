@@ -43,6 +43,13 @@ RSpec.describe "electricity intraday advice page", type: :system do
       it "shows dates for 7 day period up to end date" do
         expect(page).to have_content("graph shows how the electricity consumption for your school varies during the day between 26 Dec 2020 and 01 Jan 2021")
       end
+
+      context 'when not enough data' do
+        let(:start_date)          { end_date - 11.months }
+        it "shows message" do
+          expect(page).to have_content("Not enough data to run analysis")
+        end
+      end
     end
 
     context "clicking the 'Learn More' tab" do

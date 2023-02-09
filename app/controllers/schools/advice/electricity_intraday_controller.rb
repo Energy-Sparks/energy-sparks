@@ -10,6 +10,12 @@ module Schools
 
       private
 
+      def create_analysable
+        OpenStruct.new(
+          enough_data?: analysis_dates.one_years_data
+        )
+      end
+
       def analysis_dates
         start_date = aggregate_school.aggregated_electricity_meters.amr_data.start_date
         end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
