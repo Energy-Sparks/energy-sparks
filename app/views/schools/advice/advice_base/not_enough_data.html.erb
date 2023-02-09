@@ -6,9 +6,9 @@
     <p>
       <%= t('advice_pages.not_enough_data.message', fuel_type: @advice_page.fuel_type) %>
     </p>
-    <% if @analysable.available_from.present? %>
+    <% if @analysable.data_available_from.present? %>
       <p>
-        <%= t('advice_pages.not_enough_data.available_from', available_from: @analysable.available_from.to_s(:es_short)) %>
+        <%= t('advice_pages.not_enough_data.available_from', available_from: @analysable.data_available_from.to_s(:es_short)) %>
       </p>
     <% end %>
     <p>
