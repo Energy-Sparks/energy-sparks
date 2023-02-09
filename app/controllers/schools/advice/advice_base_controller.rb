@@ -39,7 +39,7 @@ module Schools
       end
 
       def advice_page_end_date
-        @advice_page_end_date ||= AggregateSchoolService.analysis_date(aggregate_school, @advice_page.fuel_type)
+        @advice_page_end_date ||= AggregateSchoolService.analysis_date(aggregate_school, advice_page_fuel_type)
       end
 
       def set_tab_name
@@ -72,7 +72,7 @@ module Schools
       end
 
       def school_has_fuel_type?
-        case @advice_page.fuel_type.to_sym
+        case advice_page_fuel_type
         when :gas
           @school.has_gas?
         when :electricity
@@ -88,9 +88,33 @@ module Schools
 
       def start_end_dates
         {
-          earliest_reading:  aggregate_school.aggregate_meter(@advice_page.fuel_type.to_sym).amr_data.start_date,
-          last_reading:  aggregate_school.aggregate_meter(@advice_page.fuel_type.to_sym).amr_data.end_date,
+          earliest_reading:  analysis_start_date,
+          last_reading:  analysis_end_date,
         }
+      end
+
+      def advice_page_fuel_type
+        @advice_page.fuel_type.to_sym
+      end
+
+      def analysis_start_date
+        aggregate_school.aggregate_meter(advice_page_fuel_type).amr_data.start_date
+      end
+
+      def analysis_end_date
+        aggregate_school.aggregate_meter(advice_page_fuel_type).amr_data.end_date
+      end
+
+      def analysis_dates
+        start_date = analysis_start_date
+        end_date = analysis_end_date
+        OpenStruct.new(
+          start_date: start_date,
+          end_date: end_date,
+          one_years_data: one_years_data?(start_date, end_date),
+          recent_data: recent_data?(end_date),
+          months_analysed: months_analysed(start_date, end_date)
+        )
       end
 
       #Should return an object that conforms to interface described
