@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "electricity out of hours advice page", type: :system do
   let(:key) { 'electricity_out_of_hours' }
-  let(:expected_page_title) { "Electricity out of hours usage analysis" }
+  let(:expected_page_title) { "Out of school hours electricity use" }
   include_context "electricity advice page"
 
   context 'as school admin' do
