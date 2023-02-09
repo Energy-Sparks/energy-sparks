@@ -18,6 +18,7 @@
           <br /><%= render 'admin/issues/issueable', issueable: issue.try(:issueable) %>
         <% end %>
         <%= render 'admin/issues/fuel_type', issue: issue %>
+        <%= render 'admin/issues/meters', issue: issue %>
         </td>
         <td><%= render 'admin/issues/owned_by', issue: issue %></td>
         <td><%= render 'admin/issues/status', issue: issue %></td>
