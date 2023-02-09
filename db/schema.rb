@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_27_115102) do
+ActiveRecord::Schema.define(version: 2023_02_08_104408) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -910,6 +910,15 @@ ActiveRecord::Schema.define(version: 2023_01_27_115102) do
     t.datetime "created_at", precision: 6, default: -> { "now()" }, null: false
     t.datetime "updated_at", precision: 6, default: -> { "now()" }, null: false
     t.index ["intervention_type_group_id"], name: "index_intervention_types_on_intervention_type_group_id"
+  end
+
+  create_table "issue_meters", force: :cascade do |t|
+    t.bigint "issue_id"
+    t.bigint "meter_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["issue_id"], name: "index_issue_meters_on_issue_id"
+    t.index ["meter_id"], name: "index_issue_meters_on_meter_id"
   end
 
   create_table "issues", force: :cascade do |t|
@@ -1860,6 +1869,8 @@ ActiveRecord::Schema.define(version: 2023_01_27_115102) do
   add_foreign_key "global_meter_attributes", "users", column: "deleted_by_id", on_delete: :restrict
   add_foreign_key "intervention_type_suggestions", "intervention_types", on_delete: :cascade
   add_foreign_key "intervention_types", "intervention_type_groups", on_delete: :cascade
+  add_foreign_key "issue_meters", "issues"
+  add_foreign_key "issue_meters", "meters"
   add_foreign_key "issues", "users", column: "created_by_id"
   add_foreign_key "issues", "users", column: "owned_by_id"
   add_foreign_key "issues", "users", column: "updated_by_id"

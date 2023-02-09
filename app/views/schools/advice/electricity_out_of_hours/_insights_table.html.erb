@@ -1,0 +1,18 @@
+<table class="mt-2 table table-sm advice-table">
+    <thead>
+      <th><%= t('advice_pages.electricity_out_of_hours.insights.how_do_you_compare.table.category') %></th>
+      <th class="text-right"><%= t('kwh') %></th>
+      <th class="text-right"><%= t('advice_pages.electricity_out_of_hours.insights.how_do_you_compare.table.your_kwh') %></th>
+    </thead>
+    <tr>
+      <td>
+        <%= t('advice_pages.electricity_out_of_hours.insights.how_do_you_compare.table.exemplar_school') %>
+      </td>
+      <td class="text-right">
+        <%= format_unit(@annual_usage_breakdown&.potential_savings(versus: :exemplar_school)&.kwh, :kwh) %>
+      </td>
+      <td class="text-right">
+        <%= format_unit(@annual_usage_breakdown&.total&.kwh, :kwh) %>
+      </td>
+    <tr>
+</table>

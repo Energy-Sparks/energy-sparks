@@ -3,8 +3,49 @@ en:
   advice_pages:
     electricity_out_of_hours:
       analysis:
+        last_twelve_months:
+          community_use: Your school has identified that there is community use of the school outside of school hours. Over the last year, {community_kwh} of electricity has been used during these times which will have cost {community_gbp} and caused {community_co2} to be emitted.
+          table:
+            co2_kg: CO2 kg
+            gbp_at_current_tariff: "£ (at current tariff)"
+            percent: Percent
+            time_of_day: Time of day
+            total: Total
+          table_introduction: The table below shows how much electricity has been used when the school is open and closed on a school day as well as during weekends and holidays.
+          title: Last 12 months
+        summary: This section gives a more detailed analysis of your school’s out of hours electricity use and some things to look out for. For good energy management, you want most of your energy use to be when the school is open.
         title: Analysis
+        usage_by_day_of_week:
+          daytype_breakdown_electricity_tolerant_chart:
+            subtitle_html: This chart shows a breakdown of your electricity consumption between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span>
+            title: Electricity usage breakdown
+          electricity_by_day_of_week_tolerant_chart:
+            footer: There will be some electricity usage at weekends from appliances and devices left on, but the school should aim to minimise these. Schools with low weekend electricity consumption aim to switch as many appliances off as possible on a Friday afternoon, sometimes providing the caretaker or cleaning staff with a checklist as to what they should be turning off.
+            subtitle_html: This chart shows the total amount of electricity used by your school between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span>, broken down by day of the week and time of use
+            title: Electricity use by day of the week
+          title: Usage by day of week
       insights:
+        how_do_you_compare:
+          table:
+            category: Category
+            exemplar_school: Exemplar
+            your_kwh: Your kWh
+        how_do_you_compare_one_html: "<p>How does your out of hours usage compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?</p>"
+        how_do_you_compare_title: How do you compare?
+        how_do_you_compare_two_html: "<p>For more detail, compare with other schools in your group</p>"
         next_steps: Next steps
-        title: Insights
-      page_title: Electricity out of hours usage analysis
+        title: What is out of hours usage?
+        what_is_out_of_hours_usage_html: |-
+          <p>
+            Out of hours electricity use is the amount of electricity used when the school is closed - overnight, at weekends and during the holidays.
+          </p>
+          <p>
+            Reducing out of hours electricity use is one of the easiest, and cheapest ways of saving lots of energy.
+          </p>
+          <p>
+            Note: The analysis within this page is based on the school opening hours set for your school. It is best to set these to be as accurate as you can so that you receive appropriate advice.
+          </p>
+        what_is_out_of_hours_usage_link: Learn more
+        your_out_of_hours_usage_html: Over the last year %{out_of_hours_percent} of your electricity was used when the school was closed. This has cost you %{out_of_hours_gbp} and led to emissions of %{out_of_hours_co2}kg CO2.
+        your_out_of_hours_usage_title: Your out of hours usage
+      page_title: Out of school hours electricity use

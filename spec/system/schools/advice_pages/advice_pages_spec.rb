@@ -2,14 +2,13 @@ require 'rails_helper'
 
 RSpec.describe "advice pages", type: :system do
 
-  let(:school) { create(:school) }
+  include_context "electricity advice page"
 
   let(:key) { 'total_energy_use' }
   let(:learn_more) { 'here is some more explanation' }
+  let(:expected_page_title) { "Total energy use" }
 
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, learn_more: learn_more) }
-
-  let(:expected_page_title) { "Total energy use" }
 
   context 'when error occurs' do
     before do
@@ -23,6 +22,45 @@ RSpec.describe "advice pages", type: :system do
       expect(page).to have_content('We encountered an error attempting to generate your analysis')
     end
   end
+
+  context 'when school doesnt have fuel type' do
+    before do
+      allow_any_instance_of(Schools::Advice::AdviceBaseController).to receive(:school_has_fuel_type?).and_return(false)
+    end
+    it 'shows the no fuel type page' do
+      visit school_advice_path(school)
+      click_on key
+      expect(page).to have_content('Unable to run requested analysis')
+    end
+  end
+
+  context 'when school doesnt have enough data' do
+    let(:data_available_from)  { nil }
+    let(:analysable) {
+      OpenStruct.new(
+        enough_data?: false,
+        data_available_from: data_available_from
+      )
+    }
+    before do
+      allow_any_instance_of(Schools::Advice::AdviceBaseController).to receive(:create_analysable).and_return(analysable)
+    end
+    it 'shows the not enough data page' do
+      visit school_advice_path(school)
+      click_on key
+      expect(page).to have_content('Not enough data to run analysis')
+      expect(page).to_not have_content('Assuming we continue to regularly receive data')
+    end
+    context 'and we can estimate a date' do
+      let(:data_available_from) { Date.today + 10 }
+      it 'also includes the data' do
+        visit school_advice_path(school)
+        click_on key
+        expect(page).to have_content("Assuming we continue to regularly receive data we expect this analysis to be available after #{data_available_from.to_s(:es_short)}")
+      end
+    end
+  end
+
 
   context 'as non-logged in user' do
 

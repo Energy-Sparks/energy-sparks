@@ -58,6 +58,28 @@ RSpec.describe Issue, type: :model do
     end
   end
 
+  describe "validate :school_issue_meters_only" do
+    let(:meter) { create(:gas_meter) }
+    before do
+      issue.meters << meter
+      issue.save
+    end
+    context "issueable is a school" do
+      subject(:issue) { create(:issue, issueable: create(:school)) }
+      it { expect(issue).to be_valid }
+    end
+    context "issueable is a school group" do
+      subject(:issue) { create(:issue, issueable: create(:school_group)) }
+      it { expect(issue).to_not be_valid }
+      it { expect(issue.errors.messages[:base]).to include("Only school issues can have associated meters") }
+    end
+    context "issueable is a data source" do
+      subject(:issue) { create(:issue, issueable: create(:data_source)) }
+      it { expect(issue).to_not be_valid }
+      it { expect(issue.errors.messages[:base]).to include("Only school issues can have associated meters") }
+    end
+  end
+
   describe "#resolve!" do
     let!(:user) { create(:admin) }
     context "when issue is of type note" do
