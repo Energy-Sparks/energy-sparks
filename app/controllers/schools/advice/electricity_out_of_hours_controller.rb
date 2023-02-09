@@ -1,17 +1,22 @@
 module Schools
   module Advice
     class ElectricityOutOfHoursController < AdviceBaseController
-      before_action :set_annual_usage_breakdown
       before_action :set_usage_categories
 
       def insights
+        @annual_usage_breakdown = annual_usage_breakdown_service.usage_breakdown
       end
 
       def analysis
+        @annual_usage_breakdown = annual_usage_breakdown_service.usage_breakdown
         @analysis_dates = analysis_dates
       end
 
       private
+
+      def create_analysable
+        annual_usage_breakdown_service
+      end
 
       def analysis_dates
         start_date = aggregate_school.aggregated_electricity_meters.amr_data.start_date
@@ -25,11 +30,11 @@ module Schools
         )
       end
 
-      def set_annual_usage_breakdown
-        @annual_usage_breakdown = ::Usage::AnnualUsageBreakdownService.new(
+      def annual_usage_breakdown_service
+        ::Usage::AnnualUsageBreakdownService.new(
           meter_collection: aggregate_school,
           fuel_type: :electricity
-        ).usage_breakdown
+        )
       end
 
       def set_usage_categories
