@@ -48,4 +48,4 @@ en:
         what_is_out_of_hours_usage_link: Learn more
         your_out_of_hours_usage_html: Over the last year %{out_of_hours_percent} of your electricity was used when the school was closed. This has cost you %{out_of_hours_gbp} and led to emissions of %{out_of_hours_co2}kg CO2.
         your_out_of_hours_usage_title: Your out of hours usage
-      page_title: Electricity out of hours usage analysis
+      page_title: Out of school hours electricity use
