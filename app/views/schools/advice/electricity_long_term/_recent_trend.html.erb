@@ -1,5 +1,18 @@
 <%= render 'schools/advice/section_title', section_id: 'recent-trend', section_title: t('advice_pages.electricity_long_term.analysis.recent_trend.title') %>
 
+<% if annual_usage.kwh < vs_exemplar.kwh %>
+  <%= component 'notice', status: :positive do %>
+    <p><%= t('advice_pages.electricity_long_term.analysis.comparison.assessment.low.title') %></p>
+    <p><%= t('advice_pages.electricity_long_term.analysis.comparison.assessment.low.percent_html', percent: format_unit(estimated_savings_vs_exemplar.percent.abs, :percent)) %></p>
+  <% end %>
+<% else %>
+  <%= component 'notice', status: :negative do %>
+    <p><%= t('advice_pages.electricity_long_term.analysis.comparison.assessment.high.title') %></p>
+    <p><%= t('advice_pages.electricity_long_term.analysis.comparison.assessment.high.percent_html', percent: format_unit(estimated_savings_vs_exemplar.percent, :percent)) %></p>
+    <p><%= t('advice_pages.electricity_long_term.analysis.comparison.assessment.high.savings_html', estimated_savings_kwh: format_unit(estimated_savings_vs_exemplar.kwh, :kwh, false), estimated_savings_gbp: format_unit(estimated_savings_vs_exemplar.£, :£, false) ) %></p>
+  <% end %>
+<% end %>
+
 <%= component 'chart', chart_type: :group_by_week_electricity, school: school do |c| %>
   <% c.with_title { t('advice_pages.electricity_long_term.charts.group_by_week_electricity.title') } %>
   <% c.with_subtitle { t('advice_pages.electricity_long_term.charts.group_by_week_electricity.subtitle') } %>
