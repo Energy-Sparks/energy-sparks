@@ -30,6 +30,7 @@ RSpec.shared_context "electricity advice page" do
     allow(amr_data).to receive(:end_date).and_return(end_date)
     allow(electricity_aggregate_meter).to receive(:fuel_type).and_return(:electricity)
     allow(electricity_aggregate_meter).to receive(:amr_data).and_return(amr_data)
+    allow(meter_collection).to receive(:aggregate_meter).with(:electricity).and_return(electricity_aggregate_meter)
     allow(meter_collection).to receive(:aggregated_electricity_meters).and_return(electricity_aggregate_meter)
     allow(meter_collection).to receive(:amr_data).and_return(amr_data)
     allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(meter_collection)

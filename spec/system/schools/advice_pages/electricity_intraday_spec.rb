@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "electricity intraday advice page", type: :system do
   let(:key) { 'electricity_intraday' }
   let(:expected_page_title) { "Electricity intraday usage analysis" }
+
   include_context "electricity advice page"
 
   context 'as school admin' do
@@ -21,16 +22,7 @@ RSpec.describe "electricity intraday advice page", type: :system do
     end
 
     context "clicking the 'Analysis' tab" do
-      let(:start_date)          { Date.parse('20190101')}
-      let(:end_date)            { Date.parse('20210101')}
-      let(:amr_data)            { double('amr-data', start_date: start_date, end_date: end_date) }
-      let(:aggregate_meter)     { double('aggregate_meter', amr_data: amr_data) }
-      let(:aggregate_school)    { double('meter-collection') }
-
       before do
-        allow(aggregate_school).to receive(:aggregated_electricity_meters).and_return(aggregate_meter)
-        allow(aggregate_school).to receive(:aggregate_meter).and_return(aggregate_meter)
-        allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(aggregate_school)
         click_on 'Analysis'
       end
 
@@ -41,11 +33,13 @@ RSpec.describe "electricity intraday advice page", type: :system do
       end
 
       it "shows dates for 7 day period up to end date" do
-        expect(page).to have_content("graph shows how the electricity consumption for your school varies during the day between 26 Dec 2020 and 01 Jan 2021")
+        expected_start_date = (end_date - 6.days).to_s(:es_short)
+        expected_end_date = end_date.to_s(:es_short)
+        expect(page).to have_content("graph shows how the electricity consumption for your school varies during the day between #{expected_start_date} and #{expected_end_date}")
       end
 
       context 'when not enough data' do
-        let(:start_date)          { end_date - 11.months }
+        let(:start_date) { end_date - 11.months}
         it "shows message" do
           expect(page).to have_content("Not enough data to run analysis")
         end
