@@ -43,16 +43,16 @@
         <%= t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.table.total') %>
       </td>
       <td class="text-right">
-        <%=  format_unit(usage_breakdown_totals_for(@annual_usage_breakdown, :kwh), :kwh) %>
+        <%=  format_unit(annual_usage_breakdown_totals_for(@annual_usage_breakdown, :kwh), :kwh) %>
       </td>
       <td class="text-right">
-        <%=  format_unit(usage_breakdown_totals_for(@annual_usage_breakdown, :£), :£) %>
+        <%=  format_unit(annual_usage_breakdown_totals_for(@annual_usage_breakdown, :£), :£) %>
       </td>
       <td class="text-right">
-        <%=  format_unit(usage_breakdown_totals_for(@annual_usage_breakdown, :co2), :co2) %>
+        <%=  format_unit(annual_usage_breakdown_totals_for(@annual_usage_breakdown, :co2), :co2) %>
       </td>
       <td class="text-right">
-        <%=  format_unit(usage_breakdown_totals_for(@annual_usage_breakdown, :percent), :percent) %>
+        <%=  format_unit(annual_usage_breakdown_totals_for(@annual_usage_breakdown, :percent), :percent) %>
       </td>
     </tr>
   </tbody>

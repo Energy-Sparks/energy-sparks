@@ -78,11 +78,11 @@ module AdvicePageHelper
     ((end_date - start_date).to_f / 365 * 12).round
   end
 
-  def usage_breakdown_totals_for(annual_usage_breakdown, label = :kwh)
-      annual_usage_breakdown.holiday.send(label) +
-        annual_usage_breakdown.weekend.send(label) +
-        annual_usage_breakdown.school_day_open.send(label) +
-        annual_usage_breakdown.school_day_closed.send(label) +
-        annual_usage_breakdown.community.send(label)
+  def annual_usage_breakdown_totals_for(annual_usage_breakdown, unit = :kwh)
+    annual_usage_breakdown.holiday.send(unit) +
+      annual_usage_breakdown.weekend.send(unit) +
+      annual_usage_breakdown.school_day_open.send(unit) +
+      annual_usage_breakdown.school_day_closed.send(unit) +
+      annual_usage_breakdown.community.send(unit)
   end
 end
