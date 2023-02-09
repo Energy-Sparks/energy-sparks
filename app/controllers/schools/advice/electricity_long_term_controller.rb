@@ -39,19 +39,29 @@ module Schools
         meters.sort { |a, b| a[1].name_or_mpan_mprn <=> b[1].name_or_mpan_mprn }
       end
 
-      #add dates to subtitles
-      #check date range for 12 month comparison
-      #only include unlimited view if >1 years data
       def analysis_dates
         start_date = aggregate_school.aggregated_electricity_meters.amr_data.start_date
         end_date = aggregate_school.aggregated_electricity_meters.amr_data.end_date
         OpenStruct.new(
           start_date: start_date,
           end_date: end_date,
+          one_year_before_end: end_date - 1.year,
+          last_full_week_start_date: last_full_week_start_date(end_date),
+          last_full_week_end_date: last_full_week_end_date(end_date),
           one_years_data: one_years_data?(start_date, end_date),
           months_of_data: months_between(start_date, end_date),
           recent_data: recent_data?(end_date)
         )
+      end
+
+      #for charts that use the last full week
+      def last_full_week_start_date(end_date)
+        return end_date.prev_year.end_of_week
+      end
+
+      #for charts that use the last full week
+      def last_full_week_end_date(end_date)
+        return end_date.prev_week.end_of_week - 1
       end
 
       def usage_service
