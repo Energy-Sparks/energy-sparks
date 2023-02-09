@@ -1,1 +1,18 @@
+<%= component 'notice', status: :neutral do |c| %>
+  <% c.with_link { link_to t('advice_pages.gas_out_of_hours.insights.what_is_out_of_hours_usage_link'), learn_more_school_advice_gas_out_of_hours_path(@school) } %>
+  <%= t('advice_pages.gas_out_of_hours.insights.what_is_out_of_hours_usage_html') %>
+<% end %>
 
+<%= render 'schools/advice/section_title', section_id: 'current', section_title: t('advice_pages.gas_out_of_hours.insights.your_out_of_hours_usage_title') %>
+<%= t(
+      'advice_pages.gas_out_of_hours.insights.your_out_of_hours_usage_html',
+      out_of_hours_percent: format_unit(@annual_usage_breakdown&.out_of_hours&.percent, :percent),
+      out_of_hours_gbp: format_unit(@annual_usage_breakdown&.out_of_hours&.£, :£),
+      out_of_hours_co2: format_unit(@annual_usage_breakdown&.out_of_hours&.co2, :co2)
+    )
+  %>
+
+<%= render 'schools/advice/section_title', section_id: 'current', section_title: t('advice_pages.gas_out_of_hours.insights.how_do_you_compare_title') %>
+<%= t('advice_pages.gas_out_of_hours.insights.how_do_you_compare_one_html', school_type: I18n.t("analytics.school_types.#{@school&.school_type}").downcase) %>
+
+<%= t('advice_pages.gas_out_of_hours.insights.how_do_you_compare_two_html') %>

@@ -5,6 +5,22 @@ en:
       analysis:
         title: Analysis
       insights:
-        next_steps: Next steps
-        title: Insights
+        how_do_you_compare_one_html: "<p>How does your out of hours usage compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?</p>"
+        how_do_you_compare_title: How do you compare?
+        how_do_you_compare_two_html: "<p>For more detail, compare with other schools in your group</p>"
+        next_steps: Make sure that your heating is set to only heat the school when it needs to be warm. Heating and hot water can be switched off for evenings, weekends and holidays and heating should not come on too early in the mornings. Use a checklist of energy saving tasks to be completed before holidays.
+        title: What is out of hours usage?
+        what_is_out_of_hours_usage_html: |-
+          <p>
+            Out of hours gas use is the amount of gas used when the school is closed - overnight, at weekends and during the holidays.
+          </p>
+          <p>
+            Reducing out of hours gas use is one of the easiest, and cheapest ways of saving lots of energy.
+          </p>
+          <p>
+            Note: The analysis within this page is based on the school opening hours set for your school. It is best to set these to be as accurate as you can so that you receive appropriate advice.
+          </p>
+        what_is_out_of_hours_usage_link: Learn more
+        your_out_of_hours_usage_html: Over the last year %{out_of_hours_percent} of your gas was used when the school was closed. This has cost you %{out_of_hours_gbp} and led to emissions of %{out_of_hours_co2}kg CO2.
+        your_out_of_hours_usage_title: Out of school hours gas use
       page_title: Gas out of hours usage analysis
