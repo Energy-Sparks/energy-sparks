@@ -16,19 +16,35 @@ en:
             </p>
           comparison_chart_subtitle_html: The chart below provides a comparison of your school's average consumption during school days between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span>, and includes a comparison with 'benchmark' and 'exemplar' schools.
           comparison_chart_title: Electricity consumption during the school day over the last 12 months
+          holidays_chart_subtitle: The graph compares the average electricity consumption for your school during the school holidays over the last 2 years
+          holidays_chart_title: Daily variation in electricity use during school holidays
+          schooldays_chart_explanation_html: |-
+            <p>
+              This chart shows the peak electricity usage at the school (normally during the middle of the day) and the overnight electricity consumption.
+            </p>
+            <p>
+              It is useful in diagnosing what changes have happened over the last year which may have changed electricity consumption.
+            </p>
+          schooldays_chart_subtitle: The chart shows the average electricity consumption for your school during the school day over the last 2 years
+          schooldays_chart_title: Daily variation in electricity use during school days
+          trends_chart_explanation: You can use this type of graph to understand how the schools electricity usage changes over time. You can click on the legend to add or remove lines from the graph to make it clearer.
+          trends_chart_subtitle_html: The graph shows how the electricity consumption for your school varies during the day between <span class="start-date">%{start_date}</span> and <span class="end-date">%{end_date}</span>
+          trends_chart_title: Daily variation in electricity use over the last 7 days
+          weekends_chart_subtitle: The graph compares the average electricity consumption for your school during the weekend over the last 2 years
+          weekends_chart_title: Daily variation in electricity use over the weekends
+        comparison:
+          title: How does your school compare?
+        holidays:
+          title: Holidays
+        schooldays:
+          title: School days
         sections: The following sections provide more background and analysis on your electricity baseload
         summary: This section gives a more detailed analysis of how your school’s electricity use varies throughout the day. Comparisons are made between your school and benchmark and exemplar schools as well as between this year and the previous year for weekdays, weekends and holidays.
         title: Analysis
-        comparison:
-          title: How does your school compare?
-        schooldays:
-          title: School days
-        holidays:
-          title: Holidays
-        weekends:
-          title: Weekends
         trends:
           title: Recent trends
+        weekends:
+          title: Weekends
       insights:
         next_steps: Next steps
         title: Insights
