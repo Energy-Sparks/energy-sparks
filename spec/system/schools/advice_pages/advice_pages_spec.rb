@@ -35,11 +35,11 @@ RSpec.describe "advice pages", type: :system do
   end
 
   context 'when school doesnt have enough data' do
-    let(:available_from)  { nil }
+    let(:data_available_from)  { nil }
     let(:analysable) {
       OpenStruct.new(
         enough_data?: false,
-        available_from: available_from
+        data_available_from: data_available_from
       )
     }
     before do
@@ -52,11 +52,11 @@ RSpec.describe "advice pages", type: :system do
       expect(page).to_not have_content('Assuming we continue to regularly receive data')
     end
     context 'and we can estimate a date' do
-      let(:available_from) { Date.today + 10 }
+      let(:data_available_from) { Date.today + 10 }
       it 'also includes the data' do
         visit school_advice_path(school)
         click_on key
-        expect(page).to have_content("Assuming we continue to regularly receive data we expect this analysis to be available after #{available_from.to_s(:es_short)}")
+        expect(page).to have_content("Assuming we continue to regularly receive data we expect this analysis to be available after #{data_available_from.to_s(:es_short)}")
       end
     end
   end
