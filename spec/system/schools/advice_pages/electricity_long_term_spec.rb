@@ -42,6 +42,7 @@ RSpec.describe "electricity long term advice page", type: :system do
       end
 
       it_behaves_like "an advice page tab", tab: "Insights"
+
       it 'includes expected sections' do
         expect(page).to have_content("Tracking long term trends")
         expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.insights.current_usage.title'))
@@ -61,6 +62,7 @@ RSpec.describe "electricity long term advice page", type: :system do
         click_on 'Analysis'
       end
       it_behaves_like "an advice page tab", tab: "Analysis"
+
       it 'includes expected sections' do
         expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.analysis.recent_trend.title'))
         expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.analysis.comparison.title'))
