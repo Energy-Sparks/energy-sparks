@@ -1,6 +1,10 @@
 ---
 en:
   advice_pages:
+    tables:
+      columns:
+        period: Period
+        category: Category
     benchmarks:
       benchmark_school: Well managed
       exemplar_school: Exemplar

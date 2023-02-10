@@ -21,6 +21,14 @@ module Schools
         annual_usage_calculator.annual_usage
       end
 
+      def annual_usage_change_since_last_year
+        annual_usage_calculator.annual_usage_change_since_last_year
+      end
+
+      def annual_usage_kwh(compare: :benchmark_school)
+        annual_usage_benchmark.annual_electricity_usage_kwh(compare: compare)
+      end
+
       def annual_usage_vs_benchmark(compare: :benchmark_school)
         annual_usage_benchmark.annual_usage(compare: compare)
       end

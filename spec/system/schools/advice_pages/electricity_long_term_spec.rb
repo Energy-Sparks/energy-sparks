@@ -27,6 +27,9 @@ RSpec.describe "electricity long term advice page", type: :system do
       allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive(:estimated_savings).with(versus: :benchmark_school).and_return(annual_usage_vs_benchmark)
       allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive(:estimated_savings).with(versus: :exemplar_school).and_return(annual_usage_vs_exemplar)
 
+      allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive(:annual_usage_kwh).with(compare: :benchmark_school).and_return(annual_usage_vs_benchmark.kwh)
+      allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive(:annual_usage_kwh).with(compare: :exemplar_school).and_return(annual_usage_vs_exemplar.kwh)
+
       sign_in(user)
       visit school_advice_electricity_long_term_path(school)
     end
@@ -34,8 +37,24 @@ RSpec.describe "electricity long term advice page", type: :system do
     it_behaves_like "an advice page tab", tab: "Insights"
 
     context "clicking the 'Insights' tab" do
-      before { click_on 'Insights' }
+      before do
+        click_on 'Insights'
+      end
+
       it_behaves_like "an advice page tab", tab: "Insights"
+      it 'includes expected sections' do
+        expect(page).to have_content("Tracking long term trends")
+        expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.insights.current_usage.title'))
+        expect(page).to have_content(I18n.t('advice_pages.electricity_long_term.insights.comparison.title'))
+      end
+      it 'includes expected data' do
+        expect(page).to have_content("1,000")
+        expect(page).to have_content("£500")
+        expect(page).to have_content("1,500")
+
+        expect(page).to have_content("500")
+        expect(page).to have_content("800")
+      end
     end
     context "clicking the 'Analysis' tab" do
       before do
