@@ -3,11 +3,6 @@ en:
   advice_pages:
     baseload:
       analysis:
-        baseload_high_details_html: If you matched the baseload of other schools of the same size you would save %{estimated_savings}.
-        baseload_low: Your baseload is low.
-        baseload_low_details_html: This is good, and as a result you are saving %{estimated_savings} per year versus other schools of a similar size.
-        baseload_low_extra_savings_html: If you matched the baseload of the best performing schools you could save %{estimated_savings} per year.
-        baseload_high: Your baseload is high.
         charts:
           baseload_chart_considerations: If your baseload has changed, for example suddenly increasing or decreasing, you should be able to track down and explain the cause of this change. Consider whether the school has recently purchased new equipment. A very large decrease over the summer holidays is good, it shows that appliances and equipment have been switched off. Perhaps fridges and freezers in the kitchen were emptied or consolidated. Consider how significant that drop is - if caused by switching off fridges and freezers, they might be inefficient enough to require replacement. Think about whether your school can replicate that decrease for other holidays, or even weekends.
           baseload_chart_explanation: Each point on this chart represents the average baseload over the hours a school is closed on that day. You can click on a point in the chart and it will drill down to show you the full electricity usage on that day.
@@ -18,6 +13,11 @@ en:
           long_term_baseload_chart_title: Long term baseload comparison with benchmark and exemplar schools
           long_term_baseload_meter_chart_subtitle: Electricity baseload from %{month_year_start} to %{month_year_end} for %{meter}
           long_term_baseload_meter_chart_title: Long term trends in your electricity baseload for a single meter
+        baseload_high: Your baseload is high.
+        baseload_high_details_html: If you matched the baseload of other schools of the same size you would save %{estimated_savings}.
+        baseload_low: Your baseload is low.
+        baseload_low_details_html: This is good, and as a result you are saving %{estimated_savings} per year versus other schools of a similar size.
+        baseload_low_extra_savings_html: If you matched the baseload of the best performing schools you could save %{estimated_savings} per year.
         long_term_trends:
           intro: Unless the school has physically increased in size, if you are managing your baseload electricity consumption well you would expect baseload to reduce over time as appliances and computers have become more power efficient with lower standby power requirements. If this is not the case then you should look to identify the cause of the increase.
           table_description: The table below shows the annual average baseload for all of the years we have data for your school.
