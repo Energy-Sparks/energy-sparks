@@ -262,6 +262,11 @@ PreCommit:
     flags: ['-errors', '-quiet', '-utf8']
     include: '**/*.html'
 
+  I18nTasks:
+    quiet: true
+    enabled: true
+    command: ['i18n-tasks', 'normalize', 'en']
+
   ImageOptim:
     enabled: false
     description: 'Check for optimizable images'
