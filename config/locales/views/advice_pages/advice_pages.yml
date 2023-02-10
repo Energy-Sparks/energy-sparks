@@ -5,6 +5,7 @@ en:
       benchmark_school: Well managed
       exemplar_school: Exemplar
       other: Improving
+      your_school: Your school
     breadcrumbs:
       root: Advice
     error:
@@ -20,7 +21,7 @@ en:
       name: Advice
       pages:
         baseload: Baseload
-        boiler_control: Boiler control
+        boiler_control: Heating control
         electricity_costs: Costs
         electricity_intraday: Intraday
         electricity_long_term: Long term changes
@@ -52,3 +53,7 @@ en:
       title: Not enough data to run analysis
     show:
       title: Advice Pages
+    tables:
+      columns:
+        category: Category
+        period: Period

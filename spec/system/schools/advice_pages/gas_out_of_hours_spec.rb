@@ -1,16 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe "gas out of hours advice page", type: :system do
-
   let(:key) { 'gas_out_of_hours' }
-  let(:expected_page_title) { "Gas out of hours usage analysis" }
+  let(:expected_page_title) { "Out of school hours gas use" }
   include_context "gas advice page"
 
   context 'as school admin' do
-
     let(:user)  { create(:school_admin, school: school) }
 
     before do
+      allow_any_instance_of(Usage::AnnualUsageBreakdownService).to receive(:usage_breakdown) { nil }
+
       sign_in(user)
       visit school_advice_gas_out_of_hours_path(school)
     end
