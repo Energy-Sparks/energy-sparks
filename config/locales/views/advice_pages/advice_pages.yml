@@ -1,10 +1,6 @@
 ---
 en:
   advice_pages:
-    tables:
-      columns:
-        period: Period
-        category: Category
     benchmarks:
       benchmark_school: Well managed
       exemplar_school: Exemplar
@@ -57,3 +53,7 @@ en:
       title: Not enough data to run analysis
     show:
       title: Advice Pages
+    tables:
+      columns:
+        category: Category
+        period: Period
