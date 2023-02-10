@@ -1,13 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe "gas out of hours advice page", type: :system do
-
   let(:key) { 'gas_out_of_hours' }
   let(:expected_page_title) { "Out of school hours gas use" }
   include_context "gas advice page"
 
   context 'as school admin' do
-
     let(:user)  { create(:school_admin, school: school) }
 
     before do
