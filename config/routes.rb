@@ -150,7 +150,6 @@ Rails.application.routes.draw do
          :thermostatic_control,
          :gas_costs,
          :gas_long_term,
-         :gas_intraday,
          :gas_out_of_hours,
          :gas_recent_changes,
          :hot_water,
