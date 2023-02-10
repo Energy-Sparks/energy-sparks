@@ -32,11 +32,8 @@ module Schools
       end
 
       def sorted_meters_for_breakdown(annual_usage_meter_breakdown)
-        meters = {}
-        annual_usage_meter_breakdown.meters.each do |mpan_mprn|
-          meters[mpan_mprn] = @school.meters.find_by_mpan_mprn(mpan_mprn)
-        end
-        meters.sort { |a, b| a[1].name_or_mpan_mprn <=> b[1].name_or_mpan_mprn }
+        meters = @school.meters.where(mpan_mprn: annual_usage_meter_breakdown.meters).order(:name, :mpan_mprn)
+        meters.index_by(&:mpan_mprn)
       end
 
       def analysis_dates
@@ -56,12 +53,12 @@ module Schools
 
       #for charts that use the last full week
       def last_full_week_start_date(end_date)
-        return end_date.prev_year.end_of_week
+        end_date.prev_year.end_of_week
       end
 
       #for charts that use the last full week
       def last_full_week_end_date(end_date)
-        return end_date.prev_week.end_of_week - 1
+        end_date.prev_week.end_of_week - 1
       end
 
       def usage_service
