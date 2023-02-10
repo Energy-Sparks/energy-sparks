@@ -21,16 +21,8 @@ RSpec.describe "electricity recent changes advice page", type: :system do
     end
 
     context "clicking the 'Analysis' tab" do
-      let(:start_date)          { Date.parse('20190101')}
-      let(:end_date)            { Date.parse('20210101')}
-      let(:amr_data)            { double('amr-data', start_date: start_date, end_date: end_date) }
-      let(:aggregate_meter)     { double('aggregate_meter', amr_data: amr_data) }
-      let(:aggregate_school)    { double('meter-collection') }
 
       before do
-        allow(aggregate_school).to receive(:aggregated_electricity_meters).and_return(aggregate_meter)
-        allow(aggregate_school).to receive(:aggregate_meter).and_return(aggregate_meter)
-        allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(aggregate_school)
         click_on 'Analysis'
       end
 
@@ -42,7 +34,9 @@ RSpec.describe "electricity recent changes advice page", type: :system do
       end
 
       it "shows start and end dates" do
-        expect(page).to have_content("Electricity data is available from Tue 1st Jan 2019 to Fri 1st Jan 2021")
+        expected_start_date = start_date.to_s(:es_full)
+        expected_end_date = end_date.to_s(:es_full)
+        expect(page).to have_content("Electricity data is available from #{expected_start_date} to #{expected_end_date}")
       end
     end
 
