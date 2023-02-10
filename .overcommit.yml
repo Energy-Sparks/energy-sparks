@@ -263,8 +263,9 @@ PreCommit:
     include: '**/*.html'
 
   I18nTasks:
-    quiet: true
+    quiet: false
     enabled: true
+    on_warn: fail # Treat all warnings as failures
     command: ['i18n-tasks', 'normalize', 'en']
 
   ImageOptim:
