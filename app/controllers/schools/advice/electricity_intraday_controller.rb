@@ -19,7 +19,7 @@ module Schools
         # and this years average peak kw value
         old_peak_kw = @peak_usage_calculation_1_year_ago.average_peak_kw
         new_peak_kw = @peak_usage_calculation.average_peak_kw
-        ((old_peak_kw - new_peak_kw) / old_peak_kw) # * 100
+        (new_peak_kw - old_peak_kw) / old_peak_kw # * 100
       end
 
       def build_peak_usage_benchmarking
