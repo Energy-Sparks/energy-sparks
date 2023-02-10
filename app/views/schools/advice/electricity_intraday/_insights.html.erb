@@ -19,7 +19,7 @@
       <%= format_unit(@peak_usage_calculation.average_peak_kw, :kw) %>
     </td>
     <td class="text-right">
-      <%= format_unit(@peak_kw_usage_percentage_change, :percent) %>
+      <%= up_downify(format_unit(@peak_kw_usage_percentage_change, :relative_percent)) %>
     </td>
   </tr>
 </table>

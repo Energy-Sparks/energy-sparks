@@ -17,6 +17,7 @@ module Schools
       def calculate_percentage_change_in_peak_kw
         # Calculates the relative change between last years average peak kw value
         # and this years average peak kw value
+        # Consistent with Usage::CombinedUsageMetricComparison
         old_peak_kw = @peak_usage_calculation_1_year_ago.average_peak_kw
         new_peak_kw = @peak_usage_calculation.average_peak_kw
         (new_peak_kw - old_peak_kw) / old_peak_kw # * 100
