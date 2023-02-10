@@ -14,6 +14,7 @@ en:
               title: Your gas usage is low.
           table_explanation: The following table outlines the potential benefits of reducing your gas use to match %{school_type} schools with a similar number of pupils.
           title: Comparison with other schools
+        degree_days: A number of charts have an additional blue line showing 'degrees days' which is a measure of how cold it was during the period. Degree days are the inverse of temperature. The higher the degree days the lower the temperature.
         long_term_trends:
           summary: This section looks at how your gas consumption changes during the year, and compares consumption for the last 12 months with previous years where we have data.
           title: Long term trends
@@ -24,7 +25,6 @@ en:
           title: Gas consumption breakdown by meter
         recent_trend:
           title: Recent trend
-        degree_days: A number of charts have an additional blue line showing 'degrees days' which is a measure of how cold it was during the period. Degree days are the inverse of temperature. The higher the degree days the lower the temperature.
         sections: The following sections provide more background and analysis on your gas consumption
         summary: This section gives a more detailed analysis of how your school’s gas consumption has changed in the long term.
         title: Long term usage analysis
@@ -52,8 +52,8 @@ en:
           subtitle: The chart below provides a weekly breakdown of the gas used by each underlying meter.
           title: Electricity consumption by meter
         group_by_week_gas_unlimited:
-          header: Each bar represents a whole week and the split between holiday, weekend and school day open and closed consumption for that week. It highlights how gas consumption generally increases in the winter and is lower in the summer.
           explanation: This chart shows how your gas consumption varies throughout the year over the long term. Each bar represents a whole week and the split between holiday, weekend and school day open and closed consumption for that week. It highlights how gas consumption generally increases in the winter and is lower in the summer. You can click on the chart to explore the data in more detail.
+          header: Each bar represents a whole week and the split between holiday, weekend and school day open and closed consumption for that week. It highlights how gas consumption generally increases in the winter and is lower in the summer.
           subtitle: This chart gives the breakdown of gas consumption between school day open and closed, holidays and weekends for every week of data for your school
           title: Gas consumption by week for the last few years
         group_by_week_gas_versus_benchmark:
