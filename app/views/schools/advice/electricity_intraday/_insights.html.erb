@@ -1,5 +1,5 @@
 <%= component 'notice', status: :neutral do |c| %>
-  Intraday electricity use analysis looks at how the amount of electricity used by a school varies throughout the day - from the overnight baseload to the peak in the middle of the day. This page looks at this variation for school days, weekends and holidays and also compares your school to other schools of a similar size.
+  <%= t('advice_pages.electricity_intraday.insights.summary') %>
 <% end %>
 
 <%= render 'schools/advice/section_title', section_id: 'your_current_peak_electricity_use', section_title: 'Your current peak electricity use' %>
@@ -8,14 +8,13 @@ Table showing:
 peak consumption - last year {average_school_day_last_year_kw}
 Change %
 
-<%= render 'schools/advice/section_title', section_id: 'how_do_you_compare', section_title: 'How do you compare?' %>
+<%= render 'schools/advice/section_title', section_id: 'how_do_you_compare', section_title: t('advice_pages.electricity_intraday.insights.how_do_you_compare.title') %>
+<%= t('advice_pages.electricity_intraday.insights.how_do_you_compare.summary') %>
 
-How does your peak electricity consumption compare to other {school_type} schools on Energy Sparks, with a similar number of pupils?
 Table showing average school day peak consumption for:
 Exemplar
 Well managed
 Improving
 Your school
 
-For more detail, compare with other schools in your group
-
+<%= t('advice_pages.electricity_intraday.insights.how_do_you_compare.more_detail') %>
