@@ -46,9 +46,16 @@ en:
         weekends:
           title: Weekends
       insights:
+        your_current_peak_electricity_use:
+          table:
+            average_peak_kw: Average peak kW
+            percent_change: "% change"
         how_do_you_compare:
+          table:
+            exemplar_school: Exemplar school
+            your_kw: Your kW
           more_detail: For more detail, compare with other schools in your group
-          summary: How does your peak electricity consumption compare to other {school_type} schools on Energy Sparks, with a similar number of pupils?
+          summary: How does your peak electricity consumption compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?
           title: How do you compare?
         next_steps: Next steps
         summary: Intraday electricity use analysis looks at how the amount of electricity used by a school varies throughout the day - from the overnight baseload to the peak in the middle of the day. This page looks at this variation for school days, weekends and holidays and also compares your school to other schools of a similar size.

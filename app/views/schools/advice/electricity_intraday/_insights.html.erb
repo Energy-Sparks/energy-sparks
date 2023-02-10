@@ -2,19 +2,49 @@
   <%= t('advice_pages.electricity_intraday.insights.summary') %>
 <% end %>
 
+<!-- Your current peak electricity use section -->
 <%= render 'schools/advice/section_title', section_id: 'your_current_peak_electricity_use', section_title: 'Your current peak electricity use' %>
 
-Table showing:
-peak consumption - last year {average_school_day_last_year_kw}
-Change %
+<table class="mt-2 table table-sm advice-table">
+  <thead>
+    <th class="text-left">
+      <%= t('advice_pages.electricity_intraday.insights.your_current_peak_electricity_use.table.average_peak_kw') %>
+    </th>
+    <th class="text-right">
+      <%= t('advice_pages.electricity_intraday.insights.your_current_peak_electricity_use.table.percent_change') %>
+    </th>
+  </thead>
+  <tr>
+    <td class="text-left">
+      <%= format_unit(@peak_usage_calculation.average_peak_kw, :kw) %>
+    </td>
+    <td class="text-right">
+      <%= format_unit(@peak_kw_usage_percentage_change, :percent) %>
+    </td>
+  </tr>
+</table>
 
+<!-- How do you compare section -->
 <%= render 'schools/advice/section_title', section_id: 'how_do_you_compare', section_title: t('advice_pages.electricity_intraday.insights.how_do_you_compare.title') %>
-<%= t('advice_pages.electricity_intraday.insights.how_do_you_compare.summary') %>
+<%= t('advice_pages.electricity_intraday.insights.how_do_you_compare.summary', school_type: @school.school_type.downcase) %>
 
-Table showing average school day peak consumption for:
-Exemplar
-Well managed
-Improving
-Your school
+<table class="mt-2 table table-sm advice-table">
+  <thead>
+    <th><%= t('advice_pages.gas_out_of_hours.insights.how_do_you_compare.table.category') %></th>
+    <th class="text-right"><%= t('kw') %></th>
+    <th class="text-right"><%= t('advice_pages.electricity_intraday.insights.how_do_you_compare.table.your_kw') %></th>
+  </thead>
+  <tr>
+    <td>
+      <%= t('advice_pages.gas_out_of_hours.insights.how_do_you_compare.table.exemplar_school') %>
+    </td>
+    <td class="text-right">
+      <%= format_unit(@peak_usage_benchmarking&.average_peak_usage_kw(compare: :exemplar_school), :kw) %>
+    </td>
+    <td class="text-right">
+      <%= format_unit(@peak_usage_calculation.average_peak_kw, :kw) %>
+    </td>
+  <tr>
+</table>
 
 <%= t('advice_pages.electricity_intraday.insights.how_do_you_compare.more_detail') %>
