@@ -20,7 +20,7 @@ en:
       name: Advice
       pages:
         baseload: Baseload
-        boiler_control: Boiler control
+        boiler_control: Heating control
         electricity_costs: Costs
         electricity_intraday: Intraday
         electricity_long_term: Long term changes
