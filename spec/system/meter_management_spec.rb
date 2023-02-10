@@ -60,6 +60,12 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
     context 'when the school has a DCC meter' do
       let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
 
+      let!(:data_api) { double(find: true, inventory: {device_id: 123999}, elements: [1]) }
+
+      before(:each) do
+        allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).with(meter).and_return(data_api)
+      end
+
       it 'the meter inventory button is not shown' do
         click_on 'Manage meters'
         click_on 'Details'
@@ -168,8 +174,11 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
       let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
       let!(:data_api) { double(find: true, inventory: {device_id: 123999}, elements: [1]) }
 
-      it 'the meter inventory button can be shown' do
+      before(:each) do
         allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).with(meter).and_return(data_api)
+      end
+
+      it 'the meter inventory button can be shown' do
         click_on 'Manage meters'
         click_on 'Details'
         click_on 'Inventory'
@@ -192,7 +201,6 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
       end
 
       it 'the dcc checkboxes and status are shown on the edit form' do
-        allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).with(meter).and_return(data_api)
         click_on 'Manage meters'
         click_on 'Edit'
         check "DCC Smart Meter"
@@ -204,6 +212,12 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
     end
 
     context 'when creating meters' do
+      let!(:data_api) { double(find: true, inventory: {device_id: 123999}, elements: [1]) }
+
+      before(:each) do
+        allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).and_return(data_api)
+      end
+
       it 'allows adding of meters from the management page with validation' do
         click_on('Manage meters')
 
