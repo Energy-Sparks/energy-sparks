@@ -2,6 +2,12 @@ module Schools
   module Advice
     class ElectricityLongTermController < AdviceBaseController
       def insights
+        @analysis_dates = analysis_dates
+        @annual_usage = usage_service.annual_usage
+        @vs_benchmark = usage_service.annual_usage_vs_benchmark(compare: :benchmark_school)
+        @vs_exemplar = usage_service.annual_usage_vs_benchmark(compare: :exemplar_school)
+        @annual_usage_change_since_last_year = usage_service.annual_usage_change_since_last_year
+        @benchmarked_usage = benchmarked_usage(@annual_usage.kwh)
       end
 
       def analysis
@@ -59,6 +65,18 @@ module Schools
       #for charts that use the last full week
       def last_full_week_end_date(end_date)
         end_date.prev_week.end_of_week - 1
+      end
+
+      def benchmarked_usage(annual_usage_kwh)
+        annual_usage_kwh_benchmark = usage_service.annual_usage_kwh(compare: :benchmark_school)
+        annual_usage_kwh_exemplar = usage_service.annual_usage_kwh(compare: :exemplar_school)
+
+        OpenStruct.new(
+          category: categorise_school_vs_benchmark(annual_usage_kwh, annual_usage_kwh_benchmark, annual_usage_kwh_exemplar),
+          annual_usage_kwh: annual_usage_kwh,
+          annual_usage_kwh_benchmark: annual_usage_kwh_benchmark,
+          annual_usage_kwh_exemplar: annual_usage_kwh_exemplar
+        )
       end
 
       def usage_service

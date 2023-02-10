@@ -13,7 +13,7 @@
 </ul>
 
 <%= render 'recent_trend', school: @school, analysis_dates: @analysis_dates, annual_usage: @annual_usage, vs_exemplar: @vs_exemplar, estimated_savings_vs_exemplar: @estimated_savings_vs_exemplar %>
-<%= render 'comparison', school: @school, analysis_dates: @analysis_dates, annual_usage: @annual_usage, vs_benchmark: @vs_benchmark, vs_exemplar: @vs_exemplar, estimated_savings_vs_exemplar: @estimated_savings_vs_exemplar, estimated_savings_vs_benchmark: @estimated_savings_vs_benchmark %>
+<%= render 'analysis_comparison', school: @school, analysis_dates: @analysis_dates, annual_usage: @annual_usage, vs_benchmark: @vs_benchmark, vs_exemplar: @vs_exemplar, estimated_savings_vs_exemplar: @estimated_savings_vs_exemplar, estimated_savings_vs_benchmark: @estimated_savings_vs_benchmark %>
 <%= render 'long_term_trend', school: @school, analysis_dates: @analysis_dates %>
 
 <% if @multiple_meters %>

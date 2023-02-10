@@ -53,3 +53,7 @@ en:
       title: Not enough data to run analysis
     show:
       title: Advice Pages
+    tables:
+      columns:
+        category: Category
+        period: Period

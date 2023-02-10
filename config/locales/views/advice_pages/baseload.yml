@@ -51,18 +51,16 @@ en:
         more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
         tables:
           columns:
-            category: Category
             your_baseload: Your baseload (kW)
         title: How do you compare?
       current_baseload:
-        calculation_dates: Calculation based on data from %{start_date} to %{end_date}
+        calculation_dates: Calculation based on usage between %{start_date} and %{end_date}
         last_week: Last week
         last_year: Last year
         review_our_analysis: Review our detailed analysis
         tables:
           columns:
             percentage_change: "% Change"
-            period: Period
             use: Average baseload (kW)
         title: Your current baseload
       insights:
