@@ -44,13 +44,13 @@ en:
           subtitle: Another cause of high out of hours gas use is having central heating timings which cause the heating to be on for too long during a school day.
           title: Gas use through the school day
       insights:
+        comparison:
+          how_do_you_compare: How does your gas usage out of school hours compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?
+          more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
+          title: How do you compare?
         how_do_you_compare:
           table:
             your_kwh: Your kWh
-        comparison:
-          title: How do you compare?
-          how_do_you_compare: How does your gas usage out of school hours compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?
-          more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
         next_steps: Make sure that your heating is set to only heat the school when it needs to be warm. Heating and hot water can be switched off for evenings, weekends and holidays and heating should not come on too early in the mornings. Use a checklist of energy saving tasks to be completed before holidays.
         title: What is out of hours usage?
         what_is_out_of_hours_usage_html: |-
