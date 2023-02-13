@@ -4,12 +4,12 @@ en:
     electricity_out_of_hours:
       analysis:
         last_twelve_months:
-          community_use: Your school has identified that there is community use of the school outside of school hours. Over the last year, {community_kwh} of electricity has been used during these times which will have cost {community_gbp} and caused {community_co2} to be emitted.
+          community_use_html: Your school has identified that there is community use of the school outside of school hours. Over the last year, %{community_kwh} kWh of electricity has been used during these times which will have cost %{community_gbp} and caused %{community_co2} kg/co2 to be emitted.
           table:
-            co2_kg: CO2 kg
+            co2_kg: kg/co2
             gbp_at_current_tariff: "£ (at current tariff)"
             percent: Percent
-            time_of_day: Time of day
+            time_of_use: Time of use
             total: Total
           table_introduction: The table below shows how much electricity has been used when the school is open and closed on a school day as well as during weekends and holidays.
           title: Last 12 months
