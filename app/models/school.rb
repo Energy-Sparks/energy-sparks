@@ -261,14 +261,14 @@ class School < ApplicationRecord
 
   def activities_in_academic_year(date)
     if (academic_year = academic_year_for(date))
-      return activities.between(academic_year.start_date, academic_year.end_date)
+      return activities.between(academic_year.start_date, academic_year.end_date).order(created_at: :asc)
     end
     []
   end
 
   def observations_in_academic_year(date)
     if (academic_year = academic_year_for(date))
-      return observations.between(academic_year.start_date, academic_year.end_date)
+      return observations.between(academic_year.start_date, academic_year.end_date).order(created_at: :asc)
     end
     []
   end
