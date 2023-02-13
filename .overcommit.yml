@@ -265,8 +265,10 @@ PreCommit:
   I18nTasks:
     quiet: false
     enabled: true
+    requires_files: true #only run if specific files changes
     on_warn: fail # Treat all warnings as failures
     command: ['i18n-tasks', 'check-normalized']
+    include: 'config/locales/**/*.yml' #apply to i18n yml only
 
   ImageOptim:
     enabled: false
