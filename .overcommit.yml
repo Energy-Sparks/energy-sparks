@@ -266,7 +266,7 @@ PreCommit:
     quiet: false
     enabled: true
     on_warn: fail # Treat all warnings as failures
-    command: ['i18n-tasks', 'normalize', 'en']
+    command: ['i18n-tasks', 'check-normalized']
 
   ImageOptim:
     enabled: false
