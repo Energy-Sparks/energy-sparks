@@ -47,7 +47,7 @@
   <p><%= t('advice_pages.baseload.analysis.long_term_trends.intro') %></p>
   <p><%= t('advice_pages.baseload.analysis.long_term_trends.table_description') %></p>
 
-  <%= render 'long_term_trends_table', annual_average_baseloads: @annual_average_baseloads %>
+  <%= render 'long_term_trends_table', school: @school, annual_average_baseloads: @annual_average_baseloads, analysis_dates: @analysis_dates %>
 
   <%= component 'chart', chart_type: :baseload_versus_benchmarks, school: @school do |c| %>
     <% c.with_title { t('advice_pages.baseload.analysis.charts.long_term_baseload_chart_title') } %>
