@@ -15,6 +15,9 @@ en:
     intro_para_1: Schools score points by recording their activities to investigate their energy use, learning about energy, and taking energy saving actions around their school.
     intro_para_2: Our scoreboards show which schools are most active across England, Scotland and Wales.
     page_title: Scoreboards
+    prizes_link: read more
+    prizes_para_1: Thanks to our funders this school year we will be rewarding top scoring schools with grants towards an energy saving improvement of your choice. Maybe you might invest in LED lights, an energy-efficient dishwasher or fridge for the school kitchen or put the grant towards solar panels. The choice is yours!
+    prizes_para_2: We are also offering a special prize for the school that provides the most compelling evidence of pupil-led action at their school based on your activity record
     view_all:
       one: View scores for 1 school
       other: View scores for %{count} schools

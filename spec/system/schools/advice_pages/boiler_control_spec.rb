@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "boiler advice page", type: :system do
   let(:key) { 'boiler_control' }
-  let(:expected_page_title) { "Boiler control analysis" }
+  let(:expected_page_title) { "Heating control analysis" }
   include_context "gas advice page"
 
   context 'as school admin' do

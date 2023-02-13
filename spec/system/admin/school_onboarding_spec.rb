@@ -258,7 +258,8 @@ RSpec.describe "onboarding", :schools, type: :system do
     end
 
     it 'shows recently onboarded schools' do
-      school = create :school
+      school_group = create :school_group
+      school = create :school, country: :england, school_group: school_group
       onboarding = create :school_onboarding, :with_events, event_names: [:onboarding_complete], school: school
       click_on 'Manage'
       click_on 'Reports'

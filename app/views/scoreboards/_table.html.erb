@@ -17,7 +17,7 @@
             <h2><%= link_to school.name, school_path(school) %></h2>
           </td>
           <td>
-            <h2>
+            <h2 class="nowrap">
               <%= link_to school.sum_points, school_timeline_path(school, academic_year: @academic_year), class: 'badge badge-success' %>
               &nbsp;
               <% if school.recent_points&.positive? %>

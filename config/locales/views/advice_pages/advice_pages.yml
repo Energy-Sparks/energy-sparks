@@ -5,6 +5,7 @@ en:
       benchmark_school: Well managed
       exemplar_school: Exemplar
       other: Improving
+      your_school: Your school
     breadcrumbs:
       root: Advice
     error:
@@ -20,14 +21,13 @@ en:
       name: Advice
       pages:
         baseload: Baseload
-        boiler_control: Boiler control
+        boiler_control: Heating control
         electricity_costs: Costs
         electricity_intraday: Intraday
         electricity_long_term: Long term changes
         electricity_out_of_hours: Out of school hours
         electricity_recent_changes: Recent changes
         gas_costs: Costs
-        gas_intraday: Intraday
         gas_long_term: Long term changes
         gas_out_of_hours: Out of school hours
         gas_recent_changes: Recent changes
@@ -39,8 +39,20 @@ en:
       sections:
         electricity: Electricity
         gas: Gas
-        solar: Solar
+        solar_pv: Solar
         storage_heater: Storage Heaters
+    no_fuel_type:
+      message: We don't currently have %{fuel_type} data for your school, so are unable to run this analysis
+      title: Unable to run requested analysis
     no_recent_data: no recent data
+    not_enough_data:
+      available_from: Assuming we continue to regularly receive data we expect this analysis to be available after %{available_from}.
+      learn_more_html: In the meantime you can <a href="%{learn_more_link}">learn more</a> about this topic.
+      message: We don't currently have enough %{fuel_type} data in order to run this analysis for your school.
+      title: Not enough data to run analysis
     show:
       title: Advice Pages
+    tables:
+      columns:
+        category: Category
+        period: Period

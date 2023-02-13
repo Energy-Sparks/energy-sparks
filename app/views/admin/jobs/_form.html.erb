@@ -8,7 +8,7 @@
 
   <div class="form-group">
     <%= f.label :closing_date, "Closing date", class: "form-label" %>
-    <%= render(DatePickerFormComponent.new(form: f, field_name: :closing_date, value: job.closing_date&.strftime('%d/%m/%Y'))) %>
+    <%= component 'date_picker_form', form: f, field_name: :closing_date, value: job.closing_date&.strftime('%d/%m/%Y') %>
   </div>
 
   <div class="description-trix-editor form-group">

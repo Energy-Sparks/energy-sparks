@@ -14,7 +14,7 @@ RSpec.describe RecommendationsComponent, type: :component, include_url_helpers: 
     let(:params) { all_params }
     it { expect(html).to have_selector("h4 strong", text: "Title text") }
     it "adds specified classes" do
-      expect(html).to have_css('div.card-deck.recommendations.my-class')
+      expect(html).to have_css('div.card-deck.recommendations-component.my-class')
     end
     it "shows 'limit' amount of cards" do
       expect(cards.count).to eq(5)
@@ -50,7 +50,7 @@ RSpec.describe RecommendationsComponent, type: :component, include_url_helpers: 
       expect(html).to_not have_selector("h4 strong")
     end
     it "does not add css" do
-      expect(html).to_not have_css('div.card-deck.recommendations.my-class')
+      expect(html).to_not have_css('div.card-deck.recommendations-component.my-class')
     end
     it "limits to 4" do
       expect(cards.count).to eq(4)

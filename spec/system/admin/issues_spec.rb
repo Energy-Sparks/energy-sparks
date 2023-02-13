@@ -4,6 +4,8 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
   let!(:school_group_issues_admin) { create(:admin, name: "Group Issues Admin") }
   let!(:school_group) { create(:school_group, default_issues_admin_user: school_group_issues_admin )}
   let!(:school) { create(:school, school_group: school_group) }
+  let!(:gas_meter) { create(:gas_meter, school: school) }
+  let!(:electricity_meter) { create(:electricity_meter, school: school) }
   let!(:other_issues_admin) { create(:admin, name: "Other Issues Admin") }
   let!(:issue)   {}
   let!(:user)   {}
@@ -14,6 +16,9 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
       expect(page).to have_content issue.title
       expect(page).to have_content issue.description.to_plain_text
       expect(page).to have_content issue.fuel_type.capitalize
+      issue.meters.each do |meter|
+        expect(page).to have_link meter.mpan_mprn, href: school_meter_path(meter.school, meter)
+      end
       expect(page).to have_content issue.status.capitalize
       expect(page).to have_content issue_admin.display_name
       expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(issue.updated_at)}"
@@ -27,6 +32,9 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
       expect(page).to have_content issue.title
       expect(page).to have_content issue.issueable.name
       expect(page).to have_content issue.fuel_type.capitalize
+      issue.meters.each do |meter|
+        expect(page).to have_link meter.mpan_mprn, href: school_meter_path(meter.school, meter)
+      end
       expect(page).to have_content nice_date_times_today(issue.updated_at)
       expect(page).to have_link("View", href: polymorphic_path([:admin, issue.issueable, issue]))
       expect(page).to have_css("i[class*='fa-thumbtack']") if issue.pinned?
@@ -71,6 +79,10 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 assigned_to = issueable.is_a?(DataSource) ? [] : issueable.default_issues_admin_user.display_name
                 expect(page).to have_select('Assigned to', selected: assigned_to)
                 expect(page).to have_unchecked_field('Pinned')
+                if issueable.is_a? School
+                  expect(page).to have_unchecked_field(electricity_meter.mpan_mprn.to_s)
+                  expect(page).to have_unchecked_field(gas_meter.mpan_mprn.to_s)
+                end
               end
 
               context "with required values missing" do
@@ -99,6 +111,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   fill_in 'Title', with: "#{issue_type} title"
                   fill_in_trix 'trix-editor#issue_description', with: "#{issue_type} desc"
                   select 'Gas', from: 'Fuel type'
+                  check gas_meter.mpan_mprn.to_s if issueable.is_a? School
                   select 'Other Issues Admin', from: 'Assigned to'
                   check 'Pinned'
                   click_button 'Save'
@@ -113,6 +126,10 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                   expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                   expect(page).to have_css("i[class*='fa-thumbtack']")
+                  if issueable.is_a? School
+                    expect(page).to_not have_content electricity_meter.mpan_mprn
+                    expect(page).to have_content gas_meter.mpan_mprn
+                  end
                 end
                 after { Timecop.return }
               end
@@ -125,6 +142,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
             context "of type #{issue_type}" do
               let!(:issue) { create(:issue, issueable: issueable, issue_type: issue_type, fuel_type: :electricity, created_by: user, owned_by: school_group_issues_admin, pinned: true) }
               before do
+                issue.meters << electricity_meter if issueable.is_a? School
                 click_link("Edit")
               end
               it "shows edit form" do
@@ -135,6 +153,10 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 expect(page).to have_select('Issue type', selected: issue.issue_type.capitalize)
                 expect(page).to have_select('Assigned to', selected: school_group_issues_admin.display_name)
                 expect(page).to have_checked_field('Pinned')
+                if issueable.is_a? School
+                  expect(page).to have_checked_field(electricity_meter.mpan_mprn.to_s)
+                  expect(page).to have_unchecked_field(gas_meter.mpan_mprn.to_s)
+                end
               end
               context "and saving new values" do
                 let(:frozen_time) { Time.now }
@@ -148,6 +170,10 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   select new_issue_type, from: 'Issue type'
                   select 'Other Issues Admin', from: 'Assigned to'
                   uncheck 'Pinned'
+                  if issueable.is_a? School
+                    uncheck electricity_meter.mpan_mprn.to_s
+                    check gas_meter.mpan_mprn.to_s
+                  end
                   click_button 'Save'
                 end
 
@@ -161,6 +187,10 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                   expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(issue.created_at)}"
                   expect(page).to_not have_css("i[class*='fa-thumbtack']")
+                  if issueable.is_a? School
+                    expect(page).to have_content gas_meter.mpan_mprn
+                    expect(page).to_not have_content electricity_meter.mpan_mprn
+                  end
                 end
                 after { Timecop.return }
               end

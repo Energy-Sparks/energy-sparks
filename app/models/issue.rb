@@ -36,9 +36,13 @@ class Issue < ApplicationRecord
   delegate :name, to: :issueable
   belongs_to :school_group, -> { where(issues: { issueable_type: 'SchoolGroup' }) }, foreign_key: 'issueable_id', optional: true
   belongs_to :school, -> { where(issues: { issueable_type: 'School' }) }, foreign_key: 'issueable_id', optional: true
+
   belongs_to :created_by, class_name: 'User'
   belongs_to :updated_by, class_name: 'User'
   belongs_to :owned_by, class_name: 'User', optional: true
+
+  has_many :issue_meters
+  has_many :meters, through: :issue_meters
 
   scope :for_school_group, ->(school_group) do
     where(schools: { school_group: school_group }).or(
@@ -60,6 +64,7 @@ class Issue < ApplicationRecord
   enum status: { open: 0, closed: 1 }, _prefix: true
 
   validates :issue_type, :status, :title, :description, presence: true
+  validate :school_issue_meters_only
 
   before_save :set_note_status
   after_initialize :set_enum_defaults
@@ -128,5 +133,11 @@ class Issue < ApplicationRecord
 
   def set_note_status
     self.status = :open if self.note?
+  end
+
+  def school_issue_meters_only
+    if meters.any? && !issueable.is_a?(School)
+      errors.add(:base, "Only school issues can have associated meters")
+    end
   end
 end
