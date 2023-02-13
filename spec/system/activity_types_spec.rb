@@ -39,31 +39,39 @@ describe 'activity types', type: :system do
       expect(page).to have_content(activity_type_1.name)
     end
 
-    it 'paginates search results' do
-      Pagy::DEFAULT[:items] = 1
-      visit search_activity_types_path
-      fill_in 'query', with: 'activity'
-      click_on 'Search'
-
-      #possibly flickering as ordering might be different?
-      expect(page).to have_content(activity_type_1.name)
-      expect(page).not_to have_content(activity_type_2.name)
-
-      click_on 'Next'
-
-      expect(page).not_to have_content(activity_type_1.name)
-      expect(page).to have_content(activity_type_2.name)
-
-      # reset this to prevent problems with other tests..
-      Pagy::DEFAULT[:items] = 20
-    end
-
     it 'shows no results' do
       visit search_activity_types_path
       fill_in 'query', with: 'blah'
       click_on 'Search'
 
       expect(page).to have_content('No results found')
+    end
+
+    context 'when paginating' do
+      before :each do
+        Pagy::DEFAULT[:items] = 1
+        visit search_activity_types_path
+      end
+
+      after :each do
+        Pagy::DEFAULT[:items] = 20
+      end
+
+      it 'limits the search results' do
+        fill_in 'query', with: 'activity'
+        click_on 'Search'
+
+        #possibly flickering as ordering might be different?
+        #test could instead assert whether there is expect number of
+        #result rows, check for navigation, etc.
+        expect(page).to have_content(activity_type_1.name)
+        expect(page).not_to have_content(activity_type_2.name)
+
+        click_on 'Next'
+        expect(page).not_to have_content(activity_type_1.name)
+        expect(page).to have_content(activity_type_2.name)
+      end
+
     end
 
     context 'when filtering' do
@@ -74,9 +82,14 @@ describe 'activity types', type: :system do
       let!(:activity_type_1) { create(:activity_type, name: 'baz one', key_stages: [key_stage_1], subjects: [subject_1]) }
       let!(:activity_type_2) { create(:activity_type, name: 'baz two', key_stages: [key_stage_2], subjects: [subject_2]) }
 
-      context "visiting the seach page" do
+      context "visiting the search page" do
         before :each do
+          Pagy::DEFAULT[:items] = 20
           visit search_activity_types_path
+        end
+
+        after :each do
+          Pagy::DEFAULT[:items] = 20
         end
 
         it 'finds all with no filter' do
