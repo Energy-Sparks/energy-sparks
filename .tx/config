@@ -92,6 +92,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:analytics-modelling-heating-heating-yml]
+file_filter  = config/locales/<lang>/analytics/modelling/heating/heating.yml
+source_file  = config/locales/analytics/modelling/heating/heating.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:classes-tables-tables-yml]
 file_filter  = config/locales/<lang>/classes/tables/tables.yml
 source_file  = config/locales/classes/tables/tables.yml
@@ -211,6 +218,34 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-advice_pages-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/advice_pages.yml
+source_file  = config/locales/views/advice_pages/advice_pages.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-baseload-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/baseload.yml
+source_file  = config/locales/views/advice_pages/baseload.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-calendars-calendars-yml]
+file_filter  = config/locales/<lang>/views/calendars/calendars.yml
+source_file  = config/locales/views/calendars/calendars.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-components-breadcrumbs-yml]
+file_filter  = config/locales/<lang>/views/components/breadcrumbs.yml
+source_file  = config/locales/views/components/breadcrumbs.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-consent_documents-consent_documents-yml]
 file_filter  = config/locales/<lang>/views/consent_documents/consent_documents.yml
 source_file  = config/locales/views/consent_documents/consent_documents.yml
@@ -221,6 +256,13 @@ minimum_perc = 100
 [o:energy-sparks:p:energy-sparks:r:views-consents-consents-yml]
 file_filter  = config/locales/<lang>/views/consents/consents.yml
 source_file  = config/locales/views/consents/consents.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-email_unsubscription-email_unsubscription-yml]
+file_filter  = config/locales/<lang>/views/email_unsubscription/email_unsubscription.yml
+source_file  = config/locales/views/email_unsubscription/email_unsubscription.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100
@@ -462,4 +504,3 @@ source_file  = config/locales/views/terms_and_conditions/terms_and_conditions.ym
 source_lang  = en
 type         = YML
 minimum_perc = 100
-
