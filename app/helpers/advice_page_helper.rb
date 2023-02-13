@@ -1,3 +1,4 @@
+# rubocop:disable Naming/AsciiIdentifiers
 module AdvicePageHelper
   def advice_page_path(school, advice_page, tab = :insights)
     polymorphic_path([tab, school, :advice, advice_page.key.to_sym])
@@ -85,4 +86,13 @@ module AdvicePageHelper
       annual_usage_breakdown.school_day_closed.send(unit) +
       annual_usage_breakdown.community.send(unit)
   end
+
+  def meters_by_estimated_saving(meters)
+    meters.sort_by {|_, v| -v.estimated_saving_£ }
+  end
+
+  def meters_by_percentage_baseload(meters)
+    meters.sort_by {|_, v| -v.percentage_baseload }
+  end
 end
+# rubocop:enable Naming/AsciiIdentifiers
