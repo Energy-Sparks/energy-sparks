@@ -11,14 +11,27 @@ RSpec.describe "electricity intraday advice page", type: :system do
 
     before do
       sign_in(user)
+      allow_any_instance_of(Usage::PeakUsageBenchmarkingService).to receive(:average_peak_usage_kw) { 12.0 }
+      allow_any_instance_of(Usage::PeakUsageCalculationService).to receive(:average_peak_kw) { 12.0 }
+
       visit school_advice_electricity_intraday_path(school)
     end
 
     it_behaves_like "an advice page tab", tab: "Insights"
 
     context "clicking the 'Insights' tab" do
-      before { click_on 'Insights' }
+      before do
+        click_on 'Insights'
+      end
+
       it_behaves_like "an advice page tab", tab: "Insights"
+
+      it 'shows expected content' do
+        expect(page).to have_content('Your current peak electricity use')
+        expect(page).to have_content('How do you compare?')
+        expect(page).to have_content('For more detail, compare with other schools in your group')
+        expect(page).to have_content(12)
+      end
     end
 
     context "clicking the 'Analysis' tab" do
