@@ -56,3 +56,5 @@ en:
       columns:
         category: Category
         period: Period
+      labels:
+        partial: "(partial)"
