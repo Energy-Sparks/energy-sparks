@@ -18,6 +18,8 @@ en:
         school_day_heating:
           title: Gas usage for heating during the day
         seasonal_control:
+          estimated_savings_html: Your school could reduce its gas usage by %{estimated_savings_kwh} kWh by turning its boiler off in warm weather. For example earlier in the Spring and later in the Autumn. This would save %{estimated_savings_gbp} and %{estimated_savings_co2} kg CO2 annually.
+          heating_on_in_warm_weather_days: Last year your school heating was on for %{days} days during warm weather. This is %{adjective}.
           title: Seasonal control
         summary: This section gives a more detailed analysis of your school’s boiler control and some things to look out for.
         title: Heating control analysis
@@ -32,6 +34,10 @@ en:
             </p>
           subtitle_html: This graph shows the gas consumption for every half hour of the day during school days in winter between <span class='start-date'>START DATE</span> and <span class='end-date'>END DATE</span>
           title: How gas usage varies during the school day in winter
+        heating_on_off_by_week:
+          header: You can drill-down to individual days by clicking on the bars on the chart.
+          subtitle_html: This graph shows when the heating and hot water was on between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>, including when the heating was left on in warm weather.
+          title: Seasonal control chart
       insights:
         next_steps: Next steps
         title: Insights
