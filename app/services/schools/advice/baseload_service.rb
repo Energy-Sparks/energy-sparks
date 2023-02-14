@@ -29,7 +29,7 @@ module Schools
       end
 
       def annual_baseload_usage
-        @annual_baseload_usage ||= baseload_service.annual_baseload_usage
+        @annual_baseload_usage ||= baseload_service.annual_baseload_usage(include_percentage: true)
       end
 
       def average_baseload_kw_benchmark(compare: :benchmark_school)

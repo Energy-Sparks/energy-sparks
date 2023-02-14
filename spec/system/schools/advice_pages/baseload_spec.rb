@@ -34,7 +34,7 @@ RSpec.describe "Baseload advice page", type: :system do
     context 'when viewing the analysis' do
       let(:average_baseload_kw) {2.4}
       let(:average_baseload_kw_benchmark) {2.1}
-      let(:usage) { double(kwh: 123.0, £: 456.0, co2: 789.0) }
+      let(:usage) { double(kwh: 123.0, £: 456.0, co2: 789.0, percent: 0.2) }
       let(:savings) { double(kwh: 11.0, £: 22.0, co2: 33.0) }
       let(:annual_average_baseload) { {year: 2020, baseload_usage: usage} }
       let(:baseload_meter_breakdown) { {} }
@@ -74,6 +74,7 @@ RSpec.describe "Baseload advice page", type: :system do
       it 'shows analysis content' do
         within '.advice-page-tabs' do
           expect(page).to have_content('baseload over the last 12 months was 2.4 kW')
+          expect(page).to have_content('Your baseload represents 20&percnt; of your annual consumption')
         end
       end
 
