@@ -6,9 +6,16 @@ RSpec.describe "electricity recent changes advice page", type: :system do
   include_context "electricity advice page"
 
   context 'as school admin' do
-    let(:user)  { create(:school_admin, school: school) }
+    let(:user) { create(:school_admin, school: school) }
 
     before do
+      allow_any_instance_of(Usage::RecentUsagePeriodCalculationService).to receive(:recent_usage) do
+        OpenStruct.new(
+          date_range: [Time.zone.today, Time.zone.today - 1.week],
+          combined_usage_metric: CombinedUsageMetric.new(kwh: 12.0, £: 12.0, co2: 12.0)
+        )
+      end
+
       sign_in(user)
       visit school_advice_electricity_recent_changes_path(school)
     end
@@ -18,10 +25,16 @@ RSpec.describe "electricity recent changes advice page", type: :system do
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
       it_behaves_like "an advice page tab", tab: "Insights"
+
+      it 'shows expected content' do
+        expect(page).to have_content('What do we mean by recent changes?')
+        expect(page).to have_content('Your recent electricity use')
+        expect(page).to have_content('How do you compare?')
+        expect(page).to have_content(12)
+      end
     end
 
     context "clicking the 'Analysis' tab" do
-
       before do
         click_on 'Analysis'
       end
