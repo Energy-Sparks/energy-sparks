@@ -1,0 +1,14 @@
+<%= component 'notice', status: :neutral do |c| %>
+  <% c.with_link { link_to t('advice_pages.electricity_recent_changes.insights.link'), learn_more_school_advice_electricity_recent_changes_path(@school) } %>
+  <%= t('advice_pages.electricity_recent_changes.insights.summary') %>.
+<% end %>
+
+<%= render 'schools/advice/section_title', section_id: 'your_recent_electricity_use', section_title: t('advice_pages.electricity_recent_changes.insights.your_recent_electricity_use.title') %>
+
+start date - end date
+kwh
+£
+co2
+
+<%= render 'schools/advice/section_title', section_id: 'how_do_you_compare', section_title: t('advice_pages.electricity_recent_changes.insights.how_do_you_compare.title') %>
+<%= t('advice_pages.electricity_recent_changes.insights.how_do_you_compare.summary') %>
