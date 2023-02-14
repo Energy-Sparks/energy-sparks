@@ -42,4 +42,4 @@ jobs:
         run: bundle exec i18n-tasks health
       # Add or replace test runners here
       - name: Run tests
-        run: bin/rake
+        run: bundle exec rspec --exclude-pattern "i18n_spec.rb"
