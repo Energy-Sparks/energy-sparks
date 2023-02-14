@@ -41,6 +41,7 @@ en:
         summary: This section gives a more detailed analysis of your school’s electricity baseload and some things to look out for.
         title: Baseload Analysis
         usage: Your baseload over the last %{months_analysed} months was %{baseload_usage} kW. Other schools with a similar number of pupils have a baseload of %{benchmark_usage} kW.
+        usage_percent_html: Your baseload represents %{percent} of your annual consumption.
         weekday_variation:
           intro_1: At a well-managed school the baseload should remain the same throughout the week, there should be no reason why the electricity consumption at midnight on a weekday should be higher than during the weekend.
           intro_2: The most common cause of weekday variation is a high energy consuming appliance which is turned on on a Monday and off again on a Friday.
