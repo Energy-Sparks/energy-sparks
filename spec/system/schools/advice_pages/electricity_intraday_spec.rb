@@ -17,7 +17,17 @@ RSpec.describe "electricity intraday advice page", type: :system do
     it_behaves_like "an advice page tab", tab: "Insights"
 
     context "clicking the 'Insights' tab" do
-      before { click_on 'Insights' }
+      before do
+        allow_any_instance_of(Usage::PeakUsageBenchmarkingService).to receive_messages({
+          average_peak_usage_kw: 150
+        })
+        allow_any_instance_of(Usage::PeakUsageCalculationService).to receive_messages({
+          average_peak_kw: 50
+        })
+
+        click_on 'Insights'
+      end
+
       it_behaves_like "an advice page tab", tab: "Insights"
     end
 

@@ -14,9 +14,15 @@ module Schools
 
       private
 
+      def create_analysable
+        OpenStruct.new(
+          enough_data?: analysis_dates.one_years_data
+        )
+      end
+
       def calculate_percentage_change_in_peak_kw
-        old_peak_kw = @peak_usage_calculation_1_year_ago.average_peak_kw
-        new_peak_kw = @peak_usage_calculation.average_peak_kw
+        old_peak_kw = @peak_usage_calculation_1_year_ago&.average_peak_kw
+        new_peak_kw = @peak_usage_calculation&.average_peak_kw
 
         percent_change(old_peak_kw, new_peak_kw)
       end
@@ -49,12 +55,6 @@ module Schools
 
       def previous_years_asof_date
         @previous_years_asof_date ||= asof_date - 1.year
-      end
-
-      def create_analysable
-        OpenStruct.new(
-          enough_data?: analysis_dates.one_years_data
-        )
       end
 
       def advice_page_key
