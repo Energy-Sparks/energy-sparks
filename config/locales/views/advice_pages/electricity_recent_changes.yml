@@ -27,7 +27,7 @@ en:
         title: What do we mean by recent changes?
         your_recent_electricity_use:
           table:
+            change: Change
             date_range: Date range
-            difference: Difference
           title: Your recent electricity use
       page_title: Electricity recent changes analysis
