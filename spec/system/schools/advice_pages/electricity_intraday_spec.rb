@@ -11,6 +11,9 @@ RSpec.describe "electricity intraday advice page", type: :system do
 
     before do
       sign_in(user)
+      allow_any_instance_of(Usage::PeakUsageBenchmarkingService).to receive(:average_peak_usage_kw) { 12.0 }
+      allow_any_instance_of(Usage::PeakUsageCalculationService).to receive(:average_peak_kw) { 12.0 }
+
       visit school_advice_electricity_intraday_path(school)
     end
 
@@ -18,13 +21,6 @@ RSpec.describe "electricity intraday advice page", type: :system do
 
     context "clicking the 'Insights' tab" do
       before do
-        allow_any_instance_of(Usage::PeakUsageBenchmarkingService).to receive_messages({
-          average_peak_usage_kw: 150
-        })
-        allow_any_instance_of(Usage::PeakUsageCalculationService).to receive_messages({
-          average_peak_kw: 50
-        })
-
         click_on 'Insights'
       end
 
