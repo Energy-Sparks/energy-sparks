@@ -25,6 +25,13 @@ RSpec.describe "electricity intraday advice page", type: :system do
       end
 
       it_behaves_like "an advice page tab", tab: "Insights"
+
+      it 'shows expected content' do
+        expect(page).to have_content('Your current peak electricity use')
+        expect(page).to have_content('How do you compare?')
+        expect(page).to have_content('For more detail, compare with other schools in your group')
+        expect(page).to have_content(12)
+      end
     end
 
     context "clicking the 'Analysis' tab" do
