@@ -9,6 +9,8 @@ module Schools
         @analysis_dates = analysis_dates
         @last_week_start_times = heating_control_service.last_week_start_times
         @estimated_savings = heating_control_service.estimated_savings
+        @seasonal_analysis = heating_control_service.seasonal_analysis
+        @enough_data_for_seasonal_analysis = heating_control_service.enough_data_for_seasonal_analysis?
       end
 
       private

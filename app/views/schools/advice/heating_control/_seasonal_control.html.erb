@@ -1,0 +1,23 @@
+<%= render 'schools/advice/section_title', section_id: 'seasonal-control', section_title: t('advice_pages.heating_control.analysis.seasonal_control.title') %>
+
+<%= component 'notice', status: warm_weather_on_days_status(seasonal_analysis.heating_on_in_warm_weather_days) do %>
+ <p>
+   <%= t('advice_pages.heating_control.analysis.seasonal_control.heating_on_in_warm_weather_days',
+   days: seasonal_analysis.heating_on_in_warm_weather_days.to_i,
+   adjective: warm_weather_on_days_adjective(seasonal_analysis.heating_on_in_warm_weather_days)) %>
+ </p>
+<% end %>
+
+<p class="pt-2">
+  <%= t('advice_pages.heating_control.analysis.seasonal_control.estimated_savings_html',
+    estimated_savings_kwh: format_unit(seasonal_analysis.estimated_savings.kwh, :kwh),
+    estimated_savings_gbp: format_unit(seasonal_analysis.estimated_savings.£, :£),
+    estimated_savings_co2: format_unit(seasonal_analysis.estimated_savings.co2, :co2)
+  ) %>
+</p>
+
+<%= component 'chart', chart_type: :heating_on_off_by_week, school: school do |c| %>
+  <% c.with_title { t('advice_pages.heating_control.charts.heating_on_off_by_week.title') } %>
+  <% c.with_subtitle { t('advice_pages.heating_control.charts.heating_on_off_by_week.subtitle_html', start_date: analysis_dates.last_full_week_start_date.to_s(:es_short), end_date: analysis_dates.last_full_week_end_date.to_s(:es_short)) } %>
+  <% c.with_header { t('advice_pages.heating_control.charts.heating_on_off_by_week.header') } %>
+<% end %>

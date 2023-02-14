@@ -33,15 +33,26 @@ module Schools
         heating_savings_service.estimated_savings
       end
 
+      def seasonal_analysis
+        seasonal_analysis_service.seasonal_analysis
+      end
+
+      def enough_data_for_seasonal_analysis?
+        seasonal_analysis_service.enough_data?
+      end
+
       private
 
       def heating_start_time_service
-        puts analysis_date.inspect
         @heating_start_time_service ||= Heating::HeatingStartTimeService.new(@meter_collection, analysis_date)
       end
 
       def heating_savings_service
         @heating_savings_service ||= Heating::HeatingStartTimeSavingsService.new(@meter_collection, analysis_date)
+      end
+
+      def seasonal_analysis_service
+        @seasonal_analysis_service ||= Heating::SeasonalControlAnalysisService.new(meter_collection: @meter_collection)
       end
 
       def analysis_date
