@@ -28,6 +28,5 @@ en:
         your_recent_electricity_use:
           table:
             change: Change
-            date_range: Date range
           title: Your recent electricity use
       page_title: Electricity recent changes analysis
