@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe "boiler advice page", type: :system do
-  let(:key) { 'boiler_control' }
+RSpec.describe "heating control advice page", type: :system do
+  let(:key) { 'heating_control' }
   let(:expected_page_title) { "Heating control analysis" }
   include_context "gas advice page"
 
@@ -10,7 +10,7 @@ RSpec.describe "boiler advice page", type: :system do
 
     before do
       sign_in(user)
-      visit school_advice_boiler_control_path(school)
+      visit school_advice_heating_control_path(school)
     end
 
     it_behaves_like "an advice page tab", tab: "Insights"

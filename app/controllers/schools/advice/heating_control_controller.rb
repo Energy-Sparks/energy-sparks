@@ -1,6 +1,6 @@
 module Schools
   module Advice
-    class BoilerControlController < AdviceBaseController
+    class HeatingControlController < AdviceBaseController
       def insights
       end
 
@@ -10,7 +10,7 @@ module Schools
       private
 
       def advice_page_key
-        :boiler_control
+        :heating_control
       end
     end
   end

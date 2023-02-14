@@ -21,7 +21,6 @@ en:
       name: Advice
       pages:
         baseload: Baseload
-        boiler_control: Heating control
         electricity_costs: Costs
         electricity_intraday: Intraday
         electricity_long_term: Long term changes
@@ -31,6 +30,7 @@ en:
         gas_long_term: Long term changes
         gas_out_of_hours: Out of school hours
         gas_recent_changes: Recent changes
+        heating_control: Heating control
         hot_water: Hot water
         solar_pv: Solar PV
         storage_heaters: Storage heaters
