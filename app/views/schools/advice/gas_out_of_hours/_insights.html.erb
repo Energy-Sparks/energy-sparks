@@ -12,9 +12,16 @@
     )
   %>
 
-<%= render 'schools/advice/section_title', section_id: 'current', section_title: t('advice_pages.gas_out_of_hours.insights.how_do_you_compare_title') %>
-<%= t('advice_pages.gas_out_of_hours.insights.how_do_you_compare_one_html') %>
+  <%= render 'schools/advice/section_title', section_id: 'current', section_title: t('advice_pages.gas_out_of_hours.insights.comparison.title') %>
 
-<%= render 'insights_table' %>
+  <p>
+    <%= t('advice_pages.gas_out_of_hours.insights.comparison.how_do_you_compare', school_type: t('analytics.school_types.' + @school.school_type).downcase) %>
+  </p>
 
-<%= t('advice_pages.gas_out_of_hours.insights.how_do_you_compare_two_html') %>
+  <%= render 'insights_table' %>
+
+  <% if @school.school_group.present? %>
+    <p>
+      <%= t('advice_pages.gas_out_of_hours.insights.comparison.more_detail_html', link: benchmark_for_school_group_path(:annual_gas_out_of_hours_use, @school)) %>
+    </p>
+  <% end %>

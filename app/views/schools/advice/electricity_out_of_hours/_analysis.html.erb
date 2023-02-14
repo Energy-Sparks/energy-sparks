@@ -13,13 +13,13 @@
 </ul>
 
 <%= render 'schools/advice/section_title', section_id: 'last_twelve_months', section_title: t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.title') %>
-<% if @school.school_times.community_use.any? %>
-  <p><%= t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.community_use') %></p>
+
+<% if @annual_usage_breakdown.community.present? %>
+  <p><%= t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.community_use_html',
+    community_kwh: format_unit(@annual_usage_breakdown.community.kwh, :kwh),
+    community_gbp: format_unit(@annual_usage_breakdown.community.£, :£),
+    community_co2: format_unit(@annual_usage_breakdown.community.co2, :co2) ) %></p>
 <% end %>
-
-<p><%= t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.table_introduction') %></p>
-
-<%= render 'analysis_table' %>
 
 <%= component 'chart', chart_type: :daytype_breakdown_electricity_tolerant, school: @school do |c| %>
   <% c.with_title do %>
@@ -27,9 +27,11 @@
   <% end %>
 
   <% c.with_subtitle { t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_electricity_tolerant_chart.subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
-
-
 <% end %>
+
+<p><%= t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.table_introduction') %></p>
+
+<%= render 'analysis_table' %>
 
 <%= render 'schools/advice/section_title', section_id: 'usage_by_day_of_week', section_title: t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.title') %>
 <%= component 'chart', chart_type: :electricity_by_day_of_week_tolerant, school: @school do |c| %>
@@ -41,6 +43,3 @@
     <%= t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.electricity_by_day_of_week_tolerant_chart.footer') %>
   <% end %>
 <% end %>
-
-
-

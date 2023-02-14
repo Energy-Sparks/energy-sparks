@@ -11,7 +11,7 @@
     </tr>
   </thead>
   <tbody>
-    <% seasonal_variation_by_meter.each do |mpan_mprn, variation| %>
+    <% meters_by_estimated_saving(seasonal_variation_by_meter).each do |mpan_mprn, variation| %>
     <tr>
       <td class="text-left"><%= variation.meter.present? ? variation.meter.name_or_mpan_mprn : mpan_mprn %></td>
       <td class="text-left"><%= format_rating(variation.variation_rating) %></td>
