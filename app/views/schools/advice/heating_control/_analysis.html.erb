@@ -1,0 +1,18 @@
+<p><%= t('advice_pages.heating_control.analysis.summary') %></p>
+
+<ul>
+  <li><%= link_to(t('advice_pages.heating_control.analysis.heating_timings.title'), '#heating-timings') %></li>
+  <li><%= link_to(t('advice_pages.heating_control.analysis.heating_during_the_day.title'), '#heating-during-the-day') %></li>
+  <% if @multiple_meters %>
+    <li><%= link_to(t('advice_pages.heating_control.analysis.meter_breakdown.title'), '#meter-breakdown') %></li>
+  <% end %>
+  <li><%= link_to(t('advice_pages.heating_control.analysis.seasonal_control.title'), '#seasonal-control') %></li>
+</ul>
+
+<%= render 'heating_timings', last_week_start_times: @last_week_start_times, estimated_savings: @estimated_savings %>
+
+<%= render 'schools/advice/section_title', section_id: 'heating-during-the-day', section_title: t('advice_pages.heating_control.analysis.heating_during_the_day.title') %>
+
+<%= render 'schools/advice/section_title', section_id: 'meter-breakdown', section_title: t('advice_pages.heating_control.analysis.meter_breakdown.title') %>
+
+<%= render 'schools/advice/section_title', section_id: 'seasonal-control', section_title: t('advice_pages.heating_control.analysis.seasonal_control.title') %>

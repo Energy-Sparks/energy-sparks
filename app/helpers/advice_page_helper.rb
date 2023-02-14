@@ -104,5 +104,23 @@ module AdvicePageHelper
   def meters_by_percentage_baseload(meters)
     meters.sort_by {|_, v| -v.percentage_baseload }
   end
+
+  def heating_time_class(heating_start_time, recommended_time)
+    return '' if heating_start_time.nil?
+    if heating_start_time >= recommended_time
+      'text-positive'
+    else
+      'text-negative'
+    end
+  end
+
+  def heating_time_assessment(heating_start_time, recommended_time)
+    return I18n.t('analytics.modelling.heating.no_heating') if heating_start_time.nil?
+    if heating_start_time >= recommended_time
+      I18n.t('analytics.modelling.heating.on_time')
+    else
+      I18n.t('analytics.modelling.heating.too_early')
+    end
+  end
 end
 # rubocop:enable Naming/AsciiIdentifiers

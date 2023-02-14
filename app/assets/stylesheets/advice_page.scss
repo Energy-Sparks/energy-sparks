@@ -22,6 +22,10 @@
   thead {
     background-color: $dark-blue !important;
     color: white;
+    th {
+      border-bottom: 0px;
+      border-top: 0px;
+    }
   }
   .fa-arrow-circle-down {
     color: $green;
@@ -38,6 +42,13 @@
   tr.negative-row {
     border-left: 5px solid $new-red;
   }
+}
+
+.text-positive {
+  color: $green;
+}
+.text-negative {
+  color: $new-red;
 }
 
 .advice-table-caption {

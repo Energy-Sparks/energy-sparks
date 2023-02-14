@@ -3,8 +3,37 @@ en:
   advice_pages:
     heating_control:
       analysis:
-        title: Analysis
+        heating_during_the_day:
+          title: Gas usage for heating during the day
+        heating_timings:
+          estimated_savings_html: If you followed our recommendations to switch your heating on later for a full year you could save %{estimated_saving}.
+          intro_html: |-
+            <p>
+              This table shows the time your heating switched on for the most recent week for which we have data.
+            </p>
+            <p>
+              It suggests a better time for your heating to have switched on based on that day's weather on that day, along with an expected saving if you changed your heating to match the recommended time.
+            </p>
+          title: Central heating timings for last seven days
+        meter_breakdown:
+          title: Central heating operating times by meter
+        seasonal_control:
+          title: Seasonal control
+        summary: This section gives a more detailed analysis of your school’s boiler control and some things to look out for.
+        title: Heating control analysis
       insights:
         next_steps: Next steps
         title: Insights
       page_title: Heating control analysis
+      tables:
+        columns:
+          assessment: Assessment
+          date: Date
+          heating_on_time: Switched on
+          heating_time: Heating timing
+          overnight_temperature: Overnight temperature (°C)
+          potential_saving: Potential saving
+          potential_saving_co2: kg/CO2
+          potential_saving_gbp: "£"
+          potential_saving_kwh: kWh
+          recommended_time: Recommended
