@@ -58,8 +58,8 @@ en:
       minutes:
         one: "%{count} minute"
         other: "%{count} minutes"
-  kwh: kWh
   kw: kW
+  kwh: kWh
   school_types:
     mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
   "£": "£"
