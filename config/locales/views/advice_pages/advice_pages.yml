@@ -28,7 +28,6 @@ en:
         electricity_out_of_hours: Out of school hours
         electricity_recent_changes: Recent changes
         gas_costs: Costs
-        gas_intraday: Intraday
         gas_long_term: Long term changes
         gas_out_of_hours: Out of school hours
         gas_recent_changes: Recent changes
@@ -57,3 +56,5 @@ en:
       columns:
         category: Category
         period: Period
+      labels:
+        partial: "(partial)"

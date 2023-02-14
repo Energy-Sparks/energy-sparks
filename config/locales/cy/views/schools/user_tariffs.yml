@@ -1,0 +1,90 @@
+cy:
+  schools:
+    user_tariff_charges:
+      charge_vat:
+        rate: Cyfradd
+      charges_edit_electricity:
+        consumption_and_supply_charges: Costau defnyddio a chyflenwi
+        distribution_charges: Costau dosbarthu
+        other_charges: Costau eraill
+        transmission_charges: Costau trosglwyddo
+      charges_edit_gas:
+        consumption_and_supply_charges: Costau defnyddio a chyflenwi
+        other_charges: Costau eraill
+      index:
+        title: Ychwanegu taliadau sefydlog ar gyfer y tariff hwn
+        using_your_bill_introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y taliadau sefydlog sy'n gysylltiedig â'r tariff hwn
+    user_tariff_differential_prices:
+      form:
+        labels:
+          end_time: Amser gorffen
+          start_time: Amser cychwyn
+          value: Cyfradd mewn £/kWh
+      index:
+        consumption_charges: Costau defnydd
+        title: Ychwanegu costau defnydd ar gyfer pob cyfnod amser ar gyfer y tariff hwn
+        using_your_bill_introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
+    user_tariff_flat_prices:
+      edit:
+        introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
+        title: Golygu'r costau defnydd ar gyfer y tariff hwn
+      new:
+        introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
+        title: Ychwanegu costau defnydd ar gyfer y tariff hwn
+    user_tariffs:
+      charges_table:
+        climate_charge_levy: Ardoll tâl hinsawdd
+        tnuos: TNUoS (Defnydd System Rhwydwaith Trosglwyddo)
+        vat_rate: Cyfradd TAW
+      choose_meters:
+        title: Dewiswch fesuryddion ar gyfer y tariff hwn
+        which_meters_will_this_tariff_apply_to: I ba fesuryddion y bydd y tariff hwn yn berthnasol?
+      choose_type:
+        day_night_tariff: Tariff Dydd/Nos
+        is_this_a_simple_flat_rate: Ai cyfradd unffurf syml yw hon?
+        or_a_rate_which_varies_by_time_of_day: Neu gyfradd sy’n amrywio yn ôl amser o’r dydd (e.e. tariff Dydd/Nos, Economi7)
+        simple: Syml
+        title: Dewiswch y math o'r tariff hwn
+      edit:
+        title: Golygu'r enw a'r ystod dyddiad ar gyfer y tariff %{fuel_type} hwn
+      flat_rate:
+        no_flat_rate_tariff_has_been_set_yet: Nid oes tariff cyfradd unffurf wedi'i osod eto
+      index:
+        changes_to_cost_calculations_message: Bydd newidiadau i'r cyfrifiadau cost yn seiliedig ar y tariffau hyn yn cael eu diweddaru dros nos
+        electricity:
+          add_label: Ychwanegu tariff trydan
+          header: Trydan
+          there_are_no_electricity_tariffs_set_up_yet: Nid oes tariffau trydan wedi'u gosod eto
+        gas:
+          add_label: Ychwanegu tariff nwy
+          header: Nwy
+          there_are_no_gas_tariffs_set_up_yet: Nid oes tariffau nwy wedi'u gosod eto
+        introduction_html: Ychwanegwch dariffau mesurydd o'ch biliau trydan a nwy yma, i wella cywirdeb y cyfrifiadau cost a ddangosir ar eich tudalennau <a href='%{electricity_analysis_path}'>dadansoddiad cost trydan</a> a <a href='%{gas_analysis_path}'>dadansoddiad cost nwy</>
+        title: Rheoli tariffau
+      meters:
+        meters_associated_with_this_tariff: Mesuryddion sy'n gysylltiedig â'r tariff hwn
+        there_are_no_meters_associated_with_this_tariff: Nid oes unrhyw fesuryddion yn gysylltiedig â'r tariff hwn
+      new:
+        title: Dewiswch enw ac ystod dyddiad ar gyfer y tariff %{fuel_type} hwn
+      rates_table:
+        no_consumption_charges_specified_yet: Dim costau defnydd wedi'u nodi eto
+        price_per_kwh: "%{price_value} fesul kWh"
+      show:
+        consumption_charges: Costau defnydd
+        introduction_html: Bydd unrhyw newidiadau i'r tariff yn cael eu hadlewyrchu yn y tudalennau <a href='%{electricity_analysis_path}'>dadansoddiad cost trydan</a> a <a href='%{gas_analysis_path}'>dadansoddiad cost nwy</a> a fydd yn diweddaru dros nos
+        meter_attribute_view: Gwedd priodoledd mesurydd (gweinyddwr yn unig)
+        standing_charges: Costau sefydlog
+        title: Manylion tariff
+      tariff_partial:
+        day_night_tariff: Tariff dydd/nos
+        end_date: Dyddiad gorffen
+        full_details: Manylion llawn
+        no_consumption_charges_have_been_set_yet: Nid oes unrhyw gostau defnydd wedi'u gosod eto
+        per_kwh: fesul kWh
+        price_from_to: "%{price_start_time} i %{price_end_time} : "
+        simple_tariff: Tariff syml
+        start_date: Dyddiad cychwyn
+        type: Math
+      there_should_only_be_one_tariff_message: Dim ond un tariff ddylai fod ar gyfer pob cyfnod dyddiad, ar gyfer pob metr
+      title_partial:
+        heading: Tariff

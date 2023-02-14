@@ -703,7 +703,7 @@ describe School do
     let!(:intervention_type_2){ create :intervention_type }
     let!(:observation_1){ create :observation, :intervention, at: date_1, school: school, intervention_type: intervention_type_1 }
     let!(:observation_2){ create :observation, :intervention, at: date_2, school: school, intervention_type: intervention_type_2 }
-    let!(:observation_without_intervention_type) { create(:observation, :temperature, at: date_1, school: school) }
+    let!(:observation_without_intervention_type) { create(:observation, :temperature, at: date_1 + 1.day, school: school) }
 
     it 'finds observations from the academic year' do
       expect(school.observations_in_academic_year(academic_year.start_date + 2.months)).to eq([observation_1, observation_without_intervention_type])
