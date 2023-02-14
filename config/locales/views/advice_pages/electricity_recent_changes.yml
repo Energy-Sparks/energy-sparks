@@ -26,5 +26,8 @@ en:
         summary: This page makes note of whether your electricity use has increased or decreased recently. Monitoring recent changes to your energy use can help you to assess the impacts of changes you have made, or quickly identify problems
         title: What do we mean by recent changes?
         your_recent_electricity_use:
+          table:
+            date_range: Date range
+            difference: Difference
           title: Your recent electricity use
       page_title: Electricity recent changes analysis

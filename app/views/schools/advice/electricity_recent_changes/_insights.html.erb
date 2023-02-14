@@ -5,10 +5,32 @@
 
 <%= render 'schools/advice/section_title', section_id: 'your_recent_electricity_use', section_title: t('advice_pages.electricity_recent_changes.insights.your_recent_electricity_use.title') %>
 
-start date - end date
-kwh
-£
-co2
+<table class="mt-2 table table-sm advice-table">
+  <thead>
+    <th><%= t('advice_pages.electricity_recent_changes.insights.your_recent_electricity_use.table.date_range') %></th>
+    <th class="text-right"><%= t('kwh') %></th>
+    <th class="text-right"><%= t('£') %></th>
+    <th class="text-right"><%= t('co2') %></th>
+  </thead>
+  <tr>
+    <td><%= @recent_usage.last_4_school_weeks.date_range.map { |d| d.to_s(:es_short) }.join(' - ') %></td>
+    <td class="text-right"><%= format_unit(@recent_usage.last_4_school_weeks.results.kwh, :kwh) %></td>
+    <td class="text-right"><%= format_unit(@recent_usage.last_4_school_weeks.results.£, :£) %></td>
+    <td class="text-right"><%= format_unit(@recent_usage.last_4_school_weeks.results.co2, :co2) %></td>
+  </tr>
+  <tr>
+    <td><%= @recent_usage.previous_4_school_weeks.date_range.map { |d| d.to_s(:es_short) }.join(' - ') %></td>
+    <td class="text-right"><%= format_unit(@recent_usage.previous_4_school_weeks.results.kwh, :kwh) %></td>
+    <td class="text-right"><%= format_unit(@recent_usage.previous_4_school_weeks.results.£, :£) %></td>
+    <td class="text-right"><%= format_unit(@recent_usage.previous_4_school_weeks.results.co2, :co2) %></td>
+  </tr>
+  <tr>
+    <td><%= t('advice_pages.electricity_recent_changes.insights.your_recent_electricity_use.table.difference') %></td>
+    <td class="text-right"><%= format_unit(@recent_usage.recent_usage_comparison.kwh, :kwh) %></td>
+    <td class="text-right"><%= format_unit(@recent_usage.recent_usage_comparison.£, :£) %></td>
+    <td class="text-right"><%= format_unit(@recent_usage.recent_usage_comparison.co2, :co2) %></td>
+  </tr>
+</table>
 
 <%= render 'schools/advice/section_title', section_id: 'how_do_you_compare', section_title: t('advice_pages.electricity_recent_changes.insights.how_do_you_compare.title') %>
 <%= t('advice_pages.electricity_recent_changes.insights.how_do_you_compare.summary') %>
