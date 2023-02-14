@@ -26,7 +26,7 @@ module Schools
       end
 
       def annual_usage_kwh(compare: :benchmark_school)
-        annual_usage_benchmark.annual_electricity_usage_kwh(compare: compare)
+        annual_usage_benchmark.annual_usage_kwh(compare: compare)
       end
 
       def annual_usage_vs_benchmark(compare: :benchmark_school)
