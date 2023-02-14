@@ -3,8 +3,6 @@ en:
   advice_pages:
     heating_control:
       analysis:
-        heating_during_the_day:
-          title: Gas usage for heating during the day
         heating_timings:
           estimated_savings_html: If you followed our recommendations to switch your heating on later for a full year you could save %{estimated_saving}.
           intro_html: |-
@@ -17,10 +15,23 @@ en:
           title: Central heating timings for last seven days
         meter_breakdown:
           title: Central heating operating times by meter
+        school_day_heating:
+          title: Gas usage for heating during the day
         seasonal_control:
           title: Seasonal control
         summary: This section gives a more detailed analysis of your school’s boiler control and some things to look out for.
         title: Heating control analysis
+      charts:
+        gas_heating_season_intraday_up_to_1_year:
+          footer_html: |-
+            <p>
+              This is a useful graph for determining how well controlled the timing of the boiler is. A well timed boiler should only come on at about 6:00am to get the school up to temperature by 8:00am, and then turn off again about half an hour before the school closes.
+            </p>
+            <p>
+              If your school has underfloor heating, it may take a few hours longer to warm up, but does not need to be on 24 hours a day.
+            </p>
+          subtitle_html: This graph shows the gas consumption for every half hour of the day during school days in winter between <span class='start-date'>START DATE</span> and <span class='end-date'>END DATE</span>
+          title: How gas usage varies during the school day in winter
       insights:
         next_steps: Next steps
         title: Insights
