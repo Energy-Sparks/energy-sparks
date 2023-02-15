@@ -14,6 +14,7 @@ module Schools
       before_action :check_has_fuel_type, only: [:insights, :analysis]
       before_action :check_can_run_analysis, only: [:insights, :analysis]
       before_action :set_data_warning, only: [:insights, :analysis]
+      before_action :set_page_title, only: [:insights, :analysis]
 
       include AdvicePageHelper
       include SchoolAggregation
@@ -33,6 +34,10 @@ module Schools
       end
 
       private
+
+      def set_page_title
+        @advice_page_title = t("advice_pages.#{@advice_page.key}.insights.title")
+      end
 
       def set_data_warning
         @data_warning = !recent_data?(advice_page_end_date)

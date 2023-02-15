@@ -3,8 +3,14 @@ en:
   advice_pages:
     solar_pv:
       analysis:
-        title: Analysis
+        has_solar_pv:
+          title: Analysis
+        no_solar_pv:
+          title: Analysis
       insights:
+        has_solar_pv:
+          title: Solar PV generation
         next_steps: Next steps
-        title: Insights
+        no_solar_pv:
+          title: Benefits of installing solar panels
       page_title: Solar PV analysis
