@@ -12,24 +12,33 @@
     <th class="text-right"><%= t('£') %></th>
     <th class="text-right"><%= t('co2') %></th>
   </thead>
-  <tr>
-    <td><%= @recent_usage.last_week.date_range.map { |d| d.to_s(:es_short) }.join(' - ') %></td>
-    <td class="text-right"><%= format_unit(@recent_usage.last_week.combined_usage_metric.kwh, :kwh) %></td>
-    <td class="text-right"><%= format_unit(@recent_usage.last_week.combined_usage_metric.£, :£) %></td>
-    <td class="text-right"><%= format_unit(@recent_usage.last_week.combined_usage_metric.co2, :co2) %></td>
-  </tr>
-  <tr>
-    <td><%= @recent_usage.previous_week.date_range.map { |d| d.to_s(:es_short) }.join(' - ') %></td>
-    <td class="text-right"><%= format_unit(@recent_usage.previous_week.combined_usage_metric.kwh, :kwh) %></td>
-    <td class="text-right"><%= format_unit(@recent_usage.previous_week.combined_usage_metric.£, :£) %></td>
-    <td class="text-right"><%= format_unit(@recent_usage.previous_week.combined_usage_metric.co2, :co2) %></td>
-  </tr>
-  <tr>
-    <td><%= t('advice_pages.electricity_recent_changes.insights.your_recent_electricity_use.table.change') %></td>
-    <td class="text-right"><%= format_unit(@recent_usage.change.kwh, :kwh) %></td>
-    <td class="text-right"><%= format_unit(@recent_usage.change.£, :£) %></td>
-    <td class="text-right"><%= format_unit(@recent_usage.change.co2, :co2) %></td>
-  </tr>
+  <% if @analysis_dates.recent_data %>
+    <tr>
+      <td><%= @recent_usage.last_week.date_range.map { |d| d.to_s(:es_short) }.join(' - ') %></td>
+      <td class="text-right"><%= format_unit(@recent_usage.last_week.combined_usage_metric.kwh, :kwh) %></td>
+      <td class="text-right"><%= format_unit(@recent_usage.last_week.combined_usage_metric.£, :£) %></td>
+      <td class="text-right"><%= format_unit(@recent_usage.last_week.combined_usage_metric.co2, :co2) %></td>
+    </tr>
+    <tr>
+      <td><%= @recent_usage.previous_week.date_range.map { |d| d.to_s(:es_short) }.join(' - ') %></td>
+      <td class="text-right"><%= format_unit(@recent_usage.previous_week.combined_usage_metric.kwh, :kwh) %></td>
+      <td class="text-right"><%= format_unit(@recent_usage.previous_week.combined_usage_metric.£, :£) %></td>
+      <td class="text-right"><%= format_unit(@recent_usage.previous_week.combined_usage_metric.co2, :co2) %></td>
+    </tr>
+    <tr>
+      <td><%= t('advice_pages.electricity_recent_changes.insights.your_recent_electricity_use.table.change') %></td>
+      <td class="text-right"><%= format_unit(@recent_usage.change.kwh, :kwh) %></td>
+      <td class="text-right"><%= format_unit(@recent_usage.change.£, :£) %></td>
+      <td class="text-right"><%= format_unit(@recent_usage.change.co2, :co2) %></td>
+    </tr>
+  <% else %>
+    <tr>
+      <td class="text-right old-data">
+        <%= t('advice_pages.no_recent_data') %>
+      </td>
+      <td class="text-right">-</td>
+    </tr>
+  <% end %>
 </table>
 
 <%= render 'schools/advice/section_title', section_id: 'how_do_you_compare', section_title: t('advice_pages.electricity_recent_changes.insights.how_do_you_compare.title') %>
