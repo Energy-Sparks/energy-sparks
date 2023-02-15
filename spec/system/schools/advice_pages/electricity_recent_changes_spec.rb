@@ -51,6 +51,13 @@ RSpec.describe "electricity recent changes advice page", type: :system do
         expected_end_date = end_date.to_s(:es_full)
         expect(page).to have_content("Electricity data is available from #{expected_start_date} to #{expected_end_date}")
       end
+
+      it 'shows expected content' do
+        expect(page).to have_content('Comparison of electricity use over 2 recent weeks')
+        expect(page).to have_content('Comparison of electricity use over 2 recent days')
+        expect(page).to have_css('#chart_wrapper_calendar_picker_electricity_week_example_comparison_chart')
+        expect(page).to have_css('#chart_wrapper_calendar_picker_electricity_day_example_comparison_chart')
+      end
     end
 
     context "clicking the 'Learn More' tab" do
