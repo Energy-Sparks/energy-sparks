@@ -19,7 +19,9 @@
 
 <%= render 'school_day_heating', school: @school, analysis_dates: @analysis_dates %>
 
-<%= render 'meter_breakdown', school: @school, analysis_dates: @analysis_dates, meters: @meters, date_ranges_by_meter: @date_ranges_by_meter %>
+<% if @multiple_meters %>
+  <%= render 'meter_breakdown', school: @school, analysis_dates: @analysis_dates, meters: @meters, date_ranges_by_meter: @date_ranges_by_meter %>
+<% end %>
 
 <% if @enough_data_for_seasonal_analysis %>
   <%= render 'seasonal_control', school: @school, analysis_dates: @analysis_dates, seasonal_analysis: @seasonal_analysis %>

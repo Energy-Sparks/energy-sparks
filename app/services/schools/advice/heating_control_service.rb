@@ -12,6 +12,14 @@ module Schools
         heating_start_time_service.enough_data?
       end
 
+      def multiple_meters?
+        @school.meters.active.gas.count > 1
+      end
+
+      def meters
+        @school.meters.active.gas
+      end
+
       def date_ranges_by_meter
         heat_meters.each_with_object({}) do |analytics_meter, date_range_by_meter|
           end_date = analytics_meter.amr_data.end_date
