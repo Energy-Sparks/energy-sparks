@@ -14,6 +14,8 @@ en:
             </p>
           title: Central heating timings for last seven days
         meter_breakdown:
+          chart_subtitle_html: This graph shows the gas consumption for every half hour of the day during school days in winter between <span class='start-date'>%{month_year_start}</span> and <span class='end-date'>%{month_year_end}</span> for %{meter}
+          select: Select a meter
           title: Central heating operating times by meter
         school_day_heating:
           title: Gas usage for heating during the day
@@ -32,7 +34,7 @@ en:
             <p>
               If your school has underfloor heating, it may take a few hours longer to warm up, but does not need to be on 24 hours a day.
             </p>
-          subtitle_html: This graph shows the gas consumption for every half hour of the day during school days in winter between <span class='start-date'>START DATE</span> and <span class='end-date'>END DATE</span>
+          subtitle_html: This graph shows the gas consumption for every half hour of the day during school days in winter between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>
           title: How gas usage varies during the school day in winter
         heating_on_off_by_week:
           header: You can drill-down to individual days by clicking on the bars on the chart.

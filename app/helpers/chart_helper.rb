@@ -70,9 +70,12 @@ module ChartHelper
     config
   end
 
-  def create_chart_descriptions(date_ranges_by_meter)
+  def create_chart_descriptions(key, date_ranges_by_meter)
     date_ranges_by_meter.each_with_object({}) do |(mpan_mprn, dates), date_ranges|
-      date_ranges[mpan_mprn] = I18n.t('advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_subtitle', month_year_start: month_year(dates[:start_date]), month_year_end: month_year(dates[:end_date]), meter: mpan_mprn)
+      date_ranges[mpan_mprn] = I18n.t(key,
+        month_year_start: dates[:start_date].to_s(:es_short),
+        month_year_end: dates[:end_date].to_s(:es_short),
+        meter: dates[:meter].present? ? dates[:meter].name_or_mpan_mprn : mpan_mprn)
     end
   end
 end

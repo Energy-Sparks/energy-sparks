@@ -12,6 +12,19 @@ module Schools
         heating_start_time_service.enough_data?
       end
 
+      def date_ranges_by_meter
+        heat_meters.each_with_object({}) do |analytics_meter, date_range_by_meter|
+          end_date = analytics_meter.amr_data.end_date
+          start_date = [end_date - 363, analytics_meter.amr_data.start_date].max
+          meter = @school.meters.find_by_mpan_mprn(analytics_meter.mpan_mprn)
+          date_range_by_meter[analytics_meter.mpan_mprn] = {
+            meter: meter,
+            start_date: start_date,
+            end_date: end_date
+          }
+        end
+      end
+
       #TODO: needs changes in the analytics
       def data_available_from
         nil
@@ -42,6 +55,10 @@ module Schools
       end
 
       private
+
+      def heat_meters
+        @heat_meters ||= @meter_collection.heat_meters
+      end
 
       def heating_start_time_service
         @heating_start_time_service ||= Heating::HeatingStartTimeService.new(@meter_collection, analysis_date)
