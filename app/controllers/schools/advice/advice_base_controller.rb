@@ -14,7 +14,9 @@ module Schools
       before_action :check_has_fuel_type, only: [:insights, :analysis]
       before_action :check_can_run_analysis, only: [:insights, :analysis]
       before_action :set_data_warning, only: [:insights, :analysis]
-      before_action :set_page_title, only: [:insights, :analysis]
+      before_action :set_page_title, only: [:insights, :analysis, :learn_more]
+      before_action :set_page_subtitle, only: [:insights, :analysis]
+      before_action :set_insights_next_steps, only: [:insights]
 
       include AdvicePageHelper
       include SchoolAggregation
@@ -35,8 +37,16 @@ module Schools
 
       private
 
+      def set_insights_next_steps
+        @advice_page_insights_next_steps = t("advice_pages.#{@advice_page.key}.insights.next_steps")
+      end
+
       def set_page_title
-        @advice_page_title = t("advice_pages.#{@advice_page.key}.insights.title")
+        @advice_page_title = t("advice_pages.#{@advice_page.key}.page_title")
+      end
+
+      def set_page_subtitle
+        @advice_page_subtitle = t("advice_pages.#{@advice_page.key}.#{action_name}.title")
       end
 
       def set_data_warning

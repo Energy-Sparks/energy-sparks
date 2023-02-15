@@ -9,8 +9,16 @@ module Schools
 
       private
 
+      def set_insights_next_steps
+        @advice_page_insights_next_steps = t("advice_pages.#{advice_page_key}.insights.#{section_key}.next_steps")
+      end
+
+      def set_page_subtitle
+        @advice_page_subtitle = t("advice_pages.#{advice_page_key}.#{section_key}.#{action_name}.title")
+      end
+
       def set_page_title
-        @advice_page_title = t("advice_pages.#{@advice_page.key}.#{action_name}.#{section_key}.title")
+        @advice_page_title = t("advice_pages.#{advice_page_key}.#{section_key}.page_title")
       end
 
       def section_key

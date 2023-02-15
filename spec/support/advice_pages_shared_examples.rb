@@ -27,7 +27,7 @@ RSpec.shared_examples "an advice page tab" do |tab:|
   it 'shows page breadcrumb' do
     within '.advice-page-breadcrumb' do
       expect(page).to have_link('Advice')
-      expect(page).to have_text(I18n.t("advice_pages.#{key}.page_title"))
+      expect(page).to have_text(expected_page_title)
     end
   end
 
@@ -47,7 +47,7 @@ RSpec.shared_examples "an advice page tab" do |tab:|
       refresh
     end
     it 'still shows the analysis' do
-      expect(page).to have_content(I18n.t("advice_pages.#{key}.page_title"))
+      expect(page).to have_content(expected_page_title)
     end
   end
 
