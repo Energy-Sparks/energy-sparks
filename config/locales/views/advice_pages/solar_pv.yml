@@ -6,12 +6,13 @@ en:
         analysis:
           title: Analysis
         insights:
+          next_steps: Next steps
           title: Insights
         page_title: Solar PV generation
-      next_steps: Next steps
       no_solar_pv:
         analysis:
           title: Analysis
         insights:
+          next_steps: Next steps
           title: What is solar PV?
         page_title: Benefits of installing solar panels
