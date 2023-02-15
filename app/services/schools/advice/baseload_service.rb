@@ -108,8 +108,15 @@ module Schools
       end
 
       def date_ranges_by_meter
-        electricity_meters.each_with_object({}) do |meter, date_range_by_meter|
-          date_range_by_meter[meter.mpan_mprn] = { start_date: meter.amr_data.start_date, end_date: meter.amr_data.end_date }
+        electricity_meters.each_with_object({}) do |analytics_meter, date_range_by_meter|
+          end_date = analytics_meter.amr_data.end_date
+          start_date = analytics_meter.amr_data.start_date
+          meter = @school.meters.find_by_mpan_mprn(analytics_meter.mpan_mprn)
+          date_range_by_meter[analytics_meter.mpan_mprn] = {
+            meter: meter,
+            start_date: start_date,
+            end_date: end_date
+          }
         end
       end
 

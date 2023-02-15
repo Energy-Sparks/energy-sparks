@@ -106,7 +106,14 @@
 
     <%= render 'schools/advice/section_title', section_id: 'meter-charts', section_title: t('advice_pages.baseload.analysis.meter_charts.title') %>
 
-    <h4 class="chart-title"><%= t('advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_title') %></h4>
+    <%= render 'schools/advice/meter_breakdown_charts',
+        school: @school,
+        meters: @meters,
+        date_ranges_by_meter: @date_ranges_by_meter,
+        chart_type: :baseload,
+        chart_title_key: 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_title',
+        chart_subtitle_key: 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_subtitle'
+    %>
 
     <%= render 'meter_breakdown_charts', school: @school, meters: @meters, date_ranges_by_meter: @date_ranges_by_meter %>
 
