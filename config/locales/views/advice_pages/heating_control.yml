@@ -42,8 +42,13 @@ en:
           subtitle_html: This graph shows when the heating and hot water was on between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>, including when the heating was left on in warm weather.
           title: Seasonal control chart
       insights:
-        next_steps: Next steps
-        title: Insights
+        comparison:
+          heating_on_comparison_link: how often you have heating on during warm weather
+          more_detail_html: For more detail look at how your school compares with others in your group
+          start_time_comparison_link: morning start times for heating
+          title: How do you compare?
+        next_steps: Review your heating times.
+        title: What do we mean by heating control?
       page_title: Heating control analysis
       tables:
         columns:
@@ -57,3 +62,11 @@ en:
           potential_saving_gbp: "£"
           potential_saving_kwh: kWh
           recommended_time: Recommended
+      what_are_heating_controls:
+        link: Learn more
+        text_html: |-
+          <p>
+          Heating control refers to the settings used to heat the school effectively while it is fully occupied and to minimise waste out of school hours.
+          </p>
+          Getting the heating control right for your school can save money and carbon very quickly as well as improving the learning environment for students.
+          </p>

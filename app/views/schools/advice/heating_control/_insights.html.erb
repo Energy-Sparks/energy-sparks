@@ -1,0 +1,8 @@
+<%= component 'notice', status: :neutral do |c| %>
+  <% c.with_link { link_to t('advice_pages.heating_control.what_are_heating_controls.link'), learn_more_school_advice_heating_control_path(@school) } %>
+  <%= t('advice_pages.heating_control.what_are_heating_controls.text_html') %>
+<% end %>
+
+<% if @school.school_group.present? %>
+  <%= render 'comparison', school: @school %>
+<% end %>
