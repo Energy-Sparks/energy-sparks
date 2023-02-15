@@ -13,7 +13,7 @@ module Schools
 
         @multiple_meters = multiple_meters?
         if @multiple_meters
-          @meters = @school.meters.active.gas.sort_by(&:name_or_mpan_mprn)
+          @meters = @school.meters.active.gas.sort_by(&:display_name)
           @date_ranges_by_meter = heating_control_service.date_ranges_by_meter
         end
       end

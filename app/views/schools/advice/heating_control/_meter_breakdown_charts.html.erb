@@ -10,7 +10,7 @@
             <p><%= t('advice_pages.heating_control.analysis.meter_breakdown.select') %></p>
           </div>
           <div class="col-md-6 form-group">
-            <%= select_tag :meter, options_from_collection_for_select(meters, :mpan_mprn, :name_or_mpan_mprn, meters.first.mpan_mprn), include_blank: false, class: "form-control" %>
+            <%= select_tag :meter, options_from_collection_for_select(meters, :mpan_mprn, :display_name, meters.first.mpan_mprn), include_blank: false, class: "form-control" %>
           </div>
         </div>
       <% end %>
