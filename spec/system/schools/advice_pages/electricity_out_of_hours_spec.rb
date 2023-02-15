@@ -45,6 +45,8 @@ RSpec.describe "electricity out of hours advice page", type: :system do
         expect(page).to have_content('Your out of hours usage')
         expect(page).to have_content('How do you compare?')
         expect(page).to have_content('What should you do next?')
+        expect(page).to have_content('Exemplar')
+        expect(page).to have_content('12')
       end
     end
 
@@ -55,6 +57,10 @@ RSpec.describe "electricity out of hours advice page", type: :system do
       it 'shows expected content' do
         expect(page).to have_content('Last 12 months')
         expect(page).to have_content('Usage by day of week')
+        expect(page).to have_content('£12')
+        expect(page).to have_content('12 kg/co2')
+        expect(page).to have_css('#chart_wrapper_daytype_breakdown_electricity_tolerant')
+        expect(page).to have_css('#chart_wrapper_electricity_by_day_of_week_tolerant')
       end
     end
 
