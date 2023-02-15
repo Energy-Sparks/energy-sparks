@@ -2,44 +2,7 @@
   <% c.with_link { link_to t('advice_pages.electricity_recent_changes.insights.link'), learn_more_school_advice_electricity_recent_changes_path(@school) } %>
   <%= t('advice_pages.electricity_recent_changes.insights.summary') %>.
 <% end %>
-
 <%= render 'schools/advice/section_title', section_id: 'your_recent_electricity_use', section_title: t('advice_pages.electricity_recent_changes.insights.your_recent_electricity_use.title') %>
-
-<table class="mt-2 table table-sm advice-table">
-  <thead>
-    <th><%= t('advice_pages.tables.columns.period') %></th>
-    <th class="text-right"><%= t('kwh') %></th>
-    <th class="text-right"><%= t('£') %></th>
-    <th class="text-right"><%= t('co2') %></th>
-  </thead>
-  <% if @analysis_dates.recent_data %>
-    <tr>
-      <td><%= @recent_usage.last_week.date_range.map { |d| d.to_s(:es_short) }.join(' - ') %></td>
-      <td class="text-right"><%= format_unit(@recent_usage.last_week.combined_usage_metric.kwh, :kwh) %></td>
-      <td class="text-right"><%= format_unit(@recent_usage.last_week.combined_usage_metric.£, :£) %></td>
-      <td class="text-right"><%= format_unit(@recent_usage.last_week.combined_usage_metric.co2, :co2) %></td>
-    </tr>
-    <tr>
-      <td><%= @recent_usage.previous_week.date_range.map { |d| d.to_s(:es_short) }.join(' - ') %></td>
-      <td class="text-right"><%= format_unit(@recent_usage.previous_week.combined_usage_metric.kwh, :kwh) %></td>
-      <td class="text-right"><%= format_unit(@recent_usage.previous_week.combined_usage_metric.£, :£) %></td>
-      <td class="text-right"><%= format_unit(@recent_usage.previous_week.combined_usage_metric.co2, :co2) %></td>
-    </tr>
-    <tr>
-      <td><%= t('advice_pages.electricity_recent_changes.insights.your_recent_electricity_use.table.change') %></td>
-      <td class="text-right"><%= format_unit(@recent_usage.change.kwh, :kwh) %></td>
-      <td class="text-right"><%= format_unit(@recent_usage.change.£, :£) %></td>
-      <td class="text-right"><%= format_unit(@recent_usage.change.co2, :co2) %></td>
-    </tr>
-  <% else %>
-    <tr>
-      <td class="text-right old-data">
-        <%= t('advice_pages.no_recent_data') %>
-      </td>
-      <td class="text-right">-</td>
-    </tr>
-  <% end %>
-</table>
-
+<%= render 'your_recent_electricity_use_table' %>
 <%= render 'schools/advice/section_title', section_id: 'how_do_you_compare', section_title: t('advice_pages.electricity_recent_changes.insights.how_do_you_compare.title') %>
 <%= t('advice_pages.electricity_recent_changes.insights.how_do_you_compare.summary_html', comparison_link: benchmark_path(benchmark_type: :change_in_electricity_consumption_recent_school_weeks)) %>
