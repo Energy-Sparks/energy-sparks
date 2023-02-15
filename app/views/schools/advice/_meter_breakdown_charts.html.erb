@@ -1,5 +1,5 @@
 <div class="charts">
-  <%= component 'chart', chart_type: chart_type, school: school, html_class: 'usage-chart', chart_config: create_chart_config(school, chart_type, meters.first.mpan_mprn) do |c| %>
+  <%= component 'chart', chart_type: chart_type, analysis_controls: analysis_controls, school: school, html_class: 'usage-chart', chart_config: create_chart_config(school, chart_type, meters.first.mpan_mprn) do |c| %>
     <% c.with_title { t(chart_title_key) } %>
     <% c.with_subtitle { '' } %>
     <% c.with_header do %>
