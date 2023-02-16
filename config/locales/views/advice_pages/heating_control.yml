@@ -4,7 +4,7 @@ en:
     heating_control:
       analysis:
         heating_timings:
-          estimated_savings_html: If you followed our recommendations to switch your heating on later for a full year you could save %{estimated_saving}.
+          estimated_savings_html: "<p> If you followed our recommendations to switch your heating on later for a full year you could save %{estimated_saving}. </p> <p>This would reduce your gas consumption by %{percent}.</p>"
           intro_html: |-
             <p>
               This table shows the time your heating switched on for the most recent week for which we have data.
@@ -23,6 +23,7 @@ en:
         seasonal_control:
           estimated_savings_html: Your school could reduce its gas usage by %{estimated_savings_kwh} kWh by turning its boiler off in warm weather. For example earlier in the Spring and later in the Autumn. This would save %{estimated_savings_gbp} and %{estimated_savings_co2} kg CO2 annually.
           heating_on_in_warm_weather_days: Last year your school heating was on for %{days} days during warm weather. This is %{adjective}.
+          percent_html: This represents %{percent} of your annual heating consumption
           title: Seasonal control
         summary: This section gives a more detailed analysis of your school’s boiler control and some things to look out for.
         title: Heating control analysis
@@ -47,8 +48,14 @@ en:
           more_detail_html: For more detail look at how your school compares with others in your group
           start_time_comparison_link: morning start times for heating
           title: How do you compare?
+        controls:
+          average_start_time: Our analysis shows that recently the average start time for your heating was %{time}.
+          title: Your heating controls
         next_steps: Review your heating times.
         title: What do we mean by heating control?
+        view_our_analysis_html: <a href="%{href}">View our analysis</a>
+        warm_weather:
+          title: Leaving the heating on during warm weather
       page_title: Heating control analysis
       tables:
         columns:

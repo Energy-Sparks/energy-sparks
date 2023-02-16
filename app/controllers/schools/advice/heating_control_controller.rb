@@ -2,12 +2,19 @@ module Schools
   module Advice
     class HeatingControlController < AdviceBaseController
       def insights
+        @last_week_start_times = heating_control_service.last_week_start_times
+        @estimated_savings = heating_control_service.estimated_savings
+        @percentage_of_annual_gas = heating_control_service.percentage_of_annual_gas
+        @enough_data_for_seasonal_analysis = heating_control_service.enough_data_for_seasonal_analysis?
+        @seasonal_analysis = heating_control_service.seasonal_analysis
       end
 
       def analysis
         @analysis_dates = analysis_dates
         @last_week_start_times = heating_control_service.last_week_start_times
         @estimated_savings = heating_control_service.estimated_savings
+        @percentage_of_annual_gas = heating_control_service.percentage_of_annual_gas
+
         @seasonal_analysis = heating_control_service.seasonal_analysis
         @enough_data_for_seasonal_analysis = heating_control_service.enough_data_for_seasonal_analysis?
 

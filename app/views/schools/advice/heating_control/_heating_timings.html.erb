@@ -2,9 +2,9 @@
 
 <%= t('advice_pages.heating_control.analysis.heating_timings.intro_html') %>
 
-<p>
-  <%= t('advice_pages.heating_control.analysis.heating_timings.estimated_savings_html', estimated_saving: format_unit(estimated_savings.£, :£)) %>
-</p>
+<%= t('advice_pages.heating_control.analysis.heating_timings.estimated_savings_html',
+  estimated_saving: format_unit(estimated_savings.£, :£),
+  percent: format_unit(percentage_of_annual_gas, :percent)) %>
 
 <table class="table advice-table">
   <thead>
