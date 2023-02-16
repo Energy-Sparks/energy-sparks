@@ -9,10 +9,24 @@ RSpec.describe "solar pv advice page", type: :system do
   end
 
   context 'as school admin' do
-    let(:user)  { create(:school_admin, school: school) }
+    let(:user) { create(:school_admin, school: school) }
 
     before do
-      Schools::Advice::SolarPvController.any_instance.stub(:potential_benefits_estimator) {
+      Schools::Advice::SolarPvController.any_instance.stub(:existing_benefits) do
+        OpenStruct.new(
+          annual_saving_from_solar_pv_percent: 0.2112828204597476,
+          annual_electricity_including_onsite_solar_pv_consumption_kwh: 61_057.88139174447,
+          annual_carbon_saving_percent: 0.2324996269349433,
+          saving_£current: 1935.0722087616766,
+          export_£: 64.77266266370466,
+          annual_co2_saving_kg: 2541.832811649812,
+          annual_solar_pv_kwh: 14_195.934645018606,
+          annual_exported_solar_pv_kwh: 1295.4532532740932,
+          annual_solar_pv_consumed_onsite_kwh: 12_900.481391744512,
+          annual_consumed_from_national_grid_kwh: 48_157.39999999996
+        )
+      end
+      Schools::Advice::SolarPvController.any_instance.stub(:potential_benefits_estimator) do
         OpenStruct.new(
           optimum_kwp: 52.5,
           optimum_payback_years: 5.682322708769174,
@@ -31,7 +45,7 @@ RSpec.describe "solar pv advice page", type: :system do
             payback_years: 17.07143409053209
           )
         )
-      }
+      end
 
       sign_in(user)
       visit school_advice_solar_pv_path(school)
@@ -40,7 +54,6 @@ RSpec.describe "solar pv advice page", type: :system do
     it_behaves_like "an advice page tab", tab: "Insights"
 
     context "clicking the 'Insights' tab as a school *without* solar pv" do
-
       before do
         allow_any_instance_of(School).to receive(:has_solar_pv?) { false }
 
@@ -56,7 +69,6 @@ RSpec.describe "solar pv advice page", type: :system do
     end
 
     context "clicking the 'Insights' tab as a school *with* solar pv" do
-
       before do
         allow_any_instance_of(School).to receive(:has_solar_pv?) { true }
 
@@ -72,7 +84,6 @@ RSpec.describe "solar pv advice page", type: :system do
     end
 
     context "clicking the 'Analysis' tab as a school *without* solar pv" do
-
       before do
         allow_any_instance_of(School).to receive(:has_solar_pv?) { false }
         @expected_page_title = "Benefits of installing solar panels"
@@ -88,7 +99,6 @@ RSpec.describe "solar pv advice page", type: :system do
     end
 
     context "clicking the 'Analysis' tab as a school *with* solar pv" do
-
       before do
         allow_any_instance_of(School).to receive(:has_solar_pv?) { true }
 
