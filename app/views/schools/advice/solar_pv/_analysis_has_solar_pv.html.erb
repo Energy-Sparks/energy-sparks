@@ -1,0 +1,78 @@
+<p>This page provides more detailed insights into the energy produced by your solar panels.</p>
+
+<ul>
+  <li>
+    <a href='#long_term_trends'>
+      Long term trends
+    </a>
+  </li>
+  <li>
+    <a href='#summary_of_electricity_usage_for_the_last_year'>
+      Summary of electricity usage for the last year
+    </a>
+  </li>
+  <li>
+    <a href='#recent_electricity_consumption_and_solar_production'>
+      Recent electricity consumption and solar production
+    </a>
+  </li>
+</ul>
+
+<%= render 'schools/advice/section_title', section_id: 'long_term_trends', section_title: 'Long term trends' %>
+
+Include the “your solar panels have reduced…” notice from the insights section.
+
+<%= component 'chart', chart_type: :solar_pv_group_by_month, school: @school do |c| %>
+  <% c.with_title do %>
+    Electricity consumption and solar PV for the last 12 months
+  <% end %>
+    "The chart below shows your school's electricity consumption, solar energy generation and exported solar energy between #{short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date)} and #{short_dates(@analysis_dates.end_date)}. It includes an indication of how bright the sun was during each month"
+  end %>
+  <% c.with_footer do %>
+    <p>The chart shows how much of the school’s energy consumption is supplied by your solar panels and consumed onsite. It also indicates how much energy is exported to the National Grid on days when the panels are producing more electricity than the school needs.</p>
+    <p>The “brightness of sunshine” line on the chart represents the 'average solar irradiance'. This is a measure of how bright the sun was during each month.</p>
+  <% end %>
+<% end %>
+
+<%= render 'schools/advice/section_title', section_id: 'recent_electricity_consumption_and_solar_production', section_title: 'Recent electricity consumption and solar production' %>
+
+<%= component 'chart', chart_type: :solar_pv_last_7_days_by_submeter, school: @school do |c| %>
+  <% c.with_title { 'Electricity consumption and solar PV for the 7 days' } %>
+  <% c.with_subtitle do
+    "This chart shows the electricity consumption at your school for every half hour of the day between #{short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date)} and #{short_dates(@analysis_dates.end_date)} broken down. It includes an indication of how bright the sun was during that period."
+  end %>
+
+
+<% end %>
+
+<%= render 'schools/advice/section_title', section_id: 'benefits_of_having_installed_solar_panels', section_title: 'Benefits of having installed solar panels' %>
+
+<p>Installing solar panels has reduced your school’s energy usage by 4,111 kWh (XX%) in the last 12 months.</p>
+
+<p>The panels have reduced your carbon emissions by approximately {{annual_co2_saving_kg}} each year.</p>
+
+<p>The following table summarises how much energy your solar panels has produced and how much has been consumed on site and exported to the national grid between START DATE and END DATE:<p>
+
+Include table from existing analysis page
+
+<p>The cost savings from your panels will depend on whether they are owned by the school or whether a third-party energy company owns the panels.</p>
+
+<strong>If the panels are owned by the school</strong>
+
+<p>The school will have saved about £620 from the free electricity it is consuming from the panels</p>
+
+<p>There may be extra returns on the investment depending on when the panels were installed before or after April 2019.</p>
+
+Before April 2019
+After April 2019
+The school might also gain from the government subsidy called 'feed-in-tariff'.
+
+<p>The amount of the feed in tariff will depend on when the panels were installed and is typically in the range 5p/kWh to 40 p/kWh x the total 'Photovoltaic production' of 5,694 kWh, each year</p>
+
+<p>There will be an extra saving of about £79 from exported electricity under the SEG (Smart Export Guarantee)</p>
+
+<strong>If the panels are owned by a third-party</strong>
+
+<p>Third party companies install solar panels for free and charge schools a discounted rate for the energy consumed from these panels.</p>
+
+<p>So the savings will depend on the difference between the cost of mains electricity and how much the third party is charging for electricity.</p>

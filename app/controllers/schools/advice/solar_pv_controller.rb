@@ -5,6 +5,7 @@ module Schools
       end
 
       def analysis
+        @analysis_dates = analysis_dates
       end
 
       private

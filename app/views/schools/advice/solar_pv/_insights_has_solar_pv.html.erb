@@ -1,0 +1,17 @@
+<%= component 'notice', status: :neutral do |c| %>
+  <% c.with_link { link_to t('advice_pages.solar_pv.no_solar_pv.insights.link'), learn_more_school_advice_solar_pv_path(@school) } %>
+  <p>Many schools have solar photovoltaic (solar PV) panels which produce energy from sunlight.</p>
+  <p>The panels reduce both the school's electricity consumption from the national grid and its carbon emissions. Electricity produced from solar panels produces very little carbon.</p>
+  <p>Solar PV works well for schools as they produce most energy around midday which is when a school typically uses most energy.</p>
+<% end %>
+
+<%= render 'schools/advice/section_title', section_id: 'your_solar_energy_production', section_title: 'Your solar energy production' %>
+
+<p>Your solar panels have reduced your electricity consumption from the national grid by 15%</p>
+
+Include table from the “Summary of electricity usage for the last year” section of the analysis
+
+<%= render 'schools/advice/section_title', section_id: 'how_do_you_compare', section_title: 'How do you compare?' %>
+
+For more detail, compare with other schools in your group
+
