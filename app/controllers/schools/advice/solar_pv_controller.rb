@@ -3,29 +3,30 @@ module Schools
     class SolarPvController < AdviceBaseController
       def insights
         if @school.has_solar_pv?
-          @existing_benefits = existing_benefits
+          @existing_benefits = build_existing_benefits
         else
-          @potential_benefits_estimator = potential_benefits_estimator
+          @potential_benefits_estimator = build_potential_benefits
         end
       end
 
       def analysis
         if @school.has_solar_pv?
           @analysis_dates = analysis_dates
+          @existing_benefits = build_existing_benefits
         else
-          @potential_benefits_estimator = potential_benefits_estimator
+          @potential_benefits_estimator = build_potential_benefits
         end
       end
 
       private
 
-      def existing_benefits
+      def build_existing_benefits
         ::SolarPhotovoltaics::ExistingBenefitsService.new(
           meter_collection: aggregate_school
         ).create_model
       end
 
-      def potential_benefits_estimator
+      def build_potential_benefits
         ::SolarPhotovoltaics::PotentialBenefitsEstimatorService.new(
           meter_collection: aggregate_school,
           asof_date: analysis_end_date
