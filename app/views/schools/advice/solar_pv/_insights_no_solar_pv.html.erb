@@ -1,14 +1,8 @@
 <%= component 'notice', status: :neutral do |c| %>
   <% c.with_link { link_to t('advice_pages.solar_pv.no_solar_pv.insights.link'), learn_more_school_advice_solar_pv_path(@school) } %>
-  <p>Many schools have solar photovoltaic (solar PV) panels which produce energy from sunlight.</p>
-  <p>The panels reduce both the school's electricity consumption from the national grid and its carbon emissions. Electricity produced from solar panels produces very little carbon.</p>
-  <p>Solar PV works well for schools as they produce most energy around midday which is when a school typically uses most energy.</p>
+  <%= t('advice_pages.solar_pv.no_solar_pv.insights.advice_html') %>
 <% end %>
-
-<%= render 'schools/advice/section_title', section_id: 'potential_benefits_for_your_school', section_title: 'Potential benefits for your school' %>
-
-<p>Your school doesn’t have solar panels.</p>
-
-<p>If you do get solar panels installed, don’t forget to let us know at <a href='mailto:hello@energysparks.uk'>hello@energysparks.uk</a> so that we can configure them for your school.</p>
-
-<p>Installing solar panels could reduce the electricity you consume from the national grid by <%= format_unit(@potential_benefits_estimator.optimum_mains_reduction_percent, :percent) %> each year.</p>
+<%= render 'schools/advice/section_title', section_id: 'potential_benefits_for_your_school', section_title: t('advice_pages.solar_pv.no_solar_pv.insights.potential_benefits_for_your_school') %>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.insights.your_school_doesnt_have_solar_panels') %>.</p>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.insights.if_you_do_get_solar_panels_installed_html') %>.</p>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.insights.installing_solar_panels_could_reduce_html', optimum_mains_reduction_percent: format_unit(@potential_benefits_estimator.optimum_mains_reduction_percent, :percent)) %>.</p>

@@ -1,79 +1,9 @@
-<p>Installing solar PV at your school will reduce the electricity you consume from the national grid, and reduce your school's carbon emissions. It should be seen as an addition to reducing your school's electricity consumption through energy efficiency rather than an alternative.</p>
-
-<p>It might take between 2 and 15 years to pay back the capital costs of installing solar panels depending on your assumptions for future electricity tariffs, but PTAs will often be prepared to raise some of the capital costs making it more economic for schools.</p>
-
-<p>The table below provides estimates of the potential benefits and costs of installing different quantities of solar PV panels at your school:</p>
-
-
-<table class="table table-sm">
-  <thead class="thead-dark">
-    <tr>
-      <th class="text-center-">
-        Capacity(kWp)
-      </th>
-      <th class="text-center">
-        Panels
-      </th>
-      <th class="text-center">
-        Area (m2)
-      </th>
-      <th class="text-center">
-        Annual self consumed solar electricity (kWh)
-      </th>
-      <th class="text-center">
-        Annual exported solar electricity (kWh)
-      </th>
-      <th class="text-center">
-        Annual output from panels (kWh)
-      </th>
-      <th class="text-center">
-        Reduction in mains consumption
-      </th>
-      <th class="text-center">
-        Annual saving
-      </th>
-      <th class="text-center">
-        Annual saving (CO2)
-      </th>
-      <th class="text-center">
-        Estimated capital cost
-      </th>
-      <th class="text-center">
-        Payback years
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @potential_benefits_estimator.scenarios.each do |scenario| %>
-      <tr>
-        <td class="text-left"><%= format_unit(scenario.kwp, :kwh) %></td>
-        <td class="text-right"><%= scenario.panels %></td>
-        <td class="text-right"><%= scenario.area %></td>
-        <td class="text-right"><%= format_unit(scenario.solar_consumed_onsite_kwh, :kwh) %></td>
-        <td class="text-right"><%= format_unit(scenario.exported_kwh, :kwh) %></td>
-        <td class="text-right"><%= format_unit(scenario.solar_pv_output_kwh, :kwh) %></td>
-        <td class="text-right"><%= format_unit(scenario.reduction_in_mains_percent, :percent) %></td>
-        <td class="text-right"><%= format_unit(scenario.mains_savings_£, :£) %></td>
-        <td class="text-right"><%= format_unit(scenario.solar_pv_output_co2, :co2) %></td>
-        <td class="text-right"><%= format_unit(scenario.capital_cost_£, :£) %></td>
-        <td class="text-right"><%= scenario.payback_years.round %> years</td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<p>The table contains a range of capacities, calculated using half hourly electricity meter data from your school and real solar PV data for your locality for the last year to produce a reasonable estimate of the potential for solar PV to reduce your main consumption.</p>
-
-<p>Energy Sparks has estimated that installing <%= format_unit(@potential_benefits_estimator.optimum_kwp, :kwh) %> kWh provides the best payback.</p>
-
-<p>However, installing slightly more or less than the best payback makes little difference to the economics.</p>
-
-<p>Comments</p>
-<ul>
-  <li>The calculations currently assume you will get some income from any exported electricity. Since the end of the Feed-In-Tariff in April 2019 automatic income from export has been replaced by the Smart Export Guarantee (SEG) scheme but this income is dependent on agreement with your electricity supplier</li>
-  <li>The calculations are based on a current electricity price of 15p/kWh, if mains electricity prices increase there will be a higher economic benefit and shorter payback to the installation.</li>
-  <li>If the school becomes more efficient at using electricity and reduces its electricity consumption the benefit will also reduce.</li>
-  <li>The capital costs in the table above are estimates based on current market rates; the installation cost at your school might be a little different - you need to get quotes.</li>
-  <li>The estimates assume your have roof space and that is it roughly south facing - as this is optimal for schools whose peak demand is during the middle of the day when south facing panels produce the most electricity.</li>
-  <li>The benefits of your solar pv will be reduced if you make your school more energy efficient. However, if you want your school to reduce its carbon emissions you should consider both installing solar panels and reducing your electricity consumption.</li>
-</ul>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.analysis.installing_solar_pv') %>.</p>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.analysis.it_might_take_between') %>.</p>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.analysis.the_table_below') %>:</p>
+<%= render 'analysis_no_solar_table' %>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.analysis.the_table_contains') %>.</p>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.analysis.energy_sparks_has_estimated', optimum_kwp: format_unit(@potential_benefits_estimator.optimum_kwp, :kwh)) %>.</p>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.analysis.however_installing_slightly_more') %>.</p>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.analysis.comments') %></p>
+<p><%= t('advice_pages.solar_pv.no_solar_pv.analysis.comments_list_html') %></p>
