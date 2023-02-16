@@ -4,11 +4,67 @@
 
 <p>The table below provides estimates of the potential benefits and costs of installing different quantities of solar PV panels at your school:</p>
 
-** Table from current analysis page **
+
+<table class="table table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th class="text-center-">
+        Capacity(kWp)
+      </th>
+      <th class="text-center">
+        Panels
+      </th>
+      <th class="text-center">
+        Area (m2)
+      </th>
+      <th class="text-center">
+        Annual self consumed solar electricity (kWh)
+      </th>
+      <th class="text-center">
+        Annual exported solar electricity (kWh)
+      </th>
+      <th class="text-center">
+        Annual output from panels (kWh)
+      </th>
+      <th class="text-center">
+        Reduction in mains consumption
+      </th>
+      <th class="text-center">
+        Annual saving
+      </th>
+      <th class="text-center">
+        Annual saving (CO2)
+      </th>
+      <th class="text-center">
+        Estimated capital cost
+      </th>
+      <th class="text-center">
+        Payback years
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @potential_benefits_estimator.scenarios.each do |scenario| %>
+      <tr>
+        <td class="text-left"><%= format_unit(scenario.kwp, :kwh) %></td>
+        <td class="text-right"><%= scenario.panels %></td>
+        <td class="text-right"><%= scenario.area %></td>
+        <td class="text-right"><%= format_unit(scenario.solar_consumed_onsite_kwh, :kwh) %></td>
+        <td class="text-right"><%= format_unit(scenario.exported_kwh, :kwh) %></td>
+        <td class="text-right"><%= format_unit(scenario.solar_pv_output_kwh, :kwh) %></td>
+        <td class="text-right"><%= format_unit(scenario.reduction_in_mains_percent, :percent) %></td>
+        <td class="text-right"><%= format_unit(scenario.mains_savings_£, :£) %></td>
+        <td class="text-right"><%= format_unit(scenario.solar_pv_output_co2, :co2) %></td>
+        <td class="text-right"><%= format_unit(scenario.capital_cost_£, :£) %></td>
+        <td class="text-right"><%= scenario.payback_years.round %> years</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <p>The table contains a range of capacities, calculated using half hourly electricity meter data from your school and real solar PV data for your locality for the last year to produce a reasonable estimate of the potential for solar PV to reduce your main consumption.</p>
 
-<p>Energy Sparks has estimated that installing {optimum_kwp} provides the best payback.</p>
+<p>Energy Sparks has estimated that installing <%= format_unit(@potential_benefits_estimator.optimum_kwp, :kwh) %> kWh provides the best payback.</p>
 
 <p>However, installing slightly more or less than the best payback makes little difference to the economics.</p>
 

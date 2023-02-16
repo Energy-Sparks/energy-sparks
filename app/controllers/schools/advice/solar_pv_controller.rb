@@ -6,7 +6,11 @@ module Schools
       end
 
       def analysis
-        @analysis_dates = analysis_dates
+        if @school.has_solar_pv?
+          @analysis_dates = analysis_dates
+        else
+          @potential_benefits_estimator = potential_benefits_estimator
+        end
       end
 
       private
