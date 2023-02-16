@@ -6,8 +6,24 @@ en:
         analysis:
           title: Analysis
         insights:
+          advice_html: |-
+            <p>Many schools have solar photovoltaic (solar PV) panels which produce energy from sunlight.</p>
+            <p>The panels reduce both the school's electricity consumption from the national grid and its carbon emissions. Electricity produced from solar panels produces very little carbon.</p>
+            <p>Solar PV works well for schools as they produce most energy around midday which is when a school typically uses most energy.</p>
+          for_more_detail_html: For more detail, <a href='%{link}'>compare with other schools in your group</a>
+          how_do_you_compare: How do you compare?
+          link: Learn more
           next_steps_html: Next steps
+          table:
+            row:
+              consumption_from_network: Consumption from network
+              export_to_the_network: Export to the network
+              photovoltaic_production: Photovoltaic production
+              self_consumption: Self-consumption
+              total_consumption: Total consumption
           title: Insights
+          your_solar_energy_production: Your solar energy production
+          your_solar_panels_have_reduced: Your solar panels have reduced your electricity consumption from the national grid by %{annual_saving_from_solar_pv_percent}
         page_title: Solar PV generation
       no_solar_pv:
         analysis:
