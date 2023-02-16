@@ -12,6 +12,27 @@ RSpec.describe "solar pv advice page", type: :system do
     let(:user)  { create(:school_admin, school: school) }
 
     before do
+      Schools::Advice::SolarPvController.any_instance.stub(:potential_benefits_estimator) {
+        OpenStruct.new(
+          optimum_kwp: 52.5,
+          optimum_payback_years: 5.682322708769174,
+          optimum_mains_reduction_percent: 0.10478762755164217,
+          scenarios: OpenStruct.new(
+            kwp: 1,
+            panels: 3,
+            area: 4,
+            solar_consumed_onsite_kwh: 893.9545973935678,
+            exported_kwh: 0.0,
+            solar_pv_output_kwh: 893.954597393567,
+            reduction_in_mains_percent: 0.002068165948887468,
+            mains_savings_£: 140.1736542641811,
+            solar_pv_output_co2: 169.23840876311736,
+            capital_cost_£: 2392.9653,
+            payback_years: 17.07143409053209
+          )
+        )
+      }
+
       sign_in(user)
       visit school_advice_solar_pv_path(school)
     end
