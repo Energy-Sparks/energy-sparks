@@ -4,6 +4,10 @@ en:
     solar_pv:
       has_solar_pv:
         analysis:
+          benefits_of_having_installed_solar_panels: Benefits of having installed solar panels
+          long_term_trends: Long term trends
+          recent_electricity_consumption_and_solar_production: Recent electricity consumption and solar production
+          this_page_provides: This page provides more detailed insights into the energy produced by your solar panels
           title: Analysis
         insights:
           advice_html: |-
