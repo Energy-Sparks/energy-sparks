@@ -1,0 +1,14 @@
+<%= component 'notice', status: :neutral do |c| %>
+  <% c.with_link { link_to t('advice_pages.solar_pv.no_solar_pv.insights.link'), learn_more_school_advice_solar_pv_path(@school) } %>
+  <p>Many schools have solar photovoltaic (solar PV) panels which produce energy from sunlight.</p>
+  <p>The panels reduce both the school's electricity consumption from the national grid and its carbon emissions. Electricity produced from solar panels produces very little carbon.</p>
+  <p>Solar PV works well for schools as they produce most energy around midday which is when a school typically uses most energy.</p>
+<% end %>
+
+<%= render 'schools/advice/section_title', section_id: 'potential_benefits_for_your_school', section_title: 'Potential benefits for your school' %>
+
+<p>Your school doesn’t have solar panels.</p>
+
+<p>If you do get solar panels installed, don’t forget to let us know at hello@energysparks.uk so that we can configure them for your school.</p>
+
+<p>Installing solar panels could reduce the electricity you consume from the national grid by {optimum_mains_reduction_percent} each year.</p>
