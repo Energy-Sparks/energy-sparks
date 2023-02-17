@@ -16,7 +16,6 @@ en:
         meter_breakdown:
           chart_subtitle_html: This graph shows the gas consumption for every half hour of the day during school days in winter between <span class='start-date'>%{month_year_start}</span> and <span class='end-date'>%{month_year_end}</span> for %{meter}
           chart_title: How gas usage varies during the school day in winter for individual meters
-          select: Select a meter
           title: Central heating operating times by meter
         school_day_heating:
           title: Gas usage for heating during the day
