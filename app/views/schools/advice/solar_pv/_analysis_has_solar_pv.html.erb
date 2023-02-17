@@ -18,7 +18,10 @@
 </ul>
 
 <%= render 'schools/advice/section_title', section_id: 'long_term_trends', section_title: t('advice_pages.solar_pv.has_solar_pv.analysis.long_term_trends') %>
-<p><%= t('advice_pages.solar_pv.has_solar_pv.insights.your_solar_panels_have_reduced', annual_saving_from_solar_pv_percent: format_unit(@existing_benefits.annual_saving_from_solar_pv_percent, :percent)).html_safe %></p>
+
+<%= component 'notice', status: :positive do |c| %>
+  <%= t('advice_pages.solar_pv.has_solar_pv.insights.your_solar_panels_have_reduced', annual_saving_from_solar_pv_percent: format_unit(@existing_benefits.annual_saving_from_solar_pv_percent, :percent)).html_safe %>
+<% end %>
 
 <%= component 'chart', chart_type: :solar_pv_group_by_month, school: @school do |c| %>
   <% c.with_title do %>
@@ -26,7 +29,7 @@
   <% end %>
   <% c.with_subtitle do %>
     <%= t(
-      'advice_pages.solar_pv.has_solar_pv.analysis.solar_pv_group_by_month.subtitle',
+      'advice_pages.solar_pv.has_solar_pv.analysis.solar_pv_group_by_month.subtitle_html',
       start_date: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
       end_date: short_dates(@analysis_dates.end_date)
     )
@@ -44,8 +47,8 @@
     <%= t('advice_pages.solar_pv.has_solar_pv.analysis.solar_pv_last_7_days_by_submeter.title') %>
   <% end %>
   <% c.with_subtitle do %>
-    <%= t('advice_pages.solar_pv.has_solar_pv.analysis.solar_pv_last_7_days_by_submeter.subtitle',
-    start_date: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
+    <%= t('advice_pages.solar_pv.has_solar_pv.analysis.solar_pv_last_7_days_by_submeter.subtitle_html',
+    start_date: short_dates(@analysis_dates.end_date - 6.days),
     end_date: short_dates(@analysis_dates.end_date)
     ) %>
   <% end %>

@@ -21,10 +21,10 @@ en:
             footer_html: |-
               <p>The chart shows how much of the school’s energy consumption is supplied by your solar panels and consumed onsite. It also indicates how much energy is exported to the National Grid on days when the panels are producing more electricity than the school needs.</p>
               <p>The “brightness of sunshine” line on the chart represents the 'average solar irradiance'. This is a measure of how bright the sun was during each month.</p>
-            subtitle: The chart below shows your school's electricity consumption, solar energy generation and exported solar energy between %{start_date} and %{end_date}. It includes an indication of how bright the sun was during each month"
+            subtitle_html: The chart below shows your school's electricity consumption, solar energy generation and exported solar energy between %{start_date} and %{end_date}. It includes an indication of how bright the sun was during each month"
             title: Electricity consumption and solar PV for the last 12 months
           solar_pv_last_7_days_by_submeter:
-            subtitle: This chart shows the electricity consumption at your school for every half hour of the day between %{start_date} and %{end_date} broken down. It includes an indication of how bright the sun was during that period.
+            subtitle_html: This chart shows the electricity consumption at your school for every half hour of the day between <span class="start-date">%{start_date}</span> and <span class="end-date">%{end_date}</span> broken down. It includes an indication of how bright the sun was during that period.
             title: Electricity consumption and solar PV for the 7 days
           the_cost_savings: The cost savings from your panels will depend on whether they are owned by the school or whether a third-party energy company owns the panels
           the_panels_have_reduced: The panels have reduced your carbon emissions by approximately %{annual_co2_saving_kg} kg CO2 each year
@@ -43,6 +43,7 @@ en:
           link: Learn more
           next_steps_html: Next steps
           table:
+            category: Category
             row:
               consumption_from_network: Consumption from network
               export_to_the_network: Export to the network
