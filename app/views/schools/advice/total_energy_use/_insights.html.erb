@@ -1,0 +1,22 @@
+<%= component 'notice', status: :neutral do |c| %>
+  <% c.with_link { link_to advice_t('insights.intro.link'), learn_more_school_advice_total_energy_use_path(@school) } %>
+  <%= advice_t('insights.intro.text') %>
+<% end %>
+
+<%= render 'schools/advice/section_title', section_id: 'energy-use', section_title: advice_t('insights.energy_use.title') %>
+
+<% if @overview_data %>
+  <%= render 'management/schools/overview_data', overview_data: @overview_data, show_savings: false %>
+  <div class="text-right management-overview-caption">
+    <%= @overview_data.date_ranges %>
+    <%= link_to_help_for_feature :management_summary_overview, title: "#{t('schools.show.more_information')} #{fa_icon('info-circle')}".html_safe %>
+  </div>
+<% end %>
+
+<%= render 'schools/advice/section_title', section_id: 'comparison', section_title: advice_t('insights.comparison.title') %>
+
+<% if @school.school_group.present? %>
+  <p>
+    <%= advice_t('insights.comparison.more_detail_html', link: benchmark_for_school_group_path(:annual_energy_costs_per_pupil, @school)) %>
+  </p>
+<% end %>

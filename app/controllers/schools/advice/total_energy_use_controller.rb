@@ -2,11 +2,11 @@ module Schools
   module Advice
     class TotalEnergyUseController < AdviceBaseController
       def insights
+        @overview_data = Schools::ManagementTableService.new(@school).management_data
       end
 
       def analysis
         @analysis_dates = analysis_dates
-        puts @analysis_dates.inspect
       end
 
       private
