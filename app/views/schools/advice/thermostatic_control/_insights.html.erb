@@ -6,7 +6,6 @@
 <%= render 'schools/advice/section_title', section_id: 'your_thermostatic_control', section_title: t('advice_pages.thermostatic_control.insights.your_thermostatic_control.title') %>
 
 <% rating_value = AnalyseHeatingAndHotWater::HeatingModel.find_r2_rating(@heating_thermostatic_analysis.r2, :rating_value) %>
-
 <%= component 'notice', status: notice_status_for(rating_value) do |c| %>
   <%=
     t('advice_pages.thermostatic_control.insights.thermostatic_control_r2_notice_html',

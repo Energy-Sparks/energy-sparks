@@ -6,6 +6,7 @@ module Schools
       end
 
       def analysis
+        @heating_thermostatic_analysis = build_heating_thermostatic_analysis
       end
 
       private
