@@ -7,6 +7,15 @@ en:
           benefits_of_having_installed_solar_panels: Benefits of having installed solar panels
           long_term_trends: Long term trends
           recent_electricity_consumption_and_solar_production: Recent electricity consumption and solar production
+          solar_pv_group_by_month:
+            footer_html: |-
+              <p>The chart shows how much of the school’s energy consumption is supplied by your solar panels and consumed onsite. It also indicates how much energy is exported to the National Grid on days when the panels are producing more electricity than the school needs.</p>
+              <p>The “brightness of sunshine” line on the chart represents the 'average solar irradiance'. This is a measure of how bright the sun was during each month.</p>
+            subtitle: The chart below shows your school's electricity consumption, solar energy generation and exported solar energy between %{start_date} and %{end_date}. It includes an indication of how bright the sun was during each month"
+            title: Electricity consumption and solar PV for the last 12 months
+          solar_pv_last_7_days_by_submeter:
+            subtitle: This chart shows the electricity consumption at your school for every half hour of the day between %{start_date} and %{end_date} broken down. It includes an indication of how bright the sun was during that period.
+            title: Electricity consumption and solar PV for the 7 days
           this_page_provides: This page provides more detailed insights into the energy produced by your solar panels
           title: Analysis
         insights:

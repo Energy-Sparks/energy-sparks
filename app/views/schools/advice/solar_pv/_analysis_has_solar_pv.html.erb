@@ -20,32 +20,42 @@
 <%= render 'schools/advice/section_title', section_id: 'long_term_trends', section_title: t('advice_pages.solar_pv.has_solar_pv.analysis.long_term_trends') %>
 <p><%= t('advice_pages.solar_pv.has_solar_pv.insights.your_solar_panels_have_reduced', annual_saving_from_solar_pv_percent: format_unit(@existing_benefits.annual_saving_from_solar_pv_percent, :percent)).html_safe %></p>
 
-
-
 <%= component 'chart', chart_type: :solar_pv_group_by_month, school: @school do |c| %>
   <% c.with_title do %>
-    Electricity consumption and solar PV for the last 12 months
+    <%= t('advice_pages.solar_pv.has_solar_pv.analysis.solar_pv_group_by_month.title') %>
   <% end %>
-    "The chart below shows your school's electricity consumption, solar energy generation and exported solar energy between #{short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date)} and #{short_dates(@analysis_dates.end_date)}. It includes an indication of how bright the sun was during each month"
-  end %>
+  <% c.with_subtitle do %>
+    <%= t(
+      'advice_pages.solar_pv.has_solar_pv.analysis.solar_pv_group_by_month.subtitle',
+      start_date: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
+      end_date: short_dates(@analysis_dates.end_date)
+    )
+    %>
+  <% end %>
   <% c.with_footer do %>
-    <p>The chart shows how much of the school’s energy consumption is supplied by your solar panels and consumed onsite. It also indicates how much energy is exported to the National Grid on days when the panels are producing more electricity than the school needs.</p>
-    <p>The “brightness of sunshine” line on the chart represents the 'average solar irradiance'. This is a measure of how bright the sun was during each month.</p>
+    <%= t('advice_pages.solar_pv.has_solar_pv.analysis.solar_pv_group_by_month.footer_html') %>
   <% end %>
 <% end %>
 
 <%= render 'schools/advice/section_title', section_id: 'recent_electricity_consumption_and_solar_production', section_title: t('advice_pages.solar_pv.has_solar_pv.analysis.recent_electricity_consumption_and_solar_production') %>
 
 <%= component 'chart', chart_type: :solar_pv_last_7_days_by_submeter, school: @school do |c| %>
-  <% c.with_title { 'Electricity consumption and solar PV for the 7 days' } %>
-  <% c.with_subtitle do
-    "This chart shows the electricity consumption at your school for every half hour of the day between #{short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date)} and #{short_dates(@analysis_dates.end_date)} broken down. It includes an indication of how bright the sun was during that period."
-  end %>
+  <% c.with_title do %>
+    <%= t('advice_pages.solar_pv.has_solar_pv.analysis.solar_pv_last_7_days_by_submeter.title') %>
+  <% end %>
+  <% c.with_subtitle do %>
+    <%= t('advice_pages.solar_pv.has_solar_pv.analysis.solar_pv_last_7_days_by_submeter.subtitle',
+    start_date: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
+    end_date: short_dates(@analysis_dates.end_date)
+    ) %>
+  <% end %>
 <% end %>
 
 <%= render 'schools/advice/section_title', section_id: 'benefits_of_having_installed_solar_panels', section_title: t('advice_pages.solar_pv.has_solar_pv.analysis.benefits_of_having_installed_solar_panels') %>
 
-<p>Installing solar panels has reduced your school’s energy usage by 4,111 kWh (XX%) in the last 12 months.</p>
+<p>
+Installing solar panels has reduced your school’s energy usage by 4,111 kWh (XX%) in the last 12 months.
+</p>
 
 <p>The panels have reduced your carbon emissions by approximately {{annual_co2_saving_kg}} each year.</p>
 
