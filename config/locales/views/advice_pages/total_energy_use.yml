@@ -4,5 +4,9 @@ en:
     total_energy_use:
       analysis:
         summary: This section gives a more detailed analysis of how your school’s energy consumption compares with other schools.
+      charts:
+        benchmark:
+          subtitle_html: This chart shows how your school’s energy use compared against well managed and exemplar schools between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>
+          title: Annual energy use comparison with other schools
       insights:
       page_title: Energy usage summary

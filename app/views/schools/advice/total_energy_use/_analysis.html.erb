@@ -1,1 +1,8 @@
-<p><%= advice_t('advice_pages.total_energy_use.analysis.summary') %></p>
+<p><%= advice_t('analysis.summary') %></p>
+
+<%= component 'chart', chart_type: :benchmark, school: @school do |c| %>
+  <% c.with_title { advice_t('charts.benchmark.title') } %>
+  <% c.with_subtitle do %>
+    <%= advice_t('charts.benchmark.subtitle_html', start_date: @analysis_dates.one_year_before_end.to_s(:es_short), end_date: @analysis_dates.end_date.to_s(:es_short)) %>
+  <% end %>
+<% end %>
