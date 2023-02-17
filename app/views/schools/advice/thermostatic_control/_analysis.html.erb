@@ -1,25 +1,23 @@
-<p>This section gives a more detailed analysis of your school’s boiler control and some things to look out for.</p>
-<p>The following sections provide more background and analysis on your electricity baseload<p>
-
+<%= t('advice_pages.thermostatic_control.analysis.this_section_html') %>
 <ul>
   <li>
     <a href='#thermostatic_control_in_your_school'>
-      Thermostatic control in your school
+      <%= t('advice_pages.thermostatic_control.analysis.thermostatic_control_in_your_school') %>
     </a>
   </li>
   <li>
     <a href='#how_to_calculate_a_theoretical_daily_gas_consumption_using_the_model'>
-      How to calculate a theoretical daily gas consumption using the model
+      <%= t('advice_pages.thermostatic_control.analysis.how_to_calculate_a_theoretical_daily_gas_consumption_using_the_model') %>
     </a>
   </li>
   <li>
     <a href='#using_days_with_large_diurnal_range_to_understand_thermostatic_control'>
-      Using days with large diurnal range to understand thermostatic control
+      <%= t('advice_pages.thermostatic_control.analysis.using_days_with_large_diurnal_range_to_understand_thermostatic_control') %>
     </a>
   </li>
 </ul>
 
-<%= render 'schools/advice/section_title', section_id: 'thermostatic_control_in_your_school', section_title: 'Thermostatic control in your school' %>
+<%= render 'schools/advice/section_title', section_id: 'thermostatic_control_in_your_school', section_title: t('advice_pages.thermostatic_control.analysis.thermostatic_control_in_your_school') %>
 
 <% rating_value = AnalyseHeatingAndHotWater::HeatingModel.find_r2_rating(@heating_thermostatic_analysis.r2, :rating_value) %>
 <%= component 'notice', status: notice_status_for(rating_value) do |c| %>
@@ -56,11 +54,11 @@
   <% end %>
 <% end %>
 
-<%= render 'schools/advice/section_title', section_id: 'how_to_calculate_a_theoretical_daily_gas_consumption_using_the_model', section_title: 'How to calculate a theoretical daily gas consumption using the model' %>
+<%= render 'schools/advice/section_title', section_id: 'how_to_calculate_a_theoretical_daily_gas_consumption_using_the_model', section_title: t('advice_pages.thermostatic_control.analysis.how_to_calculate_a_theoretical_daily_gas_consumption_using_the_model') %>
 
 <%= t('advice_pages.thermostatic_control.analysis.for_energy_experts_html') %>
 
-<%= render 'schools/advice/section_title', section_id: 'using_days_with_large_diurnal_range_to_understand_thermostatic_control', section_title: 'Using days with large diurnal range to understand thermostatic control' %>
+<%= render 'schools/advice/section_title', section_id: 'using_days_with_large_diurnal_range_to_understand_thermostatic_control', section_title: t('advice_pages.thermostatic_control.analysis.using_days_with_large_diurnal_range_to_understand_thermostatic_control') %>
 
 <%= t('advice_pages.thermostatic_control.analysis.an_alternative_way_of_looking_html') %>
 
