@@ -146,6 +146,10 @@ module AdvicePageHelper
     I18nHelper.adjective(warm_weather_on_days_rating(days))
   end
 
+  def notice_status_for(rating_value)
+    rating_value > 4 ? :positive : :negative
+  end
+
   def warm_weather_on_days_status(days)
     if [:excellent, :good].include?(warm_weather_on_days_rating(days))
       :positive
