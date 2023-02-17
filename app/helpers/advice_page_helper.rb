@@ -8,8 +8,8 @@ module AdvicePageHelper
   #our naming convention and page keys. Will only work on advice pages,
   #and only for keys that are part of a page. Generic templates need to use
   #the default helper.
-  def advice_t(key)
-    I18n.t(key, scope: [:advice_pages, @advice_page.key.to_sym])
+  def advice_t(key, **vars)
+    I18n.t(key, vars.merge(scope: [:advice_pages, @advice_page.key.to_sym]))
   end
 
   def chart_start_month_year(date = Time.zone.today)
