@@ -18,6 +18,22 @@ module Schools
       def analysis
         @analysis_dates = analysis_dates
         @benchmark_chart = benchmark_chart
+
+        if can_benchmark_electricity?
+          @electricity_annual_usage = electricity_usage_service.annual_usage
+          @electricity_vs_benchmark = electricity_usage_service.annual_usage_vs_benchmark(compare: :benchmark_school)
+          @electricity_vs_exemplar = electricity_usage_service.annual_usage_vs_benchmark(compare: :exemplar_school)
+          @electricity_estimated_savings_vs_exemplar = electricity_usage_service.estimated_savings(versus: :exemplar_school)
+          @electricity_estimated_savings_vs_benchmark = electricity_usage_service.estimated_savings(versus: :benchmark_school)
+        end
+
+        if can_benchmark_gas?
+          @gas_annual_usage = gas_usage_service.annual_usage
+          @gas_vs_benchmark = gas_usage_service.annual_usage_vs_benchmark(compare: :benchmark_school)
+          @gas_vs_exemplar = gas_usage_service.annual_usage_vs_benchmark(compare: :exemplar_school)
+          @gas_estimated_savings_vs_exemplar = gas_usage_service.estimated_savings(versus: :exemplar_school)
+          @gas_estimated_savings_vs_benchmark = gas_usage_service.estimated_savings(versus: :benchmark_school)
+        end
       end
 
       private

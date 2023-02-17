@@ -18,6 +18,14 @@ RSpec.describe "total energy use advice page", type: :system do
     let(:annual_usage_vs_benchmark) { CombinedUsageMetric.new(kwh: 800, £: 400, co2: 1300) }
     let(:annual_usage_vs_exemplar) { CombinedUsageMetric.new(kwh: 500, £: 300, co2: 1000) }
 
+    let(:annual_usage) { CombinedUsageMetric.new(kwh: 1000, £: 500, co2: 1500) }
+    let(:annual_usage_vs_benchmark) { CombinedUsageMetric.new(kwh: 800, £: 400, co2: 1300) }
+    let(:annual_usage_vs_exemplar) { CombinedUsageMetric.new(kwh: 500, £: 300, co2: 1000) }
+
+    let(:savings_vs_benchmark) { CombinedUsageMetric.new(kwh: 200, £: 100, co2: 200) }
+    let(:savings_vs_exemplar) { CombinedUsageMetric.new(kwh: 500, £: 200, co2: 500) }
+
+
     before do
       allow(gas_aggregate_meter).to receive(:amr_data).and_return(amr_data)
       allow(meter_collection).to receive(:aggregated_heat_meters).and_return(gas_aggregate_meter)
@@ -29,6 +37,12 @@ RSpec.describe "total energy use advice page", type: :system do
       )
       allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive(:annual_usage_kwh).with(compare: :benchmark_school).and_return(annual_usage_vs_benchmark.kwh)
       allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive(:annual_usage_kwh).with(compare: :exemplar_school).and_return(annual_usage_vs_exemplar.kwh)
+
+      allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive(:annual_usage_vs_benchmark).with(compare: :benchmark_school).and_return(annual_usage_vs_benchmark)
+      allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive(:annual_usage_vs_benchmark).with(compare: :exemplar_school).and_return(annual_usage_vs_exemplar)
+
+      allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive(:estimated_savings).with(versus: :benchmark_school).and_return(annual_usage_vs_benchmark)
+      allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive(:estimated_savings).with(versus: :exemplar_school).and_return(annual_usage_vs_exemplar)
 
       sign_in(user)
       visit school_advice_total_energy_use_path(school)
