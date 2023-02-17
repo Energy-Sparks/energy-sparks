@@ -42,7 +42,7 @@ RSpec.describe "electricity intraday advice page", type: :system do
       it_behaves_like "an advice page tab", tab: "Analysis"
 
       it "shows titles" do
-        expect(page).to have_content("Electricity consumption during the school day over the last 12 months")
+        expect(page).to have_content(I18n.t('advice_pages.electricity_intraday.analysis.comparison.title'))
       end
 
       it "shows the expected charts" do
