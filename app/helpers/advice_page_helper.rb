@@ -4,6 +4,14 @@ module AdvicePageHelper
     polymorphic_path([tab, school, :advice, advice_page.key.to_sym])
   end
 
+  #Helper for the advice pages, passes a scope to the I18n.t API based on
+  #our naming convention and page keys. Will only work on advice pages,
+  #and only for keys that are part of a page. Generic templates need to use
+  #the default helper.
+  def advice_t(key)
+    I18n.t(key, scope: [:advice_pages, @advice_page.key.to_sym])
+  end
+
   def chart_start_month_year(date = Time.zone.today)
     month_year(date.last_month - 1.year)
   end
