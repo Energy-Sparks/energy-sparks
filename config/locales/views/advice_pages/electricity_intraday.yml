@@ -6,7 +6,7 @@ en:
         charts:
           comparison_chart_explanation_html: |-
             <p>
-              This chart allows you to see how your school’s electricity consumption compares with other energy efficient schools throughout the school day. A 'benchmark' school represents the 30.0% best ranked primary schools and 'exemplar' the 17.5% best primary schools.
+              This chart allows you to see how your school’s electricity consumption compares with other energy efficient schools throughout the school day. A 'benchmark' school represents the 30.0% best ranked %{school_type} schools and 'exemplar' the 17.5% best %{school_type} schools.
             </p>
             <p>
               This chart can be useful to observe where your school’s pattern of energy use differs from other schools. There might be anomalies like jumps in usage outside school hours which can’t be accounted for.
@@ -15,7 +15,7 @@ en:
               If your school has high consumption overnight, compared to the benchmark schools, this could indicate that you need to reduce your baseload. If consumption is mainly high during the middle of the day, this indicates you need to reduce your peak electricity use.
             </p>
           comparison_chart_subtitle_html: The chart below provides a comparison of your school's average consumption during school days between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span>, and includes a comparison with 'benchmark' and 'exemplar' schools.
-          comparison_chart_title: Electricity consumption during the school day over the last 12 months
+          comparison_chart_title: Your school day electricity consumption over the last 12 months
           holidays_chart_subtitle: The graph compares the average electricity consumption for your school during the school holidays over the last 2 years
           holidays_chart_title: Daily variation in electricity use during school holidays
           schooldays_chart_explanation_html: |-
