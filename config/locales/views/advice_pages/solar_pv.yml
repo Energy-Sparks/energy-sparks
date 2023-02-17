@@ -4,9 +4,19 @@ en:
     solar_pv:
       has_solar_pv:
         analysis:
+          after_april_2019: After April 2019
+          after_april_2019_content_html: There will be an extra saving of about £79 from exported electricity under the <a href="https://www.ofgem.gov.uk/environmental-and-social-schemes/smart-export-guarantee-seg">SEG (Smart Export Guarantee)</a>
+          before_april_2019: Before April 2019
+          before_april_2019_content_html: |-
+            <p>The school might also gain from the government subsidy called 'feed-in-tariff'.</p>
+            <p>The amount of the feed in tariff will depend on when the panels were installed and is typically in the range 5p/kWh to 40 p/kWh x the total 'Photovoltaic production' of 5,694 kWh, each year</p>
           benefits_of_having_installed_solar_panels: Benefits of having installed solar panels
+          if_the_panels_are_owned_by_a_third_party: If the panels are owned by a third-party
+          if_the_panels_are_owned_by_the_school: If the panels are owned by the school
+          installing_solar_panels_has_reduced_html: Installing solar panels has reduced your school’s energy usage by %{annual_solar_pv_consumed_onsite_kwh} kWh (%{annual_saving_from_solar_pv_percent}) in the last 12 months
           long_term_trends: Long term trends
           recent_electricity_consumption_and_solar_production: Recent electricity consumption and solar production
+          so_the_savings: So the savings will depend on the difference between the cost of mains electricity and how much the third party is charging for electricity
           solar_pv_group_by_month:
             footer_html: |-
               <p>The chart shows how much of the school’s energy consumption is supplied by your solar panels and consumed onsite. It also indicates how much energy is exported to the National Grid on days when the panels are producing more electricity than the school needs.</p>
@@ -16,6 +26,11 @@ en:
           solar_pv_last_7_days_by_submeter:
             subtitle: This chart shows the electricity consumption at your school for every half hour of the day between %{start_date} and %{end_date} broken down. It includes an indication of how bright the sun was during that period.
             title: Electricity consumption and solar PV for the 7 days
+          the_cost_savings: The cost savings from your panels will depend on whether they are owned by the school or whether a third-party energy company owns the panels
+          the_panels_have_reduced: The panels have reduced your carbon emissions by approximately %{annual_co2_saving_kg} kg CO2 each year
+          the_school_will_have_saved_html: The school will have saved about %{saving_current_gbp} from the free electricity it is consuming from the panels
+          there_may_be_extra_returns: There may be extra returns on the investment depending on when the panels were installed before or after April 2019
+          third_party_companies: Third party companies install solar panels for free and charge schools a discounted rate for the energy consumed from these panels
           this_page_provides: This page provides more detailed insights into the energy produced by your solar panels
           title: Analysis
         insights:

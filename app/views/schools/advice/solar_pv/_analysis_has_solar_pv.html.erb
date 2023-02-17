@@ -54,33 +54,49 @@
 <%= render 'schools/advice/section_title', section_id: 'benefits_of_having_installed_solar_panels', section_title: t('advice_pages.solar_pv.has_solar_pv.analysis.benefits_of_having_installed_solar_panels') %>
 
 <p>
-Installing solar panels has reduced your school’s energy usage by 4,111 kWh (XX%) in the last 12 months.
+  <%= t('advice_pages.solar_pv.has_solar_pv.analysis.installing_solar_panels_has_reduced_html',
+    annual_solar_pv_consumed_onsite_kwh: format_unit(@existing_benefits.annual_solar_pv_consumed_onsite_kwh, :kwh),
+    annual_saving_from_solar_pv_percent: format_unit(@existing_benefits.annual_saving_from_solar_pv_percent, :percent)
+    )
+  %>
 </p>
 
-<p>The panels have reduced your carbon emissions by approximately {{annual_co2_saving_kg}} each year.</p>
+<p>
+  <%= t('advice_pages.solar_pv.has_solar_pv.analysis.the_panels_have_reduced', annual_co2_saving_kg: format_unit(@existing_benefits.annual_co2_saving_kg, :kg)
+  ) %>.
+</p>
 
-<p>The following table summarises how much energy your solar panels has produced and how much has been consumed on site and exported to the national grid between START DATE and END DATE:<p>
+<p><%= t('advice_pages.solar_pv.has_solar_pv.analysis.the_cost_savings') %>.</p>
 
-Include table from existing analysis page
+<strong><%= t('advice_pages.solar_pv.has_solar_pv.analysis.if_the_panels_are_owned_by_the_school') %></strong>
 
-<p>The cost savings from your panels will depend on whether they are owned by the school or whether a third-party energy company owns the panels.</p>
+<p><%= t('advice_pages.solar_pv.has_solar_pv.analysis.the_school_will_have_saved_html', saving_current_gbp: format_unit(@existing_benefits.saving_£current, :£)) %>.</p>
 
-<strong>If the panels are owned by the school</strong>
+<p><%= t('advice_pages.solar_pv.has_solar_pv.analysis.there_may_be_extra_returns') %>.</p>
 
-<p>The school will have saved about £620 from the free electricity it is consuming from the panels</p>
+<table class="table table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th class="text-center" style="width: 50%">
+        <%= t('advice_pages.solar_pv.has_solar_pv.analysis.before_april_2019') %>
+      </th>
+      <th class="text-center" style="width: 50%">
+        <%= t('advice_pages.solar_pv.has_solar_pv.analysis.after_april_2019') %>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= t('advice_pages.solar_pv.has_solar_pv.analysis.before_april_2019_content_html') %></td>
+      <td><%= t('advice_pages.solar_pv.has_solar_pv.analysis.after_april_2019_content_html') %></td>
+    </tr>
+  </tbody>
+</table>
 
-<p>There may be extra returns on the investment depending on when the panels were installed before or after April 2019.</p>
+<strong>
+  <%= t('advice_pages.solar_pv.has_solar_pv.analysis.if_the_panels_are_owned_by_a_third_party') %>
+</strong>
 
-Before April 2019
-After April 2019
-The school might also gain from the government subsidy called 'feed-in-tariff'.
+<p><%= t('advice_pages.solar_pv.has_solar_pv.analysis.third_party_companies') %>.</p>
 
-<p>The amount of the feed in tariff will depend on when the panels were installed and is typically in the range 5p/kWh to 40 p/kWh x the total 'Photovoltaic production' of 5,694 kWh, each year</p>
-
-<p>There will be an extra saving of about £79 from exported electricity under the SEG (Smart Export Guarantee)</p>
-
-<strong>If the panels are owned by a third-party</strong>
-
-<p>Third party companies install solar panels for free and charge schools a discounted rate for the energy consumed from these panels.</p>
-
-<p>So the savings will depend on the difference between the cost of mains electricity and how much the third party is charging for electricity.</p>
+<p><%= t('advice_pages.solar_pv.has_solar_pv.analysis.so_the_savings') %>.</p>
