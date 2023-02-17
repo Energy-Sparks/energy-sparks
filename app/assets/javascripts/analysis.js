@@ -252,7 +252,6 @@ function processAnnotations(loaded_annotations, chart){
 function setupAnalysisControls(chartContainer, chartConfig){
   var controls = $(chartContainer).parent().find('.analysis-controls');
   if(controls.length){
-    //console.log("Setup analysis controls: " + chartConfig.type + "meter: " + chartConfig.mpan_mprn);
     controls.find('.move_back').on('click', function(event){
       event.preventDefault();
       $(this).prop( "disabled", true );
