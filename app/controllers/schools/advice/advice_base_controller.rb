@@ -141,6 +141,7 @@ module Schools
           last_full_week_start_date: last_full_week_start_date(end_date),
           last_full_week_end_date: last_full_week_end_date(end_date),
           recent_data: recent_data?(end_date),
+          months_of_data: months_between(start_date, end_date),
           months_analysed: months_analysed(start_date, end_date)
         )
       end

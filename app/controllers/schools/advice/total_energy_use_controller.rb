@@ -6,6 +6,7 @@ module Schools
 
       def analysis
         @analysis_dates = analysis_dates
+        puts @analysis_dates.inspect
       end
 
       private
@@ -19,7 +20,7 @@ module Schools
       end
 
       def analysis_start_date
-        analysis_end_date - 1.year
+        aggregate_meters.map { |meter| meter.amr_data.start_date }.max
       end
 
       def analysis_end_date
