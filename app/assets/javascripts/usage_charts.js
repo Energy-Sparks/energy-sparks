@@ -14,25 +14,25 @@ $(document).ready(function() {
       chartConfig.mpan_mprn = meter;
     }
 
+    updateMeterSpecificChartState(chartDiv, chartConfig);
+
     var seriesBreakdown = $(chartDiv).find("input[name='series_breakdown']").val();
     if (seriesBreakdown) {
       chartConfig.series_breakdown = seriesBreakdown;
     }
 
     chartConfig.date_ranges = getDateRanges(chartDiv);
-
-    setupAxisControls(chartContainer[0], chartConfig);
     processAnalysisChart(chartContainer[0], chartConfig);
-    setupAnalysisControls(chartContainer[0], chartConfig);
-    setupChartDescription(chartDiv, chartConfig);
   }
 
-  function setupChartDescription(chartDiv, chartConfig) {
+  //used for the per-meter chart switching behaviour on the advice pages
+  function updateMeterSpecificChartState(chartDiv, chartConfig) {
     var descriptions = $(chartDiv).find("input[name='descriptions']").data('descriptions');
     var description = $(chartDiv).find('.chart-subtitle');
     var meter = chartConfig.mpan_mprn;
     if(descriptions && description && meter && descriptions[meter]) {
-      description.text(descriptions[meter]);
+      chartConfig.transformations = [];
+      description.html(descriptions[meter]);
     }
   }
 
@@ -131,6 +131,12 @@ $(document).ready(function() {
     if (secondDataPickerWrapper.length) {
       setUpDatePicker(secondDataPickerWrapper, secondDataPicker, minMaxReadings, defaultComparisonDate, period);
     }
+
+    var chartContainer = $(chartDiv).find('.usage-chart').first();
+    var chartConfig = chartContainer.data('chart-config');
+    setupAxisControls(chartContainer[0], chartConfig);
+    setupAnalysisControls(chartContainer[0], chartConfig);
+
     updateChart(chartDiv);
   }
 

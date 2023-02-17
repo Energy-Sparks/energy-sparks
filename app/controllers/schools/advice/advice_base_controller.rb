@@ -105,13 +105,26 @@ module Schools
         aggregate_school.aggregate_meter(advice_page_fuel_type).amr_data.end_date
       end
 
+      #for charts that use the last full week
+      def last_full_week_start_date(end_date)
+        end_date.prev_year.end_of_week
+      end
+
+      #for charts that use the last full week
+      def last_full_week_end_date(end_date)
+        end_date.prev_week.end_of_week - 1
+      end
+
       def analysis_dates
         start_date = analysis_start_date
         end_date = analysis_end_date
         OpenStruct.new(
           start_date: start_date,
           end_date: end_date,
+          one_year_before_end: end_date - 1.year,
           one_years_data: one_years_data?(start_date, end_date),
+          last_full_week_start_date: last_full_week_start_date(end_date),
+          last_full_week_end_date: last_full_week_end_date(end_date),
           recent_data: recent_data?(end_date),
           months_analysed: months_analysed(start_date, end_date)
         )

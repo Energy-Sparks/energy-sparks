@@ -104,5 +104,46 @@ module AdvicePageHelper
   def meters_by_percentage_baseload(meters)
     meters.sort_by {|_, v| -v.percentage_baseload }
   end
+
+  def heating_time_class(heating_start_time, recommended_time)
+    return '' if heating_start_time.nil?
+    if heating_start_time >= recommended_time
+      'text-positive'
+    else
+      'text-negative'
+    end
+  end
+
+  def heating_time_assessment(heating_start_time, recommended_time)
+    return I18n.t('analytics.modelling.heating.no_heating') if heating_start_time.nil?
+    if heating_start_time >= recommended_time
+      I18n.t('analytics.modelling.heating.on_time')
+    else
+      I18n.t('analytics.modelling.heating.too_early')
+    end
+  end
+
+  def warm_weather_on_days_rating(days)
+    range = {
+      0..6     => :excellent,
+      6..11    => :good,
+      12..16   => :above_average,
+      17..24   => :poor,
+      25..365  => :very_poor
+    }
+    range.select { |k, _v| k.cover?(days.to_i) }.values.first
+  end
+
+  def warm_weather_on_days_adjective(days)
+    I18nHelper.adjective(warm_weather_on_days_rating(days))
+  end
+
+  def warm_weather_on_days_status(days)
+    if [:excellent, :good].include?(warm_weather_on_days_rating(days))
+      :positive
+    else
+      :negative
+    end
+  end
 end
 # rubocop:enable Naming/AsciiIdentifiers

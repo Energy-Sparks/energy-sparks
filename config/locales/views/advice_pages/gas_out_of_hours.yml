@@ -38,7 +38,7 @@ en:
           title: Usage by day of week
         usage_through_the_school_day:
           gas_heating_season_intraday_up_to_1_year:
-            footer_html: "<p>This is a useful graph for determining how well controlled the timing of the boiler is. High out of hours gas use maybe due to a boiler coming on too early in the morning.</p><p>See the <a href='%{insights_school_advice_boiler_control_path}'>heating control advice page</a> for more information.</p>"
+            footer_html: "<p>This is a useful graph for determining how well controlled the timing of the boiler is. High out of hours gas use maybe due to a boiler coming on too early in the morning.</p><p>See the <a href='%{insights_school_advice_heating_control_path}'>heating control advice page</a> for more information.</p>"
             subtitle_html: <p>This graph shows how the gas consumption of the school varies on school days when the heating is on in the winter between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span> (aggregated across the whole year).</p>
             title: Central heating timings
           subtitle: Another cause of high out of hours gas use is having central heating timings which cause the heating to be on for too long during a school day.

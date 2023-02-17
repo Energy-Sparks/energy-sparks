@@ -142,7 +142,7 @@ class Meter < ApplicationRecord
   end
 
   def name_or_mpan_mprn
-    name.present? ? name : mpan_mprn
+    name.present? ? name : mpan_mprn.to_s
   end
 
   def display_name

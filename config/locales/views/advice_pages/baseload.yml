@@ -16,7 +16,7 @@ en:
           long_term_baseload_chart_explanation: You can click on the chart to drill down to individual days and work out at what times of day and year your school is doing either better or worse than these schools.
           long_term_baseload_chart_subtitle_html: This chart shows the long term trend in your school’s baseload between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span>, and includes a comparison with 'benchmark' and 'exemplar' schools
           long_term_baseload_chart_title: Long term baseload comparison with benchmark and exemplar schools
-          long_term_baseload_meter_chart_subtitle: Electricity baseload from %{month_year_start} to %{month_year_end} for %{meter}
+          long_term_baseload_meter_chart_subtitle: Electricity baseload from %{start_date} to %{end_date} for %{meter}
           long_term_baseload_meter_chart_title: Long term trends in your electricity baseload for a single meter
         long_term_trends:
           intro: Unless the school has physically increased in size, if you are managing your baseload electricity consumption well you would expect baseload to reduce over time as appliances and computers have become more power efficient with lower standby power requirements. If this is not the case then you should look to identify the cause of the increase.

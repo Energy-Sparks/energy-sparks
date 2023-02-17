@@ -8,7 +8,7 @@ module Schools
       end
 
       def analysis
-        @meters = @school.meters.electricity
+        @meters = @school.meters.active.electricity
         @analysis_dates = analysis_dates
 
         @multiple_meters = baseload_service.multiple_electricity_meters?
@@ -22,6 +22,7 @@ module Schools
         if @multiple_meters
           @baseload_meter_breakdown = baseload_service.baseload_meter_breakdown
           @baseload_meter_breakdown_total = baseload_service.meter_breakdown_table_total
+          @date_ranges_by_meter = baseload_service.date_ranges_by_meter
         end
 
         #need at least a years worth of data for this analysis
@@ -31,8 +32,6 @@ module Schools
           @intraweek_variation = baseload_service.intraweek_variation
           @intraweek_variation_by_meter = baseload_service.intraweek_variation_by_meter
         end
-
-        @date_ranges_by_meter = baseload_service.date_ranges_by_meter
       end
 
       private

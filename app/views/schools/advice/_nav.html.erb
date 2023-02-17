@@ -11,7 +11,7 @@
     <% s.with_item(name: t('advice_pages.nav.pages.electricity_recent_changes'), href: school_advice_electricity_recent_changes_path(@school)) %>
   <% end %>
   <% c.with_section(name: t('advice_pages.nav.sections.gas'), icon: 'fire', classes: 'bg-gas-light', visible: @school.has_gas?) do |s| %>
-  <% s.with_item(name: t('advice_pages.nav.pages.boiler_control'), href: school_advice_boiler_control_path(@school)) %>
+  <% s.with_item(name: t('advice_pages.nav.pages.heating_control'), href: school_advice_heating_control_path(@school)) %>
   <% s.with_item(name: t('advice_pages.nav.pages.gas_costs'), href: school_advice_gas_costs_path(@school)) %>
   <% s.with_item(name: t('advice_pages.nav.pages.hot_water'), href: school_advice_hot_water_path(@school)) %>
   <% s.with_item(name: t('advice_pages.nav.pages.gas_long_term'), href: school_advice_gas_long_term_path(@school)) %>
