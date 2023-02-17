@@ -38,7 +38,7 @@ module Schools
       private
 
       def set_insights_next_steps
-        @advice_page_insights_next_steps = t("advice_pages.#{@advice_page.key}.insights.next_steps")
+        @advice_page_insights_next_steps = if_exists('insights.next_steps')
       end
 
       def set_page_title
@@ -46,7 +46,14 @@ module Schools
       end
 
       def set_page_subtitle
-        @advice_page_subtitle = t("advice_pages.#{@advice_page.key}.#{action_name}.title")
+        @advice_page_subtitle = if_exists("#{action_name}.title")
+      end
+
+      def if_exists(key)
+        full_key = "advice_pages.#{@advice_page.key}.#{key}"
+        if I18n.exists?(full_key, I18n.locale)
+          t(full_key)
+        end
       end
 
       def set_data_warning

@@ -1,11 +1,16 @@
 <%= render 'schools/advice/advice_page', school: @school, advice_pages: @advice_pages, advice_page: @advice_page, tab: @tab, data_warning: @data_warning do %>
 
-  <h2><%= @advice_page_subtitle %></h2>
+  <% if @advice_page_subtitle.present? %>
+    <h2><%= @advice_page_subtitle %></h2>
+  <% end %>
 
   <%= render 'insights' %>
 
   <%= render 'schools/advice/section_title', section_id: 'recommendations', section_title: t('advice_pages.insights.recommendations.title') %>
-  <p><%= @advice_page_insights_next_steps %></p>
+
+  <% if @advice_page_insights_next_steps.present? %>
+    <p><%= @advice_page_insights_next_steps %></p>
+  <% end %>
 
   <%= component 'recommendations', recommendations: @activity_types, title: t("advice_pages.insights.recommendations.activities_title"), classes: 'pb-4' %>
 
