@@ -4,12 +4,12 @@ module Schools
       def insights
         @overview_data = Schools::ManagementTableService.new(@school).management_data
 
-        if @school.has_electricity? && electricity_usage_service.enough_data?
+        if can_benchmark_electricity?
           @electricity_annual_usage = electricity_usage_service.annual_usage
           @electricity_benchmarked_usage = benchmarked_usage(electricity_usage_service, @electricity_annual_usage.kwh)
         end
 
-        if @school.has_gas? && gas_usage_service.enough_data?
+        if can_benchmark_gas?
           @gas_annual_usage = gas_usage_service.annual_usage
           @gas_benchmarked_usage = benchmarked_usage(gas_usage_service, @gas_annual_usage.kwh)
         end
@@ -17,9 +17,25 @@ module Schools
 
       def analysis
         @analysis_dates = analysis_dates
+        @benchmark_chart = benchmark_chart
       end
 
       private
+
+      def can_benchmark_electricity?
+        @school.has_electricity? && electricity_usage_service.enough_data?
+      end
+
+      def can_benchmark_gas?
+        @school.has_gas? && gas_usage_service.enough_data?
+      end
+
+      def benchmark_chart
+        return :benchmark_one_year if can_benchmark_gas? && can_benchmark_electricity?
+        return :benchmark_electric_only_one_year_kwh if can_benchmark_electricity?
+        return :benchmark_gas_only_one_year_kwh if can_benchmark_gas?
+        nil
+      end
 
       def advice_page_key
         :total_energy_use
