@@ -15,6 +15,24 @@
 
 <%= render 'schools/advice/section_title', section_id: 'comparison', section_title: advice_t('insights.comparison.title') %>
 
+<% if @electricity_benchmarked_usage.present? || @gas_benchmarked_usage.present? %>
+  <p>
+    <%= advice_t('insights.comparison.how_do_you_compare', school_type: t('analytics.school_types.' + @school.school_type).downcase) %>
+  </p>
+
+  <% if @electricity_benchmarked_usage.present? %>
+    <h3><%= t('common.electricity') %></h3>
+
+    <%= render 'schools/advice/electricity_long_term/insights_benchmark_table', school: @school, benchmarked_usage: @electricity_benchmarked_usage %>
+  <% end %>
+
+  <% if @gas_benchmarked_usage.present? %>
+    <h3><%= t('common.gas') %></h3>
+
+    <%= render 'schools/advice/gas_long_term/insights_benchmark_table', school: @school, benchmarked_usage: @gas_benchmarked_usage %>
+  <% end %>
+<% end %>
+
 <% if @school.school_group.present? %>
   <p>
     <%= advice_t('insights.comparison.more_detail_html', link: benchmark_for_school_group_path(:annual_energy_costs_per_pupil, @school)) %>
