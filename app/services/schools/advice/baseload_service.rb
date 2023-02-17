@@ -2,6 +2,16 @@
 module Schools
   module Advice
     class BaseloadService < BaseService
+      include AnalysableMixin
+
+      def enough_data?
+        baseload_service.enough_data?
+      end
+
+      def data_available_from
+        baseload_service.data_available_from
+      end
+
       def has_electricity?
         @school.has_electricity?
       end
