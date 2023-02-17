@@ -33,11 +33,32 @@ RSpec.describe "thermostatic control advice page", type: :system do
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
       it_behaves_like "an advice page tab", tab: "Insights"
+
+      it 'shows expected content' do
+        expect(page).to have_content('What do we mean by advanced thermostatic control?')
+        expect(page).to have_content('Your thermostatic control')
+        expect(page).to have_content('How do you compare?')
+        expect(page).to have_content('Your thermostatic control is about average')
+        expect(page).to have_content("Your school's thermostatic control is 0.67")
+      end
     end
+
     context "clicking the 'Analysis' tab" do
       before { click_on 'Analysis' }
       it_behaves_like "an advice page tab", tab: "Analysis"
+
+      it 'shows expected content' do
+        expect(page).to have_content('Analysis')
+        expect(page).to have_content('Thermostatic control in your school')
+        expect(page).to have_content('How to calculate a theoretical daily gas consumption using the model')
+        expect(page).to have_content('Your thermostatic control is about average')
+        expect(page).to have_content('Using days with large diurnal range to understand thermostatic control')
+        expect(page).to have_content('Your schools R² value is 0.67 which is about average')
+        expect(page).to have_css('#chart_wrapper_thermostatic_up_to_1_year')
+        expect(page).to have_css('#chart_wrapper_thermostatic_control_large_diurnal_range')
+      end
     end
+
     context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }
       it_behaves_like "an advice page tab", tab: "Learn More"
