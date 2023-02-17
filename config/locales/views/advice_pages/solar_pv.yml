@@ -8,7 +8,7 @@ en:
           after_april_2019_content_html: There will be an extra saving of about £79 from exported electricity under the <a href="https://www.ofgem.gov.uk/environmental-and-social-schemes/smart-export-guarantee-seg">SEG (Smart Export Guarantee)</a>
           before_april_2019: Before April 2019
           before_april_2019_content_html: |-
-            <p>The school might also gain from the government subsidy called 'feed-in-tariff'.</p>
+            <p>The school might also gain from the government subsidy called <a href="https://www.ofgem.gov.uk/environmental-and-social-schemes/feed-tariffs-fit">'feed-in-tariff'</a>.</p>
             <p>The amount of the feed in tariff will depend on when the panels were installed and is typically in the range 5p/kWh to 40 p/kWh x the total 'Photovoltaic production' of 5,694 kWh, each year</p>
           benefits_of_having_installed_solar_panels: Benefits of having installed solar panels
           if_the_panels_are_owned_by_a_third_party: If the panels are owned by a third-party
@@ -49,7 +49,7 @@ en:
               photovoltaic_production: Photovoltaic production
               self_consumption: Self-consumption
               total_consumption: Total consumption
-          title: Insights
+          title: What is solar PV?
           your_solar_energy_production: Your solar energy production
           your_solar_panels_have_reduced: Your solar panels have reduced your electricity consumption from the national grid by %{annual_saving_from_solar_pv_percent}
         page_title: Solar PV generation

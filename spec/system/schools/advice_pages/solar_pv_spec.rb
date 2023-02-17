@@ -30,7 +30,7 @@ RSpec.describe "solar pv advice page", type: :system do
             optimum_kwp: 52.5,
             optimum_payback_years: 5.682322708769174,
             optimum_mains_reduction_percent: 0.10478762755164217,
-            scenarios: OpenStruct.new(
+            scenarios: [OpenStruct.new(
               kwp: 1,
               panels: 3,
               area: 4,
@@ -42,7 +42,7 @@ RSpec.describe "solar pv advice page", type: :system do
               solar_pv_output_co2: 169.23840876311736,
               capital_cost_£: 2392.9653,
               payback_years: 17.07143409053209
-            )
+            )]
                                     )
         }
       )
@@ -65,6 +65,9 @@ RSpec.describe "solar pv advice page", type: :system do
       it 'shows expected content' do
         expect(page).to have_content('Benefits of installing solar panels')
         expect(page).not_to have_content('Solar PV generation')
+
+        expect(page).to have_content('What is solar PV?')
+        expect(page).to have_content('Potential benefits for your school')
       end
     end
 
@@ -80,6 +83,12 @@ RSpec.describe "solar pv advice page", type: :system do
       it 'shows expected content' do
         expect(page).not_to have_content('Benefits of installing solar panels')
         expect(page).to have_content('Solar PV generation')
+
+        expect(page).to have_content('What is solar PV?')
+        expect(page).to have_content('Your solar energy production')
+        expect(page).to have_content('Total consumption')
+        expect(page).to have_content('61,000')
+        expect(page).to have_content('How do you compare?')
       end
     end
 
@@ -95,6 +104,9 @@ RSpec.describe "solar pv advice page", type: :system do
 
       it 'shows expected content' do
         expect(page).to have_content('Analysis')
+        expect(page).to have_content('Installing solar PV at your school will reduce the electricity you consume')
+        expect(page).to have_content('Capacity (kWp)')
+        expect(page).to have_content('890')
       end
     end
 
@@ -109,6 +121,13 @@ RSpec.describe "solar pv advice page", type: :system do
 
       it 'shows expected content' do
         expect(page).to have_content('Analysis')
+        expect(page).to have_content('Long term trends')
+        expect(page).to have_content('Recent electricity consumption and solar production')
+        expect(page).to have_content('Benefits of having installed solar panels')
+        expect(page).to have_content('Before April 2019')
+        expect(page).to have_content('After April 2019')
+        expect(page).to have_css('#chart_wrapper_solar_pv_group_by_month')
+        expect(page).to have_css('#chart_wrapper_solar_pv_last_7_days_by_submeter')
       end
     end
 
