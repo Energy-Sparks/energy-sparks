@@ -69,6 +69,11 @@
   ) %>.
 </p>
 
+<%= t('advice_pages.solar_pv.has_solar_pv.analysis.the_following_table_summarises', start_date: short_dates(@analysis_dates.start_date), end_date: short_dates(@analysis_dates.end_date)) %>:
+
+<%= render 'insights_has_solar_pv_table' %>
+
+
 <p><%= t('advice_pages.solar_pv.has_solar_pv.analysis.the_cost_savings') %>.</p>
 
 <strong><%= t('advice_pages.solar_pv.has_solar_pv.analysis.if_the_panels_are_owned_by_the_school') %></strong>

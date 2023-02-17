@@ -27,6 +27,7 @@ en:
             subtitle_html: This chart shows the electricity consumption at your school for every half hour of the day between <span class="start-date">%{start_date}</span> and <span class="end-date">%{end_date}</span> broken down. It includes an indication of how bright the sun was during that period.
             title: Electricity consumption and solar PV for the 7 days
           the_cost_savings: The cost savings from your panels will depend on whether they are owned by the school or whether a third-party energy company owns the panels
+          the_following_table_summarises: The following table summarises how much energy your solar panels has produced and how much has been consumed on site and exported to the national grid between %{start_date} and %{end_date}
           the_panels_have_reduced: The panels have reduced your carbon emissions by approximately %{annual_co2_saving_kg} kg CO2 each year
           the_school_will_have_saved_html: The school will have saved about %{saving_current_gbp} from the free electricity it is consuming from the panels
           there_may_be_extra_returns: There may be extra returns on the investment depending on when the panels were installed before or after April 2019
