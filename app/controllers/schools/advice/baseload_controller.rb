@@ -36,6 +36,10 @@ module Schools
 
       private
 
+      def create_analysable
+        baseload_service
+      end
+
       def current_baseload
         average_baseload_kw_last_year = baseload_service.average_baseload_kw(period: :year)
         average_baseload_kw_last_week = baseload_service.average_baseload_kw(period: :week)
