@@ -3,8 +3,6 @@ en:
   advice_pages:
     total_energy_use:
       analysis:
-        title: Analysis
+        summary: This section gives a more detailed analysis of how your school’s energy consumption compares with other schools.
       insights:
-        next_steps: Next steps
-        title: Insights
-      page_title: Total energy use
+      page_title: Energy usage summary

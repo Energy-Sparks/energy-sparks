@@ -50,7 +50,6 @@ en:
         controls:
           average_start_time: Our analysis shows that recently the average start time for your heating was %{time}.
           title: Your heating controls
-        next_steps: Review your heating times.
         title: What do we mean by heating control?
         view_our_analysis_html: <a href="%{href}">View our analysis</a>
         warm_weather:
