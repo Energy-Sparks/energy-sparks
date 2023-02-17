@@ -11,8 +11,16 @@ module Schools
 
       private
 
+      def create_analysable
+        heating_thermostatic_analysis_service
+      end
+
       def build_heating_thermostatic_analysis
-        Heating::HeatingThermostaticAnalysisService.new(meter_collection: aggregate_school).create_model
+        heating_thermostatic_analysis_service.create_model
+      end
+
+      def heating_thermostatic_analysis_service
+        @heating_thermostatic_analysis_service ||= Heating::HeatingThermostaticAnalysisService.new(meter_collection: aggregate_school)
       end
 
       def set_insights_next_steps
