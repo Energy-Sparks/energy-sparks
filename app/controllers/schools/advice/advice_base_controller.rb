@@ -97,7 +97,7 @@ module Schools
         when :solar_pv
           @school.has_solar_pv?
         else
-          false
+          true
         end
       end
 
@@ -109,7 +109,7 @@ module Schools
       end
 
       def advice_page_fuel_type
-        @advice_page.fuel_type.to_sym
+        @advice_page.fuel_type&.to_sym
       end
 
       def analysis_start_date
