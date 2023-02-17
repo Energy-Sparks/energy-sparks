@@ -23,6 +23,10 @@ class ChartDataValues
 
   X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
 
+  BENCHMARK_LABELS = [
+    I18n.t('analytics.series_data_manager.series_name.benchmark_school'), I18n.t('analytics.series_data_manager.series_name.exemplar_school')
+  ].freeze
+
   def initialize(chart, chart_type, transformations: [], allowed_operations: {}, drilldown_available: false, parent_timescale_description: nil, y1_axis_choices: [])
     if chart
       @chart_type         = chart_type
@@ -319,6 +323,11 @@ private
         data = data.map { |record| record.present? ? convert_relative_time(record.relative_time) : nil }
       end
 
+
+      if is_benchmark_chart?
+        colour_benchmark_bars(data)
+      end
+
       { name: data_type, color: colour, type: @chart1_type, data: data, index: index }
     end
 
@@ -522,5 +531,34 @@ private
 
   def transformation_type(transformation)
     transformation.first
+  end
+
+  def is_benchmark_chart?
+    @configuration[:inject].present? && @configuration[:inject] == :benchmark
+  end
+
+  def colour_benchmark_bars(data)
+    @x_axis_categories.each_with_index do |category, index|
+      if BENCHMARK_LABELS.include?(category)
+         data[index] = {
+           y: data[index], color: benchmark_colour(category)
+         }
+      end
+    end
+  end
+
+  def benchmark_colour(_category)
+    #if category == I18n.t('analytics.series_data_manager.series_name.benchmark_school')
+    #  "#ffac21"
+    #else
+    #  "#9c3367"
+    #end
+    if @chart_type.match?(/_gas_/)
+      DARK_GAS
+    elsif @chart_type.match?(/_storage_/)
+      DARK_STORAGE
+    else
+      DARK_ELECTRICITY
+    end
   end
 end
