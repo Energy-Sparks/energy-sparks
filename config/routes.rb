@@ -146,7 +146,7 @@ Rails.application.routes.draw do
          :electricity_intraday,
          :electricity_out_of_hours,
          :electricity_recent_changes,
-         :boiler_control,
+         :heating_control,
          :thermostatic_control,
          :gas_costs,
          :gas_long_term,

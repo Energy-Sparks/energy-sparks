@@ -14,6 +14,9 @@ module Schools
       before_action :check_has_fuel_type, only: [:insights, :analysis]
       before_action :check_can_run_analysis, only: [:insights, :analysis]
       before_action :set_data_warning, only: [:insights, :analysis]
+      before_action :set_page_title, only: [:insights, :analysis, :learn_more]
+      before_action :set_page_subtitle, only: [:insights, :analysis]
+      before_action :set_insights_next_steps, only: [:insights]
 
       include AdvicePageHelper
       include SchoolAggregation
@@ -33,6 +36,18 @@ module Schools
       end
 
       private
+
+      def set_insights_next_steps
+        @advice_page_insights_next_steps = t("advice_pages.#{@advice_page.key}.insights.next_steps")
+      end
+
+      def set_page_title
+        @advice_page_title = t("advice_pages.#{@advice_page.key}.page_title")
+      end
+
+      def set_page_subtitle
+        @advice_page_subtitle = t("advice_pages.#{@advice_page.key}.#{action_name}.title")
+      end
 
       def set_data_warning
         @data_warning = !recent_data?(advice_page_end_date)
@@ -105,13 +120,26 @@ module Schools
         aggregate_school.aggregate_meter(advice_page_fuel_type).amr_data.end_date
       end
 
+      #for charts that use the last full week
+      def last_full_week_start_date(end_date)
+        end_date.prev_year.end_of_week
+      end
+
+      #for charts that use the last full week
+      def last_full_week_end_date(end_date)
+        end_date.prev_week.end_of_week - 1
+      end
+
       def analysis_dates
         start_date = analysis_start_date
         end_date = analysis_end_date
         OpenStruct.new(
           start_date: start_date,
           end_date: end_date,
+          one_year_before_end: end_date - 1.year,
           one_years_data: one_years_data?(start_date, end_date),
+          last_full_week_start_date: last_full_week_start_date(end_date),
+          last_full_week_end_date: last_full_week_end_date(end_date),
           recent_data: recent_data?(end_date),
           months_analysed: months_analysed(start_date, end_date)
         )

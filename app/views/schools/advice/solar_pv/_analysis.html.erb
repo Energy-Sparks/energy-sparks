@@ -1,0 +1,5 @@
+<% if @school.has_solar_pv? %>
+  <%= render 'analysis_has_solar_pv' %>
+<% else %>
+  <%= render 'analysis_no_solar_pv' %>
+<% end %>

@@ -42,13 +42,15 @@ RSpec.describe "electricity intraday advice page", type: :system do
       it_behaves_like "an advice page tab", tab: "Analysis"
 
       it "shows titles" do
-        expect(page).to have_content("Electricity consumption during the school day over the last 12 months")
+        expect(page).to have_content(I18n.t('advice_pages.electricity_intraday.analysis.comparison.title'))
       end
 
-      it "shows dates for 7 day period up to end date" do
-        expected_start_date = (end_date - 6.days).to_s(:es_short)
-        expected_end_date = end_date.to_s(:es_short)
-        expect(page).to have_content("graph shows how the electricity consumption for your school varies during the day between #{expected_start_date} and #{expected_end_date}")
+      it "shows the expected charts" do
+        expect(page).to have_css('#chart_wrapper_intraday_line_school_days_reduced_data_versus_benchmarks')
+        expect(page).to have_css('#chart_wrapper_intraday_line_school_days_reduced_data')
+        expect(page).to have_css('#chart_wrapper_intraday_line_holidays')
+        expect(page).to have_css('#chart_wrapper_intraday_line_weekends')
+        expect(page).to have_css('#chart_wrapper_intraday_line_school_last7days')
       end
 
       context 'when not enough data' do

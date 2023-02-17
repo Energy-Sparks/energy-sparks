@@ -17,7 +17,7 @@
   <% c.with_title { t('advice_pages.electricity_intraday.analysis.charts.comparison_chart_title') } %>
   <% c.with_subtitle { t('advice_pages.electricity_intraday.analysis.charts.comparison_chart_subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
   <% c.with_footer do %>
-    <p><%= t('advice_pages.electricity_intraday.analysis.charts.comparison_chart_explanation_html') %></p>
+    <p><%= t('advice_pages.electricity_intraday.analysis.charts.comparison_chart_explanation_html', school_type: t('analytics.school_types.' + @school.school_type).downcase) %></p>
   <% end %>
 <% end %>
 
@@ -53,7 +53,7 @@
 
 <%= component 'chart', chart_type: :intraday_line_school_last7days, school: @school do |c| %>
   <% c.with_title { t('advice_pages.electricity_intraday.analysis.charts.trends_chart_title') } %>
-  <% c.with_subtitle { t('advice_pages.electricity_intraday.analysis.charts.trends_chart_subtitle_html', start_date: short_dates(@analysis_dates.end_date - 6.days), end_date: short_dates(@analysis_dates.end_date)) } %>
+  <% c.with_subtitle { t('advice_pages.electricity_intraday.analysis.charts.trends_chart_subtitle') } %>
   <% c.with_footer do %>
     <p><%= t('advice_pages.electricity_intraday.analysis.charts.trends_chart_explanation') %></p>
   <% end %>

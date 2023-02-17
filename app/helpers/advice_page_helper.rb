@@ -4,6 +4,14 @@ module AdvicePageHelper
     polymorphic_path([tab, school, :advice, advice_page.key.to_sym])
   end
 
+  #Helper for the advice pages, passes a scope to the I18n.t API based on
+  #our naming convention and page keys. Will only work on advice pages,
+  #and only for keys that are part of a page. Generic templates need to use
+  #the default helper.
+  def advice_t(key, **vars)
+    I18n.t(key, vars.merge(scope: [:advice_pages, @advice_page.key.to_sym])).html_safe
+  end
+
   def chart_start_month_year(date = Time.zone.today)
     month_year(date.last_month - 1.year)
   end
@@ -103,6 +111,51 @@ module AdvicePageHelper
 
   def meters_by_percentage_baseload(meters)
     meters.sort_by {|_, v| -v.percentage_baseload }
+  end
+
+  def heating_time_class(heating_start_time, recommended_time)
+    return '' if heating_start_time.nil?
+    if heating_start_time >= recommended_time
+      'text-positive'
+    else
+      'text-negative'
+    end
+  end
+
+  def heating_time_assessment(heating_start_time, recommended_time)
+    return I18n.t('analytics.modelling.heating.no_heating') if heating_start_time.nil?
+    if heating_start_time >= recommended_time
+      I18n.t('analytics.modelling.heating.on_time')
+    else
+      I18n.t('analytics.modelling.heating.too_early')
+    end
+  end
+
+  def warm_weather_on_days_rating(days)
+    range = {
+      0..6     => :excellent,
+      6..11    => :good,
+      12..16   => :above_average,
+      17..24   => :poor,
+      25..365  => :very_poor
+    }
+    range.select { |k, _v| k.cover?(days.to_i) }.values.first
+  end
+
+  def warm_weather_on_days_adjective(days)
+    I18nHelper.adjective(warm_weather_on_days_rating(days))
+  end
+
+  def notice_status_for(rating_value)
+    rating_value > 4 ? :positive : :negative
+  end
+
+  def warm_weather_on_days_status(days)
+    if [:excellent, :good].include?(warm_weather_on_days_rating(days))
+      :positive
+    else
+      :negative
+    end
   end
 end
 # rubocop:enable Naming/AsciiIdentifiers
