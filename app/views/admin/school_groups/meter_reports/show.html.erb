@@ -70,8 +70,8 @@
               <%= meter.zero_reading_days.count %>
             </td>
             <td>
-              <% if meter.notes.present? %>
-                <%= render 'schools/meters/meter_notes', meter: meter %>
+              <% if meter.issues.any? %>
+                <%= render 'schools/meters/meter_issues', meter: meter, hide_new: true %>
               <% end %>
             </td>
           </tr>
