@@ -274,8 +274,6 @@ cy:
       inventory:
         meter_title: 'Mesurydd: %{meter_mpan_mprn}'
         title: Stocrestr
-      meter_notes:
-        meter_notes_mpan_mprn: "Nodiadau Mesurydd (%{meter_mpan_mprn})"
       show:
         admin_notes: Nodiadau gweinyddiwr
         basic_information: Gwybodaeth sylfaenol
