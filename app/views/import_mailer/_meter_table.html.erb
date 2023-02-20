@@ -8,7 +8,7 @@
       </td>
       <td><%= nice_dates(meter.last_validated_reading) %></td>
       <td>
-        <% if meter.notes.present? %>
+        <% if meter.issues.any? %>
           <%= link_to school_meter_url(meter.school, meter) do %>
             <%= image_tag 'email/sticky-note-regular.png', width: '20px', height: '20px' %>
           <% end %>

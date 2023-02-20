@@ -1,6 +1,6 @@
 <div>
   <button type="button" class="btn btn-sm text-nowrap" data-toggle="modal" data-target="#meter-issues-<%= meter.id %>">
-    <%= t("schools.meters.meter_issues.button") %> <%= render 'admin/issues/counters', issues_count: meter.issues.issue.count, notes_count: meter.issues.note.count %>
+    <%= issue_type_icons(meter.issues, hide_empty: local_assigns[:view_mode]) %>
   </button>
   <div class="modal fade" id="meter-issues-<%= meter.id %>" tabindex="-1" role="dialog" aria-labelledby="#meter-issues-<%= meter.id %>-title" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
@@ -23,7 +23,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <%= render 'admin/issues/new_issues_links', issueable: meter.school, meter_ids: [meter.id] unless local_assigns[:hide_new] %>
+          <%= render 'admin/issues/new_issues_links', issueable: meter.school, meter_ids: [meter.id] unless local_assigns[:view_mode] %>
           <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><%= t('common.labels.close') %></button>
         </div>
       </div>

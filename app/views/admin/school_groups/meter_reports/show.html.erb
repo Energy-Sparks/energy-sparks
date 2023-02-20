@@ -46,7 +46,7 @@
         <th>Large gaps (last 2 years)</th>
         <th>Modified readings (last 2 years)</th>
         <th>Zero reading days</th>
-        <th>Notes</th>
+        <th>Issues</th>
       </tr>
     </thead>
     <tbody>
@@ -71,7 +71,7 @@
             </td>
             <td>
               <% if meter.issues.any? %>
-                <%= render 'schools/meters/meter_issues', meter: meter, hide_new: true %>
+                <%= render 'schools/meters/meter_issues', meter: meter, view_mode: true %>
               <% end %>
             </td>
           </tr>
