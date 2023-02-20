@@ -149,7 +149,7 @@
                   <i class="fas fa-file-download"></i>
                 <% end %>
               <% end %>
-              <%= render 'issue_buttons', meter: meter %>
+              <%= render 'meter_issues', meter: meter if current_user.admin? %>
             </div>
           </td>
           <td>
