@@ -136,14 +136,14 @@ class ChartDataValues
       I18n.t("analytics.series_data_manager.series_name.#{Series::HotWater::USEFULHOTWATERUSAGE_I18N_KEY}") => '#3bc0f0',
       I18n.t("analytics.series_data_manager.series_name.#{Series::HotWater::WASTEDHOTWATERUSAGE_I18N_KEY}") => '#ff4500',
       I18n.t("analytics.series_data_manager.series_name.#{Series::MultipleFuels::SOLARPV_I18N_KEY}") => '#ffac21',
-      I18n.t('analytics.series_data_manager.series_name.electricity') => MIDDLE_ELECTRICITY,
-      I18n.t('analytics.series_data_manager.series_name.gas') => MIDDLE_GAS,
+      I18n.t('analytics.series_data_manager.series_name.electricity') => DARK_ELECTRICITY,
+      I18n.t('analytics.series_data_manager.series_name.gas') => DARK_GAS,
       I18n.t('analytics.series_data_manager.series_name.storage_heaters') => STORAGE_HEATER,
       '£' => MONEY,
       I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME_I18N_KEY}") => GREEN,
-      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME}") => MIDDLE_ELECTRICITY,
+      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME}") => DARK_ELECTRICITY,
       I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME}") => LIGHT_GAS_LINE,
-      I18n.t('analytics.series_data_manager.y2_solar_label') => MIDDLE_GAS,
+      I18n.t('analytics.series_data_manager.y2_solar_label') => DARK_GAS,
       I18n.t('analytics.series_data_manager.y2_rating') => '#232b49'
     }
   end
@@ -547,18 +547,19 @@ private
     end
   end
 
-  def benchmark_colour(_category)
-    #if category == I18n.t('analytics.series_data_manager.series_name.benchmark_school')
-    #  "#ffac21"
-    #else
-    #  "#9c3367"
-    #end
+  def benchmark_colour(category)
     if @chart_type.match?(/_gas_/)
-      DARK_GAS
+      if category == I18n.t('analytics.series_data_manager.series_name.benchmark_school')
+        MIDDLE_GAS
+      else
+        LIGHT_GAS
+      end
     elsif @chart_type.match?(/_storage_/)
       DARK_STORAGE
+    elsif category == I18n.t('analytics.series_data_manager.series_name.benchmark_school')
+      MIDDLE_ELECTRICITY
     else
-      DARK_ELECTRICITY
+      LIGHT_ELECTRICITY
     end
   end
 end
