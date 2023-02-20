@@ -1,0 +1,27 @@
+<div>
+  <button type="button" class="btn btn-sm" data-toggle="modal" data-target="#meter-<%= issue_type %>-<%= meter.id %>">
+    <%= issue_type_icon(issue_type) %>
+  </button>
+  <div class="modal fade" id="meter-<%= issue_type %>-<%= meter.id %>" tabindex="-1" role="dialog" aria-labelledby="#meter-<%= issue_type %>-<%= meter.id %>-title" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="meter-<%= issue_type %>-<%= meter.id %>-title"><%= t("schools.meters.meter_issues.#{issue_type}_mpan_mprn", meter_mpan_mprn: meter.mpan_mprn) %></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body py-0">
+          <div class="p-2">
+            <% meter.issues.for_issue_types(issue_type).each do |issue| %>
+              <%= render 'admin/issues/issue', issue: issue, single: true %>
+            <% end %>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><%= t('common.labels.close') %></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+<% if current_user.admin? %>
+  <% if meter.issues.issue.any? %>
+    <%= render 'meter_issues', issue_type: :issue, meter: meter %>
+  <% end %>
+  <% if meter.issues.note.any? %>
+    <%= render 'meter_issues', issue_type: :note, meter: meter %>
+  <% end %>
+<% end %>
