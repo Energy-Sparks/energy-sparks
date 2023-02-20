@@ -143,7 +143,7 @@ class ChartDataValues
       I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME_I18N_KEY}") => GREEN,
       I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME}") => DARK_ELECTRICITY,
       I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME}") => LIGHT_GAS_LINE,
-      I18n.t('analytics.series_data_manager.y2_solar_label') => DARK_GAS,
+      I18n.t('analytics.series_data_manager.y2_solar_label') => MIDDLE_GAS,
       I18n.t('analytics.series_data_manager.y2_rating') => '#232b49'
     }
   end
@@ -322,7 +322,6 @@ private
         @uses_time_of_day = true
         data = data.map { |record| record.present? ? convert_relative_time(record.relative_time) : nil }
       end
-
 
       if is_benchmark_chart?
         colour_benchmark_bars(data)
@@ -540,6 +539,8 @@ private
   def colour_benchmark_bars(data)
     @x_axis_categories.each_with_index do |category, index|
       if BENCHMARK_LABELS.include?(category)
+         #replace the scalar value with an object that
+         #holds the original y axis data and specifies a custom colour
          data[index] = {
            y: data[index], color: benchmark_colour(category)
          }
