@@ -1,0 +1,40 @@
+<%= component 'notice', status: :neutral do |c| %>
+  <% c.with_link { link_to advice_t('total_energy_use.insights.intro.link'), learn_more_school_advice_total_energy_use_path(@school) } %>
+  <%= advice_t('total_energy_use.insights.intro.text') %>
+<% end %>
+
+<%= render 'schools/advice/section_title', section_id: 'energy-use', section_title: advice_t('total_energy_use.insights.energy_use.title') %>
+
+<% if @overview_data %>
+  <%= render 'management/schools/overview_data', overview_data: @overview_data, show_savings: false %>
+  <div class="text-right management-overview-caption">
+    <%= @overview_data.date_ranges %>
+    <%= link_to_help_for_feature :management_summary_overview, title: "#{t('schools.show.more_information')} #{fa_icon('info-circle')}".html_safe %>
+  </div>
+<% end %>
+
+<%= render 'schools/advice/section_title', section_id: 'comparison', section_title: advice_t('total_energy_use.insights.comparison.title') %>
+
+<% if @electricity_benchmarked_usage.present? || @gas_benchmarked_usage.present? %>
+  <p>
+    <%= advice_t('total_energy_use.insights.comparison.how_do_you_compare', school_type: t('analytics.school_types.' + @school.school_type).downcase) %>
+  </p>
+
+  <% if @electricity_benchmarked_usage.present? %>
+    <h3><%= t('common.electricity') %></h3>
+
+    <%= render 'schools/advice/electricity_long_term/insights_benchmark_table', school: @school, benchmarked_usage: @electricity_benchmarked_usage %>
+  <% end %>
+
+  <% if @gas_benchmarked_usage.present? %>
+    <h3><%= t('common.gas') %></h3>
+
+    <%= render 'schools/advice/gas_long_term/insights_benchmark_table', school: @school, benchmarked_usage: @gas_benchmarked_usage %>
+  <% end %>
+<% end %>
+
+<% if @school.school_group.present? %>
+  <p>
+    <%= advice_t('total_energy_use.insights.comparison.more_detail_html', link: benchmark_for_school_group_path(:annual_energy_costs_per_pupil, @school)) %>
+  </p>
+<% end %>

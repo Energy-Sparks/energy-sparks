@@ -5,11 +5,10 @@ module AdvicePageHelper
   end
 
   #Helper for the advice pages, passes a scope to the I18n.t API based on
-  #our naming convention and page keys. Will only work on advice pages,
-  #and only for keys that are part of a page. Generic templates need to use
-  #the default helper.
+  #our naming convention and page keys. Will only work on advice pages
+  #content, e.g advice_pages.*
   def advice_t(key, **vars)
-    I18n.t(key, vars.merge(scope: [:advice_pages, @advice_page.key.to_sym])).html_safe
+    I18n.t(key, vars.merge(scope: [:advice_pages])).html_safe
   end
 
   def chart_start_month_year(date = Time.zone.today)

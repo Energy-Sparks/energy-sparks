@@ -4,42 +4,7 @@
   <%= t('advice_pages.gas_long_term.insights.comparison.how_do_you_compare', school_type: t('analytics.school_types.' + school.school_type)) %>
 </p>
 
-<table class="table table-sm advice-table" id="comparison-long-term-usage">
-  <thead>
-    <th><%= t('advice_pages.tables.columns.category') %></th>
-    <th class="text-right"><%= t('advice_pages.gas_long_term.tables.columns.annual_usage_kwh') %></th>
-    <th class="text-right"><%= t('advice_pages.gas_long_term.tables.columns.your_usage') %></th>
-  </thead>
-  <tbody>
-    <tr class="<%= row_class_for_category(benchmarked_usage.category, :exemplar) %>">
-      <td><%= t('advice_pages.benchmarks.exemplar_school') %></td>
-      <td class="text-right"><%= format_unit(benchmarked_usage.annual_usage_kwh_exemplar, :kwh) %></td>
-      <td class="text-right">
-        <% if benchmarked_usage.category == :exemplar %>
-         <%= format_unit(benchmarked_usage.annual_usage_kwh, :kwh) %>
-        <% end %>
-      </td>
-    </tr>
-    <tr class="<%= row_class_for_category(benchmarked_usage.category, :benchmark) %>">
-      <td><%= t('advice_pages.benchmarks.benchmark_school') %></td>
-      <td class="text-right"><%= format_unit(benchmarked_usage.annual_usage_kwh_benchmark, :kwh) %></td>
-      <td class="text-right">
-        <% if benchmarked_usage.category == :benchmark %>
-         <%= format_unit(benchmarked_usage.annual_usage_kwh, :kwh) %>
-        <% end %>
-      </td>
-    </tr>
-    <tr class="<%= row_class_for_category(benchmarked_usage.category, :other, 'negative-row') %>">
-      <td><%= t('advice_pages.benchmarks.other') %></td>
-      <td class="text-right">><%= format_unit(benchmarked_usage.annual_usage_kwh_benchmark, :kwh) %></td>
-      <td class="text-right">
-        <% if benchmarked_usage.category == :other %>
-          <%= format_unit(benchmarked_usage.annual_usage_kwh, :kwh) %>
-        <% end %>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<%= render 'insights_benchmark_table', benchmarked_usage: benchmarked_usage %>
 
 <% if school.school_group.present? %>
   <p>
