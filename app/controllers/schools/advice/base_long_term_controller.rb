@@ -4,8 +4,6 @@ module Schools
       def insights
         @analysis_dates = analysis_dates
         @annual_usage = usage_service.annual_usage
-        @vs_benchmark = usage_service.annual_usage_vs_benchmark(compare: :benchmark_school)
-        @vs_exemplar = usage_service.annual_usage_vs_benchmark(compare: :exemplar_school)
         @annual_usage_change_since_last_year = usage_service.annual_usage_change_since_last_year
         @benchmarked_usage = benchmarked_usage(@annual_usage.kwh)
       end
