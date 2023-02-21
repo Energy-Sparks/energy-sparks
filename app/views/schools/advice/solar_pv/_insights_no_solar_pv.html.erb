@@ -7,6 +7,5 @@
 <%= component 'notice', status: :positive do |c| %>
 <p><%= t('advice_pages.solar_pv.no_solar_pv.insights.your_school_doesnt_have_solar_panels') %>.</p>
 <p><%= t('advice_pages.solar_pv.no_solar_pv.insights.if_you_do_get_solar_panels_installed_html') %>.</p>
-<% end %>
-<br />
 <p><%= t('advice_pages.solar_pv.no_solar_pv.insights.installing_solar_panels_could_reduce_html', optimum_mains_reduction_percent: format_unit(@potential_benefits_estimator.optimum_mains_reduction_percent, :percent)) %>.</p>
+<% end %>
