@@ -1,8 +1,6 @@
 module Schools
   module Advice
     class AdviceBaseController < ApplicationController
-      append_view_path "#{Rails.root}/app/components"
-
       before_action :header_fix_enabled
 
       load_and_authorize_resource :school

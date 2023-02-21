@@ -25,12 +25,12 @@ module Schools
     def categorise_school
       return :other if @school_value.nil? || @benchmark_value.nil? || @exemplar_value.nil?
       if @school_value <= @exemplar_value
-        :exemplar
+        :exemplar_school
       elsif @school_value > @exemplar_value &&
             @school_value <= @benchmark_value
-        :benchmark
+        :benchmark_school
       else
-        :other
+        :other_school
       end
     end
   end
