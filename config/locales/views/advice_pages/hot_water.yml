@@ -5,6 +5,18 @@ en:
       analysis:
         title: Analysis
       insights:
-        next_steps: Next steps
+        next_steps_html: |-
+          To reduce the amount of energy used to heat water in your school:
+          <ul>
+            <li>Make sure any immersion heaters are only set to run from 8am to 3pm. If storage tanks are large you might find you can turn off the immersion heater at 2pm or earlier and still have enough hot water left for the rest of the school day and for cleaners after school.</li>
+            <li>Check your hot water is switched off at the weekend and during school holidays. You may need to change from 24 hour timers to 7 day timers to achieve this reliably, but it can be an easy way to save lots of energy.</li>
+            <li>Adjust gas and oil boiler controls so that hot water is only heated Monday to Friday in term time.</li>
+            <li>If your heating system boilers also provide hot water in the summer, ensure that the minimum number of boilers operate for hot water provision and that all heating system pumps are switched off and valves closed.</li>
+            <li>Tanks and their distribution pipework should be well insulated to avoid heat loss.</li>
+            <li>Wasting hot water penalises a school twice: once for the energy used to heat the water and again for the actual water used. Fit taps which turn off automatically and deal with dripping taps and leaks promptly.</li>
+            <li>Consider providing cleaning staff with point-of-use electric water heaters for use during holidays.</li>
+            <li>Consider moving to point-of-use electric water heaters across the whole school estate instead of a circulatory hot water system.</li>
+            <li>For more information on managing legionella risk, read the Health and Safety Executive (HSE) guidance <a href='https://www.hse.gov.uk/legionnaires/hot-and-cold.htm'>Legionnaires’ disease: hot and cold water systems</a>.</li>
+          </ul>
         title: Insights
       page_title: Hot water usage analysis
