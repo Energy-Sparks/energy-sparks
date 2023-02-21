@@ -14,8 +14,10 @@ module IssuesHelper
         icons << issue_type_icon(issue_type, count)
       end
     end
-    content_tag(:span, title: counts.join(" & "), data: { toggle: "tooltip" }) do
-      icons.join(" ").html_safe
+    if icons.any?
+      content_tag(:span, title: counts.join(" & "), data: { toggle: "tooltip" }) do
+        icons.join(" ").html_safe
+      end
     end
   end
 
