@@ -274,7 +274,6 @@ en:
         meter_title: 'Meter: %{meter_mpan_mprn}'
         title: Inventory
       meter_issues:
-        button: Issues
         no_meter_issues: No issues or notes for meter
         title: Meter Issues & Notes - %{name}
       show:
