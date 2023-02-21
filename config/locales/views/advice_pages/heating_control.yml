@@ -7,7 +7,7 @@ en:
           estimated_savings_html: "<p> If you followed our recommendations to switch your heating on later for a full year you could save %{estimated_saving}. </p> <p>This would reduce your gas consumption by %{percent}.</p>"
           intro_html: |-
             <p>
-              This table shows the time your heating switched on for the most recent week for which we have data.
+              This table shows the time your heating switched on during the most recent week for which we have data.
             </p>
             <p>
               It suggests a better time for your heating to have switched on based on that day's weather on that day, along with an expected saving if you changed your heating to match the recommended time.
@@ -63,7 +63,7 @@ en:
           heating_time: Heating timing
           overnight_temperature: Overnight temperature (°C)
           potential_saving: Potential saving
-          potential_saving_co2: kg/CO2
+          potential_saving_co2: kg CO2
           potential_saving_gbp: "£"
           potential_saving_kwh: kWh
           recommended_time: Recommended
