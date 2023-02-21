@@ -9,15 +9,15 @@
       <td class='text-right'><%= format_unit(@existing_benefits.annual_solar_pv_kwh, :kwh) %></td>
     </tr>
     <tr>
-      <td><%= t('advice_pages.solar_pv.has_solar_pv.insights.table.row.export_to_the_network') %></td>
+      <td><%= t('advice_pages.solar_pv.has_solar_pv.insights.table.row.exported_solar_electricity') %></td>
       <td class='text-right'><%= format_unit(@existing_benefits.annual_exported_solar_pv_kwh, :kwh) %></td>
     </tr>
     <tr>
-      <td><%= t('advice_pages.solar_pv.has_solar_pv.insights.table.row.self_consumption') %></td>
+      <td><%= t('advice_pages.solar_pv.has_solar_pv.insights.table.row.electricity_consumed_from_solar_pv') %></td>
       <td class='text-right'><%= format_unit(@existing_benefits.annual_solar_pv_consumed_onsite_kwh, :kwh) %></td>
     </tr>
     <tr>
-      <td><%= t('advice_pages.solar_pv.has_solar_pv.insights.table.row.consumption_from_network') %></td>
+      <td><%= t('advice_pages.solar_pv.has_solar_pv.insights.table.row.electricity_consumed_from_mains') %></td>
       <td class='text-right'><%= format_unit(@existing_benefits.annual_consumed_from_national_grid_kwh, :kwh) %></td>
     </tr>
     <tr>
