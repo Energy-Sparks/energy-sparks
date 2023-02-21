@@ -1,7 +1,28 @@
-Title:  What do we mean by hot water gas use?
+<%= component 'notice', status: :neutral do |c| %>
+  <p>Improving the timing control of your existing hot water system or replacing it completely with point of use electric hot water systems can produce significant savings.</p>
 
-Hot water in schools is generally provided by a central gas boiler which then continuously circulates the hot water in a loop around the school. Sometimes these gas-based systems are supplemented by more local electrically powered immersion or point of use heaters.
+  <p>Hot water in schools is generally provided by a central gas boiler which then continuously circulates the hot water in a loop around the school. Sometimes these gas-based systems are supplemented by more local electrically powered immersion or point of use heaters.</p>
+<% end %>
 
-This section of the dashboard analyses the efficiency of your school's hot water usage and the potential savings from either improving the timing control of your existing hot water system or replacing it completely with point of use electric hot water systems.
+<%= render 'schools/advice/section_title', section_id: 'your_hot_water_use', section_title: 'Your hot water use' %>
 
+<p>Circulatory gas-based hot water systems in schools are generally very inefficient, averaging about 15%</p>
 
+<p>We estimate your hot water efficiency to be <%= @gas_hot_water.investment_choices.existing_gas.efficiency %>%</p>
+
+<p>
+Improving the way that you control your hot water could reduce your annual gas consumption by
+<%= format_unit(@gas_hot_water.investment_choices.gas_better_control.saving_kwh_percent, :percent) %>
+or you could investigate replacing your current hot water system with point of use electric heaters which would save
+<%= format_unit(@gas_hot_water.investment_choices.point_of_use_electric.saving_kwh_percent, :percent) %>
+</p>
+
+<% percent = (@gas_hot_water.efficiency_breakdowns.annual.kwh.total - @gas_hot_water.efficiency_breakdowns.annual.kwh.school_day_open) / @gas_hot_water.efficiency_breakdowns.annual.kwh.total %>
+
+<p>The table below shows that <%= format_unit(percent, :percent) %> of the energy used to heat your hot water is used outside of school opening times. Adjust your boiler settings to ensure that you are only heating water when it is needed.</p>
+
+Add period breakdown table from existing hot water page.
+
+<%= render 'schools/advice/section_title', section_id: 'how_do_you_compare', section_title: 'How do you compare?' %>
+
+For more detail, compare with other schools in your group

@@ -1,0 +1,79 @@
+<%= component 'notice', status: :neutral do |c| %>
+  Note: if your school has a gas heated swimming pool, it is more difficult for us to assess efficiency.
+<% end %>
+<br>
+<p>This section gives a more detailed analysis of how to improve the efficiency of your school’s hot water system.</p>
+
+<p>The following sections provide more background and analysis on your hot water efficiency including:</p>
+
+<ul>
+  <li>
+    <a href='#hot_water_efficiency_improvement_options'>
+      Hot water efficiency improvement options
+    </a>
+  </li>
+  <li>
+    <a href='#how_does_energy_sparks_calculate'>
+      How does Energy Sparks calculate the efficiency and potential savings of a school’s hot water system?
+    </a>
+  </li>
+</ul>
+
+<%= render 'schools/advice/section_title', section_id: 'hot_water_efficiency_improvement_options', section_title: 'Hot water efficiency improvement options' %>
+
+<%= component 'notice', status: :neutral do |c| %>
+  <p>Improving the timing control of your existing hot water system or replacing it completely with point of use electric hot water systems can produce significant savings.</p>
+
+  <p>Hot water in schools is generally provided by a central gas boiler which then continuously circulates the hot water in a loop around the school. Sometimes these gas-based systems are supplemented by more local electrically powered immersion or point of use heaters.</p>
+<% end %>
+<br />
+<p>Circulatory hot water systems are inefficient because they circulate hot water permanently in a loop around the school so hot water is immediately available when someone turns on a tap rather than having to wait for the hot water to come all the way from the boiler room. The circulatory pipework used to do this is often poorly insulated and loses heat. Often these types of systems are only 15% efficient.</p>
+
+<p>Generally, there are two potential options you might have to reduce the costs and carbon emissions of running the hot water system at your school:</p>
+
+<ol>
+  <li>improving the timing control of your existing system or</li>
+  <li>replacing it with point of use electric water heaters.</li>
+</ol>
+
+<p>The table below provides some indication of the benefits of these two alternatives:</p>
+
+**Table**
+
+<p>This is only an approximate estimate as Energy Sparks can only imply this based on a generic school of the same size as yours and the information provided by your school's smart meter data, but it should provide an indication whether investments of this type are worthwhile investigating further.</p>
+
+<strong>Improved boiler control</strong>
+
+<p>This option involves changing the timing of your existing boiler potentially at no cost to the school.</p>
+
+<p>
+It involves reducing the time the hot water is heated to school hours and turning it off during weekends and holidays.
+This could save you about {gas_better_control_saving_gbp} a year and reduce your carbon emissions
+by {gas_better_control_saving_co2} kg CO2 ({gas_better_control_saving_co2_percent}).</p>
+
+<strong>Point of use electric heater</strong>
+
+<p>This option often leads to the largest savings but for most schools it does require a significant capital investment.</p>
+
+<p>
+We estimate a saving of {point_of_use_electric_saving_gbp} per year for your school, and a more significant
+reduction in carbon emissions of ({point_of_use_electric_saving_co2} kg CO2/ {point_of_use_electric_saving_co2_percent}).
+</p>
+
+Title: How does Energy Sparks calculate the efficiency and potential savings of a school’s hot water system?
+
+<%= render 'schools/advice/section_title', section_id: 'how_does_energy_sparks_calculate', section_title: 'How does Energy Sparks calculate the efficiency and potential savings of a school’s hot water system?' %>
+
+<p>We estimate the amount of energy used for hot water in your school by looking at heating over the course of the summer - just before and during the start of the summer holidays. It is assumed that during the summer term, gas is used for hot water but not space heating and during the holidays, gas is used for hot water but very little of that is used.</p>
+
+<p>The chart below gives a demonstration of that assessment for your school. The red bars show energy used to heat the water that is circulated around the school. The blue bars show the energy used to heat the water that is used. Note that if your school has a gas heated swimming pool, it is more difficult for us to assess efficiency.</p>
+
+Add chart from current hot water page
+
+<p>Theoretically every pupil uses about 5 litres of hot water per day, which for your school with {pupil_number} pupils,
+equates to {theoretical_annual_hot_water_requirement_litres} litres of hot water over the 190 days of the school year.
+In a 100% efficient system about {theoretical_annual_hot_water_requirement_kwh} kWh of energy is required each year to heat this hot water.</p>
+
+<p>We calculate the efficiency of your hot water system by comparing this calculation of {theoretical_annual_hot_water_requirement_kwh} kWh for a 100% efficient system with Energy Sparks' estimate of {existing_gas_annual_kwh} kWh for your current system.</p>
+
+<p>The circulatory gas-based systems in schools are generally very inefficient, averaging about 15%; for your school we estimate {existing_gas_efficiency}. These inefficiencies offer significant cost and carbon emission saving opportunities if addressed.</p>
