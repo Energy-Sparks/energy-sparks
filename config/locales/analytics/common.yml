@@ -64,7 +64,7 @@ en:
     series_data_manager:
       series_name:
         baseload: BASELOAD
-        benchmark_school: Benchmark (Good) School
+        benchmark_school: Well managed
         boiler_off: Boiler Off
         community: Community
         community_baseload: Community Baseload
