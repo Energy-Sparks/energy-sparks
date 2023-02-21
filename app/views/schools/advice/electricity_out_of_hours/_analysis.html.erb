@@ -14,13 +14,6 @@
 
 <%= render 'schools/advice/section_title', section_id: 'last_twelve_months', section_title: t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.title') %>
 
-<% if @annual_usage_breakdown.community.present? %>
-  <p><%= t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.community_use_html',
-    community_kwh: format_unit(@annual_usage_breakdown.community.kwh, :kwh),
-    community_gbp: format_unit(@annual_usage_breakdown.community.£, :£),
-    community_co2: format_unit(@annual_usage_breakdown.community.co2, :co2) ) %></p>
-<% end %>
-
 <%= component 'chart', chart_type: :daytype_breakdown_electricity_tolerant, school: @school do |c| %>
   <% c.with_title do %>
     <%= t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_electricity_tolerant_chart.title') %>
