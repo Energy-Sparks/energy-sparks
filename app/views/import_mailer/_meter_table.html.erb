@@ -10,7 +10,7 @@
       <td>
         <% if meter.issues.any? %>
           <%= link_to school_meter_url(meter.school, meter) do %>
-            <%= image_tag 'email/sticky-note-regular.png', width: '20px', height: '20px' %>
+            <%= issue_type_images(meter.issues) %>
           <% end %>
         <% end %>
       </td>

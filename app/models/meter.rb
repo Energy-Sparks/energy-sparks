@@ -154,6 +154,10 @@ class Meter < ApplicationRecord
     "#{mpan_mprn} - #{meter_type.to_s.humanize}"
   end
 
+  def display_mpan_mprn_name
+    name.present? ? "#{mpan_mprn} - #{name}" : mpan_mprn
+  end
+
   def school_meter_attributes
     school.meter_attributes_for(self)
   end

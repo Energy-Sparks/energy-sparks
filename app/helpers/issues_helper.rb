@@ -9,12 +9,27 @@ module IssuesHelper
     icons = []
     Issue.issue_types.each_key do |issue_type|
       count = issues.for_issue_types(issue_type).count
-      counts << pluralize(count, issue_type.to_s) unless count == 0 && hide_empty
-      icons << issue_type_icon(issue_type, count) unless count == 0 && hide_empty
+      unless count == 0 && hide_empty
+        counts << pluralize(count, issue_type.to_s)
+        icons << issue_type_icon(issue_type, count)
+      end
     end
     content_tag(:span, title: counts.join(" & "), data: { toggle: "tooltip" }) do
       icons.join(" ").html_safe
     end
+  end
+
+  def issue_type_image(issue_type)
+    image = issue_type.to_sym == :note ? 'sticky-note-regular.png' : 'exclamation-circle-solid.png'
+    image_tag "email/#{image}", width: '20px', height: '20px'
+  end
+
+  def issue_type_images(issues)
+    images = []
+    Issue.issue_types.each_key do |issue_type|
+      images << issue_type_image(issue_type) if issues.for_issue_types(issue_type).any?
+    end
+    images.join.html_safe
   end
 
   def issueable_icon(issueable)
