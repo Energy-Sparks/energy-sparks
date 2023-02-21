@@ -51,35 +51,26 @@
           </button>
         </div>
         <div class="modal-body">
-        <h4><strong>Specific notes</strong></h4>
+        <h4><strong>Energy data</strong></h4>
 
-        <p>
-          <%= t('advice_pages.baseload.current_baseload.calculation_dates', start_date: I18n.l(analysis_dates.start_date, format: '%-d %B %Y'), end_date: I18n.l(analysis_dates.end_date, format: '%-d %B %Y')) %>.
-        </p>
-
-        <h4><strong>Cost calculations</strong></h4>
-
-        <ul>
-          <li>Consumption costs are estimated based on historic tariff information.</li>
-          <li>Future savings are estimates based on your school's latest tariff information.</li>
-          <li>Potential cost savings quoted in school comparisons, e.g. for comparable "well managed" and "exemplar" schools are also based on your school's current tariffs.</li>
-        </ul>
-
-        <p>
-          Your electricity tariffs have changed in the last year, the last change was on Thursday 01 Sep 2022, before this date the average tariff was 15p/kWh, and since it is £3.10/kWh. This will increase your electricity costs by 1,900% going forwards
-        </p>
-
-        <h4><strong>School comparisons</strong></h4>
-
-        <p>
-          School comparisons are based on benchmarking your school against comparable schools
-          based on the characteristics outlined below.
-        </p>
-
-        <ul>
-          <li>"Exemplar" schools represent the top 17.5% of Energy Sparks schools</li>
-          <li>"Well managed" schools represent the top 35% of Energy Sparks schools</li>
-        </ul>
+        <table class="table table-sm advice-table">
+          <thead>
+            <tr>
+              <th>Fuel type</th>
+              <th>Date range</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Electricity</td>
+              <td>13 Jan 2019 - 3 Feb 2023</td>
+            </tr>
+            <tr>
+              <td>Gas</td>
+              <td>1 Sep 2018 - 3 Feb 2023</td>
+            </tr>
+          </tbody>
+        </table>
 
         <h4><strong>School characteristics</strong></h4>
 
@@ -114,6 +105,30 @@
             </tr>
           </tbody>
         </table>
+
+        <h4><strong>Cost calculations</strong></h4>
+
+        <ul>
+          <li>Consumption costs are estimated based on historic tariff information.</li>
+          <li>Future savings are estimates based on your school's latest tariff information.</li>
+          <li>Potential cost savings quoted in school comparisons, e.g. for comparable "well managed" and "exemplar" schools are also based on your school's current tariffs.</li>
+        </ul>
+
+        <p>
+          Your electricity tariffs have changed in the last year, the last change was on Thursday 01 Sep 2022, before this date the average tariff was 15p/kWh, and since it is £3.10/kWh. This will increase your electricity costs by 1,900% going forwards
+        </p>
+
+        <h4><strong>School comparisons</strong></h4>
+
+        <p>
+          School comparisons are based on benchmarking your school against comparable schools
+          based on the characteristics outlined below.
+        </p>
+
+        <ul>
+          <li>"Exemplar" schools represent the top 17.5% of Energy Sparks schools</li>
+          <li>"Well managed" schools represent the top 35% of Energy Sparks schools</li>
+        </ul>
 
         </div>
         <div class="modal-footer">
