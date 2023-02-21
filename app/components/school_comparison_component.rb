@@ -1,6 +1,8 @@
 class SchoolComparisonComponent < ViewComponent::Base
   renders_one :callout_footer
 
+  CATEGORIES = [:exemplar_school, :benchmark_school, :other_school].freeze
+
   def initialize(id: 'comparison', comparison:)
     @id = id
     @comparison = comparison
@@ -11,7 +13,7 @@ class SchoolComparisonComponent < ViewComponent::Base
   end
 
   def categories
-    [:exemplar_school, :benchmark_school, :other_school]
+    CATEGORIES
   end
 
   def school_in_category?(category)
@@ -22,7 +24,7 @@ class SchoolComparisonComponent < ViewComponent::Base
     if @comparison.category == category
       'd-flex'
     else
-      ' d-none d-md-block'
+      'd-none d-md-block'
     end
   end
 
