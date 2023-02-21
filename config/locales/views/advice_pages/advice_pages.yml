@@ -61,3 +61,5 @@ en:
         period: Period
       labels:
         partial: "(partial)"
+      notice:
+        two_significant_figures: Data in this table are presented to 2 significant figures.
