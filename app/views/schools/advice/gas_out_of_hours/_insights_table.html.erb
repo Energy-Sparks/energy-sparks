@@ -12,7 +12,7 @@
         <%= format_unit(@annual_usage_breakdown&.potential_savings(versus: :exemplar_school)&.kwh, :kwh) %>
       </td>
       <td class="text-right">
-        <%= format_unit(@annual_usage_breakdown&.total&.kwh, :kwh) %>
+        <%= format_unit(@annual_usage_breakdown&.out_of_hours&.kwh, :kwh) %>
       </td>
     <tr>
 </table>
