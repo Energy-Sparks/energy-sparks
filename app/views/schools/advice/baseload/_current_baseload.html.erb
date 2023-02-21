@@ -35,6 +35,83 @@
     </tbody>
 </table>
 <div class="text-right advice-table-caption">
-  <%= t('advice_pages.baseload.current_baseload.calculation_dates', start_date: I18n.l(analysis_dates.start_date, format: '%-d %B %Y'), end_date: I18n.l(analysis_dates.end_date, format: '%-d %B %Y')) %>.
-  <a href="<%= analysis_school_advice_baseload_path(school) %>"><%= t('advice_pages.baseload.current_baseload.review_our_analysis') %></a>
+  <a href="" data-toggle="modal" data-target="#table-footnotes">How did we calculate these figures? <span style="color: #007bff;"><%= fa_icon('question-circle') %></span></a>
+</div>
+
+<a href="<%= analysis_school_advice_baseload_path(school) %>"><%= t('advice_pages.baseload.current_baseload.review_our_analysis') %></a>
+
+<div>
+  <div class="modal fade" id="table-footnotes" tabindex="-1" role="dialog" aria-labelledby="#table-footnotes-title" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="background: #232b49 !important; color: white;">
+          <h2 class="modal-title" id="table-footnotes-title">How have we analysed your data?</h2>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span style="color: white" aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <h4><strong>Specific notes</strong></h4>
+
+        <p>
+          <%= t('advice_pages.baseload.current_baseload.calculation_dates', start_date: I18n.l(analysis_dates.start_date, format: '%-d %B %Y'), end_date: I18n.l(analysis_dates.end_date, format: '%-d %B %Y')) %>.
+        </p>
+
+        <h4><strong>Cost calculations</strong></h4>
+
+        <p>
+          Consumption costs are estimated based on historic tariff information.
+        </p>
+
+        <p>
+          Future savings are estimates based on your latest tariff information.
+        </p>
+
+        <h4><strong>School comparisons</strong></h4>
+
+        <p>
+          School comparisons are based on benchmarking your school based on its type
+          and size.
+        </p>
+
+        <p>
+          Temperature compensated values use weather data for your school location.
+        </p>
+
+        <h4><strong>School characteristics</strong></h4>
+
+        <table class="table table-sm advice-table">
+          <thead>
+            <tr>
+              <th>Characteristic</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Floor area</td>
+              <td><%= @school.floor_area %> m<sup>2</sup></td>
+            </tr>
+            <tr>
+              <td>Location</td>
+              <td><%= @school.postcode %> (<%= @school.latitude %>, <%= @school.longitude %>)</td>
+            </tr>
+            <tr>
+              <td>Pupils</td>
+              <td><%= @school.number_of_pupils %></td>
+            </tr>
+            <tr>
+              <td>Type</td>
+              <td><%= @school.school_type %></td>
+            </tr>
+          </tbody>
+        </table>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><%= t('common.labels.close') %></button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
