@@ -4,7 +4,6 @@ en:
     gas_out_of_hours:
       analysis:
         last_twelve_months:
-          community_use_html: Your school has identified that there is community use of the school outside of school hours. Over the last year, %{community_kwh} kWh of gas has been used during these times which will have cost %{community_gbp} and caused %{community_co2} to be emitted.
           table:
             co2_kg: kg/co2
             gbp_at_current_tariff: "£ (at current tariff)"
