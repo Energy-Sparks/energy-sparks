@@ -55,6 +55,9 @@ RSpec.describe "gas long term advice page", type: :system do
         expect(page).to have_content("500")
         expect(page).to have_content("800")
       end
+      it 'includes the comparison' do
+        expect(page).to have_css('#gas-comparison')
+      end
 
     end
     context "clicking the 'Analysis' tab" do
@@ -71,7 +74,6 @@ RSpec.describe "gas long term advice page", type: :system do
       end
       it 'includes expected charts' do
         expect(page).to have_css('#chart_wrapper_group_by_week_gas')
-        expect(page).to have_css('#chart_wrapper_group_by_week_gas_versus_benchmark')
         expect(page).to have_css('#chart_wrapper_group_by_week_gas_unlimited')
 
         #not enough data for these

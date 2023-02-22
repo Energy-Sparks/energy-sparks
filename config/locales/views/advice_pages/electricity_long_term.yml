@@ -62,6 +62,7 @@ en:
           title: Electricity use comparison with other schools over the last 12 months
       insights:
         comparison:
+          callout_footer: annual electricity use
           how_do_you_compare: How does your electricity use for the last 12 months compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?
           more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
           title: How do you compare?
@@ -82,7 +83,6 @@ en:
           estimated_savings_gbp: Estimated saving (£)
           meter: Meter
           percent: Percent of total use
-          your_usage: Your usage (kWh)
         labels:
           all_meters: All meters
       what_is_long_term_use:

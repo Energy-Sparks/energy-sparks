@@ -69,11 +69,11 @@ module Schools
         annual_usage_kwh_benchmark = usage_service.annual_usage_kwh(compare: :benchmark_school)
         annual_usage_kwh_exemplar = usage_service.annual_usage_kwh(compare: :exemplar_school)
 
-        OpenStruct.new(
-          category: categorise_school_vs_benchmark(annual_usage_kwh, annual_usage_kwh_benchmark, annual_usage_kwh_exemplar),
-          annual_usage_kwh: annual_usage_kwh,
-          annual_usage_kwh_benchmark: annual_usage_kwh_benchmark,
-          annual_usage_kwh_exemplar: annual_usage_kwh_exemplar
+        Schools::Comparison.new(
+          school_value: annual_usage_kwh,
+          benchmark_value: annual_usage_kwh_benchmark,
+          exemplar_value: annual_usage_kwh_exemplar,
+          unit: :kwh
         )
       end
 
