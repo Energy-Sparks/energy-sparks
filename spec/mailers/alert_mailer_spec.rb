@@ -28,7 +28,7 @@ RSpec.describe AlertMailer do
         end
       end
       email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to eql "welsh alert.."
+      expect(email.subject).to eql "Energy Sparks rhybuddion"
     end
 
     it 'uses default locale if specified but disabled' do
@@ -39,6 +39,20 @@ RSpec.describe AlertMailer do
       end
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to eql "Energy Sparks alerts"
+    end
+  end
+
+  describe '#with_contact_locale' do
+    let(:user) { create(:user, preferred_locale: :cy) }
+    let(:contact) { create(:contact_with_name_email, school: school, user: user) }
+    it 'uses locale from contact' do
+      ClimateControl.modify FEATURE_FLAG_EMAILS_WITH_PREFERRED_LOCALE: 'true' do
+        ClimateControl.modify SEND_AUTOMATED_EMAILS: 'true' do
+          AlertMailer.with_contact_locale(contact: contact, events: []) { |mailer| mailer.alert_email.deliver_now }
+        end
+      end
+      email = ActionMailer::Base.deliveries.last
+      expect(email.subject).to eql "Energy Sparks rhybuddion"
     end
   end
 end

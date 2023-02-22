@@ -49,4 +49,8 @@ class Contact < ApplicationRecord
     self.email_address = user.email
     self.staff_role = user.staff_role
   end
+
+  def preferred_locale
+    user ? user.preferred_locale : :en
+  end
 end

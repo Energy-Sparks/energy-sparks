@@ -8,6 +8,10 @@ class LocaleMailer < ApplicationMailer
     end
   end
 
+  def self.with_contact_locale(contact:, **args)
+    yield self.with(**args, school: contact.school, email_address: contact.email_address, locale: contact.preferred_locale)
+  end
+
   def self.users_for_locale(users, locale)
     users.select {|u| u.preferred_locale.to_sym == locale.to_sym}
   end

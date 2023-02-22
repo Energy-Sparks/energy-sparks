@@ -2,7 +2,7 @@
 cy:
   alert_mailer:
     alert_email:
-      subject: welsh alert..
+      subject: Energy Sparks rhybuddion
   bill_request_mailer:
     request_bill:
       description: "Mae Sbarcynni angen i chi ddarparu bil ynni diweddar ar gyfer eich ysgol i gadarnhau rhifau eich mesurydd ac awdurdod Energy Sparks i gasglu, prosesu ac arddangos y data ar gyfer y mesuryddion hynny."
