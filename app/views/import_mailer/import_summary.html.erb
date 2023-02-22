@@ -7,25 +7,26 @@
       <th>Meter type</th>
       <th>School</th>
       <th>MPAN/MPRN</th>
+      <th>Data source</th>
       <th>Last validated reading date</th>
-      <th></th>
+      <th colspan="2"></th>
     </tr>
   </thead>
   <thead class="thead-light">
     <tr>
-      <th colspan="4">Meters with stale data</th>
+      <th colspan="8">Meters with stale data</th>
     </tr>
   <thead>
   <%= render 'meter_table', meters: @meters_running_behind %>
   <thead class="thead-light">
     <tr>
-      <th colspan="4">Meters with blank readings (whole day)</th>
+      <th colspan="8">Meters with blank readings (whole day)</th>
     </tr>
   <thead>
   <%= render 'meter_table', meters: @meters_with_blank_data %>
   <thead class="thead-light">
     <tr>
-      <th colspan="4">Zero data imports (whole day)</th>
+      <th colspan="8">Zero data imports (whole day)</th>
     </tr>
   <thead>
   <%= render 'meter_table', meters: @meters_with_zero_data %>

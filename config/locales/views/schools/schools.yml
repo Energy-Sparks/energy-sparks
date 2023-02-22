@@ -279,6 +279,7 @@ en:
       show:
         admin_notes: Admin notes
         basic_information: Basic information
+        data_source: Data source
         dcc_consented: DCC Consented
         dcc_information: DCC information
         dcc_last_checked: DCC last checked

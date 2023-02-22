@@ -26,14 +26,6 @@ module IssuesHelper
     image_tag "email/#{image}", width: '20px', height: '20px'
   end
 
-  def issue_type_images(issues)
-    images = []
-    Issue.issue_types.each_key do |issue_type|
-      images << issue_type_image(issue_type) if issues.for_issue_types(issue_type).any?
-    end
-    images.join.html_safe
-  end
-
   def issueable_icon(issueable)
     return '' if issueable.nil?
     if issueable.is_a?(Symbol)

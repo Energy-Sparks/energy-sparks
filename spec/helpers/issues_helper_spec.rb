@@ -86,29 +86,4 @@ describe IssuesHelper do
       it { expect(subject).to include('email/exclamation-circle-solid') }
     end
   end
-
-  describe '.issue_type_images' do
-    let(:school) { create(:school) }
-    let(:note) { create(:issue, issue_type: :note) }
-    let(:issue) { create(:issue, issue_type: :issue) }
-
-    subject { helper.issue_type_images(school.issues) }
-    context "issues includes a note" do
-      before { school.issues << note }
-      it { expect(subject).to include('sticky-note') }
-    end
-    context "issues includes an issue" do
-      before { school.issues << issue }
-      it { expect(subject).to include('exclamation') }
-    end
-    context "issues includes both" do
-      before { school.issues << issue << note}
-      it { expect(subject).to include('sticky-note') }
-      it { expect(subject).to include('exclamation') }
-    end
-    context "issues includes neither" do
-      it { expect(subject).to_not include('sticky-note') }
-      it { expect(subject).to_not include('exclamation') }
-    end
-  end
 end
