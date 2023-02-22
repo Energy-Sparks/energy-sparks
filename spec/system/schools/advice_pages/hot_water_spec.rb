@@ -96,11 +96,28 @@ RSpec.describe "hot water advice page", type: :system do
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
       it_behaves_like "an advice page tab", tab: "Insights"
+
+      it 'shows expected content' do
+        expect(page).to have_content('Your hot water use')
+        expect(page).to have_content('How do you compare?')
+        expect(page).to have_content('70,000') # 69_893  annual efficiency kwh total
+        expect(page).to have_content('£2,100') # 2096    annual efficiency £ total
+      end
     end
+
     context "clicking the 'Analysis' tab" do
       before { click_on 'Analysis' }
       it_behaves_like "an advice page tab", tab: "Analysis"
+
+      it 'shows expected content' do
+        expect(page).to have_content('Hot water efficiency improvement options')
+        expect(page).to have_content('How does Energy Sparks calculate the efficiency and potential savings of a school’s hot water system?')
+        expect(page).to have_content('£20,000') # 19,600  point_of_use_electric capex
+
+        expect(page).to have_css('#chart_wrapper_hotwater')
+      end
     end
+
     context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }
       it_behaves_like "an advice page tab", tab: "Learn More"

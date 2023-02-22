@@ -35,11 +35,28 @@ en:
           <p>This option often leads to the largest savings but for most schools it does require a significant capital investment.</p>
           <p>
             We estimate a saving of %{point_of_use_electric_saving_gbp} per year for your school, and a more significant
-            reduction in carbon emissions of %({point_of_use_electric_saving_co2} kg CO2/ %{point_of_use_electric_saving_co2_percent}).
+            reduction in carbon emissions of (%{point_of_use_electric_saving_co2} kg CO2/ %{point_of_use_electric_saving_co2_percent}).
           </p>
         point_of_use_electric_heater_title: Point of use electric heater
         summary_notice: 'Note: if your school has a gas heated swimming pool, it is more difficult for us to assess efficiency.'
-        the_circulatory_gas_based_systems_html: "<p>\n  The circulatory gas-based systems in schools are generally very inefficient, averaging about 15%;\n  for your school we estimate %{existing_gas_efficiency}. These inefficiencies offer significant cost \n  and carbon emission saving opportunities if addressed.\n</p>"
+        table:
+          columns:
+            annual_co2_kg: Annual CO2/kg
+            annual_cost_gbp: Annual Cost £
+            annual_kwh: Annual kWh
+            capital_cost: Capital Cost
+            choice: Choice
+            efficiency: Efficiency
+            payback_years: Payback (years)
+            saving_co2: Saving CO2
+            saving_co2_percent: Saving CO2 percent
+            saving_gbp: Saving £
+            saving_gbp_percent: Saving £ percent
+          rows:
+            current_setup: Current setup
+            improved_boiler_control: Improved boiler control
+            point_of_use_electric_heaters: Point of use electric heaters
+        the_circulatory_gas_based_systems_html: "<p>The circulatory gas-based systems in schools are generally very inefficient, averaging about 15%; for your school we estimate %{existing_gas_efficiency}. These inefficiencies offer significant cost and carbon emission saving opportunities if addressed.</p>"
         theoretically_every_pupil_uses_html: |-
           <p>
             Theoretically every pupil uses about 5 litres of hot water per day, which for your school with %{number_of_pupils} pupils,
@@ -47,10 +64,11 @@ en:
             about %{theoretical_annual_hot_water_requirement_kwh} kWh of energy is required each year to heat this hot water.
           </p>
         title: Analysis
-        we_calculate_the_efficiency_html: "<p>\n  We calculate the efficiency of your hot water system by comparing this calculation of %{theoretical_annual_hot_water_requirement_kwh} kWh \n  for a 100% efficient system with Energy Sparks' estimate of %{existing_gas_annual_kwh} kWh for your current system.\n</p>"
+        we_calculate_the_efficiency_html: "<p>We calculate the efficiency of your hot water system by comparing this calculation of %{theoretical_annual_hot_water_requirement_kwh} kWh for a 100% efficient system with Energy Sparks' estimate of %{existing_gas_annual_kwh} kWh for your current system.</p>"
       insights:
         circulatory_gas_based_hot_water: Circulatory gas-based hot water systems in schools are generally very inefficient, averaging about 15%
         for_more_detail_html: For more detail, <a href='%{link}'>compare with other schools in your group</a>
+        how_do_you_compare: How do you compare?
         improving_the_way_html: |-
           Improving the way that you control your hot water could reduce your annual gas consumption by %{gas_better_control_saving_kwh_percent}
           or you could investigate replacing your current hot water system with point of use electric heaters which would save
