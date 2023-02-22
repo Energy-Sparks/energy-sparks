@@ -187,6 +187,20 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
           it { expect(page).to have_link("New Note") }
           it { expect(page).to have_link("New Issue") }
         end
+
+        context "Clicking on meter 'Details'" do
+          before { click_link 'Details' }
+
+          context "Clicking Issues button" do
+            before { click_on "Issues" }
+            it_behaves_like "a displayed issue" do
+              let(:user) { admin }
+              let(:issue_admin) { admin }
+            end
+            it { expect(page).to have_link("New Note") }
+            it { expect(page).to have_link("New Issue") }
+          end
+        end
       end
     end
 

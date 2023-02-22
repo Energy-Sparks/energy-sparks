@@ -4,7 +4,7 @@ module IssuesHelper
     fa_icon("#{Issue.issue_type_image(issue_type)} text-#{colour}")
   end
 
-  def issue_type_icons(issues, hide_empty: false)
+  def issue_type_icons(issues, hide_empty: false, label: '')
     counts = []
     icons = []
     Issue.issue_types.each_key do |issue_type|
@@ -16,7 +16,8 @@ module IssuesHelper
     end
     if icons.any?
       content_tag(:span, title: counts.join(" & "), data: { toggle: "tooltip" }) do
-        icons.join(" ").html_safe
+        icons.prepend(label) if label
+        icons.join(' ').html_safe
       end
     end
   end

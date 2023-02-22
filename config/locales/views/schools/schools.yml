@@ -274,6 +274,7 @@ en:
         meter_title: 'Meter: %{meter_mpan_mprn}'
         title: Inventory
       meter_issues:
+        button_label: Issues
         no_meter_issues: No issues or notes for meter
         title: Meter Issues & Notes - %{name}
       show:
@@ -283,7 +284,7 @@ en:
         dcc_consented: DCC Consented
         dcc_information: DCC information
         dcc_last_checked: DCC last checked
-        download_readings: Download readings
+        download_readings: Readings
         earliest_available_data: Earliest Available Data
         grant_consent: Grant consent
         inventory: Inventory
