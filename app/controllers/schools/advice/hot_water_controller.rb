@@ -6,6 +6,7 @@ module Schools
       end
 
       def analysis
+        @gas_hot_water = gas_hot_water_service.create_model
       end
 
       private
