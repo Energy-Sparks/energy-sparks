@@ -72,5 +72,31 @@ RSpec.describe Schools::ConsentRequestService do
         end
       end
     end
+
+    context 'when formatting multiple emails' do
+      let!(:preferred_locale) { :cy }
+      let!(:staff)            { create(:staff, school: school) }
+
+      it 'should generate 2 emails' do
+        expect { service.request_consent!([school_admin, staff])
+        }.to change(ActionMailer::Base.deliveries, :count).from(0).to(2)
+      end
+
+      context 'when locales are different' do
+        before :each do
+          service.request_consent!([school_admin, staff])
+        end
+
+        it 'email should have cy subject line' do
+          email = ActionMailer::Base.deliveries.last
+          expect(email.subject).to eql("Mae angen caniatâd arnom i gael mynediad at ddata ynni eich ysgol")
+        end
+
+        it 'email should have en subject line' do
+          email = ActionMailer::Base.deliveries.last(2).first
+          expect(email.subject).to eql("We need permission to access your school's energy data")
+        end
+      end
+    end
   end
 end
