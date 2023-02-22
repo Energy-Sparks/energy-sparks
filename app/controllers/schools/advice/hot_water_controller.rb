@@ -2,17 +2,17 @@ module Schools
   module Advice
     class HotWaterController < AdviceBaseController
       def insights
-        @gas_hot_water = gas_hot_water_service.create_model
+        @gas_hot_water = build_gas_hot_water
       end
 
       def analysis
-        @gas_hot_water = gas_hot_water_service.create_model
+        @gas_hot_water = build_gas_hot_water
       end
 
       private
 
-      def gas_hot_water_service
-        @gas_hot_water_service ||= HotWater::GasHotWaterService.new(meter_collection: aggregate_school)
+      def build_gas_hot_water
+        HotWater::GasHotWaterService.new(meter_collection: aggregate_school).create_model
       end
 
       def set_insights_next_steps
