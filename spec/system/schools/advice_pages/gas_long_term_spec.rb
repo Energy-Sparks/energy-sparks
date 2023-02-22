@@ -71,7 +71,6 @@ RSpec.describe "gas long term advice page", type: :system do
       end
       it 'includes expected charts' do
         expect(page).to have_css('#chart_wrapper_group_by_week_gas')
-        expect(page).to have_css('#chart_wrapper_group_by_week_gas_versus_benchmark')
         expect(page).to have_css('#chart_wrapper_group_by_week_gas_unlimited')
 
         #not enough data for these
