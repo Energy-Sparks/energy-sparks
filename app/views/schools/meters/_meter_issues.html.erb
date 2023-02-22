@@ -1,5 +1,5 @@
 <div>
-  <button type="button" class="btn btn-sm text-nowrap" data-toggle="modal" data-target="#meter-issues-<%= meter.id %>">
+  <button type="button" title="Issues" class="btn btn-sm text-nowrap" data-toggle="modal" data-target="#meter-issues-<%= meter.id %>">
     <%= issue_type_icons(meter.issues, hide_empty: local_assigns[:view_mode]) %>
   </button>
   <div class="modal fade" id="meter-issues-<%= meter.id %>" tabindex="-1" role="dialog" aria-labelledby="#meter-issues-<%= meter.id %>-title" aria-hidden="true">
