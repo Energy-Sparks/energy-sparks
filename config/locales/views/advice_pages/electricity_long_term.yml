@@ -19,7 +19,7 @@ en:
           title: Long term trends
         meter_breakdown:
           summary: Your school has multiple electricity meters. The section below shows electricity use for each meter. You might be able to use this information to identify high or unusual energy consumption in certain parts of your school.
-          table_explanation: Having multiple meters can help you understand your energy use better, however, there is a significant standing charge for each meter of more than £ 1,000 per year, so there is potential for saving by consolidating meters.
+          table_explanation: Having multiple meters can help you understand your energy use better, however, there is a significant standing charge for each meter of more than £1,000 per year, so there is potential for saving by consolidating meters.
           table_introduction: The table below covers the most recent 12 months from %{start_date} to %{end_date}.
           title: Electricity consumption breakdown by meter
         recent_trend:
@@ -75,7 +75,7 @@ en:
       page_title: Long term changes in electricity consumption
       tables:
         columns:
-          annual_change: Annual change in usage
+          annual_change: Change since previous year
           annual_usage_co2: Annual co2 (kg/CO2)
           annual_usage_gbp: Annual cost (£)
           annual_usage_kwh: Annual usage (kWh)
