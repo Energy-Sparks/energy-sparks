@@ -4,9 +4,7 @@
       <td><%= link_to school.name, school_path(school) %> <%= dashboard_message_icon(school) %></td>
       <td><%= render 'shared/school_status_buttons', school: school %></td>
       <td class="nowrap text-right">
-        <%= link_to admin_school_issues_path(school), class: "btn btn-sm" do %>
-          <%= issue_type_icons(school.issues) %>
-        <% end %>
+        <%= link_to "Issues #{issue_type_icons(school.issues)}".html_safe, admin_school_issues_path(school), class: "btn btn-sm" %>
         <%= link_to 'Edit', edit_school_path(school), class: "btn btn-sm" %>
         <%= link_to 'Users', school_users_path(school), class: "btn btn-sm" %>
         <%= link_to 'Meters', school_meters_path(school), class: "btn btn-sm" %>
