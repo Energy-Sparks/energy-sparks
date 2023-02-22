@@ -13,7 +13,7 @@ class AlertMailer < LocaleMailer
     @target_prompt = params[:target_prompt]
     @title = @school.name
 
-    email = make_bootstrap_mail(to: @email_address, subject: I18n.t('alert_mailer.alert_email.subject', locale: active_locale))
+    email = make_bootstrap_mail(to: @email_address)
     add_mg_email_tag(email, 'alerts')
   end
 
