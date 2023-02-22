@@ -56,6 +56,9 @@ RSpec.describe "electricity long term advice page", type: :system do
         expect(page).to have_content("500")
         expect(page).to have_content("800")
       end
+      it 'includes the comparison' do
+        expect(page).to have_css('#electricity-comparison')
+      end
     end
     context "clicking the 'Analysis' tab" do
       before do

@@ -59,6 +59,11 @@ RSpec.describe "total energy use advice page", type: :system do
         expect(page).to have_css('#management-overview-table')
         expect(page).to have_content("How does your energy use for the last 12 months compare to other primary schools")
       end
+      it 'includes the comparison' do
+        expect(page).to have_css('#electricity-comparison')
+        expect(page).to have_css('#gas-comparison')
+      end
+
     end
     context "clicking the 'Analysis' tab" do
       context 'with default data' do
