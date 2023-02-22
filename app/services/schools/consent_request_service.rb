@@ -10,7 +10,7 @@ module Schools
     end
 
     def request_consent!(users)
-      LocaleMailer.with(mailer: ConsentRequestMailer, users: users, school: @school) { |mailer| mailer.request_consent.deliver_now }
+      ConsentRequestMailer.with_locales(users: users, school: @school) { |mailer| mailer.request_consent.deliver_now }
     end
   end
 end

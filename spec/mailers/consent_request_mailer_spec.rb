@@ -4,6 +4,7 @@ RSpec.describe ConsentRequestMailer do
 
   let(:school) { create(:school, name: 'Test School') }
   let(:email_address) { 'blah@blah.com' }
+  let(:user) { create(:user, email: email_address) }
 
   describe '#request_consent' do
 
@@ -33,7 +34,7 @@ RSpec.describe ConsentRequestMailer do
 
       it 'sends an email with en strings even if I18n is cy' do
         ClimateControl.modify SEND_AUTOMATED_EMAILS: 'true' do
-          ConsentRequestMailer.with(emails: [email_address], school: school).request_consent.deliver_now
+          ConsentRequestMailer.with(users: [user], school: school).request_consent.deliver_now
         end
         email = ActionMailer::Base.deliveries.last
         expect(email.subject).to eql ("We need permission to access your school's energy data")
