@@ -5,6 +5,12 @@ en:
       analysis:
         title: Analysis
       insights:
+        circulatory_gas_based_hot_water: Circulatory gas-based hot water systems in schools are generally very inefficient, averaging about 15%
+        for_more_detail_html: For more detail, <a href='%{link}'>compare with other schools in your group</a>
+        improving_the_way_html: |-
+          Improving the way that you control your hot water could reduce your annual gas consumption by %{gas_better_control_saving_kwh_percent}
+          or you could investigate replacing your current hot water system with point of use electric heaters which would save
+          %{gas_point_of_use_electric_saving_kwh_percent}
         next_steps_html: |-
           To reduce the amount of energy used to heat water in your school:
           <ul>
@@ -18,5 +24,24 @@ en:
             <li>Consider moving to point-of-use electric water heaters across the whole school estate instead of a circulatory hot water system.</li>
             <li>For more information on managing legionella risk, read the Health and Safety Executive (HSE) guidance <a href='https://www.hse.gov.uk/legionnaires/hot-and-cold.htm'>Legionnaires’ disease: hot and cold water systems</a>.</li>
           </ul>
+        summary_notice_html: |-
+          <p>Improving the timing control of your existing hot water system or replacing it completely with point of use electric hot water systems can produce significant savings.</p>
+          <p>Hot water in schools is generally provided by a central gas boiler which then continuously circulates the hot water in a loop around the school. Sometimes these gas-based systems are supplemented by more local electrically powered immersion or point of use heaters.</p>
+        table:
+          columns:
+            annual_gbp: Annual £
+            annual_kwh: Annual kWh
+            daily_gbp: Daily £
+            daily_kwh: Daily kWh
+          rows:
+            holidays: Holidays
+            school_day_closed: School day (closed)
+            school_day_open: School day (open)
+            total: Total
+            weekends: Weekends
+        the_table_below_html: |-
+          The table below shows that %{percent} of the energy used to heat your hot water is used outside of school opening times.
+          Adjust your boiler settings to ensure that you are only heating water when it is needed.
         title: What do we mean by hot water gas use?
+        we_estimate_your_hot_water_efficiency_to_be_html: We estimate your hot water efficiency to be %{efficiency_percent}
       page_title: Hot water usage analysis
