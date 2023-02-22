@@ -60,11 +60,11 @@ module Schools
         average_baseload_kw_benchmark = baseload_service.average_baseload_kw_benchmark(compare: :benchmark_school)
         average_baseload_kw_exemplar = baseload_service.average_baseload_kw_benchmark(compare: :exemplar_school)
 
-        OpenStruct.new(
-          category: categorise_school_vs_benchmark(average_baseload_kw_last_year, average_baseload_kw_benchmark, average_baseload_kw_exemplar),
-          average_baseload_kw_last_year: average_baseload_kw_last_year,
-          average_baseload_kw_benchmark: average_baseload_kw_benchmark,
-          average_baseload_kw_exemplar: average_baseload_kw_exemplar
+        Schools::Comparison.new(
+          school_value: average_baseload_kw_last_year,
+          benchmark_value: average_baseload_kw_benchmark,
+          exemplar_value: average_baseload_kw_exemplar,
+          unit: :kw
         )
       end
 

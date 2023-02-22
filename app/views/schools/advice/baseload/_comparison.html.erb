@@ -4,42 +4,11 @@
   <%= t('advice_pages.baseload.comparison.how_do_you_compare', school_type: t('analytics.school_types.' + school.school_type)) %>
 </p>
 
-<table class="table table-sm advice-table" id="comparison-baseload">
-  <thead>
-    <th><%= t('advice_pages.tables.columns.category') %></th>
-    <th class="text-right"><%= t('advice_pages.baseload.tables.columns.average_annual_baseload_kw') %></th>
-    <th class="text-right"><%= t('advice_pages.baseload.comparison.tables.columns.your_baseload') %></th>
-  </thead>
-  <tbody>
-    <tr class="<%= row_class_for_category(benchmarked_baseload.category, :exemplar) %>">
-      <td><%= t('advice_pages.benchmarks.exemplar_school') %></td>
-      <td class="text-right"><%= format_unit(benchmarked_baseload.average_baseload_kw_exemplar, :kw) %></td>
-      <td class="text-right">
-        <% if benchmarked_baseload.category == :exemplar %>
-         <%= format_unit(benchmarked_baseload.average_baseload_kw_last_year, :kw) %>
-        <% end %>
-      </td>
-    </tr>
-    <tr class="<%= row_class_for_category(benchmarked_baseload.category, :benchmark) %>">
-      <td><%= t('advice_pages.benchmarks.benchmark_school') %></td>
-      <td class="text-right"><%= format_unit(benchmarked_baseload.average_baseload_kw_benchmark, :kw) %></td>
-      <td class="text-right">
-        <% if benchmarked_baseload.category == :benchmark %>
-         <%= format_unit(benchmarked_baseload.average_baseload_kw_last_year, :kw) %>
-        <% end %>
-      </td>
-    </tr>
-    <tr class="<%= row_class_for_category(benchmarked_baseload.category, :other, 'negative-row') %>">
-      <td><%= t('advice_pages.benchmarks.other') %></td>
-      <td class="text-right">><%= format_unit(benchmarked_baseload.average_baseload_kw_benchmark, :kw) %></td>
-      <td class="text-right">
-        <% if benchmarked_baseload.category == :other %>
-          <%= format_unit(benchmarked_baseload.average_baseload_kw_last_year, :kw) %>
-        <% end %>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="col">
+  <%= component 'school_comparison', id: 'comparison-baseload', comparison: @benchmarked_baseload do |c| %>
+    <% c.with_callout_footer { advice_t('baseload.comparison.callout_footer') } %>
+  <% end %>
+</div>
 
 <% if school.school_group.present? %>
   <p>

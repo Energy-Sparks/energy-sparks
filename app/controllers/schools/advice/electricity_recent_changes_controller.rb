@@ -22,8 +22,8 @@ module Schools
 
       def change
         Usage::CombinedUsageMetricComparison.new(
-          last_week.combined_usage_metric,
-          previous_week.combined_usage_metric
+          previous_week.combined_usage_metric,
+          last_week.combined_usage_metric
         ).compare
       end
 

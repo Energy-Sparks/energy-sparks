@@ -4,7 +4,7 @@ en:
     baseload:
       analysis:
         baseload_high: Your baseload is high.
-        baseload_high_details_html: If you matched the baseload of other schools of the same size you would save %{estimated_savings}.
+        baseload_high_details_html: If you matched the baseload of other schools of the same size you would save %{estimated_savings} per year.
         baseload_low: Your baseload is low.
         baseload_low_details_html: This is good, and as a result you are saving %{estimated_savings} per year versus other schools of a similar size.
         baseload_low_extra_savings_html: If you matched the baseload of the best performing schools you could save %{estimated_savings} per year.
@@ -48,11 +48,9 @@ en:
           table_description: The meter breakdown in the table below may help to identify where in the school, daily variation variation comes from.
           title: Variation in baseload between days of week
       comparison:
+        callout_footer: average baseload
         how_do_you_compare: How does your baseload compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?
         more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
-        tables:
-          columns:
-            your_baseload: Your baseload (kW)
         title: How do you compare?
       current_baseload:
         calculation_dates: Calculation based on usage between %{start_date} and %{end_date}
