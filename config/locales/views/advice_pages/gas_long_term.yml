@@ -56,9 +56,6 @@ en:
           header: Each bar represents a whole week and the split between holiday, weekend and school day open and closed consumption for that week. It highlights how gas consumption generally increases in the winter and is lower in the summer.
           subtitle: This chart gives the breakdown of gas consumption between school day open and closed, holidays and weekends for every week of data for your school
           title: Gas consumption by week for the last few years
-        group_by_week_gas_versus_benchmark:
-          subtitle_html: This chart shows how your school’s gas use compares against well managed and exemplar schools for each week between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>
-          title: Gas use comparison with other schools over the last 12 months
       insights:
         comparison:
           how_do_you_compare: How does your gas use for the last 12 months compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?
