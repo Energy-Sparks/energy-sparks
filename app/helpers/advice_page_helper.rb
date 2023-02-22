@@ -55,27 +55,6 @@ module AdvicePageHelper
     end
   end
 
-  #categorise a school as being in the "exemplar", "benchmark" or "other" categories
-  #by comparing a numeric metric, e.g. their baseload, against expected values for
-  #the other categories
-  #
-  #returns a symbol: :exemplar, :benchmark, :other
-  def categorise_school_vs_benchmark(school, benchmark_school, exemplar_school)
-    return :other if school.nil? || benchmark_school.nil? || exemplar_school.nil?
-    if school <= exemplar_school
-      :exemplar
-    elsif school > exemplar_school &&
-          school <= benchmark_school
-      :benchmark
-    else
-      :other
-    end
-  end
-
-  def row_class_for_category(category, compare, row_class = 'positive-row')
-    row_class if category == compare
-  end
-
   #calculate relative % change of a current value from a base value
   def relative_percent(base, current)
     return 0.0 if base.nil? || current.nil? || base == current
