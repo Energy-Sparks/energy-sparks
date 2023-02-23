@@ -46,6 +46,10 @@
   <div class="col-md-6">
     <h3><%= t('schools.meters.show.basic_information') %></h3>
     <dl class="row">
+      <% if current_user.admin? %>
+        <dt class="col-sm-3"><%= t('schools.meters.show.data_source') %></dt>
+        <dd class="col-sm-9"><%= @meter.data_source ? link_to(@meter.data_source.name, admin_data_source_path(@meter.data_source)) : t('common.labels.not_set') %></dd>
+      <% end %>
       <dt class="col-sm-3">MPAN/MPRN</dt>
       <dd class="col-sm-9"><%= @meter.mpan_mprn %></dd>
       <dt class="col-sm-3"><%= t('schools.meters.show.serial_number') %></dt>

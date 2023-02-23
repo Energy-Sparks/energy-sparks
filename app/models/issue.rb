@@ -41,7 +41,7 @@ class Issue < ApplicationRecord
   belongs_to :updated_by, class_name: 'User'
   belongs_to :owned_by, class_name: 'User', optional: true
 
-  has_many :issue_meters
+  has_many :issue_meters, dependent: :destroy
   has_many :meters, through: :issue_meters
 
   scope :for_school_group, ->(school_group) do

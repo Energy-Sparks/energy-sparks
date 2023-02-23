@@ -222,7 +222,6 @@ en:
       edit:
         edit_meter: Edit meter
       form:
-        admin_notes: Admin notes
         admin_only_features_for_n3rgy_integration: Admin only features for n3rgy integration
         create_meter: Create Meter
         data_source: Data source
@@ -274,11 +273,13 @@ en:
       inventory:
         meter_title: 'Meter: %{meter_mpan_mprn}'
         title: Inventory
-      meter_notes:
-        meter_notes_mpan_mprn: Meter Notes (%{meter_mpan_mprn})
+      meter_issues:
+        no_meter_issues: No issues or notes for meter
+        title: Meter Issues & Notes - %{name}
       show:
         admin_notes: Admin notes
         basic_information: Basic information
+        data_source: Data source
         dcc_consented: DCC Consented
         dcc_information: DCC information
         dcc_last_checked: DCC last checked

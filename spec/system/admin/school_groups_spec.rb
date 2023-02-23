@@ -223,9 +223,9 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
             end
           end
 
-          it "has an action buttons" do
+          it "has action buttons" do
             within '#active' do
-              expect(page).to have_link('Issues 1 1')
+              expect(page).to have_link('Issues')
               expect(page).to have_link('Edit')
               expect(page).to have_link('Users')
               expect(page).to have_link('Meters')
@@ -436,7 +436,9 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         within "table" do
           click_on 'Manage'
         end
-        click_on 'Issues'
+        within "#school-group-button-panel" do
+          click_on 'Issues'
+        end
       end
       after { Timecop.return }
       it "shows csv contents" do

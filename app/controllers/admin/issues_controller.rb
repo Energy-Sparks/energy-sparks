@@ -30,7 +30,7 @@ module Admin
     end
 
     def new
-      @issue = Issue.new(issue_type: params[:issue_type], issueable: @issueable)
+      @issue = Issue.new(issue_type: params[:issue_type], issueable: @issueable, meter_ids: params[:meter_ids])
     end
 
     def create
