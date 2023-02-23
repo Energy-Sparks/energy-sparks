@@ -30,14 +30,14 @@
 
 <%= render 'admin/shared/dashboard_message', messageable: @school_group %>
 
-<div class="bg-light p-2 mb-2 d-flex justify-content-between border rounded">
+<div id="school-group-button-panel" class="bg-light p-2 mb-2 d-flex justify-content-between border rounded">
   <%= link_to 'View', school_group_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Edit', edit_admin_school_group_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Manage partners', admin_school_group_partners_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Meter attributes', admin_school_group_meter_attributes_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Meter report', admin_school_group_meter_report_path(@school_group), class: 'btn btn-sm' %>
-  <%= link_to "#{fa_icon(:download)} Meter report".html_safe, admin_school_group_meter_report_path(@school_group, format: :csv) , class: 'btn btn-sm', title: "Download meter report csv" %>
-  <%= link_to "#{fa_icon(:download)} Issues".html_safe, admin_school_group_issues_path(@school_group, format: :csv) , class: 'btn btn-sm', title: "Download issues csv" %>
+  <%= link_to "#{fa_icon('file-download')} Meter report".html_safe, admin_school_group_meter_report_path(@school_group, format: :csv) , class: 'btn btn-sm', title: "Download meter report csv" %>
+  <%= link_to "#{fa_icon('file-download')} Issues".html_safe, admin_school_group_issues_path(@school_group, format: :csv) , class: 'btn btn-sm', title: "Download issues csv" %>
   <div title="School groups can only be deleted if there are no associated schools or users" rel="tooltip">
     <%= link_to 'Delete', admin_school_group_path(@school_group), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm#{' disabled' unless @school_group.safe_to_destroy?}" %>
   </div>
@@ -68,16 +68,16 @@
     <% end %>
   </div>
   <div class="tab-pane fade" id="school-group-issues" role="tabpanel" aria-labelledby="school-group-issues-tab">
-    <% if @school_group.issues.status_open.any? %>
-      <%= render 'admin/issues/issues_list', issues: @school_group.issues.status_open, show_issueable: false %>
+    <% if @school_group.issues.any? %>
+      <%= render 'admin/issues/issues_list', issues: @school_group.issues, issueable_type: 'Group' %>
     <% else %>
       <div class="bg-light p-2">No school group issues for <%= @school_group.name %>.</div>
     <% end %>
     <%= render 'admin/issues/new_issues_links', issueable: @school_group %>
   </div>
   <div class="tab-pane fade" id="school-issues" role="tabpanel" aria-labelledby="school-issues-tab">
-    <% if @school_group.school_issues.status_open.any? %>
-      <%= render 'admin/issues/issues_list', issues: @school_group.school_issues.status_open, show_issueable: true %>
+    <% if @school_group.school_issues.any? %>
+      <%= render 'admin/issues/issues_list', issues: @school_group.school_issues, issueable_type: 'School' %>
     <% else %>
       <div class="bg-light p-2">No school issues for <%= @school_group.name %>.</div>
     <% end %>

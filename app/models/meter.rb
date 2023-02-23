@@ -48,7 +48,6 @@ class Meter < ApplicationRecord
   belongs_to :solar_edge_installation, optional: true
   belongs_to :meter_review, optional: true
   belongs_to :data_source, optional: true
-  belongs_to :issue_meter, optional: true
 
   has_one :rtone_variant_installation, required: false
 
@@ -57,6 +56,8 @@ class Meter < ApplicationRecord
   has_many :tariff_prices,              inverse_of: :meter, dependent: :destroy
   has_many :tariff_standing_charges,    inverse_of: :meter, dependent: :destroy
   has_many :meter_attributes
+  has_many :issue_meters, dependent: :destroy
+  has_many :issues, through: :issue_meters
 
   has_and_belongs_to_many :user_tariffs, inverse_of: :meters
 
@@ -151,6 +152,13 @@ class Meter < ApplicationRecord
 
   def display_meter_mpan_mprn
     "#{mpan_mprn} - #{meter_type.to_s.humanize}"
+  end
+
+  def display_mpan_mprn_name
+    output = mpan_mprn.to_s
+    output += " - #{name}" if name.present?
+    output += " - #{data_source.name}" if data_source
+    output
   end
 
   def school_meter_attributes

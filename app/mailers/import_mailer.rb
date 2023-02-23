@@ -1,5 +1,5 @@
 class ImportMailer < ApplicationMailer
-  helper :application
+  helper :application, :issues
   def import_summary
     @meters_running_behind = params[:meters_running_behind]
     @meters_with_blank_data = params[:meters_with_blank_data]

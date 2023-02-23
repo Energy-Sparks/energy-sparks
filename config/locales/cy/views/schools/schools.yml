@@ -222,7 +222,6 @@ cy:
       edit:
         edit_meter: Golygu mesurydd
       form:
-        admin_notes: Nodiadau gweinyddiwr
         admin_only_features_for_n3rgy_integration: Nodweddion gweinyddiwr yn unig ar gyfer integreiddio n3rgy
         create_meter: Creu Mesurydd
         data_source: Ffynhonnell ddata
@@ -274,10 +273,7 @@ cy:
       inventory:
         meter_title: 'Mesurydd: %{meter_mpan_mprn}'
         title: Stocrestr
-      meter_notes:
-        meter_notes_mpan_mprn: "Nodiadau Mesurydd (%{meter_mpan_mprn})"
       show:
-        admin_notes: Nodiadau gweinyddiwr
         basic_information: Gwybodaeth sylfaenol
         dcc_consented: Caniatâd DCC
         dcc_information: Gwybodaeth DCC

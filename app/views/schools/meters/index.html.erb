@@ -146,12 +146,10 @@
               <% end %>
               <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
                 <%= link_to school_meter_path(@school, meter, format: "csv"), class: 'btn btn-info btn-sm' do %>
-                  <i class="fas fa-file-download"></i>
+                  <%= fa_icon('file-download') %>
                 <% end %>
               <% end %>
-              <% if current_user.admin? && meter.notes.present? %>
-                <%= render 'meter_notes', meter: meter %>
-              <% end %>
+              <%= render 'meter_issues', meter: meter if current_user.admin? %>
             </div>
           </td>
           <td>

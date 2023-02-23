@@ -10,11 +10,17 @@ RSpec.shared_examples_for "a listed meter" do |admin: true|
   end
   it { expect(page).to have_content(meter.mpan_mprn) }
   it { expect(page).to have_content(meter.name) }
-  it { expect(page).to have_link(meter.data_source.name) } if admin
   it { expect(page).to have_content(short_dates(meter.first_validated_reading)) }
   it { expect(page).to have_content(short_dates(meter.last_validated_reading)) }
   it { expect(page).to have_content(meter.zero_reading_days.count) }
   it { expect(page).to have_content(meter.gappy_validated_readings.count) }
+  if admin
+    it { expect(page).to have_button('Issues') }
+    it { expect(page).to have_link(meter.data_source.name) }
+  else
+    it { expect(page).to_not have_button('Issues') }
+    it { expect(page).to_not have_link(meter.data_source.name) }
+  end
 end
 
 RSpec.describe "meter management", :meters, type: :system, include_application_helper: true do
@@ -92,7 +98,6 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
       context "Add meter form" do
         it "does not display admin only fields" do
           expect(page).to_not have_content('Data source')
-          expect(page).to_not have_content('Admin notes')
         end
       end
 
@@ -127,7 +132,6 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
     context "Add meter form" do
       it "does not display admin only fields" do
         expect(page).to_not have_content('Data source')
-        expect(page).to_not have_content('Admin notes')
       end
     end
 
@@ -166,6 +170,36 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
         end
         it_behaves_like "a listed meter", admin: true do
           let(:meter) { inactive_meter }
+        end
+      end
+
+      context "with meter issues" do
+        let(:meter) { active_meter }
+        let!(:issue) { create(:issue, issueable: school, meters: [meter], created_by: admin, updated_by: admin)}
+        let!(:setup_data) { issue }
+
+        context "Clicking Issues button" do
+          before { click_on "Issues" }
+          it_behaves_like "a displayed issue" do
+            let(:user) { admin }
+            let(:issue_admin) { admin }
+          end
+          it { expect(page).to have_link("New Note") }
+          it { expect(page).to have_link("New Issue") }
+        end
+
+        context "Clicking on meter 'Details'" do
+          before { click_link 'Details' }
+
+          context "Clicking Issues button" do
+            before { click_on "Issues" }
+            it_behaves_like "a displayed issue" do
+              let(:user) { admin }
+              let(:issue_admin) { admin }
+            end
+            it { expect(page).to have_link("New Note") }
+            it { expect(page).to have_link("New Issue") }
+          end
         end
       end
     end
@@ -226,7 +260,6 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
 
         fill_in 'Meter Point Number', with: '123543'
         fill_in 'Name', with: 'Gas'
-        fill_in_trix '#meter_notes', with: "These are my notes"
         choose 'Gas'
         select 'Data Co', from: 'Data source'
         click_on 'Create Meter'
@@ -234,9 +267,6 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
         expect(school.meters.count).to eq(1)
         expect(school.meters.first.mpan_mprn).to eq(123543)
         expect(school.meters.first.data_source.name).to eq('Data Co')
-
-        click_on "Details"
-        expect(page).to have_content("These are my notes")
       end
     end
 
