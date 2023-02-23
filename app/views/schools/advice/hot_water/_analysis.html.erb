@@ -48,7 +48,7 @@
 <%= render 'schools/advice/section_title', section_id: 'how_does_energy_sparks_calculate', section_title: t('advice_pages.hot_water.analysis.how_does_energy_sparks_calculate') %>
 <%= t('advice_pages.hot_water.analysis.how_does_energy_sparks_calculate_content_introduction_html') %>
 
-<%= component 'chart', chart_type: :hotwater, school: @school do |c| %>
+<%= component 'chart', chart_type: :hotwater, analysis_controls: false, school: @school do |c| %>
 <% end %>
 
 <% annual_litres = AnalyseHeatingAndHotWater::HotwaterModel.annual_school_hot_water_litres(@school.number_of_pupils) %>
