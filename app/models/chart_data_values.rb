@@ -324,7 +324,7 @@ private
       end
 
       if is_benchmark_chart?
-        colour_benchmark_bars(data)
+        colour_benchmark_bars(data_type, data)
       end
 
       { name: data_type, color: colour, type: @chart1_type, data: data, index: index }
@@ -536,31 +536,60 @@ private
     @configuration[:inject].present? && @configuration[:inject] == :benchmark
   end
 
-  def colour_benchmark_bars(data)
+  def colour_benchmark_bars(data_type, data)
     @x_axis_categories.each_with_index do |category, index|
       if BENCHMARK_LABELS.include?(category)
          #replace the scalar value with an object that
          #holds the original y axis data and specifies a custom colour
          data[index] = {
-           y: data[index], color: benchmark_colour(category)
+           y: data[index], color: benchmark_colour(data_type, category)
          }
       end
     end
   end
 
-  def benchmark_colour(category)
+  #category = benchmark, exemplar
+  #data_type = Gas, Electricity
+  def benchmark_colour(data_type, category)
+    #this has multiple fuel types
+    if [:benchmark, :benchmark_one_year].include?(@chart_type)
+      return colours_for_multiple_fuel_type_bencmark(data_type, category)
+    end
     if @chart_type.match?(/_gas_/)
-      if category == I18n.t('analytics.series_data_manager.series_name.benchmark_school')
+      if benchmark_school_category?(category)
         MIDDLE_GAS
       else
         LIGHT_GAS
       end
     elsif @chart_type.match?(/_storage_/)
       DARK_STORAGE
-    elsif category == I18n.t('analytics.series_data_manager.series_name.benchmark_school')
+    elsif benchmark_school_category?(category)
       MIDDLE_ELECTRICITY
     else
       LIGHT_ELECTRICITY
     end
+  end
+
+  def colours_for_multiple_fuel_type_bencmark(data_type, category)
+    case data_type
+    when 'Gas'
+      if benchmark_school_category?(category)
+        MIDDLE_GAS
+      else
+        LIGHT_GAS
+      end
+    when 'Electricity'
+      if benchmark_school_category?(category)
+        MIDDLE_ELECTRICITY
+      else
+        LIGHT_ELECTRICITY
+      end
+    else
+      DARK_STORAGE
+    end
+  end
+
+  def benchmark_school_category?(category)
+    category == I18n.t('analytics.series_data_manager.series_name.benchmark_school')
   end
 end

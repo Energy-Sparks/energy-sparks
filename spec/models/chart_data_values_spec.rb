@@ -211,4 +211,91 @@ describe ChartDataValues do
       end
     end
   end
+
+  context 'with benchmark charts' do
+    let(:chart) { :benchmark }
+    let(:chart_type)  { :bar }
+    let(:x_axis) { ["09 Feb 2019 to 07 Feb 2020", "08 Feb 2020 to 05 Feb 2021", "Exemplar School", "Benchmark (Good) School"] }
+    let(:x_axis_ranges) { [["Sat, 09 Feb 2019", "Fri, 07 Feb 2020"],
+         ["Sat, 08 Feb 2020", "Fri, 05 Feb 2021"],
+         ["Sat, 06 Feb 2021", "Fri, 04 Feb 2022"],
+         ["Sat, 05 Feb 2022", "Fri, 03 Feb 2023"]]
+    }
+    let(:x_data) {
+      { "electricity"=> [77230.65592499996,60319.60000000002,32928.30656992425,47040.43795703465],
+        "gas"=> [21031.15421717688,19455.429877914285,15151.625158016384,16335.345873486414]
+      }
+    }
+    let(:config) {
+      {
+        title: "Annual Electricity and Gas Consumption Comparison with other schools in your region",
+        x_axis: x_axis,
+        x_axis_ranges: x_axis_ranges,
+        x_data: x_data,
+        chart1_type: chart_type,
+        chart1_subtype: :stacked,
+        y_axis_label: "£",
+        config_name: :benchmark,
+        configuration: {:name=>"Annual Electricity and Gas Consumption Comparison",
+           :chart1_type=>:bar,
+           :chart1_subtype=>:stacked,
+           :meter_definition=>:all,
+           :x_axis=>:year,
+           :series_breakdown=>:fuel,
+           :yaxis_units=>:£,
+           :restrict_y1_axis=>[:£, :co2],
+           :yaxis_scaling=>:none,
+           :inject=>:benchmark,
+           :y_axis_label=>"£",
+           :min_combined_school_date=>"Sun, 13 Jan 2019",
+           :max_combined_school_date=>"Fri, 03 Feb 2023"
+         },
+         name: :benchmark
+      }
+    }
+    let(:transformations) { [] }
+    let(:allowed_operations) { {} }
+    let(:drilldown_available) { false }
+    let(:parent_timescale_description) { nil }
+    let(:y1_axis_choices) { [] }
+
+    let(:chart_data_values)  { ChartDataValues.new(config, chart, transformations: transformations, allowed_operations: allowed_operations, drilldown_available: drilldown_available, parent_timescale_description: parent_timescale_description, y1_axis_choices: y1_axis_choices).process }
+
+    let(:electricity_series) { chart_data_values.series_data.first }
+    let(:gas_series) { chart_data_values.series_data.last }
+
+    it 'has right series default colours' do
+      expect(electricity_series[:name]).to eq 'Electricity'
+      expect(electricity_series[:color]).to eq '#007EFF'
+      expect(gas_series[:name]).to eq 'Gas'
+      expect(gas_series[:color]).to eq '#FF8438' #dark gas
+    end
+
+    it 'overrides colours for benchmark and exemplar schools' do
+      electricity_data = electricity_series[:data]
+      expect(electricity_data[0]).to be_within(0.1).of(77230.6)
+      expect(electricity_data[1]).to be_within(0.1).of(60319.6)
+
+      exemplar = electricity_data[2]
+      expect(exemplar[:y]).to be_within(0.1).of(32928.3)
+      expect(exemplar[:color]).to eq '#59D0FF'
+
+      benchmark = electricity_data[3]
+      expect(benchmark[:y]).to be_within(0.1).of(47040.4)
+      expect(benchmark[:color]).to eq '#02B8FF'
+
+      gas_data = gas_series[:data]
+      expect(gas_data[0]).to be_within(0.1).of(21031.1)
+      expect(gas_data[1]).to be_within(0.1).of(19455.4)
+
+      exemplar = gas_data[2]
+      expect(exemplar[:y]).to be_within(0.1).of(15151.6)
+      expect(exemplar[:color]).to eq '#FFC73E' #light gas
+
+      benchmark = gas_data[3]
+      expect(benchmark[:y]).to be_within(0.1).of(16335.3)
+      expect(benchmark[:color]).to eq '#FFB138' #middle gas
+    end
+
+  end
 end
