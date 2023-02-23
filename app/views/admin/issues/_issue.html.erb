@@ -1,4 +1,4 @@
-<% expand = (@issueable || local_assigns[:single]) unless local_assigns[:expand] %>
+<% expand = ((issue.status_open? && @issueable) || local_assigns[:single]) unless local_assigns[:expand] %>
 <div class="row pb-2">
   <div class="admin-issue <%= issue.issue_type %> col-md-12 rounded">
     <h4>
