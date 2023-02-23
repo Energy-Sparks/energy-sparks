@@ -79,11 +79,13 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
+  # Use letter_opener in development - https://github.com/ryanb/letter_opener
+  config.action_mailer.delivery_method = :letter_opener
+
   # Use mailcatcher locally - https://github.com/sj26/mailcatcher
   # NOTE not using default port!
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { address: '127.0.0.1', port:ENV.fetch('LOCAL_SMTP_PORT') { 1025 } }
-  config.action_mailer.raise_delivery_errors = false
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = { address: '127.0.0.1', port:ENV.fetch('LOCAL_SMTP_PORT') { 1025 } }
 
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
   config.action_mailer.asset_host = ENV.fetch('ASSET_HOST'){ "http://#{ENV['APPLICATION_HOST']}" }

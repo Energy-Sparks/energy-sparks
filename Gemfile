@@ -148,6 +148,7 @@ group :development do
   gem 'bundler-audit'
   gem 'brakeman'
   gem 'scout_apm'
+  gem 'letter_opener'
 #  gem 'rack-mini-profiler'
 #  gem 'memory_profiler'
 #  gem 'i18n-debug'
