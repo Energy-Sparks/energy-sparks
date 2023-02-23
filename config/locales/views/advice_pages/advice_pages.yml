@@ -15,6 +15,9 @@ en:
       data_warning: We have not received data for your %{fuel_type} usage for over thirty days. As a result your analysis will be out of date and may not reflect recent changes in your school.
       message: We encountered an error attempting to generate your analysis. The Energy Sparks team have been notified of the problem.
       title: Sorry, something has gone wrong
+    how_have_we_analysed_your_data:
+      link_title: How did we calculate these figures?
+      page_title: How have we analysed your data?
     insights:
       recommendations:
         actions_title: Take action around the school
