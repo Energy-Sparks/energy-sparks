@@ -45,7 +45,7 @@
       <% end %>
     </div>
   <% else %>
-    <%= render 'issues_list', issues: @issues, show_issueable: true %>
+    <%= render 'issues_list', issues: @issues %>
   <% end %>
   <%= render "shared/pagy_footer" %>
 <% else %>

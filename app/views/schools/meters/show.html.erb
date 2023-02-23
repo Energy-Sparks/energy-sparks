@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between align-items-center">
   <h1>
-    <%= meter_name = @meter.name.present? ? @meter.name : t('schools.meters.show.meter') %>
+    <% meter_name = @meter.name.present? ? @meter.name : t('schools.meters.show.meter') %>
     <%= t('schools.meters.show.title', meter_name: meter_name, meter_mpan_mprn: @meter.mpan_mprn) %>
   </h1>
   <div class="h5">
