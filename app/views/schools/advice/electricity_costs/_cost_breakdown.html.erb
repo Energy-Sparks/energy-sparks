@@ -1,0 +1,6 @@
+<%= render 'schools/advice/section_title', section_id: 'cost-breakdown', section_title: advice_t('electricity_costs.analysis.cost_breakdown.title') %>
+
+<%= component 'chart', chart_type: :electricity_cost_1_year_accounting_breakdown, school: school do |c| %>
+  <% c.with_title { advice_t('electricity_costs.charts.cost_1_year_accounting_breakdown.title') } %>
+  <% c.with_subtitle { advice_t('electricity_costs.charts.cost_1_year_accounting_breakdown.subtitle_html', end_date: analysis_dates.end_date.to_s(:es_short)) } %>
+<% end %>

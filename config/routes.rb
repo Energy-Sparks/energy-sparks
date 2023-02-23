@@ -168,6 +168,9 @@ Rails.application.routes.draw do
               get :insights
               get :analysis
               get :learn_more
+              if page == :electricity_costs
+                get :meter_costs
+              end
             end
           end
         end
