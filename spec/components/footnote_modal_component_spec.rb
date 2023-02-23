@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe FootnoteModalComponent, type: :component do
-  let(:all_params) { { title: 'How did we calculate these figures?' } }
+  let(:all_params) { { title: 'How did we calculate these figures?', modal_id: 'an_arbitrary_id' } }
   let(:params) { all_params }
   let(:body_content) { "<p>Some modal body content</p>" }
 
@@ -35,8 +35,9 @@ RSpec.describe FootnoteModalComponent, type: :component do
 
   context "with body_content" do
     let(:html) do
-      # In a component .html.erb view this will be:
-      # <%= render(FootnoteModalComponent.new(title: "my title")) do |component| %>
+      # In a component .html.erb view the markup will be:
+      # <a href="" data-toggle="modal" data-target="#table-footnotes">How did we calculate these figures? <span style="color: #007bff;"><%= fa_icon('question-circle') %></span></a>
+      # <%= render(FootnoteModalComponent.new(title: "my title", id: 'table-footnotes')) do |component| %>
       #   <% component.with_body_content do %>
       #     Some content
       #   <% end %>

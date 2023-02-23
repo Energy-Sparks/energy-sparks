@@ -3,15 +3,12 @@
 class FootnoteModalComponent < ViewComponent::Base
   renders_one :body_content
 
-  def initialize(title:)
+  def initialize(title:, modal_id:)
     @title = title
+    @modal_id = modal_id
   end
 
   def icon
     helpers.fa_icon('question-circle')
-  end
-
-  def modal_id
-    'footnote-modal-' + object_id.to_s
   end
 end
