@@ -17,9 +17,9 @@ module Targets
 
     def invite_schools_to_set_first_target
       list_schools.each do |school|
-        to = to(school)
-        if to.any?
-          TargetMailer.with(to: to, school: school).first_target.deliver_now
+        users = users(school)
+        if users.any?
+          TargetMailer.with_user_locales(users: users, school: school) { |mailer| mailer.first_target.deliver_now }
           school.school_target_events.create(event: :first_target_sent)
         end
       end
@@ -27,9 +27,9 @@ module Targets
 
     def remind_schools_to_set_first_target
       list_schools_requiring_reminder.each do |school|
-        to = to(school)
-        if to.any?
-          TargetMailer.with(to: to, school: school).first_target_reminder.deliver_now
+        users = users(school)
+        if users.any?
+          TargetMailer.with_user_locales(users: users, school: school) { |mailer| mailer.first_target_reminder.deliver_now }
           school.school_target_events.create(event: :first_target_reminder_sent)
         end
       end
@@ -37,9 +37,9 @@ module Targets
 
     def invite_schools_to_review_target
       list_schools_requiring_review.each do |school|
-        to = to(school)
-        if to.any?
-          TargetMailer.with(to: to, school: school).review_target.deliver_now
+        users = users(school)
+        if users.any?
+          TargetMailer.with_user_locales(users: users, school: school) { |mailer| mailer.review_target.deliver_now }
           school.school_target_events.create(event: :review_target_sent)
         end
       end
@@ -53,9 +53,8 @@ module Targets
       end
     end
 
-    def to(school)
-      users = school.all_adult_school_users.to_a
-      users.uniq.map(&:email)
+    def users(school)
+      school.all_adult_school_users.uniq
     end
 
     def reject_for_reminder?(school)
