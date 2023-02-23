@@ -155,7 +155,10 @@ class Meter < ApplicationRecord
   end
 
   def display_mpan_mprn_name
-    name.present? ? "#{mpan_mprn} - #{name}" : mpan_mprn
+    output = mpan_mprn.to_s
+    output += " - #{name}" if name.present?
+    output += " - #{data_source.name}" if data_source
+    output
   end
 
   def school_meter_attributes

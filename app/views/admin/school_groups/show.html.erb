@@ -69,7 +69,7 @@
   </div>
   <div class="tab-pane fade" id="school-group-issues" role="tabpanel" aria-labelledby="school-group-issues-tab">
     <% if @school_group.issues.status_open.any? %>
-      <%= render 'admin/issues/issues_list', issues: @school_group.issues.status_open, show_issueable: false %>
+      <%= render 'admin/issues/issues_list', issues: @school_group.issues.status_open, issueable_type: 'Group' %>
     <% else %>
       <div class="bg-light p-2">No school group issues for <%= @school_group.name %>.</div>
     <% end %>
@@ -77,7 +77,7 @@
   </div>
   <div class="tab-pane fade" id="school-issues" role="tabpanel" aria-labelledby="school-issues-tab">
     <% if @school_group.school_issues.status_open.any? %>
-      <%= render 'admin/issues/issues_list', issues: @school_group.school_issues.status_open, show_issueable: true %>
+      <%= render 'admin/issues/issues_list', issues: @school_group.school_issues.status_open, issueable_type: 'School' %>
     <% else %>
       <div class="bg-light p-2">No school issues for <%= @school_group.name %>.</div>
     <% end %>

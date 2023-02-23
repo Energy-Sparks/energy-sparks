@@ -45,7 +45,7 @@
 <div class="tab-content" id="data-source-content">
   <div class="tab-pane fade show active" id="issues" role="tabpanel" aria-labelledby="issues-tab">
     <% if @data_source.issues.status_open.any? %>
-      <%= render 'admin/issues/issues_list', issues: @data_source.issues.status_open, show_issueable: false %>
+      <%= render 'admin/issues/issues_list', issues: @data_source.issues.status_open, issueable_type: 'Data source' %>
     <% else %>
       <div class="bg-light p-2">No issues for <%= @data_source.name %>.</div>
     <% end %>
