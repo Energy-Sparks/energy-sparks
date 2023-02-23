@@ -99,7 +99,7 @@ describe SchoolGroup, :school_groups, type: :model do
 
       let!(:closed_school_group_issue) {    create(:issue, status: :closed, updated_by: user, issueable: school_group, fuel_type: :gas) }
       let!(:school_group_note) {            create(:issue, issue_type: :note, updated_by: user, issueable: school_group, fuel_type: :gas) }
-      let!(:school_in_different_school_group_issue) { create(:issue, updated_by: user, issueable: create(:school), fuel_type: :electricity) }
+      let!(:school_in_different_school_group_issue) { create(:issue, updated_by: user, issueable: create(:school, school_group: create(:school_group)), fuel_type: :electricity) }
       let!(:different_school_group_issue) { create(:issue, updated_by: user, issueable: create(:school_group), fuel_type: :electricity) }
 
       it { expect(csv.lines.count).to eq(6) }
