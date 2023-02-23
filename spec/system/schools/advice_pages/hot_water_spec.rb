@@ -11,6 +11,7 @@ RSpec.describe "hot water advice page", type: :system do
     before do
       allow_any_instance_of(Schools::Advice::HotWaterController).to receive_messages(
         {
+          create_analysable: OpenStruct.new(enough_data?: true),
           build_gas_hot_water: OpenStruct.new(
             investment_choices: OpenStruct.new(
               existing_gas: OpenStruct.new(

@@ -11,8 +11,16 @@ module Schools
 
       private
 
+      def create_analysable
+        gas_hot_water_service
+      end
+
       def build_gas_hot_water
-        HotWater::GasHotWaterService.new(meter_collection: aggregate_school).create_model
+        gas_hot_water_service.create_model
+      end
+
+      def gas_hot_water_service
+        @gas_hot_water_service ||= HotWater::GasHotWaterService.new(meter_collection: aggregate_school)
       end
 
       def set_insights_next_steps
