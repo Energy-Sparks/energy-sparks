@@ -18,7 +18,7 @@
         <td class="fit"><%= render 'admin/issues/issueable', issueable: issue.try(:issueable) %></td>
         <td width="100%" class="overflow">
           <%= render 'admin/issues/pinned', issue: issue %>
-          <%= issue.title %><br />
+          <span title="<%= issue.title %>" data-toggle="tooltip"><%= issue.title %></span><br />
           <%= render 'admin/issues/meters', issue: issue %>
         </td>
         <td class="fit"><%= render 'admin/issues/fuel_type', issue: issue %></td>
