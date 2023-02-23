@@ -329,7 +329,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       end
 
       describe "School Group Issues tab" do
-        context "when there are open issues for the school group" do
+        context "when there are issues for the school group" do
           let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school_group, fuel_type: :gas, pinned: true) }
           let!(:setup_data) { issue }
           it "displays a count of school group issues" do
@@ -338,10 +338,11 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           it "lists issue in issues tab" do
             within '#school-group-issues' do
               expect(page).to have_content issue.title
-              expect(page).to_not have_content issue.issueable.name
+              expect(page).to have_content issue.issueable.name
               expect(page).to have_content issue.fuel_type.capitalize
               expect(page).to have_content nice_date_times_today(issue.updated_at)
               expect(page).to have_link("View", href: polymorphic_path([:admin, school_group, issue]))
+              expect(page).to have_link("Edit", href: edit_polymorphic_path([:admin, issue]))
               expect(page).to have_css("i[class*='fa-thumbtack']")
             end
           end
@@ -356,7 +357,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       end
 
       describe "School Issues tab" do
-        context "when there are open issues for schools in the school group" do
+        context "when there are issues for schools in the school group" do
           let!(:school) { create(:school, school_group: school_group)}
           let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas, pinned: true) }
           let!(:setup_data) { issue }
@@ -370,6 +371,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
               expect(page).to have_content issue.fuel_type.capitalize
               expect(page).to have_content nice_date_times_today(issue.updated_at)
               expect(page).to have_link("View", href: polymorphic_path([:admin, school, issue]))
+              expect(page).to have_link("Edit", href: edit_polymorphic_path([:admin, issue]))
               expect(page).to have_css("i[class*='fa-thumbtack']")
             end
           end
