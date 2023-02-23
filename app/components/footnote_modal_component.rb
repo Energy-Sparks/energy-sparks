@@ -8,8 +8,4 @@ class FootnoteModalComponent < ViewComponent::Base
     @modal_id = modal_id
     @modal_dialog_classes = modal_dialog_classes
   end
-
-  def icon
-    helpers.fa_icon('question-circle')
-  end
 end
