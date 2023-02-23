@@ -585,7 +585,7 @@ private
         LIGHT_ELECTRICITY
       end
     else
-      return DARK_STORAGE
+      DARK_STORAGE
     end
   end
 
