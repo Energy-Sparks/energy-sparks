@@ -274,7 +274,6 @@ cy:
         meter_title: 'Mesurydd: %{meter_mpan_mprn}'
         title: Stocrestr
       show:
-        admin_notes: Nodiadau gweinyddiwr
         basic_information: Gwybodaeth sylfaenol
         dcc_consented: Caniatâd DCC
         dcc_information: Gwybodaeth DCC

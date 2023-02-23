@@ -36,8 +36,8 @@
   <%= link_to 'Manage partners', admin_school_group_partners_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Meter attributes', admin_school_group_meter_attributes_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Meter report', admin_school_group_meter_report_path(@school_group), class: 'btn btn-sm' %>
-  <%= link_to "#{fa_icon(:download)} Meter report".html_safe, admin_school_group_meter_report_path(@school_group, format: :csv) , class: 'btn btn-sm', title: "Download meter report csv" %>
-  <%= link_to "#{fa_icon(:download)} Issues".html_safe, admin_school_group_issues_path(@school_group, format: :csv) , class: 'btn btn-sm', title: "Download issues csv" %>
+  <%= link_to "#{fa_icon('file-download')} Meter report".html_safe, admin_school_group_meter_report_path(@school_group, format: :csv) , class: 'btn btn-sm', title: "Download meter report csv" %>
+  <%= link_to "#{fa_icon('file-download')} Issues".html_safe, admin_school_group_issues_path(@school_group, format: :csv) , class: 'btn btn-sm', title: "Download issues csv" %>
   <div title="School groups can only be deleted if there are no associated schools or users" rel="tooltip">
     <%= link_to 'Delete', admin_school_group_path(@school_group), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm#{' disabled' unless @school_group.safe_to_destroy?}" %>
   </div>
