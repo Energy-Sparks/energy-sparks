@@ -1,46 +1,59 @@
-<strong>Energy data</strong>
+<h4><strong><%= t('advice_pages.how_have_we_analysed_your_data.energy_data') %></strong></h4>
 
-For pages with a single fuel type (which is all except the Total Energy Use):
+<p>Calculations based on %{fuel_type} consumed between %{start_date} and %{end_date}</p>
+<p>Where start/end are dates for aggregate meter</p>
+<p>For total energy use:</p>
 
-Calculations based on %{fuel_type} consumed between %{start_date} and %{end_date}
+<table class="table table-sm">
+  <thead class="thead-dark">
+    <th class="text-left"><%= t('advice_pages.how_have_we_analysed_your_data.total_energy_use_table.columns.fuel_type') %></th>
+    <th class="text-right"><%= t('advice_pages.how_have_we_analysed_your_data.total_energy_use_table.columns.aggregated_meter_date_range') %></th>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="text-left"><%= t('advice_pages.how_have_we_analysed_your_data.total_energy_use_table.rows.electricity') %></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="text-left"><%= t('advice_pages.how_have_we_analysed_your_data.total_energy_use_table.rows.gas') %></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
 
-Where start/end are dates for aggregate meter
+<h4><strong><%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics') %></strong></h4>
 
-For total energy use:
+<p><%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_introduction') %>.</p>
 
-A table with 2 columns:
-fuel type and aggregated meter date range
-one row per fuel type, with start/end dates of the aggregate meter
+<table class="table table-sm">
+  <thead class="thead-dark">
+    <th class="text-left"><%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.columns.characteristic') %></th>
+    <th class="text-right"><%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.columns.value') %></th>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="text-left"><%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.floor_area') %></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="text-left"><%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.location') %></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="text-left"><%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.pupils') %></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="text-left"><%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.type') %></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
 
-Title: School characteristics
-
-The following characteristics are used when analysing your school energy data. Temperature compensation uses weather data specific to your school's location.
-
-A table with 2 columns:
-
-Characteristic
-Value
-
-And then rows for:
-
-floor area, with value of: floor area m2
-location, with value of: postcode (lat/long)
-pupils, with value of number of pupils
-type, with value of school type
-
-Title: Cost calculations
-
-Consumption costs are estimated based on historic tariff information
-Future savings are estimates based on your school's latest tariff information
-Potential cost savings quoted in school comparisons, e.g. for comparable "well managed" and "exemplar" schools are also based on your school's current tariffs
-
-If a schools’ tariffs have changed recently:
+<h4><strong><%= t('advice_pages.how_have_we_analysed_your_data.cost_calculations') %></strong></h4>
+<%= t('advice_pages.how_have_we_analysed_your_data.cost_calculations_introduction_html') %>
 
 Your electricity tariffs have changed in the last year, the last change was on %{date}, before this date the average tariff was XXXp/kWh, and since it is £YYYY/kWh. This will increase your electricity costs by ZZZZ% going forwards. Cost calculations used for most charts and analysis do not include standing charges except for the more accurate bill validation information presented on the Cost analysis page. .
 
-Title: School comparisons
-
-School comparisons are based on benchmarking your school against comparable schools based on the characteristics outlined below.
-
-"Exemplar" schools represent the top 17.5% of Energy Sparks schools
-"Well managed" schools represent the top 30% of Energy Sparks schools
+<h4><strong><%= t('advice_pages.how_have_we_analysed_your_data.school_comparisons') %></strong></h4>
+<%= t('advice_pages.how_have_we_analysed_your_data.school_comparisons_introduction_html') %>
