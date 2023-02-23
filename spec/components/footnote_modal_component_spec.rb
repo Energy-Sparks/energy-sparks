@@ -37,7 +37,7 @@ RSpec.describe FootnoteModalComponent, type: :component do
     let(:html) do
       # In a component .html.erb view the markup will be:
       # <a href="" data-toggle="modal" data-target="#table-footnotes">How did we calculate these figures? <span style="color: #007bff;"><%= fa_icon('question-circle') %></span></a>
-      # <%= render(FootnoteModalComponent.new(title: "my title", id: 'table-footnotes')) do |component| %>
+      # <%= render(FootnoteModalComponent.new(title: "my title", modal_id: 'table-footnotes')) do |component| %>
       #   <% component.with_body_content do %>
       #     Some content
       #   <% end %>
