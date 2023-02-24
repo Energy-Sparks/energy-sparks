@@ -20,6 +20,14 @@
     <% end %>
   <% end %>
 
+  <% if @electricity_annual_usage || @gas_annual_usage %>
+    <%= render(FootnoteModalComponent.new(title: t('advice_pages.how_have_we_analysed_your_data.page_title'), modal_id: 'how-have-we-analysed-your-data-footnotes')) do |component| %>
+      <% component.with_body_content do %>
+        <%= render 'schools/advice/how_have_we_analysed_your_data' %>
+      <% end %>
+    <% end %>
+  <% end %>
+
   <% if @electricity_annual_usage %>
     <h3><%= t('common.electricity') %></h3>
     <p>
@@ -27,6 +35,7 @@
     </p>
 
     <%= render 'schools/advice/electricity_long_term/comparison_with_benchmark_table', annual_usage: @electricity_annual_usage, vs_exemplar: @electricity_vs_exemplar, vs_benchmark: @electricity_vs_benchmark, estimated_savings_vs_exemplar: @electricity_estimated_savings_vs_exemplar, estimated_savings_vs_benchmark: @electricity_estimated_savings_vs_benchmark %>
+    <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>
   <% end %>
 
   <% if @gas_annual_usage %>
@@ -36,6 +45,7 @@
     </p>
 
     <%= render 'schools/advice/gas_long_term/comparison_with_benchmark_table', annual_usage: @gas_annual_usage, vs_exemplar: @gas_vs_exemplar, vs_benchmark: @gas_vs_benchmark, estimated_savings_vs_exemplar: @gas_estimated_savings_vs_exemplar, estimated_savings_vs_benchmark: @gas_estimated_savings_vs_benchmark %>
+    <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>
   <% end %>
 
 <% end %>

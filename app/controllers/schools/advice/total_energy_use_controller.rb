@@ -16,6 +16,8 @@ module Schools
       end
 
       def analysis
+        @overview_data = Schools::ManagementTableService.new(@school).management_data
+
         @analysis_dates = analysis_dates
         @benchmark_chart = benchmark_chart
 
