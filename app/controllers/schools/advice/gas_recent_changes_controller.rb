@@ -12,6 +12,12 @@ module Schools
 
       private
 
+      def create_analysable
+        OpenStruct.new(
+          enough_data?: analysis_dates.one_years_data
+        )
+      end
+
       def build_recent_usage
         OpenStruct.new(
           last_week: last_week,
