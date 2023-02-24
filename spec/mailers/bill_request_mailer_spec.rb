@@ -10,7 +10,9 @@ RSpec.describe BillRequestMailer do
   around do |example|
     ClimateControl.modify SEND_AUTOMATED_EMAILS: 'true' do
       ClimateControl.modify FEATURE_FLAG_EMAILS_WITH_PREFERRED_LOCALE: enable_locale_emails do
-        example.run
+        ClimateControl.modify WELSH_APPLICATION_HOST: 'cy.localhost' do
+          example.run
+        end
       end
     end
   end
@@ -26,6 +28,7 @@ RSpec.describe BillRequestMailer do
       it 'sends an email with en strings' do
         expect(@email.subject).to eql ("Please upload a recent energy bill to Energy Sparks")
         expect(@email.body.to_s).to include("Please upload an energy bill for Test School")
+        expect(@email.body.to_s).to include("http://localhost/schools/test-school/consent_documents")
       end
     end
   end
@@ -36,6 +39,7 @@ RSpec.describe BillRequestMailer do
       it 'sends an email with en strings' do
         expect(@email.subject).to eql ("Uwchlwythwch fil ynni diweddar i Sbarcynni")
         expect(@email.body.to_s).to include("Uwchlwythwch fil ynni ar gyfer Test School")
+        expect(@email.body.to_s).to include("http://cy.localhost/schools/test-school/consent_documents")
       end
     end
   end
