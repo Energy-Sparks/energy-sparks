@@ -1,6 +1,10 @@
 class OnboardingMailer < ApplicationMailer
   helper :application
 
+  def get_locales(school_onboarding)
+    EnergySparks::FeatureFlags.active?(:emails_with_preferred_locale) ? school_onboarding.email_locales : [:en]
+  end
+
   def for_locales(locales)
     locales.map { |locale| I18n.with_locale(locale) { yield } }
   end
@@ -9,7 +13,7 @@ class OnboardingMailer < ApplicationMailer
     @school_onboarding = params[:school_onboarding]
     @title = @school_onboarding.school_name
 
-    locales = @school_onboarding.email_locales
+    locales = get_locales(@school_onboarding)
 
     @body = for_locales(locales) do
       render :onboarding_email_content, layout: nil
