@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "total energy use advice page", type: :system do
   let(:key) { 'total_energy_use' }
   let(:expected_page_title) { "Energy usage summary" }
-  include_context "electricity advice page"
+  include_context "total energy advice page"
 
   context 'as school admin' do
     let(:user)  { create(:school_admin, school: school) }
@@ -27,6 +27,10 @@ RSpec.describe "total energy use advice page", type: :system do
 
 
     before do
+      allow_any_instance_of(Tables::SummaryTableData).to receive(:table_date_ranges) {
+        { electricity: { start_date: '1 Sep 2018', end_date: '3 Feb 2023' }, gas: { start_date: '5 Jan 2023', end_date: '2 Feb 2023' } }
+      }
+
       allow(gas_aggregate_meter).to receive(:amr_data).and_return(amr_data)
       allow(meter_collection).to receive(:aggregated_heat_meters).and_return(gas_aggregate_meter)
 
@@ -64,6 +68,17 @@ RSpec.describe "total energy use advice page", type: :system do
         expect(page).to have_css('#gas-comparison')
       end
 
+      it 'shows the how have we analysed your data modal' do
+        # expect(page).to have_content("How did we calculate these figures?")
+        click_on 'How did we calculate these figures?'
+        expect(page).to have_content("How have we analysed your data?")
+        expect(page).to have_content("School characteristics")
+        expect(page).to have_content("Cost calculations")
+        expect(page).to have_content("School comparisons")
+        expect(page).to have_content('"Exemplar" schools represent the top 17.5% of Energy Sparks schools')
+        expect(page).to have_content('Meter date range')
+        expect(page).not_to have_content('Your electricity tariffs have changed')
+      end
     end
     context "clicking the 'Analysis' tab" do
       context 'with default data' do
@@ -91,6 +106,18 @@ RSpec.describe "total energy use advice page", type: :system do
           expect(page).to have_css('#chart_wrapper_benchmark_one_year')
           expect(page).to have_css('#chart_wrapper_stacked_all_years')
         end
+      end
+
+      it 'shows the how have we analysed your data modal' do
+        # expect(page).to have_content("How did we calculate these figures?")
+        click_on 'How did we calculate these figures?'
+        expect(page).to have_content("How have we analysed your data?")
+        expect(page).to have_content("School characteristics")
+        expect(page).to have_content("Cost calculations")
+        expect(page).to have_content("School comparisons")
+        expect(page).to have_content('"Exemplar" schools represent the top 17.5% of Energy Sparks schools')
+        expect(page).to have_content('Meter date range')
+        expect(page).not_to have_content('Your electricity tariffs have changed')
       end
     end
     context "clicking the 'Learn More' tab" do

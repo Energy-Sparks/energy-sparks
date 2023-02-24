@@ -17,6 +17,7 @@ module Schools
       before_action :set_page_title, only: [:insights, :analysis, :learn_more]
       before_action :set_page_subtitle, only: [:insights, :analysis]
       before_action :set_insights_next_steps, only: [:insights]
+      before_action :set_economic_tariffs_change_caveats, only: [:insights, :analysis]
 
       include AdvicePageHelper
       include SchoolAggregation
@@ -36,6 +37,10 @@ module Schools
       end
 
       private
+
+      def set_economic_tariffs_change_caveats
+        @economic_tariffs_change_caveats = nil
+      end
 
       def set_insights_next_steps
         @advice_page_insights_next_steps = if_exists('insights.next_steps')
