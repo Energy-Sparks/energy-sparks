@@ -3,15 +3,43 @@ require 'rails_helper'
 RSpec.describe OnboardingMailer do
   let(:school){ create(:school, name: 'Test School') }
   let(:user){ create(:onboarding_user, school: school) }
-  let(:school_onboarding) { create(:school_onboarding, school_name: 'Test School', created_by: user, school: school) }
+  let(:school_onboarding) { create(:school_onboarding, school_name: 'Test School', created_by: user, school: school, country: 'wales') }
+  let(:enable_locale_emails) { 'false' }
+
+  around do |example|
+    ClimateControl.modify FEATURE_FLAG_EMAILS_WITH_PREFERRED_LOCALE: enable_locale_emails do
+      ClimateControl.modify WELSH_APPLICATION_HOST: 'cy.localhost' do
+        example.run
+      end
+    end
+  end
 
   describe '#onboarding_email' do
-    it 'sends the onboarding email' do
-      OnboardingMailer.with(emails: ['test@blah.com'], school_onboarding: school_onboarding).onboarding_email.deliver_now
-      email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarding_email.subject'))
-      I18n.t('onboarding_mailer.onboarding_email').except(:subject).values.each do |email_content|
-        expect(email.body.to_s).to include(email_content.gsub('%{school_name}', school.name))
+    context 'when locale emails disabled' do
+      it 'sends the onboarding email in english only' do
+        OnboardingMailer.with(emails: ['test@blah.com'], school_onboarding: school_onboarding).onboarding_email.deliver_now
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarding_email.subject'))
+        I18n.t('onboarding_mailer.onboarding_email').except(:subject).values.each do |email_content|
+          expect(email.body.to_s).to include(email_content.gsub('%{school_name}', school.name))
+        end
+        I18n.t('onboarding_mailer.onboarding_email', locale: :cy).except(:subject).values.each do |email_content|
+          expect(email.body.to_s).not_to include(email_content.gsub('%{school_name}', school.name))
+        end
+      end
+    end
+    context 'when locale emails disabled' do
+      let(:enable_locale_emails) { 'true' }
+      it 'sends the onboarding email in both languages' do
+        OnboardingMailer.with(emails: ['test@blah.com'], school_onboarding: school_onboarding).onboarding_email.deliver_now
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarding_email.subject') + " / " + I18n.t('onboarding_mailer.onboarding_email.subject', locale: :cy))
+        I18n.t('onboarding_mailer.onboarding_email').except(:subject).values.each do |email_content|
+          expect(email.body.to_s).to include(email_content.gsub('%{school_name}', school.name))
+        end
+        I18n.t('onboarding_mailer.onboarding_email', locale: :cy).except(:subject).values.each do |email_content|
+          expect(email.body.to_s).to include(email_content.gsub('%{school_name}', school.name))
+        end
       end
     end
   end
