@@ -28,7 +28,7 @@ RSpec.describe OnboardingMailer do
         end
       end
     end
-    context 'when locale emails disabled' do
+    context 'when locale emails enabled' do
       let(:enable_locale_emails) { 'true' }
       it 'sends the onboarding email in both languages' do
         OnboardingMailer.with(emails: ['test@blah.com'], school_onboarding: school_onboarding).onboarding_email.deliver_now
