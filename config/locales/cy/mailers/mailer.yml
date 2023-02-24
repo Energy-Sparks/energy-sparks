@@ -45,12 +45,11 @@ cy:
       subject: "Mae %{school} bellach yn fyw ar Sbarcynni"
     onboarding_email:
       subject: Sefydlwch eich ysgol ar Sbarcynni
-      paragraph_1_html: Welsh here for %{school_name} ...
-      paragraph_2: Para 2 Welsh here...
-      paragraph_3: Para 3 Welsh here...
+      set_up_your_school_on_energy_sparks: Sefydlwch eich ysgol ar Sbarcynni
       title: Sefydlwch eich ysgol ar Sbarcynni
     reminder_email:
       subject: Peidiwch ag anghofio sefydlu eich ysgol ar Sbarcynni
+      title: Peidiwch ag anghofio sefydlu eich ysgol ar Sbarcynni
     welcome_email:
       subject: Croeso i Sbarcynni
   target_mailer:
