@@ -45,9 +45,6 @@ en:
         columns:
           aggregated_meter_date_range: Aggregated meter date range
           fuel_type: Fuel type
-        rows:
-          electricity: Electricity
-          gas: Gas
       your_electricity_tariffs_html: Your electricity tariffs have changed in the last year, the last change was on %{last_change_date}, before this date the average tariff was %{rate_before_gbp_per_kwh}/kWh, and since it is %{rate_after_gbp_per_kwh}/kWh. This will increase your electricity costs by %{percent_change} going forwards. Cost calculations used for most charts and analysis do not include standing charges except for the more accurate bill validation information presented on the Cost analysis page.
     insights:
       recommendations:
