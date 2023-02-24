@@ -117,7 +117,8 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
     end
 
     describe "Viewing school group page" do
-      let!(:school_group) { create :school_group }
+      let!(:issues_admin) { }
+      let!(:school_group) { create :school_group, default_issues_admin_user: issues_admin }
       before do
         click_on 'Edit School Groups'
         within "table" do
@@ -136,6 +137,22 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         end
         it "displays pupils in active schools count" do
           expect(page).to have_content("Pupils in active schools: #{school_group.schools.visible.map(&:number_of_pupils).compact.sum}")
+        end
+
+        describe "with an issues admin" do
+          let(:issues_link) { polymorphic_path([:admin, Issue], user: issues_admin) }
+          let!(:setup_data) { issues_admin }
+          context "that is the same as the logged in user" do
+            let!(:issues_admin) { admin }
+            it { expect(page).to have_link("Default Issues Admin • You", href: issues_link) }
+          end
+          context "that is a different user" do
+            let!(:issues_admin) { create(:admin) }
+            it { expect(page).to have_link("Default Issues Admin • #{issues_admin.display_name}", href: issues_link) }
+          end
+          context "no issues admin user is set" do
+            it { expect(page).to_not have_link(href: issues_link) }
+          end
         end
       end
 
