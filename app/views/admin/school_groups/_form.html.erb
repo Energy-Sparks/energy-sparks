@@ -52,7 +52,7 @@
 
       <div class="form-group">
         <%= f.label :default_country, 'Default country' %>
-§        <%= f.select :default_country, options_for_select(School.countries.map {|key, value| [key.titleize, key]}, @school_group.default_country), {include_blank: false}, { class: 'form-control' } %>
+        <%= f.select :default_country, options_for_select(School.countries.map {|key, value| [key.titleize, key]}, @school_group.default_country), {include_blank: false}, { class: 'form-control' } %>
       </div>
 
       <div class="form-group">
