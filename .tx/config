@@ -232,6 +232,69 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-electricity_intraday-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/electricity_intraday.yml
+source_file  = config/locales/views/advice_pages/electricity_intraday.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-electricity_long_term-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/electricity_long_term.yml
+source_file  = config/locales/views/advice_pages/electricity_long_term.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-electricity_out_of_hours-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/electricity_out_of_hours.yml
+source_file  = config/locales/views/advice_pages/electricity_out_of_hours.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-electricity_recent_changes-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/electricity_recent_changes.yml
+source_file  = config/locales/views/advice_pages/electricity_recent_changes.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-gas_long_term-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/gas_long_term.yml
+source_file  = config/locales/views/advice_pages/gas_long_term.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-gas_out_of_hours-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/gas_out_of_hours.yml
+source_file  = config/locales/views/advice_pages/gas_out_of_hours.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-gas_recent_changes-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/gas_recent_changes.yml
+source_file  = config/locales/views/advice_pages/gas_recent_changes.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-heating_control-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/heating_control.yml
+source_file  = config/locales/views/advice_pages/heating_control.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-solar_pv-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/solar_pv.yml
+source_file  = config/locales/views/advice_pages/solar_pv.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-calendars-calendars-yml]
 file_filter  = config/locales/<lang>/views/calendars/calendars.yml
 source_file  = config/locales/views/calendars/calendars.yml
