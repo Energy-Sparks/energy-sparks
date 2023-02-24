@@ -16,12 +16,12 @@ en:
       message: We encountered an error attempting to generate your analysis. The Energy Sparks team have been notified of the problem.
       title: Sorry, something has gone wrong
     how_have_we_analysed_your_data:
+      calculations_based_on_fuel_type: Calculations based on %{fuel_type} consumed between %{start_date} and %{end_date}
       cost_calculations: Cost calculations
       cost_calculations_introduction_html: |-
         <p>Consumption costs are estimated based on historic tariff information</p>
         <p>Future savings are estimates based on your school's latest tariff information</p>
         <p>Potential cost savings quoted in school comparisons, e.g. for comparable "well managed" and "exemplar" schools are also based on your school's current tariffs</p>
-        <p>If a schools’ tariffs have changed recently:<p>
       energy_data: Energy data
       link_title: How did we calculate these figures?
       page_title: How have we analysed your data?
