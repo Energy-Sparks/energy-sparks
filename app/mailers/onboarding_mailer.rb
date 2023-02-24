@@ -1,10 +1,25 @@
 class OnboardingMailer < ApplicationMailer
   helper :application
 
+  def for_locales(locales)
+    locales.map { |locale| I18n.with_locale(locale) { yield } }
+  end
+
   def onboarding_email
     @school_onboarding = params[:school_onboarding]
     @title = @school_onboarding.school_name
-    make_bootstrap_mail(to: @school_onboarding.contact_email)
+
+    locales = @school_onboarding.email_locales
+
+    @body = for_locales(locales) do
+      render :onboarding_email_content, layout: nil
+    end.join("<hr>")
+
+    @subject = for_locales(locales) do
+      default_i18n_subject
+    end.join(" / ")
+
+    make_bootstrap_mail(to: @school_onboarding.contact_email, subject: @subject)
   end
 
   def completion_email
