@@ -533,7 +533,7 @@ private
   end
 
   def is_benchmark_chart?
-    @configuration[:inject].present? && @configuration[:inject] == :benchmark
+    @configuration.present? && @configuration[:inject].present? && @configuration[:inject] == :benchmark
   end
 
   def colour_benchmark_bars(data_type, data)
