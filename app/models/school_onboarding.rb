@@ -115,6 +115,10 @@ class SchoolOnboarding < ApplicationRecord
     pupil_account_created?
   end
 
+  def email_locales
+    country == 'wales' ? [:en, :cy] : [:en]
+  end
+
   def to_param
     uuid
   end

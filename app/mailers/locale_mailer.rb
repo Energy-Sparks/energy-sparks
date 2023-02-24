@@ -16,15 +16,23 @@ class LocaleMailer < ApplicationMailer
     users.select {|u| u.preferred_locale.to_sym == locale.to_sym}
   end
 
+  def for_each_locale(locales)
+    locales.map { |locale| I18n.with_locale(locale) { yield } }
+  end
+
   # send with locale if preferred locales are enabled
   def make_bootstrap_mail(*args)
-    I18n.with_locale(active_locale) do
+    I18n.with_locale(active_locale(locale_param)) do
       super(*args)
     end
   end
 
-  def active_locale
-    EnergySparks::FeatureFlags.active?(:emails_with_preferred_locale) ? locale_param : :en
+  def active_locale(locale)
+    EnergySparks::FeatureFlags.active?(:emails_with_preferred_locale) ? locale : :en
+  end
+
+  def active_locales(locales)
+    EnergySparks::FeatureFlags.active?(:emails_with_preferred_locale) ? locales : [:en]
   end
 
   def locale_param
