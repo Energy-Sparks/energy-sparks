@@ -2,8 +2,3 @@
   <%= render 'current_baseload', school: @school, analysis_dates: @analysis_dates,
   current_baseload: @current_baseload %>
   <%= render 'comparison', school: @school, benchmarked_baseload: @benchmarked_baseload %>
-  <%= render(FootnoteModalComponent.new(title: t('advice_pages.how_have_we_analysed_your_data.page_title'), modal_id: 'how-have-we-analysed-your-data-footnotes')) do |component| %>
-    <% component.with_body_content do %>
-      <%= render 'schools/advice/how_have_we_analysed_your_data' %>
-    <% end %>
-  <% end %>
