@@ -76,7 +76,7 @@ RSpec.describe "total energy use advice page", type: :system do
         expect(page).to have_content("Cost calculations")
         expect(page).to have_content("School comparisons")
         expect(page).to have_content('"Exemplar" schools represent the top 17.5% of Energy Sparks schools')
-        expect(page).to have_content('Aggregated meter date range')
+        expect(page).to have_content('Meter date range')
         expect(page).not_to have_content('Your electricity tariffs have changed')
       end
     end
@@ -116,7 +116,7 @@ RSpec.describe "total energy use advice page", type: :system do
         expect(page).to have_content("Cost calculations")
         expect(page).to have_content("School comparisons")
         expect(page).to have_content('"Exemplar" schools represent the top 17.5% of Energy Sparks schools')
-        expect(page).to have_content('Aggregated meter date range')
+        expect(page).to have_content('Meter date range')
         expect(page).not_to have_content('Your electricity tariffs have changed')
       end
     end
