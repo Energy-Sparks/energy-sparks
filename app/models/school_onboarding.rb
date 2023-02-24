@@ -64,6 +64,7 @@ class SchoolOnboarding < ApplicationRecord
   scope :for_school_type, ->(school_type) { joins(:school).where(schools: { school_type: school_type }) }
 
   enum default_chart_preference: [:default, :carbon, :usage, :cost]
+  enum country: School.countries
 
   def has_event?(event_name)
     events.where(event: event_name).any?
