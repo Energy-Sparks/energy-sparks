@@ -23,9 +23,11 @@ RSpec.describe OnboardingMailer do
         I18n.t('onboarding_mailer.onboarding_email').except(:subject).values.each do |email_content|
           expect(email.body.to_s).to include(email_content.gsub('%{school_name}', school.name))
         end
+        expect(email.body.to_s).to include("http://localhost/school_setup/")
         I18n.t('onboarding_mailer.onboarding_email', locale: :cy).except(:subject).values.each do |email_content|
           expect(email.body.to_s).not_to include(email_content.gsub('%{school_name}', school.name))
         end
+        expect(email.body.to_s).not_to include("http://cy.localhost/school_setup/")
       end
     end
     context 'when locale emails enabled' do
@@ -37,9 +39,11 @@ RSpec.describe OnboardingMailer do
         I18n.t('onboarding_mailer.onboarding_email').except(:subject).values.each do |email_content|
           expect(email.body.to_s).to include(email_content.gsub('%{school_name}', school.name))
         end
+        expect(email.body.to_s).to include("http://localhost/school_setup/")
         I18n.t('onboarding_mailer.onboarding_email', locale: :cy).except(:subject).values.each do |email_content|
           expect(email.body.to_s).to include(email_content.gsub('%{school_name}', school.name))
         end
+        expect(email.body.to_s).to include("http://cy.localhost/school_setup/")
       end
     end
   end
