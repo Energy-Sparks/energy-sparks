@@ -56,12 +56,31 @@ RSpec.describe OnboardingMailer do
   end
 
   describe '#reminder_email' do
-    it 'sends the reminder email' do
-      OnboardingMailer.with(emails: ['test@blah.com'], school_onboarding: school_onboarding).reminder_email.deliver_now
-      email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to eq(I18n.t('onboarding_mailer.reminder_email.subject'))
-      I18n.t('onboarding_mailer.reminder_email').except(:subject).values.each do |email_content|
-        expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(email_content.gsub('%{school_name}', school.name))
+    context 'when locale emails disabled' do
+      it 'sends the reminder email in english only' do
+        OnboardingMailer.with(emails: ['test@blah.com'], school_onboarding: school_onboarding).reminder_email.deliver_now
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to eq(I18n.t('onboarding_mailer.reminder_email.subject'))
+        I18n.t('onboarding_mailer.reminder_email').except(:subject).values.each do |email_content|
+          expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(email_content.gsub('%{school_name}', school.name))
+        end
+        I18n.t('onboarding_mailer.reminder_email', locale: :cy).except(:subject).values.each do |email_content|
+          expect(ActionController::Base.helpers.sanitize(email.body.to_s)).not_to include(email_content.gsub('%{school_name}', school.name))
+        end
+      end
+    end
+    context 'when locale emails enabled' do
+      let(:enable_locale_emails) { 'true' }
+      it 'sends the reminder email' do
+        OnboardingMailer.with(emails: ['test@blah.com'], school_onboarding: school_onboarding).reminder_email.deliver_now
+        email = ActionMailer::Base.deliveries.last
+        expect(email.subject).to eq(I18n.t('onboarding_mailer.reminder_email.subject') + " / " + I18n.t('onboarding_mailer.reminder_email.subject', locale: :cy))
+        I18n.t('onboarding_mailer.reminder_email').except(:subject).values.each do |email_content|
+          expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(email_content.gsub('%{school_name}', school.name))
+        end
+        I18n.t('onboarding_mailer.reminder_email', locale: :cy).except(:subject).values.each do |email_content|
+          expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(email_content.gsub('%{school_name}', school.name))
+        end
       end
     end
   end
