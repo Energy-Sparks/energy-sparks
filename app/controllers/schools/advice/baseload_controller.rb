@@ -36,6 +36,16 @@ module Schools
 
       private
 
+      def set_economic_tariffs_change_caveats
+        @economic_tariffs_change_caveats = build_economic_tariffs_change_caveats
+      end
+
+      def build_economic_tariffs_change_caveats
+        Costs::EconomicTariffsChangeCaveatsService.new(
+          meter_collection: aggregate_school, fuel_type: @advice_page.fuel_type.to_sym
+        ).calculate_economic_tariff_changed
+      end
+
       def create_analysable
         baseload_service
       end
