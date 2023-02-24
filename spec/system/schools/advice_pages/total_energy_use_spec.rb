@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "total energy use advice page", type: :system do
   let(:key) { 'total_energy_use' }
   let(:expected_page_title) { "Energy usage summary" }
-  include_context "electricity advice page"
+  include_context "total energy advice page"
 
   context 'as school admin' do
     let(:user)  { create(:school_admin, school: school) }
@@ -68,6 +68,17 @@ RSpec.describe "total energy use advice page", type: :system do
         expect(page).to have_css('#gas-comparison')
       end
 
+      it 'shows the how have we analysed your data modal' do
+        # expect(page).to have_content("How did we calculate these figures?")
+        click_on 'How did we calculate these figures?'
+        expect(page).to have_content("How have we analysed your data?")
+        expect(page).to have_content("School characteristics")
+        expect(page).to have_content("Cost calculations")
+        expect(page).to have_content("School comparisons")
+        expect(page).to have_content('"Exemplar" schools represent the top 17.5% of Energy Sparks schools')
+        expect(page).to have_content('Aggregated meter date range')
+        expect(page).not_to have_content('Your electricity tariffs have changed')
+      end
     end
     context "clicking the 'Analysis' tab" do
       context 'with default data' do
@@ -95,6 +106,18 @@ RSpec.describe "total energy use advice page", type: :system do
           expect(page).to have_css('#chart_wrapper_benchmark_one_year')
           expect(page).to have_css('#chart_wrapper_stacked_all_years')
         end
+      end
+
+      it 'shows the how have we analysed your data modal' do
+        # expect(page).to have_content("How did we calculate these figures?")
+        click_on 'How did we calculate these figures?'
+        expect(page).to have_content("How have we analysed your data?")
+        expect(page).to have_content("School characteristics")
+        expect(page).to have_content("Cost calculations")
+        expect(page).to have_content("School comparisons")
+        expect(page).to have_content('"Exemplar" schools represent the top 17.5% of Energy Sparks schools')
+        expect(page).to have_content('Aggregated meter date range')
+        expect(page).not_to have_content('Your electricity tariffs have changed')
       end
     end
     context "clicking the 'Learn More' tab" do

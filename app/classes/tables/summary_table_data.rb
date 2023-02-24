@@ -40,11 +40,11 @@ module Tables
       summary_data_for(fuel_type, :year)
     end
 
+    private
+
     def fuel_types
       @template_data.blank? ? [] : @template_data.keys
     end
-
-    private
 
     def summary_data_for(fuel_type, period)
       OpenStruct.new(
