@@ -1279,7 +1279,7 @@ ActiveRecord::Schema.define(version: 2023_02_24_111633) do
     t.boolean "public", default: true
     t.integer "default_chart_preference", default: 0, null: false
     t.bigint "default_issues_admin_user_id"
-    t.integer "country", default: 0, null: false
+    t.integer "default_country", default: 0, null: false
     t.index ["default_issues_admin_user_id"], name: "index_school_groups_on_default_issues_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"

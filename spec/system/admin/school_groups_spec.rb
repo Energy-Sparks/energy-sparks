@@ -106,6 +106,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           select 'BANES and Frome', from: 'Default scoreboard'
           select 'BANES dark sky weather', from: 'Default Dark Sky Weather Data Feed Area'
           select 'Admin', from: 'Default issues admin user'
+          select 'Wales', from: 'Default country'
           choose 'Display chart data in kwh, where available'
           click_on 'Create School group'
         end
@@ -113,6 +114,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           expect(SchoolGroup.where(name: 'BANES').count).to eq(1)
         end
         it { expect(SchoolGroup.where(name: 'BANES').first.default_issues_admin_user).to eq(admin) }
+        it { expect(SchoolGroup.where(name: 'BANES').first.default_country).to eq("wales") }
       end
     end
 

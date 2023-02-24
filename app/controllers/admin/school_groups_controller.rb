@@ -46,7 +46,8 @@ module Admin
 
     def school_group_params
       params.require(:school_group).permit(
-        :name, :description, :country,
+        :name, :description,
+        :default_country,
         :default_scoreboard_id,
         :default_template_calendar_id,
         :default_dark_sky_area_id,
