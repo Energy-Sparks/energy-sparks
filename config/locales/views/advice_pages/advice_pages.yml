@@ -43,7 +43,7 @@ en:
         <p>"Well managed" schools represent the top 30% of Energy Sparks schools</p>
       total_energy_use_table:
         columns:
-          aggregated_meter_date_range: Aggregated meter date range
+          aggregated_meter_date_range: Meter date range
           fuel_type: Fuel type
       your_electricity_tariffs_html: Your electricity tariffs have changed in the last year, the last change was on %{last_change_date}, before this date the average tariff was %{rate_before_gbp_per_kwh}/kWh, and since it is %{rate_after_gbp_per_kwh}/kWh. This will increase your electricity costs by %{percent_change} going forwards. Cost calculations used for most charts and analysis do not include standing charges except for the more accurate bill validation information presented on the Cost analysis page.
     insights:
