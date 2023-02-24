@@ -27,6 +27,10 @@ RSpec.describe "total energy use advice page", type: :system do
 
 
     before do
+      allow_any_instance_of(Tables::SummaryTableData).to receive(:table_date_ranges) {
+        { electricity: { start_date: '1 Sep 2018', end_date: '3 Feb 2023' }, gas: { start_date: '5 Jan 2023', end_date: '2 Feb 2023' } }
+      }
+
       allow(gas_aggregate_meter).to receive(:amr_data).and_return(amr_data)
       allow(meter_collection).to receive(:aggregated_heat_meters).and_return(gas_aggregate_meter)
 

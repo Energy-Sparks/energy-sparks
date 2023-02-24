@@ -1,7 +1,7 @@
 <h4><strong><%= t('advice_pages.how_have_we_analysed_your_data.energy_data') %></strong></h4>
 <% if @advice_page.fuel_type %>
   <p>
-    <%= t('advice_pages.how_have_we_analysed_your_data.calculations_based_on_fuel_type', fuel_type: I18n.t("common.#{@advice_page.fuel_type}"), start_date: short_dates(@analysis_dates.start_date), end_date: short_dates(@analysis_dates.end_date)) %>
+    <%= t('advice_pages.how_have_we_analysed_your_data.calculations_based_on_fuel_type', fuel_type: I18n.t("common.#{@advice_page.fuel_type}"), start_date: short_dates(@analysis_dates&.start_date), end_date: short_dates(@analysis_dates&.end_date)) %>
   </p>
 <% else %>
   <table class="table table-sm">
@@ -10,7 +10,7 @@
       <th class="text-right"><%= t('advice_pages.how_have_we_analysed_your_data.total_energy_use_table.columns.aggregated_meter_date_range') %></th>
     </thead>
     <tbody>
-      <% @overview_data.table_date_ranges.each do |fuel_type, date_range| %>
+      <% @overview_data&.table_date_ranges&.each do |fuel_type, date_range| %>
         <tr>
           <td class="text-left"><%= t("common.#{fuel_type}") %></td>
           <td class="text-right"><%= date_range[:start_date] %> - <%= date_range[:end_date] %></td>
