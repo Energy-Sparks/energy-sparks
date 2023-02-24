@@ -34,6 +34,12 @@
       <%= f.select :scoreboard_id, options_from_collection_for_select(Scoreboard.order(:name), 'id', 'name', (@school_onboarding.scoreboard.id if @school_onboarding.scoreboard)),{}, { class: 'form-control' }%>
     </div>
   </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :country, 'Country' %>
+      <%= f.select :country, options_for_select(School.countries.map {|key, value| [key.titleize, key]}, @school_onboarding.country), {include_blank: false}, { class: 'form-control' } %>
+    </div>
+  </div>
 
   <div class="form-group">
     <label><%= t("admin.school_groups.default_chart_preference.form_group") %></label>
