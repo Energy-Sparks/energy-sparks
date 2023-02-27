@@ -79,11 +79,11 @@ class Issue < ApplicationRecord
   end
 
   def self.csv_headers
-    ["For", "Name", "Title", "Description", "Fuel type", "Type", "Status", "Status summary", "Owned by", "Created by", "Created at", "Updated by", "Updated at"]
+    ["For", "Name", "Title", "Description", "Fuel type", "Type", "Status", "Status summary", "Meters", "Data sources", "Owned by", "Created by", "Created at", "Updated by", "Updated at"]
   end
 
   def self.csv_attributes
-    %w{issueable_type.titleize issueable.name title description.to_plain_text fuel_type issue_type status status_summary owned_by.display_name created_by.display_name created_at updated_by.display_name updated_at}
+    %w{issueable_type.titleize issueable.name title description.to_plain_text fuel_type issue_type status status_summary mpan_mprns data_source_names owned_by.display_name created_by.display_name created_at updated_by.display_name updated_at}
   end
 
   def self.issue_type_images
@@ -120,6 +120,14 @@ class Issue < ApplicationRecord
 
   def self.issueable_image(issueable)
     issueable_images[issueable.model_name.to_s.underscore.to_sym]
+  end
+
+  def mpan_mprns
+    meters.map(&:mpan_mprn).compact.join('|').presence
+  end
+
+  def data_source_names
+    meters.map {|meter| meter.data_source.try(:name) }.compact.uniq.join('|').presence
   end
 
   private
