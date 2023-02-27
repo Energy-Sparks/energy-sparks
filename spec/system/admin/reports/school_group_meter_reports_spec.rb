@@ -6,8 +6,9 @@ describe 'school group meter reports', type: :system do
   let(:school_group)            { create(:school_group, name: 'Big Group') }
   let(:school)                  { create(:school, school_group: school_group) }
 
-  let!(:meter)            { create(:electricity_meter, school: school) }
-  let!(:meter_inactive)   { create(:electricity_meter, school: school, active: false) }
+  let(:data_source)       { create(:data_source) }
+  let!(:meter)            { create(:electricity_meter, school: school, data_source: data_source) }
+  let!(:meter_inactive)   { create(:electricity_meter, school: school, active: false, data_source: data_source) }
 
   before(:each) do
     sign_in(admin)
@@ -35,6 +36,7 @@ describe 'school group meter reports', type: :system do
       expect(header).to match /#{school_group.name.parameterize}-meter-report.csv$/
       expect(page.source).to have_content(school.name)
       expect(page.source).to have_content(meter.mpan_mprn)
+      expect(page.source).to have_content(data_source.name)
     end
   end
 
@@ -72,6 +74,7 @@ describe 'school group meter reports', type: :system do
       expect(header).to match /#{school_group.name.parameterize}-meter-report.csv$/
       expect(page.source).to have_content(school.name)
       expect(page.source).to have_content(meter.mpan_mprn)
+      expect(page.source).to have_content(data_source.name)
     end
   end
 end
