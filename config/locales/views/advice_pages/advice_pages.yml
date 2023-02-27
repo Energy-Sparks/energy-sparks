@@ -85,7 +85,7 @@ en:
       message: We don't currently have enough %{fuel_type} data in order to run this analysis for your school.
       title: Not enough data to run analysis
     show:
-      title: Advice Pages
+      title: Energy efficiency advice
     tables:
       columns:
         category: Category

@@ -11,14 +11,57 @@
   <div class="col-md-3 col-lg-3 col-xl-2 advice-page-nav">
     <%= render 'nav', school: @school, advice_pages: @advice_pages %>
   </div>
+
   <div class="col-md-9 col-lg-9 col-xl-10 advice-page-tabs">
-    <h2><%= component 'page_nav/collapse_button', display: 'inline' %> All pages</h2>
-    <% if @advice_pages.any? %>
-      <% @advice_pages.each do |advice_page| %>
-        <li><%= link_to advice_page.key, advice_page_path(@school, advice_page) %></li>
-      <% end %>
+    <ul class="nav nav-tabs locales">
+      <li class="nav-item d-md-none">
+        <%= component 'page_nav/collapse_button' %>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="<%= school_advice_path(@school) %>">
+          Priorities
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<%= school_advice_path(@school, alerts: true) %>">
+          Alerts
+        </a>
+      </li>
+    </ul>
+
+    <% if params[:alerts] %>
+      <div class="row mt-4">
+        <div class="col">
+          <%= component 'notice', status: :neutral do |c| %>
+            <p>
+              These are the latest alerts for your school.
+            </p>
+          <% end %>
+
+          <% if @dashboard_alerts %>
+            <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title, show_all: true %>
+          <% end %>
+        </div>
+      </div>
     <% else %>
-      <p>No advice pages</p>
+      <div class="row mt-4">
+        <div class="col">
+          <%= component 'notice', status: :neutral do |c| %>
+            <% c.with_link { link_to 'View energy use summary', insights_school_advice_total_energy_use_path(@school) } %>
+            <p>
+              Prioritise the following areas to help reduce your costs and
+              co2 emissions.
+            </p>
+            <p>
+              Used the links on the left to explore your energy usage data in more
+              detail
+            </p>
+          <% end %>
+          <%= render 'list', management_priorities: @management_priorities, school: @school %>
+        </div>
+      </div>
+
     <% end %>
+
   </div>
 </div>
