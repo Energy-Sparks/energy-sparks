@@ -32,18 +32,18 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       end
 
       context "with multiple groups" do
-        let(:school_groups) { [create(:school_group), create(:school_group)] }
+        let(:school_groups) { [create(:school_group, default_issues_admin_user: create(:admin)), create(:school_group)] }
 
         it "displays totals for each group" do
           within('table') do
             school_groups.each do |school_group|
-              expect(page).to have_selector(:table_row, { "Name" => school_group.name, "Onboarding" => 1 , "Active" => 1, "Data visible" => 1, "Invisible" => 1, "Removed" => 1 })
+              expect(page).to have_selector(:table_row, { "Name" => school_group.name, "Issues admin" => school_group.default_issues_admin_user.try(:display_name) || "", "Onboarding" => 1 , "Active" => 1, "Data visible" => 1, "Invisible" => 1, "Removed" => 1 })
             end
           end
         end
         it "displays a grand total" do
           within('table') do
-            expect(page).to have_selector(:table_row, { "Name" => "All Energy Sparks Schools", "Onboarding" => 2 , "Active" => 2, "Data visible" => 2, "Invisible" => 2, "Removed" => 2 })
+            expect(page).to have_selector(:table_row, { "Name" => "All Energy Sparks Schools", "Issues admin" => "", "Onboarding" => 2 , "Active" => 2, "Data visible" => 2, "Invisible" => 2, "Removed" => 2 })
           end
         end
         it "has a link to manage school group" do
@@ -106,6 +106,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           select 'BANES and Frome', from: 'Default scoreboard'
           select 'BANES dark sky weather', from: 'Default Dark Sky Weather Data Feed Area'
           select 'Admin', from: 'Default issues admin user'
+          select 'Wales', from: 'Default country'
           choose 'Display chart data in kwh, where available'
           click_on 'Create School group'
         end
@@ -113,11 +114,13 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           expect(SchoolGroup.where(name: 'BANES').count).to eq(1)
         end
         it { expect(SchoolGroup.where(name: 'BANES').first.default_issues_admin_user).to eq(admin) }
+        it { expect(SchoolGroup.where(name: 'BANES').first.default_country).to eq("wales") }
       end
     end
 
     describe "Viewing school group page" do
-      let!(:school_group) { create :school_group }
+      let!(:issues_admin) { }
+      let!(:school_group) { create :school_group, default_issues_admin_user: issues_admin }
       before do
         click_on 'Edit School Groups'
         within "table" do
@@ -136,6 +139,22 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         end
         it "displays pupils in active schools count" do
           expect(page).to have_content("Pupils in active schools: #{school_group.schools.visible.map(&:number_of_pupils).compact.sum}")
+        end
+
+        describe "with an issues admin" do
+          let(:issues_link) { polymorphic_path([:admin, Issue], user: issues_admin) }
+          let!(:setup_data) { issues_admin }
+          context "that is the same as the logged in user" do
+            let!(:issues_admin) { admin }
+            it { expect(page).to have_link("Default Issues Admin • You", href: issues_link) }
+          end
+          context "that is a different user" do
+            let!(:issues_admin) { create(:admin) }
+            it { expect(page).to have_link("Default Issues Admin • #{issues_admin.display_name}", href: issues_link) }
+          end
+          context "no issues admin user is set" do
+            it { expect(page).to_not have_link(href: issues_link) }
+          end
         end
       end
 
@@ -223,9 +242,9 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
             end
           end
 
-          it "has an action buttons" do
+          it "has action buttons" do
             within '#active' do
-              expect(page).to have_link('Issues 1 1')
+              expect(page).to have_link('Issues')
               expect(page).to have_link('Edit')
               expect(page).to have_link('Users')
               expect(page).to have_link('Meters')
@@ -329,7 +348,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       end
 
       describe "School Group Issues tab" do
-        context "when there are open issues for the school group" do
+        context "when there are issues for the school group" do
           let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school_group, fuel_type: :gas, pinned: true) }
           let!(:setup_data) { issue }
           it "displays a count of school group issues" do
@@ -338,10 +357,11 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           it "lists issue in issues tab" do
             within '#school-group-issues' do
               expect(page).to have_content issue.title
-              expect(page).to_not have_content issue.issueable.name
+              expect(page).to have_content issue.issueable.name
               expect(page).to have_content issue.fuel_type.capitalize
               expect(page).to have_content nice_date_times_today(issue.updated_at)
               expect(page).to have_link("View", href: polymorphic_path([:admin, school_group, issue]))
+              expect(page).to have_link("Edit", href: edit_polymorphic_path([:admin, issue]))
               expect(page).to have_css("i[class*='fa-thumbtack']")
             end
           end
@@ -356,7 +376,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       end
 
       describe "School Issues tab" do
-        context "when there are open issues for schools in the school group" do
+        context "when there are issues for schools in the school group" do
           let!(:school) { create(:school, school_group: school_group)}
           let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas, pinned: true) }
           let!(:setup_data) { issue }
@@ -370,6 +390,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
               expect(page).to have_content issue.fuel_type.capitalize
               expect(page).to have_content nice_date_times_today(issue.updated_at)
               expect(page).to have_link("View", href: polymorphic_path([:admin, school, issue]))
+              expect(page).to have_link("Edit", href: edit_polymorphic_path([:admin, issue]))
               expect(page).to have_css("i[class*='fa-thumbtack']")
             end
           end
@@ -436,7 +457,9 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         within "table" do
           click_on 'Manage'
         end
-        click_on 'Issues'
+        within "#school-group-button-panel" do
+          click_on 'Issues'
+        end
       end
       after { Timecop.return }
       it "shows csv contents" do

@@ -1,5 +1,8 @@
 ---
 cy:
+  alert_mailer:
+    alert_email:
+      subject: Energy Sparks rhybuddion
   bill_request_mailer:
     request_bill:
       description: "Mae Sbarcynni angen i chi ddarparu bil ynni diweddar ar gyfer eich ysgol i gadarnhau rhifau eich mesurydd ac awdurdod Energy Sparks i gasglu, prosesu ac arddangos y data ar gyfer y mesuryddion hynny."
@@ -42,8 +45,11 @@ cy:
       subject: "Mae %{school} bellach yn fyw ar Sbarcynni"
     onboarding_email:
       subject: Sefydlwch eich ysgol ar Sbarcynni
+      set_up_your_school_on_energy_sparks: Sefydlwch eich ysgol ar Sbarcynni
+      title: Sefydlwch eich ysgol ar Sbarcynni
     reminder_email:
       subject: Peidiwch ag anghofio sefydlu eich ysgol ar Sbarcynni
+      title: Peidiwch ag anghofio sefydlu eich ysgol ar Sbarcynni
     welcome_email:
       subject: Croeso i Sbarcynni
   target_mailer:

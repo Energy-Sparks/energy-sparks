@@ -9,7 +9,7 @@
     </tr>
   </thead>
   <tbody>
-    <% baseload_meter_breakdown.each do |mpan_mprn, breakdown| %>
+    <% meters_by_percentage_baseload(baseload_meter_breakdown).each do |mpan_mprn, breakdown| %>
     <tr>
       <td><%= breakdown.meter.present? ? breakdown.meter.name_or_mpan_mprn : mpan_mprn %></td>
       <td class="text-right"><%= format_unit(breakdown.baseload_kw, :kw) %></td>
@@ -27,3 +27,4 @@
     </tr>
   </tbody>
 </table>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>

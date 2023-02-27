@@ -8,7 +8,7 @@ module Schools
       end
 
       def analysis
-        @meters = @school.meters.electricity
+        @meters = @school.meters.active.electricity
         @analysis_dates = analysis_dates
 
         @multiple_meters = baseload_service.multiple_electricity_meters?
@@ -22,6 +22,7 @@ module Schools
         if @multiple_meters
           @baseload_meter_breakdown = baseload_service.baseload_meter_breakdown
           @baseload_meter_breakdown_total = baseload_service.meter_breakdown_table_total
+          @date_ranges_by_meter = baseload_service.date_ranges_by_meter
         end
 
         #need at least a years worth of data for this analysis
@@ -31,11 +32,23 @@ module Schools
           @intraweek_variation = baseload_service.intraweek_variation
           @intraweek_variation_by_meter = baseload_service.intraweek_variation_by_meter
         end
-
-        @date_ranges_by_meter = baseload_service.date_ranges_by_meter
       end
 
       private
+
+      def set_economic_tariffs_change_caveats
+        @economic_tariffs_change_caveats = build_economic_tariffs_change_caveats
+      end
+
+      def build_economic_tariffs_change_caveats
+        Costs::EconomicTariffsChangeCaveatsService.new(
+          meter_collection: aggregate_school, fuel_type: @advice_page.fuel_type.to_sym
+        ).calculate_economic_tariff_changed
+      end
+
+      def create_analysable
+        baseload_service
+      end
 
       def current_baseload
         average_baseload_kw_last_year = baseload_service.average_baseload_kw(period: :year)
@@ -57,11 +70,11 @@ module Schools
         average_baseload_kw_benchmark = baseload_service.average_baseload_kw_benchmark(compare: :benchmark_school)
         average_baseload_kw_exemplar = baseload_service.average_baseload_kw_benchmark(compare: :exemplar_school)
 
-        OpenStruct.new(
-          category: categorise_school_vs_benchmark(average_baseload_kw_last_year, average_baseload_kw_benchmark, average_baseload_kw_exemplar),
-          average_baseload_kw_last_year: average_baseload_kw_last_year,
-          average_baseload_kw_benchmark: average_baseload_kw_benchmark,
-          average_baseload_kw_exemplar: average_baseload_kw_exemplar
+        Schools::Comparison.new(
+          school_value: average_baseload_kw_last_year,
+          benchmark_value: average_baseload_kw_benchmark,
+          exemplar_value: average_baseload_kw_exemplar,
+          unit: :kw
         )
       end
 

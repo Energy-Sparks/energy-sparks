@@ -4,7 +4,7 @@ en:
     baseload:
       analysis:
         baseload_high: Your baseload is high.
-        baseload_high_details_html: If you matched the baseload of other schools of the same size you would save %{estimated_savings}.
+        baseload_high_details_html: If you matched the baseload of other schools of the same size you would save %{estimated_savings} per year.
         baseload_low: Your baseload is low.
         baseload_low_details_html: This is good, and as a result you are saving %{estimated_savings} per year versus other schools of a similar size.
         baseload_low_extra_savings_html: If you matched the baseload of the best performing schools you could save %{estimated_savings} per year.
@@ -16,7 +16,7 @@ en:
           long_term_baseload_chart_explanation: You can click on the chart to drill down to individual days and work out at what times of day and year your school is doing either better or worse than these schools.
           long_term_baseload_chart_subtitle_html: This chart shows the long term trend in your school’s baseload between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span>, and includes a comparison with 'benchmark' and 'exemplar' schools
           long_term_baseload_chart_title: Long term baseload comparison with benchmark and exemplar schools
-          long_term_baseload_meter_chart_subtitle: Electricity baseload from %{month_year_start} to %{month_year_end} for %{meter}
+          long_term_baseload_meter_chart_subtitle: Electricity baseload from %{start_date} to %{end_date} for %{meter}
           long_term_baseload_meter_chart_title: Long term trends in your electricity baseload for a single meter
         long_term_trends:
           intro: Unless the school has physically increased in size, if you are managing your baseload electricity consumption well you would expect baseload to reduce over time as appliances and computers have become more power efficient with lower standby power requirements. If this is not the case then you should look to identify the cause of the increase.
@@ -40,24 +40,22 @@ en:
         sections: The following sections provide more background and analysis on your electricity baseload
         summary: This section gives a more detailed analysis of your school’s electricity baseload and some things to look out for.
         title: Baseload Analysis
-        usage: Your electricity baseload over the last %{months_analysed} months was %{baseload_usage} kW. Other schools with a similar number of pupils have a baseload of %{benchmark_usage} kW.
+        usage: Your baseload over the last %{months_analysed} months was %{baseload_usage} kW. Other schools with a similar number of pupils have a baseload of %{benchmark_usage} kW.
+        usage_percent_html: Your baseload represents %{percent} of your annual consumption.
         weekday_variation:
           intro_1: At a well-managed school the baseload should remain the same throughout the week, there should be no reason why the electricity consumption at midnight on a weekday should be higher than during the weekend.
           intro_2: The most common cause of weekday variation is a high energy consuming appliance which is turned on on a Monday and off again on a Friday.
           table_description: The meter breakdown in the table below may help to identify where in the school, daily variation variation comes from.
           title: Variation in baseload between days of week
       comparison:
+        callout_footer: average baseload
         how_do_you_compare: How does your baseload compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?
         more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
-        tables:
-          columns:
-            your_baseload: Your baseload (kW)
         title: How do you compare?
       current_baseload:
         calculation_dates: Calculation based on usage between %{start_date} and %{end_date}
         last_week: Last week
         last_year: Last year
-        review_our_analysis: Review our detailed analysis
         tables:
           columns:
             percentage_change: "% Change"

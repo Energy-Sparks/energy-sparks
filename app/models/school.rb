@@ -221,6 +221,12 @@ class School < ApplicationRecord
     amr_validated_readings.minimum(:reading_date) - 1.year
   end
 
+  def full_location_to_s
+    return '' unless postcode.present?
+
+    "#{postcode} (#{longitude}, #{latitude})"
+  end
+
   def find_user_or_cluster_user_by_id(id)
     users.find_by_id(id) || cluster_users.find_by_id(id)
   end
@@ -261,14 +267,14 @@ class School < ApplicationRecord
 
   def activities_in_academic_year(date)
     if (academic_year = academic_year_for(date))
-      return activities.between(academic_year.start_date, academic_year.end_date)
+      return activities.between(academic_year.start_date, academic_year.end_date).order(created_at: :asc)
     end
     []
   end
 
   def observations_in_academic_year(date)
     if (academic_year = academic_year_for(date))
-      return observations.between(academic_year.start_date, academic_year.end_date)
+      return observations.between(academic_year.start_date, academic_year.end_date).order(created_at: :asc)
     end
     []
   end

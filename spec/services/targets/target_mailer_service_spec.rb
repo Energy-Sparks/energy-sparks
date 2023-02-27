@@ -157,9 +157,10 @@ RSpec.describe Targets::TargetMailerService do
 
     let(:enough_data) { true }
 
-    let(:email)       { ActionMailer::Base.deliveries.last }
-    let(:email_body)  { email.body.to_s }
-    let(:matcher)     { Capybara::Node::Simple.new(email_body.to_s) }
+    let(:email)         { ActionMailer::Base.deliveries.last }
+    let(:email_body)    { email.body.to_s }
+    let(:email_subject) { email.subject }
+    let(:matcher)       { Capybara::Node::Simple.new(email_body.to_s) }
 
     it 'sends an email' do
       service.invite_schools_to_set_first_target
@@ -187,6 +188,24 @@ RSpec.describe Targets::TargetMailerService do
       service.invite_schools_to_set_first_target
       expect(email_body).to include("Set your first energy saving target")
       expect(matcher).to have_link("Set your first target")
+    end
+
+    context 'when preferred locales specified' do
+      let!(:school_admin)  { create(:school_admin, school: school, preferred_locale: :cy) }
+      it 'uses preferred locale' do
+        ClimateControl.modify FEATURE_FLAG_EMAILS_WITH_PREFERRED_LOCALE: 'true' do
+          service.invite_schools_to_set_first_target
+        end
+        expect(ActionMailer::Base.deliveries.count).to eql 2
+        emails = ActionMailer::Base.deliveries.last(2)
+
+        expected_subjects = [
+          "Set your first energy saving target",
+          "Gosodwch eich targed arbed ynni cyntaf"
+        ]
+
+        expect(emails.map(&:subject)).to match_array(expected_subjects)
+      end
     end
 
     it 'should add utm parameters' do

@@ -23,7 +23,8 @@ RSpec.describe "onboarding", :schools, type: :system do
       default_dark_sky_area: dark_sky_weather_area,
       default_weather_station: weather_station,
       default_scoreboard: scoreboard,
-      default_chart_preference: default_chart_preference
+      default_chart_preference: default_chart_preference,
+      default_country: 'wales'
     )
   end
 
@@ -61,6 +62,7 @@ RSpec.describe "onboarding", :schools, type: :system do
       expect(page).to have_select('Dark Sky Data Feed Area', selected: 'BANES dark sky weather')
       expect(page).to have_select('Weather Station', selected: 'BANES weather')
       expect(page).to have_select('Scoreboard', selected: 'BANES scoreboard')
+      expect(page).to have_select('Country', selected: 'Wales')
 
       click_on 'Next'
 
@@ -97,6 +99,7 @@ RSpec.describe "onboarding", :schools, type: :system do
       click_on 'Next'
 
       select 'Oxford calendar', from: 'Template calendar'
+      select 'Scotland', from: 'Country'
 
       choose('Display chart data in £, where available')
 
@@ -105,6 +108,7 @@ RSpec.describe "onboarding", :schools, type: :system do
       expect(onboarding.school_name).to eq('A new name')
       expect(onboarding.template_calendar).to eq(other_template_calendar)
       expect(onboarding.default_chart_preference).to eq "cost"
+      expect(onboarding.country).to eq "scotland"
     end
 
     context 'when completing onboarding as admin without consents' do

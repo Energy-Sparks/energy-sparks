@@ -4,12 +4,11 @@ en:
     electricity_out_of_hours:
       analysis:
         last_twelve_months:
-          community_use: Your school has identified that there is community use of the school outside of school hours. Over the last year, {community_kwh} of electricity has been used during these times which will have cost {community_gbp} and caused {community_co2} to be emitted.
           table:
-            co2_kg: CO2 kg
+            co2_kg: kg/co2
             gbp_at_current_tariff: "£ (at current tariff)"
             percent: Percent
-            time_of_day: Time of day
+            time_of_use: Time of use
             total: Total
           table_introduction: The table below shows how much electricity has been used when the school is open and closed on a school day as well as during weekends and holidays.
           title: Last 12 months
@@ -25,15 +24,14 @@ en:
             title: Electricity use by day of the week
           title: Usage by day of week
       insights:
+        comparison:
+          how_do_you_compare: How does your electricity usage out of school hours compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?
+          more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
+          title: How do you compare?
         how_do_you_compare:
           table:
-            category: Category
-            exemplar_school: Exemplar
             your_kwh: Your kWh
-        how_do_you_compare_one_html: "<p>How does your out of hours usage compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?</p>"
-        how_do_you_compare_title: How do you compare?
-        how_do_you_compare_two_html: "<p>For more detail, compare with other schools in your group</p>"
-        next_steps: Next steps
+        next_steps: Make sure you switch off lights and electrical equipment on a daily basis and do a more thorough check before weekends and holidays.
         title: What is out of hours usage?
         what_is_out_of_hours_usage_html: |-
           <p>

@@ -11,7 +11,7 @@
     <% s.with_item(name: t('advice_pages.nav.pages.electricity_recent_changes'), href: school_advice_electricity_recent_changes_path(@school)) %>
   <% end %>
   <% c.with_section(name: t('advice_pages.nav.sections.gas'), icon: 'fire', classes: 'bg-gas-light', visible: @school.has_gas?) do |s| %>
-  <% s.with_item(name: t('advice_pages.nav.pages.boiler_control'), href: school_advice_boiler_control_path(@school)) %>
+  <% s.with_item(name: t('advice_pages.nav.pages.heating_control'), href: school_advice_heating_control_path(@school)) %>
   <% s.with_item(name: t('advice_pages.nav.pages.gas_costs'), href: school_advice_gas_costs_path(@school)) %>
   <% s.with_item(name: t('advice_pages.nav.pages.hot_water'), href: school_advice_hot_water_path(@school)) %>
   <% s.with_item(name: t('advice_pages.nav.pages.gas_long_term'), href: school_advice_gas_long_term_path(@school)) %>
@@ -22,7 +22,7 @@
   <% c.with_section(name: t('advice_pages.nav.sections.storage_heater'), icon: 'window-maximize', classes: 'bg-storage-light', visible: @school.has_storage_heaters?) do |s| %>
     <% s.with_item(name: t('advice_pages.nav.pages.storage_heaters'), href: school_advice_storage_heaters_path(@school)) %>
   <% end %>
-  <% c.with_section(name: t('advice_pages.nav.sections.solar_pv'), icon: 'sun', classes: 'bg-solar-light', visible: @school.has_solar_pv?) do |s| %>
+  <% c.with_section(name: t('advice_pages.nav.sections.solar_pv'), icon: 'sun', classes: 'bg-solar-light') do |s| %>
     <% s.with_item(name: t('advice_pages.nav.pages.solar_pv'), href: school_advice_solar_pv_path(@school)) %>
   <% end %>
 <% end %>

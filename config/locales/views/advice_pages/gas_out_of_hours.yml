@@ -4,12 +4,11 @@ en:
     gas_out_of_hours:
       analysis:
         last_twelve_months:
-          community_use: Your school has identified that there is community use of the school outside of school hours. Over the last year, {community_kwh} of gas has been used during these times which will have cost {community_gbp} and caused {community_co2} to be emitted.
           table:
-            co2_kg: CO2 kg
+            co2_kg: kg/co2
             gbp_at_current_tariff: "£ (at current tariff)"
             percent: Percent
-            time_of_day: Time of day
+            time_of_use: Time of use
             total: Total
           table_introduction: The table below shows how much gas has been used when the school is open and closed on a school day as well as during weekends and holidays.
           title: Last 12 months
@@ -38,20 +37,19 @@ en:
           title: Usage by day of week
         usage_through_the_school_day:
           gas_heating_season_intraday_up_to_1_year:
-            footer_html: "<p>This is a useful graph for determining how well controlled the timing of the boiler is. High out of hours gas use maybe due to a boiler coming on too early in the morning.</p><p>See the <a href='%{insights_school_advice_boiler_control_path}'>heating control advice page</a> for more information.</p>"
+            footer_html: "<p>This is a useful graph for determining how well controlled the timing of the boiler is. High out of hours gas use maybe due to a boiler coming on too early in the morning.</p><p>See the <a href='%{insights_school_advice_heating_control_path}'>heating control advice page</a> for more information.</p>"
             subtitle_html: <p>This graph shows how the gas consumption of the school varies on school days when the heating is on in the winter between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span> (aggregated across the whole year).</p>
             title: Central heating timings
           subtitle: Another cause of high out of hours gas use is having central heating timings which cause the heating to be on for too long during a school day.
           title: Gas use through the school day
       insights:
+        comparison:
+          how_do_you_compare: How does your gas usage out of school hours compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?
+          more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
+          title: How do you compare?
         how_do_you_compare:
           table:
-            category: Category
-            exemplar_school: Exemplar
             your_kwh: Your kWh
-        how_do_you_compare_one_html: "<p>How does your out of hours gas use compare to other schools on Energy Sparks, with a similar number of pupils?</p>"
-        how_do_you_compare_title: How do you compare?
-        how_do_you_compare_two_html: "<p>For more detail, compare with other schools in your group</p>"
         next_steps: Make sure that your heating is set to only heat the school when it needs to be warm. Heating and hot water can be switched off for evenings, weekends and holidays and heating should not come on too early in the mornings. Use a checklist of energy saving tasks to be completed before holidays.
         title: What is out of hours usage?
         what_is_out_of_hours_usage_html: |-

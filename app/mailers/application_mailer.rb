@@ -1,4 +1,6 @@
 class ApplicationMailer < ActionMailer::Base
+  include DefaultUrlOptionsHelper
+
   default from: 'Energy Sparks <hello@energysparks.uk>'
   layout 'mailer'
 
@@ -11,15 +13,11 @@ class ApplicationMailer < ActionMailer::Base
     end
   end
 
-  def default_url_options
-    if Rails.env.production?
-      { host: I18n.locale == :cy ? ENV['WELSH_APPLICATION_HOST'] : ENV['APPLICATION_HOST'] }
-    else
-      super
-    end
-  end
-
   def set_title
     @title = params[:title] || ""
+  end
+
+  def user_emails(users)
+    users.map(&:email)
   end
 end

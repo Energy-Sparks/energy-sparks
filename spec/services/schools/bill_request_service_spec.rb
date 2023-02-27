@@ -56,30 +56,49 @@ RSpec.describe Schools::BillRequestService do
     end
 
     context 'when formatting email' do
-        before(:each) do
-          service.request_documentation!([school_admin])
-          @email = ActionMailer::Base.deliveries.last
-        end
+      before(:each) do
+        service.request_documentation!([school_admin])
+        @email = ActionMailer::Base.deliveries.last
+      end
 
-        it 'should send to the correct users' do
-          expect(@email.to).to match_array([school_admin.email])
-        end
+      it 'should send to the correct users' do
+        expect(@email.to).to match_array([school_admin.email])
+      end
 
-        it 'should have the expected subject line' do
-          expect(@email.subject).to eql("Please upload a recent energy bill to Energy Sparks")
-        end
+      it 'should have the expected subject line' do
+        expect(@email.subject).to eql("Please upload a recent energy bill to Energy Sparks")
+      end
 
-        it 'should include the school name' do
-          email_body = @email.body.to_s
-          expect(email_body).to include(school.name)
-        end
+      it 'should include the school name' do
+        email_body = @email.body.to_s
+        expect(email_body).to include(school.name)
+      end
 
-        it 'should include a link to the upload a bill page' do
-          email_body = @email.body.to_s
-          node = Capybara::Node::Simple.new(email_body)
-          expect(node).to have_link('Upload your bill')
-        end
+      it 'should include a link to the upload a bill page' do
+        email_body = @email.body.to_s
+        node = Capybara::Node::Simple.new(email_body)
+        expect(node).to have_link('Upload your bill')
+      end
 
+    end
+
+    context 'when user has a locale' do
+
+      around do |example|
+        ClimateControl.modify FEATURE_FLAG_EMAILS_WITH_PREFERRED_LOCALE: 'true' do
+          example.run
+        end
+      end
+
+      before(:each) do
+        school_admin.update(preferred_locale: :cy)
+        service.request_documentation!([school_admin])
+        @email = ActionMailer::Base.deliveries.last
+      end
+
+      it 'should have the expected subject line' do
+        expect(@email.subject).to eql("Uwchlwythwch fil ynni diweddar i Sbarcynni")
+      end
     end
 
     context 'with mpans' do

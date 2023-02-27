@@ -34,6 +34,7 @@ en:
       manage: Manage
       next: Next
       no_label: 'No'
+      not_set: Not set
       previous: Previous
       remove: Remove
       report: Report
@@ -51,6 +52,7 @@ en:
     pie_charts: Pie charts
     privacy_policy: privacy policy
     school: School
+    solar_pv: Solar PV
     storage_heater: Storage heater
     storage_heaters: Storage heaters
     terms_and_conditions: terms and conditions
@@ -58,6 +60,7 @@ en:
       minutes:
         one: "%{count} minute"
         other: "%{count} minutes"
+  kw: kW
   kwh: kWh
   school_types:
     mixed_primary_and_secondary: 'Mixed: Primary and Secondary'

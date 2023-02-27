@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between align-items-center">
   <h1>
-    <%= meter_name = @meter.name.present? ? @meter.name : t('schools.meters.show.meter') %>
+    <% meter_name = @meter.name.present? ? @meter.name : t('schools.meters.show.meter') %>
     <%= t('schools.meters.show.title', meter_name: meter_name, meter_mpan_mprn: @meter.mpan_mprn) %>
   </h1>
   <div class="h5">
@@ -10,7 +10,7 @@
 
 <div class="mb-2 alert alert-secondary row">
   <div class="col-md-6">
-    <%= link_to t('schools.meters.show.download_readings'), school_meter_path(@school, @meter, format: "csv"), class: 'btn btn-info btn-sm' if @meter.amr_validated_readings.any? %>
+    <%= link_to "#{fa_icon('file-download')} #{t('schools.meters.show.download_readings')}".html_safe, school_meter_path(@school, @meter, format: "csv"), class: 'btn btn-info btn-sm' if @meter.amr_validated_readings.any? %>
     <%= link_to t('common.labels.edit'), edit_school_meter_path(@school, @meter), class: 'btn btn-sm btn-warning' %>
     <% if can?(:report_on, @meter) && @meter.amr_validated_readings.any? %>
       <%= link_to t('common.labels.report'), admin_reports_amr_validated_reading_path(@meter), class: 'btn btn-info btn-sm' %>
@@ -23,6 +23,7 @@
     <% else %>
       <%= link_to t('common.labels.activate'), activate_school_meter_path(@school, @meter), method: :put, class: 'btn btn-sm btn-secondary' %>
     <% end %>
+    <%= render 'meter_issues', meter: @meter, label: t("schools.meters.meter_issues.button_label") if current_user.admin? %>
   </div>
   <div class="col-md-6">
     <% if @meter.dcc_meter? %>
@@ -46,6 +47,10 @@
   <div class="col-md-6">
     <h3><%= t('schools.meters.show.basic_information') %></h3>
     <dl class="row">
+      <% if current_user.admin? %>
+        <dt class="col-sm-3"><%= t('schools.meters.show.data_source') %></dt>
+        <dd class="col-sm-9"><%= @meter.data_source ? link_to(@meter.data_source.name, admin_data_source_path(@meter.data_source)) : t('common.labels.not_set') %></dd>
+      <% end %>
       <dt class="col-sm-3">MPAN/MPRN</dt>
       <dd class="col-sm-9"><%= @meter.mpan_mprn %></dd>
       <dt class="col-sm-3"><%= t('schools.meters.show.serial_number') %></dt>
@@ -90,8 +95,3 @@
     <% end %>
   </div>
 </div>
-
-<% if current_user.admin? && @meter.notes.present? %>
-  <h3><%= t('schools.meters.show.admin_notes') %></h3>
-  <%= @meter.notes %>
-<% end %>

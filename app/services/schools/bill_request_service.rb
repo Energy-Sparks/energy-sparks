@@ -13,7 +13,7 @@ module Schools
     def request_documentation!(users, meters = [])
       electricity_meters = meters.select(&:electricity?)
       gas_meters = meters.select(&:gas?)
-      BillRequestMailer.with(emails: users.map(&:email), school: @school, electricity_meters: electricity_meters, gas_meters: gas_meters).request_bill.deliver_now
+      BillRequestMailer.with_user_locales(users: users, school: @school, electricity_meters: electricity_meters, gas_meters: gas_meters) { |mailer| mailer.request_bill.deliver_now }
       @school.update!(bill_requested: true)
     end
   end

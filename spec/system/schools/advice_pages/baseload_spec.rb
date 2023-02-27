@@ -10,6 +10,16 @@ RSpec.describe "Baseload advice page", type: :system do
     let(:user)  { create(:school_admin, school: school) }
 
     before do
+      allow_any_instance_of(Schools::Advice::BaseloadController).to receive_messages({
+        build_economic_tariffs_change_caveats: OpenStruct.new(
+                                               last_change_date: Date.new(2022, 9, 1),
+                                               percent_change: 18.857098661736725,
+                                               rate_after_£_per_kwh: 3.066783066364631,
+                                               rate_before_£_per_kwh: 0.1544426564326899)
+
+
+      })
+
       sign_in(user)
       visit school_advice_path(school)
     end
@@ -34,7 +44,7 @@ RSpec.describe "Baseload advice page", type: :system do
     context 'when viewing the analysis' do
       let(:average_baseload_kw) {2.4}
       let(:average_baseload_kw_benchmark) {2.1}
-      let(:usage) { double(kwh: 123.0, £: 456.0, co2: 789.0) }
+      let(:usage) { double(kwh: 123.0, £: 456.0, co2: 789.0, percent: 0.2) }
       let(:savings) { double(kwh: 11.0, £: 22.0, co2: 33.0) }
       let(:annual_average_baseload) { {year: 2020, baseload_usage: usage} }
       let(:baseload_meter_breakdown) { {} }
@@ -74,7 +84,19 @@ RSpec.describe "Baseload advice page", type: :system do
       it 'shows analysis content' do
         within '.advice-page-tabs' do
           expect(page).to have_content('baseload over the last 12 months was 2.4 kW')
+          expect(page).to have_content('Your baseload represents 20&percnt; of your annual consumption')
         end
+      end
+
+      it 'shows the how have we analysed your data modal' do
+        first(:link, "How did we calculate these figures?").click
+        expect(page).to have_content("How have we analysed your data?")
+        expect(page).to have_content("Calculations based on Electricity consumed between 24 Feb 2022 and 23 Feb 2023")
+        expect(page).to have_content("School characteristics")
+        expect(page).to have_content("Cost calculations")
+        expect(page).to have_content('Your electricity tariffs have changed in the last year, the last change was on 01 Sep 2022, before this date the average tariff was 15p/kWh, and since it is £3.10/kWh. This will increase your electricity costs by 1,900&percnt; going forwards')
+        expect(page).to have_content("School comparisons")
+        expect(page).to have_content('"Exemplar" schools represent the top 17.5% of Energy Sparks schools')
       end
 
       context "with limited data" do
@@ -94,7 +116,6 @@ RSpec.describe "Baseload advice page", type: :system do
         before { refresh }
         it_behaves_like "an advice page showing electricity data warning"
       end
-
     end
 
     context 'when viewing the insights' do
@@ -137,16 +158,6 @@ RSpec.describe "Baseload advice page", type: :system do
         end
       end
 
-      it 'shows the comparison section' do
-        expect(page).to have_content("How do you compare?")
-        #check within table
-        within '#comparison-baseload' do
-          expect(page).to have_content("1.1")
-          expect(page).to have_content("2.4")
-        end
-        expect(page).to have_content("compare with other schools in your group")
-      end
-
       context "with no recent data" do
         let(:start_date)  { Date.today - 24.months}
         let(:end_date)    { Date.today - 2.months}
@@ -163,23 +174,29 @@ RSpec.describe "Baseload advice page", type: :system do
         it_behaves_like "an advice page showing electricity data warning"
       end
 
-      it 'shows the current baseload section' do
-        expect(page).to have_content("Your current baseload")
-        #check within table
-        within '#current-baseload' do
-          expect(page).to have_content("2.1")
-          expect(page).to have_content("2.2")
-        end
-      end
-
       it 'shows the comparison section' do
         expect(page).to have_content("How do you compare?")
-        #check within table
-        within '#comparison-baseload' do
+        within '.school-comparison-component-footer-row' do
           expect(page).to have_content("1.1")
           expect(page).to have_content("2.4")
         end
+        #check within comparison component
+        within '.school-comparison-component-callout-box' do
+          expect(page).to have_content("2.1")
+        end
         expect(page).to have_content("compare with other schools in your group")
+      end
+
+      it 'shows the how have we analysed your data modal' do
+        # expect(page).to have_content("How did we calculate these figures?")
+        click_on 'How did we calculate these figures?'
+        expect(page).to have_content("How have we analysed your data?")
+        expect(page).to have_content("Calculations based on Electricity consumed between 24 Feb 2022 and 23 Feb 2023")
+        expect(page).to have_content("School characteristics")
+        expect(page).to have_content("Cost calculations")
+        expect(page).to have_content('Your electricity tariffs have changed in the last year, the last change was on 01 Sep 2022, before this date the average tariff was 15p/kWh, and since it is £3.10/kWh. This will increase your electricity costs by 1,900&percnt; going forwards')
+        expect(page).to have_content("School comparisons")
+        expect(page).to have_content('"Exemplar" schools represent the top 17.5% of Energy Sparks schools')
       end
     end
   end

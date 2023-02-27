@@ -154,7 +154,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             it { expect(page).to have_content("Data source was successfully deleted") }
           end
           describe "Issues tab" do
-            context "when there are open issues for the data source" do
+            context "when there are issues for the data source" do
               let(:admin) { create(:admin) }
               let(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: existing_data_source, fuel_type: :gas, pinned: true) }
               let(:setup_data) { issue }
@@ -164,7 +164,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
               it "lists issue in issues tab" do
                 within '#issues' do
                   expect(page).to have_content issue.title
-                  expect(page).to_not have_content issue.issueable.name
+                  expect(page).to have_content issue.issueable.name
                   expect(page).to have_content issue.fuel_type.capitalize
                   expect(page).to have_content nice_date_times_today(issue.updated_at)
                   expect(page).to have_link("View", href: polymorphic_path([:admin, existing_data_source, issue]))

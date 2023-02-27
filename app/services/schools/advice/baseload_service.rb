@@ -2,6 +2,16 @@
 module Schools
   module Advice
     class BaseloadService < BaseService
+      include AnalysableMixin
+
+      def enough_data?
+        baseload_service.enough_data?
+      end
+
+      def data_available_from
+        baseload_service.data_available_from
+      end
+
       def has_electricity?
         @school.has_electricity?
       end
@@ -29,7 +39,7 @@ module Schools
       end
 
       def annual_baseload_usage
-        @annual_baseload_usage ||= baseload_service.annual_baseload_usage
+        @annual_baseload_usage ||= baseload_service.annual_baseload_usage(include_percentage: true)
       end
 
       def average_baseload_kw_benchmark(compare: :benchmark_school)
@@ -108,8 +118,15 @@ module Schools
       end
 
       def date_ranges_by_meter
-        electricity_meters.each_with_object({}) do |meter, date_range_by_meter|
-          date_range_by_meter[meter.mpan_mprn] = { start_date: meter.amr_data.start_date, end_date: meter.amr_data.end_date }
+        electricity_meters.each_with_object({}) do |analytics_meter, date_range_by_meter|
+          end_date = analytics_meter.amr_data.end_date
+          start_date = analytics_meter.amr_data.start_date
+          meter = @school.meters.find_by_mpan_mprn(analytics_meter.mpan_mprn)
+          date_range_by_meter[analytics_meter.mpan_mprn] = {
+            meter: meter,
+            start_date: start_date,
+            end_date: end_date
+          }
         end
       end
 
