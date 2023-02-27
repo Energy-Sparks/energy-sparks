@@ -1,0 +1,47 @@
+<div class="table-responsive-sm">
+  <table class="table table-borderless table-sm">
+    <thead>
+      <tr>
+        <th></th>
+        <th colspan="1"></th>
+        <th colspan="2">Annual Saving</th>
+        <th></th>
+      </tr>
+      <tr>
+        <th></th>
+        <th scope="col"></th>
+        <th scope="col">Cost</th>
+        <th scope="col">Co2 (kg/CO2)</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% management_priorities.each do |priority| %>
+        <tr>
+          <td>
+            <span class="<%=fuel_type_class(priority.find_out_more.alert.alert_type.fuel_type)%>">
+              <%= fa_icon fuel_type_icon(priority.find_out_more.alert.alert_type.fuel_type) %>
+            </span>
+          </td>
+          <td scope="row">
+            <%= link_to priority.management_priorities_title, advice_page_path(school, AdvicePage.first) %>
+          </td>
+          <td><%= priority.template_variables[:average_one_year_saving_gbp] %></td>
+          <td><%= priority.template_variables[:one_year_saving_co2] %><br></td>
+          <td>
+            <% if priority.find_out_more %>
+              <%= link_to 'View analysis', advice_page_path(school, AdvicePage.first), class: 'btn btn-rounded btn-fixed-width-10' %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+    <% if local_assigns[:show_more] %>
+      <tfoot>
+        <tr>
+          <td colspan="5" class="text-right"><%= link_to t('management.priorities.more_opportunities'), management_school_management_priorities_path(school)  %></td>
+        </tr>
+      </tfoot>
+    <% end %>
+  </table>
+</div>
