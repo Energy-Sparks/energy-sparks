@@ -23,4 +23,5 @@
 </table>
 <div class="text-right advice-table-caption">
   <%= t('advice_pages.baseload.current_baseload.calculation_dates', start_date: I18n.l(analysis_dates.start_date, format: '%-d %B %Y'), end_date: I18n.l(analysis_dates.end_date, format: '%-d %B %Y')) %>
+  <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>
 </div>

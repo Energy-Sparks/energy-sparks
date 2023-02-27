@@ -32,18 +32,18 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       end
 
       context "with multiple groups" do
-        let(:school_groups) { [create(:school_group), create(:school_group)] }
+        let(:school_groups) { [create(:school_group, default_issues_admin_user: create(:admin)), create(:school_group)] }
 
         it "displays totals for each group" do
           within('table') do
             school_groups.each do |school_group|
-              expect(page).to have_selector(:table_row, { "Name" => school_group.name, "Onboarding" => 1 , "Active" => 1, "Data visible" => 1, "Invisible" => 1, "Removed" => 1 })
+              expect(page).to have_selector(:table_row, { "Name" => school_group.name, "Issues admin" => school_group.default_issues_admin_user.try(:display_name) || "", "Onboarding" => 1 , "Active" => 1, "Data visible" => 1, "Invisible" => 1, "Removed" => 1 })
             end
           end
         end
         it "displays a grand total" do
           within('table') do
-            expect(page).to have_selector(:table_row, { "Name" => "All Energy Sparks Schools", "Onboarding" => 2 , "Active" => 2, "Data visible" => 2, "Invisible" => 2, "Removed" => 2 })
+            expect(page).to have_selector(:table_row, { "Name" => "All Energy Sparks Schools", "Issues admin" => "", "Onboarding" => 2 , "Active" => 2, "Data visible" => 2, "Invisible" => 2, "Removed" => 2 })
           end
         end
         it "has a link to manage school group" do
@@ -106,6 +106,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           select 'BANES and Frome', from: 'Default scoreboard'
           select 'BANES dark sky weather', from: 'Default Dark Sky Weather Data Feed Area'
           select 'Admin', from: 'Default issues admin user'
+          select 'Wales', from: 'Default country'
           choose 'Display chart data in kwh, where available'
           click_on 'Create School group'
         end
@@ -113,11 +114,13 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           expect(SchoolGroup.where(name: 'BANES').count).to eq(1)
         end
         it { expect(SchoolGroup.where(name: 'BANES').first.default_issues_admin_user).to eq(admin) }
+        it { expect(SchoolGroup.where(name: 'BANES').first.default_country).to eq("wales") }
       end
     end
 
     describe "Viewing school group page" do
-      let!(:school_group) { create :school_group }
+      let!(:issues_admin) { }
+      let!(:school_group) { create :school_group, default_issues_admin_user: issues_admin }
       before do
         click_on 'Edit School Groups'
         within "table" do
@@ -136,6 +139,22 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         end
         it "displays pupils in active schools count" do
           expect(page).to have_content("Pupils in active schools: #{school_group.schools.visible.map(&:number_of_pupils).compact.sum}")
+        end
+
+        describe "with an issues admin" do
+          let(:issues_link) { polymorphic_path([:admin, Issue], user: issues_admin) }
+          let!(:setup_data) { issues_admin }
+          context "that is the same as the logged in user" do
+            let!(:issues_admin) { admin }
+            it { expect(page).to have_link("Default Issues Admin • You", href: issues_link) }
+          end
+          context "that is a different user" do
+            let!(:issues_admin) { create(:admin) }
+            it { expect(page).to have_link("Default Issues Admin • #{issues_admin.display_name}", href: issues_link) }
+          end
+          context "no issues admin user is set" do
+            it { expect(page).to_not have_link(href: issues_link) }
+          end
         end
       end
 

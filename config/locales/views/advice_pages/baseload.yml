@@ -56,7 +56,6 @@ en:
         calculation_dates: Calculation based on usage between %{start_date} and %{end_date}
         last_week: Last week
         last_year: Last year
-        review_our_analysis: Review our detailed analysis
         tables:
           columns:
             percentage_change: "% Change"

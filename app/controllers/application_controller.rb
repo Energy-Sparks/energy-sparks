@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include DefaultUrlOptionsHelper
+
   protect_from_forgery with: :exception
   around_action :switch_locale
   before_action :authenticate_user!
@@ -23,14 +25,6 @@ class ApplicationController < ActionController::Base
   def switch_locale(&action)
     locale = LocaleFinder.new(params, request).locale
     I18n.with_locale(locale, &action)
-  end
-
-  def default_url_options
-    if Rails.env.production?
-      { host: I18n.locale == :cy ? ENV['WELSH_APPLICATION_HOST'] : ENV['APPLICATION_HOST'] }
-    else
-      super
-    end
   end
 
   def route_not_found

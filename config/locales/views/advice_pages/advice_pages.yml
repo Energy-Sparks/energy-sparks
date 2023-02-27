@@ -15,6 +15,37 @@ en:
       data_warning: We have not received data for your %{fuel_type} usage for over thirty days. As a result your analysis will be out of date and may not reflect recent changes in your school.
       message: We encountered an error attempting to generate your analysis. The Energy Sparks team have been notified of the problem.
       title: Sorry, something has gone wrong
+    how_have_we_analysed_your_data:
+      calculations_based_on_fuel_type: Calculations based on %{fuel_type} consumed between %{start_date} and %{end_date}
+      cost_calculations: Cost calculations
+      cost_calculations_introduction_html: |-
+        <p>Consumption costs are estimated based on historic tariff information</p>
+        <p>Future savings are estimates based on your school's latest tariff information</p>
+        <p>Potential cost savings quoted in school comparisons, e.g. for comparable "well managed" and "exemplar" schools are also based on your school's current tariffs</p>
+      energy_data: Energy data
+      link_title: How did we calculate these figures?
+      page_title: How have we analysed your data?
+      school_characteristics: School characteristics
+      school_characteristics_introduction: The following characteristics are used when analysing your school energy data. Temperature compensation uses weather data specific to your school's location
+      school_characteristics_table:
+        columns:
+          characteristic: Characteristic
+          value: Value
+        rows:
+          floor_area: Floor area
+          location: Location
+          pupils: Pupils
+          type: Type
+      school_comparisons: School comparisons
+      school_comparisons_introduction_html: |-
+        <p>School comparisons are based on benchmarking your school against comparable schools based on the characteristics outlined below.</p>
+        <p>"Exemplar" schools represent the top 17.5% of Energy Sparks schools</p>
+        <p>"Well managed" schools represent the top 30% of Energy Sparks schools</p>
+      total_energy_use_table:
+        columns:
+          aggregated_meter_date_range: Meter date range
+          fuel_type: Fuel type
+      your_electricity_tariffs_html: Your electricity tariffs have changed in the last year, the last change was on %{last_change_date}, before this date the average tariff was %{rate_before_gbp_per_kwh}/kWh, and since it is %{rate_after_gbp_per_kwh}/kWh. This will increase your electricity costs by %{percent_change} going forwards. Cost calculations used for most charts and analysis do not include standing charges except for the more accurate bill validation information presented on the Cost analysis page.
     insights:
       recommendations:
         actions_title: Take action around the school

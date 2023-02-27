@@ -221,6 +221,12 @@ class School < ApplicationRecord
     amr_validated_readings.minimum(:reading_date) - 1.year
   end
 
+  def full_location_to_s
+    return '' unless postcode.present?
+
+    "#{postcode} (#{longitude}, #{latitude})"
+  end
+
   def find_user_or_cluster_user_by_id(id)
     users.find_by_id(id) || cluster_users.find_by_id(id)
   end

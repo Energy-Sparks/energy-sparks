@@ -64,6 +64,7 @@ class SchoolOnboarding < ApplicationRecord
   scope :for_school_type, ->(school_type) { joins(:school).where(schools: { school_type: school_type }) }
 
   enum default_chart_preference: [:default, :carbon, :usage, :cost]
+  enum country: School.countries
 
   def has_event?(event_name)
     events.where(event: event_name).any?
@@ -112,6 +113,10 @@ class SchoolOnboarding < ApplicationRecord
   def ready_for_review?
     #adding pupil password is trigger for last step
     pupil_account_created?
+  end
+
+  def email_locales
+    country == 'wales' ? [:en, :cy] : [:en]
   end
 
   def to_param

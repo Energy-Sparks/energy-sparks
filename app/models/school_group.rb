@@ -65,6 +65,7 @@ class SchoolGroup < ApplicationRecord
   validates :name, presence: true
 
   enum default_chart_preference: [:default, :carbon, :usage, :cost]
+  enum default_country: School.countries
 
   def has_visible_schools?
     schools.visible.any?
