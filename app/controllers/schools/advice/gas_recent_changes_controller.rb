@@ -12,6 +12,19 @@ module Schools
 
       private
 
+      def create_analysable
+        OpenStruct.new(
+          enough_data?: two_weeks_data?
+        )
+      end
+
+      def two_weeks_data?
+        helpers.two_weeks_data?(
+          start_date: aggregate_school.aggregated_heat_meters.amr_data.start_date,
+          end_date: aggregate_school.aggregated_heat_meters.amr_data.end_date
+        )
+      end
+
       def build_recent_usage
         OpenStruct.new(
           last_week: last_week,

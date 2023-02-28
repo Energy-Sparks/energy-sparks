@@ -18,6 +18,5 @@
       period: t('advice_pages.gas_recent_changes.insights.your_recent_gas_use.table.change')
   %>
 </table>
-<div class="text-right advice-table-caption">
-  <%= t('advice_pages.tables.notice.two_significant_figures') %>
-</div>
+<% @additional_notice_text = t('advice_pages.tables.notice.two_significant_figures') %>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>

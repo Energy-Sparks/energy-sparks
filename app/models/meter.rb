@@ -154,10 +154,11 @@ class Meter < ApplicationRecord
     "#{mpan_mprn} - #{meter_type.to_s.humanize}"
   end
 
-  def display_mpan_mprn_name
+  def display_summary(display_name: true, display_data_source: true, display_inactive: false)
     output = mpan_mprn.to_s
-    output += " - #{name}" if name.present?
-    output += " - #{data_source.name}" if data_source
+    output += " - #{name}" if display_name && name.present?
+    output += " - #{data_source.name}" if display_data_source && data_source
+    output += " (inactive)" if display_inactive && !active?
     output
   end
 
