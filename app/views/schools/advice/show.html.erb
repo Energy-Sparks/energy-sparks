@@ -19,12 +19,12 @@
       </li>
       <li class="nav-item">
         <a class="nav-link active" href="<%= school_advice_path(@school) %>">
-          Priorities
+          Priority areas
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="<%= school_advice_path(@school, alerts: true) %>">
-          Alerts
+          Latest alerts
         </a>
       </li>
     </ul>
@@ -32,20 +32,19 @@
     <% if params[:alerts] %>
       <div class="row mt-4">
         <div class="col">
-          <%= component 'notice', status: :neutral do |c| %>
-            <p>
-              These are the latest alerts for your school.
-            </p>
-          <% end %>
+          <h2>Latest alerts</h2>
 
           <% if @dashboard_alerts %>
-            <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title, show_all: true %>
+            <%= render 'alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
           <% end %>
         </div>
       </div>
+
     <% else %>
       <div class="row mt-4">
         <div class="col">
+          <h2>Prioritised cost savings</h2>
+
           <%= component 'notice', status: :neutral do |c| %>
             <% c.with_link { link_to 'View energy use summary', insights_school_advice_total_energy_use_path(@school) } %>
             <p>
@@ -57,6 +56,7 @@
               detail
             </p>
           <% end %>
+
           <%= render 'list', management_priorities: @management_priorities, school: @school %>
         </div>
       </div>
