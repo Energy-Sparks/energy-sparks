@@ -175,16 +175,32 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
         end
       end
 
+      context "without meter issues" do
+        let(:meter) { active_meter }
+        let!(:setup_data) { meter }
+
+        it { expect(page).to have_link('Issues')}
+        it { expect(page).to have_css("i[class*='fa-exclamation-circle']") }
+        it { expect(page).to_not have_css("i[class*='fa-exclamation-circle text-danger']") }
+        context "Clicking on meter 'Details'" do
+          before { click_link 'Details' }
+          it { expect(page).to have_link('Issues')}
+          it { expect(page).to_not have_css("i[class*='fa-exclamation-circle text-danger']") }
+        end
+      end
+
       context "with meter issues" do
         let(:meter) { active_meter }
         let!(:issue) { create(:issue, issueable: school, meters: [meter], created_by: admin, updated_by: admin)}
         let!(:setup_data) { issue }
 
         it { expect(page).to have_link('Issues')}
+        it { expect(page).to have_css("i[class*='fa-exclamation-circle text-danger']") }
 
         context "Clicking on meter 'Details'" do
           before { click_link 'Details' }
           it { expect(page).to have_link('Issues')}
+          it { expect(page).to have_css("i[class*='fa-exclamation-circle text-danger']") }
         end
       end
     end
