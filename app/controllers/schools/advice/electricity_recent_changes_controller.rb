@@ -14,7 +14,14 @@ module Schools
 
       def create_analysable
         OpenStruct.new(
-          enough_data?: analysis_dates.one_years_data
+          enough_data?: two_weeks_data?
+        )
+      end
+
+      def two_weeks_data?
+        helpers.two_weeks_data?(
+          start_date: aggregate_school.aggregated_electricity_meters.amr_data.start_date,
+          end_date: aggregate_school.aggregated_electricity_meters.amr_data.end_date
         )
       end
 

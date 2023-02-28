@@ -70,10 +70,10 @@ module AdvicePageHelper
     (end_date - 364) >= start_date
   end
 
-  def two_weeks_data?(start_date, end_date)
+  def two_weeks_data?(start_date:, end_date:)
     return false unless start_date && end_date
 
-    (end_date - start_date) >= 7
+    (end_date - start_date) >= 14
   end
 
   def months_analysed(start_date, end_date)
