@@ -2,15 +2,15 @@ module Admin
   class DccConsentsController < AdminController
     def index
       if params[:sandbox]
-        @dcc_consent_calcs = Meters::DccConsentCalcs.new(Meter.dcc, production_data_api.list + sandbox_data_api.list)
+        @dcc_consent_calcs = ::Meters::DccConsentCalcs.new(Meter.dcc, production_data_api.list + sandbox_data_api.list)
       else
-        @dcc_consent_calcs = Meters::DccConsentCalcs.new(Meter.dcc.reject(&:sandbox), production_data_api.list)
+        @dcc_consent_calcs = ::Meters::DccConsentCalcs.new(Meter.dcc.reject(&:sandbox), production_data_api.list)
       end
     end
 
     def grant
       meter = Meter.find_by_mpan_mprn(params[:mpxn])
-      service = Meters::DccGrantTrustedConsents.new([meter])
+      service = ::Meters::DccGrantTrustedConsents.new([meter])
       if service.perform
         redirect_back fallback_location: admin_dcc_consents_path, notice: "Consent granted for #{meter.mpan_mprn}"
       else
@@ -20,7 +20,7 @@ module Admin
 
     def withdraw
       meter = Meter.find_by_mpan_mprn(params[:mpxn])
-      service = Meters::DccWithdrawTrustedConsents.new([meter])
+      service = ::Meters::DccWithdrawTrustedConsents.new([meter])
       if service.perform
         redirect_back fallback_location: admin_dcc_consents_path, notice: "Consent withdrawn for #{meter.mpan_mprn}"
       else
