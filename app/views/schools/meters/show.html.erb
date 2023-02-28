@@ -23,7 +23,7 @@
     <% else %>
       <%= link_to t('common.labels.activate'), activate_school_meter_path(@school, @meter), method: :put, class: 'btn btn-sm btn-secondary' %>
     <% end %>
-    <%= render 'meter_issues', meter: @meter, label: t("schools.meters.meter_issues.button_label") if current_user.admin? %>
+    <%= render 'admin/meters/issues/modal', label: t("schools.meters.meter_issues.button_label"), meter: @meter if current_user.admin? %>
   </div>
   <div class="col-md-6">
     <% if @meter.dcc_meter? %>

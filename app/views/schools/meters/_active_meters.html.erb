@@ -28,7 +28,7 @@
             <i class="fas fa-file-download"></i>
           <% end %>
         <% end %>
-        <%= render 'meter_issues', meter: meter if current_user.admin? %>
+        <%= render 'admin/meters/issues/modal', meter: meter if current_user.admin? %>
       </div>
     </td>
     <td>
