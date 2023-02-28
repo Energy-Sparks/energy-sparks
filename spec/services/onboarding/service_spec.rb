@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Onboarding::Service, type: :service do
-
   let(:admin)         { create(:admin) }
   let(:school)        { create(:school, visible: false) }
 
@@ -45,14 +44,16 @@ describe Onboarding::Service, type: :service do
       expect(onboarding.has_event?(:onboarding_complete)).to be_truthy
     end
     it 'sets school visible if feature flag set' do
-      expect(EnergySparks::FeatureFlags).to receive(:active?).with(:data_enabled_onboarding).and_return(true)
-      subject.complete_onboarding(onboarding, [])
-      expect(onboarding.school.visible?).to be_truthy
+      ClimateControl.modify FEATURE_FLAG_DATA_ENABLED_ONBOARDING: 'true' do
+        subject.complete_onboarding(onboarding, [])
+        expect(onboarding.school.visible?).to be_truthy
+      end
     end
     it 'does not set school visible if feature flag not set' do
-      expect(EnergySparks::FeatureFlags).to receive(:active?).with(:data_enabled_onboarding).and_return(false)
-      subject.complete_onboarding(onboarding, [])
-      expect(onboarding.school.visible?).to be_falsey
+      ClimateControl.modify FEATURE_FLAG_DATA_ENABLED_ONBOARDING: 'false' do
+        subject.complete_onboarding(onboarding, [])
+        expect(onboarding.school.visible?).to be_falsey
+      end
     end
     it 'sends confirmation email to unconfirmed users only' do
       expect(confirmed_user).not_to receive(:send_confirmation_instructions)
@@ -64,9 +65,9 @@ describe Onboarding::Service, type: :service do
       subject.complete_onboarding(onboarding, [])
     end
     it 'broadcasts message' do
-      expect{
+      expect do
         subject.complete_onboarding(onboarding, [])
-      }.to broadcast(:onboarding_completed, onboarding)
+      end.to broadcast(:onboarding_completed, onboarding)
     end
   end
 end
