@@ -1,0 +1,20 @@
+<%= render 'schools/advice/index/advice_index_page', school: @school, advice_pages: @advice_pages, tab: @tab do %>
+<div class="row mt-4">
+  <div class="col">
+    <h2><%= t('advice_pages.index.priorities.title')%></h2>
+
+    <%= component 'notice', status: :neutral do |c| %>
+      <% c.with_link { link_to 'View energy use summary', insights_school_advice_total_energy_use_path(@school) } %>
+      <p>
+        Prioritise the following areas to help reduce your costs and
+        co2 emissions.
+      </p>
+      <p>
+        Used the links on the left to explore your energy usage data in more
+        detail
+      </p>
+    <% end %>
+    <%= render 'schools/advice/index/list', management_priorities: @management_priorities, school: @school %>
+  </div>
+</div>
+<% end %>

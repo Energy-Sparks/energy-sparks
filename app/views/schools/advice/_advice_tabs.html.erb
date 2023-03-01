@@ -4,17 +4,17 @@
   </li>
   <li class="nav-item">
     <a class="nav-link <%= 'active' if tab == :insights %>" href="<%= advice_page_path(school, advice_page, :insights) %>">
-      Insights
+      <%= t('advice_pages.tabs.insights') %>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link <%= 'active' if tab == :analysis %>" href="<%= advice_page_path(school, advice_page, :analysis) %>">
-      Analysis
+      <%= t('advice_pages.tabs.analysis') %>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link <%= 'active' if tab == :learn_more %>" href="<%= advice_page_path(school, advice_page, :learn_more) %>">
-      Learn More
+      <%= t('advice_pages.tabs.learn_more') %>
     </a>
   </li>
 </ul>

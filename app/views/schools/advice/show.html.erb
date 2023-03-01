@@ -1,117 +1,45 @@
-<div class="advice-page-breadcrumb">
-  <%= component 'breadcrumbs' do |c| %>
-    <% c.with_school(@school) %>
-    <% c.with_items([{ name: t('advice_pages.breadcrumbs.root'), href: school_advice_path(@school) }]) %>
-  <% end %>
-</div>
-
-<h1><%= t('advice_pages.show.title') %></h1>
-
-<div class="row">
-  <div class="col-md-3 col-lg-3 col-xl-2 advice-page-nav">
-    <%= render 'nav', school: @school, advice_pages: @advice_pages %>
+<%= render 'schools/advice/index/advice_index_page', school: @school, advice_pages: @advice_pages, tab: @tab do %>
+  <div class="row mt-4">
+    <div class="col">
+      <h2><%= t('advice_pages.index.show.title')%></h2>
+      <p>
+        We carry out a detailed analysis of your school energy data. You can
+        explore our analysis using the links below or in the navigation bar
+        on the left.
+      </p>
+      <p>
+        Every page provides recommended activities for both adults and pupils to help you
+        reduce your energy usage and carbon emissions.
+      </p>
+      <%= component 'notice', status: :neutral do |c| %>
+        <% c.with_link { link_to 'View priority areas', school_advice_path(@school, savings: true) } %>
+        <p>
+          Looking for suggestions of where to start first? Review our suggested priority areas and
+          your recent alerts.
+        </p>
+      <% end %>
+    </div>
   </div>
-
-  <div class="col-md-9 col-lg-9 col-xl-10 advice-page-tabs">
-    <ul class="nav nav-tabs locales">
-      <li class="nav-item d-md-none">
-        <%= component 'page_nav/collapse_button' %>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link active" href="<%= school_advice_path(@school) %>">
-          Overview
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="<%= school_advice_path(@school, savings: true) %>">
-          Priority areas <span class="badge badge-secondary"><%= @management_priorities.count %></span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="<%= school_advice_path(@school, alerts: true) %>">
-          Recent alerts <span class="badge badge-secondary"><%= @dashboard_alerts.count %></span>
-        </a>
-      </li>
-    </ul>
-
-    <% if params[:alerts] %>
-      <div class="row mt-4">
-        <div class="col">
-          <h2>Recent alerts</h2>
-
-          <% if @dashboard_alerts %>
-            <%= render 'alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
-          <% end %>
-        </div>
-      </div>
-    <% elsif params[:savings] %>
-      <div class="row mt-4">
-        <div class="col">
-          <h2>Priority areas</h2>
-
-          <%= component 'notice', status: :neutral do |c| %>
-            <% c.with_link { link_to 'View energy use summary', insights_school_advice_total_energy_use_path(@school) } %>
-            <p>
-              Prioritise the following areas to help reduce your costs and
-              co2 emissions.
-            </p>
-            <p>
-              Used the links on the left to explore your energy usage data in more
-              detail
-            </p>
-          <% end %>
-
-          <%= render 'list', management_priorities: @management_priorities, school: @school %>
-        </div>
-      </div>
-    <% else %>
-
-        <div class="row mt-4">
+  <% AdvicePage.fuel_types.each do |fuel_type| %>
+  <div class="row mt-4">
+    <div class="col">
+      <h3>
+        <span class="<%=fuel_type_class(fuel_type.first)%>">
+          <%= fa_icon( fuel_type_icon(fuel_type.first) ) %>
+        </span>
+        <%= t("advice_pages.nav.sections.#{fuel_type.first}") %>
+      </h3>
+      <% AdvicePage.where(fuel_type: fuel_type.first).order(:key).each do |ap| %>
+        <div class="mt-4 row d-flex align-items-center" style="">
           <div class="col">
-            <h2>Overview</h2>
-            <p>
-              We carry out a detailed analysis of your school energy data. You can
-              explore our analysis using the links below or in the navigation bar
-              on the left.
-            </p>
-            <p>
-              Every page provides recommended activities for both adults and pupils to help you
-              reduce your energy usage and carbon emissions.
-            </p>
-            <%= component 'notice', status: :neutral do |c| %>
-              <% c.with_link { link_to 'View priority areas', school_advice_path(@school, savings: true) } %>
-              <p>
-                Looking for suggestions of where to start first? Review our suggested priority areas and
-                your recent alerts.
-              </p>
-            <% end %>
+            <h4><%= link_to t("advice_pages.nav.pages.#{ap.key}"), advice_page_path(@school, ap) %></h4>
+          </div>
+          <div class="col">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id bibendum mauris.
           </div>
         </div>
-
-
-          <% AdvicePage.fuel_types.each do |fuel_type| %>
-          <div class="row mt-4">
-            <div class="col">
-              <h3>
-                <span class="<%=fuel_type_class(fuel_type.first)%>">
-                  <%= fa_icon( fuel_type_icon(fuel_type.first) ) %>
-                </span>
-                <%= t("advice_pages.nav.sections.#{fuel_type.first}") %>
-              </h3>
-              <% AdvicePage.where(fuel_type: fuel_type.first).order(:key).each do |ap| %>
-                <div class="mt-4 row d-flex align-items-center" style="">
-                  <div class="col">
-                    <h4><%= link_to t("advice_pages.nav.pages.#{ap.key}"), advice_page_path(@school, ap) %></h4>
-                  </div>
-                  <div class="col">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam id bibendum mauris.
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          </div>
-          <% end %>
-    <% end %>
-
+      <% end %>
+    </div>
   </div>
-</div>
+  <% end %>
+<% end %>

@@ -145,5 +145,20 @@ module AdvicePageHelper
       :negative
     end
   end
+
+  def advice_index_breadcrumbs(school, tab)
+    breadcrumbs = [{ name: I18n.t('advice_pages.breadcrumbs.root'), href: school_advice_path(school) }]
+    case tab
+    when :alerts
+      breadcrumbs << {
+        name: I18n.t('advice_pages.index.alerts.title'), href: alerts_school_advice_path(school)
+      }
+    when :priorities
+      breadcrumbs << {
+        name: I18n.t('advice_pages.index.priorities.title'), href: alerts_school_advice_path(school)
+      }
+    end
+    breadcrumbs
+  end
 end
 # rubocop:enable Naming/AsciiIdentifiers

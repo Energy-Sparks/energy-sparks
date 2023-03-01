@@ -1,0 +1,11 @@
+---
+en:
+  advice_pages:
+    index:
+      alerts:
+        title: Recent alerts
+      priorities:
+        title: Priority areas
+      show:
+        title: Overview
+      title: Energy efficiency advice
