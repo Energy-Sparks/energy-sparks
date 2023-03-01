@@ -24,7 +24,7 @@ RSpec.describe Targets::SchoolTargetService do
       end
 
       it 'should default to 12 months from now' do
-        expect((target.target_date - target.start_date).to_i).to eql 365
+        expect((target.target_date - target.start_date).to_i).to be_between(365, 366)
       end
 
       it 'should have default values' do
@@ -62,7 +62,7 @@ RSpec.describe Targets::SchoolTargetService do
       end
 
       it 'should default to 12 months from now' do
-        expect((target.target_date - target.start_date).to_i).to eql 365
+        expect((target.target_date - target.start_date).to_i).to be_between(365, 366)
       end
 
       it 'should inherit targets' do
