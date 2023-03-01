@@ -47,6 +47,14 @@ Rails.application.routes.draw do
 
   get 'benchmarks', to: 'benchmarks#index'
   get 'benchmark', to: 'benchmarks#show'
+
+  resource :compare, controller: 'compare' do
+    collection do
+      get :index, to: "compare#group"
+      get :group, :categories, :groups, :benchmark, :results
+    end
+  end
+
   get 'version', to: 'version#show'
 
   get 'sign_in_and_redirect', to: 'sign_in_and_redirect#redirect'
@@ -164,7 +172,6 @@ Rails.application.routes.draw do
           end
         end
       end
-
 
       resources :analysis, controller: :analysis, only: [:index, :show]
 
