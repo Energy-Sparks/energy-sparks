@@ -16,10 +16,18 @@ class EnergySparksDeviseMailer < Devise::Mailer
     @title = t(:title, scope: [:devise, :mailer, action], default: "")
     initialize_from_record(record)
     if BILINGUAL_EMAILS.include?(action)
-      devise_mail_for_locales(action, opts, active_locales([:en, record.preferred_locale.to_sym]).uniq, &block)
+      devise_mail_for_locales(action, opts, active_locales_for_devise(record), &block)
     else
-      devise_mail_for_locale(action, opts, active_locale(record.preferred_locale), &block)
+      devise_mail_for_locale(action, opts, active_locale_for_devise(record), &block)
     end
+  end
+
+  def active_locale_for_devise(record)
+    record.respond_to?(:preferred_locale) ? active_locale(record.preferred_locale) : :en
+  end
+
+  def active_locales_for_devise(record)
+    record.respond_to?(:school) ? active_locales(record.school.email_locales) : [:en]
   end
 
   def devise_mail_for_locale(action, opts, locale, &block)

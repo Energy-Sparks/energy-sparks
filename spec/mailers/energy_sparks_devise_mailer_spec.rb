@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe EnergySparksDeviseMailer do
 
-  let(:user)                  { create(:user, preferred_locale: preferred_locale) }
+  let(:school)                { create(:school) }
+  let(:user)                  { create(:user, school: school) }
   let(:enable_locale_emails)  { 'true' }
 
   around do |example|
@@ -15,12 +16,13 @@ RSpec.describe EnergySparksDeviseMailer do
 
   describe '#confirmation_instructions' do
     before :each do
+      school.update(country: country)
       user.send_confirmation_instructions
       expect(ActionMailer::Base.deliveries.count).to eql 1
       @email = ActionMailer::Base.deliveries.last
     end
-    context 'when user has preferred_locale of en' do
-      let(:preferred_locale)  { :en }
+    context 'when school has country of england' do
+      let(:country) { "england" }
       it 'sends an email in en' do
         expect(@email.subject).to eq("Energy Sparks: confirm your account")
       end
@@ -29,8 +31,9 @@ RSpec.describe EnergySparksDeviseMailer do
         expect(@email.body.to_s).not_to include("http://cy.localhost/users/confirmation?confirmation_token=")
       end
     end
-    context 'when user has preferred_locale of cy' do
-      let(:preferred_locale)  { :cy }
+
+    context 'when school has country of wales' do
+      let(:country) { "wales" }
       it 'sends an email in en and cy' do
         expect(@email.subject).to eq("Energy Sparks: confirm your account / Sbarcynni: cadarnhau eich cyfrif")
       end

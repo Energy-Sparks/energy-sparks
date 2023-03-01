@@ -560,6 +560,10 @@ class School < ApplicationRecord
     { active: self.visible.count, data_visible: self.visible.data_enabled.count, invisible: self.not_visible.count, removed: self.inactive.count }
   end
 
+  def email_locales
+    country == 'wales' ? [:en, :cy] : [:en]
+  end
+
   private
 
   def add_joining_observation
