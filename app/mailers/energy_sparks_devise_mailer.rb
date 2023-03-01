@@ -12,11 +12,7 @@ class EnergySparksDeviseMailer < Devise::Mailer
     @title = t(:title, scope: [:devise, :mailer, action], default: "")
     initialize_from_record(record)
     I18n.with_locale(active_locale(record.preferred_locale)) do
-      if Rails.env.test?
-        mail headers_for(action, opts), &block
-      else
-        make_bootstrap_mail headers_for(action, opts), &block
-      end
+      make_bootstrap_mail headers_for(action, opts), &block
     end
   end
 
