@@ -4,6 +4,7 @@ en:
     index:
       alerts:
         title: Recent alerts
+        view_analysis: View analysis
       priorities:
         intro: Prioritise the following actions to reduce your costs and co2 emissions.
         table:
