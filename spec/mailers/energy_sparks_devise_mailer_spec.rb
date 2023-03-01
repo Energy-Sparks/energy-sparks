@@ -19,7 +19,7 @@ RSpec.describe EnergySparksDeviseMailer do
       expect(ActionMailer::Base.deliveries.count).to eql 1
       @email = ActionMailer::Base.deliveries.last
     end
-    context 'when user has preferred_locale of cy' do
+    context 'when user has preferred_locale of en' do
       let(:preferred_locale)  { :en }
       it 'sends an email in en' do
         expect(@email.subject).to eq("Energy Sparks: confirm your account")
@@ -37,6 +37,12 @@ RSpec.describe EnergySparksDeviseMailer do
       it 'contains links to default site and cy site' do
         expect(@email.body.to_s).to include("http://localhost/users/confirmation?confirmation_token=")
         expect(@email.body.to_s).to include("http://cy.localhost/users/confirmation?confirmation_token=")
+      end
+      context 'but locale emails are turned off' do
+        let(:enable_locale_emails)  { 'false' }
+        it 'sends an email in en only' do
+          expect(@email.subject).to eq("Energy Sparks: confirm your account")
+        end
       end
     end
   end

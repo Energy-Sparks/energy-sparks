@@ -6,27 +6,32 @@ class EnergySparksDeviseMailer < Devise::Mailer
 
   default template_path: 'devise/mailer'
 
-  layout 'mailer'
+  BILINGUAL_EMAILS = [:confirmation_instructions].freeze
 
-  def confirmation_instructions(record, token, opts = {})
-    action = :confirmation_instructions
-    template = :confirmation_instructions_content
-    @token = token
-    @title = t(:title, scope: [:devise, :mailer, action], default: "")
-    initialize_from_record(record)
-    locales = active_locales([:en, record.preferred_locale.to_sym]).uniq
-    subject = for_each_locale(locales) { subject_for(action) }.join(" / ")
-    @body = for_each_locale(locales) { render template, layout: nil }.join("<hr>")
-    make_bootstrap_mail headers_for(action, opts.merge(subject: subject))
-  end
+  layout 'mailer'
 
   protected
 
   def devise_mail(record, action, opts = {}, &block)
     @title = t(:title, scope: [:devise, :mailer, action], default: "")
     initialize_from_record(record)
-    I18n.with_locale(active_locale(record.preferred_locale)) do
+    if BILINGUAL_EMAILS.include?(action)
+      devise_mail_for_locales(action, opts, active_locales([:en, record.preferred_locale.to_sym]).uniq, &block)
+    else
+      devise_mail_for_locale(action, opts, active_locale(record.preferred_locale), &block)
+    end
+  end
+
+  def devise_mail_for_locale(action, opts, locale, &block)
+    I18n.with_locale(locale) do
       make_bootstrap_mail headers_for(action, opts), &block
     end
+  end
+
+  def devise_mail_for_locales(action, opts, locales, &block)
+    template = "#{action}_content"
+    subject = for_each_locale(locales) { subject_for(action) }.join(" / ")
+    @body = for_each_locale(locales) { render template, layout: nil }.join("<hr>")
+    make_bootstrap_mail headers_for(action, opts.merge(subject: subject)), &block
   end
 end
