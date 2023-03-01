@@ -343,7 +343,7 @@ Rails.application.routes.draw do
     post 'dcc_consents/:mpxn/grant', to: 'dcc_consents#grant', as: :grant_dcc_consent
     resources :consent_grants, only: [:index, :show]
     resources :meters, only: [:index]
-    get 'meters/:meter_id/issues', to: 'meters/issues#index'
+    get 'issues/meter_issues/:meter_id', to: 'issues#meter_issues'
 
     resources :consent_statements
     post 'consent_statements/:id/publish', to: 'consent_statements#publish', as: :publish_consent_statement

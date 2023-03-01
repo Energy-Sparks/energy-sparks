@@ -6,7 +6,7 @@ module Admin
     load_and_authorize_resource :school, instance_name: 'issueable'
     load_and_authorize_resource :school_group, instance_name: 'issueable'
     load_and_authorize_resource :data_source, instance_name: 'issueable'
-    load_and_authorize_resource :issue, through: :issueable, shallow: true
+    load_and_authorize_resource :issue, through: :issueable, shallow: true, except: [:meter_issues]
     load_and_authorize_resource :school # For school context menu if school available
 
     def index
@@ -61,6 +61,13 @@ module Admin
         notice = "Can only resolve issues (and not notes)."
       end
       redirect_back_or_index notice: notice
+    end
+
+    def meter_issues
+      @meter = Meter.find(params[:meter_id])
+      respond_to do |format|
+        format.js
+      end
     end
 
     private

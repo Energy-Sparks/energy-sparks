@@ -15,7 +15,7 @@ module Admin
       end
 
       def create
-        service = ::Meters::MeterAttributeManager.new(@school)
+        service = Meters::MeterAttributeManager.new(@school)
         service.create!(
           params[:attribute][:meter_id],
           params[:attribute][:type],
@@ -42,7 +42,7 @@ module Admin
       end
 
       def update
-        service = ::Meters::MeterAttributeManager.new(@school)
+        service = Meters::MeterAttributeManager.new(@school)
         service.update!(
           params[:id],
           params[:attribute][:root],
@@ -55,7 +55,7 @@ module Admin
       end
 
       def destroy
-        service = ::Meters::MeterAttributeManager.new(@school)
+        service = Meters::MeterAttributeManager.new(@school)
         service.delete!(params[:id], current_user)
         redirect_to admin_school_meter_attributes_path(@school)
       rescue => e

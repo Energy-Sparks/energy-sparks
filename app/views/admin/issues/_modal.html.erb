@@ -5,6 +5,6 @@
   </div>
 </div>
 
-<a data-toggle="modal" href="/admin/meters/<%= meter.id %>/issues" title="Issues" class="btn btn-sm text-nowrap" data-target="#meter-issues-<%= meter.id %>" data-remote="true">
+<a data-toggle="modal" href="/admin/issues/meter_issues/<%= meter.id %>" title="Issues" class="btn btn-sm text-nowrap" data-target="#meter-issues-<%= meter.id %>" data-remote="true">
   <%= issue_type_icons(meter.issues, hide_empty: local_assigns[:view_mode], label: local_assigns[:label]) %>
 </a>
