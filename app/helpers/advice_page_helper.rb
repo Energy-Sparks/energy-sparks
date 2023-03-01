@@ -160,5 +160,10 @@ module AdvicePageHelper
     end
     breadcrumbs
   end
+
+  def school_has_fuel_type?(school, fuel_type)
+    fuel_type = 'storage_heaters' if fuel_type == "storage_heater"
+    school.send("has_#{fuel_type}?".to_sym)
+  end
 end
 # rubocop:enable Naming/AsciiIdentifiers

@@ -15,5 +15,28 @@ en:
         table_note: Use the table headings to sort the recommendations. Potential cost savings for the same fuel type are not additive.
         title: Priority actions
       show:
+        intro: You can explore our analysis using the links below or in the navigation bar on the left.
+        notice_html: |-
+          <p>Looking for suggestions of where to start?</p>
+          <p>Review our recommended priority areas or view your energy use summary.</p>
+        notice_link: View energy use summary
+        page_contents: Every page provides recommended activities for both adults and pupils that will help you reduce your energy use and carbon emissions.
+        page_summary:
+          baseload: Baseload
+          electricity_costs: Costs
+          electricity_intraday: Intraday
+          electricity_long_term: Long term changes
+          electricity_out_of_hours: Out of school hours
+          electricity_recent_changes: Recent changes
+          gas_costs: Costs
+          gas_long_term: Long term changes
+          gas_out_of_hours: Out of school hours
+          gas_recent_changes: Recent changes
+          heating_control: Heating control
+          hot_water: Hot water
+          solar_pv: Solar PV
+          storage_heaters: Storage heaters
+          thermostatic_control: Thermostatic
+          total_energy_use: Total energy use
         title: Overview
       title: Energy efficiency advice
