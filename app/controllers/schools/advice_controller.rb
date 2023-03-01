@@ -14,7 +14,7 @@ module Schools
     end
 
     def priorities
-      @management_priorities = setup_priorities(latest_management_priorities, limit: nil)
+      @management_priorities = sort_priorities
     end
 
     def alerts
@@ -42,6 +42,16 @@ module Schools
 
     def latest_management_priorities
       @latest_management_priorities ||= @school.latest_management_priorities
+    end
+
+    def sort_priorities
+      setup_priorities(latest_management_priorities, limit: nil).sort do |a, b|
+        money_to_i(b.template_variables[:average_one_year_saving_gbp]) <=> money_to_i(a.template_variables[:average_one_year_saving_gbp])
+      end
+    end
+
+    def money_to_i(val)
+      val.gsub(/\D/, '').to_i
     end
   end
 end

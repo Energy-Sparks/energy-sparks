@@ -18,6 +18,9 @@
           your recent alerts.
         </p>
       <% end %>
+      <%= component 'notice', status: :neutral do |c| %>
+        <% c.with_link { link_to 'View energy use summary', insights_school_advice_total_energy_use_path(@school) } %>
+      <% end %>
     </div>
   </div>
   <% AdvicePage.fuel_types.each do |fuel_type| %>

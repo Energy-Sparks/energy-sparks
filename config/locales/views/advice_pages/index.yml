@@ -5,7 +5,14 @@ en:
       alerts:
         title: Recent alerts
       priorities:
-        title: Priority areas
+        intro: Prioritise the following actions to reduce your costs and co2 emissions.
+        table:
+          columns:
+            co2_reduction: CO2 reduction
+            cost_saving: Cost saving
+            fuel_type: Fuel
+        table_note: Use the table headings to sort the recommendations. Potential cost savings for the same fuel type are not additive.
+        title: Priority actions
       show:
         title: Overview
       title: Energy efficiency advice
