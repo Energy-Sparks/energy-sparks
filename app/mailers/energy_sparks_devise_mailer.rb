@@ -23,11 +23,11 @@ class EnergySparksDeviseMailer < Devise::Mailer
   end
 
   def active_locale_for_devise(record)
-    record.respond_to?(:preferred_locale) ? active_locale(record.preferred_locale) : :en
+    record.try(:preferred_locale) ? active_locale(record.preferred_locale) : :en
   end
 
   def active_locales_for_devise(record)
-    record.respond_to?(:school) ? active_locales(record.school.email_locales) : [:en]
+    record.try(:school) ? active_locales(record.school.email_locales) : [:en]
   end
 
   def devise_mail_for_locale(action, opts, locale, &block)
