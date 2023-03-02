@@ -87,14 +87,13 @@ RSpec.describe Schools::ConsentRequestService do
           service.request_consent!([school_admin, staff])
         end
 
-        it 'email should have cy subject line' do
-          email = ActionMailer::Base.deliveries.last
-          expect(email.subject).to eql("Mae angen caniatâd arnom i gael mynediad at ddata ynni eich ysgol")
-        end
-
-        it 'email should have en subject line' do
-          email = ActionMailer::Base.deliveries.last(2).first
-          expect(email.subject).to eql("We need permission to access your school's energy data")
+        it 'email should have en and cy subject line' do
+          emails = ActionMailer::Base.deliveries.last(2)
+          expected_subjects = [
+            "Mae angen caniatâd arnom i gael mynediad at ddata ynni eich ysgol",
+            "We need permission to access your school's energy data"
+          ]
+          expect(emails.map(&:subject)).to match_array(expected_subjects)
         end
       end
     end
