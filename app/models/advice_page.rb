@@ -19,6 +19,7 @@ class AdvicePage < ApplicationRecord
 
   translates :learn_more, backend: :action_text
 
+  has_many :alert_types
   has_many :advice_page_activity_types
   has_many :activity_types, through: :advice_page_activity_types
 
