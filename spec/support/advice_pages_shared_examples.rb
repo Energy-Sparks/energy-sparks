@@ -79,5 +79,3 @@ RSpec.shared_examples "an advice page showing electricity data warning" do
     expect(page).to have_content("We have not received data for your electricity usage for over thirty days")
   end
 end
-
-

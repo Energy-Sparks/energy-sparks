@@ -145,5 +145,29 @@ module AdvicePageHelper
       :negative
     end
   end
+
+  def advice_index_breadcrumbs(school, tab)
+    breadcrumbs = [{ name: I18n.t('advice_pages.breadcrumbs.root'), href: school_advice_path(school) }]
+    case tab
+    when :alerts
+      breadcrumbs << {
+        name: I18n.t('advice_pages.index.alerts.title'), href: alerts_school_advice_path(school)
+      }
+    when :priorities
+      breadcrumbs << {
+        name: I18n.t('advice_pages.index.priorities.title'), href: alerts_school_advice_path(school)
+      }
+    end
+    breadcrumbs
+  end
+
+  def display_advice_page?(school, fuel_type)
+    fuel_type.to_sym == :solar_pv || school_has_fuel_type?(school, fuel_type)
+  end
+
+  def school_has_fuel_type?(school, fuel_type)
+    fuel_type = 'storage_heaters' if fuel_type == "storage_heater"
+    school.send("has_#{fuel_type}?".to_sym)
+  end
 end
 # rubocop:enable Naming/AsciiIdentifiers

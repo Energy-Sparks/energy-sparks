@@ -84,8 +84,6 @@ en:
       learn_more_html: In the meantime you can <a href="%{learn_more_link}">learn more</a> about this topic.
       message: We don't currently have enough %{fuel_type} data in order to run this analysis for your school.
       title: Not enough data to run analysis
-    show:
-      title: Energy efficiency advice
     tables:
       columns:
         category: Category
@@ -94,3 +92,7 @@ en:
         partial: "(partial)"
       notice:
         two_significant_figures: Data in this table are presented to 2 significant figures.
+    tabs:
+      analysis: Analysis
+      insights: Insights
+      learn_more: Learn More
