@@ -1,1 +1,5 @@
 <%= render 'header' %>
+
+<% School.school_types.keys.each do |school_type| %>
+  <%= School.human_enum_name(:school_type, school_type) %>
+<% end %>

@@ -23,6 +23,34 @@ describe User do
     expect(user.school_name).to eq('Big School')
   end
 
+  describe "#default_school_group" do
+    let(:school) { }
+    let(:school_group) { }
+    let(:user) { create(:user, school_group: school_group, school: school) }
+    subject(:default_school_group) { user.default_school_group }
+
+    context "User has school with a school group" do
+      let(:school) { create(:school, :with_school_group) }
+      it { expect(default_school_group).to eq(school.school_group) }
+    end
+    context "User doesn't have school but has a school group" do
+      let(:school_group) { create(:school_group) }
+      it { expect(default_school_group).to eq(school_group) }
+    end
+    context "User has school with no school group but has group" do
+      let(:school) { create(:school) }
+      let(:school_group) { create(:school_group) }
+      it { expect(default_school_group).to eq(school_group) }
+    end
+    context "User has school with no school group and no group" do
+      let(:school) { create(:school) }
+      it { expect(default_school_group).to be_nil }
+    end
+    context "User has no school or school group" do
+      it { expect(default_school_group).to be_nil }
+    end
+  end
+
   it 'returns school group name' do
     user = create(:user)
     expect(user.school_group_name).to be_nil
