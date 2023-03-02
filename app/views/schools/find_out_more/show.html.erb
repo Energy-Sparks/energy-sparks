@@ -3,6 +3,13 @@
 
 <h1 class="pt-4"><%= sanitize @content.find_out_more_title %></h1>
 
+<% if EnergySparks::FeatureFlags.active?(:replace_find_out_mores) %>
+  <div class="mb-2 alert alert-danger row">
+    Currently only admin users can view this page as the "REPLACE_FIND_OUT_MORES" feature is
+    active.
+  </div>
+<% end %>
+
 <div class="row">
   <% if @chart %>
     <div class="col">
