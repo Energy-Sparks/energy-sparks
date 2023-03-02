@@ -1,0 +1,13 @@
+<h1><%= t('compare.title') %></h1>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md">
+      <p><%= t("compare.#{controller.action_name}.intro") %></p>
+      <p><%= t("compare.options", schools_count: 'X', benchmarks_count: 'Y') %></p>
+    </div>
+    <div class="col-md">
+      <%= t("compare.summary_html") %>
+    </div>
+  </div>
+</div>
