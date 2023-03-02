@@ -9,6 +9,7 @@ RSpec.describe "advice pages", type: :system do
 
   context 'default index' do
     before(:each) do
+      allow_any_instance_of(School).to receive(:has_electricity?).and_return(true)
       visit school_advice_path(school)
     end
 
