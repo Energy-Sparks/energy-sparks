@@ -161,6 +161,10 @@ module AdvicePageHelper
     breadcrumbs
   end
 
+  def display_advice_page?(school, fuel_type)
+    fuel_type.to_sym == :solar_pv || school_has_fuel_type?(school, fuel_type)
+  end
+
   def school_has_fuel_type?(school, fuel_type)
     fuel_type = 'storage_heaters' if fuel_type == "storage_heater"
     school.send("has_#{fuel_type}?".to_sym)
