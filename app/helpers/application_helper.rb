@@ -91,6 +91,11 @@ module ApplicationHelper
     end
   end
 
+  def status_for_alert_colour(colour)
+    return :unknown if colour.nil?
+    colour
+  end
+
   def class_for_alert_colour(colour)
     return class_for_alert_colour(:unknown) if colour.nil?
     case colour.to_sym

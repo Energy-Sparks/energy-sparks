@@ -171,6 +171,10 @@ Rails.application.routes.draw do
             end
           end
         end
+        collection do
+          get :priorities
+          get :alerts
+        end
       end
 
       resources :analysis, controller: :analysis, only: [:index, :show]
