@@ -27,8 +27,7 @@ shared_examples "a compare search filter page" do |tab:, show_your_group_tab:tru
   end
 end
 
-describe 'compare pages', type: :system do
-
+describe 'compare pages', :compare, type: :system do
   before do
     sign_in(user) if user
     visit compare_path
@@ -45,6 +44,16 @@ describe 'compare pages', type: :system do
 
       it_behaves_like "a compare search header", intro: "View how schools within the same MAT"
       it_behaves_like "a compare search filter page", tab: 'Your group'
+      it { expect(page).to have_content "Compare all schools within #{user.school_group_name}" }
+
+      context "search filter" do
+        it 'has a checked checkbox for each school type' do
+          School.school_types.keys.each do |school_type|
+            expect(page).to have_checked_field(I18n.t("common.school_types.#{school_type}"))
+          end
+        end
+        it { expect(page).to have_button "Compare schools" }
+      end
     end
 
     context "'Categories' filter page" do

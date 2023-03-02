@@ -9,6 +9,7 @@ class CompareController < ApplicationController
 
   # filters
   def group
+    params[:school_types] ||= School.school_types.keys
   end
 
   def categories
@@ -18,7 +19,7 @@ class CompareController < ApplicationController
   end
 
   # pick benchmark
-  def benchmark
+  def benchmarks
   end
 
   # display results
