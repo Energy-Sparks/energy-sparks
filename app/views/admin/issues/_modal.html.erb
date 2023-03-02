@@ -1,0 +1,10 @@
+<div class="modal fade" id="meter-issues-<%= meter.id %>" tabindex="-1" role="dialog" aria-labelledby="#meter-issues-title" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
+
+<a data-toggle="modal" href="/admin/issues/meter_issues/<%= meter.id %>" title="Issues" class="btn btn-sm text-nowrap" data-target="#meter-issues-<%= meter.id %>" data-remote="true">
+  <%= issue_type_icons(meter.issues, hide_empty: local_assigns[:view_mode], label: local_assigns[:label]) %>
+</a>

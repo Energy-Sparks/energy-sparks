@@ -70,8 +70,8 @@
               <%= meter.zero_reading_days.count %>
             </td>
             <td>
-              <% if meter.issues.any? %>
-                <%= render 'schools/meters/meter_issues', meter: meter, view_mode: true %>
+             <% if meter.issues.any? %>
+                <%= render 'admin/issues/modal', meter: meter, view_mode: true %>
               <% end %>
             </td>
           </tr>

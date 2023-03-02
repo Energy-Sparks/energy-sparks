@@ -8,18 +8,20 @@ RSpec.shared_examples_for "a listed meter" do |admin: true|
       expect(page).to have_content("Inactive meters")
     end
   end
-  it { expect(page).to have_content(meter.mpan_mprn) }
-  it { expect(page).to have_content(meter.name) }
-  it { expect(page).to have_content(short_dates(meter.first_validated_reading)) }
-  it { expect(page).to have_content(short_dates(meter.last_validated_reading)) }
-  it { expect(page).to have_content(meter.zero_reading_days.count) }
-  it { expect(page).to have_content(meter.gappy_validated_readings.count) }
-  if admin
-    it { expect(page).to have_button('Issues') }
-    it { expect(page).to have_link(meter.data_source.name) }
-  else
-    it { expect(page).to_not have_button('Issues') }
-    it { expect(page).to_not have_link(meter.data_source.name) }
+  it "displays meter" do
+    expect(page).to have_content(meter.mpan_mprn)
+    expect(page).to have_content(meter.name)
+    expect(page).to have_content(short_dates(meter.first_validated_reading))
+    expect(page).to have_content(short_dates(meter.last_validated_reading))
+    expect(page).to have_content(meter.zero_reading_days.count)
+    expect(page).to have_content(meter.gappy_validated_readings.count)
+    if admin
+      expect(page).to have_link('Issues')
+      expect(page).to have_link(meter.data_source.name)
+    else
+      expect(page).to_not have_link('Issues')
+      expect(page).to_not have_link(meter.data_source.name)
+    end
   end
 end
 
@@ -173,33 +175,32 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
         end
       end
 
+      context "without meter issues" do
+        let(:meter) { active_meter }
+        let!(:setup_data) { meter }
+
+        it { expect(page).to have_link('Issues')}
+        it { expect(page).to have_css("i[class*='fa-exclamation-circle']") }
+        it { expect(page).to_not have_css("i[class*='fa-exclamation-circle text-danger']") }
+        context "Clicking on meter 'Details'" do
+          before { click_link 'Details' }
+          it { expect(page).to have_link('Issues')}
+          it { expect(page).to_not have_css("i[class*='fa-exclamation-circle text-danger']") }
+        end
+      end
+
       context "with meter issues" do
         let(:meter) { active_meter }
         let!(:issue) { create(:issue, issueable: school, meters: [meter], created_by: admin, updated_by: admin)}
         let!(:setup_data) { issue }
 
-        context "Clicking Issues button" do
-          before { click_on "Issues" }
-          it_behaves_like "a displayed issue" do
-            let(:user) { admin }
-            let(:issue_admin) { admin }
-          end
-          it { expect(page).to have_link("New Note") }
-          it { expect(page).to have_link("New Issue") }
-        end
+        it { expect(page).to have_link('Issues')}
+        it { expect(page).to have_css("i[class*='fa-exclamation-circle text-danger']") }
 
         context "Clicking on meter 'Details'" do
           before { click_link 'Details' }
-
-          context "Clicking Issues button" do
-            before { click_on "Issues" }
-            it_behaves_like "a displayed issue" do
-              let(:user) { admin }
-              let(:issue_admin) { admin }
-            end
-            it { expect(page).to have_link("New Note") }
-            it { expect(page).to have_link("New Issue") }
-          end
+          it { expect(page).to have_link('Issues')}
+          it { expect(page).to have_css("i[class*='fa-exclamation-circle text-danger']") }
         end
       end
     end
