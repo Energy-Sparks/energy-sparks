@@ -44,14 +44,6 @@ cy:
         serves_dinners: Mae ein hysgol yn gweini cinio ysgol ar y safle
         urn: Cyfeirnod Unigryw
         website: Gwefan
-        school_type:
-          infant: Babanod
-          junior: Iau
-          middle: Canol
-          mixed_primary_and_secondary: 'Cymysg: Cynradd ac Uwchradd'
-          primary: Cynradd
-          secondary: Uwchradd
-          special: Arbennig
       transport_survey_response:
         id: Rhif adnabod
         journey_minutes: Munudau taith

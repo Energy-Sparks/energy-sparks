@@ -41,14 +41,6 @@ en:
         percentage_free_school_meals: Percentage of pupils eligible for free school meals at any time during the past 6 years
         postcode: Postcode
         public: Public
-        school_type:
-          infant: Infant
-          junior: Junior
-          middle: Middle
-          mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
-          primary: Primary
-          secondary: Secondary
-          special: Special
         serves_dinners: Our school serves school dinners on site
         urn: Unique Reference Number
         website: Website

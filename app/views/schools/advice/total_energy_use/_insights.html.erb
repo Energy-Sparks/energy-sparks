@@ -14,7 +14,7 @@
 
 <% if @electricity_benchmarked_usage.present? || @gas_benchmarked_usage.present? %>
   <p>
-    <%= advice_t('total_energy_use.insights.comparison.how_do_you_compare', school_type: t('analytics.school_types.' + @school.school_type).downcase) %>
+    <%= advice_t('total_energy_use.insights.comparison.how_do_you_compare', school_type: t('common.school_types.' + @school.school_type).downcase) %>
   </p>
 
   <% if @electricity_benchmarked_usage.present? %>

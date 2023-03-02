@@ -21,7 +21,7 @@
               <td><%= link_to school.name, school_path(school) %></td>
               <td><%= school.postcode %></td>
               <td><%= school.number_of_pupils %></td>
-              <td><%= t('analytics.school_types.' + school.school_type) %></td>
+              <td><%= t('common.school_types.' + school.school_type) %></td>
               <td class="text-right"><%= school.percentage_free_school_meals %></td>
             </tr>
           <% end %>
