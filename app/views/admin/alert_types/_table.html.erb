@@ -18,7 +18,7 @@
         <td><%= link_to alert_type.title, admin_alert_type_path(alert_type) %></td>
         <td>
           <% if alert_type.advice_page.present? %>
-            <%= link_to alert_type.advice_page.key, edit_admin_advice_page_path(alert_type.advice_page) %>
+            <%= link_to alert_type.advice_page.label, edit_admin_advice_page_path(alert_type.advice_page) %>
           <% else %>
             none
           <% end %>
