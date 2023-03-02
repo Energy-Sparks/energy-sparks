@@ -186,7 +186,7 @@ class User < ApplicationRecord
   end
 
   def after_confirmation
-    OnboardingMailer.with(user: self).welcome_email.deliver_now if self.school.present?
+    OnboardingMailer.with_user_locales(users: [self]) { |mailer| mailer.welcome_email.deliver_now } if self.school.present?
   end
 
 protected

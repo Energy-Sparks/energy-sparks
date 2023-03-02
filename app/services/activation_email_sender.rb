@@ -5,10 +5,10 @@ class ActivationEmailSender
 
   def send
     unless @school.has_school_onboarding_event?(:activation_email_sent)
-      to = @school.activation_email_list
-      if to.any?
+      users = @school.activation_users
+      if users.any?
         target_prompt = include_target_prompt_in_email?
-        OnboardingMailer.with(to: to, school: @school, target_prompt: target_prompt).activation_email.deliver_now
+        OnboardingMailer.with_user_locales(users: users, school: @school, target_prompt: target_prompt) { |mailer| mailer.activation_email.deliver_now }
 
         onboarding_service.record_event(@school.school_onboarding, :activation_email_sent)
         record_target_event(@school, :first_target_sent) if target_prompt
