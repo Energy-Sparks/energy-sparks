@@ -18,6 +18,8 @@
 class AlertType < ApplicationRecord
   SUB_CATEGORIES = [:hot_water, :heating, :baseload, :electricity_use, :solar_pv, :tariffs, :co2, :boiler_control, :overview, :storage_heaters].freeze
 
+  belongs_to :advice_page, optional: true
+
   has_many :alerts
 
   has_many :ratings, class_name: 'AlertTypeRating'
@@ -27,6 +29,7 @@ class AlertType < ApplicationRecord
   enum fuel_type: [:electricity, :gas, :storage_heater, :solar_pv], _suffix: :fuel_type
   enum sub_category: SUB_CATEGORIES
   enum frequency: [:termly, :weekly, :before_each_holiday]
+  enum group: [:advice, :benchmarking, :change, :priority]
 
   scope :electricity,   -> { where(fuel_type: :electricity) }
   scope :gas,           -> { where(fuel_type: :gas) }
@@ -34,7 +37,7 @@ class AlertType < ApplicationRecord
 
   scope :editable, -> { where.not(background: true) }
 
-  validates_presence_of :frequency, :title, :class_name, :source
+  validates_presence_of :frequency, :title, :class_name, :source, :group
 
   has_rich_text :description
 
