@@ -1,7 +1,5 @@
 <h1>Alert type management</h1>
 
-<p><%= link_to 'Admin page', admin_path %></p>
-
 <ul class="nav nav-pills">
   <li class="nav-item">
     <a class="nav-link disabled" href="#">Jump to</a>
@@ -17,17 +15,16 @@
   <a name="Standard"> </a>
 </div>
 <h2>Standard</h2>
-<%= render 'table', alert_types: @standard_alert_types %>
+<%= render 'table', alert_types: @standard_alert_types, show_full: true %>
 
 <div class="nav-anchor">
   <a name="System"> </a>
 </div>
 <h2>System</h2>
-<%= render 'table', alert_types: @system_alert_types %>
+<%= render 'table', alert_types: @system_alert_types, show_full: true %>
 
 <div class="nav-anchor">
   <a name="Analysis"> </a>
 </div>
-<h2>Analysis</h2>
+<h2>Old Analysis Pages</h2>
 <%= render 'table', alert_types: @analysis_alert_types %>
-
