@@ -52,7 +52,7 @@ class OnboardingMailer < LocaleMailer
   end
 
   def welcome_email
-    @school = @user.school
+    @school = params[:school]
     @title = @school.name
     @to = user_emails(params[:users])
     make_bootstrap_mail(to: @to)
