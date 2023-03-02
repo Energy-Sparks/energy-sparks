@@ -18,4 +18,8 @@ module SchoolsHelper
   def disabled_for_pseudo_meter?(meter)
     meter.pseudo && action_name == 'edit'
   end
+
+  def dashboard_alert_buttons(school, alert_content)
+    alert_content.find_out_more ? { t('schools.show.find_out_more') => school_find_out_more_path(school, alert_content.find_out_more) } : {}
+  end
 end
