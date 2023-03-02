@@ -10,9 +10,9 @@
   <tbody id="priority">
     <% management_priorities.each do |priority| %>
       <tr>
-        <td data-order="<%= priority.find_out_more.alert.alert_type.fuel_type %>">
-          <span class="<%=fuel_type_class(priority.find_out_more.alert.alert_type.fuel_type)%>">
-            <%= fa_icon alert_icon(priority.find_out_more.alert,'fa-2x') %>
+        <td data-order="<%= priority.alert.alert_type.fuel_type %>">
+          <span class="<%=fuel_type_class(priority.alert.alert_type.fuel_type)%>">
+            <%= fa_icon alert_icon(priority.alert,'fa-2x') %>
           </span>
         </td>
         <td>
