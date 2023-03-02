@@ -12,6 +12,7 @@ class PasswordsController < Devise::PasswordsController
     @allow_alerts = allow_alerts?(user)
     @subscribe_alerts = true
     @subscribe_newsletters = true
+    @preferred_locale = user.preferred_locale
   end
 
   def update
@@ -20,7 +21,9 @@ class PasswordsController < Devise::PasswordsController
       @allow_alerts = allow_alerts?(resource)
       @subscribe_alerts = auto_create_alert_contact?
       @subscribe_newsletters = auto_subscribe_newsletter?
+      @preferred_locale = resource_params[:preferred_locale]
       if resource.errors.empty?
+        resource.update!(preferred_locale: @preferred_locale)
         create_or_update_alert_contact(resource.school, resource) if @subscribe_alerts
         subscribe_newsletter(resource) if @subscribe_newsletters
       end
