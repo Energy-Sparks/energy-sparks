@@ -22,21 +22,21 @@ en:
         notice_link: View energy use summary
         page_contents: Every page provides recommended activities for both adults and pupils that will help you reduce your energy use and carbon emissions.
         page_summary:
-          baseload: Baseload
-          electricity_costs: Costs
-          electricity_intraday: Intraday
-          electricity_long_term: Long term changes
-          electricity_out_of_hours: Out of school hours
-          electricity_recent_changes: Recent changes
-          gas_costs: Costs
-          gas_long_term: Long term changes
-          gas_out_of_hours: Out of school hours
-          gas_recent_changes: Recent changes
-          heating_control: Heating control
-          hot_water: Hot water
-          solar_pv: Solar PV
-          storage_heaters: Storage heaters
-          thermostatic_control: Thermostatic
-          total_energy_use: Total energy use
+          baseload: Understand how much energy your school uses to keep appliances running all the time
+          electricity_costs: Review how much your school has recently spent on electricity
+          electricity_intraday: Explore how your electricity use varies during the day
+          electricity_long_term: See long term trends in your electricity use
+          electricity_out_of_hours: How much of your electricity use is outside of school hours?
+          electricity_recent_changes: How has your electricity use changed over the last few weeks?
+          gas_costs: Review how much your school has recently spent on gas
+          gas_long_term: See long term trends in your gas use
+          gas_out_of_hours: How much of your gas use is outside of school hours?
+          gas_recent_changes: How has your gas use changed over the last few weeks?
+          heating_control: Review your central heating timings and use of gas to heat the school
+          hot_water: Understand the efficiency of your hot water system
+          solar_pv: See the benefits of having solar panels on your school
+          storage_heaters: Review how much energy you consume to power your storage heaters
+          thermostatic_control: Understand how well your gas use adapts to changing temperatures
+          total_energy_use: A summary of your electricity and gas use
         title: Overview
       title: Energy efficiency advice
