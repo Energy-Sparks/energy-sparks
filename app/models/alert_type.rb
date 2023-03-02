@@ -2,17 +2,25 @@
 #
 # Table name: alert_types
 #
+#  advice_page_id  :bigint(8)
 #  background      :boolean          default(FALSE)
 #  benchmark       :boolean          default(FALSE)
 #  class_name      :text
 #  frequency       :integer
 #  fuel_type       :integer
+#  group           :integer          default("advice"), not null
 #  has_ratings     :boolean          default(TRUE)
 #  id              :bigint(8)        not null, primary key
+#  link_to         :integer          default("insights_page"), not null
+#  link_to_section :string
 #  source          :integer          default("analytics"), not null
 #  sub_category    :integer
 #  title           :text
 #  user_restricted :boolean          default(FALSE), not null
+#
+# Indexes
+#
+#  index_alert_types_on_advice_page_id  (advice_page_id)
 #
 
 class AlertType < ApplicationRecord
@@ -30,6 +38,7 @@ class AlertType < ApplicationRecord
   enum sub_category: SUB_CATEGORIES
   enum frequency: [:termly, :weekly, :before_each_holiday]
   enum group: [:advice, :benchmarking, :change, :priority]
+  enum link_to: [:insights_page, :analysis_page, :learn_more_page]
 
   scope :electricity,   -> { where(fuel_type: :electricity) }
   scope :gas,           -> { where(fuel_type: :gas) }

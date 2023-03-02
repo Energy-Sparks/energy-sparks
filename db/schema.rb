@@ -315,6 +315,8 @@ ActiveRecord::Schema.define(version: 2023_03_02_122743) do
     t.boolean "benchmark", default: false
     t.boolean "user_restricted", default: false, null: false
     t.bigint "advice_page_id"
+    t.integer "link_to", default: 0, null: false
+    t.string "link_to_section"
     t.integer "group", default: 0, null: false
     t.index ["advice_page_id"], name: "index_alert_types_on_advice_page_id"
   end
