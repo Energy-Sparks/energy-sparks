@@ -1,6 +1,8 @@
 class AlertMailer < LocaleMailer
   include MailgunMailerHelper
+
   helper :application
+  helper :schools
 
   after_action :prevent_delivery_from_test
 
