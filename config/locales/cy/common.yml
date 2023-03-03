@@ -50,6 +50,14 @@ cy:
     school: Ysgol
     storage_heater: Stôr-wresogydd
     storage_heaters: Stôr-wresogyddion
+    school_types:
+      infant: Babanod
+      junior: Iau
+      middle: Canol
+      mixed_primary_and_secondary: 'Cymysg: Cynradd ac Uwchradd'
+      primary: Cynradd
+      secondary: Uwchradd
+      special: Arbennig
     terms_and_conditions: telerau ac amodau
     units:
       minutes:
@@ -58,6 +66,4 @@ cy:
         many: "%{count} o funudau"
         other: "%{count} o funudau"
   kwh: kWh
-  school_types:
-    mixed_primary_and_secondary: 'Cymysg: Cynradd ac Uwchradd'
   "£": "£"

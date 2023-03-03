@@ -138,8 +138,11 @@ class User < ApplicationRecord
   end
 
   def school_group_name
-    return school.school_group.name if school && school.school_group
-    return school_group.name if school_group
+    default_school_group.try(:name)
+  end
+
+  def default_school_group
+    school.try(:school_group) || school_group
   end
 
   def self.new_pupil(school, attributes)
@@ -186,7 +189,7 @@ class User < ApplicationRecord
   end
 
   def after_confirmation
-    OnboardingMailer.with(user: self).welcome_email.deliver_now if self.school.present?
+    OnboardingMailer.with_user_locales(users: [self], school: school) { |mailer| mailer.welcome_email.deliver_now } if self.school.present?
   end
 
 protected

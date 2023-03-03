@@ -2,11 +2,8 @@ class LocaleMailer < ApplicationMailer
   include LocaleMailerHelper
 
   def self.with_user_locales(users:, **args)
-    I18n.available_locales.each do |locale|
-      locale_users = users_for_locale(users, locale)
-      if locale_users.any?
-        yield self.with(**args, locale: locale, users: locale_users)
-      end
+    users_by_locale(users).each do |locale, locale_users|
+      yield self.with(**args, locale: locale, users: locale_users)
     end
   end
 
@@ -14,18 +11,17 @@ class LocaleMailer < ApplicationMailer
     yield self.with(**args, school: contact.school, email_address: contact.email_address, locale: contact.preferred_locale)
   end
 
-  def self.users_for_locale(users, locale)
-    users.select {|u| u.preferred_locale.to_sym == locale.to_sym}
+  def self.users_by_locale(users)
+    users.group_by(&:preferred_locale)
   end
 
-  # send with locale if preferred locales are enabled
   def make_bootstrap_mail(*args)
-    I18n.with_locale(active_locale(locale_param)) do
+    I18n.with_locale(locale_param) do
       super(*args)
     end
   end
 
   def locale_param
-    params[:locale] || :en
+    active_locale(params[:locale] || :en)
   end
 end

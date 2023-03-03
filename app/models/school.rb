@@ -366,14 +366,14 @@ class School < ApplicationRecord
     all_school_admins + staff
   end
 
-  def activation_email_list
+  def activation_users
     users = []
     if school_onboarding && school_onboarding.created_user.present?
       users << school_onboarding.created_user
     end
     #also email admin, staff and group users
     users += all_adult_school_users.to_a
-    users.uniq.map(&:email)
+    users.uniq
   end
 
   def latest_content

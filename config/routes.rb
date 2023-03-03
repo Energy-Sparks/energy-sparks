@@ -51,7 +51,7 @@ Rails.application.routes.draw do
   resource :compare, controller: 'compare' do
     collection do
       get :index, to: "compare#group"
-      get :group, :categories, :groups, :benchmark, :results
+      get :group, :categories, :groups, :benchmarks, :results
     end
   end
 

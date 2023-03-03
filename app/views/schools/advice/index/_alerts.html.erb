@@ -7,9 +7,11 @@
           </div>
           <div class="col-md-11">
           <%= alert_content.send(content_field) %>
-            <div class="text-right">
-              <%= link_to t('advice_pages.index.alerts.view_analysis'), insights_school_advice_total_energy_use_path(@school), class: 'btn btn-rounded btn-fixed-width-10' %>
-            </div>
+            <% if alert_content.alert.advice_page.present? %>
+              <div class="text-right">
+                <%= link_to t('advice_pages.index.alerts.view_analysis'), advice_page_path(school, alert_content.alert.advice_page, alert_content.alert.alert_type.advice_page_tab_for_link_to, anchor: alert_content.alert.alert_type.link_to_section) %>
+              </div>
+            <% end %>
           </div>
         </div>
       <% end %>

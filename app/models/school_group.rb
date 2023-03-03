@@ -4,6 +4,7 @@
 #
 #  created_at                    :datetime         not null
 #  default_chart_preference      :integer          default("default"), not null
+#  default_country               :integer          default("england"), not null
 #  default_dark_sky_area_id      :bigint(8)
 #  default_issues_admin_user_id  :bigint(8)
 #  default_scoreboard_id         :bigint(8)
@@ -106,5 +107,9 @@ class SchoolGroup < ApplicationRecord
 
   def all_issues
     Issue.for_school_group(self)
+  end
+
+  def email_locales
+    default_country == 'wales' ? [:en, :cy] : [:en]
   end
 end

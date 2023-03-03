@@ -12,7 +12,7 @@
       <tbody>
         <% @report.school_types.keys.sort.each do |type| %>
           <tr>
-            <td><%= t('analytics.school_types.' + type) %></td>
+            <td><%= t('common.school_types.' + type) %></td>
             <td class="text-right"><%= report.school_types[type] %></td>
           </tr>
         <% end %>
