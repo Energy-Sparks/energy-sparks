@@ -15,7 +15,7 @@ en:
           <p>So for your school if the average outside temperature is 12°C the predicted gas consumption for the school would be -20.6 * 12.0 + 301 = 54 kWh for the day. Whereas if the outside temperature was colder at 4°C the gas consumption would be -20.6 * 4.0 + 301 = 218 kWh. See if you can read these values off the trend line of the graph above (temperatures of 12°C and 4°C on the x axis and the answer - the predicted daily gas consumption on the y-axis).</p>
         how_to_calculate_a_theoretical_daily_gas_consumption_using_the_model: How to calculate a theoretical daily gas consumption using the model
         scatter_chart_html: |-
-          <p>The scatter chart below shows a thermostatic analysis of your school's heating system. The y axis shows the energy consumption in kWh on any given day. The x axis is the outside temperature.</p>
+          <p>The scatter chart below shows a thermostatic analysis of your school's heating system. The x axis is the outside temperature. The y axis shows the energy consumption in kWh on any given day.</p>
           <p>Two sets of data are provided on the chart. The points associated with the group at the top of the chart are those for winter school day heating. As it gets warmer the daily gas consumption drops.</p>
           <p>R² is a measure of how close to the trendline the daily heating values are.</p>
           <p>An R² of 0.0 means that there is no relationship between how cold it is outside and how much gas your school consumes. This is would lead to higher running costs and increased carbon emissions.</p>
@@ -30,7 +30,7 @@ en:
             <p>If the heating has good thermostatic control (a high R² value) then the points at the top of chart when the heating is on should be close to the trend line.</p>
             <p>This is because the amount of heating required on a single day is linearly proportional to the difference between the inside and outside temperature, and any variation from the trend line would suggest thermostatic control isn't working too well.</p>
             <p>The second set of data at the bottom of the chart is for gas consumption in the summer when the heating is not on; typically, this is from hot water and kitchen consumption.</p>
-            <p>The slope of this line is often an indication of how well insulated the hot water system is; if the consumption increases as it gets colder it suggests a lack of insulation. An estimate of this loss across the last year is %{insulation_hotwater_heat_loss_estimate_kwh} kWh (%{insulation_hotwater_heat_loss_estimate_gbp}).</p>
+            <p>The slope of this line is often an indication of how well insulated the hot water system is; if the consumption increases as it gets colder it suggests a lack of insulation.</p>
           subtitle: This chart shows an analysis of how closely gas consumption in your school is aligned with the outside temperature between start date to end date
           title: Thermostatic analysis of your school's heating system
         this_section_html: |-
@@ -38,7 +38,7 @@ en:
           <p>The following sections provide more background and analysis on your electricity baseload<p>
         title: Analysis
         using_days_with_large_diurnal_range_to_understand_thermostatic_control: Using days with large diurnal range to understand thermostatic control
-        your_schools_R2_value: Your schools R² value is %{r2} which is %{r2_rating_adjective}.
+        your_schools_R2_value: Your school's R² value is %{r2} which is %{r2_rating_adjective}.
       insights:
         advice_html: |-
           <p>We call this page an advanced page because there are some complex themes involved and it might take a user some time to work through the explanations.</p>
