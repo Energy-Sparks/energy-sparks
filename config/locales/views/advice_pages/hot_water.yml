@@ -31,6 +31,11 @@ en:
         introduction_html: |-
           <p>This section gives a more detailed analysis of how to improve the efficiency of your school’s hot water system.</p>
           <p>The following sections provide more background and analysis on your hot water efficiency including:</p>
+        options:
+          point_of_use_best: Our analysis is showing that for your school, investing in point of use electric heaters would be the best option.
+          point_of_use_co2_saving: Our analysis is showing that for your school, investing in point of use electric heaters would cost more money to run than your current setup. However, it would reduce your CO2 emissions by more.
+          point_of_use_larger_co2_benefit: Our analysis is showing that for your school, investing in point of use electric heaters would save less money each year than improving your boiler control. However, it would reduce your CO2 emissions by more.
+          point_of_use_not_worthwhile: Our analysis is showing that for your school, investing in point of use electric heaters would be unlikely to be the best option.
         point_of_use_electric_heater_content_html: |-
           <p>This option often leads to the largest savings but for most schools it does require a significant capital investment.</p>
           <p>
