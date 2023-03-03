@@ -11,8 +11,14 @@ en:
         for_energy_experts_html: |-
           <p>For energy experts, the formula which defines the trend line is very interesting. It predicts how the gas consumption varies with outside temperature.</p>
           <p>In the example above the formula for heating is:</p>
-          <p>predicted_heating_requirement = -20.6 * outside_temperature + 301</p>
-          <p>So for your school if the average outside temperature is 12°C the predicted gas consumption for the school would be -20.6 * 12.0 + 301 = 54 kWh for the day. Whereas if the outside temperature was colder at 4°C the gas consumption would be -20.6 * 4.0 + 301 = 218 kWh. See if you can read these values off the trend line of the graph above (temperatures of 12°C and 4°C on the x axis and the answer - the predicted daily gas consumption on the y-axis).</p>
+          <p><code>Predicted heating requirement (kWh) = %{b} * outside temperature + %{a}</code></p>
+          <p>So for your school if the average outside temperature is 12°C the predicted gas consumption for the school on that day would be:</p>
+          <p><code>%{predicted_kwh_for_high} kWh = %{b} * %{temperature_high} + %{a}</code></p>
+          <p>Whereas if the outside temperature was colder at 4°C the gas consumption for that day would be:</p>
+          <p><code>%{predicted_kwh_for_low} kWh = %{b} * %{temperature_low} + %{a}</code></p>
+          <p>
+          See if you can read these values off the trend line of the graph above (temperatures of 12°C and 4°C on the x axis and the answer - the predicted daily gas consumption on the y-axis).
+          </p>
         how_to_calculate_a_theoretical_daily_gas_consumption_using_the_model: How to calculate a theoretical daily gas consumption using the model
         scatter_chart_html: |-
           <p>The scatter chart below shows a thermostatic analysis of your school's heating system. The x axis is the outside temperature. The y axis shows the energy consumption in kWh on any given day.</p>
