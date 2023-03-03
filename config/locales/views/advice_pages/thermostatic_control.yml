@@ -55,8 +55,7 @@ en:
             <li>Try moving your main boiler thermostat to a different location such as the school office or a classroom.</li>
           </ul>
         thermostatic_control_r2_notice_html: |-
-          <p>Your thermostatic control is %{r2_rating_adjective}</p>
-          <p>Your school's thermostatic control is %{r2}.</p>
+          <p>Your thermostatic control is %{r2}, which is %{r2_rating_adjective}</p>
           <p>The average value for schools is %{average_schools_r2} and a perfect value is 1.0. The lower the value below 1.0, the worse the school's thermostatic control.</p>
         title: What do we mean by advanced thermostatic control?
         your_thermostatic_control:
