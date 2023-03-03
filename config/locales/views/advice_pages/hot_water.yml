@@ -106,4 +106,22 @@ en:
           Adjust your boiler settings to ensure that you are only heating water when it is needed.
         title: What do we mean by hot water gas use?
         we_estimate_your_hot_water_efficiency_to_be_html: We estimate your hot water efficiency to be %{efficiency_percent}
+      not_relevant:
+        other_reasons:
+          reason: |-
+            <p>We cannot generate a hot water gas use analysis for your school.</p>
+            <p>This could be for a number of reasons:</p>
+            <ul>
+              <li>we do not have enough gas consumption data for your school to perform the analysis, in which case you could try checking again after the next summer holidays</li>
+              <li>our preliminary analysis shows that it is unlikely your school uses a significant amount of gas to heat hot water</li>
+              <li>you may already follow our advice and have switched off your hot water during the holidays. Well done!</li>
+            </ul>
+          title: Unable to perform analysis
+        swimming_pool:
+          reason: |-
+            <p>
+            You've told us that your school has a swimming pool. Because of this we cannot accurately
+            estimate how much gas you use for hot water.
+            </p>
+          title: Unable to perform hot water analysis
       page_title: Hot water usage analysis
