@@ -55,6 +55,17 @@ class AlertType < ApplicationRecord
     fuel_type.humanize
   end
 
+  def advice_page_tab_for_link_to
+    case link_to
+    when :analysis_page
+      :analysis
+    when :learn_more_page
+      :learn_more
+    else
+      :insights
+    end
+  end
+
   def cleaned_template_variables
     # TODO: make the analytics code remove the £ sign
     class_name.constantize.front_end_template_variables.deep_transform_keys do |key|

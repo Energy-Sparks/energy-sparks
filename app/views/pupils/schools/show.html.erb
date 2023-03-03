@@ -36,7 +36,7 @@
           colour: class_for_alert_colour(content.colour),
           icon: alert_icon(content.alert, 'fa-3x'),
           content: content.pupil_dashboard_title,
-          buttons: content.find_out_more ? { t('pupils.schools.show.find_out_more') => school_find_out_more_path(@school, content.find_out_more) } : {}
+          buttons: dashboard_alert_buttons(@school, content)
     %>
    <% end %>
 <% end %>
