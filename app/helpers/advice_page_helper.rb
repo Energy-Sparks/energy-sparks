@@ -1,7 +1,7 @@
 # rubocop:disable Naming/AsciiIdentifiers
 module AdvicePageHelper
-  def advice_page_path(school, advice_page, tab = :insights)
-    polymorphic_path([tab, school, :advice, advice_page.key.to_sym])
+  def advice_page_path(school, advice_page, tab = :insights, params: {}, anchor: nil)
+    polymorphic_path([tab, school, :advice, advice_page.key.to_sym], params: params, anchor: anchor)
   end
 
   #Helper for the advice pages, passes a scope to the I18n.t API based on

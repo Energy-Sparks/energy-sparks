@@ -56,7 +56,7 @@ class AlertType < ApplicationRecord
   end
 
   def advice_page_tab_for_link_to
-    case link_to
+    case link_to.to_sym
     when :analysis_page
       :analysis
     when :learn_more_page

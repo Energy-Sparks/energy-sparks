@@ -42,7 +42,7 @@ describe SchoolsHelper do
           let(:alert_type)   { create(:alert_type, advice_page: advice_page, link_to: :analysis_page, link_to_section: anchor) }
           it 'returns the expected path' do
             path = helper.find_out_more_path_from_alert_content(school, alert_content, params: params)
-            expect(path).to eq insights_school_advice_baseload_path(school, params: params, anchor: anchor)
+            expect(path).to eq analysis_school_advice_baseload_path(school, params: params, anchor: anchor)
           end
         end
       end
@@ -85,7 +85,7 @@ describe SchoolsHelper do
 
           it 'returns the expected path' do
             buttons = helper.dashboard_alert_buttons(school, alert_content)
-            expect(buttons.values.first).to eq insights_school_advice_baseload_path(school, anchor: anchor)
+            expect(buttons.values.first).to eq analysis_school_advice_baseload_path(school, anchor: anchor)
           end
         end
       end

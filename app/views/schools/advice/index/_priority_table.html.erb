@@ -17,7 +17,11 @@
         </td>
         <td>
           <h4>
-            <%= priority.management_priorities_title %>
+            <% if priority.alert.advice_page.present? %>
+              <%= link_to priority.management_priorities_title, advice_page_path(school, priority.alert.advice_page, priority.alert.alert_type.advice_page_tab_for_link_to, anchor: priority.alert.alert_type.link_to_section) %>
+            <% else %>
+              <%= priority.management_priorities_title %>
+            <% end %>
           </h4>
         </td>
         <td>
