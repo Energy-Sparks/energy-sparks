@@ -34,7 +34,11 @@ module Schools
       end
 
       def gas_hot_water
-        @gas_hot_water ||= gas_hot_water_service.create_model
+        @gas_hot_water ||= build_gas_hot_water_model
+      end
+
+      def build_gas_hot_water_model
+        gas_hot_water_service.create_model
       end
 
       def gas_hot_water_service
