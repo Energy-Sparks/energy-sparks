@@ -41,17 +41,21 @@ en:
         summary_notice: 'Note: if your school has a gas heated swimming pool, it is more difficult for us to assess efficiency.'
         table:
           columns:
-            annual_co2_kg: Annual CO2/kg
-            annual_cost_gbp: Annual Cost £
-            annual_kwh: Annual kWh
+            annual: Annual use
+            annual_co2_kg: CO2/kg
+            annual_cost_gbp: "£"
+            annual_kwh: kWh
             capital_cost: Capital Cost
+            capital_cost_gbp: "£"
             choice: Choice
             efficiency: Efficiency
-            payback_years: Payback (years)
-            saving_co2: Saving CO2
-            saving_co2_percent: Saving CO2 percent
-            saving_gbp: Saving £
-            saving_gbp_percent: Saving £ percent
+            payback: Payback
+            payback_years: Years
+            saving: Annual saving
+            saving_co2: CO2/kg
+            saving_co2_percent: "%"
+            saving_gbp: Cost
+            saving_gbp_percent: "%"
           rows:
             current_setup: Current setup
             improved_boiler_control: Improved boiler control
