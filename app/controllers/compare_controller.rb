@@ -1,6 +1,6 @@
 class CompareController < ApplicationController
-  skip_before_action :authenticate_user!
   before_action :header_fix_enabled
+  skip_before_action :authenticate_user!
 
   before_action :get_school_group
   before_action :redirect_unless_school_group, only: [:group]

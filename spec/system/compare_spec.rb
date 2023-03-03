@@ -71,7 +71,7 @@ describe 'compare pages', :compare, type: :system do
     end
   end
 
-  context "Logged in user withought school group" do
+  context "Logged in user without school group" do
     let(:user) { create(:admin) }
 
     it_behaves_like "a compare search header", intro: "View how schools within the same MAT"
