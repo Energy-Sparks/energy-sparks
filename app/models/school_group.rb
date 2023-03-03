@@ -108,4 +108,8 @@ class SchoolGroup < ApplicationRecord
   def all_issues
     Issue.for_school_group(self)
   end
+
+  def email_locales
+    default_country == 'wales' ? [:en, :cy] : [:en]
+  end
 end
