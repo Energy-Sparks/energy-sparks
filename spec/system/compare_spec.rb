@@ -10,19 +10,19 @@ end
 
 shared_examples "a compare search filter page" do |tab:, show_your_group_tab:true|
   it "has standard tabs" do
-    expect(page).to have_link("Choose categories", href: '/compare/categories')
-    expect(page).to have_link("Choose groups", href: '/compare/groups')
+    expect(page).to have_link("Choose categories", href: '#categories')
+    expect(page).to have_link("Choose groups", href: '#groups')
   end
 
   it "has 'Your group' tab", if: show_your_group_tab do
-    expect(page).to have_link("Your group", href: '/compare/group')
+    expect(page).to have_link("Your group", href: '#group')
   end
 
   it "doesn't have 'Your group' tab", unless: show_your_group_tab do
-    expect(page).to_not have_link("Your group", href: '/compare/group')
+    expect(page).to_not have_link("Your group", href: '#group')
   end
 
-  it "#{tab} tab is selected" do
+  it "#{tab} tab is selected", js: true do
     expect(page).to have_css("a.nav-link.active", text: tab)
   end
 end
@@ -80,7 +80,6 @@ describe 'compare pages', :compare, type: :system do
 
   context "Logged out user" do
     let(:user) {}
-
     it_behaves_like "a compare search header", intro: "View how schools within the same MAT"
     it_behaves_like "a compare search filter page", tab: 'Choose categories', show_your_group_tab: false
   end

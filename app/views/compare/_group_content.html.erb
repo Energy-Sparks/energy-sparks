@@ -1,13 +1,8 @@
-<%= render 'header' %>
+<div class="tab-pane fade show <%= ' active' if @school_group %>" id="group" role="tabpanel" aria-labelledby="group-tab">
 
-<div class="row">
-  <div class="col">
-    <h4 class='my-2'><%= t('compare.group.title', name: @school_group.name) %></h4>
-  </div>
-</div>
+  <h4 class='my-2'><%= t('compare.group.title', name: @school_group.name) %></h4>
 
-<div class="row">
-  <div class="col-md bg-light ml-3 p-3 rounded border">
+  <div class="bg-light p-3 rounded border">
     <div class="smaller"><%= t('compare.limit_by_school_type') %></div>
     <%= form_tag benchmarks_compare_path, method: :get do %>
       <div class="nowrap ensure-one-checked">

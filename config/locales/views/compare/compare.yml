@@ -2,15 +2,13 @@
 en:
   compare:
     categories:
-      intro: View how schools within the same MAT or local authority area compare across a range of energy performance benchmarks
       tab: Choose categories
     group:
-      intro: View how schools within the same MAT or local authority area compare across a range of energy performance benchmarks
       tab: Your group
       title: Compare all schools within %{name}
     groups:
-      intro: View how schools within the same MAT or local authority area compare across a range of energy performance benchmarks
       tab: Choose groups
+    intro: View how schools within the same MAT or local authority area compare across a range of energy performance benchmarks
     limit_by_school_type: 'Limit results to include schools of type:'
     options: Use options below to compare %{schools_count} schools against %{benchmarks_count} benchmarks
     summary_html: |

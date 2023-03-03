@@ -48,10 +48,9 @@ Rails.application.routes.draw do
   get 'benchmarks', to: 'benchmarks#index'
   get 'benchmark', to: 'benchmarks#show'
 
-  resource :compare, controller: 'compare' do
+  resource :compare, controller: 'compare', only: [:index] do
     collection do
-      get :index, to: "compare#group"
-      get :group, :categories, :groups, :benchmarks, :results
+      get :index, :benchmarks, :results
     end
   end
 
