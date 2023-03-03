@@ -34,7 +34,11 @@ module SchoolsHelper
       advice_page_path_from_alert_type(school, alert_type, params: params, mailer: mailer)
     else
       return nil unless alert_content.find_out_more.present?
-      school_find_out_more_path(school, alert_content.find_out_more, params: params)
+      if mailer
+        school_find_out_more_url(school, alert_content.find_out_more, params: params)
+      else
+        school_find_out_more_path(school, alert_content.find_out_more, params: params)
+      end
     end
   end
 
