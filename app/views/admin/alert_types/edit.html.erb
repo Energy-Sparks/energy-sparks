@@ -18,7 +18,7 @@
 
   <div class="form-group">
     <%= f.label 'Link to', for: :link_to %>
-    <%= f.select :link_to, options_for_select(AlertType.link_tos.map {|key, value| [key.titleize, key]}, f.object.group), {include_blank: false}, { class: 'form-control' } %>
+    <%= f.select :link_to, options_for_select(AlertType.link_tos.map {|key, value| [key.titleize, key]}, f.object.link_to), {include_blank: false}, { class: 'form-control' } %>
   </div>
 
   <div class="form-group">
