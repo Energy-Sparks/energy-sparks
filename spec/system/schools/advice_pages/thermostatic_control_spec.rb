@@ -40,8 +40,7 @@ RSpec.describe "thermostatic control advice page", type: :system do
         expect(page).to have_content('What do we mean by advanced thermostatic control?')
         expect(page).to have_content('Your thermostatic control')
         expect(page).to have_content('How do you compare?')
-        expect(page).to have_content('Your thermostatic control is about average')
-        expect(page).to have_content("Your school's thermostatic control is 0.67")
+        expect(page).to have_content('Your thermostatic control is 0.67, which is about average')
       end
     end
 
@@ -53,9 +52,9 @@ RSpec.describe "thermostatic control advice page", type: :system do
         expect(page).to have_content('Analysis')
         expect(page).to have_content('Thermostatic control in your school')
         expect(page).to have_content('How to calculate a theoretical daily gas consumption using the model')
-        expect(page).to have_content('Your thermostatic control is about average')
+        expect(page).to have_content('Your thermostatic control is 0.67, which is about average')
         expect(page).to have_content('Using days with large diurnal range to understand thermostatic control')
-        expect(page).to have_content('Your schools R² value is 0.67 which is about average')
+        expect(page).to have_content("Your school's R² value is 0.67 which is about average")
         expect(page).to have_css('#chart_wrapper_thermostatic_up_to_1_year')
         expect(page).to have_css('#chart_wrapper_thermostatic_control_large_diurnal_range')
       end
