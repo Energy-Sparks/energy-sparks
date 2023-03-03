@@ -1,0 +1,13 @@
+<ul class="nav nav-tabs locales">
+  <% if @school_group %>
+    <li class="nav-item">
+      <a class="nav-link <%= 'active' if tab == 'group' %>" href="<%= group_compare_path %>"><%= t('compare.group.tab') %></a>
+    </li>
+  <% end %>
+  <li class="nav-item">
+    <a class="nav-link <%= 'active' if tab == 'categories' %>" href="<%= categories_compare_path %>"><%= t('compare.categories.tab') %></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link <%= 'active' if tab == 'groups' %>" href="<%= groups_compare_path %>"><%= t('compare.groups.tab') %></a>
+  </li>
+</ul>

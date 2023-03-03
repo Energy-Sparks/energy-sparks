@@ -138,8 +138,11 @@ class User < ApplicationRecord
   end
 
   def school_group_name
-    return school.school_group.name if school && school.school_group
-    return school_group.name if school_group
+    default_school_group.try(:name)
+  end
+
+  def default_school_group
+    school.try(:school_group) || school_group
   end
 
   def self.new_pupil(school, attributes)
