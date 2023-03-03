@@ -94,6 +94,32 @@ RSpec.describe "hot water advice page", type: :system do
 
     it_behaves_like "an advice page tab", tab: "Insights"
 
+    context "when school has a pool" do
+      before do
+        allow_any_instance_of(Schools::Advice::HotWaterController).to receive_messages(
+          has_swimming_pool?: true
+        )
+        click_on 'Insights'
+      end
+      it 'shows not relevant page' do
+        expect(page).to have_content(I18n.t('advice_pages.hot_water.not_relevant.swimming_pool.title'))
+        expect(page).to have_content('pool')
+      end
+    end
+
+    context "when efficiency is too high" do
+      before do
+        allow_any_instance_of(Schools::Advice::HotWaterController).to receive_messages(
+          has_swimming_pool?: false,
+          minimal_use_of_gas?: true
+        )
+        click_on 'Insights'
+      end
+      it 'shows not relevant page' do
+        expect(page).to have_content(I18n.t('advice_pages.hot_water.not_relevant.other_reasons.title'))
+      end
+    end
+
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
       it_behaves_like "an advice page tab", tab: "Insights"
@@ -104,6 +130,7 @@ RSpec.describe "hot water advice page", type: :system do
         expect(page).to have_content('70,000') # 69_893  annual efficiency kwh total
         expect(page).to have_content('£2,100') # 2096    annual efficiency £ total
       end
+
     end
 
     context "clicking the 'Analysis' tab" do
