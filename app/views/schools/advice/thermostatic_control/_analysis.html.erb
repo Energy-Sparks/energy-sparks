@@ -56,7 +56,13 @@
 
 <%= render 'schools/advice/section_title', section_id: 'how_to_calculate_a_theoretical_daily_gas_consumption_using_the_model', section_title: t('advice_pages.thermostatic_control.analysis.how_to_calculate_a_theoretical_daily_gas_consumption_using_the_model') %>
 
-<%= t('advice_pages.thermostatic_control.analysis.for_energy_experts_html') %>
+<%= t('advice_pages.thermostatic_control.analysis.for_energy_experts_html',
+  a: @heating_thermostatic_analysis.average_heating_school_day_a.round(0),
+  b: @heating_thermostatic_analysis.average_heating_school_day_b.round(1),
+  predicted_kwh_for_high: @heating_thermostatic_analysis.predicted_kwh_for_high_average_outside_temperature.round(0),
+  predicted_kwh_for_low: @heating_thermostatic_analysis.predicted_kwh_for_low_average_outside_temperature.round(0),
+  temperature_high: @heating_thermostatic_analysis.average_outside_temperature_high,
+  temperature_low: @heating_thermostatic_analysis.average_outside_temperature_low) %>
 
 <%= render 'schools/advice/section_title', section_id: 'using_days_with_large_diurnal_range_to_understand_thermostatic_control', section_title: t('advice_pages.thermostatic_control.analysis.using_days_with_large_diurnal_range_to_understand_thermostatic_control') %>
 
