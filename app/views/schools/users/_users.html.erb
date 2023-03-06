@@ -19,17 +19,17 @@
           <td><%= y_n(user.confirmed?) %></td>
           <td><%= y_n(user.contact_for_school) %></td>
           <td><%= user.staff_role.try(:translated_title) %></td>
-          <% if EnergySparks::FeatureFlags.active?(:redirect_to_preferred_locale) %>
-            <td><%= I18n.t("languages.#{user.preferred_locale}") %></td>
-          <% end %>
+          <td><%= I18n.t("languages.#{user.preferred_locale}") %></td>
           <td>
-            <div class="btn-group">
+            <div class="btn-group nowrap">
               <%= link_to(t('common.labels.edit'), edit_school_user_path(@school, user), class: 'btn btn-primary btn-sm') if can?(:edit, user) %>
               <%= link_to(t('common.labels.delete'), school_user_path(@school, user), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger btn-sm') if can?(:delete, user) %>
               <% if current_user.admin? && !user.confirmed? %>
                 <%= button_to t('schools.users.index.resend_confirmation'), admin_user_confirmation_path(user, school: true), class: 'btn btn-warning btn-sm' %>
               <% end %>
-            </div>
+              <% if can?(:edit, user) && !user.school_admin? %>
+                <%= link_to(t('schools.users.index.make_school_admin'), make_school_admin_school_user_path(@school, user), method: :post, data: { confirm: t('common.confirm') }, class: 'btn btn-danger btn-sm') %>
+              <% end %>
           </td>
       </tr>
     <% end %>
