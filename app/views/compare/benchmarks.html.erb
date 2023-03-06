@@ -1,10 +1,21 @@
+<% content_for :page_title, t('compare.benchmarks.title') %>
 
+<h1><%= t('compare.benchmarks.title') %></h1>
+
+<p><%= t('compare.benchmarks.description') %></p>
 
 <% @benchmark_groups.each do |benchmark_group| %>
-  <h2><%= benchmark_group[:name] %></h2>
-  <ul>
-    <% benchmark_group[:benchmarks].each do |benchmark, title| %>
-      <li><%= link_to title, benchmark_path(benchmark_type: benchmark, benchmark: @benchmark_filter) %></li>
-    <% end %>
-  </ul>
+  <h4><%= benchmark_group[:name] %></h4>
+  <div class="row">
+    <div class="col-sm-6">
+      <ul>
+        <% benchmark_group[:benchmarks].each do |benchmark, title| %>
+          <li><%= link_to title, benchmark_path(benchmark_type: benchmark, benchmark: @benchmark_filter) %></li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="col-sm-6">
+      <%= benchmark_group[:description] || "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." %>
+    </div>
+  </div>
 <% end %>
