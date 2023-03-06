@@ -1,0 +1,8 @@
+<% @benchmark_groups.each do |benchmark_group| %>
+  <h2><%= benchmark_group[:name] %></h2>
+  <ul>
+    <% benchmark_group[:benchmarks].each do |benchmark, title| %>
+      <li><%= link_to title, benchmark_path(benchmark_type: benchmark, benchmark: @benchmark_filter) %></li>
+    <% end %>
+  </ul>
+<% end %>
