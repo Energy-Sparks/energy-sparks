@@ -1,0 +1,7 @@
+cy:
+  analytics:
+    modelling:
+      heating:
+        no_heating: dim gwres
+        on_time: ar amser
+        too_early: rhy gynnar
