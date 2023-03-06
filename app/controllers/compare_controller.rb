@@ -34,7 +34,7 @@ class CompareController < ApplicationController
   end
 
   def benchmark_count
-    # Count is all available benchmarks for guest users only
+    # Count is of all available benchmarks for guest users only
     @benchmark_count ||= Benchmarking::BenchmarkManager.structured_pages(user_type: user_type_hash_guest).inject(0) { |count, group| count + group[:benchmarks].count }
   end
 
