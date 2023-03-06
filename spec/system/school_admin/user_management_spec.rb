@@ -401,7 +401,7 @@ describe 'School admin user management' do
 
       context 'when displaying users' do
         it 'shows preferred language' do
-          school_admin = create(:school_admin, name: "New admin", school: school, preferred_locale: :cy)
+          school_admin = create(:school_admin, school: school, preferred_locale: :cy)
           click_on 'Manage users'
           within '.school_admin' do
             expect(page).to have_content('Welsh')
