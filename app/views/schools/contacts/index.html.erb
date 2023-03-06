@@ -30,6 +30,7 @@
         <th><%= t('schools.contacts.index.role') %></th>
         <th><%= t('schools.contacts.index.mobile_phone_number') %></th>
         <th><%= t('schools.contacts.index.email_address') %></th>
+        <th><%= t('schools.users.form.preferred_locale') %></th>
         <th><%= t('schools.contacts.index.actions') %></th>
       </tr>
     </thead>
@@ -40,6 +41,7 @@
           <td><%= contact.staff_role.try(:translated_title) %></td>
           <td><%= contact.mobile_phone_number %></td>
           <td><%= contact.email_address %></td>
+          <td><%= I18n.t("languages.#{contact.preferred_locale}") %></td>
           <td>
             <div class="btn-group">
               <%= link_to t('common.labels.edit'), edit_school_contact_path(@school, contact), class: 'btn btn-warning' %>
