@@ -29,7 +29,31 @@
 
 <%= t('advice_pages.hot_water.analysis.hot_water_efficiency_improvement_options_table_footer_html') %>
 
-<strong><%= t('advice_pages.hot_water.analysis.improved_boiler_control_title') %></strong>
+<% if @gas_hot_water.investment_choices.point_of_use_electric.saving_£ > @gas_hot_water.investment_choices.gas_better_control.saving_£ &&
+     @gas_hot_water.investment_choices.point_of_use_electric.saving_co2 > @gas_hot_water.investment_choices.gas_better_control.saving_co2 %>
+     <p>
+       <%= t('advice_pages.hot_water.analysis.options.point_of_use_best') %>
+     </p>
+<% elsif @gas_hot_water.investment_choices.point_of_use_electric.saving_£ < @gas_hot_water.investment_choices.gas_better_control.saving_£ &&
+     @gas_hot_water.investment_choices.point_of_use_electric.annual_£ > @gas_hot_water.investment_choices.existing_gas.annual_£ &&
+     @gas_hot_water.investment_choices.point_of_use_electric.saving_co2 > @gas_hot_water.investment_choices.gas_better_control.saving_co2 %>
+     <p>
+       <%= t('advice_pages.hot_water.analysis.options.point_of_use_co2_saving') %>
+     </p>
+<% elsif @gas_hot_water.investment_choices.point_of_use_electric.saving_£ < @gas_hot_water.investment_choices.gas_better_control.saving_£ &&
+  @gas_hot_water.investment_choices.point_of_use_electric.annual_£ < @gas_hot_water.investment_choices.existing_gas.annual_£ &&
+  @gas_hot_water.investment_choices.point_of_use_electric.saving_co2 > @gas_hot_water.investment_choices.gas_better_control.saving_co2 %>
+    <p>
+       <%= t('advice_pages.hot_water.analysis.options.point_of_use_larger_co2_benefit') %>
+    </p>
+<% elsif @gas_hot_water.investment_choices.point_of_use_electric.saving_£ < @gas_hot_water.investment_choices.gas_better_control.saving_£ &&
+  @gas_hot_water.investment_choices.point_of_use_electric.saving_co2 < @gas_hot_water.investment_choices.gas_better_control.saving_co2 %>
+    <p>
+       <%= t('advice_pages.hot_water.analysis.options.point_of_use_not_worthwhile') %>
+    </p>
+<% end %>
+
+<p><strong><%= t('advice_pages.hot_water.analysis.improved_boiler_control_title') %></strong></p>
 <%= t('advice_pages.hot_water.analysis.improved_boiler_control_content_html',
       gas_better_control_saving_gbp: format_unit(@gas_hot_water.investment_choices.gas_better_control.saving_£, :£),
       gas_better_control_saving_co2: format_unit(@gas_hot_water.investment_choices.gas_better_control.saving_co2, :co2),
@@ -37,7 +61,7 @@
   )
 %>
 
-<strong><%= t('advice_pages.hot_water.analysis.point_of_use_electric_heater_title') %></strong>
+<p><strong><%= t('advice_pages.hot_water.analysis.point_of_use_electric_heater_title') %></strong></p>
 <%= t('advice_pages.hot_water.analysis.point_of_use_electric_heater_content_html',
        point_of_use_electric_saving_gbp: format_unit(@gas_hot_water.investment_choices.point_of_use_electric.saving_£, :£),
        point_of_use_electric_saving_co2: format_unit(@gas_hot_water.investment_choices.point_of_use_electric.saving_co2, :co2),
