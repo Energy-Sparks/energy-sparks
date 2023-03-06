@@ -31,6 +31,11 @@ en:
         introduction_html: |-
           <p>This section gives a more detailed analysis of how to improve the efficiency of your school’s hot water system.</p>
           <p>The following sections provide more background and analysis on your hot water efficiency including:</p>
+        options:
+          point_of_use_best: Our analysis is showing that for your school, investing in point of use electric heaters would be the best option.
+          point_of_use_co2_saving: Our analysis is showing that for your school, investing in point of use electric heaters would cost more money to run than your current setup. However, it would reduce your CO2 emissions by more.
+          point_of_use_larger_co2_benefit: Our analysis is showing that for your school, investing in point of use electric heaters would save less money each year than improving your boiler control. However, it would reduce your CO2 emissions by more.
+          point_of_use_not_worthwhile: Our analysis is showing that for your school, investing in point of use electric heaters would be unlikely to be the best option.
         point_of_use_electric_heater_content_html: |-
           <p>This option often leads to the largest savings but for most schools it does require a significant capital investment.</p>
           <p>
@@ -41,17 +46,21 @@ en:
         summary_notice: 'Note: if your school has a gas heated swimming pool, it is more difficult for us to assess efficiency.'
         table:
           columns:
-            annual_co2_kg: Annual CO2/kg
-            annual_cost_gbp: Annual Cost £
-            annual_kwh: Annual kWh
+            annual: Annual use
+            annual_co2_kg: CO2/kg
+            annual_cost_gbp: "£"
+            annual_kwh: kWh
             capital_cost: Capital Cost
+            capital_cost_gbp: "£"
             choice: Choice
             efficiency: Efficiency
-            payback_years: Payback (years)
-            saving_co2: Saving CO2
-            saving_co2_percent: Saving CO2 percent
-            saving_gbp: Saving £
-            saving_gbp_percent: Saving £ percent
+            payback: Payback
+            payback_years: Years
+            saving: Annual saving
+            saving_co2: CO2/kg
+            saving_co2_percent: "%"
+            saving_gbp: Cost
+            saving_gbp_percent: "%"
           rows:
             current_setup: Current setup
             improved_boiler_control: Improved boiler control
@@ -69,10 +78,7 @@ en:
         circulatory_gas_based_hot_water: Circulatory gas-based hot water systems in schools are generally very inefficient, averaging about 15%
         for_more_detail_html: For more detail, <a href='%{link}'>compare with other schools in your group</a>
         how_do_you_compare: How do you compare?
-        improving_the_way_html: |-
-          Improving the way that you control your hot water could reduce your annual gas consumption by %{gas_better_control_saving_kwh_percent}
-          or you could investigate replacing your current hot water system with point of use electric heaters which would save
-          %{gas_point_of_use_electric_saving_kwh_percent}
+        improving_the_way_html: If you followed our recommendations to improve the way that you control your hot water, you could reduce your annual gas consumption for hot water by %{gas_better_control_saving_kwh_percent}. Or you could investigate replacing your current hot water system with point of use electric heaters.
         next_steps_html: |-
           To reduce the amount of energy used to heat water in your school:
           <ul>
@@ -106,4 +112,22 @@ en:
           Adjust your boiler settings to ensure that you are only heating water when it is needed.
         title: What do we mean by hot water gas use?
         we_estimate_your_hot_water_efficiency_to_be_html: We estimate your hot water efficiency to be %{efficiency_percent}
+      not_relevant:
+        other_reasons:
+          reason: |-
+            <p>We cannot generate a hot water gas use analysis for your school.</p>
+            <p>This could be for a number of reasons:</p>
+            <ul>
+              <li>we do not have enough gas consumption data for your school to perform the analysis, in which case you could try checking again after the next summer holidays</li>
+              <li>our preliminary analysis shows that it is unlikely your school uses a significant amount of gas to heat hot water</li>
+              <li>you may already follow our advice and have switched off your hot water during the holidays. Well done!</li>
+            </ul>
+          title: Unable to perform hot water analysis
+        swimming_pool:
+          reason: |-
+            <p>
+            You've told us that your school has a swimming pool. Because of this we cannot accurately
+            estimate how much gas you use for hot water.
+            </p>
+          title: Unable to perform hot water analysis
       page_title: Hot water usage analysis
