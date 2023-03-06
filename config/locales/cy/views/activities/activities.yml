@@ -52,6 +52,8 @@ cy:
         many: ac angen sgorio %{count} o bwyntiau i gyrraedd safle %{place_to_reach}
         other: ac angen sgorio %{count} o bwyntiau i gyrraedd safle %{place_to_reach}
       choose_your_next_activity: Dewiswch eich gweithgaredd nesaf o'r awgrymiadau isod.
+      prizes: Gallai ein hysgolion â'r sgorau uchaf eleni ennill hyd at £1250 tuag at welliant arbed ynni o'ch dewis chi
+      prizes_link: darllen rhagor
       recorded_this_year:
         one: Rwyt ti wedi recordio 1 gweithgaredd hyd yn hyn eleni
         two: Rwyt ti wedi recordio %{count} weithgaredd hyd yn hyn eleni

@@ -1,0 +1,55 @@
+cy:
+  calendars:
+    calendar_actions:
+      add_new_event: Ychwanegu digwyddiad newydd
+    calendar_events:
+      edit:
+        title: Golygu digwyddiad
+      form:
+        event_type: Math o Ddigwyddiad
+      index:
+        add_new_event: Ychwanegu digwyddiad newydd
+        calendar_events_list: Mae hwn yn dangos y digwyddiadau calendr mewn rhestr - cliciwch ar y teitl i olygu'r digwyddiad
+        calendar_view: Gwedd calendr
+      new:
+        title: Creu digwyddiad newydd
+    calendar_links:
+      view_older_events: Gweld pob digwyddiad hŷn
+      view_older_events_and_bank_holidays: Gweld pob digwyddiad hŷn a gwyliau banc
+    current_events:
+      end_date: Dyddiad Gorffen
+      last_updated: Diweddarwyd Ddiwethaf
+      start_date: Dyddiad Cychwyn
+      status: Statws
+      type: Math
+    event_modal:
+      calendar_event: Digwyddiad Calendr
+      end_date: Dyddiad Gorffen
+      event_type: Math o Ddigwyddiad
+      save_changes: Cadw Newidiadau
+      start_date: Dyddiad Cychwyn
+    legend:
+      bank_holiday: Gŵyl y Banc
+      holiday: Gwyliau
+      in_school: yn yr ysgol
+      inset_day: Diwrnod HMS
+      out_school: allan o'r ysgol
+      term_time: Yn Ystod y Tymor Ysgol
+      title: Allwedd
+    resync:
+      calendar: Calendr
+      error: Gwall
+      events_created: Digwyddiadau wedi'u creu
+      events_deleted: Digwyddiadau wedi'u dileu
+      failed_to_resync: Ni fu modd ailgysoni
+      successfully_resynced: Wedi ailgysoni'n llwyddiannus
+      title: Ailgysoni wedi'i gwblhau ar gyfer %{calendar_title}
+    show:
+      add_new_event: Ychwanegu digwyddiad newydd
+      all_calendars: Pob calendr
+      amend_existing_events_message: Gallwch ddiwygio digwyddiadau presennol, fel y tymhorau ysgol drwy glicio arnynt, diweddaru'r dyddiadau a chadw'r newidiadau
+      calendar_view: Gwedd calendr
+      confirm_message: Bydd hyn yn copïo'r holl ddigwyddiadau sydd wedi'u golygu yn y 7 diwrnod i galendrau plant. Ydych chi'n siŵr?
+      current_events: Digwyddiadau presennol
+      title: "Calendr %{calendar_title}"
+      update_dependent_schools: Diweddaru ysgolion dibynnol
