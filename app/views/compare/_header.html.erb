@@ -5,7 +5,7 @@
 <div class="row">
   <div class="col-sm-6">
     <p><%= t("compare.intro") %></p>
-    <p><%= t("compare.options_html", schools_count: School.data_visible.count, benchmarks_count: 'Y') %></p>
+    <p><%= t("compare.options_html", school_count: School.data_visible.count, benchmark_count: @benchmark_count) %></p>
   </div>
   <div class="col-sm-6">
     <ul class="fa-ul">

@@ -5,8 +5,9 @@ class CompareController < ApplicationController
   skip_before_action :authenticate_user!
 
   before_action :get_school_group
-  before_action :latest_benchmark_run
-  before_action :content_manager
+  before_action :latest_benchmark_run, except: [:index]
+  before_action :content_manager, except: [:index]
+  before_action :benchmark_count, only: [:index]
   before_action :benchmark_groups, only: [:benchmarks]
 
   # filters
@@ -30,6 +31,11 @@ class CompareController < ApplicationController
 
   def content_manager
     @content_manager ||= Benchmarking::BenchmarkContentManager.new(@latest_benchmark_run.run_date)
+  end
+
+  def benchmark_count
+    # Count is all available benchmarks for guest users only
+    @benchmark_count ||= Benchmarking::BenchmarkManager.structured_pages(user_type: user_type_hash_guest).inject(0) { |count, group| count + group[:benchmarks].count }
   end
 
   def benchmark_groups
