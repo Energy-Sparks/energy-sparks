@@ -5,6 +5,7 @@ shared_examples "a compare search header" do |intro: |
     expect(page).to have_content "School Comparison Tool"
     expect(page).to have_content "Identify examples of best practice"
     expect(page).to have_content intro
+    expect(page).to have_content "Use options below to compare 1 schools against 1 benchmarks"
   end
 end
 
@@ -28,18 +29,23 @@ shared_examples "a compare search filter page" do |tab:, show_your_group_tab:tru
 end
 
 describe 'compare pages', :compare, type: :system do
+  let(:school_group)      { create(:school_group) }
+  let!(:school)           { create(:school, school_group: school_group)}
+  let(:benchmark_groups)  { [ { name: 'cat1', benchmarks: { page_a: 'Page A'} } ] }
+
   before do
+    expect(Benchmarking::BenchmarkManager).to receive(:structured_pages).at_least(:once).and_return(benchmark_groups)
     sign_in(user) if user
     visit compare_path
   end
 
   context "Logged in user with school group" do
-    let(:user) { create(:user, school_group: create(:school_group)) }
+    let(:user) { create(:user, school_group: school_group) }
 
     it_behaves_like "a compare search header", intro: "View how schools within the same MAT"
     it_behaves_like "a compare search filter page", tab: 'Your group'
 
-    context "'Your group' filter page" do
+    context "'Your group' filter tab" do
       before { click_on 'Your group' }
 
       it_behaves_like "a compare search header", intro: "View how schools within the same MAT"
@@ -56,14 +62,14 @@ describe 'compare pages', :compare, type: :system do
       end
     end
 
-    context "'Categories' filter page" do
+    context "'Categories' filter tab" do
       before { click_on 'Choose categories' }
 
       it_behaves_like "a compare search header", intro: "View how schools within the same MAT"
       it_behaves_like "a compare search filter page", tab: 'Choose categories'
     end
 
-    context "'Groups' filter page" do
+    context "'Groups' filter tab" do
       before { click_on 'Choose groups' }
 
       it_behaves_like "a compare search header", intro: "View how schools within the same MAT"
