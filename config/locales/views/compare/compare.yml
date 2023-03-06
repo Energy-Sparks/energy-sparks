@@ -10,11 +10,9 @@ en:
       tab: Choose groups
     intro: View how schools within the same MAT or local authority area compare across a range of energy performance benchmarks
     limit_by_school_type: 'Limit results to include schools of type:'
-    options: Use options below to compare %{schools_count} schools against %{benchmarks_count} benchmarks
-    summary_html: |
-      <ul>
-        <li>Identify examples of best practice</li>
-        <li>Identify schools needing most support</li>
-        <li>Compare individual performance against schools with similar characteristics</li>
-      </ul>
+    options_html: Use options below to compare <strong>%{schools_count}</strong> schools against <strong>%{benchmarks_count}</strong> benchmarks
+    summary:
+      item_1: Identify examples of best practice
+      item_2: Identify schools needing most support
+      item_3: Compare individual performance against schools with similar characteristics
     title: School Comparison Tool
