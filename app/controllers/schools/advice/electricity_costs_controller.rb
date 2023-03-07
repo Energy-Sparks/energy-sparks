@@ -3,13 +3,16 @@ module Schools
     class ElectricityCostsController < AdviceBaseController
       protect_from_forgery except: :meter_costs
 
+      before_action :set_tariff_coverage, only: [:insights, :analysis]
+      before_action :set_next_steps, only: [:insights]
+      before_action :set_one_year_breakdown_chart, only: [:analysis, :meter_costs]
+
       def insights
+        @annual_costs = costs_service.annual_costs
       end
 
       def analysis
         @meters = @school.meters.active.electricity
-        @complete_tariff_coverage = costs_service.complete_tariff_coverage?
-        @periods_with_missing_tariffs = costs_service.periods_with_missing_tariffs
         @annual_costs = costs_service.annual_costs
         @multiple_meters = costs_service.multiple_meters?
         if @multiple_meters
@@ -29,7 +32,6 @@ module Schools
           @mpan_mprn = params[:mpan_mprn]
           @label = meter.name_or_mpan_mprn
         end
-        load_advice_page
         @analysis_dates = analysis_dates
         respond_to do |format|
           format.js
@@ -37,6 +39,31 @@ module Schools
       end
 
       private
+
+      def set_tariff_coverage
+        @complete_tariff_coverage = costs_service.complete_tariff_coverage?
+        @periods_with_missing_tariffs = costs_service.periods_with_missing_tariffs
+      end
+
+      def set_next_steps
+        @advice_page_insights_next_steps = @complete_tariff_coverage ? nil : I18n.t('advice_pages.electricity_costs.insights.next_steps_html', link: school_user_tariffs_path(@school)).html_safe
+      end
+
+      def set_one_year_breakdown_chart
+        dates = analysis_dates
+        days_of_data = dates.end_date - dates.start_date
+        case days_of_data
+        when 1..13
+          @one_year_breakdown_chart = :electricity_cost_1_year_accounting_breakdown_group_by_day
+          @one_year_breakdown_chart_key = :cost_1_year_accounting_breakdown_group_by_day
+        when 14..79
+          @one_year_breakdown_chart = :electricity_cost_1_year_accounting_breakdown_group_by_week
+          @one_year_breakdown_chart_key = :cost_1_year_accounting_breakdown_group_by_week
+        else
+          @one_year_breakdown_chart = :electricity_cost_1_year_accounting_breakdown
+          @one_year_breakdown_chart_key = :cost_1_year_accounting_breakdown
+        end
+      end
 
       def aggregate_meter_label
         I18n.t('advice_pages.electricity_costs.analysis.meter_breakdown.whole_school')
@@ -56,6 +83,10 @@ module Schools
 
       def advice_page_key
         :electricity_costs
+      end
+
+      def advice_page_fuel_type
+        :electricity
       end
 
       def costs_service

@@ -26,12 +26,31 @@ en:
           meter_title: Electricity cost components for the last year for %{meter}
           subtitle_html: This chart shows the bill components for the 12 months ending on <span class='end-date'>%{end_date}</span> for the whole school
           title: Electricity cost components for the last year
+        cost_1_year_accounting_breakdown_group_by_day:
+          meter_subtitle_html: This chart shows the bill components for the period ending on <span class='end-date'>%{end_date}</span>
+          meter_title: Electricity cost components for the last two weeks for %{meter}
+          subtitle_html: This chart shows the bill components for the period ending on <span class='end-date'>%{end_date}</span> for the whole school
+          title: Electricity cost components for the last two weeks
+        cost_1_year_accounting_breakdown_group_by_week:
+          meter_subtitle_html: This chart shows the bill components for the period ending on <span class='end-date'>%{end_date}</span>
+          meter_title: Electricity cost components for the last few weeks for %{meter}
+          subtitle_html: This chart shows the bill components for the period ending on <span class='end-date'>%{end_date}</span> for the whole school
+          title: Electricity cost components for the last few weeks
         cost_comparison_last_2_years_accounting:
           meter_title: Electricity cost comparison for last 2 years for %{meter}
           subtitle_html: This chart compares your monthly consumption for the 12 months ending on <span class='end-date'>%{end_date}</span> and the previous 12 months
           title: Electricity cost comparison for last 2 years
       insights:
-        next_steps: Next steps
+        current_costs:
+          title: Your current costs
+        intro_html: |-
+          <p>Your electricity bill is broken down into a variety of different charges. Some of these are fixed standing charges, while others vary depending on how much electricity you use and when you use it.
+          </p>
+          <p>
+          Understanding these charges can help you reduce your costs and may help with bill validation.
+          </p>
+        link: Learn more
+        next_steps_html: To get a better estimate of your costs, <a href="%{link}">update your tariff information</a>
       page_title: Electricity cost analysis
       tables:
         columns:

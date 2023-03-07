@@ -1,6 +1,6 @@
-<%= component 'chart', chart_type: :electricity_cost_1_year_accounting_breakdown, analysis_controls: true, school: school, chart_config: create_chart_config(school, :electricity_cost_1_year_accounting_breakdown, mpan_mprn) do |c| %>
-  <% c.with_title { advice_t('electricity_costs.charts.cost_1_year_accounting_breakdown.meter_title', meter: label) } %>
-  <% c.with_subtitle { advice_t('electricity_costs.charts.cost_1_year_accounting_breakdown.meter_subtitle_html', end_date: analysis_dates.end_date.to_s(:es_short)) } %>
+<%= component 'chart', chart_type: one_year_breakdown_chart, analysis_controls: true, school: school, chart_config: create_chart_config(school, one_year_breakdown_chart, mpan_mprn) do |c| %>
+  <% c.with_title { advice_t("electricity_costs.charts.#{one_year_breakdown_chart_key}.meter_title", meter: label) } %>
+  <% c.with_subtitle { advice_t("electricity_costs.charts.#{one_year_breakdown_chart_key}.meter_subtitle_html", end_date: analysis_dates.end_date.to_s(:es_short)) } %>
 <% end %>
 
 <% if analysis_dates.months_of_data > 23 %>

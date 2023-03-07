@@ -1,20 +1,20 @@
 <%= render 'tariff_note', school: @school, analysis_dates: @analysis_dates, complete_tariff_coverage: @complete_tariff_coverage, periods_with_missing_tariffs: @periods_with_missing_tariffs %>
 
-<p><%= advice_t('electricity_costs.analysis.summary') %></p>
+<% if @multiple_meters || @analysis_dates.months_of_data > 23 %>
+  <p><%= advice_t('electricity_costs.analysis.summary') %></p>
+<% end %>
 
 <ul>
   <% if @multiple_meters %>
     <li>
       <%= link_to(advice_t('electricity_costs.analysis.cost_breakdown_by_meter.title', period: format_unit(@annual_costs.days/365.0, :years)), '#cost-breakdown-by-meter') %>
     </li>
-    <% if @multiple_meters %>
-      <li><%= link_to(advice_t('electricity_costs.analysis.meter_breakdown.title'), '#meter-breakdown') %></li>
-    <% end %>
+    <li><%= link_to(advice_t('electricity_costs.analysis.meter_breakdown.title'), '#meter-breakdown') %></li>
   <% else %>
-    <li><%= link_to( advice_t('electricity_costs.analysis.cost_breakdown_by_charge.title', period: format_unit(@annual_costs.days/365.0, :years)), '#cost-breakdown-by-charge') %></li>
     <% if @analysis_dates.months_of_data > 23 %>
+      <li><%= link_to( advice_t('electricity_costs.analysis.cost_breakdown_by_charge.title', period: format_unit(@annual_costs.days/365.0, :years)), '#cost-breakdown-by-charge') %></li>
       <li><%= link_to(advice_t('electricity_costs.analysis.comparison.title'), '#comparison') %></li>
-      <% end %>
+    <% end %>
   <% end %>
 </ul>
 
@@ -25,9 +25,11 @@
     options_for_meter_select: @options_for_meter_select,
     default_meter: @aggregate_meter_adapter.mpan_mprn,
     default_meter_label: @aggregate_meter_adapter.name_or_mpan_mprn,
-    analysis_dates: @analysis_dates %>
+    analysis_dates: @analysis_dates,
+    one_year_breakdown_chart: @one_year_breakdown_chart,
+    one_year_breakdown_chart_key: @one_year_breakdown_chart_key %>
 <% else %>
-  <%= render 'cost_breakdown_by_charge', school: @school, analysis_dates: @analysis_dates, annual_costs: @annual_costs, show_school_total: true %>
+  <%= render 'cost_breakdown_by_charge', school: @school, analysis_dates: @analysis_dates, annual_costs: @annual_costs, one_year_breakdown_chart: @one_year_breakdown_chart, one_year_breakdown_chart_key: @one_year_breakdown_chart_key, show_school_total: true %>
   <% if @analysis_dates.months_of_data > 23 %>
     <%= render 'cost_comparison', school: @school, analysis_dates: @analysis_dates %>
   <% end %>

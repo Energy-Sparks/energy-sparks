@@ -10,5 +10,11 @@
 <% end %>
 
 <div id="meter-costs">
-  <%= render 'meter', mpan_mprn: default_meter, label: default_meter_label, school: school, analysis_dates: analysis_dates %>
+  <%= render 'meter',
+    mpan_mprn: default_meter,
+    label: default_meter_label,
+    school: school,
+    analysis_dates: analysis_dates,
+    one_year_breakdown_chart: one_year_breakdown_chart,
+    one_year_breakdown_chart_key: one_year_breakdown_chart_key %>
 </div>

@@ -34,6 +34,26 @@ RSpec.describe "electricity costs advice page", type: :system do
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
       it_behaves_like "an advice page tab", tab: "Insights"
+
+      it 'has the intro' do
+        expect(page).to have_content("Your electricity bill is broken down into a variety of different charges")
+      end
+      it 'displays a brief summary of total cost' do
+        expect(page).to have_content("We estimate your total electricity cost over the last 12 months to be £1,000")
+      end
+      context 'and incomplete tariffs' do
+        it 'displays warning about incomplete tariffs' do
+          expect(page).to have_content("Energy Sparks currently doesn't have a complete record of your real tariffs")
+        end
+      end
+      context 'and complete tariffs' do
+        let(:complete_tariff_coverage) { true }
+        it 'does not display warning about incomplete tariffs' do
+          expect(page).to_not have_content("Energy Sparks currently doesn't have a complete record of your real tariffs")
+          expect(page).to have_content("The information below provides a good estimate of your annual costs")
+        end
+      end
+
     end
     context "clicking the 'Analysis' tab" do
       before { click_on 'Analysis' }
