@@ -6,12 +6,13 @@ en:
         comparison:
           title: Cost comparison for last 2 years
         cost_breakdown_by_charge:
-          title: Cost breakdown by charges for the last %{period}
+          title: Cost breakdown by charge for the last %{period}
         cost_breakdown_by_meter:
-          title: Cost breakdown by meter for the last %{period}
+          intro: The following table summarises the total cost associated with each meter for the last %{period}
+          title: Total cost for the last %{period}
           whole_school: We estimate your total electricity cost over the last %{period} to be %{cost}.
         meter_breakdown:
-          title: Cost breakdown by meter
+          title: Cost breakdown
         summary: The following sections provide more background and analysis on your electricity costs
         tariff_note:
           good_estimate: The information below provides a good estimate of your annual costs for this meter based on meter tariff information which has been provided to Energy Sparks.
@@ -19,12 +20,12 @@ en:
           poor_estimate: Energy Sparks currently doesn't have a complete record of your real tariffs and is using default tariffs between %{period_start_and_end}. This means the costs on this page won't be accurate.
       charts:
         cost_1_year_accounting_breakdown:
-          meter_subtitle_html: This chart shows the bill components for the 12 months ending on <span class='end-date'>%{end_date}</span> for meter %{meter}
-          meter_title: Electricity cost components for the last year for a single meter
+          meter_subtitle_html: This chart shows the bill components for the 12 months ending on <span class='end-date'>%{end_date}</span>
+          meter_title: Electricity cost components for the last year for %{meter}
           subtitle_html: This chart shows the bill components for the 12 months ending on <span class='end-date'>%{end_date}</span> for the whole school
           title: Electricity cost components for the last year
         cost_comparison_last_2_years_accounting:
-          meter_title: Electricity cost comparison for last 2 years for a single meter
+          meter_title: Electricity cost comparison for last 2 years for %{meter}
           subtitle_html: This chart compares your monthly consumption for the 12 months ending on <span class='end-date'>%{end_date}</span> and the previous 12 months
           title: Electricity cost comparison for last 2 years
         cost_comparison_last_2_years_accounting_meter:
@@ -33,3 +34,9 @@ en:
       insights:
         next_steps: Next steps
       page_title: Electricity cost analysis
+      tables:
+        columns:
+          cost: Cost (£)
+          meter: Meter
+        labels:
+          total: Total

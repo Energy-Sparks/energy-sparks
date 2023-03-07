@@ -19,7 +19,7 @@
 </ul>
 
 <% if @multiple_meters %>
-  <%= render 'cost_breakdown_by_meter', school: @school, analysis_dates: @analysis_dates, annual_costs: @annual_costs %>
+  <%= render 'cost_breakdown_by_meter', school: @school, analysis_dates: @analysis_dates, annual_costs: @annual_costs, annual_costs_breakdown_by_meter: @annual_costs_breakdown_by_meter %>
   <%= render 'meter_breakdown', school: @school, meters: @meters, analysis_dates: @analysis_dates %>
 <% else %>
   <%= render 'cost_breakdown_by_charge', school: @school, analysis_dates: @analysis_dates, annual_costs: @annual_costs, show_school_total: true %>

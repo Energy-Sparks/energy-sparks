@@ -26,11 +26,16 @@ module Schools
       def annual_costs_breakdown_by_meter
         breakdown = {}
         reporting_meters.each do |meter|
-          breakdown[meter.mpan_mprn] = accounting_costs_service(meter).annual_cost
+          breakdown[meter_for_mpan(meter.mpan_mprn)] = accounting_costs_service(meter).annual_cost
         end
+        breakdown
       end
 
       private
+
+      def meter_for_mpan(mpan_mprn)
+        @school.meters.find_by_mpan_mprn(mpan_mprn)
+      end
 
       def aggregate_meter
         @meter_collection.aggregate_meter(@fuel_type)

@@ -1,1 +1,24 @@
-<%= render 'schools/advice/section_title', section_id: 'cost-breakdown-by-meter', section_title: advice_t('electricity_costs.analysis.cost_breakdown_by_meter.title', period: format_unit(@annual_costs.days/365.0, :years)) %>
+<%= render 'schools/advice/section_title', section_id: 'cost-breakdown-by-meter', section_title: advice_t('electricity_costs.analysis.cost_breakdown_by_meter.title', period: format_unit(annual_costs.days/365.0, :years)) %>
+
+<p>
+  <%= advice_t('electricity_costs.analysis.cost_breakdown_by_meter.intro', period: format_unit(annual_costs.days/365.0, :years)) %>
+</p>
+
+<table class="table table-sm advice-table table-with-totals">
+  <thead>
+    <th class="text-left"><%= advice_t('electricity_costs.tables.columns.meter') %></th>
+    <th class="text-right"><%= advice_t('electricity_costs.tables.columns.cost') %></th>
+  </thead>
+  <tbody>
+    <% annual_costs_breakdown_by_meter.sort{|a,b| a[0].name_or_mpan_mprn <=> b[0].name_or_mpan_mprn }.each do |meter, cost| %>
+      <tr>
+        <td class="text-left"><%= meter.name_or_mpan_mprn %></td>
+        <td class="text-right"><%= FormatEnergyUnit.format_pounds(:£, cost.£, :text, :approx_accountant, true) %></td>
+      </tr>
+    <% end %>
+    <tr>
+      <td><%= advice_t('electricity_costs.tables.labels.total') %></td>
+      <td><%= FormatEnergyUnit.format_pounds(:£, annual_costs.£, :text, :approx_accountant, true) %></td>
+    </tr>
+  </tbody>
+</table>

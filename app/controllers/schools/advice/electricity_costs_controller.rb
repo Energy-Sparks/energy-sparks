@@ -12,6 +12,7 @@ module Schools
         @complete_tariff_coverage = costs_service.complete_tariff_coverage?
         @periods_with_missing_tariffs = costs_service.periods_with_missing_tariffs
         @annual_costs = costs_service.annual_costs
+        @annual_costs_breakdown_by_meter = costs_service.annual_costs_breakdown_by_meter
         @analysis_dates = analysis_dates
       end
 
