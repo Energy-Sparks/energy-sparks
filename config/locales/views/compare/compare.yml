@@ -1,22 +1,25 @@
 ---
 en:
   compare:
-    categories:
+    benchmarks:
+      comparing: 'Comparing:'
+      description: Click on a benchmark to compare the selected schools
+      including_html: Including %{school_types} schools
+      schools_in_html: Schools in the <strong>%{school_group}</strong> group
+      title: Choose school comparison benchmark
+    index:
+      categories:
+        tab: Choose categories
+      group:
+        tab: Your group
+        title: Compare all schools within %{name}
+      groups:
+        tab: Choose groups
       intro: View how schools within the same MAT or local authority area compare across a range of energy performance benchmarks
-      tab: Choose categories
-    group:
-      intro: View how schools within the same MAT or local authority area compare across a range of energy performance benchmarks
-      tab: Your group
-      title: Compare all schools within %{name}
-    groups:
-      intro: View how schools within the same MAT or local authority area compare across a range of energy performance benchmarks
-      tab: Choose groups
+      options_html: Use options below to compare <strong>%{school_count}</strong> schools against <strong>%{benchmark_count}</strong> benchmarks
+      summary:
+        item_1: Identify examples of best practice
+        item_2: Identify schools needing most support
+        item_3: Compare individual performance against schools with similar characteristics
+      title: School Comparison Tool
     limit_by_school_type: 'Limit results to include schools of type:'
-    options: Use options below to compare %{schools_count} schools against %{benchmarks_count} benchmarks
-    summary_html: |
-      <ul>
-        <li>Identify examples of best practice</li>
-        <li>Identify schools needing most support</li>
-        <li>Compare individual performance against schools with similar characteristics</li>
-      </ul>
-    title: School Comparison Tool

@@ -1,0 +1,29 @@
+<% content_for :page_title, t('compare.benchmarks.title') %>
+
+<h1><%= t('compare.benchmarks.title') %></h1>
+
+<div class="bg-light p-3 mb-3 rounded border">
+  <p><%= t('compare.benchmarks.comparing') %></p>
+  <% if @school_group %>
+    <p><%= t('compare.benchmarks.schools_in_html', school_group: @school_group.name) %>
+  <% end %>
+  <p><%= t('compare.benchmarks.including_html', school_types: params[:school_types].map {|st| tag.strong(t('common.school_types.' + st))}.to_sentence.html_safe) %></p>
+</div>
+
+<p><%= t('compare.benchmarks.description') %></p>
+
+<% @benchmark_groups.each do |benchmark_group| %>
+  <h4><%= benchmark_group[:name] %></h4>
+  <div class="row">
+    <div class="col-sm-6">
+      <ul>
+        <% benchmark_group[:benchmarks].each do |benchmark, title| %>
+          <li><%= link_to title, results_compare_path(benchmark_type: benchmark, benchmark: @benchmark_filter) %></li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="col-sm-6">
+      <%= benchmark_group[:description] %>
+    </div>
+  </div>
+<% end %>

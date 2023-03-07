@@ -23,6 +23,6 @@
   input.badge-pill-toggle-#{$color} + label:active,
   input.badge-pill-toggle-#{$color}:checked + label {
     @include badge-variant($value);
-    border: none;
+    border: 1px solid transparent;
   }
 }
