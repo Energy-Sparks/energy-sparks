@@ -17,6 +17,7 @@ class CompareController < ApplicationController
 
   # pick benchmark
   def benchmarks
+    @school_group = SchoolGroup.find_by(slug: params[:school_group])
   end
 
   # display results
