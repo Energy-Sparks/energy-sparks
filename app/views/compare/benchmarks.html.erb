@@ -18,12 +18,12 @@
     <div class="col-sm-6">
       <ul>
         <% benchmark_group[:benchmarks].each do |benchmark, title| %>
-          <li><%= link_to title, benchmark_path(benchmark_type: benchmark, benchmark: @benchmark_filter) %></li>
+          <li><%= link_to title, results_compare_path(benchmark_type: benchmark, benchmark: @benchmark_filter) %></li>
         <% end %>
       </ul>
     </div>
     <div class="col-sm-6">
-      <%= benchmark_group[:description] || "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." %>
+      <%= benchmark_group[:description] %>
     </div>
   </div>
 <% end %>

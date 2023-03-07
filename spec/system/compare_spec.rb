@@ -28,6 +28,14 @@ shared_examples "a compare search filter page" do |tab:, show_your_group_tab:tru
   end
 end
 
+shared_examples "a compare school type filter" do |checked: School.school_types.keys|
+  it 'has school_type checkbox fields' do
+    checked.each do |school_type|
+      expect(page).to have_checked_field(I18n.t("common.school_types.#{school_type}"))
+    end
+  end
+end
+
 describe 'compare pages', :compare, type: :system do
   let(:school_group)      { create(:school_group) }
   let!(:school)           { create(:school, school_group: school_group)}
@@ -53,11 +61,7 @@ describe 'compare pages', :compare, type: :system do
       it { expect(page).to have_content "Compare all schools within #{user.school_group_name}" }
 
       context "search filter" do
-        it 'has a checked checkbox for each school type' do
-          School.school_types.keys.each do |school_type|
-            expect(page).to have_checked_field(I18n.t("common.school_types.#{school_type}"))
-          end
-        end
+        it_behaves_like "a compare school type filter"
         it { expect(page).to have_button "Compare schools" }
       end
     end

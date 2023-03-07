@@ -5,7 +5,7 @@ en:
       comparing: 'Comparing:'
       description: Click on a benchmark to compare the selected schools
       including_html: Including %{school_types} schools
-      schools_in_html: Schools in <strong>%{school_group}</strong>
+      schools_in_html: Schools in the <strong>%{school_group}</strong> group
       title: Choose school comparison benchmark
     index:
       categories:
