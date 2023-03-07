@@ -50,7 +50,8 @@ private
       :mobile_phone_number,
       :name,
       :user_id,
-      :staff_role_id
+      :staff_role_id,
+      user_attributes: [:id, :preferred_locale]
     )
   end
 
