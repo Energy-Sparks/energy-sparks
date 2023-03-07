@@ -8,7 +8,10 @@ module Schools
 
       def analysis
         @meters = @school.meters.active.electricity
-        @multiple_meters = @school.meters.active.electricity.count > 1
+        @multiple_meters = costs_service.multiple_meters?
+        @complete_tariff_coverage = costs_service.complete_tariff_coverage?
+        @periods_with_missing_tariffs = costs_service.periods_with_missing_tariffs
+        @annual_costs = costs_service.annual_costs
         @analysis_dates = analysis_dates
       end
 
@@ -25,6 +28,10 @@ module Schools
 
       def advice_page_key
         :electricity_costs
+      end
+
+      def costs_service
+        Schools::Advice::CostsService.new(@school, aggregate_school, :electricity)
       end
     end
   end

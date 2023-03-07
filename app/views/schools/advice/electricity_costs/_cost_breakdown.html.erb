@@ -1,4 +1,10 @@
-<%= render 'schools/advice/section_title', section_id: 'cost-breakdown', section_title: advice_t('electricity_costs.analysis.cost_breakdown.title') %>
+<%= render 'schools/advice/section_title', section_id: 'cost-breakdown', section_title: advice_t('electricity_costs.analysis.cost_breakdown.title', period: format_unit(@annual_costs.days/365.0, :years)) %>
+
+<% if local_assigns[:show_school_total] == true %>
+  <p>
+    <%= advice_t('electricity_costs.analysis.cost_summary.whole_school', cost: format_unit(@annual_costs.£, :£), period: format_unit(@annual_costs.days/365.0, :years)) %>
+  </p>
+<% end %>
 
 <%= component 'chart', chart_type: :electricity_cost_1_year_accounting_breakdown, school: school do |c| %>
   <% c.with_title { advice_t('electricity_costs.charts.cost_1_year_accounting_breakdown.title') } %>
