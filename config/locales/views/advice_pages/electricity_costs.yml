@@ -30,9 +30,6 @@ en:
           meter_title: Electricity cost comparison for last 2 years for %{meter}
           subtitle_html: This chart compares your monthly consumption for the 12 months ending on <span class='end-date'>%{end_date}</span> and the previous 12 months
           title: Electricity cost comparison for last 2 years
-        cost_comparison_last_2_years_accounting_meter:
-          subtitle_html: This chart compares your monthly consumption for the 12 months ending on <span class='end-date'>%{end_date}</span> and the previous 12 months for meter %{meter}
-          title: Electricity cost comparison for last 2 years for a single meter
       insights:
         next_steps: Next steps
       page_title: Electricity cost analysis
