@@ -12,6 +12,7 @@ en:
           title: Total cost for the last %{period}
           whole_school: We estimate your total electricity cost over the last %{period} to be %{cost}.
         meter_breakdown:
+          select: Select an option to view costs for the whole school or a specific meter
           title: Cost breakdown
           whole_school: Whole school
         summary: The following sections provide more background and analysis on your electricity costs
