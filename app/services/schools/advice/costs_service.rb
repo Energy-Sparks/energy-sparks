@@ -23,7 +23,7 @@ module Schools
         accounting_costs_service.annual_cost
       end
 
-      def annual_costs_breakdown
+      def annual_costs_breakdown_by_meter
         breakdown = {}
         reporting_meters.each do |meter|
           breakdown[meter.mpan_mprn] = accounting_costs_service(meter).annual_cost

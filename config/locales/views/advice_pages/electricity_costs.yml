@@ -5,10 +5,10 @@ en:
       analysis:
         comparison:
           title: Cost comparison for last 2 years
-        cost_breakdown:
-          title: Cost breakdown for the last %{period}
-        cost_summary:
-          title: Cost summary for the last %{period}
+        cost_breakdown_by_charge:
+          title: Cost breakdown by charges for the last %{period}
+        cost_breakdown_by_meter:
+          title: Cost breakdown by meter for the last %{period}
           whole_school: We estimate your total electricity cost over the last %{period} to be %{cost}.
         meter_breakdown:
           title: Cost breakdown by meter
