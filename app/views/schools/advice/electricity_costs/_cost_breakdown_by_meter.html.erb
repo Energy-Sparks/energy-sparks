@@ -17,8 +17,8 @@
       </tr>
     <% end %>
     <tr>
-      <td><%= advice_t('electricity_costs.tables.labels.total') %></td>
-      <td><%= FormatEnergyUnit.format_pounds(:£, annual_costs.£, :text, :approx_accountant, true) %></td>
+      <td class="text-left"><%= advice_t('electricity_costs.tables.labels.total') %></td>
+      <td class="text-right"><%= FormatEnergyUnit.format_pounds(:£, annual_costs.£, :text, :approx_accountant, true) %></td>
     </tr>
   </tbody>
 </table>
