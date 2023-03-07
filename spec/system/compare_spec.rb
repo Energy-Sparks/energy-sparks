@@ -28,21 +28,64 @@ shared_examples "a compare search filter page" do |tab:, show_your_group_tab:tru
   end
 end
 
-shared_examples "a compare school type filter" do |checked: School.school_types.keys|
+shared_examples "a compare school type form filter" do |school_types: School.school_types.keys|
   it 'has school_type checkbox fields' do
-    checked.each do |school_type|
+    school_types.each do |school_type|
       expect(page).to have_checked_field(I18n.t("common.school_types.#{school_type}"))
     end
+  end
+end
+
+shared_examples "a compare school type filter" do |school_types: School.school_types.keys|
+  it 'displays school type filters' do
+    school_types.each do |school_type|
+      expect(page).to have_content(I18n.t("common.school_types.#{school_type}"))
+    end
+  end
+end
+
+shared_context 'a compare index page' do
+  before do
+    expect(Benchmarking::BenchmarkManager).to receive(:structured_pages).at_least(:once).and_return(benchmark_groups)
+  end
+end
+
+shared_context 'a compare benchmark page' do
+  let(:content_manager)   { double(:content_manager) }
+  let!(:benchmark_run)    { BenchmarkResultSchoolGenerationRun.create(school: school, benchmark_result_generation_run: BenchmarkResultGenerationRun.create! ) }
+
+  before do
+    expect(Benchmarking::BenchmarkContentManager).to receive(:new).at_least(:once).and_return(content_manager)
+    expect(content_manager).to receive(:structured_pages).at_least(:once).and_return(benchmark_groups)
+  end
+end
+
+shared_context 'a compare results page' do
+  include_context 'a compare benchmark page'
+  let(:example_content) {
+    [
+      {:type=>:title, :content=>'Title goes here'},
+      {:type=>:html, :content=>'Some HTML'},
+      {:type=>:table_text, :content=>'Table text'},
+      {:type=>:analytics_html, :content=>'analytics html'},
+      {:type=>:chart_data, :content=>'chart data'},
+      {:type=>:table_composite, :content=> { header: ['column 1'], rows: [[{ formatted: 'row 1', raw: 'row 1'}], [{ formatted: school.name, urn: school.urn, drilldown_content_class: gas_fuel_alert_type.class_name }]] }},
+    ]
+  }
+  before do
+    expect(content_manager).to receive(:content).at_least(:once).and_return(example_content)
   end
 end
 
 describe 'compare pages', :compare, type: :system do
   let(:school_group)      { create(:school_group) }
   let!(:school)           { create(:school, school_group: school_group)}
-  let(:benchmark_groups)  { [ { name: 'cat1', benchmarks: { page_a: 'Page A'} } ] }
+
+  let(:benchmark_groups)  { [ { name: 'Benchmark group name', description: 'Benchmark description', benchmarks: { a_benchmark_key: 'Benchmark name'} } ] }
+
+  include_context "a compare index page"
 
   before do
-    expect(Benchmarking::BenchmarkManager).to receive(:structured_pages).at_least(:once).and_return(benchmark_groups)
     sign_in(user) if user
     visit compare_path
   end
@@ -61,8 +104,24 @@ describe 'compare pages', :compare, type: :system do
       it { expect(page).to have_content "Compare all schools within #{user.school_group_name}" }
 
       context "search filter" do
-        it_behaves_like "a compare school type filter"
-        it { expect(page).to have_button "Compare schools" }
+        it_behaves_like "a compare school type form filter"
+        context "Benchmark page" do
+          include_context 'a compare benchmark page'
+          before do
+            within '#group' do
+              click_on 'Compare schools'
+            end
+          end
+
+          context "displaying search filter summary" do
+            it_behaves_like "a compare school type filter"
+          end
+          context "listing benchmarks" do
+            it { expect(page).to have_content('Benchmark group name') }
+            it { expect(page).to have_content('Benchmark description') }
+            it { expect(page).to have_link('Benchmark name') } # add href here
+          end
+        end
       end
     end
 
