@@ -190,6 +190,16 @@ describe 'School admin user management' do
         staff.reload
         expect(staff.role).to eq('school_admin')
       end
+
+      context 'when displaying users' do
+        it 'shows preferred language' do
+          staff = create(:staff, school: school, preferred_locale: :cy)
+          click_on 'Manage users'
+          within '.staff' do
+            expect(page).to have_content('Welsh')
+          end
+        end
+      end
     end
 
     describe 'managing school admins' do
@@ -389,6 +399,15 @@ describe 'School admin user management' do
 
       end
 
+      context 'when displaying users' do
+        it 'shows preferred language' do
+          school_admin = create(:school_admin, school: school, preferred_locale: :cy)
+          click_on 'Manage users'
+          within '.school_admin' do
+            expect(page).to have_content('Welsh')
+          end
+        end
+      end
     end
   end
 

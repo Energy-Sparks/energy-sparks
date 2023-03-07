@@ -19,6 +19,7 @@ class AdvicePage < ApplicationRecord
 
   translates :learn_more, backend: :action_text
 
+  has_many :alert_types
   has_many :advice_page_activity_types
   has_many :activity_types, through: :advice_page_activity_types
 
@@ -32,6 +33,10 @@ class AdvicePage < ApplicationRecord
   scope :by_key, -> { order(key: :asc) }
 
   enum fuel_type: [:electricity, :gas, :storage_heater, :solar_pv]
+
+  def label
+    key.humanize
+  end
 
   def update_activity_type_positions!(position_attributes)
     transaction do

@@ -47,6 +47,13 @@ Rails.application.routes.draw do
 
   get 'benchmarks', to: 'benchmarks#index'
   get 'benchmark', to: 'benchmarks#show'
+
+  resource :compare, controller: 'compare', only: [:index] do
+    collection do
+      get :index, :benchmarks, :results
+    end
+  end
+
   get 'version', to: 'version#show'
 
   get 'sign_in_and_redirect', to: 'sign_in_and_redirect#redirect'
@@ -163,8 +170,11 @@ Rails.application.routes.draw do
             end
           end
         end
+        collection do
+          get :priorities
+          get :alerts
+        end
       end
-
 
       resources :analysis, controller: :analysis, only: [:index, :show]
 
@@ -343,6 +353,8 @@ Rails.application.routes.draw do
     post 'dcc_consents/:mpxn/grant', to: 'dcc_consents#grant', as: :grant_dcc_consent
     resources :consent_grants, only: [:index, :show]
     resources :meters, only: [:index]
+    get 'issues/meter_issues/:meter_id', to: 'issues#meter_issues'
+
     resources :consent_statements
     post 'consent_statements/:id/publish', to: 'consent_statements#publish', as: :publish_consent_statement
     resources :partners

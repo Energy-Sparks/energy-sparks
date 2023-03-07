@@ -27,7 +27,9 @@ RSpec.describe "advice pages", type: :system do
     end
     it 'shows the no fuel type page' do
       visit school_advice_path(school)
-      click_on key
+      within '#page-nav' do
+        click_on 'Total energy use'
+      end
       expect(page).to have_content('Unable to run requested analysis')
     end
   end
@@ -45,7 +47,9 @@ RSpec.describe "advice pages", type: :system do
     end
     it 'shows the not enough data page' do
       visit school_advice_path(school)
-      click_on key
+      within '#page-nav' do
+        click_on 'Total energy use'
+      end
       expect(page).to have_content('Not enough data to run analysis')
       expect(page).to_not have_content('Assuming we continue to regularly receive data')
     end
@@ -53,7 +57,9 @@ RSpec.describe "advice pages", type: :system do
       let(:data_available_from) { Date.today + 10 }
       it 'also includes the data' do
         visit school_advice_path(school)
-        click_on key
+        within '#page-nav' do
+          click_on 'Total energy use'
+        end
         expect(page).to have_content("Assuming we continue to regularly receive data we expect this analysis to be available after #{data_available_from.to_s(:es_short)}")
       end
     end
@@ -67,8 +73,8 @@ RSpec.describe "advice pages", type: :system do
     end
 
     it 'shows the advice pages index' do
-      expect(page).to have_content('Advice Pages')
-      expect(page).to have_link(key)
+      expect(page).to have_content('Energy efficiency advice')
+      expect(page).to have_link('Total energy use')
     end
 
     context 'when page is restricted' do
@@ -76,8 +82,10 @@ RSpec.describe "advice pages", type: :system do
         advice_page.update(restricted: true)
       end
       it 'does not show the restricted advice page' do
-        click_on key
-        expect(page).to have_content('Advice Pages')
+        within '#page-nav' do
+          click_on 'Total energy use'
+        end
+        expect(page).to have_content('Energy efficiency advice')
         expect(page).to have_content("Only an admin or staff user for this school can access this content")
       end
     end
@@ -94,8 +102,10 @@ RSpec.describe "advice pages", type: :system do
     end
 
     it 'shows the advice pages index' do
-      expect(page).to have_content('Advice Pages')
-      expect(page).to have_link(key)
+      expect(page).to have_content('Energy efficiency advice')
+      within '#page-nav' do
+        expect(page).to have_link('Total energy use')
+      end
     end
 
     context 'basic navigation checks' do
@@ -140,8 +150,7 @@ RSpec.describe "advice pages", type: :system do
         within '#manage_school_menu' do
           click_on 'Advice pages'
         end
-        expect(page).to have_content("Advice Pages")
-        expect(page).to have_content("All pages")
+        expect(page).to have_content("Energy efficiency advice")
       end
 
       it 'links from admin page' do

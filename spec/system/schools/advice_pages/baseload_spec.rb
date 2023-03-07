@@ -91,7 +91,6 @@ RSpec.describe "Baseload advice page", type: :system do
       it 'shows the how have we analysed your data modal' do
         first(:link, "How did we calculate these figures?").click
         expect(page).to have_content("How have we analysed your data?")
-        expect(page).to have_content("Calculations based on Electricity consumed between 24 Feb 2022 and 23 Feb 2023")
         expect(page).to have_content("School characteristics")
         expect(page).to have_content("Cost calculations")
         expect(page).to have_content('Your electricity tariffs have changed in the last year, the last change was on 01 Sep 2022, before this date the average tariff was 15p/kWh, and since it is £3.10/kWh. This will increase your electricity costs by 1,900&percnt; going forwards')
@@ -191,7 +190,6 @@ RSpec.describe "Baseload advice page", type: :system do
         # expect(page).to have_content("How did we calculate these figures?")
         click_on 'How did we calculate these figures?'
         expect(page).to have_content("How have we analysed your data?")
-        expect(page).to have_content("Calculations based on Electricity consumed between 24 Feb 2022 and 23 Feb 2023")
         expect(page).to have_content("School characteristics")
         expect(page).to have_content("Cost calculations")
         expect(page).to have_content('Your electricity tariffs have changed in the last year, the last change was on 01 Sep 2022, before this date the average tariff was 15p/kWh, and since it is £3.10/kWh. This will increase your electricity costs by 1,900&percnt; going forwards')

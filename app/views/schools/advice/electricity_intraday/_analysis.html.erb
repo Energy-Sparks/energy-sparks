@@ -17,7 +17,7 @@
   <% c.with_title { t('advice_pages.electricity_intraday.analysis.charts.comparison_chart_title') } %>
   <% c.with_subtitle { t('advice_pages.electricity_intraday.analysis.charts.comparison_chart_subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
   <% c.with_footer do %>
-    <p><%= t('advice_pages.electricity_intraday.analysis.charts.comparison_chart_explanation_html', school_type: t('analytics.school_types.' + @school.school_type).downcase) %></p>
+    <p><%= t('advice_pages.electricity_intraday.analysis.charts.comparison_chart_explanation_html', school_type: t('common.school_types.' + @school.school_type).downcase) %></p>
   <% end %>
 <% end %>
 

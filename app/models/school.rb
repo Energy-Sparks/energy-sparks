@@ -174,6 +174,7 @@ class School < ApplicationRecord
   scope :without_group,      -> { active.where(school_group_id: nil) }
   scope :without_scoreboard, -> { active.where(scoreboard_id: nil) }
   scope :awaiting_activation, -> { active.where("visible = ? or data_enabled = ?", false, false) }
+  scope :data_visible,        -> { data_enabled.visible }
 
   scope :with_config, -> { joins(:configuration) }
   scope :by_name,     -> { order(name: :asc) }
@@ -366,14 +367,14 @@ class School < ApplicationRecord
     all_school_admins + staff
   end
 
-  def activation_email_list
+  def activation_users
     users = []
     if school_onboarding && school_onboarding.created_user.present?
       users << school_onboarding.created_user
     end
     #also email admin, staff and group users
     users += all_adult_school_users.to_a
-    users.uniq.map(&:email)
+    users.uniq
   end
 
   def latest_content
@@ -557,7 +558,11 @@ class School < ApplicationRecord
   end
 
   def self.status_counts
-    { active: self.visible.count, data_visible: self.visible.data_enabled.count, invisible: self.not_visible.count, removed: self.inactive.count }
+    { active: self.visible.count, data_visible: self.data_visible.count, invisible: self.not_visible.count, removed: self.inactive.count }
+  end
+
+  def email_locales
+    country == 'wales' ? [:en, :cy] : [:en]
   end
 
   private

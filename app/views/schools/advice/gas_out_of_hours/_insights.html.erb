@@ -15,7 +15,7 @@
   <%= render 'schools/advice/section_title', section_id: 'current', section_title: t('advice_pages.gas_out_of_hours.insights.comparison.title') %>
 
   <p>
-    <%= t('advice_pages.gas_out_of_hours.insights.comparison.how_do_you_compare', school_type: t('analytics.school_types.' + @school.school_type).downcase) %>
+    <%= t('advice_pages.gas_out_of_hours.insights.comparison.how_do_you_compare', school_type: t('common.school_types.' + @school.school_type).downcase) %>
   </p>
 
   <%= render 'insights_table' %>

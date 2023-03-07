@@ -59,7 +59,8 @@ RSpec.describe "manage school alert contacts", type: :system do
   end
 
   context 'as admin' do
-    let(:user)          { create(:admin) }
+    let(:user)                  { create(:admin) }
+    let!(:alertable_user) { create(:staff, school: school) }
     it 'should be able to visit the alert contacts page and enter a new contact' do
       visit school_contacts_path(school)
       expect(page.current_path).to eq(school_contacts_path(school))
@@ -81,6 +82,25 @@ RSpec.describe "manage school alert contacts", type: :system do
       expect(page.current_path).to eq(school_contacts_path(school))
       expect(page).not_to have_content("Professor Yaffle")
       expect(page).to have_content("Prof Yaffle")
+    end
+
+    it 'should be able to create and edit a new contact for a user' do
+      visit school_contacts_path(school)
+      click_on "Next"
+      fill_in 'Mobile phone number', with: '078912345678'
+      select 'Welsh', from: 'Preferred language'
+      click_on "Enable alert"
+      expect(page.current_path).to eq(school_contacts_path(school))
+      alertable_user.reload
+      expect(alertable_user.contacts.first.mobile_phone_number).to eq('078912345678')
+      expect(alertable_user.preferred_locale).to eq('cy')
+      click_on "Edit"
+      fill_in 'Mobile phone number', with: '01122333444'
+      select 'English', from: 'Preferred language'
+      click_on "Update details"
+      alertable_user.reload
+      expect(alertable_user.contacts.first.mobile_phone_number).to eq('01122333444')
+      expect(alertable_user.preferred_locale).to eq('en')
     end
   end
 end

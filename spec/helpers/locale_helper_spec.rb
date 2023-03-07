@@ -72,4 +72,16 @@ describe LocaleHelper do
       end
     end
   end
+
+  describe '.t_role' do
+    before :each do
+      I18n.backend.store_translations("cy", {role: {guest: 'gwestai', school_admin: 'gweinyddwr ysgol'}})
+    end
+    it 'formats role' do
+      I18n.with_locale(:cy) do
+        expect(helper.t_role('guest')).to eq('gwestai')
+        expect(helper.t_role('school_admin')).to eq('gweinyddwr ysgol')
+      end
+    end
+  end
 end

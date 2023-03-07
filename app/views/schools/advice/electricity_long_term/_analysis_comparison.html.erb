@@ -6,7 +6,7 @@
 <% end %>
 
 <p>
-  <%= t('advice_pages.electricity_long_term.analysis.comparison.table_explanation', school_type: t('analytics.school_types.' + school.school_type)) %>
+  <%= t('advice_pages.electricity_long_term.analysis.comparison.table_explanation', school_type: t('common.school_types.' + school.school_type)) %>
 </p>
 
 <%= render 'comparison_with_benchmark_table', annual_usage: annual_usage, vs_exemplar: vs_exemplar, vs_benchmark: vs_benchmark, estimated_savings_vs_exemplar: estimated_savings_vs_exemplar, estimated_savings_vs_benchmark: estimated_savings_vs_benchmark %>

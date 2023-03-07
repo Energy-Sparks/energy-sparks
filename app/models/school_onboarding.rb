@@ -3,6 +3,7 @@
 # Table name: school_onboardings
 #
 #  contact_email            :string           not null
+#  country                  :integer          default("england"), not null
 #  created_at               :datetime         not null
 #  created_by_id            :bigint(8)
 #  created_user_id          :bigint(8)

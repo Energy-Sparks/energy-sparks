@@ -204,6 +204,21 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
         end
       end
 
+      context "when there is a data source with minimal attributes" do
+        let(:existing_data_source) { DataSource.create!(name: 'No info', organisation_type: nil) }
+        let(:setup_data) { existing_data_source }
+
+        it { expect(page).to have_content(existing_data_source.name) }
+        context "clicking manage" do
+          before do
+            within('table') do
+              click_on "Manage"
+            end
+          end
+          it { expect(page).to have_content(existing_data_source.name) }
+        end
+      end
+
       it { expect(page).to have_link('New data source') }
       context "creating a new data source" do
         before do

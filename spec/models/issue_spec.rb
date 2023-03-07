@@ -130,4 +130,32 @@ RSpec.describe Issue, type: :model do
       end
     end
   end
+
+  describe "#data_source_names" do
+    let(:data_source) { create(:data_source) }
+    let(:issue) { create(:issue, meters: meters) }
+    let(:meters) { [] }
+    subject(:data_source_names) { issue.data_source_names }
+
+    context "with no meters" do
+      it { expect(data_source_names).to be_nil }
+    end
+    context "with meters with no data source" do
+      let(:meters) { [create(:gas_meter), create(:gas_meter)] }
+      it { expect(data_source_names).to be_nil }
+    end
+    context "with meters with same data source" do
+      let(:meters) { [create(:gas_meter, data_source: data_source), create(:gas_meter, data_source: data_source)] }
+      it "displays unique data sources" do
+        expect(data_source_names).to eq(data_source.name)
+      end
+    end
+    context "with meters from multiple sources" do
+      let(:another_data_source) { create(:data_source) }
+      let(:meters) { [create(:gas_meter, data_source: data_source), create(:gas_meter, data_source: another_data_source)]}
+      it "joins data source names with a pipe" do
+        expect(data_source_names).to eq("#{data_source.name}|#{another_data_source.name}")
+      end
+    end
+  end
 end

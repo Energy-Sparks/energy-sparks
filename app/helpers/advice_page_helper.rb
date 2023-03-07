@@ -1,7 +1,7 @@
 # rubocop:disable Naming/AsciiIdentifiers
 module AdvicePageHelper
-  def advice_page_path(school, advice_page, tab = :insights)
-    polymorphic_path([tab, school, :advice, advice_page.key.to_sym])
+  def advice_page_path(school, advice_page, tab = :insights, params: {}, anchor: nil)
+    polymorphic_path([tab, school, :advice, advice_page.key.to_sym], params: params, anchor: anchor)
   end
 
   #Helper for the advice pages, passes a scope to the I18n.t API based on
@@ -68,6 +68,12 @@ module AdvicePageHelper
 
   def one_years_data?(start_date, end_date)
     (end_date - 364) >= start_date
+  end
+
+  def two_weeks_data?(start_date:, end_date:)
+    return false unless start_date && end_date
+
+    (end_date - start_date) >= 14
   end
 
   def months_analysed(start_date, end_date)
@@ -138,6 +144,30 @@ module AdvicePageHelper
     else
       :negative
     end
+  end
+
+  def advice_index_breadcrumbs(school, tab)
+    breadcrumbs = [{ name: I18n.t('advice_pages.breadcrumbs.root'), href: school_advice_path(school) }]
+    case tab
+    when :alerts
+      breadcrumbs << {
+        name: I18n.t('advice_pages.index.alerts.title'), href: alerts_school_advice_path(school)
+      }
+    when :priorities
+      breadcrumbs << {
+        name: I18n.t('advice_pages.index.priorities.title'), href: alerts_school_advice_path(school)
+      }
+    end
+    breadcrumbs
+  end
+
+  def display_advice_page?(school, fuel_type)
+    fuel_type.to_sym == :solar_pv || school_has_fuel_type?(school, fuel_type)
+  end
+
+  def school_has_fuel_type?(school, fuel_type)
+    fuel_type = 'storage_heaters' if fuel_type == "storage_heater"
+    school.send("has_#{fuel_type}?".to_sym)
   end
 end
 # rubocop:enable Naming/AsciiIdentifiers

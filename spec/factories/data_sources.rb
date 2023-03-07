@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :data_source do
-    name { "Data source name" }
+    sequence(:name) {|n| "Data source name #{n}"}
     organisation_type { :energy_supplier }
     sequence(:contact_name) {|n| "Contact name #{n}" }
     sequence(:contact_email) {|n| "contact#{n}@email.com" }
