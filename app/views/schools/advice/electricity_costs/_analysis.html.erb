@@ -4,19 +4,21 @@
   <p><%= advice_t('electricity_costs.analysis.summary') %></p>
 <% end %>
 
-<ul>
-  <% if @multiple_meters %>
+<% if @multiple_meters %>
+  <ul>
     <li>
       <%= link_to(advice_t('electricity_costs.analysis.cost_breakdown_by_meter.title', period: format_unit(@annual_costs.days/365.0, :years)), '#cost-breakdown-by-meter') %>
     </li>
     <li><%= link_to(advice_t('electricity_costs.analysis.meter_breakdown.title'), '#meter-breakdown') %></li>
-  <% else %>
+  </ul>
+<% else %>
+  <ul>
     <% if @analysis_dates.months_of_data > 23 %>
       <li><%= link_to( advice_t('electricity_costs.analysis.cost_breakdown_by_charge.title', period: format_unit(@annual_costs.days/365.0, :years)), '#cost-breakdown-by-charge') %></li>
       <li><%= link_to(advice_t('electricity_costs.analysis.comparison.title'), '#comparison') %></li>
     <% end %>
-  <% end %>
-</ul>
+  </ul>
+<% end %>
 
 <% if @multiple_meters %>
   <%= render 'cost_breakdown_by_meter', school: @school, analysis_dates: @analysis_dates, annual_costs: @annual_costs, annual_costs_breakdown_by_meter: @annual_costs_breakdown_by_meter %>
