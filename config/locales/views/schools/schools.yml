@@ -124,10 +124,8 @@ en:
         alert_contacts: Alert Contacts
         alert_contacts_message: The alerts can be sent to people with an Energy Sparks account by email. Or use this form to enable alerts via text message.
         email_address: Email Address
-        enable_alerts_for: 'Enable alerts for:'
         mobile_phone_number: Mobile Phone Number
         name: Name
-        next: Next
         preferred_locale: Preferred language
         receives_alerts: Receives alerts?
         role: Role
