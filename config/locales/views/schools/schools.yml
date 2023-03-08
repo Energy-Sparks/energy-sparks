@@ -106,6 +106,8 @@ en:
     contacts:
       edit:
         disable_alerts: Disable alerts
+        edit_phone_number: Edit phone number
+        enable_alerts: Enable alerts
         update_contact_details: Update contact details
         update_contact_details_for: Update contact details for %{user_name}
         update_contact_details_for_email_or_text_alerts: Update contact details for email or text alerts
@@ -116,18 +118,16 @@ en:
           email: Email address
           mobile_phone_number: Mobile phone number
           name: Name
-          role: Role
       index:
         account_contacts: Account contacts
         actions: Actions
         alert_contacts: Alert Contacts
-        alert_contacts_message: The alerts can be sent to people with an Energy Sparks account or directly by email or text message to a mobile phone.
+        alert_contacts_message: The alerts can be sent to people with an Energy Sparks account by email. Or use this form to enable alerts via text message.
         email_address: Email Address
-        enable_alerts_for: 'Enable alerts for:'
-        enable_alerts_for_an_email_or_phone_number: Enable alerts for an email or phone number
         mobile_phone_number: Mobile Phone Number
         name: Name
-        next: Next
+        preferred_locale: Preferred language
+        receives_alerts: Receives alerts?
         role: Role
         standalone_contacts: Standalone contacts
         title: "%{school_name} Alert Contacts"
