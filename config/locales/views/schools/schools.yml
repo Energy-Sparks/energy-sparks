@@ -116,7 +116,6 @@ en:
           email: Email address
           mobile_phone_number: Mobile phone number
           name: Name
-          role: Role
       index:
         account_contacts: Account contacts
         actions: Actions

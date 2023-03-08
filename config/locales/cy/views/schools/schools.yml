@@ -116,7 +116,6 @@ cy:
           email: Cyfeiriad e-bost
           mobile_phone_number: Rhif ffôn symudol
           name: Enw
-          role: Rôl
       index:
         account_contacts: Cysylltiadau cyfrif
         actions: Camau
