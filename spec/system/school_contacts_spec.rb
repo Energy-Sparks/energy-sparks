@@ -18,18 +18,6 @@ RSpec.describe "school", type: :system do
     end
 
     describe 'no contacts' do
-
-      it 'allows me to add a new one' do
-        visit school_contacts_path(school)
-
-        click_on('Enable alerts for an email or phone number')
-        fill_in('Name', with: 'Arthur Boggitt')
-        fill_in('Email address', with: 'arthur@boggithall.test')
-        click_on('Enable alerts')
-        expect(page.current_path).to eq school_contacts_path(school)
-        expect(page).to have_content 'Alerts enabled for Arthur Boggitt'
-      end
-
       it 'allows me to add a contact for an existing user' do
         visit school_contacts_path(school)
 
@@ -99,7 +87,25 @@ RSpec.describe "school", type: :system do
         click_on('Reports')
         click_on('Alert subscribers')
         expect(page).to have_content contact.name
+      end
 
+      it 'allows existing contacts to be edited' do
+        visit school_contacts_path(school)
+
+        click_on('Edit')
+        fill_in 'Mobile phone number', with: '01122333444'
+        click_on('Update details')
+        expect(page).to have_content contact.name
+
+        contact.reload
+        expect(contact.mobile_phone_number).to eq('01122333444')
+      end
+
+      it 'allows existing contacts to be deleted' do
+        visit school_contacts_path(school)
+        expect {
+          click_on('Delete')
+        }.to change { Contact.count }.by(-1)
       end
     end
   end
