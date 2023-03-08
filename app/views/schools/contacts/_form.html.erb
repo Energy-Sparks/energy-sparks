@@ -10,8 +10,10 @@
 <%= f.input :mobile_phone_number, as: :string, label: t('schools.contacts.form.labels.mobile_phone_number') %>
 
 <% if f.object.user %>
-  <%= f.simple_fields_for :user do |p| %>
-    <%= p.input :preferred_locale, label: t('schools.users.form.preferred_locale'), required: :false, collection: I18n.available_locales.map { |locale| [I18n.t("languages.#{locale}"), locale] }, selected: f.object.preferred_locale, prompt: '', hint: t('schools.users.form.preferred_locale_hint') %>
+  <% if f.object.user == current_user %>
+    <%= f.simple_fields_for :user do |p| %>
+      <%= p.input :preferred_locale, label: t('schools.users.form.preferred_locale'), required: :false, collection: I18n.available_locales.map { |locale| [I18n.t("languages.#{locale}"), locale] }, selected: f.object.preferred_locale, prompt: '', hint: t('schools.users.form.preferred_locale_hint') %>
+    <% end %>
   <% end %>
 <% end %>
 

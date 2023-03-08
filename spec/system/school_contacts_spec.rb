@@ -149,6 +149,8 @@ RSpec.describe "school", type: :system do
         visit school_contacts_path(school)
 
         click_on('Edit')
+        expect(page).not_to have_content('Preferred language')
+
         fill_in 'Mobile phone number', with: '01122333444'
         click_on('Update details')
         expect(page).to have_content contact.name
