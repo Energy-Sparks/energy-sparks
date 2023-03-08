@@ -17,6 +17,8 @@ class BenchmarksController < ApplicationController
   def show
     benchmark_results unless @benchmark_filter[:school_group_ids].empty?
 
+
+
     respond_to do |format|
       format.html do
         @page = params.require(:benchmark_type).to_sym
