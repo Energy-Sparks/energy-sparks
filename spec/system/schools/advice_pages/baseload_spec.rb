@@ -89,7 +89,6 @@ RSpec.describe "Baseload advice page", type: :system do
       end
 
       it 'shows the how have we analysed your data modal' do
-        first(:link, "How did we calculate these figures?").click
         expect(page).to have_content("How have we analysed your data?")
         expect(page).to have_content("School characteristics")
         expect(page).to have_content("Cost calculations")

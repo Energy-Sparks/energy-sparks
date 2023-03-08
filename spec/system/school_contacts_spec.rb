@@ -21,9 +21,9 @@ RSpec.describe "school", type: :system do
         visit school_contacts_path(school)
         expect(page).not_to have_content('Standalone contacts')
 
-        select teacher.name, from: 'Enable alerts for:'
-        click_button 'Next'
+        first(:link, "Enable alerts").click
         expect(find_field('Email address').value).to eq teacher.email
+
         click_on('Enable alerts')
         expect(page).to have_content "Alerts enabled for #{teacher.name}"
 
@@ -113,7 +113,7 @@ RSpec.describe "school", type: :system do
       it 'allows contacts to be edited' do
         visit school_contacts_path(school)
 
-        click_on('Edit')
+        click_on('Edit phone number')
         fill_in 'Mobile phone number', with: '01122333444'
         click_on('Update details')
         expect(page).to have_content contact.name
@@ -129,65 +129,73 @@ RSpec.describe "school", type: :system do
         }.to change { Contact.count }.by(-1)
       end
     end
+
+    describe 'existing standalone contacts' do
+      let!(:contact) { create(:contact_with_name_email, school: school) }
+      it 'shows me the contacts on the page' do
+        visit school_contacts_path(school)
+
+        pp page.html
+
+        expect(page).to have_content('Standalone contacts')
+        expect(page).to have_content contact.name
+
+        click_on('Reports')
+        click_on('Alert subscribers')
+        expect(page).to have_content contact.name
+      end
+
+      it 'allows existing contacts to be edited' do
+        visit school_contacts_path(school)
+
+        click_on('Edit')
+        fill_in 'Mobile phone number', with: '01122333444'
+        click_on('Update details')
+        expect(page).to have_content contact.name
+
+        contact.reload
+        expect(contact.mobile_phone_number).to eq('01122333444')
+      end
+
+      it 'allows existing contacts to be deleted' do
+        visit school_contacts_path(school)
+        expect {
+          click_on('Delete')
+        }.to change { Contact.count }.by(-1)
+      end
+    end
   end
 
-  describe 'existing standalone contacts' do
-    let!(:contact) { create(:contact_with_name_email, school: school) }
-    it 'shows me the contacts on the page' do
-      visit school_contacts_path(school)
-      expect(page).to have_content('Standalone contacts')
-      expect(page).to have_content contact.name
+  describe 'when logged in as a teacher' do
 
-      click_on('Reports')
-      click_on('Alert subscribers')
-      expect(page).to have_content contact.name
+    before(:each) do
+      sign_in(teacher)
     end
 
-    it 'allows existing contacts to be edited' do
-      visit school_contacts_path(school)
+    it 'lets me sign up for alerts' do
 
-      click_on('Edit')
+      expect(teacher.contact_for_school).to be_nil
+      visit school_path(school)
+
+      click_on('My alerts')
+
+      expect(find_field('Email address').value).to eq teacher.email
+
       fill_in 'Mobile phone number', with: '01122333444'
-      click_on('Update details')
-      expect(page).to have_content contact.name
+      select 'Welsh', from: 'Preferred language'
 
-      contact.reload
-      expect(contact.mobile_phone_number).to eq('01122333444')
+      click_button 'Enable alerts'
+
+      teacher.reload
+      expect(teacher.contact_for_school).to_not be_nil
+      expect(teacher.contact_for_school.mobile_phone_number).to eq('01122333444')
+      expect(teacher.preferred_locale).to eq('cy')
+
+      click_on 'My alerts'
+      click_on 'Disable alerts'
+
+      teacher.reload
+      expect(teacher.contact_for_school).to be_nil
     end
-
-    it 'allows existing contacts to be deleted' do
-      visit school_contacts_path(school)
-      expect {
-        click_on('Delete')
-      }.to change { Contact.count }.by(-1)
-    end
-  end
-end
-
-describe 'when logged in as a teacher' do
-
-  before(:each) do
-    sign_in(teacher)
-  end
-
-  it 'lets me sign up for alerts' do
-
-    expect(teacher.contact_for_school).to be_nil
-    visit school_path(school)
-
-    click_on('My alerts')
-
-    expect(find_field('Email address').value).to eq teacher.email
-    click_button 'Enable alerts'
-
-    teacher.reload
-    expect(teacher.contact_for_school).to_not be_nil
-
-    click_on 'My alerts'
-
-    click_on 'Disable alerts'
-
-    teacher.reload
-    expect(teacher.contact_for_school).to be_nil
   end
 end
