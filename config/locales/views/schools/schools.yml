@@ -128,6 +128,8 @@ en:
         mobile_phone_number: Mobile Phone Number
         name: Name
         next: Next
+        preferred_locale: Preferred language
+        receives_alerts: Receives alerts?
         role: Role
         standalone_contacts: Standalone contacts
         title: "%{school_name} Alert Contacts"
