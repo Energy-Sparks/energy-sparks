@@ -3,6 +3,7 @@ en:
   analytics:
     benchmarking:
       caveat_text:
+        comparison_with_previous_period_infinite: "<p>An infinite or incalculable value indicates the consumption in the first period was zero.</p>"
         covid_lockdown: ''
         es_data_not_in_sync_html: |-
           <p>
@@ -14,6 +15,8 @@ en:
             underlying meters.
           </p>
         es_doesnt_have_all_meter_data_html: "<p>\n  Energy Sparks doesn't have a full set of meter data for some schools, for example rural schools with \n  biomass or oil boilers, so a total energy comparison might not be relevant for all schools. This comparison \n  excludes the benefit of any solar PV which might be installed - so looks at energy consumption only.\n</p>"
+        es_exclude_storage_heaters_and_solar_pv: "<p>This breakdown excludes electricity consumed by storage heaters and solar PV.</p>"
+        es_exclude_storage_heaters_and_solar_pv_data_html: "<p>The data excludes storage heaters and any saving the school might get from solar PV.</p>"
         es_exclude_storage_heaters_and_solar_pv_html: |-
           <p>
             This breakdown excludes electricity consumed by storage heaters and
@@ -33,13 +36,13 @@ en:
         autumn_term_2021_2022_energy_comparison: Autumn Term 2021 versus 2022 energy use
         baseload_per_pupil: Baseload per pupil
         change_in_electricity_consumption_recent_school_weeks: Recent change in electricity use
-        change_in_electricity_holiday_consumption_previous_holiday: Change in electricity use between the last 2 holidays
+        change_in_electricity_holiday_consumption_previous_holiday: Change in electricity use between the last two holidays
         change_in_electricity_holiday_consumption_previous_years_holiday: Change in electricity use between this holiday and the same holiday last year
         change_in_electricity_since_last_year: Annual change in electricity use
         change_in_energy_since_last_year: Annual change in total energy use
         change_in_energy_use_since_joined_energy_sparks: Change in energy use since the school joined Energy Sparks
         change_in_gas_consumption_recent_school_weeks: Recent change in gas use
-        change_in_gas_holiday_consumption_previous_holiday: Change in gas use between the last 2 holidays
+        change_in_gas_holiday_consumption_previous_holiday: Change in gas use between the last two holidays
         change_in_gas_holiday_consumption_previous_years_holiday: Change in gas use between this holiday and the same holiday last year
         change_in_gas_since_last_year: Annual change in gas use
         change_in_solar_pv_since_last_year: Annual change in solar PV production and resulting CO2 savings
@@ -90,6 +93,42 @@ en:
               Be careful when comparing kWh values between different fuel types,
               technically they aren't directly comparable as they are different types of energy.
             </p>
+        annual_gas_out_of_hours_use:
+          introduction_text_html: |-
+            <p>This chart shows the breakdown of when schools are using gas. School day open is when the school is open to pupils and staff. School day closed is when the school is closed to pupils and staff overnight.</p>
+            <p>Most schools are unoccupied for about 85% of the year; between 5:00pm and 7:30am on school days, at weekends and during holidays. A focus on reducing out of hours gas usage; turning heating and hot water systems off out of hours provides schools with a cost-efficient way of reducing their overall consumption.</p>
+            <p>Schools should aim to reduce their out of hours gas usage below 35% of annual consumption.</p>
+        annual_heating_costs_per_floor_area:
+          introduction_text_html: |-
+            <p>This benchmark compares last year’s gas and storage heater costs per floor area (m2).</p>
+            <p>The benchmark is adjusted for regional temperatures over the last year, so that for example schools in Scotland are compared on the same terms as schools in the warmer south west of England.</p>
+            <p>For schools heated by gas, the cost includes gas used for hot water and by the school kitchen.</p>
+            <p>Schools with negative savings potential  have heating consumption below that of the best schools, which is good. For schools with storage heaters, heating costs are calculated using electricity tariff prices including differential/economy-7 tariffs if schools are on such a tariff.</p>
+        baseload_per_pupil:
+          introduction_text_html: |-
+            <p>
+              A school's baseload is the electricity consumed by appliances kept running at all times.
+            </p>
+            <p>
+              This is one of the most useful benchmarks for understanding a school's electricity use, as 50% of most schools' electricity is consumed out of hours. Reducing the baseload will have a big impact on overall electricity consumption.
+            </p>
+            <p>
+              All schools should aim to reduce their electricity baseload per pupil to that of the best schools. Schools perform roughly the same function so should be able to achieve similar electricity consumption, particularly out of hours.
+            </p>
+        change_in_electricity_consumption_recent_school_weeks:
+          introduction_text_html: "<p>This benchmark shows the change in electricity consumption over the last two school weeks. You should expect a small increase in electricity consumption going into the winter with increased lighting usage and a subsequent reduction in the spring.</p>"
+        change_in_electricity_holiday_consumption_previous_holiday:
+          introduction_text_html: |-
+            <p>
+              This benchmark shows the change in electricity consumption between the two most recent holidays.
+            </p>
+            <p>
+              This comparison compares the latest available data for the most recent holiday with an adjusted figure for the previous holiday, scaling to the same number of days and the latest tariff. The change in £ is the saving or increased cost for the most recent holiday to date.
+            </p>
+        change_in_electricity_holiday_consumption_previous_years_holiday:
+          introduction_text_html: |-
+            <p>This benchmark shows the change in electricity consumption between the most recent holiday, and the same holiday last year.</p>
+            <p>This comparison compares the latest available data for the most recent holiday with an adjusted figure for the previous holiday, scaling to the same number of days and the latest tariff. The change in £ is the saving or increased cost for the most recent holiday to date.</p>
         change_in_electricity_since_last_year:
           introduction_text_html: |-
             <p>
@@ -166,6 +205,32 @@ en:
                 </li>
               </ul>
             </p>
+        change_in_energy_use_since_joined_energy_sparks:
+          chart_interpretation_text_html: |-
+            <p>
+              Not all schools will be representated in this data, as we need 1 year&apos;s
+              worth of data before the school joined Energy Sparks and at least 1 year
+              after to do the comparison.
+            </p>
+          introduction_text_html: |-
+            <p>
+              This benchmark compares the change in annual energy use since the school
+              joined Energy Sparks. So for the year before the school joined Energy Sparks versus
+              the latest year.
+            </p>
+        change_in_gas_consumption_recent_school_weeks:
+          introduction_text_html: |-
+            <p>
+              This comparison simply shows the change in gas consumption over the last two school weeks. You might expect an increase in gas consumption going into the winter as it gets colder and a subsequent reduction in the spring.
+            </p>
+        change_in_gas_holiday_consumption_previous_holiday:
+          introduction_text_html: |-
+            <p>This benchmark shows the change in gas consumption between the two most recent holidays.</p>
+            <p>This comparison compares the latest available data for the most recent holiday with an adjusted figure for the previous holiday, scaling to the same number of days and adjusting for changes in outside temperature and the latest tariff. The change in £ is the saving or increased cost for the most recent holiday to date.</p>
+        change_in_gas_holiday_consumption_previous_years_holiday:
+          introduction_text_html: |-
+            <p>This benchmark shows the change in gas consumption between the most recent holiday, and the same holiday last year.</p>
+            <p>This comparison compares the latest available data for the most recent holiday with an adjusted figure for the previous holiday, scaling to the same number of days and adjusting for changes in outside temperature and the latest tariff. The change in £ is the saving or increased cost for the most recent holiday to date.</p>
         change_in_gas_since_last_year:
           introduction_text_html: |-
             <p>
@@ -237,5 +302,85 @@ en:
               indicator of the work a school might have done to reduce its energy consumption as
               it&apos;s not dependent on temperature differences between the two years.
             </p>
+        electricity_consumption_during_holiday:
+          introduction_text_html: "<p>This benchmark shows the projected electricity costs for the current holiday. No data for a school is shown once the holiday is over. The projection calculation is based on the consumption patterns during the holiday so far.</p>"
+        electricity_peak_kw_per_pupil:
+          introduction_text_html: "<p>This benchmark shows the peak daily school power consumption per floor area. High values compared with other schools might suggest inefficient lighting, appliances or kitchen equipment. The peaks generally occur during the middle of the day.</p>"
+        electricity_targets:
+          introduction_text_html: "<p>This benchmark shows how a school is progressing against the target it has set for this year.</p>"
+        gas_consumption_during_holiday:
+          introduction_text_html: |-
+            <p>
+              This benchmark shows the projected gas costs for the current holiday. No data for a school is shown once the holiday is over. The projection calculation is based on the consumption patterns during the holiday so far.
+            </p>
+        gas_targets:
+          introduction_text_html: "<p>This benchmark shows how a school is progressing against the target it has set for this year.</p>"
+        heating_coming_on_too_early:
+          introduction_text_html: |-
+            <p>This benchmark shows what time the boilers have been starting on average in the last week and last year.</p>
+            <p>Many schools have their heating coming on too early in the morning. Generally, heating boilers shouldn’t be turning on before 5am in cold weather and 7am in milder weather. If your school heating comes on before this, you should be able to make changes to the heating controls to save energy and lots of money.</p>
+        heating_in_warm_weather:
+          introduction_text_html: |-
+            <p>Schools often forget to turn their heating off in warm weather, about 10% of schools leave their heating on all summer.</p>
+            <p>This benchmark shows how much of the school’s heating is used in warm weather. Schools should aim to keep their heating off as much as possible in warm weather. In mild weather the large numbers of pupils and electrical equipment should be enough to keep the school warm once it is open for the day.</p>
         holiday_usage_last_year:
-          introduction_text_html: "<p>\n  This benchmark shows the cost of electricity and gas used last year for the upcoming holidays. \n  For example, if the next holidays are the Summer holidays 2023, the data shown will be for Summer 2022. \n  This allows you to identify which schools in your group need to take the most action to cut holiday waste.\n</p>"
+          introduction_text_html: "<p>This benchmark shows the cost of electricity and gas used last year for the upcoming holidays. For example, if the next holidays are the Summer holidays 2023, the data shown will be for Summer 2022. This allows you to identify which schools in your group need to take the most action to cut holiday waste.</p>"
+        hot_water_efficiency:
+          introduction_text_html: "<p> This benchmark analyses the efficiency of schools' hot water systems and the potential savings from either improving the timing control of existing hot water systems or replacing it completely with point of use electric hot water systems. <p>"
+        layer_up_powerdown_day_november_2022:
+          introduction_text_html: |-
+            <p>
+              This comparison below for gas and storage heaters has the
+              the previous period temperature compensated to the current
+              period's temperatures.
+            </p>
+            <p>
+              Schools' solar PV production has been removed from the comparison.
+            </p>
+            <p>
+              CO2 values for electricity (including where the CO2 is
+              aggregated across electricity, gas, storage heaters) is difficult
+              to compare for short periods as it is dependent on the carbon intensity
+              of the national grid on the days being compared and this could vary by up to
+              300&percnt; from day to day.
+            </p>
+        seasonal_baseload_variation:
+          introduction_text_html: |-
+            <p>A school's baseload is the electricity consumed by appliances kept running at all times.</p>
+            <p>In general, the baseload in the winter should be very similar to the summer. In practice many schools leave electric heaters on overnight when the school is unoccupied. Identifying and turning off or better timing such equipment is a quick way of saving electricity and costs.</p>
+        solar_pv_benefit_estimate:
+          introduction_text_html: |-
+            <p>
+              This benchmark shows the benefit of installing solar PV panels at schools which don't already
+              have solar PV panels fitted. This analysis uses half hourly electricity consumption data for each
+              school over the last year combined with local half hourly solar generation data to work out the
+              benefit of installing solar panels. The payback and savings are calculated using the school's most
+              recent tariff. Further detail is provided if you drill down to a school's individual analysis - where a
+              range of different scenarios for different numbers of panels is presented.
+            </p>
+        storage_heater_consumption_during_holiday:
+          introduction_text_html: |-
+            <p>
+              This benchmark shows the projected storage heater costs for the current holiday. No data for a school is shown once the holiday is over. The projection calculation is based on the consumption patterns during the holiday so far.
+            </p>
+        thermostat_sensitivity:
+          introduction_text_html: "<p>This benchmark shows the benefit of reducing the heating set temperature by 1°C.</p> <p>A negative value is indicative of very poor thermostatic control, where Energy Sparks’ modelling cannot make sense of the relationship between the school's gas consumption and outside temperature.</p>"
+        thermostatic_control:
+          introduction_text_html: |-
+            <p>
+              This benchmark provides a measure of the schools’ thermostatic control, and the savings potential if thermostatic control is improved.
+            </p>
+            <p>
+              Energy Sparks calculates the quality of a school's thermostatic control using a measure called 'R2'. The heating consumption of a school should be linearly proportional to the outside temperature, the colder it is the more energy is required to keep the school warm. The 'R2' is a measure of how well correlated this heating consumption is with outside temperature - the closer to 1.0 the better the control. Any value above 0.8 is good. If a school has a value below 0.5 it suggests the thermostatic control is very poor and there is a limited relationship between the temperature and the heating used to keep the school warm.
+            </p>
+        weekday_baseload_variation:
+          introduction_text_html: |-
+            <p>
+              A school's baseload is the electricity consumed by appliances kept running at all times.
+            </p>
+            <p>
+              In general, the baseload should not vary between days of the week and between weekdays and weekends.
+            </p>
+            <p>
+              If there is a big variation, find out what is causing the baseload to be higher on certain days of the week, and switch off the equipment or lights causing the difference.
+            </p>

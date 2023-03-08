@@ -116,18 +116,14 @@ cy:
           email: Cyfeiriad e-bost
           mobile_phone_number: Rhif ffôn symudol
           name: Enw
-          role: Rôl
       index:
         account_contacts: Cysylltiadau cyfrif
         actions: Camau
         alert_contacts: Cysylltiadau Rhybuddio
         alert_contacts_message: Gellir anfon y rhybuddion at bobl sydd â chyfrif Sbarcynni neu'n uniongyrchol trwy e-bost neu neges destun i ffôn symudol.
         email_address: Cyfeiriad E-bost
-        enable_alerts_for: 'Galluogi rhybuddion ar gyfer:'
-        enable_alerts_for_an_email_or_phone_number: Galluogi rhybuddion ar gyfer e-bost neu rif ffôn
         mobile_phone_number: Rhif Ffôn Symudol
         name: Enw
-        next: Nesaf
         role: Rôl
         standalone_contacts: Cysylltiadau annibynnol
         title: "%{school_name} o Gysylltiadau Rhybuddio"
