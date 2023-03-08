@@ -20,6 +20,7 @@ RSpec.describe "school", type: :system do
     describe 'no contacts' do
       it 'allows me to add a contact for an existing user' do
         visit school_contacts_path(school)
+        expect(page).not_to have_content('Standalone contacts')
 
         select teacher.name, from: 'Enable alerts for:'
         click_button 'Next'
@@ -82,6 +83,7 @@ RSpec.describe "school", type: :system do
       let!(:contact) { create(:contact_with_name_email, school: school) }
       it 'shows me the contacts on the page' do
         visit school_contacts_path(school)
+        expect(page).to have_content('Standalone contacts')
         expect(page).to have_content contact.name
 
         click_on('Reports')

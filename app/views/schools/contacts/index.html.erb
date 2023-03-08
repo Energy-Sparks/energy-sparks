@@ -54,34 +54,38 @@
   </table>
 </div>
 
-<h2><%= t('schools.contacts.index.standalone_contacts') %></h2>
+<% if @standalone_contacts.any? %>
 
-<div class="table-responsive">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th><%= t('schools.contacts.index.name') %></th>
-        <th><%= t('schools.contacts.index.role') %></th>
-        <th><%= t('schools.contacts.index.mobile_phone_number') %></th>
-        <th><%= t('schools.contacts.index.email_address') %></th>
-        <th><%= t('schools.contacts.index.actions') %></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @standalone_contacts.each do |contact| %>
-        <tr scope="row">
-          <td><%= contact.name %></td>
-          <td><%= contact.staff_role.try(:translated_title) %></td>
-          <td><%= contact.mobile_phone_number %></td>
-          <td><%= contact.email_address %></td>
-          <td>
-            <div class="btn-group">
-              <%= link_to t('common.labels.edit'), edit_school_contact_path(@school, contact), class: 'btn btn-warning' %>
-              <%= link_to t('common.labels.delete'), school_contact_path(@school, contact), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
-            </div>
-          </td>
+  <h2><%= t('schools.contacts.index.standalone_contacts') %></h2>
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th><%= t('schools.contacts.index.name') %></th>
+          <th><%= t('schools.contacts.index.role') %></th>
+          <th><%= t('schools.contacts.index.mobile_phone_number') %></th>
+          <th><%= t('schools.contacts.index.email_address') %></th>
+          <th><%= t('schools.contacts.index.actions') %></th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+      </thead>
+      <tbody>
+        <% @standalone_contacts.each do |contact| %>
+          <tr scope="row">
+            <td><%= contact.name %></td>
+            <td><%= contact.staff_role.try(:translated_title) %></td>
+            <td><%= contact.mobile_phone_number %></td>
+            <td><%= contact.email_address %></td>
+            <td>
+              <div class="btn-group">
+                <%= link_to t('common.labels.edit'), edit_school_contact_path(@school, contact), class: 'btn btn-warning' %>
+                <%= link_to t('common.labels.delete'), school_contact_path(@school, contact), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+<% end %>
