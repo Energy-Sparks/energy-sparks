@@ -72,14 +72,15 @@ describe AdvicePageHelper do
     end
     let(:advice_page_1) { create(:advice_page, key: 'one') }
     let(:advice_page_2) { create(:advice_page, key: 'two') }
+    let(:advice_pages) { [advice_page_1, advice_page_2] }
     it 'sorts by default label' do
-      sort_advice_pages = helper.sort_by_label([advice_page_1, advice_page_2])
-      expect(sort_advice_pages.map(&:key)).to eq(["two", "one"])
+      sorted_advice_pages = helper.sort_by_label(advice_pages)
+      expect(sorted_advice_pages.map(&:key)).to eq(["two", "one"])
     end
     it 'sorts by cy label' do
       I18n.with_locale(:cy) do
-        sort_advice_pages = helper.sort_by_label([advice_page_1, advice_page_2])
-        expect(sort_advice_pages.map(&:key)).to eq(["one", "two"])
+        sorted_advice_pages = helper.sort_by_label(advice_pages)
+        expect(sorted_advice_pages.map(&:key)).to eq(["one", "two"])
       end
     end
   end
