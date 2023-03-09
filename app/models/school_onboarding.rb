@@ -127,4 +127,19 @@ class SchoolOnboarding < ApplicationRecord
   def page_anchor
     school_group.slug if school_group
   end
+
+  def onboarding_completed_on
+    events.onboarding_complete.minimum(:created_at)
+  end
+
+  def first_made_data_enabled
+    events.onboarding_data_enabled.minimum(:created_at)
+  end
+
+  def days_until_data_enabled
+    return nil unless complete?
+    data_enabled_on = first_made_data_enabled
+    return nil unless data_enabled_on.present?
+    (data_enabled_on.to_date - onboarding_completed_on.to_date).to_i
+  end
 end
