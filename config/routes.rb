@@ -498,6 +498,7 @@ Rails.application.routes.draw do
       resources :data_loads, only: :index
       resources :transifex_loads, only: [:index, :show]
       resources :activity_types, only: [:index, :show]
+      resources :dcc_status, only: [:index]
     end
 
     resource :settings, only: [:show, :update]
