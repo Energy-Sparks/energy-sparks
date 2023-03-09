@@ -4,10 +4,10 @@
 
 <div class="bg-light p-3 mb-3 rounded border">
   <p><%= t('compare.benchmarks.comparing') %></p>
-  <% if @school_group %>
+  <% if @filter[:search] == 'group' %>
     <p><%= t('compare.benchmarks.schools_in_html', school_group: @school_group.name) %>
   <% end %>
-  <p><%= t('compare.benchmarks.including_html', school_types: params[:school_types].map {|st| tag.strong(t('common.school_types.' + st))}.to_sentence.html_safe) %></p>
+  <p><%= t('compare.benchmarks.including_html', school_types: @filter[:school_types].map {|st| tag.strong(t('common.school_types.' + st))}.to_sentence.html_safe) %></p>
 </div>
 
 <p><%= t('compare.benchmarks.description') %></p>
@@ -18,7 +18,7 @@
     <div class="col-sm-6">
       <ul>
         <% benchmark_group[:benchmarks].each do |benchmark, title| %>
-          <li><%= link_to title, results_compare_path(benchmark_type: benchmark, benchmark: @benchmark_filter) %></li>
+          <li><%= link_to title, compare_path(benchmark, @filter) %></li>
         <% end %>
       </ul>
     </div>

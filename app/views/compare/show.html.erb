@@ -1,0 +1,10 @@
+<% content_for :page_title, 'Benchmark name'  %>
+
+<% @benchmark_groups.each do |benchmark_group| %>
+  <h1><%= benchmark_group[:name] %></h1>
+  <% benchmark_group[:benchmarks].each_key do |benchmark| %>
+    <% @content_hash[benchmark].each do |content| %>
+      <%= render "compare/content_types/#{content[:type]}", content: content[:content], school: @school %>
+    <% end %>
+  <% end %>
+<% end %>
