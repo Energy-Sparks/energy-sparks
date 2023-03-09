@@ -18,6 +18,7 @@ module Schools
       before_action :set_page_subtitle, only: [:insights, :analysis]
       before_action :set_insights_next_steps, only: [:insights]
       before_action :set_economic_tariffs_change_caveats, only: [:insights, :analysis]
+      before_action :load_advice_pages
 
       include AdvicePageHelper
       include SchoolAggregation
@@ -37,6 +38,10 @@ module Schools
       end
 
       private
+
+      def load_advice_pages
+        @advice_pages = AdvicePage.all
+      end
 
       def set_economic_tariffs_change_caveats
         @economic_tariffs_change_caveats = nil

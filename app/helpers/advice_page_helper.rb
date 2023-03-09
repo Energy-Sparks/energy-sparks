@@ -4,6 +4,10 @@ module AdvicePageHelper
     polymorphic_path([tab, school, :advice, advice_page.key.to_sym], params: params, anchor: anchor)
   end
 
+  def sort_by_label(advice_pages)
+    advice_pages.sort_by(&:translated_label)
+  end
+
   #Helper for the advice pages, passes a scope to the I18n.t API based on
   #our naming convention and page keys. Will only work on advice pages
   #content, e.g advice_pages.*
