@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   before_action :analytics_code
   before_action :pagy_locale
   before_action :check_admin_mode
-  helper_method :site_settings, :current_school_podium, :current_user_school
+  helper_method :site_settings, :current_school_podium, :current_user_school, :current_school_group
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
@@ -49,6 +49,10 @@ class ApplicationController < ActionController::Base
 
   def current_ip_address
     request.remote_ip
+  end
+
+  def current_school_group
+    current_user.try(:default_school_group)
   end
 
   private

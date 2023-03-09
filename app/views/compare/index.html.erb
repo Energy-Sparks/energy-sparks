@@ -19,8 +19,8 @@
 <%= render 'tabs' %>
 
 <div class="tab-content" id="compare-content">
-  <%= render 'compare/tab_content/group' if @school_group %>
-  <div class="tab-pane fade show<%= ' active' unless @school_group %>" id="categories" role="tabpanel" aria-labelledby="categories-tab">
+  <%= render 'compare/tab_content/group' if current_school_group %>
+  <div class="tab-pane fade show<%= ' active' unless current_school_group %>" id="categories" role="tabpanel" aria-labelledby="categories-tab">
     <%= render 'compare/tab_content/categories' %>
   </div>
   <div class="tab-pane fade show" id="groups" role="tabpanel" aria-labelledby="groups-tab">

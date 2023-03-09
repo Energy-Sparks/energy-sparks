@@ -5,7 +5,6 @@ class CompareController < ApplicationController
   skip_before_action :authenticate_user!
 
   before_action :filter
-  before_action :get_school_group
   before_action :latest_benchmark_run, except: [:index]
   before_action :content_manager, except: [:index]
   before_action :benchmark_count, only: [:index]
@@ -68,11 +67,7 @@ class CompareController < ApplicationController
   end
 
   def benchmark_groups
-    @benchmark_groups = @content_manager.structured_pages(school_ids: nil, filter: nil, user_type: user_type_hash)
-  end
-
-  def get_school_group
-    @school_group = current_user.try(:default_school_group)
+    @benchmark_groups ||= @content_manager.structured_pages(school_ids: nil, filter: nil, user_type: user_type_hash)
   end
 
   def content_for_page(benchmark, errors = [])
