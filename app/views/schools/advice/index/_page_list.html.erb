@@ -11,7 +11,7 @@
         <% sort_by_label(advice_pages.where(fuel_type: fuel_type)).each do |ap| %>
           <div class="mt-4 row d-flex align-items-center" style="">
             <div class="col">
-              <h4><%= link_to ap.translated_label, advice_page_path(school, ap) %></h4>
+              <h4><%= link_to translated_label(ap), advice_page_path(school, ap) %></h4>
             </div>
             <div class="col">
               <%= t("advice_pages.index.show.page_summary.#{ap.key}") %>

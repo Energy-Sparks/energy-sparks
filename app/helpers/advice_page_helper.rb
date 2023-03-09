@@ -5,7 +5,11 @@ module AdvicePageHelper
   end
 
   def sort_by_label(advice_pages)
-    advice_pages.sort_by(&:translated_label)
+    advice_pages.sort_by { |ap| translated_label(ap) }
+  end
+
+  def translated_label(advice_page)
+    I18n.t("advice_pages.nav.pages.#{advice_page.key}")
   end
 
   #Helper for the advice pages, passes a scope to the I18n.t API based on

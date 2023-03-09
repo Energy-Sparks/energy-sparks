@@ -64,4 +64,16 @@ describe AdvicePageHelper do
     end
 
   end
+
+  describe '.sort_by_label' do
+    before :each do
+      I18n.backend.store_translations("en", {advice_pages: {nav: { pages: { ZZZ: "AAA" }}}})
+    end
+    let(:advice_page_other) { create(:advice_page, key: 'ZZZ') }
+    it 'sorts by en label' do
+      sort_advice_pages = helper.sort_by_label([advice_page, advice_page_other])
+      expect(sort_advice_pages.first).to eq(advice_page_other)
+      expect(sort_advice_pages.last).to eq(advice_page)
+    end
+  end
 end

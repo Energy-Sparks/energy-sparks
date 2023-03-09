@@ -38,10 +38,6 @@ class AdvicePage < ApplicationRecord
     key.humanize
   end
 
-  def translated_label
-    I18n.t("advice_pages.nav.pages.#{key}")
-  end
-
   def update_activity_type_positions!(position_attributes)
     transaction do
       advice_page_activity_types.destroy_all
