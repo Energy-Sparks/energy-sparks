@@ -28,7 +28,7 @@ module Schools
     end
 
     def load_advice_pages
-      @advice_pages = AdvicePage.all.by_key
+      @advice_pages = AdvicePage.all
     end
 
     def set_content
