@@ -325,6 +325,7 @@ RSpec.describe "adult dashboard navigation", type: :system do
     include_examples "navigation" do
       let(:test_school) { school }
     end
+
     it 'shows me the adult dashboard by default' do
       visit schools_path
       expect(page.has_content? "Energy Sparks schools across the UK").to be true
@@ -337,6 +338,12 @@ RSpec.describe "adult dashboard navigation", type: :system do
       click_on 'Print view'
       expect(page).to have_content("Adult dashboard for #{school.name}")
     end
+
+    it 'shows download link' do
+      visit school_path(school)
+      expect(page).to have_link("Download your data")
+    end
+
     context 'when school in private group' do
       before(:each) do
         school_group.update!(public: false)

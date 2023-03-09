@@ -61,6 +61,7 @@ class Ability
         can :manage, SchoolOnboarding do |onboarding|
           onboarding.school_group.present? && user.school_group == onboarding.school_group
         end
+        can :read, [:school_downloads]
       else
         school_scope = { id: user.school_id, visible: true }
         related_school_scope = { school_id: user.school_id }
