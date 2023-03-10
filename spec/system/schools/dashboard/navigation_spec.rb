@@ -200,6 +200,13 @@ RSpec.describe "adult dashboard navigation", type: :system do
       expect(page).to have_link("Download our data")
     end
 
+    it "doesn't allow download of other schools data" do
+      other_school = create(:school)
+      visit school_path(other_school)
+      expect(page).to have_content("Adult Dashboard")
+      expect(page).not_to have_link("Download your data")
+    end
+
     it 'should display my school menu on other pages' do
       visit home_page_path
       expect(page).to have_css("#my_school_menu")
@@ -273,6 +280,13 @@ RSpec.describe "adult dashboard navigation", type: :system do
       expect(page).to have_link("Download our data")
     end
 
+    it "doesn't allow download of other schools data" do
+      other_school = create(:school)
+      visit school_path(other_school)
+      expect(page).to have_content("Adult Dashboard")
+      expect(page).not_to have_link("Download your data")
+    end
+
     it 'should display my school menu on other pages' do
       visit home_page_path
       expect(page).to have_css("#my_school_menu")
@@ -341,6 +355,7 @@ RSpec.describe "adult dashboard navigation", type: :system do
 
     it 'shows download link' do
       visit school_path(school)
+      expect(page).to have_content("Adult Dashboard")
       expect(page).to have_link("Download your data")
     end
 

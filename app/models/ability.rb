@@ -61,7 +61,7 @@ class Ability
         can :manage, SchoolOnboarding do |onboarding|
           onboarding.school_group.present? && user.school_group == onboarding.school_group
         end
-        can :read, [:school_downloads]
+        can :download_school_data, School, school_scope
       else
         school_scope = { id: user.school_id, visible: true }
         related_school_scope = { school_id: user.school_id }
@@ -70,7 +70,8 @@ class Ability
         can :manage, SchoolOnboarding do |onboarding|
           onboarding.created_user.blank? || (onboarding.created_user == user)
         end
-        can :read, [:my_school_menu, :school_downloads]
+        can :read, [:my_school_menu]
+        can :download_school_data, School, school_scope
         can :switch, School
       end
       #allow users from schools in same group to access dashboards
@@ -131,7 +132,8 @@ class Ability
       can :manage, Activity, school: { id: user.school_id, visible: true }
       can :manage, Observation, school: { id: user.school_id, visible: true }
       can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
-      can :read, [:my_school_menu, :school_downloads]
+      can :read, [:my_school_menu]
+      can :download_school_data, School, school_scope
       can :read, Meter
       can [:start_programme], School, id: user.school_id, visible: true
       #pupils can view management dashboard for their school and others in group
