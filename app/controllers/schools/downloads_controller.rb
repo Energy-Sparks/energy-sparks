@@ -11,7 +11,7 @@ module Schools
     def authorized?
       unless can?(:download_school_data, @school)
         flash[:error] = "You are not authorized to view that page."
-        redirect_to root_path
+        redirect_to school_path(@school)
       end
     end
   end
