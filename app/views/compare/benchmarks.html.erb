@@ -2,13 +2,7 @@
 
 <h1><%= t('compare.benchmarks.title') %></h1>
 
-<div class="bg-light p-3 mb-3 rounded border">
-  <p><%= t('compare.benchmarks.comparing') %></p>
-  <% if @filter[:search] == 'group' %>
-    <p><%= t('compare.benchmarks.schools_in_html', school_group: current_school_group.name) %>
-  <% end %>
-  <p><%= t('compare.benchmarks.including_html', school_types: @filter[:school_types].map {|st| tag.strong(t('common.school_types.' + st))}.to_sentence.html_safe) %></p>
-</div>
+<%= render 'comparing' %>
 
 <p><%= t('compare.benchmarks.description') %></p>
 

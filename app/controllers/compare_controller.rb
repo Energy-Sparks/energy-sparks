@@ -21,8 +21,10 @@ class CompareController < ApplicationController
 
   def show
     @benchmark = @filter[:benchmark].to_sym
-    @content = content_for_benchmark(@benchmark)
-    @benchmark_title = extract_title(@content)
+    content = content_for_benchmark(@benchmark)
+
+    @title = extract_title(content)
+    @content = filter_content(content)
   end
 
   private
@@ -57,8 +59,7 @@ class CompareController < ApplicationController
   end
 
   def content_for_benchmark(benchmark)
-    content = @content_manager.content(fetch_benchmark_data, benchmark, user_type: user_type_hash, online: true)
-    return filter_content(content)
+    @content_manager.content(fetch_benchmark_data, benchmark, user_type: user_type_hash, online: true)
     # rubocop:disable Lint/RescueException
   rescue Exception => e
     # rubocop:enable Lint/RescueException
@@ -77,6 +78,6 @@ class CompareController < ApplicationController
 
   def select_fragment?(fragment)
     return false unless fragment.present?
-    [:chart, :html, :table_composite, :title].include?(fragment[:type]) && fragment[:content].present?
+    [:chart, :html, :table_composite].include?(fragment[:type]) && fragment[:content].present?
   end
 end
