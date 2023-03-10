@@ -20,10 +20,8 @@ class CompareController < ApplicationController
   end
 
   def show
-    @results = fetch_results # unless @filter[:school_group_ids].empty?
     @benchmark = @filter[:benchmark].to_sym
-
-    @content = filter_content(@benchmark)
+    @content = content_for_benchmark(@benchmark)
   end
 
   private
@@ -35,20 +33,6 @@ class CompareController < ApplicationController
         .to_hash.symbolize_keys
   end
 
-  def params_for_school_filter
-    @filter.slice(:school_group_ids, :school_types)
-  end
-
-  def fetch_results
-    include_invisible = can? :show, :all_schools
-
-    splatted_params = { include_invisible: include_invisible }.merge(params_for_school_filter)
-    schools = SchoolFilter.new(**splatted_params).filter
-    schools = schools.select {|s| can?(:show, s) } unless include_invisible
-
-    Alerts::CollateBenchmarkData.new(@latest_benchmark_run).perform(schools)
-  end
-
   def latest_benchmark_run
     @latest_benchmark_run ||= BenchmarkResultGenerationRun.latest
   end
@@ -57,8 +41,22 @@ class CompareController < ApplicationController
     @content_manager ||= Benchmarking::BenchmarkContentManager.new(@latest_benchmark_run.run_date)
   end
 
+  def included_schools
+    include_invisible = can? :show, :all_schools
+
+    school_params = @filter.slice(:school_group_ids, :school_types).merge(include_invisible: include_invisible)
+    schools = SchoolFilter.new(**school_params).filter
+    schools.select {|s| can?(:show, s) } unless include_invisible
+    schools
+  end
+
+  def fetch_benchmark_data
+    Alerts::CollateBenchmarkData.new(@latest_benchmark_run).perform(included_schools)
+  end
+
   def content_for_benchmark(benchmark)
-    @content_manager.content(@results, benchmark, user_type: user_type_hash, online: true)
+    content = @content_manager.content(fetch_benchmark_data, benchmark, user_type: user_type_hash, online: true)
+    return filter_content(content)
     # rubocop:disable Lint/RescueException
   rescue Exception => e
     # rubocop:enable Lint/RescueException
@@ -66,11 +64,11 @@ class CompareController < ApplicationController
     {}
   end
 
-  def filter_content(benchmark)
-    content_for_benchmark(benchmark).select { |content| content_select?(content) }
+  def filter_content(content)
+    content.select { |content_element| select_content_element?(content_element) }
   end
 
-  def content_select?(content)
+  def select_content_element?(content)
     return false unless content.present?
     [:chart, :html, :table_composite, :title].include?(content[:type]) && content[:content].present?
   end
