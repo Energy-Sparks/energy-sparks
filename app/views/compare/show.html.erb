@@ -1,0 +1,11 @@
+<% content_for :page_title, @title  %>
+
+<h1><%= @title %></h1>
+
+<%= render 'filter' %>
+
+<div id='benchmark-content'%>
+  <% @content.each do |content| %>
+    <%= render "compare/content_types/#{content[:type]}", content: content[:content] %>
+  <% end %>
+</div>
