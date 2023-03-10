@@ -330,6 +330,26 @@ RSpec.describe "adult dashboard navigation", type: :system do
         end
       end
     end
+
+    context 'with replacement advice pages' do
+      around do |example|
+        ClimateControl.modify FEATURE_FLAG_REPLACE_ANALYSIS_PAGES: 'true' do
+          example.run
+        end
+      end
+      it 'links to advice pages from review energy analysis' do
+        visit school_path(school)
+        click_on 'Review energy analysis'
+        expect(page).to have_content("Energy efficiency advice")
+      end
+      it 'links to advice pages from my school' do
+        visit school_path(school)
+        within '#my_school_menu' do
+          click_on 'Energy analysis'
+        end
+        expect(page).to have_content("Energy efficiency advice")
+      end
+    end
   end
 
   context 'as group admin' do
@@ -391,6 +411,21 @@ RSpec.describe "adult dashboard navigation", type: :system do
         click_on("User view")
         expect(page).to have_link("Admin view")
         expect(page).to_not have_link("Explore data")
+      end
+    end
+
+    context 'with replacement advice pages' do
+      around do |example|
+        ClimateControl.modify FEATURE_FLAG_REPLACE_ANALYSIS_PAGES: 'true' do
+          example.run
+        end
+      end
+      it 'links to advice pages from manage school menu' do
+        visit school_path(school)
+        within '#manage_school_menu' do
+          click_on 'Old analysis pages'
+        end
+        expect(page).to have_content("Analysis for #{school.name}")
       end
     end
   end
