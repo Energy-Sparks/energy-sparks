@@ -16,12 +16,13 @@ class CompareController < ApplicationController
 
   # pick benchmark
   def benchmarks
-    @benchmark_groups = @content_manager.structured_pages(school_ids: nil, filter: nil, user_type: user_type_hash)
+    @benchmark_groups = @content_manager.structured_pages(user_type: user_type_hash)
   end
 
   def show
     @benchmark = @filter[:benchmark].to_sym
     @content = content_for_benchmark(@benchmark)
+    @benchmark_title = extract_title(@content)
   end
 
   private
@@ -42,6 +43,7 @@ class CompareController < ApplicationController
   end
 
   def included_schools
+    # wonder if this can be replaced by a use of the scope accessible_by(current_ability)
     include_invisible = can? :show, :all_schools
 
     school_params = @filter.slice(:school_group_ids, :school_types).merge(include_invisible: include_invisible)
@@ -64,12 +66,17 @@ class CompareController < ApplicationController
     {}
   end
 
-  def filter_content(content)
-    content.select { |content_element| select_content_element?(content_element) }
+  def extract_title(content)
+    title_fragment = content.find { |fragment| fragment[:type] == :title && fragment[:content]}
+    title_fragment && title_fragment[:content]
   end
 
-  def select_content_element?(content)
-    return false unless content.present?
-    [:chart, :html, :table_composite, :title].include?(content[:type]) && content[:content].present?
+  def filter_content(content)
+    content.select { |fragment| select_fragment?(fragment) }
+  end
+
+  def select_fragment?(fragment)
+    return false unless fragment.present?
+    [:chart, :html, :table_composite, :title].include?(fragment[:type]) && fragment[:content].present?
   end
 end

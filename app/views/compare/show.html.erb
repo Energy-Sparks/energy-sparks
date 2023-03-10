@@ -1,4 +1,6 @@
-<% content_for :page_title, 'Benchmark name'  %>
+<% content_for :page_title, @benchmark_title  %>
+
+<h1><%= @benchmark_title %></h1>
 
 <% @content.each do |content| %>
   <%= render "compare/content_types/#{content[:type]}", content: content[:content], school: @school %>
