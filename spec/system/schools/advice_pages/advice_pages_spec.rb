@@ -148,9 +148,21 @@ RSpec.describe "advice pages", type: :system do
 
       it 'links to advice pages from manage school menu' do
         within '#manage_school_menu' do
-          click_on 'Old analysis pages'
+          click_on 'Advice pages'
         end
-        expect(page).to have_content("Analysis for #{school.name}")
+        expect(page).to have_content("Energy efficiency advice")
+      end
+
+      context 'with replacement advice pages' do
+        it 'links to advice pages from manage school menu' do
+          ClimateControl.modify FEATURE_FLAG_REPLACE_ANALYSIS_PAGES: 'true' do
+            visit learn_more_school_advice_total_energy_use_path(school)
+            within '#manage_school_menu' do
+              click_on 'Old analysis pages'
+            end
+            expect(page).to have_content("Analysis for #{school.name}")
+          end
+        end
       end
 
       it 'links from admin page' do

@@ -21,6 +21,7 @@ RSpec.shared_examples "navigation" do
     it 'does not show data-enabled links' do
       within('.application') do
         expect(page).to_not have_link("Compare schools")
+        expect(page).to_not have_link("Explore data")
         expect(page).to_not have_link("Review energy analysis")
         expect(page).to_not have_link("Print view")
       end
@@ -28,7 +29,19 @@ RSpec.shared_examples "navigation" do
   end
 
   it 'has links to analysis' do
+    expect(page).to have_link("Explore data")
     expect(page).to have_link("Review energy analysis")
+  end
+
+  context 'with co2 analysis' do
+    before(:each) do
+      co2_page = double(analysis_title: 'Some CO2 page', analysis_page: 'analysis/page/co2')
+      expect_any_instance_of(SchoolsController).to receive(:process_analysis_templates).and_return([co2_page])
+      visit school_path(test_school, switch: true)
+    end
+    it 'shows link to co2 analysis page' do
+      expect(page).to have_link("Carbon emissions")
+    end
   end
 
   context 'when school has partners' do
@@ -369,6 +382,7 @@ RSpec.describe "adult dashboard navigation", type: :system do
       end
       it 'overrides flag and shows data-enabled links' do
         expect(page).to have_link("Compare schools")
+        expect(page).to have_link("Explore data")
         expect(page).to have_link("Review energy analysis")
         expect(page).to have_link("Download your data")
       end
@@ -376,6 +390,7 @@ RSpec.describe "adult dashboard navigation", type: :system do
         expect(page).to have_link("User view")
         click_on("User view")
         expect(page).to have_link("Admin view")
+        expect(page).to_not have_link("Explore data")
       end
     end
   end

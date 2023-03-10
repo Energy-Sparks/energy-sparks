@@ -437,6 +437,10 @@ module ApplicationHelper
   end
 
   def school_advice_link(school)
-    EnergySparks::FeatureFlags.active?(:replace_analysis_pages) ? school_advice_path(school) : school_analysis_index_path(school)
+    replace_analysis_pages? ? school_advice_path(school) : school_analysis_index_path(school)
+  end
+
+  def replace_analysis_pages?
+    EnergySparks::FeatureFlags.active?(:replace_analysis_pages)
   end
 end
