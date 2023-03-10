@@ -13,12 +13,10 @@
         <% end %>
       <% end %>
       <% if school.configuration %>
-        <% if replace_analysis_pages? %>
-          <%= link_to public ? t('pupils.analysis.review_energy_analysis') : t('schools.schools.review_energy_analysis'), school_advice_link(school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
-        <% else %>
+        <% unless replace_analysis_pages? %>
           <%= link_to public ? t('pupils.analysis.explore_data') : t('schools.schools.explore_data'), pupils_school_analysis_path(school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
-          <%= link_to public ? t('pupils.analysis.review_energy_analysis') : t('schools.schools.review_energy_analysis'), school_analysis_index_path(school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
         <% end %>
+        <%= link_to public ? t('pupils.analysis.review_energy_analysis') : t('schools.schools.review_energy_analysis'), school_advice_link(school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
       <% end %>
     <% end %>
     <% if show_admin_page_switch?(school) %>
