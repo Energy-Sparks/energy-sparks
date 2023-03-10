@@ -2,8 +2,10 @@
 
 <h1><%= @title %></h1>
 
-<%= render 'comparing' %>
+<%= render 'filter' %>
 
-<% @content.each do |content| %>
-  <%= render "compare/content_types/#{content[:type]}", content: content[:content] %>
-<% end %>
+<div id='benchmark-content'%>
+  <% @content.each do |content| %>
+    <%= render "compare/content_types/#{content[:type]}", content: content[:content] %>
+  <% end %>
+</div>

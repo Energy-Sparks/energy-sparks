@@ -4,7 +4,7 @@ en:
     benchmarks:
       description: Click on a benchmark to compare the selected schools
       title: Choose school comparison benchmark
-    comparing:
+    filter:
       school_types_html: Including %{school_types} schools
       schools_in_school_group_html: Schools in the <strong>%{school_group}</strong> group
       title: 'Comparing:'
