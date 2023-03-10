@@ -89,7 +89,35 @@ en:
         category: Category
         period: Period
       labels:
+        bill_components:
+          00_30_to_07_00: 00:30 to 07:00
+          07_30_to_00_00: 07:30 to 00:00
+          agreed_availability_charge: Agreed availability charge
+          climate_change_levy__2021_22: Climate change levy (2021/22)
+          commodity_rate: Commodity rate
+          data_collection_dcda_agent_charge: DC/DA agent charge
+          duos_amber: Duos (Amber)
+          duos_green: Duos (Green)
+          duos_red: Duos (Red)
+          excess_availability_charge: Excess availability charge
+          feed_in_tariff_levy: Feed in tariff levy
+          fixed_charge: Fixed charge
+          flat_rate: Flat rate
+          meter_asset_provider_charge: Meter asset provider charge
+          nhh_automatic_meter_reading_charge: NHH Automatic meter reading charge
+          nhh_metering_agent_charge: NHH Metering agent charge
+          non_commodity_rate: Non commodit rate
+          reactive_power_charge: Reactive power charge
+          renewable_energy_obligation: Renewable energy obligation
+          settlement_agency_fee: Settlement agency fee
+          site_fee: Site fee
+          standing_charge: Standing charge
+          tnuos: Tnuos
+          vat_20: VAT (20%)
+          vat_5: VAT (5%)
+        change_prev_year: Previous year change
         partial: "(partial)"
+        total: Total
       notice:
         two_significant_figures: Data in this table are presented to 2 significant figures.
     tabs:

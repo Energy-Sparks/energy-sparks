@@ -1,0 +1,48 @@
+<table id="<%= @id %>" class="table table-sm table-striped advice-table">
+    <thead>
+      <% if @year_header %>
+        <tr>
+          <th></th>
+          <% years_header do |year| %>
+            <th class="text-right"><%= year %></th>
+          <% end %>
+          <th></th>
+        </tr>
+      <% end %>
+      <tr>
+        <th></th>
+        <% months_header do |month| %>
+          <th class="text-right"><%= month %></th>
+        <% end %>
+        <th class="text-right"><%= t('advice_pages.tables.labels.total') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% all_components.each do |group| %>
+        <% group[:list].each do |component| %>
+          <% if bill_component?(component: component) %>
+            <tr>
+              <td><%= t("advice_pages.tables.labels.bill_components.#{component}") %></td>
+              <% bill_component_row(component: component) do |v| %>
+                <td class="text-right"><%= v %></td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% end %>
+      <% end %>
+      <tr class="table-success">
+        <td><%= t('advice_pages.tables.labels.total') %></td>
+        <% totals_row do |total| %>
+          <td class="text-right"><%= total %></td>
+        <% end %>
+      </tr>
+      <% if include_change_in_costs_row? %>
+        <tr class="bg-light">
+          <td><%= t('advice_pages.tables.labels.change_prev_year') %></td>
+          <% change_in_costs_row do |change| %>
+            <td class="text-right"><%= change %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+</table>

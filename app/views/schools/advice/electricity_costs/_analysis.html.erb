@@ -29,9 +29,19 @@
     default_meter_label: @aggregate_meter_adapter.name_or_mpan_mprn,
     analysis_dates: @analysis_dates,
     one_year_breakdown_chart: @one_year_breakdown_chart,
-    one_year_breakdown_chart_key: @one_year_breakdown_chart_key %>
+    one_year_breakdown_chart_key: @one_year_breakdown_chart_key,
+    monthly_costs: @monthly_costs,
+    change_in_costs: @change_in_costs %>
 <% else %>
-  <%= render 'cost_breakdown_by_charge', school: @school, analysis_dates: @analysis_dates, annual_costs: @annual_costs, one_year_breakdown_chart: @one_year_breakdown_chart, one_year_breakdown_chart_key: @one_year_breakdown_chart_key, show_school_total: true %>
+  <%= render 'cost_breakdown_by_charge',
+    school: @school,
+    analysis_dates: @analysis_dates,
+    annual_costs: @annual_costs,
+    one_year_breakdown_chart: @one_year_breakdown_chart,
+    one_year_breakdown_chart_key: @one_year_breakdown_chart_key,
+    monthly_costs: @monthly_costs,
+    change_in_costs: @change_in_costs,
+    show_school_total: true %>
   <% if @analysis_dates.months_of_data > 23 %>
     <%= render 'cost_comparison', school: @school, analysis_dates: @analysis_dates %>
   <% end %>
