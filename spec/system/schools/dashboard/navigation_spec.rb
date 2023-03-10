@@ -33,17 +33,6 @@ RSpec.shared_examples "navigation" do
     expect(page).to have_link("Review energy analysis")
   end
 
-  context 'with co2 analysis' do
-    before(:each) do
-      co2_page = double(analysis_title: 'Some CO2 page', analysis_page: 'analysis/page/co2')
-      expect_any_instance_of(SchoolsController).to receive(:process_analysis_templates).and_return([co2_page])
-      visit school_path(test_school, switch: true)
-    end
-    it 'shows link to co2 analysis page' do
-      expect(page).to have_link("Carbon emissions")
-    end
-  end
-
   context 'when school has partners' do
 
     let(:partner)             { create(:partner, name: "School Sponsor", url: "http://example.org") }
