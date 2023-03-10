@@ -324,7 +324,6 @@ cy:
       view_schools: Gweld ysgolion
     schools:
       compare_schools: Cymharu ysgolion
-      explore_data: Archwilio data
       review_energy_analysis: Adolygu dadansoddiad ynni
     show:
       act_on_energy_usage: Gweithredu ar y defnydd o ynni

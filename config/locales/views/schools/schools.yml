@@ -492,7 +492,6 @@ en:
           other: We have not received data for your %{out_of_date_fuel_types} usage for over thirty days. As a result your progress report will be out of date
     schools:
       compare_schools: Compare schools
-      explore_data: Explore data
       review_energy_analysis: Review energy analysis
     show:
       act_on_energy_usage: Act on energy usage
