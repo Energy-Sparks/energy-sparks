@@ -148,9 +148,9 @@ RSpec.describe "advice pages", type: :system do
 
       it 'links to advice pages from manage school menu' do
         within '#manage_school_menu' do
-          click_on 'Advice pages'
+          click_on 'Old analysis pages'
         end
-        expect(page).to have_content("Energy efficiency advice")
+        expect(page).to have_content("Analysis for #{school.name}")
       end
 
       it 'links from admin page' do
