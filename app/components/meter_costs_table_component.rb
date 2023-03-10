@@ -140,7 +140,7 @@ class MeterCostsTableComponent < ViewComponent::Base
   end
 
   def include_change_in_costs_row?
-    @change_in_costs_row.present? && @change_in_costs.values.compact.any?
+    @change_in_costs.present? && @change_in_costs.values.compact.any?
   end
 
   private
