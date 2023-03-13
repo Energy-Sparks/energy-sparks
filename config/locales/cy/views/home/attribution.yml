@@ -8,8 +8,8 @@ cy:
       - name: Data Amcangyfrif o Ddwysedd Carbon
         source: <a href="https://carbonintensity.org.uk/" target="_new">Data Dwysedd Carbon</a>
         terms: <a href="https://creativecommons.org/licenses/by/4.0/" target="_new">CC-BY 4.0</a>
-      - name: Amcangyfrif o Gynhyrchiad Solar PV
-        source: <a href="https://www.solar.sheffield.ac.uk/" target="_new">Sheffield PV yn Fyw</a>
+      - name: Amcangyfrif o Gynhyrchiad Solar Ffotofoltaig
+        source: <a href="https://www.solar.sheffield.ac.uk/" target="_new">Sheffield Ffotofoltaig yn Fyw</a>
       - name: Data Tymheredd Hanesyddol
         source: <a href="https://meteostat.net/" target="_new">Meteostat</a>. <br>Darparwyd data crai gan <a href="https://www.noaa.gov/" target="_new">NOAA</a>, <a href="https://www.dwd.de/" target="_new">DWD</a> ac <a href="https://dev.meteostat.net/docs/sources.html" target="_new">eraill</a>.
         terms: <a href="https://creativecommons.org/licenses/by-nc/4.0/legalcode" target="_new">CC-BY-NC 4.0</a>

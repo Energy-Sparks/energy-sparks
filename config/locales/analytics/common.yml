@@ -43,7 +43,7 @@ en:
       pa: "%{cost}pa"
       previous_school_week: previous school week
       school_day: school day
-      storage_heaters: storage_heaters
+      storage_heaters: storage heaters
       weekend: weekend
     holidays:
       autumn_half_term: Autumn half term
