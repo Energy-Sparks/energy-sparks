@@ -7,6 +7,7 @@ class CompareController < ApplicationController
   before_action :filter
   before_action :latest_benchmark_run, except: [:index]
   before_action :content_manager, except: [:index]
+  helper_method :index_params
 
   # filters
   def index
@@ -31,9 +32,13 @@ class CompareController < ApplicationController
 
   def filter
     @filter ||=
-      params.permit(:search, :benchmark, school_group_ids: [], school_types: [])
+      params.permit(:type, :benchmark, school_group_ids: [], school_types: [])
         .with_defaults(school_group_ids: [], school_types: School.school_types.keys)
         .to_hash.symbolize_keys
+  end
+
+  def index_params
+    filter.merge(anchor: filter[:type])
   end
 
   def latest_benchmark_run
