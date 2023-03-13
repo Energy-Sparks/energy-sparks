@@ -8,7 +8,7 @@ RSpec.describe "advice pages", type: :system do
   let(:learn_more) { 'here is some more explanation' }
   let(:expected_page_title) { "Energy usage summary" }
 
-  let!(:advice_page) { create(:advice_page, key: key, restricted: false, learn_more: learn_more) }
+  let!(:advice_page) { create(:advice_page, key: key, restricted: false, learn_more: learn_more, fuel_type: nil) }
 
   context 'when error occurs' do
     before do

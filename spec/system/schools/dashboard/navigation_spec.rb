@@ -200,6 +200,13 @@ RSpec.describe "adult dashboard navigation", type: :system do
       expect(page).to have_link("Download our data")
     end
 
+    it "doesn't allow download of other schools data" do
+      other_school = create(:school)
+      visit school_path(other_school)
+      expect(page).to have_content("Adult Dashboard")
+      expect(page).not_to have_link("Download your data")
+    end
+
     it 'should display my school menu on other pages' do
       visit home_page_path
       expect(page).to have_css("#my_school_menu")
@@ -273,6 +280,13 @@ RSpec.describe "adult dashboard navigation", type: :system do
       expect(page).to have_link("Download our data")
     end
 
+    it "doesn't allow download of other schools data" do
+      other_school = create(:school)
+      visit school_path(other_school)
+      expect(page).to have_content("Adult Dashboard")
+      expect(page).not_to have_link("Download your data")
+    end
+
     it 'should display my school menu on other pages' do
       visit home_page_path
       expect(page).to have_css("#my_school_menu")
@@ -325,6 +339,7 @@ RSpec.describe "adult dashboard navigation", type: :system do
     include_examples "navigation" do
       let(:test_school) { school }
     end
+
     it 'shows me the adult dashboard by default' do
       visit schools_path
       expect(page.has_content? "Energy Sparks schools across the UK").to be true
@@ -337,6 +352,13 @@ RSpec.describe "adult dashboard navigation", type: :system do
       click_on 'Print view'
       expect(page).to have_content("Adult dashboard for #{school.name}")
     end
+
+    it 'shows download link' do
+      visit school_path(school)
+      expect(page).to have_content("Adult Dashboard")
+      expect(page).to have_link("Download your data")
+    end
+
     context 'when school in private group' do
       before(:each) do
         school_group.update!(public: false)

@@ -14,6 +14,18 @@ RSpec.describe "electricity costs advice page", type: :system do
     let(:periods_with_missing_tariffs) { [[period_start, period_start + 1.month]] }
     let(:annual_costs)  { OpenStruct.new(£: 1000, days: 365) }
     let(:annual_costs_breakdown_by_meter) { Hash.new }
+    let(:beginning_of_month)  { Date.today.beginning_of_month }
+    let(:costs_for_latest_twelve_months) {
+      { beginning_of_month => Costs::MeterMonth.new(
+        month_start_date: beginning_of_month,
+        start_date: beginning_of_month,
+        end_date: beginning_of_month.end_of_month,
+        bill_component_costs: {}
+      )}
+    }
+    let(:change_in_costs) {
+      {beginning_of_month => nil}
+    }
 
     before do
       allow(electricity_aggregate_meter).to receive(:mpan_mprn).and_return("999999")
@@ -23,7 +35,9 @@ RSpec.describe "electricity costs advice page", type: :system do
         periods_with_missing_tariffs: periods_with_missing_tariffs,
         annual_costs: annual_costs,
         multiple_meters?: multiple_meters,
-        annual_costs_breakdown_by_meter: annual_costs_breakdown_by_meter
+        annual_costs_breakdown_by_meter: annual_costs_breakdown_by_meter,
+        calculate_costs_for_latest_twelve_months: costs_for_latest_twelve_months,
+        calculate_change_in_costs: change_in_costs
       )
       sign_in(user)
       visit school_advice_electricity_costs_path(school)

@@ -20,6 +20,7 @@ class ProgrammeType < ApplicationRecord
   translates :title, type: :string, fallbacks: { cy: :en }
   translates :short_description, type: :string, fallbacks: { cy: :en }
   translates :description, backend: :action_text
+  translates :document_link, type: :string, fallbacks: { cy: :en }
 
   t_has_one_attached :image
   has_many :programme_type_activity_types

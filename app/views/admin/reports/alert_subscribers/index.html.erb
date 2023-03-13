@@ -28,6 +28,7 @@
         <th>School</th>
         <th>Email</th>
         <th>Phone number for SMS</th>
+        <th>User</th>
         <th></th>
       </tr>
     </thead>
@@ -40,6 +41,7 @@
               <td><%= link_to school.name, school_path(school) %></td>
               <td><%= contact.email_address %></td>
               <td><%= contact.mobile_phone_number %></td>
+              <td><%= link_to contact.user_id, edit_admin_user_path(id: contact.user_id) if contact.user_id %></td>
               <td><%= link_to "Edit", edit_school_contact_path(contact.school, contact) , class: 'btn btn-success btn-sm' %></td>
             </tr>
           <% end %>

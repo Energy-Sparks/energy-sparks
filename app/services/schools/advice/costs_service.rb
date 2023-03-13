@@ -31,6 +31,26 @@ module Schools
         breakdown
       end
 
+      #find the analytics meter for a given mpan
+      def analytics_meter_for_mpan(mpan_mprn)
+        @meter_collection.meter?(mpan_mprn)
+      end
+
+      def calculate_costs_for_latest_twelve_months(meter = aggregate_meter)
+        meter_costs_service(meter).calculate_costs_for_latest_twelve_months
+      end
+
+      def calculate_change_in_costs(meter = aggregate_meter)
+        last_twelve_months = meter_costs_service(meter).calculate_costs_for_latest_twelve_months
+        previous_twelve_months = meter_costs_service(meter).calculate_costs_for_previous_twelve_months
+        last_twelve_months.map do |month, cost|
+          year_previous = month.prev_year
+          year_previous_costs = previous_twelve_months[year_previous]
+          change = year_previous_costs.nil? ? nil : cost.total - year_previous_costs.total
+          [month, change]
+        end.to_h
+      end
+
       private
 
       def meter_for_mpan(mpan_mprn)
@@ -55,6 +75,10 @@ module Schools
 
       def reporting_meters
         @meter_collection.real_meters2.select { |m| m.fuel_type == @fuel_type }
+      end
+
+      def meter_costs_service(meter = aggregate_meter)
+        Costs::MonthlyMeterCostsService.new(meter: meter)
       end
 
       def accounting_costs_service(meter = aggregate_meter)

@@ -6,6 +6,7 @@ module Schools
       load_and_authorize_resource :school
       skip_before_action :authenticate_user!
 
+      before_action :load_advice_pages
       before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
       before_action :set_tab_name, only: [:insights, :analysis, :learn_more]
       before_action :load_advice_page, only: [:insights, :analysis, :learn_more]
@@ -37,6 +38,10 @@ module Schools
       end
 
       private
+
+      def load_advice_pages
+        @advice_pages = AdvicePage.all
+      end
 
       def set_economic_tariffs_change_caveats
         @economic_tariffs_change_caveats = nil
