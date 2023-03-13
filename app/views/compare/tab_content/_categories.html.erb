@@ -1,1 +1,33 @@
-Category
+<div class="tab-pane fade show <%= ' active' unless current_school_group %>" id="categories" role="tabpanel" aria-labelledby="categories-tab">
+
+  <h4 class='my-2'><%= t('compare.index.categories.type_title') %></h4>
+  <div class="bg-light p-3 rounded border">
+    <%= form_tag benchmarks_compare_index_path, method: :get do %>
+      <%= hidden_field_tag(:type, 'categories') %>
+
+      <%= select_tag :school_type, options_for_select(School.school_types.keys.map {|key, value| [t("common.school_types.#{key}"), key]}, @filter[:school_type]) %>
+       <div class="pt-2">
+        <%= submit_tag 'Compare schools', class: 'btn btn-sm' %>
+      </div>
+    <% end %>
+  </div>
+
+  <h4 class='my-2'><%= t('compare.index.categories.country_title') %></h4>
+  <div class="bg-light p-3 rounded border">
+    <%= form_tag benchmarks_compare_index_path, method: :get do %>
+      <%= hidden_field_tag(:type, 'categories') %>
+      <%= radio_button_tag 'country', '', @filter[:country].blank? %>
+      <%= label_tag 'country_', t('compare.index.categories.all_schools') %>
+      <% School.countries.keys.each do |country| %>
+        <%= radio_button_tag('country', country, @filter[:country] == country, id: country) %>
+        <%= label_tag country, t('school_statistics.' + country) %>
+      <% end %>
+
+      <%= render 'school_type_filter', type: 'categories' %>
+      <div class="pt-2">
+        <%= submit_tag 'Compare schools', class: 'btn btn-sm' %>
+      </div>
+    <% end %>
+  </div>
+
+</div>

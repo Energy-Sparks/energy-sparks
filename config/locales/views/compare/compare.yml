@@ -4,14 +4,12 @@ en:
     benchmarks:
       description: Click on a benchmark to compare the selected schools
       title: Choose school comparison benchmark
-    filter:
-      change_options: Change options
-      school_types_html: Including %{school_types} schools
-      schools_in_school_group_html: Schools in the <strong>%{school_group}</strong> group
-      title: 'Comparing:'
     index:
       categories:
+        all_schools: All schools
+        country_title: Compare schools by country
         tab: Choose categories
+        type_title: Compare schools by type
       group:
         tab: Your group
         title: Compare all schools within %{name}
@@ -25,3 +23,11 @@ en:
         item_3: Compare individual performance against schools with similar characteristics
       title: School Comparison Tool
     limit_by_school_type: 'Limit results to include schools of type:'
+    summary:
+      all_countries: All countries
+      change_options: Change options
+      school_types_html: Including %{school_types} schools
+      schools_in_school_group_html: Schools in the <strong>%{school_group}</strong> group
+      schools_with_country_html: 'Schools in country: <strong>%{country}</strong>'
+      schools_with_type_html: 'Schools of type: <strong>%{school_type}</strong>'
+      title: 'Comparing:'

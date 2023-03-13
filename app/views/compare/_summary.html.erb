@@ -1,0 +1,17 @@
+<div class="bg-light p-3 mb-3 rounded border clearfix">
+  <%= link_to t('compare.summary.change_options'), compare_index_url(index_params), class: 'btn btn-sm float-right' %>
+  <p><%= t('compare.summary.title') %></p>
+  <% if @filter[:type] == 'group' %>
+    <p><%= t('compare.summary.schools_in_school_group_html', school_group: current_school_group.name) %></p>
+    <%= render 'school_type_summary' %>
+  <% end %>
+  <% if @filter[:type] == 'categories' %>
+    <% if @filter[:school_type] %>
+      <p><%= t('compare.summary.schools_with_type_html', school_type: t("common.school_types.#{@filter[:school_type]}")) %></p>
+    <% end %>
+    <% if @filter[:country] %>
+      <p><%= t('compare.summary.schools_with_country_html', country: (@filter[:country].present? ? t("school_statistics.#{@filter[:country]}") : t('compare.summary.all_countries'))) %></p>
+      <%= render 'school_type_summary' %>
+    <% end %>
+  <% end %>
+</div>
