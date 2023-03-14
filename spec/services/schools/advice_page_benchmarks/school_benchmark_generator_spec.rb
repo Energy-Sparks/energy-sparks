@@ -26,18 +26,18 @@ RSpec.describe Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator, type: :s
       end
       context 'and a benchmark is generated' do
         before(:each) do
-          allow(service).to receive(:benchmark_school).and_return(:exemplar)
+          allow(service).to receive(:benchmark_school).and_return(:exemplar_school)
         end
         it 'creates benchmark' do
           expect(result).to_not be_nil
           expect(result.advice_page).to eq advice_page
           expect(result.school).to eq school
-          expect(result.benchmarked_as).to eq "exemplar"
+          expect(result.benchmarked_as).to eq "exemplar_school"
         end
       end
     end
     context 'with existing benchmark' do
-      let!(:benchmark) { create(:advice_page_school_benchmark, school: school, advice_page: advice_page, benchmarked_as: :improving)}
+      let!(:benchmark) { create(:advice_page_school_benchmark, school: school, advice_page: advice_page, benchmarked_as: :other_school)}
 
       before(:each) do
         school.reload
@@ -45,12 +45,12 @@ RSpec.describe Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator, type: :s
 
       context 'and a benchmark is generated' do
         before(:each) do
-          allow(service).to receive(:benchmark_school).and_return(:exemplar)
+          allow(service).to receive(:benchmark_school).and_return(:exemplar_school)
         end
         it 'updates the benchmark' do
           expect(result).to eq benchmark
           benchmark.reload
-          expect(benchmark.benchmarked_as).to eq "exemplar"
+          expect(benchmark.benchmarked_as).to eq "exemplar_school"
         end
       end
       context 'and benchmark is nil' do
