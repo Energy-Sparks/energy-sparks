@@ -4,7 +4,7 @@ module Schools
       def insights
         @analysis_dates = analysis_dates
         @current_baseload = current_baseload
-        @benchmarked_baseload = benchmark_baseload(current_baseload.average_baseload_kw_last_year)
+        @benchmarked_baseload = baseload_service.benchmark_baseload
       end
 
       def analysis
@@ -63,18 +63,6 @@ module Schools
           average_baseload_kw_last_year: average_baseload_kw_last_year,
           percentage_change_year: relative_percent(previous_year_average_baseload_kw, average_baseload_kw_last_year),
           percentage_change_week: relative_percent(previous_week_average_baseload_kw, average_baseload_kw_last_week)
-        )
-      end
-
-      def benchmark_baseload(average_baseload_kw_last_year)
-        average_baseload_kw_benchmark = baseload_service.average_baseload_kw_benchmark(compare: :benchmark_school)
-        average_baseload_kw_exemplar = baseload_service.average_baseload_kw_benchmark(compare: :exemplar_school)
-
-        Schools::Comparison.new(
-          school_value: average_baseload_kw_last_year,
-          benchmark_value: average_baseload_kw_benchmark,
-          exemplar_value: average_baseload_kw_exemplar,
-          unit: :kw
         )
       end
 

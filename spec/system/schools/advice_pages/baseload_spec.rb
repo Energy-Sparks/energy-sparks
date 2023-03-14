@@ -127,6 +127,14 @@ RSpec.describe "Baseload advice page", type: :system do
       let(:previous_year_average_baseload_kw) { 2.0 }
       let(:previous_week_average_baseload_kw) { 1.9 }
 
+      let(:comparison) {
+        Schools::Comparison.new(
+          school_value: average_baseload_last_year_kw,
+          benchmark_value: average_baseload_kw_benchmark,
+          exemplar_value: average_baseload_kw_exemplar,
+          unit: :kw
+        )
+      }
       before(:each) do
         #current baseload
         allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:average_baseload_kw).with(period: :year).and_return average_baseload_last_year_kw
@@ -136,9 +144,7 @@ RSpec.describe "Baseload advice page", type: :system do
         allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:previous_period_average_baseload_kw).with(period: :week).and_return previous_week_average_baseload_kw
 
         #comparison
-        allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:average_baseload_kw_benchmark).with(compare: :benchmark_school).and_return average_baseload_kw_benchmark
-        allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:average_baseload_kw_benchmark).with(compare: :exemplar_school).and_return average_baseload_kw_exemplar
-
+        allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:benchmark_baseload).and_return comparison
         visit insights_school_advice_baseload_path(school)
       end
 
