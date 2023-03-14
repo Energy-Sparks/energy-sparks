@@ -138,6 +138,8 @@ class School < ApplicationRecord
   has_many :school_alert_type_exclusions, dependent: :destroy
   has_many :school_batch_runs
 
+  has_many :advice_page_school_benchmarks
+
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
 
