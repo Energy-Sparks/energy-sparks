@@ -48,9 +48,9 @@ Rails.application.routes.draw do
   get 'benchmarks', to: 'benchmarks#index'
   get 'benchmark', to: 'benchmarks#show'
 
-  resource :compare, controller: 'compare', only: [:index] do
+  resources :compare, controller: 'compare', param: :benchmark, only: [:index, :show] do
     collection do
-      get :index, :benchmarks, :results
+      get :benchmarks
     end
   end
 
@@ -167,6 +167,9 @@ Rails.application.routes.draw do
               get :insights
               get :analysis
               get :learn_more
+              if page == :electricity_costs
+                get :meter_costs
+              end
             end
           end
         end
@@ -495,6 +498,7 @@ Rails.application.routes.draw do
       resources :data_loads, only: :index
       resources :transifex_loads, only: [:index, :show]
       resources :activity_types, only: [:index, :show]
+      resources :dcc_status, only: [:index]
     end
 
     resource :settings, only: [:show, :update]
