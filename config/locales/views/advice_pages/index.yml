@@ -15,12 +15,10 @@ en:
         table_note: Use the table headings to sort the recommendations. Potential cost savings for the same fuel type are not additive.
         title: Priority actions
       show:
-        intro: You can explore our analysis using the links below or in the navigation bar on the left.
         notice_html: |-
-          <p>Looking for suggestions of where to start?</p>
-          <p>Review our recommended priority areas or view your energy use summary.</p>
-        notice_link: View energy use summary
-        page_contents: Every page provides recommended activities for both adults and pupils that will help you reduce your energy use and carbon emissions.
+          <p>Looking for suggestions of how to start reducing your energy usage?</p>
+          <p>We've recommended some priority actions to help you make progress. Or explore our detailed analysis below.</p>
+        notice_link: View prioritised actions
         page_summary:
           baseload: Understand how much energy your school uses to keep appliances running all the time
           electricity_costs: Review how much your school has recently spent on electricity
