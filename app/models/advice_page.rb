@@ -25,6 +25,7 @@ class AdvicePage < ApplicationRecord
 
   has_many :advice_page_intervention_types
   has_many :intervention_types, through: :advice_page_intervention_types
+  has_many :advice_page_school_benchmarks
 
   accepts_nested_attributes_for :advice_page_activity_types, reject_if: proc {|attributes| attributes['position'].blank? }
 

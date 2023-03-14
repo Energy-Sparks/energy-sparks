@@ -16,6 +16,7 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
 
   let(:usage) { CombinedUsageMetric.new(£: 0, kwh: 0, co2: 0) }
   let(:average_baseload_kw) { 2.1 }
+  let(:exemplar_average_baseload_kw) { 1.9 }
   let(:savings) { double(£: 1, co2: 2) }
 
   let(:service)   { Schools::Advice::BaseloadService.new(school, meter_collection) }
@@ -76,6 +77,21 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     end
     it 'returns the baseload vs benchmark' do
       expect(service.average_baseload_kw_benchmark).to eq(average_baseload_kw)
+    end
+  end
+
+  describe '#benchmark_baseload' do
+    before do
+      allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:average_baseload_kw).and_return(usage)
+      allow_any_instance_of(Baseload::BaseloadBenchmarkingService).to receive(:average_baseload_kw).with(compare: :benchmark_school).and_return(average_baseload_kw)
+      allow_any_instance_of(Baseload::BaseloadBenchmarkingService).to receive(:average_baseload_kw).with(compare: :exemplar_school).and_return(exemplar_average_baseload_kw)
+    end
+    it 'returns a comparison' do
+      comparison = service.benchmark_baseload
+      expect(comparison.school_value).to eq usage
+      expect(comparison.benchmark_value).to eq average_baseload_kw
+      expect(comparison.exemplar_value).to eq exemplar_average_baseload_kw
+      expect(comparison.unit).to eq :kw
     end
   end
 
