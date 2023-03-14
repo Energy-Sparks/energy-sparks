@@ -2,27 +2,36 @@
   <div class="col">
     <% if display_advice_page?(school, fuel_type) %>
       <div class="row mt-4">
-        <div class="col <%=fuel_type_background_class(fuel_type)%>">
+        <div class="col-2">
           <h4>
-            <span>
+            <span class="<%= fuel_type_class(fuel_type) %>">
               <%= fa_icon( fuel_type_icon(fuel_type) ) %>
             </span>
             <%= t("advice_pages.nav.sections.#{fuel_type}") %>
           </h4>
         </div>
+        <div class="col-10"></div>
       </div>
       <div class="row">
         <div class="col">
           <% sort_by_label(advice_pages.where(fuel_type: fuel_type)).each do |ap| %>
-            <div class="mt-2 row d-flex align-items-center" style="">
+            <div class="mt-3 row d-flex align-items-center">
               <div class="col-2">
-                <h5 style="padding-bottom: 0px;"><%= link_to translated_label(ap), advice_page_path(school, ap) %></h5>
+                <h5 class="advice-page-label"><%= link_to translated_label(ap), advice_page_path(school, ap) %></h5>
               </div>
               <div class="col">
                 <%= t("advice_pages.index.show.page_summary.#{ap.key}") %>
               </div>
-              <div class="col-2">
-              </div>
+              <% school_benchmark = advice_page_benchmarks.where(advice_page: ap).first %>
+              <% if school_benchmark.present? %>
+                <div class="col-2 bg-<%= school_benchmark.benchmarked_as %>">
+                  <div class="advice-page-benchmark-label">
+                    <%= t("advice_pages.benchmarks.#{school_benchmark.benchmarked_as}") %>
+                  </div>
+                </div>
+              <% else %>
+                <div class="col-2"></div>
+              <% end %>
             </div>
           <% end %>
         </div>

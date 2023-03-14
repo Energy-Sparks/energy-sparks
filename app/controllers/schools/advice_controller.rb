@@ -11,6 +11,7 @@ module Schools
     include DashboardPriorities
 
     def show
+      @advice_page_benchmarks = @school.advice_page_school_benchmarks
     end
 
     def priorities
