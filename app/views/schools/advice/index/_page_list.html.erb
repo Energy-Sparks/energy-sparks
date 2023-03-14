@@ -1,24 +1,32 @@
 <% AdvicePage.fuel_types.keys.each do |fuel_type| %>
-  <% if display_advice_page?(school, fuel_type) %>
-    <div class="row mt-4">
-      <div class="col">
-        <h3>
-          <span class="<%=fuel_type_class(fuel_type)%>">
-            <%= fa_icon( fuel_type_icon(fuel_type) ) %>
-          </span>
-          <%= t("advice_pages.nav.sections.#{fuel_type}") %>
-        </h3>
-        <% sort_by_label(advice_pages.where(fuel_type: fuel_type)).each do |ap| %>
-          <div class="mt-4 row d-flex align-items-center" style="">
-            <div class="col">
-              <h4><%= link_to translated_label(ap), advice_page_path(school, ap) %></h4>
-            </div>
-            <div class="col">
-              <%= t("advice_pages.index.show.page_summary.#{ap.key}") %>
-            </div>
-          </div>
-        <% end %>
+  <div class="col">
+    <% if display_advice_page?(school, fuel_type) %>
+      <div class="row mt-4">
+        <div class="col <%=fuel_type_background_class(fuel_type)%>">
+          <h4>
+            <span>
+              <%= fa_icon( fuel_type_icon(fuel_type) ) %>
+            </span>
+            <%= t("advice_pages.nav.sections.#{fuel_type}") %>
+          </h4>
+        </div>
       </div>
-    </div>
-  <% end %>
+      <div class="row">
+        <div class="col">
+          <% sort_by_label(advice_pages.where(fuel_type: fuel_type)).each do |ap| %>
+            <div class="mt-2 row d-flex align-items-center" style="">
+              <div class="col-2">
+                <h5 style="padding-bottom: 0px;"><%= link_to translated_label(ap), advice_page_path(school, ap) %></h5>
+              </div>
+              <div class="col">
+                <%= t("advice_pages.index.show.page_summary.#{ap.key}") %>
+              </div>
+              <div class="col-2">
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
 <% end %>
