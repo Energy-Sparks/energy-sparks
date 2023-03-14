@@ -143,7 +143,6 @@ module Schools
         )
       end
 
-
       private
 
       def asof_date

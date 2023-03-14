@@ -2,9 +2,8 @@ module Schools
   module AdvicePageBenchmarks
     class BaseloadBenchmarkGenerator < SchoolBenchmarkGenerator
       def benchmark_school
-        return nil unless baseload_service.enough_data?
-        comparison = baseload_service.benchmark_baseload
-        return comparison.category
+        return unless baseload_service.enough_data?
+        baseload_service.benchmark_baseload.category
       end
 
       private
