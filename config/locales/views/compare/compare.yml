@@ -15,7 +15,6 @@ en:
       title: 'Comparing:'
     index:
       categories:
-        all_schools: All schools
         country_title: Compare schools by country
         tab: Choose categories
         type_title: Compare schools by type
