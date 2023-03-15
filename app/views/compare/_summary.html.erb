@@ -14,4 +14,9 @@
       <%= render 'school_type_summary' %>
     <% end %>
   <% end %>
+  <% if @filter[:type] == 'groups' %>
+    <p><%= t('compare.filter.schools_in_school_groups_html', school_groups: SchoolGroup.find(@filter[:school_group_ids]).map {|school_group| tag.strong(school_group.name)}.to_sentence.html_safe) %></p>
+    <%= render 'school_type_summary' %>
+  <% end %>
+
 </div>
