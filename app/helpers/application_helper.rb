@@ -186,6 +186,21 @@ module ApplicationHelper
     end
   end
 
+  def fuel_type_background_class(fuel_type)
+    case fuel_type.to_sym
+    when :electricity
+      'bg-electric-light'
+    when :gas
+      'bg-gas-light'
+    when :solar_pv
+      'bg-solar-light'
+    when :storage_heater, :storage_heaters
+      'bg-storage-light'
+    when :exported_solar_pv
+      'bg-solar-light'
+    end
+  end
+
   def fuel_type_class(fuel_type)
     case fuel_type.to_sym
     when :electricity

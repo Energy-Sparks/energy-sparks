@@ -130,6 +130,19 @@ module Schools
         end
       end
 
+      def benchmark_baseload
+        average_baseload_kw_last_year = average_baseload_kw(period: :year)
+        average_baseload_kw_benchmark = average_baseload_kw_benchmark(compare: :benchmark_school)
+        average_baseload_kw_exemplar = average_baseload_kw_benchmark(compare: :exemplar_school)
+
+        Schools::Comparison.new(
+          school_value: average_baseload_kw_last_year,
+          benchmark_value: average_baseload_kw_benchmark,
+          exemplar_value: average_baseload_kw_exemplar,
+          unit: :kw
+        )
+      end
+
       private
 
       def asof_date

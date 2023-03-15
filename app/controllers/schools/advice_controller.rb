@@ -11,18 +11,7 @@ module Schools
     include DashboardPriorities
 
     def show
-      @management_priorities = @school.latest_management_priorities.by_priority.limit(site_settings.management_priorities_page_limit).map do |priority|
-        TemplateInterpolation.new(
-          priority.content_version,
-          with_objects: { find_out_more: priority.find_out_more },
-          proxy: [:colour]
-        ).interpolate(
-          :management_priorities_title,
-          with: priority.alert.template_variables
-        )
-      end
-
-      @dashboard_alerts = setup_alerts(@school.latest_dashboard_alerts.management_dashboard, :management_dashboard_title, limit: nil)
+      @advice_page_benchmarks = @school.advice_page_school_benchmarks
     end
 
     def priorities

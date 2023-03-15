@@ -104,18 +104,7 @@ module Schools
       end
 
       def school_has_fuel_type?
-        case advice_page_fuel_type
-        when :gas
-          @school.has_gas?
-        when :electricity
-          @school.has_electricity?
-        when :storage_heater
-          @school.has_storage_heaters?
-        when :solar_pv
-          @school.has_solar_pv?
-        else
-          true
-        end
+        @advice_page.school_has_fuel_type?(@school)
       end
 
       def start_end_dates

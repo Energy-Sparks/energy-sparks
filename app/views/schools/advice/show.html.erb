@@ -2,17 +2,11 @@
   <div class="row mt-4">
     <div class="col">
       <h2><%= t('advice_pages.index.show.title')%></h2>
-      <p>
-        <%= t('advice_pages.index.show.intro') %>
-      </p>
-      <p>
-        <%= t('advice_pages.index.show.page_contents') %>
-      </p>
       <%= component 'notice', status: :neutral do |c| %>
-        <% c.with_link { link_to t('advice_pages.index.show.notice_link'), insights_school_advice_total_energy_use_path(@school) } %>
+        <% c.with_link { link_to t('advice_pages.index.show.notice_link'), priorities_school_advice_path(@school) } %>
         <%= t('advice_pages.index.show.notice_html') %>
       <% end %>
     </div>
   </div>
-  <%= render 'schools/advice/index/page_list', school: @school, advice_pages: @advice_pages %>
+  <%= render 'schools/advice/index/page_list', school: @school, advice_pages: @advice_pages, advice_page_benchmarks: @advice_page_benchmarks %>
 <% end %>

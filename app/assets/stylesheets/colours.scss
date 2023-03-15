@@ -68,3 +68,13 @@ $colours-light: (
 .advice-question-icon {
   color: $light-blue-links;
 }
+
+.bg-exemplar_school {
+  background-color: $green !important;
+}
+.bg-benchmark_school {
+  background-color: $light-orange !important;
+}
+.bg-other_school {
+  background-color: $bg-negative !important;
+}
