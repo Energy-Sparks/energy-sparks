@@ -2,13 +2,34 @@ require 'rails_helper'
 RSpec.describe Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator, type: :service do
 
   let(:school)      { create(:school) }
-  let(:advice_page) { create(:advice_page, key: :baseload) }
+  let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
+
+  let(:advice_page) { create(:advice_page, key: :baseload, fuel_type: :electricity) }
   let(:aggregate_school) { double(:aggregate_school) }
 
   let(:service)     { Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
 
+  context '.generator_for' do
+    let(:generator) { Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.generator_for(advice_page: advice_page, school: school, aggregate_school: aggregate_school) }
+
+    it 'returns object for known generator' do
+      expect(generator).to_not be_nil
+      expect(generator.class).to eq Schools::AdvicePageBenchmarks::BaseloadBenchmarkGenerator
+    end
+    context 'for unknown key' do
+      let(:advice_page) { create(:advice_page, key: :unknown) }
+      it 'returns nil for unknown generator' do
+        expect(generator).to be_nil
+      end
+    end
+  end
+
   context '#perform' do
     let(:result)      { service.perform }
+
+    before(:each) do
+      school.configuration.update!(fuel_configuration: fuel_configuration)
+    end
 
     context 'when an error occurs' do
       before(:each) do
@@ -19,6 +40,19 @@ RSpec.describe Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator, type: :s
         service.perform
       end
     end
+
+    context 'when school doesnt have fuel type' do
+      let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: false, has_gas: true, has_storage_heaters: true)}
+
+      before(:each) do
+        allow(service).to receive(:benchmark_school).and_return(:exemplar_school)
+      end
+
+      it 'doesnt generate a benchmark' do
+        expect(result).to be_nil
+      end
+    end
+
     context 'with no benchmark' do
       it 'doesnt create record if benchmarked_as is nil' do
         expect(result).to be_nil

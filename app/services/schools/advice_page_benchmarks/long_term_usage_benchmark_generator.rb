@@ -9,7 +9,7 @@ module Schools
       private
 
       def usage_service
-        @usage_service ||= Schools::Advice::LongTermUsageService.new(@school, @aggregate_school, @advice_page.fuel_type)
+        @usage_service ||= Schools::Advice::LongTermUsageService.new(@school, @aggregate_school, advice_page_fuel_type)
       end
     end
   end
