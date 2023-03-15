@@ -52,4 +52,22 @@ class AdvicePage < ApplicationRecord
       update!(advice_page_intervention_types_attributes: position_attributes)
     end
   end
+
+  #Check whether school has the fuel type for this advice page
+  #Defaults to treating unknown/nil fuel type as applicable to
+  #all schools
+  def school_has_fuel_type?(school, default_value: true)
+    case fuel_type&.to_sym
+    when :gas
+      school.has_gas?
+    when :electricity
+      school.has_electricity?
+    when :storage_heater
+      school.has_storage_heaters?
+    when :solar_pv
+      school.has_solar_pv?
+    else
+      default_value
+    end
+  end
 end
