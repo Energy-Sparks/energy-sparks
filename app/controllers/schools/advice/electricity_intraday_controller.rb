@@ -2,10 +2,10 @@ module Schools
   module Advice
     class ElectricityIntradayController < AdviceBaseController
       def insights
-        @peak_usage_benchmarking = build_peak_usage_benchmarking
-        @peak_usage_calculation = build_peak_usage_calculation(asof_date)
-        @peak_usage_calculation_1_year_ago = build_peak_usage_calculation(previous_years_asof_date)
+        @peak_usage_calculation = peak_usage_service(asof_date)
+        @peak_usage_calculation_1_year_ago = peak_usage_service(previous_years_asof_date)
         @peak_kw_usage_percentage_change = calculate_percentage_change_in_peak_kw
+        @benchmarked_usage = benchmark_peak_usage
       end
 
       def analysis
@@ -17,6 +17,15 @@ module Schools
       def create_analysable
         OpenStruct.new(
           enough_data?: analysis_dates.one_years_data
+        )
+      end
+
+      def benchmark_peak_usage
+        Schools::Comparison.new(
+          school_value: @peak_usage_calculation&.average_peak_kw,
+          benchmark_value: nil,
+          exemplar_value: peak_usage_benchmarking_service&.average_peak_usage_kw(compare: :exemplar_school),
+          unit: :kw
         )
       end
 
@@ -35,14 +44,14 @@ module Schools
         (new_value - old_value) / old_value
       end
 
-      def build_peak_usage_benchmarking
-        ::Usage::PeakUsageBenchmarkingService.new(
+      def peak_usage_benchmarking_service
+        @peak_usage_benchmarking_service ||= ::Usage::PeakUsageBenchmarkingService.new(
           meter_collection: aggregate_school,
           asof_date: asof_date
         )
       end
 
-      def build_peak_usage_calculation(date)
+      def peak_usage_service(date)
         ::Usage::PeakUsageCalculationService.new(
           meter_collection: aggregate_school,
           asof_date: date

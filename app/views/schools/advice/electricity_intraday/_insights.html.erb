@@ -9,8 +9,13 @@
 
 <!-- How do you compare section -->
 <%= render 'schools/advice/section_title', section_id: 'how_do_you_compare', section_title: t('advice_pages.electricity_intraday.insights.how_do_you_compare.title') %>
+
 <%= t('advice_pages.electricity_intraday.insights.how_do_you_compare.summary', school_type: @school.school_type.downcase) %>
 
-<%= render 'insights_how_do_you_compare_table' %>
+<div class="col">
+  <%= component 'school_comparison', id: 'comparison-electricity-out-of-hours', comparison: @benchmarked_usage do |c| %>
+    <% c.with_callout_footer { advice_t('electricity_intraday.insights.how_do_you_compare.callout_footer') } %>
+  <% end %>
+</div>
 
-<%= t('advice_pages.electricity_intraday.insights.how_do_you_compare.more_detail') %>
+<%= t('advice_pages.electricity_intraday.insights.how_do_you_compare.more_detail_html', link: benchmark_for_school_group_path(:electricity_peak_kw_per_pupil, @school)) %>
