@@ -10,8 +10,11 @@ module Schools
       def self.generator_for(advice_page:, school:, aggregate_school:)
         case advice_page.key.to_sym
         when :baseload
-          BaseloadBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)
+          BaseloadBenchmarkGenerator
+        when :electricity_long_term, :gas_long_term
+          LongTermUsageBenchmarkGenerator
         end
+        return generator_class.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)
       end
 
       def perform
