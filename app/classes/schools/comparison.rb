@@ -10,10 +10,7 @@ module Schools
     end
 
     def valid?
-      @school_value.present? &&
-        @benchmark_value.present? &&
-        @exemplar_value.present? &&
-        @unit.present?
+      @school_value.present? && @exemplar_value.present? && @unit.present?
     end
 
     def category
@@ -23,7 +20,7 @@ module Schools
     private
 
     def categorise_school
-      return :other if @school_value.nil? || @benchmark_value.nil? || @exemplar_value.nil?
+      return :other_school if @school_value.nil? || @benchmark_value.nil? || @exemplar_value.nil?
       if @school_value <= @exemplar_value
         :exemplar_school
       elsif @school_value > @exemplar_value &&
