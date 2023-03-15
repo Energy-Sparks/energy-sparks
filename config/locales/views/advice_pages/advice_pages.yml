@@ -86,7 +86,6 @@ en:
       title: Not enough data to run analysis
     tables:
       columns:
-        category: Category
         period: Period
       labels:
         bill_components:
