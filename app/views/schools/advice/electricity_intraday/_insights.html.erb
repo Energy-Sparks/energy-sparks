@@ -1,5 +1,6 @@
 <%= component 'notice', status: :neutral do |c| %>
-  <%= t('advice_pages.electricity_intraday.insights.summary') %>
+  <% c.with_link { link_to t('advice_pages.electricity_intraday.insights.summary_link'), learn_more_school_advice_electricity_intraday_path(@school) } %>
+  <%= t('advice_pages.electricity_intraday.insights.summary_html') %>
 <% end %>
 
 <!-- Your current peak electricity use section -->
