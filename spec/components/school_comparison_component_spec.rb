@@ -30,7 +30,7 @@ RSpec.describe SchoolComparisonComponent, type: :component do
       expect(component.render?).to eq true
     end
     it 'uses adjusts values for footer' do
-      expect(component.benchmark_value).to eq ''
+      expect(component.benchmark_value).to eq nil
       expect(component.other_value).to eq '10 kW'
     end
     it "classifies the school as other_school" do

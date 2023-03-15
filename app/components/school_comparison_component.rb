@@ -37,7 +37,7 @@ class SchoolComparisonComponent < ViewComponent::Base
   end
 
   def benchmark_value
-    return '' unless @comparison.benchmark_value
+    return nil unless @comparison.benchmark_value
     format_unit(@comparison.benchmark_value).html_safe
   end
 

@@ -5,6 +5,7 @@ module Schools
 
       def insights
         @annual_usage_breakdown = annual_usage_breakdown_service.usage_breakdown
+        @benchmarked_usage = benchmark_school(@annual_usage_breakdown)
       end
 
       def analysis
@@ -27,6 +28,15 @@ module Schools
           one_years_data: one_years_data?(start_date, end_date),
           recent_data: recent_data?(end_date),
           months_analysed: months_analysed(start_date, end_date)
+        )
+      end
+
+      def benchmark_school(annual_usage_breakdown)
+        Schools::Comparison.new(
+          school_value: annual_usage_breakdown&.out_of_hours&.kwh,
+          benchmark_value: nil,
+          exemplar_value: annual_usage_breakdown&.potential_savings(versus: :exemplar_school)&.kwh,
+          unit: :kwh
         )
       end
 
