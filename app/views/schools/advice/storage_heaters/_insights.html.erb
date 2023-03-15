@@ -1,25 +1,9 @@
 <%= component 'notice', status: :neutral do |c| %>
-  <% c.with_link { link_to t('advice_pages.gas_out_of_hours.insights.what_is_out_of_hours_usage_link'), learn_more_school_advice_gas_out_of_hours_path(@school) } %>
-  <%= t('advice_pages.storage_heaters.insights.what_is_out_of_hours_usage_html') %>
+  <% c.with_link { link_to t('advice_pages.storage_heaters.insights.link'), learn_more_school_advice_storage_heaters_path(@school) } %>
+  <%= t('advice_pages.storage_heaters.insights.advice_html') %>
 <% end %>
 
-What are storage heaters?
+<%= render 'schools/advice/section_title', section_id: 'leaving_the_heating_on_during_warm_weather
+', section_title: t('advice_pages.storage_heaters.insights.leaving_the_heating_on_during_warm_weather.title') %>
 
-Storage heaters work differently from other forms of heating in that they consume electricity overnight, store the energy, and then release the stored heat to classrooms during the day.
-
-In contrast most gas heating systems consume gas to produce heat immediately, so only consume energy during the school day.
-
-Leaving the heating on during warm weather
-
-Include notice from the seasonal control section of the analysis
-
-How do you compare?
-
-Link to the three storage heater comparison benchmarks, from the school comparison page.
-
-What should you do next?
-
-To the reduce the amount of energy used by storage heaters in your school:
-Keep an eye on the weather forecast, particularly in the Spring, and try to remember to turn your heating off when it is warm outside. Energy Sparks automatically emails you if it is going to be warm in the following week - keep an eye on your weekly alert email.
-Normally, storage heaters should be switched off during the school holidays and at weekends. If not currently installed, adding 7-day timers will be worth the investment.
-Check out the Energy Sparks case study focused on improving storage heater control.
+<%= render 'schools/advice/section_title', section_id: 'how_do_you_compare', section_title: t('advice_pages.storage_heaters.insights.how_do_you_compare.title') %>
