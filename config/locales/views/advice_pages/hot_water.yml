@@ -110,9 +110,6 @@ en:
             school_day_open: School day (open)
             total: Total
             weekends: Weekends
-        the_table_below_html: |-
-          The table below shows that %{percent} of the energy used to heat your hot water is used outside of school opening times.
-          Adjust your boiler settings to ensure that you are only heating water when it is needed.
         title: What do we mean by hot water gas use?
         we_estimate_your_hot_water_efficiency_to_be_html: We estimate your hot water efficiency to be %{efficiency_percent}
       not_relevant:
