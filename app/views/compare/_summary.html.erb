@@ -6,7 +6,7 @@
     <%= render 'school_type_summary' %>
   <% elsif @filter[:type] == 'categories' %>
     <% if @filter[:school_type] %>
-      <p><%= t('compare.filter.schools_with_type_html', school_type: (@åfilter[:school_type].present? ? t("common.school_types.#{@filter[:school_type]}") : t('compare.filter.all_school_types'))) %></p>
+      <p><%= t('compare.filter.schools_with_type_html', school_type: (@filter[:school_type].present? ? t("common.school_types.#{@filter[:school_type]}") : t('compare.filter.all_school_types'))) %></p>
     <% end %>
     <% if @filter[:country] %>
       <p><%= t('compare.filter.schools_with_country_html', country: (@filter[:country].present? ? t("school_statistics.#{@filter[:country]}") : t('compare.filter.all_countries'))) %></p>
