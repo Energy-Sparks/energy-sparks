@@ -86,6 +86,7 @@
 <% end %>
 
 <%= render 'schools/advice/section_title', section_id: 'seasonal_control', section_title: t('advice_pages.storage_heaters.analysis.seasonal_control.title') %>
+<%= render('seasonal_control_notice') %>
 <%= t('advice_pages.storage_heaters.analysis.seasonal_control.advice_html') %>
 
 <%= component 'chart', chart_type: :heating_on_off_by_week_storage_heater, school: @school do |c| %>

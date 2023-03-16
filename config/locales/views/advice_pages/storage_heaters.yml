@@ -30,12 +30,12 @@ en:
           title: Recent usage
         seasonal_control:
           advice_html: |-
-            <p>Your school had its heating on for {warm_weather_heating_days_schooldays_days} days which is %{assessment}</p>
             <p>Your school should only be using electricity for storage heaters during the winter. Most schools turn the heating on after the Autumn half term holiday in November, and off after Easter in April, or perhaps a little later if it's an early Easter holiday.</p>
             <p>By comparing your storage heater usage with the local weather we can highlight when your storage heaters have been on during warm and cold weather. This is shown in the following chart.</p>
           heating_on_off_by_week_storage_heater:
             subtitle: Electricity used for hot water and heating during warm and cold weather between %{day} and %{day}.
             title: Storage heater use in warm weather
+          notice_html: "<p>Your school had its heating on for {warm_weather_heating_days_schooldays_days} days which is %{assessment}</p>"
           title: Seasonal control
           you_should_ensure: You should ensure that storage heaters are turned off during weekends and holidays, and shorten the period when they are used during the year.
         thermostatic_control:
