@@ -1,11 +1,11 @@
-<div class="tab-pane fade show <%= ' active' if current_school_group %>" id="groups" role="tabpanel" aria-labelledby="groups-tab">
-
+<div class="tab-pane fade show" id="groups" role="tabpanel" aria-labelledby="groups-tab">
   <h4 class='my-2'><%= t('compare.index.groups.title') %></h4>
 
   <div class="bg-light p-3 rounded border">
     <%= form_tag benchmarks_compare_index_path, method: :get do %>
       <%= hidden_field_tag(:type, 'groups') %>
       <!-- TODO: List of all school groups, should exclude any groups without schools or where all the schools are not visible to the user -->
+      <!-- SchoolGroup.left_joins(:schools).where('schools.id is NOT NULL').distinct -->
       <%= select_tag('school_group_ids', options_from_collection_for_select(SchoolGroup.all, "id", "name", @filter[:school_group_ids]), multiple: true) %>
       <%= render 'school_type_filter', type: 'groups' %>
       <div class="pt-2">

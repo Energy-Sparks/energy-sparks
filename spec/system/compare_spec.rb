@@ -5,7 +5,7 @@ shared_examples "an index page" do |tab:, show_your_group_tab:true|
     expect(page).to have_content "School Comparison Tool"
     expect(page).to have_content "Identify examples of best practice"
     expect(page).to have_content "View how schools within the same MAT"
-    expect(page).to have_content "Use options below to compare 1 schools against 1 benchmarks"
+    expect(page).to have_content "Use options below to compare 2 schools against 1 benchmarks"
   end
 
   it "has standard tabs" do
@@ -52,7 +52,7 @@ shared_examples "a results page" do
   end
 end
 
-shared_examples "a form filter" do |id:'', school_types_excluding: nil, school_type: nil, country: nil|
+shared_examples "a form filter" do |id:, school_types_excluding: nil, school_type: nil, country: nil, school_groups: nil|
   let(:all_school_types)  { School.school_types.keys }
 
   it 'has school_type checkbox fields', if: school_types_excluding do
@@ -77,8 +77,13 @@ shared_examples "a form filter" do |id:'', school_types_excluding: nil, school_t
       expect(page).to have_checked_field(country)
     end
   end
-end
 
+  it "has school group select", if: school_groups do
+    within "#{id}" do
+      expect(page).to have_select('school_group_ids', selected: school_groups)
+    end
+  end
+end
 
 shared_examples "a filter summary" do |school_types: nil, school_types_excluding: nil, country: nil, school_groups: nil|
   let(:all_school_types)  { School.school_types.keys }
@@ -103,6 +108,12 @@ shared_examples "a filter summary" do |school_types: nil, school_types_excluding
 
   it 'displays country', if: country do
     expect(page).to have_content country
+  end
+
+  it 'displays groups', if: school_groups do
+    school_groups.each do |group|
+      expect(page).to have_content(group)
+    end
   end
 
   it { expect(page).to have_link('Change options')}
@@ -149,10 +160,13 @@ end
 ## actual tests ##
 
 describe 'compare pages', :compare, type: :system do
-  let(:all_school_types)  { School.school_types.keys }
-  let(:school_group)      { create(:school_group) }
-  let!(:school)           { create(:school, school_group: school_group)}
-  let(:benchmark_groups)  { [ { name: 'Benchmark group name', description: 'Benchmark description', benchmarks: { a_benchmark_key: 'Benchmark name'} } ] }
+  let(:all_school_types) { School.school_types.keys }
+  let!(:school_group)    { create(:school_group, name: "Group 1") }
+  let!(:school)          { create(:school, school_group: school_group)}
+  let!(:school_group_2)  { create(:school_group, name: "Group 2") }
+  let!(:school_2)        { create(:school, school_group: school_group_2)}
+
+  let(:benchmark_groups) { [ { name: 'Benchmark group name', description: 'Benchmark description', benchmarks: { a_benchmark_key: 'Benchmark name'} } ] }
 
   include_context "index page context"
 
@@ -294,12 +308,50 @@ describe 'compare pages', :compare, type: :system do
       before { click_on 'Choose groups' }
 
       it_behaves_like "an index page", tab: 'Choose groups'
+
+      it { expect(page).to have_content "Compare schools in groups" }
+
+      context "search filter" do
+        it_behaves_like "a form filter", id: '#groups', school_groups: [], school_types_excluding: [] # show all
+        context "Benchmark page" do
+          include_context 'benchmarks page context'
+          before do
+            within '#groups' do
+              select 'Group 1'
+              select 'Group 2'
+              uncheck 'Infant'
+              click_on 'Compare schools'
+            end
+          end
+
+          it_behaves_like "a benchmark list page"
+          it_behaves_like "a filter summary", school_types_excluding: ['infant'], school_groups: ["Group 1", "Group 2"]
+
+          context "Changing options" do
+            before { click_on "Change options" }
+            it_behaves_like "an index page", tab: 'Choose groups'
+            it_behaves_like "a form filter", id: '#groups', school_groups: ["Group 1", "Group 2"], school_types_excluding: ['infant']
+          end
+
+          context "results page" do
+            include_context 'results page context'
+            before { click_on 'Benchmark name' }
+            it_behaves_like "a results page"
+            it_behaves_like "a filter summary", school_types_excluding: ['infant'], school_groups: ["Group 1", "Group 2"]
+
+            context "Changing options" do
+              before { click_on "Change options" }
+              it_behaves_like "an index page", tab: 'Choose group'
+              it_behaves_like "a form filter", id: '#groups', school_groups: ["Group 1", "Group 2"], school_types_excluding: ['infant']
+            end
+          end
+        end
+      end
     end
   end
 
   context "Logged in user without school group" do
     let(:user) { create(:admin) }
-
     it_behaves_like "an index page", tab: 'Choose categories', show_your_group_tab: false
   end
 
