@@ -14,8 +14,7 @@
 %>
 
 <div class="col">
-  <%= component 'school_comparison', id: 'comparison-thermostatic', comparison: @benchmark_thermostatic_control do |c| %>
-  <% end %>
+  <%= component 'school_comparison', id: 'comparison-thermostatic', comparison: @benchmark_thermostatic_control %>
 </div>
 
 <%= t('advice_pages.thermostatic_control.insights.for_more_detail_html', link: benchmark_for_school_group_path(:thermostatic_control, @school)) %>
