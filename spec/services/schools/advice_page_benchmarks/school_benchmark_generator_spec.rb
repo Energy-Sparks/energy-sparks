@@ -9,6 +9,23 @@ RSpec.describe Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator, type: :s
 
   let(:service)     { Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
 
+  context '.can_benchmark?' do
+    let(:result) { Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.can_benchmark?(advice_page: advice_page)}
+    context 'for existing benchmarks' do
+      [:baseload, :electricity_long_term, :gas_long_term, :electricity_out_of_hours, :gas_out_of_hours, :electricity_intraday, :thermostatic_control, :heating_control].each do |key|
+        let(:advice_page) { create(:advice_page, key: key) }
+        it "returns true for #{key}" do
+          expect(result).to eq true
+        end
+      end
+    end
+    context 'for unknown benchmark' do
+      let(:advice_page) { create(:advice_page, key: :unknown) }
+      it 'returns false' do
+        expect(result).to eq false
+      end
+    end
+  end
   context '.generator_for' do
     let(:generator) { Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.generator_for(advice_page: advice_page, school: school, aggregate_school: aggregate_school) }
 

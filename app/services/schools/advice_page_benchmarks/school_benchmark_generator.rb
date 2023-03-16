@@ -7,21 +7,31 @@ module Schools
         @aggregate_school = aggregate_school
       end
 
+      def self.can_benchmark?(advice_page:)
+        generator_for_advice_page(advice_page: advice_page).present?
+      end
+
       def self.generator_for(advice_page:, school:, aggregate_school:)
-        generator_class = case advice_page.key.to_sym
-                          when :baseload
-                            BaseloadBenchmarkGenerator
-                          when :electricity_long_term, :gas_long_term
-                            LongTermUsageBenchmarkGenerator
-                          when :electricity_out_of_hours, :gas_out_of_hours
-                            OutOfHoursUsageBenchmarkGenerator
-                          when :electricity_intraday
-                            PeakUsageBenchmarkGenerator
-                          when :thermostatic_control
-                            ThermostaticControlBenchmarkGenerator
-                          end
+        generator_class = generator_for_advice_page(advice_page: advice_page)
         return nil unless generator_class.present?
         generator_class.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)
+      end
+
+      private_class_method def self.generator_for_advice_page(advice_page:)
+        case advice_page.key.to_sym
+        when :baseload
+          BaseloadBenchmarkGenerator
+        when :electricity_long_term, :gas_long_term
+          LongTermUsageBenchmarkGenerator
+        when :electricity_out_of_hours, :gas_out_of_hours
+          OutOfHoursUsageBenchmarkGenerator
+        when :electricity_intraday
+          PeakUsageBenchmarkGenerator
+        when :thermostatic_control
+          ThermostaticControlBenchmarkGenerator
+        when :heating_control
+          HeatingControlBenchmarkGenerator
+        end
       end
 
       def perform
