@@ -68,6 +68,5 @@ en:
       minutes:
         one: "%{count} minute"
         other: "%{count} minutes"
-  kw: kW
   kwh: kWh
   "£": "£"

@@ -9,10 +9,10 @@
   </thead>
   <tr>
     <td class="text-left">
-      <%= format_unit(@peak_usage_calculation&.average_peak_kw, :kw) %>
+      <%= format_unit(average_peak_kw, :kw) %>
     </td>
     <td class="text-right">
-      <%= up_downify(format_unit(@peak_kw_usage_percentage_change, :relative_percent)) %>
+      <%= up_downify(format_unit(peak_kw_usage_percentage_change, :relative_percent)) %>
     </td>
   </tr>
 </table>

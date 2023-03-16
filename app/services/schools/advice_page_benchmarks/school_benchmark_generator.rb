@@ -8,13 +8,26 @@ module Schools
       end
 
       def self.generator_for(advice_page:, school:, aggregate_school:)
-        case advice_page.key.to_sym
-        when :baseload
-          BaseloadBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)
-        end
+        generator_class = case advice_page.key.to_sym
+                          when :baseload
+                            BaseloadBenchmarkGenerator
+                          when :electricity_long_term, :gas_long_term
+                            LongTermUsageBenchmarkGenerator
+                          when :electricity_out_of_hours, :gas_out_of_hours
+                            OutOfHoursUsageBenchmarkGenerator
+                          when :electricity_intraday
+                            PeakUsageBenchmarkGenerator
+                          when :thermostatic_control
+                            ThermostaticControlBenchmarkGenerator
+                          when :heating_control
+                            HeatingControlBenchmarkGenerator
+                          end
+        return nil unless generator_class.present?
+        generator_class.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)
       end
 
       def perform
+        return nil unless school_has_fuel_type?
         begin
           benchmarked_as = benchmark_school
           @school_benchmark = @school.advice_page_school_benchmarks.find_or_create_by(advice_page: @advice_page)
@@ -30,6 +43,14 @@ module Schools
       end
 
       protected
+
+      def school_has_fuel_type?
+        @advice_page.school_has_fuel_type?(@school)
+      end
+
+      def advice_page_fuel_type
+        @advice_page.fuel_type&.to_sym
+      end
 
       def benchmark_school
         nil

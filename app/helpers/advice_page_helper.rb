@@ -127,27 +127,16 @@ module AdvicePageHelper
     end
   end
 
-  def warm_weather_on_days_rating(days)
-    range = {
-      0..6     => :excellent,
-      6..11    => :good,
-      12..16   => :above_average,
-      17..24   => :poor,
-      25..365  => :very_poor
-    }
-    range.select { |k, _v| k.cover?(days.to_i) }.values.first
-  end
-
-  def warm_weather_on_days_adjective(days)
-    I18nHelper.adjective(warm_weather_on_days_rating(days))
+  def warm_weather_on_days_adjective(rating)
+    I18nHelper.adjective(rating)
   end
 
   def notice_status_for(rating_value)
-    rating_value > 4 ? :positive : :negative
+    rating_value > 6 ? :positive : :negative
   end
 
-  def warm_weather_on_days_status(days)
-    if [:excellent, :good].include?(warm_weather_on_days_rating(days))
+  def warm_weather_on_days_status(rating)
+    if [:excellent, :good].include?(rating)
       :positive
     else
       :negative

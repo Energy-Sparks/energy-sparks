@@ -43,9 +43,11 @@ en:
           title: Seasonal control chart
       insights:
         comparison:
-          heating_on_comparison_link: how often you have heating on during warm weather
+          callout_footer: days
+          heating_on_comparison_link: How often you have heating on during warm weather
+          intro: When it comes to leaving heating on during warm weather, how do you compare with other schools?
           more_detail_html: For more detail look at how your school compares with others in your group
-          start_time_comparison_link: morning start times for heating
+          start_time_comparison_link: Morning start times for heating
           title: How do you compare?
         controls:
           average_start_time: Our analysis shows that recently the average start time for your heating was %{time}.

@@ -4,7 +4,7 @@ en:
     benchmarks:
       benchmark_school: Well managed
       exemplar_school: Exemplar
-      other: Improving
+      other_school: Improving
       your_school: Your school
     breadcrumbs:
       root: Advice
@@ -68,7 +68,7 @@ en:
         hot_water: Hot water
         solar_pv: Solar PV
         storage_heaters: Storage heaters
-        thermostatic_control: Thermostatic
+        thermostatic_control: Thermostatic control
         total_energy_use: Total energy use
       sections:
         electricity: Electricity
@@ -86,7 +86,6 @@ en:
       title: Not enough data to run analysis
     tables:
       columns:
-        category: Category
         period: Period
       labels:
         bill_components:
