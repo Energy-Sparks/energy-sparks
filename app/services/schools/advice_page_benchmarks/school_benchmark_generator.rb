@@ -19,6 +19,8 @@ module Schools
                             PeakUsageBenchmarkGenerator
                           when :thermostatic_control
                             ThermostaticControlBenchmarkGenerator
+                          when :heating_control
+                            HeatingControlBenchmarkGenerator
                           end
         return nil unless generator_class.present?
         generator_class.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)
