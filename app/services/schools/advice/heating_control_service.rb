@@ -5,7 +5,7 @@ module Schools
 
       #number of days heating on in warm weather => rating
       WARM_WEATHER_DAYS_RATING = {
-        0..6     => :excellent,
+        0..5     => :excellent,
         6..11    => :good,
         12..16   => :above_average,
         17..24   => :poor,
