@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "thermostatic control advice page", type: :system do
   let(:key) { 'thermostatic_control' }
-  let(:expected_page_title) { "Advanced thermostatic control analysis" }
+  let(:expected_page_title) { "Thermostatic control analysis" }
   include_context "gas advice page"
 
   context 'as school admin' do
@@ -37,8 +37,7 @@ RSpec.describe "thermostatic control advice page", type: :system do
       it_behaves_like "an advice page tab", tab: "Insights"
 
       it 'shows expected content' do
-        expect(page).to have_content('What do we mean by advanced thermostatic control?')
-        expect(page).to have_content('Your thermostatic control')
+        expect(page).to have_content('What is thermostatic control?')
         expect(page).to have_content('How do you compare?')
         expect(page).to have_content('Your thermostatic control is 0.67, which is about average')
       end
