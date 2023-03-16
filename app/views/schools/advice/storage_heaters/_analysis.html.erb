@@ -32,105 +32,89 @@
 
 <%= component 'chart', chart_type: :storage_heater_group_by_week, school: @school do |c| %>
   <% c.with_title do %>
-    Storage heater electricity consumption for the last year
+    <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_group_by_week.title') %>
   <% end %>
   <% c.with_subtitle do %>
-    The chart below shows your storage heater electricity consumption broken down on a weekly basis between %{date} and %{date}
+    <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_group_by_week.subtitle') %>
   <% end %>
   <% c.with_footer do %>
-    <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.chart_footnote_html') %>
+    <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_group_by_week.footer_html') %>
   <% end %>
 <% end %>
-
-<p>The table below shows how much electricity has been used for storage heaters over the last 12 months when the school is open and closed on a school day as well as during weekends and holidays.</p>
+<p>
+  <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.the_table_below') %>
+</p>
 
 <%= component 'chart', chart_type: :storage_heater_by_day_of_week_tolerant, school: @school do |c| %>
   <% c.with_title do %>
-    Storage heater electricity consumption by day of the week
+    <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_by_day_of_week_tolerant.title') %>
   <% end %>
   <% c.with_subtitle do %>
-    This chart shows the total amount of electricity used between %{day} and %{day}, broken down into days of the week.
+    <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_by_day_of_week_tolerant.subtitle') %>
   <% end %>
 <% end %>
 
 <%= component 'chart', chart_type: :storage_heater_intraday_current_year, school: @school do |c| %>
   <% c.with_title do %>
-    Storage heater electricity consumption by time of day
+    <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_intraday_current_year.title') %>
   <% end %>
   <% c.with_subtitle do %>
-    The chart below shows the average electricity consumption f between %{day} and %{day}, broken down by time of day.
+    <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_intraday_current_year.subtitle') %>
   <% end %>
 <% end %>
-
-
 
 <%= render 'schools/advice/section_title', section_id: 'recent_usage', section_title: t('advice_pages.storage_heaters.analysis.recent_usage.title') %>
 <%= t('advice_pages.storage_heaters.analysis.recent_usage.this_chart_html') %>
 
 <%= component 'chart', chart_type: :intraday_line_school_last7days_storage_heaters, school: @school do |c| %>
   <% c.with_title do %>
-    Storage heater electricity consumption for last 7 days
+    <%= t('advice_pages.storage_heaters.analysis.recent_usage.intraday_line_school_last7days_storage_heaters.title') %>
   <% end %>
   <% c.with_subtitle do %>
-    Electricity consumed by storage heaters between %{day and %{day}.
+    <%= t('advice_pages.storage_heaters.analysis.recent_usage.intraday_line_school_last7days_storage_heaters.subtitle') %>
   <% end %>
 <% end %>
-
 
 <%= render 'schools/advice/section_title', section_id: 'long_term_trends', section_title: t('advice_pages.storage_heaters.analysis.long_term_trends.title') %>
 <%= component 'chart', chart_type: :storage_heater_group_by_week_long_term, school: @school do |c| %>
   <% c.with_title do %>
-    Long term storage heater electricity consumption
+    <%= t('advice_pages.storage_heaters.analysis.long_term_trends.storage_heater_group_by_week_long_term.title') %>
   <% end %>
   <% c.with_subtitle do %>
-    This chart gives the breakdown or gas consumption between school day open and closed, holidays and weekends for all the full years we have data for your school
+    <%= t('advice_pages.storage_heaters.analysis.long_term_trends.storage_heater_group_by_week_long_term.subtitle') %>
   <% end %>
 <% end %>
 
-
 <%= render 'schools/advice/section_title', section_id: 'seasonal_control', section_title: t('advice_pages.storage_heaters.analysis.seasonal_control.title') %>
-<p>Your school had its heating on for {warm_weather_heating_days_schooldays_days} days which is %{assessment}</p>
-
-<p>Your school should only be using electricity for storage heaters during the winter. Most schools turn the heating on after the Autumn half term holiday in November, and off after Easter in April, or perhaps a little later if it's an early Easter holiday.</p>
-
-<p>By comparing your storage heater usage with the local weather we can highlight when your storage heaters have been on during warm and cold weather. This is shown in the following chart.</p>
+<%= t('advice_pages.storage_heaters.analysis.seasonal_control.advice_html') %>
 
 <%= component 'chart', chart_type: :heating_on_off_by_week_storage_heater, school: @school do |c| %>
   <% c.with_title do %>
-    Storage heater use in warm weather
+    <%= t('advice_pages.storage_heaters.analysis.seasonal_control.heating_on_off_by_week_storage_heater.title') %>
   <% end %>
   <% c.with_subtitle do %>
-    Electricity used for hot water and heating during warm and cold weather between %{day} and %{day}.
+    <%= t('advice_pages.storage_heaters.analysis.seasonal_control.heating_on_off_by_week_storage_heater.subtitle') %>
   <% end %>
 <% end %>
-
-<p>You should ensure that storage heaters are turned off during weekends and holidays, and shorten the period when they are used during the year.</p>
-
+<p>
+  <%= t('advice_pages.storage_heaters.analysis.seasonal_control.you_should_ensure') %>
+</p>
 
 <%= render 'schools/advice/section_title', section_id: 'thermostatic_control', section_title: t('advice_pages.storage_heaters.analysis.thermostatic_control.title') %>
 
 <% rating_value = 1 %>
 <%= component 'notice', status: notice_status_for(rating_value) do |c| %>
-Your thermostatic control is {{r2}}, which is {{r2_rating_adjective}}
-For storage heaters, an R2 value of over 0.5 is good. A perfect value is 1.0. The lower the value below 1.0, the worse the school's thermostatic control.
+  <%= t('advice_pages.storage_heaters.analysis.thermostatic_control.your_thermostatic_control_is') %>
 <% end %>
 
 <%= component 'chart', chart_type: :storage_heater_thermostatic, school: @school do |c| %>
   <% c.with_title do %>
-    Thermostatic analysis of your school’s storage heater use
+    <%= t('advice_pages.storage_heaters.analysis.thermostatic_control.storage_heater_thermostatic.title') %>
   <% end %>
   <% c.with_subtitle do %>
-    This chart shows an analysis of how closely electricity used by storage heaters in your school is aligned with the outside temperature between %{start date} and %{end date}
+    <%= t('advice_pages.storage_heaters.analysis.thermostatic_control.storage_heater_thermostatic.subtitle') %>
+  <% end %>
+  <% c.with_footer do %>
+    <%= t('advice_pages.storage_heaters.analysis.thermostatic_control.storage_heater_thermostatic.content_html') %>
   <% end %>
 <% end %>
-
-Chart header/intro: This chart plots the outside temperature (x axis) versus the storage heater electricity consumption for all the days of the last year when the storage heaters were turned on. The trendline shows the ideal electricity consumption if the thermostatic control is working perfectly i.e. all the points sit on a straight line.
-
-If the heating has good thermostatic control (a high R² value) then the points at the top of chart when the heating is on should be close to the trend line.
-
-This is because the amount of heating required on a single day is linearly proportional to the difference between the inside and outside temperature, and any variation from the trend line would suggest thermostatic control isn't working too well.
-
-Unfortunately, for storage heaters this is difficult because they consume the electricity overnight with no reference to the subsequent heating demand during the day.
-
-
-
