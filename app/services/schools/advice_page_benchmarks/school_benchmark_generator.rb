@@ -17,6 +17,8 @@ module Schools
                             OutOfHoursUsageBenchmarkGenerator
                           when :electricity_intraday
                             PeakUsageBenchmarkGenerator
+                          when :thermostatic_control
+                            ThermostaticControlBenchmarkGenerator
                           end
         return nil unless generator_class.present?
         generator_class.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)
