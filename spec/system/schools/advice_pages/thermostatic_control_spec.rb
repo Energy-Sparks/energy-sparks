@@ -11,10 +11,10 @@ RSpec.describe "thermostatic control advice page", type: :system do
     before do
       sign_in(user)
 
-      allow_any_instance_of(Schools::Advice::ThermostaticControlController).to receive_messages(
+      allow_any_instance_of(Schools::Advice::ThermostaticAnalysisService).to receive_messages(
         {
-          create_analysable: OpenStruct.new(enough_data?: true),
-          build_heating_thermostatic_analysis: OpenStruct.new(
+          enough_data?: true,
+          thermostatic_analysis: OpenStruct.new(
             r2: 0.6743665142232793,
             insulation_hotwater_heat_loss_estimate_kwh: 193_133.95130872616,
             insulation_hotwater_heat_loss_estimate_£: 5794.0185392617805,
