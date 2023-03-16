@@ -64,6 +64,4 @@ en:
           <p>Your thermostatic control is %{r2}, which is %{r2_rating_adjective}</p>
           <p>The average value for schools is %{average_schools_r2} and a perfect value is 1.0. The lower the value below 1.0, the worse the school's thermostatic control.</p>
         title: What is thermostatic control?
-        your_thermostatic_control:
-          title: Your thermostatic control
       page_title: Thermostatic control analysis
