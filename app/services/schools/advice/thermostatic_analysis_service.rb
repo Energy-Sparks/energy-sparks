@@ -3,6 +3,9 @@ module Schools
     class ThermostaticAnalysisService
       include AnalysableMixin
 
+      EXEMPLAR_R2_VALUE = 0.8
+      BENCHMARK_R2_VALUE = 0.6
+
       def initialize(school, meter_collection)
         @school = school
         @meter_collection = meter_collection
@@ -25,8 +28,8 @@ module Schools
       def benchmark_thermostatic_control
         Schools::Comparison.new(
           school_value: thermostatic_analysis.r2,
-          benchmark_value: 0.6,
-          exemplar_value: 0.8,
+          benchmark_value: BENCHMARK_R2_VALUE,
+          exemplar_value: EXEMPLAR_R2_VALUE,
           unit: :r2,
           low_is_good: false
         )
