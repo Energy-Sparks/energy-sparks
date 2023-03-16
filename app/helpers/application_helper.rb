@@ -450,4 +450,12 @@ module ApplicationHelper
     component = name.to_s.sub(%r{(/|$)}, '_component\1').camelize.constantize
     render(component.new(*args, **kwargs), &block)
   end
+
+  def school_advice_link(school)
+    replace_analysis_pages? ? school_advice_path(school) : school_analysis_index_path(school)
+  end
+
+  def replace_analysis_pages?
+    EnergySparks::FeatureFlags.active?(:replace_analysis_pages)
+  end
 end
