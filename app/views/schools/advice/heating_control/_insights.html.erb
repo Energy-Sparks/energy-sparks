@@ -21,7 +21,7 @@
 <% if @enough_data_for_seasonal_analysis %>
   <%= render 'schools/advice/section_title', section_id: 'comparison', section_title: t('advice_pages.heating_control.insights.warm_weather.title') %>
 
-  <%= render 'warm_weather_notice', seasonal_analysis: @seasonal_analysis %>
+  <%= render 'warm_weather_notice', seasonal_analysis: @seasonal_analysis, warm_weather_on_days_rating: @warm_weather_on_days_rating %>
 
   <%= render 'warm_weather_benefits', seasonal_analysis: @seasonal_analysis %>
 
