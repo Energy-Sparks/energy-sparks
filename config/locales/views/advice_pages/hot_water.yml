@@ -78,7 +78,10 @@ en:
         circulatory_gas_based_hot_water: Circulatory gas-based hot water systems in schools are generally very inefficient, averaging about 15%
         for_more_detail_html: For more detail, <a href='%{link}'>compare with other schools in your group</a>
         how_do_you_compare: How do you compare?
-        improving_the_way_html: If you followed our recommendations to improve the way that you control your hot water, you could reduce your annual gas consumption for hot water by %{gas_better_control_saving_kwh_percent}. Or you could investigate replacing your current hot water system with point of use electric heaters.
+        improving_the_way_html: |-
+          <p>The table below shows that %{gas_better_control_saving_gbp_percent} of the energy used to heat your hot water is used outside of school opening times. Adjusting your boiler settings to ensure that you are only heating water when it is needed could save you %{gas_better_control_saving_gbp} per year.
+          </p>
+          <p>Or you could investigate replacing your current hot water system with point of use electric heaters.</p>
         next_steps_html: |-
           To reduce the amount of energy used to heat water in your school:
           <ul>
@@ -107,9 +110,6 @@ en:
             school_day_open: School day (open)
             total: Total
             weekends: Weekends
-        the_table_below_html: |-
-          The table below shows that %{percent} of the energy used to heat your hot water is used outside of school opening times.
-          Adjust your boiler settings to ensure that you are only heating water when it is needed.
         title: What do we mean by hot water gas use?
         we_estimate_your_hot_water_efficiency_to_be_html: We estimate your hot water efficiency to be %{efficiency_percent}
       not_relevant:

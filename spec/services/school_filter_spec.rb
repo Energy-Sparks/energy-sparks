@@ -27,10 +27,22 @@ describe SchoolFilter do
     expect(SchoolFilter.new(scoreboard_ids: [scoreboard_a.id, scoreboard_b.id]).filter).to match_array [school_1, school_2]
   end
 
-  it 'filters by school type' do
+  it 'filters by school types' do
     expect(SchoolFilter.new(school_types: [School.school_types[:primary]]).filter).to eq [school_1]
     expect(SchoolFilter.new(school_types: [School.school_types[:secondary]]).filter).to eq [school_2]
     expect(SchoolFilter.new(school_types: [School.school_types[:primary], School.school_types[:secondary]]).filter).to match_array [school_1, school_2]
+  end
+
+  it 'filters by school type' do
+    expect(SchoolFilter.new(school_type: School.school_types[:primary]).filter).to eq [school_1]
+    expect(SchoolFilter.new(school_type: School.school_types[:secondary]).filter).to eq [school_2]
+    expect(SchoolFilter.new(school_type: School.school_types[:primary], school_types: [School.school_types[:primary], School.school_types[:secondary]]).filter).to match_array [school_1]
+  end
+
+  it 'filters by country' do
+    school_1.update(country: :scotland)
+    expect(SchoolFilter.new(country: School.countries[:scotland]).filter).to eq [school_1]
+    expect(SchoolFilter.new(country: School.countries[:wales]).filter).to eq []
   end
 
   it 'filters by visible' do

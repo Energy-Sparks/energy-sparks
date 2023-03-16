@@ -19,6 +19,7 @@ module Schools
         @multiple_meters = costs_service.multiple_meters?
         @monthly_costs = costs_service.calculate_costs_for_latest_twelve_months
         @change_in_costs = costs_service.calculate_change_in_costs
+        @aggregate_meter_mpan_mprn = aggregate_meter_mpan_mprn
         if @multiple_meters
           @annual_costs_breakdown_by_meter = costs_service.annual_costs_breakdown_by_meter
           @aggregate_meter_adapter = aggregate_meter_adapter

@@ -167,7 +167,7 @@ Rails.application.routes.draw do
               get :insights
               get :analysis
               get :learn_more
-              if page == :electricity_costs
+              if [:electricity_costs, :gas_costs].include?(page)
                 get :meter_costs
               end
             end
