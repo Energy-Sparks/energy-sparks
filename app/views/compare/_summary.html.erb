@@ -4,8 +4,7 @@
   <% if @filter[:type] == 'group' %>
     <p><%= t('compare.filter.schools_in_school_group_html', school_group: current_school_group.name) %></p>
     <%= render 'school_type_summary' %>
-  <% end %>
-  <% if @filter[:type] == 'categories' %>
+  <% elsif @filter[:type] == 'categories' %>
     <% if @filter[:school_type] %>
       <p><%= t('compare.filter.schools_with_type_html', school_type: (@filter[:school_type].present? ? t("common.school_types.#{@filter[:school_type]}") : t('compare.filter.all_school_types'))) %></p>
     <% end %>
@@ -13,5 +12,8 @@
       <p><%= t('compare.filter.schools_with_country_html', country: (@filter[:country].present? ? t("school_statistics.#{@filter[:country]}") : t('compare.filter.all_countries'))) %></p>
       <%= render 'school_type_summary' %>
     <% end %>
+  <% elsif @filter[:type] == 'groups' %>
+    <p><%= t('compare.filter.schools_in_school_groups_html', school_groups: SchoolGroup.find(@filter[:school_group_ids]).map {|school_group| tag.strong(school_group.name)}.to_sentence.html_safe) %></p>
+    <%= render 'school_type_summary' %>
   <% end %>
 </div>
