@@ -4,7 +4,7 @@
   <div class="bg-light p-3 rounded border">
     <%= form_tag benchmarks_compare_index_path, method: :get do %>
       <%= hidden_field_tag(:type, 'groups') %>
-      <%= select_tag('school_group_ids', options_from_collection_for_select(SchoolGroup.all.select(&:has_visible_schools?), "id", "name", @filter[:school_group_ids]), multiple: true) %>
+      <%= select_tag('school_group_ids', options_from_collection_for_select(SchoolGroup.all.by_name.select(&:has_visible_schools?), "id", "name", @filter[:school_group_ids]), multiple: true, size: 10) %>
       <%= render 'school_type_filter', type: 'groups' %>
       <div class="pt-2">
         <%= submit_tag 'Compare schools', class: 'btn btn-sm' %>
