@@ -12,6 +12,9 @@ module Schools
         25..365  => :very_poor
       }.freeze
 
+      EXEMPLAR_WARM_WEATHER_DAYS = 6
+      BENCHMARK_WARM_WEATHER_DAYS = 11
+
       def initialize(school, meter_collection)
         @school = school
         @meter_collection = meter_collection
@@ -73,6 +76,15 @@ module Schools
 
       def warm_weather_on_days_rating
         WARM_WEATHER_DAYS_RATING.select { |k, _v| k.cover?(days_when_heating_on_warm_weather) }.values.first
+      end
+
+      def benchmark_warm_weather_days
+        Schools::Comparison.new(
+          school_value: days_when_heating_on_warm_weather,
+          benchmark_value: BENCHMARK_WARM_WEATHER_DAYS,
+          exemplar_value: EXEMPLAR_WARM_WEATHER_DAYS,
+          unit: :days
+        )
       end
 
       private

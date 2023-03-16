@@ -31,5 +31,5 @@
 <% end %>
 
 <% if @school.school_group.present? %>
-  <%= render 'comparison', school: @school %>
+  <%= render 'comparison', school: @school, benchmark_warm_weather_days: @benchmark_warm_weather_days %>
 <% end %>

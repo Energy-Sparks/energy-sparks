@@ -9,6 +9,7 @@ module Schools
         if @enough_data_for_seasonal_analysis
           @seasonal_analysis = heating_control_service.seasonal_analysis
           @warm_weather_on_days_rating = heating_control_service.warm_weather_on_days_rating
+          @benchmark_warm_weather_days = heating_control_service.benchmark_warm_weather_days
         end
       end
 
