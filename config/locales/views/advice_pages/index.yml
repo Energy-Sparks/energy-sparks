@@ -15,6 +15,7 @@ en:
         table_note: Use the table headings to sort the recommendations. Potential cost savings for the same fuel type are not additive.
         title: Priority actions
       show:
+        how_do_you_compare: How does your school compare?
         not_applicable: Not applicable
         not_available: Not available
         notice_html: |-

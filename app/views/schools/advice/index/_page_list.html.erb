@@ -11,10 +11,10 @@
           </h4>
         </div>
         <div class="col-7"></div>
-        <div class="col-2 bg-light">
+        <div class="col-2 <%= idx == 0 ? 'bg-light' : ''%>">
           <% if idx == 0 %>
             <div class="advice-page-benchmark-label">
-              How does your school compare?
+              <%= t("advice_pages.index.show.how_do_you_compare") %>
             </div>
           <% end %>
         </div>
