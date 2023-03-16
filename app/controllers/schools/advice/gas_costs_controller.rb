@@ -17,13 +17,13 @@ module Schools
         days_of_data = dates.end_date - dates.start_date
         case days_of_data
         when 1..13
-          @one_year_breakdown_chart = :gas_cost_1_year_accounting_breakdown_group_by_day
+          @one_year_breakdown_chart = :electricity_cost_1_year_accounting_breakdown_group_by_day
           @one_year_breakdown_chart_key = :cost_1_year_accounting_breakdown_group_by_day
         when 14..79
-          @one_year_breakdown_chart = :gas_cost_1_year_accounting_breakdown_group_by_week
+          @one_year_breakdown_chart = :electricity_cost_1_year_accounting_breakdown_group_by_week
           @one_year_breakdown_chart_key = :cost_1_year_accounting_breakdown_group_by_week
         else
-          @one_year_breakdown_chart = :gas_cost_1_year_accounting_breakdown
+          @one_year_breakdown_chart = :electricity_cost_1_year_accounting_breakdown
           @one_year_breakdown_chart_key = :cost_1_year_accounting_breakdown
         end
       end
