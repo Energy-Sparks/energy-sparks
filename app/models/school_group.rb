@@ -63,7 +63,6 @@ class SchoolGroup < ApplicationRecord
 
   scope :by_name, -> { order(name: :asc) }
   scope :is_public, -> { where(public: true) }
-
   validates :name, presence: true
 
   enum default_chart_preference: [:default, :carbon, :usage, :cost]
