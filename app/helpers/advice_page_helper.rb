@@ -143,7 +143,7 @@ module AdvicePageHelper
   end
 
   def notice_status_for(rating_value)
-    rating_value > 4 ? :positive : :negative
+    rating_value > 6 ? :positive : :negative
   end
 
   def warm_weather_on_days_status(days)
