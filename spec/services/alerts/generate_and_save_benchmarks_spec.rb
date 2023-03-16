@@ -19,7 +19,8 @@ module Alerts
       chart_data: {chart: 'variables'},
       table_data: {table: 'variables'},
       priority_data: {priority: 'variables'},
-      benchmark_data: {benchmark: 'variables', var: Float::INFINITY}
+      benchmark_data: {benchmark: 'variables', var: Float::INFINITY},
+      benchmark_data_cy: {benchmark: 'welsh-variables', var: Float::INFINITY}
     }}
 
     let(:example_benchmark_report)    { Adapters::Report.new(**alert_report_attributes) }
@@ -77,8 +78,8 @@ module Alerts
         allow_any_instance_of(GenerateAlertTypeRunResult).to receive(:perform).and_return(alert_type_run_result)
         service = GenerateAndSaveBenchmarks.new(school: school, aggregate_school: aggregate_school, benchmark_result_generation_run: benchmark_result_generation_run)
         service.perform
-        expect(BenchmarkResult.last.data).to_not eq({})
         expect(BenchmarkResult.last.results).to_not eq({})
+        expect(BenchmarkResult.last.results_cy).to_not eq({})
         expect(BenchmarkResult.last.results["var"]).to eq ".inf"
       end
 

@@ -71,7 +71,13 @@ module Alerts
     def process_alert_benchmark_report(alert_type, alert_report, asof_date)
       if alert_report.valid
         if alert_report.benchmark_data.present?
-          BenchmarkResult.create!(benchmark_result_school_generation_run: @benchmark_result_school_generation_run, asof: asof_date, alert_type: alert_type, data: alert_report.benchmark_data, results: BenchmarkResult.convert_for_storage(alert_report.benchmark_data))
+          BenchmarkResult.create!(
+            benchmark_result_school_generation_run: @benchmark_result_school_generation_run,
+            asof: asof_date,
+            alert_type: alert_type,
+            results: BenchmarkResult.convert_for_storage(alert_report.benchmark_data),
+            results_cy: BenchmarkResult.convert_for_storage(alert_report.benchmark_data_cy)
+          )
         end
       else
         BenchmarkResultError.create!(benchmark_result_school_generation_run: @benchmark_result_school_generation_run, asof_date: asof_date, information: "Relevance: #{alert_report.relevance}", alert_type: alert_type)

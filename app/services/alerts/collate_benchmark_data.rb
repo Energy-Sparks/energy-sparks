@@ -16,7 +16,7 @@ module Alerts
     private
 
     def result_column
-      :results
+      I18n.locale == :cy ? :results_cy : :results
     end
 
     def benchmark_run_date

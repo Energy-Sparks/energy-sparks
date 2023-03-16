@@ -6,9 +6,9 @@
 #  asof                                      :date             not null
 #  benchmark_result_school_generation_run_id :bigint(8)        not null
 #  created_at                                :datetime         not null
-#  data                                      :text
 #  id                                        :bigint(8)        not null, primary key
 #  results                                   :json
+#  results_cy                                :json
 #  updated_at                                :datetime         not null
 #
 # Indexes
