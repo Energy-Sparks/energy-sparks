@@ -92,8 +92,8 @@ RSpec.describe "gas costs advice page", type: :system do
           end
         end
         it 'with only 12 months data' do
-          expect(page).to have_css('#chart_wrapper_gas_cost_1_year_accounting_breakdown')
-          expect(page).to_not have_css('#chart_wrapper_gas_cost_comparison_last_2_years_accounting')
+          expect(page).to have_css('#chart_wrapper_electricity_cost_1_year_accounting_breakdown')
+          expect(page).to_not have_css('#chart_wrapper_electricity_cost_comparison_last_2_years_accounting')
         end
       end
       context 'with multiple meters' do
