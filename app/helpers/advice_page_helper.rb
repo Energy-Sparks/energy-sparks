@@ -158,7 +158,11 @@ module AdvicePageHelper
 
   def tariff_source(tariff_summary)
     return t('advice_pages.tables.labels.default') unless tariff_summary.real
-    t('advice_pages.tables.labels.user_supplied')
+    if tariff_summary.name.include?('DCC SMETS2')
+      t('advice_pages.tables.labels.smart_meter')
+    else
+      t('advice_pages.tables.labels.user_supplied')
+    end
   end
 end
 # rubocop:enable Naming/AsciiIdentifiers
