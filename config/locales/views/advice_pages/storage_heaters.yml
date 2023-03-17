@@ -80,4 +80,6 @@ en:
             <li>Check out the Energy Sparks case study focused on improving storage heater control.</li>
           </ul>
         title: What are storage heaters?
+        your_storage_heater_energy_use:
+          title: Your storage heater energy use
       page_title: Storage heater usage analysis
