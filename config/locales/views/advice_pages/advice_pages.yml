@@ -89,7 +89,6 @@ en:
         name: Name
         period: Period
         source: Source
-        type: Type
       labels:
         bill_components:
           00_30_to_07_00: 00:30 to 07:00
