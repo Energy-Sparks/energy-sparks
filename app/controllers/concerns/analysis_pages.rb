@@ -9,8 +9,7 @@ module AnalysisPages
   end
 
   def find_advice_page_of_class(analysis_class)
-    alert_type = AlertType.where("lower(class_name) = ?", analysis_class.downcase).first
-    return alert_type
+    AlertType.where("lower(class_name) = ?", analysis_class.downcase).first
   end
 
   def setup_analysis_pages(analysis_pages)
