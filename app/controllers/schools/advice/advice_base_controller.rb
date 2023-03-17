@@ -169,10 +169,18 @@ module Schools
       end
 
       def load_recommendations
-        activity_type_filter = ActivityTypeFilter.new(school: @school, scope: @advice_page.ordered_activity_types, query: { exclude_if_done_this_year: true })
+        activity_type_filter = ActivityTypeFilter.new(
+          school: @school,
+          scope: @advice_page.ordered_activity_types,
+          query: { exclude_if_done_this_year: true }
+        )
         @activity_types = activity_type_filter.activity_types.limit(4)
 
-        intervention_type_filter = InterventionTypeFilter.new(school: @school, scope: @advice_page.ordered_intervention_types, query: { exclude_if_done_this_year: true })
+        intervention_type_filter = InterventionTypeFilter.new(
+          school: @school,
+          scope: @advice_page.ordered_intervention_types,
+          query: { exclude_if_done_this_year: true }
+        )
         @intervention_types = intervention_type_filter.intervention_types.limit(4)
       end
     end

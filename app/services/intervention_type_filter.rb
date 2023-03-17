@@ -1,7 +1,7 @@
 class InterventionTypeFilter
   attr_reader :query
 
-  def initialize(query: {}, school: nil, scope: nil, current_date: Time.zone.today)
+  def initialize(query: {}, school:, scope: nil, current_date: Time.zone.today)
     @query = query
     @school = school
     @scope = (scope || default_scope).preload(:intervention_type_group).group('intervention_types.id')
@@ -14,26 +14,14 @@ class InterventionTypeFilter
     filtered
   end
 
-  def for_category(category)
-    intervention_types.where(intervention_type_group: category)
-  end
-
   def exclude_if_done_this_year
-    @school && @query[:exclude_if_done_this_year]
+    @query[:exclude_if_done_this_year]
   end
 
 private
 
-  def load_selected(model, key)
-    if @query[key].blank?
-      model.none
-    else
-      model.where(id: @query[key])
-    end
-  end
-
   def default_scope
-    InterventionTypes.active.custom_last
+    InterventionType.active.custom_last
   end
 
   def exclude_completed_activities(filtered)

@@ -58,6 +58,8 @@ class InterventionType < ApplicationRecord
   scope :display_order,         -> { order(:custom, :name) }
   scope :not_custom,            -> { where(custom: false) }
   scope :active_and_not_custom, -> { active.not_custom }
+  scope :custom_last,           -> { order(:custom) }
+  scope :between, ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
 
   before_save :copy_searchable_attributes
 
