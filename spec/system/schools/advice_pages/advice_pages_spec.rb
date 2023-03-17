@@ -132,7 +132,7 @@ RSpec.describe "advice pages", type: :system do
       end
 
       it 'shows breadcrumb' do
-        within '.advice-page-breadcrumb' do
+        within '.page-breadcrumb' do
           expect(page).to have_link('Schools')
           expect(page).to have_link(school.name)
           expect(page).to have_link('Advice')

@@ -1,7 +1,7 @@
 RSpec.shared_examples "an advice page" do
 
   it 'shows advice breadcrumbs' do
-    within '.advice-page-breadcrumb' do
+    within '.page-breadcrumb' do
       expect(page).to have_link('Schools')
       expect(page).to have_link(school.name)
       expect(page).to have_link(school.school_group.name) if school.school_group
@@ -25,7 +25,7 @@ RSpec.shared_examples "an advice page tab" do |tab:|
   end
 
   it 'shows page breadcrumb' do
-    within '.advice-page-breadcrumb' do
+    within '.page-breadcrumb' do
       expect(page).to have_link('Advice')
       expect(page).to have_text(expected_page_title)
     end
