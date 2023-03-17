@@ -2,6 +2,8 @@ module Schools
   module Advice
     class StorageHeatersController < AdviceBaseController
       before_action :set_seasonal_analysis, only: [:insights, :analysis]
+      before_action :set_annual_usage_breakdown, only: [:insights, :analysis]
+      before_action :set_usage_categories, only: [:analysis]
 
       def insights
       end
@@ -11,6 +13,17 @@ module Schools
       end
 
       private
+
+      def set_annual_usage_breakdown
+        @annual_usage_breakdown = build_annual_usage_breakdown
+      end
+
+      def build_annual_usage_breakdown
+        ::Usage::AnnualUsageBreakdownService.new(
+          meter_collection: aggregate_school,
+          fuel_type: :storage_heater
+        ).usage_breakdown
+      end
 
       def analysis_dates
         start_date = aggregate_school.storage_heater_meter.amr_data.start_date
@@ -32,7 +45,7 @@ module Schools
       end
 
       def build_seasonal_analysis
-        Heating::SeasonalControlAnalysisService.new(meter_collection: aggregate_school, fuel_type: :storage_heater).seasonal_analysis
+        ::Heating::SeasonalControlAnalysisService.new(meter_collection: aggregate_school, fuel_type: :storage_heater).seasonal_analysis
       end
 
       def set_insights_next_steps
@@ -41,6 +54,12 @@ module Schools
 
       def advice_page_key
         :storage_heaters
+      end
+
+      def set_usage_categories
+        @usage_categories = [:holiday, :weekend, :school_day_open, :school_day_closed]
+        @usage_categories += [:community] if @school.school_times.community_use.any?
+        @usage_categories
       end
     end
   end
