@@ -55,6 +55,6 @@ module TariffsHelper
   end
 
   def settings(charge_type)
-    UserTariffCharge::CHARGE_TYPES[charge_type.to_sym] || {}
+    UserTariffCharge.charge_types[charge_type.to_sym] || {}
   end
 end
