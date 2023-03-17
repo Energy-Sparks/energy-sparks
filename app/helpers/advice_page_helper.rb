@@ -166,5 +166,9 @@ module AdvicePageHelper
     fuel_type = 'storage_heaters' if fuel_type == "storage_heater"
     school.send("has_#{fuel_type}?".to_sym)
   end
+
+  def can_benchmark?(advice_page:)
+    Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.can_benchmark?(advice_page: advice_page)
+  end
 end
 # rubocop:enable Naming/AsciiIdentifiers

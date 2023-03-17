@@ -483,7 +483,6 @@ Rails.application.routes.draw do
       get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings, defaults: { format: 'csv' }
       get 'tariffs', to: 'tariffs#index', as: :tariffs
       get 'tariffs/:meter_id', to: 'tariffs#show', as: :tariff
-      resources :benchmark_result_generation_runs, only: [:index, :show]
       resources :amr_data_feed_import_logs, only: [:index]
       get "amr_data_feed_import_logs/errors" => "amr_data_feed_import_logs#errors"
       get "amr_data_feed_import_logs/warnings" => "amr_data_feed_import_logs#warnings"

@@ -19,7 +19,8 @@ module Alerts
       chart_data: { chart: 'variables' },
       table_data: { table: 'variables' },
       priority_data: { priority: 'variables' },
-      benchmark_data: { benchmark: 'variables', var: Float::INFINITY }
+      benchmark_data: { benchmark: 'variables', var: Float::INFINITY },
+      benchmark_data_cy: { benchmark: 'welsh-variables', var: Float::INFINITY }
     }
     end
 
@@ -104,8 +105,8 @@ module Alerts
         expect(Alert.first.template_data).to_not be_nil
         expect(Alert.first.template_data_cy).to_not be_nil
 
-        expect(BenchmarkResult.last.data).to_not eq({})
         expect(BenchmarkResult.last.results).to_not eq({})
+        expect(BenchmarkResult.last.results_cy).to_not eq({})
         expect(BenchmarkResult.last.results["var"]).to eq ".inf"
       end
 

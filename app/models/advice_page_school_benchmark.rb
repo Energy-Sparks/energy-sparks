@@ -3,7 +3,7 @@
 # Table name: advice_page_school_benchmarks
 #
 #  advice_page_id :bigint(8)        not null
-#  benchmarked_as :integer          default("improving"), not null
+#  benchmarked_as :integer          default("other_school"), not null
 #  created_at     :datetime         not null
 #  id             :bigint(8)        not null, primary key
 #  school_id      :bigint(8)        not null

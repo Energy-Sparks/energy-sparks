@@ -6,9 +6,9 @@
 #  asof                                      :date             not null
 #  benchmark_result_school_generation_run_id :bigint(8)        not null
 #  created_at                                :datetime         not null
-#  data                                      :text
 #  id                                        :bigint(8)        not null, primary key
 #  results                                   :json
+#  results_cy                                :json
 #  updated_at                                :datetime         not null
 #
 # Indexes
@@ -25,8 +25,6 @@
 class BenchmarkResult < ApplicationRecord
   belongs_to :benchmark_result_school_generation_run, counter_cache: :benchmark_result_count
   belongs_to :alert_type
-
-  store :data, coder: YAML
 
   #converts JSON which may contain, NAN, Float::Infinity,
   def self.convert_for_storage(json)
