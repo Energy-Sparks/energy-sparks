@@ -5,7 +5,7 @@
     <label>
       <%= advice_t('electricity_costs.analysis.meter_breakdown.select') %>
     </label>
-    <%= select_tag :mpan_mprn, options_from_collection_for_select(options_for_meter_select, :mpan_mprn, :name_or_mpan_mprn, nil), class: "form-control", onchange: "$(this.form).submit();" %>
+    <%= select_tag :mpan_mprn, options_from_collection_for_select(options_for_meter_select, :mpan_mprn, :name_or_mpan_mprn, nil), class: "form-control", onchange: "$('#meter-costs').html('Loading data...');$(this.form).submit();" %>
   </div>
 <% end %>
 
