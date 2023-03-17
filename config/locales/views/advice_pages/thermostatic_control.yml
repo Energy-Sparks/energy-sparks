@@ -37,7 +37,7 @@ en:
             <p>This is because the amount of heating required on a single day is linearly proportional to the difference between the inside and outside temperature, and any variation from the trend line would suggest thermostatic control isn't working too well.</p>
             <p>The second set of data at the bottom of the chart is for gas consumption in the summer when the heating is not on; typically, this is from hot water and kitchen consumption.</p>
             <p>The slope of this line is often an indication of how well insulated the hot water system is; if the consumption increases as it gets colder it suggests a lack of insulation.</p>
-          subtitle: This chart shows an analysis of how closely gas consumption in your school is aligned with the outside temperature between start date to end date
+          subtitle_html: This chart shows an analysis of how closely gas consumption in your school is aligned with the outside temperature between <span class="start-date">%{start_date}</span> to <span class="end-date">%{end_date}</span>
           title: Thermostatic analysis of your school's heating system
         this_section_html: |-
           <p>This section gives a more detailed analysis of your school’s boiler control and some things to look out for.</p>
