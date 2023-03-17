@@ -25,37 +25,37 @@ module Alerts
     let(:variables_8)         { {"number_example_2"=>8.0, "string_example_2"=>"H", "time_of_day_2"=> TimeOfDay.new(1,45)} }
     let(:variables_9)         { {"number_example_2"=>9.0, "string_example_2"=>"H", "time_of_day_2"=> TimeOfDay.new(1,45)} }
 
-    let(:benchmark_result_1)  { BenchmarkResult.create!(alert_type: alert_type_1, asof: date_1, benchmark_result_school_generation_run: school_run_1, data: variables_1, results: variables_1 )}
+    let(:benchmark_result_1)  { BenchmarkResult.create!(alert_type: alert_type_1, asof: date_1, benchmark_result_school_generation_run: school_run_1, results: variables_1 )}
 
-    let(:benchmark_result_2)  { BenchmarkResult.create!(alert_type: alert_type_1, asof: date_2, benchmark_result_school_generation_run: school_run_1, data: variables_2, results: variables_2 )}
-    let(:benchmark_result_3)  { BenchmarkResult.create!(alert_type: alert_type_2, asof: date_1, benchmark_result_school_generation_run: school_run_1, data: variables_3, results: variables_3 )}
-    let(:benchmark_result_4)  { BenchmarkResult.create!(alert_type: alert_type_2, asof: date_2, benchmark_result_school_generation_run: school_run_1, data: variables_4, results: variables_4)}
+    let(:benchmark_result_2)  { BenchmarkResult.create!(alert_type: alert_type_1, asof: date_2, benchmark_result_school_generation_run: school_run_1, results: variables_2 )}
+    let(:benchmark_result_3)  { BenchmarkResult.create!(alert_type: alert_type_2, asof: date_1, benchmark_result_school_generation_run: school_run_1, results: variables_3 )}
+    let(:benchmark_result_4)  { BenchmarkResult.create!(alert_type: alert_type_2, asof: date_2, benchmark_result_school_generation_run: school_run_1, results: variables_4)}
 
-    let(:benchmark_result_5)  { BenchmarkResult.create!(alert_type: alert_type_1, asof: date_1, benchmark_result_school_generation_run: school_run_2, data: variables_5, results: variables_5 )}
-    let(:benchmark_result_6)  { BenchmarkResult.create!(alert_type: alert_type_1, asof: date_2, benchmark_result_school_generation_run: school_run_2, data: variables_6, results: variables_6 )}
-    let(:benchmark_result_7)  { BenchmarkResult.create!(alert_type: alert_type_2, asof: date_1, benchmark_result_school_generation_run: school_run_2, data: variables_7, results: variables_7 )}
-    let(:benchmark_result_8)  { BenchmarkResult.create!(alert_type: alert_type_2, asof: date_2, benchmark_result_school_generation_run: school_run_2, data: variables_8, results: variables_8 )}
+    let(:benchmark_result_5)  { BenchmarkResult.create!(alert_type: alert_type_1, asof: date_1, benchmark_result_school_generation_run: school_run_2, results: variables_5 )}
+    let(:benchmark_result_6)  { BenchmarkResult.create!(alert_type: alert_type_1, asof: date_2, benchmark_result_school_generation_run: school_run_2, results: variables_6 )}
+    let(:benchmark_result_7)  { BenchmarkResult.create!(alert_type: alert_type_2, asof: date_1, benchmark_result_school_generation_run: school_run_2, results: variables_7 )}
+    let(:benchmark_result_8)  { BenchmarkResult.create!(alert_type: alert_type_2, asof: date_2, benchmark_result_school_generation_run: school_run_2, results: variables_8 )}
 
     # this older run for school_2 should be overridden in the results by the later one
-    let!(:benchmark_result_9)  { BenchmarkResult.create!(alert_type: alert_type_2, asof: date_2, benchmark_result_school_generation_run: school_run_2_old, data: variables_9, results: variables_9 )}
+    let!(:benchmark_result_9)  { BenchmarkResult.create!(alert_type: alert_type_2, asof: date_2, benchmark_result_school_generation_run: school_run_2_old, results: variables_9 )}
 
     let!(:example_output) {
       {
         date_1 => {
-          school_1.id => benchmark_result_1.data.merge(benchmark_result_3.data) ,
-          school_2.id => benchmark_result_5.data.merge(benchmark_result_7.data)
+          school_1.id => benchmark_result_1.results.merge(benchmark_result_3.results) ,
+          school_2.id => benchmark_result_5.results.merge(benchmark_result_7.results)
         },
         date_2 => {
-          school_1.id => benchmark_result_2.data.merge(benchmark_result_4.data) ,
-          school_2.id => benchmark_result_6.data.merge(benchmark_result_8.data)
+          school_1.id => benchmark_result_2.results.merge(benchmark_result_4.results) ,
+          school_2.id => benchmark_result_6.results.merge(benchmark_result_8.results)
         }
       }
     }
 
     let!(:example_output_school_1) {
       {
-        date_1 => { school_1.id => benchmark_result_1.data.merge(benchmark_result_3.data) },
-        date_2 => { school_1.id => benchmark_result_2.data.merge(benchmark_result_4.data) }
+        date_1 => { school_1.id => benchmark_result_1.results.merge(benchmark_result_3.results) },
+        date_2 => { school_1.id => benchmark_result_2.results.merge(benchmark_result_4.results) }
       }
     }
 
@@ -67,21 +67,12 @@ module Alerts
     }
 
     it 'does the stuff' do
-      ClimateControl.modify FEATURE_FLAG_JSON_BENCHMARKS: 'false' do
-        expect(CollateBenchmarkData.new(run).perform).to eq example_output
-      end
+      expect(CollateBenchmarkData.new(run).perform).to eq example_output
     end
 
     it 'collates filtering by school' do
-      ClimateControl.modify FEATURE_FLAG_JSON_BENCHMARKS: 'false' do
-        expect(CollateBenchmarkData.new(run).perform([school_1])).to eq example_output_school_1
-      end
+      expect(CollateBenchmarkData.new(run).perform([school_1])).to eq example_output_school_1
     end
 
-    it 'uses json column when feature active' do
-      ClimateControl.modify FEATURE_FLAG_JSON_BENCHMARKS: 'true' do
-        expect(CollateBenchmarkData.new(run).perform([school_1])).to eq example_output_school_1_as_json
-      end
-    end
   end
 end
