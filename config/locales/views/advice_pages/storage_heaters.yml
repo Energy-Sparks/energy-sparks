@@ -57,7 +57,7 @@ en:
             subtitle: This chart shows an analysis of how closely electricity used by storage heaters in your school is aligned with the outside temperature between %{start date} and %{end date}
             title: Thermostatic analysis of your school’s storage heater use
           title: Thermostatic control
-          your_thermostatic_control_is: Your thermostatic control is {{r2}}, which is {{r2_rating_adjective}} For storage heaters, an R2 value of over 0.5 is good. A perfect value is 1.0. The lower the value below 1.0, the worse the school's thermostatic control.
+          your_thermostatic_control_is: Your thermostatic control is %{r2}, which is %{r2_rating_adjective}. For storage heaters, an R2 value of over 0.5 is good. A perfect value is 1.0. The lower the value below 1.0, the worse the school's thermostatic control.
         this_page_html: "<p>This page gives a more detailed analysis of your school’s storage heater energy use to help improve how you manage them.</p>"
         title: Storage heater analysis
       insights:

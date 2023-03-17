@@ -4,6 +4,7 @@ module Schools
       before_action :set_seasonal_analysis, only: [:insights, :analysis]
       before_action :set_annual_usage_breakdown, only: [:insights, :analysis]
       before_action :set_usage_categories, only: [:analysis]
+      before_action :set_heating_thermostatic_analysis, only: [:insights, :analysis]
 
       def insights
       end
@@ -13,6 +14,17 @@ module Schools
       end
 
       private
+
+      def set_heating_thermostatic_analysis
+        @heating_thermostatic_analysis = build_heating_thermostatic_analysis
+      end
+
+      def build_heating_thermostatic_analysis
+        ::Heating::HeatingThermostaticAnalysisService.new(
+          meter_collection: aggregate_school,
+          fuel_type: :storage_heater
+        ).create_model
+      end
 
       def set_annual_usage_breakdown
         @annual_usage_breakdown = build_annual_usage_breakdown

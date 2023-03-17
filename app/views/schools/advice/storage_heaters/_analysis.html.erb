@@ -116,7 +116,7 @@
 </p>
 <%= render 'schools/advice/section_title', section_id: 'thermostatic_control', section_title: t('advice_pages.storage_heaters.analysis.thermostatic_control.title') %>
 
-<%# render 'your_thermostatic_control_notice' %>
+<%= render 'your_thermostatic_control_notice' %>
 
 <%= component 'chart', chart_type: :storage_heater_thermostatic, school: @school do |c| %>
   <% c.with_title do %>
