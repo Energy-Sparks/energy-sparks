@@ -127,6 +127,12 @@ RSpec.describe 'alert type management', type: :system do
 
   describe 'creating alert content' do
 
+    around do |example|
+      ClimateControl.modify FEATURE_FLAG_REPLACE_FIND_OUT_MORES: 'false' do
+        example.run
+      end
+    end
+
     let!(:alert) do
       create(:alert, alert_type: gas_fuel_alert_type, template_data: {gas_percentage: '10%', chart_a: :example_chart_value}, school: create(:school))
     end
