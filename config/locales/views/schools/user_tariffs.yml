@@ -88,6 +88,7 @@ en:
         standing_charges: Standing charges
         title: Tariff details
       tariff_partial:
+        consumption_charges: Consumption charges
         day_night_tariff: Day/night tariff
         end_date: End date
         full_details: Full details
