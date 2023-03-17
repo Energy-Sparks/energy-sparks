@@ -7,6 +7,7 @@ module Schools
       end
 
       def analysis
+        @analysis_dates = analysis_dates
         @heating_thermostatic_analysis = thermostatic_analysis_service.thermostatic_analysis
       end
 
