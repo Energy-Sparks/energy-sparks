@@ -41,6 +41,7 @@ module Schools
           analytics_meter = costs_service.analytics_meter_for_mpan(@mpan_mprn)
           @monthly_costs = costs_service.calculate_costs_for_latest_twelve_months(analytics_meter)
           @change_in_costs = costs_service.calculate_change_in_costs(analytics_meter)
+          @tariffs = costs_service.tariffs(analytics_meter)
         end
         @analysis_dates = analysis_dates
         respond_to do |format|

@@ -51,6 +51,17 @@ module Schools
         end.to_h
       end
 
+      def tariffs(analytics_meter)
+        tariffs = tariff_information_service(analytics_meter).tariffs
+        tariffs.map do |range, tariff|
+          if tariff.real
+            tariff.user_tariff = @school.user_tariffs.where(name: tariff.name).first
+          end
+          [range, tariff]
+        end
+        tariffs.sort { |a, b| a[0].begin <=> b[0].begin}
+      end
+
       private
 
       def meter_for_mpan(mpan_mprn)

@@ -51,6 +51,7 @@ en:
         actions_title: Take action around the school
         activities_title: Work with the pupils
         title: What should you do next?
+    loading_data: Loading data...
     nav:
       name: Advice
       pages:
@@ -86,7 +87,9 @@ en:
       title: Not enough data to run analysis
     tables:
       columns:
+        name: Name
         period: Period
+        source: Source
       labels:
         bill_components:
           00_30_to_07_00: 00:30 to 07:00
@@ -115,11 +118,15 @@ en:
           vat_20: VAT (20%)
           vat_5: VAT (5%)
         change_prev_year: Previous year change
+        default: Default
         partial: "(partial)"
+        smart_meter: Smart meter
         total: Total
+        user_supplied: User supplied
       notice:
         two_significant_figures: Data in this table are presented to 2 significant figures.
     tabs:
       analysis: Analysis
       insights: Insights
       learn_more: Learn More
+    tariff_table_intro: We used the following tariffs to calculate these costs.
