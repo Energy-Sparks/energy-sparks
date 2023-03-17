@@ -6,19 +6,19 @@
   <thead class="thead-dark">
     <tr>
       <th class="text-left-">
-        Time of use
+        <%= t('advice_pages.storage_heaters.analysis.analysis_table.columns.time_of_use') %>
       </th>
       <th class="text-right-">
-        kWh
+        <%= t('advice_pages.storage_heaters.analysis.analysis_table.columns.kwh') %>
       </th>
       <th class="text-right-">
-        £ (at current tariff)
+        <%= t('advice_pages.storage_heaters.analysis.analysis_table.columns.gbp_at_current_tariff') %>
       </th>
       <th class="text-right-">
-        kg/co2
+        <%= t('advice_pages.storage_heaters.analysis.analysis_table.columns.kg_co2') %>
       </th>
       <th class="text-right-">
-        Percent
+        <%= t('advice_pages.storage_heaters.analysis.analysis_table.columns.percent') %>
       </th>
     </tr>
   </thead>
@@ -26,7 +26,8 @@
     <% @usage_categories.each do |usage_category| %>
       <tr>
         <td>
-          <%= t("analytics.series_data_manager.series_name.#{usage_category}") %>
+          <% category_key = usage_category == :school_day_closed ? :storage_heater_charge : usage_category %>
+          <%= t("analytics.series_data_manager.series_name.#{category_key}") %>
         </td>
         <td class="text-right">
           <%= format_unit(@annual_usage_breakdown.send(usage_category).kwh, :kwh) %>
@@ -44,7 +45,7 @@
     <% end %>
     <tr>
       <td>
-        Total
+        <%= t('advice_pages.storage_heaters.analysis.analysis_table.rows.total') %>
       </td>
       <td class="text-right">
         <%=  format_unit(annual_usage_breakdown_totals_for(@annual_usage_breakdown, :kwh), :kwh) %>

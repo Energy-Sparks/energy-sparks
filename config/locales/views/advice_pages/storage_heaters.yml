@@ -3,6 +3,15 @@ en:
   advice_pages:
     storage_heaters:
       analysis:
+        analysis_table:
+          columns:
+            gbp_at_current_tariff: "£ (at current tariff)"
+            kg_co2: kg/co2
+            kwh: kWh
+            percent: Percent
+            time_of_use: Time of use
+          rows:
+            total: Total
         electricity_use_for_the_last_12_months:
           advice_html: "<p>This section gives some insights into how the storage heaters in your school have used electricity over the last year.</p>"
           storage_heater_by_day_of_week_tolerant:
