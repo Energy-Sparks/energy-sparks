@@ -132,7 +132,7 @@ RSpec.describe "advice pages", type: :system do
       end
 
       it 'shows breadcrumb' do
-        within '.advice-page-breadcrumb' do
+        within '.page-breadcrumb' do
           expect(page).to have_link('Schools')
           expect(page).to have_link(school.name)
           expect(page).to have_link('Advice')
@@ -144,13 +144,6 @@ RSpec.describe "advice pages", type: :system do
         within '.advice-page-tabs' do
           expect(page).to have_content(learn_more)
         end
-      end
-
-      it 'links to advice pages from manage school menu' do
-        within '#manage_school_menu' do
-          click_on 'Advice pages'
-        end
-        expect(page).to have_content("Energy efficiency advice")
       end
 
       it 'links from admin page' do

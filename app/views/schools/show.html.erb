@@ -1,6 +1,8 @@
 <%= content_for :page_title, t('schools.show.dashboard_title', school_name: @school.name) %>
 
-<%= render 'shared/dashboard_title', school: @school, co2_pages: @co2_pages, public: true, show_data_enabled_features: @show_data_enabled_features %>
+<%= render 'shared/dashboard_title', school: @school do %>
+  <%= render 'adult_dashboard_buttons', school: @school, co2_pages: @co2_pages, public: true, show_data_enabled_features: @show_data_enabled_features %>
+<% end %>
 
 <% if @overview_data %>
   <h2><%= t('schools.show.summary_of_recent_energy_usage') %></h2>

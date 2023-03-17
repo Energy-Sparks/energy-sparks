@@ -1,11 +1,5 @@
 <% content_for :page_title, "#{t('advice_pages.index.title')} | #{school.name}" %>
 
-<div class="advice-page-breadcrumb">
-  <%= component 'breadcrumbs' do |c| %>
-    <% c.with_school(school) %>
-    <% c.with_items( advice_index_breadcrumbs(school, tab)) %>
-  <% end %>
-</div>
 <h1><%= t('advice_pages.index.title') %></h1>
 
 <div class="row">

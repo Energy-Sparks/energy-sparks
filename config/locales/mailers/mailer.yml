@@ -59,6 +59,7 @@ en:
     get_in_touch: Get in touch
   onboarding_mailer:
     activation_email:
+      explore_activities: Explore activities
       get_in_touch_html: <a href="%{contact_url}">Get in touch</a> if you have any further questions
       header: "%{school_name} is now live on Energy Sparks"
       join_a_webinar: Join a webinar
@@ -78,6 +79,7 @@ en:
       subject: "%{school} has completed the onboarding process"
       title: "%{school_name} has completed the automatic setup process"
     data_enabled_email:
+      explore_data: Explore your data
       get_in_touch_html: <a href="%{contact_url}">Get in touch</a> if you have any further questions.
       join_a_webinar: Join a webinar
       need_some_help: Need some help?
