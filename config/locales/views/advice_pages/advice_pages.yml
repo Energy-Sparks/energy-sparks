@@ -51,6 +51,7 @@ en:
         actions_title: Take action around the school
         activities_title: Work with the pupils
         title: What should you do next?
+    loading_data: Loading data...
     nav:
       name: Advice
       pages:
