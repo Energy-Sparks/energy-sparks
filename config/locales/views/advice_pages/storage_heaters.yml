@@ -6,14 +6,14 @@ en:
         electricity_use_for_the_last_12_months:
           advice_html: "<p>This section gives some insights into how the storage heaters in your school have used electricity over the last year.</p>"
           storage_heater_by_day_of_week_tolerant:
-            subtitle: This chart shows the total amount of electricity used between %{day} and %{day}, broken down into days of the week.
+            subtitle_html: This chart shows the total amount of electricity used between <span class='start-date'>%{start_month_year}</span> and <span class='end-date'>%{end_month_year}</span>, broken down into days of the week.
             title: Storage heater electricity consumption by day of the week
           storage_heater_group_by_week:
             footer_html: "<p>Generally, consumption should peak in the winter when it is coldest and the school requires most heat. The second axis, 'Degree Day' line on the chart above is an indication of how cold it was, so the higher the line the colder the outside temperature.</p>"
-            subtitle: The chart below shows your storage heater electricity consumption broken down on a weekly basis between %{date} and %{date}
+            subtitle_html: The chart below shows your storage heater electricity consumption broken down on a weekly basis between <span class='start-date'>%{start_month_year}</span> and <span class='end-date'>%{end_month_year}</span>
             title: Storage heater electricity consumption for the last year
           storage_heater_intraday_current_year:
-            subtitle: The chart below shows the average electricity consumption between %{day} and %{day}, broken down by time of day.
+            subtitle_html: The chart below shows the average electricity consumption between <span class='start-date'>%{start_month_year}</span> and <span class='end-date'>%{end_month_year}</span>, broken down by time of day.
             title: Storage heater electricity consumption by time of day
           the_table_below: The table below shows how much electricity has been used for storage heaters over the last 12 months when the school is open and closed on a school day as well as during weekends and holidays.
           title: Electricity use for the last 12 months
@@ -24,7 +24,7 @@ en:
           title: Long term trends
         recent_usage:
           intraday_line_school_last7days_storage_heaters:
-            subtitle: Electricity consumed by storage heaters between %{day and %{day}.
+            subtitle_html: Electricity consumed by storage heaters between <span class='start-date'>%{start_month_year}</span> and <span class='end-date'>%{end_month_year}</span>.
             title: Storage heater electricity consumption for last 7 days
           this_chart_html: "<p>This chart is only useful during the winter when the storage heaters are turned on.</p>"
           title: Recent usage
@@ -33,7 +33,7 @@ en:
             <p>Your school should only be using electricity for storage heaters during the winter. Most schools turn the heating on after the Autumn half term holiday in November, and off after Easter in April, or perhaps a little later if it's an early Easter holiday.</p>
             <p>By comparing your storage heater usage with the local weather we can highlight when your storage heaters have been on during warm and cold weather. This is shown in the following chart.</p>
           heating_on_off_by_week_storage_heater:
-            subtitle: Electricity used for hot water and heating during warm and cold weather between %{day} and %{day}.
+            subtitle_html: Electricity used for hot water and heating during warm and cold weather between <span class='start-date'>%{start_month_year}</span> and <span class='end-date'>%{end_month_year}</span>.
             title: Storage heater use in warm weather
           notice_html: "<p>Your school had its heating on for %{heating_on_in_warm_weather_days} days which is %{assessment}</p>"
           title: Seasonal control

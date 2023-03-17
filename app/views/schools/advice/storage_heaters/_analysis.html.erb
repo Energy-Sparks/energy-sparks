@@ -35,7 +35,10 @@
     <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_group_by_week.title') %>
   <% end %>
   <% c.with_subtitle do %>
-    <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_group_by_week.subtitle') %>
+    <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_group_by_week.subtitle_html',
+           start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
+           end_month_year: short_dates(@analysis_dates.end_date
+          )) %>
   <% end %>
   <% c.with_footer do %>
     <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_group_by_week.footer_html') %>
@@ -50,7 +53,10 @@
     <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_by_day_of_week_tolerant.title') %>
   <% end %>
   <% c.with_subtitle do %>
-    <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_by_day_of_week_tolerant.subtitle') %>
+    <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_by_day_of_week_tolerant.subtitle_html',
+          start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
+          end_month_year: short_dates(@analysis_dates.end_date
+        )) %>
   <% end %>
 <% end %>
 
@@ -59,7 +65,10 @@
     <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_intraday_current_year.title') %>
   <% end %>
   <% c.with_subtitle do %>
-    <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_intraday_current_year.subtitle') %>
+    <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_intraday_current_year.subtitle_html',
+          start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
+          end_month_year: short_dates(@analysis_dates.end_date
+         )) %>
   <% end %>
 <% end %>
 
@@ -71,7 +80,10 @@
     <%= t('advice_pages.storage_heaters.analysis.recent_usage.intraday_line_school_last7days_storage_heaters.title') %>
   <% end %>
   <% c.with_subtitle do %>
-    <%= t('advice_pages.storage_heaters.analysis.recent_usage.intraday_line_school_last7days_storage_heaters.subtitle') %>
+    <%= t('advice_pages.storage_heaters.analysis.recent_usage.intraday_line_school_last7days_storage_heaters.subtitle_html',
+          start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.week : @analysis_dates.start_date),
+          end_month_year: short_dates(@analysis_dates.end_date)
+    ) %>
   <% end %>
 <% end %>
 
@@ -94,19 +106,18 @@
     <%= t('advice_pages.storage_heaters.analysis.seasonal_control.heating_on_off_by_week_storage_heater.title') %>
   <% end %>
   <% c.with_subtitle do %>
-    <%= t('advice_pages.storage_heaters.analysis.seasonal_control.heating_on_off_by_week_storage_heater.subtitle') %>
+    <%= t('advice_pages.storage_heaters.analysis.seasonal_control.heating_on_off_by_week_storage_heater.subtitle_html',
+           start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
+           end_month_year: short_dates(@analysis_dates.end_date)
+           ) %>
   <% end %>
 <% end %>
 <p>
   <%= t('advice_pages.storage_heaters.analysis.seasonal_control.you_should_ensure') %>
 </p>
-
 <%= render 'schools/advice/section_title', section_id: 'thermostatic_control', section_title: t('advice_pages.storage_heaters.analysis.thermostatic_control.title') %>
 
-<% rating_value = 1 %>
-<%= component 'notice', status: notice_status_for(rating_value) do |c| %>
-  <%= t('advice_pages.storage_heaters.analysis.thermostatic_control.your_thermostatic_control_is') %>
-<% end %>
+<%# render 'your_thermostatic_control_notice' %>
 
 <%= component 'chart', chart_type: :storage_heater_thermostatic, school: @school do |c| %>
   <% c.with_title do %>
