@@ -116,16 +116,15 @@ end
 RSpec.shared_context "storage advice page" do
   let(:fuel_type) { :storage_heater }
   include_context "advice page base"
-  let(:fuel_type) { :solar_pv }
-  include_context "advice page base"
+  # let(:fuel_type) { :solar_pv }
+  # include_context "advice page base"
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: fuel_type, learn_more: learn_more_content) }
-
   let(:start_date)  { Date.today - 365}
   let(:end_date)    { Date.today - 1}
   let(:amr_data)    { double('amr-data') }
-
   let(:electricity_aggregate_meter)   { double('electricity-aggregated-meter')}
   let(:meter_collection)              { double('meter-collection', electricity_meters: []) }
+  let(:storage_heater_meter)   { double('storage-heater-meter')}
 
   before do
     school.configuration.update!(fuel_configuration: fuel_configuration)
@@ -133,8 +132,12 @@ RSpec.shared_context "storage advice page" do
     allow(amr_data).to receive(:end_date).and_return(end_date)
     allow(electricity_aggregate_meter).to receive(:fuel_type).and_return(:electricity)
     allow(electricity_aggregate_meter).to receive(:amr_data).and_return(amr_data)
+    allow(storage_heater_meter).to receive(:fuel_type).and_return(:storage_heater)
+    allow(meter_collection).to receive(:aggregate_meter).and_return(storage_heater_meter)
     allow(meter_collection).to receive(:aggregated_electricity_meters).and_return(electricity_aggregate_meter)
+    allow(meter_collection).to receive(:storage_heater_meter).and_return(storage_heater_meter)
     allow(meter_collection).to receive(:amr_data).and_return(amr_data)
+    allow(storage_heater_meter).to receive(:amr_data).and_return(amr_data)
     allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(meter_collection)
   end
 end
