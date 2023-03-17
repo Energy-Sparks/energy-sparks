@@ -12,7 +12,7 @@ describe 'Benchmarks' do
                               alert_type: gas_fuel_alert_type,
                               asof: Date.parse('01/01/2019'),
                               benchmark_result_school_generation_run: run_1,
-                              data: {
+                              results: {
                                 "number_example"=>1.0,
                                 "string_example"=>"A",
                                 "time_of_day"=> TimeOfDay.new(0,10)
