@@ -26,13 +26,15 @@ class UserTariffCharge < ApplicationRecord
 
   scope :for_type, ->(type) { where('charge_type = ?', type.to_s) }
 
-  CHARGE_TYPE_UNITS = {
-    kwh: 'kWh',
-    kva: 'kVA',
-    day: 'day',
-    month: 'month',
-    quarter: 'quarter',
-  }.freeze
+  def self.charge_type_units
+    {
+      kwh: I18n.t('charge_type_units.kwh'),
+      kva: I18n.t('charge_type_units.kva'),
+      day: I18n.t('charge_type_units.day'),
+      month: I18n.t('charge_type_units.month'),
+      quarter: I18n.t('charge_type_units.quarter')
+    }.freeze
+  end
 
   def self.charge_types
     {

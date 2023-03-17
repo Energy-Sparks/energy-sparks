@@ -1,5 +1,11 @@
 ---
 en:
+  charge_type_units:
+    day: day
+    kva: kVA
+    kwh: kWh
+    month: month
+    quarter: quarter
   user_tariff_charge:
     available_capacity: Available capacity
     data_collection_dcda_agent_charge: Data Collection DC/DA Agent Charge
