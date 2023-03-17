@@ -17,6 +17,7 @@ module Schools
       before_action :set_data_warning, only: [:insights, :analysis]
       before_action :set_page_title, only: [:insights, :analysis, :learn_more]
       before_action :set_page_subtitle, only: [:insights, :analysis]
+      before_action :set_breadcrumbs, only: [:insights, :analysis, :learn_more]
       before_action :set_insights_next_steps, only: [:insights]
       before_action :set_economic_tariffs_change_caveats, only: [:insights, :analysis]
 
@@ -57,6 +58,13 @@ module Schools
 
       def set_page_subtitle
         @advice_page_subtitle = if_exists("#{action_name}.title")
+      end
+
+      def set_breadcrumbs
+        @breadcrumbs = [
+          { name: t('advice_pages.breadcrumbs.root'), href: school_advice_path(@school) },
+          { name: @advice_page_title, href: advice_page_path(@school, @advice_page) },
+        ]
       end
 
       def if_exists(key)
