@@ -1,12 +1,12 @@
 <p>
-  <%= advice_t('gas_costs.analysis.tariff_table.intro') %>
+  <%= t('advice_pages.tariff_table_intro') %>
 </p>
 <table class="table advice-table">
   <thead>
     <tr>
-      <th><%= advice_t('gas_costs.analysis.tariff_table.columns.name') %></th>
-      <th><%= advice_t('gas_costs.analysis.tariff_table.columns.period') %></th>
-      <th><%= advice_t('gas_costs.analysis.tariff_table.columns.source') %></th>
+      <th><%= t('advice_pages.tables.columns.name') %></th>
+      <th><%= t('advice_pages.tables.columns.period') %></th>
+      <th><%= t('advice_pages.tables.columns.source') %></th>
     </tr>
   </thead>
   <tbody>
@@ -20,7 +20,7 @@
           <% end %>
         </td>
         <td><%= short_dates(period.begin) %> - <%= short_dates(period.end) %></td>
-        <td><%= summary.real ? advice_t('gas_costs.analysis.tariff_table.labels.user_supplied') : advice_t('gas_costs.analysis.tariff_table.labels.default') %></td>
+        <td><%= tariff_source(summary) %></td>
       </tr>
     <% end %>
   </tbody>

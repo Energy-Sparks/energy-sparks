@@ -59,6 +59,7 @@ module Schools
           end
           [range, tariff]
         end
+        tariffs.sort { |a, b| a[0].begin <=> b[0].begin}
       end
 
       private

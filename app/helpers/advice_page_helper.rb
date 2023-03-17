@@ -155,5 +155,10 @@ module AdvicePageHelper
   def can_benchmark?(advice_page:)
     Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.can_benchmark?(advice_page: advice_page)
   end
+
+  def tariff_source(tariff_summary)
+    return t('advice_pages.tables.labels.default') unless tariff_summary.real
+    t('advice_pages.tables.labels.user_supplied')
+  end
 end
 # rubocop:enable Naming/AsciiIdentifiers
