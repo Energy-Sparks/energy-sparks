@@ -26,7 +26,9 @@ RSpec.describe "school adult dashboard", type: :system do
           it 'renders a loading page and then back to the dashboard page on success' do
             visit school_path(school)
 
-            expect(page).to have_content('Adult Dashboard')
+            within('.dashboard-school-title') do
+              expect(page).to have_content(school.name)
+            end
             # if redirect fails it will still be processing
             expect(page).to_not have_content('processing')
             expect(page).to_not have_content("we're having trouble processing your energy data today")
@@ -58,7 +60,6 @@ RSpec.describe "school adult dashboard", type: :system do
 
         it 'and redirects to pupil dashboard' do
           visit school_path(school)
-          expect(page).to_not have_content("Adult Dashboard")
           expect(page).to_not have_content("Energy Sparks is processing all of this school's data to provide today's analysis")
           expect(page).to have_content("No activities completed, make a start!")
         end
