@@ -133,6 +133,7 @@ RSpec.shared_context "storage advice page" do
     allow(electricity_aggregate_meter).to receive(:fuel_type).and_return(:electricity)
     allow(electricity_aggregate_meter).to receive(:amr_data).and_return(amr_data)
     allow(storage_heater_meter).to receive(:fuel_type).and_return(:storage_heater)
+    allow(meter_collection).to receive(:aggregate_meter).and_return(storage_heater_meter)
     allow(meter_collection).to receive(:aggregated_electricity_meters).and_return(electricity_aggregate_meter)
     allow(meter_collection).to receive(:storage_heater_meter).and_return(storage_heater_meter)
     allow(meter_collection).to receive(:amr_data).and_return(amr_data)
