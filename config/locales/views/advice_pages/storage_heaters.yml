@@ -44,7 +44,7 @@ en:
           heating_on_off_by_week_storage_heater:
             subtitle_html: Electricity used for hot water and heating during warm and cold weather between <span class='start-date'>%{start_month_year}</span> and <span class='end-date'>%{end_month_year}</span>.
             title: Storage heater use in warm weather
-          notice_html: "<p>Your school had its heating on for %{heating_on_in_warm_weather_days} days which is %{assessment}</p>"
+          notice_html: "<p>Last year your school heating was on for %{heating_on_in_warm_weather_days} days during warm weather. This is %{assessment}</p>"
           title: Seasonal control
           you_should_ensure: You should ensure that storage heaters are turned off during weekends and holidays, and shorten the period when they are used during the year.
         thermostatic_control:
