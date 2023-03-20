@@ -46,7 +46,7 @@ module Schools
       end
 
       def set_insights_next_steps
-        @advice_page_insights_next_steps = t("advice_pages.#{advice_page_key}.insights.next_steps_html").html_safe
+        @advice_page_insights_next_steps = t("advice_pages.#{advice_page_key}.insights.next_steps_html", case_study_1: "/case_studies/3/download?locale=#{I18n.locale}", case_study_2: "/case_studies/9/download?locale=#{I18n.locale}").html_safe
       end
 
       def advice_page_key

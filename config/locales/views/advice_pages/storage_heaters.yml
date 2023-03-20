@@ -75,7 +75,11 @@ en:
           <ul>
             <li>Keep an eye on the weather forecast, particularly in the Spring, and try to remember to turn your heating off when it is warm outside. Energy Sparks automatically emails you if it is going to be warm in the following week - keep an eye on your weekly alert email.</li>
             <li>Normally, storage heaters should be switched off during the school holidays and at weekends. If not currently installed, adding 7-day timers will be worth the investment.</li>
-            <li>Check out the Energy Sparks case study focused on improving storage heater control.</li>
+          </ul>
+          <p>Check out the Energy Sparks case studies focused on improving storage heater control:</p>
+          <ul>
+            <li><a href="%{case_study_1}">28% reduction in consumption from installing 7-day timers</a></li>
+            <li><a href="%{case_study_2}">38% reduction in consumption by improving heating timings</a></li>
           </ul>
         title: What are storage heaters?
         your_storage_heater_energy_use:
