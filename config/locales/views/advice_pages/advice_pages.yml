@@ -124,6 +124,7 @@ en:
         total: Total
         user_supplied: User supplied
       notice:
+        partial_months: indicates a partial month
         two_significant_figures: Data in this table are presented to 2 significant figures.
     tabs:
       analysis: Analysis
