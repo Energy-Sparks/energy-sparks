@@ -14,7 +14,7 @@ RSpec.describe InterventionTypeFilter, type: :service do
     create(:intervention_type, active: false)
   }
 
-  let(:school){ create(:school) }
+  let(:school) { create(:school) }
 
   let(:query) { {} }
   let(:scope) { nil }

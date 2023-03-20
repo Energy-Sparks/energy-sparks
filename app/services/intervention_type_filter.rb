@@ -14,11 +14,11 @@ class InterventionTypeFilter
     filtered
   end
 
+private
+
   def exclude_if_done_this_year
     @query[:exclude_if_done_this_year]
   end
-
-private
 
   def default_scope
     InterventionType.active.custom_last
