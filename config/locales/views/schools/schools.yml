@@ -399,6 +399,10 @@ en:
         tip: Tip
         your_new_target: Your new target
       progress:
+        breadcrumbs:
+          electricity: Electricity progress
+          gas: Gas progress
+          storage_heater: Storage heater progress
         charts:
           cumulative_progress: Cumulative progress
           weekly_progress: Weekly progress

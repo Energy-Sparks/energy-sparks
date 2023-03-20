@@ -34,6 +34,8 @@ class SchoolsController < ApplicationController
   #data enabled to offer a better initial user experience
   before_action :redirect_to_pupil_dash_if_not_data_enabled, only: [:show]
 
+  before_action :set_breadcrumbs
+
   def index
     @schools = School.visible.by_name
     @school_groups = SchoolGroup.by_name.select(&:has_visible_schools?)
@@ -109,6 +111,14 @@ class SchoolsController < ApplicationController
   end
 
 private
+
+  def set_breadcrumbs
+    if action_name.to_sym == :edit
+      @breadcrumbs = [{ name: I18n.t('manage_school_menu.edit_school_details') }]
+    else
+      @breadcrumbs = [{ name: I18n.t('dashboards.adult_dashboard') }]
+    end
+  end
 
   def user_signed_in_and_linked_to_school?
     user_signed_in? && (current_user.school_id == @school.id)

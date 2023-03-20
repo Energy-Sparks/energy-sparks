@@ -3,6 +3,8 @@
 class CalendarsController < ApplicationController
   load_and_authorize_resource
 
+  before_action :set_breadcrumbs
+
   # GET /calendars/1
   def show
     @academic_year = academic_year
@@ -36,6 +38,10 @@ class CalendarsController < ApplicationController
   end
 
   private
+
+  def set_breadcrumbs
+    @breadcrumbs = [{ name: I18n.t('manage_school_menu.school_calendar') }] if @calendar.school?
+  end
 
   def academic_year
     academic_year_ids = @calendar.calendar_events.pluck(:academic_year_id).uniq.sort_by(&:to_i).reject(&:nil?)
