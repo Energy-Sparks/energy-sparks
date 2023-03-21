@@ -31,7 +31,7 @@ module TariffsHelper
 
   def user_tariff_prices_text(user_tariff)
     if user_tariff.user_tariff_prices.map(&:description).include?(UserTariffPrice::NIGHT_RATE_DESCRIPTION)
-      "Based on the meters associated with this tariff, we've set some default day/night periods - you'll need to update the rates from the details on your bill."
+      I18n.t('schools.tariffs_helper.prices_text')
     end
   end
 
@@ -53,7 +53,11 @@ module TariffsHelper
 
   def user_tariff_charge_value(user_tariff_charge)
     if user_tariff_charge.units
-      "#{number_to_currency(user_tariff_charge.value, unit: '£')} per #{user_tariff_charge_type_units_humanized(user_tariff_charge.units)}"
+      I18n.t(
+        'schools.tariffs_helper.charge_value',
+        value: number_to_currency(user_tariff_charge.value, unit: '£'),
+        units: user_tariff_charge_type_units_humanized(user_tariff_charge.units)
+      )
     else
       user_tariff_charge.value.to_s
     end
