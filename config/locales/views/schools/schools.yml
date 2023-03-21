@@ -159,6 +159,7 @@ en:
         validated_meter_data: Validated meter data
         we_use_sheffield_solar_pv_api_message_html: We use the <a href="https://www.solar.sheffield.ac.uk/pvlive/">University of Sheffield Solar PV</a> API for solar pv generation data, you can download the data we have for your school here
     estimated_annual_consumptions:
+      breadcrumb: Estimated annual consumption
       destroy:
         estimate_successfully_removed: Estimate successfully removed
       edit:
@@ -399,6 +400,10 @@ en:
         tip: Tip
         your_new_target: Your new target
       progress:
+        breadcrumbs:
+          electricity: Electricity progress
+          gas: Gas progress
+          storage_heater: Storage heater progress
         charts:
           cumulative_progress: Cumulative progress
           weekly_progress: Weekly progress

@@ -3,6 +3,7 @@ module Schools
     load_and_authorize_resource :school
 
     skip_before_action :authenticate_user!
+    before_action :set_breadcrumbs
 
     def show
       authorize! :index, Observation
@@ -18,6 +19,12 @@ module Schools
                                  []
                                end
       @observations = @school.observations.visible.order('at DESC').where('at BETWEEN ? AND ?', @academic_year.start_date, @academic_year.end_date)
+    end
+
+    private
+
+    def set_breadcrumbs
+      @breadcrumbs = [{ name: I18n.t('timeline.view_all_events') }]
     end
   end
 end
