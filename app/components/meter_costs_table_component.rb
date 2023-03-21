@@ -30,6 +30,7 @@ class MeterCostsTableComponent < ViewComponent::Base
     @precision = precision
     @monthly_costs = monthly_costs
     @change_in_costs = change_in_costs
+    @any_partial_months = false
   end
 
   #Iterate over months, yielding either year or nil
@@ -45,7 +46,7 @@ class MeterCostsTableComponent < ViewComponent::Base
   #Iterate over each month
   def months_header
     months.map do |month|
-      yield I18n.l(month, format: @month_format)
+      yield I18n.l(month, format: @month_format), partial_month?(month)
     end
   end
 
@@ -151,6 +152,13 @@ class MeterCostsTableComponent < ViewComponent::Base
 
   def months
     @months ||= @monthly_costs.reject { |_month, costs| costs.nil? || costs.total == 0.0 }.keys.sort
+  end
+
+  def partial_month?(month)
+    costs = @monthly_costs[month]
+    return nil unless costs.present?
+    @any_partial_months |= costs.full_month
+    costs.full_month
   end
 
   def format(value)
