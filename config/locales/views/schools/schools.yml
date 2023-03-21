@@ -319,6 +319,13 @@ en:
       access_disabled: This school has disabled public access to energy usage data and insights.
       login_links_html: Use the links below to log in as a member of staff or pupil from this school. Or <a href='%{schools_path}'>explore another school</a>
       page_title: "%{school} has no public data"
+    pupils:
+      edit:
+        title: Edit pupil account
+        update: Update account
+      new:
+        create: Create account
+        title: New pupil account
     school_details:
       activation_date_hint: This is the date when the school becomes active on Energy Sparks
       address: Address
