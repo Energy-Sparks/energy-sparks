@@ -7,17 +7,19 @@
 <p><%= t('compare.benchmarks.description') %></p>
 
 <% @benchmark_groups.each do |benchmark_group| %>
-  <h4><%= benchmark_group[:name] %></h4>
+  <h4><strong><%= benchmark_group[:name] %></strong></h4>
   <div class="row">
-    <div class="col-sm-6">
-      <ul>
-        <% benchmark_group[:benchmarks].each do |benchmark, title| %>
-          <li><%= link_to title, compare_path(benchmark, @filter) %></li>
-        <% end %>
-      </ul>
-    </div>
-    <div class="col-sm-6">
+    <div class="col-sm-12">
       <%= benchmark_group[:description] %>
     </div>
+    <%= benchmark_group[:benchmarks].each_slice((benchmark_group[:benchmarks].length / 2.0).round) do |set| %>
+      <div class="col-sm-6">
+        <ul>
+          <% set.each do |benchmark, title| %>
+            <li><%= link_to title, compare_path(benchmark, @filter) %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
   </div>
 <% end %>
