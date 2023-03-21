@@ -5,12 +5,12 @@
 <% end %>
 
 <table class="table table-borderless">
-  <% @interventions.group_by{|intervention| [intervention.at.strftime("%Y"), intervention.at.strftime("%B")]}.each do |(year, month), interventions|%>
+  <% @interventions.group_by{|intervention| [intervention.at.year, intervention.at.month]}.each do |(year, month), interventions|%>
     <thead>
       <tr>
         <th colspan="3">
-          <span class="float-right"><%= pluralize(interventions.size, 'action') %></span>
-          <h2><%= month %> <span class="h3"><%= year %></span></h2>
+          <span class="float-right"><%= t('schools.observations.timeline.action', count: interventions.size) %></span>
+          <h2><%= t_month(month) %> <span class="h3"><%= year %></span></h2>
         </th>
       </tr>
     </thead>
@@ -27,8 +27,8 @@
           <td class="text-right">
             <% if can?(:manage, intervention) %>
               <div class="btn-group">
-                <%= link_to 'Edit', edit_school_intervention_path(@school, intervention), class: 'btn btn-warning' %>
-                <%= link_to 'Delete', school_intervention_path(@school, intervention), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+                <%= link_to t('common.labels.edit'), edit_school_intervention_path(@school, intervention), class: 'btn btn-warning' %>
+                <%= link_to t('common.labels.delete'), school_intervention_path(@school, intervention), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
               </div>
             <% end %>
           </td>

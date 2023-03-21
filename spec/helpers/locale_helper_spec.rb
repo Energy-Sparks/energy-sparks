@@ -73,6 +73,21 @@ describe LocaleHelper do
     end
   end
 
+  describe '.t_month' do
+    it 'returns month name in en' do
+      expect(helper.t_month('1')).to eq('January')
+      expect(helper.t_month('12')).to eq('December')
+      expect(helper.t_month('123')).to be_nil
+    end
+    it 'returns month name in cy' do
+      I18n.with_locale(:cy) do
+        expect(helper.t_month('1')).to eq('Ionawr')
+        expect(helper.t_month('12')).to eq('Rhagfyr')
+        expect(helper.t_month('123')).to be_nil
+      end
+    end
+  end
+
   describe '.t_role' do
     before :each do
       I18n.backend.store_translations("cy", {role: {guest: 'gwestai', school_admin: 'gweinyddwr ysgol'}})
