@@ -1,9 +1,20 @@
 ---
 en:
   schools:
+    tariffs_helper:
+      charge_value: "%{value} per %{units}"
+      for_mpan: "(for MPAN %{user_tariff_meters_list})"
+      for_mprn: "(for MPRN %{user_tariff_meters_list})"
+      prices_text: Based on the meters associated with this tariff, we've set some default day/night periods - you'll need to update the rates from the details on your bill.
+      user_tariff_title: "%{start_date} to %{end_date}"
     user_tariff_charges:
+      charge_ccl:
+        climate_charge_levy: Climate charge levy
+      charge_tnuos:
+        tnuos_transmission_network_use_of_system: TNUoS (Transmission Network Use of System)
       charge_vat:
         rate: Rate
+        vat_rate: VAT rate
       charges_edit_electricity:
         consumption_and_supply_charges: Consumption and supply charges
         distribution_charges: Distribution charges
@@ -22,6 +33,7 @@ en:
           start_time: Start time
           value: Rate in £/kWh
       index:
+        add_rate: Add rate
         consumption_charges: Consumption charges
         title: Add consumption charges for each time period for this tariff
         using_your_bill_introduction: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
@@ -29,6 +41,9 @@ en:
       edit:
         introduction: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         title: Edit the consumption charges for this tariff
+      form:
+        per_gbp_kwh: per £/kWh
+        rate: Rate
       new:
         introduction: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         title: Add consumption charges for this tariff
@@ -49,7 +64,9 @@ en:
       edit:
         title: Edit the name and date range for this %{fuel_type} tariff
       flat_rate:
+        flat_rate_tariff: Flat rate tariff
         no_flat_rate_tariff_has_been_set_yet: No flat rate tariff has been set yet
+        per_kwh: per kWh
       index:
         changes_to_cost_calculations_message: Changes to the cost calculations based on these tariffs will update overnight
         electricity:
@@ -77,6 +94,7 @@ en:
         standing_charges: Standing charges
         title: Tariff details
       tariff_partial:
+        consumption_charges: Consumption charges
         day_night_tariff: Day/night tariff
         end_date: End date
         full_details: Full details
