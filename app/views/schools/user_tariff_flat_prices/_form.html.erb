@@ -4,7 +4,7 @@
   <tbody>
   <tr>
     <td class="description">
-      Rate
+      <%= t('schools.user_tariff_flat_prices.form.rate') %>
     </td>
     <td class="value">
     </td>
@@ -12,7 +12,7 @@
       <%= f.input :value, as: :string, pattern: '[0-9.]+', label: false, input_html: { value: user_tariff_price.value }, required: false %>
     </td>
     <td class="units">
-      per £/kWh
+      <%= t('schools.user_tariff_flat_prices.form.per_gbp_kwh') %>
     </td>
     <td class="units">
     </td>

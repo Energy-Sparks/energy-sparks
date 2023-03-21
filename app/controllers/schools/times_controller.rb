@@ -1,6 +1,7 @@
 module Schools
   class TimesController < ApplicationController
     before_action :set_school
+    before_action :set_breadcrumbs
 
     def edit
     end
@@ -19,6 +20,10 @@ module Schools
     def set_school
       @school = School.friendly.find(params[:school_id])
       authorize! :manage_school_times, @school
+    end
+
+    def set_breadcrumbs
+      @breadcrumbs = [{ name: I18n.t('manage_school_menu.edit_school_times') }]
     end
 
     def school_params

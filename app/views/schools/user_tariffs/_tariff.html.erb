@@ -26,7 +26,7 @@
             </tr>
             <tr>
               <% if user_tariff.user_tariff_prices.any? %>
-                <td class="description">Consumption charges</td>
+                <td class="description"><%= t('schools.user_tariffs.tariff_partial.consumption_charges') %></td>
                 <td class="value nowrap">
                   <% user_tariff.user_tariff_prices.each do |price| %>
                     <%= t('schools.user_tariffs.tariff_partial.price_from_to', price_start_time: price.start_time.to_s(:time), price_end_time: price.end_time.to_s(:time)) if !user_tariff.flat_rate %>

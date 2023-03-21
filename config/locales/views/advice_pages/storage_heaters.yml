@@ -44,7 +44,7 @@ en:
           heating_on_off_by_week_storage_heater:
             subtitle_html: Electricity used for hot water and heating during warm and cold weather between <span class='start-date'>%{start_month_year}</span> and <span class='end-date'>%{end_month_year}</span>.
             title: Storage heater use in warm weather
-          notice_html: "<p>Your school had its heating on for %{heating_on_in_warm_weather_days} days which is %{assessment}</p>"
+          notice_html: "<p>Last year your school heating was on for %{heating_on_in_warm_weather_days} days during warm weather. This is %{assessment}.</p>"
           title: Seasonal control
           you_should_ensure: You should ensure that storage heaters are turned off during weekends and holidays, and shorten the period when they are used during the year.
         thermostatic_control:
@@ -64,8 +64,6 @@ en:
         advice_html: |-
           <p>Storage heaters work differently from other forms of heating in that they consume electricity overnight, store the energy, and then release the stored heat to classrooms during the day.</p>
           <p>In contrast most gas heating systems consume gas to produce heat immediately, so only consume energy during the school day.</p>
-          <p>Leaving the heating on during warm weather</p>
-          <p>Include notice from the seasonal control section of the analysis</p>
         how_do_you_compare:
           for_more_detail: For more detail look at how your school compares with others in your group
           title: How do you compare?
@@ -77,7 +75,11 @@ en:
           <ul>
             <li>Keep an eye on the weather forecast, particularly in the Spring, and try to remember to turn your heating off when it is warm outside. Energy Sparks automatically emails you if it is going to be warm in the following week - keep an eye on your weekly alert email.</li>
             <li>Normally, storage heaters should be switched off during the school holidays and at weekends. If not currently installed, adding 7-day timers will be worth the investment.</li>
-            <li>Check out the Energy Sparks case study focused on improving storage heater control.</li>
+          </ul>
+          <p>Check out the Energy Sparks case studies focused on improving storage heater control:</p>
+          <ul>
+            <li><a href="%{case_study_1}">28% reduction in consumption from installing 7-day timers</a></li>
+            <li><a href="%{case_study_2}">38% reduction in consumption by improving heating timings</a></li>
           </ul>
         title: What are storage heaters?
         your_storage_heater_energy_use:

@@ -1,15 +1,24 @@
 module TariffsHelper
   def user_tariff_title(user_tariff, with_mpxn = false)
-    str = "#{user_tariff.start_date.to_s(:es_compact)} to #{user_tariff.end_date.to_s(:es_compact)}"
-    str += " : #{user_tariff.name}" if user_tariff.name.present?
+    start_date = user_tariff.start_date.to_s(:es_compact)
+    end_date = user_tariff.end_date.to_s(:es_compact)
+
+    title = I18n.t(
+      'schools.tariffs_helper.user_tariff_title',
+      start_date: start_date,
+      end_date: end_date
+    )
+    title += " : #{user_tariff.name} " if user_tariff.name.present?
+
     if user_tariff.meters.any? && with_mpxn
       if user_tariff.gas?
-        str += " (for MPRN #{user_tariff.meters.map(&:mpan_mprn).to_sentence})"
+        title += I18n.t('schools.tariffs_helper.for_mprn', user_tariff_meters_list: user_tariff.meters.map(&:mpan_mprn).to_sentence)
       else
-        str += " (for MPAN #{user_tariff.meters.map(&:mpan_mprn).to_sentence})"
+        title += I18n.t('schools.tariffs_helper.for_mpan', user_tariff_meters_list: user_tariff.meters.map(&:mpan_mprn).to_sentence)
       end
     end
-    str
+
+    title
   end
 
   def user_tariff_price_title(user_tariff_price)
@@ -22,7 +31,7 @@ module TariffsHelper
 
   def user_tariff_prices_text(user_tariff)
     if user_tariff.user_tariff_prices.map(&:description).include?(UserTariffPrice::NIGHT_RATE_DESCRIPTION)
-      "Based on the meters associated with this tariff, we've set some default day/night periods - you'll need to update the rates from the details on your bill."
+      I18n.t('schools.tariffs_helper.prices_text')
     end
   end
 
@@ -31,11 +40,11 @@ module TariffsHelper
   end
 
   def user_tariff_charge_type_units_for(charge_type)
-    settings(charge_type).fetch(:units, []).map { |k| [UserTariffCharge::CHARGE_TYPE_UNITS[k], k] }
+    settings(charge_type).fetch(:units, []).map { |k| [UserTariffCharge.charge_type_units[k], k] }
   end
 
   def user_tariff_charge_type_units_humanized(charge_type_units)
-    UserTariffCharge::CHARGE_TYPE_UNITS[charge_type_units.to_sym]
+    UserTariffCharge.charge_type_units[charge_type_units.to_sym]
   end
 
   def user_tariff_charge_type_description(charge_type)
@@ -44,7 +53,11 @@ module TariffsHelper
 
   def user_tariff_charge_value(user_tariff_charge)
     if user_tariff_charge.units
-      "#{number_to_currency(user_tariff_charge.value, unit: '£')} per #{user_tariff_charge_type_units_humanized(user_tariff_charge.units)}"
+      I18n.t(
+        'schools.tariffs_helper.charge_value',
+        value: number_to_currency(user_tariff_charge.value, unit: '£'),
+        units: user_tariff_charge_type_units_humanized(user_tariff_charge.units)
+      )
     else
       user_tariff_charge.value.to_s
     end
@@ -55,6 +68,6 @@ module TariffsHelper
   end
 
   def settings(charge_type)
-    UserTariffCharge::CHARGE_TYPES[charge_type.to_sym] || {}
+    UserTariffCharge.charge_types[charge_type.to_sym] || {}
   end
 end
