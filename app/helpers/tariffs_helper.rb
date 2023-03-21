@@ -31,11 +31,11 @@ module TariffsHelper
   end
 
   def user_tariff_charge_type_units_for(charge_type)
-    settings(charge_type).fetch(:units, []).map { |k| [UserTariffCharge::CHARGE_TYPE_UNITS[k], k] }
+    settings(charge_type).fetch(:units, []).map { |k| [UserTariffCharge.charge_type_units[k], k] }
   end
 
   def user_tariff_charge_type_units_humanized(charge_type_units)
-    UserTariffCharge::CHARGE_TYPE_UNITS[charge_type_units.to_sym]
+    UserTariffCharge.charge_type_units[charge_type_units.to_sym]
   end
 
   def user_tariff_charge_type_description(charge_type)
