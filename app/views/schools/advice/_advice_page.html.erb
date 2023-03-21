@@ -7,7 +7,7 @@
   <div class="col-md-9 col-lg-9 col-xl-10 advice-page-tabs">
     <%= render 'schools/advice/advice_tabs', school: school, advice_page: advice_page, tab: tab %>
     <div class="mt-4" id="<%= advice_page.key %>-<%= tab %>">
-      <%= render('schools/advice/data_warning', fuel_type: advice_page.fuel_type) if data_warning %>
+      <%= render('schools/advice/data_warning', fuel_type: advice_page.t_fuel_type) if data_warning %>
       <%= yield %>
     </div>
   </div>

@@ -39,6 +39,10 @@ class AdvicePage < ApplicationRecord
     key.humanize
   end
 
+  def t_fuel_type
+    I18n.t("advice_pages.fuel_type.#{fuel_type}")
+  end
+
   def ordered_activity_types
     activity_types.order('advice_page_activity_types.position').group('activity_types.id, advice_page_activity_types.position')
   end
