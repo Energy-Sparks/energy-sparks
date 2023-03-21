@@ -2,7 +2,7 @@ module Schools
   module Advice
     class HotWaterController < AdviceBaseController
       before_action   :gas_hot_water
-      before_action   :check_can_run_analysis, only: [:insights, :analysis]
+      before_action   :check_can_run_analysis, only: [:insights, :analysis]      
 
       def insights
       end
@@ -12,7 +12,14 @@ module Schools
 
       private
 
+      def create_analysable
+        OpenStruct.new(
+          enough_data?: gas_hot_water_service.enough_data?
+        )
+      end
+
       def check_can_run_analysis
+        return unless gas_hot_water_service.enough_data?
         @has_swimming_pool = has_swimming_pool?
         render :not_relevant and return if not_relevant?
       end
