@@ -1,6 +1,11 @@
 ---
 en:
   advice_pages:
+    fuel_type:
+      gas: gas
+      electricity: electricity
+      storage_heater: storage heater
+      solar_pv: solar PV
     benchmarks:
       benchmark_school: Well managed
       exemplar_school: Exemplar
