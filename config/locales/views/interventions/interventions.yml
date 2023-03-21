@@ -8,6 +8,7 @@ en:
       choose_next_action: Choose your next action from the suggestions below.
       current_school_position: and your school is currently in %{position} place.
       our_suggestions: Our suggestions based on your energy use alerts and any energy audit completed at your school
+      page_title: Action completed for %{school}
       points_scored: You've just scored %{points} points!
       points_to_change_position: and need to score %{points} points to reach %{position} place.
       see_scoreboard: See the scoreboard
