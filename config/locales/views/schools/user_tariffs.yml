@@ -4,7 +4,7 @@ en:
     tariffs_helper:
       for_mpan: "(for MPAN %{user_tariff_meters_list})"
       for_mprn: "(for MPRN %{user_tariff_meters_list})"
-      user_tariff_title_html: "%{start_date} to %{end_date}"
+      user_tariff_title: "%{start_date} to %{end_date}"
     user_tariff_charges:
       charge_ccl:
         climate_charge_levy: Climate charge levy

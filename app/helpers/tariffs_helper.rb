@@ -4,7 +4,7 @@ module TariffsHelper
     end_date = user_tariff.end_date.to_s(:es_compact)
 
     title = I18n.t(
-      'schools.tariffs_helper.user_tariff_title_html',
+      'schools.tariffs_helper.user_tariff_title',
       start_date: start_date,
       end_date: end_date
     )
