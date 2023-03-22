@@ -31,13 +31,13 @@ class CompareController < ApplicationController
 
   def filter
     @filter ||=
-      params.permit(:type, :benchmark, :country, :school_type, school_group_ids: [], school_types: [])
+      params.permit(:search, :benchmark, :country, :school_type, school_group_ids: [], school_types: [])
         .with_defaults(school_group_ids: [], school_types: [])
         .to_hash.symbolize_keys
   end
 
   def index_params
-    filter.merge(anchor: filter[:type])
+    filter.merge(anchor: filter[:search])
   end
 
   def latest_benchmark_run
