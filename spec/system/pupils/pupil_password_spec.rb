@@ -44,5 +44,4 @@ describe 'pupil passwords' do
     expect(page).to have_content('Signed in successfully')
     expect(page.current_path).to eq(pupils_school_path(school))
   end
-
 end
