@@ -23,25 +23,39 @@ module Schools
       def check_can_run_analysis
         if @school.has_electricity?
           @analysable = create_analysable
-          if @analysable.present? && !@analysable.enough_data?
-            render 'not_enough_data'
-          end
+          render 'not_enough_data' if @analysable.present? && !@analysable.enough_data?
         else
-          render :not_relevant
+          render :not_relevant # Don't show the page if a school doesn't have an electricity fuel type
+        end
+      end
+
+      def create_analysable
+        if @school.has_solar_pv?
+          existing_benefits_service.enough_data?
+        else
+          potential_benefits_service.enough_data?
         end
       end
 
       def build_existing_benefits
-        ::SolarPhotovoltaics::ExistingBenefitsService.new(
+        existing_benefits_service.create_model
+      end
+
+      def existing_benefits_service
+        @existing_benefits_service ||= ::SolarPhotovoltaics::ExistingBenefitsService.new(
           meter_collection: aggregate_school
-        ).create_model
+        )
       end
 
       def build_potential_benefits
-        ::SolarPhotovoltaics::PotentialBenefitsEstimatorService.new(
+        potential_benefits_service.create_model
+      end
+
+      def potential_benefits_service
+        @potential_benefits_service ||= ::SolarPhotovoltaics::PotentialBenefitsEstimatorService.new(
           meter_collection: aggregate_school,
           asof_date: analysis_end_date
-        ).create_model
+        )
       end
 
       def set_insights_next_steps
