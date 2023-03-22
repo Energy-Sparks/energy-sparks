@@ -1,4 +1,8 @@
 module TariffsHelper
+  def any_smart_meters?(school)
+    school.meters.dcc.any?
+  end
+
   def user_tariff_title(user_tariff, with_mpxn = false)
     start_date = user_tariff.start_date.to_s(:es_compact)
     end_date = user_tariff.end_date.to_s(:es_compact)

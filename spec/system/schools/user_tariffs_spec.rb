@@ -20,9 +20,9 @@ describe 'user tariffs', type: :system do
         within '.application' do
           click_link('Manage tariffs')
         end
-        expect(page).to have_content('Manage tariffs')
-        expect(page).to have_link('electricity cost analysis')
-        expect(page).to have_link('gas cost analysis')
+        expect(page).to have_content(I18n.t('schools.user_tariffs.index.title'))
+        expect(page).to have_link('electricity cost')
+        expect(page).to have_link('gas cost')
       end
     end
 
@@ -156,7 +156,7 @@ describe 'user tariffs', type: :system do
       end
 
       it 'can handle partially created tariff with bits missing' do
-        expect(page).to have_content('Manage tariffs')
+        expect(page).to have_content(I18n.t('schools.user_tariffs.index.title'))
 
         click_link('Add electricity tariff')
 
@@ -173,8 +173,7 @@ describe 'user tariffs', type: :system do
 
         visit school_user_tariffs_path(school)
 
-        expect(page).to have_content('Manage tariffs')
-        expect(page).to have_content('No consumption charges have been set yet')
+        expect(page).to have_content(I18n.t('schools.user_tariffs.index.title'))
       end
 
       it 'can create a flat rate tariff with price' do

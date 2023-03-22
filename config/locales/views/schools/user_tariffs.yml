@@ -72,16 +72,29 @@ en:
         electricity:
           add_label: Add electricity tariff
           header: Electricity
-          there_are_no_electricity_tariffs_set_up_yet: There are no electricity tariffs set up yet
+          there_are_no_electricity_tariffs_set_up_yet: We have no tariffs for your electricity meters
         gas:
           add_label: Add gas tariff
           header: Gas
-          there_are_no_gas_tariffs_set_up_yet: There are no gas tariffs set up yet
-        introduction_html: Add meter tariffs from your electricity and gas bills here, to improve the accuracy of the cost calculations displayed on your <a href='%{electricity_analysis_path}'>electricity cost analysis</a> and <a href='%{gas_analysis_path}'>gas cost analysis</> pages
-        title: Manage tariffs
+          there_are_no_gas_tariffs_set_up_yet: We have no tariffs for your gas meters.
+        introduction_html: |-
+          <p>
+            You can improve the accuracy of the cost calculations on your <a href='%{electricity_analysis_path}'>electricity cost</a> and <a href='%{gas_analysis_path}'>gas cost</a> analysis pages by adding details about your real tariffs.
+          </p>
+          <p>
+            To add a a new tariff you will need to supply detailed information about the energy costs and the range of standing charges that are included in your energy contract.
+          </p>
+        note_about_defaults: If we do not have your real tariff information, then we will estimate your costs using our default tariffs.
+        tabs:
+          default_tariffs: Default tariffs
+          smart_meter_tariffs: Smart meter tariffs
+          user_tariffs: User supplied tariffs
+        title: Manage and view tariffs
       meters:
+        meter_list: Meters
         meters_associated_with_this_tariff: Meters associated with this tariff
         there_are_no_meters_associated_with_this_tariff: There are no meters associated with this tariff
+      name: Name
       new:
         title: Choose a name and date range for this %{fuel_type} tariff
       rates_table:
