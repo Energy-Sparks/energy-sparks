@@ -84,4 +84,26 @@ describe AdvicePageHelper do
       end
     end
   end
+
+  describe 'with dashboard alerts' do
+    let(:alert_type_advice)   { create(:alert_type, group: 'advice') }
+    let(:alert_type_change)   { create(:alert_type, group: 'change') }
+    let(:alert_advice) { create(:alert, :with_run, alert_type: alert_type_advice, run_on: Time.zone.today, school: school, rating: 9.0) }
+    let(:alert_change) { create(:alert, :with_run, alert_type: alert_type_change, run_on: Time.zone.today, school: school, rating: 9.0) }
+    let(:dashboard_alert_advice)  { OpenStruct.new(alert: alert_advice) }
+    let(:dashboard_alert_change)  { OpenStruct.new(alert: alert_change) }
+    let(:dashboard_alerts)  { [dashboard_alert_advice, dashboard_alert_change] }
+
+    describe '.dashboard_alert_groups' do
+      it 'should return list of groups with alerts' do
+        expect(helper.dashboard_alert_groups(dashboard_alerts)).to eq(['change', 'advice'])
+      end
+    end
+
+    describe '.dashboard_alerts_for_group' do
+      it 'should return alerts for group' do
+        expect(helper.dashboard_alerts_for_group(dashboard_alerts, 'change')).to eq([dashboard_alert_change])
+      end
+    end
+  end
 end
