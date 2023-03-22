@@ -17,9 +17,11 @@ en:
       title: 'Comparing:'
     index:
       categories:
-        country_title: Compare schools by country
         tab: Choose categories
         type_title: Compare schools by type
+      country:
+        tab: Choose country
+        title: Compare schools by country
       group:
         tab: Your group
         title: Compare all schools within %{name}
@@ -33,4 +35,7 @@ en:
         item_2: Identify schools needing most support
         item_3: Compare individual performance against schools with similar characteristics
       title: School Comparison Tool
+      type:
+        tab: Choose type
+        title: Compare schools by type
     limit_by_school_type: 'Limit results to include schools of type:'
