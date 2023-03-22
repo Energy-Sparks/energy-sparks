@@ -89,6 +89,8 @@ en:
       available_from: Assuming we continue to regularly receive data we expect this analysis to be available after %{available_from}.
       learn_more_html: In the meantime you can <a href="%{learn_more_link}">learn more</a> about this topic.
       message: We don't currently have enough %{fuel_type} data in order to run this analysis for your school.
+      table_row_data_available_from: Data available from %{date}
+      table_row_not_enough: not enough data
       title: Not enough data to run analysis
     tables:
       columns:
