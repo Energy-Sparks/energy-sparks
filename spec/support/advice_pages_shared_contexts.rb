@@ -98,7 +98,7 @@ RSpec.shared_context "solar advice page" do
   let(:amr_data)    { double('amr-data') }
 
   let(:electricity_aggregate_meter)   { double('electricity-aggregated-meter')}
-  let(:meter_collection)              { double('meter-collection', electricity_meters: []) }
+  let(:meter_collection)              { double('meter-collection', electricity_meters: [], solar_pv_panels?: true) }
 
   before do
     school.configuration.update!(fuel_configuration: fuel_configuration)

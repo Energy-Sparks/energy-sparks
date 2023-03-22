@@ -20,16 +20,13 @@ module Schools
 
       private
 
-      def check_can_run_analysis
-        if @school.has_electricity?
-          @analysable = create_analysable
-          render 'not_enough_data' if @analysable.present? && !@analysable.enough_data?
-        else
-          render :not_relevant # Don't show the page if a school doesn't have an electricity fuel type
-        end
+      def create_analysable
+        OpenStruct.new(
+          enough_data?: enough_data?
+        )
       end
 
-      def create_analysable
+      def enough_data?
         if @school.has_solar_pv?
           existing_benefits_service.enough_data?
         else
@@ -73,12 +70,6 @@ module Schools
 
       def section_key
         @school.has_solar_pv? ? :has_solar_pv : :no_solar_pv
-      end
-
-      def check_has_fuel_type
-        # Skip fuel type check here as there are two versions of the solar pv page:
-        # one version for when the school has solar pv, the other for when they don’t.
-        true
       end
 
       def advice_page_fuel_type
