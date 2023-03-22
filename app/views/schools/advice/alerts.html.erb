@@ -3,7 +3,7 @@
     <div class="col">
       <h2><%= t('advice_pages.index.alerts.title')%></h2>
       <% if @dashboard_alerts %>
-        <%= render 'schools/advice/index/alerts', dashboard_alerts: @dashboard_alerts, school: @school, content_field: :management_dashboard_title %>
+        <%= render 'schools/advice/index/alerts', dashboard_alerts: @dashboard_alerts, alert_groups: @alert_groups, school: @school, content_field: :management_dashboard_title %>
       <% end %>
     </div>
   </div>

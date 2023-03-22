@@ -164,5 +164,13 @@ module AdvicePageHelper
       t('advice_pages.tables.labels.user_supplied')
     end
   end
+
+  def dashboard_alert_groups(dashboard_alerts)
+    %w[priority change benchmarking advice].select { |group| dashboard_alerts_for_group(dashboard_alerts, group).any? }
+  end
+
+  def dashboard_alerts_for_group(dashboard_alerts, group)
+    dashboard_alerts.select { |dashboard_alert| dashboard_alert.alert.alert_type.group == group }
+  end
 end
 # rubocop:enable Naming/AsciiIdentifiers
