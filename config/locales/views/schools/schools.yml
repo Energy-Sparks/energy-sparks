@@ -192,6 +192,11 @@ en:
         tip: Tip
         your_estimate: Your estimate
         your_recent_energy_bills: Your recent energy bills should provide the data you need
+    inactive:
+      description: We are still in the process of setting up your school on Energy Sparks. You will get an email notification when your school's account is activated on Energy Sparks.
+      other_schools: other schools
+      other_schools_html: In the meantine, take a look at how %{other_schools_link} are using Energy Sparks
+      schools_in_area: schools in your area
     index:
       a_to_z_of_all_energy_sparks_schools: A to Z of all Energy Sparks schools
       introduction_1: Discover which schools are using Energy Sparks to reduce their energy usage
@@ -314,6 +319,13 @@ en:
       access_disabled: This school has disabled public access to energy usage data and insights.
       login_links_html: Use the links below to log in as a member of staff or pupil from this school. Or <a href='%{schools_path}'>explore another school</a>
       page_title: "%{school} has no public data"
+    pupils:
+      edit:
+        title: Edit pupil account
+        update: Update account
+      new:
+        create: Create account
+        title: New pupil account
     school_details:
       activation_date_hint: This is the date when the school becomes active on Energy Sparks
       address: Address

@@ -102,7 +102,7 @@ module AdvicePageHelper
   end
 
   def meters_by_estimated_saving(meters)
-    meters.sort_by {|_, v| -v.estimated_saving_£ }
+    meters.sort_by {|_, v| v.estimated_saving_£.present? ? -v.estimated_saving_£ : 0.0 }
   end
 
   def meters_by_percentage_baseload(meters)

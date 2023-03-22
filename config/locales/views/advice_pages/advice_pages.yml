@@ -15,6 +15,11 @@ en:
       data_warning: We have not received data for your %{fuel_type} usage for over thirty days. As a result your analysis will be out of date and may not reflect recent changes in your school.
       message: We encountered an error attempting to generate your analysis. The Energy Sparks team have been notified of the problem.
       title: Sorry, something has gone wrong
+    fuel_type:
+      electricity: electricity
+      gas: gas
+      solar_pv: solar PV
+      storage_heater: storage heater
     how_have_we_analysed_your_data:
       calculations_based_on_fuel_type: Calculations based on %{fuel_type} consumed between %{start_date} and %{end_date}
       cost_calculations: Cost calculations
@@ -84,6 +89,8 @@ en:
       available_from: Assuming we continue to regularly receive data we expect this analysis to be available after %{available_from}.
       learn_more_html: In the meantime you can <a href="%{learn_more_link}">learn more</a> about this topic.
       message: We don't currently have enough %{fuel_type} data in order to run this analysis for your school.
+      table_row_data_available_from: Data available from %{date}
+      table_row_not_enough: not enough data
       title: Not enough data to run analysis
     tables:
       columns:

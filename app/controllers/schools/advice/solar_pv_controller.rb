@@ -59,6 +59,7 @@ module Schools
       end
 
       def set_insights_next_steps
+        return if @school.has_solar_pv?
         @advice_page_insights_next_steps = t("advice_pages.#{advice_page_key}.#{section_key}.insights.next_steps_html").html_safe
       end
 

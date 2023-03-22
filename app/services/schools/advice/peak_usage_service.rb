@@ -33,7 +33,7 @@ module Schools
       def benchmark_peak_usage
         Schools::Comparison.new(
           school_value: average_peak_kw,
-          benchmark_value: nil,
+          benchmark_value: peak_usage_benchmarking_service.average_peak_usage_kw(compare: :benchmark_school),
           exemplar_value: peak_usage_benchmarking_service.average_peak_usage_kw(compare: :exemplar_school),
           unit: :kw
         )
