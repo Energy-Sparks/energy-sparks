@@ -20,6 +20,17 @@ module Schools
 
       private
 
+      def check_can_run_analysis
+        if @school.has_electricity?
+          @analysable = create_analysable
+          if @analysable.present? && !@analysable.enough_data?
+            render 'not_enough_data'
+          end
+        else
+          render :not_relevant
+        end
+      end
+
       def build_existing_benefits
         ::SolarPhotovoltaics::ExistingBenefitsService.new(
           meter_collection: aggregate_school
