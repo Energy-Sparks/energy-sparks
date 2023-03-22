@@ -1,0 +1,49 @@
+<table class="table advice-table">
+  <thead>
+    <tr>
+      <th><%= t('schools.user_tariffs.meters.meter') %></th>
+      <th><%= t('schools.user_tariffs.tariff_partial.start_date') %></th>
+      <th><%= t('schools.user_tariffs.tariff_partial.end_date') %></th>
+      <th><%= t('schools.user_tariffs.tariff_partial.type') %></th>
+      <th>x price</th>
+      <th><%= t('schools.user_tariffs.show.standing_charges') %></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% meters.each do |meter| %>
+      <% meter.smart_meter_tariffs.each do |tariff_price, context| %>
+        <tr>
+          <td><%= meter.name_or_mpan_mprn %></td>
+          <td><%= tariff_price.tariff_date.to_s(:es_compact) %></td>
+          <td><%= (context.next_tariff.tariff_date-1).to_s(:es_compact) if context.next_tariff %></td>
+          <td>
+            <% if tariff_price.tariff_type == :flat %>
+              <%= t('schools.user_tariffs.tariff_partial.simple_tariff') %>
+            <% elsif tariff_price.tariff_type == :differential %>
+              <%= t('schools.user_tariffs.tariff_partial.day_night_tariff') %>
+            <% else %>
+              <%= t('schools.user_tariffs.index.smart_meter_tariffs.tariff_types.differential_tiered') %>
+            <% end %>
+          </td>
+          <td>
+            <% if tariff_price.tariff_type == :flat %>
+              <%= t('schools.user_tariffs.rates_table.price_per_kwh',
+                price_value: FormatEnergyUnit.format(:£, tariff_price.prices.first, :text, false, false, :accountant)) %>
+            <% elsif tariff_price.tariff_type == :differential  %>
+              <ul style="list-style: none; padding-left: 0px;">
+                <% tariff_price.prices.uniq.each do |price| %>
+                  <li>
+                    <%= t('schools.user_tariffs.rates_table.price_per_kwh',
+                      price_value: FormatEnergyUnit.format(:£, price, :text, false, false, :accountant)) %>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
+          </td>
+          <td><%= t('schools.user_tariffs.index.smart_meter_tariffs.tariff_charges.per_day', charge: FormatEnergyUnit.format(:£, context.standing_charge.value, :text, false, false, :accountant)) %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

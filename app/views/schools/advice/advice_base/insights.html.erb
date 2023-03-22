@@ -1,4 +1,4 @@
-<%= render 'schools/advice/advice_page', school: @school, advice_pages: @advice_pages, advice_page: @advice_page, tab: @tab, data_warning: @data_warning do %>
+<%= render 'schools/advice/advice_page', school: @school, advice_pages: nil, advice_page: @advice_page, tab: @tab, data_warning: @data_warning do %>
 
   <% if @advice_page_subtitle.present? %>
     <h2><%= @advice_page_subtitle %></h2>

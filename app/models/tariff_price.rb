@@ -24,4 +24,9 @@ class TariffPrice < ApplicationRecord
   belongs_to :tariff_import_log, inverse_of: :tariff_prices
 
   serialize :prices
+
+  def tariff_type
+    return :differential_tiered if prices.any? {|p| p.is_a? Hash }
+    prices.uniq.count == 1 ? :flat : :differential
+  end
 end
