@@ -338,7 +338,7 @@ describe 'compare pages', :compare, type: :system do
 
           context "Changing options" do
             before { click_on "Change options" }
-            it_behaves_like "an index page", tab: 'Choose group'
+            it_behaves_like "an index page", tab: 'Choose groups'
             it_behaves_like "a form filter", id: '#groups', school_groups: ["Group 1", "Group 2"], school_types_excluding: ['infant']
           end
         end

@@ -16,9 +16,6 @@ en:
       schools_with_type_html: 'Schools of type: <strong>%{school_type}</strong>'
       title: 'Comparing:'
     index:
-      categories:
-        tab: Choose categories
-        type_title: Compare schools by type
       country:
         tab: Choose country
         title: Compare schools by country
