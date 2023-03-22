@@ -144,11 +144,12 @@ module AdvicePageHelper
   end
 
   def display_advice_page?(school, fuel_type)
-    fuel_type.to_sym == :solar_pv || school_has_fuel_type?(school, fuel_type)
+    school_has_fuel_type?(school, fuel_type)
   end
 
   def school_has_fuel_type?(school, fuel_type)
     fuel_type = 'storage_heaters' if fuel_type == "storage_heater"
+    fuel_type = 'electricity' if fuel_type == "solar_pv"
     school.send("has_#{fuel_type}?".to_sym)
   end
 

@@ -20,17 +20,39 @@ module Schools
 
       private
 
+      def create_analysable
+        OpenStruct.new(
+          enough_data?: enough_data?
+        )
+      end
+
+      def enough_data?
+        if @school.has_solar_pv?
+          existing_benefits_service.enough_data?
+        else
+          potential_benefits_service.enough_data?
+        end
+      end
+
       def build_existing_benefits
-        ::SolarPhotovoltaics::ExistingBenefitsService.new(
+        existing_benefits_service.create_model
+      end
+
+      def existing_benefits_service
+        @existing_benefits_service ||= ::SolarPhotovoltaics::ExistingBenefitsService.new(
           meter_collection: aggregate_school
-        ).create_model
+        )
       end
 
       def build_potential_benefits
-        ::SolarPhotovoltaics::PotentialBenefitsEstimatorService.new(
+        potential_benefits_service.create_model
+      end
+
+      def potential_benefits_service
+        @potential_benefits_service ||= ::SolarPhotovoltaics::PotentialBenefitsEstimatorService.new(
           meter_collection: aggregate_school,
           asof_date: analysis_end_date
-        ).create_model
+        )
       end
 
       def set_insights_next_steps
@@ -48,12 +70,6 @@ module Schools
 
       def section_key
         @school.has_solar_pv? ? :has_solar_pv : :no_solar_pv
-      end
-
-      def check_has_fuel_type
-        # Skip fuel type check here as there are two versions of the solar pv page:
-        # one version for when the school has solar pv, the other for when they don’t.
-        true
       end
 
       def advice_page_fuel_type

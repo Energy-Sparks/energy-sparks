@@ -17,7 +17,7 @@
       <% s.with_item(name: translated_label(ap), href: advice_page_path(@school, ap)) %>
     <% end %>
   <% end %>
-  <% c.with_section(name: t('advice_pages.nav.sections.solar_pv'), icon: 'sun', classes: 'bg-solar-light') do |s| %>
+  <% c.with_section(name: t('advice_pages.nav.sections.solar_pv'), icon: 'sun', classes: 'bg-solar-light', visible: @school.has_electricity?) do |s| %>
     <% sort_by_label(advice_pages.where(fuel_type: :solar_pv)).each do |ap| %>
       <% s.with_item(name: translated_label(ap), href: advice_page_path(@school, ap)) %>
     <% end %>
