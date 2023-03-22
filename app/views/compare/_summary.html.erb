@@ -1,4 +1,4 @@
-<div class="bg-light p-3 mb-3 rounded border clearfix">
+<div class="p-3 mb-3 rounded border clearfix">
   <%= link_to t('compare.filter.change_options'), compare_index_url(index_params), class: 'btn btn-sm float-right' %>
   <p><%= t('compare.filter.title') %></p>
 
@@ -10,7 +10,7 @@
     <% elsif @filter[:search] == 'country' %>
       <p><%= t('compare.filter.schools_with_country_html', country: (@filter[:country].present? ? t("school_statistics.#{@filter[:country]}") : t('compare.filter.all_countries'))) %></p>
     <% elsif @filter[:search] == 'groups' %>
-      <p><%= t('compare.filter.schools_in_school_groups_html', school_groups: SchoolGroup.find(@filter[:school_group_ids]).map {|school_group| tag.strong(school_group.name)}.to_sentence.html_safe) %></p>
+      <p><%= t('compare.filter.schools_in_school_groups_html', school_groups: SchoolGroup.find(@filter[:school_group_ids]).map {|school_group| tag.span(school_group.name, class: 'badge badge-info')}.join(' ').html_safe) %></p>
     <% end %>
     <%= render 'school_type_summary' %>
   <% end %>
