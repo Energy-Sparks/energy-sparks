@@ -26,8 +26,7 @@ private
       if select_fragment?(fragment)
         @title ||= fragment[:content] if fragment[:type] == :title
         key = new_key(key, fragment)
-        group[key] ||= []
-        group[key] << fragment
+        (group[key] ||= []) << fragment
       end
     end
     group
