@@ -2,9 +2,9 @@ module Schools
   module Advice
     class ElectricityIntradayController < AdviceBaseController
       def insights
-        @average_peak_kw = peak_usage_service.average_peak_kw
-        @peak_kw_usage_percentage_change = peak_usage_service.percentage_change_in_peak_kw
-        @benchmarked_usage = peak_usage_service.benchmark_peak_usage
+        @average_peak_kw = average_peak_kw
+        @peak_kw_usage_percentage_change = percentage_change_in_peak_kw
+        @benchmarked_usage = benchmark_peak_usage
       end
 
       def analysis
@@ -20,6 +20,18 @@ module Schools
         OpenStruct.new(
           enough_data?: true
         )
+      end
+
+      def benchmark_peak_usage
+        peak_usage_service.benchmark_peak_usage
+      end
+
+      def percentage_change_in_peak_kw
+        peak_usage_service.percentage_change_in_peak_kw
+      end
+
+      def average_peak_kw
+        peak_usage_service.average_peak_kw
       end
 
       def peak_usage_service

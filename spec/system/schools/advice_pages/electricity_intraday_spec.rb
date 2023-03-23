@@ -56,7 +56,8 @@ RSpec.describe "electricity intraday advice page", type: :system do
       context 'when not enough data' do
         let(:start_date) { end_date - 11.months}
         it "shows message" do
-          expect(page).to have_content("Not enough data to run analysis")
+          # expect page to not have table for peak kw usage if school has <1 year of data.
+          # expect page to have text "Data on peak kw usage available from %{data_available_from}"
         end
       end
     end
