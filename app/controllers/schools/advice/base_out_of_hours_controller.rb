@@ -34,8 +34,8 @@ module Schools
       def benchmark_school(annual_usage_breakdown)
         Schools::Comparison.new(
           school_value: annual_usage_breakdown.out_of_hours.kwh,
-          benchmark_value: (annual_usage_breakdown.out_of_hours.kwh * BenchmarkMetrics::BENCHMARK_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY),
-          exemplar_value: (annual_usage_breakdown.out_of_hours.kwh * BenchmarkMetrics::EXEMPLAR_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY),
+          benchmark_value: (annual_usage_breakdown.total.kwh * BenchmarkMetrics::BENCHMARK_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY),
+          exemplar_value: (annual_usage_breakdown.total.kwh * BenchmarkMetrics::EXEMPLAR_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY),
           unit: :kwh
         )
       end
