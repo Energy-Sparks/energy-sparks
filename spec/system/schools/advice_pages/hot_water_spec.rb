@@ -7,11 +7,12 @@ RSpec.describe "hot water advice page", type: :system do
 
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
+    let(:enough_data) { true }
 
     before do
       allow_any_instance_of(Schools::Advice::HotWaterController).to receive_messages(
         {
-          gas_hot_water_service: OpenStruct.new(enough_data?: true),
+          gas_hot_water_service: OpenStruct.new(enough_data?: enough_data),
           gas_hot_water_model: OpenStruct.new(
             investment_choices: OpenStruct.new(
               existing_gas: OpenStruct.new(
@@ -122,6 +123,17 @@ RSpec.describe "hot water advice page", type: :system do
       end
     end
 
+    context "when not enough data" do
+      let(:enough_data) { false }
+
+      before do
+        click_on 'Insights'
+      end
+      it 'shows not enough data page' do
+        expect(page).to have_content('Not enough data to run analysis')
+      end
+
+    end
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
       it_behaves_like "an advice page tab", tab: "Insights"

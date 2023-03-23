@@ -12,6 +12,8 @@ module Schools
       private
 
       def check_can_run_analysis
+        @analysable = create_analysable
+        render 'schools/advice/advice_base/not_enough_data' and return unless @analysable.enough_data?
         @has_swimming_pool = has_swimming_pool?
         render :not_relevant and return if not_relevant?
       end
@@ -21,10 +23,6 @@ module Schools
       end
 
       def minimal_use_of_gas?
-        # Check if there is sufficient gas data otherwise
-        # investment choices will throw an exception
-        return true unless gas_hot_water_service.enough_data?
-
         gas_hot_water_model.investment_choices.existing_gas.efficiency > 1.0
       end
 
