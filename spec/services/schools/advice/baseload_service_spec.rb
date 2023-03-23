@@ -167,7 +167,7 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
   end
 
   describe '#seasonal_variation' do
-    let(:seasonal_variation) { double(winter_kw: 1, summer_kw: 2, percentage: 3) }
+    let(:seasonal_variation) { double(winter_kw: 1, summer_kw: 2, percentage: 3.0) }
     before do
       allow_any_instance_of(Baseload::SeasonalBaseloadService).to receive(:seasonal_variation).and_return(seasonal_variation)
       allow_any_instance_of(Baseload::SeasonalBaseloadService).to receive(:estimated_costs).and_return(savings)
