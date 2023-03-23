@@ -32,7 +32,7 @@ private
   end
 
   def aggregate_school
-    aggregate_school_service.aggregate_school
+    @aggregate_school ||= aggregate_school_service.aggregate_school
   end
 
   def number_of_solar_readings
