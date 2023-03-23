@@ -3,6 +3,25 @@ module TariffsHelper
     school.meters.dcc.any?
   end
 
+  def smart_meter_tariffs(meter)
+    smart_meter_tariff_attributes = meter.smart_meter_tariff_attributes
+    return [] unless smart_meter_tariff_attributes
+    smart_meter_tariff_attributes[:accounting_tariff_generic]
+  end
+
+  #This isnt ideal, but ensures we're using same approach as analytics
+  def rates_for_differential_tariff(tariff_price)
+    smart_meter_tariff_attributes = tariff_price.meter.smart_meter_tariff_attributes
+    rates = {}
+    return rates unless smart_meter_tariff_attributes
+    smart_meter_tariff_attributes[:accounting_tariff_generic].each do |tariff|
+      if tariff[:start_date] == tariff_price.tariff_date
+        rates = tariff[:rates].reject { |k| k == :standing_charge }
+      end
+    end
+    rates
+  end
+
   def user_tariff_title(user_tariff, with_mpxn = false)
     start_date = user_tariff.start_date.to_s(:es_compact)
     end_date = user_tariff.end_date.to_s(:es_compact)

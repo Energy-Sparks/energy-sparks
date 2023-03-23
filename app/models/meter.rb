@@ -210,19 +210,8 @@ class Meter < ApplicationRecord
     %w{school.school_group.name school.name mpan_mprn meter_type.humanize active created_at updated_at}
   end
 
-  def smart_meter_tariffs
-    tariffs = {}
-    prices = tariff_prices.by_date.to_a
-    tariff_prices.by_date.each_with_index do |tariff_price, idx|
-      standing_charge = tariff_standing_charges.find_by(start_date: tariff_price.tariff_date)
-      if standing_charge.present?
-        tariffs[tariff_price] = OpenStruct.new(
-          standing_charge: standing_charge,
-          next_tariff: prices[idx + 1]
-        )
-      end
-    end
-    tariffs
+  def smart_meter_tariff_attributes
+    @smart_meter_tariff_attributes ||= Amr::AnalyticsTariffFactory.new(self).build
   end
 
   private
