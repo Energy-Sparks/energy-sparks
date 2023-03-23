@@ -63,6 +63,11 @@ en:
     solar_pv: Solar PV
     storage_heater: Storage heater
     storage_heaters: Storage heaters
+    table:
+      columns:
+        co2_kg: CO2 (kg)
+        cost_gbp: Cost (£)
+        use_kwh: Use (kWh)
     terms_and_conditions: terms and conditions
     units:
       minutes:
