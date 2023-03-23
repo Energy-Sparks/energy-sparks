@@ -6,15 +6,15 @@ class BenchmarkContentFilter
   end
 
   def intro
-    @content[:intro]
+    @content[:intro] ||= []
   end
 
   def charts
-    @content[:charts]
+    @content[:charts] ||= []
   end
 
   def tables
-    @content[:tables]
+    @content[:tables] ||= []
   end
 
 private
