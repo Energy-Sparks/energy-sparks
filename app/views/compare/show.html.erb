@@ -8,7 +8,7 @@
   <%= render 'content_group', group: @content.intro %>
 </div>
 
-<% if @content.charts.any? && @content.tables.any? %>
+<% if @content.charts.any? || @content.tables.any? %>
   <ul class="nav nav-tabs locales url-aware" id="compare-results-tabs" role="tablist">
     <% if @content.charts.any? %>
       <li class="nav-item">
