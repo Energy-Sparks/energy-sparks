@@ -4,20 +4,17 @@ require "rails_helper"
 
 RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
 
-  let(:html) { render_inline(AlertsComponent.new(**params)) }
-
   let(:school) { create(:school) }
-
+  let(:show_links) { true }
+  let(:show_icons) { true }
   let(:advice_page) { create(:advice_page, key: :baseload) }
   let(:alert_type) { create(:alert_type, advice_page: advice_page) }
   let(:alert) { create(:alert, alert_type: alert_type) }
   let(:alert_content) { double(management_dashboard_title: "some alert text", colour: :positive, alert: alert) }
   let(:dashboard_alerts)  { [alert_content] }
-
   let(:all_params) { { dashboard_alerts: dashboard_alerts, alert_types: [alert_type], school: school, show_links: show_links, show_icons: show_icons } }
 
-  let(:show_links) { true }
-  let(:show_icons) { true }
+  let(:html) { render_inline(AlertsComponent.new(**params)) }
 
   context "with all params" do
     let(:params) { all_params }
