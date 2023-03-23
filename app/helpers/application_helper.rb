@@ -458,4 +458,12 @@ module ApplicationHelper
   def replace_analysis_pages?
     EnergySparks::FeatureFlags.active?(:replace_analysis_pages)
   end
+
+  def school_name_group(school)
+    if school.school_group
+      "#{school.name} (#{school.school_group.name})"
+    else
+      school.name
+    end
+  end
 end
