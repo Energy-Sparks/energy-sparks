@@ -4,7 +4,9 @@
 
 <%= render 'summary' %>
 
-<%= render 'content_group', group: @content.intro %>
+<div id="intro">
+  <%= render 'content_group', group: @content.intro %>
+</div>
 
 <% if @content.charts.any? && @content.tables.any? %>
   <ul class="nav nav-tabs locales url-aware" id="compare-results-tabs" role="tablist">
