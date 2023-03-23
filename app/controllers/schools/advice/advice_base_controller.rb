@@ -7,6 +7,7 @@ module Schools
       skip_before_action :authenticate_user!
 
       before_action :load_advice_pages
+      before_action :load_dashboard_alerts
       before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
       before_action :set_tab_name, only: [:insights, :analysis, :learn_more]
       before_action :load_advice_page, only: [:insights, :analysis, :learn_more]
@@ -23,6 +24,7 @@ module Schools
 
       include AdvicePageHelper
       include SchoolAggregation
+      include DashboardAlerts
 
       rescue_from StandardError do |exception|
         Rollbar.error(exception, advice_page: advice_page_key, school: @school.name, school_id: @school.id, tab: @tab)
@@ -42,6 +44,14 @@ module Schools
 
       def load_advice_pages
         @advice_pages = AdvicePage.all
+      end
+
+      def load_dashboard_alerts
+        @dashboard_alerts = setup_alerts(latest_dashboard_alerts, :management_dashboard_title, limit: nil)
+      end
+
+      def latest_dashboard_alerts
+        @latest_dashboard_alerts ||= @school.latest_dashboard_alerts.management_dashboard
       end
 
       def set_economic_tariffs_change_caveats

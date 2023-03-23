@@ -1,0 +1,7 @@
+<div class="alerts-component">
+  <% if alerts %>
+    <% alerts.each do |alert|%>
+      <%= render 'schools/advice/index/alert', alert_content: alert, content_field: :management_dashboard_title, school: school, show_links: show_links , show_icons: show_icons %>
+    <% end %>
+  <% end %>
+</div>
