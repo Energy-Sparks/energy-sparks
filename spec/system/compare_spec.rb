@@ -40,7 +40,7 @@ describe 'compare pages', :compare, type: :system do
 
     it "has included fragments" do
       within '#intro' do
-        expect(page).to have_content('Benchmark name')
+        expect(page).to_not have_content('Benchmark name')
         expect(page).to have_content('intro html')
       end
 

@@ -2,6 +2,7 @@ class BenchmarkContentFilter
   attr_accessor :title
 
   def initialize(content)
+    @title = extract_title(content)
     @content = filter_content(content)
   end
 
@@ -19,12 +20,16 @@ class BenchmarkContentFilter
 
 private
 
+  def extract_title(content)
+    i = content.find_index { |fragment| fragment[:type] == :title && fragment[:content].present?}
+    content.delete_at(i)[:content] if i
+  end
+
   def filter_content(content)
     group = {}
     key = :intro
     content.each do |fragment|
       if select_fragment?(fragment)
-        @title ||= fragment[:content] if fragment[:type] == :title
         key = new_key(key, fragment)
         (group[key] ||= []) << fragment
       end
