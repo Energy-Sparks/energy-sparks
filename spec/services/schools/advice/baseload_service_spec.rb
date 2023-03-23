@@ -179,7 +179,7 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
   end
 
   describe '#seasonal_variation_by_meter' do
-    let(:seasonal_variation) { double(winter_kw: 1, summer_kw: 2, percentage: 3) }
+    let(:seasonal_variation) { double(winter_kw: 1, summer_kw: 2, percentage: 3.0) }
     let(:electricity_meter_1) { double(mpan_mprn: 'meter1', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity, aggregate_meter?: false) }
     let(:electricity_meter_2) { double(mpan_mprn: 'meter2', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity, aggregate_meter?: false) }
     let(:electricity_meters) { [electricity_meter_1, electricity_meter_2] }
