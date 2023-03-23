@@ -3,6 +3,7 @@
 class AlertsComponent < ViewComponent::Base
   attr_reader :school, :show_links, :show_icons
 
+  include AdvicePageHelper
   include ApplicationHelper
 
   def initialize(school:, dashboard_alerts:, alert_types:, show_links: true, show_icons: true)
