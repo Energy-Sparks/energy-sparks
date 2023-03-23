@@ -13,12 +13,17 @@ module Schools
 
       private
 
-      def peak_usage_service
-        @peak_usage_service = Schools::Advice::PeakUsageService.new(@school, aggregate_school)
+      def create_analysable
+        # We still need to show parts of the analysis and insights
+        # page irrespective of ammount of data available.
+        # https://trello.com/c/UOlSVWAg/3144-analysis-page-feedback-electricity-intraday
+        OpenStruct.new(
+          enough_data?: true
+        )
       end
 
-      def create_analysable
-        peak_usage_service
+      def peak_usage_service
+        @peak_usage_service = Schools::Advice::PeakUsageService.new(@school, aggregate_school)
       end
 
       def advice_page_key
