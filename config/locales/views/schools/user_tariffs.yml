@@ -68,33 +68,34 @@ en:
         no_flat_rate_tariff_has_been_set_yet: No flat rate tariff has been set yet
         per_kwh: per kWh
       index:
-        changes_to_cost_calculations_message: Changes to the cost calculations based on these tariffs will update overnight
+        changes_to_cost_calculations_message: The cost calculations based on these tariffs will update overnight
         electricity:
           add_label: Add electricity tariff
           header: Electricity
-          there_are_no_electricity_tariffs_set_up_yet: We have no tariffs for your electricity meters
+          there_are_no_electricity_tariffs_set_up_yet: We have no user supplied tariffs for your electricity meters
         gas:
           add_label: Add gas tariff
           header: Gas
-          there_are_no_gas_tariffs_set_up_yet: We have no tariffs for your gas meters.
+          there_are_no_gas_tariffs_set_up_yet: We have no user supplied tariffs for your gas meters.
         introduction_html: |-
           <p>
-            You can improve the accuracy of the cost calculations on your <a href='%{electricity_analysis_path}'>electricity cost</a> and <a href='%{gas_analysis_path}'>gas cost</a> analysis pages by adding details about your real tariffs.
+            You can improve the accuracy of the calculations on your <a href="%{advice_pages}">cost analysis pages</a> by adding details about your real tariffs.
           </p>
           <p>
             To add a a new tariff you will need to supply detailed information about the energy costs and the range of standing charges that are included in your energy contract.
           </p>
         note_about_defaults: If we do not have your real tariff information, then we will estimate your costs using our default tariffs.
+        note_about_smart_meter_tariffs: We are currently using tariffs automatically imported from your smart meters.
         smart_meter_tariffs:
           introduction_html: |-
             <p>
-              We are able to automatically load basic tariff information from your smart meters. Summarised below is the latest tariff information for each meter.
+              We are automatically loading basic tariff information from your smart meters.
             </p>
             <p>
-              This information is already being used to improve the accuracy of the cost calculations on your <a href='%{electricity_analysis_path}'>electricity cost</a> and <a href='%{gas_analysis_path}'>gas cost</a> analysis pages.
+              This information already being used to improve the accuracy of the calculations on your <a href="%{advice_pages}">cost analysis pages</a> and is summarised below..
             </p>
             <p>
-              Manually adding a new tariff will allow you to provide more information about your standing charges.
+              Manually adding a new tariff will allow you to provide more information about your standing charges for a given period.
             </p>
           tariff_charges:
             per_day: "%{charge} per day"

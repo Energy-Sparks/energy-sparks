@@ -1,7 +1,7 @@
 <div class="row mt-4">
   <div class="col">
     <div class="user_tariff">
-      <%= t('schools.user_tariffs.index.introduction_html', electricity_analysis_path: analysis_page_finder_path(urn: @school.urn, analysis_class: 'AdviceElectricityCosts'), gas_analysis_path: analysis_page_finder_path(urn: @school.urn, analysis_class: 'AdviceGasCosts')) %>
+      <%= t('schools.user_tariffs.index.introduction_html', advice_pages: school_advice_path(@school)) %>
 
       <p><%= t('schools.user_tariffs.index.changes_to_cost_calculations_message') %></p>
 
@@ -19,7 +19,13 @@
               <%= render 'user_tariffs_summary_table', tariffs: @electricity_tariffs, school: @school %>
             <% else %>
               <p><%= t('schools.user_tariffs.index.electricity.there_are_no_electricity_tariffs_set_up_yet') %></p>
-              <p><%= t('schools.user_tariffs.index.note_about_defaults') %><%= %></p>
+              <p>
+                <% if @electricity_meters.dcc.any? %>
+                  <%= t('schools.user_tariffs.index.note_about_smart_meter_tariffs') %>
+                <% else %>
+                  <%= t('schools.user_tariffs.index.note_about_defaults') %>
+                <% end %>
+              </p>
             <% end %>
             <div class="mt-4">
               <%= link_to t('schools.user_tariffs.index.electricity.add_label'), choose_meters_school_user_tariffs_path(@school, fuel_type: :electricity), class: 'btn btn-success' %>
@@ -41,7 +47,13 @@
               <%= render 'user_tariffs_summary_table', tariffs: @gas_tariffs, school: @school %>
             <% else %>
               <p><%= t('schools.user_tariffs.index.gas.there_are_no_gas_tariffs_set_up_yet') %></p>
-              <p><%= t('schools.user_tariffs.index.note_about_defaults') %><%= %></p>
+              <p>
+                <% if @gas_meters.dcc.any? %>
+                  <%= t('schools.user_tariffs.index.note_about_smart_meter_tariffs') %>
+                <% else %>
+                  <%= t('schools.user_tariffs.index.note_about_defaults') %>
+                <% end %>
+              </p>
             <% end %>
             <div>
               <%= link_to t('schools.user_tariffs.index.gas.add_label'), choose_meters_school_user_tariffs_path(@school, fuel_type: :gas), class: 'btn btn-success' %>

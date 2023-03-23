@@ -21,8 +21,7 @@ describe 'user tariffs', type: :system do
           click_link('Manage tariffs')
         end
         expect(page).to have_content(I18n.t('schools.user_tariffs.index.title'))
-        expect(page).to have_link('electricity cost')
-        expect(page).to have_link('gas cost')
+        expect(page).to have_link('cost analysis pages')
       end
     end
 

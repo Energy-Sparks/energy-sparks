@@ -1,7 +1,7 @@
 <div class="row mt-4">
   <div class="col">
 
-    <%= t('schools.user_tariffs.index.smart_meter_tariffs.introduction_html', electricity_analysis_path: analysis_page_finder_path(urn: @school.urn, analysis_class: 'AdviceElectricityCosts'), gas_analysis_path: analysis_page_finder_path(urn: @school.urn, analysis_class: 'AdviceGasCosts')) %>
+    <%= t('schools.user_tariffs.index.smart_meter_tariffs.introduction_html', advice_pages: school_advice_path(@school)) %>
 
     <div class="row">
       <div class="col">
