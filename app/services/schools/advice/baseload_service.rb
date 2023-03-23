@@ -194,8 +194,12 @@ module Schools
       def calculate_seasonal_variation(analytics_meter = aggregate_meter, date = asof_date, load_meter = false)
         meter = load_meter ? meter_for_mpan(analytics_meter.mpan_mprn) : nil
         seasonal_baseload_service = Baseload::SeasonalBaseloadService.new(analytics_meter, date)
+        #return if there's not enough data, then return limited object
         return OpenStruct.new(meter: meter, enough_data?: false, data_available_from: seasonal_baseload_service.data_available_from) unless seasonal_baseload_service.enough_data?
         variation = seasonal_baseload_service.seasonal_variation
+        #we may have >1 year of data, but not enough to actually calculate a seasonal analysis
+        #e.g. a meter for a swimming pool only used in the summer
+        return OpenStruct.new(meter: meter, enough_data?: false) if variation.percentage.nan?
         saving = seasonal_baseload_service.estimated_costs
         build_seasonal_variation(meter, variation, saving)
       end
