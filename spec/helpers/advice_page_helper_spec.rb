@@ -105,5 +105,14 @@ describe AdvicePageHelper do
         expect(helper.dashboard_alerts_for_group(dashboard_alerts, 'change')).to eq([dashboard_alert_change])
       end
     end
+
+    describe '.alert_types_for_group' do
+      it 'should return alert types for group' do
+        expect(helper.alert_types_for_group('change')).to eq([alert_type_change])
+      end
+      it 'handles unknown group' do
+        expect(helper.alert_types_for_group('blah')).to eq([])
+      end
+    end
   end
 end
