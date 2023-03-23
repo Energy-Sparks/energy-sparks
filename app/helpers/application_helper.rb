@@ -92,7 +92,7 @@ module ApplicationHelper
   end
 
   def status_for_alert_colour(colour)
-    return :unknown if colour.nil?
+    return :neutral if colour.nil?
     colour
   end
 

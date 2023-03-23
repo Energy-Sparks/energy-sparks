@@ -1,8 +1,6 @@
 <% unless dashboard_alerts.empty? %>
   <% dashboard_alert_groups(dashboard_alerts).each do |alert_group| %>
     <h3><%= t("advice_pages.alerts.groups.#{alert_group}") %></h3>
-    <% dashboard_alerts_for_group(dashboard_alerts, alert_group).each do |dashboard_alert|%>
-      <%= render 'schools/advice/index/alert', alert_content: dashboard_alert, content_field: content_field, school: school %>
-    <% end %>
+    <%= component 'alerts', school: @school, dashboard_alerts: dashboard_alerts, alert_types: alert_types_for_group(alert_group), show_links: false, show_icons: false %>
   <% end %>
 <% end %>

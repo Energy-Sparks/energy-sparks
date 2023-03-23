@@ -275,4 +275,13 @@ describe ApplicationHelper do
       expect(helper.school_name_group(school_without_group)).to eq('School Two')
     end
   end
+
+  describe '#status_for_alert_colour' do
+    it 'returns neutral if no colour supplied' do
+      expect(helper.status_for_alert_colour(nil)).to eq(:neutral)
+    end
+    it 'returns colour if supplied' do
+      expect(helper.status_for_alert_colour(:green)).to eq(:green)
+    end
+  end
 end
