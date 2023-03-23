@@ -3,7 +3,8 @@ require 'rails_helper'
 
 describe 'pupil passwords' do
 
-  let(:school){ create(:school) }
+  let(:school_group){ create(:school_group, name: 'MySchoolGroup') }
+  let(:school){ create(:school, name: 'MySchool', school_group: school_group) }
   let!(:pupil){ create(:pupil, pupil_password: 'theelectrons', school: school) }
 
   it 'allows the pupil to log in just using the pupil password' do
@@ -35,7 +36,7 @@ describe 'pupil passwords' do
   it 'allows the pupil to select their school' do
     visit new_user_session_path(role: :pupil)
 
-    select school.name, from: 'Select your school'
+    select 'MySchool (MySchoolGroup)', from: 'Select your school'
     fill_in 'Your pupil password', with: 'theelectrons'
     within '#pupil' do
       click_on 'Sign in'
@@ -44,5 +45,4 @@ describe 'pupil passwords' do
     expect(page).to have_content('Signed in successfully')
     expect(page.current_path).to eq(pupils_school_path(school))
   end
-
 end

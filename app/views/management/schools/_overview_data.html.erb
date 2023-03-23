@@ -5,9 +5,9 @@
         <th class="icon"></th>
         <th class="text-left"></th>
         <th class="text-left"></th>
-        <th class="text-right"><%= t('schools.show.use_kwh') %></th>
-        <th class="text-right"><%= t('schools.show.co2_kg') %></th>
-        <th class="text-right"><%= t('schools.show.cost_£') %></th>
+        <th class="text-right"><%= t('common.table.columns.use_kwh') %></th>
+        <th class="text-right"><%= t('common.table.columns.co2_kg') %></th>
+        <th class="text-right"><%= t('common.table.columns.cost_gbp') %></th>
         <% if local_assigns[:show_savings].nil? || local_assigns[:shows_savings] == true %>
           <th class="text-right"><%= t('schools.show.potential_savings') %></th>
         <% end %>

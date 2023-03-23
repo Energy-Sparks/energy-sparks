@@ -191,11 +191,12 @@ module Schools
         )
       end
 
-      def calculate_seasonal_variation(meter = aggregate_meter, date = asof_date, load_meter = false)
-        seasonal_baseload_service = Baseload::SeasonalBaseloadService.new(meter, date)
+      def calculate_seasonal_variation(analytics_meter = aggregate_meter, date = asof_date, load_meter = false)
+        meter = load_meter ? meter_for_mpan(analytics_meter.mpan_mprn) : nil
+        seasonal_baseload_service = Baseload::SeasonalBaseloadService.new(analytics_meter, date)
+        return OpenStruct.new(meter: meter, enough_data?: false, data_available_from: seasonal_baseload_service.data_available_from) unless seasonal_baseload_service.enough_data?
         variation = seasonal_baseload_service.seasonal_variation
         saving = seasonal_baseload_service.estimated_costs
-        meter = load_meter ? meter_for_mpan(meter.mpan_mprn) : nil
         build_seasonal_variation(meter, variation, saving)
       end
 
@@ -207,7 +208,8 @@ module Schools
           percentage: variation.percentage,
           estimated_saving_£: saving.£,
           estimated_saving_co2: saving.co2,
-          variation_rating: seasonal_variation_rating(variation.percentage)
+          variation_rating: seasonal_variation_rating(variation.percentage),
+          enough_data?: true
         )
       end
 
@@ -215,11 +217,12 @@ module Schools
         calculate_rating_from_range(0, 0.50, percentage)
       end
 
-      def calculate_intraweek_variation(meter = aggregate_meter, date = asof_date, load_meter = false)
-        intraweek_baseload_service = Baseload::IntraweekBaseloadService.new(meter, date)
+      def calculate_intraweek_variation(analytics_meter = aggregate_meter, date = asof_date, load_meter = false)
+        intraweek_baseload_service = Baseload::IntraweekBaseloadService.new(analytics_meter, date)
+        meter = load_meter ? meter_for_mpan(analytics_meter.mpan_mprn) : nil
+        return OpenStruct.new(meter: meter, enough_data?: false, data_available_from: intraweek_baseload_service.data_available_from) unless intraweek_baseload_service.enough_data?
         variation = intraweek_baseload_service.intraweek_variation
         saving = intraweek_baseload_service.estimated_costs
-        meter = load_meter ? meter_for_mpan(meter.mpan_mprn) : nil
         build_intraweek_variation(meter, variation, saving)
       end
 
@@ -231,7 +234,8 @@ module Schools
           percent_intraday_variation: variation.percent_intraday_variation,
           estimated_saving_£: saving.£,
           estimated_saving_co2: saving.co2,
-          variation_rating: intraweek_variation_rating(variation.percent_intraday_variation)
+          variation_rating: intraweek_variation_rating(variation.percent_intraday_variation),
+          enough_data?: true
         )
       end
 

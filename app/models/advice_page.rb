@@ -40,7 +40,8 @@ class AdvicePage < ApplicationRecord
   end
 
   def t_fuel_type
-    I18n.t("advice_pages.fuel_type.#{fuel_type}")
+    fuel_type_key = fuel_type == 'solar_pv' ? 'electricity' : fuel_type
+    I18n.t("advice_pages.fuel_type.#{fuel_type_key}")
   end
 
   def ordered_activity_types
@@ -77,7 +78,11 @@ class AdvicePage < ApplicationRecord
     when :storage_heater
       school.has_storage_heaters?
     when :solar_pv
-      school.has_solar_pv?
+      # The check here is for electricity as a
+      # "potential benefits" page is instead shown
+      # for all schools with electricity but without
+      # solar pv
+      school.has_electricity?
     else
       default_value
     end

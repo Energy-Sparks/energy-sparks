@@ -42,7 +42,6 @@ en:
           for_more_detail_html: For more detail, <a href='%{link}'>compare with other schools in your group</a>
           how_do_you_compare: How do you compare?
           link: Learn more
-          next_steps_html: Next steps
           table:
             category: Category
             row:
@@ -64,7 +63,7 @@ en:
               <li>The calculations are based on a current electricity price of 15p/kWh, if mains electricity prices increase there will be a higher economic benefit and shorter payback to the installation.</li>
               <li>If the school becomes more efficient at using electricity and reduces its electricity consumption the benefit will also reduce.</li>
               <li>The capital costs in the table above are estimates based on current market rates; the installation cost at your school might be a little different - you need to get quotes.</li>
-              <li>The estimates assume your have roof space and that is it roughly south facing - as this is optimal for schools whose peak demand is during the middle of the day when south facing panels produce the most electricity.</li>
+              <li>The estimates assume your school has roof space and that it is roughly south facing - as this is optimal for schools whose peak demand is during the middle of the day when south facing panels produce the most electricity.</li>
               <li>The benefits of your solar pv will be reduced if you make your school more energy efficient. However, if you want your school to reduce its carbon emissions you should consider both installing solar panels and reducing your electricity consumption.</li>
             </ul>
           energy_sparks_has_estimated: Energy Sparks has estimated that installing %{optimum_kwp} kWp provides the best payback
@@ -99,7 +98,7 @@ en:
             <p>If you are interested in getting solar PV installed at your school you should:</p>
             <ul>
               <li>Speak with a specialist who can assess the existing roof space in terms of space available and structural integrity.</li>
-              <li>You can ask for specialist advice from qualified installers listed on the MCS website.
+              <li>You can ask for specialist advice from qualified installers listed on the <a href='https://mcscertified.com/find-an-installer/'>MCS</a> website.
               <li>Investigate funding sources for solar panels.</li>
             </ul>
           potential_benefits_for_your_school: Potential benefits for your school

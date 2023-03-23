@@ -19,8 +19,8 @@ module AdvicePageHelper
     I18n.t(key, vars.merge(scope: [:advice_pages])).html_safe
   end
 
-  def format_unit(value, units, in_table = true)
-    FormatEnergyUnit.format(units, value, :html, false, in_table).html_safe
+  def format_unit(value, units, in_table = true, user_numeric_comprehension_level = :ks2)
+    FormatEnergyUnit.format(units, value, :html, false, in_table, user_numeric_comprehension_level).html_safe
   end
 
   def chart_start_month_year(date = Time.zone.today)
@@ -102,7 +102,7 @@ module AdvicePageHelper
   end
 
   def meters_by_estimated_saving(meters)
-    meters.sort_by {|_, v| -v.estimated_saving_£ }
+    meters.sort_by {|_, v| v.estimated_saving_£.present? ? -v.estimated_saving_£ : 0.0 }
   end
 
   def meters_by_percentage_baseload(meters)
@@ -144,11 +144,12 @@ module AdvicePageHelper
   end
 
   def display_advice_page?(school, fuel_type)
-    fuel_type.to_sym == :solar_pv || school_has_fuel_type?(school, fuel_type)
+    school_has_fuel_type?(school, fuel_type)
   end
 
   def school_has_fuel_type?(school, fuel_type)
     fuel_type = 'storage_heaters' if fuel_type == "storage_heater"
+    fuel_type = 'electricity' if fuel_type == "solar_pv"
     school.send("has_#{fuel_type}?".to_sym)
   end
 
@@ -163,6 +164,14 @@ module AdvicePageHelper
     else
       t('advice_pages.tables.labels.user_supplied')
     end
+  end
+
+  def dashboard_alert_groups(dashboard_alerts)
+    %w[priority change benchmarking advice].select { |group| dashboard_alerts_for_group(dashboard_alerts, group).any? }
+  end
+
+  def dashboard_alerts_for_group(dashboard_alerts, group)
+    dashboard_alerts.select { |dashboard_alert| dashboard_alert.alert.alert_type.group == group }
   end
 end
 # rubocop:enable Naming/AsciiIdentifiers

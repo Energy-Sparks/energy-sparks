@@ -1,9 +1,9 @@
 <% if combined_usage_metric.kwh %>
   <tr>
     <td><%= period %></td>
-    <td class="text-right"><%= format_unit(combined_usage_metric.kwh, :kwh) %></td>
-    <td class="text-right"><%= format_unit(combined_usage_metric.£, :£) %></td>
-    <td class="text-right"><%= format_unit(combined_usage_metric.co2, :co2) %></td>
+    <td class="text-right"><%= format_unit(combined_usage_metric.kwh, :kwh, true, :target) %></td>
+    <td class="text-right"><%= format_unit(combined_usage_metric.£, :£, true, :target) %></td>
+    <td class="text-right"><%= format_unit(combined_usage_metric.co2, :co2, true, :target) %></td>
   </tr>
 <% else %>
   <tr>
