@@ -163,3 +163,4 @@ en:
       there_should_only_be_one_tariff_message: There should only be one tariff for each date period, for each meter
       title_partial:
         heading: Tariff
+      view_and_manage_tariffs_html: <a href="%{user_tariffs_path}">View and manage your school tariffs</a>
