@@ -20,11 +20,9 @@ class CompareController < ApplicationController
 
   # display results
   def show
-    @benchmark = @filter[:benchmark].to_sym
-    content = content_for_benchmark(@benchmark)
-
-    @title = extract_title_from_content(content) || extract_title_from_benchmark(@benchmark)
-    @content = filter_content(content)
+    benchmark = filter[:benchmark].to_sym
+    @content = BenchmarkContentFilter.new(content_for_benchmark(benchmark))
+    @content.title ||= extract_title_from_benchmark(benchmark)
   end
 
   private
@@ -75,21 +73,7 @@ class CompareController < ApplicationController
     []
   end
 
-  def extract_title_from_content(content)
-    title_fragment = content.find { |fragment| fragment[:type] == :title && fragment[:content]}
-    title_fragment && title_fragment[:content]
-  end
-
   def extract_title_from_benchmark(benchmark)
     benchmark_groups.find {|group| group[:benchmarks]}.dig(:benchmarks, benchmark)
-  end
-
-  def filter_content(content)
-    content.select { |fragment| select_fragment?(fragment) }
-  end
-
-  def select_fragment?(fragment)
-    return false unless fragment.present?
-    [:chart, :html, :table_composite].include?(fragment[:type]) && fragment[:content].present?
   end
 end

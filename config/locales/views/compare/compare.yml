@@ -36,3 +36,6 @@ en:
         tab: Choose type
         title: Compare schools by type
     limit_by_school_type: 'Limit results to include schools of type:'
+    show:
+      charts: Charts
+      tables: Tables

@@ -1,11 +1,29 @@
 <% content_for :page_title, @title  %>
 
-<h1><%= @title %></h1>
+<h1><%= @content.title %></h1>
 
 <%= render 'summary' %>
 
-<div id='benchmark-content'%>
-  <% @content.each do |content| %>
-    <%= render "compare/content_types/#{content[:type]}", content: content[:content] %>
+<%= render 'content_group', group: @content.intro %>
+
+<ul class="nav nav-tabs locales url-aware" id="compare-results-tabs" role="tablist">
+  <% if @content.charts %>
+    <li class="nav-item">
+      <a class="nav-link active" id="charts-tab" data-toggle="tab" href="#charts" role="tab" aria-controls="charts-content"><%= t('compare.show.charts') %></a>
+    </li>
   <% end %>
+  <% if @content.tables %>
+    <li class="nav-item">
+      <a class="nav-link<%= ' active' unless @content.charts %>" id="tables-tab" data-toggle="tab" href="#tables" role="tab" aria-controls="tables-content"><%= t('compare.show.tables') %></a>
+    </li>
+  <% end %>
+</ul>
+
+<div class="tab-content" id="compare-results-content">
+  <div class="tab-pane fade show <%= ' active' if @content.charts %>" id="charts" role="tabpanel" aria-labelledby="charts-tab">
+    <%= render 'content_group', group: @content.charts %>
+  </div>
+  <div class="tab-pane fade show <%= ' active' unless @content.charts %>" id="tables" role="tabpanel" aria-labelledby="tables-tab">
+    <%= render 'content_group', group: @content.tables %>
+  </div>
 </div>
