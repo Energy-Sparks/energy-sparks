@@ -3,6 +3,8 @@
 class AlertsComponent < ViewComponent::Base
   attr_reader :school, :show_links, :show_icons
 
+  include ApplicationHelper
+
   def initialize(school:, dashboard_alerts:, alert_types:, show_links: true, show_icons: true)
     @school = school
     @dashboard_alerts = dashboard_alerts
@@ -13,6 +15,10 @@ class AlertsComponent < ViewComponent::Base
 
   def alerts
     @alerts ||= dashboard_alerts_for(@alert_types)
+  end
+
+  def content_field
+    :management_dashboard_title
   end
 
   def dashboard_alerts_for(alert_types)
