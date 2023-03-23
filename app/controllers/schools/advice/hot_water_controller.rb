@@ -21,6 +21,10 @@ module Schools
       end
 
       def minimal_use_of_gas?
+        # Check if there is sufficient gas data otherwise
+        # investment choices will throw an exception
+        return true unless gas_hot_water_service.enough_data?
+
         gas_hot_water_model.investment_choices.existing_gas.efficiency > 1.0
       end
 
