@@ -2,9 +2,13 @@ module Schools
   module Advice
     class ElectricityIntradayController < AdviceBaseController
       def insights
-        @average_peak_kw = average_peak_kw
-        @peak_kw_usage_percentage_change = percentage_change_in_peak_kw
-        @benchmarked_usage = benchmark_peak_usage
+        if peak_usage_service.enough_data?
+          @average_peak_kw = average_peak_kw
+          @peak_kw_usage_percentage_change = percentage_change_in_peak_kw
+          @benchmarked_usage = benchmark_peak_usage
+        else
+          @not_enough_data_data_available_from = peak_usage_service.data_available_from
+        end
       end
 
       def analysis
@@ -16,6 +20,7 @@ module Schools
       def create_analysable
         # We still need to show parts of the analysis and insights
         # page irrespective of ammount of data available.
+        # Some insights page sections will be hidden when not relevent.  See:
         # https://trello.com/c/UOlSVWAg/3144-analysis-page-feedback-electricity-intraday
         OpenStruct.new(
           enough_data?: true
