@@ -1,19 +1,17 @@
 module Schools
   module Advice
     class HotWaterController < AdviceBaseController
-      before_action   :gas_hot_water
-      before_action   :check_can_run_analysis, only: [:insights, :analysis]
-
       def insights
+        @gas_hot_water = gas_hot_water_model
       end
 
       def analysis
+        @gas_hot_water = gas_hot_water_model
       end
 
       private
 
       def check_can_run_analysis
-        return unless gas_hot_water_service.enough_data?
         @has_swimming_pool = has_swimming_pool?
         render :not_relevant and return if not_relevant?
       end
@@ -23,7 +21,7 @@ module Schools
       end
 
       def minimal_use_of_gas?
-        @gas_hot_water.investment_choices.existing_gas.efficiency > 1.0
+        gas_hot_water_model.investment_choices.existing_gas.efficiency > 1.0
       end
 
       def has_swimming_pool?
@@ -34,12 +32,8 @@ module Schools
         gas_hot_water_service
       end
 
-      def gas_hot_water
-        @gas_hot_water ||= build_gas_hot_water_model
-      end
-
-      def build_gas_hot_water_model
-        gas_hot_water_service.create_model
+      def gas_hot_water_model
+        @gas_hot_water_model ||= gas_hot_water_service.create_model
       end
 
       def gas_hot_water_service
