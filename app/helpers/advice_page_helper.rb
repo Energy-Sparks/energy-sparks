@@ -19,8 +19,8 @@ module AdvicePageHelper
     I18n.t(key, vars.merge(scope: [:advice_pages])).html_safe
   end
 
-  def format_unit(value, units, in_table = true)
-    FormatEnergyUnit.format(units, value, :html, false, in_table).html_safe
+  def format_unit(value, units, in_table = true, user_numeric_comprehension_level = :ks2)
+    FormatEnergyUnit.format(units, value, :html, false, in_table, user_numeric_comprehension_level).html_safe
   end
 
   def chart_start_month_year(date = Time.zone.today)
