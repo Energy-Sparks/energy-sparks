@@ -1,0 +1,15 @@
+<div class="row mt-4">
+  <div class="col">
+
+    <h4><%= t('schools.user_tariffs.default_tariffs.accounting.title') %></h4>
+
+    <%= t('schools.user_tariffs.default_tariffs.accounting.introduction_html') %>
+
+    <h4><%= t('schools.user_tariffs.default_tariffs.economic.title') %></h4>
+
+    <%= t('schools.user_tariffs.default_tariffs.economic.introduction_html') %>
+
+    <%= render 'economic_tariffs_table', school: @school %>
+
+  </div>
+</div>

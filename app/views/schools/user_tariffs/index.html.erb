@@ -1,44 +1,36 @@
 <h1><%= t('schools.user_tariffs.index.title') %></h1>
 
-<div class="user_tariff">
-
-  <p>
-    <%= t('schools.user_tariffs.index.introduction_html', electricity_analysis_path: analysis_page_finder_path(urn: @school.urn, analysis_class: 'AdviceElectricityCosts'), gas_analysis_path: analysis_page_finder_path(urn: @school.urn, analysis_class: 'AdviceGasCosts')
-    ) %>.
-  </p>
-
-  <p><%= t('schools.user_tariffs.index.changes_to_cost_calculations_message') %>.</p>
-  <br/>
-
-  <% if @electricity_meters.any? %>
-    <h2><%= t('schools.user_tariffs.index.electricity.header') %></h2>
-    <div>
-      <%= link_to t('schools.user_tariffs.index.electricity.add_label'), choose_meters_school_user_tariffs_path(@school, fuel_type: :electricity), class: 'btn btn-success' %>
-    </div>
-    <br/>
-    <% if @electricity_tariffs.any? %>
-      <% @electricity_tariffs.each do |user_tariff| %>
-        <%= render 'tariff', user_tariff: user_tariff, school: @school %>
-      <% end %>
-    <% else %>
-      <h4><%= t('schools.user_tariffs.index.electricity.there_are_no_electricity_tariffs_set_up_yet') %></h4>
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link active"
+      id="nav-user-tariffs-tab" data-toggle="tab"
+      href="#nav-user-tariffs" role="tab" aria-controls="nav-user-tariffs" aria-selected="true">
+      <%= t('schools.user_tariffs.index.tabs.user_tariffs') %>
+    </a>
+    <% if any_smart_meters?(@school) %>
+      <a class="nav-item nav-link"
+        id="nav-smart-meter-tariffs-tab" data-toggle="tab" href="#nav-smart-meter-tariffs" role="tab" aria-controls="nav-smart-meter-tariffs" aria-selected="false">
+        <%= t('schools.user_tariffs.index.tabs.smart_meter_tariffs') %>
+      </a>
     <% end %>
-    <br/>
-    <br/>
-  <% end %>
-
-  <% if @gas_meters.any? %>
-    <h2><%= t('schools.user_tariffs.index.gas.header') %></h2>
-    <div>
-      <%= link_to t('schools.user_tariffs.index.gas.add_label'), choose_meters_school_user_tariffs_path(@school, fuel_type: :gas), class: 'btn btn-success' %>
+    <a class="nav-item nav-link" id="nav-default-tariffs-tab" data-toggle="tab" href="#nav-default-tariffs" role="tab" aria-controls="nav-default-tariffs" aria-selected="false">
+      <%= t('schools.user_tariffs.index.tabs.default_tariffs') %>
+    </a>
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active"
+      id="nav-user-tariffs" role="tabpanel" aria-labelledby="nav-user-tariffs-tab">
+      <%= render 'user_tariffs_tab' %>
+  </div>
+  <% if any_smart_meters?(@school) %>
+    <div class="tab-pane fade"
+        id="nav-smart-meter-tariffs" role="tabpanel" aria-labelledby="nav-smart-meter-tariffs-tab">
+        <%= render 'smart_meter_tariffs_tab' %>
     </div>
-    <br/>
-    <% if @gas_tariffs.any? %>
-      <% @gas_tariffs.each do |user_tariff| %>
-        <%= render 'tariff', user_tariff: user_tariff, school: @school %>
-      <% end %>
-    <% else %>
-      <h4><%= t('schools.user_tariffs.index.gas.there_are_no_gas_tariffs_set_up_yet') %></h4>
-    <% end %>
   <% end %>
+  <div class="tab-pane fade"
+      id="nav-default-tariffs" role="tabpanel" aria-labelledby="nav-default-tariffs-tab">
+      <%= render 'default_tariffs_tab' %>
+  </div>
 </div>
