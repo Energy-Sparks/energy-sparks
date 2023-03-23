@@ -7,7 +7,6 @@ module Schools
       skip_before_action :authenticate_user!
 
       before_action :load_advice_pages
-      before_action :load_dashboard_alerts
       before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
       before_action :set_tab_name, only: [:insights, :analysis, :learn_more]
       before_action :load_advice_page, only: [:insights, :analysis, :learn_more]
