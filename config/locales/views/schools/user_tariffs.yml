@@ -89,6 +89,15 @@ en:
             <p>
               <a href="mailto:hello@energysparks.uk">Contact us</a> if you would like the tariffs your MAT or school updated. We will need information about the specific tariffs including the start date from when they are effective.
             </p>
+          tariffs_table:
+            columns:
+              scope: Scope
+            labels:
+              aggregated_electricity: Electricity
+              aggregated_gas: Gas
+              global: System wide
+              school: School
+              school_group: School Group (MAT)
           title: Economic tariffs
       edit:
         title: Edit the name and date range for this %{fuel_type} tariff
@@ -157,7 +166,7 @@ en:
         day_night_tariff: Day/night tariff
         end_date: End date
         full_details: Full details
-        price_from_to: "%{price_start_time} to %{price_end_time} : "
+        price_from_to: "%{price_start_time} to %{price_end_time}:"
         simple_tariff: Simple tariff
         start_date: Start date
         type: Type

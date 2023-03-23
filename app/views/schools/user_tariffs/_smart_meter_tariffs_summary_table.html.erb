@@ -35,7 +35,7 @@
               <ul style="list-style: none; padding-left: 0px;">
                 <% rates.each do |_r, price| %>
                   <li>
-                    <%= t('schools.user_tariffs.tariff_partial.price_from_to', start_time: price[:from], end_time: price[:to]) %> - <%= t('schools.user_tariffs.rates_table.price_per_kwh',
+                    <%= t('schools.user_tariffs.tariff_partial.price_from_to', price_start_time: price[:from], price_end_time: price[:to]) %> <%= t('schools.user_tariffs.rates_table.price_per_kwh',
                       price_value: FormatEnergyUnit.format(:£, price[:rate], :text, false, false, :accountant)) %>
                   </li>
                 <% end %>
