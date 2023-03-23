@@ -26,7 +26,7 @@ RSpec.describe "electricity intraday advice page", type: :system do
 
       it_behaves_like "an advice page tab", tab: "Insights"
 
-      it 'shows expected content' do
+      it 'shows all expected content' do
         expect(page).to have_content('Your current peak electricity use')
         expect(page).not_to have_content('Data on peak kw usage available from')
         expect(page).to have_content('How did we calculate these figures?')
@@ -38,7 +38,7 @@ RSpec.describe "electricity intraday advice page", type: :system do
 
       context 'when not enough data' do
         let(:start_date) { end_date - 11.months}
-        it "shows message" do
+        it "shows only relevent content" do
           expect(page).to have_content('Your current peak electricity use')
           expect(page).to have_content('Data on peak kw usage available from')
           expect(page).not_to have_content('How did we calculate these figures?')
@@ -61,7 +61,7 @@ RSpec.describe "electricity intraday advice page", type: :system do
         expect(page).to have_content(I18n.t('advice_pages.electricity_intraday.analysis.comparison.title'))
       end
 
-      it "shows the expected charts" do
+      it "shows all of the expected charts" do
         expect(page).to have_css('#chart_wrapper_intraday_line_school_days_reduced_data_versus_benchmarks')
         expect(page).to have_css('#chart_wrapper_intraday_line_school_days_reduced_data')
         expect(page).to have_css('#chart_wrapper_intraday_line_holidays')
@@ -71,7 +71,7 @@ RSpec.describe "electricity intraday advice page", type: :system do
 
       context 'when not enough data' do
         let(:start_date) { end_date - 11.months}
-        it "shows message" do
+        it "shows all of the expected charts" do
           expect(page).to have_css('#chart_wrapper_intraday_line_school_days_reduced_data_versus_benchmarks')
           expect(page).to have_css('#chart_wrapper_intraday_line_school_days_reduced_data')
           expect(page).to have_css('#chart_wrapper_intraday_line_holidays')
