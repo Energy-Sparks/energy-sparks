@@ -62,15 +62,6 @@ en:
         simple: Simple
         title: Choose the type of this tariff
       default_tariffs:
-        accounting:
-          introduction_html: |-
-            <p>
-            When we do not have real information about your tariffs supplied by your school, MAT or automatically loaded from our smart meter, we use default tariffs for calculating your energy costs.
-            </p>
-            <p>
-              <a href="mailto:hello@energysparks.uk">Contact us</a> if you have questions about these defaults.
-            </p>
-          title: Accounting tariffs
         economic:
           introduction_html: |-
             <p>
@@ -87,7 +78,7 @@ en:
             The table below summarises the tariffs we are using for your school.
             </p>
             <p>
-              <a href="mailto:hello@energysparks.uk">Contact us</a> if you would like the tariffs your MAT or school updated. We will need information about the specific tariffs including the start date from when they are effective.
+              <a href="mailto:hello@energysparks.uk">Contact us</a> if you would like the tariffs for your MAT or school updated. We will need information about the specific tariffs including the start date from when they are effective.
             </p>
           tariffs_table:
             columns:
@@ -98,7 +89,6 @@ en:
               global: System wide
               school: School
               school_group: School Group (MAT)
-          title: Economic tariffs
       edit:
         title: Edit the name and date range for this %{fuel_type} tariff
       flat_rate:
@@ -152,7 +142,7 @@ en:
             We are automatically loading basic tariff information from your smart meters.
           </p>
           <p>
-            This information already being used to improve the accuracy of the calculations on your <a href="%{advice_pages}">cost analysis pages</a> and is summarised below..
+            This information is already being used to improve the accuracy of the calculations on your <a href="%{advice_pages}">cost analysis pages</a> and is summarised below.
           </p>
           <p>
             Manually adding a new tariff will allow you to provide more information about your standing charges for a given period.
@@ -173,3 +163,4 @@ en:
       there_should_only_be_one_tariff_message: There should only be one tariff for each date period, for each meter
       title_partial:
         heading: Tariff
+      view_and_manage_tariffs_html: <a href="%{user_tariffs_path}">View and manage your school tariffs</a>

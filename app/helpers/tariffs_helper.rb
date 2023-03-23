@@ -6,11 +6,11 @@ module TariffsHelper
   #find all of the economic tariffs for a specific group, collecting them
   #via their scope
   def economic_tariffs_for_school(school)
-    tariffs = {}
-    tariffs[:school] = convert_meter_attributes_to_hash(school.pseudo_meter_attributes)
-    tariffs[:school_group] = convert_meter_attributes_to_hash(school.school_group_pseudo_meter_attributes)
-    tariffs[:global] = convert_meter_attributes_to_hash(school.global_pseudo_meter_attributes)
-    tariffs
+    {
+      school: convert_meter_attributes_to_hash(school.pseudo_meter_attributes),
+      school_group: convert_meter_attributes_to_hash(school.school_group_pseudo_meter_attributes),
+      global: convert_meter_attributes_to_hash(school.global_pseudo_meter_attributes)
+    }
   end
 
   #convert the meter attributes to a hash, to make them easier to process

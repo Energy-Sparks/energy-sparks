@@ -33,7 +33,7 @@ en:
           subtitle: This chart shows how your school’s gas use compared against well managed and exemplar schools between %{start_date} and %{end_date}
           title: Annual gas use comparison with other schools
         gas_by_month_year:
-          explanation: This chart can be a quick way to spot whether energy saving behaviour and lighting and equipment updates are having an impact on your gas consumption. You need to be careful when comparing months with holidays, particularly Easter, which some years is in March and other times in April.
+          explanation: This chart can be a quick way to spot whether changes to heating and hot water control are having an impact on your gas consumption. You need to be careful when comparing months with holidays, particularly Easter, which some years is in March and other times in April.
           subtitle_html: This chart shows the difference in gas consumption for the 12 months ending on <span class='end-date'>%{end_date}</span> and the previous 12 months
           title: Monthly gas consumption comparison over the last two years
         gas_longterm_trend:
