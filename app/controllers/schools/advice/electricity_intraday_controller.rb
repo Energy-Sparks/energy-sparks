@@ -30,7 +30,7 @@ module Schools
       end
 
       def peak_usage_service_date_range
-        [asof_date - 364, asof_date]
+        [asof_date - Usage::PeakUsageCalculationService::DATE_RANGE_DAYS_AGO, asof_date]
       end
 
       def asof_date
