@@ -178,5 +178,9 @@ module AdvicePageHelper
   def dashboard_alerts_for_group(dashboard_alerts, group)
     dashboard_alerts.select { |dashboard_alert| dashboard_alert.alert.alert_type.group == group }
   end
+
+  def t_weekday(week_day)
+    I18n.t('date.day_names')[week_day]
+  end
 end
 # rubocop:enable Naming/AsciiIdentifiers
