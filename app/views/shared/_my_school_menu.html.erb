@@ -31,7 +31,7 @@
 
     <% if current_user.school&.school_group&.present? %>
       <!-- Compare schools -->
-      <%= link_to t('schools.school_group.compare_schools'), compare_path(benchmark: {school_group_ids: [current_user.school.school_group.id]}), class: 'dropdown-item' %>
+      <%= link_to t('schools.school_group.compare_schools'), compare_index_path(school_group_ids: [current_user.school.school_group.id]) + '#groups', class: 'dropdown-item' %>
     <% end %>
 
     <!-- Complete pupil activities -->

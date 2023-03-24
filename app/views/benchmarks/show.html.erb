@@ -3,9 +3,9 @@
 <h1>School Comparison Tool</h1>
 <p>This tool allows you to compare the energy performance of a number of schools within a Local Authority group or across the whole of Energy Sparks. The aim is to allow you to identify the best and worst performing schools to provide examples of best practice and to identify the schools needing the most support to improve their energy management.</p>
 
-<p><%= link_to 'Benchmark list', compare_path(benchmark: @benchmark_filter) %></p>
+<p><%= link_to 'Benchmark list', benchmarks_path(benchmark: @benchmark_filter) %></p>
 
-<p><%= link_to 'Download benchmark results YAML file (admin only)', compare_path({format: :yaml}) if can? :download, BenchmarkResult %></p>
+<p><%= link_to 'Download benchmark results YAML file (admin only)', benchmarks_path({format: :yaml}) if can? :download, BenchmarkResult %></p>
 
 <% if can?(:read, :benchmark_errors_messages) %>
   <p>
