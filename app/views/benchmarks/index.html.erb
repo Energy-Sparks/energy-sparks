@@ -13,7 +13,7 @@
   <h2><%= page_group[:name] %></h2>
   <ul>
     <% page_group[:benchmarks].each do |benchmark, title| %>
-      <li><%= link_to title, benchmark_path(benchmark_type: benchmark, benchmark: @benchmark_filter) %></li>
+      <li><%= link_to title, compare_path(benchmark_type: benchmark, benchmark: @benchmark_filter) %></li>
     <% end %>
   </ul>
 <% end %>

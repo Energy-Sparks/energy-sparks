@@ -45,9 +45,6 @@ Rails.application.routes.draw do
   get 'data_feeds/weather_observations/:weather_station_id', to: 'data_feeds/weather_observations#show', as: :data_feeds_weather_observations
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
-  get 'benchmarks', to: 'benchmarks#index'
-  get 'benchmark', to: 'benchmarks#show'
-
   resources :compare, controller: 'compare', param: :benchmark, only: [:index, :show] do
     collection do
       get :benchmarks
