@@ -11,11 +11,11 @@ en:
       country: 'Select country:'
       school_groups: 'Select school groups:'
       school_type: 'Select school type:'
-      school_types_html: Including %{school_types}
-      schools_in_school_group_html: Schools in the <strong>%{school_group}</strong> group
-      schools_in_school_groups_html: 'Schools in groups: %{school_groups}'
-      schools_with_country_html: 'Schools in country: <strong>%{country}</strong>'
-      schools_with_type_html: 'Schools of type: <strong>%{school_type}</strong>'
+      school_types_html: 'Including: %{school_types}'
+      schools_in_school_group_html: Comparing schools in the %{school_group} group
+      schools_in_school_groups_html: 'Comparing schools in groups: %{school_groups}'
+      schools_with_country_html: Comparing schools in %{country}
+      schools_with_type_html: 'Comparing schools of type: %{school_type}'
       title: 'Comparing:'
     index:
       country:
