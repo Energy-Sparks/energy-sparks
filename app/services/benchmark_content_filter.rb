@@ -100,12 +100,19 @@ private
 
   def parse_benchmark(benchmark)
     chunk = []
+    intro = []
     keep = ''
     benchmark.each do |fragment|
-      chunk << fragment
-      if (key = key(fragment))
-        keep = key
-        @content[keep] += chunk
+      key = key(fragment)
+      keep = key if key
+
+      if keep.blank?
+        intro << fragment
+      else
+        chunk << fragment
+      end
+      if key
+        @content[keep] += intro + chunk
         chunk = []
       end
     end

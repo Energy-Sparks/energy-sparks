@@ -9,8 +9,8 @@ describe BenchmarkContentFilter, type: :service do
     { type: :table_composite, content: { header: ['table composite header'], rows: [[]] }},
 
     ## second benchmark
-    { type: :title, content: 'Chart 2 name'},
-    { type: :html, content: 'Chart 2 intro'},
+    { type: :title, content: 'Benchmark 2 name'},
+    { type: :html, content: 'Benchmark 2 intro'},
     { type: :chart, content: { title: 'chart 2 title', config_name: "config_name", x_axis: ["a school"] } },
 
     { type: :html, content: 'table 2 html'},
@@ -43,12 +43,14 @@ describe BenchmarkContentFilter, type: :service do
 
   describe "#table" do
     subject(:tables) { filter.tables }
-    it { expect(tables.count).to be(5)}
+    it { expect(tables.count).to be(7)}
     it { expect(tables[0][:content][:header]).to eq(["table composite header"])}
-    it { expect(tables[1][:content]).to eq("table 2 html")}
-    it { expect(tables[2][:content]).to eq("table 2 more html")}
-    it { expect(tables[3][:content][:header]).to eq(["table 2 composite header"])}
-    it { expect(tables[4][:content]).to eq("table 2 even more html")}
+    it { expect(tables[1][:content]).to eq("Benchmark 2 name")}
+    it { expect(tables[2][:content]).to eq("Benchmark 2 intro")}
+    it { expect(tables[3][:content]).to eq("table 2 html")}
+    it { expect(tables[4][:content]).to eq("table 2 more html")}
+    it { expect(tables[5][:content][:header]).to eq(["table 2 composite header"])}
+    it { expect(tables[6][:content]).to eq("table 2 even more html")}
   end
 
   describe "#chart" do
@@ -56,8 +58,8 @@ describe BenchmarkContentFilter, type: :service do
     it { expect(charts.count).to be(5)}
     it { expect(charts[0][:content][:title]).to eq("chart 1")}
     it { expect(charts[1][:content]).to eq("chart html")}
-    it { expect(charts[2][:content]).to eq("Chart 2 name")}
-    it { expect(charts[3][:content]).to eq("Chart 2 intro")}
+    it { expect(charts[2][:content]).to eq("Benchmark 2 name")}
+    it { expect(charts[3][:content]).to eq("Benchmark 2 intro")}
     it { expect(charts[4][:content][:title]).to eq("chart 2 title")}
   end
 end
