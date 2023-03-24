@@ -50,7 +50,7 @@ RSpec.describe "Baseload advice page", type: :system do
       let(:baseload_meter_breakdown) { {} }
       let(:seasonal_variation)  { double(winter_kw: 1, summer_kw: 2, percentage: 3, estimated_saving_£: 4, estimated_saving_co2: 5, variation_rating: 6) }
       let(:seasonal_variation_by_meter) { {} }
-      let(:intraweek_variation) { double(max_day_kw: 1, min_day_kw: 2, percent_intraday_variation: 3, estimated_saving_£: 4, estimated_saving_co2: 5, variation_rating: 6) }
+      let(:intraweek_variation) { double(max_day_kw: 1, min_day_kw: 2, percent_intraday_variation: 3, estimated_saving_£: 4, estimated_saving_co2: 5, variation_rating: 6, min_day: 0, max_day: 1) }
       let(:intraweek_variation_by_meter) { {} }
 
       before(:each) do

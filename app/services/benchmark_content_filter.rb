@@ -111,7 +111,9 @@ private
       else
         chunk << fragment
       end
+
       if key
+        @content[keep] ||= []
         @content[keep] += intro + chunk
         chunk = []
       end
