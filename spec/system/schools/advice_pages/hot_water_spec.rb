@@ -7,7 +7,7 @@ RSpec.describe "hot water advice page", type: :system do
 
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
-    let(:saving_£_percent) { 0.12 }
+    let(:saving_£_percent) { 0.28327380733860796 }
 
     before do
       allow_any_instance_of(Schools::Advice::HotWaterController).to receive_messages(
