@@ -50,6 +50,7 @@ RSpec.describe "gas recent changes advice page", type: :system do
         expect(page).to have_css('#chart_wrapper_calendar_picker_gas_week_example_comparison_chart')
         expect(page).to have_css('#chart_wrapper_calendar_picker_gas_day_example_comparison_chart')
         expect(page).to have_css('#chart_wrapper_last_2_weeks_gas_degreedays')
+        expect(page).to have_css('#chart_wrapper_last_7_days_intraday_gas')
       end
 
       it "shows start and end dates" do
