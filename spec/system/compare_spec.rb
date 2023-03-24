@@ -44,15 +44,17 @@ describe 'compare pages', :compare, type: :system do
         expect(page).to have_content('intro html')
       end
 
+      within '#tables' do
+        expect(page).to have_content('table composite header')
+        expect(page).to have_content('table html')
+        expect(page).to have_content('Benchmark 2')
+        expect(page).to have_content('table composite 2 header')
+        expect(page).to have_content('table html')
+      end
+
       within '#charts' do
         expect(page).to have_css("div#chart_config_name.analysis-chart")
         expect(page).to have_content('chart html')
-      end
-
-      within '#tables' do
-        expect(page).to have_content('table composite header')
-        expect(page).to have_content('another title')
-        expect(page).to have_content('table html')
       end
     end
 
@@ -161,10 +163,11 @@ describe 'compare pages', :compare, type: :system do
         { type: :html, content: 'chart html'},
         { type: :table_composite, content: { header: ['table composite header'], rows: [[{ formatted: 'row 1', raw: 'row 1'}], [{ formatted: school.name, urn: school.urn, drilldown_content_class: gas_fuel_alert_type.class_name }]] }},
         { type: :table_text, content: 'table text'},
-        { type: :analytics_html, content: 'analytics html'},
-        { type: :chart_data, content: 'chart data'},
-        { type: :title, content: 'another title'},
         { type: :html, content: 'table html'},
+        { type: :analytics_html, content: 'analytics html'},
+        { type: :title, content: 'Benchmark 2'},
+        { type: :table_composite, content: { header: ['table composite 2 header'], rows: [[{ formatted: 'row 1', raw: 'row 1'}], [{ formatted: school.name, urn: school.urn, drilldown_content_class: gas_fuel_alert_type.class_name }]] }},
+        { type: :html, content: 'table 2 html'},
       ]
     }
 
