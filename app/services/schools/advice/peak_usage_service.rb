@@ -39,6 +39,10 @@ module Schools
         )
       end
 
+      def asof_date
+        @asof_date ||= AggregateSchoolService.analysis_date(@meter_collection, :electricity)
+      end
+
       private
 
       # Copied from ContentBase
@@ -47,10 +51,6 @@ module Schools
         return 0.0 if !old_value.nan? && old_value == new_value # both 0.0 case
 
         (new_value - old_value) / old_value
-      end
-
-      def asof_date
-        @asof_date ||= AggregateSchoolService.analysis_date(@meter_collection, :electricity)
       end
 
       def previous_years_asof_date
