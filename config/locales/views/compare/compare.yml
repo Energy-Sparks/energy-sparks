@@ -7,6 +7,7 @@ en:
     filter:
       all_countries: All countries
       all_school_types: All school types
+      change_benchmark: Change benchmark
       change_options: Change options
       country: 'Select country:'
       school_groups: 'Select school groups:'

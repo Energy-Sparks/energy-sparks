@@ -1,5 +1,6 @@
 <div class="p-3 mb-3 bg-light rounded border clearfix">
-  <%= link_to t('compare.filter.change_options'), compare_index_url(index_params), class: 'btn btn-sm float-right' %>
+  <%= link_to t('compare.filter.change_benchmark'), benchmarks_compare_index_path(index_params.except(:benchmark)), class: 'btn btn-sm float-right ml-2' if action_name == 'show' %>
+  <%= link_to t('compare.filter.change_options'), compare_index_path(index_params), class: 'btn btn-sm float-right' %>
   <% if @filter[:search] == 'type' %>
     <p><%= t('compare.filter.schools_with_type_html', school_type: tag.span(@filter[:school_type].present? ? t("common.school_types.#{@filter[:school_type]}") : t('compare.filter.all_school_types'), class: 'badge border bg-white')) %></p>
   <% else %>
