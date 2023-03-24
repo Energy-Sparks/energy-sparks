@@ -59,7 +59,7 @@
 <%= component 'chart',
            chart_type: :intraday_line_school_last7days,
            school: @school,
-           analysis_controls: false,
+           analysis_controls: true,
            no_zoom: true,
            axis_controls: false do |c| %>
   <% c.with_title { t('advice_pages.electricity_recent_changes.analysis.charts.compare_last_week_chart_title') } %>
