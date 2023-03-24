@@ -55,11 +55,11 @@ module AdvicePageHelper
 
   #link to a specific benchmark for a school group, falls back to the
   #generic benchmark page if a school doesn't have a group
-  def benchmark_for_school_group_path(benchmark_type, school)
+  def compare_for_school_group_path(benchmark_type, school)
     if school.school_group.present?
-      benchmark_path({ "benchmark_type" => benchmark_type, "benchmark[school_group_ids][]" => school.school_group.id })
+      compare_path(benchmark: benchmark_type, school_group_ids: [school.school_group.id])
     else
-      benchmark_path({ "benchmark_type" => benchmark_type })
+      compare_path(benchmark: benchmark_type)
     end
   end
 

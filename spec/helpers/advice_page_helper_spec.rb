@@ -6,6 +6,17 @@ describe AdvicePageHelper do
   let(:advice_page)               { create(:advice_page, key: 'baseload') }
   let(:advice_page_not_in_routes) { create(:advice_page, key: 'notapage') }
 
+  describe '.compare_for_school_group_path' do
+    it 'returns a path to the compare page for a specific benchmark_type and for a school with no school group' do
+      expect(compare_for_school_group_path(:baseload_per_pupil, school)).to eq('/compare/baseload_per_pupil')
+    end
+
+    it 'returns a path to the compare page for a specific benchmark_type and for a school with a school group' do
+      allow_any_instance_of(School).to receive(:school_group) { OpenStruct.new(id: 999) }
+      expect(compare_for_school_group_path(:baseload_per_pupil, school)).to eq('/compare/baseload_per_pupil?school_group_ids%5B%5D=999')
+    end
+  end
+
   describe '.advice_baseload_high?' do
     it 'returns true if value higher than 0.0' do
       expect(helper.advice_baseload_high?(0.1)).to be_truthy

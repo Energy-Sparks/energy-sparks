@@ -5,7 +5,8 @@
   <div class="h5">
     <%= link_to "Explore your data", pupils_school_analysis_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
     <% if @school.school_group && can?(:compare, @school.school_group) %>
-      <%= link_to 'Compare schools', benchmarks_path(benchmark: {school_group_ids: [@school.school_group.id]}), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+      <%= link_to 'Compare schools', compare_index_path(school_group_ids: [@school.school_group.id]) + '#groups', class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+
     <% end %>
   </div>
 </div>

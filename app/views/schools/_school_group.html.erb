@@ -10,7 +10,7 @@
         <div class='btn-group'>
           <%= link_to t('schools.school_group.view_schools'), school_group_path(school_group), class: 'btn nav-link' %>
           <% if can?(:compare, school_group) %>
-            <%= link_to t('schools.school_group.compare_schools'), benchmarks_path(benchmark: {school_group_ids: [school_group.id]}), class: 'btn nav-link' %>
+            <%= link_to t('schools.school_group.compare_schools'), compare_index_path(school_group_ids: [school_group.id]) + '#groups', class: 'btn nav-link' %>
           <% end %>
         </div>
         <div class="padded-row">

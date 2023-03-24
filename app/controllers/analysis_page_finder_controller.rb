@@ -22,7 +22,7 @@ class AnalysisPageFinderController < ApplicationController
       if analysis_page
         redirect_to school_analysis_path(school.slug, analysis_page.id)
       else
-        redirect_back fallback_location: benchmarks_path, notice: "We couldn't take you to the correct location, sorry."
+        redirect_back fallback_location: compare_index_path, notice: "We couldn't take you to the correct location, sorry."
       end
     end
   end
