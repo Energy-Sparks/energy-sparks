@@ -2,10 +2,12 @@ module Schools
   module Advice
     class HotWaterController < AdviceBaseController
       def insights
+        @analysis_dates = analysis_dates
         @gas_hot_water = gas_hot_water_model
       end
 
       def analysis
+        @analysis_dates = analysis_dates
         @gas_hot_water = gas_hot_water_model
       end
 
