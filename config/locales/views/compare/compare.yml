@@ -5,7 +5,7 @@ en:
       description: Click on a benchmark to compare the selected schools
       title: Choose school comparison benchmark
     filter:
-      all_countries: All
+      all_countries: All countries
       all_school_types: All school types
       change_options: Change options
       country: 'Select country:'
