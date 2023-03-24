@@ -210,6 +210,10 @@ class Meter < ApplicationRecord
     %w{school.school_group.name school.name mpan_mprn meter_type.humanize active created_at updated_at}
   end
 
+  def smart_meter_tariff_attributes
+    @smart_meter_tariff_attributes ||= Amr::AnalyticsTariffFactory.new(self).build
+  end
+
   private
 
   def pseudo_mpan_mprn_not_changed

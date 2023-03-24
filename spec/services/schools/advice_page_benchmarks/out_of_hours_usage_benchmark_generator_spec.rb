@@ -42,7 +42,7 @@ RSpec.describe Schools::AdvicePageBenchmarks::OutOfHoursUsageBenchmarkGenerator,
 
     context 'with a comparison' do
       it 'returns the comparison category' do
-        expect(service.benchmark_school).to eq :other_school
+        expect(service.benchmark_school).to eq :exemplar_school
       end
     end
 

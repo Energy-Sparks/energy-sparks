@@ -263,4 +263,25 @@ describe ApplicationHelper do
       expect(helper.i18n_key_from('Some Thing')).to eq('some_thing')
     end
   end
+
+  describe '#school_name_group' do
+    let(:school_group)          { create(:school_group, name: 'Some School Group') }
+    let(:school_with_group)     { create(:school, name: "School One", school_group: school_group) }
+    let(:school_without_group)  { create(:school, name: "School Two") }
+    it 'handles school with group' do
+      expect(helper.school_name_group(school_with_group)).to eq('School One (Some School Group)')
+    end
+    it 'handles school without group' do
+      expect(helper.school_name_group(school_without_group)).to eq('School Two')
+    end
+  end
+
+  describe '#status_for_alert_colour' do
+    it 'returns neutral if no colour supplied' do
+      expect(helper.status_for_alert_colour(nil)).to eq(:neutral)
+    end
+    it 'returns colour if supplied' do
+      expect(helper.status_for_alert_colour(:green)).to eq(:green)
+    end
+  end
 end

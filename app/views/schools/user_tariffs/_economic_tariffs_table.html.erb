@@ -1,0 +1,27 @@
+<table class="table advice-table">
+  <thead>
+    <tr>
+      <th><%= t('schools.user_tariffs.default_tariffs.economic.tariffs_table.columns.scope') %></th>
+      <th><%= t('schools.user_tariffs.name') %></th>
+      <th><%= t('schools.user_tariffs.meters.meter_list') %></th>
+      <th><%= t('schools.user_tariffs.tariff_partial.start_date') %></th>
+      <th><%= t('schools.user_tariffs.tariff_partial.end_date') %></th>
+      <th><%= t('schools.user_tariffs.tariff_partial.type') %></th>
+      <th><%= t('schools.user_tariffs.tariff_partial.consumption_charges') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% economic_tariffs_for_school(school).each do |scope, tariffs| %>
+      <% tariffs.each do |aggregate_meter_type, tariff_attributes| %>
+        <% tariff = tariff_attributes[:economic_tariff] || tariff_attributes[:economic_tariff_change_over_time] %>
+        <% if tariff.is_a? Array %>
+          <% tariff.each do |t| %>
+            <%= render 'economic_tariff_table_row', tariff: t, aggregate_meter_type: aggregate_meter_type, scope: scope, school: school %>
+          <% end %>
+        <% else %>
+          <%= render 'economic_tariff_table_row', tariff: tariff, aggregate_meter_type: aggregate_meter_type, scope: scope, school: school %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

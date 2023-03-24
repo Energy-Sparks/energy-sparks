@@ -40,7 +40,8 @@ class AdvicePage < ApplicationRecord
   end
 
   def t_fuel_type
-    I18n.t("advice_pages.fuel_type.#{fuel_type}")
+    fuel_type_key = fuel_type == 'solar_pv' ? 'electricity' : fuel_type
+    I18n.t("advice_pages.fuel_type.#{fuel_type_key}")
   end
 
   def ordered_activity_types

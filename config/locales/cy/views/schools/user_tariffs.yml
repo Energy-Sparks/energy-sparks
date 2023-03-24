@@ -79,8 +79,6 @@ cy:
         day_night_tariff: Tariff dydd/nos
         end_date: Dyddiad gorffen
         full_details: Manylion llawn
-        no_consumption_charges_have_been_set_yet: Nid oes unrhyw gostau defnydd wedi'u gosod eto
-        per_kwh: fesul kWh
         price_from_to: "%{price_start_time} i %{price_end_time} : "
         simple_tariff: Tariff syml
         start_date: Dyddiad cychwyn

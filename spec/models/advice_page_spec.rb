@@ -14,7 +14,11 @@ describe AdvicePage do
       advice_page = AdvicePage.create(key: 'same')
       AdvicePage.fuel_types.keys.each do |fuel_type|
         advice_page.update(fuel_type: fuel_type)
-        expect(advice_page.t_fuel_type).to eq(I18n.t("advice_pages.fuel_type.#{fuel_type}"))
+        if fuel_type == 'solar_pv'
+          expect(advice_page.t_fuel_type).to eq(I18n.t("advice_pages.fuel_type.electricity"))
+        else
+          expect(advice_page.t_fuel_type).to eq(I18n.t("advice_pages.fuel_type.#{fuel_type}"))
+        end
       end
     end
   end
