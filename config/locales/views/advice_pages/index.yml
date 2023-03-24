@@ -16,8 +16,8 @@ en:
         title: Priority actions
       show:
         how_do_you_compare: How does your school compare?
-        not_applicable: Not applicable
-        not_available: Not available
+        not_applicable: No comparison
+        not_available: Not enough data
         notice_html: |-
           <p>Looking for suggestions of how to start reducing your energy usage?</p>
           <p>We've recommended some priority actions to help you make progress. Or explore our detailed analysis below.</p>
