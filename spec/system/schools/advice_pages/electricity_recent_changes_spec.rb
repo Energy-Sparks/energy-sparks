@@ -57,6 +57,7 @@ RSpec.describe "electricity recent changes advice page", type: :system do
         expect(page).to have_content('Comparison of electricity use over 2 recent days')
         expect(page).to have_css('#chart_wrapper_calendar_picker_electricity_week_example_comparison_chart')
         expect(page).to have_css('#chart_wrapper_calendar_picker_electricity_day_example_comparison_chart')
+        expect(page).to have_css('#chart_wrapper_intraday_line_school_last7days')
       end
     end
 

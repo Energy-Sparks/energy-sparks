@@ -4,6 +4,10 @@ en:
     gas_recent_changes:
       analysis:
         charts:
+          compare_last_week_chart_explanation: The chart automatically uses the seven most recently available days. Use the explore buttons above the chart to compare alternative days. You can click on the legend to add or remove lines from the graph to make it clearer.
+          compare_last_week_chart_footer: You can use this type of chart to understand how the school's gas use varies throughout the week.
+          compare_last_week_chart_subtitle: A comparison between your school's gas use throughout the day over the last 7 days.
+          compare_last_week_chart_title: Your school's half hourly gas consumption over the last 7 days
           compare_recent_days_chart_explanation: The chart automatically uses the most recently available days. Use the options below the chart to compare alternative days.
           compare_recent_days_chart_subtitle: This chart shows the gas consumption throughout the day on two recent days.
           compare_recent_days_chart_title: Your school's half hourly gas use for two recent days
@@ -13,6 +17,8 @@ en:
           impact_of_temperature_chart_explanation_html: Degree days are the inverse of temperature. The higher the degree days the lower the temperature. %{more_detail_url}. If the heating boiler is working well at your school, degree days should track the gas usage quite closely.
           impact_of_temperature_chart_subtitle_html: This chart shows your schools’ gas use between <span class="start-date">%{start_date}</span> and <span class="end-date">%{end_date}</span>, including a comparison with degree days.
           impact_of_temperature_chart_title: Your school's gas use over the last two weeks
+        compare_last_week:
+          title: Comparison of gas use over the last 7 days
         compare_recent_days:
           title: Comparison of gas use over 2 recent days
         compare_recent_weeks:
