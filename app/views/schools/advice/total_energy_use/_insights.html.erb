@@ -38,6 +38,6 @@
 
 <% if @school.school_group.present? %>
   <p>
-    <%= advice_t('total_energy_use.insights.comparison.more_detail_html', link: benchmark_for_school_group_path(:annual_energy_costs_per_pupil, @school)) %>
+    <%= advice_t('total_energy_use.insights.comparison.more_detail_html', link: compare_for_school_group_path(:annual_energy_costs_per_pupil, @school)) %>
   </p>
 <% end %>
