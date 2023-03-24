@@ -233,6 +233,8 @@ module Schools
       def build_intraweek_variation(meter, variation, saving)
         OpenStruct.new(
           meter: meter,
+          max_day: variation.max_day,
+          min_day: variation.min_day,
           max_day_kw: variation.max_day_kw,
           min_day_kw: variation.min_day_kw,
           percent_intraday_variation: variation.percent_intraday_variation,

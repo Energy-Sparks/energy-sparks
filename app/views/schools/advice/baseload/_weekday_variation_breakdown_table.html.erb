@@ -16,8 +16,8 @@
           <td class="text-left"><%= variation && variation.meter.present? ? variation.meter.name_or_mpan_mprn : mpan_mprn %></td>
           <% if variation.enough_data? %>
             <td class="text-left"><%= format_rating(variation.variation_rating) %></td>
-            <td class="text-right"><%= format_unit(variation.max_day_kw, :kw) %></td>
-            <td class="text-right"><%= format_unit(variation.min_day_kw, :kw) %></td>
+            <td class="text-right"><%= format_unit(variation.max_day_kw, :kw) %> (<%= t_weekday(intraweek_variation.max_day) %>)</td>
+            <td class="text-right"><%= format_unit(variation.min_day_kw, :kw) %> (<%= t_weekday(intraweek_variation.min_day) %>)</td>
             <td class="text-right"><%= format_unit(variation.percent_intraday_variation, :percent) %></td>
             <td class="text-right"><%= format_unit(variation.estimated_saving_£, :£) %></td>
             <td class="text-right"><%= format_unit(variation.estimated_saving_co2, :kg) %></td>
