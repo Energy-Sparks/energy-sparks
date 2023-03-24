@@ -10,6 +10,7 @@ module Schools
       end
 
       def analysis
+        @analysis_dates = analysis_dates
         if @school.has_solar_pv?
           @analysis_dates = analysis_dates
           @existing_benefits = build_existing_benefits

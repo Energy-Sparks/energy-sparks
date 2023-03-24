@@ -2,6 +2,7 @@ module Schools
   module Advice
     class ElectricityRecentChangesController < AdviceBaseController
       def insights
+        @analysis_dates = analysis_dates
         @recent_usage = build_recent_usage
       end
 
