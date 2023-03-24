@@ -62,7 +62,7 @@
 <%= component 'chart',
            chart_type: :last_7_days_intraday_gas,
            school: @school,
-           analysis_controls: false,
+           analysis_controls: true,
            no_zoom: true,
            axis_controls: false do |c| %>
   <% c.with_title { t('advice_pages.gas_recent_changes.analysis.charts.compare_last_week_chart_title') } %>
