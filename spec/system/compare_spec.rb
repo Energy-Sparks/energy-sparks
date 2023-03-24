@@ -39,15 +39,27 @@ describe 'compare pages', :compare, type: :system do
     it { expect(page).to have_selector('h1', text: 'Benchmark name') }
 
     it "has included fragments" do
-      within '#benchmark-content' do
-        expect(page).to have_content('HTML')
+      within '#intro' do
+        expect(page).to_not have_content('Benchmark name')
+        expect(page).to have_content('intro html')
+      end
+
+      within '#tables' do
         expect(page).to have_content('table composite header')
+        expect(page).to have_content('table html')
+        expect(page).to have_content('Benchmark 2')
+        expect(page).to have_content('table composite 2 header')
+        expect(page).to have_content('table html')
+      end
+
+      within '#charts' do
         expect(page).to have_css("div#chart_config_name.analysis-chart")
+        expect(page).to have_content('chart html')
       end
     end
 
     it "excludes fragments" do
-      within '#benchmark-content' do
+      within '#tables' do
         expect(page).to_not have_content('table text')
         expect(page).to_not have_content('analytics html')
         expect(page).to_not have_content('chart data')
@@ -146,12 +158,16 @@ describe 'compare pages', :compare, type: :system do
     let(:example_content) {
       [
         { type: :title, content: 'Benchmark name'},
-        { type: :html, content: 'HTML'},
+        { type: :html, content: 'intro html'},
         { type: :chart, content: { title: 'chart title', config_name: "config_name", x_axis: ["a school"] } },
+        { type: :html, content: 'chart html'},
         { type: :table_composite, content: { header: ['table composite header'], rows: [[{ formatted: 'row 1', raw: 'row 1'}], [{ formatted: school.name, urn: school.urn, drilldown_content_class: gas_fuel_alert_type.class_name }]] }},
         { type: :table_text, content: 'table text'},
+        { type: :html, content: 'table html'},
         { type: :analytics_html, content: 'analytics html'},
-        { type: :chart_data, content: 'chart data'}
+        { type: :title, content: 'Benchmark 2'},
+        { type: :table_composite, content: { header: ['table composite 2 header'], rows: [[{ formatted: 'row 1', raw: 'row 1'}], [{ formatted: school.name, urn: school.urn, drilldown_content_class: gas_fuel_alert_type.class_name }]] }},
+        { type: :html, content: 'table 2 html'},
       ]
     }
 
