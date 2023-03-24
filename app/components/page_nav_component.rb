@@ -58,12 +58,13 @@ class PageNavComponent < ViewComponent::Base
   end
 
   class ItemComponent < ViewComponent::Base
-    attr_reader :name, :href, :match_controller
+    attr_reader :name, :href, :match_controller, :classes
 
-    def initialize(name:, href:, match_controller: false)
+    def initialize(name:, href:, classes: nil, match_controller: false)
       @name = name
       @href = href
       @match_controller = match_controller
+      @classes = classes
     end
 
     def current_controller?(href)
@@ -76,6 +77,7 @@ class PageNavComponent < ViewComponent::Base
 
     def call
       args = { class: "nav-link border-bottom item small" }
+      args[:class] += " #{classes}" if classes
       args[:class] += ' current' if current_item?(href)
       link_to(name, href, args)
     end
