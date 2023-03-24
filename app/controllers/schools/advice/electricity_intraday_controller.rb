@@ -2,6 +2,7 @@ module Schools
   module Advice
     class ElectricityIntradayController < AdviceBaseController
       def insights
+        @analysis_dates = analysis_dates
         if peak_usage_service.enough_data?
           @average_peak_kw = average_peak_kw
           @peak_kw_usage_percentage_change = percentage_change_in_peak_kw
