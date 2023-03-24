@@ -20,17 +20,6 @@
 
 <div class="s-3"></div>
 
-<% if @target_prompt %>
-  <div class="s-3"></div>
-
-  <h5 class="mb-3"><%= t('onboarding_mailer.activation_email.set_your_first_targets') %></h5>
-
-  <%= render 'shared/mailer/first_target_prompt', tracking_params: targets_utm_parameters(source: "activation") %>
-
-  <div class="s-3"></div>
-
-<% end %>
-
 <h5 class="mb-3"><%= t('onboarding_mailer.activation_email.need_some_help') %></h5>
 
 <p>
