@@ -1,7 +1,6 @@
 <%= render 'schools/advice/section_title', section_id: 'cost-breakdown-by-meter', section_title: advice_t('electricity_costs.analysis.cost_breakdown_by_meter.title', period: format_unit(annual_costs.days/365.0, :years)) %>
-
 <p>
-  <%= advice_t('electricity_costs.analysis.cost_breakdown_by_meter.intro', period: format_unit(annual_costs.days/365.0, :years)) %>
+  <%= advice_t('electricity_costs.analysis.cost_breakdown_by_meter.intro', period: format_unit(annual_costs.days/365.0, :years), start_date: short_dates(@costs_service_analysis_date_range.first), end_date: short_dates(@costs_service_analysis_date_range.last)) %>
 </p>
 
 <table class="table table-sm advice-table table-with-totals">

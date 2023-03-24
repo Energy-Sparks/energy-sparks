@@ -62,6 +62,10 @@ module Schools
         tariffs.sort { |a, b| a[0].begin <=> b[0].begin}
       end
 
+      def analysis_date_range
+        [analysis_start_date, analysis_end_date]
+      end
+
       private
 
       def meter_for_mpan(mpan_mprn)
