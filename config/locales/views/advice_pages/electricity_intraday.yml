@@ -65,5 +65,6 @@ en:
           table:
             average_peak_kw: Average peak kW
             percent_change: "% change"
+          the_table_below: The table below provides the average peak kW for electricity consumed between %{start_date} and %{end_date}.
           title: Your current peak electricity use
       page_title: Electricity intraday usage analysis
