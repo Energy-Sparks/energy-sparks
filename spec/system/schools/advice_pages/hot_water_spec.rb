@@ -7,6 +7,7 @@ RSpec.describe "hot water advice page", type: :system do
 
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
+    let(:saving_£_percent) { 0.12 }
 
     before do
       allow_any_instance_of(Schools::Advice::HotWaterController).to receive_messages(
@@ -25,7 +26,7 @@ RSpec.describe "hot water advice page", type: :system do
                 saving_kwh: 19_798.904124999986,
                 saving_kwh_percent: 0.2832738073386079,
                 saving_£: 593.9671237499992,
-                saving_£_percent: 0.28327380733860796,
+                saving_£_percent: saving_£_percent,
                 saving_co2: 4157.769866249997,
                 saving_co2_percent: 0.2832738073386079,
                 payback_years: 0.0,
@@ -131,6 +132,35 @@ RSpec.describe "hot water advice page", type: :system do
         expect(page).to have_content('£2,100') # 2096    annual efficiency £ total
       end
 
+      context 'for a investment_choices.gas_better_control.saving_£_percent under 2 percent' do
+        let(:saving_£_percent) { 0.001 }
+        it 'shows below table content' do
+          expect(page).to have_content('Your holiday and weekend hot water use is already very low, well done.')
+        end
+      end
+
+      context 'for a investment_choices.gas_better_control.saving_£_percent above 2 percent but under 10 percent' do
+        let(:saving_£_percent) { 0.09 }
+        it 'shows below table content' do
+          expect(page).to have_content('Your holiday and weekend hot water use is already very low. You could reduce your annual gas consumption for hot water by 9&percnt; by switching it off completely outside of school hours.')
+        end
+      end
+
+      context 'for a investment_choices.gas_better_control.saving_£_percent including and above 10 percent' do
+        let(:saving_£_percent) { 0.10 }
+        it 'shows below table content' do
+          expect(page).to have_content('The table below shows that 10&percnt; of the energy used to heat your hot water is used outside of school opening times. Adjusting your boiler settings to ensure that you are only heating water when it is needed could save you £590 per year')
+          expect(page).to have_content('Or you could investigate replacing your current hot water system with point of use electric heaters.')
+        end
+      end
+
+      context 'for a investment_choices.gas_better_control.saving_£_percent including and above 10 percent' do
+        let(:saving_£_percent) { 0.99 }
+        it 'shows below table content' do
+          expect(page).to have_content('The table below shows that 99&percnt; of the energy used to heat your hot water is used outside of school opening times. Adjusting your boiler settings to ensure that you are only heating water when it is needed could save you £590 per year')
+          expect(page).to have_content('Or you could investigate replacing your current hot water system with point of use electric heaters.')
+        end
+      end
     end
 
     context "clicking the 'Analysis' tab" do
