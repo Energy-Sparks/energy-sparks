@@ -1,21 +1,22 @@
 <div class="tab-pane fade show <%= ' active' unless current_school_group %>" id="country" role="tabpanel" aria-labelledby="country-tab">
   <h4 class='my-2'><%= t('compare.index.country.title') %></h4>
-  <div id="by_country" class="bg-light p-3 rounded border">
+  <div class="bg-light p-3 rounded border">
     <%= form_tag benchmarks_compare_index_path, method: :get do %>
       <%= hidden_field_tag(:search, 'country') %>
-      <% School.countries.keys.each do |country| %>
-        <div class="form-check pl-0">
-          <%= radio_button_tag('country', country, @filter[:country] == country, id: country) %>
-          <%= label_tag country, t('school_statistics.' + country) %>
+        <label><%= t('compare.filter.country') %></label>
+        <% School.countries.keys.each do |country| %>
+        <div class="form-check">
+          <%= radio_button_tag('country', country, @filter[:country] == country, id: country, class: 'form-check-input') %>
+          <%= label_tag country, t('school_statistics.' + country), class: 'form-check-label' %>
         </div>
       <% end %>
-      <div class="form-check pl-0">
-        <%= radio_button_tag 'country', '', @filter[:country].blank? %>
-        <%= label_tag 'country_', t('compare.filter.all_countries') %>
+      <div class="form-check pb-3">
+        <%= radio_button_tag 'country', '', @filter[:country].blank?, class: 'form-check-input' %>
+        <%= label_tag 'country_', t('compare.filter.all_countries'), class: 'form-check-label' %>
       </div>
       <%= render 'school_type_filter', type: 'categories' %>
       <div class="pt-2">
-        <%= submit_tag 'Compare schools', class: 'btn btn-sm' %>
+        <%= submit_tag 'Compare schools', class: 'btn' %>
       </div>
     <% end %>
   </div>

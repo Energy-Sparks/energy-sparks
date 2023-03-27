@@ -65,6 +65,8 @@ describe 'compare pages', :compare, type: :system do
         expect(page).to_not have_content('chart data')
       end
     end
+
+    it { expect(page).to have_link('Change benchmark') }
   end
 
   shared_examples "a form filter" do |id:, school_types_excluding: nil, school_type: nil, country: nil, school_groups: nil|

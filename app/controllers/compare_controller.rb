@@ -1,7 +1,5 @@
 class CompareController < ApplicationController
   include UserTypeSpecific
-
-  before_action :header_fix_enabled
   skip_before_action :authenticate_user!
 
   before_action :filter
