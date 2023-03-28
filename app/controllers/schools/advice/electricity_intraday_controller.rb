@@ -1,6 +1,8 @@
 module Schools
   module Advice
     class ElectricityIntradayController < AdviceBaseController
+      before_action :load_dashboard_alerts, only: [:insights]
+
       def insights
         @analysis_dates = analysis_dates
         if peak_usage_service.enough_data?

@@ -2,6 +2,9 @@
   <%= t('advice_pages.hot_water.insights.summary_notice_html') %>
 <% end %>
 <%= render 'schools/advice/section_title', section_id: 'your_hot_water_use', section_title: 'Your hot water use' %>
+
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertHotWaterInsulationAdvice), show_links: false, show_icons: false %>
+
 <p><%= t('advice_pages.hot_water.insights.circulatory_gas_based_hot_water') %></p>
 <p><%= t('advice_pages.hot_water.insights.we_estimate_your_hot_water_efficiency_to_be_html', efficiency_percent: format_unit(@gas_hot_water.investment_choices.existing_gas.efficiency, :percent)) %></p>
 

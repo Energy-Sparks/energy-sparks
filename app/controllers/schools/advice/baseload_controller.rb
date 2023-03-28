@@ -1,6 +1,8 @@
 module Schools
   module Advice
     class BaseloadController < AdviceBaseController
+      before_action :load_dashboard_alerts, only: [:insights, :analysis]
+
       def insights
         @analysis_dates = analysis_dates
         @current_baseload = current_baseload

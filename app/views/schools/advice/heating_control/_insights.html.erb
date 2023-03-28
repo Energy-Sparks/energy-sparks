@@ -5,6 +5,8 @@
 
 <%= render 'schools/advice/section_title', section_id: 'comparison', section_title: t('advice_pages.heating_control.insights.controls.title') %>
 
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertHeatingSensitivityAdvice), show_links: false, show_icons: false %>
+
 <p>
   <%= t('advice_pages.heating_control.insights.controls.average_start_time',
   time: @last_week_start_times.average_start_time) %>

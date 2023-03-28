@@ -1,5 +1,7 @@
 <%= render 'schools/advice/section_title', section_id: 'current', section_title: t('advice_pages.gas_long_term.insights.current_usage.title') %>
 
+<%= component 'alerts', school: school, dashboard_alerts: dashboard_alerts, alert_types: alert_types_for_class(AlertGasAnnualVersusBenchmark), show_links: false, show_icons: false %>
+
 <table class="table table-sm advice-table">
   <thead class="thead-dark">
     <th><%= t('advice_pages.tables.columns.period') %></th>

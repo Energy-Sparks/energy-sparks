@@ -17,12 +17,12 @@
   <%= render 'heating_timings', last_week_start_times: @last_week_start_times, estimated_savings: @estimated_savings, percentage_of_annual_gas: @percentage_of_annual_gas %>
 <% end %>
 
-<%= render 'school_day_heating', school: @school, analysis_dates: @analysis_dates %>
+<%= render 'school_day_heating', school: @school, analysis_dates: @analysis_dates, dashboard_alerts: @dashboard_alerts %>
 
 <% if @multiple_meters %>
   <%= render 'meter_breakdown', school: @school, analysis_dates: @analysis_dates, meters: @meters, date_ranges_by_meter: @date_ranges_by_meter %>
 <% end %>
 
 <% if @enough_data_for_seasonal_analysis %>
-  <%= render 'seasonal_control', school: @school, analysis_dates: @analysis_dates, seasonal_analysis: @seasonal_analysis, warm_weather_on_days_rating: @warm_weather_on_days_rating %>
+  <%= render 'seasonal_control', school: @school, analysis_dates: @analysis_dates, seasonal_analysis: @seasonal_analysis, warm_weather_on_days_rating: @warm_weather_on_days_rating, dashboard_alerts: @dashboard_alerts %>
 <% end %>

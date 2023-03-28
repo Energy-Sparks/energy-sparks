@@ -1,6 +1,8 @@
 module Schools
   module Advice
     class GasOutOfHoursController < BaseOutOfHoursController
+      before_action :load_dashboard_alerts, only: [:insights, :analysis]
+
       private
 
       def fuel_type
