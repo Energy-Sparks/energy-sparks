@@ -41,13 +41,6 @@ describe AdvicePageHelper do
     end
   end
 
-  describe '.two_weeks_data?' do
-    it 'returns true if there are at least 14 days between two dates' do
-      expect(helper.two_weeks_data?(start_date: Date.new(2021,01,01), end_date: Date.new(2021,01,15))).to eq(true)
-      expect(helper.two_weeks_data?(start_date: Date.new(2021,01,02), end_date: Date.new(2021,01,15))).to eq(false)
-    end
-  end
-
   describe '.advice_page_path' do
 
     it 'returns path to insights by default' do
