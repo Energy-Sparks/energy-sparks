@@ -32,8 +32,8 @@ RSpec.describe ConsentRequestMailer do
     let(:enable_locale_emails) { 'true' }
     describe '#request_consent' do
       it 'sends an email with cy strings' do
-        expect(@email.subject).to eql ("Mae angen caniatâd arnom i gael mynediad at ddata ynni eich ysgol")
-        expect(ActionController::Base.helpers.sanitize(@email.body.to_s)).to include("Rhowch ganiatâd i Energy Sparks gael mynediad at ddata ar gyfer Test School")
+        expect(@email.subject).to eql I18n.t('consent_request_mailer.request_consent.subject', locale: :cy)
+        expect(ActionController::Base.helpers.sanitize(@email.body.to_s)).to include(I18n.t('consent_request_mailer.request_consent.description', school_name: 'Test School', locale: :cy))
       end
     end
   end

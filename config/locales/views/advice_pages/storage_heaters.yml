@@ -15,6 +15,7 @@ en:
         electricity_use_for_the_last_12_months:
           advice_html: "<p>This section gives some insights into how the storage heaters in your school have used electricity over the last year.</p>"
           storage_heater_by_day_of_week_tolerant:
+            footer_html: There should be little or no electricity use by storage heaters on Saturdays and Sundays. The cost of installing a 7-day timer can often be paid back with savings within one heating season (see our <a href='%{case_study_path}'>case study</a>).
             subtitle_html: This chart shows the total amount of electricity used between <span class='start-date'>%{start_month_year}</span> and <span class='end-date'>%{end_month_year}</span>, broken down into days of the week.
             title: Storage heater electricity consumption by day of the week
           storage_heater_group_by_week:
@@ -22,6 +23,7 @@ en:
             subtitle_html: The chart below shows your storage heater electricity consumption broken down on a weekly basis between <span class='start-date'>%{start_month_year}</span> and <span class='end-date'>%{end_month_year}</span>
             title: Storage heater electricity consumption for the last year
           storage_heater_intraday_current_year:
+            footer: The chart above shows when your storage heaters are being ‘charged’ overnight when electricity is cheaper.
             subtitle_html: The chart below shows the average electricity consumption between <span class='start-date'>%{start_month_year}</span> and <span class='end-date'>%{end_month_year}</span>, broken down by time of day.
             title: Storage heater electricity consumption by time of day
           the_table_below: The table below shows how much electricity has been used for storage heaters over the last 12 months when the school is open and closed on a school day as well as during weekends and holidays.

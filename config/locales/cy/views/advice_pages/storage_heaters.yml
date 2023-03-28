@@ -1,0 +1,86 @@
+cy:
+  advice_pages:
+    storage_heaters:
+      analysis:
+        analysis_table:
+          columns:
+            gbp_at_current_tariff: "£ (ar y tariff presennol)"
+            kg_co2: kg/co2
+            kwh: kWh
+            percent: Canran
+            time_of_use: Amser defnydd
+          rows:
+            total: Cyfanswm
+        electricity_use_for_the_last_12_months:
+          advice_html: "<p>Mae'r adran hon yn rhoi cipolwg ar sut mae'r stôr-wresogyddion yn eich ysgol wedi defnyddio trydan dros y flwyddyn ddiwethaf.</p>"
+          storage_heater_by_day_of_week_tolerant:
+            subtitle_html: Mae'r siart hwn yn dangos cyfanswm y trydan a ddefnyddiwyd rhwng <span class='start-date'>%{start_month_year}</span> a <span class='end-date'>%{end_month_year}</span>, wedi'i ddadansoddi i ddyddiau'r wythnos.
+            title: Defnydd o drydan stôr-wresogydd erbyn diwrnod o'r wythnos
+          storage_heater_group_by_week:
+            footer_html: "<p>Yn gyffredinol, dylai'r defnydd gyrraedd ei uchafbwynt yn y gaeaf pan mae'n oeraf a'r ysgol sydd angen y gwres mwyaf. Mae'r ail echel, llinell 'Diwrnod Gradd' ar y siart uchod yn arwydd o ba mor oer oedd hi, felly po uchaf yw'r llinell, oeraf yw'r tymheredd y tu allan.1"
+            subtitle_html: Mae'r siart isod yn dangos eich defnydd o drydan stôr-wresogydd wedi'i ddadansoddi bob wythnos rhwng <span class='start-date'>%{start_month_year}</span> a <span class='end-date'>%{end_month_year}</span>
+            title: Defnydd o drydan stôr-wresogydd ar gyfer y llynedd
+          storage_heater_intraday_current_year:
+            subtitle_html: Mae'r siart isod yn dangos y defnydd trydan cyfartalog rhwng <span class='start-date'>%{start_month_year}</span> a <span class='end-date'>%{end_month_year}</span>, wedi'i ddadansoddi i amser o'r dydd.
+            title: Defnydd o drydan stôr-wresogydd ar gyfer yn ôl amser o't dydd
+          the_table_below: Mae’r tabl isod yn dangos faint o drydan sydd wedi’i ddefnyddio ar gyfer storfeydd gwresogyddion dros y 12 mis diwethaf pan fo’r ysgol ar agor a chau ar ddiwrnod ysgol yn ogystal ag ar benwythnosau a gwyliau.
+          title: Defnydd trydan am y 12 mis diwethaf
+        long_term_trends:
+          storage_heater_group_by_week_long_term:
+            subtitle: Mae’r siart hwn yn rhoi dadansoddiad o’r defnydd o nwy rhwng diwrnodau ysgol agored a chaeedig, gwyliau a phenwythnosau ar gyfer yr holl flynyddoedd llawn sydd gennym ni ddata ar gyfer eich ysgol.
+            title: Defnydd trydan stôr-wresogydd hirdymor
+          title: Tueddiadau hirdymor
+        recent_usage:
+          intraday_line_school_last7days_storage_heaters:
+            subtitle_html: Trydan a ddefnyddir gan stôr-wresogyddion rhwng <span class='start-date'>%{start_month_year}</span> a <span class='end-date'>%{end_month_year}</span>.
+            title: Defnydd o drydan stôr-wresogydd ar gyfer y 7 diwrnod diwethaf
+          this_chart_html: "<p>Mae'r siart hwn yn ddefnyddiol dim ond yn ystod y gaeaf pan fydd y stôr-wresogyddion yn cael eu troi ymlaen.</p>"
+          title: Defnydd diweddar
+        seasonal_control:
+          advice_html: |-
+            <p>Dim ond yn ystod y gaeaf y dylai eich ysgol fod yn defnyddio trydan ar gyfer stôr-wresogyddion. Mae'r rhan fwyaf o ysgolion yn troi'r gwres ymlaen ar ôl gwyliau hanner tymor yr Hydref ym mis Tachwedd, ac i ffwrdd ar ôl y Pasg ym mis Ebrill, neu efallai ychydig yn ddiweddarach os yw'n wyliau Pasg cynnar.</p>
+            <p>Trwy gymharu eich defnydd o stôr-wresogyddion gyda'r tywydd lleol gallwn amlygu pryd mae eich stôr-wresogyddion wedi bod ymlaen yn ystod tywydd cynnes ac oer. Dangosir hyn yn y siart a ganlyn.</p>
+          heating_on_off_by_week_storage_heater:
+            subtitle_html: Trydan a ddefnyddir ar gyfer dŵr poeth a gwresogi yn ystod tywydd cynnes ac oer rhwng<span class='start-date'>%{start_month_year}</span> a <span class='end-date'>%{end_month_year}</span>.
+            title: Defnydd stôr-wresogyddion mewn tywydd cynnes
+          notice_html: "<p>Y llynedd roedd gwres eich ysgol ymlaen am %{heating_on_in_warm_weather_days} diwrnod yn ystod tywydd cynnes. Dyma %{assessment}.</p>"
+          title: Rheolaeth dymhorol
+          you_should_ensure: Dylech sicrhau bod stôr-wresogyddion yn cael eu diffodd yn ystod penwythnosau a gwyliau, a byrhau'r cyfnod pan gânt eu defnyddio yn ystod y flwyddyn.
+        thermostatic_control:
+          storage_heater_thermostatic:
+            content_html: |-
+              <p>Mae'r siart hwn yn plotio'r tymheredd y tu allan (echelin x) yn erbyn defnydd trydan y gwresogydd storio ar gyfer holl ddyddiau'r flwyddyn ddiwethaf pan gafodd y gwresogyddion storio eu troi ymlaen. Mae'r duedd yn dangos y defnydd trydan delfrydol os yw'r rheolydd thermostatig yn gweithio'n berffaith h.y. mae'r holl bwyntiau'n eistedd ar linell syth.</p>
+              <p>Os oes gan y gwresogi reolaeth thermostatig dda (gwerth R<sup>2</sup> uchel) yna dylai'r pwyntiau ar frig y siart pan fydd y gwres ymlaen fod yn agos at y llinell duedd.</p>
+              <p>Mae hyn oherwydd bod faint o wres sydd ei angen ar un diwrnod yn gymesur yn llinol â'r gwahaniaeth rhwng y tymheredd y tu mewn a'r tu allan, a byddai unrhyw amrywiad o'r llinell duedd yn awgrymu nad yw rheolaeth thermostatig yn gweithio'n rhy dda.</p>
+              <p>Yn anffodus, mae hyn yn anodd ar gyfer gwresogyddion storio oherwydd eu bod yn defnyddio'r trydan dros nos heb unrhyw gyfeiriad at y galw dilynol am wres yn ystod y dydd.</p>
+            subtitle_html: Mae’r siart hwn yn dangos dadansoddiad o ba mor agos y mae trydan a ddefnyddir gan stôr-wresogyddion yn eich ysgol yn cyd-fynd â’r tymheredd allanol rhwng <span class='start-date'>%{start_month_year}</span> a <span class='end-date'>%{end_month_year}</span>
+            title: Dadansoddiad thermostatig o ddefnydd stôr-wresogydd eich ysgol
+          title: Rheolaeth thermostatig
+          your_thermostatic_control_is_html: Eich rheolydd thermostatig yw %{r2}, sef %{r2_rating_adjective}. Ar gyfer stôr-wresogyddion, mae gwerth R<sup>2</sup> o dros 0.5 yn dda. Gwerth perffaith yw 1.0. Po isaf yw'r gwerth o dan 1.0, y gwaethaf yw rheolaeth thermostatig yr ysgol.
+        this_page_html: "<p>Mae’r dudalen hon yn rhoi dadansoddiad manylach o ddefnydd ynni stôr-wresogyddion eich ysgol i helpu i wella sut rydych yn eu rheoli.1"
+        title: Dadansoddiad stôr-wresogyddion
+      insights:
+        advice_html: |-
+          <p>Mae stôr-wresogyddion yn gweithio'n wahanol i fathau eraill o wresogi gan eu bod yn defnyddio trydan dros nos, yn storio'r ynni, ac yna'n rhyddhau'r gwres sydd wedi'i storio i ystafelloedd dosbarth yn ystod y dydd.</p>
+          <p>Mewn cyferbyniad mae'r rhan fwyaf o systemau gwresogi nwy yn defnyddio nwy i gynhyrchu gwres ar unwaith, felly dim ond yn ystod y diwrnod ysgol y maent yn defnyddio ynni.</p>
+        how_do_you_compare:
+          for_more_detail: Am ragor o fanylion, edrychwch ar sut mae eich ysgol yn cymharu ag eraill yn eich grŵp
+          title: Sut ydych chi'n cymharu?
+        leaving_the_heating_on_during_warm_weather:
+          title: Gadael y gwres ymlaen yn ystod tywydd cynnes
+        link: Dysgu rhagor
+        next_steps_html: |-
+          <p>Er mwyn lleihau faint o ynni a ddefnyddir gan wresogyddion storio yn eich ysgol:</p>
+          <ul>
+            <li>Cadwch lygad ar ragolygon y tywydd, yn enwedig yn y Gwanwyn, a cheisiwch gofio diffodd eich gwres pan fydd yn gynnes tu allan. Mae Sbarcynni yn anfon e-bost atoch yn awtomatig os yw'n mynd i fod yn gynnes yr wythnos ganlynol - cadwch lygad ar eich e-bost rhybudd wythnosol.</li>
+            <li>Fel arfer, dylid diffodd gwresogyddion storio yn ystod gwyliau'r ysgol ac ar benwythnosau. Os nad yw wedi'i osod ar hyn o bryd, bydd ychwanegu amseryddion 7 diwrnod yn werth y buddsoddiad.</li>
+          </ul>
+          <p>Edrychwch ar yr astudiaethau achos Sbarcynni sy'n canolbwyntio ar wella rheolaeth gwresogyddion storio:</p>
+          <ul>
+            <li><a href="%{case_study_1}">Gostyngiad o 28% mewn defnydd o osod amseryddion 7 diwrnod</a></li>
+            <li><a href="%{case_study_2}">Gostyngiad o 38% mewn defnydd trwy wella amserau gwresogi</a></li>
+          </ul>
+        title: Beth yw stôr-wresogyddion?
+        your_storage_heater_energy_use:
+          title: Eich defnydd o ynni stôr-wresogyddion
+      page_title: Dadansoddiad defnydd stôr-wresogyddion
