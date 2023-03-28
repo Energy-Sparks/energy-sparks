@@ -10,7 +10,7 @@
       <% elsif @filter[:search] == 'country' %>
         <%= t('compare.filter.schools_with_country_html', country: tag.span(@filter[:country].present? ? t("school_statistics.#{@filter[:country]}") : t('compare.filter.all_countries'), class: 'badge badge-info')) %>
       <% elsif @filter[:search] == 'groups' %>
-        <%= t('compare.filter.schools_in_school_groups_html', school_groups: SchoolGroup.find(@filter[:school_group_ids]).map {|school_group| tag.span(school_group.name, class: 'badge badge-info')}.join(' ').html_safe) %>
+        <%= t('compare.filter.schools_in_school_groups_html', school_groups: @filter[:school_group_ids].present? ? SchoolGroup.find(@filter[:school_group_ids]).map {|school_group| tag.span(school_group.name, class: 'badge badge-info')}.join(' ').html_safe : tag.span(t('compare.filter.all_groups'), class: 'badge badge-info')) %>
       <% end %>
     </p>
     <%= render 'school_type_summary' %>

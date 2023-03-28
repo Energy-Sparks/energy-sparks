@@ -28,7 +28,7 @@ class CompareController < ApplicationController
   def filter
     @filter ||=
       params.permit(:search, :benchmark, :country, :school_type, school_group_ids: [], school_types: [])
-        .with_defaults(school_group_ids: [], school_types: [])
+        .with_defaults(school_group_ids: [], school_types: School.school_types.keys)
         .to_hash.symbolize_keys
   end
 

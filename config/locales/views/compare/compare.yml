@@ -6,6 +6,7 @@ en:
       title: Choose school comparison benchmark
     filter:
       all_countries: All countries
+      all_groups: All groups
       all_school_types: All school types
       change_benchmark: Change benchmark
       change_options: Change options

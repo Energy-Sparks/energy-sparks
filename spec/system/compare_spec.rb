@@ -180,6 +180,7 @@ describe 'compare pages', :compare, type: :system do
 
   ## tests ##
 
+  let(:user) {}
   let(:all_school_types) { School.school_types.keys }
   let!(:school_group)    { create(:school_group, name: "Group 1") }
   let!(:school)          { create(:school, school_group: school_group)}
@@ -372,6 +373,36 @@ describe 'compare pages', :compare, type: :system do
   context "Logged out user" do
     let(:user) {}
     it_behaves_like "an index page", tab: 'Choose country', show_your_group_tab: false
+  end
+
+  describe "Redirecting old benchmark to new compare routes", type: :request do
+    before do
+      get old_benchmark_url
+    end
+
+    context "/benchmarks" do
+      let(:old_benchmark_url) { "/benchmarks" }
+      it { expect(response).to redirect_to('/compare') }
+      it { expect(response.status).to eq(301) }
+    end
+
+    context "/benchmark" do
+      context "with school groups" do
+        let(:old_benchmark_url) { "/benchmark?benchmark_type=a_benchmark_key&benchmark%5Bschool_group_ids%5D%5B%5D=&benchmark%5Bschool_group_ids%5D%5B%5D=#{school_group.id}&benchmark%5Bschool_group_ids%5D%5B%5D=#{school_group_2.id}&benchmark%5Bschool_types%5D%5B%5D=&benchmark%5Bschool_types%5D%5B%5D=0&benchmark%5Bschool_types%5D%5B%5D=1&benchmark%5Bschool_types%5D%5B%5D=2&benchmark%5Bschool_types%5D%5B%5D=3&benchmark%5Bschool_group_ids%5D%5B%5D=&benchmark%5Bschool_types%5D%5B%5D=4&benchmark%5Bschool_types%5D%5B%5D=5&benchmark%5Bschool_types%5D%5B%5D=6&commit=Compare" }
+        it "redirects to the new pages" do
+          expect(response).to redirect_to("/compare/a_benchmark_key?search=groups&school_group_ids%5B%5D=#{school_group.id}&school_group_ids%5B%5D=#{school_group_2.id}&school_types%5B%5D=primary&school_types%5B%5D=secondary&school_types%5B%5D=special&school_types%5B%5D=infant&school_types%5B%5D=junior&school_types%5B%5D=middle&school_types%5B%5D=mixed_primary_and_secondary")
+        end
+        it { expect(response.status).to eq(301) }
+      end
+
+      context "without school groups" do
+        let(:old_benchmark_url) { '/benchmark?benchmark%5Bschool_types%5D%5B%5D=0&benchmark%5Bschool_types%5D%5B%5D=1&benchmark%5Bschool_types%5D%5B%5D=2&benchmark%5Bschool_types%5D%5B%5D=3&benchmark%5Bschool_types%5D%5B%5D=4&benchmark%5Bschool_types%5D%5B%5D=5&benchmark%5Bschool_types%5D%5B%5D=6&benchmark_type=a_benchmark_key' }
+        it "redirects to the new pages" do
+          expect(response).to redirect_to('/compare/a_benchmark_key?search=groups&school_types%5B%5D=primary&school_types%5B%5D=secondary&school_types%5B%5D=special&school_types%5B%5D=infant&school_types%5B%5D=junior&school_types%5B%5D=middle&school_types%5B%5D=mixed_primary_and_secondary')
+        end
+        it { expect(response.status).to eq(301) }
+      end
+    end
   end
 
 end
