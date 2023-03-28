@@ -57,6 +57,9 @@
           end_month_year: short_dates(@analysis_dates.end_date
         )) %>
   <% end %>
+  <% c.with_footer do %>
+    <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_by_day_of_week_tolerant.footer_html', case_study_path: case_study_download_path(id: 3, locale: I18n.locale)) %>
+  <% end %>
 <% end %>
 
 <%= component 'chart', chart_type: :storage_heater_intraday_current_year, school: @school do |c| %>
@@ -68,6 +71,9 @@
           start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
           end_month_year: short_dates(@analysis_dates.end_date
          )) %>
+  <% end %>
+  <% c.with_footer do %>
+    <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_intraday_current_year.footer') %>
   <% end %>
 <% end %>
 
