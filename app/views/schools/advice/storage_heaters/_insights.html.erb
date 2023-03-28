@@ -14,6 +14,7 @@
 ', section_title: t('advice_pages.storage_heaters.insights.leaving_the_heating_on_during_warm_weather.title') %>
 
 <%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertSeasonalHeatingSchoolDaysStorageHeaters), show_links: false, show_icons: false %>
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertTurnHeatingOffStorageHeaters), show_links: false, show_icons: false %>
 
 <%= render('seasonal_control_notice') %>
 
