@@ -1,5 +1,22 @@
 cy:
   interventions:
+    completed:
+      actions_completed:
+        one: Rydych wedi recordio 1 weithred hyd yn hyn eleni
+        two: Rydych wedi recordio %{count} o weithredoedd hyd yn hyn eleni
+        many: Rydych wedi recordio %{count} o weithredoedd hyd yn hyn eleni
+        other: Rydych wedi recordio %{count} o weithredoedd hyd yn hyn eleni
+      choose_next_action: Dewiswch eich gweithred nesaf o'r awgrymiadau isod.
+      current_school_position: ac mae eich ysgol yn %{position} lle ar hyn o bryd.
+      our_suggestions: Mae ein hawgrymiadau yn seiliedig ar eich rhybuddion defnydd ynni ac unrhyw archwiliad ynni a gwblhawyd yn eich ysgol
+      page_title: "Gweithred %{school} "
+      points_scored: Rydych chi newydd sgorio %{points} o bwyntiau!
+      points_to_change_position: ac angen sgorio %{points} pwynt i gyrraedd %{position} lle.
+      see_scoreboard: Gweld y bwrdd sgorio
+      suggested_actions: Gweithredoedd a awgrymir ar gyfer eich ysgol
+      title: Llongyfarchiadau! Rydym wedi cofnodi'ch gweithred.
+      view_action: Gweld eich gweithred
+      view_all_actions: Gweld pob gweithred
     edit:
       page_title: Diweddaru gweithred arbed ynni
       title: Diweddarwch eich gweithred arbed ynni
@@ -19,6 +36,9 @@ cy:
       when_did_you_complete_this_action: Pryd wnaethoch chi gwblhau'r weithred hon?
       you_can_add_formatting_label: Gallwch ychwanegu fformatio, dolenni ac atodi lluniau gan ddefnyddio'r bar offer isod. Gallwch hofran dros bob eicon i ddysgu beth mae'n ei wneud
       you_can_record_label: Gallwch gofnodi gweithrediadau diweddar a hŷn i greu cofnod cyflawn o'r holl weithgareddau arbed ynni rydych wedi'u cyflawni fel ysgol
+    index:
+      record_action: Cofnodi gweithred arbed ynni
+      title: Eich gweithredoedd arbed ynni
     new:
       page_title: Cofnodi gweithred arbed ynni
       title: Cofnodi gweithred arbed ynni ar gyfer eich ysgol

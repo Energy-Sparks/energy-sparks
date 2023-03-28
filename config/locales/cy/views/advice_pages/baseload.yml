@@ -18,7 +18,7 @@ cy:
           long_term_baseload_meter_chart_subtitle: Llwyth sylfaenol trydan o %{start_date} i %{end_date} ar gyfer %{meter}
           long_term_baseload_meter_chart_title: Tueddiadau hirdymor yn llwyth sylfaenol trydan ar gyfer un mesurydd
         long_term_trends:
-          intro: Oni bai bod yr ysgol wedi cynyddu'n ffisegol mewn maint, os ydych yn rheoli eich defnydd o drydan sylfaenol yn dda byddech yn disgwyl i'ch llwyth sylfaen leihau dros amser wrth i offer a chyfrifiaduron ddod yn fwy ynni-effeithlon gyda gofynion pŵer modd gorffwys is. Os nad yw hyn yn wir, dylech geisio canfod achos y cynnydd.
+          intro: Oni bai bod yr ysgol wedi cynyddu'n ffisegol mewn maint, os ydych yn rheoli eich defnydd o drydan sylfaenol yn dda byddech yn disgwyl i'ch llwyth sylfaenol leihau dros amser wrth i offer a chyfrifiaduron ddod yn fwy ynni-effeithlon gyda gofynion pŵer modd gorffwys is. Os nad yw hyn yn wir, dylech geisio canfod achos y cynnydd.
           table_description: Mae'r tabl isod yn dangos y llwyth sylfaenol cyfartalog blynyddol ar gyfer yr holl flynyddoedd y mae gennym ddata ar gyfer eich ysgol.
           title: Tueddiadau hirdymor
         meter_breakdown:

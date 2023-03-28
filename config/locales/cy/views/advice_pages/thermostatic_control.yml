@@ -36,6 +36,7 @@ cy:
             <p>Mae hyn oherwydd bod faint o wres sydd ei angen ar un diwrnod yn gymesur yn llinol â'r gwahaniaeth rhwng y tymheredd y tu mewn a'r tu allan, a byddai unrhyw amrywiad o'r llinell duedd yn awgrymu nad yw rheolaeth thermostatig yn gweithio'n rhy dda.</p>
             <p>Mae'r ail set o ddata ar waelod y siart ar gyfer defnydd nwy yn yr haf pan nad yw'r gwres ymlaen; yn nodweddiadol, mae hyn o ddŵr poeth a defnydd o'r gegin.</p>
             <p>Mae ongl y llinell hon yn aml yn arwydd o ba mor dda y mae'r system dŵr poeth wedi'i hinswleiddio; os bydd y defnydd yn cynyddu wrth iddo oeri mae'n awgrymu diffyg inswleiddio.</p>
+          subtitle_html: Mae'r siart hwn yn dangos dadansoddiad o ba mor agos y mae'r defnydd o nwy yn eich ysgol yn cyd-fynd â'r tymheredd y tu allan rhwng <span class="start-date">%{start_date}</span> a <span class="end-date">%{end_date}</span>
           title: Dadansoddiad thermostatig o system wresogi eich ysgol
         this_section_html: |-
           <p>Mae'r adran hon yn rhoi dadansoddiad manylach o reolaeth boeler eich ysgol a rhai pethau i gadw llygad amdanynt.</p>
@@ -45,8 +46,8 @@ cy:
         your_schools_R2_value: Gwerth R² eich ysgol yw %{r2} sy'n %{r2_rating_adjective}.
       insights:
         advice_html: |-
-          <p>Rydym yn galw'r dudalen hon yn dudalen uwch oherwydd mae rhai themâu cymhleth dan sylw ac efallai y bydd yn cymryd peth amser i ddefnyddiwr weithio trwy'r esboniadau.</p>
           <p>Mae adeilad gyda rheolaeth thermostatig da yn golygu po oeraf ydyw y tu allan, po uchaf yw'r defnydd o nwy ar gyfer gwresogi.</p>
+          <p>Mae hon yn dudalen uwch oherwydd mae rhai themâu cymhleth dan sylw a gallai gymryd peth amser i ddefnyddiwr weithio trwy'r esboniadau.</p>
         for_more_detail_html: Am ragor o fanylion, <a href="%{link}">cymharwch gydag ysgolion eraill yn eich grŵp</a>
         how_do_you_compare:
           title: Sut ydych chi'n cymharu?
@@ -61,7 +62,5 @@ cy:
         thermostatic_control_r2_notice_html: |-
           <p>Eich rheolaeth thermostatig yw %{r2}, sef %{r2_rating_adjective}</p>
           <p>Y gwerth cyfartalog ar gyfer ysgolion yw %{average_schools_r2} a gwerth perffaith yw 1.0. Po isaf yw'r gwerth islaw 1.0, y gwaethaf yw rheolaeth thermostatig yr ysgol.</p>
-        title: Beth a olygwn wrth reolaeth gwres uwch?
-        your_thermostatic_control:
-          title: Eich rheolaeth thermostatig
-      page_title: Dadansoddiad rheolaeth thermostatig uwch
+        title: Beth yw rheolaeth thermostatig?
+      page_title: Dadansoddiad rheolaeth thermostatig

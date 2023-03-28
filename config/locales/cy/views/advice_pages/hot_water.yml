@@ -1,0 +1,134 @@
+cy:
+  advice_pages:
+    hot_water:
+      analysis:
+        hot_water_efficiency_improvement_options: Opsiynau gwella effeithlonrwydd dŵr poeth
+        hot_water_efficiency_improvement_options_content_html: |-
+          <p>Mae systemau dŵr poeth cylchredol yn aneffeithlon oherwydd eu bod yn cylchredeg dŵr poeth yn barhaol mewn dolen o amgylch yr ysgol felly mae dŵr poeth ar gael yn syth pan fydd rhywun yn troi tap ymlaen yn hytrach na gorfod aros i’r dŵr poeth ddod yr holl ffordd o’r ystafell boeler. Mae'r pibellau cylchredol a ddefnyddir i wneud hyn yn aml wedi'u hinswleiddio'n wael ac yn colli gwres. Yn aml, dim ond 15% yn effeithlon yw'r mathau hyn o systemau.</p>
+          <p>Yn gyffredinol, mae dau opsiwn posibl y gallai fod gennych i leihau costau ac allyriadau carbon rhedeg y system dŵr poeth yn eich ysgol:</p>
+          <ol>
+            <li>gwella rheolaeth amseriad eich system bresennol neu</li>
+            <li>osod gwresogyddion dŵr trydan pwynt defnyddio yn ei le.</li>
+          </ol>
+          <p>Mae’r tabl isod yn rhoi rhyw syniad o fanteision y ddau ddewis amgen hyn:</p>
+        hot_water_efficiency_improvement_options_notice_html: |-
+          <p>Gall gwella rheolaeth amseriad eich system dŵr poeth bresennol neu osod systemau dŵr poeth trydan yn ei lle yn gyfan gwbl arwain at arbedion sylweddol.</p>
+          <p>Mae dŵr poeth mewn ysgolion yn cael ei ddarparu fel arfer gan foeler nwy canolog sydd wedyn yn cylchredeg y dŵr poeth mewn dolen yn barhaus o gwmpas yr ysgol. Weithiau caiff y systemau hyn sy'n seiliedig ar nwy eu hategu gan dwymwyr tanddwr neu bwynt defnyddio mwy lleol sy'n cael eu pweru gan drydan.</p>
+        hot_water_efficiency_improvement_options_table_footer_html: "<p>Bras amcan yn unig yw hwn gan mai dim ond ar sail ysgol generig o’r un maint â’ch un chi a’r wybodaeth a ddarparwyd gan ddata mesurydd deallus eich ysgol y gall Sbarcynni ei awgrymu, ond dylai roi syniad a yw’n werth ymchwilio ymhellach i fuddsoddiadau o’r math hwn.</p>"
+        how_does_energy_sparks_calculate: Sut mae Sbarcynni yn cyfrifo effeithlonrwydd ac arbedion posibl system dŵr poeth ysgol?
+        how_does_energy_sparks_calculate_content_introduction_html: |-
+          <p>Rydym yn amcangyfrif faint o ynni a ddefnyddir ar gyfer dŵr poeth yn eich ysgol trwy edrych ar wresogi dros yr haf - ychydig cyn ac yn ystod gwyliau'r haf. Tybir, yn ystod tymor yr haf, fod nwy yn cael ei ddefnyddio ar gyfer dŵr poeth ond nid gwresogi gofod ac yn ystod y gwyliau, defnyddir nwy ar gyfer dŵr poeth ond ychydig iawn o hwnnw a ddefnyddir.</p>
+          <p>Mae'r siart isod yn dangos yr asesiad hwnnw ar gyfer eich ysgol. Mae'r bariau coch yn dangos yr ynni a ddefnyddir i gynhesu'r dŵr sy'n cael ei gylchredeg o amgylch yr ysgol. Mae'r bariau glas yn dangos yr egni a ddefnyddir i gynhesu'r dŵr a ddefnyddir. Sylwch, os oes gan eich ysgol bwll nofio wedi'i gynhesu â nwy, mae'n anoddach i ni asesu effeithlonrwydd.</p>
+        improved_boiler_control_content_html: |-
+          <p>Mae'r opsiwn hwn yn golygu newid amseriad eich boeler presennol o bosibl heb unrhyw gost i'r ysgol.</p>
+          <p>
+            Mae'n golygu lleihau'r amser mae'r dŵr poeth yn cael ei gynhesu i oriau ysgol a'i ddiffodd yn ystod penwythnosau a gwyliau.
+            Gallai hyn arbed tua %{gas_better_control_saving_gbp} y flwyddyn i chi a lleihau eich allyriadau carbon
+            gan %{gas_better_control_saving_co2} kg CO2 (%{gas_better_control_saving_co2_percent}).
+          </p>
+        improved_boiler_control_title: Gwell rheolaeth ar foeleri
+        introduction_html: |-
+          <p>Mae'r adran hon yn rhoi dadansoddiad manylach o sut i wella effeithlonrwydd system dŵr poeth eich ysgol.</p>
+          <p>Mae’r adrannau canlynol yn rhoi mwy o gefndir a dadansoddiad o’ch effeithlonrwydd dŵr poeth gan gynnwys:</p>
+        options:
+          point_of_use_best: Mae ein dadansoddiad yn dangos mai buddsoddi mewn gwresogyddion trydan pwynt defnyddio fyddai'r opsiwn gorau i'ch ysgol chi.
+          point_of_use_co2_saving: Mae ein dadansoddiad yn dangos y byddai buddsoddi mewn gwresogyddion trydan pwynt defnyddio yn costio mwy o arian i'w rhedeg na'ch gosodiad presennol i'ch ysgol chi. Serch hynny, byddai'n lleihau eich allyriadau CO2 yn fwy.
+          point_of_use_larger_co2_benefit: Mae ein dadansoddiad yn dangos y byddai buddsoddi mewn gwresogyddion trydan pwynt defnyddio yn arbed llai o arian bob blwyddyn na gwella rheolaeth eich boeler. Serch hynny, byddai'n lleihau eich allyriadau CO2 yn fwy.
+          point_of_use_not_worthwhile: Mae ein dadansoddiad yn dangos y byddai buddsoddi mewn gwresogyddion trydan pwynt defnyddio yn anhebygol o fod yr opsiwn gorau ar gyfer eich ysgol chi.
+        point_of_use_electric_heater_content_html: |-
+          <p>Mae'r opsiwn hwn yn aml yn arwain at yr arbedion mwyaf ond ar gyfer y rhan fwyaf o ysgolion mae angen buddsoddiad cyfalaf sylweddol.</p>
+          <p>
+            Rydym yn amcangyfrif arbediad o %{point_of_use_electric_saving_gbp} y flwyddyn ar gyfer eich ysgol, a gostyngiad
+            mwy sylweddol mewn allyriadau carbon o (%{point_of_use_electric_saving_co2} kg CO2/ %{point_of_use_electric_saving_co2_percent}).
+          </p>
+        point_of_use_electric_heater_title: Gwresogydd trydan pwynt defnyddio
+        summary_notice: 'Sylwer: os oes gan eich ysgol bwll nofio wedi''i gynhesu â nwy, mae''n anoddach i ni asesu effeithlonrwydd.'
+        table:
+          columns:
+            annual: Defnydd blynyddol
+            annual_co2_kg: CO2/kg
+            annual_cost_gbp: "£"
+            annual_kwh: kWh
+            capital_cost: Cost Cyfalaf
+            capital_cost_gbp: "£"
+            choice: Dewis
+            efficiency: Effeithlonrwydd
+            payback: Ad-dalu
+            payback_years: Blynyddoedd
+            saving: Arbediad blynyddol
+            saving_co2: CO2/kg
+            saving_co2_percent: "%"
+            saving_gbp: Cost
+            saving_gbp_percent: "%"
+          rows:
+            current_setup: Gosodiad presennol
+            improved_boiler_control: Gwell rheolaeth ar foeleri
+            point_of_use_electric_heaters: Gwresogyddion pwynt defnyddio
+        the_circulatory_gas_based_systems_html: "<p>Mae'r systemau sy'n seiliedig ar nwy cylchredol mewn ysgolion yn gyffredinol aneffeithlon iawn, gyda chyfartaledd o tua 15%; ar gyfer eich ysgol rydym yn amcangyfrif %{existing_gas_efficiency}. Mae'r aneffeithlonrwydd hyn yn cynnig cyfleoedd sylweddol o ran costau ac allyriadau carbon os eir i'r afael â hwy.</p>"
+        theoretically_every_pupil_uses_html: |-
+          <p>
+            Yn ddamcaniaethol, mae pob disgybl yn defnyddio tua 5 litr o ddŵr poeth y dydd, sydd ar gyfer eich ysgol gyda %{number_of_pupils} o ddisgyblion,
+            sy'n hafal i  %{theoretical_annual_hot_water_requirement_litres} litr o ddŵr poeth dros y 190 diwrnod o'r flwyddyn ysgol. Mewn system 100% effeithlon mae angen
+            tua %{theoretical_annual_hot_water_requirement_kwh} kWh o ynni bob blwyddyn i gynhesu'r dŵr poeth hwn.
+          </p>
+        title: Dadansoddiad
+        we_calculate_the_efficiency_html: "<p>Rydym yn cyfrifo effeithlonrwydd eich system dŵr poeth drwy gymharu cyfrifiad hwn o %{theoretical_annual_hot_water_requirement_kwh} kWh ar gyfer system 100% effeithlon ag amcangyfrif Sbarcynni o %{existing_gas_annual_kwh} kWh ar gyfer eich system bresennol.</p>"
+      insights:
+        circulatory_gas_based_hot_water: Mae systemau dŵr poeth cylchredol sy’n seiliedig ar nwy mewn ysgolion yn aneffeithlon iawn ar y cyfan, gyda chyfartaledd o tua 15%
+        for_more_detail_html: Am ragor o fanylion, <a href="%{link}">cymharwch gydag ysgolion eraill yn eich grŵp</a>
+        how_do_you_compare: Sut ydych chi'n cymharu?
+        improving_the_way_html_over_10pc_html: |-
+          <p>Mae'r tabl isod yn dangos bod %{gas_better_control_saving_gbp_percent} o'r ynni a ddefnyddir i wresogi eich dŵr poeth yn cael ei ddefnyddio y tu allan i oriau agor yr ysgol. Gallai addasu gosodiadau eich boeler i sicrhau eich bod ond yn gwresogi dŵr pan fydd ei angen arbed %{gas_better_control_saving_gbp} y flwyddyn i chi.
+          </p>
+          <p>Neu gallech ymchwilio i newid eich system dŵr poeth presennol am wresogyddion trydan pwynt defnyddio.</p>
+        improving_the_way_html_under_10pc_html: "<p>Mae eich defnydd o ddŵr poeth ar wyliau ac ar benwythnosau eisoes yn isel iawn. Gallech leihau eich defnydd blynyddol o nwy ar gyfer dŵr poeth %{gas_better_control_saving_gbp_percent} drwy ei ddiffodd yn gyfan gwbl y tu allan i oriau ysgol.</p>"
+        improving_the_way_html_under_2pc_html: "<p>Mae eich defnydd o ddŵr poeth ar wyliau ac ar benwythnosau eisoes yn isel iawn, da iawn chi.</p>"
+        next_steps_html: |-
+          I leihau faint o ynni a ddefnyddir i gynhesu dŵr yn eich ysgol:
+          <ul>
+          <li>Sicrhewch fod unrhyw dwymwyr tanddwr wedi'u gosod i redeg rhwng 8am a 3pm yn unig. Os yw'r tanciau storio'n fawr efallai y byddwch yn gallu diffodd y twymwr tanddwr am 2pm neu'n gynt a bod gennych ddigon o ddŵr poeth ar ôl am weddill y diwrnod ysgol ac ar gyfer glanhawyr ar ôl ysgol.
+          <li>Gwiriwch fod eich dŵr poeth wedi'i ddiffodd ar y penwythnosau ac yn ystod gwyliau'r ysgol. Mae'n bosib y bydd angen i chi newid o amseryddion 24 awr i amseryddion 7 diwrnod i gyflawni hyn yn ddibynadwy, ond gall fod yn ffordd hawdd o arbed llawer o ynni.
+          <li>Addaswch reolyddion boiler olew a nwy fel bod dŵr poeth yn cael ei gynhesu o ddydd Llun i ddydd Gwener yn ystod y tymor yn unig.
+          <li>Os yw boeleri eich system gwresogi hefyd yn darparu dŵr poeth yn yr haf, sicrhewch fod cyn lleied â phosibl o foeleri’n gweithredu ar gyfer darparu dŵr poeth a bod holl bympiau’r system wresogi yn cael eu diffodd a’r falfiau ar gau.
+          <li>Dylai tanciau a'u pibellau dosbarthu gael eu hinswleiddio'n dda i osgoi colli gwres.
+          <li>Mae gwastraffu dŵr poeth yn cosbi ysgol ddwywaith: unwaith am yr ynni a ddefnyddir i gynhesu'r dŵr ac eto am y dŵr a ddefnyddir. Gosodwch dapiau sy'n diffodd yn awtomatig ac yn delio â thapiau sy'n diferu ac yn gollwng yn brydlon.
+          <li>Ystyriwch ddarparu gwresogyddion dŵr trydan pwynt defnyddio i staff glanhau i'w defnyddio yn ystod gwyliau.
+          <li>Ystyriwch symud at wresogyddion dŵr trydan pwynt defnyddio ar draws ystâd gyfan yr ysgol yn lle system dŵr poeth cylchredol.
+          <li>I gael rhagor o wybodaeth am ddŵr poeth ynni effeithlon a rheoli risg clefyd y llengfilwyr, darllenwch ganllawiau’r DfE: <a href="https://www.gov.uk/government/publications/energy-efficiency-guidance-for-the-school-and-fe-college-estate/energy-efficiency-guidance-for-the-school-and-further-education-college-estate">Effeithlonrwydd ynni: canllawiau ar gyfer yr ystâd ysgolion a cholegau addysg bellach</a>.
+          </ul>
+        summary_notice_html: |-
+          <p>Gall gwella rheolaeth amseriad eich system dŵr poeth bresennol neu osod systemau dŵr poeth trydan yn ei lle yn gyfan gwbl arwain at arbedion sylweddol.</p>
+          <p>Mae dŵr poeth mewn ysgolion yn cael ei ddarparu fel arfer gan foeler nwy canolog sydd wedyn yn cylchredeg y dŵr poeth mewn dolen yn barhaus o gwmpas yr ysgol. Weithiau caiff y systemau hyn sy'n seiliedig ar nwy eu hategu gan dwymwyr tanddwr neu bwynt defnyddio mwy lleol sy'n cael eu pweru gan drydan.</p>
+        table:
+          columns:
+            annual_gbp: £ blynyddol
+            annual_kwh: kWh blynyddol
+            daily_gbp: £ dyddiol
+            daily_kwh: kWh dyddiol
+          rows:
+            holidays: Gwyliau
+            school_day_closed: Diwrnod ysgol (ar gau)
+            school_day_open: Diwrnod ysgol (ar agor)
+            total: Cyfanswm
+            weekends: Penwythnosau
+        title: Beth a olygwn wrth ddefnydd nwy dŵr poeth?
+        we_estimate_your_hot_water_efficiency_to_be_html: Rydym yn amcangyfrif mai %{efficiency_percent} yw eich effeithlonrwydd dŵr poeth
+      not_relevant:
+        other_reasons:
+          reason: |-
+            <p>Ni allwn gynhyrchu dadansoddiad defnydd nwy dŵr poeth ar gyfer eich ysgol.</p>
+            <p>Gallai hyn fod am nifer o resymau:</p>
+            <ul>
+              <li>nid oes gennym ddigon o ddata defnydd nwy i'ch ysgol wneud y dadansoddiad, ac os felly gallech geisio gwirio eto ar ôl gwyliau’r haf nesaf</li>
+              <li>mae ein dadansoddiad rhagarweiniol yn dangos ei bod yn annhebygol y bydd eich ysgol yn defnyddio swm sylweddol o nwy i gynhesu dŵr poeth</li>
+              <li>efallai eich bod eisoes yn dilyn ein cyngor ac wedi diffodd eich dŵr poeth yn ystod y gwyliau. Da iawn!</li>
+            </ul>
+          title: Methu â pherfformio dadansoddiad dŵr poeth
+        swimming_pool:
+          reason: |-
+            <p>
+            Rydych wedi dweud wrthym fod gan eich ysgol bwll nofio. Oherwydd hyn ni allwn amcangyfrif yn gywir
+            faint o nwy rydych yn ei ddefnyddio ar gyfer dŵr poeth.
+            </p>
+          title: Methu â pherfformio dadansoddiad dŵr poeth
+      page_title: Dadansoddiad defnydd dŵr poeth
