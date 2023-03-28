@@ -3,6 +3,14 @@ en:
   advice_pages:
     electricity_out_of_hours:
       analysis:
+        holiday_usage:
+          alert_group_by_week_electricity_14_months:
+            header: This chart can help your school compare electricity use during holidays
+            subtitle_html: This chart gives the breakdown of electricity consumption between school day open and closed, holidays and weekends for each week between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>
+            title: Electricity use by week for the last 14 months
+          table_footer: Ideally the summary holiday should be lower than other holidays as more equipment and appliances can be switched off.
+          table_intro: The table below shows a summary of your electricity usage during the last year of school holidays.
+          title: Holiday usage
         last_twelve_months:
           table:
             co2_kg: kg/co2
@@ -12,7 +20,10 @@ en:
             total: Total
           table_introduction: The table below shows how much electricity has been used when the school is open and closed on a school day as well as during weekends and holidays.
           title: Last 12 months
-        summary: This section gives a more detailed analysis of your school’s out of hours electricity use and some things to look out for. For good energy management, you want most of your energy use to be when the school is open.
+        summary: This section gives a more detailed analysis of your school's out of hours electricity use and some things to look out for. For good energy management, you want most of your energy use to be when the school is open.
+        tables:
+          columns:
+            average_daily_usage: Average daily usage (kWh)
         title: Analysis
         usage_by_day_of_week:
           daytype_breakdown_electricity_tolerant_chart:

@@ -1,0 +1,27 @@
+<tr>
+  <td></td>
+  <td>
+    <%= t('analytics.from_and_to', from_date: holiday.start_date.to_s(:es_short), to_date: holiday.end_date.to_s(:es_short)) %>
+    <% if within_school_period?(holiday) %>
+      <sup>*</sup>
+    <% end %>
+  </td>
+  <% if holiday_usage[holiday].usage.present? %>
+    <td class="text-right">
+      <%= format_unit(holiday_usage[holiday].usage.kwh, :kwh, true, :target) %>
+    </td>
+    <td class="text-right">
+      <%= format_unit(average_daily_usage(holiday_usage[holiday].usage, holiday), :kwh, true, :target) %>
+    </td>
+    <td class="text-right">
+      <%= format_unit(holiday_usage[holiday].usage.£, :£, true, :target) %>
+    </td>
+    <td class="text-right">
+      <%= format_unit(holiday_usage[holiday].usage.co2, :co2, true, :target) %>
+    </td>
+  <% else %>
+    <td colspan="3" class="text-center old-data">
+      <%= t('advice_pages.not_enough_data.table_row_not_enough') %>
+    </td>
+  <% end %>
+</tr>
