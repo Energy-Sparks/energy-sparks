@@ -7,7 +7,6 @@ module Schools
         meter_data_checker.at_least_x_days_data?(14)
       end
 
-      #Not yet implemented in underlying services
       def data_available_from
         meter_data_checker.date_when_enough_data_available(14)
       end
