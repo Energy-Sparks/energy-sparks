@@ -5,6 +5,7 @@ class BenchmarkContentFilter
   def initialize(content)
     @counts = count_content_types(content)
     benchmarks = group_content(content)
+    @content = {}
 
     if benchmarks.count > 0
       extract_title(benchmarks[0])
@@ -65,7 +66,6 @@ private
   end
 
   def filter_content(content)
-    @content = {}
     key = :intro
     content.each do |fragment|
       if select_fragment?(fragment)
