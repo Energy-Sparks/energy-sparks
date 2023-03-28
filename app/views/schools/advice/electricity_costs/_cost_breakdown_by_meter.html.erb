@@ -11,7 +11,10 @@
   <tbody>
     <% annual_costs_breakdown_by_meter.sort{|a,b| a[0].name_or_mpan_mprn <=> b[0].name_or_mpan_mprn }.each do |meter, cost| %>
       <tr>
-        <td class="text-left"><%= meter.name_or_mpan_mprn %></td>
+        <td class="text-left">
+          <%= meter.name_or_mpan_mprn %>
+          <% if cost.days < 365 %> * <% end %>
+        </td>
         <td class="text-right"><%= FormatEnergyUnit.format_pounds(:£, cost.£, :text, :approx_accountant, true) %></td>
       </tr>
     <% end %>
@@ -21,3 +24,12 @@
     </tr>
   </tbody>
 </table>
+<% partial_meter_data = annual_costs_breakdown_by_meter.select { |meter, costs| costs.days < 365} %>
+<% if partial_meter_data.present? %>
+  <div class="text-right advice-table-caption">
+    <sup>*</sup> <%= t('advice_pages.tables.notice.partial_year') %>:
+    <% partial_meter_data.map do |meter,costs| %>
+        <%= meter.name_or_mpan_mprn %> (<%= short_dates(costs.start_date) %> - <%= short_dates(costs.end_date) %>)
+    <% end.to_sentence %>
+  </div>
+<% end %>

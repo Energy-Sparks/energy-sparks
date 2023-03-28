@@ -28,6 +28,7 @@ module Schools
         reporting_meters.each do |meter|
           breakdown[meter_for_mpan(meter.mpan_mprn)] = accounting_costs_service(meter).annual_cost
         end
+
         breakdown
       end
 
@@ -97,7 +98,7 @@ module Schools
       end
 
       def accounting_costs_service(meter = aggregate_meter)
-        Costs::AccountingCostsService.new(meter)
+        Costs::AccountingCostsService.new(meter, aggregate_meter.amr_data.end_date)
       end
 
       def tariff_information_service(meter = aggregate_meter)
