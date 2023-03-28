@@ -26,6 +26,7 @@ module Schools
           @options_for_meter_select = options_for_meter_select
         end
         @analysis_dates = analysis_dates
+        @costs_service_analysis_date_range = costs_service.analysis_date_range
       end
 
       def meter_costs

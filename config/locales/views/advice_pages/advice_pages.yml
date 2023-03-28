@@ -138,6 +138,7 @@ en:
         user_supplied: User supplied
       notice:
         partial_months: indicates a partial month
+        partial_year: indicates a partial year
         three_significant_figures: Data in this table are presented to 3 significant figures.
         two_significant_figures: Data in this table are presented to 2 significant figures.
     tabs:
