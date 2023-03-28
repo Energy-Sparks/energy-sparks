@@ -1,0 +1,16 @@
+cy:
+  charge_type_units:
+    day: dydd
+    kva: kVA
+    kwh: kWh
+    month: mis
+    quarter: chwarter
+  user_tariff_charge:
+    available_capacity: Capasiti sydd ar gael
+    data_collection_dcda_agent_charge: Casglu Data DC/DA Tâl Asiant
+    nhh_automatic_meter_reading_charge: Tâl darllen mesurydd awtomatig NHH
+    nhh_metering_agent_charge: Tâl asiant mesuryddion NHH
+    rate: Cyfradd
+    unit_rate_charge_amber: Tâl cyfradd uned (ambr)
+    unit_rate_charge_green: Tâl cyfradd uned (gwyrdd)
+    unit_rate_charge_red: Tâl cyfradd uned (coch)

@@ -1,4 +1,3 @@
----
 cy:
   about_menu:
     about_us: Amdanom ni
@@ -25,7 +24,7 @@ cy:
         two: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>%{count}</strong> bwynt i'ch ysgol!
         many: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>%{count}</strong> o bwyntiau i'ch ysgol!
         other: Mewngofnodwch nawr i gofnodi'r %{label} hwn ac ennill <strong>%{count}</strong> o bwyntiau i'ch ysgol!
-      sign_in_to_record_html: "Mewngofnodwch i gofnodi %{label}"
+      sign_in_to_record_html: Mewngofnodwch i gofnodi %{label}
   analysis_controls:
     back_one: Yn ôl 1
     change_units: Newid unedau
@@ -56,18 +55,19 @@ cy:
     adult_dashboard: Dangosfwrdd oedolion
     pupil_dashboard: Dangosfwrdd disgyblion
   footer:
-    cc_licence_notice_html: "Cyhoeddir cynnwys ar y wefan hon o dan <a href=\"https://creativecommons.org/licenses/by/4.0/\">Drwydded Creative Commons Attribution 4.0</a>"
+    cc_licence_notice_html: Cyhoeddir cynnwys ar y wefan hon o dan <a href="https://creativecommons.org/licenses/by/4.0/">Drwydded Creative Commons Attribution 4.0</a>
     child_safeguarding_policy: Polisi diogelu plant
     follow_energy_sparks: Dilyn Sbarcynni
     more_information: Rhagor o wybodaeth
     privacy_and_cookie_policy: Polisi preifatrwydd a chwcis
-    registered_charity_notice: "Mae Sbarcynni yn elusen gofrestredig yng Nghymru a Lloegr, cofrestriad 1189273"
+    registered_charity_notice: Mae Sbarcynni yn elusen gofrestredig yng Nghymru a Lloegr, cofrestriad 1189273
     terms_and_conditions: Telerau ac amodau
   manage_menu:
     admin: Gweinyddwr
     manage: Rheoli
     reports: Adroddiadau
   manage_school_menu:
+    advice_pages: Tudalennau cyngor
     batch_reports: Adroddiadau swp
     edit_school_details: Golygu manylion yr ysgol
     edit_school_times: Golygu amseroedd ysgol
@@ -79,10 +79,12 @@ cy:
     manage_meters: Rheoli mesuryddion
     manage_partners: Rheoli partneriaid
     manage_school: Rheoli'r Ysgol
+    manage_school_group: Rheoli grŵp ysgol
     manage_tariffs: Rheoli tariffau
     manage_usage_estimate: Rheoli amcangyfrif defnydd
     manage_users: Rheoli defnyddwyr
     meter_attributes: Priodweddau mesurydd
+    old_analysis_pages: Hen dudalennau dadansoddi
     remove_school: Tynnu'r ysgol
     review_targets: Adolygu targedau
     school_calendar: Calendr ysgol
@@ -126,13 +128,13 @@ cy:
     training: Hyfforddiant
     videos: Fideos
   partners:
-    supports_in_partnership_with: "Mae Sbarcynni yn cefnogi %{school_name} mewn partneriaeth â"
+    supports_in_partnership_with: Mae Sbarcynni yn cefnogi %{school_name} mewn partneriaeth â
   switch_schools_menu:
     switch_school: Newid ysgol
   terms_and_conditions:
-    message_html: "Rwy'n cadarnhau cytundeb gyda %{terms_and_conditions_link} a %{privacy_policy_link} Sbarcynni"
+    message_html: Rwy'n cadarnhau cytundeb gyda %{terms_and_conditions_link} a %{privacy_policy_link} Sbarcynni
   timeline:
     view_all_events: Gweld pob digwyddiad
-    whats_been_going_on: "Beth sydd wedi bod yn digwydd?"
+    whats_been_going_on: Beth sydd wedi bod yn digwydd?
   translation_coming_soon:
-    message: "Rydym yn dal i weithio tuag at gael Sbarcynni wedi'i gyfieithu'n llawn i'r Gymraeg. Rydym wedi rhoi blaenoriaeth i gyfieithu ein gweithgareddau addysgol a'n gweithgareddau sy'n ymwneud â disgyblion. Mae cyfieithu'r rhan hon o'r wefan yn dal i fynd rhagddo, felly am y tro rydym yn defnyddio'r gosodiad diofyn o Saesneg."
+    message: Rydym yn dal i weithio tuag at gael Sbarcynni wedi'i gyfieithu'n llawn i'r Gymraeg. Rydym wedi rhoi blaenoriaeth i gyfieithu ein gweithgareddau addysgol a'n gweithgareddau sy'n ymwneud â disgyblion. Mae cyfieithu'r rhan hon o'r wefan yn dal i fynd rhagddo, felly am y tro rydym yn defnyddio'r gosodiad diofyn o Saesneg.
