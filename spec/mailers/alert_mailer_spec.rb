@@ -12,12 +12,14 @@ RSpec.describe AlertMailer do
       end
       expect(ActionMailer::Base.deliveries.count).to eql 1
       email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to eql "Energy Sparks alerts"
+      expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject', locale: :en)
       expect(email.mailgun_headers['X-Mailgun-Tag']).to eql "alerts"
     end
 
     it 'does not send an email if env var is not set' do
-      AlertMailer.with(email_address: email_address, school: school, events: []).alert_email.deliver_now
+      ClimateControl.modify SEND_AUTOMATED_EMAILS: 'false' do
+        AlertMailer.with(email_address: email_address, school: school, events: []).alert_email.deliver_now
+      end
       expect(ActionMailer::Base.deliveries.count).to eql 0
     end
 
@@ -28,7 +30,7 @@ RSpec.describe AlertMailer do
         end
       end
       email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to eql "Energy Sparks rhybuddion"
+      expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject', locale: :cy)
     end
 
     it 'uses default locale if specified but disabled' do
@@ -38,7 +40,7 @@ RSpec.describe AlertMailer do
         end
       end
       email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to eql "Energy Sparks alerts"
+      expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject', locale: :en)
     end
   end
 
@@ -52,7 +54,7 @@ RSpec.describe AlertMailer do
         end
       end
       email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to eql "Energy Sparks rhybuddion"
+      expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject', locale: :cy)
     end
   end
 end

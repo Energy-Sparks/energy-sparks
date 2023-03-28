@@ -35,14 +35,17 @@ RSpec.describe OnboardingMailer do
       it 'sends the onboarding email in both languages' do
         OnboardingMailer.with(school_onboarding: school_onboarding).onboarding_email.deliver_now
         email = ActionMailer::Base.deliveries.last
+        #subject includes both english and welsh
         expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarding_email.subject') + " / " + I18n.t('onboarding_mailer.onboarding_email.subject', locale: :cy))
+        #body includes all english phrases
         I18n.t('onboarding_mailer.onboarding_email').except(:subject).values.each do |email_content|
           expect(email.body.to_s).to include(email_content.gsub('%{school_name}', school.name))
         end
         expect(email.body.to_s).to include("http://localhost/school_setup/")
-        I18n.t('onboarding_mailer.onboarding_email', locale: :cy).except(:subject).values.each do |email_content|
-          expect(email.body.to_s).to include(email_content.gsub('%{school_name}', school.name))
-        end
+        #body includes some expected welsh phrases
+        expect(email.body.to_s).to include(I18n.t('onboarding_mailer.onboarding_email.paragraph_1_html', school_name: school.name, locale: :cy))
+        expect(email.body.to_s).to include(I18n.t('onboarding_mailer.onboarding_email.paragraph_2', locale: :cy))
+        expect(email.body.to_s).to include(I18n.t('onboarding_mailer.onboarding_email.set_up_your_school_on_energy_sparks', locale: :cy))
         expect(email.body.to_s).to include("http://cy.localhost/school_setup/")
       end
     end
@@ -120,7 +123,7 @@ RSpec.describe OnboardingMailer do
         OnboardingMailer.with_user_locales(users: [user], school: school) { |mailer| mailer.activation_email.deliver_now }
         email = ActionMailer::Base.deliveries.last
         expect(email.subject).to eq(I18n.t('onboarding_mailer.activation_email.subject', locale: :cy).gsub('%{school}', school.name))
-        I18n.t('onboarding_mailer.activation_email').except(:subject, :set_your_first_targets).values.each do |email_content|
+        I18n.t('onboarding_mailer.activation_email', locale: :cy).except(:subject, :set_your_first_targets).values.each do |email_content|
           expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
                                                                                 email_content.gsub('%{school_name}', school.name)
                                                                                              .gsub('%{contact_url}', 'http://cy.localhost/contact')
@@ -159,7 +162,7 @@ RSpec.describe OnboardingMailer do
         OnboardingMailer.with_user_locales(users: [user], school: school) { |mailer| mailer.onboarded_email.deliver_now }
         email = ActionMailer::Base.deliveries.last
         expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarded_email.subject', locale: :cy).gsub('%{school}', school.name))
-        I18n.t('onboarding_mailer.onboarded_email').except(:subject).values.each do |email_content|
+        I18n.t('onboarding_mailer.onboarded_email', locale: :cy).except(:subject).values.each do |email_content|
           expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
                                                                                 email_content.gsub('%{school_name}', school.name)
                                                                                              .gsub('%{contact_url}', 'http://cy.localhost/contact')
@@ -235,7 +238,7 @@ RSpec.describe OnboardingMailer do
         OnboardingMailer.with_user_locales(users: [user], school: school) { |mailer| mailer.welcome_email.deliver_now }
         email = ActionMailer::Base.deliveries.last
         expect(email.subject).to eq(I18n.t('onboarding_mailer.welcome_email.subject', locale: :cy))
-        I18n.t('onboarding_mailer.welcome_email').except(:subject).values.each do |email_content|
+        I18n.t('onboarding_mailer.welcome_email', locale: :cy).except(:subject).values.each do |email_content|
           expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
                                                                                 email_content.gsub('%{school_name}', school.name)
                                                                                              .gsub('%{contact_url}', 'http://cy.localhost/contact')
