@@ -40,7 +40,7 @@ module ChartHelper
       :div,
       '',
       id: "chart_#{chart_type}",
-      class: 'analysis-chart',
+      class: 'analysis-chart tabbed',
       style: "height:#{chart_height}px;",
       data: {
         autoload_chart: true,

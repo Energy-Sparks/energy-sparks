@@ -50,6 +50,7 @@
 //= require date_pickers
 //= require checkboxes
 //= require select
+//= require tabbed_charts
 
 //= require observations
 //= require form_wizard
