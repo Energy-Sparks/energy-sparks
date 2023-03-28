@@ -51,6 +51,14 @@ Rails.application.routes.draw do
     end
   end
 
+  # redirect old benchmark URLs
+  get '/benchmarks', to: redirect('/compare')
+  get '/benchmark', to: redirect { |p, request|
+    params = request.params['benchmark'].slice('school_group_ids', 'school_types').transform_values! { | a | a.reject(&:blank?)}
+    params['school_types'].map! {|id| School.school_types.key(id.to_i) }
+    "/compare/#{request.params['benchmark_type']}?search=groups&#{params.to_query}"
+  }
+
   get 'version', to: 'version#show'
 
   get 'sign_in_and_redirect', to: 'sign_in_and_redirect#redirect'
