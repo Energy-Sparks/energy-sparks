@@ -74,7 +74,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 end
               end
               context "with fields filled in" do
-                let(:frozen_time) { Time.now }
+                let(:frozen_time) { Time.zone.now }
                 before do
                   Timecop.freeze(frozen_time)
                   fill_in 'Title', with: "#{issue_type} title"
@@ -128,7 +128,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 end
               end
               context "and saving new values" do
-                let(:frozen_time) { Time.now }
+                let(:frozen_time) { Time.zone.now }
                 let(:new_issue_type) { Issue.issue_types.keys.excluding(issue_type).first.capitalize }
                 before do
                   Timecop.freeze(frozen_time)
