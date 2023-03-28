@@ -27,6 +27,7 @@ en:
           link_text: meter breakdown
           table_description: The table below shows a breakdown of the average baseload for your school for the last %{months_analysed} months by meter.
           title: Baseload breakdown by meter
+          whole_school: Whole school
         meter_charts:
           title: Baseload charts by meter
         multiple_meters_suggestion_html: Ideally, there should be little variation in baseload between different days and seasons. If you notice unusual changes or very high baseload, you might be able to narrow down what is causing it by looking at the %{link} of your baseload below.

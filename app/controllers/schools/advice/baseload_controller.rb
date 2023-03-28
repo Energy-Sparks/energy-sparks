@@ -8,7 +8,7 @@ module Schools
       end
 
       def analysis
-        @meters = @school.meters.active.electricity
+        @meters = options_for_meter_select
         @analysis_dates = analysis_dates
 
         @multiple_meters = baseload_service.multiple_electricity_meters?
@@ -35,6 +35,21 @@ module Schools
       end
 
       private
+
+      def aggregate_meter
+        @aggregate_meter ||= aggregate_school.aggregated_electricity_meters
+      end
+
+      def aggregate_meter_adapter
+        OpenStruct.new(
+          mpan_mprn: aggregate_meter.mpan_mprn.to_s,
+          display_name: I18n.t("advice_pages.#{advice_page_key}.analysis.meter_breakdown.whole_school")
+        )
+      end
+
+      def options_for_meter_select
+        [aggregate_meter_adapter] + @school.meters.active.electricity.sort_by(&:name_or_mpan_mprn)
+      end
 
       def set_economic_tariffs_change_caveats
         @economic_tariffs_change_caveats = build_economic_tariffs_change_caveats
