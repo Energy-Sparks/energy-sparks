@@ -12,6 +12,10 @@
   </li>
 </ul>
 
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertGasHeatingHotWaterOnDuringHoliday), show_links: false, show_icons: false %>
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertPreviousHolidayComparisonGas), show_links: false, show_icons: false %>
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertPreviousYearHolidayComparisonGas), show_links: false, show_icons: false %>
+
 <%= render 'schools/advice/section_title', section_id: 'last_twelve_months', section_title: t('advice_pages.gas_out_of_hours.analysis.last_twelve_months.title') %>
 
 <%= component 'chart', chart_type: :daytype_breakdown_gas_tolerant, school: @school do |c| %>
