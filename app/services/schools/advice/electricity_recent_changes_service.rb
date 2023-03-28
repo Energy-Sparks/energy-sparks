@@ -12,11 +12,11 @@ module Schools
         meter_data_checker.date_when_enough_data_available(14)
       end
 
+      private
+
       def asof_date
         @asof_date ||= AggregateSchoolService.analysis_date(@meter_collection, :electricity)
       end
-
-      private
 
       def aggregate_meter
         @meter_collection.aggregated_electricity_meters
