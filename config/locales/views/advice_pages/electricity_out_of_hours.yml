@@ -8,8 +8,8 @@ en:
             header: This chart can help your school compare electricity use during holidays
             subtitle_html: This chart gives the breakdown of electricity consumption between school day open and closed, holidays and weekends for each week between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>
             title: Electricity use by week for the last 14 months
-          table_footer: Ideally the summary holiday should be lower than other holidays as more equipment and appliances can be switched off.
-          table_intro: The table below shows a summary of your electricity usage during the last year of school holidays.
+          table_footer: There may be reasons for some holidays to have higher energy use, for example additional security lighting in winter or contractors working on school property. Ideally the summary holiday should be lower than other holidays as more equipment and appliances can be switched off.
+          table_intro: The table below shows a summary of your electricity usage during the last year of school holidays. It includes average energy use per day to enable comparison for different length holidays.
           title: Holiday usage
         last_twelve_months:
           table:
