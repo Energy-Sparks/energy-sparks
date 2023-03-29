@@ -1,11 +1,11 @@
 <%= render 'schools/advice/section_title', section_id: 'meter-breakdown', section_title: advice_t('gas_costs.analysis.meter_breakdown.title') %>
 
-<%= simple_form_for :school, url: meter_costs_school_advice_electricity_costs_path(school, format: :js), method: :get, remote: true do |f| %>
+<%= simple_form_for :school, url: meter_costs_school_advice_gas_costs_path(school, format: :js), method: :get, remote: true do |f| %>
   <div class="form-group">
     <label>
       <%= advice_t('gas_costs.analysis.meter_breakdown.select') %>
     </label>
-    <%= select_tag :mpan_mprn, options_from_collection_for_select(options_for_meter_select, :mpan_mprn, :name_or_mpan_mprn, nil), class: "form-control", onchange: "$(this.form).submit();" %>
+    <%= select_tag :mpan_mprn, options_from_collection_for_select(options_for_meter_select, :mpan_mprn, :name_or_mpan_mprn, nil), class: "form-control", onchange: "$('#meter-costs').html('#{ t('advice_pages.loading_data')}');$(this.form).submit();"  %>
   </div>
 <% end %>
 

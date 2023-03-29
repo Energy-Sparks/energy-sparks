@@ -62,16 +62,16 @@ cy:
       special: Arbennig
     series_data_manager:
       series_name:
-        baseload: LLWYTH SYLFAEN
+        baseload: LLWYTH SYLFAENOL
         benchmark_school: Dan reolaeth dda
         boiler_off: Boeler i ffwrdd
         community: Cymuned
-        community_baseload: Llwyth Sylfaen Cymunedol
+        community_baseload: Llwyth Sylfaenol Cymunedol
         cusum: CUSUM
         degree_days: Dyddiau Gradd
         electricity: Trydan
         electricity_consumed_from_mains: Trydan a ddefnyddir o'r prif gyflenwad
-        electricity_consumed_from_solar_pv: Trydan a ddefnyddir o solar pv
+        electricity_consumed_from_solar_pv: Trydan a ddefnyddir o solar ffotofoltaig
         exemplar_school: Ysgol Enghreifftiol
         exported_solar_electricity: Allforio trydan solar (heb ei ddefnyddio ar y safle)
         gas: Nwy
@@ -91,7 +91,7 @@ cy:
         school_day_hot_water_kitchen: Dŵr poeth/cegin yn unig Ar Ddiwrnodau Ysgol
         school_day_open: Diwrnod Ysgol Ar Agor
         solar_irradiance: Arbelydru solar
-        solar_pv: Solar PV (a ddefnyddir ar y safle)
+        solar_pv: Solar ffotofoltaig (a ddefnyddir ar y safle)
         storage_heater_charge: Tâl stôr-wresogydd (diwrnod ysgol)
         storage_heaters: Stôr-wresogyddion
         target_degree_days: Diwrnodau gradd targed

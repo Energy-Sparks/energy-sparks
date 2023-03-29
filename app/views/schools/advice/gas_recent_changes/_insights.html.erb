@@ -3,7 +3,7 @@
   <%= t('advice_pages.gas_recent_changes.insights.summary') %>.
 <% end %>
 <%= render 'schools/advice/section_title', section_id: 'your_recent_gas_use', section_title: t('advice_pages.gas_recent_changes.insights.your_recent_gas_use.title') %>
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertSchoolWeekComparisonGas), show_links: false, show_icons: false %>
 <%= render 'your_recent_gas_use_table' %>
 <%= render 'schools/advice/section_title', section_id: 'how_do_you_compare', section_title: t('advice_pages.gas_recent_changes.insights.how_do_you_compare.title') %>
-<%= t('advice_pages.gas_recent_changes.insights.how_do_you_compare.summary_html', comparison_link: benchmark_for_school_group_path(:change_in_gas_consumption_recent_school_weeks, @school)) %>
-
+<%= t('advice_pages.gas_recent_changes.insights.how_do_you_compare.summary_html', comparison_link: compare_for_school_group_path(:change_in_gas_consumption_recent_school_weeks, @school)) %>

@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   get 'case-studies', to: 'case_studies#index', as: :case_studies
   get 'case_studies/:id/:serve', to: 'case_studies#download'
+  get 'case-studies/:id/download', to: 'case_studies#download', as: :case_study_download
   get 'newsletters', to: 'newsletters#index', as: :newsletters
   get 'resources', to: 'resource_files#index', as: :resources
   get 'resources/:id/:serve', to: 'resource_files#download', as: :serve_resource
@@ -45,14 +46,15 @@ Rails.application.routes.draw do
   get 'data_feeds/weather_observations/:weather_station_id', to: 'data_feeds/weather_observations#show', as: :data_feeds_weather_observations
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
-  get 'benchmarks', to: 'benchmarks#index'
-  get 'benchmark', to: 'benchmarks#show'
-
   resources :compare, controller: 'compare', param: :benchmark, only: [:index, :show] do
     collection do
       get :benchmarks
     end
   end
+
+  # redirect old benchmark URLs
+  get '/benchmarks', to: redirect('/compare')
+  get '/benchmark', to: redirect(BenchmarkRedirector.new)
 
   get 'version', to: 'version#show'
 
@@ -167,7 +169,7 @@ Rails.application.routes.draw do
               get :insights
               get :analysis
               get :learn_more
-              if page == :electricity_costs
+              if [:electricity_costs, :gas_costs].include?(page)
                 get :meter_costs
               end
             end
@@ -483,7 +485,6 @@ Rails.application.routes.draw do
       get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings, defaults: { format: 'csv' }
       get 'tariffs', to: 'tariffs#index', as: :tariffs
       get 'tariffs/:meter_id', to: 'tariffs#show', as: :tariff
-      resources :benchmark_result_generation_runs, only: [:index, :show]
       resources :amr_data_feed_import_logs, only: [:index]
       get "amr_data_feed_import_logs/errors" => "amr_data_feed_import_logs#errors"
       get "amr_data_feed_import_logs/warnings" => "amr_data_feed_import_logs#warnings"

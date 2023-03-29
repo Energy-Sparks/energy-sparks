@@ -14,6 +14,7 @@ RSpec.describe "solar pv advice page", type: :system do
     before do
       allow_any_instance_of(Schools::Advice::SolarPvController).to receive_messages(
         {
+          create_analysable: OpenStruct.new(enough_data?: true),
           build_existing_benefits: OpenStruct.new(
             annual_saving_from_solar_pv_percent: 0.2112828204597476,
             annual_electricity_including_onsite_solar_pv_consumption_kwh: 61_057.88139174447,

@@ -1,9 +1,0 @@
-<div class="bg-light p-3 mb-3 rounded border clearfix">
-  <p><%= t('compare.filter.title') %></p>
-  <% if @filter[:type] == 'group' %>
-    <p><%= t('compare.filter.schools_in_school_group_html', school_group: current_school_group.name) %>
-  <% end %>
-  <p><%= t('compare.filter.school_types_html', school_types: @filter[:school_types].map {|st| tag.strong(t('common.school_types.' + st))}.to_sentence.html_safe) %>
-    <%= link_to t('compare.filter.change_options'), compare_index_url(index_params), class: 'btn btn-sm float-right' %>
-  </p>
-</div>

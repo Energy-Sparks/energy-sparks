@@ -121,6 +121,10 @@ RSpec.describe "advice pages", type: :system do
         expect(page).to have_link('Recent alerts', class: 'active')
       end
 
+      it "displays the alert group" do
+        expect(page).to have_content('Long term trends and advice')
+      end
+
       it 'displays English alert text' do
         visit school_path(school, switch: true)
         expect(page).to have_content('You can save £5,000 on heating in 1 year')

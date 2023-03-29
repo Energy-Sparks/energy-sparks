@@ -20,7 +20,9 @@ RSpec.describe 'live data', type: :system do
     end
 
     it 'does not let me view live data' do
-      expect(page).to have_content("Dashboard")
+      within '.dashboard-school-title' do
+        expect(page).to have_content(school.name)
+      end
       expect(page).to_not have_content("live data")
     end
   end

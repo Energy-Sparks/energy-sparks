@@ -45,17 +45,19 @@
         <%= t('advice_pages.benchmarks.benchmark_school') %>
       </h4>
       <p>
-        &lt;<%= benchmark_value %>
+        <% if benchmark_value %>
+          &lt;<%= benchmark_value %>
+        <% end %>
       </p>
     </div>
   </div>
   <div class="col-md-4 justify-content-center <%= responsive_classes(:other_school) %>">
     <div>
       <h4 class="category-label">
-        <%= t('advice_pages.benchmarks.other') %>
+        <%= t('advice_pages.benchmarks.other_school') %>
       </h4>
       <p>
-        &gt;<%= benchmark_value %>
+        &gt;<%= other_value %>
       </p>
     </div>
   </div>

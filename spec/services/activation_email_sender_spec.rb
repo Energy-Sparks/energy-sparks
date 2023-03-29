@@ -45,18 +45,6 @@ describe ActivationEmailSender, :schools, type: :service do
           expect(email.to).to eql [onboarding_user.email]
         end
 
-        it 'records target invite if enough data' do
-          allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-          service.send
-          expect(school.has_school_target_event?(:first_target_sent)).to be true
-        end
-
-        it 'does not records target invite if not enough data' do
-          allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(false)
-          service.send
-          expect(school.has_school_target_event?(:first_target_sent)).to be false
-        end
-
         it 'records that an email was sent' do
           service.send
           expect(school_onboarding).to have_event(:activation_email_sent)
@@ -116,22 +104,6 @@ describe ActivationEmailSender, :schools, type: :service do
             expect(matcher).to have_link("Get in touch")
           end
 
-          context 'request to set targets' do
-            let(:enough_data) { true }
-            it 'when enough data' do
-              allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-              service.send
-              expect(email_body).to include("Set your first targets")
-              expect(matcher).to have_link("Set your first target")
-            end
-
-            it 'but not when not enough data' do
-              allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(false)
-              service.send
-              expect(email_body).to_not include("Set your first targets")
-              expect(matcher).to_not have_link("Set your first target")
-            end
-          end
         end
       end
     end

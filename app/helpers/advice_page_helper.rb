@@ -19,8 +19,8 @@ module AdvicePageHelper
     I18n.t(key, vars.merge(scope: [:advice_pages])).html_safe
   end
 
-  def format_unit(value, units, in_table = true)
-    FormatEnergyUnit.format(units, value, :html, false, in_table).html_safe
+  def format_unit(value, units, in_table = true, user_numeric_comprehension_level = :ks2)
+    FormatEnergyUnit.format(units, value, :html, false, in_table, user_numeric_comprehension_level).html_safe
   end
 
   def chart_start_month_year(date = Time.zone.today)
@@ -55,11 +55,11 @@ module AdvicePageHelper
 
   #link to a specific benchmark for a school group, falls back to the
   #generic benchmark page if a school doesn't have a group
-  def benchmark_for_school_group_path(benchmark_type, school)
+  def compare_for_school_group_path(benchmark_type, school)
     if school.school_group.present?
-      benchmark_path({ "benchmark_type" => benchmark_type, "benchmark[school_group_ids][]" => school.school_group.id })
+      compare_path(benchmark: benchmark_type, school_group_ids: [school.school_group.id])
     else
-      benchmark_path({ "benchmark_type" => benchmark_type })
+      compare_path(benchmark: benchmark_type)
     end
   end
 
@@ -76,12 +76,6 @@ module AdvicePageHelper
 
   def one_years_data?(start_date, end_date)
     (end_date - 364) >= start_date
-  end
-
-  def two_weeks_data?(start_date:, end_date:)
-    return false unless start_date && end_date
-
-    (end_date - start_date) >= 14
   end
 
   def months_analysed(start_date, end_date)
@@ -102,7 +96,7 @@ module AdvicePageHelper
   end
 
   def meters_by_estimated_saving(meters)
-    meters.sort_by {|_, v| -v.estimated_saving_£ }
+    meters.sort_by {|_, v| v.estimated_saving_£.present? ? -v.estimated_saving_£ : 0.0 }
   end
 
   def meters_by_percentage_baseload(meters)
@@ -127,55 +121,83 @@ module AdvicePageHelper
     end
   end
 
-  def warm_weather_on_days_rating(days)
-    range = {
-      0..6     => :excellent,
-      6..11    => :good,
-      12..16   => :above_average,
-      17..24   => :poor,
-      25..365  => :very_poor
-    }
-    range.select { |k, _v| k.cover?(days.to_i) }.values.first
-  end
-
-  def warm_weather_on_days_adjective(days)
-    I18nHelper.adjective(warm_weather_on_days_rating(days))
+  def warm_weather_on_days_adjective(rating)
+    I18nHelper.adjective(rating)
   end
 
   def notice_status_for(rating_value)
-    rating_value > 4 ? :positive : :negative
+    rating_value > 6 ? :positive : :negative
   end
 
-  def warm_weather_on_days_status(days)
-    if [:excellent, :good].include?(warm_weather_on_days_rating(days))
+  def warm_weather_on_days_status(rating)
+    if [:excellent, :good].include?(rating)
       :positive
     else
       :negative
     end
   end
 
-  def advice_index_breadcrumbs(school, tab)
-    breadcrumbs = [{ name: I18n.t('advice_pages.breadcrumbs.root'), href: school_advice_path(school) }]
-    case tab
-    when :alerts
-      breadcrumbs << {
-        name: I18n.t('advice_pages.index.alerts.title'), href: alerts_school_advice_path(school)
-      }
-    when :priorities
-      breadcrumbs << {
-        name: I18n.t('advice_pages.index.priorities.title'), href: alerts_school_advice_path(school)
-      }
-    end
-    breadcrumbs
-  end
-
   def display_advice_page?(school, fuel_type)
-    fuel_type.to_sym == :solar_pv || school_has_fuel_type?(school, fuel_type)
+    school_has_fuel_type?(school, fuel_type)
   end
 
   def school_has_fuel_type?(school, fuel_type)
     fuel_type = 'storage_heaters' if fuel_type == "storage_heater"
+    fuel_type = 'electricity' if fuel_type == "solar_pv"
     school.send("has_#{fuel_type}?".to_sym)
+  end
+
+  def can_benchmark?(advice_page:)
+    Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.can_benchmark?(advice_page: advice_page)
+  end
+
+  def tariff_source(tariff_summary)
+    return t('advice_pages.tables.labels.default') unless tariff_summary.real
+    if tariff_summary.name.include?('DCC SMETS2')
+      t('advice_pages.tables.labels.smart_meter')
+    else
+      t('advice_pages.tables.labels.user_supplied')
+    end
+  end
+
+  def alert_types_for_group(group)
+    AlertType.groups.key?(group) ? AlertType.send(group) : []
+  end
+
+  def alert_types_for_class(class_name)
+    AlertType.where(class_name: class_name.to_s)
+  end
+
+  # alert type groups have a specific order here
+  def dashboard_alert_groups(dashboard_alerts)
+    %w[priority change benchmarking advice].select { |group| dashboard_alerts_for_group(dashboard_alerts, group).any? }
+  end
+
+  def dashboard_alerts_for_group(dashboard_alerts, group)
+    dashboard_alerts.select { |dashboard_alert| dashboard_alert.alert.alert_type.group == group }
+  end
+
+  def t_weekday(week_day)
+    I18n.t('date.day_names')[week_day]
+  end
+
+  #sort an array of SchoolPeriod objects
+  def sort_school_periods(periods)
+    periods.sort { |a, b| a.start_date <=> b.start_date }
+  end
+
+  def can_compare_holiday_usage?(holiday, holiday_usage)
+    return false unless holiday_usage.usage.present?
+    return false unless holiday_usage.previous_holiday_usage.present?
+    Time.zone.today > holiday.end_date
+  end
+
+  def within_school_period?(school_period)
+    @analysis_dates.end_date > school_period.start_date && @analysis_dates.end_date < school_period.end_date
+  end
+
+  def average_daily_usage(usage, school_period)
+    return usage.kwh / (school_period.end_date - school_period.start_date)
   end
 end
 # rubocop:enable Naming/AsciiIdentifiers

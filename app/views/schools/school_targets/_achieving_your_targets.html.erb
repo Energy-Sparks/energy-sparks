@@ -45,7 +45,7 @@
       <p><%= t('schools.school_targets.achieving_your_targets.we_analyse_your_data') %></p>
       <ul>
         <li>
-          <%= link_to t('schools.school_targets.achieving_your_targets.review_your_energy_analysis'), school_analysis_index_path(school) %>
+          <%= link_to t('schools.school_targets.achieving_your_targets.review_your_energy_analysis'), school_advice_link(school) %>
         </li>
         <li>
           <%= link_to t('schools.school_targets.achieving_your_targets.explore_your_data'), pupils_school_analysis_path(school) %>
@@ -58,7 +58,7 @@
         </li>
         <% if school.school_group && can?(:compare, school.school_group) %>
           <li>
-            <%= link_to t('schools.school_targets.achieving_your_targets.compare_usage_with_schools_in_your_group'), benchmarks_path(benchmark: {school_group_ids: [school.school_group.id]}) %>
+            <%= link_to t('schools.school_targets.achieving_your_targets.compare_usage_with_schools_in_your_group'), compare_index_path(school_group_ids: [school.school_group.id])  + '#groups' %>
           </li>
         <% end %>
         <% if daily_variation_url %>

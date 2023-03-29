@@ -8,7 +8,7 @@ en:
         cost_breakdown_by_charge:
           title: Cost breakdown by charge for the last %{period}
         cost_breakdown_by_meter:
-          intro: The following table summarises the total cost associated with each meter for the last %{period}
+          intro: The following table summarises the total cost associated with each meter for the last %{period} between %{start_date} and %{end_date}
           title: Total cost for the last %{period}
           whole_school: We estimate your total electricity cost over the last %{period} to be %{cost}.
         meter_breakdown:

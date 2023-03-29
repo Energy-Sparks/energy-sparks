@@ -70,3 +70,31 @@
 .advice-table-caption {
   margin-bottom: 40px;
 }
+
+.advice-page-label {
+  padding-bottom: 0px;
+  padding-top: 10px;
+  font-weight: bold;
+}
+
+.advice-page-benchmark-label {
+  text-align: center !important;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.advice-page-benchmark-muted-label {
+  @extend .advice-page-benchmark-label;
+  font-weight: bold;
+  color: $grey;
+}
+
+.advice-page-benchmark-colored-label {
+  @extend .advice-page-benchmark-label;
+  font-weight: bold;
+  color: white;
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}

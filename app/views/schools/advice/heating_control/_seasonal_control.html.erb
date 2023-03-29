@@ -1,6 +1,9 @@
 <%= render 'schools/advice/section_title', section_id: 'seasonal-control', section_title: t('advice_pages.heating_control.analysis.seasonal_control.title') %>
 
-<%= render 'warm_weather_notice', seasonal_analysis: seasonal_analysis %>
+<%= component 'alerts', school: school, dashboard_alerts: dashboard_alerts, alert_types: alert_types_for_class(AlertSeasonalHeatingSchoolDays), show_links: false, show_icons: false %>
+<%= component 'alerts', school: school, dashboard_alerts: dashboard_alerts, alert_types: alert_types_for_class(AlertTurnHeatingOff), show_links: false, show_icons: false %>
+
+<%= render 'warm_weather_notice', seasonal_analysis: seasonal_analysis, warm_weather_on_days_rating: warm_weather_on_days_rating %>
 
 <%= render 'warm_weather_benefits', seasonal_analysis: seasonal_analysis %>
 

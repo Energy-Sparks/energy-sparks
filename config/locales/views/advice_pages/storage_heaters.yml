@@ -3,8 +3,94 @@ en:
   advice_pages:
     storage_heaters:
       analysis:
-        title: Analysis
+        analysis_table:
+          columns:
+            gbp_at_current_tariff: "£ (at current tariff)"
+            kg_co2: kg/co2
+            kwh: kWh
+            percent: Percent
+            time_of_use: Time of use
+          rows:
+            total: Total
+        electricity_use_for_the_last_12_months:
+          advice_html: "<p>This section gives some insights into how the storage heaters in your school have used electricity over the last year.</p>"
+          storage_heater_by_day_of_week_tolerant:
+            footer_html: There should be little or no electricity use by storage heaters on Saturdays and Sundays. The cost of installing a 7-day timer can often be paid back with savings within one heating season (see our <a href='%{case_study_path}'>case study</a>).
+            subtitle_html: This chart shows the total amount of electricity used between <span class='start-date'>%{start_month_year}</span> and <span class='end-date'>%{end_month_year}</span>, broken down into days of the week.
+            title: Storage heater electricity consumption by day of the week
+          storage_heater_group_by_week:
+            footer_html: "<p>Generally, consumption should peak in the winter when it is coldest and the school requires most heat. The second axis, 'Degree Day' line on the chart above is an indication of how cold it was, so the higher the line the colder the outside temperature.</p>"
+            subtitle_html: The chart below shows your storage heater electricity consumption broken down on a weekly basis between <span class='start-date'>%{start_month_year}</span> and <span class='end-date'>%{end_month_year}</span>
+            title: Storage heater electricity consumption for the last year
+          storage_heater_intraday_current_year:
+            footer: The chart above shows when your storage heaters are being ‘charged’ overnight when electricity is cheaper.
+            subtitle_html: The chart below shows the average electricity consumption between <span class='start-date'>%{start_month_year}</span> and <span class='end-date'>%{end_month_year}</span>, broken down by time of day.
+            title: Storage heater electricity consumption by time of day
+          the_table_below: The table below shows how much electricity has been used for storage heaters over the last 12 months when the school is open and closed on a school day as well as during weekends and holidays.
+          title: Electricity use for the last 12 months
+        holiday_usage:
+          table_footer: There should be no reason for storage heaters to remain on during summer half term or summer holidays.
+          table_intro: The table below shows the total storage heater electricity consumption during the last year of school holidays. It includes average energy use per day to enable comparison for different length holidays.
+          title: Storage heater use during holidays
+        long_term_trends:
+          storage_heater_group_by_week_long_term:
+            subtitle: This chart gives the breakdown or gas consumption between school day open and closed, holidays and weekends for all the full years we have data for your school
+            title: Long term storage heater electricity consumption
+          title: Long term trends
+        recent_usage:
+          intraday_line_school_last7days_storage_heaters:
+            subtitle_html: Electricity consumed by storage heaters between <span class='start-date'>%{start_month_year}</span> and <span class='end-date'>%{end_month_year}</span>.
+            title: Storage heater electricity consumption for last 7 days
+          this_chart_html: "<p>This chart is only useful during the winter when the storage heaters are turned on.</p>"
+          title: Recent usage
+        seasonal_control:
+          advice_html: |-
+            <p>Your school should only be using electricity for storage heaters during the winter. Most schools turn the heating on after the Autumn half term holiday in November, and off after Easter in April, or perhaps a little later if it's an early Easter holiday.</p>
+            <p>By comparing your storage heater usage with the local weather we can highlight when your storage heaters have been on during warm and cold weather. This is shown in the following chart.</p>
+          heating_on_off_by_week_storage_heater:
+            subtitle_html: Electricity used for hot water and heating during warm and cold weather between <span class='start-date'>%{start_month_year}</span> and <span class='end-date'>%{end_month_year}</span>.
+            title: Storage heater use in warm weather
+          notice_html: "<p>Last year your school heating was on for %{heating_on_in_warm_weather_days} days during warm weather. This is %{assessment}.</p>"
+          title: Seasonal control
+          you_should_ensure: You should ensure that storage heaters are turned off during weekends and holidays, and shorten the period when they are used during the year.
+        tables:
+          columns:
+            average_daily_usage: Average daily usage (kWh)
+        thermostatic_control:
+          storage_heater_thermostatic:
+            content_html: |-
+              <p>This chart plots the outside temperature (x axis) versus the storage heater electricity consumption for all the days of the last year when the storage heaters were turned on. The trendline shows the ideal electricity consumption if the thermostatic control is working perfectly i.e. all the points sit on a straight line.</p>
+              <p>If the heating has good thermostatic control (a high R<sup>2</sup> value) then the points at the top of chart when the heating is on should be close to the trend line.</p>
+              <p>This is because the amount of heating required on a single day is linearly proportional to the difference between the inside and outside temperature, and any variation from the trend line would suggest thermostatic control isn't working too well.</p>
+              <p>Unfortunately, for storage heaters this is difficult because they consume the electricity overnight with no reference to the subsequent heating demand during the day.</p>
+            subtitle_html: This chart shows an analysis of how closely electricity used by storage heaters in your school is aligned with the outside temperature between <span class='start-date'>%{start_month_year}</span> and <span class='end-date'>%{end_month_year}</span>
+            title: Thermostatic analysis of your school’s storage heater use
+          title: Thermostatic control
+          your_thermostatic_control_is_html: Your thermostatic control is %{r2}, which is %{r2_rating_adjective}. For storage heaters, an R<sup>2</sup> value of over 0.5 is good. A perfect value is 1.0. The lower the value below 1.0, the worse the school's thermostatic control.
+        this_page_html: "<p>This page gives a more detailed analysis of your school’s storage heater energy use to help improve how you manage them.</p>"
+        title: Storage heater analysis
       insights:
-        next_steps: Next steps
-        title: Insights
+        advice_html: |-
+          <p>Storage heaters work differently from other forms of heating in that they consume electricity overnight, store the energy, and then release the stored heat to classrooms during the day.</p>
+          <p>In contrast most gas heating systems consume gas to produce heat immediately, so only consume energy during the school day.</p>
+        how_do_you_compare:
+          for_more_detail: For more detail look at how your school compares with others in your group
+          title: How do you compare?
+        leaving_the_heating_on_during_warm_weather:
+          title: Leaving the heating on during warm weather
+        link: Learn more
+        next_steps_html: |-
+          <p>To the reduce the amount of energy used by storage heaters in your school:</p>
+          <ul>
+            <li>Keep an eye on the weather forecast, particularly in the Spring, and try to remember to turn your heating off when it is warm outside. Energy Sparks automatically emails you if it is going to be warm in the following week - keep an eye on your weekly alert email.</li>
+            <li>Normally, storage heaters should be switched off during the school holidays and at weekends. If not currently installed, adding 7-day timers will be worth the investment.</li>
+          </ul>
+          <p>Check out the Energy Sparks case studies focused on improving storage heater control:</p>
+          <ul>
+            <li><a href="%{case_study_1}">28% reduction in consumption from installing 7-day timers</a></li>
+            <li><a href="%{case_study_2}">38% reduction in consumption by improving heating timings</a></li>
+          </ul>
+        title: What are storage heaters?
+        your_storage_heater_energy_use:
+          title: Your storage heater energy use
       page_title: Storage heater usage analysis

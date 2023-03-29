@@ -24,12 +24,10 @@ cy:
           title: Defnydd fesul diwrnod yr wythnos
       insights:
         comparison:
+          callout_footer: defnydd blynyddol
           how_do_you_compare: Sut mae eich defnydd o drydan y tu allan i oriau ysgol yn cymharu ag ysgolion %{school_type} eraill ar Sbarcynni, sydd â nifer tebyg o ddisgyblion?
           more_detail_html: Am ragor o fanylion, <a href="%{link}">cymharwch gydag ysgolion eraill yn eich grŵp</a>
           title: Sut ydych chi'n cymharu?
-        how_do_you_compare:
-          table:
-            your_kwh: Eich kWh
         next_steps: Sicrhewch eich bod yn diffodd y goleuadau ac offer trydan yn ddyddiol a gwnewch wiriad mwy trylwyr cyn penwythnosau a gwyliau.
         title: Beth yw defnydd y tu allan i oriau?
         what_is_out_of_hours_usage_html: |-

@@ -15,11 +15,13 @@ Disallow: /schools/scoreboard
 Disallow: /schools/*/analysis
 Disallow: /schools/*/find_out_more/*
 Disallow: /schools/*/chart.json
+Disallow: /schools/*/advice/*
 Disallow: /pupils/schools/*/analysis
 Disallow: /benchmark
 Disallow: /all_benchmarks
 Disallow: /users/sign_in
 Disallow: /activity_types/search
+Disallow: /compare/*
 
 User-agent: SemrushBot
 Disallow: /

@@ -1,12 +1,18 @@
 module Schools
   module Advice
     class HeatingControlController < AdviceBaseController
+      before_action :load_dashboard_alerts, only: [:insights, :analysis]
+
       def insights
         @last_week_start_times = heating_control_service.last_week_start_times
         @estimated_savings = heating_control_service.estimated_savings
         @percentage_of_annual_gas = heating_control_service.percentage_of_annual_gas
         @enough_data_for_seasonal_analysis = heating_control_service.enough_data_for_seasonal_analysis?
-        @seasonal_analysis = heating_control_service.seasonal_analysis
+        if @enough_data_for_seasonal_analysis
+          @seasonal_analysis = heating_control_service.seasonal_analysis
+          @warm_weather_on_days_rating = heating_control_service.warm_weather_on_days_rating
+          @benchmark_warm_weather_days = heating_control_service.benchmark_warm_weather_days
+        end
       end
 
       def analysis
@@ -15,8 +21,11 @@ module Schools
         @estimated_savings = heating_control_service.estimated_savings
         @percentage_of_annual_gas = heating_control_service.percentage_of_annual_gas
 
-        @seasonal_analysis = heating_control_service.seasonal_analysis
         @enough_data_for_seasonal_analysis = heating_control_service.enough_data_for_seasonal_analysis?
+        if @enough_data_for_seasonal_analysis
+          @seasonal_analysis = heating_control_service.seasonal_analysis
+          @warm_weather_on_days_rating = heating_control_service.warm_weather_on_days_rating
+        end
 
         @multiple_meters = heating_control_service.multiple_meters?
         if @multiple_meters

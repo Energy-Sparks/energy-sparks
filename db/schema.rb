@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_02_122743) do
+ActiveRecord::Schema.define(version: 2023_03_16_173201) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -160,6 +160,16 @@ ActiveRecord::Schema.define(version: 2023_03_02_122743) do
     t.integer "position"
     t.index ["advice_page_id"], name: "index_advice_page_intervention_types_on_advice_page_id"
     t.index ["intervention_type_id"], name: "index_advice_page_intervention_types_on_intervention_type_id"
+  end
+
+  create_table "advice_page_school_benchmarks", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.bigint "advice_page_id", null: false
+    t.integer "benchmarked_as", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["advice_page_id"], name: "index_advice_page_school_benchmarks_on_advice_page_id"
+    t.index ["school_id"], name: "index_advice_page_school_benchmarks_on_school_id"
   end
 
   create_table "advice_pages", force: :cascade do |t|
@@ -533,11 +543,11 @@ ActiveRecord::Schema.define(version: 2023_03_02_122743) do
   create_table "benchmark_results", force: :cascade do |t|
     t.bigint "alert_type_id", null: false
     t.date "asof", null: false
-    t.text "data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "benchmark_result_school_generation_run_id", null: false
     t.json "results", default: {}
+    t.json "results_cy", default: {}
     t.index ["alert_type_id"], name: "index_benchmark_results_on_alert_type_id"
     t.index ["benchmark_result_school_generation_run_id"], name: "ben_rgr_index"
   end
@@ -1805,6 +1815,8 @@ ActiveRecord::Schema.define(version: 2023_03_02_122743) do
   add_foreign_key "activity_type_topics", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_topics", "topics", on_delete: :restrict
   add_foreign_key "activity_types", "activity_categories"
+  add_foreign_key "advice_page_school_benchmarks", "advice_pages", on_delete: :cascade
+  add_foreign_key "advice_page_school_benchmarks", "schools", on_delete: :cascade
   add_foreign_key "alert_errors", "alert_generation_runs", on_delete: :cascade
   add_foreign_key "alert_errors", "alert_types", on_delete: :cascade
   add_foreign_key "alert_generation_runs", "schools", on_delete: :cascade

@@ -47,19 +47,24 @@ en:
           title: Weekends
       insights:
         how_do_you_compare:
-          more_detail: For more detail, compare with other schools in your group
-          summary: How does your peak electricity consumption compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?
-          table:
-            category: Category
-            exemplar_school: Exemplar school
-            your_kw: Your kW
+          callout_footer: average peak usage
+          more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
+          summary: How does your peak electricity use compare to other %{school_type} schools on Energy Sparks with a similar number of pupils?
           title: How do you compare?
-        next_steps: Next steps
-        summary: Intraday electricity use analysis looks at how the amount of electricity used by a school varies throughout the day - from the overnight baseload to the peak in the middle of the day. This page looks at this variation for school days, weekends and holidays and also compares your school to other schools of a similar size.
-        title: What is intraday electricity use analysis?
+        summary_html: |-
+          <p>
+            Intraday use refers to how your electricity use varies at different times of the day. Usage will be at a peak in the middle of the day, but should be low overnight.
+          </p>
+          <p>
+            This page looks at this variation for school days, weekends and holidays and also compares your school to other schools of a similar size.
+          </p>
+        summary_link: Learn more
+        title: What is intraday use?
         your_current_peak_electricity_use:
+          data_on_peak_kw_usage_available_from: Data on peak kw usage available from %{data_available_from}
           table:
             average_peak_kw: Average peak kW
             percent_change: "% change"
+          the_table_below: The table below provides the average peak kW for electricity consumed between %{start_date} and %{end_date}.
           title: Your current peak electricity use
       page_title: Electricity intraday usage analysis

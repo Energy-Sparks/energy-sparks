@@ -14,6 +14,7 @@ module Pupils
     before_action only: [:show] do
       redirect_unless_permitted :show
     end
+    before_action :set_breadcrumbs
 
     def show
       authorize! :show_pupils_dash, @school
@@ -23,6 +24,10 @@ module Pupils
     end
 
   private
+
+    def set_breadcrumbs
+      @breadcrumbs = [{ name: I18n.t('dashboards.pupil_dashboard') }]
+    end
 
     def setup_default_features
       activity_setup(@school)

@@ -5,6 +5,7 @@
 <ul>
   <li><%= link_to(t('advice_pages.gas_recent_changes.analysis.compare_recent_weeks.title'), '#compare-recent-weeks') %></li>
   <li><%= link_to(t('advice_pages.gas_recent_changes.analysis.compare_recent_days.title'), '#compare-recent-days') %></li>
+  <li><%= link_to(t('advice_pages.gas_recent_changes.analysis.compare_last_week.title'), '#compare-last-week') %></li>
   <li><%= link_to(t('advice_pages.gas_recent_changes.analysis.impact_of_temperature.title'), '#impact-of-temperature') %></li>
 </ul>
 
@@ -55,6 +56,24 @@
     <% end %>
   <% end %>
 </div>
+
+<%= render 'schools/advice/section_title', section_id: 'compare-last-week', section_title: t('advice_pages.gas_recent_changes.analysis.compare_last_week.title') %>
+
+<%= component 'chart',
+           chart_type: :last_7_days_intraday_gas,
+           school: @school,
+           analysis_controls: true,
+           no_zoom: true,
+           axis_controls: false do |c| %>
+  <% c.with_title { t('advice_pages.gas_recent_changes.analysis.charts.compare_last_week_chart_title') } %>
+  <% c.with_subtitle { t('advice_pages.gas_recent_changes.analysis.charts.compare_last_week_chart_subtitle') } %>
+  <% c.with_header do %>
+    <p><%= t('advice_pages.gas_recent_changes.analysis.charts.compare_last_week_chart_explanation') %></p>
+  <% end %>
+  <% c.with_footer do %>
+    <p><%= t('advice_pages.gas_recent_changes.analysis.charts.compare_last_week_chart_footer') %></p>
+  <% end %>
+<% end %>
 
 <!--  IMPACT ON GAS USE OF TEMP -->
 <%= render 'schools/advice/section_title', section_id: 'impact-of-temperature', section_title: t('advice_pages.gas_recent_changes.analysis.impact_of_temperature.title') %>

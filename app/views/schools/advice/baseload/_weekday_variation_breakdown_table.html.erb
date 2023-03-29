@@ -12,15 +12,25 @@
   </thead>
   <tbody>
     <% meters_by_estimated_saving(intraweek_variation_by_meter).each do |mpan_mprn, variation| %>
-    <tr>
-      <td class="text-left"><%= variation.meter.present? ? variation.meter.name_or_mpan_mprn : mpan_mprn %></td>
-      <td class="text-left"><%= format_rating(variation.variation_rating) %></td>
-      <td class="text-right"><%= format_unit(variation.max_day_kw, :kw) %></td>
-      <td class="text-right"><%= format_unit(variation.min_day_kw, :kw) %></td>
-      <td class="text-right"><%= format_unit(variation.percent_intraday_variation, :percent) %></td>
-      <td class="text-right"><%= format_unit(variation.estimated_saving_£, :£) %></td>
-      <td class="text-right"><%= format_unit(variation.estimated_saving_co2, :kg) %></td>
-    </tr>
+        <tr>
+          <td class="text-left"><%= variation && variation.meter.present? ? variation.meter.name_or_mpan_mprn : mpan_mprn %></td>
+          <% if variation.enough_data? %>
+            <td class="text-left"><%= format_rating(variation.variation_rating) %></td>
+            <td class="text-right"><%= format_unit(variation.max_day_kw, :kw) %> (<%= t_weekday(intraweek_variation.max_day) %>)</td>
+            <td class="text-right"><%= format_unit(variation.min_day_kw, :kw) %> (<%= t_weekday(intraweek_variation.min_day) %>)</td>
+            <td class="text-right"><%= format_unit(variation.percent_intraday_variation, :percent) %></td>
+            <td class="text-right"><%= format_unit(variation.estimated_saving_£, :£) %></td>
+            <td class="text-right"><%= format_unit(variation.estimated_saving_co2, :kg) %></td>
+          <% else %>
+            <td colspan="6" class="text-center old-data">
+              <% if variation.data_available_from.present? %>
+                <%= t('advice_pages.not_enough_data.table_row_data_available_from', date: variation.data_available_from.to_s(:es_short)) %>
+              <% else %>
+                <%= t('advice_pages.not_enough_data.table_row_not_enough') %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
     <% end %>
     <tr>
       <td class="text-left"><%= t('advice_pages.baseload.tables.labels.all_meters') %></td>

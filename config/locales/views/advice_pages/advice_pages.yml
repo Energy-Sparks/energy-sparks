@@ -1,10 +1,16 @@
 ---
 en:
   advice_pages:
+    alerts:
+      groups:
+        advice: Long term trends and advice
+        benchmarking: Comparison with other schools
+        change: Recent changes in your energy usage
+        priority: Priority alerts
     benchmarks:
       benchmark_school: Well managed
       exemplar_school: Exemplar
-      other: Improving
+      other_school: Action needed
       your_school: Your school
     breadcrumbs:
       root: Advice
@@ -15,6 +21,11 @@ en:
       data_warning: We have not received data for your %{fuel_type} usage for over thirty days. As a result your analysis will be out of date and may not reflect recent changes in your school.
       message: We encountered an error attempting to generate your analysis. The Energy Sparks team have been notified of the problem.
       title: Sorry, something has gone wrong
+    fuel_type:
+      electricity: electricity
+      gas: gas
+      solar_pv: solar PV
+      storage_heater: storage heater
     how_have_we_analysed_your_data:
       calculations_based_on_fuel_type: Calculations based on %{fuel_type} consumed between %{start_date} and %{end_date}
       cost_calculations: Cost calculations
@@ -51,16 +62,17 @@ en:
         actions_title: Take action around the school
         activities_title: Work with the pupils
         title: What should you do next?
+    loading_data: Loading data...
     nav:
       name: Advice
       pages:
         baseload: Baseload
-        electricity_costs: Costs
+        electricity_costs: Tariffs and costs
         electricity_intraday: Intraday
         electricity_long_term: Long term changes
         electricity_out_of_hours: Out of school hours
         electricity_recent_changes: Recent changes
-        gas_costs: Costs
+        gas_costs: Tariffs and costs
         gas_long_term: Long term changes
         gas_out_of_hours: Out of school hours
         gas_recent_changes: Recent changes
@@ -68,8 +80,8 @@ en:
         hot_water: Hot water
         solar_pv: Solar PV
         storage_heaters: Storage heaters
-        thermostatic_control: Thermostatic
-        total_energy_use: Total energy use
+        thermostatic_control: Thermostatic control
+        total_energy_use: Energy use summary
       sections:
         electricity: Electricity
         gas: Gas
@@ -83,11 +95,14 @@ en:
       available_from: Assuming we continue to regularly receive data we expect this analysis to be available after %{available_from}.
       learn_more_html: In the meantime you can <a href="%{learn_more_link}">learn more</a> about this topic.
       message: We don't currently have enough %{fuel_type} data in order to run this analysis for your school.
+      table_row_data_available_from: Data available from %{date}
+      table_row_not_enough: not enough data
       title: Not enough data to run analysis
     tables:
       columns:
-        category: Category
+        name: Name
         period: Period
+        source: Source
       labels:
         bill_components:
           00_30_to_07_00: 00:30 to 07:00
@@ -116,11 +131,19 @@ en:
           vat_20: VAT (20%)
           vat_5: VAT (5%)
         change_prev_year: Previous year change
+        default: Default
         partial: "(partial)"
+        smart_meter: Smart meter
         total: Total
+        user_supplied: User supplied
       notice:
+        partial_holiday: only partial data available for current holiday
+        partial_months: indicates a partial month
+        partial_year: indicates a partial year
+        three_significant_figures: Data in this table are presented to 3 significant figures.
         two_significant_figures: Data in this table are presented to 2 significant figures.
     tabs:
       analysis: Analysis
       insights: Insights
       learn_more: Learn More
+    tariff_table_intro: We used the following tariffs to calculate these costs.

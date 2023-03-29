@@ -1,13 +1,4 @@
 <% content_for :page_title, "#{@advice_page_title} | #{school.name}" %>
-
-<div class="advice-page-breadcrumb">
-  <%= component 'breadcrumbs' do |c| %>
-    <% c.with_school(school) %>
-    <% c.with_items([ { name: t('advice_pages.breadcrumbs.root'), href: school_advice_path(school) },
-                      { name: @advice_page_title, href: advice_page_path(school, advice_page) },
-                    ]) %>
-  <% end %>
-</div>
 <h1><%= @advice_page_title %></h1>
 <div class="row">
   <div class="col-md-3 col-lg-3 col-xl-2 advice-page-nav">
@@ -16,7 +7,7 @@
   <div class="col-md-9 col-lg-9 col-xl-10 advice-page-tabs">
     <%= render 'schools/advice/advice_tabs', school: school, advice_page: advice_page, tab: tab %>
     <div class="mt-4" id="<%= advice_page.key %>-<%= tab %>">
-      <%= render('schools/advice/data_warning', fuel_type: advice_page.fuel_type) if data_warning %>
+      <%= render('schools/advice/data_warning', fuel_type: advice_page.t_fuel_type) if data_warning %>
       <%= yield %>
     </div>
   </div>

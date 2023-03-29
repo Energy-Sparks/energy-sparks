@@ -4,12 +4,18 @@ en:
     electricity_recent_changes:
       analysis:
         charts:
+          compare_last_week_chart_explanation: The chart automatically uses the seven most recently available days. Use the explore buttons above the chart to compare alternative days. You can click on the legend to add or remove lines from the graph to make it clearer.
+          compare_last_week_chart_footer: You can use this type of chart to understand how the school's electricity use varies throughout the week.
+          compare_last_week_chart_subtitle: A comparison between your school's electricity use throughout the day over the last 7 days.
+          compare_last_week_chart_title: Your school's half hourly electricity consumption over the last 7 days
           compare_recent_days_chart_explanation: The chart automatically uses the two most recently available days. Use the options below the chart to compare alternative days.
           compare_recent_days_chart_subtitle: A comparison between your school’s electricity use throughout the day on two recent days.
           compare_recent_days_chart_title: Your school's half hourly electricity use for two recent days
           compare_recent_weeks_chart_explanation: The chart automatically uses the last two fully available weeks. Use the options below the chart to compare alternative weeks.
           compare_recent_weeks_chart_subtitle: A comparison of  your school’s daily electricity use across two recent weeks.
           compare_recent_weeks_chart_title: Your school's daily electricity use for two recent weeks
+        compare_last_week:
+          title: Comparison of electricity use over the last 7 days
         compare_recent_days:
           title: Comparison of electricity use over 2 recent days
         compare_recent_weeks:

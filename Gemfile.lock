@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: e0996cc605b3d763aee65ec04e3fb1a2745e8a5a
-  tag: 2.4.17
+  revision: df06bf4664f9b386e4bc75b757dccd213cab3be4
+  tag: 2.5.4
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (~> 6.0.0)
@@ -425,7 +425,7 @@ GEM
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.6.1)
-    rack (2.2.6.2)
+    rack (2.2.6.4)
     rack-attack (6.5.0)
       rack (>= 1.0, < 3)
     rack-canonical-host (1.1.0)

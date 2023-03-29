@@ -3,6 +3,8 @@ module Schools
     load_and_authorize_resource :school
     load_and_authorize_resource :estimated_annual_consumption, through: :school
 
+    before_action :set_breadcrumbs
+
     def index
       if @school.estimated_annual_consumptions.any?
         redirect_to edit_school_estimated_annual_consumption_path(@school, @school.latest_annual_estimate)
@@ -51,6 +53,10 @@ module Schools
     end
 
     private
+
+    def set_breadcrumbs
+      @breadcrumbs = [{ name: I18n.t('schools.estimated_annual_consumptions.breadcrumb') }]
+    end
 
     def estimated_annual_consumption_params
         params.require(:estimated_annual_consumption).permit(:electricity, :gas, :storage_heaters, :year, :school_id)

@@ -13,6 +13,34 @@ RSpec.describe SchoolComparisonComponent, type: :component do
 
   let(:params)  { { id: 'spec-id', comparison: comparison } }
 
+  context 'when the comparison only has exemplar and school values' do
+    let(:comparison) {
+      Schools::Comparison.new(
+        school_value: 150,
+        benchmark_value: nil,
+        exemplar_value: 10,
+        unit: :kw
+      )
+    }
+    let(:component)  { SchoolComparisonComponent.new(**params) }
+    let(:html) do
+      render_inline(component)
+    end
+    it 'still renders' do
+      expect(component.render?).to eq true
+    end
+    it 'uses adjusts values for footer' do
+      expect(component.benchmark_value).to eq nil
+      expect(component.other_value).to eq '10 kW'
+    end
+    it "classifies the school as other_school" do
+      expect(component.category).to eq 'other_school'
+      within '.school-comparison-component-callout-box .body' do
+        expect(html).to have_content('>15 kW')
+      end
+    end
+  end
+
   context 'with benchmark school' do
     let(:html) do
       render_inline(SchoolComparisonComponent.new(**params))

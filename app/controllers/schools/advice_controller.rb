@@ -6,11 +6,13 @@ module Schools
     before_action :load_advice_pages
     before_action :set_tab_name
     before_action :set_content
+    before_action :set_breadcrumbs
 
     include DashboardAlerts
     include DashboardPriorities
 
     def show
+      @advice_page_benchmarks = @school.advice_page_school_benchmarks
     end
 
     def priorities
@@ -25,6 +27,20 @@ module Schools
 
     def set_tab_name
       @tab = action_name.to_sym
+    end
+
+    def set_breadcrumbs
+      @breadcrumbs = [{ name: I18n.t('advice_pages.breadcrumbs.root'), href: school_advice_path(@school) }]
+      case @tab
+      when :alerts
+        @breadcrumbs << {
+          name: I18n.t('advice_pages.index.alerts.title'), href: alerts_school_advice_path(@school)
+        }
+      when :priorities
+        @breadcrumbs << {
+          name: I18n.t('advice_pages.index.priorities.title'), href: alerts_school_advice_path(@school)
+        }
+      end
     end
 
     def load_advice_pages

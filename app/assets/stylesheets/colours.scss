@@ -59,12 +59,36 @@ $colours-light: (
   "carbon"   : $light-grey
 );
 
+$colours-dark: (
+  "electric" : $electric-dark,
+  "gas"      : $gas-dark,
+  "storage"  : $storage-dark,
+  "solar"    : $solar-dark,
+  "carbon"   : $grey
+);
+
 @each $tag, $colour in $colours-light {
   .bg-#{$tag}-light {
     background-color: $colour;
   }
 }
 
+@each $tag, $colour in $colours-dark {
+  .bg-#{$tag}-dark {
+    background-color: $colour;
+  }
+}
+
 .advice-question-icon {
   color: $light-blue-links;
+}
+
+.bg-exemplar_school {
+  background-color: $green !important;
+}
+.bg-benchmark_school {
+  background-color: $light-orange !important;
+}
+.bg-other_school {
+  background-color: $bg-negative !important;
 }

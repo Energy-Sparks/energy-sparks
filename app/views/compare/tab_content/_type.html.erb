@@ -1,0 +1,13 @@
+<div class="tab-pane fade show" id="type" role="tabpanel" aria-labelledby="type-tab">
+  <h4 class='my-2'><%= t('compare.index.type.title') %></h4>
+  <div class="bg-light p-3 rounded border">
+    <%= form_tag benchmarks_compare_index_path, method: :get do %>
+      <%= hidden_field_tag(:search, 'type') %>
+      <%= label_tag :school_type, t('compare.filter.school_type') %>
+      <%= select_tag :school_type, options_for_select(School.school_types.keys.map {|key, value| [t("common.school_types.#{key}"), key]}, @filter[:school_type]), include_blank: t('compare.filter.all_school_types'), class: 'form-control' %>
+       <div class="pt-2">
+        <%= submit_tag 'Compare schools', class: 'btn' %>
+      </div>
+    <% end %>
+  </div>
+</div>

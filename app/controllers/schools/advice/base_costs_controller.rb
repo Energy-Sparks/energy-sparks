@@ -19,12 +19,14 @@ module Schools
         @multiple_meters = costs_service.multiple_meters?
         @monthly_costs = costs_service.calculate_costs_for_latest_twelve_months
         @change_in_costs = costs_service.calculate_change_in_costs
+        @aggregate_meter_mpan_mprn = aggregate_meter_mpan_mprn
         if @multiple_meters
           @annual_costs_breakdown_by_meter = costs_service.annual_costs_breakdown_by_meter
           @aggregate_meter_adapter = aggregate_meter_adapter
           @options_for_meter_select = options_for_meter_select
         end
         @analysis_dates = analysis_dates
+        @costs_service_analysis_date_range = costs_service.analysis_date_range
       end
 
       def meter_costs
@@ -40,6 +42,7 @@ module Schools
           analytics_meter = costs_service.analytics_meter_for_mpan(@mpan_mprn)
           @monthly_costs = costs_service.calculate_costs_for_latest_twelve_months(analytics_meter)
           @change_in_costs = costs_service.calculate_change_in_costs(analytics_meter)
+          @tariffs = costs_service.tariffs(analytics_meter)
         end
         @analysis_dates = analysis_dates
         respond_to do |format|

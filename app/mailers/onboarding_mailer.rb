@@ -32,7 +32,6 @@ class OnboardingMailer < LocaleMailer
     @school = params[:school]
     @title = @school.name
     @to = user_emails(params[:users])
-    @target_prompt = params[:target_prompt]
     make_bootstrap_mail(to: @to, subject: default_i18n_subject(school: @school.name, locale: locale_param))
   end
 

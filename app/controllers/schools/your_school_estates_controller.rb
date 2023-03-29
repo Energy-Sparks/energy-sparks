@@ -2,6 +2,7 @@ module Schools
   class YourSchoolEstatesController < ApplicationController
     load_and_authorize_resource :school
     before_action :return_to_school_unless_feature_enabled
+    before_action :set_breadcrumbs
 
     def edit
     end
@@ -17,6 +18,10 @@ module Schools
     end
 
     private
+
+    def set_breadcrumbs
+      @breadcrumbs = [{ name: I18n.t('manage_school_menu.your_school_estate') }]
+    end
 
     def return_to_school_unless_feature_enabled
       redirect_to school_path(@school) and return unless EnergySparks::FeatureFlags.active?(:your_school_estates)

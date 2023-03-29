@@ -1,3 +1,9 @@
+<%= t('advice_pages.electricity_intraday.insights.your_current_peak_electricity_use.the_table_below',
+      start_date: short_dates(@peak_usage_service_date_range.first),
+      end_date: short_dates(@peak_usage_service_date_range.last)
+    )
+%>
+
 <table class="mt-2 table table-sm advice-table">
   <thead>
     <th class="text-left">
@@ -9,10 +15,10 @@
   </thead>
   <tr>
     <td class="text-left">
-      <%= format_unit(@peak_usage_calculation&.average_peak_kw, :kw) %>
+      <%= format_unit(average_peak_kw, :kw) %>
     </td>
     <td class="text-right">
-      <%= up_downify(format_unit(@peak_kw_usage_percentage_change, :relative_percent)) %>
+      <%= up_downify(format_unit(peak_kw_usage_percentage_change, :relative_percent)) %>
     </td>
   </tr>
 </table>

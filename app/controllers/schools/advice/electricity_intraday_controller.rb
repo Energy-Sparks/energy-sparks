@@ -1,11 +1,18 @@
 module Schools
   module Advice
     class ElectricityIntradayController < AdviceBaseController
+      before_action :load_dashboard_alerts, only: [:insights]
+
       def insights
-        @peak_usage_benchmarking = build_peak_usage_benchmarking
-        @peak_usage_calculation = build_peak_usage_calculation(asof_date)
-        @peak_usage_calculation_1_year_ago = build_peak_usage_calculation(previous_years_asof_date)
-        @peak_kw_usage_percentage_change = calculate_percentage_change_in_peak_kw
+        @analysis_dates = analysis_dates
+        if peak_usage_service.enough_data?
+          @average_peak_kw = average_peak_kw
+          @peak_kw_usage_percentage_change = percentage_change_in_peak_kw
+          @benchmarked_usage = benchmark_peak_usage
+          @peak_usage_service_date_range = peak_usage_service_date_range
+        else
+          @not_enough_data_data_available_from = peak_usage_service.data_available_from
+        end
       end
 
       def analysis
@@ -15,46 +22,37 @@ module Schools
       private
 
       def create_analysable
+        # We still need to show parts of the analysis and insights
+        # page irrespective of ammount of data available.
+        # Some insights page sections will be hidden when not relevent.  See:
+        # https://trello.com/c/UOlSVWAg/3144-analysis-page-feedback-electricity-intraday
         OpenStruct.new(
-          enough_data?: analysis_dates.one_years_data
+          enough_data?: true
         )
       end
 
-      def calculate_percentage_change_in_peak_kw
-        old_peak_kw = @peak_usage_calculation_1_year_ago&.average_peak_kw
-        new_peak_kw = @peak_usage_calculation&.average_peak_kw
-
-        percent_change(old_peak_kw, new_peak_kw)
-      end
-
-      # Copied from ContentBase
-      def percent_change(old_value, new_value)
-        return nil if old_value.nil? || new_value.nil?
-        return 0.0 if !old_value.nan? && old_value == new_value # both 0.0 case
-
-        (new_value - old_value) / old_value
-      end
-
-      def build_peak_usage_benchmarking
-        ::Usage::PeakUsageBenchmarkingService.new(
-          meter_collection: aggregate_school,
-          asof_date: asof_date
-        )
-      end
-
-      def build_peak_usage_calculation(date)
-        ::Usage::PeakUsageCalculationService.new(
-          meter_collection: aggregate_school,
-          asof_date: date
-        )
+      def peak_usage_service_date_range
+        [asof_date - Usage::PeakUsageCalculationService::DATE_RANGE_DAYS_AGO, asof_date]
       end
 
       def asof_date
-        @asof_date ||= AggregateSchoolService.analysis_date(aggregate_school, :electricity)
+        peak_usage_service.asof_date
       end
 
-      def previous_years_asof_date
-        @previous_years_asof_date ||= asof_date - 1.year
+      def benchmark_peak_usage
+        peak_usage_service.benchmark_peak_usage
+      end
+
+      def percentage_change_in_peak_kw
+        peak_usage_service.percentage_change_in_peak_kw
+      end
+
+      def average_peak_kw
+        peak_usage_service.average_peak_kw
+      end
+
+      def peak_usage_service
+        @peak_usage_service = Schools::Advice::PeakUsageService.new(@school, aggregate_school)
       end
 
       def advice_page_key

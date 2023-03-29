@@ -44,7 +44,7 @@
     <%= t('advice_pages.thermostatic_control.analysis.thermostatic_up_to_1_year.title') %>
   <% end %>
   <% c.with_subtitle do %>
-    <%= t('advice_pages.thermostatic_control.analysis.thermostatic_up_to_1_year.subtitle') %>
+    <%= t('advice_pages.thermostatic_control.analysis.thermostatic_up_to_1_year.subtitle_html', start_date: short_dates(@analysis_dates.one_years_data ? @analysis_dates.one_year_before_end : @analysis_dates.start_date), end_date: short_dates(@analysis_dates.end_date)) %>
   <% end %>
   <% c.with_footer do %>
     <%= t('advice_pages.thermostatic_control.analysis.thermostatic_up_to_1_year.footer_html',

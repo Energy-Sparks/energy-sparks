@@ -41,6 +41,7 @@
     one_year_breakdown_chart_key: @one_year_breakdown_chart_key,
     monthly_costs: @monthly_costs,
     change_in_costs: @change_in_costs,
+    aggregate_meter_mpan_mprn: @aggregate_meter_mpan_mprn,
     show_school_total: true %>
   <% if @analysis_dates.months_of_data > 23 %>
     <%= render 'cost_comparison', school: @school, analysis_dates: @analysis_dates %>

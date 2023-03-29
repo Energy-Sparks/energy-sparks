@@ -2,6 +2,7 @@ module Schools
   class UserTariffsController < ApplicationController
     load_and_authorize_resource :school
     load_and_authorize_resource :user_tariff
+    before_action :set_breadcrumbs
 
     def index
       @electricity_meters = @school.meters.electricity
@@ -61,6 +62,10 @@ module Schools
     end
 
     private
+
+    def set_breadcrumbs
+      @breadcrumbs = [{ name: I18n.t('manage_school_menu.manage_tariffs') }]
+    end
 
     def default_params
       { start_date: Date.parse('2021-04-01'), end_date: Date.parse('2022-03-31'), flat_rate: true }

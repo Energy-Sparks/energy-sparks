@@ -41,6 +41,20 @@ module Schools
         meter_breakdown_service.calculate_breakdown
       end
 
+      def benchmark_usage
+        annual_usage_kwh = annual_usage.kwh
+        annual_usage_kwh_benchmark = annual_usage_kwh(compare: :benchmark_school)
+        annual_usage_kwh_exemplar = annual_usage_kwh(compare: :exemplar_school)
+
+        Schools::Comparison.new(
+          school_value: annual_usage_kwh,
+          benchmark_value: annual_usage_kwh_benchmark,
+          exemplar_value: annual_usage_kwh_exemplar,
+          unit: :kwh
+        )
+      end
+
+
       private
 
       def aggregate_meter

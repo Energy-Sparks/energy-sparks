@@ -13,6 +13,11 @@ RSpec.describe "school alerts", type: :system do
   end
 
   context 'with generated alert' do
+    around do |example|
+      ClimateControl.modify FEATURE_FLAG_REPLACE_ANALYSIS_PAGES: 'false' do
+        example.run
+      end
+    end
 
     describe 'Find Out More' do
 

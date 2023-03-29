@@ -1,19 +1,6 @@
 <% unless dashboard_alerts.empty? %>
-    <% dashboard_alerts.each do |alert_content|%>
-      <%= component 'notice', classes: 'mt-4', status: status_for_alert_colour(alert_content.colour) do |c| %>
-        <div class="row">
-          <div class="col-md-1 d-flex align-items-center">
-          <%= fa_icon( alert_icon(alert_content.alert, 'fa-3x') ) %>
-          </div>
-          <div class="col-md-11">
-          <%= alert_content.send(content_field) %>
-            <% if alert_content.alert.advice_page.present? %>
-              <div class="text-right">
-                <%= link_to t('advice_pages.index.alerts.view_analysis'), advice_page_path(school, alert_content.alert.advice_page, alert_content.alert.alert_type.advice_page_tab_for_link_to, anchor: alert_content.alert.alert_type.link_to_section) %>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
+  <% dashboard_alert_groups(dashboard_alerts).each do |alert_group| %>
+    <h3><%= t("advice_pages.alerts.groups.#{alert_group}") %></h3>
+    <%= component 'alerts', school: school, dashboard_alerts: dashboard_alerts, alert_types: alert_types_for_group(alert_group), show_links: true, show_icons: false %>
   <% end %>
 <% end %>

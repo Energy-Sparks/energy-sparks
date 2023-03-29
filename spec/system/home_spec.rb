@@ -170,7 +170,9 @@ RSpec.describe "home", type: :system do
 
       it 'redirects from teacher page' do
         visit "/teachers/schools/#{school.slug}"
-        expect(page).to have_content('Adult Dashboard')
+        within('.dashboard-school-title') do
+          expect(page).to have_content(school.name)
+        end
       end
 
       it 'does not redirect to holding page' do

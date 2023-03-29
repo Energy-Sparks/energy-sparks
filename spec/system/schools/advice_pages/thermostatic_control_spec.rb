@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "thermostatic control advice page", type: :system do
   let(:key) { 'thermostatic_control' }
-  let(:expected_page_title) { "Advanced thermostatic control analysis" }
+  let(:expected_page_title) { "Thermostatic control analysis" }
   include_context "gas advice page"
 
   context 'as school admin' do
@@ -11,10 +11,10 @@ RSpec.describe "thermostatic control advice page", type: :system do
     before do
       sign_in(user)
 
-      allow_any_instance_of(Schools::Advice::ThermostaticControlController).to receive_messages(
+      allow_any_instance_of(Schools::Advice::ThermostaticAnalysisService).to receive_messages(
         {
-          create_analysable: OpenStruct.new(enough_data?: true),
-          build_heating_thermostatic_analysis: OpenStruct.new(
+          enough_data?: true,
+          thermostatic_analysis: OpenStruct.new(
             r2: 0.6743665142232793,
             insulation_hotwater_heat_loss_estimate_kwh: 193_133.95130872616,
             insulation_hotwater_heat_loss_estimate_£: 5794.0185392617805,
@@ -37,8 +37,7 @@ RSpec.describe "thermostatic control advice page", type: :system do
       it_behaves_like "an advice page tab", tab: "Insights"
 
       it 'shows expected content' do
-        expect(page).to have_content('What do we mean by advanced thermostatic control?')
-        expect(page).to have_content('Your thermostatic control')
+        expect(page).to have_content('What is thermostatic control?')
         expect(page).to have_content('How do you compare?')
         expect(page).to have_content('Your thermostatic control is 0.67, which is about average')
       end

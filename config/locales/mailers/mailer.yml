@@ -59,6 +59,7 @@ en:
     get_in_touch: Get in touch
   onboarding_mailer:
     activation_email:
+      explore_activities: Explore activities
       get_in_touch_html: <a href="%{contact_url}">Get in touch</a> if you have any further questions
       header: "%{school_name} is now live on Energy Sparks"
       join_a_webinar: Join a webinar
@@ -69,7 +70,6 @@ en:
       paragraph_4: We will be in touch shortly to confirm when we have completed getting access to your energy data.
       paragraph_5_html: For help using Energy Sparks please read our <a href="https://energysparks.uk/resources/12/download">User Guide</a>, watch our <a href="%{user_guide_videos_url}">Training Videos</a> or join one of our <a href="%{training_url}">live webinar training</a> sessions.
       paragraph_6: We hope Energy Sparks will empower your pupils, school staff, and wider school community to take action to make your school more energy efficient.
-      set_your_first_targets: Set your first targets
       subject: "%{school} is live on Energy Sparks"
       thanks_for_joining: Thanks for joining!
       the_energy_sparks_team: The Energy Sparks Team
@@ -78,6 +78,7 @@ en:
       subject: "%{school} has completed the onboarding process"
       title: "%{school_name} has completed the automatic setup process"
     data_enabled_email:
+      explore_data: Explore your data
       get_in_touch_html: <a href="%{contact_url}">Get in touch</a> if you have any further questions.
       join_a_webinar: Join a webinar
       need_some_help: Need some help?

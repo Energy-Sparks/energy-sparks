@@ -16,7 +16,7 @@ module Alerts
     private
 
     def result_column
-      EnergySparks::FeatureFlags.active?(:json_benchmarks) ? :results : :data
+      I18n.locale == :cy ? :results_cy : :results
     end
 
     def benchmark_run_date

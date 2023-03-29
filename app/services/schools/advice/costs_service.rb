@@ -28,6 +28,7 @@ module Schools
         reporting_meters.each do |meter|
           breakdown[meter_for_mpan(meter.mpan_mprn)] = accounting_costs_service(meter).annual_cost
         end
+
         breakdown
       end
 
@@ -49,6 +50,21 @@ module Schools
           change = year_previous_costs.nil? ? nil : cost.total - year_previous_costs.total
           [month, change]
         end.to_h
+      end
+
+      def tariffs(analytics_meter)
+        tariffs = tariff_information_service(analytics_meter).tariffs
+        tariffs.map do |range, tariff|
+          if tariff.real
+            tariff.user_tariff = @school.user_tariffs.where(name: tariff.name).first
+          end
+          [range, tariff]
+        end
+        tariffs.sort { |a, b| a[0].begin <=> b[0].begin}
+      end
+
+      def analysis_date_range
+        [analysis_start_date, analysis_end_date]
       end
 
       private
@@ -82,7 +98,7 @@ module Schools
       end
 
       def accounting_costs_service(meter = aggregate_meter)
-        Costs::AccountingCostsService.new(meter)
+        Costs::AccountingCostsService.new(meter, aggregate_meter.amr_data.end_date)
       end
 
       def tariff_information_service(meter = aggregate_meter)

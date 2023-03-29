@@ -10,6 +10,11 @@
       <%= t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.title') %>
     </a>
   </li>
+  <li>
+    <a href='#holiday-usage'>
+      <%= t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title') %>
+    </a>
+  </li>
 </ul>
 
 <%= render 'schools/advice/section_title', section_id: 'last_twelve_months', section_title: t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.title') %>
@@ -36,3 +41,34 @@
     <%= t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.electricity_by_day_of_week_tolerant_chart.footer') %>
   <% end %>
 <% end %>
+
+<%= render 'schools/advice/section_title', section_id: 'holiday-usage', section_title: t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title') %>
+
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertElectricityUsageDuringCurrentHoliday), show_links: false, show_icons: false %>
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertPreviousHolidayComparisonElectricity), show_links: false, show_icons: false %>
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertPreviousYearHolidayComparisonElectricity), show_links: false, show_icons: false %>
+
+<% if @analysis_dates.months_of_data >= 14 %>
+  <%= component 'chart', chart_type: :alert_group_by_week_electricity_14_months, school: @school do |c| %>
+    <% c.with_title do %>
+      <%= advice_t('electricity_out_of_hours.analysis.holiday_usage.alert_group_by_week_electricity_14_months.title') %>
+    <% end %>
+    <% c.with_subtitle do %>
+      <%= advice_t('electricity_out_of_hours.analysis.holiday_usage.alert_group_by_week_electricity_14_months.subtitle_html',
+        start_date: @analysis_dates.last_full_week_start_date.to_s(:es_short),
+        end_date: @analysis_dates.last_full_week_end_date.to_s(:es_short))
+       %>
+    <% end %>
+    <% c.with_header do %>
+      <p>
+        <%= advice_t('electricity_out_of_hours.analysis.holiday_usage.alert_group_by_week_electricity_14_months.header') %>
+      </p>
+    <% end %>
+  <% end %>
+<% end %>
+
+<p><%= advice_t('electricity_out_of_hours.analysis.holiday_usage.table_intro') %></p>
+
+<%= render 'holiday_usage_table', holiday_usage: @holiday_usage %>
+
+<p><%= advice_t('electricity_out_of_hours.analysis.holiday_usage.table_footer') %></p>

@@ -66,7 +66,6 @@ RSpec.describe "manage school", type: :system do
         expect(page).to have_link("Batch reports")
         expect(page).to have_link("Review targets")
         expect(page).to have_link("Expert analysis")
-        expect(page).to have_link("Advice pages")
         expect(page).to have_link("Remove school")
       end
     end
@@ -85,7 +84,6 @@ RSpec.describe "manage school", type: :system do
         expect(page).to_not have_link("Batch reports")
         expect(page).to_not have_link("Review targets")
         expect(page).to_not have_link("Expert analysis")
-        expect(page).to_not have_link("Advice pages")
         expect(page).to_not have_link("Remove school")
       end
     end

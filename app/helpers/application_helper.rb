@@ -92,7 +92,7 @@ module ApplicationHelper
   end
 
   def status_for_alert_colour(colour)
-    return :unknown if colour.nil?
+    return :neutral if colour.nil?
     colour
   end
 
@@ -183,6 +183,21 @@ module ApplicationHelper
       'fire-alt'
     when :exported_solar_pv
       'arrow-right'
+    end
+  end
+
+  def fuel_type_background_class(fuel_type)
+    case fuel_type.to_sym
+    when :electricity
+      'bg-electric-light'
+    when :gas
+      'bg-gas-light'
+    when :solar_pv
+      'bg-solar-light'
+    when :storage_heater, :storage_heaters
+      'bg-storage-light'
+    when :exported_solar_pv
+      'bg-solar-light'
     end
   end
 
@@ -434,5 +449,21 @@ module ApplicationHelper
   def component(name, *args, **kwargs, &block)
     component = name.to_s.sub(%r{(/|$)}, '_component\1').camelize.constantize
     render(component.new(*args, **kwargs), &block)
+  end
+
+  def school_advice_link(school)
+    replace_analysis_pages? ? school_advice_path(school) : school_analysis_index_path(school)
+  end
+
+  def replace_analysis_pages?
+    EnergySparks::FeatureFlags.active?(:replace_analysis_pages)
+  end
+
+  def school_name_group(school)
+    if school.school_group
+      "#{school.name} (#{school.school_group.name})"
+    else
+      school.name
+    end
   end
 end

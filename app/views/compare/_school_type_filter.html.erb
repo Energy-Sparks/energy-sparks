@@ -1,12 +1,14 @@
-<div class="smaller"><%= t('compare.limit_by_school_type') %></div>
-<div class="nowrap ensure-one-checked">
+<label><%= t('compare.limit_by_school_type') %></label>
+<div class="ensure-one-checked">
   <% School.school_types.keys.each do |school_type| %>
-    <%= check_box_tag('school_types[]', school_type, @filter[:school_types].include?(school_type), id: school_type, class: "badge-toggle-secondary") %>
-    <%= label_tag school_type, t('common.school_types.' + school_type),
-        data: {
-          toggle: "tooltip",
-          placement: "bottom",
-          delay: { "show": 500, "hide": 100 }},
-        title: "Select at least one" %>
+    <div class="form-check form-check-inline">
+      <%= check_box_tag('school_types[]', school_type, @filter[:school_types].include?(school_type) || @filter[:school_types].none?, class: "form-check-input", id: "#{type}_#{school_type}") %>
+      <%= label_tag "#{type}_#{school_type}", t('common.school_types.' + school_type),
+          data: {
+            toggle: "tooltip",
+            placement: "bottom",
+            delay: { "show": 500, "hide": 100 }},
+          title: t('compare.filter.select_one'), class: "form-check-label" %>
+    </div>
   <% end %>
 </div>

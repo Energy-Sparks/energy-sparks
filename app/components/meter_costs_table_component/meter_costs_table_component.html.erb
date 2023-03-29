@@ -11,8 +11,8 @@
       <% end %>
       <tr>
         <th></th>
-        <% months_header do |month| %>
-          <th class="text-right"><%= month %></th>
+        <% months_header do |month, full_month| %>
+          <th class="text-right"><%= month %><%= '<sup>*</sup>'.html_safe if !full_month.nil? && !full_month %></th>
         <% end %>
         <th class="text-right"><%= t('advice_pages.tables.labels.total') %></th>
       </tr>
@@ -46,3 +46,8 @@
       <% end %>
     </tbody>
 </table>
+<% if @any_partial_months %>
+  <div class="text-right advice-table-caption">
+    <sup>*</sup> <%= t('advice_pages.tables.notice.partial_months')%>
+  </div>
+<% end %>

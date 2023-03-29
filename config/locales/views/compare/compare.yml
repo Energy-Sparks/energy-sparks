@@ -5,18 +5,30 @@ en:
       description: Click on a benchmark to compare the selected schools
       title: Choose school comparison benchmark
     filter:
+      all_countries: All countries
+      all_groups: All groups
+      all_school_types: All school types
+      change_benchmark: Change benchmark
       change_options: Change options
-      school_types_html: Including %{school_types} schools
-      schools_in_school_group_html: Schools in the <strong>%{school_group}</strong> group
-      title: 'Comparing:'
+      country: 'Select country:'
+      school_groups: 'Select school groups:'
+      school_type: 'Select school type:'
+      school_types_html: 'Including: %{school_types}'
+      schools_in_school_group_html: Comparing schools in the %{school_group} group
+      schools_in_school_groups_html: 'Comparing schools in groups: %{school_groups}'
+      schools_with_country_html: Comparing schools in %{country}
+      schools_with_type_html: 'Comparing schools of type: %{school_type}'
+      select_one: Select at least one
     index:
-      categories:
-        tab: Choose categories
+      country:
+        tab: Choose country
+        title: Compare schools by country
       group:
         tab: Your group
         title: Compare all schools within %{name}
       groups:
         tab: Choose groups
+        title: Compare schools in groups
       intro: View how schools within the same MAT or local authority area compare across a range of energy performance benchmarks
       options_html: Use options below to compare <strong>%{school_count}</strong> schools against <strong>%{benchmark_count}</strong> benchmarks
       summary:
@@ -24,4 +36,10 @@ en:
         item_2: Identify schools needing most support
         item_3: Compare individual performance against schools with similar characteristics
       title: School Comparison Tool
+      type:
+        tab: Choose type
+        title: Compare schools by type
     limit_by_school_type: 'Limit results to include schools of type:'
+    show:
+      charts: Charts
+      tables: Tables

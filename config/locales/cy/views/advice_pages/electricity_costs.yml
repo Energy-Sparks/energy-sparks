@@ -1,0 +1,59 @@
+cy:
+  advice_pages:
+    electricity_costs:
+      analysis:
+        comparison:
+          title: Cymhariaeth cost ar gyfer y 2 flynedd ddiwethaf
+        cost_breakdown_by_charge:
+          title: Dadansoddiad cost yn ôl tâl am y %{period} diwethaf
+        cost_breakdown_by_meter:
+          intro: Mae'r tabl canlynol yn crynhoi cyfanswm y gost sy'n gysylltiedig â phob metr am y %{period} diwethaf
+          title: Cyfanswm y gost am y %{period} diwethaf
+          whole_school: Rydym yn amcangyfrif cyfanswm eich cost trydan dros y %{period} diwethaf i fod yn %{cost}.
+        meter_breakdown:
+          select: Dewiswch opsiwn i weld costau ar gyfer yr ysgol gyfan neu fesurydd penodol
+          title: Dadansoddiad cost
+          whole_school: Ysgol gyfan
+        summary: Mae'r adrannau canlynol yn rhoi mwy o gefndir a dadansoddiad o'ch costau trydan
+        tariff_note:
+          good_estimate: Mae'r wybodaeth isod yn rhoi amcangyfrif da o'ch costau blynyddol ar gyfer y mesurydd hwn yn seiliedig ar wybodaeth tariff mesurydd a ddarparwyd i Sbarcynni.
+          manage_tariffs: Rheoli tariffau
+          poor_estimate: Ar hyn o bryd nid oes gan Sbarvynni gofnod cyflawn o'ch tariffau go iawn ac mae'n defnyddio tariffau rhagosodedig rhwng %{period_start_and_end}. Mae hyn yn golygu na fydd y costau ar y dudalen hon yn gywir.
+      charts:
+        cost_1_year_accounting_breakdown:
+          meter_subtitle_html: Mae'r siart hwn yn dangos y cydrannau bil am y 12 mis sy'n dod i ben ar <span class='end-date'>%{end_date}</span>
+          meter_title: Cydrannau cost trydan am y flwyddyn ddiwethaf am %{meter}
+          subtitle_html: Mae'r siart hwn yn dangos y cydrannau bil am y 12 mis sy'n dod i ben ar <span class='end-date'>%{end_date}</span> ar gyfer yr ysgol gyfan
+          title: Cydrannau cost trydan ar gyfer y flwyddyn ddiwethaf
+        cost_1_year_accounting_breakdown_group_by_day:
+          meter_subtitle_html: Mae'r siart hwn yn dangos y cydrannau bil am y cyfnod sy'n dod i ben ar <span class='end-date'>%{end_date}</span>
+          meter_title: Cydrannau cost trydan am y dwy wythnos ddiwethaf ar gyfer %{meter}
+          subtitle_html: Mae'r siart hwn yn dangos y cydrannau bil am y cyfnod sy'n dod i ben ar <span class='end-date'>%{end_date}</span> ar gyfer yr ysgol gyfan
+          title: Cydrannau cost trydan ar gyfer y dwy wythnos ddiwethaf
+        cost_1_year_accounting_breakdown_group_by_week:
+          meter_subtitle_html: Mae'r siart hwn yn dangos y cydrannau bil am y cyfnod sy'n dod i ben ar <span class='end-date'>%{end_date}</span>
+          meter_title: Cydrannau cost trydan am yr ychydig wythnosau ar gyfer %{meter}
+          subtitle_html: Mae'r siart hwn yn dangos y cydrannau bil am y cyfnod sy'n dod i ben ar <span class='end-date'>%{end_date}</span> ar gyfer yr ysgol gyfan
+          title: Cydrannau cost trydan ar gyfer yr ychydig wythnosnau diwethaf
+        cost_comparison_last_2_years_accounting:
+          meter_title: Cymhariaeth costau trydan ar gyfer y 2 flynedd ddiwethaf ar gyfer %{meter}
+          subtitle_html: Mae'r siart hwn yn cymharu eich defnydd misol am y 12 mis yn diweddu ar <span class='end-date'>%{end_date}</span> a'r 12 mis blaenorol
+          title: Cymhariaeth costau trydan am y 2 flynedd ddiwethaf
+      insights:
+        current_costs:
+          title: Eich costau presennol
+        intro_html: |-
+          <p>Caiff eich bil trydan ei rannu'n amrywiaeth o daliadau gwahanol. Mae rhai o'r rhain yn daliadau sefydlog sefydlog, tra bod eraill yn amrywio yn dibynnu ar faint o drydan rydych chi'n ei ddefnyddio a phryd rydych chi'n ei ddefnyddio.
+          </p>
+          <p>
+          Gall deall y taliadau hyn eich helpu i leihau eich costau a gall eich helpu i ddilysu biliau.
+          </p>
+        link: Dysgu rhagor
+        next_steps_html: I gael amcangyfrif gwell o'ch costau, <a href="%{link}">diweddarwch eich gwybodaeth tariff</a>
+      page_title: Dadansoddiad cost trydan
+      tables:
+        columns:
+          cost: Cost (£)
+          meter: Mesurydd
+        labels:
+          total: Cyfanswm

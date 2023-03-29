@@ -7,6 +7,7 @@ module Pupils
 
     skip_before_action :authenticate_user!
     before_action :check_aggregated_school_in_cache
+    before_action :set_breadcrumbs
 
     def index
       render params[:category] || :index
@@ -18,6 +19,13 @@ module Pupils
     end
 
     private
+
+    def set_breadcrumbs
+      @breadcrumbs = [
+        { name: I18n.t('dashboards.pupil_dashboard'), href: pupils_school_path(@school) },
+        { name: I18n.t('pupils.analysis.explore_data') }
+      ]
+    end
 
     def get_chart_config
       energy = params.require(:energy)

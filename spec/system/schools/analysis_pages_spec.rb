@@ -31,6 +31,12 @@ RSpec.describe "analysis page", type: :system do
 
     let!(:alert) { create(:alert, :with_run, alert_type: gas_fuel_alert_type, school: school, rating: 9.0) }
 
+    around do |example|
+      ClimateControl.modify FEATURE_FLAG_REPLACE_ANALYSIS_PAGES: 'false' do
+        example.run
+      end
+    end
+
     before do
       Alerts::GenerateContent.new(school).perform
 

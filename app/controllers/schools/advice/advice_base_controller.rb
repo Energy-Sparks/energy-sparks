@@ -12,16 +12,18 @@ module Schools
       before_action :load_advice_page, only: [:insights, :analysis, :learn_more]
       before_action :check_authorisation, only: [:insights, :analysis, :learn_more]
       before_action :load_recommendations, only: [:insights]
+      before_action :set_page_title, only: [:insights, :analysis, :learn_more]
       before_action :check_has_fuel_type, only: [:insights, :analysis]
       before_action :check_can_run_analysis, only: [:insights, :analysis]
       before_action :set_data_warning, only: [:insights, :analysis]
-      before_action :set_page_title, only: [:insights, :analysis, :learn_more]
       before_action :set_page_subtitle, only: [:insights, :analysis]
+      before_action :set_breadcrumbs, only: [:insights, :analysis, :learn_more]
       before_action :set_insights_next_steps, only: [:insights]
       before_action :set_economic_tariffs_change_caveats, only: [:insights, :analysis]
 
       include AdvicePageHelper
       include SchoolAggregation
+      include DashboardAlerts
 
       rescue_from StandardError do |exception|
         Rollbar.error(exception, advice_page: advice_page_key, school: @school.name, school_id: @school.id, tab: @tab)
@@ -43,6 +45,14 @@ module Schools
         @advice_pages = AdvicePage.all
       end
 
+      def load_dashboard_alerts
+        @dashboard_alerts = setup_alerts(latest_dashboard_alerts, :management_dashboard_title, limit: nil)
+      end
+
+      def latest_dashboard_alerts
+        @latest_dashboard_alerts ||= @school.latest_dashboard_alerts.management_dashboard
+      end
+
       def set_economic_tariffs_change_caveats
         @economic_tariffs_change_caveats = nil
       end
@@ -57,6 +67,13 @@ module Schools
 
       def set_page_subtitle
         @advice_page_subtitle = if_exists("#{action_name}.title")
+      end
+
+      def set_breadcrumbs
+        @breadcrumbs = [
+          { name: t('advice_pages.breadcrumbs.root'), href: school_advice_path(@school) },
+          { name: @advice_page_title, href: advice_page_path(@school, @advice_page) },
+        ]
       end
 
       def if_exists(key)
@@ -104,18 +121,7 @@ module Schools
       end
 
       def school_has_fuel_type?
-        case advice_page_fuel_type
-        when :gas
-          @school.has_gas?
-        when :electricity
-          @school.has_electricity?
-        when :storage_heater
-          @school.has_storage_heaters?
-        when :solar_pv
-          @school.has_solar_pv?
-        else
-          true
-        end
+        @advice_page.school_has_fuel_type?(@school)
       end
 
       def start_end_dates
@@ -172,8 +178,19 @@ module Schools
       end
 
       def load_recommendations
-        @activity_types = @advice_page.activity_types
-        @intervention_types = @advice_page.intervention_types.limit(3)
+        activity_type_filter = ActivityTypeFilter.new(
+          school: @school,
+          scope: @advice_page.ordered_activity_types,
+          query: { exclude_if_done_this_year: true }
+        )
+        @activity_types = activity_type_filter.activity_types.limit(4)
+
+        intervention_type_filter = InterventionTypeFilter.new(
+          school: @school,
+          scope: @advice_page.ordered_intervention_types,
+          query: { exclude_if_done_this_year: true }
+        )
+        @intervention_types = intervention_type_filter.intervention_types.limit(4)
       end
     end
   end

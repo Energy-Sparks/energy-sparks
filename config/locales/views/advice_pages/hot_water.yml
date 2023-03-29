@@ -78,7 +78,12 @@ en:
         circulatory_gas_based_hot_water: Circulatory gas-based hot water systems in schools are generally very inefficient, averaging about 15%
         for_more_detail_html: For more detail, <a href='%{link}'>compare with other schools in your group</a>
         how_do_you_compare: How do you compare?
-        improving_the_way_html: If you followed our recommendations to improve the way that you control your hot water, you could reduce your annual gas consumption for hot water by %{gas_better_control_saving_kwh_percent}. Or you could investigate replacing your current hot water system with point of use electric heaters.
+        improving_the_way_html_over_10pc_html: |-
+          <p>The table below shows that %{gas_better_control_saving_gbp_percent} of the energy used to heat your hot water is used outside of school opening times. Adjusting your boiler settings to ensure that you are only heating water when it is needed could save you %{gas_better_control_saving_gbp} per year.
+          </p>
+          <p>Or you could investigate replacing your current hot water system with point of use electric heaters.</p>
+        improving_the_way_html_under_10pc_html: "<p>Your holiday and weekend hot water use is already very low. You could reduce your annual gas consumption for hot water by %{gas_better_control_saving_gbp_percent} by switching it off completely outside of school hours.</p>"
+        improving_the_way_html_under_2pc_html: "<p>Your holiday and weekend hot water use is already very low, well done.</p>"
         next_steps_html: |-
           To reduce the amount of energy used to heat water in your school:
           <ul>
@@ -90,7 +95,7 @@ en:
             <li>Wasting hot water penalises a school twice: once for the energy used to heat the water and again for the actual water used. Fit taps which turn off automatically and deal with dripping taps and leaks promptly.</li>
             <li>Consider providing cleaning staff with point-of-use electric water heaters for use during holidays.</li>
             <li>Consider moving to point-of-use electric water heaters across the whole school estate instead of a circulatory hot water system.</li>
-            <li>For more information on managing legionella risk, read the Health and Safety Executive (HSE) guidance <a href='https://www.hse.gov.uk/legionnaires/hot-and-cold.htm'>Legionnaires’ disease: hot and cold water systems</a>.</li>
+            <li>For more information on energy efficient hot water and managing legionella risk, read the DfE guidance: <a href="https://www.gov.uk/government/publications/energy-efficiency-guidance-for-the-school-and-fe-college-estate/energy-efficiency-guidance-for-the-school-and-further-education-college-estate">Energy efficiency: guidance for the school and further education college estate</a>.</li>
           </ul>
         summary_notice_html: |-
           <p>Improving the timing control of your existing hot water system or replacing it completely with point of use electric hot water systems can produce significant savings.</p>
@@ -107,9 +112,6 @@ en:
             school_day_open: School day (open)
             total: Total
             weekends: Weekends
-        the_table_below_html: |-
-          The table below shows that %{percent} of the energy used to heat your hot water is used outside of school opening times.
-          Adjust your boiler settings to ensure that you are only heating water when it is needed.
         title: What do we mean by hot water gas use?
         we_estimate_your_hot_water_efficiency_to_be_html: We estimate your hot water efficiency to be %{efficiency_percent}
       not_relevant:

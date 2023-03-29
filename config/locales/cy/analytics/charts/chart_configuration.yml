@@ -1005,3 +1005,16 @@ cy:
     thermostatic_winter_weekend_best:
       title:
         - Thermostatig (Penwythnos y Gaeaf)
+    y_axis_label_name:
+      co2: kg CO2
+      days: dyddiau
+      kw: kW
+      kwh: kWh
+      percent: canran
+      percent_0dp: canran
+      relative_percent: canran
+      relative_percent_0dp: canran
+      timeofday: Amser o'r dydd
+      w: W
+      £: "£"
+      £_0dp: "£"

@@ -3,6 +3,18 @@ module Schools
     class HeatingControlService
       include AnalysableMixin
 
+      #number of days heating on in warm weather => rating
+      WARM_WEATHER_DAYS_RATING = {
+        0..5     => :excellent,
+        6..11    => :good,
+        12..16   => :above_average,
+        17..24   => :poor,
+        25..365  => :very_poor
+      }.freeze
+
+      EXEMPLAR_WARM_WEATHER_DAYS = 6
+      BENCHMARK_WARM_WEATHER_DAYS = 11
+
       def initialize(school, meter_collection)
         @school = school
         @meter_collection = meter_collection
@@ -62,7 +74,24 @@ module Schools
         seasonal_analysis_service.enough_data?
       end
 
+      def warm_weather_on_days_rating
+        WARM_WEATHER_DAYS_RATING.select { |k, _v| k.cover?(days_when_heating_on_warm_weather) }.values.first
+      end
+
+      def benchmark_warm_weather_days
+        Schools::Comparison.new(
+          school_value: days_when_heating_on_warm_weather,
+          benchmark_value: BENCHMARK_WARM_WEATHER_DAYS,
+          exemplar_value: EXEMPLAR_WARM_WEATHER_DAYS,
+          unit: :days
+        )
+      end
+
       private
+
+      def days_when_heating_on_warm_weather
+        seasonal_analysis.heating_on_in_warm_weather_days.to_i
+      end
 
       def heat_meters
         @heat_meters ||= @meter_collection.heat_meters

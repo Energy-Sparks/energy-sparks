@@ -1,9 +1,9 @@
 <table class="mt-2 table table-sm advice-table">
   <thead>
     <th><%= t('advice_pages.tables.columns.period') %></th>
-    <th class="text-right"><%= t('kwh') %></th>
-    <th class="text-right"><%= t('£') %></th>
-    <th class="text-right"><%= t('co2') %></th>
+    <th class="text-right"><%= t('common.table.columns.use_kwh') %></th>
+    <th class="text-right"><%= t('common.table.columns.cost_gbp') %></th>
+    <th class="text-right"><%= t('common.table.columns.co2_kg') %></th>
   </thead>
   <%= render 'your_recent_gas_use_table_row',
       combined_usage_metric: @recent_usage.previous_week.combined_usage_metric,

@@ -1,3 +1,23 @@
+.dashboard-title {
+  div.dashboard-school-title {
+    h1 {
+      padding-top: 10px;
+      padding-bottom: 0px;
+      margin-bottom: 0px;
+    }
+    .dashboard-school-address {
+      color: #6c757d !important;
+      font-size: 80%;
+      .badge {
+        font-size: inherit;
+      }
+      small {
+        font-size: inherit;
+      }
+    }
+  }
+}
+
 div.dashboards {
   div.analysis-chart, div.simulator-chart {
     height: 400px;

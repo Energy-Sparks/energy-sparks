@@ -6,12 +6,12 @@ module Schools
 
         if can_benchmark_electricity?
           @electricity_annual_usage = electricity_usage_service.annual_usage
-          @electricity_benchmarked_usage = benchmarked_usage(electricity_usage_service, @electricity_annual_usage.kwh)
+          @electricity_benchmarked_usage = electricity_usage_service.benchmark_usage
         end
 
         if can_benchmark_gas?
           @gas_annual_usage = gas_usage_service.annual_usage
-          @gas_benchmarked_usage = benchmarked_usage(gas_usage_service, @gas_annual_usage.kwh)
+          @gas_benchmarked_usage = gas_usage_service.benchmark_usage
         end
       end
 
@@ -69,18 +69,6 @@ module Schools
 
       def analysis_end_date
         aggregate_meters.map { |meter| meter.amr_data.end_date }.min
-      end
-
-      def benchmarked_usage(usage_service, annual_usage_kwh)
-        annual_usage_kwh_benchmark = usage_service.annual_usage_kwh(compare: :benchmark_school)
-        annual_usage_kwh_exemplar = usage_service.annual_usage_kwh(compare: :exemplar_school)
-
-        Schools::Comparison.new(
-          school_value: annual_usage_kwh,
-          benchmark_value: annual_usage_kwh_benchmark,
-          exemplar_value: annual_usage_kwh_exemplar,
-          unit: :kwh
-        )
       end
 
       def gas_usage_service

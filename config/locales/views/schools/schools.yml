@@ -159,6 +159,7 @@ en:
         validated_meter_data: Validated meter data
         we_use_sheffield_solar_pv_api_message_html: We use the <a href="https://www.solar.sheffield.ac.uk/pvlive/">University of Sheffield Solar PV</a> API for solar pv generation data, you can download the data we have for your school here
     estimated_annual_consumptions:
+      breadcrumb: Estimated annual consumption
       destroy:
         estimate_successfully_removed: Estimate successfully removed
       edit:
@@ -191,6 +192,11 @@ en:
         tip: Tip
         your_estimate: Your estimate
         your_recent_energy_bills: Your recent energy bills should provide the data you need
+    inactive:
+      description: We are still in the process of setting up your school on Energy Sparks. You will get an email notification when your school's account is activated on Energy Sparks.
+      other_schools: other schools
+      other_schools_html: In the meantine, take a look at how %{other_schools_link} are using Energy Sparks
+      schools_in_area: schools in your area
     index:
       a_to_z_of_all_energy_sparks_schools: A to Z of all Energy Sparks schools
       introduction_1: Discover which schools are using Energy Sparks to reduce their energy usage
@@ -309,6 +315,17 @@ en:
           received_an_audit: Received an energy audit
         temperatures:
           recorded_temperatures_in: Recorded temperatures in
+    private:
+      access_disabled: This school has disabled public access to energy usage data and insights.
+      login_links_html: Use the links below to log in as a member of staff or pupil from this school. Or <a href='%{schools_path}'>explore another school</a>
+      page_title: "%{school} has no public data"
+    pupils:
+      edit:
+        title: Edit pupil account
+        update: Update account
+      new:
+        create: Create account
+        title: New pupil account
     school_details:
       activation_date_hint: This is the date when the school becomes active on Energy Sparks
       address: Address
@@ -399,6 +416,10 @@ en:
         tip: Tip
         your_new_target: Your new target
       progress:
+        breadcrumbs:
+          electricity: Electricity progress
+          gas: Gas progress
+          storage_heater: Storage heater progress
         charts:
           cumulative_progress: Cumulative progress
           weekly_progress: Weekly progress
@@ -500,14 +521,11 @@ en:
       add_alert_contacts: Add alert contacts
       add_consumption_estimate: Add an estimate of your annual %{fuels} consumption so we can provide you with a more detailed progress report to help you achieve your targets
       add_estimate: Add an estimate
-      adult_dashboard: Adult Dashboard
-      co2_kg: CO2 (kg)
       coming_soon: Coming Soon
       complete_activities: Teach pupils about energy and climate change within the context of your own school by completing our freely available activities
       complete_interventions: Record energy saving actions made by school staff and facilities management to help to track whether your interventions have saved energy.
       complete_short_programme: Take the next step towards completing one of our short programmes of activity to increase your impact and score points for your school
       configuring_data_access: We're configuring access to your energy data and will notify you when it's ready to explore
-      cost_£: Cost (£)
       create_pupil_account: Create a pupil account
       dashboard_title: Adult dashboard for %{school_name}
       download_data: Download your data
@@ -537,7 +555,6 @@ en:
       setup_pupil_account: Set up a pupil account for your school to give your pupils direct access to the pupil dashboard. No email address is needed for a pupil account.
       summary_of_recent_energy_usage: Summary of recent energy usage
       upload_energy_bill: Upload a bill
-      use_kwh: Use (kWh)
       view_programmes: View your programmes
     timeline:
       no_events: No events to show

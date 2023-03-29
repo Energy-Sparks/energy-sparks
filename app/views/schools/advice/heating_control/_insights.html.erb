@@ -5,6 +5,8 @@
 
 <%= render 'schools/advice/section_title', section_id: 'comparison', section_title: t('advice_pages.heating_control.insights.controls.title') %>
 
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertHeatingSensitivityAdvice), show_links: false, show_icons: false %>
+
 <p>
   <%= t('advice_pages.heating_control.insights.controls.average_start_time',
   time: @last_week_start_times.average_start_time) %>
@@ -21,7 +23,7 @@
 <% if @enough_data_for_seasonal_analysis %>
   <%= render 'schools/advice/section_title', section_id: 'comparison', section_title: t('advice_pages.heating_control.insights.warm_weather.title') %>
 
-  <%= render 'warm_weather_notice', seasonal_analysis: @seasonal_analysis %>
+  <%= render 'warm_weather_notice', seasonal_analysis: @seasonal_analysis, warm_weather_on_days_rating: @warm_weather_on_days_rating %>
 
   <%= render 'warm_weather_benefits', seasonal_analysis: @seasonal_analysis %>
 
@@ -31,5 +33,5 @@
 <% end %>
 
 <% if @school.school_group.present? %>
-  <%= render 'comparison', school: @school %>
+  <%= render 'comparison', school: @school, benchmark_warm_weather_days: @benchmark_warm_weather_days %>
 <% end %>

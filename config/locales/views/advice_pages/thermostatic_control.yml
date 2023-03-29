@@ -37,7 +37,7 @@ en:
             <p>This is because the amount of heating required on a single day is linearly proportional to the difference between the inside and outside temperature, and any variation from the trend line would suggest thermostatic control isn't working too well.</p>
             <p>The second set of data at the bottom of the chart is for gas consumption in the summer when the heating is not on; typically, this is from hot water and kitchen consumption.</p>
             <p>The slope of this line is often an indication of how well insulated the hot water system is; if the consumption increases as it gets colder it suggests a lack of insulation.</p>
-          subtitle: This chart shows an analysis of how closely gas consumption in your school is aligned with the outside temperature between start date to end date
+          subtitle_html: This chart shows an analysis of how closely gas consumption in your school is aligned with the outside temperature between <span class="start-date">%{start_date}</span> to <span class="end-date">%{end_date}</span>
           title: Thermostatic analysis of your school's heating system
         this_section_html: |-
           <p>This section gives a more detailed analysis of your school’s boiler control and some things to look out for.</p>
@@ -47,8 +47,8 @@ en:
         your_schools_R2_value: Your school's R² value is %{r2} which is %{r2_rating_adjective}.
       insights:
         advice_html: |-
-          <p>We call this page an advanced page because there are some complex themes involved and it might take a user some time to work through the explanations.</p>
           <p>A building with good thermostatic control means that the colder it is outside the higher the gas consumption for heating.</p>
+          <p>This is an advanced page because there are some complex themes involved and it might take a user some time to work through the explanations.</p>
         for_more_detail_html: For more detail, <a href='%{link}'>compare with other schools in your group</a>
         how_do_you_compare:
           title: How do you compare?
@@ -63,7 +63,5 @@ en:
         thermostatic_control_r2_notice_html: |-
           <p>Your thermostatic control is %{r2}, which is %{r2_rating_adjective}</p>
           <p>The average value for schools is %{average_schools_r2} and a perfect value is 1.0. The lower the value below 1.0, the worse the school's thermostatic control.</p>
-        title: What do we mean by advanced thermostatic control?
-        your_thermostatic_control:
-          title: Your thermostatic control
-      page_title: Advanced thermostatic control analysis
+        title: What is thermostatic control?
+      page_title: Thermostatic control analysis

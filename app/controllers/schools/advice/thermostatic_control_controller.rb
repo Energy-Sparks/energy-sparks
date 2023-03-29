@@ -2,25 +2,23 @@ module Schools
   module Advice
     class ThermostaticControlController < AdviceBaseController
       def insights
-        @heating_thermostatic_analysis = build_heating_thermostatic_analysis
+        @heating_thermostatic_analysis = thermostatic_analysis_service.thermostatic_analysis
+        @benchmark_thermostatic_control = thermostatic_analysis_service.benchmark_thermostatic_control
       end
 
       def analysis
-        @heating_thermostatic_analysis = build_heating_thermostatic_analysis
+        @analysis_dates = analysis_dates
+        @heating_thermostatic_analysis = thermostatic_analysis_service.thermostatic_analysis
       end
 
       private
 
+      def thermostatic_analysis_service
+        @thermostatic_analysis_service ||= Schools::Advice::ThermostaticAnalysisService.new(@school, aggregate_school)
+      end
+
       def create_analysable
-        heating_thermostatic_analysis_service
-      end
-
-      def build_heating_thermostatic_analysis
-        heating_thermostatic_analysis_service.create_model
-      end
-
-      def heating_thermostatic_analysis_service
-        @heating_thermostatic_analysis_service ||= Heating::HeatingThermostaticAnalysisService.new(meter_collection: aggregate_school)
+        thermostatic_analysis_service
       end
 
       def set_insights_next_steps

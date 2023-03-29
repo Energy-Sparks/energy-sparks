@@ -1,6 +1,8 @@
 module Schools
   module Advice
     class GasLongTermController < BaseLongTermController
+      before_action :load_dashboard_alerts, only: [:insights]
+
       private
 
       def fuel_type

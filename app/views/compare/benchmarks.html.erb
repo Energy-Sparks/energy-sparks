@@ -2,22 +2,20 @@
 
 <h1><%= t('compare.benchmarks.title') %></h1>
 
-<%= render 'filter' %>
+<%= render 'summary' %>
 
-<p><%= t('compare.benchmarks.description') %></p>
+<h4><%= t('compare.benchmarks.description') %></h4>
 
 <% @benchmark_groups.each do |benchmark_group| %>
-  <h4><%= benchmark_group[:name] %></h4>
-  <div class="row">
-    <div class="col-sm-6">
-      <ul>
+  <div class="compare card mb-4">
+    <div class="card-header"><%= %><%= benchmark_group[:name] %></div>
+    <div class="card-body pb-0">
+      <div class="card-subtitle text-muted"><%= benchmark_group[:description] %></div>
+      <ul class="fa-ul card-columns">
         <% benchmark_group[:benchmarks].each do |benchmark, title| %>
-          <li><%= link_to title, compare_path(benchmark, @filter) %></li>
+          <li class="pt-1"><i class="fa-li fas fa-check"></i><%= link_to title, compare_path(benchmark, @filter) %></li>
         <% end %>
       </ul>
-    </div>
-    <div class="col-sm-6">
-      <%= benchmark_group[:description] %>
     </div>
   </div>
 <% end %>

@@ -1,7 +1,10 @@
 <% content_for :page_title, t('compare.index.title') %>
 
-<h1><%= t('compare.index.title') %></h1>
-
+<div class="row mt-2">
+  <div class="col">
+    <p class="display-3"><strong><%= t('compare.index.title') %></strong></p>
+  </div>
+</div>
 <div class="row">
   <div class="col-sm-6">
     <p><%= t("compare.index.intro") %></p>
@@ -16,14 +19,11 @@
   </div>
 </div>
 
-<%= render 'tabs' %>
+<%= render 'search_tabs' %>
 
 <div class="tab-content" id="compare-content">
   <%= render 'compare/tab_content/group' if current_school_group %>
-  <div class="tab-pane fade show<%= ' active' unless current_school_group %>" id="categories" role="tabpanel" aria-labelledby="categories-tab">
-    <%= render 'compare/tab_content/categories' %>
-  </div>
-  <div class="tab-pane fade show" id="groups" role="tabpanel" aria-labelledby="groups-tab">
-    <%= render 'compare/tab_content/groups' %>
-  </div>
+  <%= render 'compare/tab_content/country' %>
+  <%= render 'compare/tab_content/type' %>
+  <%= render 'compare/tab_content/groups' %>
 </div>

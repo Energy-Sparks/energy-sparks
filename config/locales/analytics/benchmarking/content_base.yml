@@ -47,6 +47,11 @@ en:
         change_in_gas_since_last_year: Annual change in gas use
         change_in_solar_pv_since_last_year: Annual change in solar PV production and resulting CO2 savings
         change_in_storage_heaters_since_last_year: Annual change in storage heater
+        data:
+          metering:
+            electricity: Electricity
+            gas: Gas
+            storage_heaters: Storage heaters
         electricity_consumption_during_holiday: Electricity use during current holiday
         electricity_peak_kw_per_pupil: Peak school day electricity use
         electricity_targets: Progress against electricity target
@@ -82,6 +87,21 @@ en:
           description: These benchmarks compare the combined energy use of a school site
           title: Total Energy Use Benchmarks
       configuration:
+        column_groups:
+          change_since_joined_energy_sparks: Change since joined Energy Sparks
+          co2_kg: CO2 (kg)
+          cost: Cost
+          electricity_consumption: Electricity consumption
+          gas_consumption: Gas consumption
+          gbp: "£"
+          kwh: kWh
+          metering: Metering
+          percent_changed: Percent changed
+          solar: Solar
+          solar_pv_production: Solar PV production
+          solar_self_consumption: Solar self consumption
+          storage_heater_consumption: Storage heater consumption
+          total_energy_consumption: Total energy consumption
         column_heading_explanation:
           last_year_definition_html: "<p>In school comparisons &apos;last year&apos; is defined as this year to date.</p>"
           last_year_previous_year_definition_html: "<p>In school comparisons &apos;last year&apos; is defined as this year to date, &apos;previous year&apos; is defined as the year before.</p>"
@@ -319,10 +339,15 @@ en:
             two_value_html: "<p>A 1 kW increase in baseload is equivalent to an increase in annual electricity costs of between %{value_first_gbp} and %{value_last_gbp} depending on your current tariff.</p>"
         benchmark_change_adhoc_comparison_gas_table:
           introduction_text: 'The change columns are calculated using temperature adjusted values:'
+        benchmark_holidays_change_base:
+          period_type: holiday
+          period_types: holidays
         benchmark_sept_nov_2022_gas_table:
           introduction_text: 'The change columns are calculated using temperature adjusted values:'
         change_in_electricity_consumption_recent_school_weeks:
           introduction_text_html: "<p>This benchmark shows the change in electricity consumption over the last two school weeks. You should expect a small increase in electricity consumption going into the winter with increased lighting usage and a subsequent reduction in the spring.</p>"
+          period_type: school week
+          period_types: school weeks
         change_in_electricity_holiday_consumption_previous_holiday:
           introduction_text_html: |-
             <p>
@@ -520,6 +545,17 @@ en:
           introduction_text_html: "<p>This benchmark shows the peak daily school power consumption per floor area. High values compared with other schools might suggest inefficient lighting, appliances or kitchen equipment. The peaks generally occur during the middle of the day.</p>"
         electricity_targets:
           introduction_text_html: "<p>This benchmark shows how a school is progressing against the target it has set for this year.</p>"
+        footnotes:
+          electricity:
+            change_rows_text: "<li>(*1) the comparison has been adjusted because the number of pupils have changed between the two %{period_type_string} for %{schools_to_sentence}.</li>"
+            infinite_decrease_school_names_text: "<li>(*3) schools where percentage change is -Infinity is caused by the electricity consumption in the current %{period_type_string} being zero but in the previous %{period_type_string} it was more than zero</li>"
+            infinite_increase_school_names_text: "<li>(*2) schools where percentage change is +Infinity is caused by the electricity consumption in the previous %{period_type_string} being more than zero but in the current %{period_type_string} zero</li>"
+          gas:
+            change_rows_text: "<li>(*1) the comparison has been adjusted because the floor area has changed between the two %{period_type_string} for %{schools_to_sentence}.</li>"
+            infinite_decrease_school_names_text: "<li>(*3) schools where percentage change is -Infinity is caused by the gas consumption in the current %{period_type_string} being zero but in the previous %{period_type_string} it was more than zero</li>"
+            infinite_increase_school_names_text: "<li>(*2) schools where percentage change is +Infinity is caused by the gas consumption in the previous %{period_type_string} being more than zero but in the current %{period_type_string} zero</li>"
+          notes: Notes
+          rate_changed_in_period: "<li>(*6) schools where the economic tariff has changed between the two periods, this is not reflected in the &apos;%{change_gbp_current_header}&apos; column as it is calculated using the most recent tariff.</li>"
         gas_consumption_during_holiday:
           introduction_text_html: |-
             <p>

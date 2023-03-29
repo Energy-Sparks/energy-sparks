@@ -183,6 +183,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:models-user_tariff_charge-yml]
+file_filter  = config/locales/<lang>/models/user_tariff_charge.yml
+source_file  = config/locales/models/user_tariff_charge.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:pagy-yml]
 file_filter  = config/locales/<lang>/pagy.yml
 source_file  = config/locales/pagy.yml
@@ -239,6 +246,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-electricity_costs-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/electricity_costs.yml
+source_file  = config/locales/views/advice_pages/electricity_costs.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-advice_pages-electricity_intraday-yml]
 file_filter  = config/locales/<lang>/views/advice_pages/electricity_intraday.yml
 source_file  = config/locales/views/advice_pages/electricity_intraday.yml
@@ -263,6 +277,13 @@ minimum_perc = 100
 [o:energy-sparks:p:energy-sparks:r:views-advice_pages-electricity_recent_changes-yml]
 file_filter  = config/locales/<lang>/views/advice_pages/electricity_recent_changes.yml
 source_file  = config/locales/views/advice_pages/electricity_recent_changes.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-gas_costs-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/gas_costs.yml
+source_file  = config/locales/views/advice_pages/gas_costs.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100
@@ -312,6 +333,13 @@ minimum_perc = 100
 [o:energy-sparks:p:energy-sparks:r:views-advice_pages-solar_pv-yml]
 file_filter  = config/locales/<lang>/views/advice_pages/solar_pv.yml
 source_file  = config/locales/views/advice_pages/solar_pv.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-storage_heaters-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/storage_heaters.yml
+source_file  = config/locales/views/advice_pages/storage_heaters.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100
@@ -609,3 +637,4 @@ source_file  = config/locales/views/terms_and_conditions/terms_and_conditions.ym
 source_lang  = en
 type         = YML
 minimum_perc = 100
+
