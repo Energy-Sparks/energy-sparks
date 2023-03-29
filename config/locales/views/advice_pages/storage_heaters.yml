@@ -28,6 +28,10 @@ en:
             title: Storage heater electricity consumption by time of day
           the_table_below: The table below shows how much electricity has been used for storage heaters over the last 12 months when the school is open and closed on a school day as well as during weekends and holidays.
           title: Electricity use for the last 12 months
+        holiday_usage:
+          table_footer: There should be no reason for storage heaters to remain on during summer half term or summer holidays.
+          table_intro: The table below shows the total storage heater electricity consumption during the last year of school holidays. It includes average energy use per day to enable comparison for different length holidays.
+          title: Storage heater use during holidays
         long_term_trends:
           storage_heater_group_by_week_long_term:
             subtitle: This chart gives the breakdown or gas consumption between school day open and closed, holidays and weekends for all the full years we have data for your school
@@ -49,6 +53,9 @@ en:
           notice_html: "<p>Last year your school heating was on for %{heating_on_in_warm_weather_days} days during warm weather. This is %{assessment}.</p>"
           title: Seasonal control
           you_should_ensure: You should ensure that storage heaters are turned off during weekends and holidays, and shorten the period when they are used during the year.
+        tables:
+          columns:
+            average_daily_usage: Average daily usage (kWh)
         thermostatic_control:
           storage_heater_thermostatic:
             content_html: |-

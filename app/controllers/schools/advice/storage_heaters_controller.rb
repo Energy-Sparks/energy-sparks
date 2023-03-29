@@ -12,6 +12,7 @@ module Schools
 
       def analysis
         @analysis_dates = analysis_dates
+        @holiday_usage = holiday_usage_calculation_service.school_holiday_calendar_comparison
       end
 
       private
@@ -36,6 +37,17 @@ module Schools
           meter_collection: aggregate_school,
           fuel_type: :storage_heater
         ).usage_breakdown
+      end
+
+      def holiday_usage_calculation_service
+        ::Usage::HolidayUsageCalculationService.new(
+          aggregate_meter,
+          aggregate_school.holidays
+        )
+      end
+
+      def aggregate_meter
+        aggregate_school.storage_heater_meter
       end
 
       def set_seasonal_analysis
