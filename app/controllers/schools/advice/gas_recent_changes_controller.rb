@@ -14,16 +14,11 @@ module Schools
       private
 
       def create_analysable
-        OpenStruct.new(
-          enough_data?: two_weeks_data?
-        )
+        gas_recent_changes_service
       end
 
-      def two_weeks_data?
-        helpers.two_weeks_data?(
-          start_date: aggregate_school.aggregated_heat_meters.amr_data.start_date,
-          end_date: aggregate_school.aggregated_heat_meters.amr_data.end_date
-        )
+      def gas_recent_changes_service
+        @gas_recent_changes_service ||= Schools::Advice::GasRecentChangesService.new(@school, aggregate_school)
       end
 
       def build_recent_usage
