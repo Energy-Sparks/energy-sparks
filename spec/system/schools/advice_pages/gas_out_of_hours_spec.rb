@@ -7,6 +7,19 @@ RSpec.describe "gas out of hours advice page", type: :system do
 
   context 'as school admin' do
     let(:user)  { create(:school_admin, school: school) }
+    let(:school_period) { Holiday.new(:xmas, "Xmas 2021/2022", Date.new(2021,12,18), Date.new(2022,01,3), nil) }
+    let(:holiday_usage) {
+      OpenStruct.new(
+        usage: CombinedUsageMetric.new(
+          £: 12.0,
+          kwh: 12.0,
+          co2: 12.0,
+          percent: 0.4
+        ),
+        previous_holiday: nil,
+        previous_holiday_usage: nil
+      )
+    }
 
     before do
       combined_usage_metric = CombinedUsageMetric.new(
@@ -29,6 +42,14 @@ RSpec.describe "gas out of hours advice page", type: :system do
       end
       allow_any_instance_of(Usage::AnnualUsageCategoryBreakdown).to receive(:total) { combined_usage_metric }
       allow_any_instance_of(Usage::AnnualUsageCategoryBreakdown).to receive(:potential_savings) { combined_usage_metric }
+
+      allow(meter_collection).to receive(:holidays).and_return(nil)
+
+      school_holiday_calendar_comparison = {
+        school_period => holiday_usage
+      }
+
+      allow_any_instance_of(Usage::HolidayUsageCalculationService).to receive(:school_holiday_calendar_comparison) { school_holiday_calendar_comparison }
 
       sign_in(user)
       visit school_advice_gas_out_of_hours_path(school)
