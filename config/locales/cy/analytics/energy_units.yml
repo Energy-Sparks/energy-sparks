@@ -46,6 +46,7 @@ cy:
       percent_0dp: "%{value}%"
       percent_html: "%{value}&percnt;"
       pupils: "%{value} o ddisgyblion"
+      r2: ''
       relative_percent: "%{sign}%{value}%"
       relative_percent_0dp: "%{sign}%{value}%"
       shower: "%{value} o gawodydd"
