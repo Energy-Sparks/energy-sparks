@@ -35,11 +35,13 @@ module Schools
       end
 
       #for charts that use the last full week
+      #beginning of the week is Sunday
       def last_full_week_start_date(end_date)
         (end_date - 13.months).beginning_of_week - 1
       end
 
       #for charts that use the last full week
+      #end of the week is Saturday
       def last_full_week_end_date(end_date)
         end_date.prev_week.end_of_week - 1
       end

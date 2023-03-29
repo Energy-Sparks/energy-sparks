@@ -12,7 +12,6 @@
     <td class="text-right">
       <%= format_unit(average_daily_usage(holiday_usage[holiday].previous_holiday_usage, holiday), :kwh, true, :target) %>
     </td>
-
     <td class="text-right">
       <%= format_unit(holiday_usage[holiday].previous_holiday_usage.£, :£, true, :target) %>
     </td>
@@ -20,7 +19,7 @@
       <%= format_unit(holiday_usage[holiday].previous_holiday_usage.co2, :co2, true, :target) %>
     </td>
   <% else %>
-    <td colspan="3" class="text-center old-data">
+    <td colspan="4" class="text-center old-data">
       <%= t('advice_pages.not_enough_data.table_row_not_enough') %>
     </td>
   <% end %>

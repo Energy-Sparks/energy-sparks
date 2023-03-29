@@ -199,7 +199,7 @@ module AdvicePageHelper
   end
 
   def average_daily_usage(usage, school_period)
-    return usage.kwh / (school_period.end_date - school_period.start_date).to_i
+    return usage.kwh / (school_period.end_date - school_period.start_date)
   end
 end
 # rubocop:enable Naming/AsciiIdentifiers

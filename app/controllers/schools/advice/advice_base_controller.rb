@@ -26,8 +26,6 @@ module Schools
       include DashboardAlerts
 
       rescue_from StandardError do |exception|
-        puts exception
-        puts exception.backtrace
         Rollbar.error(exception, advice_page: advice_page_key, school: @school.name, school_id: @school.id, tab: @tab)
         raise if Rails.env.development? || @advice_page.nil?
         render 'error', status: :internal_server_error
