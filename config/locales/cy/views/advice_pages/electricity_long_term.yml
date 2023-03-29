@@ -40,7 +40,7 @@ cy:
           title: Newid yn y defnydd o drydan dros yr ychydig flynyddoedd diwethaf
         group_by_week_electricity:
           explanation_html: |-
-            <p>Mae'r siart hwn yn dangos sut mae eich defnydd o drydan yn amrywio drwy gydol y flwyddyn. Mae pob bar yn cynrychiol wythnos gyfan a'r rhaniad rhwng defnydd gwyliau, penwythnos a diwrnod ysgol ar agor ac ar gau ar gyfer yr wythnos honno. Mae'n amlygu sut mae'r defnydd o drydan yn gyffredinol yn cynyddu yn y gaeaf ac yn is yn yr haf. Gallwch glicio ar y siart i archwilio'r data yn fwy manwl. Fel uchod, dylech weld tuedd gyffredin ar i lawr.
+            <p>Mae'r siart hwn yn dangos sut mae eich defnydd o drydan yn amrywio drwy gydol y flwyddyn. Mae pob bar yn cynrychiol wythnos gyfan a'r rhaniad rhwng defnydd gwyliau, penwythnos a diwrnod ysgol ar agor ac ar gau ar gyfer yr wythnos honno. Mae'n amlygu sut mae'r defnydd o drydan yn gyffredinol yn cynyddu yn y gaeaf ac yn is yn yr haf. Gallwch glicio ar y siart i archwilio'r data yn fwy manwl.
             <p>
             Mae'r lliwiau ar y graff hefyd yn amlygu'r defnydd o drydan dros wyliau mewn coch. Fel arfer mae defnydd gwyliau yn cael ei achosi gan offer a chyfrifiaduron yn cael eu gadael ymlaen (a elwir yn 'llwyth sylfaenol'). Dylai'r ysgol anelu at leihau'r llwyth sylfaenol hwn (sydd hefyd yn digwydd ar benwythnosau a thros nos yn ystod dyddiau ysgol) gan y bydd hyn yn cael effaith fawr ar gostau ynni ysgol. Weithiau gellir cyflawni hyn trwy ddiffodd offer ar ddydd Gwener cyn penwythnosau a gwyliau, ac weithiau trwy amnewid offer trydanol hŷn gyda rhai newydd mwy effeithlon.
             </p>

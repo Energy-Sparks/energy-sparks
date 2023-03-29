@@ -62,11 +62,11 @@ cy:
       special: Arbennig
     series_data_manager:
       series_name:
-        baseload: LLWYTH SYLFAEN
+        baseload: LLWYTH SYLFAENOL
         benchmark_school: Dan reolaeth dda
         boiler_off: Boeler i ffwrdd
         community: Cymuned
-        community_baseload: Llwyth Sylfaen Cymunedol
+        community_baseload: Llwyth Sylfaenol Cymunedol
         cusum: CUSUM
         degree_days: Dyddiau Gradd
         electricity: Trydan

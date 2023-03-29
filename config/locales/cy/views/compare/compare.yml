@@ -1,0 +1,43 @@
+cy:
+  compare:
+    benchmarks:
+      description: Cliciwch ar feincnod i gymharu'r ysgolion a ddewiswyd
+      title: Dewiswch feincnod cymharu ysgolion
+    filter:
+      all_countries: Pob gwlad
+      all_school_types: Pob math o ysgol
+      change_benchmark: Newid meincnod
+      change_options: Newid opsiynau
+      country: 'Dewiswch wlad:'
+      school_groups: 'Dewiswch grwpiau ysgol:'
+      school_type: 'Dewiswch fath o ysgol:'
+      school_types_html: 'Gan gynnwys: %{school_types}'
+      schools_in_school_group_html: Cymharu ysgolion yn y grŵp %{school_group}
+      schools_in_school_groups_html: 'Cymharu ysgolion mewn grwpiau: %{school_groups}'
+      schools_with_country_html: Cymharu ysgolion yn %{country}
+      schools_with_type_html: 'Cymharu ysgolion o fath: %{school_type}'
+      select_one: Dewiswch o leiaf un
+    index:
+      country:
+        tab: Dewiswch wlad
+        title: Cymharwch ysgolion yn ôl gwlad
+      group:
+        tab: Eich grŵp
+        title: Cymharwch bob ysgol o fewn %{name}
+      groups:
+        tab: Dewiswch grwpiau
+        title: Cymharwch ysgolion mewn grwpiau
+      intro: Gweld sut mae ysgolion o fewn yr un ardal ymddiriedolaeth aml-academi (MAT) neu awdurdod lleol yn cymharu ar draws ystod o feincnodau perfformiad ynni
+      options_html: Defnyddiwch opsiynau isod i gymharu <strong>%{school_count}</strong>ysgol â <strong>%{benchmark_count}</strong> meincnod
+      summary:
+        item_1: Nodwch enghreifftiau o arfer gorau
+        item_2: Nodwch yr ysgolion sydd angen y cymorth mwyaf
+        item_3: Cymharwch berfformiad unigol ag ysgolion â nodweddion tebyg
+      title: Offeryn Cymharu Ysgolion
+      type:
+        tab: Dewiswch fath
+        title: Cymharwch ysgolion yn ôl math
+    limit_by_school_type: 'Cyfyngu canlyniadau i gynnwys ysgolion o fath:'
+    show:
+      charts: Siartiau
+      tables: Tablau

@@ -62,6 +62,11 @@ cy:
     solar_pv: Solar ffotofoltaig
     storage_heater: Stôr-wresogydd
     storage_heaters: Stôr-wresogyddion
+    table:
+      columns:
+        co2_kg: CO2 (kg)
+        cost_gbp: Cost (£)
+        use_kwh: Defnyddio (kWh)
     terms_and_conditions: telerau ac amodau
     units:
       minutes:

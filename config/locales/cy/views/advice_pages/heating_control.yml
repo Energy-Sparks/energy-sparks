@@ -42,9 +42,11 @@ cy:
           title: Siart rheolaeth dymhorol
       insights:
         comparison:
-          heating_on_comparison_link: pa mor aml y byddwch yn cael gwres ymlaen yn ystod tywydd cynnes
+          callout_footer: dyddiau
+          heating_on_comparison_link: Pa mor aml y bydd gennych wres ymlaen yn ystod tywydd cynnes
+          intro: O ran gadael gwres ymlaen yn ystod tywydd cynnes, sut ydych chi'n cymharu ag ysgolion eraill?
           more_detail_html: Am ragor o fanylion, edrychwch ar sut mae eich ysgol yn cymharu ag eraill yn eich grŵp
-          start_time_comparison_link: amseroedd cychwyn bore ar gyfer gwresogi
+          start_time_comparison_link: Amseroedd cychwyn bore ar gyfer gwresogi
           title: Sut ydych chi'n cymharu?
         controls:
           average_start_time: Mae ein dadansoddiad yn dangos mai'r amser cychwyn cyfartalog ar gyfer eich gwresogi yn ddiweddar oedd %{time}.
