@@ -10,6 +10,7 @@ cy:
         terms: <a href="https://creativecommons.org/licenses/by/4.0/" target="_new">CC-BY 4.0</a>
       - name: Amcangyfrif o Gynhyrchiad Solar Ffotofoltaig
         source: <a href="https://www.solar.sheffield.ac.uk/" target="_new">Sheffield Ffotofoltaig yn Fyw</a>
+        terms: ''
       - name: Data Tymheredd Hanesyddol
         source: <a href="https://meteostat.net/" target="_new">Meteostat</a>. <br>Darparwyd data crai gan <a href="https://www.noaa.gov/" target="_new">NOAA</a>, <a href="https://www.dwd.de/" target="_new">DWD</a> ac <a href="https://dev.meteostat.net/docs/sources.html" target="_new">eraill</a>.
         terms: <a href="https://creativecommons.org/licenses/by-nc/4.0/legalcode" target="_new">CC-BY-NC 4.0</a>
@@ -18,6 +19,7 @@ cy:
         terms: <a href="https://opendatacommons.org/licenses/odbl/" target="_new">ODbL</a>
       - name: Rhagolygon y tywydd
         source: <a href="https://darksky.net/poweredby/" target="_new">Wedi'i bweru gan Dark Sky</a>.
+        terms: ''
     introduction: Mae Sbarcynni yn dibynnu ar nifer o setiau data cyhoeddus ac agored. Dyma restr o'r setiau data trydydd parti rydym yn eu mewnforio a'u defnyddio ar y wefan
     read_more_html: Gallwch hefyd ddarllen rhagor am y <a href='%{datasets_path}'>data cynhyrchu ynni a defnydd ysgolion</a> rydym yn eu defnyddio ac yn sicrhau eu bod ar gael
     source: Ffynhonnell
