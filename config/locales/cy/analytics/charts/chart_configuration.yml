@@ -1006,6 +1006,7 @@ cy:
       title:
         - Thermostatig (Penwythnos y Gaeaf)
     y_axis_label_name:
+      r2: ''
       co2: kg CO2
       days: dyddiau
       kw: kW

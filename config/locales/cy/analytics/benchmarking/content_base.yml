@@ -3,6 +3,7 @@ cy:
     benchmarking:
       caveat_text:
         comparison_with_previous_period_infinite: "<p>Mae gwerth anfeidrol neu anfesuradwy yn dangos mai sero oedd y defnydd yn y cyfnod cyntaf.</p>"
+        covid_lockdown: ''
         es_data_not_in_sync_html: |-
           <p>
             Mae costau gwresogyddion nwy, trydan a stôr-wresogyddion i gyd yn defnyddio'r data

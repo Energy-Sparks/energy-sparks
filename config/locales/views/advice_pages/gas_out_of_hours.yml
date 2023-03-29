@@ -8,6 +8,7 @@ en:
             header: This chart can help your school compare gas use during holidays
             subtitle_html: This chart gives the breakdown of gas consumption between school day open and closed, holidays and weekends for each week between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>
             title: Gas use by week for the last 14 months
+          table_alert_note: 'Note: The table above is not adjusted for changes in outside temperature, the % changes in gas consumption might therefore differ from those in your school''s alert messages.'
           table_footer: Winter holidays would be expected to have higher gas use due to frost protection settings.
           table_intro: The table below shows a summary of your gas usage during the last year of school holidays. It includes average energy use per day to enable comparison for different length holidays.
           title: Holiday usage
