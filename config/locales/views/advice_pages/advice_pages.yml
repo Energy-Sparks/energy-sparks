@@ -67,12 +67,12 @@ en:
       name: Advice
       pages:
         baseload: Baseload
-        electricity_costs: Costs
+        electricity_costs: Tariffs and costs
         electricity_intraday: Intraday
         electricity_long_term: Long term changes
         electricity_out_of_hours: Out of school hours
         electricity_recent_changes: Recent changes
-        gas_costs: Costs
+        gas_costs: Tariffs and costs
         gas_long_term: Long term changes
         gas_out_of_hours: Out of school hours
         gas_recent_changes: Recent changes
