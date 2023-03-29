@@ -164,6 +164,10 @@ module AdvicePageHelper
     AlertType.groups.key?(group) ? AlertType.send(group) : []
   end
 
+  def alert_types_for_class(class_name)
+    AlertType.where(class_name: class_name.to_s)
+  end
+
   # alert type groups have a specific order here
   def dashboard_alert_groups(dashboard_alerts)
     %w[priority change benchmarking advice].select { |group| dashboard_alerts_for_group(dashboard_alerts, group).any? }

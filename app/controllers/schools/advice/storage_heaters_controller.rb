@@ -1,6 +1,7 @@
 module Schools
   module Advice
     class StorageHeatersController < AdviceBaseController
+      before_action :load_dashboard_alerts, only: [:insights, :analysis, :learn_more]
       before_action :set_seasonal_analysis, only: [:insights, :analysis]
       before_action :set_annual_usage_breakdown, only: [:insights, :analysis]
       before_action :set_usage_categories, only: [:insights, :analysis]
