@@ -41,13 +41,6 @@ describe AdvicePageHelper do
     end
   end
 
-  describe '.two_weeks_data?' do
-    it 'returns true if there are at least 14 days between two dates' do
-      expect(helper.two_weeks_data?(start_date: Date.new(2021,01,01), end_date: Date.new(2021,01,15))).to eq(true)
-      expect(helper.two_weeks_data?(start_date: Date.new(2021,01,02), end_date: Date.new(2021,01,15))).to eq(false)
-    end
-  end
-
   describe '.advice_page_path' do
 
     it 'returns path to insights by default' do
@@ -97,8 +90,8 @@ describe AdvicePageHelper do
   end
 
   describe 'with dashboard alerts' do
-    let(:alert_type_advice)   { create(:alert_type, group: 'advice') }
-    let(:alert_type_change)   { create(:alert_type, group: 'change') }
+    let(:alert_type_advice)   { create(:alert_type, group: 'advice', class_name: 'AdviceAlert') }
+    let(:alert_type_change)   { create(:alert_type, group: 'change', class_name: 'ChangeAlert') }
     let(:alert_advice) { create(:alert, :with_run, alert_type: alert_type_advice, run_on: Time.zone.today, school: school, rating: 9.0) }
     let(:alert_change) { create(:alert, :with_run, alert_type: alert_type_change, run_on: Time.zone.today, school: school, rating: 9.0) }
     let(:dashboard_alert_advice)  { OpenStruct.new(alert: alert_advice) }
@@ -123,6 +116,12 @@ describe AdvicePageHelper do
       end
       it 'handles unknown group' do
         expect(helper.alert_types_for_group('blah')).to eq([])
+      end
+    end
+
+    describe '.alert_types_for_class' do
+      it 'should return alert types for class name' do
+        expect(helper.alert_types_for_class('ChangeAlert')).to eq([alert_type_change])
       end
     end
   end

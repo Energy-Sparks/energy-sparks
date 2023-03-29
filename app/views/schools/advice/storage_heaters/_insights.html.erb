@@ -6,10 +6,16 @@
 <%= render 'schools/advice/section_title', section_id: 'your_storage_heater_energy_use
 ', section_title: t('advice_pages.storage_heaters.insights.your_storage_heater_energy_use.title') %>
 
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertStorageHeatersLongTermTrend), show_links: false, show_icons: false %>
+
 <%= render 'analysis_table' %>
 
 <%= render 'schools/advice/section_title', section_id: 'leaving_the_heating_on_during_warm_weather
 ', section_title: t('advice_pages.storage_heaters.insights.leaving_the_heating_on_during_warm_weather.title') %>
+
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertSeasonalHeatingSchoolDaysStorageHeaters), show_links: false, show_icons: false %>
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertTurnHeatingOffStorageHeaters), show_links: false, show_icons: false %>
+
 <%= render('seasonal_control_notice') %>
 
 <%= render 'schools/advice/section_title', section_id: 'how_do_you_compare', section_title: t('advice_pages.storage_heaters.insights.how_do_you_compare.title') %>

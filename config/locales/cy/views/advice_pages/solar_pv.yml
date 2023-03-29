@@ -41,7 +41,6 @@ cy:
           for_more_detail_html: Am ragor o fanylion, <a href="%{link}">cymharwch gydag ysgolion eraill yn eich grŵp</a>
           how_do_you_compare: Sut ydych chi'n cymharu?
           link: Dysgu rhagor
-          next_steps_html: Camau nesaf
           table:
             category: Categori
             row:
@@ -98,7 +97,7 @@ cy:
             <p>Os oes gennych ddiddordeb mewn gosod ffotofoltäig solar yn eich ysgol dylech:</p>
             <ul>
               <li>Siaradwch ag arbenigwr a all asesu'r gofod to presennol o ran y gofod sydd ar gael a chywirdeb strwythurol.</li>
-              <li>Gallwch ofyn am gyngor arbenigol gan osodwyr cymwys a restrir ar wefan MCS.
+              <li>Gallwch ofyn am gyngor arbenigol gan osodwyr cymwys a restrir ar wefan <a href='https://mcscertified.com/find-an-installer/'>MCS</a>.
               <li>Ymchwilio i ffynonellau cyllid ar gyfer paneli solar.</li>
             </ul>
           potential_benefits_for_your_school: Manteision posib i'ch ysgol

@@ -3,6 +3,10 @@ cy:
     gas_recent_changes:
       analysis:
         charts:
+          compare_last_week_chart_explanation: Mae'r siart yn defnyddio'r saith diwrnod diweddaraf sydd ar gael yn awtomatig. Defnyddiwch y botymau archwilio uwchben y siart i gymharu dyddiau amgen. Gallwch glicio ar y chwedl i ychwanegu neu dynnu llinellau o'r graff i'w gwneud yn gliriach.
+          compare_last_week_chart_footer: Gallwch ddefnyddio’r math hwn o siart i ddeall sut mae defnydd nwy yr ysgol yn amrywio drwy gydol yr wythnos.
+          compare_last_week_chart_subtitle: Cymhariaeth rhwng defnydd nwy eich ysgol drwy gydol y dydd dros y 7 diwrnod diwethaf.
+          compare_last_week_chart_title: Defnydd nwy eich ysgol bob hanner awr dros y 7 diwrnod diwethaf
           compare_recent_days_chart_explanation: Mae'r siart yn defnyddio'r ddiwrnodau diweddaraf sydd ar gael yn awtomatig. Defnyddiwch yr opsiynau o dan y siart i gymharu dyddiau amgen.
           compare_recent_days_chart_subtitle: Mae'r siart hwn yn dangos defnydd o nwy trwy gydol y dydd ar ddau ddiwrnod diweddar.
           compare_recent_days_chart_title: Defnydd nwy eich ysgol bob hanner awr am ddau ddiwrnod diweddar
@@ -12,6 +16,8 @@ cy:
           impact_of_temperature_chart_explanation_html: Dyddraddau yw'r gwrthdro tymheredd. Po uchaf yw'r dyddraddau, yr isaf yw'r tymheredd.%{more_detail_url}. Os yw'r boeler gwresogi yn gweithio'n dda yn eich ysgol, dylai dyddraddau olrhain y defnydd o nwy yn eithaf agos.
           impact_of_temperature_chart_subtitle_html: Mae'r siart hwn yn dangos defnydd nwy eich ysgol rhwng <span class="start-date">%{start_date}</span> a %{end_date}, gan gynnwys cymhariaeth â dyddraddau.
           impact_of_temperature_chart_title: Defnydd nwy eich ysgol dros y pythefnos diwethaf
+        compare_last_week:
+          title: Cymhariaeth o ddefnydd nwy dros y 7 diwrnod diwethaf
         compare_recent_days:
           title: Cymhariaeth o ddefnydd nwy dros 2 ddiwrnod diweddar
         compare_recent_weeks:

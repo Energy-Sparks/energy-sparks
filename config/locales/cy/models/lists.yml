@@ -36,6 +36,16 @@ cy:
     ks3: CA3
     ks4: CA4
     ks5: CA5
+  role:
+    admin: Gweinyddwr
+    analytics: Dadansoddeg
+    group_admin: Gweinyddwr Grŵp
+    guest: Gwestai
+    pupil: Disgybl
+    school_admin: Gweinyddwr Ysgol
+    school_onboarding: Cofrestru
+    staff: Staff
+    volunteer: Gwirfoddolwr
   staff_role:
     building_site_manager_or_caretaker: Rheolwr adeilad/safle neu ofalwr
     business_manager: Rheolwr busnes

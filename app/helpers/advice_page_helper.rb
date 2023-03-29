@@ -78,12 +78,6 @@ module AdvicePageHelper
     (end_date - 364) >= start_date
   end
 
-  def two_weeks_data?(start_date:, end_date:)
-    return false unless start_date && end_date
-
-    (end_date - start_date) >= 14
-  end
-
   def months_analysed(start_date, end_date)
     months = months_between(start_date, end_date)
     months > 12 ? 12 : months
@@ -168,6 +162,10 @@ module AdvicePageHelper
 
   def alert_types_for_group(group)
     AlertType.groups.key?(group) ? AlertType.send(group) : []
+  end
+
+  def alert_types_for_class(class_name)
+    AlertType.where(class_name: class_name.to_s)
   end
 
   # alert type groups have a specific order here

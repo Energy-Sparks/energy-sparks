@@ -4,6 +4,10 @@
 <% end %>
 
 <%= render 'schools/advice/section_title', section_id: 'current', section_title: t('advice_pages.gas_out_of_hours.insights.your_out_of_hours_usage_title') %>
+
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertOutOfHoursGasUsage), show_links: false, show_icons: false %>
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertWeekendGasConsumptionShortTerm), show_links: false, show_icons: false %>
+
 <%= t(
       'advice_pages.gas_out_of_hours.insights.your_out_of_hours_usage_html',
       out_of_hours_percent: format_unit(@annual_usage_breakdown&.out_of_hours&.percent, :percent),

@@ -1,6 +1,8 @@
 module Schools
   module Advice
     class ElectricityRecentChangesController < AdviceBaseController
+      before_action :load_dashboard_alerts, only: [:insights]
+
       def insights
         @analysis_dates = analysis_dates
         @recent_usage = build_recent_usage
@@ -14,16 +16,11 @@ module Schools
       private
 
       def create_analysable
-        OpenStruct.new(
-          enough_data?: two_weeks_data?
-        )
+        electricity_recent_changes_service
       end
 
-      def two_weeks_data?
-        helpers.two_weeks_data?(
-          start_date: aggregate_school.aggregated_electricity_meters.amr_data.start_date,
-          end_date: aggregate_school.aggregated_electricity_meters.amr_data.end_date
-        )
+      def electricity_recent_changes_service
+        @electricity_recent_changes_service ||= Schools::Advice::ElectricityRecentChangesService.new(@school, aggregate_school)
       end
 
       def build_recent_usage

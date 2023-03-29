@@ -1,6 +1,8 @@
 module Schools
   module Advice
     class SolarPvController < AdviceBaseController
+      before_action :load_dashboard_alerts, only: [:insights]
+
       def insights
         if @school.has_solar_pv?
           @existing_benefits = build_existing_benefits
