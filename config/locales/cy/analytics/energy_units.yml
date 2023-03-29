@@ -9,8 +9,12 @@ cy:
       co2t: "%{value} o dunelli CO2"
       comparison_percent: "%"
       computer_console: "%{value} o gonsolau cyfrifiaduron"
+      date: ''
+      date_mmm_yyyy: ''
+      datetime: ''
       days: dyddiau
       electricity: "%{value} trydan"
+      fuel_type: ''
       gas: "%{value} nwy"
       home: "%{value} o gartrefi"
       homes_electricity: "%{value} o gartrefi (defnydd trydan)"
@@ -46,8 +50,11 @@ cy:
       percent_0dp: "%{value}%"
       percent_html: "%{value}&percnt;"
       pupils: "%{value} o ddisgyblion"
+      r2: ''
       relative_percent: "%{sign}%{value}%"
       relative_percent_0dp: "%{sign}%{value}%"
+      school_name: ''
+      short_school_name: ''
       shower: "%{value} o gawodydd"
       smartphone: "%{value} o wefrau ffonau clyfar"
       solar_panels: "%{value} o baneli solar"
@@ -55,6 +62,7 @@ cy:
       teaching_assistant: "%{value} cynorthwyydd addysgu"
       teaching_assistant_hours: "%{value} cynorthwyydd addysgu (oriau)"
       temperature: "%{value}C"
+      timeofday: ''
       tree: "%{value} o goed"
       tv: "%{value} set teledu"
       vegetarian_dinner: "%{value} o giniawau"

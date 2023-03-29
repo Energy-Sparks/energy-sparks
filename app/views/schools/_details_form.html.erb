@@ -8,7 +8,7 @@
 
 <div class="form-group">
   <%= f.label :funding_status %>
-  <%= f.select :funding_status, options_for_select(School.funding_statuses.map {|key, value| [key.titleize, key]}, f.object.funding_status), {include_blank: false}, { class: 'form-control' } %>
+  <%= f.select :funding_status, options_for_select(School.funding_statuses.map {|key, value| [t("schools.funding_status.#{key}"), key]}, f.object.funding_status), {include_blank: false}, { class: 'form-control' } %>
 </div>
 
 <% if current_user.admin? %>
@@ -29,7 +29,7 @@
   <h2><%= t('schools.school_details.location') %></h2>
   <div class="form-group">
     <%= f.label :country %>
-    <%= f.select :country, options_for_select(School.countries.map {|key, value| [key.titleize, key]}, f.object.country), {include_blank: false}, { class: 'form-control' } %>
+    <%= f.select :country, options_for_select(School.countries.map {|key, value| [t('school_statistics.' + key), key]}, f.object.country), {include_blank: false}, { class: 'form-control' } %>
   </div>
   <p><%= t('schools.school_details.geocode_message') %></p>
   <div class="form-group">
