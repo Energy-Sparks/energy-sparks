@@ -29,7 +29,7 @@
               <div class="col">
                 <% if ap.key == 'solar_pv' %>
                   <% solar_status = @school.has_solar_pv? ? 'has_solar' : 'no_solar' %>
-                  <%= t("advice_pages.index.show.page_summary.#{ap.key}.#{solar_status}") %>
+                  <%= t("advice_pages.index.show.page_summary.solar_pv.#{solar_status}") %>
                 <% else %>
                   <%= t("advice_pages.index.show.page_summary.#{ap.key}") %>
                 <% end %>
