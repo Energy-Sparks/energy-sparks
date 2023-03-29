@@ -15,12 +15,7 @@
       <%= t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title') %>
     </a>
   </li>
-
 </ul>
-
-<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertElectricityUsageDuringCurrentHoliday), show_links: false, show_icons: false %>
-<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertPreviousHolidayComparisonElectricity), show_links: false, show_icons: false %>
-<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertPreviousYearHolidayComparisonElectricity), show_links: false, show_icons: false %>
 
 <%= render 'schools/advice/section_title', section_id: 'last_twelve_months', section_title: t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.title') %>
 
@@ -48,6 +43,10 @@
 <% end %>
 
 <%= render 'schools/advice/section_title', section_id: 'holiday-usage', section_title: t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title') %>
+
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertElectricityUsageDuringCurrentHoliday), show_links: false, show_icons: false %>
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertPreviousHolidayComparisonElectricity), show_links: false, show_icons: false %>
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertPreviousYearHolidayComparisonElectricity), show_links: false, show_icons: false %>
 
 <% if @analysis_dates.months_of_data >= 14 %>
   <%= component 'chart', chart_type: :alert_group_by_week_electricity_14_months, school: @school do |c| %>
