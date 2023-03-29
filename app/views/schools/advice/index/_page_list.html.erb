@@ -27,7 +27,12 @@
                 <h5 class="advice-page-label"><%= link_to translated_label(ap), advice_page_path(school, ap) %></h5>
               </div>
               <div class="col">
-                <%= t("advice_pages.index.show.page_summary.#{ap.key}") %>
+                <% if ap.key == 'solar_pv' %>
+                  <% solar_status = @school.has_solar_pv? ? 'has_solar' : 'no_solar' %>
+                  <%= t("advice_pages.index.show.page_summary.#{ap.key}.#{solar_status}") %>
+                <% else %>
+                  <%= t("advice_pages.index.show.page_summary.#{ap.key}") %>
+                <% end %>
               </div>
               <% school_benchmark = advice_page_benchmarks.where(advice_page: ap).first %>
               <% if school_benchmark.present? %>
