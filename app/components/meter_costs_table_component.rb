@@ -165,4 +165,11 @@ class MeterCostsTableComponent < ViewComponent::Base
     return "-" if value.nil?
     FormatEnergyUnit.format_pounds(:£, value, :text, @precision, true)
   end
+
+  def period_bucket_times(period)
+    t1_str, t2_str = period.split(' to ')
+    t2 = TimeOfDay.parse(t2_str)
+    t2_end = TimeOfDay.add_hours_and_minutes(t2, 0, 30)
+    { start: t1_str, end: t2_end }
+  end
 end
