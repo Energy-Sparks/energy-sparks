@@ -82,6 +82,8 @@ RSpec.describe "gas out of hours advice page", type: :system do
         expect(page).to have_css('#chart_wrapper_daytype_breakdown_gas_tolerant')
         expect(page).to have_css('#chart_wrapper_gas_by_day_of_week_tolerant')
         expect(page).to have_css('#chart_wrapper_gas_heating_season_intraday_up_to_1_year')
+        expect(page).to have_content("Holiday usage")
+        expect(page).to have_content(Date.new(2021,12,18).to_s(:es_short))
       end
     end
 
