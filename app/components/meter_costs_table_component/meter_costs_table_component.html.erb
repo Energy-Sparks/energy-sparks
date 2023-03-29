@@ -2,7 +2,7 @@
     <thead>
       <% if @year_header %>
         <tr>
-          <th></th>
+          <th colspan="2"></th>
           <% years_header do |year| %>
             <th class="text-right"><%= year %></th>
           <% end %>
@@ -10,7 +10,7 @@
         </tr>
       <% end %>
       <tr>
-        <th></th>
+        <th colspan="2"></th>
         <% months_header do |month, full_month| %>
           <th class="text-right"><%= month %><%= '<sup>*</sup>'.html_safe if !full_month.nil? && !full_month %></th>
         <% end %>
@@ -23,6 +23,7 @@
           <% if bill_component?(component: component) %>
             <tr>
               <td><%= t("advice_pages.tables.labels.bill_components.#{component}") %></td>
+              <td><%= helpers.icon_tooltip(t("advice_pages.tables.tooltips.bill_components.#{component}")) %></td>
               <% bill_component_row(component: component) do |v| %>
                 <td class="text-right"><%= v %></td>
               <% end %>
