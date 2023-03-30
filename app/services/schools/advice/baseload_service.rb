@@ -17,7 +17,7 @@ module Schools
       end
 
       def multiple_electricity_meters?
-        @school.meters.electricity.count > 1
+        @school.meters.active.electricity.count > 1
       end
 
       def average_baseload_kw(period: :year)
