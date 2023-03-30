@@ -19,7 +19,6 @@
         <%= t('schools.school_targets.progress.current.unfortunately_as_much_as_last_year', fuel_type: human_fuel_type(@fuel_type)) %>
       </p>
     <% elsif @latest_progress > 0.0 %>
-      <%= @latest_progress %>
       <p>
         <%= t('schools.school_targets.progress.current.unfortunately_more_than_last_year', fuel_type: human_fuel_type(@fuel_type), relative_percent: format_target(@latest_progress, :relative_percent)) %>.
       </p>
