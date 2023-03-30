@@ -62,6 +62,10 @@ en:
             percentage_change: "% Change"
             use: Average baseload (kW)
         title: Your current baseload
+      for_each_1kw_reduction_html: |-
+        <p>
+          For each 1kW reduction in baseload, the school will save %{kwh_saving} kWh and %{gbp_saving} per year, and reduce its carbon footprint by %{co2_saving} kg.
+        </p>
       insights:
         next_steps: To fully determine the causes of your baseload usage you need to do a survey of what appliances are being left on overnight and their power consumption
         title: What is baseload?
@@ -91,8 +95,5 @@ en:
         </p>
         <p>
           It can be the fastest way of reducing a school's energy costs and reducing its carbon footprint.
-        </p>
-        <p>
-          For each 1kW reduction in baseload, the school will save 8,760 kWh.
         </p>
       what_is_baseload_link: Learn more

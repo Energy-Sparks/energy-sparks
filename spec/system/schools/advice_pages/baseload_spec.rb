@@ -142,6 +142,7 @@ RSpec.describe "Baseload advice page", type: :system do
 
         allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:previous_period_average_baseload_kw).with(period: :year).and_return previous_year_average_baseload_kw
         allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:previous_period_average_baseload_kw).with(period: :week).and_return previous_week_average_baseload_kw
+        allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:saving_through_1_kw_reduction_in_baseload) { OpenStruct.new(kwh: 8800, £: 1300, co2: 1600, percent: nil) }
 
         #comparison
         allow_any_instance_of(Schools::Advice::BaseloadService).to receive(:benchmark_baseload).and_return comparison

@@ -7,6 +7,7 @@ module Schools
         @analysis_dates = analysis_dates
         @current_baseload = current_baseload
         @benchmarked_baseload = baseload_service.benchmark_baseload
+        @saving_through_1_kw_reduction_in_baseload = baseload_service.saving_through_1_kw_reduction_in_baseload
       end
 
       def analysis

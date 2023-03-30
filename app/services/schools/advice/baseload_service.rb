@@ -38,6 +38,10 @@ module Schools
         end
       end
 
+      def saving_through_1_kw_reduction_in_baseload
+        baseload_service.saving_through_1_kw_reduction_in_baseload
+      end
+
       def annual_baseload_usage
         @annual_baseload_usage ||= baseload_service.annual_baseload_usage(include_percentage: true)
       end
