@@ -6,7 +6,7 @@ module Schools
 
     def users
       users = @school.all_adult_school_users
-      users += @school.school_group.users.group_admin
+      users += @school.school_group.users.group_admin if @school.school_group
       # sort by staff role, with missing staff roles last in the list
       users.sort_by { |u| [u.staff_role ? 0 : 1, u.staff_role] }
     end
