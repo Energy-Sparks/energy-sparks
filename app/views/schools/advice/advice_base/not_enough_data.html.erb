@@ -4,7 +4,7 @@
       <%= t('advice_pages.not_enough_data.title') %>
     </h2>
     <p>
-      <%= t('advice_pages.not_enough_data.message', fuel_type: @advice_page.fuel_type) %>
+      <%= t('advice_pages.not_enough_data.message', fuel_type: @advice_page.t_fuel_type) %>
     </p>
     <% if @analysable.data_available_from.present? %>
       <p>
