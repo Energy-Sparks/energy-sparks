@@ -38,6 +38,16 @@ RSpec.describe Schools::BillRequestService do
       end
     end
 
+    context 'with group admin (not in cluster)' do
+      let!(:school_group)   { create(:school_group, schools: [school])}
+      let!(:school_admin)   { create(:school_admin, school: school)}
+      let!(:group_admin)    { create(:group_admin, school_group: school_group)}
+
+      it 'should return group admin users last' do
+        expect(service.users).to eq([school_admin, group_admin])
+      end
+    end
+
   end
 
   context '#request_documentation!' do

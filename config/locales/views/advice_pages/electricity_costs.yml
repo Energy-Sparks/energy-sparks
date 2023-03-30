@@ -3,6 +3,22 @@ en:
   advice_pages:
     electricity_costs:
       analysis:
+        agreed_capacity_notice:
+          nearing_agreed_capacity_html: |-
+            <p>Your capacity usage of %{kw} kW is quite close to your agreed limit of %{agreed_limit_kw} kW for meter %{mpan_mprn}.</p>
+            <p>There is a risk of incurring significantly monthly penalty charges if you go over the limit. We suggest you contact your energy manager or energy supplier to discuss.</p>
+          not_nearing_agreed_capacity:
+            annual_saving_gbp_html: "<p>By reducing your limit you could save up to %{annual_saving_gbp} per year.</p>"
+            introduction_html: |-
+              <b>Potential easy saving:</b>
+              <p>Your current maximum annual capacity usage of %{kw} kW is significantly lower than your agreed limit of %{agreed_limit_kw} kW for meter %{mpan_mprn}.</p>
+            suggestion_html: |-
+              <p>
+                We suggest you contact your energy manager or energy supplier to discuss reducing the
+                limit to save your costs. The main risk of doing this is if your annual usage goes up
+                if you are planning on signficantly increasing the size of the school or electricity
+                consumption in the near future?
+              </p>
         comparison:
           title: Cost comparison for last 2 years
         cost_breakdown_by_charge:
