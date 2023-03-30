@@ -43,7 +43,9 @@ module Schools
           @monthly_costs = costs_service.calculate_costs_for_latest_twelve_months(analytics_meter)
           @change_in_costs = costs_service.calculate_change_in_costs(analytics_meter)
           @tariffs = costs_service.tariffs(analytics_meter)
-          @agreed_capacity = Costs::AgreedSupplyCapacityService.new(analytics_meter).summarise
+          if meter.fuel_type == :electricity
+            @agreed_capacity = Costs::AgreedSupplyCapacityService.new(analytics_meter).summarise
+          end
         end
 
         @analysis_dates = analysis_dates
