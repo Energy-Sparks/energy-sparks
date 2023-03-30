@@ -14,7 +14,6 @@ class ChartData
 
   def data
     chart_manager = ChartManager.new(@aggregated_school)
-
     chart_config = customised_chart_config(chart_manager)
 
     transformed_chart_type, transformed_chart_config = apply_transformations(@transformations, @original_chart_type, chart_config, chart_manager)
@@ -25,8 +24,11 @@ class ChartData
     parent_timescale_description = chart_manager.parent_chart_timescale_description(transformed_chart_config)
     parent_timescale_description = I18n.t("chart_data.timescale_description.#{parent_timescale_description}", default: nil) || parent_timescale_description
 
+
+    run_chart = run_chart_for(chart_manager, transformed_chart_config, transformed_chart_type)
+
     values = ChartDataValues.new(
-      chart_manager.run_chart(transformed_chart_config, transformed_chart_type, provide_advice: @provide_advice),
+      run_chart,
       transformed_chart_type,
       transformations: @transformations,
       allowed_operations: allowed_operations,
@@ -36,6 +38,14 @@ class ChartData
     ).process
 
     values
+  end
+
+  def run_chart_for(chart_manager, transformed_chart_config, transformed_chart_type)
+    # Set reraise_exception to true
+    chart_manager.run_chart(transformed_chart_config, transformed_chart_type, true, nil, true, provide_advice: @provide_advice)
+  rescue => e
+    Rollbar.error(e)
+    nil
   end
 
   def has_chart_data?

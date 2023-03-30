@@ -41,6 +41,7 @@ private
     chart_config[:y_axis_units] = y_axis_units.to_sym if y_axis_units.present?
     provide_advice = params[:provide_advice] || false
     output = ChartData.new(@school, aggregate_school, @chart_type, chart_config, transformations: get_transformations, provide_advice: provide_advice).data
+
     if output
       render json: ChartDataValues.as_chart_json(output)
     else
