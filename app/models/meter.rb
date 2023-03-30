@@ -61,8 +61,6 @@ class Meter < ApplicationRecord
 
   has_and_belongs_to_many :user_tariffs, inverse_of: :meters
 
-  has_rich_text :notes
-
   CREATABLE_METER_TYPES = [:electricity, :gas, :solar_pv, :exported_solar_pv].freeze
   MAIN_METER_TYPES = [:electricity, :gas].freeze
   SUB_METER_TYPES = [:solar_pv, :exported_solar_pv].freeze
