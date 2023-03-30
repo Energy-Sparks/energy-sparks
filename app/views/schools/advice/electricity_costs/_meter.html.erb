@@ -5,6 +5,8 @@
 
 <%= component 'meter_costs_table', monthly_costs: monthly_costs, change_in_costs: change_in_costs %>
 
+<%= render 'agreed_capacity_notice' if @agreed_capacity %>
+
 <% if local_assigns[:tariffs] %>
   <%= render 'tariff_summary_table', school: school, tariffs: tariffs %>
   <div class="text-right">

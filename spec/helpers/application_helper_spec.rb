@@ -284,4 +284,15 @@ describe ApplicationHelper do
       expect(helper.status_for_alert_colour(:green)).to eq(:green)
     end
   end
+
+  describe '#user_school_role' do
+    let(:user_with_staff_role) { create(:staff) }
+    let(:user_without_staff_role) { create(:group_admin) }
+    it 'returns staff role title' do
+      expect(helper.user_school_role(user_with_staff_role)).to eq('Teacher')
+    end
+    it 'returns role' do
+      expect(helper.user_school_role(user_without_staff_role)).to eq('Group admin')
+    end
+  end
 end

@@ -210,7 +210,19 @@ class ChartDataValues
     date.to_s(:es_short)
   end
 
+  def translate_bill_component_series(series_key_as_string)
+    I18n.t("advice_pages.tables.labels.bill_components.#{series_key_as_string}")
+  end
+
   def translated_series_item_for(series_key_as_string)
+    series_key_as_string = series_key_as_string.to_s
+    return I18n.t('analytics.series_data_manager.series_name.baseload') if series_key_as_string.casecmp('baseload').zero?
+    return I18n.t('advice_pages.benchmarks.benchmark_school') if series_key_as_string == 'benchmark'
+    return I18n.t('advice_pages.benchmarks.exemplar_school') if series_key_as_string == 'exemplar'
+    return I18n.t('analytics.common.school_day') if series_key_as_string == 'school day'
+
+    return translate_bill_component_series(series_key_as_string) if I18n.t("advice_pages.tables.labels.bill_components").keys.map(&:to_s).include?(series_key_as_string)
+
     i18n_key = series_translation_key_lookup[series_key_as_string]
     return series_key_as_string unless i18n_key
 

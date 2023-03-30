@@ -466,4 +466,8 @@ module ApplicationHelper
       school.name
     end
   end
+
+  def user_school_role(user)
+    user.staff_role ? user.staff_role.title : user.role.humanize
+  end
 end

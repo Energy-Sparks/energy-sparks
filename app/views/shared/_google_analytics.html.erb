@@ -14,7 +14,8 @@
       gtag('event', 'school_dimension', {'user_school': '<%= current_user.school.name %>'});
     <% end %>
     <% if @advice_page.present? %>
-      gtag('event', 'advice_page_dimension', {'advice_page': '<%= @advice_page.key %>', 'advice_page_tab': '<%= @tab %>'});
+      gtag('event', 'advice_page_dimension', {'advice_page': '<%= @advice_page.key %>'});
+      gtag('event', 'advice_page_tab', {'advice_page_tab': '<%= @tab %>'});
     <% end %>
   <% end %>
 </script>

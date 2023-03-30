@@ -17,7 +17,7 @@ module Schools
       end
 
       def multiple_electricity_meters?
-        @school.meters.electricity.count > 1
+        @school.meters.active.electricity.count > 1
       end
 
       def average_baseload_kw(period: :year)
@@ -36,6 +36,10 @@ module Schools
         else
           raise "Invalid period"
         end
+      end
+
+      def saving_through_1_kw_reduction_in_baseload
+        baseload_service.saving_through_1_kw_reduction_in_baseload
       end
 
       def annual_baseload_usage
