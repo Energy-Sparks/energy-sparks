@@ -12,7 +12,7 @@ class AnalysisPageFinderController < ApplicationController
 
     if replace_analysis_pages?
       alert_type = find_advice_page_of_class(analysis_class)
-      if alert_type.advice_page.present?
+      if alert_type && alert_type.advice_page.present?
         redirect_to advice_page_path(school, alert_type.advice_page)
       else
         redirect_to school_advice_path(school)
