@@ -31,7 +31,7 @@ module Schools
 
       def enough_data?
         if @school.has_solar_pv?
-          existing_benefits_service.enough_data?
+          true
         else
           potential_benefits_service.enough_data?
         end
