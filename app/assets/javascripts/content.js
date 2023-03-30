@@ -67,12 +67,11 @@ $(document).ready(function() {
 
   $('#management-energy-overview').on('show.bs.tab', function (e) {
     // Find the chart by matching the class
-    chart = $('.' + e.target.hash.replace('#','') + '-analysis-chart')
-
+    var chart = $('.' + e.target.hash.replace('#','') + '-analysis-chart');
     // Only re/load chart if autoload chart is false (first tab is true)
     if (chart.data('autoload-chart') === false) {
-      chart.data('autoload-chart', true)
-      chartConfig = chart.data('chart-config');
+      chart.data('autoload-chart', true);
+      var chartConfig = chart.data('chart-config');
       processAnalysisChart(chart[0], chartConfig);
       setupAnalysisControls(chart[0], chartConfig);
       setupAxisControls(chart[0], chartConfig);
