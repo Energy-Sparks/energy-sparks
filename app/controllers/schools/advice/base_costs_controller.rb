@@ -44,6 +44,8 @@ module Schools
           @change_in_costs = costs_service.calculate_change_in_costs(analytics_meter)
           @tariffs = costs_service.tariffs(analytics_meter)
         end
+        @agreed_capacity = Costs::AgreedSupplyCapacityService.new(analytics_meter).summarise
+
         @analysis_dates = analysis_dates
         respond_to do |format|
           format.js

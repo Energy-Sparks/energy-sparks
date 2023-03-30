@@ -3,7 +3,10 @@
   <% c.with_subtitle { advice_t("electricity_costs.charts.#{one_year_breakdown_chart_key}.meter_subtitle_html", end_date: analysis_dates.end_date.to_s(:es_short)) } %>
 <% end %>
 
+
 <%= component 'meter_costs_table', monthly_costs: monthly_costs, change_in_costs: change_in_costs %>
+
+<%= render 'agreed_capacity_notice' if @agreed_capacity %>
 
 <% if local_assigns[:tariffs] %>
   <%= render 'tariff_summary_table', school: school, tariffs: tariffs %>
