@@ -216,7 +216,7 @@ class ChartDataValues
 
   def translated_series_item_for(series_key_as_string)
     series_key_as_string = series_key_as_string.to_s
-    return I18n.t('chart_configuration.baseload.title') if series_key_as_string.casecmp('baseload').zero?
+    return I18n.t('analytics.series_data_manager.series_name.baseload') if series_key_as_string.casecmp('baseload').zero?
     return I18n.t('advice_pages.benchmarks.benchmark_school') if series_key_as_string == 'benchmark'
     return I18n.t('advice_pages.benchmarks.exemplar_school') if series_key_as_string == 'exemplar'
     return translate_bill_component_series(series_key_as_string) if I18n.t("advice_pages.tables.labels.bill_components").keys.map(&:to_s).include?(series_key_as_string)
