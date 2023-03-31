@@ -183,6 +183,32 @@ describe UserTariff do
       expect(meter_attribute[:accounting_tariff_generic][0][:source]).to eq(:manually_entered)
       expect(meter_attribute[:accounting_tariff_generic][0][:type]).to eq(:differential)
     end
+
+    it "should prevent same start and end time" do
+      expect(user_tariff).to be_valid
+      user_tariff_price_1.update(end_time: user_tariff_price_1.start_time)
+      expect(user_tariff_price_1).not_to be_valid
+      expect(user_tariff_price_1.errors[:start_time]).to include("can't be the same as end time")
+    end
+
+    context 'when times overlap' do
+      let(:user_tariff_price_1)  { UserTariffPrice.new(start_time: '00:00', end_time: '07:00', value: 1.23, units: 'kwh') }
+      let(:user_tariff_price_2)  { UserTariffPrice.new(start_time: '07:00', end_time: '00:00', value: 2.46, units: 'kwh') }
+
+      it "should prevent overlapping start time" do
+        expect(user_tariff).to be_valid
+        user_tariff_price_2.update(start_time: '06:30')
+        expect(user_tariff_price_2).not_to be_valid
+        expect(user_tariff_price_2.errors[:start_time]).to include("overlaps with another time range")
+      end
+
+      it "should prevent overlapping end time" do
+        expect(user_tariff).to be_valid
+        user_tariff_price_1.update(end_time: '07:30')
+        expect(user_tariff_price_1).not_to be_valid
+        expect(user_tariff_price_1.errors[:end_time]).to include("overlaps with another time range")
+      end
+    end
   end
 end
 

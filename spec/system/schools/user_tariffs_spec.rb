@@ -233,6 +233,8 @@ describe 'user tariffs', type: :system do
 
         expect(page).to have_content('Night rate (00:00 to 07:00)')
         expect(page).to have_content('Day rate (07:00 to 00:00)')
+        expect(page).not_to have_link('Add rate')
+        expect(page).not_to have_link('Delete')
 
         first('.user-tariff-show-button').click
 
