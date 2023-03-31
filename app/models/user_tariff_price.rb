@@ -42,7 +42,7 @@ class UserTariffPrice < ApplicationRecord
   private
 
   def no_time_overlaps
-    self.user_tariff.user_tariff_prices.without(self).each do |other_price|
+    user_tariff.user_tariff_prices.without(self).each do |other_price|
       errors.add(:start_time, 'overlaps with another time range') if other_price.time_range.include?(start_time)
       errors.add(:end_time, 'overlaps with another time range') if other_price.time_range.include?(end_time)
     end
