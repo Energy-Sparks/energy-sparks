@@ -98,7 +98,7 @@ module Schools
       end
 
       def accounting_costs_service(meter = aggregate_meter)
-        Costs::AccountingCostsService.new(meter, aggregate_meter.amr_data.end_date)
+        Costs::AccountingCostsService.new(meter, meter.amr_data.end_date)
       end
 
       def tariff_information_service(meter = aggregate_meter)
