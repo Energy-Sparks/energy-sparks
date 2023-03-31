@@ -50,10 +50,8 @@ module Schools
 
     def keep?(chart_type, chart_config = { y_axis_units: :kwh })
       # This method confirms whether a given chart can run for a school, which is recorded as part of the
-      # overnight run and used to populate the pupil “Explore data” pages and the adult dashboard charts (see
-      # GenerateAnalysisChartConfiguration and GenerateDashboardChartConfiguration services).
-      # We therefore mark reraise exception false here (used by ChartManager#run_chart) as we don't want to log
-      # any errors unnecessarily.
+      # overnight run and used to populate the pupil “Explore data” pages. We therefore mark reraise exception
+      # false here (used by ChartManager#run_chart) as we don't want to log errors unnecessarily.
       ChartData.new(
         @school,
         @aggregated_meter_collection,
