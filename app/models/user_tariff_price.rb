@@ -34,9 +34,8 @@ class UserTariffPrice < ApplicationRecord
   DAY_RATE_DESCRIPTION = 'Day rate'.freeze
 
   def time_range
-    first = start_time + 1.minute
-    last = end_time < start_time ? end_time + 1.day : end_time
-    first...last
+    last_time = end_time < start_time ? end_time + 1.day : end_time
+    start_time + 1.minute..last_time - 1.minute
   end
 
   private
