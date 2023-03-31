@@ -31,21 +31,9 @@ class UserTariff < ApplicationRecord
   scope :by_start_date, -> { order(start_date: :asc) }
   scope :electricity, -> { where(fuel_type: 'electricity') }
   scope :gas, -> { where(fuel_type: 'gas') }
-  # scope :has_prices, -> { joins(:user_tariff_prices).where.not(user_tariff_prices: { id: nil }) }
-  # scope :has_charges, -> { joins(:user_tariff_charges).where.not(user_tariff_charges: { id: nil }) }
 
-  scope :has_prices, -> {
-    where(
-      "EXISTS (SELECT 1 from user_tariff_prices WHERE user_tariffs.id = user_tariff_prices.user_tariff_id)",
-      )
-  }
-
-  scope :has_charges, -> {
-    where(
-      "EXISTS (SELECT 1 from user_tariff_charges WHERE user_tariffs.id = user_tariff_charges.user_tariff_id)",
-      )
-  }
-
+  scope :has_prices, -> { where(id: UserTariffPrice.select(:user_tariff_id)) }
+  scope :has_charges, -> { where(id: UserTariffCharge.select(:user_tariff_id)) }
   scope :complete, -> { has_prices.or(has_charges) }
 
   def electricity?
