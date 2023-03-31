@@ -33,6 +33,7 @@
       <% end %>
       <tr class="table-success">
         <td><%= t('advice_pages.tables.labels.total') %></td>
+        <td></td>
         <% totals_row do |total| %>
           <td class="text-right"><%= total %></td>
         <% end %>
@@ -40,6 +41,7 @@
       <% if include_change_in_costs_row? %>
         <tr class="bg-light">
           <td><%= t('advice_pages.tables.labels.change_prev_year') %></td>
+          <td></td>
           <% change_in_costs_row do |change| %>
             <td class="text-right"><%= change %></td>
           <% end %>

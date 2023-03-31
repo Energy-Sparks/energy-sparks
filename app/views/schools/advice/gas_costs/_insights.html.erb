@@ -11,4 +11,4 @@
   <%= advice_t('gas_costs.analysis.cost_breakdown_by_meter.whole_school', cost: format_unit(@annual_costs.£, :£), period: format_unit(@annual_costs.days/365.0, :years)) %>
 </p>
 
-<%= component 'meter_costs_table', monthly_costs: @monthly_costs, change_in_costs: @change_in_costs %>
+<%= component 'meter_costs_table', monthly_costs: @monthly_costs, change_in_costs: @change_in_costs, meter: @meters.first %>
