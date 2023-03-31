@@ -6,7 +6,7 @@ module Schools
       before_action :set_tariff_coverage, only: [:insights, :analysis]
       before_action :set_next_steps, only: [:insights]
       before_action :set_one_year_breakdown_chart, only: [:analysis, :meter_costs]
-      before_action :set_meters, only: [:insights, :analysis]
+      before_action :set_meters, only: [:analysis]
 
       def insights
         @annual_costs = costs_service.annual_costs
