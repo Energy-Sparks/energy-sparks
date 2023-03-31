@@ -31,7 +31,7 @@ class MeterCostsTableComponent < ViewComponent::Base
     @monthly_costs = monthly_costs
     @change_in_costs = change_in_costs
     @any_partial_months = false
-    @mpan_mprn = mpan_mprn
+    @mpan_mprn = mpan_mprn # only required for fuel type electric
     @t_scope = 'advice_pages.tables.tooltips.bill_components'
   end
 

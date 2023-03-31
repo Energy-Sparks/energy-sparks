@@ -12,6 +12,7 @@ module Schools
         @annual_costs = costs_service.annual_costs
         @monthly_costs = costs_service.calculate_costs_for_latest_twelve_months
         @change_in_costs = costs_service.calculate_change_in_costs
+        @aggregate_meter_mpan_mprn = aggregate_meter_mpan_mprn
       end
 
       def analysis
