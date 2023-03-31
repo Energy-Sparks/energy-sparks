@@ -11,4 +11,4 @@
   <% c.with_subtitle { advice_t("electricity_costs.charts.#{one_year_breakdown_chart_key}.subtitle_html", end_date: analysis_dates.end_date.to_s(:es_short)) } %>
 <% end %>
 
-<%= component 'meter_costs_table', monthly_costs: monthly_costs, change_in_costs: change_in_costs %>
+<%= component 'meter_costs_table', monthly_costs: monthly_costs, change_in_costs: change_in_costs, mpan_mprn: mpan_mprn %>

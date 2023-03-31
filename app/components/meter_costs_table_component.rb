@@ -31,7 +31,7 @@ class MeterCostsTableComponent < ViewComponent::Base
     @monthly_costs = monthly_costs
     @change_in_costs = change_in_costs
     @any_partial_months = false
-    @mpan_mprn = mpan_mprn # only required for fuel type electric
+    @mpan_mprn = mpan_mprn # only required for fuel type electricity
     @t_scope = 'advice_pages.tables.tooltips.bill_components'
   end
 
@@ -176,7 +176,7 @@ class MeterCostsTableComponent < ViewComponent::Base
   end
 
   def duos_charge_times(band)
-    return '' unless @mpan_mprn # don't render duos if no meter present for now
+    return '' unless @mpan_mprn # duos is electricity only
     @duos ||= DUOSCharges.regional_charge_table(@mpan_mprn.to_i)[:bands]
     charge_times = @duos[band].inject([]) do |memo, (key, period)|
       period = t(:all_day, scope: @t_scope) if period == 'all day'
