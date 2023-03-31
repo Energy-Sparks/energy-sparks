@@ -38,8 +38,12 @@ module Schools
     end
 
     def run_chart(chart_type)
+      # This and the can_run_chart? method below confirms whether a given chart can run for a school, which is
+      # recorded as part of the overnight run and used to populate the adult dashboard charts.
+      # We therefore mark reraise exception false here (used by ChartManager#run_chart) as we don't want to log
+      # errors unnecessarily.
       chart_config = { y_axis_units: :kwh }
-      ChartData.new(@school, @aggregated_meter_collection, chart_type, chart_config)
+      ChartData.new(@school, @aggregated_meter_collection, chart_type, chart_config, reraise_exception: false)
     end
 
     def can_run_chart?(chart_type)

@@ -3,18 +3,18 @@ require 'dashboard'
 class ChartData
   OPERATIONS = %i[move extend contract compare].freeze
 
-  def initialize(school, aggregated_school, original_chart_type, chart_config, transformations: [], provide_advice: false)
+  def initialize(school, aggregated_school, original_chart_type, chart_config, transformations: [], provide_advice: false, reraise_exception: false)
     @school = school
     @aggregated_school = aggregated_school
     @original_chart_type = original_chart_type
     @chart_config_overrides = chart_config
     @transformations = transformations
     @provide_advice = provide_advice
+    @reraise_exception = reraise_exception
   end
 
   def data
     chart_manager = ChartManager.new(@aggregated_school)
-
     chart_config = customised_chart_config(chart_manager)
 
     transformed_chart_type, transformed_chart_config = apply_transformations(@transformations, @original_chart_type, chart_config, chart_manager)
@@ -25,8 +25,11 @@ class ChartData
     parent_timescale_description = chart_manager.parent_chart_timescale_description(transformed_chart_config)
     parent_timescale_description = I18n.t("chart_data.timescale_description.#{parent_timescale_description}", default: nil) || parent_timescale_description
 
+
+    run_chart = run_chart_for(chart_manager, transformed_chart_config, transformed_chart_type)
+
     values = ChartDataValues.new(
-      chart_manager.run_chart(transformed_chart_config, transformed_chart_type, provide_advice: @provide_advice),
+      run_chart,
       transformed_chart_type,
       transformations: @transformations,
       allowed_operations: allowed_operations,
@@ -38,13 +41,36 @@ class ChartData
     values
   end
 
+  def run_chart_for(chart_manager, transformed_chart_config, transformed_chart_type)
+    chart_manager.run_chart(
+      transformed_chart_config,       # chart_config
+      transformed_chart_type,         # chart_param
+      true,                           # resolve_inheritance
+      nil,                            # override_config
+      @reraise_exception,             # reraise_exception
+      provide_advice: @provide_advice # provide_advice
+    )
+  rescue => e
+    if @reraise_exception
+      Rollbar.error(
+        e,
+        school_name: @school.name,
+        transformed_chart_config: transformed_chart_config,
+        transformed_chart_type: transformed_chart_type,
+        provide_advice: @provide_advice
+      )
+      Rails.logger.error "Chart run failed unexpectedly for #{transformed_chart_type} and #{@school.name} - #{e.message}"
+    end
+    nil
+  end
+
   def has_chart_data?
     ! data.series_data.nil?
   rescue EnergySparksNotEnoughDataException, EnergySparksNoMeterDataAvailableForFuelType, EnergySparksMissingPeriodForSpecifiedPeriodChart
     false
   rescue => e
     Rails.logger.error "Chart generation failed unexpectedly for #{@original_chart_type} and #{@aggregated_school.name} - #{e.message}"
-    Rollbar.error(e, school_name: @aggregated_school.name, original_chart_type: @original_chart_type, chart_config_overrides: @chart_config_overrides, transformations: @transformations)
+    Rollbar.error(e, school_name: @school.name, original_chart_type: @original_chart_type, chart_config_overrides: @chart_config_overrides, transformations: @transformations)
     false
   end
 
