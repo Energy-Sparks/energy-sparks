@@ -23,7 +23,7 @@ class MeterCostsTableComponent < ViewComponent::Base
   #year_header: display year header row in table
   #month_format: change month format for month row
   #precision: change rounding of numbers, see FormatEnergyUnit
-  def initialize(id: 'meter-costs-table', year_header: true, month_format: '%b', precision: :approx_accountant, monthly_costs:, change_in_costs: nil, meter: nil)
+  def initialize(id: 'meter-costs-table', year_header: true, month_format: '%b', precision: :approx_accountant, monthly_costs:, change_in_costs: nil, mpan_mprn: nil)
     @id = id
     @year_header = year_header
     @month_format = month_format
@@ -31,7 +31,7 @@ class MeterCostsTableComponent < ViewComponent::Base
     @monthly_costs = monthly_costs
     @change_in_costs = change_in_costs
     @any_partial_months = false
-    @meter = meter
+    @mpan_mprn = mpan_mprn
     @t_scope = 'advice_pages.tables.tooltips.bill_components'
   end
 
@@ -176,8 +176,8 @@ class MeterCostsTableComponent < ViewComponent::Base
   end
 
   def duos_charge_times(band)
-    return '' unless @meter # don't render duos if no meter present for now
-    @duos ||= DUOSCharges.regional_charge_table(@meter.mpan_mprn)[:bands]
+    return '' unless @mpan_mprn # don't render duos if no meter present for now
+    @duos ||= DUOSCharges.regional_charge_table(@mpan_mprn.to_i)[:bands]
     charge_times = @duos[band].inject([]) do |memo, (key, period)|
       period = t(:all_day, scope: @t_scope) if period == 'all day'
       memo << t(key, scope: @t_scope, period: period)

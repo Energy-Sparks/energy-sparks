@@ -24,7 +24,7 @@ RSpec.describe MeterCostsTableComponent, type: :component do
 
   let(:meter) { create(:electricity_meter) }
 
-  let(:params)  { { id: 'cost-table-id', monthly_costs: monthly_costs, change_in_costs: change_in_costs, meter: meter } }
+  let(:params)  { { id: 'cost-table-id', monthly_costs: monthly_costs, change_in_costs: change_in_costs, mpan_mprn: meter.mpan_mprn } }
 
   context 'basic rendering' do
     let(:html) do
@@ -65,7 +65,7 @@ RSpec.describe MeterCostsTableComponent, type: :component do
   end
 
   context 'with alternate thead' do
-    let(:params)  { { id: 'cost-table-id', year_header: false, month_format: '%b %Y', monthly_costs: monthly_costs, change_in_costs: change_in_costs, meter: meter } }
+    let(:params)  { { id: 'cost-table-id', year_header: false, month_format: '%b %Y', monthly_costs: monthly_costs, change_in_costs: change_in_costs, mpan_mprn: meter.mpan_mprn } }
     let(:html) do
       render_inline(MeterCostsTableComponent.new(**params))
     end
