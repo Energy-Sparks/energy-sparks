@@ -8,16 +8,18 @@ module Schools
     end
 
     def create
-      @user_tariff_charges = make_charges(params[:user_tariff_charges], @user_tariff)
-      @user_tariff_charges.map(&:valid?)
-      if @user_tariff_charges.all?(&:valid?)
+      user_tariff_charges = make_charges(params[:user_tariff_charges], @user_tariff)
+      validator = UserTariffChargeValidator.new(user_tariff_charges)
+      if validator.valid?
         UserTariff.transaction do
           @user_tariff.update(user_tariff_params)
           @user_tariff.user_tariff_charges.destroy_all
-          @user_tariff_charges.each(&:save!)
+          validator.user_tariff_charges.each(&:save!)
         end
         redirect_to school_user_tariff_path(@school, @user_tariff)
       else
+        @user_tariff_charges = validator.user_tariff_charges
+        flash[:error] = validator.message
         render :index
       end
     end
