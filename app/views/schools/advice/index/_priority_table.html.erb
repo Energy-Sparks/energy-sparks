@@ -2,7 +2,7 @@
   <thead>
     <tr>
       <th><%= t('advice_pages.index.priorities.table.columns.fuel_type') %></th>
-      <th data-orderable="false"></th>
+      <th></th>
       <th><%= t('advice_pages.index.priorities.table.columns.cost_saving') %></th>
       <th><%= t('advice_pages.index.priorities.table.columns.co2_reduction') %></th>
     </tr>
@@ -15,7 +15,7 @@
             <%= fa_icon alert_icon(priority.alert,'fa-2x') %>
           </span>
         </td>
-        <td>
+        <td data-order='<%= priority.management_priorities_title %>'>
           <h4>
             <% if priority.alert.advice_page.present? %>
               <%= link_to priority.management_priorities_title, advice_page_path(school, priority.alert.advice_page, priority.alert.alert_type.advice_page_tab_for_link_to, anchor: priority.alert.alert_type.link_to_section) %>
