@@ -84,6 +84,33 @@ describe UserTariff do
       expect(meter_attribute[:accounting_tariff_generic][0][:source]).to eq(:manually_entered)
       expect(meter_attribute[:accounting_tariff_generic][0][:type]).to eq(:flat)
     end
+
+    context '#complete' do
+      context 'with prices and charges' do
+        it "should include tariff" do
+          expect(UserTariff.complete).to include(user_tariff)
+        end
+      end
+      context 'without prices or charges' do
+        let(:user_tariff_prices)  { [] }
+        let(:user_tariff_charges)  { [] }
+        it "should not include tariff" do
+          expect(UserTariff.complete).not_to include(user_tariff)
+        end
+      end
+      context 'without prices' do
+        let(:user_tariff_prices)  { [] }
+        it "should include tariff" do
+          expect(UserTariff.complete).to include(user_tariff)
+        end
+      end
+      context 'without charges' do
+        let(:user_tariff_charges)  { [] }
+        it "should include tariff" do
+          expect(UserTariff.complete).to include(user_tariff)
+        end
+      end
+    end
   end
 
   context 'with differential electricity tariff' do
