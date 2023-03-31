@@ -23,7 +23,7 @@ class MeterCostsTableComponent < ViewComponent::Base
   #year_header: display year header row in table
   #month_format: change month format for month row
   #precision: change rounding of numbers, see FormatEnergyUnit
-  def initialize(id: 'meter-costs-table', year_header: true, month_format: '%b', precision: :approx_accountant, monthly_costs:, change_in_costs: nil, mpan_mprn: nil)
+  def initialize(id: 'meter-costs-table', year_header: true, month_format: '%b', precision: :approx_accountant, monthly_costs:, change_in_costs: nil, school: nil, fuel_type: nil)
     @id = id
     @year_header = year_header
     @month_format = month_format
@@ -31,7 +31,8 @@ class MeterCostsTableComponent < ViewComponent::Base
     @monthly_costs = monthly_costs
     @change_in_costs = change_in_costs
     @any_partial_months = false
-    @mpan_mprn = mpan_mprn # only required for fuel type electricity
+    @school = school
+    @fuel_type = fuel_type
     @t_scope = 'advice_pages.tables.tooltips.bill_components'
   end
 
@@ -176,8 +177,8 @@ class MeterCostsTableComponent < ViewComponent::Base
   end
 
   def duos_charge_times(band)
-    return '' unless @mpan_mprn # duos is electricity only
-    @duos ||= DUOSCharges.regional_charge_table(@mpan_mprn.to_i)[:bands]
+    return '' unless mpan_mprn
+    @duos ||= DUOSCharges.regional_charge_table(mpan_mprn.to_i)[:bands]
     charge_times = @duos[band].inject([]) do |memo, (key, period)|
       period = t(:all_day, scope: @t_scope) if period == 'all day'
       memo << t(key, scope: @t_scope, period: period)
@@ -189,5 +190,11 @@ class MeterCostsTableComponent < ViewComponent::Base
   def format(value)
     return "-" if value.nil?
     FormatEnergyUnit.format_pounds(:£, value, :text, @precision, true)
+  end
+
+  def mpan_mprn
+    if @school && @fuel_type && @fuel_type.to_sym == :electricity # duos is only for electricity
+      return @school.meters.active.where(meter_type: @fuel_type).first.try(:mpan_mprn)
+    end
   end
 end
