@@ -51,7 +51,16 @@ class ChartData
       provide_advice: @provide_advice # provide_advice
     )
   rescue => e
-    Rollbar.error(e) if @reraise_exception
+    if @reraise_exception
+      Rollbar.error(
+        e,
+        school_name: @school.name,
+        transformed_chart_config: transformed_chart_config,
+        transformed_chart_type: transformed_chart_type,
+        provide_advice: @provide_advice
+      )
+      Rails.logger.error "Chart run failed unexpectedly for #{transformed_chart_type} and #{@school.name} - #{e.message}"
+    end
     nil
   end
 
@@ -61,7 +70,7 @@ class ChartData
     false
   rescue => e
     Rails.logger.error "Chart generation failed unexpectedly for #{@original_chart_type} and #{@aggregated_school.name} - #{e.message}"
-    Rollbar.error(e, school_name: @aggregated_school.name, original_chart_type: @original_chart_type, chart_config_overrides: @chart_config_overrides, transformations: @transformations)
+    Rollbar.error(e, school_name: @school.name, original_chart_type: @original_chart_type, chart_config_overrides: @chart_config_overrides, transformations: @transformations)
     false
   end
 
