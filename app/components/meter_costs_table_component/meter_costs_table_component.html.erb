@@ -23,7 +23,7 @@
           <% if bill_component?(component: component) %>
             <tr>
               <td><%= t("advice_pages.tables.labels.bill_components.#{component}") %></td>
-              <td><%= helpers.icon_tooltip(t("advice_pages.tables.tooltips.bill_components.#{component}")) %></td>
+              <td><%= tooltip(component: component) %></td>
               <% bill_component_row(component: component) do |v| %>
                 <td class="text-right"><%= v %></td>
               <% end %>

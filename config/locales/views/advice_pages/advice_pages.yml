@@ -144,15 +144,14 @@ en:
         two_significant_figures: Data in this table are presented to 2 significant figures.
       tooltips:
         bill_components:
-          00_30_to_07_00: ''
-          07_30_to_00_00: ''
+          00_30_to_07_00: This is the charge for electricity consumed between 00:30 and 00:70 per kWh
+          07_30_to_00_00: This is the charge for electricity consumed between 07:30 and 00:30 per kWh
           agreed_availability_charge: A charge for the cabling to provide an agreed maximum amount of power in KVA of electricity to the school. This can often be reduced via discussions with your energy supplier
+          all_day: all day
           climate_change_levy__2021_22: 'Climate Change Levy: based on your carbon emissions (per kWh of consumption). If you reduce your consumption your CCL will reduce'
           commodity_rate: The charge per kWh of consumption for the whole day
           data_collection_dcda_agent_charge: The cost of collecting your half hourly meter readings twice a day. Energy Sparks uses this half hourly data to analyse your energy consumption
-          duos_amber: ''
-          duos_green: ''
-          duos_red: ''
+          duos: 'Distributed use of system charge: - charge per kWh of usage during these times: %{charge_times}. To reduce, reduce the schools usage during these times'
           excess_availability_charge: A 'fine' for going over your 'Agreed Availability Limit' in a month. If you are being 'fined' for more than a few months a year its generally cheaper to ask your energy supplier to increase your 'Agreed Availability Limit'
           feed_in_tariff_levy: A fee to cover the costs of supporting renewables on the electricity network. You can reduce this by reducing your energy consumption
           fixed_charge: Fixed fee for your energy supply
@@ -162,13 +161,13 @@ en:
           nhh_metering_agent_charge: The cost of collecting your half hourly meter readings twice a day. Energy Sparks uses this half hourly data to analyse your energy consumption
           non_commodity_rate: All non-rate charges proportion to kWh consumption (for some contracts these include network charges)
           reactive_power_charge: A charge based on how out of balance the voltage and current consumption of your school is. If it is a large cost then its possible to rebalance your school but your will need an electrician to help you. Energy Sparks can't calculate this because we currently don't have access to the raw data to calculate this, so you will need to look at your paper bills; the cost for most schools is less than £20 per month
-          renewable_energy_obligation: ''
+          renewable_energy_obligation: Renewable Energy Obligation - at a fixed government rate per kWh consumed
           settlement_agency_fee: A fee to pay for the cost of maintaining and reading your meter
           site_fee: Miscellaneous fixed fee
           standing_charge: Fixed fee for your energy supply
           tnuos: 'Transmission Network Use Of System Charge: based on the schools peak consumption on winter weekdays between 17:00 and 19:30 - to reduce make sure as many appliances as possible are turned off during the winter when the school closes for the day'
-          vat_20: ''
-          vat_5: ''
+          weekdays: 'weekdays: %{period}'
+          weekends: 'weekends: %{period}'
     tabs:
       analysis: Analysis
       insights: Insights
