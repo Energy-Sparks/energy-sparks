@@ -51,7 +51,7 @@ class ChartData
       provide_advice: @provide_advice # provide_advice
     )
   rescue => e
-    Rollbar.error(e)
+    Rollbar.error(e) if @reraise_exception
     nil
   end
 
