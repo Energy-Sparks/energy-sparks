@@ -105,21 +105,6 @@ class MeterCostsTableComponent < ViewComponent::Base
     @monthly_costs.values.any? {|costs| costs.present? && costs.bill_component_costs.key?(component) }
   end
 
-  def is_duos?(component)
-    duos_charges.include?(component) && component.to_s[/duos_(\w+)$/, 1].to_sym
-  end
-
-  def duos_charge_times(band)
-    return '' unless @meter # don't render duos if no meter present for now
-    @duos ||= DUOSCharges.regional_charge_table(@meter.mpan_mprn)[:bands]
-    charge_times = @duos[band].inject([]) do |memo, (key, period)|
-      period = t(:all_day, scope: @t_scope) if period == 'all day'
-      memo << t(key, scope: @t_scope, period: period)
-      memo
-    end
-    helpers.icon_tooltip(t(:duos, scope: @t_scope, charge_times: charge_times.join(" ")))
-  end
-
   def tooltip(component:)
     if (band = is_duos?(component))
       duos_charge_times(band)
@@ -184,6 +169,21 @@ class MeterCostsTableComponent < ViewComponent::Base
     return nil unless costs.present?
     @any_partial_months |= costs.full_month
     costs.full_month
+  end
+
+  def is_duos?(component)
+    duos_charges.include?(component) && component.to_s[/duos_(\w+)$/, 1].to_sym
+  end
+
+  def duos_charge_times(band)
+    return '' unless @meter # don't render duos if no meter present for now
+    @duos ||= DUOSCharges.regional_charge_table(@meter.mpan_mprn)[:bands]
+    charge_times = @duos[band].inject([]) do |memo, (key, period)|
+      period = t(:all_day, scope: @t_scope) if period == 'all day'
+      memo << t(key, scope: @t_scope, period: period)
+      memo
+    end
+    helpers.icon_tooltip(t(:duos, scope: @t_scope, charge_times: charge_times.join(" ")))
   end
 
   def format(value)

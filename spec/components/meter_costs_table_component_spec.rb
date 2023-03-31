@@ -22,7 +22,9 @@ RSpec.describe MeterCostsTableComponent, type: :component do
   let(:monthly_costs)   { { january => january_costs } }
   let(:change_in_costs) { nil }
 
-  let(:params)  { { id: 'cost-table-id', monthly_costs: monthly_costs, change_in_costs: change_in_costs } }
+  let(:meter) { create(:electricity_meter) }
+
+  let(:params)  { { id: 'cost-table-id', monthly_costs: monthly_costs, change_in_costs: change_in_costs, meter: meter } }
 
   context 'basic rendering' do
     let(:html) do
@@ -38,11 +40,13 @@ RSpec.describe MeterCostsTableComponent, type: :component do
 
     it 'includes flat rate row' do
       expect(html).to have_text("Flat rate")
+      expect(html).to have_css("span[data-title='The charge per kWh of consumption for the whole day']")
       expect(html).to have_text("£100")
     end
 
     it 'includes standing charge row' do
       expect(html).to have_text("Standing charge")
+      expect(html).to have_css("span[data-title='Fixed fee for your energy supply']")
       expect(html).to have_text("£50")
     end
 
@@ -61,7 +65,7 @@ RSpec.describe MeterCostsTableComponent, type: :component do
   end
 
   context 'with alternate thead' do
-    let(:params)  { { id: 'cost-table-id', year_header: false, month_format: '%b %Y', monthly_costs: monthly_costs, change_in_costs: change_in_costs } }
+    let(:params)  { { id: 'cost-table-id', year_header: false, month_format: '%b %Y', monthly_costs: monthly_costs, change_in_costs: change_in_costs, meter: meter } }
     let(:html) do
       render_inline(MeterCostsTableComponent.new(**params))
     end
@@ -114,13 +118,16 @@ RSpec.describe MeterCostsTableComponent, type: :component do
     it 'includes extra month' do
       expect(html).to have_text("Feb")
     end
+
     it 'includes duos red row' do
       expect(html).to have_text("Duos (Red)")
+      expect(html).to have_css("span[data-title='Distributed use of system charge: - charge per kWh of usage during these times: weekdays: 16:00 – 19:00 . To reduce, reduce the schools usage during these times']")
       expect(html).to have_text("£10")
     end
 
     it 'includes availability charge row' do
       expect(html).to have_text("Agreed availability charge")
+      expect(html).to have_css("span[data-title='A charge for the cabling to provide an agreed maximum amount of power in KVA of electricity to the school. This can often be reduced via discussions with your energy supplier']")
       expect(html).to have_text("£27")
     end
 
