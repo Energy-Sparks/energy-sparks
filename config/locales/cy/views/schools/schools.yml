@@ -191,6 +191,9 @@ cy:
         tip: Awgrym
         your_estimate: Eich amcangyfrif
         your_recent_energy_bills: Dylai eich biliau ynni diweddar ddarparu'r data sydd eu hangen arnoch
+    funding_status:
+      private_school: Ysgol Breifat
+      state_school: Ysgol y Wladwriaeth
     inactive:
       description: Rydym yn dal yn y broses o sefydlu eich ysgol ar Sbarcynni. Byddwch yn cael hysbysiad e-bost pan fydd cyfrif eich ysgol wedi'i weithredu ar Sbarcynni.
       other_schools: ysgolion eraill
@@ -334,14 +337,17 @@ cy:
       analysis_preferences: Dewisiadau Dadansoddiad
       basic_details: Manylion sylfaenol
       created: "Crëwyd %{school_name} ar %{created_at}"
+      editing: Ysgol Olygu
       floor_area_hint: Os nad ydych yn gwybod hyn, gadewch ef yn wag a byddwn yn ceisio cael y wybodaeth hon gan eich Awdurdod Lleol neu MAT
       geocode_message: Gadewch y rhain yn wag i gael eu gosod o'r cod post
       key_stage: Cyfnodau allweddol
       key_stage_message: Os ydych yn yr Alban, mae CA1 yn cwmpasu P2 a P3, mae CA2 yn cwmpasu P4 i P7, mae CA3 yn cwmpasu S1 i S3, mae CA4 yn cwmpasu S4 a S5, mae CA5 yn cwmpasu S6
       location: Lleoliad
+      new: Ysgol Newydd
       percentage_free_school_meals_hint: Os nad ydych yn gwybod, gadewch y maes hwn yn wag.
       school_features: Nodweddion yr ysgol
       stage_of_education: Cyfnod addysg
+      update_school: Ysgol Ddiweddaru
       urn_hint: Bydd hyn eich URN yn Lloegr, SEED yn yr Alban
       view_on_map: Gweld ar y map
     school_group:

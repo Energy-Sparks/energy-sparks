@@ -26,6 +26,7 @@ cy:
           link_text: manylion y mesurydd
           table_description: Mae'r tabl isod yn dangos manylion y llwyth sylfaenol cyfartalog ar gyfer eich ysgol yn y %{months_analysed} mis diwethaf fesul mesurydd.
           title: Manylion llwyth sylfaenol fesul mesurydd
+          whole_school: Ysgol gyfan
         meter_charts:
           title: Siartiau llwyth sylfaenol fesul mesurydd
         multiple_meters_suggestion_html: Yn ddelfrydol, ni ddylai fod llawer o amrywiad yn y llwyth sylfaenol rhwng diwrnodau a thymhorau gwahanol. Os byddwch yn sylwi ar newidiadau anarferol neu lwyth sylfaenol uchel iawn, efallai y gallwch chi leihau'r hyn sy'n ei achosi trwy edrych ar eich llwyth sylfaenol isod.

@@ -2,6 +2,15 @@ cy:
   advice_pages:
     gas_out_of_hours:
       analysis:
+        holiday_usage:
+          alert_group_by_week_gas_14_months:
+            header: Gall y siart hwn helpu eich ysgol i gymharu'r defnydd o nwy yn ystod gwyliau
+            subtitle_html: Mae'r siart hwn yn rhoi dadansoddiad o'r defnydd o nwu rhwng diwrnodau ysgol ar agor ac ar gau, gwyliau a phenwythnosau ar gyfer pob wythnos rhwng <span class='start-date'>%{start_date}</span> a <span class='end-date'>%{end_date}</span>
+            title: Defnydd nwy fesul wythnos am y 14 mis diwethaf
+          table_alert_note: 'Sylwer: Nid yw''r tabl uchod wedi''i addasu ar gyfer newidiadau mewn tymheredd allanol, felly gallai''r newidiadau % yn y defnydd o nwy fod yn wahanol i''r rhai yn negeseuon rhybudd eich ysgol.'
+          table_footer: Byddai disgwyl i wyliau'r gaeaf gael defnydd uwch o nwy oherwydd gosodiadau amddiffyn rhag rhew.
+          table_intro: Mae’r tabl isod yn dangos crynodeb o’ch defnydd nwy gwyliau’r ysgol y llynedd. Mae'n cynnwys defnydd ynni cyfartalog y dydd i alluogi cymhariaeth ar gyfer gwyliau o hyd gwahanol.
+          title: Defnydd gwyliau
         last_twelve_months:
           table:
             co2_kg: kg/co2
@@ -12,6 +21,9 @@ cy:
           table_introduction: Mae'r tabl isod yn dangos faint o nwy a ddefnyddiwyd pan mae'r ysgol ar agor neu ar gau ar ddiwrnod ysgol yn ogystal ag ar benwythnosau a gwyliau.
           title: 12 mis diwethaf
         summary: Mae'r adran hon yn rhoi dadansoddiad manylach o ddefnydd nwy eich ysgol y tu allan i oriau ysgol a rhai pethau i gadw llygad amdanynt. Er mwyn rheoli ynni'n dda, rydych am i'r rhan fwyaf o'ch defnydd ynni fod pan fydd yr ysgol ar agor.
+        tables:
+          columns:
+            average_daily_usage: Defnydd dyddiol ar gyfartaledd (kWh)
         title: Dadansoddiad
         usage_by_day_of_week:
           daytype_breakdown_gas_tolerant_chart:
