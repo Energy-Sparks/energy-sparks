@@ -6,7 +6,7 @@ module Schools
       before_action :set_tariff_coverage, only: [:insights, :analysis]
       before_action :set_next_steps, only: [:insights]
       before_action :set_one_year_breakdown_chart, only: [:analysis, :meter_costs]
-      before_action :set_meters, only: [:analysis, :insights]
+      before_action :set_meters, only: [:analysis]
 
       def insights
         @annual_costs = costs_service.annual_costs
@@ -20,7 +20,6 @@ module Schools
         @monthly_costs = costs_service.calculate_costs_for_latest_twelve_months
         @change_in_costs = costs_service.calculate_change_in_costs
         @aggregate_meter_mpan_mprn = aggregate_meter_mpan_mprn
-        @mpan_mprn = @meters.first.mpan_mprn
         if @multiple_meters
           @annual_costs_breakdown_by_meter = costs_service.annual_costs_breakdown_by_meter
           @aggregate_meter_adapter = aggregate_meter_adapter
