@@ -134,7 +134,7 @@ describe Charts::Annotate do
           expect(subject).to eq(
             [
               {
-                x_axis_category: '2018-06-28',
+                x_axis_category: '28-06-2018',
                 event: 'Changed boiler',
                 id: intervention_1.id,
                 date: Date.new(2018, 6, 28),
@@ -154,14 +154,14 @@ describe Charts::Annotate do
           expect(subject).to eq(
             [
               {
-                x_axis_category: '2018-06-28',
+                x_axis_category: '28-06-2018',
                 event: 'Changed boiler',
                 id: intervention_1.id,
                 date: Date.new(2018, 6, 28),
                 icon: 'question-circle'
               },
               {
-                x_axis_category: '2018-07-08',
+                x_axis_category: '08-07-2018',
                 event: 'Changed bulbs',
                 id: intervention_2.id,
                 date: Date.new(2018, 7, 8),

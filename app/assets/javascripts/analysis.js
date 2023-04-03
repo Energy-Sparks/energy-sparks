@@ -218,20 +218,23 @@ function processAnnotations(loaded_annotations, chart){
     var date = new Date(annotation.date);
     var point = xAxis.series[0].getValidPoints()[categoryIndex];
     var date = new Date(annotation.date);
-    if(xAxis.series[0].stackKey){
-      var y = point.total;
-    } else {
-      var y = point.y;
+
+    if (point) {
+      if(xAxis.series[0].stackKey){
+        var y = point.total;
+      } else {
+        var y = point.y;
+      }
+      return {
+        point: {
+          x: categoryIndex,
+          y: y,
+          xAxis: 0,
+          yAxis: 0,
+        },
+        text: '<a href="' + annotation.url + '"><i class="fas fa-'+annotation.icon+'" data-toggle="tooltip" data-placement="right" title="(' + date.toLocaleDateString() + ') ' + annotation.event + '"></i></a>',
+      };
     }
-    return {
-      point: {
-        x: categoryIndex,
-        y: y,
-        xAxis: 0,
-        yAxis: 0,
-      },
-      text: '<a href="' + annotation.url + '"><i class="fas fa-'+annotation.icon+'" data-toggle="tooltip" data-placement="right" title="(' + date.toLocaleDateString() + ') ' + annotation.event + '"></i></a>',
-    };
   });
   chart.addAnnotation({
     labelOptions:{
