@@ -1,0 +1,2 @@
+class AdminMeterStatus < ApplicationRecord
+end

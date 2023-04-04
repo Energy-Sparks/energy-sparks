@@ -423,6 +423,7 @@ Rails.application.routes.draw do
 
     resources :meter_attributes, only: :index
     resources :meter_reviews, only: :index
+    resources :meter_statuses, except: :show
 
     resources :programme_types do
       scope module: :programme_types do
