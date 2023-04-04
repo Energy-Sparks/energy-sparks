@@ -32,7 +32,6 @@ cy:
           start_time: Amser cychwyn
           value: Cyfradd mewn £/kWh
       index:
-        add_rate: Ychwanegu cyfradd
         consumption_charges: Costau defnydd
         title: Ychwanegu costau defnydd ar gyfer pob cyfnod amser ar gyfer y tariff hwn
         using_your_bill_introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn

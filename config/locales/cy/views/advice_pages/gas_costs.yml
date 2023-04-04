@@ -7,7 +7,7 @@ cy:
         cost_breakdown_by_charge:
           title: Dadansoddiad cost yn ôl tâl am y %{ cyfnod} diwethaf
         cost_breakdown_by_meter:
-          intro: Mae'r tabl canlynol yn crynhoi cyfanswm y gost sy'n gysylltiedig â phob metr am y %{period} diwethaf
+          intro: Mae'r tabl canlynol yn crynhoi cyfanswm y gost sy'n gysylltiedig â phob metr am y %{period} diwethaf rhwng %{start_date} a %{end_date}
           title: Cyfanswm y gost am y %{period} diwethaf
           whole_school: Rydym yn amcangyfrif cyfanswm eich cost nwy dros y %{period}diwethaf fel %{cost}.
         meter_breakdown:

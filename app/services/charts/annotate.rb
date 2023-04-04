@@ -40,7 +40,7 @@ module Charts
           id: intervention.id,
           event: intervention.intervention_type.name,
           date: intervention.at.to_date,
-          x_axis_category: intervention.at.strftime('%Y-%m-%d'),
+          x_axis_category: intervention.at.strftime('%d-%m-%Y'),
           icon: intervention.intervention_type.intervention_type_group.icon
         }
       end

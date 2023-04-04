@@ -5,6 +5,7 @@ cy:
       title: Dewiswch feincnod cymharu ysgolion
     filter:
       all_countries: Pob gwlad
+      all_groups: Pob grŵp
       all_school_types: Pob math o ysgol
       change_benchmark: Newid meincnod
       change_options: Newid opsiynau

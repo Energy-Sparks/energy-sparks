@@ -14,6 +14,7 @@ cy:
         electricity_use_for_the_last_12_months:
           advice_html: "<p>Mae'r adran hon yn rhoi cipolwg ar sut mae'r stôr-wresogyddion yn eich ysgol wedi defnyddio trydan dros y flwyddyn ddiwethaf.</p>"
           storage_heater_by_day_of_week_tolerant:
+            footer_html: Ni ddylai stôr-wresyddion ddefnyddio llawer o drydan, os o gwbl, ar ddydd Sadwrn a dydd Sul. Yn aml gellir ad-dalu cost gosod amserydd 7 diwrnod gydag arbedion o fewn un tymor gwresogi (gweler ein <a href='%{case_study_path}'>hastudiaeth achos</a>).
             subtitle_html: Mae'r siart hwn yn dangos cyfanswm y trydan a ddefnyddiwyd rhwng <span class='start-date'>%{start_month_year}</span> a <span class='end-date'>%{end_month_year}</span>, wedi'i ddadansoddi i ddyddiau'r wythnos.
             title: Defnydd o drydan stôr-wresogydd erbyn diwrnod o'r wythnos
           storage_heater_group_by_week:
@@ -21,10 +22,15 @@ cy:
             subtitle_html: Mae'r siart isod yn dangos eich defnydd o drydan stôr-wresogydd wedi'i ddadansoddi bob wythnos rhwng <span class='start-date'>%{start_month_year}</span> a <span class='end-date'>%{end_month_year}</span>
             title: Defnydd o drydan stôr-wresogydd ar gyfer y llynedd
           storage_heater_intraday_current_year:
+            footer: Mae’r siart uchod yn dangos pryd mae eich stôr-wresogyddion yn cael eu ‘gwefru’ dros nos pan fo trydan yn rhatach.
             subtitle_html: Mae'r siart isod yn dangos y defnydd trydan cyfartalog rhwng <span class='start-date'>%{start_month_year}</span> a <span class='end-date'>%{end_month_year}</span>, wedi'i ddadansoddi i amser o'r dydd.
             title: Defnydd o drydan stôr-wresogydd ar gyfer yn ôl amser o't dydd
           the_table_below: Mae’r tabl isod yn dangos faint o drydan sydd wedi’i ddefnyddio ar gyfer storfeydd gwresogyddion dros y 12 mis diwethaf pan fo’r ysgol ar agor a chau ar ddiwrnod ysgol yn ogystal ag ar benwythnosau a gwyliau.
           title: Defnydd trydan am y 12 mis diwethaf
+        holiday_usage:
+          table_footer: Ni ddylai fod unrhyw reswm i stôr-wresogyddion aros ymlaen yn ystod hanner tymor yr haf neu wyliau'r haf.
+          table_intro: Mae’r tabl isod yn dangos crynodeb ddefnydd trydan stôr-wresogyddion gwyliau ysgol y llynedd. Mae'n cynnwys defnydd ynni cyfartalog y dydd i alluogi cymhariaeth ar gyfer gwyliau o hyd gwahanol.
+          title: Defnydd  stôr-wresogyddion yn ystod y gwyliau
         long_term_trends:
           storage_heater_group_by_week_long_term:
             subtitle: Mae’r siart hwn yn rhoi dadansoddiad o’r defnydd o nwy rhwng diwrnodau ysgol agored a chaeedig, gwyliau a phenwythnosau ar gyfer yr holl flynyddoedd llawn sydd gennym ni ddata ar gyfer eich ysgol.
@@ -46,6 +52,9 @@ cy:
           notice_html: "<p>Y llynedd roedd gwres eich ysgol ymlaen am %{heating_on_in_warm_weather_days} diwrnod yn ystod tywydd cynnes. Dyma %{assessment}.</p>"
           title: Rheolaeth dymhorol
           you_should_ensure: Dylech sicrhau bod stôr-wresogyddion yn cael eu diffodd yn ystod penwythnosau a gwyliau, a byrhau'r cyfnod pan gânt eu defnyddio yn ystod y flwyddyn.
+        tables:
+          columns:
+            average_daily_usage: Defnydd dyddiol ar gyfartaledd (kWh)
         thermostatic_control:
           storage_heater_thermostatic:
             content_html: |-

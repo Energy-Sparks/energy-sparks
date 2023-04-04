@@ -173,7 +173,7 @@ class Meter < ApplicationRecord
   end
 
   def user_tariff_meter_attributes
-    user_tariffs.map(&:meter_attribute)
+    user_tariffs.complete.map(&:meter_attribute)
   end
 
   def all_meter_attributes
