@@ -1,0 +1,18 @@
+<% content_for :page_title, 'Meter Status' %>
+
+<h1>Meter Status</h1>
+
+<table class="table">
+  <thead>
+    <th>Meter Status</th>
+    <th></th>
+  </thead>
+  <tbody>
+    <% @meter_status.each do |status| %>
+      <tr>
+        <td><%= status.label %></td>
+        <td></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
