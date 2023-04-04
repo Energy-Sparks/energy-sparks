@@ -58,7 +58,7 @@ class SchoolGroup < ApplicationRecord
   belongs_to :default_weather_station, class_name: 'WeatherStation', foreign_key: 'default_weather_station_id', optional: true
   belongs_to :default_scoreboard, class_name: 'Scoreboard', optional: true
   belongs_to :default_issues_admin_user, class_name: 'User', foreign_key: 'default_issues_admin_user_id', optional: true
-  belongs_to :admin_meter_status, foreign_key: 'admin_meter_statuses_id'
+  belongs_to :admin_meter_status, foreign_key: 'admin_meter_statuses_id', optional: true
 
   has_many :meter_attributes, inverse_of: :school_group, class_name: 'SchoolGroupMeterAttribute'
 

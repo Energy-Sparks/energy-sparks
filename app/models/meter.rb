@@ -48,7 +48,7 @@ class Meter < ApplicationRecord
   belongs_to :solar_edge_installation, optional: true
   belongs_to :meter_review, optional: true
   belongs_to :data_source, optional: true
-  belongs_to :admin_meter_status, foreign_key: 'admin_meter_statuses_id'
+  belongs_to :admin_meter_status, foreign_key: 'admin_meter_statuses_id', optional: true
 
   has_one :rtone_variant_installation, required: false
 
