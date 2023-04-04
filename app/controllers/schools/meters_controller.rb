@@ -104,7 +104,7 @@ module Schools
     end
 
     def meter_params
-      params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number, :dcc_meter, :sandbox, :earliest_available_data, :data_source_id)
+      params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number, :dcc_meter, :sandbox, :earliest_available_data, :data_source_id, :admin_meter_statuses_id)
     end
   end
 end
