@@ -90,6 +90,7 @@ class SchoolTarget < ApplicationRecord
   end
 
   def saved_progress_report_for(fuel_type)
+    fuel_type = :storage_heaters if fuel_type == :storage_heater
     raise "Invalid fuel type" unless [:electricity, :gas, :storage_heaters].include?(fuel_type)
     report = self["#{fuel_type}_report".to_sym]
     return nil unless report&.any?
