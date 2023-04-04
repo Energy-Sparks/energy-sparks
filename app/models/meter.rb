@@ -102,6 +102,10 @@ class Meter < ApplicationRecord
     school.name
   end
 
+  def admin_meter_status_label
+    admin_meter_status&.label || school&.school_group&.admin_meter_status&.label || ''
+  end
+
   def fuel_type
     meter_type.to_sym
   end
