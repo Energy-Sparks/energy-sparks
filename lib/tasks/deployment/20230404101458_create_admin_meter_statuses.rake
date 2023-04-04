@@ -22,7 +22,7 @@ namespace :after_party do
       { label: 'Disconnected meter', created_at: time_now, updated_at: time_now },
       { label: 'Meter issue - action required by school/MAT/Council ', created_at: time_now, updated_at: time_now },
       { label: 'Meter issue - action required by supplier/procurement/MOP', created_at: time_now, updated_at: time_now },
-      { label: 'Data not available, created_at', created_at: time_now, updated_at: time_now }
+      { label: 'Data not available', created_at: time_now, updated_at: time_now }
     ])
 
     # Update task as completed.  If you remove the line below, the task will
