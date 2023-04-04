@@ -33,12 +33,12 @@ class ChartDataValues
       @chart              = chart
       @title              = chart[:title]
       @subtitle           = chart[:subtitle]
+      @chart1_type        = chart[:chart1_type]
+      @chart1_subtype     = chart[:chart1_subtype]
       @x_axis_categories  = translate_categories_for(chart[:x_axis])
       @x_axis_ranges      = chart[:x_axis_ranges]
       @x_max_value        = chart[:x_max_value]
       @x_min_value        = chart[:x_min_value]
-      @chart1_type        = chart[:chart1_type]
-      @chart1_subtype     = chart[:chart1_subtype]
       @x_axis_label       = chart[:x_axis_label]
       @y_axis_label       = format_y_axis_label_for(chart[:y_axis_label])
       @configuration      = chart[:configuration]
@@ -66,7 +66,7 @@ class ChartDataValues
 
   def translate_categories_for(categories)
     return categories unless categories.is_a? Array
-
+    return categories if @chart1_type == :scatter
     categories.map { |category_label| translated_series_item_for(category_label) }
   end
 
