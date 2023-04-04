@@ -4,11 +4,12 @@ describe ChartDataValues do
 
   let(:chart) { :management_dashboard_group_by_week_electricity }
   let(:chart_type)  { :column }
+  let(:x_axis)      { %w[Sunday Monday Tuesday Wednesday Thursday Friday Saturday] }
   let(:x_axis_ranges) { [[Date.parse('Sun, 28 Apr 2019'), Date.parse('Sun, 28 Apr 2019')]] }
   let(:config) {
     {
       title: "Comparison of last 2 weeks gas consumption - adjusted for outside temperature £7.70",
-      x_axis: %w[Sunday Monday Tuesday Wednesday Thursday Friday Saturday],
+      x_axis: x_axis,
       x_axis_ranges: x_axis_ranges,
       x_data: { "Energy:Sun21Apr19-Sat27Apr19" => [], "Energy:Sun28Apr19-Sat04May19" => [] },
       chart1_type: chart_type,
@@ -30,6 +31,17 @@ describe ChartDataValues do
     expect(chart_data_values.series_data.first[:name]).to eq "Sun 21 Apr 19 - Sat 27 Apr 19"
     expect(chart_data_values.series_data.second[:name]).to eq "Sun 28 Apr 19 - Sat 04 May 19"
     expect(chart_data_values.x_axis_categories).to eq %w[Sunday Monday Tuesday Wednesday Thursday Friday Saturday]
+  end
+
+  context 'with scatter chart' do
+    let(:chart_type)  { :scatter }
+    let(:x_axis)      { [0.1, 0.2, 0.3]}
+    it 'doesnt translate series labels' do
+      first_series = chart_data_values.series_data[0]
+      first_item = first_series[:data].first
+      #confirm that series data are numbers, not strings
+      expect(first_item[0]).to be_a Float
+    end
   end
 
   context 'when setting colours' do
