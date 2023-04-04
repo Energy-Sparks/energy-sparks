@@ -62,8 +62,12 @@ module Schools
 
     def sort_priorities
       setup_priorities(latest_management_priorities, limit: nil).sort do |a, b|
-        a.management_priorities_title.to_plain_text <=> b.management_priorities_title.to_plain_text
+        money_to_i(b.template_variables[:average_one_year_saving_gbp]) <=> money_to_i(a.template_variables[:average_one_year_saving_gbp])
       end
+    end
+
+    def money_to_i(val)
+      val.gsub(/\D/, '').to_i
     end
   end
 end
