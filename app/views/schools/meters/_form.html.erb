@@ -67,8 +67,6 @@
         <%= form.label :earliest_available_data, t('schools.meters.form.earliest_available_data') %>
         <%= component 'date_picker_form', form: form, field_name: :earliest_available_data, value: meter.earliest_available_data&.strftime('%d/%m/%Y') %>
       </div>
-
-
     <% end %>
   </div>
 
