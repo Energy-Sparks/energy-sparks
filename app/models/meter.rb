@@ -103,7 +103,8 @@ class Meter < ApplicationRecord
   end
 
   def admin_meter_status_label
-    admin_meter_status&.label || school&.school_group&.send(:"admin_meter_status_#{fuel_type}")&.label || ''
+    for_fuel_type = (fuel_type == :exported_solar_pv ? :solar_pv : fuel_type)
+    admin_meter_status&.label || school&.school_group&.send(:"admin_meter_status_#{for_fuel_type}")&.label || ''
   end
 
   def fuel_type
