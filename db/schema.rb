@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_16_173201) do
+ActiveRecord::Schema.define(version: 2023_04_05_085418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -144,6 +144,12 @@ ActiveRecord::Schema.define(version: 2023_03_16_173201) do
     t.string "summary"
     t.index ["active"], name: "index_activity_types_on_active"
     t.index ["activity_category_id"], name: "index_activity_types_on_activity_category_id"
+  end
+
+  create_table "admin_meter_statuses", force: :cascade do |t|
+    t.string "label"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "advice_page_activity_types", force: :cascade do |t|
@@ -1083,6 +1089,7 @@ ActiveRecord::Schema.define(version: 2023_03_16_173201) do
     t.bigint "meter_review_id"
     t.datetime "dcc_checked_at"
     t.bigint "data_source_id"
+    t.bigint "admin_meter_statuses_id"
     t.index ["data_source_id"], name: "index_meters_on_data_source_id"
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_review_id"], name: "index_meters_on_meter_review_id"
@@ -1295,6 +1302,9 @@ ActiveRecord::Schema.define(version: 2023_03_16_173201) do
     t.integer "default_chart_preference", default: 0, null: false
     t.bigint "default_issues_admin_user_id"
     t.integer "default_country", default: 0, null: false
+    t.bigint "admin_meter_statuses_electricity_id"
+    t.bigint "admin_meter_statuses_gas_id"
+    t.bigint "admin_meter_statuses_solar_pv_id"
     t.index ["default_issues_admin_user_id"], name: "index_school_groups_on_default_issues_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"

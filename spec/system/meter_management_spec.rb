@@ -76,19 +76,19 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
 
       it 'the meter inventory button is not shown' do
         click_on 'Manage meters'
-        click_on 'Details'
+        click_on meter.mpan_mprn.to_s
         expect(page).not_to have_button('Inventory')
       end
 
       it 'the tariff report button is not shown' do
         click_on 'Manage meters'
-        click_on 'Details'
+        click_on meter.mpan_mprn.to_s
         expect(page).not_to have_button('Tariff Report')
       end
 
       it 'the attributes button is not shown' do
         click_on 'Manage meters'
-        click_on 'Details'
+        click_on meter.mpan_mprn.to_s
         expect(page).not_to have_button('Attributes')
       end
     end
@@ -183,7 +183,7 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
         it { expect(page).to have_css("i[class*='fa-exclamation-circle']") }
         it { expect(page).to_not have_css("i[class*='fa-exclamation-circle text-danger']") }
         context "Clicking on meter 'Details'" do
-          before { click_link 'Details' }
+          before { click_link meter.mpan_mprn.to_s }
           it { expect(page).to have_link('Issues')}
           it { expect(page).to_not have_css("i[class*='fa-exclamation-circle text-danger']") }
         end
@@ -198,7 +198,7 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
         it { expect(page).to have_css("i[class*='fa-exclamation-circle text-danger']") }
 
         context "Clicking on meter 'Details'" do
-          before { click_link 'Details' }
+          before { click_link meter.mpan_mprn.to_s }
           it { expect(page).to have_link('Issues')}
           it { expect(page).to have_css("i[class*='fa-exclamation-circle text-danger']") }
         end
@@ -215,7 +215,7 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
 
       it 'the meter inventory button can be shown' do
         click_on 'Manage meters'
-        click_on 'Details'
+        click_on meter.mpan_mprn.to_s
         click_on 'Inventory'
         expect(page).to have_content('device_id')
         expect(page).to have_content('123999')
@@ -223,14 +223,14 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
 
       it 'the tariff report can be shown' do
         click_on 'Manage meters'
-        click_on 'Details'
+        click_on meter.mpan_mprn.to_s
         click_on 'Tariff Report'
         expect(page).to have_content("Standing charges")
       end
 
       it 'the single meter attributes view can be shown' do
         click_on 'Manage meters'
-        click_on 'Details'
+        click_on meter.mpan_mprn.to_s
         click_on 'Attributes'
         expect(page).to have_content("Individual Meter attributes")
       end

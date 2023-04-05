@@ -2,6 +2,14 @@ cy:
   advice_pages:
     electricity_out_of_hours:
       analysis:
+        holiday_usage:
+          alert_group_by_week_electricity_14_months:
+            header: Gall y siart hwn helpu eich ysgol i gymharu defnydd trydan yn ystod gwyliau
+            subtitle_html: Mae'r siart hwn yn rhoi dadansoddiad o'r defnydd o drydan rhwng diwrnodau ysgol ar agor ac ar gau, gwyliau a phenwythnosau ar gyfer pob wythnos rhwng <span class='start-date'>%{start_date}</span> a <span class='end-date'>%{end_date}</span>
+            title: Defnydd o drydan fesul wythnos am y 14 mis diwethaf
+          table_footer: Gall fod rhesymau dros rai gwyliau i ddefnyddio mwy o ynni, er enghraifft goleuadau diogelwch ychwanegol yn y gaeaf neu gontractwyr yn gweithio ar eiddo ysgol. Yn ddelfrydol, dylai'r gwyliau cryno fod yn is na gwyliau eraill oherwydd gellir diffodd mwy o offer a chyfarpar.
+          table_intro: Mae’r tabl isod yn dangos crynodeb o’ch defnydd trydan gwyliau ysgol y llynedd. Mae'n cynnwys defnydd ynni cyfartalog y dydd i alluogi cymhariaeth ar gyfer gwyliau o hyd gwahanol.
+          title: Defnydd gwyliau
         last_twelve_months:
           table:
             co2_kg: kg/co2
@@ -12,6 +20,9 @@ cy:
           table_introduction: Mae'r tabl isod yn dangos faint o drydan a ddefnyddiwyd pan mae'r ysgol ar agor neu ar gau ar ddiwrnod ysgol yn ogystal ag ar benwythnosau a gwyliau.
           title: 12 mis diwethaf
         summary: Mae'r adran hon yn rhoi dadansoddiad manylach o ddefnydd trydan eich ysgol y tu allan i oriau ysgol a rhai pethau i gadw llygad amdanynt. Er mwyn rheoli ynni'n dda, rydych am i'r rhan fwyaf o'ch defnydd ynni fod pan fydd yr ysgol ar agor.
+        tables:
+          columns:
+            average_daily_usage: Defnydd dyddiol ar gyfartaledd (kWh)
         title: Dadansoddiad
         usage_by_day_of_week:
           daytype_breakdown_electricity_tolerant_chart:

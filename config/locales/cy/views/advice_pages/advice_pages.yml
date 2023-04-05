@@ -66,12 +66,12 @@ cy:
       name: Cyngor
       pages:
         baseload: Llwyth sylfaenol
-        electricity_costs: Costau
+        electricity_costs: Tariffau a chostau
         electricity_intraday: O fewn un diwrnod
         electricity_long_term: Newidiadau hirdymor
         electricity_out_of_hours: Tu allan i oriau ysgol
         electricity_recent_changes: Newidiadau diweddar
-        gas_costs: Costau
+        gas_costs: Tariffau a chostau
         gas_long_term: Newidiadau hirdymor
         gas_out_of_hours: Tu allan i oriau ysgol
         gas_recent_changes: Newidiadau diweddar
@@ -136,7 +136,9 @@ cy:
         total: Cyfanswm
         user_supplied: Cyflenwyd defnyddiwr
       notice:
+        partial_holiday: data rhannol yn unig sydd ar gael ar gyfer gwyliau presennol
         partial_months: yn dynodi mis rhannol
+        partial_year: yn dynodi blwyddyn rannol
         three_significant_figures: Cyflwynir data yn y tabl hwn i 3 ffigwr arwyddocaol.
         two_significant_figures: Cyflwynir data yn y tabl hwn i 2 ffigwr arwyddocaol.
     tabs:

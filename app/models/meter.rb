@@ -48,6 +48,7 @@ class Meter < ApplicationRecord
   belongs_to :solar_edge_installation, optional: true
   belongs_to :meter_review, optional: true
   belongs_to :data_source, optional: true
+  belongs_to :admin_meter_status, foreign_key: 'admin_meter_statuses_id', optional: true
 
   has_one :rtone_variant_installation, required: false
 
@@ -60,8 +61,6 @@ class Meter < ApplicationRecord
   has_many :issues, through: :issue_meters
 
   has_and_belongs_to_many :user_tariffs, inverse_of: :meters
-
-  has_rich_text :notes
 
   CREATABLE_METER_TYPES = [:electricity, :gas, :solar_pv, :exported_solar_pv].freeze
   MAIN_METER_TYPES = [:electricity, :gas].freeze
@@ -101,6 +100,11 @@ class Meter < ApplicationRecord
 
   def school_name
     school.name
+  end
+
+  def admin_meter_status_label
+    for_fuel_type = (fuel_type == :exported_solar_pv ? :solar_pv : fuel_type)
+    admin_meter_status&.label || school&.school_group&.send(:"admin_meter_status_#{for_fuel_type}")&.label || ''
   end
 
   def fuel_type
@@ -175,7 +179,7 @@ class Meter < ApplicationRecord
   end
 
   def user_tariff_meter_attributes
-    user_tariffs.map(&:meter_attribute)
+    user_tariffs.complete.map(&:meter_attribute)
   end
 
   def all_meter_attributes

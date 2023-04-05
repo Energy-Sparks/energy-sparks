@@ -79,6 +79,7 @@
       <th scope="col"><%= t('schools.meters.index.name') %></th>
       <% if current_user.admin? %>
         <th scope="col"><%= t('schools.meters.index.data_source') %></th>
+        <th scope="col"><%= t('schools.meters.index.admin_meter_status') %></th>
       <% end %>
       <th scope="col"><%= t('schools.meters.index.imported') %></th>
       <th scope="col"><%= t('schools.meters.index.validated') %></th>
@@ -128,7 +129,12 @@
           <td><%= meter.mpan_mprn %></td>
           <td><%= meter.name %></td>
           <% if current_user.admin? %>
-            <td><%= link_to meter.data_source.try(:name), admin_data_source_path(meter.data_source) if meter.data_source %></td>
+            <td>
+              <%= link_to meter.data_source.try(:name), admin_data_source_path(meter.data_source) if meter.data_source %>
+            </td>
+            <td>
+              <%= meter.admin_meter_status_label %>
+            </td>
           <% end %>
           <td><%= meter.amr_data_feed_readings.count %></td>
           <td><%= meter.amr_validated_readings.count %></td>

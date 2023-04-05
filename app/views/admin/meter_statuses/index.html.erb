@@ -1,0 +1,26 @@
+<% content_for :page_title, 'Meter Status' %>
+
+<h1>Meter Statuses</h1>
+
+<table class="table">
+  <thead>
+    <th>Meter Statuses</th>
+    <th></th>
+  </thead>
+  <tbody>
+    <% @admin_meter_statuses.each do |status| %>
+      <tr>
+        <td><%= status.label %></td>
+        <td>
+          <%= link_to "Edit", edit_admin_meter_status_path(status), class: 'btn btn-default' %>
+          <% if status.school_groups.count.zero? && status.meters.count.zero? %>
+            <%= link_to 'Delete', status, method: :delete, data: { confirm: 'Are you sure you want to delete this meter status?' }, class: 'btn btn-default' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p><%= link_to 'New meter status', new_admin_meter_status_url %></p>
+

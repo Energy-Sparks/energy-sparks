@@ -34,7 +34,9 @@ cy:
           gas_recent_changes: Sut mae eich defnydd o nwy wedi newid dros yr ychydig wythnosau diwethaf?
           heating_control: Adolygwch amseroedd eich gwres canolog a'ch defnydd o nwy i wresogi'r ysgol
           hot_water: Deall effeithlonrwydd eich system dŵr poeth
-          solar_pv: Gweld maneteision cael paneli solar ar eich ysgol
+          solar_pv:
+            has_solar: Gweld maneteision cael paneli solar ar eich ysgol
+            no_solar: Gweld manteision posib gosod paneli solar ar eich ysgol
           storage_heaters: Adolygwch faint o ynni rydych yn ei ddefnyddio i bweru'ch gwresogyddion stôr
           thermostatic_control: Deall pa mor dda y mae eich defnydd o nwy yn addasu i dymheredd newidiol
           total_energy_use: Crynodeb o'ch defnydd o drydan a nwy

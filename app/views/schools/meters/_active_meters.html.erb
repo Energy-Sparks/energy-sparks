@@ -1,10 +1,23 @@
 <% active_meters.each do |meter| %>
   <tr scope="row" class="<%='table-warning' if @invalid_mpan.include?(meter) %>">
     <td title="<%= (meter.meter_type.to_s.humanize) %>"><%= fa_icon(fuel_type_icon(meter.meter_type)) %></td>
-    <td><%= meter.mpan_mprn %></td>
+    <td>
+      <%= link_to meter.mpan_mprn, school_meter_path(@school, meter) %>
+    </td>
     <td><%= meter.name %></td>
     <% if current_user.admin? %>
-      <td><%= link_to meter.data_source.try(:name), admin_data_source_path(meter.data_source) if meter.data_source %></td>
+      <td>
+        <%= link_to meter.data_source.try(:name), admin_data_source_path(meter.data_source) if meter.data_source %>
+      </td>
+      <td>
+        <% if meter.admin_meter_status.nil? && meter.admin_meter_status_label.present? %>
+          <span data-toggle="tooltip" title="Default <%= meter.fuel_type.to_s.humanize.downcase %> admin meter status for this school's school group">
+            <%= meter.admin_meter_status_label %>
+          </span>
+        <% else %>
+          <span><%= meter.admin_meter_status_label %></span>
+        <% end %>
+      </td>
     <% end %>
     <td><%= meter.amr_data_feed_readings.count %></td>
     <td><%= meter.amr_validated_readings.count %></td>
@@ -14,9 +27,6 @@
     <td><%= meter.gappy_validated_readings.count %></td>
     <td>
       <div class="btn-group btn-group-sm" role="group">
-        <% if can?(:edit, meter) %>
-          <%= link_to t('common.labels.details'), school_meter_path(@school, meter), class: 'btn btn-sm' %>
-        <% end %>
         <% if can?(:view_meter_attributes, meter) %>
           <%= link_to t('common.labels.attributes'), admin_school_single_meter_attribute_path(@school, meter), class: 'btn btn-sm' %>
         <% end %>

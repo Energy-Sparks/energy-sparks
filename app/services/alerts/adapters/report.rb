@@ -18,8 +18,7 @@ module Alerts
 
       def displayable?
         valid &&
-          !enough_data.nil? &&
-          !(enough_data == :not_enough) &&
+          enough_data == :enough &&
           relevance == :relevant &&
           !rating.nil?
       end

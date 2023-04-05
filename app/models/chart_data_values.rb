@@ -33,13 +33,13 @@ class ChartDataValues
       @chart              = chart
       @title              = chart[:title]
       @subtitle           = chart[:subtitle]
+      @chart1_type        = chart[:chart1_type]
+      @chart1_subtype     = chart[:chart1_subtype]
       @x_axis_categories  = translate_categories_for(chart[:x_axis])
       @x_axis_ranges      = chart[:x_axis_ranges]
       @x_max_value        = chart[:x_max_value]
       @x_min_value        = chart[:x_min_value]
-      @chart1_type        = chart[:chart1_type]
-      @chart1_subtype     = chart[:chart1_subtype]
-      @x_axis_label       = chart[:x_axis_label]
+      @x_axis_label       = translated_series_item_for(chart[:x_axis_label]) if chart[:x_axis_label]
       @y_axis_label       = format_y_axis_label_for(chart[:y_axis_label])
       @configuration      = chart[:configuration]
       @advice_header      = chart[:advice_header]
@@ -66,7 +66,7 @@ class ChartDataValues
 
   def translate_categories_for(categories)
     return categories unless categories.is_a? Array
-
+    return categories if @chart1_type == :scatter
     categories.map { |category_label| translated_series_item_for(category_label) }
   end
 
@@ -433,7 +433,7 @@ private
       end
 
       @y2_axis_label = @y2_data.keys[0]
-      @y2_axis_label = 'Temperature' if @y2_axis_label.start_with?('Temp')
+      @y2_axis_label = translated_series_item_for('Temperature') if @y2_axis_label.start_with?('Temp')
 
       @y2_data.each do |data_type, data|
         data_type = tidy_and_keep_label(data_type)
@@ -584,13 +584,13 @@ private
 
   def colours_for_multiple_fuel_type_bencmark(data_type, category)
     case data_type
-    when 'Gas'
+    when translated_series_item_for('Gas')
       if benchmark_school_category?(category)
         MIDDLE_GAS
       else
         LIGHT_GAS
       end
-    when 'Electricity'
+    when translated_series_item_for('Electricity')
       if benchmark_school_category?(category)
         MIDDLE_ELECTRICITY
       else

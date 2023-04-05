@@ -1,0 +1,8 @@
+---
+cy:
+  charts:
+    timescale_name:
+      day: dydd
+      week: wythnos
+      year: blwyddyn
+      up_to_a_year: blwyddyn
