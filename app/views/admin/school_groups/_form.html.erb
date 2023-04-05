@@ -56,8 +56,18 @@
       </div>
 
       <div class="form-group">
-        <%= f.label :admin_meter_statuses_id, 'Default admin meter status' %>
-        <%= f.select(:admin_meter_statuses_id, AdminMeterStatus.all.collect { |d| [ d.label, d.id ] }, { include_blank: true }, class: 'form-control') %>
+        <%= f.label :admin_meter_statuses_electricity_id, 'Default admin meter status for Electricity' %>
+        <%= f.select(:admin_meter_statuses_electricity_id, AdminMeterStatus.all.collect { |d| [ d.label, d.id ] }, { include_blank: true }, class: 'form-control') %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :admin_meter_statuses_gas_id, 'Default admin meter status for Gas' %>
+        <%= f.select(:admin_meter_statuses_gas_id, AdminMeterStatus.all.collect { |d| [ d.label, d.id ] }, { include_blank: true }, class: 'form-control') %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :admin_meter_statuses_solar_pv_id, 'Default admin meter status for Solar PV' %>
+        <%= f.select(:admin_meter_statuses_solar_pv_id, AdminMeterStatus.all.collect { |d| [ d.label, d.id ] }, { include_blank: true }, class: 'form-control') %>
       </div>
 
       <div class="form-group">

@@ -56,7 +56,9 @@ module Admin
         :default_chart_preference,
         :default_issues_admin_user_id,
         :public,
-        :admin_meter_statuses_id
+        :admin_meter_statuses_electricity_id,
+        :admin_meter_statuses_gas_id,
+        :admin_meter_statuses_solar_pv_id
       )
     end
   end

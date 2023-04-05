@@ -103,7 +103,7 @@ class Meter < ApplicationRecord
   end
 
   def admin_meter_status_label
-    admin_meter_status&.label || school&.school_group&.admin_meter_status&.label || ''
+    admin_meter_status&.label || school&.school_group&.send(:"admin_meter_status_#{fuel_type}")&.label || ''
   end
 
   def fuel_type

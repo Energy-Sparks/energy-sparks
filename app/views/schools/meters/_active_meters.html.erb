@@ -10,7 +10,13 @@
         <%= link_to meter.data_source.try(:name), admin_data_source_path(meter.data_source) if meter.data_source %>
       </td>
       <td>
-        <%= meter.admin_meter_status_label %>
+        <% if meter.admin_meter_status.nil? && meter.admin_meter_status_label.present? %>
+          <span data-toggle="tooltip" title="Default <%= meter.fuel_type.to_s.humanize.downcase %> admin meter status for this school's school group">
+            <%= meter.admin_meter_status_label %>
+          </span>
+        <% else %>
+          <span><%= meter.admin_meter_status_label %></span>
+        <% end %>
       </td>
     <% end %>
     <td><%= meter.amr_data_feed_readings.count %></td>
