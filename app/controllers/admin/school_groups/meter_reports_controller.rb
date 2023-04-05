@@ -36,7 +36,8 @@ module Admin
             'Last validated reading',
             'Large gaps (last 2 years)',
             'Modified readings (last 2 years)',
-            'Zero reading days'
+            'Zero reading days',
+            'Admin meter status'
           ]
           school_group.schools.by_name.each do |school|
             school.meters.where(meter_scope).order(:mpan_mprn).each do |meter|
@@ -51,7 +52,8 @@ module Admin
                 nice_dates(meter.last_validated_reading),
                 date_range_from_reading_gaps(meter.gappy_validated_readings),
                 meter.modified_validated_readings.count,
-                meter.zero_reading_days.count
+                meter.zero_reading_days.count,
+                meter.admin_meter_status_label
               ]
             end
           end

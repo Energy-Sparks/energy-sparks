@@ -56,6 +56,21 @@
       </div>
 
       <div class="form-group">
+        <%= f.label :admin_meter_statuses_electricity_id, 'Default admin meter status for Electricity' %>
+        <%= f.select(:admin_meter_statuses_electricity_id, AdminMeterStatus.all.collect { |d| [ d.label, d.id ] }, { include_blank: true }, class: 'form-control') %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :admin_meter_statuses_gas_id, 'Default admin meter status for Gas' %>
+        <%= f.select(:admin_meter_statuses_gas_id, AdminMeterStatus.all.collect { |d| [ d.label, d.id ] }, { include_blank: true }, class: 'form-control') %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :admin_meter_statuses_solar_pv_id, 'Default admin meter status for Solar PV' %>
+        <%= f.select(:admin_meter_statuses_solar_pv_id, AdminMeterStatus.all.collect { |d| [ d.label, d.id ] }, { include_blank: true }, class: 'form-control') %>
+      </div>
+
+      <div class="form-group">
         <label><%= t("admin.school_groups.default_chart_preference.form_group") %></label>
         <p class="small"><%= t("admin.school_groups.default_chart_preference.explanation") %></p>
         <% SchoolGroup.default_chart_preferences.keys.each do |preference| %>

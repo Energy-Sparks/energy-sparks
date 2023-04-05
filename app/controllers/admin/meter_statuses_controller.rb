@@ -35,10 +35,16 @@ module Admin
     end
 
     def destroy
-      @admin_meter_status.destroy
-
       respond_to do |format|
-        format.html { redirect_to admin_meter_statuses_path, notice: "Meter status was successfully deleted." }
+        # Delete button is hidden in the ui when there are associated meters and school groups but
+        # this is left here as a fallback
+        if @admin_meter_status.school_groups.count.zero? && @admin_meter_status.meters.count.zero?
+          @admin_meter_status.destroy
+          notice = 'Meter status was successfully deleted.'
+        else
+          notice = 'Meter status cannot be deleted while it has associated school groups or meters.'
+        end
+        format.html { redirect_to admin_meter_statuses_path, notice: notice }
       end
     end
 

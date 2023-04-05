@@ -55,7 +55,10 @@ module Admin
         :default_weather_station_id,
         :default_chart_preference,
         :default_issues_admin_user_id,
-        :public
+        :public,
+        :admin_meter_statuses_electricity_id,
+        :admin_meter_statuses_gas_id,
+        :admin_meter_statuses_solar_pv_id
       )
     end
   end

@@ -47,6 +47,7 @@
         <th>Modified readings (last 2 years)</th>
         <th>Zero reading days</th>
         <th>Issues</th>
+        <th>Admin meter status</th>
       </tr>
     </thead>
     <tbody>
@@ -73,6 +74,9 @@
              <% if meter.issues.any? %>
                 <%= render 'admin/issues/modal', meter: meter, view_mode: true %>
               <% end %>
+            </td>
+            <td>
+              <%= meter.admin_meter_status_label %>
             </td>
           </tr>
         <% end %>
