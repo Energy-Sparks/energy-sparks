@@ -1,0 +1,12 @@
+<h1>Bulk meter updates: <%= @school_group.name %></h1>
+
+<% [:electricity, :gas, :solar_pv].each do |fuel_type| %>
+  <%= form_with url: admin_school_group_meter_update_bulk_update_meters_url(meter_update_id: fuel_type), method: :post, format: :html do |form| %>
+    <div class="form-group pb-4">
+      <%= form.label :data_source_id, "Bulk update data source for all #{fuel_type.to_s.humanize.downcase} meters" %>
+      <%= form.select :data_source_id, options_from_collection_for_select(DataSource.all, 'id', 'name', @school_group.send("default_data_source_#{fuel_type}_id")), {include_blank: 'none'}, { class: 'form-control mb-2' } %>
+
+      <%= form.submit 'Update', class: 'btn' %>
+    </div>
+  <% end %>
+<% end %>
