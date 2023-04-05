@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_04_135501) do
+ActiveRecord::Schema.define(version: 2023_04_05_085418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1302,7 +1302,9 @@ ActiveRecord::Schema.define(version: 2023_04_04_135501) do
     t.integer "default_chart_preference", default: 0, null: false
     t.bigint "default_issues_admin_user_id"
     t.integer "default_country", default: 0, null: false
-    t.bigint "admin_meter_statuses_id"
+    t.bigint "admin_meter_statuses_electricity_id"
+    t.bigint "admin_meter_statuses_gas_id"
+    t.bigint "admin_meter_statuses_solar_pv_id"
     t.index ["default_issues_admin_user_id"], name: "index_school_groups_on_default_issues_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
