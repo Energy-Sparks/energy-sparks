@@ -48,6 +48,7 @@ class Meter < ApplicationRecord
   belongs_to :solar_edge_installation, optional: true
   belongs_to :meter_review, optional: true
   belongs_to :data_source, optional: true
+  belongs_to :admin_meter_status, foreign_key: 'admin_meter_statuses_id', optional: true
 
   has_one :rtone_variant_installation, required: false
 
@@ -99,6 +100,10 @@ class Meter < ApplicationRecord
 
   def school_name
     school.name
+  end
+
+  def admin_meter_status_label
+    admin_meter_status&.label || school&.school_group&.admin_meter_status&.label || ''
   end
 
   def fuel_type
