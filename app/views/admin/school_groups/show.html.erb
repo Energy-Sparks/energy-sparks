@@ -48,6 +48,7 @@
   <%= link_to 'Edit', edit_admin_school_group_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Manage partners', admin_school_group_partners_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Meter attributes', admin_school_group_meter_attributes_path(@school_group), class: 'btn btn-sm' %>
+  <%= link_to 'Meter updates', admin_school_group_meter_updates_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Meter report', admin_school_group_meter_report_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to "#{fa_icon('file-download')} Meter report".html_safe, admin_school_group_meter_report_path(@school_group, format: :csv) , class: 'btn btn-sm', title: "Download meter report csv" %>
   <%= link_to "#{fa_icon('file-download')} Issues".html_safe, admin_school_group_issues_path(@school_group, format: :csv) , class: 'btn btn-sm', title: "Download issues csv" %>
