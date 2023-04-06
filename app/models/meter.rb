@@ -133,7 +133,7 @@ class Meter < ApplicationRecord
     # only interested if there are enough non_ORIG readings
     return [] unless amr_validated_readings.since(since_date).modified.count >= gap_size
     # find chunks where consecutive readings were all non-ORIG
-    gaps = amr_validated_readings.since(since_date).by_date.chunk_while { |r1, r2| r1.modified && r2.modified }
+    gaps = amr_validated_readings.since(since_date).by_date.select(:reading_date, :status).chunk_while { |r1, r2| r1.status != 'ORIG' && r2.status != 'ORIG' }
     # return chunks of specified size or bigger
     gaps.select { |gap| gap.count >= gap_size }
   end
@@ -143,7 +143,7 @@ class Meter < ApplicationRecord
   end
 
   def zero_reading_days_warning?
-    return true if fuel_type == :electricity && zero_reading_days.count > 0
+    return true if fuel_type == :electricity && zero_reading_days.any?
   end
 
   def name_or_mpan_mprn

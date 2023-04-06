@@ -46,7 +46,7 @@ module Admin
                 meter.meter_type,
                 meter.mpan_mprn,
                 meter.name,
-                meter.data_source.try(:name),
+                meter.data_source.try(:name) || '',
                 y_n(meter.active),
                 nice_dates(meter.first_validated_reading),
                 nice_dates(meter.last_validated_reading),
