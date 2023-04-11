@@ -4,6 +4,7 @@ module Targets
       @school = school
       @aggregated_school = aggregated_school
       @progress_by_fuel_type = {}
+      @reported_errors = {}
     end
 
     def cumulative_progress(fuel_type)
@@ -117,7 +118,7 @@ module Targets
       begin
         @progress_by_fuel_type[fuel_type] ||= target_service(fuel_type).progress
       rescue => e
-        Rollbar.error(e, scope: :generate_progress, school_id: @school.id, school: @school.name, fuel_type: fuel_type)
+        report_to_rollbar_once(e, fuel_type)
         return nil
       end
     end
@@ -125,19 +126,27 @@ module Targets
     def enough_data_to_calculate_target?(fuel_type)
       begin
         return false unless target_service(fuel_type).enough_data_to_set_target?
-        #introduce extra check for gas only. Sometimes the heating model fails
-        #because there isn't enough data in summer. So trigger that here if possible
-        #needs a better upstream fix
-        target_service(fuel_type).progress if fuel_type == :gas
+        calculation_error = target_service(fuel_type).target_meter_calculation_problem
+        if calculation_error.present?
+          raise StandardError, calculation_error[:text]
+        end
         true
       rescue => e
-        Rollbar.error(e, scope: :generate_progress, school_id: @school.id, school: @school.name, fuel_type: fuel_type)
+        report_to_rollbar_once(e, fuel_type)
         false
       end
     end
 
     def target_service(fuel_type)
       TargetsService.new(@aggregated_school, fuel_type)
+    end
+
+    #Report errors only once for each fuel type
+    def report_to_rollbar_once(error, fuel_type)
+      unless @reported_errors[fuel_type]
+        Rollbar.error(error, scope: :generate_progress, school_id: @school.id, school: @school.name, fuel_type: fuel_type)
+      end
+      @reported_errors[fuel_type] = true
     end
   end
 end
