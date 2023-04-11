@@ -4,6 +4,7 @@ module Admin
 
     def index
       @school_groups = SchoolGroup.all.by_name
+      @search_users = find_users
       @unattached_users = @users.where(school_id: nil, school_group_id: nil).order(:email)
     end
 
@@ -39,6 +40,18 @@ module Admin
     end
 
   private
+
+    def find_users
+      if params[:search].present?
+        search = params[:search]
+        if search["email"].present?
+          return User.where("email like ?", "%#{search['email']}%").where.not(role: :pupil).limit(50)
+        else
+          return []
+        end
+      end
+      []
+    end
 
     def user_params
       params.require(:user).permit(:name, :email, :role, :school_id, :school_group_id, :staff_role_id, cluster_school_ids: [])
