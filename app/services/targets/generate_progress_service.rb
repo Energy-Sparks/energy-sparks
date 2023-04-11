@@ -126,10 +126,10 @@ module Targets
     def enough_data_to_calculate_target?(fuel_type)
       begin
         return false unless target_service(fuel_type).enough_data_to_set_target?
-        #introduce extra check for gas only. Sometimes the heating model fails
-        #because there isn't enough data in summer. So trigger that here if possible
-        #needs a better upstream fix
-        target_service(fuel_type).progress if fuel_type == :gas
+        calculation_error = target_service(fuel_type).target_meter_calculation_problem
+        if calculation_error.present?
+          raise StandardError, calculation_error[:text]
+        end
         true
       rescue => e
         report_to_rollbar_once(e, fuel_type)
