@@ -14,20 +14,20 @@
       <tr>
         <th>Name</th>
         <th>Email</th>
-        <th>Last signed in</th>
         <th>Confirmed?</th>
-        <th>Locked?</th>
+        <th>Last signed in</th>
+        <th>Language</th>
         <th></th>
       </tr>
     </thead>
     <tbody>
       <% @group_admins.each do |user| %>
-        <tr>
+        <tr class="<%= 'table-danger' if user.access_locked? %>">
           <td><%= user.name %></td>
           <td><%= user.pupil? ? "N/A" : user.email %></td>
+          <td><%= y_n(user.confirmed?) %></td>
           <td data-order="<%=user.last_sign_in_at.iso8601 if user.last_sign_in_at %>"><%= display_last_signed_in_as(user) %></td>
-          <td><%= user.confirmed? ? 'Y' : 'N' %></td>
-          <td><%= user.access_locked? ? 'Y' : '' %></td>
+          <td><%= I18n.t("languages.#{user.preferred_locale}") %></td>
           <td>
             <div class="btn-group">
               <%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-primary btn-sm' %>
@@ -50,24 +50,26 @@
       <th>Email</th>
       <th>Role</th>
       <th>Staff Role</th>
-      <th>Last signed in</th>
       <th>Confirmed?</th>
-      <th>Locked?</th>
+      <th>Last signed in</th>
+      <th>Alerts</th>
+      <th>Language</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
     <% @school_group.schools.by_name.each do |school| %>
       <% @school_users[school].each do |user| %>
-        <tr>
+      <tr class="<%= 'table-danger' if user.access_locked? %>">
           <td><%= link_to school.name, school_path(school) %></td>
           <td><%= user.name %></td>
           <td><%= user.pupil? ? "N/A" : user.email %></td>
           <td><%= user.role.titleize %></td>
           <td><%= user.staff_role&.title %></td>
+          <td><%= y_n(user.confirmed?) %></td>
           <td data-order="<%=user.last_sign_in_at.iso8601 if user.last_sign_in_at %>"><%= display_last_signed_in_as(user) %></td>
-          <td><%= user.confirmed? ? 'Y' : 'N' %></td>
-          <td><%= user.access_locked? ? 'Y' : '' %></td>
+          <td><%= y_n(user.contact_for_school) %></td>
+          <td><%= I18n.t("languages.#{user.preferred_locale}") %></td>
           <td>
             <div class="btn-group">
               <%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-primary btn-sm' %>

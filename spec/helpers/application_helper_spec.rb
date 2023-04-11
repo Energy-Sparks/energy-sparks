@@ -35,7 +35,7 @@ describe ApplicationHelper do
 
     it 'shows the last time as user signed in' do
       last_sign_in_at = DateTime.new(2001, 2, 3, 4, 5, 6)
-      expect(display_last_signed_in_as(build(:user, last_sign_in_at: last_sign_in_at))).to eq nice_date_times(last_sign_in_at)
+      expect(display_last_signed_in_as(build(:user, last_sign_in_at: last_sign_in_at))).to eq last_sign_in_at.strftime('%d/%m/%Y %H:%M')
     end
   end
 

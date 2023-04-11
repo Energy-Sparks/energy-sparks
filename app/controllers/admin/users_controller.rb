@@ -4,8 +4,6 @@ module Admin
 
     def index
       @school_groups = SchoolGroup.all.by_name
-      @school_users = {} #school_users
-      @school_group_users = [] #@users.where.not(school_group_id: nil).order('school_groups.name', :email).includes(:school_group)
       @unattached_users = @users.where(school_id: nil, school_group_id: nil).order(:email)
     end
 
