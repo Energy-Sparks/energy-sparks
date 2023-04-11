@@ -4,6 +4,7 @@ module Targets
       @school = school
       @aggregated_school = aggregated_school
       @progress_by_fuel_type = {}
+      @reported_errors = {}
     end
 
     def cumulative_progress(fuel_type)
@@ -40,11 +41,18 @@ module Targets
 
     def fuel_type_progress(fuel_type)
       if can_generate_fuel_type?(fuel_type)
+        cumulative_progress = cumulative_progress(fuel_type)
+        current_monthly_usage = current_monthly_usage(fuel_type)
+        current_monthly_target = current_monthly_target(fuel_type)
+        #if we encounted errors, the above values may be nil
+        #in that case we can't produce a progress report for the fuel
+        return {} unless cumulative_progress.present?
+
         Targets::FuelProgress.new(
           fuel_type: fuel_type,
-          progress: cumulative_progress(fuel_type),
-          usage: current_monthly_usage(fuel_type),
-          target: current_monthly_target(fuel_type),
+          progress: cumulative_progress,
+          usage: current_monthly_usage,
+          target: current_monthly_target,
           recent_data: target_service(fuel_type).recent_data?
         )
       else
@@ -102,8 +110,7 @@ module Targets
     end
 
     def progress_report(fuel_type)
-      return nil unless has_fuel_type_and_target?(fuel_type)
-      return nil unless enough_data_to_calculate_target?(fuel_type)
+      return nil unless can_generate_fuel_type?(fuel_type)
       target_progress(fuel_type)
     end
 
@@ -111,22 +118,35 @@ module Targets
       begin
         @progress_by_fuel_type[fuel_type] ||= target_service(fuel_type).progress
       rescue => e
-        Rollbar.error(e, scope: :generate_progress, school_id: @school.id, school: @school.name, fuel_type: fuel_type)
+        report_to_rollbar_once(e, fuel_type)
         return nil
       end
     end
 
     def enough_data_to_calculate_target?(fuel_type)
       begin
-        target_service(fuel_type).enough_data_to_set_target?
+        return false unless target_service(fuel_type).enough_data_to_set_target?
+        calculation_error = target_service(fuel_type).target_meter_calculation_problem
+        if calculation_error.present?
+          raise StandardError, calculation_error[:text]
+        end
+        true
       rescue => e
-        Rollbar.error(e, scope: :generate_progress, school_id: @school.id, school: @school.name, fuel_type: fuel_type)
+        report_to_rollbar_once(e, fuel_type)
         false
       end
     end
 
     def target_service(fuel_type)
       TargetsService.new(@aggregated_school, fuel_type)
+    end
+
+    #Report errors only once for each fuel type
+    def report_to_rollbar_once(error, fuel_type)
+      unless @reported_errors[fuel_type]
+        Rollbar.error(error, scope: :generate_progress, school_id: @school.id, school: @school.name, fuel_type: fuel_type)
+      end
+      @reported_errors[fuel_type] = true
     end
   end
 end

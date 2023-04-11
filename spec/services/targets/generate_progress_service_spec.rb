@@ -49,6 +49,7 @@ describe Targets::GenerateProgressService do
     context 'and there is an error in the progress report generation' do
       before(:each) do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
+        allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
         allow_any_instance_of(TargetsService).to receive(:progress).and_raise(StandardError.new('test requested'))
       end
 
@@ -79,6 +80,7 @@ describe Targets::GenerateProgressService do
 
         before(:each) do
           allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
+          allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
           allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         end
 
@@ -93,6 +95,7 @@ describe Targets::GenerateProgressService do
 
       before(:each) do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
+        allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
       end
 
@@ -105,6 +108,7 @@ describe Targets::GenerateProgressService do
   context '#current_monthly_target' do
     before(:each) do
       allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
+      allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
       allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
     end
 
@@ -117,6 +121,7 @@ describe Targets::GenerateProgressService do
 
       before(:each) do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
+        allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
       end
 
@@ -129,6 +134,7 @@ describe Targets::GenerateProgressService do
   context '#current_monthly_usage' do
     before(:each) do
       allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
+      allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
       allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
     end
 
@@ -160,6 +166,7 @@ describe Targets::GenerateProgressService do
 
       before(:each) do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
+        allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
       end
@@ -196,13 +203,36 @@ describe Targets::GenerateProgressService do
 
       before(:each) do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
+        allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
       end
-      it 'generates' do
+      it 'still generates' do
         expect( service.generate! ).to eq school_target
       end
     end
+
+    context 'and there is an error in the progress report generation' do
+      let(:target) { service.generate! }
+
+      before(:each) do
+        allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
+        allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
+        error = StandardError.new('test requested')
+        allow_any_instance_of(TargetsService).to receive(:progress).and_raise(error)
+        expect(Rollbar).to receive(:error).with(error, scope: :generate_progress, school_id: school.id, school: school.name, fuel_type: :electricity)
+      end
+
+      it 'records when last run' do
+        expect( target.report_last_generated ).to_not be_nil
+      end
+
+      it 'sets values to nil' do
+        expect( target.electricity_progress ).to eq({})
+        expect( target.electricity_report ).to be_nil
+      end
+    end
+
   end
 
 end
