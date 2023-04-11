@@ -1,0 +1,84 @@
+<div class="d-flex justify-content-between align-items-center">
+  <h1><%= @school_group.name %> Users</h1>
+  <div>
+    <%= header_nav_link 'Manage school group', admin_school_group_path(@school_group) %>
+    <%= header_nav_link 'All users', admin_users_path %>
+  </div>
+</div>
+
+<% if @group_admins.any? %>
+  <h2>Group Admins</h2>
+
+  <table class="table table-sm table-sorted">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Last signed in</th>
+        <th>Confirmed?</th>
+        <th>Locked?</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @group_admins.each do |user| %>
+        <tr>
+          <td><%= user.name %></td>
+          <td><%= user.pupil? ? "N/A" : user.email %></td>
+          <td data-order="<%=user.last_sign_in_at.iso8601 if user.last_sign_in_at %>"><%= display_last_signed_in_as(user) %></td>
+          <td><%= user.confirmed? ? 'Y' : 'N' %></td>
+          <td><%= user.access_locked? ? 'Y' : '' %></td>
+          <td>
+            <div class="btn-group">
+              <%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-primary btn-sm' %>
+              <%= link_to 'Delete', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<h2>School Users</h2>
+
+<table class="table table-sm table-sorted">
+  <thead>
+    <tr>
+      <th>School</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Staff Role</th>
+      <th>Last signed in</th>
+      <th>Confirmed?</th>
+      <th>Locked?</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @school_group.schools.by_name.each do |school| %>
+      <% @school_users[school].each do |user| %>
+        <tr>
+          <td><%= link_to school.name, school_path(school) %></td>
+          <td><%= user.name %></td>
+          <td><%= user.pupil? ? "N/A" : user.email %></td>
+          <td><%= user.role.titleize %></td>
+          <td><%= user.staff_role&.title %></td>
+          <td data-order="<%=user.last_sign_in_at.iso8601 if user.last_sign_in_at %>"><%= display_last_signed_in_as(user) %></td>
+          <td><%= user.confirmed? ? 'Y' : 'N' %></td>
+          <td><%= user.access_locked? ? 'Y' : '' %></td>
+          <td>
+            <div class="btn-group">
+              <%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-primary btn-sm' %>
+              <%= link_to 'Delete', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+            </div>
+            <% unless user.confirmed? %>
+              <%= button_to 'Resend confirmation', admin_user_confirmation_path(user), class: 'btn btn-warning btn-sm' %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
