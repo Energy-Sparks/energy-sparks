@@ -199,10 +199,29 @@ describe Targets::GenerateProgressService do
         allow_any_instance_of(TargetsService).to receive(:progress).and_return(progress)
         allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
       end
-      it 'generates' do
+      it 'still generates' do
         expect( service.generate! ).to eq school_target
       end
     end
+
+    context 'and there is an error in the progress report generation' do
+      let(:target) { service.generate! }
+
+      before(:each) do
+        allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
+        allow_any_instance_of(TargetsService).to receive(:progress).and_raise(StandardError.new('test requested'))
+      end
+
+      it 'records when last run' do
+        expect( target.report_last_generated ).to_not be_nil
+      end
+
+      it 'sets values to nil' do
+        expect( target.electricity_progress ).to eq({})
+        expect( target.electricity_report ).to be_nil
+      end
+    end
+
   end
 
 end
