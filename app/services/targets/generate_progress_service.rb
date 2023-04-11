@@ -40,11 +40,18 @@ module Targets
 
     def fuel_type_progress(fuel_type)
       if can_generate_fuel_type?(fuel_type)
+        cumulative_progress = cumulative_progress(fuel_type)
+        current_monthly_usage = current_monthly_usage(fuel_type)
+        current_monthly_target = current_monthly_target(fuel_type)
+        #if we encounted errors, the above values may be nil
+        #in that case we can't produce a progress report for the fuel
+        return {} unless cumulative_progress.present?
+
         Targets::FuelProgress.new(
           fuel_type: fuel_type,
-          progress: cumulative_progress(fuel_type),
-          usage: current_monthly_usage(fuel_type),
-          target: current_monthly_target(fuel_type),
+          progress: cumulative_progress,
+          usage: current_monthly_usage,
+          target: current_monthly_target,
           recent_data: target_service(fuel_type).recent_data?
         )
       else
@@ -102,8 +109,7 @@ module Targets
     end
 
     def progress_report(fuel_type)
-      return nil unless has_fuel_type_and_target?(fuel_type)
-      return nil unless enough_data_to_calculate_target?(fuel_type)
+      return nil unless can_generate_fuel_type?(fuel_type)
       target_progress(fuel_type)
     end
 
@@ -118,7 +124,12 @@ module Targets
 
     def enough_data_to_calculate_target?(fuel_type)
       begin
-        target_service(fuel_type).enough_data_to_set_target?
+        return false unless target_service(fuel_type).enough_data_to_set_target?
+        #introduce extra check for gas only. Sometimes the heating model fails
+        #because there isn't enough data in summer. So trigger that here if possible
+        #needs a better upstream fix
+        target_service(fuel_type).progress if fuel_type == :gas
+        true
       rescue => e
         Rollbar.error(e, scope: :generate_progress, school_id: @school.id, school: @school.name, fuel_type: fuel_type)
         false
