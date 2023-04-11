@@ -209,7 +209,9 @@ describe Targets::GenerateProgressService do
 
       before(:each) do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
-        allow_any_instance_of(TargetsService).to receive(:progress).and_raise(StandardError.new('test requested'))
+        error = StandardError.new('test requested')
+        allow_any_instance_of(TargetsService).to receive(:progress).and_raise(error)
+        expect(Rollbar).to receive(:error).with(error, scope: :generate_progress, school_id: school.id, school: school.name, fuel_type: :electricity)
       end
 
       it 'records when last run' do
