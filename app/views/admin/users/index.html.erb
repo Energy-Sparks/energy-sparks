@@ -5,110 +5,130 @@
   </div>
 </div>
 
-<h2>School group users</h2>
-
-<div id="top" class="d-flex justify-content-between align-items-center">
-  <form action="" class="form">
-    <label for="admin-user-picker">Choose group</label>
-    <select id="admin-user-picker" class="admin-user-picker">
-      <% @school_groups.each do |school_group| %>
-        <option value="/admin/school_groups/<%= school_group.name.parameterize %>/users"><%= school_group.name %></option>
-      <% end %>
-      <option value="#school_group_users">School group users</option>
-      <option value="#no_school_users">Users without a school</option>
-    </select>
-  </form>
+<div class="row mb-2">
+  <div class="col">
+    <%= link_to 'Download list of school users as CSV', admin_users_path(format: :csv), class: 'btn btn-sm' %>
+  </div>
 </div>
 
 <hr />
 
-<h2>Search users</h2>
+<div class="row mt-2">
+  <div class="col">
+    <h2>Search users</h2>
 
-<%= simple_form_for :search, url: admin_users_path, method: "GET", html: { class: 'form' } do |f| %>
-  <%= f.input :email, input_html: {value: params[:search].present? ? params[:search]["email"]: ''} %>
-  <%= f.submit "Search", class: "btn btn-primary" %>
-  <%= link_to 'Clear', admin_users_path, class: "btn btn-primary" %>
-<% end %>
+    <%= simple_form_for :search, url: admin_users_path, method: "GET", html: { class: 'form' } do |f| %>
+      <%= f.input :email, input_html: {value: params[:search].present? ? params[:search]["email"]: ''} %>
+      <%= f.submit "Search", class: "btn btn-primary" %>
+      <%= link_to 'Clear', admin_users_path, class: "btn btn-primary" %>
+    <% end %>
 
-<% if @search_users.any? %>
-  <div class="row mt-4">
-    <div class="col">
-      <p>First 50 users with email matching search...</p>
+    <% if @search_users.any? %>
+      <div class="row mt-4">
+        <div class="col">
+          <p>First 50 users with email matching search...</p>
+        </div>
+      </div>
+      <table class="table table-sm table-sorted">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>School or group</th>
+            <th>Role</th>
+            <th>Confirmed</th>
+            <th>Last signed in</th>
+            <th>Language</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @search_users.each do |user| %>
+            <tr class="<%= 'table-danger' if user.access_locked? %>">
+              <td><%= user.name %></td>
+              <td><%= user.pupil? ? "N/A" : user.email %></td>
+              <td>
+                <% if user.group_admin? %>
+                  <%= link_to user.school_group.name, admin_school_group_path(user.school_group) %>
+                <% elsif user.school.present? %>
+                  <%= link_to user.school.name, school_users_path(user.school) %>
+                <% end %>
+              </td>
+              <td><%= user.role.titleize %></td>
+              <td><%= y_n(user.confirmed?) %></td>
+              <td data-order="<%=user.last_sign_in_at.iso8601 if user.last_sign_in_at %>"><%= display_last_signed_in_as(user) %></td>
+              <td><%= I18n.t("languages.#{user.preferred_locale}") %></td>
+              <td>
+                <div class="btn-group">
+                  <%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-primary btn-sm' %>
+                  <%= link_to 'Delete', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+                  <% unless user.confirmed? %>
+                    <%= button_to 'Resend confirmation', admin_user_confirmation_path(user), class: 'btn btn-warning btn-sm' %>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+</div>
+
+<div class="row mt-2">
+  <div class="col">
+    <h2>School group users</h2>
+    <div id="top" class="d-flex justify-content-between align-items-center">
+      <form action="" class="form">
+        <label for="admin-user-picker">Choose group</label>
+        <select id="admin-user-picker" class="admin-user-picker">
+          <% @school_groups.each do |school_group| %>
+            <option value="/admin/school_groups/<%= school_group.name.parameterize %>/users"><%= school_group.name %></option>
+          <% end %>
+          <option value="#school_group_users">School group users</option>
+          <option value="#no_school_users">Users without a school</option>
+        </select>
+      </form>
     </div>
   </div>
-  <table class="table table-sm table-sorted">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>School or group</th>
-        <th>Role</th>
-        <th>Confirmed</th>
-        <th>Last signed in</th>
-        <th>Language</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @search_users.each do |user| %>
-        <tr class="<%= 'table-danger' if user.access_locked? %>">
-          <td><%= user.name %></td>
-          <td><%= user.pupil? ? "N/A" : user.email %></td>
-          <td>
-            <% if user.group_admin? %>
-              <%= link_to user.school_group.name, admin_school_group_path(user.school_group) %>
-            <% elsif user.school.present? %>
-              <%= link_to user.school.name, school_users_path(user.school) %>
-            <% end %>
-          </td>
-          <td><%= user.role.titleize %></td>
-          <td><%= y_n(user.confirmed?) %></td>
-          <td data-order="<%=user.last_sign_in_at.iso8601 if user.last_sign_in_at %>"><%= display_last_signed_in_as(user) %></td>
-          <td><%= I18n.t("languages.#{user.preferred_locale}") %></td>
-          <td>
-            <div class="btn-group">
-              <%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-primary btn-sm' %>
-              <%= link_to 'Delete', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
-            </div>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-
-<% end %>
+</div>
 
 <hr />
 
-<h2>Users without a school</h2>
+<div class="row mt-2">
+  <div class="col">
+    <h2>Users without a school</h2>
 
-<table class="table table-sm table-sorted">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Role</th>
-      <th>Confirmed</th>
-      <th>Last sign in</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @unattached_users.each do |user| %>
-      <tr class="<%= 'table-danger' if user.access_locked? %>">
-        <td><%= user.name %></td>
-        <td><%= user.pupil? ? "N/A" : user.email %></td>
-        <td><%= user.role.titleize %></td>
-        <td><%= y_n(user.confirmed?) %></td>
-        <td data-order="<%=user.last_sign_in_at.iso8601 if user.last_sign_in_at %>"><%= display_last_signed_in_as(user) %></td>
-        <td>
-          <div class="btn-group">
-            <%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-primary btn-sm' %>
-            <%= link_to 'Delete', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
-          </div>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+    <table class="table table-sm table-sorted">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Confirmed</th>
+          <th>Last sign in</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @unattached_users.each do |user| %>
+          <tr class="<%= 'table-danger' if user.access_locked? %>">
+            <td><%= user.name %></td>
+            <td><%= user.pupil? ? "N/A" : user.email %></td>
+            <td><%= user.role.titleize %></td>
+            <td><%= y_n(user.confirmed?) %></td>
+            <td data-order="<%=user.last_sign_in_at.iso8601 if user.last_sign_in_at %>"><%= display_last_signed_in_as(user) %></td>
+            <td>
+              <div class="btn-group">
+                <%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-primary btn-sm' %>
+                <%= link_to 'Delete', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
 <%= link_to "Back to Top", "#top", class: "btn btn-primary" %>
