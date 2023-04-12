@@ -384,6 +384,7 @@ Rails.application.routes.draw do
             post :make_visible
           end
         end
+        resource :users, only: [:show]
         resource :partners, only: [:show, :update]
         resource :meter_report, only: [:show]
         concerns :messageable
