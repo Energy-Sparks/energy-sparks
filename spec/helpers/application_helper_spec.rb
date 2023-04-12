@@ -30,7 +30,7 @@ describe ApplicationHelper do
 
   describe 'last signed in helper' do
     it 'shows a message if a user has never signed in' do
-      expect(display_last_signed_in_as(build(:user))).to eq 'Never signed in'
+      expect(display_last_signed_in_as(build(:user))).to eq '-'
     end
 
     it 'shows the last time as user signed in' do
