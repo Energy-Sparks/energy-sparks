@@ -14,11 +14,12 @@ namespace :after_party do
     config['reading_fields'] = ['Meter Read']
     config['header_example'] = "MPANCore,Sett Date,Sett Period,Type,Meter Read"
     config['row_per_reading'] = true
+    config['positional_index'] = true
     config['number_of_header_rows'] = 2
 
     amr_data_feed_config = AmrDataFeedConfig.find_by(identifier: identifier)
     if amr_data_feed_config
-      amr_Data_feed_config.update!(config)
+      amr_data_feed_config.update!(config)
     else
       AmrDataFeedConfig.create!(config)
     end
