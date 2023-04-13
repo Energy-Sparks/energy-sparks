@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_05_085418) do
+ActiveRecord::Schema.define(version: 2023_04_13_134037) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -388,6 +388,7 @@ ActiveRecord::Schema.define(version: 2023_04_05_085418) do
     t.integer "missing_readings_limit"
     t.boolean "lookup_by_serial_number", default: false
     t.jsonb "column_row_filters", default: {}
+    t.boolean "positional_index", default: false, null: false
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
   end
