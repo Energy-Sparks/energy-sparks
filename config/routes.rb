@@ -245,7 +245,7 @@ Rails.application.routes.draw do
 
       resources :solar_feeds_configuration, only: [:index]
 
-      resources :solar_edge_installations, only: [:new, :create, :edit, :update, :destroy]
+      resources :solar_edge_installations, only: [:new, :show, :create, :edit, :update, :destroy]
       resources :low_carbon_hub_installations, only: [:new, :show, :create, :edit, :update, :destroy]
       resources :rtone_variant_installations, only: [:new, :create, :edit, :update, :destroy]
 
