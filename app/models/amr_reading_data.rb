@@ -103,7 +103,7 @@ class AmrReadingData
   end
 
   def missing_readings?(readings)
-    readings.compact.count(&:present?) < (48 - @missing_reading_threshold)
+    readings.compact.count {|hh| hh.present? && hh != '-'} < (48 - @missing_reading_threshold)
   end
 
   def valid_reading_date?(reading_date)
