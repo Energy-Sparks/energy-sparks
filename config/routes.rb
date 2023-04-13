@@ -239,7 +239,7 @@ Rails.application.routes.draw do
 
       resources :solar_feeds_configuration, only: [:index]
 
-      resources :solar_edge_installations, only: [:new, :create, :edit, :update, :destroy]
+      resources :solar_edge_installations, only: [:new, :show, :create, :edit, :update, :destroy]
       resources :low_carbon_hub_installations, only: [:new, :show, :create, :edit, :update, :destroy]
       resources :rtone_variant_installations, only: [:new, :create, :edit, :update, :destroy]
 
@@ -378,6 +378,7 @@ Rails.application.routes.draw do
             post :make_visible
           end
         end
+        resource :users, only: [:show]
         resource :partners, only: [:show, :update]
         resource :meter_report, only: [:show]
         concerns :messageable

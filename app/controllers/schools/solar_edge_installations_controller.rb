@@ -7,11 +7,23 @@ module Schools
     end
 
     def create
-      if @solar_edge_installation.save
-        redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'New Solar Edge API feed created.'
+      @solar_edge_installation = Solar::SolarEdgeInstallationFactory.new(
+        school: @school,
+        mpan: solar_edge_installation_params[:mpan],
+        site_id: solar_edge_installation_params[:site_id],
+        api_key: solar_edge_installation_params[:api_key],
+        amr_data_feed_config: AmrDataFeedConfig.find(solar_edge_installation_params[:amr_data_feed_config_id]),
+      ).perform
+
+      if @solar_edge_installation.persisted?
+        redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'Solar Edge installation was successfully created.'
       else
         render :new
       end
+    rescue => e
+      Rollbar.error(e, job: :solar_download, school: @school)
+      flash[:error] = e.message
+      render :new
     end
 
     def edit
@@ -19,6 +31,7 @@ module Schools
 
     def update
       if @solar_edge_installation.update(solar_edge_installation_params)
+        Solar::SolarEdgeInstallationFactory.update_information(@solar_edge_installation)
         redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'Solar Edge API feed was updated'
       else
         render :edit

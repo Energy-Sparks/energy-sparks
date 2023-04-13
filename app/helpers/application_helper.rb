@@ -55,7 +55,7 @@ module ApplicationHelper
   end
 
   def display_last_signed_in_as(user)
-    user.last_sign_in_at ? nice_date_times(user.last_sign_in_at) : 'Never signed in'
+    user.last_sign_in_at ? user.last_sign_in_at.strftime('%d/%m/%Y %H:%M') : '-'
   end
 
   def options_from_collection_for_select_with_data(collection, value_method, text_method, selected = nil, data = {})
