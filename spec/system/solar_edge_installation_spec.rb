@@ -15,6 +15,10 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
   context 'as an admin' do
 
     before(:each) do
+      allow_any_instance_of(SolarEdgeAPI).to receive(:site_details).and_return({})
+      allow_any_instance_of(SolarEdgeAPI).to receive(:site_start_end_dates).and_return([Date.yesterday, Date.today])
+      allow_any_instance_of(SolarEdgeAPI).to receive(:smart_meter_data).and_return({})
+
       sign_in(admin)
       visit school_meters_path(school)
     end
@@ -37,7 +41,7 @@ RSpec.describe "Solar edge installation management", :solar_edge_installations, 
         fill_in(:solar_edge_installation_api_key, with: api_key)
 
         expect { click_on 'Submit'}.to change { SolarEdgeInstallation.count }.by(1)
-        expect(page).to have_content("New Solar Edge API feed created")
+        expect(page).to have_content("Solar Edge installation was successfully created")
 
         expect(SolarEdgeInstallation.first.mpan).to eql mpan
         expect(SolarEdgeInstallation.first.site_id).to eql site_id
