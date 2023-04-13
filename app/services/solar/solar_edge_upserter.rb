@@ -18,12 +18,14 @@ module Solar
         meter = Meter.find_or_create_by!(
           meter_type: meter_type,
           mpan_mprn: mpan_mprn,
-          solar_edge_installation_id: @solar_edge_installation.id,
-          school: @solar_edge_installation.school,
-          pseudo: true
+          school: @solar_edge_installation.school
         ) do |new_record|
           new_record.name = meter_type.to_s.humanize
+          new_record.pseudo = true
+          new_record.solar_edge_installation = @solar_edge_installation
         end
+
+        update_existing_meter_if_needed(meter)
 
         Amr::DataFeedUpserter.new(data_feed_reading_array(readings_hash, meter.id, mpan_mprn), @amr_data_feed_import_log).perform
         Rails.logger.info "Upserted #{@amr_data_feed_import_log.records_updated} inserted #{@amr_data_feed_import_log.records_imported}for #{@solar_edge_installation.site_id} at #{@solar_edge_installation.school.name}"
@@ -31,6 +33,17 @@ module Solar
     end
 
     private
+
+    #manually created meters may not be associated with the installation, update
+    #if not
+    def update_existing_meter_if_needed(meter)
+      if !meter.pseudo? || meter.solar_edge_installation.nil?
+        meter.update!(
+          pseudo: true,
+          solar_edge_installation: @solar_edge_installation
+        )
+      end
+    end
 
     def synthetic_mpan(meter_type, mpan)
       Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(mpan, meter_type)
