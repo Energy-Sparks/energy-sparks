@@ -97,7 +97,7 @@ class Ability
       can :deactivate, Meter, { active: true }.merge(related_school_scope)
       can [:destroy, :delete], Meter, related_school_scope
       cannot [:destroy, :delete], Meter do |meter|
-        meter.amr_data_feed_readings.count > 0
+        meter.amr_data_feed_readings.any?
       end
       can :manage, Observation, related_school_scope
       can :manage, TransportSurvey, related_school_scope
