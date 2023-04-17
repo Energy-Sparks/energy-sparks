@@ -40,7 +40,16 @@ module Admin
             'Admin meter status'
           ]
           school_group.schools.by_name.each do |school|
-            school.meters.where(meter_scope).order(:mpan_mprn).each do |meter|
+            school.meters.where(meter_scope)
+              .joins(:amr_validated_readings)
+              .group('meters.id')
+              .select(
+                "meters.*,
+                 MIN(amr_validated_readings.reading_date) AS first_validated_reading_date,
+                 MAX(amr_validated_readings.reading_date) AS last_validated_reading_date,
+                 COUNT(1) FILTER (WHERE one_day_kwh = 0) AS zero_reading_days_count"
+                 )
+              .order(:mpan_mprn).each do |meter|
               csv << [
                 school.name,
                 meter.meter_type,
@@ -48,11 +57,11 @@ module Admin
                 meter.name,
                 meter.data_source.try(:name) || '',
                 y_n(meter.active),
-                nice_dates(meter.first_validated_reading),
-                nice_dates(meter.last_validated_reading),
+                nice_dates(meter.first_validated_reading_date),
+                nice_dates(meter.last_validated_reading_date),
                 date_range_from_reading_gaps(meter.gappy_validated_readings),
                 meter.modified_validated_readings.count,
-                meter.zero_reading_days.count,
+                meter.zero_reading_days_count,
                 meter.admin_meter_status_label
               ]
             end
