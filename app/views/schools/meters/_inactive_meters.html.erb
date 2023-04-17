@@ -12,7 +12,7 @@
       </td>
     <% end %>
     <td><%= meter.amr_data_feed_readings.count %></td>
-    <td><%= meter.amr_validated_readings.count %></td>
+    <td><%= meter.number_of_validated_readings %></td>
     <td><%= short_dates meter.first_validated_reading %></td>
     <td><%= short_dates meter.last_validated_reading %></td>
     <td><%= meter.zero_reading_days.count %></td>

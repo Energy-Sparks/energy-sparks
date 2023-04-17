@@ -2,13 +2,7 @@
   <h1 class="display-4"><%= @school.name %></h1>
   <div class="stats">
     <p class="lead">Energy Sparks is processing all of this school's data to provide today's analysis.</p>
-    <p>Once we've finished, we will re-direct you to the school dashboard</p>
-    <p>We're crunching:</p>
-    <ul>
-      <li><%= number_with_delimiter(@number_of_meter_readings) %> meter readings</li>
-      <li><%= number_with_delimiter @number_of_weather_readings %> temperature readings</li>
-      <li><%= number_with_delimiter @number_of_solar_pv_readings %> Solar generation readings</li>
-    </ul>
+    <p>Once we've finished, we will re-direct you to the school dashboard.</p>
     <div class="spinner-border" role="status">
       <span class="sr-only">Loading...</span>
     </div>

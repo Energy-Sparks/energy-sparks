@@ -6,11 +6,14 @@ describe ManualDataLoadRunJob, ts: false do
 
   let(:job)                 { ManualDataLoadRunJob.new }
 
+  let(:imported)            { 55 }
+  let(:updated)             { 99 }
+
   before(:each) do
     #stub the service
     allow_any_instance_of(Amr::ProcessAmrReadingData).to receive(:perform).and_return(true)
-    allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_imported).and_return(55)
-    allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_updated).and_return(99)
+    allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_imported).and_return(imported)
+    allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_updated).and_return(updated)
   end
 
   context 'with a valid file' do
@@ -30,6 +33,19 @@ describe ManualDataLoadRunJob, ts: false do
 
     it 'marks data as imported' do
       expect(run.amr_uploaded_reading.imported).to be true
+    end
+  end
+
+  context 'for small imports' do
+    let(:imported)            { 2 }
+    let(:updated)             { 0 }
+
+    before(:each) do
+      expect_any_instance_of(Database::VacuumService).to_not receive(:perform)
+      job.load(run.amr_uploaded_reading.amr_data_feed_config, run.amr_uploaded_reading, run)
+    end
+    it 'completed with no vacuum' do
+      expect(run.status).to eq "done"
     end
   end
 
