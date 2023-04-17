@@ -80,7 +80,7 @@ class Meter < ApplicationRecord
   scope :consented, -> { where(dcc_meter: true, consent_granted: true) }
 
   scope :with_counts, -> {
-                            joins(:amr_validated_readings)
+                            left_outer_joins(:amr_validated_readings)
                             .group('meters.id')
                             .select(
                               "meters.*,
