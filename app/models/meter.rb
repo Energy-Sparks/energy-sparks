@@ -79,6 +79,16 @@ class Meter < ApplicationRecord
   scope :dcc, -> { where(dcc_meter: true) }
   scope :consented, -> { where(dcc_meter: true, consent_granted: true) }
 
+  scope :with_counts, -> {
+                            left_outer_joins(:amr_validated_readings)
+                            .group('meters.id')
+                            .select(
+                              "meters.*,
+                               MIN(amr_validated_readings.reading_date) AS first_validated_reading_date,
+                               MAX(amr_validated_readings.reading_date) AS last_validated_reading_date,
+                               COUNT(1) FILTER (WHERE one_day_kwh = 0) AS zero_reading_days_count")
+  }
+
   # If adding a new one, add to the amr_validated_reading case statement for downloading data
   enum meter_type: [:electricity, :gas, :solar_pv, :exported_solar_pv]
 
