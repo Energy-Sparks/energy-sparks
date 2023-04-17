@@ -52,7 +52,7 @@
     </thead>
     <tbody>
       <% @school_group.schools.by_name.each do |school| %>
-        <% school.meters.where(@meter_scope).order(:mpan_mprn).each do |meter| %>
+        <% school.meters.where(@meter_scope).with_counts.order(:mpan_mprn).each do |meter| %>
           <tr>
             <td><%= link_to(school.name, school_path(school)) %></td>
             <td><%= fa_icon fuel_type_icon(meter.meter_type) %></td>
@@ -63,12 +63,12 @@
             <% if @meter_scope.empty? %>
               <td><%= meter.active ? 'Active' : 'Deprecated' %></td>
             <% end %>
-            <td><%= nice_dates(meter.first_validated_reading) %></td>
-            <td class=<%= class_for_last_date(meter.last_validated_reading) %>><%= nice_dates(meter.last_validated_reading) %></td>
+            <td><%= nice_dates(meter.first_validated_reading_date) %></td>
+            <td class=<%= class_for_last_date(meter.last_validated_reading_date) %>><%= nice_dates(meter.last_validated_reading) %></td>
             <td class="gappy-dates"><%= date_range_from_reading_gaps(meter.gappy_validated_readings) %></td>
             <td class="modified-dates"><%= meter.modified_validated_readings.count %></td>
             <td class="<%= meter.zero_reading_days_warning? ? 'table-danger' : ''%>">
-              <%= meter.zero_reading_days.count %>
+              <%= meter.zero_reading_days_count %>
             </td>
             <td>
              <% if meter.issues.any? %>
