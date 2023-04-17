@@ -125,6 +125,13 @@ class Meter < ApplicationRecord
     Meter.meter_types.keys - ['gas']
   end
 
+  def number_of_validated_readings
+    last_reading = last_validated_reading
+    first_reading = first_validated_reading
+    return 0 if last_reading.nil?
+    return (last_reading - first_reading).to_i + 1
+  end
+
   def first_validated_reading
     amr_validated_readings.minimum(:reading_date)
   end
