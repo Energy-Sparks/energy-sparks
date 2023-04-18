@@ -41,6 +41,7 @@ class AlertType < ApplicationRecord
   enum group: [:advice, :benchmarking, :change, :priority]
   enum link_to: [:insights_page, :analysis_page, :learn_more_page]
 
+  scope :enabled,       -> { where(enabled: true) }
   scope :electricity,   -> { where(fuel_type: :electricity) }
   scope :gas,           -> { where(fuel_type: :gas) }
   scope :no_fuel,       -> { where(fuel_type: nil) }
