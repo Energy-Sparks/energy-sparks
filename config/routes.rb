@@ -378,6 +378,9 @@ Rails.application.routes.draw do
     resources :school_groups do
       scope module: :school_groups do
         resources :meter_attributes
+        resources :meter_updates, only: [:index] do
+          post :bulk_update_meters
+        end
         resources :school_onboardings, only: [:index] do
           collection do
             post :reminders

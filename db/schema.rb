@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_18_080133) do
+ActiveRecord::Schema.define(version: 2023_04_18_114415) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -425,6 +425,7 @@ ActiveRecord::Schema.define(version: 2023_04_18_080133) do
     t.datetime "updated_at", null: false
     t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_config_id"
     t.index ["amr_data_feed_import_log_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_import_log_id"
+    t.index ["meter_id", "amr_data_feed_config_id"], name: "adfr_meter_id_config_id"
     t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
     t.index ["mpan_mprn", "reading_date"], name: "unique_meter_readings", unique: true
     t.index ["mpan_mprn"], name: "index_amr_data_feed_readings_on_mpan_mprn"
@@ -1307,6 +1308,9 @@ ActiveRecord::Schema.define(version: 2023_04_18_080133) do
     t.bigint "admin_meter_statuses_electricity_id"
     t.bigint "admin_meter_statuses_gas_id"
     t.bigint "admin_meter_statuses_solar_pv_id"
+    t.bigint "default_data_source_electricity_id"
+    t.bigint "default_data_source_gas_id"
+    t.bigint "default_data_source_solar_pv_id"
     t.index ["default_issues_admin_user_id"], name: "index_school_groups_on_default_issues_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"

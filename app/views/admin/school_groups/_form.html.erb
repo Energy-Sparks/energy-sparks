@@ -71,6 +71,21 @@
       </div>
 
       <div class="form-group">
+        <%= f.label :default_data_source_electricity_id, 'Default data source for Electricity' %>
+        <%= f.select(:default_data_source_electricity_id, DataSource.all.collect { |d| [ d.name, d.id ] }, { include_blank: true }, class: 'form-control') %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :default_data_source_gas_id, 'Default data source for Gas' %>
+        <%= f.select(:default_data_source_gas_id, DataSource.all.collect { |d| [ d.name, d.id ] }, { include_blank: true }, class: 'form-control') %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :default_data_source_solar_pv_id, 'Default data source for Solar PV' %>
+        <%= f.select(:default_data_source_solar_pv_id, DataSource.all.collect { |d| [ d.name, d.id ] }, { include_blank: true }, class: 'form-control') %>
+      </div>
+
+      <div class="form-group">
         <label><%= t("admin.school_groups.default_chart_preference.form_group") %></label>
         <p class="small"><%= t("admin.school_groups.default_chart_preference.explanation") %></p>
         <% SchoolGroup.default_chart_preferences.keys.each do |preference| %>

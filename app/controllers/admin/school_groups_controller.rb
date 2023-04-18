@@ -58,7 +58,10 @@ module Admin
         :public,
         :admin_meter_statuses_electricity_id,
         :admin_meter_statuses_gas_id,
-        :admin_meter_statuses_solar_pv_id
+        :admin_meter_statuses_solar_pv_id,
+        :default_data_source_electricity_id,
+        :default_data_source_gas_id,
+        :default_data_source_solar_pv_id
       )
     end
   end

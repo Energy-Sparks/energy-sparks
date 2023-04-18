@@ -46,6 +46,7 @@ class SchoolGroup < ApplicationRecord
   friendly_id :name, use: [:finders, :slugged, :history]
 
   has_many :schools
+  has_many :meters, through: :schools
   has_many :school_onboardings
   has_many :calendars, through: :schools
   has_many :users
@@ -67,6 +68,9 @@ class SchoolGroup < ApplicationRecord
   belongs_to :admin_meter_status_electricity, class_name: 'AdminMeterStatus', foreign_key: 'admin_meter_statuses_electricity_id', optional: true
   belongs_to :admin_meter_status_gas, class_name: 'AdminMeterStatus', foreign_key: 'admin_meter_statuses_gas_id', optional: true
   belongs_to :admin_meter_status_solar_pv, class_name: 'AdminMeterStatus', foreign_key: 'admin_meter_statuses_solar_pv_id', optional: true
+  belongs_to :default_data_source_electricity, class_name: 'DataSource', foreign_key: 'default_data_source_electricity_id', optional: true
+  belongs_to :default_data_source_gas, class_name: 'DataSource', foreign_key: 'default_data_source_gas_id', optional: true
+  belongs_to :default_data_source_solar_pv, class_name: 'DataSource', foreign_key: 'default_data_source_solar_pv_id', optional: true
 
   has_many :meter_attributes, inverse_of: :school_group, class_name: 'SchoolGroupMeterAttribute'
 
