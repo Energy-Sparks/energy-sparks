@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_13_134037) do
+ActiveRecord::Schema.define(version: 2023_04_18_080133) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -334,6 +334,7 @@ ActiveRecord::Schema.define(version: 2023_04_13_134037) do
     t.integer "link_to", default: 0, null: false
     t.string "link_to_section"
     t.integer "group", default: 0, null: false
+    t.boolean "enabled", default: true, null: false
     t.index ["advice_page_id"], name: "index_alert_types_on_advice_page_id"
   end
 

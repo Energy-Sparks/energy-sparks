@@ -13,7 +13,7 @@
   </thead>
   <tbody>
     <% alert_types.each do |alert_type| %>
-      <tr>
+      <tr class="<%= alert_type.enabled ? '' : 'table-danger' %>">
         <td><%= alert_type.display_fuel_type %></td>
         <td><%= link_to alert_type.title, admin_alert_type_path(alert_type) %></td>
         <td>
