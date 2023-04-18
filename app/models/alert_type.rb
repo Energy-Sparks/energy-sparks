@@ -6,6 +6,7 @@
 #  background      :boolean          default(FALSE)
 #  benchmark       :boolean          default(FALSE)
 #  class_name      :text
+#  enabled         :boolean          default(TRUE), not null
 #  frequency       :integer
 #  fuel_type       :integer
 #  group           :integer          default("advice"), not null

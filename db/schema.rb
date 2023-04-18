@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_13_134037) do
+ActiveRecord::Schema.define(version: 2023_04_18_080133) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -334,6 +334,7 @@ ActiveRecord::Schema.define(version: 2023_04_13_134037) do
     t.integer "link_to", default: 0, null: false
     t.string "link_to_section"
     t.integer "group", default: 0, null: false
+    t.boolean "enabled", default: true, null: false
     t.index ["advice_page_id"], name: "index_alert_types_on_advice_page_id"
   end
 
@@ -849,13 +850,13 @@ ActiveRecord::Schema.define(version: 2023_04_13_134037) do
     t.index ["replaced_by_id"], name: "index_global_meter_attributes_on_replaced_by_id"
   end
 
-  create_table "good_job_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_processes", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "state"
   end
 
-  create_table "good_job_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_settings", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "key"
@@ -863,7 +864,7 @@ ActiveRecord::Schema.define(version: 2023_04_13_134037) do
     t.index ["key"], name: "index_good_job_settings_on_key", unique: true
   end
 
-  create_table "good_jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_jobs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.text "queue_name"
     t.integer "priority"
     t.jsonb "serialized_params"
@@ -1306,6 +1307,9 @@ ActiveRecord::Schema.define(version: 2023_04_13_134037) do
     t.bigint "admin_meter_statuses_electricity_id"
     t.bigint "admin_meter_statuses_gas_id"
     t.bigint "admin_meter_statuses_solar_pv_id"
+    t.bigint "default_data_source_electricity_id"
+    t.bigint "default_data_source_gas_id"
+    t.bigint "default_data_source_solar_pv_id"
     t.index ["default_issues_admin_user_id"], name: "index_school_groups_on_default_issues_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
