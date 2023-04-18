@@ -19,6 +19,7 @@
 #  mpan_mprn_field         :text             not null
 #  msn_field               :text
 #  number_of_header_rows   :integer          default(0), not null
+#  positional_index        :boolean          default(FALSE), not null
 #  postcode_field          :text
 #  process_type            :integer          default("s3_folder"), not null
 #  provider_id_field       :text
