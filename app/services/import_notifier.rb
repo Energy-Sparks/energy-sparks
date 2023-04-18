@@ -24,7 +24,7 @@ class ImportNotifier
     .joins(:amr_data_feed_readings)
     .where("amr_data_feed_readings.readings = ARRAY[?]", Array.new(48, '')) #where readings is empty string
     .joins("INNER JOIN amr_data_feed_import_logs on amr_data_feed_readings.amr_data_feed_import_log_id = amr_data_feed_import_logs.id") #manually join to import logs
-    .where('import_time BETWEEN ? AND ?', from, to) #limit to period
+    .where('import_time BETWEEN :from AND :to', from: from, to: to) #limit to period
     .distinct #distinct meters
   end
 
@@ -37,7 +37,7 @@ class ImportNotifier
     .joins(:amr_data_feed_readings)
     .where("amr_data_feed_readings.readings = ARRAY[?] OR amr_data_feed_readings.readings = ARRAY[?]", Array.new(48, '0'), Array.new(48, '0.0')) #where readings are 0, or 0.0
     .joins("INNER JOIN amr_data_feed_import_logs on amr_data_feed_readings.amr_data_feed_import_log_id = amr_data_feed_import_logs.id") #manually join to import logs
-    .where('import_time BETWEEN ? AND ?', from, to) #limit to period
+    .where('import_time BETWEEN :from AND :to', from: from, to: to) #limit to period
     .distinct #distinct meters
   end
 
