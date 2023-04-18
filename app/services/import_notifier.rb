@@ -6,33 +6,39 @@ class ImportNotifier
   def meters_running_behind
     find_with_config do |config|
       if config.import_warning_days.present?
-        config.meters.select {|meter| meter.last_validated_reading && meter.last_validated_reading < config.import_warning_days.days.ago}
+        Meter.active
+          #that have ever had readings loaded from this config (~ data source)
+          .joins(:amr_data_feed_readings).where("amr_data_feed_readings.amr_data_feed_config_id=?", config.id)
+          #and where the latest validated reading is older than what we expect in the config
+          .joins(:amr_validated_readings).group('meters.id').having("MAX(amr_validated_readings.reading_date) < NOW() - INTERVAL '? days'", config.import_warning_days)
       else
         []
       end
     end
   end
 
+  #data feed readings, creating in last 24 hours, where the readings are ALL blank
+  #nil, numeric, string values are not blank, so this equates to an array of ['']
   def meters_with_blank_data(from: 24.hours.ago, to: Time.zone.now)
-    find_with_config do |config|
-      import_logs = config.amr_data_feed_import_logs.where('import_time BETWEEN ? AND ?', from, to).order(:import_time)
-      all_log_meters = import_logs.map do |log|
-        log.amr_data_feed_readings.select {|reading| reading.readings.blank? || reading.readings.all?(&:blank?)}.map(&:meter).compact
-      end
-      all_log_meters.flatten.uniq
-    end
+    Meter.active
+    .joins(:amr_data_feed_readings)
+    .where("amr_data_feed_readings.readings = ARRAY[?]", Array.new(48, '')) #where readings is empty string
+    .joins("INNER JOIN amr_data_feed_import_logs on amr_data_feed_readings.amr_data_feed_import_log_id = amr_data_feed_import_logs.id") #manually join to import logs
+    .where('import_time BETWEEN :from AND :to', from: from, to: to) #limit to period
+    .distinct #distinct meters
   end
 
+  #data feed readings, creating in last 24 hours, where the readings are ALL 0 or 0.0
+  #this version is slightly different to original as that used ruby to cast values to a float
+  #this meant any dodgy chars, e.g. '-', where treated as 0.0
   def meters_with_zero_data(from: 24.hours.ago, to: Time.zone.now)
-    find_with_config do |config|
-      import_logs = config.amr_data_feed_import_logs.where('import_time BETWEEN ? AND ?', from, to).order(:import_time)
-      all_log_meters = import_logs.map do |log|
-        log.amr_data_feed_readings.select {|reading| reading.readings.present? && reading.readings.all? {|x48| x48.to_f == 0.0 rescue true}}.map(&:meter).compact
-      end
-      uniq_log_meters = all_log_meters.flatten.uniq
-      # exported solar PV is legitimately zero on some days
-      uniq_log_meters.reject(&:exported_solar_pv?)
-    end
+    Meter.active
+    .where.not(meter_type: :exported_solar_pv) # exported solar PV is legitimately zero on some days
+    .joins(:amr_data_feed_readings)
+    .where("amr_data_feed_readings.readings = ARRAY[?] OR amr_data_feed_readings.readings = ARRAY[?]", Array.new(48, '0'), Array.new(48, '0.0')) #where readings are 0, or 0.0
+    .joins("INNER JOIN amr_data_feed_import_logs on amr_data_feed_readings.amr_data_feed_import_log_id = amr_data_feed_import_logs.id") #manually join to import logs
+    .where('import_time BETWEEN :from AND :to', from: from, to: to) #limit to period
+    .distinct #distinct meters
   end
 
   def notify(from:, to:)
@@ -46,6 +52,6 @@ class ImportNotifier
     AmrDataFeedConfig.order(:description).each do |config|
       meters = meters | yield(config)
     end
-    meters.reject {|m| !m.active? }.sort_by {|m| [m.school.area_name, m.meter_type, m.school_name, m.mpan_mprn]}
+    meters.sort_by {|m| [m.school.area_name, m.meter_type, m.school_name, m.mpan_mprn]}
   end
 end

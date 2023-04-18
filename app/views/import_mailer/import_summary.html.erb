@@ -13,22 +13,28 @@
       <th colspan="2"></th>
     </tr>
   </thead>
-  <thead class="thead-light">
-    <tr>
-      <th colspan="8">Meters with stale data</th>
-    </tr>
-  <thead>
-  <%= render 'meter_table', meters: @meters_running_behind %>
-  <thead class="thead-light">
-    <tr>
-      <th colspan="8">Meters with blank readings (whole day)</th>
-    </tr>
-  <thead>
-  <%= render 'meter_table', meters: @meters_with_blank_data %>
-  <thead class="thead-light">
-    <tr>
-      <th colspan="8">Zero data imports (whole day)</th>
-    </tr>
-  <thead>
-  <%= render 'meter_table', meters: @meters_with_zero_data %>
+  <% if @meters_running_behind.any? %>
+    <thead class="thead-light">
+      <tr>
+        <th colspan="8">Meters with stale data</th>
+      </tr>
+    <thead>
+    <%= render 'meter_table', meters: @meters_running_behind %>
+  <% end %>
+  <% if @meters_with_blank_data.any? %>
+    <thead class="thead-light">
+      <tr>
+        <th colspan="8">Meters with blank readings (whole day)</th>
+      </tr>
+    <thead>
+    <%= render 'meter_table', meters: @meters_with_blank_data %>
+  <% end %>
+  <% if @meters_with_zero_data.any? %>
+    <thead class="thead-light">
+      <tr>
+        <th colspan="8">Zero data imports (whole day)</th>
+      </tr>
+    <thead>
+    <%= render 'meter_table', meters: @meters_with_zero_data %>
+  <% end %>
 </table>

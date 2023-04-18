@@ -42,6 +42,8 @@
   <dt class="col-md-2">Class</dt>
   <dd class="col-md-10"><%= @alert_type.class_name %></dd>
 
+  <dt class="col-md-2">Enabled</dt>
+  <dd class="col-md-10"><%= @alert_type.enabled&.to_s&.capitalize %></dd>
 </dl>
 
 <% if @alert_type.description.present? %>

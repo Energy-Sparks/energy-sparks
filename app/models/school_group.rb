@@ -2,21 +2,27 @@
 #
 # Table name: school_groups
 #
-#  created_at                    :datetime         not null
-#  default_chart_preference      :integer          default("default"), not null
-#  default_country               :integer          default("england"), not null
-#  default_dark_sky_area_id      :bigint(8)
-#  default_issues_admin_user_id  :bigint(8)
-#  default_scoreboard_id         :bigint(8)
-#  default_solar_pv_tuos_area_id :bigint(8)
-#  default_template_calendar_id  :bigint(8)
-#  default_weather_station_id    :bigint(8)
-#  description                   :string
-#  id                            :bigint(8)        not null, primary key
-#  name                          :string           not null
-#  public                        :boolean          default(TRUE)
-#  slug                          :string           not null
-#  updated_at                    :datetime         not null
+#  admin_meter_statuses_electricity_id :bigint(8)
+#  admin_meter_statuses_gas_id         :bigint(8)
+#  admin_meter_statuses_solar_pv_id    :bigint(8)
+#  created_at                          :datetime         not null
+#  default_chart_preference            :integer          default("default"), not null
+#  default_country                     :integer          default("england"), not null
+#  default_dark_sky_area_id            :bigint(8)
+#  default_data_source_electricity_id  :bigint(8)
+#  default_data_source_gas_id          :bigint(8)
+#  default_data_source_solar_pv_id     :bigint(8)
+#  default_issues_admin_user_id        :bigint(8)
+#  default_scoreboard_id               :bigint(8)
+#  default_solar_pv_tuos_area_id       :bigint(8)
+#  default_template_calendar_id        :bigint(8)
+#  default_weather_station_id          :bigint(8)
+#  description                         :string
+#  id                                  :bigint(8)        not null, primary key
+#  name                                :string           not null
+#  public                              :boolean          default(TRUE)
+#  slug                                :string           not null
+#  updated_at                          :datetime         not null
 #
 # Indexes
 #
@@ -40,6 +46,7 @@ class SchoolGroup < ApplicationRecord
   friendly_id :name, use: [:finders, :slugged, :history]
 
   has_many :schools
+  has_many :meters, through: :schools
   has_many :school_onboardings
   has_many :calendars, through: :schools
   has_many :users
@@ -61,6 +68,9 @@ class SchoolGroup < ApplicationRecord
   belongs_to :admin_meter_status_electricity, class_name: 'AdminMeterStatus', foreign_key: 'admin_meter_statuses_electricity_id', optional: true
   belongs_to :admin_meter_status_gas, class_name: 'AdminMeterStatus', foreign_key: 'admin_meter_statuses_gas_id', optional: true
   belongs_to :admin_meter_status_solar_pv, class_name: 'AdminMeterStatus', foreign_key: 'admin_meter_statuses_solar_pv_id', optional: true
+  belongs_to :default_data_source_electricity, class_name: 'DataSource', foreign_key: 'default_data_source_electricity_id', optional: true
+  belongs_to :default_data_source_gas, class_name: 'DataSource', foreign_key: 'default_data_source_gas_id', optional: true
+  belongs_to :default_data_source_solar_pv, class_name: 'DataSource', foreign_key: 'default_data_source_solar_pv_id', optional: true
 
   has_many :meter_attributes, inverse_of: :school_group, class_name: 'SchoolGroupMeterAttribute'
 

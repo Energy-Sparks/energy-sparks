@@ -3,6 +3,7 @@
 # Table name: meters
 #
 #  active                         :boolean          default(TRUE)
+#  admin_meter_statuses_id        :bigint(8)
 #  consent_granted                :boolean          default(FALSE)
 #  created_at                     :datetime         not null
 #  data_source_id                 :bigint(8)

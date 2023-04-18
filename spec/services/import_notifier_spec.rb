@@ -6,6 +6,7 @@ describe ImportNotifier do
   let(:bath_school) { create(:school, :with_school_group, name: "Bath School")}
   let(:sheffield_config) { create(:amr_data_feed_config, description: 'Sheffield', import_warning_days: 5) }
   let(:bath_config) { create(:amr_data_feed_config, description: 'Bath', import_warning_days: 2) }
+  let(:other_config) { create(:amr_data_feed_config, description: 'Other', import_warning_days: 10) }
 
   let(:sheffield_import_log) { create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago) }
 
@@ -32,6 +33,13 @@ describe ImportNotifier do
       meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
       meters_running_behind = ImportNotifier.new.meters_running_behind()
       expect(meters_running_behind).to match_array([])
+    end
+
+    it 'checks against the warning days for config of the unvalidated reading' do
+      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: sheffield_config, log: sheffield_import_log)
+      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: other_config, log: sheffield_import_log)
+      meters_running_behind = ImportNotifier.new.meters_running_behind()
+      expect(meters_running_behind).to match_array([meter_1])
     end
   end
 
@@ -63,6 +71,15 @@ describe ImportNotifier do
       meters_with_zero_data = ImportNotifier.new.meters_with_zero_data(from: 2.days.ago, to: Time.now)
       expect(meters_with_zero_data).to be_empty
     end
+
+    #future requirement
+    xit 'does not include gas data in the summer' do
+      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: Date.new(2022,8,1), end_date: Date.new(2022,9,1), config: sheffield_config, log: sheffield_import_log)
+      meter_1.amr_data_feed_readings.last.update!(readings: Array.new(48, 0))
+      meters_with_zero_data = ImportNotifier.new.meters_with_zero_data(from: Date.new(2022,8,1), to: Time.now)
+      expect(meters_with_zero_data).to match_array([])
+    end
+
   end
 
   describe '#meters_running_behind' do
