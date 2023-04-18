@@ -25,7 +25,7 @@ module Admin
   private
 
     def alert_type_params
-      params.require(:alert_type).permit(:title, :description, :frequency, :group, :advice_page_id, :link_to, :link_to_section)
+      params.require(:alert_type).permit(:title, :description, :frequency, :group, :advice_page_id, :link_to, :link_to_section, :enabled)
     end
   end
 end
