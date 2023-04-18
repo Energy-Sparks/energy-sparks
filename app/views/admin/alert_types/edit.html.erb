@@ -26,6 +26,10 @@
     <small>Optional: provide a specific section of the selected analysis page to which users will be sent</small>
   </div>
 
+  <div class="form-group">
+    <%= f.input :enabled, as: :boolean %>
+  </div>
+
   <div class="form-group mt-4">
     <%= f.submit class: 'btn btn-success' %>
     <%= link_to 'Cancel', admin_alert_type_path(@alert_type), class: 'btn btn-warning' %>
