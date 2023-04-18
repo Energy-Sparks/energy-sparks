@@ -155,7 +155,6 @@ describe AmrReadingData do
       it "with missing readings (as \"-\")" do
         readings = amr_reading_data[:reading_data].first[:readings]
         readings[readings.size - 1] = "-"
-        puts readings.inspect
 
         amr_reading_data[:reading_data].first[:readings] = readings
 
