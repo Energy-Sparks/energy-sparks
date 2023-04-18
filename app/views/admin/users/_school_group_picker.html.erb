@@ -1,0 +1,13 @@
+<h2>School group users</h2>
+<div id="top" class="d-flex justify-content-between align-items-center">
+  <form action="" class="form">
+    <label for="admin-user-picker">Choose group</label>
+    <select id="admin-user-picker" class="admin-user-picker">
+      <% @school_groups.each do |school_group| %>
+        <option value="/admin/school_groups/<%= school_group.name.parameterize %>/users"><%= school_group.name %></option>
+      <% end %>
+      <option value="#school_group_users">School group users</option>
+      <option value="#no_school_users">Users without a school</option>
+    </select>
+  </form>
+</div>

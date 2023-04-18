@@ -79,6 +79,16 @@ class Meter < ApplicationRecord
   scope :dcc, -> { where(dcc_meter: true) }
   scope :consented, -> { where(dcc_meter: true, consent_granted: true) }
 
+  scope :with_counts, -> {
+                            left_outer_joins(:amr_validated_readings)
+                            .group('meters.id')
+                            .select(
+                              "meters.*,
+                               MIN(amr_validated_readings.reading_date) AS first_validated_reading_date,
+                               MAX(amr_validated_readings.reading_date) AS last_validated_reading_date,
+                               COUNT(1) FILTER (WHERE one_day_kwh = 0) AS zero_reading_days_count")
+  }
+
   # If adding a new one, add to the amr_validated_reading case statement for downloading data
   enum meter_type: [:electricity, :gas, :solar_pv, :exported_solar_pv]
 
@@ -115,6 +125,13 @@ class Meter < ApplicationRecord
     Meter.meter_types.keys - ['gas']
   end
 
+  def number_of_validated_readings
+    last_reading = last_validated_reading
+    first_reading = first_validated_reading
+    return 0 if last_reading.nil?
+    return (last_reading - first_reading).to_i + 1
+  end
+
   def first_validated_reading
     amr_validated_readings.minimum(:reading_date)
   end
@@ -133,7 +150,7 @@ class Meter < ApplicationRecord
     # only interested if there are enough non_ORIG readings
     return [] unless amr_validated_readings.since(since_date).modified.count >= gap_size
     # find chunks where consecutive readings were all non-ORIG
-    gaps = amr_validated_readings.since(since_date).by_date.chunk_while { |r1, r2| r1.modified && r2.modified }
+    gaps = amr_validated_readings.since(since_date).by_date.select(:reading_date, :status).chunk_while { |r1, r2| r1.status != 'ORIG' && r2.status != 'ORIG' }
     # return chunks of specified size or bigger
     gaps.select { |gap| gap.count >= gap_size }
   end
@@ -143,7 +160,7 @@ class Meter < ApplicationRecord
   end
 
   def zero_reading_days_warning?
-    return true if fuel_type == :electricity && zero_reading_days.count > 0
+    return true if fuel_type == :electricity && zero_reading_days.any?
   end
 
   def name_or_mpan_mprn

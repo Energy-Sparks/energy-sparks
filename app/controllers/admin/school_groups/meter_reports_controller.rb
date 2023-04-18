@@ -40,19 +40,21 @@ module Admin
             'Admin meter status'
           ]
           school_group.schools.by_name.each do |school|
-            school.meters.where(meter_scope).order(:mpan_mprn).each do |meter|
+            school.meters.where(meter_scope)
+              .with_counts
+              .order(:mpan_mprn).each do |meter|
               csv << [
                 school.name,
                 meter.meter_type,
                 meter.mpan_mprn,
                 meter.name,
-                meter.data_source.try(:name),
+                meter.data_source.try(:name) || '',
                 y_n(meter.active),
-                nice_dates(meter.first_validated_reading),
-                nice_dates(meter.last_validated_reading),
+                nice_dates(meter.first_validated_reading_date),
+                nice_dates(meter.last_validated_reading_date),
                 date_range_from_reading_gaps(meter.gappy_validated_readings),
                 meter.modified_validated_readings.count,
-                meter.zero_reading_days.count,
+                meter.zero_reading_days_count,
                 meter.admin_meter_status_label
               ]
             end

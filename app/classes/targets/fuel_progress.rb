@@ -18,7 +18,7 @@ module Targets
       @recent_data
     end
 
-    def can_chart?
+    def valid?
       @usage.present? && @target.present?
     end
 

@@ -21,7 +21,7 @@ module Amr
     private
 
     def convert_to_day_per_row_format(array_of_data_feed_reading_hashes)
-      SingleReadConverter.new(array_of_data_feed_reading_hashes).perform
+      SingleReadConverter.new(array_of_data_feed_reading_hashes, indexed: @config[:positional_index]).perform
     rescue ArgumentError
       {}
     end

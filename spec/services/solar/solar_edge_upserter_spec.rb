@@ -60,31 +60,64 @@ module Solar
     context 'when pseudo meter exists' do
       let!(:existing_pseudo_meter) { create(:electricity_meter, solar_edge_installation: solar_edge_installation, name: "Existing meter", mpan_mprn: expected_electricity_mpan, school: solar_edge_installation.school, pseudo: true )}
 
-      it 'creates new pseudo meters where required' do
-        expect {
-          SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings, import_log: import_log).perform
-        }.to change { Meter.count }.by(2)
-        expect(solar_edge_installation.meters.solar_pv.first.mpan_mprn).to eq(expected_solar_pv_mpan)
-        expect(solar_edge_installation.meters.solar_pv.first.name).to eq("Solar pv")
-        expect(solar_edge_installation.meters.exported_solar_pv.last.mpan_mprn).to eq(expected_exported_solar_pv_mpan)
-        expect(solar_edge_installation.meters.exported_solar_pv.last.name).to eq("Exported solar pv")
+      context 'with all fields' do
+        it 'creates new pseudo meters where required' do
+          expect {
+            SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings, import_log: import_log).perform
+          }.to change { Meter.count }.by(2)
+          expect(solar_edge_installation.meters.solar_pv.first.mpan_mprn).to eq(expected_solar_pv_mpan)
+          expect(solar_edge_installation.meters.solar_pv.first.name).to eq("Solar pv")
+          expect(solar_edge_installation.meters.exported_solar_pv.last.mpan_mprn).to eq(expected_exported_solar_pv_mpan)
+          expect(solar_edge_installation.meters.exported_solar_pv.last.name).to eq("Exported solar pv")
 
-        existing_pseudo_meter.reload
-        expect(existing_pseudo_meter.name).to eq("Existing meter")
+          existing_pseudo_meter.reload
+          expect(existing_pseudo_meter.name).to eq("Existing meter")
+        end
+
+        it 'creates all the amr readings' do
+          expect {
+            SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings, import_log: import_log).perform
+          }.to change { AmrDataFeedReading.count }.by(6)
+          amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_solar_pv_mpan).amr_data_feed_readings.last
+          expect(amr_reading.readings[0]).to eq('2.0')
+          amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_electricity_mpan).amr_data_feed_readings.last
+          expect(amr_reading.readings[0]).to eq('4.0')
+          amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_exported_solar_pv_mpan).amr_data_feed_readings.last
+          expect(amr_reading.readings[0]).to eq('6.0')
+        end
       end
 
-      it 'creates all the amr readings' do
-        expect {
-          SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings, import_log: import_log).perform
-        }.to change { AmrDataFeedReading.count }.by(6)
-        amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_solar_pv_mpan).amr_data_feed_readings.last
-        expect(amr_reading.readings[0]).to eq('2.0')
-        amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_electricity_mpan).amr_data_feed_readings.last
-        expect(amr_reading.readings[0]).to eq('4.0')
-        amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_exported_solar_pv_mpan).amr_data_feed_readings.last
-        expect(amr_reading.readings[0]).to eq('6.0')
-      end
+      context 'with no installation or pseudo flag' do
+        let!(:existing_pseudo_meter) { create(:electricity_meter, solar_edge_installation: nil, name: "Existing meter", mpan_mprn: expected_electricity_mpan, school: solar_edge_installation.school, pseudo: false )}
 
+        it 'creates new pseudo meters where required' do
+          expect {
+            SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings, import_log: import_log).perform
+          }.to change { Meter.count }.by(2)
+          expect(solar_edge_installation.meters.solar_pv.first.mpan_mprn).to eq(expected_solar_pv_mpan)
+          expect(solar_edge_installation.meters.solar_pv.first.name).to eq("Solar pv")
+          expect(solar_edge_installation.meters.exported_solar_pv.last.mpan_mprn).to eq(expected_exported_solar_pv_mpan)
+          expect(solar_edge_installation.meters.exported_solar_pv.last.name).to eq("Exported solar pv")
+
+          existing_pseudo_meter.reload
+          expect(existing_pseudo_meter.name).to eq("Existing meter")
+          expect(existing_pseudo_meter.solar_edge_installation).to eq solar_edge_installation
+          expect(existing_pseudo_meter.pseudo?).to be true
+        end
+
+        it 'creates all the amr readings' do
+          expect {
+            SolarEdgeUpserter.new(solar_edge_installation: solar_edge_installation, readings: readings, import_log: import_log).perform
+          }.to change { AmrDataFeedReading.count }.by(6)
+          amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_solar_pv_mpan).amr_data_feed_readings.last
+          expect(amr_reading.readings[0]).to eq('2.0')
+          amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_electricity_mpan).amr_data_feed_readings.last
+          expect(amr_reading.readings[0]).to eq('4.0')
+          amr_reading = solar_edge_installation.meters.find_by_mpan_mprn(expected_exported_solar_pv_mpan).amr_data_feed_readings.last
+          expect(amr_reading.readings[0]).to eq('6.0')
+        end
+
+      end
     end
   end
 end
