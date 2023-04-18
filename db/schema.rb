@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 2023_04_18_080133) do
-=======
 ActiveRecord::Schema.define(version: 2023_04_18_114415) do
->>>>>>> eff42c917 (Add index to speed up meters running behind)
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
