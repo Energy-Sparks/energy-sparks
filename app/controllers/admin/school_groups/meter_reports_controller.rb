@@ -5,15 +5,14 @@ module Admin
       load_and_authorize_resource :school_group
 
       def show
-        @meter_scope = if params.key?(:all_meters)
-                         {}
-                       else
-                         { active: true }
-                       end
-
+        @meter_scope = params.key?(:all_meters) ? {} : { active: true }
         respond_to do |format|
-          format.html { @meters = meters(@school_group, @meter_scope) }
-          format.csv { send_data produce_csv(@school_group, @meter_scope), filename: filename(@school_group) }
+          format.html { }
+          format.csv do
+            send_data ::SchoolGroups::Meters::CsvGenerator.new(@school_group, @meter_scope).generate,
+            filename: "#{@school_group.name}-meter-report".parameterize + '.csv'
+            #format.html { @meters = meters(@school_group, @meter_scope) }
+            #format.csv { send_data produce_csv(@school_group, @meter_scope), filename: filename(@school_group) }
         end
       end
 
