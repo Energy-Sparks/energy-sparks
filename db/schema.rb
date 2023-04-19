@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_18_114415) do
+ActiveRecord::Schema.define(version: 2023_04_19_100900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1169,6 +1169,19 @@ ActiveRecord::Schema.define(version: 2023_04_18_114415) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
+  end
+
+  create_table "procurement_routes", force: :cascade do |t|
+    t.string "organisation_name", null: false
+    t.string "contact_name"
+    t.string "contact_email"
+    t.string "loa_contact_details"
+    t.text "data_prerequisites"
+    t.text "new_area_data_feed"
+    t.text "add_existing_data_feed"
+    t.text "data_issues_contact_details"
+    t.text "loa_expiry_procedure"
+    t.text "comments"
   end
 
   create_table "programme_activities", force: :cascade do |t|
