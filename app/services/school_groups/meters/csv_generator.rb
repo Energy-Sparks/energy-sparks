@@ -26,7 +26,11 @@ module SchoolGroups
         @meter_scope = meter_scope
       end
 
-      def generate
+      def filename
+        "#{@school_group.name}-meter-report".parameterize + '.csv'
+      end
+
+      def content
         CSV.generate(headers: true) do |csv|
           csv << self.class.csv_headers
           @school_group.schools.by_name.each do |school|

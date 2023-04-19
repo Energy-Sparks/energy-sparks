@@ -3,14 +3,15 @@ module Admin
     class MeterReportsController < AdminController
       include ApplicationHelper
       load_and_authorize_resource :school_group
+      before_action :meter_scope
 
       def show
         @meter_scope = params.key?(:all_meters) ? {} : { active: true }
         respond_to do |format|
           format.html { }
           format.csv do
-            send_data ::SchoolGroups::Meters::CsvGenerator.new(@school_group, @meter_scope).generate,
-            filename: "#{@school_group.name}-meter-report".parameterize + '.csv'
+            send_data csv.content,
+            filename: csv.filename
             #format.html { @meters = meters(@school_group, @meter_scope) }
             #format.csv { send_data produce_csv(@school_group, @meter_scope), filename: filename(@school_group) }
         end
@@ -64,6 +65,21 @@ module Admin
               ]
           end
         end
+      end
+
+      def deliver
+        AdminMailer.with(to: 'deb@urbanwide.com', school_group: @school_group, filename: csv.filename, csv: csv.content).school_group_meters_report.deliver
+        redirect_to admin_school_group_path(@school_group), notice: "Report requested"
+      end
+
+      private
+
+      def csv
+        @csv ||= ::SchoolGroups::Meters::CsvGenerator.new(@school_group, @meter_scope)
+      end
+
+      def meter_scope
+        @meter_scope = params.key?(:all_meters) ? {} : { active: true }
       end
     end
   end
