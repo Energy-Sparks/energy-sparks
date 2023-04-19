@@ -241,6 +241,7 @@ en:
         meter_point_number: Meter Point Number
         name: Name
         only_check_if_adding_an_n3rgy_test_meter: Only check if you're adding an n3rgy test meter, not used for live schools
+        procurement_route: Procurement route
         sandbox: Sandbox
         serial_number: Serial number
         title: The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters)

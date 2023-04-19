@@ -39,6 +39,10 @@
       <%= form.select(:data_source_id, DataSource.all.collect { |d| [ d.name, d.id ] }, { include_blank: true }, class: 'form-control') %>
     </div>
     <div class="form-group">
+      <%= form.label :procurement_route_id, t('schools.meters.form.procurement_route') %>
+      <%= form.select(:procurement_route_id, ProcurementRoute.all.collect { |p| [ p.organisation_name, p.id ] }, { include_blank: true }, class: 'form-control') %>
+    </div>
+    <div class="form-group">
       <%= form.label :admin_meter_status, 'Admin meter status' %>
       <%= form.select(:admin_meter_statuses_id, AdminMeterStatus.all.collect { |d| [ d.label, d.id ] }, { include_blank: true }, class: 'form-control') %>
     </div>
