@@ -68,8 +68,8 @@ module Admin
       end
 
       def deliver
-        AdminMailer.with(to: 'deb@urbanwide.com', school_group: @school_group, filename: csv.filename, csv: csv.content).school_group_meters_report.deliver
-        redirect_to admin_school_group_path(@school_group), notice: "Report requested"
+        AdminMailer.with(to: current_user.email, school_group: @school_group, filename: csv.filename, csv: csv.content).school_group_meters_report.deliver
+        redirect_to admin_school_group_path(@school_group), notice: "Report requested to be sent to #{current_user.email}"
       end
 
       private
