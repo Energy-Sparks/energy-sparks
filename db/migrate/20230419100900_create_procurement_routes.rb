@@ -11,6 +11,7 @@ class CreateProcurementRoutes < ActiveRecord::Migration[6.0]
       t.text :data_issues_contact_details
       t.text :loa_expiry_procedure
       t.text :comments
+      t.timestamps
     end
   end
 end
