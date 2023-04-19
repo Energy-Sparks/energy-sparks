@@ -61,6 +61,7 @@ class Meter < ApplicationRecord
   has_many :issue_meters, dependent: :destroy
   has_many :issues, through: :issue_meters
 
+  has_one :school_group, through: :school
   has_and_belongs_to_many :user_tariffs, inverse_of: :meters
 
   CREATABLE_METER_TYPES = [:electricity, :gas, :solar_pv, :exported_solar_pv].freeze
@@ -82,7 +83,7 @@ class Meter < ApplicationRecord
 
   scope :with_counts, -> {
                             left_outer_joins(:amr_validated_readings)
-                            .group('meters.id')
+                            .group('schools.id', 'meters.id')
                             .select(
                               "meters.*,
                                MIN(amr_validated_readings.reading_date) AS first_validated_reading_date,
