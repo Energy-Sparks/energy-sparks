@@ -15,4 +15,6 @@
 #  organisation_name           :string           not null
 #
 class ProcurementRoute < ApplicationRecord
+  validates :organisation_name, presence: true
+  has_many :meters
 end
