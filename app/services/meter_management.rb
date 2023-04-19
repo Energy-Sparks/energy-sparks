@@ -44,7 +44,7 @@ class MeterManagement
   def delete_meter!
     @meter.transaction do
       AggregateSchoolService.new(@meter.school).invalidate_cache
-      @meter.delete
+      @meter.destroy
     end
   end
 
