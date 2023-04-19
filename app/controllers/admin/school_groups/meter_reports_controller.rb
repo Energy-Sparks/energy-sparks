@@ -6,7 +6,6 @@ module Admin
       before_action :meter_scope
 
       def show
-        @meter_scope = params.key?(:all_meters) ? {} : { active: true }
         respond_to do |format|
           format.html { }
           format.csv do
@@ -68,7 +67,7 @@ module Admin
       end
 
       def deliver
-        AdminMailer.with(to: current_user.email, school_group: @school_group, filename: csv.filename, csv: csv.content).school_group_meters_report.deliver
+        SchoolGroupMeterReportJob.perform_later(to: current_user.email, school_group: @school_group, meter_scope: @meter_scope)
         redirect_to admin_school_group_path(@school_group), notice: "Report requested to be sent to #{current_user.email}"
       end
 
@@ -79,7 +78,7 @@ module Admin
       end
 
       def meter_scope
-        @meter_scope = params.key?(:all_meters) ? {} : { active: true }
+        @meter_scope ||= params.key?(:all_meters) ? {} : { active: true }
       end
     end
   end
