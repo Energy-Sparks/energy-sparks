@@ -22,6 +22,7 @@
 #
 # Indexes
 #
+#  adfr_meter_id_config_id                                      (meter_id,amr_data_feed_config_id)
 #  index_amr_data_feed_readings_on_amr_data_feed_config_id      (amr_data_feed_config_id)
 #  index_amr_data_feed_readings_on_amr_data_feed_import_log_id  (amr_data_feed_import_log_id)
 #  index_amr_data_feed_readings_on_meter_id                     (meter_id)
