@@ -1,3 +1,26 @@
 <%= render 'header', title: "Manage Procurement Routes" do %>
   <%= header_nav_link 'Admin', admin_url %>
 <% end %>
+
+<%= link_to 'New procurement route', new_admin_procurement_route_path, class: 'btn btn-primary' %>
+
+<table class="table table-sorted" style="width: 100%">
+  <thead>
+    <tr>
+      <th>Organisation name</th>
+      <th>Contact name</th>
+      <th class="no-sort text-right">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @procurement_routes.each do |procurement_route| %>
+      <tr>
+        <td class="nowrap"><%= procurement_route.organisation_name %></td>
+        <td><span class="badge badge-info"><%= procurement_route.contact_name %></span></td>
+        <td class="nowrap text-right">
+          <%= link_to 'Manage', admin_procurement_route_path(procurement_route), class: "btn btn-sm" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
