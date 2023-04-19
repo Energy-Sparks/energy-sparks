@@ -268,6 +268,7 @@ en:
         name: Name
         no_active_meters: No active meters
         only_admins_message: Only admins can delete meters with meter readings
+        procurement_route: Procurement route
         readings: Readings
         report: Report
         review_meters: Review meters
