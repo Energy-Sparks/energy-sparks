@@ -1,0 +1,21 @@
+<div class="row p-2">
+  <div class="col-md-12 border rounded bg-light pb-2">
+    <%= render 'header', title: title do %>
+      <%= header_nav_link 'All procurement routes', admin_procurement_routes_url %>
+    <% end %>
+    <%= simple_form_for [:admin, procurement_route] do |f| %>
+      <%= redirect_back_tag params %>
+      <%= f.input :organisation_name, label: "Organisation name" %>
+      <%= f.input :contact_name %>
+      <%= f.input :contact_email %>
+      <%= f.input :loa_contact_details, label: "Who to send LOA to" %>
+      <%= f.input :data_prerequisites %>
+      <%= f.input :new_area_data_feed, label: "How to setup data feed for a new area" %>
+      <%= f.input :add_existing_data_feed, label: "How to add to an existing data feed" %>
+      <%= f.input :data_issues_contact_details, label: "Who to contact about data issues" %>
+      <%= f.input :loa_expiry_procedure, label: "What to do when LOA is about expire" %>
+      <%= f.input :comments %>
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+</div>

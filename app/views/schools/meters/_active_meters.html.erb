@@ -10,6 +10,9 @@
         <%= link_to meter.data_source.try(:name), admin_data_source_path(meter.data_source) if meter.data_source %>
       </td>
       <td>
+        <%= link_to meter.procurement_route.try(:organisation_name), admin_procurement_route_path(meter.procurement_route) if meter.procurement_route %>
+      </td>
+      <td>
         <% if meter.admin_meter_status.nil? && meter.admin_meter_status_label.present? %>
           <span data-toggle="tooltip" title="Default <%= meter.fuel_type.to_s.humanize.downcase %> admin meter status for this school's school group">
             <%= meter.admin_meter_status_label %>
