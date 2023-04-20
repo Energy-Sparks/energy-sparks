@@ -56,7 +56,7 @@ class Meter < ApplicationRecord
 
   has_one :rtone_variant_installation, required: false
 
-  has_many :amr_data_feed_readings,     inverse_of: :meter, dependent: :destroy
+  has_many :amr_data_feed_readings,     inverse_of: :meter
   has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy
   has_many :tariff_prices,              inverse_of: :meter, dependent: :destroy
   has_many :tariff_standing_charges,    inverse_of: :meter, dependent: :destroy
@@ -64,6 +64,7 @@ class Meter < ApplicationRecord
   has_many :issue_meters, dependent: :destroy
   has_many :issues, through: :issue_meters
 
+  has_one :school_group, through: :school
   has_and_belongs_to_many :user_tariffs, inverse_of: :meters
 
   CREATABLE_METER_TYPES = [:electricity, :gas, :solar_pv, :exported_solar_pv].freeze
@@ -85,7 +86,7 @@ class Meter < ApplicationRecord
 
   scope :with_counts, -> {
                             left_outer_joins(:amr_validated_readings)
-                            .group('meters.id')
+                            .group('schools.id', 'meters.id')
                             .select(
                               "meters.*,
                                MIN(amr_validated_readings.reading_date) AS first_validated_reading_date,

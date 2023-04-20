@@ -12,12 +12,21 @@ module Admin
                        end
 
         respond_to do |format|
-          format.html { }
+          format.html { @meters = meters(@school_group, @meter_scope) }
           format.csv { send_data produce_csv(@school_group, @meter_scope), filename: filename(@school_group) }
         end
       end
 
       private
+
+      def meters(school_group, meter_scope)
+        Meter.where(meter_scope)
+          .joins(:school)
+          .joins(:school_group)
+          .where(schools: { school_group: school_group })
+          .with_counts
+          .order("schools.name", :mpan_mprn)
+      end
 
       def filename(school_group)
         school_group.name.parameterize + '-meter-report.csv'
@@ -39,12 +48,9 @@ module Admin
             'Zero reading days',
             'Admin meter status'
           ]
-          school_group.schools.by_name.each do |school|
-            school.meters.where(meter_scope)
-              .with_counts
-              .order(:mpan_mprn).each do |meter|
+          meters(school_group, meter_scope).each do |meter|
               csv << [
-                school.name,
+                meter.school.name,
                 meter.meter_type,
                 meter.mpan_mprn,
                 meter.name,
@@ -57,7 +63,6 @@ module Admin
                 meter.zero_reading_days_count,
                 meter.admin_meter_status_label
               ]
-            end
           end
         end
       end

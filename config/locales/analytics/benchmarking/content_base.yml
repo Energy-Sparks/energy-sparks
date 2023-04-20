@@ -118,6 +118,7 @@ en:
           baseload_percent: Baseload as a percent of total usage
           blended_current_rate: Blended current rate
           change: Change
+          change_co2: Change CO2
           change_excluding_solar: Change (excluding solar)
           change_in_annual_co2: Change in annual CO2
           change_in_annual_electricity_co2_excluding_solar: Change in annual electricity CO2 (excluding solar)
@@ -131,6 +132,7 @@ en:
           change_in_heating_costs_between_last_2_years: Change in heating costs between last 2 years
           change_kwh: Change kWh
           change_pct: Change %
+          change_pct_co2: Change CO2 %
           change_£: Change £
           change_£current: Change £ (latest tariff)
           co2_last_year: CO2 (last year)
@@ -542,6 +544,24 @@ en:
               the unadjusted previous year value. The adjusted percent change is a better
               indicator of the work a school might have done to reduce its energy consumption as
               it&apos;s not dependent on temperature differences between the two years.
+            </p>
+        easter_shutdown_2023_energy_comparison:
+          introduction_text_html: |-
+            <p>
+            This benchmark shows the change in energy consumption between the most recent holiday, and the last week of the previous school term.
+            </p>
+            <p>
+            This comparison compares the latest available data for the most recent holiday with an adjusted figure for the last week of the school term, scaling to the same number of days and adjusting for changes in outside temperature and the latest tariff. The change in £ is the saving or increased cost for the most recent holiday to date compared to term time consumption.
+            </p>
+            <p>
+              Schools' solar PV production has been removed from the comparison.
+            </p>
+            <p>
+              CO2 values for electricity (including where the CO2 is
+              aggregated across electricity, gas, storage heaters) is difficult
+              to compare for short periods as it is dependent on the carbon intensity
+              of the national grid on the days being compared and this could vary by up to
+              300&percnt; from day to day.
             </p>
         electricity_consumption_during_holiday:
           introduction_text_html: "<p>This benchmark shows the projected electricity costs for the current holiday. No data for a school is shown once the holiday is over. The projection calculation is based on the consumption patterns during the holiday so far.</p>"

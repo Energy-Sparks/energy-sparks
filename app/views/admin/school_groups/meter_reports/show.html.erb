@@ -51,13 +51,12 @@
       </tr>
     </thead>
     <tbody>
-      <% @school_group.schools.by_name.each do |school| %>
-        <% school.meters.where(@meter_scope).with_counts.order(:mpan_mprn).each do |meter| %>
+        <% @meters.each do |meter| %>
           <tr>
-            <td><%= link_to(school.name, school_path(school)) %></td>
+            <td><%= link_to(meter.school.name, school_path(meter.school)) %></td>
             <td><%= fa_icon fuel_type_icon(meter.meter_type) %></td>
             <td>
-              <%= link_to(meter.mpan_mprn, school_meter_path(school, meter)) %>
+              <%= link_to(meter.mpan_mprn, school_meter_path(meter.school, meter)) %>
             </td>
             <td><%= link_to(meter.name.present? ? meter.name : meter.meter_type.to_s.humanize, admin_reports_amr_validated_reading_path(meter)) if AmrValidatedReading.where(meter_id: meter.id).any? %></td>
             <% if @meter_scope.empty? %>
@@ -80,7 +79,6 @@
             </td>
           </tr>
         <% end %>
-      <% end %>
     </tbody>
   </table>
 </div>
