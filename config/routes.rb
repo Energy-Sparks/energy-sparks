@@ -383,7 +383,9 @@ Rails.application.routes.draw do
         end
         resource :users, only: [:show]
         resource :partners, only: [:show, :update]
-        resource :meter_report, only: [:show]
+        resource :meter_report, only: [:show] do
+          post :deliver, on: :member
+        end
         concerns :messageable
         concerns :issueable
       end
@@ -460,6 +462,7 @@ Rails.application.routes.draw do
     resources :global_meter_attributes
     resources :consents
     resources :transport_types
+    resources :procurement_routes
     resources :data_sources do
       scope module: :data_sources do
         concerns :issueable

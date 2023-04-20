@@ -133,6 +133,7 @@ en:
           change_kwh: Change kWh
           change_pct: Change %
           change_pct_co2: Change CO2 %
+          change_pct_combo: Change kWh/£ %
           change_£: Change £
           change_£current: Change £ (latest tariff)
           co2_last_year: CO2 (last year)

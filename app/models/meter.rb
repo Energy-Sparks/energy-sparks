@@ -17,6 +17,7 @@
 #  meter_type                     :integer
 #  mpan_mprn                      :bigint(8)
 #  name                           :string
+#  procurement_route_id           :bigint(8)
 #  pseudo                         :boolean          default(FALSE)
 #  sandbox                        :boolean          default(FALSE)
 #  school_id                      :bigint(8)        not null
@@ -30,6 +31,7 @@
 #  index_meters_on_meter_review_id                 (meter_review_id)
 #  index_meters_on_meter_type                      (meter_type)
 #  index_meters_on_mpan_mprn                       (mpan_mprn) UNIQUE
+#  index_meters_on_procurement_route_id            (procurement_route_id)
 #  index_meters_on_school_id                       (school_id)
 #  index_meters_on_solar_edge_installation_id      (solar_edge_installation_id)
 #
@@ -49,6 +51,7 @@ class Meter < ApplicationRecord
   belongs_to :solar_edge_installation, optional: true
   belongs_to :meter_review, optional: true
   belongs_to :data_source, optional: true
+  belongs_to :procurement_route, optional: true
   belongs_to :admin_meter_status, foreign_key: 'admin_meter_statuses_id', optional: true
 
   has_one :rtone_variant_installation, required: false
@@ -61,6 +64,7 @@ class Meter < ApplicationRecord
   has_many :issue_meters, dependent: :destroy
   has_many :issues, through: :issue_meters
 
+  has_one :school_group, through: :school
   has_and_belongs_to_many :user_tariffs, inverse_of: :meters
 
   CREATABLE_METER_TYPES = [:electricity, :gas, :solar_pv, :exported_solar_pv].freeze
@@ -82,7 +86,7 @@ class Meter < ApplicationRecord
 
   scope :with_counts, -> {
                             left_outer_joins(:amr_validated_readings)
-                            .group('meters.id')
+                            .group('schools.id', 'meters.id')
                             .select(
                               "meters.*,
                                MIN(amr_validated_readings.reading_date) AS first_validated_reading_date,
