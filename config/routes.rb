@@ -389,7 +389,9 @@ Rails.application.routes.draw do
         end
         resource :users, only: [:show]
         resource :partners, only: [:show, :update]
-        resource :meter_report, only: [:show]
+        resource :meter_report, only: [:show] do
+          post :deliver, on: :member
+        end
         concerns :messageable
         concerns :issueable
       end
