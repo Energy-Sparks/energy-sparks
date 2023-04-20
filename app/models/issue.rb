@@ -79,11 +79,11 @@ class Issue < ApplicationRecord
   end
 
   def self.csv_headers
-    ["For", "Name", "Title", "Description", "Fuel type", "Type", "Status", "Status summary", "Meters", "Data sources", "Owned by", "Created by", "Created at", "Updated by", "Updated at"]
+    ["For", "Name", "Title", "Description", "Fuel type", "Type", "Status", "Status summary", "Meters", "Meter status", "Data sources", "Owned by", "Created by", "Created at", "Updated by", "Updated at"]
   end
 
   def self.csv_attributes
-    %w{issueable_type.titleize issueable.name title description.to_plain_text fuel_type issue_type status status_summary mpan_mprns data_source_names owned_by.display_name created_by.display_name created_at updated_by.display_name updated_at}
+    %w{issueable_type.titleize issueable.name title description.to_plain_text fuel_type issue_type status status_summary mpan_mprns admin_meter_statuses data_source_names owned_by.display_name created_by.display_name created_at updated_by.display_name updated_at}
   end
 
   def self.issue_type_images
@@ -124,6 +124,12 @@ class Issue < ApplicationRecord
 
   def mpan_mprns
     meters.map(&:mpan_mprn).compact.join('|').presence
+  end
+
+  def admin_meter_statuses
+    labels = meters.map { |meter| meter.admin_meter_status&.label }
+    return '' if labels.compact.empty?
+    labels.map { |label| label || 'None' }.join('|')
   end
 
   def data_source_names
