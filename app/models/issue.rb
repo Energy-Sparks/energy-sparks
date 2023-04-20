@@ -128,7 +128,7 @@ class Issue < ApplicationRecord
 
   def admin_meter_statuses
     labels = meters.map { |meter| meter.admin_meter_status&.label }
-    return '' if labels.compact.empty?
+    return nil if labels.compact.empty?
     return labels.first if labels.uniq.size == 1
     labels.map { |label| label || 'None' }.join('|')
   end
