@@ -52,13 +52,22 @@ module SchoolGroups
       end
     end
 
-    def meters
-      Meter.where(@meter_scope)
-        .joins(:school)
-        .joins(:school_group)
-        .where(schools: { school_group: @school_group })
-        .with_counts
-        .order("schools.name", :mpan_mprn)
+    def meters(full_detail: true)
+      if full_detail
+        Meter.where(@meter_scope)
+          .joins(:school)
+          .joins(:school_group)
+          .where(schools: { school_group: @school_group })
+          .with_counts
+          .order("schools.name", :mpan_mprn)
+      else
+        Meter.where(@meter_scope)
+          .joins(:school)
+          .joins(:school_group)
+          .where(schools: { school_group: @school_group })
+          .with_reading_dates
+          .order("schools.name", :mpan_mprn)
+      end
     end
   end
 end
