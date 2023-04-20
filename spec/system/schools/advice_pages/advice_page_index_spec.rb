@@ -137,6 +137,29 @@ RSpec.describe "advice pages", type: :system do
         expect(page).to have_content('Gallwch arbed £7,000 mewn 1 flwyddyn')
       end
     end
+  end
 
+  context 'for a non-public school' do
+    before { school.update(public: false) }
+    let(:user) {}
+    let(:login_text) { 'Log in with your email address and password' }
+
+    before do
+      sign_in(user) if user
+      visit school_advice_path(school)
+    end
+
+    context 'logged out user' do
+      it 'shows login page' do
+        expect(page).to have_link(login_text)
+      end
+    end
+
+    context 'school user' do
+      let(:user) { create(:staff, school: school) }
+      it 'does not show login page' do
+        expect(page).to_not have_link(login_text)
+      end
+    end
   end
 end

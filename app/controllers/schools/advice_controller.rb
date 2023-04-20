@@ -1,15 +1,17 @@
 module Schools
   class AdviceController < ApplicationController
-    load_and_authorize_resource :school
+    include NonPublicSchools
+    include DashboardAlerts
+    include DashboardPriorities
+
+    load_resource :school
     skip_before_action :authenticate_user!
+    before_action { redirect_unless_permitted :show } # redirect to login if user can't view the school
 
     before_action :load_advice_pages
     before_action :set_tab_name
     before_action :set_content
     before_action :set_breadcrumbs
-
-    include DashboardAlerts
-    include DashboardPriorities
 
     def show
       @advice_page_benchmarks = @school.advice_page_school_benchmarks
