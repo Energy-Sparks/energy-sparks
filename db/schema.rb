@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_18_114415) do
+ActiveRecord::Schema.define(version: 2023_04_19_130712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1093,11 +1093,13 @@ ActiveRecord::Schema.define(version: 2023_04_18_114415) do
     t.datetime "dcc_checked_at"
     t.bigint "data_source_id"
     t.bigint "admin_meter_statuses_id"
+    t.bigint "procurement_route_id"
     t.index ["data_source_id"], name: "index_meters_on_data_source_id"
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_review_id"], name: "index_meters_on_meter_review_id"
     t.index ["meter_type"], name: "index_meters_on_meter_type"
     t.index ["mpan_mprn"], name: "index_meters_on_mpan_mprn", unique: true
+    t.index ["procurement_route_id"], name: "index_meters_on_procurement_route_id"
     t.index ["school_id"], name: "index_meters_on_school_id"
     t.index ["solar_edge_installation_id"], name: "index_meters_on_solar_edge_installation_id"
   end
@@ -1169,6 +1171,21 @@ ActiveRecord::Schema.define(version: 2023_04_18_114415) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "name"
+  end
+
+  create_table "procurement_routes", force: :cascade do |t|
+    t.string "organisation_name", null: false
+    t.string "contact_name"
+    t.string "contact_email"
+    t.string "loa_contact_details"
+    t.text "data_prerequisites"
+    t.text "new_area_data_feed"
+    t.text "add_existing_data_feed"
+    t.text "data_issues_contact_details"
+    t.text "loa_expiry_procedure"
+    t.text "comments"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "programme_activities", force: :cascade do |t|

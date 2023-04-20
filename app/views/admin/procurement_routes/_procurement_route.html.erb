@@ -1,0 +1,63 @@
+<% default = "&nbsp;".html_safe %>
+
+<div class="collapse p-4" id="procurement-route">
+  <div class="row">
+    <div class="col-6 mb-2">
+      <div class="font-weight-bolder ml-1">Contact name</div>
+      <div class="bg-white p-1 border"><%= procurement_route.contact_name.presence || default %></div>
+    </div>
+    <div class="col-6">
+      <div class="font-weight-bolder ml-1">Contact email</div>
+      <div class="bg-white p-1 border"><%= procurement_route.contact_email.presence || default %></div>
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-12">
+      <div class="font-weight-bolder ml-1">Who to send LOA to</div>
+      <div class="bg-white p-1 border"><%= procurement_route.loa_contact_details.presence || default %></div>
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-12">
+      <div class="font-weight-bolder ml-1">Data prerequisites</div>
+      <div class="bg-white p-1 border text-break"><%= procurement_route.data_prerequisites.presence || default %></div>
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-12">
+      <div class="font-weight-bolder ml-1">How to setup data feed for a new area</div>
+      <div class="bg-white p-1 border text-break"><%= procurement_route.new_area_data_feed.presence || default %></div>
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-12">
+      <div class="font-weight-bolder ml-1">How to add to an existing data feed</div>
+      <div class="bg-white p-1 border text-break"><%= procurement_route.add_existing_data_feed.presence || default %></div>
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-12">
+      <div class="font-weight-bolder ml-1">Who to contact about data issues</div>
+      <div class="bg-white p-1 border text-break"><%= procurement_route.data_issues_contact_details.presence || default %></div>
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-12">
+      <div class="font-weight-bolder ml-1">What to do when LOA is about expire</div>
+      <div class="bg-white p-1 border text-break"><%= procurement_route.loa_expiry_procedure.presence || default %></div>
+    </div>
+  </div>
+  <div class="row pb-2">
+    <div class="col-12">
+      <div class="font-weight-bolder ml-1">Comments</div>
+      <div class="bg-white p-1 border text-break"><%= procurement_route.comments.presence || default %></div>
+    </div>
+  </div>
+
+  <div class="row pb-2">
+    <div class="col-12">
+      <div class="badge badge-pill bg-white text-dark font-weight-normal">Created • <%= nice_date_times_today(procurement_route.created_at) %></div>
+      <div class="badge badge-pill bg-white text-dark font-weight-normal">Updated • <%= nice_date_times_today(procurement_route.updated_at) %></div>
+    </div>
+  </div>
+</div>
