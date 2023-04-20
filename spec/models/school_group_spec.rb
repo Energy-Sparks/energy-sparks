@@ -82,10 +82,10 @@ describe SchoolGroup, :school_groups, type: :model do
 
   describe "issues csv" do
     def issue_csv_line(issue)
-      [issue.issueable_type.titleize, issue.issueable.name, issue.title, issue.description.to_plain_text, issue.fuel_type, issue.issue_type, issue.status, issue.status_summary, issue.mpan_mprns, issue.data_source_names, issue.owned_by.try(:display_name), issue.created_by.display_name, issue.created_at, issue.updated_by.display_name, issue.updated_at].join(',')
+      [issue.issueable_type.titleize, issue.issueable.name, issue.title, issue.description.to_plain_text, issue.fuel_type, issue.issue_type, issue.status, issue.status_summary, issue.mpan_mprns, issue.admin_meter_statuses, issue.data_source_names, issue.owned_by.try(:display_name), issue.created_by.display_name, issue.created_at, issue.updated_by.display_name, issue.updated_at].join(',')
     end
 
-    let(:header) { "For,Name,Title,Description,Fuel type,Type,Status,Status summary,Meters,Data sources,Owned by,Created by,Created at,Updated by,Updated at" }
+    let(:header) { "For,Name,Title,Description,Fuel type,Type,Status,Status summary,Meters,Meter status,Data sources,Owned by,Created by,Created at,Updated by,Updated at" }
     let(:user) { create(:admin) }
     let(:school_group) { create(:school_group) }
     let(:data_source) { create(:data_source) }

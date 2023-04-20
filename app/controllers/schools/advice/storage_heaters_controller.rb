@@ -17,6 +17,10 @@ module Schools
 
       private
 
+      def create_analysable
+        annual_usage_breakdown_service
+      end
+
       def set_heating_thermostatic_analysis
         @heating_thermostatic_analysis = build_heating_thermostatic_analysis
       end
@@ -33,10 +37,14 @@ module Schools
       end
 
       def build_annual_usage_breakdown
-        ::Usage::AnnualUsageBreakdownService.new(
+        annual_usage_breakdown_service.usage_breakdown
+      end
+
+      def annual_usage_breakdown_service
+        @annual_usage_breakdown_service ||= ::Usage::AnnualUsageBreakdownService.new(
           meter_collection: aggregate_school,
           fuel_type: :storage_heater
-        ).usage_breakdown
+        )
       end
 
       def holiday_usage_calculation_service
