@@ -17,6 +17,14 @@
       combined_usage_metric: @recent_usage.change,
       period: t('advice_pages.electricity_recent_changes.insights.your_recent_electricity_use.table.change')) if @recent_usage.change
   %>
+  <% unless @electricity_recent_changes_service.enough_data_for_full_week_comparison? %>
+    <tr>
+      <td><%= t('advice_pages.not_enough_data.message', fuel_type: @advice_page.t_fuel_type) %></td>
+      <td class="text-right">-</td>
+      <td class="text-right">-</td>
+      <td class="text-right">-</td>
+    </tr>
+  <% end %>
 </table>
 <% @additional_notice_text = t('advice_pages.tables.notice.three_significant_figures') %>
 <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
