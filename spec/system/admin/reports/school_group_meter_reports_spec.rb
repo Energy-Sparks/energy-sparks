@@ -25,18 +25,8 @@ describe 'school group meter reports', type: :system do
       expect(page).to have_content("School group meter data reports")
       expect(page).to have_content(school_group.name)
       expect(page).to have_link("Meter Report")
-      expect(page).to have_link("Download CSV")
+      expect(page).to have_link(href: deliver_admin_school_group_meter_report_path(school_group))
       expect(page).to have_link("Download meter collections")
-    end
-
-    it 'downloads csv' do
-      click_on "Download CSV"
-      header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
-      expect(header).to match /#{school_group.name.parameterize}-meter-report.csv$/
-      expect(page.source).to have_content(school.name)
-      expect(page.source).to have_content(meter.mpan_mprn)
-      expect(page.source).to have_content(data_source.name)
     end
   end
 
@@ -49,7 +39,7 @@ describe 'school group meter reports', type: :system do
 
     it 'links to downloads and all meters' do
       expect(page).to have_content("#{school_group.name} meter report")
-      expect(page).to have_link("Download CSV")
+      expect(page).to have_link(href: deliver_admin_school_group_meter_report_path(school_group))
       expect(page).to have_link("Download meter collections")
     end
 
@@ -65,16 +55,6 @@ describe 'school group meter reports', type: :system do
       expect(page).to have_content(meter.mpan_mprn)
       expect(page).to have_content(meter_inactive.mpan_mprn)
       expect(page).not_to have_link("Show all meters")
-    end
-
-    it 'downloads csv' do
-      click_on "Download CSV"
-      header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
-      expect(header).to match /#{school_group.name.parameterize}-meter-report.csv$/
-      expect(page.source).to have_content(school.name)
-      expect(page.source).to have_content(meter.mpan_mprn)
-      expect(page.source).to have_content(data_source.name)
     end
   end
 end
