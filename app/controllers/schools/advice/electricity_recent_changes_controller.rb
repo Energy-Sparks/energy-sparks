@@ -32,6 +32,7 @@ module Schools
       end
 
       def change
+        return nil unless electricity_recent_changes_service.enough_data_for_full_week_comparison?
         Usage::CombinedUsageMetricComparison.new(
           previous_week.combined_usage_metric,
           last_week.combined_usage_metric
@@ -43,6 +44,7 @@ module Schools
       end
 
       def previous_week
+        return nil unless electricity_recent_changes_service.enough_data_for_full_week_comparison?
         @previous_week ||= recent_usage_calculation.recent_usage(period_range: -1..-1)
       end
 
