@@ -4,11 +4,16 @@ module Schools
       include AnalysableMixin
 
       def enough_data?
-        meter_data_checker.at_least_x_days_data?(14)
+        meter_data_checker.at_least_x_days_data?(7)
       end
 
       def data_available_from
-        meter_data_checker.date_when_enough_data_available(14)
+        meter_data_checker.date_when_enough_data_available(7)
+      end
+
+      def enough_data_for_full_week_comparison?
+        start_date = aggregate_meter.amr_data.start_date.sunday? ? aggregate_meter.amr_data.start_date : aggregate_meter.amr_data.start_date.next_occurring(:sunday)
+        ((asof_date - start_date) + 1) >= 14
       end
 
       private
