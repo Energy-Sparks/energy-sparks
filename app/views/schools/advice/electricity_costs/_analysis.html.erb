@@ -31,7 +31,8 @@
     one_year_breakdown_chart: @one_year_breakdown_chart,
     one_year_breakdown_chart_key: @one_year_breakdown_chart_key,
     monthly_costs: @monthly_costs,
-    change_in_costs: @change_in_costs %>
+    change_in_costs: @change_in_costs,
+    fuel_type: @advice_page.fuel_type %>
 <% else %>
   <%= render 'cost_breakdown_by_charge',
     school: @school,
@@ -41,7 +42,8 @@
     one_year_breakdown_chart_key: @one_year_breakdown_chart_key,
     monthly_costs: @monthly_costs,
     change_in_costs: @change_in_costs,
-    show_school_total: true %>
+    show_school_total: true,
+    fuel_type: @advice_page.fuel_type %>
   <% if @analysis_dates.months_of_data > 23 %>
     <%= render 'cost_comparison', school: @school, analysis_dates: @analysis_dates %>
   <% end %>

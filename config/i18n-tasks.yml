@@ -147,6 +147,7 @@ ignore_unused:
   - 'advice_pages.*.insights.next_steps'
   - 'advice_pages.electricity_costs.charts.cost_1_year_accounting_breakdown*'
   - 'advice_pages.gas_costs.charts.cost_1_year_accounting_breakdown*'
+  - 'advice_pages.tables.tooltips.bill_components.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'

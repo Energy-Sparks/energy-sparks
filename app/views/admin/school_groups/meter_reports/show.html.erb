@@ -8,8 +8,8 @@
 <p>You can download the individual meter collections (unvalidated, validated and aggregated) for each school</p>
 <p><%= link_to "Download meter collections", admin_schools_meter_collections_path(anchor: "school-group-#{@school_group.id}") %>
 
-<p>You can download this school group meter report as CSV</p>
-<p><%= link_to "Download CSV", admin_school_group_meter_report_path(@school_group, format: :csv) %>
+<p>You can request this school group meter report as CSV</p>
+<%= link_to "#{fa_icon('envelope')} Meter report".html_safe, deliver_admin_school_group_meter_report_path(@school_group, all_meters: params[:all_meters]) , class: 'btn btn-sm', title: "Email meter report csv", method: :update, data: { confirm: "Are you sure you want to send the meter report to #{current_user.email}?" } %>
 
 <% unless @meter_scope.empty? %>
   <h2>Meters</h2>
@@ -67,7 +67,7 @@
             <td class="gappy-dates"><%= date_range_from_reading_gaps(meter.gappy_validated_readings) %></td>
             <td class="modified-dates"><%= meter.modified_validated_readings.count %></td>
             <td class="<%= meter.zero_reading_days_warning? ? 'table-danger' : ''%>">
-              <%= meter.zero_reading_days_count %>
+              <%= y_n(meter.zero_reading_days.any?) %>
             </td>
             <td>
              <% if meter.issues.any? %>
