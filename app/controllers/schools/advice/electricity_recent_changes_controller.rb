@@ -39,11 +39,11 @@ module Schools
       end
 
       def last_week
-        @last_week ||= recent_usage_calculation.recent_usage(period_range: 0..0)
+        @last_week ||= recent_usage_calculation.recent_usage(date_range: electricity_recent_changes_service.date_range[:last_week])
       end
 
       def previous_week
-        @previous_week ||= recent_usage_calculation.recent_usage(period_range: -1..-1)
+        @previous_week ||= recent_usage_calculation.recent_usage(date_range: electricity_recent_changes_service.date_range[:previous_week])
       end
 
       def recent_usage_calculation
