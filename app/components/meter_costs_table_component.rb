@@ -23,7 +23,7 @@ class MeterCostsTableComponent < ViewComponent::Base
   #year_header: display year header row in table
   #month_format: change month format for month row
   #precision: change rounding of numbers, see FormatEnergyUnit
-  def initialize(id: 'meter-costs-table', year_header: true, month_format: '%b', precision: :approx_accountant, monthly_costs:, change_in_costs: nil)
+  def initialize(id: 'meter-costs-table', year_header: true, month_format: '%b', precision: :approx_accountant, monthly_costs:, change_in_costs: nil, school: nil, fuel_type: nil)
     @id = id
     @year_header = year_header
     @month_format = month_format
@@ -31,6 +31,9 @@ class MeterCostsTableComponent < ViewComponent::Base
     @monthly_costs = monthly_costs
     @change_in_costs = change_in_costs
     @any_partial_months = false
+    @school = school
+    @fuel_type = fuel_type
+    @t_scope = 'advice_pages.tables.tooltips.bill_components'
   end
 
   #Iterate over months, yielding either year or nil
@@ -68,7 +71,7 @@ class MeterCostsTableComponent < ViewComponent::Base
   end
 
   def consumption_charges
-   [:flat_rate, :commodity_rate, :non_commodity_rate, period_sym('00:30 to 07:00'), period_sym('07:30 to 00_00')]
+   [:flat_rate, :commodity_rate, :non_commodity_rate, period_sym('00:30 to 07:00'), period_sym('07:30 to 00:00')]
   end
 
   def duos_charges
@@ -101,6 +104,14 @@ class MeterCostsTableComponent < ViewComponent::Base
 
   def bill_component?(component:)
     @monthly_costs.values.any? {|costs| costs.present? && costs.bill_component_costs.key?(component) }
+  end
+
+  def tooltip(component:)
+    if (band = is_duos?(component))
+      duos_charge_times(band)
+    else
+      helpers.icon_tooltip(t(component, scope: @t_scope, default: ''))
+    end
   end
 
   def bill_component_row(component:)
@@ -161,8 +172,29 @@ class MeterCostsTableComponent < ViewComponent::Base
     costs.full_month
   end
 
+  def is_duos?(component)
+    duos_charges.include?(component) && component.to_s[/duos_(\w+)$/, 1].to_sym
+  end
+
+  def duos_charge_times(band)
+    return '' unless mpan_mprn
+    @duos ||= DUOSCharges.regional_charge_table(mpan_mprn.to_i)[:bands]
+    charge_times = @duos[band].inject([]) do |memo, (key, period)|
+      period = t(:all_day, scope: @t_scope) if period == 'all day'
+      memo << t(key, scope: @t_scope, period: period)
+      memo
+    end
+    helpers.icon_tooltip(t(:duos, scope: @t_scope, charge_times: charge_times.join(" ")))
+  end
+
   def format(value)
     return "-" if value.nil?
     FormatEnergyUnit.format_pounds(:£, value, :text, @precision, true)
+  end
+
+  def mpan_mprn
+    if @school && @fuel_type && @fuel_type.to_sym == :electricity # duos is only for electricity
+      return @school.meters.active.where(meter_type: @fuel_type).first.try(:mpan_mprn)
+    end
   end
 end
