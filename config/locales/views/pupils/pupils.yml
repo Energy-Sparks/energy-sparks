@@ -78,7 +78,7 @@ en:
         start_transport_survey: Start surveying
         things_to_do: Things to do
         title: Pupil dashboard for %{school_name}
-        transport_surveys: Start a transport survey so that you can find out how much carbon your school community uses by travelling to school
+        transport_surveys: Start a transport survey so that you can find out how much carbon your school community generates by travelling to school
         try_this_first: Try this one first
         try_this_next: Try this one next
         update_temperatures: Update temperatures
