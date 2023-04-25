@@ -53,6 +53,12 @@ en:
             split: Your school's daily gas use in your chosen week recorded by meter
     weekly-usage-link: View usage by week
   schools:
+    aggregated_meter_collections:
+      show:
+        error_html: Sorry, we're having trouble processing your energy data today. Try again later or, if it continues to happen, <a href='%{contact_path}'>contact us</a>
+        loading: Loading...
+        paragraph_1: Energy Sparks is processing all of this school's data to provide today's analysis
+        paragraph_2: Once we've finished, we will re-direct you to the school dashboard
     audits:
       created: Audit created
       deleted: Audit was successfully deleted.

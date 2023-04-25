@@ -1,13 +1,13 @@
 <div class="jumbotron aggregated-meter-collection-loader" data-aggregation-path="<%= @aggregation_path %>">
   <h1 class="display-4"><%= @school.name %></h1>
   <div class="stats">
-    <p class="lead">Energy Sparks is processing all of this school's data to provide today's analysis.</p>
-    <p>Once we've finished, we will re-direct you to the school dashboard.</p>
+    <p class="lead"><%= t('schools.aggregated_meter_collections.show.paragraph_1') %></p>
+    <p><%= t('schools.aggregated_meter_collections.show.paragraph_2') %></p>
     <div class="spinner-border" role="status">
-      <span class="sr-only">Loading...</span>
+      <span class="sr-only"><%= t('schools.aggregated_meter_collections.show.loading') %></span>
     </div>
   </div>
   <div class="alert alert-warning error">
-    Sorry, we're having trouble processing your energy data today. Try again later or, if it continues to happen, <%= link_to 'contact us', contact_path %>
+    <%= t('schools.aggregated_meter_collections.show.error_html', contact_path: contact_path) %>
   </div>
 </div>

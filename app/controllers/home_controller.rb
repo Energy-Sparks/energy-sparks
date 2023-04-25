@@ -94,6 +94,9 @@ class HomeController < ApplicationController
   def privacy_and_cookie_policy
   end
 
+  def support_us
+  end
+
   def terms_and_conditions
   end
 
@@ -101,6 +104,11 @@ class HomeController < ApplicationController
   end
 
   def child_safeguarding_policy
+  end
+
+  def funders
+    @school_count = School.visible.count
+    @partners = Partner.order(:position)
   end
 
   def training
@@ -119,7 +127,6 @@ class HomeController < ApplicationController
     @staff = TeamMember.staff.order(:position)
     @consultants = TeamMember.consultant.order(:position)
     @trustees = TeamMember.trustee.order(:position)
-    @partners = Partner.order(:position)
   end
 
   private

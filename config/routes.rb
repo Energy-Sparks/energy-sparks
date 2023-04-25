@@ -34,7 +34,9 @@ Rails.application.routes.draw do
   get 'child-safeguarding-policy', to: 'home#child_safeguarding_policy'
   get 'user-guide-videos', to: 'home#user_guide_videos'
   get 'team', to: 'home#team'
+  get 'funders', to: 'home#funders'
   get 'privacy_and_cookie_policy', to: 'home#privacy_and_cookie_policy', as: :privacy_and_cookie_policy
+  get 'support_us', to: 'home#support_us', as: :support_us
   get 'terms_and_conditions', to: 'home#terms_and_conditions', as: :terms_and_conditions
   get 'training', to: 'home#training'
   get 'energy-audits', to: 'home#energy_audits'
