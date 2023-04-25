@@ -18,7 +18,7 @@ RSpec.shared_examples "dashboard prompts" do
   end
 
   it 'has prompt to start survey' do
-    expect(page).to have_content("Start a transport survey so that you can find out how much carbon your school community uses by travelling to school")
+    expect(page).to have_content("Start a transport survey so that you can find out how much carbon your school community generates by travelling to school")
   end
 
   it 'has school group dashboard message' do
@@ -53,7 +53,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
     end
 
     it 'does not have prompt to start survey' do
-      expect(page).to_not have_content("Start a transport survey so that you can find out how much carbon your school community use")
+      expect(page).to_not have_content("Start a transport survey so that you can find out how much carbon your school community generates by travelling to school")
     end
 
     it 'does not display school group dashboard message' do
@@ -81,7 +81,7 @@ RSpec.describe "adult dashboard prompts", type: :system do
     end
 
     it 'does not have prompt to start survey' do
-      expect(page).to_not have_content("Start a transport survey so that you can find out how much carbon your school community use")
+      expect(page).to_not have_content("Start a transport survey so that you can find out how much carbon your school community generates by travelling to school")
     end
 
     it 'does not display school group dashboard message' do
