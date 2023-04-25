@@ -1,32 +1,22 @@
-<% content_for :page_title, 'Support us' %>
+<% content_for :page_title, t('support_us.title') %>
 
 <div class="application container">
   <div class="row padded-row">
     <div>
-      <h1>Support us</h1>
+      <h1><%= t('support_us.title') %></h1>
       <%= render 'two_column_image_deck', column_one: 'support-us/support_us_1.jpg', column_two: 'support-us/support_us_2.jpg' %>
     </div>
   </div>
   <div class="row">
-    <div class="col-md-12">
-      <p>If you are a decision maker in philanthropy, business or government seeking to empower the future generation of climate champions and support low cost energy saving action in UK schools, we want to work with you.</p>
-<h2>Why partner with Energy Sparks?</h2>
-<p>Energy Sparks' vision is a sustainable future in which the school community is at the heart of measurable action to tackle climate change. We equip children and young people with knowledge, skills, and tools to take measurable action in their school and wider community to reduce carbon emissions.</p>
-<p>We enable school leaders, staff and communities to better understand and reduce their school’s energy consumption and introduce wider measures to reduce their carbon footprint.</p>
-<p>Your funding could allow Energy Sparks to support existing and new schools to access our services free of charge, minimising barriers to engagement and providing opportunities for students to take impactful action to reduce their school's carbon footprint, develop environmental awareness, and participate in leadership and collaborative opportunities.</p>
-<p>Your funding could support schools in the regions around your centres of operation, or contribute to our core mission to support schools across the UK.</p>
-<p>Energy Sparks is an expert voice on school energy management, democratising access to energy consumption data for <%= School.active.count %> UK schools. Working with Energy Sparks brings our partners unique insights into the energy management challenges for schools and connection to the most inspiring champions making a difference to our schools’ carbon footprints.</p>
-<p>Beyond funding, we offer collaborative opportunities for our partners including brand enhancement, staff volunteering, tailored staff briefings, and co-hosted webinars.</p>
-<p>We also welcome partnerships with sustainability education organisations wanting to deliver in-school workshops using our tools and resources.</p>
-<p>We would love to hear from you. Contact our CEO, <a href='mailto:claudia.towner@energysparks.uk'>Claudia Towner</a> to find out more.</p>
-<p><%= link_to 'Our existing funders and partners', team_path %></p>
-
-<%= render 'home/testimonial',
-  quote: "Energy Sparks is a fantastic educational tool. It underpins our climate programme in schools. Children and teachers enjoy seeing tangible change in their energy consumption as a result of their actions. It makes it meaningful. We’ve seen evidence of children applying the learning at homes as well. And they all love the schools’ league table!",
-  by: 'Dan McCallum',
-  title: 'Director',
-  location: 'Awel Aman Tawe and Egni Co-op'
-%>
-<br />
+    <div class="col-md-12 pb-6">
+      <%= t('support_us.content_html', school_count: School.active.count) %>
+      <p><%= link_to t('support_us.our_existing_funders_and_partners'), team_path + '#partners' %></p>
+      <%= render 'home/testimonial',
+        quote:  t('support_us.quote.text'),
+        by: 'Dan McCallum',
+        title: t('support_us.quote.title'),
+        location: 'Awel Aman Tawe and Egni Co-op'
+      %>
+    </div>
   </div>
 </div>
