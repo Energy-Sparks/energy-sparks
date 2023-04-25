@@ -103,6 +103,11 @@ class HomeController < ApplicationController
   def child_safeguarding_policy
   end
 
+  def funders
+    @school_count = School.visible.count
+    @partners = Partner.order(:position)
+  end
+
   def training
     @events = Events::ListEvents.new.perform
   end
@@ -119,7 +124,6 @@ class HomeController < ApplicationController
     @staff = TeamMember.staff.order(:position)
     @consultants = TeamMember.consultant.order(:position)
     @trustees = TeamMember.trustee.order(:position)
-    @partners = Partner.order(:position)
   end
 
   private
