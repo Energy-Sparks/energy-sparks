@@ -1,5 +1,11 @@
 ---
 en:
   funders:
-    intro_html: "<p> Our funders and supporters are passionate about lowering school carbon emissions and supporting children and young people to develop energy saving lifeskills. Together we are creating impact at <strong><a href='/schools'>%{school_count} UK schools</a></strong> currently working with Energy Sparks. </p> <p> <a href='/support_us'>Find out more about becoming an Energy Sparks funding partner</a>. </p>"
+    intro_html: |-
+      <p>
+        Our funders and supporters are passionate about lowering school carbon emissions and supporting children and young people to develop energy saving lifeskills. Together we are creating impact at <strong><a href='/schools'>%{school_count} UK schools</a></strong> currently working with Energy Sparks.
+      </p>
+      <p>
+        <a href='/support_us'>Find out more about becoming an Energy Sparks funding partner</a>.
+      </p>
     title: Our Funders
