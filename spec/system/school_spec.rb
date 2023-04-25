@@ -19,6 +19,7 @@ RSpec.describe "school adult dashboard", type: :system do
           it 'renders a loading page' do
             visit school_path(school)
             expect(page).to have_content("Energy Sparks is processing all of this school's data to provide today's analysis")
+            expect(page).to have_content("Once we've finished, we will re-direct you to the school dashboard")
           end
         end
 
