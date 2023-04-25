@@ -94,6 +94,9 @@ class HomeController < ApplicationController
   def privacy_and_cookie_policy
   end
 
+  def support_us
+  end
+
   def terms_and_conditions
   end
 

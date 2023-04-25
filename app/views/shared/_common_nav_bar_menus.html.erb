@@ -22,4 +22,8 @@
 
 <%= render 'shared/about_menu' %>
 
+<li class="nav-item">
+  <%= link_to 'Support us', support_us_path, class: 'nav-link' %>
+</li>
+
 <%= render 'shared/manage_menu' if can?(:manage, :admin_functions) %>
