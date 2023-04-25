@@ -287,7 +287,7 @@ module ApplicationHelper
 
   def up_downify(text)
     return if text.nil? || text == "-"
-    icon = if text.match?(/^\+/)
+    icon = if text.match?(/^\+?£?\d*\.?\d+/)
              fa_icon('arrow-circle-up')
            elsif text.match?(/increased/)
              fa_icon('arrow-circle-up')

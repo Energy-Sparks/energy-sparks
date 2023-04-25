@@ -6,7 +6,7 @@ module Admin
 
       def show
         respond_to do |format|
-          format.html { @meters = meter_report.meters }
+          format.html { @meters = meter_report.meters(full_detail: false) }
           format.csv { send_data meter_report.csv, filename: meter_report.csv_filename }
         end
       end

@@ -91,7 +91,16 @@ class Meter < ApplicationRecord
                               "meters.*,
                                MIN(amr_validated_readings.reading_date) AS first_validated_reading_date,
                                MAX(amr_validated_readings.reading_date) AS last_validated_reading_date,
-                               COUNT(1) FILTER (WHERE one_day_kwh = 0) AS zero_reading_days_count")
+                               COUNT(1) FILTER (WHERE one_day_kwh = 0.0) AS zero_reading_days_count")
+  }
+
+  scope :with_reading_dates, -> {
+     left_outer_joins(:amr_validated_readings)
+       .group('schools.id', 'meters.id')
+       .select(
+         "meters.*,
+          MIN(amr_validated_readings.reading_date) AS first_validated_reading_date,
+          MAX(amr_validated_readings.reading_date) AS last_validated_reading_date")
   }
 
   # If adding a new one, add to the amr_validated_reading case statement for downloading data

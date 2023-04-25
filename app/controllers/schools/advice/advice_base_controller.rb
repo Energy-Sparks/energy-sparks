@@ -1,11 +1,16 @@
 module Schools
   module Advice
     class AdviceBaseController < ApplicationController
-      before_action :header_fix_enabled
+      include NonPublicSchools
+      include AdvicePageHelper
+      include SchoolAggregation
+      include DashboardAlerts
 
-      load_and_authorize_resource :school
+      load_resource :school
       skip_before_action :authenticate_user!
+      before_action { redirect_unless_permitted :show } # redirect to login if user can't view the school
 
+      before_action :header_fix_enabled
       before_action :load_advice_pages
       before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
       before_action :set_tab_name, only: [:insights, :analysis, :learn_more]
@@ -20,10 +25,6 @@ module Schools
       before_action :set_breadcrumbs, only: [:insights, :analysis, :learn_more]
       before_action :set_insights_next_steps, only: [:insights]
       before_action :set_economic_tariffs_change_caveats, only: [:insights, :analysis]
-
-      include AdvicePageHelper
-      include SchoolAggregation
-      include DashboardAlerts
 
       rescue_from StandardError do |exception|
         Rollbar.error(exception, advice_page: advice_page_key, school: @school.name, school_id: @school.id, tab: @tab)

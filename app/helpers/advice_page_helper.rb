@@ -199,5 +199,9 @@ module AdvicePageHelper
   def average_daily_usage(usage, school_period)
     return usage.kwh / (school_period.end_date - school_period.start_date)
   end
+
+  def icon_tooltip(text = '')
+    tag.span(fa_icon('info-circle'), data: { toggle: "tooltip", placement: "top", title: text }, class: 'text-muted') if text.present?
+  end
 end
 # rubocop:enable Naming/AsciiIdentifiers
