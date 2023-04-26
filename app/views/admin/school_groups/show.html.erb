@@ -51,6 +51,7 @@
   <%= link_to 'Meter attributes', admin_school_group_meter_attributes_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Meter updates', admin_school_group_meter_updates_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Meter report', admin_school_group_meter_report_path(@school_group), class: 'btn btn-sm' %>
+  <%= link_to 'Chart updates', admin_school_group_chart_updates_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to "#{fa_icon('envelope')} Meter report".html_safe, deliver_admin_school_group_meter_report_path(@school_group) , class: 'btn btn-sm', title: "Email meter report csv", method: :update, data: { confirm: "Are you sure you want to send the meter report to #{current_user.email}?" } %>
   <%= link_to "#{fa_icon('file-download')} Issues".html_safe, admin_school_group_issues_path(@school_group, format: :csv) , class: 'btn btn-sm', title: "Download issues csv" %>
   <div title="School groups can only be deleted if there are no associated schools or users" rel="tooltip">
