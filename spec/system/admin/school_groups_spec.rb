@@ -473,15 +473,12 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       let!(:school_group) { create(:school_group, name: 'BANES', public: true, default_chart_preference: "default") }
       let!(:school_group2) { create(:school_group, name: 'BANES 2', public: true, default_chart_preference: "default") }
       before do
-      create :school, active: false, school_group: school_group, chart_preference: 'default'
-      create :school, active: false, school_group: school_group, chart_preference: 'carbon'
-      create :school, active: false, school_group: school_group, chart_preference: 'usage'
-
-      create :school, active: false, school_group: school_group2, chart_preference: 'default'
-      create :school, active: false, school_group: school_group2, chart_preference: 'carbon'
-      create :school, active: false, school_group: school_group2, chart_preference: 'usage'
-
-
+        create :school, active: false, school_group: school_group, chart_preference: 'default'
+        create :school, active: false, school_group: school_group, chart_preference: 'carbon'
+        create :school, active: false, school_group: school_group, chart_preference: 'usage'
+        create :school, active: false, school_group: school_group2, chart_preference: 'default'
+        create :school, active: false, school_group: school_group2, chart_preference: 'carbon'
+        create :school, active: false, school_group: school_group2, chart_preference: 'usage'
         click_on 'Edit School Groups'
         within "table" do
           click_on 'Manage', match: :first
