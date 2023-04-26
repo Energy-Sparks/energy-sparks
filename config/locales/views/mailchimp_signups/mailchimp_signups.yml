@@ -1,0 +1,15 @@
+---
+en:
+  mailchimp_signups:
+    index:
+      subscription_confirmed: Subscription confirmed
+      thank_you_for_subscribing: Thank you for subscribing!
+      your_subscription_has_been_confirmed: Your subscription to our list has been confirmed
+    mailchimp_form:
+      email_address: Email address *
+      please_specify: Please specify
+      school_name: School name (if appropriate)
+      subscribe: Subscribe
+      user_name: User name *
+    new:
+      sign_up_to_the_energy_sparks_newsletter: Sign up to the Energy Sparks newsletter

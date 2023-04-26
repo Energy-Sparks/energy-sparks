@@ -107,6 +107,9 @@ Rails.application.configure do
   config.hosts << "energysparks.development"
   config.hosts << "cy.energysparks.development"
   config.hosts << "mirror.energysparks.development"
+
+  # View components - Always place view in a sidecar directory when using the generator
+  config.view_component.generate.sidecar = true
 end
 
 class MyAppFormatter < Logger::Formatter

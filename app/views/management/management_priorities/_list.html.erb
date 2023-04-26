@@ -23,8 +23,9 @@
           <td><%= priority.template_variables[:one_year_saving_co2] %><br></td>
           <td><%= priority.template_variables[:average_capital_cost] %></td>
           <td>
-            <% if priority.find_out_more %>
-              <%= link_to t('management.priorities.find_out_more'), school_find_out_more_path(school, priority.find_out_more), class: 'btn btn-rounded btn-fixed-width-10' %>
+            <% path = find_out_more_path_from_alert_content(school, priority) %>
+            <% if path != nil %>
+              <%= link_to t('management.priorities.find_out_more'), path, class: 'btn btn-rounded btn-fixed-width-10' %>
             <% end %>
           </td>
         </tr>

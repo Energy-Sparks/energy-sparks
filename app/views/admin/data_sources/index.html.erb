@@ -1,0 +1,26 @@
+<%= render 'header', title: "Manage Data Sources" do %>
+  <%= header_nav_link 'Admin', admin_url %>
+<% end %>
+
+<%= link_to 'New data source', new_admin_data_source_path, class: 'btn btn-primary' %>
+
+<table class="table table-sorted" style="width: 100%">
+  <thead>
+    <tr>
+      <th>Organisation name</th>
+      <th>Organisation type</th>
+      <th class="no-sort text-right">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @data_sources.each do |data_source| %>
+      <tr>
+        <td class="nowrap"><%= data_source.name %></td>
+        <td><span class="badge badge-info"><%= data_source.organisation_type.try(:humanize) %></span></td>
+        <td class="nowrap text-right">
+          <%= link_to 'Manage', admin_data_source_path(data_source), class: "btn btn-sm" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

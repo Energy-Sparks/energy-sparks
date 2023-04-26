@@ -1,5 +1,7 @@
-<% if activity_category.image.present? %>
-  <%= image_tag activity_category.image, class: "card-img-top img-fluid " + css_class %>
+<% if I18n.locale.to_s == 'cy' && activity_category.t_attached(:image, :cy).present? %>
+  <%= image_tag activity_category.image_cy, class: "card-img-top img-fluid " + css_class %>
+<% elsif activity_category.t_attached(:image, :en).present? %>
+  <%= image_tag activity_category.image_en, class: "card-img-top img-fluid " + css_class %>
 <% else %>
   <%= image_tag "placeholder300x200.png", class: "card-img-top img-fluid " + css_class %>
 <% end %>

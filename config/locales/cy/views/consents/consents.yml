@@ -1,0 +1,37 @@
+cy:
+  consent:
+    description: Mae angen eich caniatâd arnom er mwyn cofrestru eich ysgol yn y gwasanaeth Sbarcynni.
+    message_html: Os oes angen mwy o amser arnoch i wneud penderfyniad gallwch ddychwelyd i'r dudalen hon unrhyw bryd gan ddefnyddio'r ddolen yn yr e-bost. Os oes gennych unrhyw gwestiynau am y caniatadau uchod yna gallwch %{email_us} i'w trafod.
+    not_sure: Ddim yn siŵr?
+    section_1_content_html: Er mwyn darparu Sbarcynni i'ch ysgol mae angen i ni ddefnyddio data am yr ynni rydych yn ei ddefnyddio neu'n ei gynhyrchu yn eich ysgol. I wneud hyn mae angen eich caniatâd arnom i gael mynediad at y data hynny, eu storio, eu defnyddio a’u rhannu fel y gallwn roi mewnwelediadau, dadansoddiadau a chyngor priodol i chi.
+    section_1_title: Pam mae angen eich caniatâd arnom?
+    section_2_content_html: |-
+      <p>Gall Sbarcynni ddefnyddio'r holl mathau o ddata canlynol:</p>
+      <ul>
+        <li>Gwybodaeth bob hanner awr am ddefnydd, cynhyrchiant ac allforiad nwy a thrydan. Bydd data hanesyddol a pharhaus yn cael eu casglu pan fyddant ar gael</li>
+       <li>Gwybodaeth tariff ynni sy'n cynnwys gwybodaeth am y pris a godir arnoch am ynni a ddefnyddiwyd i ddarparu amcangyfrifion cost ac arbedion mwy cywir drwy'r offeryn Sbarcynni.</li>
+       <li>Gwybodaeth sy'n adnabod y mesurydd ynni (rhif, lleoliad, math)</li>
+       <li>Enwau a gwybodaeth gyswllt ar gyfer pobl yn eich ysgol.</li>
+      </ul>
+      <p>Bydd y dull o gasglu’r data hyn yn benodol i’ch ysgol yn dibynnu ar eich cyflenwr ynni a pha fath o fesuryddion sydd gennych. Byddwn yn ymdrin â gosod hyn ar eich rhan ond efallai y bydd angen gwybodaeth ychwanegol gennych chi.</p>
+      <p>Mae rhagor o wybodaeth am sut rydym yn storio a defnyddio eich data wedi'i chynnwys yn ein %{privacy_policy_link}.</p>
+      <p>Rydym hefyd yn defnyddio gwybodaeth gyhoeddus am eich ysgol, gan gynnwys ei chyfeiriad i wirio pa fesuryddion sydd gennych.</p>
+    section_2_title: Pa ddata sydd angen i ni gael mynediad atynt?
+    section_3_content_html: |-
+      <p>Fel y disgrifir yn ein %{privacy_policy_link}, byddwn yn defnyddio'r data hyn i:</p><ul>
+       <li>Ddadansoddi a chyflwyno'ch data defnydd a chynhyrchiant ynni ar ein gwefan</li>
+       <li>Anfon hysbysiadau e-bost neu neges destun atoch yn tynnu sylw at newidiadau yn y defnydd o ynni, neu broblemau defnydd ynni hirdymor</li>
+       <li>E-bostio ein cylchlythr rheolaidd atoch</li>
+       <li>Eich cefnogi i arbed ynni yn eich ysgol</li>
+      </ul> <p>Bydd Sbarcynni yn casglu ac yn defnyddio data defnydd, cynhyrchiant ac allforiad cyhyd ag y bydd eich ysgol yn defnyddio ein gwasanaeth.</p> <p>Bydd peth o'ch data, gan gynnwys gwybodaeth am ddefnydd ynni, yn cael ei arddangos yn gyhoeddus ar ein gwefan. Dim ond i ddefnyddwyr ysgol awdurdodedig y cyflwynir data arall, megis gwybodaeth gywir am dariffau. Cyfrifir amcangyfrifon cost sydd ar gael i'r cyhoedd gan ddefnyddio data cost gyfartalog.</p> <p>Gall ysgolion annibynnol optio i mewn i wneud yr holl ddata yn breifat, am ffi ychwanegol.</p>
+    section_3_title: Beth fyddwn ni'n gwneud gyda'ch data
+    section_4_content_html: |-
+      <p>Mae gan eich ysgol yr hawl i dynnu caniatâd yn ôl ar unrhyw adeg.</p>
+      <p>Fel y disgrifir yn ein %{terms_and_conditions_link} gallwch wneud hyn drwy -bostio hello@energysparks.uk. Bydd Sbarcynni wedyn yn tynnu'ch data ynni hanesyddol a pharhaus o'r wefan Sbarcynni o fewn mis.</p>
+    section_4_title: Tynnu'ch caniatâd yn ôl
+    section_5_content_html: |-
+      <p>I gwblhau gosod eich ysgol, darllenwch y datganiad caniatâd a darparwch eich enw a theitl eich swydd.</p>
+      <p>Rhaid i chi hefyd gytuno i'n %{terms_and_conditions_link} sy'n egluro'r cytundeb llawn rhwng eich ysgol a Sbarcynni.</p>
+    section_5_title: Eich caniatâd
+    terms_and_conditions_html: Rwy'n rhoi caniatâd ac yn cadarnhau cytundeb llawn â'r %{terms_and_conditions_link}
+    title: Caniatâd i gael mynediad at a defnyddio data

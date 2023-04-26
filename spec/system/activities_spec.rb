@@ -361,4 +361,23 @@ describe 'viewing and recording activities', type: :system do
       end
     end
   end
+
+  context "displaying prizes" do
+    let!(:activity)     { create(:activity, school: school, activity_type: activity_type) }
+    let(:feature_active) { false }
+    let(:prize_excerpt) { 'Our top scoring schools this year could win' }
+    before do
+      allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true) if feature_active
+      sign_in(create(:admin))
+    end
+    context "when activity is complete" do
+      before { visit completed_school_activity_path(school, activity) }
+      it { expect(page).to_not have_content(prize_excerpt) }
+      context "feature is active" do
+        let(:feature_active) { true }
+        it { expect(page).to have_content(prize_excerpt) }
+        it { expect(page).to have_link('read more', href: 'https://blog.energysparks.uk/fantastic-prizes-to-motivate-pupils-to-take-energy-saving-action/') }
+      end
+    end
+  end
 end

@@ -6,12 +6,16 @@
   gtag('js', new Date());
 
   gtag('config', '<%= analytics_code %>', {
-    'custom_map': {'dimension1': 'user_role', 'dimension2': 'user_school'}
+    'custom_map': {'dimension1': 'user_role', 'dimension2': 'user_school', 'dimension3': 'advice_page', 'dimension4': 'advice_page_tab'}
   });
   <% if current_user %>
     gtag('event', 'role_dimension', {'user_role': '<%= current_user.role %>'});
     <% if current_user.school %>
       gtag('event', 'school_dimension', {'user_school': '<%= current_user.school.name %>'});
+    <% end %>
+    <% if @advice_page.present? %>
+      gtag('event', 'advice_page_dimension', {'advice_page': '<%= @advice_page.key %>'});
+      gtag('event', 'advice_page_tab', {'advice_page_tab': '<%= @tab %>'});
     <% end %>
   <% end %>
 </script>

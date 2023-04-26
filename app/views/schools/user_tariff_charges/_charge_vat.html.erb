@@ -4,10 +4,10 @@
   <tbody>
   <tr>
     <td class="description">
-      VAT rate
+      <%= t('schools.user_tariff_charges.charge_vat.vat_rate') %>
     </td>
     <td class="value">
-      Rate
+      <%= t('schools.user_tariff_charges.charge_vat.rate') %>
     </td>
     <td class="value">
       <%= f.select :vat_rate, options_for_select(['0%', '5%', '20%'], user_tariff.vat_rate), {required: :true}, { class: 'form-control' } %>

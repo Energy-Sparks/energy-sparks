@@ -1,0 +1,45 @@
+---
+en:
+  advice_pages:
+    index:
+      alerts:
+        title: Recent alerts
+        view_analysis: View analysis
+      priorities:
+        intro: Prioritise the following actions to reduce your costs and carbon dioxide emissions.
+        table:
+          columns:
+            co2_reduction: CO2 reduction
+            cost_saving: Cost saving
+            fuel_type: Fuel
+        table_note: Use the table headings to sort the recommendations. Potential cost savings for the same fuel type are not additive.
+        title: Priority actions
+      show:
+        how_do_you_compare: How does your school compare?
+        not_applicable: No comparison
+        not_available: Not enough data
+        notice_html: |-
+          <p>Looking for suggestions of how to start reducing your energy usage?</p>
+          <p>We've recommended some priority actions to help you make progress. Or explore our detailed analysis below.</p>
+        notice_link: View prioritised actions
+        page_summary:
+          baseload: Understand how much energy your school uses to keep appliances running all the time
+          electricity_costs: Review how much your school has recently spent on electricity
+          electricity_intraday: Explore how your electricity use varies during the day
+          electricity_long_term: See long term trends in your electricity use
+          electricity_out_of_hours: How much of your electricity use is outside of school hours?
+          electricity_recent_changes: How has your electricity use changed over the last few weeks?
+          gas_costs: Review how much your school has recently spent on gas
+          gas_long_term: See long term trends in your gas use
+          gas_out_of_hours: How much of your gas use is outside of school hours?
+          gas_recent_changes: How has your gas use changed over the last few weeks?
+          heating_control: Review your central heating timings and use of gas to heat the school
+          hot_water: Understand the efficiency of your hot water system
+          solar_pv:
+            has_solar: See the benefits of having solar panels on your school
+            no_solar: See the potential benefits of installing solar panels on your school
+          storage_heaters: Review how much energy you consume to power your storage heaters
+          thermostatic_control: Understand how well your gas use adapts to changing temperatures
+          total_energy_use: A summary of your electricity and gas use
+        title: Overview
+      title: Energy efficiency advice

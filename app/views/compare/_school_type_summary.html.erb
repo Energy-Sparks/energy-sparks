@@ -1,0 +1,2 @@
+<p><%= t('compare.filter.school_types_html', school_types: @filter[:school_types].map {|st| tag.span(t('common.school_types.' + st), class: 'badge badge-info')}.join(' ').html_safe) %>
+</p>

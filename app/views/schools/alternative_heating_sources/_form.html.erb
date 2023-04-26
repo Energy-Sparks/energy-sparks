@@ -1,9 +1,0 @@
-<%= simple_form_for [@school, @alternative_heating_source] do |form| %>
-  <%= form.input :source, collection: AlternativeHeatingSource.sources.keys.map { |source| [source.humanize, source] }, label_method: :first, value_method: :second, include_blank: true %>
-  <%= form.input :percent_of_overall_use, as: :integer, input_html: { value: form.object.percent_of_overall_use || '0' } %>
-  <%= form.input :notes, as: :text %>
-
-  <div class="actions">
-    <%= form.submit "Submit", class: 'btn btn-primary'%>
-  </div>
-<% end %>

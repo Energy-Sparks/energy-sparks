@@ -44,4 +44,13 @@ RSpec.describe I18n do
     expect(I18n.t('date.abbr_month_names', locale: 'en')).to eq(['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
     expect(I18n.t('date.abbr_month_names', locale: 'cy')).to eq(['', 'Ion', 'Chwe', 'Maw', 'Ebr', 'Mai', 'Meh', 'Gorff', 'Awst', 'Medi', 'Hyd', 'Tach', 'Rhag'])
   end
+
+  it 'ensures the analytics yaml translation files have been synced with the main application with rake i18n:copy_analytics_yaml' do
+    analytics_gem_path = `bundle info energy-sparks_analytics --path`.chomp
+    analytics_yaml = File.join(analytics_gem_path, 'config', 'locales')
+    yaml = Dir["**/*.yml", base: analytics_yaml].reject {|f| f.match /^x-/}.sort
+    yaml.each do |yml|
+      expect(YAML.load_file(File.join(analytics_gem_path, 'config', 'locales', yml))).to eq(YAML.load_file(Rails.root.join('config', 'locales', 'analytics', yml)))
+    end
+  end
 end

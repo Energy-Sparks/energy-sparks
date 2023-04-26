@@ -4,7 +4,20 @@
     <%= header_nav_link 'All school groups', admin_school_groups_url %>
   </div>
 </div>
-<p>Pupils in active schools: <span class="badge badge-success"><%= number_with_delimiter @school_group.schools.visible.map(&:number_of_pupils).compact.sum %></span></p>
+<div class="row pb-2">
+  <div class="col-lg-6">
+    Pupils in active schools: <span class="badge badge-success"><%= number_with_delimiter @school_group.schools.visible.map(&:number_of_pupils).compact.sum %>
+  </div>
+  <div class="col-lg-6 text-right">
+    <% if @school_group.default_issues_admin_user %>
+      <span class="badge border badge-pill border-secondary font-weight-normal">
+        <%= link_to "Default Issues Admin • " + (@school_group.default_issues_admin_user == current_user ? "You" : @school_group.default_issues_admin_user.display_name),
+          polymorphic_path([:admin, Issue], user: @school_group.default_issues_admin_user),
+          class: 'text-decoration-none' %>
+      </span>
+    <% end %>
+  </div>
+</div>
 <div class="row pb-2">
   <div class="col-lg-12">
     <div class="card-deck">
@@ -28,15 +41,18 @@
   </div>
 </div>
 
-<%= render 'admin/shared/dashboard_message', object: @school_group %>
+<%= render 'admin/shared/dashboard_message', messageable: @school_group %>
 
-<div class="bg-light p-2 my-2 d-flex justify-content-between">
+<div id="school-group-button-panel" class="bg-light p-2 mb-2 d-flex justify-content-between border rounded">
   <%= link_to 'View', school_group_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Edit', edit_admin_school_group_path(@school_group), class: 'btn btn-sm' %>
+  <%= link_to 'Manage users', admin_school_group_users_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Manage partners', admin_school_group_partners_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Meter attributes', admin_school_group_meter_attributes_path(@school_group), class: 'btn btn-sm' %>
+  <%= link_to 'Meter updates', admin_school_group_meter_updates_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Meter report', admin_school_group_meter_report_path(@school_group), class: 'btn btn-sm' %>
-  <%= link_to 'Download meter report', admin_school_group_meter_report_path(@school_group, format: :csv) , class: 'btn btn-sm' %>
+  <%= link_to "#{fa_icon('envelope')} Meter report".html_safe, deliver_admin_school_group_meter_report_path(@school_group) , class: 'btn btn-sm', title: "Email meter report csv", method: :update, data: { confirm: "Are you sure you want to send the meter report to #{current_user.email}?" } %>
+  <%= link_to "#{fa_icon('file-download')} Issues".html_safe, admin_school_group_issues_path(@school_group, format: :csv) , class: 'btn btn-sm', title: "Download issues csv" %>
   <div title="School groups can only be deleted if there are no associated schools or users" rel="tooltip">
     <%= link_to 'Delete', admin_school_group_path(@school_group), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm#{' disabled' unless @school_group.safe_to_destroy?}" %>
   </div>
@@ -45,25 +61,40 @@
 <%= render 'schools_tabs' %>
 
 <div class="tab-content" id="school-group-schools-content">
-  <div class="tab-pane fade show active" id="active-content" role="tabpanel" aria-labelledby="active-tab">
+  <div class="tab-pane fade show active" id="active" role="tabpanel" aria-labelledby="active-tab">
     <% if @school_group.schools.visible.any? %>
       <%= render 'active_schools', school_group: @school_group %>
     <% else %>
       <div class="bg-light p-2">No active schools for <%= @school_group.name %>.</div>
     <% end %>
   </div>
-  <div class="tab-pane fade" id="onboarding-content" role="tabpanel" aria-labelledby="onboarding-tab">
+  <div class="tab-pane fade" id="onboarding" role="tabpanel" aria-labelledby="onboarding-tab">
     <% if @school_group.school_onboardings.incomplete.any? %>
-      <%= render 'onboarding_schools', school_group: @school_group %>
+      <%= render 'onboarding_schools', school_group: @school_group, anchor: "onboarding" %>
     <% else %>
       <div class="bg-light p-2">No schools currently onboarding for <%= @school_group.name %>.</div>
     <% end %>
   </div>
-  <div class="tab-pane fade" id="removed-content" role="tabpanel" aria-labelledby="removed-tab">
+  <div class="tab-pane fade" id="removed" role="tabpanel" aria-labelledby="removed-tab">
     <% if @school_group.schools.inactive.any? %>
       <%= render 'removed_schools', school_group: @school_group %>
     <% else %>
       <div class="bg-light p-2">No removed schools for <%= @school_group.name %>.</div>
+    <% end %>
+  </div>
+  <div class="tab-pane fade" id="school-group-issues" role="tabpanel" aria-labelledby="school-group-issues-tab">
+    <% if @school_group.issues.any? %>
+      <%= render 'admin/issues/issues_list', issues: @school_group.issues, issueable_type: 'Group' %>
+    <% else %>
+      <div class="bg-light p-2">No school group issues for <%= @school_group.name %>.</div>
+    <% end %>
+    <%= render 'admin/issues/new_issues_links', issueable: @school_group %>
+  </div>
+  <div class="tab-pane fade" id="school-issues" role="tabpanel" aria-labelledby="school-issues-tab">
+    <% if @school_group.school_issues.any? %>
+      <%= render 'admin/issues/issues_list', issues: @school_group.school_issues, issueable_type: 'School' %>
+    <% else %>
+      <div class="bg-light p-2">No school issues for <%= @school_group.name %>.</div>
     <% end %>
   </div>
 </div>

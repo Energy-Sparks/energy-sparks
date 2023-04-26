@@ -9,6 +9,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'spec_helper'
 require 'rspec/rails'
 require 'pry'
+require 'view_component/test_helpers'
 require 'capybara/rspec'
 require 'webdrivers'
 require 'capybara/email/rspec'
@@ -67,9 +68,19 @@ RSpec.configure do |config|
   config.before { ActionMailer::Base.deliveries.clear }
 
   config.include ApplicationHelper, include_application_helper: true
+  config.include Rails.application.routes.url_helpers, include_url_helpers: true
 
   # Wisper gem helpers
   config.include(Wisper::RSpec::BroadcastMatcher)
+
+  # ViewComponent helpers
+  config.include ViewComponent::TestHelpers, type: :component
+  config.include ViewComponent::SystemTestHelpers, type: :component
+  config.include Capybara::RSpecMatchers, type: :component
+  config.include Devise::Test::ControllerHelpers, type: :component
+  config.before(:each, type: :component) do
+    @request = controller.request
+  end
 end
 
 Shoulda::Matchers.configure do |config|

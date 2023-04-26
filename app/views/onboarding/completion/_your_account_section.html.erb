@@ -1,0 +1,36 @@
+<div class="card mb-3" id="your-account">
+  <div class="card-header">
+    <h4>
+      <%= t('onboarding.completion.new.your_account_section.title') %>
+      <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-account"
+        aria-expanded="<%= params[:show]=='account' ? 'true' : 'false' %>" aria-controls="collapse-account"><%= t('common.labels.view') %></button></span>
+    </h4>
+  </div>
+  <div id="collapse-account" class="collapse <%= 'show' if params[:show]=='account' %>">
+    <div class="card-body">
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <th><%= t('onboarding.completion.new.name') %>:</th>
+            <td><%=@school_onboarding.created_user.name%></td>
+          </tr>
+          <tr>
+            <th><%= t('onboarding.completion.new.email') %>:</th>
+            <td><%=@school_onboarding.created_user.email%></td>
+          </tr>
+          <% if @school_onboarding.created_user.staff_role.present? %>
+            <tr>
+              <th><%= t('onboarding.completion.new.role') %>:</th>
+              <td><%= t(@school_onboarding.created_user.staff_role.i18n_key) %></td>
+            </tr>
+          <% end %>
+          <tr>
+            <th><%= t('onboarding.completion.new.your_account_section.password') %>:</th>
+            <td>***********</td>
+          </tr>
+        </tbody>
+      </table>
+      <%= link_to t('onboarding.completion.new.your_account_section.edit_your_account'), edit_onboarding_account_path(@school_onboarding), class: 'btn btn-primary' %>
+    </div>
+  </div>
+</div>

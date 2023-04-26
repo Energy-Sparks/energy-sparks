@@ -1,8 +1,8 @@
-<h1>Add standing charges for this tariff</h1>
+<h1><%= t('schools.user_tariff_charges.index.title') %></h1>
 
 <div class="user_tariff">
 
-  <p>Using your bill, please provide as much detail as you can about the standing charges associated with this tariff.</p>
+  <p><%= t('schools.user_tariff_charges.index.using_your_bill_introduction') %>.</p>
   <br/>
 
   <%= render 'schools/user_tariffs/header', user_tariff: @user_tariff %>
@@ -17,8 +17,8 @@
 
     <br/>
 
-    <%= link_to "Previous", school_user_tariff_user_tariff_prices_path(@school, @user_tariff), class: 'btn' %>
-    <%= f.submit 'Next', class: 'btn btn-primary' %>
+    <%= link_to t('common.labels.previous'), school_user_tariff_user_tariff_prices_path(@school, @user_tariff), class: 'btn' %>
+    <%= f.submit t('common.labels.next'), class: 'btn btn-primary' %>
 
   <% end %>
 

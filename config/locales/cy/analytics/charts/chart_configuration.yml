@@ -113,7 +113,7 @@ cy:
         - Llwyth sylfaen kW
     benchmark:
       title:
-        - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn dy ranbarth
+        - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
     benchmark_co2:
       title:
         - Allyriadau Carbon Ysgol o Ddefnydd Trydan a Nwy
@@ -122,19 +122,19 @@ cy:
         - Cymhariaeth Meincnod (Defnydd Trydan Blynyddol)
     benchmark_electric_only_£:
       title:
-        - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn dy ranbarth
+        - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
     benchmark_gas_only_£:
       title:
-        - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn dy ranbarth
+        - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
     benchmark_kwh:
       title:
-        - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn dy ranbarth
+        - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
     benchmark_kwh_electric_only:
       title:
-        - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn dy ranbarth
+        - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
     benchmark_storage_heater_only_£:
       title:
-        - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn dy ranbarth
+        - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
     boiler_start_time:
       title:
         - Amser cychwyn boeler
@@ -275,19 +275,19 @@ cy:
         - Costau Ynni
     electricity_co2_last_7_days_with_co2_intensity:
       title:
-        - Amrywiad yn allyriadau carbon trydan dy ysgol dros yr wythnos ddiwethaf
+        - Amrywiad yn allyriadau carbon trydan eich ysgol dros yr wythnos ddiwethaf
     electricity_co2_last_7_days_with_co2_intensity_unmodified:
       title:
-        - Allyriadau carbon dy ysgol a dwyster carbon y Grid Trydan Cenedlaethol dros y flwyddyn ddiwethaf
+        - Allyriadau carbon eich ysgol a dwyster carbon y Grid Trydan Cenedlaethol dros y flwyddyn ddiwethaf
     electricity_co2_last_year_weekly_with_co2_intensity:
       title:
-        - Allyriadau carbon dy ysgol a dwyster carbon y Grid Trydan Cenedlaethol dros y flwyddyn ddiwethaf
+        - Allyriadau carbon eich ysgol a dwyster carbon y Grid Trydan Cenedlaethol dros y flwyddyn ddiwethaf
     electricity_co2_last_year_weekly_with_co2_intensity_co2_only:
       title:
-        - Allyriadau carbon dy ysgol a dwyster carbon y Grid Trydan Cenedlaethol dros y flwyddyn ddiwethaf
+        - Allyriadau carbon eich ysgol a dwyster carbon y Grid Trydan Cenedlaethol dros y flwyddyn ddiwethaf
     electricity_co2_last_year_weekly_with_co2_intensity_unmodified:
       title:
-        - Allyriadau carbon dy ysgol a dwyster carbon y Grid Trydan Cenedlaethol dros y flwyddyn ddiwethaf
+        - Allyriadau carbon eich ysgol a dwyster carbon y Grid Trydan Cenedlaethol dros y flwyddyn ddiwethaf
     electricity_cost_1_year_accounting_breakdown:
       title:
         - Costau Ynni
@@ -308,7 +308,7 @@ cy:
         - O fewn diwrnod (7 diwrnod diwethaf)
     electricity_kwh_last_7_days_with_co2_intensity:
       title:
-        - Amrywiad yn allyriadau carbon trydan dy ysgol dros yr wythnos ddiwethaf
+        - Amrywiad yn allyriadau carbon trydan eich ysgol dros yr wythnos ddiwethaf
     electricity_longterm_trend:
       title:
         - 'Trydan: tueddiadau hirdymor'
@@ -458,7 +458,7 @@ cy:
         - 'Yn ôl Wythnos: Efelychydd Trydan (Goleuadau Diogelwch)'
     group_by_week_electricity_simulator_solar_pv:
       title:
-        - 'Yn ôl Mis: Efelychydd Trydan (Solar PV)'
+        - 'Yn ôl Mis: Efelychydd Trydan (Solar Ffotofoltaig)'
     group_by_week_electricity_unlimited:
       title:
         - 'Yn ôl Wythnos: Trydan (aml-flwyddyn)'
@@ -504,6 +504,9 @@ cy:
     group_by_week_gas_unlimited:
       title:
         - 'Yn ôl Wythnos: Nwy (aml-flwyddyn)'
+    group_by_week_gas_versus_benchmark:
+      title:
+        - 'Yn ôl Wythnos: Nwy - o''i gymharu â meincnod'
     group_by_year_gas_unlimited_meter_breakdown_heating_model_fitter:
       title:
         - Dadansoddiad mesurydd nwy fesul blwyddyn
@@ -575,7 +578,7 @@ cy:
         - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd (Efelychydd)'
     intraday_electricity_simulator_solar_pv_kwh:
       title:
-        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Solar PV)'
+        - 'Blynyddol: Diwrnod Ysgol yn ôl Amser o''r Dydd: Efelychydd Trydan (Solar  Ffotofoltaig)'
     intraday_line_holidays:
       title:
         - O fewn diwrnod (gwyliau)
@@ -594,6 +597,9 @@ cy:
     intraday_line_school_days_6months_test_delete:
       title:
         - O fewn diwrnod (Cymharu 6 mis ar wahân)
+    intraday_line_school_days_gas_reduced_data_versus_benchmarks:
+      title:
+        - 'Yn ôl Wythnos: Nwy - o''i gymharu â meincnod - o fewn dydd'
     intraday_line_school_days_last5weeks:
       title:
         - Yn ystod y dydd (cymhariaeth y 5 wythnos diwethaf - diwrnod ysgol)
@@ -641,10 +647,10 @@ cy:
         - Nwy o fewn diwrnod (7 diwrnod diwethaf)
     management_dashboard_group_by_month_solar_pv:
       title:
-        - Dadansoddiad o baneli solar PV eich ysgol
+        - Dadansoddiad o baneli solar ffotofoltaig eich ysgol
     management_dashboard_group_by_month_solar_pv_unlimited:
       title:
-        - Dadansoddiad o baneli solar PV eich ysgol
+        - Dadansoddiad o baneli solar ffotofoltaig eich ysgol
     management_dashboard_group_by_week_electricity:
       title:
         - 'Yn ôl Wythnos: Trydan'
@@ -753,15 +759,15 @@ cy:
         - Faint mae fy ysgol yn ei wario ar drydan o gymharu ag ysgolion eraill (£)
     pupil_dashboard_solar_pv_monthly:
       title:
-        - Sut mae paneli solar PV fy ysgol yn lleihau defnydd fy ysgol o drydan o'r prif gyflenwad (kWh)
-        - Effaith Solar PV yn eich mis a ddewisir (mewn kWh)
-        - Effaith Solar PV ar eich diwrnod a ddewisir (mewn kWh)
+        - Sut mae paneli solar ffotofoltaig fy ysgol yn lleihau defnydd fy ysgol o drydan o'r prif gyflenwad (kWh)
+        - Effaith Solar ffotofoltaig yn eich mis a ddewisir (mewn kWh)
+        - Effaith Solar ffotofoltaig ar eich diwrnod a ddewisir (mewn kWh)
     pupil_dashboard_solar_pv_one_week_by_day:
       title:
-        - Solar PV ar gyfer yr wythnos ddiwethaf
+        - Solar ffotofoltaig ar gyfer yr wythnos ddiwethaf
     pupil_dashboard_solar_pv_one_week_by_day_previous_week:
       title:
-        - Solar PV ar gyfer yr wythnos flaenorol
+        - Solar ffotofoltaig ar gyfer yr wythnos flaenorol
     pupil_dashboard_storage_heaters_benchmark:
       title:
         - Faint mae fy ysgol yn ei wario ar stôr-wresogyddion o gymharu ag ysgolion eraill (£)
@@ -800,22 +806,22 @@ cy:
         - Thermostatig (Diwrnod Ysgol) - gwresogi - atchweliad gwahanu di-wres, yn ystyried covid
     solar_pv_group_by_month:
       title:
-        - Dadansoddiad o baneli solar PV eich ysgol
+        - Dadansoddiad o baneli solar ffotofoltaig eich ysgol
     solar_pv_group_by_month_dashboard_overview:
       title:
-        - Dadansoddiad o baneli solar PV eich ysgol
+        - Dadansoddiad o baneli solar ffotofoltaig eich ysgol
     solar_pv_group_by_week:
       title:
-        - Solar PV yn ôl wythnos o'r flwyddyn
+        - Solar ffotofoltaig yn ôl wythnos o'r flwyddyn
     solar_pv_group_by_week_by_submeter:
       title:
-        - Solar PV yn ôl wythnos o'r flwyddyn
+        - Solar ffotofoltaig yn ôl wythnos o'r flwyddyn
     solar_pv_last_7_days_by_submeter:
       title:
         - Defnydd trydan eich ysgol yn y 7 diwrnod diwethaf
     solar_pv_single_day_adhoc_test:
       title:
-        - Siart prawf PV solar undydd ad hoc
+        - Siart prawf solar ffotofoltaig undydd ad hoc
     storage_heater_by_day_of_week:
       title:
         - Defnydd stôr-wresogyddion yn ôl diwrnod yr wythnos
@@ -999,3 +1005,17 @@ cy:
     thermostatic_winter_weekend_best:
       title:
         - Thermostatig (Penwythnos y Gaeaf)
+    y_axis_label_name:
+      r2: ''
+      co2: kg CO2
+      days: dyddiau
+      kw: kW
+      kwh: kWh
+      percent: canran
+      percent_0dp: canran
+      relative_percent: canran
+      relative_percent_0dp: canran
+      timeofday: Amser o'r dydd
+      w: W
+      £: "£"
+      £_0dp: "£"

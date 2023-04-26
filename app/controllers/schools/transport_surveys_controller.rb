@@ -7,7 +7,9 @@ module Schools
     load_resource :transport_survey, find_by: :run_on, id_param: :run_on, through: :school, except: [:update]
 
     authorize_resource :transport_survey
+    before_action :header_fix_enabled
     before_action :load_or_create, only: [:update]
+    before_action :set_breadcrumbs
 
     def index
       @transport_surveys = @transport_surveys.order(run_on: :desc)
@@ -40,6 +42,12 @@ module Schools
     end
 
     private
+
+    def set_breadcrumbs
+      @breadcrumbs = [
+        { name: I18n.t('activerecord.models.transport_survey.other') },
+      ]
+    end
 
     def transport_survey_params
       params.require(:transport_survey).permit(:run_on, responses: [:run_identifier, :journey_minutes, :surveyed_at, :passengers, :transport_type_id, :weather])

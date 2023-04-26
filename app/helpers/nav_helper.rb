@@ -2,7 +2,7 @@ module NavHelper
   def navbar_image_link
     title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
     link_to '/home-page', class: 'navbar-brand', title: title do
-      image_tag('nav-brand-transparent.png', class: "d-inline-block align-top")
+      image_tag("nav-brand-transparent-#{I18n.locale}.png", class: "d-inline-block align-top")
     end
   end
 
@@ -52,6 +52,17 @@ module NavHelper
 
   def show_sub_nav?(school, hide_subnav)
     school.present? && school.id && hide_subnav.nil?
+  end
+
+  def header_fix_enabled?
+    @header_fix_enabled == true
+  end
+
+  def conditional_application_container_classes
+    classes = ''
+    classes += ' extra-padding' unless show_sub_nav?(@school, @hide_subnav)
+    classes += ' header-fix' if header_fix_enabled?
+    classes
   end
 
   def show_partner_footer?(school)

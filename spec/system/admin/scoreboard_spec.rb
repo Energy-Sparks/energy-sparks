@@ -16,7 +16,7 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
       click_on 'Create Scoreboard'
       expect(page).to have_content("can't be blank")
 
-      fill_in 'Name', with: 'BANES and Frome'
+      fill_in 'Name *', with: 'BANES and Frome'
       fill_in 'Description', with: 'A collection of schools'
       select 'Scotland', from: 'Academic year calendar'
       click_on 'Create Scoreboard'
@@ -29,7 +29,7 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
       scoreboard = create(:scoreboard, name: 'BANES and Frome')
       visit admin_scoreboards_path
       click_on 'Edit'
-      fill_in 'Name', with: 'BANES Only'
+      fill_in 'Name *', with: 'BANES Only'
       uncheck 'Public'
 
       click_on 'Update Scoreboard'

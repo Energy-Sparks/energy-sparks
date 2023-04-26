@@ -37,6 +37,18 @@ describe SchoolOnboarding, type: :model do
     end
   end
 
+  describe ".email_locales" do
+    it "only en for england" do
+      expect(SchoolOnboarding.new(country: 'england').email_locales).to eq([:en])
+    end
+    it "only en for scotland" do
+      expect(SchoolOnboarding.new(country: 'scotland').email_locales).to eq([:en])
+    end
+    it "en and cy for wales" do
+      expect(SchoolOnboarding.new(country: 'wales').email_locales).to eq([:en, :cy])
+    end
+  end
+
   describe ".incomplete" do
     context "when there is an onboarding with no events" do
       let!(:incomplete) { create :school_onboarding }

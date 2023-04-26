@@ -5,10 +5,11 @@
 
 <p><strong>Image:</strong>
 
-<% if !@activity_category.image.blank? %>
-  <p><%= image_tag @activity_category.image, width: '300px', class: "activity_type_image" %></p>
+<% if I18n.locale.to_s == 'cy' && @activity_category.t_attached(:image, :cy).present? %>
+  <p><%= image_tag @activity_category.image_cy, width: '300px', class: "activity_type_image" %></p>
+<% elsif @activity_category.t_attached(:image, :en).present? %>
+  <p><%= image_tag @activity_category.image_en, width: '300px', class: "activity_type_image" %></p>
 <% end %>
-
 
 <p><strong>Featured:</strong><%= y_n(@activity_category.featured) %></p>
 <p><strong>Pupil:</strong><%= y_n(@activity_category.pupil) %></p>

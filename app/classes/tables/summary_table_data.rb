@@ -16,6 +16,14 @@ module Tables
       end.join(' ')
     end
 
+    def table_date_ranges
+      table_date_ranges = {}
+      fuel_types.each do |fuel_type|
+        table_date_ranges[fuel_type] = { start_date: start_date(fuel_type), end_date: end_date(fuel_type) }
+      end
+      table_date_ranges
+    end
+
     def start_date(fuel_type)
       format_date(fetch(fuel_type, :start_date))
     end

@@ -1,0 +1,193 @@
+---
+en:
+  onboarding:
+    account:
+      create: Create my account
+      message_1: Your administrator login will allow you to manage your school on Energy Sparks
+      message_2: You can use an existing administrator account if you have one
+      message_3: Use the form below to create a new account
+      role_hint: What is your primary role in relation to Energy Sparks?
+      title: 'Step 1: Create your school administrator account'
+      title_for_update: Update your school adminstrator account details
+      update: Update my account
+      use_existing_account: Use an existing account
+      your_name: Your name
+    completion:
+      new:
+        admin: Admin
+        complete_setup: Complete setup
+        consent_section:
+          consent_up_to_date_message: You have given us consent to collect, store, analyse and publish your school's energy data
+          title: 3. Consent
+        email: Email
+        inset_days_section:
+          actions: Actions
+          add_an_inset_day: Add an inset day
+          configure_inset_days: Configure inset days
+          configure_inset_days_message_html: "<p>We've created a calendar for your school based on your school area's term times and national bank holidays.</p><p>Adding your school's inset days helps us make our energy calculations more accurate for days where the school may be closed.</p><p>Once your account is activated, you will be able to add any other dates where your school terms differ from your Local Authority recommended dates.</p>"
+          date: Date
+          type: Type
+        name: Name
+        opening_times_section:
+          day: Day
+          opening_times: Opening times
+          set_opening_times: Set opening times
+          set_your_school_opening_times: Set your school opening times
+          set_your_school_opening_times_message: We've set some default school opening times. If your school has different opening times then you can update them here
+        optional_steps_section:
+          actions: Actions
+          add_a_meter: Add a meter
+          configure_energy_meters: Configure energy meters
+          mpan_mprn: MPAN/MPRN
+          name: Name
+          optional_steps: Optional steps
+          optional_steps_message: It's not necessary for you to fill in the following sections to complete the sign-up process, but the more information you provide the quicker your school can start using Energy Sparks and our energy calculations will become more accurate.
+          school_meters_empty_message: If you have the details of your energy meters to hand then you can input them here. If not, we can get your meter details from your Local Authority, Multi-academy Trust or school group.
+          type: Type
+        pupil_password_section:
+          edit_pupil_account: Edit pupil account
+          pupil_account_name: Pupil account name
+          pupil_password: Pupil password
+          title: 5. Pupil account
+        review_and_update_your_answers: Review and update your answers before completing setup
+        role: Role
+        school_details_section:
+          dinners_are_cooked_on_site: Dinners are cooked on site
+          edit_school_details: Edit school details
+          floor_area: Floor area
+          key_stages: Key stages
+          kitchen_cooks_dinners_for_other_schools: Kitchen cooks dinners for other schools
+          number_of_pupils: Number of pupils
+          number_of_schools: Number of schools
+          percentage_of_free_school_meals: Percentage of free school meals
+          postcode: Postcode
+          school_address: School address
+          school_has_its_own_swimming_pool: School has its own swimming pool
+          school_has_night_storage_heaters: School has night storage heaters
+          school_has_solar_pv_panels: School has solar PV panels
+          school_name: School name
+          school_serves_school_dinners_on_site: School serves school dinners on site
+          stage_of_education: Stage of education
+          title: 2. Your school details
+          urn: URN
+          website: Website
+        school_users_section:
+          manage_users: Manage users
+          title: 4. Additional school accounts
+          you_have_not_added_additional_school_accounts_message: You have not added any additional school accounts. You will be able to add new accounts later, but doing so now will help you and the staff get setup sooner
+        title: 'Final step: review your answers'
+        your_account_section:
+          edit_your_account: Edit your account
+          password: Password
+          title: 1. Your school administrator account
+      show:
+        before_your_school_goes_live_message: Before your school goes live on Energy Sparks we will review the information you've provided and ensure we have access to your energy data
+        eager_to_get_started: Eager to get started?
+        in_the_meantime_you_can: In the meantime you can
+        or_look_at_how: Or look at how
+        other_schools_html: "<a href='%{schools_path}'>other schools</a> are using Energy Sparks"
+        review_user_guide_or_training_videos_message_html: Review our <a href="%{user_guide_path}">user guide</a> or watch our <a href="%{user_guide_videos_path}">training videos</a>
+        school_active_notice: Your school is now active!
+        school_successfully_set_up: "%{school_name} has been successfully set up on Energy Sparks. Thank you"
+        schools_in_your_area_html: "<a href='%{school_group_path}'>schools in your area</a> are using Energy Sparks"
+        this_normally_takes_24_hours_message: This normally takes about 24 hours. We will email you when we've completed our final checks
+        title: Setup completed
+        webinar_training_session_message_html: Sign up to one of our <a href='%{training_path}'>live webinar training sessions</a>
+        what_happens_next: What happens next?
+    consent:
+      create: Grant consent
+      title: 'Step 3: Grant consent to access and use data'
+    contacts:
+      edit:
+        title: Update alert contact
+      new:
+        title: Add a new alert contact
+    inset_days:
+      edit:
+        title: Edit inset day
+        update_inset_day: Update inset day
+      form:
+        date: Date
+        type: Type
+      new:
+        add_inset_day: Add inset day
+        title: New inset day
+    meters:
+      description_paragraph_1: The Meter Point Number is also known as the MPAN (for electricity meters) and the MPRN (for gas meters)
+      description_paragraph_2: 'Your MPAN should be printed on your electricity bill. It is a 13 digit number, and can be referred to as a ‘Supply Number’. An example number is: 20 0001 5001 165. Do not confuse your MPAN with your electricity supplier account number or the meter serial number printed on your electricity meter'
+      description_paragraph_3: Your MPRN should be printed on your gas bill. The format of a MPRN is standard. It is between 6-10 numerical digits long. Do not confuse your MPRN with your gas supplier account number or the meter serial number printed on your gas meter
+      edit:
+        title: Update meter
+      form:
+        hints:
+          meter_name: You can give your meter a name to describe the area of the school is supplies with energy, for example, Kitchen gas. This will help pupils and staff interpret the energy data in Energy Sparks. If you only have one meter this is not necessary.
+        labels:
+          meter_name: Meter Name
+          meter_point_number: Meter Point Number
+          serial_number: Serial number
+    pupil_account:
+      create: Create pupil account
+      message_1: Pupil accounts allow your pupils to log into Energy Sparks using only a password. No email address is required.
+      message_2: The accounts can be created to be used in classrooms or with eco-teams, one account per classroom or team and the passwords can then be shared with the pupils.
+      message_3: You can create more pupil accounts once your school is activated.
+      name: Name
+      name_hint: This could be the name of a classroom or an eco-team
+      name_placeholder: e.g. %{school_name} classroom password
+      pupil_password: Pupil password
+      pupil_password_hint: Make it memorable and easy for pupils to type
+      pupil_password_placeholder: e.g. superenergysavers
+      title: 'Step 5: Create your pupil account'
+      title_for_update: Update your pupil account
+      update: Update pupil account
+    school_details:
+      create: Save school details
+      message: Tell us about your school so that we can tailor the activities and insights we provide to you and your pupils, so that you can get the best from our service.
+      title: 'Step 2: Tell us about your school'
+      title_for_update: Update your school information
+      update: Update school details
+    school_times:
+      title: Update opening times
+      update: Update school times
+    show:
+      continue: Continue
+      get_started: To get started, we need to complete the following steps
+      introducing: We are excited to be introducing Energy Sparks to your school, and look forward to working with you to save energy.
+      more_steps: You have a few more steps to complete before we can setup your school
+      start: Start
+      step_1: Create your school administrator account
+      step_2: Gather some information about your school
+      step_3: Get your permission to collect, store, analyse and publish your school's energy data
+      step_4: Add any additional staff or school administrator accounts
+      step_5: Create a pupil account
+      step_6: Final review
+      thanks_for_enrolling_html: Thank you for enrolling <strong>%{school_name}</strong> with Energy Sparks!
+      time_to_complete: The setup process should take less than 10 minutes
+      title: Set up your school on Energy Sparks
+    users:
+      add_new_account: Add new account
+      adult_users_additional_accounts_message: You can add any number of additional accounts for the adult users at your school.
+      continue: Continue
+      edit:
+        title: Edit account
+        update_account: Update account
+      form:
+        preferred_locale: Preferred language
+        preferred_locale_hint: Set your preferred language for using the website and receiving emails
+        role: Role
+        staff_accounts_have_access_hint: Staff accounts have access to all teacher and pupil functionality. School administrators can manage users and school details
+        type: Type
+        what_is_the_users_relationship_hint: What is the users relationship with the school?
+      new:
+        create_account: Create account
+        title: Add a new account
+      skip_for_now: Skip for now
+      staff_accounts_have_access_message: Staff accounts have access to teacher, management and pupil Energy Sparks functionality and alerts but cannot manage other accounts. Administrator accounts can also manage other users and update your school details.
+      step_4: 'Step 4: Add additional accounts'
+      table:
+        admin: Admin?
+        email: Email
+        name: Name
+        preferred_locale: Preferred language
+        role: Role
+      title: Manage your school accounts
+      when_you_have_finished_onboarding_message: When you have finished onboarding your school, new users will be sent an email to confirm their account and will then be asked to set a password for their account before it can be accessed.

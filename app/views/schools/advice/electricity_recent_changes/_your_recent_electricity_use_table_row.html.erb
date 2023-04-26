@@ -1,0 +1,15 @@
+<% if combined_usage_metric.kwh %>
+  <tr>
+    <td><%= period %></td>
+    <td class="text-right"><%= format_unit(combined_usage_metric.kwh, :kwh, true, :target) %></td>
+    <td class="text-right"><%= format_unit(combined_usage_metric.£, :£, true, :target) %></td>
+    <td class="text-right"><%= format_unit(combined_usage_metric.co2, :co2, true, :target) %></td>
+  </tr>
+<% else %>
+  <tr>
+    <td><%= t('advice_pages.no_recent_data') %></td>
+    <td class="text-right">-</td>
+    <td class="text-right">-</td>
+    <td class="text-right">-</td>
+  </tr>
+<% end %>

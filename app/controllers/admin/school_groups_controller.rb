@@ -46,13 +46,22 @@ module Admin
 
     def school_group_params
       params.require(:school_group).permit(
-        :name, :description, :default_scoreboard_id,
+        :name, :description,
+        :default_country,
+        :default_scoreboard_id,
         :default_template_calendar_id,
         :default_dark_sky_area_id,
         :default_solar_pv_tuos_area_id,
         :default_weather_station_id,
         :default_chart_preference,
-        :public
+        :default_issues_admin_user_id,
+        :public,
+        :admin_meter_statuses_electricity_id,
+        :admin_meter_statuses_gas_id,
+        :admin_meter_statuses_solar_pv_id,
+        :default_data_source_electricity_id,
+        :default_data_source_gas_id,
+        :default_data_source_solar_pv_id
       )
     end
   end

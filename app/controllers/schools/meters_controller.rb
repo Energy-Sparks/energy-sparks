@@ -5,6 +5,8 @@ module Schools
     load_and_authorize_resource :school
     load_and_authorize_resource through: :school
 
+    before_action :set_breadcrumbs
+
     def index
       load_meters
       @meter = @school.meters.new
@@ -79,6 +81,10 @@ module Schools
 
   private
 
+    def set_breadcrumbs
+      @breadcrumbs = [{ name: I18n.t('manage_school_menu.manage_meters') }]
+    end
+
     def enough_data_for_targets?
       return nil unless can?(:view_target_data, @school)
       Targets::SchoolTargetService.new(@school).enough_data?
@@ -98,7 +104,7 @@ module Schools
     end
 
     def meter_params
-      params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number, :dcc_meter, :sandbox, :earliest_available_data, :notes)
+      params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number, :dcc_meter, :sandbox, :earliest_available_data, :data_source_id, :procurement_route_id, :admin_meter_statuses_id)
     end
   end
 end

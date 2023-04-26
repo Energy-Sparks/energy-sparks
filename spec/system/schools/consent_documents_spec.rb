@@ -83,7 +83,7 @@ describe 'consent documents', type: :system do
         visit school_consent_document_path(school, bill)
         click_on 'Edit'
 
-        fill_in 'Title', with: "Changed title"
+        fill_in :consent_document_title, with: "Changed title"
         fill_in_trix with: "New description"
 
         click_on 'Update'
@@ -138,7 +138,7 @@ describe 'consent documents', type: :system do
             visit school_consent_document_path(school, bill)
             click_on 'Edit'
 
-            fill_in 'Title', with: "Changed title"
+            fill_in :consent_document_title, with: "Changed title"
             fill_in_trix with: "New description"
 
             click_on 'Update'

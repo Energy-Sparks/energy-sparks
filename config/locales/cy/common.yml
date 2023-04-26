@@ -1,26 +1,72 @@
 cy:
   co2: CO2
   common:
-    application: Energy Sparks
+    application: Sbarcynni
+    back_to_top: Yn ôl i'r brig
     bar_charts: Siartiau bar
-    confirm: Wyt ti'n siŵr?
+    confirm: Ydych chi'n siŵr?
+    data: data
     electricity: Trydan
-    electricity_and_solar_pv: Trydan a Solar PV
+    electricity_and_solar_pv: Trydan a Solar Ffotofoltaig
+    email_us: e-bostio ni
     gas: Nwy
     labels:
       actions: Gweithredoedd
+      activate: Gweithredu
+      active: Gweithredol
+      are_you_sure: Ydych chi'n siŵr?
+      attributes: Priodweddau
       back: Yn ôl
+      cancel: Canslo
+      close: Cau
+      create: Creu
+      created: Crëwyd
+      deactivate: Dadweithredu
       delete: Dileu
+      download: Lawrlwytho
       edit: Golygu
+      finished: Wedi gorffen
+      home: Hafan
+      inactive: Anweithredol
+      last_updated: Diweddarwyd ddiwethaf
       manage: Rheoli
       next: Nesaf
+      no_label: 'Na'
+      not_set: Heb ei osod
       previous: Blaenorol
+      remove: Tynnu
+      report: Adrodd
+      restart: Ail-ddechrau
+      save: Cadw
+      status: Statws
+      submit: Cyflwyno
+      type: Math
+      update: Diweddaru
+      upload: Uwchlwytho
+      view: Gweld
       view_results: Gweld canlyniadau
+      yes_label: 'Ie'
     line_graphs: Graffiau llinell
     pie_charts: Siartiau cylch
+    privacy_policy: polisi preifatrwydd
     school: Ysgol
+    school_types:
+      infant: Babanod
+      junior: Iau
+      middle: Canol
+      mixed_primary_and_secondary: 'Cymysg: Cynradd ac Uwchradd'
+      primary: Cynradd
+      secondary: Uwchradd
+      special: Arbennig
+    solar_pv: Solar ffotofoltaig
     storage_heater: Stôr-wresogydd
     storage_heaters: Stôr-wresogyddion
+    table:
+      columns:
+        co2_kg: CO2 (kg)
+        cost_gbp: Cost (£)
+        use_kwh: Defnyddio (kWh)
+    terms_and_conditions: telerau ac amodau
     units:
       minutes:
         one: '%{count} funud'
@@ -28,6 +74,4 @@ cy:
         many: '%{count} o funudau'
         other: '%{count} o funudau'
   kwh: kWh
-  school_types:
-    mixed_primary_and_secondary: 'Cymysg: Cynradd ac Uwchradd'
   £: "£"

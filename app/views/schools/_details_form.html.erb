@@ -1,37 +1,37 @@
 <% if school.persisted? && current_user.admin? %>
-  <p><%= school.name %> was created on <%= nice_dates(school.created_at) %></p>
+  <p><%= t('schools.school_details.created', school_name: school.name, created_at: nice_dates(school.created_at)) %></p>
 <% end %>
 
 <%= f.hidden_field :data_enabled, value: school.data_enabled %>
-<%= f.input :name, label: 'School name'%>
-<%= f.input :urn, label: 'Unique Reference Number', hint: 'This is your URN in England, SEED in Scotland' %>
+<%= f.input :name %>
+<%= f.input :urn, hint: t('schools.school_details.urn_hint') %>
 
 <div class="form-group">
   <%= f.label :funding_status %>
-  <%= f.select :funding_status, options_for_select(School.funding_statuses.map {|key, value| [key.titleize, key]}, f.object.funding_status), {include_blank: false}, { class: 'form-control' } %>
+  <%= f.select :funding_status, options_for_select(School.funding_statuses.map {|key, value| [t("schools.funding_status.#{key}"), key]}, f.object.funding_status), {include_blank: false}, { class: 'form-control' } %>
 </div>
 
 <% if current_user.admin? %>
   <div class="bg-light">
-    <strong>Admin options</strong>
-    <%= f.input :activation_date, as: :tempus_dominus_date, default_date: nil, label: 'Activation date', hint: 'This is the date when the school becomes active on Energy Sparks' %>
+    <strong><%= t('schools.school_details.admin_options') %></strong>
+    <%= f.input :activation_date, as: :tempus_dominus_date, default_date: nil, hint: t('schools.school_details.activation_date_hint') %>
     <%= f.input :enable_targets_feature %>
     <%= f.input :public %>
   </div>
 <% end %>
 
-<h2 id="address">Address</h2>
+<h2 id="address"><%= t('schools.school_details.address') %></h2>
 <%= f.input :address %>
 <%= f.input :postcode %>
 <%= f.input :website %>
 
 <% if can?(:manage, :geocoding) %>
-  <h2>Location</h2>
+  <h2><%= t('schools.school_details.location') %></h2>
   <div class="form-group">
     <%= f.label :country %>
-    <%= f.select :country, options_for_select(School.countries.map {|key, value| [key.titleize, key]}, f.object.country), {include_blank: false}, { class: 'form-control' } %>
+    <%= f.select :country, options_for_select(School.countries.map {|key, value| [t('school_statistics.' + key), key]}, f.object.country), {include_blank: false}, { class: 'form-control' } %>
   </div>
-  <p>Leave these blank to have them set from the postcode</p>
+  <p><%= t('schools.school_details.geocode_message') %></p>
   <div class="form-group">
     <%= f.input :latitude %>
     <%= f.input :longitude %>
@@ -39,36 +39,36 @@
 
   <% if f.object.latitude && f.object.longitude %>
     <p>
-      <%= link_to 'View on map', "https://www.openstreetmap.org/?mlat=#{f.object.latitude}&mlon=#{f.object.longitude}", target: "_blank" %>
+      <%= link_to t('schools.school_details.view_on_map'), "https://www.openstreetmap.org/?mlat=#{f.object.latitude}&mlon=#{f.object.longitude}", target: "_blank" %>
     </p>
   <% end %>
 <% end %>
 
-<h2 id="basic-details">Basic details</h2>
+<h2 id="basic-details"><%= t('schools.school_details.basic_details') %></h2>
 <div class="form-group">
-  <p>Stage of education</p>
+  <p><%= t('schools.school_details.stage_of_education') %></p>
 
   <% School.school_types.keys.each do |school_type| %>
     <div class="form-check form-check-inline">
       <%= f.radio_button :school_type, school_type, class: "form-check-input" %>
-      <%= f.label "school_type_#{school_type.to_sym}", t("school_types.#{school_type}", default: school_type.humanize),  class: "form-check-label" %>
+      <%= f.label "school_type_#{school_type.to_sym}", t("common.school_types.#{school_type}", default: school_type.humanize),  class: "form-check-label" %>
     </div>
   <% end %>
 </div>
 
 <div class="form-group pt-2">
-  <p>Key stages</p>
+  <p><%= t('schools.school_details.key_stage') %></p>
 
   <%= f.collection_check_boxes(:key_stage_ids, key_stages, :id, :name) do |b| %>
     <div class="custom-control custom-checkbox custom-control-inline">
       <%= b.check_box(class: "custom-control-input") %>
       <%= b.label(class: "custom-control-label") do %>
-        <%= b.object.name %>
+        <%= t(b.object.i18n_key) %>
       <% end %>
     </div>
   <% end %>
 
-  <small class="form-text text-muted">If you are in Scotland, KS1 covers P2 and P3, KS2 covers P4 to P7, KS3 covers S1 to S3, KS4 covers S4 and S5, KS5 is S6.</small>
+  <small class="form-text text-muted"><%= t('schools.school_details.key_stage_message') %>.</small>
 </div>
 
 <div class="form-group pt-2">
@@ -76,24 +76,31 @@
 </div>
 
 <div class="form-group">
-  <%= f.input :percentage_free_school_meals, label: 'Percentage of pupils eligible for free school meals at any time during the past 6 years', hint: "If you don't know, please leave this field blank." %>
+  <%= f.input :percentage_free_school_meals, hint: t('schools.school_details.percentage_free_school_meals_hint') %>
 </div>
 
-<h2 id="school-features">School features</h2>
+<h2 id="school-features"><%= t('schools.school_details.school_features') %></h2>
 
 <div class="form-group">
-  <%= f.input :floor_area, label: 'Floor area in square metres', hint: "If you don't know this please leave it blank and we will try to obtain this information from your Local Authority or MAT" %>
+  <%= f.input :floor_area, hint: t('schools.school_details.floor_area_hint') %>
 </div>
 
-<%= f.input :indicated_has_solar_panels, label: 'Our school has solar PV panels' %>
-<%= f.input :indicated_has_storage_heaters, label: 'Our school has night storage heaters' %>
-<%= f.input :has_swimming_pool, label: 'Our school has its own swimming pool' %>
-<%= f.input :serves_dinners, label: 'Our school serves school dinners on site', input_html: {data: {reveals: '.school_cooks_dinners_onsite'}}%>
-<%= f.input :cooks_dinners_onsite, label: 'Dinners are cooked on site', input_html: {data: {reveals: '.school_cooks_dinners_for_other_schools'}}, wrapper_html: {data: {revealed_by: '.school_serves_dinners'}} %>
-<%= f.input :cooks_dinners_for_other_schools, label: 'The kitchen cooks dinners for other schools', input_html: {data: {reveals: '.school_cooks_dinners_for_other_schools_count'}}, wrapper_html: {data: {revealed_by: '.school_cooks_dinners_on_site'}} %>
-<%= f.input :cooks_dinners_for_other_schools_count, label: 'How many schools does your school cook dinners for?', wrapper_html: {data: {revealed_by: '.school_cooks_dinners_for_other_schools'}}%>
+<%= f.input :indicated_has_solar_panels %>
+<%= f.input :indicated_has_storage_heaters %>
+<%= f.input :has_swimming_pool %>
+<%= f.input :serves_dinners, input_html: {data: {reveals: '.school_cooks_dinners_onsite'}}%>
+<%= f.input :cooks_dinners_onsite, input_html: {data: {reveals: '.school_cooks_dinners_for_other_schools'}}, wrapper_html: {data: {revealed_by: '.school_serves_dinners'}} %>
+<%= f.input :cooks_dinners_for_other_schools, input_html: {data: {reveals: '.school_cooks_dinners_for_other_schools_count'}}, wrapper_html: {data: {revealed_by: '.school_cooks_dinners_on_site'}} %>
+<%= f.input :cooks_dinners_for_other_schools_count, wrapper_html: {data: {revealed_by: '.school_cooks_dinners_for_other_schools'}}%>
 
-<h2 id="preferences">Analysis Preferences</h2>
+<% if EnergySparks::FeatureFlags.active?(:your_school_estates) %>
+  <%= f.input :alternative_heating_oil %>
+  <%= f.input :alternative_heating_lpg %>
+  <%= f.input :alternative_heating_biomass %>
+  <%= f.input :alternative_heating_district_heating %>
+<% end %>
+
+<h2 id="preferences"><%= t('schools.school_details.analysis_preferences') %></h2>
 
 <div class="form-group">
   <label><%= t("schools.chart_preference.form_group") %></label>

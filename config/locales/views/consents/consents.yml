@@ -1,0 +1,38 @@
+---
+en:
+  consent:
+    description: We need your consent in order to enrol your school in the Energy Sparks service.
+    message_html: If you need more time to make a decision you can return to this page at any time using the link in the email. If you have any questions about the above permissions then you can %{email_us} to discuss them.
+    not_sure: Not sure?
+    section_1_content_html: To provide Energy Sparks to your school we need to use data about the energy you consume or produce at your school. To do this we need your consent to access, store, use and share that data so that we can provide you with appropriate insights, analysis and advice.
+    section_1_title: Why do we need your consent?
+    section_2_content_html: |-
+      <p>Energy Sparks can use all of the following types of data:</p>
+      <ul>
+        <li>Half hourly energy consumption, generation and export information for both gas and electricity. Both historical and ongoing data will be obtained where available</li>
+        <li>Energy tariff information containing information of the price you are charged for energy consumed to provide more accurate cost and savings estimates through the Energy Sparks tool.</li>
+        <li>Information identifying the energy meter (number, location, type)</li>
+        <li>Names and contact information for people in your school.</li>
+      </ul>
+      <p>The means of collecting this data will be specific to your school depending on your energy supplier and what type of meters you have installed. We will handle setting this on your behalf but may require additional information from you.</p>
+      <p>More information about how we store and use your data is covered in our %{privacy_policy_link}.</p>
+      <p>We also use public information about your school, including its address to verify which meters you have installed.</p>
+    section_2_title: What data do we need to access?
+    section_3_content_html: |-
+      <p>As described in our %{privacy_policy_link}, we will use this data to:</p> <ul>
+        <li>Analyse and present your energy consumption and generation data on our website</li>
+        <li>Email or text you alerts highlighting changes in energy use, or long term energy consumption problems</li>
+        <li>Email you our regular newsletter</li>
+        <li>Support you with saving energy at your school</li>
+      </ul> <p>Energy Sparks will collect and use consumption, generation and export data for as long as your school uses our service.</p> <p>Some of your data, including information on energy usage will be publicly displayed on our website. Other data, such as accurate tariff information is only presented to authorised school users. Publicly accessible cost estimates are calculated using average cost data.</p> <p>Independent schools may opt-in to make all data private, for an additional fee.</p>
+    section_3_title: What we will do with your data
+    section_4_content_html: |-
+      <p>Your school has the right to withdraw consent at any time.</p>
+      <p>As described in our %{terms_and_conditions_link} you can do this by emailing hello@energysparks.uk. Energy Sparks will then remove your ongoing and historical energy data from the Energy Sparks website within one month.</p>
+    section_4_title: Withdrawing consent
+    section_5_content_html: |-
+      <p>To complete the setup of your school, please read the following consent statement and provide your name and job title.</p>
+      <p>You must also agree to our %{terms_and_conditions_link} which set out the full agreement between your school and Energy Sparks.</p>
+    section_5_title: Your grant of consent
+    terms_and_conditions_html: I give permission and confirm full agreement with the %{terms_and_conditions_link}
+    title: Consent to access and use data

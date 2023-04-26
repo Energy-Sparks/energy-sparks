@@ -1,0 +1,16 @@
+<div class="card mb-3" id="consent">
+  <div class="card-header">
+    <h4>
+      <%= t('onboarding.completion.new.consent_section.title') %>
+      <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-consent"
+        aria-expanded="false" aria-controls="collapse-consent"><%= t('common.labels.view') %></button></span>
+    </h4>
+  </div>
+  <div id="collapse-consent" class="collapse">
+    <div class="card-body">
+      <% if @school.consent_up_to_date? %>
+        <%= t('onboarding.completion.new.consent_section.consent_up_to_date_message') %>
+      <% end %>
+    </div>
+  </div>
+</div>

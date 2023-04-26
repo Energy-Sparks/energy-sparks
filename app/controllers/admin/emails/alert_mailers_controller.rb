@@ -1,6 +1,6 @@
 module Admin::Emails
   class AlertMailersController < AdminController
-    layout 'layouts/alert_mailer'
+    layout 'mailer'
 
     def show
       @email = Email.find(params[:id])

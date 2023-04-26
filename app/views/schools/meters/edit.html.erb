@@ -1,3 +1,3 @@
-<h1>Edit meter: <%= @school.name %> : <%= @meter.name %></h1>
+<h1><%= t('schools.meters.edit.edit_meter') %>: <%= @school.name %> : <%= @meter.name %></h1>
 
 <%= render 'form', school: @school, meter: @meter, show_dcc_fields: current_user.admin? %>

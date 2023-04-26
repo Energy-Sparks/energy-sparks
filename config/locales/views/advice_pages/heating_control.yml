@@ -1,0 +1,79 @@
+---
+en:
+  advice_pages:
+    heating_control:
+      analysis:
+        heating_timings:
+          estimated_savings_html: "<p> If you followed our recommendations to switch your heating on later for a full year you could save %{estimated_saving}. </p> <p>This would reduce your gas consumption by %{percent}.</p>"
+          intro_html: |-
+            <p>
+              This table shows the time your heating switched on during the most recent week for which we have data.
+            </p>
+            <p>
+              It suggests a better time for your heating to have switched on based on that day's weather on that day, along with an expected saving if you changed your heating to match the recommended time.
+            </p>
+          title: Central heating timings
+        meter_breakdown:
+          chart_subtitle_html: This graph shows the gas consumption for every half hour of the day during school days in winter between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span> for %{meter}
+          chart_title: How gas usage varies during the school day in winter for individual meters
+          title: Central heating operating times by meter
+        school_day_heating:
+          title: Gas usage for heating during the day
+        seasonal_control:
+          estimated_savings_html: Your school could reduce its gas usage by %{estimated_savings_kwh} kWh by turning its boiler off in warm weather. For example earlier in the Spring and later in the Autumn. This would save %{estimated_savings_gbp} and %{estimated_savings_co2} kg CO2 annually.
+          heating_on_in_warm_weather_days: Last year your school heating was on for %{days} days during warm weather. This is %{adjective}.
+          percent_html: This represents %{percent} of your annual heating consumption
+          title: Seasonal control
+        summary: This section gives a more detailed analysis of your school’s boiler control and some things to look out for.
+        title: Heating control analysis
+      charts:
+        gas_heating_season_intraday_up_to_1_year:
+          footer_html: |-
+            <p>
+              This is a useful graph for determining how well controlled the timing of the boiler is. A well timed boiler should only come on at about 6:00am to get the school up to temperature by 8:00am, and then turn off again about half an hour before the school closes.
+            </p>
+            <p>
+              If your school has underfloor heating, it may take a few hours longer to warm up, but does not need to be on 24 hours a day.
+            </p>
+          subtitle_html: This graph shows the gas consumption for every half hour of the day during school days in winter between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>
+          title: How gas usage varies during the school day in winter
+        heating_on_off_by_week:
+          header: You can drill-down to individual days by clicking on the bars on the chart.
+          subtitle_html: This graph shows when the heating and hot water was on between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>, including when the heating was left on in warm weather.
+          title: Seasonal control chart
+      insights:
+        comparison:
+          callout_footer: days
+          heating_on_comparison_link: How often you have heating on during warm weather
+          intro: When it comes to leaving heating on during warm weather, how do you compare with other schools?
+          more_detail_html: For more detail look at how your school compares with others in your group
+          start_time_comparison_link: Morning start times for heating
+          title: How do you compare?
+        controls:
+          average_start_time: Our analysis shows that recently the average start time for your heating was %{time}.
+          title: Your heating controls
+        title: What do we mean by heating control?
+        view_our_analysis_html: <a href="%{href}">View our analysis</a>
+        warm_weather:
+          title: Leaving the heating on during warm weather
+      page_title: Heating control analysis
+      tables:
+        columns:
+          assessment: Assessment
+          date: Date
+          heating_on_time: Switched on
+          heating_time: Heating timing
+          overnight_temperature: Overnight temperature (°C)
+          potential_saving: Potential saving
+          potential_saving_co2: kg CO2
+          potential_saving_gbp: "£"
+          potential_saving_kwh: kWh
+          recommended_time: Recommended
+      what_are_heating_controls:
+        link: Learn more
+        text_html: |-
+          <p>
+          Heating control refers to the settings used to heat the school effectively while it is fully occupied and to minimise waste out of school hours.
+          </p>
+          Getting the heating control right for your school can save money and carbon very quickly as well as improving the learning environment for students.
+          </p>

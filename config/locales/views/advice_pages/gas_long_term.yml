@@ -1,0 +1,92 @@
+---
+en:
+  advice_pages:
+    gas_long_term:
+      analysis:
+        comparison:
+          assessment:
+            high:
+              percent_html: Your annual gas usage is %{percent} higher than the best performing schools.
+              savings_html: If you matched the usage of those schools you could save %{estimated_savings_kwh} or %{estimated_savings_gbp} per year.
+              title: Your gas usage is high.
+            low:
+              percent_html: Your annual gas usage is %{percent} lower than the best performing schools.
+              title: Your gas usage is low.
+          table_explanation: The following table outlines the potential benefits of reducing your gas use to match %{school_type} schools with a similar number of pupils.
+          title: Comparison with other schools
+        degree_days: A number of charts have an additional blue line showing 'degrees days' which is a measure of how cold it was during the period. Degree days are the inverse of temperature. The higher the degree days the lower the temperature.
+        long_term_trends:
+          summary: This section looks at how your gas consumption changes during the year, and compares consumption for the last 12 months with previous years where we have data.
+          title: Long term trends
+        meter_breakdown:
+          summary: Your school has multiple gas meters. The section below shows gas use for each meter. You might be able to use this information to identify high or unusual energy consumption in certain parts of your school.
+          table_explanation: Having multiple meters can help you understand your energy use better, however, there is a significant standing charge for each meter of more than £1,000 per year, so there is potential for saving by consolidating meters.
+          table_introduction: The table below covers the most recent 12 months from %{start_date} to %{end_date}.
+          title: Gas consumption breakdown by meter
+        recent_trend:
+          title: Recent trend
+        sections: The following sections provide more background and analysis on your gas consumption
+        summary: This section gives a more detailed analysis of how your school’s gas consumption has changed in the long term.
+        title: Long term usage analysis
+      charts:
+        benchmark:
+          subtitle: This chart shows how your school’s gas use compared against well managed and exemplar schools between %{start_date} and %{end_date}
+          title: Annual gas use comparison with other schools
+        gas_by_month_year:
+          explanation: This chart can be a quick way to spot whether changes to heating and hot water control are having an impact on your gas consumption. You need to be careful when comparing months with holidays, particularly Easter, which some years is in March and other times in April.
+          subtitle_html: This chart shows the difference in gas consumption for the 12 months ending on <span class='end-date'>%{end_date}</span> and the previous 12 months
+          title: Monthly gas consumption comparison over the last two years
+        gas_longterm_trend:
+          explanation: Reducing gas consumption can be achieved by turning your school's thermostat down, reducing out of hours usage, insulating your buildings or installing a new more efficient gas boiler.
+          subtitle: This chart, and the table below give the breakdown of gas consumption between school day open and closed, holidays and weekends for each full year of data we have for your school
+          temp_compensation: There is no temperature compensation applied to this chart. You should expect the amount of gas used each year to vary and broadly follow degree days - the colder it is outside, the more gas should be used in the school.
+          title: Change in gas consumption over the last few years
+        group_by_week_gas:
+          explanation_html: |-
+            <p>
+            The amount of gas used throughout the year should follow closely with degree days - the colder it is outside, the more gas should be used in the school. You should expect consumption to be quite low between the Easter holidays and autumn half term as the heating can be switched off and gas only used for the hot water, kitchen, or to heat a swimming pool. Gas consumption should be low during the holidays - shown in red.
+            </p>
+          subtitle_html: This chart gives the breakdown of gas consumption between school day open and closed, holidays and weekends for each week between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>
+          title: Gas consumption by week for the last 12 months
+        group_by_week_gas_meter_breakdown_one_year:
+          header: Clicking on the chart columns allows you to drilldown to more detailed data, clicking on the legend allows you to add and remove meters.
+          subtitle: The chart below provides a weekly breakdown of the gas used by each underlying meter.
+          title: Gas consumption by meter
+        group_by_week_gas_unlimited:
+          explanation: This chart shows how your gas consumption varies throughout the year over the long term. Each bar represents a whole week and the split between holiday, weekend and school day open and closed consumption for that week. It highlights how gas consumption generally increases in the winter and is lower in the summer. You can click on the chart to explore the data in more detail.
+          header: Each bar represents a whole week and the split between holiday, weekend and school day open and closed consumption for that week. It highlights how gas consumption generally increases in the winter and is lower in the summer.
+          subtitle: This chart gives the breakdown of gas consumption between school day open and closed, holidays and weekends for every week of data for your school
+          title: Gas consumption by week for the last few years
+      insights:
+        comparison:
+          callout_footer: annual gas usage
+          how_do_you_compare: How does your gas use for the last 12 months compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?
+          more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
+          title: How do you compare?
+        current_usage:
+          last_year: Last year
+          review_our_analysis: Review our detailed analysis
+          title: Your long term gas use
+        next_steps: To fully determine the causes of the changes in your gas consumption you should review how consumption has changed month by month. To ensure that you are saving as much gas as possible, you should review your heating timings and set temperatures.
+        title: What do we mean by long term gas use?
+      page_title: Long term changes in gas consumption
+      tables:
+        columns:
+          annual_change: Change since previous year
+          annual_usage_co2: Annual co2 (kg/CO2)
+          annual_usage_gbp: Annual cost (£)
+          annual_usage_kwh: Annual usage (kWh)
+          estimated_savings_gbp: Estimated saving (£)
+          meter: Meter
+          percent: Percent of total use
+        labels:
+          all_meters: All meters
+      what_is_long_term_use:
+        link: Learn more
+        text_html: |-
+          <p>
+          Tracking long term trends in your school's gas use can help you to monitor your overall progress towards reducing your gas costs and carbon emissions.
+          </p>
+          <p>
+          Viewing your gas use over a whole year or more can help identify any unexpected variations in your usage and do forward planning.
+          </p>

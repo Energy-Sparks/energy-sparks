@@ -1,6 +1,8 @@
 <%= content_for :page_title, t('schools.show.dashboard_title', school_name: @school.name) %>
 
-<%= render 'shared/dashboard_title', school: @school, co2_pages: @co2_pages, public: true, show_data_enabled_features: @show_data_enabled_features %>
+<%= render 'shared/dashboard_title', school: @school do %>
+  <%= render 'adult_dashboard_buttons', school: @school, co2_pages: @co2_pages, public: true, show_data_enabled_features: @show_data_enabled_features %>
+<% end %>
 
 <% if @overview_data %>
   <h2><%= t('schools.show.summary_of_recent_energy_usage') %></h2>
@@ -20,7 +22,8 @@
 <% end %>
 
 <% if @show_standard_prompts %>
-  <%= render 'management/schools/dashboard_message', school: @school %>
+  <%= render 'management/schools/dashboard_message', messageable: @school %>
+  <%= render 'management/schools/dashboard_message', messageable: @school.try(:school_group) %>
 <% end %>
 
 <% if @suggest_estimates_for_fuel_types.present? && @suggest_estimates_for_fuel_types.any? %>
@@ -45,6 +48,10 @@
 
 <% if @review_targets %>
   <%= render 'management/schools/targets/review_targets', school: @school %>
+<% end %>
+
+<% if @set_new_target %>
+  <%= render 'management/schools/targets/set_new_target', school: @school %>
 <% end %>
 
 <% if @show_standard_prompts %>
@@ -96,7 +103,7 @@
           <%= fa_icon('file-alt') %>
           <%= t('schools.show.print_view') %>
         <% end %>
-        <%= link_to t('schools.show.download_data'), school_downloads_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' if can?(:read, :school_downloads) %>
+        <%= link_to t('schools.show.download_data'), school_downloads_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' if can?(:download_school_data, @school) %>
     </div>
   </div>
 <% end %>

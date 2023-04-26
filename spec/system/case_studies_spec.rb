@@ -15,17 +15,21 @@ RSpec.describe "case_studies", type: :system do
   end
 
   it 'shows the expected link' do
-    expect(page).to have_link I18n.t('case_studies.download'), href: "/case_studies/#{case_study.id}/download"
+    expect(page).to have_link I18n.t('case_studies.download'), href: "/case_studies/#{case_study.id}/download?locale=en"
   end
 
   it 'serves the file' do
-    find("a[href='/case_studies/#{case_study.id}/download']").click
+    find("a[href='/case_studies/#{case_study.id}/download?locale=en']").click
     expect(page).to have_http_status(200)
   end
 
   context "a welsh download is not available" do
+    before do
+      visit case_studies_path(locale: 'cy')
+    end
+
     it "the welsh link is not displayed" do
-      expect(page).to have_no_link I18n.t('case_studies.download', :locale => :cy), href: "/case_studies/#{case_study.id}/download?locale=cy"
+      expect(page).to have_link I18n.t('case_studies.download', :locale => :cy), href: "/case_studies/#{case_study.id}/download?locale=en"
     end
   end
 
@@ -35,7 +39,7 @@ RSpec.describe "case_studies", type: :system do
       file_cy: fixture_file_upload(Rails.root + "spec/fixtures/images/newsletter-placeholder.png")) }
 
     before do
-      visit case_studies_path
+      visit case_studies_path(locale: 'cy')
     end
 
     it 'shows the welsh link' do

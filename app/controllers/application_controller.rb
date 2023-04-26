@@ -1,27 +1,30 @@
 class ApplicationController < ActionController::Base
+  include DefaultUrlOptionsHelper
+
   protect_from_forgery with: :exception
   around_action :switch_locale
   before_action :authenticate_user!
   before_action :analytics_code
   before_action :pagy_locale
   before_action :check_admin_mode
-  helper_method :site_settings, :current_school_podium, :current_user_school
+  helper_method :site_settings, :current_school_podium, :current_user_school, :current_school_group
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
   end
 
+  def after_sign_in_path_for(user)
+    if EnergySparks::FeatureFlags.active?(:redirect_to_preferred_locale)
+      subdomain = ApplicationController.helpers.subdomain_for(user.preferred_locale)
+      root_url(subdomain: subdomain).chomp('/') + session.fetch(:user_return_to, '/')
+    else
+      session.fetch(:user_return_to, root_url)
+    end
+  end
+
   def switch_locale(&action)
     locale = LocaleFinder.new(params, request).locale
     I18n.with_locale(locale, &action)
-  end
-
-  def default_url_options
-    if Rails.env.production?
-      { host: I18n.locale == :cy ? ENV['WELSH_APPLICATION_HOST'] : ENV['APPLICATION_HOST'] }
-    else
-      super
-    end
   end
 
   def route_not_found
@@ -46,6 +49,10 @@ class ApplicationController < ActionController::Base
 
   def current_ip_address
     request.remote_ip
+  end
+
+  def current_school_group
+    current_user.try(:default_school_group)
   end
 
   private
@@ -74,5 +81,9 @@ class ApplicationController < ActionController::Base
 
   def pagy_locale
     @pagy_locale = I18n.locale.to_s
+  end
+
+  def header_fix_enabled
+    @header_fix_enabled = true
   end
 end

@@ -6,7 +6,7 @@ class SolarAreaLoaderJob < ApplicationJob
   end
 
   def perform(area)
-    start_date = Date.yesterday - 30.days
+    start_date = Date.yesterday - 2.years
     DataFeeds::SolarPvTuosLoader.new(start_date).import_area(area)
   end
 end

@@ -60,10 +60,9 @@ cy:
         activities_completed: Rwyt ti wedi cwblhau %{count} o weithgareddau
         admin_view: Gwedd weinyddol
         choose_another_activity: Dewisa weithgaredd arall
-        complete_an_activity: Cwblha weithgaredd i sgorio pwyntiau ar Energy Sparks
+        complete_an_activity: Cwblha weithgaredd i sgorio pwyntiau ar Sbarcynni
         enter_temperatures: Rho dymereddau
         find_how_much_energy_used: Darganfod faint o ynni a ddefnyddiwyd
-        find_out_more: Dysgu rhagor&hellip;
         how_will_school_compare: Sut bydd dy ysgol yn cymharu? Byddi di'n gallu darganfod yn fuan!
         look_at_the_energy_use: Gad i ni edrych ar y data defnydd ynni ar gyfer dy ysgol
         measure_temperatures: Mesura dymhereddau ystafell ddosbarth i ddarganfod a ddylet ti droi'r gwres i lawr i arbed ynni
@@ -78,7 +77,7 @@ cy:
         start_transport_survey: Dechrau arolygu
         things_to_do: Pethau i'w gwneud
         title: Dangosfwrdd disgyblion ar gyfer %{school_name}
-        transport_surveys: Dechreuwch arolwg trafnidiaeth fel y gallwch ddarganfod faint o garbon y mae cymuned eich ysgol yn ei ddefnyddio trwy deithio i'r ysgol
+        transport_surveys: Dechreuwch arolwg trafnidiaeth fel y gallwch ddarganfod faint o garbon y mae cymuned eich ysgol yn ei gynhyrchu trwy deithio i'r ysgol
         try_this_first: Rho gynnig ar yr un hwn yn gyntaf
         try_this_next: Rho gynnig ar hwn nesaf
         update_temperatures: Diweddaru tymereddau

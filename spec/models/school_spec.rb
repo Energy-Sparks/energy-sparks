@@ -37,6 +37,21 @@ describe School do
     end
   end
 
+  it 'validates alternative heating percents' do
+    [:alternative_heating_oil_percent, :alternative_heating_lpg_percent, :alternative_heating_biomass_percent, :alternative_heating_district_heating_percent].each do |field|
+      subject[field] = 100
+      expect(subject).to be_valid
+      subject[field] = 0
+      expect(subject).to be_valid
+      subject[field] = -1
+      expect(subject).not_to be_valid
+      subject[field] = 101
+      expect(subject).not_to be_valid
+      subject[field] = nil
+      expect(subject).to be_valid
+    end
+  end
+
   it 'validates postcodes' do
     ["BA2 £3Z", "BA14 9 DU", "TS11 7B"].each do |invalid|
       subject.postcode=invalid
@@ -563,6 +578,8 @@ describe School do
         expect(subject.has_current_target?).to eql true
         expect(subject.current_target).to eql target
         expect(subject.most_recent_target).to eql target
+        expect(subject.expired_target).to be_nil
+        expect(subject.has_expired_target?).to eql false
       end
 
       it "the target should add meter attributes" do
@@ -577,6 +594,8 @@ describe School do
           expect(subject.has_current_target?).to be true
           expect(subject.current_target).to eql target
           expect(subject.most_recent_target).to eql future_target
+          expect(subject.expired_target).to be_nil
+          expect(subject.has_expired_target?).to eql false
         end
       end
 
@@ -590,6 +609,8 @@ describe School do
           expect(subject.has_current_target?).to be false
           expect(subject.current_target).to eql nil
           expect(subject.most_recent_target).to eql target
+          expect(subject.expired_target).to eq target
+          expect(subject.has_expired_target?).to eql true
         end
 
         it "should still produce meter attributes" do
@@ -682,7 +703,7 @@ describe School do
     let!(:intervention_type_2){ create :intervention_type }
     let!(:observation_1){ create :observation, :intervention, at: date_1, school: school, intervention_type: intervention_type_1 }
     let!(:observation_2){ create :observation, :intervention, at: date_2, school: school, intervention_type: intervention_type_2 }
-    let!(:observation_without_intervention_type) { create(:observation, :temperature, at: date_1, school: school) }
+    let!(:observation_without_intervention_type) { create(:observation, :temperature, at: date_1 + 1.day, school: school) }
 
     it 'finds observations from the academic year' do
       expect(school.observations_in_academic_year(academic_year.start_date + 2.months)).to eq([observation_1, observation_without_intervention_type])
@@ -698,6 +719,18 @@ describe School do
 
     it 'handles missing academic year' do
       expect(school.intervention_types_in_academic_year(Date.parse('01-01-1900'))).to eq([])
+    end
+
+    describe '#subscription_frequency' do
+      it 'returns the subscription frequency for a school if there is a holiday approaching' do
+        allow(school).to receive(:holiday_approaching?) { true }
+        expect(school.subscription_frequency).to eq([:weekly, :termly, :before_each_holiday])
+      end
+
+      it 'returns the subscription frequency for a school if there is not a holiday approaching' do
+        allow(school).to receive(:holiday_approaching?) { false }
+        expect(school.subscription_frequency).to eq([:weekly])
+      end
     end
 
     context 'when finding intervention types by date' do

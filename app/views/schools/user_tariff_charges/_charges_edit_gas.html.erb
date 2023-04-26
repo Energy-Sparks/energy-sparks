@@ -1,5 +1,5 @@
 
-<h4>Consumption and supply charges</h4>
+<h4><%= t('schools.user_tariff_charges.charges_edit_gas.consumption_and_supply_charges') %></h4>
 
 <div class="fixed_charge">
   <%= f.fields_for :fixed_charge do |ff| %>
@@ -9,7 +9,7 @@
 
 <br/>
 
-<h4>Other charges</h4>
+<h4><%= t('schools.user_tariff_charges.charges_edit_gas.other_charges') %></h4>
 
 <%= f.fields_for :other do |ff| %>
   <%= render 'charge_basic', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :other), f: ff %>

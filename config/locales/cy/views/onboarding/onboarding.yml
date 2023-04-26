@@ -1,0 +1,192 @@
+cy:
+  onboarding:
+    account:
+      create: Creu fy nghyfrif
+      message_1: Bydd eich cyfrif gweinyddwr yn caniatau i chi reoli'ch ysgol ar Sbarcynni
+      message_2: Gallwch ddefnyddio cyfrif gweinyddwr presennol os oes un gennych chi
+      message_3: Defnyddiwch y ffurflen isod i greu cyfrif newydd
+      role_hint: Beth yw eich prif rôl mewn perthynas â Sbarcynni?
+      title: 'Cam 1: Creu eich cyfrif gweinyddwr ysgol'
+      title_for_update: Diweddaru manylion eich cyfrif gweinyddwr ysgol
+      update: Diweddaru fy nghyfrif
+      use_existing_account: Defnyddio cyfrif presennol
+      your_name: Eich enw
+    completion:
+      new:
+        admin: Gweinyddwr
+        complete_setup: Cwblhau gosod
+        consent_section:
+          consent_up_to_date_message: Rydych chi wedi rhoi caniatâd i ni gasglu, storio, dadansoddi a chyhoeddi data ynni eich ysgol
+          title: 3. Caniatâd
+        email: E-bost
+        inset_days_section:
+          actions: Camau
+          add_an_inset_day: Ychwanegu diwrnod HMS
+          configure_inset_days: Ffurfweddu diwrnodau HMS
+          configure_inset_days_message_html: "<p>Rydym wedi creu calendr ar gyfer eich ysgol yn seiliedig ar amseroedd tymor eich ysgol a gwyliau banc cenedlaethol.</p><p>Mae ychwanegu diwrnodau HMS eich ysgol yn ein helpu i wneud ein cyfrifiadau ynni yn fwy cywir ar gyfer diwrnodau pan all yr ysgol fod ar gau.</p><p>Unwaith y bydd eich cyfrif wedi’i actifadu, byddwch yn gallu ychwanegu unrhyw ddyddiadau eraill lle mae eich tymhorau ysgol yn wahanol i’r dyddiadau a argymhellir gan eich Awdurdod Lleol.</p>"
+          date: Dyddiad
+          type: Math
+        name: Enw
+        opening_times_section:
+          day: Diwrnod
+          opening_times: Oriau agor
+          set_opening_times: Gosod oriau agor
+          set_your_school_opening_times: Gosod oriau agor eich ysgol
+          set_your_school_opening_times_message: Rydym wedi pennu rhai oriau agor rhagosodedig ar gyfer ysgolion. Os oes gan eich ysgol amseroedd agor gwahanol, gallwch eu diweddaru yma
+        optional_steps_section:
+          actions: Camau
+          add_a_meter: Ychwanegu mesurydd
+          configure_energy_meters: Ffurfweddu mesuryddion ynni
+          mpan_mprn: MPAN/MPRN
+          name: Enw
+          optional_steps: Camau dewisol
+          optional_steps_message: Nid oes angen i chi lenwi'r adrannau canlynol i gwblhau'r broses gofrestru, ond po fwyaf o wybodaeth y byddwch yn ei darparu, y cyflymaf y gall eich ysgol ddechrau defnyddio Energy Sparks a bydd ein cyfrifiadau ynni yn dod yn fwy cywir.
+          school_meters_empty_message: Os oes gennych fanylion eich mesuryddion ynni wrth law yna gallwch eu mewnbynnu yma. Os na, gallwn gael manylion eich mesurydd gan eich Awdurdod Lleol, Ymddiriedolaeth Aml-academi neu grŵp ysgol.
+          type: Math
+        pupil_password_section:
+          edit_pupil_account: Golygu cyfrif disgybl
+          pupil_account_name: Enw cyfrif disgybl
+          pupil_password: Cyfrinair disgybl
+          title: 5. Cyfrif disgybl
+        review_and_update_your_answers: Adolygwch a diweddarwch eich atebion cyn cwblhau'r gosodiad
+        role: Rôl
+        school_details_section:
+          dinners_are_cooked_on_site: Ciniawau yn cael eu coginio ar y safle
+          edit_school_details: Golygu manylion yr ysgol
+          floor_area: Arwynebedd llawr
+          key_stages: Cyfnodau allweddol
+          kitchen_cooks_dinners_for_other_schools: Cegin yn coginio ciniawau ar gyfer ysgolion eraill
+          number_of_pupils: Nifer y disgyblion
+          number_of_schools: Nifer yr ysgolion
+          percentage_of_free_school_meals: Canran y prydau ysgol am ddim
+          postcode: Cod post
+          school_address: Cyfeiriad yr ysgol
+          school_has_its_own_swimming_pool: Mae gan yr ysgol ei phwll nofio ei hun
+          school_has_night_storage_heaters: Mae gan yr ysgol stôr-wresogyddion nos
+          school_has_solar_pv_panels: Mae gan yr ysgol baneli solar PV
+          school_name: Enw'r ysgol
+          school_serves_school_dinners_on_site: Mae'r ysgol yn gweini cinio ysgol ar y safle
+          stage_of_education: Cyfnod addysg
+          title: 2. Manylion eich ysgol
+          urn: URN
+          website: Gwefan
+        school_users_section:
+          manage_users: Rheoli defnyddwyr
+          title: 4. Cyfrifon ysgol ychwanegol
+          you_have_not_added_additional_school_accounts_message: Nid ydych wedi ychwanegu unrhyw gyfrifon ysgol ychwanegol. Byddwch yn gallu ychwanegu cyfrifon newydd yn ddiweddarach, ond bydd gwneud hynny nawr yn eich helpu chi a'r staff i sefydlu'n gynt
+        title: 'Cam olaf: adolygu''ch atebion'
+        your_account_section:
+          edit_your_account: Golygu eich cyfrif
+          password: Cyfrinair
+          title: 1. Eich cyfrif gweinyddwr ysgol
+      show:
+        before_your_school_goes_live_message: Cyn i'ch ysgol fynd yn fyw ar Sbarcynni byddwn yn adolygu'r wybodaeth rydych wedi'i darparu a sicrhau bod gennym fynediad at eich data ynni
+        eager_to_get_started: Yn awyddus i ddechrau?
+        in_the_meantime_you_can: Yn y cyfamser gallwch
+        or_look_at_how: Neu edrychwch ar sut
+        other_schools_html: "<a href='%{schools_path}'>mae ysgolion eraill</a> yn defnyddio Sbarcynni"
+        review_user_guide_or_training_videos_message_html: Adolygwch ein <a href="%{user_guide_path}">canllaw defnyddiwr</a> neu gwyliwch ein <a href="%{user_guide_videos_path}">fideos hyfforddiant</a>
+        school_active_notice: Mae eich ysgol bellach yn weithredol!
+        school_successfully_set_up: "Mae %{school_name} wedi'i sefydlu'n llwyddiannus ar Sbarcynni. Diolch"
+        schools_in_your_area_html: "Mae <a href='%{schools_path}'>ysgolion yn eich ardal</a> yn defnyddio Sbarcynni"
+        this_normally_takes_24_hours_message: Mae hyn fel arfer yn cymryd tua 24 awr. Byddwn yn anfon e-bost atoch pan fyddwn wedi cwblhau ein gwiriadau terfynol
+        title: Wedi cwblhau gosod
+        webinar_training_session_message_html: Cofrestrwch ar gyfer un o'n <a href='%{training_path}'>sesiynau hyfforddi gweminar byw</a>
+        what_happens_next: Beth sy'n digwydd nesaf?
+    consent:
+      create: Rhoi caniatâd
+      title: 'Cam 3: Rhoi caniatâd i gael mynediad at a defnyddio data'
+    contacts:
+      edit:
+        title: Diweddaru cyswllt rhybudd
+      new:
+        title: Ychwanegu cyswllt rhybudd newydd
+    inset_days:
+      edit:
+        title: Golygu diwrnod HMS
+        update_inset_day: Diweddaru diwrnod HMS
+      form:
+        date: Dyddiad
+        type: Math
+      new:
+        add_inset_day: Ychwanegu diwrnod HMS
+        title: Diwrnod HMS newydd
+    meters:
+      description_paragraph_1: Gelwir y Rhif Pwynt Mesurydd hefyd yn MPAN (ar gyfer mesuryddion trydan) a'r MPRN (ar gyfer mesuryddion nwy).
+      description_paragraph_2: 'Dylai eich MPAN fod wedi''i argraffu ar eich bil trydan. Mae’n rhif 13 digid, a gellir cyfeirio ato fel ‘Rhif Cyflenwi’. Enghraifft o rif yw: 20 0001 5001 165. Peidiwch â chymysgu eich MPAN a rhif eich cyfrif cyflenwr trydan neu rif cyfresol y mesurydd sydd wedi''i argraffu ar eich mesurydd trydan'
+      description_paragraph_3: Dylai eich MPRN fod wedi'i argraffu ar eich bil nwy. Mae fformat MPRN yn safonol. Mae rhwng 6-10 digid rhifiadol o hyd. Peidiwch â chymysgu eich MPRN a rhif eich cyfrif cyflenwr nwy neu rif cyfresol y mesurydd sydd wedi'i argraffu ar eich mesurydd nwy
+      edit:
+        title: Diweddaru mesurydd
+      form:
+        hints:
+          meter_name: Gallwch roi enw i'ch mesurydd i ddisgrifio ardal yr ysgol lle mae cyflenwadau ynni, er enghraifft, Nwy cegin. Bydd hyn yn helpu disgyblion a staff i ddehongli'r data ynni yn Sbarcynni. Os mai dim ond un mesyrudd sydd gennych, nid oes angen gwneud hyn.
+        labels:
+          meter_name: Enw'r Mesurydd
+          meter_point_number: Rhif Pwynt Mesurydd
+          serial_number: Rhif cyfresol
+    pupil_account:
+      create: Creu cyfrif disgybl
+      message_1: Mae cyfrifon disgybl yn caniatáu disgyblion i fewngofnodi i Sbarcynni gan ddfnyddio cynfrinair yn unig. Nid oes angen cyfeiriad e-bost.
+      message_2: Gellir creu’r cyfrifon i’w defnyddio mewn ystafelloedd dosbarth neu gyda thimau eco, un cyfrif fesul dosbarth neu dîm ac yna gellir rhannu’r cyfrineiriau gyda’r disgyblion.
+      message_3: Gallwch greu mwy o gyfrifon disgyblion unwaith y bydd eich ysgol ar waith.
+      name: Enw
+      name_hint: Gallai hyn fod yn enw dosbarth neu dîm eco
+      name_placeholder: e.e. cyfrinair dosbarth %{school_name}
+      pupil_password: Cyfrinair disgybl
+      pupil_password_hint: Gwnewch ef yn gofiadwy ac yn hawdd i ddisgyblion ei deipio
+      pupil_password_placeholder: e.e. arbedwyrynniarbennig
+      title: 'Cam 5: Creu eich cyfrif disgybl'
+      title_for_update: Diweddaru eich cyfrif disgybl
+      update: Diweddaru cyfrif disgybl
+    school_details:
+      create: Cadw manylion ysgol
+      message: Dywedwch wrthym am eich ysgol fel y gallwn deilwra'r gweithgareddau a'r mewnwelediadau a ddarparwn i chi a'ch disgyblion, er mwyn i chi gael y gorau o'n gwasanaeth.
+      title: 'Cam 2: Dweud wrthym am eich ysgol'
+      title_for_update: Diweddaru gwybodaeth eich ysgol
+      update: Diweddaru manylion ysgol
+    school_times:
+      title: Diweddaru amseroedd agor
+      update: Diweddaru amseroedd ysgol
+    show:
+      continue: Parhau
+      get_started: i gychwyn arni, mae angen i ni gwblhau'r camau canlynol
+      introducing: Rydym yn gyffrous i gyflwyno Sbarcynni i'ch ysgol, ac edrychwn ymlaen at weithio gyda chi i arbed ynni.
+      more_steps: Mae gennych ychydig mwy o gamau i'w cwblhau cyn y gallwn sefydlu'ch ysgol
+      start: Dechrau
+      step_1: Creu cyfrif gweinyddwr eich ysgol
+      step_2: Casglu gwybodaeth am eich ysgol
+      step_3: Cael eich caniatâd i gasglu, storio, dadansoddi a chyhoeddi data ynni eich ysgol
+      step_4: Ychwanegu unrhyw gyfrifon staff neu weinyddwyr ysgol ychwanegol
+      step_5: Creu cyfrif disgybl
+      step_6: Adolygiad olaf
+      thanks_for_enrolling_html: Diolch am gofrestru <strong>%{school_name}</strong> gyda Sbarcynni!
+      time_to_complete: Dylai'r broses sefydlu gymryd llai na 10 munud
+      title: Sefydlwch eich ysgol ar Sbarcynni
+    users:
+      add_new_account: Ychwanegu cyfrif newydd
+      adult_users_additional_accounts_message: Gallwch ychwanegu unrhyw nifer o gyfrifon ychwanegol ar gyfer defnyddwyr sy'n oedolion yn eich ysgol.
+      continue: Parhau
+      edit:
+        title: Golygu cyfrif
+        update_account: Diweddaru cyfrif
+      form:
+        preferred_locale: Dewis iaith
+        preferred_locale_hint: Gosodwch eich dewis iaith ar gyfer defnyddio'r wefan a derbyn e-byst
+        role: Rôl
+        staff_accounts_have_access_hint: Mae gan gyfrifon staff fynediad at holl swyddogaethau athrawon a disgyblion. Gall gweinyddwyr ysgolion reoli defnyddwyr a manylion ysgol
+        type: Math
+        what_is_the_users_relationship_hint: Beth yw perthynas y defnyddiwr gyda'r ysgol?
+      new:
+        create_account: Creu cyfrif
+        title: Ychwanegu cyfrif newydd
+      skip_for_now: Hepgor am y tro
+      staff_accounts_have_access_message: Mae gan gyfrifon staff fynediad at swyddogaethau a rhybuddion Sbarcynni athrawon, rheolwyr a disgyblion ond ni allant reoli cyfrifon eraill. Gall cyfrifon gweinyddwr hefyd reoli defnyddwyr eraill a diweddaru manylion eich ysgol.
+      step_4: 'Cam 4: Ychwanegu cyfrifon ychwanegol'
+      table:
+        admin: Gweinyddwr?
+        email: E-bost
+        name: Enw
+        preferred_locale: Dewis iaith
+        role: Rôl
+      title: Rheoli cyfrifon eich ysgol
+      when_you_have_finished_onboarding_message: Pan fyddwch wedi gorffen sefydlu'ch ysgol, bydd e-bost yn cael ei anfon at ddefnyddwyr newydd i gadarnhau eu cyfrif ac yna gofynnir iddynt osod cyfrinair ar gyfer eu cyfrif cyn y gellir ei gyrchu.

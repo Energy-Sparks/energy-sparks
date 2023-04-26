@@ -11,7 +11,7 @@
 
     <div class="mc-field-group form-group row">
       <div class="col-sm-3">
-        <%= label_tag :user_name, 'User name *' %>
+        <%= label_tag :user_name, t('mailchimp_signups.mailchimp_form.user_name') %>
       </div>
       <div class="col-sm-9">
         <%= text_field_tag "merge_fields[FULLNAME]", config.user_name, class: 'form-control', required: true %>
@@ -20,7 +20,7 @@
 
     <div class="mc-field-group form-group row">
       <div class="col-sm-3">
-        <%= label_tag 'School name (if appropriate)' %>
+        <%= label_tag t('mailchimp_signups.mailchimp_form.school_name') %>
       </div>
       <div class="col-sm-9">
         <%= text_field_tag "merge_fields[SCHOOL]", config.school_name, class: 'form-control'  %>
@@ -29,7 +29,7 @@
 
     <div class="mc-field-group form-group row">
       <div class="col-sm-3">
-        <%= label_tag :email_address, 'Email address *' %>
+        <%= label_tag :email_address, t('mailchimp_signups.mailchimp_form.email_address') %>
       </div>
       <div class="col-sm-9">
         <%= text_field_tag :email_address, config.email_address, class: 'form-control', required: true %>
@@ -48,14 +48,14 @@
               <%= label_tag "interests_#{category.id}_#{interest.id}", interest.name, value: interest.name, class: "form-check-label" %>
             </div>
             <% if interest.name == 'Other' %>
-              <%= text_field_tag "merge_fields[#{other_field_name(category.title)}]", '', class: 'form-control hidden', placeholder: 'Please specify', class: 'hidden' %>
+              <%= text_field_tag "merge_fields[#{other_field_name(category.title)}]", '', class: 'form-control hidden', placeholder: t('mailchimp_signups.mailchimp_form.please_specify'), class: 'hidden' %>
             <% end %>
           <% end %>
         </div>
       </div>
     <% end %>
 
-    <%= submit_tag "Subscribe", class: 'btn btn-success' %>
+    <%= submit_tag t('mailchimp_signups.mailchimp_form.subscribe'), class: 'btn btn-success' %>
 
   <% end %>
 

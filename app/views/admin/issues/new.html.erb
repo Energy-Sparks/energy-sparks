@@ -1,0 +1,1 @@
+<%= render 'form', issue: @issue, title: "New #{@issue.issue_type.capitalize}" + (@issue.issueable ? " for #{@issue.issueable.name}" : '') %>

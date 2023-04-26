@@ -1,0 +1,37 @@
+<%= component 'notice', status: :neutral do |c| %>
+  <% c.with_link { link_to t('advice_pages.heating_control.what_are_heating_controls.link'), learn_more_school_advice_heating_control_path(@school) } %>
+  <%= t('advice_pages.heating_control.what_are_heating_controls.text_html') %>
+<% end %>
+
+<%= render 'schools/advice/section_title', section_id: 'comparison', section_title: t('advice_pages.heating_control.insights.controls.title') %>
+
+<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertHeatingSensitivityAdvice), show_links: false, show_icons: false %>
+
+<p>
+  <%= t('advice_pages.heating_control.insights.controls.average_start_time',
+  time: @last_week_start_times.average_start_time) %>
+</p>
+
+<%= t('advice_pages.heating_control.analysis.heating_timings.estimated_savings_html',
+  estimated_saving: format_unit(@estimated_savings.£, :£),
+  percent: format_unit(@percentage_of_annual_gas, :percent)) %>
+
+<p>
+  <%= t('advice_pages.heating_control.insights.view_our_analysis_html', href: analysis_school_advice_heating_control_path(@school, anchor: 'heating-timings')) %>
+</p>
+
+<% if @enough_data_for_seasonal_analysis %>
+  <%= render 'schools/advice/section_title', section_id: 'comparison', section_title: t('advice_pages.heating_control.insights.warm_weather.title') %>
+
+  <%= render 'warm_weather_notice', seasonal_analysis: @seasonal_analysis, warm_weather_on_days_rating: @warm_weather_on_days_rating %>
+
+  <%= render 'warm_weather_benefits', seasonal_analysis: @seasonal_analysis %>
+
+  <p>
+    <%= t('advice_pages.heating_control.insights.view_our_analysis_html', href: analysis_school_advice_heating_control_path(@school, anchor: 'seasonal-control')) %>
+  </p>
+<% end %>
+
+<% if @school.school_group.present? %>
+  <%= render 'comparison', school: @school, benchmark_warm_weather_days: @benchmark_warm_weather_days %>
+<% end %>

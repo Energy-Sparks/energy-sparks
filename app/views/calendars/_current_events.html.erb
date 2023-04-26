@@ -1,14 +1,14 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>Type</th>
-      <th>Start Date</th>
-      <th>End Date</th>
-      <th>Last Updated</th>
+      <th><%= t('calendars.current_events.type') %></th>
+      <th><%= t('calendars.current_events.start_date') %></th>
+      <th><%= t('calendars.current_events.end_date') %></th>
+      <th><%= t('calendars.current_events.last_updated') %></th>
       <% if can? :manage, calendar %>
-        <th>Status</th>
+        <th><%= t('calendars.current_events.status') %></th>
       <% end %>
-      <th>Actions</th>
+      <th><%= t('common.labels.actions') %></th>
     </tr>
   </thead>
   <tbody>
@@ -29,7 +29,7 @@
         <% if can? :manage, calendar %>
           <td><%= calendar_event_status(calendar_event) %></td>
         <% end %>
-        <td><div class="btn-group"><%= link_to 'Edit', edit_calendar_calendar_event_path(calendar_event.calendar, calendar_event), class: 'btn btn-warning' %><%= link_to 'Delete', calendar_calendar_event_path(calendar, calendar_event), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></div></td>
+        <td><div class="btn-group"><%= link_to t('common.labels.edit'), edit_calendar_calendar_event_path(calendar_event.calendar, calendar_event), class: 'btn btn-warning' %><%= link_to t('common.labels.delete'), calendar_calendar_event_path(calendar, calendar_event), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %></div></td>
       </tr>
     <% end %>
   </tbody>

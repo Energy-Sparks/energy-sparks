@@ -40,6 +40,7 @@ class CalendarEvent < ApplicationRecord
   scope :bank_holidays,     -> { joins(:calendar_event_type).merge(CalendarEventType.bank_holiday) }
   scope :outside_term_time, -> { joins(:calendar_event_type).merge(CalendarEventType.outside_term_time) }
 
+  scope :by_end_date,       -> { order(end_date: :asc)}
   before_validation :update_academic_year
 
   validates :calendar, :calendar_event_type, :start_date, :end_date, presence: true

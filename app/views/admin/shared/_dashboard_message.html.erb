@@ -1,11 +1,9 @@
-<div class="bg-neutral py-2 clearfix">
-  <div class="float-left px-4">
-    <%= fa_icon(:info) %>
+<div class="alert alert-info clearfix mb-2 d-flex">
+  <div class="pl-2 pr-3 justify-content-start"><%= fa_icon(:info) %></div>
+  <div class="flex-grow-1">
+    <%= messageable.dashboard_message.try(:message) || "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}" %>
   </div>
-  <div class="float-left">
-    <%= object.dashboard_message.try(:message) || "No message is currently set to display on dashboards for this #{object.model_name.human.downcase}" %>
-  </div>
-  <div class="float-right px-2">
-    <%= link_to 'Set message', url_for([:edit, :admin, object, :dashboard_message]), class: 'btn btn-sm' %>
+  <div class="justify-content-end">
+    <%= link_to 'Set message', url_for([:edit, :admin, messageable, :dashboard_message]), class: 'btn btn-sm' %>
   </div>
 </div>

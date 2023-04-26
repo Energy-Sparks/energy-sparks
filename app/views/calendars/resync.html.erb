@@ -1,13 +1,13 @@
-<h1>Resync completed for <%= @calendar.title %></h1>
-<p><%= link_to 'Back', calendar_path(@calendar), class: 'btn btn-success' %></p>
+<h1><%= t('calendars.resync.title', calendar_title: @calendar.title) %>Resync completed for <%= @calendar.title %></h1>
+<p><%= link_to t('common.labels.back'), calendar_path(@calendar), class: 'btn btn-success' %></p>
 
 <% if @resync_service.failures.any? %>
-  <h3>Failed to resync</h3>
+  <h3><%= t('calendars.resync.failed_to_resync') %></h3>
   <table class="table table-striped">
     <thead>
     <tr>
-      <th>Calendar</th>
-      <th>Error</th>
+      <th><%= t('calendars.resync.calendar') %></th>
+      <th><%= t('calendars.resync.error') %></th>
     </tr>
     </thead>
     <tbody>
@@ -22,13 +22,13 @@
 <% end %>
 
 <% if @resync_service.successes.any? %>
-  <h3>Successfully resynced</h3>
+  <h3><%= t('calendars.resync.successfully_resynced') %></h3>
   <table class="table table-striped">
     <thead>
     <tr>
-      <th>Calendar</th>
-      <th>Events deleted</th>
-      <th>Events created</th>
+      <th><%= t('calendars.resync.calendar') %></th>
+      <th><%= t('calendars.resync.events_deleted') %></th>
+      <th><%= t('calendars.resync.events_created') %></th>
     </tr>
     </thead>
     <tbody>

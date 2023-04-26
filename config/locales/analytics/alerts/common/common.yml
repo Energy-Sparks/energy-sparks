@@ -17,3 +17,6 @@ en:
     alert_target_base:
       summary: "%{percent} %{above_or_below} target"
       timescale: at least 1 year
+    tariff_change:
+      change_between_periods_caveat: 'Warning: the school''s economic tariff has changed between the two periods being compared, this is not reflected in the cost savings where we have used the most recent tariff to calculate the savings.'
+      change_within_period_caveat: 'Warning: the school''s economic tariff has changed recently, this is not reflected in the cost savings where we have used the most recent tariff to calculate the savings.'

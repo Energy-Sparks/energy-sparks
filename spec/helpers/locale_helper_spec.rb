@@ -42,4 +42,61 @@ describe LocaleHelper do
       end
     end
   end
+
+  describe '.t_period' do
+    it 'returns period name' do
+      expect(helper.t_period(:term_times)).to eq('Term Times')
+      expect(helper.t_period(:only_holidays)).to eq('Only Holidays')
+      expect(helper.t_period(:all_year)).to eq('All Year')
+      expect(helper.t_period(:something_else)).to eq('')
+    end
+  end
+
+  describe '.t_day' do
+    it 'returns day name' do
+      expect(helper.t_day('monday')).to eq('Monday')
+      expect(helper.t_day('tuesday')).to eq('Tuesday')
+      expect(helper.t_day('wednesday')).to eq('Wednesday')
+      expect(helper.t_day('thursday')).to eq('Thursday')
+      expect(helper.t_day('friday')).to eq('Friday')
+      expect(helper.t_day('saturday')).to eq('Saturday')
+      expect(helper.t_day('sunday')).to eq('Sunday')
+      expect(helper.t_day('weekdays')).to eq('Weekdays')
+      expect(helper.t_day('weekends')).to eq('Weekends')
+      expect(helper.t_day('everyday')).to eq('Everyday')
+      expect(helper.t_day('notaday')).to eq('')
+    end
+    it 'translates day name' do
+      I18n.with_locale(:cy) do
+        expect(helper.t_day('monday')).to eq('Dydd Llun')
+      end
+    end
+  end
+
+  describe '.t_month' do
+    it 'returns month name in en' do
+      expect(helper.t_month('1')).to eq('January')
+      expect(helper.t_month('12')).to eq('December')
+      expect(helper.t_month('123')).to be_nil
+    end
+    it 'returns month name in cy' do
+      I18n.with_locale(:cy) do
+        expect(helper.t_month('1')).to eq('Ionawr')
+        expect(helper.t_month('12')).to eq('Rhagfyr')
+        expect(helper.t_month('123')).to be_nil
+      end
+    end
+  end
+
+  describe '.t_role' do
+    before :each do
+      I18n.backend.store_translations("cy", {role: {guest: 'gwestai', school_admin: 'gweinyddwr ysgol'}})
+    end
+    it 'formats role' do
+      I18n.with_locale(:cy) do
+        expect(helper.t_role('guest')).to eq('gwestai')
+        expect(helper.t_role('school_admin')).to eq('gweinyddwr ysgol')
+      end
+    end
+  end
 end

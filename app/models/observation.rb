@@ -13,6 +13,7 @@
 #  observation_type     :integer          not null
 #  points               :integer
 #  school_id            :bigint(8)        not null
+#  school_target_id     :bigint(8)
 #  updated_at           :datetime         not null
 #  visible              :boolean          default(TRUE)
 #
@@ -22,6 +23,7 @@
 #  index_observations_on_audit_id              (audit_id)
 #  index_observations_on_intervention_type_id  (intervention_type_id)
 #  index_observations_on_school_id             (school_id)
+#  index_observations_on_school_target_id      (school_target_id)
 #
 # Foreign Keys
 #
@@ -29,6 +31,7 @@
 #  fk_rails_...  (audit_id => audits.id)
 #  fk_rails_...  (intervention_type_id => intervention_types.id) ON DELETE => restrict
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
+#  fk_rails_...  (school_target_id => school_targets.id)
 #
 
 class Observation < ApplicationRecord
@@ -38,15 +41,16 @@ class Observation < ApplicationRecord
   belongs_to :intervention_type, optional: true
   belongs_to :activity, optional: true
   belongs_to :audit, optional: true
-  enum observation_type: [:temperature, :intervention, :activity, :event, :audit]
+  belongs_to :school_target, optional: true
+  enum observation_type: [:temperature, :intervention, :activity, :event, :audit, :school_target]
 
   validates_presence_of :at, :school
-  validate :at_date_cannot_be_in_the_future
   validates_associated :temperature_recordings
 
   validates :intervention_type_id, presence: { message: 'please select an option' }, if: :intervention?
   validates :activity_id, presence: true, if: :activity?
   validates :audit_id, presence: true, if: :audit?
+  validates :school_target_id, presence: true, if: :school_target?
 
   accepts_nested_attributes_for :temperature_recordings, reject_if: :reject_temperature_recordings
 
@@ -55,15 +59,12 @@ class Observation < ApplicationRecord
   scope :for_school, ->(school) { where(school: school) }
   scope :between, ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
   scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago)}
+  scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago)}
 
 
   has_rich_text :description
 
   before_save :add_points_for_interventions
-
-  def at_date_cannot_be_in_the_future
-    errors.add(:at, "can't be in the future") if at.present? && at > Time.zone.today.end_of_day
-  end
 
 private
 

@@ -37,6 +37,16 @@ en:
     ks3: KS3
     ks4: KS4
     ks5: KS5
+  role:
+    admin: Admin
+    analytics: Analytics
+    group_admin: Group Admin
+    guest: Guest
+    pupil: Pupil
+    school_admin: School Admin
+    school_onboarding: Onboarding
+    staff: Staff
+    volunteer: Volunteer
   staff_role:
     building_site_manager_or_caretaker: Building/site manager or caretaker
     business_manager: Business manager

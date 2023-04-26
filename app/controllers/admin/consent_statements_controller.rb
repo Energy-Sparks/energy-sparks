@@ -1,5 +1,6 @@
 module Admin
   class ConsentStatementsController < AdminController
+    include LocaleHelper
     load_and_authorize_resource
 
     def index
@@ -57,7 +58,8 @@ module Admin
     private
 
     def consent_statement_params
-      params.require(:consent_statement).permit(:title, :content)
+      translated_params = t_params(ConsentStatement.mobility_attributes)
+      params.require(:consent_statement).permit(translated_params, :title, :content)
     end
   end
 end

@@ -1,5 +1,6 @@
 module Admin
   class ScoreboardsController < ApplicationController
+    include LocaleHelper
     load_and_authorize_resource
 
     # GET /scoreboards
@@ -42,7 +43,8 @@ module Admin
   private
 
     def scoreboard_params
-      params.require(:scoreboard).permit(:name, :description, :academic_year_calendar_id, :public)
+      translated_params = t_params(Scoreboard.mobility_attributes)
+      params.require(:scoreboard).permit(translated_params, :description, :academic_year_calendar_id, :public)
     end
   end
 end

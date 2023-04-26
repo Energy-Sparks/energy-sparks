@@ -2,7 +2,7 @@ module Schools
   module TransportSurveys
     class ResponsesController < ApplicationController
       include Pagy::Backend
-
+      before_action :header_fix_enabled
       load_resource :school
       load_resource :transport_survey, find_by: :run_on, id_param: :transport_survey_run_on, through: :school
       load_and_authorize_resource :response, class: 'TransportSurveyResponse', through: :transport_survey

@@ -1,5 +1,5 @@
 <%= render 'schools/dashboard/info_bar',
-      colour: 'bg-neutral',
+      colour: class_for_alert_colour(:neutral),
       icon: 'car-alt fa-3x',
       content: t('pupils.schools.show.transport_surveys'),
       buttons: { t('pupils.schools.show.start_transport_survey') => start_school_transport_surveys_path(school) }.merge(

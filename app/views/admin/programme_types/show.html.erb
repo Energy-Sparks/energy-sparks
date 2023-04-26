@@ -2,8 +2,10 @@
 
 <h2>Image</h2>
 
-<% if !@programme_type.image.blank? %>
-  <p><%= image_tag @programme_type.image, width: '300px', class: "programme_type_image" %></p>
+<% if I18n.locale.to_s == 'cy' && @programme_type.t_attached(:image, :cy).present? %>
+  <p><%= image_tag @programme_type.image_cy, width: '300px', class: "programme_type_image" %></p>
+<% elsif @programme_type.t_attached(:image, :en).present? %>
+  <p><%= image_tag @programme_type.image_en, width: '300px', class: "programme_type_image" %></p>
 <% end %>
 
 <h2>Description</h2>

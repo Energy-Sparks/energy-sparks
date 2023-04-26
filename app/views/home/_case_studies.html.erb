@@ -9,32 +9,11 @@
       <% end %>
     </div>
   </div>
-  <% unless case_studies.empty? %>
-    <% case_studies.in_groups_of(3, false).each do |group| %>
-      <div class="card-deck mb-4">
-        <% group.each do |case_study| %>
-          <div class="card">
-            <div class="card-header bg-positive"><%= case_study.title %></div>
-            <div class="card-body">
-              <div class="card-text">
-                <%= case_study.description %>
-              </div>
-            </div>
-            <div class="card-footer case-studies-download-links" data-event-value="<%= case_study.id %>">
-              <%= link_to url_for( controller: :case_studies, action: :download, serve: :download, id: case_study.id ), class: 'btn' do %>
-                <%= t('case_studies.download', :locale => :en) %>
-                <i class="fas fa-file-download"></i>
-              <% end %>
-              <% if case_study.t_attached(:file, :cy).present? %>
-                <%= link_to url_for( controller: :case_studies, action: :download, serve: :download, id: case_study.id, :locale => :cy ), class: 'btn' do %>
-                  <%= t('case_studies.download', :locale => :cy) %>
-                  <i class="fas fa-file-download"></i>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-   <% end %>
+  <% case_studies.in_groups_of(3, false).each do |group| %>
+    <div class="card-deck mb-4">
+      <% group.each do |case_study| %>
+        <%= render './case_studies/case_study_card', case_study: case_study %>
+      <% end %>
+    </div>
+  <% end %>
 </div>

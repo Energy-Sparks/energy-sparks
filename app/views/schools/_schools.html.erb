@@ -8,7 +8,7 @@
     <div id="collapse<%= label %>" class="collapse" aria-labelledby="heading<%= label %>" data-parent="#accordion<%= label %>">
       <div class="card-body">
         <div class='btn-group'>
-          <%= link_to t('schools.schools.compare_schools'), benchmarks_path, class: 'btn nav-link' %>
+          <%= link_to t('schools.schools.compare_schools'), compare_index_path, class: 'btn nav-link' %>
         </div>
         <div class="padded-row">
           <% schools.each_slice(3) do |threeschools| %>

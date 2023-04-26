@@ -11,6 +11,7 @@ module Admin
           @school_onboarding.weather_station = @school_onboarding.school_group.default_weather_station
           @school_onboarding.scoreboard = @school_onboarding.school_group.default_scoreboard
           @school_onboarding.default_chart_preference = @school_onboarding.school_group.default_chart_preference
+          @school_onboarding.country = @school_onboarding.school_group.default_country
         end
       end
 
@@ -32,7 +33,8 @@ module Admin
           :dark_sky_area_id,
           :scoreboard_id,
           :weather_station_id,
-          :default_chart_preference
+          :default_chart_preference,
+          :country
         )
       end
     end

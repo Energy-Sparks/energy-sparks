@@ -1,5 +1,5 @@
 cy:
-  about_energy_sparks: Mae Energy Sparks yn elusen gofrestredig sy'n gweithio er budd y cyhoedd i ddatblygu a hyrwyddo offer, gwasanaethau a rhaglenni i leihau'r defnydd o ynni ac adnoddau ac allyriadau carbon. Nod Energy Sparks yw addysgu'r cyhoedd, yn enwedig pobl ifanc, am achosion ac effeithiau newid yn yr hinsawdd, a phwysigrwydd arbed ynni a lleihau allyriadau carbon.
+  about_energy_sparks: Mae Sbarcynni yn elusen gofrestredig sy'n gweithio er budd y cyhoedd i ddatblygu a hyrwyddo offer, gwasanaethau a rhaglenni i leihau'r defnydd o ynni ac adnoddau ac allyriadau carbon. Nod Sbarcynni yw addysgu'r cyhoedd, yn enwedig pobl ifanc, am achosion ac effeithiau newid yn yr hinsawdd, a phwysigrwydd arbed ynni a lleihau allyriadau carbon.
   case_studies:
     download: Lawrlwytho
     more_case_studies: Rhagor o astudiaethau achos
@@ -10,30 +10,30 @@ cy:
       message_2: Dangoswch i'ch ysgol faint a phryd rydych yn defnyddio ynni.
       message_3: Cael cyngor arbed ynni wedi'i deilwra ar gyfer eich ysgol chi yn unig.
       message_4: Cael rhybuddion awtomataidd i roi gwybod i chi pan fydd eich defnydd o ynni yn newid.
-      message_5: Archwilia weithgareddau tîm eco a dosbarth ar gyfer disgyblion.
+      message_5: Archwiliwch weithgareddau tîm eco a dosbarth ar gyfer disgyblion.
       message_6: Rhannu syniadau arbed ynni a chystadlu yn erbyn ysgolion eraill.
     enrol_your_school: Cofrestru eich ysgol
     funnels:
       local_authority:
-        button: Energy Sparks ar gyfer Awdurdodau Lleol
-        text: Dysgu rhagor am sut y gall Energy Sparks weithio gydag Awdurdodau Lleol i gefnogi ysgolion yn eu hardal.
+        button: Sbarcynni ar gyfer Awdurdodau Lleol
+        text: Dysgu rhagor am sut y gall Sbarcynni weithio gydag Awdurdodau Lleol i gefnogi ysgolion yn eu hardal.
         title: Ar gyfer Awdurdodau Lleol
       multi_academy:
-        button: Energy Sparks ar gyfer Ymddiriedolaethau Aml-Academi
-        text: Dysgu am sut mae Energy Sparks yn cefnogi Ymddiriedolaethau Aml-Academi.
+        button: Sbarcynni ar gyfer Ymddiriedolaethau Aml-Academi
+        text: Dysgu am sut mae Sbarcynni yn cefnogi Ymddiriedolaethau Aml-Academi.
         title: Ar gyfer Ymddiriedolaethau Aml-Academi
       school:
-        button: Energy Sparks ar gyfer Ysgolion
+        button: Sbarcynni ar gyfer Ysgolion
         text: Dysgu rhagor am sut y gall Energy Sparks gefnogi eich ysgol.
         title: Ar gyfer ysgolion
     quote:
       job_title: Pennaeth yr Ysgol
-      text_html: Mae ymgysylltu ag Energy Sparks wedi bod yn brofiad gwerth chweil. Nid yn unig y mae'r ysgol wedi arbed arian, mae'r plant wedi dod yn fwy ymwybodol o'r ffyrdd y gallant helpu i leihau defnydd ynni&hellip;
-    sub_title: Offeryn dadansoddi ynni a rhaglen addysg ynni ar-lein sy'n benodol i ysgolion yw Energy Sparks.
+      text_html: Mae ymgysylltu ag Sbarcynni wedi bod yn brofiad gwerth chweil. Nid yn unig y mae'r ysgol wedi arbed arian, mae'r plant wedi dod yn fwy ymwybodol o'r ffyrdd y gallant helpu i leihau defnydd ynni&hellip;
+    sub_title: Offeryn dadansoddi ynni a rhaglen addysg ynni ar-lein sy'n benodol i ysgolion yw Sbarcynni.
     title: Rydym yn helpu ysgolion i ddod yn fwy ynni-effeithlon a brwydro yn erbyn newid hinsawdd.
   mailchimp:
     continue: Parhau
-    latest_news_title: Cael y newyddion diweddaraf gan Energy Sparks yn eich mewnflwch
+    latest_news_title: Cael y newyddion diweddaraf gan Sbarcynni yn eich mewnflwch
     more_newsletters: Rhagor o gylchlythyrau
     never_share_your_email_promise: Ni fyddwn byth yn rhannu eich e-bost ag unrhyw un arall
     title_html: Cadw yn gyfoes&hellip;
@@ -50,4 +50,4 @@ cy:
     title: Hyfforddiant
   videos:
     title: Fideos canllaw defnyddiwr
-  working_with: Ar hyn o bryd mae Energy Sparks yn gweithio gyda
+  working_with: Ar hyn o bryd mae Sbarcynni yn gweithio gyda

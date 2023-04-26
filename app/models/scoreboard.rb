@@ -21,18 +21,22 @@
 #
 
 class Scoreboard < ApplicationRecord
+  extend Mobility
+  include TransifexSerialisable
+  translates :name, type: :string, fallbacks: { cy: :en }
+  before_save :update_name
   extend FriendlyId
 
   scope :is_public, -> { where(public: true) }
 
   FIRST_YEAR = 2018
 
-  friendly_id :name, use: [:finders, :slugged, :history]
+  friendly_id :name_en, use: [:finders, :slugged, :history]
 
   has_many :schools
   belongs_to :academic_year_calendar, class_name: 'Calendar', optional: true
 
-  validates :name, :academic_year_calendar_id, presence: true
+  validates :name_en, :academic_year_calendar_id, presence: true
 
   def safe_destroy
     raise EnergySparks::SafeDestroyError, 'Scoreboard has associated schools' if schools.any?
@@ -72,6 +76,10 @@ class Scoreboard < ApplicationRecord
   end
 
   private
+
+  def update_name
+    self[:name] = self.name_en
+  end
 
   def this_academic_year
     academic_year_calendar.academic_year_for(Time.zone.today)

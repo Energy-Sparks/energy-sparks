@@ -1,0 +1,27 @@
+<% content_for :page_title do %>Benchmark Result for <%= @school.name %><% end %>
+<div class="row padded-row">
+  <div class="col-md-12">
+    <h1 property="name">Benchmark Result for <%= link_to @school.name, @school %></h1>
+  </div>
+
+  <div class="col-md-12">
+    <p><%= link_to "View all benchmark results in this run", school_benchmark_report_path(@school, @result.benchmark_result_school_generation_run) %></p>
+    <div class="card mb-3">
+      <div class="card-header">
+        <h4>Benchmark Result: <%= @result.alert_type.title %></h4>
+      </div>
+      <div class="card-body">
+        <h5>Benchmark variables (English)</h5>
+        <%= sanitize ap(@result.results, index: false, plain: true)%>
+      </div>
+      <div class="card-body">
+        <h5>Benchmark variables (Welsh)</h5>
+        <%= sanitize ap(@result.results_cy, index: false, plain: true)%>
+      </div>
+
+      <div class="card-footer text-muted">
+        <p class="card-text"><b>Run on date</b>: <%= nice_dates @result.created_at %></p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -7,6 +7,8 @@ RSpec.shared_examples "dashboard timeline" do
     create(:observation_with_temperature_recording_and_location, school: test_school)
     activity_type = create(:activity_type) # doesn't get saved if built with activity below
     create(:activity, school: test_school, activity_type: activity_type)
+    #will automatically add observation
+    create(:school_target, school: test_school, start_date: Date.today)
     visit school_path(test_school, switch: true)
   end
 
@@ -14,10 +16,12 @@ RSpec.shared_examples "dashboard timeline" do
     expect(page).to have_content('Recorded temperatures in')
     expect(page).to have_content('Upgraded insulation')
     expect(page).to have_content('Completed an activity')
+    expect(page).to have_content('Started working towards an energy saving target')
     click_on 'View all events'
     expect(page).to have_content('Recorded temperatures in')
     expect(page).to have_content('Upgraded insulation')
     expect(page).to have_content('Completed an activity')
+    expect(page).to have_content('Started working towards an energy saving target')
   end
 end
 

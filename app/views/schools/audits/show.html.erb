@@ -1,4 +1,4 @@
-<% content_for :page_title, "#{@school.name} Audit - #{@audit.title}" %>
+<% content_for :page_title, t('schools.audits.show.title', school_name: @school.name, audit_title: @audit.title) %>
 
 <div class="row padded-row">
   <div class="col-md-3">
@@ -7,11 +7,11 @@
   <div class="col-md-6">
     <h2><%= @audit.title %></h2>
     <p>
-      Completed on <%= @audit.created_at.strftime("%A, %d %B %Y") %>.
+      <%= t('schools.audits.show.completed_on') %> <%= I18n.l(@audit.created_at, format: '%A, %d %B %Y') %>.
     </p>
   </div>
   <div class="col-md-3">
-    <%= link_to "View all audits", school_audits_path(@school), class: 'btn btn-secondary float-right' %>
+    <%= link_to t('schools.audits.show.view_all_audits'), school_audits_path(@school), class: 'btn btn-secondary float-right' %>
   </div>
 </div>
 
@@ -19,10 +19,10 @@
     <div class="row" id="audit-admin-tools">
       <div class="col-md-9">
         <div class="mb-2 alert <%= @audit.published? ? 'alert-secondary' : active(@audit.published)%>">
-        <%= link_to 'Edit', edit_school_audit_path(@school, @audit), class: 'btn btn-warning btn-sm' %>
-        <%= link_to 'Remove', school_audit_path(@school, @audit), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-warning btn-sm' %>
+        <%= link_to t('common.labels.edit'), edit_school_audit_path(@school, @audit), class: 'btn btn-warning btn-sm' %>
+        <%= link_to t('common.labels.remove'), school_audit_path(@school, @audit), method: :delete, data: { confirm:  t('common.confirm') }, class: 'btn btn-warning btn-sm' %>
         <% if !@audit.published? %>
-          <strong>Note</strong>: this audit is not visible to users
+          <%= t('schools.audits.show.visibility_note_html') %>
         <% end %>
         </div>
       </div>
@@ -36,14 +36,14 @@
   <div class="col-md-3 text-center">
     <% if @audit.file.attached? %>
       <%= link_to @audit.file, class: "btn btn-lg", target: '_blank' do %>
-        Download report <%= fa_icon("download") %>
+        <%= t('schools.audits.show.download_report') %> <%= fa_icon("download") %>
       <% end %>
     <% end %>
   </div>
 </div>
 
 <% if @audit.audit_intervention_types.any? %>
-  <h3>Recommended energy saving actions</h3>
+  <h3><%= t('schools.audits.show.recommended_energy_saving_actions') %></h3>
 
   <% @audit.audit_intervention_types.by_name.each_with_index do |audit_intervention_type, idx| %>
     <div class="row">
@@ -63,7 +63,7 @@
 <% end %>
 
 <% if @audit.audit_activity_types.any? %>
-  <h3>Recommended pupil-lead activities</h3>
+  <h3><%= t('schools.audits.show.recommended_pupil_lead_activities') %></h3>
   <% @audit.audit_activity_types.by_name.each_with_index do |audit_activity_type, idx| %>
     <div class="row">
       <div class="col-sm-2 text-center align-self-center">

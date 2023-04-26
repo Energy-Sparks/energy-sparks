@@ -1,7 +1,7 @@
 <% if user_tariff.meters.present? %>
   <div class="row">
     <div class="col-md-3">
-      <p>Meters associated with this tariff:</p>
+      <p><%= t('schools.user_tariffs.meters.meters_associated_with_this_tariff') %>:</p>
     </div>
     <div class="col-md-3 right">
       <% user_tariff.meters.each do |meter| %>
@@ -13,5 +13,5 @@
     </div>
   </div>
 <% else %>
-  <p>There are no meters associated with this tariff</p>
+  <p><%= t('schools.user_tariffs.meters.there_are_no_meters_associated_with_this_tariff') %></p>
 <% end %>

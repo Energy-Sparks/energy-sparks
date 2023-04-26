@@ -21,6 +21,10 @@ module ApplicationHelper
     date ? date.to_s(:es_short) : ""
   end
 
+  def nice_date_times_today(datetime)
+    datetime.today? ? nice_times_only(datetime) : short_dates(datetime)
+  end
+
   def human_counts(collection)
     case collection.count
     when 0
@@ -51,7 +55,7 @@ module ApplicationHelper
   end
 
   def display_last_signed_in_as(user)
-    user.last_sign_in_at ? nice_date_times(user.last_sign_in_at) : 'Never signed in'
+    user.last_sign_in_at ? user.last_sign_in_at.strftime('%d/%m/%Y %H:%M') : '-'
   end
 
   def options_from_collection_for_select_with_data(collection, value_method, text_method, selected = nil, data = {})
@@ -85,6 +89,11 @@ module ApplicationHelper
     if dates.count > 0
       dates.count
     end
+  end
+
+  def status_for_alert_colour(colour)
+    return :neutral if colour.nil?
+    colour
   end
 
   def class_for_alert_colour(colour)
@@ -177,6 +186,36 @@ module ApplicationHelper
     end
   end
 
+  def fuel_type_background_class(fuel_type)
+    case fuel_type.to_sym
+    when :electricity
+      'bg-electric-light'
+    when :gas
+      'bg-gas-light'
+    when :solar_pv
+      'bg-solar-light'
+    when :storage_heater, :storage_heaters
+      'bg-storage-light'
+    when :exported_solar_pv
+      'bg-solar-light'
+    end
+  end
+
+  def fuel_type_class(fuel_type)
+    case fuel_type.to_sym
+    when :electricity
+      'text-electricity'
+    when :gas
+      'text-gas'
+    when :solar_pv
+      'text-solar'
+    when :storage_heater, :storage_heaters
+      'text-storage'
+    when :exported_solar_pv
+      'text-solar'
+    end
+  end
+
   def label_is_energy_plus?(label)
     label.is_a?(String) && label.start_with?('Energy') && label.length > 6
   end
@@ -228,7 +267,7 @@ module ApplicationHelper
   end
 
   def y_n(boolean)
-    boolean ? 'Yes' : 'No'
+    boolean ? I18n.t('common.labels.yes_label') : I18n.t('common.labels.no_label')
   end
 
   def checkmark(boolean)
@@ -248,7 +287,7 @@ module ApplicationHelper
 
   def up_downify(text)
     return if text.nil? || text == "-"
-    icon = if text.match?(/^\+/)
+    icon = if text.match?(/^\+?£?\d*\.?\d+/)
              fa_icon('arrow-circle-up')
            elsif text.match?(/increased/)
              fa_icon('arrow-circle-up')
@@ -302,7 +341,7 @@ module ApplicationHelper
   end
 
   def format_target(value, units)
-    FormatEnergyUnit.format(units, value, :html, false, true, :target)
+    FormatEnergyUnit.format(units, value, :html, false, true, :target).html_safe
   end
 
   def progress_as_percent(completed, total)
@@ -375,5 +414,60 @@ module ApplicationHelper
 
   def i18n_key_from(str)
     str.gsub('+', ' And ').delete(' ').underscore
+  end
+
+  def redirect_back_url(params)
+    params[:redirect_back].blank? ? request.referer : params[:redirect_back]
+  end
+
+  def redirect_back_tag(params)
+    tag.input type: 'hidden', name: :redirect_back, value: redirect_back_url(params)
+  end
+
+  def redirect_back_params(params)
+    { redirect_back: redirect_back_url(params) }
+  end
+
+  def dashboard_message_icon(messageable)
+    if messageable.dashboard_message
+      title = "Dashboard message is shown for "
+      title += messageable.is_a?(SchoolGroup) ? "schools in this group" : "school"
+      tag.span class: 'badge badge-info', title: "#{title}: #{messageable.dashboard_message.message}" do
+        fa_icon(:info)
+      end
+    end
+  end
+
+  def toggler
+    (fa_icon("chevron-down") + fa_icon("chevron-right")).html_safe
+  end
+
+  def text_with_icon(text, icon)
+    (icon ? "#{fa_icon(icon)} #{text}" : text).html_safe
+  end
+
+  def component(name, *args, **kwargs, &block)
+    component = name.to_s.sub(%r{(/|$)}, '_component\1').camelize.constantize
+    render(component.new(*args, **kwargs), &block)
+  end
+
+  def school_advice_link(school)
+    replace_analysis_pages? ? school_advice_path(school) : school_analysis_index_path(school)
+  end
+
+  def replace_analysis_pages?
+    EnergySparks::FeatureFlags.active?(:replace_analysis_pages)
+  end
+
+  def school_name_group(school)
+    if school.school_group
+      "#{school.name} (#{school.school_group.name})"
+    else
+      school.name
+    end
+  end
+
+  def user_school_role(user)
+    user.staff_role ? user.staff_role.title : user.role.humanize
   end
 end

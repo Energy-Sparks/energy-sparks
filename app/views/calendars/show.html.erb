@@ -1,10 +1,10 @@
-<% content_for :page_title, "#{@calendar.title} Calendar" %>
+<% content_for :page_title, t('calendars.show.title', calendar_title: @calendar.title) %>
 
 <div class="d-flex justify-content-between align-items-center">
-  <h1><%= @calendar.title %> Calendar </h1>
+  <h1><%= t('calendars.show.title', calendar_title: @calendar.title) %></h1>
   <div>
     <% if can?(:index, Calendar) %>
-      <%= link_to "All calendars", admin_calendars_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
+      <%= link_to t('calendars.show.all_calendars'), admin_calendars_path, class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
     <% end %>
   </div>
 </div>
@@ -13,24 +13,24 @@
   <%= render 'admin_calendar_info' %>
 <% end %>
 
-<p>You can amend existing events, like the term times by clicking on them, updating the dates and saving the changes.</p>
+<p><%= t('calendars.show.amend_existing_events_message') %>.</p>
 
 
-<%= link_to 'Add new event', new_calendar_calendar_event_path(@calendar), class: 'btn btn-primary' %>
+<%= link_to t('calendars.show.add_new_event'), new_calendar_calendar_event_path(@calendar), class: 'btn btn-primary' %>
 
 <% if can? :manage, @calendar %>
   <% if @calendar.calendars.any? %>
-    <%= link_to 'Update dependent schools', resync_calendar_path(@calendar), method: :post, class: 'btn btn-primary', data: { confirm: 'This will copy all events that have been edited in the 7 days to child calendars. Are you sure?' } %>
+    <%= link_to t('calendars.show.update_dependent_schools'), resync_calendar_path(@calendar), method: :post, class: 'btn btn-primary', data: { confirm: t('calendars.show.confirm_message') } %>
   <% end %>
 <% end %>
 
 <nav class="mt-2">
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
     <a class="nav-item nav-link active" id="nav-calendar-view-tab" data-toggle="tab" href="#calendar-view-tab" role="tab" aria-controls="calendar-view-tab" aria-selected="yes">
-      Calendar view
+      <%= t('calendars.show.calendar_view') %>
     </a>
     <a class="nav-item nav-link reloadable" id="nav-list-view-tab" data-toggle="tab" data-reload-url='<%= current_events_calendar_path(@calendar) %>' href="#list-view-tab" role="tab" aria-controls="list-view-tab" aria-selected="yes">
-      Current events
+      <%= t('calendars.show.current_events') %>
     </a>
   </div>
 </nav>

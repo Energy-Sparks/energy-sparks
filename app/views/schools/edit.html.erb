@@ -1,12 +1,11 @@
 <div class="row justify-content-md-center">
   <div class="col col-md-10 col-lg-8">
-    <h1>Editing School</h1>
+    <h1><%= t('schools.school_details.editing') %></h1>
 
-    <%= render 'form', school: @school, submit_text: 'Update School'%>
+    <%= render 'form', school: @school, submit_text: t('schools.school_details.update_school') %>
 
     <div class="other-actions">
-      <%= link_to 'Back', school_path(@school), class: 'btn btn-secondary' %>
+      <%= link_to t('common.labels.back'), school_path(@school), class: 'btn btn-secondary' %>
     </div>
   </div>
 </div>
-

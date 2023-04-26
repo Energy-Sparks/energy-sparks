@@ -16,6 +16,7 @@
 #  last_sign_in_ip        :inet
 #  locked_at              :datetime
 #  name                   :string
+#  preferred_locale       :string           default("en"), not null
 #  pupil_password         :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
@@ -82,6 +83,8 @@ class User < ApplicationRecord
 
   validates :school_group_id, presence: true, if: :group_admin?
 
+  validate :preferred_locale_presence_in_available_locales
+
   after_save :update_contact
 
   def default_scoreboard
@@ -135,8 +138,11 @@ class User < ApplicationRecord
   end
 
   def school_group_name
-    return school.school_group.name if school && school.school_group
-    return school_group.name if school_group
+    default_school_group.try(:name)
+  end
+
+  def default_school_group
+    school.try(:school_group) || school_group
   end
 
   def self.new_pupil(school, attributes)
@@ -183,10 +189,16 @@ class User < ApplicationRecord
   end
 
   def after_confirmation
-    OnboardingMailer.with(user: self).welcome_email.deliver_now if self.school.present?
+    OnboardingMailer.with_user_locales(users: [self], school: school) { |mailer| mailer.welcome_email.deliver_now } if self.school.present?
   end
 
 protected
+
+  def preferred_locale_presence_in_available_locales
+    return if I18n.available_locales.include? preferred_locale&.to_sym
+
+    errors.add(:preferred_locale, "must be present in the list of availale locales")
+  end
 
   def password_required?
     confirmed? ? super : false

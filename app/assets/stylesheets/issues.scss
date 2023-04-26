@@ -1,0 +1,31 @@
+.admin-issue {
+  background-color: $light;
+  border-top: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.admin-issue.note {
+  border-left:6px solid $warning;
+}
+
+.admin-issue.issue {
+  border-left:6px solid $danger;
+}
+
+tr.admin-issue .note {
+  border-left: 3px solid $warning;
+}
+
+tr.admin-issue .issue {
+  border-left: 3px solid $danger;
+}
+
+.admin-issue .trix-content {
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+
+.admin-issue trix-editor.form-control {
+  height: auto;
+}

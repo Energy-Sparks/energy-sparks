@@ -1,0 +1,66 @@
+cy:
+  advice_pages:
+    thermostatic_control:
+      analysis:
+        an_alternative_way_of_looking_html: |-
+          <p>Ffordd arall o edrych ar y rheolydd thermostatig yw edrych a yw defnydd ysgol o nwy yn newyd ar ddiwrnod pan fo'r tymheredd y tu allan yn newid yn sylweddol.</p>
+          <p>Amrediad dyddiol yw'r gwahaniaeth rhwng tymheredd yn ystod y dydd a'r nos. Mae'n gyffredin i dymheredd allanol gynyddu mwy na 10°C yn ystod y dydd. Mae hyn yn arbennig o wir yn y gwanwyn, lle mae tymheredd y ddaear oer ar ôl y gaeaf yn arwain at nosweithiau oerach, a heulwen gynnes y gwanwyn yn cynyddu tymheredd yn ystod y dydd.</p>
+          <p>Os oes newid mawr mewn tymheredd mewn diwrnod, fe'i disgrifir fel un sydd ag amrediad dyddiol mawr</p>
+          <p>Mewn egwyddor, os bydd tymheredd y tu allan yn codi 10°C, yna bydd y gwres a gollir drwy ffabrig adeilad (e.e. waliau, ffenestri ac ati) yn haneru mwy (gan fod y gwres a gollir yn gymesur â'r gwahaniaeth rhwng tymheredd y tu allan a'r tu mewn). Os oes gan yr ysgol reolaeth thermostatig dda yna byddech yn disgwyl gweld gostyngiad tebyg yn y defnydd o nwy yn ystod y dydd.</p>
+        for_energy_experts_html: |-
+          <p>Ar gyfer arbenigwyr ynni, mae'r fformiwla sy'n diffinio'r llinell duedd yn ddiddorol iawn. Mae'n rhagweld sut mae'r defnydd o nwy yn amrywio gyda thymheredd y tu allan.</p>
+          <p>Yn yr enghraifft uchod, y fformiwla ar gyfer gwresogi yw:</p>
+          <p><code>Y gofyniad gwresogi a ragwelir (kWh) = %{b} * tymheredd y tu allan + %{a}</code></p>
+          <p>Felly ar gyfer eich ysgol, os yw’r tymheredd allanol cyfartalog yn 12°C, y defnydd o nwy a ragwelir ar gyfer yr ysgol ar y diwrnod hwnnw fyddai:</p>
+          <p><code>%{predicted_kwh_for_high} kWh = %{b} * %{temperature_high} + %{a}</code></p>
+          <p>Ond pe bai'r tymheredd y tu allan yn oerach ar 4°C byddai'r defnydd o nwy ar gyfer y diwrnod hwnnw:</p>
+          <p><code>%{predicted_kwh_for_low} kWh = %{b} * %{temperature_low} + %{a}</code></p>
+          <p>
+          Gweld a allwch chi ddarllen y gwerthoedd hyn oddi ar linell duedd y graff uchod (tymheredd 12°C a 4°C ar yr echelin x a'r ateb - y defnydd dyddiol o nwy a ragwelir ar yr echelin-y).
+          </p>
+        how_to_calculate_a_theoretical_daily_gas_consumption_using_the_model: Sut i gyfrifo defnydd dyddiol o nwy damcaniaethol gan ddefnyddio'r model
+        scatter_chart_html: |-
+          <p>Mae'r siart gwasgariad isod yn dangos dadansoddiad thermostatig o system wresogi eich ysgol. Yr echelin x yw'r tymheredd y tu allan. Mae'r echelin y yn dangos y defnydd o ynni mewn kWh ar unrhyw ddiwrnod penodol.</p>
+          <p>Darperir dwy set o ddata ar y siart. Y pwyntiau sy'n gysylltiedig â'r grŵp ar frig y siart yw'r rhai ar gyfer gwresogi diwrnod ysgol gaeaf. Wrth iddo gynhesu mae'r defnydd o nwy bob dydd yn gostwng.</p>
+          <p>Mae R² yn fesur o ba mor agos at y duedd yw'r gwerthoedd gwresogi dyddiol.</p>
+          <p>Mae R² o 0.0 yn golygu nad oes perthynas rhwng pa mor oer yw hi y tu allan a faint o nwy mae'ch ysgol yn ei ddefnyddio. Byddai hyn yn arwain at gostau rhedeg uwch a mwy o allyriadau carbon.</p>
+          <p>Mae R² o 1.0 yn berffaith. Mae'n golygu bod defnydd eich ysgol o nwy yn gymesur â pha mor oer yw y tu allan.</p>
+        thermostatic_control_in_your_school: Rheolaeth thermostatig yn eich ysgol
+        thermostatic_control_large_diurnal_range:
+          footer: Gallwch glicio ar y botymau 'Archwilio' ar y siart e.e. 'Yn ôl 1 diwrnod gydag amrediad dyddiol mawr' i archwilio dyddiau eraill.
+          subtitle: Mae'r siart hwn yn dangos enghraifft ddiweddar o ddiwrnodau gaeafol gydag amrediad dyddiol mawr
+          title: Siart amrediad dyddiol
+        thermostatic_up_to_1_year:
+          footer_html: |-
+            <p>Os oes gan y gwres reolaeth thermostatig dda (gwerth R² uchel) yna dylai'r pwyntiau ar frig y siart pan fydd y gwres ymlaen fod yn agos at y llinell duedd.</p>
+            <p>Mae hyn oherwydd bod faint o wres sydd ei angen ar un diwrnod yn gymesur yn llinol â'r gwahaniaeth rhwng y tymheredd y tu mewn a'r tu allan, a byddai unrhyw amrywiad o'r llinell duedd yn awgrymu nad yw rheolaeth thermostatig yn gweithio'n rhy dda.</p>
+            <p>Mae'r ail set o ddata ar waelod y siart ar gyfer defnydd nwy yn yr haf pan nad yw'r gwres ymlaen; yn nodweddiadol, mae hyn o ddŵr poeth a defnydd o'r gegin.</p>
+            <p>Mae ongl y llinell hon yn aml yn arwydd o ba mor dda y mae'r system dŵr poeth wedi'i hinswleiddio; os bydd y defnydd yn cynyddu wrth iddo oeri mae'n awgrymu diffyg inswleiddio.</p>
+          subtitle_html: Mae'r siart hwn yn dangos dadansoddiad o ba mor agos y mae'r defnydd o nwy yn eich ysgol yn cyd-fynd â'r tymheredd y tu allan rhwng <span class="start-date">%{start_date}</span> a <span class="end-date">%{end_date}</span>
+          title: Dadansoddiad thermostatig o system wresogi eich ysgol
+        this_section_html: |-
+          <p>Mae'r adran hon yn rhoi dadansoddiad manylach o reolaeth boeler eich ysgol a rhai pethau i gadw llygad amdanynt.</p>
+          <p>Mae'r adrannau canlynol yn rhoi mwy o gefndir a dadansoddiad o'ch llwyth sylfaenol trydan<p>
+        title: Dadansoddiad
+        using_days_with_large_diurnal_range_to_understand_thermostatic_control: Defnyddio diwrnodau gydag amrediad dyddiol mawr i ddeall rheolaeth thermostatig
+        your_schools_R2_value: Gwerth R² eich ysgol yw %{r2} sy'n %{r2_rating_adjective}.
+      insights:
+        advice_html: |-
+          <p>Mae adeilad gyda rheolaeth thermostatig da yn golygu po oeraf ydyw y tu allan, po uchaf yw'r defnydd o nwy ar gyfer gwresogi.</p>
+          <p>Mae hon yn dudalen uwch oherwydd mae rhai themâu cymhleth dan sylw a gallai gymryd peth amser i ddefnyddiwr weithio trwy'r esboniadau.</p>
+        for_more_detail_html: Am ragor o fanylion, <a href="%{link}">cymharwch gydag ysgolion eraill yn eich grŵp</a>
+        how_do_you_compare:
+          title: Sut ydych chi'n cymharu?
+        link: Dysgu rhagor
+        next_steps_html: |-
+          <p>Er mwyn gwella rheolaeth thermostatig eich ysgol, dylech:</p>
+          <ul>
+            <li>Sicrhewch fod gan yr holl reiddiaduron falfiau rheoli thermostatig sy'n gweithio, fel y gallwch addasu tymheredd yr ystafell ddosbarth heb agor ffenestri a drysau.</li>
+            <li>Cynhaliwch ymgyrch i gael pawb yn yr ysgol i ddeall pwysigrwydd diffodd rheiddiaduron cyn i chi agor ffenestri a drysau.</li>
+            <li>Ceisiwch symud thermostat eich prif foeler i leoliad gwahanol fel swyddfa'r ysgol neu ystafell ddosbarth.</li>
+          </ul>
+        thermostatic_control_r2_notice_html: |-
+          <p>Eich rheolaeth thermostatig yw %{r2}, sef %{r2_rating_adjective}</p>
+          <p>Y gwerth cyfartalog ar gyfer ysgolion yw %{average_schools_r2} a gwerth perffaith yw 1.0. Po isaf yw'r gwerth islaw 1.0, y gwaethaf yw rheolaeth thermostatig yr ysgol.</p>
+        title: Beth yw rheolaeth thermostatig?
+      page_title: Dadansoddiad rheolaeth thermostatig

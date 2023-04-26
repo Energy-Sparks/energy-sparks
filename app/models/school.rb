@@ -2,51 +2,63 @@
 #
 # Table name: schools
 #
-#  activation_date                       :date
-#  active                                :boolean          default(TRUE)
-#  address                               :text
-#  bill_requested                        :boolean          default(FALSE)
-#  calendar_id                           :bigint(8)
-#  chart_preference                      :integer          default("default"), not null
-#  cooks_dinners_for_other_schools       :boolean          default(FALSE), not null
-#  cooks_dinners_for_other_schools_count :integer
-#  cooks_dinners_onsite                  :boolean          default(FALSE), not null
-#  country                               :integer          default("england"), not null
-#  created_at                            :datetime         not null
-#  dark_sky_area_id                      :bigint(8)
-#  data_enabled                          :boolean          default(FALSE)
-#  enable_targets_feature                :boolean          default(TRUE)
-#  floor_area                            :decimal(, )
-#  funding_status                        :integer          default("state_school"), not null
-#  has_swimming_pool                     :boolean          default(FALSE), not null
-#  id                                    :bigint(8)        not null, primary key
-#  indicated_has_solar_panels            :boolean          default(FALSE), not null
-#  indicated_has_storage_heaters         :boolean          default(FALSE)
-#  latitude                              :decimal(10, 6)
-#  level                                 :integer          default(0)
-#  longitude                             :decimal(10, 6)
-#  met_office_area_id                    :bigint(8)
-#  name                                  :string
-#  number_of_pupils                      :integer
-#  percentage_free_school_meals          :integer
-#  postcode                              :string
-#  process_data                          :boolean          default(FALSE)
-#  public                                :boolean          default(TRUE)
-#  removal_date                          :date
-#  school_group_id                       :bigint(8)
-#  school_type                           :integer          not null
-#  scoreboard_id                         :bigint(8)
-#  serves_dinners                        :boolean          default(FALSE), not null
-#  slug                                  :string
-#  solar_pv_tuos_area_id                 :bigint(8)
-#  temperature_area_id                   :bigint(8)
-#  template_calendar_id                  :integer
-#  updated_at                            :datetime         not null
-#  urn                                   :integer          not null
-#  validation_cache_key                  :string           default("initial")
-#  visible                               :boolean          default(FALSE)
-#  weather_station_id                    :bigint(8)
-#  website                               :string
+#  activation_date                              :date
+#  active                                       :boolean          default(TRUE)
+#  address                                      :text
+#  alternative_heating_biomass                  :boolean          default(FALSE), not null
+#  alternative_heating_biomass_notes            :text
+#  alternative_heating_biomass_percent          :integer          default(0)
+#  alternative_heating_district_heating         :boolean          default(FALSE), not null
+#  alternative_heating_district_heating_notes   :text
+#  alternative_heating_district_heating_percent :integer          default(0)
+#  alternative_heating_lpg                      :boolean          default(FALSE), not null
+#  alternative_heating_lpg_notes                :text
+#  alternative_heating_lpg_percent              :integer          default(0)
+#  alternative_heating_oil                      :boolean          default(FALSE), not null
+#  alternative_heating_oil_notes                :text
+#  alternative_heating_oil_percent              :integer          default(0)
+#  bill_requested                               :boolean          default(FALSE)
+#  calendar_id                                  :bigint(8)
+#  chart_preference                             :integer          default("default"), not null
+#  cooks_dinners_for_other_schools              :boolean          default(FALSE), not null
+#  cooks_dinners_for_other_schools_count        :integer
+#  cooks_dinners_onsite                         :boolean          default(FALSE), not null
+#  country                                      :integer          default("england"), not null
+#  created_at                                   :datetime         not null
+#  dark_sky_area_id                             :bigint(8)
+#  data_enabled                                 :boolean          default(FALSE)
+#  enable_targets_feature                       :boolean          default(TRUE)
+#  floor_area                                   :decimal(, )
+#  funding_status                               :integer          default("state_school"), not null
+#  has_swimming_pool                            :boolean          default(FALSE), not null
+#  id                                           :bigint(8)        not null, primary key
+#  indicated_has_solar_panels                   :boolean          default(FALSE), not null
+#  indicated_has_storage_heaters                :boolean          default(FALSE)
+#  latitude                                     :decimal(10, 6)
+#  level                                        :integer          default(0)
+#  longitude                                    :decimal(10, 6)
+#  met_office_area_id                           :bigint(8)
+#  name                                         :string
+#  number_of_pupils                             :integer
+#  percentage_free_school_meals                 :integer
+#  postcode                                     :string
+#  process_data                                 :boolean          default(FALSE)
+#  public                                       :boolean          default(TRUE)
+#  removal_date                                 :date
+#  school_group_id                              :bigint(8)
+#  school_type                                  :integer          not null
+#  scoreboard_id                                :bigint(8)
+#  serves_dinners                               :boolean          default(FALSE), not null
+#  slug                                         :string
+#  solar_pv_tuos_area_id                        :bigint(8)
+#  temperature_area_id                          :bigint(8)
+#  template_calendar_id                         :integer
+#  updated_at                                   :datetime         not null
+#  urn                                          :integer          not null
+#  validation_cache_key                         :string           default("initial")
+#  visible                                      :boolean          default(FALSE)
+#  weather_station_id                           :bigint(8)
+#  website                                      :string
 #
 # Indexes
 #
@@ -111,13 +123,13 @@ class School < ApplicationRecord
   has_many :equivalences
 
   has_many :locations
-  has_many :notes
+
+  has_one :dashboard_message, as: :messageable, dependent: :destroy
+  has_many :issues, as: :issueable, dependent: :destroy
 
   has_many :simulations, inverse_of: :school
 
   has_many :estimated_annual_consumptions
-
-  has_many :alternative_heating_sources
 
   has_many :amr_data_feed_readings,       through: :meters
   has_many :amr_validated_readings,       through: :meters
@@ -126,13 +138,18 @@ class School < ApplicationRecord
   has_many :school_alert_type_exclusions, dependent: :destroy
   has_many :school_batch_runs
 
+  has_many :advice_page_school_benchmarks
+
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
 
   belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, optional: true
   belongs_to :weather_station, optional: true
+
   belongs_to :school_group, optional: true
+  delegate :default_issues_admin_user, to: :school_group
+
   belongs_to :scoreboard, optional: true
 
   has_one :school_onboarding
@@ -159,6 +176,7 @@ class School < ApplicationRecord
   scope :without_group,      -> { active.where(school_group_id: nil) }
   scope :without_scoreboard, -> { active.where(scoreboard_id: nil) }
   scope :awaiting_activation, -> { active.where("visible = ? or data_enabled = ?", false, false) }
+  scope :data_visible,        -> { data_enabled.visible }
 
   scope :with_config, -> { joins(:configuration) }
   scope :by_name,     -> { order(name: :asc) }
@@ -176,6 +194,8 @@ class School < ApplicationRecord
   validates :postcode, format: { with: /\A[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}\z/i }
 
   validates_associated :school_times, on: :school_time_update
+
+  validates :alternative_heating_oil_percent, :alternative_heating_lpg_percent, :alternative_heating_biomass_percent, :alternative_heating_district_heating_percent, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true }
 
   accepts_nested_attributes_for :school_times, reject_if: proc {|attributes| attributes['day'].blank? }, allow_destroy: true
 
@@ -202,6 +222,12 @@ class School < ApplicationRecord
     # currently stored as strings (and in an inconsistent date format as defined in the associated meter's amr data feed
     # config) so we instead use the minimum validated reading date minus 1 year.
     amr_validated_readings.minimum(:reading_date) - 1.year
+  end
+
+  def full_location_to_s
+    return '' unless postcode.present?
+
+    "#{postcode} (#{longitude}, #{latitude})"
   end
 
   def find_user_or_cluster_user_by_id(id)
@@ -244,14 +270,14 @@ class School < ApplicationRecord
 
   def activities_in_academic_year(date)
     if (academic_year = academic_year_for(date))
-      return activities.between(academic_year.start_date, academic_year.end_date)
+      return activities.between(academic_year.start_date, academic_year.end_date).order(created_at: :asc)
     end
     []
   end
 
   def observations_in_academic_year(date)
     if (academic_year = academic_year_for(date))
-      return observations.between(academic_year.start_date, academic_year.end_date)
+      return observations.between(academic_year.start_date, academic_year.end_date).order(created_at: :asc)
     end
     []
   end
@@ -343,14 +369,14 @@ class School < ApplicationRecord
     all_school_admins + staff
   end
 
-  def activation_email_list
+  def activation_users
     users = []
     if school_onboarding && school_onboarding.created_user.present?
       users << school_onboarding.created_user
     end
     #also email admin, staff and group users
     users += all_adult_school_users.to_a
-    users.uniq.map(&:email)
+    users.uniq
   end
 
   def latest_content
@@ -423,6 +449,14 @@ class School < ApplicationRecord
 
   def most_recent_target
     school_targets.by_start_date.first
+  end
+
+  def expired_target
+    school_targets.by_start_date.expired.first
+  end
+
+  def has_expired_target?
+    expired_target.present?
   end
 
   def has_school_target_event?(event_name)
@@ -526,7 +560,19 @@ class School < ApplicationRecord
   end
 
   def self.status_counts
-    { active: self.visible.count, data_visible: self.visible.data_enabled.count, invisible: self.not_visible.count, removed: self.inactive.count }
+    { active: self.visible.count, data_visible: self.data_visible.count, invisible: self.not_visible.count, removed: self.inactive.count }
+  end
+
+  def email_locales
+    country == 'wales' ? [:en, :cy] : [:en]
+  end
+
+  def subscription_frequency
+    if holiday_approaching?
+      [:weekly, :termly, :before_each_holiday]
+    else
+      [:weekly]
+    end
   end
 
   private

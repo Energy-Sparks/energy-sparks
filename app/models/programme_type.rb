@@ -15,11 +15,14 @@
 class ProgrammeType < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
+  include TranslatableAttachment
+
   translates :title, type: :string, fallbacks: { cy: :en }
   translates :short_description, type: :string, fallbacks: { cy: :en }
   translates :description, backend: :action_text
+  translates :document_link, type: :string, fallbacks: { cy: :en }
 
-  has_one_attached :image
+  t_has_one_attached :image
   has_many :programme_type_activity_types
   has_many :activity_types, through: :programme_type_activity_types
 

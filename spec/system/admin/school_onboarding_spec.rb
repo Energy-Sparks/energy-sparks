@@ -23,7 +23,8 @@ RSpec.describe "onboarding", :schools, type: :system do
       default_dark_sky_area: dark_sky_weather_area,
       default_weather_station: weather_station,
       default_scoreboard: scoreboard,
-      default_chart_preference: default_chart_preference
+      default_chart_preference: default_chart_preference,
+      default_country: 'wales'
     )
   end
 
@@ -38,11 +39,11 @@ RSpec.describe "onboarding", :schools, type: :system do
     end
 
     context "selectable actions" do
-      let!(:setup_data)  { } # call to create all objects required by tests before page is loaded, overriden in contexts
-      before do
-        click_on 'Manage school onboarding'
+      it_behaves_like "admin school group onboardings" do
+        def after_setup_data
+          click_on 'Manage school onboarding'
+        end
       end
-      it_behaves_like "admin school group onboardings"
     end
 
     it 'allows a new onboarding to be setup and sends an email to the school' do
@@ -61,6 +62,7 @@ RSpec.describe "onboarding", :schools, type: :system do
       expect(page).to have_select('Dark Sky Data Feed Area', selected: 'BANES dark sky weather')
       expect(page).to have_select('Weather Station', selected: 'BANES weather')
       expect(page).to have_select('Scoreboard', selected: 'BANES scoreboard')
+      expect(page).to have_select('Country', selected: 'Wales')
 
       click_on 'Next'
 
@@ -97,6 +99,7 @@ RSpec.describe "onboarding", :schools, type: :system do
       click_on 'Next'
 
       select 'Oxford calendar', from: 'Template calendar'
+      select 'Scotland', from: 'Country'
 
       choose('Display chart data in £, where available')
 
@@ -105,6 +108,7 @@ RSpec.describe "onboarding", :schools, type: :system do
       expect(onboarding.school_name).to eq('A new name')
       expect(onboarding.template_calendar).to eq(other_template_calendar)
       expect(onboarding.default_chart_preference).to eq "cost"
+      expect(onboarding.country).to eq "scotland"
     end
 
     context 'when completing onboarding as admin without consents' do
@@ -258,7 +262,8 @@ RSpec.describe "onboarding", :schools, type: :system do
     end
 
     it 'shows recently onboarded schools' do
-      school = create :school
+      school_group = create :school_group
+      school = create :school, country: :england, school_group: school_group
       onboarding = create :school_onboarding, :with_events, event_names: [:onboarding_complete], school: school
       click_on 'Manage'
       click_on 'Reports'
@@ -267,7 +272,9 @@ RSpec.describe "onboarding", :schools, type: :system do
       expect(page).to have_content 'Schools recently onboarded'
 
       click_on onboarding.school_name
-      expect(page).to have_content 'Adult Dashboard'
+      within('.dashboard-school-title') do
+        expect(page).to have_content(school.name)
+      end
     end
   end
 end

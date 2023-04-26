@@ -20,7 +20,7 @@ describe Alerts::GenerateEmailNotifications do
   let(:alert_subscription_event_2) { AlertSubscriptionEvent.find_by!(content_version: content_version_2) }
 
   around do |example|
-    ClimateControl.modify SEND_AUTOMATED_EMAILS: 'true' do
+    ClimateControl.modify SEND_AUTOMATED_EMAILS: 'true', FEATURE_FLAG_REPLACE_FIND_OUT_MORES: 'false' do
       example.run
     end
   end

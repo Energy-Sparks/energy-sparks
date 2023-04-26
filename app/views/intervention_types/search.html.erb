@@ -48,11 +48,5 @@
 
   <br/>
   <br/>
-
-  <div class="row justify-content-md-center">
-    <div class="col col-md-2">
-      <%== pagy_bootstrap_nav(@pagy) if @pagy.count > @pagy.items %>
-    </div>
-  </div>
-
+  <%= render "shared/pagy_footer" %>
 <% end %>

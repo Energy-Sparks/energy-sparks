@@ -1,17 +1,7 @@
 <%= content_for :page_title, t('pupils.schools.show.title', school_name: @school.name) %>
 
-<% if show_admin_page_switch?(@school) %>
-  <div class="row mt-2 mb-2">
-    <div class="col">
-      <div class="float-right">
-        <% if params[:no_data] %>
-          <%= link_to t('pupils.schools.show.admin_view'), pupils_school_path(@school), class: 'btn btn-outline-dark bg-warning rounded-pill font-weight-bold' %>
-        <% else %>
-          <%= link_to t('pupils.schools.show.user_view'), pupils_school_path(@school, no_data: true), class: 'btn btn-outline-dark bg-warning rounded-pill font-weight-bold' %>
-        <% end %>
-      </div>
-    </div>
-  </div>
+<%= render 'shared/dashboard_title', school: @school do %>
+  <%= render 'pupil_dashboard_buttons', school: @school %>
 <% end %>
 
 <% if @show_data_enabled_features %>
@@ -36,7 +26,7 @@
           colour: class_for_alert_colour(content.colour),
           icon: alert_icon(content.alert, 'fa-3x'),
           content: content.pupil_dashboard_title,
-          buttons: content.find_out_more ? { t('pupils.schools.show.find_out_more') => school_find_out_more_path(@school, content.find_out_more) } : {}
+          buttons: dashboard_alert_buttons(@school, content)
     %>
    <% end %>
 <% end %>

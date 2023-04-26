@@ -10,7 +10,7 @@ module Schools
     end
 
     def request_consent!(users)
-      ConsentRequestMailer.with(emails: users.map(&:email), school: @school, subject: "We need permission to access your school's energy data").request_consent.deliver_now
+      ConsentRequestMailer.with_user_locales(users: users, school: @school) { |mailer| mailer.request_consent.deliver_now }
     end
   end
 end

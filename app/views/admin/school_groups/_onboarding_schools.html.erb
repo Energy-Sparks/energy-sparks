@@ -1,24 +1,28 @@
 <%= simple_form_for school_group, html: { class: 'form-group', method: 'post' } do |f| %>
-  <table class="table table-sorted table-striped">
+  <table class="table table-sorted" style="width:100%">
     <thead>
       <tr>
         <th class="no-sort"><%= check_box_tag "check-all-#{school_group.id}", false, false, { class: 'check-all' } %></th>
-        <th>School name</th>
+        <th>School</th>
         <th>Contact email</th>
-        <th>Last activity</th>
-        <th>last event</th>
+        <th>Last event</th>
         <th class="no-sort"></th>
       </tr>
     </thead>
     <tbody>
       <% school_group.school_onboardings.by_name.incomplete.each do |onboarding| %>
-        <tr>
+        <tr class="bg-light">
           <td><%= f.check_box :school_onboarding_ids, { multiple: true, checked: false }, onboarding.id, nil %></td>
           <td><%= link_to onboarding.school_name, onboarding_path(onboarding) %></td>
-          <td><%= onboarding.contact_email %> <%= link_to 'Change', edit_admin_school_onboarding_email_path(onboarding), class: 'btn btn-warning btn-sm' if onboarding.has_only_sent_email_or_reminder? %></td>
-          <td data-order="<%= onboarding.events.maximum(:created_at) %>"><%= nice_date_times(onboarding.events.maximum(:created_at)) %></td>
-          <td><%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)).try(:humanize) %></td>
+          <td class="wrap"><%= onboarding.contact_email %> <%= link_to fa_icon('edit'), edit_admin_school_onboarding_email_path(onboarding), class: "", title: "Change email address" if onboarding.has_only_sent_email_or_reminder? %></td>
+          <td class="nowrap" data-order="<%= onboarding.events.maximum(:created_at) %>">
+            <%= nice_date_times(onboarding.events.maximum(:created_at)) %><br />
+            <span class="badge badge-secondary"><%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)).try(:humanize) %></span>
+          </td>
           <td class="nowrap text-right">
+            <% if onboarding.school %>
+              <%= link_to issue_type_icons(onboarding.school.issues, label: 'Issues'), admin_school_issues_path(onboarding.school), class: 'btn btn-sm' %>
+            <% end %>
             <%= link_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding), class: 'btn btn-warning btn-sm', method: :post %>
             <% if onboarding.school && onboarding.school.consent_grants.any? %>
               <%= link_to 'Make visible', school_visibility_path(onboarding.school), class: 'btn btn-sm', method: :post %>
@@ -31,6 +35,7 @@
       <% end %>
     </tbody>
   </table>
+  <%= hidden_field_tag :anchor, anchor %>
   <%= f.button :submit, "Make selected visible", data: {confirm: 'Are you sure?'}, formaction: make_visible_admin_school_group_school_onboardings_path(school_group) %>
   <%= f.button :submit, "Send reminders to selected", data: {confirm: 'Are you sure?'}, formaction: reminders_admin_school_group_school_onboardings_url(school_group) %>
 <% end %>

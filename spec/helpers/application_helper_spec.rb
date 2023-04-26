@@ -7,6 +7,26 @@ describe ApplicationHelper do
       expect(helper.up_downify('+10%')).to include('up')
     end
 
+    it 'adds an up arrow icon for positive numbers with no leading +' do
+      expect(helper.up_downify('10%')).to include('<i')
+      expect(helper.up_downify('10%')).to include('up')
+    end
+
+    it 'adds an up arrow icon for positive numbers with a £ sign' do
+      expect(helper.up_downify('£4')).to include('<i')
+      expect(helper.up_downify('£4')).to include('up')
+    end
+
+    it 'adds an up arrow icon for positive float' do
+      expect(helper.up_downify('4.45')).to include('<i')
+      expect(helper.up_downify('4.45')).to include('up')
+    end
+
+    it 'adds an up arrow icon for positive float with no leading 0' do
+      expect(helper.up_downify('.45')).to include('<i')
+      expect(helper.up_downify('.45')).to include('up')
+    end
+
     it 'adds an up arrow icon for increased' do
       expect(helper.up_downify('increased')).to include('<i')
       expect(helper.up_downify('increased')).to include('up')
@@ -30,12 +50,12 @@ describe ApplicationHelper do
 
   describe 'last signed in helper' do
     it 'shows a message if a user has never signed in' do
-      expect(display_last_signed_in_as(build(:user))).to eq 'Never signed in'
+      expect(display_last_signed_in_as(build(:user))).to eq '-'
     end
 
     it 'shows the last time as user signed in' do
       last_sign_in_at = DateTime.new(2001, 2, 3, 4, 5, 6)
-      expect(display_last_signed_in_as(build(:user, last_sign_in_at: last_sign_in_at))).to eq nice_date_times(last_sign_in_at)
+      expect(display_last_signed_in_as(build(:user, last_sign_in_at: last_sign_in_at))).to eq last_sign_in_at.strftime('%d/%m/%Y %H:%M')
     end
   end
 
@@ -261,6 +281,38 @@ describe ApplicationHelper do
     end
     it 'applies both' do
       expect(helper.i18n_key_from('Some Thing')).to eq('some_thing')
+    end
+  end
+
+  describe '#school_name_group' do
+    let(:school_group)          { create(:school_group, name: 'Some School Group') }
+    let(:school_with_group)     { create(:school, name: "School One", school_group: school_group) }
+    let(:school_without_group)  { create(:school, name: "School Two") }
+    it 'handles school with group' do
+      expect(helper.school_name_group(school_with_group)).to eq('School One (Some School Group)')
+    end
+    it 'handles school without group' do
+      expect(helper.school_name_group(school_without_group)).to eq('School Two')
+    end
+  end
+
+  describe '#status_for_alert_colour' do
+    it 'returns neutral if no colour supplied' do
+      expect(helper.status_for_alert_colour(nil)).to eq(:neutral)
+    end
+    it 'returns colour if supplied' do
+      expect(helper.status_for_alert_colour(:green)).to eq(:green)
+    end
+  end
+
+  describe '#user_school_role' do
+    let(:user_with_staff_role) { create(:staff) }
+    let(:user_without_staff_role) { create(:group_admin) }
+    it 'returns staff role title' do
+      expect(helper.user_school_role(user_with_staff_role)).to eq('Teacher')
+    end
+    it 'returns role' do
+      expect(helper.user_school_role(user_without_staff_role)).to eq('Group admin')
     end
   end
 end

@@ -1,9 +1,28 @@
 cy:
   school_statistics:
-    introduction: Dyma grynodeb o holl ysgolion Energy Sparks
-    page_title: Adrodd
+    active: Gweithredol
+    active_and_enabled: Gweithredol, gyda data wedi'u galluogi
+    by_country: Ysgolion gweithredol yn ôl gwlad
+    count: Cyfrif
+    country: Gwlad
+    england: Lloegr
+    free_school_meals: Ysgolion gweithredol, statws prydau ysgol am ddim
+    introduction: Dyma grynodeb o holl ysgolion Sbarcynni
+    onboarding: Cofrestru
+    onboarding_status: Statws cofrestru ysgol
+    page_title: Ystadegau ysgolion
     percent_free_school_meals: "% o brydau ysgol am ddim"
+    percentage_range: Ystod ganrannol
     postcode: Cod post
     pupil_numbers: Niferoedd disgyblion
+    school_group: Grŵp ysgol
     school_name: Enw
+    school_summary: Data allweddol ar gyfer ysgolion gweithredol
+    school_type: Math o ysgol
+    school_types: Ysgolion gweithredol yn ôl math
+    scotland: Yr Alban
+    status: Statws
     title: Ystadegau Ysgolion
+    total: Cyfanswm
+    unknown: Anhysbys
+    wales: Cymru

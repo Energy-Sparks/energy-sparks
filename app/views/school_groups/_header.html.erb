@@ -6,7 +6,7 @@
     <div class='btn-group float-right mt-4'>
       <%= link_to t('school_groups.header.view_all_schools'), schools_path, class: 'btn' %>
       <% if school_group.present? && can?(:compare, school_group) %>
-        <%= link_to t('school_groups.header.compare_schools'), benchmarks_path(benchmark: benchmark_filter ), class: 'btn' if benchmark_filter %>
+        <%= link_to t('school_groups.header.compare_schools'), compare_index_path(benchmark_filter), class: 'btn' if benchmark_filter %>
       <% end %>
       <%= link_to t('school_groups.header.scoreboard'), scoreboard_path(scoreboard), class: 'btn' if scoreboard %>
     </div>

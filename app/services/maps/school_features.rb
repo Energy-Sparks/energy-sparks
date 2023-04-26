@@ -28,17 +28,27 @@ module Maps
       end
     end
 
+    def fuel_type_icons_html_for(school)
+      fuel_type_icons = ''
+      fuel_type_icons += "&nbsp;<i class='fas fa-bolt'></i>" if school.has_electricity?
+      fuel_type_icons += "&nbsp;<i class='fas fa-fire'></i>" if school.has_gas?
+      fuel_type_icons += "&nbsp;<i class='fas fa-sun'></i>" if school.has_solar_pv?
+      fuel_type_icons
+    end
+
+    def build_popup_html_for(school)
+      <<-HTML
+        <a href='#{school_path(school)}'>#{school.name}</a>
+        <br/>
+        <p>#{I18n.t('maps.school_features.school_type')}: #{school.school_type.humanize}</p>
+        <p>#{I18n.t('maps.school_features.fuel_types')}: #{fuel_type_icons_html_for(school)}</p>
+        <p>#{I18n.t('maps.school_features.pupils')}: #{school.number_of_pupils}</p>
+      HTML
+    end
+
     def school_details(school)
-      {
-        schoolName: school.name,
-        schoolType: school.school_type.humanize,
-        schoolPath: school_path(school),
-        numberOfPupils: school.number_of_pupils,
-        fuelTypes: school.fuel_types,
-        hasElectricity: school.has_electricity?,
-        hasGas: school.has_gas?,
-        hasSolarPv: school.has_solar_pv?
-      }
+      school_popup_html = ActionController::Base.helpers.sanitize(build_popup_html_for(school))
+      { schoolPopupHtml: school_popup_html }
     end
   end
 end

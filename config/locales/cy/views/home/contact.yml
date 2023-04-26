@@ -4,15 +4,15 @@ cy:
       discover_html: Darganfod pa <a href='%{datasets_path}'>ddata agored</a> rydym yn eu defnyddio yn y gwasanaeth
       in_the_meantime: Yn y cyfamser gallwch
       learn_html: Dysgu sut i <a href='%{enrol_path}'>gofrestru eich ysgol</a>
-      read_html: Darllen <a href='%{for_teachers_path}'>am Energy Sparks</a> a nodau'r prosiect
+      read_html: Darllen <a href='%{for_teachers_path}'>am Sbarcynni</a> a nodau'r prosiect
       title: Gwybodaeth Bellach
     problem_reporting:
       content_1: Os ydych yn adrodd am broblem gyda'r gwasanaeth, ceisiwch gynnwys cymaint o fanylion â phosib yn eich e-bost, gan gynnwys pa borwr gwe a system weithredu rydych yn ei ddefnyddio, URL (cyfeiriad) y dudalen a phryd y cawsoch y broblem
       title: Adrodd am Broblemau
     questions:
-      content_1: Os oes gennych unrhyw gwestiynau neu sylwadau yn ymwneud ag Energy Sparks, anfonwch e-bost atom yn
+      content_1: Os oes gennych unrhyw gwestiynau neu sylwadau yn ymwneud ag Sbarcynni, anfonwch e-bost atom yn
       content_2: a bydd un o'r tîm yn cysylltu yn fuan
-      content_3: Gallwch gysylltu â ni gyda chwestiynau am eich data nwy a thrydan, gofyn i ni am gyngor i gynyddu’r arbedion ynni yn eich ysgol, gofyn i ni am gefnogaeth i redeg eich tîm ynni disgyblion, neu adrodd am broblem gyda’r wefan. Gallwch hefyd ddarparu awgrymiadau ar gyfer gwella Energy Sparks i ddiwallu eich anghenion yn well. Os hoffech weld nodwedd newydd rhowch wybod i ni
+      content_3: Gallwch gysylltu â ni gyda chwestiynau am eich data nwy a thrydan, gofyn i ni am gyngor i gynyddu’r arbedion ynni yn eich ysgol, gofyn i ni am gefnogaeth i redeg eich tîm ynni disgyblion, neu adrodd am broblem gyda’r wefan. Gallwch hefyd ddarparu awgrymiadau ar gyfer gwella Sbarcynni i ddiwallu eich anghenion yn well. Os hoffech weld nodwedd newydd rhowch wybod i ni
       content_4: Gallwch hefyd gysylltu â ni drwy gyfryngau cymdeithasol
       facebook: Ac ar Facebook yn
       title: Cwestiynau?

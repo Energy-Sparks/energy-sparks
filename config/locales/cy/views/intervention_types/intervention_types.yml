@@ -1,3 +1,4 @@
+---
 cy:
   intervention_types:
     intervention_type_points:
@@ -9,6 +10,11 @@ cy:
     previous_records:
       action: Gweithred
     prompt_score:
+      complete_this_action_for_group_html:
+        one: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+        two: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+        many: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+        other: Cwblhewch y weithred hon ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
       complete_this_action_html:
         one: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> pwynt i'th ysgol!
         two: Cwblha'r cam hwn i sgorio <strong>%{count}</strong> bwynt i'th ysgol!
@@ -21,9 +27,9 @@ cy:
       pupil_activities: Gweithgareddau disgyblion
       results_found:
         one: Wedi canfod 1 canlyniad
-        two: Wedi canfod %{count} ganlyniad
-        many: Wedi canfod %{count} o ganlyniadau
-        other: Wedi canfod %{count} o ganlyniadau
+        two: "Wedi canfod %{count} ganlyniad"
+        many: "Wedi canfod %{count} o ganlyniadau"
+        other: "Wedi canfod %{count} o ganlyniadau"
       search: Chwilio
       search_for_actions_by_keyword: Chwilio am gamau gweithredu yn ôl allweddair
       title: Dod o hyd i gamau gweithredu

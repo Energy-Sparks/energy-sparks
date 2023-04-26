@@ -6,7 +6,7 @@
           <h2><%= school.name  %> Staff</h2>
         </div>
         <div class="card-text">
-          <%= link_to 'Log in with your email address and password', new_user_session_path(role: :staff, school: school), class: 'btn btn-rounded'%>
+          <%= link_to t('devise.sessions.new.log_in_with_your_email_address_and_password'), new_user_session_path(role: :staff, school: school), class: 'btn btn-rounded'%>
         </div>
       </div>
     </div>
@@ -18,7 +18,7 @@
           <h2><%= school.name  %> Pupils</h2>
         </div>
         <div class="card-text">
-          <%=  link_to 'Log in with your pupil password', new_user_session_path(role: :pupil, school: school), class: 'btn btn-rounded'%>
+          <%=  link_to t('devise.sessions.new.log_in_with_your_pupil_password'), new_user_session_path(role: :pupil, school: school), class: 'btn btn-rounded'%>
         </div>
       </div>
     </div>

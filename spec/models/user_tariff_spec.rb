@@ -84,6 +84,33 @@ describe UserTariff do
       expect(meter_attribute[:accounting_tariff_generic][0][:source]).to eq(:manually_entered)
       expect(meter_attribute[:accounting_tariff_generic][0][:type]).to eq(:flat)
     end
+
+    context '#complete' do
+      context 'with prices and charges' do
+        it "should include tariff" do
+          expect(UserTariff.complete).to include(user_tariff)
+        end
+      end
+      context 'without prices or charges' do
+        let(:user_tariff_prices)  { [] }
+        let(:user_tariff_charges)  { [] }
+        it "should not include tariff" do
+          expect(UserTariff.complete).not_to include(user_tariff)
+        end
+      end
+      context 'without prices' do
+        let(:user_tariff_prices)  { [] }
+        it "should include tariff" do
+          expect(UserTariff.complete).to include(user_tariff)
+        end
+      end
+      context 'without charges' do
+        let(:user_tariff_charges)  { [] }
+        it "should include tariff" do
+          expect(UserTariff.complete).to include(user_tariff)
+        end
+      end
+    end
   end
 
   context 'with differential electricity tariff' do
@@ -182,6 +209,41 @@ describe UserTariff do
       expect(meter_attribute[:accounting_tariff_generic][0][:name]).to eq('My First Tariff')
       expect(meter_attribute[:accounting_tariff_generic][0][:source]).to eq(:manually_entered)
       expect(meter_attribute[:accounting_tariff_generic][0][:type]).to eq(:differential)
+    end
+
+    it "should prevent same start and end time" do
+      expect(user_tariff).to be_valid
+      user_tariff_price_1.update(end_time: user_tariff_price_1.start_time)
+      expect(user_tariff_price_1).not_to be_valid
+      expect(user_tariff_price_1.errors[:start_time]).to include("can't be the same as end time")
+    end
+
+    it "should allow end time of one range to be start time of next" do
+      expect(user_tariff).to be_valid
+      user_tariff_price_1.update(end_time: user_tariff_price_2.start_time)
+      expect(user_tariff_price_1).to be_valid
+      expect(user_tariff).to be_valid
+    end
+
+    it "should prevent overlapping start time" do
+      expect(user_tariff).to be_valid
+      user_tariff_price_2.update(start_time: user_tariff_price_1.end_time - 1.minute)
+      expect(user_tariff_price_2).not_to be_valid
+      expect(user_tariff_price_2.errors[:start_time]).to include("overlaps with another time range")
+    end
+
+    it "should prevent overlapping end time" do
+      expect(user_tariff).to be_valid
+      user_tariff_price_1.update(end_time: user_tariff_price_2.start_time + 1.minute)
+      expect(user_tariff_price_1).not_to be_valid
+      expect(user_tariff_price_1.errors[:end_time]).to include("overlaps with another time range")
+    end
+
+    it "should handle midnight end time as next day" do
+      expect(user_tariff).to be_valid
+      user_tariff_price_2.update(start_time: '07:00', end_time: '00:00')
+      user_tariff_price_1.update(start_time: '08:00', end_time: '09:00')
+      expect(user_tariff_price_1).not_to be_valid
     end
   end
 end

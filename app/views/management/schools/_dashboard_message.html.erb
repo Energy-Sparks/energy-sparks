@@ -1,8 +1,8 @@
-<% if school.school_group && school.school_group.dashboard_message %>
+<% if messageable.try(:dashboard_message) %>
   <%= render 'schools/dashboard/info_bar',
     colour: 'bg-neutral',
     icon: 'info-circle fa-3x',
-    content: school.school_group.dashboard_message.message,
+    content: messageable.dashboard_message.message,
     buttons: { }
   %>
 <% end %>

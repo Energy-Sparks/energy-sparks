@@ -1,16 +1,16 @@
 <div class="row justify-content-md-center">
   <div class="col col-md-10 col-lg-8">
-    <h1>Update your school adminstrator account details</h1>
+    <h1><%= t('onboarding.account.title_for_update') %></h1>
 
     <%= simple_form_for(current_user, url: onboarding_account_path(@school_onboarding)) do |f| %>
-      <%= f.input :name, label: 'Your name'%>
+      <%= f.input :name, label: t('onboarding.account.your_name') %>
       <%= f.input :email %>
       <%= f.input :password %>
       <%= f.input :password_confirmation %>
-      <%= f.input :staff_role_id, label: 'Role', required: :true, collection: StaffRole.order(:title), label_method: :translated_title, hint: 'What is your primary role in relation to Energy Sparks?'%>
+      <%= f.input :staff_role_id, required: :true, collection: StaffRole.order(:title), label_method: :translated_title, hint: t('onboarding.account.role_hint') %>
 
-      <%= f.button :submit, 'Update my account' %>
-      <%= link_to 'Back', new_onboarding_completion_path(@school_onboarding, anchor: 'your-account', show: 'account'), class: 'btn' %>
+      <%= f.button :submit, t('onboarding.account.update') %>
+      <%= link_to t('common.labels.back'), new_onboarding_completion_path(@school_onboarding, anchor: 'your-account', show: 'account'), class: 'btn' %>
     <% end %>
   </div>
 </div>

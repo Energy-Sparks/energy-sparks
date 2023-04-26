@@ -1,13 +1,10 @@
 cy:
   team:
     background:
-      content: Mae Energy Sparks yn elusen gofrestredig yng Nghymru a Lloegr, cofrestriad 1189273. Dechreuodd Energy Sparks yn 2017 fel prosiect o Transition Bath, elusen gofrestredig yng Nghymru a Lloegr, cofrestriad 1139853, ond daeth yn elusen annibynnol yn 2020
+      content: Mae Energy Sparks/Sbarcynni yn elusen gofrestredig yng Nghymru a Lloegr, cofrestriad 1189273. Dechreuodd Energy Sparks/Sbarcynni yn 2017 fel prosiect o Transition Bath, elusen gofrestredig yng Nghymru a Lloegr, cofrestriad 1139853, ond daeth yn elusen annibynnol yn 2020
       title: Cefndir
     our_team:
       consultants: Ymgynghorwyr
       staff: Staff
       title: Ein Tîm
       trustees: Ymddiriedolwyr
-    project_partners:
-      content: Mae Energy Sparks wedi cael ei gefnogi gan nifer o sefydliadau sydd wedi darparu cyllid neu gefnogaeth i’r prosiect
-      title: Partneriaid y Prosiect

@@ -1,11 +1,17 @@
-<ul class="nav nav-tabs" id="school-group-schools-tabs" role="tablist">
+<ul class="nav nav-tabs url-aware" id="school-group-schools-tabs" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active" id="active-tab" data-toggle="tab" href="#active-content" role="tab" aria-controls="active-content" aria-selected="true">Active</a>
+    <a class="nav-link active" id="active-tab" data-toggle="tab" href="#active" role="tab" aria-controls="active-content" aria-selected="true">Active</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" id="onboarding-tab" data-toggle="tab" href="#onboarding-content" role="tab" aria-controls="onboarding-content" aria-selected="true">Onboarding</a>
+    <a class="nav-link" id="onboarding-tab" data-toggle="tab" href="#onboarding" role="tab" aria-controls="onboarding-content" aria-selected="true">Onboarding</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" id="removed-tab" data-toggle="tab" href="#removed-content" role="tab" aria-controls="removed-content" aria-selected="true">Removed</a>
+    <a class="nav-link" id="removed-tab" data-toggle="tab" href="#removed" role="tab" aria-controls="removed-content" aria-selected="true">Removed</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="school-group-issues-tab" data-toggle="tab" href="#school-group-issues" role="tab" aria-controls="school-group-issues-content" aria-selected="true">School Group Issues <span class="badge badge-secondary"><%= @school_group.issues.count %></span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="school-issues-tab" data-toggle="tab" href="#school-issues" role="tab" aria-controls="issues-content" aria-selected="true">School Issues <span class="badge badge-secondary"><%= @school_group.school_issues.count %></span></a>
   </li>
 </ul>

@@ -1,8 +1,8 @@
-<h1>Edit the name and date range for this <%= @user_tariff.fuel_type %> tariff</h1>
+<h1><%= t('schools.user_tariffs.edit.title', fuel_type: @user_tariff.fuel_type) %></h1>
 
 <div class="user_tariff">
 
-  <p>There should only be one tariff for each date period, for each meter.</p>
+  <p><%= t('schools.user_tariffs.there_should_only_be_one_tariff_message') %>.</p>
   <br/>
 
   <%= render 'schools/user_tariffs/header', user_tariff: @user_tariff %>

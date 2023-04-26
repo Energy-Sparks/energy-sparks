@@ -1,0 +1,15 @@
+<td class="p-3 text-center">
+  <%= fa_icon("tachometer-alt fa-2x") %>
+</td>
+<td>
+  <h3 class="pt-1"><strong><%= link_to "Started working towards an energy saving target", school_school_target_path(@school, observation.school_target)%></strong></h3>
+  <span class="text-muted"><%= nice_dates(observation.at) %></span>
+</td>
+<% if show_actions && can?(:manage, observation) %>
+  <td class="text-right">
+    <div class="btn-group">
+      <%= link_to t('common.labels.edit'), edit_school_school_target_path(observation.school, observation.school_target), class: 'btn btn-warning' unless observation.school_target.expired? %>
+      <%= link_to t('common.labels.delete'), school_school_target_path(observation.school, observation.school_target), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
+    </div>
+  </td>
+<% end %>

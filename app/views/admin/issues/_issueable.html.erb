@@ -1,0 +1,9 @@
+<% if issueable %>
+  <span class="badge badge-secondary text-white" %>
+    <%= issueable_icon(issueable) %>
+    <%= link_to issueable.name,
+      polymorphic_path([:admin, issueable, Issue]),
+      class: 'text-white text-decoration-none'
+    %>
+  </span>
+<% end %>

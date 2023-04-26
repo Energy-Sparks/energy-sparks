@@ -1,3 +1,4 @@
+---
 cy:
   devise:
     confirmations:
@@ -8,67 +9,71 @@ cy:
       confirmation_instructions:
         before_you_begin: Cyn i chi allu dechrau defnyddio'ch cyfrif mae angen i chi gadarnhau eich cyfeiriad e-bost gan ddefnyddio'r ddolen isod
         confirm_my_account: Cadarnhau fy nghyfrif
-        once_confirmed_message: Unwaith y bydd wedi’i gadarnhau byddwch yn gallu mewngofnodi i weld faint o ynni y mae eich ysgol yn ei ddefnyddio, cael gwybod am y cyfleoedd arbed ynni mwyaf ac archwilio ein gweithgareddau a’n hadnoddau addysgol sydd wedi’u cynllunio i addysgu’ch disgyblion am ynni tra’n arbed arian i’w hysgol.
-        please_confirm_your_energy_sparks_account: Cadarnhewch eich cyfrif Energy Sparks
+        once_confirmed_message: "Unwaith y bydd wedi’i gadarnhau byddwch yn gallu mewngofnodi i weld faint o ynni y mae eich ysgol yn ei ddefnyddio, cael gwybod am y cyfleoedd arbed ynni mwyaf ac archwilio ein gweithgareddau a’n hadnoddau addysgol sydd wedi’u cynllunio i addysgu’ch disgyblion am ynni tra’n arbed arian i’w hysgol."
+        please_confirm_your_energy_sparks_account: Cadarnhewch eich cyfrif Sbarcynni
         questions_or_concerns_please_contact: Os oes gennych unrhyw gwestiynau neu bryderon yna cysylltwch â'r tîm
-        subject: 'Energy Sparks: cadarnhau eich cyfrif'
+        subject: 'Sbarcynni: cadarnhau eich cyfrif'
         team_by_replying_to_this_email: drwy ateb yr e-bost hwn
-        user_account_created_for_you_for: Mae cyfrif defnyddiwr wedi ei greu ar eich cyfer ar Energy Sparks ar gyfer %{resource_school_name}
-        user_account_created_for_you_on: Mae cyfrif defnyddiwr wedi'i greu ar eich cyfer ar Energy Sparks
-        welcome: Croeso %{resource_name}
+        user_account_created_for_you_for: "Mae cyfrif defnyddiwr wedi ei greu ar eich cyfer ar Sbarcynni ar gyfer %{resource_school_name}"
+        user_account_created_for_you_on: Mae cyfrif defnyddiwr wedi'i greu ar eich cyfer ar Sbarcynni
+        welcome: "Croeso %{resource_name}"
       email_changed:
         email_has_been_changed: Rydym yn cysylltu â chi i'ch hysbysu bod eich e-bost wedi'i newid i
         email_is_being_changed: Rydym yn cysylltu â chi i'ch hysbysu bod eich e-bost yn cael ei newid i
         hello: Helo
       password_change:
         hello: Helo
-        title: 'Energy Sparks: cyfrinair wedi''i newid'
+        title: 'Sbarcynni: cyfrinair wedi''i newid'
         were_contacting_you: Rydym yn cysylltu â chi i'ch hysbysu bod eich cyfrinair wedi'i newid.
       reset_password_instructions:
         change_my_password: Newid fy nghyfrinair
-        energy_sparks_password_reset: Ailosod cyfrinair Energy Sparks
+        energy_sparks_password_reset: Ailosod cyfrinair Sbarcynni
         follow_the_link_below_to_reset_it: Dilynwch y ddolen isod i'w ailosod
         hello: Helo
-        if_you_did_not_request_a_password_reset_message: Os na wnaethoch ofyn am ailosod cyfrinair, anwybyddwch yr e-bost hwn. Ni fydd eich cyfrinair yn newid nes i chi ddilyn y ddolen uchod a dewis creu un newydd.
+        if_you_did_not_request_a_password_reset_message: "Os na wnaethoch ofyn am ailosod cyfrinair, anwybyddwch yr e-bost hwn. Ni fydd eich cyfrinair yn newid nes i chi ddilyn y ddolen uchod a dewis creu un newydd."
         questions_or_concerns_please_contact: Os oes gennych unrhyw gwestiynau neu bryderon yna cysylltwch â'r
         team_by_replying_to_this_email: tîm drwy ateb yr e-bost hwn
-        title: 'Energy Sparks: ailosod eich cyfrinair'
+        title: 'Sbarcynni: ailosod eich cyfrinair'
         you_recently_requested_to_reset_the_password_for: Gwnaethoch gais yn ddiweddar i ailosod eich cyfrinair ar gyfer
       unlock_instructions:
         click_the_link_below: Cliciwch ar y ddolen isod i ddatgloi eich cyfrif
         hello: Helo
-        title: 'Energy Sparks: datgloi eich cyfrif'
+        title: 'Sbarcynni: datgloi eich cyfrif'
         unlock_my_account: Datgloi fy nghyfrif
         your_account_has_been_locked: Mae eich cyfrif wedi'i gloi oherwydd nifer gormodol o ymdrechion mewngofnodi aflwyddiannus
     passwords:
       edit:
         characters_minimum: lleiafswm nodau
+        complete_registration: Cwblhau cofrestru
+        complete_your_registration: Cwblhau eich cofrestriad
         confirm_new_password: Cadarnhau cyfrinair newydd
         new_password: Cyfrinair newydd
         page_title: Newid eich cyfrinair
         set_my_password: Gosod fy nghyfrinair
         set_your_password: Gosod eich cyfrinair
       new:
-        forgot_your_password: Wedi anghofio eich cyfrinair?
+        forgot_your_password: "Wedi anghofio eich cyfrinair?"
         page_title: Ailosod Cyfrinair
         send_me_reset_password_instructions: Anfonwch gyfarwyddiadau ailosod cyfrinair ataf
     sessions:
       new:
         email_address_and_password: cyfeiriad e-bost a chyfrinair
-        not_your_school: Nid dy ysgol di?
-        page_title: Mewngofnodi i Energy Sparks
+        log_in_with_your_email_address_and_password: Mewngofnodwch gyda'ch cyfeiriad e-bost a'ch cyfrinair
+        log_in_with_your_pupil_password: Mewngofnodwch gyda'ch cyfrinair disgybl
+        not_your_school: "Nid eich ysgol chi?"
+        page_title: Mewngofnodi i Sbarcynni
         pupil_password: cyfrinair disgybl
         pupil_sign_in_for: Mewngofnodi disgybl ar gyfer
         remember_me: Cofio fi
-        select_your_school: Dewisa dy ysgol
+        select_your_school: Dewiswch eich ysgol
         sign_in: Mewngofnodi
-        title: Mewngofnoda i Energy Sparks gyda dy
-        your_pupil_password: Dy gyfrinair disgybl
+        title: Mewngofnodwch i Sbarcynni gyda'ch
+        your_pupil_password: Eich cyfrinair disgybl
     shared:
       links:
-        didnt_receive_confirmation_instructions: Heb dderbyn cyfarwyddiadau cadarnhau?
+        didnt_receive_confirmation_instructions: "Heb dderbyn cyfarwyddiadau cadarnhau?"
         didnt_receive_unlock_instructions: Heb dderbyn cyfarwyddiadau datgloi
-        forgot_your_password: Wedi anghofio dy gyfrinair
+        forgot_your_password: Wedi anghofio'ch cyfrinair
         sign_in: Mewngofnodi
         sign_in_with: Mewngofnodi gyda
         sign_up: Cofrestru
@@ -78,13 +83,13 @@ cy:
         title: Ail-anfon cyfarwyddiadau datgloi
   errors:
     messages:
-      already_confirmed: wedi'i gadarnhau eisoes, rho gynnig ar fewngofnodi
-      confirmation_period_expired: angen ei gadarnhau o fewn %{period}, gofynna am un newydd
-      expired: wedi darfod, gofynna am un newydd
+      already_confirmed: "wedi'i gadarnhau eisoes, rhowch gynnig ar fewngofnodi"
+      confirmation_period_expired: "angen ei gadarnhau o fewn %{period}, gofynnwch am un newydd"
+      expired: "wedi darfod, gofynna am un newydd"
       not_found: heb ei ganfod
       not_locked: heb ei gloi
       not_saved:
         one: 'Roedd 1 gwall yn gwahardd y %{resource} hwn rhag cael ei gadw:'
-        two: 'Roedd %{count} wall yn gwahardd y %{resource} hwn rhag cael ei gadw:'
-        many: 'Roedd %{count} o wallau yn gwahardd y %{resource} hwn rhag cael ei gadw:'
-        other: 'Roedd %{count} o wallau yn gwahardd y %{resource} hwn rhag cael ei gadw:'
+        two: "Roedd %{count} wall yn gwahardd y %{resource} hwn rhag cael ei gadw:"
+        many: "Roedd %{count} o wallau yn gwahardd y %{resource} hwn rhag cael ei gadw:"
+        other: "Roedd %{count} o wallau yn gwahardd y %{resource} hwn rhag cael ei gadw:"

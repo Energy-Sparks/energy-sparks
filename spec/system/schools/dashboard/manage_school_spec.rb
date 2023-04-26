@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "manage school", type: :system do
-  let(:school)             { create(:school) }
+  let(:school)             { create(:school, :with_school_group) }
   let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
 
   before(:each) do
@@ -39,82 +39,77 @@ RSpec.describe "manage school", type: :system do
     end
   end
 
+  shared_examples "a manage school menu" do
+    it 'should have manage school menu' do
+      expect(page).to have_css("#manage_school")
+      within "#manage_school_menu" do
+        expect(page).to have_link("Edit school details")
+        expect(page).to have_link("Edit school times")
+        expect(page).to have_link("School calendar")
+        expect(page).to have_link("Manage users")
+        expect(page).to have_link("Manage alert contacts")
+        expect(page).to have_link("Manage meters")
+      end
+    end
+  end
+
+  shared_examples "a manage school menu displaying admin section" do
+    it 'shows extra manage menu items' do
+      expect(page).to have_css("#manage_school")
+      within "#manage_school_menu" do
+        expect(page).to have_link("School configuration")
+        expect(page).to have_link("Meter attributes")
+        expect(page).to have_link("Manage CADs")
+        expect(page).to have_link("Manage school group")
+        expect(page).to have_link("Manage issues")
+        expect(page).to have_link("Manage partners")
+        expect(page).to have_link("Batch reports")
+        expect(page).to have_link("Review targets")
+        expect(page).to have_link("Expert analysis")
+        expect(page).to have_link("Remove school")
+      end
+    end
+  end
+
+  shared_examples "a manage school menu not displaying admin section" do
+    it 'does not shows extra manage menu items' do
+      expect(page).to have_css("#manage_school")
+      within "#manage_school_menu" do
+        expect(page).to_not have_link("School configuration")
+        expect(page).to_not have_link("Meter attributes")
+        expect(page).to_not have_link("Manage CADs")
+        expect(page).to_not have_link("Manage school group")
+        expect(page).to_not have_link("Manage issues")
+        expect(page).to_not have_link("Manage partners")
+        expect(page).to_not have_link("Batch reports")
+        expect(page).to_not have_link("Review targets")
+        expect(page).to_not have_link("Expert analysis")
+        expect(page).to_not have_link("Remove school")
+      end
+    end
+  end
+
   context 'as school admin' do
     let(:user)  { create(:school_admin, school: school) }
-    it 'should have manage school menu' do
-      visit school_path(school)
-      expect(page).to have_css("#manage_school")
-      expect(page).to have_link("Edit school details")
-      expect(page).to have_link("Edit school times")
-      expect(page).to have_link("School calendar")
-      expect(page).to have_link("Manage users")
-      expect(page).to have_link("Manage alert contacts")
-      expect(page).to have_link("Manage meters")
-    end
-    it 'does not shows extra manage menu items' do
-      visit school_path(school)
-      expect(page).to have_css("#manage_school")
-      expect(page).to_not have_link("School configuration")
-      expect(page).to_not have_link("Meter attributes")
-      expect(page).to_not have_link("Manage CADs")
-      expect(page).to_not have_link("Manage partners")
-      expect(page).to_not have_link("Batch reports")
-      expect(page).to_not have_link("Expert analysis")
-      expect(page).to_not have_link("Remove school")
-    end
+    before { visit school_path(school) }
+    it_behaves_like "a manage school menu"
+    it_behaves_like "a manage school menu not displaying admin section"
   end
 
   context 'as group admin' do
     let(:school_group)  { create(:school_group) }
     let(:school)        { create(:school, school_group: school_group) }
     let(:user)          { create(:group_admin, school_group: school_group) }
-    it 'should have manage school menu' do
-      visit school_path(school)
-      expect(page).to have_css("#manage_school")
-      expect(page).to have_link("Edit school details")
-      expect(page).to have_link("Edit school times")
-      expect(page).to have_link("School calendar")
-      expect(page).to have_link("Manage users")
-      expect(page).to have_link("Manage alert contacts")
-      expect(page).to have_link("Manage meters")
-    end
-    it 'does not shows extra manage menu items' do
-      visit school_path(school)
-      expect(page).to have_css("#manage_school")
-      expect(page).to_not have_link("School configuration")
-      expect(page).to_not have_link("Meter attributes")
-      expect(page).to_not have_link("Manage CADs")
-      expect(page).to_not have_link("Manage partners")
-      expect(page).to_not have_link("Batch reports")
-      expect(page).to_not have_link("Expert analysis")
-      expect(page).to_not have_link("Remove school")
-    end
+    before { visit school_path(school) }
+    it_behaves_like "a manage school menu"
+    it_behaves_like "a manage school menu not displaying admin section"
   end
 
   context 'as admin' do
     let(:user)          { create(:admin) }
-
-    it 'should have manage school menu' do
-      visit school_path(school)
-      expect(page).to have_css("#manage_school")
-      expect(page).to have_link("Edit school details")
-      expect(page).to have_link("Edit school times")
-      expect(page).to have_link("School calendar")
-      expect(page).to have_link("Manage users")
-      expect(page).to have_link("Manage alert contacts")
-      expect(page).to have_link("Manage meters")
-    end
-
-    it 'shows extra manage menu items' do
-      visit school_path(school)
-      expect(page).to have_link("School configuration")
-      expect(page).to have_link("Meter attributes")
-      expect(page).to have_link("Manage CADs")
-      expect(page).to have_link("Manage partners")
-      expect(page).to have_link("Batch reports")
-      expect(page).to have_link("Expert analysis")
-      expect(page).to have_link("Remove school")
-    end
+    before { visit school_path(school) }
+    it_behaves_like "a manage school menu"
+    it_behaves_like "a manage school menu displaying admin section"
 
     it 'displays batch reports' do
       visit school_path(school)

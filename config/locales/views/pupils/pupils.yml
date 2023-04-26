@@ -64,7 +64,6 @@ en:
         complete_an_activity: Complete an activity to score points on Energy Sparks
         enter_temperatures: Enter temperatures
         find_how_much_energy_used: Find out how much energy has been used
-        find_out_more: Find out more&hellip;
         how_will_school_compare: How will your school compare? You'll soon be able to find out!
         look_at_the_energy_use: Let's look at the energy use data for your school
         measure_temperatures: Measure classroom temperatures to find out whether you should turn down the heating to save energy
@@ -79,7 +78,7 @@ en:
         start_transport_survey: Start surveying
         things_to_do: Things to do
         title: Pupil dashboard for %{school_name}
-        transport_surveys: Start a transport survey so that you can find out how much carbon your school community uses by travelling to school
+        transport_surveys: Start a transport survey so that you can find out how much carbon your school community generates by travelling to school
         try_this_first: Try this one first
         try_this_next: Try this one next
         update_temperatures: Update temperatures

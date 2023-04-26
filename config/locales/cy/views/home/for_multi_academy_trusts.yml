@@ -1,16 +1,16 @@
 cy:
   for_multi_academy_trusts:
     enrol_our_mat: Cofrestru ein Hymddiriedolaeth Aml-Academi
-    intro: Mae Energy Sparks yn darparu offeryn dadansoddi ynni ar-lein a rhaglen addysg ynni sydd wedi’u cynllunio’n benodol i helpu ysgolion i leihau eu defnydd o drydan a nwy drwy ddadansoddi data mesuryddion clyfar. Gall Energy Sparks helpu Ymddiriedolaethau Aml-Academi i gyrraedd eu targedau arbed carbon, democrateiddio mynediad at ddata ynni ysgolion a grymuso staff a myfyrwyr ysgol i gymryd camau rhad ac am ddim i leihau ôl troed carbon eu hysgol.
+    intro: Mae Sbarcynni yn darparu offeryn dadansoddi ynni ar-lein a rhaglen addysg ynni sydd wedi’u cynllunio’n benodol i helpu ysgolion i leihau eu defnydd o drydan a nwy drwy ddadansoddi data mesuryddion clyfar. Gall Sbarcynni helpu Ymddiriedolaethau Aml-Academi i gyrraedd eu targedau arbed carbon, democrateiddio mynediad at ddata ynni ysgolion a grymuso staff a myfyrwyr ysgol i gymryd camau rhad ac am ddim i leihau ôl troed carbon eu hysgol.
     quote_1:
       job_title: Pennaeth
-      text_html: '“Mae gwefan Energy Sparks yn hawdd iawn i’w defnyddio, ac mae’r plant wedi ei chael yn ddiddorol i fesur sut mae ynni’n cael ei ddefnyddio’n wahanol mewn gwahanol rannau o’r ysgol… Mae’r plant yn cael eu hysgogi gan yr elfen gystadleuol yn ogystal â’r awydd i arbed arian ac ynni …"'
+      text_html: '“Mae gwefan Sbarcynni yn hawdd iawn i’w defnyddio, ac mae’r plant wedi ei chael yn ddiddorol i fesur sut mae ynni’n cael ei ddefnyddio’n wahanol mewn gwahanol rannau o’r ysgol… Mae’r plant yn cael eu hysgogi gan yr elfen gystadleuol yn ogystal â’r awydd i arbed arian ac ynni …"'
     section_1_html: |-
-      <strong>Mae Energy Sparks yn darparu</strong>
+      <strong>Mae Sbarcynni yn darparu</strong>
       <ul>
         <li>Offeryn rheoli ynni ar-lein sy'n dangos i ysgolion pryd a faint o ynni y maent yn ei ddefnyddio</li>
         <li>Dadansoddiad ynni ysgol-benodol wedi'i deilwra</li>
-        <li>Gweithgareddau tîm eco a dosbarth i ddisgyblion yn gysylltiedig â dadansoddi egni</li>
+        <li>Gweithgareddau tîm eco a dosbarth i ddisgyblion yn gysylltiedig â dadansoddi ynni</li>
         <li>Cyngor i staff ysgol ar gymryd camau effeithiol</li>
         <li>Rhybuddion awtomataidd i roi gwybod i ysgolion pan fydd defnydd ynni yn newid</li>
         <li>Gwell llythrennedd ynni a charbon ymhlith disgyblion a staff a datblygiad sgiliau bywyd trosglwyddadwy</li>
@@ -18,7 +18,7 @@ cy:
       <p>Gweler ein <a href="/for-schools">tudalen Ar Gyfer Ysgolion</a> i ddysgu rhagor.</p>
     section_2_html: |-
       <h4><strong>Offeryn cymharu ysgolion ar gyfer Ymddiriedolaethau Aml-Academi</strong></h4>
-      <p>Mae Energy Sparks yn darparu offeryn <a href="/benchmarks">cymharu a meincnodi ysgolion</a> i ganiatáu dadansoddiad portffolio o ysgolion mewn grwpiau Ymddiriedolaeth Aml-Academi neu ar draws y portffolio Energy Sparks cyfan. Mae’r offeryn hwn yn cymharu perfformiad yn erbyn ystod o feincnodau gan gynnwys fesul disgybl ac arwynebedd llawr, defnydd gwyliau ysgol ac amser cychwyn gwresogi, ac mae'n fodd pwerus o nodi'r ysgolion sy'n perfformio waethaf i'w targedu gyda chymorth ychwanegol a'r ysgolion sy'n perfformio orau i'w cynnwys mewn astudiaethau achos.</p>
+      <p>Mae Sbarcynni yn darparu offeryn <a href="/benchmarks">cymharu a meincnodi ysgolion</a> i ganiatáu dadansoddiad portffolio o ysgolion mewn grwpiau Ymddiriedolaeth Aml-Academi neu ar draws y portffolio Sbarcynni cyfan. Mae’r offeryn hwn yn cymharu perfformiad yn erbyn ystod o feincnodau gan gynnwys fesul disgybl ac arwynebedd llawr, defnydd gwyliau ysgol ac amser cychwyn gwresogi, ac mae'n fodd pwerus o nodi'r ysgolion sy'n perfformio waethaf i'w targedu gyda chymorth ychwanegol a'r ysgolion sy'n perfformio orau i'w cynnwys mewn astudiaethau achos.</p>
       <p>
         Gall yr offeryn hefyd ddarparu gwybodaeth hawdd ei chyrchu i gefnogi rhwymedigaethau Adroddiadau Ynni a Charbon Syml (SECR).
       </p>
@@ -37,16 +37,16 @@ cy:
         <li><a href="/energy-audits">archwiliadau ynni ar y safle</a></li>
       </ul>
     section_4_html: |-
-      <h4><strong>Pa fesuryddion sydd eu hangen ar yr ysgol i ymuno â Energy Sparks?</strong></h4>
-      <p>Mae Energy Sparks angen mynediad at ddata defnydd ynni bob hanner awr yr ysgol o'u mesuryddion clyfar Hanner Awr (HH), Darllen Mesuryddion Awtomataidd (AMR) neu Fanylebau Technegol Offer Mesuryddion Clyfar (SMETS2).</p>
+      <h4><strong>Pa fesuryddion sydd eu hangen ar yr ysgol i ymuno â Sbarcynni?</strong></h4>
+      <p>Mae Sbarcynni angen mynediad at ddata defnydd ynni bob hanner awr yr ysgol o'u mesuryddion clyfar Hanner Awr (HH), Darllen Mesuryddion Awtomataidd (AMR) neu Fanylebau Technegol Offer Mesuryddion Clyfar (SMETS2).</p>
       <p>
-        Gall Energy Sparks ysgogi mwy o ysgolion i osod mesuryddion clyfar/AMB lle nad yw'r mesuryddion hyn eisoes wedi'u gosod. Mae unrhyw gost ychwanegol i osod mesuryddion SMETS2/AMR fel arfer yn cael ei wrthbwyso gan fanteision tryloywder defnydd ynni’r ysgol, a’r arbedion posib. Mae Energy Sparks yn canolbwyntio ar arbedion ddim cost a chost isel yn gyntaf, gyda’r rhan fwyaf o ysgolion â’r potensial i dorri defnydd o hyd at 30% heb wariant cyfalaf sylweddol. Mae hyn yn golygu y gall llawer o ysgolion adennill cost mesuryddion clyfar o fewn ychydig wythnosau i'w defnyddio.
+        Gall Sbarcynni ysgogi mwy o ysgolion i osod mesuryddion clyfar/AMB lle nad yw'r mesuryddion hyn eisoes wedi'u gosod. Mae unrhyw gost ychwanegol i osod mesuryddion SMETS2/AMR fel arfer yn cael ei wrthbwyso gan fanteision tryloywder defnydd ynni’r ysgol, a’r arbedion posib. Mae Sbarcynni yn canolbwyntio ar arbedion ddim cost a chost isel yn gyntaf, gyda’r rhan fwyaf o ysgolion â’r potensial i dorri defnydd o hyd at 30% heb wariant cyfalaf sylweddol. Mae hyn yn golygu y gall llawer o ysgolion adennill cost mesuryddion clyfar o fewn ychydig wythnosau i'w defnyddio.
       </p>
     section_5_html: |-
-      <h4><strong>Sut mae Energy Sparks yn cyrchu data ynni’r ysgolion?</strong></h4>
-      <p>Mae Energy Sparks fel arfer yn cael data ynni yn uniongyrchol gan y cyflenwr ynni neu gasglwr data mesurydd (DC/DA).</p>
+      <h4><strong>Sut mae Sbarcynni yn cyrchu data ynni’r ysgolion?</strong></h4>
+      <p>Mae Sbarcynni fel arfer yn cael data ynni yn uniongyrchol gan y cyflenwr ynni neu gasglwr data mesurydd (DC/DA).</p>
       <p>
-        Pan fydd ysgolion yn prynu ynni drwy gontract Ymddiriedolaeth Aml-Academi (MAT), bydd angen Llythyr Awdurdod ar Energy Sparks fel arfer a rhestr o'r rhifau mesurydd perthnasol a ddarperir gan y MAT. Pan fydd ysgolion yn prynu ynni drwy gontract Awdurdod Lleol, fel arfer bydd angen Llythyr Awdurdod a ddarperir gan dîm ynni'r Cyngor ar Energy Sparks. Weithiau, gall yr Awdurdod Lleol sefydlu adroddiadau data awtomataidd i Energy Sparks drwy eu porth cyflenwyr eu hunain. Lle mae gan ysgolion drefniadau prynu amgen, byddant fel arfer yn darparu eu Llythyr Awdurdod eu hunain.
+        Pan fydd ysgolion yn prynu ynni drwy gontract Ymddiriedolaeth Aml-Academi (MAT), bydd angen Llythyr Awdurdod ar Sbarcynni fel arfer a rhestr o'r rhifau mesurydd perthnasol a ddarperir gan y MAT. Pan fydd ysgolion yn prynu ynni drwy gontract Awdurdod Lleol, fel arfer bydd angen Llythyr Awdurdod a ddarperir gan dîm ynni'r Cyngor ar Sbarcynni. Weithiau, gall yr Awdurdod Lleol sefydlu adroddiadau data awtomataidd i Sbarcynni drwy eu porth cyflenwyr eu hunain. Lle mae gan ysgolion drefniadau prynu amgen, byddant fel arfer yn darparu eu Llythyr Awdurdod eu hunain.
       </p>
       <p>
         Bydd pob ysgol unigol hefyd yn rhoi caniatâd i ni gael mynediad at eu data ynni a’u cyhoeddi fel rhan o’u cyfrif, ochr yn ochr â chadarnhau eu bod yn cytuno â’n <a href="/terms_and_conditions">Telerau ac Amodau</a>.
@@ -54,17 +54,17 @@ cy:
     section_6_html: |-
       <h4><strong>Beth mae'n ei gostio i Ymddiriedolaethau Aml-Academi?</h4>
       <p>
-        Mae cyllid a chefnogaeth Energy Sparks gan lywodraeth ganolog ac ymddiriedolaethau a sefydliadau elusennol ar hyn o bryd yn darparu mynediad am ddim i'r 30 ysgol wladol gyntaf (ysgolion a gynhelir ac academïau) mewn unrhyw ardal Awdurdod Lleol. Disgwyliwn i ysgolion a ariennir fod eisiau ymgysylltu â'r offeryn a'r rhaglen.
+        Mae cyllid a chefnogaeth Sbarcynni gan lywodraeth ganolog ac ymddiriedolaethau a sefydliadau elusennol ar hyn o bryd yn darparu mynediad am ddim i'r 30 ysgol wladol gyntaf (ysgolion a gynhelir ac academïau) mewn unrhyw ardal Awdurdod Lleol. Disgwyliwn i ysgolion a ariennir fod eisiau ymgysylltu â'r offeryn a'r rhaglen.
       </p>
       <p>
         Mae cyllid yn cwmpasu pob agwedd ar ein gwasanaeth i ysgolion y wladwriaeth ac eithrio <a href="/energy-audits">archwiliadau ynni ar y safle</a> sy'n gofyn am dâl ychwanegol. Mae <a href="/education-workshops">gweithdai addysg</a> a ariennir ac <a href="/energy-audits">archwiliadau rhithwir</a> yn gyfyngedig ac yn amodol ar argaeledd.
       </p>
       <p>
-        Gall cyflenwr ynni’r ysgol godi ffi fach ychwanegol i ddarparu data ynni’r ysgol i Energy Sparks. Os yw’n berthnasol, mae’r gost hon fel arfer yn cael ei hychwanegu at fil ynni’r ysgol.
+        Gall cyflenwr ynni’r ysgol godi ffi fach ychwanegol i ddarparu data ynni’r ysgol i Sbarcynni. Os yw’n berthnasol, mae’r gost hon fel arfer yn cael ei hychwanegu at fil ynni’r ysgol.
       </p>
     section_7_html: |-
       <h4><strong>Pa gymorth ychwanegol sydd ei angen gan yr Ymddiriedolaeth Aml-Academi?</strong></h4>
       <p>
-        Yn ogystal â chefnogi mynediad at ddata ynni’r ysgol, bydd disgwyl i swyddfa MAT gefnogi Energy Sparks gyda recriwtio ysgolion gan ddefnyddio deunyddiau marchnata a ddarperir gan Energy Sparks. Mae Energy Sparks yn cael yr effaith fwyaf pan fydd yn gysylltiedig â gweithgareddau eraill sy'n canolbwyntio ar gynaliadwyedd sy'n mynd rhagddynt ar draws eich MAT. Yn aml gall Energy Sparks gyflwyno i grwpiau cynaliadwyedd MAT neu fforymau priodol eraill.
+        Yn ogystal â chefnogi mynediad at ddata ynni’r ysgol, bydd disgwyl i swyddfa MAT gefnogi Sbarcynni gyda recriwtio ysgolion gan ddefnyddio deunyddiau marchnata a ddarperir gan Sbarcynni. Mae Sbarcynni yn cael yr effaith fwyaf pan fydd yn gysylltiedig â gweithgareddau eraill sy'n canolbwyntio ar gynaliadwyedd sy'n mynd rhagddynt ar draws eich MAT. Yn aml gall Sbarcynni gyflwyno i grwpiau cynaliadwyedd MAT neu fforymau priodol eraill.
       </p>
-    title: Energy Sparks ar gyfer Ymddiriedolaethau Aml-Academi
+    title: Sbarcynni ar gyfer Ymddiriedolaethau Aml-Academi

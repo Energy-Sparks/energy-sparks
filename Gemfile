@@ -23,7 +23,7 @@ gem 'pg_search'
 gem 'calculate_in_group'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '2.0.9'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '2.6.7'
 #gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'aws-eb-test'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
@@ -33,7 +33,7 @@ gem 'statsample', git: 'https://github.com/Energy-Sparks/statsample', tag: '2.1.
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
-gem 'sass-rails'# Use SCSS for stylesheets
+#gem 'sass-rails'# Use SCSS for stylesheets
 gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
 gem 'momentjs-rails'
@@ -54,6 +54,7 @@ gem 'bootstrap-email'
 # Frontend
 gem 'bootstrap', '~> 4.3.0' # Use bootstrap for responsive layout
 gem 'simple_form'
+gem 'view_component'
 
 # JS Templating
 gem 'handlebars_assets'
@@ -107,6 +108,9 @@ gem 'mobility-actiontext', '~> 1.1.1'
 # Background jobs
 gem "good_job", "~> 3.4.6"
 
+# Rails 6.1 functionality. Can be removed when we upgrade.
+gem 'delegated_type'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
@@ -146,6 +150,7 @@ group :development do
   gem 'scout_apm'
 #  gem 'rack-mini-profiler'
 #  gem 'memory_profiler'
+#  gem 'i18n-debug'
 end
 
 group :test do
@@ -154,8 +159,11 @@ group :test do
   gem 'capybara-email'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
-  gem 'webdrivers'
+  gem "webdrivers", '>= 5.2.0'
   gem 'simplecov', :require => false, :group => :test
   gem 'shoulda-matchers'
   gem 'timecop'
 end
+
+gem 'sprockets', '3.7.2'
+gem 'sass-rails', '5.1.0'

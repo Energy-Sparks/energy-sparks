@@ -1,0 +1,18 @@
+<h2>Recommended actions for the <%= @advice_page.key %> advice page</h2>
+
+<%= form_tag admin_advice_page_intervention_types_path(@advice_page), method: :put do %>
+  <%= submit_tag 'Update associated actions', class: 'btn btn-primary mb-3'%>
+  <% @intervention_type_groups_and_types.each do |intervention_type_group, intervention_types| %>
+    <h3><%= intervention_type_group.name %></h3>
+    <ul class="list-unstyled advice-page-activities">
+      <%- intervention_types.each do |intervention_type| %>
+        <li>
+          <%= text_field_tag "intervention_types[#{intervention_type.id}][position]", @positions[intervention_type.id] %>
+          <%= label_tag "intervention_types[#{intervention_type.id}][position]", intervention_type.name %>
+          <%= hidden_field_tag  "intervention_types[#{intervention_type.id}][intervention_type_id]", intervention_type.id %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+  <%= submit_tag 'Update associated actions', class: 'btn btn-primary'%>
+<% end %>

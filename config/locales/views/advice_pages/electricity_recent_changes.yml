@@ -1,0 +1,38 @@
+---
+en:
+  advice_pages:
+    electricity_recent_changes:
+      analysis:
+        charts:
+          compare_last_week_chart_explanation: The chart automatically uses the seven most recently available days. Use the explore buttons above the chart to compare alternative days. You can click on the legend to add or remove lines from the graph to make it clearer.
+          compare_last_week_chart_footer: You can use this type of chart to understand how the school's electricity use varies throughout the week.
+          compare_last_week_chart_subtitle: A comparison between your school's electricity use throughout the day over the last 7 days.
+          compare_last_week_chart_title: Your school's half hourly electricity consumption over the last 7 days
+          compare_recent_days_chart_explanation: The chart automatically uses the two most recently available days. Use the options below the chart to compare alternative days.
+          compare_recent_days_chart_subtitle: A comparison between your school’s electricity use throughout the day on two recent days.
+          compare_recent_days_chart_title: Your school's half hourly electricity use for two recent days
+          compare_recent_weeks_chart_explanation: The chart automatically uses the last two fully available weeks. Use the options below the chart to compare alternative weeks.
+          compare_recent_weeks_chart_subtitle: A comparison of  your school’s daily electricity use across two recent weeks.
+          compare_recent_weeks_chart_title: Your school's daily electricity use for two recent weeks
+        compare_last_week:
+          title: Comparison of electricity use over the last 7 days
+        compare_recent_days:
+          title: Comparison of electricity use over 2 recent days
+        compare_recent_weeks:
+          title: Comparison of electricity use over 2 recent weeks
+        sections: The following sections provide more background and analysis on your electricity baseload
+        summary: This section gives a more detailed analysis of how your school’s electricity consumption has changed recently. It can be particularly useful if trying to investigate a change in electricity consumption or monitoring the impact of action taken in the school.
+        title: Analysis
+      insights:
+        how_do_you_compare:
+          summary_html: Compare your recent electricity use <a href='%{comparison_link}'>against other schools in your group</a>.
+          title: How do you compare?
+        link: Learn more
+        next_steps: Try to ensure that you understand the causes of any significant changes in your electricity consumption.
+        summary: This page makes note of whether your electricity use has increased or decreased recently. Monitoring recent changes to your energy use can help you to assess the impacts of changes you have made, or quickly identify problems
+        title: What do we mean by recent changes?
+        your_recent_electricity_use:
+          table:
+            change: Change
+          title: Your recent electricity use
+      page_title: Electricity recent changes analysis

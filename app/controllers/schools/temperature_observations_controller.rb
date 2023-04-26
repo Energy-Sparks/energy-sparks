@@ -7,6 +7,7 @@ module Schools
     before_action :check_recording_enabled, only: [:new, :create]
     before_action :set_location_names, only: [:new, :create]
     before_action :set_inital_recording_count, only: [:new, :create]
+    before_action :set_breadcrumbs
 
     TEMPERATURE_RECORD_INCREASE = 10
 
@@ -42,6 +43,12 @@ module Schools
     end
 
   private
+
+    def set_breadcrumbs
+      @breadcrumbs = [
+        { name: I18n.t('schools.temperature_observations.index.page_title') },
+      ]
+    end
 
     def set_inital_recording_count
       @existing_location_count = @school.locations.count

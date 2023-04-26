@@ -10,7 +10,7 @@
         colour: class_for_alert_colour(alert_content.colour),
         icon: alert_icon(alert_content.alert, 'fa-3x'),
         content: alert_content.send(content_field),
-        buttons: alert_content.find_out_more ? {t('for_schools.find_out_more') => school_find_out_more_path(school, alert_content.find_out_more)} : {}
+        buttons: dashboard_alert_buttons(@school, alert_content)
       %>
   <% end %>
   <% if dashboard_alerts.size > 1 && !local_assigns[:show_all] %>

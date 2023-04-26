@@ -1,0 +1,51 @@
+<h2>Benchmarks</h2>
+
+<%= link_to "View all runs", school_benchmark_reports_path(@school) %>
+
+<h3>Success</h3>
+
+<table class="table table-sm table-sorted">
+  <thead>
+    <tr>
+      <th>Alert Type</th>
+      <th>Alert Class</th>
+      <th>Using data up to</th>
+      <th>Run on</th>
+    </tr>
+  </thead>
+  <tbody>
+      <% @run.benchmark_results.each do |benchmark_result| %>
+        <tr>
+          <td><%= link_to benchmark_result.alert_type.title, school_benchmark_result_path(@school, benchmark_result) %></td>
+          <td><%= benchmark_result.alert_type.class_name %></td>
+          <td><%= nice_dates(benchmark_result.asof) %></td>
+          <td><%= nice_date_times(benchmark_result.created_at) %></td>
+        </tr>
+      <% end %>
+  </tbody>
+</table>
+
+<h3>Errors</h3>
+
+<table class="table table-sm table-sorted">
+  <thead>
+    <tr>
+      <th>Alert Type</th>
+      <th>Alert Class</th>
+      <th>Asof</th>
+      <th>Using data up to</th>
+      <th>Information</th>
+    </tr>
+  </thead>
+  <tbody>
+      <% @run.benchmark_result_errors.each do |benchmark_result_error| %>
+        <tr>
+          <td><%= benchmark_result_error.alert_type.title %></td>
+          <td><%= benchmark_result_error.alert_type.class_name %></td>
+          <td><%= nice_dates(benchmark_result_error.asof_date) %></td>
+          <td><%= nice_date_times(benchmark_result_error.created_at) %></td>
+          <td><%= benchmark_result_error.information %></td>
+        </tr>
+      <% end %>
+  </tbody>
+</table>

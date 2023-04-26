@@ -8,6 +8,10 @@ module AnalysisPages
     end
   end
 
+  def find_advice_page_of_class(analysis_class)
+    AlertType.where("lower(class_name) = ?", analysis_class.downcase).first
+  end
+
   def setup_analysis_pages(analysis_pages)
     @heating_pages = process_analysis_templates(analysis_pages.heating)
     @electricity_pages = process_analysis_templates(analysis_pages.electricity_use)

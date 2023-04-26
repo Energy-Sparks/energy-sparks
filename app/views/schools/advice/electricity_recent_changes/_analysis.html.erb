@@ -1,0 +1,73 @@
+<p><%= t('advice_pages.electricity_recent_changes.analysis.summary') %></p>
+
+<p><%= t('advice_pages.electricity_recent_changes.analysis.sections') %></p>
+
+<ul>
+  <li><%= link_to(t('advice_pages.electricity_recent_changes.analysis.compare_recent_weeks.title'), '#compare-recent-weeks') %></li>
+  <li><%= link_to(t('advice_pages.electricity_recent_changes.analysis.compare_recent_days.title'), '#compare-recent-days') %></li>
+  <li><%= link_to(t('advice_pages.electricity_recent_changes.analysis.compare_last_week.title'), '#compare-last-week') %></li>
+</ul>
+
+
+<!--  COMPARISON OF ELECTRICITY USE OVER 2 RECENT WEEKS -->
+<%= render 'schools/advice/section_title', section_id: 'compare-recent-weeks', section_title: t('advice_pages.electricity_recent_changes.analysis.compare_recent_weeks.title') %>
+
+<div class="charts">
+  <%= component 'chart',
+                chart_type: :calendar_picker_electricity_week_example_comparison_chart,
+                school: @school,
+                analysis_controls: false,
+                no_zoom: true,
+                chart_config: @chart_config,
+                html_class: 'usage-chart' do |c| %>
+    <% c.with_title { t('advice_pages.electricity_recent_changes.analysis.charts.compare_recent_weeks_chart_title') } %>
+    <% c.with_subtitle { t('advice_pages.electricity_recent_changes.analysis.charts.compare_recent_weeks_chart_subtitle') } %>
+    <% c.with_header do %>
+      <p><%= t('advice_pages.electricity_recent_changes.analysis.charts.compare_recent_weeks_chart_explanation') %></p>
+    <% end %>
+    <% c.with_footer do %>
+      <%= render 'shared/usage_controls', chart_config: @chart_config, period: :weekly, supply: :electricity, split_meters: false, meters: @meters %>
+    <% end %>
+  <% end %>
+</div>
+
+<!--  COMPARISON OF ELECTRICITY USE OVER 2 RECENT DAYS -->
+<%= render 'schools/advice/section_title', section_id: 'compare-recent-days', section_title: t('advice_pages.electricity_recent_changes.analysis.compare_recent_days.title') %>
+
+<div class="charts">
+  <%= component 'chart',
+             chart_type: :calendar_picker_electricity_day_example_comparison_chart,
+             school: @school,
+             analysis_controls: false,
+             no_zoom: true,
+             chart_config: @chart_config,
+             axis_controls: false,
+             html_class: 'usage-chart' do |c| %>
+    <% c.with_title { t('advice_pages.electricity_recent_changes.analysis.charts.compare_recent_days_chart_title') } %>
+    <% c.with_subtitle { t('advice_pages.electricity_recent_changes.analysis.charts.compare_recent_days_chart_subtitle') } %>
+    <% c.with_header do %>
+      <p><%= t('advice_pages.electricity_recent_changes.analysis.charts.compare_recent_days_chart_explanation') %></p>
+    <% end %>
+    <% c.with_footer do %>
+      <%= render 'shared/usage_controls', chart_config: @chart_config, period: :daily, supply: :electricity, split_meters: false, meters: @meters  %>
+    <% end %>
+  <% end %>
+</div>
+
+<%= render 'schools/advice/section_title', section_id: 'compare-last-week', section_title: t('advice_pages.electricity_recent_changes.analysis.compare_last_week.title') %>
+
+<%= component 'chart',
+           chart_type: :intraday_line_school_last7days,
+           school: @school,
+           analysis_controls: true,
+           no_zoom: true,
+           axis_controls: false do |c| %>
+  <% c.with_title { t('advice_pages.electricity_recent_changes.analysis.charts.compare_last_week_chart_title') } %>
+  <% c.with_subtitle { t('advice_pages.electricity_recent_changes.analysis.charts.compare_last_week_chart_subtitle') } %>
+  <% c.with_header do %>
+    <p><%= t('advice_pages.electricity_recent_changes.analysis.charts.compare_last_week_chart_explanation') %></p>
+  <% end %>
+  <% c.with_footer do %>
+    <p><%= t('advice_pages.electricity_recent_changes.analysis.charts.compare_last_week_chart_footer') %></p>
+  <% end %>
+<% end %>

@@ -43,30 +43,23 @@ module Targets
     end
 
     def enough_data?
-      return true if v2_feature_active?
-      @school.configuration.enough_data_to_set_target?
+      #always return true for v2
+      true
     end
 
     def enough_data_for_electricity?
-      return @school.has_electricity? if v2_feature_active?
-      @school.configuration.enough_data_to_set_target_for_fuel_type?(:electricity)
+      @school.has_electricity?
     end
 
     def enough_data_for_gas?
-      return @school.has_gas? if v2_feature_active?
-      @school.configuration.enough_data_to_set_target_for_fuel_type?(:gas)
+      @school.has_gas?
     end
 
     def enough_data_for_storage_heater?
-      return @school.has_storage_heaters? if v2_feature_active?
-      @school.configuration.enough_data_to_set_target_for_fuel_type?(:storage_heater)
+      @school.has_storage_heaters?
     end
 
     private
-
-    def v2_feature_active?
-      EnergySparks::FeatureFlags.active?(:school_targets_v2)
-    end
 
     def target_end_date
       target_start_date.next_year

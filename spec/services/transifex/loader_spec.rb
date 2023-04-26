@@ -7,6 +7,12 @@ describe Transifex::Loader, type: :service do
   let(:full_sync)   { true }
   let(:service)     { Transifex::Loader.new(locale, logger, full_sync) }
 
+  around do |example|
+    ClimateControl.modify FEATURE_FLAG_SYNC_ADVICE_PAGE_TRANSLATIONS: 'false' do
+      example.run
+    end
+  end
+
   it 'creates a transifex load record' do
     expect{ service.perform }.to change(TransifexLoad, :count).by(1)
   end
@@ -46,21 +52,20 @@ describe Transifex::Loader, type: :service do
   end
 
   context 'when there are no errors' do
+    let!(:advice_page_text)         { "advice page learn more" }
     let!(:activity_category)        { create(:activity_category) }
     let!(:intervention_type_group)  { create(:intervention_type_group) }
-
-    let!(:activity_type)        { create(:activity_type, active: true, activity_category: activity_category) }
-    let!(:activity_type2)        { create(:activity_type, active: false, activity_category: activity_category) }
-
-    let!(:intervention_type)    { create(:intervention_type, active: true, intervention_type_group: intervention_type_group) }
-    let!(:intervention_type2)    { create(:intervention_type, active: false, intervention_type_group: intervention_type_group) }
-    let!(:help_page)            { create(:help_page) }
-    let!(:case_study)           { create(:case_study) }
-
+    let!(:activity_type)            { create(:activity_type, active: true, activity_category: activity_category) }
+    let!(:activity_type2)           { create(:activity_type, active: false, activity_category: activity_category) }
+    let!(:intervention_type)        { create(:intervention_type, active: true, intervention_type_group: intervention_type_group) }
+    let!(:intervention_type2)       { create(:intervention_type, active: false, intervention_type_group: intervention_type_group) }
+    let!(:help_page)                { create(:help_page) }
+    let!(:case_study)               { create(:case_study) }
     let!(:programme_type)           { create(:programme_type) }
-    let!(:programme_type2)           { create(:programme_type, active: false) }
-
+    let!(:programme_type2)          { create(:programme_type, active: false) }
     let!(:transport_type)           { create(:transport_type) }
+    let!(:consent_statement)        { create(:consent_statement) }
+    let!(:advice_page)              { create(:advice_page, learn_more: advice_page_text) }
 
     before(:each) do
       allow_any_instance_of(Transifex::Synchroniser).to receive(:pull).and_return(true)
@@ -69,12 +74,36 @@ describe Transifex::Loader, type: :service do
     end
 
     it 'updates the pull count' do
-      expect(TransifexLoad.first.pulled).to eq 8
+      expect(TransifexLoad.first.pulled).to eq 9
     end
 
     it 'updates the push count' do
-      expect(TransifexLoad.first.pushed).to eq 8
+      expect(TransifexLoad.first.pushed).to eq 9
+    end
+
+    context 'when advice page syncing is enabled' do
+      around do |example|
+        ClimateControl.modify FEATURE_FLAG_SYNC_ADVICE_PAGE_TRANSLATIONS: 'true' do
+          example.run
+        end
+      end
+
+      it 'updates the pull count' do
+        expect(TransifexLoad.first.pulled).to eq 10
+      end
+      it 'updates the push count' do
+        expect(TransifexLoad.first.pushed).to eq 10
+      end
+
+      context 'when a record has no contents' do
+        let!(:advice_page_text)   { "" }
+        it 'skips the pull' do
+          expect(TransifexLoad.first.pulled).to eq 9
+        end
+        it 'skips the push' do
+          expect(TransifexLoad.first.pushed).to eq 9
+        end
+      end
     end
   end
-
 end

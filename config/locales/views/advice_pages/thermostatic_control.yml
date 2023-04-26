@@ -1,0 +1,67 @@
+---
+en:
+  advice_pages:
+    thermostatic_control:
+      analysis:
+        an_alternative_way_of_looking_html: |-
+          <p>An alternative way of looking at the thermostatic control is to look at whether a school's gas consumption changes on a day when the outside temperature changes significantly.</p>
+          <p>Diurnal range is the difference between the day time and night time temperature. It is common for outside temperatures to increase by more than 10°C during the day. This is particular true in the Spring, where cold ground temperatures after the winter lead to colder nights, and warm spring sunshine increases temperatures during the day.</p>
+          <p>If a day has a large change in temperatures it is described as having a large diurnal range</p>
+          <p>In theory if outside temperatures rise by 10°C, then the heating loss through a building's fabric (e.g. walls, windows etc.) will more than halve,  (as the heat loss is proportional to the difference between outside and inside temperatures). If the school has good thermostatic control then you would expect to see a similar drop in gas consumption over the course of the day.</p>
+        for_energy_experts_html: |-
+          <p>For energy experts, the formula which defines the trend line is very interesting. It predicts how the gas consumption varies with outside temperature.</p>
+          <p>In the example above the formula for heating is:</p>
+          <p><code>Predicted heating requirement (kWh) = %{b} * outside temperature + %{a}</code></p>
+          <p>So for your school if the average outside temperature is 12°C the predicted gas consumption for the school on that day would be:</p>
+          <p><code>%{predicted_kwh_for_high} kWh = %{b} * %{temperature_high} + %{a}</code></p>
+          <p>Whereas if the outside temperature was colder at 4°C the gas consumption for that day would be:</p>
+          <p><code>%{predicted_kwh_for_low} kWh = %{b} * %{temperature_low} + %{a}</code></p>
+          <p>
+          See if you can read these values off the trend line of the graph above (temperatures of 12°C and 4°C on the x axis and the answer - the predicted daily gas consumption on the y-axis).
+          </p>
+        how_to_calculate_a_theoretical_daily_gas_consumption_using_the_model: How to calculate a theoretical daily gas consumption using the model
+        scatter_chart_html: |-
+          <p>The scatter chart below shows a thermostatic analysis of your school's heating system. The x axis is the outside temperature. The y axis shows the energy consumption in kWh on any given day.</p>
+          <p>Two sets of data are provided on the chart. The points associated with the group at the top of the chart are those for winter school day heating. As it gets warmer the daily gas consumption drops.</p>
+          <p>R² is a measure of how close to the trendline the daily heating values are.</p>
+          <p>An R² of 0.0 means that there is no relationship between how cold it is outside and how much gas your school consumes. This is would lead to higher running costs and increased carbon emissions.</p>
+          <p>A R² of 1.0 is perfect. It means that your school’s use of gas is proportional to how cold it is outside.</p>
+        thermostatic_control_in_your_school: Thermostatic control in your school
+        thermostatic_control_large_diurnal_range:
+          footer: You can click on the 'Explore' buttons on the chart e.g. 'Back 1 day with large diurnal range' to examine other days.
+          subtitle: This chart shows recent example of winter days with a large diurnal range
+          title: Diurnal range chart
+        thermostatic_up_to_1_year:
+          footer_html: |-
+            <p>If the heating has good thermostatic control (a high R² value) then the points at the top of chart when the heating is on should be close to the trend line.</p>
+            <p>This is because the amount of heating required on a single day is linearly proportional to the difference between the inside and outside temperature, and any variation from the trend line would suggest thermostatic control isn't working too well.</p>
+            <p>The second set of data at the bottom of the chart is for gas consumption in the summer when the heating is not on; typically, this is from hot water and kitchen consumption.</p>
+            <p>The slope of this line is often an indication of how well insulated the hot water system is; if the consumption increases as it gets colder it suggests a lack of insulation.</p>
+          subtitle_html: This chart shows an analysis of how closely gas consumption in your school is aligned with the outside temperature between <span class="start-date">%{start_date}</span> to <span class="end-date">%{end_date}</span>
+          title: Thermostatic analysis of your school's heating system
+        this_section_html: |-
+          <p>This section gives a more detailed analysis of your school’s boiler control and some things to look out for.</p>
+          <p>The following sections provide more background and analysis on your electricity baseload<p>
+        title: Analysis
+        using_days_with_large_diurnal_range_to_understand_thermostatic_control: Using days with large diurnal range to understand thermostatic control
+        your_schools_R2_value: Your school's R² value is %{r2} which is %{r2_rating_adjective}.
+      insights:
+        advice_html: |-
+          <p>A building with good thermostatic control means that the colder it is outside the higher the gas consumption for heating.</p>
+          <p>This is an advanced page because there are some complex themes involved and it might take a user some time to work through the explanations.</p>
+        for_more_detail_html: For more detail, <a href='%{link}'>compare with other schools in your group</a>
+        how_do_you_compare:
+          title: How do you compare?
+        link: Learn more
+        next_steps_html: |-
+          <p>To improve your school’s thermostatic control, you should:</p>
+          <ul>
+            <li>Make sure all your radiators have working thermostatic control valves fitted, so you can adjust classroom temperatures without opening windows and doors.</li>
+            <li>Run a campaign to get everyone in the school to understand the importance of turning off radiators before you open windows and doors.</li>
+            <li>Try moving your main boiler thermostat to a different location such as the school office or a classroom.</li>
+          </ul>
+        thermostatic_control_r2_notice_html: |-
+          <p>Your thermostatic control is %{r2}, which is %{r2_rating_adjective}</p>
+          <p>The average value for schools is %{average_schools_r2} and a perfect value is 1.0. The lower the value below 1.0, the worse the school's thermostatic control.</p>
+        title: What is thermostatic control?
+      page_title: Thermostatic control analysis

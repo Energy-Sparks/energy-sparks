@@ -127,6 +127,12 @@ RSpec.describe 'alert type management', type: :system do
 
   describe 'creating alert content' do
 
+    around do |example|
+      ClimateControl.modify FEATURE_FLAG_REPLACE_FIND_OUT_MORES: 'false' do
+        example.run
+      end
+    end
+
     let!(:alert) do
       create(:alert, alert_type: gas_fuel_alert_type, template_data: {gas_percentage: '10%', chart_a: :example_chart_value}, school: create(:school))
     end
@@ -216,7 +222,7 @@ RSpec.describe 'alert type management', type: :system do
 
           choose 'table description B'
 
-          click_on 'Preview'
+          click_on 'Preview (English)'
 
           within '#find_out_more-preview-en .content' do
             expect(page).to have_content('You are using 10% too much gas!')
@@ -227,7 +233,7 @@ RSpec.describe 'alert type management', type: :system do
         fill_in 'SMS content', with: gas_fuel_alert_type_title
 
         within '.sms_active' do
-          click_on 'Preview'
+          click_on 'Preview (English)'
 
           within '#sms-preview-en .content' do
             expect(page).to have_content(gas_fuel_alert_type_title)
@@ -235,12 +241,12 @@ RSpec.describe 'alert type management', type: :system do
         end
 
         check 'Email content'
-        fill_in 'Email title', with: 'Gas usage'
+        fill_in 'Email title en', with: 'Gas usage'
 
         within '.email_active' do
           fill_in_trix with: 'You are using {{gas_percentage}} too much gas! You need to do something about it.'
 
-          click_on 'Preview'
+          click_on 'Preview (English)'
 
           within '#email-preview-en .content' do
             expect(page).to have_content('You are using 10% too much gas!')

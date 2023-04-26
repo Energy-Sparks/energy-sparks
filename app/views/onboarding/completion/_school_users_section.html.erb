@@ -1,0 +1,39 @@
+<div class="card mb-3" id="school-users">
+  <div class="card-header">
+    <h4>
+      <%= t('onboarding.completion.new.school_users_section.title') %>
+    <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-school-users"
+      aria-expanded="<%= params[:show]=='school-users' ? 'true' : 'false' %>" aria-controls="collapse-school-users"><%= t('common.labels.view') %></button></span>
+    </h4>
+  </div>
+  <div id="collapse-school-users" class="collapse <%= 'show' if params[:show]=='school-users' %>">
+    <div class="card-body">
+      <% if @users.any? %>
+        <table class="table table-condensed table-borderless">
+          <thead>
+            <tr>
+              <th><%= t('onboarding.completion.new.name') %></th>
+              <th><%= t('onboarding.completion.new.email') %></th>
+              <th><%= t('onboarding.completion.new.admin') %>?</th>
+              <th><%= t('onboarding.completion.new.role') %></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @users.each do |user| %>
+              <tr>
+                  <td><%= user.name %></td>
+                  <td><%= user.email %></td>
+                  <td><%= y_n(user.school_admin?) %></td>
+                  <td><%= user.staff_role.try(:title) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p><%= t('onboarding.completion.new.school_users_section.you_have_not_added_additional_school_accounts_message') %>.</p>
+      <% end %>
+      <%= link_to t('onboarding.completion.new.school_users_section.manage_users'), onboarding_users_path(@school_onboarding), class: 'btn btn-primary' %>
+    </div>
+  </div>
+</div>

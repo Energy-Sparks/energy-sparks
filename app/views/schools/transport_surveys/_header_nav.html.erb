@@ -1,8 +1,4 @@
-<% content_for :head do %>
-  <%= javascript_pack_tag 'transport_surveys/header_nav' %>
-<% end %>
-
-<div id="ts-header-nav" class="d-flex justify-content-between align-items-center">
+<div class="d-flex justify-content-between align-items-center">
   <% if @transport_survey %>
     <% if @transport_survey.today? %>
       <h1><%= t('schools.transport_surveys.title.today') %></h1>

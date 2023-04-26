@@ -1,34 +1,29 @@
-<h1 class="mb-3">Please upload an energy bill for <%= @school.name %></h1>
+<h1 class="mb-3"><%= t('bill_request_mailer.request_bill.title', school_name: @school.name) %></h1>
 
 <p>
- Energy Sparks needs you to provide a recent energy bill for your school to confirm your
- meter numbers and Energy Sparks' authority to collect, process and display the data for those meters.
+  <%= t('bill_request_mailer.request_bill.description') %>
 </p>
 
-<p>The bill(s) needs to be dated within the last 3 months, and show:</p>
+<div class="s-3"></div>
 
-<ul>
-<li>your school name</li>
-<li>school address</li>
-<li>electricity meter MPAN or electricity supply number and/or gas meter MPR or meter point reference number</li>
-</ul>
+<%= t('bill_request_mailer.request_bill.document_details_html') %>
 
 <% if @electricity_meters.any? || @gas_meters.any? %>
   <p>
-  Energy Sparks needs to see a sample bill for the following meter numbers:
+    <%= t('bill_request_mailer.request_bill.sample_bills_needed') %>:
   </p>
 
   <table class="table mt-2">
     <tbody>
     <% @electricity_meters.each do |m| %>
      <tr>
-       <td>Electricity</td>
+       <td><%= t('common.electricity') %></td>
        <td><%= m.mpan_mprn %></td>
      </tr>
     <% end %>
     <% @gas_meters.each do |m| %>
      <tr>
-       <td>Gas</td>
+       <td><%= t('common.gas') %></td>
        <td><%= m.mpan_mprn %></td>
      </tr>
     <% end %>
@@ -37,4 +32,4 @@
 
 <% end %>
 
-<%= link_to "Upload your bill", school_consent_documents_url(@school), class: 'btn btn-primary mt-3 mb-3' %>
+<%= link_to t('bill_request_mailer.request_bill.upload_bill'), school_consent_documents_url(@school), class: 'btn btn-primary mt-3 mb-3' %>

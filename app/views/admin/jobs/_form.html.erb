@@ -8,7 +8,7 @@
 
   <div class="form-group">
     <%= f.label :closing_date, "Closing date", class: "form-label" %>
-    <%= f.date_field :closing_date, class: 'form-control' %>
+    <%= component 'date_picker_form', form: f, field_name: :closing_date, value: job.closing_date&.strftime('%d/%m/%Y') %>
   </div>
 
   <div class="description-trix-editor form-group">
@@ -31,3 +31,13 @@
   <%= f.submit job.persisted? ? "Update" : "Create", class: "btn btn-primary" %>
   <%= link_to "View all jobs", admin_jobs_path, class: "btn btn-primary" %>
 <% end %>
+
+<script type="text/javascript">
+  $(function () {
+    $('#datetimepickerform').datetimepicker({
+      format: 'DD/MM/YYYY',
+      allowInputToggle: true,
+      locale: moment.locale()
+    });
+  });
+</script>

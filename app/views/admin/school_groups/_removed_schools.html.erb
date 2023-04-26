@@ -1,17 +1,20 @@
-<table class="table table-striped">
+<table class="table table-sorted" style="width:100%">
   <thead>
     <tr>
       <th>Name</th>
       <th>Removal date</th>
-      <th></th>
+      <th class="no-sort"></th>
     </tr>
   </thead>
   <tbody>
     <% school_group.schools.inactive.by_name.each do |school| %>
-      <tr>
+      <tr class="bg-light">
         <td><%= link_to school.name, school_path(school) %></td>
         <td><%= nice_dates(school.removal_date) %></td>
-        <td class="nowrap text-right"><%= link_to 'Meters', school_meters_path(school), class: "btn btn-sm" %></td>
+        <td class="nowrap text-right">
+          <%= link_to issue_type_icons(school.issues, label: 'Issues'), admin_school_issues_path(school), class: 'btn btn-sm' %>
+          <%= link_to 'Meters', school_meters_path(school), class: "btn btn-sm" %>
+        </td>
       </tr>
     <% end %>
   </tbody>

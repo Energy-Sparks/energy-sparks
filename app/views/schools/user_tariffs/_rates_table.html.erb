@@ -4,11 +4,12 @@
     <% user_tariff.user_tariff_prices.by_start_time.each do |user_tariff_price| %>
       <tr>
         <td class="description"><%= user_tariff_price_title(user_tariff_price) %></td>
-        <td class="value"><%= number_to_currency(user_tariff_price.value, unit: '£') %> per kWh</td>
+        <td class="value">
+          <%= t('schools.user_tariffs.rates_table.price_per_kwh', price_value: number_to_currency(user_tariff_price.value, unit: '£')) %>
+        </td>
         <% if allow_edits %>
           <td class="value">
-            <%= link_to "Edit", edit_school_user_tariff_user_tariff_differential_price_path(school, user_tariff, user_tariff_price), {class: 'btn user-tariff-show-button', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'} %>
-            <%= link_to "Delete", school_user_tariff_user_tariff_differential_price_path(school, user_tariff, user_tariff_price), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger user-tariff-show-button' %>
+            <%= link_to t('common.labels.edit'), edit_school_user_tariff_user_tariff_differential_price_path(school, user_tariff, user_tariff_price), { class: 'btn user-tariff-show-button', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window' } %>
           </td>
         <% end %>
       </tr>
@@ -16,7 +17,7 @@
   <% else %>
     <tr>
       <td colspan='10'>
-        No consumption charges specified yet
+        <%= t('schools.user_tariffs.rates_table.no_consumption_charges_specified_yet') %>
       </td>
     </tr>
   <% end %>

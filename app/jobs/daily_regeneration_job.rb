@@ -1,6 +1,10 @@
 class DailyRegenerationJob < ApplicationJob
   queue_as :regeneration
 
+  def priority
+    10
+  end
+
   def perform(school:)
     GoodJob.logger.info("#{DateTime.now.utc} Regeneration for school #{school.name} start")
     run_validate_and_persist_readings_service_for(school)

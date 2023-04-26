@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center">
-  <h1>Your live electricity data</h1>
+  <h1><%= t('schools.live_data.show.title') %></h1>
   <div>
     <%= link_to_help_for_feature :live_data, css: "btn btn-outline-dark rounded-pill font-weight-bold" %>
   </div>
@@ -15,14 +15,14 @@
 
 <div class="row">
   <div class="col-md-12 d-flex justify-content-center align-self-center">
-    <p>What can you switch off to reduce your consumption below your normal use?</p>
+    <p><%= t('schools.live_data.show.what_can_you_switch_off') %></p>
   </div>
 </div>
 
 
 <div class="row mt-4">
   <div class="col">
-    <h3>Understanding your energy consumption</h3>
+    <h3><%= t('schools.live_data.show.understanding_your_energy_consumption') %></h3>
   </div>
 </div>
 
@@ -32,16 +32,16 @@
   <div class="card-deck actions">
     <% if can?(:manage, Activity) %>
       <div class="card mb-2 text-center">
-        <%= link_to 'Choose another activity', ActivityCategory.live_data.any? ? activity_category_path(ActivityCategory.live_data.last) : activity_categories_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+        <%= link_to t('schools.live_data.show.choose_another_activity'), ActivityCategory.live_data.any? ? activity_category_path(ActivityCategory.live_data.last) : activity_categories_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
       </div>
     <% end %>
     <% if can?(:create, Observation) %>
       <div class="card mb-2">
-        <%= link_to 'Record an energy saving action', intervention_type_groups_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+        <%= link_to t('schools.live_data.show.record_an_energy_saving_action'), intervention_type_groups_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
       </div>
     <% end %>
     <div class="card mb-2">
-      <%= link_to 'View pupil dashboard', pupils_school_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+      <%= link_to t('schools.live_data.show.view_pupil_dashboard'), pupils_school_path(@school), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
     </div>
   </div>
 <% end %>

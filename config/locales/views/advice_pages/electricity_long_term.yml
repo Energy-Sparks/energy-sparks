@@ -1,0 +1,95 @@
+---
+en:
+  advice_pages:
+    electricity_long_term:
+      analysis:
+        comparison:
+          assessment:
+            high:
+              percent_html: Your annual electricity usage is %{percent} higher than the best performing schools.
+              savings_html: If you matched the usage of those schools you could save %{estimated_savings_kwh} or %{estimated_savings_gbp} per year.
+              title: Your electricity usage is high.
+            low:
+              percent_html: Your annual electricity usage is %{percent} lower than the best performing schools.
+              title: Your electricity usage is low.
+          table_explanation: The following table outlines the potential benefits of reducing your electricity use to match %{school_type} schools with a similar number of pupils.
+          title: Comparison with other schools
+        long_term_trends:
+          summary: This section looks at how your electricity consumption changes during the year, and compares consumption for the last 12 months with previous years where we have data.
+          title: Long term trends
+        meter_breakdown:
+          summary: Your school has multiple electricity meters. The section below shows electricity use for each meter. You might be able to use this information to identify high or unusual energy consumption in certain parts of your school.
+          table_explanation: Having multiple meters can help you understand your energy use better, however, there is a significant standing charge for each meter of more than £1,000 per year, so there is potential for saving by consolidating meters.
+          table_introduction: The table below covers the most recent 12 months from %{start_date} to %{end_date}.
+          title: Electricity consumption breakdown by meter
+        recent_trend:
+          title: Recent trend
+        sections: The following sections provide more background and analysis on your electricity consumption
+        summary: This section gives a more detailed analysis of how your school’s electricity consumption has changed in the long term.
+        title: Long term usage analysis
+      charts:
+        benchmark:
+          subtitle: This chart shows how your school’s electricity use compared against well managed and exemplar schools between %{start_date} and %{end_date}
+          title: Annual electricity use comparison with other schools
+        electricity_by_month_year:
+          explanation: This chart can be a quick way to spot whether energy saving behaviour and lighting and equipment updates are having an impact on your electricity consumption. You need to be careful when comparing months with holidays, particularly Easter, which some years is in March and other times in April.
+          subtitle_html: This chart shows the difference in electricity consumption for the 12 months ending on <span class='end-date'>%{end_date}</span> and the previous 12 months
+          title: Monthly electricity consumption comparison over the last two years
+        electricity_longterm_trend:
+          explanation: Unless the school has had additional buildings added, if you are managing your electricity consumption well this should show a downward trend; more modern ICT equipment, LED lighting and behaviour change all contribute to reducing electricity usage.
+          subtitle: This chart, and the table below give the breakdown of electricity consumption between school day open and closed, holidays and weekends for each full year of data we have for your school
+          title: Change in electricity consumption over the last few years
+        group_by_week_electricity:
+          explanation_html: |-
+            <p>
+            This chart shows how your electricity consumption varies throughout the year. Each bar represents a whole week and the split between holiday, weekend and school day open and closed consumption for that week. It highlights how electricity consumption generally increases in the winter and is lower in the summer. You can click on the chart to explore the data in more detail.
+            </p>
+            <p>
+            The colouring on the graph also highlights electricity usage over holidays in red. Holiday usage is normally caused by appliances and computers being left on (called 'baseload'). The school should aim to reduce this baseload (which also occurs at weekends and overnight during school days) as this will have a big impact on a school's energy costs. Sometimes this can be achieved by switching appliances off on Fridays before weekends and holidays, and sometimes by replacing older electrical appliances with more efficient new ones.
+            </p>
+          subtitle_html: This chart gives the breakdown of electricity consumption between school day open and closed, holidays and weekends for each week between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>
+          title: Electricity consumption by week for the last 12 months
+        group_by_week_electricity_meter_breakdown_one_year:
+          header: Clicking on the chart columns allows you to drilldown to more detailed data, clicking on the legend allows you to add and remove meters.
+          subtitle: The chart below provides a weekly breakdown of the electricity used by each underlying meter.
+          title: Electricity consumption by meter
+        group_by_week_electricity_unlimited:
+          explanation: This chart shows how your electricity consumption varies throughout the year over the long term. Each bar represents a whole week and the split between holiday, weekend and school day open and closed consumption for that week. It highlights how electricity consumption generally increases in the winter and is lower in the summer. You can click on the chart to explore the data in more detail. As above, you should see a general downward trend.
+          subtitle: This chart gives the breakdown of electricity consumption between school day open and closed, holidays and weekends for every week of data for your school
+          title: Electricity consumption by week for the last few years
+        group_by_week_electricity_versus_benchmark:
+          subtitle_html: This chart shows how your school’s electricity use compares against well managed and exemplar schools for each week between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>
+          title: Electricity use comparison with other schools over the last 12 months
+      insights:
+        comparison:
+          callout_footer: annual electricity use
+          how_do_you_compare: How does your electricity use for the last 12 months compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?
+          more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
+          title: How do you compare?
+        current_usage:
+          last_year: Last year
+          review_our_analysis: Review our detailed analysis
+          title: Your long term electricity use
+        next_steps: To fully determine the causes of the changes in your electricity consumption you should review how consumption has changed month by month and look in more detail at how your baseload and peak electricity consumption have changed.
+        title: What do we mean by long term electricity use?
+      page_title: Long term changes in electricity consumption
+      tables:
+        columns:
+          annual_change: Change since previous year
+          annual_usage_co2: Annual co2 (kg/CO2)
+          annual_usage_gbp: Annual cost (£)
+          annual_usage_kwh: Annual usage (kWh)
+          estimated_savings_gbp: Estimated saving (£)
+          meter: Meter
+          percent: Percent of total use
+        labels:
+          all_meters: All meters
+      what_is_long_term_use:
+        link: Learn more
+        text_html: |-
+          <p>
+          Tracking long term trends in your school's electricity use can help you to monitor your overall progress towards reducing your electricity costs and carbon emissions.
+          </p>
+          <p>
+          Viewing your electricity use over a whole year or more can help identify any seasonal variations in your usage and do forward planning.
+          </p>

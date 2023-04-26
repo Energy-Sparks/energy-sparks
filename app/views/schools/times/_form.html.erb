@@ -1,18 +1,16 @@
-<p>Enter the times when pupils are arriving and leaving the school. Including the times of any before or after school clubs.</p>
+<p><%= t('schools.times.message_1') %></p>
 
-<p>
-Times should be entered in 24 hour format.
-</p>
+<p><%= t('schools.times.message_2') %></p>
 
 <div class="row">
   <div class="col-md-3 mb-3">
-    <label for="day"><strong>Day</strong></label>
+    <label for="day"><strong><%= t('schools.times.day') %></strong></label>
   </div>
   <div class="col-md-2 mb-3">
-    <label for="opening_time"><strong>Opening Time</strong></label>
+    <label for="opening_time"><strong><%= t('schools.times.opening_time') %></strong></label>
   </div>
   <div class="col-md-2 mb-3">
-    <label for="closing_time"><strong>Closing Time</strong></label>
+    <label for="closing_time"><strong><%= t('schools.times.closing_time') %></strong></label>
   </div>
 </div>
 <%= f.fields_for :school_times, f.object.school_times.sort_by{|time| time.day ?  SchoolTime.days[time.day] : 0 } do |ff| %>
@@ -23,7 +21,7 @@ Times should be entered in 24 hour format.
         <%= ff.hidden_field :day, value: ff.object.day %>
         <%= ff.hidden_field :calendar_period, value: ff.object.calendar_period %>
         <%= ff.hidden_field :usage_type, value: ff.object.usage_type %>
-        <%= ff.object.day.capitalize %>
+        <%= t_day(ff.object.day) %>
       </div>
 
       <div class="col-md-2 mb-3">

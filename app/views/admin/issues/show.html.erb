@@ -1,0 +1,9 @@
+<%= render 'header', title: "#{@issue.issueable ? @issue.issueable.name : ''} #{@issue.issue_type.capitalize}" do %>
+  <% if @issue.issueable %>
+    <%= header_nav_link "Issues & notes for #{@issue.issueable.model_name.human.downcase}", url_for([:admin, @issue.issueable, :issues]) %>
+  <% else %>
+    <%= header_nav_link 'All issues & notes', admin_issues_url %>
+  <% end %>
+<% end %>
+
+<%= render 'issue', issue: @issue, single: true, issueable: nil %>

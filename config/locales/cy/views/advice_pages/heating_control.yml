@@ -1,0 +1,78 @@
+cy:
+  advice_pages:
+    heating_control:
+      analysis:
+        heating_timings:
+          estimated_savings_html: "<p>Pe baech yn dilyn ein hargymhellion i droi eich gwres ymlaen yn hwyrach am flwyddyn gyfan, gallech arbed %{estimated_saving}.</p> <p>Byddai hyn yn lleihau eich defnydd o nwy gan %{percent}.</p>"
+          intro_html: |-
+            <p>
+              Mae'r tabl hwn yn dangos yr amser y trodd eich gwres ymlaen yn ystod yr wythnos ddiweddaraf y mae gennym ddata ar ei chyfer.
+            </p>
+            <p>
+              Mae'n awgrymu amser gwell i'ch gwres fod wedi ei droi ymlaen yn seiliedig ar dywydd y diwrnod hwnnw. ynghyd ag arbediad disgwyliedig pe baech yn newid eich gwres i gyd-fynd â'r amser a argymhellir.
+            </p>
+          title: Amseroedd gwres canolog
+        meter_breakdown:
+          chart_subtitle_html: Mae'r graff hwn yn dangos y defnydd o nwy am bob hanner awr o'r dydd yn ystod diwrnodau ysgol yn y gaeaf rhwng <span class='start-date'>%{start_date}</span> a <span class='end-date'>%{end_date}</span> ar gyfer %{meter}
+          chart_title: Sut mae defnydd o nwy yn amrywio yn ystod diwrnod ysgol yn y gaeaf ar gyfer mesuryddion unigol
+          title: Amseroedd gweithredu gwres canolog fesul mesurydd
+        school_day_heating:
+          title: Defnydd nwy ar gyfer gwresogi yn ystod y dydd
+        seasonal_control:
+          estimated_savings_html: Gallai eich ysgol leihau ei defnydd o nwy gan %{estimated_savings_kwh} kWH trwy ddiffodd ei boeler mewn tywydd cynnes. Er enghraifft, yn gynharach yn y gwanwyn ac yn hwyrach yn yr hydref, Byddai hyn arbed %{estimated_savings_gbp} a %{estimated_savings_co2} kg CO2 yn flynyddol.
+          heating_on_in_warm_weather_days: Blwyddyn diwethaf roedd gwres eich ysgol ymlaen am %{days} o ddiwrnodau yn ystod tywydd cynnes. Mae hyn yn %{adjective}.
+          percent_html: Mae hyn yn cynrychioli %{percent} o'ch defnydd gwres blynyddol
+          title: Rheolaeth dymhorol
+        summary: Mae'r adran hon yn rhoi dadansoddiad manylach o reolaeth boeler eich ysgol a rhai pethau i gadw llygad amdanynt.
+        title: Dadansoddiad rheolaeth gwres
+      charts:
+        gas_heating_season_intraday_up_to_1_year:
+          footer_html: |-
+            <p>
+            Mae hwn yn graff defnyddiol ar gyfer pennu pa mor dda y caiff amseriad y boeler ei reoli. Dim ond tua 6:00am y dylai boeler wedi'i amseru'n dda ddod ymlaen i godi tymheredd yr ysgol erbyn 8:00am, ac yna diffodd eto tua hanner awr cyn i'r ysgol gau.
+            </p>
+            <p>
+            Os oes gan eich ysgol wres o dan y llawr, gall gymryd ychydig oriau yn hirach i gynhesu, ond nid oes angen iddo fod ymlaen 24 awr y dydd.
+            </p>
+          subtitle_html: Mae'r graff hwn yn dangos defnydd nwy am bob hanner awr y dydd yn ystod diwrnodau ysgol yn y gaeaf rhwng <span class='start-date'>%{start_date}</span> a <span class='end-date'>%{end_date}</span>
+          title: Sut mae defnydd o nwy ym amrywio yn ystod diwrnod ysgol yn y gaeaf
+        heating_on_off_by_week:
+          header: Gallwch ddrilio'r diwrnodau unigol i lawr trwy glicio ar y bariau ar y siart.
+          subtitle_html: Mae'r graff hwn yn dangos pryd roedd y gwres a'r dŵr poeth ymlaen rhwng <span class='start-date'>%{start_date}</span> a <span class='end-date'>%{end_date}</span>, gan gynnwys pryd y gadawyd y gwres ymlaen mewn tywydd cynnes.
+          title: Siart rheolaeth dymhorol
+      insights:
+        comparison:
+          callout_footer: dyddiau
+          heating_on_comparison_link: Pa mor aml y bydd gennych wres ymlaen yn ystod tywydd cynnes
+          intro: O ran gadael gwres ymlaen yn ystod tywydd cynnes, sut ydych chi'n cymharu ag ysgolion eraill?
+          more_detail_html: Am ragor o fanylion, edrychwch ar sut mae eich ysgol yn cymharu ag eraill yn eich grŵp
+          start_time_comparison_link: Amseroedd cychwyn bore ar gyfer gwresogi
+          title: Sut ydych chi'n cymharu?
+        controls:
+          average_start_time: Mae ein dadansoddiad yn dangos mai'r amser cychwyn cyfartalog ar gyfer eich gwresogi yn ddiweddar oedd %{time}.
+          title: Eich rheolyddion gwres
+        title: Beth a olygwn wrth reolaeth gwres?
+        view_our_analysis_html: <a href="%{href}">Gweler ein dadansoddiad</a>
+        warm_weather:
+          title: Gadael y gwres ymlaen yn ystod tywydd cynnes
+      page_title: Dadansoddiad rheolaeth gwres
+      tables:
+        columns:
+          assessment: Asesiad
+          date: Dyddiad
+          heating_on_time: Ymlaen
+          heating_time: Amseriad gwresogi
+          overnight_temperature: Tymheredd dros nos (°C)
+          potential_saving: Arbediad potensial
+          potential_saving_co2: kg CO2
+          potential_saving_gbp: "£"
+          potential_saving_kwh: kWh
+          recommended_time: Argymhellwyd
+      what_are_heating_controls:
+        link: Dysgu rhagor
+        text_html: |-
+          <p>
+          Mae rheolaeth gwres yn cyfeirio at y gosodiadau a ddefnyddir i wresogi'r ysgol yn effeithiol tra bydd yn cael ei defnyddio'n llawn ac i leihau gwastraff y tu allan i oriau ysgol.
+          </p>
+          Gall cael y rheolaeth gwres yn iawn ar gyfer eich ysgol arbed arian a charbon yn gyflym iawn yn ogystal â gwella'r amgylchedd dysgu i fyfyrwyr.
+          </p>

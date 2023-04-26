@@ -26,9 +26,10 @@
 
 //= require activity_types
 //= require usage_charts
-//= require bullet_charts
 //= require schools
 //= require users
+//= require header_fix
+//= require nav_tabs_url_aware
 
 // from https://github.com/neivars/bootstrap-year-calendar
 //= require bootstrap-year-calendar
@@ -49,6 +50,7 @@
 //= require date_pickers
 //= require checkboxes
 //= require select
+//= require tabbed_charts
 
 //= require observations
 //= require form_wizard

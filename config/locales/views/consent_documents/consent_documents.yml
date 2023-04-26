@@ -1,0 +1,35 @@
+---
+en:
+  consent_documents:
+    document_description: Description
+    document_details_html: |-
+      <p>A bill needs to be dated within the last 3 months, and show:</p>
+      <ul>
+        <li>your school name</li>
+        <li>school address</li>
+        <li>electricity meter MPAN or electricity supply number and/or gas meter MPR or meter point reference number</li>
+      </ul>
+    document_title: Title
+    edit:
+      description: Revise the details for a previously uploaded bill. Use the description field to add notes if useful.
+      header: Edit a bill
+      title: Edit Bill
+    index:
+      description: You have provided us with the following bills as proof of which meters are installed at your school.
+      document_link: Link
+      document_required: A copy of a recent bill will help ensure that we have authority to collect, process and display the data on your behalf.
+      document_uploaded_date: Uploaded date
+      no_documents_provided: You have not yet provided us with any energy bills to demonstrate you have access to the meters installed at your school.
+      title: Uploaded Bills
+      upload_bill: Upload a bill
+      upload_new_bill: Upload a new bill
+    new:
+      description: Upload an energy bill for your school as proof that you have access to your energy meters.
+      header: Upload an energy bill
+      message: We need this proof before we are able to get permission to access and process your data.
+      title: Upload Bill
+    show:
+      bill_description: The following bill for %{school_name} was uploaded on %{uploaded_date}
+      uploaded_file: Uploaded File
+      view_bill: View Bill
+      view_bills: View bills

@@ -1,11 +1,10 @@
+---
 cy:
   helpers:
-    select:
-      prompt: Dewiswch
-    submit:
-      create: Creu %{model}
-      submit: Cadw %{model}
-      update: Diweddaru %{model}
+    label:
+      user:
+        email: E-bost
+        password: Cyfrinair
   languages:
     cy: Cymraeg
     en: Saesneg

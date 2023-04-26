@@ -14,7 +14,7 @@ module ChartHelper
           annotations: school_annotations_path(school),
           jsonUrl: school_chart_path(school, format: :json),
           transformations: []
-        ),
+        )
       }
     )
     chart_container += "<div id='chart-error' class='d-none'>#{I18n.t('chart_data_values.standard_error_message')}</div>".html_safe
@@ -40,9 +40,10 @@ module ChartHelper
       :div,
       '',
       id: "chart_#{chart_type}",
-      class: 'analysis-chart',
+      class: 'analysis-chart tabbed',
       style: "height:#{chart_height}px;",
       data: {
+        autoload_chart: true,
         chart_config: chart_config.merge(
           type: chart_type,
           jsonData: formatted_json_data,
@@ -51,29 +52,6 @@ module ChartHelper
       }
     )
     chart_container
-  end
-
-  def bullet_chart_series(fuel_progress, units = :kwh)
-    return {
-      "y": bullet_chart_number(fuel_progress.usage, units),
-      "target": bullet_chart_number(fuel_progress.target, units)
-    }.to_json
-  end
-
-  def bullet_chart_bands(fuel_progress, units = :kwh)
-    [{
-        from: 0,
-        to: bullet_chart_number(fuel_progress.target, units),
-        color: '#50E3C2'
-    }, {
-        from: bullet_chart_number(fuel_progress.target, units),
-        to: 1_000_000,
-        color: '#FF3A5B'
-    }].to_json
-  end
-
-  def bullet_chart_number(number, units = :kwh)
-    format_target(number, units).delete(",").to_i
   end
 
   def possible_y1_axis_choices
@@ -90,5 +68,14 @@ module ChartHelper
     y_axis = select_y_axis(school, chart_name)
     config[:y_axis_units] = y_axis if y_axis.present?
     config
+  end
+
+  def create_chart_descriptions(key, date_ranges_by_meter)
+    date_ranges_by_meter.each_with_object({}) do |(mpan_mprn, dates), date_ranges|
+      date_ranges[mpan_mprn] = I18n.t(key,
+        start_date: dates[:start_date].to_s(:es_short),
+        end_date: dates[:end_date].to_s(:es_short),
+        meter: dates[:meter].present? ? dates[:meter].name_or_mpan_mprn : mpan_mprn)
+    end
   end
 end

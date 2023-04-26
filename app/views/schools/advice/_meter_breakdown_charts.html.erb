@@ -1,0 +1,19 @@
+<div class="charts">
+  <%= component 'chart', chart_type: chart_type, analysis_controls: analysis_controls, school: school, html_class: 'usage-chart', chart_config: create_chart_config(school, chart_type, meters.first.mpan_mprn) do |c| %>
+    <% c.with_title { t(chart_title_key) } %>
+    <% c.with_subtitle { '' } %>
+    <% c.with_header do %>
+      <%= form_tag "", method: :get, id: "chart-filter" do %>
+        <%= hidden_field_tag :configuration, nil, data: {configuration: create_chart_config(school, :gas_heating_season_intraday_up_to_1_year)} %>
+        <%= hidden_field_tag :descriptions, nil, data: {descriptions: create_chart_descriptions(chart_subtitle_key, date_ranges_by_meter)} %>
+
+        <div class="pt-4 chart-controls form-inline d-flex justify-content-between">
+          <label>
+            <%= t('advice_pages.charts.controls.select_meter') %>
+          </label>
+          <%= select_tag :meter, options_from_collection_for_select(meters, :mpan_mprn, :display_name, meters.first.mpan_mprn), include_blank: false, class: "custom-select", data: {toggle: "tooltip", placement: "top", title: t('advice_pages.charts.controls.select_meter')} %>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

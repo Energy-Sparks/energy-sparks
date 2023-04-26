@@ -1,0 +1,27 @@
+<p>
+  <%= t('advice_pages.tariff_table_intro') %>
+</p>
+<table class="table advice-table">
+  <thead>
+    <tr>
+      <th><%= t('advice_pages.tables.columns.name') %></th>
+      <th><%= t('advice_pages.tables.columns.period') %></th>
+      <th><%= t('advice_pages.tables.columns.source') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% tariffs.each do |period, summary| %>
+      <tr>
+        <td>
+          <% if summary.user_tariff %>
+            <%= link_to summary.name, school_user_tariff_path(school, summary.user_tariff) %>
+          <% else %>
+            <%= summary.name %>
+          <% end %>
+        </td>
+        <td><%= short_dates(period.begin) %> - <%= short_dates(period.end) %></td>
+        <td><%= tariff_source(summary) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

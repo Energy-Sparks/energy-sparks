@@ -1,0 +1,12 @@
+<% if !school_target.school.has_current_target? %>
+  <div class="flex-wrap curved-border alert text-dark bg-neutral">
+    <div class="col-md-2">
+      <%= link_to t('schools.school_targets.prompt_to_set_new_target.set_a_new_target'), new_school_school_target_path(school_target.school), class: "btn btn-light rounded-pill" %>
+    </div>
+    <div class="col">
+      <span class="align-middle">
+        <%= t('schools.school_targets.prompt_to_set_new_target.you_set_a_target_to_reduce', target_date: I18n.l(school_target.target_date, format: '%B %Y')) %>.
+      </span>
+    </div>
+  </div>
+<% end %>

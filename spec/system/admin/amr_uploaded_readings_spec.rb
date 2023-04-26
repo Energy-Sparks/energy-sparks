@@ -159,7 +159,7 @@ describe AmrUploadedReading, type: :system do
   describe 'with row per reading' do
 
     let!(:config)             { create(:amr_data_feed_config,
-                                          date_format: "%Y-%m-%d",
+                                          date_format: "%d %b %Y %H:%M:%S",
                                           mpan_mprn_field: "MPR",
                                           reading_date_field: "ReadDatetime",
                                           reading_fields: ["kWh"],

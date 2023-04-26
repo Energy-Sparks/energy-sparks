@@ -1,52 +1,50 @@
-<h1>School opening hours</h1>
+<h1><%= t('schools.times.edit.title') %></h1>
 
 <div class="alert alert-warning">
-<p>
-Please note that while we will immediately save any changes made to your school opening hours or community use times, any of our energy analysis that relies on these time periods will only update overnight.
-</p>
+  <p><%= t('schools.times.edit.introduction_message') %></p>
 </div>
 
 <%= form_for(@school, url: school_times_path(@school)) do |f| %>
   <%= render 'schools/times/form', f: f %>
   <div class="actions">
-    <%= f.submit 'Save school times', class: 'btn btn-primary' %>
+    <%= f.submit t('schools.times.edit.save_school_times'), class: 'btn btn-primary' %>
   </div>
 <% end %>
 
 <div class="row pt-3">
   <div class="col">
-    <h1>Community use times</h1>
+    <h1><%= t('schools.times.edit.community_use.title') %></h1>
   </div>
 </div>
 
 <div class="row">
   <div class="col">
   <p>
-    School premises are often used outside of school hours by your community. For example to host events, clubs or other private lettings.
+    <%= t('schools.times.edit.community_use.school_premises_message') %>.
   </p>
 
   <p>
-    Use the form below to add regular community use times at your school. We can use this information to provide extra insights into your energy usage outside of school hours.
-  </p>
+    <%= t('schools.times.edit.community_use.use_the_form_message') %>.
+  </p
 
   <p>
-  Times should be entered in 24 hour format.
+    <%= t('schools.times.edit.community_use.twenty_four_hour_format_message') %>.
   </p>
   </div>
 </div>
 
 <div class="row pt-2">
   <div class="col-md-3 mb-3">
-    <label for="day"><strong>Day</strong></label>
+    <label for="day"><strong><%= t('schools.times.edit.community_use.day') %></strong></label>
   </div>
   <div class="col-md-2 mb-3">
-    <label for="opening-time"><strong>Opening Time</strong></label>
+    <label for="opening-time"><strong><%= t('schools.times.edit.community_use.opening_time') %></strong></label>
   </div>
   <div class="col-md-2 mb-3">
-    <label for="closing-time"><strong>Closing Time</strong></label>
+    <label for="closing-time"><strong><%= t('schools.times.edit.community_use.closing_time') %></strong></label>
   </div>
   <div class="col-md-3 mb-3">
-    <label for="term-only"><strong>Time of year</strong></label>
+    <label for="term-only"><strong><%= t('schools.times.edit.community_use.time_of_year') %></strong></label>
   </div>
 </div>
 
@@ -56,8 +54,8 @@ Please note that while we will immediately save any changes made to your school 
         <%= render 'schools/times/school_time_fields', f: school_time %>
       <% end %>
       <div class="links mt-2">
-        <%= link_to_add_association 'Add time', f, :school_times, partial: 'schools/times/school_time_fields', wrap_object: Proc.new{|time| time.usage_type=:community_use; time.community_use_defaults!; time}, class: 'btn' %>
-        <%= f.submit 'Save community use times', class: 'btn btn-primary' %>
+        <%= link_to_add_association t('schools.times.edit.community_use.add_time'), f, :school_times, partial: 'schools/times/school_time_fields', wrap_object: Proc.new{|time| time.usage_type=:community_use; time.community_use_defaults!; time}, class: 'btn' %>
+        <%= f.submit t('schools.times.edit.community_use.save_community_use_times'), class: 'btn btn-primary' %>
       </div>
     </div>
   <% end %>

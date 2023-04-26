@@ -1,0 +1,33 @@
+<%= render 'schools/advice/section_title', section_id: 'comparison', section_title: t('advice_pages.heating_control.insights.comparison.title') %>
+
+<% if @benchmark_warm_weather_days %>
+  <p>
+    <%= t('advice_pages.heating_control.insights.comparison.intro') %>
+  </p>
+  <div class="col">
+    <%= component 'school_comparison', id: 'comparison-warm-weather-days', comparison: @benchmark_warm_weather_days do |c| %>
+      <% c.with_callout_footer { advice_t('heating_control.insights.comparison.callout_footer') } %>
+    <% end %>
+  </div>
+<% end %>
+
+<div class="row">
+  <div class="col">
+  <p>
+    <%= t('advice_pages.heating_control.insights.comparison.more_detail_html') %>
+  </p>
+
+  <ul>
+    <li>
+      <a href="<%= compare_for_school_group_path(:heating_in_warm_weather, school) %>">
+        <%= t('advice_pages.heating_control.insights.comparison.heating_on_comparison_link') %>
+      </a>
+    </li>
+    <li>
+      <a href="<%= compare_for_school_group_path(:heating_coming_on_too_early, school) %>">
+        <%= t('advice_pages.heating_control.insights.comparison.start_time_comparison_link') %>
+      </a>
+    </li>
+  </ul>
+  </div>
+</div>

@@ -13,6 +13,10 @@ module Targets
       electricity_progress.present? || gas_progress.present? || storage_heater_progress.present?
     end
 
+    def current_target?
+      @school_target.current?
+    end
+
     def out_of_date_fuel_types
       out_of_date = []
       out_of_date << :electricity if electricity_progress.present? && !electricity_progress.recent_data?
@@ -22,32 +26,48 @@ module Targets
       out_of_date.uniq
     end
 
-    def passing_fuel_targets
+    def passing_fuel_targets(check_recent: true)
       passing = []
-      passing << :electricity if electricity_progress.present? && electricity_progress.recent_data? && electricity_progress.achieving_target?
-      passing << :gas if gas_progress.present? && gas_progress.recent_data? && gas_progress.achieving_target?
-      passing << :storage_heater if storage_heater_progress.present? && storage_heater_progress.recent_data? && storage_heater_progress.achieving_target?
+      passing << :electricity if passing?(electricity_progress, check_recent)
+      passing << :gas if passing?(gas_progress, check_recent)
+      passing << :storage_heater if passing?(storage_heater_progress, check_recent)
       passing
     end
 
-    def failing_fuel_targets
+    def failing_fuel_targets(check_recent: true)
       failed = []
-      failed << :electricity if electricity_progress.present? && electricity_progress.recent_data? && !electricity_progress.achieving_target?
-      failed << :gas if gas_progress.present? && gas_progress.recent_data? && !gas_progress.achieving_target?
-      failed << :storage_heater if storage_heater_progress.present? && storage_heater_progress.recent_data? && !storage_heater_progress.achieving_target?
+      failed << :electricity if failing?(electricity_progress, check_recent)
+      failed << :gas if failing?(gas_progress, check_recent)
+      failed << :storage_heater if failing?(storage_heater_progress, check_recent)
       failed
     end
 
-    def any_failing_targets?
-      failing_fuel_targets.any?
+    def any_failing_targets?(check_recent: true)
+      failing_fuel_targets(check_recent: check_recent).any?
     end
 
-    def any_passing_targets?
-      passing_fuel_targets.any?
+    def any_passing_targets?(check_recent: true)
+      passing_fuel_targets(check_recent: check_recent).any?
     end
 
     def any_out_of_date_fuel_types?
       out_of_date_fuel_types.any?
+    end
+
+    private
+
+    def passing?(fuel_progress, check_recent = true)
+      return false unless fuel_progress.present? && fuel_progress.achieving_target?
+      return true unless check_recent
+      return true if fuel_progress.recent_data?
+      false
+    end
+
+    def failing?(fuel_progress, check_recent = true)
+      return false unless fuel_progress.present? && !fuel_progress.achieving_target?
+      return true unless check_recent
+      return true if fuel_progress.recent_data?
+      false
     end
   end
 end

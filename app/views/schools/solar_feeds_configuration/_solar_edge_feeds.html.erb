@@ -9,7 +9,7 @@
       </tr>
       <% solar_edge_installations.each do |installation| %>
         <tr>
-          <td><%= installation.mpan %></td>
+          <td><%= link_to installation.mpan, school_solar_edge_installation_path(school, installation) %></td>
           <td><%= installation.site_id %></td>
           <td><%= installation.api_key %></td>
           <td>

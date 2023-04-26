@@ -1,0 +1,28 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Recorded</th>
+      <th>Happened</th>
+      <th>School</th>
+      <th>Intervention Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% observations.each do |observation| %>
+      <tr>
+        <td><%= nice_dates(observation.created_at) %></td>
+        <td><%= nice_dates(observation.at) %></td>
+        <td><%= link_to observation.school.name, school_url(observation.school) %></td>
+        <td>
+          <%= link_to school_intervention_url(observation.school, observation) do %>
+            <% if observation.description.present? %>
+              <span class="text-success"><%= observation.intervention_type.name %></span>
+            <% else %>
+              <span class="text-muted"><%= observation.intervention_type.name %></span>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

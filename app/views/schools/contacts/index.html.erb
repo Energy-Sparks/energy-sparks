@@ -1,78 +1,62 @@
 <% content_for :page_title do %>
-  <%= @school.name %> Alert Contacts
+  <%= t('schools.contacts.index.title', school_name: @school.name) %>
 <% end %>
 
-<h1 property="name"><%= link_to @school.name, @school %> Alert Contacts</h1>
+<h1 property="name">
+  <%= t('schools.contacts.index.alert_contacts') %>
+</h1>
 
 <%= render 'shared/contact_explainer' %>
 
 <p>
-  The alerts can be sent to people with an Energy Sparks account or directly by email or text message to a mobile phone.
+  <%= t('schools.contacts.index.alert_contacts_message') %>
 </p>
 
-<h2>Account contacts </h2>
-
-<%= form_tag new_school_contact_path, method: :get do %>
-  <%= label_tag :user_id, 'Enable alerts for:' %>
-  <%= select_tag :user_id, options_from_collection_for_select(@accounts_without_contacts, :id, :display_name) %>
-  <%= submit_tag 'Next', class: 'btn btn-rounded'%>
-<% end %>
+<h2>
+  <%= t('schools.contacts.index.account_contacts') %>
+</h2>
 
 <div class="table-responsive mt-2">
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Role</th>
-        <th>Mobile Phone Number</th>
-        <th>Email Address</th>
-        <th>Actions</th>
+        <th><%= t('schools.contacts.index.name') %></th>
+        <th><%= t('schools.contacts.index.email_address') %></th>
+        <th><%= t('schools.contacts.index.mobile_phone_number') %></th>
+        <th><%= t('schools.contacts.index.receives_alerts') %></th>
+        <th><%= t('schools.contacts.index.role') %></th>
+        <th><%= t('schools.contacts.index.preferred_locale') %></th>
+        <th><%= t('schools.contacts.index.actions') %></th>
       </tr>
     </thead>
     <tbody>
       <% @account_contacts.each do |contact| %>
         <tr scope="row">
           <td><%= contact.name %></td>
-          <td><%= contact.staff_role.try(:title) %></td>
-          <td><%= contact.mobile_phone_number %></td>
           <td><%= contact.email_address %></td>
-          <td>
+          <td><%= contact.mobile_phone_number %></td>
+          <td><%= y_n(true) %></td>
+          <td><%= contact.staff_role.try(:translated_title) %></td>
+          <td><%= I18n.t("languages.#{contact.preferred_locale}") %></td>
+          <td class="nowrap">
             <div class="btn-group">
-              <%= link_to 'Edit', edit_school_contact_path(@school, contact), class: 'btn btn-warning' %>
-              <%= link_to 'Delete', school_contact_path(@school, contact), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+              <%= link_to t('schools.contacts.edit.disable_alerts'), school_contact_path(@school, contact), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
+              <%= link_to t('schools.contacts.edit.edit_phone_number'), edit_school_contact_path(@school, contact), class: 'btn btn-warning' %>
             </div>
           </td>
         </tr>
       <% end %>
-    </tbody>
-  </table>
-</div>
-
-<h2>Standalone contacts </h2>
-<p><%= link_to 'Enable alerts for an email or phone number', new_school_contact_path(@school), class: 'btn btn-primary' %></p>
-
-<div class="table-responsive">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Role</th>
-        <th>Mobile Phone Number</th>
-        <th>Email Address</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @standalone_contacts.each do |contact| %>
+      <% @accounts_without_contacts.each do |user| %>
         <tr scope="row">
-          <td><%= contact.name %></td>
-          <td><%= contact.staff_role.try(:title) %></td>
-          <td><%= contact.mobile_phone_number %></td>
-          <td><%= contact.email_address %></td>
-          <td>
+          <td><%= user.name %></td>
+          <td><%= user.email %></td>
+          <td></td>
+          <td><%= y_n(false) %></td>
+          <td><%= user.staff_role.try(:translated_title) %></td>
+          <td><%= I18n.t("languages.#{user.preferred_locale}") %></td>
+          <td class="nowrap">
             <div class="btn-group">
-              <%= link_to 'Edit', edit_school_contact_path(@school, contact), class: 'btn btn-warning' %>
-              <%= link_to 'Delete', school_contact_path(@school, contact), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+              <%= link_to t('schools.contacts.edit.enable_alerts'), new_school_contact_path(@school, user_id: user.id), class: 'btn btn-warning' %>
             </div>
           </td>
         </tr>
@@ -80,3 +64,39 @@
     </tbody>
   </table>
 </div>
+
+<% if @standalone_contacts.any? %>
+
+  <h2><%= t('schools.contacts.index.standalone_contacts') %></h2>
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th><%= t('schools.contacts.index.name') %></th>
+          <th><%= t('schools.contacts.index.email_address') %></th>
+          <th><%= t('schools.contacts.index.mobile_phone_number') %></th>
+          <th><%= t('schools.contacts.index.role') %></th>
+          <th><%= t('schools.contacts.index.actions') %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @standalone_contacts.each do |contact| %>
+          <tr scope="row">
+            <td><%= contact.name %></td>
+            <td><%= contact.email_address %></td>
+            <td><%= contact.mobile_phone_number %></td>
+            <td><%= contact.staff_role.try(:translated_title) %></td>
+            <td>
+              <div class="btn-group">
+                <%= link_to t('common.labels.edit'), edit_school_contact_path(@school, contact), class: 'btn btn-warning' %>
+                <%= link_to t('common.labels.delete'), school_contact_path(@school, contact), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+<% end %>

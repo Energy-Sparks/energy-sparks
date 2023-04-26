@@ -1,10 +1,10 @@
 <div class="row justify-content-md-center">
   <div class="col col-md-10 col-lg-8">
-    <h1>Update opening times</h1>
+    <h1><%= t('onboarding.school_times.title') %></h1>
     <%= form_for(@school, url: onboarding_school_times_path(@school_onboarding)) do |f| %>
       <%= render 'schools/times/form', f: f %>
-      <%= f.submit 'Update school times', class: 'btn' %>
-      <%= link_to 'Back', new_onboarding_completion_path(@school_onboarding, anchor: 'opening-times', show: 'opening-times'), class: 'btn' %>
+      <%= f.submit t('onboarding.school_times.update'), class: 'btn' %>
+      <%= link_to t('common.labels.back'), new_onboarding_completion_path(@school_onboarding, anchor: 'opening-times', show: 'opening-times'), class: 'btn' %>
     <% end %>
   </div>
 </div>

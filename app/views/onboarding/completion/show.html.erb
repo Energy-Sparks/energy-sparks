@@ -1,42 +1,37 @@
 <div class="row justify-content-md-center">
   <div class="col col-md-10 col-lg-8">
 
-    <h1>Setup completed</h1>
+    <h1><%= t('onboarding.completion.show.title') %></h1>
 
     <p>
-      <%= @school_onboarding.school.name %> has been successfully set up on Energy Sparks. Thank you.
+      <%= t('onboarding.completion.show.school_successfully_set_up', school_name: @school_onboarding.school.name) %>
     </p>
 
-    <h3>What happens next?</h3>
+    <h3><%= t('onboarding.completion.show.what_happens_next') %></h3>
 
-    <p>
-      Before your school goes live on Energy Sparks we will review the information you've provided and
-      ensure we have access to your energy data.
-    </p>
+    <p><%= t('onboarding.completion.show.before_your_school_goes_live_message') %>.</p>
 
-    <p>
-      This normally takes about 24 hours. We will email you when we've completed our final checks.
-    </p>
+    <p><%= t('onboarding.completion.show.this_normally_takes_24_hours_message') %>.</p>
 
-    <h3>Eager to get started?</h3>
+    <h3><%= t('onboarding.completion.show.eager_to_get_started') %></h3>
 
-    <p>
-      In the meantime you can:
-    </p>
+    <p><%= t('onboarding.completion.show.in_the_meantime_you_can') %>:</p>
 
     <ul>
-      <li>Review our <a href="https://energysparks.uk/resources/12/download">user guide</a> or
-      watch our <%= link_to 'training_videos', user_guide_videos_path %></li>
-      <li>Sign up to one of our <%= link_to 'live webinar training sessions', training_path %></li>
       <li>
-        Or look at how
+        <%= t('onboarding.completion.show.review_user_guide_or_training_videos_message_html', user_guide_path: ResourceFile.user_guide_download_path, user_guide_videos_path: user_guide_videos_path) %>
+      </li>
+      <li>
+        <%= t('onboarding.completion.show.webinar_training_session_message_html', training_path: training_path) %>
+      </li>
+      <li>
+        <%= t('onboarding.completion.show.or_look_at_how') %>
         <% if @school_onboarding.school.school_group.present? %>
-          <%= link_to 'schools in your area', school_group_path(@school_onboarding.school.school_group) %> are using Energy Sparks
+          <%= t('onboarding.completion.show.schools_in_your_area_html', school_group_path: school_group_path(@school_onboarding.school.school_group)) %>
         <% else %>
-        <%= link_to 'other schools', schools_path %> are using Energy Sparks
+          <%= link_to t('onboarding.completion.show.other_schools_html', schools_path: schools_path) %>
         <% end %>
       </li>
     </ul>
-
   </div>
 </div>

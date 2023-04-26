@@ -24,7 +24,7 @@ module Admin
     private
 
     def amr_data_feed_config_params
-      params.require(:amr_data_feed_config).permit(:import_warning_days, :missing_readings_limit)
+      params.require(:amr_data_feed_config).permit(:import_warning_days, :missing_readings_limit, :notes)
     end
   end
 end

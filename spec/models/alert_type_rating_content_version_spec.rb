@@ -110,16 +110,22 @@ describe AlertTypeRatingContentVersion do
 
     let(:alert_type_rating_management_priorities)   { create(:alert_type_rating, alert_type: alert_type, management_priorities_active: true) }
 
+    let(:alert_type_rating_email)   { create(:alert_type_rating, alert_type: alert_type, email_active: true) }
+    let(:alert_type_rating_sms)   { create(:alert_type_rating, alert_type: alert_type, sms_active: true) }
+
     let!(:content_version)              { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating) }
     let!(:content_version_pupil)        { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating_pupil, pupil_dashboard_title: 'some title') }
     let!(:content_version_management)   { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating_management, management_dashboard_title: 'some title') }
     let!(:content_version_both)         { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating_both, management_dashboard_title: 'some title', pupil_dashboard_title: 'some title') }
-
     let!(:content_version_management_title)   { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating_management_priorities, management_priorities_title: 'some priorities title') }
 
+    let!(:content_version_email)   { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating_email, email_title: 'email title {{title_variable}}', email_content: 'email content {{content_variable}}') }
+
+    let!(:content_version_sms)   { AlertTypeRatingContentVersion.create(alert_type_rating: alert_type_rating_sms, sms_content: 'sms content {{content_variable}}') }
+
     context 'when fetching records for sync' do
-      it 'includes records with pupil or management dashboard alert active' do
-        expect(AlertTypeRatingContentVersion.tx_resources).to match_array([content_version_pupil, content_version_management, content_version_both, content_version_management_title])
+      it 'includes records with pupil, management dashboard alert, sms and email active' do
+        expect(AlertTypeRatingContentVersion.tx_resources).to match_array([content_version_pupil, content_version_management, content_version_both, content_version_management_title, content_version_sms, content_version_email])
       end
     end
     context 'when serialising fields' do
@@ -143,6 +149,20 @@ describe AlertTypeRatingContentVersion do
         data = content_version_management_title.tx_serialise
         key = data["en"].keys.first
         expect(data["en"][key].keys).to match_array(["management_priorities_title_html"])
+
+        data = content_version_email.tx_serialise
+        key = data["en"].keys.first
+        expect(data["en"][key].keys).to match_array(["email_title", "email_content_html"])
+        #check that we're serialsing as templated content
+        expect(data["en"][key]["email_title"]).to eq "email title %{tx_var_title_variable}"
+        expect(data["en"][key]["email_content_html"]).to eq "email content %{tx_var_content_variable}"
+
+        data = content_version_sms.tx_serialise
+        key = data["en"].keys.first
+        expect(data["en"][key].keys).to match_array(["sms_content"])
+        #check that we're serialsing as templated content
+        expect(data["en"][key]["sms_content"]).to eq "sms content %{tx_var_content_variable}"
+
       end
     end
   end

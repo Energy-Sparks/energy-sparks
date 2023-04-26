@@ -1,31 +1,34 @@
 <div class="row justify-content-md-center">
   <div class="col col-md-10 col-lg-8">
     <% if @school_onboarding.ready_for_review? %>
-      <h1>Manage your school accounts</h1>
+      <h1><%= t('onboarding.users.title') %></h1>
     <% else %>
-      <h1>Step 4: Add additional accounts</h1>
+      <h1><%= t('onboarding.users.step_4') %></h1>
     <% end %>
 
     <p>
-    You can add any number of additional accounts for the adult users at your school.
+      <%= t('onboarding.users.adult_users_additional_accounts_message') %>
     </p>
 
     <p>
-    When you have finished onboarding your school, new users will be sent an email to confirm their account and will then be asked to set a password for their account before it can be accessed.
+      <%= t('onboarding.users.when_you_have_finished_onboarding_message') %>
     </p>
 
     <p>
-    Staff accounts have access to teacher, management and pupil Energy Sparks functionality and alerts but cannot manage other accounts. Administrator accounts can also manage other users and update your school details.
+      <%= t('onboarding.users.staff_accounts_have_access_message') %>
     </p>
 
     <% if @users.any? %>
       <table class="table table-condensed">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Admin?</th>
-            <th>Role</th>
+            <th><%= t('onboarding.users.table.name') %></th>
+            <th><%= t('onboarding.users.table.email') %></th>
+            <th><%= t('onboarding.users.table.admin') %></th>
+            <th><%= t('onboarding.users.table.role') %></th>
+            <% if EnergySparks::FeatureFlags.active?(:redirect_to_preferred_locale) %>
+              <th><%= t('onboarding.users.table.preferred_locale') %></th>
+            <% end %>
             <th></th>
           </tr>
         </thead>
@@ -37,10 +40,13 @@
                 <td><%= user.email %></td>
                 <td><%= y_n(user.school_admin?) %></td>
                 <td><%= user.staff_role.try(:title) %></td>
+                <% if EnergySparks::FeatureFlags.active?(:redirect_to_preferred_locale) %>
+                  <td><%= I18n.t("languages.#{user.preferred_locale}") %></td>
+                <% end %>
                 <td>
                   <div class="btn-group">
-                    <%= link_to('Edit', edit_onboarding_user_path(@school_onboarding, user), { class: 'btn btn-default btn-sm', remote: true, 'data-toggle' => "modal", 'data-target' => '#modal-window' }) if can?(:edit, user) %>
-                    <%= link_to('Delete', onboarding_user_path(@school_onboarding, user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm') if can?(:delete, user) %>
+                    <%= link_to(t('common.labels.edit'), edit_onboarding_user_path(@school_onboarding, user), { class: 'btn btn-default btn-sm', remote: true, 'data-toggle' => "modal", 'data-target' => '#modal-window' }) if can?(:edit, user) %>
+                    <%= link_to(t('common.labels.delete'), onboarding_user_path(@school_onboarding, user), method: :delete, data: { confirm: t('common.labels.are_you_sure') }, class: 'btn btn-danger btn-sm') if can?(:delete, user) %>
                   </div>
                 </td>
             </tr>
@@ -51,12 +57,12 @@
 
     <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true"></div>
 
-    <%= link_to 'Add new account', new_onboarding_user_path(@school_onboarding), { class: 'btn btn-default', remote: true, 'data-toggle' => "modal", 'data-target' => '#modal-window' }  %>
+    <%= link_to t('onboarding.users.add_new_account'), new_onboarding_user_path(@school_onboarding), { class: 'btn btn-default', remote: true, 'data-toggle' => "modal", 'data-target' => '#modal-window' }  %>
 
     <% if @school_onboarding.ready_for_review? %>
-      <%= link_to 'Continue', new_onboarding_completion_path(@school_onboarding), class: 'btn btn-default' %>
+      <%= link_to t('onboarding.users.continue'), new_onboarding_completion_path(@school_onboarding), class: 'btn btn-default' %>
     <% else %>
-      <%= link_to @users.any? ? 'Continue' : 'Skip for now', new_onboarding_pupil_account_path(@school_onboarding), class: 'btn btn-default' %>
+      <%= link_to @users.any? ? t('onboarding.users.continue') : t('onboarding.users.skip_for_now'), new_onboarding_pupil_account_path(@school_onboarding), class: 'btn btn-default' %>
     <% end %>
 
   </div>

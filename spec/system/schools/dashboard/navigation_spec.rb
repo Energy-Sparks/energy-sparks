@@ -29,19 +29,7 @@ RSpec.shared_examples "navigation" do
   end
 
   it 'has links to analysis' do
-    expect(page).to have_link("Explore data")
     expect(page).to have_link("Review energy analysis")
-  end
-
-  context 'with co2 analysis' do
-    before(:each) do
-      co2_page = double(analysis_title: 'Some CO2 page', analysis_page: 'analysis/page/co2')
-      expect_any_instance_of(SchoolsController).to receive(:process_analysis_templates).and_return([co2_page])
-      visit school_path(test_school, switch: true)
-    end
-    it 'shows link to co2 analysis page' do
-      expect(page).to have_link("Carbon emissions")
-    end
   end
 
   context 'when school has partners' do
@@ -200,6 +188,15 @@ RSpec.describe "adult dashboard navigation", type: :system do
       expect(page).to have_link("Download our data")
     end
 
+    it "doesn't allow download of other schools data" do
+      other_school = create(:school)
+      visit school_path(other_school)
+      within '.dashboard-school-title' do
+        expect(page).to have_content(other_school.name)
+      end
+      expect(page).not_to have_link("Download your data")
+    end
+
     it 'should display my school menu on other pages' do
       visit home_page_path
       expect(page).to have_css("#my_school_menu")
@@ -273,6 +270,15 @@ RSpec.describe "adult dashboard navigation", type: :system do
       expect(page).to have_link("Download our data")
     end
 
+    it "doesn't allow download of other schools data" do
+      other_school = create(:school)
+      visit school_path(other_school)
+      within '.dashboard-school-title' do
+        expect(page).to have_content(other_school.name)
+      end
+      expect(page).not_to have_link("Download your data")
+    end
+
     it 'should display my school menu on other pages' do
       visit home_page_path
       expect(page).to have_css("#my_school_menu")
@@ -316,6 +322,26 @@ RSpec.describe "adult dashboard navigation", type: :system do
         end
       end
     end
+
+    context 'with replacement advice pages' do
+      around do |example|
+        ClimateControl.modify FEATURE_FLAG_REPLACE_ANALYSIS_PAGES: 'true' do
+          example.run
+        end
+      end
+      it 'links to advice pages from review energy analysis' do
+        visit school_path(school)
+        click_on 'Review energy analysis'
+        expect(page).to have_content("Energy efficiency advice")
+      end
+      it 'links to advice pages from my school' do
+        visit school_path(school)
+        within '#my_school_menu' do
+          click_on 'Energy analysis'
+        end
+        expect(page).to have_content("Energy efficiency advice")
+      end
+    end
   end
 
   context 'as group admin' do
@@ -325,6 +351,7 @@ RSpec.describe "adult dashboard navigation", type: :system do
     include_examples "navigation" do
       let(:test_school) { school }
     end
+
     it 'shows me the adult dashboard by default' do
       visit schools_path
       expect(page.has_content? "Energy Sparks schools across the UK").to be true
@@ -337,6 +364,15 @@ RSpec.describe "adult dashboard navigation", type: :system do
       click_on 'Print view'
       expect(page).to have_content("Adult dashboard for #{school.name}")
     end
+
+    it 'shows download link' do
+      visit school_path(school)
+      within '.dashboard-school-title' do
+        expect(page).to have_content(school.name)
+      end
+      expect(page).to have_link("Download your data")
+    end
+
     context 'when school in private group' do
       before(:each) do
         school_group.update!(public: false)
@@ -360,7 +396,6 @@ RSpec.describe "adult dashboard navigation", type: :system do
       end
       it 'overrides flag and shows data-enabled links' do
         expect(page).to have_link("Compare schools")
-        expect(page).to have_link("Explore data")
         expect(page).to have_link("Review energy analysis")
         expect(page).to have_link("Download your data")
       end
@@ -369,6 +404,21 @@ RSpec.describe "adult dashboard navigation", type: :system do
         click_on("User view")
         expect(page).to have_link("Admin view")
         expect(page).to_not have_link("Explore data")
+      end
+    end
+
+    context 'with replacement advice pages' do
+      around do |example|
+        ClimateControl.modify FEATURE_FLAG_REPLACE_ANALYSIS_PAGES: 'true' do
+          example.run
+        end
+      end
+      it 'links to advice pages from manage school menu' do
+        visit school_path(school)
+        within '#manage_school_menu' do
+          click_on 'Old analysis pages'
+        end
+        expect(page).to have_content("Analysis for #{school.name}")
       end
     end
   end

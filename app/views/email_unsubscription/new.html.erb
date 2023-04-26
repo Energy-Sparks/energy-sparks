@@ -1,6 +1,6 @@
-<h1 class="mt-2">Unsubscribe</h1>
+<h1 class="mt-2"><%= t('email_unsubscription.new.unsubscribe') %></h1>
 
-<p>We're sorry you don't want to receive alerts like this one by email:</p>
+<p><%= t('email_unsubscription.new.were_sorry_message') %>:</p>
 
 <div class="card bg-light m-2">
   <div class="card-body">
@@ -9,10 +9,10 @@
   </div>
 </div>
 
-<p>Please let us know why and we'll use this information to improve our service.</p>
+<p><%= t('email_unsubscription.new.please_let_us_know_why_message') %>.</p>
 
 <%= simple_form_for @alert_type_rating_unsubscription, url: email_unsubscription_path(uuid: @alert_subscription_event.unsubscription_uuid) do |form| %>
   <%= form.input :reason %>
-  <%= form.input :unsubscription_period, as: :radio_buttons, collection: [['One month', :one_month], ['6 months', :six_months], ["I don't want to see them again", :forever]], label: "Don't show me alerts like this for:"%>
-  <%= form.submit 'Submit', class: 'btn btn-primary' %>
+  <%= form.input :unsubscription_period, as: :radio_buttons, collection: [[t('email_unsubscription.new.unsubscription_period.one_month'), :one_month], [t('email_unsubscription.new.unsubscription_period.six_months'), :six_months], [t('email_unsubscription.new.unsubscription_period.forever'), :forever]], label: t('email_unsubscription.new.unsubscription_period.label') %>
+  <%= form.submit t('common.labels.submit'), class: 'btn btn-primary' %>
 <% end %>

@@ -8,8 +8,13 @@
   <%= @consent_statement.title %>
 </h3>
 
-<h2>Content</h2>
-
-<p>
-  <%= @consent_statement.content %>
-</p>
+<% I18n.available_locales.each do |locale| %>
+  <h2>Content (<%= t("languages.#{locale}") %>)</h2>
+  <p>
+    <% if @consent_statement.content(locale: locale).present? %>
+      <%= @consent_statement.content(locale: locale)  %>
+    <% else %>
+      <p><em>No content given</em></p>
+    <% end %>
+  </p>
+<% end %>

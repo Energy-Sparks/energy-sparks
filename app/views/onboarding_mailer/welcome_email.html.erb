@@ -1,21 +1,19 @@
-<h1 class="mb-3">Thanks for confirming your Energy Sparks user account.</h1>
+<h1 class="mb-3"><%= t('onboarding_mailer.welcome_email.title') %></h1>
 
 <p>
-You can now use Energy Sparks to see how much energy your school is using,
-find out about the greatest energy saving opportunities and explore our
-activities and educational resources designed to teach your pupils about
-energy whilst saving money for their school.
+  <%= t('onboarding_mailer.welcome_email.paragraph_1') %>
 </p>
+
+<div class="s-3"></div>
 
 <p>
-For help using Energy Sparks please read our <a href="https://energysparks.uk/resources/12/download">User Guide</a>,
-watch our <a href="https://energysparks.uk/user-guide-videos">Training Videos</a> or
-join one of our <a href="https://energysparks.uk/training">live webinar training</a> sessions.
+  <%= t('onboarding_mailer.welcome_email.paragraph_2_html') %>
 </p>
+
+<div class="s-3"></div>
 
 <p>
-  We hope Energy Sparks will empower your pupils, school staff,
-  and wider school community to take action to make your school more energy efficient.
+  <%= t('onboarding_mailer.welcome_email.paragraph_3') %>
 </p>
 
-<%= link_to 'View your school', school_url(@school), class: 'btn btn-primary mt-3 mb-3'%>
+<%= link_to t('onboarding_mailer.welcome_email.view_your_school'), school_url(@school), class: 'btn btn-primary mt-3 mb-3'%>

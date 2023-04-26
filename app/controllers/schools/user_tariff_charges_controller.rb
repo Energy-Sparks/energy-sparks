@@ -26,7 +26,7 @@ module Schools
 
     def make_charges(defs, user_tariff)
       defs.keys.map do |type|
-        if UserTariffCharge::CHARGE_TYPES.key?(type.to_sym)
+        if UserTariffCharge.charge_types.key?(type.to_sym)
           value = defs[type][:value]
           units = defs[type][:units]
           if value.present?

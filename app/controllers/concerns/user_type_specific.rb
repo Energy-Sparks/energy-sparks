@@ -7,7 +7,11 @@ module UserTypeSpecific
     if current_user
       { user_role: current_user.role.to_sym, staff_role: current_user.staff_role_as_symbol }
     else
-      { user_role: :guest, staff_role: nil }
+      user_type_hash_guest
     end
+  end
+
+  def user_type_hash_guest
+    { user_role: :guest, staff_role: nil }
   end
 end

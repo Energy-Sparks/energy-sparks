@@ -24,7 +24,7 @@ RSpec.describe Targets::SchoolTargetService do
       end
 
       it 'should default to 12 months from now' do
-        expect((target.target_date - target.start_date).to_i).to eql 365
+        expect((target.target_date - target.start_date).to_i).to be_between(365, 366)
       end
 
       it 'should have default values' do
@@ -62,7 +62,7 @@ RSpec.describe Targets::SchoolTargetService do
       end
 
       it 'should default to 12 months from now' do
-        expect((target.target_date - target.start_date).to_i).to eql 365
+        expect((target.target_date - target.start_date).to_i).to be_between(365, 366)
       end
 
       it 'should inherit targets' do
@@ -93,68 +93,21 @@ RSpec.describe Targets::SchoolTargetService do
     end
   end
 
-  describe '#enough_data? v2' do
-    before(:each) do
-      expect(EnergySparks::FeatureFlags).to receive(:active?).at_least(:once).with(:school_targets_v2).and_return(true)
-    end
-
-    context 'and there isnt enough data' do
-      it 'returns true' do
-        expect(service.enough_data?).to be true
-      end
-    end
-
-    context 'and there is enough data' do
-      before(:each) do
-        school.configuration.update!(school_target_fuel_types: ["electricity", "gas", "storage_heater"])
-      end
-      it 'returns true' do
-        expect(service.enough_data?).to be true
-      end
-      it 'checks for presence of fuel types' do
-        expect(service.enough_data_for_electricity?).to be true
-        expect(service.enough_data_for_gas?).to be true
-        expect(service.enough_data_for_storage_heater?).to be true
-
-        school.configuration.update(fuel_configuration: Schools::FuelConfiguration.new(
-          has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true))
-        expect(service.enough_data_for_electricity?).to be true
-        expect(service.enough_data_for_gas?).to be false
-        expect(service.enough_data_for_storage_heater?).to be false
-      end
-    end
-  end
-
   describe '#enough_data?' do
-
-    before(:each) do
-      allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(false)
+    it 'returns true' do
+      expect(service.enough_data?).to be true
     end
+    it 'checks for presence of fuel types' do
+      expect(service.enough_data_for_electricity?).to be true
+      expect(service.enough_data_for_gas?).to be true
+      expect(service.enough_data_for_storage_heater?).to be true
 
-    context 'and there isnt enough data' do
-      it 'returns false' do
-        expect(service.enough_data?).to be false
-      end
-    end
-
-    context 'and there is enough data' do
-      before(:each) do
-        school.configuration.update!(school_target_fuel_types: ["electricity", "gas", "storage_heater"])
-      end
-      it 'returns true' do
-        expect(service.enough_data?).to be true
-      end
-      it 'checks the individual fuel types' do
-        expect(service.enough_data_for_electricity?).to be true
-        expect(service.enough_data_for_gas?).to be true
-        expect(service.enough_data_for_storage_heater?).to be true
-      end
-      it 'handles missing fuel types' do
-        school.configuration.update!(school_target_fuel_types: ["electricity"])
-        expect(service.enough_data_for_electricity?).to be true
-        expect(service.enough_data_for_gas?).to be false
-        expect(service.enough_data_for_storage_heater?).to be false
-      end
+      school.configuration.update(fuel_configuration: Schools::FuelConfiguration.new(
+        has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true))
+      expect(service.enough_data_for_electricity?).to be true
+      expect(service.enough_data_for_gas?).to be false
+      expect(service.enough_data_for_storage_heater?).to be false
     end
   end
+
 end

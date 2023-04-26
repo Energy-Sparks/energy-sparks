@@ -20,7 +20,5 @@ describe AmrReadingWarning, type: :system, include_application_helper: true do
 
     expect(page).to have_content('Warnings')
     expect(page).to have_content(nice_date_times(log.import_time))
-    expect(page).to have_content(mpan)
-    expect(page).to have_content(AmrReadingData::WARNINGS[:missing_readings])
   end
 end

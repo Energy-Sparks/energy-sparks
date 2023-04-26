@@ -27,27 +27,7 @@ function fireRequestForJson(mapDiv) {
   });
 
   function onEachFeature(feature, layer) {
-    layer.bindPopup(popupHtml(feature.properties));
-  }
-
-  function popupHtml(props) {
-    var str = "";
-    str += "<a href='" + props.schoolPath + "'>" + props.schoolName + "</a>";
-    str += "<br/>";
-    str += "<p>School type: " + props.schoolType + "</p>";
-    str += "<p>Fuel types: ";
-    if (props.hasElectricity) {
-      str += "&nbsp;<i class='fas fa-bolt'></i>";
-    }
-    if (props.hasGas) {
-      str += "&nbsp;<i class='fas fa-fire'></i>";
-    }
-    if (props.hasSolarPv) {
-      str += "&nbsp;<i class='fas fa-sun'></i>";
-    }
-    str += "</p>";
-    str += "<p>Pupils: " + props.numberOfPupils + "</p>";
-    return str;
+    layer.bindPopup(feature.properties.schoolPopupHtml);
   }
 
   function makeMap() {

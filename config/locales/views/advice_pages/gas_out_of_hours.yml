@@ -1,0 +1,78 @@
+---
+en:
+  advice_pages:
+    gas_out_of_hours:
+      analysis:
+        holiday_usage:
+          alert_group_by_week_gas_14_months:
+            header: This chart can help your school compare gas use during holidays
+            subtitle_html: This chart gives the breakdown of gas consumption between school day open and closed, holidays and weekends for each week between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>
+            title: Gas use by week for the last 14 months
+          table_alert_note: 'Note: The table above is not adjusted for changes in outside temperature, the % changes in gas consumption might therefore differ from those in your school''s alert messages.'
+          table_footer: Winter holidays would be expected to have higher gas use due to frost protection settings.
+          table_intro: The table below shows a summary of your gas usage during the last year of school holidays. It includes average energy use per day to enable comparison for different length holidays.
+          title: Holiday usage
+        last_twelve_months:
+          table:
+            co2_kg: kg/co2
+            gbp_at_current_tariff: "£ (at current tariff)"
+            percent: Percent
+            time_of_use: Time of use
+            total: Total
+          table_introduction: The table below shows how much gas has been used when the school is open and closed on a school day as well as during weekends and holidays.
+          title: Last 12 months
+        summary: This section gives a more detailed analysis of your school’s out of hours gas use and some things to look out for. For good energy management, you want most of your energy use to be when the school is open.
+        tables:
+          columns:
+            average_daily_usage: Average daily usage (kWh)
+        title: Analysis
+        usage_by_day_of_week:
+          daytype_breakdown_gas_tolerant_chart:
+            subtitle_html: This chart shows a breakdown of your gas consumption between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span>
+            title: Gas usage breakdown
+          gas_by_day_of_week_tolerant_chart:
+            footer_html: |-
+              <p>For most schools there should be no gas usage at weekends. The only reason gas might be used is for frost protection in very cold weather, and averaged across the whole year this should be a very small proportion of weekly usage.</p>
+              <p>For some schools there is more gas consumption on a Monday and Tuesday than Wednesday, Thursday and Friday, as additional energy is required to heat a school up after the heating is left off at weekends. This energy is being absorbed into the masonry.</p>
+              <p>'Thermal mass' describes a material's capacity to absorb, store and release heat. For example, concrete has a high capacity to store heat and is referred to as a 'high thermal mass' material. Insulation foam, by contrast, has very little heat storage capacity and is referred to as having 'low thermal mass'.</p>
+              <p>It's still much more efficient to turn the heating off over the weekend, and use a little more energy on Monday and Tuesday than it is to leave the heating on all weekend.</p>
+              <p>If the graph shows high weekend gas consumption, ask your caretaker or building manager to check your heating system controls. You may have:</p>
+              <ul>
+                <li>incorrect or faulty frost protection</li>
+                <li>lack a 7 day timer so it is not possible to turn the heating off at weekends</li>
+                <li>incorrect boiler settings</li>
+              </ul>
+              <p>By eliminating weekend gas consumption at your school you could save up to %{savings_gbp} (%{savings_kwh}kWh) per year.</p>
+            subtitle_html: This chart shows the total amount of gas used by your school between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span>, broken down by day of the week and time of use
+            title: Gas use by day of the week
+          subtitle: To understand why your school is using too much gas outside of school hours, first look at gas use by day of the week.
+          title: Usage by day of week
+        usage_through_the_school_day:
+          gas_heating_season_intraday_up_to_1_year:
+            footer_html: "<p>This is a useful graph for determining how well controlled the timing of the boiler is. High out of hours gas use maybe due to a boiler coming on too early in the morning.</p><p>See the <a href='%{insights_school_advice_heating_control_path}'>heating control advice page</a> for more information.</p>"
+            subtitle_html: <p>This graph shows how the gas consumption of the school varies on school days when the heating is on in the winter between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span> (aggregated across the whole year).</p>
+            title: Central heating timings
+          subtitle: Another cause of high out of hours gas use is having central heating timings which cause the heating to be on for too long during a school day.
+          title: Gas use through the school day
+      insights:
+        comparison:
+          callout_footer: annual usage
+          how_do_you_compare: How does your gas usage out of school hours compare to other %{school_type} schools on Energy Sparks, with a similar number of pupils?
+          more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
+          title: How do you compare?
+        next_steps: Make sure that your heating is set to only heat the school when it needs to be warm. Heating and hot water can be switched off for evenings, weekends and holidays and heating should not come on too early in the mornings. Use a checklist of energy saving tasks to be completed before holidays.
+        title: What is out of hours usage?
+        what_is_out_of_hours_usage_html: |-
+          <p>
+            Out of hours gas use is the amount of gas used when the school is closed - overnight, at weekends and during the holidays.
+          </p>
+          <p>
+            Reducing out of hours gas use is one of the easiest, and cheapest ways of saving lots of energy.
+          </p>
+          <p>
+            Note: The analysis within this page is based on the school opening hours set for your school. It is best to set these to be as accurate as you can so that you receive appropriate advice.
+          </p>
+        what_is_out_of_hours_usage_link: Learn more
+        your_out_of_hours_usage_html: Over the last year %{out_of_hours_percent} of your gas was used when the school was closed. This has cost you %{out_of_hours_gbp} and led to emissions of %{out_of_hours_co2}kg CO2.
+        your_out_of_hours_usage_title: Out of school hours gas use
+      page_title: Out of school hours gas use

@@ -51,6 +51,17 @@ describe "downloads", type: :system do
     end
   end
 
+  context 'as school admin' do
+    let!(:school_admin) { create(:school_admin) }
+    let!(:other_school) { create(:school) }
+
+    it 'does not allow download of other schools data' do
+      sign_in(school_admin)
+      visit school_downloads_path(other_school)
+      expect(page).to have_content("You are not authorized to view that page")
+    end
+  end
+
   context 'as admin' do
 
     let!(:admin)                  { create(:admin) }

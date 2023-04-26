@@ -1,16 +1,15 @@
 <% content_for :page_title do %>
-  <%= @school.name %> Edit Bill
+  <%= @school.name %><%= t('consent_documents.edit.title') %>
 <% end %>
 
-<h1>Edit a bill</h1>
+<h1><%= t('consent_documents.edit.header') %></h1>
 
 <p>
-  Revise the details for a previously uploaded bill. Use the description field to add
-  notes if useful.
+  <%= t('consent_documents.edit.description') %>
 </p>
 
-<%= render 'form', label: "Update", school: @school, consent_document: @consent_document %>
+<%= render 'form', label: t('common.labels.update'), school: @school, consent_document: @consent_document %>
 
 <div class="other-actions">
-  <%= link_to 'Cancel', school_consent_documents_path, class: 'btn' %>
+  <%= link_to t('common.labels.cancel'), school_consent_documents_path, class: 'btn' %>
 </div>

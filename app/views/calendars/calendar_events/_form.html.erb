@@ -2,22 +2,22 @@
   <%= render 'shared/errors', subject: calendar_event, subject_name: 'event' %>
 
   <div class="form-group">
-    <%= f.label :calendar_event_type_id, 'Event Type' %>
+    <%= f.label :calendar_event_type_id, t('calendars.calendar_events.form.event_type') %>
     <%= f.select :calendar_event_type_id, options_from_collection_for_select(calendar.valid_calendar_event_types, 'id', 'display_title',  calendar_event.calendar_event_type.nil? ? 1 : calendar_event.calendar_event_type.id),{}, { class: 'form-control' } %>
   </div>
 
   <div class="form-group row">
     <div class="col">
       <div class="form-group">
-        <%= f.input :start_date, as: :tempus_dominus_date, default_date: Time.zone.today %>
+        <%= f.input :start_date, as: :tempus_dominus_date, default_date: Time.zone.today, label: t('calendars.current_events.start_date') %>
       </div>
     </div>
     <div class="col">
       <div class="form-group">
-        <%= f.input :end_date, as: :tempus_dominus_date, default_date: Time.zone.today %>
+        <%= f.input :end_date, as: :tempus_dominus_date, default_date: Time.zone.today, label: t('calendars.current_events.end_date') %>
       </div>
     </div>
   </div>
   <%= f.submit class: 'btn btn-primary' %>
-  <%= link_to 'Back', :back, class: 'btn btn-secondary' %>
+  <%= link_to t('common.labels.back'), :back, class: 'btn btn-secondary' %>
 <% end %>

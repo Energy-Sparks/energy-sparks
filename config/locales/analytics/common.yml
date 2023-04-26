@@ -43,7 +43,7 @@ en:
       pa: "%{cost}pa"
       previous_school_week: previous school week
       school_day: school day
-      storage_heaters: storage_heaters
+      storage_heaters: storage heaters
       weekend: weekend
     holidays:
       autumn_half_term: Autumn half term
@@ -64,7 +64,7 @@ en:
     series_data_manager:
       series_name:
         baseload: BASELOAD
-        benchmark_school: Benchmark (Good) School
+        benchmark_school: Well managed
         boiler_off: Boiler Off
         community: Community
         community_baseload: Community Baseload
@@ -94,7 +94,7 @@ en:
         solar_irradiance: Solar Irradiance
         solar_pv: Solar PV (consumed onsite)
         storage_heater_charge: Storage heater charge (school day)
-        storage_heaters: storage heaters
+        storage_heaters: Storage heaters
         target_degree_days: Target degree days
         temperature: Temperature
         useful_hot_water_usage: Hot Water Usage

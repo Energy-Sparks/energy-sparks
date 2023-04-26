@@ -1,5 +1,30 @@
 "use strict";
 
+function updateDynamicTitles(titleWrapper, chartData) {
+  var titleH3 = titleWrapper.find('h3');
+  var titleH5 = titleWrapper.find('h5');
+
+  titleH3.text(chartData.title);
+  if (chartData.subtitle) {
+    titleH5.text(chartData.subtitle);
+  } else if (chartData.drilldown_available) {
+    titleH5.text(chartData.explore_message);
+  } else {
+    titleH5.text('');
+  }
+}
+
+function updateDatesInSubtitles(subTitleElement, chartData) {
+  if (chartData.subtitle_start_date) {
+    var startDateElement = $(subTitleElement).find('.start-date');
+    startDateElement.text(chartData.subtitle_start_date);
+  }
+  if (chartData.subtitle_end_date) {
+    var endDateElement = $(subTitleElement).find('.end-date');
+    endDateElement.text(chartData.subtitle_end_date);
+  }
+}
+
 function chartFailure(chart, title) {
   var $standardErrorMessage = document.getElementById('chart-error').textContent
   var $chartDiv = $(chart.renderTo);
@@ -22,19 +47,16 @@ function chartSuccess(chartConfig, chartData, chart) {
   var noAdvice = chartConfig.no_advice;
 
   var $chartWrapper = $chartDiv.parents('.chart-wrapper');
-  var titleH3 = $chartWrapper.find('h3');
-  var titleH5 = $chartWrapper.find('h5');
 
-  titleH3.text(chartData.title);
-
-  if (chartData.subtitle) {
-    titleH5.text(chartData.subtitle);
-  } else {
-    if (chartData.drilldown_available) {
-      titleH5.text(chartData.explore_message);
-    } else {
-      titleH5.text('');
-    }
+  //supports dynamic title elements, in which whole content is replaced
+  if ($chartWrapper.find('div.dynamic-titles').length) {
+    var $titleWrapper = $( $chartWrapper.find('div.dynamic-titles')[0] );
+    updateDynamicTitles($titleWrapper, chartData);
+  }
+  //supports injecting start/end dates from JSON response
+  if ($chartWrapper.find('.chart-subtitle').length) {
+    var $subTitle = $( $chartWrapper.find('.chart-subtitle')[0] );
+    updateDatesInSubtitles($subTitle, chartData);
   }
 
   if (! noAdvice) {
@@ -196,20 +218,23 @@ function processAnnotations(loaded_annotations, chart){
     var date = new Date(annotation.date);
     var point = xAxis.series[0].getValidPoints()[categoryIndex];
     var date = new Date(annotation.date);
-    if(xAxis.series[0].stackKey){
-      var y = point.total;
-    } else {
-      var y = point.y;
+
+    if (point) {
+      if(xAxis.series[0].stackKey){
+        var y = point.total;
+      } else {
+        var y = point.y;
+      }
+      return {
+        point: {
+          x: categoryIndex,
+          y: y,
+          xAxis: 0,
+          yAxis: 0,
+        },
+        text: '<a href="' + annotation.url + '"><i class="fas fa-'+annotation.icon+'" data-toggle="tooltip" data-placement="right" title="(' + date.toLocaleDateString() + ') ' + annotation.event + '"></i></a>',
+      };
     }
-    return {
-      point: {
-        x: categoryIndex,
-        y: y,
-        xAxis: 0,
-        yAxis: 0,
-      },
-      text: '<a href="' + annotation.url + '"><i class="fas fa-'+annotation.icon+'" data-toggle="tooltip" data-placement="right" title="(' + date.toLocaleDateString() + ') ' + annotation.event + '"></i></a>',
-    };
   });
   chart.addAnnotation({
     labelOptions:{
@@ -290,7 +315,7 @@ function enableAxisControls(chartContainer, chartData) {
         } else {
           $(this).prop('disabled', true);
         }
-        label = $("label[for='" + $(this).attr("id") + "']");
+        var label = $("label[for='" + $(this).attr("id") + "']");
         if(label) {
           if ($(label).text() == chartData.y_axis_label) {
             $(this).prop('checked', true);

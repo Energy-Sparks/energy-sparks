@@ -1,0 +1,34 @@
+cy:
+  consent_documents:
+    document_description: Disgrifiad
+    document_details_html: |-
+      <p>Rhaid i fil fod gyda dyddiad o fewn y 3 mis diwethaf, a dangos:</p>
+      <ul>
+        <li>enw eich ysgol</li>
+        <li>cyfeiriad yr ysgol</li>
+        <li>MPAN mesurydd trydan neu rif cyflenwad trydan a/neu MPR mesurydd nwy neu gyfeirnod pwynt mesurydd</li>
+      </ul>
+    document_title: Teitl
+    edit:
+      description: Adolygwch y manylion ar gyfer bil a uwchlwythwyd yn flaenorol. Defnyddiwch y maes disgrifiad i ychwanegu nodiadau os yw'n ddefnyddiol.
+      header: Golygu bil
+      title: Golygu Bil
+    index:
+      description: Rydych wedi darparu'r biliau canlynol i ni fel prawf o ba fesuryddion sydd wedi'u gosod yn eich ysgol.
+      document_link: Dolen
+      document_required: Bydd copi o fil diweddar yn helpu i sicrhau bod gennym yr awdurdod i gasglu, prosesu ac arddangos y data ar eich rhan.
+      document_uploaded_date: Dyddiad yr uwchlwythwyd
+      no_documents_provided: Nid ydych wedi rhoi unrhyw filiau ynni i ni eto i ddangos bod gennych fynediad at y mesuryddion sydd wedi'u gosod yn eich ysgol.
+      title: Biliau a Uwchlwythwyd
+      upload_bill: Uwchlwytho bil
+      upload_new_bill: Uwchlwytho bil newydd
+    new:
+      description: Uwchlwythwch fil ynni ar gyfer eich ysgol fel prawf bod gennych fynediad at eich mesuryddion ynni.
+      header: Uwchlwythwch fil ynni
+      message: Mae angen y prawf hwn arnom cyn y gallwn gael caniatâd i gyrchu a phrosesu eich data.
+      title: Uwchlwytho Bil
+    show:
+      bill_description: Cafodd y bil canlynol ar gyfer %{school_name} ei uwchlwytho ar %{uploaded_date}
+      uploaded_file: Ffeil a Uwchlwythwyd
+      view_bill: Gweld bil
+      view_bills: Gweld biliau

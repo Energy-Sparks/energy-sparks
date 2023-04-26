@@ -6,8 +6,9 @@ describe 'school group meter reports', type: :system do
   let(:school_group)            { create(:school_group, name: 'Big Group') }
   let(:school)                  { create(:school, school_group: school_group) }
 
-  let!(:meter)            { create(:electricity_meter, school: school) }
-  let!(:meter_inactive)   { create(:electricity_meter, school: school, active: false) }
+  let(:data_source)       { create(:data_source) }
+  let!(:meter)            { create(:electricity_meter, school: school, data_source: data_source) }
+  let!(:meter_inactive)   { create(:electricity_meter, school: school, active: false, data_source: data_source) }
 
   before(:each) do
     sign_in(admin)
@@ -24,17 +25,8 @@ describe 'school group meter reports', type: :system do
       expect(page).to have_content("School group meter data reports")
       expect(page).to have_content(school_group.name)
       expect(page).to have_link("Meter Report")
-      expect(page).to have_link("Download CSV")
+      expect(page).to have_link(href: deliver_admin_school_group_meter_report_path(school_group))
       expect(page).to have_link("Download meter collections")
-    end
-
-    it 'downloads csv' do
-      click_on "Download CSV"
-      header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
-      expect(header).to match /#{school_group.name.parameterize}-meter-report.csv$/
-      expect(page.source).to have_content(school.name)
-      expect(page.source).to have_content(meter.mpan_mprn)
     end
   end
 
@@ -47,7 +39,7 @@ describe 'school group meter reports', type: :system do
 
     it 'links to downloads and all meters' do
       expect(page).to have_content("#{school_group.name} meter report")
-      expect(page).to have_link("Download CSV")
+      expect(page).to have_link(href: deliver_admin_school_group_meter_report_path(school_group))
       expect(page).to have_link("Download meter collections")
     end
 
@@ -63,15 +55,6 @@ describe 'school group meter reports', type: :system do
       expect(page).to have_content(meter.mpan_mprn)
       expect(page).to have_content(meter_inactive.mpan_mprn)
       expect(page).not_to have_link("Show all meters")
-    end
-
-    it 'downloads csv' do
-      click_on "Download CSV"
-      header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
-      expect(header).to match /#{school_group.name.parameterize}-meter-report.csv$/
-      expect(page.source).to have_content(school.name)
-      expect(page.source).to have_content(meter.mpan_mprn)
     end
   end
 end

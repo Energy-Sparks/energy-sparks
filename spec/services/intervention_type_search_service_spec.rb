@@ -34,7 +34,7 @@ describe InterventionTypeSearchService do
 
       expect(InterventionTypeSearchService.search('foo bar', 'en')).to eq([])
       expect(InterventionTypeSearchService.search('foo baz', 'en')).to eq([intervention_type_1])
-      expect(InterventionTypeSearchService.search('baz', 'en')).to eq([intervention_type_1, intervention_type_2])
+      expect(InterventionTypeSearchService.search('baz', 'en')).to match_array([intervention_type_1, intervention_type_2])
     end
 
     it 'ignores simple words' do

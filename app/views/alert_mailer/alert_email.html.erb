@@ -1,46 +1,50 @@
-<h1>Your weekly alerts</h1>
+<h1><%= t('alert_mailer.alert_email.title') %></h1>
 
 <div class="s-3"></div>
 <p>
-  We analyse <%= link_to "your school's", school_url(@school) %> energy data to highlight where you are making progress
-  or where you may be able to take steps to reduce your usage to save money and
-  reduce carbon emissions.
+  <%= t('alert_mailer.alert_email.paragraph_1_html', school_url: school_url(@school)) %>.
 </p>
 
 <div class="s-3"></div>
 
-<h3>Stay up to date</h3>
+<h3><%= t('alert_mailer.alert_email.stay_up_to_date') %></h3>
 
 <div class="s-3"></div>
 
 <% if @target_prompt %>
   <% if @school.has_current_target? %>
     <p>
-     Your school has set a target to reduce its energy usage by <%= nice_dates(@school.current_target.target_date) %>.
-     <strong><%= link_to "Your school's progress report", school_school_targets_url(@school, params: targets_utm_parameters) %></strong> will help you
-      monitor progress and suggest ways to take action.
+      <%= t('alert_mailer.alert_email.your_school_has_current_target_html', target_date: nice_dates(@school.current_target.target_date), school_targets_url: school_school_targets_url(@school, params: targets_utm_parameters)) %>.
     </p>
-    <%= link_to 'View your progress report', school_school_targets_url(@school, params: targets_utm_parameters), class: 'btn btn-primary mt-3 mb-3 float-right'%>
+    <%= link_to t('alert_mailer.alert_email.view_your_progress_report'), school_school_targets_url(@school, params: targets_utm_parameters), class: 'btn btn-primary mt-3 mb-3 ax-right'%>
   <% elsif @school.has_target? %>
     <p>
-     Your school set a target to reduce its energy usage by <%= nice_dates(@school.most_recent_target.target_date) %>.
-     Its time to <%= link_to "review your progress", school_school_target_url(@school, @school.most_recent_target, params: targets_utm_parameters) %> and set a new target
-     for the year ahead.
+      <%= t('alert_mailer.alert_email.your_school_has_target_html', target_date: nice_dates(@school.most_recent_target.target_date), school_targets_url: school_school_target_url(@school, @school.most_recent_target, params: targets_utm_parameters)) %>.
     </p>
-    <%= link_to 'Set a new target', school_school_targets_url(@school, params: targets_utm_parameters), class: 'btn btn-primary mt-3 mb-3 float-right'%>
+    <%= link_to t('alert_mailer.alert_email.set_a_new_target'), school_school_targets_url(@school, params: targets_utm_parameters), class: 'btn btn-primary mt-3 mb-3 ax-right'%>
   <% else %>
     <%= render 'shared/mailer/first_target_prompt', tracking_params: targets_utm_parameters %>
   <% end %>
 <% end %>
 
 <p>
-  Your <strong><%= link_to 'school dashboard', school_url(@school, params: weekly_alert_utm_parameters) %></strong> always shows your latest alerts and
-  our <strong><%= link_to 'detailed analysis', school_analysis_index_url(@school, params: weekly_alert_utm_parameters) %></strong> of your energy usage will provide further insights.
+  <%= t('alert_mailer.alert_email.dashboard_and_analysis_message_html', school_url: school_url(@school, params: weekly_alert_utm_parameters), school_analysis_index_url: school_analysis_index_url(@school, params: weekly_alert_utm_parameters)) %>.
 </p>
 
-<%= link_to 'View your school dashboard', school_url(@school, params: weekly_alert_utm_parameters), class: 'btn btn-primary mt-3 mb-3 float-right'%>
+<%= link_to t('alert_mailer.alert_email.view_your_school_dashboard'), school_url(@school, params: weekly_alert_utm_parameters), class: 'btn btn-primary mt-3 mb-3 ax-right'%>
 
-<h3>Latest updates</h3>
+<div class="s-3"></div>
+
+<h3><%= t('alert_mailer.alert_email.get_your_pupils_involved') %></h3>
+<div class="s-3"></div>
+
+<%= t('alert_mailer.alert_email.education_workshops_message') %>.
+
+<%= link_to t('alert_mailer.alert_email.book_a_workshop'), education_workshops_url, class: 'btn btn-primary mt-3 mb-3 ax-right'%>
+
+<div class="s-3"></div>
+
+<h3><%= t('alert_mailer.alert_email.latest_updates') %></h3>
 <div class="s-3"></div>
 
 <% @alert_content.each do |alert_content| %>
@@ -53,16 +57,17 @@
 
   <div class="row">
     <div class="col col-lg-4">
-      <% if alert_content.find_out_more %>
+      <% path = find_out_more_path_from_alert_content(@school, alert_content, params: weekly_alert_utm_parameters, mailer: true) %>
+      <% if path %>
         <p>
-          <%= link_to 'Find out more', school_find_out_more_url(@school, alert_content.find_out_more, params: weekly_alert_utm_parameters), class: 'btn btn-primary mt-2 mb-2'%>
+          <%= link_to t('alert_mailer.alert_email.find_out_more'), path, class: 'btn btn-primary mt-2 mb-2'%>
         </p>
       <% end %>
     </div>
     <div class="col col-lg-8">
       <% if alert_content.unsubscription_uuid %>
         <div class="text-right mt-lg-3">
-          <%= link_to "Don't show me alerts like this", new_email_unsubscription_url(uuid: alert_content.unsubscription_uuid, params: weekly_alert_utm_parameters), class: 'text-muted' %>
+          <%= link_to t('alert_mailer.alert_email.do_not_show_me_alerts_like_this'), new_email_unsubscription_url(uuid: alert_content.unsubscription_uuid, params: weekly_alert_utm_parameters), class: 'text-muted' %>
         </div>
       <% end %>
     </div>
@@ -70,20 +75,27 @@
   <div class="s-5"></div>
 <% end %>
 
+<h3><%= t('alert_mailer.alert_email.need_more_help') %></h3>
+<div class="s-3"></div>
+
+<%= t('alert_mailer.alert_email.need_more_help_message') %>.
+
+<%= link_to t('alert_mailer.alert_email.book_an_audit'), energy_audits_url, class: 'btn btn-primary mt-3 mb-3 ax-right'%>
+
 <hr/>
 
-<h5>Why am I receiving these emails?</h5>
+<h5><%= t('alert_mailer.alert_email.why_am_i_receiving_these_emails') %></h5>
 <div class="s-3"></div>
 
-<p>You have been signed up to receive energy alerts for your school.</p>
+<p><%= t('alert_mailer.alert_email.you_have_been_signed_up') %>.</p>
 <div class="s-3"></div>
 
-<p>You can stop receiving, or temporarily pause individual alerts by clicking the links provided in this email.</p>
+<p><%= t('alert_mailer.alert_email.you_can_stop_receiving') %>.</p>
 <div class="s-3"></div>
 
 <% if @unsubscribe_emails %>
-  <p>If you wish to completely unsubscribe from these emails then contact your school administrator(s): <%= @unsubscribe_emails %></p>
+  <p><%= t('alert_mailer.alert_email.if_you_wish_to_completely_unsubscribe') %>: <%= @unsubscribe_emails %></p>
 <% end %>
 <div class="s-3"></div>
 
-<p>If you have any feedback on these emails, please contact us at <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>.</p>
+<p><%= t('alert_mailer.alert_email.if_you_have_any_feedback') %> <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>.</p>

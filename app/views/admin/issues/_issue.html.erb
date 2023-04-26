@@ -1,0 +1,40 @@
+<% expand = ((issue.status_open? && @issueable) || local_assigns[:single]) unless local_assigns[:expand] %>
+<div class="row pb-2">
+  <div class="admin-issue <%= issue.issue_type %> col-md-12 rounded">
+    <h4>
+      <%= issue_type_icon(issue.issue_type) %> <%= issue.title %>
+      <div class="float-right">
+        <small>
+          <%= render 'admin/issues/owned_by', issue: issue %>
+          <%= render 'admin/issues/status', issue: issue %>
+          <%= nice_date_times_today(issue.updated_at) %>
+          <%= render 'admin/issues/pinned', issue: issue %>
+        </small>
+      </div>
+    </h4>
+    <div class="clearfix">
+      <span data-toggle="collapse" href="#issue-<%= issue.id %>" role="button" aria-expanded="true" aria-controls="issue-<%= issue.id %>" class="badge badge-light toggler  text-decoration-none<%= " collapsed" unless expand %>">
+        <%= toggler %>
+      </span>
+      <span class="badge <%= issue.issue? ? "badge-danger" : "badge-warning" %>"><%= issue.issue_type.capitalize %></span>
+      <%= render 'admin/issues/issueable', issueable: issue.try(:issueable) %>
+      <%= render 'admin/issues/fuel_type', issue: issue %>
+      <%= render 'admin/issues/meters', issue: issue %>
+      <span class='float-right pb-2'>
+          <%= link_to 'Resolve', polymorphic_path([:resolve, :admin, @issueable, issue]), method: :post, class: 'btn btn-info btn-sm' if issue.resolvable? %>
+        <% unless local_assigns[:single] %>
+          <%= link_to 'View', polymorphic_path([:admin, @issueable, issue]), class: 'btn btn-info btn-sm' %>
+        <% end %>
+        <%= link_to 'Edit', edit_polymorphic_path([:admin, @issueable, issue]), class: 'btn btn-info btn-sm' %>
+        <%= link_to 'Delete', polymorphic_path([:admin, @issueable, issue]), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
+      </span>
+    </div>
+    <div class="collapse<%= " show" if expand %>" id="issue-<%= issue.id %>">
+      <div class="bg-white mb-2 p-2"><%= issue.description %></div>
+      <div class="pb-2">
+        <div class="badge badge-pill bg-white text-dark font-weight-normal">Created • <%= issue.created_by.display_name %> • <%= nice_date_times_today(issue.created_at) %></div>
+        <div class="badge badge-pill bg-white text-dark font-weight-normal">Updated • <%= issue.updated_by.display_name %> • <%= nice_date_times_today(issue.updated_at) %></div>
+      </div>
+    </div>
+  </div>
+</div>

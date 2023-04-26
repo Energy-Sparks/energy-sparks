@@ -2,30 +2,30 @@ cy:
   for_schools:
     enrol_our_school: Cofrestru ein hysgol
     find_out_more: Dysgu rhagor
-    intro: Offeryn dadansoddi ynni ar-lein a rhaglen addysg ynni yw Energy Sparks sydd wedi’u cynllunio’n benodol i helpu ysgolion i leihau eu defnydd o drydan a nwy drwy ddadansoddi data mesuryddion clyfar. Mae Energy Sparks yn helpu ysgolion i leihau eu hallyriadau carbon, a gwneud cyfraniad gwirioneddol at fynd i’r afael â’r ‘argyfwng hinsawdd’.
+    intro: Offeryn dadansoddi ynni ar-lein a rhaglen addysg ynni yw Sbarcynni sydd wedi’u cynllunio’n benodol i helpu ysgolion i leihau eu defnydd o drydan a nwy drwy ddadansoddi data mesuryddion clyfar. Mae Sbarcynni yn helpu ysgolion i leihau eu hallyriadau carbon, a gwneud cyfraniad gwirioneddol at fynd i’r afael â’r ‘argyfwng hinsawdd’.
     quote_1:
       job_title: Prifathro
       text_html: |-
-        "Mae Energy Sparks wedi galluogi plant yn Freshford i ymchwilio i sut mae ynni'n cael ei ddefnyddio mewn gwahanol rannau o'r ysgol a dyfeisio strategaethau i leihau defnydd yr ysgol. Cafodd brwdfrydedd y plant ei sbarduno gan yr elfen gystadleuol ac maen nhw wedi gweithio'n effeithiol gyda'r staff a'r gymuned leol i feddwl yn arloesol am yr hyn y gallwn ei wneud i leihau ein heffaith ar yr amgylchedd a lleihau costau. Datblygodd a chyflwynodd y plant fentrau seiliedig ar dystiolaeth i reolwyr busnes yr ysgol, gan sicrhau gosod goleuadau ac offer cegin ynni-effeithlon, switsys synhwyrydd symudiadau, ac ymgyrch paneli solar.
+        "Mae Sbarcynni wedi galluogi plant yn Freshford i ymchwilio i sut mae ynni'n cael ei ddefnyddio mewn gwahanol rannau o'r ysgol a dyfeisio strategaethau i leihau defnydd yr ysgol. Cafodd brwdfrydedd y plant ei sbarduno gan yr elfen gystadleuol ac maen nhw wedi gweithio'n effeithiol gyda'r staff a'r gymuned leol i feddwl yn arloesol am yr hyn y gallwn ei wneud i leihau ein heffaith ar yr amgylchedd a lleihau costau. Datblygodd a chyflwynodd y plant fentrau seiliedig ar dystiolaeth i reolwyr busnes yr ysgol, gan sicrhau gosod goleuadau ac offer cegin ynni-effeithlon, switsys synhwyrydd symudiadau, ac ymgyrch paneli solar.
         <br><br>
-        Mae adnoddau Energy Sparks yn arfau ysbrydoledig, pwerus a thrawsnewidiol i bob ysgol a fydd yn eu galluogi i leihau eu hôl troed CO2, arbed arian a helpu plant i ddatblygu agwedd rymus a galluog tuag at heriau cynhesu byd-eang."
+        Mae adnoddau Sbarcynni yn arfau ysbrydoledig, pwerus a thrawsnewidiol i bob ysgol a fydd yn eu galluogi i leihau eu hôl troed CO2, arbed arian a helpu plant i ddatblygu agwedd rymus a galluog tuag at heriau cynhesu byd-eang."
     section_1_html: |-
-      <h4><strong>Mae Energy Sparks yn dangos i ysgolion pryd a faint o ynni y maent yn ei ddefnyddio ac yn darparu cyngor arbed ynni wedi'i deilwra ar gyfer ysgolion unigol</strong></h4>
+      <h4><strong>Mae Sbarcynni yn dangos i ysgolion pryd a faint o ynni y maent yn ei ddefnyddio ac yn darparu cyngor arbed ynni wedi'i deilwra ar gyfer ysgolion unigol</strong></h4>
       <p>
-        Gan ddefnyddio data trydan, nwy a solar yr ysgol, mae Energy Sparks yn dangos i ddisgyblion, staff a chymuned ehangach yr ysgol faint o ynni mae’r ysgol yn ei ddefnyddio. Mae’r offeryn ar-lein yn cyflwyno dadansoddiad pwrpasol o’r data ynni gydag awgrymiadau o gamau y gallai cymuned yr ysgol eu cymryd i arbed ynni a lleihau allyriadau carbon yr ysgol.
+        Gan ddefnyddio data trydan, nwy a solar yr ysgol, mae Sbarcynni yn dangos i ddisgyblion, staff a chymuned ehangach yr ysgol faint o ynni mae’r ysgol yn ei ddefnyddio. Mae’r offeryn ar-lein yn cyflwyno dadansoddiad pwrpasol o’r data ynni gydag awgrymiadau o gamau y gallai cymuned yr ysgol eu cymryd i arbed ynni a lleihau allyriadau carbon yr ysgol.
       </p>
       <p>
-        Mae Energy Sparks yn darparu dangosfyrddau i oedolion a disgyblion wedi'u teilwra i ddiwallu anghenion penodol myfyrwyr a staff ysgol.
+        Mae Sbarcynni yn darparu dangosfyrddau i oedolion a disgyblion wedi'u teilwra i ddiwallu anghenion penodol myfyrwyr a staff ysgol.
       </p>
     section_2_html: |-
-      <h4><strong>Gweithgareddau tîm eco a dosbarth i ddisgyblion yn gysylltiedig â dadansoddi egni</strong></h4>
+      <h4><strong>Gweithgareddau tîm eco a dosbarth i ddisgyblion yn gysylltiedig â dadansoddi ynni</strong></h4>
       <p>
-        Mae gan Energy Sparks %{activity_count} o <a href="/activity_categories">weithgareddau</a> addysg ynni a chynaliadwyedd ac adnoddau cysylltiedig y gall disgyblion gymryd rhan ynddynt drwy dimau eco neu ddysgu'r cwricwlwm. Mae’r gweithgareddau hyn yn cefnogi dysgu am newid hinsawdd ac ynni, ymchwilio i’r defnydd o ynni o amgylch safle’r ysgol, cymryd camau i leihau’r defnydd o ynni a lledaenu’r neges arbed ynni a lleihau carbon ar draws cymuned ehangach yr ysgol. Anogir ysgolion i gofnodi gweithgareddau sydd wedi'u cwblhau ar Energy Sparks, gan <a href="/scoreboards">ennill pwyntiau</a> a rhannu arfer orau ag ysgolion eraill.
+        Mae gan Sbarcynni %{activity_count} o <a href="/activity_categories">weithgareddau</a> addysg ynni a chynaliadwyedd ac adnoddau cysylltiedig y gall disgyblion gymryd rhan ynddynt drwy dimau eco neu ddysgu'r cwricwlwm. Mae’r gweithgareddau hyn yn cefnogi dysgu am newid hinsawdd ac ynni, ymchwilio i’r defnydd o ynni o amgylch safle’r ysgol, cymryd camau i leihau’r defnydd o ynni a lledaenu’r neges arbed ynni a lleihau carbon ar draws cymuned ehangach yr ysgol. Anogir ysgolion i gofnodi gweithgareddau sydd wedi'u cwblhau ar Sbarcynni, gan <a href="/scoreboards">ennill pwyntiau</a> a rhannu arfer orau ag ysgolion eraill.
       </p>
     section_3_html: |-
       <h4><strong>Cyngor i staff ysgol ar gymryd camau effeithiol</strong></h4>
       <p>
-        Mae Energy Sparks yn darparu canllawiau i gefnogi camau gweithredu <a href="/intervention_type_groups">a arweinir gan oedolion</a> i arbed ynni trwy newidiadau mewn:
+        Mae Sbarcynni yn darparu canllawiau i gefnogi camau gweithredu <a href="/intervention_type_groups">a arweinir gan oedolion</a> i arbed ynni trwy newidiadau mewn:
       </p>
       <ul>
         <li>Ymddygiad staff a disgyblion</li>
@@ -38,7 +38,7 @@ cy:
     section_4_html: |-
       <h4><strong>Rhybuddion awtomataidd i roi gwybod i ysgolion pan fydd defnydd ynni yn newid</strong></h4>
       <p>
-        Mae Energy Sparks yn darparu rhybuddion e-bost a neges destun wythnosol ac ar-lein ac anogaethau gweithredu sy'n hysbysu defnyddwyr pan fydd eu defnydd yn newid a'r goblygiadau cost a charbon. Mae cysylltiad unigryw rhwng rhybuddion a gweithgareddau disgyblion a chamau gweithredu a argymhellir wedi'u harwain gan oedolion i rymuso disgyblion a staff i gymryd camau effeithiol i dargedu gwastraff ynni.
+        Mae Sbarcynni yn darparu rhybuddion e-bost a neges destun wythnosol ac ar-lein ac anogaethau gweithredu sy'n hysbysu defnyddwyr pan fydd eu defnydd yn newid a'r goblygiadau cost a charbon. Mae cysylltiad unigryw rhwng rhybuddion a gweithgareddau disgyblion a chamau gweithredu a argymhellir wedi'u harwain gan oedolion i rymuso disgyblion a staff i gymryd camau effeithiol i dargedu gwastraff ynni.
       </p>
     section_5:
       list_1_html: |-
@@ -67,24 +67,24 @@ cy:
     section_6_html: |-
       <h4><strong>Faint o ynni y gall ysgolion sy'n cymryd rhan ei arbed?</strong></h4>
       <p>
-        Gall y rhan fwyaf o ysgolion sy’n cymryd rhan gydag Energy Sparks ddisgwyl cyflawni arbedion ynni o tua 10% yn eu blwyddyn gyntaf o ymgysylltu ag Energy Sparks, gan arwain at arbedion cost o tua £2500 ac 8 tunnell o CO2 yn seiliedig ar ysgol gynradd 2 ddosbarth mynediad ar gyfartaledd. Mae ysgolion sy'n perfformio orau yn Energy Sparks wedi cyflawni arbedion o hyd at 30%, yn gyffredinol trwy leihau'r defnydd o wres yn ystod gwyliau ysgol, penwythnos a thros nos a thorri eu llwyth sylfaen trydan. Rhoddir enghreifftiau o arbedion a gyflawnwyd yn yr ysgolion sy'n cymryd rhan yn <a href="/case-studies">Astudiaethau achos</a> Energy Sparks.
+        Gall y rhan fwyaf o ysgolion sy’n cymryd rhan gydag Sbarcynni ddisgwyl cyflawni arbedion ynni o tua 10% yn eu blwyddyn gyntaf o ymgysylltu ag Sbarcynni, gan arwain at arbedion cost o tua £2500 ac 8 tunnell o CO2 yn seiliedig ar ysgol gynradd 2 ddosbarth mynediad ar gyfartaledd. Mae ysgolion sy'n perfformio orau yn Sbarcynni wedi cyflawni arbedion o hyd at 30%, yn gyffredinol trwy leihau'r defnydd o wres yn ystod gwyliau ysgol, penwythnos a thros nos a thorri eu llwyth sylfaenol trydan. Rhoddir enghreifftiau o arbedion a gyflawnwyd yn yr ysgolion sy'n cymryd rhan yn <a href="/case-studies">Astudiaethau achos</a> Sbarcynni.
       </p>
     section_7_html: |-
-      <h4><strong>Pa fesuryddion sydd eu hangen ar yr ysgol i ymuno â Energy Sparks?</strong></h4>
+      <h4><strong>Pa fesuryddion sydd eu hangen ar yr ysgol i ymuno â Sbarcynni?</strong></h4>
       <p>
-       I ymuno ag Energy Sparks mae angen gosod mesuryddion clyfar sy'n gallu darparu data defnydd trydan a nwy bob hanner awr i Energy Sparks. Gall y rhain fod yn fesuryddion Hanner Awr (HH), Darllen Mesuryddion Awtomataidd (AMR) neu Fanylebau Technegol Offer Mesuryddion Clyfar (SMETS2). Os nad oes gennych y mesuryddion cywir wedi’u gosod, gallwch ofyn am uwchraddio gan eich cyflenwr ynni. Mae Energy Sparks yn argymell SMETS2 ar gyfer trydan ac AMR ar gyfer nwy pan fo ar gael.
+       I ymuno ag Sbarcynni mae angen gosod mesuryddion clyfar sy'n gallu darparu data defnydd trydan a nwy bob hanner awr i Sbarcynni. Gall y rhain fod yn fesuryddion Hanner Awr (HH), Darllen Mesuryddion Awtomataidd (AMR) neu Fanylebau Technegol Offer Mesuryddion Clyfar (SMETS2). Os nad oes gennych y mesuryddion cywir wedi’u gosod, gallwch ofyn am uwchraddio gan eich cyflenwr ynni. Mae Sbarcynni yn argymell SMETS2 ar gyfer trydan ac AMR ar gyfer nwy pan fo ar gael.
       </p>
     section_8:
       list_1_html: |-
         <p><strong>Ysgolion gwladol (ysgolion a gynhelir ac academïau)</strong></p>
         <p>
-        Mae mynediad at yr offeryn ar-lein ac adnoddau addysg ar hyn o bryd yn <strong>rhad ac am ddim</strong> i ysgolion gwladol ar draws y DU drwy gyllid a chefnogaeth Energy Sparks gan lywodraeth ganolog, awdurdodau lleol ac ymddiriedolaethau a sefydliadau elusennol.
+        Mae mynediad at yr offeryn ar-lein ac adnoddau addysg ar hyn o bryd yn <strong>rhad ac am ddim</strong> i ysgolion gwladol ar draws y DU drwy gyllid a chefnogaeth Sbarcynni gan lywodraeth ganolog, awdurdodau lleol ac ymddiriedolaethau a sefydliadau elusennol.
         </p>
         <p>
         Mae cyllid yn cwmpasu pob agwedd ar ein gwasanaeth i ysgolion y wladwriaeth ac eithrio <a href="/energy-audits">archwiliadau ynni ar y safle</a> sy'n gofyn am dâl ychwanegol.
         </p>
         <p><strong>
-        Efallai y bydd eich cyflenwr yn codi ffi fach ychwanegol i ddarparu eich data ynni i Energy Sparks. Os yn berthnasol, bydd y gost hon yn cael ei hychwanegu at eich bil ynni. Bydd unrhyw gostau'n cael eu cadarnhau cyn i'ch cyfrif gael ei sefydlu.
+        Efallai y bydd eich cyflenwr yn codi ffi fach ychwanegol i ddarparu eich data ynni i Sbarcynni. Os yn berthnasol, bydd y gost hon yn cael ei hychwanegu at eich bil ynni. Bydd unrhyw gostau'n cael eu cadarnhau cyn i'ch cyfrif gael ei sefydlu.
         </strong></p>
       list_2_html: |-
         <p><strong>Ysgolion annibynnol (preifat)</strong></p>
@@ -101,6 +101,6 @@ cy:
         <p>
         Mae <a href="/education-workshops">Gweithdai addysg</a>ac <a href="/energy-audits">archwiliadau ynni</a> rhithwir ac ar y safle ar gael am gost ychwanegol.
         </p>
-      title_html: "<h4><strong>Mynediad am ddim i Energy Sparks i ysgolion y wladwriaeth</strong></h4>"
-    section_9_html: <p>Mae ysgolion sy’n cymryd rhan a defnyddwyr sy’n oedolion yn cadarnhau eu cytundeb â <a href="/terms_and_conditions">Thelerau ac Amodau</a> Energy Sparks fel rhan o’u proses sefydlu cyfrif gychwynnol.</p>
-    title: Energy Sparks ar gyfer ysgolion
+      title_html: "<h4><strong>Mynediad am ddim i Sbarcynni i ysgolion y wladwriaeth</strong></h4>"
+    section_9_html: <p>Mae ysgolion sy’n cymryd rhan a defnyddwyr sy’n oedolion yn cadarnhau eu cytundeb â <a href="/terms_and_conditions">Thelerau ac Amodau</a> Sbarcynni fel rhan o’u proses sefydlu cyfrif gychwynnol.</p>
+    title: Sbarcynni ar gyfer ysgolion

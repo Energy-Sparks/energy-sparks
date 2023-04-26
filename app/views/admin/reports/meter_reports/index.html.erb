@@ -18,7 +18,7 @@
           <td>
             <div class='btn-group'>
               <%= link_to 'Meter Report', admin_school_group_meter_report_path(school_group), class: 'btn' %>
-              <%= link_to 'Download CSV', admin_school_group_meter_report_path(school_group, format: :csv) , class: 'btn' %>
+              <%= link_to "#{fa_icon('envelope')} Meter report".html_safe, deliver_admin_school_group_meter_report_path(school_group) , class: 'btn', title: "Email meter report csv", method: :update, data: { confirm: "Are you sure you want to send the meter report to #{current_user.email}?" } %>
               <%= link_to 'Download meter collections', admin_schools_meter_collections_path(anchor: "school-group-#{school_group.id}"), class: 'btn' %>
             </div>
           </td>

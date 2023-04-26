@@ -33,6 +33,8 @@ describe Maps::SchoolFeatures do
   let!(:fuel_gas)             { Schools::FuelConfiguration.new(has_gas: true) }
   let!(:school_2_config)      { create(:configuration, school: school_2, fuel_configuration: fuel_gas) }
 
+  let!(:fuel_solar_pv)        { Schools::FuelConfiguration.new(has_solar_pv: true) }
+  let!(:school_3_config)      { create(:configuration, school: school_3, fuel_configuration: fuel_solar_pv) }
 
   it 'provides JSON for all schools' do
     json = Maps::SchoolFeatures.new([school_1, school_2, school_3]).as_json
@@ -44,28 +46,32 @@ describe Maps::SchoolFeatures do
     expect(feature['type']).to eq('Feature')
     expect(feature['geometry']['type']).to eq('Point')
     expect(feature['geometry']['coordinates']).to eq([-2.30142, 51.34062])
-    expect(feature['properties']['schoolName']).to eq('My School 1')
-    expect(feature['properties']['numberOfPupils']).to eq(100)
-    expect(feature['properties']['hasElectricity']).to eq(true)
-    expect(feature['properties']['hasGas']).to eq(false)
+
+    expect(feature['properties']['schoolPopupHtml']).to include(school_1.name) # school name
+    expect(feature['properties']['schoolPopupHtml']).to include("Pupils: #{school_1.number_of_pupils}") # number of pupils
+    expect(feature['properties']['schoolPopupHtml']).to include('<i class="fas fa-bolt">') # has electricity
+    expect(feature['properties']['schoolPopupHtml']).not_to include('<i class="fas fa-fire">') # does not have gas
+    expect(feature['properties']['schoolPopupHtml']).not_to include('<i class="fas fa-sun">') # does not have solar pv
 
     feature = json['features'][1]
     expect(feature['type']).to eq('Feature')
     expect(feature['geometry']['type']).to eq('Point')
     expect(feature['geometry']['coordinates']).to eq([-2.30142, 51.34062])
-    expect(feature['properties']['schoolName']).to eq('My School 2')
-    expect(feature['properties']['numberOfPupils']).to eq(200)
-    expect(feature['properties']['hasElectricity']).to eq(false)
-    expect(feature['properties']['hasGas']).to eq(true)
+    expect(feature['properties']['schoolPopupHtml']).to include(school_2.name) # school name
+    expect(feature['properties']['schoolPopupHtml']).to include("Pupils: #{school_2.number_of_pupils}") # number of pupils
+    expect(feature['properties']['schoolPopupHtml']).not_to include('<i class="fas fa-bolt">') # does not hav electricity
+    expect(feature['properties']['schoolPopupHtml']).to include('<i class="fas fa-fire">') # has gas
+    expect(feature['properties']['schoolPopupHtml']).not_to include('<i class="fas fa-sun">') # does not have solar pv
 
     feature = json['features'][2]
     expect(feature['type']).to eq('Feature')
     expect(feature['geometry']['type']).to eq('Point')
     expect(feature['geometry']['coordinates']).to eq([-2.30142, 51.34062])
-    expect(feature['properties']['schoolName']).to eq('My School 3')
-    expect(feature['properties']['numberOfPupils']).to eq(300)
-    expect(feature['properties']['hasElectricity']).to eq(false)
-    expect(feature['properties']['hasGas']).to eq(false)
+    expect(feature['properties']['schoolPopupHtml']).to include(school_3.name) # school name
+    expect(feature['properties']['schoolPopupHtml']).to include("Pupils: #{school_3.number_of_pupils}") # number of pupils
+    expect(feature['properties']['schoolPopupHtml']).not_to include('<i class="fas fa-bolt">') # does not have electricity
+    expect(feature['properties']['schoolPopupHtml']).not_to include('<i class="fas fa-fire">') # does not have gas
+    expect(feature['properties']['schoolPopupHtml']).to include('<i class="fas fa-sun">') # has solar pv
   end
 
 end

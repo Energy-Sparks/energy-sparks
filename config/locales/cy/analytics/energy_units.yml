@@ -1,4 +1,3 @@
----
 cy:
   analytics:
     energy_units:
@@ -45,6 +44,7 @@ cy:
       opt_start_standard_deviation: "%{value} gwyriad safonol (oriau)"
       optimum_start_sensitivity: "%{value} awr/C"
       p: "%{value}c"
+      p_per_kwh: "%{value}c/kWh"
       panels: "%{value} o baneli solar PV"
       percent: "%{value}%"
       percent_0dp: "%{value}%"
@@ -70,46 +70,50 @@ cy:
       years: blynyddoedd
       years_decimal: "%{value} o flynyddoedd"
       years_range: "%{low} i %{high}"
-      "£": "%{sign}£%{value}"
-      "£_0dp": "%{sign}£%{value}"
-      "£_0dp_html": "%{sign}&pound;%{value}"
-      "£_html": "%{sign}&pound;%{value}"
-      "£_per_kva": "%{sign}£%{value}/kVA"
-      "£_per_kva_html": "%{sign}&pound;%{value}/kVA"
-      "£_per_kwh": "%{sign}£%{value}/kWh"
-      "£_per_kwh_html": "%{sign}&pound;%{value}/kWh"
-      "£_range": "%{low} i %{high}"
+      £: "%{sign}£%{value}"
+      £_0dp: "%{sign}£%{value}"
+      £_0dp_html: "%{sign}&pound;%{value}"
+      £_html: "%{sign}&pound;%{value}"
+      £_per_kva: "%{sign}£%{value}/kVA"
+      £_per_kva_html: "%{sign}&pound;%{value}/kVA"
+      £_per_kw: "%{sign}£%{value}/kW"
+      £_per_kw_html: "%{sign}£%{value}/kW"
+      £_per_kwh: "%{sign}£%{value}/kWh"
+      £_per_kwh_html: "%{sign}&pound;%{value}/kWh"
+      £_range: "%{low} i %{high}"
+      £current: "%{sign}£%{value}"
+      £current_html: "%{sign}&pound;%{value}"
     units:
       days:
-        one: "%{count} dydd"
-        two: "%{count} ddydd"
-        many: "%{count} o ddyddiau"
-        other: "%{count} o ddyddiau"
+        one: '%{count} dydd'
+        two: '%{count} ddydd'
+        many: '%{count} o ddyddiau'
+        other: '%{count} o ddyddiau'
       hours:
-        one: "%{count} awr"
-        two: "%{count} awr"
-        many: "%{count} awr"
-        other: "%{count} awr"
+        one: '%{count} awr'
+        two: '%{count} awr'
+        many: '%{count} awr'
+        other: '%{count} awr'
       infinity: Anfeidroldeb
       infinity_negative: "-Anfeidroldeb"
       minutes:
-        one: "%{count} funud"
-        two: "%{count} funud "
-        many: "%{count} o funudau "
-        other: "%{count} o funudau "
+        one: '%{count} funud'
+        two: '%{count} funud '
+        many: '%{count} o funudau '
+        other: '%{count} o funudau '
       months:
-        one: "%{count} mis"
-        two: "%{count} fis"
-        many: "%{count} o fisoedd"
-        other: "%{count} o fisoedd"
+        one: '%{count} mis'
+        two: '%{count} fis'
+        many: '%{count} o fisoedd'
+        other: '%{count} o fisoedd'
       nan: Angyfrifadwy
       weeks:
-        one: "%{count} wythnos"
-        two: "%{count} wythnos"
-        many: "%{count} wythnos"
-        other: "%{count} wythnos"
+        one: '%{count} wythnos'
+        two: '%{count} wythnos'
+        many: '%{count} wythnos'
+        other: '%{count} wythnos'
       years:
-        one: "%{count} blwyddyn"
-        two: "%{count} flynedd"
-        many: "%{count} o flynyddoedd"
-        other: "%{count} o flynyddoedd"
+        one: '%{count} blwyddyn'
+        two: '%{count} flynedd'
+        many: '%{count} o flynyddoedd'
+        other: '%{count} o flynyddoedd'

@@ -1,5 +1,7 @@
-<% if intervention_type.image.present? %>
-  <%= image_tag intervention_type.image, class: "card-img-top img-fluid " + css_class %>
+<% if I18n.locale.to_s == 'cy' && intervention_type.t_attached(:image, :cy).present? %>
+  <%= image_tag intervention_type.image_cy, class: "card-img-top img-fluid " + css_class %>
+<% elsif intervention_type.t_attached(:image, :en).present? %>
+  <%= image_tag intervention_type.image_en, class: "card-img-top img-fluid " + css_class %>
 <% else %>
   <%= image_tag "placeholder300x200.png", class: "card-img-top img-fluid " + css_class %>
 <% end %>

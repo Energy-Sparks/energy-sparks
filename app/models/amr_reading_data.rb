@@ -3,6 +3,7 @@ class AmrReadingData
 
   attr_accessor :reading_data, :date_format, :missing_reading_threshold
 
+  WARNING_INCONSISTENT_DATE_FORMAT = 'Reading date format does not match configuration format'.freeze
   WARNING_BAD_DATE_FORMAT = 'Bad format for a reading date'.freeze
   WARNING_READING_DATE_MISSING = 'Reading date is missing'.freeze
   WARNING_READING_FUTURE_DATE = 'Reading date is in the future'.freeze
@@ -13,6 +14,7 @@ class AmrReadingData
   ERROR_UNABLE_TO_PARSE_FILE = 'Unable to parse the file'.freeze
 
   WARNINGS = {
+    inconsistent_reading_date_format: WARNING_INCONSISTENT_DATE_FORMAT,
     missing_readings: WARNING_MISSING_READINGS,
     missing_mpan_mprn: WARNING_MISSING_MPAN_MPRN,
     missing_reading_date: WARNING_READING_DATE_MISSING,
@@ -75,8 +77,12 @@ class AmrReadingData
       warnings << :missing_mpan_mprn if reading[:mpan_mprn].blank?
       warnings << :missing_reading_date if reading_date.blank?
       warnings << :duplicate_reading if duplicate_reading?(reading, @reading_data[index + 1..-1])
+
       if reading_date.present? && valid_reading_date?(reading_date)
         warnings << :future_reading_date if future_reading_date?(reading_date)
+        if EnergySparks::FeatureFlags.active?(:inconsistent_reading_date_format_warning)
+          warnings << :inconsistent_reading_date_format if inconsistent_reading_date_format?(reading_date)
+        end
       else
         warnings << :invalid_reading_date
       end
@@ -85,8 +91,19 @@ class AmrReadingData
     end
   end
 
+  def inconsistent_reading_date_format?(reading_date)
+    return false if reading_date.is_a? Date
+
+    formatted_date = Date.strptime(reading_date, @date_format)
+    return false if formatted_date.strftime(@date_format) == reading_date
+
+    true
+  rescue ArgumentError
+    true
+  end
+
   def missing_readings?(readings)
-    readings.compact.count(&:present?) < (48 - @missing_reading_threshold)
+    readings.compact.count {|reading| reading.present? && reading != '-'} < (48 - @missing_reading_threshold)
   end
 
   def valid_reading_date?(reading_date)

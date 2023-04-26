@@ -1,81 +1,28 @@
 require 'benchmark'
 
 module Schools
+  #Redirect old urls
   class ProgressController < ApplicationController
     load_and_authorize_resource :school
-
-    include SchoolAggregation
-    include SchoolProgress
-
     skip_before_action :authenticate_user!
-    before_action :check_aggregated_school_in_cache, only: :index
-    before_action :redirect_if_disabled
 
     def index
       redirect_to electricity_school_progress_index_path
     end
 
     def electricity
-      progress_service.display_progress_for_fuel_type?(:electricity) ? index_for(:electricity) : missing(:electricity)
+      @school_target = @school.most_recent_target
+      redirect_to electricity_school_school_target_progress_index_path(@school, @school_target)
     end
 
     def gas
-      progress_service.display_progress_for_fuel_type?(:gas) ? index_for(:gas) : missing(:gas)
+      @school_target = @school.most_recent_target
+      redirect_to gas_school_school_target_progress_index_path(@school, @school_target)
     end
 
     def storage_heater
-      progress_service.display_progress_for_fuel_type?(:storage_heaters) ? index_for(:storage_heater) : missing(:storage_heater)
-    end
-
-    private
-
-    def index_for(fuel_type)
-      @fuel_type = fuel_type
       @school_target = @school.most_recent_target
-      authorize! :show, @school_target
-      @show_storage_heater_notes = show_storage_heater_notes(@school, @school_target, @fuel_type)
-      service = TargetsService.new(aggregate_school, @fuel_type)
-      begin
-        @recent_data = service.recent_data?
-        @progress = service.progress
-        @this_month_target = @progress.cumulative_targets_kwh[this_month]
-        @suggest_estimate_important = suggest_estimate_for_fuel_type?(@fuel_type, check_data: true)
-        @debug_content = service.analytics_debug_info if current_user.present? && current_user.analytics?
-      rescue => e
-        Rails.logger.error e
-        Rails.logger.error e.backtrace.join("\n")
-        Rollbar.error(e, scope: :progress_report, school_id: @school.id, school: @school.name, fuel_type: @fuel_type)
-        @debug_error = e.message
-        begin
-          @debug_problem = TargetsService.new(aggregate_school, @fuel_type).target_meter_calculation_problem
-          @bad_estimate = bad_estimate?(@debug_problem[:type])
-        rescue => ex
-          Rails.logger.error ex
-          Rollbar.error(ex, scope: :target_meter_calculation_problem, school_id: @school.id, school: @school.name, fuel_type: @fuel_type)
-        end
-      end
-      render :index
-    end
-
-    def this_month
-      Time.zone.now.strftime("%b")
-    end
-
-    def bad_estimate?(type)
-      [MissingGasEstimationBase::MoreDataAlreadyThanEstimate, MissingElectricityEstimation::MoreDataAlreadyThanEstimate].include?(type)
-    end
-
-    def missing(fuel_type)
-      @fuel_type = fuel_type
-      render :missing
-    end
-
-    def show_storage_heater_notes(school, school_target, fuel_type)
-      fuel_type == :electricity && school.has_storage_heaters? && school_target.storage_heaters.present?
-    end
-
-    def progress_service
-      Targets::ProgressService.new(@school)
+      redirect_to storage_heater_school_school_target_progress_index_path(@school, @school_target)
     end
   end
 end

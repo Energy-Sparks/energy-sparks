@@ -4,22 +4,23 @@
     <%= f.input t_field(:title, locale), label: ProgrammeType.human_attribute_name(:title), as: :string %>
   <% end %>
 
-  <%= f.label 'Image' %>
-  <p class="small">This image will appear in the list of programmes.</p>
+  <%= render 'admin/shared/locale_tabs', f: f, field: :image do |locale| %>
+    <%= f.label 'Image' %>
 
-  <div class="upload-preview">
-    <div class="col-md-3">
-      <% if !f.object.image.blank? %>
-        <%= image_tag f.object.image, width: '300px' %>
-      <% else %>
-        <%= image_tag '1x1.png' %>
-      <% end %>
+    <p class="small">This image will appear in the list of programmes.</p>
+    <div class="upload-preview">
+      <div class="col-md-3">
+        <% t_image = ('image_' + locale.to_s).to_sym %>
+        <% if !f.object.send(t_image).blank? %>
+          <%= image_tag f.object.send(t_image), width: '300px' %>
+        <% else %>
+          <%= image_tag '1x1.png' %>
+        <% end %>
+      </div>
     </div>
-  </div>
 
-  <p>
-    <%= f.input :image, label: false %>
-  </p>
+    <%= f.input t_field(:image, locale), label: false %>
+  <% end %>
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :short_description do |locale| %>
     <%= f.input t_field(:short_description, locale), label: ProgrammeType.human_attribute_name(:short_description), as: :string %>
@@ -32,7 +33,10 @@
     </div>
   <% end %>
 
-  <%= f.input :document_link %>
+  <%= render 'admin/shared/locale_tabs', f: f, field: :document_link do |locale| %>
+    <%= f.input t_field(:document_link, locale), label: ProgrammeType.human_attribute_name(:document_link), as: :string %>
+  <% end %>
+
   <%= f.input :active %>
   <%= f.input :default %>
 

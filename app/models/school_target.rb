@@ -5,8 +5,10 @@
 #  created_at               :datetime         not null
 #  electricity              :float
 #  electricity_progress     :json
+#  electricity_report       :jsonb
 #  gas                      :float
 #  gas_progress             :json
+#  gas_report               :jsonb
 #  id                       :bigint(8)        not null, primary key
 #  report_last_generated    :datetime
 #  revised_fuel_types       :string           default([]), not null, is an Array
@@ -14,6 +16,7 @@
 #  start_date               :date
 #  storage_heaters          :float
 #  storage_heaters_progress :json
+#  storage_heaters_report   :jsonb
 #  target_date              :date
 #  updated_at               :datetime         not null
 #
@@ -28,6 +31,9 @@
 class SchoolTarget < ApplicationRecord
   belongs_to :school
 
+  #for timeline entry
+  has_many :observations, dependent: :destroy
+
   validates_presence_of :school, :target_date, :start_date
   validate :must_have_one_target
 
@@ -35,13 +41,19 @@ class SchoolTarget < ApplicationRecord
 
   scope :by_date, -> { order(created_at: :desc) }
   scope :by_start_date, -> { order(start_date: :desc) }
-
+  scope :expired, -> { where(":now >= start_date and :now >= target_date", now: Time.zone.today) }
   scope :currently_active, -> { where('start_date <= ? and target_date <= ?', Time.zone.today, Time.zone.today.next_year) }
 
   before_save :adjust_target_date
+  after_save :add_observation
+  after_update :ensure_observation_date_is_correct
 
   def current?
     Time.zone.now >= start_date && Time.zone.now <= target_date
+  end
+
+  def expired?
+    Time.zone.now >= start_date && Time.zone.now >= target_date
   end
 
   def meter_attributes_by_meter_type
@@ -77,7 +89,24 @@ class SchoolTarget < ApplicationRecord
     )
   end
 
+  def saved_progress_report_for(fuel_type)
+    fuel_type = :storage_heaters if fuel_type == :storage_heater
+    raise "Invalid fuel type" unless [:electricity, :gas, :storage_heaters].include?(fuel_type)
+    report = self["#{fuel_type}_report".to_sym]
+    return nil unless report&.any?
+    TargetsProgress.new(reformat_saved_report(report))
+  end
+
   private
+
+  #ensure TargetsProgress is round-tripped properly
+  def reformat_saved_report(report)
+    report.symbolize_keys!
+    report[:fuel_type] = report[:fuel_type].to_sym
+    #reparse to Dates from yyyy-mm-dd format
+    report[:months].map! {|m| Date.strptime(m, '%Y-%m-%d')}
+    report
+  end
 
   def target_to_hash(target)
     {
@@ -98,5 +127,21 @@ class SchoolTarget < ApplicationRecord
 
   def adjust_target_date
     self.target_date = self.start_date.next_year
+  end
+
+  def add_observation
+    unless observations.any?
+      Observation.create!(
+        school: school,
+        observation_type: :school_target,
+        school_target: self,
+        at: start_date,
+        points: 0
+      )
+    end
+  end
+
+  def ensure_observation_date_is_correct
+    observations.update_all(at: start_date)
   end
 end

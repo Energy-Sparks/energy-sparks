@@ -3,9 +3,9 @@
     <%= fa_icon(icon) %>
   </div>
 
-  <% if buttons %>
+  <% if buttons ||= [] %>
     <div class='<%= "col-md-#{11 - buttons.size * 3}" %>'>
-      <%= content %>
+      <%= content ||= yield %>
     </div>
     <% buttons.each do |title, path| %>
       <div class="col-md-3">
@@ -14,7 +14,7 @@
     <% end %>
   <% else %>
     <div class="col-md-11">
-      <h5><%= content %></h5>
+      <h5><%= content ||= yield %></h5>
     </div>
   <% end %>
 </div>

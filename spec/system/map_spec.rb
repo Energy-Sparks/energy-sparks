@@ -16,9 +16,9 @@ RSpec.describe "map", type: :system do
 
     expect(json['type']).to eq('FeatureCollection')
     expect(json['features'].count).to eq(3)
-    expect(json['features'][0]['properties']['schoolName']).to eq('My School 1')
-    expect(json['features'][1]['properties']['schoolName']).to eq('My School 2')
-    expect(json['features'][2]['properties']['schoolName']).to eq('My School 3')
+    expect(json['features'][0]['properties']['schoolPopupHtml']).to include('My School 1')
+    expect(json['features'][1]['properties']['schoolPopupHtml']).to include('My School 2')
+    expect(json['features'][2]['properties']['schoolPopupHtml']).to include('My School 3')
   end
 
   it 'provides JSON for one group' do
@@ -27,6 +27,6 @@ RSpec.describe "map", type: :system do
 
     expect(json['type']).to eq('FeatureCollection')
     expect(json['features'].count).to eq(1)
-    expect(json['features'][0]['properties']['schoolName']).to eq('My School 3')
+    expect(json['features'][0]['properties']['schoolPopupHtml']).to include('My School 3')
   end
 end

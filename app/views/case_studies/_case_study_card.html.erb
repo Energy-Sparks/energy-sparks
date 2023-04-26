@@ -1,0 +1,15 @@
+<div class="card">
+  <div class="card-header bg-positive"><%= case_study.title %></div>
+  <div class="card-body">
+    <div class="card-text">
+      <%= case_study.description %>
+    </div>
+  </div>
+  <div class="card-footer case-studies-download-links" data-event-value="<%= case_study.id %>">
+    <% download_locale = (I18n.locale.to_sym == :cy && case_study.t_attached(:file, :cy).present?) ? :cy : :en %>
+    <%= link_to url_for( controller: :case_studies, action: :download, serve: :download, id: case_study.id, :locale => download_locale ), class: 'btn' do %>
+      <%= t('case_studies.download') %>
+      <i class="fas fa-file-download"></i>
+    <% end %>
+  </div>
+</div>

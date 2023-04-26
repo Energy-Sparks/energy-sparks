@@ -1,0 +1,122 @@
+<div class="card mb-3" id="school-details">
+  <div class="card-header">
+    <h4>
+      <%= t('onboarding.completion.new.school_details_section.title') %>
+      <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-school-details"
+        aria-expanded="<%= params[:show]=='school-details' ? 'true' : 'false' %>" aria-controls="collapse-school-details"><%= t('common.labels.view') %></button></span>
+    </h4>
+  </div>
+  <div id="collapse-school-details" class="collapse <%= 'show' if params[:show]=='school-details' %>">
+    <div class="card-body">
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <th><%= t('onboarding.completion.new.school_details_section.school_name') %>:</th>
+            <td><%=@school.name%></td>
+          </tr>
+          <tr>
+            <th><%= t('onboarding.completion.new.school_details_section.urn') %>:</th>
+            <td><%=@school.urn%></td>
+          </tr>
+          <tr>
+            <th><%= t('onboarding.completion.new.school_details_section.school_address') %>:</th>
+            <td><%=@school.address %></td>
+          </tr>
+          <tr>
+            <th><%= t('onboarding.completion.new.school_details_section.postcode') %>:</th>
+            <td><%=@school.postcode %></td>
+          </tr>
+          <tr>
+            <th><%= t('onboarding.completion.new.school_details_section.website') %>:</th>
+            <td><%=@school.website %></td>
+          </tr>
+          <tr>
+            <th><%= t('onboarding.completion.new.school_details_section.stage_of_education') %>:</th>
+            <td>
+              <% if @school.school_type.present? %>
+                <%= @school.school_type.try(:humanize) %>
+              <% else %>
+                <%= link_to t('common.labels.edit'), edit_onboarding_school_details_path(@school_onboarding, anchor: 'basic-details') %>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <th><%= t('onboarding.completion.new.school_details_section.key_stages') %>:</th>
+            <td>
+              <% if @school.key_stages.present? %>
+                <%= @school.key_stages.map {|ks| t(ks.i18n_key) }.to_sentence %>
+              <% else %>
+                <%= link_to t('common.labels.edit'), edit_onboarding_school_details_path(@school_onboarding, anchor: 'basic-details') %>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <th><%= t('onboarding.completion.new.school_details_section.number_of_pupils') %>:</th>
+            <td>
+              <% if @school.number_of_pupils.present? %>
+                <%=@school.number_of_pupils %>
+              <% else %>
+                <%= link_to t('common.labels.edit'), edit_onboarding_school_details_path(@school_onboarding, anchor: 'basic-details') %>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <th><%= t('onboarding.completion.new.school_details_section.percentage_of_free_school_meals') %>:</th>
+            <td>
+              <% if @school.percentage_free_school_meals.present? %>
+                <%=@school.percentage_free_school_meals %>
+              <% else %>
+                <%= link_to t('common.labels.edit'), edit_onboarding_school_details_path(@school_onboarding, anchor: 'basic-details') %>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <th><%= t('onboarding.completion.new.school_details_section.floor_area') %>:</th>
+            <td>
+              <% if @school.floor_area.present? %>
+                <%=@school.floor_area %>
+              <% else %>
+                <%= link_to t('common.labels.edit'), edit_onboarding_school_details_path(@school_onboarding, anchor: 'school-features') %>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <th><%= t('onboarding.completion.new.school_details_section.school_has_solar_pv_panels') %>?</th>
+            <td><%= @school.indicated_has_solar_panels ? t('common.labels.yes_label') : t('common.labels.no_label') %></td>
+          </tr>
+          <tr>
+            <th><%= t('onboarding.completion.new.school_details_section.school_has_night_storage_heaters') %>?</th>
+            <td><%= @school.indicated_has_storage_heaters ? t('common.labels.yes_label') : t('common.labels.no_label') %></td>
+          </tr>
+          <tr>
+            <th><%= t('onboarding.completion.new.school_details_section.school_has_its_own_swimming_pool') %>?</th>
+            <td><%= @school.has_swimming_pool ? t('common.labels.yes_label') : t('common.labels.no_label') %></td>
+          </tr>
+          <tr>
+            <th><%= t('onboarding.completion.new.school_details_section.school_serves_school_dinners_on_site') %>?</th>
+            <td><%= @school.serves_dinners ? t('common.labels.yes_label') : t('common.labels.no_label') %></td>
+          </tr>
+          <% if @school.serves_dinners %>
+            <tr>
+              <th><%= t('onboarding.completion.new.school_details_section.dinners_are_cooked_on_site') %>?</th>
+              <td><%= @school.cooks_dinners_onsite ? t('common.labels.yes_label') : t('common.labels.no_label') %></td>
+            </tr>
+            <% if @school.cooks_dinners_onsite %>
+              <tr>
+                <th><%= t('onboarding.completion.new.school_details_section.kitchen_cooks_dinners_for_other_schools') %>?</th>
+                <td><%= @school.cooks_dinners_for_other_schools ? t('common.labels.yes_label') : t('common.labels.no_label') %></td>
+              </tr>
+              <% if @school.cooks_dinners_for_other_schools %>
+                <tr>
+                  <th><%= t('onboarding.completion.new.school_details_section.number_of_schools') %>:</th>
+                  <td><%= @school.cooks_dinners_for_other_schools_count %></td>
+                </tr>
+              <% end %>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+      <%= link_to t('onboarding.completion.new.school_details_section.edit_school_details'), edit_onboarding_school_details_path(@school_onboarding), class: 'btn btn-primary' %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<%= render 'schools/advice/section_title', section_id: 'heating-timings', section_title: t('advice_pages.heating_control.analysis.heating_timings.title') %>
+
+<%= t('advice_pages.heating_control.analysis.heating_timings.intro_html') %>
+
+<%= t('advice_pages.heating_control.analysis.heating_timings.estimated_savings_html',
+  estimated_saving: format_unit(estimated_savings.£, :£),
+  percent: format_unit(percentage_of_annual_gas, :percent)) %>
+
+<table class="table advice-table">
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th colspan="2"><%= t('advice_pages.heating_control.tables.columns.heating_time') %></th>
+      <th></th>
+      <th colspan="3"><%= t('advice_pages.heating_control.tables.columns.potential_saving') %></th>
+    </tr>
+    <tr>
+      <th><%= t('advice_pages.heating_control.tables.columns.date') %></th>
+      <th><%= t('advice_pages.heating_control.tables.columns.overnight_temperature') %></th>
+      <th><%= t('advice_pages.heating_control.tables.columns.heating_on_time') %></th>
+      <th><%= t('advice_pages.heating_control.tables.columns.recommended_time') %></th>
+      <th><%= t('advice_pages.heating_control.tables.columns.assessment') %></th>
+      <th><%= t('advice_pages.heating_control.tables.columns.potential_saving_kwh') %></th>
+      <th><%= t('advice_pages.heating_control.tables.columns.potential_saving_gbp') %></th>
+      <th><%= t('advice_pages.heating_control.tables.columns.potential_saving_co2') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% last_week_start_times.days.each do |day| %>
+      <tr>
+        <td><%= day.date.to_s(:es_full) %></td>
+        <td><%= day.temperature %></td>
+        <% if day.heating_start_time.present? %>
+          <td><%= day.heating_start_time %></td>
+          <td><%= day.recommended_time %></td>
+          <td class="<%= heating_time_class(day.heating_start_time, day.recommended_time) %>">
+            <%= heating_time_assessment(day.heating_start_time, day.recommended_time) %>
+          </td>
+          <% if day.heating_start_time < day.recommended_time %>
+            <td><%= format_unit(day.saving.kwh, :kwh) %></td>
+            <td><%= format_unit(day.saving.£, :£) %></td>
+            <td><%= format_unit(day.saving.co2, :co2) %></td>
+          <% else %>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+          <% end %>
+        <% else %>
+          <td>-</td>
+          <td>-</td>
+          <td colspan="1"><%= t('analytics.modelling.heating.no_heating') %></td>
+          <td>-</td>
+          <td>-</td>
+          <td>-</td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>

@@ -8,7 +8,6 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
   let!(:school_with_points) { create :school, :with_points, score_points: points, scoreboard: scoreboard }
 
   describe 'with public scoreboards' do
-
     describe 'on the index page' do
       before(:each) do
         visit scoreboards_path
@@ -73,7 +72,31 @@ RSpec.describe 'scoreboards', :scoreboards, type: :system do
       end
 
     end
-
   end
 
+  context "displaying prizes" do
+    let(:feature_active) { false }
+    let(:prize_excerpt) { 'We are also offering a special prize' }
+    before do
+      allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true) if feature_active
+    end
+    context "on index page" do
+      before { visit scoreboards_path }
+      it { expect(page).to_not have_content(prize_excerpt) }
+      context "feature is active" do
+        let(:feature_active) { true }
+        it { expect(page).to have_content(prize_excerpt) }
+        it { expect(page).to have_link('read more', href: 'https://blog.energysparks.uk/fantastic-prizes-to-motivate-pupils-to-take-energy-saving-action/') }
+      end
+    end
+    context "on scoreboard page" do
+      before { visit scoreboards_path(scoreboard) }
+      it { expect(page).to_not have_content(prize_excerpt) }
+      context "feature is active" do
+        let(:feature_active) { true }
+        it { expect(page).to have_content(prize_excerpt) }
+        it { expect(page).to have_link('read more', href: 'https://blog.energysparks.uk/fantastic-prizes-to-motivate-pupils-to-take-energy-saving-action/') }
+      end
+    end
+  end
 end

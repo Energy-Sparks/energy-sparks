@@ -1,0 +1,25 @@
+<%= component 'page_nav', name: t('advice_pages.nav.name'), icon: 'home', href: school_advice_path(@school), options: { match_controller: true } do |c| %>
+  <% c.with_section do |s| %>
+    <% s.with_item(name: t('advice_pages.nav.pages.total_energy_use'), href: school_advice_total_energy_use_path(@school)) %>
+  <% end %>
+  <% c.with_section(name: t('advice_pages.nav.sections.electricity'), icon: 'bolt', classes: 'electric-section', visible: @school.has_electricity?) do |s| %>
+    <% sort_by_label(advice_pages.where(fuel_type: :electricity)).each do |ap| %>
+      <% s.with_item(name: translated_label(ap), href: advice_page_path(@school, ap), classes: 'electric-item') %>
+    <% end %>
+  <% end %>
+  <% c.with_section(name: t('advice_pages.nav.sections.gas'), icon: 'fire', classes: 'gas-section', visible: @school.has_gas?) do |s| %>
+    <% sort_by_label(advice_pages.where(fuel_type: :gas)).each do |ap| %>
+      <% s.with_item(name: translated_label(ap), href: advice_page_path(@school, ap), classes: 'gas-item') %>
+    <% end %>
+  <% end %>
+  <% c.with_section(name: t('advice_pages.nav.sections.storage_heater'), icon: 'window-maximize', classes: 'storage-section', visible: @school.has_storage_heaters?) do |s| %>
+    <% sort_by_label(advice_pages.where(fuel_type: :storage_heater)).each do |ap| %>
+      <% s.with_item(name: translated_label(ap), href: advice_page_path(@school, ap), classes: 'storage-item') %>
+    <% end %>
+  <% end %>
+  <% c.with_section(name: t('advice_pages.nav.sections.solar_pv'), icon: 'sun', classes: 'solar-section', visible: @school.has_electricity?) do |s| %>
+    <% sort_by_label(advice_pages.where(fuel_type: :solar_pv)).each do |ap| %>
+      <% s.with_item(name: translated_label(ap), href: advice_page_path(@school, ap), classes: 'solar-item') %>
+    <% end %>
+  <% end %>
+<% end %>

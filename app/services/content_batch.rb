@@ -68,7 +68,10 @@ class ContentBatch
 
       @logger.info "Generated target data"
 
-      broadcast(:school_content_generated, school)
+      # Generate advice page benchmarks
+      Schools::AdvicePageBenchmarks::GenerateBenchmarks.new(school: school, aggregate_school: aggregate_school).generate!
+      @logger.info "Generated advice page benchmarks"
+
     rescue StandardError => e
       @logger.error "There was an error for #{school.name} - #{e.message}"
       Rollbar.error(e, job: :content_batch, school_id: school.id, school: school.name)

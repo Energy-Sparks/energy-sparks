@@ -7,12 +7,7 @@ module Targets
     def display_progress_for_fuel_type?(fuel_type)
       #for v2 we will allow them to see a progress report, even if there's not enough data
       #so just check there is a fuel type and target
-      if EnergySparks::FeatureFlags.active?(:school_targets_v2)
-        has_fuel_type_and_target?(fuel_type)
-      else
-        has_fuel_type_and_target?(fuel_type) &&
-          @school.configuration.enough_data_to_set_target_for_fuel_type?(fuel_type)
-      end
+      has_fuel_type_and_target?(fuel_type)
     end
 
     def progress_summary

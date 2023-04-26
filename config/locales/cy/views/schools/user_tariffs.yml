@@ -1,0 +1,163 @@
+cy:
+  schools:
+    tariffs_helper:
+      charge_value: "%{value} fesul %{units}"
+      for_mpan: "(ar gyfer MPAN %{user_tariff_meters_list})"
+      for_mprn: "(ar gyfer MPRN %{user_tariff_meters_list})"
+      prices_text: Yn seiliedig ar y mesuryddion sy'n gysylltiedig â'r tariff hwn, rydym wedi gosod rhai cyfnodau dydd/nos diofyn - bydd angen i chi ddiweddaru'r cyfraddau o'r manylion ar eich bil.
+      user_tariff_title: "%{start_date} i %{end_date}"
+    user_tariff_charges:
+      charge_ccl:
+        climate_charge_levy: Ardoll tâl hinsawdd
+      charge_tnuos:
+        tnuos_transmission_network_use_of_system: TNUoS (Defnydd System Rhwydwaith Trosglwyddo)
+      charge_vat:
+        rate: Cyfradd
+        vat_rate: Cyfradd TAW
+      charges_edit_electricity:
+        consumption_and_supply_charges: Costau defnyddio a chyflenwi
+        distribution_charges: Costau dosbarthu
+        other_charges: Costau eraill
+        transmission_charges: Costau trosglwyddo
+      charges_edit_gas:
+        consumption_and_supply_charges: Costau defnyddio a chyflenwi
+        other_charges: Costau eraill
+      index:
+        title: Ychwanegu taliadau sefydlog ar gyfer y tariff hwn
+        using_your_bill_introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y taliadau sefydlog sy'n gysylltiedig â'r tariff hwn
+    user_tariff_differential_prices:
+      form:
+        labels:
+          end_time: Amser gorffen
+          start_time: Amser cychwyn
+          value: Cyfradd mewn £/kWh
+      index:
+        consumption_charges: Costau defnydd
+        title: Ychwanegu costau defnydd ar gyfer pob cyfnod amser ar gyfer y tariff hwn
+        using_your_bill_introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
+    user_tariff_flat_prices:
+      edit:
+        introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
+        title: Golygu'r costau defnydd ar gyfer y tariff hwn
+      form:
+        per_gbp_kwh: fesul £/kWh
+        rate: Cyfradd
+      new:
+        introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
+        title: Ychwanegu costau defnydd ar gyfer y tariff hwn
+    user_tariffs:
+      charges_table:
+        climate_charge_levy: Ardoll tâl hinsawdd
+        tnuos: TNUoS (Defnydd System Rhwydwaith Trosglwyddo)
+        vat_rate: Cyfradd TAW
+      choose_meters:
+        title: Dewiswch fesuryddion ar gyfer y tariff hwn
+        which_meters_will_this_tariff_apply_to: I ba fesuryddion y bydd y tariff hwn yn berthnasol?
+      choose_type:
+        day_night_tariff: Tariff Dydd/Nos
+        is_this_a_simple_flat_rate: Ai cyfradd unffurf syml yw hon?
+        or_a_rate_which_varies_by_time_of_day: Neu gyfradd sy’n amrywio yn ôl amser o’r dydd (e.e. tariff Dydd/Nos, Economi7)
+        simple: Syml
+        title: Dewiswch y math o'r tariff hwn
+      default_tariffs:
+        economic:
+          introduction_html: |-
+            <p>
+            Mae Sbarcynni yn defnyddio model cost syml ar gyfer:
+            </p>
+            <ul>
+              <li>Cyfrifo'r costau a ddangosir ar y rhan fwyaf o siartiau a dadansoddiadau ar draws y safle</li>
+              <li>Rhagolygon economaidd wrth wneud dadansoddiad cost a budd ar gyfer awgrymu gwelliannau i'ch rheolaeth ynni</li>
+            </ul>
+            <p>
+            Dim ond fel rhan o gynhyrchu eich tudalen dadansoddi <a href="%{advice_pages}"> cost y byddwn yn defnyddio eich tariffau go iawn.</a>
+            </p>
+            <p>
+            Mae’r tabl isod yn crynhoi’r tariffau rydym yn eu defnyddio ar gyfer eich ysgol.
+            </p>
+            <p>
+              <a href="mailto:hello@energysparks.uk">Cysylltwch â ni</a>os hoffech i'r tariffau ar gyfer eich MAT neu'ch ysgol gael eu diweddaru. Bydd angen gwybodaeth arnom am y tariffau penodol gan gynnwys y dyddiad dechrau pan fyddant yn effeithiol.
+          tariffs_table:
+            columns:
+              scope: Cwmpas
+            labels:
+              aggregated_electricity: Trydan
+              aggregated_gas: Nwy
+              global: System eang
+              school: Ysgol
+              school_group: Grŵp Ysgol (MAT)
+      edit:
+        title: Golygu'r enw a'r ystod dyddiad ar gyfer y tariff %{fuel_type} hwn
+      flat_rate:
+        flat_rate_tariff: Tariff cyfradd fflat
+        no_flat_rate_tariff_has_been_set_yet: Nid oes tariff cyfradd unffurf wedi'i osod eto
+        per_kwh: fesul kWh
+      index:
+        changes_to_cost_calculations_message: Bydd y cyfrifiadau cost yn seiliedig ar y tariffau hyn yn diweddaru dros nos
+        electricity:
+          add_label: Ychwanegu tariff trydan
+          header: Trydan
+          there_are_no_electricity_tariffs_set_up_yet: Nid oes gennym unrhyw dariffau a gyflenwir gan ddefnyddwyr ar gyfer eich mesuryddion trydan
+        gas:
+          add_label: Ychwanegu tariff nwy
+          header: Nwy
+          there_are_no_gas_tariffs_set_up_yet: Nid oes gennym unrhyw dariffau a gyflenwir gan ddefnyddwyr ar gyfer eich mesuryddion nwy.
+        introduction_html: |-
+          <p>
+          Gallwch wella cywirdeb y cyfrifiadau ar eich<a href="%{advice_pages}"> tudalennau dadansoddi costau</a> drwy ychwanegu manylion am eich tariffau go iawn.
+          </p>
+          <p>
+            I ychwanegu tariff newydd bydd angen i chi ddarparu gwybodaeth fanwl am y costau ynni a'r ystod o daliadau sefydlog sydd wedi'u cynnwys yn eich contract ynni.
+          </p>
+        note_about_defaults: Os nad oes gennym eich gwybodaeth tariff go iawn, yna byddwn yn amcangyfrif eich costau gan ddefnyddio ein tariffau diofyn.
+        note_about_smart_meter_tariffs: Ar hyn o bryd rydym yn defnyddio tariffau a fewnforir yn awtomatig o'ch mesuryddion clyfar.
+        tabs:
+          default_tariffs: tariffau diofyn
+          smart_meter_tariffs: Tariffau mesurydd clyfar
+          user_tariffs: Prisiau a gyflenwir gan ddefnyddwyr
+        title: Rheoli a gweld tariffau
+      meters:
+        meter: Mesurydd
+        meter_list: Mesuryddion
+        meters_associated_with_this_tariff: Mesuryddion sy'n gysylltiedig â'r tariff hwn
+        there_are_no_meters_associated_with_this_tariff: Nid oes unrhyw fesuryddion yn gysylltiedig â'r tariff hwn
+      name: Enw
+      new:
+        title: Dewiswch enw ac ystod dyddiad ar gyfer y tariff %{fuel_type} hwn
+      rates_table:
+        no_consumption_charges_specified_yet: Dim costau defnydd wedi'u nodi eto
+        price_per_kwh: "%{price_value} fesul kWh"
+      show:
+        consumption_charges: Costau defnydd
+        introduction_html: Bydd unrhyw newidiadau i'r tariff yn cael eu hadlewyrchu yn y tudalennau <a href='%{electricity_analysis_path}'>dadansoddiad cost trydan</a> a <a href='%{gas_analysis_path}'>dadansoddiad cost nwy</a> a fydd yn diweddaru dros nos
+        meter_attribute_view: Gwedd priodoledd mesurydd (gweinyddwr yn unig)
+        standing_charges: Costau sefydlog
+        title: Manylion tariff
+      smart_meter_tariffs:
+        introduction_html: |-
+          <p>
+            Rydym yn llwytho gwybodaeth tariff sylfaenol yn awtomatig o'ch mesuryddion clyfar.
+          </p>
+          <p>
+            Mae'r wybodaeth hon eisoes yn cael ei defnyddio i wella cywirdeb y cyfrifiadau ar eich <a href="%{advice_pages}">tudalennau dadansoddi costau</a> ac fe'i crynhoir isod.
+          </p>
+          <p>
+            Bydd ychwanegu tariff newydd â llaw yn eich galluogi i ddarparu rhagor o wybodaeth am eich taliadau sefydlog am gyfnod penodol.
+          </p>
+        tariff_charges:
+          per_day: "%{charge} y dydd"
+        tariff_types:
+          differential_tiered: Tariff haenau gwahaniaethol
+      tariff_partial:
+        consumption_charges: Costau defnydd
+        day_night_tariff: Tariff dydd/nos
+        end_date: Dyddiad gorffen
+        full_details: Manylion llawn
+        price_from_to: "%{price_start_time} i %{price_end_time}:"
+        simple_tariff: Tariff syml
+        start_date: Dyddiad cychwyn
+        type: Math
+      there_should_only_be_one_tariff_message: Dim ond un tariff ddylai fod ar gyfer pob cyfnod dyddiad, ar gyfer pob metr
+      title_partial:
+        heading: Tariff
+      view_and_manage_tariffs_html: <a href="%{user_tariffs_path}">Gweld a rheoli tariffau eich ysgol</a>

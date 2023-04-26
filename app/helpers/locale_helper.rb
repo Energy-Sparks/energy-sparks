@@ -29,4 +29,22 @@ module LocaleHelper
     end
     safe_join output, char
   end
+
+  def t_period(period)
+    I18n.t("date.calendar_period.#{period}", default: '')
+  end
+
+  def t_day(day)
+    I18n.t('date.day_names')[Date.parse(day).wday]
+  rescue
+    I18n.t("date.other.#{day}", default: '')
+  end
+
+  def t_month(month)
+    I18n.t('date.month_names')[month.to_i]
+  end
+
+  def t_role(role)
+    I18n.t("role.#{role}", default: '')
+  end
 end

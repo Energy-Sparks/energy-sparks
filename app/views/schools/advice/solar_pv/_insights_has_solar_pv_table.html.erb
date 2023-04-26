@@ -1,0 +1,29 @@
+<table class="mt-2 table table-sm advice-table table-with-totals">
+  <thead>
+    <th><%= t('advice_pages.solar_pv.has_solar_pv.insights.table.category') %></th>
+    <th class='text-right'><%= t('kwh') %></th>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= t('advice_pages.solar_pv.has_solar_pv.insights.table.row.photovoltaic_production') %></td>
+      <td class='text-right'><%= format_unit(@existing_benefits.annual_solar_pv_kwh, :kwh) %></td>
+    </tr>
+    <tr>
+      <td><%= t('advice_pages.solar_pv.has_solar_pv.insights.table.row.exported_solar_electricity') %></td>
+      <td class='text-right'><%= format_unit(@existing_benefits.annual_exported_solar_pv_kwh, :kwh) %></td>
+    </tr>
+    <tr>
+      <td><%= t('advice_pages.solar_pv.has_solar_pv.insights.table.row.electricity_consumed_from_solar_pv') %></td>
+      <td class='text-right'><%= format_unit(@existing_benefits.annual_solar_pv_consumed_onsite_kwh, :kwh) %></td>
+    </tr>
+    <tr>
+      <td><%= t('advice_pages.solar_pv.has_solar_pv.insights.table.row.electricity_consumed_from_mains') %></td>
+      <td class='text-right'><%= format_unit(@existing_benefits.annual_consumed_from_national_grid_kwh, :kwh) %></td>
+    </tr>
+    <tr>
+      <td><%= t('advice_pages.solar_pv.has_solar_pv.insights.table.row.total_consumption') %></td>
+      <td class='text-right'><%= format_unit(@existing_benefits.annual_electricity_including_onsite_solar_pv_consumption_kwh, :kwh) %></td>
+    </tr>
+  </tbody>
+</table>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>

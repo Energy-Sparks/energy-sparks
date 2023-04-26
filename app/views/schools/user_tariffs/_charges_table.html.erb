@@ -10,17 +10,17 @@
   <% end %>
   <% if user_tariff.tnuos? %>
     <tr>
-      <td class="description">TNUoS (Transmission Network Use of System)</td>
+      <td class="description"><%= t('schools.user_tariffs.charges_table.tnuos') %></td>
       <td class="value"><%= y_n(user_tariff.tnuos?)  %></td>
     </tr>
   <% end %>
   <tr>
-    <td class="description">VAT rate</td>
+    <td class="description"><%= t('schools.user_tariffs.charges_table.vat_rate') %></td>
     <td class="value"><%= user_tariff.vat_rate  %></td>
   </tr>
   <% if user_tariff.ccl? %>
     <tr>
-      <td class="description">Climate charge levy</td>
+      <td class="description"><%= t('schools.user_tariffs.charges_table.climate_charge_levy') %></td>
       <td class="value"><%= y_n(user_tariff.ccl?)  %></td>
     </tr>
   <% end %>

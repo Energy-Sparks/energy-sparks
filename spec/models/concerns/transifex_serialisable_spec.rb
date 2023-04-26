@@ -50,16 +50,32 @@ describe TransifexSerialisable do
     end
   end
 
-  it 'all including models have timestamps and include Mobility' do
-    #we have to explicitly require the classes otherwise they're not loaded and
-    #check for included modules fails
-    Dir[Rails.root.join("app/models/**/*.rb")].each { |f| require f }
+  context 'with real classes' do
 
-    tx_serialisables = ApplicationRecord.descendants.select { |c| c.included_modules.include? TransifexSerialisable }
+    before do
+      #we have to explicitly require the classes otherwise they're not loaded and
+      #check for included modules fails
+      Dir[Rails.root.join("app/models/**/*.rb")].each { |f| require f }
+      @tx_serialisables = ApplicationRecord.descendants.select { |c| c.included_modules.include? TransifexSerialisable }
+    end
 
-    tx_serialisables.each do |clazz|
-      expect(clazz.column_names).to include("created_at", "updated_at"), "expected #{clazz.name} to have timestamps"
-      expect(clazz.singleton_class.ancestors).to include(Mobility), "expected #{clazz.name} to extend Mobility"
+    it 'all including models have timestamps and include Mobility' do
+      @tx_serialisables.each do |clazz|
+        expect(clazz.column_names).to include("created_at", "updated_at"), "expected #{clazz.name} to have timestamps"
+        expect(clazz.singleton_class.ancestors).to include(Mobility), "expected #{clazz.name} to extend Mobility"
+      end
+    end
+
+    it 'model shows no content present if no attributes set' do
+      serialisable = @tx_serialisables.first.new
+      expect(serialisable.has_content?).to be_falsey
+    end
+
+    it 'model shows content present if some attribute set' do
+      clazz = @tx_serialisables.first
+      attr = clazz.mobility_attributes.first
+      serialisable = clazz.new(attr => 'something')
+      expect(serialisable.has_content?).to be_truthy
     end
   end
 end

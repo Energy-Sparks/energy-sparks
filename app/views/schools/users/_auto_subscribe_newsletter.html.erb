@@ -2,17 +2,17 @@
   <div class="col-md-3">
     <div class="custom-control custom-checkbox pb-3">
       <input type="checkbox" class="custom-control-input" id="user_auto_subscribe_newsletter" name="user[auto_subscribe_newsletter]" <%= "checked" if checked %> >
-      <label class="custom-control-label" for="user_auto_subscribe_newsletter">Subscribe to newsletters</label>
+      <label class="custom-control-label" for="user_auto_subscribe_newsletter"><%= t('schools.users.auto_subscribe_newsletter.subscribe_to_newsletters') %></label>
     </div>
   </div>
   <div class="col-md-9">
-    <p>Newsletters are our main communication channel for:</p>
+    <p><%= t('schools.users.auto_subscribe_newsletter.newsletters_main_communication_channel') %>:</p>
     <ul>
-      <li>highlighting new resources</li>
-      <li>sharing featured activities</li>
-      <li>celebrating best practice and success stories at participating schools</li>
-      <li>promoting supporting services such as workshops, training and audits</li>
+      <li><%= t('schools.users.auto_subscribe_newsletter.newsletters_main_communication_channel_list_item_1') %></li>
+      <li><%= t('schools.users.auto_subscribe_newsletter.newsletters_main_communication_channel_list_item_2') %></li>
+      <li><%= t('schools.users.auto_subscribe_newsletter.newsletters_main_communication_channel_list_item_3') %></li>
+      <li><%= t('schools.users.auto_subscribe_newsletter.newsletters_main_communication_channel_list_item_4') %></li>
     </ul>
-    <p>We strongly recommend you sign up to get the most from Energy Sparks (we'll never share your email address with anyone else).</p>
+    <p><%= t('schools.users.auto_subscribe_newsletter.we_strongly_recommend_you_sign_up') %>.</p>
   </div>
 </div>

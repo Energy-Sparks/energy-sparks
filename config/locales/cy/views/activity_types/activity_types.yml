@@ -1,3 +1,4 @@
+---
 cy:
   activity_types:
     activity: Gweithgaredd
@@ -5,7 +6,7 @@ cy:
     key_stages: Cyfnodau Allweddol
     recommended:
       all_activities: Pob gweithgaredd
-      introduction: Mae'r rhain yn weithgareddau a awgrymir ar gyfer eich ysgol, yn seiliedig ar eich gweithgaredd blaenorol a'ch targedau
+      introduction: "Mae'r rhain yn weithgareddau a awgrymir ar gyfer eich ysgol, yn seiliedig ar eich gweithgaredd blaenorol a'ch targedau"
       title: Argymhellir ar gyfer eich ysgol
     score_for_this_activity: Sgôr ar gyfer y gweithgaredd hwn
     search:
@@ -17,11 +18,16 @@ cy:
       no_results_found: Heb ganfod unrhyw ganlyniadau
       results_found:
         one: Wedi canfod 1 canlyniad
-        two: Wedi canfod %{count} ganlyniad
-        many: Wedi canfod %{count} o ganlyniadau
-        other: Wedi canfod %{count} o ganlyniadau
+        two: "Wedi canfod %{count} ganlyniad"
+        many: "Wedi canfod %{count} o ganlyniadau"
+        other: "Wedi canfod %{count} o ganlyniadau"
       title: Dod o hyd i weithgareddau disgyblion
     show:
+      complete_this_activity_for_group_html:
+        one: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>1</strong> pwynt!
+        two: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+        many: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
+        other: Cwblhewch y gweithgaredd hwn ar ran ysgol i sgorio <strong>%{count}</strong> o bwyntiau!
       complete_this_activity_html:
         one: Cwblhewch y gweithgaredd hwn i sgorio <strong>1</strong> pwynt!
         two: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> bwynt!
@@ -29,6 +35,7 @@ cy:
         other: Cwblhewch y gweithgaredd hwn i sgorio <strong>%{count}</strong> o bwyntiau!
       download_resources: Lawrlwytho adnoddau
       record_this_activity: Cofnodi'r gweithgaredd hwn
+      select_school: Dewiswch ysgol...
       view_related_activities:
         one: Gweld 1 gweithgaredd cysylltiedig
         two: Gweld %{count} weithgaredd cysylltiedig

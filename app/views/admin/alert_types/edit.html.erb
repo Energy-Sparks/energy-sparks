@@ -2,10 +2,36 @@
 
 <%= simple_form_for(@alert_type, url: admin_alert_type_path(@alert_type)) do |f| %>
   <%= f.input :title, as: :string %>
-  <%= f.label 'Description', for: :description %>
+  <%= f.label 'Description (for internal use)', for: :description %>
   <%= f.rich_text_area :description %>
-  <%= f.input :frequency, as: :radio_buttons, collection: AlertType.frequencies.keys, label_method: :humanize %>
+  <%= f.input :frequency, as: :radio_buttons, collection: AlertType.frequencies.keys, label_method: :humanize, label: 'Email frequency' %>
 
-  <%= f.submit class: 'btn btn-success' %>
-  <%= link_to 'Cancel', admin_alert_type_path(@alert_type), class: 'btn btn-warning' %>
+  <div class="form-group">
+    <%= f.label 'Group', for: :group %>
+    <%= f.select :group, options_for_select(AlertType.groups.map {|key, value| [key.titleize, key]}, f.object.group), {include_blank: false}, { class: 'form-control' } %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label 'Advice Page', for: :advice_page_id %>
+    <%= f.select :advice_page_id, options_from_collection_for_select(AdvicePage.all, 'id', 'label', f.object.advice_page_id), {include_blank: 'none'}, { class: 'form-control' } %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label 'Link to', for: :link_to %>
+    <%= f.select :link_to, options_for_select(AlertType.link_tos.map {|key, value| [key.titleize, key]}, f.object.link_to), {include_blank: false}, { class: 'form-control' } %>
+  </div>
+
+  <div class="form-group">
+    <%= f.input :link_to_section, as: :string %>
+    <small>Optional: provide a specific section of the selected analysis page to which users will be sent</small>
+  </div>
+
+  <div class="form-group">
+    <%= f.input :enabled, as: :boolean %>
+  </div>
+
+  <div class="form-group mt-4">
+    <%= f.submit class: 'btn btn-success' %>
+    <%= link_to 'Cancel', admin_alert_type_path(@alert_type), class: 'btn btn-warning' %>
+  </div>
 <% end %>

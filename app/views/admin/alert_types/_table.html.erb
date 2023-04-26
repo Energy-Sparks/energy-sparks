@@ -1,18 +1,32 @@
-<table class="table table-striped">
+<table class="table table-sorted">
   <thead>
     <tr>
-      <th>Title</th>
       <th>Fuel</th>
-      <th>Frequency</th>
-      <th></th>
+      <th>Title</th>
+      <th>Advice Page</th>
+      <% if local_assigns[:show_full] %>
+        <th>Group</th>
+        <th>Email Frequency</th>
+      <% end %>
+      <th data-orderable="false"></th>
     </tr>
   </thead>
   <tbody>
     <% alert_types.each do |alert_type| %>
-      <tr>
-        <td><%= link_to alert_type.title, admin_alert_type_path(alert_type) %></td>
+      <tr class="<%= alert_type.enabled ? '' : 'table-danger' %>">
         <td><%= alert_type.display_fuel_type %></td>
-        <td><%= alert_type.frequency %></td>
+        <td><%= link_to alert_type.title, admin_alert_type_path(alert_type) %></td>
+        <td>
+          <% if alert_type.advice_page.present? %>
+            <%= link_to alert_type.advice_page.label, edit_admin_advice_page_path(alert_type.advice_page) %>
+          <% else %>
+            none
+          <% end %>
+        </td>
+        <% if local_assigns[:show_full] %>
+          <td><%= alert_type.group %></td>
+          <td><%= alert_type.frequency %></td>
+        <% end %>
         <td><%= link_to 'Manage', admin_alert_type_path(alert_type), class: 'btn btn-primary btn-sm'%></td>
       </tr>
     <% end %>

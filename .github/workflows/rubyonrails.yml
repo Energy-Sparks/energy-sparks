@@ -37,6 +37,9 @@ jobs:
       # Precompile assets
       - name: Precompile assets
         run: bundle exec rake assets:precompile
+      # Fail early if we have issues with translation keys
+      - name: Run i18n-tasks
+        run: bundle exec i18n-tasks health
       # Add or replace test runners here
       - name: Run tests
-        run: bin/rake
+        run: bundle exec rspec --exclude-pattern "i18n_spec.rb"

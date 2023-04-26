@@ -111,7 +111,7 @@ class ScheduleDataManagerService
   end
 
   def school_minimum_reading_date_with_temperature_days_offset
-    @school.minimum_reading_date - temperature_days_offset.days
+    @school.minimum_reading_date - 1.year - temperature_days_offset.days
   end
 
   def temperature_days_offset

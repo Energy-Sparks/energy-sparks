@@ -21,14 +21,15 @@ describe 'programme type management', type: :system do
       click_on 'New Programme Type'
       fill_in :programme_type_title_en, with: old_title
       fill_in_trix '#programme_type_description_en', with: description
-      attach_file("programme_type_image", Rails.root + "spec/fixtures/images/placeholder.png")
+      attach_file(:programme_type_image_en, Rails.root + "spec/fixtures/images/placeholder.png")
+
       click_on 'Save'
       expect(page).to have_content('Programme Types')
       expect(page).to have_content(old_title)
       expect(page).to have_css(".text-danger")
       expect(page).to have_content('No')
 
-      expect(ProgrammeType.last.image.filename).to eq('placeholder.png')
+      expect(ProgrammeType.last.image_en.filename).to eq('placeholder.png')
 
       click_on 'Edit'
       fill_in :programme_type_title_en, with: new_title

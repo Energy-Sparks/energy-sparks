@@ -42,17 +42,21 @@ namespace :utility do
   desc 'Save aggregate schools to S3'
   task save_aggregate_schools_to_s3: :environment do
     puts "#{DateTime.now.utc} save_aggregate_schools_to_s3 start"
-    require 'energy_sparks/s3_yaml'
-    target_bucket = ENV['AGGREGATE_SCHOOL_CACHE_BUCKET']
-    abort("No S3 bucket configured") if target_bucket.blank?
+    if ENV['ENVIRONMENT_IDENTIFIER'] == "production"
+      require 'energy_sparks/s3_yaml'
+      target_bucket = ENV['AGGREGATE_SCHOOL_CACHE_BUCKET']
+      abort("No S3 bucket configured") if target_bucket.blank?
 
-    School.process_data.order(:name).each do |school|
-      Rails.logger.info "Uploading aggregated #{school.name} to S3"
-      aggregate_school = AggregateSchoolService.new(school).aggregate_school
-      EnergySparks::S3Yaml.save(aggregate_school, school.name, data_type: 'aggregated-meter-collection', bucket: target_bucket)
-    rescue StandardError => e
-      Rails.logger.error "There was an error for aggregated #{school.name} - #{e.message}"
-      Rollbar.error(e, job: :save_aggregate_schools_to_s3, school_id: school.id, school: school.name)
+      School.process_data.order(:name).each do |school|
+        Rails.logger.info "Uploading aggregated #{school.name} to S3"
+        aggregate_school = AggregateSchoolService.new(school).aggregate_school
+        EnergySparks::S3Yaml.save(aggregate_school, school.name, data_type: 'aggregated-meter-collection', bucket: target_bucket)
+      rescue StandardError => e
+        Rails.logger.error "There was an error for aggregated #{school.name} - #{e.message}"
+        Rollbar.error(e, job: :save_aggregate_schools_to_s3, school_id: school.id, school: school.name)
+      end
+    else
+      puts "Skipping save_aggregate_schools_to_s3 as not on production"
     end
     puts "#{DateTime.now.utc} save_aggregate_schools_to_s3 end"
   end
@@ -60,17 +64,21 @@ namespace :utility do
   desc 'Save unvalidated  schools to S3'
   task save_unvalidated_schools_to_s3: :environment do
     puts "#{DateTime.now.utc} save_unvalidated_schools_to_s3 start"
-    require 'energy_sparks/s3_yaml'
-    target_bucket = ENV['UNVALIDATED_SCHOOL_CACHE_BUCKET']
-    abort("No S3 bucket configured") if target_bucket.blank?
-    School.process_data.order(:name).each do |school|
-
-      Rails.logger.info "Uploading unvalidated #{school.name} to S3"
-      data = Amr::AnalyticsMeterCollectionFactory.new(school).unvalidated_data
-      EnergySparks::S3Yaml.save(data, school.name, data_type: 'unvalidated-data', bucket: target_bucket)
-    rescue StandardError => e
-      Rails.logger.error "There was an error for unvalidated #{school.name} - #{e.message}"
-      Rollbar.error(e, job: :save_unvalidated_schools_to_s3, school_id: school.id, school: school.name)
+    if ENV['ENVIRONMENT_IDENTIFIER'] == "production"
+      require 'energy_sparks/s3_yaml'
+      target_bucket = ENV['UNVALIDATED_SCHOOL_CACHE_BUCKET']
+      abort("No S3 bucket configured") if target_bucket.blank?
+      filepath = Rails.root.join("config/test_schools.yml")
+      SchoolsLoader.new(filepath).schools.each do |school|
+        Rails.logger.info "Uploading unvalidated #{school.name} to S3"
+        data = Amr::AnalyticsMeterCollectionFactory.new(school).unvalidated_data
+        EnergySparks::S3Yaml.save(data, school.name, data_type: 'unvalidated-data', bucket: target_bucket)
+      rescue StandardError => e
+        Rails.logger.error "There was an error for unvalidated #{school.name} - #{e.message}"
+        Rollbar.error(e, job: :save_unvalidated_schools_to_s3, school_id: school.id, school: school.name)
+      end
+    else
+      puts "Skipping save_unvalidated_schools_to_s3 as not on production"
     end
     puts "#{DateTime.now.utc} save_unvalidated_schools_to_s3 end"
   end

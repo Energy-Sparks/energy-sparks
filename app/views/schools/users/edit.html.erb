@@ -1,9 +1,9 @@
-<h1>Edit <%= @user.role.humanize(capitalize: false) %> account</h1>
+<h1><%= t('schools.users.edit.title', user_role: t_role(@user.role).downcase) %></h1>
 
 <%= simple_form_for @user, url: school_user_path(@school, @user) do |f| %>
   <%= render 'form', f: f %>
   <% if @user.confirmed? %>
     <%= render 'schools/users/auto_create_alert_contact', f: f, school: @school, user: @user, checked: Schools::ContactFinder.new(@school).contact_for(@user).present? %>
   <% end %>
-  <%= f.submit 'Update account', class: 'btn btn-rounded'%>
+  <%= f.submit t('schools.users.edit.update_account'), class: 'btn btn-rounded'%>
 <% end %>

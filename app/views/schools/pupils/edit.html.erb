@@ -1,6 +1,6 @@
-<h1>Edit pupil account</h1>
+<h1><%= t('schools.pupils.edit.title') %></h1>
 
 <%= simple_form_for @pupil, url: school_pupil_path(@school, @pupil) do |f| %>
   <%= render 'form', f: f %>
-  <%= f.submit 'Update account', class: 'btn btn-rounded'%>
+  <%= f.submit t('schools.pupils.edit.update'), class: 'btn btn-rounded'%>
 <% end %>

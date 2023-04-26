@@ -1,9 +1,10 @@
-<table class="table table-condensed regional-calendars">
+<table class="table table-condensed regional-calendars table-sorted">
   <thead>
     <tr>
       <th>Name</th>
       <th>Based on</th>
       <th>Dependent Calendars</th>
+      <th>Last term date</th>
       <th></th>
     </tr>
   </thead>
@@ -14,6 +15,8 @@
         <td><%= calendar.title %></td>
         <td><%= link_to calendar.based_on.title, calendar_path(calendar.based_on) unless calendar.based_on.nil? %></td>
         <td><%= calendar.calendars.count %></td>
+        <% last_term_date = calendar.calendar_events.terms.by_end_date.last %>
+        <td data-order="<%= last_term_date.end_date.strftime("%Y-%m-%d") if last_term_date.present? %>"><%= nice_dates(last_term_date&.end_date) %></td>
         <td>
           <div class='btn-group'>
           <%= link_to 'Show', calendar, class: 'btn btn-info' if can?(:read, calendar) %>

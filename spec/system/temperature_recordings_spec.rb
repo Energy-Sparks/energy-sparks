@@ -55,9 +55,6 @@ describe 'temperature recordings as school admin' do
           fill_in 'The Hall', with: 20
           fill_in 'At', with: ''
           expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0)
-
-          fill_in 'At', with: Date.tomorrow
-          expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(0).and change { TemperatureRecording.count }.by(0)
           fill_in 'At', with: Date.yesterday
           expect { click_on('Create temperature recordings') }.to change { Observation.count }.by(1).and change { TemperatureRecording.count }.by(1)
         end

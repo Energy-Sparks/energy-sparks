@@ -12,17 +12,19 @@ describe AmrDataFeedImportLog, type: :system, include_application_helper: true d
     click_on 'Reports'
   end
 
-  it 'shows a benchmark result run and allows the user to drill down' do
+  it 'shows an import log summary table' do
     error_messages = "Oh no!"
     log_1 = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, error_messages: error_messages, import_time: 1.day.ago)
     log_2 = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago)
 
     click_on 'AMR File imports report'
-    expect(page).to have_content('Amr Data Feed Import Logs')
-    expect(page).to have_content(nice_date_times(log_1.import_time))
-    expect(page).to have_content(nice_date_times(log_2.import_time))
+    expect(page).to have_content('Data Feed Import Logs')
+    expect(page).to have_content('Summary of the last 7 days')
 
-    expect(page).to have_content(200)
-    expect(page).to have_content(error_messages)
+    expect(page).to have_content('Successes 1')
+    expect(page).to have_content('Warnings 0')
+    expect(page).to have_content('Errors 1')
+
+    expect(page).to have_content('Feed')
   end
 end

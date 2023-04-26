@@ -8,4 +8,24 @@ RSpec.describe ProgrammeType, type: :model do
   it "#tx_resources" do
     expect( ProgrammeType.tx_resources ).to match_array([programme_type_1])
   end
+
+  context "#document_link" do
+    before :each do
+      programme_type_1.update(document_link: 'en-doc')
+    end
+    it "gives en version by default" do
+      expect( programme_type_1.document_link ).to eq('en-doc')
+    end
+    it "gives en version if no cy version" do
+      I18n.with_locale(:cy) do
+        expect( programme_type_1.document_link ).to eq('en-doc')
+      end
+    end
+    it "gives cy version if provided" do
+      programme_type_1.update(document_link_cy: 'cy-doc')
+      I18n.with_locale(:cy) do
+        expect( programme_type_1.document_link ).to eq('cy-doc')
+      end
+    end
+  end
 end

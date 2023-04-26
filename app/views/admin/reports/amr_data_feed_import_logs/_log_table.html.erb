@@ -1,0 +1,40 @@
+<div class="d-flex justify-content-center pt-4">
+  <%== pagy_bootstrap_nav(@pagy) %>
+</div>
+
+<table class="table table-sorted">
+  <thead>
+    <tr>
+      <th class="no-sort">Feed</th>
+      <th class="no-sort">File name</th>
+      <th>Import Time</th>
+      <% if action_name == 'warnings' %>
+        <th class="no-sort">Warnings count</th>
+        <th class="no-sort">Warnings summary</th>
+      <% end %>
+      <% if action_name == 'errors' %>
+        <th class="no-sort">Errors summary</th>
+      <% end %>
+      <th class="no-sort">Records imported</th>
+      <th class="no-sort">Records updated</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @logs.each do |log| %>
+      <tr>
+        <td><%= link_to log.amr_data_feed_config.description, admin_amr_data_feed_config_path(log.amr_data_feed_config) %></td>
+        <td><%= log.file_name %></td>
+        <td data-order="<%= log.import_time&.strftime('%Y-%m-%d') %>"><%= nice_date_times log.import_time %></td>
+        <% if action_name == 'warnings' %>
+          <td><%= log.amr_reading_warnings.count %></td>
+          <td><%= log.amr_reading_warnings.map(&:messages).uniq.to_sentence %></td>
+        <% end %>
+        <% if action_name == 'errors' %>
+          <td><%= log.error_messages %></td>
+        <% end %>
+        <td><%= log.records_imported %></td>
+        <td><%= log.records_updated %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

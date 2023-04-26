@@ -1,56 +1,42 @@
-<h1>Amr Data Feed Import Logs</h1>
+<h1>Data Feed Import Logs</h1>
+<%= render 'tabs' %>
 
-<% if @any_warnings %>
-  <p><%= link_to 'Warnings list', admin_reports_amr_reading_warnings_path %></p>
-<% end %>
+<h4>Summary of the last <%= Admin::Reports::AmrDataFeedImportLogsController::SUMMARY_PERIOD_IN_DAYS %> days</h4>
 
-<% if @errored_logs.any? %>
-<h2>Errored</h2>
-<table class="table table-sorted">
+<table class="table table-bordered text-center">
   <thead>
     <tr>
+      <th colspan=2></th>
+      <th>Successes</th>
+      <th colspan=3>Warnings</th>
+      <th colspan=3>Errors</th>
+    </tr>
+    <tr>
       <th>Feed</th>
-      <th>Error messages</th>
-      <th>File name</th>
-      <th>Import Time</th>
+      <th>Imports</th>
+      <th>Count</th>
+      <th>Count</th>
+      <th>Last 24 hours</th>
+      <th>Previous 24 hours</th>
+      <th>Count</th>
+      <th>Last 24 hours</th>
+      <th>Previous 24 hours</th>
     </tr>
   </thead>
   <tbody>
-    <% @errored_logs.each do |log| %>
-      <tr>
-        <td><%= link_to log.amr_data_feed_config.description, admin_amr_data_feed_config_path(log.amr_data_feed_config) %></td>
-        <td><%= log.error_messages %></td>
-        <td><%= log.file_name %></td>
-        <td data-order="<%= log.import_time.strftime("%s") %>"><%= nice_date_times log.import_time %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-<% else %>
-  <p>There are no import logs with errors</p>
-<% end %>
-
-<h2>Successful</h2>
-<%== pagy_bootstrap_nav(@pagy) %>
-<table class="table">
-  <thead>
+  <% @amr_data_feed_configs.each do |config| %>
     <tr>
-      <th>Feed</th>
-      <th>File name</th>
-      <th>Import Time</th>
-      <th>Records imported</th>
-      <th>Records updated</th>
+    <% import_logs = config.amr_data_feed_import_logs.where('import_time >= ?', Date.today - Admin::Reports::AmrDataFeedImportLogsController::SUMMARY_PERIOD_IN_DAYS.days) %>
+    <td class='text-left'><%= link_to config.description, admin_amr_data_feed_config_path(config) %></td>
+    <td><%= import_logs.count %></td>
+    <td><%= link_to import_logs.successful.count, admin_reports_amr_data_feed_import_logs_successes_path({config: {config_id: config.id}}) %></td>
+    <td><%= link_to import_logs.with_warnings.count, admin_reports_amr_data_feed_import_logs_warnings_path({config: {config_id: config.id}}) %></td>
+    <td><%= import_logs.with_warnings.where(import_time: 24.hours.ago..Time.now).count %></td>
+    <td><%= import_logs.with_warnings.where(import_time: 48.hours.ago..24.hours.ago).count %></td>
+    <td><%= link_to import_logs.where.not(error_messages: nil).count, admin_reports_amr_data_feed_import_logs_errors_path({config: {config_id: config.id}}) %></td>
+    <td><%= import_logs.where.not(error_messages: nil).where(import_time: 24.hours.ago..Time.now).count %></td>
+    <td><%= import_logs.where.not(error_messages: nil).where(import_time: 48.hours.ago..24.hours.ago).count %></td>
     </tr>
-  </thead>
-  <tbody>
-    <% @successful_logs.each do |log| %>
-      <tr>
-        <td><%= link_to log.amr_data_feed_config.description, admin_amr_data_feed_config_path(log.amr_data_feed_config) %></td>
-        <td><%= log.file_name %></td>
-        <td><%= nice_date_times log.import_time %></td>
-        <td><%= log.records_imported %></td>
-        <td><%= log.records_updated %></td>
-      </tr>
-    <% end %>
+  <% end %>
   </tbody>
 </table>

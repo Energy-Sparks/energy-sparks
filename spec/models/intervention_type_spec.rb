@@ -42,7 +42,8 @@ describe 'InterventionType' do
       intervention_type_1 = create(:intervention_type, name: 'time')
       intervention_type_2 = create(:intervention_type, name: 'timing')
 
-      expect(InterventionType.search(query: 'timing', locale: 'en')).to eq([intervention_type_1, intervention_type_2])
+      #use match array here as the ordering isn't guaranteed?
+      expect(InterventionType.search(query: 'timing', locale: 'en')).to match_array([intervention_type_2, intervention_type_1])
     end
 
     it 'finds search content for different locales' do

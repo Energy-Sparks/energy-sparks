@@ -6,9 +6,8 @@
 
   <div class="custom-control custom-checkbox agreements">
     <%= check_box_tag "privacy", false, false, class: 'custom-control-input multi-select must-check' %>
-    <%= label_tag "privacy", "I give permission and confirm full agreement with the ", class: 'custom-control-label' %>
-    <%= link_to 'terms and conditions', terms_and_conditions_path, target: "_blank" %>
+    <%= label_tag "privacy", t('consent.terms_and_conditions_html', terms_and_conditions_link: link_to('terms and conditions', terms_and_conditions_path, target: "_blank")), class: 'custom-control-label' %>
   </div>
 
-  <%= f.button :submit, 'Grant consent', class: 'btn btn-primary' %>
+  <%= f.button :submit, t('onboarding.consent.create'), class: 'btn btn-primary' %>
 <% end %>

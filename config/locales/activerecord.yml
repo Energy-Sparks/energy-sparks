@@ -8,11 +8,42 @@ en:
         name: Name
         school_specific_description: School specific description
         summary: Summary
+      consent_grant:
+        job_title: Job title
+        name: Name
+        school_name: School name
       intervention_type:
         description: Description
         download_links: Download links
         name: Title
         summary: Summary
+      school:
+        activation_date: Activation date
+        address: Address
+        alternative_heating_biomass: Our school has a Biomass boiler
+        alternative_heating_district_heating: Our school has District Heating
+        alternative_heating_lpg: Our school is using LPG for heating
+        alternative_heating_oil: Our school uses Oil for heating
+        cooks_dinners_for_other_schools: The kitchen cooks dinners for other schools
+        cooks_dinners_for_other_schools_count: How many schools does your school cook dinners for?
+        cooks_dinners_onsite: Dinners are cooked on site
+        country: Country
+        enable_targets_feature: Enable targets feature
+        floor_area: Floor area in square metres
+        funding_status: Funding status
+        has_swimming_pool: Our school has its own swimming pool
+        indicated_has_solar_panels: Our school has solar PV panels
+        indicated_has_storage_heaters: Our school has night storage heaters
+        latitude: Latitude
+        longitude: Longitude
+        name: School name
+        number_of_pupils: Number of pupils
+        percentage_free_school_meals: Percentage of pupils eligible for free school meals at any time during the past 6 years
+        postcode: Postcode
+        public: Public
+        serves_dinners: Our school serves school dinners on site
+        urn: Unique Reference Number
+        website: Website
       transport_survey_response:
         id: Id
         journey_minutes: Journey minutes
@@ -37,6 +68,11 @@ en:
           walking_and_cycling: Walking and cycling
         image: Image
         name: Name
+      user:
+        email: Email
+        password: Password
+        password_confirmation: Password confirmation
+        staff_role_id: Role
     errors:
       messages:
         record_invalid: 'Validation failed: %{errors}'

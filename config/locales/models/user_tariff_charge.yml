@@ -1,0 +1,17 @@
+---
+en:
+  charge_type_units:
+    day: day
+    kva: kVA
+    kwh: kWh
+    month: month
+    quarter: quarter
+  user_tariff_charge:
+    available_capacity: Available capacity
+    data_collection_dcda_agent_charge: Data Collection DC/DA Agent Charge
+    nhh_automatic_meter_reading_charge: NHH automatic meter reading charge
+    nhh_metering_agent_charge: NHH metering agent charge
+    rate: Rate
+    unit_rate_charge_amber: Unit rate charge (amber)
+    unit_rate_charge_green: Unit rate charge (green)
+    unit_rate_charge_red: Unit rate charge (red)

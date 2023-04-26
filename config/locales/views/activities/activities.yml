@@ -49,6 +49,8 @@ en:
         one: and need to score %{count} point to reach %{place_to_reach} place
         other: and need to score %{count} points to reach %{place_to_reach} place
       choose_your_next_activity: Choose your next activity from the suggestions below.
+      prizes: Our top scoring schools this year could win up to £1250 towards an energy saving improvement of your choice
+      prizes_link: read more
       recorded_this_year:
         one: You've recorded 1 activity so far this year
         other: You've recorded %{count} activities so far this year

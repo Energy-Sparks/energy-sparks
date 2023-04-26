@@ -11,7 +11,17 @@
       <%= render 'shared/nav' %>
     <% end %>
 
-    <div class="application container <%= 'extra-padding' unless show_sub_nav?(@school, @hide_subnav) %>">
+    <div class="application container<%= conditional_application_container_classes %>">
+      <% if show_sub_nav?(@school, @hide_subnav) %>
+        <div class="page-breadcrumb">
+          <%= component 'breadcrumbs' do |c| %>
+            <% c.with_school(@school) %>
+            <% if @breadcrumbs.present? && @breadcrumbs.any? %>
+              <% c.with_items(@breadcrumbs) %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
       <%= render 'shared/alerts' if flash.any? %>
       <%= yield %>
     </div>

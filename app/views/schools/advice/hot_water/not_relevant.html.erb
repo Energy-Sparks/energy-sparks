@@ -1,0 +1,11 @@
+<%= render 'schools/advice/advice_page', school: @school, advice_pages: @advice_pages, advice_page: @advice_page, tab: @tab, data_warning: @data_warning do %>
+
+  <% if @has_swimming_pool %>
+    <h2><%= advice_t('hot_water.not_relevant.swimming_pool.title') %></h2>
+    <%= advice_t('hot_water.not_relevant.swimming_pool.reason') %>
+  <% else %>
+    <h2><%= advice_t('hot_water.not_relevant.other_reasons.title') %></h2>
+    <%= advice_t('hot_water.not_relevant.other_reasons.reason') %>
+  <% end %>
+
+<% end %>

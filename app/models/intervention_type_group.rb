@@ -13,13 +13,13 @@
 class InterventionTypeGroup < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
+
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :description, type: :string, fallbacks: { cy: :en }
 
   validates :name, presence: true, uniqueness: true
 
   has_many :intervention_types
-  has_one_attached :image
 
   scope :by_name, -> { i18n.order(name: :asc) }
   scope :active,  -> { where(active: true) }

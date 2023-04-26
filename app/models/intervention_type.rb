@@ -25,6 +25,7 @@ class InterventionType < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
   include Searchable
+  include TranslatableAttachment
 
   TX_REWRITEABLE_FIELDS = [:description_cy, :download_links_cy].freeze
 
@@ -39,7 +40,7 @@ class InterventionType < ApplicationRecord
   has_many :intervention_type_suggestions
   has_many :suggested_types, through: :intervention_type_suggestions
 
-  has_one_attached :image
+  t_has_one_attached :image
 
   has_many :link_rewrites, as: :rewriteable
 
@@ -57,6 +58,8 @@ class InterventionType < ApplicationRecord
   scope :display_order,         -> { order(:custom, :name) }
   scope :not_custom,            -> { where(custom: false) }
   scope :active_and_not_custom, -> { active.not_custom }
+  scope :custom_last,           -> { order(:custom) }
+  scope :between, ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
 
   before_save :copy_searchable_attributes
 

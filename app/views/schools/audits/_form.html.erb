@@ -4,19 +4,19 @@
 
   <%= f.input :title %>
 
-  <%= f.label 'Description', for: :description %>
+  <%= f.label t('schools.audits.form.description'), for: :description %>
 
   <div class="trix-wrapper">
     <%= f.rich_text_area :description %>
   </div>
 
-  <h2>Report</h2>
+  <h2><%= t('schools.audits.form.report') %></h2>
 
   <% if audit.file.attached? %>
-    Current file: <%= link_to @audit.file.filename, url_for(@audit.file), target: '_blank' %>
+    <%= t('schools.audits.form.current_file') %>: <%= link_to @audit.file.filename, url_for(@audit.file), target: '_blank' %>
     <%= f.hidden_field :file, value: f.object.file.signed_id %>
   <% else %>
-    No file attached yet
+    <%= t('schools.audits.form.no_file_attached_yet') %>
   <% end %>
 
   <br/>
@@ -28,28 +28,26 @@
   <br/>
 
   <%= f.input :published %>
-  <p class="small">Unpublished audits will not be viewable by the user, but will still score points and be visible in the school timeline.</p>
+  <p class="small"><%= t('schools.audits.form.unpublished_audits_message') %>.</p>
 
   <%= f.input :involved_pupils %>
-  <p class="small">If pupils were involved when you carried out your audit then the school will score <span class="badge badge-success"><%= Audits::AuditService::AUDIT_POINTS %></span> points</p>
+  <p class="small"><%= t('schools.audits.form.audit_points_message_html', audit_points: Audits::AuditService::AUDIT_POINTS) %></p>
 
-  <h2>Activities</h2>
+  <h2><%= t('schools.audits.form.activities') %></h2>
   <p class="small">
-    Add any number of pupil-lead activities. The full list can be explored from the
-    public <%= link_to "activity pages", activity_categories_path %>
+    <%= t('schools.audits.form.activities_message_html', activity_categories_path: activity_categories_path) %>.
   </p>
 
   <p class="small">
-    To add a custom activity, choose "Other" from the appropriate category and include some
-    notes for the user.
+    <%= t('schools.audits.form.add_a_custom_activity_message') %>.
   </p>
 
   <div class="row">
     <div class="col-md-5 mb-3">
-      <label for="activity_type">Activity Type</label>
+      <label for="activity_type"><%= t('schools.audits.form.activity_type') %></label>
     </div>
     <div class="col-md-5 mb-3">
-      <label for="notes">Notes</label>
+      <label for="notes"><%= t('schools.audits.form.notes') %></label>
     </div>
     <div class="col-md-2 mb-3">
     </div>
@@ -60,31 +58,29 @@
       <%= render 'audit_activity_type_fields', f: audit_activity_type %>
     <% end %>
     <div class="links">
-      <%= link_to_add_association 'Add activity', f, :audit_activity_types, class: 'btn' %>
+      <%= link_to_add_association t('schools.audits.form.add_activity'), f, :audit_activity_types, class: 'btn' %>
     </div>
   </div>
 
   <br/>
   <br/>
 
-  <h2>Actions</h2>
+  <h2><%= t('common.labels.actions') %></h2>
 
   <p class="small">
-    Add any number of adult energy saving actions. The full list can be explored from the
-    public <%= link_to "energy saving action pages", intervention_type_groups_path %>
+    <%= t('schools.audits.form.actions_message_1_html', intervention_type_groups_path: intervention_type_groups_path) %>
   </p>
 
   <p class="small">
-    To add a custom action, choose "Other" from the appropriate category and include some
-    notes for the user.
+    <%= t('schools.audits.form.actions_message_2') %>.
   </p>
 
   <div class="row">
     <div class="col-md-5 mb-3">
-      <label for="firstName">Action Type</label>
+      <label for="firstName"><%= t('schools.audits.form.action_type') %></label>
     </div>
     <div class="col-md-5 mb-3">
-      <label for="lastName">Notes</label>
+      <label for="lastName"><%= t('schools.audits.form.notes') %></label>
     </div>
     <div class="col-md-2 mb-3">
     </div>
@@ -95,7 +91,7 @@
       <%= render 'audit_intervention_type_fields', f: audit_intervention_type %>
     <% end %>
     <div class="links">
-      <%= link_to_add_association 'Add action', f, :audit_intervention_types, class: 'btn' %>
+      <%= link_to_add_association t('schools.audits.form.add_action'), f, :audit_intervention_types, class: 'btn' %>
     </div>
   </div>
 
@@ -103,11 +99,10 @@
   <br/>
 
   <p class="small">
-    Note: once created the school will automatically be awarded points for having received this
-    audit.
+    <%= t('schools.audits.form.audit_points_message') %>
   </p>
 
-  <%= f.submit @audit.persisted? ? 'Update' : 'Create', class: 'btn btn-success' %>
+  <%= f.submit @audit.persisted? ? t('common.labels.update') : t('common.labels.create'), class: 'btn btn-success' %>
 
-  <%= link_to "Cancel", @audit.persisted? ? school_audit_path(@school, @audit) : school_audits_path(@school), class: "btn btn-primary" %>
+  <%= link_to t('common.labels.cancel'), @audit.persisted? ? school_audit_path(@school, @audit) : school_audits_path(@school), class: "btn btn-primary" %>
 <% end %>

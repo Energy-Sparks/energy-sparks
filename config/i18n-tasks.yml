@@ -137,6 +137,16 @@ ignore_unused:
   - 'common.storage_heater'
   - 'chart_configuration.*'
   - 'pagy.*'
+  - 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_subtitle'
+  - 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_title'
+  - 'advice_pages.heating_control.analysis.meter_breakdown.chart_subtitle_html'
+  - 'advice_pages.heating_control.analysis.meter_breakdown.chart_title'
+  - 'advice_pages.*.analysis.title'
+  - 'advice_pages.*.insights.title'
+  - 'advice_pages.*.insights.next_steps'
+  - 'advice_pages.electricity_costs.charts.cost_1_year_accounting_breakdown*'
+  - 'advice_pages.gas_costs.charts.cost_1_year_accounting_breakdown*'
+  - 'advice_pages.tables.tooltips.bill_components.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'
@@ -169,3 +179,7 @@ ignore_unused:
 #
 # <%# I18n::Tasks.add_scanner 'I18n::Tasks::Scanners::PatternMapper',
 #       patterns: [['\bSpree\.t[( ]\s*%{key}', 'spree.%{key}']] %>
+ <% I18n::Tasks.add_scanner 'I18n::Tasks::Scanners::PatternMapper',
+       patterns: [
+         ['\badvice_t[( ]\s*%{key}', 'advice_pages.%{key}']
+       ] %>

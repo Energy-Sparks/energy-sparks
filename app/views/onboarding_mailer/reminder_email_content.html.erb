@@ -1,0 +1,11 @@
+<h1 class="mb-3"><%= t('onboarding_mailer.reminder_email.title') %></h1>
+
+<p><%= t('onboarding_mailer.reminder_email.paragraph_1_html', school_name: @school_onboarding.school_name) %></p>
+
+<div class="s-3"></div>
+
+<p><%= t('onboarding_mailer.reminder_email.paragraph_2') %><p>
+
+<%= link_to t('onboarding_mailer.reminder_email.paragraph_3'), onboarding_url(@school_onboarding), class: 'btn btn-primary mb-3 mt-3'%>
+
+<p class="small"><%= t('onboarding_mailer.reminder_email.the_energy_sparks_team') %><p>

@@ -2,17 +2,38 @@ module Amr
   class SingleReadConverter
     BLANK_THRESHOLD = 1
 
-    def initialize(single_reading_array)
+    #@param Array single_reading_array an array of readings
+    #@param boolean indexed whether the array should be interpreted in HH order, rather than via timestamp
+    def initialize(single_reading_array, indexed: false)
       @single_reading_array = single_reading_array
+      @indexed = indexed
       @results_array = []
     end
 
+    #Reading will be either:
+    #
+    #{:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019 00:30:00", :readings=>["14.4"]
+    #
+    # With timestamps starting at 00:00:00 or 00:30:00
+    #
+    # OR (indexed: true)
+    #
+    #{:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019", :readings=>["14.4"]
+    #{:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019", :readings=>["14.4"]
+    #
+    # ...where each consecutive reading is a new HH period
+    # For here we need to determine the period by counting the index into the array
     def perform
-      @single_reading_array.each do |single_reading|
+      @dates = Set.new
+
+      @single_reading_array.each_with_index do |single_reading, idx|
+        #keep a count of number of unique days
+        @dates.add(single_reading[:reading_date])
+
         reading_day = Date.parse(single_reading[:reading_date])
         reading = single_reading[:readings].first.to_f
 
-        reading_index = reading_index_of_record(reading_day, single_reading)
+        reading_index = reading_index_of_record(reading_day, single_reading, idx)
 
         if last_reading_of_day?(reading_index)
           reading_day = reading_day - 1.day
@@ -44,11 +65,15 @@ module Amr
       reading_index == -1
     end
 
-    def reading_index_of_record(reading_day, single_reading)
-      reading_day_time = Time.parse(single_reading[:reading_date]).utc
-      first_reading_time = Time.parse(reading_day.strftime('%Y-%m-%d')).utc + 30.minutes
+    def reading_index_of_record(reading_day, single_reading, index)
+      if @indexed
+        index < 48 ? index : index - ((@dates.size - 1) * 48)
+      else
+        reading_day_time = Time.parse(single_reading[:reading_date]).utc
+        first_reading_time = Time.parse(reading_day.strftime('%Y-%m-%d')).utc + 30.minutes
 
-      ((reading_day_time - first_reading_time) / 30.minutes).to_i
+        ((reading_day_time - first_reading_time) / 30.minutes).to_i
+      end
     end
 
     def day_from_results(reading_day, mpan_mprn)

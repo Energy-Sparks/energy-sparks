@@ -111,7 +111,7 @@ RSpec.describe 'calendars', :calendar, type: :system do
       visit calendar_path(calendar)
       expect(page).to have_content("inherited")
       click_on 'Edit'
-      fill_in 'Start date', with: parent_event.start_date - 1.day
+      fill_in 'Start Date', with: parent_event.start_date - 1.day
       click_on 'Update Calendar event'
 
       expect(page).to have_content("Event was successfully updated.")

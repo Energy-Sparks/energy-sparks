@@ -9,8 +9,12 @@
 #  updated_at :datetime         not null
 #
 class ConsentStatement < ApplicationRecord
+  extend Mobility
+  include TransifexSerialisable
+
   has_many :consent_grants, inverse_of: :consent_statement
-  has_rich_text :content
+
+  translates :content, backend: :action_text
 
   validates :title, :content, presence: true
   validates_uniqueness_of :current, if: :current

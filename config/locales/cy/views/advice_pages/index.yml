@@ -1,0 +1,44 @@
+cy:
+  advice_pages:
+    index:
+      alerts:
+        title: Rhybuddion diweddar
+        view_analysis: Gweler dadansoddiad
+      priorities:
+        intro: Blaenoriaethwch y gweithredoedd canlynol i leihau eich costau ac allyriadau carbon deuocsid.
+        table:
+          columns:
+            co2_reduction: Gostyngiad CO2
+            cost_saving: Arbed costau
+            fuel_type: Tanwydd
+        table_note: Defnyddiwch benawdau'r tabl i drefnu'r argymhellion. Nid yw arbedion cost posibl ar gyfer yr un math o danwydd yn ychwanegyn.
+        title: Camau gweithredu â blaenoriaeth
+      show:
+        how_do_you_compare: Sut mae'ch ysgol yn cymharu?
+        not_applicable: Dim cymhariaeth
+        not_available: Dim digon o ddata
+        notice_html: |-
+          <p>Chwilio am awgrymiadau ar sut i ddechrau lleihau eich defnydd o ynni?</p>
+          <p>Rydym wedi argymell rhai camau gweithredu â blaenoriaeth i'ch helpu i wneud cynnydd. Neu archwiliwch ein dadansoddiad manwl isod.</p>
+        notice_link: Gweld camau gweithredu â blaenoriaeth
+        page_summary:
+          baseload: Deall faint o ynni y mae eich ysgol yn ei ddefnyddio i gadw offer i redeg drwy'r amser
+          electricity_costs: Adolygwch faint mae eich ysgol wedi'i wario ar drydan yn ddiweddar
+          electricity_intraday: Archwiliwch sut mae eich defnydd o drydan yn amrywio yn ystod y dydd
+          electricity_long_term: Gweld tueddiadau hirdymor yn eich defnydd o drydan
+          electricity_out_of_hours: Faint o'ch defnydd trydan sydd y tu allan i oriau ysgol?
+          electricity_recent_changes: Sut mae eich defnydd o drydan wedi newid dros yr ychydig wythnosau diwethaf?
+          gas_costs: Adolygwch faint mae eich ysgol wedi'i wario ar nwy yn ddiweddar
+          gas_long_term: Gweld tueddiadau hirdymor yn eich defnydd o nwy
+          gas_out_of_hours: Faint o'ch defnydd nwy sydd y tu allan i oriau ysgol?
+          gas_recent_changes: Sut mae eich defnydd o nwy wedi newid dros yr ychydig wythnosau diwethaf?
+          heating_control: Adolygwch amseroedd eich gwres canolog a'ch defnydd o nwy i wresogi'r ysgol
+          hot_water: Deall effeithlonrwydd eich system dŵr poeth
+          solar_pv:
+            has_solar: Gweld maneteision cael paneli solar ar eich ysgol
+            no_solar: Gweld manteision posib gosod paneli solar ar eich ysgol
+          storage_heaters: Adolygwch faint o ynni rydych yn ei ddefnyddio i bweru'ch gwresogyddion stôr
+          thermostatic_control: Deall pa mor dda y mae eich defnydd o nwy yn addasu i dymheredd newidiol
+          total_energy_use: Crynodeb o'ch defnydd o drydan a nwy
+        title: Trosolwg
+      title: Cyngor effeithlonrwydd ynni

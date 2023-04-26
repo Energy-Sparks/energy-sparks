@@ -6,15 +6,17 @@ module Schools
     include SchoolAggregation
     include SchoolProgress
     include ActivityTypeFilterable
+    include DashboardTimeline
 
     skip_before_action :authenticate_user!, only: [:index, :show]
 
     before_action :check_aggregated_school_in_cache, only: :show
     before_action :redirect_if_disabled
+    before_action :set_breadcrumbs
 
     def index
-      if @school.has_current_target?
-        redirect_to school_school_target_path(@school, @school.current_target)
+      if @school.has_target?
+        redirect_to school_school_target_path(@school, @school.most_recent_target)
       else
         redirect_to new_school_school_target_path(@school)
       end
@@ -22,17 +24,24 @@ module Schools
 
     def show
       authorize! :show, @school_target
-      setup_activity_suggestions
-      @actions = Interventions::SuggestAction.new(@school).suggest
 
       unless @school_target.report_last_generated.nil?
         @progress_summary = progress_service.progress_summary
-        @prompt_to_review_target = prompt_to_review_target?
-        @fuel_types_changed = fuel_types_changed
         @overview_data = Schools::ManagementTableService.new(@school).management_data
       end
-      #list of fuel types to suggest estimates
-      @suggest_estimates_for_fuel_types = suggest_estimates_for_fuel_types(check_data: true)
+
+      if @school_target.current?
+        setup_activity_suggestions
+        @actions = Interventions::SuggestAction.new(@school).suggest
+        #list of fuel types to suggest estimates
+        @suggest_estimates_for_fuel_types = suggest_estimates_for_fuel_types(check_data: true)
+        @prompt_to_review_target = prompt_to_review_target?
+        @fuel_types_changed = fuel_types_changed
+        render :current
+      else
+        @observations = setup_target_timeline(@school_target)
+        render :expired
+      end
     end
 
     #create first or new target if current has expired
@@ -62,9 +71,13 @@ module Schools
 
     def edit
       authorize! :edit, @school_target
-      target_service.refresh_target(@school_target)
-      @prompt_to_review_target = prompt_to_review_target?
-      @fuel_types_changed = fuel_types_changed
+      if @school_target.expired?
+        redirect_to school_school_target_path(@school, @school_target), notice: 'Cannot edit an expired target'
+      else
+        target_service.refresh_target(@school_target)
+        @prompt_to_review_target = prompt_to_review_target?
+        @fuel_types_changed = fuel_types_changed
+      end
     end
 
     def update
@@ -85,6 +98,10 @@ module Schools
     end
 
     private
+
+    def set_breadcrumbs
+      @breadcrumbs = [{ name: I18n.t('manage_school_menu.review_targets') }]
+    end
 
     def school_target_params
       params.require(:school_target).permit(:electricity, :gas, :storage_heaters, :start_date, :target_date, :school_id)

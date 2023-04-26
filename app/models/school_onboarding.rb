@@ -2,26 +2,25 @@
 #
 # Table name: school_onboardings
 #
-#  contact_email                 :string           not null
-#  created_at                    :datetime         not null
-#  created_by_id                 :bigint(8)
-#  created_user_id               :bigint(8)
-#  dark_sky_area_id              :bigint(8)
-#  default_chart_preference      :integer          default("default"), not null
-#  id                            :bigint(8)        not null, primary key
-#  notes                         :text
-#  school_group_id               :bigint(8)
-#  school_id                     :bigint(8)
-#  school_name                   :string           not null
-#  school_will_be_public         :boolean          default(TRUE)
-#  scoreboard_id                 :bigint(8)
-#  solar_pv_tuos_area_id         :bigint(8)
-#  subscribe_to_newsletter       :boolean          default(TRUE)
-#  subscribe_users_to_newsletter :bigint(8)        default([]), not null, is an Array
-#  template_calendar_id          :bigint(8)
-#  updated_at                    :datetime         not null
-#  uuid                          :string           not null
-#  weather_station_id            :bigint(8)
+#  contact_email            :string           not null
+#  country                  :integer          default("england"), not null
+#  created_at               :datetime         not null
+#  created_by_id            :bigint(8)
+#  created_user_id          :bigint(8)
+#  dark_sky_area_id         :bigint(8)
+#  default_chart_preference :integer          default("default"), not null
+#  id                       :bigint(8)        not null, primary key
+#  notes                    :text
+#  school_group_id          :bigint(8)
+#  school_id                :bigint(8)
+#  school_name              :string           not null
+#  school_will_be_public    :boolean          default(TRUE)
+#  scoreboard_id            :bigint(8)
+#  solar_pv_tuos_area_id    :bigint(8)
+#  template_calendar_id     :bigint(8)
+#  updated_at               :datetime         not null
+#  uuid                     :string           not null
+#  weather_station_id       :bigint(8)
 #
 # Indexes
 #
@@ -66,6 +65,7 @@ class SchoolOnboarding < ApplicationRecord
   scope :for_school_type, ->(school_type) { joins(:school).where(schools: { school_type: school_type }) }
 
   enum default_chart_preference: [:default, :carbon, :usage, :cost]
+  enum country: School.countries
 
   def has_event?(event_name)
     events.where(event: event_name).any?
@@ -116,11 +116,30 @@ class SchoolOnboarding < ApplicationRecord
     pupil_account_created?
   end
 
+  def email_locales
+    country == 'wales' ? [:en, :cy] : [:en]
+  end
+
   def to_param
     uuid
   end
 
   def page_anchor
     school_group.slug if school_group
+  end
+
+  def onboarding_completed_on
+    events.onboarding_complete.minimum(:created_at)
+  end
+
+  def first_made_data_enabled
+    events.onboarding_data_enabled.minimum(:created_at)
+  end
+
+  def days_until_data_enabled
+    return nil unless complete?
+    data_enabled_on = first_made_data_enabled
+    return nil unless data_enabled_on.present?
+    (data_enabled_on.to_date - onboarding_completed_on.to_date).to_i
   end
 end

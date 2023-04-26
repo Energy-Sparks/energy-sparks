@@ -4,12 +4,12 @@
   <%= hidden_field :school_target, :target_date %>
   <%= hidden_field :school_target, :school_id %>
 
-  <%= render 'shared/errors', subject: school_target, subject_name: 'School target' %>
+  <%= render 'shared/errors', subject: school_target, subject_name: t('schools.school_targets.form.school_target') %>
 
   <% if target_service.enough_data_for_electricity? %>
     <div class="input-group col-12">
       <div class="col-sm-6">
-        <%= f.label :electricity, "Reducing electricity usage by", class: "form-label" %>
+        <%= f.label :electricity, t('schools.school_targets.form.reducing_electricity_usage_by'), class: "form-label" %>
       </div>
       <div class="col-sm-2">
         <%= f.text_field :electricity, class: 'form-control', value: school_target.electricity || 0.0, pattern: '[0-9.]+' %>
@@ -23,7 +23,7 @@
   <% if target_service.enough_data_for_gas? %>
     <div class="input-group col-12">
       <div class="col-sm-6">
-        <%= f.label :gas, "Reducing gas usage by", class: "form-label" %>
+        <%= f.label :gas, t('schools.school_targets.form.reducing_gas_usage_by'), class: "form-label" %>
       </div>
       <div class="col-sm-2">
         <%= f.text_field :gas, class: 'form-control', value: school_target.gas || 0.0, pattern: '[0-9.]+'  %>
@@ -37,7 +37,7 @@
   <% if target_service.enough_data_for_storage_heater? %>
     <div class="input-group col-12">
       <div class="col-sm-6">
-        <%= f.label :storage_heaters, "Reducing storage heater usage by", class: "form-label" %>
+        <%= f.label :storage_heaters,  t('schools.school_targets.form.reducing_storage_heater_usage_by'), class: "form-label" %>
       </div>
       <div class="col-sm-2">
         <%= f.text_field :storage_heaters, class: 'form-control', value: school_target.storage_heaters || 0.0, pattern: '[0-9.]+' %>
@@ -51,25 +51,22 @@
   <div class="mt-4">
     <% if !school_target.persisted? %>
       <p>
-        Your new target will run for 12 months from the date you specify.<br>
+        <%= t('schools.school_targets.form.your_new_target_will_run_for_12_months') %>.<br>
       </p>
     <% else %>
       <p>
-        You are currenly aiming to achieve your target by <strong><%= nice_dates(school_target.target_date) %></strong>.<br>You can
-        revise the start of the 12 month period.
+        <%= t('schools.school_targets.form.you_are_currently_aiming_to_achieve_your_target_by_html', target_date: nice_dates(school_target.target_date)) %>.
       </p>
     <% end %>
   </div>
 
   <div class="input-group col-12">
     <div class="col-sm-6">
-      <%= f.label :start_date, "Start date", class: "form-label" %>
+      <%= f.label :start_date, t('schools.school_targets.form.start_date'), class: "form-label" %>
     </div>
-    <div class="col-sm-3">
-      <%= f.date_field :start_date, class: 'form-control', value: school_target.start_date %>
+    <div class="col-sm-4">
+      <%= component 'date_picker_form', form: f, field_name: :start_date, value: school_target.start_date&.strftime('%d/%m/%Y') %>
     </div>
   </div>
-
-  <%= f.submit school_target.persisted? ? "Update our target" : "Set this target", class: "btn btn-primary" %>
-
+  <%= f.submit school_target.persisted? ? t('schools.school_targets.form.update_our_target') : t('schools.school_targets.form.set_this_target'), class: "btn btn-primary" %>
 <% end %>

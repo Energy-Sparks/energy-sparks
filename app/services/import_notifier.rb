@@ -4,48 +4,44 @@ class ImportNotifier
   end
 
   def meters_running_behind
-    find_with_config do |config|
-      if config.import_warning_days.present?
-        config.meters.select {|meter| meter.last_validated_reading && meter.last_validated_reading < config.import_warning_days.days.ago}
-      else
-        []
-      end
-    end
+    meters = Meter.active
+    .joins(:amr_data_feed_readings)
+    .where("amr_data_feed_readings.created_at >= NOW() - INTERVAL '1 year'")
+    .joins("INNER JOIN amr_data_feed_configs on amr_data_feed_readings.amr_data_feed_config_id = amr_data_feed_configs.id")
+    .where.not("amr_data_feed_configs.import_warning_days" => nil)
+    .joins(:amr_validated_readings)
+    .group('meters.id')
+    .having("MAX(amr_validated_readings.reading_date) < NOW() - MIN(amr_data_feed_configs.import_warning_days) * '1 day'::interval")
+    meters.sort_by {|m| [m.school.area_name, m.meter_type, m.school_name, m.mpan_mprn]}
   end
 
+  #data feed readings, creating in last 24 hours, where the readings are ALL blank
+  #nil, numeric, string values are not blank, so this equates to an array of ['']
   def meters_with_blank_data(from: 24.hours.ago, to: Time.zone.now)
-    find_with_config do |config|
-      import_logs = config.amr_data_feed_import_logs.where('import_time BETWEEN ? AND ?', from, to).order(:import_time)
-      all_log_meters = import_logs.map do |log|
-        log.amr_data_feed_readings.select {|reading| reading.readings.blank? || reading.readings.all?(&:blank?)}.map(&:meter).compact
-      end
-      all_log_meters.flatten.uniq
-    end
+    meters = Meter.active
+    .joins(:amr_data_feed_readings)
+    .where("amr_data_feed_readings.readings = ARRAY[?]", Array.new(48, '')) #where readings is empty string
+    .joins("INNER JOIN amr_data_feed_import_logs on amr_data_feed_readings.amr_data_feed_import_log_id = amr_data_feed_import_logs.id") #manually join to import logs
+    .where('import_time BETWEEN :from AND :to', from: from, to: to) #limit to period
+    .distinct #distinct meters
+    meters.sort_by {|m| [m.school.area_name, m.meter_type, m.school_name, m.mpan_mprn]}
   end
 
+  #data feed readings, creating in last 24 hours, where the readings are ALL 0 or 0.0
+  #this version is slightly different to original as that used ruby to cast values to a float
+  #this meant any dodgy chars, e.g. '-', where treated as 0.0
   def meters_with_zero_data(from: 24.hours.ago, to: Time.zone.now)
-    find_with_config do |config|
-      import_logs = config.amr_data_feed_import_logs.where('import_time BETWEEN ? AND ?', from, to).order(:import_time)
-      all_log_meters = import_logs.map do |log|
-        log.amr_data_feed_readings.select {|reading| reading.readings.present? && reading.readings.all? {|x48| x48.to_f == 0.0 rescue true}}.map(&:meter).compact
-      end
-      uniq_log_meters = all_log_meters.flatten.uniq
-      # exported solar PV is legitimately zero on some days
-      uniq_log_meters.reject(&:exported_solar_pv?)
-    end
+    meters = Meter.active
+    .where.not(meter_type: :exported_solar_pv) # exported solar PV is legitimately zero on some days
+    .joins(:amr_data_feed_readings)
+    .where("amr_data_feed_readings.readings = ARRAY[?] OR amr_data_feed_readings.readings = ARRAY[?]", Array.new(48, '0'), Array.new(48, '0.0')) #where readings are 0, or 0.0
+    .joins("INNER JOIN amr_data_feed_import_logs on amr_data_feed_readings.amr_data_feed_import_log_id = amr_data_feed_import_logs.id") #manually join to import logs
+    .where('import_time BETWEEN :from AND :to', from: from, to: to) #limit to period
+    .distinct #distinct meters
+    meters.sort_by {|m| [m.school.area_name, m.meter_type, m.school_name, m.mpan_mprn]}
   end
 
   def notify(from:, to:)
     ImportMailer.with(meters_running_behind: meters_running_behind, meters_with_blank_data: meters_with_blank_data(from: from, to: to), meters_with_zero_data: meters_with_zero_data(from: from, to: to), description: @description).import_summary.deliver_now
-  end
-
-  private
-
-  def find_with_config
-    meters = []
-    AmrDataFeedConfig.order(:description).each do |config|
-      meters = meters | yield(config)
-    end
-    meters.reject {|m| !m.active? }.sort_by {|m| [m.school.area_name, m.meter_type, m.school_name, m.mpan_mprn]}
   end
 end

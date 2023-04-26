@@ -32,6 +32,10 @@ class UserTariff < ApplicationRecord
   scope :electricity, -> { where(fuel_type: 'electricity') }
   scope :gas, -> { where(fuel_type: 'gas') }
 
+  scope :has_prices, -> { where(id: UserTariffPrice.select(:user_tariff_id)) }
+  scope :has_charges, -> { where(id: UserTariffCharge.select(:user_tariff_id)) }
+  scope :complete, -> { has_prices.or(has_charges) }
+
   def electricity?
     fuel_type.to_sym == :electricity
   end

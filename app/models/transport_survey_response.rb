@@ -25,6 +25,7 @@
 #
 class TransportSurveyResponse < ApplicationRecord
   extend ActiveModel::Translation
+  include CsvExportable
 
   belongs_to :transport_survey
   belongs_to :transport_type, inverse_of: :responses
@@ -67,27 +68,6 @@ class TransportSurveyResponse < ApplicationRecord
 
   def self.csv_attributes
     %w{id run_identifier weather_name weather_image journey_minutes transport_type.name transport_type.image passengers surveyed_at}
-  end
-
-  def self.csv_headers
-    csv_attributes.map do |attr|
-      (attr, relation) = attr.split('.').reverse
-      if relation
-        klass = reflections[relation].klass
-        "#{klass.model_name.human} #{klass.human_attribute_name(attr).downcase}"
-      else
-        human_attribute_name(attr)
-      end
-    end
-  end
-
-  def self.to_csv
-    CSV.generate(headers: true) do |csv|
-      csv << csv_headers
-      all.find_each do |response|
-        csv << csv_attributes.map { |attr| attr.split('.').inject(response, :try) }
-      end
-    end
   end
 
   def carbon

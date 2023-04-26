@@ -1,0 +1,14 @@
+cy:
+  email_unsubscription:
+    new:
+      please_let_us_know_why_message: Rhowch wybod i ni pam a byddwn yn defnyddio'r wybodaeth hon i wella'n gwasanaeth
+      unsubscribe: Dad-danysgrifio
+      unsubscription_period:
+        forever: Dydw i ddim eisiau eu gweld nhw eto
+        label: 'Peidiwch â dangos rhybuddion fel hyn i mi ar gyfer:'
+        one_month: Un mis
+        six_months: 6 mis
+      were_sorry_message: Mae'n ddrwg gennym nad ydych am dderbyn rhybuddion fel hwn drwy e-bost
+    show:
+      paragraph_1: Ni ddylech dderbyn rhybuddion fel hyn yn eich e-byst eto. Byddwn yn defnyddio'r wybodaeth rydych wedi rhoi'i i ni i wella swyddogaeth ein rhybuddion ac anfon rhybuddion mwy perthnasol yn y dyfodol
+      title: Diolch am eich adborth

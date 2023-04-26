@@ -23,6 +23,10 @@ en:
     - Oct
     - Nov
     - Dec
+    calendar_period:
+      all_year: All Year
+      only_holidays: Only Holidays
+      term_times: Term Times
     day_names:
     - Sunday
     - Monday
@@ -45,6 +49,10 @@ en:
     - October
     - November
     - December
+    other:
+      everyday: Everyday
+      weekdays: Weekdays
+      weekends: Weekends
   support:
     array:
       last_word_connector: ", and "

@@ -1,3 +1,6 @@
-<%= f.input :name, required: :true %>
-<%= f.input :email, required: :true %>
-<%= f.input :staff_role_id, label: 'Role', required: :true, collection: StaffRole.order(:title), label_method: :translated_title, hint: 'What is their primary role in relation to Energy Sparks?'%>
+<%= f.input :name, required: :true, label: t('schools.users.form.name') %>
+<%= f.input :email, required: :true, label: t('schools.users.form.email') %>
+<%= f.input :staff_role_id, label: t('schools.users.form.role'), required: :true, collection: StaffRole.translated_names_and_ids, hint: t('schools.users.form.what_is_their_primary_role') %>
+<% if EnergySparks::FeatureFlags.active?(:redirect_to_preferred_locale) %>
+  <%= f.input :preferred_locale, label: t('schools.users.form.preferred_locale'), required: :true, collection: I18n.available_locales.map { |locale| [I18n.t("languages.#{locale}"), locale] }, prompt: '', hint: t('schools.users.form.preferred_locale_hint') %>
+<% end %>

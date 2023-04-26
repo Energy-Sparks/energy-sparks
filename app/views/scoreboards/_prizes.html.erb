@@ -1,0 +1,5 @@
+<%= render 'schools/dashboard/info_bar', colour: class_for_alert_colour(:neutral),
+    icon: 'award fa-3x' do %>
+    <p><%= t('scoreboards.prizes_para_1') %></p>
+    <p><%= t('scoreboards.prizes_para_2') %> - <%= link_to t('scoreboards.prizes_link'), 'https://blog.energysparks.uk/fantastic-prizes-to-motivate-pupils-to-take-energy-saving-action/' %></p>
+<% end %>

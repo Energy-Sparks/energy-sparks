@@ -6,17 +6,17 @@ cy:
       you_have_already_completed_this_programme: Rydych chi eisoes wedi cwblhau'r rhaglen hon
       you_have_already_started_this_programme: Rydych chi eisoes wedi dechrau'r rhaglen hon
     completed:
-      you_completed_this_programme_on: Gwnaethoch chii gwblhau'r rhaglen hon ar
+      you_completed_this_programme_on: Gwnaethoch chi gwblhau'r rhaglen hon ar
     index:
       introduction_1: Rhaglenni byr o weithgareddau cysylltiedig y gall disgyblion weithio drwyddynt gam wrth gam i gael mwy o effaith
-      introduction_2: Fel defnyddiwr Energy Sparks gallwch chi gofrestru ar unrhyw un o'n rhaglenni a chofnodi gweithgareddau i olrhain eich cynnydd a sgorio pwyntiau ar gyfer eich ysgol.
+      introduction_2: Fel defnyddiwr Sbarcynni gallwch chi gofrestru ar unrhyw un o'n rhaglenni a chofnodi gweithgareddau i olrhain eich cynnydd a sgorio pwyntiau ar gyfer eich ysgol.
       page_title: Rhaglenni
       title: Ein Rhaglenni Arbed Ynni
     prompt:
       start: Dechrau
       you_can_enrol_your_school_in_this_programme: Gallwch chi gofrestru eich ysgol yn y rhaglen hon
     prompt_login:
-      are_you_an_energy_sparks_user_html: Ydych chi'n ddefnyddiwr Energy Sparks?<br>Mewngofnodwch a chofrestrwch eich ysgol ar y rhaglen hon, neu cofnodwch eich cynnydd diweddar
+      are_you_an_energy_sparks_user_html: Ydych chi'n ddefnyddiwr Sbarcynni?<br>Mewngofnodwch a chofrestrwch eich ysgol ar y rhaglen hon, neu cofnodwch eich cynnydd diweddar
       sign_in_now: Mewngofnodi nawr
     show:
       activities: Gweithgareddau

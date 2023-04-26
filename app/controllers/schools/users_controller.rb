@@ -4,6 +4,8 @@ module Schools
 
     load_and_authorize_resource :school
 
+    before_action :set_breadcrumbs
+
     def index
       authorize! :manage_users, @school
       @users = @school.users
@@ -65,8 +67,12 @@ module Schools
 
     private
 
+    def set_breadcrumbs
+      @breadcrumbs = [{ name: I18n.t('manage_school_menu.manage_users') }]
+    end
+
     def user_params
-      params.require(:user).permit(:name, :email, :staff_role_id, :role)
+      params.require(:user).permit(:name, :email, :staff_role_id, :role, :preferred_locale)
     end
   end
 end

@@ -12,22 +12,21 @@
 
   <%= f.input :activity_category_id, as: :select, collection: ActivityCategory.all, include_blank: false %>
 
-  <%= f.label 'Image' %>
-  <p class="small">This image will appear in the right-hand panel next to both non-specific and school-specific descriptions.</p>
-
-  <div class="upload-preview">
-    <div class="col-md-3">
-      <% if !f.object.image.blank? %>
-        <%= image_tag f.object.image, width: '300px' %>
-      <% else %>
-        <%= image_tag '1x1.png' %>
-      <% end %>
+  <%= render 'admin/shared/locale_tabs', f: f, field: :image do |locale| %>
+    <%= f.label 'Image' %>
+    <p class="small">This image will appear in the right-hand panel next to both non-specific and school-specific descriptions.</p>
+    <div class="upload-preview">
+      <div class="col-md-3">
+        <% t_image = ('image_' + locale.to_s).to_sym %>
+        <% if !f.object.send(t_image).blank? %>
+          <%= image_tag f.object.send(t_image), width: '300px' %>
+        <% else %>
+          <%= image_tag '1x1.png' %>
+        <% end %>
+      </div>
     </div>
-  </div>
-
-  <p>
-    <%= f.input :image, label: false %>
-  </p>
+    <%= f.input t_field(:image, locale), label: false %>
+  <% end %>
 
   <%= render 'admin/shared/locale_tabs', f: f, field: :summary do |locale| %>
     <%= f.input t_field(:summary, locale), label: ActivityType.human_attribute_name(:summary), as: :string %>

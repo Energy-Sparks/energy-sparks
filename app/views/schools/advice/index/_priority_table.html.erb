@@ -1,0 +1,40 @@
+<table class="table table-borderless table-sorted advice-table advice-priority-table">
+  <thead>
+    <tr>
+      <th><%= t('advice_pages.index.priorities.table.columns.fuel_type') %></th>
+      <th data-orderable="false"></th>
+      <th><%= t('advice_pages.index.priorities.table.columns.cost_saving') %></th>
+      <th><%= t('advice_pages.index.priorities.table.columns.co2_reduction') %></th>
+    </tr>
+  </thead>
+  <tbody id="priority">
+    <% management_priorities.each do |priority| %>
+      <tr>
+        <td data-order="<%= priority.alert.alert_type.fuel_type %>">
+          <span class="<%=fuel_type_class(priority.alert.alert_type.fuel_type)%>">
+            <%= fa_icon alert_icon(priority.alert,'fa-2x') %>
+          </span>
+        </td>
+        <td>
+          <h4>
+            <% if priority.alert.advice_page.present? %>
+              <%= link_to priority.management_priorities_title, advice_page_path(school, priority.alert.advice_page, priority.alert.alert_type.advice_page_tab_for_link_to, anchor: priority.alert.alert_type.link_to_section) %>
+            <% else %>
+              <%= priority.management_priorities_title %>
+            <% end %>
+          </h4>
+        </td>
+        <td>
+          <h4>
+            <%= priority.template_variables[:average_one_year_saving_gbp] %>
+          </h4>
+        </td>
+        <td data-order="<%= priority.template_variables[:one_year_saving_co2].gsub(/(,|kg CO2)/, '').to_i %>">
+          <h4>
+            <%= priority.template_variables[:one_year_saving_co2] %>
+          </h4>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

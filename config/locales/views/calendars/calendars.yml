@@ -1,0 +1,56 @@
+---
+en:
+  calendars:
+    calendar_actions:
+      add_new_event: Add new event
+    calendar_events:
+      edit:
+        title: Edit an event
+      form:
+        event_type: Event Type
+      index:
+        add_new_event: Add new event
+        calendar_events_list: This shows the calendar events in a list - click on the title to edit the event
+        calendar_view: Calendar view
+      new:
+        title: Create a new event
+    calendar_links:
+      view_older_events: View all older events
+      view_older_events_and_bank_holidays: View all older events and bank holidays
+    current_events:
+      end_date: End Date
+      last_updated: Last Updated
+      start_date: Start Date
+      status: Status
+      type: Type
+    event_modal:
+      calendar_event: Calendar Event
+      end_date: End Date
+      event_type: Event Type
+      save_changes: Save Changes
+      start_date: Start Date
+    legend:
+      bank_holiday: Bank Holiday
+      holiday: Holiday
+      in_school: in school
+      inset_day: Inset Day
+      out_school: out school
+      term_time: Term Time
+      title: Legend
+    resync:
+      calendar: Calendar
+      error: Error
+      events_created: Events created
+      events_deleted: Events deleted
+      failed_to_resync: Failed to resync
+      successfully_resynced: Successfully resynced
+      title: Resync completed for %{calendar_title}
+    show:
+      add_new_event: Add new event
+      all_calendars: All calendars
+      amend_existing_events_message: You can amend existing events, like the term times by clicking on them, updating the dates and saving the changes
+      calendar_view: Calendar view
+      confirm_message: This will copy all events that have been edited in the 7 days to child calendars. Are you sure?
+      current_events: Current events
+      title: "%{calendar_title} Calendar"
+      update_dependent_schools: Update dependent schools
