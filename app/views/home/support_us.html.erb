@@ -10,7 +10,7 @@
   <div class="row">
     <div class="col-md-12 pb-6">
       <%= t('support_us.content_html', school_count: School.active.count) %>
-      <p><%= link_to t('support_us.our_existing_funders_and_partners'), team_path + '#partners' %></p>
+      <p><%= link_to t('support_us.our_existing_funders_and_partners'), funders_path %></p>
       <%= render 'home/testimonial',
         quote:  t('support_us.quote.text'),
         by: 'Dan McCallum',
