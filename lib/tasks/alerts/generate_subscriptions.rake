@@ -6,7 +6,7 @@ namespace :alerts do
 
     schools.each do |school|
       puts "Running alert subscription generation for #{school.name}, including #{school.subscription_frequency.to_sentence} subscriptions"
-      GenerateSubscriptionsJob.perform(school_id: school.id)
+      GenerateSubscriptionsJob.perform_later(school_id: school.id)
     end
 
     puts "#{DateTime.now.utc} Generate subscriptions end"
