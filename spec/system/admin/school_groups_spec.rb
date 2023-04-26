@@ -469,6 +469,44 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       end
     end
 
+    describe "bulk updating charts" do
+      let!(:school_group) { create(:school_group, name: 'BANES', public: true, default_chart_preference: "default") }
+      let!(:school_group2) { create(:school_group, name: 'BANES 2', public: true, default_chart_preference: "default") }
+      before do
+      create :school, active: false, school_group: school_group, chart_preference: 'default'
+      create :school, active: false, school_group: school_group, chart_preference: 'carbon'
+      create :school, active: false, school_group: school_group, chart_preference: 'usage'
+
+      create :school, active: false, school_group: school_group2, chart_preference: 'default'
+      create :school, active: false, school_group: school_group2, chart_preference: 'carbon'
+      create :school, active: false, school_group: school_group2, chart_preference: 'usage'
+
+
+        click_on 'Edit School Groups'
+        within "table" do
+          click_on 'Manage', match: :first
+        end
+        click_on 'Chart updates'
+      end
+
+      it 'shows a form to select default chart units' do
+        expect(school_group.default_chart_preference).to eq('default')
+        expect(school_group2.default_chart_preference).to eq('default')
+        expect(school_group.schools.map(&:chart_preference).sort).to eq(['carbon','default','usage'])
+        expect(school_group2.schools.map(&:chart_preference).sort).to eq(['carbon','default','usage'])
+        expect(page).to have_content("Bulk chart updates: BANES")
+        SchoolGroup.default_chart_preferences.keys.each do |preference|
+          expect(page).to have_content(I18n.t("admin.school_groups.default_chart_preference.#{preference}"))
+        end
+        choose 'Display chart data in £, where available'
+        click_on 'Update all schools in this group'
+        expect(school_group.reload.default_chart_preference).to eq('cost')
+        expect(school_group2.reload.default_chart_preference).to eq('default')
+        expect(school_group.schools.map(&:chart_preference).sort).to eq(['cost','cost','cost'])
+        expect(school_group2.schools.map(&:chart_preference).sort).to eq(['carbon','default','usage'])
+      end
+    end
+
     describe "Managing partners" do
       let!(:partners) { 3.times.collect { create(:partner) } }
       let!(:school_group)      { create(:school_group, name: 'BANES') }
