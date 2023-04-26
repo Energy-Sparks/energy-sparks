@@ -5,13 +5,8 @@ namespace :alerts do
     schools = School.data_enabled.process_data.visible.with_config
 
     schools.each do |school|
-      subscription_frequency = if school.holiday_approaching?
-                                 [:weekly, :termly, :before_each_holiday]
-                               else
-                                 [:weekly]
-                               end
-      puts "Running alert subscription generation for #{school.name}, including #{subscription_frequency.to_sentence} subscriptions"
-      Alerts::GenerateSubscriptions.new(school).perform(subscription_frequency: subscription_frequency)
+      puts "Running alert subscription generation for #{school.name}, including #{school.subscription_frequency.to_sentence} subscriptions"
+      GenerateSubscriptionsJob.perform(school_id: school.id)
     end
 
     puts "#{DateTime.now.utc} Generate subscriptions end"
