@@ -567,6 +567,14 @@ class School < ApplicationRecord
     country == 'wales' ? [:en, :cy] : [:en]
   end
 
+  def subscription_frequency
+    if holiday_approaching?
+      [:weekly, :termly, :before_each_holiday]
+    else
+      [:weekly]
+    end
+  end
+
   private
 
   def add_joining_observation
