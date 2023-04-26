@@ -22,13 +22,16 @@ module SchoolGroups
       end
     end
 
-    def initialize(school_group, meter_scope = {})
+    attr_reader :school_group, :full_detail, :all_meters
+
+    def initialize(school_group, full_detail: true, all_meters: false)
       @school_group = school_group
-      @meter_scope = meter_scope
+      @full_detail = full_detail
+      @all_meters = all_meters
     end
 
     def csv_filename
-      "#{@school_group.name}-meter-report".parameterize + '.csv'
+      "#{school_group.name}-meter-report".parameterize + '.csv'
     end
 
     def csv
@@ -54,22 +57,21 @@ module SchoolGroups
       end
     end
 
-    def meters(full_detail: true)
-      if full_detail
-        Meter.where(@meter_scope)
-          .joins(:school)
-          .joins(:school_group)
-          .where(schools: { school_group: @school_group })
-          .with_counts
-          .order("schools.name", :mpan_mprn)
-      else
-        Meter.where(@meter_scope)
-          .joins(:school)
-          .joins(:school_group)
-          .where(schools: { school_group: @school_group })
-          .with_reading_dates
-          .order("schools.name", :mpan_mprn)
-      end
+    def meters
+      @meters ||= meter_scope
+    end
+
+    private
+
+    def meter_scope
+      scope = Meter.all
+        .joins(:school)
+        .joins(:school_group)
+        .where(schools: { school_group: school_group })
+        .order("schools.name", :mpan_mprn)
+      scope = full_detail ? scope.with_counts : scope.with_reading_dates
+      scope = all_meters ? scope : scope.active
+      scope
     end
   end
 end

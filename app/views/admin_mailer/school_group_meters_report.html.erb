@@ -1,0 +1,68 @@
+<h1><%= @school_group.name %> meter report</h1>
+
+<div class="row">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>School</th>
+        <th>Supply</th>
+        <th>Number</th>
+        <th>Readings calendar</th>
+        <% if params[:all_meters] %>
+          <th>Active</th>
+        <% end %>
+        <th>First validated reading</th>
+        <th>Last validated reading</th>
+        <th>Large gaps (last 2 years)</th>
+        <th>Modified readings (last 2 years)</th>
+        <th>Zero reading days</th>
+        <th>Issues</th>
+        <th>Admin meter status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @meters.each do |meter| %>
+        <tr>
+          <td><%= link_to(meter.school.name, school_url(meter.school)) %></td>
+          <td><%= fa_icon fuel_type_icon(meter.meter_type) %></td>
+          <td>
+            <%= link_to(meter.mpan_mprn, school_meter_url(meter.school, meter)) %>
+          </td>
+          <td><%= link_to(meter.name.present? ? meter.name : meter.meter_type.to_s.humanize, admin_reports_amr_validated_reading_url(meter)) if AmrValidatedReading.where(meter_id: meter.id).any? %></td>
+          <% if params[:all_meters] %>
+            <td><%= meter.active ? 'Active' : 'Deprecated' %></td>
+          <% end %>
+          <td><%= nice_dates(meter.first_validated_reading_date) %></td>
+          <td class=<%= class_for_last_date(meter.last_validated_reading_date) %>><%= nice_dates(meter.last_validated_reading_date) %></td>
+          <td class="gappy-dates"><%= date_range_from_reading_gaps(meter.gappy_validated_readings) %></td>
+          <td class="modified-dates"><%= meter.modified_validated_readings.count %></td>
+          <td class="<%= meter.zero_reading_days_warning? ? 'table-danger' : ''%>">
+            <%= y_n(meter.zero_reading_days.any?) %>
+          </td>
+          <td>
+           <% if meter.issues.any? %>
+              <%= render 'admin/issues/modal', meter: meter, view_mode: true %>
+            <% end %>
+          </td>
+          <td>
+            <%= meter.admin_meter_status_label %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<h3>Loader Legend</h3>
+<div class="row p-2">
+  <div class="col-2 table-danger"></div>
+  <div class="col-10">No reading for 30 days</div>
+</div>
+<div class="row p-2">
+  <div class="col-2 table-warning"></div>
+  <div class="col-10">No reading for 5 days</div>
+</div>
+<div class="row p-2">
+  <div class="col-2 table-success"></div>
+  <div class="col-10">Recent reading</div>
+</div>

@@ -11,7 +11,7 @@
 <p>You can request this school group meter report as CSV</p>
 <%= link_to "#{fa_icon('envelope')} Meter report".html_safe, deliver_admin_school_group_meter_report_path(@school_group, all_meters: params[:all_meters]) , class: 'btn btn-sm', title: "Email meter report csv", method: :update, data: { confirm: "Are you sure you want to send the meter report to #{current_user.email}?" } %>
 
-<% unless @meter_scope.empty? %>
+<% unless params[:all_meters] %>
   <h2>Meters</h2>
   <p>This shows all active meters by default, if you would like deprecated meters to be included: <%= link_to 'Show all meters', admin_school_group_meter_report_path(@school_group, all_meters: true), class: 'btn' %></p>
 <% end %>
@@ -38,7 +38,7 @@
         <th>Supply</th>
         <th>Number</th>
         <th>Readings calendar</th>
-        <% if @meter_scope.empty? %>
+        <% if params[:all_meters] %>
           <th>Active</th>
         <% end %>
         <th>First validated reading</th>
@@ -59,7 +59,7 @@
               <%= link_to(meter.mpan_mprn, school_meter_path(meter.school, meter)) %>
             </td>
             <td><%= link_to(meter.name.present? ? meter.name : meter.meter_type.to_s.humanize, admin_reports_amr_validated_reading_path(meter)) if AmrValidatedReading.where(meter_id: meter.id).any? %></td>
-            <% if @meter_scope.empty? %>
+            <% if params[:all_meters] %>
               <td><%= meter.active ? 'Active' : 'Deprecated' %></td>
             <% end %>
             <td><%= nice_dates(meter.first_validated_reading_date) %></td>
