@@ -29,7 +29,7 @@ module Admin
 
     def update
       if @school_group.update(school_group_params)
-        redirect_to admin_school_groups_path, notice: 'School group was successfully updated.'
+        redirect_to admin_school_group_path(@school_group), notice: 'School group was successfully updated.'
       else
         render :edit
       end
