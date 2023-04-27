@@ -35,7 +35,7 @@
           <td class="gappy-dates"><%= date_range_from_reading_gaps(meter.gappy_validated_readings) %></td>
           <td class="modified-dates"><%= meter.modified_validated_readings.count %></td>
           <td class="<%= meter.zero_reading_days_warning? ? 'table-danger' : ''%>">
-            <%= y_n(meter.zero_reading_days.any?) %>
+            <span data-toggle="tooltip" title="<%= pluralize(meter.zero_reading_days_count, 'day') %>"><%= y_n(meter.zero_reading_days_count > 0) %></span>
           </td>
           <% if local_assigns[:email] %>
             <td>
