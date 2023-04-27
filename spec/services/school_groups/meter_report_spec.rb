@@ -9,7 +9,7 @@ RSpec.describe SchoolGroups::MeterReport do
   let!(:active_meter) { create :gas_meter, active: true, school: create(:school, school_group: school_group) }
   let!(:inactive_meter) { create :gas_meter, active: false, school: create(:school, school_group: school_group) }
 
-  let(:header) { 'School,Supply,Number,Meter,Data source,Active,First validated reading,Last validated reading,Large gaps (last 2 years),Modified readings (last 2 years),Zero reading days,Admin meter status' }
+  let(:header) { 'School,Supply,Number,Meter,Data source,Procurement route,Active,First validated reading,Last validated reading,Large gaps (last 2 years),Modified readings (last 2 years),Zero reading days,Admin meter status' }
 
   describe "#csv_filename" do
     it { expect(meter_report.csv_filename).to eq("a-group-meter-report.csv") }
@@ -33,6 +33,5 @@ RSpec.describe SchoolGroups::MeterReport do
       it { expect(csv).to include(active_meter.school_name) }
       it { expect(csv).to include(inactive_meter.school_name) }
     end
-
   end
 end
