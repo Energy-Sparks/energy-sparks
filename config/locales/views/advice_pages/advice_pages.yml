@@ -140,6 +140,7 @@ en:
       notice:
         partial_holiday: only partial data available for current holiday
         partial_months: indicates a partial month
+        partial_week: indicates a partial week
         partial_year: indicates a partial year
         three_significant_figures: Data in this table are presented to 3 significant figures.
         two_significant_figures: Data in this table are presented to 2 significant figures.

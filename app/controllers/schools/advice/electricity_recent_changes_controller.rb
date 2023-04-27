@@ -32,6 +32,7 @@ module Schools
       end
 
       def change
+        return nil unless electricity_recent_changes_service.date_ranges[:comparable?]
         Usage::CombinedUsageMetricComparison.new(
           previous_week.combined_usage_metric,
           last_week.combined_usage_metric
@@ -39,11 +40,13 @@ module Schools
       end
 
       def last_week
-        @last_week ||= recent_usage_calculation.recent_usage(date_range: electricity_recent_changes_service.date_range[:last_week])
+        timescale = { daterange: electricity_recent_changes_service.date_ranges[:last_week] }
+        @last_week ||= recent_usage_calculation.recent_usage(timescale)
       end
 
       def previous_week
-        @previous_week ||= recent_usage_calculation.recent_usage(date_range: electricity_recent_changes_service.date_range[:previous_week])
+        timescale = { daterange: electricity_recent_changes_service.date_ranges[:previous_week] }
+        @previous_week ||= recent_usage_calculation.recent_usage(timescale)
       end
 
       def recent_usage_calculation

@@ -16,9 +16,17 @@ module Schools
         last_week_start_date = last_week_end_date.prev_occurring(:sunday)
         previous_week_end_date = last_week_start_date - 1
         previous_week_start_date = [aggregate_meter.amr_data.start_date, previous_week_end_date.prev_occurring(:sunday)].max
+
+        last_week_date_range = last_week_start_date..last_week_end_date
+        previous_week_date_range = previous_week_start_date..previous_week_end_date
+
+        # Do last and previous weeks comprise two full weeks (7 days) of data?
+        comparable = (last_week_start_date..last_week_end_date).count == 7 && (previous_week_start_date..previous_week_end_date).count == 7
+
         {
-          last_week: last_week_start_date..last_week_end_date,
-          previous_week: previous_week_start_date..previous_week_end_date
+          last_week: last_week_date_range,
+          previous_week: previous_week_date_range,
+          comparable?: comparable
         }
       end
 
