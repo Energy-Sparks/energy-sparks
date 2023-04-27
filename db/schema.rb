@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_19_130712) do
+ActiveRecord::Schema.define(version: 2023_04_27_152411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -761,6 +761,7 @@ ActiveRecord::Schema.define(version: 2023_04_19_130712) do
     t.text "comments"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "import_warning_days"
   end
 
   create_table "emails", force: :cascade do |t|
@@ -1328,6 +1329,9 @@ ActiveRecord::Schema.define(version: 2023_04_19_130712) do
     t.bigint "default_data_source_electricity_id"
     t.bigint "default_data_source_gas_id"
     t.bigint "default_data_source_solar_pv_id"
+    t.bigint "default_procurement_route_electricity_id"
+    t.bigint "default_procurement_route_gas_id"
+    t.bigint "default_procurement_route_solar_pv_id"
     t.index ["default_issues_admin_user_id"], name: "index_school_groups_on_default_issues_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
@@ -1536,6 +1540,7 @@ ActiveRecord::Schema.define(version: 2023_04_19_130712) do
     t.integer "management_priorities_page_limit", default: 10
     t.boolean "message_for_no_pupil_accounts", default: true
     t.jsonb "temperature_recording_months", default: ["10", "11", "12", "1", "2", "3", "4"]
+    t.integer "default_import_warning_days", default: 10
   end
 
   create_table "sms_records", force: :cascade do |t|
