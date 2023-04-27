@@ -24,9 +24,8 @@ module SchoolGroups
 
     attr_reader :school_group, :all_meters
 
-    def initialize(school_group, full_detail: true, all_meters: false)
+    def initialize(school_group, all_meters: false)
       @school_group = school_group
-      @full_detail = full_detail
       @all_meters = all_meters
     end
 
