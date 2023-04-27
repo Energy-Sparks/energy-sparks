@@ -10,7 +10,7 @@
           <div class="form-group pb-4">
             <%= form.label :data_source_id, "Bulk update data source for all #{fuel_type.to_s.humanize.downcase} meters" %>
             <%= form.select :data_source_id, options_from_collection_for_select(DataSource.all, 'id', 'name', @school_group.send("default_data_source_#{fuel_type}_id")), {include_blank: 'none'}, { class: 'form-control mb-2' } %>
-            <%= form.submit 'Update', class: 'btn' %>
+            <%= form.submit "Update #{fuel_type.to_s.humanize.downcase} data source for all schools in this group", class: 'btn' %>
           </div>
         <% end %>
       <% end %>
@@ -22,7 +22,7 @@
           <div class="form-group pb-4">
             <%= form.label :procurement_route_id, "Bulk update procurement route for all #{fuel_type.to_s.humanize.downcase} meters" %>
             <%= form.select :procurement_route_id, options_from_collection_for_select(ProcurementRoute.all, 'id', 'organisation_name', @school_group.send("default_procurement_route_#{fuel_type}_id")), {include_blank: 'none'}, { class: 'form-control mb-2' } %>
-            <%= form.submit 'Update', class: 'btn' %>
+            <%= form.submit "Update #{fuel_type.to_s.humanize.downcase} procurement route for all schools in this group", class: 'btn' %>
           </div>
         <% end %>
       <% end %>

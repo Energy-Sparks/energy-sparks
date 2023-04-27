@@ -469,6 +469,99 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       end
     end
 
+    describe "bulk updating procurement routes and data sources" do
+      let(:gas_data_source) { DataSource.create(name: 'Gas data source') }
+      let(:electricity_data_source) { DataSource.create(name: 'Electricity data source') }
+      let(:solar_pv_data_source) { DataSource.create(name: 'Solar PV data source') }
+      let(:gas_procurement_route) { ProcurementRoute.create(organisation_name: 'Gas procurement route') }
+      let(:electricity_procurement_route) { ProcurementRoute.create(organisation_name: 'Electricity procurement route') }
+      let(:solar_pv_procurement_route) { ProcurementRoute.create(organisation_name: 'Solar PV procurement route') }
+
+      let!(:school_group) do
+        create(:school_group,
+               name: 'BANES',
+               public: true,
+               default_data_source_electricity_id: electricity_data_source.id,
+               default_data_source_gas_id: gas_data_source.id,
+               default_data_source_solar_pv_id: solar_pv_data_source.id,
+               default_procurement_route_electricity_id: electricity_procurement_route.id,
+               default_procurement_route_gas_id: gas_procurement_route.id,
+               default_procurement_route_solar_pv_id: solar_pv_procurement_route.id
+              )
+      end
+
+      let!(:school_group2) do
+        create(:school_group,
+               name: 'BANES 2',
+               public: true,
+               default_data_source_electricity_id: electricity_data_source.id,
+               default_data_source_gas_id: gas_data_source.id,
+               default_data_source_solar_pv_id: solar_pv_data_source.id,
+               default_procurement_route_electricity_id: electricity_procurement_route.id,
+               default_procurement_route_gas_id: gas_procurement_route.id,
+               default_procurement_route_solar_pv_id: solar_pv_procurement_route.id
+              )
+      end
+
+      let(:school_1) { create :school, active: false, school_group: school_group }
+      let(:school_2) { create :school, active: false, school_group: school_group2 }
+
+
+      before do
+        click_on 'Edit School Groups'
+        within "table" do
+          click_on 'Manage', match: :first
+        end
+        click_on 'Meter updates'
+
+
+        create(:gas_meter, mpan_mprn: 1234567891231, school: school_1, data_source_id: nil, procurement_route_id: nil)
+        create(:electricity_meter, mpan_mprn: 1234567891232, school: school_1, data_source_id: nil, procurement_route_id: nil)
+        create(:solar_pv_meter, mpan_mprn: 1234567891233, school: school_1, data_source_id: nil, procurement_route_id: nil)
+
+        create(:gas_meter, mpan_mprn: 1234567891234, school: school_2, data_source_id: nil, procurement_route_id: nil)
+        create(:electricity_meter, mpan_mprn: 1234567891235, school: school_2, data_source_id: nil, procurement_route_id: nil)
+        create(:solar_pv_meter, mpan_mprn: 1234567891236, school: school_2, data_source_id: nil, procurement_route_id: nil)
+      end
+
+      it 'shows a form to bulk update ' do
+        expect(page).to have_content('Gas data source')
+        expect(page).to have_content('Electricity data source')
+        expect(page).to have_content('Solar PV data source')
+        expect(page).to have_content('Gas procurement route')
+        expect(page).to have_content('Electricity procurement route')
+        expect(page).to have_content('Solar PV procurement route')
+
+        expect(school_1.meters.order(:meter_type).map { |m| [m.meter_type, m.data_source&.name, m.procurement_route&.organisation_name] }).to eq([["electricity", nil, nil], ["gas", nil, nil], ["solar_pv", nil, nil]])
+        expect(school_2.meters.order(:meter_type).map { |m| [m.meter_type, m.data_source&.name, m.procurement_route&.organisation_name] }).to eq([["electricity", nil, nil], ["gas", nil, nil], ["solar_pv", nil, nil]])
+
+        click_on 'Update electricity data source for all schools in this group'
+        expect(school_1.meters.order(:meter_type).map { |m| [m.meter_type, m.data_source&.name, m.procurement_route&.organisation_name] }).to eq([["electricity", "Electricity data source", nil], ["gas", nil, nil], ["solar_pv", nil, nil]])
+        expect(school_2.meters.order(:meter_type).map { |m| [m.meter_type, m.data_source&.name, m.procurement_route&.organisation_name] }).to eq([["electricity", nil, nil], ["gas", nil, nil], ["solar_pv", nil, nil]])
+
+        click_on 'Update gas data source for all schools in this group'
+        expect(school_1.meters.order(:meter_type).map { |m| [m.meter_type, m.data_source&.name, m.procurement_route&.organisation_name] }).to eq([["electricity", "Electricity data source", nil], ["gas", "Gas data source", nil], ["solar_pv", nil, nil]])
+        expect(school_2.meters.order(:meter_type).map { |m| [m.meter_type, m.data_source&.name, m.procurement_route&.organisation_name] }).to eq([["electricity", nil, nil], ["gas", nil, nil], ["solar_pv", nil, nil]])
+
+        click_on 'Update solar pv data source for all schools in this group'
+        expect(school_1.meters.order(:meter_type).map { |m| [m.meter_type, m.data_source&.name, m.procurement_route&.organisation_name] }).to eq([["electricity", "Electricity data source", nil], ["gas", "Gas data source", nil], ["solar_pv", "Solar PV data source", nil]])
+        expect(school_2.meters.order(:meter_type).map { |m| [m.meter_type, m.data_source&.name, m.procurement_route&.organisation_name] }).to eq([["electricity", nil, nil], ["gas", nil, nil], ["solar_pv", nil, nil]])
+
+        click_on 'Update electricity procurement route for all schools in this group'
+        expect(school_1.meters.order(:meter_type).map { |m| [m.meter_type, m.data_source&.name, m.procurement_route&.organisation_name] }).to eq([["electricity", "Electricity data source", "Electricity procurement route"], ["gas", "Gas data source", nil], ["solar_pv", "Solar PV data source", nil]])
+        expect(school_2.meters.order(:meter_type).map { |m| [m.meter_type, m.data_source&.name, m.procurement_route&.organisation_name] }).to eq([["electricity", nil, nil], ["gas", nil, nil], ["solar_pv", nil, nil]])
+
+        click_on 'Update gas procurement route for all schools in this group'
+        expect(school_1.meters.order(:meter_type).map { |m| [m.meter_type, m.data_source&.name, m.procurement_route&.organisation_name] }).to eq([["electricity", "Electricity data source", "Electricity procurement route"], ["gas", "Gas data source", "Gas procurement route"], ["solar_pv", "Solar PV data source", nil]])
+        expect(school_2.meters.order(:meter_type).map { |m| [m.meter_type, m.data_source&.name, m.procurement_route&.organisation_name] }).to eq([["electricity", nil, nil], ["gas", nil, nil], ["solar_pv", nil, nil]])
+
+        click_on 'Update solar pv procurement route for all schools in this group'
+        expect(school_1.meters.order(:meter_type).map { |m| [m.meter_type, m.data_source&.name, m.procurement_route&.organisation_name] }).to eq([["electricity", "Electricity data source", "Electricity procurement route"], ["gas", "Gas data source", "Gas procurement route"], ["solar_pv", "Solar PV data source", "Solar PV procurement route"]])
+        expect(school_2.meters.order(:meter_type).map { |m| [m.meter_type, m.data_source&.name, m.procurement_route&.organisation_name] }).to eq([["electricity", nil, nil], ["gas", nil, nil], ["solar_pv", nil, nil]])
+
+      end
+    end
+
     describe "bulk updating charts" do
       let!(:school_group) { create(:school_group, name: 'BANES', public: true, default_chart_preference: "default") }
       let!(:school_group2) { create(:school_group, name: 'BANES 2', public: true, default_chart_preference: "default") }
