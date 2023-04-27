@@ -721,6 +721,18 @@ describe School do
       expect(school.intervention_types_in_academic_year(Date.parse('01-01-1900'))).to eq([])
     end
 
+    describe '#subscription_frequency' do
+      it 'returns the subscription frequency for a school if there is a holiday approaching' do
+        allow(school).to receive(:holiday_approaching?) { true }
+        expect(school.subscription_frequency).to eq([:weekly, :termly, :before_each_holiday])
+      end
+
+      it 'returns the subscription frequency for a school if there is not a holiday approaching' do
+        allow(school).to receive(:holiday_approaching?) { false }
+        expect(school.subscription_frequency).to eq([:weekly])
+      end
+    end
+
     context 'when finding intervention types by date' do
       let!(:recent_observation)  { create(:observation, :intervention, at: date_1 + 1.day, school: school, intervention_type: intervention_type_2) }
       it 'finds intervention types by date, including duplicates, excluding non-intervention observations' do
