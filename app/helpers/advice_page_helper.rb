@@ -20,6 +20,8 @@ module AdvicePageHelper
   end
 
   def format_unit(value, units, in_table = true, user_numeric_comprehension_level = :ks2)
+    # Ensure all tiny numbers are displayed as zero (e.g. -0.000000000000004736951571734001 should be shown as 0 and not -4.7e-15)
+    value = 0.0 if value&.between?(-0.001, 0.001)
     FormatEnergyUnit.format(units, value, :html, false, in_table, user_numeric_comprehension_level).html_safe
   end
 
