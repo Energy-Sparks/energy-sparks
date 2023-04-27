@@ -22,7 +22,7 @@ module SchoolGroups
       end
     end
 
-    attr_reader :school_group, :full_detail, :all_meters
+    attr_reader :school_group, :all_meters
 
     def initialize(school_group, full_detail: true, all_meters: false)
       @school_group = school_group
@@ -68,8 +68,8 @@ module SchoolGroups
         .joins(:school)
         .joins(:school_group)
         .where(schools: { school_group: school_group })
+        .with_zero_reading_days_and_dates
         .order("schools.name", :mpan_mprn)
-      scope = full_detail ? scope.with_counts : scope.with_reading_dates
       scope = all_meters ? scope : scope.active
       scope
     end

@@ -19,7 +19,7 @@ module Admin
       private
 
       def meter_report
-        @meter_report ||= ::SchoolGroups::MeterReport.new(@school_group, full_detail: true, all_meters: !!params[:all_meters])
+        @meter_report ||= ::SchoolGroups::MeterReport.new(@school_group, all_meters: !!params[:all_meters])
       end
     end
   end
