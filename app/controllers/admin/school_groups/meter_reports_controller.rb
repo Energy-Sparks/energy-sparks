@@ -13,7 +13,7 @@ module Admin
 
       def deliver
         SchoolGroupMeterReportJob.perform_later(to: current_user.email, school_group: @school_group)
-        redirect_to admin_school_group_path(@school_group), notice: "Report requested to be sent to #{current_user.email}"
+        redirect_back fallback_location: admin_school_group_path(@school_group), notice: "Report requested to be sent to #{current_user.email}"
       end
 
       private
