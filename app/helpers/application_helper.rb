@@ -186,6 +186,10 @@ module ApplicationHelper
     end
   end
 
+  def fuel_type_image(fuel_type)
+    image_tag "email/#{fuel_type_icon(fuel_type)}", width: '20px', height: '20px'
+  end
+
   def fuel_type_background_class(fuel_type)
     case fuel_type.to_sym
     when :electricity
