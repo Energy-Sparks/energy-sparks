@@ -14,10 +14,7 @@ RSpec.describe "meter reports", :amr_validated_readings, type: :system do
 
   context 'when a meter has readings' do
     before(:each) do
-      click_on 'Manage'
-      click_on('Reports')
-      click_on('School group meter reports')
-      click_on('Meter Report')
+      visit admin_school_group_meter_report_path(school.school_group)
     end
 
     it 'includes school and meters' do
@@ -38,7 +35,6 @@ RSpec.describe "meter reports", :amr_validated_readings, type: :system do
   end
 
   context 'when there are gaps in the meter readings' do
-
     let(:base_date) { Date.today - 1.year }
 
     before do
@@ -48,14 +44,10 @@ RSpec.describe "meter reports", :amr_validated_readings, type: :system do
       end
       create(:amr_validated_reading, meter: meter, reading_date: base_date + 17, status: 'ORIG')
       create(:amr_validated_reading, meter: meter, reading_date: base_date + 18, status: 'NOT_ORIG')
+      visit admin_school_group_meter_report_path(school.school_group)
     end
 
     it 'shows count of modified dates and gaps' do
-      click_on('Manage')
-      click_on('Reports')
-      click_on('School group meter reports')
-      click_on('Meter Report')
-
       expect(page).to have_content 'Large gaps (last 2 years)'
       expect(page).to have_content 'Modified readings (last 2 years)'
 
