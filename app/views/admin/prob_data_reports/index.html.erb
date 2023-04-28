@@ -1,0 +1,9 @@
+<%= render 'header', title: "PROB data report" do %>
+  <%= header_nav_link 'Admin', admin_url %>
+<% end %>
+
+<% @prob_data.each do |prob_datum| %>
+
+  <%= prob_datum.inspect %>
+
+<% end %>
