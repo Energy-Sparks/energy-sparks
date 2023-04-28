@@ -63,10 +63,12 @@ describe ImportNotifier do
     end
 
     it 'sorts meters' do
-      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, data_source: create(:data_source, import_warning_days: 5))
-      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, data_source: create(:data_source, import_warning_days: 5))
-      meters_running_behind = ImportNotifier.new.meters_running_behind
-      expect(meters_running_behind).to match_array([meter_2, meter_1])
+      school_group_1 = create(:school_group, name: 'AAAAAAA')
+      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, school: create(:school, school_group: school_group_1), start_date: 20.days.ago, end_date: 9.days.ago, data_source: create(:data_source, import_warning_days: 5))
+      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, school: create(:school), start_date: 20.days.ago, end_date: 9.days.ago, data_source: create(:data_source, import_warning_days: 5))
+      meter_3 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, school: create(:school), start_date: 20.days.ago, end_date: 9.days.ago, data_source: create(:data_source, import_warning_days: 5))
+      expect(ImportNotifier.new.find_meters_running_behind.map(&:id)).to eq([meter_1.id, meter_2.id, meter_3.id])
+      expect(ImportNotifier.new.meters_running_behind.map(&:id)).to eq([meter_2.id, meter_3.id, meter_1.id])
     end
   end
 
