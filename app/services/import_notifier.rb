@@ -27,7 +27,13 @@ class ImportNotifier
              MAX(amr_validated_readings.reading_date) < NOW() - MIN(
                                                                      COALESCE(
                                                                        data_sources.import_warning_days,
-                                                                       (SELECT site_settings.default_import_warning_days FROM site_settings ORDER BY created_at DESC LIMIT 1)
+                                                                       (
+                                                                          SELECT site_settings.default_import_warning_days
+                                                                          FROM site_settings
+                                                                          ORDER BY created_at
+                                                                          DESC
+                                                                          LIMIT 1
+                                                                        )
                                                                      )
                                                                    ) * '1 day'::interval
            SQL
