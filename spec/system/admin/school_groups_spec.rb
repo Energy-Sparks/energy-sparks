@@ -201,12 +201,11 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           before { click_link 'Meter attributes' }
           it { expect(page).to have_current_path(admin_school_group_meter_attributes_path(school_group)) }
         end
-        it { expect(page).to have_link('Meter report', href: admin_school_group_meter_report_path(school_group)) }
+        it { expect(page).to have_link('Meter report', href: deliver_admin_school_group_meter_report_path(school_group)) }
         context "clicking 'Meter report'" do
-          before { click_link 'Meter report', href: admin_school_group_meter_report_path(school_group) }
-          it { expect(page).to have_current_path(admin_school_group_meter_report_path(school_group)) }
+          before { click_link 'Meter report' }
+          it { expect(page).to have_current_path(admin_school_group_path(school_group)) }
         end
-        it { expect(page).to have_link(href: deliver_admin_school_group_meter_report_path(school_group)) }
         it { expect(page).to have_link('Issues') }
         context "clicking 'Download issues' button" do
           before { click_link 'Issues' }
