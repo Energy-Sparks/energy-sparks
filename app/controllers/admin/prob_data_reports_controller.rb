@@ -11,9 +11,12 @@ module Admin
     def find_prob_data
       AmrValidatedReading.joins(:meter)
                          .joins("INNER JOIN schools on meters.school_id = schools.id")
+                         .joins("LEFT JOIN school_groups on schools.school_group_id = school_groups.id")
                          .where(status: 'PROB')
-                         .group("schools.name", "meters.name", "meters.meter_type", :mpan_mprn)
+                         .group("school_groups.name", "schools.name", "meters.meter_type", "meters.name", :mpan_mprn)
+                         .order('count(*) DESC')
                          .count
+                         .map { |row| row.to_a.flatten }
     end
   end
 end

@@ -2,8 +2,27 @@
   <%= header_nav_link 'Admin', admin_url %>
 <% end %>
 
-<% @prob_data.each do |prob_datum| %>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>School group</th>
+      <th>School</th>
+      <th>Meter name/mpan/mprn</th>
+      <th>Meter type</th>
+      <th>Count of PROB records</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @prob_data.each do |row| %>
+      <tr>
+        <td><%= row[0] %></td>
+        <td><%= row[1] %></td>
+        <td><%= [row[3], row[4]].reject(&:blank?).join(': ') %></td>
+        <td><%= Meter.meter_types.key(row[2]).humanize %></td>
+        <td><%= row[5] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
-  <%= prob_datum.inspect %>
 
-<% end %>
