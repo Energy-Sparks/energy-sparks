@@ -187,7 +187,7 @@ module ApplicationHelper
   end
 
   def fuel_type_image(fuel_type)
-    image_tag "email/#{fuel_type_icon(fuel_type)}", width: '20px', height: '20px'
+    image_tag "email/#{fuel_type_icon(fuel_type)}.png", width: '20px', height: '20px'
   end
 
   def fuel_type_background_class(fuel_type)
