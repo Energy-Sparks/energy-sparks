@@ -25,11 +25,16 @@ module Schools
       end
 
       def multiple_meters?
-        @school.meters.active.gas.count > 1
+        meters.count > 1
       end
 
       def meters
-        @school.meters.active.gas
+        @school.meters
+               .joins(:meter_attributes)
+               .active
+               .gas
+        # .where.not(attribute_type: 'function_switch')
+        # .where.not(input_data: ['kitchen_only','hotwater_only'])
       end
 
       def date_ranges_by_meter
