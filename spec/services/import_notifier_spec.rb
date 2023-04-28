@@ -41,18 +41,18 @@ describe ImportNotifier do
       expect(ImportNotifier.new.meters_running_behind).to match_array([meter_2, meter_1])
     end
 
-    # it 'defaults to the site setting default when a meters does not have a data source' do
-    #   meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, data_source: nil)
-    #   meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, data_source: nil)
-    #   expect(SiteSettings.current.default_import_warning_days).to eq(10)
-    #   expect(ImportNotifier.new.meters_running_behind).to match_array([])
-    #   SiteSettings.current.update(default_import_warning_days: 5)
-    #   expect(SiteSettings.current.default_import_warning_days).to eq(5)
-    #   expect(ImportNotifier.new.meters_running_behind).to match_array([meter_1])
-    #   SiteSettings.current.update(default_import_warning_days: 2)
-    #   expect(SiteSettings.current.default_import_warning_days).to eq(2)
-    #   expect(ImportNotifier.new.meters_running_behind).to match_array([meter_2, meter_1])
-    # end
+    it 'defaults to the site setting default when a meters does not have a data source' do
+      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, data_source: nil)
+      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, data_source: nil)
+      expect(SiteSettings.current.default_import_warning_days).to eq(10)
+      expect(ImportNotifier.new.meters_running_behind).to match_array([])
+      SiteSettings.current.update(default_import_warning_days: 5)
+      expect(SiteSettings.current.default_import_warning_days).to eq(5)
+      expect(ImportNotifier.new.meters_running_behind).to match_array([meter_1])
+      SiteSettings.current.update(default_import_warning_days: 2)
+      expect(SiteSettings.current.default_import_warning_days).to eq(2)
+      expect(ImportNotifier.new.meters_running_behind).to match_array([meter_2, meter_1])
+    end
 
     it 'checks against the warning days for config of the unvalidated reading' do
       meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, data_source: create(:data_source, import_warning_days: 5))

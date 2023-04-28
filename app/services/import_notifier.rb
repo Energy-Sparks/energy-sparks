@@ -9,7 +9,7 @@ class ImportNotifier
     # .joins(:school_group)
     .joins(:amr_data_feed_readings)
     .where("amr_data_feed_readings.created_at >= NOW() - INTERVAL '1 year'")
-    .joins('INNER JOIN data_sources on data_sources.id = meters.data_source_id')
+    .joins('LEFT JOIN data_sources on data_sources.id = meters.data_source_id')
     .joins(:amr_validated_readings)
     .group('meters.id')
     .having(
