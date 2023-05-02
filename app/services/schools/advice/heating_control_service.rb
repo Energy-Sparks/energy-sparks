@@ -29,10 +29,11 @@ module Schools
       end
 
       def meters
-        excluded_meter_ids = MeterAttribute.where(<<-SQL.squish
-                                                      input_data::text IN ('"kitchen_only"', '"hotwater_only"')
-        SQL
-                                                  ).pluck(:meter_id)
+        excluded_meter_ids = MeterAttribute.where(
+          <<-SQL.squish
+            input_data::text IN ('"kitchen_only"', '"hotwater_only"')
+          SQL
+        ).pluck(:meter_id)
 
         @school.meters
                .active
