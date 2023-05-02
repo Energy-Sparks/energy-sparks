@@ -298,7 +298,7 @@ class School < ApplicationRecord
   end
 
   def area_name
-    school_group.name if school_group
+    school_group ? school_group.name : ''
   end
 
   def active_meters
