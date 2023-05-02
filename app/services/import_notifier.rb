@@ -6,7 +6,7 @@ class ImportNotifier
   def meters_running_behind
     find_meters_running_behind.sort_by do |meter|
       [
-        meter.school.area_name,
+        meter.school.area_name.to_s,
         meter.meter_type,
         meter.school_name,
         meter.mpan_mprn
