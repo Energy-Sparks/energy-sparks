@@ -29,10 +29,15 @@ module Schools
       end
 
       def meters
-        excluded_meter_attribute_input_types = %w[kitchen_only hotwater_only]
-        Meter.active
-             .gas
-             .where.not(id: MeterAttribute.where("input_data::text NOT IN (?)", excluded_meter_attribute_input_types).pluck(:meter_id))
+        excluded_meter_ids = MeterAttribute.where(<<-SQL.squish
+                                                      input_data::text IN ('"kitchen_only"', '"hotwater_only"')
+        SQL
+                                                  ).pluck(:meter_id)
+
+        @school.meters
+               .active
+               .gas
+               .where.not(id: excluded_meter_ids)
       end
 
       def date_ranges_by_meter
