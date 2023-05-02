@@ -29,12 +29,6 @@ module Schools
       end
 
       def meters
-        excluded_meter_ids = MeterAttribute.where(
-          <<-SQL.squish
-            input_data::text IN ('"kitchen_only"', '"hotwater_only"')
-          SQL
-        ).pluck(:meter_id)
-
         @school.meters
                .active
                .gas
@@ -97,6 +91,14 @@ module Schools
       end
 
       private
+
+      def excluded_meter_ids
+        @excluded_meter_ids ||= MeterAttribute.where(meter_id: @school.meters.pluck(:id)).where(
+          <<-SQL.squish
+            input_data::text IN ('"kitchen_only"', '"hotwater_only"')
+          SQL
+        ).pluck(:meter_id)
+      end
 
       def days_when_heating_on_warm_weather
         seasonal_analysis.heating_on_in_warm_weather_days.to_i

@@ -16,6 +16,6 @@ RSpec.describe Schools::Advice::HeatingControlService, type: :service do
   it 'returns relevent meters' do
     expect(school.meters.count).to eq(6)
     expect(school.meters.gas.count).to eq(5)
-    expect(service.meters).to eq([gas_meter_1, gas_meter_2, gas_meter_3])
+    expect(service.meters.pluck(:name).sort).to eq([gas_meter_1, gas_meter_2, gas_meter_3].map(&:name).sort)
   end
 end
