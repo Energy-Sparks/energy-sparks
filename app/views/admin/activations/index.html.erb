@@ -24,6 +24,7 @@
             <th class="enabled">Data visible?</th>
             <th class="meters">Meters</th>
             <th class="review">Awaiting meter review?</th>
+            <th class="review">Issues?</th>
             <th class="actions">Actions</th>
           </tr>
         </thead>
@@ -47,6 +48,9 @@
                 <% if school.meters.unreviewed_dcc_meter.any? %>
                  <%= link_to "(view)", admin_meter_reviews_path %>
                 <% end %>
+              </td>
+              <td>
+                <%= link_to school.issues.where(status: 'open').count, admin_school_issues_path(school_id: school.slug) if school.issues.where(status: 'open').any? %>
               </td>
               <td>
                 <div class="btn-group">
