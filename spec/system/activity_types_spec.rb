@@ -78,7 +78,7 @@ describe 'activity types', type: :system do
       let!(:key_stage_1) { create(:key_stage, name: "KS1") }
       let!(:key_stage_2) { create(:key_stage, name: "KS2") }
       let!(:subject_1) { create(:subject, name: "Citizenship") }
-      let!(:subject_2) { create(:subject, name: "English") }
+      let!(:subject_2) { create(:subject, name: "Languages, Literacy and Communication") }
       let!(:activity_type_1) { create(:activity_type, name: 'baz one', key_stages: [key_stage_1], subjects: [subject_1]) }
       let!(:activity_type_2) { create(:activity_type, name: 'baz two', key_stages: [key_stage_2], subjects: [subject_2]) }
 
