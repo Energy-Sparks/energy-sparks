@@ -1006,6 +1006,7 @@ cy:
       kwh: kWh
       percent: canran
       percent_0dp: canran
+      r2: ''
       relative_percent: canran
       relative_percent_0dp: canran
       timeofday: Amser o'r dydd
