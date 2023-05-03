@@ -7,26 +7,6 @@ describe ApplicationHelper do
       expect(helper.up_downify('+10%')).to include('up')
     end
 
-    it 'adds an up arrow icon for positive numbers with no leading +' do
-      expect(helper.up_downify('10%')).to include('<i')
-      expect(helper.up_downify('10%')).to include('up')
-    end
-
-    it 'adds an up arrow icon for positive numbers with a £ sign' do
-      expect(helper.up_downify('£4')).to include('<i')
-      expect(helper.up_downify('£4')).to include('up')
-    end
-
-    it 'adds an up arrow icon for positive float' do
-      expect(helper.up_downify('4.45')).to include('<i')
-      expect(helper.up_downify('4.45')).to include('up')
-    end
-
-    it 'adds an up arrow icon for positive float with no leading 0' do
-      expect(helper.up_downify('.45')).to include('<i')
-      expect(helper.up_downify('.45')).to include('up')
-    end
-
     it 'adds an up arrow icon for increased' do
       expect(helper.up_downify('increased')).to include('<i')
       expect(helper.up_downify('increased')).to include('up')
