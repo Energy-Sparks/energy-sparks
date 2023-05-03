@@ -50,7 +50,7 @@
                 <% end %>
               </td>
               <td>
-                <%= link_to school.issues.where(status: 'open').count, admin_school_issues_path(school_id: school.slug) if school.issues.where(status: 'open').any? %>
+                <%= link_to school.issues.status_open.count, admin_school_issues_path(school_id: school.slug) if school.issues.status_open.any? %>
               </td>
               <td>
                 <div class="btn-group">
