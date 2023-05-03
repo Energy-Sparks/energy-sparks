@@ -47,7 +47,7 @@ cy:
         - Cymhariaeth o ddefnydd trydan y 2 wythnos ysgol ddiwethaf
     alert_1_year_baseload:
       title:
-        - Llwyth sylfaen kW - y llynedd
+        - Llwyth sylfaenol kW - y llynedd
     alert_daytype_breakdown_electricity:
       title:
         - 'Dadansoddiad yn ôl math o ddiwrnod/amser: Trydan'
@@ -104,13 +104,13 @@ cy:
         - Defnydd nwy bob hanner awr yr wythnos ddiwethaf (kWh)
     baseload:
       title:
-        - Llwyth sylfaen kW
+        - Llwyth sylfaenol kW
     baseload_lastyear:
       title:
-        - Llwyth sylfaen kW - y llynedd
+        - Llwyth sylfaenol kW - y llynedd
     baseload_versus_benchmarks:
       title:
-        - Llwyth sylfaen kW
+        - Llwyth sylfaenol kW
     benchmark:
       title:
         - Cymhariaeth Defnydd Blynyddol o Drydan a Nwy ag ysgolion eraill yn eich rhanbarth
@@ -671,7 +671,7 @@ cy:
         - Defnydd pŵer dyddiol uchaf (kW)
     pupil_dashboard_baseload_lastyear:
       title:
-        - Llwyth sylfaen trydan eich ysgol. Dyma bŵer a ddefnyddir pan fo’r ysgol yn wag (kW)
+        - Llwyth sylfaenol trydan eich ysgol. Dyma bŵer a ddefnyddir pan fo’r ysgol yn wag (kW)
         - Defnydd pŵer trydan ar eich diwrnod dewisol (mewn kW)
     pupil_dashboard_daytype_breakdown_electricity:
       title:
@@ -879,18 +879,12 @@ cy:
     targeting_and_tracking_unscaled_target_group_by_week_storage_heater:
       title:
         - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed heb raddfa (<%= total_kwh %> kWh)
-    targeting_and_tracking_weekly_electricity_one_year_column_deprecated:
-      title:
-        - targedu_ac_olrhain_wythnos_trydan_colofn_un_flwyddyn
     targeting_and_tracking_weekly_electricity_one_year_cumulative_line:
       title:
         - Cynnydd wythnosol yn erbyn y targed hyd yma
     targeting_and_tracking_weekly_electricity_one_year_line:
       title:
         - Cynnydd wythnosol yn erbyn y targed hyd yma
-    targeting_and_tracking_weekly_electricity_to_date_column_deprecated:
-      title:
-        - Cynnydd wythnosol yn erbyn targed
     targeting_and_tracking_weekly_electricity_to_date_cumulative_line:
       title:
         - Cynnydd cronnus yn erbyn targed
@@ -1006,7 +1000,6 @@ cy:
       title:
         - Thermostatig (Penwythnos y Gaeaf)
     y_axis_label_name:
-      r2: ''
       co2: kg CO2
       days: dyddiau
       kw: kW
