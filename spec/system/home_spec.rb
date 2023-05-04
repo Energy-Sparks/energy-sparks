@@ -76,13 +76,22 @@ RSpec.describe "home", type: :system do
     expect(page.has_content? "Enrol with Energy Sparks")
   end
 
-  it "has a training page" do
+  describe 'training page' do
+    let(:response) { JSON.load( File.new( File.join( fixture_path, "events/events.json") ) ) }
+    before do
       visit root_path
       click_on('Our services')
+      expect(EventbriteSDK).to receive(:get).with(any_args).and_return response
       within('#our-services') do
         click_on('Training')
       end
-    expect(page.has_content? 'Training')
+    end
+
+    it "has a training page" do
+      expect(page).to have_content('Training')
+      expect(page).to have_content('Sold out')
+      expect(page).to have_content('Spaces available')
+    end
   end
 
   it 'has a datasets page' do

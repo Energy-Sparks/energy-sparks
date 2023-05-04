@@ -340,7 +340,7 @@
                "display" : "0.00 GBP",
                "major_value" : "0.00"
             },
-            "is_sold_out" : false,
+            "is_sold_out" : true,
             "start_sales_date" : null,
             "has_available_tickets" : true,
             "waitlist_available" : false,
