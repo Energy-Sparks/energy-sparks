@@ -20,7 +20,9 @@ module Schools
       end
 
       def data_available_from
-        meter_data_checker.date_when_enough_data_available(14)
+        return if full_last_week?
+
+        last_week_date_range.last.next_occurring(:sunday) + 1.week
       end
 
       private
@@ -72,8 +74,10 @@ module Schools
       end
 
       def previous_week_date_range
+        return [] if aggregate_meter.amr_data.start_date >= last_week_date_range.first
+
         previous_week_end_date = last_week_date_range.first - 1
-        previous_week_start_date = [aggregate_meter.amr_data.start_date, previous_week_end_date.prev_occurring(:sunday)].max
+        previous_week_start_date = [aggregate_meter.amr_data.start_date, previous_week_end_date.prev_occurring(:sunday)].min
         [
           previous_week_start_date,
           previous_week_end_date
