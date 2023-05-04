@@ -11,7 +11,11 @@ namespace :after_party do
     Subject.find_by(name: 'Maths').update(name: 'Mathematics and Numeracy')
     Subject.find_by(name: 'Science').update(name: 'Science and Technology')
 
-    Subject.find_by(name: 'Design and Technology').delete
+    d_and_t = Subject.find_by(name: 'Design and Technology')
+    d_and_t.activity_types.each do |activity_type|
+      activity_type.subjects.delete(d_and_t)
+    end
+    d_and_t.delete
 
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).
