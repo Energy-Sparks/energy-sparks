@@ -455,6 +455,11 @@ class School < ApplicationRecord
     school_targets.by_start_date.expired.first
   end
 
+  def previous_expired_target(current)
+    idx = school_targets.by_start_date.expired.index { |t| t == current }
+    school_targets.by_start_date.expired[idx + 1]
+  end
+
   def has_expired_target?
     expired_target.present?
   end

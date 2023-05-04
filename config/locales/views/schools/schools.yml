@@ -500,6 +500,9 @@ en:
       prompt_to_set_new_target:
         set_a_new_target: Set a new target
         you_set_a_target_to_reduce: You set a target to reduce your energy usage by %{target_date}. It's now time to review your progress and set a new target
+      show:
+        final_results: See the final results of your goal to reduce your target by %{target_date}
+        view_results: View results
       target_table:
         current_progress: Current progress
         final_result: Final result
@@ -521,6 +524,7 @@ en:
         revise_your_target: Revise your target
         set_a_new_target: Set a new target
         view_current_target: View current target
+        view_last_year_report: View last year report
         we_are_calculating_your_progress: We are calculating your progress
       warn_recent_data:
         we_have_not_received_data:
