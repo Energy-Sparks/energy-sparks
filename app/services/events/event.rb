@@ -8,7 +8,6 @@ module Events
       @date = DateTime.parse(eventbrite.start.local)
       @url = eventbrite.url
       @sold_out = false
-      @ticket_availability = eventbrite.ticket_availability
       if eventbrite.ticket_availability.present?
         @sold_out = eventbrite.ticket_availability.is_sold_out
       end
