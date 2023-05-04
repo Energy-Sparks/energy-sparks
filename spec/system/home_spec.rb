@@ -81,7 +81,9 @@ RSpec.describe "home", type: :system do
     before do
       visit root_path
       click_on('Our services')
-      expect(EventbriteSDK).to receive(:get).with(any_args).and_return response
+      expect(EventbriteSDK).to receive(:get).with(any_args) do
+        response
+      end
       within('#our-services') do
         click_on('Training')
       end
