@@ -10,6 +10,7 @@ module SchoolGroups
           'Number',
           'Meter',
           'Data source',
+          'Procurement route',
           'Active',
           'First validated reading',
           'Last validated reading',
@@ -21,13 +22,15 @@ module SchoolGroups
       end
     end
 
-    def initialize(school_group, meter_scope = {})
+    attr_reader :school_group, :all_meters
+
+    def initialize(school_group, all_meters: false)
       @school_group = school_group
-      @meter_scope = meter_scope
+      @all_meters = all_meters
     end
 
     def csv_filename
-      "#{@school_group.name}-meter-report".parameterize + '.csv'
+      "#{school_group.name}-meter-report".parameterize + '.csv'
     end
 
     def csv
@@ -40,6 +43,7 @@ module SchoolGroups
             meter.mpan_mprn,
             meter.name,
             meter.data_source.try(:name) || '',
+            meter.procurement_route.try(:organisation_name) || '',
             y_n(meter.active),
             nice_dates(meter.first_validated_reading_date),
             nice_dates(meter.last_validated_reading_date),
@@ -52,22 +56,21 @@ module SchoolGroups
       end
     end
 
-    def meters(full_detail: true)
-      if full_detail
-        Meter.where(@meter_scope)
-          .joins(:school)
-          .joins(:school_group)
-          .where(schools: { school_group: @school_group })
-          .with_counts
-          .order("schools.name", :mpan_mprn)
-      else
-        Meter.where(@meter_scope)
-          .joins(:school)
-          .joins(:school_group)
-          .where(schools: { school_group: @school_group })
-          .with_reading_dates
-          .order("schools.name", :mpan_mprn)
-      end
+    def meters
+      @meters ||= meter_scope
+    end
+
+    private
+
+    def meter_scope
+      scope = Meter.all
+        .joins(:school)
+        .joins(:school_group)
+        .where(schools: { school_group: school_group })
+        .with_zero_reading_days_and_dates
+        .order("schools.name", :mpan_mprn)
+      scope = all_meters ? scope : scope.active
+      scope
     end
   end
 end

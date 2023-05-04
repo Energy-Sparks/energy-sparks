@@ -29,7 +29,7 @@ module Admin
 
     def update
       if @school_group.update(school_group_params)
-        redirect_to admin_school_groups_path, notice: 'School group was successfully updated.'
+        redirect_to admin_school_group_path(@school_group), notice: 'School group was successfully updated.'
       else
         render :edit
       end
@@ -61,7 +61,10 @@ module Admin
         :admin_meter_statuses_solar_pv_id,
         :default_data_source_electricity_id,
         :default_data_source_gas_id,
-        :default_data_source_solar_pv_id
+        :default_data_source_solar_pv_id,
+        :default_procurement_route_electricity_id,
+        :default_procurement_route_gas_id,
+        :default_procurement_route_solar_pv_id
       )
     end
   end

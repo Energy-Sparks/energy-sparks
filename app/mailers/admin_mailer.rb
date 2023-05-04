@@ -1,9 +1,15 @@
 class AdminMailer < ApplicationMailer
+  helper :application, :issues
+
   def school_group_meters_report
-    to, csv, filename, school_group = params.values_at(:to, :csv, :filename, :school_group)
-    title = "Meter report for #{school_group.name}"
+    to, meter_report = params.values_at(:to, :meter_report)
+    @school_group = meter_report.school_group
+    @meters = meter_report.meters
+
     env = ENV['ENVIRONMENT_IDENTIFIER'] || 'unknown'
-    attachments[filename] = { mime_type: 'text/csv', content: csv }
-    mail(to: to, subject: "[energy-sparks-#{env}] Energy Sparks - #{title}", body: title)
+    title = "Meter report for #{@school_group.name}"
+    attachments[meter_report.csv_filename] = { mime_type: 'text/csv', content: meter_report.csv }
+
+    make_bootstrap_mail(to: to, subject: "[energy-sparks-#{env}] Energy Sparks - #{title}")
   end
 end

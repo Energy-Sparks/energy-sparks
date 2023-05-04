@@ -373,9 +373,13 @@ Rails.application.routes.draw do
     resources :videos
     resources :school_groups do
       scope module: :school_groups do
+        resources :chart_updates, only: [:index] do
+          post :bulk_update_charts
+        end
         resources :meter_attributes
         resources :meter_updates, only: [:index] do
-          post :bulk_update_meters
+          post :bulk_update_meter_data_source
+          post :bulk_update_meter_procurement_route
         end
         resources :school_onboardings, only: [:index] do
           collection do
@@ -464,6 +468,7 @@ Rails.application.routes.draw do
     resources :global_meter_attributes
     resources :consents
     resources :transport_types
+    resources :prob_data_reports
     resources :procurement_routes
     resources :data_sources do
       scope module: :data_sources do

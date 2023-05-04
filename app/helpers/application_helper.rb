@@ -186,6 +186,10 @@ module ApplicationHelper
     end
   end
 
+  def fuel_type_image(fuel_type)
+    image_tag "email/#{fuel_type_icon(fuel_type)}.png", width: '20px', height: '20px'
+  end
+
   def fuel_type_background_class(fuel_type)
     case fuel_type.to_sym
     when :electricity
@@ -287,7 +291,7 @@ module ApplicationHelper
 
   def up_downify(text)
     return if text.nil? || text == "-"
-    icon = if text.match?(/^\+?£?\d*\.?\d+/)
+    icon = if text.match?(/^\+/)
              fa_icon('arrow-circle-up')
            elsif text.match?(/increased/)
              fa_icon('arrow-circle-up')

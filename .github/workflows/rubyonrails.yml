@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [ master, aws-eb-master ]
 jobs:
-  test:
+  test-core:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -42,4 +42,42 @@ jobs:
         run: bundle exec i18n-tasks health
       # Add or replace test runners here
       - name: Run tests
-        run: bundle exec rspec --exclude-pattern "i18n_spec.rb"
+        run: bundle exec rspec --exclude-pattern "spec/system/**/*_spec.rb"
+  test-system:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14-alpine
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_DB: rails_test
+          POSTGRES_USER: rails
+          POSTGRES_PASSWORD: password
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 10.*
+      - name: Checkout code
+        uses: actions/checkout@v3
+      # Add or replace dependency steps here
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      # Add or replace database setup steps here
+      - name: Set up database schema
+        run: bin/rails db:schema:load
+      # Precompile assets
+      - name: Precompile assets
+        run: bundle exec rake assets:precompile
+      # Fail early if we have issues with translation keys
+      - name: Run i18n-tasks
+        run: bundle exec i18n-tasks health
+      # Add or replace test runners here
+      - name: Run tests
+        run: bundle exec rspec spec/system

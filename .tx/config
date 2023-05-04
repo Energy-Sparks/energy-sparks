@@ -78,6 +78,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:analytics-charts-chart_timescale_descriptions-yml]
+file_filter  = config/locales/<lang>/analytics/charts/chart_timescale_descriptions.yml
+source_file  = config/locales/analytics/charts/chart_timescale_descriptions.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:analytics-common-yml]
 file_filter  = config/locales/<lang>/analytics/common.yml
 source_file  = config/locales/analytics/common.yml
@@ -158,13 +165,6 @@ minimum_perc = 100
 [o:energy-sparks:p:energy-sparks:r:mailers-mailer-yml]
 file_filter  = config/locales/<lang>/mailers/mailer.yml
 source_file  = config/locales/mailers/mailer.yml
-source_lang  = en
-type         = YML
-minimum_perc = 100
-
-[o:energy-sparks:p:energy-sparks:r:models-chart_data-yml]
-file_filter  = config/locales/<lang>/models/chart_data.yml
-source_file  = config/locales/models/chart_data.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100
@@ -491,6 +491,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-home-funders-yml]
+file_filter  = config/locales/<lang>/views/home/funders.yml
+source_file  = config/locales/views/home/funders.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-home-home-yml]
 file_filter  = config/locales/<lang>/views/home/home.yml
 source_file  = config/locales/views/home/home.yml
@@ -508,6 +515,13 @@ minimum_perc = 100
 [o:energy-sparks:p:energy-sparks:r:views-home-school_statistics-yml]
 file_filter  = config/locales/<lang>/views/home/school_statistics.yml
 source_file  = config/locales/views/home/school_statistics.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-home-support_us-yml]
+file_filter  = config/locales/<lang>/views/home/support_us.yml
+source_file  = config/locales/views/home/support_us.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100

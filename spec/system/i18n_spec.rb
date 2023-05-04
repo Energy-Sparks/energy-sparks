@@ -30,7 +30,7 @@ RSpec.describe "i18n", type: :system do
     let!(:ks1) { KeyStage.create(name: 'KS1') }
     let(:activity_data_driven)    { true }
     let(:school_data_enabled)     { true }
-    let!(:subject) { Subject.create(name: "Science") }
+    let!(:subject) { Subject.create(name: "Science and Technology") }
     let(:school) { create_active_school(data_enabled: school_data_enabled) }
     let(:activity_type_name_en)           { 'Find out why food waste is bad for the planet' }
     let(:activity_type_name_cy)           { 'Darganfydda pam mae gwastraff bwyd yn ddrwg ir blaned' }
