@@ -64,7 +64,7 @@ module Schools
 
       def find_last_week_date_range
         last_week_end_date = aggregate_meter.amr_data.end_date.saturday? ? aggregate_meter.amr_data.end_date : aggregate_meter.amr_data.end_date.prev_occurring(:saturday)
-        last_week_start_date = last_week_end_date.prev_occurring(:sunday)
+        last_week_start_date = [aggregate_meter.amr_data.start_date, last_week_end_date.prev_occurring(:sunday)].max
         [
           last_week_start_date,
           last_week_end_date
