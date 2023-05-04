@@ -32,6 +32,8 @@ module Schools
       end
 
       def full_previous_week?
+        return nil unless full_last_week?
+
         (previous_week_date_range.first..previous_week_date_range.last).count == 7
       end
 
@@ -45,6 +47,7 @@ module Schools
 
       def change
         return nil unless full_previous_week?
+
         Usage::CombinedUsageMetricComparison.new(
           last_week.combined_usage_metric,
           previous_week.combined_usage_metric
@@ -57,6 +60,7 @@ module Schools
 
       def previous_week
         return nil unless full_previous_week?
+
         @previous_week ||= usage_data_for(previous_week_date_range)
       end
 
