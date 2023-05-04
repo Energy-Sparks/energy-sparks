@@ -7,7 +7,7 @@
   </thead>
   <%= render 'your_recent_gas_use_table_row',
       combined_usage_metric: @recent_usage.previous_week.combined_usage_metric,
-      period: @recent_usage.previous_week.date_range.map { |d| d.to_s(:es_short) }.join(' - ')
+      period: @recent_usage.previous_week.date_range.map { |d| d.to_s(:es_short) }.join(' - ') if @recent_usage.previous_week
   %>
   <%= render 'your_recent_gas_use_table_row',
       combined_usage_metric: @recent_usage.last_week.combined_usage_metric,
@@ -15,7 +15,7 @@
   %>
   <%= render 'your_recent_gas_use_table_row',
       combined_usage_metric: @recent_usage.change,
-      period: t('advice_pages.gas_recent_changes.insights.your_recent_gas_use.table.change')
+      period: t('advice_pages.gas_recent_changes.insights.your_recent_gas_use.table.change') if @recent_usage.change
   %>
 </table>
 <% @additional_notice_text = t('advice_pages.tables.notice.two_significant_figures') %>
