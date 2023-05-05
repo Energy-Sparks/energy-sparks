@@ -474,6 +474,7 @@ Rails.application.routes.draw do
     resources :global_meter_attributes
     resources :consents
     resources :transport_types
+    resources :prob_data_reports
     resources :procurement_routes
     resources :data_sources do
       scope module: :data_sources do
