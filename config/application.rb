@@ -42,7 +42,10 @@ module EnergySparks
     config.session_store :cookie_store, key: '_energy-sparks_session'
 
     config.after_initialize do
-      BenchmarkMetrics.set_current_prices(prices: SiteSettings.current_prices) # if environment set
+      if EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices)
+        BenchmarkMetrics.set_current_prices(prices: SiteSettings.current_prices)
+      end
+
       ActionText::ContentHelper.allowed_attributes.add 'id'
       ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'
     end

@@ -7,7 +7,9 @@ module Admin
 
     def update
       SiteSettings.create!(site_settings_params)
-      BenchmarkMetrics.set_current_prices(prices: SiteSettings.current_prices) # if feature flag
+      if EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices)
+        BenchmarkMetrics.set_current_prices(prices: SiteSettings.current_prices)
+      end
       redirect_to admin_settings_path, notice: 'Settings updated'
     end
 

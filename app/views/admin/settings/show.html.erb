@@ -7,12 +7,14 @@
   <%= f.input :management_priorities_page_limit, hint: 'How many entries to show on the management priorities page '%>
   <%= f.input :temperature_recording_months, as: :check_boxes, collection: @temperature_setting_months, checked: f.object.temperature_recording_months %>
 
-  <hr />
-  <h3>Price settings</h3>
-  <%= f.input :electricity_price, as: :numeric %>
-  <%= f.input :solar_export_price, as: :numeric %>
-  <%= f.input :gas_price, as: :numeric %>
-  <%= f.input :oil_price, as: :numeric %>
+  <% if EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices) %>
+    <hr />
+    <h3>Price settings</h3>
+    <%= f.input :electricity_price, as: :numeric %>
+    <%= f.input :solar_export_price, as: :numeric %>
+    <%= f.input :gas_price, as: :numeric %>
+    <%= f.input :oil_price, as: :numeric %>
+  <% end %>
 
   <%= f.submit 'Update settings', class: 'btn btn-primary'%>
 <% end %>
