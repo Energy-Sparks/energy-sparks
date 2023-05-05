@@ -76,23 +76,33 @@ RSpec.describe "home", type: :system do
     expect(page.has_content? "Enrol with Energy Sparks")
   end
 
-  describe 'training page' do
-    let(:response) { JSON.load( File.new( File.join( fixture_path, "events/events.json") ) ) }
+  describe 'having a training page' do
+    let(:sold_out) { OpenStruct.new(date: DateTime.tomorrow, name: 'Event 1', url: 'http://hello', sold_out?: true) }
+    let(:spaces_available) { OpenStruct.new(date: DateTime.now + 10.days, name: 'Event 2', url: 'http://hello2', sold_out?: false) }
+    let(:list_events) { double('list_events') }
+
     before do
       visit root_path
       click_on('Our services')
-      expect(EventbriteSDK).to receive(:get).with(any_args) do
-        response
-      end
+
+      expect(Events::ListEvents).to receive(:new).and_return(list_events)
+      expect(list_events).to receive(:perform).and_return([sold_out, spaces_available])
+
       within('#our-services') do
         click_on('Training')
       end
     end
 
-    it "has a training page" do
-      expect(page).to have_content('Training')
-      expect(page).to have_content('Sold out')
+    it { expect(page).to have_content('Training') }
+
+    it "has available event" do
+      expect(page).to have_content('Event 1')
       expect(page).to have_content('Spaces available')
+    end
+
+    it "has sold out event" do
+      expect(page).to have_content('Event 2')
+      expect(page).to have_content('Sold out')
     end
   end
 
