@@ -26,12 +26,20 @@ module Admin
     end
 
     def settings_params
-      params.require(:site_settings).permit(
-        :message_for_no_contacts, :message_for_no_pupil_accounts,
-        :management_priorities_dashboard_limit, :management_priorities_page_limit,
-        :electricity_price, :solar_export_price, :gas_price, :oil_price,
-        temperature_recording_months: []
-      )
+      if EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices)
+        params.require(:site_settings).permit(
+          :message_for_no_contacts, :message_for_no_pupil_accounts,
+          :management_priorities_dashboard_limit, :management_priorities_page_limit,
+          :electricity_price, :solar_export_price, :gas_price, :oil_price,
+          temperature_recording_months: []
+        )
+      else
+        params.require(:site_settings).permit(
+          :message_for_no_contacts, :message_for_no_pupil_accounts,
+          :management_priorities_dashboard_limit, :management_priorities_page_limit,
+          temperature_recording_months: []
+        )
+      end
     end
 
     def temperature_setting_months
