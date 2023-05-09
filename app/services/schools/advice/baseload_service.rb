@@ -29,10 +29,10 @@ module Schools
         case period
         when :year
           baseload_service = Baseload::BaseloadCalculationService.new(aggregate_meter, end_of_previous_year)
-          @previous_year_average_baseload_kw ||= baseload_service.average_baseload_kw(period: period)
+          @previous_year_average_baseload_kw ||= baseload_service.enough_data? ? baseload_service.average_baseload_kw(period: period) : 0
         when :week
           baseload_service = Baseload::BaseloadCalculationService.new(aggregate_meter, end_of_previous_week)
-          @previous_week_average_baseload_kw ||= baseload_service.average_baseload_kw(period: period)
+          @previous_week_average_baseload_kw ||= baseload_service.enough_data? ? baseload_service.average_baseload_kw(period: period) : 0
         else
           raise "Invalid period"
         end
@@ -79,7 +79,7 @@ module Schools
         meter_breakdowns = {}
         baseloads.meters.each do |mpan_mprn|
           baseload_service = Baseload::BaseloadCalculationService.new(@meter_collection.meter?(mpan_mprn), end_of_previous_year)
-          previous_year_baseload = baseload_service.average_baseload_kw(period: :year)
+          previous_year_baseload = baseload_service.enough_data? ? baseload_service.average_baseload_kw(period: :year) : 0
           meter_breakdowns[mpan_mprn] = build_meter_breakdown(mpan_mprn, baseloads, previous_year_baseload)
         end
         meter_breakdowns
