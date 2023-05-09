@@ -16,6 +16,7 @@ module Admin
       params.require(:site_settings).permit(
         :message_for_no_contacts, :message_for_no_pupil_accounts,
         :management_priorities_dashboard_limit, :management_priorities_page_limit,
+        :default_import_warning_days,
         temperature_recording_months: []
       )
     end
