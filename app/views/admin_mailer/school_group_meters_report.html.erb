@@ -1,0 +1,21 @@
+<h1><%= @school_group.name %> active meter report</h1>
+
+<%= render 'shared/school_group_meter_report', email: true %>
+
+<h3>Loader Legend</h3>
+<div class="row p-2">
+  <div class="col-2 table-danger"></div>
+  <div class="col-10">No reading for 30 days</div>
+</div>
+<div class="row p-2">
+  <div class="col-2 table-warning"></div>
+  <div class="col-10">No reading for 5 days</div>
+</div>
+<div class="row p-2">
+  <div class="col-2 table-success"></div>
+  <div class="col-10">Recent reading</div>
+</div>
+
+<h2>Downloads</h2>
+<p>You can download the individual meter collections (unvalidated, validated and aggregated) for each school</p>
+<p><%= link_to "Download meter collections", admin_schools_meter_collections_url(anchor: "school-group-#{@school_group.id}") %>

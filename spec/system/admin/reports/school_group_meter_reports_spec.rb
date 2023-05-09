@@ -24,22 +24,27 @@ describe 'school group meter reports', type: :system do
     it 'displays the reports index' do
       expect(page).to have_content("School group meter data reports")
       expect(page).to have_content(school_group.name)
-      expect(page).to have_link("Meter Report")
-      expect(page).to have_link(href: deliver_admin_school_group_meter_report_path(school_group))
+      expect(page).to have_link("Meter report", href: deliver_admin_school_group_meter_report_path(school_group))
       expect(page).to have_link("Download meter collections")
+    end
+
+    context 'when clicking on the email meter report link' do
+      before do
+        click_on "Meter report"
+      end
+      it { expect(page).to have_content "Report requested to be sent to #{admin.email}" }
+      it { expect(page).to have_content "School group meter data reports" }
     end
   end
 
-  context 'when on school group meter report page' do
-
+  context 'when viewing the "unlinked" school group meter report page' do
     before :each do
-      click_on "School group meter reports"
-      click_on "Meter Report"
+      visit admin_school_group_meter_report_path(school_group)
     end
 
     it 'links to downloads and all meters' do
       expect(page).to have_content("#{school_group.name} meter report")
-      expect(page).to have_link(href: deliver_admin_school_group_meter_report_path(school_group))
+      expect(page).to have_link('Meter report', href: deliver_admin_school_group_meter_report_path(school_group))
       expect(page).to have_link("Download meter collections")
     end
 

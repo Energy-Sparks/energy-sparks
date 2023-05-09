@@ -4,42 +4,71 @@ describe ImportNotifier do
 
   let(:sheffield_school) { create(:school, :with_school_group, name: "Sheffield School")}
   let(:bath_school) { create(:school, :with_school_group, name: "Bath School")}
-  let(:sheffield_config) { create(:amr_data_feed_config, description: 'Sheffield', import_warning_days: 5) }
-  let(:bath_config) { create(:amr_data_feed_config, description: 'Bath', import_warning_days: 2) }
-  let(:other_config) { create(:amr_data_feed_config, description: 'Other', import_warning_days: 10) }
+  let(:sheffield_config) { create(:amr_data_feed_config, description: 'Sheffield') }
+  let(:bath_config) { create(:amr_data_feed_config, description: 'Bath') }
+  let(:other_config) { create(:amr_data_feed_config, description: 'Other') }
 
   let(:sheffield_import_log) { create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago) }
 
   describe '#meters_running_behind' do
     it 'gets all the meters that have not had validated data for X days' do
-      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: sheffield_config, log: sheffield_import_log)
-      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
-      meters_running_behind = ImportNotifier.new.meters_running_behind()
+      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, data_source: create(:data_source, import_warning_days: 5))
+      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, data_source: create(:data_source, import_warning_days: 5))
+      meters_running_behind = ImportNotifier.new.meters_running_behind
+      expect(SiteSettings.current.default_import_warning_days).to eq(10)
       expect(meters_running_behind).to match_array([meter_1])
     end
 
     it 'ignores inactive meters when warning about meters running behind' do
-      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: sheffield_config, log: sheffield_import_log)
-      inactive_meter = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, active: false, start_date: 20.days.ago, end_date: 9.days.ago, config: sheffield_config, log: sheffield_import_log)
-      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
-      meters_running_behind = ImportNotifier.new.meters_running_behind()
+      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, data_source: create(:data_source, import_warning_days: 5))
+      inactive_meter = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, active: false, start_date: 20.days.ago, end_date: 9.days.ago, data_source: create(:data_source, import_warning_days: 5))
+      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, data_source: create(:data_source, import_warning_days: 5))
+      meters_running_behind = ImportNotifier.new.meters_running_behind
+      expect(SiteSettings.current.default_import_warning_days).to eq(10)
       expect(meters_running_behind).to match_array([meter_1])
     end
 
-    it 'ignores meters when config doesnt have warning days' do
-      sheffield_config.update!(import_warning_days: nil)
-      sheffield_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago)
-      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: sheffield_config, log: sheffield_import_log)
-      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
-      meters_running_behind = ImportNotifier.new.meters_running_behind()
-      expect(meters_running_behind).to match_array([])
+    it 'defaults to the site setting default when a meters data source does not have any import warning days' do
+      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, data_source: create(:data_source, import_warning_days: nil))
+      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, data_source: create(:data_source, import_warning_days: nil))
+      expect(SiteSettings.current.default_import_warning_days).to eq(10)
+      expect(ImportNotifier.new.meters_running_behind).to match_array([])
+      SiteSettings.current.update(default_import_warning_days: 5)
+      expect(SiteSettings.current.default_import_warning_days).to eq(5)
+      expect(ImportNotifier.new.meters_running_behind).to match_array([meter_1])
+      SiteSettings.current.update(default_import_warning_days: 2)
+      expect(SiteSettings.current.default_import_warning_days).to eq(2)
+      expect(ImportNotifier.new.meters_running_behind).to match_array([meter_2, meter_1])
+    end
+
+    it 'defaults to the site setting default when a meters does not have a data source' do
+      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, data_source: nil)
+      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, data_source: nil)
+      expect(SiteSettings.current.default_import_warning_days).to eq(10)
+      expect(ImportNotifier.new.meters_running_behind).to match_array([])
+      SiteSettings.current.update(default_import_warning_days: 5)
+      expect(SiteSettings.current.default_import_warning_days).to eq(5)
+      expect(ImportNotifier.new.meters_running_behind).to match_array([meter_1])
+      SiteSettings.current.update(default_import_warning_days: 2)
+      expect(SiteSettings.current.default_import_warning_days).to eq(2)
+      expect(ImportNotifier.new.meters_running_behind).to match_array([meter_2, meter_1])
     end
 
     it 'checks against the warning days for config of the unvalidated reading' do
-      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: sheffield_config, log: sheffield_import_log)
-      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: other_config, log: sheffield_import_log)
-      meters_running_behind = ImportNotifier.new.meters_running_behind()
+      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, data_source: create(:data_source, import_warning_days: 5))
+      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, data_source: create(:data_source, import_warning_days: 5))
+      meters_running_behind = ImportNotifier.new.meters_running_behind
+      expect(SiteSettings.current.default_import_warning_days).to eq(10)
       expect(meters_running_behind).to match_array([meter_1])
+    end
+
+    it 'sorts meters' do
+      school_group_1 = create(:school_group, name: 'AAAAAAA')
+      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, school: create(:school, school_group: school_group_1), start_date: 20.days.ago, end_date: 9.days.ago, data_source: create(:data_source, import_warning_days: 5))
+      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, school: create(:school), start_date: 20.days.ago, end_date: 9.days.ago, data_source: create(:data_source, import_warning_days: 5))
+      meter_3 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, school: create(:school), start_date: 20.days.ago, end_date: 9.days.ago, data_source: create(:data_source, import_warning_days: 5))
+      expect(ImportNotifier.new.send(:find_meters_running_behind).order(:id).map(&:id)).to eq([meter_1.id, meter_2.id, meter_3.id])
+      expect(ImportNotifier.new.meters_running_behind.map(&:id)).to match_array([meter_2.id, meter_3.id, meter_1.id])
     end
   end
 
@@ -82,24 +111,6 @@ describe ImportNotifier do
 
   end
 
-  describe '#meters_running_behind' do
-    it 'removes duplicates, when meters are loaded via multiple configs' do
-      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: sheffield_config, log: sheffield_import_log)
-      bath_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: bath_config, records_imported: 200, import_time: 1.day.ago)
-      readings = create(:amr_data_feed_reading, meter: meter_1, reading_date: 9.days.ago, amr_data_feed_config: bath_config, amr_data_feed_import_log: bath_import_log)
-      meters_running_behind = ImportNotifier.new.meters_running_behind()
-      expect(meters_running_behind).to match_array([meter_1])
-    end
-
-    it 'sorts meters' do
-      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: sheffield_config, log: sheffield_import_log)
-      bath_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: bath_config, records_imported: 200, import_time: 1.day.ago)
-      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: bath_config, log: bath_import_log)
-      meters_running_behind = ImportNotifier.new.meters_running_behind()
-      expect(meters_running_behind).to match_array([meter_2, meter_1])
-    end
-  end
-
   describe '#notify' do
     it 'formats the email properly' do
       create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago)
@@ -113,9 +124,9 @@ describe ImportNotifier do
     end
 
     it 'contains the meter information' do
-      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: sheffield_config, log: sheffield_import_log, school: sheffield_school)
+      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, school: sheffield_school, data_source: create(:data_source, import_warning_days: 5))
       bath_import_log = create(:amr_data_feed_import_log, amr_data_feed_config: bath_config, records_imported: 200, import_time: 1.day.ago)
-      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, config: bath_config, log: bath_import_log, school: bath_school)
+      meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, school: bath_school, data_source: create(:data_source, import_warning_days: 2))
       ImportNotifier.new.notify(from: 2.days.ago, to: Time.now)
 
       email = ActionMailer::Base.deliveries.last

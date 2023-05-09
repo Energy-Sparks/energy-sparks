@@ -61,7 +61,10 @@ module Admin
         :admin_meter_statuses_solar_pv_id,
         :default_data_source_electricity_id,
         :default_data_source_gas_id,
-        :default_data_source_solar_pv_id
+        :default_data_source_solar_pv_id,
+        :default_procurement_route_electricity_id,
+        :default_procurement_route_gas_id,
+        :default_procurement_route_solar_pv_id
       )
     end
   end

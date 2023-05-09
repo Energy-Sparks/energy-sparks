@@ -4,7 +4,7 @@ describe 'viewing and recording activities', type: :system do
 
   let!(:activity_category) { create(:activity_category)}
 
-  let!(:subject)  { Subject.create(name: "Science") }
+  let!(:subject)  { Subject.create(name: "Science and Technology") }
   let!(:ks1)      { KeyStage.create(name: 'KS1') }
   let(:activity_data_driven)    { true }
   let(:school_data_enabled)     { true }

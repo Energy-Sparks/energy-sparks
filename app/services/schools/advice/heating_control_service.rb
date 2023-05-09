@@ -25,11 +25,11 @@ module Schools
       end
 
       def multiple_meters?
-        @school.meters.active.gas.count > 1
+        meters.count > 1
       end
 
       def meters
-        @school.meters.active.gas
+        @meters ||= find_meters
       end
 
       def date_ranges_by_meter
@@ -88,6 +88,19 @@ module Schools
       end
 
       private
+
+      def find_meters
+        @school.meters
+               .active
+               .gas
+               .where.not(id: MeterAttribute.where(meter_id: @school.meters.pluck(:id))
+                                            .where(
+                                              <<-SQL.squish
+                                                input_data::text IN ('"kitchen_only"', '"hotwater_only"')
+                                              SQL
+                                            ).pluck(:meter_id)
+              )
+      end
 
       def days_when_heating_on_warm_weather
         seasonal_analysis.heating_on_in_warm_weather_days.to_i
