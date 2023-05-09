@@ -1,13 +1,13 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: acaa07665c8a8dabdd4c0e221bab1426124579fb
-  tag: 2.6.7
+  revision: ea7d7fe7df42bcaa337c6b50881945c728bfc9f6
+  tag: 2.7
   specs:
     energy-sparks_analytics (1.2.1)
-      activesupport (~> 6.0.0)
+      activesupport (>= 6.0, < 7.1)
       benchmark-memory (~> 0.1.2)
       chroma (~> 0.2.0)
-      faraday (~> 1.0.1)
+      faraday (>= 1.0.1, < 2.8.0)
       faraday_middleware (~> 1.0.0)
       hashdiff (~> 1.0.0)
       html-table (~> 1.5.1)
@@ -23,7 +23,7 @@ GIT
       soda-ruby (~> 0.2.25)
       statsample (~> 2.1.0)
       structured_warnings (~> 0.3.0)
-      write_xlsx (~> 0.85.5)
+      write_xlsx (>= 0.85.5, < 1.11.0)
 
 GIT
   remote: https://github.com/Energy-Sparks/statsample
@@ -672,14 +672,11 @@ GEM
     websocket-extensions (0.1.5)
     wisper (2.0.0)
     wisper-rspec (1.1.0)
-    write_xlsx (0.85.11)
+    write_xlsx (1.10.2)
       rubyzip (>= 1.0.0)
-      zip-zip
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.6.6)
-    zip-zip (0.3)
-      rubyzip (>= 1.0.0)
 
 PLATFORMS
   ruby
