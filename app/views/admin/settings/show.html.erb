@@ -11,9 +11,9 @@
   <% if EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices) %>
     <hr />
     <h3>Price settings</h3>
-    <%= f.input :electricity_price, as: :numeric %>
-    <%= f.input :solar_export_price, as: :numeric %>
-    <%= f.input :gas_price, as: :numeric %>
+    <%= f.input :electricity_price, as: :numeric, hint: 'Used to calculate the cost of a kettle, smartphone, TV, & console, for equivalences.  Also used as the default electricity tariff when a school has gas only, when calculating cost of point of use water heaters.' %>
+    <%= f.input :gas_price, as: :numeric, hint: 'Used to calculate the cost of a shower for equivalences.' %>
+    <%= f.input :solar_export_price, as: :numeric, hint: 'Used to calculate the £ value of exported solar, with existing panels, for the advice page.  Also used to calculate the economic benefit of installing solar for the advice page and alert.' %>
   <% end %>
 
   <%= f.submit 'Update settings', class: 'btn btn-primary'%>
