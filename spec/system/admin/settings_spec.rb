@@ -10,7 +10,7 @@ describe 'site-wide settings' do
     click_on 'Admin'
   end
 
-  it 'allows admmins to update site settings with the site settings pricing feature flag enabled' do
+  it 'allows admins to update site settings with the site settings pricing feature flag enabled' do
     ClimateControl.modify FEATURE_FLAG_USE_SITE_SETTINGS_CURRENT_PRICES: 'true' do
       BenchmarkMetrics.set_current_prices(prices: BenchmarkMetrics.default_prices)
       expect(SiteSettings.current.electricity_price).to eq(nil)
@@ -35,7 +35,7 @@ describe 'site-wide settings' do
     end
   end
 
-  it 'allows admmins to update site settings with the site settings pricing feature flag disabled' do
+  it 'allows admins to update site settings with the site settings pricing feature flag disabled' do
     ClimateControl.modify FEATURE_FLAG_USE_SITE_SETTINGS_CURRENT_PRICES: 'false' do
       BenchmarkMetrics.set_current_prices(prices: BenchmarkMetrics.default_prices)
       expect(SiteSettings.current.electricity_price).to eq(nil)
