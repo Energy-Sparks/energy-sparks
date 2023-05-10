@@ -11,7 +11,7 @@
           <label>
             <%= t('advice_pages.charts.controls.select_meter') %>
           </label>
-          <%= select_tag :meter, options_from_collection_for_select(meters, :mpan_mprn, :display_name, meters.first.mpan_mprn), include_blank: false, class: "custom-select", data: {toggle: "tooltip", placement: "top", title: t('advice_pages.charts.controls.select_meter')} %>
+          <%= select_tag :meter, options_from_collection_for_select(meters.keep_if { | m | m.has_readings? }, :mpan_mprn, :display_name, meters.first.mpan_mprn), include_blank: false, class: "custom-select", data: {toggle: "tooltip", placement: "top", title: t('advice_pages.charts.controls.select_meter')} %>
         </div>
       <% end %>
     <% end %>

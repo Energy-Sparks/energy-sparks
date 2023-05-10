@@ -10,14 +10,14 @@ module SchoolGroups
           'Number',
           'Meter',
           'Data source',
+          'Admin meter status',
           'Procurement route',
           'Active',
           'First validated reading',
           'Last validated reading',
           'Large gaps (last 2 years)',
           'Modified readings (last 2 years)',
-          'Zero reading days',
-          'Admin meter status'
+          'Zero reading days'
         ]
       end
     end
@@ -30,7 +30,9 @@ module SchoolGroups
     end
 
     def csv_filename
-      "#{school_group.name}-meter-report".parameterize + '.csv'
+      filename = "#{school_group.name}-meter-report-#{Time.zone.now.iso8601}"
+      filename += "-all-meters" if all_meters
+      filename.parameterize + '.csv'
     end
 
     def csv
@@ -43,14 +45,14 @@ module SchoolGroups
             meter.mpan_mprn,
             meter.name,
             meter.data_source.try(:name) || '',
+            meter.admin_meter_status_label,
             meter.procurement_route.try(:organisation_name) || '',
             y_n(meter.active),
             nice_dates(meter.first_validated_reading_date),
             nice_dates(meter.last_validated_reading_date),
             date_range_from_reading_gaps(meter.gappy_validated_readings),
             meter.modified_validated_readings.count,
-            meter.zero_reading_days_count,
-            meter.admin_meter_status_label
+            meter.zero_reading_days_count
           ]
         end
       end
