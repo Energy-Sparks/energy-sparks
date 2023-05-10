@@ -140,7 +140,7 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
       allow_any_instance_of(Baseload::BaseloadMeterBreakdownService).to receive(:calculate_breakdown).and_return(breakdown)
       allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:annual_baseload_usage).and_return(usage)
       allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:average_baseload_kw).and_return(average_baseload_kw)
-      allow(meter_collection).to receive(:meter?).and_return( double('meter', fuel_type: :electricity) )
+      allow(meter_collection).to receive(:meter?).and_return( double('meter', fuel_type: :electricity, amr_data: amr_data) )
     end
     it 'returns usage by years' do
       result = service.baseload_meter_breakdown

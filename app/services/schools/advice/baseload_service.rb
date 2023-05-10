@@ -29,10 +29,10 @@ module Schools
         case period
         when :year
           baseload_service = Baseload::BaseloadCalculationService.new(aggregate_meter, end_of_previous_year)
-          @previous_year_average_baseload_kw ||= baseload_service.average_baseload_kw(period: period)
+          @previous_year_average_baseload_kw ||= baseload_service.enough_data? ? baseload_service.average_baseload_kw(period: period) : nil
         when :week
           baseload_service = Baseload::BaseloadCalculationService.new(aggregate_meter, end_of_previous_week)
-          @previous_week_average_baseload_kw ||= baseload_service.average_baseload_kw(period: period)
+          @previous_week_average_baseload_kw ||= baseload_service.enough_data? ? baseload_service.average_baseload_kw(period: period) : nil
         else
           raise "Invalid period"
         end
@@ -79,7 +79,7 @@ module Schools
         meter_breakdowns = {}
         baseloads.meters.each do |mpan_mprn|
           baseload_service = Baseload::BaseloadCalculationService.new(@meter_collection.meter?(mpan_mprn), end_of_previous_year)
-          previous_year_baseload = baseload_service.average_baseload_kw(period: :year)
+          previous_year_baseload = baseload_service.enough_data? ? baseload_service.average_baseload_kw(period: :year) : nil
           meter_breakdowns[mpan_mprn] = build_meter_breakdown(mpan_mprn, baseloads, previous_year_baseload)
         end
         meter_breakdowns
@@ -95,7 +95,7 @@ module Schools
           baseload_cost_£: baseload_usage.£,
           percentage_baseload: 1.0,
           baseload_previous_year_kw: previous_year_baseload,
-          baseload_change_kw: baseload_kw - previous_year_baseload
+          baseload_change_kw: previous_year_baseload ? baseload_kw - previous_year_baseload : nil
         )
       end
 
@@ -191,7 +191,7 @@ module Schools
           baseload_cost_£: breakdown.baseload_cost_£(mpan_mprn),
           percentage_baseload: breakdown.percentage_baseload(mpan_mprn),
           baseload_previous_year_kw: previous_year_baseload,
-          baseload_change_kw: breakdown.baseload_kw(mpan_mprn) - previous_year_baseload
+          baseload_change_kw: previous_year_baseload ? breakdown.baseload_kw(mpan_mprn) - previous_year_baseload : nil
         )
       end
 
