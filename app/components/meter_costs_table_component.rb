@@ -71,7 +71,11 @@ class MeterCostsTableComponent < ViewComponent::Base
   end
 
   def consumption_charges
-   [:flat_rate, :commodity_rate, :non_commodity_rate] + day_night_rate_combinations.map { |day_night_rate_combination| period_sym("#{day_night_rate_combination.first} to #{day_night_rate_combination.last}") } # , period_sym('00:30 to 07:00'), period_sym('07:30 to 00:00'), period_sym('00:00 to 06:30'), period_sym('07:00 to 23:30')]
+    [
+      :flat_rate,
+      :commodity_rate,
+      :non_commodity_rate
+    ] + day_night_rate_combinations.map { |day_night_rate_combination| period_sym("#{day_night_rate_combination.first} to #{day_night_rate_combination.last}") }
   end
 
   def duos_charges
