@@ -67,6 +67,8 @@ RSpec.describe AdminMailer do
     end
 
     context "csv report" do
+      before { Timecop.freeze(Time.zone.now) }
+      after { Timecop.return }
       let(:attachment) { email.attachments[0] }
 
       it { expect(email.attachments.count).to eq(1) }
