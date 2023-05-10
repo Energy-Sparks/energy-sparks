@@ -168,6 +168,10 @@ class Meter < ApplicationRecord
     return true if fuel_type == :electricity && zero_reading_days.any?
   end
 
+  def has_readings?
+    amr_validated_readings.any?
+  end
+
   def name_or_mpan_mprn
     name.present? ? name : mpan_mprn.to_s
   end
