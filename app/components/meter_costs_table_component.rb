@@ -113,6 +113,9 @@ class MeterCostsTableComponent < ViewComponent::Base
   def tooltip(component:)
     if (band = is_duos?(component))
       duos_charge_times(band)
+    elsif component[2] == "_"
+      component_times = component.to_s.gsub('_to_', ' ').tr('_', ':').split(' ')
+      helpers.icon_tooltip(t('day_night', scope: @t_scope, time_from: component_times.first, time_to: component_times.last, default: ''))
     else
       helpers.icon_tooltip(t(component, scope: @t_scope, default: ''))
     end
