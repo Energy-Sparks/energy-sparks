@@ -30,7 +30,9 @@ module SchoolGroups
     end
 
     def csv_filename
-      "#{school_group.name}-meter-report".parameterize + '.csv'
+      filename = "#{school_group.name}-meter-report-#{Time.zone.now.iso8601}"
+      filename += "-all-meters" if all_meters
+      filename.parameterize + '.csv'
     end
 
     def csv

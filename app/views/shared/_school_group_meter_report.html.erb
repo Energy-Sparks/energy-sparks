@@ -6,7 +6,7 @@
         <th>Supply</th>
         <th>Number</th>
         <th>Readings calendar</th>
-        <% if params[:all_meters] %>
+        <% if local_assigns[:all_meters] %>
           <th>Active</th>
         <% end %>
         <th>First validated reading</th>
@@ -27,7 +27,7 @@
             <%= link_to(meter.mpan_mprn, school_meter_url(meter.school, meter)) %>
           </td>
           <td><%= link_to(meter.name.present? ? meter.name : meter.meter_type.to_s.humanize, admin_reports_amr_validated_reading_url(meter)) if AmrValidatedReading.where(meter_id: meter.id).any? %></td>
-          <% if params[:all_meters] %>
+          <% if local_assigns[:all_meters] %>
             <td><%= meter.active ? 'Active' : 'Deprecated' %></td>
           <% end %>
           <td><%= nice_dates(meter.first_validated_reading_date) %></td>

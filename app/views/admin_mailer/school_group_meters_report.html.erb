@@ -1,6 +1,6 @@
-<h1><%= @school_group.name %> active meter report</h1>
+<h1><%= @school_group.name %> meter report</h1>
 
-<%= render 'shared/school_group_meter_report', email: true %>
+<%= render 'shared/school_group_meter_report', email: true, all_meters: @all_meters %>
 
 <h3>Loader Legend</h3>
 <div class="row p-2">
