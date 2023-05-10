@@ -9,6 +9,7 @@ class AdminMailer < ApplicationMailer
 
     env = ENV['ENVIRONMENT_IDENTIFIER'] || 'unknown'
     title = "Meter report for #{@school_group.name}"
+    title += @all_meters ? " - all meters" : " - active meters"
     attachments[meter_report.csv_filename] = { mime_type: 'text/csv', content: meter_report.csv }
 
     make_bootstrap_mail(to: to, subject: "[energy-sparks-#{env}] Energy Sparks - #{title}")
