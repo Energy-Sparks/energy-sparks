@@ -24,15 +24,18 @@ describe 'school group meter reports', type: :system do
     it 'displays the reports index' do
       expect(page).to have_content("School group meter data reports")
       expect(page).to have_content(school_group.name)
-      expect(page).to have_link("Meter report", href: deliver_admin_school_group_meter_report_path(school_group))
+      expect(page).to have_button("Meter report")
       expect(page).to have_link("Download meter collections")
     end
 
-    context 'when clicking on the email meter report link' do
+    context 'when clicking on the email meter report link', js: true do
       before do
         click_on "Meter report"
+        accept_alert do
+          click_on "Email meter report"
+        end
       end
-      it { expect(page).to have_content "Report requested to be sent to #{admin.email}" }
+      it { expect(page).to have_content "Meter report for #{school_group.name} requested to be sent to #{admin.email}" }
       it { expect(page).to have_content "School group meter data reports" }
     end
   end
@@ -44,7 +47,7 @@ describe 'school group meter reports', type: :system do
 
     it 'links to downloads and all meters' do
       expect(page).to have_content("#{school_group.name} meter report")
-      expect(page).to have_link('Meter report', href: deliver_admin_school_group_meter_report_path(school_group))
+      expect(page).to have_button('Meter report')
       expect(page).to have_link("Download meter collections")
     end
 
