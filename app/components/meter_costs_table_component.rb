@@ -75,7 +75,7 @@ class MeterCostsTableComponent < ViewComponent::Base
       :flat_rate,
       :commodity_rate,
       :non_commodity_rate
-    ] + day_night_rate_combinations.map { |day_night_rate_combination| period_sym("#{day_night_rate_combination.first} to #{day_night_rate_combination.last}") }
+    ] + all_day_night_rate_combinations
   end
 
   def duos_charges
@@ -203,6 +203,10 @@ class MeterCostsTableComponent < ViewComponent::Base
     if @school && @fuel_type && @fuel_type.to_sym == :electricity # duos is only for electricity
       return @school.meters.active.where(meter_type: @fuel_type).first.try(:mpan_mprn)
     end
+  end
+
+  def all_day_night_rate_combinations
+    @all_day_night_rate_combinations ||= day_night_rate_combinations.map { |day_night_rate_combination| period_sym("#{day_night_rate_combination.first} to #{day_night_rate_combination.last}") }
   end
 
   def day_night_rate_combinations
