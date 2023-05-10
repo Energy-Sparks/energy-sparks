@@ -97,8 +97,8 @@ RSpec.describe MeterCostsTableComponent, type: :component do
         standing_charge: 50,
         duos_red: 10.0,
         agreed_availability_charge: 27.0,
-        '00_30_to_12_30': 10,
-        '12_30_to_23_30': 10
+        '00_30_to_12_30': 15,
+        '12_30_to_23_30': 20
       }
     }
 
@@ -133,12 +133,21 @@ RSpec.describe MeterCostsTableComponent, type: :component do
       expect(html).to have_text("£27")
     end
 
+    it 'includes two day night charge rows' do
+      expect(html).to have_text("00:30 to 12:30")
+      expect(html).to have_css("span[data-title='This is the charge for electricity consumed between 00:30 and 12:30 per kWh']")
+      expect(html).to have_text("£15")
+      expect(html).to have_text("12:30 to 23:30")
+      expect(html).to have_css("span[data-title='This is the charge for electricity consumed between 12:30 and 23:30 per kWh']")
+      expect(html).to have_text("£20")
+    end
+
     it 'includes five rows in tbody' do
       expect(html).to have_css("tbody tr", :count=>7)
     end
 
     it 'has correct total' do
-      expect(html).to have_text("£207")
+      expect(html).to have_text("£222")
     end
   end
 
