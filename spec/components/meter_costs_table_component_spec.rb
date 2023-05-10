@@ -96,7 +96,9 @@ RSpec.describe MeterCostsTableComponent, type: :component do
         flat_rate: 100.0,
         standing_charge: 50,
         duos_red: 10.0,
-        agreed_availability_charge: 27.0
+        agreed_availability_charge: 27.0,
+        '00_30_to_12_30': 10,
+        '12_30_to_23_30': 10
       }
     }
 
@@ -132,11 +134,11 @@ RSpec.describe MeterCostsTableComponent, type: :component do
     end
 
     it 'includes five rows in tbody' do
-      expect(html).to have_css("tbody tr", :count=>5)
+      expect(html).to have_css("tbody tr", :count=>7)
     end
 
     it 'has correct total' do
-      expect(html).to have_text("£187")
+      expect(html).to have_text("£207")
     end
   end
 
