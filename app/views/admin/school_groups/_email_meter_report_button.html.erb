@@ -13,27 +13,27 @@
         </button>
       </div>
       <%= form_tag deliver_admin_school_group_meter_report_path(school_group), method: :post do %>
-      <div class="modal-body">
-        <div><strong>To: </strong><span class="badge border badge-pill border-secondary font-weight-normal"><%= current_user.email %></span>
+        <div class="modal-body">
+          <div><strong>To: </strong><span class="badge border badge-pill border-secondary font-weight-normal"><%= current_user.email %></span>
+          </div>
+          <div class="pb-2"><strong>Group: </strong><%= school_group.name %>
+          </div>
+          <strong>Include:</strong>
+          <div class="form-check">
+            <%= radio_button_tag :all_meters, '', true, class: 'form-check-input' %>
+            <%= label_tag :all_meters_, 'Only active meters', class: 'form-check-label' %>
+          </div>
+          <div class="form-check">
+            <%= radio_button_tag :all_meters, 'true', false, class: 'form-check-input' %>
+            <%= label_tag :all_meters_true, 'Active and inactive meters', class: 'form-check-label'%>
+          </div>
         </div>
-        <div class="pb-2"><strong>Group: </strong><%= school_group.name %>
+        <div class="modal-footer">
+          <%= button_tag(type: 'submit', class: 'btn btn-sm', data: { confirm: "Are you sure you want to send the meter report to #{current_user.email}?" }) do %>
+            <%= fa_icon('envelope') %> Email meter report
+          <% end %>
+          <button type="button" class="btn btn-sm" data-dismiss="modal">Close</button>
         </div>
-        <strong>Include:</strong>
-        <div class="form-check">
-          <%= radio_button_tag :all_meters, '', true, class: 'form-check-input' %>
-          <%= label_tag :all_meters_, 'Only active meters', class: 'form-check-label' %>
-        </div>
-        <div class="form-check">
-          <%= radio_button_tag :all_meters, 'true', false, class: 'form-check-input' %>
-          <%= label_tag :all_meters_true, 'Active and inactive meters', class: 'form-check-label'%>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <%= button_tag(type: 'submit', class: 'btn btn-sm', data: { confirm: "Are you sure you want to send the meter report to #{current_user.email}?" }) do %>
-          <%= fa_icon('envelope') %> Email meter report
-        <% end %>
-        <button type="button" class="btn btn-sm" data-dismiss="modal">Close</button>
-      </div>
       <% end %>
     </div>
   </div>
