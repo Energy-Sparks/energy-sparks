@@ -2,6 +2,10 @@ require 'rails_helper'
 
 RSpec.describe SchoolGroups::MeterReport do
 
+  let(:frozen_time) { Time.zone.now }
+  before { Timecop.freeze(frozen_time) }
+  after { Timecop.return }
+
   let(:school_group) { create :school_group, name: 'A Group' }
   let(:all_meters) { false }
   subject(:meter_report) { SchoolGroups::MeterReport.new(school_group, all_meters: all_meters) }
@@ -12,10 +16,6 @@ RSpec.describe SchoolGroups::MeterReport do
   let(:header) { 'School,Supply,Number,Meter,Data source,Admin meter status,Procurement route,Active,First validated reading,Last validated reading,Large gaps (last 2 years),Modified readings (last 2 years),Zero reading days' }
 
   describe "#csv_filename" do
-    let(:frozen_time) { Time.zone.now }
-    before { Timecop.freeze(frozen_time) }
-    after { Timecop.return }
-
     context "when all_meters is false" do
       let(:all_meters) { false }
       it { expect(meter_report.csv_filename).to eq("a-group-meter-report-#{frozen_time.iso8601.parameterize}.csv") }
