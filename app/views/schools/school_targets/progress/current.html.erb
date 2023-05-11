@@ -92,7 +92,7 @@
 
   <h3><%= t('schools.school_targets.progress.current.progress_charts') %></h3>
 
-  <%= render 'charts', school: @school, fuel_type: @fuel_type, progress: @progress %>
+  <%= render 'charts', school: @school, fuel_type: @fuel_type == :storage_heaters ? :storage_heater : @fuel_type, progress: @progress %>
 
   <% if current_user.present? && current_user.analytics? %>
     <h2><%= t('schools.school_targets.progress.current.debug') %></h2>

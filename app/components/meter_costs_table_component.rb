@@ -71,7 +71,11 @@ class MeterCostsTableComponent < ViewComponent::Base
   end
 
   def consumption_charges
-   [:flat_rate, :commodity_rate, :non_commodity_rate, period_sym('00:30 to 07:00'), period_sym('07:30 to 00:00')]
+    [
+      :flat_rate,
+      :commodity_rate,
+      :non_commodity_rate
+    ] + all_day_night_rate_combinations
   end
 
   def duos_charges
@@ -109,6 +113,9 @@ class MeterCostsTableComponent < ViewComponent::Base
   def tooltip(component:)
     if (band = is_duos?(component))
       duos_charge_times(band)
+    elsif component[2] == "_"
+      component_times = component.to_s.gsub('_to_', ' ').tr('_', ':').split(' ')
+      helpers.icon_tooltip(t('day_night', scope: @t_scope, time_from: component_times.first, time_to: component_times.last, default: ''))
     else
       helpers.icon_tooltip(t(component, scope: @t_scope, default: ''))
     end
@@ -196,5 +203,17 @@ class MeterCostsTableComponent < ViewComponent::Base
     if @school && @fuel_type && @fuel_type.to_sym == :electricity # duos is only for electricity
       return @school.meters.active.where(meter_type: @fuel_type).first.try(:mpan_mprn)
     end
+  end
+
+  def all_day_night_rate_combinations
+    @all_day_night_rate_combinations ||= day_night_rate_combinations.map { |day_night_rate_combination| period_sym("#{day_night_rate_combination.first} to #{day_night_rate_combination.last}") }
+  end
+
+  def day_night_rate_combinations
+    @day_night_rate_combinations ||= possible_time_combinations.product(possible_time_combinations)
+  end
+
+  def possible_time_combinations
+    @possible_time_combinations ||= ('00'..'23').to_a.product(%w[00 30]).collect { |hour, minutes| "#{hour}:#{minutes}" }
   end
 end

@@ -9,7 +9,7 @@
 <p><%= link_to "Download meter collections", admin_schools_meter_collections_path(anchor: "school-group-#{@school_group.id}") %>
 
 <p>You can request this school group meter report, including a CSV</p>
-<%= link_to "#{fa_icon('envelope')} Meter report".html_safe, deliver_admin_school_group_meter_report_path(@school_group, all_meters: params[:all_meters]) , class: 'btn btn-sm', title: "Email meter report & csv", method: :update, data: { confirm: "Are you sure you want to send the meter report to #{current_user.email}?" } %>
+<%= render 'admin/school_groups/email_meter_report_button', school_group: @school_group, class: 'btn btn-sm' %>
 
 <% unless params[:all_meters] %>
   <h2>Meters</h2>
@@ -30,4 +30,4 @@
   <div class="col-10">Recent reading</div>
 </div>
 
-<%= render 'shared/school_group_meter_report' %>
+<%= render 'shared/school_group_meter_report', all_meters: params[:all_meters] %>
