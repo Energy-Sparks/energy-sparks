@@ -8,6 +8,8 @@ class PasswordsController < Devise::PasswordsController
     super
     # the resource is NOT the actual user - have to find it ourselves
     user = User.with_reset_password_token(params[:reset_password_token])
+
+    redirect_to new_user_password_path and return unless user
     @allow_newsletters = allow_newletters?(user)
     @allow_alerts = allow_alerts?(user)
     @subscribe_alerts = true
