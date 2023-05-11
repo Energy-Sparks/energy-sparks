@@ -80,6 +80,7 @@ en:
               area_m2: Area (m2)
               capacity_kwp: Capacity (kWp)
               estimated_capital_cost: Estimated capital cost
+              export_income: Export income
               panels: Panels
               payback_years: Payback years
               reduction_in_mains_consumption: Reduction in mains consumption
