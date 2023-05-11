@@ -34,9 +34,6 @@
       <th class="text-center">
         <%= t('advice_pages.solar_pv.no_solar_pv.analysis.table.column.payback_years') %>
       </th>
-      <th class="text-center">
-        <%= t('advice_pages.solar_pv.no_solar_pv.analysis.table.column.export_income') %>
-      </th>
     </tr>
   </thead>
   <tbody>
@@ -53,7 +50,6 @@
         <td class="text-right"><%= format_unit(scenario.solar_pv_output_co2, :co2) %></td>
         <td class="text-right"><%= format_unit(scenario.capital_cost_£, :£) %></td>
         <td class="text-right"><%= scenario.payback_years.round %> years</td>
-        <td class="text-right"><%= format_unit(scenario.export_income_£, :£) %></td>
       </tr>
     <% end %>
   </tbody>
