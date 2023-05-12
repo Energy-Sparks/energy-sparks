@@ -47,7 +47,7 @@ module Schools
             @agreed_capacity = Costs::AgreedSupplyCapacityService.new(analytics_meter).summarise
           end
         end
-
+        @fuel_type = advice_page_fuel_type
         @analysis_dates = analysis_dates
         respond_to do |format|
           format.js

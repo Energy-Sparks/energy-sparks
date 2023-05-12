@@ -22,8 +22,18 @@
         <% group[:list].each do |component| %>
           <% if bill_component?(component: component) %>
             <tr>
-              <td><%= t("advice_pages.tables.labels.bill_components.#{component}") %></td>
-              <td><%= tooltip(component: component) %></td>
+              <td>
+                <% if component[2] == "_" %>
+                  <% component_times = component.to_s.gsub('_to_',' ').gsub('_',':').split(' ') %>
+                  <%= t("advice_pages.tables.labels.bill_components.day_night", time_from: component_times.first, time_to: component_times.last) %>
+                <% else %>
+                  <%= t("advice_pages.tables.labels.bill_components.#{component}") %>
+                <% end %>
+              </td>
+              <td>
+                <%= tooltip(component: component) %>
+              </td>
+
               <% bill_component_row(component: component) do |v| %>
                 <td class="text-right"><%= v %></td>
               <% end %>

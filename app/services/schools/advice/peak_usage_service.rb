@@ -23,7 +23,8 @@ module Schools
       end
 
       def previous_year_peak_kw
-        peak_usage_calculation_service(previous_years_asof_date).average_peak_kw
+        previous_years_peak_usage_calculation_service = peak_usage_calculation_service(previous_years_asof_date)
+        previous_years_peak_usage_calculation_service.enough_data? ? previous_years_peak_usage_calculation_service.average_peak_kw : nil
       end
 
       def percentage_change_in_peak_kw

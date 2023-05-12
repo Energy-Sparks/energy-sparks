@@ -46,6 +46,8 @@ en:
     other: "%{count} schools"
   training:
     intro: This page lists all of our upcoming training sessions. Follow the links to our Eventbrite page to book your tickets.
+    sold_out: Sold out
+    spaces_available: Spaces available
     title: Training
   videos:
     title: User guide videos

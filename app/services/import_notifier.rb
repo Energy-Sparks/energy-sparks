@@ -4,15 +4,14 @@ class ImportNotifier
   end
 
   def meters_running_behind
-    meters = Meter.active
-    .joins(:amr_data_feed_readings)
-    .where("amr_data_feed_readings.created_at >= NOW() - INTERVAL '1 year'")
-    .joins("INNER JOIN amr_data_feed_configs on amr_data_feed_readings.amr_data_feed_config_id = amr_data_feed_configs.id")
-    .where.not("amr_data_feed_configs.import_warning_days" => nil)
-    .joins(:amr_validated_readings)
-    .group('meters.id')
-    .having("MAX(amr_validated_readings.reading_date) < NOW() - MIN(amr_data_feed_configs.import_warning_days) * '1 day'::interval")
-    meters.sort_by {|m| [m.school.area_name, m.meter_type, m.school_name, m.mpan_mprn]}
+    find_meters_running_behind.sort_by do |meter|
+      [
+        meter.school.area_name.to_s,
+        meter.meter_type,
+        meter.school_name,
+        meter.mpan_mprn
+      ]
+    end
   end
 
   #data feed readings, creating in last 24 hours, where the readings are ALL blank
@@ -43,5 +42,29 @@ class ImportNotifier
 
   def notify(from:, to:)
     ImportMailer.with(meters_running_behind: meters_running_behind, meters_with_blank_data: meters_with_blank_data(from: from, to: to), meters_with_zero_data: meters_with_zero_data(from: from, to: to), description: @description).import_summary.deliver_now
+  end
+
+  private
+
+  def find_meters_running_behind
+    Meter.active
+         .joins(:school)
+         .joins('LEFT JOIN data_sources on data_sources.id = meters.data_source_id')
+         .joins(:amr_validated_readings)
+         .group('meters.id, data_sources.import_warning_days')
+         .having(
+           <<-SQL.squish
+             MAX(amr_validated_readings.reading_date) < NOW() - COALESCE(
+                                                                       data_sources.import_warning_days,
+                                                                       (
+                                                                          SELECT site_settings.default_import_warning_days
+                                                                          FROM site_settings
+                                                                          ORDER BY created_at
+                                                                          DESC
+                                                                          LIMIT 1
+                                                                        )
+                                                                     ) * '1 day'::interval
+           SQL
+         )
   end
 end
