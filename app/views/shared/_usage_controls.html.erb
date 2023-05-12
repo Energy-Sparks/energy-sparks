@@ -13,7 +13,7 @@
         <div class="form-group">
           <div class="input-group">
             <div class="input-group date <%= 'week-view' if period == :weekly %>" id="<%= period %>-datetimepicker1" data-target-input="nearest">
-              <%= text_field_tag("first-date-picker", '', class: 'form-control datetimepicker-input', data: { target: "##{period}-datetimepicker1" }) %>
+              <%= text_field_tag("first-date-picker", '', class: 'form-control datetimepicker-input', data: { target: "##{period}-datetimepicker1" }, onkeydown: 'return false') %>
 
               <div class="input-group-append" data-target="#<%= period %>-datetimepicker1" data-toggle="datetimepicker">
                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
@@ -31,7 +31,7 @@
         <div class="form-group">
           <div class="input-group">
             <div class="input-group date <%= 'week-view' if period == :weekly %>" id='<%= "#{period}-datetimepicker2" %>' data-target-input="nearest">
-              <%= text_field_tag("second-date-picker", '', class: 'form-control datetimepicker-input', data: { target: "##{period}-datetimepicker2" }) %>
+              <%= text_field_tag("second-date-picker", '', class: 'form-control datetimepicker-input', data: { target: "##{period}-datetimepicker2" }, onkeydown: 'return false') %>
 
               <div class="input-group-append" data-target="##{period}-datetimepicker2" data-toggle="datetimepicker">
                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
