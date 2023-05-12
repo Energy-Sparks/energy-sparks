@@ -57,6 +57,8 @@ function chartSuccess(chartConfig, chartData, chart) {
   if ($chartWrapper.find('.chart-subtitle').length) {
     var $subTitle = $( $chartWrapper.find('.chart-subtitle')[0] );
     updateDatesInSubtitles($subTitle, chartData);
+    chartConfig['export_title'] = $chartWrapper.find('.chart-title')[0].innerText
+    chartConfig['export_subtitle'] = $chartWrapper.find('.chart-subtitle')[0].innerText
   }
 
   if (! noAdvice) {
@@ -85,6 +87,8 @@ function chartSuccess(chartConfig, chartData, chart) {
   } else if (chartType == 'pie') {
     pie(chartData, chart, seriesData, $chartDiv);
   }
+
+  updateExport(chart, chartConfig)
 
   enableAxisControls($chartWrapper, chartData);
 
