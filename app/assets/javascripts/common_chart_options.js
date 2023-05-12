@@ -229,19 +229,29 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
   updateChartLabels(chartData, highchartsChart);
   normaliseYAxis(highchartsChart);
 
-  console.log(chartConfig)
-
-
-  // Set a title for all exports
-  highchartsChart.update({
-    exporting: {
-      chartOptions: {
-        title: {
-          text: chartConfig['export_title']
+  // Set a title & subtitle, if present, for all chart exports
+  if ('export_title' in chartConfig) {
+    highchartsChart.update({
+      exporting: {
+        chartOptions: {
+          title: {
+            text: chartConfig['export_title']
+          }
         }
       }
-    }
-  });
+    });
+  }
+  if ('export_subtitle' in chartConfig) {
+    highchartsChart.update({
+      exporting: {
+        chartOptions: {
+          subtitle: {
+            text: chartConfig['export_subtitle']
+          }
+        }
+      }
+    });
+  }
 
   highchartsChart.redraw();
 }
