@@ -460,8 +460,12 @@ class School < ApplicationRecord
     school_targets.by_start_date.expired[idx + 1]
   end
 
-  def has_expired_target?
-    expired_target.present?
+  def has_expired_target?(fuel_type: nil)
+    if fuel_type
+      expired_target.present? && expired_target.try(fuel_type)
+    else
+      expired_target.present?
+    end
   end
 
   def has_school_target_event?(event_name)
