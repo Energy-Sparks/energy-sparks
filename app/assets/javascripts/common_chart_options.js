@@ -19,9 +19,6 @@ function commonChartOptions(clickListener){
       sourceHeight: 665,
       scale: 1 ,
       chartOptions: {
-        // title: {
-        //   text: 'title after export'
-        // },
         chart: {
           style: {
             fontFamily: 'Arial'
