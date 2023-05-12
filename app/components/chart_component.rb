@@ -10,7 +10,7 @@ class ChartComponent < ViewComponent::Base
 
   include ChartHelper
 
-  def initialize(chart_type:, school:, chart_config: nil, analysis_controls: true, no_zoom: true, axis_controls: true, html_class: 'analysis-chart')
+  def initialize(chart_type:, school:, chart_config: nil, analysis_controls: true, no_zoom: true, axis_controls: true, html_class: 'analysis-chart', export_title: '')
     @chart_type = chart_type
     @school = school
     @chart_config = chart_config
@@ -18,10 +18,11 @@ class ChartComponent < ViewComponent::Base
     @no_zoom = no_zoom
     @axis_controls = axis_controls
     @html_class = html_class
+    @export_title = export_title
   end
 
   def chart_config
-    @chart_config ||= create_chart_config(@school, @chart_type)
+    @chart_config ||= create_chart_config(@school, @chart_type, export_title: @export_title)
   rescue StandardError
     nil
   end

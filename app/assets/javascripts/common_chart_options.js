@@ -142,6 +142,8 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
 
   //console.log(chartType + ': ' + subChartType);
 
+
+
   var xAxisCategories = chartData.x_axis_categories;
   var yAxisLabel = chartData.y_axis_label;
   var y2AxisLabel = chartData.y2_axis_label;
@@ -150,6 +152,7 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
   var noZoom = chartConfig.no_zoom;
 
   highchartsChart.xAxis[0].setCategories(xAxisCategories);
+
 
   // BAR Charts
   if (chartType == 'bar') {
@@ -225,6 +228,20 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
 
   updateChartLabels(chartData, highchartsChart);
   normaliseYAxis(highchartsChart);
+
+  console.log(chartConfig)
+
+
+  // Set a title for all exports
+  highchartsChart.update({
+    exporting: {
+      chartOptions: {
+        title: {
+          text: chartConfig['export_title']
+        }
+      }
+    }
+  });
 
   highchartsChart.redraw();
 }
