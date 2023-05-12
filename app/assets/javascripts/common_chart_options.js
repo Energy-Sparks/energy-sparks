@@ -229,6 +229,10 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
   updateChartLabels(chartData, highchartsChart);
   normaliseYAxis(highchartsChart);
 
+  highchartsChart.redraw();
+}
+
+function updateExport(highchartsChart, chartConfig) {
   // Set a title & subtitle, if present, for all chart exports
   if ('export_title' in chartConfig) {
     highchartsChart.update({
@@ -252,8 +256,6 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
       }
     });
   }
-
-  highchartsChart.redraw();
 }
 
 function updateChartLabels(data, chart){
@@ -332,6 +334,7 @@ function pie(chartData, highchartsChart, seriesData, $chartDiv) {
     }
   }
   });
+
   highchartsChart.redraw();
 }
 

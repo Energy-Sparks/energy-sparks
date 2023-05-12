@@ -87,6 +87,8 @@ function chartSuccess(chartConfig, chartData, chart) {
     pie(chartData, chart, seriesData, $chartDiv);
   }
 
+  updateExport(chart, chartConfig)
+
   enableAxisControls($chartWrapper, chartData);
 
   if(chartData.allowed_operations){
