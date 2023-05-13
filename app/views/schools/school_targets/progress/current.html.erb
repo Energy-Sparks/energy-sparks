@@ -4,7 +4,7 @@
   </h1>
 
   <div>
-    <% if @school_target.school.has_expired_target_for_fuel_type(@fuel_type) %>
+    <% if @school_target.school.has_expired_target_for_fuel_type?(@fuel_type) %>
       <%= link_to t('schools.school_targets.progress.current.view_last_years_target_report'), {school_target_id: @school_target.school.expired_target }, class: "btn btn-outline-dark font-weight-bold" %>
     <% end %>
     <%= link_to t('schools.school_targets.progress.current.review_targets'), school_school_target_path(@school, @school_target), class: "btn btn-outline-dark rounded-pill font-weight-bold" %>
