@@ -21,9 +21,14 @@ class ChartComponent < ViewComponent::Base
   end
 
   def chart_config
-    @chart_config ||= create_chart_config(@school, @chart_type)
+    @chart_config ||= create_chart_config(@school, @chart_type, export_title: @export_title, export_subtitle: @export_subtitle)
   rescue StandardError
     nil
+  end
+
+  def before_render
+    @export_title = title.present? ? title.to_s : ''
+    @export_subtitle = subtitle.present? ? subtitle.to_s : ''
   end
 
   def valid_config?
