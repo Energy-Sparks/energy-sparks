@@ -14,6 +14,18 @@ function commonChartOptions(clickListener){
   return {
     colors: ["#9c3367", "#67347f", "#935fb8", "#e676a3", "#e4558b", "#7a9fb1", "#5297c6", "#97c086", "#3f7d69", "#6dc691", "#8e8d6b", "#e5c07c", "#e9d889", "#e59757", "#f4966c", "#e5644e", "#cd4851", "#bd4d65", "#515749"],
     title: { text: null },
+    exporting: {
+      sourceWidth: 1278,
+      sourceHeight: 665,
+      scale: 1 ,
+      chartOptions: {
+        chart: {
+          style: {
+            fontFamily: 'Arial'
+          }
+        }
+      }
+    },
     xAxis: { showEmpty: false },
     yAxis: { showEmpty: false, title: { rotation: 0, margin: 30, useHTML: true, style: {fontSize: '18px'} } },
     tooltip: {
@@ -127,6 +139,8 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
 
   //console.log(chartType + ': ' + subChartType);
 
+
+
   var xAxisCategories = chartData.x_axis_categories;
   var yAxisLabel = chartData.y_axis_label;
   var y2AxisLabel = chartData.y2_axis_label;
@@ -135,6 +149,7 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
   var noZoom = chartConfig.no_zoom;
 
   highchartsChart.xAxis[0].setCategories(xAxisCategories);
+
 
   // BAR Charts
   if (chartType == 'bar') {
@@ -214,6 +229,32 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig) {
   highchartsChart.redraw();
 }
 
+function updateExport(highchartsChart, chartConfig) {
+  // Set a title & subtitle, if present, for all chart exports
+  if ('export_title' in chartConfig) {
+    highchartsChart.update({
+      exporting: {
+        chartOptions: {
+          title: {
+            text: chartConfig['export_title']
+          }
+        }
+      }
+    });
+  }
+  if ('export_subtitle' in chartConfig) {
+    highchartsChart.update({
+      exporting: {
+        chartOptions: {
+          subtitle: {
+            text: chartConfig['export_subtitle']
+          }
+        }
+      }
+    });
+  }
+}
+
 function updateChartLabels(data, chart){
 
   var yAxisLabel = data.y_axis_label;
@@ -290,6 +331,7 @@ function pie(chartData, highchartsChart, seriesData, $chartDiv) {
     }
   }
   });
+
   highchartsChart.redraw();
 }
 
