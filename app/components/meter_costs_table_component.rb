@@ -99,7 +99,7 @@ class MeterCostsTableComponent < ViewComponent::Base
   end
 
   def other
-    [:feed_in_tariff_levy, :climate_change_levy__2021_22, :renewable_energy_obligation]
+    [:feed_in_tariff_levy, :climate_change_levy__2021_22, :renewable_energy_obligation] + MeterAttributes.default_economic_rates.structure.keys
   end
 
   def vat_charges
