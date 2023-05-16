@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.shared_examples "managing targets" do
+RSpec.shared_examples "managing targets", include_application_helper: true do
   let!(:gas_meter)         { create(:gas_meter, school: test_school) }
   let!(:electricity_meter) { create(:electricity_meter, school: test_school) }
 
@@ -134,6 +134,7 @@ RSpec.shared_examples "managing targets" do
     let!(:target)              { create(:school_target, school: test_school) }
     let!(:activity_type)       { create(:activity_type) }
     let!(:intervention_type)   { create(:intervention_type) }
+    let!(:expired_targets)     { }
 
     before(:each) do
       visit school_school_targets_path(test_school)
@@ -179,6 +180,35 @@ RSpec.shared_examples "managing targets" do
     it "redirects away from the new target form" do
       visit new_school_school_target_path(test_school, target)
       expect(page).to have_title("Your current energy saving targets")
+    end
+
+    context "when an expired target is present" do
+      let(:expired_target) { create(:school_target, school: test_school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday) }
+      let(:expired_targets) { [ expired_target ] }
+      it "links to expired target" do
+        expect(page).to have_link("View results")
+      end
+      context "and clicking 'View results'" do
+        before { click_on "View results" }
+        it "shows previous expired target" do
+          expect(page).to have_content("Your school set a target to reduce its energy usage between #{nice_dates(expired_target.start_date)} and #{nice_dates(expired_target.target_date)}")
+        end
+        it { expect(page).to_not have_link("View results") }
+        context "more than one expired targets" do
+          let(:older_expired_target) { create(:school_target, school: test_school, start_date: Date.yesterday.years_ago(2), target_date: Date.yesterday.years_ago(1)) }
+          let(:expired_targets) { [ expired_target, older_expired_target ] }
+          it "shows previous expired target" do
+            expect(page).to have_content("Your school set a target to reduce its energy usage between #{nice_dates(expired_target.start_date)} and #{nice_dates(expired_target.target_date)}")
+          end
+        end
+        context "no more expired targets" do
+          it { expect(page).to_not have_link("View results") }
+        end
+      end
+    end
+
+    context "no expired target" do
+      it { expect(page).to_not have_link("View results") }
     end
 
     context 'and I edit the target' do

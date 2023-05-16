@@ -617,6 +617,27 @@ describe School do
           expect(subject.all_pseudo_meter_attributes).to_not eql({})
         end
       end
+
+      describe ".has_expired_target_for_fuel_type?" do
+        before(:each) do
+          target.update!(electricity: 5)
+        end
+        let!(:expired_target) { create(:school_target, start_date: Date.yesterday.prev_year, school: subject, electricity: 5, gas: nil) }
+        it { expect(subject.has_expired_target_for_fuel_type?(:electricity)).to be true }
+        it { expect(subject.has_expired_target_for_fuel_type?(:gas)).to be false }
+      end
+
+      describe ".previous_expired_target" do
+        let!(:expired_target) { create(:school_target, start_date: Date.yesterday.prev_year, school: subject) }
+        let!(:older_expired_target) { create(:school_target, start_date: Date.yesterday.years_ago(2), school: subject) }
+        let!(:oldest_expired_target) { create(:school_target, start_date: Date.yesterday.years_ago(2), school: subject) }
+
+        it { expect(subject.previous_expired_target(expired_target)).to eq older_expired_target }
+        it { expect(subject.previous_expired_target(older_expired_target)).to eq oldest_expired_target }
+        it { expect(subject.previous_expired_target(oldest_expired_target)).to be_nil }
+        it { expect(subject.previous_expired_target(nil)).to be_nil }
+        it { expect(subject.previous_expired_target(target)).to be_nil }
+      end
     end
   end
 
