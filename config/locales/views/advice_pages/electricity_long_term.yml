@@ -37,7 +37,7 @@ en:
           title: Monthly electricity consumption comparison over the last two years
         electricity_longterm_trend:
           explanation: Unless the school has had additional buildings added, if you are managing your electricity consumption well this should show a downward trend; more modern ICT equipment, LED lighting and behaviour change all contribute to reducing electricity usage.
-          subtitle: This chart, and the table below give the breakdown of electricity consumption between school day open and closed, holidays and weekends for each full year of data we have for your school
+          subtitle: This chart gives the breakdown of electricity consumption between school day open and closed, holidays and weekends for each full year of data we have for your school
           title: Change in electricity consumption over the last few years
         group_by_week_electricity:
           explanation_html: |-
