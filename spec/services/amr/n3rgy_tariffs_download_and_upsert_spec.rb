@@ -29,7 +29,6 @@ module Amr
 
       it "should request 24 hours of data and insert a new tariff price and tariff standing charge" do
         expect(n3rgy_api).to receive(:tariffs).with(meter.mpan_mprn, meter.meter_type, start_date, end_date).and_return(tariffs)
-
         expect {
           Amr::N3rgyTariffsDownloadAndUpsert.new(n3rgy_api_factory: n3rgy_api_factory, meter: meter).perform
         }.to change { TariffImportLog.count }.by(1)
