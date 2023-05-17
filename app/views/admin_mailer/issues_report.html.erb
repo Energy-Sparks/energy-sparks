@@ -1,5 +1,4 @@
-<h1>Issue report for: <%= @user.display_name %></h1>
-
+<h1>Open issues for: <%= @user.display_name %></h1>
 
 <table class="table">
   <thead>
@@ -8,8 +7,7 @@
       <th>Issue for</th>
       <th>Title</th>
       <th>Fuel</th>
-      <th class="nowrap">Assigned to</th>
-      <th>Status</th>
+      <th>Created</th>
       <th>Updated</th>
       <th colspan="2"></th>
     </tr>
@@ -18,16 +16,17 @@
     <% @issues.by_created_at.each do |issue| %>
       <tr class="bg-light">
         <td title="<%= issue.issue_type %>"><%= issue_type_image(issue.issue_type) %></td>
-        <td><%= render 'admin/issues/issueable', issueable: issue.try(:issueable) %></td>
+        <td><%= render 'admin/issues/issueable', issueable: issue.try(:issueable), email: true %></td>
         <td width="100%" class="overflow">
-          <%= render 'admin/issues/pinned', issue: issue %>
           <span title="<%= issue.title %>" data-toggle="tooltip"><%= issue.title %></span><br />
-          <%= render 'admin/issues/meters', issue: issue %>
+          <%= render 'admin/issues/meters', issue: issue, email: true %>
         </td>
-        <td><%= render 'admin/issues/fuel_type', issue: issue %></td>
-        <td><%= render 'admin/issues/owned_by', issue: issue %></td>
-        <td><%= render 'admin/issues/status', issue: issue %></td>
-        <td><div class="badge badge-pill bg-white text-dark font-weight-normal nowrap"><%= nice_date_times_today(issue.updated_at) %></div></td>
+        <td>
+          <%= render 'admin/issues/fuel_type', issue: issue, email: true %>
+        </td>
+        <td><div class="badge bg-white rounded-full text-dark font-weight-normal nowrap"><%= nice_date_times(issue.created_at) %></div></td>
+        <td><div class="badge bg-white rounded-full text-dark font-weight-normal nowrap"><%= nice_date_times(issue.updated_at) %></div></td>
+
         <td>
           <%= link_to 'View', polymorphic_url([:admin, issue.issueable, issue]), class: "btn btn-sm" %>
         </td>

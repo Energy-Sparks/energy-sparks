@@ -26,8 +26,8 @@
         <td class="fit"><%= render 'admin/issues/status', issue: issue %></td>
         <td class="fit" data-order="<%= issue.updated_at %>"><div class="badge badge-pill bg-white text-dark font-weight-normal nowrap"><%= nice_date_times_today(issue.updated_at) %></div></td>
         <td class="fit nowrap text-right">
-          <%= link_to 'View', polymorphic_path([:admin, issue.issueable, issue]), class: "btn btn-sm" %>
-          <%= link_to 'Edit', edit_polymorphic_path([:admin, @issueable, issue]), class: 'btn btn-info btn-sm' %>
+          <%= link_to 'View', polymorphic_url([:admin, issue.issueable, issue]), class: "btn btn-sm" %>
+          <%= link_to 'Edit', edit_polymorphic_url([:admin, @issueable, issue]), class: 'btn btn-info btn-sm' %>
         </td>
       </tr>
     <% end %>
