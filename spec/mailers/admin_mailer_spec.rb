@@ -5,6 +5,11 @@ RSpec.describe AdminMailer do
   let(:email) { ActionMailer::Base.deliveries.last }
   let(:to) { 'test@test.com' }
 
+  around do |example|
+    ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'unknown' do
+      example.run
+    end
+  end
 
   describe '#school_group_meters_report' do
 
