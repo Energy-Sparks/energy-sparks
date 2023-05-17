@@ -5,7 +5,7 @@ RSpec.shared_examples_for "a displayed issue" do
     expect(page).to have_content issue.description.to_plain_text
     expect(page).to have_content issue.fuel_type.capitalize
     issue.meters.each do |meter|
-      expect(page).to have_path meter.mpan_mprn.to_s, href: school_meter_path(meter.school, meter)
+      expect(page).to have_link meter.mpan_mprn.to_s, href: school_meter_path(meter.school, meter)
     end
     expect(page).to have_content issue.status.capitalize
     expect(page).to have_content issue_admin.display_name
