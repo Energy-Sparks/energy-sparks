@@ -1,15 +1,15 @@
 module Amr
   class N3rgyTariffsDownloadAndUpsert
-    def initialize(meter:, start_date:, end_date:, n3rgy_api_factory: Amr::N3rgyApiFactory.new)
+    def initialize(meter:, n3rgy_api_factory: Amr::N3rgyApiFactory.new)
       @meter = meter
       @n3rgy_api_factory = n3rgy_api_factory
-      @start_date = start_date
-      @end_date = end_date
+      # @start_date = start_date
+      # @end_date = end_date
     end
 
     def perform
-      start_date = @start_date || available_dates.first
-      end_date = @end_date || available_dates.last
+      start_date = Time.zone.today.yesterday.beginning_of_day # @start_date || available_dates.first
+      end_date = Time.zone.today.yesterday.end_of_day #@end_date || available_dates.last
       import_log = create_import_log(start_date, end_date)
       tariffs = N3rgyDownloader.new(meter: @meter, start_date: start_date, end_date: end_date, n3rgy_api: n3rgy_api).tariffs
       N3rgyTariffsUpserter.new(meter: @meter, tariffs: tariffs, import_log: import_log).perform
@@ -26,15 +26,15 @@ module Amr
       @n3rgy_api ||= @n3rgy_api_factory.data_api(@meter)
     end
 
-    def available_dates
-      @available_dates ||= (n3rgy_api.tariffs_available_date_range(@meter.mpan_mprn, @meter.fuel_type) || default_date_range)
-    end
+    # def available_dates
+    #   @available_dates ||= (n3rgy_api.tariffs_available_date_range(@meter.mpan_mprn, @meter.fuel_type) || default_date_range)
+    # end
 
-    def default_date_range
-      start_date = Time.zone.today - 13.months
-      end_date = Time.zone.today - 1
-      (start_date..end_date)
-    end
+    # def default_date_range
+    #   start_date = Time.zone.today - 13.months
+    #   end_date = Time.zone.today - 1
+    #   (start_date..end_date)
+    # end
 
     def create_import_log(start_date, end_date)
       TariffImportLog.create(
