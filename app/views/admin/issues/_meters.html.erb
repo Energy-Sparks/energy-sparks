@@ -1,7 +1,7 @@
 <% if issue.meters %>
   <% issue.meters.each do |meter| %>
-    <span class="badge bg-light border border-dark<%= " rounded" if local_assigns[:email] %>">
-      <%= link_to("#{fa_icon(fuel_type_icon(meter.meter_type))} #{meter.mpan_mprn}".html_safe, school_meter_url(meter.school, meter), title: meter.display_summary, data: { toggle: 'tooltip'}, class: 'text-decoration-none') %>
+    <span class="badge badge-light border border-dark">
+      <%= link_to("#{fa_icon(fuel_type_icon(meter.meter_type))} #{meter.mpan_mprn}".html_safe, school_meter_path(meter.school, meter), title: meter.display_summary, data: { toggle: 'tooltip'}, class: 'text-decoration-none') %>
     </span>
   <% end %>
 <% end %>

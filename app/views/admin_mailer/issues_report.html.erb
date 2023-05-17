@@ -5,6 +5,7 @@
     <tr>
       <th></th>
       <th>Issue for</th>
+      <th></th>
       <th>Title</th>
       <th>Fuel</th>
       <th>Created</th>
@@ -17,9 +18,13 @@
       <tr class="bg-light">
         <td title="<%= issue.issue_type %>"><%= issue_type_image(issue.issue_type) %></td>
         <td><%= render 'admin/issues/issueable', issueable: issue.try(:issueable), email: true %></td>
+        <td>
+          <% if issue.created_at > 1.week.ago %>
+            <span class="badge bg-danger rounded text-white" title="New this week!">new!</span>
+          <% end %>
+        </td>
         <td width="100%" class="overflow">
-          <span title="<%= issue.title %>" data-toggle="tooltip"><%= issue.title %></span><br />
-          <%= render 'admin/issues/meters', issue: issue, email: true %>
+          <span title="<%= issue.title %>" data-toggle="tooltip"><%= issue.title %></span>
         </td>
         <td>
           <%= render 'admin/issues/fuel_type', issue: issue, email: true %>
