@@ -1,9 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe AdminMailer do
-  let(:school_group) { create :school_group }
+RSpec.describe AdminMailer, include_application_helper: true do
   let(:email) { ActionMailer::Base.deliveries.last }
-  let(:to) { 'test@test.com' }
 
   around do |example|
     ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'unknown' do
@@ -58,6 +56,9 @@ RSpec.describe AdminMailer do
 
     before { Timecop.freeze(Time.zone.now) }
     after { Timecop.return }
+
+    let(:school_group) { create :school_group }
+    let(:to) { 'test@test.com' }
 
     let!(:active_meter) { create :gas_meter, mpan_mprn: 12345678, active: true, school: create(:school, school_group: school_group) }
     let!(:inactive_meter) { create :gas_meter, mpan_mprn: 87654321, active: false, school: create(:school, school_group: school_group) }
@@ -114,6 +115,61 @@ RSpec.describe AdminMailer do
       context "Active meters" do
         let(:all_meters) { false }
         it_behaves_like "a report with standard fields", active_only: true
+      end
+    end
+  end
+
+  describe '#issues_report' do
+
+    before { Timecop.freeze(Time.zone.now) }
+    after { Timecop.return }
+
+    let(:body) { email.body.raw_source }
+
+    let(:admin) { create(:admin) }
+    let(:note) { create(:issue, issue_type: :note) }
+    let(:new_issue) { create(:issue, issue_type: :issue, status: :open, owned_by: admin, created_at: 5.days.ago) }
+    let(:issue) { create(:issue, issue_type: :issue, status: :open, owned_by: admin, created_at: 2.weeks.ago, issueable: create(:school)) }
+    let(:closed_issue) { create(:issue, issue_type: :issue, status: :closed, owned_by: admin) }
+    let(:someone_elses_issue) { create(:issue, issue_type: :issue, status: :open, owned_by: nil) }
+    let!(:issues) { [] }
+
+    before do
+      AdminMailer.with(user: admin).issues_report.deliver
+    end
+
+    context "showing only open issues for user" do
+      let(:issues) { [issue, note, closed_issue, someone_elses_issue] }
+      it { expect(email.subject).to eql "[energy-sparks-unknown] Energy Sparks - Issue report for #{admin.display_name}" }
+
+      it "displays issue" do
+        expect(body).to have_content(issue.title)
+        expect(body).to have_content(issue.fuel_type.capitalize)
+        expect(body).to have_content(issue.issueable.name)
+        expect(body).to have_content(nice_date_times(issue.created_at))
+        expect(body).to have_content(nice_date_times(issue.updated_at))
+        expect(body).to have_link("View", href: admin_school_issue_url(issue.issueable, issue))
+        expect(body).to have_link("Edit", href: edit_admin_issue_url(issue))
+      end
+      it { expect(body).to have_link("View all issues for: #{admin.display_name}", href: admin_issues_url(user: admin)) }
+      it { expect(body).to_not have_content(note.title) }
+      it { expect(body).to_not have_content(closed_issue.title) }
+      it { expect(body).to_not have_content(someone_elses_issue.title) }
+    end
+
+    context "when there are new issues for user" do
+      let(:issues) { [new_issue] }
+      it { expect(body).to have_content("new!") }
+    end
+
+    context "when there are only old issues for user" do
+      let(:issues) { [issue] }
+      it { expect(body).to_not have_content("new!") }
+    end
+
+    context "when there aren't any issues for user" do
+      it "doesn't send email" do
+        expect(email).to be_nil
       end
     end
   end

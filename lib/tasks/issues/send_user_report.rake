@@ -16,4 +16,3 @@ namespace :issues do
     puts "#{Time.zone.now} send_user_report end - Finished sending weekly issues report to admins"
   end
 end
-

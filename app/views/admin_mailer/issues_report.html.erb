@@ -14,7 +14,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @issues.by_created_at.each do |issue| %>
+    <% @issues.each do |issue| %>
       <tr class="bg-light">
         <td title="<%= issue.issue_type %>"><%= issue_type_image(issue.issue_type) %></td>
         <td><%= render 'admin/issues/issueable', issueable: issue.try(:issueable), email: true %></td>
@@ -31,7 +31,6 @@
         </td>
         <td><div class="badge bg-white rounded-full text-dark font-weight-normal nowrap"><%= nice_date_times(issue.created_at) %></div></td>
         <td><div class="badge bg-white rounded-full text-dark font-weight-normal nowrap"><%= nice_date_times(issue.updated_at) %></div></td>
-
         <td>
           <%= link_to 'View', polymorphic_url([:admin, issue.issueable, issue]), class: "btn btn-sm" %>
         </td>
@@ -43,4 +42,4 @@
   </tbody>
 </table>
 
-<%= link_to "View all issues for #{@user.email}", admin_issues_url(user: @user) %>
+<p><%= link_to "View all issues for: #{@user.display_name}", admin_issues_url(user: @user) %></p>
