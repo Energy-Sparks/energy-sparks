@@ -94,6 +94,28 @@ describe 'target progress report', type: :system do
         visit electricity_school_school_target_progress_index_path(school, school_target)
       end
 
+      context "with a link to the expired target report" do
+        context "and an expired target for the same fuel" do
+          let!(:expired_target) { create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday, electricity: 1) }
+          before { refresh }
+          it 'links to the expired target report' do
+            expect(page).to have_link("View last year’s target report", href: electricity_school_school_target_progress_index_path(school, expired_target))
+          end
+        end
+
+        context "and an expired target for a different fuel" do
+          let!(:expired_target) { create(:school_target, school: school, start_date: Date.yesterday.prev_year, target_date: Date.yesterday, electricity: nil, gas: 1) }
+          before { refresh }
+          it 'does not link to the expired target report' do
+            expect(page).to_not have_link("View last year’s target report")
+          end
+        end
+
+        context "no expired target" do
+          it { expect(page).to_not have_link("View last year’s target report") }
+        end
+      end
+
       it 'includes summary of the target dates' do
         expect(page).to have_content("Your school has set a target to reduce its electricity usage by #{school_target.electricity}% between #{school_target.start_date.to_s(:es_full)} and #{school_target.target_date.to_s(:es_full)}")
       end
@@ -285,7 +307,6 @@ describe 'target progress report', type: :system do
       it 'has a footnote to indicate this is a snapshot' do
         expect(page).to have_content("Any later updates to your school configuration or data will not be reflected in these historical results.")
       end
-
     end
   end
 end

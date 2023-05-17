@@ -1,0 +1,12 @@
+<% if previous_target %>
+  <div class="flex-wrap curved-border alert text-dark bg-neutral">
+    <div class="col-md-2">
+      <%= link_to t('schools.school_targets.show.view_results'), school_school_target_path(@school, previous_target), class: "btn btn-light rounded-pill" %>
+    </div>
+    <div class="col">
+      <span class="align-middle">
+        <%= t('schools.school_targets.show.final_results', target_date: nice_dates(previous_target.target_date)) %>.
+      </span>
+    </div>
+  </div>
+<% end %>
