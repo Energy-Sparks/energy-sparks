@@ -154,7 +154,7 @@ module Schools
 
       #for charts that use the last full week
       def last_full_week_end_date(end_date)
-        end_date.prev_week.end_of_week - 1
+        end_date.end_of_week - 1
       end
 
       def analysis_dates
