@@ -8,12 +8,12 @@ module Amr
       @meter = meter
       @config = config
       @n3rgy_api_factory = n3rgy_api_factory
-      @end_date = Time.zone.today.yesterday.end_of_day # Amr::N3rgyDownloaderDates.end_date(available_dates)
-      @start_date = Time.zone.today.yesterday.beginning_of_day # Amr::N3rgyDownloaderDates.start_date(available_dates, current_dates)
+      @end_date = Time.zone.today.yesterday.end_of_day
+      @start_date = Time.zone.today.yesterday.beginning_of_day
     end
 
     def perform
-      return unless readings
+      return nil if @end_date > available_dates.last
 
       N3rgyReadingsUpserter.new(meter: @meter, config: @config, readings: readings, import_log: import_log).perform
     rescue => e
@@ -26,17 +26,12 @@ module Amr
     private
 
     def readings
-      # return nil if @end_date > Amr::N3rgyDownloaderDates.end_date(available_dates)
       @readings ||= N3rgyDownloader.new(meter: @meter, start_date: @start_date, end_date: @end_date, n3rgy_api: n3rgy_api).readings
     end
 
     def available_dates
       @available_dates ||= n3rgy_api.readings_available_date_range(@meter.mpan_mprn, @meter.fuel_type)
     end
-
-    # def current_dates
-    #   @current_dates ||= readings_current_date_range(@meter)
-    # end
 
     def n3rgy_api
       @n3rgy_api ||= @n3rgy_api_factory.data_api(@meter)

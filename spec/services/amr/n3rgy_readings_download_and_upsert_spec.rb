@@ -23,6 +23,7 @@ module Amr
 
     context "when downloading data" do
       it "should handle and log exceptions" do
+        allow(n3rgy_api).to receive(:readings_available_date_range).with(meter.mpan_mprn, meter.fuel_type).and_return(Time.zone.now-10.days..Time.zone.now)
         expect( AmrDataFeedImportLog.count ).to eq(0)
         expect(n3rgy_api).to receive(:readings).and_raise(StandardError)
         expect {
@@ -32,7 +33,7 @@ module Amr
       end
 
       it "should request 24 hours of data and create a new AmrDataFeedReading if readings are available" do
-        # allow(n3rgy_api).to receive(:readings_available_date_range).with(meter.mpan_mprn, meter.fuel_type).and_return(nil)
+        allow(n3rgy_api).to receive(:readings_available_date_range).with(meter.mpan_mprn, meter.fuel_type).and_return(Time.zone.now-10.days..Time.zone.now)
         allow(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, Date.today.yesterday.beginning_of_day, Date.today.yesterday.end_of_day).and_return(readings)
         expect do
           Amr::N3rgyReadingsDownloadAndUpsert.new(
@@ -44,33 +45,24 @@ module Amr
       end
 
       it "should request 24 hours of data and *update* an existing AmrDataFeedReading of the same if readings are available" do
-      #   allow(n3rgy_api).to receive(:readings_available_date_range).with(meter.mpan_mprn, meter.fuel_type).and_return(nil)
-      #   allow(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, Date.today.yesterday.beginning_of_day, Date.today.yesterday.end_of_day).and_return(readings)
-      #   expect do
-      #     Amr::N3rgyReadingsDownloadAndUpsert.new(
-      #       n3rgy_api_factory: n3rgy_api_factory,
-      #       config: config,
-      #       meter: meter
-      #     ).perform
-      #   end.to change { AmrDataFeedImportLog.count }.by(1).and change { AmrDataFeedReading.count }.by(0)
       end
 
       it 'should request 24 hours of data and *not* create a new AmrDataFeedReading if readings are not available' do
-        # allow(n3rgy_api).to receive(:readings_available_date_range).with(meter.mpan_mprn, meter.fuel_type).and_return(nil)
-        # allow(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, Date.today.yesterday.beginning_of_day, Date.today.yesterday.end_of_day).and_return(readings)
-        # expect do
-        #   Amr::N3rgyReadingsDownloadAndUpsert.new(
-        #     n3rgy_api_factory: n3rgy_api_factory,
-        #     config: config,
-        #     meter: meter
-        #   ).perform
-        # end.not_to change { AmrDataFeedReading.count }.by(1)
+        allow(n3rgy_api).to receive(:readings_available_date_range).with(meter.mpan_mprn, meter.fuel_type).and_return(Time.zone.now-10.days..Time.zone.now-2.days)
+        allow(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, Date.today.yesterday.beginning_of_day, Date.today.yesterday.end_of_day).and_return(readings)
+        expect do
+          Amr::N3rgyReadingsDownloadAndUpsert.new(
+            n3rgy_api_factory: n3rgy_api_factory,
+            config: config,
+            meter: meter
+          ).perform
+        end.to change { AmrDataFeedImportLog.count }.by(0).and change { AmrDataFeedReading.count }.by(0)
       end
     end
 
     describe '#readings' do
       it 'should return the last 24 hours readings for a given meter' do
-        # allow(n3rgy_api).to receive(:readings_available_date_range).with(meter.mpan_mprn, meter.fuel_type).and_return(nil)
+        allow(n3rgy_api).to receive(:readings_available_date_range).with(meter.mpan_mprn, meter.fuel_type).and_return(Time.zone.now-10.days..Time.zone.now)
         allow(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, Date.today.yesterday.beginning_of_day, Date.today.yesterday.end_of_day).and_return(readings)
         expect(
           Amr::N3rgyReadingsDownloadAndUpsert.new(
