@@ -8,7 +8,7 @@ module Schools
       end
 
       def aggregate_meter
-        aggregate_school.aggregated_heat_meters
+        aggregate_school.aggregated_heat_meters&.original_meter
       end
 
       #FIXME keep to current, or change over?
