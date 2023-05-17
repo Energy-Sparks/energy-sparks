@@ -20,7 +20,6 @@ module Amr
           Amr::N3rgyTariffsDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, meter: meter ).perform
         }.to change { TariffImportLog.count }.by(1)
          .and change { TariffPrice.count }.by(0)
-         .and change { TariffPrice.count }.by(0)
          .and change { TariffStandingCharge.count }.by(0)
 
 
@@ -34,28 +33,36 @@ module Amr
       end
 
       it "should use available date range if no dates specified" do
-        available_range = (earliest..yesterday)
         expect(n3rgy_api).to receive(:tariffs).with(meter.mpan_mprn, meter.meter_type, Date.today.yesterday.beginning_of_day, Date.today.yesterday.end_of_day)
         upserter = Amr::N3rgyTariffsDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, meter: meter )
         upserter.perform
       end
 
       it "should request 24 hours if earliest data is unknown" do
-        # expect(n3rgy_api).to receive(:tariffs_available_date_range).with(meter.mpan_mprn, meter.fuel_type).and_return(nil)
         expect(n3rgy_api).to receive(:tariffs).with(meter.mpan_mprn, meter.meter_type, Date.today.yesterday.beginning_of_day, Date.today.yesterday.end_of_day)
         upserter = Amr::N3rgyTariffsDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, meter: meter )
         upserter.perform
       end
 
       context "when upserting data" do
+        # let(:tariffs)        { { abc: 123 } }
 
-        let(:tariffs)        { { abc: 123 } }
+        let(:expected_tiered_tariff)      { {:tariffs=>{1=>0.48527000000000003, 2=>0.16774}, :thresholds=>{1=>1000}, :type=>:tiered} }
+        let(:expected_prices)             { [expected_tiered_tariff, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992] }
+        let(:expected_standing_charge)    { 0.19541 }
+
+        let(:kwh_tariffs)                 { { start_date => expected_prices } }
+        let(:standing_charges)            { { start_date => expected_standing_charge } }
+
+        let(:tariffs)                     { { kwh_tariffs: kwh_tariffs, standing_charges: standing_charges } }
 
         it "should result in new readings" do
           expect(n3rgy_api).to receive(:tariffs).with(meter.mpan_mprn, meter.meter_type, start_date, end_date).and_return(tariffs)
-          expect(N3rgyTariffsUpserter).to receive(:new).with(meter: meter, tariffs: tariffs, import_log: anything)
-          upserter = Amr::N3rgyTariffsDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, meter: meter )
-          upserter.perform
+          expect {
+            Amr::N3rgyTariffsDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, meter: meter ).perform
+          }.to change { TariffImportLog.count }.by(1)
+           .and change { TariffPrice.count }.by(1)
+           .and change { TariffStandingCharge.count }.by(1)
         end
       end
     end
