@@ -17,24 +17,33 @@ module Amr
 
     context "when downloading data" do
       it "should handle and log exceptions" do
-        expect( TariffImportLog.count ).to eql 0
+        expect(TariffImportLog.count).to eq(0)
         expect(n3rgy_api).to receive(:tariffs).and_raise(StandardError)
         expect {
           Amr::N3rgyTariffsDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, meter: meter ).perform
         }.to change { TariffImportLog.count }.by(1)
          .and change { TariffPrice.count }.by(0)
          .and change { TariffStandingCharge.count }.by(0)
-        expect(TariffImportLog.first.error_messages).to_not be_blank
+        expect(TariffImportLog.first.error_messages).to eq("Error downloading tariffs from #{start_date} to #{end_date} : StandardError")
       end
 
-      it "should request 24 hours of data and insert a new tariff price and tariff standing charge" do
-        expect(n3rgy_api).to receive(:tariffs).with(meter.mpan_mprn, meter.meter_type, start_date, end_date).and_return(tariffs)
+      it "should request 24 hours of data and upsert a new tariff price and tariff standing charge if there are no existing records of the same date" do
+        allow(n3rgy_api).to receive(:tariffs).with(meter.mpan_mprn, meter.meter_type, start_date, end_date).and_return(tariffs)
+        expect(TariffImportLog.count).to eq(0)
         expect {
           Amr::N3rgyTariffsDownloadAndUpsert.new(n3rgy_api_factory: n3rgy_api_factory, meter: meter).perform
         }.to change { TariffImportLog.count }.by(1)
          .and change { TariffPrice.count }.by(1)
          .and change { TariffStandingCharge.count }.by(1)
         expect(TariffImportLog.first.error_messages).to be_blank
+
+        # Should not insert new records if they already exist
+        expect {
+          Amr::N3rgyTariffsDownloadAndUpsert.new(n3rgy_api_factory: n3rgy_api_factory, meter: meter).perform
+        }.to change { TariffImportLog.count }.by(1)
+         .and change { TariffPrice.count }.by(0)
+         .and change { TariffStandingCharge.count }.by(0)
+        expect(TariffImportLog.last.error_messages).to be_blank
       end
     end
   end
