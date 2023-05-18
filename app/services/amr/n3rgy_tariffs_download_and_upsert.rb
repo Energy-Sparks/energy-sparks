@@ -3,8 +3,8 @@ module Amr
     def initialize(meter:, n3rgy_api_factory: Amr::N3rgyApiFactory.new)
       @meter = meter
       @n3rgy_api_factory = n3rgy_api_factory
-      @start_date = Time.zone.today.yesterday.beginning_of_day
-      @end_date = Time.zone.today.yesterday.end_of_day
+      @start_date = DateTime.now.yesterday.beginning_of_day
+      @end_date = DateTime.now.beginning_of_day # Error for same day <MeterReadingsFeeds::N3rgyDataApi::ApiFailure: Parameter 'start' must represent a date before parameter 'end'.>
     end
 
     def perform
