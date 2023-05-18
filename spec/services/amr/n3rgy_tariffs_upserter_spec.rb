@@ -20,7 +20,7 @@ module Amr
     let(:upserter) { Amr::N3rgyTariffsUpserter.new(meter: meter, tariffs: tariffs, import_log: import_log) }
 
     context 'with empty prices' do
-      let(:kwh_tariffs) { { } }
+      let(:kwh_tariffs) { {} }
 
       it "skips upsert" do
         upserter.perform
@@ -29,7 +29,7 @@ module Amr
     end
 
     context 'with empty standing charges' do
-      let(:standing_charges) { { } }
+      let(:standing_charges) { {} }
 
       it "skips upsert" do
         upserter.perform
@@ -48,8 +48,8 @@ module Amr
       upserter.perform
       meter.reload
       expect(meter.tariff_prices.count).to eq(1)
-      expect(meter.tariff_prices.last.prices[0]).to eqexpected_tiered_tariff
-      expect(meter.tariff_prices.last.prices[1]).to eq0.15992
+      expect(meter.tariff_prices.last.prices[0]).to eq expected_tiered_tariff
+      expect(meter.tariff_prices.last.prices[1]).to eq 0.15992
     end
 
     it "logs counts of inserts and updates" do
@@ -59,17 +59,9 @@ module Amr
     end
 
     context 'if readings already exist' do
-      # let(:price_array_1) { [0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391, 0.04391] }
-      # let(:price_array_2) { [0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491, 0.04491] }
-
-      # let!(:tariff_price_1) { create(:tariff_price, meter: meter, tariff_date: start_date - 5.days, prices: price_array_1) }
-      # let!(:tariff_price_2) { create(:tariff_price, meter: meter, tariff_date: start_date - 4.day, prices: price_array_2) }
-      # let!(:tariff_standing_charge_1) { create(:tariff_standing_charge, meter: meter, start_date: start_date - 2.days) }
-      # let!(:tariff_standing_charge_2) { create(:tariff_standing_charge, meter: meter, start_date: start_date - 1.day) }
-
       it "adds a new price array if it differs from the latest" do
         tariffs_1 = {
-          kwh_tariffs: { (Date.today - 3.days) => [{:tariffs => {1 => 0.48527000000000003, 2 => 0.16774}, :thresholds => {1 => 1000}, :type => :tiered}, 0.11992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992]}, standing_charges: {Date.today - 3.days => 0.19541}
+          kwh_tariffs: { (Date.today - 3.days) => [{ :tariffs => {1 => 0.48527000000000003, 2 => 0.16774}, :thresholds => {1 => 1000}, :type => :tiered}, 0.11992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992] }, standing_charges: {Date.today - 3.days => 0.19541}
         }
 
         tariffs_2 = {
@@ -88,24 +80,33 @@ module Amr
           kwh_tariffs: { Date.today => [{:tariffs => {1 => 0.48527000000000003, 2 => 0.16774}, :thresholds => {1 => 1000}, :type => :tiered}, 0.11992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992]}, standing_charges: {Date.today => 0.19541}
         }
 
-
         expect(TariffPrice.count).to eq(0)
+        expect(TariffStandingCharge.count).to eq(0)
         Amr::N3rgyTariffsUpserter.new(meter: meter, tariffs: tariffs_1, import_log: import_log).perform
         expect(TariffPrice.count).to eq(1)
+        expect(TariffStandingCharge.count).to eq(1)
         Amr::N3rgyTariffsUpserter.new(meter: meter, tariffs: tariffs_2, import_log: import_log).perform
         expect(TariffPrice.count).to eq(2)
+        expect(TariffStandingCharge.count).to eq(2)
         Amr::N3rgyTariffsUpserter.new(meter: meter, tariffs: tariffs_3, import_log: import_log).perform
         expect(TariffPrice.count).to eq(3)
+        expect(TariffStandingCharge.count).to eq(3)
         # These two tariffs are already in the database so a
         Amr::N3rgyTariffsUpserter.new(meter: meter, tariffs: tariffs_1, import_log: import_log).perform
         Amr::N3rgyTariffsUpserter.new(meter: meter, tariffs: tariffs_2, import_log: import_log).perform
         expect(TariffPrice.count).to eq(3)
-        # This run has a pricing array identical to the last one
+        expect(TariffStandingCharge.count).to eq(3)
+        # This run has a pricing array identical to the last one stored
         Amr::N3rgyTariffsUpserter.new(meter: meter, tariffs: tariffs_4, import_log: import_log).perform
         expect(TariffPrice.count).to eq(3)
-        # This run has a pricing array different to the last one
+        expect(TariffStandingCharge.count).to eq(3)
+        # This run has a pricing array different to the last one stored (tariffs_5 has the same date as tariffs_4)
         Amr::N3rgyTariffsUpserter.new(meter: meter, tariffs: tariffs_5, import_log: import_log).perform
         expect(TariffPrice.count).to eq(4)
+        expect(TariffStandingCharge.count).to eq(4)
+        Amr::N3rgyTariffsUpserter.new(meter: meter, tariffs: tariffs_5, import_log: import_log).perform
+        expect(TariffPrice.count).to eq(4)
+        expect(TariffStandingCharge.count).to eq(4)
 
 
 
