@@ -6,8 +6,8 @@ module Amr
     let(:n3rgy_api)           { double(:n3rgy_api) }
     let(:n3rgy_api_factory)   { double(:n3rgy_api_factory, data_api: n3rgy_api) }
     let(:meter)               { create(:electricity_meter ) }
-    let(:end_date)            { Date.today.yesterday.end_of_day }
-    let(:start_date)          { Date.today.yesterday.beginning_of_day }
+    let(:end_date)            { DateTime.now.beginning_of_day }
+    let(:start_date)          { DateTime.now.yesterday.beginning_of_day }
     let(:expected_tiered_tariff)      { {:tariffs=>{1=>0.48527000000000003, 2=>0.16774}, :thresholds=>{1=>1000}, :type=>:tiered} }
     let(:expected_prices)             { [expected_tiered_tariff, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992] }
     let(:expected_standing_charge)    { 0.19541 }
