@@ -13,7 +13,7 @@ describe 'temperature recordings as school admin' do
 
     context 'when the site settings are turned off' do
       before(:each) do
-        SiteSettings.create!(temperature_recording_months: [])
+        SiteSettings.create!(temperature_recording_months: [], electricity_price: 1, solar_export_price: 1, gas_price: 1)
       end
       it 'does not show temperature recording links' do
         sign_in(user)
@@ -25,7 +25,7 @@ describe 'temperature recordings as school admin' do
     context 'when temperature recoding is turned on' do
 
       before(:each) do
-        SiteSettings.create!(temperature_recording_months: (1..12).map(&:to_s))
+        SiteSettings.create!(temperature_recording_months: (1..12).map(&:to_s), electricity_price: 1, solar_export_price: 1, gas_price: 1)
         sign_in(user)
         visit root_path
         click_on 'Enter temperatures'
@@ -107,7 +107,7 @@ describe 'temperature recordings as school admin' do
     end
 
     before(:each) do
-      SiteSettings.create!(temperature_recording_months: (1..12).map(&:to_s))
+      SiteSettings.create!(temperature_recording_months: (1..12).map(&:to_s), electricity_price: 1, solar_export_price: 1, gas_price: 1)
       sign_in(user)
       visit root_path
       click_on 'Pupil dashboard'
