@@ -73,11 +73,11 @@ module Amr
         }
 
         tariffs_4 = {
-          kwh_tariffs: { Date.today => [{:tariffs => {1 => 0.48527000000000003, 2 => 0.16774}, :thresholds => {1 => 1000}, :type => :tiered}, 0.13992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992]}, standing_charges: {Date.today - 1.day => 0.19541}
+          kwh_tariffs: { Date.today => [{:tariffs => {1 => 0.48527000000000003, 2 => 0.16774}, :thresholds => {1 => 1000}, :type => :tiered}, 0.13992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992]}, standing_charges: {Date.today => 0.19541}
         }
 
         tariffs_5 = {
-          kwh_tariffs: { Date.today => [{:tariffs => {1 => 0.48527000000000003, 2 => 0.16774}, :thresholds => {1 => 1000}, :type => :tiered}, 0.11992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992]}, standing_charges: {Date.today => 0.19541}
+          kwh_tariffs: { Date.today => [{:tariffs => {1 => 0.48527000000000003, 2 => 0.16774}, :thresholds => {1 => 1000}, :type => :tiered}, 0.11992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992, 0.15992]}, standing_charges: {Date.today => 0.19542}
         }
 
         expect(TariffPrice.count).to eq(0)
@@ -99,14 +99,13 @@ module Amr
         # This run has a pricing array identical to the last one stored
         Amr::N3rgyTariffsUpserter.new(meter: meter, tariffs: tariffs_4, import_log: import_log).perform
         expect(TariffPrice.count).to eq(3)
-        expect(TariffStandingCharge.count).to eq(3)
+        expect(TariffStandingCharge.count).to eq(4)
+        expect(TariffStandingCharge.last.value).to eq(0.19541)
         # This run has a pricing array different to the last one stored (tariffs_5 has the same date as tariffs_4)
         Amr::N3rgyTariffsUpserter.new(meter: meter, tariffs: tariffs_5, import_log: import_log).perform
         expect(TariffPrice.count).to eq(4)
         expect(TariffStandingCharge.count).to eq(4)
-        Amr::N3rgyTariffsUpserter.new(meter: meter, tariffs: tariffs_5, import_log: import_log).perform
-        expect(TariffPrice.count).to eq(4)
-        expect(TariffStandingCharge.count).to eq(4)
+        expect(TariffStandingCharge.last.value).to eq(0.19542)
 
 
 
