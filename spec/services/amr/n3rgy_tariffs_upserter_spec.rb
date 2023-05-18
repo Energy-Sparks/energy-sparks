@@ -106,21 +106,6 @@ module Amr
         expect(TariffPrice.count).to eq(4)
         expect(TariffStandingCharge.count).to eq(4)
         expect(TariffStandingCharge.last.value).to eq(0.19542)
-
-
-
-
-        # expect( meter.tariff_prices.count ).to eql 2
-        # expect( meter.tariff_standing_charges.count ).to eql 2
-        # upserter.perform
-        # expect( meter.tariff_prices.count ).to eql 3
-        # expect( TariffPrice.count ).to eql 3
-        # expect( meter.tariff_standing_charges.count ).to eql 3
-        # expect( TariffStandingCharge.count ).to eql 3
-        # # expect( meter.tariff_prices ).not_to include(tariff_price_1)
-        # # expect( meter.tariff_prices ).not_to include(tariff_price_2)
-        # # expect( meter.tariff_standing_charges ).not_to include(tariff_standing_charge_1)
-        # # expect( meter.tariff_standing_charges ).not_to include(tariff_standing_charge_2)
       end
     end
   end
