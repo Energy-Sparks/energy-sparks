@@ -26,4 +26,6 @@
 <% end %>
   <div class="pt-4"></div>
 
+<%= render "previous_target", previous_target: @school.previous_expired_target(@school_target) %>
+
 <%= render 'target_timeline', school: @school, observations: @observations %>

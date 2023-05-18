@@ -1,0 +1,45 @@
+<h1>Open issues for: <%= @user.display_name %></h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Issue for</th>
+      <th></th>
+      <th>Title</th>
+      <th>Fuel</th>
+      <th>Created</th>
+      <th>Updated</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @issues.each do |issue| %>
+      <tr class="bg-light">
+        <td title="<%= issue.issue_type %>"><%= issue_type_image(issue.issue_type) %></td>
+        <td><%= render 'admin/issues/issueable', issueable: issue.try(:issueable), email: true %></td>
+        <td>
+          <% if issue.created_at > 1.week.ago %>
+            <span class="badge bg-danger rounded text-white" title="New this week!">new!</span>
+          <% end %>
+        </td>
+        <td width="100%" class="overflow">
+          <span title="<%= issue.title %>" data-toggle="tooltip"><%= issue.title %></span>
+        </td>
+        <td>
+          <%= render 'admin/issues/fuel_type', issue: issue, email: true %>
+        </td>
+        <td><div class="badge bg-white rounded-full text-dark font-weight-normal nowrap"><%= nice_date_times(issue.created_at) %></div></td>
+        <td><div class="badge bg-white rounded-full text-dark font-weight-normal nowrap"><%= nice_date_times(issue.updated_at) %></div></td>
+        <td>
+          <%= link_to 'View', polymorphic_url([:admin, issue.issueable, issue]), class: "btn btn-sm" %>
+        </td>
+        <td>
+          <%= link_to 'Edit', edit_polymorphic_url([:admin, @issueable, issue]), class: 'btn btn-sm' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<p><%= link_to "View all issues for: #{@user.display_name}", admin_issues_url(user: @user) %></p>

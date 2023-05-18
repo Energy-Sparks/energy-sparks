@@ -55,16 +55,6 @@ module Schools
         )
       end
 
-      #for charts that use the last full week
-      def last_full_week_start_date(end_date)
-        end_date.prev_year.end_of_week
-      end
-
-      #for charts that use the last full week
-      def last_full_week_end_date(end_date)
-        end_date.prev_week.end_of_week - 1
-      end
-
       def usage_service
         @usage_service ||= Schools::Advice::LongTermUsageService.new(@school, aggregate_school, fuel_type)
       end
