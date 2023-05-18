@@ -1540,7 +1540,6 @@ ActiveRecord::Schema.define(version: 2023_04_27_152411) do
     t.integer "management_priorities_page_limit", default: 10
     t.boolean "message_for_no_pupil_accounts", default: true
     t.jsonb "temperature_recording_months", default: ["10", "11", "12", "1", "2", "3", "4"]
-    t.jsonb "prices"
     t.integer "default_import_warning_days", default: 10
   end
 
