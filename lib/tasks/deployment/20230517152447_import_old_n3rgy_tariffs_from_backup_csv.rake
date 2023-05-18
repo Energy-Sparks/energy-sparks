@@ -3,6 +3,15 @@ namespace :after_party do
   task import_old_n3rgy_tariffs_from_backup_csv: :environment do
     puts "Running deploy task 'import_old_n3rgy_tariffs_from_backup_csv'"
 
+    # tariff_import_log = YAML.load(File.read(File.expand_path('../tmp/tariff_import_log.yml', __FILE__)))
+    # TariffImportLog.upsert_all(tariff_import_log)
+
+    # tariff_price = YAML.load(File.read(File.expand_path('../tmp/tariff_price.yml', __FILE__)))
+    # TariffPrice.upsert_all(tariff_price)
+
+    # tariff_standing_charge = YAML.load(File.read(File.expand_path('../tmp/tariff_standing_charge.yml', __FILE__)))
+    # TariffStandingCharge.upsert_all(tariff_standing_charge)
+
     keys = TariffImportLog.attribute_names
     CSV.open("tmp/tariff_import_log.csv", "rb").drop(1).each do |values|
       TariffImportLog.create!(Hash[keys.zip(values)])

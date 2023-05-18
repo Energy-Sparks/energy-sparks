@@ -1,6 +1,19 @@
 namespace :meters do
   desc 'Export tariff price and standing charge data to a csv file'
   task :tariff_price_and_standing_charge_exporter => :environment do |_t, args|
+
+    # File.open("tmp/tariff_import_log.yml", 'w') do |file|
+    #   file.write TariffImportLog.all.to_a.map(&:attributes).to_yaml
+    # end
+
+    # File.open("tmp/tariff_price.yml", 'w') do |file|
+    #   file.write TariffPrice.all.to_a.map(&:attributes).to_yaml
+    # end
+
+    # File.open("tmp/tariff_standing_charge.yml", 'w') do |file|
+    #   file.write TariffStandingCharge.all.to_a.map(&:attributes).to_yaml
+    # end
+
     CSV.open("tmp/tariff_import_log.csv", "wb") do |csv|
       csv << TariffImportLog.attribute_names
       TariffImportLog.where(source: 'n3rgy-api').each do |tariff_import_log|
