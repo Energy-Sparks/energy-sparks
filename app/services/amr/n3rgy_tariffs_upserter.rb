@@ -27,13 +27,17 @@ module Amr
     end
 
     def prices_array(tariff_prices_hash)
+      last_prices = TariffPrice.where(meter_id: @meter.id).order(tariff_date: :asc).last&.prices
+
       tariff_prices_hash.map do |tariff_date, prices|
+        next if last_prices && (last_prices == prices)
+
         {
           meter_id: @meter.id,
           tariff_date: tariff_date,
           prices: prices
         }
-      end
+      end.compact
     end
 
     def standing_charges_array(standing_charges_hash)
