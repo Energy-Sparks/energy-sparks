@@ -618,7 +618,7 @@ describe School do
         end
       end
 
-      describe ".has_expired_target_for_fuel_type?" do
+      describe "#has_expired_target_for_fuel_type?" do
         before(:each) do
           target.update!(electricity: 5)
         end
@@ -627,10 +627,10 @@ describe School do
         it { expect(subject.has_expired_target_for_fuel_type?(:gas)).to be false }
       end
 
-      describe ".previous_expired_target" do
+      describe "#previous_expired_target" do
         let!(:expired_target) { create(:school_target, start_date: Date.yesterday.prev_year, school: subject) }
         let!(:older_expired_target) { create(:school_target, start_date: Date.yesterday.years_ago(2), school: subject) }
-        let!(:oldest_expired_target) { create(:school_target, start_date: Date.yesterday.years_ago(2), school: subject) }
+        let!(:oldest_expired_target) { create(:school_target, start_date: Date.yesterday.years_ago(3), school: subject) }
 
         it { expect(subject.previous_expired_target(expired_target)).to eq older_expired_target }
         it { expect(subject.previous_expired_target(older_expired_target)).to eq oldest_expired_target }
