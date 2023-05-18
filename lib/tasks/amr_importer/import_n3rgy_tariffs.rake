@@ -4,9 +4,11 @@ namespace :amr do
     start_date = Date.parse(args[:start_date]) if args[:start_date].present?
     end_date = Date.parse(args[:end_date]) if args[:end_date].present?
 
-    puts "#{DateTime.now.utc} import_n3rgy_tariffs start"
-    Meter.where(dcc_meter: true, consent_granted: true).each do |meter|
-      Amr::N3rgyTariffsDownloadAndUpsert.new(meter: meter, start_date: start_date, end_date: end_date).perform
+    meters = Meter.where(dcc_meter: true, consent_granted: true)
+
+    puts "#{DateTime.now.utc} import_n3rgy_tariffs start for #{meters.count} meters"
+    meters.each do |meter|
+      Amr::N3rgyTariffsDownloadAndUpsert.new(meter: meter).perform
     end
     puts "#{DateTime.now.utc} import_n3rgy_tariffs end"
   end
