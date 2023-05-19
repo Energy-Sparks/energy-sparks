@@ -8,6 +8,8 @@ en:
     quarter: quarter
   user_tariff_charge:
     available_capacity: Available capacity
+    available_capacity_tip: Available capacity should be entered if this field is set
+    available_capacity_tooltip: Available capacity should be entered if Agreed availability charge or Excess availability charge are set
     data_collection_dcda_agent_charge: Data Collection DC/DA Agent Charge
     nhh_automatic_meter_reading_charge: NHH automatic meter reading charge
     nhh_metering_agent_charge: NHH metering agent charge
