@@ -56,6 +56,7 @@
 //= require form_wizard
 //= require trix_customisations
 //= require multi_select
+//= require depends_on
 
 //= require table_sorting
 //= require mailchimp

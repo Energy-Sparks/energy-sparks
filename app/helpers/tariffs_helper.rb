@@ -117,6 +117,10 @@ module TariffsHelper
     settings(charge_type).fetch(:label, default)
   end
 
+  def user_tariff_charge_type_tip(charge_type)
+    settings(charge_type).fetch(:tip, '')
+  end
+
   def settings(charge_type)
     UserTariffCharge.charge_types[charge_type.to_sym] || {}
   end

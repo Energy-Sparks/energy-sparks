@@ -67,7 +67,7 @@ module Amr
     end
 
     def find_meter_by_serial_number(meter_serial_number)
-      unless @meters_by_serial_number.key(meter_serial_number)
+      unless @meters_by_serial_number.key?(meter_serial_number)
         meters = Meter.where(meter_serial_number: meter_serial_number)
         raise DataFeedException.new("Multiple meters found with meter_serial_number #{meter_serial_number}") if meters.size > 1
         @meters_by_serial_number[meter_serial_number] = meters.first

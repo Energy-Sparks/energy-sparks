@@ -56,10 +56,12 @@ class UserTariffCharge < ApplicationRecord
         units: [:day, :month, :quarter]
       },
       agreed_availability_charge: {
-        units: [:kva]
+        units: [:kva],
+        tip: I18n.t('user_tariff_charge.available_capacity_tip')
       },
       excess_availability_charge: {
-        units: [:kva]
+        units: [:kva],
+        tip: I18n.t('user_tariff_charge.available_capacity_tip')
       },
       settlement_agency_fee: {
         units: [:day, :month, :quarter]
