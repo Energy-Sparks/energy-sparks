@@ -24,16 +24,25 @@ module Amr
     # ...where each consecutive reading is a new HH period
     # For here we need to determine the period by counting the index into the array
     def perform
-      @dates = Set.new
+      current_mpan_mprn = nil
+      mpan_mprn_reading_count = 0
 
-      @single_reading_array.each_with_index do |single_reading, idx|
-        #keep a count of number of unique days
+      @single_reading_array.each do |single_reading|
+        #track which mpan we are processing. code assumes all readings for a
+        #meter are in a single block
+        if single_reading[:mpan_mprn] != current_mpan_mprn
+          current_mpan_mprn = single_reading[:mpan_mprn]
+          @dates = Set.new
+          mpan_mprn_reading_count = 0
+        end
+
+        #keep a count of number of unique days for each mpan
         @dates.add(single_reading[:reading_date])
 
         reading_day = Date.parse(single_reading[:reading_date])
         reading = single_reading[:readings].first.to_f
 
-        reading_index = reading_index_of_record(reading_day, single_reading, idx)
+        reading_index = reading_index_of_record(reading_day, single_reading, mpan_mprn_reading_count)
 
         if last_reading_of_day?(reading_index)
           reading_day = reading_day - 1.day
@@ -50,6 +59,9 @@ module Amr
           new_record = { reading_date: reading_day, readings: readings, mpan_mprn: single_reading[:mpan_mprn], amr_data_feed_config_id: single_reading[:amr_data_feed_config_id], meter_id: single_reading[:meter_id] }
           @results_array << new_record
         end
+
+        #update reading count for this mpan
+        mpan_mprn_reading_count += 1
       end
 
       reject_any_low_reading_days
