@@ -49,7 +49,7 @@ class UserTariff < ApplicationRecord
   end
 
   def to_hash
-    {
+    hash = {
       start_date: start_date.to_s(:es_compact),
       end_date: end_date.to_s(:es_compact),
       source: :manually_entered,
@@ -58,9 +58,14 @@ class UserTariff < ApplicationRecord
       sub_type: '',
       rates: rates,
       vat: vat_rate,
-      asc_limit_kw: value_for_charge(:asc_limit_kw),
       climate_change_levy: ccl
     }
+
+    if rates.key?(:agreed_availability_charge) || rates.key?(:excess_availability_charge)
+      hash[:asc_limit_kw] = value_for_charge(:asc_limit_kw)
+    end
+
+    hash
   end
 
   def value_for_charge(type)
