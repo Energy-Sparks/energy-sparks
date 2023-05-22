@@ -376,6 +376,18 @@ module Amr
         results = SingleReadConverter.new(readings, indexed: true).perform
         expect(results).to eq indexed_output
       end
+
+      it 'handles files with multiple mpans' do
+        #create test data that consists of 2 days readings for 2 different meters
+        two_meters_worth_of_readings = readings + readings.map {|r| {amr_data_feed_config_id: 6, mpan_mprn: "123456789012", reading_date: r[:reading_date], readings: r[:readings]} }
+
+        results = SingleReadConverter.new(two_meters_worth_of_readings, indexed: true).perform
+
+        #create expected output: 2 x 2 days readings for 2 meters
+        expected_results = indexed_output + indexed_output.map {|r| {amr_data_feed_config_id: 6, meter_id: nil, mpan_mprn: "123456789012", reading_date: r[:reading_date], readings: r[:readings] } }
+
+        expect(results).to eq expected_results
+      end
     end
 
     context 'dodgy data' do
