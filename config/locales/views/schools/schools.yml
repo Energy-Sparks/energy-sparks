@@ -427,7 +427,7 @@ en:
         page_title: Update your energy saving target
         review_and_set_your_next_energy_saving_target: Review and set your next energy saving target
         review_your_dashboard: Review your dashboard
-        target_date_reached: The target date for your previous target has been reached. Its time to <a href='%{school_target_path}'>review your progress</a> and set a new target
+        target_date_reached_html: The target date for your previous target has been reached. Its time to <a href='%{school_target_path}'>review your progress</a> and set a new target
         tip: Tip
         your_new_target: Your new target
       progress:
@@ -458,6 +458,7 @@ en:
           title: Tracking progress to reduce your %{fuel_type} energy usage
           unfortunately_as_much_as_last_year: Unfortunately you are using as much %{fuel_type} as you did last year
           unfortunately_more_than_last_year: Unfortunately you are using %{relative_percent} more %{fuel_type} than last year
+          view_last_years_target_report: View last year’s target report
           we_have_been_notified_about_this_error_1: In the meantime, we have been notified about this error and will investigate
           we_have_been_notified_about_this_error_2: We have been notified about this error and will investigate
           we_have_not_received_data: We have not received data for your %{fuel_type} usage for over thirty days. As a result your progress report will be out of date
@@ -500,6 +501,9 @@ en:
       prompt_to_set_new_target:
         set_a_new_target: Set a new target
         you_set_a_target_to_reduce: You set a target to reduce your energy usage by %{target_date}. It's now time to review your progress and set a new target
+      show:
+        final_results: See the final results of your goal to reduce your target by %{target_date}
+        view_results: View results
       target_table:
         current_progress: Current progress
         final_result: Final result

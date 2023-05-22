@@ -235,8 +235,11 @@ function updateExport(highchartsChart, chartConfig) {
     highchartsChart.update({
       exporting: {
         chartOptions: {
+          allowHTML: true,
           title: {
-            text: chartConfig['export_title']
+            useHTML: true,
+            align: 'left',
+            text: "<span style='font-size:21px'><b>" + chartConfig['export_title'] + '</b></span>'
           }
         }
       }
@@ -246,8 +249,11 @@ function updateExport(highchartsChart, chartConfig) {
     highchartsChart.update({
       exporting: {
         chartOptions: {
+          allowHTML: true,
           subtitle: {
-            text: chartConfig['export_subtitle']
+            useHTML: true,
+            align: 'left',
+            text: "<span style='font-size:18px'>" + chartConfig['export_subtitle'] + '</span>'
           }
         }
       }

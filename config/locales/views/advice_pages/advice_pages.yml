@@ -111,6 +111,7 @@ en:
           commodity_rate: Commodity rate
           data_collection_dcda_agent_charge: DC/DA agent charge
           day_night: "%{time_from} to %{time_to}"
+          daytime_rate: Daytime rate
           duos_amber: Duos (Amber)
           duos_green: Duos (Green)
           duos_red: Duos (Red)
@@ -121,7 +122,9 @@ en:
           meter_asset_provider_charge: Meter asset provider charge
           nhh_automatic_meter_reading_charge: NHH Automatic meter reading charge
           nhh_metering_agent_charge: NHH Metering agent charge
+          nighttime_rate: Night-time rate
           non_commodity_rate: Non commodit rate
+          rate: Rate
           reactive_power_charge: Reactive power charge
           renewable_energy_obligation: Renewable energy obligation
           settlement_agency_fee: Settlement agency fee
