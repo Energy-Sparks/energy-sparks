@@ -60,7 +60,7 @@ en:
           comments_list_html: |-
             <ul>
               <li>The calculations currently assume you will get some income from any exported electricity. Since the end of the Feed-In-Tariff in April 2019 automatic income from export has been replaced by the Smart Export Guarantee (SEG) scheme but this income is dependent on agreement with your electricity supplier</li>
-              <li>The calculations are based on a current electricity price of 15p/kWh, if mains electricity prices increase there will be a higher economic benefit and shorter payback to the installation.</li>
+              <li>The calculations are based on a current electricity price of %{site_settings_electricity_price}/kWh, if mains electricity prices increase there will be a higher economic benefit and shorter payback to the installation.</li>
               <li>If the school becomes more efficient at using electricity and reduces its electricity consumption the benefit will also reduce.</li>
               <li>The capital costs in the table above are estimates based on current market rates; the installation cost at your school might be a little different - you need to get quotes.</li>
               <li>The estimates assume your school has roof space and that it is roughly south facing - as this is optimal for schools whose peak demand is during the middle of the day when south facing panels produce the most electricity.</li>
