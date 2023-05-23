@@ -8,7 +8,7 @@ module Schools
       end
 
       def aggregate_meter
-        aggregate_school.aggregated_electricity_meters
+        aggregate_school.aggregated_electricity_meters&.original_meter
       end
 
       def set_one_year_breakdown_chart

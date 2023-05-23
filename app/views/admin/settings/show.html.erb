@@ -8,5 +8,13 @@
   <%= f.input :temperature_recording_months, as: :check_boxes, collection: @temperature_setting_months, checked: f.object.temperature_recording_months %>
   <%= f.input :default_import_warning_days %>
 
+  <% if EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices) %>
+    <hr />
+    <h3>Price settings</h3>
+    <%= f.input :electricity_price, as: :numeric, label: 'Electricity price per kWh', hint: 'Used to calculate the cost of a kettle, smartphone, TV, & console, for equivalences.  Also used as the default electricity tariff when a school has gas only, when calculating cost of point of use water heaters.' %>
+    <%= f.input :gas_price, as: :numeric, label: 'Gas price per kWh', hint: 'Used to calculate the cost of a shower for equivalences.' %>
+    <%= f.input :solar_export_price, label: 'Solar export price per kWh', as: :numeric, hint: 'Used to calculate the £ value of exported solar, with existing panels, for the advice page.  Also used to calculate the economic benefit of installing solar for the advice page and alert.' %>
+  <% end %>
+
   <%= f.submit 'Update settings', class: 'btn btn-primary'%>
 <% end %>
