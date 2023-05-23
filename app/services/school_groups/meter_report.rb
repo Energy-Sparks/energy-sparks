@@ -48,8 +48,8 @@ module SchoolGroups
             meter.admin_meter_status_label,
             meter.procurement_route.try(:organisation_name) || '',
             y_n(meter.active),
-            meter.first_validated_reading_date&.strftime('%d/%m/%Y'),
-            meter.last_validated_reading_date&.strftime('%d/%m/%Y'),
+            meter.first_validated_reading_date&.to_s(:es_compact),
+            meter.last_validated_reading_date&.to_s(:es_compact),
             date_range_from_reading_gaps(meter.gappy_validated_readings),
             meter.modified_validated_readings.count,
             meter.zero_reading_days_count
