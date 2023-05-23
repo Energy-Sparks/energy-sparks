@@ -288,7 +288,7 @@ describe 'Meter', :meters do
   describe ".to_csv" do
     let(:data_source) { create(:data_source) }
     subject { data_source.meters.to_csv }
-    let(:header) { "School group,School,MPAN/MPRN,Meter type,Active,Created at,Updated at" }
+    let(:header) { "School group,School,MPAN/MPRN,Meter type,Active,Last validated meter reading,Created at,Updated at" }
 
     context "with meters" do
       let!(:meters) do
@@ -300,7 +300,7 @@ describe 'Meter', :meters do
       2.times do |i|
         it { expect(subject.lines[i+1].chomp).to eq([
           meters[i].school.school_group.try(:name), meters[i].school.name, meters[i].mpan_mprn,
-          meters[i].meter_type.humanize, meters[i].active, meters[i].created_at, meters[i].updated_at].join(',')) }
+          meters[i].meter_type.humanize, meters[i].active,nil, meters[i].created_at, meters[i].updated_at].join(',')) }
       end
     end
 
