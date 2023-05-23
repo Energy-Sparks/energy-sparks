@@ -7,12 +7,6 @@ module Admin
       respond_to do |format|
         format.html
         format.csv do
-
-
-puts '-----'
-puts @data_source.meters.inspect
-puts '-----'
-
           send_data @data_source.meters.to_csv,
           filename: "#{t('common.application')}-#{@data_source.name}-meters-#{Time.zone.now.iso8601}".parameterize + '.csv'
         end
