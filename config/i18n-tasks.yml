@@ -137,6 +137,7 @@ ignore_unused:
   - 'chart_configuration.*'
   - 'common.storage_heater'
   - 'chart_configuration.*'
+  - 'aggregation_service_solar_pv.*'
   - 'pagy.*'
   - 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_subtitle'
   - 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_title'

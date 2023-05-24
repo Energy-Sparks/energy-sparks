@@ -82,6 +82,7 @@ module Admin
         csv << [
           'School Group',
           'School',
+          'School type',
           'Name',
           'Email',
           'Role',
@@ -91,6 +92,7 @@ module Admin
           csv << [
             user.group_admin? ? user.school_group.name : user.school&.school_group&.name,
             user.school.present? ? user.school.name : '',
+            user.school.present? ? user.school.school_type.humanize : '',
             user.name,
             user.email,
             user.role.titleize,

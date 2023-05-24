@@ -23,7 +23,7 @@ module Solar
       )
     rescue => e
       Rollbar.error(
-        e, 
+        e,
         installation_id: @low_carbon_hub_installation.id,
         school_id: @low_carbon_hub_installation.school_id,
         start_date: @start_date,
