@@ -4,7 +4,7 @@ module Schools
       private
 
       def set_meters
-        @meters = @school.meters.active.electricity
+        @meters = @school.meters.active.electricity.order(:mpan_mprn)
       end
 
       def aggregate_meter
