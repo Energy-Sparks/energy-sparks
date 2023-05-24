@@ -51,7 +51,7 @@ module Schools
       end
 
       def options_for_meter_select
-        [aggregate_meter_adapter] + @school.meters.active.electricity.sort_by(&:name_or_mpan_mprn)
+        [aggregate_meter_adapter] + @school.meters.active.electricity.sort_by(&:mpan_mprn)
       end
 
       def set_economic_tariffs_change_caveats
