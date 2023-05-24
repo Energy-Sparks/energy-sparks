@@ -3,7 +3,6 @@ cy:
     benchmarking:
       caveat_text:
         comparison_with_previous_period_infinite: "<p>Mae gwerth anfeidrol neu anfesuradwy yn dangos mai sero oedd y defnydd yn y cyfnod cyntaf.</p>"
-        covid_lockdown: ''
         es_data_not_in_sync_html: |-
           <p>
             Mae costau gwresogyddion nwy, trydan a stôr-wresogyddion i gyd yn defnyddio'r data
@@ -49,6 +48,7 @@ cy:
             electricity: Trydan
             gas: Nwy
             storage_heaters: Stôr-wresogyddion
+        easter_shutdown_2023_energy_comparison: Cymhariaeth cau ar gyfer y Pasg 2023
         electricity_consumption_during_holiday: Defnydd trydan yn ystod y gwyliau presennol
         electricity_peak_kw_per_pupil: Uchafbwynt defnydd trydan diwrnod ysgol
         electricity_targets: Cynnydd yn erbyn targed trydan
@@ -114,6 +114,7 @@ cy:
           baseload_percent: Llwyth sylfaenol fel canran o gyfanswm y defnydd
           blended_current_rate: Cyfradd gyfredol gymysg
           change: Newid
+          change_co2: Newid o ran CO2
           change_excluding_solar: Newid (ac eithrio solar)
           change_in_annual_co2: Newid yn y CO2 blynyddol
           change_in_annual_electricity_co2_excluding_solar: Newid yn y CO2 trydan blynyddol (ac eithrio solar)
@@ -127,6 +128,8 @@ cy:
           change_in_heating_costs_between_last_2_years: Newid mewn costau gwresogi rhwng y 2 flynedd ddiwethaf
           change_kwh: Newid kWh
           change_pct: Newid %
+          change_pct_co2: Newid o ran % CO2
+          change_pct_combo: Newid o ran % kWh/£
           change_£: Newid £
           change_£current: Newid £ (tariff diweddaraf)
           co2_last_year: CO2 (y llynedd)
@@ -161,6 +164,9 @@ cy:
           holiday: Gwyliau
           holiday_usage_to_date: Defnydd gwyliau hyd yma
           kwh_consumption_since_target_set: Defnydd kWh ers gosod y targed
+          last_school_week: Wythnos ysgol olaf
+          last_school_week_temperature_adjusted: Wythnos ysgol olaf (tymheredd wedi'i addasu)
+          last_school_week_temperature_unadjusted: Wythnos ysgol olaf (tymheredd heb ei addasu)
           last_year: Y llynedd
           last_year_carbon_emissions_tonnes_co2: Allyriadau carbon y llynedd (tunelli CO2)
           last_year_consumption_kwh: Defnydd kWh y llynedd
@@ -457,6 +463,24 @@ cy:
               gwerth y flwyddyn flaenorol heb ei addasu. Mae'r newid canrannol wedi'i addasu yn
               ddangosydd gwell o'r gwaith y gallai ysgol fod wedi'i wneud i leihau ei defnydd o ynni
               gan nad yw'n dibynnu ar wahaniaethau tymheredd rhwng y ddwy flynedd.
+            </p>
+        easter_shutdown_2023_energy_comparison:
+          introduction_text_html: |-
+            <p>
+            Mae’r meincnod hwn yn dangos y newid yn y defnydd o ynni rhwng y gwyliau diweddaraf, ac wythnos olaf y tymor ysgol blaenorol.
+            </p>
+            <p>
+            Mae'r gymhariaeth hon yn cymharu'r data diweddaraf sydd ar gael ar gyfer y gwyliau mwyaf diweddar â ffigur wedi'i addasu ar gyfer wythnos olaf y tymor ysgol, gan raddio i'r un nifer o ddyddiau ac addasu ar gyfer newidiadau mewn tymheredd allanol a'r tariff diweddaraf. Y newid mewn £ yw'r arbediad neu'r gost uwch ar gyfer y gwyliau diweddaraf hyd yma o'i gymharu â'r defnydd yn ystod y tymor.
+            </p>
+            <p>
+             Mae cynhyrchiad solar ffotofoltäig ysgolion wedi'i dynnu o'r gymhariaeth.
+            </p>
+            <p>
+             Mae'n anodd cymharu gwerthoedd CO2 ar gyfer trydan (gan gynnwys
+              lle mae'r CO2 wedi'i agregu ar draws gwresogyddion trydan, nwy, storio)
+              am gyfnodau byr gan ei fod yn dibynnu ar ddwysedd carbon
+              y grid cenedlaethol ar y diwrnodau sy'n cael eu cymharu a gallai hyn amrywio hyd at
+              300&percnt; o ddydd i ddydd.
             </p>
         electricity_consumption_during_holiday:
           introduction_text_html: "<p>Mae'r meincnod hwn yn dangos y costau trydan rhagamcanol ar gyfer y gwyliau presennol. Ni ddangosir unrhyw ddata ar gyfer ysgol unwaith y bydd y gwyliau drosodd. Mae'r cyfrifiad rhagamcan yn seiliedig ar y patrymau defnydd yn ystod y gwyliau hyd yn hyn.</p>"

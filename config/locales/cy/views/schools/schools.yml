@@ -52,6 +52,12 @@ cy:
             split: Defnydd nwy dyddiol eich ysgol yn eich wythnos ddewisol wedi'i gofnodi fesul metr
     weekly-usage-link: Gweld defnydd fesul wythnos
   schools:
+    aggregated_meter_collections:
+      show:
+        error_html: Mae'n ddrwg gennym, rydym yn cael trafferth prosesu eich data ynni heddiw. Rhowch gynnig arall arni'n nes ymlaen neu, os bydd yn parhau i ddigwydd,<a href='%{contact_path}'>cysylltwch â ni</a>
+        loading: Wrthi'n llwytho...
+        paragraph_1: Mae Sbarcynni yn prosesu holl ddata'r ysgol hon i ddarparu dadansoddiad heddiw
+        paragraph_2: Unwaith y byddwn wedi gorffen, byddwn yn eich ailgyfeirio at ddangosfwrdd yr ysgol
     audits:
       created: Archwiliad wedi'i greu
       deleted: Cafodd yr archwiliad ei ddileu yn llwyddiannus.
@@ -240,6 +246,7 @@ cy:
         meter_point_number: Rhif Pwynt Mesurydd
         name: Enw
         only_check_if_adding_an_n3rgy_test_meter: Gwiriwch a ydych yn ychwanegu mesurydd prawf n3rgy, nad yw'n cael ei ddefnyddio ar gyfer ysgolion byw, yn unig
+        procurement_route: Llwybr caffael
         sandbox: Blwch tywod
         serial_number: Rhif cyfresol
         title: Gelwir y Rhif Pwynt Mesurydd hefyd yn MPAN (ar gyfer mesuryddion trydan) a'r MPRN (ar gyfer mesuryddion nwy).
@@ -249,6 +256,7 @@ cy:
         active_meters: Mesuryddion gweithredol
         active_pseudo_meters: Mesuryddion ffug gweithredol
         add_meter: Ychwanegu mesurydd
+        admin_meter_status: Statws mesurydd gweinyddol
         data_processing_turned_on_message: Rhaid troi prosesu data ymlaen ar gyfer yr ysgol hon cyn y gellir dilysu darlleniadau mesurydd
         data_source: Ffynhonnell ddata
         details: Manylion
@@ -265,6 +273,7 @@ cy:
         name: Enw
         no_active_meters: Dim mesuryddion gweithredol
         only_admins_message: Dim ond gweinyddwyr all ddileu mesuryddion gyda darlleniadau mesurydd
+        procurement_route: Llwybr caffael
         readings: Darlleniadau
         report: Adrodd
         review_meters: Adolygu mesuryddion
