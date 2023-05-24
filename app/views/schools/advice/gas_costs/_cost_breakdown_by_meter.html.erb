@@ -7,20 +7,23 @@
 <table class="table table-sm advice-table table-with-totals">
   <thead>
     <th class="text-left"><%= advice_t('gas_costs.tables.columns.meter') %></th>
+    <th class="text-left"></th>
     <th class="text-right"><%= advice_t('gas_costs.tables.columns.cost') %></th>
   </thead>
   <tbody>
     <% annual_costs_breakdown_by_meter.sort{|a,b| a[0].name_or_mpan_mprn <=> b[0].name_or_mpan_mprn }.each do |meter, cost| %>
       <tr>
         <td class="text-left">
-          <%= meter.name_or_mpan_mprn %>
+          <%= meter.mpan_mprn %>
           <% if cost.days < 365 %> * <% end %>
         </td>
+        <td class="text-left"><%= meter.name %></td>
         <td class="text-right"><%= FormatEnergyUnit.format_pounds(:£, cost.£, :text, :approx_accountant, true) %></td>
       </tr>
     <% end %>
     <tr>
       <td class="text-left"><%= advice_t('gas_costs.tables.labels.total') %></td>
+      <td></td>
       <td class="text-right"><%= FormatEnergyUnit.format_pounds(:£, annual_costs.£, :text, :approx_accountant, true) %></td>
     </tr>
   </tbody>
