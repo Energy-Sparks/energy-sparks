@@ -15,6 +15,7 @@
 <table class="table table-sm table-with-totals">
   <thead class="thead-dark">
     <th><%= t('advice_pages.gas_long_term.tables.columns.meter') %></th>
+    <th></th>
     <th class="text-right"><%= t('advice_pages.gas_long_term.tables.columns.annual_usage_kwh') %></th>
     <th class="text-right"><%= t('advice_pages.gas_long_term.tables.columns.annual_usage_gbp') %></th>
     <th class="text-right"><%= t('advice_pages.gas_long_term.tables.columns.percent') %></th>
@@ -23,7 +24,8 @@
   <tbody>
     <% meters_for_breakdown.each do |mpan_mprn, meter| %>
       <tr>
-        <td><%= meter.name_or_mpan_mprn %></td>
+        <td><%= meter.mpan_mprn %></td>
+        <td><%= meter.name %></td>
         <td class="text-right"><%= format_unit(annual_usage_meter_breakdown.usage(mpan_mprn).kwh, :kwh) %></td>
         <td class="text-right"><%= format_unit(annual_usage_meter_breakdown.usage(mpan_mprn).£, :£) %></td>
         <td class="text-right"><%= format_unit(annual_usage_meter_breakdown.usage(mpan_mprn).percent, :percent) %></td>
