@@ -56,5 +56,6 @@ en:
         columns:
           cost: Cost (£)
           meter: Meter
+          name: Name
         labels:
           total: Total
