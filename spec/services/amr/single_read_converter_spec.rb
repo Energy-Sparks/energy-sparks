@@ -379,7 +379,7 @@ module Amr
 
       it 'handles files with multiple mpans' do
         #create test data that consists of 2 days readings for 2 different meters
-        two_meters_worth_of_readings = readings + readings.map {|r| {amr_data_feed_config_id: 6, mpan_mprn: "123456789012", reading_date: r[:reading_date], period: r[:position], readings: r[:readings]} }
+        two_meters_worth_of_readings = readings + readings.map {|r| {amr_data_feed_config_id: 6, mpan_mprn: "123456789012", reading_date: r[:reading_date], period: r[:period], readings: r[:readings]} }
 
         results = SingleReadConverter.new(two_meters_worth_of_readings, indexed: true).perform
 
