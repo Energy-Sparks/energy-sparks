@@ -28,8 +28,16 @@ describe Amr::DataFeedTranslator do
     expect(result[:description]).to eq('MEERSBROOK PRIMARY - M1')
     expect(result[:readings].first).to eq('1.20800000')
     expect(result[:readings].last).to eq('1.17700000')
-    expect(result[:period]).to eq('1')
     expect(result[:units]).to eq('kwh')
+  end
+
+  it 'adds period for positionally indexed files' do
+    sheffield_config.positional_index = true
+    readings = [
+      ['MEERSBROOK PRIMARY - M1', '2333300681718', '31/12/2019', '1', 'kwh','1.20800000', '1.16100000', '1.19500000', '1.21000000', '1.16600000', '1.20100000', '1.17800000', '1.30000000', '1.30100000', '1.26600000', '1.27300000', '1.28000000', '2.10900000', '2.03700000', '1.29100000', '1.24600000', '1.67800000', '1.24500000', '1.12800000', '1.11300000', '1.35000000', '1.11700000', '1.14200000', '1.40600000', '1.10100000', '1.12300000', '1.16400000', '1.42700000', '1.12900000', '1.10400000', '1.11900000', '1.46600000', '1.18400000', '1.14600000', '1.22600000', '1.20800000', '1.25500000', '1.20000000', '1.23600000', '1.16300000', '1.12400000', '1.19800000', '1.12800000', '1.15500000', '1.13000000', '1.18200000', '1.14500000', '1.17700000', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+    ]
+    result = Amr::DataFeedTranslator.new(sheffield_config, readings).perform.first
+    expect(result[:period]).to eq('1')
   end
 
   it 'removes rows that do not match the expected_units' do
