@@ -82,6 +82,7 @@ en:
           highest_day_baseload: Highest day baseload (kW)
           lowest_day_baseload: Lowest day baseload (kW)
           meter: Meter
+          name: Name
           percentage_difference: "% difference"
           percentage_of_total: "% of total baseload"
           potential_saving_co2: CO2 reduction (kg)

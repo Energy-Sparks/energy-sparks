@@ -81,6 +81,12 @@ div.popover {
   }
 }
 
+.table-with-totals-footer {
+  tfoot tr:last-of-type  {
+    @extend .table-success
+  }
+}
+
 .analysis, hr.analysis {
   margin-top: 40px;
 }

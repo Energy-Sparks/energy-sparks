@@ -12,9 +12,10 @@
 
 <p><%= t('advice_pages.gas_long_term.analysis.meter_breakdown.table_introduction', start_date: annual_usage_meter_breakdown.start_date.to_s(:es_short), end_date: annual_usage_meter_breakdown.end_date.to_s(:es_short)) %></p>
 
-<table class="table table-sm table-with-totals">
+<table class="table table-sm table-with-totals-footer table-sorted">
   <thead class="thead-dark">
     <th><%= t('advice_pages.gas_long_term.tables.columns.meter') %></th>
+    <th class='no-sort'><%= t('advice_pages.gas_long_term.tables.columns.name') %></th>
     <th class="text-right"><%= t('advice_pages.gas_long_term.tables.columns.annual_usage_kwh') %></th>
     <th class="text-right"><%= t('advice_pages.gas_long_term.tables.columns.annual_usage_gbp') %></th>
     <th class="text-right"><%= t('advice_pages.gas_long_term.tables.columns.percent') %></th>
@@ -23,21 +24,33 @@
   <tbody>
     <% meters_for_breakdown.each do |mpan_mprn, meter| %>
       <tr>
-        <td><%= meter.name_or_mpan_mprn %></td>
-        <td class="text-right"><%= format_unit(annual_usage_meter_breakdown.usage(mpan_mprn).kwh, :kwh) %></td>
-        <td class="text-right"><%= format_unit(annual_usage_meter_breakdown.usage(mpan_mprn).£, :£) %></td>
-        <td class="text-right"><%= format_unit(annual_usage_meter_breakdown.usage(mpan_mprn).percent, :percent) %></td>
-        <td class="text-right"><%= format_unit(annual_usage_meter_breakdown.annual_percent_change(mpan_mprn), :percent) %></td>
+        <td><%= meter.mpan_mprn %></td>
+        <td><%= meter.name %></td>
+        <td class="text-right" data-order="<%= annual_usage_meter_breakdown.usage(mpan_mprn).kwh %>">
+          <%= format_unit(annual_usage_meter_breakdown.usage(mpan_mprn).kwh, :kwh) %>
+        </td>
+        <td class="text-right" data-order="<%= annual_usage_meter_breakdown.usage(mpan_mprn).£ %>">
+          <%= format_unit(annual_usage_meter_breakdown.usage(mpan_mprn).£, :£) %>
+        </td>
+        <td class="text-right" data-order="<%= annual_usage_meter_breakdown.usage(mpan_mprn).percent %>">
+          <%= format_unit(annual_usage_meter_breakdown.usage(mpan_mprn).percent, :percent) %>
+        </td>
+        <td class="text-right" data-order="<%= annual_usage_meter_breakdown.annual_percent_change(mpan_mprn) %>">
+          <%= format_unit(annual_usage_meter_breakdown.annual_percent_change(mpan_mprn), :percent) %>
+        </td>
       </tr>
     <% end %>
+  </tbody>
+  <tfoot>
     <tr>
       <td><%= t('advice_pages.gas_long_term.tables.labels.all_meters') %></td>
+      <td></td>
       <td class="text-right"><%= format_unit(annual_usage_meter_breakdown.total_usage.kwh, :kwh) %></td>
       <td class="text-right"><%= format_unit(annual_usage_meter_breakdown.total_usage.£, :£) %></td>
       <td class="text-right"><%= format_unit(annual_usage_meter_breakdown.total_usage.percent, :percent) %></td>
       <td class="text-right"><%= format_unit(annual_usage_meter_breakdown.total_annual_percent_change, :percent) %></td>
     </tr>
-  </tbody>
+  </tfoot>
 </table>
 <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>
 <p><%= t('advice_pages.gas_long_term.analysis.meter_breakdown.table_explanation') %></p>
