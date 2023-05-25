@@ -184,8 +184,8 @@ class User < ApplicationRecord
     )
   end
 
-  def contact_for_school(current_school: school)
-    contacts.for_school(current_school).first
+  def contact_for_school
+    contacts.for_school(school).first
   end
 
   def after_confirmation
