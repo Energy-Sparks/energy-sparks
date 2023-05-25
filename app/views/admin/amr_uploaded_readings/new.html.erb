@@ -21,6 +21,8 @@
     <% if @errors %>
       <div class="alert alert-danger" role="alert">
         <p>We have identified some problem processing the file you have uploaded, are you sure it is in the correct format?</p>
+        <p><strong>Reading count</strong>: <%= @amr_reading_data.reading_count %></p>
+        <p><strong>Valid reading count</strong>: <%= @amr_reading_data.valid_reading_count %></p>
         <p><strong>Errors</strong></p>
         <%= @errors %>
       </div>

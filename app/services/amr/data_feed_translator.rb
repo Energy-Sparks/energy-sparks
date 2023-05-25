@@ -23,6 +23,7 @@ module Amr
       data_feed_reading_hash[:description] = fetch_from_row(:description_index, row)
       data_feed_reading_hash[:provider_record_id] = fetch_from_row(:provider_record_id_index, row)
       data_feed_reading_hash[:readings] = readings_as_array(row)
+      data_feed_reading_hash[:period] = fetch_from_row(:period_index, row)
       data_feed_reading_hash
     end
 
@@ -58,7 +59,7 @@ module Amr
     end
 
     def find_meter_by_mpan_mprn(mpan_mprn)
-      unless @meters_by_mpan_mprn.key(mpan_mprn)
+      unless @meters_by_mpan_mprn.key?(mpan_mprn)
         meters = Meter.where(mpan_mprn: mpan_mprn)
         raise DataFeedException.new("Multiple meters found with mpan_mprn #{mpan_mprn}") if meters.size > 1
         @meters_by_mpan_mprn[mpan_mprn] = meters.first
