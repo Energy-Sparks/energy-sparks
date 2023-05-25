@@ -17,7 +17,7 @@
           <td><%= user.name %></td>
           <td><%= user.email %></td>
           <td><%= y_n(user.confirmed?) %></td>
-          <td><%= y_n(Schools::ContactFinder.new(@school).contact_for(user).present?) %></td>
+          <td><%= y_n(user.contacts.for_school(@school).present?) %></td>
           <td><%= user.staff_role.try(:translated_title) %></td>
           <td><%= I18n.t("languages.#{user.preferred_locale}") %></td>
           <td>
