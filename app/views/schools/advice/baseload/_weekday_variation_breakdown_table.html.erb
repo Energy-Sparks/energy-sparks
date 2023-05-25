@@ -1,9 +1,9 @@
-<table class="table table-sm table-with-totals">
+<table class="table table-sm table-with-totals-footer table-sorted">
   <thead class="thead-dark">
     <tr>
       <th class="text-left"><%= t('advice_pages.baseload.tables.columns.meter') %></th>
-      <th></th>
-      <th class="text-left"><%= t('advice_pages.baseload.tables.columns.assessment') %></th>
+      <th class="text-left no-sort"><%= t('advice_pages.baseload.tables.columns.name') %></th>
+      <th class="text-left no-sort"><%= t('advice_pages.baseload.tables.columns.assessment') %></th>
       <th class="text-right"><%= t('advice_pages.baseload.tables.columns.highest_day_baseload') %></th>
       <th class="text-right"><%= t('advice_pages.baseload.tables.columns.lowest_day_baseload') %></th>
       <th class="text-right"><%= t('advice_pages.baseload.tables.columns.percentage_difference') %></th>
@@ -17,12 +17,24 @@
           <td class="text-left"><%= variation && variation.meter.present? ? variation.meter.mpan_mprn : mpan_mprn %></td>
           <td><%= variation && variation.meter.present? ? variation.meter.name : '' %></td>
           <% if variation.enough_data? %>
-            <td class="text-left"><%= format_rating(variation.variation_rating) %></td>
-            <td class="text-right"><%= format_unit(variation.max_day_kw, :kw) %> (<%= t_weekday(intraweek_variation.max_day) %>)</td>
-            <td class="text-right"><%= format_unit(variation.min_day_kw, :kw) %> (<%= t_weekday(intraweek_variation.min_day) %>)</td>
-            <td class="text-right"><%= format_unit(variation.percent_intraday_variation, :percent) %></td>
-            <td class="text-right"><%= format_unit(variation.estimated_saving_£, :£) %></td>
-            <td class="text-right"><%= format_unit(variation.estimated_saving_co2, :kg) %></td>
+            <td class="text-left" data-order="<%= variation.variation_rating %>">
+              <%= format_rating(variation.variation_rating) %>
+            </td>
+            <td class="text-right" data-order="<%= variation.max_day_kw %>">
+              <%= format_unit(variation.max_day_kw, :kw) %> (<%= t_weekday(intraweek_variation.max_day) %>)
+            </td>
+            <td class="text-right" data-order="<%= variation.min_day_kw %>">
+              <%= format_unit(variation.min_day_kw, :kw) %> (<%= t_weekday(intraweek_variation.min_day) %>)
+            </td>
+            <td class="text-right" data-order="<%= variation.percent_intraday_variation %>">
+              <%= format_unit(variation.percent_intraday_variation, :percent) %>
+            </td>
+            <td class="text-right" data-order="<%= variation.estimated_saving_£ %>">
+              <%= format_unit(variation.estimated_saving_£, :£) %>
+            </td>
+            <td class="text-right" data-order="<%= variation.estimated_saving_co2 %>">
+              <%= format_unit(variation.estimated_saving_co2, :kg) %>
+            </td>
           <% else %>
             <td colspan="6" class="text-center old-data">
               <% if variation.data_available_from.present? %>
@@ -34,6 +46,8 @@
           <% end %>
         </tr>
     <% end %>
+  </tbody>
+  <tfoot>
     <tr>
       <td class="text-left"><%= t('advice_pages.baseload.tables.labels.all_meters') %></td>
       <td></td>
@@ -44,6 +58,6 @@
       <td class="text-right"><%= format_target(intraweek_variation.estimated_saving_£, :£) %></td>
       <td class="text-right"><%= format_target(intraweek_variation.estimated_saving_co2, :kg) %></td>
     </tr>
-  </tbody>
+  </tfoot>
 </table>
 <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', data_target: "how-have-we-analysed-your-data-footnotes" %>
