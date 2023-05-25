@@ -104,6 +104,9 @@ describe SchoolGroup, :school_groups, type: :model do
       let!(:school_in_different_school_group_issue) { create(:issue, updated_by: user, issueable: create(:school, school_group: create(:school_group)), fuel_type: :electricity) }
       let!(:different_school_group_issue) { create(:issue, updated_by: user, issueable: create(:school_group), fuel_type: :electricity) }
 
+      let!(:school_for_bug) { School.find_by(id: school_group.id) || create(:school, id: school_group.id) }
+      let!(:school_issue_with_issueable_id_same_as_school_group_id) {  create(:issue, updated_by: user, issueable_type: 'School', issueable_id: school_group.id) }
+
       it { expect(csv.lines.count).to eq(8) }
       it { expect(csv.lines.first.chomp).to eq(header) }
 
@@ -112,11 +115,12 @@ describe SchoolGroup, :school_groups, type: :model do
       it { expect(csv).to include(issue_csv_line(different_school_in_school_group_issue)) }
       it { expect(csv).to include(issue_csv_line(school_issue_with_meters)) }
       it { expect(csv).to include(issue_csv_line(school_issue_with_data_sources)) }
-
       it { expect(csv).to include(issue_csv_line(closed_school_group_issue)) }
       it { expect(csv).to include(issue_csv_line(school_group_note)) }
+
       it { expect(csv).to_not include(issue_csv_line(school_in_different_school_group_issue)) }
       it { expect(csv).to_not include(issue_csv_line(different_school_group_issue)) }
+      it { expect(csv).to_not include(issue_csv_line(school_issue_with_issueable_id_same_as_school_group_id)) }
     end
 
     context "with no issues" do

@@ -19,7 +19,7 @@ en:
       source: <a href="https://www.openstreetmap.org/copyright" target="_new">OpenStreetMap</a> <br>© <a href="https://stadiamaps.com/" target="_new">Stadia Maps</a>, © <a href="https://openmaptiles.org/" target="_new">OpenMapTiles</a> © <a href="http://openstreetmap.org" target="_new">OpenStreetMap</a> contributors
       terms: <a href="https://opendatacommons.org/licenses/odbl/" target="_new">ODbL</a>
     - name: Weather forecast
-      source: <a href="https://darksky.net/poweredby/" target="_new">Powered by Dark Sky</a>.
+      source: <a href="https://www.visualcrossing.com/" target="_new">Powered by Visual Crossing Weather</a>.
       terms: ''
     introduction: Energy Sparks relies on a number of public and open datasets. Here is a list of the third-party datasets which we import and use on the site
     read_more_html: You can also read more about the <a href='%{datasets_path}'>school energy generation and usage data</a> we use and make available

@@ -19,6 +19,7 @@
 #  mpan_mprn_field         :text             not null
 #  msn_field               :text
 #  number_of_header_rows   :integer          default(0), not null
+#  period_field            :string
 #  positional_index        :boolean          default(FALSE), not null
 #  postcode_field          :text
 #  process_type            :integer          default("s3_folder"), not null
@@ -59,7 +60,8 @@ class AmrDataFeedConfig < ApplicationRecord
       description_index: header_array.find_index(meter_description_field),
       total_index: header_array.find_index(total_field),
       meter_serial_number_index: header_array.find_index(msn_field),
-      provider_record_id_index: header_array.find_index(provider_id_field)
+      provider_record_id_index: header_array.find_index(provider_id_field),
+      period_index: header_array.find_index(period_field)
     }
   end
 

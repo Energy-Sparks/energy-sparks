@@ -32,7 +32,8 @@ module Schools
       end
 
       def full_previous_week?
-        return nil unless full_last_week?
+        return false unless full_last_week?
+        return false unless aggregate_meter.amr_data.start_date <= previous_week_date_range.first
 
         (previous_week_date_range.first..previous_week_date_range.last).count == 7
       end

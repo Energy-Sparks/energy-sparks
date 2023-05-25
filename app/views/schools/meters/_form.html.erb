@@ -85,15 +85,18 @@
     switch($("input[type='radio'][name='meter[meter_type]']:checked").val()) {
       case 'electricity':
         document.getElementById('meter_data_source_id').value=<%= @school&.school_group&.default_data_source_electricity_id || 'null' %>
+        document.getElementById('meter_procurement_route_id').value=<%= @school&.school_group&.default_procurement_route_electricity_id || 'null' %>
+        document.getElementById('meter_admin_meter_statuses_id').value=<%= @school&.school_group&.admin_meter_statuses_electricity_id || 'null' %>
         break;
       case 'gas':
         document.getElementById('meter_data_source_id').value=<%= @school&.school_group&.default_data_source_gas_id || 'null' %>
+        document.getElementById('meter_procurement_route_id').value=<%= @school&.school_group&.default_procurement_route_gas_id || 'null' %>
+        document.getElementById('meter_admin_meter_statuses_id').value=<%= @school&.school_group&.admin_meter_statuses_gas_id || 'null' %>
         break;
-      case 'solar_pv':
+      case 'solar_pv': case 'exported_solar_pv':
         document.getElementById('meter_data_source_id').value=<%= @school&.school_group&.default_data_source_solar_pv_id || 'null' %>
-        break;
-      case 'exported_solar_pv':
-        document.getElementById('meter_data_source_id').value=<%= @school&.school_group&.default_data_source_solar_pv_id || 'null' %>
+        document.getElementById('meter_procurement_route_id').value=<%= @school&.school_group&.default_procurement_route_solar_pv_id || 'null' %>
+        document.getElementById('meter_admin_meter_statuses_id').value=<%= @school&.school_group&.admin_meter_statuses_solar_pv_id || 'null' %>
         break;
     }
   })

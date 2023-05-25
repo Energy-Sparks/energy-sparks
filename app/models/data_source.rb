@@ -12,6 +12,7 @@
 #  data_prerequisites          :text
 #  historic_data               :text
 #  id                          :bigint(8)        not null, primary key
+#  import_warning_days         :integer
 #  loa_contact_details         :text
 #  loa_expiry_procedure        :text
 #  name                        :string           not null

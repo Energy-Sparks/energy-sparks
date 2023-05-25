@@ -1,4 +1,3 @@
----
 cy:
   schools:
     transport_surveys:
@@ -18,7 +17,7 @@ cy:
             many: Ydych yn siŵr eich bod am gadw %{count} ymateb sydd heb eu cadw o %{date}?
             other: Ydych yn siŵr eich bod am gadw %{count} ymateb sydd heb eu cadw o %{date}?
           no_connection: Bu gwall wrth gadw ymatebion - gwnewch yn siŵr bod gennych gysylltiad WIFI cyn cadw!
-          no_local_storage: "Nid yw eich porwr yn cefnogi nodwedd sy'n ofynnol gan ein hofferyn arolwg. Naill ai uwchraddiwch eich porwr, defnyddiwch ddewis arall neu galluogwch 'localStorage'"
+          no_local_storage: Nid yw eich porwr yn cefnogi nodwedd sy'n ofynnol gan ein hofferyn arolwg. Naill ai uwchraddiwch eich porwr, defnyddiwch ddewis arall neu galluogwch 'localStorage'
           no_responses: Dim byd i'w gadw - casglwch rai ymatebion arolwg yn gyntaf!
           responses_removed: Ymatebion sydd heb eu cadw wedi'u dileu!
           responses_saved: Ymatebion wedi'u cadw!
@@ -61,8 +60,8 @@ cy:
             <li>Pan fyddwch wedi gorffen, gwnewch yn siŵr eich bod wedi'ch cysylltu â'r rhyngrwyd cyn cyflwyno'r canlyniadau</li>
             <li>Gallech geisio cynnal arolwg trafnidiaeth ar ddiwrnod gwahanol i weld a ydych wedi lleihau eich carbon</li>
           how_title: Sut i wneud y gweithgaredd hwn
-          why: "Mae trafnidiaeth yn cyfrif am tua un rhan o bump o allyriadau carbon deuocsid (CO2) byd-eang. Mae rhai dulliau trafnidiaeth yn allyrru mwy o garbon nag eraill! Er enghraifft, mae ceir petrol neu ddiesel yn allyrru, ar gyfartaledd, tua 3 gwaith yn fwy na cheir trydan. Nid yw rhai dulliau yn allyrru unrhyw garbon o gwbl - allwch chi ddyfalu beth ydyn nhw? Darganfyddwch faint o garbon y mae cymuned eich ysgol yn ei gynhyrchu trwy deithio i'r ysgol"
-          why_title: "Pam ydyn ni'n gwneud hyn?"
+          why: Mae trafnidiaeth yn cyfrif am tua un rhan o bump o allyriadau carbon deuocsid (CO2) byd-eang. Mae rhai dulliau trafnidiaeth yn allyrru mwy o garbon nag eraill! Er enghraifft, mae ceir petrol neu ddiesel yn allyrru, ar gyfartaledd, tua 3 gwaith yn fwy na cheir trydan. Nid yw rhai dulliau yn allyrru unrhyw garbon o gwbl - allwch chi ddyfalu beth ydyn nhw? Darganfyddwch faint o garbon y mae cymuned eich ysgol yn ei gynhyrchu trwy deithio i'r ysgol
+          why_title: Pam ydyn ni'n gwneud hyn?
         labels:
           minutes: Munudau
           pupils: Disgybl(ion)
@@ -76,15 +75,15 @@ cy:
           transport: Trafnidiaeth
         pupils:
           one: Jyst fi
-          two: "%{count} ddisgybl"
-          many: "%{count} o ddisgyblion"
-          other: "%{count} o ddisgyblion"
+          two: '%{count} ddisgybl'
+          many: '%{count} o ddisgyblion'
+          other: '%{count} o ddisgyblion'
         steps:
-          carbon_html: "Gwnaethoch chi ddefnyddio %{carbon} o garbon!"
+          carbon_html: Gwnaethoch chi ddefnyddio %{carbon} o garbon!
           confirm: Cadarnhewch eich dewis
           sharing_html: 'Rhannu: Faint o ddisgyblion yr ysgol hon a rannodd eich taith %{transport}?'
           sharing_note: Peidiwch â chynnwys eich rhieni neu ofalwyr neu blant sy’n mynychu ysgolion neu feithrinfeydd gwahanol
-          summary_html: "Ar gyfer eich taith %{time} o funudau i'r ysgol gan %{transport}"
+          summary_html: Ar gyfer eich taith %{time} o funudau i'r ysgol gan %{transport}
           time: 'Amser: Sawl munud gymerodd eich taith i gyd?'
           transport: 'Trafnidiaeth: Pa fath o drafnidiaeth wnest ti ei ddefnyddio i gyrraedd yr ysgol?'
           weather: Dewiswch y tywydd heddiw
@@ -142,10 +141,10 @@ cy:
           public_transport_html: "Teithiodd %{amount} ar drafnidiaeth gyhoeddus"
           walking_and_cycling_html: "Roedd %{amount} wedi cerdded neu feicio, gan gynhyrchu sero CO2"
         summary_html:
-          one: "Cynhyrchodd <strong>1 disgybl a staff</strong> sydd wedi'u cynnwys yn yr arolwg hwn<strong> %{carbon}kg</strong> o garbon drwy deithio i'r ysgol"
-          two: "Cynhyrchodd <strong>%{count} o ddisgyblion a staff</strong> sydd wedi'u cynnwys yn yr arolwg hwn<strong> %{carbon}kg</strong> o garbon drwy deithio i'r ysgol"
-          many: "Cynhyrchodd <strong>%{count} o ddisgyblion a staff</strong> sydd wedi'u cynnwys yn yr arolwg hwn<strong> %{carbon}kg</strong> o garbon drwy deithio i'r ysgol"
-          other: "Cynhyrchodd <strong>%{count} o ddisgyblion a staff</strong> sydd wedi'u cynnwys yn yr arolwg hwn<strong> %{carbon}kg</strong> o garbon drwy deithio i'r ysgol"
+          one: Cynhyrchodd <strong>1 disgybl a staff</strong> sydd wedi'u cynnwys yn yr arolwg hwn<strong> %{carbon}kg</strong> o garbon drwy deithio i'r ysgol
+          two: Cynhyrchodd <strong>%{count} o ddisgyblion a staff</strong> sydd wedi'u cynnwys yn yr arolwg hwn<strong> %{carbon}kg</strong> o garbon drwy deithio i'r ysgol
+          many: Cynhyrchodd <strong>%{count} o ddisgyblion a staff</strong> sydd wedi'u cynnwys yn yr arolwg hwn<strong> %{carbon}kg</strong> o garbon drwy deithio i'r ysgol
+          other: Cynhyrchodd <strong>%{count} o ddisgyblion a staff</strong> sydd wedi'u cynnwys yn yr arolwg hwn<strong> %{carbon}kg</strong> o garbon drwy deithio i'r ysgol
         time_travelled_by_car: Amser a deithiwyd yn y car
         transport_categories_title: Dadansoddiad o deithiau yn ôl categori trafnidiaeth
       tab_nav:
@@ -153,6 +152,6 @@ cy:
         results: Canlyniadau
         survey_today: Arolwg heddiw
       title:
-        dated: "Arolwg teithio i'r ysgol ar %{date}"
+        dated: Arolwg teithio i'r ysgol ar %{date}
         default: Arolygon teithio i'r ysgol
         today: Arolwg teithio i'r ysgol heddiw
