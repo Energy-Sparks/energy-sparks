@@ -2,27 +2,30 @@
 #
 # Table name: school_groups
 #
-#  admin_meter_statuses_electricity_id :bigint(8)
-#  admin_meter_statuses_gas_id         :bigint(8)
-#  admin_meter_statuses_solar_pv_id    :bigint(8)
-#  created_at                          :datetime         not null
-#  default_chart_preference            :integer          default("default"), not null
-#  default_country                     :integer          default("england"), not null
-#  default_dark_sky_area_id            :bigint(8)
-#  default_data_source_electricity_id  :bigint(8)
-#  default_data_source_gas_id          :bigint(8)
-#  default_data_source_solar_pv_id     :bigint(8)
-#  default_issues_admin_user_id        :bigint(8)
-#  default_scoreboard_id               :bigint(8)
-#  default_solar_pv_tuos_area_id       :bigint(8)
-#  default_template_calendar_id        :bigint(8)
-#  default_weather_station_id          :bigint(8)
-#  description                         :string
-#  id                                  :bigint(8)        not null, primary key
-#  name                                :string           not null
-#  public                              :boolean          default(TRUE)
-#  slug                                :string           not null
-#  updated_at                          :datetime         not null
+#  admin_meter_statuses_electricity_id      :bigint(8)
+#  admin_meter_statuses_gas_id              :bigint(8)
+#  admin_meter_statuses_solar_pv_id         :bigint(8)
+#  created_at                               :datetime         not null
+#  default_chart_preference                 :integer          default("default"), not null
+#  default_country                          :integer          default("england"), not null
+#  default_dark_sky_area_id                 :bigint(8)
+#  default_data_source_electricity_id       :bigint(8)
+#  default_data_source_gas_id               :bigint(8)
+#  default_data_source_solar_pv_id          :bigint(8)
+#  default_issues_admin_user_id             :bigint(8)
+#  default_procurement_route_electricity_id :bigint(8)
+#  default_procurement_route_gas_id         :bigint(8)
+#  default_procurement_route_solar_pv_id    :bigint(8)
+#  default_scoreboard_id                    :bigint(8)
+#  default_solar_pv_tuos_area_id            :bigint(8)
+#  default_template_calendar_id             :bigint(8)
+#  default_weather_station_id               :bigint(8)
+#  description                              :string
+#  id                                       :bigint(8)        not null, primary key
+#  name                                     :string           not null
+#  public                                   :boolean          default(TRUE)
+#  slug                                     :string           not null
+#  updated_at                               :datetime         not null
 #
 # Indexes
 #
