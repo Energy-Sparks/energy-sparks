@@ -23,7 +23,7 @@ module Amr
       data_feed_reading_hash[:description] = fetch_from_row(:description_index, row)
       data_feed_reading_hash[:provider_record_id] = fetch_from_row(:provider_record_id_index, row)
       data_feed_reading_hash[:readings] = readings_as_array(row)
-      data_feed_reading_hash[:period] = fetch_from_row(:period_index, row)
+      data_feed_reading_hash[:period] = fetch_from_row(:period_index, row) if @config.positional_index
       data_feed_reading_hash
     end
 
