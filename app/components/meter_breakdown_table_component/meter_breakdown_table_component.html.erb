@@ -1,13 +1,23 @@
 <table class="table table-sm table-with-totals-footer table-sorted">
   <thead class="thead-dark">
     <% @headers.each do |header| %>
-      <th class='<%= header[:class] %>'><%= header[:title] %></th>
+      <th><%= header %></th>
     <% end %>
   </thead>
   <tbody>
-
+    <% @rows.each do |row| %>
+      <tr>
+      <% row.each do |element| %>
+        <td><%= element %></td>
+      <% end %>
+    </tr>
+    <% end %>
   </tbody>
   <tfoot>
-
+    <tr>
+    <% @footers.each do |footer| %>
+      <td><%= footer %></td>
+    <% end %>
+    </tr>
   </tfoot>
 </table>

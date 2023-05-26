@@ -1,3 +1,34 @@
+<% rows = meters_by_percentage_baseload(baseload_meter_breakdown).each_with_object([]) do |(mpan_mprn, breakdown), d|
+          d << [
+              breakdown.meter.present? ? breakdown.meter.mpan_mprn : mpan_mprn,
+              breakdown.meter.present? ? breakdown.meter.name : '',
+              breakdown.baseload_kw,
+              breakdown.baseload_cost_£,
+              breakdown.baseload_change_kw,
+              breakdown.percentage_baseload
+            ]
+          end
+%>
+
+<%= component 'meter_breakdown_table',
+    headers: [
+      I18n.t('advice_pages.baseload.tables.columns.meter'),
+      I18n.t('advice_pages.baseload.tables.columns.name'),
+      I18n.t('advice_pages.baseload.tables.columns.average_annual_baseload_kw'),
+      I18n.t('advice_pages.baseload.tables.columns.average_annual_baseload_gbp'),
+      I18n.t('advice_pages.baseload.tables.columns.change_since_previous_year'),
+      I18n.t('advice_pages.baseload.tables.columns.percentage_of_total')
+    ],
+    rows: rows,
+    footers: [
+      I18n.t('advice_pages.baseload.tables.labels.all_meters'),
+      '',
+      baseload_meter_breakdown_total.baseload_kw,
+      baseload_meter_breakdown_total.baseload_cost_£,
+      baseload_meter_breakdown_total.baseload_change_kw,
+      baseload_meter_breakdown_total.percentage_baseload
+    ]
+%>
 
 
 
