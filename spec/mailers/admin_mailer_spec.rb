@@ -140,7 +140,13 @@ RSpec.describe AdminMailer, include_application_helper: true do
 
     context "showing only open issues for user" do
       let(:issues) { [issue, note, closed_issue, someone_elses_issue] }
+      let(:attachment) { email.attachments[0] }
+
       it { expect(email.subject).to eql "[energy-sparks-unknown] Energy Sparks - Issue report for #{admin.display_name}" }
+
+      it { expect(email.attachments.count).to eq(1) }
+      it { expect(attachment.content_type).to include('text/csv') }
+      it { expect(attachment.filename).to eq('issues_report.csv') }
 
       it "displays issue" do
         expect(body).to have_content(issue.title)
