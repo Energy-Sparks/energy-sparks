@@ -124,7 +124,6 @@ RSpec.describe AdminMailer, include_application_helper: true do
     before { Timecop.freeze(Time.zone.now) }
     after { Timecop.return }
 
-    let(:body) { email.body.raw_source }
 
     let(:admin) { create(:admin) }
     let(:note) { create(:issue, issue_type: :note) }
@@ -133,6 +132,8 @@ RSpec.describe AdminMailer, include_application_helper: true do
     let(:closed_issue) { create(:issue, issue_type: :issue, status: :closed, owned_by: admin) }
     let(:someone_elses_issue) { create(:issue, issue_type: :issue, status: :open, owned_by: nil) }
     let!(:issues) { [] }
+    let(:attachment) { email.attachments[0] }
+    let(:body) { email.html_part.body.raw_source }
 
     before do
       AdminMailer.with(user: admin).issues_report.deliver
@@ -140,13 +141,8 @@ RSpec.describe AdminMailer, include_application_helper: true do
 
     context "showing only open issues for user" do
       let(:issues) { [issue, note, closed_issue, someone_elses_issue] }
-      let(:attachment) { email.attachments[0] }
 
       it { expect(email.subject).to eql "[energy-sparks-unknown] Energy Sparks - Issue report for #{admin.display_name}" }
-
-      it { expect(email.attachments.count).to eq(1) }
-      it { expect(attachment.content_type).to include('text/csv') }
-      it { expect(attachment.filename).to eq('issues_report.csv') }
 
       it "displays issue" do
         expect(body).to have_content(issue.title)
@@ -177,6 +173,15 @@ RSpec.describe AdminMailer, include_application_helper: true do
       it "doesn't send email" do
         expect(email).to be_nil
       end
+    end
+
+    context "csv report" do
+      let(:issues) { [new_issue] }
+
+      it { expect(email.attachments.count).to eq(1) }
+      it { expect(attachment.content_type).to include('text/csv') }
+      it { expect(attachment.filename).to eq('issues_report.csv') }
+      it { expect(attachment.body.raw_source).to eq("Issue type,Issue for,\"\",Title,Fuel,Created,Updated,View,Edit\r\nissue,#{new_issue.issueable.name},New this week!,#{new_issue.title},Gas,#{new_issue.created_at.strftime('%d/%m/%Y')},#{new_issue.updated_at.strftime('%d/%m/%Y')},http://localhost/admin/schools/#{new_issue.issueable.slug}/issues/#{new_issue.id},http://localhost/admin/issues/#{new_issue.id}/edit\r\n") }
     end
   end
 end

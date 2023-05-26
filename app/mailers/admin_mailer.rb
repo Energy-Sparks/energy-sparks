@@ -18,12 +18,33 @@ class AdminMailer < ApplicationMailer
     @user = params[:user]
     @issues = Issue.for_owned_by(@user).status_open.issue.by_created_at
     title = "Issue report for #{@user.display_name}"
+
     if @issues.any?
+      attachments['issues_report.csv'] = { mime_type: 'text/csv', content: build_issues_csv_for(@issues) }
       make_bootstrap_mail(to: @user.email, subject: subject(title))
     end
   end
 
   private
+
+  def build_issues_csv_for(issues)
+    CSV.generate(headers: true) do |csv|
+      csv << ['Issue type', 'Issue for', '', 'Title', 'Fuel', 'Created', 'Updated', 'View', 'Edit']
+      issues.each do |issue|
+        csv << [
+          issue.issue_type,
+          issue&.issueable&.name,
+          issue.created_at > 1.week.ago ? 'New this week!' : '',
+          issue.title,
+          issue.fuel_type&.humanize,
+          issue.created_at.strftime('%d/%m/%Y'),
+          issue.updated_at.strftime('%d/%m/%Y'),
+          polymorphic_url([:admin, issue.issueable, issue]),
+          edit_polymorphic_url([:admin, @issueable, issue])
+        ]
+      end
+    end
+  end
 
   def env
     ENV['ENVIRONMENT_IDENTIFIER'] || 'unknown'
