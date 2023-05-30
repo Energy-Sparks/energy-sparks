@@ -57,7 +57,7 @@ class SchoolGroupsController < ApplicationController
   end
 
   def current_dashboard
-    authorize! :compare, @school_group
+    authorize! :show, @school_group
     render 'current_dashboard'
   end
 
