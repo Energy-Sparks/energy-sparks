@@ -113,6 +113,10 @@ Rails.application.routes.draw do
   resources :school_groups, only: [:show] do
     member do
       get :map
+      get :recent_usage
+      get :comparisons
+      get :priority_actions
+      get :current_scores
     end
   end
   resources :scoreboards, only: [:show, :index]

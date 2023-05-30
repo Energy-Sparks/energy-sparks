@@ -7,6 +7,7 @@ en:
       view_all_schools: View all schools
       view_group: View group
       view_map: View map
+      view_scoreboard: Scoreboard
     show:
       currently_works_with_from:
         one: Energy Sparks currently works with %{count} school from
@@ -17,3 +18,9 @@ en:
       if_you_would_like_support_enrol_here_html: If you would like Energy Sparks to support your school to reduce its carbon emissions, enrol <a href='%{enrol_path}'>here</a>
       in_partnership_with: in partnership with
       not_visible_schools: Not visible schools
+    titles:
+      comparisons: Comparisons
+      current_scores: Current scores
+      group_dashboard: Group dashboard
+      map: Map
+      priority_actions: Priority actions
