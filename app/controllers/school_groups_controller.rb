@@ -15,6 +15,11 @@ class SchoolGroupsController < ApplicationController
   end
 
   def map
+    @breadcrumbs = [
+      { name: 'Schools' },
+      { name: @school_group.name, href: school_group_path(@school_group) },
+      { name: 'Maps' }
+    ]
     redirect_to school_group_path(@school_group) unless EnergySparks::FeatureFlags.active?(:enhanced_school_group_dashboard)
   end
 
@@ -31,6 +36,10 @@ class SchoolGroupsController < ApplicationController
 
   def enhanced_dashboard
     if can?(:show, SchoolGroup)
+      @breadcrumbs = [
+        { name: 'Schools' },
+        { name: @school_group.name }
+      ]
       render 'enhanced_dashboard'
     else
       redirect_to map_school_group_path(@school_group)

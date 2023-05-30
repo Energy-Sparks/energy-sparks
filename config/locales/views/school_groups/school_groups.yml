@@ -5,8 +5,8 @@ en:
       compare_schools: Compare schools
       scoreboard: Scoreboard
       view_all_schools: View all schools
+      view_group: View group
       view_map: View map
-      view_schools: View schools
     show:
       currently_works_with_from:
         one: Energy Sparks currently works with %{count} school from
