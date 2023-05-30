@@ -13,7 +13,7 @@
   <div class="col-md-4">
     <div class='btn-group float-right mt-4'>
       <% if current_page?(action: 'map') %>
-        <%= link_to t('school_groups.header.view_group'), school_group_path(@school_group), class: 'btn' %>
+        <%= link_to(t('school_groups.header.view_group'), school_group_path(@school_group), class: 'btn') if can?(:compare, @school_group) %>
       <% else %>
         <%= link_to t('school_groups.header.view_map'), map_school_group_path(@school_group), class: 'btn' %>
       <% end %>
