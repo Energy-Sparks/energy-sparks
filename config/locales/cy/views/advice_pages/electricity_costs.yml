@@ -2,6 +2,22 @@ cy:
   advice_pages:
     electricity_costs:
       analysis:
+        agreed_capacity_notice:
+          nearing_agreed_capacity_html: |-
+            <p>Mae eich defnydd cynhwysedd o %{kw} kW yn eithaf agos i'ch terfyn a gytunwyd o %{agreeed_limit_kw} kW ar gyfer metr %{mpan_mprn}.</p>
+            <p>There is a risk of incurring significantly monthly penalty charges if you go over the limit. We suggest you contact your energy manager or energy supplier to discuss.</p>
+          not_nearing_agreed_capacity:
+            annual_saving_gbp_html: "<p>Drwy leihau eich terfyn gallech arbed hyd at %{annual_saving_gbp} y flwyddyn.</p>"
+            introduction_html: |-
+              <b>Arbediad hawdd posibl:</b>
+              <p>Mae eich defnydd cynhwysedd blynyddol mwyaf cyfredol o %{kw} kW yn sylweddol is na'ch terfyn cytunedig o %{agreeed_limit_kw} kW ar gyfer metr %{mpan_mprn}.2
+            suggestion_html: |-
+              <p>
+                Rydym yn awgrymu eich bod yn cysylltu â'ch rheolwr ynni neu gyflenwr ynni i drafod lleihau'r
+               terfyn er mwyn arbed eich costau. Y prif risg o wneud hyn yw os bydd eich defnydd blynyddol yn cynyddu
+                os ydych yn bwriadu cynyddu maint yr ysgol yn sylweddol neu ddefnyddio
+                trydan yn y dyfodol agos?
+              </p>
         comparison:
           title: Cymhariaeth cost ar gyfer y 2 flynedd ddiwethaf
         cost_breakdown_by_charge:

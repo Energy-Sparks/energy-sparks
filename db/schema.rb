@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_27_152411) do
+ActiveRecord::Schema.define(version: 2023_05_25_095829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -390,6 +390,7 @@ ActiveRecord::Schema.define(version: 2023_04_27_152411) do
     t.boolean "lookup_by_serial_number", default: false
     t.jsonb "column_row_filters", default: {}
     t.boolean "positional_index", default: false, null: false
+    t.string "period_field"
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
   end
@@ -1541,6 +1542,7 @@ ActiveRecord::Schema.define(version: 2023_04_27_152411) do
     t.boolean "message_for_no_pupil_accounts", default: true
     t.jsonb "temperature_recording_months", default: ["10", "11", "12", "1", "2", "3", "4"]
     t.integer "default_import_warning_days", default: 10
+    t.jsonb "prices"
   end
 
   create_table "sms_records", force: :cascade do |t|

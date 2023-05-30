@@ -29,6 +29,7 @@ RSpec.describe "electricity costs advice page", type: :system do
 
     before do
       allow(electricity_aggregate_meter).to receive(:mpan_mprn).and_return("999999")
+      allow(electricity_aggregate_meter).to receive(:original_meter).and_return(electricity_aggregate_meter)
 
       allow_any_instance_of(Schools::Advice::CostsService).to receive_messages(
         complete_tariff_coverage?: complete_tariff_coverage,

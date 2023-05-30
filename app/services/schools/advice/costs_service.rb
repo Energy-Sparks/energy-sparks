@@ -74,7 +74,7 @@ module Schools
       end
 
       def aggregate_meter
-        @meter_collection.aggregate_meter(@fuel_type)
+        @meter_collection.aggregate_meter(@fuel_type)&.original_meter
       end
 
       def analysis_end_date(meter = aggregate_meter)

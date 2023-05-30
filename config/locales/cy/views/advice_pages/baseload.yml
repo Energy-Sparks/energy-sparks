@@ -61,6 +61,10 @@ cy:
             percentage_change: "% Newid"
             use: Llwyth sylfaenol cyfartalog (kW)
         title: Eich llwyth sylfaenol presennol
+      for_each_1kw_reduction_html: |-
+        <p>
+          Am bob gostyngiad o 1kW yn y llwyth sylfaenol, bydd yr ysgol yn arbed %{kwh_saving} kWh a %{gbp_saving} y flwyddyn, ac yn lleihau ei hôl troed carbon gan %{co2_saving} kg.
+        </p>
       insights:
         next_steps: Er mwyn canfod yn llawn beth yw achosion eich defnydd o lwyth sylfaenol mae angen i chi wneud arolwg o ba offer sy'n cael eu gadael ymlaen dros nos a'u defnydd o bŵer
         title: Beth yw llwyth sylfaenol?
@@ -88,10 +92,7 @@ cy:
         <p>
           Llwyth sylfaenol trydanol yw'r trydan sydd ei angen i ddarparu pŵer i offer sy'n dal i redeg bob amser.
         </p>
-
-          Gall fod y ffordd gyflymaf o leihau costau ynni ysgol a lleihau ei hôl troed carbon .
-
         <p>
-          Am bob gostyngiad o 1kW yn y llwyth sylfaenol, bydd yr ysgol yn arbed 8,760 kWh.
+          Gall fod y ffordd gyflymaf o leihau costau ynni ysgol a lleihau ei hôl troed carbon.
         </p>
       what_is_baseload_link: Dysgu rhagor

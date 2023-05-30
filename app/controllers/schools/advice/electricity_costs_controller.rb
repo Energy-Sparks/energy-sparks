@@ -4,11 +4,11 @@ module Schools
       private
 
       def set_meters
-        @meters = @school.meters.active.electricity
+        @meters = @school.meters.active.electricity.order(:mpan_mprn)
       end
 
       def aggregate_meter
-        aggregate_school.aggregated_electricity_meters
+        aggregate_school.aggregated_electricity_meters&.original_meter
       end
 
       def set_one_year_breakdown_chart

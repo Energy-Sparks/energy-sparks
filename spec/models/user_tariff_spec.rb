@@ -28,7 +28,7 @@ describe UserTariff do
     end
   end
 
-    context 'with flat rate electricity tariff' do
+  context 'with flat rate electricity tariff' do
 
     let(:user_tariff)  do
       UserTariff.create(
@@ -43,6 +43,7 @@ describe UserTariff do
         user_tariff_charges: user_tariff_charges,
         )
     end
+    let(:attributes) { user_tariff.to_hash }
 
     let(:user_tariff_price)  { UserTariffPrice.new(start_time: '00:00', end_time: '23:30', value: 1.23, units: 'kwh') }
     let(:user_tariff_charge)  { UserTariffCharge.new(charge_type: :fixed_charge, value: 4.56, units: :month) }
@@ -51,8 +52,6 @@ describe UserTariff do
     let(:user_tariff_charges)  { [user_tariff_charge] }
 
     it "should include basic fields" do
-      attributes = user_tariff.to_hash
-
       expect(attributes[:name]).to eq('My First Tariff')
       expect(attributes[:start_date]).to eq('01/04/2021')
       expect(attributes[:end_date]).to eq('31/03/2022')
@@ -63,15 +62,11 @@ describe UserTariff do
     end
 
     it "should include standing charges" do
-      attributes = user_tariff.to_hash
-
       rates = attributes[:rates]
       expect(rates[:fixed_charge]).to eq({per: 'month', rate: '4.56'})
     end
 
     it "should include rate" do
-      attributes = user_tariff.to_hash
-
       rates = attributes[:rates]
       expect(rates[:flat_rate][:per]).to eq('kwh')
       expect(rates[:flat_rate][:rate]).to eq('1.23')
@@ -114,7 +109,6 @@ describe UserTariff do
   end
 
   context 'with differential electricity tariff' do
-
     let(:user_tariff)  do
       UserTariff.create(
         school: school,
@@ -129,17 +123,18 @@ describe UserTariff do
         )
     end
 
+    let(:attributes) { user_tariff.to_hash }
+
     let(:user_tariff_price_1)  { UserTariffPrice.new(start_time: '00:00', end_time: '03:30', value: 1.23, units: 'kwh') }
     let(:user_tariff_price_2)  { UserTariffPrice.new(start_time: '04:00', end_time: '23:30', value: 2.46, units: 'kwh') }
     let(:user_tariff_charge_1)  { UserTariffCharge.new(charge_type: :fixed_charge, value: 4.56, units: :month) }
     let(:user_tariff_charge_2)  { UserTariffCharge.new(charge_type: :agreed_availability_charge, value: 6.78, units: :kva) }
 
     let(:user_tariff_prices)  { [user_tariff_price_1, user_tariff_price_2] }
-    let(:user_tariff_charges)  { [user_tariff_charge_1, user_tariff_charge_2] }
+    let(:user_tariff_charges) { [user_tariff_charge_1, user_tariff_charge_2] }
+    let(:asc_limit_kw_charge) { UserTariffCharge.create(charge_type: :asc_limit_kw, value: 5.43) }
 
     it "should include basic fields" do
-      attributes = user_tariff.to_hash
-
       expect(attributes[:name]).to eq('My First Tariff')
       expect(attributes[:start_date]).to eq('01/04/2021')
       expect(attributes[:end_date]).to eq('31/03/2022')
@@ -152,19 +147,35 @@ describe UserTariff do
     it "should include duos" do
       user_tariff.user_tariff_charges << UserTariffCharge.create(charge_type: :duos_red, value: 6.78)
 
-      attributes = user_tariff.to_hash
       expect(attributes[:rates][:duos_red]).to eq('6.78')
     end
 
-    it "should include asc limit kw" do
-      user_tariff.user_tariff_charges << UserTariffCharge.create(charge_type: :asc_limit_kw, value: 5.43)
+    context "with asc limit kw" do
+      context "agreed_availability_charge and excess_availability_charge not present" do
+        let(:user_tariff_charges) { [asc_limit_kw_charge] }
+        it "should not be included" do
+          expect(attributes).to_not have_key(:asc_limit_kw)
+        end
+      end
 
-      attributes = user_tariff.to_hash
-      expect(attributes[:asc_limit_kw]).to eq('5.43')
+      context "agreed_availability_charge is present" do
+        let(:agreed_availability_charge)  { UserTariffCharge.create(charge_type: :agreed_availability_charge, value: 6.78, units: :kva) }
+        let(:user_tariff_charges) { [asc_limit_kw_charge, agreed_availability_charge] }
+        it "should be included" do
+          expect(attributes[:asc_limit_kw]).to eq('5.43')
+        end
+      end
+
+      context "excess_availability_charge is present" do
+        let(:excess_availability_charge)  { UserTariffCharge.create(charge_type: :excess_availability_charge, value: 6.78, units: :kva) }
+        let(:user_tariff_charges) { [asc_limit_kw_charge, excess_availability_charge] }
+        it "should be included" do
+          expect(attributes[:asc_limit_kw]).to eq('5.43')
+        end
+      end
     end
 
     it "should include ccl" do
-      attributes = user_tariff.to_hash
       expect(attributes[:climate_change_levy]).to be_falsey
 
       user_tariff.update(ccl: true)
@@ -173,7 +184,6 @@ describe UserTariff do
     end
 
     it "should include tnuos" do
-      attributes = user_tariff.to_hash
       expect(attributes[:rates][:tnuos]).to be_falsey
 
       user_tariff.update(tnuos: true)
@@ -182,16 +192,12 @@ describe UserTariff do
     end
 
     it "should include standing charges" do
-      attributes = user_tariff.to_hash
-
       rates = attributes[:rates]
       expect(rates[:fixed_charge]).to eq({:per => 'month', :rate => '4.56'})
       expect(rates[:agreed_availability_charge]).to eq({:per => 'kva', :rate => '6.78'})
     end
 
     it "should include rates with adjusted end times" do
-      attributes = user_tariff.to_hash
-
       rates = attributes[:rates]
       expect(rates[:rate0][:per]).to eq('kwh')
       expect(rates[:rate0][:rate]).to eq('1.23')

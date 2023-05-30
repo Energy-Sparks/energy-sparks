@@ -269,102 +269,102 @@ module Amr
     end
 
     context 'indexed file format' do
-      let(:readings) { [{:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["14.4"]}, #1
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["15"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["15.1"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["15"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["15"]}, #5
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["15"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["14.9"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["15.1"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["15"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["15.1"]}, #10
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["15.7"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["19.6"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["29.9"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["29.7"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["30.2"]}, #15
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["29.6"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["34.1"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["34.4"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["34.7"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["33.5"]}, #20
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["33.5"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["33.4"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["33.6"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["34.5"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["33.7"]}, #25
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["34"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["32.7"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["34.2"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["35.1"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["33"]}, #30
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["33.4"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["32.6"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["33.1"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["37.6"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["38.9"]}, #35
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["37.7"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["36.7"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["32.9"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["33.1"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["31.1"]}, #40
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["27.6"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["23.3"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["16.7"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["16.6"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["15.9"]}, #45
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["15.6"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["15.4"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26/08/2019", :readings=>["48.0"]}, #48
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["15.2"]}, #1
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.4"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.3"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.4"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.3"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.4"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.3"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.3"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.4"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["6.5"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["2.3"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["3.2"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.8"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.6"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["2"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["3"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["2"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.3"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.7"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.4"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.1"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["0.9"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.2"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["0.9"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.7"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["0.8"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["0.8"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["0.8"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.2"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.1"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.7"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["2"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["2.8"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["3.8"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.6"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["0.5"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["0.7"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["0.9"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.2"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.2"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.2"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.3"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.3"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.2"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.2"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.2"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["1.3"]},
-                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"27/08/2019", :readings=>["99.0"]}, #48
+      let(:readings) { [{:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 1, :reading_date=>"26/08/2019", :readings=>["14.4"]}, #1
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 2, :reading_date=>"26/08/2019", :readings=>["15"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 3, :reading_date=>"26/08/2019", :readings=>["15.1"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 4, :reading_date=>"26/08/2019", :readings=>["15"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 5, :reading_date=>"26/08/2019", :readings=>["15"]}, #5
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 6, :reading_date=>"26/08/2019", :readings=>["15"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 7, :reading_date=>"26/08/2019", :readings=>["14.9"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 8, :reading_date=>"26/08/2019", :readings=>["15.1"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 9, :reading_date=>"26/08/2019", :readings=>["15"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 10, :reading_date=>"26/08/2019", :readings=>["15.1"]}, #10
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 11, :reading_date=>"26/08/2019", :readings=>["15.7"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 12, :reading_date=>"26/08/2019", :readings=>["19.6"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 13, :reading_date=>"26/08/2019", :readings=>["29.9"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 14, :reading_date=>"26/08/2019", :readings=>["29.7"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 15, :reading_date=>"26/08/2019", :readings=>["30.2"]}, #15
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 16, :reading_date=>"26/08/2019", :readings=>["29.6"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 17, :reading_date=>"26/08/2019", :readings=>["34.1"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 18, :reading_date=>"26/08/2019", :readings=>["34.4"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 19, :reading_date=>"26/08/2019", :readings=>["34.7"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 20, :reading_date=>"26/08/2019", :readings=>["33.5"]}, #20
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 21, :reading_date=>"26/08/2019", :readings=>["33.5"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 22, :reading_date=>"26/08/2019", :readings=>["33.4"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 23, :reading_date=>"26/08/2019", :readings=>["33.6"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 24, :reading_date=>"26/08/2019", :readings=>["34.5"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 25, :reading_date=>"26/08/2019", :readings=>["33.7"]}, #25
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 26, :reading_date=>"26/08/2019", :readings=>["34"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 27, :reading_date=>"26/08/2019", :readings=>["32.7"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 28, :reading_date=>"26/08/2019", :readings=>["34.2"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 29, :reading_date=>"26/08/2019", :readings=>["35.1"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 30, :reading_date=>"26/08/2019", :readings=>["33"]}, #30
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 31, :reading_date=>"26/08/2019", :readings=>["33.4"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 32, :reading_date=>"26/08/2019", :readings=>["32.6"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 33, :reading_date=>"26/08/2019", :readings=>["33.1"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 34, :reading_date=>"26/08/2019", :readings=>["37.6"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 35, :reading_date=>"26/08/2019", :readings=>["38.9"]}, #35
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 36, :reading_date=>"26/08/2019", :readings=>["37.7"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 37, :reading_date=>"26/08/2019", :readings=>["36.7"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 38, :reading_date=>"26/08/2019", :readings=>["32.9"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 39, :reading_date=>"26/08/2019", :readings=>["33.1"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 40, :reading_date=>"26/08/2019", :readings=>["31.1"]}, #40
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 41, :reading_date=>"26/08/2019", :readings=>["27.6"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 42, :reading_date=>"26/08/2019", :readings=>["23.3"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 43, :reading_date=>"26/08/2019", :readings=>["16.7"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 44, :reading_date=>"26/08/2019", :readings=>["16.6"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 45, :reading_date=>"26/08/2019", :readings=>["15.9"]}, #45
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 46, :reading_date=>"26/08/2019", :readings=>["15.6"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 47, :reading_date=>"26/08/2019", :readings=>["15.4"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 48, :reading_date=>"26/08/2019", :readings=>["48.0"]}, #48
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 1, :reading_date=>"27/08/2019", :readings=>["15.2"]}, #1
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 2, :reading_date=>"27/08/2019", :readings=>["1.4"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 3, :reading_date=>"27/08/2019", :readings=>["1.3"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 4, :reading_date=>"27/08/2019", :readings=>["1.4"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 5, :reading_date=>"27/08/2019", :readings=>["1.3"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 6, :reading_date=>"27/08/2019", :readings=>["1.4"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 7, :reading_date=>"27/08/2019", :readings=>["1.3"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 8, :reading_date=>"27/08/2019", :readings=>["1.3"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 9, :reading_date=>"27/08/2019", :readings=>["1.4"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 10, :reading_date=>"27/08/2019", :readings=>["6.5"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 11, :reading_date=>"27/08/2019", :readings=>["2.3"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 12, :reading_date=>"27/08/2019", :readings=>["3.2"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 13, :reading_date=>"27/08/2019", :readings=>["1.8"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 14, :reading_date=>"27/08/2019", :readings=>["1.6"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 15, :reading_date=>"27/08/2019", :readings=>["2"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 16, :reading_date=>"27/08/2019", :readings=>["3"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 17, :reading_date=>"27/08/2019", :readings=>["2"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 18, :reading_date=>"27/08/2019", :readings=>["1.3"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 19, :reading_date=>"27/08/2019", :readings=>["1.7"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 20, :reading_date=>"27/08/2019", :readings=>["1.4"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 21, :reading_date=>"27/08/2019", :readings=>["1.1"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 22, :reading_date=>"27/08/2019", :readings=>["0.9"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 23, :reading_date=>"27/08/2019", :readings=>["1.2"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 24, :reading_date=>"27/08/2019", :readings=>["0.9"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 25, :reading_date=>"27/08/2019", :readings=>["1.7"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 26, :reading_date=>"27/08/2019", :readings=>["0.8"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 27, :reading_date=>"27/08/2019", :readings=>["0.8"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 28, :reading_date=>"27/08/2019", :readings=>["0.8"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 29, :reading_date=>"27/08/2019", :readings=>["1.2"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 30, :reading_date=>"27/08/2019", :readings=>["1.1"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 31, :reading_date=>"27/08/2019", :readings=>["1.7"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 32, :reading_date=>"27/08/2019", :readings=>["2"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 33, :reading_date=>"27/08/2019", :readings=>["2.8"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 34, :reading_date=>"27/08/2019", :readings=>["3.8"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 35, :reading_date=>"27/08/2019", :readings=>["1.6"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 36, :reading_date=>"27/08/2019", :readings=>["0.5"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 37, :reading_date=>"27/08/2019", :readings=>["0.7"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 38, :reading_date=>"27/08/2019", :readings=>["0.9"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 39, :reading_date=>"27/08/2019", :readings=>["1.2"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 40, :reading_date=>"27/08/2019", :readings=>["1.2"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 41, :reading_date=>"27/08/2019", :readings=>["1.2"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 42, :reading_date=>"27/08/2019", :readings=>["1.3"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 43, :reading_date=>"27/08/2019", :readings=>["1.3"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 44, :reading_date=>"27/08/2019", :readings=>["1.2"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 45, :reading_date=>"27/08/2019", :readings=>["1.2"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 46, :reading_date=>"27/08/2019", :readings=>["1.2"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 47, :reading_date=>"27/08/2019", :readings=>["1.3"]},
+                        {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: 48, :reading_date=>"27/08/2019", :readings=>["99.0"]}, #48
                       ] }
 
       let(:indexed_output) { [
@@ -375,6 +375,18 @@ module Amr
       it 'converts a list of single readings per half hour into a day per reading format' do
         results = SingleReadConverter.new(readings, indexed: true).perform
         expect(results).to eq indexed_output
+      end
+
+      it 'handles files with multiple mpans' do
+        #create test data that consists of 2 days readings for 2 different meters
+        two_meters_worth_of_readings = readings + readings.map {|r| {amr_data_feed_config_id: 6, mpan_mprn: "123456789012", reading_date: r[:reading_date], period: r[:period], readings: r[:readings]} }
+
+        results = SingleReadConverter.new(two_meters_worth_of_readings, indexed: true).perform
+
+        #create expected output: 2 x 2 days readings for 2 meters
+        expected_results = indexed_output + indexed_output.map {|r| {amr_data_feed_config_id: 6, meter_id: nil, mpan_mprn: "123456789012", reading_date: r[:reading_date], readings: r[:readings] } }
+
+        expect(results).to eq expected_results
       end
     end
 

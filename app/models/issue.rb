@@ -34,6 +34,7 @@ class Issue < ApplicationRecord
 
   delegated_type :issueable, types: %w[School SchoolGroup DataSource]
   delegate :name, to: :issueable
+
   belongs_to :school_group, -> { where(issues: { issueable_type: 'SchoolGroup' }) }, foreign_key: 'issueable_id', optional: true
   belongs_to :school, -> { where(issues: { issueable_type: 'School' }) }, foreign_key: 'issueable_id', optional: true
 
@@ -45,8 +46,8 @@ class Issue < ApplicationRecord
   has_many :meters, through: :issue_meters
 
   scope :for_school_group, ->(school_group) do
-    where(schools: { school_group: school_group }).or(
-      where(school_group: school_group)).left_joins(:school)
+    where(issues: { issueable_type: 'SchoolGroup', issueable_id: school_group }).or(
+      where(issues: { issueable_type: 'School', issueable_id: school_group.schools }))
   end
 
   scope :for_issue_types, ->(issue_types) { where(issue_type: issue_types) }
