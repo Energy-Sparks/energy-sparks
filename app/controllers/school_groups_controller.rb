@@ -3,7 +3,7 @@ class SchoolGroupsController < ApplicationController
 
   load_and_authorize_resource
   before_action :find_schools_and_partners
-  before_action :build_breadcrumbs, exclude: [:show]
+  before_action :build_breadcrumbs
 
   skip_before_action :authenticate_user!, only: [:show, :map]
 
@@ -56,11 +56,6 @@ class SchoolGroupsController < ApplicationController
 
   def enhanced_dashboard
     if can?(:show, SchoolGroup)
-      @breadcrumbs = [
-        { name: 'Schools' },
-        { name: @school_group.name, href: school_group_path(@school_group) },
-        { name: I18n.t("school_groups.titles.group_dashboard") }
-      ]
       render 'enhanced_dashboard'
     else
       redirect_to map_school_group_path(@school_group)

@@ -21,6 +21,6 @@ en:
     titles:
       comparisons: Comparisons
       current_scores: Current scores
-      group_dashboard: Group dashboard
       map: Map
       priority_actions: Priority actions
+      show: Group dashboard
