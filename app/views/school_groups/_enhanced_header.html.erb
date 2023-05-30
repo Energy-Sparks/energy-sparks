@@ -1,3 +1,5 @@
+<% content_for :page_title, @school_group.name + ' | ' +  t("school_groups.titles.#{action_name}") %>
+
 <div class="page-breadcrumb">
   <%= component 'breadcrumbs' do |c| %>
     <% c.with_items(@breadcrumbs) %>
