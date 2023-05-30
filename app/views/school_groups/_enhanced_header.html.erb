@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-md-8">
+    <h1><%= @school_group.name %></h1>
+  </div>
+  <div class="col-md-4">
+    <div class='btn-group float-right mt-4'>
+      <% if current_page?(action: 'map') %>
+        <%= link_to t('school_groups.header.view_schools'), school_group_path(@school_group), class: 'btn' %>
+      <% else %>
+        <%= link_to t('school_groups.header.view_map'), map_school_group_path(@school_group), class: 'btn' %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<p>
+<% if @partners.any? %>
+  <%= t('school_groups.show.currently_works_with_schools_from', count: @schools.count) %> <%= @school_group.name %> <%= t('school_groups.show.in_partnership_with') %> <%= list_of_partners_as_links(@partners) %>.
+<% else %>
+  <%= t('school_groups.show.currently_works_with_from', count: @schools.count) %> <%= @school_group.name %>.
+<% end %>
+</p>
