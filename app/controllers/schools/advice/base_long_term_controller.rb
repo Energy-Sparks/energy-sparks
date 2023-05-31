@@ -36,7 +36,7 @@ module Schools
       end
 
       def sorted_meters_for_breakdown(annual_usage_meter_breakdown)
-        meters = @school.meters.where(mpan_mprn: annual_usage_meter_breakdown.meters).order(:name, :mpan_mprn)
+        meters = @school.meters.where(mpan_mprn: annual_usage_meter_breakdown.meters).order(:mpan_mprn)
         meters.index_by(&:mpan_mprn)
       end
 

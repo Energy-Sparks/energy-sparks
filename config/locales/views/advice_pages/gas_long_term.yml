@@ -78,6 +78,7 @@ en:
           annual_usage_kwh: Annual usage (kWh)
           estimated_savings_gbp: Estimated saving (£)
           meter: Meter
+          name: Name
           percent: Percent of total use
         labels:
           all_meters: All meters

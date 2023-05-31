@@ -107,6 +107,7 @@ cy:
           00_30_to_07_00: 00:30 i 07:00
           07_30_to_00_00: 07:30 i 00:00
           agreed_availability_charge: Tâl argaeledd y cytunwyd arno
+          climate_change_levy__2020_21: Ardoll newid hinsawdd (2020/21)
           climate_change_levy__2021_22: Ardoll newid hinsawdd (2021/22)
           commodity_rate: Cyfradd nwyddau
           data_collection_dcda_agent_charge: Tâl asiant DC/DA
@@ -141,6 +142,32 @@ cy:
         partial_year: yn dynodi blwyddyn rannol
         three_significant_figures: Cyflwynir data yn y tabl hwn i 3 ffigwr arwyddocaol.
         two_significant_figures: Cyflwynir data yn y tabl hwn i 2 ffigwr arwyddocaol.
+      tooltips:
+        bill_components:
+          00_30_to_07_00: Dyma'r tâl am drydan a ddefnyddir rhwng 00:30 a 00:70 y kWh
+          07_30_to_00_00: Dyma'r tâl am drydan a ddefnyddir rhwng 07:30 a 00:30 y kWh
+          agreed_availability_charge: Tâl am y ceblau i ddarparu uchafswm y cytunwyd arno mewn KVA o drydan i'r ysgol. Yn aml gellir lleihau hyn trwy drafodaethau gyda'ch cyflenwr ynni
+          all_day: trwy'r dydd
+          climate_change_levy__2021_22: 'Ardoll Newid yn yr Hinsawdd: yn seiliedig ar eich allyriadau carbon (fesul kWh o ddefnydd). Os byddwch yn lleihau eich defnydd bydd eich CCL yn lleihau'
+          commodity_rate: Y tâl fesul kWh o ddefnydd am y diwrnod cyfan
+          data_collection_dcda_agent_charge: Cost casglu eich darlleniadau mesurydd bob hanner awr ddwywaith y dydd. Mae Sbarcynni yn defnyddio'r data hanner awr hwn i ddadansoddi eich defnydd o ynni
+          duos: 'Tâl defnyddio system wedi''i ddosbarthu: - tâl fesul kWh o ddefnydd yn ystod yr amseroedd hyn: %{charge_times}. I leihau, lleihau defnydd ysgolion yn ystod yr amseroedd hyn'
+          excess_availability_charge: '''Dirwy'' am fynd dros eich ''Terfyn Argaeledd Cytûn'' mewn mis. Os ydych yn cael eich ‘dirwyo’ am fwy nag ychydig fisoedd y flwyddyn mae’n rhatach ar y cyfan i ofyn i’ch cyflenwr ynni gynyddu eich ‘Terfyn Argaeledd a Gytunwyd’.'
+          feed_in_tariff_levy: Ffi i dalu costau cefnogi ynni adnewyddadwy ar y rhwydwaith trydan. Gallwch leihau hyn drwy leihau eich defnydd o ynni
+          fixed_charge: Ffi sefydlog ar gyfer eich cyflenwad ynni
+          flat_rate: Y tâl fesul kWh o ddefnydd am y diwrnod cyfan
+          meter_asset_provider_charge: Cost trydydd parti i gynnal a chadw eich mesurydd
+          nhh_automatic_meter_reading_charge: Cost casglu eich darlleniadau mesurydd bob hanner awr ddwywaith y dydd. Mae Sbarcynni yn defnyddio'r data hanner awr hwn i ddadansoddi eich defnydd o ynni
+          nhh_metering_agent_charge: Cost casglu eich darlleniadau mesurydd bob hanner awr ddwywaith y dydd. Mae Sbarcynni yn defnyddio'r data hanner awr hwn i ddadansoddi eich defnydd o ynni
+          non_commodity_rate: Mae’r holl daliadau nad ydynt yn rhai cyfradd yn gymesur â defnydd kWh (ar gyfer rhai contractau mae’r rhain yn cynnwys taliadau rhwydwaith)
+          reactive_power_charge: Tâl yn seiliedig ar ba mor anghytbwys yw foltedd a defnydd presennol eich ysgol. Os yw'n gost fawr yna mae'n bosibl ail-gydbwyso'ch ysgol ond bydd angen trydanwr arnoch i'ch helpu. Ni all Sbarcynni gyfrifo hyn oherwydd ar hyn o bryd nid oes gennym fynediad at y data crai i gyfrifo hyn, felly bydd angen i chi edrych ar eich biliau papur; mae'r gost i'r rhan fwyaf o ysgolion yn llai na £20 y mis
+          renewable_energy_obligation: Rhwymedigaeth Ynni Adnewyddadwy - ar gyfradd sefydlog gan y llywodraeth fesul kWh a ddefnyddir
+          settlement_agency_fee: Ffi i dalu am y gost o gynnal a darllen eich mesurydd
+          site_fee: Ffi sefydlog amrywiol
+          standing_charge: Ffi sefydlog ar gyfer eich cyflenwad ynni
+          tnuos: 'Tâl Defnydd o’r System Rhwydwaith Trawsyrru: yn seiliedig ar ddefnydd brig yr ysgol ar ddiwrnodau’r wythnos yn ystod y gaeaf rhwng 17:00 a 19:30 - i leihau gwnewch yn siŵr bod cymaint o offer â phosibl yn cael eu diffodd yn ystod y gaeaf pan fydd yr ysgol yn cau am y dydd'
+          weekdays: 'dyddiau''r wythnos: %{period}'
+          weekends: 'penwythnosau: %{period}'
     tabs:
       analysis: Dadansoddiad
       insights: Mewnwelediadau

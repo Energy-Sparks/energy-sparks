@@ -2,6 +2,9 @@ cy:
   education_workshops:
     availability: Sylwch, dim ond i ysgolion sydd â chyfrif Sbarcynni gweithredol y mae gweithdai addysg ar gael ar hyn o bryd. Mae gweithdai personol ar gael yn y rhan fwyaf o ardaloedd Cymru a Lloegr. Ar hyn o bryd dim ond yn yr Alban y gallwn gynnig gweithdai rhithwir.
     book: Archebu gweithdy
+    cost_html: |-
+      <p>Mae gweithdai rhithwir yn rhad ac am ddim i ysgolion gwladol. Mae gweithdai personol wedi'u darparu'n rhad ac am ddim i ysgolion y wladwriaeth yn flaenorol, ond mae'r holl leoedd a ariennir yn cael eu cymryd ar hyn o bryd.</p>
+      <p>Mae gweithdai personol bellach ar gael ar sail y telir amdano o £395 yn amodol ar leoliad. Mae Sbarcynni yn chwilio am arianwyr newydd i'n galluogi i ddarparu mwy o weithdai personol am ddim i ysgolion.</p>
     intro_html: |-
       <p>
         Er mwyn cefnogi ymgysylltiad ac ysgogi effaith, mae Sbarcynni yn cynnig gweithdai addysg personol a rhithwir hanner diwrnod i ysgolion sy'n cymryd rhan ledled y DU. Gall gweithdai addysg gynnwys:

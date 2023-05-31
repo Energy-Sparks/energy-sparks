@@ -68,5 +68,12 @@ describe Targets::SuggestEstimatesService, type: :service do
         expect(service.suggest_for_fuel_type?(:gas, check_data: true)).to eq false
       end
     end
+
+    describe '#months_between' do
+      it 'calculates the floored number of months between two dates' do
+        expect( service.send(:months_between, Date.new(2022,12,31), (Date.new(2022,12,31) - 2.years)) ).to eq(24)
+        expect( service.send(:months_between, Date.new(2022,12,31), (Date.new(2022,12,31) - 2.years + 1.day)) ).to eq(23)
+      end
+    end
   end
 end

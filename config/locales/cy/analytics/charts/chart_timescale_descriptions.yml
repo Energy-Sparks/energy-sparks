@@ -1,8 +1,22 @@
----
 cy:
   charts:
     timescale_name:
+      academicyear: blwyddyn academaidd
+      daterange: ystod dyddiad
       day: dydd
-      week: wythnos
-      year: blwyddyn
+      diurnal: diwrnod gydag amrediad dyddiol mawr
+      frostday: diwrnod rhewllyd
+      frostday_3: diwrnod rhewllyd
+      holiday: gwyliau
+      hotwater: cyfnod yr haf gyda defnydd dŵr poeth
+      includeholiday: gwyliau
+      month: mis
+      n_weeks: "%{count} wythnos"
+      optimum_start: diwrnod enghreifftiol cychwyn gorau posib
+      period: cyfnod
+      schoolweek: wythnos ysgol
       up_to_a_year: blwyddyn
+      week: wythnos
+      workweek: wythnos
+      year: blwyddyn
+      years: hirdymor
