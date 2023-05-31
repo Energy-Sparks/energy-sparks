@@ -390,6 +390,24 @@ module Amr
       end
     end
 
+    context 'missing mpan_mprn' do
+      let(:readings) { [{:amr_data_feed_config_id=>6, :mpan_mprn=>nil, reading_date: Date.parse('27 Aug 2019').to_s, readings: [15.2, 1.4, 1.3, 1.4, 1.3, 1.4, 1.3, 1.3, 1.4, 6.5, 2.3, 3.2, 1.8, 1.6, 2.0, 3.0, 2.0, 1.3, 1.7, 1.4, 1.1, 0.9, 1.2, 0.9, 1.7, 0.8, 0.8, 0.8, 1.2, 1.1, 1.7, 2.0, 2.8, 3.8, 1.6, 0.5, 0.7, 0.9, 1.2, 1.2, 1.2, 1.3, 1.3, 1.2, 1.2, 1.2, 1.3, 99.0]}] }
+
+      it 'ignores row' do
+        results = SingleReadConverter.new(readings).perform
+        expect(results).to be_empty
+      end
+    end
+
+    context 'missing date' do
+      let(:readings) { [{:amr_data_feed_config_id=>6, :mpan_mprn=>"12345678", reading_date: nil, readings: [15.2, 1.4, 1.3, 1.4, 1.3, 1.4, 1.3, 1.3, 1.4, 6.5, 2.3, 3.2, 1.8, 1.6, 2.0, 3.0, 2.0, 1.3, 1.7, 1.4, 1.1, 0.9, 1.2, 0.9, 1.7, 0.8, 0.8, 0.8, 1.2, 1.1, 1.7, 2.0, 2.8, 3.8, 1.6, 0.5, 0.7, 0.9, 1.2, 1.2, 1.2, 1.3, 1.3, 1.2, 1.2, 1.2, 1.3, 99.0]}] }
+
+      it 'ignores row' do
+        results = SingleReadConverter.new(readings).perform
+        expect(results).to be_empty
+      end
+    end
+
     context 'dodgy data' do
       let(:readings) { [{:amr_data_feed_config_id=>6, :mpan_mprn=>"Primary school", :reading_date=>"123456789012", :readings=>["01/01/2019"]}] }
 

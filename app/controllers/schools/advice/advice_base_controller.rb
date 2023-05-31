@@ -160,6 +160,7 @@ module Schools
       def analysis_dates
         start_date = analysis_start_date
         end_date = analysis_end_date
+
         OpenStruct.new(
           start_date: start_date,
           end_date: end_date,

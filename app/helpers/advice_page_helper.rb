@@ -86,7 +86,7 @@ module AdvicePageHelper
   end
 
   def months_between(start_date, end_date)
-    ((end_date - start_date).to_f / 365 * 12).round
+    ((end_date - start_date).to_f / 365 * 12).floor
   end
 
   def annual_usage_breakdown_totals_for(annual_usage_breakdown, unit = :kwh)
