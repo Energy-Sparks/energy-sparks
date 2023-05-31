@@ -81,8 +81,12 @@ class Meter < ApplicationRecord
 
   scope :unreviewed_dcc_meter, -> { where(dcc_meter: true, consent_granted: false, meter_review: nil) }
   scope :awaiting_trusted_consent, -> { where(dcc_meter: true, consent_granted: false).where.not(meter_review: nil) }
+  scope :not_dcc, -> { where(dcc_meter: false) }
   scope :dcc, -> { where(dcc_meter: true) }
   scope :consented, -> { where(dcc_meter: true, consent_granted: true) }
+
+  scope :not_recently_checked, -> { where("dcc_checked_at is NULL OR dcc_checked_at < ?", 2.months.ago) }
+  scope :meters_to_check_against_dcc, -> { main_meter.not_dcc.not_recently_checked }
 
   scope :with_zero_reading_days_and_dates, -> {
       left_outer_joins(:amr_validated_readings)
