@@ -5,10 +5,13 @@ describe 'school groups', :school_groups, type: :system do
   let!(:scoreboard)            { create(:scoreboard, name: 'BANES and Frome') }
   let!(:dark_sky_weather_area) { create(:dark_sky_area, title: 'BANES dark sky weather') }
   let!(:school_group)          { create(:school_group, public: public) }
+  let!(:school_group_2)        { create(:school_group, public: false) }
   let(:public)                 { true }
   let!(:school_1)              { create(:school, school_group: school_group, number_of_pupils: 10) }
   let!(:school_2)              { create(:school, school_group: school_group, number_of_pupils: 20) }
   let!(:school_admin)          { create(:school_admin, school: school_1) }
+  let!(:group_admin)           { create(:group_admin, school_group: school_group) }
+  let!(:group_admin_2)         { create(:group_admin, school_group: school_group_2) }
 
   context 'current school group pages with feature flag set to false' do
     describe 'when not logged in' do
@@ -293,7 +296,87 @@ describe 'school groups', :school_groups, type: :system do
       context 'when school group is private' do
         let(:public) { false }
 
+        it 'does not redirect enhanced page actions to school group page if feature is enabled and does redirect other actions to the map page' do
+          ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'true' do
+            visit map_school_group_path(school_group)
+            expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
+            visit comparisons_school_group_path(school_group)
+            expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
+            visit priority_actions_school_group_path(school_group)
+            expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
+            visit current_scores_school_group_path(school_group)
+            expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
+          end
+        end
+      end
+    end
+
+    context 'when logged in as a group admin' do
+      before(:each) do
+        sign_in(group_admin)
+      end
+
+      context 'when school group is public' do
+        let(:public) { true }
+
+        it 'does not redirect enhanced page actions to school group page if feature is enabled or redirect to the map page' do
+          ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'true' do
+            visit map_school_group_path(school_group)
+            expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
+            visit comparisons_school_group_path(school_group)
+            expect(current_path).to eq "/school_groups/#{school_group.slug}/comparisons"
+            visit priority_actions_school_group_path(school_group)
+            expect(current_path).to eq "/school_groups/#{school_group.slug}/priority_actions"
+            visit current_scores_school_group_path(school_group)
+            expect(current_path).to eq "/school_groups/#{school_group.slug}/current_scores"
+          end
+        end
+      end
+
+      context 'when school group is private' do
+        let(:public) { false }
+
         it 'does not redirect enhanced page actions to school group page if feature is enabled and does not redirect other actions to the map page' do
+          ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'true' do
+            visit map_school_group_path(school_group)
+            expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
+            visit comparisons_school_group_path(school_group)
+            expect(current_path).to eq "/school_groups/#{school_group.slug}/comparisons"
+            visit priority_actions_school_group_path(school_group)
+            expect(current_path).to eq "/school_groups/#{school_group.slug}/priority_actions"
+            visit current_scores_school_group_path(school_group)
+            expect(current_path).to eq "/school_groups/#{school_group.slug}/current_scores"
+          end
+        end
+      end
+    end
+
+    context 'when logged in as a group admin for a different group' do
+      before(:each) do
+        sign_in(group_admin_2) # Admin for school group 2
+      end
+
+      context 'when school group is public' do
+        let(:public) { true }
+
+        it 'does not redirect enhanced page actions to school group page if feature is enabled or redirect to the map page' do
+          ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'true' do
+            visit map_school_group_path(school_group)
+            expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
+            visit comparisons_school_group_path(school_group)
+            expect(current_path).to eq "/school_groups/#{school_group.slug}/comparisons"
+            visit priority_actions_school_group_path(school_group)
+            expect(current_path).to eq "/school_groups/#{school_group.slug}/priority_actions"
+            visit current_scores_school_group_path(school_group)
+            expect(current_path).to eq "/school_groups/#{school_group.slug}/current_scores"
+          end
+        end
+      end
+
+      context 'when school group is private' do
+        let(:public) { false }
+
+        it 'does not redirect enhanced page actions to school group page if feature is enabled but does redirect other actions to the map page' do
           ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'true' do
             visit map_school_group_path(school_group)
             expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
