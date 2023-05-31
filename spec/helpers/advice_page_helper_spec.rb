@@ -56,6 +56,13 @@ describe AdvicePageHelper do
     end
   end
 
+  describe '#months_between' do
+    it 'calculates the floored number of months between two dates' do
+      expect(helper.months_between((Date.new(2022,12,31) - 2.years),  Date.new(2022,12,31) )).to eq(24)
+      expect(helper.months_between((Date.new(2022,12,31) - 2.years + 1.day), Date.new(2022,12,31) )).to eq(23)
+    end
+  end
+
   describe '.advice_page_path' do
 
     it 'returns path to insights by default' do
