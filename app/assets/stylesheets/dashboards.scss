@@ -193,6 +193,18 @@ table.management-priorities {
   }
 }
 
+.school-groups-recent-usage-table {
+  .fa-arrow-circle-down {
+    color: $green;
+  }
+  .fa-arrow-circle-up {
+    color: $new-red;
+  }
+  .icon {
+    width: 10px;
+  }
+}
+
 .management-overview {
   thead{
     background-color: $grey;
