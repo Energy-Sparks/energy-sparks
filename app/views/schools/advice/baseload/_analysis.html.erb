@@ -26,6 +26,8 @@
 
   <p><%= t('advice_pages.baseload.analysis.usage', baseload_usage: format_unit(@average_baseload_kw, :kw), benchmark_usage: format_unit(@average_baseload_kw_benchmark, :kw), months_analysed: @analysis_dates.months_analysed) %></p>
 
+<%= @analysis_dates.months_analysed %>
+
   <p><%= t('advice_pages.baseload.analysis.usage_percent_html', percent: format_unit(@baseload_usage.percent, :percent)) %></p>
 
   <%= component 'chart', chart_type: :baseload_lastyear, school: @school do |c| %>
