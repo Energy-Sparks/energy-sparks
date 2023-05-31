@@ -24,6 +24,7 @@ class SchoolGroupsController < ApplicationController
   end
 
   def priority_actions
+    @priority_actions_service = SchoolGroups::PriorityActions.new(@school_group)
   end
 
   def current_scores
