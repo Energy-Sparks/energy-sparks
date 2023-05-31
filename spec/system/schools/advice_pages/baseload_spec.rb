@@ -99,8 +99,9 @@ RSpec.describe "Baseload advice page", type: :system do
       end
 
       context "with limited data" do
-        let(:start_date)  { Date.today - 8.months}
-        let(:end_date)    { Date.today - 1}
+        let(:start_date)  { Date.parse('28/09/2022') }
+        let(:end_date)    { Date.parse('30/05/2023') }
+        # Note ((Date.parse('30/05/2023') - Date.parse('28/09/2022')).to_f / 365 * 12) => 8.021917808219179
         before do
           visit analysis_school_advice_baseload_path(school)
         end

@@ -25,6 +25,9 @@ module Amr
     # For here we need to determine the period by counting the index into the array
     def perform
       @single_reading_array.each do |single_reading|
+        #ignore rows that dont have necessary information
+        next unless single_reading[:reading_date].present? && single_reading[:mpan_mprn].present?
+
         reading_day = Date.parse(single_reading[:reading_date])
         reading = single_reading[:readings].first.to_f
 
