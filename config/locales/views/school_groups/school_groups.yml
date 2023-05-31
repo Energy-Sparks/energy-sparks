@@ -23,4 +23,5 @@ en:
       current_scores: Current Scores
       map: Map
       priority_actions: Priority Actions
-      show: Group dashboard
+      recent_usage: Recent Usage
+      show: Group Dashboard
