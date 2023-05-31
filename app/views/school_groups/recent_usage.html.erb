@@ -22,22 +22,22 @@
     <% @school_group.schools.order(:name).each do |school| %>
       <% recent_usage = school.recent_usage %>
       <tr>
-        <td class="<%= recent_usage&.electricity&.week&.message_class %>" data-order=<%= recent_usage&.electricity&.week&.change_exp || 1.0 %> %>
+        <td class="<%= recent_usage&.electricity&.week&.message_class %>" data-order="<%= recent_usage&.electricity&.week&.change_exp || 1.0 %>">
           <%= up_downify(recent_usage&.electricity&.week&.change) %>
         </td>
-        <td class="<%= recent_usage&.electricity&.year&.message_class %>" data-order=<%= recent_usage&.electricity&.year&.change_exp || 1.0 %>>
+        <td class="<%= recent_usage&.electricity&.year&.message_class %>" data-order="<%= recent_usage&.electricity&.year&.change_exp || 1.0 %>">
           <%= up_downify(recent_usage&.electricity&.year&.change) %>
         </td>
-        <td class="<%= recent_usage&.gas&.week&.message_class %>" data-order=<%= recent_usage&.gas&.week&.change_exp || 1.0 %>>
+        <td class="<%= recent_usage&.gas&.week&.message_class %>" data-order="<%= recent_usage&.gas&.week&.change_exp || 1.0 %>">
           <%= up_downify(recent_usage&.gas&.week&.change) %>
         </td>
-        <td class="<%= recent_usage&.gas&.year&.message_class %>" data-order=<%= recent_usage&.gas&.year&.change_exp || 1.0 %>>
+        <td class="<%= recent_usage&.gas&.year&.message_class %>" data-order="<%= recent_usage&.gas&.year&.change_exp || 1.0 %>">
           <%= up_downify(recent_usage&.gas&.year&.change) %>
         </td>
-        <td class="<%= recent_usage&.storage_heaters&.week&.message_class %>" data-order=<%= recent_usage&.storage_heaters&.week&.change_exp || 1.0 %>>
+        <td class="<%= recent_usage&.storage_heaters&.week&.message_class %>" data-order="<%= recent_usage&.storage_heaters&.week&.change_exp || 1.0 %>">
           <%= up_downify(recent_usage&.storage_heaters&.week&.change) %>
         </td>
-        <td class="<%= recent_usage&.storage_heaters&.year&.message_class %>" data-order=<%= recent_usage&.storage_heaters&.year&.change_exp || 1.0 %>>
+        <td class="<%= recent_usage&.storage_heaters&.year&.message_class %>" data-order="<%= recent_usage&.storage_heaters&.year&.change_exp || 1.0 %>">
           <%= up_downify(recent_usage&.storage_heaters&.year&.change) %>
         </td>
         <td>
