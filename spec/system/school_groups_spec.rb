@@ -40,11 +40,6 @@ describe 'school groups', :school_groups, type: :system do
       it 'includes data attribute' do
         ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'false' do
           visit school_group_path(school_group)
-
-          # el = page.find('div[id="runtime"]')['data-value']
-          # p usage
-
-          # expect(page).to have_selector('div[data-school-group-id="' + school_group.id.to_s + '"]')
           expect(page).to have_selector("div[data-school-group-id='#{school_group.id}']")
         end
       end
@@ -313,83 +308,4 @@ describe 'school groups', :school_groups, type: :system do
       end
     end
   end
-
-
-
-  #   describe 'when not logged in' do
-  #     it 'it does not redirect enhanced page actions to school group page if feature is enabled and or map page if group is public' do
-  #       ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'true' do
-  #         visit map_school_group_path(school_group)
-  #         expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
-  #         visit comparisons_school_group_path(school_group)
-  #         expect(current_path).to eq "/school_groups/#{school_group.slug}/comparisons"
-  #         visit priority_actions_school_group_path(school_group)
-  #         expect(current_path).to eq "/school_groups/#{school_group.slug}/priority_actions"
-  #         visit current_scores_school_group_path(school_group)
-  #         expect(current_path).to eq "/school_groups/#{school_group.slug}/current_scores"
-  #       end
-  #     end
-
-  #     context 'when group is private' do
-  #       let(:public)    { false }
-
-  #       it 'it does not redirect enhanced page actions to school group page if feature is enabled but does redirect to the map page if group is not public' do
-  #         ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'true' do
-  #           visit map_school_group_path(school_group)
-  #           expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
-  #           visit comparisons_school_group_path(school_group)
-  #           expect(current_path).to eq "/school_groups/#{school_group.slug}/comparisons"
-  #           visit priority_actions_school_group_path(school_group)
-  #           expect(current_path).to eq "/school_groups/#{school_group.slug}/priority_actions"
-  #           visit current_scores_school_group_path(school_group)
-  #           expect(current_path).to eq "/school_groups/#{school_group.slug}/current_scores"
-  #         end
-  #       end
-  #     end
-
-  #     it 'shows a map page with a map div and a list of schools' do
-  #       ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'true' do
-  #         visit map_school_group_path(school_group)
-  #         expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
-  #         expect(page).to have_content(school_1.name)
-  #         expect(page).to have_content(school_2.name)
-  #         expect(page).to have_selector(:id, 'geo-json-map')
-  #       end
-  #     end
-  #   end
-
-  #   describe 'when logged in as school admin' do
-  #     before(:each) do
-  #       sign_in(school_admin)
-  #     end
-  #     it 'shows compare link' do
-  #       ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'true' do
-  #         visit school_group_path(school_group)
-  #         expect(page).to_not have_link("Compare schools")
-  #       end
-  #     end
-  #   end
-
-  #   describe 'when logged in' do
-  #     before(:each) do
-  #       sign_in(user)
-  #     end
-  #     context 'when group is public' do
-  #       it 'shows compare link' do
-  #         ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'true' do
-  #           visit school_group_path(school_group)
-  #           expect(page).to_not have_link("Compare schools")
-  #         end
-  #       end
-  #     end
-  #     context 'when group is private' do
-  #       it 'doesnt show compare link' do
-  #         ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'true' do
-  #           visit school_group_path(school_group)
-  #           expect(page).to_not have_link("Compare schools")
-  #         end
-  #       end
-  #     end
-  #   end
-  # end
 end
