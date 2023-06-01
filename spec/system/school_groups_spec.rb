@@ -390,5 +390,71 @@ describe 'school groups', :school_groups, type: :system do
         end
       end
     end
+
+    context 'priority_actions' do
+      let!(:alert_type) { create(:alert_type, fuel_type: :gas, frequency: :weekly) }
+      let!(:alert_type_rating) do
+        create(
+          :alert_type_rating,
+          alert_type: alert_type,
+          rating_from: 6.1,
+          rating_to: 10,
+          management_priorities_active: true,
+          description: "high"
+        )
+      end
+      let!(:alert_type_rating_content_version) do
+        create(
+          :alert_type_rating_content_version,
+          alert_type_rating: alert_type_rating,
+          management_priorities_title: 'Spending too much money on heating',
+        )
+      end
+      let(:saving) {
+        OpenStruct.new(
+          school: school_1,
+          average_one_year_saving_gbp: 1000,
+          one_year_saving_co2: 1100
+        )
+      }
+      let(:priority_actions) {
+        {
+          alert_type_rating => [saving]
+        }
+      }
+      let(:total_saving) {
+        OpenStruct.new(
+          schools: [school_1],
+          average_one_year_saving_gbp: 1000,
+          one_year_saving_co2: 1100
+        )
+      }
+      let(:total_savings) {
+        {
+          alert_type_rating => total_saving
+        }
+      }
+
+      before do
+        allow_any_instance_of(SchoolGroups::PriorityActions).to receive(:priority_actions).and_return(priority_actions)
+        allow_any_instance_of(SchoolGroups::PriorityActions).to receive(:total_savings).and_return(total_savings)
+        visit priority_actions_school_group_path(school_group)
+      end
+
+      it 'displays list of actions' do
+        expect(page).to have_css('#school-group-priorities')
+        within('#school-group-priorities') do
+          expect(page).to have_content("Spending too much money on heating")
+          expect(page).to have_content("£1,000")
+          expect(page).to have_content("1,100 kg CO2")
+        end
+      end
+
+      it 'has a modal popup with a list of schools' do
+        first(:link, "Spending too much money on heating").click
+        expect(page).to have_content("This action has been identified as a priority for the following schools")
+        expect(page).to have_content(school_1.name)
+      end
+    end
   end
 end
