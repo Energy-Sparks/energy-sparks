@@ -68,7 +68,7 @@ class SchoolGroupsController < ApplicationController
 
   def enhanced_dashboard
     if can?(:compare, @school_group)
-      render 'enhanced_dashboard'
+      render 'recent_usage'
     else
       redirect_to map_school_group_path(@school_group) and return
     end
