@@ -1,11 +1,11 @@
 <%= render 'enhanced_header' %>
 
-<table width="100%" class="mt-3 table table-borderless table-sorted school-groups-recent-usage-table">
+<table width="100%" class="mt-3 table advice-table table-sorted ">
   <thead>
     <tr>
-      <th colspan="2"><%= t('common.electricity') %></th>
-      <th colspan="2"><%= t('common.gas') %></th>
-      <th colspan="2"><%= t('common.storage_heaters') %></th>
+      <th colspan="2"><%= fa_icon fuel_type_icon(:electricity) %> <%= t('common.electricity') %></th>
+      <th colspan="2"><%= fa_icon fuel_type_icon(:gas) %> <%= t('common.gas') %></th>
+      <th colspan="2"><%= fa_icon fuel_type_icon(:storage_heaters) %> <%= t('common.storage_heaters') %></th>
       <th colspan="1"><%= t('common.school') %></th>
     </tr>
     <tr>
