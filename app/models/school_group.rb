@@ -136,6 +136,6 @@ class SchoolGroup < ApplicationRecord
   private
 
   def this_academic_year
-    default_template_calendar.academic_year_for(Time.zone.today)
+    default_template_calendar&.academic_year_for(Time.zone.today)
   end
 end

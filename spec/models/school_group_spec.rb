@@ -129,6 +129,33 @@ describe SchoolGroup, :school_groups, type: :model do
     end
   end
 
+  describe '#scored_schools' do
+    let!(:template_calendar) { create(:template_calendar)}
+    let(:school_group) { create(:school_group) }
+    let!(:schools)  { (1..5).collect { |n| create :school, :with_points, score_points: 6 - n, activities_happened_on: 6.months.ago, template_calendar: template_calendar, school_group: school_group}}
+
+    it 'returns schools in points order' do
+      expect(school_group.scored_schools.map(&:id)).to eq(schools.map(&:id))
+    end
+
+    context 'with academic years' do
+      let(:this_academic_year) { create(:academic_year, start_date: 12.months.ago, end_date: Time.zone.today, calendar: template_calendar) }
+      let(:last_academic_year) { create(:academic_year, start_date: 24.months.ago, end_date: 12.months.ago, calendar: template_calendar) }
+
+      it 'accepts an academic year and restricts' do
+        expect(school_group.scored_schools(academic_year: this_academic_year).map(&:sum_points).any?(&:zero?)).to eq(false)
+        expect(school_group.scored_schools(academic_year: last_academic_year).map(&:sum_points).all?(&:nil?)).to eq(true)
+      end
+
+      it 'also defaults to the current academic year' do
+        create :school, :with_points, score_points: 6, activities_happened_on: 18.months.ago, school_group: school_group
+        expect(school_group.scored_schools(academic_year: last_academic_year).to_a.size).to be 6
+        expect(school_group.scored_schools(academic_year: this_academic_year).to_a.size).to be 6
+        expect(school_group.scored_schools.to_a.size).to be 6
+      end
+    end
+  end
+
   describe 'abilities' do
     let(:ability) { Ability.new(user) }
     let(:user) { nil }
