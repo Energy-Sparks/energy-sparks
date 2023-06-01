@@ -1,1 +1,29 @@
 <%= render 'enhanced_header' %>
+
+<table width="100%" class="mt-3 table">
+  <thead>
+    <tr>
+      <th>Position</th>
+      <th>School</th>
+      <th>Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @school_group.scored_schools.with_points.schools_with_positions.each do |position, schools| %>
+      <% schools.each do |school| %>
+        <tr>
+          <td><%= position %></td>
+          <td><%= school.name %></td>
+          <td><%= school.sum_points %></td>
+        </tr>
+      <% end %>
+    <% end %>
+    <% @school_group.scored_schools.without_points.each do |school| %>
+      <tr>
+        <td></td>
+        <td><%= school.name %></td>
+        <td></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
