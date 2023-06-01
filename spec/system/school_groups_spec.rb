@@ -13,6 +13,10 @@ describe 'school groups', :school_groups, type: :system do
   let!(:group_admin)           { create(:group_admin, school_group: school_group) }
   let!(:group_admin_2)         { create(:group_admin, school_group: school_group_2) }
 
+  before do
+    allow_any_instance_of(SchoolGroup).to receive(:fuel_types) { [:electricity, :gas, :storage_heaters] }
+  end
+
   context 'current school group pages with feature flag set to false' do
     describe 'when not logged in' do
       it 'redirects enhanced page actions to school group page if feature is not enabled' do
