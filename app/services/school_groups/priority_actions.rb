@@ -2,6 +2,7 @@ module SchoolGroups
   class PriorityActions
     def initialize(school_group)
       @school_group = school_group
+      @ratings_for_reporting = {}
     end
 
     #returns a hash of alert_type_rating to a list of ManagementPriority
@@ -61,8 +62,11 @@ module SchoolGroups
     end
 
     def rating_for_reporting(rating)
-      alert_type = rating.alert_type
-      alert_type.ratings.where(management_priorities_active: true).order(:rating_from).last
+      unless @ratings_for_reporting[rating].present?
+        alert_type = rating.alert_type
+        @ratings_for_reporting[rating] = alert_type.worst_management_priority_rating
+      end
+      @ratings_for_reporting[rating]
     end
 
     #Any alert rating where `management_priorities_active: true`. i.e. will produce a
@@ -74,7 +78,7 @@ module SchoolGroups
 
     #The latest ManagementPriority records for every school in group
     def priorities
-      @priorities ||= ManagementPriority.where(content_generation_run: content_generation_runs)
+      @priorities ||= ManagementPriority.where(content_generation_run: content_generation_runs).joins(:content_version).joins(content_version: :alert_type_rating)
     end
 
     #latest content generation runs for every school in the group
