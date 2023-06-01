@@ -1,0 +1,32 @@
+<p>This action has been identified as a priority for the following schools.</p>
+
+<table class="table table-borderless table-sorted advice-table advice-priority-table">
+  <thead>
+    <tr>
+      <th></th>
+      <th><%= t('advice_pages.index.priorities.table.columns.cost_saving') %></th>
+      <th><%= t('advice_pages.index.priorities.table.columns.co2_reduction') %></th>
+      <th class="no-sort"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% priority_actions[alert_type_rating].each do |saving| %>
+      <tr>
+        <td>
+          <%= link_to saving.school.name, school_path(saving.school) %>
+        </td>
+        <td data-order="<%= saving.average_one_year_saving_gbp %>">
+          <%= format_unit(saving.average_one_year_saving_gbp, :£) %>
+        </td>
+        <td data-order="<%= saving.one_year_saving_co2 %>">
+          <%= format_unit(saving.one_year_saving_co2, :co2) %> kg CO2
+        </td>
+        <td>
+          <% if alert_type_rating.alert_type.advice_page.present? %>
+            <%= link_to "View analysis", advice_page_path(saving.school, alert_type_rating.alert_type.advice_page, alert_type_rating.alert_type.advice_page_tab_for_link_to, anchor: alert_type_rating.alert_type.link_to_section) %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
