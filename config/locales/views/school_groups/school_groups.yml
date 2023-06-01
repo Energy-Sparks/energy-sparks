@@ -8,6 +8,9 @@ en:
       view_group: View group
       view_map: View map
       view_scoreboard: Scoreboard
+    priority_actions:
+      intro: This action has been identified as a priority for the following schools.
+      view_analysis: View analysis
     show:
       currently_works_with_from:
         one: Energy Sparks currently works with %{count} school from
