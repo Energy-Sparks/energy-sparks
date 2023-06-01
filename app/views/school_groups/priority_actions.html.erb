@@ -28,12 +28,12 @@
             <%= savings.schools.length %>
           </h4>
         </td>
-        <td>
+        <td data-order="<%= savings.average_one_year_saving_gbp %>">
           <h4>
             <%= format_unit(savings.average_one_year_saving_gbp, :£) %>
           </h4>
         </td>
-        <td>
+        <td data-order="<%= savings.one_year_saving_co2 %>">
           <h4>
             <%= format_unit(savings.one_year_saving_co2, :co2) %> kg CO2
           </h4>
