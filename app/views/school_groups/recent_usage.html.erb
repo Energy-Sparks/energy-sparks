@@ -23,22 +23,22 @@
       <% recent_usage = school.recent_usage %>
       <tr>
         <td class="<%= recent_usage&.electricity&.week&.message_class %>" data-order="<%= recent_usage&.electricity&.week&.change_exp || 1.0 %>">
-          <%= up_downify(recent_usage&.electricity&.week&.change) %>
+          <%= up_downify(recent_usage&.electricity&.week&.change || 'n/a') %>
         </td>
         <td class="<%= recent_usage&.electricity&.year&.message_class %>" data-order="<%= recent_usage&.electricity&.year&.change_exp || 1.0 %>">
-          <%= up_downify(recent_usage&.electricity&.year&.change) %>
+          <%= up_downify(recent_usage&.electricity&.year&.change || 'n/a') %>
         </td>
         <td class="<%= recent_usage&.gas&.week&.message_class %>" data-order="<%= recent_usage&.gas&.week&.change_exp || 1.0 %>">
-          <%= up_downify(recent_usage&.gas&.week&.change) %>
+          <%= up_downify(recent_usage&.gas&.week&.change || 'n/a') %>
         </td>
         <td class="<%= recent_usage&.gas&.year&.message_class %>" data-order="<%= recent_usage&.gas&.year&.change_exp || 1.0 %>">
-          <%= up_downify(recent_usage&.gas&.year&.change) %>
+          <%= up_downify(recent_usage&.gas&.year&.change || 'n/a') %>
         </td>
         <td class="<%= recent_usage&.storage_heaters&.week&.message_class %>" data-order="<%= recent_usage&.storage_heaters&.week&.change_exp || 1.0 %>">
-          <%= up_downify(recent_usage&.storage_heaters&.week&.change) %>
+          <%= up_downify(recent_usage&.storage_heaters&.week&.change || 'n/a') %>
         </td>
         <td class="<%= recent_usage&.storage_heaters&.year&.message_class %>" data-order="<%= recent_usage&.storage_heaters&.year&.change_exp || 1.0 %>">
-          <%= up_downify(recent_usage&.storage_heaters&.year&.change) %>
+          <%= up_downify(recent_usage&.storage_heaters&.year&.change || 'n/a') %>
         </td>
         <td>
           <%= link_to school.name, school_path(school) %>
