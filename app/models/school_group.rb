@@ -133,7 +133,9 @@ class SchoolGroup < ApplicationRecord
     default_country == 'wales' ? [:en, :cy] : [:en]
   end
 
-  def scored_schools(recent_boundary: 1.month.ago)
-    ScoredSchoolsList.new(scored(recent_boundary: recent_boundary).left_outer_joins(:observations))
+  private
+
+  def this_academic_year
+    default_template_calendar.academic_year_for(Time.zone.today)
   end
 end

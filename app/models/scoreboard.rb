@@ -57,19 +57,6 @@ class Scoreboard < ApplicationRecord
     academic_year_calendar.academic_year_for(today).previous_year
   end
 
-  def scored_schools(recent_boundary: 1.month.ago, academic_year: this_academic_year)
-    if academic_year
-      with_academic_year = scored(recent_boundary: recent_boundary).joins(
-        self.class.sanitize_sql_array(
-          ['LEFT JOIN observations ON observations.school_id = schools.id AND observations.at BETWEEN ? AND ?', academic_year.start_date, academic_year.end_date]
-        )
-      )
-      ScoredSchoolsList.new(with_academic_year)
-    else
-      ScoredSchoolsList.new(scored(recent_boundary: recent_boundary).left_outer_joins(:observations))
-    end
-  end
-
   private
 
   def update_name
