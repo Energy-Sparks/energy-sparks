@@ -17,7 +17,7 @@
       <% else %>
         <%= link_to t('school_groups.header.view_map'), map_school_group_path(@school_group), class: 'btn' %>
       <% end %>
-      <%= link_to t('school_groups.header.view_scoreboard'), scoreboards_path, class: 'btn' %>
+      <%= link_to t('school_groups.header.view_scoreboard'), scoreboard_path(@school_group.default_scoreboard), class: 'btn' if @school_group.default_scoreboard %>
     </div>
   </div>
 </div>
