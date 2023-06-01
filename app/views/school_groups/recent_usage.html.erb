@@ -19,7 +19,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @school_group.schools.order(:name).each do |school| %>
+    <% @school_group.schools.visible.order(:name).each do |school| %>
       <% recent_usage = school.recent_usage %>
       <tr>
         <td class="<%= recent_usage&.electricity&.week&.message_class %>" data-order="<%= recent_usage&.electricity&.week&.change_exp || 1.0 %>">
