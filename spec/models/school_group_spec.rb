@@ -80,6 +80,21 @@ describe SchoolGroup, :school_groups, type: :model do
 
   end
 
+  describe 'fuel_types' do
+    let(:school_group) { create(:school_group) }
+    let(:school_1) { create(:school, school_group: school_group) }
+    let(:school_2) { create(:school, school_group: school_group) }
+
+    it 'returns an array of symbolized fuel types used across all schools in a given group' do
+      Schools::Configuration.create!(school: school_1, fuel_configuration: {"has_solar_pv":false,"has_storage_heaters":false,"fuel_types_for_analysis":"electric_and_gas","has_gas":true,"has_electricity":true})
+      expect(school_group.fuel_types.sort).to eq([:electricity, :gas])
+      configuration = Schools::Configuration.create!(school: school_1, fuel_configuration: {"has_solar_pv":true,"has_storage_heaters":false,"fuel_types_for_analysis":"electric_and_gas","has_gas":false,"has_electricity":true})
+      expect(school_group.fuel_types.sort).to eq([:electricity, :gas, :solar_pv])
+      configuration.update(fuel_configuration: {"has_solar_pv":false,"has_storage_heaters":true,"fuel_types_for_analysis":"electric_and_gas","has_gas":false,"has_electricity":true})
+      expect(school_group.fuel_types.sort).to eq([:electricity, :gas, :storage_heaters])
+    end
+  end
+
   describe "issues csv" do
     def issue_csv_line(issue)
       [issue.issueable_type.titleize, issue.issueable.name, issue.title, issue.description.to_plain_text, issue.fuel_type, issue.issue_type, issue.status, issue.status_summary, issue.mpan_mprns, issue.admin_meter_statuses, issue.data_source_names, issue.owned_by.try(:display_name), issue.created_by.display_name, issue.created_at, issue.updated_by.display_name, issue.updated_at].join(',')

@@ -87,6 +87,21 @@ class SchoolGroup < ApplicationRecord
   enum default_chart_preference: [:default, :carbon, :usage, :cost]
   enum default_country: School.countries
 
+  def fuel_types
+    query = <<-SQL.squish
+      SELECT DISTINCT(fuel_types.key) FROM (
+        SELECT
+          row_to_json(json_each(fuel_configuration))->>'key' as key,
+          (row_to_json(json_each(fuel_configuration))->>'value') as value
+        FROM configurations
+        WHERE school_id IN (#{schools.visible.pluck(:id).join(',')})
+      ) as fuel_types
+      WHERE fuel_types.value = 'true';
+    SQL
+    sanitized_query = ActiveRecord::Base.sanitize_sql_array(query)
+    SchoolGroup.connection.select_all(sanitized_query).rows.flatten.map { |fuel_type| fuel_type.gsub('has_', '').to_sym }
+  end
+
   def has_visible_schools?
     schools.visible.any?
   end
