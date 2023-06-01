@@ -99,7 +99,7 @@ class SchoolGroup < ApplicationRecord
       WHERE fuel_types.value = 'true';
     SQL
     sanitized_query = ActiveRecord::Base.sanitize_sql_array(query)
-    SchoolGroup.connection.select_all(sanitized_query).rows.flatten
+    SchoolGroup.connection.select_all(sanitized_query).rows.flatten.map { |fuel_type| fuel_type.gsub('has_', '').to_sym }
   end
 
   def has_visible_schools?
