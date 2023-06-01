@@ -3,9 +3,9 @@
 <table width="100%" class="mt-3 table advice-table">
   <thead>
     <tr>
-      <th>Position</th>
-      <th>School</th>
-      <th>Score</th>
+      <th><%= t('scoreboard.position') %></th>
+      <th><%= t('common.school') %></th>
+      <th><%= t('scoreboard.score') %></th>
     </tr>
   </thead>
   <tbody>
@@ -28,9 +28,9 @@
     <% end %>
     <% @school_group.scored_schools.without_points.each do |school| %>
       <tr>
-        <td></td>
+        <td><span class="badge badge-secondary">-</span></td>
         <td><%= link_to school.name, school_path(school) %></td>
-        <td></td>
+        <td><span class="badge badge-secondary">0</span></td>
       </tr>
     <% end %>
   </tbody>
