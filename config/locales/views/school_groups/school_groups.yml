@@ -9,7 +9,11 @@ en:
       view_map: View map
       view_scoreboard: Scoreboard
     priority_actions:
-      intro: This action has been identified as a priority for the following schools.
+      intro_html: |-
+        <p>We carry out daily analysis for all schools to help identify the areas where there are the biggest opportunities to reduce costs and carbon emissions.</p>
+        <p>This table summarises the potential savings across this entire group of schools. Click on a heading to view the savings for individual schools and explore the detailed analysis.</p>
+        <p><strong>Note</strong>: Savings are not additive across the table as reduced usage in one area, e.g. electricity baseload, will also lead to savings in other areas, e.g. out of hours electricity usage. The potential savings are intended to help to prioritise and coordinate energy saving actions across the group. Cost savings are based on the latest tariff information we have available for the individual schools.</p>
+      modal_intro: This action has been identified as a priority for the following schools.
       view_analysis: View analysis
     show:
       currently_works_with_from:

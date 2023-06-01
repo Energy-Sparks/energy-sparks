@@ -1,5 +1,10 @@
 <%= render 'enhanced_header' %>
 
+<%= component 'notice', status: :neutral, classes: 'mt-2 mb-4' do |c| %>
+  <%= t('school_groups.priority_actions.intro_html') %>
+<% end %>
+
+
 <table class="table table-borderless table-sorted advice-table advice-priority-table">
   <thead>
     <tr>
