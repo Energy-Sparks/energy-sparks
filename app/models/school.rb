@@ -585,7 +585,7 @@ class School < ApplicationRecord
   end
 
   def recent_usage
-    latest_management_dashboard_tables&.first&.data&.by_fuel_type_table
+    Schools::ManagementTableService.new(self).management_data&.by_fuel_type_table || []
   end
 
   private
