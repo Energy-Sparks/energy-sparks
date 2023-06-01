@@ -66,7 +66,7 @@ module Tables
         cost: format_number(fetch(fuel_type, period, :£), :£),
         savings: format_number(fetch(fuel_type, period, :savings_£), :£),
         change: format_number(fetch(fuel_type, period, :percent_change), :comparison_percent, :text),
-        change_exp: Math.exp(fetch(fuel_type, period, :percent_change).to_f || 1.0), # Used for sorting as datatables
+        change_exp: Math.exp(fetch(fuel_type, period, :percent_change).to_f || 1.0), # Used for datatable sorting
         message: data_validity_message(fuel_type, period),
         message_class: data_validity_class(fuel_type, period),
         has_data: has_data?(fuel_type, period)
