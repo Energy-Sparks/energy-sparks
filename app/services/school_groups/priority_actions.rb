@@ -16,13 +16,21 @@ module SchoolGroups
       priority_actions.transform_values do |priorities|
         OpenStruct.new(
           schools: priorities.map(&:school),
-          average_one_year_saving_gbp: priorities.reduce(0) {|sum, saving| sum + saving.average_one_year_saving_gbp },
-          one_year_saving_co2: priorities.reduce(0) {|sum, saving| sum + saving.one_year_saving_co2 }
+          average_one_year_saving_gbp: sum_average_one_year_saving_gbp(priorities),
+          one_year_saving_co2: sum_one_year_saving_co2(priorities)
         )
       end
     end
 
     private
+
+    def sum_average_one_year_saving_gbp(priorities)
+      priorities.reduce(0) {|sum, saving| sum + saving.average_one_year_saving_gbp }
+    end
+
+    def sum_one_year_saving_co2(priorities)
+      priorities.reduce(0) {|sum, saving| sum + saving.one_year_saving_co2 }
+    end
 
     def find_priority_actions
       actions = Hash.new([])
@@ -37,24 +45,23 @@ module SchoolGroups
 
     def priorities_for_rating(rating)
       for_rating = priorities.select do |priority|
-        priority.content_version.alert_type_rating == rating
+        priority.alert_type_rating_id == rating.id
       end
       for_rating.map do |priority|
-        alert = priority.alert
         OpenStruct.new(
-          school: alert.school,
-          average_one_year_saving_gbp: average_one_year_saving_gbp(alert),
-          one_year_saving_co2: one_year_saving_co2(alert)
+          school: schools.find {|s| s.id == priority.school_id },
+          average_one_year_saving_gbp: average_one_year_saving_gbp(priority),
+          one_year_saving_co2: one_year_saving_co2(priority)
         )
       end
     end
 
-    def one_year_saving_co2(alert)
-      money_to_i(alert.template_data["one_year_saving_co2"].split(" ").first)
+    def average_one_year_saving_gbp(priority)
+      money_to_i(priority.average_one_year_saving_gbp)
     end
 
-    def average_one_year_saving_gbp(alert)
-      money_to_i(alert.template_data["average_one_year_saving_£"])
+    def one_year_saving_co2(priority)
+      money_to_i(priority.one_year_saving_co2.split(" ").first)
     end
 
     def money_to_i(val)
@@ -76,15 +83,8 @@ module SchoolGroups
       @alert_type_ratings = AlertTypeRating.management_priorities_title
     end
 
-    #The latest ManagementPriority records for every school in group
     def priorities
-      @priorities ||= ManagementPriority.where(content_generation_run: content_generation_runs).joins(:content_version).joins(content_version: :alert_type_rating)
-    end
-
-    #latest content generation runs for every school in the group
-    #ignoring schools with no runs
-    def content_generation_runs
-      @content_generation_runs ||= schools.map(&:latest_content).compact
+      @priorities = ManagementPriority.for_school_group(@school_group)
     end
 
     def schools
