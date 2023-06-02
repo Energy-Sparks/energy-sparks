@@ -13,6 +13,10 @@ describe 'school groups', :school_groups, type: :system do
   let!(:group_admin)           { create(:group_admin, school_group: school_group) }
   let!(:group_admin_2)         { create(:group_admin, school_group: school_group_2) }
 
+  before do
+    allow_any_instance_of(SchoolGroup).to receive(:fuel_types) { [:electricity, :gas, :storage_heaters] }
+  end
+
   context 'current school group pages with feature flag set to false' do
     describe 'when not logged in' do
       it 'redirects enhanced page actions to school group page if feature is not enabled' do
@@ -125,6 +129,14 @@ describe 'school groups', :school_groups, type: :system do
         describe '#show/recent usage' do
           it 'shows a map page with a map div and a list of schools' do
             ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'true' do
+              changes = OpenStruct.new(change: "-16%")
+              allow_any_instance_of(School).to receive(:recent_usage) do
+                OpenStruct.new(
+                  electricity: OpenStruct.new(week: changes, year: changes),
+                  gas: OpenStruct.new(week: changes, year: changes),
+                  storage_heaters: OpenStruct.new(week: changes, year: changes)
+                )
+              end
               visit school_group_path(school_group)
               expect(current_path).to eq "/school_groups/#{school_group.slug}"
               expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq(['Schools', school_group.name, 'Group Dashboard'])
@@ -135,6 +147,17 @@ describe 'school groups', :school_groups, type: :system do
               expect(page).to have_content('View map')
               expect(page).not_to have_content('View group')
               expect(page).to have_content('Scoreboard')
+
+              # Table content
+              expect(page).to have_content('Electricity')
+              expect(page).to have_content('Gas')
+              expect(page).to have_content('Storage heaters')
+              expect(page).to have_content('School')
+              expect(page).to have_content('Last week')
+              expect(page).to have_content('Last year')
+              expect(page).to have_content(school_1.name)
+              expect(page).to have_content(school_2.name)
+              expect(page).to have_content('-16%')
             end
           end
         end

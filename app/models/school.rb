@@ -584,6 +584,10 @@ class School < ApplicationRecord
     end
   end
 
+  def recent_usage
+    Schools::ManagementTableService.new(self).management_data&.by_fuel_type_table || []
+  end
+
   private
 
   def add_joining_observation
