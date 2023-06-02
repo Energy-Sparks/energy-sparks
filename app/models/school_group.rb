@@ -45,6 +45,7 @@
 class SchoolGroup < ApplicationRecord
   extend FriendlyId
   include ParentMeterAttributeHolder
+  include Scorable
 
   friendly_id :name, use: [:finders, :slugged, :history]
 
@@ -145,5 +146,11 @@ class SchoolGroup < ApplicationRecord
 
   def email_locales
     default_country == 'wales' ? [:en, :cy] : [:en]
+  end
+
+  private
+
+  def this_academic_year
+    default_template_calendar&.academic_year_for(Time.zone.today)
   end
 end
