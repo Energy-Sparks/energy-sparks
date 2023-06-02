@@ -30,6 +30,8 @@ en:
       home: Home
       inactive: Inactive
       last_updated: Last updated
+      last_week: Last week
+      last_year: Last year
       manage: Manage
       next: Next
       no_label: 'No'

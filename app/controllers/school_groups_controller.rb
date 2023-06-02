@@ -6,6 +6,7 @@ class SchoolGroupsController < ApplicationController
   before_action :redirect_unless_authorised, only: [:comparisons, :priority_actions, :current_scores]
   before_action :find_schools_and_partners
   before_action :build_breadcrumbs
+  before_action :find_school_group_fuel_types
 
   skip_before_action :authenticate_user!
 
@@ -30,6 +31,10 @@ class SchoolGroupsController < ApplicationController
   end
 
   private
+
+  def find_school_group_fuel_types
+    @fuel_types = @school_group.fuel_types
+  end
 
   def redirect_unless_feature_enabled
     redirect_to school_group_path(@school_group) and return unless EnergySparks::FeatureFlags.active?(:enhanced_school_group_dashboard)
@@ -63,7 +68,7 @@ class SchoolGroupsController < ApplicationController
 
   def enhanced_dashboard
     if can?(:compare, @school_group)
-      render 'enhanced_dashboard'
+      render 'recent_usage'
     else
       redirect_to map_school_group_path(@school_group) and return
     end
