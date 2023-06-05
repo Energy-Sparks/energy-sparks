@@ -110,7 +110,7 @@ describe 'school groups', :school_groups, type: :system do
 
   context 'enhanced school group pages with feature flag set to true' do
     around do |example|
-      ClimateControl.modify FEATURE_FLAG_REPLACE_ANALYSIS_PAGES: 'true' do
+      ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'true' do
         example.run
       end
     end
@@ -408,7 +408,7 @@ describe 'school groups', :school_groups, type: :system do
 
     context 'priority_actions' do
       around do |example|
-        ClimateControl.modify FEATURE_FLAG_REPLACE_ANALYSIS_PAGES: 'true' do
+        ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'true' do
           example.run
         end
       end
