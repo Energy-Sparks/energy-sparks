@@ -25,6 +25,9 @@ en:
         es_per_pupil_v_per_floor_area_html: "<p>\n   Generally, per pupil benchmarks are appropriate for electricity (as they should be proportional to the appliances in \n   use), but per floor area benchmarks are more appropriate for gas (the size of building which needs heating). Overall, \n   energy use comparison on a per pupil basis is probably more appropriate in most cases.\n</p>"
         es_per_pupil_v_per_floor_area_useful_html: "<p>\n  Generally, per pupil benchmarks are appropriate for electricity (as they should be proportional to the appliances in \n  use), but per floor area benchmarks are more appropriate for gas (the size of building which needs heating). Overall, \n  energy use comparison on a per pupil basis is probably more appropriate than on a per floor area basis, but this analysis \n  can be useful in some circumstances.\n</p>"
       chart_table_config:
+        annual_change_in_electricity_out_of_hours_use: Annual change in electricity used out of school hours
+        annual_change_in_gas_out_of_hours_use: Annual change in gas used out of school hours
+        annual_change_in_storage_heater_out_of_hours_use: Annual change in storage heater usage out of school hours
         annual_electricity_costs_per_pupil: Annual electricity use per pupil with savings potential
         annual_electricity_out_of_hours_use: Electricity used out of school hours
         annual_energy_costs: Annual cost of electricity, gas, storage heaters and combined energy
@@ -193,7 +196,10 @@ en:
           last_year_gas_£: Last year Gas £
           last_year_heating_costs_per_floor_area: Last year heating costs per floor area
           last_year_kwh_consumption: Last year kWh consumption
+          last_year_out_of_hours_co2: Last year out of hours co2
           last_year_out_of_hours_cost: Last year out of hours cost
+          last_year_out_of_hours_cost_ct: Last year out of hours cost at current tariff
+          last_year_out_of_hours_kwh: Last year out of hours kwh
           last_year_saving_if_improve_to_exemplar: Last year saving if improve to exemplar
           last_year_saving_per_1c_reduction_in_thermostat: Saving per 1C reduction in thermostat
           last_year_storage_heater_costs_£: Last year storage heater costs
@@ -225,6 +231,9 @@ en:
           previous_year: Previous year
           previous_year_electricity_£: Previous year electricity £
           previous_year_gas_costs_£: Previous year gas costs
+          previous_year_out_of_hours_co2: Previous year out of hours co2
+          previous_year_out_of_hours_cost_ct: Previous year out of hours cost at current tariff
+          previous_year_out_of_hours_kwh: Previous year out of hours kwh
           previous_year_storage_heater_costs_£: Previous year storage heater costs
           previous_year_temperature_adjusted: Previous year (temperature adjusted)
           previous_year_temperature_unadjusted: Previous year (temperature unadjusted)
@@ -293,6 +302,30 @@ en:
                 are calculated using the relevant tariff at the time
           </p>
       content:
+        annual_change_in_electricity_out_of_hours_use:
+          introduction_text_html: |-
+            <p>
+              This table compares electricity used outside of school hours over the last 12 month period, with the previous 12 month period.
+            </p>
+        annual_change_in_gas_out_of_hours_use:
+          introduction_text_html: |-
+            <p>
+              This table compares gas used outside of school hours over the last 12 month period, with the previous 12 month period.
+            </p>
+        annual_change_in_out_of_hours_use:
+          table_html: |-
+            <p>
+              If a school has less than 12 months of data, then no comparison will be shown. If a school has less than 2 years of data
+              then only the data for the last 12 months will be shown.
+            </p>
+            <p>
+              Costs are calculated based on the school's current tariff.
+            </p>
+        annual_change_in_storage_heater_out_of_hours_use:
+          introduction_text_html: |-
+            <p>
+              This table compares storage heater usage outside of school hours over the last 12 month period, with the previous 12 month period.
+            </p>
         annual_electricity_costs_per_pupil:
           introduction_text_html: "<p>\n  This benchmark compares the electricity cost per pupil in the last year.\n</p>\n<p>\n  There should not be a significant difference between schools as all schools need to use roughly the same amount of ICT equipment, \n  lighting and refrigeration per pupil. Exceptions might be schools with swimming pools or sports flood lighting which can significantly \n  increase demand. Special schools also have higher electricity costs per pupil due to lower pupil densities and specialist equipment.\n</p>\n<p>\n  The data excludes storage heaters which are reported elsewhere under the 'heating' benchmarks.\n</p>"
         annual_electricity_out_of_hours_use:

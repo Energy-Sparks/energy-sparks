@@ -82,4 +82,8 @@ class AlertType < ApplicationRecord
   def available_tables
     class_name.constantize.front_end_template_tables.map { |variable_name, values| [values[:description], variable_name] }
   end
+
+  def worst_management_priority_rating
+    ratings.where(management_priorities_active: true).order(:rating_from).last
+  end
 end
