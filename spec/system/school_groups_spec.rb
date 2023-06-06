@@ -7,8 +7,8 @@ describe 'school groups', :school_groups, type: :system do
   let!(:school_group)          { create(:school_group, public: public) }
   let!(:school_group_2)        { create(:school_group, public: false) }
   let(:public)                 { true }
-  let!(:school_1)              { create(:school, school_group: school_group, number_of_pupils: 10) }
-  let!(:school_2)              { create(:school, school_group: school_group, number_of_pupils: 20) }
+  let!(:school_1)              { create(:school, school_group: school_group, number_of_pupils: 10, data_enabled: true) }
+  let!(:school_2)              { create(:school, school_group: school_group, number_of_pupils: 20, data_enabled: true) }
   let!(:school_admin)          { create(:school_admin, school: school_1) }
   let!(:group_admin)           { create(:group_admin, school_group: school_group) }
   let!(:group_admin_2)         { create(:group_admin, school_group: school_group_2) }
@@ -127,14 +127,14 @@ describe 'school groups', :school_groups, type: :system do
         end
 
         describe '#show/recent usage' do
-          it 'shows a map page with a map div and a list of schools' do
+          it 'shows the list of schools with their usage' do
             ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'true' do
               changes = OpenStruct.new(change: "-16%")
               allow_any_instance_of(School).to receive(:recent_usage) do
                 OpenStruct.new(
-                  electricity: OpenStruct.new(week: changes, year: changes),
-                  gas: OpenStruct.new(week: changes, year: changes),
-                  storage_heaters: OpenStruct.new(week: changes, year: changes)
+                  electricity: OpenStruct.new(week: changes, year: changes, has_data: true),
+                  gas: OpenStruct.new(week: changes, year: changes, has_data: true),
+                  storage_heaters: OpenStruct.new(week: changes, year: changes, has_data: true)
                 )
               end
               visit school_group_path(school_group)
