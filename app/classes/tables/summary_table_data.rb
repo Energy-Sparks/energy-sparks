@@ -4,6 +4,17 @@ module Tables
       @template_data = template_data
     end
 
+    def by_fuel_type_table
+      fuel_type_table = {}
+      fuel_types.map do |fuel_type|
+        fuel_type_table[fuel_type] = OpenStruct.new(
+          week: summary_data_for(fuel_type, :workweek),
+          year: summary_data_for(fuel_type, :year)
+        )
+      end
+      OpenStruct.new(fuel_type_table)
+    end
+
     def by_fuel_type
       fuel_types.map do |fuel_type|
         [summary_data_for(fuel_type, :workweek), summary_data_for(fuel_type, :year)]

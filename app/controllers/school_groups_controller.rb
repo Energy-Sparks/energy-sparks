@@ -6,6 +6,7 @@ class SchoolGroupsController < ApplicationController
   before_action :redirect_unless_authorised, only: [:comparisons, :priority_actions, :current_scores]
   before_action :find_schools_and_partners
   before_action :build_breadcrumbs
+  before_action :find_school_group_fuel_types
 
   skip_before_action :authenticate_user!
 
@@ -24,12 +25,25 @@ class SchoolGroupsController < ApplicationController
   end
 
   def priority_actions
+    service = SchoolGroups::PriorityActions.new(@school_group)
+    @priority_actions = service.priority_actions
+    @total_savings = sort_total_savings(service.total_savings)
   end
 
   def current_scores
   end
 
   private
+
+  def sort_total_savings(total_savings)
+    total_savings.sort do |a, b|
+      b[1].average_one_year_saving_gbp <=> a[1].average_one_year_saving_gbp
+    end
+  end
+
+  def find_school_group_fuel_types
+    @fuel_types = @school_group.fuel_types
+  end
 
   def redirect_unless_feature_enabled
     redirect_to school_group_path(@school_group) and return unless EnergySparks::FeatureFlags.active?(:enhanced_school_group_dashboard)
@@ -63,7 +77,7 @@ class SchoolGroupsController < ApplicationController
 
   def enhanced_dashboard
     if can?(:compare, @school_group)
-      render 'enhanced_dashboard'
+      render 'recent_usage'
     else
       redirect_to map_school_group_path(@school_group) and return
     end

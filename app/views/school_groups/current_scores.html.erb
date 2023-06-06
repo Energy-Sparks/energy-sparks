@@ -1,1 +1,37 @@
 <%= render 'enhanced_header' %>
+
+<table width="100%" class="mt-3 table advice-table">
+  <thead>
+    <tr>
+      <th><%= t('scoreboard.position') %></th>
+      <th><%= t('common.school') %></th>
+      <th><%= t('scoreboard.score') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @school_group.scored_schools.with_points.schools_with_positions.each do |position, schools| %>
+      <% schools.each do |school| %>
+        <tr>
+          <td>
+            <span class="badge badge-primary"><%= '=' if schools.size > 1 %><%= position %></span>
+          </td>
+          <td><%= link_to school.name, school_path(school) %></td>
+          <td>
+            <%= link_to school.sum_points, school_timeline_path(school, academic_year: @academic_year), class: 'badge badge-success' %>
+            &nbsp;
+            <% if school.recent_points&.positive? %>
+              <i class="fa fa-arrow-up" data-toggle="tooltip" title="<%= t('scoreboard.score_tooltip') %>"></i>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+    <% @school_group.scored_schools.without_points.each do |school| %>
+      <tr>
+        <td><span class="badge badge-secondary">-</span></td>
+        <td><%= link_to school.name, school_path(school) %></td>
+        <td><span class="badge badge-secondary">0</span></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

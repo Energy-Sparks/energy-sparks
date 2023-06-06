@@ -23,6 +23,8 @@
 class Scoreboard < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
+  include Scorable
+
   translates :name, type: :string, fallbacks: { cy: :en }
   before_save :update_name
   extend FriendlyId
@@ -53,26 +55,6 @@ class Scoreboard < ApplicationRecord
 
   def previous_academic_year(today: Time.zone.today)
     academic_year_calendar.academic_year_for(today).previous_year
-  end
-
-  def scored_schools(recent_boundary: 1.month.ago, academic_year: this_academic_year)
-    scored = schools.visible.select('schools.*, SUM(observations.points) AS sum_points, MAX(observations.at) AS recent_observation').select(
-      self.class.sanitize_sql_array(
-        ['SUM(observations.points) FILTER (WHERE observations.at > ?) AS recent_points', recent_boundary]
-      )
-    ).
-      order(Arel.sql('sum_points DESC NULLS LAST, MAX(observations.at) DESC, schools.name ASC')).
-      group('schools.id')
-    if academic_year
-      with_academic_year = scored.joins(
-        self.class.sanitize_sql_array(
-          ['LEFT JOIN observations ON observations.school_id = schools.id AND observations.at BETWEEN ? AND ?', academic_year.start_date, academic_year.end_date]
-        )
-      )
-      ScoredSchoolsList.new(with_academic_year)
-    else
-      ScoredSchoolsList.new(scored.left_outer_joins(:observations))
-    end
   end
 
   private
