@@ -9,20 +9,4 @@ class SchoolGroupComparisonComponent < ViewComponent::Base
     @id = id
     @comparison = comparison
   end
-
-  def category
-    @comparison.category.to_s
-  end
-
-  def categories
-    CATEGORIES
-  end
-
-  def responsive_classes(category)
-    if @comparison.category == category
-      'd-flex'
-    else
-      'd-none d-md-block'
-    end
-  end
 end
