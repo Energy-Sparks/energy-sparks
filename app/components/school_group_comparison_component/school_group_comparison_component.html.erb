@@ -1,0 +1,42 @@
+<div
+  id="<%= @id %>"
+  class="school-group-comparison-component-callout-row row mt-4">
+  <% categories.each do |category| %>
+    <div class="col-md-4 justify-content-center <%=category%> <%= responsive_classes(category) %>">
+        <div class="school-comparison-component-callout-box">
+          <div class="body m-2">
+            <h2>
+              <%= @comparison.send(category) %>
+            </h2>
+            <h3>
+              Schools
+            </h3>
+          </div>
+        </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="school-comparison-component-footer-row row">
+  <div class="col-md-4 justify-content-center <%= responsive_classes(:exemplar_school) %>">
+    <div>
+      <h4 class="category-label">
+        <%= t('advice_pages.benchmarks.exemplar_school') %>
+      </h4>
+    </div>
+  </div>
+  <div class="col-md-4 justify-content-center <%= responsive_classes(:benchmark_school) %>">
+    <div>
+      <h4 class="category-label">
+        <%= t('advice_pages.benchmarks.benchmark_school') %>
+      </h4>
+    </div>
+  </div>
+  <div class="col-md-4 justify-content-center <%= responsive_classes(:other_school) %>">
+    <div>
+      <h4 class="category-label">
+        <%= t('advice_pages.benchmarks.other_school') %>
+      </h4>
+    </div>
+  </div>
+</div>

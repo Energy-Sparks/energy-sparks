@@ -1,1 +1,15 @@
 <%= render 'enhanced_header' %>
+
+<p>
+  View all school comparison benchmarks
+</p>
+
+<% comparison = OpenStruct.new(exemplar_school: 1, benchmark_school: 3, other_school: 4) %>
+
+<div class="col">
+  <%= component 'school_group_comparison', id: 'group-comparison-baseload', comparison: comparison %>
+</div>
+
+<p>
+  View detailed comparison
+</p>
