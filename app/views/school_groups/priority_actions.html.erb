@@ -1,1 +1,59 @@
 <%= render 'enhanced_header' %>
+
+<%= component 'notice', status: :neutral, classes: 'mt-2 mb-4' do |c| %>
+  <%= t('school_groups.priority_actions.intro_html') %>
+<% end %>
+
+
+<table class="table table-borderless table-sorted advice-table advice-priority-table">
+  <thead>
+    <tr>
+      <th><%= t('advice_pages.index.priorities.table.columns.fuel_type') %></th>
+      <th data-orderable="false"></th>
+      <th><%= t('components.breadcrumbs.schools') %></th>
+      <th><%= t('advice_pages.index.priorities.table.columns.cost_saving') %></th>
+      <th><%= t('advice_pages.index.priorities.table.columns.co2_reduction') %></th>
+    </tr>
+  </thead>
+  <tbody id="school-group-priorities">
+    <% @total_savings.each do |alert_type_rating, savings| %>
+      <tr>
+        <td data-order="<%= alert_type_rating.alert_type.fuel_type %>">
+          <span class="<%=fuel_type_class(alert_type_rating.alert_type.fuel_type)%>">
+            <%= fa_icon alert_type_icon(alert_type_rating.alert_type,'fa-2x') %>
+          </span>
+        </td>
+        <td>
+          <h4>
+            <a href="" data-toggle="modal" data-target="#action-<%= alert_type_rating.id %>">
+              <%= alert_type_rating.current_content.management_priorities_title %>
+            </a>
+          </h4>
+          <%= component 'footnote_modal', title: alert_type_rating.current_content.management_priorities_title.to_plain_text, modal_id: "action-#{alert_type_rating.id}", modal_dialog_classes: 'modal-xl modal-dialog-centered' do |component| %>
+            <% component.with_body_content do %>
+              <%= render 'priority_action_modal',
+                alert_type_rating: alert_type_rating,
+                savings: savings,
+                priority_actions: @priority_actions %>
+            <% end %>
+          <% end %>
+        </td>
+        <td>
+          <h4>
+            <%= savings.schools.length %>
+          </h4>
+        </td>
+        <td data-order="<%= savings.average_one_year_saving_gbp %>">
+          <h4>
+            <%= format_unit(savings.average_one_year_saving_gbp, :£) %>
+          </h4>
+        </td>
+        <td data-order="<%= savings.one_year_saving_co2 %>">
+          <h4>
+            <%= format_unit(savings.one_year_saving_co2, :co2) %> kg CO2
+          </h4>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
