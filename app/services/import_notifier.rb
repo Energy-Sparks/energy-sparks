@@ -1,4 +1,6 @@
 class ImportNotifier
+  # include Rails.application.routes.url_helpers
+
   def initialize(description: nil)
     @description = description
   end
@@ -75,16 +77,16 @@ class ImportNotifier
   def csv_row_for(title, meter)
     [
       title,
-      meter.school.school_group.name,
+      meter.school&.school_group&.name,
       meter.meter_type.to_s.humanize,
       meter.school.name,
       meter.mpan_mprn,
-      meter.data_source.name,
+      meter.data_source&.name,
       meter.procurement_route&.organisation_name,
-      nice_dates(meter.last_validated_reading),
+      meter.last_validated_reading&.strftime('%d/%m/%Y'),
       meter.admin_meter_status_label,
-      link_to(meter.issues.issue.count, school_meter_url(meter.school, meter)),
-      link_to(meter.issues.note.count, school_meter_url(meter.school, meter)),
+      meter.issues.issue.count,
+      meter.issues.note.count,
       meter.school&.school_group&.default_issues_admin_user&.name
     ]
   end
