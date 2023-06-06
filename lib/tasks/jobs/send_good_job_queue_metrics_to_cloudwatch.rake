@@ -7,6 +7,7 @@ namespace :jobs do
     GoodJob::Job.distinct(:queue_name).pluck(:queue_name).each do |queue_name|
       commands = []
 
+      # possible statuses: [:scheduled, :retried, :queued, :running, :finished, :discarded]
       [:queued].each do |status|
         count = GoodJob::Job.where(queue_name: queue_name).send(status).count
 
