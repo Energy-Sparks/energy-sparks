@@ -1,6 +1,4 @@
 class ImportNotifier
-  # include Rails.application.routes.url_helpers
-
   def initialize(description: nil)
     @description = description
   end
