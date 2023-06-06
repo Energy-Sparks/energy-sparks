@@ -110,7 +110,7 @@ describe 'school groups', :school_groups, type: :system do
 
         describe 'showing recent usage tab' do
           before(:each) do
-            changes = OpenStruct.new(change: "-16%")
+            changes = OpenStruct.new(change: "-16%", has_data: true)
             allow_any_instance_of(School).to receive(:recent_usage) do
               OpenStruct.new(
                 electricity: OpenStruct.new(week: changes, year: changes),
