@@ -3,13 +3,14 @@
 require "rails_helper"
 
 RSpec.describe SchoolGroupComparisonComponent, type: :component do
-  let(:comparison) {
-    OpenStruct.new(exemplar_school: 1, benchmark_school: 3, other_school: 4)
-  }
-
-  let(:params)  { { id: 'spec-id', comparison: comparison } }
+  let(:school_group) { create(:school_group) }
+  let(:params)  { { id: 'spec-id', school_group: school_group } }
   let(:component)  { SchoolGroupComparisonComponent.new(**params) }
   let(:html) { render_inline(component) }
+
+  before do
+    8.times { create(:school, school_group: school_group) }
+  end
 
   it 'renders ok' do
     expect(component.render?).to eq true

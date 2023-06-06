@@ -1,23 +1,8 @@
 <%= render 'enhanced_header' %>
-
-<p class=mt-3>
-  <%= t('school_groups.comparisons.view_all_school_comparison_benchmarks') %>
-</p>
-
-<strong>
-  <%= t('school_groups.comparisons.baseload') %>
-</strong>
-
-<p>
-  <%= t('school_groups.comparisons.how_does_the_baseload_of_your_schools_compare_message') %>
-</p>
-
-<% comparison = OpenStruct.new(exemplar_school: 1, benchmark_school: 3, other_school: 4) %>
-
+<p class=mt-3><%= t('school_groups.comparisons.view_all_school_comparison_benchmarks') %></p>
+<strong><%= t('school_groups.comparisons.baseload') %></strong>
+<p><%= t('school_groups.comparisons.how_does_the_baseload_of_your_schools_compare_message') %></p>
 <div class="col">
-  <%= component 'school_group_comparison', id: 'group-comparison-baseload', comparison: comparison %>
+  <%= component 'school_group_comparison', id: 'group-comparison-baseload', school_group: @school_group %>
 </div>
-
-<p class=mt-3>
-  <%= t('school_groups.comparisons.view_detailed_comparison') %>
-</p>
+<p class=mt-3><%= t('school_groups.comparisons.view_detailed_comparison') %></p>

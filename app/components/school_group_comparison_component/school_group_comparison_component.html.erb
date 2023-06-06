@@ -2,12 +2,33 @@
   id="<%= @id %>"
   class="school-group-comparison-component-callout-row row mt-4">
   <% SchoolGroupComparisonComponent::CATEGORIES.each do |category| %>
-    <div class="col-md-4 justify-content-center <%=category%> <%= 'd-flex' if @comparison.send(category).positive?  %>">
+    <div class="col-md-4 justify-content-center <%=category%> <%= 'd-flex' if @comparison.send(category).size.positive?  %>">
         <div class="school-group-comparison-component-callout-box">
           <div class="body m-2">
-            <% label = t('school_count', count: @comparison.send(category)).split(' ') %>
-            <h2><%= label.first %></h2>
+            <% label = t('school_count', count: @comparison.send(category).size).split(' ') %>
+            <h2>
+              <button type="button" class="btn btn-link" data-toggle="modal" data-target="#<%= category.to_s.camelize %>ModalCenter">
+                <%= label.first %>
+              </button>
+            </h2>
             <h3><%= label.last.capitalize %></h3>
+            <div class="modal fade" id="<%= category.to_s.camelize %>ModalCenter" tabindex="-1" role="dialog" aria-labelledby="<%= category.to_s.camelize %>ModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle"><%= t("advice_pages.benchmarks.#{category}") %></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <% @comparison.send(category).each do |school| %>
+                      <p><%= school.name %></p>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
     </div>
