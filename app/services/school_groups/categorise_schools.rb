@@ -27,17 +27,19 @@ module SchoolGroups
 
     def query
       <<-SQL.squish
-        select
-        advice_pages.key as advice_page_key,
-        schools.id as school_id,
-        schools.slug as school_slug,
-        schools.name as school_name,
+        SELECT
+        advice_pages.key AS advice_page_key,
+        schools.id AS school_id,
+        schools.slug AS school_slug,
+        schools.name AS school_name,
         advice_page_school_benchmarks.benchmarked_as
-        from advice_page_school_benchmarks
-        inner join advice_pages on advice_pages.id = advice_page_school_benchmarks.advice_page_id
-        inner join schools on schools.id = advice_page_school_benchmarks.school_id
-        where schools.school_group_id = #{@school_group.id}
-        order by advice_pages.key, schools.name;
+        FROM advice_page_school_benchmarks
+        INNER JOIN advice_pages ON advice_pages.id = advice_page_school_benchmarks.advice_page_id
+        INNER JOIN schools ON schools.id = advice_page_school_benchmarks.school_id
+        WHERE schools.school_group_id = #{@school_group.id}
+        AND schools.active = true
+        AND schools.visible = true
+        ORDER BY advice_pages.key, schools.name;
       SQL
     end
   end

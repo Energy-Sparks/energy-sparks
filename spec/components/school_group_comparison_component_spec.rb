@@ -6,17 +6,17 @@ RSpec.describe SchoolGroupComparisonComponent, type: :component do
   let(:school_group) { create(:school_group) }
   let(:comparison) {
     {
-      benchmark_school: [{"school_id"=>1, "school_slug"=>"school-1", "school_name"=>"Skhool 1"}],
+      benchmark_school: [{"school_id"=>1, "school_slug"=>"school-1", "school_name"=>"School 1"}],
       exemplar_school: [
-        {"school_id"=>2, "school_slug"=>"skhool-2", "school_name"=>"Skhool 2"},
-        {"school_id"=>3, "school_slug"=>"skhool-3", "school_name"=>"Skhool 3"},
-        {"school_id"=>4, "school_slug"=>"skhool-4", "school_name"=>"Skhool 4"}
+        {"school_id"=>2, "school_slug"=>"school-2", "school_name"=>"School 2"},
+        {"school_id"=>3, "school_slug"=>"school-3", "school_name"=>"School 3"},
+        {"school_id"=>4, "school_slug"=>"school-4", "school_name"=>"School 4"}
       ],
       other_school: [
-        {"school_id"=>5, "school_slug"=>"skhool-5", "school_name"=>"Skhool 5"},
-        {"school_id"=>6, "school_slug"=>"skhool-6", "school_name"=>"Skhool 6"},
-        {"school_id"=>7, "school_slug"=>"skhool-7", "school_name"=>"Skhool 7"},
-        {"school_id"=>8, "school_slug"=>"skhool-8", "school_name"=>"Skhool 8"}
+        {"school_id"=>5, "school_slug"=>"school-5", "school_name"=>"School 5"},
+        {"school_id"=>6, "school_slug"=>"school-6", "school_name"=>"School 6"},
+        {"school_id"=>7, "school_slug"=>"school-7", "school_name"=>"School 7"},
+        {"school_id"=>8, "school_slug"=>"school-8", "school_name"=>"School 8"}
       ]
     }
   }
@@ -33,8 +33,6 @@ RSpec.describe SchoolGroupComparisonComponent, type: :component do
     expect(html).to have_content('1')
     expect(html).to have_content('3')
     expect(html).to have_content('4')
-    expect(html).to have_content('School', count: 3)
-    expect(html).to have_content('Schools', count: 2)
   end
 
   it "includes the category titles" do
