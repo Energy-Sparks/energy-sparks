@@ -37,7 +37,7 @@ module SchoolGroups
         inner join advice_pages on advice_pages.id = advice_page_school_benchmarks.advice_page_id
         inner join schools on schools.id = advice_page_school_benchmarks.school_id
         where schools.school_group_id = #{@school_group.id}
-        order by advice_pages.key;
+        order by advice_pages.key, schools.name;
       SQL
     end
   end
