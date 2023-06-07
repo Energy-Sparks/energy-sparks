@@ -16,7 +16,7 @@ class AdminMailer < ApplicationMailer
 
   def issues_report
     @user = params[:user]
-    @issues = Issue.for_owned_by(@user).status_open.issue.by_created_at
+    @issues = Issue.for_owned_by(@user).status_open.issue.by_created_at.includes([:created_by, :issueable])
     title = "Issue report for #{@user.display_name}"
 
     if @issues.any?
