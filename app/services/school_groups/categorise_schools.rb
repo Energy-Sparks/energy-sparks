@@ -1,51 +1,44 @@
 module SchoolGroups
   class CategoriseSchools
-    def initialize(school_group:, advice_page: baseload_advice_page)
+    def initialize(school_group:)
       @school_group = school_group
-      @advice_page = advice_page
     end
 
     def categorise_schools
-      exemplar_school = []
-      benchmark_school = []
-      other_school = []
-      not_categorised = []
-
-      @school_group.schools.each do |school|
-        case benchmark(school)
-        when :other_school
-          other_school << school
-        when :benchmark_school
-          benchmark_school << school
-        when :exemplar_school
-          exemplar_school << school
-        else
-          not_categorised << school
+      benchmarks_grouped_by_advice_page.each_with_object({}) do |(advice_page_key, school_results), categorised_schools|
+        categorised_schools[advice_page_key.to_sym] = school_results.group_by do |school_result|
+          AdvicePageSchoolBenchmark.benchmarked_as.key(school_result['benchmarked_as']).to_sym
         end
       end
-
-      OpenStruct.new(
-        exemplar_school: exemplar_school,
-        benchmark_school: benchmark_school,
-        other_school: other_school
-      )
     end
 
     private
 
-    def benchmark(school)
-      aggregate_school = AggregateSchoolService.new(school).aggregate_school
-      Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator.generator_for(
-        advice_page: @advice_page,
-        school: school,
-        aggregate_school: aggregate_school
-      ).benchmark_school
-    rescue
-      nil
+    def benchmarks_grouped_by_advice_page
+      find_advice_page_school_benchmarks.group_by do |advice_page_school_benchmark|
+        advice_page_school_benchmark['advice_page_key'].to_sym
+      end
     end
 
-    def baseload_advice_page
-      OpenStruct.new(key: :baseload)
+    def find_advice_page_school_benchmarks
+      sanitized_query = ActiveRecord::Base.sanitize_sql_array(query)
+      AdvicePageSchoolBenchmark.connection.select_all(sanitized_query)
+    end
+
+    def query
+      <<-SQL.squish
+        select
+        advice_pages.key as advice_page_key,
+        schools.id as school_id,
+        schools.slug as school_slug,
+        schools.name as school_name,
+        advice_page_school_benchmarks.benchmarked_as
+        from advice_page_school_benchmarks
+        inner join advice_pages on advice_pages.id = advice_page_school_benchmarks.advice_page_id
+        inner join schools on schools.id = advice_page_school_benchmarks.school_id
+        where schools.school_group_id = #{@school_group.id}
+        order by advice_pages.key;
+      SQL
     end
   end
 end

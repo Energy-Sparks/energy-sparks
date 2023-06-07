@@ -5,9 +5,13 @@ class SchoolGroupComparisonComponent < ViewComponent::Base
 
   CATEGORIES = [:exemplar_school, :benchmark_school, :other_school].freeze
 
-  def initialize(id:, school_group:)
+  def initialize(id:, comparison:, advice_page_key:)
     @id = id
-    # @school_group = school_group
-    @comparison = school_group.categorise_schools
+    @comparison = comparison
+    @advice_page_key = advice_page_key
+  end
+
+  def advice_page_path_for(school_slug)
+    send("school_advice_#{@advice_page_key}_path", school_id: school_slug)
   end
 end

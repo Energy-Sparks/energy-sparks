@@ -2,17 +2,23 @@
   id="<%= @id %>"
   class="school-group-comparison-component-callout-row row mt-4">
   <% SchoolGroupComparisonComponent::CATEGORIES.each do |category| %>
-    <div class="col-md-4 justify-content-center <%=category%> <%= 'd-flex' if @comparison.send(category)&.size&.positive? %>">
+    <div class="col-md-4 justify-content-center <%=category%> d-flex">
         <div class="school-group-comparison-component-callout-box">
           <div class="body m-2">
-            <% label = t('school_count', count: @comparison.send(category).size).split(' ') %>
+            <% count = @comparison[category]&.size || 0 %>
+            <% label = t('school_count', count: count).split(' ') %>
             <h2>
-              <a href='#' data-toggle="modal" data-target="#<%= category.to_s.camelize %>ModalCenter">
+              <% if count.positive? %>
+                <a href='#' data-toggle="modal" data-target="#<%= @advice_page_key.to_s.camelize + category.to_s.camelize %>ModalCenter">
+                  <%= label.first %>
+                </a>
+              <% else %>
                 <%= label.first %>
-              </a>
+              <% end %>
             </h2>
             <h3><%= label.last.capitalize %></h3>
-            <div class="modal fade" id="<%= category.to_s.camelize %>ModalCenter" tabindex="-1" role="dialog" aria-labelledby="<%= category.to_s.camelize %>ModalCenterTitle" aria-hidden="true">
+
+            <div class="modal fade" id="<%= @advice_page_key.to_s.camelize + category.to_s.camelize %>ModalCenter" tabindex="-1" role="dialog" aria-labelledby="<%= category.to_s.camelize %>ModalCenterTitle" aria-hidden="true">
               <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                   <div class="modal-header ">
@@ -22,11 +28,11 @@
                     </button>
                   </div>
                   <div class="modal-body text-left">
-                    <% @comparison.send(category).each do |school| %>
+                    <% @comparison[category]&.each do |school| %>
                       <div class="row">
-                        <div class="col-auto mr-auto"><%= link_to school.name, school_path(school) %></div>
+                        <div class="col-auto mr-auto"><%= link_to school['school_name'], school_path(id: school['school_slug']) %></div>
                         <div class="col-auto">
-                          <%= link_to t('school_groups.priority_actions.view_analysis'), school_advice_path(school) %>
+                          <%= link_to t('school_groups.priority_actions.view_analysis'), advice_page_path_for(school['school_slug']) %>
                         </div>
                       </div>
                     <% end %>

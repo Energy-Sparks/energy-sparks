@@ -22,6 +22,9 @@ class SchoolGroupsController < ApplicationController
   end
 
   def comparisons
+    @categorised_schools = SchoolGroups::CategoriseSchools.new(
+      school_group: SchoolGroup.find_by(name: 'Durham')
+    ).categorise_schools
   end
 
   def priority_actions

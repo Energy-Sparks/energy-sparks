@@ -4,20 +4,26 @@ require "rails_helper"
 
 RSpec.describe SchoolGroupComparisonComponent, type: :component do
   let(:school_group) { create(:school_group) }
-  let(:params)  { { id: 'spec-id', school_group: school_group } }
+  let(:comparison) {
+    {
+      benchmark_school: [{"school_id"=>1, "school_slug"=>"school-1", "school_name"=>"Skhool 1"}],
+      exemplar_school: [
+        {"school_id"=>2, "school_slug"=>"skhool-2", "school_name"=>"Skhool 2"},
+        {"school_id"=>3, "school_slug"=>"skhool-3", "school_name"=>"Skhool 3"},
+        {"school_id"=>4, "school_slug"=>"skhool-4", "school_name"=>"Skhool 4"}
+      ],
+      other_school: [
+        {"school_id"=>5, "school_slug"=>"skhool-5", "school_name"=>"Skhool 5"},
+        {"school_id"=>6, "school_slug"=>"skhool-6", "school_name"=>"Skhool 6"},
+        {"school_id"=>7, "school_slug"=>"skhool-7", "school_name"=>"Skhool 7"},
+        {"school_id"=>8, "school_slug"=>"skhool-8", "school_name"=>"Skhool 8"}
+      ]
+    }
+  }
+
+  let(:params) { { id: 'spec-id', comparison: comparison, advice_page_key: :baseload } }
   let(:component)  { SchoolGroupComparisonComponent.new(**params) }
   let(:html) { render_inline(component) }
-
-  before do
-    8.times { create(:school, school_group: school_group) }
-    allow_any_instance_of(SchoolGroup).to receive(:categorise_schools) do
-      OpenStruct.new(
-        exemplar_school: [school_group.schools[0]],
-        benchmark_school: school_group.schools[1..3],
-        other_school: school_group.schools[4..7]
-      )
-    end
-  end
 
   it 'renders ok' do
     expect(component.render?).to eq true
