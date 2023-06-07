@@ -2,7 +2,7 @@
   id="<%= @id %>"
   class="school-group-comparison-component-callout-row row mt-4">
   <% SchoolGroupComparisonComponent::CATEGORIES.each do |category| %>
-    <div class="col-md-4 justify-content-center <%=category%> <%= 'd-flex' if @comparison.send(category).size.positive?  %>">
+    <div class="col-md-4 justify-content-center <%=category%> <%= 'd-flex' if @comparison.send(category)&.size&.positive? %>">
         <div class="school-group-comparison-component-callout-box">
           <div class="body m-2">
             <% label = t('school_count', count: @comparison.send(category).size).split(' ') %>

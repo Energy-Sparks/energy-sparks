@@ -10,6 +10,13 @@ RSpec.describe SchoolGroupComparisonComponent, type: :component do
 
   before do
     8.times { create(:school, school_group: school_group) }
+    allow_any_instance_of(SchoolGroup).to receive(:categorise_schools) do
+      OpenStruct.new(
+        exemplar_school: [school_group.schools[0]],
+        benchmark_school: school_group.schools[1..3],
+        other_school: school_group.schools[4..7]
+      )
+    end
   end
 
   it 'renders ok' do

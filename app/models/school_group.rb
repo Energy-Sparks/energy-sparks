@@ -148,6 +148,10 @@ class SchoolGroup < ApplicationRecord
     default_country == 'wales' ? [:en, :cy] : [:en]
   end
 
+  def categorise_schools
+    SchoolGroups::CategoriseSchools.new(self).categorise_schools
+  end
+
   private
 
   def this_academic_year
