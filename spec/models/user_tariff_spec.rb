@@ -158,19 +158,60 @@ describe UserTariff do
         end
       end
 
-      context "agreed_availability_charge is present" do
+      context "and agreed_availability_charge is present" do
         let(:agreed_availability_charge)  { UserTariffCharge.create(charge_type: :agreed_availability_charge, value: 6.78, units: :kva) }
         let(:user_tariff_charges) { [asc_limit_kw_charge, agreed_availability_charge] }
         it "should be included" do
           expect(attributes[:asc_limit_kw]).to eq('5.43')
         end
+        it 'should include the charge' do
+          expect(attributes[:rates]).to have_key(:agreed_availability_charge)
+        end
       end
 
-      context "excess_availability_charge is present" do
+      context "and excess_availability_charge is present" do
         let(:excess_availability_charge)  { UserTariffCharge.create(charge_type: :excess_availability_charge, value: 6.78, units: :kva) }
         let(:user_tariff_charges) { [asc_limit_kw_charge, excess_availability_charge] }
         it "should be included" do
           expect(attributes[:asc_limit_kw]).to eq('5.43')
+        end
+        it 'should include the charge' do
+          expect(attributes[:rates]).to have_key(:excess_availability_charge)
+        end
+      end
+
+      context 'only agreed availability charge is present' do
+        let(:agreed_availability_charge)  { UserTariffCharge.create(charge_type: :agreed_availability_charge, value: 6.78, units: :kva) }
+        let(:user_tariff_charges) { [agreed_availability_charge] }
+        it "should not be included" do
+          expect(attributes[:rates]).to_not have_key(:asc_limit_kw)
+        end
+        it 'should not include the charge' do
+          expect(attributes[:rates]).to_not have_key(:agreed_availability_charge)
+        end
+      end
+
+      context 'only excess_availability_charge charge is present' do
+        let(:excess_availability_charge)  { UserTariffCharge.create(charge_type: :excess_availability_charge, value: 6.78, units: :kva) }
+        let(:user_tariff_charges) { [excess_availability_charge] }
+        it "should not be included" do
+          expect(attributes).to_not have_key(:asc_limit_kw)
+        end
+        it 'should not include the charge' do
+          expect(attributes[:rates]).to_not have_key(:excess_availability_charge)
+        end
+      end
+
+      context 'all charges are present' do
+        let(:agreed_availability_charge)  { UserTariffCharge.create(charge_type: :agreed_availability_charge, value: 6.78, units: :kva) }
+        let(:excess_availability_charge)  { UserTariffCharge.create(charge_type: :excess_availability_charge, value: 6.78, units: :kva) }
+        let(:user_tariff_charges) { [asc_limit_kw_charge, agreed_availability_charge, excess_availability_charge] }
+        it "should be included" do
+          expect(attributes).to have_key(:asc_limit_kw)
+        end
+        it 'should include the charges' do
+          expect(attributes[:rates][:agreed_availability_charge]).to eq({:per => 'kva', :rate => '6.78'})
+          expect(attributes[:rates][:excess_availability_charge]).to eq({:per => 'kva', :rate => '6.78'})
         end
       end
     end
@@ -194,7 +235,6 @@ describe UserTariff do
     it "should include standing charges" do
       rates = attributes[:rates]
       expect(rates[:fixed_charge]).to eq({:per => 'month', :rate => '4.56'})
-      expect(rates[:agreed_availability_charge]).to eq({:per => 'kva', :rate => '6.78'})
     end
 
     it "should include rates with adjusted end times" do
