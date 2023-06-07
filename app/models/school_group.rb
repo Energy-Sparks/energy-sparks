@@ -149,7 +149,7 @@ class SchoolGroup < ApplicationRecord
   end
 
   def categorise_schools
-    SchoolGroups::CategoriseSchools.new(self).categorise_schools
+    SchoolGroups::CategoriseSchools.new(school_group: self).categorise_schools
   end
 
   private
