@@ -148,6 +148,7 @@ RSpec.describe AdminMailer, include_application_helper: true do
         expect(body).to have_content(issue.title)
         expect(body).to have_content(issue.fuel_type.capitalize)
         expect(body).to have_content(issue.issueable.name)
+        expect(body).to have_content(issue.created_by.display_name)
         expect(body).to have_content(nice_date_times(issue.created_at))
         expect(body).to have_content(nice_date_times(issue.updated_at))
         expect(body).to have_link("View", href: admin_school_issue_url(issue.issueable, issue))
@@ -181,7 +182,7 @@ RSpec.describe AdminMailer, include_application_helper: true do
       it { expect(email.attachments.count).to eq(1) }
       it { expect(attachment.content_type).to include('text/csv') }
       it { expect(attachment.filename).to eq('issues_report.csv') }
-      it { expect(attachment.body.raw_source).to eq("Issue type,Issue for,\"\",Title,Fuel,Created,Updated,View,Edit\r\nissue,#{new_issue.issueable.name},New this week!,#{new_issue.title},Gas,#{new_issue.created_at.strftime('%d/%m/%Y')},#{new_issue.updated_at.strftime('%d/%m/%Y')},http://localhost/admin/schools/#{new_issue.issueable.slug}/issues/#{new_issue.id},http://localhost/admin/issues/#{new_issue.id}/edit\r\n") }
+      it { expect(attachment.body.raw_source).to eq("Issue type,Issue for,\"\",Title,Fuel,Created By,Created,Updated,View,Edit\r\nissue,#{new_issue.issueable.name},New this week!,#{new_issue.title},Gas,#{new_issue.created_by.display_name},#{new_issue.created_at.strftime('%d/%m/%Y')},#{new_issue.updated_at.strftime('%d/%m/%Y')},http://localhost/admin/schools/#{new_issue.issueable.slug}/issues/#{new_issue.id},http://localhost/admin/issues/#{new_issue.id}/edit\r\n") }
     end
   end
 end
