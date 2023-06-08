@@ -27,6 +27,19 @@ RSpec.shared_examples "a private school group dashboard" do
 
 end
 
+RSpec.shared_examples "school group dashboard notification" do
+  it 'does not show a school group dashboard notification' do
+    visit map_school_group_path(school_group)
+    expect(page).not_to have_content('A school group notice message')
+    visit comparisons_school_group_path(school_group)
+    expect(page).not_to have_content('A school group notice message')
+    visit priority_actions_school_group_path(school_group)
+    expect(page).not_to have_content('A school group notice message')
+    visit current_scores_school_group_path(school_group)
+    expect(page).not_to have_content('A school group notice message')
+  end
+end
+
 RSpec.shared_examples "school dashboard navigation" do
   it 'shows navigation' do
     expect(page).to have_content('Recent Usage')
