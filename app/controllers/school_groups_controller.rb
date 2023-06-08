@@ -7,6 +7,7 @@ class SchoolGroupsController < ApplicationController
   before_action :find_schools_and_partners
   before_action :build_breadcrumbs
   before_action :find_school_group_fuel_types
+  before_action :set_show_school_group_message
 
   skip_before_action :authenticate_user!
 
@@ -34,6 +35,26 @@ class SchoolGroupsController < ApplicationController
   end
 
   private
+
+  def set_show_school_group_message
+    @show_school_group_message = show_school_group_message?
+  end
+
+  def show_school_group_message?
+    return false unless @schoolGroup.dashboard_message.present?
+
+    if user_signed_in? && current_user.admin?
+      true
+    elsif user_signed_in_and_linked_to_school? && can?(:show_management_dash, @school)
+      true
+    else
+      false
+    end
+  end
+
+  def user_signed_in_and_linked_to_school?
+    user_signed_in? && (current_user.school_id == @school.id)
+  end
 
   def sort_total_savings(total_savings)
     total_savings.sort do |a, b|
