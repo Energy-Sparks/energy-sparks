@@ -121,6 +121,10 @@ private
     end
   end
 
+  def user_signed_in_and_linked_to_school?
+    user_signed_in? && (current_user.school_id == @school.id)
+  end
+
   def not_signed_in?
     !user_signed_in? || current_user.guest?
   end
@@ -139,10 +143,6 @@ private
 
   def redirect_to_pupil_dash_if_not_data_enabled
     redirect_to pupils_school_path(@school) if not_signed_in? && !@school.data_enabled
-  end
-
-  def user_signed_in_and_linked_to_school?
-    user_signed_in? && (current_user.school_id == @school.id)
   end
 
   def setup_default_features

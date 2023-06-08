@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'school groups', :school_groups, type: :system do
 
   let(:public)                 { true }
-  let(:school_group)          { create(:school_group, public: public) }
+  let!(:school_group)          { create(:school_group, public: public) }
 
   let!(:user)                  { create(:user) }
   let!(:school_1)              { create(:school, school_group: school_group, number_of_pupils: 10, data_enabled: true) }
@@ -21,9 +21,6 @@ describe 'school groups', :school_groups, type: :system do
       example.run
     end
   end
-
-
-
 
   context 'current school group pages (feature disabled)' do
     describe 'when not logged in' do
