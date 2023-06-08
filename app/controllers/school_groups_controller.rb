@@ -1,5 +1,6 @@
 class SchoolGroupsController < ApplicationController
   include PartnersHelper
+  include Promptable
 
   before_action :find_school_group
   before_action :redirect_unless_feature_enabled, only: [:map, :comparisons, :priority_actions, :current_scores]
@@ -43,17 +44,7 @@ class SchoolGroupsController < ApplicationController
   def show_school_group_message?
     return false unless @school_group.dashboard_message.present?
 
-    if user_signed_in? && current_user.admin?
-      true
-    elsif user_signed_in_and_linked_to_school? && can?(:show_management_dash, @school)
-      true
-    else
-      false
-    end
-  end
-
-  def user_signed_in_and_linked_to_school?
-    user_signed_in? && (current_user.school_id == @school.id)
+    show_standard_prompts?(@school_group)
   end
 
   def sort_total_savings(total_savings)
