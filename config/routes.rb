@@ -386,9 +386,6 @@ Rails.application.routes.draw do
     resources :videos
     resources :school_groups do
       scope module: :school_groups do
-        resources :chart_updates, only: [:index] do
-          post :bulk_update_charts
-        end
         resources :meter_attributes
         resources :meter_updates, only: [:index] do
           post :bulk_update_meter_data_source

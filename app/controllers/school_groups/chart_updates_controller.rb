@@ -3,13 +3,16 @@ module SchoolGroups
     load_and_authorize_resource :school_group
 
     def index
+      redirect_to school_group_path(@school_group) and return unless can?(:manage, @school_group)
     end
 
     def bulk_update_charts
+      redirect_to school_group_path(@school_group) and return unless can?(:manage, @school_group)
+
       if @school_group.schools.update_all(chart_preference: default_chart_preference) && @school_group.update!(default_chart_preference: default_chart_preference)
         count = @school_group.schools.count
-        notice = "Default chart preference successfully updated for #{@school_group.name} and #{count} #{'school'.pluralize(count)} in this group."
-        redirect_to(admin_school_group_chart_updates_path(@school_group), notice: notice) and return
+        notice = t('school_groups.chart_updates.bulk_update_charts.notice', school_group_name: @school_group.name, count: count)
+        redirect_to(school_group_chart_updates_path(@school_group), notice: notice) and return
       else
         render :index, status: :unprocessable_entity
       end
