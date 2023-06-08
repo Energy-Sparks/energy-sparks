@@ -60,7 +60,7 @@ describe MeterAttribute do
     it 'returns expected data' do
       expect(solar_panels.size).to eq 1
       expect(panel.meter_attribute_id).to eq solar_attribute.id
-      expect(panel.meter_id).to eq solar_attribute.meter.id
+      expect(panel.meter).to eq solar_attribute.meter
       expect(panel.school_id).to eq solar_attribute.meter.school.id
       expect(panel.start_date).to eq '2022-01-01'
       expect(panel.end_date).to eq '2023-01-01'

@@ -59,8 +59,8 @@ class MeterAttribute < ApplicationRecord
     MeterAttribute.connection.select_all(sanitized_query).rows.map do |row|
       OpenStruct.new(
         meter_attribute_id: row[0],
-        meter_id: row[1],
-        school_id: row[2],
+        school_id: row[1],
+        meter: Meter.find(row[2]),
         start_date: row[3],
         end_date: row[4],
         kwp: row[5],
