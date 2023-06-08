@@ -1,6 +1,5 @@
 class SchoolGroupsController < ApplicationController
   include PartnersHelper
-  include Promptable
 
   before_action :find_school_group
   before_action :redirect_unless_feature_enabled, only: [:map, :comparisons, :priority_actions, :current_scores]
