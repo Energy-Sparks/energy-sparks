@@ -89,13 +89,15 @@ class SchoolGroup < ApplicationRecord
   enum default_country: School.countries
 
   def fuel_types
+    school_ids = schools.visible.pluck(:id)
+    return [] if school_ids.empty?
     query = <<-SQL.squish
       SELECT DISTINCT(fuel_types.key) FROM (
         SELECT
           row_to_json(json_each(fuel_configuration))->>'key' as key,
           (row_to_json(json_each(fuel_configuration))->>'value') as value
         FROM configurations
-        WHERE school_id IN (#{schools.visible.pluck(:id).join(',')})
+        WHERE school_id IN (#{school_ids.join(',')})
       ) as fuel_types
       WHERE fuel_types.value = 'true';
     SQL
