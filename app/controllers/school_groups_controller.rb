@@ -41,7 +41,7 @@ class SchoolGroupsController < ApplicationController
   end
 
   def show_school_group_message?
-    return false unless @schoolGroup.dashboard_message.present?
+    return false unless @school_group.dashboard_message.present?
 
     if user_signed_in? && current_user.admin?
       true

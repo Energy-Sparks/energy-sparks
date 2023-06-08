@@ -22,6 +22,7 @@
   </div>
 </div>
 
+
 <p>
 <% if @partners.any? %>
   <%= t('school_groups.show.currently_works_with_schools_from', count: @schools.count) %> <%= @school_group.name %> <%= t('school_groups.show.in_partnership_with') %> <%= list_of_partners_as_links(@partners) %>.
@@ -29,6 +30,19 @@
   <%= t('school_groups.show.currently_works_with_from', count: @schools.count) %> <%= @school_group.name %>.
 <% end %>
 </p>
+
+<% if @show_school_group_message && @school_group.dashboard_message %>
+  <div class='row'>
+    <div class="col-md-12">
+      <%= render 'schools/dashboard/info_bar',
+         colour: 'bg-neutral',
+         icon: 'info-circle fa-3x',
+         content: @school_group.dashboard_message.message,
+         buttons: { }
+      %>
+    </div>
+  </div>
+<% end %>
 
 <% unless current_page?(action: 'map') %>
   <ul class="nav nav-tabs locales">
