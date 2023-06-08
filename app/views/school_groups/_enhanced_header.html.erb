@@ -31,7 +31,7 @@
 <% end %>
 </p>
 
-<% if @show_school_group_message && @school_group.dashboard_message %>
+<% if @show_school_group_message && @school_group.dashboard_message&.message&.present? %>
   <div class='row'>
     <div class="col-md-12">
       <%= render 'schools/dashboard/info_bar',
