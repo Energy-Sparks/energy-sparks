@@ -42,9 +42,15 @@ class SchoolGroupsController < ApplicationController
   end
 
   def show_school_group_message?
-    return false unless @school_group.dashboard_message.present?
+    return false unless @school_group&.dashboard_message
 
-    show_standard_prompts?(@school_group)
+    if user_signed_in? && current_user.admin?
+      true
+    elsif can?(:show_management_dash, @school_group)
+      true
+    else
+      false
+    end
   end
 
   def sort_total_savings(total_savings)
