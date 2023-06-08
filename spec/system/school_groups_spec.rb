@@ -22,6 +22,9 @@ describe 'school groups', :school_groups, type: :system do
     end
   end
 
+
+
+
   context 'current school group pages (feature disabled)' do
     describe 'when not logged in' do
       it 'redirects enhanced page actions to school group page' do
@@ -327,10 +330,39 @@ describe 'school groups', :school_groups, type: :system do
         sign_in(user)
       end
 
-      context '' do
-        let(:public) { true }
+      context 'school group dashboard notification' do
+        it 'shows a school group dashboard notification to group admins' do
+          visit map_school_group_path(school_group)
+          expect(page).to have_content('A school group notice message')
+          visit comparisons_school_group_path(school_group)
+          expect(page).to have_content('A school group notice message')
+          visit priority_actions_school_group_path(school_group)
+          expect(page).to have_content('A school group notice message')
+          visit current_scores_school_group_path(school_group)
+          expect(page).to have_content('A school group notice message')
+        end
+      end
 
-        it 'shows a school group dashboard notification' do
+      context 'when school group is public' do
+        let(:public) { true }
+        include_examples "a public school group dashboard"
+      end
+
+      context 'when school group is private' do
+        let(:public) { false }
+        include_examples "a public school group dashboard"
+      end
+    end
+
+    context 'when logged in as an admin' do
+      let!(:user)           { create(:admin) }
+
+      before(:each) do
+        sign_in(user)
+      end
+
+      context 'school group dashboard notification' do
+        it 'shows a school group dashboard notification to group admins' do
           visit map_school_group_path(school_group)
           expect(page).to have_content('A school group notice message')
           visit comparisons_school_group_path(school_group)
