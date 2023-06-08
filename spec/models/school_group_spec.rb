@@ -84,6 +84,9 @@ describe SchoolGroup, :school_groups, type: :model do
     let(:school_group) { create(:school_group) }
     let(:school_1) { create(:school, school_group: school_group) }
     let(:school_2) { create(:school, school_group: school_group) }
+    let(:school_group_2) { create(:school_group) }
+    let(:school_group_3) { create(:school_group) }
+    let(:school_3) { create(:school, school_group: school_group_3, visible: false) }
 
     it 'returns an array of symbolized fuel types used across all schools in a given group' do
       Schools::Configuration.create!(school: school_1, fuel_configuration: {"has_solar_pv":false,"has_storage_heaters":false,"fuel_types_for_analysis":"electric_and_gas","has_gas":true,"has_electricity":true})
@@ -92,6 +95,17 @@ describe SchoolGroup, :school_groups, type: :model do
       expect(school_group.fuel_types.sort).to eq([:electricity, :gas, :solar_pv])
       configuration.update(fuel_configuration: {"has_solar_pv":false,"has_storage_heaters":true,"fuel_types_for_analysis":"electric_and_gas","has_gas":false,"has_electricity":true})
       expect(school_group.fuel_types.sort).to eq([:electricity, :gas, :storage_heaters])
+    end
+
+    it 'returns an empty array if a school group has no visible schools' do
+      expect(school_group_2.schools.count).to eq(0)
+      expect(school_group_2.schools.visible.count).to eq(0)
+      expect(school_group_2.fuel_types).to eq([])
+
+      Schools::Configuration.create!(school: school_3, fuel_configuration: { "has_solar_pv": false, "has_storage_heaters": false, "fuel_types_for_analysis": "electric_and_gas", "has_gas": true, "has_electricity": true })
+      expect(school_group_3.schools.count).to eq(1)
+      expect(school_group_3.schools.visible.count).to eq(0)
+      expect(school_group_3.fuel_types).to eq([])
     end
   end
 
