@@ -50,6 +50,7 @@ class Ability
         can :show, SchoolGroup, id: user.school_group_id
         can :compare, SchoolGroup, id: user.school_group_id
         can :show_management_dash, SchoolGroup, id: user.school_group.id
+        can :update_settings, SchoolGroup, id: user.school_group_id
 
         can [:show, :update], Calendar do |calendar|
           user.school_group.calendars.include?(calendar)
