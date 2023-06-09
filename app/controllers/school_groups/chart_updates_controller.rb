@@ -3,11 +3,11 @@ module SchoolGroups
     load_and_authorize_resource :school_group
 
     def index
-      redirect_to school_group_path(@school_group) and return unless can?(:manage, @school_group)
+      redirect_to school_group_path(@school_group) and return unless can?(:update_settings, @school_group)
     end
 
     def bulk_update_charts
-      redirect_to school_group_path(@school_group) and return unless can?(:manage, @school_group)
+      redirect_to school_group_path(@school_group) and return unless can?(:update_settings, @school_group)
 
       if @school_group.schools.update_all(chart_preference: default_chart_preference) && @school_group.update!(default_chart_preference: default_chart_preference)
         count = @school_group.schools.count

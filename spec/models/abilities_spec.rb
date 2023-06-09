@@ -20,7 +20,7 @@ describe Ability do
       it { is_expected.to be_able_to(:show, create(:school, visible: false, public: false)) }
 
       it { is_expected.to be_able_to(:show_management_dash, create(:school_group))}
-      it { is_expected.to be_able_to(:manage, create(:school_group))}
+      it { is_expected.to be_able_to(:update_settings, create(:school_group))}
     end
 
     context "as a school admin" do
@@ -48,7 +48,7 @@ describe Ability do
       it { is_expected.not_to be_able_to(:manage, Activity.new(school: another_school)) }
       it { is_expected.to be_able_to(:read, ActivityCategory.new) }
       it { is_expected.to be_able_to(:show, ActivityType.new) }
-      it { is_expected.not_to be_able_to(:manage, mygroup)}
+      it { is_expected.not_to be_able_to(:update_settings, mygroup)}
 
       it "can manage another school admin for this school" do
         expect(subject).to be_able_to(:manage, other_admin)
@@ -98,7 +98,7 @@ describe Ability do
 
       it { is_expected.to be_able_to(:show_management_dash, mygroup)}
       it { is_expected.to_not be_able_to(:show_management_dash, create(:school_group))}
-      it { is_expected.not_to be_able_to(:manage, mygroup)}
+      it { is_expected.not_to be_able_to(:update_settings, mygroup)}
     end
 
     context "when is a guest" do
@@ -121,7 +121,7 @@ describe Ability do
 
       it { is_expected.to_not be_able_to(:show_management_dash, create(:school_group))}
       it { is_expected.to_not be_able_to(:show_management_dash, mygroup)}
-      it { is_expected.to_not be_able_to(:manage, mygroup)}
+      it { is_expected.to_not be_able_to(:update_settings, mygroup)}
     end
 
     context "when a group admin" do
@@ -153,7 +153,7 @@ describe Ability do
 
       it { is_expected.to be_able_to(:show_management_dash, school_group)}
       it { is_expected.to_not be_able_to(:show_management_dash, create(:school_group))}
-      it { is_expected.to be_able_to(:manage, school_group)}
+      it { is_expected.to be_able_to(:update_settings, school_group)}
 
       context 'is onboarding' do
 
