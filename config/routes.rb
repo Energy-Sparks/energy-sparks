@@ -111,6 +111,11 @@ Rails.application.routes.draw do
   resource :school_switcher, only: [:create], controller: :school_switcher
 
   resources :school_groups, only: [:show] do
+    scope module: :school_groups do
+      resources :chart_updates, only: [:index] do
+        post :bulk_update_charts
+      end
+    end
     member do
       get :map
       get :recent_usage
@@ -381,9 +386,6 @@ Rails.application.routes.draw do
     resources :videos
     resources :school_groups do
       scope module: :school_groups do
-        resources :chart_updates, only: [:index] do
-          post :bulk_update_charts
-        end
         resources :meter_attributes
         resources :meter_updates, only: [:index] do
           post :bulk_update_meter_data_source

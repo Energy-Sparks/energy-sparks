@@ -37,7 +37,7 @@
           <%= link_to school.name, school_path(school) %>
         </td>
         <% if school.data_enabled %>
-          <% recent_usage = school.recent_usage %>
+          <% recent_usage = school&.recent_usage %>
           <% if @fuel_types.include?(:electricity) %>
             <% if recent_usage&.electricity&.week&.has_data %>
               <td class="text-right <%= recent_usage&.electricity&.week&.message_class %>"

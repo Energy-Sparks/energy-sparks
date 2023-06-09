@@ -1,6 +1,21 @@
 ---
 en:
   school_groups:
+    chart_updates:
+      bulk_update_charts:
+        notice:
+          one: Default chart preference successfully updated for %{school_group_name} and 1 school in this group.
+          other: Default chart preference successfully updated for %{school_group_name} and %{count} school in this group.
+      index:
+        default_chart_preference:
+          carbon: Display chart data in kg CO2, where available
+          cost: Display chart data in £, where available
+          default: Use system default options for each chart
+          explanation: Choose a default option for how energy usage data is displayed in charts
+          form_group: Default chart units
+          usage: Display chart data in kwh, where available
+        group_chart_settings: Group Chart Settings
+        update_all_schools_in_this_group: Update all schools in this group
     comparisons:
       how_does_it_compare:
         baseload: How does the baseload of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
