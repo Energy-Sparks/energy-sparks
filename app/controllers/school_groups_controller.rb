@@ -1,5 +1,6 @@
 class SchoolGroupsController < ApplicationController
   include PartnersHelper
+  include Promptable
 
   before_action :find_school_group
   before_action :redirect_unless_feature_enabled, only: [:map, :comparisons, :priority_actions, :current_scores]
@@ -7,6 +8,7 @@ class SchoolGroupsController < ApplicationController
   before_action :find_schools_and_partners
   before_action :build_breadcrumbs
   before_action :find_school_group_fuel_types
+  before_action :set_show_school_group_message
 
   skip_before_action :authenticate_user!
 
@@ -34,6 +36,16 @@ class SchoolGroupsController < ApplicationController
   end
 
   private
+
+  def set_show_school_group_message
+    @show_school_group_message = show_school_group_message?
+  end
+
+  def show_school_group_message?
+    return false unless @school_group&.dashboard_message
+
+    show_standard_prompts?(@school_group)
+  end
 
   def sort_total_savings(total_savings)
     total_savings.sort do |a, b|
