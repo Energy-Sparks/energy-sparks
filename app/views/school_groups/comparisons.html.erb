@@ -1,1 +1,10 @@
 <%= render 'enhanced_header' %>
+<p class=mt-3><%= link_to t('school_groups.comparisons.view_all_school_comparison_benchmarks'), benchmarks_compare_index_path(search: 'groups', school_group_ids: [@school_group.id]) %></p>
+<% @school_group.categorise_schools.each do |advice_page_key, comparison| %>
+  <%= component 'school_group_comparison', id: 'group-comparison-baseload', comparison: comparison, advice_page_key: advice_page_key %>
+  <p class=pb-5>
+    <%= link_to t('school_groups.comparisons.view_detailed_comparison'), compare_path(benchmark: compare_benchmark_key_for(advice_page_key), school_group_ids: [@school_group.id]) %>
+  </p>
+<% end %>
+
+

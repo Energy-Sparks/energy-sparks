@@ -7,6 +7,7 @@ class SchoolsController < ApplicationController
   include DashboardPriorities
   include NonPublicSchools
   include SchoolProgress
+  include Promptable
 
   load_and_authorize_resource except: [:show, :index]
   load_resource only: [:show]
@@ -144,21 +145,11 @@ private
     redirect_to pupils_school_path(@school) if not_signed_in? && !@school.data_enabled
   end
 
-  def show_standard_prompts?
-    if user_signed_in? && current_user.admin?
-      true
-    elsif user_signed_in_and_linked_to_school? && can?(:show_management_dash, @school)
-      true
-    else
-      false
-    end
-  end
-
   def setup_default_features
     @observations = setup_timeline(@school.observations)
     #Setup management dashboard features if users has permission
     #to do that
-    @show_standard_prompts = show_standard_prompts?
+    @show_standard_prompts = show_standard_prompts?(@school)
     if can?(:show_management_dash, @school)
       @add_contacts = site_settings.message_for_no_contacts && @school.contacts.empty? && can?(:manage, Contact)
       @add_pupils = site_settings.message_for_no_pupil_accounts && @school.users.pupil.empty? && can?(:manage_users, @school)

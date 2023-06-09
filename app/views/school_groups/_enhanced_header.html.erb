@@ -30,6 +30,14 @@
 <% end %>
 </p>
 
+<% if @show_school_group_message && @school_group.dashboard_message&.message&.present? %>
+  <div class='row'>
+    <div class="col-md-12">
+      <%= render 'management/schools/dashboard_message', messageable: @school_group %>
+    </div>
+  </div>
+<% end %>
+
 <% unless current_page?(action: 'map') %>
   <ul class="nav nav-tabs locales">
     <li class="nav-item">
