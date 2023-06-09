@@ -1,10 +1,7 @@
+<% content_for :page_title, @school_group.name + ' | ' +  t("school_groups.titles.#{action_name}") %>
 <%= render 'sub_nav' if can?(:update_settings, @school_group) %>
 
-<p class='pt-4'>
-  <% content_for :page_title, @school_group.name + ' | ' +  t("school_groups.titles.#{action_name}") %>
-</p>
-
-<div class="page-breadcrumb">
+<div class="page-breadcrumb pt-5">
   <%= component 'breadcrumbs' do |c| %>
     <% c.with_items(@breadcrumbs) %>
   <% end %>

@@ -10,7 +10,7 @@
         <ul class="navbar-nav">
           <li class="nav-item dropdown mt-2">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="school-list-menu" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= t('school_groups.sub_nav.dashboards') %></a>
-            <div class="dropdown-menu scrollable" aria-labelledby="school-list-menu" id="manage_school_menu">
+            <div class="dropdown-menu scrollable" aria-labelledby="school-list-menu" id="dropdown-school-list-menu">
               <% @school_group.schools.visible.order(:name).each do |school| %>
                 <%= link_to school.name, school_path(school), class: 'dropdown-item' %>
               <% end %>
@@ -18,7 +18,7 @@
           </li>
           <li class="nav-item dropdown mt-2">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="manage-school-group" href="#" role="button" aria-haspopup="true" aria-expanded="false"><%= t('school_groups.sub_nav.manage_group') %></a>
-            <div class="dropdown-menu scrollable" aria-labelledby="manage-school-group" id="manage_school_menu">
+            <div class="dropdown-menu scrollable" aria-labelledby="manage-school-group" id="dropdown-manage-school-group">
               <%= link_to t('school_groups.sub_nav.chart_settings'), school_group_chart_updates_path(@school_group), class: 'dropdown-item' %>
               <% if current_user.admin? %>
                 <%= link_to t('school_groups.sub_nav.group_admin'), admin_school_group_path(@school_group), class: 'dropdown-item' %>
