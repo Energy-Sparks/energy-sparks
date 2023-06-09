@@ -23,7 +23,8 @@ describe Ability do
     end
 
     context "as a school admin" do
-      let(:school) { create(:school) }
+      let(:mygroup) { create(:school_group) }
+      let(:school) { create(:school, school_group: mygroup) }
       let(:another_school) { create(:school) }
       let(:user) { create(:school_admin, school: school) }
 
@@ -63,11 +64,13 @@ describe Ability do
       it { is_expected.to_not be_able_to(:download_school_data, another_school) }
       it { is_expected.to_not be_able_to(:download_school_data, create(:school, school_group: school.school_group)) }
 
+      it { is_expected.to be_able_to(:show_management_dash, mygroup)}
       it { is_expected.to_not be_able_to(:show_management_dash, create(:school_group))}
     end
 
     context "when is a school user" do
-      let(:school) { create(:school) }
+      let(:mygroup) { create(:school_group) }
+      let(:school) { create(:school, school_group: mygroup) }
       let(:another_school) { create(:school) }
       let(:user) { create(:staff, school: school) }
 
@@ -91,11 +94,13 @@ describe Ability do
       it { is_expected.to_not be_able_to(:download_school_data, another_school) }
       it { is_expected.to_not be_able_to(:download_school_data, create(:school, school_group: school.school_group)) }
 
+      it { is_expected.to be_able_to(:show_management_dash, mygroup)}
       it { is_expected.to_not be_able_to(:show_management_dash, create(:school_group))}
     end
 
     context "when is a guest" do
-      let(:school) { create(:school) }
+      let(:mygroup) { create(:school_group) }
+      let(:school) { create(:school, school_group: mygroup) }
       let(:user) { create(:user, role: :guest) }
 
       %i[index show usage].each do |action|
@@ -112,6 +117,7 @@ describe Ability do
       it { is_expected.to_not be_able_to(:download_school_data, create(:school, school_group: school.school_group)) }
 
       it { is_expected.to_not be_able_to(:show_management_dash, create(:school_group))}
+      it { is_expected.to_not be_able_to(:show_management_dash, mygroup)}
     end
 
     context "when a group admin" do
@@ -140,6 +146,9 @@ describe Ability do
       it { is_expected.to be_able_to(:download_school_data, school) }
       it { is_expected.to_not be_able_to(:download_school_data, create(:school)) }
       it { is_expected.to be_able_to(:download_school_data, create(:school, school_group: school.school_group)) }
+
+      it { is_expected.to be_able_to(:show_management_dash, school_group)}
+      it { is_expected.to_not be_able_to(:show_management_dash, create(:school_group))}
 
       context 'is onboarding' do
 

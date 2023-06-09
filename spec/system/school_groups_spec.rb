@@ -109,7 +109,7 @@ describe 'school groups', :school_groups, type: :system do
       context 'when school group is public' do
         let(:public) { true }
         include_examples "a public school group dashboard"
-        include_examples 'school group dashboard notification'
+        include_examples 'school group no dashboard notification'
 
         describe 'showing recent usage tab' do
           before(:each) do
@@ -310,13 +310,13 @@ describe 'school groups', :school_groups, type: :system do
       context 'when school group is public' do
         let(:public) { true }
         include_examples "a public school group dashboard"
-        include_examples "school group dashboard notification"
+        include_examples "school group no dashboard notification"
       end
 
       context 'when school group is private' do
         let(:public) { false }
         include_examples "a private school group dashboard"
-        include_examples "school group dashboard notification"
+        include_examples "school group no dashboard notification"
       end
     end
 
@@ -328,16 +328,7 @@ describe 'school groups', :school_groups, type: :system do
       end
 
       context 'school group dashboard notification' do
-        it 'shows a school group dashboard notification to group admins' do
-          visit map_school_group_path(school_group)
-          expect(page).to have_content('A school group notice message')
-          visit comparisons_school_group_path(school_group)
-          expect(page).to have_content('A school group notice message')
-          visit priority_actions_school_group_path(school_group)
-          expect(page).to have_content('A school group notice message')
-          visit current_scores_school_group_path(school_group)
-          expect(page).to have_content('A school group notice message')
-        end
+        include_examples 'school group dashboard notification'
       end
 
       context 'when school group is public' do
@@ -359,16 +350,7 @@ describe 'school groups', :school_groups, type: :system do
       end
 
       context 'school group dashboard notification' do
-        it 'shows a school group dashboard notification to group admins' do
-          visit map_school_group_path(school_group)
-          expect(page).to have_content('A school group notice message')
-          visit comparisons_school_group_path(school_group)
-          expect(page).to have_content('A school group notice message')
-          visit priority_actions_school_group_path(school_group)
-          expect(page).to have_content('A school group notice message')
-          visit current_scores_school_group_path(school_group)
-          expect(page).to have_content('A school group notice message')
-        end
+        include_examples 'school group dashboard notification'
       end
 
       context 'when school group is public' do
@@ -393,13 +375,13 @@ describe 'school groups', :school_groups, type: :system do
       context 'when school group is public' do
         let(:public) { true }
         include_examples "a public school group dashboard"
-        include_examples "school group dashboard notification"
+        include_examples "school group no dashboard notification"
       end
 
       context 'when school group is private' do
         let(:public) { false }
         include_examples "a private school group dashboard"
-        include_examples "school group dashboard notification"
+        include_examples "school group no dashboard notification"
       end
     end
 
