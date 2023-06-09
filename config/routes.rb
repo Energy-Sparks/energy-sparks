@@ -110,7 +110,15 @@ Rails.application.routes.draw do
 
   resource :school_switcher, only: [:create], controller: :school_switcher
 
-  resources :school_groups, only: [:show]
+  resources :school_groups, only: [:show] do
+    member do
+      get :map
+      get :recent_usage
+      get :comparisons
+      get :priority_actions
+      get :current_scores
+    end
+  end
   resources :scoreboards, only: [:show, :index]
   resources :transport_types, only: [:index]
 
@@ -521,6 +529,7 @@ Rails.application.routes.draw do
       resources :transifex_loads, only: [:index, :show]
       resources :activity_types, only: [:index, :show]
       resources :dcc_status, only: [:index]
+      resources :solar_panels, only: [:index]
     end
 
     resource :settings, only: [:show, :update]

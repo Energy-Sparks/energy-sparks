@@ -1,10 +1,32 @@
 ---
 en:
   school_groups:
+    comparisons:
+      how_does_it_compare:
+        baseload: How does the baseload of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
+        electricity_intraday: How does the electricity intraday usage analysis of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
+        electricity_long_term: How does the long term changes in electricity consumption of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
+        electricity_out_of_hours: How does the out of school hours electricity use of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
+        gas_long_term: How does the long term changes in gas consumption of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
+        gas_out_of_hours: How does the out of school hours gas use of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
+        heating_control: How does the heating control analysis of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
+        thermostatic_control: How does the thermostatic control analysis of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
+      view_all_school_comparison_benchmarks: View all school comparison benchmarks
+      view_detailed_comparison: View detailed comparison
     header:
       compare_schools: Compare schools
       scoreboard: Scoreboard
       view_all_schools: View all schools
+      view_group: View group
+      view_map: View map
+      view_scoreboard: Scoreboard
+    priority_actions:
+      intro_html: |-
+        <p>We carry out daily analysis for all schools to help identify the areas where there are the biggest opportunities to reduce costs and carbon emissions.</p>
+        <p>This table summarises the potential savings across this entire group of schools. Click on a heading to view the savings for individual schools and explore the detailed analysis.</p>
+        <p><strong>Note</strong>: Savings are not additive across the table as reduced usage in one area, e.g. electricity baseload, will also lead to savings in other areas, e.g. out of hours electricity usage. The potential savings are intended to help to prioritise and coordinate energy saving actions across the group. Cost savings are based on the latest tariff information we have available for the individual schools.</p>
+      modal_intro: This action has been identified as a priority for the following schools.
+      view_analysis: View analysis
     show:
       currently_works_with_from:
         one: Energy Sparks currently works with %{count} school from
@@ -15,3 +37,10 @@ en:
       if_you_would_like_support_enrol_here_html: If you would like Energy Sparks to support your school to reduce its carbon emissions, enrol <a href='%{enrol_path}'>here</a>
       in_partnership_with: in partnership with
       not_visible_schools: Not visible schools
+    titles:
+      comparisons: Comparisons
+      current_scores: Current Scores
+      map: Map
+      priority_actions: Priority Actions
+      recent_usage: Recent Usage
+      show: Group Dashboard

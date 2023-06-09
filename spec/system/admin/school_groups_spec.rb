@@ -6,6 +6,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
   before do
     setup_data
+    allow_any_instance_of(SchoolGroup).to receive(:fuel_types) { [:electricity, :gas, :storage_heaters] }
   end
 
   def create_data_for_school_groups(school_groups)

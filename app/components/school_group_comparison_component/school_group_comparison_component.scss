@@ -1,0 +1,54 @@
+.school-group-comparison-component-callout-row {
+  .exemplar_school {
+    background-color: #f8f9fa !important;
+    border-bottom: 10px solid #5cb85c;
+  }
+  .benchmark_school {
+    background-color: #f8f9fa !important;
+    border-bottom: 10px solid #ffac21;
+  }
+  .other_school {
+    background-color: #f8f9fa !important;
+    border-bottom: 10px solid #FF3A5B;
+  }
+}
+
+.school-group-comparison-component-footer-row {
+  div {
+    text-align: center;
+  }
+  .category-label {
+    font-weight: bold;
+    margin-bottom: 0px;
+  }
+}
+
+.school-group-comparison-component-callout-box {
+  border: 1px solid #dee2e6;
+  width: 50%;
+  box-shadow: 1px 1px #ccc;
+  margin-top: 10px;
+  margin-bottom: 12px;
+  background-color: white;
+  text-align: center;
+
+  div.body h2 {
+    padding-bottom: 0px; margin-bottom: 0px;
+  }
+}
+
+.school-group-comparison-component-callout-box:after {
+  content: "";
+  position: absolute;
+  top: 97%;
+  left: 50%;
+  height: 20px;
+  width: 20px;
+  background: white;
+  box-sizing: border-box;
+  transform: rotate(45deg) translate(-50%);
+  border-bottom: inherit;
+  border-right: inherit;
+  margin-top: -12px;
+  box-shadow: inherit;
+}

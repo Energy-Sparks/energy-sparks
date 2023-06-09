@@ -80,6 +80,35 @@ describe SchoolGroup, :school_groups, type: :model do
 
   end
 
+  describe 'fuel_types' do
+    let(:school_group) { create(:school_group) }
+    let(:school_1) { create(:school, school_group: school_group) }
+    let(:school_2) { create(:school, school_group: school_group) }
+    let(:school_group_2) { create(:school_group) }
+    let(:school_group_3) { create(:school_group) }
+    let(:school_3) { create(:school, school_group: school_group_3, visible: false) }
+
+    it 'returns an array of symbolized fuel types used across all schools in a given group' do
+      Schools::Configuration.create!(school: school_1, fuel_configuration: {"has_solar_pv":false,"has_storage_heaters":false,"fuel_types_for_analysis":"electric_and_gas","has_gas":true,"has_electricity":true})
+      expect(school_group.fuel_types.sort).to eq([:electricity, :gas])
+      configuration = Schools::Configuration.create!(school: school_1, fuel_configuration: {"has_solar_pv":true,"has_storage_heaters":false,"fuel_types_for_analysis":"electric_and_gas","has_gas":false,"has_electricity":true})
+      expect(school_group.fuel_types.sort).to eq([:electricity, :gas, :solar_pv])
+      configuration.update(fuel_configuration: {"has_solar_pv":false,"has_storage_heaters":true,"fuel_types_for_analysis":"electric_and_gas","has_gas":false,"has_electricity":true})
+      expect(school_group.fuel_types.sort).to eq([:electricity, :gas, :storage_heaters])
+    end
+
+    it 'returns an empty array if a school group has no visible schools' do
+      expect(school_group_2.schools.count).to eq(0)
+      expect(school_group_2.schools.visible.count).to eq(0)
+      expect(school_group_2.fuel_types).to eq([])
+
+      Schools::Configuration.create!(school: school_3, fuel_configuration: { "has_solar_pv": false, "has_storage_heaters": false, "fuel_types_for_analysis": "electric_and_gas", "has_gas": true, "has_electricity": true })
+      expect(school_group_3.schools.count).to eq(1)
+      expect(school_group_3.schools.visible.count).to eq(0)
+      expect(school_group_3.fuel_types).to eq([])
+    end
+  end
+
   describe "issues csv" do
     def issue_csv_line(issue)
       [issue.issueable_type.titleize, issue.issueable.name, issue.title, issue.description.to_plain_text, issue.fuel_type, issue.issue_type, issue.status, issue.status_summary, issue.mpan_mprns, issue.admin_meter_statuses, issue.data_source_names, issue.owned_by.try(:display_name), issue.created_by.display_name, issue.created_at, issue.updated_by.display_name, issue.updated_at].join(',')
@@ -126,6 +155,33 @@ describe SchoolGroup, :school_groups, type: :model do
     context "with no issues" do
       it { expect(csv.lines.count).to eq(1) }
       it { expect(csv.lines.first.chomp).to eq(header) }
+    end
+  end
+
+  describe '#scored_schools' do
+    let!(:template_calendar) { create(:template_calendar)}
+    let(:school_group) { create(:school_group) }
+    let!(:schools)  { (1..5).collect { |n| create :school, :with_points, score_points: 6 - n, activities_happened_on: 6.months.ago, template_calendar: template_calendar, school_group: school_group}}
+
+    it 'returns schools in points order' do
+      expect(school_group.scored_schools.map(&:id)).to eq(schools.map(&:id))
+    end
+
+    context 'with academic years' do
+      let(:this_academic_year) { create(:academic_year, start_date: 12.months.ago, end_date: Time.zone.today, calendar: template_calendar) }
+      let(:last_academic_year) { create(:academic_year, start_date: 24.months.ago, end_date: 12.months.ago, calendar: template_calendar) }
+
+      it 'accepts an academic year and restricts' do
+        expect(school_group.scored_schools(academic_year: this_academic_year).map(&:sum_points).any?(&:zero?)).to eq(false)
+        expect(school_group.scored_schools(academic_year: last_academic_year).map(&:sum_points).all?(&:nil?)).to eq(true)
+      end
+
+      it 'also defaults to the current academic year' do
+        create :school, :with_points, score_points: 6, activities_happened_on: 18.months.ago, school_group: school_group
+        expect(school_group.scored_schools(academic_year: last_academic_year).to_a.size).to be 6
+        expect(school_group.scored_schools(academic_year: this_academic_year).to_a.size).to be 6
+        expect(school_group.scored_schools.to_a.size).to be 6
+      end
     end
   end
 

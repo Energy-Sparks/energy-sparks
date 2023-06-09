@@ -84,7 +84,14 @@ class UserTariff < ApplicationRecord
       end
     end
     user_tariff_charges.select { |c| c.units.present? }.each do |charge|
-      attrs[charge.charge_type.to_sym] = { rate: charge.value.to_s, per: charge.units.to_s }
+      charge_value = { rate: charge.value.to_s, per: charge.units.to_s }
+      charge_type = charge.charge_type.to_sym
+      #only add these charges if we also have an asc limit
+      if charge.is_type?([:agreed_availability_charge, :excess_availability_charge])
+        attrs[charge_type] = charge_value if value_for_charge(:asc_limit_kw).present?
+      else
+        attrs[charge_type] = charge_value
+      end
     end
     user_tariff_charges.select { |c| c.is_type?([:duos_red, :duos_amber, :duos_green]) }.each do |charge|
       attrs[charge.charge_type.to_sym] = charge.value.to_s
