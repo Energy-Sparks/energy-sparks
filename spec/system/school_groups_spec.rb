@@ -4,12 +4,14 @@ describe 'school groups', :school_groups, type: :system do
 
   let(:public)                 { true }
   let!(:school_group)          { create(:school_group, public: public) }
+
   let!(:user)                  { create(:user) }
   let!(:school_1)              { create(:school, school_group: school_group, number_of_pupils: 10, data_enabled: true) }
   let!(:school_2)              { create(:school, school_group: school_group, number_of_pupils: 20, data_enabled: true) }
 
   before do
     allow_any_instance_of(SchoolGroup).to receive(:fuel_types) { [:electricity, :gas, :storage_heaters] }
+    DashboardMessage.create!(messageable_type: 'SchoolGroup', messageable_id: school_group.id, message: 'A school group notice message')
   end
 
   let(:feature_flag) { 'false' }
@@ -107,6 +109,7 @@ describe 'school groups', :school_groups, type: :system do
       context 'when school group is public' do
         let(:public) { true }
         include_examples "a public school group dashboard"
+        include_examples 'school group no dashboard notification'
 
         describe 'showing recent usage tab' do
           before(:each) do
@@ -289,11 +292,13 @@ describe 'school groups', :school_groups, type: :system do
       context 'when school group is public' do
         let(:public) { true }
         include_examples "a public school group dashboard"
+        include_examples "school group dashboard notification"
       end
 
       context 'when school group is private' do
         let(:public) { false }
         include_examples "a public school group dashboard"
+        include_examples "school group dashboard notification"
       end
     end
 
@@ -305,11 +310,13 @@ describe 'school groups', :school_groups, type: :system do
       context 'when school group is public' do
         let(:public) { true }
         include_examples "a public school group dashboard"
+        include_examples "school group no dashboard notification"
       end
 
       context 'when school group is private' do
         let(:public) { false }
         include_examples "a private school group dashboard"
+        include_examples "school group no dashboard notification"
       end
     end
 
@@ -318,6 +325,32 @@ describe 'school groups', :school_groups, type: :system do
 
       before(:each) do
         sign_in(user)
+      end
+
+      context 'school group dashboard notification' do
+        include_examples 'school group dashboard notification'
+      end
+
+      context 'when school group is public' do
+        let(:public) { true }
+        include_examples "a public school group dashboard"
+      end
+
+      context 'when school group is private' do
+        let(:public) { false }
+        include_examples "a public school group dashboard"
+      end
+    end
+
+    context 'when logged in as an admin' do
+      let!(:user)           { create(:admin) }
+
+      before(:each) do
+        sign_in(user)
+      end
+
+      context 'school group dashboard notification' do
+        include_examples 'school group dashboard notification'
       end
 
       context 'when school group is public' do
@@ -342,11 +375,13 @@ describe 'school groups', :school_groups, type: :system do
       context 'when school group is public' do
         let(:public) { true }
         include_examples "a public school group dashboard"
+        include_examples "school group no dashboard notification"
       end
 
       context 'when school group is private' do
         let(:public) { false }
         include_examples "a private school group dashboard"
+        include_examples "school group no dashboard notification"
       end
     end
 

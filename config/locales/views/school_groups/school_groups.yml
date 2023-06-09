@@ -16,6 +16,18 @@ en:
           usage: Display chart data in kwh, where available
         group_chart_settings: Group Chart Settings
         update_all_schools_in_this_group: Update all schools in this group
+    comparisons:
+      how_does_it_compare:
+        baseload: How does the baseload of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
+        electricity_intraday: How does the electricity intraday usage analysis of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
+        electricity_long_term: How does the long term changes in electricity consumption of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
+        electricity_out_of_hours: How does the out of school hours electricity use of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
+        gas_long_term: How does the long term changes in gas consumption of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
+        gas_out_of_hours: How does the out of school hours gas use of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
+        heating_control: How does the heating control analysis of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
+        thermostatic_control: How does the thermostatic control analysis of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
+      view_all_school_comparison_benchmarks: View all school comparison benchmarks
+      view_detailed_comparison: View detailed comparison
     header:
       compare_schools: Compare schools
       scoreboard: Scoreboard

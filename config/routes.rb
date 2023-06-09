@@ -525,6 +525,7 @@ Rails.application.routes.draw do
       resources :transifex_loads, only: [:index, :show]
       resources :activity_types, only: [:index, :show]
       resources :dcc_status, only: [:index]
+      resources :solar_panels, only: [:index]
     end
 
     resource :settings, only: [:show, :update]
