@@ -111,6 +111,13 @@ describe 'school groups', :school_groups, type: :system do
         include_examples "a public school group dashboard"
         include_examples 'school group no dashboard notification'
 
+        describe 'chart updates' do
+          it 'shows a form to select default chart units' do
+            visit school_group_chart_updates_path(school_group)
+            expect(current_path).to eq('/users/sign_in')
+          end
+        end
+
         describe 'showing recent usage tab' do
           before(:each) do
             changes = OpenStruct.new(change: "-16%", has_data: true)
@@ -293,12 +300,14 @@ describe 'school groups', :school_groups, type: :system do
         let(:public) { true }
         include_examples "a public school group dashboard"
         include_examples "school group dashboard notification"
+        include_examples "visiting chart updates redirects to group page"
       end
 
       context 'when school group is private' do
         let(:public) { false }
         include_examples "a public school group dashboard"
         include_examples "school group dashboard notification"
+        include_examples "visiting chart updates redirects to group page"
       end
     end
 
@@ -311,20 +320,35 @@ describe 'school groups', :school_groups, type: :system do
         let(:public) { true }
         include_examples "a public school group dashboard"
         include_examples "school group no dashboard notification"
+        include_examples "visiting chart updates redirects to group page"
       end
 
       context 'when school group is private' do
         let(:public) { false }
         include_examples "a private school group dashboard"
         include_examples "school group no dashboard notification"
+        include_examples "visiting chart updates redirects to group map page"
       end
     end
 
     context 'when logged in as the group admin' do
       let!(:user)           { create(:group_admin, school_group: school_group) }
+      let!(:school_group2)  { create(:school_group) }
 
       before(:each) do
         sign_in(user)
+        school_group.schools.delete_all
+        create :school, active: false, school_group: school_group, chart_preference: 'default'
+        create :school, active: false, school_group: school_group, chart_preference: 'carbon'
+        create :school, active: false, school_group: school_group, chart_preference: 'usage'
+        school_group.reload
+        create :school, active: false, school_group: school_group2, chart_preference: 'default'
+        create :school, active: false, school_group: school_group2, chart_preference: 'carbon'
+        create :school, active: false, school_group: school_group2, chart_preference: 'usage'
+      end
+
+      context 'group chart settings page' do
+        include_examples 'allows access to chart updates page and editing of default chart preferences'
       end
 
       context 'school group dashboard notification' do
@@ -344,9 +368,22 @@ describe 'school groups', :school_groups, type: :system do
 
     context 'when logged in as an admin' do
       let!(:user)           { create(:admin) }
+      let!(:school_group2)  { create(:school_group) }
 
       before(:each) do
         sign_in(user)
+        school_group.schools.delete_all
+        create :school, active: false, school_group: school_group, chart_preference: 'default'
+        create :school, active: false, school_group: school_group, chart_preference: 'carbon'
+        create :school, active: false, school_group: school_group, chart_preference: 'usage'
+        school_group.reload
+        create :school, active: false, school_group: school_group2, chart_preference: 'default'
+        create :school, active: false, school_group: school_group2, chart_preference: 'carbon'
+        create :school, active: false, school_group: school_group2, chart_preference: 'usage'
+      end
+
+      context 'group chart settings page' do
+        include_examples 'allows access to chart updates page and editing of default chart preferences'
       end
 
       context 'school group dashboard notification' do
@@ -360,7 +397,6 @@ describe 'school groups', :school_groups, type: :system do
 
       context 'when school group is private' do
         let(:public) { false }
-        include_examples "a public school group dashboard"
       end
     end
 
@@ -376,12 +412,14 @@ describe 'school groups', :school_groups, type: :system do
         let(:public) { true }
         include_examples "a public school group dashboard"
         include_examples "school group no dashboard notification"
+        include_examples "visiting chart updates redirects to group page"
       end
 
       context 'when school group is private' do
         let(:public) { false }
         include_examples "a private school group dashboard"
         include_examples "school group no dashboard notification"
+        include_examples "visiting chart updates redirects to group map page"
       end
     end
 
