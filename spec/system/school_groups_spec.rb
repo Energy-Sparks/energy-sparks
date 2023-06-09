@@ -118,6 +118,10 @@ describe 'school groups', :school_groups, type: :system do
           end
         end
 
+        context 'does not show the sub navigation menu' do
+          include_examples 'does not show the sub navigation menu'
+        end
+
         describe 'showing recent usage tab' do
           before(:each) do
             changes = OpenStruct.new(change: "-16%", has_data: true)
@@ -286,6 +290,7 @@ describe 'school groups', :school_groups, type: :system do
       context 'when school group is private' do
         let(:public) { false }
         include_examples "a private school group dashboard"
+        include_examples 'does not show the sub navigation menu'
       end
     end
 
@@ -294,6 +299,10 @@ describe 'school groups', :school_groups, type: :system do
 
       before(:each) do
         sign_in(user)
+      end
+
+      context 'does not show the sub navigation menu' do
+        include_examples 'does not show the sub navigation menu'
       end
 
       context 'when school group is public' do
@@ -314,6 +323,10 @@ describe 'school groups', :school_groups, type: :system do
     context 'when logged in as a non school admin' do
       before(:each) do
         sign_in(user)
+      end
+
+      context 'does not show the sub navigation menu' do
+        include_examples 'does not show the sub navigation menu'
       end
 
       context 'when school group is public' do
@@ -345,6 +358,10 @@ describe 'school groups', :school_groups, type: :system do
         create :school, active: false, school_group: school_group2, chart_preference: 'default'
         create :school, active: false, school_group: school_group2, chart_preference: 'carbon'
         create :school, active: false, school_group: school_group2, chart_preference: 'usage'
+      end
+
+      context 'shows the sub navigation menu' do
+        include_examples 'shows the sub navigation menu'
       end
 
       context 'group chart settings page' do
@@ -382,6 +399,10 @@ describe 'school groups', :school_groups, type: :system do
         create :school, active: false, school_group: school_group2, chart_preference: 'usage'
       end
 
+      context 'shows the sub navigation menu' do
+        include_examples 'shows the sub navigation menu'
+      end
+
       context 'group chart settings page' do
         include_examples 'allows access to chart updates page and editing of default chart preferences'
       end
@@ -406,6 +427,10 @@ describe 'school groups', :school_groups, type: :system do
 
       before(:each) do
         sign_in(user)
+      end
+
+      context 'does not show the sub navigation menu' do
+        include_examples 'does not show the sub navigation menu'
       end
 
       context 'when school group is public' do

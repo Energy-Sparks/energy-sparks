@@ -106,3 +106,51 @@ RSpec.shared_examples 'allows access to chart updates page and editing of defaul
     expect(school_group2.schools.map(&:chart_preference).sort).to eq(['carbon','default','usage'])
   end
 end
+
+RSpec.shared_examples "shows the sub navigation menu" do
+  it 'shows the sub navigation menu' do
+    visit school_group_path(school_group)
+    expect(page).to have_selector(id: "school-list-menu")
+    expect(page).to have_selector(id: "manage-school-group")
+
+    visit map_school_group_path(school_group)
+    expect(page).to have_selector(id: "school-list-menu")
+    expect(page).to have_selector(id: "manage-school-group")
+
+    visit comparisons_school_group_path(school_group)
+    expect(page).to have_selector(id: "school-list-menu")
+    expect(page).to have_selector(id: "manage-school-group")
+
+    visit priority_actions_school_group_path(school_group)
+    expect(page).to have_selector(id: "school-list-menu")
+    expect(page).to have_selector(id: "manage-school-group")
+
+    visit current_scores_school_group_path(school_group)
+    expect(page).to have_selector(id: "school-list-menu")
+    expect(page).to have_selector(id: "manage-school-group")
+  end
+end
+
+RSpec.shared_examples "does not show the sub navigation menu" do
+  it 'does not show the sub navigation menu' do
+    visit school_group_path(school_group)
+    expect(page).not_to have_selector(id: "school-list-menu")
+    expect(page).not_to have_selector(id: "manage-school-group")
+
+    visit map_school_group_path(school_group)
+    expect(page).not_to have_selector(id: "school-list-menu")
+    expect(page).not_to have_selector(id: "manage-school-group")
+
+    visit comparisons_school_group_path(school_group)
+    expect(page).not_to have_selector(id: "school-list-menu")
+    expect(page).not_to have_selector(id: "manage-school-group")
+
+    visit priority_actions_school_group_path(school_group)
+    expect(page).not_to have_selector(id: "school-list-menu")
+    expect(page).not_to have_selector(id: "manage-school-group")
+
+    visit current_scores_school_group_path(school_group)
+    expect(page).not_to have_selector(id: "school-list-menu")
+    expect(page).not_to have_selector(id: "manage-school-group")
+  end
+end
