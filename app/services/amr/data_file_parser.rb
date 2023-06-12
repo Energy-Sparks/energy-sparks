@@ -1,4 +1,6 @@
 require 'csv'
+require 'roo'
+require 'roo-xls'
 
 module Amr
   class DataFileParser
@@ -12,10 +14,17 @@ module Amr
     end
 
     def perform
-      spreadsheet = Roo::Spreadsheet.open(path_and_file_name)
-      content = spreadsheet.sheet(0).to_csv
+      ext = File.extname(path_and_file_name)
+
+      content =
+        if %w(.xlsx .xls).include?(ext)
+          spreadsheet = Roo::Spreadsheet.open(path_and_file_name)
+          spreadsheet.sheet(0).to_csv
+        else
+          File.read(path_and_file_name)
+        end
       CSV.parse(content, col_sep: config.column_separator, row_sep: :auto)
-    rescue CSV::MalformedCSVError, Roo::Error => e
+    rescue CSV::MalformedCSVError => e
       raise Error, e.message
     end
   end
