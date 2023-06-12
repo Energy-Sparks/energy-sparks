@@ -24,7 +24,7 @@ module Amr
           File.read(path_and_file_name)
         end
       CSV.parse(content, col_sep: config.column_separator, row_sep: :auto)
-    rescue CSV::MalformedCSVError => e
+    rescue CSV::MalformedCSVError, Roo::Error => e
       raise Error, e.message
     end
   end
