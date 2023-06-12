@@ -5,7 +5,7 @@
   </div>
 </div>
 
-<p>Upload an CSV file containing AMR data using the <strong><%= @amr_data_feed_config.description %></strong> configuration and preview the results before deciding on whether to import the data or not</p>
+<p>Upload a .csv, .xlsx or .xls file containing AMR data using the <strong><%= @amr_data_feed_config.description %></strong> configuration and preview the results before deciding on whether to import the data or not</p>
 
 <ul class="nav nav-tabs" id="manual-loading" role="tablist">
   <li class="nav-item">
@@ -43,7 +43,7 @@
 
     <div class="alert alert-secondary">
       <%= simple_form_for [:admin, @amr_data_feed_config, @amr_uploaded_reading] do |f| %>
-        <%= f.input :csv_file, label: 'Upload a file', as: :file, input_html: {accept: '.csv'} %>
+        <%= f.input :data_file, label: 'Upload a file', as: :file, input_html: {accept: '.csv, .xls, .xlsx'} %>
         <%= f.submit 'Preview', class: 'btn' %>
       <% end %>
     </div>

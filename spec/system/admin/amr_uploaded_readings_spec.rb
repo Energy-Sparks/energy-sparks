@@ -28,7 +28,7 @@ describe AmrUploadedReading, type: :system do
 
     context "previewing a valid csv file" do
       before do
-        attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/banes-example-file.csv')
+        attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_csv_files/banes-example-file.csv')
         expect { click_on 'Preview' }.to change { AmrUploadedReading.count }.by 1
       end
 
@@ -71,7 +71,7 @@ describe AmrUploadedReading, type: :system do
     end
 
     it 'produces an error message when an invalid CSV file is uploaded' do
-      attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/not_a_csv.csv')
+      attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_csv_files/not_a_csv.csv')
       expect { click_on 'Preview' }.to_not change { AmrUploadedReading.count }
 
       expect(AmrUploadedReading.count).to be 0
@@ -80,8 +80,8 @@ describe AmrUploadedReading, type: :system do
     end
 
     it 'produces an error message when translator raise error' do
-      attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/not_a_csv.csv')
-      expect_any_instance_of(Amr::CsvToAmrReadingData).to receive(:perform).and_raise(Amr::DataFeedException.new('bad file'))
+      attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_csv_files/not_a_csv.csv')
+      expect_any_instance_of(Amr::DataFileToAmrReadingData).to receive(:perform).and_raise(Amr::DataFeedException.new('bad file'))
 
       click_on 'Preview'
 
@@ -92,31 +92,31 @@ describe AmrUploadedReading, type: :system do
 
 
     it 'is helpful if a very different format file is loaded' do
-      attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/example-sheffield-file.csv')
+      attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_csv_files/example-sheffield-file.csv')
       click_on 'Preview'
       expect(page).to have_content(AmrReadingData::ERROR_UNABLE_TO_PARSE_FILE)
     end
 
     it 'is helpful if a dodgy date format file is loaded' do
-      attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/banes-bad-example-date-file.csv')
+      attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_csv_files/banes-bad-example-date-file.csv')
       click_on 'Preview'
       expect(page).to have_content(AmrReadingData::ERROR_UNABLE_TO_PARSE_FILE)
     end
 
     it 'is helpful if a single dodgy date format is in the file loaded' do
-      attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/banes-bad-example-file.csv')
+      attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_csv_files/banes-bad-example-file.csv')
       click_on 'Preview'
       expect(page).to have_content(AmrReadingData::WARNING_BAD_DATE_FORMAT)
     end
 
     it 'is helpful if a dodgy mpan format file is loaded' do
-      attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/banes-bad-example-missing-mpan-file.csv')
+      attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_csv_files/banes-bad-example-missing-mpan-file.csv')
       click_on 'Preview'
       expect(page).to have_content(AmrReadingData::WARNING_MISSING_MPAN_MPRN)
     end
 
     it 'is helpful if a reading is missing' do
-      attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/banes-bad-example-missing-data-file.csv')
+      attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_csv_files/banes-bad-example-missing-data-file.csv')
       click_on 'Preview'
       expect(page).to have_content(AmrReadingData::WARNING_MISSING_READINGS)
     end
@@ -144,13 +144,13 @@ describe AmrUploadedReading, type: :system do
     end
 
     it 'handles a wrong file format' do
-      attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/example-bad-sheffield-file.csv')
+      attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_csv_files/example-bad-sheffield-file.csv')
       click_on 'Preview'
       expect(page).to have_content(AmrReadingData::WARNING_MISSING_READINGS)
     end
 
     it 'handles a wrong file format' do
-      attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/example-bad-sheffield-proper-file.csv')
+      attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_csv_files/example-bad-sheffield-proper-file.csv')
       click_on 'Preview'
       expect(page).to have_content(AmrReadingData::WARNING_READING_DATE_MISSING)
     end
@@ -179,7 +179,7 @@ describe AmrUploadedReading, type: :system do
     end
 
     it 'handles a correct file format' do
-      attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/example-highlands-file.csv')
+      attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_csv_files/example-highlands-file.csv')
       expect { click_on 'Preview' }.to change { AmrUploadedReading.count }.by 1
 
       expect(AmrUploadedReading.count).to be 1
@@ -195,7 +195,7 @@ describe AmrUploadedReading, type: :system do
     end
 
     it 'handles a wrong file format' do
-      attach_file('amr_uploaded_reading[csv_file]', 'spec/fixtures/amr_upload_csv_files/example-sheffield-file.csv')
+      attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_csv_files/example-sheffield-file.csv')
       click_on 'Preview'
       expect(page).to have_content(AmrReadingData::ERROR_UNABLE_TO_PARSE_FILE)
     end
