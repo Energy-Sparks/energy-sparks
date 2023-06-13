@@ -747,6 +747,8 @@ DEPENDENCIES
   rb-readline
   rgeo-geojson
   rollbar
+  roo
+  roo-xls
   rspec-json_expectations
   rspec-rails (~> 4.0.1)
   rubocop (= 0.90.0)
