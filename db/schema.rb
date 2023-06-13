@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_25_095829) do
+ActiveRecord::Schema.define(version: 2023_06_13_155937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -853,13 +853,13 @@ ActiveRecord::Schema.define(version: 2023_05_25_095829) do
     t.index ["replaced_by_id"], name: "index_global_meter_attributes_on_replaced_by_id"
   end
 
-  create_table "good_job_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_processes", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "state"
   end
 
-  create_table "good_job_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_settings", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "key"
@@ -867,7 +867,7 @@ ActiveRecord::Schema.define(version: 2023_05_25_095829) do
     t.index ["key"], name: "index_good_job_settings_on_key", unique: true
   end
 
-  create_table "good_jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_jobs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.text "queue_name"
     t.integer "priority"
     t.jsonb "serialized_params"
@@ -1309,35 +1309,8 @@ ActiveRecord::Schema.define(version: 2023_05_25_095829) do
     t.index ["school_group_id"], name: "index_school_group_partners_on_school_group_id"
   end
 
-  create_table "school_groups", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "description"
-    t.string "slug", null: false
-    t.bigint "default_scoreboard_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "default_solar_pv_tuos_area_id"
-    t.bigint "default_dark_sky_area_id"
-    t.bigint "default_template_calendar_id"
-    t.bigint "default_weather_station_id"
-    t.boolean "public", default: true
-    t.integer "default_chart_preference", default: 0, null: false
-    t.bigint "default_issues_admin_user_id"
-    t.integer "default_country", default: 0, null: false
-    t.bigint "admin_meter_statuses_electricity_id"
-    t.bigint "admin_meter_statuses_gas_id"
-    t.bigint "admin_meter_statuses_solar_pv_id"
-    t.bigint "default_data_source_electricity_id"
-    t.bigint "default_data_source_gas_id"
-    t.bigint "default_data_source_solar_pv_id"
-    t.bigint "default_procurement_route_electricity_id"
-    t.bigint "default_procurement_route_gas_id"
-    t.bigint "default_procurement_route_solar_pv_id"
-    t.index ["default_issues_admin_user_id"], name: "index_school_groups_on_default_issues_admin_user_id"
-    t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
-    t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
-    t.index ["default_template_calendar_id"], name: "index_school_groups_on_default_template_calendar_id"
-  end
+# Could not dump table "school_groups" because of following StandardError
+#   Unknown type 'group_types' for column 'group_type'
 
   create_table "school_key_stages", id: false, force: :cascade do |t|
     t.bigint "school_id", null: false
@@ -1541,8 +1514,8 @@ ActiveRecord::Schema.define(version: 2023_05_25_095829) do
     t.integer "management_priorities_page_limit", default: 10
     t.boolean "message_for_no_pupil_accounts", default: true
     t.jsonb "temperature_recording_months", default: ["10", "11", "12", "1", "2", "3", "4"]
-    t.integer "default_import_warning_days", default: 10
     t.jsonb "prices"
+    t.integer "default_import_warning_days", default: 10
   end
 
   create_table "sms_records", force: :cascade do |t|
