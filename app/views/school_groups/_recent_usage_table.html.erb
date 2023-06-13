@@ -1,0 +1,101 @@
+<table width="100%" class="mt-3 table advice-table table-sorted">
+  <thead>
+    <tr>
+      <th></th>
+      <% if @fuel_types.include?(:electricity) %>
+        <th colspan="2"><%= fa_icon fuel_type_icon(:electricity) %> <%= t('common.electricity') %></th>
+      <% end %>
+      <% if @fuel_types.include?(:gas) %>
+        <th colspan="2"><%= fa_icon fuel_type_icon(:gas) %> <%= t('common.gas') %></th>
+      <% end %>
+      <% if @fuel_types.include?(:storage_heaters) %>
+        <th colspan="2"><%= fa_icon fuel_type_icon(:storage_heaters) %> <%= t('common.storage_heaters') %></th>
+      <% end %>
+    </tr>
+    <tr>
+      <th colspan="1"><%= t('common.school') %></th>
+      <% if @fuel_types.include?(:electricity) %>
+        <th><%= t('common.labels.last_week') %></th>
+        <th><%= t('common.labels.last_year') %></th>
+      <% end %>
+      <% if @fuel_types.include?(:gas) %>
+        <th><%= t('common.labels.last_week') %></th>
+        <th><%= t('common.labels.last_year') %></th>
+      <% end %>
+      <% if @fuel_types.include?(:storage_heaters) %>
+        <th><%= t('common.labels.last_week') %></th>
+        <th><%= t('common.labels.last_year') %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @school_group.schools.visible.order(:name).each do |school| %>
+      <tr>
+        <td>
+          <%= link_to school.name, school_path(school) %>
+        </td>
+        <% if school.data_enabled %>
+          <% recent_usage = school&.recent_usage %>
+          <% if @fuel_types.include?(:electricity) %>
+            <% if recent_usage&.electricity&.week&.has_data %>
+              <td class="text-right <%= recent_usage&.electricity&.week&.message_class %>"
+                  data-order="<%= recent_usage&.electricity&.week&.change&.gsub('%','')&.to_f || '0' %>">
+                <%= up_downify(value_for(recent_usage&.electricity&.week, metric)) %>
+              </td>
+            <% else %>
+              <td class="text-right" data-order="0">-</td>
+            <% end %>
+            <% if recent_usage&.electricity&.year&.has_data %>
+              <td class="text-right <%= recent_usage&.electricity&.year&.message_class %>"
+                  data-order="<%= recent_usage&.electricity&.year&.change&.gsub('%','')&.to_f || '0'  %>">
+                <%= up_downify(value_for(recent_usage&.electricity&.year, metric)) %>
+              </td>
+            <% else %>
+              <td class="text-right" data-order="0">-</td>
+            <% end %>
+          <% end %>
+          <% if @fuel_types.include?(:gas) %>
+            <% if recent_usage&.gas&.week&.has_data %>
+              <td class="text-right <%= recent_usage&.gas&.week&.message_class %>"
+                  data-order="<%= recent_usage&.gas&.week&.change&.gsub('%','')&.to_f || '0' %>">
+                <%= up_downify(value_for(recent_usage&.gas&.week, metric)) %>
+              </td>
+            <% else %>
+              <td class="text-right" data-order="0">-</td>
+            <% end %>
+            <% if recent_usage&.gas&.year&.has_data %>
+              <td class="text-right <%= recent_usage&.gas&.year&.message_class %>"
+                  data-order="<%= recent_usage&.gas&.year&.change&.gsub('%','')&.to_f || '0' %>">
+                <%= up_downify(value_for(recent_usage&.gas&.year, metric)) %>
+              </td>
+            <% else %>
+              <td class="text-right" data-order="'0'">-</td>
+            <% end %>
+          <% end %>
+          <% if @fuel_types.include?(:storage_heaters) %>
+            <% if recent_usage&.storage_heaters&.week&.has_data %>
+              <td class="text-right <%= recent_usage&.storage_heaters&.week&.message_class %>"
+                  data-order="<%= recent_usage&.storage_heaters&.week&.change&.gsub('%','')&.to_f || '0' %>">
+                <%= up_downify(recent_usage&.storage_heaters&.week&.change) %>
+              </td>
+            <% else %>
+              <td class="text-right" data-order="'0'">-</td>
+            <% end %>
+            <% if recent_usage&.storage_heaters&.year&.has_data %>
+              <td class="text-right <%= recent_usage&.storage_heaters&.year&.message_class %>"
+                  data-order="<%= recent_usage&.storage_heaters&.year&.change&.gsub('%','')&.to_f || '0' %>">
+                <%= up_downify(recent_usage&.storage_heaters&.year&.change) %>
+              </td>
+            <% else %>
+              <td class="text-right" data-order="'0'">-</td>
+            <% end %>
+          <% end %>
+        <% else %>
+          <% (@fuel_types.reject{|f| f == :solar_pv}.length * 2).times do %>
+            <td class="text-right" data-order="'0'">-</td>
+          <% end %>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
