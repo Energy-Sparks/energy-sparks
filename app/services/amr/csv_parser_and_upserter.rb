@@ -14,7 +14,7 @@ module Amr
       amr_data_feed_import_log = AmrDataFeedImportLog.create(amr_data_feed_config_id: @config.id, file_name: @file_name, import_time: DateTime.now.utc)
 
       begin
-        amr_reading_data = CsvToAmrReadingData.new(@config, "#{@config.local_bucket_path}/#{@file_name}").perform
+        amr_reading_data = DataFileToAmrReadingData.new(@config, "#{@config.local_bucket_path}/#{@file_name}").perform
 
         if amr_reading_data.valid?
           ProcessAmrReadingData.new(amr_data_feed_import_log).perform(amr_reading_data.valid_records, amr_reading_data.warnings)

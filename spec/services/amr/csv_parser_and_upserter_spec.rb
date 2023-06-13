@@ -176,7 +176,7 @@ module Amr
           expect(AmrDataFeedReading.count).to be 0
 
           e = StandardError.new
-          expect_any_instance_of(Amr::CsvToAmrReadingData).to receive(:perform).and_raise(e)
+          expect_any_instance_of(Amr::DataFileToAmrReadingData).to receive(:perform).and_raise(e)
 
           importer = CsvParserAndUpserter.new(highlands_config, 'empty.csv')
           expect { importer.perform }.to raise_error StandardError
@@ -440,7 +440,7 @@ module Amr
       end
 
       it 'should handle graceful failure' do
-        expect { write_file_and_parse(banes_duff, config) }.to raise_error(Amr::CsvParser::Error)
+        expect { write_file_and_parse(banes_duff, config) }.to raise_error(Amr::DataFileParser::Error)
 
         expect(AmrDataFeedReading.count).to be 0
         expect(AmrDataFeedImportLog.count).to be 1
