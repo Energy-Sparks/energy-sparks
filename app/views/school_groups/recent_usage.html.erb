@@ -1,5 +1,16 @@
 <%= render 'enhanced_header' %>
 
+<%= form_with url: school_group_path(@school_group), method: :get do |f| %>
+  <div class='mt-3 mb-3'>
+    <% ['change', 'usage', 'co2', 'cost'].each do |metric| %>
+      <div class="form-check form-check-inline">
+        <%= f.radio_button :metric, metric, onclick: 'this.form.submit();', class: 'form-check-input', checked: radio_button_checked_for(metric) %>
+        <%= f.label :metric, t("school_groups.show.metric.#{metric}"), value: metric, class: 'form-check-label' %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
 <table width="100%" class="mt-3 table advice-table table-sorted">
   <thead>
     <tr>
@@ -42,7 +53,7 @@
             <% if recent_usage&.electricity&.week&.has_data %>
               <td class="text-right <%= recent_usage&.electricity&.week&.message_class %>"
                   data-order="<%= recent_usage&.electricity&.week&.change&.gsub('%','')&.to_f || '0' %>">
-                <%= up_downify(recent_usage&.electricity&.week&.change) %>
+                <%= up_downify(value_for(recent_usage&.electricity&.week)) %>
               </td>
             <% else %>
               <td class="text-right" data-order="0">-</td>
@@ -50,7 +61,7 @@
             <% if recent_usage&.electricity&.year&.has_data %>
               <td class="text-right <%= recent_usage&.electricity&.year&.message_class %>"
                   data-order="<%= recent_usage&.electricity&.year&.change&.gsub('%','')&.to_f || '0'  %>">
-                <%= up_downify(recent_usage&.electricity&.year&.change) %>
+                <%= up_downify(value_for(recent_usage&.electricity&.year)) %>
               </td>
             <% else %>
               <td class="text-right" data-order="0">-</td>
@@ -60,7 +71,7 @@
             <% if recent_usage&.gas&.week&.has_data %>
               <td class="text-right <%= recent_usage&.gas&.week&.message_class %>"
                   data-order="<%= recent_usage&.gas&.week&.change&.gsub('%','')&.to_f || '0' %>">
-                <%= up_downify(recent_usage&.gas&.week&.change) %>
+                <%= up_downify(value_for(recent_usage&.gas&.week)) %>
               </td>
             <% else %>
               <td class="text-right" data-order="0">-</td>
@@ -68,7 +79,7 @@
             <% if recent_usage&.gas&.year&.has_data %>
               <td class="text-right <%= recent_usage&.gas&.year&.message_class %>"
                   data-order="<%= recent_usage&.gas&.year&.change&.gsub('%','')&.to_f || '0' %>">
-                <%= up_downify(recent_usage&.gas&.year&.change) %>
+                <%= up_downify(value_for(recent_usage&.gas&.year)) %>
               </td>
             <% else %>
               <td class="text-right" data-order="'0'">-</td>
@@ -78,7 +89,7 @@
             <% if recent_usage&.storage_heaters&.week&.has_data %>
               <td class="text-right <%= recent_usage&.storage_heaters&.week&.message_class %>"
                   data-order="<%= recent_usage&.storage_heaters&.week&.change&.gsub('%','')&.to_f || '0' %>">
-                <%= up_downify(recent_usage&.storage_heaters&.week&.change) %>
+                <%= up_downify(value_for(recent_usage&.storage_heaters&.week)) %>
               </td>
             <% else %>
               <td class="text-right" data-order="'0'">-</td>
@@ -86,7 +97,7 @@
             <% if recent_usage&.storage_heaters&.year&.has_data %>
               <td class="text-right <%= recent_usage&.storage_heaters&.year&.message_class %>"
                   data-order="<%= recent_usage&.storage_heaters&.year&.change&.gsub('%','')&.to_f || '0' %>">
-                <%= up_downify(recent_usage&.storage_heaters&.year&.change) %>
+                <%= up_downify(value_for(recent_usage&.storage_heaters&.year)) %>
               </td>
             <% else %>
               <td class="text-right" data-order="'0'">-</td>
