@@ -15,7 +15,7 @@ module SchoolGroupsHelper
   end
 
   def value_for(recent_usage)
-    return '' unless recent_usage
+    return nil unless recent_usage
     case params['metric']
     when 'usage' then recent_usage.usage
     when 'co2' then recent_usage.co2
