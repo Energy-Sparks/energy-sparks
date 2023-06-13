@@ -584,7 +584,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         expect(school_group2.default_chart_preference).to eq('default')
         expect(school_group.schools.map(&:chart_preference).sort).to eq(['carbon','default','usage'])
         expect(school_group2.schools.map(&:chart_preference).sort).to eq(['carbon','default','usage'])
-        expect(page).to have_content("BANES Group Chart Settings")
+        expect(page).to have_content("BANES chart Settings")
         SchoolGroup.default_chart_preferences.keys.each do |preference|
           expect(page).to have_content(I18n.t("school_groups.chart_updates.index.default_chart_preference.#{preference}"))
         end
