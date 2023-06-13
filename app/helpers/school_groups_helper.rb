@@ -19,4 +19,16 @@ module SchoolGroupsHelper
     when :thermostatic_control then :thermostatic_control
     end
   end
+
+  def value_for(recent_usage, metric)
+    return '' unless recent_usage
+    case metric
+    when 'usage' then recent_usage.usage
+    when 'co2' then recent_usage.co2
+    when 'cost' then recent_usage.cost
+    when 'change' then recent_usage.change
+    else
+      recent_usage.change
+    end
+  end
 end
