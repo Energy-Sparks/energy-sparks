@@ -10,23 +10,27 @@
           <div class="school-group-comparison-component-callout-box">
             <div class="body m-2">
               <% label = t('school_count', count: count).split(' ') %>
-              <h2>
-                <% if count.positive? %>
-                  <a href='#' data-toggle="modal" data-target="#<%= @advice_page_key.to_s.camelize + category.to_s.camelize %>ModalCenter">
+              <div class="body m-2">
+                <h2>
+                  <% if count.positive? %>
+                    <a href='#' data-toggle="modal" data-target="#<%= @advice_page_key.to_s.camelize + category.to_s.camelize %>ModalCenter">
+                      <%= label.first %>
+                    </a>
+                  <% else %>
                     <%= label.first %>
-                  </a>
-                <% else %>
-                  <%= label.first %>
-                <% end %>
-              </h2>
-              <h3><%= label.last.capitalize %></h3>
+                  <% end %>
+                </h2>
+              </div>
+              <div class="footer mb-2">
+                <small><%= label.last.capitalize %></small>
+              </div>
               <% if count.positive? %>
                 <%= render(FootnoteModalComponent.new(title: modal_title_for(category), modal_id: modal_id_for(category))) do |component| %>
                   <% component.with_body_content do %>
                     <table class="table table-borderless table-sorted advice-table advice-priority-table">
                       <thead>
                         <tr>
-                          <th ><%= t('common.school') %></th>
+                          <th><%= t('common.school') %></th>
                           <th class="no-sort"></th>
                         </tr>
                       </thead>
