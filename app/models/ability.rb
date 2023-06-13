@@ -49,6 +49,8 @@ class Ability
         related_school_scope = { school: { school_group_id: user.school_group_id } }
         can :show, SchoolGroup, id: user.school_group_id
         can :compare, SchoolGroup, id: user.school_group_id
+        can :show_management_dash, SchoolGroup, id: user.school_group.id
+        can :update_settings, SchoolGroup, id: user.school_group_id
 
         can [:show, :update], Calendar do |calendar|
           user.school_group.calendars.include?(calendar)
@@ -76,6 +78,7 @@ class Ability
       if user.school.present?
         can [:show, :usage, :show_pupils_dash], School, { school_group_id: user.school.school_group_id, visible: true }
         can :compare, SchoolGroup, { id: user.school.school_group_id, public: false }
+        can :show_management_dash, SchoolGroup, { id: user.school.school_group_id }
       end
       can [
         :show, :usage, :show_pupils_dash,
@@ -128,6 +131,8 @@ class Ability
       ], School, { school_group_id: user.school.school_group_id, visible: true }
       can [:show, :read, :index], Audit, school: { id: user.school_id, visible: true }
       can :compare, SchoolGroup, { id: user.school.school_group_id }
+      can :show_management_dash, SchoolGroup, { id: user.school.school_group_id }
+
       can :manage, Activity, school: { id: user.school_id, visible: true }
       can :manage, Observation, school: { id: user.school_id, visible: true }
       can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)

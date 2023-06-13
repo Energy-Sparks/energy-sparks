@@ -13,13 +13,12 @@ module Admin
     end
 
     def create
-      @csv_file = params[:amr_uploaded_reading][:csv_file]
+      @data_file = params[:amr_uploaded_reading][:data_file]
 
-      @amr_reading_data = Amr::CsvToAmrReadingData.new(@amr_data_feed_config, @csv_file.tempfile).perform
-
+      @amr_reading_data = Amr::DataFileToAmrReadingData.new(@amr_data_feed_config, @data_file.tempfile).perform
       @amr_uploaded_reading = AmrUploadedReading.new(
         amr_data_feed_config: @amr_data_feed_config,
-        file_name: @csv_file.original_filename,
+        file_name: @data_file.original_filename,
         reading_data: @amr_reading_data.reading_data
       )
 

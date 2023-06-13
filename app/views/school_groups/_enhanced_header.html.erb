@@ -1,6 +1,7 @@
 <% content_for :page_title, @school_group.name + ' | ' +  t("school_groups.titles.#{action_name}") %>
+<%= render 'sub_nav' if can?(:update_settings, @school_group) %>
 
-<div class="page-breadcrumb">
+<div class="page-breadcrumb pt-5">
   <%= component 'breadcrumbs' do |c| %>
     <% c.with_items(@breadcrumbs) %>
   <% end %>
@@ -29,6 +30,14 @@
   <%= t('school_groups.show.currently_works_with_from', count: @schools.count) %> <%= @school_group.name %>.
 <% end %>
 </p>
+
+<% if @show_school_group_message && @school_group.dashboard_message&.message&.present? %>
+  <div class='row'>
+    <div class="col-md-12">
+      <%= render 'management/schools/dashboard_message', messageable: @school_group %>
+    </div>
+  </div>
+<% end %>
 
 <% unless current_page?(action: 'map') %>
   <ul class="nav nav-tabs locales">
