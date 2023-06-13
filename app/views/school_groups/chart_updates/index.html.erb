@@ -1,3 +1,11 @@
+<% content_for :page_title, @school_group.name + ' | ' +  t('school_groups.chart_updates.index.group_chart_settings').capitalize %>
+<%= render 'school_groups/sub_nav' if can?(:update_settings, @school_group) %>
+<div class="page-breadcrumb pt-5">
+  <%= component 'breadcrumbs' do |c| %>
+    <% c.with_items(@breadcrumbs) %>
+  <% end %>
+</div>
+
 <h1><%= @school_group.name %> <%= t('school_groups.chart_updates.index.group_chart_settings') %></h1>
 
 <%= simple_form_for :school_group, url: school_group_chart_update_bulk_update_charts_path(chart_update_id: @school_group.id), method: :post do |form| %>
