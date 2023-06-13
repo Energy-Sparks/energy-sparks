@@ -55,7 +55,7 @@ en:
         change: "% change"
         co2: CO2 (kg)
         cost: Cost (£)
-        usage: Use (kwh)
+        usage: Use (kWh)
       not_visible_schools: Not visible schools
     sub_nav:
       chart_settings: Chart settings
