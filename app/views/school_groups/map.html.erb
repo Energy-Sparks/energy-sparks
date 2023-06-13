@@ -9,7 +9,7 @@
   </div>
 </div>
 
-<% @school_group.schools.visible.by_name.each do |school| %>
+<% @school_group.schools.includes(:configuration).visible.by_name.each do |school| %>
   <div class='pb-2'>
     <h4><%= link_to school.name, school_path(school) %></h5>
     <p>
