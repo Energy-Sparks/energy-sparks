@@ -124,7 +124,7 @@ describe 'school groups', :school_groups, type: :system do
 
         describe 'showing recent usage tab' do
           before(:each) do
-            changes = OpenStruct.new(change: "-16%", has_data: true)
+            changes = OpenStruct.new(change: "-16%", usage: '910', cost: '£137', co2: '8,540', has_data: true)
             allow_any_instance_of(School).to receive(:recent_usage) do
               OpenStruct.new(
                 electricity: OpenStruct.new(week: changes, year: changes),
@@ -140,16 +140,102 @@ describe 'school groups', :school_groups, type: :system do
             let(:breadcrumb)    { 'Group Dashboard' }
           end
 
-          it 'shows expected table content' do
-            expect(page).to have_content('Electricity')
-            expect(page).to have_content('Gas')
-            expect(page).to have_content('Storage heaters')
-            expect(page).to have_content('School')
-            expect(page).to have_content('Last week')
-            expect(page).to have_content('Last year')
-            expect(page).to have_content(school_1.name)
-            expect(page).to have_content(school_2.name)
-            expect(page).to have_content('-16%')
+          describe 'changes in metrics params' do
+            it 'shows expected table content for change when there are no metrics params' do
+              visit school_group_path(school_group, {})
+              expect(page).to have_content('Electricity')
+              expect(page).to have_content('Gas')
+              expect(page).to have_content('Storage heaters')
+              expect(page).to have_content('School')
+              expect(page).to have_content('Last week')
+              expect(page).to have_content('Last year')
+              expect(page).to have_content(school_1.name)
+              expect(page).to have_content(school_2.name)
+              expect(page).to have_content('-16%')
+              expect(page).not_to have_content('910')
+              expect(page).not_to have_content('£137')
+              expect(page).not_to have_content('8,540')
+            end
+
+            it 'shows expected table content for change when there is an invalid metrics params' do
+              visit school_group_path(school_group, metric: 'something invalid')
+              expect(page).to have_content('Electricity')
+              expect(page).to have_content('Gas')
+              expect(page).to have_content('Storage heaters')
+              expect(page).to have_content('School')
+              expect(page).to have_content('Last week')
+              expect(page).to have_content('Last year')
+              expect(page).to have_content(school_1.name)
+              expect(page).to have_content(school_2.name)
+              expect(page).to have_content('-16%')
+              expect(page).not_to have_content('910')
+              expect(page).not_to have_content('£137')
+              expect(page).not_to have_content('8,540')
+            end
+
+            it 'shows expected table content for change when there are metrics params for change' do
+              visit school_group_path(school_group, metrics: 'change')
+              expect(page).to have_content('Electricity')
+              expect(page).to have_content('Gas')
+              expect(page).to have_content('Storage heaters')
+              expect(page).to have_content('School')
+              expect(page).to have_content('Last week')
+              expect(page).to have_content('Last year')
+              expect(page).to have_content(school_1.name)
+              expect(page).to have_content(school_2.name)
+              expect(page).to have_content('-16%')
+              expect(page).not_to have_content('910')
+              expect(page).not_to have_content('£137')
+              expect(page).not_to have_content('8,540')
+            end
+
+            it 'shows expected table content for usage when there are metrics params for usage' do
+              visit school_group_path(school_group, metric: 'usage')
+              expect(page).to have_content('Electricity')
+              expect(page).to have_content('Gas')
+              expect(page).to have_content('Storage heaters')
+              expect(page).to have_content('School')
+              expect(page).to have_content('Last week')
+              expect(page).to have_content('Last year')
+              expect(page).to have_content(school_1.name)
+              expect(page).to have_content(school_2.name)
+              expect(page).not_to have_content('-16%')
+              expect(page).to have_content('910')
+              expect(page).not_to have_content('£137')
+              expect(page).not_to have_content('8,540')
+            end
+
+            it 'shows expected table content for cost when there are metrics params for cost' do
+              visit school_group_path(school_group, metric: 'cost')
+              expect(page).to have_content('Electricity')
+              expect(page).to have_content('Gas')
+              expect(page).to have_content('Storage heaters')
+              expect(page).to have_content('School')
+              expect(page).to have_content('Last week')
+              expect(page).to have_content('Last year')
+              expect(page).to have_content(school_1.name)
+              expect(page).to have_content(school_2.name)
+              expect(page).not_to have_content('-16%')
+              expect(page).not_to have_content('910')
+              expect(page).to have_content('£137')
+              expect(page).not_to have_content('8,540')
+            end
+
+            it 'shows expected table content for co2 when there are metrics params for co2' do
+              visit school_group_path(school_group, metric: 'co2')
+              expect(page).to have_content('Electricity')
+              expect(page).to have_content('Gas')
+              expect(page).to have_content('Storage heaters')
+              expect(page).to have_content('School')
+              expect(page).to have_content('Last week')
+              expect(page).to have_content('Last year')
+              expect(page).to have_content(school_1.name)
+              expect(page).to have_content(school_2.name)
+              expect(page).not_to have_content('-16%')
+              expect(page).not_to have_content('910')
+              expect(page).not_to have_content('£137')
+              expect(page).to have_content('8,540')
+            end
           end
         end
 
