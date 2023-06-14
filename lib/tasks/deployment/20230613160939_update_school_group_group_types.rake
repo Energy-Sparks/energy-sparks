@@ -3,8 +3,8 @@ namespace :after_party do
   task update_school_group_group_types: :environment do
     puts "Running deploy task 'update_school_group_group_types'"
 
-    SchoolGroup.where("lower(name) like '%trust%'").update_all(group_type: 'multi_academy_trust')
-    SchoolGroup.where("lower(name) like '%partnership%'").update_all(group_type: 'multi_academy_trust')
+    SchoolGroup.where("lower(name) like '%trust%'").update_all(group_type: :multi_academy_trust)
+    SchoolGroup.where("lower(name) like '%partnership%'").update_all(group_type: :multi_academy_trust)
 
     # Put your task implementation HERE.
 

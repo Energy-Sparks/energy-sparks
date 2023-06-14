@@ -85,7 +85,7 @@ class SchoolGroup < ApplicationRecord
   scope :is_public, -> { where(public: true) }
   validates :name, presence: true
 
-  enum school_groups: [:general, :local_authority, :multi_academy_trust]
+  enum group_type: [:general, :local_authority, :multi_academy_trust]
   enum default_chart_preference: [:default, :carbon, :usage, :cost]
   enum default_country: School.countries
 

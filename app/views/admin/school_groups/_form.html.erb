@@ -13,6 +13,11 @@
   </div>
 
   <div class="form-group">
+    <%= f.label :group_type %>
+    <%= f.select :group_type, options_from_collection_for_select(SchoolGroup.group_types.map { |k,v| OpenStruct.new(id: k, group_type: k.humanize.capitalize) }, 'id', 'group_type', @school_group.group_type), {include_blank: false}, { class: 'form-control' } %>
+  </div>
+
+  <div class="form-group">
     <div class="form-check form-check-inline">
       <%= f.check_box :public, class: 'form-check-input' %>
       <%= f.label :public, class: 'form-check-label' %>
