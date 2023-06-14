@@ -60,8 +60,11 @@ en:
     sub_nav:
       chart_settings: Chart settings
       dashboards: Dashboards
+      edit_group: Edit group
       group_admin: Group admin
       manage_group: Manage Group
+      manage_partners: Manage partners
+      manage_users: Manage users
       set_message: Set message
     titles:
       comparisons: Comparisons

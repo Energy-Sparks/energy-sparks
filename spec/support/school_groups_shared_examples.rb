@@ -12,7 +12,6 @@ RSpec.shared_examples "a public school group dashboard" do
 end
 
 RSpec.shared_examples "a private school group dashboard" do
-
   it 'the user can only access the map view' do
     visit map_school_group_path(school_group)
     expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
@@ -24,7 +23,6 @@ RSpec.shared_examples "a private school group dashboard" do
     expect(current_path).to eq "/school_groups/#{school_group.slug}/map"
     expect(page).to_not have_content('View group')
   end
-
 end
 
 RSpec.shared_examples "school group no dashboard notification" do
@@ -95,18 +93,18 @@ RSpec.shared_examples 'allows access to chart updates page and editing of defaul
     expect(page).to have_selector(id: "manage-school-group")
     expect(school_group.default_chart_preference).to eq('default')
     expect(school_group2.default_chart_preference).to eq('default')
-    expect(school_group.schools.map(&:chart_preference).sort).to eq(['carbon','default','usage'])
-    expect(school_group2.schools.map(&:chart_preference).sort).to eq(['carbon','default','usage'])
+    expect(school_group.schools.map(&:chart_preference).sort).to eq(%w[carbon default usage])
+    expect(school_group2.schools.map(&:chart_preference).sort).to eq(%w[carbon default usage])
     expect(page).to have_content("#{school_group.name} chart settings")
-    SchoolGroup.default_chart_preferences.keys.each do |preference|
+    SchoolGroup.default_chart_preferences.each_key do |preference|
       expect(page).to have_content(I18n.t("school_groups.chart_updates.index.default_chart_preference.#{preference}"))
     end
     choose 'Display chart data in £, where available'
     click_on 'Update all schools in this group'
     expect(school_group.reload.default_chart_preference).to eq('cost')
     expect(school_group2.reload.default_chart_preference).to eq('default')
-    expect(school_group.schools.map(&:chart_preference).sort).to eq(['cost','cost','cost'])
-    expect(school_group2.schools.map(&:chart_preference).sort).to eq(['carbon','default','usage'])
+    expect(school_group.schools.map(&:chart_preference).sort).to eq(%w[cost cost cost])
+    expect(school_group2.schools.map(&:chart_preference).sort).to eq(%w[carbon default usage])
   end
 end
 
@@ -114,22 +112,32 @@ RSpec.shared_examples "shows the sub navigation menu" do
   it 'shows the sub navigation menu' do
     visit school_group_path(school_group)
     expect(page).to have_selector(id: "school-list-menu")
+    expect(school_group.schools.visible.count.positive?).to eq(true)
+    expect(find('#dropdown-school-list-menu').all('a').collect(&:text).sort).to eq(school_group.schools.visible.order(:name).map(&:name))
     expect(page).to have_selector(id: "manage-school-group")
 
     visit map_school_group_path(school_group)
     expect(page).to have_selector(id: "school-list-menu")
+    expect(school_group.schools.visible.count.positive?).to eq(true)
+    expect(find('#dropdown-school-list-menu').all('a').collect(&:text).sort).to eq(school_group.schools.visible.order(:name).map(&:name))
     expect(page).to have_selector(id: "manage-school-group")
 
     visit comparisons_school_group_path(school_group)
     expect(page).to have_selector(id: "school-list-menu")
+    expect(school_group.schools.visible.count.positive?).to eq(true)
+    expect(find('#dropdown-school-list-menu').all('a').collect(&:text).sort).to eq(school_group.schools.visible.order(:name).map(&:name))
     expect(page).to have_selector(id: "manage-school-group")
 
     visit priority_actions_school_group_path(school_group)
     expect(page).to have_selector(id: "school-list-menu")
+    expect(school_group.schools.visible.count.positive?).to eq(true)
+    expect(find('#dropdown-school-list-menu').all('a').collect(&:text).sort).to eq(school_group.schools.visible.order(:name).map(&:name))
     expect(page).to have_selector(id: "manage-school-group")
 
     visit current_scores_school_group_path(school_group)
     expect(page).to have_selector(id: "school-list-menu")
+    expect(school_group.schools.visible.count.positive?).to eq(true)
+    expect(find('#dropdown-school-list-menu').all('a').collect(&:text).sort).to eq(school_group.schools.visible.order(:name).map(&:name))
     expect(page).to have_selector(id: "manage-school-group")
   end
 end
