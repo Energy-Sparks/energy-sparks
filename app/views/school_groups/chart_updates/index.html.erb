@@ -1,5 +1,4 @@
 <% content_for :page_title, @school_group.name + ' | ' +  t('school_groups.chart_updates.index.group_chart_settings').capitalize %>
-<%= render 'school_groups/sub_nav' if can?(:update_settings, @school_group) %>
 <div class="page-breadcrumb pt-5">
   <%= component 'breadcrumbs' do |c| %>
     <% c.with_items(@breadcrumbs) %>
