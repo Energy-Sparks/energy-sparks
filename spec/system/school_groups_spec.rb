@@ -189,7 +189,7 @@ describe 'school groups', :school_groups, type: :system do
               expect(page).not_to have_content('8,540')
             end
 
-            it 'shows expected table content for change when there are metrics params for usage' do
+            it 'shows expected table content for usage when there are metrics params for usage' do
               visit school_group_path(school_group, metric: 'usage')
               expect(page).to have_content('Electricity')
               expect(page).to have_content('Gas')
@@ -205,7 +205,7 @@ describe 'school groups', :school_groups, type: :system do
               expect(page).not_to have_content('8,540')
             end
 
-            it 'shows expected table content for change when there are metrics params for cost' do
+            it 'shows expected table content for cost when there are metrics params for cost' do
               visit school_group_path(school_group, metric: 'cost')
               expect(page).to have_content('Electricity')
               expect(page).to have_content('Gas')
@@ -221,7 +221,7 @@ describe 'school groups', :school_groups, type: :system do
               expect(page).not_to have_content('8,540')
             end
 
-            it 'shows expected table content for change when there are metrics params for co2' do
+            it 'shows expected table content for co2 when there are metrics params for co2' do
               visit school_group_path(school_group, metric: 'co2')
               expect(page).to have_content('Electricity')
               expect(page).to have_content('Gas')
