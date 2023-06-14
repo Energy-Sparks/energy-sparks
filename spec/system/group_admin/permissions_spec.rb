@@ -16,7 +16,9 @@ describe 'Group admin login and permissions' do
     visit root_path
     expect(page).to have_content(school_group.name)
 
-    click_on school.name
+    # click_on school.name
+    first(:link, school.name).click
+
     click_on 'Edit school details'
 
     fill_in 'School name', with: 'New school name'
