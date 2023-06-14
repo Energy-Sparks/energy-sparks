@@ -111,6 +111,10 @@ gem "good_job", "~> 3.4.6"
 # Rails 6.1 functionality. Can be removed when we upgrade.
 gem 'delegated_type'
 
+# Spreadsheet parsing
+gem 'roo'
+gem 'roo-xls'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
