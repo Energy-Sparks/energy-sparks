@@ -7,7 +7,8 @@
     <thead>
       <tr>
         <th>Name</th>
-        <th class="d-none d-xl-block nowrap">Issues admin</th>
+        <th class="d-none d-xl-block nowrap">Group type</th>
+        <th>Issues admin</th>
         <th title="Schools onboarding">Onboarding</th>
         <th title="Schools active (without data visible)">Active</th>
         <th title="Schools active (with data visible)" class='nowrap'>Data visible</th>
@@ -23,6 +24,7 @@
           <td><%= school_group.name %>
             <%= dashboard_message_icon(school_group) %>
           </td>
+          <td><%= school_group.group_type.humanize %></td>
           <td class="d-none d-xl-block">
           <% if school_group.default_issues_admin_user %>
             <span class="badge border badge-pill border-secondary font-weight-normal">
