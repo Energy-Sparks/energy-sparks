@@ -1,17 +1,17 @@
 require 'rails_helper'
 
 describe 'school groups', :school_groups, type: :system do
-
   let(:public)                 { true }
   let!(:school_group)          { create(:school_group, public: public) }
 
   let!(:user)                  { create(:user) }
-  let!(:school_1)              { create(:school, school_group: school_group, number_of_pupils: 10, data_enabled: true) }
-  let!(:school_2)              { create(:school, school_group: school_group, number_of_pupils: 20, data_enabled: true) }
+  let!(:school_1)              { create(:school, school_group: school_group, number_of_pupils: 10, data_enabled: true, visible: true, active: true) }
+  let!(:school_2)              { create(:school, school_group: school_group, number_of_pupils: 20, data_enabled: true, visible: true, active: true) }
 
   before do
     allow_any_instance_of(SchoolGroup).to receive(:fuel_types) { [:electricity, :gas, :storage_heaters] }
     DashboardMessage.create!(messageable_type: 'SchoolGroup', messageable_id: school_group.id, message: 'A school group notice message')
+    school_group.schools.reload
   end
 
   let(:feature_flag) { 'false' }
@@ -70,7 +70,7 @@ describe 'school groups', :school_groups, type: :system do
     end
 
     describe 'when logged in as school admin' do
-      let!(:user)                  { create(:school_admin, school: school_1) }
+      let!(:user) { create(:school_admin, school: school_1) }
 
       before(:each) do
         sign_in(user)
@@ -124,7 +124,7 @@ describe 'school groups', :school_groups, type: :system do
 
         describe 'showing recent usage tab' do
           before(:each) do
-            changes = OpenStruct.new(change: "-16%", has_data: true)
+            changes = OpenStruct.new(change: "-16%", usage: '910', cost: '£137', co2: '8,540', has_data: true)
             allow_any_instance_of(School).to receive(:recent_usage) do
               OpenStruct.new(
                 electricity: OpenStruct.new(week: changes, year: changes),
@@ -140,21 +140,106 @@ describe 'school groups', :school_groups, type: :system do
             let(:breadcrumb)    { 'Group Dashboard' }
           end
 
-          it 'shows expected table content' do
-            expect(page).to have_content('Electricity')
-            expect(page).to have_content('Gas')
-            expect(page).to have_content('Storage heaters')
-            expect(page).to have_content('School')
-            expect(page).to have_content('Last week')
-            expect(page).to have_content('Last year')
-            expect(page).to have_content(school_1.name)
-            expect(page).to have_content(school_2.name)
-            expect(page).to have_content('-16%')
+          describe 'changes in metrics params' do
+            it 'shows expected table content for change when there are no metrics params' do
+              visit school_group_path(school_group, {})
+              expect(page).to have_content('Electricity')
+              expect(page).to have_content('Gas')
+              expect(page).to have_content('Storage heaters')
+              expect(page).to have_content('School')
+              expect(page).to have_content('Last week')
+              expect(page).to have_content('Last year')
+              expect(page).to have_content(school_1.name)
+              expect(page).to have_content(school_2.name)
+              expect(page).to have_content('-16%')
+              expect(page).not_to have_content('910')
+              expect(page).not_to have_content('£137')
+              expect(page).not_to have_content('8,540')
+            end
+
+            it 'shows expected table content for change when there is an invalid metrics params' do
+              visit school_group_path(school_group, metric: 'something invalid')
+              expect(page).to have_content('Electricity')
+              expect(page).to have_content('Gas')
+              expect(page).to have_content('Storage heaters')
+              expect(page).to have_content('School')
+              expect(page).to have_content('Last week')
+              expect(page).to have_content('Last year')
+              expect(page).to have_content(school_1.name)
+              expect(page).to have_content(school_2.name)
+              expect(page).to have_content('-16%')
+              expect(page).not_to have_content('910')
+              expect(page).not_to have_content('£137')
+              expect(page).not_to have_content('8,540')
+            end
+
+            it 'shows expected table content for change when there are metrics params for change' do
+              visit school_group_path(school_group, metrics: 'change')
+              expect(page).to have_content('Electricity')
+              expect(page).to have_content('Gas')
+              expect(page).to have_content('Storage heaters')
+              expect(page).to have_content('School')
+              expect(page).to have_content('Last week')
+              expect(page).to have_content('Last year')
+              expect(page).to have_content(school_1.name)
+              expect(page).to have_content(school_2.name)
+              expect(page).to have_content('-16%')
+              expect(page).not_to have_content('910')
+              expect(page).not_to have_content('£137')
+              expect(page).not_to have_content('8,540')
+            end
+
+            it 'shows expected table content for usage when there are metrics params for usage' do
+              visit school_group_path(school_group, metric: 'usage')
+              expect(page).to have_content('Electricity')
+              expect(page).to have_content('Gas')
+              expect(page).to have_content('Storage heaters')
+              expect(page).to have_content('School')
+              expect(page).to have_content('Last week')
+              expect(page).to have_content('Last year')
+              expect(page).to have_content(school_1.name)
+              expect(page).to have_content(school_2.name)
+              expect(page).not_to have_content('-16%')
+              expect(page).to have_content('910')
+              expect(page).not_to have_content('£137')
+              expect(page).not_to have_content('8,540')
+            end
+
+            it 'shows expected table content for cost when there are metrics params for cost' do
+              visit school_group_path(school_group, metric: 'cost')
+              expect(page).to have_content('Electricity')
+              expect(page).to have_content('Gas')
+              expect(page).to have_content('Storage heaters')
+              expect(page).to have_content('School')
+              expect(page).to have_content('Last week')
+              expect(page).to have_content('Last year')
+              expect(page).to have_content(school_1.name)
+              expect(page).to have_content(school_2.name)
+              expect(page).not_to have_content('-16%')
+              expect(page).not_to have_content('910')
+              expect(page).to have_content('£137')
+              expect(page).not_to have_content('8,540')
+            end
+
+            it 'shows expected table content for co2 when there are metrics params for co2' do
+              visit school_group_path(school_group, metric: 'co2')
+              expect(page).to have_content('Electricity')
+              expect(page).to have_content('Gas')
+              expect(page).to have_content('Storage heaters')
+              expect(page).to have_content('School')
+              expect(page).to have_content('Last week')
+              expect(page).to have_content('Last year')
+              expect(page).to have_content(school_1.name)
+              expect(page).to have_content(school_2.name)
+              expect(page).not_to have_content('-16%')
+              expect(page).not_to have_content('910')
+              expect(page).not_to have_content('£137')
+              expect(page).to have_content('8,540')
+            end
           end
         end
 
         describe 'showing comparisons' do
-
           before(:each) do
             visit comparisons_school_group_path(school_group)
           end
@@ -186,30 +271,30 @@ describe 'school groups', :school_groups, type: :system do
               management_priorities_title: 'Spending too much money on heating',
             )
           end
-          let(:saving) {
+          let(:saving) do
             OpenStruct.new(
               school: school_1,
               average_one_year_saving_gbp: 1000,
               one_year_saving_co2: 1100
             )
-          }
-          let(:priority_actions) {
+          end
+          let(:priority_actions) do
             {
               alert_type_rating => [saving]
             }
-          }
-          let(:total_saving) {
+          end
+          let(:total_saving) do
             OpenStruct.new(
               schools: [school_1],
               average_one_year_saving_gbp: 1000,
               one_year_saving_co2: 1100
             )
-          }
-          let(:total_savings) {
+          end
+          let(:total_savings) do
             {
               alert_type_rating => total_saving
             }
-          }
+          end
 
           before(:each) do
             allow_any_instance_of(SchoolGroups::PriorityActions).to receive(:priority_actions).and_return(priority_actions)
@@ -236,7 +321,6 @@ describe 'school groups', :school_groups, type: :system do
             expect(page).to have_content("This action has been identified as a priority for the following schools")
             expect(page).to have_content(school_1.name)
           end
-
         end
 
         describe 'showing current_scores' do
@@ -295,7 +379,7 @@ describe 'school groups', :school_groups, type: :system do
     end
 
     context 'when logged in as a school admin' do
-      let!(:user)                  { create(:school_admin, school: school_1) }
+      let!(:user) { create(:school_admin, school: school_1) }
 
       before(:each) do
         sign_in(user)
@@ -351,17 +435,21 @@ describe 'school groups', :school_groups, type: :system do
       before(:each) do
         sign_in(user)
         school_group.schools.delete_all
-        create :school, active: false, school_group: school_group, chart_preference: 'default'
-        create :school, active: false, school_group: school_group, chart_preference: 'carbon'
-        create :school, active: false, school_group: school_group, chart_preference: 'usage'
+        create :school, active: true, school_group: school_group, chart_preference: 'default'
+        create :school, active: true, school_group: school_group, chart_preference: 'carbon'
+        create :school, active: true, school_group: school_group, chart_preference: 'usage'
         school_group.reload
-        create :school, active: false, school_group: school_group2, chart_preference: 'default'
-        create :school, active: false, school_group: school_group2, chart_preference: 'carbon'
-        create :school, active: false, school_group: school_group2, chart_preference: 'usage'
+        create :school, active: true, school_group: school_group2, chart_preference: 'default'
+        create :school, active: true, school_group: school_group2, chart_preference: 'carbon'
+        create :school, active: true, school_group: school_group2, chart_preference: 'usage'
       end
 
       context 'shows the sub navigation menu' do
         include_examples 'shows the sub navigation menu'
+        it 'shows only the sub nav manage school links available to a group admin' do
+          visit school_group_path(school_group)
+          expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(["Chart settings"])
+        end
       end
 
       context 'group chart settings page' do
@@ -390,17 +478,21 @@ describe 'school groups', :school_groups, type: :system do
       before(:each) do
         sign_in(user)
         school_group.schools.delete_all
-        create :school, active: false, school_group: school_group, chart_preference: 'default'
-        create :school, active: false, school_group: school_group, chart_preference: 'carbon'
-        create :school, active: false, school_group: school_group, chart_preference: 'usage'
+        create :school, active: true, school_group: school_group, chart_preference: 'default'
+        create :school, active: true, school_group: school_group, chart_preference: 'carbon'
+        create :school, active: true, school_group: school_group, chart_preference: 'usage'
         school_group.reload
-        create :school, active: false, school_group: school_group2, chart_preference: 'default'
-        create :school, active: false, school_group: school_group2, chart_preference: 'carbon'
-        create :school, active: false, school_group: school_group2, chart_preference: 'usage'
+        create :school, active: true, school_group: school_group2, chart_preference: 'default'
+        create :school, active: true, school_group: school_group2, chart_preference: 'carbon'
+        create :school, active: true, school_group: school_group2, chart_preference: 'usage'
       end
 
       context 'shows the sub navigation menu' do
         include_examples 'shows the sub navigation menu'
+        it 'shows the sub nav manage school links available to an admin' do
+          visit school_group_path(school_group)
+          expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(["Chart settings", "Group admin", "Set message", "Group admin", "Set message", "Edit group", "Manage users", "Manage partners"])
+        end
       end
 
       context 'group chart settings page' do
@@ -454,7 +546,6 @@ describe 'school groups', :school_groups, type: :system do
           example.run
         end
       end
-
     end
   end
 end

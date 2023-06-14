@@ -7,8 +7,9 @@
     <% if show_sub_nav?(@school, @hide_subnav) %>
       <%= render 'shared/mini_nav' %>
       <%= render 'shared/sub_nav', podium: current_school_podium, school: @school %>
-    <% elsif controller_name == 'school_groups' && can?(:update_settings, @school_group) %>
+    <% elsif controller_path.split('/').first == 'school_groups' && can?(:update_settings, @school_group) %>
       <%= render 'shared/mini_nav' %>
+      <%= render 'school_groups/sub_nav' if can?(:update_settings, @school_group) %>
     <% else %>
       <%= render 'shared/nav' %>
     <% end %>

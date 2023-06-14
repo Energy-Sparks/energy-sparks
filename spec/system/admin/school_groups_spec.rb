@@ -38,13 +38,13 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         it "displays totals for each group" do
           within('table') do
             school_groups.each do |school_group|
-              expect(page).to have_selector(:table_row, { "Name" => school_group.name, "Issues admin" => school_group.default_issues_admin_user.try(:display_name) || "", "Onboarding" => 1 , "Active" => 1, "Data visible" => 1, "Invisible" => 1, "Removed" => 1 })
+              expect(page).to have_selector(:table_row, { "Name" => school_group.name, "Group type" => school_group.group_type.humanize, "Issues admin" => school_group.default_issues_admin_user.try(:display_name) || "", "Onboarding" => 1 , "Active" => 1, "Data visible" => 1, "Invisible" => 1, "Removed" => 1 })
             end
           end
         end
         it "displays a grand total" do
           within('table') do
-            expect(page).to have_selector(:table_row, { "Name" => "All Energy Sparks Schools", "Issues admin" => "", "Onboarding" => 2 , "Active" => 2, "Data visible" => 2, "Invisible" => 2, "Removed" => 2 })
+            expect(page).to have_selector(:table_row, { "Name" => "All Energy Sparks Schools", "Group type" => "", "Issues admin" => "", "Onboarding" => 2 , "Active" => 2, "Data visible" => 2, "Invisible" => 2, "Removed" => 2 })
           end
         end
         it "has a link to manage school group" do
@@ -584,7 +584,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         expect(school_group2.default_chart_preference).to eq('default')
         expect(school_group.schools.map(&:chart_preference).sort).to eq(['carbon','default','usage'])
         expect(school_group2.schools.map(&:chart_preference).sort).to eq(['carbon','default','usage'])
-        expect(page).to have_content("BANES Group Chart Settings")
+        expect(page).to have_content("BANES chart settings")
         SchoolGroup.default_chart_preferences.keys.each do |preference|
           expect(page).to have_content(I18n.t("school_groups.chart_updates.index.default_chart_preference.#{preference}"))
         end

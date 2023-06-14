@@ -14,7 +14,7 @@ en:
           explanation: Choose a default option for how energy usage data is displayed in charts
           form_group: Default chart units
           usage: Display chart data in kwh, where available
-        group_chart_settings: Group Chart Settings
+        group_chart_settings: chart settings
         update_all_schools_in_this_group: Update all schools in this group
     comparisons:
       how_does_it_compare:
@@ -51,12 +51,20 @@ en:
         other: Energy Sparks currently works with %{count} schools from
       if_you_would_like_support_enrol_here_html: If you would like Energy Sparks to support your school to reduce its carbon emissions, enrol <a href='%{enrol_path}'>here</a>
       in_partnership_with: in partnership with
+      metric:
+        change: "% change"
+        co2: CO2 (kg)
+        cost: Cost (£)
+        usage: Use (kWh)
       not_visible_schools: Not visible schools
     sub_nav:
       chart_settings: Chart settings
       dashboards: Dashboards
+      edit_group: Edit group
       group_admin: Group admin
       manage_group: Manage Group
+      manage_partners: Manage partners
+      manage_users: Manage users
       set_message: Set message
     titles:
       comparisons: Comparisons
