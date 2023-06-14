@@ -90,6 +90,7 @@ end
 RSpec.shared_examples 'allows access to chart updates page and editing of default chart preferences' do
   it 'shows a form to select default chart units' do
     visit school_group_chart_updates_path(school_group)
+    expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq(['Schools', school_group.name, 'Chart settings'])
     expect(school_group.default_chart_preference).to eq('default')
     expect(school_group2.default_chart_preference).to eq('default')
     expect(school_group.schools.map(&:chart_preference).sort).to eq(['carbon','default','usage'])
