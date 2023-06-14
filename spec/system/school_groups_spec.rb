@@ -11,7 +11,6 @@ describe 'school groups', :school_groups, type: :system do
   before do
     allow_any_instance_of(SchoolGroup).to receive(:fuel_types) { [:electricity, :gas, :storage_heaters] }
     DashboardMessage.create!(messageable_type: 'SchoolGroup', messageable_id: school_group.id, message: 'A school group notice message')
-    # school_group.schools.update_all(visible: true, active: true)
     school_group.schools.reload
   end
 
