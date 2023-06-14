@@ -14,7 +14,7 @@ en:
           explanation: Choose a default option for how energy usage data is displayed in charts
           form_group: Default chart units
           usage: Display chart data in kwh, where available
-        group_chart_settings: Group Chart Settings
+        group_chart_settings: chart settings
         update_all_schools_in_this_group: Update all schools in this group
     comparisons:
       how_does_it_compare:
