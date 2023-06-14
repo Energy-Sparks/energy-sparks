@@ -2,7 +2,7 @@ module SchoolGroups
   class CsvGenerator
     class << self
       def csv_headers
-        ['School group', 'School type', 'Onboarding', 'Active', 'Data visible', 'Invisible', 'Removed']
+        ['School group', 'Group type', 'School type', 'Onboarding', 'Active', 'Data visible', 'Invisible', 'Removed']
       end
 
       def count_fields
@@ -23,9 +23,9 @@ module SchoolGroups
         csv << self.class.csv_headers
         @school_groups.each do |g|
           School.school_types.each_key do |school_type|
-            csv << [g.name, school_type.humanize, g.school_onboardings.for_school_type(school_type).incomplete.count] + g.schools.where(school_type: school_type).status_counts.slice(*self.class.count_fields).values
+            csv << [g.name, g.group_type.humanize, school_type.humanize, g.school_onboardings.for_school_type(school_type).incomplete.count] + g.schools.where(school_type: school_type).status_counts.slice(*self.class.count_fields).values
           end
-          csv << [g.name, "All school types", g.school_onboardings.incomplete.count] + g.schools.status_counts.slice(*self.class.count_fields).values
+          csv << [g.name, g.group_type.humanize, "All school types", g.school_onboardings.incomplete.count] + g.schools.status_counts.slice(*self.class.count_fields).values
         end
         csv << ['All Energy Sparks schools', 'All school types', SchoolOnboarding.incomplete.count] + School.all.status_counts.slice(*self.class.count_fields).values
       end

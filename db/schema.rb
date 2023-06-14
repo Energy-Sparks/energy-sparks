@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_25_095829) do
+ActiveRecord::Schema.define(version: 2023_06_13_155937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1333,6 +1333,7 @@ ActiveRecord::Schema.define(version: 2023_05_25_095829) do
     t.bigint "default_procurement_route_electricity_id"
     t.bigint "default_procurement_route_gas_id"
     t.bigint "default_procurement_route_solar_pv_id"
+    t.integer "group_type", default: 0
     t.index ["default_issues_admin_user_id"], name: "index_school_groups_on_default_issues_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
@@ -1541,8 +1542,8 @@ ActiveRecord::Schema.define(version: 2023_05_25_095829) do
     t.integer "management_priorities_page_limit", default: 10
     t.boolean "message_for_no_pupil_accounts", default: true
     t.jsonb "temperature_recording_months", default: ["10", "11", "12", "1", "2", "3", "4"]
-    t.integer "default_import_warning_days", default: 10
     t.jsonb "prices"
+    t.integer "default_import_warning_days", default: 10
   end
 
   create_table "sms_records", force: :cascade do |t|
