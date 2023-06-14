@@ -10,6 +10,7 @@ module SchoolGroupsHelper
   def radio_button_checked_for(metric)
     return true if params['metric'] == metric
     return true if params['metric'].blank? && metric == 'change'
+    return true if %w[usage co2 cost change].exclude?(params['metric']) && metric == 'change'
 
     false
   end
