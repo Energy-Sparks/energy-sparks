@@ -5,7 +5,7 @@ en:
       bulk_update_charts:
         notice:
           one: Default chart preference successfully updated for %{school_group_name} and 1 school in this group.
-          other: Default chart preference successfully updated for %{school_group_name} and %{count} school in this group.
+          other: Default chart preference successfully updated for %{school_group_name} and %{count} schools in this group.
       index:
         default_chart_preference:
           carbon: Display chart data in kg CO2, where available
