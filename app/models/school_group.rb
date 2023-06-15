@@ -89,6 +89,10 @@ class SchoolGroup < ApplicationRecord
   enum default_chart_preference: [:default, :carbon, :usage, :cost]
   enum default_country: School.countries
 
+  def visible_schools_count
+    schools.visible.count
+  end
+
   def fuel_types
     school_ids = schools.visible.pluck(:id)
     return [] if school_ids.empty?

@@ -110,6 +110,7 @@ describe 'school groups', :school_groups, type: :system do
         let(:public) { true }
         include_examples "a public school group dashboard"
         include_examples 'school group no dashboard notification'
+        include_examples 'shows the we are working with message'
 
         describe 'chart updates' do
           it 'shows a form to select default chart units' do
@@ -387,6 +388,8 @@ describe 'school groups', :school_groups, type: :system do
         sign_in(user)
       end
 
+      include_examples 'shows the we are working with message'
+
       context 'does not show the sub navigation menu' do
         include_examples 'does not show the sub navigation menu'
       end
@@ -410,6 +413,8 @@ describe 'school groups', :school_groups, type: :system do
       before(:each) do
         sign_in(user)
       end
+
+      include_examples 'shows the we are working with message'
 
       context 'does not show the sub navigation menu' do
         include_examples 'does not show the sub navigation menu'
@@ -445,6 +450,8 @@ describe 'school groups', :school_groups, type: :system do
         create :school, active: true, school_group: school_group2, chart_preference: 'carbon'
         create :school, active: true, school_group: school_group2, chart_preference: 'usage'
       end
+
+      include_examples 'shows the we are working with message'
 
       context 'shows the sub navigation menu' do
         include_examples 'shows the sub navigation menu'
@@ -489,6 +496,8 @@ describe 'school groups', :school_groups, type: :system do
         create :school, active: true, school_group: school_group2, chart_preference: 'usage'
       end
 
+      include_examples 'shows the we are working with message'
+
       context 'shows the sub navigation menu' do
         include_examples 'shows the sub navigation menu'
         it 'shows the sub nav manage school links available to an admin' do
@@ -522,6 +531,8 @@ describe 'school groups', :school_groups, type: :system do
       before(:each) do
         sign_in(user)
       end
+
+      include_examples 'shows the we are working with message'
 
       context 'does not show the sub navigation menu' do
         include_examples 'does not show the sub navigation menu'
