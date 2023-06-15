@@ -491,7 +491,7 @@ describe 'school groups', :school_groups, type: :system do
         include_examples 'shows the sub navigation menu'
         it 'shows the sub nav manage school links available to an admin' do
           visit school_group_path(school_group)
-          expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(["Chart settings", "Group admin", "Set message", "Group admin", "Set message", "Edit group", "Manage users", "Manage partners"])
+          expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(['Chart settings', 'Edit group', 'Set message', 'Manage users', 'Manage partners', 'Group admin'])
         end
       end
 
