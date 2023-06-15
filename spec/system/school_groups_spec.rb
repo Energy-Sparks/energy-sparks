@@ -287,7 +287,8 @@ describe 'school groups', :school_groups, type: :system do
             OpenStruct.new(
               schools: [school_1],
               average_one_year_saving_gbp: 1000,
-              one_year_saving_co2: 1100
+              one_year_saving_co2: 1100,
+              one_year_saving_kwh: 2200
             )
           end
           let(:total_savings) do
@@ -313,6 +314,7 @@ describe 'school groups', :school_groups, type: :system do
               expect(page).to have_content("Spending too much money on heating")
               expect(page).to have_content("£1,000")
               expect(page).to have_content("1,100 kg CO2")
+              expect(page).to have_content("2,200 kWh")
             end
           end
 
@@ -540,12 +542,5 @@ describe 'school groups', :school_groups, type: :system do
       end
     end
 
-    context 'viewing priority_actions' do
-      around do |example|
-        ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: 'true' do
-          example.run
-        end
-      end
-    end
   end
 end

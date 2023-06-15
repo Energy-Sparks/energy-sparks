@@ -51,6 +51,7 @@ RSpec.describe "advice pages", type: :system do
           average_one_year_saving_gbp: '£5,000',
           average_capital_cost: '£2,000',
           one_year_saving_co2: '9,400 kg CO2',
+          one_year_saving_kwh: '6,500 kWh',
           average_payback_years: '0 days'
         }
       )
@@ -70,6 +71,7 @@ RSpec.describe "advice pages", type: :system do
       expect(page).to have_content('Spending too much money on heating')
       expect(page).to have_content('£5,000')
       expect(page).to have_content('9,400 kg CO2')
+      expect(page).to have_content('6,500 kWh')
     end
 
   end

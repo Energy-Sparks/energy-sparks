@@ -39,11 +39,11 @@ class ManagementPriority < ApplicationRecord
   #Returns an Array of OpenStruct
   def self.for_school_group(school_group)
     query = <<-SQL.squish
-      SELECT a.school_id, a.id, cv.alert_type_rating_id, vars.average_one_year_saving_£, vars.one_year_saving_co2
+      SELECT a.school_id, a.id, cv.alert_type_rating_id, vars.average_one_year_saving_£, vars.one_year_saving_co2, vars.one_year_saving_kwh
       FROM management_priorities mp
       INNER JOIN alert_type_rating_content_versions cv ON mp.alert_type_rating_content_version_id = cv.id
       INNER JOIN alerts a ON mp.alert_id = a.id,
-      JSON_TO_RECORD(a.template_data) AS vars(one_year_saving_co2 TEXT, average_one_year_saving_£ TEXT)
+      JSON_TO_RECORD(a.template_data) AS vars(one_year_saving_kwh TEXT, one_year_saving_co2 TEXT, average_one_year_saving_£ TEXT)
       WHERE
         content_generation_run_id IN (
             SELECT c1.id FROM content_generation_runs c1
@@ -66,7 +66,8 @@ class ManagementPriority < ApplicationRecord
         alert_id: row[1],
         alert_type_rating_id: row[2],
         average_one_year_saving_gbp: row[3],
-        one_year_saving_co2: row[4]
+        one_year_saving_co2: row[4],
+        one_year_saving_kwh: row[5]
       )
     end
   end
