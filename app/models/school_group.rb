@@ -154,6 +154,10 @@ class SchoolGroup < ApplicationRecord
     SchoolGroups::CategoriseSchools.new(school_group: self).categorise_schools
   end
 
+  def categorise_schools_by_fuel_type
+    SchoolGroups::CategoriseSchools.new(school_group: self).categorise_schools_by_fuel_type
+  end
+
   private
 
   def this_academic_year
