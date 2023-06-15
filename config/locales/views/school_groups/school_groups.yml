@@ -57,6 +57,28 @@ en:
         cost: Cost (£)
         usage: Use (kWh)
       not_visible_schools: Not visible schools
+      we_are_working_with:
+        general:
+          in_partnership_with_html:
+            one: We are working with 1 school in this group in partnership with %{partners}
+            other: We are working with %{count} schools in this group in partnership with %{partners}
+          no_partnership:
+            one: We are working with 1 school in this group
+            other: We are working with %{count} schools in this group
+        local_authority:
+          in_partnership_with_html:
+            one: We are working with 1 school in this local authority in partnership with %{partners}
+            other: We are working with %{count} schools in this local authority in partnership with %{partners}
+          no_partnership:
+            one: We are working with 1 school in this local authority
+            other: We are working with %{count} schools in this local authority
+        multi_academy_trust:
+          in_partnership_with_html:
+            one: We are working with 1 school in this multi-academy trust in partnership with %{partners}
+            other: We are working with %{count} schools in this multi-academy trust in partnership with %{partners}
+          no_partnership:
+            one: We are working with 1 school in this multi-academy trust
+            other: We are working with %{count} schools in this multi-academy trust
     sub_nav:
       chart_settings: Chart settings
       dashboards: Dashboards

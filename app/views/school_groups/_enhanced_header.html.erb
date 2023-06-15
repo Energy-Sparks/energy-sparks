@@ -24,9 +24,9 @@
 
 <p>
 <% if @partners.any? %>
-  <%= t('school_groups.show.currently_works_with_schools_from', count: @schools.count) %> <%= @school_group.name %> <%= t('school_groups.show.in_partnership_with') %> <%= list_of_partners_as_links(@partners) %>.
+  <%= t("school_groups.show.we_are_working_with.#{@school_group.group_type}.in_partnership_with_html", count: @schools.count, partners: list_of_partners_as_links(@partners)) %>.
 <% else %>
-  <%= t('school_groups.show.currently_works_with_from', count: @schools.count) %> <%= @school_group.name %>.
+  <%= t("school_groups.show.we_are_working_with.#{@school_group.group_type}.no_partnership", count: @schools.count) %>.
 <% end %>
 </p>
 
