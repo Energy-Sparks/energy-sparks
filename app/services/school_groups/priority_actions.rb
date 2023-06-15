@@ -17,7 +17,8 @@ module SchoolGroups
         OpenStruct.new(
           schools: priorities.map(&:school),
           average_one_year_saving_gbp: sum_average_one_year_saving_gbp(priorities),
-          one_year_saving_co2: sum_one_year_saving_co2(priorities)
+          one_year_saving_co2: sum_one_year_saving_co2(priorities),
+          one_year_saving_kwh: sum_one_year_saving_kwh2(priorities)
         )
       end
     end
@@ -30,6 +31,10 @@ module SchoolGroups
 
     def sum_one_year_saving_co2(priorities)
       priorities.reduce(0) {|sum, saving| sum + saving.one_year_saving_co2 }
+    end
+
+    def sum_one_year_saving_kwh2(priorities)
+      priorities.reduce(0) {|sum, saving| sum + saving.one_year_saving_kwh }
     end
 
     def find_priority_actions
@@ -51,20 +56,26 @@ module SchoolGroups
         OpenStruct.new(
           school: schools.find {|s| s.id == priority.school_id },
           average_one_year_saving_gbp: average_one_year_saving_gbp(priority),
-          one_year_saving_co2: one_year_saving_co2(priority)
+          one_year_saving_co2: one_year_saving_co2(priority),
+          one_year_saving_kwh: one_year_saving_kwh(priority)
         )
       end
     end
 
+    def one_year_saving_kwh(priority)
+      value_to_i(priority.one_year_saving_kwh)
+    end
+
     def average_one_year_saving_gbp(priority)
-      money_to_i(priority.average_one_year_saving_gbp)
+      value_to_i(priority.average_one_year_saving_gbp)
     end
 
     def one_year_saving_co2(priority)
-      money_to_i(priority.one_year_saving_co2.split(" ").first)
+      value_to_i(priority.one_year_saving_co2.split(" ").first)
     end
 
-    def money_to_i(val)
+    def value_to_i(val)
+      return 0 if val.nil?
       val.gsub(/\D/, '').to_i
     end
 

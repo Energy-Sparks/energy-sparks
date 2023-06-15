@@ -4,6 +4,7 @@
   <thead>
     <tr>
       <th><%= t('common.school') %></th>
+      <th><%= t('advice_pages.index.priorities.table.columns.kwh_saving') %></th>
       <th><%= t('advice_pages.index.priorities.table.columns.cost_saving') %></th>
       <th><%= t('advice_pages.index.priorities.table.columns.co2_reduction') %></th>
       <th class="no-sort"></th>
@@ -14,6 +15,9 @@
       <tr>
         <td>
           <%= link_to saving.school.name, school_path(saving.school) %>
+        </td>
+        <td data-order="<%= saving.one_year_saving_kwh %>">
+          <%= format_unit(saving.one_year_saving_kwh, :kwh) %> kWh
         </td>
         <td data-order="<%= saving.average_one_year_saving_gbp %>">
           <%= format_unit(saving.average_one_year_saving_gbp, :£) %>

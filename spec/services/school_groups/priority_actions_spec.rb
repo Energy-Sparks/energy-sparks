@@ -68,7 +68,8 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
       rating: 2.0,
       template_data: {
         average_one_year_saving_£: '£1,000',
-        one_year_saving_co2: '1,100 kg CO2'
+        one_year_saving_co2: '1,100 kg CO2',
+        one_year_saving_kwh: '1,111 kWh'
       }
     )
   end
@@ -80,7 +81,8 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
       rating: 8.0,
       template_data: {
         average_one_year_saving_£: '£2,000',
-        one_year_saving_co2: '2,200 kg CO2'
+        one_year_saving_co2: '2,200 kg CO2',
+        one_year_saving_kwh: '2,222 kWh'
       }
     )
   end
@@ -92,7 +94,8 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
       rating: 8.0,
       template_data: {
         average_one_year_saving_£: '£9,000',
-        one_year_saving_co2: '9,900 kg CO2'
+        one_year_saving_co2: '9,900 kg CO2',
+        one_year_saving_kwh: '9,999 kWh'
       }
     )
   end
@@ -126,8 +129,8 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
     end
 
     it 'returns the expected values' do
-      school_1_priority = OpenStruct.new(school: school_1, average_one_year_saving_gbp: 1000, one_year_saving_co2: 1100)
-      school_2_priority = OpenStruct.new(school: school_2, average_one_year_saving_gbp: 2000, one_year_saving_co2: 2200)
+      school_1_priority = OpenStruct.new(school: school_1, average_one_year_saving_gbp: 1000, one_year_saving_co2: 1100, one_year_saving_kwh: 1111)
+      school_2_priority = OpenStruct.new(school: school_2, average_one_year_saving_gbp: 2000, one_year_saving_co2: 2200, one_year_saving_kwh: 2222)
       expect(priority_actions[alert_type_rating_high]).to match_array([school_1_priority, school_2_priority])
     end
 
@@ -154,6 +157,11 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
     it 'calculates correct co2 total' do
       expect(total_savings[alert_type_rating_high].one_year_saving_co2).to eq 3300
     end
+
+    it 'calculates correct kwh total' do
+      expect(total_savings[alert_type_rating_high].one_year_saving_kwh).to eq 3333
+    end
+
   end
 
 end
