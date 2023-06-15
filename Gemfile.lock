@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 1de20ee7693f12ad8b61b279aa3830eaec044b8b
-  tag: 2.8.2
+  revision: 2312f5315e83bbb093679d3a406a1646f8061a52
+  branch: aws-eb-test
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
