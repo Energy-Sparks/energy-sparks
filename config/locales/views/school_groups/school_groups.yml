@@ -43,6 +43,7 @@ en:
       modal_intro: This action has been identified as a priority for the following schools.
       view_analysis: View analysis
     show:
+      change_units: Change units
       currently_works_with_from:
         one: Energy Sparks currently works with %{count} school from
         other: Energy Sparks currently works with %{count} schools from
