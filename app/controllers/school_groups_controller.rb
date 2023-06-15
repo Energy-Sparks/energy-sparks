@@ -90,7 +90,17 @@ class SchoolGroupsController < ApplicationController
 
   def enhanced_dashboard
     if can?(:compare, @school_group)
-      render 'recent_usage'
+      respond_to do |format|
+        format.html do
+          render 'recent_usage'
+        end
+        format.csv do
+          metric = params['metric'] || 'change'
+          metric_label = I18n.t("school_groups.show.metric.#{metric}")
+          send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group, metric: metric).export,
+          filename: "#{@school_group.name} - #{I18n.t('school_groups.titles.recent_usage')} - #{metric_label}.csv"
+        end
+      end
     else
       redirect_to map_school_group_path(@school_group) and return
     end

@@ -28,6 +28,7 @@ en:
         thermostatic_control: How does the thermostatic control analysis of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
       view_all_school_comparison_benchmarks: View all school comparison benchmarks
       view_detailed_comparison: View detailed comparison
+    download_as_csv: Download as CSV
     header:
       compare_schools: Compare schools
       scoreboard: Scoreboard
