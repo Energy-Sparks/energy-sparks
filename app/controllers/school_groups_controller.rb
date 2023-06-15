@@ -72,7 +72,7 @@ class SchoolGroupsController < ApplicationController
 
   def build_breadcrumbs
     @breadcrumbs = [
-      { name: 'Schools' },
+      { name: I18n.t('common.schools'), href: schools_path },
       { name: @school_group.name, href: school_group_path(@school_group) },
       { name: I18n.t("school_groups.titles.#{action_name}") }
     ]

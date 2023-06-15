@@ -165,3 +165,87 @@ RSpec.shared_examples "does not show the sub navigation menu" do
     expect(page).not_to have_selector(id: "manage-school-group")
   end
 end
+
+RSpec.shared_examples "shows the we are working with message" do
+  it 'shows the we are working with message' do
+    { general: 'group', local_authority: 'local authority', multi_academy_trust: 'multi-academy trust' }.each do |group_type, label|
+      allow_any_instance_of(SchoolGroup).to receive_messages(
+        {
+          group_type: group_type,
+          visible_schools_count: 0,
+          partners: []
+        }
+      )
+      visit school_group_path(school_group)
+      expect(page).to have_content("We are working with 0 schools in this #{label}.")
+
+      allow_any_instance_of(SchoolGroup).to receive_messages(
+        {
+          group_type: group_type,
+          visible_schools_count: 1,
+          partners: []
+        }
+      )
+      visit school_group_path(school_group)
+      expect(page).to have_content("We are working with 1 school in this #{label}.")
+
+      allow_any_instance_of(SchoolGroup).to receive_messages(
+        {
+          group_type: group_type,
+          visible_schools_count: 3,
+          partners: []
+        }
+      )
+      visit school_group_path(school_group)
+      expect(page).to have_content("We are working with 3 schools in this #{label}.")
+
+      allow_any_instance_of(SchoolGroup).to receive_messages(
+        {
+          group_type: group_type,
+          visible_schools_count: 0,
+          partners: [
+            OpenStruct.new(name: 'Partner 1', url: 'http://example.com'),
+            OpenStruct.new(name: 'Partner 2', url: 'http://example.com')
+          ]
+        }
+      )
+      visit school_group_path(school_group)
+      expect(page).to have_content("We are working with 0 schools in this #{label} in partnership with Partner 1 and Partner 2.")
+
+      allow_any_instance_of(SchoolGroup).to receive_messages(
+        {
+          group_type: group_type,
+          visible_schools_count: 1,
+          partners: [
+            OpenStruct.new(name: 'Partner 1', url: 'http://example.com'),
+            OpenStruct.new(name: 'Partner 2', url: 'http://example.com')
+          ]
+        }
+      )
+      visit school_group_path(school_group)
+      expect(page).to have_content("We are working with 1 school in this #{label} in partnership with Partner 1 and Partner 2.")
+
+      allow_any_instance_of(SchoolGroup).to receive_messages(
+        {
+          group_type: group_type,
+          visible_schools_count: 3,
+          partners: [
+            OpenStruct.new(name: 'Partner 1', url: 'http://example.com'),
+            OpenStruct.new(name: 'Partner 2', url: 'http://example.com')
+          ]
+        }
+      )
+      visit school_group_path(school_group)
+      expect(page).to have_content("We are working with 3 schools in this #{label} in partnership with Partner 1 and Partner 2.")
+    end
+
+    visit map_school_group_path(school_group)
+    expect(page).to have_content('We are working with')
+    visit comparisons_school_group_path(school_group)
+    expect(page).to have_content('We are working with')
+    visit priority_actions_school_group_path(school_group)
+    expect(page).to have_content('We are working with')
+    visit current_scores_school_group_path(school_group)
+    expect(page).to have_content('We are working with')
+  end
+end
