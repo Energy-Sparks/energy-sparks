@@ -16,7 +16,7 @@ module SchoolGroups
             ]
           end
         end
-        @school_group.scored_schools.without_points.each { |school| csv << ['', school.name, 0] }
+        @school_group.scored_schools.without_points.each { |school| csv << ['-', school.name, 0] }
       end
     end
 
