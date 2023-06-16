@@ -11,12 +11,12 @@ RSpec.describe "gas recent changes advice page", type: :system do
     let(:user)  { create(:school_admin, school: school) }
 
     before do
-      allow_any_instance_of(Usage::RecentUsagePeriodCalculationService).to receive(:recent_usage) do
-        OpenStruct.new(
-          date_range: [Time.zone.today, Time.zone.today - 1.week],
-          combined_usage_metric: CombinedUsageMetric.new(kwh: 12.0, £: 12.0, co2: 12.0)
-        )
-      end
+#      allow_any_instance_of(Usage::RecentUsagePeriodCalculationService).to receive(:recent_usage) do
+#        OpenStruct.new(
+#          date_range: [Time.zone.today, Time.zone.today - 1.week],
+#          combined_usage_metric: CombinedUsageMetric.new(kwh: 12.0, £: 12.0, co2: 12.0)
+#        )
+#      end
 
       sign_in(user)
       visit school_advice_gas_recent_changes_path(school)
