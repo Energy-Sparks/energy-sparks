@@ -237,6 +237,15 @@ describe 'school groups', :school_groups, type: :system do
               expect(page).not_to have_content('£137')
               expect(page).to have_content('8,540')
             end
+
+            it 'allows a csv download of recent data metrics' do
+              visit school_group_path(school_group)
+              click_on 'Download as CSV'
+              header = page.response_headers['Content-Disposition']
+              expect(header).to match /^attachment/
+              expect(header).to match /#{school_group.name} - #{I18n.t('school_groups.titles.recent_usage')} - %25 change.csv/
+              expect(page.source).to have_content "School,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},-16%,-16%,-16%,-16%,-16%,-16%\n#{school_group.schools.second.name},-16%,-16%,-16%,-16%,-16%,-16%\n"
+            end
           end
         end
 
