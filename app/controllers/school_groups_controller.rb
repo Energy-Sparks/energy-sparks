@@ -98,7 +98,7 @@ class SchoolGroupsController < ApplicationController
           metric = params['metric'] || 'change'
           metric_label = I18n.t("school_groups.show.metric.#{metric}")
           send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group, metric: metric).export,
-          filename: "#{@school_group.name} - #{I18n.t('school_groups.titles.recent_usage')} - #{metric_label}.csv"
+          filename: "#{@school_group.name} - #{I18n.t('school_groups.titles.recent_usage')} - #{metric_label} (#{Time.zone.now.strftime('%d/%m/%Y')}).csv"
         end
       end
     else

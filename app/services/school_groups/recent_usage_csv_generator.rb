@@ -13,36 +13,7 @@ module SchoolGroups
           recent_usage = school&.recent_usage
           row = []
           row << school.name
-          if fuel_types.include?(:electricity)
-            if recent_usage&.electricity&.week&.has_data
-              row << recent_usage&.electricity&.week.send(@metric)
-              row << recent_usage&.electricity&.year.send(@metric)
-            else
-              row << '-'
-              row << '-'
-            end
-          end
-
-          if fuel_types.include?(:gas)
-            if recent_usage&.gas&.week&.has_data
-              row << recent_usage&.gas&.week.send(@metric)
-              row << recent_usage&.gas&.year.send(@metric)
-            else
-              row << '-'
-              row << '-'
-            end
-          end
-
-          if fuel_types.include?(:storage_heaters)
-            if recent_usage&.storage_heaters&.week&.has_data
-              row << recent_usage&.storage_heaters&.week.send(@metric)
-              row << recent_usage&.storage_heaters&.year.send(@metric)
-            else
-              row << '-'
-              row << '-'
-            end
-          end
-
+          fuel_types.each { |fuel_type| row += columns_for(fuel_type, recent_usage) }
           csv << row
         end
       end
@@ -50,26 +21,30 @@ module SchoolGroups
 
     private
 
+    def columns_for(fuel_type, recent_usage)
+      columns = []
+      columns << (recent_usage&.send(fuel_type)&.week&.has_data ? recent_usage&.send(fuel_type)&.week&.send(@metric) : '-')
+      columns << (recent_usage&.send(fuel_type)&.year&.has_data ? recent_usage&.send(fuel_type)&.year&.send(@metric) : '-')
+      columns
+    end
+
     def fuel_types
-      @fuel_types ||= @school_group.fuel_types
+      # Only include electricity, gas and storage heaters fuel types (e.g. exclude solar pv)
+      @fuel_types ||= @school_group.fuel_types & [:electricity, :gas, :storage_heaters]
     end
 
     def headers
       header_row = []
       header_row << I18n.t('common.school')
-      if fuel_types.include?(:electricity)
-        header_row << I18n.t('common.electricity') + ' ' + I18n.t('common.labels.last_week')
-        header_row << I18n.t('common.electricity') + ' ' + I18n.t('common.labels.last_year')
-      end
-      if fuel_types.include?(:gas)
-        header_row << I18n.t('common.gas') + ' ' + I18n.t('common.labels.last_week')
-        header_row << I18n.t('common.gas') + ' ' + I18n.t('common.labels.last_year')
-      end
-      if fuel_types.include?(:storage_heaters)
-        header_row << I18n.t('common.storage_heaters') + ' ' + I18n.t('common.labels.last_week')
-        header_row << I18n.t('common.storage_heaters') + ' ' + I18n.t('common.labels.last_year')
-      end
+      fuel_types.each { |fuel_type| header_row += header_columns_for(fuel_type) }
       header_row
+    end
+
+    def header_columns_for(fuel_type)
+      columns = []
+      columns << I18n.t("common.#{fuel_type}") + ' ' + I18n.t('common.labels.last_week')
+      columns << I18n.t("common.#{fuel_type}") + ' ' + I18n.t('common.labels.last_year')
+      columns
     end
   end
 end

@@ -125,7 +125,17 @@ describe 'school groups', :school_groups, type: :system do
 
         describe 'showing recent usage tab' do
           before(:each) do
-            changes = OpenStruct.new(change: "-16%", usage: '910', cost: '£137', co2: '8,540', has_data: true)
+            changes = OpenStruct.new(
+              change: "-16%",
+              usage: '910',
+              cost: '£137',
+              co2: '8,540',
+              change_text: "-16%",
+              usage_text: '910',
+              cost_text: '£137',
+              co2_text: '8,540',
+              has_data: true
+            )
             allow_any_instance_of(School).to receive(:recent_usage) do
               OpenStruct.new(
                 electricity: OpenStruct.new(week: changes, year: changes),
@@ -239,34 +249,33 @@ describe 'school groups', :school_groups, type: :system do
             end
 
             it 'allows a csv download of recent data metrics' do
-# %w[change usage cost co2]
-
               visit school_group_path(school_group)
+
               click_on 'Download as CSV'
               header = page.response_headers['Content-Disposition']
               expect(header).to match /^attachment/
-              expect(header).to match /#{school_group.name} - #{I18n.t('school_groups.titles.recent_usage')} - %25 change.csv/
+              expect(header).to match /#{school_group.name} - #{I18n.t('school_groups.titles.recent_usage')} - %25 change/
               expect(page.source).to have_content "School,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},-16%,-16%,-16%,-16%,-16%,-16%\n#{school_group.schools.second.name},-16%,-16%,-16%,-16%,-16%,-16%\n"
 
               visit school_group_path(school_group, metric: 'usage')
               click_on 'Download as CSV'
               header = page.response_headers['Content-Disposition']
               expect(header).to match /^attachment/
-              expect(header).to match /#{school_group.name} - #{I18n.t('school_groups.titles.recent_usage')} - Use %28kWh%29.csv/
+              expect(header).to match /#{school_group.name} - #{I18n.t('school_groups.titles.recent_usage')} - Use %28kWh%29/
               expect(page.source).to have_content "School,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},910,910,910,910,910,910\n#{school_group.schools.second.name},910,910,910,910,910,910\n"
 
               visit school_group_path(school_group, metric: 'cost')
               click_on 'Download as CSV'
               header = page.response_headers['Content-Disposition']
               expect(header).to match /^attachment/
-              expect(header).to match /#{school_group.name} - #{I18n.t('school_groups.titles.recent_usage')} - Cost %28%3F%29.csv/
+              expect(header).to match /#{school_group.name} - #{I18n.t('school_groups.titles.recent_usage')} - Cost %28%3F%29/
               expect(page.source).to have_content "School,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},£137,£137,£137,£137,£137,£137\n#{school_group.schools.second.name},£137,£137,£137,£137,£137,£137\n"
 
               visit school_group_path(school_group, metric: 'co2')
               click_on 'Download as CSV'
               header = page.response_headers['Content-Disposition']
               expect(header).to match /^attachment/
-              expect(header).to match /#{school_group.name} - #{I18n.t('school_groups.titles.recent_usage')} - CO2 %28kg%29.csv/
+              expect(header).to match /#{school_group.name} - #{I18n.t('school_groups.titles.recent_usage')} - CO2 %28kg%29/
               expect(page.source).to have_content "School,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\"\n#{school_group.schools.second.name},\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\"\n"
             end
           end

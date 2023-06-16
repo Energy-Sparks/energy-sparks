@@ -13,7 +13,7 @@
     </div>
   <% end %>
   <div>
-    <%= link_to t('school_groups.download_as_csv'), school_group_path(@school_group, format: :csv, metric: params['metric']), class: 'btn btn-primary' %>
+    <%= link_to t('school_groups.download_as_csv'), school_group_path(@school_group, format: :csv, metric: params['metric']), class: 'btn btn-sm' %>
   </div>
 </div>
 
@@ -90,6 +90,7 @@
               <td class="text-right <%= recent_usage&.gas&.year&.message_class %>"
                   data-order="<%= value&.gsub(/[^-.0-9]/, '')&.to_f || '0' %>">
                 <%= up_downify(value) %>
+
               </td>
             <% else %>
               <td class="text-right" data-order="'0'">-</td>
