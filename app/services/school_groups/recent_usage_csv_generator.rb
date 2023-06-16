@@ -3,7 +3,7 @@ module SchoolGroups
     def initialize(school_group:, metric: 'change')
       raise unless %w[change usage cost co2].include?(metric)
       @school_group = school_group
-      @metric = metric
+      @metric = metric + '_text'
     end
 
     def export
@@ -11,13 +11,12 @@ module SchoolGroups
         csv << headers
         @school_group.schools.visible.order(:name).each do |school|
           recent_usage = school&.recent_usage
-
           row = []
           row << school.name
           if fuel_types.include?(:electricity)
             if recent_usage&.electricity&.week&.has_data
-              row << Nokogiri::HTML(recent_usage&.electricity&.week.send(@metric)).text
-              row << Nokogiri::HTML(recent_usage&.electricity&.year.send(@metric)).text
+              row << recent_usage&.electricity&.week.send(@metric)
+              row << recent_usage&.electricity&.year.send(@metric)
             else
               row << '-'
               row << '-'
@@ -26,8 +25,8 @@ module SchoolGroups
 
           if fuel_types.include?(:gas)
             if recent_usage&.gas&.week&.has_data
-              row << Nokogiri::HTML(recent_usage&.gas&.week.send(@metric)).text
-              row << Nokogiri::HTML(recent_usage&.gas&.year.send(@metric)).text
+              row << recent_usage&.gas&.week.send(@metric)
+              row << recent_usage&.gas&.year.send(@metric)
             else
               row << '-'
               row << '-'
@@ -36,8 +35,8 @@ module SchoolGroups
 
           if fuel_types.include?(:storage_heaters)
             if recent_usage&.storage_heaters&.week&.has_data
-              row << Nokogiri::HTML(recent_usage&.storage_heaters&.week.send(@metric)).text
-              row << Nokogiri::HTML(recent_usage&.storage_heaters&.year.send(@metric)).text
+              row << recent_usage&.storage_heaters&.week.send(@metric)
+              row << recent_usage&.storage_heaters&.year.send(@metric)
             else
               row << '-'
               row << '-'
