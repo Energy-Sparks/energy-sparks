@@ -1,7 +1,7 @@
 module SchoolGroups
   class RecentUsageCsvGenerator
     def initialize(school_group:, metric: 'change')
-      raise unless %w[change usage cost co2].include? metric
+      raise unless %w[change usage cost co2].include?(metric)
       @school_group = school_group
       @metric = metric
     end
