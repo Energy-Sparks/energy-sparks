@@ -1,16 +1,21 @@
 <%= render 'enhanced_header' %>
 
-<%= form_with url: school_group_path(@school_group), method: :get do |f| %>
-  <div class='mt-4'>
-    <label class="mr-2"><%= t("school_groups.show.change_units") %>:</label>
-    <% ['change', 'usage', 'cost', 'co2'].each do |metric| %>
-      <div class="form-check form-check-inline">
-        <%= f.radio_button :metric, metric, onclick: 'this.form.submit();', class: 'form-check-input', checked: radio_button_checked_for(metric) %>
-        <%= f.label :metric, t("school_groups.show.metric.#{metric}"), value: metric, class: 'form-check-label' %>
-      </div>
-    <% end %>
+<div class="d-flex justify-content-between mt-4">
+  <%= form_with url: school_group_path(@school_group), method: :get do |f| %>
+    <div>
+      <label class="mr-2"><%= t("school_groups.show.change_units") %>:</label>
+      <% ['change', 'usage', 'cost', 'co2'].each do |metric| %>
+        <div class="form-check form-check-inline">
+          <%= f.radio_button :metric, metric, onclick: 'this.form.submit();', class: 'form-check-input', checked: radio_button_checked_for(metric) %>
+          <%= f.label :metric, t("school_groups.show.metric.#{metric}"), value: metric, class: 'form-check-label' %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  <div>
+    <%= link_to t('school_groups.download_as_csv'), school_group_path(@school_group, format: :csv, metric: params['metric']), class: 'btn btn-sm' %>
   </div>
-<% end %>
+</div>
 
 <table width="100%" class="mt-3 table advice-table table-sorted">
   <thead>
@@ -85,6 +90,7 @@
               <td class="text-right <%= recent_usage&.gas&.year&.message_class %>"
                   data-order="<%= value&.gsub(/[^-.0-9]/, '')&.to_f || '0' %>">
                 <%= up_downify(value) %>
+
               </td>
             <% else %>
               <td class="text-right" data-order="'0'">-</td>
