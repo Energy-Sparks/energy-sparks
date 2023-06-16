@@ -17,28 +17,28 @@
     <tr>
       <th></th>
       <% if @fuel_types.include?(:electricity) %>
-        <th colspan="2"><%= fa_icon fuel_type_icon(:electricity) %> <%= t('common.electricity') %></th>
+        <th colspan="2" class="text-center"><%= fa_icon fuel_type_icon(:electricity) %> <%= t('common.electricity') %></th>
       <% end %>
       <% if @fuel_types.include?(:gas) %>
-        <th colspan="2"><%= fa_icon fuel_type_icon(:gas) %> <%= t('common.gas') %></th>
+        <th colspan="2" class="text-center"><%= fa_icon fuel_type_icon(:gas) %> <%= t('common.gas') %></th>
       <% end %>
       <% if @fuel_types.include?(:storage_heaters) %>
-        <th colspan="2"><%= fa_icon fuel_type_icon(:storage_heaters) %> <%= t('common.storage_heaters') %></th>
+        <th colspan="2" class="text-center"><%= fa_icon fuel_type_icon(:storage_heaters) %> <%= t('common.storage_heaters') %></th>
       <% end %>
     </tr>
     <tr>
       <th colspan="1"><%= t('common.school') %></th>
       <% if @fuel_types.include?(:electricity) %>
-        <th><%= t('common.labels.last_week') %></th>
-        <th><%= t('common.labels.last_year') %></th>
+        <th class="text-right"><%= t('common.labels.last_week') %></th>
+        <th class="text-right"><%= t('common.labels.last_year') %></th>
       <% end %>
       <% if @fuel_types.include?(:gas) %>
-        <th><%= t('common.labels.last_week') %></th>
-        <th><%= t('common.labels.last_year') %></th>
+        <th class="text-right"><%= t('common.labels.last_week') %></th>
+        <th class="text-right"><%= t('common.labels.last_year') %></th>
       <% end %>
       <% if @fuel_types.include?(:storage_heaters) %>
-        <th><%= t('common.labels.last_week') %></th>
-        <th><%= t('common.labels.last_year') %></th>
+        <th class="text-right"><%= t('common.labels.last_week') %></th>
+        <th class="text-right"><%= t('common.labels.last_year') %></th>
       <% end %>
     </tr>
   </thead>

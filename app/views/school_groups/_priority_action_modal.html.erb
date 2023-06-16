@@ -4,9 +4,9 @@
   <thead>
     <tr>
       <th><%= t('common.school') %></th>
-      <th><%= t('advice_pages.index.priorities.table.columns.kwh_saving') %></th>
-      <th><%= t('advice_pages.index.priorities.table.columns.cost_saving') %></th>
-      <th><%= t('advice_pages.index.priorities.table.columns.co2_reduction') %></th>
+      <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.kwh_saving') %></th>
+      <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.cost_saving') %></th>
+      <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.co2_reduction') %></th>
       <th class="no-sort"></th>
     </tr>
   </thead>
@@ -16,16 +16,16 @@
         <td>
           <%= link_to saving.school.name, school_path(saving.school) %>
         </td>
-        <td data-order="<%= saving.one_year_saving_kwh %>">
+        <td class="text-right" data-order="<%= saving.one_year_saving_kwh %>">
           <%= format_unit(saving.one_year_saving_kwh, :kwh) %> kWh
         </td>
-        <td data-order="<%= saving.average_one_year_saving_gbp %>">
+        <td class="text-right" data-order="<%= saving.average_one_year_saving_gbp %>">
           <%= format_unit(saving.average_one_year_saving_gbp, :£) %>
         </td>
-        <td data-order="<%= saving.one_year_saving_co2 %>">
+        <td class="text-right" data-order="<%= saving.one_year_saving_co2 %>">
           <%= format_unit(saving.one_year_saving_co2, :co2) %> kg CO2
         </td>
-        <td>
+        <td class="text-right">
           <% if alert_type_rating.alert_type.advice_page.present? %>
             <%= link_to t('school_groups.priority_actions.view_analysis'), advice_page_path(saving.school, alert_type_rating.alert_type.advice_page, alert_type_rating.alert_type.advice_page_tab_for_link_to, anchor: alert_type_rating.alert_type.link_to_section) %>
           <% end %>
