@@ -63,7 +63,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
 
     let(:csv)   { service.csv }
 
-    it 'returns rights headers' do
+    it 'returns the right headers' do
       expect(csv.lines.first.chomp).to eq Schools::FunderAllocationReportService.csv_headers.join(",")
     end
 
