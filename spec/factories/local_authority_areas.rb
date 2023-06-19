@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :local_authority_area do
-    code { "MyString" }
-    name { "MyString" }
+    sequence(:code) { |n| "RGN#{n}" }
+    sequence(:name) { |n| "Area #{n}" }
   end
 end

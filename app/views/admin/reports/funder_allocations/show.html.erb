@@ -1,0 +1,9 @@
+<% content_for :page_title, 'Funder allocation report' %>
+
+<h1>Funder allocation report</h1>
+
+<%= form_tag deliver_admin_reports_funder_allocations_path, method: :post do %>
+  <%= button_tag(type: 'submit', class: 'btn btn-sm') do %>
+    <%= fa_icon('envelope') %> Email meter report
+  <% end %>
+<% end %>
