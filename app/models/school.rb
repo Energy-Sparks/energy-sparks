@@ -593,6 +593,14 @@ class School < ApplicationRecord
     Schools::ManagementTableService.new(self)&.management_data&.by_fuel_type_table || OpenStruct.new
   end
 
+  def all_data_sources(meter_type)
+    meters.active.where(meter_type: meter_type).data_source_known.joins(:data_source).order("data_sources.name ASC").distinct.pluck("data_sources.name")
+  end
+
+  def all_procurement_routes(meter_type)
+    meters.active.where(meter_type: meter_type).procurement_route_known.joins(:procurement_route).order("procurement_routes.organisation_name ASC").distinct.pluck("procurement_routes.organisation_name")
+  end
+
   private
 
   def add_joining_observation

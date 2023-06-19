@@ -20,16 +20,22 @@ module Schools
           'Actions this year', #Number of actions recorded this academic year
           'Electricity Data Source 1',
           'Electricity Data Source 2',
+          'Electricity Data Source 3',
           'Electricity Procurement Route 1',
           'Electricity Procurement Route 2',
+          'Electricity Procurement Route 3',
           'Gas Data Source 1',
           'Gas Data Source 2',
+          'Gas Data Source 3',
           'Gas Procurement Route 1',
           'Gas Procurement Route 2',
+          'Gas Procurement Route 3',
           'Solar Data Source 1',
           'Solar Data Source 2',
+          'Solar Data Source 3',
           'Solar Procurement Route 1',
-          'Solar Procurement Route 2'
+          'Solar Procurement Route 2',
+          'Solar Procurement Route 3'
         ]
       end
     end
@@ -37,7 +43,15 @@ module Schools
     def csv
       CSV.generate(headers: true) do |csv|
         csv << self.class.csv_headers
-        School.visible.includes(:activities, :observations).order(:school_group_id).each do |school|
+        School.visible.includes(:local_authority_area, :calendar).order(:school_group_id).each do |school|
+          electricity_data_sources = school.all_data_sources(:electricity)
+          gas_data_sources = school.all_data_sources(:gas)
+          solar_data_sources = school.all_data_sources([:solar_pv, :exported_solar_pv])
+
+          electricity_routes = school.all_procurement_routes(:electricity)
+          gas_routes = school.all_procurement_routes(:gas)
+          solar_routes = school.all_procurement_routes([:solar_pv, :exported_solar_pv])
+
           csv << [
             school.school_group.name,
             school.name,
@@ -54,12 +68,24 @@ module Schools
             region(school),
             activities_this_academic_year(school),
             actions_this_academic_year(school),
-            nil,
-            nil,
-            nil,
-            nil,
-            nil,
-            nil
+            electricity_data_sources[0],
+            electricity_data_sources[1],
+            electricity_data_sources[2],
+            electricity_routes[0],
+            electricity_routes[1],
+            electricity_routes[2],
+            gas_data_sources[0],
+            gas_data_sources[1],
+            gas_data_sources[2],
+            gas_routes[0],
+            gas_routes[1],
+            gas_routes[2],
+            solar_data_sources[0],
+            solar_data_sources[1],
+            solar_data_sources[2],
+            solar_routes[0],
+            solar_routes[1],
+            solar_routes[2]
           ]
         end
       end
@@ -92,21 +118,19 @@ module Schools
     end
 
     def activities_this_academic_year(school)
-      school.activities.count { |activity| activity_completed_this_academic_year?(activity) }
-    end
-
-    def activity_completed_this_academic_year?(activity)
-      academic_year = activity.school.academic_year_for(activity.happened_on)
-      academic_year.present? && academic_year.current?
+      academic_year = academic_year(school)
+      return 0 unless academic_year.present?
+      school.activities.between(academic_year.start_date, academic_year.end_date).count
     end
 
     def actions_this_academic_year(school)
-      school.observations.intervention.count { |observation| action_completed_this_academic_year?(observation) }
+      academic_year = academic_year(school)
+      return 0 unless academic_year.present?
+      school.observations.intervention.between(academic_year.start_date, academic_year.end_date).count
     end
 
-    def action_completed_this_academic_year?(observation)
-      academic_year = observation.school.academic_year_for(observation.created_at)
-      academic_year.present? && academic_year.current?
+    def academic_year(school)
+      school.academic_year_for(Time.zone.today)
     end
 
     def format_time(date)
