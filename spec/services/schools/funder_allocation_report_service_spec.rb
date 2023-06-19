@@ -86,6 +86,12 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
           nil,
           nil,
           nil,
+          nil,
+          nil,
+          nil,
+          nil,
+          nil,
+          nil,
           nil
         ].join(",")
     end
