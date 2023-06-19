@@ -237,11 +237,11 @@ class Meter < ApplicationRecord
   end
 
   def self.csv_headers
-    ["School group", "School", "MPAN/MPRN", "Meter type", "Active", "Last validated meter reading", "Created at", "Updated at"]
+    ["School group", "School", "MPAN/MPRN", "Meter type", "Active", "First validated meter reading", "Last validated meter reading"]
   end
 
   def self.csv_attributes
-    %w{school.school_group.name school.name mpan_mprn meter_type.humanize active last_validated_reading created_at updated_at}
+    %w{school.school_group.name school.name mpan_mprn meter_type.humanize active first_validated_reading last_validated_reading}
   end
 
   def smart_meter_tariff_attributes
