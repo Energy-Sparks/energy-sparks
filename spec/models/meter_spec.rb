@@ -288,19 +288,31 @@ describe 'Meter', :meters do
   describe ".to_csv" do
     let(:data_source) { create(:data_source) }
     subject { data_source.meters.to_csv }
-    let(:header) { "School group,School,MPAN/MPRN,Meter type,Active,First validated meter reading, Last validated meter reading" }
+    let(:header) { "School group,School,MPAN/MPRN,Meter type,Active,First validated meter reading,Last validated meter reading" }
+    before { Timecop.freeze }
+    after { Timecop.return }
 
     context "with meters" do
       let!(:meters) do
         [ create(:gas_meter, data_source: data_source, school: create(:school)),
           create(:gas_meter, data_source: data_source, school: create(:school, :with_school_group)) ]
       end
+      let(:first_reading_date) { 1.year.ago.to_date + 2.days }
+      let(:last_reading_date) { 1.year.ago.to_date + 4.days }
+
+      before do
+        meters.each do |meter|
+          create(:amr_validated_reading, meter: meter, reading_date: first_reading_date)
+          create(:amr_validated_reading, meter: meter, reading_date: last_reading_date)
+        end
+      end
+
       it { expect(subject.lines.count).to eq(3) }
       it { expect(subject.lines.first.chomp).to eq(header) }
       2.times do |i|
         it { expect(subject.lines[i+1].chomp).to eq([
           meters[i].school.school_group.try(:name), meters[i].school.name, meters[i].mpan_mprn,
-          meters[i].meter_type.humanize, meters[i].active, nil, nil].join(',')) }
+          meters[i].meter_type.humanize, meters[i].active, first_reading_date, last_reading_date].join(',')) }
       end
     end
 
