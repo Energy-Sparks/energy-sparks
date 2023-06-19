@@ -170,7 +170,7 @@ class School < ApplicationRecord
   enum chart_preference: [:default, :carbon, :usage, :cost]
   enum country: [:england, :scotland, :wales]
   enum funding_status: [:state_school, :private_school]
-  enum region: [:north_east, :north_west, :yorkshire, :east_midlands, :west_midlands, :east_england, :london, :south_east, :south_west]
+  enum region: [:north_east, :north_west, :yorkshire_and_the_humber, :east_midlands, :west_midlands, :east_of_england, :london, :south_east, :south_west]
 
   scope :active,             -> { where(active: true) }
   scope :inactive,           -> { where(active: false) }
