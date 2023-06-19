@@ -25,6 +25,13 @@ class AdminMailer < ApplicationMailer
     end
   end
 
+  def funder_allocation_report
+    to, funder_report = params.values_at(:to, :funder_report)
+    title = "Funder allocation report #{Time.zone.today.iso8601}"
+    attachments[funder_report.csv_filename] = { mime_type: 'text/csv', content: funder_report.csv }
+    make_bootstrap_mail(to: to, subject: subject(title))
+  end
+
   private
 
   def build_issues_csv_for(issues)
