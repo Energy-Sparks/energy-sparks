@@ -27,6 +27,15 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
     let(:school_onboarding) { create(:school_onboarding, :with_events,
       event_names: [:onboarding_complete, :onboarding_data_enabled]) }
 
+    let(:data_source_1) { create(:data_source) }
+    let(:procurement_route_1) { create(:procurement_route) }
+
+    let(:data_source_2) { create(:data_source) }
+    let(:procurement_route_2) { create(:procurement_route) }
+
+    let(:data_source_3) { create(:data_source) }
+    let(:procurement_route_3) { create(:procurement_route) }
+
     let(:school_group)  { create(:school_group) }
 
     let!(:school_1)  { create(:school,
@@ -42,6 +51,10 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
 
     let!(:activities)  { create_list(:activity, 5, school: school_1) }
     let!(:actions)     { create_list(:observation, 3, :intervention, school: school_1) }
+
+    let!(:electricity_meter) { create(:electricity_meter, active: true, data_source: data_source_1, procurement_route: procurement_route_1, school: school_1)}
+    let!(:gas_meter) { create(:gas_meter, active: true, data_source: data_source_2, procurement_route: procurement_route_2, school: school_1)}
+    let!(:solar_meter) { create(:solar_pv_meter, active: true, data_source: data_source_3, procurement_route: procurement_route_3, school: school_1)}
 
     #only basic data, helps to catch errors checking for nils
     let!(:school_2)  { create(:school, visible: true, school_group: create(:school_group)) }
@@ -73,24 +86,24 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
           school_1.percentage_free_school_meals,
           school_1.local_authority_area.name,
           school_1.region.humanize,
-          5, #todo activites
-          3, #todo actions
+          5,
+          3,
+          electricity_meter.data_source.name,
           nil,
           nil,
+          electricity_meter.procurement_route.organisation_name,
           nil,
           nil,
+          gas_meter.data_source.name,
           nil,
           nil,
+          gas_meter.procurement_route.organisation_name,
           nil,
           nil,
+          solar_meter.data_source.name,
           nil,
           nil,
-          nil,
-          nil,
-          nil,
-          nil,
-          nil,
-          nil,
+          solar_meter.procurement_route.organisation_name,
           nil,
           nil
         ].join(",")
