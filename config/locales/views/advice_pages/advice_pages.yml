@@ -24,6 +24,7 @@ en:
     fuel_type:
       electricity: electricity
       gas: gas
+      other: other
       solar_pv: solar PV
       storage_heater: storage heater
     how_have_we_analysed_your_data:

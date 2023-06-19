@@ -1,9 +1,15 @@
 module SchoolGroups
   class ChartUpdatesController < ApplicationController
+    before_action :header_fix_enabled
     load_and_authorize_resource :school_group
 
     def index
       redirect_to school_group_path(@school_group) and return unless can?(:update_settings, @school_group)
+      @breadcrumbs = [
+        { name: I18n.t('common.schools'), href: schools_path },
+        { name: @school_group.name, href: school_group_path(@school_group) },
+        { name: t('school_groups.chart_updates.index.group_chart_settings').capitalize }
+      ]
     end
 
     def bulk_update_charts

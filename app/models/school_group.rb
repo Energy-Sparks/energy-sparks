@@ -21,6 +21,7 @@
 #  default_template_calendar_id             :bigint(8)
 #  default_weather_station_id               :bigint(8)
 #  description                              :string
+#  group_type                               :integer          default("general")
 #  id                                       :bigint(8)        not null, primary key
 #  name                                     :string           not null
 #  public                                   :boolean          default(TRUE)
@@ -85,8 +86,13 @@ class SchoolGroup < ApplicationRecord
   scope :is_public, -> { where(public: true) }
   validates :name, presence: true
 
+  enum group_type: [:general, :local_authority, :multi_academy_trust]
   enum default_chart_preference: [:default, :carbon, :usage, :cost]
   enum default_country: School.countries
+
+  def visible_schools_count
+    schools.visible.count
+  end
 
   def fuel_types
     school_ids = schools.visible.pluck(:id)

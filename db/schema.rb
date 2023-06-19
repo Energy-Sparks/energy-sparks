@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_25_095829) do
+ActiveRecord::Schema.define(version: 2023_06_19_085613) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -989,6 +989,13 @@ ActiveRecord::Schema.define(version: 2023_05_25_095829) do
     t.index ["rewriteable_type", "rewriteable_id"], name: "index_link_rewrites_on_rewriteable_type_and_rewriteable_id"
   end
 
+  create_table "local_authority_areas", force: :cascade do |t|
+    t.string "code"
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "locations", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.text "name", null: false
@@ -1333,6 +1340,7 @@ ActiveRecord::Schema.define(version: 2023_05_25_095829) do
     t.bigint "default_procurement_route_electricity_id"
     t.bigint "default_procurement_route_gas_id"
     t.bigint "default_procurement_route_solar_pv_id"
+    t.integer "group_type", default: 0
     t.index ["default_issues_admin_user_id"], name: "index_school_groups_on_default_issues_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
@@ -1502,8 +1510,11 @@ ActiveRecord::Schema.define(version: 2023_05_25_095829) do
     t.boolean "alternative_heating_district_heating", default: false, null: false
     t.integer "alternative_heating_district_heating_percent", default: 0
     t.text "alternative_heating_district_heating_notes"
+    t.integer "region"
+    t.bigint "local_authority_area_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
+    t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
     t.index ["scoreboard_id"], name: "index_schools_on_scoreboard_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true

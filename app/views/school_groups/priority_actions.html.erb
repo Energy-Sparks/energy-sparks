@@ -10,9 +10,10 @@
     <tr>
       <th><%= t('advice_pages.index.priorities.table.columns.fuel_type') %></th>
       <th data-orderable="false"></th>
-      <th><%= t('components.breadcrumbs.schools') %></th>
-      <th><%= t('advice_pages.index.priorities.table.columns.cost_saving') %></th>
-      <th><%= t('advice_pages.index.priorities.table.columns.co2_reduction') %></th>
+      <th class="text-right"><%= t('components.breadcrumbs.schools') %></th>
+      <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.kwh_saving') %></th>
+      <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.cost_saving') %></th>
+      <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.co2_reduction') %></th>
     </tr>
   </thead>
   <tbody id="school-group-priorities">
@@ -38,17 +39,22 @@
             <% end %>
           <% end %>
         </td>
-        <td>
+        <td class="text-right">
           <h4>
             <%= savings.schools.length %>
           </h4>
         </td>
-        <td data-order="<%= savings.average_one_year_saving_gbp %>">
+        <td  class="text-right" data-order="<%= savings.one_year_saving_kwh %>">
+          <h4>
+            <%= format_unit(savings.one_year_saving_kwh, :kwh) %> kWh
+          </h4>
+        </td>
+        <td class="text-right" data-order="<%= savings.average_one_year_saving_gbp %>">
           <h4>
             <%= format_unit(savings.average_one_year_saving_gbp, :£) %>
           </h4>
         </td>
-        <td data-order="<%= savings.one_year_saving_co2 %>">
+        <td class="text-right" data-order="<%= savings.one_year_saving_co2 %>">
           <h4>
             <%= format_unit(savings.one_year_saving_co2, :co2) %> kg CO2
           </h4>
