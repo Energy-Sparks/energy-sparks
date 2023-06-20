@@ -392,7 +392,8 @@ describe 'school groups', :school_groups, type: :system do
             click_on 'Download as CSV'
             header = page.response_headers['Content-Disposition']
             expect(header).to match /^attachment/
-            expect(header).to match /#{school_group.name} - #{I18n.t('school_groups.titles.current_scores')}/
+            filename = "#{school_group.name}-#{I18n.t('school_groups.titles.current_scores')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+            expect(header).to match filename
             expect(page.source).to have_content "Position,School,Score\n=1,School 1,20\n=1,School 2,20\n2,School 3,18\n-,School 4,0\n-,School 5,0\n"
           end
 

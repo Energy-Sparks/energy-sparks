@@ -37,8 +37,9 @@ class SchoolGroupsController < ApplicationController
     respond_to do |format|
       format.html {}
       format.csv do
+        filename = "#{@school_group.name}-#{I18n.t('school_groups.titles.current_scores')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
         send_data SchoolGroups::CurrentScoresCsvGenerator.new(school_group: @school_group).export,
-        filename: "#{@school_group.name} - #{I18n.t('school_groups.titles.current_scores')} (#{Time.zone.now.strftime('%d/%m/%Y')}).csv"
+        filename: filename
       end
     end
   end
