@@ -51,10 +51,17 @@ module Amr
         end
       end
 
+      truncate_too_many_readings
       reject_any_low_reading_days
     end
 
     private
+
+    def truncate_too_many_readings
+      @results_array.each_with_index do |result, idx|
+        @results_array[idx][:readings] = result[:readings].take(48) if result[:readings].count > 48
+      end
+    end
 
     def reject_any_low_reading_days
       @results_array.reject { |result| result[:readings].count(&:blank?) > BLANK_THRESHOLD }
