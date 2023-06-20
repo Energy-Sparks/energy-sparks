@@ -36,6 +36,7 @@
 #  indicated_has_storage_heaters                :boolean          default(FALSE)
 #  latitude                                     :decimal(10, 6)
 #  level                                        :integer          default(0)
+#  local_authority_area_id                      :bigint(8)
 #  longitude                                    :decimal(10, 6)
 #  met_office_area_id                           :bigint(8)
 #  name                                         :string
@@ -44,6 +45,7 @@
 #  postcode                                     :string
 #  process_data                                 :boolean          default(FALSE)
 #  public                                       :boolean          default(TRUE)
+#  region                                       :integer
 #  removal_date                                 :date
 #  school_group_id                              :bigint(8)
 #  school_type                                  :integer          not null
@@ -62,11 +64,12 @@
 #
 # Indexes
 #
-#  index_schools_on_calendar_id             (calendar_id)
-#  index_schools_on_latitude_and_longitude  (latitude,longitude)
-#  index_schools_on_school_group_id         (school_group_id)
-#  index_schools_on_scoreboard_id           (scoreboard_id)
-#  index_schools_on_urn                     (urn) UNIQUE
+#  index_schools_on_calendar_id              (calendar_id)
+#  index_schools_on_latitude_and_longitude   (latitude,longitude)
+#  index_schools_on_local_authority_area_id  (local_authority_area_id)
+#  index_schools_on_school_group_id          (school_group_id)
+#  index_schools_on_scoreboard_id            (scoreboard_id)
+#  index_schools_on_urn                      (urn) UNIQUE
 #
 # Foreign Keys
 #
@@ -151,6 +154,7 @@ class School < ApplicationRecord
   delegate :default_issues_admin_user, to: :school_group
 
   belongs_to :scoreboard, optional: true
+  belongs_to :local_authority_area, optional: true
 
   has_one :school_onboarding
   has_one :configuration, class_name: 'Schools::Configuration'
@@ -166,6 +170,7 @@ class School < ApplicationRecord
   enum chart_preference: [:default, :carbon, :usage, :cost]
   enum country: [:england, :scotland, :wales]
   enum funding_status: [:state_school, :private_school]
+  enum region: [:north_east, :north_west, :yorkshire_and_the_humber, :east_midlands, :west_midlands, :east_of_england, :london, :south_east, :south_west]
 
   scope :active,             -> { where(active: true) }
   scope :inactive,           -> { where(active: false) }
@@ -265,6 +270,7 @@ class School < ApplicationRecord
   end
 
   def academic_year_for(date)
+    return nil unless calendar.present?
     calendar.academic_year_for(date)
   end
 
@@ -586,6 +592,14 @@ class School < ApplicationRecord
 
   def recent_usage
     Schools::ManagementTableService.new(self)&.management_data&.by_fuel_type_table || OpenStruct.new
+  end
+
+  def all_data_sources(meter_type)
+    meters.active.where(meter_type: meter_type).data_source_known.joins(:data_source).order("data_sources.name ASC").distinct.pluck("data_sources.name")
+  end
+
+  def all_procurement_routes(meter_type)
+    meters.active.where(meter_type: meter_type).procurement_route_known.joins(:procurement_route).order("procurement_routes.organisation_name ASC").distinct.pluck("procurement_routes.organisation_name")
   end
 
   private

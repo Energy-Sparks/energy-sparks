@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 1de20ee7693f12ad8b61b279aa3830eaec044b8b
-  tag: 2.8.2
+  revision: 3a587900136e8e2c0f3d5704bfc9d604187199cc
+  tag: 2.8.3
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
@@ -23,7 +23,7 @@ GIT
       soda-ruby (~> 0.2.25)
       statsample (~> 2.1.0)
       structured_warnings (~> 0.3.0)
-      write_xlsx (>= 0.85.5, < 1.11.0)
+      write_xlsx (>= 0.85.5, < 1.12.0)
 
 GIT
   remote: https://github.com/Energy-Sparks/statsample
@@ -672,7 +672,7 @@ GEM
     websocket-extensions (0.1.5)
     wisper (2.0.0)
     wisper-rspec (1.1.0)
-    write_xlsx (1.10.2)
+    write_xlsx (1.11.0)
       rubyzip (>= 1.0.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
