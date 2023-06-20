@@ -35,9 +35,15 @@ class SchoolGroupsController < ApplicationController
         @total_savings = sort_total_savings(service.total_savings)
       end
       format.csv do
-        filename = "#{@school_group.name}-#{I18n.t('school_groups.titles.priority_actions')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
-        send_data SchoolGroups::PriorityActionsCsvGenerator.new(school_group: @school_group).export,
-        filename: filename
+        if params[:alert_type_rating_ids]
+          filename = "#{@school_group.name}-#{I18n.t('school_groups.titles.priority_actions')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+          send_data SchoolGroups::SchoolsPriorityActionCsvGenerator.new(school_group: @school_group, alert_type_rating_ids: params[:alert_type_rating_ids]).export,
+          filename: filename
+        else
+          filename = "#{@school_group.name}-#{I18n.t('school_groups.titles.priority_actions')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+          send_data SchoolGroups::PriorityActionsCsvGenerator.new(school_group: @school_group).export,
+          filename: filename
+        end
       end
     end
   end

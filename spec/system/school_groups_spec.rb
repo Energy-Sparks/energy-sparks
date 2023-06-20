@@ -350,13 +350,23 @@ describe 'school groups', :school_groups, type: :system do
             let(:breadcrumb)    { 'Priority Actions' }
           end
 
-          it 'allows a csv download of recent data metrics' do
-            click_on 'Download as CSV'
+          it 'allows a csv download of all priority actions for a school group' do
+            # first(:link, 'Download as CSV').click
+            click_link('Download as CSV', id: 'download-priority-actions-school-group-csv')
             header = page.response_headers['Content-Disposition']
             expect(header).to match /^attachment/
             filename = "#{school_group.name}-#{I18n.t('school_groups.titles.priority_actions')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
             expect(header).to match filename
             expect(page.source).to eq "Fuel,Description,Schools,Energy saving,Cost saving,CO2 reduction\nGas,Spending too much money on heating,1,\"2,200 kWh\",\"£1,000\",\"1,100 kg CO2\"\n"
+          end
+
+          it 'allows a csv download of a specific priority action for schools in a school group' do
+            click_link('Download as CSV', id: 'download-priority-actions-school-csv')
+            header = page.response_headers['Content-Disposition']
+            expect(header).to match /^attachment/
+            filename = "#{school_group.name}-#{I18n.t('school_groups.titles.priority_actions')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+            expect(header).to match filename
+            expect(page.source).to eq "Fuel,Description,School,Energy saving,Cost saving,CO2 reduction\nGas,Spending too much money on heating,#{school_group.schools.first.name}, kWh,£1000,1100 kg CO2\n"
           end
 
           it 'displays list of actions' do

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SchoolGroups::PriorityActionCsvGenerator do
+RSpec.describe SchoolGroups::SchoolsPriorityActionCsvGenerator do
   let(:school_group) { create(:school_group) }
 
   let!(:school_1)              { create(:school, school_group: school_group, number_of_pupils: 10, data_enabled: true, visible: true, active: true) }
@@ -58,9 +58,9 @@ RSpec.describe SchoolGroups::PriorityActionCsvGenerator do
   context "with school group data" do
     describe '#export' do
       it 'returns priority actions data as a csv for a school group' do
-        csv = SchoolGroups::PriorityActionCsvGenerator.new(school_group: school_group).export
+        csv = SchoolGroups::SchoolsPriorityActionCsvGenerator.new(school_group: school_group).export
         expect(csv.lines.count).to eq(2)
-        expect(csv.lines[0]).to eq("Fuel,\"\",School,Energy saving,Cost saving,CO2 reduction\n")
+        expect(csv.lines[0]).to eq("Fuel,Description,School,Energy saving,Cost saving,CO2 reduction\n")
         expect(csv.lines[1]).to eq("Gas,Spending too much money on heating,#{school_group.schools.first.name},,1000,1100\n")
       end
     end

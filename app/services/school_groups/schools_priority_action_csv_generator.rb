@@ -1,5 +1,5 @@
 module SchoolGroups
-  class PriorityActionCsvGenerator
+  class SchoolsPriorityActionCsvGenerator
     def initialize(school_group:, alert_type_rating_ids: [])
       @alert_type_rating_ids = alert_type_rating_ids
       @school_group = school_group
@@ -11,14 +11,14 @@ module SchoolGroups
       CSV.generate(headers: true) do |csv|
         csv << headers
         @total_savings.each do |alert_type_rating, _savings|
-          @priority_actions[alert_type_rating].each do |saving|
+          @priority_actions[alert_type_rating].sort {|a, b| a.school.name <=> b.school.name }.each do |saving|
             csv << [
               I18n.t("common.#{alert_type_rating.alert_type&.fuel_type}"),
               alert_type_rating.current_content.management_priorities_title.to_plain_text,
               saving.school.name,
-              saving.one_year_saving_kwh,
-              saving.average_one_year_saving_gbp,
-              saving.one_year_saving_co2
+              saving.one_year_saving_kwh.to_s + ' kWh',
+              '£' + saving.average_one_year_saving_gbp.to_s,
+              saving.one_year_saving_co2.to_s + ' kg CO2'
             ]
           end
         end
@@ -38,7 +38,7 @@ module SchoolGroups
     def headers
       [
         I18n.t('advice_pages.index.priorities.table.columns.fuel_type'),
-        '',
+        I18n.t('advice_pages.index.priorities.table.columns.description'),
         I18n.t('common.school'),
         I18n.t('advice_pages.index.priorities.table.columns.kwh_saving'),
         I18n.t('advice_pages.index.priorities.table.columns.cost_saving'),
