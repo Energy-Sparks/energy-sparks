@@ -15,7 +15,7 @@ module SchoolGroupsHelper
     false
   end
 
-  def value_for(recent_usage, formatted: false)
+  def value_for(recent_usage, formatted: true)
     return nil unless recent_usage
     case params['metric']
     when 'usage' then formatted ? recent_usage.usage : recent_usage.usage_text
