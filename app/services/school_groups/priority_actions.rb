@@ -1,6 +1,7 @@
 module SchoolGroups
   class PriorityActions
-    def initialize(school_group)
+    def initialize(school_group, alert_type_rating_ids: [])
+      @alert_type_rating_ids = alert_type_rating_ids
       @school_group = school_group
       @ratings_for_reporting = {}
     end
@@ -91,7 +92,11 @@ module SchoolGroups
     #ManagementPriority record. These are all the ratings that school might be graded
     #against
     def alert_type_ratings
-      @alert_type_ratings = AlertTypeRating.management_priorities_title
+      @alert_type_ratings = if @alert_type_rating_ids.empty?
+                              AlertTypeRating.management_priorities_title
+                            else
+                              AlertTypeRating.management_priorities_title.where(id: @alert_type_rating_ids)
+                            end
     end
 
     def priorities
