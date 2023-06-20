@@ -11,6 +11,7 @@ en:
           columns:
             co2_reduction: CO2 reduction
             cost_saving: Cost saving
+            description: Description
             fuel_type: Fuel
             kwh_saving: Energy saving
         table_note: Use the table headings to sort the recommendations. Potential cost savings for the same fuel type are not additive.

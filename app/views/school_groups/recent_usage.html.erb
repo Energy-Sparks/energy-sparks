@@ -56,61 +56,58 @@
         <% if school.data_enabled %>
           <% recent_usage = school&.recent_usage %>
           <% if @fuel_types.include?(:electricity) %>
+
             <% if recent_usage&.electricity&.week&.has_data %>
-              <% value = value_for(recent_usage&.electricity&.week) %>
               <td class="text-right <%= recent_usage&.electricity&.week&.message_class %>"
-                  data-order="<%= value&.gsub(/[^-.0-9]/, '')&.to_f || '0' %>">
-                <%= up_downify(value) %>
+                  data-order="<%= value_for(recent_usage&.electricity&.week, formatted: false) %>">
+                <%= up_downify(value_for(recent_usage&.electricity&.week, formatted: true)) %>
               </td>
             <% else %>
               <td class="text-right" data-order="0">-</td>
             <% end %>
+
             <% if recent_usage&.electricity&.year&.has_data %>
-              <% value = value_for(recent_usage&.electricity&.year) %>
               <td class="text-right <%= recent_usage&.electricity&.year&.message_class %>"
-                  data-order="<%= value&.gsub(/[^-.0-9]/, '')&.to_f || '0' %>">
-                <%= up_downify(value) %>
+                  data-order="<%= value_for(recent_usage&.electricity&.year, formatted: false) %>">
+                <%= up_downify(value_for(recent_usage&.electricity&.year, formatted: true)) %>
               </td>
             <% else %>
               <td class="text-right" data-order="0">-</td>
             <% end %>
           <% end %>
+
           <% if @fuel_types.include?(:gas) %>
             <% if recent_usage&.gas&.week&.has_data %>
-              <% value = value_for(recent_usage&.gas&.week) %>
               <td class="text-right <%= recent_usage&.gas&.week&.message_class %>"
-                  data-order="<%= value&.gsub(/[^-.0-9]/, '')&.to_f || '0' %>">
-                <%= up_downify(value) %>
+                  data-order="<%= value_for(recent_usage&.gas&.week, formatted: false) %>">
+                <%= up_downify(value_for(recent_usage&.gas&.week, formatted: true)) %>
               </td>
             <% else %>
               <td class="text-right" data-order="0">-</td>
             <% end %>
             <% if recent_usage&.gas&.year&.has_data %>
-              <% value = value_for(recent_usage&.gas&.year) %>
               <td class="text-right <%= recent_usage&.gas&.year&.message_class %>"
-                  data-order="<%= value&.gsub(/[^-.0-9]/, '')&.to_f || '0' %>">
-                <%= up_downify(value) %>
-
+                  data-order="<%= value_for(recent_usage&.gas&.year, formatted: false) %>">
+                <%= up_downify(value_for(recent_usage&.gas&.year, formatted: true)) %>
               </td>
             <% else %>
               <td class="text-right" data-order="'0'">-</td>
             <% end %>
           <% end %>
+
           <% if @fuel_types.include?(:storage_heaters) %>
             <% if recent_usage&.storage_heaters&.week&.has_data %>
-              <% value = value_for(recent_usage&.storage_heaters&.week) %>
               <td class="text-right <%= recent_usage&.storage_heaters&.week&.message_class %>"
-                  data-order="<%= value.gsub(/[^-.0-9]/, '')&.to_f || '0' %>">
-                <%= up_downify(value) %>
+                  data-order="<%= value_for(recent_usage&.storage_heaters&.week, formatted: false) %>">
+                <%= up_downify(value_for(recent_usage&.storage_heaters&.week, formatted: true)) %>
               </td>
             <% else %>
               <td class="text-right" data-order="'0'">-</td>
             <% end %>
             <% if recent_usage&.storage_heaters&.year&.has_data %>
-              <% value = value_for(recent_usage&.storage_heaters&.year) %>
               <td class="text-right <%= recent_usage&.storage_heaters&.year&.message_class %>"
-                  data-order="<%= value&.gsub(/[^-.0-9]/, '')&.to_f || '0' %>">
-                <%= up_downify(value) %>
+                  data-order="<%= value_for(recent_usage&.storage_heaters&.year, formatted: false) %>">
+                <%= up_downify(value_for(recent_usage&.storage_heaters&.year, formatted: true)) %>
               </td>
             <% else %>
               <td class="text-right" data-order="'0'">-</td>

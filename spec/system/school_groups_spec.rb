@@ -350,6 +350,15 @@ describe 'school groups', :school_groups, type: :system do
             let(:breadcrumb)    { 'Priority Actions' }
           end
 
+          it 'allows a csv download of recent data metrics' do
+            click_on 'Download as CSV'
+            header = page.response_headers['Content-Disposition']
+            expect(header).to match /^attachment/
+            filename = "#{school_group.name}-#{I18n.t('school_groups.titles.priority_actions')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+            expect(header).to match filename
+            expect(page.source).to eq "Fuel,Description,Schools,Energy saving,Cost saving,CO2 reduction\nGas,Spending too much money on heating,1,\"2,200 kWh\",\"£1,000\",\"1,100 kg CO2\"\n"
+          end
+
           it 'displays list of actions' do
             expect(page).to have_css('#school-group-priorities')
             within('#school-group-priorities') do
@@ -370,11 +379,31 @@ describe 'school groups', :school_groups, type: :system do
         describe 'showing current_scores' do
           before(:each) do
             visit current_scores_school_group_path(school_group)
+            allow_any_instance_of(SchoolGroup).to receive(:scored_schools) do
+              OpenStruct.new(
+                with_points: OpenStruct.new(
+                               schools_with_positions: {
+                                1 => [OpenStruct.new(name: 'School 1', sum_points: 20), OpenStruct.new(name: 'School 2', sum_points: 20)],
+                                2 => [OpenStruct.new(name: 'School 3', sum_points: 18)]
+                               }
+                             ),
+                without_points: [OpenStruct.new(name: 'School 4'), OpenStruct.new(name: 'School 5')]
+              )
+            end
           end
 
           include_examples "school dashboard navigation" do
             let(:expected_path) { "/school_groups/#{school_group.slug}/current_scores" }
             let(:breadcrumb)    { 'Current Scores' }
+          end
+
+          it 'allows a csv download of recent data metrics' do
+            click_on 'Download as CSV'
+            header = page.response_headers['Content-Disposition']
+            expect(header).to match /^attachment/
+            filename = "#{school_group.name}-#{I18n.t('school_groups.titles.current_scores')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+            expect(header).to match filename
+            expect(page.source).to have_content "Position,School,Score\n=1,School 1,20\n=1,School 2,20\n2,School 3,18\n-,School 4,0\n-,School 5,0\n"
           end
 
           it 'shows expected content'

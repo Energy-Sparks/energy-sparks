@@ -4,6 +4,9 @@
   <%= t('school_groups.priority_actions.intro_html') %>
 <% end %>
 
+<div class='text-right'>
+  <%= link_to t('school_groups.download_as_csv'), priority_actions_school_group_path(@school_group, format: :csv), class: 'btn btn-sm' %>
+</div>
 
 
 

@@ -28,12 +28,29 @@ class SchoolGroupsController < ApplicationController
   end
 
   def priority_actions
-    service = SchoolGroups::PriorityActions.new(@school_group)
-    @priority_actions = service.priority_actions
-    @total_savings = sort_total_savings(service.total_savings)
+    respond_to do |format|
+      format.html do
+        service = SchoolGroups::PriorityActions.new(@school_group)
+        @priority_actions = service.priority_actions
+        @total_savings = sort_total_savings(service.total_savings)
+      end
+      format.csv do
+        filename = "#{@school_group.name}-#{I18n.t('school_groups.titles.priority_actions')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+        send_data SchoolGroups::PriorityActionsCsvGenerator.new(school_group: @school_group).export,
+        filename: filename
+      end
+    end
   end
 
   def current_scores
+    respond_to do |format|
+      format.html {}
+      format.csv do
+        filename = "#{@school_group.name}-#{I18n.t('school_groups.titles.current_scores')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+        send_data SchoolGroups::CurrentScoresCsvGenerator.new(school_group: @school_group).export,
+        filename: filename
+      end
+    end
   end
 
   private
