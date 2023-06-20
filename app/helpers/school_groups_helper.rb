@@ -15,15 +15,15 @@ module SchoolGroupsHelper
     false
   end
 
-  def value_for(recent_usage)
+  def value_for(recent_usage, formatted: true)
     return nil unless recent_usage
     case params['metric']
-    when 'usage' then recent_usage.usage
-    when 'co2' then recent_usage.co2
-    when 'cost' then recent_usage.cost
-    when 'change' then recent_usage.change
+    when 'usage' then formatted ? recent_usage.usage : recent_usage.usage_text
+    when 'co2' then formatted ? recent_usage.co2 : recent_usage.co2_text
+    when 'cost' then formatted ? recent_usage.cost : recent_usage.cost_text
+    when 'change' then formatted ? recent_usage.change : recent_usage.change_text.gsub(/[^-.0-9]/, '')
     else
-      recent_usage.change
+      formatted ? recent_usage.change : recent_usage.change_text.gsub(/[^-.0-9]/, '')
     end
   end
 
