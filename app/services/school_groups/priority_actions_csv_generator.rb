@@ -36,7 +36,7 @@ module SchoolGroups
     def headers
       [
         I18n.t('advice_pages.index.priorities.table.columns.fuel_type'),
-        '',
+        I18n.t('advice_pages.index.priorities.table.columns.description'),
         I18n.t('components.breadcrumbs.schools'),
         I18n.t('advice_pages.index.priorities.table.columns.kwh_saving'),
         I18n.t('advice_pages.index.priorities.table.columns.cost_saving'),

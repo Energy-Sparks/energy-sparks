@@ -354,8 +354,9 @@ describe 'school groups', :school_groups, type: :system do
             click_on 'Download as CSV'
             header = page.response_headers['Content-Disposition']
             expect(header).to match /^attachment/
-            expect(header).to match /#{school_group.name} - #{I18n.t('school_groups.titles.priority_actions')}/
-            expect(page.source).to eq "Fuel,\"\",Schools,Energy saving,Cost saving,CO2 reduction\nGas,Spending too much money on heating,1,\"2,200 kWh\",\"£1,000\",\"1,100 kg CO2\"\n"
+            filename = "#{school_group.name}-#{I18n.t('school_groups.titles.priority_actions')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+            expect(header).to match filename
+            expect(page.source).to eq "Fuel,Description,Schools,Energy saving,Cost saving,CO2 reduction\nGas,Spending too much money on heating,1,\"2,200 kWh\",\"£1,000\",\"1,100 kg CO2\"\n"
           end
 
           it 'displays list of actions' do
