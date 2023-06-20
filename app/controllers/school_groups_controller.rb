@@ -34,6 +34,14 @@ class SchoolGroupsController < ApplicationController
   end
 
   def current_scores
+    respond_to do |format|
+      format.html {}
+      format.csv do
+        filename = "#{@school_group.name}-#{I18n.t('school_groups.titles.current_scores')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+        send_data SchoolGroups::CurrentScoresCsvGenerator.new(school_group: @school_group).export,
+        filename: filename
+      end
+    end
   end
 
   private
