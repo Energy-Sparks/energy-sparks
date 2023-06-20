@@ -27,6 +27,7 @@ RSpec.describe SchoolGroups::SchoolsPriorityActionCsvGenerator do
   let(:saving) do
     OpenStruct.new(
       school: school_1,
+      one_year_saving_kwh: 0,
       average_one_year_saving_gbp: 1000,
       one_year_saving_co2: 1100
     )
@@ -58,10 +59,10 @@ RSpec.describe SchoolGroups::SchoolsPriorityActionCsvGenerator do
   context "with school group data" do
     describe '#export' do
       it 'returns priority actions data as a csv for a school group' do
-        csv = SchoolGroups::SchoolsPriorityActionCsvGenerator.new(school_group: school_group).export
+        csv = SchoolGroups::SchoolsPriorityActionCsvGenerator.new(school_group: school_group, alert_type_rating_ids: [alert_type_rating.id]).export
         expect(csv.lines.count).to eq(2)
         expect(csv.lines[0]).to eq("Fuel,Description,School,Energy saving,Cost saving,CO2 reduction\n")
-        expect(csv.lines[1]).to eq("Gas,Spending too much money on heating,#{school_group.schools.first.name},,1000,1100\n")
+        expect(csv.lines[1]).to eq("Gas,Spending too much money on heating,#{school_group.schools.first.name},0 kWh,£1000,1100 kg CO2\n")
       end
     end
   end
