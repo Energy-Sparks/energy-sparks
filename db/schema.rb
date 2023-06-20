@@ -853,13 +853,13 @@ ActiveRecord::Schema.define(version: 2023_06_27_144212) do
     t.index ["replaced_by_id"], name: "index_global_meter_attributes_on_replaced_by_id"
   end
 
-  create_table "good_job_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_processes", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "state"
   end
 
-  create_table "good_job_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_settings", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "key"
@@ -867,7 +867,7 @@ ActiveRecord::Schema.define(version: 2023_06_27_144212) do
     t.index ["key"], name: "index_good_job_settings_on_key", unique: true
   end
 
-  create_table "good_jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_jobs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.text "queue_name"
     t.integer "priority"
     t.jsonb "serialized_params"
@@ -1290,6 +1290,23 @@ ActiveRecord::Schema.define(version: 2023_06_27_144212) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["school_id"], name: "index_school_batch_runs_on_school_id"
+  end
+
+  create_table "school_group_cluster_schools", force: :cascade do |t|
+    t.bigint "school_group_cluster_id", null: false
+    t.bigint "school_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_group_cluster_id"], name: "index_school_group_cluster_schools_on_school_group_cluster_id"
+    t.index ["school_id"], name: "index_school_group_cluster_schools_on_school_id"
+  end
+
+  create_table "school_group_clusters", force: :cascade do |t|
+    t.string "name"
+    t.bigint "school_group_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["school_group_id"], name: "index_school_group_clusters_on_school_group_id"
   end
 
   create_table "school_group_meter_attributes", force: :cascade do |t|
@@ -1983,6 +2000,9 @@ ActiveRecord::Schema.define(version: 2023_06_27_144212) do
   add_foreign_key "school_alert_type_exclusions", "schools", on_delete: :cascade
   add_foreign_key "school_batch_run_log_entries", "school_batch_runs", on_delete: :cascade
   add_foreign_key "school_batch_runs", "schools", on_delete: :cascade
+  add_foreign_key "school_group_cluster_schools", "school_group_clusters", on_delete: :cascade
+  add_foreign_key "school_group_cluster_schools", "schools", on_delete: :cascade
+  add_foreign_key "school_group_clusters", "school_groups", on_delete: :cascade
   add_foreign_key "school_group_meter_attributes", "school_group_meter_attributes", column: "replaced_by_id", on_delete: :nullify
   add_foreign_key "school_group_meter_attributes", "school_groups", on_delete: :cascade
   add_foreign_key "school_group_meter_attributes", "users", column: "created_by_id", on_delete: :nullify
