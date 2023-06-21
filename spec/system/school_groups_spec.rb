@@ -254,28 +254,32 @@ describe 'school groups', :school_groups, type: :system do
               click_on 'Download as CSV'
               header = page.response_headers['Content-Disposition']
               expect(header).to match /^attachment/
-              expect(header).to match /#{school_group.name} - #{I18n.t('school_groups.titles.recent_usage')} - %25 change/
+              filename = "#{school_group.name}-recent-usage-change-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+              expect(header).to match filename
               expect(page.source).to have_content "School,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},-16%,-16%,-16%,-16%,-16%,-16%\n#{school_group.schools.second.name},-16%,-16%,-16%,-16%,-16%,-16%\n"
 
               visit school_group_path(school_group, metric: 'usage')
               click_on 'Download as CSV'
               header = page.response_headers['Content-Disposition']
               expect(header).to match /^attachment/
-              expect(header).to match /#{school_group.name} - #{I18n.t('school_groups.titles.recent_usage')} - Use %28kWh%29/
+              filename = "#{school_group.name}-recent-usage-use-kwh-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+              expect(header).to match filename
               expect(page.source).to have_content "School,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},910,910,910,910,910,910\n#{school_group.schools.second.name},910,910,910,910,910,910\n"
 
               visit school_group_path(school_group, metric: 'cost')
               click_on 'Download as CSV'
               header = page.response_headers['Content-Disposition']
               expect(header).to match /^attachment/
-              expect(header).to match /#{school_group.name} - #{I18n.t('school_groups.titles.recent_usage')} - Cost %28%3F%29/
+              filename = "#{school_group.name}-recent-usage-cost-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+              expect(header).to match filename
               expect(page.source).to have_content "School,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},£137,£137,£137,£137,£137,£137\n#{school_group.schools.second.name},£137,£137,£137,£137,£137,£137\n"
 
               visit school_group_path(school_group, metric: 'co2')
               click_on 'Download as CSV'
               header = page.response_headers['Content-Disposition']
               expect(header).to match /^attachment/
-              expect(header).to match /#{school_group.name} - #{I18n.t('school_groups.titles.recent_usage')} - CO2 %28kg%29/
+              filename = "#{school_group.name}-recent-usage-co2-kg-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+              expect(header).to match filename
               expect(page.source).to have_content "School,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\"\n#{school_group.schools.second.name},\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\"\n"
             end
           end
@@ -350,13 +354,23 @@ describe 'school groups', :school_groups, type: :system do
             let(:breadcrumb)    { 'Priority Actions' }
           end
 
-          it 'allows a csv download of recent data metrics' do
-            click_on 'Download as CSV'
+          it 'allows a csv download of all priority actions for a school group' do
+            # first(:link, 'Download as CSV').click
+            click_link('Download as CSV', id: 'download-priority-actions-school-group-csv')
             header = page.response_headers['Content-Disposition']
             expect(header).to match /^attachment/
             filename = "#{school_group.name}-#{I18n.t('school_groups.titles.priority_actions')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
             expect(header).to match filename
             expect(page.source).to eq "Fuel,Description,Schools,Energy saving,Cost saving,CO2 reduction\nGas,Spending too much money on heating,1,\"2,200 kWh\",\"£1,000\",\"1,100 kg CO2\"\n"
+          end
+
+          it 'allows a csv download of a specific priority action for schools in a school group' do
+            click_link('Download as CSV', id: 'download-priority-actions-school-csv')
+            header = page.response_headers['Content-Disposition']
+            expect(header).to match /^attachment/
+            filename = "#{school_group.name}-#{I18n.t('school_groups.titles.priority_actions')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+            expect(header).to match filename
+            expect(page.source).to eq "Fuel,Description,School,Energy saving,Cost saving,CO2 reduction\nGas,Spending too much money on heating,#{school_group.schools.first.name}, kWh,£1000,1100 kg CO2\n"
           end
 
           it 'displays list of actions' do
