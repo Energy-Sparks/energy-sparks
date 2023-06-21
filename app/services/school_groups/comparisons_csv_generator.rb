@@ -10,7 +10,7 @@ module SchoolGroups
         csv << headers
         @school_group.categorise_schools.each do |fuel_type, advice_pages|
           advice_pages.each do |advice_page_key, comparison|
-            next unless @advice_page_keys.include?(advice_page_key)
+            next unless add_row_for(advice_page_key)
 
             SchoolGroupComparisonComponent::CATEGORIES.each do |category|
               comparison[category]&.each do |school|
@@ -28,6 +28,13 @@ module SchoolGroups
     end
 
     private
+
+    def add_row_for(advice_page_key)
+      return true if @advice_page_keys.empty?
+      return true if @advice_page_keys.include?(advice_page_key)
+
+      false
+    end
 
     def headers
       [
