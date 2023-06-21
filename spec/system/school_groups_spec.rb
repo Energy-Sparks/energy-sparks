@@ -287,6 +287,166 @@ describe 'school groups', :school_groups, type: :system do
 
         describe 'showing comparisons' do
           before(:each) do
+            allow_any_instance_of(SchoolGroup).to receive(:categorise_schools) {
+              {
+                electricity: {
+                  baseload: {
+                    other_school: [
+                      {
+                        "school_id" => 1,
+                        "school_slug" => "school-1",
+                        "school_name" => "School 1",
+                      },
+                      {
+                        "school_id" => 2,
+                        "school_slug" => "school-2",
+                        "school_name" => "School 2",
+                      }
+                    ],
+                    benchmark_school: [
+                      {
+                        "school_id" => 3,
+                        "school_slug" => "school-3",
+                        "school_name" => "School 3",
+                      },
+                      {
+                        "school_id" => 4,
+                        "school_slug" => "school-4",
+                        "school_name" => "School 4",
+                      }
+                    ],
+                    exemplar_school: [
+                      {
+                        "school_id" => 5,
+                        "school_slug" => "school-5",
+                        "school_name" => "School 5",
+                      },
+                      {
+                        "school_id" => 6,
+                        "school_slug" => "school-6",
+                        "school_name" => "School 6",
+                      }
+                    ]
+                  },
+                  electricity_long_term: {
+                    other_school: [
+                      {
+                        "school_id" => 1,
+                        "school_slug" => "school-1",
+                        "school_name" => "School 1",
+                      },
+                      {
+                        "school_id" => 2,
+                        "school_slug" => "school-2",
+                        "school_name" => "School 2",
+                      }
+                    ],
+                    benchmark_school: [
+                      {
+                        "school_id" => 3,
+                        "school_slug" => "school-3",
+                        "school_name" => "School 3",
+                      },
+                      {
+                        "school_id" => 4,
+                        "school_slug" => "school-4",
+                        "school_name" => "School 4",
+                      }
+                    ],
+                    exemplar_school: [
+                      {
+                        "school_id" => 5,
+                        "school_slug" => "school-5",
+                        "school_name" => "School 5",
+                      },
+                      {
+                        "school_id" => 6,
+                        "school_slug" => "school-6",
+                        "school_name" => "School 6",
+                      }
+                    ]
+                  }
+                },
+                gas: {
+                  gas_long_term: {
+                    other_school: [
+                      {
+                        "school_id" => 1,
+                        "school_slug" => "school-1",
+                        "school_name" => "School 1",
+                      },
+                      {
+                        "school_id" => 2,
+                        "school_slug" => "school-2",
+                        "school_name" => "School 2",
+                      }
+                    ],
+                    benchmark_school: [
+                      {
+                        "school_id" => 3,
+                        "school_slug" => "school-3",
+                        "school_name" => "School 3",
+                      },
+                      {
+                        "school_id" => 4,
+                        "school_slug" => "school-4",
+                        "school_name" => "School 4",
+                      }
+                    ],
+                    exemplar_school: [
+                      {
+                        "school_id" => 5,
+                        "school_slug" => "school-5",
+                        "school_name" => "School 5",
+                      },
+                      {
+                        "school_id" => 6,
+                        "school_slug" => "school-6",
+                        "school_name" => "School 6",
+                      }
+                    ]
+                  },
+                  gas_out_of_hours: {
+                    other_school: [
+                      {
+                        "school_id" => 1,
+                        "school_slug" => "school-1",
+                        "school_name" => "School 1",
+                      },
+                      {
+                        "school_id" => 2,
+                        "school_slug" => "school-2",
+                        "school_name" => "School 2",
+                      }
+                    ],
+                    benchmark_school: [
+                      {
+                        "school_id" => 3,
+                        "school_slug" => "school-3",
+                        "school_name" => "School 3",
+                      },
+                      {
+                        "school_id" => 4,
+                        "school_slug" => "school-4",
+                        "school_name" => "School 4",
+                      }
+                    ],
+                    exemplar_school: [
+                      {
+                        "school_id" => 5,
+                        "school_slug" => "school-5",
+                        "school_name" => "School 5",
+                      },
+                      {
+                        "school_id" => 6,
+                        "school_slug" => "school-6",
+                        "school_name" => "School 6",
+                      }
+                    ]
+                  }
+                }
+              }
+            }
             visit comparisons_school_group_path(school_group)
           end
 
@@ -295,7 +455,50 @@ describe 'school groups', :school_groups, type: :system do
             let(:breadcrumb)    { 'Comparisons' }
           end
 
-          it 'shows expected content'
+          it 'shows expected content' do
+            [
+              'baseload',
+              'electricity_long_term',
+              'gas_long_term',
+              'gas_out_of_hours'
+            ].each do |advice_page_key|
+              expect(page).to have_content(I18n.t("advice_pages.#{advice_page_key}.page_title"))
+            end
+
+            [
+              'electricity_costs',
+              'electricity_intraday',
+              'electricity_out_of_hours',
+              'electricity_recent_changes',
+              'gas_costs',
+              'gas_recent_changes',
+              'heating_control',
+              'hot_water',
+              'solar_pv',
+              'storage_heaters',
+              'thermostatic_control'
+            ].each do |advice_page_key|
+              expect(page).not_to have_content(I18n.t("advice_pages.#{advice_page_key}.page_title"))
+            end
+          end
+
+          it 'allows a csv download of all priority actions for a school group' do
+            visit comparisons_school_group_path(school_group)
+            first(:link, 'Download as CSV', id: 'download-comparisons-school-csv-baseload').click
+            header = page.response_headers['Content-Disposition']
+            expect(header).to match /^attachment/
+            filename = "#{school_group.name}-#{I18n.t('school_groups.titles.comparisons')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+            expect(header).to match filename
+            expect(page.source).to eq "Fuel,Description,School,Category\nElectricity,Baseload analysis,School 5,Exemplar\nElectricity,Baseload analysis,School 6,Exemplar\nElectricity,Baseload analysis,School 3,Well managed\nElectricity,Baseload analysis,School 4,Well managed\nElectricity,Baseload analysis,School 1,Action needed\nElectricity,Baseload analysis,School 2,Action needed\n"
+
+            visit comparisons_school_group_path(school_group)
+            first(:link, 'Download as CSV', id: 'download-comparisons-school-csv-gas_out_of_hours').click
+            header = page.response_headers['Content-Disposition']
+            expect(header).to match /^attachment/
+            filename = "#{school_group.name}-#{I18n.t('school_groups.titles.comparisons')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+            expect(header).to match filename
+            expect(page.source).to eq "Fuel,Description,School,Category\nGas,Out of school hours gas use,School 5,Exemplar\nGas,Out of school hours gas use,School 6,Exemplar\nGas,Out of school hours gas use,School 3,Well managed\nGas,Out of school hours gas use,School 4,Well managed\nGas,Out of school hours gas use,School 1,Action needed\nGas,Out of school hours gas use,School 2,Action needed\n"
+          end
         end
 
         describe 'showing priority actions' do
