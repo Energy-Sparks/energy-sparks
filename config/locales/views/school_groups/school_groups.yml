@@ -17,6 +17,7 @@ en:
         group_chart_settings: chart settings
         update_all_schools_in_this_group: Update all schools in this group
     comparisons:
+      category: Category
       how_does_it_compare:
         baseload: How does the baseload of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
         electricity_intraday: How does the electricity intraday usage analysis of your schools compare to other schools on Energy Sparks, with a similar number of pupils?
