@@ -25,6 +25,14 @@ class SchoolGroupsController < ApplicationController
   end
 
   def comparisons
+    respond_to do |format|
+      format.html {}
+      format.csv do
+        filename = "#{@school_group.name}-#{I18n.t('school_groups.titles.comparisons')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+        send_data SchoolGroups::ComparisonsCsvGenerator.new(school_group: @school_group, advice_page_keys: params['advice_page_keys']).export,
+        filename: filename
+      end
+    end
   end
 
   def priority_actions
