@@ -5,7 +5,7 @@
   <% advice_pages.each do |advice_page_key, comparison| %>
     <%= component('school_group_comparison', id: 'group-comparison-baseload', comparison: comparison, advice_page_key: advice_page_key) do |component| %>
       <% component.with_csv_download_link do %>
-        <%= link_to t('school_groups.download_as_csv'), comparisons_school_group_path(@school_group, format: :csv, advice_page_keys: [advice_page_key]), class: 'btn btn-sm', id: 'download-priority-actions-school-csv' %>
+        <%= link_to t('school_groups.download_as_csv'), comparisons_school_group_path(@school_group, format: :csv, advice_page_keys: [advice_page_key]), class: 'btn btn-sm', id: "download-comparisons-school-csv-#{advice_page_key}" %>
       <% end %>
     <% end %>
     <p class=pb-5>
