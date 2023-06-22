@@ -45,6 +45,13 @@ describe 'school groups', :school_groups, type: :system do
         expect(page).to_not have_content('Current Scores')
       end
 
+      it 'does not show enhanced page sub navigation bar' do
+        visit school_group_path(school_group)
+        expect(page).not_to have_selector(id: "school-group-subnav")
+        expect(page).not_to have_selector(id: "school-list-menu")
+        expect(page).not_to have_selector(id: "manage-school-group")
+      end
+
       it 'includes data attribute' do
         visit school_group_path(school_group)
         expect(page).to have_selector("div[data-school-group-id='#{school_group.id}']")
@@ -59,6 +66,13 @@ describe 'school groups', :school_groups, type: :system do
 
       context 'when group is private' do
         let(:public)    { false }
+
+        it 'does not show enhanced page sub navigation bar' do
+          visit school_group_path(school_group)
+          expect(page).not_to have_selector(id: "school-group-subnav")
+          expect(page).not_to have_selector(id: "school-list-menu")
+          expect(page).not_to have_selector(id: "manage-school-group")
+        end
 
         it 'doesnt show compare link' do
           visit school_group_path(school_group)
@@ -79,6 +93,13 @@ describe 'school groups', :school_groups, type: :system do
         visit school_group_path(school_group)
         expect(page).to have_link("Compare schools")
       end
+
+      it 'does not show enhanced page sub navigation bar' do
+        visit school_group_path(school_group)
+        expect(page).not_to have_selector(id: "school-group-subnav")
+        expect(page).not_to have_selector(id: "school-list-menu")
+        expect(page).not_to have_selector(id: "manage-school-group")
+      end
     end
 
     describe 'when logged in' do
@@ -91,12 +112,26 @@ describe 'school groups', :school_groups, type: :system do
           visit school_group_path(school_group)
           expect(page).to have_link("Compare schools")
         end
+
+        it 'does not show enhanced page sub navigation bar' do
+          visit school_group_path(school_group)
+          expect(page).not_to have_selector(id: "school-group-subnav")
+          expect(page).not_to have_selector(id: "school-list-menu")
+          expect(page).not_to have_selector(id: "manage-school-group")
+        end
       end
 
       context 'when group is private' do
         it 'doesnt show compare link' do
           visit school_group_path(school_group)
           expect(page).to have_link("Compare schools")
+        end
+
+        it 'does not show enhanced page sub navigation bar' do
+          visit school_group_path(school_group)
+          expect(page).not_to have_selector(id: "school-group-subnav")
+          expect(page).not_to have_selector(id: "school-list-menu")
+          expect(page).not_to have_selector(id: "manage-school-group")
         end
       end
     end
