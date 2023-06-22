@@ -9,8 +9,29 @@ class MeterManagement
     subscribe(Targets::FuelTypeEventListener.new)
   end
 
+  def n3rgy_consented?
+    return false unless @meter.dcc_meter?
+    mpxns = MeterReadingsFeeds::N3rgy.new(api_key: ENV["N3RGY_API_KEY"], production: true).mpxns
+    mpxns.include? @meter.mpan_mprn
+  rescue => e
+    Rails.logger.error "Exception: checking consented status of meter #{@meter.mpan_mprn} : #{e.class} #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
+    Rollbar.error(e)
+    return [:api_error]
+  end
+
+  def available_cache_range
+    return [] unless @meter.dcc_meter?
+    @n3rgy_api_factory.data_api(@meter).readings_available_date_range(@meter.mpan_mprn, @meter.fuel_type)
+  rescue => e
+    Rails.logger.error "Exception: checking available date range of meter #{@meter.mpan_mprn} : #{e.class} #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
+    Rollbar.error(e)
+    return [:api_error]
+  end
+
   def check_n3rgy_status
-    @n3rgy_api_factory.data_api(@meter).find(@meter.mpan_mprn)
+    @n3rgy_api_factory.data_api(@meter).status(@meter.mpan_mprn)
   rescue => e
     Rails.logger.error "Exception: checking status of meter #{@meter.mpan_mprn} : #{e.class} #{e.message}"
     Rails.logger.error e.backtrace.join("\n")

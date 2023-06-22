@@ -68,7 +68,7 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
     context 'when the school has a DCC meter' do
       let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
 
-      let!(:data_api) { double(find: true, inventory: {device_id: 123999}, elements: [1]) }
+      let!(:data_api) { double(status: :available, readings_available_date_range: Date.today..Date.today) }
 
       before(:each) do
         allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).with(meter).and_return(data_api)
@@ -207,14 +207,20 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
 
     context 'when the school has a DCC meter' do
       let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
-      let!(:data_api) { double(find: true, inventory: {device_id: 123999}, elements: [1]) }
+      let!(:data_api) { double(status: :available, inventory: {device_id: 123999}, readings_available_date_range: Date.today..Date.today) }
 
       before(:each) do
         allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).with(meter).and_return(data_api)
+        click_on 'Manage meters'
+      end
+
+      it 'shows the status and dates' do
+        click_on meter.mpan_mprn.to_s
+        expect(page).to have_content("Available")
+        expect(page).to have_content(Date.today.iso8601)
       end
 
       it 'the meter inventory button can be shown' do
-        click_on 'Manage meters'
         click_on meter.mpan_mprn.to_s
         click_on 'Inventory'
         expect(page).to have_content('device_id')
@@ -222,21 +228,18 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
       end
 
       it 'the tariff report can be shown' do
-        click_on 'Manage meters'
         click_on meter.mpan_mprn.to_s
         click_on 'Tariff Report'
         expect(page).to have_content("Standing charges")
       end
 
       it 'the single meter attributes view can be shown' do
-        click_on 'Manage meters'
         click_on meter.mpan_mprn.to_s
         click_on 'Attributes'
         expect(page).to have_content("Individual Meter attributes")
       end
 
       it 'the dcc checkboxes and status are shown on the edit form' do
-        click_on 'Manage meters'
         click_on 'Edit'
         check "DCC Smart Meter"
         check "Sandbox"
@@ -247,7 +250,7 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
     end
 
     context 'when creating meters' do
-      let!(:data_api) { double(find: true, inventory: {device_id: 123999}, elements: [1]) }
+      let!(:data_api) { double(status: :available, inventory: {device_id: 123999}) }
 
       before(:each) do
         allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).and_return(data_api)
