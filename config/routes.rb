@@ -253,6 +253,7 @@ Rails.application.routes.draw do
       resources :meters do
         member do
           get :inventory
+          get :n3rgy_status
           put :activate
           put :deactivate
         end
