@@ -279,8 +279,6 @@ en:
         report: Report
         review_meters: Review meters
         school_downloads: School downloads
-        school_enough_data_message: This school has enough data for at least one fuel type to generate targets
-        school_not_enough_data_message: This school does not have enough data to generate targets
         this_may_take_some_time: This may take some time!
         title: Manage meters
         validate_meter_readings: Validate meter readings
