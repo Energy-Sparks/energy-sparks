@@ -22,9 +22,6 @@
         <%= link_to t('schools.meters.index.review_meters'), new_admin_school_meter_review_path(@school), class: 'btn' %>
       <% end %>
     <% end %>
-    <% if can? :manage, UserTariff %>
-      <%= link_to t('schools.meters.index.manage_tariffs'), school_user_tariffs_path(@school), class: 'btn' %>
-    <% end %>
   </div>
 <% end %>
 
