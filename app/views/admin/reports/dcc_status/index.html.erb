@@ -42,7 +42,7 @@
 
     <tbody>
       <% @dcc_meters.each do |meter| %>
-        <tr class="<%= highlight_consent_mismatch?(@mpxns, meter) ? 'bg-warning' : '' %>">
+        <tr class="<%= highlight_consent_mismatch?(@mpxns, meter) ? 'bg-danger text-white' : '' %>">
           <td><%= link_to meter.school.name, school_meters_path(meter.school) %></td>
           <td><%= link_to meter.name, school_meter_path(meter.school, meter) %></td>
           <td><%= meter.mpan_mprn %></td>
