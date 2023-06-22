@@ -415,5 +415,20 @@ module Amr
         expect{ SingleReadConverter.new(readings).perform }.to raise_error(ArgumentError)
       end
     end
+
+    context 'more than 48 readings' do
+      let(:readings) do
+        data = []
+        49.times { |idx| data << {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: idx + 1, :reading_date=>"25/08/2019", :readings=>["14.4"]} }
+        48.times { |idx| data << {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", period: idx + 1, :reading_date=>"26/08/2019", :readings=>["7"]} }
+        data
+      end
+      subject(:results) { SingleReadConverter.new(readings, indexed: true).perform }
+
+      it "truncates after 48 readings" do
+        expect(results.first[:readings].length).to be(48)
+        expect(results.second[:readings].length).to be(48)
+      end
+    end
   end
 end

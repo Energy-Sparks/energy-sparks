@@ -111,30 +111,35 @@ end
 RSpec.shared_examples "shows the sub navigation menu" do
   it 'shows the sub navigation menu' do
     visit school_group_path(school_group)
+    expect(page).to have_selector(id: "school-group-subnav")
     expect(page).to have_selector(id: "school-list-menu")
     expect(school_group.schools.visible.count.positive?).to eq(true)
     expect(find('#dropdown-school-list-menu').all('a').collect(&:text).sort).to eq(school_group.schools.visible.order(:name).map(&:name))
     expect(page).to have_selector(id: "manage-school-group")
 
     visit map_school_group_path(school_group)
+    expect(page).to have_selector(id: "school-group-subnav")
     expect(page).to have_selector(id: "school-list-menu")
     expect(school_group.schools.visible.count.positive?).to eq(true)
     expect(find('#dropdown-school-list-menu').all('a').collect(&:text).sort).to eq(school_group.schools.visible.order(:name).map(&:name))
     expect(page).to have_selector(id: "manage-school-group")
 
     visit comparisons_school_group_path(school_group)
+    expect(page).to have_selector(id: "school-group-subnav")
     expect(page).to have_selector(id: "school-list-menu")
     expect(school_group.schools.visible.count.positive?).to eq(true)
     expect(find('#dropdown-school-list-menu').all('a').collect(&:text).sort).to eq(school_group.schools.visible.order(:name).map(&:name))
     expect(page).to have_selector(id: "manage-school-group")
 
     visit priority_actions_school_group_path(school_group)
+    expect(page).to have_selector(id: "school-group-subnav")
     expect(page).to have_selector(id: "school-list-menu")
     expect(school_group.schools.visible.count.positive?).to eq(true)
     expect(find('#dropdown-school-list-menu').all('a').collect(&:text).sort).to eq(school_group.schools.visible.order(:name).map(&:name))
     expect(page).to have_selector(id: "manage-school-group")
 
     visit current_scores_school_group_path(school_group)
+    expect(page).to have_selector(id: "school-group-subnav")
     expect(page).to have_selector(id: "school-list-menu")
     expect(school_group.schools.visible.count.positive?).to eq(true)
     expect(find('#dropdown-school-list-menu').all('a').collect(&:text).sort).to eq(school_group.schools.visible.order(:name).map(&:name))

@@ -1,5 +1,9 @@
 <%= render 'enhanced_header' %>
 
+<div class='text-right pt-3'>
+  <%= link_to t('school_groups.download_as_csv'), current_scores_school_group_path(@school_group, format: :csv), class: 'btn btn-sm' %>
+</div>
+
 <table width="100%" class="mt-3 table advice-table">
   <thead>
     <tr>
