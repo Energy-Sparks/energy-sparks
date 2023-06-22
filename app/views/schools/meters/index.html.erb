@@ -29,7 +29,6 @@
   <% if @school.process_data? %>
     <div class="alert alert-secondary mb-2">
       <%= link_to t('schools.meters.index.validate_meter_readings'), school_meter_readings_validation_path(@school), method: :post, class: 'btn mr-3' %>
-      <%= t('schools.meters.index.this_may_take_some_time') %>
     </div>
   <% else %>
     <div class="alert alert-warning mb-2">
