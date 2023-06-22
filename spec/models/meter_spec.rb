@@ -52,12 +52,6 @@ describe 'Meter', :meters do
     end
   end
 
-  describe '#reviewed_dcc_meter' do
-    it 'returns a collection of reviewed meters' do
-
-    end
-  end
-
   describe 'valid?' do
     describe 'mpan_mprn' do
       context 'with an electricity meter' do
