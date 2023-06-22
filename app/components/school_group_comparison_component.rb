@@ -2,6 +2,7 @@
 
 class SchoolGroupComparisonComponent < ViewComponent::Base
   renders_one :callout_footer
+  renders_one :csv_download_link
 
   CATEGORIES = [:exemplar_school, :benchmark_school, :other_school].freeze
 

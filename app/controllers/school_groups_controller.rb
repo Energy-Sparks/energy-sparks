@@ -25,18 +25,56 @@ class SchoolGroupsController < ApplicationController
   end
 
   def comparisons
+    respond_to do |format|
+      format.html {}
+      format.csv do
+        filename = "#{@school_group.name}-#{I18n.t('school_groups.titles.comparisons')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+        send_data SchoolGroups::ComparisonsCsvGenerator.new(school_group: @school_group, advice_page_keys: params['advice_page_keys']).export,
+        filename: filename
+      end
+    end
   end
 
   def priority_actions
-    service = SchoolGroups::PriorityActions.new(@school_group)
-    @priority_actions = service.priority_actions
-    @total_savings = sort_total_savings(service.total_savings)
+    respond_to do |format|
+      format.html do
+        service = SchoolGroups::PriorityActions.new(@school_group)
+        @priority_actions = service.priority_actions
+        @total_savings = sort_total_savings(service.total_savings)
+      end
+      format.csv do
+        send_data priority_actions_csv, filename: csv_filename_for('priority_actions')
+      end
+    end
   end
 
   def current_scores
+    respond_to do |format|
+      format.html {}
+      format.csv do
+        send_data SchoolGroups::CurrentScoresCsvGenerator.new(school_group: @school_group).export,
+        filename: csv_filename_for('current_scores')
+      end
+    end
   end
 
   private
+
+  def csv_filename_for(action, metric_label: '')
+    title = I18n.t("school_groups.titles.#{action}")
+    "#{@school_group.name}-#{title}-#{metric_label}#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+  end
+
+  def priority_actions_csv
+    if params[:alert_type_rating_ids]
+      SchoolGroups::SchoolsPriorityActionCsvGenerator.new(
+        school_group: @school_group,
+        alert_type_rating_ids: params[:alert_type_rating_ids].map(&:to_i)
+      ).export
+    else
+      SchoolGroups::PriorityActionsCsvGenerator.new(school_group: @school_group).export
+    end
+  end
 
   def set_show_school_group_message
     @show_school_group_message = show_school_group_message?
@@ -96,9 +134,9 @@ class SchoolGroupsController < ApplicationController
         end
         format.csv do
           metric = params['metric'] || 'change'
-          metric_label = I18n.t("school_groups.show.metric.#{metric}")
+          metric_label = I18n.t("school_groups.show.metric.#{metric}") + '-'
           send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group, metric: metric).export,
-          filename: "#{@school_group.name} - #{I18n.t('school_groups.titles.recent_usage')} - #{metric_label} (#{Time.zone.now.strftime('%d/%m/%Y')}).csv"
+          filename: csv_filename_for('recent_usage', metric_label: metric_label)
         end
       end
     else
