@@ -17,7 +17,9 @@
     <%= link_to t('schools.meters.index.manage_solar_api_feeds'), school_solar_feeds_configuration_index_path(@school), class: 'btn' %>
     <% end %>
     <% if can? :manage, MeterReview %>
-      <%= link_to t('schools.meters.index.meter_reviews'), admin_school_meter_reviews_path(@school), class: 'btn' %>
+      <% if @school.meters.reviewed_dcc_meter %>
+        <%= link_to t('schools.meters.index.meter_reviews'), admin_school_meter_reviews_path(@school), class: 'btn' %>
+      <% end %>
       <% if @pending_reviews %>
         <%= link_to t('schools.meters.index.review_meters'), new_admin_school_meter_review_path(@school), class: 'btn' %>
       <% end %>

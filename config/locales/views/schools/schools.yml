@@ -268,7 +268,7 @@ en:
         latest: Latest
         manage_solar_api_feeds: Manage Solar API feeds
         meter: Meter
-        meter_reviews: Meter reviews
+        meter_reviews: Completed DCC meter reviews
         mpan_warning_message: There are electricity meters with MPANs that don't appear to have the correct check digit
         name: Name
         no_active_meters: No active meters
