@@ -301,11 +301,9 @@ cy:
         dcc_information: Gwybodaeth DCC
         dcc_last_checked: Gwiriwyd DCC ddiwethaf
         download_readings: Darlleniadau
-        earliest_available_data: Data Cynharaf Sydd Ar Gael
         grant_consent: Rhoi caniatâd
         inventory: Stocrestr
         meter: Mesurydd
-        meter_elements: Elfennau Mesurydd
         n3rgy_api_status: Statws API n3rgy
         not_configured_as_a_dcc_meter: Heb ei ffurfweddu fel mesurydd DCC
         sandbox: Blwch tywod

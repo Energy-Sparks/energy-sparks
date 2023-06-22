@@ -303,11 +303,9 @@ en:
         dcc_information: DCC (SMETS2) information
         dcc_last_checked: Last automated check
         download_readings: Readings
-        earliest_available_data: Earliest Available Data
         grant_consent: Grant consent
         inventory: Inventory
         meter: Meter
-        meter_elements: Meter Elements
         n3rgy_api_status: n3rgy API Status
         n3rgy_consent_confirmed: n3rgy Confirm Consented
         not_configured_as_a_dcc_meter: Not configured as a DCC meter
