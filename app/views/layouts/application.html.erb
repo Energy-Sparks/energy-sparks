@@ -7,7 +7,7 @@
     <% if show_sub_nav?(@school, @hide_subnav) %>
       <%= render 'shared/mini_nav' %>
       <%= render 'shared/sub_nav', podium: current_school_podium, school: @school %>
-    <% elsif controller_path.split('/').first == 'school_groups' && can?(:update_settings, @school_group) %>
+    <% elsif EnergySparks::FeatureFlags.active?(:enhanced_school_group_dashboard) && controller_path.split('/').first == 'school_groups' && can?(:update_settings, @school_group) %>
       <%= render 'shared/mini_nav' %>
       <%= render 'school_groups/sub_nav' if can?(:update_settings, @school_group) %>
     <% else %>
