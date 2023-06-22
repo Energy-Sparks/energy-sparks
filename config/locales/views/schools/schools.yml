@@ -258,7 +258,6 @@ en:
         active_pseudo_meters: Active pseudo meters
         add_meter: Add meter
         admin_meter_status: Admin meter status
-        data_processing_turned_on_message: Data processing must be turned on for this school before meter readings can be validated
         data_source: Data source
         details: Details
         first: First
