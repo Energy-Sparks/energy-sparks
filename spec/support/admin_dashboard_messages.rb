@@ -7,6 +7,7 @@ RSpec.shared_examples "admin dashboard messages" do | permitted: true |
     context "No message set" do
       it { expect(page).to have_content "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}" }
       it { expect(page).to have_link('Set message') }
+      it { expect(page).not_to have_link('Delete message') }
       context "Clicking on 'Set message'" do
         before { click_link "Set message" }
         it { expect(page).to have_content("Dashboard Message for #{messageable.name}") }
@@ -47,6 +48,7 @@ RSpec.shared_examples "admin dashboard messages" do | permitted: true |
       let(:setup_data) { messageable.create_dashboard_message(message: message) }
       it { expect(page).to have_content message }
       it { expect(page).to have_link('Edit message') }
+      it { expect(page).to have_link('Delete message') }
       context "Clicking on 'Edit message'" do
         before { click_link "Edit message" }
         it { expect(page).to have_field('Message', with: message) }
@@ -69,11 +71,47 @@ RSpec.shared_examples "admin dashboard messages" do | permitted: true |
           end
         end
       end
+
+      context 'when clicking on the delete message link', js: true do
+        let(:setup_data) { messageable.create_dashboard_message(message: message) }
+        context 'delete a message' do
+          it 'deletes a message' do
+            expect(page).to have_content message
+            expect(page).to have_link('Edit message')
+            expect(page).to have_link('Delete message')
+            expect(page).not_to have_link('Set message')
+            accept_alert("Are you sure?") do
+              click_link 'Delete message'
+            end
+            expect(page).not_to have_content message
+            expect(page).not_to have_link('Edit message')
+            expect(page).not_to have_link('Delete message')
+            expect(page).to have_link('Set message')
+          end
+
+          it 'declines to delete a message' do
+            expect(page).to have_content message
+            expect(page).to have_link('Edit message')
+            expect(page).to have_link('Delete message')
+            expect(page).not_to have_link('Set message')
+            dismiss_confirm("Are you sure?") do
+              click_link 'Delete message'
+            end
+            expect(page).to have_content message
+            expect(page).to have_link('Edit message')
+            expect(page).to have_link('Delete message')
+            expect(page).not_to have_link('Set message')
+          end
+        end
+      end
+
     end
   end
   context "when not permitted", unless: permitted do
     it "panel is not shown" do
       expect(page).to_not have_content('Set message')
+      expect(page).not_to have_content('Edit message')
+      expect(page).not_to have_content('Delete message')
     end
   end
 end
