@@ -84,25 +84,42 @@ describe MeterManagement do
     end
   end
 
-  describe 'check_n3rgy_status' do
+  describe 'is_meter_known_to_n3rgy?' do
     let(:n3rgy_api)         { double(:n3rgy_api) }
     let(:n3rgy_api_factory) { double(:n3rgy_api_factory, data_api: n3rgy_api) }
 
-    it "shows existing dcc meters" do
+    it "returns api status" do
       meter = create(:electricity_meter)
       expect(n3rgy_api).to receive(:find).with(meter.mpan_mprn).and_return(true)
-      expect( MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).check_n3rgy_status ).to eql(true)
-    end
+      expect( MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).is_meter_known_to_n3rgy? ).to be true
 
-    it "does not show non-existent dcc meters" do
-      meter = create(:electricity_meter)
       expect(n3rgy_api).to receive(:find).with(meter.mpan_mprn).and_return(false)
-      expect( MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).check_n3rgy_status ).to eql(false)
+      expect( MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).is_meter_known_to_n3rgy? ).to be false
     end
 
     it "handles API errors" do
       meter = create(:electricity_meter)
       allow(n3rgy_api).to receive(:find).with(meter.mpan_mprn).and_raise(StandardError)
+      expect( MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).is_meter_known_to_n3rgy? ).to be false
+    end
+  end
+
+  describe 'check_n3rgy_status' do
+    let(:n3rgy_api)         { double(:n3rgy_api) }
+    let(:n3rgy_api_factory) { double(:n3rgy_api_factory, data_api: n3rgy_api) }
+
+    it "returns api status" do
+      meter = create(:electricity_meter)
+      expect(n3rgy_api).to receive(:status).with(meter.mpan_mprn).and_return(:available)
+      expect( MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).check_n3rgy_status ).to eql(:available)
+
+      expect(n3rgy_api).to receive(:status).with(meter.mpan_mprn).and_return(:unknown)
+      expect( MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).check_n3rgy_status ).to eql(:unknown)
+    end
+
+    it "handles API errors" do
+      meter = create(:electricity_meter)
+      allow(n3rgy_api).to receive(:status).with(meter.mpan_mprn).and_raise(StandardError)
       expect( MeterManagement.new(meter, n3rgy_api_factory: n3rgy_api_factory).check_n3rgy_status ).to eql(:api_error)
     end
   end

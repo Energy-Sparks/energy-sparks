@@ -260,7 +260,6 @@ en:
         admin_meter_status: Admin meter status
         data_processing_turned_on_message: Data processing must be turned on for this school before meter readings can be validated
         data_source: Data source
-        details: Details
         first: First
         imported: Imported
         inactive_meters: Inactive meters
@@ -296,25 +295,26 @@ en:
         no_meter_issues: No issues or notes for meter
         title: Meter Issues & Notes - %{name}
       show:
+        available_cache_range: Available date range
         basic_information: Basic information
         data_source: Data source
         dcc_consented: DCC Consented
-        dcc_information: DCC information
-        dcc_last_checked: DCC last checked
+        dcc_information: DCC (SMETS2) information
+        dcc_last_checked: Last automated check
         download_readings: Readings
-        earliest_available_data: Earliest Available Data
         grant_consent: Grant consent
         inventory: Inventory
         meter: Meter
-        meter_elements: Meter Elements
         n3rgy_api_status: n3rgy API Status
+        n3rgy_consent_confirmed: n3rgy Confirm Consented
+        n3rgy_known_meter: Available from n3rgy?
         not_configured_as_a_dcc_meter: Not configured as a DCC meter
-        sandbox: Sandbox
+        sandbox: Sandbox (test meter)
         school_meter_management: School meter management
         serial_number: Serial Number
         tariff_report: Tariff Report
         title: "%{meter_name} (%{meter_mpan_mprn})"
-        user_consented: User Consented
+        user_consented: User has consented
         withdraw_consent: Withdraw consent
     observations:
       timeline:

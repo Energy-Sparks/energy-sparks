@@ -9,12 +9,42 @@ class MeterManagement
     subscribe(Targets::FuelTypeEventListener.new)
   end
 
-  def check_n3rgy_status
+  def n3rgy_consented?
+    return false unless @meter.dcc_meter?
+    mpxns = MeterReadingsFeeds::N3rgy.new(api_key: ENV["N3RGY_API_KEY"], production: true).mpxns
+    mpxns.include? @meter.mpan_mprn
+  rescue => e
+    Rails.logger.warn "Error fetching list of consented mpans #{e.class} #{e.message}"
+    Rails.logger.warn e.backtrace.join("\n")
+    Rollbar.warning(e)
+    return nil
+  end
+
+  def available_cache_range
+    return [] unless @meter.dcc_meter?
+    @n3rgy_api_factory.data_api(@meter).readings_available_date_range(@meter.mpan_mprn, @meter.fuel_type)
+  rescue => e
+    Rails.logger.warn "Error fetching available cache range for #{@meter.mpan_mprn} #{e.class} #{e.message}"
+    Rails.logger.warn e.backtrace.join("\n")
+    Rollbar.warning(e, meter: @meter.id, mpan: @meter.mpan_mprn)
+    return [:api_error]
+  end
+
+  def is_meter_known_to_n3rgy?
     @n3rgy_api_factory.data_api(@meter).find(@meter.mpan_mprn)
   rescue => e
-    Rails.logger.error "Exception: checking status of meter #{@meter.mpan_mprn} : #{e.class} #{e.message}"
-    Rails.logger.error e.backtrace.join("\n")
-    Rollbar.error(e)
+    Rails.logger.warn "Error looking up #{@meter.mpan_mprn} #{e.class} #{e.message}"
+    Rails.logger.warn e.backtrace.join("\n")
+    Rollbar.warning(e, meter: @meter.id, mpan: @meter.mpan_mprn)
+    return false
+  end
+
+  def check_n3rgy_status
+    @n3rgy_api_factory.data_api(@meter).status(@meter.mpan_mprn)
+  rescue => e
+    Rails.logger.warn "Error checking status of #{@meter.mpan_mprn} #{e.class} #{e.message}"
+    Rails.logger.warn e.backtrace.join("\n")
+    Rollbar.warning(e, meter: @meter.id, mpan: @meter.mpan_mprn)
     return :api_error
   end
 
@@ -22,9 +52,9 @@ class MeterManagement
     return nil unless @meter.dcc_meter?
     @n3rgy_api_factory.data_api(@meter).elements(@meter.mpan_mprn, @meter.meter_type)
   rescue => e
-    Rails.logger.error "Exception: checking elements of meter #{@meter.mpan_mprn} : #{e.class} #{e.message}"
-    Rails.logger.error e.backtrace.join("\n")
-    Rollbar.error(e)
+    Rails.logger.warn "Exception: checking elements of meter #{@meter.mpan_mprn} : #{e.class} #{e.message}"
+    Rails.logger.warn e.backtrace.join("\n")
+    Rollbar.warning(e)
     return :api_error
   end
 

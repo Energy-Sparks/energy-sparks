@@ -20,9 +20,7 @@ module Schools
     end
 
     def show
-      manager = MeterManagement.new(@meter)
-      @n3rgy_status = manager.check_n3rgy_status
-      @elements = manager.elements
+      set_n3rgy_status
       respond_to do |format|
         format.html
         format.csv { send_data readings_to_csv(AmrValidatedReading.download_query_for_meter(@meter), AmrValidatedReading::CSV_HEADER_FOR_METER), filename: "meter-amr-readings-#{@meter.mpan_mprn}.csv" }
@@ -80,6 +78,17 @@ module Schools
     end
 
   private
+
+    def set_n3rgy_status
+      return unless can?(:view_dcc_data, @school)
+      manager = MeterManagement.new(@meter)
+      @known_to_n3rgy = manager.is_meter_known_to_n3rgy?
+      if @known_to_n3rgy && @meter.dcc_meter
+        @n3rgy_status = manager.check_n3rgy_status
+        @n3rgy_consent_confirmed = manager.n3rgy_consented?
+        @available_cache_range = manager.available_cache_range if @n3rgy_status == :available
+      end
+    end
 
     def set_breadcrumbs
       @breadcrumbs = [{ name: I18n.t('manage_school_menu.manage_meters') }]
