@@ -1,23 +1,7 @@
 GIT
-  remote: https://github.com/Energy-Sparks/statsample
-  revision: e3de8a332546ca0506938f49f8a9f92762aee737
-  branch: update-gems-and-awesome-print
-  tag: 2.1.1-energy-sparks
-  specs:
-    statsample (2.1.0)
-      amazing_print (~> 1.2.1)
-      daru (~> 0.2.2)
-      dirty-memoize (~> 0.0.4)
-      distribution (~> 0.7)
-      extendmatrix (~> 0.4)
-      minimization (~> 0.2)
-      reportbuilder (~> 1.4)
-      rserve-client (~> 0.3)
-      rubyvis (~> 0.6.1)
-      spreadsheet (~> 1.1)
-
-PATH
-  remote: ../energy-sparks_analytics
+  remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
+  revision: de21367ebe5593fc94b000ab8511f18274e03ddc
+  tag: 2.8.4
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
@@ -39,7 +23,25 @@ PATH
       soda-ruby (~> 0.2.25)
       statsample (~> 2.1.0)
       structured_warnings (~> 0.3.0)
-      write_xlsx (>= 0.85.5, < 1.11.0)
+      write_xlsx (>= 0.85.5, < 1.12.0)
+
+GIT
+  remote: https://github.com/Energy-Sparks/statsample
+  revision: e3de8a332546ca0506938f49f8a9f92762aee737
+  branch: update-gems-and-awesome-print
+  tag: 2.1.1-energy-sparks
+  specs:
+    statsample (2.1.0)
+      amazing_print (~> 1.2.1)
+      daru (~> 0.2.2)
+      dirty-memoize (~> 0.0.4)
+      distribution (~> 0.7)
+      extendmatrix (~> 0.4)
+      minimization (~> 0.2)
+      reportbuilder (~> 1.4)
+      rserve-client (~> 0.3)
+      rubyvis (~> 0.6.1)
+      spreadsheet (~> 1.1)
 
 GEM
   remote: https://rubygems.org/
@@ -670,7 +672,7 @@ GEM
     websocket-extensions (0.1.5)
     wisper (2.0.0)
     wisper-rspec (1.1.0)
-    write_xlsx (1.10.2)
+    write_xlsx (1.11.0)
       rubyzip (>= 1.0.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
