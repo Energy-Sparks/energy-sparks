@@ -260,7 +260,6 @@ en:
         admin_meter_status: Admin meter status
         data_processing_turned_on_message: Data processing must be turned on for this school before meter readings can be validated
         data_source: Data source
-        details: Details
         first: First
         imported: Imported
         inactive_meters: Inactive meters
@@ -308,6 +307,7 @@ en:
         meter: Meter
         n3rgy_api_status: n3rgy API Status
         n3rgy_consent_confirmed: n3rgy Confirm Consented
+        n3rgy_known_meter: Available from n3rgy?
         not_configured_as_a_dcc_meter: Not configured as a DCC meter
         sandbox: Sandbox (test meter)
         school_meter_management: School meter management
