@@ -22,14 +22,8 @@ module Solar
         @end_date
       )
     rescue => e
-      Rollbar.error(
-        e,
-        installation_id: @low_carbon_hub_installation.id,
-        school_id: @low_carbon_hub_installation.school_id,
-        start_date: @start_date,
-        end_date: @end_date,
-        installation_latest_electricity_reading: @low_carbon_hub_installation.latest_electricity_reading
-      )
+      import_log.update!(error_messages: "Error downloading data from #{@start_date} to #{@end_date} for school id #{@low_carbon_hub_installation.school_id} : #{e.class}  #{e.message}")
+      return nil
     end
   end
 end

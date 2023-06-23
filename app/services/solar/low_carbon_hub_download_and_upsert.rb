@@ -11,6 +11,7 @@ module Solar
     def download_and_upsert
       readings = LowCarbonHubDownloader.new(installation: @installation, start_date: start_date, end_date: end_date, api: low_carbon_hub_api).readings
 
+      return unless readings
       LowCarbonHubUpserter.new(installation: @installation, readings: readings, import_log: import_log).perform
     end
 
