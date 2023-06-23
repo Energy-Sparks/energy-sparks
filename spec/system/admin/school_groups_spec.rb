@@ -29,7 +29,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
     describe "Viewing school groups index page" do
       let(:setup_data) { create_data_for_school_groups(school_groups) }
       before do
-        click_on 'Edit School Groups'
+        click_on 'Manage School Groups'
       end
 
       context "with multiple groups" do
@@ -90,7 +90,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       let!(:dark_sky_weather_area)  { create(:dark_sky_area, title: 'BANES dark sky weather') }
 
       before do
-        click_on 'Edit School Groups'
+        click_on 'Manage School Groups'
         click_on 'New school group'
       end
 
@@ -123,7 +123,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       let!(:issues_admin) { }
       let!(:school_group) { create :school_group, default_issues_admin_user: issues_admin }
       before do
-        click_on 'Edit School Groups'
+        click_on 'Manage School Groups'
         within "table" do
           click_on 'Manage'
         end
@@ -400,7 +400,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
     describe "Editing a school group" do
       let!(:school_group) { create(:school_group, name: 'BANES', public: true) }
       before do
-        click_on 'Edit School Groups'
+        click_on 'Manage School Groups'
         within "table" do
           click_on 'Manage'
         end
@@ -419,7 +419,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
     describe "Deleting a school group" do
       let!(:school_group) { create(:school_group) }
       before do
-        click_on 'Edit School Groups'
+        click_on 'Manage School Groups'
         within "table" do
           click_on 'Manage'
         end
@@ -449,7 +449,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas) }
       before do
         Timecop.freeze
-        click_on 'Edit School Groups'
+        click_on 'Manage School Groups'
         within "table" do
           click_on 'Manage'
         end
@@ -508,7 +508,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
 
       before do
-        click_on 'Edit School Groups'
+        click_on 'Manage School Groups'
         within "table" do
           click_on 'Manage', match: :first
         end
@@ -572,7 +572,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         create :school, active: false, school_group: school_group2, chart_preference: 'default'
         create :school, active: false, school_group: school_group2, chart_preference: 'carbon'
         create :school, active: false, school_group: school_group2, chart_preference: 'usage'
-        click_on 'Edit School Groups'
+        click_on 'Manage School Groups'
         within "table" do
           click_on 'Manage', match: :first
         end
@@ -601,7 +601,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       let!(:partners) { 3.times.collect { create(:partner) } }
       let!(:school_group)      { create(:school_group, name: 'BANES') }
       before do
-        click_on 'Edit School Groups'
+        click_on 'Manage School Groups'
         within "table" do
           click_on 'Manage'
         end
