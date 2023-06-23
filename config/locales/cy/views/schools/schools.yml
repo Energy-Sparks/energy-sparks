@@ -259,7 +259,6 @@ cy:
         admin_meter_status: Statws mesurydd gweinyddol
         data_processing_turned_on_message: Rhaid troi prosesu data ymlaen ar gyfer yr ysgol hon cyn y gellir dilysu darlleniadau mesurydd
         data_source: Ffynhonnell ddata
-        details: Manylion
         first: Cyntaf
         imported: Mewnforiwyd
         inactive_meters: Mesuryddion anweithredol
