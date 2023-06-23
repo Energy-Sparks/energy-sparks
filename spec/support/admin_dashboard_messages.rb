@@ -46,9 +46,9 @@ RSpec.shared_examples "admin dashboard messages" do | permitted: true |
     context "a message is already set" do
       let(:setup_data) { messageable.create_dashboard_message(message: message) }
       it { expect(page).to have_content message }
-      it { expect(page).to have_link('Set message') }
-      context "Clicking on 'Set message'" do
-        before { click_link "Set message" }
+      it { expect(page).to have_link('Edit message') }
+      context "Clicking on 'Edit message'" do
+        before { click_link "Edit message" }
         it { expect(page).to have_field('Message', with: message) }
         context "and changing message" do
           before do
