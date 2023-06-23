@@ -1,9 +1,7 @@
 <div class='d-flex justify-content-between align-items-baseline'>
   <h1><%= t('schools.meters.index.title') %></h1>
-  <% if current_user.admin? && @school&.school_group&.default_issues_admin_user&.present? %>
-    <span class="badge border badge-pill border-secondary font-weight-normal">
-      <%= @school.default_issues_admin_user&.display_name %>
-    </span>
+  <% if current_user.admin? && @school&.school_group %>
+    <%= render 'admin/school_groups/default_issues_admin_user', school_group: @school&.school_group %>
   <% end %>
 </div>
 
