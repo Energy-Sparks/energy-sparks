@@ -308,6 +308,7 @@ en:
         meter: Meter
         n3rgy_api_status: n3rgy API Status
         n3rgy_consent_confirmed: n3rgy Confirm Consented
+        n3rgy_known_meter: Available from n3rgy?
         not_configured_as_a_dcc_meter: Not configured as a DCC meter
         sandbox: Sandbox (test meter)
         school_meter_management: School meter management
