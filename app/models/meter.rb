@@ -79,7 +79,8 @@ class Meter < ApplicationRecord
   scope :sub_meter, -> { where(pseudo: true, meter_type: SUB_METER_TYPES) }
   scope :no_amr_validated_readings, -> { left_outer_joins(:amr_validated_readings).where(amr_validated_readings: { meter_id: nil }) }
 
-  scope :unreviewed_dcc_meter, -> { where(dcc_meter: true, consent_granted: false, meter_review: nil) }
+  scope :unreviewed_dcc_meter, -> { where(dcc_meter: true, consent_granted: false, meter_review_id: nil) }
+  scope :reviewed_dcc_meter, -> { where(dcc_meter: true).where.not(meter_review_id: nil) }
   scope :awaiting_trusted_consent, -> { where(dcc_meter: true, consent_granted: false).where.not(meter_review: nil) }
   scope :not_dcc, -> { where(dcc_meter: false) }
   scope :dcc, -> { where(dcc_meter: true) }

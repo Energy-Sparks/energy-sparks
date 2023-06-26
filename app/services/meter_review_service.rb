@@ -31,14 +31,12 @@ class MeterReviewService
     raise MeterReviewError.new("You must select at least one meter") if meters.empty?
     meters.each do |meter|
       raise MeterReviewError.new("#{meter.mpan_mprn} is not a DCC meter") unless meter.dcc_meter?
-      raise MeterReviewError.new("#{meter.mpan_mprn} not found in DCC api") unless valid_status(meter)
+      raise MeterReviewError.new("#{meter.mpan_mprn} not found in DCC api") unless is_meter_known_to_n3rgy?(meter)
     end
   end
 
-  def valid_status(meter)
-    # NB check_n3rgy_status may return :api_error symbol,
-    # which evaluates as true if you're not careful..
-    MeterManagement.new(meter).check_n3rgy_status == true
+  def is_meter_known_to_n3rgy?(meter)
+    MeterManagement.new(meter).is_meter_known_to_n3rgy?
   end
 
   def current_consent

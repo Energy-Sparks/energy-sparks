@@ -66,32 +66,34 @@
     </dl>
   </div>
   <div class="col-md-7">
-    <h3><%= t('schools.meters.show.dcc_information') %></h3>
-    <% if @meter.dcc_meter? %>
-      <dl class="row">
-        <dt class="col-sm-3"><%= t('schools.meters.show.dcc_last_checked') %></dt>
-        <dd class="col-sm-9"><%= nice_date_times @meter.dcc_checked_at %></dd>
-        <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_api_status') %></dt>
-        <dd class="col-sm-9"><%= @n3rgy_status.to_s.humanize %></dd>
-        <dt class="col-sm-3"><%= t('schools.meters.show.user_consented') %>?</dt>
-        <dd class="col-sm-9"><%= @meter.meter_review.present? %></dd>
-        <dt class="col-sm-3"><%= t('schools.meters.show.dcc_consented') %>?</dt>
-        <dd class="col-sm-9"><%= @meter.consent_granted? %></dd>
-        <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_consent_confirmed') %>?</dt>
-        <dd class="col-sm-9"><%= @n3rgy_consent_confirmed %></dd>
-        <dt class="col-sm-3"><%= t('schools.meters.show.available_cache_range') %></dt>
-        <dd class="col-sm-9"><%= @available_cache_range %></dd>
-        <dt class="col-sm-3"><%= t('schools.meters.show.sandbox') %>?</dt>
-        <dd class="col-sm-9"><%= @meter.sandbox? %></dd>
-      </dl>
-    <% else %>
-      <p><%= t('schools.meters.show.not_configured_as_a_dcc_meter') %></p>
-      <dl class="row">
-        <dt class="col-sm-3"><%= t('schools.meters.show.dcc_last_checked') %></dt>
-        <dd class="col-sm-9"><%= nice_date_times @meter.dcc_checked_at %></dd>
-        <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_api_status') %></dt>
-        <dd class="col-sm-9"><%= @n3rgy_status %></dd>
-      </dl>
+    <% if current_user.admin? %>
+      <h3><%= t('schools.meters.show.dcc_information') %></h3>
+      <% if @meter.dcc_meter? %>
+        <dl class="row">
+          <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_known_meter') %></dt>
+          <dd class="col-sm-9"><%= @known_to_n3rgy %></dd>
+          <dt class="col-sm-3"><%= t('schools.meters.show.user_consented') %>?</dt>
+          <dd class="col-sm-9"><%= @meter.meter_review.present? %></dd>
+          <dt class="col-sm-3"><%= t('schools.meters.show.dcc_consented') %>?</dt>
+          <dd class="col-sm-9"><%= @meter.consent_granted? %></dd>
+          <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_consent_confirmed') %>?</dt>
+          <dd class="col-sm-9"><%= @n3rgy_consent_confirmed %></dd>
+          <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_api_status') %></dt>
+          <dd class="col-sm-9"><%= @n3rgy_status.to_s.humanize %></dd>
+          <dt class="col-sm-3"><%= t('schools.meters.show.available_cache_range') %></dt>
+          <dd class="col-sm-9"><%= @available_cache_range %></dd>
+          <dt class="col-sm-3"><%= t('schools.meters.show.sandbox') %>?</dt>
+          <dd class="col-sm-9"><%= @meter.sandbox? %></dd>
+        </dl>
+      <% else %>
+        <p><%= t('schools.meters.show.not_configured_as_a_dcc_meter') %></p>
+        <dl class="row">
+          <dt class="col-sm-3"><%= t('schools.meters.show.dcc_last_checked') %></dt>
+          <dd class="col-sm-9"><%= nice_date_times @meter.dcc_checked_at %></dd>
+          <dt class="col-sm-3"><%= t('schools.meters.show.n3rgy_known_meter') %></dt>
+          <dd class="col-sm-9"><%= @known_to_n3rgy %></dd>
+        </dl>
+      <% end %>
     <% end %>
   </div>
 </div>
