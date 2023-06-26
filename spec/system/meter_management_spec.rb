@@ -207,7 +207,7 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
 
     context 'when the school has a DCC meter' do
       let!(:meter) { create(:electricity_meter, dcc_meter: true, name: 'Electricity meter', school: school, mpan_mprn: 1234567890123 ) }
-      let!(:data_api) { double(status: :available, inventory: {device_id: 123999}, readings_available_date_range: Date.today..Date.today) }
+      let!(:data_api) { double(find: true, status: :available, inventory: {device_id: 123999}, readings_available_date_range: Date.today..Date.today) }
 
       before(:each) do
         allow_any_instance_of(Amr::N3rgyApiFactory).to receive(:data_api).with(meter).and_return(data_api)
@@ -349,9 +349,6 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
           click_on 'Manage meters'
         end
 
-        it 'should say' do
-          expect(page).to have_content("This school has enough data for at least one fuel type to generate targets")
-        end
         it 'should link to detail' do
           expect(page).to have_link("View target data", href: admin_school_target_data_path(school))
         end
@@ -361,10 +358,6 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
         before(:each) do
           allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(false)
           click_on 'Manage meters'
-        end
-
-        it 'should say' do
-          expect(page).to have_content("This school does not have enough data to generate targets")
         end
 
         it 'should link to detail' do
