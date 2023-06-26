@@ -17,9 +17,8 @@ describe 'user tariffs', type: :system do
     context 'has navigation links' do
       it 'from meters page to user tariffs index' do
         visit school_meters_path(school)
-        within '.application' do
-          click_link('Manage tariffs')
-        end
+        click_link('Manage School')
+        click_link('Manage tariffs')
         expect(page).to have_content(I18n.t('schools.user_tariffs.index.title'))
         expect(page).to have_link('cost analysis pages')
       end

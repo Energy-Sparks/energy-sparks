@@ -266,9 +266,8 @@ en:
         large_gaps: Large gaps
         latest: Latest
         manage_solar_api_feeds: Manage Solar API feeds
-        manage_tariffs: Manage tariffs
         meter: Meter
-        meter_reviews: Meter reviews
+        meter_reviews: Completed DCC meter reviews
         mpan_warning_message: There are electricity meters with MPANs that don't appear to have the correct check digit
         name: Name
         no_active_meters: No active meters
@@ -276,12 +275,9 @@ en:
         procurement_route: Procurement route
         readings: Readings
         report: Report
-        review_meters: Review meters
+        review_meters: Pending DCC meter reviews
         school_downloads: School downloads
-        school_enough_data_message: This school has enough data for at least one fuel type to generate targets
-        school_not_enough_data_message: This school does not have enough data to generate targets
-        this_may_take_some_time: This may take some time!
-        title: Meters
+        title: Manage meters
         validate_meter_readings: Validate meter readings
         validated: Validated
         validated_readings: Validated Readings

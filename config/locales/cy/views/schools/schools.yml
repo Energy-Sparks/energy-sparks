@@ -265,7 +265,6 @@ cy:
         large_gaps: Bylchau mawr
         latest: Diweddaraf
         manage_solar_api_feeds: Rheoli ffrydiau API Solar
-        manage_tariffs: Rheoli tariffau
         meter: Mesurydd
         meter_reviews: Adolygiadau mesurydd
         mpan_warning_message: Mae yna fesuryddion trydan gydag MPAN nad yw'n ymddangos bod ganddynt y digid gwirio cywir
@@ -277,9 +276,6 @@ cy:
         report: Adrodd
         review_meters: Adolygu mesuryddion
         school_downloads: Lawrlwythiadau ysgol
-        school_enough_data_message: Mae gan yr ysgol hon ddigon o ddata ar gyfer o leiaf un math o danwydd i gynhyrchu targedau
-        school_not_enough_data_message: Nid oes gan yr ysgol hon ddigon o ddata i gynhyrchu targedau
-        this_may_take_some_time: Gall hyn gymryd peth amser!
         title: Mesuryddion
         validate_meter_readings: Dilysu darlleniadau mesurydd
         validated: Dilyswyd

@@ -103,7 +103,7 @@ RSpec.describe 'meter_reviews', type: :system do
     context 'when viewing meters for school' do
       it 'displays a link to perform a review' do
         visit school_meters_path(school)
-        expect(page).to have_link("Review meters", href: new_admin_school_meter_review_path(school))
+        expect(page).to have_link("Pending DCC meter reviews", href: new_admin_school_meter_review_path(school))
       end
     end
   end
@@ -215,12 +215,13 @@ RSpec.describe 'meter_reviews', type: :system do
     end
 
     context 'when viewing meters' do
+      let(:meter_review) { create(:meter_review) }
+      let(:electricity_meter_reviewed) { create(:electricity_meter, dcc_meter: true, meter_review: meter_review, mpan_mprn: 1234567890111, school: school) }
+
       it 'provides a link to meter reviews' do
         visit school_meters_path(school)
-        expect(page).to have_link("Meter reviews", href: admin_school_meter_reviews_path(school) )
+        expect(page).to have_link("Completed DCC meter reviews", href: admin_school_meter_reviews_path(school) )
       end
     end
   end
-
-
 end
