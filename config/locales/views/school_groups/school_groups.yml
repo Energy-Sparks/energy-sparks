@@ -16,6 +16,15 @@ en:
           usage: Display chart data in kwh, where available
         group_chart_settings: chart settings
         update_all_schools_in_this_group: Update all schools in this group
+    clusters:
+      buttons:
+        create_new: Create new cluster
+      created: Cluster created
+      deleted: Cluster deleted
+      labels:
+        name: Name
+      title: Clusters
+      updated: Cluster updated
     comparisons:
       category: Category
       how_does_it_compare:
@@ -84,6 +93,7 @@ en:
             other: We are working with %{count} schools in this multi-academy trust
     sub_nav:
       chart_settings: Chart settings
+      clusters: Clusters
       dashboards: Dashboards
       edit_group: Edit group
       group_admin: Group admin

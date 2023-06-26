@@ -115,6 +115,7 @@ Rails.application.routes.draw do
       resources :chart_updates, only: [:index] do
         post :bulk_update_charts
       end
+      resources :clusters
     end
     member do
       get :map

@@ -85,6 +85,18 @@ RSpec.shared_examples "visiting chart updates redirects to group page" do
   end
 end
 
+RSpec.shared_examples "redirects to school group page" do
+  it 'redirects to school group page' do
+    expect(page).to have_current_path "/school_groups/#{school_group.slug}"
+  end
+end
+
+RSpec.shared_examples "redirects to login page" do
+  it 'redirects to login page' do
+    expect(current_path).to eq("/users/sign_in")
+  end
+end
+
 RSpec.shared_examples 'allows access to chart updates page and editing of default chart preferences' do
   it 'shows a form to select default chart units' do
     visit school_group_chart_updates_path(school_group)

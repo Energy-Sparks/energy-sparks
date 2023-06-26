@@ -45,12 +45,13 @@ class Ability
       cannot :read, :my_school_menu
     elsif user.school_admin? || user.group_admin?
       if user.group_admin?
-        school_scope = { school_group_id: user.school_group_id, visible: true }
+        school_group_scope = { school_group_id: user.school_group_id }
         related_school_scope = { school: { school_group_id: user.school_group_id } }
         can :show, SchoolGroup, id: user.school_group_id
         can :compare, SchoolGroup, id: user.school_group_id
         can :show_management_dash, SchoolGroup, id: user.school_group.id
         can :update_settings, SchoolGroup, id: user.school_group_id
+        can :manage, SchoolGroupCluster, school_group_scope
 
         can [:show, :update], Calendar do |calendar|
           user.school_group.calendars.include?(calendar)
