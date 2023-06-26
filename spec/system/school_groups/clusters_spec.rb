@@ -4,16 +4,6 @@ describe 'school group clusters', :school_group_clusters, type: :system do
   let(:public)                 { true }
   let!(:school_group)          { create(:school_group, public: public) }
 
-  #let!(:user)                  { create(:user) }
-  #let!(:school_1)              { create(:school, school_group: school_group, number_of_pupils: 10, data_enabled: true, visible: true, active: true) }
-  #let!(:school_2)              { create(:school, school_group: school_group, number_of_pupils: 20, data_enabled: true, visible: true, active: true) }
-
-  let!(:user)                   { }
-
-  let(:group_admin)             { create(:group_admin, school_group: school_group) }
-  let(:admin)                   { create(:admin) }
-  let(:permitted_users)         { [group_admin, admin] }
-
   shared_examples "shows school group clusters index page" do
     it "shows school group clusters index page" do
       expect(current_path).to eq "/school_groups/#{school_group.slug}/clusters"
