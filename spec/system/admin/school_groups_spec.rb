@@ -223,6 +223,41 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         it_behaves_like "admin dashboard messages" do
           let(:messageable) { school_group }
         end
+
+        context 'when clicking on the delete message link', js: true do
+          let(:setup_data) { messageable.create_dashboard_message(message: message) }
+                    let(:messageable) { school_group }
+
+          context 'delete a message' do
+            it 'deletes a message' do
+              expect(page).to have_content message
+              expect(page).to have_link('Edit message')
+              expect(page).to have_link('Delete message')
+              expect(page).not_to have_link('Set message')
+              accept_alert("Are you sure?") do
+                click_link 'Delete message'
+              end
+              expect(page).not_to have_content message
+              expect(page).not_to have_link('Edit message')
+              expect(page).not_to have_link('Delete message')
+              expect(page).to have_link('Set message')
+            end
+
+            it 'declines to delete a message' do
+              expect(page).to have_content message
+              expect(page).to have_link('Edit message')
+              expect(page).to have_link('Delete message')
+              expect(page).not_to have_link('Set message')
+              dismiss_confirm("Are you sure?") do
+                click_link 'Delete message'
+              end
+              expect(page).to have_content message
+              expect(page).to have_link('Edit message')
+              expect(page).to have_link('Delete message')
+              expect(page).not_to have_link('Set message')
+            end
+          end
+        end
       end
 
       describe "Active schools tab" do

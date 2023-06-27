@@ -71,40 +71,6 @@ RSpec.shared_examples "admin dashboard messages" do | permitted: true |
           end
         end
       end
-
-      context 'when clicking on the delete message link', js: true do
-        let(:setup_data) { messageable.create_dashboard_message(message: message) }
-        context 'delete a message' do
-          it 'deletes a message' do
-            expect(page).to have_content message
-            expect(page).to have_link('Edit message')
-            expect(page).to have_link('Delete message')
-            expect(page).not_to have_link('Set message')
-            accept_alert("Are you sure?") do
-              click_link 'Delete message'
-            end
-            expect(page).not_to have_content message
-            expect(page).not_to have_link('Edit message')
-            expect(page).not_to have_link('Delete message')
-            expect(page).to have_link('Set message')
-          end
-
-          it 'declines to delete a message' do
-            expect(page).to have_content message
-            expect(page).to have_link('Edit message')
-            expect(page).to have_link('Delete message')
-            expect(page).not_to have_link('Set message')
-            dismiss_confirm("Are you sure?") do
-              click_link 'Delete message'
-            end
-            expect(page).to have_content message
-            expect(page).to have_link('Edit message')
-            expect(page).to have_link('Delete message')
-            expect(page).not_to have_link('Set message')
-          end
-        end
-      end
-
     end
   end
   context "when not permitted", unless: permitted do
