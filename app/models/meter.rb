@@ -239,15 +239,19 @@ class Meter < ApplicationRecord
   end
 
   def self.csv_headers
-    ["School group", "School", "MPAN/MPRN", "Meter type", "Active", "First validated meter reading", "Last validated meter reading"]
+    ["School group", "School", "MPAN/MPRN", "Meter type", "Active", "First validated meter reading", "Last validated meter reading", "Admin Meter Status", "Open issues"]
   end
 
   def self.csv_attributes
-    %w{school.school_group.name school.name mpan_mprn meter_type.humanize active first_validated_reading last_validated_reading}
+    %w{school.school_group.name school.name mpan_mprn meter_type.humanize active first_validated_reading last_validated_reading admin_meter_status_label open_issues_count}
   end
 
   def smart_meter_tariff_attributes
     @smart_meter_tariff_attributes ||= Amr::AnalyticsTariffFactory.new(self).build
+  end
+
+  def open_issues_count
+    issues&.where(issue_type: "issue")&.status_open&.count
   end
 
   private
