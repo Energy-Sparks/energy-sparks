@@ -225,6 +225,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         end
 
         context 'when clicking on the delete message link', js: true do
+          let(:message) { 'This is a school group message' }
           let(:setup_data) { messageable.create_dashboard_message(message: message) }
                     let(:messageable) { school_group }
 
