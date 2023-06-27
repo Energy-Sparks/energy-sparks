@@ -71,6 +71,7 @@ RSpec.describe 'bill_requests', type: :system do
 
       context 'when valid form is submitted' do
         before(:each) do
+          expect(page).not_to have_content('Bill requested on')
           find(:css, "#bill_request_user_ids_#{school_admin.id}").set(true)
           click_on 'Request bill'
         end
@@ -81,6 +82,11 @@ RSpec.describe 'bill_requests', type: :system do
 
         it 'should send the email' do
           expect(ActionMailer::Base.deliveries.count).to be 1
+        end
+
+        it 'should now show a bill requested on time stamp on the bill request page' do
+          visit new_admin_school_bill_request_path(school)
+          expect(page).to have_content('Bill requested on')
         end
       end
 

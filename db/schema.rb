@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_19_085613) do
+ActiveRecord::Schema.define(version: 2023_06_27_144212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -853,13 +853,13 @@ ActiveRecord::Schema.define(version: 2023_06_19_085613) do
     t.index ["replaced_by_id"], name: "index_global_meter_attributes_on_replaced_by_id"
   end
 
-  create_table "good_job_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_processes", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "state"
   end
 
-  create_table "good_job_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_settings", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "key"
@@ -867,7 +867,7 @@ ActiveRecord::Schema.define(version: 2023_06_19_085613) do
     t.index ["key"], name: "index_good_job_settings_on_key", unique: true
   end
 
-  create_table "good_jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_jobs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.text "queue_name"
     t.integer "priority"
     t.jsonb "serialized_params"
@@ -1512,6 +1512,7 @@ ActiveRecord::Schema.define(version: 2023_06_19_085613) do
     t.text "alternative_heating_district_heating_notes"
     t.integer "region"
     t.bigint "local_authority_area_id"
+    t.datetime "bill_requested_at"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"
@@ -1552,8 +1553,8 @@ ActiveRecord::Schema.define(version: 2023_06_19_085613) do
     t.integer "management_priorities_page_limit", default: 10
     t.boolean "message_for_no_pupil_accounts", default: true
     t.jsonb "temperature_recording_months", default: ["10", "11", "12", "1", "2", "3", "4"]
-    t.integer "default_import_warning_days", default: 10
     t.jsonb "prices"
+    t.integer "default_import_warning_days", default: 10
   end
 
   create_table "sms_records", force: :cascade do |t|

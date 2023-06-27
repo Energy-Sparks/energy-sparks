@@ -15,7 +15,7 @@ module Schools
       electricity_meters = meters.select(&:electricity?)
       gas_meters = meters.select(&:gas?)
       BillRequestMailer.with_user_locales(users: users, school: @school, electricity_meters: electricity_meters, gas_meters: gas_meters) { |mailer| mailer.request_bill.deliver_now }
-      @school.update!(bill_requested: true)
+      @school.update!(bill_requested: true, bill_requested_at: DateTime.now)
     end
   end
 end

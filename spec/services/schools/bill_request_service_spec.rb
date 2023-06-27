@@ -62,7 +62,7 @@ RSpec.describe Schools::BillRequestService do
     it 'should set flag on school' do
       expect{
         service.request_documentation!([school_admin])
-      }.to change(school, :bill_requested).from(false).to(true)
+      }.to change(school, :bill_requested).from(false).to(true).and change { school.bill_requested_at.class }.from(NilClass).to(ActiveSupport::TimeWithZone)
     end
 
     context 'when formatting email' do
