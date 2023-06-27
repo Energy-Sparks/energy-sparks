@@ -62,47 +62,47 @@
 
       <div class="form-group">
         <%= f.label :admin_meter_statuses_electricity_id, 'Default admin meter status for Electricity' %>
-        <%= f.select(:admin_meter_statuses_electricity_id, AdminMeterStatus.all.collect { |d| [ d.label, d.id ] }, { include_blank: true }, class: 'form-control') %>
+        <%= f.select(:admin_meter_statuses_electricity_id, AdminMeterStatus.all.order(:label).collect { |d| [ d.label, d.id ] }, { include_blank: true }, class: 'form-control') %>
       </div>
 
       <div class="form-group">
         <%= f.label :admin_meter_statuses_gas_id, 'Default admin meter status for Gas' %>
-        <%= f.select(:admin_meter_statuses_gas_id, AdminMeterStatus.all.collect { |d| [ d.label, d.id ] }, { include_blank: true }, class: 'form-control') %>
+        <%= f.select(:admin_meter_statuses_gas_id, AdminMeterStatus.all.order(:label).collect { |d| [ d.label, d.id ] }, { include_blank: true }, class: 'form-control') %>
       </div>
 
       <div class="form-group">
         <%= f.label :admin_meter_statuses_solar_pv_id, 'Default admin meter status for Solar PV' %>
-        <%= f.select(:admin_meter_statuses_solar_pv_id, AdminMeterStatus.all.collect { |d| [ d.label, d.id ] }, { include_blank: true }, class: 'form-control') %>
+        <%= f.select(:admin_meter_statuses_solar_pv_id, AdminMeterStatus.all.order(:label).collect { |d| [ d.label, d.id ] }, { include_blank: true }, class: 'form-control') %>
       </div>
 
       <div class="form-group">
         <%= f.label :default_data_source_electricity_id, 'Default data source for Electricity' %>
-        <%= f.select(:default_data_source_electricity_id, DataSource.all.collect { |d| [ d.name, d.id ] }, { include_blank: true }, class: 'form-control') %>
+        <%= f.select(:default_data_source_electricity_id, DataSource.all.order(:name).collect { |d| [ d.name, d.id ] }, { include_blank: true }, class: 'form-control') %>
       </div>
 
       <div class="form-group">
         <%= f.label :default_data_source_gas_id, 'Default data source for Gas' %>
-        <%= f.select(:default_data_source_gas_id, DataSource.all.collect { |d| [ d.name, d.id ] }, { include_blank: true }, class: 'form-control') %>
+        <%= f.select(:default_data_source_gas_id, DataSource.all.order(:name).collect { |d| [ d.name, d.id ] }, { include_blank: true }, class: 'form-control') %>
       </div>
 
       <div class="form-group">
         <%= f.label :default_data_source_solar_pv_id, 'Default data source for Solar PV' %>
-        <%= f.select(:default_data_source_solar_pv_id, DataSource.all.collect { |d| [ d.name, d.id ] }, { include_blank: true }, class: 'form-control') %>
+        <%= f.select(:default_data_source_solar_pv_id, DataSource.all.order(:name).collect { |d| [ d.name, d.id ] }, { include_blank: true }, class: 'form-control') %>
       </div>
 
       <div class="form-group">
         <%= f.label :default_procurement_route_electricity_id, 'Default procurement route for Electricity' %>
-        <%= f.select(:default_procurement_route_electricity_id, ProcurementRoute.all.collect { |d| [ d.organisation_name, d.id ] }, { include_blank: true }, class: 'form-control') %>
+        <%= f.select(:default_procurement_route_electricity_id, ProcurementRoute.all.order(:organisation_name).collect { |d| [ d.organisation_name, d.id ] }, { include_blank: true }, class: 'form-control') %>
       </div>
 
       <div class="form-group">
         <%= f.label :default_procurement_route_gas_id, 'Default procurement route for Gas' %>
-        <%= f.select(:default_procurement_route_gas_id, ProcurementRoute.all.collect { |d| [ d.organisation_name, d.id ] }, { include_blank: true }, class: 'form-control') %>
+        <%= f.select(:default_procurement_route_gas_id, ProcurementRoute.all.order(:organisation_name).collect { |d| [ d.organisation_name, d.id ] }, { include_blank: true }, class: 'form-control') %>
       </div>
 
       <div class="form-group">
         <%= f.label :default_procurement_route_solar_pv_id, 'Default procurement route for Solar PV' %>
-        <%= f.select(:default_procurement_route_solar_pv_id, ProcurementRoute.all.collect { |d| [ d.organisation_name, d.id ] }, { include_blank: true }, class: 'form-control') %>
+        <%= f.select(:default_procurement_route_solar_pv_id, ProcurementRoute.all.order(:organisation_name).collect { |d| [ d.organisation_name, d.id ] }, { include_blank: true }, class: 'form-control') %>
       </div>
 
       <div class="form-group">
