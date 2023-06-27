@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'bill_requests', type: :system do
 
   let!(:school)                { create(:school) }
-  let!(:unreviewed_dcc_meter)             { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: false, meter_review_id: nil) }
+  let!(:unreviewed_dcc_meter)  { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: false, meter_review_id: nil) }
   let!(:reviewed_dcc_meter)    { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: true) }
 
   let!(:admin)                 { create(:admin) }
