@@ -3,7 +3,8 @@ require 'rails_helper'
 RSpec.describe 'bill_requests', type: :system do
 
   let!(:school)                { create(:school) }
-  let!(:dcc_meter)             { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: false) }
+  let!(:unreviewed_dcc_meter)             { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: false, meter_review_id: nil) }
+  let!(:reviewed_dcc_meter)    { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: true) }
 
   let!(:admin)                 { create(:admin) }
 
@@ -51,6 +52,9 @@ RSpec.describe 'bill_requests', type: :system do
         expect(page).to have_text(staff.staff_role.title)
         expect(page).to have_text(school_admin.name)
         expect(page).to have_text(school_admin.staff_role.title)
+
+        expect(page).to have_text(unreviewed_dcc_meter.mpan_mprn)
+        expect(page).not_to have_text(reviewed_dcc_meter.mpan_mprn)
       end
 
       it 'should link to manage users' do
