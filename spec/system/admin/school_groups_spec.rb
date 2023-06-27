@@ -379,12 +379,12 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         end
       end
 
-      describe "School Group Issues tab" do
+      describe "Group Issues and Notes tab" do
         context "when there are issues for the school group" do
           let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school_group, fuel_type: :gas, pinned: true) }
           let!(:setup_data) { issue }
           it "displays a count of school group issues" do
-            expect(page).to have_content "School Group Issues 1"
+            expect(page).to have_content "Group Issues and Notes 1"
           end
           it "lists issue in issues tab" do
             within '#school-group-issues' do
@@ -407,13 +407,13 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         end
       end
 
-      describe "School Issues tab" do
+      describe "School Issues and Notes tab" do
         context "when there are issues for schools in the school group" do
           let!(:school) { create(:school, school_group: school_group)}
           let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas, pinned: true) }
           let!(:setup_data) { issue }
           it "displays a count of school group issues" do
-            expect(page).to have_content "School Issues 1"
+            expect(page).to have_content "School Issues and Notes 1"
           end
           it "lists issue in issues tab" do
             within '#school-issues' do
