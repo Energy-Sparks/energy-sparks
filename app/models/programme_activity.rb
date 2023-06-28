@@ -18,4 +18,12 @@ class ProgrammeActivity < ApplicationRecord
   belongs_to :activity_type
   belongs_to :activity
   belongs_to :programme
+
+  validate :activity_type_is_also_a_programme_activity_activity_type
+
+  private
+
+  def activity_type_is_also_a_programme_activity_activity_type
+    programme.programme_activities.pluck(:activity_type_id).includes?(activity_type.id)
+  end
 end

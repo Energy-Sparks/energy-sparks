@@ -45,6 +45,7 @@ class ActivityCreator
   def add_programme_activity(programme)
     # Only add an activity for the programme if its one of those in the programme type the school
     # is enrolled in.
+    next unless programme.programme_activities.pluck(:activity_type_id).includes?(@activity.activity_type.id)
 
     # Create programme_activity for this programme, associated with programme, activity_type and activity
     # but not if there already is a record for this activity type, so just recording the first instance
