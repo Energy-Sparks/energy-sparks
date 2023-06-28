@@ -1,0 +1,59 @@
+<% content_for :page_title, 'Unvalidated readings report' %>
+
+<h1>Unvalidated readings report</h1>
+
+<p>
+This form can be used to generate a report from the unvalidated meter data. This includes all of the
+raw data loaded into the system over the last few years.
+</p>
+
+<p>
+Add one or more MPANs/MPRNs into the box below, one per line. Then run the report.
+</p>
+
+<p>
+If the MPANs/MPRNs are found then you'll get a table that lists the meter associated with that
+meter (if any) and one row for each data feed config used to load data for that meter, along with the
+earliest and latest reading dates. This is necessary because data is received by multiple routes.
+</p>
+
+<p>
+The results are sorted by MPAN then DESCENDING order of reading date, so the most recent date is first.
+</p>
+
+<p>
+It's possible for this report to break if the raw readings have been loaded with an incorrect date format.
+If you get an error add a Trello card indicating which MPANs you were trying to view.
+</p>
+
+<%= simple_form_for :mpans, url: admin_reports_unvalidated_readings_path, method: "GET", html: { class: 'form' } do |f| %>
+  <%= f.input :list, as: :text, input_html: {'rows' => 20, 'cols' => 10, value: params[:mpans].present? ? params[:mpans]["list"]: ''} %>
+  <%= f.submit "Run report", class: "btn btn-primary" %>
+<% end %>
+
+<% if @report.any? %>
+  <table class="advice-table mt-4 table table-sm">
+    <thead>
+      <tr>
+        <th>MPAN/MPRN</th>
+        <th>Meter</th>
+        <th>Config identifier</th>
+        <th>Config name</th>
+        <th>Earliest reading</th>
+        <th>Latest reading</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @report.each do |row| %>
+        <tr>
+          <td><%= row['mpan_mprn'] %></td>
+          <td><%= row['meter_id'] %></td>
+          <td><%= row['identifier'] %></td>
+          <td><%= row['description'] %></td>
+          <td><%= row['earliest_reading'] %></td>
+          <td><%= row['latest_reading'] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
