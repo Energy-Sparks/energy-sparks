@@ -35,14 +35,17 @@ describe ActivityCreator do
   end
 
   context 'with a programme' do
-    let!(:school)         { create :school }
-    let(:programme_type)  { create :programme_type_with_activity_types }
-    let(:activity_type)   { programme_type.activity_types.first }
-    let(:activity_type_2) { create(:activity_type) }
-    let(:activity_2)      { create(:activity, activity_type: activity_type_2, school: school_1) }
-    let!(:programme)      { Programmes::Creator.new(school, programme_type).create }
+    let!(:school)           { create :school }
+    let!(:school_2)           { create :school }
+    let(:programme_type)    { create :programme_type_with_activity_types }
+    let(:programme_type_2)  { create :programme_type_with_activity_types }
+    let(:activity_type)     { programme_type.activity_types.first }
+    let(:activity_type_2)   { programme_type_2.activity_types.first }
+    let(:activity_2)        { create(:activity, activity_type: activity_type_2, school: school_1) }
+    let!(:programme)        { Programmes::Creator.new(school, programme_type).create }
+    let!(:programme_2)        { Programmes::Creator.new(school, programme_type_2).create }
 
-    it 'completes the activity in the programme' do
+    it 'a school is recording an activity that is in a programme' do
       activity = build(:activity, activity_type: activity_type, school: school)
 
       expect do
@@ -51,12 +54,15 @@ describe ActivityCreator do
       expect(programme.programme_activities.find_by(activity_type: activity_type).activity_id).to be activity.id
     end
 
-    it "completes the activity in the programme but does not add a new programme activity if an the activity_type is not included in the programme's programme_type activity_type's" do
+    it "a school is recording an activity that isn't in a programme" do
       activity = build(:activity, activity_type: activity_type_2, school: school)
 
       expect do
         ActivityCreator.new(activity).process
       end.to change { programme.programme_activities.count }.by(0).and change { Observation.count }.by(1).and change(activity, :updated_at)
+    end
+
+    it "a school is recording an activity that is in a programme, but not one they're part of" do
     end
 
     it "completes the programme if all the activities are completed" do
