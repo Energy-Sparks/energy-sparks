@@ -43,8 +43,11 @@ class ActivityCreator
   end
 
   def add_programme_activity(programme)
-    # Only add an activity for the programme if its one of those in the programme type the school
-    # is enrolled in.
+    # A ProgrammeActivity record indicates that an activity has been recorded as part of a Programme.
+    #
+    # A ProgrammeType has a list of ActivityType's. A new ProgrammeActivity record should only be created if
+    # the activity_type of the Activity is one of the ActivityType's associated with the
+    # Programme's ProgrammeType (there is also a validation on the ProgrammeActivity model to check this).
     return unless programme.programme_type.activity_types.pluck(:id).include?(@activity.activity_type.id)
 
     # Create programme_activity for this programme, associated with programme, activity_type and activity
