@@ -24,6 +24,8 @@ class ProgrammeActivity < ApplicationRecord
   private
 
   def activity_type_is_also_a_programme_programme_type_activity_type
-    programme.programme_type.activity_types.pluck(:id).include?(activity_type.id)
+    return if programme.programme_type.activity_types.pluck(:id).include?(activity_type.id)
+
+    errors.add(:activity_type, "must be a programme programme type activity type")
   end
 end
