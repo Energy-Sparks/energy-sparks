@@ -642,17 +642,19 @@ describe School do
   end
 
   context 'school users' do
-    let!(:school_admin)     { create(:school_admin, school: subject)}
-    let!(:cluster_admin)    { create(:school_admin, name: "Cluster admin", cluster_schools: [subject]) }
-    let!(:staff)            { create(:staff, school: subject)}
-    let!(:pupil)            { create(:pupil, school: subject)}
+    let!(:school_admin)     { create(:school_admin, school: subject, email: 'school_user_1@test.com')}
+    let!(:cluster_admin)    { create(:school_admin, name: "Cluster admin", cluster_schools: [subject], email: 'school_user_2@test.com') }
+    let!(:staff)            { create(:staff, school: subject, email: 'school_user_3@test.com')}
+    let!(:staff_2)          { create(:staff, school: subject, cluster_schools: [subject], email: 'school_user_4@test.com') }
+    let!(:pupil)            { create(:pupil, school: subject, email: 'school_user_5@test.com')}
 
     it 'identifies different groups' do
       expect(subject.school_admin).to match_array([school_admin])
-      expect(subject.cluster_users).to match_array([cluster_admin])
-      expect(subject.staff).to match_array([staff])
-      expect(subject.all_school_admins).to match_array([school_admin, cluster_admin])
-      expect(subject.all_adult_school_users).to match_array([school_admin, cluster_admin, staff])
+      expect(subject.cluster_users).to match_array([cluster_admin, staff_2])
+      expect(subject.staff).to match_array([staff, staff_2])
+      expect(subject.all_school_admins.sort { |a, b| a.email <=> b.email }).to match_array([staff_2, school_admin, cluster_admin].sort { |a, b| a.email <=> b.email })
+      expect((subject.all_school_admins + subject.staff).sort { |a, b| a.email <=> b.email }).to match_array([school_admin, cluster_admin, staff, staff_2, staff_2])
+      expect(subject.all_adult_school_users.sort { |a, b| a.email <=> b.email }).to match_array([school_admin, cluster_admin, staff, staff_2].sort { |a, b| a.email <=> b.email })
     end
 
     it 'handles empty lists' do

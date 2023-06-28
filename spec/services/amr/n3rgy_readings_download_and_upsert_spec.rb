@@ -5,13 +5,13 @@ module Amr
 
     let(:n3rgy_api)         { double(:n3rgy_api) }
     let(:n3rgy_api_factory) { double(:n3rgy_api_factory, data_api: n3rgy_api) }
-    let(:earliest)          { Date.parse("2019-01-01") }
-    let(:thirteen_months_ago) { Date.today - 13.months }
+    let(:earliest)          { DateTime.parse("2019-01-01T0000") }
+    let(:thirteen_months_ago) { DateTime.now - 13.months }
     let(:meter)             { create(:electricity_meter, earliest_available_data: earliest ) }
     let(:config)            { create(:amr_data_feed_config)}
-    let(:end_date)          { Date.today - 7 }
+    let(:end_date)          { DateTime.now - 7 }
     let(:start_date)        { end_date - 8 }
-    let(:yesterday)             { Date.today - 1 }
+    let(:yesterday)             { DateTime.now - 1 }
 
     let(:readings)        {
       {
@@ -61,7 +61,7 @@ module Amr
 
       context "when there are readings" do
 
-        let(:last_week) { Date.today - 7 }
+        let(:last_week) { DateTime.now - 7 }
 
         before do
           create(:amr_data_feed_reading, meter: meter, reading_date: last_week)

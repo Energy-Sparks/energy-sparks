@@ -52,6 +52,22 @@ describe 'Meter', :meters do
     end
   end
 
+  describe '#open_issues_count' do
+    let!(:electricity_meter) { create(:electricity_meter, mpan_mprn: 1234567890123) }
+
+    it 'returns a count of all open issues for a given meter' do
+      expect(electricity_meter.open_issues_count).to eq(0)
+      issue = create(:issue, issue_type: :note, status: :open)
+      issue.meters << electricity_meter
+      issue.save!
+      expect(electricity_meter.open_issues_count).to eq(0)
+      issue = create(:issue, issue_type: :issue, status: :open)
+      issue.meters << electricity_meter
+      issue.save!
+      expect(electricity_meter.open_issues_count).to eq(1)
+    end
+  end
+
   describe 'valid?' do
     describe 'mpan_mprn' do
       context 'with an electricity meter' do
@@ -304,14 +320,15 @@ describe 'Meter', :meters do
   describe ".to_csv" do
     let(:data_source) { create(:data_source) }
     subject { data_source.meters.to_csv }
-    let(:header) { "School group,School,MPAN/MPRN,Meter type,Active,First validated meter reading,Last validated meter reading" }
+    let(:header) { "School group,School,MPAN/MPRN,Meter type,Active,First validated meter reading,Last validated meter reading,Admin Meter Status,Open issues" }
     before { Timecop.freeze }
     after { Timecop.return }
 
     context "with meters" do
+      let(:admin_meter_status) { AdminMeterStatus.create(label: "On Data Feed") }
       let!(:meters) do
-        [ create(:gas_meter, data_source: data_source, school: create(:school)),
-          create(:gas_meter, data_source: data_source, school: create(:school, :with_school_group)) ]
+        [ create(:gas_meter, data_source: data_source, school: create(:school), admin_meter_status: admin_meter_status),
+          create(:gas_meter, data_source: data_source, school: create(:school, :with_school_group), admin_meter_status: admin_meter_status) ]
       end
       let(:first_reading_date) { 1.year.ago.to_date + 2.days }
       let(:last_reading_date) { 1.year.ago.to_date + 4.days }
@@ -320,6 +337,10 @@ describe 'Meter', :meters do
         meters.each do |meter|
           create(:amr_validated_reading, meter: meter, reading_date: first_reading_date)
           create(:amr_validated_reading, meter: meter, reading_date: last_reading_date)
+
+          issue = create(:issue, issue_type: :issue, status: :open)
+          issue.meters << meter
+          issue.save!
         end
       end
 
@@ -328,7 +349,7 @@ describe 'Meter', :meters do
       2.times do |i|
         it { expect(subject.lines[i+1].chomp).to eq([
           meters[i].school.school_group.try(:name), meters[i].school.name, meters[i].mpan_mprn,
-          meters[i].meter_type.humanize, meters[i].active, first_reading_date, last_reading_date].join(',')) }
+          meters[i].meter_type.humanize, meters[i].active, first_reading_date, last_reading_date, admin_meter_status.label, 1].join(',')) }
       end
     end
 

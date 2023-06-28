@@ -372,7 +372,7 @@ class School < ApplicationRecord
   end
 
   def all_adult_school_users
-    all_school_admins + staff
+    (all_school_admins + staff).uniq
   end
 
   def activation_users

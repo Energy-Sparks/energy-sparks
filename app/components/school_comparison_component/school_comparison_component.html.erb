@@ -35,7 +35,7 @@
         <%= t('advice_pages.benchmarks.exemplar_school') %>
       </h4>
       <p>
-        &lt;<%= exemplar_value %>
+        <%= exemplar_value_sign %><%= exemplar_value %>
       </p>
     </div>
   </div>
@@ -46,7 +46,7 @@
       </h4>
       <p>
         <% if benchmark_value %>
-          &lt;<%= benchmark_value %>
+          <%= benchmark_value_sign %><%= benchmark_value %>
         <% end %>
       </p>
     </div>
@@ -57,7 +57,7 @@
         <%= t('advice_pages.benchmarks.other_school') %>
       </h4>
       <p>
-        &gt;<%= other_value %>
+        <%= other_value_sign %><%= other_value %>
       </p>
     </div>
   </div>
