@@ -3,5 +3,9 @@
 <%= simple_form_for [@school_group, @cluster], url:(@cluster.new_record? ? school_group_clusters_path(@school_group) : school_group_cluster_path(@school_group, @cluster)) do |f| %>
   <div class="form-group">
     <%= f.input :name, label:  t("school_groups.clusters.labels.name"), class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.association :schools, label:  t("school_groups.clusters.labels.schools"), collection: @school_group.schools.by_name %>
+  </div>
   <%= f.submit "Save", class: 'btn' %>
 <% end %>

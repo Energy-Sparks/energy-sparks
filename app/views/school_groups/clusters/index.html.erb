@@ -9,6 +9,7 @@
     <thead>
       <tr>
         <th><%= t('school_groups.clusters.labels.name') %></th>
+        <th><%= t('school_groups.clusters.labels.schools') %></th>
         <th><%= t('common.labels.actions') %></th>
       </tr>
     </thead>
@@ -17,6 +18,7 @@
       <% @clusters.each do |cluster| %>
           <tr>
             <td><%= cluster.name %></td>
+            <td><%= t('school_groups.clusters.schools', count: cluster.schools.count) %></td>
             <td>
               <%= link_to t('common.labels.edit'), edit_school_group_cluster_path(@school_group, cluster), class: 'btn btn-sm' %>
               <%= link_to t('common.labels.delete'), school_group_cluster_path(@school_group, cluster), method: :delete, data: {confirm:  t('common.confirm') }, class: 'btn btn-sm btn-danger' %>

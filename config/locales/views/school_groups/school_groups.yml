@@ -19,13 +19,19 @@ en:
     clusters:
       buttons:
         create_new: Create new cluster
-      created: Cluster created
-      deleted: Cluster deleted
       labels:
         name: Name
+        new: New
+        schools: Schools
+      messages:
+        created: Cluster created
+        deleted: Cluster deleted
+        updated: Cluster updated
       no_clusters: No clusters yet
+      schools:
+        one: 1 school
+        other: "%{count} schools"
       title: Clusters
-      updated: Cluster updated
     comparisons:
       category: Category
       how_does_it_compare:

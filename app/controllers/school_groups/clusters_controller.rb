@@ -13,7 +13,7 @@ module SchoolGroups
     def create
       @cluster = @school_group.clusters.build(cluster_params)
       if @cluster.save
-        redirect_to school_group_clusters_path(@school_group), notice: I18n.t('school_groups.clusters.created')
+        redirect_to school_group_clusters_path(@school_group), notice: I18n.t('school_groups.clusters.messages.created')
       else
         render :new
       end
@@ -24,7 +24,7 @@ module SchoolGroups
 
     def update
       if @cluster.update(cluster_params)
-        redirect_to school_group_clusters_path(@school_group), notice: I18n.t('school_groups.clusters.updated')
+        redirect_to school_group_clusters_path(@school_group), notice: I18n.t('school_groups.clusters.messages.updated')
       else
         render :edit
       end
@@ -32,7 +32,7 @@ module SchoolGroups
 
     def destroy
       @cluster.destroy
-      redirect_to school_group_clusters_path(@school_group), notice: I18n.t('school_groups.clusters.deleted')
+      redirect_to school_group_clusters_path(@school_group), notice: I18n.t('school_groups.clusters.messages.deleted')
     end
 
     private
@@ -42,15 +42,16 @@ module SchoolGroups
     end
 
     def cluster_params
-      params.require(:school_group_cluster).permit(:name)
+      params.require(:school_group_cluster).permit(:name, school_ids: [])
     end
 
     def set_breadcrumbs
       @breadcrumbs = [
         { name: I18n.t('common.schools'), href: schools_path },
         { name: @school_group.name, href: school_group_path(@school_group) },
-        { name: t('school_groups.clusters.title').capitalize }
+        { name: t('school_groups.clusters.title').capitalize, href: school_group_clusters_path(@school_group) },
       ]
+      @breadcrumbs << { name: @cluster.name || I18n.t('school_groups.clusters.labels.new') } unless @clusters
     end
   end
 end
