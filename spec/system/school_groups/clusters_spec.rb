@@ -56,6 +56,7 @@ describe 'school group clusters', :school_group_clusters, type: :system do
 
         it { expect(page).to have_content "#{school_group.name} Clusters"}
         it { expect(page).to have_link "Create new cluster" }
+        it { expect(page).to have_content "No clusters yet" }
 
         context "Adding a new cluster" do
           before { click_on "Create new cluster" }

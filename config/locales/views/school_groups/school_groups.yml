@@ -23,6 +23,7 @@ en:
       deleted: Cluster deleted
       labels:
         name: Name
+      no_clusters: No clusters yet
       title: Clusters
       updated: Cluster updated
     comparisons:
