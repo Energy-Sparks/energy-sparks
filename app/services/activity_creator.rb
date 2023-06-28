@@ -43,12 +43,15 @@ class ActivityCreator
   end
 
   def add_programme_activity(programme)
-    #create programme_activity for this programme, associated with programme, activity_type and activity
-    #but not if there already is a record for this activity type, so just recording the first instance
+    # Only add an activity for the programme if its one of those in the programme type the school
+    # is enrolled in.
+
+    # Create programme_activity for this programme, associated with programme, activity_type and activity
+    # but not if there already is a record for this activity type, so just recording the first instance
     if programme_activities(programme).empty?
       programme.programme_activities.create!(activity_type: @activity.activity_type, activity: @activity)
     else
-      # if programme activity already exists for this type, set the new activity
+      # If programme activity already exists for this type, set the new activity
       programme_activities(programme).last.update(activity: @activity)
     end
   end
