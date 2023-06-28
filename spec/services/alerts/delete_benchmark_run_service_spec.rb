@@ -20,8 +20,8 @@ describe Alerts::DeleteBenchmarkRunService, type: :service do
 
   let(:service)   { Alerts::DeleteBenchmarkRunService.new }
 
-  it 'defaults to beginning of month, 3 months ago' do
-    expect(service.older_than).to eql(3.months.ago.beginning_of_month)
+  it 'defaults to beginning of month, 1 month ago' do
+    expect(service.older_than).to eql(1.months.ago.beginning_of_month)
   end
 
   it 'doesnt delete new runs' do
@@ -30,7 +30,7 @@ describe Alerts::DeleteBenchmarkRunService, type: :service do
   end
 
   context 'when there are older runs to delete' do
-    let(:created_at)        { Time.zone.now - 6.months }
+    let(:created_at)        { Time.zone.now - 3.months }
 
     let!(:new_run)          { BenchmarkResultGenerationRun.create! }
     let!(:new_school_run)   { BenchmarkResultSchoolGenerationRun.create(school: school,
