@@ -7,6 +7,7 @@ RSpec.shared_examples "admin dashboard messages" do | permitted: true |
     context "No message set" do
       it { expect(page).to have_content "No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}" }
       it { expect(page).to have_link('Set message') }
+      it { expect(page).not_to have_link('Delete message') }
       context "Clicking on 'Set message'" do
         before { click_link "Set message" }
         it { expect(page).to have_content("Dashboard Message for #{messageable.name}") }
@@ -46,9 +47,10 @@ RSpec.shared_examples "admin dashboard messages" do | permitted: true |
     context "a message is already set" do
       let(:setup_data) { messageable.create_dashboard_message(message: message) }
       it { expect(page).to have_content message }
-      it { expect(page).to have_link('Set message') }
-      context "Clicking on 'Set message'" do
-        before { click_link "Set message" }
+      it { expect(page).to have_link('Edit message') }
+      it { expect(page).to have_link('Delete message') }
+      context "Clicking on 'Edit message'" do
+        before { click_link "Edit message" }
         it { expect(page).to have_field('Message', with: message) }
         context "and changing message" do
           before do
@@ -74,6 +76,8 @@ RSpec.shared_examples "admin dashboard messages" do | permitted: true |
   context "when not permitted", unless: permitted do
     it "panel is not shown" do
       expect(page).to_not have_content('Set message')
+      expect(page).not_to have_content('Edit message')
+      expect(page).not_to have_content('Delete message')
     end
   end
 end

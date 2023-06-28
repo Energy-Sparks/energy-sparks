@@ -53,4 +53,16 @@ class SchoolComparisonComponent < ViewComponent::Base
   def render?
     @comparison.valid?
   end
+
+  def exemplar_value_sign
+    (@comparison.low_is_good ? '&lt;' : '&gt;').html_safe
+  end
+
+  def benchmark_value_sign
+    (@comparison.low_is_good ? '&lt;' : '&gt;').html_safe
+  end
+
+  def other_value_sign
+    (@comparison.low_is_good ? '&gt;' : '&lt;').html_safe
+  end
 end

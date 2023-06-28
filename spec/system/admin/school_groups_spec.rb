@@ -29,7 +29,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
     describe "Viewing school groups index page" do
       let(:setup_data) { create_data_for_school_groups(school_groups) }
       before do
-        click_on 'Edit School Groups'
+        click_on 'Manage School Groups'
       end
 
       context "with multiple groups" do
@@ -90,7 +90,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       let!(:dark_sky_weather_area)  { create(:dark_sky_area, title: 'BANES dark sky weather') }
 
       before do
-        click_on 'Edit School Groups'
+        click_on 'Manage School Groups'
         click_on 'New school group'
       end
 
@@ -123,7 +123,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       let!(:issues_admin) { }
       let!(:school_group) { create :school_group, default_issues_admin_user: issues_admin }
       before do
-        click_on 'Edit School Groups'
+        click_on 'Manage School Groups'
         within "table" do
           click_on 'Manage'
         end
@@ -222,6 +222,42 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       describe "Dashboard message panel" do
         it_behaves_like "admin dashboard messages" do
           let(:messageable) { school_group }
+        end
+
+        context 'when clicking on the delete message link', js: true do
+          let(:message) { 'This is a school group message' }
+          let(:setup_data) { messageable.create_dashboard_message(message: message) }
+                    let(:messageable) { school_group }
+
+          context 'delete a message' do
+            it 'deletes a message' do
+              expect(page).to have_content message
+              expect(page).to have_link('Edit message')
+              expect(page).to have_link('Delete message')
+              expect(page).not_to have_link('Set message')
+              accept_alert("Are you sure?") do
+                click_link 'Delete message'
+              end
+              expect(page).not_to have_content message
+              expect(page).not_to have_link('Edit message')
+              expect(page).not_to have_link('Delete message')
+              expect(page).to have_link('Set message')
+            end
+
+            it 'declines to delete a message' do
+              expect(page).to have_content message
+              expect(page).to have_link('Edit message')
+              expect(page).to have_link('Delete message')
+              expect(page).not_to have_link('Set message')
+              dismiss_confirm("Are you sure?") do
+                click_link 'Delete message'
+              end
+              expect(page).to have_content message
+              expect(page).to have_link('Edit message')
+              expect(page).to have_link('Delete message')
+              expect(page).not_to have_link('Set message')
+            end
+          end
         end
       end
 
@@ -343,12 +379,12 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         end
       end
 
-      describe "School Group Issues tab" do
+      describe "Group Issues and Notes tab" do
         context "when there are issues for the school group" do
           let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school_group, fuel_type: :gas, pinned: true) }
           let!(:setup_data) { issue }
           it "displays a count of school group issues" do
-            expect(page).to have_content "School Group Issues 1"
+            expect(page).to have_content "Group Issues and Notes 1"
           end
           it "lists issue in issues tab" do
             within '#school-group-issues' do
@@ -371,13 +407,13 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         end
       end
 
-      describe "School Issues tab" do
+      describe "School Issues and Notes tab" do
         context "when there are issues for schools in the school group" do
           let!(:school) { create(:school, school_group: school_group)}
           let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas, pinned: true) }
           let!(:setup_data) { issue }
           it "displays a count of school group issues" do
-            expect(page).to have_content "School Issues 1"
+            expect(page).to have_content "School Issues and Notes 1"
           end
           it "lists issue in issues tab" do
             within '#school-issues' do
@@ -400,7 +436,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
     describe "Editing a school group" do
       let!(:school_group) { create(:school_group, name: 'BANES', public: true) }
       before do
-        click_on 'Edit School Groups'
+        click_on 'Manage School Groups'
         within "table" do
           click_on 'Manage'
         end
@@ -419,7 +455,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
     describe "Deleting a school group" do
       let!(:school_group) { create(:school_group) }
       before do
-        click_on 'Edit School Groups'
+        click_on 'Manage School Groups'
         within "table" do
           click_on 'Manage'
         end
@@ -449,7 +485,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas) }
       before do
         Timecop.freeze
-        click_on 'Edit School Groups'
+        click_on 'Manage School Groups'
         within "table" do
           click_on 'Manage'
         end
@@ -508,7 +544,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
 
       before do
-        click_on 'Edit School Groups'
+        click_on 'Manage School Groups'
         within "table" do
           click_on 'Manage', match: :first
         end
@@ -572,7 +608,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         create :school, active: false, school_group: school_group2, chart_preference: 'default'
         create :school, active: false, school_group: school_group2, chart_preference: 'carbon'
         create :school, active: false, school_group: school_group2, chart_preference: 'usage'
-        click_on 'Edit School Groups'
+        click_on 'Manage School Groups'
         within "table" do
           click_on 'Manage', match: :first
         end
@@ -601,7 +637,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       let!(:partners) { 3.times.collect { create(:partner) } }
       let!(:school_group)      { create(:school_group, name: 'BANES') }
       before do
-        click_on 'Edit School Groups'
+        click_on 'Manage School Groups'
         within "table" do
           click_on 'Manage'
         end

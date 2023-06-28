@@ -15,16 +15,20 @@
           <div class="card bg-light">
             <div class="card-header">Which meter(s) should be on the bill?</div>
             <div class="card-body">
-              <div class="form-check">
-                <%= f.collection_check_boxes(:meter_ids, @meters, :id, :mpan_mprn) do |b|  %>
-                  <div class="control-group">
-                    <%= b.check_box(class: "form-check-input") %>
-                    <%= b.label(class: "form-check-label") do %>
-                      <%= b.object.mpan_mprn %>
-                    <% end %>
-                  </div>
-                <% end %>
-              </div>
+              <% if @meters.present? %>
+                <div class="form-check">
+                  <%= f.collection_check_boxes(:meter_ids, @meters, :id, :mpan_mprn) do |b|  %>
+                    <div class="control-group">
+                      <%= b.check_box(class: "form-check-input", checked: true) %>
+                      <%= b.label(class: "form-check-label") do %>
+                        <%= b.object.mpan_mprn %>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
+              <% else %>
+                <p>No meters pending review</p>
+              <% end %>
             </div>
           </div>
           <div class="card bg-light">
@@ -54,6 +58,9 @@
        <div class="col">
          <div class="mt-4">
            <%= f.button :submit, "Request bill", "data-confirm": 'Are you sure?', disabled: @users.empty? %>
+           <% if @school.bill_requested_at %>
+             <span class='p-2'>Bill last requested from the school <%= @school.bill_requested_at.strftime("on %m/%d/%Y at %H:%M") %></span>
+           <% end %>
          </div>
          <hr>
          <div class="btn-group">

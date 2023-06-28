@@ -3,7 +3,8 @@ require 'rails_helper'
 RSpec.describe 'bill_requests', type: :system do
 
   let!(:school)                { create(:school) }
-  let!(:dcc_meter)             { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: false) }
+  let!(:unreviewed_dcc_meter)  { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: false, meter_review_id: nil) }
+  let!(:reviewed_dcc_meter)    { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: true) }
 
   let!(:admin)                 { create(:admin) }
 
@@ -51,6 +52,9 @@ RSpec.describe 'bill_requests', type: :system do
         expect(page).to have_text(staff.staff_role.title)
         expect(page).to have_text(school_admin.name)
         expect(page).to have_text(school_admin.staff_role.title)
+
+        expect(page).to have_text(unreviewed_dcc_meter.mpan_mprn)
+        expect(page).not_to have_text(reviewed_dcc_meter.mpan_mprn)
       end
 
       it 'should link to manage users' do
@@ -67,6 +71,7 @@ RSpec.describe 'bill_requests', type: :system do
 
       context 'when valid form is submitted' do
         before(:each) do
+          expect(page).not_to have_content('Bill last requested from the school on')
           find(:css, "#bill_request_user_ids_#{school_admin.id}").set(true)
           click_on 'Request bill'
         end
@@ -77,6 +82,11 @@ RSpec.describe 'bill_requests', type: :system do
 
         it 'should send the email' do
           expect(ActionMailer::Base.deliveries.count).to be 1
+        end
+
+        it 'should now show a bill requested on time stamp on the bill request page' do
+          visit new_admin_school_bill_request_path(school)
+          expect(page).to have_content('Bill last requested from the school on')
         end
       end
 
