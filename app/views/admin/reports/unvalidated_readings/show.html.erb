@@ -1,0 +1,35 @@
+<% content_for :page_title, 'Unvalidated readings report' %>
+
+<h1>Unvalidated readings report</h1>
+
+<%= simple_form_for :mpans, url: admin_reports_unvalidated_readings_path, method: "GET", html: { class: 'form' } do |f| %>
+  <%= f.input :list, as: :text, input_html: {'rows' => 20, 'cols' => 10, value: params[:mpans].present? ? params[:mpans]["list"]: ''} %>
+  <%= f.submit "Run report", class: "btn btn-primary" %>
+<% end %>
+
+<% if @report.any? %>
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th>MPAN/MPRN</th>
+        <th>Meter</th>
+        <th>Config identifier</th>
+        <th>Config name</th>
+        <th>Earliest reading</th>
+        <th>Latest reading</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @report.each do |row| %>
+        <tr>
+          <td><%= row['mpan_mprn'] %></td>
+          <td><%= row['meter_id'] %></td>
+          <td><%= row['identifier'] %></td>
+          <td><%= row['description'] %></td>
+          <td><%= row['earliest_reading'] %></td>
+          <td><%= row['latest_reading'] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
