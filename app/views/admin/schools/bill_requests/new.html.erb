@@ -59,7 +59,7 @@
          <div class="mt-4">
            <%= f.button :submit, "Request bill", "data-confirm": 'Are you sure?', disabled: @users.empty? %>
            <% if @school.bill_requested_at %>
-             <span class='p-2'>Bill requested <%= @school.bill_requested_at.strftime("on %m/%d/%Y at %H:%M") %></span>
+             <span class='p-2'>Bill last requested from the school <%= @school.bill_requested_at.strftime("on %m/%d/%Y at %H:%M") %></span>
            <% end %>
          </div>
          <hr>
