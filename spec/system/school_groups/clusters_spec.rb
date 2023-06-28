@@ -11,6 +11,12 @@ describe 'school group clusters', :school_group_clusters, type: :system do
     end
   end
 
+  around do |example|
+    ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: "true" do
+      example.run
+    end
+  end
+
   describe "when not logged in" do
     before do
       visit school_group_clusters_url(school_group)
@@ -32,7 +38,7 @@ describe 'school group clusters', :school_group_clusters, type: :system do
     end
 
     context "as a group admin of a different group" do
-      let!(:user) { create(:group_admin) }
+      let!(:user) { create(:group_admin, school_group: create(:school_group)) }
       before do
         visit school_group_clusters_url(school_group)
       end

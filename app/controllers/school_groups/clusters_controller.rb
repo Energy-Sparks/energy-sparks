@@ -3,7 +3,6 @@ module SchoolGroups
     load_and_authorize_resource :school_group
     before_action :redirect_unless_authorised
     load_and_authorize_resource :cluster, class: 'SchoolGroupCluster', through: :school_group
-    #rescue_from CanCan::AccessDenied, :with => :redirect_unless_authorised
 
     before_action :header_fix_enabled
     before_action :set_breadcrumbs
