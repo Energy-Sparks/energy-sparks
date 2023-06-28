@@ -80,9 +80,9 @@ class AmrDataFeedReading < ApplicationRecord
     QUERY
   end
 
-  def self.unvalidated_data_report_for_mpans(mpans)
+  def self.build_unvalidated_data_report_query(mpans)
     list_of_mpans = mpans.map {|m| "'#{m}'"}.join(',')
-    query = <<~QUERY
+    <<~QUERY
       SELECT mpan_mprn, meter_id, identifier, description, MIN(parsed_date) as earliest_reading, MAX(parsed_date) as latest_reading FROM (
         SELECT mpan_mprn, meter_id, identifier, amr_data_feed_configs.description, reading_date,
         CASE
@@ -108,6 +108,10 @@ class AmrDataFeedReading < ApplicationRecord
       GROUP BY mpan_mprn, meter_id, identifier, description
       ORDER by mpan_mprn, meter_id, latest_reading DESC
     QUERY
+  end
+
+  def self.unvalidated_data_report_for_mpans(mpans)
+    query = build_unvalidated_data_report_query(mpans)
     ActiveRecord::Base.connection.execute(ActiveRecord::Base.sanitize_sql(query))
   end
 end
