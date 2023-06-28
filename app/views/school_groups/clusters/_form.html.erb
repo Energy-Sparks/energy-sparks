@@ -1,5 +1,3 @@
-<% content_for :page_title, @school_group.name + ' | ' +  t('school_groups.clusters.title').capitalize %>
-
 <%= simple_form_for [@school_group, @cluster], url:(@cluster.new_record? ? school_group_clusters_path(@school_group) : school_group_cluster_path(@school_group, @cluster)) do |f| %>
   <div class="form-group">
     <%= f.input :name, label:  t("school_groups.clusters.labels.name"), class: 'form-control' %>

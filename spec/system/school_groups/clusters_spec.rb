@@ -15,6 +15,10 @@ describe 'school group clusters', :school_group_clusters, type: :system do
   end
 
   shared_examples "school group clusters index page" do |name:nil, count:nil|
+    it 'shows breadcrumbs' do
+      expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq(['Schools', school_group.name, 'Clusters'])
+    end
+
     it "shows school group clusters index page" do
       expect(current_path).to eq "/school_groups/#{school_group.slug}/clusters"
       expect(page).to have_content "#{school_group.name} Clusters"
@@ -27,12 +31,17 @@ describe 'school group clusters', :school_group_clusters, type: :system do
       expect(page).to have_link("Edit", href: /clusters/)
       expect(page).to have_link("Delete")
     end
+
     it "doesn't display cluster", unless: name do
       expect(page).to_not have_link("Edit", href: /clusters/)
     end
   end
 
   shared_examples "school group cluster form" do |name:'', schools:[]|
+    it 'shows breadcrumbs' do
+      expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq(['Schools', school_group.name, 'Clusters', (name.blank? ? "New" : name)])
+    end
+
     it "displays cluster form" do
       if name
         expect(find_field('Name').text).to be_blank

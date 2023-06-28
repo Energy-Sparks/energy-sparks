@@ -31,7 +31,10 @@ en:
       schools:
         one: 1 school
         other: "%{count} schools"
-      title: Clusters
+      titles:
+        create: Create cluster
+        edit: Edit cluster
+        index: Clusters
     comparisons:
       category: Category
       how_does_it_compare:

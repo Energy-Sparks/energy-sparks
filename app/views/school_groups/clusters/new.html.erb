@@ -1,3 +1,4 @@
-<h2>New cluster</h2>
+<% content_for :page_title, @school_group.name + ' | ' +  t('school_groups.clusters.titles.create').capitalize %>
+<h2><%= t('school_groups.clusters.titles.create') %></h2>
 
 <%= render "form" %>

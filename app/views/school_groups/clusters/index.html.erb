@@ -1,6 +1,6 @@
-<% content_for :page_title, @school_group.name + ' | ' +  t('school_groups.clusters.title').capitalize %>
+<% content_for :page_title, @school_group.name + ' | ' +  t('school_groups.clusters.titles.index').capitalize %>
 
-<h1><%= @school_group.name %> <%= t('school_groups.clusters.title') %></h1>
+<h1><%= @school_group.name %> <%= t('school_groups.clusters.titles.index') %></h1>
 
 <p><%= link_to t('school_groups.clusters.buttons.create_new'), new_school_group_cluster_path(@school_group), class: 'btn btn-sm' %></p>
 

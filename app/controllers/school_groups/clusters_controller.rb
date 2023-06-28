@@ -49,9 +49,9 @@ module SchoolGroups
       @breadcrumbs = [
         { name: I18n.t('common.schools'), href: schools_path },
         { name: @school_group.name, href: school_group_path(@school_group) },
-        { name: t('school_groups.clusters.title').capitalize, href: school_group_clusters_path(@school_group) },
+        { name: t('school_groups.clusters.titles.index').capitalize, href: school_group_clusters_path(@school_group) },
       ]
-      @breadcrumbs << { name: @cluster.name || I18n.t('school_groups.clusters.labels.new') } unless @clusters
+      @breadcrumbs << { name: @cluster.new_record? ? I18n.t('school_groups.clusters.labels.new') : @cluster.name } unless @clusters
     end
   end
 end
