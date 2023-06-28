@@ -36,18 +36,20 @@ describe ActivityCreator do
 
   context 'with a programme' do
     let!(:school)           { create :school }
-    let!(:school_2)           { create :school }
+    let!(:school_2)         { create :school }
     let(:programme_type)    { create :programme_type_with_activity_types }
     let(:programme_type_2)  { create :programme_type_with_activity_types }
     let(:activity_type)     { programme_type.activity_types.first }
     let(:activity_type_2)   { programme_type_2.activity_types.first }
+    let(:activity_type_3)   { create(:activity_type) }
     let(:activity_2)        { create(:activity, activity_type: activity_type_2, school: school_1) }
     let!(:programme)        { Programmes::Creator.new(school, programme_type).create }
-    let!(:programme_2)        { Programmes::Creator.new(school, programme_type_2).create }
+    let!(:programme_2)      { Programmes::Creator.new(school, programme_type_2).create }
 
     it 'a school is recording an activity that is in a programme' do
+      expect(activity_type.programme_types).to eq([programme_type])
+      expect(school.programmes).not_to include([programme_type])
       activity = build(:activity, activity_type: activity_type, school: school)
-
       expect do
         ActivityCreator.new(activity).process
       end.to change { programme.programme_activities.count }.by(1).and change { Observation.count }.by(1).and change(activity, :updated_at)
@@ -55,7 +57,8 @@ describe ActivityCreator do
     end
 
     it "a school is recording an activity that isn't in a programme" do
-      activity = build(:activity, activity_type: activity_type_2, school: school)
+      expect(activity_type_3.programme_types).to eq([])
+      activity = build(:activity, activity_type: activity_type_3, school: school)
 
       expect do
         ActivityCreator.new(activity).process
@@ -63,6 +66,13 @@ describe ActivityCreator do
     end
 
     it "a school is recording an activity that is in a programme, but not one they're part of" do
+      expect(activity_type_2.programme_types).to eq([programme_type_2])
+      expect(school.programmes).not_to include([programme_type_2])
+
+      activity = build(:activity, activity_type: activity_type_2, school: school)
+      expect do
+        ActivityCreator.new(activity).process
+      end.to change { programme.programme_activities.count }.by(0).and change { Observation.count }.by(1).and change(activity, :updated_at)
     end
 
     it "completes the programme if all the activities are completed" do
