@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 describe ActivityCreator do
-
-  let(:activity_category){ create :activity_category }
-  let(:activity_type){ create :activity_type, activity_category: activity_category, score: 50}
+  let(:activity_category) { create :activity_category }
+  let(:activity_type) { create :activity_type, activity_category: activity_category, score: 50}
 
   it 'sets the activity category if the activity type has one' do
     activity = build(:activity, activity_type: activity_type, activity_category: nil)
@@ -39,14 +38,25 @@ describe ActivityCreator do
     let!(:school)         { create :school }
     let(:programme_type)  { create :programme_type_with_activity_types }
     let(:activity_type)   { programme_type.activity_types.first }
+    let(:activity_type_2) { create(:activity_type) }
+    let(:activity_2)      { create(:activity, activity_type: activity_type_2, school: school_1) }
     let!(:programme)      { Programmes::Creator.new(school, programme_type).create }
 
     it 'completes the activity in the programme' do
       activity = build(:activity, activity_type: activity_type, school: school)
-      ActivityCreator.new(activity).process
 
-      expect(programme.programme_activities.count).to eql 1
+      expect do
+        ActivityCreator.new(activity).process
+      end.to change { programme.programme_activities.count }.by(1).and change { Observation.count }.by(1).and change(activity, :updated_at)
       expect(programme.programme_activities.find_by(activity_type: activity_type).activity_id).to be activity.id
+    end
+
+    it "completes the activity in the programme but does not add a new programme activity if an the activity_type is not included in the programme's programme_type activity_type's" do
+      activity = build(:activity, activity_type: activity_type_2, school: school)
+
+      expect do
+        ActivityCreator.new(activity).process
+      end.to change { programme.programme_activities.count }.by(0).and change { Observation.count }.by(1).and change(activity, :updated_at)
     end
 
     it "completes the programme if all the activities are completed" do
@@ -59,7 +69,6 @@ describe ActivityCreator do
     end
 
     context "when extra activities are recorded, which are no longer in the programme" do
-
       before do
         extra_activity_type = create(:activity_type)
         extra_activity = create(:activity, activity_type: extra_activity_type)
@@ -93,5 +102,4 @@ describe ActivityCreator do
       expect(programme.activities).to include(activity)
     end
   end
-
 end

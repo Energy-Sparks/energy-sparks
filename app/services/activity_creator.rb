@@ -43,11 +43,16 @@ class ActivityCreator
   end
 
   def add_programme_activity(programme)
-    # A ProgrammeActivity record indicates that an activity has been recorded as part of a Programme.
+    # A ProgrammeType is a set of themed ActivityTypes, e.g. reduce your gas usage. Because an ActivityType
+    # can be in multiple ProgrammeTypes, there is a many-many association ProgrameTypeActivityType that links
+    # the two models.
     #
-    # A ProgrammeType has a list of ActivityType's. A new ProgrammeActivity record should only be created if
-    # the activity_type of the Activity is one of the ActivityType's associated with the
-    # Programme's ProgrammeType (there is also a validation on the ProgrammeActivity model to check this).
+    # When a school signs up to complete a ProgrammeType we record that as a Programme. When they complete an
+    # ActivityType we record that as a new Activity.
+    #
+    # To track progress against completing the ProgrammeType we should only be associating the school's Programme
+    # with those Activities that are for ActivityTypes that are part of the programme. So we only create
+    # ProgrammeActivity records in that case.
     return unless programme.programme_type.activity_types.pluck(:id).include?(@activity.activity_type.id)
 
     # Create programme_activity for this programme, associated with programme, activity_type and activity
