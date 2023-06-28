@@ -79,4 +79,42 @@ class AmrDataFeedReading < ApplicationRecord
       ORDER BY s.id, m.mpan_mprn ASC
     QUERY
   end
+
+  def self.build_unvalidated_data_report_query(mpans)
+    list_of_mpans = mpans.map {|m| "'#{m}'"}.join(',')
+    <<~QUERY
+      SELECT mpan_mprn, meter_id, identifier, description, MIN(parsed_date) as earliest_reading, MAX(parsed_date) as latest_reading FROM (
+        SELECT mpan_mprn, meter_id, identifier, amr_data_feed_configs.description, reading_date,
+        CASE
+          WHEN reading_date ~ '\\d{2}-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\\d{2}' THEN to_date(reading_date, 'DD-MON-YY')
+          WHEN date_format='%d-%m-%Y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
+          WHEN date_format='%d-%m-%Y' THEN to_date(reading_date, 'DD-MM-YYYY')
+          WHEN date_format='%d/%m/%Y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
+          WHEN date_format='%d/%m/%Y' THEN to_date(reading_date, 'DD/MM/YYYY')
+          WHEN date_format='%d/%m/%y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
+          WHEN date_format='%d/%m/%y' THEN to_date(reading_date, 'DD/MM/YY')
+          WHEN date_format='%Y-%m-%d' THEN to_date(reading_date, 'YYYY-MM-DD')
+          WHEN date_format='%Y-%m-%d' THEN to_date(reading_date, 'YYYY-MM-DD ')
+          WHEN date_format='%y-%m-%d' THEN to_date(reading_date, 'YY-MM-DD ')
+          WHEN date_format='"%d-%m-%Y"' THEN to_date(reading_date, '"DD-MM-YYYY"')
+          WHEN date_format='%d/%m/%Y %H:%M:%S' THEN to_date(reading_date, 'DD/MM/YYYY HH24:MI::SS')
+          WHEN date_format='%H:%M:%S %a %d/%m/%Y' THEN to_date(reading_date, 'HH24:MI::SS Dy DD/MM/YYYY')
+          WHEN date_format='%e %b %Y %H:%M:%S' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
+          WHEN date_format='%e %b %Y %H:%M:%S' THEN to_date(reading_date, 'DD Mon YYYY HH24:MI::SS')
+          WHEN date_format='%b %e %Y %I:%M%p' THEN to_date(reading_date, 'Mon DD YYYY HH12:MIam')
+          ELSE NULL
+        END parsed_date
+        FROM amr_data_feed_readings
+        JOIN amr_data_feed_configs ON amr_data_feed_configs.id = amr_data_feed_readings.amr_data_feed_config_id
+        WHERE mpan_mprn IN (#{list_of_mpans})
+        ) as raw_data
+      GROUP BY mpan_mprn, meter_id, identifier, description
+      ORDER by mpan_mprn, meter_id, latest_reading DESC
+    QUERY
+  end
+
+  def self.unvalidated_data_report_for_mpans(mpans)
+    query = build_unvalidated_data_report_query(mpans)
+    ActiveRecord::Base.connection.execute(ActiveRecord::Base.sanitize_sql(query))
+  end
 end
