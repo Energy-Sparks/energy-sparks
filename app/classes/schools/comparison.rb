@@ -1,6 +1,6 @@
 module Schools
   class Comparison
-    attr_reader :school_value, :benchmark_value, :exemplar_value, :unit
+    attr_reader :school_value, :benchmark_value, :exemplar_value, :unit, :low_is_good
 
     def initialize(school_value:, benchmark_value:, exemplar_value:, unit:, low_is_good: true)
       @school_value = school_value
