@@ -5,7 +5,7 @@ module Amr
 
     let(:n3rgy_api)         { double(:n3rgy_api) }
     let(:n3rgy_api_factory) { double(:n3rgy_api_factory, data_api: n3rgy_api) }
-    let(:earliest)          { DateTime.parse("2019-01-01T0000") }
+    let(:earliest)          { DateTime.parse("2019-01-01T00:00") }
     let(:thirteen_months_ago) { DateTime.now - 13.months }
     let(:meter)             { create(:electricity_meter, earliest_available_data: earliest ) }
     let(:config)            { create(:amr_data_feed_config)}
@@ -17,7 +17,7 @@ module Amr
       {
         meter.meter_type => {
             mpan_mprn:        meter.mpan_mprn,
-            readings:         { start_date: OneDayAMRReading.new(meter.mpan_mprn, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)) },
+            readings:         { start_date => OneDayAMRReading.new(meter.mpan_mprn, start_date, 'ORIG', nil, start_date, Array.new(48, 0.25)) },
             missing_readings: []
           }
       }
@@ -61,7 +61,8 @@ module Amr
 
       context "when there are readings" do
 
-        let(:last_week) { DateTime.now - 7 }
+        # Note: this is a Date object as the reading date needs to be stored in the database in ISO 8601 format e.g. 2023-06-29
+        let(:last_week) { Date.today - 7 }
 
         before do
           create(:amr_data_feed_reading, meter: meter, reading_date: last_week)
@@ -73,6 +74,10 @@ module Amr
           available_range = (last_week-1..yesterday)
           expect(n3rgy_api).to receive(:readings_available_date_range).with(meter.mpan_mprn, meter.fuel_type).and_return(available_range)
           expect(n3rgy_api).to receive(:readings).with(meter.mpan_mprn, meter.meter_type, last_week-1, yesterday).and_return(readings)
+
+          # maximum and minimum amr data feed readings reading date should be in ISO 8601 format e.g. '2023-06-29'
+          expect(meter.amr_data_feed_readings.minimum(:reading_date)).to match(/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/)
+          expect(meter.amr_data_feed_readings.maximum(:reading_date)).to match(/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/)
 
           upserter = Amr::N3rgyReadingsDownloadAndUpsert.new( n3rgy_api_factory: n3rgy_api_factory, config: config, meter: meter, start_date: nil, end_date: nil )
           upserter.perform
