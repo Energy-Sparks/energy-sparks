@@ -5,7 +5,7 @@ module Amr
 
     let(:n3rgy_api)         { double(:n3rgy_api) }
     let(:n3rgy_api_factory) { double(:n3rgy_api_factory, data_api: n3rgy_api) }
-    let(:earliest)          { DateTime.parse("2019-01-01T0000") }
+    let(:earliest)          { DateTime.parse("2019-01-01T00:00") }
     let(:thirteen_months_ago) { DateTime.now - 13.months }
     let(:meter)             { create(:electricity_meter, earliest_available_data: earliest ) }
     let(:config)            { create(:amr_data_feed_config)}
