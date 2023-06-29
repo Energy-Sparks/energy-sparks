@@ -9,7 +9,7 @@ module Amr
 
     describe '#start_date' do
       it 'picks the appropriate start date from the available and current range' do
-        travel_to Time.zone.local(2023, 06, 29, 12, 00, 00) do
+        travel_to DateTime.parse('2023-06-29T04:05:06+00:00') do
           expect(Amr::N3rgyDownloaderDates.start_date(available_range, current_range).to_s).to eq('2023-01-01T00:00:00+00:00')
           expect(Amr::N3rgyDownloaderDates.start_date(nil, current_range).to_s).to eq('2022-05-29T00:00:00+00:00') # DateTime now minus 13 months
           expect(Amr::N3rgyDownloaderDates.start_date(available_range, nil).to_s).to eq('2023-01-01T00:00:00+00:00')
