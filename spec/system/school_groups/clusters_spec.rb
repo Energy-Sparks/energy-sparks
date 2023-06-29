@@ -19,6 +19,10 @@ describe 'school group clusters', :school_group_clusters, type: :system do
       expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq(['Schools', school_group.name, 'Clusters'])
     end
 
+    it "shows intro text" do
+      expect(page).to have_content "A cluster is a set of schools that are grouped together"
+    end
+
     it "shows school group clusters index page" do
       expect(current_path).to eq "/school_groups/#{school_group.slug}/clusters"
       expect(page).to have_content "#{school_group.name} Clusters"
@@ -87,7 +91,7 @@ describe 'school group clusters', :school_group_clusters, type: :system do
 
         before do
           visit school_group_url(school_group)
-          click_on "Clusters"
+          click_on "Manage clusters"
         end
 
         it_behaves_like "school group clusters index page"

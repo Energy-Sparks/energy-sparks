@@ -2,6 +2,8 @@
 
 <h1><%= @school_group.name %> <%= t('school_groups.clusters.titles.index') %></h1>
 
+<p><%= t('school_groups.clusters.intro', group_type: t("school_groups.clusters.group_type.#{@school_group.group_type}")) %></p>
+
 <p><%= link_to t('school_groups.clusters.buttons.create_new'), new_school_group_cluster_path(@school_group), class: 'btn btn-sm' %></p>
 
 <% if @clusters.any? %>

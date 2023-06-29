@@ -19,6 +19,11 @@ en:
     clusters:
       buttons:
         create_new: Create new cluster
+      group_type:
+        general: School Group
+        local_authority: Local Authority
+        multi_academy_trust: Multi-Academy Trust
+      intro: A cluster is a set of schools that are grouped together within your %{group_type}. For example, you may want to group all your southern and northern schools, all your primaries, etc. Grouping schools into clusters will allow you to more easily compare related schools
       labels:
         name: Name
         new: New
@@ -103,7 +108,7 @@ en:
             other: We are working with %{count} schools in this multi-academy trust
     sub_nav:
       chart_settings: Chart settings
-      clusters: Clusters
+      clusters: Manage clusters
       dashboards: Dashboards
       edit_group: Edit group
       group_admin: Group admin
