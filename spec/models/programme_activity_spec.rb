@@ -18,4 +18,7 @@ RSpec.describe ProgrammeActivity, type: :model do
     expect(ProgrammeActivity.new(programme: programme_1, activity_type: activity_type_1, activity: activity_1)).to be_valid
     expect(ProgrammeActivity.new(programme: programme_1, activity_type: activity_type_2, activity: activity_2)).not_to be_valid
   end
+
+  it "program activity remains after the activity type has been removed from a programme" do
+  end
 end
