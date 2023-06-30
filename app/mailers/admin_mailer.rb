@@ -2,9 +2,10 @@ class AdminMailer < ApplicationMailer
   helper :application, :issues
 
   def school_data_source_report
-    to, data_source = params.values_at(:to, :data_source)
-    title = "#{t('common.application')}-#{data_source.name}-meters-#{Time.zone.now.iso8601}"
-    attachments[(title + '.csv').parameterize] = { mime_type: 'text/csv', content: data_source.meters.to_csv }
+    to, data_source_id = params.values_at(:to, :data_source_id)
+    @data_source = DataSource.find(data_source_id)
+    title = "#{t('common.application')}-#{@data_source.name}-meters-#{Time.zone.now.iso8601}"
+    attachments[(title + '.csv').parameterize] = { mime_type: 'text/csv', content: @data_source.to_csv }
 
     make_bootstrap_mail(to: to, subject: subject(title))
   end
