@@ -19,7 +19,7 @@ module CsvExportable
     end
 
     def to_csv(header: true)
-      CSV.generate(headers: header) do |csv|
+      CSV.generate(headers: false) do |csv|
         csv << csv_headers if header == true
         all.find_each do |record|
           csv << csv_attributes.map { |attr| attr.split('.').inject(record, :try) }
