@@ -32,16 +32,16 @@ class DataSource < ApplicationRecord
       csv << csv_headers
       meters.each do |meter|
         csv << [
-          meter.school.school_group.name,
-          meter.school.name,
-          meter.mpan_mprn,
-          meter.meter_type.humanize,
-          meter.active,
-          meter.first_validated_reading,
-          meter.last_validated_reading,
-          meter.admin_meter_status_label,
-          meter.open_issues_count,
-        ] + meter.open_issues_as_list
+          meter&.school&.school_group&.name,
+          meter&.school&.name,
+          meter&.mpan_mprn,
+          meter&.meter_type&.humanize,
+          meter&.active,
+          meter&.first_validated_reading,
+          meter&.last_validated_reading,
+          meter&.admin_meter_status_label,
+          meter&.open_issues_count,
+        ] + meter&.open_issues_as_list
       end
     end
   end
