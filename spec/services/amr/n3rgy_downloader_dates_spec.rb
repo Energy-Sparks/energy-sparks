@@ -19,8 +19,10 @@ module Amr
 
     describe '#end_date' do
       it 'picks the appropriate start date from the available and current range' do
-        expect(Amr::N3rgyDownloaderDates.end_date(available_range).to_s).to eq('2023-03-01T12:00:00+00:00')
-        expect(Amr::N3rgyDownloaderDates.end_date(nil).to_s).to eq('2023-06-28T23:30:00+01:00') # DateTime now minus 1 day
+        travel_to DateTime.parse('2023-06-29T04:05:06+00:00') do
+          expect(Amr::N3rgyDownloaderDates.end_date(available_range).to_s).to eq('2023-03-01T12:00:00+00:00')
+          expect(Amr::N3rgyDownloaderDates.end_date(nil).to_s).to eq('2023-06-28T23:30:00+00:00') # DateTime now minus 1 day
+        end
       end
     end
   end
