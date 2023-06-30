@@ -14,7 +14,8 @@ module Admin
     end
 
     def deliver
-      SendDataSourceReportJob.perform_later(to: current_user.email, data_source_id: @data_source.id)
+      @data_source = DataSource.find(params[:data_source_id])
+      SendDataSourceReportJob.perform_now(to: current_user.email, data_source_id: @data_source.id)
       redirect_back fallback_location: admin_data_source_path(@data_source), notice: "Data source report for #{@data_source.name} requested to be sent to #{current_user.email}"
     end
 
