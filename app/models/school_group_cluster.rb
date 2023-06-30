@@ -19,8 +19,7 @@
 class SchoolGroupCluster < ApplicationRecord
   belongs_to :school_group
 
-  has_many :school_group_cluster_schools
-  has_many :schools, through: :school_group_cluster_schools
+  has_many :schools
 
   validates :name, presence: true
 end

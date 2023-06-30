@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_27_144212) do
+ActiveRecord::Schema.define(version: 2023_06_30_103731) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1292,15 +1292,6 @@ ActiveRecord::Schema.define(version: 2023_06_27_144212) do
     t.index ["school_id"], name: "index_school_batch_runs_on_school_id"
   end
 
-  create_table "school_group_cluster_schools", force: :cascade do |t|
-    t.bigint "school_group_cluster_id", null: false
-    t.bigint "school_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["school_group_cluster_id"], name: "index_school_group_cluster_schools_on_school_group_cluster_id"
-    t.index ["school_id"], name: "index_school_group_cluster_schools_on_school_id"
-  end
-
   create_table "school_group_clusters", force: :cascade do |t|
     t.string "name"
     t.bigint "school_group_id", null: false
@@ -1530,9 +1521,11 @@ ActiveRecord::Schema.define(version: 2023_06_27_144212) do
     t.integer "region"
     t.bigint "local_authority_area_id"
     t.datetime "bill_requested_at"
+    t.bigint "school_group_cluster_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"
+    t.index ["school_group_cluster_id"], name: "index_schools_on_school_group_cluster_id"
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
     t.index ["scoreboard_id"], name: "index_schools_on_scoreboard_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true
@@ -1570,8 +1563,8 @@ ActiveRecord::Schema.define(version: 2023_06_27_144212) do
     t.integer "management_priorities_page_limit", default: 10
     t.boolean "message_for_no_pupil_accounts", default: true
     t.jsonb "temperature_recording_months", default: ["10", "11", "12", "1", "2", "3", "4"]
-    t.integer "default_import_warning_days", default: 10
     t.jsonb "prices"
+    t.integer "default_import_warning_days", default: 10
   end
 
   create_table "sms_records", force: :cascade do |t|
@@ -2000,8 +1993,6 @@ ActiveRecord::Schema.define(version: 2023_06_27_144212) do
   add_foreign_key "school_alert_type_exclusions", "schools", on_delete: :cascade
   add_foreign_key "school_batch_run_log_entries", "school_batch_runs", on_delete: :cascade
   add_foreign_key "school_batch_runs", "schools", on_delete: :cascade
-  add_foreign_key "school_group_cluster_schools", "school_group_clusters", on_delete: :cascade
-  add_foreign_key "school_group_cluster_schools", "schools", on_delete: :cascade
   add_foreign_key "school_group_clusters", "school_groups", on_delete: :cascade
   add_foreign_key "school_group_meter_attributes", "school_group_meter_attributes", column: "replaced_by_id", on_delete: :nullify
   add_foreign_key "school_group_meter_attributes", "school_groups", on_delete: :cascade
@@ -2029,6 +2020,7 @@ ActiveRecord::Schema.define(version: 2023_06_27_144212) do
   add_foreign_key "school_targets", "schools"
   add_foreign_key "school_times", "schools", on_delete: :cascade
   add_foreign_key "schools", "calendars", on_delete: :restrict
+  add_foreign_key "schools", "school_group_clusters", on_delete: :nullify
   add_foreign_key "schools", "school_groups", on_delete: :restrict
   add_foreign_key "schools", "scoreboards", on_delete: :nullify
   add_foreign_key "scoreboards", "calendars", column: "academic_year_calendar_id", on_delete: :nullify

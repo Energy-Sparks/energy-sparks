@@ -145,6 +145,7 @@ class School < ApplicationRecord
 
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
+  belongs_to :school_group_cluster, optional: true
 
   belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, optional: true
