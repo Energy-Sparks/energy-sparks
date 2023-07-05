@@ -30,6 +30,21 @@ module SchoolGroups
       end
     end
 
+    def assign
+      if @cluster
+        @cluster.school_ids += cluster_params[:school_ids].compact
+        notice = I18n.t('school_groups.clusters.messages.assigned', cluster: @cluster.name, count: cluster_params[:school_ids].count)
+      else
+        notice = I18n.t('school_groups.clusters.messages.select_cluster')
+      end
+      redirect_to school_group_clusters_path(@school_group), notice: notice
+    end
+
+    def unassign
+      @cluster.school_ids -= cluster_params[:school_ids]
+      redirect_to school_group_clusters_path(@school_group), notice: I18n.t('school_groups.clusters.messages.unassigned', cluster: @cluster.name, count: cluster_params[:school_ids].count)
+    end
+
     def destroy
       @cluster.destroy
       redirect_to school_group_clusters_path(@school_group), notice: I18n.t('school_groups.clusters.messages.deleted')
@@ -42,16 +57,19 @@ module SchoolGroups
     end
 
     def cluster_params
-      params.require(:school_group_cluster).permit(:name, school_ids: [])
+      sanitized = params.fetch(:school_group_cluster, {}).permit(:name, school_ids: [])
+        .with_defaults(school_ids: []).to_hash.symbolize_keys
+      sanitized[:school_ids].map!(&:to_i)
+      sanitized
     end
 
     def set_breadcrumbs
       @breadcrumbs = [
         { name: I18n.t('common.schools'), href: schools_path },
         { name: @school_group.name, href: school_group_path(@school_group) },
-        { name: t('school_groups.clusters.titles.index').capitalize, href: school_group_clusters_path(@school_group) },
+        { name: t('school_groups.clusters.index.title').capitalize, href: school_group_clusters_path(@school_group) },
       ]
-      @breadcrumbs << { name: @cluster.new_record? ? I18n.t('school_groups.clusters.labels.new') : @cluster.name } unless @clusters
+      @breadcrumbs << { name: @cluster.new_record? ? I18n.t('school_groups.clusters.labels.new') : @cluster.name } if @cluster
     end
   end
 end

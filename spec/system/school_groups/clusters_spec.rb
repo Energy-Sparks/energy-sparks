@@ -14,7 +14,7 @@ describe 'school group clusters', :school_group_clusters, type: :system do
     end
   end
 
-  shared_examples "school group clusters index page" do |name:nil, count:nil|
+  shared_examples "school group clusters index page" do |name:nil, count:0|
     it 'shows breadcrumbs' do
       expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq(['Schools', school_group.name, 'Clusters'])
     end
@@ -29,11 +29,12 @@ describe 'school group clusters', :school_group_clusters, type: :system do
       expect(page).to have_link "Create new cluster"
     end
 
-    it "display cluster", if: name do
+    it "displays cluster", if: name do
       expect(page).to have_content(name)
       expect(page).to have_content("#{count} #{'school'.pluralize(count)}")
       expect(page).to have_link("Edit", href: /clusters/)
       expect(page).to have_link("Delete")
+      expect(page).to have_button("Unassign selected", disabled: count < 1)
     end
 
     it "doesn't display cluster", unless: name do
@@ -41,7 +42,7 @@ describe 'school group clusters', :school_group_clusters, type: :system do
     end
   end
 
-  shared_examples "school group cluster form" do |name:'', schools:[]|
+  shared_examples "school group cluster form" do |name:''|
     it 'shows breadcrumbs' do
       expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq(['Schools', school_group.name, 'Clusters', (name.blank? ? "New" : name)])
     end
@@ -52,7 +53,6 @@ describe 'school group clusters', :school_group_clusters, type: :system do
       else
         expect(page).to have_field('Name', with: name)
       end
-      expect(page).to have_select('Schools', options: ["School 1", "School 2", "School 3"], selected: schools)
       expect(page).to have_button('Save')
     end
   end
@@ -95,64 +95,49 @@ describe 'school group clusters', :school_group_clusters, type: :system do
         end
 
         it_behaves_like "school group clusters index page"
-        it { expect(page).to have_content "No clusters yet" }
+        it { expect(page).to have_content "No clusters" }
 
-        context "Adding a new cluster" do
+        describe "Cluster management" do
           before { click_on "Create new cluster" }
 
-          it_behaves_like "school group cluster form", name: '', schools: []
+          it_behaves_like "school group cluster form", name: ''
 
           context "Saving with missing fields" do
             before do
               fill_in "Name", with: ''
               click_button 'Save'
             end
-            it_behaves_like "school group cluster form", name: '', schools: []
+            it_behaves_like "school group cluster form", name: ''
           end
 
-          context "Creating a new cluster" do
+          context "Creating cluster" do
             before do
               fill_in "Name", with: 'My Cluster'
-              select 'School 1', from: "Schools"
-              select 'School 3', from: "Schools"
               click_button 'Save'
             end
 
-            it_behaves_like "school group clusters index page", name: 'My Cluster', count: 2
+            it_behaves_like "school group clusters index page", name: 'My Cluster', count: 0
             it { expect(page).to have_content("Cluster created")}
 
-            context "Clicking 'Edit" do
+            context "Editing cluster" do
               before do
                 click_link "Edit"
               end
 
-              it_behaves_like "school group cluster form", name: 'My Cluster', schools: ["School 1", "School 3"]
+              it_behaves_like "school group cluster form", name: 'My Cluster'
 
               context "Saving new values" do
                 before do
                   fill_in "Name", with: 'My Updated Cluster'
-                  unselect 'School 1', from: "Schools"
-                  select 'School 2', from: "Schools"
-                  unselect 'School 3', from: "Schools"
                   click_button 'Save'
                 end
 
                 it { expect(page).to have_content("Cluster updated") }
-                it_behaves_like "school group clusters index page", name: 'My Updated Cluster', count: 1
-              end
-
-              context "Selecting no schools" do
-                before do
-                  unselect 'School 1', from: "Schools"
-                  unselect 'School 3', from: "Schools"
-                  click_button 'Save'
-                end
-                it { expect(page).to have_content("Cluster updated") }
-                it_behaves_like "school group clusters index page", name: 'My Cluster', count: 0
+                it_behaves_like "school group clusters index page", name: 'My Updated Cluster', count: 0
               end
             end
 
-            context "Clicking 'Delete'" do
+            context "Deleting cluster" do
               before do
                 click_link "Delete"
               end
@@ -162,6 +147,89 @@ describe 'school group clusters', :school_group_clusters, type: :system do
                 expect(page).to have_content("Cluster deleted")
                 expect(page).to_not have_content("My Cluster")
               end
+            end
+          end
+        end
+
+        describe "Cluster schools management" do
+          it "displays unassigned schools in cluster" do
+            within "#cluster-unassigned" do
+              expect(page).to have_content("School 1")
+              expect(page).to have_content("School 2")
+              expect(page).to have_content("School 3")
+            end
+          end
+
+          context "when there is a cluster" do
+            before do
+              click_on "Create new cluster"
+              fill_in "Name", with: 'My Cluster'
+              click_button 'Save'
+            end
+
+            describe "Adding schools to a cluster" do
+              before do
+                within "#cluster-unassigned" do
+                  check "School 1"
+                  check "School 2"
+                end
+                select "My Cluster"
+                click_on "Move"
+              end
+              let(:cluster) { school_group.clusters.find_by(name: "My Cluster") }
+              it { expect(page).to have_content("2 schools assigned to My Cluster") }
+              it_behaves_like "school group clusters index page", name: 'My Cluster', count: 2
+
+              it "adds schools to cluster" do
+                within "#cluster-#{cluster.id}" do
+                  expect(page).to have_content("School 1")
+                  expect(page).to have_content("School 2")
+                end
+              end
+              it "school removed from unassigned" do
+                within "#cluster-unassigned" do
+                  expect(page).to_not have_content("School 1")
+                  expect(page).to_not have_content("School 2")
+                  expect(page).to have_content("School 3")
+                end
+              end
+
+              describe "Removing schools from a cluster" do
+                before do
+                  within "#cluster-#{cluster.id}" do
+                    check "School 1"
+                  end
+                  click_on "Unassign selected"
+                end
+                it { expect(page).to have_content "1 school unassigned from My Cluster" }
+                it_behaves_like "school group clusters index page", name: 'My Cluster', count: 1
+
+                it "removes school from cluster" do
+                  within "#cluster-#{cluster.id}" do
+                    expect(page).to_not have_content("School 1")
+                  end
+                end
+              end
+
+              describe "deleting a cluster with schools assigned" do
+                before do
+                  click_on "Delete"
+                end
+                it "schools go back to unassigned" do
+                  within "#cluster-unassigned" do
+                    expect(page).to have_content("School 1")
+                    expect(page).to have_content("School 2")
+                    expect(page).to have_content("School 3")
+                  end
+                end
+              end
+            end
+
+            context "When no cluster is selected" do
+              before do
+                click_on "Move"
+              end
+              it { expect(page).to have_content "Please select a cluster" }
             end
           end
         end

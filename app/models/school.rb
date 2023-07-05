@@ -187,6 +187,8 @@ class School < ApplicationRecord
   scope :with_config, -> { joins(:configuration) }
   scope :by_name,     -> { order(name: :asc) }
 
+  scope :not_in_cluster, -> { where(school_group_cluster_id: nil) }
+
   validates_presence_of :urn, :name, :address, :postcode, :website, :school_type
   validates_uniqueness_of :urn
   validates :floor_area, :number_of_pupils, :cooks_dinners_for_other_schools_count, numericality: { greater_than: 0, allow_blank: true }

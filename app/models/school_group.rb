@@ -83,7 +83,6 @@ class SchoolGroup < ApplicationRecord
   has_many :meter_attributes, inverse_of: :school_group, class_name: 'SchoolGroupMeterAttribute'
 
   has_many :clusters, class_name: 'SchoolGroupCluster', dependent: :destroy
-
   scope :by_name, -> { order(name: :asc) }
   scope :is_public, -> { where(public: true) }
   validates :name, presence: true

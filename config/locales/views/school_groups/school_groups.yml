@@ -17,29 +17,48 @@ en:
         group_chart_settings: chart settings
         update_all_schools_in_this_group: Update all schools in this group
     clusters:
-      buttons:
-        create_new: Create new cluster
+      edit:
+        title: Edit cluster
       group_type:
         general: School Group
         local_authority: Local Authority
         multi_academy_trust: Multi-Academy Trust
-      intro: A cluster is a set of schools that are grouped together within your %{group_type}. For example, you may want to group all your southern and northern schools, all your primaries, etc. Grouping schools into clusters will allow you to more easily compare related schools
-      labels:
+      index:
+        all_schools: All schools are in a cluster
+        cluster: "%{cluster} cluster"
+        create_new: Create new cluster
+        move: Move
+        move_selected: Move selected to cluster
         name: Name
         new: New
-        schools: Schools
+        no_cluster: Not in a cluster
+        no_clusters: No clusters
+        no_schools: This cluster has no schools
+        select_cluster: Select cluster
+        title: Clusters
+        unassigned_title: Schools not in a cluster
+      intro: A cluster is a set of schools that are grouped together within your %{group_type}. For example, you may want to group all your southern and northern schools, all your primaries, etc. Grouping schools into clusters will allow you to more easily compare related schools
+      labels:
+        cluster: Cluster
+        clusters: Clusters
+        name: Name
+        new: New
       messages:
+        assigned:
+          one: "%{count} school assigned to %{cluster}"
+          other: "%{count} schools assigned to %{cluster}"
         created: Cluster created
         deleted: Cluster deleted
+        select_cluster: Please select a cluster
+        unassigned:
+          one: "%{count} school unassigned from %{cluster}"
+          other: "%{count} schools unassigned from %{cluster}"
         updated: Cluster updated
-      no_clusters: No clusters yet
+      new:
+        title: Create cluster
       schools:
         one: 1 school
         other: "%{count} schools"
-      titles:
-        create: Create cluster
-        edit: Edit cluster
-        index: Clusters
     comparisons:
       category: Category
       how_does_it_compare:

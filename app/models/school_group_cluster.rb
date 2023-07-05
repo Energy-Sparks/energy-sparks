@@ -18,8 +18,7 @@
 #
 class SchoolGroupCluster < ApplicationRecord
   belongs_to :school_group
-
   has_many :schools
-
-  validates :name, presence: true
+  scope :by_name, -> { order(name: :asc) }
+  validates :name, presence: true, uniqueness: { scope: :school_group_id }
 end
