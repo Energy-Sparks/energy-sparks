@@ -283,6 +283,10 @@ describe 'school groups', :school_groups, type: :system do
               expect(page).to have_content('8,540')
             end
 
+            include_examples 'not showing the cluster column' do
+              let(:url) { school_group_path(school_group) }
+            end
+
             it 'allows a csv download of recent data metrics' do
               visit school_group_path(school_group)
 
@@ -800,6 +804,11 @@ describe 'school groups', :school_groups, type: :system do
         let(:public) { false }
         include_examples "a public school group dashboard"
       end
+
+      context "recent usage tab" do
+        let(:url) { school_group_path(school_group) }
+        include_examples 'showing the cluster column'
+      end
     end
 
     context 'when logged in as an admin' do
@@ -843,6 +852,11 @@ describe 'school groups', :school_groups, type: :system do
 
       context 'when school group is private' do
         let(:public) { false }
+      end
+
+      context "recent usage tab" do
+        let(:url) { school_group_path(school_group) }
+        include_examples 'showing the cluster column'
       end
     end
 
