@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'school group clusters', :school_group_clusters, type: :system do
   let(:public)                  { true }
-  let!(:school_group)           { create(:school_group, public: public) }
+  let!(:school_group)           { create(:school_group, public: public, group_type: :multi_academy_trust ) }
 
   let!(:school_1)               { create(:school, name: 'School 1', school_group: school_group) }
   let!(:school_2)               { create(:school, name: 'School 2', school_group: school_group) }
@@ -20,7 +20,7 @@ describe 'school group clusters', :school_group_clusters, type: :system do
     end
 
     it "shows intro text" do
-      expect(page).to have_content "A cluster is a set of schools that are grouped together"
+      expect(page).to have_content "A cluster is a set of schools that are grouped together within your Multi-Academy Trust"
     end
 
     it "shows school group clusters index page" do

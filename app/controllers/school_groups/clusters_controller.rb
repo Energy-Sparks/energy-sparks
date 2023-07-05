@@ -41,7 +41,7 @@ module SchoolGroups
     end
 
     def unassign
-      @cluster.school_ids -= cluster_params['school_ids']
+      @cluster.school_ids -= cluster_params['school_ids'].map!(&:to_i)
       redirect_to school_group_clusters_path(@school_group), notice: I18n.t('school_groups.clusters.messages.unassigned', cluster: @cluster.name, count: cluster_params[:school_ids].count)
     end
 
@@ -57,10 +57,8 @@ module SchoolGroups
     end
 
     def cluster_params
-      sanitized = params.fetch(:school_group_cluster, {}).permit(:name, school_ids: [])
+      params.fetch(:school_group_cluster, {}).permit(:name, school_ids: [])
         .with_defaults(school_ids: [])
-      sanitized['school_ids'].map!(&:to_i)
-      sanitized
     end
 
     def set_breadcrumbs
