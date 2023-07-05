@@ -32,7 +32,7 @@ module SchoolGroups
 
     def assign
       if @cluster
-        @cluster.school_ids += cluster_params[:school_ids].compact
+        @cluster.school_ids += cluster_params['school_ids']
         notice = I18n.t('school_groups.clusters.messages.assigned', cluster: @cluster.name, count: cluster_params[:school_ids].count)
       else
         notice = I18n.t('school_groups.clusters.messages.select_cluster')
@@ -41,7 +41,7 @@ module SchoolGroups
     end
 
     def unassign
-      @cluster.school_ids -= cluster_params[:school_ids]
+      @cluster.school_ids -= cluster_params['school_ids']
       redirect_to school_group_clusters_path(@school_group), notice: I18n.t('school_groups.clusters.messages.unassigned', cluster: @cluster.name, count: cluster_params[:school_ids].count)
     end
 
@@ -58,8 +58,8 @@ module SchoolGroups
 
     def cluster_params
       sanitized = params.fetch(:school_group_cluster, {}).permit(:name, school_ids: [])
-        .with_defaults(school_ids: []).to_hash.symbolize_keys
-      sanitized[:school_ids].map!(&:to_i)
+        .with_defaults(school_ids: [])
+      sanitized['school_ids'].map!(&:to_i)
       sanitized
     end
 
