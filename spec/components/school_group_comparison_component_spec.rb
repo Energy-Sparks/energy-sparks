@@ -45,14 +45,14 @@ RSpec.describe SchoolGroupComparisonComponent, type: :component do
   context "View cluster is not enabled" do
     let(:view_cluster) { false }
     it { expect(html).to_not have_content('Cluster') }
-    it { expect(html).to_not have_content('N/A') }
+    it { expect(html).to_not have_content('n/a') }
     it { expect(html).to_not have_content('My Area') }
   end
 
   context "View cluster is enabled" do
     let(:view_cluster) { true }
     it { expect(html).to have_content('Cluster') }
-    it { expect(html).to have_content('N/A') }
+    it { expect(html).to have_content('n/a') }
     it { expect(html).to have_content('My Area') }
   end
 end
