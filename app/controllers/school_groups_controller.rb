@@ -135,7 +135,7 @@ class SchoolGroupsController < ApplicationController
         format.csv do
           metric = params['metric'] || 'change'
           metric_label = I18n.t("school_groups.show.metric.#{metric}") + '-'
-          send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group, metric: metric).export,
+          send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group, metric: metric, include_cluster: can?(:update_settings, @school_group)).export,
           filename: csv_filename_for('recent_usage', metric_label: metric_label)
         end
       end

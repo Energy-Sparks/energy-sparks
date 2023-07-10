@@ -61,7 +61,7 @@
         </td>
         <% if can?(:update_settings, @school_group) %>
           <td>
-            <%= school.school_group_cluster.try(:name) || t('common.labels.not_applicable') %>
+            <%= school.school_group_cluster_name %>
           </td>
         <% end %>
         <% if school.data_enabled %>

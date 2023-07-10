@@ -1,9 +1,10 @@
 module SchoolGroups
   class RecentUsageCsvGenerator
-    def initialize(school_group:, metric: 'change')
+    def initialize(school_group:, metric: 'change', include_cluster: false)
       raise unless %w[change usage cost co2].include?(metric)
       @school_group = school_group
       @metric = metric + '_text'
+      @include_cluster = include_cluster
     end
 
     def export
@@ -13,6 +14,7 @@ module SchoolGroups
           recent_usage = school&.recent_usage
           row = []
           row << school.name
+          row << school.school_group_cluster_name if @include_cluster
           fuel_types.each { |fuel_type| row += columns_for(fuel_type, recent_usage) }
           csv << row
         end
@@ -36,6 +38,7 @@ module SchoolGroups
     def headers
       header_row = []
       header_row << I18n.t('common.school')
+      header_row << I18n.t('school_groups.clusters.labels.cluster') if @include_cluster
       fuel_types.each { |fuel_type| header_row += header_columns_for(fuel_type) }
       header_row
     end
