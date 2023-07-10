@@ -32,7 +32,7 @@
 <div class="other-actions">
   <%= link_to t('common.labels.edit'), edit_school_consent_document_path(@school, @consent_document), class: 'btn' %>
   <% if can?(:delete, @consent_document) %>
-    <%= link_to t('common.labels.delete'), school_consent_document_path(@school, @consent_document), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn btn-danger'  %>
+    <%= link_to t('common.labels.delete'), school_consent_document_path(@school, @consent_document), method: :delete, data: {confirm: t('common.confirm')}, class: 'btn btn-danger'  %>
   <% end %>
   <%= link_to t('consent_documents.show.view_bills'), school_consent_documents_path(@school), class: 'btn' %>
 </div>

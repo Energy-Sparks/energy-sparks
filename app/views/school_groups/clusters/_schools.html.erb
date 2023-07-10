@@ -1,0 +1,14 @@
+<% if schools.any? %>
+  <div class="form-group">
+    <% schools.each do |school| %>
+      <div class="form-check">
+        <%= label_tag do %>
+          <%= check_box_tag 'school_group_cluster[school_ids][]', school.id, false %>
+          <%= school.name %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="pl-4 pb-4"><%= message %></div>
+<% end %>

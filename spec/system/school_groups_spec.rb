@@ -779,7 +779,7 @@ describe 'school groups', :school_groups, type: :system do
         include_examples 'shows the sub navigation menu'
         it 'shows only the sub nav manage school links available to a group admin' do
           visit school_group_path(school_group)
-          expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(["Chart settings"])
+          expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(["Chart settings", "Manage clusters"])
         end
       end
 
@@ -824,7 +824,7 @@ describe 'school groups', :school_groups, type: :system do
         include_examples 'shows the sub navigation menu'
         it 'shows the sub nav manage school links available to an admin' do
           visit school_group_path(school_group)
-          expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(['Chart settings', 'Edit group', 'Set message', 'Manage users', 'Manage partners', 'Group admin'])
+          expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(['Chart settings', 'Manage clusters', 'Edit group', 'Set message', 'Manage users', 'Manage partners', 'Group admin'])
         end
       end
 

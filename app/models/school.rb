@@ -145,6 +145,7 @@ class School < ApplicationRecord
 
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
+  belongs_to :school_group_cluster, optional: true
 
   belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, optional: true
@@ -185,6 +186,8 @@ class School < ApplicationRecord
 
   scope :with_config, -> { joins(:configuration) }
   scope :by_name,     -> { order(name: :asc) }
+
+  scope :not_in_cluster, -> { where(school_group_cluster_id: nil) }
 
   validates_presence_of :urn, :name, :address, :postcode, :website, :school_type
   validates_uniqueness_of :urn
