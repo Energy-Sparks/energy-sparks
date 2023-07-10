@@ -285,7 +285,7 @@ RSpec.shared_examples "showing the cluster column" do
   it { expect(page).to have_content('Cluster') }
 
   context "school does not have a cluster" do
-    it { expect(page).to have_content('n/a') }
+    it { expect(page).to have_content('N/A') }
   end
 
   context "school is in a cluster" do
