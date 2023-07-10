@@ -85,6 +85,18 @@ RSpec.shared_examples "visiting chart updates redirects to group page" do
   end
 end
 
+RSpec.shared_examples "redirects to school group page" do
+  it 'redirects to school group page' do
+    expect(page).to have_current_path "/school_groups/#{school_group.slug}"
+  end
+end
+
+RSpec.shared_examples "redirects to login page" do
+  it 'redirects to login page' do
+    expect(current_path).to eq("/users/sign_in")
+  end
+end
+
 RSpec.shared_examples 'allows access to chart updates page and editing of default chart preferences' do
   it 'shows a form to select default chart units' do
     visit school_group_chart_updates_path(school_group)
@@ -252,5 +264,32 @@ RSpec.shared_examples "shows the we are working with message" do
     expect(page).to have_content('We are working with')
     visit current_scores_school_group_path(school_group)
     expect(page).to have_content('We are working with')
+  end
+end
+
+RSpec.shared_examples "not showing the cluster column" do
+  before do
+    visit url if defined?(url)
+  end
+  it "doesn't show the cluster column" do
+    expect(page).to_not have_content('Cluster')
+    expect(page).to_not have_content('N/A')
+  end
+end
+
+RSpec.shared_examples "showing the cluster column" do
+  let!(:cluster) {}
+  before do
+    visit url if defined?(url)
+  end
+  it { expect(page).to have_content('Cluster') }
+
+  context "school does not have a cluster" do
+    it { expect(page).to have_content('N/A') }
+  end
+
+  context "school is in a cluster" do
+    let!(:cluster) { create(:school_group_cluster, name: "My Cluster", schools: [school]) }
+    it { expect(page).to have_content('My Cluster') }
   end
 end

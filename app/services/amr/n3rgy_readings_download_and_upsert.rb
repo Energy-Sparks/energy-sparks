@@ -52,7 +52,7 @@ module Amr
       if meter.amr_data_feed_readings.any?
         first = meter.amr_data_feed_readings.minimum(:reading_date)
         last = meter.amr_data_feed_readings.maximum(:reading_date)
-        (DateTime.parse(first + '0000')..DateTime.parse(last + '2330'))
+        (DateTime.parse(first + 'T00:00')..DateTime.parse(last + 'T23:30'))
       end
     end
   end

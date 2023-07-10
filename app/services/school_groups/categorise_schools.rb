@@ -27,10 +27,12 @@ module SchoolGroups
         schools.id AS school_id,
         schools.slug AS school_slug,
         schools.name AS school_name,
+        school_group_clusters.name AS cluster_name,
         advice_page_school_benchmarks.benchmarked_as
         FROM advice_page_school_benchmarks
         INNER JOIN advice_pages ON advice_pages.id = advice_page_school_benchmarks.advice_page_id
         INNER JOIN schools ON schools.id = advice_page_school_benchmarks.school_id
+        LEFT JOIN school_group_clusters ON school_group_clusters.id = schools.school_group_cluster_id
         WHERE schools.school_group_id = #{@school_group.id}
         AND schools.active = true
         AND schools.visible = true
