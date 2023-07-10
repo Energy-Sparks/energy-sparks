@@ -8,6 +8,9 @@
   <thead>
     <tr>
       <th><%= t('common.school') %></th>
+      <% if can?(:update_settings, @school_group) %>
+        <th class="text-right"><%= t('school_groups.clusters.labels.cluster') %></th>
+      <% end %>
       <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.kwh_saving') %></th>
       <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.cost_saving') %></th>
       <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.co2_reduction') %></th>
@@ -20,6 +23,11 @@
         <td>
           <%= link_to saving.school.name, school_path(saving.school) %>
         </td>
+        <% if can?(:update_settings, @school_group) %>
+          <td class="text-right">
+            <%= saving.school.school_group_cluster.try(:name) || t('common.labels.not_applicable') %>
+          </td>
+        <% end %>
         <td class="text-right" data-order="<%= saving.one_year_saving_kwh %>">
           <%= format_unit(saving.one_year_saving_kwh, :kwh) %> kWh
         </td>
