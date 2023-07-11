@@ -293,3 +293,21 @@ RSpec.shared_examples "showing the cluster column" do
     it { expect(page).to have_content('My Cluster') }
   end
 end
+
+RSpec.shared_examples "not showing the cluster column in the download" do |id:nil|
+  context "Clicking the Download as CSV link" do
+    before do
+      all(:link, 'Download as CSV').last.click
+    end
+    it { expect(page.source).to_not have_content ",Cluster," }
+  end
+end
+
+RSpec.shared_examples "showing the cluster column in the download" do |id: nil|
+  context "Clicking the Download as CSV link" do
+    before do
+      all(:link, 'Download as CSV').last.click
+    end
+    it { expect(page.source).to have_content ",Cluster," }
+  end
+end

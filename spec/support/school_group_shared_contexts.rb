@@ -264,7 +264,6 @@ RSpec.shared_context "school group comparisons" do
 end
 
 RSpec.shared_context "school group current scores" do
-  let(:cluster) { create(:school_group_cluster) }
   before(:each) do
     allow_any_instance_of(SchoolGroup).to receive(:scored_schools) do
       OpenStruct.new(
