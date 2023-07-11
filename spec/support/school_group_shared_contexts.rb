@@ -44,6 +44,7 @@ RSpec.shared_context "school group priority actions" do
   let(:saving) do
     OpenStruct.new(
       school: school_1,
+      one_year_saving_kwh: 0,
       average_one_year_saving_gbp: 1000,
       one_year_saving_co2: 1100
     )
