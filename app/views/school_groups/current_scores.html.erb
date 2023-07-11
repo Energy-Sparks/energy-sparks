@@ -9,6 +9,9 @@
     <tr>
       <th><%= t('scoreboard.position') %></th>
       <th><%= t('common.school') %></th>
+      <% if can?(:update_settings, @school_group) %>
+        <th><%= t('school_groups.clusters.labels.cluster') %></th>
+      <% end %>
       <th><%= t('scoreboard.score') %></th>
     </tr>
   </thead>
@@ -20,6 +23,9 @@
             <span class="badge badge-primary"><%= '=' if schools.size > 1 %><%= position %></span>
           </td>
           <td><%= link_to school.name, school_path(school) %></td>
+          <% if can?(:update_settings, @school_group) %>
+            <td><%= school.school_group_cluster.try(:name) || t('common.labels.not_applicable') %></td>
+          <% end %>
           <td>
             <%= link_to school.sum_points, school_timeline_path(school, academic_year: @academic_year), class: 'badge badge-success' %>
             &nbsp;
@@ -34,6 +40,9 @@
       <tr>
         <td><span class="badge badge-secondary">-</span></td>
         <td><%= link_to school.name, school_path(school) %></td>
+        <% if can?(:update_settings, @school_group) %>
+          <td><%= school.school_group_cluster.try(:name) || t('common.labels.not_applicable') %></td>
+        <% end %>
         <td><span class="badge badge-secondary">0</span></td>
       </tr>
     <% end %>

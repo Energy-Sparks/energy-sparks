@@ -6,10 +6,11 @@ class SchoolGroupComparisonComponent < ViewComponent::Base
 
   CATEGORIES = [:exemplar_school, :benchmark_school, :other_school].freeze
 
-  def initialize(id:, comparison:, advice_page_key:)
+  def initialize(id:, comparison:, advice_page_key:, view_cluster: false)
     @id = id
     @comparison = comparison
     @advice_page_key = advice_page_key
+    @view_cluster = view_cluster
   end
 
   def modal_title_for(category)
@@ -30,5 +31,9 @@ class SchoolGroupComparisonComponent < ViewComponent::Base
 
   def advice_page_path_for(school_slug)
     send("school_advice_#{@advice_page_key}_path", school_id: school_slug)
+  end
+
+  def view_cluster?
+    @view_cluster
   end
 end
