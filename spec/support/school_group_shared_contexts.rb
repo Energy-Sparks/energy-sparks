@@ -1,3 +1,27 @@
+RSpec.shared_context "school group recent usage" do
+  before do
+    allow_any_instance_of(SchoolGroup).to receive(:fuel_types) { [:electricity, :gas, :storage_heaters] }
+    changes = OpenStruct.new(
+      change: "-16%",
+      usage: '910',
+      cost: '£137',
+      co2: '8,540',
+      change_text: "-16%",
+      usage_text: '910',
+      cost_text: '£137',
+      co2_text: '8,540',
+      has_data: true
+    )
+    allow_any_instance_of(School).to receive(:recent_usage) do
+      OpenStruct.new(
+        electricity: OpenStruct.new(week: changes, year: changes),
+        gas: OpenStruct.new(week: changes, year: changes),
+        storage_heaters: OpenStruct.new(week: changes, year: changes)
+      )
+    end
+  end
+end
+
 RSpec.shared_context "school group priority actions" do
   let!(:alert_type) { create(:alert_type, fuel_type: :gas, frequency: :weekly) }
   let!(:alert_type_rating) do

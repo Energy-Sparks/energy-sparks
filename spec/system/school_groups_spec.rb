@@ -159,25 +159,9 @@ describe 'school groups', :school_groups, type: :system do
         end
 
         describe 'showing recent usage tab' do
+          include_context "school group recent usage"
+
           before(:each) do
-            changes = OpenStruct.new(
-              change: "-16%",
-              usage: '910',
-              cost: '£137',
-              co2: '8,540',
-              change_text: "-16%",
-              usage_text: '910',
-              cost_text: '£137',
-              co2_text: '8,540',
-              has_data: true
-            )
-            allow_any_instance_of(School).to receive(:recent_usage) do
-              OpenStruct.new(
-                electricity: OpenStruct.new(week: changes, year: changes),
-                gas: OpenStruct.new(week: changes, year: changes),
-                storage_heaters: OpenStruct.new(week: changes, year: changes)
-              )
-            end
             visit school_group_path(school_group)
           end
 
