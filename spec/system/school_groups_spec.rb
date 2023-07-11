@@ -423,19 +423,10 @@ describe 'school groups', :school_groups, type: :system do
         end
 
         describe 'showing current_scores' do
+
+          include_context "school group current scores"
           before(:each) do
             visit current_scores_school_group_path(school_group)
-            allow_any_instance_of(SchoolGroup).to receive(:scored_schools) do
-              OpenStruct.new(
-                with_points: OpenStruct.new(
-                               schools_with_positions: {
-                                1 => [OpenStruct.new(name: 'School 1', sum_points: 20), OpenStruct.new(name: 'School 2', sum_points: 20)],
-                                2 => [OpenStruct.new(name: 'School 3', sum_points: 18)]
-                               }
-                             ),
-                without_points: [OpenStruct.new(name: 'School 4'), OpenStruct.new(name: 'School 5')]
-              )
-            end
           end
 
           include_examples "school dashboard navigation" do
