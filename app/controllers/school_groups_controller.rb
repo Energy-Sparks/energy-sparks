@@ -69,10 +69,11 @@ class SchoolGroupsController < ApplicationController
     if params[:alert_type_rating_ids]
       SchoolGroups::SchoolsPriorityActionCsvGenerator.new(
         school_group: @school_group,
-        alert_type_rating_ids: params[:alert_type_rating_ids].map(&:to_i)
+        alert_type_rating_ids: params[:alert_type_rating_ids].map(&:to_i),
+        include_cluster: include_cluster
       ).export
     else
-      SchoolGroups::PriorityActionsCsvGenerator.new(school_group: @school_group, include_cluster: include_cluster).export
+      SchoolGroups::PriorityActionsCsvGenerator.new(school_group: @school_group).export
     end
   end
 

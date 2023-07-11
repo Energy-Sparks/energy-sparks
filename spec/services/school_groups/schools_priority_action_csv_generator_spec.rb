@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe SchoolGroups::SchoolsPriorityActionCsvGenerator do
   let(:school_group)           { create(:school_group) }
-  let(:cluster)                { create(:school_group_cluster, school_group: school_group, name: "My Cluster") }
   let!(:school_1)              { create(:school, school_group: school_group, number_of_pupils: 10, data_enabled: true, visible: true, active: true) }
   let!(:school_2)              { create(:school, school_group: school_group, number_of_pupils: 20, data_enabled: true, visible: true, active: true) }
 
@@ -26,7 +25,7 @@ RSpec.describe SchoolGroups::SchoolsPriorityActionCsvGenerator do
           it { expect(csv.lines[1]).to eq("Gas,Spending too much money on heating,#{school_group.schools.first.name},N/A,0 kWh,£1000,1100 kg CO2\n") }
         end
         context "when school has a cluster" do
-          before { school_1.school_group_cluster = cluster }
+          let!(:cluster) { create(:school_group_cluster, school_group: school_group, name: "My Cluster", schools: [school_1]) }
           it { expect(csv.lines[1]).to eq("Gas,Spending too much money on heating,#{school_group.schools.first.name},My Cluster,0 kWh,£1000,1100 kg CO2\n") }
         end
       end
