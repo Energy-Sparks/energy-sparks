@@ -76,6 +76,8 @@ en:
       view_group: View group
       view_map: View map
       view_scoreboard: Scoreboard
+    labels:
+      floor_area: Floor area (m2)
     priority_actions:
       intro_html: |-
         <p>We carry out daily analysis for all schools to help identify the areas where there are the biggest opportunities to reduce costs and carbon emissions.</p>

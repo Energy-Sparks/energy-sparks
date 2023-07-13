@@ -22,6 +22,8 @@ module SchoolGroups
             ]
             row << saving.school.school_group_cluster_name if @include_cluster
             row += [
+              saving.school.number_of_pupils,
+              saving.school.floor_area,
               saving.one_year_saving_kwh.to_s + ' kWh',
               '£' + saving.average_one_year_saving_gbp.to_s,
               saving.one_year_saving_co2.to_s + ' kg CO2'
@@ -50,6 +52,8 @@ module SchoolGroups
       ]
       columns << I18n.t('school_groups.clusters.labels.cluster') if @include_cluster
       columns += [
+        School.human_attribute_name('number_of_pupils'),
+        I18n.t('school_groups.labels.floor_area'),
         I18n.t('advice_pages.index.priorities.table.columns.kwh_saving'),
         I18n.t('advice_pages.index.priorities.table.columns.cost_saving'),
         I18n.t('advice_pages.index.priorities.table.columns.co2_reduction')
