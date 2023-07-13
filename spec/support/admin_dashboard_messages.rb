@@ -71,8 +71,19 @@ RSpec.shared_examples "admin dashboard messages" do | permitted: true |
           end
         end
       end
+      context "Clicking on 'Delete message'" do
+        before do
+          click_on 'Delete message'
+        end
+        it { expect(page).to have_content("No message is currently set to display on dashboards for this #{messageable.model_name.human.downcase}") }
+        context "visiting a school dashboard" do
+          before { visit school_path(messageable_school, switch: true) }
+          it { expect(page).to_not have_content(message) }
+        end
+      end
     end
   end
+
   context "when not permitted", unless: permitted do
     it "panel is not shown" do
       expect(page).to_not have_content('Set message')
