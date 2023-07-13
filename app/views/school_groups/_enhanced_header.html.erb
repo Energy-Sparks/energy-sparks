@@ -27,7 +27,9 @@
 <% if @show_school_group_message && @school_group.dashboard_message&.message&.present? %>
   <div class='row'>
     <div class="col-md-12">
-      <%= render 'management/schools/dashboard_message', messageable: @school_group %>
+      <div class="container">
+        <%= render 'management/schools/dashboard_message', messageable: @school_group %>
+      </div>
     </div>
   </div>
 <% end %>
