@@ -53,7 +53,7 @@ module SchoolGroups
       columns << I18n.t('school_groups.clusters.labels.cluster') if @include_cluster
       columns += [
         School.human_attribute_name('number_of_pupils'),
-        School.human_attribute_name('floor_area'),
+        I18n.t('school_groups.labels.floor_area'),
         I18n.t('advice_pages.index.priorities.table.columns.kwh_saving'),
         I18n.t('advice_pages.index.priorities.table.columns.cost_saving'),
         I18n.t('advice_pages.index.priorities.table.columns.co2_reduction')

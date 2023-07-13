@@ -30,7 +30,7 @@ RSpec.describe SchoolGroups::RecentUsageCsvGenerator do
       let(:params) { params_full.except(:metric) }
       it "returns change data as a csv for all schools in a school group" do
         expect(csv.lines.count).to eq(3)
-        expect(csv.lines[0]).to eq("School,Number of pupils,Floor area in square metres,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n")
+        expect(csv.lines[0]).to eq("School,Number of pupils,Floor area (m2),Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n")
         expect(csv.lines[1]).to eq("#{school_group.schools.first.name},10,,-16%,-16%,-16%,-16%,-16%,-16%\n")
         expect(csv.lines[2]).to eq("#{school_group.schools.second.name},20,300.0,-16%,-16%,-16%,-16%,-16%,-16%\n")
       end
@@ -41,7 +41,7 @@ RSpec.describe SchoolGroups::RecentUsageCsvGenerator do
       let(:metric) { 'change' }
       it "returns change data as a csv for all schools in a school group" do
         expect(csv.lines.count).to eq(3)
-        expect(csv.lines[0]).to eq("School,Number of pupils,Floor area in square metres,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n")
+        expect(csv.lines[0]).to eq("School,Number of pupils,Floor area (m2),Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n")
         expect(csv.lines[1]).to eq("#{school_group.schools.first.name},10,,-16%,-16%,-16%,-16%,-16%,-16%\n")
         expect(csv.lines[2]).to eq("#{school_group.schools.second.name},20,300.0,-16%,-16%,-16%,-16%,-16%,-16%\n")
       end
@@ -52,7 +52,7 @@ RSpec.describe SchoolGroups::RecentUsageCsvGenerator do
       let(:metric) { 'usage' }
       it 'returns usage data as a csv for all schools in a school group' do
         expect(csv.lines.count).to eq(3)
-        expect(csv.lines[0]).to eq("School,Number of pupils,Floor area in square metres,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n")
+        expect(csv.lines[0]).to eq("School,Number of pupils,Floor area (m2),Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n")
         expect(csv.lines[1]).to eq("#{school_group.schools.first.name},10,,910,910,910,910,910,910\n")
         expect(csv.lines[2]).to eq("#{school_group.schools.second.name},20,300.0,910,910,910,910,910,910\n")
       end
@@ -63,7 +63,7 @@ RSpec.describe SchoolGroups::RecentUsageCsvGenerator do
       let(:metric) { 'cost' }
       it 'returns cost data as a csv for all schools in a school group' do
         expect(csv.lines.count).to eq(3)
-        expect(csv.lines[0]).to eq("School,Number of pupils,Floor area in square metres,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n")
+        expect(csv.lines[0]).to eq("School,Number of pupils,Floor area (m2),Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n")
         expect(csv.lines[1]).to eq("#{school_group.schools.first.name},10,,£137,£137,£137,£137,£137,£137\n")
         expect(csv.lines[2]).to eq("#{school_group.schools.second.name},20,300.0,£137,£137,£137,£137,£137,£137\n")
       end
@@ -73,7 +73,7 @@ RSpec.describe SchoolGroups::RecentUsageCsvGenerator do
     context "with metric set to co2" do
       let(:metric) { 'co2' }
       it 'returns co2 data as a csv for all schools in a school group' do
-        expect(csv.lines[0]).to eq("School,Number of pupils,Floor area in square metres,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n")
+        expect(csv.lines[0]).to eq("School,Number of pupils,Floor area (m2),Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n")
         expect(csv.lines[1]).to eq("#{school_group.schools.first.name},10,,\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\"\n")
         expect(csv.lines[2]).to eq("#{school_group.schools.second.name},20,300.0,\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\"\n")
       end

@@ -280,7 +280,7 @@ describe 'school groups', :school_groups, type: :system do
               expect(header).to match /^attachment/
               filename = "#{school_group.name}-recent-usage-change-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
               expect(header).to match filename
-              expect(page.source).to have_content "School,Number of pupils,Floor area in square metres,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},10,200.0,-16%,-16%,-16%,-16%,-16%,-16%\n#{school_group.schools.second.name},20,300.0,-16%,-16%,-16%,-16%,-16%,-16%\n"
+              expect(page.source).to have_content "School,Number of pupils,Floor area (m2),Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},10,200.0,-16%,-16%,-16%,-16%,-16%,-16%\n#{school_group.schools.second.name},20,300.0,-16%,-16%,-16%,-16%,-16%,-16%\n"
 
               visit school_group_path(school_group, metric: 'usage')
               click_on 'Download as CSV'
@@ -288,7 +288,7 @@ describe 'school groups', :school_groups, type: :system do
               expect(header).to match /^attachment/
               filename = "#{school_group.name}-recent-usage-use-kwh-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
               expect(header).to match filename
-              expect(page.source).to have_content "School,Number of pupils,Floor area in square metres,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},10,200.0,910,910,910,910,910,910\n#{school_group.schools.second.name},20,300.0,910,910,910,910,910,910\n"
+              expect(page.source).to have_content "School,Number of pupils,Floor area (m2),Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},10,200.0,910,910,910,910,910,910\n#{school_group.schools.second.name},20,300.0,910,910,910,910,910,910\n"
 
               visit school_group_path(school_group, metric: 'cost')
               click_on 'Download as CSV'
@@ -296,7 +296,7 @@ describe 'school groups', :school_groups, type: :system do
               expect(header).to match /^attachment/
               filename = "#{school_group.name}-recent-usage-cost-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
               expect(header).to match filename
-              expect(page.source).to have_content "School,Number of pupils,Floor area in square metres,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},10,200.0,£137,£137,£137,£137,£137,£137\n#{school_group.schools.second.name},20,300.0,£137,£137,£137,£137,£137,£137\n"
+              expect(page.source).to have_content "School,Number of pupils,Floor area (m2),Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},10,200.0,£137,£137,£137,£137,£137,£137\n#{school_group.schools.second.name},20,300.0,£137,£137,£137,£137,£137,£137\n"
 
               visit school_group_path(school_group, metric: 'co2')
               click_on 'Download as CSV'
@@ -304,7 +304,7 @@ describe 'school groups', :school_groups, type: :system do
               expect(header).to match /^attachment/
               filename = "#{school_group.name}-recent-usage-co2-kg-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
               expect(header).to match filename
-              expect(page.source).to have_content "School,Number of pupils,Floor area in square metres,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},10,200.0,\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\"\n#{school_group.schools.second.name},20,300.0,\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\"\n"
+              expect(page.source).to have_content "School,Number of pupils,Floor area (m2),Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},10,200.0,\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\"\n#{school_group.schools.second.name},20,300.0,\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\"\n"
             end
           end
         end
@@ -397,7 +397,7 @@ describe 'school groups', :school_groups, type: :system do
             expect(header).to match /^attachment/
             filename = "#{school_group.name}-#{I18n.t('school_groups.titles.priority_actions')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
             expect(header).to match filename
-            expect(page.source).to eq "Fuel,Description,School,Number of pupils,Floor area in square metres,Energy saving,Cost saving,CO2 reduction\nGas,Spending too much money on heating,#{school_group.schools.first.name},10,200.0,0 kWh,£1000,1100 kg CO2\n"
+            expect(page.source).to eq "Fuel,Description,School,Number of pupils,Floor area (m2),Energy saving,Cost saving,CO2 reduction\nGas,Spending too much money on heating,#{school_group.schools.first.name},10,200.0,0 kWh,£1000,1100 kg CO2\n"
           end
 
           it 'displays list of actions' do

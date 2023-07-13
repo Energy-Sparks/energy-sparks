@@ -42,7 +42,7 @@ module SchoolGroups
       header_row << I18n.t('common.school')
       header_row << I18n.t('school_groups.clusters.labels.cluster') if @include_cluster
       header_row << School.human_attribute_name('number_of_pupils')
-      header_row << School.human_attribute_name('floor_area')
+      header_row << I18n.t('school_groups.labels.floor_area')
       fuel_types.each { |fuel_type| header_row += header_columns_for(fuel_type) }
       header_row
     end
