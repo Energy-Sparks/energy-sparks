@@ -25,7 +25,7 @@
         </td>
         <% if can?(:update_settings, @school_group) %>
           <td class="text-right">
-            <%= saving.school.school_group_cluster.try(:name) || t('common.labels.not_applicable') %>
+            <%= saving.school.school_group_cluster_name %>
           </td>
         <% end %>
         <td class="text-right" data-order="<%= saving.one_year_saving_kwh %>">
