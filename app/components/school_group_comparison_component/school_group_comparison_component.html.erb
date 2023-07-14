@@ -29,6 +29,9 @@
                 <% if count.positive? %>
                   <%= render(FootnoteModalComponent.new(title: tag.small(modal_title_for(category)), modal_id: modal_id_for(category))) do |component| %>
                     <% component.with_body_content do %>
+                      <div class="text-left">
+                        <%= t('school_groups.comparisons.modal_subtitle_html', category_id: category, category: t("advice_pages.benchmarks.#{category}")) %>
+                      </div>
                       <% if csv_download_link %>
                         <div class='text-right pt-3'>
                           <%= csv_download_link %>

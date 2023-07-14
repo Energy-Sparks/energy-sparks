@@ -16,7 +16,12 @@
       <% if index != 0 %><hr><% end %>
       <div class="d-flex justify-content-between align-items-top">
         <div>
-          <h2 class="scrollable-title scrollable" id="<%= fuel_type %>-comparisons"><%= t("advice_pages.fuel_type.#{fuel_type}").capitalize %></h2>
+          <h2 class="scrollable-title scrollable" id="<%= fuel_type %>-comparisons">
+            <span class="<%= fuel_type_class(fuel_type) %>">
+              <%= fa_icon( fuel_type_icon(fuel_type) ) %>
+            </span>
+            <%= t("advice_pages.fuel_type.#{fuel_type}").capitalize %>
+          </h2>
         </div>
         <div>
           <%= link_to "#" do %>
