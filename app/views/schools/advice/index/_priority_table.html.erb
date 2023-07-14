@@ -1,6 +1,10 @@
 <table class="table table-borderless table-sorted advice-table advice-priority-table">
   <thead>
     <tr>
+      <th colspan="2"><th>
+      <th colspan="3"><%= t('advice_pages.index.priorities.table.columns.savings') %></th>
+    </tr>
+    <tr>
       <th><%= t('advice_pages.index.priorities.table.columns.fuel_type') %></th>
       <th data-orderable="false"></th>
       <th><%= t('advice_pages.index.priorities.table.columns.kwh_saving') %></th>
@@ -27,7 +31,7 @@
         </td>
         <td data-order="<%= priority.template_variables[:one_year_saving_kwh].gsub(/(,|kWh)/, '').to_i %>">
           <h4>
-            <%= priority.template_variables[:one_year_saving_kwh] %>
+            <%= priority.template_variables[:one_year_saving_kwh].gsub(/(,|kWh)/, '') %>
           </h4>
         </td>
         <td>
@@ -37,7 +41,7 @@
         </td>
         <td data-order="<%= priority.template_variables[:one_year_saving_co2].gsub(/(,|kg CO2)/, '').to_i %>">
           <h4>
-            <%= priority.template_variables[:one_year_saving_co2] %>
+            <%= priority.template_variables[:one_year_saving_co2].gsub(/(,|kg CO2)/, '') %>
           </h4>
         </td>
       </tr>

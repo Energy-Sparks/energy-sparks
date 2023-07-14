@@ -35,13 +35,13 @@
           </td>
         <% end %>
         <td class="text-right" data-order="<%= saving.one_year_saving_kwh %>">
-          <%= format_unit(saving.one_year_saving_kwh, :kwh) %> kWh
+          <%= format_unit(saving.one_year_saving_kwh, :kwh) %>
         </td>
         <td class="text-right" data-order="<%= saving.average_one_year_saving_gbp %>">
           <%= format_unit(saving.average_one_year_saving_gbp, :£) %>
         </td>
         <td class="text-right" data-order="<%= saving.one_year_saving_co2 %>">
-          <%= format_unit(saving.one_year_saving_co2, :co2) %> kg CO2
+          <%= format_unit(saving.one_year_saving_co2, :co2) %>
         </td>
         <td class="text-right">
           <% if alert_type_rating.alert_type.advice_page.present? %>
