@@ -75,6 +75,9 @@ en:
         <p>These schools are benchmarked as <span class="txt-%{category_id}">%{category}</span>.</p>
       view_all_school_comparison_benchmarks: view all school comparison benchmarks
       view_detailed_comparison: View detailed comparison
+    current_scores:
+      introduction: Schools score points by recording their activities and energy saving actions. These are the scores for the current academic year.
+      regional_scoreboard_html: View how the schools rank against others in <a href="%{scoreboard}">their regional scoreboard</a>.
     download_as_csv: Download as CSV
     header:
       compare_schools: Compare schools
