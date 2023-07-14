@@ -66,7 +66,8 @@ en:
         gas_out_of_hours: How does the out of school hours gas use of your schools compare to other schools on Energy Sparks, with a similar floor area?
         heating_control: How does the heating control analysis of your schools compare to other schools on Energy Sparks, with a similar floor area?
         thermostatic_control: How does the thermostatic control analysis of your schools compare to other schools on Energy Sparks, with a similar floor area?
-      view_all_school_comparison_benchmarks: View all school comparison benchmarks
+      introduction_html: View a comparison of %{fuel_types} usage across a number of key benchmarks. Or <a href="%{link}">explore all school comparison benchmarks for this group</a>.
+      view_all_school_comparison_benchmarks: view all school comparison benchmarks
       view_detailed_comparison: View detailed comparison
     download_as_csv: Download as CSV
     header:
@@ -101,6 +102,10 @@ en:
         cost: Cost (£)
         usage: Use (kWh)
       not_visible_schools: Not visible schools
+      recent_usage_intro:
+        general: A summary of the recent energy usage across schools in this group.
+        local_authority: A summary of the recent energy usage across schools in this local authority.
+        multi_academy_trust: A summary of the recent energy usage across schools in this multi-academy trust.
       we_are_working_with:
         general:
           in_partnership_with_html:

@@ -172,6 +172,10 @@ describe 'school groups', :school_groups, type: :system do
           end
 
           describe 'changes in metrics params' do
+            it 'shows intro text' do
+              expect(page).to have_content('A summary of the recent energy usage across schools in this group.')
+            end
+
             it 'shows expected table content for change when there are no metrics params' do
               visit school_group_path(school_group, {})
               expect(page).to have_content('Electricity')
@@ -318,6 +322,14 @@ describe 'school groups', :school_groups, type: :system do
           include_examples "school dashboard navigation" do
             let(:expected_path) { "/school_groups/#{school_group.slug}/comparisons" }
             let(:breadcrumb)    { 'Comparisons' }
+          end
+
+          it 'displays introduction and links' do
+            expect(page).to have_link("explore all school comparison benchmarks for this group")
+            expect(page).to have_css('#electricity-comparisons')
+            expect(page).to have_css('#gas-comparisons')
+            expect(page).to have_link('electricity', href: '#electricity-comparisons')
+            expect(page).to have_link('gas', href: '#gas-comparisons')
           end
 
           it 'shows expected content' do
