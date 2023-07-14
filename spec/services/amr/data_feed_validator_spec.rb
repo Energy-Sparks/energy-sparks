@@ -30,9 +30,17 @@ describe Amr::DataFeedValidator do
     ]
   end
 
-  it 'ignores filter if no limit set' do
+  it 'filters rows' do
     results = Amr::DataFeedValidator.new(orsis_config, @readings).perform
 
+    expect(results.size).to eq(3)
+    expect(results).to eq(@readings[0..2])
+  end
+
+  it 'filters rows and handles empty lines' do
+    #add a row that doesn't have all of the expected columns
+    readings = @readings << ["Report generated", "2023-07-01", "by John"]
+    results = Amr::DataFeedValidator.new(orsis_config, readings).perform
     expect(results.size).to eq(3)
     expect(results).to eq(@readings[0..2])
   end
