@@ -82,7 +82,7 @@ en:
       compare_schools: Compare schools
       scoreboard: Scoreboard
       view_all_schools: View all schools
-      view_group: View group
+      view_group: View dashboard
       view_map: View map
     labels:
       floor_area: Floor area (m2)
