@@ -1,3 +1,9 @@
+<div class="text-left">
+  <% if alert_type_rating.priority_action_modal_text? %>
+    <%= alert_type_rating.priority_action_modal_text.html_safe %>
+  <% end %>
+</div>
+
 <p><%= t('school_groups.priority_actions.modal_intro') %></p>
 
 <div class='text-right pt-3'>
