@@ -211,7 +211,7 @@ module Amr
 
       it 'should not create records for empty rows (comma, comma)' do
         expect(write_file_and_parse(sheffield_empty_readings, sheffield_config)).to eq 0
-        expect(AmrDataFeedImportLog.first.error_messages).to eq AmrReadingData::ERROR_UNABLE_TO_PARSE_FILE
+        expect(AmrDataFeedImportLog.first.error_messages).to eq AmrReadingData::ERROR_NO_VALID_READINGS
       end
 
       it 'should not create records for empty rows (comma, comma) but still process file' do
@@ -243,7 +243,7 @@ module Amr
         FileUtils.mkdir_p frome_config.local_bucket_path
         expect(write_file_and_parse(example_sheffield_gas, frome_config)).to be 0
 
-        expect(AmrDataFeedImportLog.first.error_messages).to eq AmrReadingData::ERROR_UNABLE_TO_PARSE_FILE
+        expect(AmrDataFeedImportLog.first.error_messages).to eq AmrReadingData::ERROR_NO_VALID_READINGS
       end
     end
 
