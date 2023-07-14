@@ -606,7 +606,7 @@ class School < ApplicationRecord
   end
 
   def school_group_cluster_name
-    school_group_cluster.try(:name) || I18n.t('common.labels.not_applicable')
+    school_group_cluster.try(:name) || I18n.t('common.labels.not_set')
   end
 
   private

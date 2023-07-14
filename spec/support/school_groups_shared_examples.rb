@@ -273,7 +273,7 @@ RSpec.shared_examples "not showing the cluster column" do
   end
   it "doesn't show the cluster column" do
     expect(page).to_not have_content('Cluster')
-    expect(page).to_not have_content('N/A')
+    expect(page).to_not have_content('Not set')
   end
 end
 
@@ -285,7 +285,7 @@ RSpec.shared_examples "showing the cluster column" do
   it { expect(page).to have_content('Cluster') }
 
   context "school does not have a cluster" do
-    it { expect(page).to have_content('N/A') }
+    it { expect(page).to have_content('Not set') }
   end
 
   context "school is in a cluster" do

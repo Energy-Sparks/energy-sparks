@@ -52,7 +52,7 @@
                             <tr>
                               <td class='text-left'><%= link_to school['school_name'], school_path(id: school['school_slug']) %></td>
                               <% if include_cluster? %>
-                                <td class='text-right'><%= school['cluster_name'] || t('common.labels.not_applicable') %></td>
+                                <td class='text-right'><%= school['cluster_name'] || t('common.labels.not_set') %></td>
                               <% end %>
                               <td class='text-right'><%= link_to t('school_groups.priority_actions.view_analysis'), advice_page_path_for(school['school_slug']) %></td>
                             </tr>
