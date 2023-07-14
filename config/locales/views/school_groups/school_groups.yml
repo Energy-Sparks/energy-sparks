@@ -100,7 +100,13 @@ en:
           <p>
            These figures represent a comparison of school baseload over the last 12 months against the best performing schools.
           </p>
-        alert_electricity_peak_kw_versus_benchmark_html: ''
+        alert_electricity_peak_kw_versus_benchmark_html: |-
+          <p>
+          Electricity use varies at different times of the day. Usage will be at a peak in the middle of the day, but should be low overnight.
+          </p>
+          <p>
+          These figures represent a comparison of usage at peak times against the best performing schools.
+          </p>
         alert_gas_annual_versus_benchmark_html: |-
           <p>
           These savings are based on comparing gas usage over the last 12 months against the best performing schools.
