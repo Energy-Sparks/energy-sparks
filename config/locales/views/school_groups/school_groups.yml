@@ -73,7 +73,6 @@ en:
         <p>"<span class="txt-exemplar_school">Exemplar</span>" schools represent the top 17.5% of Energy Sparks schools</p>
         <p>"<span class="txt-benchmark_school">Well managed</span>" schools represent the top 30% of Energy Sparks schools</p>
         <p>These schools are benchmarked as <span class="txt-%{category_id}">%{category}</span>.</p>
-      view_all_school_comparison_benchmarks: view all school comparison benchmarks
       view_detailed_comparison: View detailed comparison
     current_scores:
       introduction: Schools score points by recording their activities and energy saving actions. These are the scores for the current academic year.
@@ -85,7 +84,6 @@ en:
       view_all_schools: View all schools
       view_group: View group
       view_map: View map
-      view_scoreboard: Scoreboard
     labels:
       floor_area: Floor area (m2)
     priority_actions:

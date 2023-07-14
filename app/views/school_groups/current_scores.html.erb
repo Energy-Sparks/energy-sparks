@@ -32,24 +32,24 @@
       <% schools.each do |school| %>
         <tr>
           <td>
-            <h3><span class="badge badge-primary"><%= '=' if schools.size > 1 %><%= position %></span></h3>
+            <h4><span class="badge badge-primary"><%= '=' if schools.size > 1 %><%= position %></span></h4>
           </td>
           <td>
             <h3><%= link_to school.name, school_path(school) %></h3>
           </td>
           <% if can?(:update_settings, @school_group) %>
             <td>
-              <h3><%= school.school_group_cluster_name %></h3>
+              <h4><%= school.school_group_cluster_name %></h4>
             </td>
           <% end %>
           <td>
-            <h3>
+            <h4>
             <%= link_to school.sum_points, school_timeline_path(school, academic_year: @academic_year), class: 'badge badge-success' %>
             &nbsp;
             <% if school.recent_points&.positive? %>
               <i class="fa fa-arrow-up" data-toggle="tooltip" title="<%= t('scoreboard.score_tooltip') %>"></i>
             <% end %>
-            </h3>
+            </h4>
           </td>
         </tr>
       <% end %>
