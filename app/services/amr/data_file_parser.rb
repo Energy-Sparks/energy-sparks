@@ -21,11 +21,31 @@ module Amr
           spreadsheet = Roo::Spreadsheet.open(path_and_file_name)
           spreadsheet.sheet(0).to_csv
         else
-          File.read(path_and_file_name)
+          clean_csv_data(path_and_file_name)
         end
-      CSV.parse(content, col_sep: config.column_separator, row_sep: :auto)
+      CSV.parse(content, col_sep: @config.column_separator, row_sep: :auto)
     rescue CSV::MalformedCSVError, Roo::Error => e
       raise Error, e.message
+    end
+
+    private
+
+    def clean_csv_data(path_and_file_name)
+      data = StringIO.new
+      File.readlines(path_and_file_name).each do |line|
+        line = remove_utf8_invalids(line)
+        line = remove_utf8_nulls(line)
+        data.puts line.encode('UTF-8', universal_newline: true)
+      end
+      data.string
+    end
+
+    def remove_utf8_invalids(line)
+      line.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+    end
+
+    def remove_utf8_nulls(line)
+      line.delete("\u0000")
     end
   end
 end
