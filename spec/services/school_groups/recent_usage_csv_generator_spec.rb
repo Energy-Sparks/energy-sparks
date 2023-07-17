@@ -14,7 +14,7 @@ RSpec.describe SchoolGroups::RecentUsageCsvGenerator do
       it { expect(csv.lines.count).to eq(3) }
       it { expect(csv.lines[0]).to start_with("School,Cluster,")}
       it { expect(csv.lines[1]).to start_with("#{school_group.schools.first.name},A Cluster,")}
-      it { expect(csv.lines[2]).to start_with("#{school_group.schools.second.name},N/A,")}
+      it { expect(csv.lines[2]).to start_with("#{school_group.schools.second.name},Not set,")}
     end
   end
 

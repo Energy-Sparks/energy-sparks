@@ -23,10 +23,10 @@ RSpec.describe SchoolGroups::CurrentScoresCsvGenerator do
         expect(csv.lines.count).to eq(6)
         expect(csv.lines[0]).to eq("Position,School,Cluster,Score\n")
         expect(csv.lines[1]).to eq("=1,School 1,My Cluster,20\n")
-        expect(csv.lines[2]).to eq("=1,School 2,N/A,20\n")
-        expect(csv.lines[3]).to eq("2,School 3,N/A,18\n")
-        expect(csv.lines[4]).to eq("-,School 4,N/A,0\n")
-        expect(csv.lines[5]).to eq("-,School 5,N/A,0\n")
+        expect(csv.lines[2]).to eq("=1,School 2,Not set,20\n")
+        expect(csv.lines[3]).to eq("2,School 3,Not set,18\n")
+        expect(csv.lines[4]).to eq("-,School 4,Not set,0\n")
+        expect(csv.lines[5]).to eq("-,School 5,Not set,0\n")
       end
     end
   end

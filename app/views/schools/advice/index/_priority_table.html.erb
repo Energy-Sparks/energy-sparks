@@ -29,9 +29,9 @@
             <% end %>
           </h4>
         </td>
-        <td data-order="<%= priority.template_variables[:one_year_saving_kwh].gsub(/(,|kWh)/, '').to_i %>">
+        <td data-order="<%= formatted_unit_to_num(priority.template_variables[:one_year_saving_kwh]) %>">
           <h4>
-            <%= priority.template_variables[:one_year_saving_kwh].gsub(/(,|kWh)/, '') %>
+            <%= format_unit(formatted_unit_to_num(priority.template_variables[:one_year_saving_kwh]), :kwh) %>
           </h4>
         </td>
         <td>
@@ -39,9 +39,9 @@
             <%= priority.template_variables[:average_one_year_saving_gbp] %>
           </h4>
         </td>
-        <td data-order="<%= priority.template_variables[:one_year_saving_co2].gsub(/(,|kg CO2)/, '').to_i %>">
+        <td data-order="<%= formatted_unit_to_num(priority.template_variables[:one_year_saving_co2]) %>">
           <h4>
-            <%= priority.template_variables[:one_year_saving_co2].gsub(/(,|kg CO2)/, '') %>
+            <%= format_unit(formatted_unit_to_num(priority.template_variables[:one_year_saving_co2]), :co2) %>
           </h4>
         </td>
       </tr>
