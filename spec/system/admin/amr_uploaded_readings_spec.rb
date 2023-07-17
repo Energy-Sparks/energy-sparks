@@ -105,13 +105,13 @@ describe AmrUploadedReading, type: :system do
     it 'is helpful if a very different format file is loaded' do
       attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_data_files/example-sheffield-file.csv')
       click_on 'Preview'
-      expect(page).to have_content(AmrReadingData::ERROR_UNABLE_TO_PARSE_FILE)
+      expect(page).to have_content(AmrReadingData::ERROR_NO_VALID_READINGS)
     end
 
     it 'is helpful if a dodgy date format file is loaded' do
       attach_file('amr_uploaded_reading[data_file]', 'spec/fixtures/amr_upload_data_files/banes-bad-example-date-file.csv')
       click_on 'Preview'
-      expect(page).to have_content(AmrReadingData::ERROR_UNABLE_TO_PARSE_FILE)
+      expect(page).to have_content(AmrReadingData::ERROR_NO_VALID_READINGS)
     end
 
     it 'is helpful if a single dodgy date format is in the file loaded' do
