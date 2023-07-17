@@ -5,8 +5,9 @@ describe 'school groups', :school_groups, type: :system do
   let!(:school_group)          { create(:school_group, public: public) }
 
   let!(:user)                  { create(:user) }
-  let!(:school_1)              { create(:school, school_group: school_group, number_of_pupils: 10, data_enabled: true, visible: true, active: true) }
-  let!(:school_2)              { create(:school, school_group: school_group, number_of_pupils: 20, data_enabled: true, visible: true, active: true) }
+
+  let!(:school_1)              { create(:school, school_group: school_group, number_of_pupils: 10, floor_area: 200.0, data_enabled: true, visible: true, active: true) }
+  let!(:school_2)              { create(:school, school_group: school_group, number_of_pupils: 20, floor_area: 300.0, data_enabled: true, visible: true, active: true) }
 
   before do
     allow_any_instance_of(SchoolGroup).to receive(:fuel_types) { [:electricity, :gas, :storage_heaters] }
@@ -159,25 +160,9 @@ describe 'school groups', :school_groups, type: :system do
         end
 
         describe 'showing recent usage tab' do
+          include_context "school group recent usage"
+
           before(:each) do
-            changes = OpenStruct.new(
-              change: "-16%",
-              usage: '910',
-              cost: '£137',
-              co2: '8,540',
-              change_text: "-16%",
-              usage_text: '910',
-              cost_text: '£137',
-              co2_text: '8,540',
-              has_data: true
-            )
-            allow_any_instance_of(School).to receive(:recent_usage) do
-              OpenStruct.new(
-                electricity: OpenStruct.new(week: changes, year: changes),
-                gas: OpenStruct.new(week: changes, year: changes),
-                storage_heaters: OpenStruct.new(week: changes, year: changes)
-              )
-            end
             visit school_group_path(school_group)
           end
 
@@ -187,6 +172,10 @@ describe 'school groups', :school_groups, type: :system do
           end
 
           describe 'changes in metrics params' do
+            it 'shows intro text' do
+              expect(page).to have_content('A summary of the recent energy usage across schools in this group.')
+            end
+
             it 'shows expected table content for change when there are no metrics params' do
               visit school_group_path(school_group, {})
               expect(page).to have_content('Electricity')
@@ -295,7 +284,7 @@ describe 'school groups', :school_groups, type: :system do
               expect(header).to match /^attachment/
               filename = "#{school_group.name}-recent-usage-change-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
               expect(header).to match filename
-              expect(page.source).to have_content "School,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},-16%,-16%,-16%,-16%,-16%,-16%\n#{school_group.schools.second.name},-16%,-16%,-16%,-16%,-16%,-16%\n"
+              expect(page.source).to have_content "School,Number of pupils,Floor area (m2),Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},10,200.0,-16%,-16%,-16%,-16%,-16%,-16%\n#{school_group.schools.second.name},20,300.0,-16%,-16%,-16%,-16%,-16%,-16%\n"
 
               visit school_group_path(school_group, metric: 'usage')
               click_on 'Download as CSV'
@@ -303,7 +292,7 @@ describe 'school groups', :school_groups, type: :system do
               expect(header).to match /^attachment/
               filename = "#{school_group.name}-recent-usage-use-kwh-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
               expect(header).to match filename
-              expect(page.source).to have_content "School,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},910,910,910,910,910,910\n#{school_group.schools.second.name},910,910,910,910,910,910\n"
+              expect(page.source).to have_content "School,Number of pupils,Floor area (m2),Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},10,200.0,910,910,910,910,910,910\n#{school_group.schools.second.name},20,300.0,910,910,910,910,910,910\n"
 
               visit school_group_path(school_group, metric: 'cost')
               click_on 'Download as CSV'
@@ -311,7 +300,7 @@ describe 'school groups', :school_groups, type: :system do
               expect(header).to match /^attachment/
               filename = "#{school_group.name}-recent-usage-cost-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
               expect(header).to match filename
-              expect(page.source).to have_content "School,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},£137,£137,£137,£137,£137,£137\n#{school_group.schools.second.name},£137,£137,£137,£137,£137,£137\n"
+              expect(page.source).to have_content "School,Number of pupils,Floor area (m2),Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},10,200.0,£137,£137,£137,£137,£137,£137\n#{school_group.schools.second.name},20,300.0,£137,£137,£137,£137,£137,£137\n"
 
               visit school_group_path(school_group, metric: 'co2')
               click_on 'Download as CSV'
@@ -319,7 +308,7 @@ describe 'school groups', :school_groups, type: :system do
               expect(header).to match /^attachment/
               filename = "#{school_group.name}-recent-usage-co2-kg-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
               expect(header).to match filename
-              expect(page.source).to have_content "School,Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\"\n#{school_group.schools.second.name},\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\"\n"
+              expect(page.source).to have_content "School,Number of pupils,Floor area (m2),Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n#{school_group.schools.first.name},10,200.0,\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\"\n#{school_group.schools.second.name},20,300.0,\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\"\n"
             end
           end
         end
@@ -333,6 +322,14 @@ describe 'school groups', :school_groups, type: :system do
           include_examples "school dashboard navigation" do
             let(:expected_path) { "/school_groups/#{school_group.slug}/comparisons" }
             let(:breadcrumb)    { 'Comparisons' }
+          end
+
+          it 'displays introduction and links' do
+            expect(page).to have_link("explore all school comparison benchmarks for this group")
+            expect(page).to have_css('#electricity-comparisons')
+            expect(page).to have_css('#gas-comparisons')
+            expect(page).to have_link('electricity', href: '#electricity-comparisons')
+            expect(page).to have_link('gas', href: '#gas-comparisons')
           end
 
           it 'shows expected content' do
@@ -398,13 +395,12 @@ describe 'school groups', :school_groups, type: :system do
           end
 
           it 'allows a csv download of all priority actions for a school group' do
-            # first(:link, 'Download as CSV').click
             click_link('Download as CSV', id: 'download-priority-actions-school-group-csv')
             header = page.response_headers['Content-Disposition']
             expect(header).to match /^attachment/
             filename = "#{school_group.name}-#{I18n.t('school_groups.titles.priority_actions')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
             expect(header).to match filename
-            expect(page.source).to eq "Fuel,Description,Schools,Energy saving,Cost saving,CO2 reduction\nGas,Spending too much money on heating,1,\"2,200 kWh\",\"£1,000\",\"1,100 kg CO2\"\n"
+            expect(page.source).to eq "Fuel,Description,Schools,Energy (kWh),Cost (£),CO2 (kg)\nGas,Spending too much money on heating,1,\"2,200\",\"£1,000\",\"1,100\"\n"
           end
 
           it 'allows a csv download of a specific priority action for schools in a school group' do
@@ -413,7 +409,7 @@ describe 'school groups', :school_groups, type: :system do
             expect(header).to match /^attachment/
             filename = "#{school_group.name}-#{I18n.t('school_groups.titles.priority_actions')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
             expect(header).to match filename
-            expect(page.source).to eq "Fuel,Description,School,Energy saving,Cost saving,CO2 reduction\nGas,Spending too much money on heating,#{school_group.schools.first.name}, kWh,£1000,1100 kg CO2\n"
+            expect(page.source).to eq "Fuel,Description,School,Number of pupils,Floor area (m2),Energy (kWh),Cost (£),CO2 (kg)\nGas,Spending too much money on heating,#{school_group.schools.first.name},10,200.0,0,£1000,1100\n"
           end
 
           it 'displays list of actions' do
@@ -421,8 +417,8 @@ describe 'school groups', :school_groups, type: :system do
             within('#school-group-priorities') do
               expect(page).to have_content("Spending too much money on heating")
               expect(page).to have_content("£1,000")
-              expect(page).to have_content("1,100 kg CO2")
-              expect(page).to have_content("2,200 kWh")
+              expect(page).to have_content("1,100")
+              expect(page).to have_content("2,200")
             end
           end
 
@@ -439,19 +435,10 @@ describe 'school groups', :school_groups, type: :system do
         end
 
         describe 'showing current_scores' do
+
+          include_context "school group current scores"
           before(:each) do
             visit current_scores_school_group_path(school_group)
-            allow_any_instance_of(SchoolGroup).to receive(:scored_schools) do
-              OpenStruct.new(
-                with_points: OpenStruct.new(
-                               schools_with_positions: {
-                                1 => [OpenStruct.new(name: 'School 1', sum_points: 20), OpenStruct.new(name: 'School 2', sum_points: 20)],
-                                2 => [OpenStruct.new(name: 'School 3', sum_points: 18)]
-                               }
-                             ),
-                without_points: [OpenStruct.new(name: 'School 4'), OpenStruct.new(name: 'School 5')]
-              )
-            end
           end
 
           include_examples "school dashboard navigation" do
@@ -497,8 +484,7 @@ describe 'school groups', :school_groups, type: :system do
 
           it 'shows navigation' do
             expect(page).not_to have_content('View map')
-            expect(page).to have_content('View group')
-            expect(page).to have_content('Scoreboard')
+            expect(page).to have_content('View dashboard')
           end
 
           it 'shows expected map content' do
@@ -547,23 +533,27 @@ describe 'school groups', :school_groups, type: :system do
       context "recent usage tab" do
         let(:url) { school_group_path(school_group) }
         include_examples 'not showing the cluster column'
+        include_examples 'not showing the cluster column in the download'
       end
 
       context "comparisons tab" do
         include_context "school group comparisons"
         let(:url) { comparisons_school_group_path(school_group) }
         include_examples 'not showing the cluster column'
+        include_examples 'not showing the cluster column in the download'
       end
 
       context "priority actions tab" do
         include_context "school group priority actions"
         let(:url) { priority_actions_school_group_path(school_group) }
         include_examples 'not showing the cluster column'
+        include_examples 'not showing the cluster column in the download'
       end
 
       context "current scores tab" do
         let(:url) { current_scores_school_group_path(school_group) }
         include_examples 'not showing the cluster column'
+        include_examples 'not showing the cluster column in the download'
       end
     end
 
@@ -595,23 +585,27 @@ describe 'school groups', :school_groups, type: :system do
       context "recent usage tab" do
         let(:url) { school_group_path(school_group) }
         include_examples 'not showing the cluster column'
+        include_examples 'not showing the cluster column in the download'
       end
 
       context "comparisons tab" do
         include_context "school group comparisons"
         let(:url) { comparisons_school_group_path(school_group) }
         include_examples 'not showing the cluster column'
+        include_examples 'not showing the cluster column in the download'
       end
 
       context "priority actions tab" do
         include_context "school group priority actions"
         let(:url) { priority_actions_school_group_path(school_group) }
         include_examples 'not showing the cluster column'
+        include_examples 'not showing the cluster column in the download'
       end
 
       context "current scores tab" do
         let(:url) { current_scores_school_group_path(school_group) }
         include_examples 'not showing the cluster column'
+        include_examples 'not showing the cluster column in the download'
       end
     end
 
@@ -663,6 +657,7 @@ describe 'school groups', :school_groups, type: :system do
         let!(:school) { school_group.schools.first }
         let(:url) { school_group_path(school_group) }
         include_examples 'showing the cluster column'
+        include_examples 'showing the cluster column in the download'
       end
 
       context "comparisons tab" do
@@ -670,6 +665,7 @@ describe 'school groups', :school_groups, type: :system do
         let!(:school) { school_1 }
         let(:url) { comparisons_school_group_path(school_group) }
         include_examples 'showing the cluster column'
+        include_examples 'showing the cluster column in the download'
       end
 
       context "priority actions tab" do
@@ -677,12 +673,14 @@ describe 'school groups', :school_groups, type: :system do
         let!(:school) { school_1 }
         let(:url) { priority_actions_school_group_path(school_group) }
         include_examples 'showing the cluster column'
+        include_examples 'showing the cluster column in the download'
       end
 
       context "current scores tab" do
         let(:url) { current_scores_school_group_path(school_group) }
         let!(:school) { school_group.schools.first }
         include_examples 'showing the cluster column'
+        include_examples 'showing the cluster column in the download'
       end
     end
 
@@ -733,6 +731,7 @@ describe 'school groups', :school_groups, type: :system do
         let!(:school) { school_group.schools.first }
         let(:url) { school_group_path(school_group) }
         include_examples 'showing the cluster column'
+        include_examples 'showing the cluster column in the download'
       end
 
       context "comparisons tab" do
@@ -740,6 +739,7 @@ describe 'school groups', :school_groups, type: :system do
         let!(:school) { school_1 }
         let(:url) { comparisons_school_group_path(school_group) }
         include_examples 'showing the cluster column'
+        include_examples 'showing the cluster column in the download'
       end
 
       context "priority actions tab" do
@@ -747,6 +747,7 @@ describe 'school groups', :school_groups, type: :system do
         let!(:school) { school_1 }
         let(:url) { priority_actions_school_group_path(school_group) }
         include_examples 'showing the cluster column'
+        include_examples 'showing the cluster column in the download'
       end
 
       context "current scores tab" do
@@ -787,23 +788,27 @@ describe 'school groups', :school_groups, type: :system do
       context "recent usage tab" do
         let(:url) { school_group_path(school_group) }
         include_examples 'not showing the cluster column'
+        include_examples 'not showing the cluster column in the download'
       end
 
       context "comparisons tab" do
         include_context "school group comparisons"
         let(:url) { comparisons_school_group_path(school_group) }
         include_examples 'not showing the cluster column'
+        include_examples 'not showing the cluster column in the download'
       end
 
       context "priority actions tab" do
         include_context "school group priority actions"
         let(:url) { priority_actions_school_group_path(school_group) }
         include_examples 'not showing the cluster column'
+        include_examples 'not showing the cluster column in the download'
       end
 
       context "current scores tab" do
         let(:url) { current_scores_school_group_path(school_group) }
         include_examples 'not showing the cluster column'
+        include_examples 'not showing the cluster column in the download'
       end
     end
   end

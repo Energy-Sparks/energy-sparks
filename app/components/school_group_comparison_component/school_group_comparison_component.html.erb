@@ -29,6 +29,9 @@
                 <% if count.positive? %>
                   <%= render(FootnoteModalComponent.new(title: tag.small(modal_title_for(category)), modal_id: modal_id_for(category))) do |component| %>
                     <% component.with_body_content do %>
+                      <div class="text-left">
+                        <%= t('school_groups.comparisons.modal_subtitle_html', category_id: category, category: t("advice_pages.benchmarks.#{category}")) %>
+                      </div>
                       <% if csv_download_link %>
                         <div class='text-right pt-3'>
                           <%= csv_download_link %>
@@ -38,7 +41,7 @@
                         <thead>
                           <tr>
                             <th class="text-left"><%= t('common.school') %></th>
-                            <% if view_cluster? %>
+                            <% if include_cluster? %>
                               <th class="text-right"><%= t('school_groups.clusters.labels.cluster') %></th>
                             <% end %>
                             <th class="no-sort"></th>
@@ -48,8 +51,8 @@
                           <% @comparison[category]&.each do |school| %>
                             <tr>
                               <td class='text-left'><%= link_to school['school_name'], school_path(id: school['school_slug']) %></td>
-                              <% if view_cluster? %>
-                                <td class='text-right'><%= school['cluster_name'] || t('common.labels.not_applicable') %></td>
+                              <% if include_cluster? %>
+                                <td class='text-right'><%= school['cluster_name'] || t('common.labels.not_set') %></td>
                               <% end %>
                               <td class='text-right'><%= link_to t('school_groups.priority_actions.view_analysis'), advice_page_path_for(school['school_slug']) %></td>
                             </tr>

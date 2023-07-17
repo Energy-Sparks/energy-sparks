@@ -273,7 +273,7 @@ RSpec.shared_examples "not showing the cluster column" do
   end
   it "doesn't show the cluster column" do
     expect(page).to_not have_content('Cluster')
-    expect(page).to_not have_content('N/A')
+    expect(page).to_not have_content('Not set')
   end
 end
 
@@ -285,11 +285,29 @@ RSpec.shared_examples "showing the cluster column" do
   it { expect(page).to have_content('Cluster') }
 
   context "school does not have a cluster" do
-    it { expect(page).to have_content('N/A') }
+    it { expect(page).to have_content('Not set') }
   end
 
   context "school is in a cluster" do
     let!(:cluster) { create(:school_group_cluster, name: "My Cluster", schools: [school]) }
     it { expect(page).to have_content('My Cluster') }
+  end
+end
+
+RSpec.shared_examples "not showing the cluster column in the download" do |id:nil|
+  context "Clicking the Download as CSV link" do
+    before do
+      all(:link, 'Download as CSV').last.click
+    end
+    it { expect(page.source).to_not have_content ",Cluster," }
+  end
+end
+
+RSpec.shared_examples "showing the cluster column in the download" do |id: nil|
+  context "Clicking the Download as CSV link" do
+    before do
+      all(:link, 'Download as CSV').last.click
+    end
+    it { expect(page.source).to have_content ",Cluster," }
   end
 end

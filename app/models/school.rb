@@ -605,6 +605,10 @@ class School < ApplicationRecord
     meters.active.where(meter_type: meter_type).procurement_route_known.joins(:procurement_route).order("procurement_routes.organisation_name ASC").distinct.pluck("procurement_routes.organisation_name")
   end
 
+  def school_group_cluster_name
+    school_group_cluster.try(:name) || I18n.t('common.labels.not_set')
+  end
+
   private
 
   def add_joining_observation

@@ -21,8 +21,8 @@ RSpec.describe SchoolGroupComparisonComponent, type: :component do
     }
   }
 
-  let(:view_cluster) { false }
-  let(:params) { { id: 'spec-id', comparison: comparison, advice_page_key: :baseload, view_cluster: view_cluster } }
+  let(:include_cluster) { false }
+  let(:params) { { id: 'spec-id', comparison: comparison, advice_page_key: :baseload, include_cluster: include_cluster } }
   let(:component)  { SchoolGroupComparisonComponent.new(**params) }
   let(:html) { render_inline(component) }
 
@@ -42,17 +42,17 @@ RSpec.describe SchoolGroupComparisonComponent, type: :component do
     expect(html).to have_content(I18n.t('advice_pages.benchmarks.other_school'))
   end
 
-  context "View cluster is not enabled" do
-    let(:view_cluster) { false }
+  context "Include cluster is not enabled" do
+    let(:include_cluster) { false }
     it { expect(html).to_not have_content('Cluster') }
-    it { expect(html).to_not have_content('N/A') }
+    it { expect(html).to_not have_content('Not set') }
     it { expect(html).to_not have_content('My Area') }
   end
 
-  context "View cluster is enabled" do
-    let(:view_cluster) { true }
+  context "Include cluster is enabled" do
+    let(:include_cluster) { true }
     it { expect(html).to have_content('Cluster') }
-    it { expect(html).to have_content('N/A') }
+    it { expect(html).to have_content('Not set') }
     it { expect(html).to have_content('My Area') }
   end
 end
