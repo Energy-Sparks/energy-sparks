@@ -1,17 +1,14 @@
 <%= render 'enhanced_header' %>
 
 <div class="row">
-  <div class="col-8">
+  <div class="col-md-12">
     <div class="school-group-map map" id="geo-json-map" data-school-group-id="<%= @school_group.id %>"></div>
-  </div>
-  <div class="col-4">
-
   </div>
 </div>
 
 <% @school_group.schools.includes(:configuration).visible.by_name.each do |school| %>
   <div class='pb-2'>
-    <h4><%= link_to school.name, school_path(school) %></h5>
+    <h4><%= link_to school.name, school_path(school) %></h4>
     <p>
       <span class="badge badge-secondary"><%= t("common.school_types.#{school.school_type}") %></span>
       <% if school.configuration %>

@@ -12,8 +12,8 @@ RSpec.describe SchoolGroups::PriorityActionsCsvGenerator do
     it 'returns priority actions data as a csv for a school group' do
       csv = SchoolGroups::PriorityActionsCsvGenerator.new(school_group: school_group.reload).export
       expect(csv.lines.count).to eq(2)
-      expect(csv.lines[0]).to eq("Fuel,Description,Schools,Energy saving,Cost saving,CO2 reduction\n")
-      expect(csv.lines[1]).to eq("Gas,Spending too much money on heating,1,\"2,200 kWh\",\"£1,000\",\"1,100 kg CO2\"\n")
+      expect(csv.lines[0]).to eq("Fuel,Description,Schools,Energy (kWh),Cost (£),CO2 (kg)\n")
+      expect(csv.lines[1]).to eq("Gas,Spending too much money on heating,1,\"2,200\",\"£1,000\",\"1,100\"\n")
     end
   end
 end

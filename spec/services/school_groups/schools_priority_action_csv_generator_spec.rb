@@ -12,21 +12,21 @@ RSpec.describe SchoolGroups::SchoolsPriorityActionCsvGenerator do
       it 'returns priority actions data as a csv for a school group' do
         csv = SchoolGroups::SchoolsPriorityActionCsvGenerator.new(school_group: school_group, alert_type_rating_ids: [alert_type_rating.id]).export
         expect(csv.lines.count).to eq(2)
-        expect(csv.lines[0]).to eq("Fuel,Description,School,Number of pupils,Floor area (m2),Energy saving,Cost saving,CO2 reduction\n")
-        expect(csv.lines[1]).to eq("Gas,Spending too much money on heating,#{school_group.schools.first.name},10,200.0,0 kWh,£1000,1100 kg CO2\n")
+        expect(csv.lines[0]).to eq("Fuel,Description,School,Number of pupils,Floor area (m2),Energy (kWh),Cost (£),CO2 (kg)\n")
+        expect(csv.lines[1]).to eq("Gas,Spending too much money on heating,#{school_group.schools.first.name},10,200.0,0,£1000,1100\n")
       end
 
       context "when including cluster" do
         subject(:csv) { SchoolGroups::SchoolsPriorityActionCsvGenerator.new(school_group: school_group, alert_type_rating_ids: [alert_type_rating.id], include_cluster: true).export }
 
         it { expect(csv.lines.count).to eq(2) }
-        it { expect(csv.lines[0]).to eq("Fuel,Description,School,Cluster,Number of pupils,Floor area (m2),Energy saving,Cost saving,CO2 reduction\n") }
+        it { expect(csv.lines[0]).to eq("Fuel,Description,School,Cluster,Number of pupils,Floor area (m2),Energy (kWh),Cost (£),CO2 (kg)\n") }
         context "when school doesn't have cluster" do
-          it { expect(csv.lines[1]).to eq("Gas,Spending too much money on heating,#{school_group.schools.first.name},N/A,10,200.0,0 kWh,£1000,1100 kg CO2\n") }
+          it { expect(csv.lines[1]).to eq("Gas,Spending too much money on heating,#{school_group.schools.first.name},Not set,10,200.0,0,£1000,1100\n") }
         end
         context "when school has a cluster" do
           let!(:cluster) { create(:school_group_cluster, school_group: school_group, name: "My Cluster", schools: [school_1]) }
-          it { expect(csv.lines[1]).to eq("Gas,Spending too much money on heating,#{school_group.schools.first.name},My Cluster,10,200.0,0 kWh,£1000,1100 kg CO2\n") }
+          it { expect(csv.lines[1]).to eq("Gas,Spending too much money on heating,#{school_group.schools.first.name},My Cluster,10,200.0,0,£1000,1100\n") }
         end
       end
     end

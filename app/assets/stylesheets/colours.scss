@@ -92,3 +92,24 @@ $colours-dark: (
 .bg-other_school {
   background-color: $bg-negative !important;
 }
+
+.txt-exemplar_school {
+  text-decoration: underline;
+  text-decoration-color: $green;
+  text-decoration-thickness: 3px;
+  font-weight: bolder;
+}
+
+.txt-benchmark_school {
+  text-decoration: underline;
+  text-decoration-color: $light-orange;
+  text-decoration-thickness: 3px;
+  font-weight: bolder;
+}
+
+.txt-other_school {
+  text-decoration: underline;
+  text-decoration-color: $bg-negative;
+  text-decoration-thickness: 3px;
+  font-weight: bolder;
+}

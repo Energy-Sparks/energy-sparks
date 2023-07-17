@@ -172,6 +172,10 @@ describe 'school groups', :school_groups, type: :system do
           end
 
           describe 'changes in metrics params' do
+            it 'shows intro text' do
+              expect(page).to have_content('A summary of the recent energy usage across schools in this group.')
+            end
+
             it 'shows expected table content for change when there are no metrics params' do
               visit school_group_path(school_group, {})
               expect(page).to have_content('Electricity')
@@ -320,6 +324,14 @@ describe 'school groups', :school_groups, type: :system do
             let(:breadcrumb)    { 'Comparisons' }
           end
 
+          it 'displays introduction and links' do
+            expect(page).to have_link("explore all school comparison benchmarks for this group")
+            expect(page).to have_css('#electricity-comparisons')
+            expect(page).to have_css('#gas-comparisons')
+            expect(page).to have_link('electricity', href: '#electricity-comparisons')
+            expect(page).to have_link('gas', href: '#gas-comparisons')
+          end
+
           it 'shows expected content' do
             [
               'baseload',
@@ -388,7 +400,7 @@ describe 'school groups', :school_groups, type: :system do
             expect(header).to match /^attachment/
             filename = "#{school_group.name}-#{I18n.t('school_groups.titles.priority_actions')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
             expect(header).to match filename
-            expect(page.source).to eq "Fuel,Description,Schools,Energy saving,Cost saving,CO2 reduction\nGas,Spending too much money on heating,1,\"2,200 kWh\",\"£1,000\",\"1,100 kg CO2\"\n"
+            expect(page.source).to eq "Fuel,Description,Schools,Energy (kWh),Cost (£),CO2 (kg)\nGas,Spending too much money on heating,1,\"2,200\",\"£1,000\",\"1,100\"\n"
           end
 
           it 'allows a csv download of a specific priority action for schools in a school group' do
@@ -397,7 +409,7 @@ describe 'school groups', :school_groups, type: :system do
             expect(header).to match /^attachment/
             filename = "#{school_group.name}-#{I18n.t('school_groups.titles.priority_actions')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
             expect(header).to match filename
-            expect(page.source).to eq "Fuel,Description,School,Number of pupils,Floor area (m2),Energy saving,Cost saving,CO2 reduction\nGas,Spending too much money on heating,#{school_group.schools.first.name},10,200.0,0 kWh,£1000,1100 kg CO2\n"
+            expect(page.source).to eq "Fuel,Description,School,Number of pupils,Floor area (m2),Energy (kWh),Cost (£),CO2 (kg)\nGas,Spending too much money on heating,#{school_group.schools.first.name},10,200.0,0,£1000,1100\n"
           end
 
           it 'displays list of actions' do
@@ -405,8 +417,8 @@ describe 'school groups', :school_groups, type: :system do
             within('#school-group-priorities') do
               expect(page).to have_content("Spending too much money on heating")
               expect(page).to have_content("£1,000")
-              expect(page).to have_content("1,100 kg CO2")
-              expect(page).to have_content("2,200 kWh")
+              expect(page).to have_content("1,100")
+              expect(page).to have_content("2,200")
             end
           end
 
@@ -472,8 +484,7 @@ describe 'school groups', :school_groups, type: :system do
 
           it 'shows navigation' do
             expect(page).not_to have_content('View map')
-            expect(page).to have_content('View group')
-            expect(page).to have_content('Scoreboard')
+            expect(page).to have_content('View dashboard')
           end
 
           it 'shows expected map content' do

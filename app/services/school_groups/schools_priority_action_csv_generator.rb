@@ -24,9 +24,9 @@ module SchoolGroups
             row += [
               saving.school.number_of_pupils,
               saving.school.floor_area,
-              saving.one_year_saving_kwh.to_s + ' kWh',
+              saving.one_year_saving_kwh.to_s,
               '£' + saving.average_one_year_saving_gbp.to_s,
-              saving.one_year_saving_co2.to_s + ' kg CO2'
+              saving.one_year_saving_co2.to_s
             ]
             csv << row
           end

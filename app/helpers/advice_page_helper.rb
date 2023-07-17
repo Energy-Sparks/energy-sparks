@@ -205,5 +205,9 @@ module AdvicePageHelper
   def icon_tooltip(text = '')
     tag.span(fa_icon('info-circle'), data: { toggle: "tooltip", placement: "top", title: text }, class: 'text-muted') if text.present?
   end
+
+  def formatted_unit_to_num(value)
+    value.gsub(/(,|kWh|kg CO2)/, '').to_i
+  end
 end
 # rubocop:enable Naming/AsciiIdentifiers
