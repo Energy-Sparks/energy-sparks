@@ -1,7 +1,8 @@
 module SchoolGroups
   class CurrentScoresCsvGenerator
-    def initialize(school_group:)
+    def initialize(school_group:, include_cluster: false)
       @school_group = school_group
+      @include_cluster = include_cluster
     end
 
     def export
@@ -9,25 +10,34 @@ module SchoolGroups
         csv << headers
         @school_group.scored_schools.with_points.schools_with_positions.each do |position, schools|
           schools.each do |school|
-            csv << [
+            row = [
               (schools.size > 1 ? '=' : '') + position.to_s,
-              school.name,
-              school.sum_points
+              school.name
             ]
+            row << school.school_group_cluster_name if @include_cluster
+            row << school.sum_points
+            csv << row
           end
         end
-        @school_group.scored_schools.without_points.each { |school| csv << ['-', school.name, 0] }
+        @school_group.scored_schools.without_points.each do |school|
+          row = ['-', school.name]
+          row << school.school_group_cluster_name if @include_cluster
+          row << 0
+          csv << row
+        end
       end
     end
 
     private
 
     def headers
-      [
+      columns = [
         I18n.t('scoreboard.position'),
-        I18n.t('common.school'),
-        I18n.t('scoreboard.score')
+        I18n.t('common.school')
       ]
+      columns << I18n.t('school_groups.clusters.labels.cluster') if @include_cluster
+      columns << I18n.t('scoreboard.score')
+      columns
     end
   end
 end

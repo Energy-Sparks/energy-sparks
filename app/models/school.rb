@@ -145,6 +145,7 @@ class School < ApplicationRecord
 
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
+  belongs_to :school_group_cluster, optional: true
 
   belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, optional: true
@@ -185,6 +186,8 @@ class School < ApplicationRecord
 
   scope :with_config, -> { joins(:configuration) }
   scope :by_name,     -> { order(name: :asc) }
+
+  scope :not_in_cluster, -> { where(school_group_cluster_id: nil) }
 
   validates_presence_of :urn, :name, :address, :postcode, :website, :school_type
   validates_uniqueness_of :urn
@@ -600,6 +603,10 @@ class School < ApplicationRecord
 
   def all_procurement_routes(meter_type)
     meters.active.where(meter_type: meter_type).procurement_route_known.joins(:procurement_route).order("procurement_routes.organisation_name ASC").distinct.pluck("procurement_routes.organisation_name")
+  end
+
+  def school_group_cluster_name
+    school_group_cluster.try(:name) || I18n.t('common.labels.not_set')
   end
 
   private

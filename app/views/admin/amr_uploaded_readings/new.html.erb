@@ -25,6 +25,15 @@
           <p>File was processed, but there are data errors.</p>
           <p><strong>Reading count</strong>: <%= @amr_reading_data.reading_count %></p>
           <p><strong>Valid reading count</strong>: <%= @amr_reading_data.valid_reading_count %></p>
+          <% if @amr_reading_data.valid_reading_count == 0 && @amr_data_feed_config.lookup_by_serial_number == true %>
+            <p>
+              This configuration finds meters using the serial number in the file.
+            </p>
+            <p>
+              As there are no readings you should check to make sure the serial number has been correctly added to the
+              meter. Otherwise all the data can be rejected.
+            </p>
+          <% end %>
         <% else %>
           <p>Could not process the file</p>
         <% end %>

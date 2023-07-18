@@ -3,20 +3,7 @@ require 'rails_helper'
 RSpec.describe SchoolGroups::CurrentScoresCsvGenerator do
   let(:school_group) { create(:school_group) }
 
-  before do
-    allow_any_instance_of(SchoolGroup).to receive(:scored_schools) do
-      OpenStruct.new(
-        with_points: OpenStruct.new(
-                       schools_with_positions: {
-                        1 => [OpenStruct.new(name: 'School 1', sum_points: 20), OpenStruct.new(name: 'School 2', sum_points: 20)],
-                        2 => [OpenStruct.new(name: 'School 3', sum_points: 18)]
-                       }
-                     ),
-        without_points: [OpenStruct.new(name: 'School 4'), OpenStruct.new(name: 'School 5')]
-      )
-    end
-
-  end
+  include_context "school group current scores"
 
   context "with school group data" do
     it 'returns priority actions data as a csv for a school group' do
@@ -28,6 +15,19 @@ RSpec.describe SchoolGroups::CurrentScoresCsvGenerator do
       expect(csv.lines[3]).to eq("2,School 3,18\n")
       expect(csv.lines[4]).to eq("-,School 4,0\n")
       expect(csv.lines[5]).to eq("-,School 5,0\n")
+    end
+
+    context "when including cluster" do
+      subject(:csv) { SchoolGroups::CurrentScoresCsvGenerator.new(school_group: school_group.reload, include_cluster: true).export }
+      it 'includes cluster' do
+        expect(csv.lines.count).to eq(6)
+        expect(csv.lines[0]).to eq("Position,School,Cluster,Score\n")
+        expect(csv.lines[1]).to eq("=1,School 1,My Cluster,20\n")
+        expect(csv.lines[2]).to eq("=1,School 2,Not set,20\n")
+        expect(csv.lines[3]).to eq("2,School 3,Not set,18\n")
+        expect(csv.lines[4]).to eq("-,School 4,Not set,0\n")
+        expect(csv.lines[5]).to eq("-,School 5,Not set,0\n")
+      end
     end
   end
 end
