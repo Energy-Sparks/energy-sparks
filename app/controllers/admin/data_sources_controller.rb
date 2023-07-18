@@ -4,18 +4,11 @@ module Admin
     load_and_authorize_resource
 
     def show
-      respond_to do |format|
-        format.html
-        format.csv do
-          send_data @data_source.to_csv,
-          filename: "#{t('common.application')}-#{@data_source.name}-meters-#{Time.zone.now.iso8601}".parameterize + '.csv'
-        end
-      end
     end
 
     def deliver
       @data_source = DataSource.find(params[:data_source_id])
-      SendDataSourceReportJob.perform_now(to: current_user.email, data_source_id: @data_source.id)
+      SendDataSourceReportJob.perform_later(to: current_user.email, data_source_id: @data_source.id)
       redirect_back fallback_location: admin_data_source_path(@data_source), notice: "Data source report for #{@data_source.name} requested to be sent to #{current_user.email}"
     end
 

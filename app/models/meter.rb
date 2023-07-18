@@ -245,7 +245,7 @@ class Meter < ApplicationRecord
   end
 
   def open_issues_as_list
-    open_issues.map { |issue| issue&.description&.body&.to_plain_text }
+    open_issues.order(created_at: :asc).map { |issue| issue&.description&.body&.to_plain_text }
   end
 
   def open_issues
