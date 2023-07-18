@@ -43,12 +43,24 @@ class ActivityCreator
   end
 
   def add_programme_activity(programme)
-    #create programme_activity for this programme, associated with programme, activity_type and activity
-    #but not if there already is a record for this activity type, so just recording the first instance
+    # A ProgrammeType is a set of themed ActivityTypes, e.g. reduce your gas usage. Because an ActivityType
+    # can be in multiple ProgrammeTypes, there is a many-many association ProgrameTypeActivityType that links
+    # the two models.
+    #
+    # When a school signs up to complete a ProgrammeType we record that as a Programme. When they complete an
+    # ActivityType we record that as a new Activity.
+    #
+    # To track progress against completing the ProgrammeType we should only be associating the school's Programme
+    # with those Activities that are for ActivityTypes that are part of the programme. So we only create
+    # ProgrammeActivity records in that case.
+    return unless programme.programme_type.activity_types.pluck(:id).include?(@activity.activity_type.id)
+
+    # Create programme_activity for this programme, associated with programme, activity_type and activity
+    # but not if there already is a record for this activity type, so just recording the first instance
     if programme_activities(programme).empty?
       programme.programme_activities.create!(activity_type: @activity.activity_type, activity: @activity)
     else
-      # if programme activity already exists for this type, set the new activity
+      # If programme activity already exists for this type, set the new activity
       programme_activities(programme).last.update(activity: @activity)
     end
   end

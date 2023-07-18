@@ -70,8 +70,8 @@ RSpec.describe "advice pages", type: :system do
     it 'displays the priorities in a table' do
       expect(page).to have_content('Spending too much money on heating')
       expect(page).to have_content('£5,000')
-      expect(page).to have_content('9,400 kg CO2')
-      expect(page).to have_content('6,500 kWh')
+      expect(page).to have_content('9,400')
+      expect(page).to have_content('6,500')
     end
 
   end

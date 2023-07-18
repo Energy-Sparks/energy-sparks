@@ -12,6 +12,7 @@ class AmrReadingData
   WARNING_DUPLICATE_READING = 'Another reading exists for the same Mpan or MPRN for the same date'.freeze
 
   ERROR_UNABLE_TO_PARSE_FILE = 'Unable to parse the file'.freeze
+  ERROR_NO_VALID_READINGS = 'No valid readings in file'.freeze
 
   WARNINGS = {
     inconsistent_reading_date_format: WARNING_INCONSISTENT_DATE_FORMAT,
@@ -62,7 +63,7 @@ class AmrReadingData
 
   def any_valid_readings?
     if valid_reading_count == 0
-      errors.add(:reading_data, ERROR_UNABLE_TO_PARSE_FILE)
+      errors.add(:reading_data, ERROR_NO_VALID_READINGS)
     end
   end
 

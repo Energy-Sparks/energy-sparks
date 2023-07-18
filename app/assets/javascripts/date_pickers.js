@@ -8,6 +8,12 @@ $(document).ready(function() {
       allowInputToggle: true,
       locale: moment.locale()
     };
+
+    var allowInputToggle = date_picker.children('input').data('allowInputToggle');
+    if (allowInputToggle != null) {
+      options.allowInputToggle = allowInputToggle;
+    }
+
     var maxDate = date_picker.children('input').data('maxDate');
     if (maxDate) {
       options.maxDate = moment(new Date(maxDate));
