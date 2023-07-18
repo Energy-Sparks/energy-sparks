@@ -44,8 +44,6 @@
 #
 
 class Meter < ApplicationRecord
-  include CsvExportable
-
   belongs_to :school, inverse_of: :meters
   belongs_to :low_carbon_hub_installation, optional: true
   belongs_to :solar_edge_installation, optional: true
@@ -238,20 +236,20 @@ class Meter < ApplicationRecord
     consent_granted
   end
 
-  def self.csv_headers
-    ["School group", "School", "MPAN/MPRN", "Meter type", "Active", "First validated meter reading", "Last validated meter reading", "Admin Meter Status", "Open issues"]
-  end
-
-  def self.csv_attributes
-    %w{school.school_group.name school.name mpan_mprn meter_type.humanize active first_validated_reading last_validated_reading admin_meter_status_label open_issues_count}
-  end
-
   def smart_meter_tariff_attributes
     @smart_meter_tariff_attributes ||= Amr::AnalyticsTariffFactory.new(self).build
   end
 
   def open_issues_count
-    issues&.where(issue_type: "issue")&.status_open&.count
+    open_issues.count
+  end
+
+  def open_issues_as_list
+    open_issues.order(created_at: :asc).map { |issue| issue&.description&.body&.to_plain_text }
+  end
+
+  def open_issues
+    issues&.where(issue_type: "issue")&.status_open
   end
 
   private
