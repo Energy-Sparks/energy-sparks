@@ -28,7 +28,7 @@
     <%= render 'admin/issues/issueable', issueable: @data_source %>
     <span class="badge badge-info"><%= @data_source.organisation_type.try(:humanize) %></span>
     <span class='float-right'>
-      <%= link_to "#{fa_icon(:download)} Meters".html_safe, admin_data_source_path(@data_source, format: :csv) , class: 'btn btn-sm', title: "Download meters csv" %>
+      <%= render 'email_report_button', data_source: @data_source, class: 'btn btn-sm' %>
       <%= link_to 'Edit', edit_admin_data_source_path(@data_source), class: "btn btn-sm" %>
       <%= link_to 'Delete', admin_data_source_path(@data_source), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger" %>
     </span>
