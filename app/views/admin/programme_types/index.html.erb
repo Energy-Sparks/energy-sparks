@@ -31,6 +31,7 @@
           <tr>
             <th>Title</th>
             <th>Activities in Programme</th>
+            <th>Bonus score</th>
             <th>Schools enrolled</th>
             <th>Schools completed</th>
             <th>Active</th>
@@ -45,6 +46,7 @@
             <tr>
               <td><%= link_to programme_type.title, admin_programme_type_path(programme_type) %></td>
               <td><%= programme_type.activity_types.count %></td>
+              <td><%= programme_type.bonus_score %></td>
               <td><%= link_to programme_type.programmes.started.count, admin_programme_type_programmes_path(programme_type) %></td>
               <td><%= programme_type.programmes.completed.count %></td>
               <td><%= checkmark(programme_type.active) %></td>

@@ -37,6 +37,8 @@
     <%= f.input t_field(:document_link, locale), label: ProgrammeType.human_attribute_name(:document_link), as: :string %>
   <% end %>
 
+  <%= f.input :bonus_score %>
+
   <%= f.input :active %>
   <%= f.input :default %>
 
