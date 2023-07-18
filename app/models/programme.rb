@@ -32,6 +32,12 @@ class Programme < ApplicationRecord
     event :complete do
       after do
         self.update(ended_on: Time.zone.now)
+        Observation.create!(
+          school: school,
+          observation_type: :programme,
+          at: Time.zone.now,
+          points: programme_type.bonus_score
+        )
       end
       transition :started => :completed
     end

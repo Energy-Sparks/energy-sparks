@@ -42,7 +42,7 @@ class Observation < ApplicationRecord
   belongs_to :activity, optional: true
   belongs_to :audit, optional: true
   belongs_to :school_target, optional: true
-  enum observation_type: [:temperature, :intervention, :activity, :event, :audit, :school_target]
+  enum observation_type: [:temperature, :intervention, :activity, :event, :audit, :school_target, :programme]
 
   validates_presence_of :at, :school
   validates_associated :temperature_recordings
