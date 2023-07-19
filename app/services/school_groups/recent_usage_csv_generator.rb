@@ -1,6 +1,6 @@
 module SchoolGroups
   class RecentUsageCsvGenerator
-    METRICS_HEADERS = [:change, :usage, :cost, :co2].freeze
+    METRIC_HEADERS = [:change, :usage, :cost, :co2].freeze
     METRICS = [:change, :usage, :cost_text, :co2].freeze
 
     def initialize(school_group:, include_cluster: false)
