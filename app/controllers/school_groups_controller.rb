@@ -60,9 +60,9 @@ class SchoolGroupsController < ApplicationController
 
   private
 
-  def csv_filename_for(action, metric_label: '')
+  def csv_filename_for(action)
     title = I18n.t("school_groups.titles.#{action}")
-    "#{@school_group.name}-#{title}-#{metric_label}#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+    "#{@school_group.name}-#{title}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
   end
 
   def priority_actions_csv
@@ -134,10 +134,8 @@ class SchoolGroupsController < ApplicationController
           render 'recent_usage'
         end
         format.csv do
-          metric = params['metric'] || 'change'
-          metric_label = I18n.t("school_groups.show.metric.#{metric}") + '-'
-          send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group, metric: metric, include_cluster: include_cluster).export,
-          filename: csv_filename_for('recent_usage', metric_label: metric_label)
+          send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group, include_cluster: include_cluster).export,
+          filename: csv_filename_for('recent_usage')
         end
       end
     else
