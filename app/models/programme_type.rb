@@ -36,7 +36,7 @@ class ProgrammeType < ApplicationRecord
   scope :featured, -> { active.default_first.by_title }
 
   validates_presence_of :title
-
+  validates :bonus_score, numericality: { greater_than_or_equal_to: 0 }
   validates_uniqueness_of :default, if: :default
 
   accepts_nested_attributes_for :programme_type_activity_types, reject_if: proc {|attributes| attributes['position'].blank? }

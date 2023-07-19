@@ -9,6 +9,13 @@ RSpec.describe ProgrammeType, type: :model do
     expect( ProgrammeType.tx_resources ).to match_array([programme_type_1])
   end
 
+  it 'has a valid bonus score that is equal to or greater than zero' do
+    expect(ProgrammeType.new(active: true, title: 'one', bonus_score: 0)).to be_valid
+    expect(ProgrammeType.new(active: true, title: 'one', bonus_score: 100)).to be_valid
+    expect(ProgrammeType.new(active: true, title: 'one', bonus_score: -1)).not_to be_valid
+    expect(ProgrammeType.new(active: true, title: 'one', bonus_score: nil)).not_to be_valid
+  end
+
   context "#document_link" do
     before :each do
       programme_type_1.update(document_link: 'en-doc')
