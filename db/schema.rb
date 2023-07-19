@@ -854,13 +854,13 @@ ActiveRecord::Schema.define(version: 2023_07_19_141228) do
     t.index ["replaced_by_id"], name: "index_global_meter_attributes_on_replaced_by_id"
   end
 
-  create_table "good_job_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_processes", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "state"
   end
 
-  create_table "good_job_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_settings", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "key"
@@ -868,7 +868,7 @@ ActiveRecord::Schema.define(version: 2023_07_19_141228) do
     t.index ["key"], name: "index_good_job_settings_on_key", unique: true
   end
 
-  create_table "good_jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_jobs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.text "queue_name"
     t.integer "priority"
     t.jsonb "serialized_params"
@@ -1168,9 +1168,11 @@ ActiveRecord::Schema.define(version: 2023_07_19_141228) do
     t.bigint "audit_id"
     t.boolean "involved_pupils", default: false, null: false
     t.bigint "school_target_id"
+    t.bigint "programme_id"
     t.index ["activity_id"], name: "index_observations_on_activity_id"
     t.index ["audit_id"], name: "index_observations_on_audit_id"
     t.index ["intervention_type_id"], name: "index_observations_on_intervention_type_id"
+    t.index ["programme_id"], name: "index_observations_on_programme_id"
     t.index ["school_id"], name: "index_observations_on_school_id"
     t.index ["school_target_id"], name: "index_observations_on_school_target_id"
   end
@@ -1222,6 +1224,7 @@ ActiveRecord::Schema.define(version: 2023_07_19_141228) do
     t.boolean "default", default: false
     t.datetime "created_at", precision: 6, default: "2022-07-06 12:00:00", null: false
     t.datetime "updated_at", precision: 6, default: "2022-07-06 12:00:00", null: false
+    t.integer "bonus_score", default: 0
   end
 
   create_table "programmes", force: :cascade do |t|
@@ -1983,6 +1986,7 @@ ActiveRecord::Schema.define(version: 2023_07_19_141228) do
   add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "audits"
   add_foreign_key "observations", "intervention_types", on_delete: :restrict
+  add_foreign_key "observations", "programmes", on_delete: :cascade
   add_foreign_key "observations", "school_targets"
   add_foreign_key "observations", "schools", on_delete: :cascade
   add_foreign_key "programmes", "programme_types", on_delete: :cascade

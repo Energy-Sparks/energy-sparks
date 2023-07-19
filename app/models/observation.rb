@@ -66,7 +66,11 @@ class Observation < ApplicationRecord
 
   before_save :add_points_for_interventions
 
-private
+  def description_includes_images?
+    description.body.to_trix_html.include?("figure")
+  end
+
+  private
 
   def add_points_for_interventions
     if intervention?
