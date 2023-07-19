@@ -55,7 +55,7 @@ Rails.application.configure do
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
-  # Note: may need to set this to false if there are asset pipeline issues when testing mailers
+  # Note: you may need to set this to false if there are asset pipeline issues when testing mailers
   config.assets.debug = true
 
   # Suppress logger output for asset requests.
