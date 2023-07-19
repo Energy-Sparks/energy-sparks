@@ -55,7 +55,7 @@ Rails.application.configure do
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
-  config.assets.debug = true
+  config.assets.debug = false
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
@@ -86,7 +86,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
-  config.action_mailer.asset_host = ENV.fetch('ASSET_HOST'){ "http://#{ENV['APPLICATION_HOST']}" }
+  config.action_mailer.asset_host = 'localhost:3000'
 
   config.mailchimp_client = MailchimpMarketing::Client.new({ api_key: ENV['MAILCHIMP_API_KEY'], server: ENV['MAILCHIMP_SERVER'] })
 

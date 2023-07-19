@@ -490,6 +490,7 @@ Rails.application.routes.draw do
     resources :prob_data_reports
     resources :procurement_routes
     resources :data_sources do
+      post :deliver
       scope module: :data_sources do
         concerns :issueable
       end

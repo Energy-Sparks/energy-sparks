@@ -8,7 +8,8 @@ module Amr
       if current_range && current_range.first <= start
         start = current_range.last
       end
-      start
+
+      start.change({ hour: 0, min: 0, sec: 0 })
     end
 
     def self.end_date(available_range)
@@ -16,11 +17,11 @@ module Amr
     end
 
     def self.default_start_date
-      Time.zone.today - 13.months
+      (DateTime.now - 13.months).change({ hour: 0, min: 0, sec: 0 })
     end
 
     def self.default_end_date
-      Time.zone.today - 1
+      (DateTime.now - 1).change({ hour: 23, min: 30, sec: 0 })
     end
   end
 end
