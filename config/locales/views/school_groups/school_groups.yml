@@ -198,7 +198,7 @@ en:
       if_you_would_like_support_enrol_here_html: If you would like Energy Sparks to support your school to reduce its carbon emissions, enrol <a href='%{enrol_path}'>here</a>
       in_partnership_with: in partnership with
       metric:
-        change: "% change"
+        change: "% Change"
         co2: CO2 (kg)
         cost: Cost (£)
         usage: Use (kWh)
