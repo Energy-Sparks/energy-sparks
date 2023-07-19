@@ -1222,7 +1222,6 @@ ActiveRecord::Schema.define(version: 2023_07_19_091407) do
     t.boolean "default", default: false
     t.datetime "created_at", precision: 6, default: "2022-07-06 12:00:00", null: false
     t.datetime "updated_at", precision: 6, default: "2022-07-06 12:00:00", null: false
-    t.integer "bonus_score", default: 0
   end
 
   create_table "programmes", force: :cascade do |t|
