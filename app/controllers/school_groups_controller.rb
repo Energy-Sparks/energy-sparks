@@ -62,7 +62,7 @@ class SchoolGroupsController < ApplicationController
 
   def csv_filename_for(action)
     title = I18n.t("school_groups.titles.#{action}")
-    "#{@school_group.name}-#{title}#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+    "#{@school_group.name}-#{title}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
   end
 
   def priority_actions_csv
