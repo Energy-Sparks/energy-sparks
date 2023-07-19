@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 2023_07_19_141228) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "activity_category_id"
+    t.integer "pupil_count"
     t.index ["activity_category_id"], name: "index_activities_on_activity_category_id"
     t.index ["activity_type_id"], name: "index_activities_on_activity_type_id"
     t.index ["school_id"], name: "index_activities_on_school_id"

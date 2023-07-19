@@ -18,6 +18,7 @@
 #  alternative_heating_oil_notes                :text
 #  alternative_heating_oil_percent              :integer          default(0)
 #  bill_requested                               :boolean          default(FALSE)
+#  bill_requested_at                            :datetime
 #  calendar_id                                  :bigint(8)
 #  chart_preference                             :integer          default("default"), not null
 #  cooks_dinners_for_other_schools              :boolean          default(FALSE), not null
@@ -47,6 +48,7 @@
 #  public                                       :boolean          default(TRUE)
 #  region                                       :integer
 #  removal_date                                 :date
+#  school_group_cluster_id                      :bigint(8)
 #  school_group_id                              :bigint(8)
 #  school_type                                  :integer          not null
 #  scoreboard_id                                :bigint(8)
@@ -67,6 +69,7 @@
 #  index_schools_on_calendar_id              (calendar_id)
 #  index_schools_on_latitude_and_longitude   (latitude,longitude)
 #  index_schools_on_local_authority_area_id  (local_authority_area_id)
+#  index_schools_on_school_group_cluster_id  (school_group_cluster_id)
 #  index_schools_on_school_group_id          (school_group_id)
 #  index_schools_on_scoreboard_id            (scoreboard_id)
 #  index_schools_on_urn                      (urn) UNIQUE
@@ -74,6 +77,7 @@
 # Foreign Keys
 #
 #  fk_rails_...  (calendar_id => calendars.id) ON DELETE => restrict
+#  fk_rails_...  (school_group_cluster_id => school_group_clusters.id) ON DELETE => nullify
 #  fk_rails_...  (school_group_id => school_groups.id) ON DELETE => restrict
 #  fk_rails_...  (scoreboard_id => scoreboards.id) ON DELETE => nullify
 #
