@@ -73,7 +73,7 @@ class ActivitiesController < ApplicationController
 private
 
   def activity_params
-    params.require(:activity).permit(:school_id, :activity_type_id, :title, :description, :happened_on, :content, :pupil_count)
+    params.require(:activity).permit(:school_id, :activity_type_id, :title, :description, :happened_on, :content)
   end
 
   def load_suggested_activities(school)
