@@ -36,7 +36,8 @@ class Programme < ApplicationRecord
           school: school,
           observation_type: :programme,
           at: Time.zone.now,
-          points: programme_type.bonus_score
+          points: programme_type.bonus_score,
+          programme_id: id
         )
       end
       transition :started => :completed

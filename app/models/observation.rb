@@ -12,6 +12,7 @@
 #  involved_pupils      :boolean          default(FALSE), not null
 #  observation_type     :integer          not null
 #  points               :integer
+#  programme_id         :bigint(8)
 #  school_id            :bigint(8)        not null
 #  school_target_id     :bigint(8)
 #  updated_at           :datetime         not null
@@ -22,6 +23,7 @@
 #  index_observations_on_activity_id           (activity_id)
 #  index_observations_on_audit_id              (audit_id)
 #  index_observations_on_intervention_type_id  (intervention_type_id)
+#  index_observations_on_programme_id          (programme_id)
 #  index_observations_on_school_id             (school_id)
 #  index_observations_on_school_target_id      (school_target_id)
 #
@@ -30,6 +32,7 @@
 #  fk_rails_...  (activity_id => activities.id) ON DELETE => nullify
 #  fk_rails_...  (audit_id => audits.id)
 #  fk_rails_...  (intervention_type_id => intervention_types.id) ON DELETE => restrict
+#  fk_rails_...  (programme_id => programmes.id) ON DELETE => cascade
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (school_target_id => school_targets.id)
 #
@@ -40,6 +43,7 @@ class Observation < ApplicationRecord
   has_many   :locations, through: :temperature_recordings
   belongs_to :intervention_type, optional: true
   belongs_to :activity, optional: true
+  belongs_to :programme, optional: true
   belongs_to :audit, optional: true
   belongs_to :school_target, optional: true
   enum observation_type: [:temperature, :intervention, :activity, :event, :audit, :school_target, :programme]
@@ -49,6 +53,7 @@ class Observation < ApplicationRecord
 
   validates :intervention_type_id, presence: { message: 'please select an option' }, if: :intervention?
   validates :activity_id, presence: true, if: :activity?
+  validates :programme_id, presence: true, if: :programme?
   validates :audit_id, presence: true, if: :audit?
   validates :school_target_id, presence: true, if: :school_target?
 

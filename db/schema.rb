@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_18_150104) do
+ActiveRecord::Schema.define(version: 2023_07_19_095513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1167,9 +1167,11 @@ ActiveRecord::Schema.define(version: 2023_07_18_150104) do
     t.bigint "audit_id"
     t.boolean "involved_pupils", default: false, null: false
     t.bigint "school_target_id"
+    t.bigint "programme_id"
     t.index ["activity_id"], name: "index_observations_on_activity_id"
     t.index ["audit_id"], name: "index_observations_on_audit_id"
     t.index ["intervention_type_id"], name: "index_observations_on_intervention_type_id"
+    t.index ["programme_id"], name: "index_observations_on_programme_id"
     t.index ["school_id"], name: "index_observations_on_school_id"
     t.index ["school_target_id"], name: "index_observations_on_school_target_id"
   end
@@ -1982,6 +1984,7 @@ ActiveRecord::Schema.define(version: 2023_07_18_150104) do
   add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "audits"
   add_foreign_key "observations", "intervention_types", on_delete: :restrict
+  add_foreign_key "observations", "programmes", on_delete: :cascade
   add_foreign_key "observations", "school_targets"
   add_foreign_key "observations", "schools", on_delete: :cascade
   add_foreign_key "programmes", "programme_types", on_delete: :cascade
