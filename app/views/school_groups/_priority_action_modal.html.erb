@@ -10,8 +10,13 @@
   <%= link_to t('school_groups.download_as_csv'), priority_actions_school_group_path(@school_group, format: :csv, alert_type_rating_ids: [alert_type_rating.id]), class: 'btn btn-sm btn-outline-dark rounded-pill font-weight-bold', id: 'download-priority-actions-school-csv' %>
 </div>
 
-<table class="table table-borderless table-sorted advice-table advice-priority-table">
+<table class="table table-borderless table-sorted advice-table advice-priority-table" style="width: 100%;">
   <thead>
+    <tr>
+      <th class="no-sort" colspan="<%= can?(:update_settings, @school_group) ? '2' : '1' %>"></th>
+      <th class="no-sort text-center" colspan="3"><%= t('advice_pages.index.priorities.table.columns.savings') %></th>
+      <th class="no-sort" colspan="1"></th>
+    </tr>
     <tr>
       <th><%= t('common.school') %></th>
       <% if can?(:update_settings, @school_group) %>
