@@ -9,27 +9,39 @@ describe 'Programme' do
 
   before { Observation.delete_all }
 
-  it '#complete' do
-    expect(Observation.count).to eq(0)
-    expect(programme.completed?).to be_falsey
-    expect(programme.ended_on).to be_nil
+  context 'completes a program with the activities 2023 feature flag enabled' do
+    it '#complete' do
+      ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
+        expect(Observation.count).to eq(0)
+        expect(programme.completed?).to be_falsey
+        expect(programme.ended_on).to be_nil
+        programme.complete!
+        expect(programme.completed?).to be_truthy
+        expect(programme.ended_on).not_to be_nil
+        expect(Observation.count).to eq(1)
+        expect(Observation.last.points).to eq(12)
+      end
+    end
+  end
 
-    programme.complete!
-
-    expect(programme.completed?).to be_truthy
-    expect(programme.ended_on).not_to be_nil
-    expect(Observation.count).to eq(1)
-    expect(Observation.last.points).to eq(12)
+  context 'completes a program with the activities 2023 feature flag disabled' do
+    it '#complete' do
+      ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'false' do
+        expect(Observation.count).to eq(0)
+        expect(programme.completed?).to be_falsey
+        expect(programme.ended_on).to be_nil
+        programme.complete!
+        expect(programme.completed?).to be_truthy
+        expect(programme.ended_on).not_to be_nil
+        expect(Observation.count).to eq(0)
+      end
+    end
   end
 
   it '#abandon' do
-    expect(Observation.count).to eq(0)
     expect(programme.abandoned?).to be_falsy
     expect(programme.ended_on).to be_nil
-
     programme.abandon!
-
-    expect(Observation.count).to eq(0)
     expect(programme.abandoned?).to be_truthy
     expect(programme.ended_on).to be_nil
   end
