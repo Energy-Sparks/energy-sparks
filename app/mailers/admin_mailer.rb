@@ -25,7 +25,7 @@ class AdminMailer < ApplicationMailer
 
   def issues_report
     @user = params[:user]
-    @issues = Issue.for_owned_by(@user).status_open.issue.by_created_at.includes([:created_by, :issueable])
+    @issues = Issue.for_owned_by(@user).status_open.issue.by_updated_at.includes([:created_by, :updated_by, :issueable])
     title = "Issue report for #{@user.display_name}"
 
     if @issues.any?
@@ -45,16 +45,18 @@ class AdminMailer < ApplicationMailer
 
   def build_issues_csv_for(issues)
     CSV.generate(headers: true) do |csv|
-      csv << ['Issue type', 'Issue for', '', 'Title', 'Fuel', 'Created By', 'Created', 'Updated', 'View', 'Edit']
+      csv << ['Issue type', 'Issue for', '', 'Group', 'Title', 'Fuel', 'Created By', 'Created', 'Updated By', 'Updated', 'View', 'Edit']
       issues.each do |issue|
         csv << [
           issue.issue_type,
           issue&.issueable&.name,
           issue.created_at > 1.week.ago ? 'New this week!' : '',
+          issue&.school_group&.name,
           issue.title,
           issue.fuel_type&.humanize,
           issue.created_by.display_name,
           issue.created_at.strftime('%d/%m/%Y'),
+          issue.updated_by.display_name,
           issue.updated_at.strftime('%d/%m/%Y'),
           polymorphic_url([:admin, issue.issueable, issue]),
           edit_polymorphic_url([:admin, @issueable, issue])
