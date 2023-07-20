@@ -64,25 +64,31 @@ class Observation < ApplicationRecord
 
   has_rich_text :description
 
-  before_save :add_points_for_interventions
-  before_save :add_points_for_included_images
-
-  def description_includes_images?
-    description.body.to_trix_html.include?("figure")
-  end
+  before_save :add_points_for_interventions, if: :intervention?
+  before_save :add_points_for_included_images, if: proc { |observation| observation.activity? || observation.intervention? }
 
   private
 
   def add_points_for_included_images
-    self.points = self.points + SiteSettings.current.photo_bonus_points
+    # Do not add points if site wide photo bonus points are set to nil or zero
+    return unless SiteSettings.current.photo_bonus_points&.nonzero?
+    return unless description_includes_images?
+
+    self.points = (self.points || 0) + SiteSettings.current.photo_bonus_points
+  end
+
+  def description_includes_images?
+    if intervention?
+      description&.body&.to_trix_html&.include?("figure")
+    elsif activity?
+      description&.body&.to_trix_html&.include?("figure") || activity.description_includes_images?
+    end
   end
 
   def add_points_for_interventions
-    if intervention?
-      academic_year = school.academic_year_for(at)
-      if academic_year&.current? && involved_pupils?
-        self.points = intervention_type.score
-      end
+    academic_year = school.academic_year_for(at)
+    if academic_year&.current? && involved_pupils?
+      self.points = intervention_type.score
     end
   end
 

@@ -5,6 +5,8 @@ describe Observation do
   let(:school_name) { 'Active school'}
   let!(:school)     { create(:school, name: school_name) }
 
+  before { SiteSettings.current.update(photo_bonus_points: 0) }
+
   describe '#recorded_in_last_week' do
     let(:observation_too_old)      { create(:observation, observation_type: :temperature) }
     let(:observation_last_week_1)  { create(:observation, observation_type: :temperature) }
@@ -21,8 +23,48 @@ describe Observation do
     end
   end
 
+  context 'activities' do
+    it 'adds points if an activity has an image in its activity description' do
+      activity = create(:activity, description: "<div><figure></figure></div>")
+      SiteSettings.current.update(photo_bonus_points: 15)
+      observation = build(:observation, observation_type: :activity, activity: activity)
+      observation.save
+      expect(observation.points).to eq(15)
+    end
+
+    it 'adds points if an activity has an image in its observation description' do
+      activity = create(:activity, description: "<div></div>")
+      SiteSettings.current.update(photo_bonus_points: 15)
+      observation = build(:observation, observation_type: :activity, activity: activity, description: "<div><figure></figure></div>")
+      observation.save
+      expect(observation.points).to eq(15)
+    end
+
+    it 'does not add points if an activity has no image in its activity or observation description' do
+      activity = create(:activity, description: "<div></div>")
+      SiteSettings.current.update(photo_bonus_points: 15)
+      observation = build(:observation, observation_type: :activity, activity: activity, description: "<div></div>")
+      observation.save
+      expect(observation.points).to eq(nil)
+    end
+  end
+
   context 'interventions' do
     let!(:intervention_type){ create(:intervention_type, score: 50) }
+
+    it 'adds points if an intervention has an image in its description' do
+      SiteSettings.current.update(photo_bonus_points: 25)
+      observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, involved_pupils: false, description: "<div><figure></figure></div>")
+      observation.save
+      expect(observation.points).to eq(25)
+    end
+
+    it 'adds no points if an intervention has no image in its description' do
+      SiteSettings.current.update(photo_bonus_points: 25)
+      observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, involved_pupils: false, description: "<div></div>")
+      observation.save
+      expect(observation.points).to eq(nil)
+    end
 
     it 'only adds points automatically if its an intervention' do
       observation = build(:observation, observation_type: :temperature, involved_pupils: true)
