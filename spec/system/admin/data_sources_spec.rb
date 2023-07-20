@@ -181,25 +181,8 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             end
           end
 
-          it "has a download meters button" do
-            expect(page).to have_link('Meters')
-          end
-
-          describe "Downloading meters csv" do
-            before do
-              Timecop.freeze
-              click_on 'Meters'
-            end
-            after { Timecop.return }
-            it "shows csv contents" do
-              expect(page.body).to eq existing_data_source.meters.to_csv
-            end
-            it "has csv content type" do
-              expect(response_headers['Content-Type']).to eq 'text/csv'
-            end
-            it "has expected file name" do
-              expect(response_headers['Content-Disposition']).to include("energy-sparks-#{existing_data_source.name}-meters-#{Time.zone.now.iso8601}".parameterize + '.csv')
-            end
+          it "has a download email data source report button" do
+            expect(page).to have_button('Email Data Source Report')
           end
         end
       end

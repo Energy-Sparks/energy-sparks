@@ -51,8 +51,8 @@ en:
       school_comparisons: School comparisons
       school_comparisons_introduction_html: |-
         <p>School comparisons are based on benchmarking your school against comparable schools based on the characteristics outlined below.</p>
-        <p>"Exemplar" schools represent the top 17.5% of Energy Sparks schools</p>
-        <p>"Well managed" schools represent the top 30% of Energy Sparks schools</p>
+        <p>"<strong>Exemplar</strong>" schools represent the top 17.5% of Energy Sparks schools</p>
+        <p>"<strong>Well managed</strong>" schools represent the top 30% of Energy Sparks schools</p>
       total_energy_use_table:
         columns:
           aggregated_meter_date_range: Meter date range

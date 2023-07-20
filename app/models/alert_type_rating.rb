@@ -91,8 +91,19 @@ class AlertTypeRating < ApplicationRecord
     intervention_types.order('alert_type_rating_intervention_types.position').group('intervention_types.id, alert_type_rating_intervention_types.position')
   end
 
+  def priority_action_modal_text?
+    I18n.t('school_groups.priority_actions.alert_types').key?("#{alert_type_class_key}_html".to_sym)
+  end
+
+  def priority_action_modal_text
+    I18n.t("school_groups.priority_actions.alert_types.#{alert_type_class_key}_html")
+  end
 
 private
+
+  def alert_type_class_key
+    alert_type.class_name.underscore
+  end
 
   def save_and_replace(content, to_replace)
     transaction do

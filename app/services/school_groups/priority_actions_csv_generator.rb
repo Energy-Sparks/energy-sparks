@@ -14,9 +14,9 @@ module SchoolGroups
           row << alert_type_rating.alert_type&.fuel_type&.humanize
           row << alert_type_rating&.current_content&.management_priorities_title&.to_plain_text
           row << savings.schools&.length
-          row << ApplicationController.helpers.format_unit(savings&.one_year_saving_kwh, Float) + ' kWh'
+          row << ApplicationController.helpers.format_unit(savings&.one_year_saving_kwh, Float)
           row << '£' + ApplicationController.helpers.format_unit(savings&.average_one_year_saving_gbp, Float)
-          row << ApplicationController.helpers.format_unit(savings&.one_year_saving_co2, Float) + ' kg CO2'
+          row << ApplicationController.helpers.format_unit(savings&.one_year_saving_co2, Float)
 
           csv << row
         end
