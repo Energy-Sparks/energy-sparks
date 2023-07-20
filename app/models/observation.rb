@@ -70,6 +70,7 @@ class Observation < ApplicationRecord
   private
 
   def add_points_for_included_images
+    return unless EnergySparks::FeatureFlags.active?(:activities_2023)
     # Do not add points if site wide photo bonus points are set to nil or zero
     return unless SiteSettings.current.photo_bonus_points&.nonzero?
     return unless description_includes_images?
