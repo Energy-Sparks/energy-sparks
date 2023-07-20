@@ -65,12 +65,17 @@ class Observation < ApplicationRecord
   has_rich_text :description
 
   before_save :add_points_for_interventions
+  before_save :add_points_for_included_images
 
   def description_includes_images?
     description.body.to_trix_html.include?("figure")
   end
 
   private
+
+  def add_points_for_included_images
+    self.points = self.points + SiteSettings.current.photo_bonus_points
+  end
 
   def add_points_for_interventions
     if intervention?
