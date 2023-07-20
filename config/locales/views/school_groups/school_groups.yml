@@ -90,6 +90,9 @@ en:
       alert_types:
         alert_electricity_annual_versus_benchmark_html: |-
           <p>
+          Understanding how a school's energy use matches up with other schools of a similar size and how much energy could be saved each year is a good place to start.
+          </p>
+          <p>
           These savings are based on comparing electricity usage over the last 12 months against the best performing schools.
           </p>
         alert_electricity_baseload_versus_benchmark_html: |-
@@ -109,15 +112,17 @@ en:
           </p>
         alert_gas_annual_versus_benchmark_html: |-
           <p>
+          Understanding how a school's energy use matches up with other schools of a similar size and how much energy could be saved each year is a good place to start.
+          </p>
+          <p>
           These savings are based on comparing gas usage over the last 12 months against the best performing schools.
           </p>
         alert_heating_coming_on_too_early_html: |-
           <p>
-          These savings are based on changing the average morning start time for heating in each school. So that the
-          heating comes on later each day to minimise waste outside of school hours.
+          Getting the heating control right for your schools can save money and carbon very quickly as well as improving the learning environment for students.
           </p>
           <p>
-          Getting the heating control right for your schools can save money and carbon very quickly as well as improving the learning environment for students.
+          These savings are based on changing the average morning start time for heating in each school. So that the heating comes on later each day to minimise waste outside of school hours.
           </p>
         alert_heating_sensitivity_advice_html: |-
           <p>
@@ -146,7 +151,7 @@ en:
           </p>
         alert_seasonal_heating_school_days_html: |-
           <p>
-            Turning the boiler off in warm weather, for example earlier in the Spring and later in the Winter, can
+            Turning the boiler off in warm weather, for example earlier in the spring and later in the winter, can
             reduce gas usage.
           </p>
           <p>
@@ -155,7 +160,7 @@ en:
           </p>
         alert_seasonal_heating_school_days_storage_heaters_html: |-
           <p>
-            Turning the heating off in warm weather, for example earlier in the Spring and later in the Winter, can
+            Turning the heating off in warm weather, for example earlier in the spring and later in the winter, can
             reduce gas usage.
           </p>
           <p>
@@ -164,10 +169,10 @@ en:
           </p>
         alert_solar_pv_benefit_estimator_html: |-
           <p>
-          These savings are based on the estimated annual savings in energy use if solar panels were installed in these schools.
+          Solar PV works well at schools as peak output from the panels around midday coincides with peak consumption at your school. Schools are now seeing a return on their investment within five to ten years.
           </p>
           <p>
-          The savings do not include capital costs. View the analysis for individual schools for more information on our estimates.
+          These savings are based on the estimated annual savings in energy use if solar panels were installed in these schools. Savings do not include capital costs. View the analysis for individual schools for more information on our estimates, including capital costs and payback periods.
           </p>
         alert_thermostatic_control_html: |-
           <p>
@@ -175,7 +180,7 @@ en:
           </p>
           <p>
             These savings are based on improving the thermostatic control in schools, to use less gas when the weather is warmer. This
-            can checking thermostats or configuring weather compensation settings on boilers.
+            could be by checking thermostats or configuring weather compensation settings on boilers.
           </p>
       intro_html: |-
         <p>We carry out daily analysis for all schools to identify the areas where there are the biggest opportunities to reduce costs and carbon emissions.</p>
@@ -193,7 +198,7 @@ en:
       if_you_would_like_support_enrol_here_html: If you would like Energy Sparks to support your school to reduce its carbon emissions, enrol <a href='%{enrol_path}'>here</a>
       in_partnership_with: in partnership with
       metric:
-        change: "% change"
+        change: "% Change"
         co2: CO2 (kg)
         cost: Cost (£)
         usage: Use (kWh)

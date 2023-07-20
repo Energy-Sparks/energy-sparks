@@ -1,22 +1,44 @@
 RSpec.shared_context "school group recent usage" do
   before do
     allow_any_instance_of(SchoolGroup).to receive(:fuel_types) { [:electricity, :gas, :storage_heaters] }
-    changes = OpenStruct.new(
+    electricity_changes = OpenStruct.new(
       change: "-16%",
       usage: '910',
       cost: '£137',
       co2: '8,540',
       change_text: "-16%",
       usage_text: '910',
-      cost_text: '£137',
+      cost_text: '137',
       co2_text: '8,540',
+      has_data: true
+    )
+    gas_changes = OpenStruct.new(
+      change: "-5%",
+      usage: '500',
+      cost: '£200',
+      co2: '4,000',
+      change_text: "-5%",
+      usage_text: '500',
+      cost_text: '200',
+      co2_text: '4,000',
+      has_data: true
+    )
+    storage_heater_changes = OpenStruct.new(
+      change: "-12%",
+      usage: '312',
+      cost: '£111',
+      co2: '1,111',
+      change_text: "-12%",
+      usage_text: '312',
+      cost_text: '111',
+      co2_text: '1,111',
       has_data: true
     )
     allow_any_instance_of(School).to receive(:recent_usage) do
       OpenStruct.new(
-        electricity: OpenStruct.new(week: changes, year: changes),
-        gas: OpenStruct.new(week: changes, year: changes),
-        storage_heaters: OpenStruct.new(week: changes, year: changes)
+        electricity: OpenStruct.new(week: electricity_changes, year: electricity_changes),
+        gas: OpenStruct.new(week: gas_changes, year: gas_changes),
+        storage_heaters: OpenStruct.new(week: storage_heater_changes, year: storage_heater_changes)
       )
     end
   end
