@@ -6,10 +6,12 @@
       <th></th>
       <th>Issue for</th>
       <th></th>
+      <th>Group</th>
       <th>Title</th>
       <th>Fuel</th>
       <th>Created By</th>
       <th>Created</th>
+      <th>Updated By</th>
       <th>Updated</th>
       <th colspan="2"></th>
     </tr>
@@ -24,7 +26,8 @@
             <span class="badge bg-danger rounded text-white" title="New this week!">new!</span>
           <% end %>
         </td>
-        <td width="100%" class="overflow">
+        <td><%= link_to issue.school_group.try(:name), admin_school_group_url(issue.school_group) if issue.school_group %></td>
+        <td style="min-width: 100px;" class="overflow">
           <span title="<%= issue.title %>" data-toggle="tooltip"><%= issue.title %></span>
         </td>
         <td>
@@ -32,6 +35,7 @@
         </td>
         <td><%= issue.created_by.display_name %></td>
         <td><div class="badge bg-white rounded-full text-dark font-weight-normal nowrap"><%= nice_date_times(issue.created_at) %></div></td>
+        <td><%= issue.updated_by.display_name %></td>
         <td><div class="badge bg-white rounded-full text-dark font-weight-normal nowrap"><%= nice_date_times(issue.updated_at) %></div></td>
         <td>
           <%= link_to 'View', polymorphic_url([:admin, issue.issueable, issue]), class: "btn btn-sm" %>

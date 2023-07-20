@@ -18,70 +18,46 @@ RSpec.describe SchoolGroups::RecentUsageCsvGenerator do
     end
   end
 
-  let(:metric)          { }
   let(:include_cluster) { false }
-  let(:params_full)     { { school_group: school_group.reload, include_cluster: include_cluster, metric: metric } }
+  let(:params_full)     { { school_group: school_group.reload, include_cluster: include_cluster } }
   let(:params)  { params_full }
 
   subject(:csv) { SchoolGroups::RecentUsageCsvGenerator.new(**params).export }
 
   context "returning data" do
-    context "with no metric" do
-      let(:params) { params_full.except(:metric) }
-      it "returns change data as a csv for all schools in a school group" do
-        expect(csv.lines.count).to eq(3)
-        expect(csv.lines[0]).to eq("School,Number of pupils,Floor area (m2),Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n")
-        expect(csv.lines[1]).to eq("#{school_group.schools.first.name},10,,-16%,-16%,-16%,-16%,-16%,-16%\n")
-        expect(csv.lines[2]).to eq("#{school_group.schools.second.name},20,300.0,-16%,-16%,-16%,-16%,-16%,-16%\n")
-      end
-      it_behaves_like "a school group recent usage csv including cluster"
-    end
+    it "returns data as a csv for all schools in a school group" do
+      expect(csv.lines.count).to eq(3)
 
-    context "with metric set to change" do
-      let(:metric) { 'change' }
-      it "returns change data as a csv for all schools in a school group" do
-        expect(csv.lines.count).to eq(3)
-        expect(csv.lines[0]).to eq("School,Number of pupils,Floor area (m2),Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n")
-        expect(csv.lines[1]).to eq("#{school_group.schools.first.name},10,,-16%,-16%,-16%,-16%,-16%,-16%\n")
-        expect(csv.lines[2]).to eq("#{school_group.schools.second.name},20,300.0,-16%,-16%,-16%,-16%,-16%,-16%\n")
+      fuel_type_columns = []
+      ["Electricity", "Gas", "Storage heaters"].each do |fuel_type|
+        ["Last week", "Last year"].each do |period|
+          ["% Change", "Use (kWh)", "Cost (£)", "CO2 (kg)"].each do |metric|
+            fuel_type_columns << "#{fuel_type} #{metric} #{period}"
+          end
+        end
       end
-      it_behaves_like "a school group recent usage csv including cluster"
-    end
+      expected_headers = ["School", "Number of pupils", "Floor area (m2)"] + fuel_type_columns
+      expect(CSV.parse_line(csv.lines[0])).to eq(expected_headers)
 
-    context "with metric set to usage" do
-      let(:metric) { 'usage' }
-      it 'returns usage data as a csv for all schools in a school group' do
-        expect(csv.lines.count).to eq(3)
-        expect(csv.lines[0]).to eq("School,Number of pupils,Floor area (m2),Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n")
-        expect(csv.lines[1]).to eq("#{school_group.schools.first.name},10,,910,910,910,910,910,910\n")
-        expect(csv.lines[2]).to eq("#{school_group.schools.second.name},20,300.0,910,910,910,910,910,910\n")
-      end
-      it_behaves_like "a school group recent usage csv including cluster"
-    end
+      expect(CSV.parse_line(csv.lines[1])).to eq([school_group.schools.first.name,"10",nil,
+        "-16%","910", "137", "8,540", #e week
+        "-16%","910", "137", "8,540", #e year
+        "-5%","500", "200", "4,000", #g week
+        "-5%","500", "200", "4,000", #g year
+        "-12%","312", "111", "1,111", #sh week
+        "-12%","312", "111", "1,111" #sh year
+        ])
 
-    context "with metric set to cost" do
-      let(:metric) { 'cost' }
-      it 'returns cost data as a csv for all schools in a school group' do
-        expect(csv.lines.count).to eq(3)
-        expect(csv.lines[0]).to eq("School,Number of pupils,Floor area (m2),Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n")
-        expect(csv.lines[1]).to eq("#{school_group.schools.first.name},10,,£137,£137,£137,£137,£137,£137\n")
-        expect(csv.lines[2]).to eq("#{school_group.schools.second.name},20,300.0,£137,£137,£137,£137,£137,£137\n")
-      end
-      it_behaves_like "a school group recent usage csv including cluster"
+      expect(CSV.parse_line(csv.lines[2])).to eq([school_group.schools.second.name,"20","300.0",
+          "-16%","910", "137", "8,540", #e week
+          "-16%","910", "137", "8,540", #e year
+          "-5%","500", "200", "4,000", #g week
+          "-5%","500", "200", "4,000", #g year
+          "-12%","312", "111", "1,111", #sh week
+          "-12%","312", "111", "1,111" #sh year
+          ])
     end
+    it_behaves_like "a school group recent usage csv including cluster"
 
-    context "with metric set to co2" do
-      let(:metric) { 'co2' }
-      it 'returns co2 data as a csv for all schools in a school group' do
-        expect(csv.lines[0]).to eq("School,Number of pupils,Floor area (m2),Electricity Last week,Electricity Last year,Gas Last week,Gas Last year,Storage heaters Last week,Storage heaters Last year\n")
-        expect(csv.lines[1]).to eq("#{school_group.schools.first.name},10,,\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\"\n")
-        expect(csv.lines[2]).to eq("#{school_group.schools.second.name},20,300.0,\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\",\"8,540\"\n")
-      end
-      it_behaves_like "a school group recent usage csv including cluster"
-    end
-  end
-
-  it 'returns an error if the class is initialised with an invalid metric type' do
-    expect { SchoolGroups::RecentUsageCsvGenerator.new(school_group: school_group.reload, metric: 'something_invalid') }.to raise_error(StandardError)
-  end
+   end
 end
