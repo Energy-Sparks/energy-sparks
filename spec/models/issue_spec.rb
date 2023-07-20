@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Issue, type: :model do
+
+  let(:school_group) { create(:school_group) }
+  let(:school) { create(:school, school_group: school_group) }
+  let(:data_source) { create(:data_source) }
+
   describe "with valid attributes" do
     subject { create :issue }
     it { is_expected.to be_valid }
@@ -103,9 +108,6 @@ RSpec.describe Issue, type: :model do
   end
 
   describe ".for_school_group" do
-    let!(:school_group) { create(:school_group) }
-    let!(:school) { create(:school, school_group: school_group) }
-
     context "when there are issues for school group and schools in group" do
       let!(:school_issue) { create(:issue, issueable: school) }
       let!(:school_group_issue) { create(:issue, issueable: school_group) }
@@ -132,7 +134,6 @@ RSpec.describe Issue, type: :model do
   end
 
   describe "#data_source_names" do
-    let(:data_source) { create(:data_source) }
     let(:issue) { create(:issue, meters: meters) }
     let(:meters) { [] }
     subject(:data_source_names) { issue.data_source_names }
@@ -156,6 +157,30 @@ RSpec.describe Issue, type: :model do
       it "joins data source names with a pipe" do
         expect(data_source_names).to eq("#{data_source.name}|#{another_data_source.name}")
       end
+    end
+  end
+
+  describe "#school_group" do
+    context "issuable is a school" do
+      context "school has school group" do
+        let(:school_issue) { create(:issue, issueable: school) }
+        it { expect(school_issue.school_group).to eq(school_group) }
+      end
+
+      context "school has no school group" do
+        let(:school_issue) { create(:issue, issueable: create(:school)) }
+        it { expect(school_issue.school_group).to be_nil }
+      end
+    end
+
+    context "issuable is a data source" do
+      let(:data_source_issue) { create(:issue, issueable: data_source) }
+      it { expect(data_source_issue.school_group).to be_nil }
+    end
+
+    context "issuable is a data source" do
+      let(:school_group_issue) { create(:issue, issueable: school_group) }
+      it { expect(school_group_issue.school_group).to eq(school_group) }
     end
   end
 end
