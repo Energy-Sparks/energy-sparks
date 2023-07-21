@@ -25,7 +25,7 @@ describe 'Programme' do
         end
       end
 
-      it 'completes a program and does not create an observation as it is completed outside of the academic year when they started it' do
+      it 'completes a program and creates an observation but does not add bonus points as it is completed outside of the academic year when they started it' do
         ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
           allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: false) }
           expect(Observation.count).to eq(0)
@@ -34,7 +34,8 @@ describe 'Programme' do
           programme.complete!
           expect(programme.completed?).to be_truthy
           expect(programme.ended_on).not_to be_nil
-          expect(Observation.count).to eq(0)
+          expect(Observation.count).to eq(1)
+          expect(Observation.last.points).to eq(0)
         end
       end
     end
