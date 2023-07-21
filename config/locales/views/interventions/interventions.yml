@@ -39,3 +39,5 @@ en:
     new:
       page_title: Record energy saving action
       title: Record an energy saving action for your school
+    show:
+      pupils_involved_in_this_activity: Pupils involved in this activity

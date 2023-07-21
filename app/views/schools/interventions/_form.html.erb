@@ -19,6 +19,13 @@
   <%= f.rich_text_area :description, wrapper_html: {class: ''}%>
   </div>
 </fieldset>
+
+<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
+  <fieldset class="form-group mt-5">
+    <%= f.input :pupil_count, as: :numeric, label: t('activities.form.how_many_pupils_were_involved_in_this_activity') %>
+  </fieldset>
+<% end %>
+
 <fieldset>
   <%= f.hidden_field :intervention_type_id, value: intervention_type.id, required: true %>
 </fieldset>
