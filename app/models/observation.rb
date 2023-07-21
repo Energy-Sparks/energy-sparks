@@ -66,14 +66,17 @@ class Observation < ApplicationRecord
   has_rich_text :description
 
   before_save :add_points_for_interventions, if: :intervention?
-  before_save :add_points_for_included_images, if: proc { |observation| observation.activity? || observation.intervention? }
+  before_save :add_bonus_points_for_included_images, if: proc { |observation| observation.activity? || observation.intervention? }
 
   private
 
-  def add_points_for_included_images
+  def add_bonus_points_for_included_images
     return unless EnergySparks::FeatureFlags.active?(:activities_2023)
-    # Do not add points if site wide photo bonus points are set to nil or zero
+    # Only add bonus points if the site wide photo bonus points is set to non zero
     return unless SiteSettings.current.photo_bonus_points&.nonzero?
+    # Only add bonus points if the current observation score is non zero
+    return unless self.points&.nonzero?
+    # Only add bonus points if the description has an image
     return unless description_includes_images?
 
     self.points = (self.points || 0) + SiteSettings.current.photo_bonus_points

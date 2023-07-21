@@ -36,23 +36,43 @@ describe Observation do
 
   context 'creates an observation with the activities 2023 feature flag enabled' do
     context 'activities' do
-      it 'sets the score if an activity has an image in its activity description' do
+      it 'sets a score if an activity has an image in its activity description and the current observation score is non zero' do
+        ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
+          activity = create(:activity, description: "<div><figure></figure></div>")
+          SiteSettings.current.update(photo_bonus_points: 15)
+          observation = build(:observation, observation_type: :activity, activity: activity, points: 10)
+          observation.save
+          expect(observation.points).to eq(25)
+        end
+      end
+
+      it 'sets a score if an activity has an image in its observation description and the current observation score is non zero' do
+        ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
+          activity = create(:activity, description: "<div></div>")
+          SiteSettings.current.update(photo_bonus_points: 15)
+          observation = build(:observation, observation_type: :activity, activity: activity, description: "<div><figure></figure></div>", points: 10)
+          observation.save
+          expect(observation.points).to eq(25)
+        end
+      end
+
+      it 'does not set a score if an activity has an image in its activity description but the current observation score is otherwise nil or zero' do
         ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
           activity = create(:activity, description: "<div><figure></figure></div>")
           SiteSettings.current.update(photo_bonus_points: 15)
           observation = build(:observation, observation_type: :activity, activity: activity)
           observation.save
-          expect(observation.points).to eq(15)
+          expect(observation.points).to eq(nil)
         end
       end
 
-      it 'sets the score if an activity has an image in its observation description' do
+      it 'does not set a score if an activity has an image in its observation description but the current observation score is otherwise nil or zero' do
         ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
           activity = create(:activity, description: "<div></div>")
           SiteSettings.current.update(photo_bonus_points: 15)
           observation = build(:observation, observation_type: :activity, activity: activity, description: "<div><figure></figure></div>")
           observation.save
-          expect(observation.points).to eq(15)
+          expect(observation.points).to eq(nil)
         end
       end
 
@@ -72,15 +92,15 @@ describe Observation do
 
       before { SiteSettings.current.update(photo_bonus_points: 25) }
 
-      it 'sets the score if an intervention has an image in its description' do
+      it 'does not set a score if an intervention has an image in its description (bonus points) but the current observation score is otherwise nil or zero (no pupils involved)' do
         ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
           observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, involved_pupils: false, description: "<div><figure></figure></div>")
           observation.save
-          expect(observation.points).to eq(25)
+          expect(observation.points).to eq(nil)
         end
       end
 
-      it 'sets the score if an intervention has no image in its description' do
+      it 'does not set a score if an intervention has no pupils are involved (points) and no image in its description (bonus points)' do
         ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
           SiteSettings.current.update(photo_bonus_points: 25)
           observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, involved_pupils: false, description: "<div></div>")
@@ -105,7 +125,7 @@ describe Observation do
         end
       end
 
-      it 'sets the score if pupils involved and the description contains an image' do
+      it 'sets the score if pupils involved and adds bonus points if the description contains an image' do
         ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
           observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, involved_pupils: true, description: "<div><figure></figure></div>")
           observation.save
@@ -113,7 +133,7 @@ describe Observation do
         end
       end
 
-      it 'does not set a score if pupils not involved' do
+      it 'does not set a score if pupils are not involved' do
         ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
           observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, involved_pupils: false)
           observation.save
@@ -127,6 +147,9 @@ describe Observation do
           observation.save
           expect(observation.points).to eq(nil)
           observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago, involved_pupils: false)
+          observation.save
+          expect(observation.points).to eq(nil)
+          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago, involved_pupils: false, description: "<div><figure></figure></div>")
           observation.save
           expect(observation.points).to eq(nil)
         end
