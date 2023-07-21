@@ -7,10 +7,12 @@
   <%= f.input :at, as: :tempus_dominus_date, label: false, input_html: { class: "form-control form-control-lg" } %>
   <small class="form-text text-muted"><%= t('interventions.form.you_can_record_label') %>.</small>
 </fieldset>
-<fieldset class="form-group mt-4">
-  <%= f.input :involved_pupils, as: :boolean, label: t('interventions.form.were_the_pupils_involved'), inline_label: true %>
-  <small class="form-text text-muted"><%= t('interventions.form.if_pupils_were_involved_label') %> <span class="badge badge-success"><%= intervention_type.score %></span> <%= t('interventions.form.points_for_your_school', count: intervention_type.score) %>.</small>
-</fieldset>
+<% unless EnergySparks::FeatureFlags.active?(:activities_2023) %>
+  <fieldset class="form-group mt-4">
+    <%= f.input :involved_pupils, as: :boolean, label: t('interventions.form.were_the_pupils_involved'), inline_label: true %>
+    <small class="form-text text-muted"><%= t('interventions.form.if_pupils_were_involved_label') %> <span class="badge badge-success"><%= intervention_type.score %></span> <%= t('interventions.form.points_for_your_school', count: intervention_type.score) %>.</small>
+  </fieldset>
+<% end %>
 <fieldset class="form-group mt-5">
   <%= f.label t('interventions.form.tell_us_more'), for: :description %>
   <small class="form-text text-muted"><%= t('interventions.form.adding_some_background_detail_label') %></small>

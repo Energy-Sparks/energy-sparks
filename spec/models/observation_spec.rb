@@ -101,21 +101,23 @@ describe Observation do
 
       before { SiteSettings.current.update(photo_bonus_points: 25) }
 
-      it 'does not set a score if an intervention has an image in its description (bonus points) but the current observation score is otherwise nil or zero (no pupils involved)' do
+      it 'does not set a score if an intervention has an image in its description (bonus points) but the current observation score is otherwise nil or zero (outside academic year)' do
         ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
-          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, involved_pupils: false, description: "<div><figure></figure></div>")
+          allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: false) }
+          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, description: "<div><figure></figure></div>")
           observation.save
           expect(observation.points).to eq(nil)
         end
       end
 
-      it 'does not set a score if an intervention has no pupils are involved (points) and no image in its description (bonus points)' do
+      it 'does not set a score if an intervention is completed outside of the academic year it was started and no image in its description (bonus points)' do
         ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
+          allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: false) }
           SiteSettings.current.update(photo_bonus_points: 25)
-          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, involved_pupils: false, description: "<div></div>")
+          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, description: "<div></div>")
           observation.save
           expect(observation.points).to eq(nil)
-          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, involved_pupils: false, description: "<div></div>", points: 0)
+          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, description: "<div></div>", points: 0)
           observation.save
           expect(observation.points).to eq(0)
         end
@@ -123,31 +125,34 @@ describe Observation do
 
       it 'only adds points automatically if its an intervention' do
         ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
-          observation = build(:observation, observation_type: :temperature, involved_pupils: true)
+          allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: true) }
+          observation = build(:observation, observation_type: :temperature)
           observation.save
           expect(observation.points).to eq(nil)
         end
       end
 
-      it 'sets the score if pupils involved' do
+      it 'sets the score if observation recorded within the academic year' do
         ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
-          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, involved_pupils: true)
+          allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: true) }
+          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type)
           observation.save
           expect(observation.points).to eq(50)
         end
       end
 
-      it 'sets the score if pupils involved and adds bonus points if the description contains an image' do
+      it 'sets the score if observation recorded within the academic year and adds bonus points if the description contains an image' do
         ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
-          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, involved_pupils: true, description: "<div><figure></figure></div>")
+          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, description: "<div><figure></figure></div>")
           observation.save
           expect(observation.points).to eq(75)
         end
       end
 
-      it 'does not set a score if pupils are not involved' do
+      it 'does not set a score if observation recorded outside of the academic year' do
         ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
-          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, involved_pupils: false)
+          allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: false) }
+          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type)
           observation.save
           expect(observation.points).to eq(nil)
         end
@@ -155,13 +160,13 @@ describe Observation do
 
       it 'scores 0 points for previous academic years' do
         ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
-          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago, involved_pupils: true)
+          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago)
           observation.save
           expect(observation.points).to eq(nil)
-          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago, involved_pupils: false)
+          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago)
           observation.save
           expect(observation.points).to eq(nil)
-          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago, involved_pupils: false, description: "<div><figure></figure></div>")
+          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago, description: "<div><figure></figure></div>")
           observation.save
           expect(observation.points).to eq(nil)
         end
@@ -169,7 +174,7 @@ describe Observation do
 
       it 'updates score if date changed' do
         ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
-        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago, involved_pupils: true)
+        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago)
         observation.save!
         expect(observation.points).to eq(nil)
         expect(observation.intervention?).to be true
