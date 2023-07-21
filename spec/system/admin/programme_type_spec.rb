@@ -18,6 +18,7 @@ describe 'programme type management', type: :system do
       description = 'SPN1'
       old_title = 'Super programme number 1'
       new_title = 'Super programme number 2'
+      bonus_score = 1234
       click_on 'New Programme Type'
       fill_in :programme_type_title_en, with: old_title
       fill_in_trix '#programme_type_description_en', with: description
@@ -33,6 +34,7 @@ describe 'programme type management', type: :system do
 
       click_on 'Edit'
       fill_in :programme_type_title_en, with: new_title
+      fill_in :programme_type_bonus_score, with: bonus_score
       check("Active", allow_label_click: true)
       check("Default", allow_label_click: true)
 
@@ -44,6 +46,7 @@ describe 'programme type management', type: :system do
 
       click_on new_title
       expect(page).to have_content(description)
+      expect(page).to have_content(bonus_score)
       click_on 'All programme types'
 
       click_on 'Delete'

@@ -2,6 +2,7 @@ require 'rails_helper'
 
 module Amr
   describe SingleReadConverter do
+
     context 'normal file format' do
       let(:readings) { [{:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019 00:30:00", :readings=>["14.4"]},
                         {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019 01:00:00", :readings=>["15"]},
@@ -156,7 +157,6 @@ module Amr
       it 'converts a list of single readings per half hour into a day per reading format' do
         expect(SingleReadConverter.new(readings).perform).to eq output
       end
-
     end
 
     context 'offset file format' do
@@ -265,6 +265,16 @@ module Amr
 
       it 'converts a list of single readings per half hour into a day per reading format' do
         expect(SingleReadConverter.new(offset_readings).perform).to eq offset_output
+      end
+    end
+
+    context 'With reading dates in ISO 8601 format (produced by xlsx to csv conversion)' do
+      let(:reading_date) { Time.parse('26 Aug 2019') }
+      let(:readings) { 48.times.collect {|i| { :amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=> (reading_date + (((i+1) * 30).minutes)).iso8601, :readings=>[(i+1).to_s] } } }
+      let(:output) { [ { amr_data_feed_config_id: 6, meter_id: nil, reading_date: reading_date.to_date, mpan_mprn: "1710035168313", readings: 48.times.collect {|i| (i+1) } } ] }
+
+      it 'converts a list of single readings per half hour into a day per reading format' do
+        expect(SingleReadConverter.new(readings).perform).to eq output
       end
     end
 
