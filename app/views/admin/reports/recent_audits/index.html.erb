@@ -21,7 +21,7 @@
     <% @recent_audits.each do |audit| %>
       <tr>
         <td><%= link_to audit.school.name, school_path(audit.school) %></td>
-        <td><%= link_to audit.title, school_audits_path(audit) %></td>
+        <td><%= link_to audit.title, school_audit_path(audit.school, audit) %></td>
         <td><%= nice_dates(audit.created_at) %></td>
         <td class='text-center'>
           <% if audit.published %>
