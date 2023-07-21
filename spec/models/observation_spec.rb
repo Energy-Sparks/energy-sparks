@@ -6,6 +6,18 @@ describe Observation do
 
   before { SiteSettings.current.update(photo_bonus_points: 0) }
 
+  describe '#pupil_count' do
+    it "is valid when present for interventions only" do
+      expect(build(:observation, observation_type: :temperature, pupil_count: 12)).to be_invalid
+      expect(build(:observation, observation_type: :event, pupil_count: 12)).to be_invalid
+      expect(build(:observation, observation_type: :activity, activity: create(:activity), pupil_count: 12)).to be_invalid
+      expect(build(:observation, observation_type: :audit, audit: create(:audit), pupil_count: 12)).to be_invalid
+      expect(build(:observation, observation_type: :school_target, school_target: create(:school_target), pupil_count: 12)).to be_invalid
+
+      expect(build(:observation, observation_type: :intervention, intervention_type: create(:intervention_type), pupil_count: 12)).to be_valid
+    end
+  end
+
   describe '#recorded_in_last_week' do
     let(:observation_too_old)      { create(:observation, observation_type: :temperature) }
     let(:observation_last_week_1)  { create(:observation, observation_type: :temperature) }

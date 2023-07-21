@@ -52,6 +52,8 @@ class Observation < ApplicationRecord
   validates :audit_id, presence: true, if: :audit?
   validates :school_target_id, presence: true, if: :school_target?
 
+  validates :pupil_count, absence: true, unless: :intervention? # Only record pupil counts for interventions
+
   accepts_nested_attributes_for :temperature_recordings, reject_if: :reject_temperature_recordings
 
   scope :visible, -> { where(visible: true) }
@@ -60,7 +62,6 @@ class Observation < ApplicationRecord
   scope :between, ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
   scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago)}
   scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago)}
-
 
   has_rich_text :description
 
