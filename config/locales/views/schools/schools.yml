@@ -95,7 +95,11 @@ en:
         title: New Audit
       show:
         completed_on: Completed on
+        completing_all_of_these_activities_will_award_you: Completing all of these activities will award you
         download_report: Download report
+        points:
+          one: point
+          other: points
         recommended_energy_saving_actions: Recommended energy saving actions
         recommended_pupil_lead_activities: Recommended pupil-lead activities
         title: "%{school_name} Audits - %{audit_title}"
