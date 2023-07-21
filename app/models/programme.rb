@@ -32,7 +32,7 @@ class Programme < ApplicationRecord
     event :complete do
       after do
         self.update(ended_on: Time.zone.now)
-        if EnergySparks::FeatureFlags.active?(:activities_2023)
+        if EnergySparks::FeatureFlags.active?(:activities_2023) && school.academic_year_for(started_on)&.current?
           Observation.create!(
             school: school,
             observation_type: :programme,
