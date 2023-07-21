@@ -321,6 +321,8 @@ en:
           completed_an_activity: Completed an activity
         audit:
           received_an_audit: Received an energy audit
+        programme:
+          completed_a_programme: Completed a programme
         temperatures:
           recorded_temperatures_in: Recorded temperatures in
     private:

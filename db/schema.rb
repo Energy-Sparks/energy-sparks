@@ -1168,10 +1168,12 @@ ActiveRecord::Schema.define(version: 2023_07_20_152127) do
     t.bigint "audit_id"
     t.boolean "involved_pupils", default: false, null: false
     t.bigint "school_target_id"
+    t.bigint "programme_id"
     t.integer "pupil_count"
     t.index ["activity_id"], name: "index_observations_on_activity_id"
     t.index ["audit_id"], name: "index_observations_on_audit_id"
     t.index ["intervention_type_id"], name: "index_observations_on_intervention_type_id"
+    t.index ["programme_id"], name: "index_observations_on_programme_id"
     t.index ["school_id"], name: "index_observations_on_school_id"
     t.index ["school_target_id"], name: "index_observations_on_school_target_id"
   end
@@ -1223,6 +1225,7 @@ ActiveRecord::Schema.define(version: 2023_07_20_152127) do
     t.boolean "default", default: false
     t.datetime "created_at", precision: 6, default: "2022-07-06 12:00:00", null: false
     t.datetime "updated_at", precision: 6, default: "2022-07-06 12:00:00", null: false
+    t.integer "bonus_score", default: 0
   end
 
   create_table "programmes", force: :cascade do |t|
@@ -1984,6 +1987,7 @@ ActiveRecord::Schema.define(version: 2023_07_20_152127) do
   add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "audits"
   add_foreign_key "observations", "intervention_types", on_delete: :restrict
+  add_foreign_key "observations", "programmes", on_delete: :cascade
   add_foreign_key "observations", "school_targets"
   add_foreign_key "observations", "schools", on_delete: :cascade
   add_foreign_key "programmes", "programme_types", on_delete: :cascade
