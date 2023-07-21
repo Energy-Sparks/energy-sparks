@@ -97,7 +97,7 @@ class Observation < ApplicationRecord
 
   def add_points_for_interventions
     academic_year = school.academic_year_for(at)
-    if academic_year&.current? && involved_pupils?
+    if academic_year&.current? # && involved_pupils?
       self.points = intervention_type.score
     end
   end
