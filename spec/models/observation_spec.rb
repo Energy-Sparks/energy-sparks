@@ -40,6 +40,7 @@ describe Observation do
         ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
           activity = create(:activity, description: "<div><figure></figure></div>")
           SiteSettings.current.update(photo_bonus_points: 15)
+          # Notes: see ActivityCreator where observation points are assigned for activities
           observation = build(:observation, observation_type: :activity, activity: activity, points: 10)
           observation.save
           expect(observation.points).to eq(25)
@@ -50,6 +51,7 @@ describe Observation do
         ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
           activity = create(:activity, description: "<div></div>")
           SiteSettings.current.update(photo_bonus_points: 15)
+          # Notes: see ActivityCreator where observation points are assigned for activities
           observation = build(:observation, observation_type: :activity, activity: activity, description: "<div><figure></figure></div>", points: 10)
           observation.save
           expect(observation.points).to eq(25)
@@ -60,7 +62,11 @@ describe Observation do
         ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
           activity = create(:activity, description: "<div><figure></figure></div>")
           SiteSettings.current.update(photo_bonus_points: 15)
-          observation = build(:observation, observation_type: :activity, activity: activity)
+          # Notes: see ActivityCreator where observation points are assigned for activities
+          observation = build(:observation, observation_type: :activity, activity: activity, points: 0)
+          observation.save
+          expect(observation.points).to eq(0)
+          observation = build(:observation, observation_type: :activity, activity: activity, points: nil)
           observation.save
           expect(observation.points).to eq(nil)
         end
@@ -73,6 +79,9 @@ describe Observation do
           observation = build(:observation, observation_type: :activity, activity: activity, description: "<div><figure></figure></div>")
           observation.save
           expect(observation.points).to eq(nil)
+          observation = build(:observation, observation_type: :activity, activity: activity, description: "<div><figure></figure></div>", points: 0)
+          observation.save
+          expect(observation.points).to eq(0)
         end
       end
 
@@ -106,6 +115,9 @@ describe Observation do
           observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, involved_pupils: false, description: "<div></div>")
           observation.save
           expect(observation.points).to eq(nil)
+          observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, involved_pupils: false, description: "<div></div>", points: 0)
+          observation.save
+          expect(observation.points).to eq(0)
         end
       end
 
