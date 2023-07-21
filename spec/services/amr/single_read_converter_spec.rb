@@ -269,9 +269,9 @@ module Amr
     end
 
     context 'With reading dates in ISO 8601 format (produced by xlsx to csv conversion)' do
-      let(:reading_date) { Date.parse('26 Aug 2019') }
-      let(:readings) { 48.times.collect {|i| { :amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=> (reading_date.to_time + (((i+1) * 30).minutes)).to_s, :readings=>[(i+1).to_s] } } }
-      let(:output) { [ { amr_data_feed_config_id: 6, meter_id: nil, reading_date: reading_date, mpan_mprn: "1710035168313", readings: 48.times.collect {|i| (i+1) } } ] }
+      let(:reading_date) { Time.parse('26 Aug 2019') }
+      let(:readings) { 48.times.collect {|i| { :amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=> (reading_date + (((i+1) * 30).minutes)).iso8601, :readings=>[(i+1).to_s] } } }
+      let(:output) { [ { amr_data_feed_config_id: 6, meter_id: nil, reading_date: reading_date.to_date, mpan_mprn: "1710035168313", readings: 48.times.collect {|i| (i+1) } } ] }
 
       it 'converts a list of single readings per half hour into a day per reading format' do
         expect(SingleReadConverter.new(readings).perform).to eq output
