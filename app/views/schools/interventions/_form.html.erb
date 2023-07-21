@@ -15,8 +15,17 @@
   <%= f.label t('interventions.form.tell_us_more'), for: :description %>
   <small class="form-text text-muted"><%= t('interventions.form.adding_some_background_detail_label') %></small>
   <small class="form-text text-muted"><%= t('interventions.form.you_can_add_formatting_label') %>.</small>
+
+  <% if EnergySparks::FeatureFlags.active?(:activities_2023) && SiteSettings.current&.photo_bonus_points&.nonzero? %>
+    <small class="form-text text-muted">
+      <%= t('interventions.form.adding_a_photo_to_document_your_action_will_score_you') %>
+      <span class="badge badge-success"><%= SiteSettings.current.photo_bonus_points %></span>
+      <%= t('interventions.form.bonus_points', count: SiteSettings.current.photo_bonus_points) %>
+    </small>
+  <% end %>
+
   <div class="mt-4">
-  <%= f.rich_text_area :description, wrapper_html: {class: ''}%>
+    <%= f.rich_text_area :description, wrapper_html: {class: ''}%>
   </div>
 </fieldset>
 

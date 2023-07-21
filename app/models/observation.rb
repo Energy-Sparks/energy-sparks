@@ -65,16 +65,35 @@ class Observation < ApplicationRecord
 
   has_rich_text :description
 
-  before_save :add_points_for_interventions
+  before_save :add_points_for_interventions, if: :intervention?
+  before_save :add_bonus_points_for_included_images, if: proc { |observation| observation.activity? || observation.intervention? }
 
   private
 
-  def add_points_for_interventions
+  def add_bonus_points_for_included_images
+    return unless EnergySparks::FeatureFlags.active?(:activities_2023)
+    # Only add bonus points if the site wide photo bonus points is set to non zero
+    return unless SiteSettings.current.photo_bonus_points&.nonzero?
+    # Only add bonus points if the current observation score is non zero
+    return unless self.points&.nonzero?
+    # Only add bonus points if the description has an image
+    return unless description_includes_images?
+
+    self.points = (self.points || 0) + SiteSettings.current.photo_bonus_points
+  end
+
+  def description_includes_images?
     if intervention?
-      academic_year = school.academic_year_for(at)
-      if academic_year&.current? && involved_pupils?
-        self.points = intervention_type.score
-      end
+      description&.body&.to_trix_html&.include?("figure")
+    elsif activity?
+      description&.body&.to_trix_html&.include?("figure") || activity.description_includes_images?
+    end
+  end
+
+  def add_points_for_interventions
+    academic_year = school.academic_year_for(at)
+    if academic_year&.current? && involved_pupils?
+      self.points = intervention_type.score
     end
   end
 

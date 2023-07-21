@@ -7,6 +7,7 @@
   <%= f.input :management_priorities_page_limit, hint: 'How many entries to show on the management priorities page '%>
   <%= f.input :temperature_recording_months, as: :check_boxes, collection: @temperature_setting_months, checked: f.object.temperature_recording_months %>
   <%= f.input :default_import_warning_days %>
+  <%= f.input :photo_bonus_points, label: 'Bonus points for adding photos to activities and actions' %>
 
   <% if EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices) %>
     <hr />

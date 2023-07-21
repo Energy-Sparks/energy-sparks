@@ -30,7 +30,7 @@ module Admin
         params.require(:site_settings).permit(
           :message_for_no_contacts, :message_for_no_pupil_accounts,
           :management_priorities_dashboard_limit, :management_priorities_page_limit,
-          :default_import_warning_days,
+          :default_import_warning_days, :photo_bonus_points,
           :electricity_price, :solar_export_price, :gas_price,
           temperature_recording_months: []
         )
@@ -38,7 +38,7 @@ module Admin
         params.require(:site_settings).permit(
           :message_for_no_contacts, :message_for_no_pupil_accounts,
           :management_priorities_dashboard_limit, :management_priorities_page_limit,
-          :default_import_warning_days,
+          :default_import_warning_days, :photo_bonus_points,
           temperature_recording_months: []
         )
       end
