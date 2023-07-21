@@ -1570,7 +1570,6 @@ ActiveRecord::Schema.define(version: 2023_07_20_152127) do
     t.jsonb "temperature_recording_months", default: ["10", "11", "12", "1", "2", "3", "4"]
     t.jsonb "prices"
     t.integer "default_import_warning_days", default: 10
-    t.integer "photo_bonus_points", default: 0
   end
 
   create_table "sms_records", force: :cascade do |t|
