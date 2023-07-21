@@ -1,0 +1,43 @@
+<% content_for :page_title, 'Recent audits' %>
+
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Recent audits</h1>
+</div>
+
+<table class="table table-sorted dataTable table-sm">
+  <thead>
+    <tr>
+      <th>School name</th>
+      <th>Audit title</th>
+      <th>Created on</th>
+      <th>Published?</th>
+      <th>Involved pupils</th>
+      <th>Number of activities</th>
+      <th>Number of actions</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @recent_audits.each do |audit| %>
+      <tr>
+        <td><%= link_to audit.school.name, school_path(audit.school) %></td>
+        <td><%= link_to audit.title, school_audits_path(audit) %></td>
+        <td><%= nice_dates(audit.created_at) %></td>
+        <td class='text-center'>
+          <% if audit.published %>
+            <i class="fas fa-check"></i>
+          <% end %>
+        </td>
+        <td>
+          <% if audit.involved_pupils %>
+            <i class="fas fa-check"></i>
+          <% end %>
+        </td>
+        <td><%= audit.activity_types.count %></td>
+        <td><%= audit.observations.count %></td>
+        <td><%= audit.observations.count %></td>
+        <td></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
