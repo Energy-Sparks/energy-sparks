@@ -778,7 +778,11 @@ ActiveRecord::Schema.define(version: 2023_07_24_142054) do
     t.bigint "energy_tariff_id", null: false
     t.text "charge_type", null: false
     t.decimal "value", null: false
+<<<<<<< HEAD
     t.text "units"
+=======
+    t.text "units", null: false
+>>>>>>> f2dfd740b (Initial rework, tests need fixing and improving)
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["energy_tariff_id"], name: "index_energy_tariff_charges_on_energy_tariff_id"
@@ -905,13 +909,13 @@ ActiveRecord::Schema.define(version: 2023_07_24_142054) do
     t.index ["replaced_by_id"], name: "index_global_meter_attributes_on_replaced_by_id"
   end
 
-  create_table "good_job_processes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_processes", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.jsonb "state"
   end
 
-  create_table "good_job_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_job_settings", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "key"
@@ -919,7 +923,7 @@ ActiveRecord::Schema.define(version: 2023_07_24_142054) do
     t.index ["key"], name: "index_good_job_settings_on_key", unique: true
   end
 
-  create_table "good_jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "good_jobs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.text "queue_name"
     t.integer "priority"
     t.jsonb "serialized_params"
@@ -1163,6 +1167,13 @@ ActiveRecord::Schema.define(version: 2023_07_24_142054) do
     t.index ["procurement_route_id"], name: "index_meters_on_procurement_route_id"
     t.index ["school_id"], name: "index_meters_on_school_id"
     t.index ["solar_edge_installation_id"], name: "index_meters_on_solar_edge_installation_id"
+  end
+
+  create_table "meters_energy_tariffs", id: false, force: :cascade do |t|
+    t.bigint "meter_id"
+    t.bigint "energy_tariff_id"
+    t.index ["energy_tariff_id"], name: "index_meters_energy_tariffs_on_energy_tariff_id"
+    t.index ["meter_id"], name: "index_meters_energy_tariffs_on_meter_id"
   end
 
   create_table "meters_user_tariffs", id: false, force: :cascade do |t|

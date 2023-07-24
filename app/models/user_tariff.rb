@@ -53,7 +53,7 @@ class UserTariff < ApplicationRecord
     {
       start_date: start_date.to_s(:es_compact),
       end_date: end_date.to_s(:es_compact),
-      source: :manually_entered,
+      source: source.to_sym,
       name: name,
       type: flat_rate ? :flat : :differential,
       sub_type: '',
