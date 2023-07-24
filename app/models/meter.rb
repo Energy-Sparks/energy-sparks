@@ -64,6 +64,7 @@ class Meter < ApplicationRecord
 
   has_one :school_group, through: :school
   has_and_belongs_to_many :user_tariffs, inverse_of: :meters
+  has_and_belongs_to_many :energy_tariffs, inverse_of: :meters
 
   CREATABLE_METER_TYPES = [:electricity, :gas, :solar_pv, :exported_solar_pv].freeze
   MAIN_METER_TYPES = [:electricity, :gas].freeze
