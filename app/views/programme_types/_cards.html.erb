@@ -21,6 +21,9 @@
       <p>
         <%= programme_type.short_description %>
       </p>
+      <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
+        <p><%= t('programme_types.cards.bonus_points', bonus_score: programme_type.bonus_score) %></p>
+      <% end %>
     </div>
     <div class="col-sm-2 align-self-center">
       <% if user_progress.in_progress?(programme_type) %>
