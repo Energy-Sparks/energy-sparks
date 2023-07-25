@@ -46,7 +46,7 @@ class Audit < ApplicationRecord
     # Checks if the associated school has completed all activites that corresponds with the activity types
     # listed in the audit.  It only includes activities logged after the audit was created and completed within
     # 12 months of the audit's creation date.
-    (activity_types.pluck(:id) - school.activities.where('happened_on >= ? AND happened_on <= ?', created_at, created_at + 12.months).pluck(:activity_type_id)).empty?
+    (activity_types.pluck(:id) - school.activities.where('happened_on >= :start_date AND happened_on <= :end_date', start_date: created_at, end_date: created_at + 12.months).pluck(:activity_type_id)).empty?
   end
 
   def create_activities_completed_observation!
