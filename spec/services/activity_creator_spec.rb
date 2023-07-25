@@ -119,7 +119,7 @@ describe ActivityCreator do
     end
   end
 
-  context 'creates an activity with the activities 2023 feature flag enabled' do
+  context 'creates an completed audit observation with the activities 2023 feature flag enabled' do
     let(:activity_category) { create(:activity_category, name: 'Zebras') }
     let(:school) { create(:school) }
 
@@ -137,6 +137,28 @@ describe ActivityCreator do
         activity = Activity.new(school: school, happened_on: Time.zone.now, activity_type: audit.activity_types.last)
         ActivityCreator.new(activity).process
         expect(Observation.audit_activities_completed.count).to eq(1)
+      end
+    end
+  end
+
+  context 'does not create an completed audit observation with the activities 2023 feature flag disabled' do
+    let(:activity_category) { create(:activity_category, name: 'Zebras') }
+    let(:school) { create(:school) }
+
+    before { Observation.delete_all }
+
+    it 'creates an observation for the activity with the points' do
+      ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'false' do
+        audit = create(:audit, :with_activity_and_intervention_types, school: school)
+        audit.activity_types[0...-1].each do |activity_type|
+          activity = Activity.new(happened_on: audit.created_at, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+          ActivityCreator.new(activity).process
+        end
+        expect(Observation.audit_activities_completed.count).to eq(0)
+
+        activity = Activity.new(school: school, happened_on: Time.zone.now, activity_type: audit.activity_types.last)
+        ActivityCreator.new(activity).process
+        expect(Observation.audit_activities_completed.count).to eq(0)
       end
     end
   end
