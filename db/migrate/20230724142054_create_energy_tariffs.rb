@@ -32,7 +32,7 @@ class CreateEnergyTariffs < ActiveRecord::Migration[6.0]
       t.text          :units, null: true
       t.timestamps
     end
-    create_table :meters_energy_tariffs, id: false do |t|
+    create_table :energy_tariffs_meters, id: false do |t|
       t.belongs_to :meter
       t.belongs_to :energy_tariff
     end
