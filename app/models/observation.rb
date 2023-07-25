@@ -56,6 +56,7 @@ class Observation < ApplicationRecord
   validates :programme_id, presence: true, if: :programme?
   validates :audit_id, presence: true, if: :audit?
   validates :school_target_id, presence: true, if: :school_target?
+  validates :audit_id, presence: true, if: :audit_activities_completed?
 
   validates :pupil_count, absence: true, unless: :intervention? # Only record pupil counts for interventions
 
