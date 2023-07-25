@@ -232,6 +232,8 @@ Rails.application.routes.draw do
 
       resources :audits
 
+      resources :tariffs
+
       resources :temperature_observations, only: [:show, :new, :create, :index, :destroy]
       resources :transport_surveys, only: [:show, :update, :index, :destroy], param: :run_on do
         collection do
