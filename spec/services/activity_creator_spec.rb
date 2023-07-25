@@ -134,9 +134,10 @@ describe ActivityCreator do
         end
         expect(Observation.audit_activities_completed.count).to eq(0)
 
-        activity = Activity.new(school: school, happened_on: Time.zone.now, activity_type: audit.activity_types.last)
-        ActivityCreator.new(activity).process
-        expect(Observation.audit_activities_completed.count).to eq(1)
+        expect do
+          activity = Activity.new(school: school, happened_on: Time.zone.now, activity_type: audit.activity_types.last)
+          ActivityCreator.new(activity).process
+        end.to change { Observation.audit_activities_completed.count }.by(1)
       end
     end
   end
@@ -156,9 +157,10 @@ describe ActivityCreator do
         end
         expect(Observation.audit_activities_completed.count).to eq(0)
 
-        activity = Activity.new(school: school, happened_on: Time.zone.now, activity_type: audit.activity_types.last)
-        ActivityCreator.new(activity).process
-        expect(Observation.audit_activities_completed.count).to eq(0)
+        expect do
+          activity = Activity.new(school: school, happened_on: Time.zone.now, activity_type: audit.activity_types.last)
+          ActivityCreator.new(activity).process
+        end.to change { Observation.audit_activities_completed.count }.by(0)
       end
     end
   end
