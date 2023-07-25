@@ -46,6 +46,7 @@ class Observation < ApplicationRecord
   belongs_to :programme, optional: true
   belongs_to :audit, optional: true
   belongs_to :school_target, optional: true
+  # If adding a new observation type remember to also add a timelime template in app/views/schools/observations/timeline
   enum observation_type: [:temperature, :intervention, :activity, :event, :audit, :school_target, :programme, :audit_activities_completed]
 
   validates_presence_of :at, :school

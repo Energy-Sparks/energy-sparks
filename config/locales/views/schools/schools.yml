@@ -324,6 +324,7 @@ en:
         activity:
           completed_an_activity: Completed an activity
         audit:
+          completed_audit_activities: Completed all audit activities
           received_an_audit: Received an energy audit
         programme:
           completed_a_programme: Completed a programme
