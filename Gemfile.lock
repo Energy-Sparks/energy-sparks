@@ -394,8 +394,9 @@ GEM
       backports
     pagy (5.6.3)
     parallel (1.21.0)
-    parser (3.0.3.1)
+    parser (3.2.2.3)
       ast (~> 2.4.1)
+      racc
     pg (1.2.3)
     pg_search (2.3.6)
       activerecord (>= 5.2)
@@ -576,7 +577,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    scout_apm (5.1.1)
+    scout_apm (5.3.5)
       parser
     selenium-webdriver (4.1.0)
       childprocess (>= 0.5, < 5.0)
