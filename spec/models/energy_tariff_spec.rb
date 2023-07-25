@@ -2,16 +2,15 @@ require 'rails_helper'
 
 describe EnergyTariff do
 
-  let(:school) { create(:school) }
-
-  let(:energy_tariff_prices)  { [] }
-  let(:energy_tariff_charges) { [] }
   let(:tariff_type)           { :flat_rate }
   let(:vat_rate)              { 5 }
 
+  let(:energy_tariff_prices)  { [] }
+  let(:energy_tariff_charges) { [] }
+
   let(:energy_tariff)  do
     EnergyTariff.create(
-      tariff_holder: school,
+      tariff_holder: create(:school),
       start_date: '2021-04-01',
       end_date: '2022-03-31',
       name: 'My First Tariff',
