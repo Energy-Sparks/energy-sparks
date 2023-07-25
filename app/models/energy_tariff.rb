@@ -42,8 +42,8 @@ class EnergyTariff < ApplicationRecord
   #only populated if tariff_holder is school
   has_and_belongs_to_many :meters, inverse_of: :energy_tariffs
 
-  belongs_to :created_by, class_name: 'User'
-  belongs_to :updated_by, class_name: 'User'
+  belongs_to :created_by, optional: true, class_name: 'User'
+  belongs_to :updated_by, optional: true, class_name: 'User'
 
   enum source: [:manually_entered, :dcc]
   enum meter_type: [:electricity, :gas, :solar_pv, :exported_solar_pv]

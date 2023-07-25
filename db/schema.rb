@@ -778,7 +778,7 @@ ActiveRecord::Schema.define(version: 2023_07_24_142054) do
     t.bigint "energy_tariff_id", null: false
     t.text "charge_type", null: false
     t.decimal "value", null: false
-    t.text "units", null: false
+    t.text "units"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["energy_tariff_id"], name: "index_energy_tariff_charges_on_energy_tariff_id"

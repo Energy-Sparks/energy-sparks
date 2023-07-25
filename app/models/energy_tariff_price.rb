@@ -19,8 +19,6 @@
 class EnergyTariffPrice < ApplicationRecord
   belongs_to :energy_tariff, inverse_of: :energy_tariff_prices
 
-  enum units: [:kwh]
-
   validates :start_time, :end_time, :value, :units, presence: true
   validates :value, numericality: true
   validate :no_time_overlaps

@@ -120,8 +120,8 @@ describe EnergyTariff do
         end_date: '2022-03-31',
         name: 'My First Tariff',
         meter_type: :electricity,
-        tariff_type: :flat_rate,
-        vat_rate: 0.05,
+        tariff_type: :differential,
+        vat_rate: 5,
         energy_tariff_prices: energy_tariff_prices,
         energy_tariff_charges: energy_tariff_charges,
         )
@@ -142,14 +142,14 @@ describe EnergyTariff do
       expect(attributes[:name]).to eq('My First Tariff')
       expect(attributes[:start_date]).to eq('01/04/2021')
       expect(attributes[:end_date]).to eq('31/03/2022')
-      expect(attributes[:source]).to eq(:manual)
+      expect(attributes[:source]).to eq(:manually_entered)
       expect(attributes[:type]).to eq(:differential)
       expect(attributes[:sub_type]).to eq('')
       expect(attributes[:vat]).to eq('5%')
     end
 
     it "should include duos" do
-      energyr_tariff.energy_tariff_charges << EnergyTariffCharge.create(charge_type: :duos_red, value: 6.78)
+      energy_tariff.energy_tariff_charges << EnergyTariffCharge.create(charge_type: :duos_red, value: 6.78)
 
       expect(attributes[:rates][:duos_red]).to eq('6.78')
     end

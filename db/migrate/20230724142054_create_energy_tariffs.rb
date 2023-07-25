@@ -29,7 +29,7 @@ class CreateEnergyTariffs < ActiveRecord::Migration[6.0]
       t.references    :energy_tariff, null: false, index: true
       t.text          :charge_type, null: false
       t.decimal       :value, null: false
-      t.text          :units, null: false
+      t.text          :units, null: true
       t.timestamps
     end
     create_table :meters_energy_tariffs, id: false do |t|
