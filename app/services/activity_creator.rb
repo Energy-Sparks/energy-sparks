@@ -25,7 +25,7 @@ class ActivityCreator
     end
   end
 
-  def create_audit_complete_activity_observation
+  def create_completed_audit_activities_observation
     return unless EnergySparks::FeatureFlags.active?(:activities_2023)
     return unless SiteSettings.current.audit_activities_bonus_points
     return if @activity.school.audits.empty?
