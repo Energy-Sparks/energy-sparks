@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_21_144131) do
+ActiveRecord::Schema.define(version: 2023_07_24_142054) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -772,6 +772,57 @@ ActiveRecord::Schema.define(version: 2023_07_21_144131) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["contact_id"], name: "index_emails_on_contact_id"
+  end
+
+  create_table "energy_tariff_charges", force: :cascade do |t|
+    t.bigint "energy_tariff_id", null: false
+    t.text "charge_type", null: false
+    t.decimal "value", null: false
+    t.text "units"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["energy_tariff_id"], name: "index_energy_tariff_charges_on_energy_tariff_id"
+  end
+
+  create_table "energy_tariff_prices", force: :cascade do |t|
+    t.bigint "energy_tariff_id", null: false
+    t.time "start_time", default: "2000-01-01 00:00:00", null: false
+    t.time "end_time", default: "2000-01-01 23:30:00", null: false
+    t.decimal "value", default: "0.0", null: false
+    t.text "units"
+    t.text "description"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["energy_tariff_id"], name: "index_energy_tariff_prices_on_energy_tariff_id"
+  end
+
+  create_table "energy_tariffs", force: :cascade do |t|
+    t.string "tariff_holder_type"
+    t.bigint "tariff_holder_id"
+    t.integer "source", default: 0, null: false
+    t.integer "meter_type", default: 0, null: false
+    t.integer "tariff_type", default: 0, null: false
+    t.text "name", null: false
+    t.date "start_date"
+    t.date "end_date"
+    t.boolean "enabled", default: false
+    t.boolean "ccl", default: false
+    t.boolean "tnuos", default: false
+    t.integer "vat_rate"
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["created_by_id"], name: "index_energy_tariffs_on_created_by_id"
+    t.index ["tariff_holder_type", "tariff_holder_id"], name: "index_energy_tariffs_on_tariff_holder_type_and_tariff_holder_id"
+    t.index ["updated_by_id"], name: "index_energy_tariffs_on_updated_by_id"
+  end
+
+  create_table "energy_tariffs_meters", id: false, force: :cascade do |t|
+    t.bigint "meter_id"
+    t.bigint "energy_tariff_id"
+    t.index ["energy_tariff_id"], name: "index_energy_tariffs_meters_on_energy_tariff_id"
+    t.index ["meter_id"], name: "index_energy_tariffs_meters_on_meter_id"
   end
 
   create_table "equivalence_type_content_versions", force: :cascade do |t|
@@ -1568,8 +1619,8 @@ ActiveRecord::Schema.define(version: 2023_07_21_144131) do
     t.integer "management_priorities_page_limit", default: 10
     t.boolean "message_for_no_pupil_accounts", default: true
     t.jsonb "temperature_recording_months", default: ["10", "11", "12", "1", "2", "3", "4"]
-    t.jsonb "prices"
     t.integer "default_import_warning_days", default: 10
+    t.jsonb "prices"
     t.integer "photo_bonus_points", default: 0
     t.integer "audit_activities_bonus_points", default: 0
   end
@@ -1944,6 +1995,8 @@ ActiveRecord::Schema.define(version: 2023_07_21_144131) do
   add_foreign_key "dashboard_alerts", "content_generation_runs", on_delete: :cascade
   add_foreign_key "dashboard_alerts", "find_out_mores", on_delete: :nullify
   add_foreign_key "emails", "contacts", on_delete: :cascade
+  add_foreign_key "energy_tariffs", "users", column: "created_by_id"
+  add_foreign_key "energy_tariffs", "users", column: "updated_by_id"
   add_foreign_key "equivalence_type_content_versions", "equivalence_type_content_versions", column: "replaced_by_id", on_delete: :nullify
   add_foreign_key "equivalence_type_content_versions", "equivalence_types", on_delete: :cascade
   add_foreign_key "equivalences", "equivalence_type_content_versions", on_delete: :cascade

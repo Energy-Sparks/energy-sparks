@@ -34,7 +34,7 @@
           <% end %>
         </td>
         <td><%= audit.activity_types.count %></td>
-        <td><%= audit.observations.count %></td>
+        <td><%= audit.intervention_types.count %></td>
         <td>
           <%= link_to 'Edit', edit_school_audit_path(audit.school, audit), class: "btn btn-sm" %>
           <%= link_to 'Delete', school_audit_path(audit.school, audit), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
