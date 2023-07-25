@@ -30,6 +30,8 @@ class Audit < ApplicationRecord
 
   has_many :audit_activity_types
   has_many :activity_types, through: :audit_activity_types
+  scope :with_activity_types, -> { where('id IN (SELECT DISTINCT(audit_id) FROM audit_activity_types)') }
+
   accepts_nested_attributes_for :audit_activity_types, allow_destroy: true
 
   has_many :audit_intervention_types
@@ -43,5 +45,20 @@ class Audit < ApplicationRecord
     # Checks if the associated school has completed all activites that corresponds with the activity types
     # listed in the audit.  It only includes activities logged after the audit was created.
     (activity_types.pluck(:id) - school.activities.where('happened_on >= ?', created_at).pluck(:activity_type_id)).empty?
+  end
+
+  def create_activities_completed_observation!
+    return unless EnergySparks::FeatureFlags.active?(:activities_2023)
+    return unless SiteSettings.current.audit_activities_bonus_points
+    return unless activities_completed?
+    return if observations.audit_activities_completed.present? # Only one audit activities completed observation is permitted per audit
+
+    Observation.create!(
+      school: school,
+      observation_type: :audit_activities_completed,
+      audit: self,
+      at: Time.zone.now,
+      points: SiteSettings.current.audit_activities_bonus_points
+    )
   end
 end

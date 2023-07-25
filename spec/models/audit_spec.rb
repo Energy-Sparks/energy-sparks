@@ -18,6 +18,18 @@ describe Audit do
     end
   end
 
+  describe '#with_activity_types' do
+    it 'returns only audits with assciated activity types' do
+      audit_1 = create(:audit)
+      audit_1.audit_activity_types.create(activity_type: activity_type)
+      audit_2 = create(:audit)
+      audit_2.audit_activity_types.create(activity_type: activity_type)
+      audit_3 = create(:audit)
+      expect(Audit.all).to match_array([audit_1, audit_2, audit_3])
+      expect(Audit.with_activity_types).to match_array([audit_1, audit_2])
+    end
+  end
+
   it 'has collection of activity types with notes' do
     audit.audit_activity_types.create(activity_type: activity_type, notes: 'some activity type')
     expect( audit.activity_types ).to eq([activity_type])
@@ -87,5 +99,45 @@ describe Audit do
       expect(audit.school.activities.count).to eq(2)
       expect(audit.activities_completed?).to eq(false)
     end
+  end
+
+  context 'with the activities 2023 feature flag enabled' do
+    describe 'create_activities_completed_observation!' do
+      let(:activity_category) { create(:activity_category, name: 'Zebras') }
+
+      it 'creates *ONLY ONE* observation for the audit with the site setting points when all activities are completed' do
+        ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
+          audit = create(:audit, :with_activity_and_intervention_types)
+          expect(audit.activity_types.count).to eq(3)
+          expect(audit.school.activities.count).to eq(0)
+          expect { audit.create_activities_completed_observation! }.to change { Observation.audit_activities_completed.count }.by(0)
+          audit.activity_types.each do |activity_type|
+            Activity.create!(happened_on: audit.created_at, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+          end
+          expect { audit.create_activities_completed_observation! }.to change { Observation.audit_activities_completed.count }.by(1)
+          expect { audit.create_activities_completed_observation! }.to change { Observation.audit_activities_completed.count }.by(0)
+        end
+      end
+    end
+  end
+
+  context 'with the activities 2023 feature flag disabled' do
+    describe 'create_activities_completed_observation!' do
+      let(:activity_category) { create(:activity_category, name: 'Zebras') }
+
+      it 'does not create an observation for the audit with the site setting points when all activities are completed' do
+        ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'false' do
+          audit = create(:audit, :with_activity_and_intervention_types)
+          expect(audit.activity_types.count).to eq(3)
+          expect(audit.school.activities.count).to eq(0)
+          expect { audit.create_activities_completed_observation! }.to change { Observation.audit_activities_completed.count }.by(0)
+          audit.activity_types.each do |activity_type|
+            Activity.create!(happened_on: audit.created_at, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+          end
+          expect { audit.create_activities_completed_observation! }.to change { Observation.audit_activities_completed.count }.by(0)
+        end
+      end
+    end
+
   end
 end

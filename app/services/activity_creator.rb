@@ -27,22 +27,8 @@ class ActivityCreator
 
   def create_completed_audit_activities_observation
     return unless EnergySparks::FeatureFlags.active?(:activities_2023)
-    return unless SiteSettings.current.audit_activities_bonus_points
-    return if @activity.school.audits.empty?
 
-    @activity.school.audits.each do |audit|
-      next if audit.activity_types.empty?
-      next unless audit.activity_types.pluck(:id).include?(@activity.activity_type_id)
-      next unless audit.activities_completed?
-
-      Observation.create!(
-        school: @activity.school,
-        observation_type: :audit_activities_completed,
-        audit: audit,
-        at: Time.zone.now,
-        points: SiteSettings.current.audit_activities_bonus_points
-      )
-    end
+    @activity.school.audits.with_activity_types.each(&:create_activities_completed_observation!)
   end
 
   def create_activity_observation
