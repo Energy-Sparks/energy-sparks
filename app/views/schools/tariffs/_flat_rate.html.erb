@@ -1,0 +1,22 @@
+<table class="table table-charges">
+  <tbody>
+  <% if user_tariff.user_tariff_prices.any? %>
+    <tr>
+      <td class="description"><%= t('schools.user_tariffs.flat_rate.flat_rate_tariff') %></td>
+      <td class="value"><%= number_to_currency(user_tariff.user_tariff_prices.first.value, unit: '£') %> <%= t('schools.user_tariffs.flat_rate.per_kwh') %></td>
+      <% if allow_edits %>
+        <td>
+          <%= link_to t('common.labels.edit'), edit_school_user_tariff_user_tariff_differential_price_path(school, user_tariff, user_tariff_price), { class: 'btn', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window' } %>
+          <%= link_to t('common.labels.delete'), school_user_tariff_user_tariff_differential_price_path(school, user_tariff, user_tariff_price), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
+        </td>
+      <% end %>
+    </tr>
+  <% else %>
+    <tr>
+      <td colspan='10'>
+        <%= t('schools.user_tariffs.flat_rate.no_flat_rate_tariff_has_been_set_yet') %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

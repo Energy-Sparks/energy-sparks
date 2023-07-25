@@ -1,0 +1,24 @@
+<h1><%= t('schools.user_tariffs.new.title', fuel_type: @user_tariff.fuel_type) %></h1>
+
+<div class="user_tariff">
+
+  <p><%= t('schools.user_tariffs.there_should_only_be_one_tariff_message') %>.</p>
+  <br/>
+
+  <%= render 'schools/user_tariffs/meters', user_tariff: @user_tariff %>
+  <br/>
+
+  <%= simple_form_for [@school, @user_tariff] do |f| %>
+
+    <%= f.hidden_field :fuel_type, value: @user_tariff.fuel_type %>
+    <%= f.hidden_field :flat_rate, value: @user_tariff.flat_rate %>
+
+    <% @user_tariff.meters.each do |meter| %>
+      <%= f.hidden_field :meter_ids, value: meter.id, multiple: true %>
+    <% end %>
+
+    <%= render 'form', school: @school, user_tariff: @user_tariff, f: f %>
+
+  <% end %>
+
+</div>

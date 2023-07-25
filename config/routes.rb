@@ -232,8 +232,6 @@ Rails.application.routes.draw do
 
       resources :audits
 
-      resources :tariffs
-
       resources :temperature_observations, only: [:show, :new, :create, :index, :destroy]
       resources :transport_surveys, only: [:show, :update, :index, :destroy], param: :run_on do
         collection do
@@ -327,6 +325,20 @@ Rails.application.routes.draw do
       resources :batch_runs, only: [:index, :create, :show]
 
       resource :consents, only: [:show, :create]
+
+      resources :tariffs do
+        resources :tariff_prices, only: [:index, :new, :edit]
+        resources :tariff_flat_prices
+        resources :tariff_differential_prices
+        resources :tariff_charges
+        collection do
+          get :choose_meters, to: 'tariffs#choose_meters'
+        end
+        member do
+          get :choose_type, to: 'tariffs#choose_type'
+        end
+      end
+
       resources :user_tariffs do
         resources :user_tariff_prices, only: [:index, :new, :edit]
         resources :user_tariff_flat_prices
@@ -339,7 +351,6 @@ Rails.application.routes.draw do
           get :choose_type, to: 'user_tariffs#choose_type'
         end
       end
-
     end
 
     # Maintain old scoreboard URL
