@@ -42,16 +42,18 @@ class Audit < ApplicationRecord
   scope :by_date,   -> { order(created_at: :desc) }
 
   def activities_completed?
+    return if activity_types.empty?
     # Checks if the associated school has completed all activites that corresponds with the activity types
-    # listed in the audit.  It only includes activities logged after the audit was created.
-    (activity_types.pluck(:id) - school.activities.where('happened_on >= ?', created_at).pluck(:activity_type_id)).empty?
+    # listed in the audit.  It only includes activities logged after the audit was created and completed within
+    # 12 months of the audit's creation date.
+    (activity_types.pluck(:id) - school.activities.where('happened_on >= ? AND happened_on <= ?', created_at, created_at + 12.months).pluck(:activity_type_id)).empty?
   end
 
   def create_activities_completed_observation!
     return unless EnergySparks::FeatureFlags.active?(:activities_2023)
     return unless SiteSettings.current.audit_activities_bonus_points
     return unless activities_completed?
-    return if observations.audit_activities_completed.present? # Only one audit activities completed observation is permitted per audit
+    return if observations&.audit_activities_completed&.present? # Only one audit activities completed observation is permitted per audit
 
     Observation.create!(
       school: school,

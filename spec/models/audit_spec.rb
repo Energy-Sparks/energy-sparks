@@ -112,9 +112,22 @@ describe Audit do
           expect(audit.school.activities.count).to eq(0)
           expect { audit.create_activities_completed_observation! }.to change { Observation.audit_activities_completed.count }.by(0)
           audit.activity_types.each do |activity_type|
-            Activity.create!(happened_on: audit.created_at, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+            Activity.create!(happened_on: audit.created_at + 12.months, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
           end
           expect { audit.create_activities_completed_observation! }.to change { Observation.audit_activities_completed.count }.by(1)
+          expect { audit.create_activities_completed_observation! }.to change { Observation.audit_activities_completed.count }.by(0)
+        end
+      end
+
+      it 'does not create an observation for the audit with the site setting points when all activities are completed but are outside of 12 months of the audit creation date' do
+        ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
+          audit = create(:audit, :with_activity_and_intervention_types)
+          expect(audit.activity_types.count).to eq(3)
+          expect(audit.school.activities.count).to eq(0)
+          expect { audit.create_activities_completed_observation! }.to change { Observation.audit_activities_completed.count }.by(0)
+          audit.activity_types.each do |activity_type|
+            Activity.create!(happened_on: audit.created_at + 13.months, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+          end
           expect { audit.create_activities_completed_observation! }.to change { Observation.audit_activities_completed.count }.by(0)
         end
       end
@@ -138,6 +151,5 @@ describe Audit do
         end
       end
     end
-
   end
 end
