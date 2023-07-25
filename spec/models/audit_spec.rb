@@ -49,4 +49,43 @@ describe Audit do
       expect(audit.intervention_types.count).to eq(3)
     end
   end
+
+  describe '#activities_completed?' do
+    let(:activity_category) { create(:activity_category, name: 'Zebras') }
+
+    it 'returns true if the associated school has completed all activites that corresponds with the activity types listed in the audit and logged after the audit was created' do
+      audit = create(:audit, :with_activity_and_intervention_types)
+      expect(audit.activity_types.count).to eq(3)
+      expect(audit.activities_completed?).to eq(false)
+      audit.activity_types.each do |activity_type|
+        Activity.create!(happened_on: audit.created_at, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+      end
+      expect(audit.school.activities.count).to eq(3)
+      expect(audit.activities_completed?).to eq(true)
+    end
+
+    it 'returns false if the associated school has completed all activites that corresponds with the activity types listed in the audit but logged before the audit was created' do
+      audit = create(:audit, :with_activity_and_intervention_types)
+      expect(audit.activity_types.count).to eq(3)
+      expect(audit.school.activities.count).to eq(0)
+      expect(audit.activities_completed?).to eq(false)
+      audit.activity_types.each do |activity_type|
+        Activity.create!(happened_on: '2022-06-24', school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+      end
+      expect(audit.school.activities.count).to eq(3)
+      expect(audit.activities_completed?).to eq(false)
+    end
+
+    it 'returns false if the associated school has not completed all activites that corresponds with the activity types listed in the audit' do
+      audit = create(:audit, :with_activity_and_intervention_types)
+      expect(audit.activity_types.count).to eq(3)
+      expect(audit.school.activities.count).to eq(0)
+      expect(audit.activities_completed?).to eq(false)
+      audit.activity_types[0...-1].each do |activity_type|
+        Activity.create!(happened_on: audit.created_at, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+      end
+      expect(audit.school.activities.count).to eq(2)
+      expect(audit.activities_completed?).to eq(false)
+    end
+  end
 end
