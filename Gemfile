@@ -131,7 +131,7 @@ group :development, :test do
   gem 'terminal-notifier', require: false
   gem 'terminal-notifier-guard', require: false
   gem 'rb-readline', require: false
-  gem 'rubocop', '0.90.0'
+  gem 'rubocop', '0.93.1'
   gem 'rubocop-rails', '2.8.0'
   gem 'rubocop-performance', '1.8.0'
   gem 'rubocop-rspec'
