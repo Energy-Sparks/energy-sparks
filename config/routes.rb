@@ -326,16 +326,16 @@ Rails.application.routes.draw do
 
       resource :consents, only: [:show, :create]
 
-      resources :tariffs do
-        resources :tariff_prices, only: [:index, :new, :edit]
-        resources :tariff_flat_prices
-        resources :tariff_differential_prices
-        resources :tariff_charges
+      resources :energy_tariffs do
+        resources :energy_tariff_prices, only: [:index, :new, :edit]
+        resources :energy_tariff_flat_prices
+        resources :energy_tariff_differential_prices
+        resources :energy_tariff_charges
         collection do
-          get :choose_meters, to: 'tariffs#choose_meters'
+          get :choose_meters, to: 'energy_tariffs#choose_meters'
         end
         member do
-          get :choose_type, to: 'tariffs#choose_type'
+          get :choose_type, to: 'energy_tariffs#choose_type'
         end
       end
 

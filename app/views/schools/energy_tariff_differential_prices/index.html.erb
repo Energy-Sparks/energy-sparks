@@ -1,0 +1,23 @@
+<h1><%= t('schools.user_tariff_differential_prices.index.title') %></h1>
+
+<div class="energy_tariff">
+
+  <p><%= t('schools.user_tariff_differential_prices.index.using_your_bill_introduction') %>.</p>
+  <br/>
+
+  <%= render 'schools/energy_tariffs/header', energy_tariff: @energy_tariff %>
+
+  <h3><%= t('schools.user_tariff_differential_prices.index.consumption_charges') %></h3>
+
+  <p><%= energy_tariff_prices_text(@energy_tariff) %></p>
+
+  <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true" ></div>
+
+  <%= render 'schools/user_tariffs/rates_table', school: @school, energy_tariff: @energy_tariff, allow_edits: true %>
+
+  <br/>
+
+  <%= link_to t('common.labels.previous'), edit_school_energy_tariff_path(@school, @energy_tariff), class: 'btn' %>
+  <%= link_to t('common.labels.next'), school_energy_tariff_energy_tariff_charges_path(@school, @energy_tariff), class: 'btn' %>
+
+</div>
