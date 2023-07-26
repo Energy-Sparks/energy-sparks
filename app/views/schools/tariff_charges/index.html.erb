@@ -1,0 +1,25 @@
+<h1><%= t('schools.user_tariff_charges.index.title') %></h1>
+
+<div class="user_tariff">
+
+  <p><%= t('schools.user_tariff_charges.index.using_your_bill_introduction') %>.</p>
+  <br/>
+
+  <%= render 'schools/user_tariffs/header', user_tariff: @user_tariff %>
+
+  <%= simple_form_for :user_tariff_charges, url: school_user_tariff_user_tariff_charges_path(@school, @user_tariff) do |f| %>
+
+    <% if @user_tariff.gas? %>
+      <%= render 'charges_edit_gas', school: @school, user_tariff: @user_tariff, user_tariff_charges: @user_tariff_charges, f: f %>
+    <% else %>
+      <%= render 'charges_edit_electricity', school: @school, user_tariff: @user_tariff, user_tariff_charges: @user_tariff_charges, f: f %>
+    <% end %>
+
+    <br/>
+
+    <%= link_to t('common.labels.previous'), school_user_tariff_user_tariff_prices_path(@school, @user_tariff), class: 'btn' %>
+    <%= f.submit t('common.labels.next'), class: 'btn btn-primary' %>
+
+  <% end %>
+
+</div>

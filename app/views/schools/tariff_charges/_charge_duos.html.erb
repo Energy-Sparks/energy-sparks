@@ -1,0 +1,15 @@
+<table class="table table-charges">
+  <tbody>
+    <%= f.fields_for :duos_red do |ff| %>
+      <%= render 'charge_basic_row', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :duos_red), f: ff %>
+    <% end %>
+
+    <%= f.fields_for :duos_amber do |ff| %>
+      <%= render 'charge_basic_row', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :duos_amber), f: ff %>
+    <% end %>
+
+    <%= f.fields_for :duos_green do |ff| %>
+      <%= render 'charge_basic_row', user_tariff_charge: user_tariff_charge_for_type(user_tariff_charges, :duos_green), f: ff %>
+    <% end %>
+  </tbody>
+</table>
