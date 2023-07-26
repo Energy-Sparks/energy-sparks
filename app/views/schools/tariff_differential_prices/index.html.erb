@@ -5,7 +5,7 @@
   <p><%= t('schools.user_tariff_differential_prices.index.using_your_bill_introduction') %>.</p>
   <br/>
 
-  <%= render 'schools/user_tariffs/header', user_tariff: @user_tariff %>
+  <%= render 'schools/tariffs/header', user_tariff: @user_tariff %>
 
   <h3><%= t('schools.user_tariff_differential_prices.index.consumption_charges') %></h3>
 
@@ -13,7 +13,7 @@
 
   <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true" ></div>
 
-  <%= render 'schools/user_tariffs/rates_table', school: @school, user_tariff: @user_tariff, allow_edits: true %>
+  <%= render 'schools/tariffs/rates_table', school: @school, user_tariff: @user_tariff, allow_edits: true %>
 
   <br/>
 

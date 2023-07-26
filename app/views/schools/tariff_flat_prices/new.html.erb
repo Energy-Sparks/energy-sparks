@@ -9,10 +9,10 @@
 
   <br/>
 
-  <%= simple_form_for @user_tariff_price, url: school_user_tariff_user_tariff_flat_prices_path(@school, @user_tariff) do |f| %>
+  <%= simple_form_for @user_tariff_price, url: school_tariff_tariff_flat_prices_path(@school, @user_tariff) do |f| %>
     <%= render 'form', school: @school, user_tariff: @user_tariff, user_tariff_price: @user_tariff_price, f: f %>
     <br/>
-    <%= link_to t('common.labels.previous'), edit_school_user_tariff_path(@school, @user_tariff), class: 'btn' %>
+    <%= link_to t('common.labels.previous'), edit_school_tariff_path(@school, @user_tariff), class: 'btn' %>
     <%= f.submit t('common.labels.next'), class: 'btn btn-primary' %>
 <% end %>
 

@@ -8,7 +8,7 @@
 
   <br/>
 
-  <%= render 'schools/user_tariffs/header', user_tariff: @user_tariff %>
+  <%= render 'schools/tariffs/header', user_tariff: @user_tariff %>
 
   <h4>
     <%= t('schools.user_tariffs.show.consumption_charges') %>
@@ -16,25 +16,25 @@
   </h4>
 
   <% if @user_tariff.flat_rate? %>
-    <%= render 'schools/user_tariffs/flat_rate', school: @school, user_tariff: @user_tariff, allow_edits: false %>
+    <%= render 'schools/tariffs/flat_rate', school: @school, user_tariff: @user_tariff, allow_edits: false %>
   <% else %>
-    <%= render 'schools/user_tariffs/rates_table', school: @school, user_tariff: @user_tariff, allow_edits: false %>
+    <%= render 'schools/tariffs/rates_table', school: @school, user_tariff: @user_tariff, allow_edits: false %>
   <% end %>
 
   <br/>
 
   <h4>
     <%= t('schools.user_tariffs.show.standing_charges') %>
-    <%= link_to t('common.labels.edit'), school_user_tariff_user_tariff_charges_path(@school, @user_tariff), class: 'btn' %>
+    <%= link_to t('common.labels.edit'), school_tariff_tariff_charges_path(@school, @user_tariff), class: 'btn' %>
   </h4>
 
-  <%= render 'schools/user_tariffs/charges_table', school: @school, user_tariff: @user_tariff, allow_edits: false %>
+  <%= render 'schools/tariffs/charges_table', school: @school, user_tariff: @user_tariff, allow_edits: false %>
 
   <br/>
   <br/>
 
-  <%= link_to t('common.labels.previous'), school_user_tariff_user_tariff_charges_path(@school, @user_tariff), class: 'btn' %>
-  <%= link_to t('common.labels.finished'), school_user_tariffs_path(@school), class: 'btn' %>
+  <%= link_to t('common.labels.previous'), school_tariff_tariff_charges_path(@school, @user_tariff), class: 'btn' %>
+  <%= link_to t('common.labels.finished'), school_tariffs_path(@school), class: 'btn' %>
 
   <div class="hidden">
     <% if can? :download, UserTariff %>

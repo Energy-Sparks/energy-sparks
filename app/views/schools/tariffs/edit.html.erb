@@ -5,7 +5,7 @@
   <p><%= t('schools.user_tariffs.there_should_only_be_one_tariff_message') %>.</p>
   <br/>
 
-  <%= render 'schools/user_tariffs/header', user_tariff: @user_tariff %>
+  <%= render 'schools/tariffs/header', user_tariff: @user_tariff %>
 
   <%= simple_form_for [@school, @user_tariff] do |f| %>
     <%= render 'form', school: @school, user_tariff: @user_tariff, f: f %>

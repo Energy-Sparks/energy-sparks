@@ -14,7 +14,7 @@ module Schools
     def new
       @user_tariff = @school.user_tariffs.build(user_tariff_params.merge(default_params))
       if @user_tariff.meter_ids.empty?
-        redirect_back fallback_location: school_user_tariffs_path(@school), notice: "Please select at least one meter for this tariff"
+        redirect_back fallback_location: school_tariffs_path(@school), notice: "Please select at least one meter for this tariff"
       end
     end
 
@@ -22,9 +22,9 @@ module Schools
       @user_tariff = @school.user_tariffs.build(user_tariff_params)
       if @user_tariff.save
         if @user_tariff.gas?
-          redirect_to school_user_tariff_user_tariff_prices_path(@school, @user_tariff)
+          redirect_to school_tariff_tariff_prices_path(@school, @user_tariff)
         else
-          redirect_to choose_type_school_user_tariff_path(@school, @user_tariff)
+          redirect_to choose_type_school_tariff_path(@school, @user_tariff)
         end
       else
         render :new
@@ -47,7 +47,7 @@ module Schools
     def update
       if @user_tariff.update(user_tariff_params)
         UserTariffDefaultPricesCreator.new(@user_tariff).process
-        redirect_to school_user_tariff_user_tariff_prices_path(@school, @user_tariff)
+        redirect_to school_tariff_tariff_prices_path(@school, @user_tariff)
       else
         render :edit
       end
@@ -58,7 +58,7 @@ module Schools
 
     def destroy
       @user_tariff.destroy
-      redirect_to school_user_tariffs_path(@school)
+      redirect_to school_tariffs_path(@school)
     end
 
     private

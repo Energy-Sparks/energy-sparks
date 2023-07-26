@@ -18,7 +18,7 @@ module Schools
       @user_tariff_price = @user_tariff.user_tariff_prices.build(user_tariff_price_params.merge(units: 'kwh'))
       respond_to do |format|
         if @user_tariff_price.save
-          format.html { redirect_to school_user_tariff_user_tariff_differential_prices_path(@school, @user_tariff) }
+          format.html { redirect_to school_tariff_tariff_differential_prices_path(@school, @user_tariff) }
           format.js
         else
           format.html { render :new }
@@ -39,7 +39,7 @@ module Schools
       @user_tariff_price = @user_tariff.user_tariff_prices.find(params[:id])
       respond_to do |format|
         if @user_tariff_price.update(user_tariff_price_params)
-          format.html { redirect_to school_user_tariff_user_tariff_differential_prices_path(@school, @user_tariff) }
+          format.html { redirect_to school_tariff_tariff_differential_prices_path(@school, @user_tariff) }
           format.js
         else
           format.html { render :edit }
@@ -50,7 +50,7 @@ module Schools
 
     def destroy
       @user_tariff.user_tariff_prices.find(params[:id]).destroy
-      redirect_to school_user_tariff_user_tariff_differential_prices_path(@school, @user_tariff)
+      redirect_to school_tariff_tariff_differential_prices_path(@school, @user_tariff)
     end
 
     private

@@ -28,7 +28,7 @@
               </p>
             <% end %>
             <div class="mt-4">
-              <%= link_to t('schools.user_tariffs.index.electricity.add_label'), choose_meters_school_user_tariffs_path(@school, fuel_type: :electricity), class: 'btn btn-success' %>
+              <%= link_to t('schools.user_tariffs.index.electricity.add_label'), choose_meters_school_tariffs_path(@school, fuel_type: :electricity), class: 'btn btn-success' %>
             </div>
           <% end %>
         </div>
@@ -56,7 +56,7 @@
               </p>
             <% end %>
             <div>
-              <%= link_to t('schools.user_tariffs.index.gas.add_label'), choose_meters_school_user_tariffs_path(@school, fuel_type: :gas), class: 'btn btn-success' %>
+              <%= link_to t('schools.user_tariffs.index.gas.add_label'), choose_meters_school_tariffs_path(@school, fuel_type: :gas), class: 'btn btn-success' %>
             </div>
           <% end %>
         </div>

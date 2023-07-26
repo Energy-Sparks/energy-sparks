@@ -5,9 +5,9 @@ module Schools
 
     def index
       if @user_tariff.user_tariff_prices.any?
-        redirect_to edit_school_user_tariff_user_tariff_flat_price_path(@school, @user_tariff, @user_tariff.user_tariff_prices.first)
+        redirect_to edit_school_tariff_tariff_flat_price_path(@school, @user_tariff, @user_tariff.user_tariff_prices.first)
       else
-        redirect_to new_school_user_tariff_user_tariff_flat_price_path(@school, @user_tariff)
+        redirect_to new_school_tariff_tariff_flat_price_path(@school, @user_tariff)
       end
     end
 
@@ -18,7 +18,7 @@ module Schools
     def create
       @user_tariff_price = @user_tariff.user_tariff_prices.build(user_tariff_price_params.merge(default_attributes))
       if @user_tariff_price.save
-        redirect_to school_user_tariff_user_tariff_charges_path(@school, @user_tariff)
+        redirect_to school_tariff_tariff_charges_path(@school, @user_tariff)
       else
         render :new
       end
@@ -31,7 +31,7 @@ module Schools
     def update
       @user_tariff_price = @user_tariff.user_tariff_prices.find(params[:id])
       if @user_tariff_price.update(user_tariff_price_params)
-         redirect_to school_user_tariff_user_tariff_charges_path(@school, @user_tariff)
+         redirect_to school_tariff_tariff_charges_path(@school, @user_tariff)
       else
         render :edit
       end

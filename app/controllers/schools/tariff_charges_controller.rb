@@ -16,7 +16,7 @@ module Schools
           @user_tariff.user_tariff_charges.destroy_all
           @user_tariff_charges.each(&:save!)
         end
-        redirect_to school_user_tariff_path(@school, @user_tariff)
+        redirect_to school_tariff_path(@school, @user_tariff)
       else
         render :index
       end
