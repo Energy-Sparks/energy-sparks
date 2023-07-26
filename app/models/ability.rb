@@ -92,6 +92,7 @@ class Ability
       can :manage, Activity, related_school_scope
       can :manage, Contact, related_school_scope
       can :manage, UserTariff, related_school_scope
+      can :manage, EnergyTariff, related_school_scope
       can :show, Cad, related_school_scope
       can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
       can [:index, :create, :read, :update], ConsentDocument, related_school_scope
