@@ -7,6 +7,12 @@ describe 'user tariffs', type: :system do
   let!(:electricity_meter)        { create(:electricity_meter, school: school, mpan_mprn: '12345678901234') }
   let!(:gas_meter)                { create(:gas_meter, school: school, mpan_mprn: '999888777') }
 
+  around do |example|
+    ClimateControl.modify FEATURE_FLAG_USE_NEW_ENERGY_TARIFFS: 'false' do
+      example.run
+    end
+  end
+
   context 'as an admin' do
     let!(:admin)                    { create(:admin) }
 

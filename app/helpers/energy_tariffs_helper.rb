@@ -1,9 +1,9 @@
 module EnergyTariffsHelper
   def energy_tariff_price_title(energy_tariff_price)
     if energy_tariff_price.description.present?
-      "#{energy_tariff_price.description} (#{energy_tariff_price.start_time.to_s(:time)} to #{energy_tariff_price.end_time.to_s(:time)})"
+      "#{energy_tariff_price&.description} (#{energy_tariff_price&.start_time&.to_s(:time)} to #{energy_tariff_price&.end_time&.to_s(:time)})"
     else
-      "Rate from #{energy_tariff_price.start_time.to_s(:time)} to #{energy_tariff_price.end_time.to_s(:time)}"
+      "Rate from #{energy_tariff_price&.start_time&.to_s(:time)} to #{energy_tariff_price&.end_time&.to_s(:time)}"
     end
   end
 
@@ -30,15 +30,15 @@ module EnergyTariffsHelper
   end
 
   def energy_tariff_title(energy_tariff, with_mpxn = false)
-    start_date = energy_tariff.start_date.to_s(:es_compact)
-    end_date = energy_tariff.end_date.to_s(:es_compact)
+    start_date = energy_tariff&.start_date&.to_s(:es_compact)
+    end_date = energy_tariff&.end_date&.to_s(:es_compact)
 
     title = I18n.t(
       'schools.tariffs_helper.user_tariff_title',
       start_date: start_date,
       end_date: end_date
     )
-    title += " : #{energy_tariff.name} " if energy_tariff.name.present?
+    title += " : #{energy_tariff&.name} " if energy_tariff&.name&.present?
 
     if energy_tariff.meters.any? && with_mpxn
       if energy_tariff.gas?

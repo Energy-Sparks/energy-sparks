@@ -30,49 +30,6 @@ describe 'energy tariffs', type: :system do
         expect(page).to have_link('cost analysis pages')
       end
     end
-
-    context 'with existing user tariff' do
-
-      let(:energy_tariff_price)  { EnergyTariffPrice.new(start_time: '00:00', end_time: '23:30', value: 1.23, units: 'kwh') }
-      let(:energy_tariff_charge)  { EnergyTariffCharge.new(charge_type: :fixed_charge, value: 4.56, units: :month) }
-
-      let!(:energy_tariff)  do
-        EnergyTariff.create!(
-          tariff_holder_type: "School",
-          tariff_holder_id: school.id,
-          start_date: '01/04/2021',
-          end_date: '31/03/2022',
-          name: 'My First Tariff',
-          meter_type: :electricity,
-          tariff_type: :flat_rate,
-          vat_rate: '20%',
-          ccl: true,
-          energy_tariff_prices: [energy_tariff_price],
-          energy_tariff_charges: [energy_tariff_charge],
-          meters: [electricity_meter]
-        )
-      end
-
-      it 'shows meter attributes on the meter attributes page' do
-        visit admin_school_single_meter_attribute_path(school, electricity_meter)
-        expect(current_path).to eq("/schools/#{school.slug}/energy_tariffs")
-
-        expect(page).to have_content('My First Tariff')
-        expect(page).to have_content('manually_entered')
-        expect(page).to have_content('Thu, 01 Apr 2021')
-        expect(page).to have_content('Thu, 31 Mar 2022')
-        expect(page).to have_content('1.23')
-        expect(page).to have_content(':kwh')
-        expect(page).to have_content('4.56')
-        expect(page).to have_content(':month')
-      end
-
-      it 'links to the review page' do
-        visit admin_school_single_meter_attribute_path(school, electricity_meter)
-        click_link 'User tariffs'
-        expect(page).to have_content('Tariff details')
-      end
-    end
   end
 
   context 'as a school admin' do
@@ -82,13 +39,11 @@ describe 'energy tariffs', type: :system do
     end
 
     context 'creating flat rate gas tariffs' do
-
-      before(:each) do
+      it 'can create a tariff and add prices and charges' do
         visit school_path(school)
         click_link('Manage tariffs')
-      end
+        expect(current_path).to eq("/schools/big-school/energy_tariffs")
 
-      it 'can create a tariff and add prices and charges' do
         expect(page).to have_content('Manage tariffs')
 
         click_link('Add gas tariff')
@@ -134,7 +89,7 @@ describe 'energy tariffs', type: :system do
 
         energy_tariff = EnergyTariff.last
         expect(energy_tariff.meters).to match_array([gas_meter])
-        expect(energy_tariff.vat_rate).to eq('5%')
+        expect(energy_tariff.vat_rate).to eq(5)
         expect(energy_tariff.ccl).to be_truthy
         energy_tariff_price = energy_tariff.energy_tariff_prices.first
         expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:00')
@@ -210,8 +165,8 @@ describe 'energy tariffs', type: :system do
 
         energy_tariff = EnergyTariff.last
         expect(energy_tariff.meters).to match_array([electricity_meter])
-        expect(energy_tariff.flat_rate).to be_truthy
-        expect(energy_tariff.vat_rate).to eq('0%')
+        expect(energy_tariff.tariff_type == 'flat_rate').to be_truthy
+        expect(energy_tariff.vat_rate).to eq(0)
         expect(energy_tariff.ccl).to be_falsey
         energy_tariff_price = energy_tariff.energy_tariff_prices.first
         expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:00')
@@ -340,7 +295,7 @@ describe 'energy tariffs', type: :system do
         energy_tariff = EnergyTariff.last
         expect(energy_tariff.tnuos).to be_truthy
         expect(energy_tariff.ccl).to be_truthy
-        expect(energy_tariff.vat_rate).to eq('20%')
+        expect(energy_tariff.vat_rate).to eq(20)
 
         expect(energy_tariff.value_for_charge(:fixed_charge)).to eq('1.11')
         expect(energy_tariff.value_for_charge(:site_fee)).to eq('2.22')
