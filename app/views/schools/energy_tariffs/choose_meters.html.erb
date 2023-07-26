@@ -2,7 +2,7 @@
 
 <div class="energy_tariff">
   <%= simple_form_for :energy_tariff, url: new_school_energy_tariff_path(@school), method: :get do |f| %>
-    <%= f.hidden_field :fuel_type, value: params[:fuel_type] %>
+    <%= f.hidden_field :meter_type, value: params[:meter_type] %>
     <div class="row">
       <div class="col-md-4">
         <p><%= t('schools.user_tariffs.choose_meters.which_meters_will_this_tariff_apply_to') %></p>

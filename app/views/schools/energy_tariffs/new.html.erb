@@ -1,4 +1,4 @@
-<h1><%= t('schools.user_tariffs.new.title', fuel_type: @energy_tariff.fuel_type) %></h1>
+<h1><%= t('schools.user_tariffs.new.title', fuel_type: @energy_tariff.meter_type) %></h1>
 
 <div class="energy_tariff">
 
@@ -10,8 +10,8 @@
 
   <%= simple_form_for [@school, @energy_tariff] do |f| %>
 
-    <%= f.hidden_field :fuel_type, value: @energy_tariff.fuel_type %>
-    <%= f.hidden_field :flat_rate, value: @energy_tariff.flat_rate %>
+    <%= f.hidden_field :meter_type, value: @energy_tariff.meter_type %>
+    <%= f.hidden_field :tariff_type, value: @energy_tariff.tariff_type %>
 
     <% @energy_tariff.meters.each do |meter| %>
       <%= f.hidden_field :meter_ids, value: meter.id, multiple: true %>

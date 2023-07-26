@@ -32,9 +32,9 @@ module Schools
     end
 
     def choose_meters
-      if params[:fuel_type] == 'electricity'
+      if params[:meter_type] == 'electricity'
         @meters = @school.meters.electricity
-      elsif params[:fuel_type] == 'gas'
+      elsif params[:meter_type] == 'gas'
         @meters = @school.meters.gas
       else
         @meters = []
@@ -68,11 +68,12 @@ module Schools
     end
 
     def default_params
-      { start_date: Date.parse('2021-04-01'), end_date: Date.parse('2022-03-31'), flat_rate: true }
+      { start_date: Date.parse('2021-04-01'), end_date: Date.parse('2022-03-31'), tariff_type: :flat_rate }
     end
 
     def energy_tariff_params
-      params.require(:energy_tariff).permit(:fuel_type, :name, :start_date, :end_date, :flat_rate, :vat_rate, meter_ids: [])
+      # params.require(:energy_tariff).permit(:meter_type, :name, :start_date, :end_date, :flat_rate, :vat_rate, meter_ids: [])
+      params.require(:energy_tariff).permit(:meter_type, :name, :start_date, :end_date, :tariff_type, :vat_rate, meter_ids: [])
     end
   end
 end
