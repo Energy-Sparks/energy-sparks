@@ -36,8 +36,8 @@ class EnergyTariff < ApplicationRecord
 
   delegated_type :tariff_holder, types: %w[School SchoolGroup]
 
-  has_many :energy_tariff_prices, inverse_of: :energy_tariff
-  has_many :energy_tariff_charges, inverse_of: :energy_tariff
+  has_many :energy_tariff_prices, inverse_of: :energy_tariff, dependent: :destroy
+  has_many :energy_tariff_charges, inverse_of: :energy_tariff, dependent: :destroy
 
   #only populated if tariff_holder is school
   has_and_belongs_to_many :meters, inverse_of: :energy_tariffs

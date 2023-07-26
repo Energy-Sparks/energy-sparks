@@ -10,7 +10,8 @@ class ActivityCreator
 
     if @activity.save
       process_programmes if started_active_programmes.any?
-      create_observation
+      create_activity_observation
+      create_completed_audit_activities_observation
     end
     @activity.persisted?
   end
@@ -24,7 +25,13 @@ class ActivityCreator
     end
   end
 
-  def create_observation
+  def create_completed_audit_activities_observation
+    return unless EnergySparks::FeatureFlags.active?(:activities_2023)
+
+    @activity.school.audits.with_activity_types.each(&:create_activities_completed_observation!)
+  end
+
+  def create_activity_observation
     academic_year = @activity.school.academic_year_for(@activity.happened_on)
     points = if academic_year && academic_year.current?
                @activity.activity_type.score

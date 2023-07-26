@@ -1622,6 +1622,7 @@ ActiveRecord::Schema.define(version: 2023_07_24_142054) do
     t.integer "default_import_warning_days", default: 10
     t.jsonb "prices"
     t.integer "photo_bonus_points", default: 0
+    t.integer "audit_activities_bonus_points", default: 0
   end
 
   create_table "sms_records", force: :cascade do |t|
