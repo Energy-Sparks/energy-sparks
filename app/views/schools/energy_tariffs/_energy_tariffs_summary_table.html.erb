@@ -21,7 +21,7 @@
           </ul>
         </td>
         <td>
-          <%= energy_tariff.flat_rate ? t('schools.user_tariffs.tariff_partial.simple_tariff') : t('schools.user_tariffs.tariff_partial.day_night_tariff') %>
+          <%= energy_tariff.tariff_type == 'flat_rate' ? t('schools.user_tariffs.tariff_partial.simple_tariff') : t('schools.user_tariffs.tariff_partial.day_night_tariff') %>
         </td>
         <td><%= energy_tariff.start_date.to_s(:es_compact) %></td>
         <td><%= energy_tariff.end_date.to_s(:es_compact) %></td>

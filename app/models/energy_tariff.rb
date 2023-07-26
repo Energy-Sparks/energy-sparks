@@ -58,6 +58,9 @@ class EnergyTariff < ApplicationRecord
   scope :has_charges, -> { where(id: EnergyTariffCharge.select(:energy_tariff_id)) }
   scope :complete, -> { has_prices.or(has_charges) }
 
+  scope :by_name, -> { order(name: :asc) }
+  scope :by_start_date, -> { order(start_date: :asc) }
+
   def meter_attribute
     MeterAttribute.new(attribute_type: :accounting_tariff_generic, input_data: to_hash)
   end
