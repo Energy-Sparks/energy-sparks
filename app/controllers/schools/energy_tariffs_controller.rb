@@ -1,7 +1,7 @@
 module Schools
   class EnergyTariffsController < ApplicationController
-    load_and_authorize_resource :school #, :instance_name => :tariff_holder
-    load_and_authorize_resource :energy_tariff #, through: [:school]
+    load_and_authorize_resource :school
+    load_and_authorize_resource :energy_tariff
     before_action :set_breadcrumbs
 
     def index
@@ -63,10 +63,6 @@ module Schools
 
     private
 
-    # def set_energy_tariff
-    #   @energy_tariff = EnergyTariff.find_by(id: )
-    # end
-
     def set_breadcrumbs
       @breadcrumbs = [{ name: I18n.t('manage_school_menu.manage_tariffs') }]
     end
@@ -76,7 +72,6 @@ module Schools
     end
 
     def energy_tariff_params
-      # params.require(:energy_tariff).permit(:meter_type, :name, :start_date, :end_date, :flat_rate, :vat_rate, meter_ids: [])
       params.require(:energy_tariff).permit(:meter_type, :name, :start_date, :end_date, :tariff_type, :vat_rate, meter_ids: [])
     end
   end

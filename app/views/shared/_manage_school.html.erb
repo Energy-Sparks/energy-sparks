@@ -9,7 +9,7 @@
     <%= link_to t('manage_school_menu.manage_alert_contacts'), school_contacts_path(school), class: 'dropdown-item' if can? :manage, Contact %>
     <%= link_to t('manage_school_menu.manage_meters'), school_meters_path(school), class: 'dropdown-item' if can? :index, Meter %>
     <% if EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs) %>
-      <%= link_to t('manage_school_menu.manage_tariffs'), school_energy_tariffs_path(school), class: 'dropdown-item' if can? :manage, UserTariff %>
+      <%= link_to t('manage_school_menu.manage_tariffs'), school_energy_tariffs_path(school), class: 'dropdown-item' if can? :manage, EnergyTariff %>
     <% else %>
       <%= link_to t('manage_school_menu.manage_tariffs'), school_user_tariffs_path(school), class: 'dropdown-item' if can? :manage, UserTariff %>
     <% end %>
