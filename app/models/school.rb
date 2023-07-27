@@ -163,6 +163,7 @@ class School < ApplicationRecord
   belongs_to :scoreboard, optional: true
   belongs_to :local_authority_area, optional: true
 
+  has_one :funder
   has_one :school_onboarding
   has_one :configuration, class_name: 'Schools::Configuration'
 

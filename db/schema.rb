@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_24_142054) do
+ActiveRecord::Schema.define(version: 2023_07_27_155443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -890,6 +890,10 @@ ActiveRecord::Schema.define(version: 2023_07_24_142054) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
+  create_table "funders", force: :cascade do |t|
+    t.string "name", null: false
+  end
+
   create_table "global_meter_attributes", force: :cascade do |t|
     t.string "attribute_type", null: false
     t.json "input_data"
@@ -1578,7 +1582,9 @@ ActiveRecord::Schema.define(version: 2023_07_24_142054) do
     t.bigint "local_authority_area_id"
     t.datetime "bill_requested_at"
     t.bigint "school_group_cluster_id"
+    t.bigint "funder_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
+    t.index ["funder_id"], name: "index_schools_on_funder_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"
     t.index ["school_group_cluster_id"], name: "index_schools_on_school_group_cluster_id"
@@ -2081,6 +2087,7 @@ ActiveRecord::Schema.define(version: 2023_07_24_142054) do
   add_foreign_key "school_targets", "schools"
   add_foreign_key "school_times", "schools", on_delete: :cascade
   add_foreign_key "schools", "calendars", on_delete: :restrict
+  add_foreign_key "schools", "funders", on_delete: :cascade
   add_foreign_key "schools", "school_group_clusters", on_delete: :nullify
   add_foreign_key "schools", "school_groups", on_delete: :restrict
   add_foreign_key "schools", "scoreboards", on_delete: :nullify
