@@ -34,7 +34,7 @@
 class EnergyTariff < ApplicationRecord
   belongs_to :tariff_holder, polymorphic: true
 
-  delegated_type :tariff_holder, types: %w[School SchoolGroup]
+  delegated_type :tariff_holder, types: %w[SiteSettings School SchoolGroup]
 
   has_many :energy_tariff_prices, inverse_of: :energy_tariff, dependent: :destroy
   has_many :energy_tariff_charges, inverse_of: :energy_tariff, dependent: :destroy
