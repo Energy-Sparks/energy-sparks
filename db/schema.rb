@@ -2087,7 +2087,6 @@ ActiveRecord::Schema.define(version: 2023_07_27_155443) do
   add_foreign_key "school_targets", "schools"
   add_foreign_key "school_times", "schools", on_delete: :cascade
   add_foreign_key "schools", "calendars", on_delete: :restrict
-  add_foreign_key "schools", "funders", on_delete: :cascade
   add_foreign_key "schools", "school_group_clusters", on_delete: :nullify
   add_foreign_key "schools", "school_groups", on_delete: :restrict
   add_foreign_key "schools", "scoreboards", on_delete: :nullify

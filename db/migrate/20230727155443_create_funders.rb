@@ -3,6 +3,6 @@ class CreateFunders < ActiveRecord::Migration[6.0]
     create_table :funders do |t|
       t.string :name, null: false
     end
-    add_reference :schools, :funder, foreign_key: { on_delete: :cascade }
+    add_reference :schools, :funder
   end
 end
