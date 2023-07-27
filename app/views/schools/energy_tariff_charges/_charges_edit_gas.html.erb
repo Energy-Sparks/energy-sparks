@@ -1,0 +1,25 @@
+
+<h4><%= t('schools.user_tariff_charges.charges_edit_gas.consumption_and_supply_charges') %></h4>
+
+<div class="fixed_charge">
+  <%= f.fields_for :fixed_charge do |ff| %>
+    <%= render 'charge_basic', energy_tariff_charge: energy_tariff_charge_for_type(energy_tariff_charges, :fixed_charge), f: ff %>
+  <% end %>
+</div>
+
+<br/>
+
+<h4><%= t('schools.user_tariff_charges.charges_edit_gas.other_charges') %></h4>
+
+<%= f.fields_for :other do |ff| %>
+  <%= render 'charge_basic', energy_tariff_charge: energy_tariff_charge_for_type(energy_tariff_charges, :other), f: ff %>
+<% end %>
+
+<%= f.fields_for :energy_tariff do |ff| %>
+  <%= render 'charge_vat', energy_tariff: energy_tariff, f: ff %>
+<% end %>
+
+<%= f.fields_for :energy_tariff do |ff| %>
+  <%= render 'charge_ccl', energy_tariff: energy_tariff, f: ff %>
+<% end %>
+

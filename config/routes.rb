@@ -325,6 +325,20 @@ Rails.application.routes.draw do
       resources :batch_runs, only: [:index, :create, :show]
 
       resource :consents, only: [:show, :create]
+
+      resources :energy_tariffs do
+        resources :energy_tariff_prices, only: [:index, :new, :edit]
+        resources :energy_tariff_flat_prices
+        resources :energy_tariff_differential_prices
+        resources :energy_tariff_charges
+        collection do
+          get :choose_meters, to: 'energy_tariffs#choose_meters'
+        end
+        member do
+          get :choose_type, to: 'energy_tariffs#choose_type'
+        end
+      end
+
       resources :user_tariffs do
         resources :user_tariff_prices, only: [:index, :new, :edit]
         resources :user_tariff_flat_prices
@@ -337,7 +351,6 @@ Rails.application.routes.draw do
           get :choose_type, to: 'user_tariffs#choose_type'
         end
       end
-
     end
 
     # Maintain old scoreboard URL
