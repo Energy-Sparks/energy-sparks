@@ -19,7 +19,7 @@ module Schools
     end
 
     def create
-      @energy_tariff = @school.energy_tariffs.build(energy_tariff_params)
+      @energy_tariff = @school.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
       if @energy_tariff.save
         if @energy_tariff.gas?
           redirect_to school_energy_tariff_energy_tariff_prices_path(@school, @energy_tariff)
@@ -45,7 +45,7 @@ module Schools
     end
 
     def update
-      if @energy_tariff.update(energy_tariff_params)
+      if @energy_tariff.update(energy_tariff_params.merge(updated_by: current_user))
         EnergyTariffDefaultPricesCreator.new(@energy_tariff).process
         redirect_to school_energy_tariff_energy_tariff_prices_path(@school, @energy_tariff)
       else

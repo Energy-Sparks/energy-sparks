@@ -28,7 +28,7 @@ module AnalyticsAttribute
   end
 
   def pseudo?(meter_type)
-    meter_attribute_type.applicable_attribute_pseudo_meter_types.include?(meter_type.to_sym)
+    meter_attribute_type&.applicable_attribute_pseudo_meter_types&.include?(meter_type.to_sym)
   end
 
   def input_data_valid
