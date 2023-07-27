@@ -66,7 +66,7 @@ Rails.application.routes.draw do
 
   resources :mailchimp_signups, only: [:new, :create, :index]
 
-  concern :tariffable do
+  concern :tariff_holder do
     scope module: 'energy_tariffs' do
     resources :energy_tariffs do
       resources :energy_tariff_prices, only: [:index, :new, :edit]
@@ -178,7 +178,7 @@ Rails.application.routes.draw do
       end
     end
 
-    concerns :tariffable
+    concerns :tariff_holder
 
     scope module: :schools do
 
