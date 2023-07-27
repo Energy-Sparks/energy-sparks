@@ -27,7 +27,7 @@ describe 'energy tariffs', type: :system do
     before(:each) { sign_in(current_user) }
 
     context 'does not allow access to the energy tariffs page' do
-      it 'from meters page to user tariffs index' do
+      it 'redirects to the school index page' do
         visit school_energy_tariffs_path(school)
         expect(current_path).to eq("/schools/#{school.slug}")
       end
@@ -39,9 +39,18 @@ describe 'energy tariffs', type: :system do
     before(:each) { sign_in(current_user) }
 
     context 'does not allow access to the energy tariffs page' do
-      it 'from meters page to user tariffs index' do
+      it 'redirects to the school index page' do
         visit school_energy_tariffs_path(school)
         expect(current_path).to eq("/schools/#{school_2.slug}")
+      end
+    end
+  end
+
+  context 'with no signed in user' do
+    context 'does not allow access to the energy tariffs page' do
+      it 'redirects to the school index page' do
+        visit school_energy_tariffs_path(school)
+        expect(current_path).to eq('/users/sign_in')
       end
     end
   end
