@@ -48,7 +48,7 @@ describe 'energy tariffs', type: :system do
 
   context 'with no signed in user' do
     context 'does not allow access to the energy tariffs page' do
-      it 'redirects to the school index page' do
+      it 'redirects to the sign in page' do
         visit school_energy_tariffs_path(school)
         expect(current_path).to eq('/users/sign_in')
       end
