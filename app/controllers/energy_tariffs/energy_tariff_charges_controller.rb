@@ -1,4 +1,4 @@
-module Schools
+module EnergyTariffs
   class EnergyTariffChargesController < ApplicationController
     load_and_authorize_resource :school
     load_and_authorize_resource :energy_tariff

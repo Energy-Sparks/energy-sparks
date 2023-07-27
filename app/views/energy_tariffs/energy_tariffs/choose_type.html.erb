@@ -1,0 +1,24 @@
+<h1><%= t('schools.user_tariffs.choose_type.title') %></h1>
+
+<div class="energy_tariff">
+
+  <%= render 'schools/energy_tariffs/header', energy_tariff: @energy_tariff %>
+
+  <p><%= t('schools.user_tariffs.choose_type.is_this_a_simple_flat_rate') %></p>
+
+  <%= simple_form_for [@school, @energy_tariff] do |f| %>
+    <%= f.hidden_field :tariff_type, value: 'flat_rate' %>
+    <%= submit_tag t('schools.user_tariffs.choose_type.simple'), class: 'btn btn-info' %>
+  <% end %>
+
+  <br/>
+  <br/>
+
+  <p><%= t('schools.user_tariffs.choose_type.or_a_rate_which_varies_by_time_of_day') %></p>
+
+  <%= simple_form_for [@school, @energy_tariff] do |f| %>
+    <%= f.hidden_field :tariff_type, value: 'differential' %>
+    <%= submit_tag t('schools.user_tariffs.choose_type.day_night_tariff'), class: 'btn btn-info' %>
+  <% end %>
+
+</div>
