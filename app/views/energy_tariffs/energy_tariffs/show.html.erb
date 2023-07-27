@@ -8,7 +8,7 @@
 
   <br/>
 
-  <%= render 'schools/energy_tariffs/header', energy_tariff: @energy_tariff %>
+  <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
 
   <h4>
     <%= t('schools.user_tariffs.show.consumption_charges') %>
@@ -16,9 +16,9 @@
   </h4>
 
   <% if @energy_tariff.flat_rate? %>
-    <%= render 'schools/energy_tariffs/flat_rate', school: @school, energy_tariff: @energy_tariff, allow_edits: false %>
+    <%= render 'energy_tariffs/energy_tariffs/flat_rate', school: @school, energy_tariff: @energy_tariff, allow_edits: false %>
   <% else %>
-    <%= render 'schools/energy_tariffs/rates_table', school: @school, energy_tariff: @energy_tariff, allow_edits: false %>
+    <%= render 'energy_tariffs/energy_tariffs/rates_table', school: @school, energy_tariff: @energy_tariff, allow_edits: false %>
   <% end %>
 
   <br/>
@@ -28,7 +28,7 @@
     <%= link_to t('common.labels.edit'), school_energy_tariff_energy_tariff_charges_path(@school, @energy_tariff), class: 'btn' %>
   </h4>
 
-  <%= render 'schools/energy_tariffs/charges_table', school: @school, energy_tariff: @energy_tariff, allow_edits: false %>
+  <%= render 'energy_tariffs/energy_tariffs/charges_table', school: @school, energy_tariff: @energy_tariff, allow_edits: false %>
 
   <br/>
   <br/>

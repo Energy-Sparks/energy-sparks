@@ -5,7 +5,7 @@
   <p><%= t('schools.user_tariff_charges.index.using_your_bill_introduction') %>.</p>
   <br/>
 
-  <%= render 'schools/energy_tariffs/header', energy_tariff: @energy_tariff %>
+  <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
 
   <%= simple_form_for :energy_tariff_charges, url: school_energy_tariff_energy_tariff_charges_path(@school, @energy_tariff) do |f| %>
 
