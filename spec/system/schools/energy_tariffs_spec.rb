@@ -42,7 +42,7 @@ describe 'energy tariffs', type: :system do
       it 'can create a tariff and add prices and charges' do
         visit school_path(school)
         click_link('Manage tariffs')
-        expect(current_path).to eq("/schools/big-school/energy_tariffs")
+        expect(current_path).to eq("/schools/#{school.slug}/energy_tariffs")
 
         expect(page).to have_content('Manage tariffs')
 
@@ -106,6 +106,8 @@ describe 'energy tariffs', type: :system do
       end
 
       it 'requires a meter to be selected' do
+        expect(current_path).to eq("/schools/#{school.slug}/energy_tariffs")
+
         click_link('Add electricity tariff')
 
         expect(page).to have_content('Select meters for this tariff')
@@ -184,6 +186,7 @@ describe 'energy tariffs', type: :system do
       end
 
       it 'can create a tariff and add prices and charges' do
+        expect(current_path).to eq("/schools/#{school.slug}/energy_tariffs")
         click_link('Add electricity tariff')
 
         check('12345678901234')
@@ -248,6 +251,8 @@ describe 'energy tariffs', type: :system do
       end
 
       it 'can create a tariff and add charges' do
+        expect(current_path).to eq("/schools/#{school.slug}/energy_tariffs")
+
         click_link('Add electricity tariff')
 
         check('12345678901234')
