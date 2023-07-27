@@ -23,7 +23,7 @@ gem 'pg_search'
 gem 'calculate_in_group'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '2.8.8'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '2.9.0'
 #gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'aws-eb-test'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
@@ -131,7 +131,7 @@ group :development, :test do
   gem 'terminal-notifier', require: false
   gem 'terminal-notifier-guard', require: false
   gem 'rb-readline', require: false
-  gem 'rubocop', '0.90.0'
+  gem 'rubocop', '0.93.1'
   gem 'rubocop-rails', '2.8.0'
   gem 'rubocop-performance', '1.8.0'
   gem 'rubocop-rspec'

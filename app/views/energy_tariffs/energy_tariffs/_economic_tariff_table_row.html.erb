@@ -1,0 +1,65 @@
+<% if tariff[:rates][:rate].present? %>
+  <tr>
+    <td><%= t("schools.user_tariffs.default_tariffs.economic.tariffs_table.labels.#{scope}") %></td>
+    <td><%= tariff[:name] %></td>
+    <td><%= t("schools.user_tariffs.default_tariffs.economic.tariffs_table.labels.#{aggregate_meter_type}") %></td>
+    <td>
+      <% if tariff[:start_date] %>
+        <%= tariff[:start_date].to_s(:es_compact) %>
+      <% else %>
+        -
+      <% end %>
+    </td>
+    <td>
+      <% if tariff[:end_date] && tariff[:end_date] <= Time.zone.today %>
+        <%= tariff[:end_date].to_s(:es_compact) %>
+      <% else %>
+        -
+      <% end %>
+    </td>
+    <td><%= t('schools.user_tariffs.tariff_partial.simple_tariff') %></td>
+    <td><%= t('schools.user_tariffs.rates_table.price_per_kwh',
+      price_value: FormatEnergyUnit.format(:£, tariff[:rates][:rate][:rate], :text, false, false, :accountant)) %></td>
+  </tr>
+<% end %>
+<% if tariff[:rates][:daytime_rate].present? %>
+    <tr>
+      <td><%= t("schools.user_tariffs.default_tariffs.economic.tariffs_table.labels.#{scope}") %></td>
+      <td><%= tariff[:name] %></td>
+      <td><%= t("schools.user_tariffs.default_tariffs.economic.tariffs_table.labels.#{aggregate_meter_type}") %></td>
+      <td>
+        <% if tariff[:start_date].present? %>
+          <%= tariff[:start_date].to_s(:es_compact) %>
+        <% else %>
+          -
+        <% end %>
+      </td>
+      <td>
+        <% if tariff[:end_date].present? && tariff[:end_date] <= Time.zone.today %>
+          <%= tariff[:end_date].to_s(:es_compact) %>
+        <% else %>
+          -
+        <% end %>
+      </td>
+      <td><%= t('schools.user_tariffs.tariff_partial.day_night_tariff') %></td>
+      <td>
+        <ul style="list-style: none; padding-left: 0px;">
+          <li>
+            <%= t('schools.user_tariffs.tariff_partial.price_from_to',
+              price_start_time: tariff[:rates][:nighttime_rate][:from],
+              price_end_time: tariff[:rates][:nighttime_rate][:to]) %>
+            <%= t('schools.user_tariffs.rates_table.price_per_kwh',
+              price_value: FormatEnergyUnit.format(:£, tariff[:rates][:nighttime_rate][:rate], :text, false, false, :accountant)) %>
+          </li>
+          <li>
+            <%= t('schools.user_tariffs.tariff_partial.price_from_to',
+              price_start_time: tariff[:rates][:daytime_rate][:from],
+              price_end_time: tariff[:rates][:daytime_rate][:to]) %>
+            <%= t('schools.user_tariffs.rates_table.price_per_kwh',
+              price_value: FormatEnergyUnit.format(:£, tariff[:rates][:daytime_rate][:rate], :text, false, false, :accountant)) %>
+          </li>
+
+        </ul>
+      </td>
+    </tr>
+<% end %>

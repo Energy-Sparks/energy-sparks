@@ -1,0 +1,34 @@
+<div class="row mt-4">
+  <div class="col">
+
+    <%= t('schools.user_tariffs.smart_meter_tariffs.introduction_html', advice_pages: school_advice_path(@school)) %>
+
+    <% if @electricity_meters.dcc.any? %>
+      <div class="row">
+        <div class="col">
+            <h4>
+              <span class="<%= fuel_type_class(:electricity) %>">
+                <%= fa_icon( fuel_type_icon(:electricity) ) %>
+              </span>
+              <%= t('schools.user_tariffs.index.electricity.header') %>
+            </h4>
+            <%= render 'smart_meter_tariffs_summary_table', meters: @electricity_meters.dcc, school: @school %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @gas_meters.dcc.any? %>
+      <div class="row">
+        <div class="col">
+            <h4>
+              <span class="<%= fuel_type_class(:gas) %>">
+                <%= fa_icon( fuel_type_icon(:gas) ) %>
+              </span>
+              <%= t('schools.user_tariffs.index.gas.header') %>
+            </h4>
+            <%= render 'smart_meter_tariffs_summary_table', meters: @gas_meters.dcc, school: @school %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

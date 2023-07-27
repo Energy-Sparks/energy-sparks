@@ -1,0 +1,36 @@
+<table class="table advice-table">
+  <thead>
+    <tr>
+      <th><%= t('schools.user_tariffs.name') %></th>
+      <th><%= t('schools.user_tariffs.meters.meter_list') %></th>
+      <th><%= t('schools.user_tariffs.tariff_partial.type') %></th>
+      <th><%= t('schools.user_tariffs.tariff_partial.start_date') %></th>
+      <th><%= t('schools.user_tariffs.tariff_partial.end_date') %></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% tariffs.each do |energy_tariff| %>
+      <tr>
+        <td><%= energy_tariff.name %></td>
+        <td>
+          <ul style="list-style: none; padding-left: 0px;">
+            <% energy_tariff.meters.each do |meter| %>
+              <li><%= meter.name_or_mpan_mprn %></li>
+            <% end %>
+          </ul>
+        </td>
+        <td>
+          <%= energy_tariff.tariff_type == 'flat_rate' ? t('schools.user_tariffs.tariff_partial.simple_tariff') : t('schools.user_tariffs.tariff_partial.day_night_tariff') %>
+        </td>
+        <td><%= energy_tariff.start_date.to_s(:es_compact) %></td>
+        <td><%= energy_tariff.end_date.to_s(:es_compact) %></td>
+        <td>
+          <%= link_to t('schools.user_tariffs.tariff_partial.full_details'), school_energy_tariff_path(school, energy_tariff), class: 'btn' if can? :download, UserTariff %>
+          <%= link_to t('common.labels.edit'), edit_school_energy_tariff_path(school, energy_tariff), class: 'btn' %>
+          <%= link_to t('common.labels.delete'), school_energy_tariff_path(school, energy_tariff), method: :delete, data: {confirm: t('common.confirm') }, class: 'btn btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
