@@ -17,9 +17,11 @@ module Admin
         if params[:mpans].present?
           param = params[:mpans]
           if param["list"].present?
-            return AmrDataFeedReading.unvalidated_data_report_for_mpans(tidy(param["list"]))
+            mpans = tidy(param["list"])
+            amr_data_feed_config_id = param['amr_data_feed_config_id'].to_i
+            return AmrDataFeedReading.unvalidated_data_report_for_mpans(mpans, [amr_data_feed_config_id])
           else
-            return []
+            []
           end
         end
         []
