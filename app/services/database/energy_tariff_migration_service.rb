@@ -103,7 +103,7 @@ module Database
             #those tariffs
             #
             #Need to translate both accounting_tariff and accounting_tariff_differential
-            migrate_school_grouo_accounting_tariffs(school_group)
+            migrate_school_group_accounting_tariffs(school_group)
           end
         end
       end
@@ -124,11 +124,11 @@ module Database
           EnergyTariff.create!(
             ccl: false,
             enabled: true,
-            end_date: Date.parse(attribute.input_data['end_date']),
+            end_date: date_or_nil(attribute.input_data['end_date']),
             meter_type: meter_type,
             name: attribute.input_data['name'],
             source: :manually_entered,
-            start_date: Date.parse(attribute.input_data['start_date']),
+            start_date: date_or_nil(attribute.input_data['start_date']),
             tariff_holder: school_group,
             tariff_type: tariff_type,
             tnuos: false,
@@ -151,11 +151,11 @@ module Database
           EnergyTariff.create!(
             ccl: false,
             enabled: true,
-            end_date: Date.parse(attribute.input_data['end_date']),
+            end_date: date_or_nil(attribute.input_data['end_date']),
             meter_type: meter_type,
             name: attribute.input_data['name'],
             source: :manually_entered,
-            start_date: Date.parse(attribute.input_data['start_date']),
+            start_date: date_or_nil(attribute.input_data['start_date']),
             tariff_holder: school_group,
             tariff_type: tariff_type,
             tnuos: false,
@@ -214,6 +214,11 @@ module Database
         )
       end
       energy_tariff_charges
+    end
+
+    def self.date_or_nil(val)
+      return nil if val.nil? || val.blank?
+      Date.parse(val)
     end
 
     def self.meter_type(attribute)
