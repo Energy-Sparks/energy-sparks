@@ -249,15 +249,47 @@ describe Database::EnergyTariffMigrationService do
   end
 
   context '#migrate_school_group_accounting_tariffs' do
-    it 'creates energy tariff'
-    it 'creates energy tariff price'
+    let(:sytem_wide)    { false }
+    let(:school_group)  { create(:school_group) }
 
-    context 'with differential tariff' do
-      it 'creates the right start and end times'
+    let!(:school_group_attribute) {
+      school_group.meter_attributes.create(
+        school_group: school_group,
+        attribute_type: "accounting_tariff",
+        input_data: input_data,
+        meter_types: ["", "electricity", "aggregated_electricity"]
+      )
+    }
+    let(:energy_tariff)        { EnergyTariff.first }
+    let(:charges)              { energy_tariff.energy_tariff_charges }
+    let(:prices)               { energy_tariff.energy_tariff_prices }
+
+    before(:each) do
+      Database::EnergyTariffMigrationService.migrate_school_group_accounting_tariffs(school_group)
     end
 
-    context 'when attributes has charges' do
-      it 'creates energy tariff charges'
+    it 'creates energy tariff' do
+      expect(energy_tariff.tariff_holder).to eq school_group
+      expect(energy_tariff.start_date).to eq start_date
+      expect(energy_tariff.end_date).to eq end_date
+      expect(energy_tariff.name).to eq tariff_name
+      expect(energy_tariff.meter_type).to eq "electricity"
+      expect(energy_tariff.tariff_type).to eq "flat_rate"
+      expect(energy_tariff.source).to eq "manually_entered"
+    end
+
+    it 'creates energy tariff price' do
+      expect(prices.first.start_time.to_s(:time)).to eq '00:00'
+      expect(prices.first.end_time.to_s(:time)).to eq '23:30'
+      expect(prices.first.value).to eq 0.03
+      expect(prices.first.units).to eq "kwh"
+    end
+
+    it 'creates energy tariff charges' do
+      expect(charges.any?).to eq true
+      expect(charges.first.charge_type).to eq 'standing_charge'
+      expect(charges.first.value).to eq 0.6
+      expect(charges.first.units).to eq 'day'
     end
   end
 end
