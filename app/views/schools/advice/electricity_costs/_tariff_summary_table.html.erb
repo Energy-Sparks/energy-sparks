@@ -14,7 +14,8 @@
       <tr>
         <td>
           <% if summary.user_tariff %>
-            <%= link_to summary.name, school_user_tariff_path(school, summary.user_tariff) %>
+            <% school_tariff_path = EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs) ? school_energy_tariff_path(school, summary.user_tariff) : school_user_tariff_path(school, summary.user_tariff) %>
+            <%= link_to summary.name, school_tariff_path %>
           <% else %>
             <%= summary.name %>
           <% end %>
