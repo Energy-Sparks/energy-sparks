@@ -36,6 +36,12 @@
       <%= f.select :scoreboard_id, options_from_collection_for_select(@scoreboards, 'id', 'name', (@school.scoreboard.id if @school.scoreboard)),{}, { class: 'form-control' }%>
     </div>
   </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :funder_id, 'Funder' %>
+      <%= f.select :funder_id, options_for_select(Funder.all.pluck(:name, :id), school.funder_id), { include_blank: true }, { class: 'form-control' } %>
+    </div>
+  </div>
   <div class="actions">
     <%= f.submit submit_text, class: 'btn btn-primary' %>
   </div>

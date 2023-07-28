@@ -18,7 +18,7 @@
     <%= f.input :enable_targets_feature %>
     <%= f.input :public %>
     <%= f.label :funder %>
-    <%= f.select :funder_id, options_for_select(Funder.all.pluck(:name, :id), school.funder_id), { include_blank: true }, { class: 'form-control' } %>
+    <%= f.select :funder_id, options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), school.funder_id), { include_blank: true }, { class: 'form-control' } %>
   </div>
 <% end %>
 
