@@ -1584,7 +1584,6 @@ ActiveRecord::Schema.define(version: 2023_07_27_155443) do
     t.bigint "school_group_cluster_id"
     t.bigint "funder_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
-    t.index ["funder_id"], name: "index_schools_on_funder_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"
     t.index ["school_group_cluster_id"], name: "index_schools_on_school_group_cluster_id"
