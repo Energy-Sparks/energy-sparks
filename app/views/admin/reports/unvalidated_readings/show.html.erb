@@ -27,7 +27,7 @@ If you get an error add a Trello card indicating which MPANs you were trying to 
 </p>
 
 <%= simple_form_for :mpans, url: admin_reports_unvalidated_readings_path, method: "GET", html: { class: 'form' } do |f| %>
-  <%= f.select :amr_data_feed_config_id, options_for_select(AmrDataFeedConfig.all.order(description: :asc).pluck(:description, :id), params[:mpans]['amr_data_feed_config_id']), { include_blank: 'All data feed configs' }, { class: 'form-control' } %>
+  <%= f.select :amr_data_feed_config_id, options_for_select(AmrDataFeedConfig.all.order(description: :asc).pluck(:description, :id), params.dig(:mpans,'amr_data_feed_config_id')), { include_blank: 'All data feed configs' }, { class: 'form-control' } %>
   <%= f.input :list, as: :text, input_html: {'rows' => 20, 'cols' => 10, value: params[:mpans].present? ? params[:mpans]["list"]: ''} %>
   <%= f.submit "Run report", class: "btn btn-primary" %>
   <%= f.submit "Download CSV", class: "btn", formaction:admin_reports_unvalidated_readings_path(format: :csv) %>

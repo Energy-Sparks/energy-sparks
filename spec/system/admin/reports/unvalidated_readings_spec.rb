@@ -39,8 +39,8 @@ describe "unvalidated readings", type: :system do
 
     let(:lines) { page.body.lines.collect(&:chomp) }
     it "shows csv contents" do
-      expect(lines.first).to eq 'MPAN/MPRN,Meter,Config identifier,Config name,Earliest reading,Latest reading'
-      expect(lines.second).to eq "#{reading.mpan_mprn},#{reading.meter.id},#{config.identifier},#{config.description},2023-06-23,2023-06-23"
+      expect(lines.first).to eq 'MPAN/MPRN,Config identifier,Config name,Earliest reading,Latest reading'
+      expect(lines.second).to eq "#{reading.mpan_mprn},#{config.identifier},#{config.description},2023-06-23,2023-06-23"
     end
     it "has csv content type" do
       expect(response_headers['Content-Type']).to eq 'text/csv'

@@ -33,9 +33,9 @@ module Admin
 
       def csv_report(report)
         CSV.generate(headers: true) do |csv|
-          csv << ['MPAN/MPRN', 'Meter', 'Config identifier', 'Config name', 'Earliest reading', 'Latest reading']
+          csv << ['MPAN/MPRN', 'Config identifier', 'Config name', 'Earliest reading', 'Latest reading']
           report.each do |row|
-            csv << row.slice('mpan_mprn', 'meter_id', 'identifier', 'description', 'earliest_reading', 'latest_reading').values
+            csv << row.slice('mpan_mprn', 'identifier', 'description', 'earliest_reading', 'latest_reading').values
           end
         end
       end
