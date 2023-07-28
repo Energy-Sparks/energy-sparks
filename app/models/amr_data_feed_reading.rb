@@ -118,7 +118,7 @@ class AmrDataFeedReading < ApplicationRecord
     QUERY
   end
 
-  def self.unvalidated_data_report_for_mpans(mpans, amr_data_feed_config_ids)
+  def self.unvalidated_data_report_for_mpans(mpans, amr_data_feed_config_ids = [])
     query = build_unvalidated_data_report_query(mpans, amr_data_feed_config_ids)
     ActiveRecord::Base.connection.execute(ActiveRecord::Base.sanitize_sql(query))
   end
