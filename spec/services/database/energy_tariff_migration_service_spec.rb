@@ -2,6 +2,38 @@ require 'rails_helper'
 
 describe Database::EnergyTariffMigrationService do
 
+  let(:start_date)      { Date.new(2000,1,1) }
+  let(:end_date)        { Date.new(2050,1,1) }
+  let(:tariff_name)     { "A Tariff" }
+  let(:default)         { true }
+  let(:system_wide)     { true }
+  let(:rate)            { 0.03 }
+  let(:standing_charge) { 0.6 }
+
+  let(:rates) {
+    {
+      rate: {
+        per: :kwh,
+        rate: rate
+      },
+      standing_charge: {
+        per: :day,
+        rate: standing_charge
+      }
+    }
+  }
+
+  let(:input_data)  {
+    {
+        start_date: start_date,
+        end_date: end_date,
+        name: tariff_name,
+        default: default,
+        system_wide: system_wide,
+        rates: rates
+    }
+  }
+
   context '#migrate_user_tariffs' do
     let!(:user_tariff)  do
       UserTariff.create(
@@ -59,23 +91,7 @@ describe Database::EnergyTariffMigrationService do
       GlobalMeterAttribute.create(
         attribute_type: 'accounting_tariff',
         meter_types: ["", "gas", "aggregated_gas"],
-        input_data: {
-            start_date: "01/01/2000",
-            end_date: "01/01/2050",
-            name: "System Wide Gas Accounting Tariff",
-            default: true,
-            system_wide: true,
-            rates: {
-              rate: {
-                per: :kwh,
-                rate: 0.03
-              },
-            standing_charge: {
-                per: :day,
-                rate: 0.6
-                }
-            }
-        }
+        input_data: input_data
       )
     }
 
@@ -90,9 +106,9 @@ describe Database::EnergyTariffMigrationService do
 
       it 'creates energy tariff' do
         expect(energy_tariff.tariff_holder).to eq SiteSettings.current
-        expect(energy_tariff.start_date).to eq Date.new(2000,1,1)
-        expect(energy_tariff.end_date).to eq Date.new(2050,1,1)
-        expect(energy_tariff.name).to eq "System Wide Gas Accounting Tariff"
+        expect(energy_tariff.start_date).to eq start_date
+        expect(energy_tariff.end_date).to eq end_date
+        expect(energy_tariff.name).to eq tariff_name
         expect(energy_tariff.meter_type).to eq "gas"
         expect(energy_tariff.tariff_type).to eq "flat_rate"
         expect(energy_tariff.source).to eq "manually_entered"
@@ -108,6 +124,140 @@ describe Database::EnergyTariffMigrationService do
         expect(charge.units).to eq "day"
         expect(charge.value).to eq 0.6
       end
+    end
+  end
+
+  it 'migrates global solar attributes'
+
+  context '#migrate_school_group_economic_tariffs' do
+    let(:sytem_wide)    { false }
+    let(:school_group)  { create(:school_group) }
+
+    let!(:school_group_attribute) {
+      school_group.meter_attributes.create(
+        school_group: school_group,
+        attribute_type: "economic_tariff_change_over_time",
+        input_data: input_data,
+        meter_types: ["", "electricity", "aggregated_electricity"]
+      )
+    }
+    let(:energy_tariff)       { EnergyTariff.first }
+    let(:charge)              { energy_tariff.energy_tariff_charges.first }
+    let(:price)               { energy_tariff.energy_tariff_prices.first }
+
+    before(:each) do
+      Database::EnergyTariffMigrationService.migrate_school_group_economic_tariffs(school_group)
+    end
+
+    context 'with only flat rate tariff' do
+        it 'creates energy tariff' do
+          expect(energy_tariff.tariff_holder).to eq school_group
+          expect(energy_tariff.start_date).to eq start_date
+          expect(energy_tariff.end_date).to eq end_date
+          expect(energy_tariff.name).to eq tariff_name
+          expect(energy_tariff.meter_type).to eq "electricity"
+          expect(energy_tariff.tariff_type).to eq "flat_rate"
+          expect(energy_tariff.source).to eq "manually_entered"
+        end
+        it 'creates energy tariff price' do
+          expect(price.start_time.to_s(:time)).to eq '00:00'
+          expect(price.end_time.to_s(:time)).to eq '23:30'
+          expect(price.value).to eq 0.03
+          expect(price.units).to eq "kwh"
+        end
+
+        it 'creates no energy tariff charges' do
+          expect(energy_tariff.energy_tariff_charges.any?).to eq false
+        end
+    end
+
+    context 'with differential tariff' do
+      let(:rates) {
+        {
+          daytime_rate: {
+            from: { hour: '0', minutes: '0' },
+            to: { hour: '7', minutes: '0' },
+            per: :kwh,
+            rate: rate * 2
+          },
+          nighttime_rate: {
+            from: { hour: '7', minutes: '0' },
+            to: { hour: '24', minutes: '0' },
+            per: :kwh,
+            rate: rate
+          }
+        }
+      }
+
+      it 'creates energy tariff' do
+        expect(energy_tariff.tariff_holder).to eq school_group
+        expect(energy_tariff.start_date).to eq start_date
+        expect(energy_tariff.end_date).to eq end_date
+        expect(energy_tariff.name).to eq tariff_name
+        expect(energy_tariff.meter_type).to eq "electricity"
+        expect(energy_tariff.tariff_type).to eq "differential"
+        expect(energy_tariff.source).to eq "manually_entered"
+      end
+
+      it 'creates energy tariff prices' do
+        expect(energy_tariff.energy_tariff_prices.count).to eq 2
+
+        daytime, nighttime = energy_tariff.energy_tariff_prices.order(start_time: :asc).to_a
+        expect(daytime.start_time.to_s(:time)).to eq '00:00'
+        expect(daytime.end_time.to_s(:time)).to eq '06:30'
+        expect(daytime.value).to eq rate * 2
+        expect(daytime.units).to eq "kwh"
+
+        expect(nighttime.start_time.to_s(:time)).to eq '07:00'
+        expect(nighttime.end_time.to_s(:time)).to eq '23:30'
+        expect(nighttime.value).to eq rate
+        expect(nighttime.units).to eq "kwh"
+      end
+
+      it 'creates no energy tariff charges' do
+        expect(energy_tariff.energy_tariff_charges.any?).to eq false
+      end
+
+    end
+
+    context 'with attribute that both flat and differential rates' do
+      let(:rates) {
+        {
+          rate: {
+            per: :kwh,
+            rate: rate
+          },
+          daytime_rate: {
+            from: { hour: '0', minutes: '0' },
+            to: { hour: '7', minutes: '0' },
+            per: :kwh,
+            rate: rate * 2
+          },
+          nighttime_rate: {
+            from: { hour: '7', minutes: '0' },
+            to: { hour: '24', minutes: '0' },
+            per: :kwh,
+            rate: rate * 2
+          }
+        }
+      }
+      it 'still creates only a differential rate tariff' do
+        expect(energy_tariff.tariff_type).to eq "differential"
+      end
+    end
+
+  end
+
+  context '#migrate_school_group_accounting_tariffs' do
+    it 'creates energy tariff'
+    it 'creates energy tariff price'
+
+    context 'with differential tariff' do
+      it 'creates the right start and end times'
+    end
+
+    context 'when attributes has charges' do
+      it 'creates energy tariff charges'
     end
   end
 end
