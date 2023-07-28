@@ -386,6 +386,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     concerns :issueable
+    resources :funders
     resources :users do
       scope module: :users do
         resource :confirmation, only: [:create], controller: 'confirmation'

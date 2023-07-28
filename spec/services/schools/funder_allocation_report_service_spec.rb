@@ -38,6 +38,8 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
 
     let(:school_group)  { create(:school_group) }
 
+    let!(:funder) { Funder.create(name: 'A new funder') }
+
     let!(:school_1)  { create(:school,
       visible: true,
       school_onboarding: school_onboarding,
@@ -46,7 +48,8 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
       country: :england,
       region: :east_of_england,
       local_authority_area: local_authority_area,
-      percentage_free_school_meals: 50)
+      percentage_free_school_meals: 50,
+      funder: funder)
     }
 
     let!(:activities)  { create_list(:activity, 5, school: school_1) }
@@ -79,6 +82,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
           'true',
           school_1.school_onboarding.onboarding_completed_on.iso8601,
           school_1.school_onboarding.first_made_data_enabled.iso8601,
+          school_1.funder.name,
           school_1.funding_status.humanize,
           'ab1 2cd',
           'England',
