@@ -39,7 +39,7 @@
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :funder_id, 'Funder' %>
-      <%= f.select :funder_id, options_for_select(Funder.all.pluck(:name, :id), school.funder_id), { include_blank: true }, { class: 'form-control' } %>
+      <%= f.select :funder_id, options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), school.funder_id), { include_blank: true }, { class: 'form-control' } %>
     </div>
   </div>
   <div class="actions">
