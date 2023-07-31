@@ -248,10 +248,11 @@ module Database
     end
 
     def self.meter_type(attribute)
-      return :electricity if attribute.meter_types.include?('electricity')
-      return :gas if attribute.meter_types.include?('gas')
-      return :solar_pv if attribute.meter_types.include?('solar_pv', 'solar_pv_consumed_sub_meter')
-      return :exported_solar_pv if attribute.meter_types.include?('exported_solar_pv', 'solar_pv_exported_sub_meter')
+      meter_types = attribute.meter_types
+      return :electricity if meter_types.include?('electricity')
+      return :gas if meter_types.include?('gas')
+      return :solar_pv if meter_types.include?('solar_pv') || meter_types.include?('solar_pv_consumed_sub_meter')
+      return :exported_solar_pv if meter_types.include?('exported_solar_pv') || meter_types.include?('solar_pv_exported_sub_meter')
       raise "Unexpected meter type"
     end
 
