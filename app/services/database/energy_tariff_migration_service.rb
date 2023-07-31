@@ -192,6 +192,29 @@ module Database
       end
     end
 
+    def self.migrate_meter_accounting_tariffs
+      MeterAttribute.where(
+        attribute_type: %w[accounting_tariff accounting_tariff_differential]).active.each do |attribute|
+          tariff_type = tariff_type(attribute)
+          EnergyTariff.create!(
+            ccl: false,
+            enabled: true,
+            end_date: date_or_nil(attribute.input_data['end_date']),
+            meter_type: attribute.meter.meter_type,
+            name: attribute.input_data['name'],
+            source: :manually_entered,
+            start_date: date_or_nil(attribute.input_data['start_date']),
+            tariff_holder: attribute.meter.school,
+            tariff_type: tariff_type,
+            tnuos: false,
+            vat_rate: nil,
+            energy_tariff_prices: energy_tariff_prices(attribute, tariff_type),
+            energy_tariff_charges: energy_tariff_charges(attribute),
+            meters: [attribute.meter]
+          )
+      end
+    end
+
     #Generic method for creating prices for any type of tariff
     def self.energy_tariff_prices(attribute, tariff_type)
       if tariff_type == :flat_rate
