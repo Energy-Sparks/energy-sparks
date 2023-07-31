@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.shared_examples 'the expected EnergyTariff' do
-  it 'with right default attributes' do
+  it 'with the right attributes' do
     expect(energy_tariff.start_date).to eq start_date
     expect(energy_tariff.end_date).to eq end_date
     expect(energy_tariff.name).to eq tariff_name
