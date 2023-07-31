@@ -50,12 +50,12 @@ RSpec.shared_examples "a migrated differential economic tariff" do
 
     daytime, nighttime = energy_tariff.energy_tariff_prices.order(start_time: :asc).to_a
     expect(daytime.start_time.to_s(:time)).to eq '00:00'
-    expect(daytime.end_time.to_s(:time)).to eq '06:30'
+    expect(daytime.end_time.to_s(:time)).to eq '07:00'
     expect(daytime.value).to eq rate * 2
     expect(daytime.units).to eq "kwh"
 
     expect(nighttime.start_time.to_s(:time)).to eq '07:00'
-    expect(nighttime.end_time.to_s(:time)).to eq '23:30'
+    expect(nighttime.end_time.to_s(:time)).to eq '00:00'
     expect(nighttime.value).to eq rate
     expect(nighttime.units).to eq "kwh"
   end
@@ -94,12 +94,12 @@ RSpec.shared_examples "a migrated differential accounting tariff" do
 
     daytime, nighttime = energy_tariff.energy_tariff_prices.order(start_time: :asc).to_a
     expect(daytime.start_time.to_s(:time)).to eq '00:00'
-    expect(daytime.end_time.to_s(:time)).to eq '06:30'
+    expect(daytime.end_time.to_s(:time)).to eq '07:00'
     expect(daytime.value).to eq rate * 2
     expect(daytime.units).to eq "kwh"
 
     expect(nighttime.start_time.to_s(:time)).to eq '07:00'
-    expect(nighttime.end_time.to_s(:time)).to eq '23:30'
+    expect(nighttime.end_time.to_s(:time)).to eq '00:00'
     expect(nighttime.value).to eq rate
     expect(nighttime.units).to eq "kwh"
   end
@@ -458,21 +458,19 @@ describe Database::EnergyTariffMigrationService do
         Database::EnergyTariffMigrationService.migrate_tariff_prices
       end
 
-      it_behaves_like 'a flat rate EnergyTariff'
-      it 'creates expected price'
-      it 'creates standing charge'
+      it_behaves_like 'a migrated flat rate accounting tariff'
     end
 
     context 'with differential tariff' do
-      let!(:tariff_price) { create(:tariff_price, :with_differential_tariff, meter: meter, tariff_date: end_date) }
+      let!(:tariff_price) { create(:tariff_price,
+        :with_differential_tariff, meter: meter, tariff_date: end_date,
+        tiered_rate: Array.new(14, rate * 2) + Array.new(34, rate)) }
 
       before(:each) do
         Database::EnergyTariffMigrationService.migrate_tariff_prices
       end
 
-      it_behaves_like 'a differential EnergyTariff'
-      it 'creates expected prices'
-      it 'creates standing charge'
+      it_behaves_like 'a migrated differential accounting tariff'
     end
 
   end

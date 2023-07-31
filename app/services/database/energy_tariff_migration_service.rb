@@ -264,7 +264,22 @@ module Database
           )
         ]
       elsif dcc_tariff
-        []
+        #this uses keys of rate0, rate1, rate2
+        rate_keys = rates.keys.select {|k| k.to_s.match("rate") }
+        rate_keys.map do |rate_key|
+          #we have to advance the end time by 30 minutes here, to match
+          #later expectations for converting back to meter attribute
+          #The EnergyTariff -> meter attribute code rolls the end time back
+          #by 30 mins, to create an inclusive range ending at 23:30.
+          #rubocop:disable Rails/Date
+          EnergyTariffPrice.new(
+            start_time: rates[rate_key][:from].to_time,
+            end_time: rates[rate_key][:to].to_time.advance(minutes: 30),
+            units: 'kwh',
+            value: rates[rate_key][:rate]
+          )
+          #rubocop:enable Rails/Date
+        end
       else
         [
           EnergyTariffPrice.new(
@@ -289,9 +304,9 @@ module Database
       energy_tariff_charges = []
       #iterate over the charges (any non-price related key) add those that
       #have a rate
-      ignored = %i[rate daytime_rate nighttime_rate]
+      ignored = %i[rate daytime_rate nighttime_rate flat_rate]
       rates.each_key do |rate_type|
-        next if ignored.include?(rate_type)
+        next if ignored.include?(rate_type) || rate_type.to_s.match("rate")
         next if rates[rate_type][:rate].blank?
         #charge has :per and :rate values
         charge = rates[rate_type]
@@ -348,19 +363,13 @@ module Database
 
       #meter attributes uses 24:00 as the final period of the day, for its
       #exclusive range. So spot this and return last half-hourly period
-      return "23:30" if range == :to && period[:hour] == '24'
+      return "00:00" if range == :to && period[:hour] == '24'
 
       #rubocop:disable Rails/Date
       #use the TimeOfDay class to convert to a time
       time_of_day = TimeOfDay.new(period[:hour].to_i, period[:minutes].to_i).to_time
       #rubocop:enable Rails/Date
 
-      #roll back 30 minutes for the end of the tariff time range, as we're converting from
-      #an exclusive range, to an inclusive range. Which means the end should be the
-      #previous half-hourly period. Start ranges ("from") remain unchanged.
-      if range == :to
-        time_of_day = time_of_day.advance(minutes: -30)
-      end
       time_of_day.to_s(:time)
     end
   end
