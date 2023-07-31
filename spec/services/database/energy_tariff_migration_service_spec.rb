@@ -6,7 +6,7 @@ RSpec.shared_examples 'the expected EnergyTariff' do
     expect(energy_tariff.end_date).to eq end_date
     expect(energy_tariff.name).to eq tariff_name
     expect(energy_tariff.meter_type).to eq "electricity"
-    expect(energy_tariff.source).to eq "manually_entered"
+    expect(energy_tariff.source).to eq source
     expect(energy_tariff.tariff_holder).to eq tariff_holder
   end
 end
@@ -117,6 +117,7 @@ describe Database::EnergyTariffMigrationService do
   let(:start_date)      { Date.new(2000,1,1) }
   let(:end_date)        { Date.new(2050,1,1) }
   let(:tariff_name)     { "A Tariff" }
+  let(:source)          { "manually_entered" }
   let(:default)         { true }
   let(:system_wide)     { true }
   let(:rate)            { 0.03 }
@@ -216,9 +217,11 @@ describe Database::EnergyTariffMigrationService do
 
       it_behaves_like "a migrated flat rate accounting tariff"
     end
-  end
 
-  it 'migrates global solar attributes'
+    context 'migrates a solar economic tariff' do
+      it 'migrates global solar attributes'
+    end
+  end
 
   context '#migrate_school_group_economic_tariffs' do
     let(:system_wide)    { false }
@@ -434,4 +437,44 @@ describe Database::EnergyTariffMigrationService do
       it_behaves_like "a migrated differential accounting tariff"
     end
   end
+
+  context '#migrate_tariff_prices' do
+    let(:start_date)  { Date.yesterday }
+    let(:end_date)    { Date.yesterday }
+    let(:source)      { "dcc" }
+    let(:tariff_name) { "Tariff from DCC SMETS2 meter" }
+    let(:tariff_holder) { create(:school)}
+    let(:meter)         { create(:electricity_meter, dcc_meter: true, school: tariff_holder) }
+
+    let!(:tariff_standing_charge) { create(:tariff_standing_charge, meter: meter, start_date: end_date, value: standing_charge) }
+
+    let(:energy_tariff)        { EnergyTariff.first }
+
+    context 'with flat rate tariff' do
+      let!(:tariff_price) { create(:tariff_price,
+        :with_flat_rate, meter: meter, tariff_date: end_date, flat_rate: Array.new(48, rate) ) }
+
+      before(:each) do
+        Database::EnergyTariffMigrationService.migrate_tariff_prices
+      end
+
+      it_behaves_like 'a flat rate EnergyTariff'
+      it 'creates expected price'
+      it 'creates standing charge'
+    end
+
+    context 'with differential tariff' do
+      let!(:tariff_price) { create(:tariff_price, :with_differential_tariff, meter: meter, tariff_date: end_date) }
+
+      before(:each) do
+        Database::EnergyTariffMigrationService.migrate_tariff_prices
+      end
+
+      it_behaves_like 'a differential EnergyTariff'
+      it 'creates expected prices'
+      it 'creates standing charge'
+    end
+
+  end
+
 end
