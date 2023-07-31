@@ -292,4 +292,123 @@ describe Database::EnergyTariffMigrationService do
       expect(charges.first.units).to eq 'day'
     end
   end
+
+  context '#migrate_school_economic_tariffs' do
+    let(:sytem_wide)    { false }
+    let(:default)       { false }
+    let(:school)  { create(:school) }
+
+    let!(:school_attribute) {
+      school.meter_attributes.create(
+        school: school,
+        attribute_type: "economic_tariff_change_over_time",
+        input_data: input_data,
+        meter_types: ["", "gas", "aggregated_gas"]
+      )
+    }
+    let(:energy_tariff)       { EnergyTariff.first }
+    let(:price)               { energy_tariff.energy_tariff_prices.first }
+
+    before(:each) do
+      Database::EnergyTariffMigrationService.migrate_school_economic_tariffs
+    end
+
+    context 'with only flat rate tariff' do
+        it 'creates energy tariff' do
+          expect(energy_tariff.tariff_holder).to eq school
+          expect(energy_tariff.start_date).to eq start_date
+          expect(energy_tariff.end_date).to eq end_date
+          expect(energy_tariff.name).to eq tariff_name
+          expect(energy_tariff.meter_type).to eq "gas"
+          expect(energy_tariff.tariff_type).to eq "flat_rate"
+          expect(energy_tariff.source).to eq "manually_entered"
+        end
+        it 'creates energy tariff price' do
+          expect(price.start_time.to_s(:time)).to eq '00:00'
+          expect(price.end_time.to_s(:time)).to eq '23:30'
+          expect(price.value).to eq 0.03
+          expect(price.units).to eq "kwh"
+        end
+
+        it 'creates no energy tariff charges' do
+          expect(energy_tariff.energy_tariff_charges.any?).to eq false
+        end
+    end
+
+    context 'with differential tariff' do
+      let(:rates) {
+        {
+          daytime_rate: {
+            from: { hour: '0', minutes: '0' },
+            to: { hour: '7', minutes: '0' },
+            per: :kwh,
+            rate: rate * 2
+          },
+          nighttime_rate: {
+            from: { hour: '7', minutes: '0' },
+            to: { hour: '24', minutes: '0' },
+            per: :kwh,
+            rate: rate
+          }
+        }
+      }
+
+      it 'creates energy tariff' do
+        expect(energy_tariff.tariff_holder).to eq school
+        expect(energy_tariff.start_date).to eq start_date
+        expect(energy_tariff.end_date).to eq end_date
+        expect(energy_tariff.name).to eq tariff_name
+        expect(energy_tariff.meter_type).to eq "gas"
+        expect(energy_tariff.tariff_type).to eq "differential"
+        expect(energy_tariff.source).to eq "manually_entered"
+      end
+
+      it 'creates energy tariff prices' do
+        expect(energy_tariff.energy_tariff_prices.count).to eq 2
+
+        daytime, nighttime = energy_tariff.energy_tariff_prices.order(start_time: :asc).to_a
+        expect(daytime.start_time.to_s(:time)).to eq '00:00'
+        expect(daytime.end_time.to_s(:time)).to eq '06:30'
+        expect(daytime.value).to eq rate * 2
+        expect(daytime.units).to eq "kwh"
+
+        expect(nighttime.start_time.to_s(:time)).to eq '07:00'
+        expect(nighttime.end_time.to_s(:time)).to eq '23:30'
+        expect(nighttime.value).to eq rate
+        expect(nighttime.units).to eq "kwh"
+      end
+
+      it 'creates no energy tariff charges' do
+        expect(energy_tariff.energy_tariff_charges.any?).to eq false
+      end
+
+    end
+
+    context 'with attribute that both flat and differential rates' do
+      let(:rates) {
+        {
+          rate: {
+            per: :kwh,
+            rate: rate
+          },
+          daytime_rate: {
+            from: { hour: '0', minutes: '0' },
+            to: { hour: '7', minutes: '0' },
+            per: :kwh,
+            rate: rate * 2
+          },
+          nighttime_rate: {
+            from: { hour: '7', minutes: '0' },
+            to: { hour: '24', minutes: '0' },
+            per: :kwh,
+            rate: rate * 2
+          }
+        }
+      }
+      it 'still creates only a differential rate tariff' do
+        expect(energy_tariff.tariff_type).to eq "differential"
+      end
+    end
+  end
+
 end

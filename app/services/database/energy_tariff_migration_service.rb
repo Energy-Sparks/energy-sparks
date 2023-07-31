@@ -166,6 +166,32 @@ module Database
       end
     end
 
+    def self.migrate_school_economic_tariffs
+      ActiveRecord::Base.transaction do
+        SchoolMeterAttribute.where(attribute_type: 'economic_tariff_change_over_time').active.each do |attribute|
+          #If a time varying tariff has day/time time rates we can ignore the flat rate. The team
+          #are currently required to add this for validation reasons.
+          tariff_type = tariff_type(attribute)
+          meter_type = meter_type(attribute)
+
+          EnergyTariff.create!(
+            ccl: false,
+            enabled: true,
+            end_date: date_or_nil(attribute.input_data['end_date']),
+            meter_type: meter_type,
+            name: attribute.input_data['name'],
+            source: :manually_entered,
+            start_date: date_or_nil(attribute.input_data['start_date']),
+            tariff_holder: attribute.school,
+            tariff_type: tariff_type,
+            tnuos: false,
+            vat_rate: nil,
+            energy_tariff_prices: energy_tariff_prices(attribute, tariff_type)
+          )
+        end
+      end
+    end
+
     #Generic method for creating prices for any type of tariff
     def self.energy_tariff_prices(attribute, tariff_type)
       if tariff_type == :flat_rate
