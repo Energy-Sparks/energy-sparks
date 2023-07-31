@@ -140,6 +140,13 @@ describe EnergyTariff do
       expect(attributes[:rates][:tnuos]).to be_truthy
     end
 
+    context 'with nil vat rate' do
+      let(:vat_rate) { nil }
+      it 'should check for nils' do
+        expect(attributes[:vat]).to be_nil
+      end
+    end
+
     context 'with flat rate electricity tariff' do
       let(:tariff_type)     { :flat_rate }
 
