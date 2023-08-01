@@ -42,12 +42,11 @@ module Database
       end
     end
 
-    #Turns the Global Meter Attributes that are for accounting tariffs into
-    #EnergyTariffs. We will be ignoring the economic tariffs as they aren't needed.
+    #Turns the Global Meter Attributes that are accounting tariffs into
+    #EnergyTariffs.
     def self.migrate_global_meter_attributes
       ActiveRecord::Base.transaction do
-        GlobalMeterAttribute.where(attribute_type: 'accounting_tariff',
-          replaced_by: nil, deleted_by: nil).each do |attribute|
+        GlobalMeterAttribute.where(attribute_type: 'accounting_tariff').active.each do |attribute|
             #either :electricity or :gas
             meter_type = meter_type(attribute)
 
@@ -82,6 +81,43 @@ module Database
               tnuos: false,
               vat_rate: nil,
               energy_tariff_charges: energy_tariff_charges,
+              energy_tariff_prices: energy_tariff_prices
+            )
+        end
+      end
+    end
+
+    #Turns the Global Meter Attributes that are economic tariffs for solar pv
+    #and solar export into Energy Tariffs
+    def self.migrate_global_solar_meter_attributes
+      solar_types = [:solar_pv, :exported_solar_pv]
+      ActiveRecord::Base.transaction do
+        GlobalMeterAttribute.where(attribute_type: 'economic_tariff').active.each do |attribute|
+            meter_type = meter_type(attribute)
+            #ignore economic tariffs for gas and electricity
+            next unless solar_types.include?(meter_type)
+
+            energy_tariff_prices = [
+              EnergyTariffPrice.new(
+                start_time: Time.zone.parse('00:00'),
+                end_time: Time.zone.parse('23:30'),
+                units: 'kwh',
+                value: attribute.input_data['rates']['rate']['rate'].to_f
+              )
+            ]
+
+            EnergyTariff.create!(
+              ccl: false,
+              enabled: true,
+              end_date: date_or_nil(attribute.input_data['end_date']),
+              meter_type: meter_type,
+              name: attribute.input_data['name'],
+              source: :manually_entered,
+              start_date: date_or_nil(attribute.input_data['start_date']),
+              tariff_holder: SiteSettings.current,
+              tariff_type: :flat_rate,
+              tnuos: false,
+              vat_rate: nil,
               energy_tariff_prices: energy_tariff_prices
             )
         end
@@ -133,7 +169,7 @@ module Database
             tariff_type: tariff_type,
             tnuos: false,
             vat_rate: nil,
-            energy_tariff_prices: energy_tariff_prices(attribute, tariff_type)
+            energy_tariff_prices: energy_tariff_prices(attribute.input_data['rates'], tariff_type)
           )
       end
     end
@@ -160,72 +196,177 @@ module Database
             tariff_type: tariff_type,
             tnuos: false,
             vat_rate: nil,
-            energy_tariff_prices: energy_tariff_prices(attribute, tariff_type),
-            energy_tariff_charges: energy_tariff_charges(attribute)
+            energy_tariff_prices: energy_tariff_prices(attribute.input_data['rates'], tariff_type),
+            energy_tariff_charges: energy_tariff_charges(attribute.input_data['rates'])
           )
       end
     end
 
+    def self.migrate_school_economic_tariffs
+      ActiveRecord::Base.transaction do
+        SchoolMeterAttribute.where(attribute_type: 'economic_tariff_change_over_time').active.each do |attribute|
+          #If a time varying tariff has day/time time rates we can ignore the flat rate. The team
+          #are currently required to add this for validation reasons.
+          tariff_type = tariff_type(attribute)
+          meter_type = meter_type(attribute)
+
+          EnergyTariff.create!(
+            ccl: false,
+            enabled: true,
+            end_date: date_or_nil(attribute.input_data['end_date']),
+            meter_type: meter_type,
+            name: attribute.input_data['name'],
+            source: :manually_entered,
+            start_date: date_or_nil(attribute.input_data['start_date']),
+            tariff_holder: attribute.school,
+            tariff_type: tariff_type,
+            tnuos: false,
+            vat_rate: nil,
+            energy_tariff_prices: energy_tariff_prices(attribute.input_data['rates'], tariff_type)
+          )
+        end
+      end
+    end
+
+    def self.migrate_meter_accounting_tariffs
+      ActiveRecord::Base.transaction do
+        MeterAttribute.where(
+          attribute_type: %w[accounting_tariff accounting_tariff_differential]).active.each do |attribute|
+            tariff_type = tariff_type(attribute)
+            EnergyTariff.create!(
+              ccl: false,
+              enabled: true,
+              end_date: date_or_nil(attribute.input_data['end_date']),
+              meter_type: attribute.meter.meter_type,
+              name: attribute.input_data['name'],
+              source: :manually_entered,
+              start_date: date_or_nil(attribute.input_data['start_date']),
+              tariff_holder: attribute.meter.school,
+              tariff_type: tariff_type,
+              tnuos: false,
+              vat_rate: nil,
+              energy_tariff_prices: energy_tariff_prices(attribute.input_data['rates'], tariff_type),
+              energy_tariff_charges: energy_tariff_charges(attribute.input_data['rates']),
+              meters: [attribute.meter]
+            )
+        end
+      end
+    end
+
+    def self.migrate_tariff_prices
+      ActiveRecord::Base.transaction do
+        Meter.dcc.each do |meter|
+          meter_attributes = meter.smart_meter_tariff_attributes
+          next if meter_attributes.nil?
+          #Note: this is an analytics meter attribute hash, not a MeterAttribute record
+          meter_attributes[:accounting_tariff_generic].each do |attribute|
+            tariff_type = if attribute[:rates][:flat_rate].present?
+                            :flat_rate
+                          else
+                            :differential
+                          end
+
+            EnergyTariff.create!(
+              ccl: false,
+              enabled: true,
+              end_date: attribute[:end_date],
+              meter_type: meter.meter_type,
+              name: attribute[:name],
+              source: :dcc,
+              start_date: attribute[:start_date],
+              tariff_holder: meter.school,
+              tariff_type: tariff_type,
+              tnuos: false,
+              vat_rate: nil,
+              energy_tariff_prices: energy_tariff_prices(attribute[:rates], tariff_type, true),
+              energy_tariff_charges: energy_tariff_charges(attribute[:rates]),
+              meters: [meter]
+            )
+          end
+        end
+      end
+    end
+
     #Generic method for creating prices for any type of tariff
-    def self.energy_tariff_prices(attribute, tariff_type)
+    def self.energy_tariff_prices(rates, tariff_type, dcc_tariff = false)
+      rates.deep_symbolize_keys!
       if tariff_type == :flat_rate
         [
           EnergyTariffPrice.new(
             start_time: Time.zone.parse('00:00'),
             end_time: Time.zone.parse('23:30'),
             units: 'kwh',
-            value: attribute.input_data['rates']['rate']['rate'].to_f
+            value: dcc_tariff ? rates[:flat_rate][:rate].to_f : rates[:rate][:rate].to_f
           )
         ]
+      elsif dcc_tariff
+        #this uses keys of rate0, rate1, rate2
+        rate_keys = rates.keys.select {|k| k.to_s.match("rate") }
+        rate_keys.map do |rate_key|
+          #we have to advance the end time by 30 minutes here, to match
+          #later expectations for converting back to meter attribute
+          #The EnergyTariff -> meter attribute code rolls the end time back
+          #by 30 mins, to create an inclusive range ending at 23:30.
+          #rubocop:disable Rails/Date
+          EnergyTariffPrice.new(
+            start_time: rates[rate_key][:from].to_time,
+            end_time: rates[rate_key][:to].to_time.advance(minutes: 30),
+            units: 'kwh',
+            value: rates[rate_key][:rate]
+          )
+          #rubocop:enable Rails/Date
+        end
       else
         [
           EnergyTariffPrice.new(
-            start_time: time_for_rate_type_period(attribute, 'daytime_rate', 'from'),
-            end_time: time_for_rate_type_period(attribute, 'daytime_rate', 'to'),
+            start_time: time_for_rate_type_period(rates, :daytime_rate, :from),
+            end_time: time_for_rate_type_period(rates, :daytime_rate, :to),
             units: 'kwh',
-            value: attribute.input_data['rates']['daytime_rate']['rate'].to_f
+            value: rates[:daytime_rate][:rate].to_f
           ),
           EnergyTariffPrice.new(
-            start_time: time_for_rate_type_period(attribute, 'nighttime_rate', 'from'),
-            end_time: time_for_rate_type_period(attribute, 'nighttime_rate', 'to'),
+            start_time: time_for_rate_type_period(rates, :nighttime_rate, :from),
+            end_time: time_for_rate_type_period(rates, :nighttime_rate, :to),
             units: 'kwh',
-            value: attribute.input_data['rates']['nighttime_rate']['rate'].to_f
+            value: rates[:nighttime_rate][:rate].to_f
           ),
         ]
       end
     end
 
     #Create charges for accounting tariffs
-    def self.energy_tariff_charges(attribute)
+    def self.energy_tariff_charges(rates)
+      rates.deep_symbolize_keys!
       energy_tariff_charges = []
-      rates = attribute.input_data['rates']
       #iterate over the charges (any non-price related key) add those that
       #have a rate
-      ignored = %w[rate daytime_rate nighttime_rate]
+      ignored = %i[rate daytime_rate nighttime_rate flat_rate]
       rates.each_key do |rate_type|
-        next if ignored.include?(rate_type)
-        next if rates[rate_type]['rate'].blank?
+        next if ignored.include?(rate_type) || rate_type.to_s.match("rate")
+        next if rates[rate_type][:rate].blank?
         #charge has :per and :rate values
         charge = rates[rate_type]
         energy_tariff_charges << EnergyTariffCharge.new(
           charge_type: rate_type.to_sym,
-          units: charge['per'].to_sym,
-          value: charge['rate'].to_f
+          units: charge[:per].to_sym,
+          value: charge[:rate].to_f
         )
       end
       energy_tariff_charges
     end
 
     def self.date_or_nil(val)
+      return val if val.is_a?(Date)
       return nil if val.nil? || val.blank?
       Date.parse(val)
     end
 
     def self.meter_type(attribute)
-      return :electricity if attribute.meter_types.include?('electricity')
-      return :gas if attribute.meter_types.include?('gas')
-      return :solar_pv if attribute.meter_types.include?('solar_pv', 'solar_pv_consumed_sub_meter')
-      return :exported_solar_pv if attribute.meter_types.include?('exported_solar_pv', 'solar_pv_exported_sub_meter')
+      meter_types = attribute.meter_types
+      return :electricity if meter_types.include?('electricity') || meter_types.include?('aggregated_electricity')
+      return :gas if meter_types.include?('gas') || meter_types.include?('aggregated_gas')
+      return :solar_pv if meter_types.include?('solar_pv') || meter_types.include?('solar_pv_consumed_sub_meter')
+      return :exported_solar_pv if meter_types.include?('exported_solar_pv') || meter_types.include?('solar_pv_exported_sub_meter')
       raise "Unexpected meter type"
     end
 
@@ -250,27 +391,21 @@ module Database
       end
     end
 
-    def self.time_for_rate_type_period(attribute, rate_type = 'daytime_rate', range = 'from')
-      return nil unless attribute.input_data['rates'][rate_type].present?
-      return nil unless attribute.input_data['rates'][rate_type][range].present?
+    def self.time_for_rate_type_period(rates, rate_type = :daytime_rate, range = :from)
+      return nil unless rates[rate_type].present?
+      return nil unless rates[rate_type][range].present?
 
-      period = attribute.input_data['rates'][rate_type][range]
+      period = rates[rate_type][range]
 
       #meter attributes uses 24:00 as the final period of the day, for its
       #exclusive range. So spot this and return last half-hourly period
-      return "23:30" if range == 'to' && period['hour'] == '24'
+      return "00:00" if range == :to && period[:hour] == '24'
 
       #rubocop:disable Rails/Date
       #use the TimeOfDay class to convert to a time
-      time_of_day = TimeOfDay.new(period['hour'].to_i, period['minutes'].to_i).to_time
+      time_of_day = TimeOfDay.new(period[:hour].to_i, period[:minutes].to_i).to_time
       #rubocop:enable Rails/Date
 
-      #roll back 30 minutes for the end of the tariff time range, as we're converting from
-      #an exclusive range, to an inclusive range. Which means the end should be the
-      #previous half-hourly period. Start ranges ("from") remain unchanged.
-      if range == 'to'
-        time_of_day = time_of_day.advance(minutes: -30)
-      end
       time_of_day.to_s(:time)
     end
   end
