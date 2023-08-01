@@ -2,6 +2,7 @@
 en:
   programme_types:
     cards:
+      bonus_points: Completing this programme this academic year will score you %{bonus_score} bonus points
       continue: Continue
       view: View
       you_have_already_completed_this_programme: You have already completed this programme

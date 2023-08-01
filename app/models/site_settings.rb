@@ -17,6 +17,11 @@
 class SiteSettings < ApplicationRecord
   store_accessor :prices, :electricity_price, :solar_export_price, :gas_price
   validates :electricity_price, :solar_export_price, :gas_price, numericality: { only_float: true, allow_blank: false }, if: -> { EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices) }
+  validates :photo_bonus_points, numericality: { greater_than_or_equal_to: 0 }
+  validates :audit_activities_bonus_points, numericality: { greater_than_or_equal_to: 0 }
+
+  has_many :energy_tariffs, as: :tariff_holder, dependent: :destroy
+
   after_save :delete_current_prices_cache
 
   CURRENT_PRICES_CACHE_KEY = 'site_settings_current_prices'.freeze

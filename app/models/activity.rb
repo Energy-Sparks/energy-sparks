@@ -55,6 +55,6 @@ class Activity < ApplicationRecord
   end
 
   def description_includes_images?
-    description.body.to_trix_html.include?("figure")
+    description&.body&.to_trix_html&.include?("figure")
   end
 end

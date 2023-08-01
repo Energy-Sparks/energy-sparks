@@ -9,6 +9,7 @@ module Schools
           'Data visible?',
           'Onboarding date',
           'Date enabled date', #(see “Recently onboarded” report)
+          'Funder',
           'Funding status',
           'Postcode',
           'Country',
@@ -59,6 +60,7 @@ module Schools
             school.data_enabled,
             onboarding_completed(school),
             first_made_data_enabled(school),
+            school&.funder&.name,
             school.funding_status.humanize,
             school.postcode,
             country(school),

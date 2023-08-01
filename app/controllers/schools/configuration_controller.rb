@@ -40,7 +40,8 @@ module Schools
         :dark_sky_area_id,
         :scoreboard_id,
         :school_group_id,
-        :weather_station_id
+        :weather_station_id,
+        :funder_id
       )
     end
 

@@ -147,6 +147,8 @@ class School < ApplicationRecord
 
   has_many :advice_page_school_benchmarks
 
+  has_many :energy_tariffs, as: :tariff_holder, dependent: :destroy
+
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
   belongs_to :school_group_cluster, optional: true
@@ -160,6 +162,8 @@ class School < ApplicationRecord
 
   belongs_to :scoreboard, optional: true
   belongs_to :local_authority_area, optional: true
+
+  belongs_to :funder, optional: true
 
   has_one :school_onboarding
   has_one :configuration, class_name: 'Schools::Configuration'

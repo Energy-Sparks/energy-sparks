@@ -47,4 +47,13 @@ describe Amr::DataFileParser, type: :service do
       end
     end
   end
+
+  context 'xlsx conversion to csv' do
+    let(:file_name) { 'date-test.xlsx' }
+    it "exports dates and datetimes to ISO 8601 format" do
+      parsed_lines[1..].each do |row|
+        expect(row[2]).to eql(row[3])
+      end
+    end
+  end
 end

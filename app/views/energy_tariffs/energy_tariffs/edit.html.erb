@@ -1,0 +1,14 @@
+<h1><%= t('schools.user_tariffs.edit.title', fuel_type: @energy_tariff.meter_type) %></h1>
+
+<div class="energy_tariff">
+
+  <p><%= t('schools.user_tariffs.there_should_only_be_one_tariff_message') %>.</p>
+  <br/>
+
+  <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
+
+  <%= simple_form_for [@school, @energy_tariff] do |f| %>
+    <%= render 'form', school: @school, energy_tariff: @energy_tariff, f: f %>
+  <% end %>
+
+</div>

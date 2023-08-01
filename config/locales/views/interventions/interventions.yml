@@ -20,7 +20,11 @@ en:
       page_title: Update energy saving action
       title: Update your energy saving action
     form:
+      adding_a_photo_to_document_your_action_will_score_you: Adding a photo to document your action will score you
       adding_some_background_detail_label: Adding some background detail can help you track and monitor improvements
+      bonus_points:
+        one: bonus point
+        other: bonus points
       if_pupils_were_involved_label: If pupils were involved in proposing, planning, fund-raising or carrying out this action then recording this action will score
       points_for_your_school:
         one: points for your school
@@ -39,3 +43,5 @@ en:
     new:
       page_title: Record energy saving action
       title: Record an energy saving action for your school
+    show:
+      pupils_involved_in_this_activity: Pupils involved in this activity
