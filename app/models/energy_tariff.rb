@@ -75,7 +75,7 @@ class EnergyTariff < ApplicationRecord
       type: flat_rate? ? :flat : :differential,
       sub_type: '',
       rates: rates,
-      vat: "#{vat_rate}%",
+      vat: vat_rate.nil? ? nil : "#{vat_rate}%",
       climate_change_levy: ccl,
       asc_limit_kw: (value_for_charge(:asc_limit_kw) if rates_has_availability_charge?(rates))
     }.compact

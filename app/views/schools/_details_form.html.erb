@@ -17,6 +17,8 @@
     <%= f.input :activation_date, as: :tempus_dominus_date, default_date: nil, hint: t('schools.school_details.activation_date_hint') %>
     <%= f.input :enable_targets_feature %>
     <%= f.input :public %>
+    <%= f.label :funder %>
+    <%= f.select :funder_id, options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), school.funder_id), { include_blank: true }, { class: 'form-control' } %>
   </div>
 <% end %>
 
