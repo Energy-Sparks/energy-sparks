@@ -11,7 +11,11 @@ module Amr
     def perform
       return if @tariffs.empty?
       Rails.logger.info "Upserting #{kwh_tariffs.count} tariff_prices and #{standing_charges.count} tariff_standing_charges for #{@meter.mpan_mprn} at #{@meter.school.name}"
-      TariffUpserter.new(prices_array(kwh_tariffs), standing_charges_array(standing_charges), @import_log).perform
+
+      prices_array = prices_array(kwh_tariffs)
+      standing_charges_array = standing_charges_array(standing_charges)
+
+      TariffUpserter.new(prices_array, standing_charges_array, @import_log).perform
       Rails.logger.info "Upserted #{@import_log.prices_updated} prices and #{@import_log.standing_charges_updated} standing charges for #{@meter.mpan_mprn} at #{@meter.school.name}"
       Rails.logger.info "Inserted #{@import_log.prices_imported} prices and #{@import_log.standing_charges_imported} standing charges for #{@meter.mpan_mprn} at #{@meter.school.name}"
     end
@@ -30,7 +34,7 @@ module Amr
       last_prices = TariffPrice.where(meter_id: @meter.id).order(tariff_date: :asc).last&.prices
 
       tariff_prices_hash.map do |tariff_date, prices|
-        next if prices.sum == 0.0
+        next if prices.all? { |price| price.is_a?(Numeric) } && prices.sum == 0.0
         next if last_prices && (last_prices == prices)
 
         {
@@ -38,7 +42,7 @@ module Amr
           tariff_date: tariff_date,
           prices: prices
         }
-      end.compact
+      end&.compact
     end
 
     def standing_charges_array(standing_charges_hash)
@@ -50,7 +54,7 @@ module Amr
           start_date: start_date,
           value: value
         }
-      end
+      end&.compact
     end
   end
 end
