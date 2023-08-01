@@ -30,6 +30,7 @@ module Amr
       last_prices = TariffPrice.where(meter_id: @meter.id).order(tariff_date: :asc).last&.prices
 
       tariff_prices_hash.map do |tariff_date, prices|
+        next if prices.sum == 0.0
         next if last_prices && (last_prices == prices)
 
         {
@@ -42,6 +43,8 @@ module Amr
 
     def standing_charges_array(standing_charges_hash)
       standing_charges_hash.map do |start_date, value|
+        next if value <= 0.0
+
         {
           meter_id: @meter.id,
           start_date: start_date,
