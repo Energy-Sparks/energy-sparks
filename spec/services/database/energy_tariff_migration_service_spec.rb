@@ -5,7 +5,7 @@ RSpec.shared_examples 'the expected EnergyTariff' do
     expect(energy_tariff.start_date).to eq start_date
     expect(energy_tariff.end_date).to eq end_date
     expect(energy_tariff.name).to eq tariff_name
-    expect(energy_tariff.meter_type).to eq "electricity"
+    expect(energy_tariff.meter_type).to eq meter_type
     expect(energy_tariff.source).to eq source
     expect(energy_tariff.tariff_holder).to eq tariff_holder
   end
@@ -118,6 +118,7 @@ describe Database::EnergyTariffMigrationService do
   let(:end_date)        { Date.new(2050,1,1) }
   let(:tariff_name)     { "A Tariff" }
   let(:source)          { "manually_entered" }
+  let(:meter_type)      { "electricity" }
   let(:default)         { true }
   let(:system_wide)     { true }
   let(:rate)            { 0.03 }
@@ -146,6 +147,53 @@ describe Database::EnergyTariffMigrationService do
         rates: rates
     }
   }
+
+  context '#date_or_nil' do
+    it 'returns expected values' do
+      expect(Database::EnergyTariffMigrationService.date_or_nil(Date.today)).to eq Date.today
+      expect(Database::EnergyTariffMigrationService.date_or_nil(nil)).to eq nil
+      expect(Database::EnergyTariffMigrationService.date_or_nil("")).to eq nil
+      expect(Database::EnergyTariffMigrationService.date_or_nil("2020-01-01")).to eq Date.new(2020,1,1)
+    end
+  end
+
+  context '#meter_types' do
+    let(:attribute)   { OpenStruct.new(meter_types: meter_types) }
+    let(:meter_types) { [] }
+    context 'with invalid type' do
+      it 'raises exception' do
+        expect { Database::EnergyTariffMigrationService.meter_type(attribute) }.to raise_error("Unexpected meter type")
+      end
+    end
+    context 'with basic fuel types' do
+      ["gas", "electricity", "solar_pv", "exported_solar_pv"].each do |type|
+        it "recognises #{type}" do
+          attribute = OpenStruct.new(meter_types: [type])
+          expect(Database::EnergyTariffMigrationService.meter_type(attribute)).to eq type.to_sym
+        end
+      end
+    end
+    context 'with aggregate types' do
+      it "recognises aggregated_electricity" do
+        attribute = OpenStruct.new(meter_types: ["aggregated_electricity"])
+        expect(Database::EnergyTariffMigrationService.meter_type(attribute)).to eq :electricity
+      end
+      it "recognises aggregated_gas" do
+        attribute = OpenStruct.new(meter_types: ["aggregated_gas"])
+        expect(Database::EnergyTariffMigrationService.meter_type(attribute)).to eq :gas
+      end
+    end
+    context 'with solar sub meters' do
+      it "recognises solar_pv_consumed_sub_meter" do
+        attribute = OpenStruct.new(meter_types: ["solar_pv_consumed_sub_meter"])
+        expect(Database::EnergyTariffMigrationService.meter_type(attribute)).to eq :solar_pv
+      end
+      it "recognises solar_pv_exported_sub_meter" do
+        attribute = OpenStruct.new(meter_types: ["solar_pv_exported_sub_meter"])
+        expect(Database::EnergyTariffMigrationService.meter_type(attribute)).to eq :exported_solar_pv
+      end
+    end
+  end
 
   context '#migrate_user_tariffs' do
     let!(:user_tariff)  do
@@ -195,6 +243,31 @@ describe Database::EnergyTariffMigrationService do
     end
   end
 
+  context '#migrate_global_solar_meter_attributes' do
+    let!(:tariff_holder)           { SiteSettings.create! }
+    let(:meter_type)               { "exported_solar_pv" }
+
+    let!(:global_meter_attribute) {
+      GlobalMeterAttribute.create(
+        attribute_type: 'economic_tariff',
+        meter_types: ["", "exported_solar_pv", "solar_pv_exported_sub_meter"],
+        input_data: input_data
+      )
+    }
+
+    context 'migrates a global solar tariff' do
+      let(:energy_tariff)       { EnergyTariff.first }
+      let(:charge)              { energy_tariff.energy_tariff_charges.first }
+      let(:price)               { energy_tariff.energy_tariff_prices.first }
+
+      before do
+        Database::EnergyTariffMigrationService.migrate_global_solar_meter_attributes
+      end
+
+      it_behaves_like "a migrated flat rate economic tariff"
+    end
+  end
+
   context '#migrate_global_meter_attributes' do
     let!(:tariff_holder)           { SiteSettings.create! }
 
@@ -218,9 +291,6 @@ describe Database::EnergyTariffMigrationService do
       it_behaves_like "a migrated flat rate accounting tariff"
     end
 
-    context 'migrates a solar economic tariff' do
-      it 'migrates global solar attributes'
-    end
   end
 
   context '#migrate_school_group_economic_tariffs' do

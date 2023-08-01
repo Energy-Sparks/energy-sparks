@@ -42,12 +42,11 @@ module Database
       end
     end
 
-    #Turns the Global Meter Attributes that are for accounting tariffs into
-    #EnergyTariffs. We will be ignoring the economic tariffs as they aren't needed.
+    #Turns the Global Meter Attributes that are accounting tariffs into
+    #EnergyTariffs.
     def self.migrate_global_meter_attributes
       ActiveRecord::Base.transaction do
-        GlobalMeterAttribute.where(attribute_type: 'accounting_tariff',
-          replaced_by: nil, deleted_by: nil).each do |attribute|
+        GlobalMeterAttribute.where(attribute_type: 'accounting_tariff').active.each do |attribute|
             #either :electricity or :gas
             meter_type = meter_type(attribute)
 
@@ -82,6 +81,43 @@ module Database
               tnuos: false,
               vat_rate: nil,
               energy_tariff_charges: energy_tariff_charges,
+              energy_tariff_prices: energy_tariff_prices
+            )
+        end
+      end
+    end
+
+    #Turns the Global Meter Attributes that are economic tariffs for solar pv
+    #and solar export into Energy Tariffs
+    def self.migrate_global_solar_meter_attributes
+      solar_types = [:solar_pv, :exported_solar_pv]
+      ActiveRecord::Base.transaction do
+        GlobalMeterAttribute.where(attribute_type: 'economic_tariff').active.each do |attribute|
+            meter_type = meter_type(attribute)
+            #ignore economic tariffs for gas and electricity
+            next unless solar_types.include?(meter_type)
+
+            energy_tariff_prices = [
+              EnergyTariffPrice.new(
+                start_time: Time.zone.parse('00:00'),
+                end_time: Time.zone.parse('23:30'),
+                units: 'kwh',
+                value: attribute.input_data['rates']['rate']['rate'].to_f
+              )
+            ]
+
+            EnergyTariff.create!(
+              ccl: false,
+              enabled: true,
+              end_date: date_or_nil(attribute.input_data['end_date']),
+              meter_type: meter_type,
+              name: attribute.input_data['name'],
+              source: :manually_entered,
+              start_date: date_or_nil(attribute.input_data['start_date']),
+              tariff_holder: SiteSettings.current,
+              tariff_type: :flat_rate,
+              tnuos: false,
+              vat_rate: nil,
               energy_tariff_prices: energy_tariff_prices
             )
         end
@@ -327,8 +363,8 @@ module Database
 
     def self.meter_type(attribute)
       meter_types = attribute.meter_types
-      return :electricity if meter_types.include?('electricity')
-      return :gas if meter_types.include?('gas')
+      return :electricity if meter_types.include?('electricity') || meter_types.include?('aggregated_electricity')
+      return :gas if meter_types.include?('gas') || meter_types.include?('aggregated_gas')
       return :solar_pv if meter_types.include?('solar_pv') || meter_types.include?('solar_pv_consumed_sub_meter')
       return :exported_solar_pv if meter_types.include?('exported_solar_pv') || meter_types.include?('solar_pv_exported_sub_meter')
       raise "Unexpected meter type"
