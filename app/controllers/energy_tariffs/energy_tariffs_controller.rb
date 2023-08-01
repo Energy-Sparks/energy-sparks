@@ -5,10 +5,18 @@ module EnergyTariffs
     before_action :set_breadcrumbs
 
     def index
-      @electricity_meters = @school.meters.electricity
-      @electricity_tariffs = @school.energy_tariffs.electricity.by_start_date.by_name
-      @gas_meters = @school.meters.gas
-      @gas_tariffs = @school.energy_tariffs.gas.by_start_date.by_name
+      if @school
+        @electricity_meters = @school.meters.electricity
+        @electricity_tariffs = @school.energy_tariffs.electricity.by_start_date.by_name
+        @gas_meters = @school.meters.gas
+        @gas_tariffs = @school.energy_tariffs.gas.by_start_date.by_name
+      elsif @school_group
+        # Placeholder for school group
+      elsif can?(:manage, :admin)
+        @energy_tariffs = SiteSettings.current.energy_tariffs
+      else
+        redirect_to new_user_session_path
+      end
     end
 
     def new

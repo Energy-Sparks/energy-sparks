@@ -17,7 +17,7 @@ RSpec.describe "routes for energy tariffs editor", type: :routing do
 
   context 'routes for the site settings energy tariff editor' do
     it 'routes site_settings_energy_tariffs_path to the EnergyTariff controller' do
-      expect(get(energy_tariffs_path)).to route_to(
+      expect(get(admin_settings_energy_tariffs_path)).to route_to(
         {
           controller: 'energy_tariffs/energy_tariffs',
           action: 'index'
