@@ -41,7 +41,7 @@ module Amr
 
       tariff_prices_hash.map do |tariff_date, prices|
         if prices.all? { |price| price.is_a?(Numeric) } && prices.sum == 0.0
-          @import_log_error_messages << 'prices returned from n3rgy are zero'
+          @import_log_error_messages << "prices returned from n3rgy for #{tariff_date} are zero"
 
           next
         end
@@ -59,7 +59,7 @@ module Amr
     def standing_charges_array(standing_charges_hash)
       standing_charges_hash.map do |start_date, value|
         if value <= 0.0
-          @import_log_error_messages << 'standing charges returned from n3rgy are zero'
+          @import_log_error_messages << "standing charges returned from n3rgy for #{start_date} are zero"
 
           next
         end

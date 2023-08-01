@@ -73,7 +73,7 @@ module Amr
         expect(meter.tariff_prices.count).to eq(0)
         expect(meter.tariff_standing_charges.count).to eq(0)
         expect(TariffImportLog.count).to eq(1)
-        expect(TariffImportLog.last.error_messages).to eq('Error downloading tariffs: prices returned from n3rgy are zero and standing charges returned from n3rgy are zero')
+        expect(TariffImportLog.last.error_messages).to eq("Error downloading tariffs: prices returned from n3rgy for #{start_date} are zero and standing charges returned from n3rgy for #{start_date} are zero")
       end
     end
 

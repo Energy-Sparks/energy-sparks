@@ -60,7 +60,7 @@ module Amr
         }.to change { TariffImportLog.count }.by(1)
          .and change { TariffPrice.count }.by(0)
          .and change { TariffStandingCharge.count }.by(0)
-        expect(TariffImportLog.first.error_messages).to eq('Error downloading tariffs: prices returned from n3rgy are zero and standing charges returned from n3rgy are zero')
+        expect(TariffImportLog.first.error_messages).to eq("Error downloading tariffs: prices returned from n3rgy for #{start_date} are zero and standing charges returned from n3rgy for #{start_date} are zero")
       end
     end
   end
