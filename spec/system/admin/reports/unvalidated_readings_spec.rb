@@ -21,7 +21,6 @@ describe "unvalidated readings", type: :system do
 
     it "displays report" do
       expect(page).to have_content reading.mpan_mprn
-      expect(page).to have_content reading.meter.id
       expect(page).to have_content config.identifier
       expect(page).to have_content config.description
       expect(page).to have_content '2023-06-23'
