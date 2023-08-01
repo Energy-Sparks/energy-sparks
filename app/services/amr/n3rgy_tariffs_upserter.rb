@@ -6,6 +6,7 @@ module Amr
       @meter = meter
       @tariffs = tariffs
       @import_log = import_log
+      @import_log_error_messages = []
     end
 
     def perform
@@ -14,6 +15,11 @@ module Amr
 
       prices_array = prices_array(kwh_tariffs)
       standing_charges_array = standing_charges_array(standing_charges)
+
+      if @import_log_error_messages.present?
+        @import_log.error_messages = "Error downloading tariffs: " + @import_log_error_messages.to_sentence
+        @import_log.save!
+      end
 
       TariffUpserter.new(prices_array, standing_charges_array, @import_log).perform
       Rails.logger.info "Upserted #{@import_log.prices_updated} prices and #{@import_log.standing_charges_updated} standing charges for #{@meter.mpan_mprn} at #{@meter.school.name}"
@@ -34,7 +40,12 @@ module Amr
       last_prices = TariffPrice.where(meter_id: @meter.id).order(tariff_date: :asc).last&.prices
 
       tariff_prices_hash.map do |tariff_date, prices|
-        next if prices.all? { |price| price.is_a?(Numeric) } && prices.sum == 0.0
+        if prices.all? { |price| price.is_a?(Numeric) } && prices.sum == 0.0
+          @import_log_error_messages << 'prices returned from n3rgy are zero'
+
+          next
+        end
+
         next if last_prices && (last_prices == prices)
 
         {
@@ -47,7 +58,11 @@ module Amr
 
     def standing_charges_array(standing_charges_hash)
       standing_charges_hash.map do |start_date, value|
-        next if value <= 0.0
+        if value <= 0.0
+          @import_log_error_messages << 'standing charges returned from n3rgy are zero'
+
+          next
+        end
 
         {
           meter_id: @meter.id,

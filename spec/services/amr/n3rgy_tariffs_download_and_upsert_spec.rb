@@ -19,6 +19,7 @@ module Amr
     let(:zero_standing_charges)            { { start_date => 0.0 } }
     let(:zero_tariffs)                     { { kwh_tariffs: zero_kwh_tariffs, standing_charges: zero_standing_charges } }
 
+    before { TariffImportLog.delete_all }
 
     context "when downloading data" do
       it "should handle and log exceptions" do
@@ -51,7 +52,7 @@ module Amr
         expect(TariffImportLog.last.error_messages).to be_blank
       end
 
-      it "should request 24 hours of data and upsert a new tariff price and tariff standing charge if there are no existing records of the same date" do
+      it "should request 24 hours of data but not upsert a new tariff price and tariff standing charge if there are zero tariffs but should log an error " do
         allow(n3rgy_api).to receive(:tariffs).with(meter.mpan_mprn, meter.meter_type, start_date, end_date).and_return(zero_tariffs)
         expect(TariffImportLog.count).to eq(0)
         expect {
@@ -59,7 +60,7 @@ module Amr
         }.to change { TariffImportLog.count }.by(1)
          .and change { TariffPrice.count }.by(0)
          .and change { TariffStandingCharge.count }.by(0)
-        expect(TariffImportLog.first.error_messages).to be_blank
+        expect(TariffImportLog.first.error_messages).to eq('Error downloading tariffs: prices returned from n3rgy are zero and standing charges returned from n3rgy are zero')
       end
     end
   end
