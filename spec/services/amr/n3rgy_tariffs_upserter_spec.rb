@@ -17,7 +17,12 @@ module Amr
 
     let(:tariffs)                     { { kwh_tariffs: kwh_tariffs, standing_charges: standing_charges } }
 
+    let(:zero_kwh_tariffs)            { { start_date => Array.new(48, 0.0) } }
+    let(:zero_standing_charges)       { { start_date => 0.0 } }
+    let(:zero_tariffs)                { { kwh_tariffs: zero_kwh_tariffs, standing_charges: zero_standing_charges } }
+
     let(:upserter) { Amr::N3rgyTariffsUpserter.new(meter: meter, tariffs: tariffs, import_log: import_log) }
+    let(:upserter_zero) { Amr::N3rgyTariffsUpserter.new(meter: meter, tariffs: zero_tariffs, import_log: import_log) }
 
     context 'with empty prices' do
       let(:kwh_tariffs) { {} }
@@ -56,6 +61,20 @@ module Amr
       expect(import_log).to receive(:update).with(prices_imported: 1, prices_updated: 0)
       expect(import_log).to receive(:update).with(standing_charges_imported: 1, standing_charges_updated: 0)
       upserter.perform
+    end
+
+    context 'if readings are zero' do
+      it '' do
+        expect(meter.tariff_prices.count).to eq(0)
+        expect(meter.tariff_standing_charges.count).to eq(0)
+        expect(TariffImportLog.count).to eq(0)
+        upserter_zero.perform
+        meter.reload
+        expect(meter.tariff_prices.count).to eq(0)
+        expect(meter.tariff_standing_charges.count).to eq(0)
+        expect(TariffImportLog.count).to eq(1)
+        expect(TariffImportLog.last.error_messages).to eq('Error downloading tariffs: prices returned from n3rgy are zero and standing charges returned from n3rgy are zero')
+      end
     end
 
     context 'if readings already exist' do
