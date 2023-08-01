@@ -80,8 +80,13 @@ class AmrDataFeedReading < ApplicationRecord
     QUERY
   end
 
-  def self.build_unvalidated_data_report_query(mpans)
+  def self.build_unvalidated_data_report_query(mpans, amr_data_feed_config_ids)
+    amr_data_feed_config_ids = amr_data_feed_config_ids.reject { |id| (id.blank? || id.zero?) }
+    amr_data_feed_config_ids = AmrDataFeedConfig.all.pluck(:id) if amr_data_feed_config_ids.empty?
+
     list_of_mpans = mpans.map {|m| "'#{m}'"}.join(',')
+    list_of_amr_data_feed_config_ids = amr_data_feed_config_ids.map {|m| "'#{m}'"}.join(',')
+
     <<~QUERY
       SELECT mpan_mprn, meter_id, identifier, description, MIN(parsed_date) as earliest_reading, MAX(parsed_date) as latest_reading FROM (
         SELECT mpan_mprn, meter_id, identifier, amr_data_feed_configs.description, reading_date,
@@ -106,15 +111,15 @@ class AmrDataFeedReading < ApplicationRecord
         END parsed_date
         FROM amr_data_feed_readings
         JOIN amr_data_feed_configs ON amr_data_feed_configs.id = amr_data_feed_readings.amr_data_feed_config_id
-        WHERE mpan_mprn IN (#{list_of_mpans})
+        WHERE mpan_mprn IN (#{list_of_mpans}) AND amr_data_feed_readings.amr_data_feed_config_id IN (#{list_of_amr_data_feed_config_ids})
         ) as raw_data
       GROUP BY mpan_mprn, meter_id, identifier, description
       ORDER by mpan_mprn, meter_id, latest_reading DESC
     QUERY
   end
 
-  def self.unvalidated_data_report_for_mpans(mpans)
-    query = build_unvalidated_data_report_query(mpans)
+  def self.unvalidated_data_report_for_mpans(mpans, amr_data_feed_config_ids = [])
+    query = build_unvalidated_data_report_query(mpans, amr_data_feed_config_ids)
     ActiveRecord::Base.connection.execute(ActiveRecord::Base.sanitize_sql(query))
   end
 end
