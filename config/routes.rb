@@ -83,6 +83,10 @@ Rails.application.routes.draw do
   end
   end
 
+  scope '/admin/settings' do
+    concerns :tariff_holder, as: 'admin_settings_energy_tariffs'
+  end
+
   resources :activity_types, only: [:show] do
     collection do
       get :search
