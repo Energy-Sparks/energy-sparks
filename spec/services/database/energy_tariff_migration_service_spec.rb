@@ -195,6 +195,69 @@ describe Database::EnergyTariffMigrationService do
     end
   end
 
+
+  context '#tariff_types' do
+    let(:tariff_holder)  { create(:school_group) }
+    let!(:school_group_attribute) {
+      tariff_holder.meter_attributes.create(
+        attribute_type: "accounting_tariff",
+        input_data: input_data,
+        meter_types: ["electricity"]
+      )
+    }
+    context 'with flat rate' do
+      it 'identifies the type' do
+        expect(Database::EnergyTariffMigrationService.tariff_type(school_group_attribute)).to eq :flat_rate
+      end
+    end
+    context 'with differential' do
+      let(:rates) {
+        {
+          daytime_rate: {
+            from: { hour: '0', minutes: '0' },
+            to: { hour: '7', minutes: '0' },
+            per: :kwh,
+            rate: rate * 2
+          },
+          nighttime_rate: {
+            from: { hour: '7', minutes: '0' },
+            to: { hour: '24', minutes: '0' },
+            per: :kwh,
+            rate: rate
+          }
+        }
+      }
+      it 'identifies the type' do
+        expect(Database::EnergyTariffMigrationService.tariff_type(school_group_attribute)).to eq :differential
+      end
+    end
+    context 'with data from meter attribute editor' do
+      let(:rates) {
+        {
+          rate: {
+            per: :kwh,
+            rate: rate
+          },
+          daytime_rate: {
+            from: { hour: '', minutes: '' },
+            to: { hour: '', minutes: '' },
+            per: '',
+            rate: ''
+          },
+          nighttime_rate: {
+            from: { hour: '', minutes: '' },
+            to: { hour: '', minutes: '' },
+            per: '',
+            rate: ''
+          }
+        }
+      }
+      it 'identifies the type' do
+        expect(Database::EnergyTariffMigrationService.tariff_type(school_group_attribute)).to eq :flat_rate
+      end
+    end
+  end
+
   context '#migrate_user_tariffs' do
     let!(:user_tariff)  do
       UserTariff.create(
