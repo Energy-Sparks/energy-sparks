@@ -18,6 +18,8 @@ describe 'site settings energy tariffs', type: :system do
         visit admin_settings_energy_tariffs_path
         expect(current_path).to eq("/admin/settings/energy_tariffs")
       end
+
+      it_behaves_like "the site settings energy tariff forms well navigated"
     end
   end
 
