@@ -1,7 +1,10 @@
 module EnergyTariffs
   class EnergyTariffsController < ApplicationController
+    include EnergyTariffable
+
     load_and_authorize_resource :school
     load_and_authorize_resource :energy_tariff
+    before_action :load_and_authorize_if_site_setting
     before_action :set_breadcrumbs
 
     def index
@@ -10,12 +13,6 @@ module EnergyTariffs
         @electricity_tariffs = @school.energy_tariffs.electricity.by_start_date.by_name
         @gas_meters = @school.meters.gas
         @gas_tariffs = @school.energy_tariffs.gas.by_start_date.by_name
-      elsif @school_group
-        # Placeholder for school group
-      elsif can?(:manage, :admin)
-        @site_setting = SiteSettings.current
-      else
-        redirect_to new_user_session_path
       end
     end
 
@@ -55,7 +52,13 @@ module EnergyTariffs
     def update
       if @energy_tariff.update(energy_tariff_params.merge(updated_by: current_user))
         EnergyTariffDefaultPricesCreator.new(@energy_tariff).process
-        redirect_to school_energy_tariff_energy_tariff_prices_path(@school, @energy_tariff)
+        if @school
+          redirect_to school_energy_tariff_energy_tariff_prices_path(@school, @energy_tariff)
+        elsif @school_group
+          # Placeholder for school group re-routing
+        else
+          redirect_to admin_settings_energy_tariff_energy_tariff_prices_path(@energy_tariff)
+        end
       else
         render :edit
       end
@@ -66,7 +69,11 @@ module EnergyTariffs
 
     def destroy
       @energy_tariff.destroy
-      redirect_to school_energy_tariffs_path(@school)
+      if @school
+        redirect_to school_energy_tariffs_path(@school)
+      else
+        redirect_to admin_settings_energy_tariffs_path
+      end
     end
 
     private

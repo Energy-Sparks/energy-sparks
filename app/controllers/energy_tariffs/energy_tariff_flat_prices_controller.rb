@@ -1,11 +1,14 @@
 module EnergyTariffs
   class EnergyTariffFlatPricesController < ApplicationController
+    include EnergyTariffable
+
     load_and_authorize_resource :school
     load_and_authorize_resource :energy_tariff
+    before_action :load_and_authorize_if_site_setting
 
     def index
       if @energy_tariff.energy_tariff_prices.any?
-        redirect_to edit_school_energy_tariff_energy_tariff_flat_price_path(@school, @energy_tariff, @energy_tariff.energy_tariff_prices.first)
+        redirect_to_edit_energy_tariff_flat_price_path
       else
         redirect_to new_school_energy_tariff_energy_tariff_flat_price_path(@school, @energy_tariff)
       end
@@ -38,6 +41,22 @@ module EnergyTariffs
     end
 
     private
+
+    def redirect_to_edit_energy_tariff_flat_price_path
+      if @school
+        redirect_to edit_school_energy_tariff_energy_tariff_flat_price_path(@school, @energy_tariff, @energy_tariff.energy_tariff_prices.first)
+      elsif @site_setting
+        redirect_to edit_admin_settings_energy_tariff_energy_tariff_flat_price_path(@energy_tariff, @energy_tariff.energy_tariff_prices.first)
+      end
+    end
+
+    def redirect_to_new_energy_tariff_flat_price_path
+      if @school
+        redirect_to new_school_energy_tariff_energy_tariff_flat_price_path(@school, @energy_tariff)
+      elsif @site_setting
+        redirect_to new_admin_setting_energy_tariff_energy_tariff_flat_price_path(@school, @energy_tariff)
+      end
+    end
 
     def default_attributes
       {

@@ -1,7 +1,10 @@
 module EnergyTariffs
   class EnergyTariffDifferentialPricesController < ApplicationController
+    include EnergyTariffable
+
     load_and_authorize_resource :school
     load_and_authorize_resource :energy_tariff
+    before_action :load_and_authorize_if_site_setting
 
     def index
     end
