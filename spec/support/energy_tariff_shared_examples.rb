@@ -68,6 +68,8 @@ RSpec.shared_examples "the school energy tariff forms well navigated" do
       expect(page).to have_content('999888777')
 
       energy_tariff = EnergyTariff.last
+      expect(energy_tariff.tariff_holder_type).to eq('School')
+      expect(energy_tariff.tariff_holder).to eq(school)
       expect(energy_tariff.created_by).to eq(current_user)
       expect(energy_tariff.updated_by).to eq(nil)
 
@@ -148,6 +150,8 @@ RSpec.shared_examples "the school energy tariff forms well navigated" do
       expect(page).to have_content('12345678901234')
 
       energy_tariff = EnergyTariff.last
+      expect(energy_tariff.tariff_holder_type).to eq('School')
+      expect(energy_tariff.tariff_holder).to eq(school)
       expect(energy_tariff.created_by).to eq(current_user)
       expect(energy_tariff.updated_by).to eq(current_user)
 
@@ -213,6 +217,9 @@ RSpec.shared_examples "the school energy tariff forms well navigated" do
       expect(page).to have_content('12345678901234')
 
       energy_tariff = EnergyTariff.last
+      expect(energy_tariff.tariff_holder_type).to eq('School')
+      expect(energy_tariff.tariff_holder).to eq(school)
+
       expect(energy_tariff.created_by).to eq(current_user)
       expect(energy_tariff.updated_by).to eq(current_user)
       expect(energy_tariff.meters).to match_array([electricity_meter])
@@ -283,6 +290,8 @@ RSpec.shared_examples "the school energy tariff forms well navigated" do
       expect(page).to have_content('Tariff details')
 
       energy_tariff = EnergyTariff.last
+      expect(energy_tariff.tariff_holder_type).to eq('School')
+      expect(energy_tariff.tariff_holder).to eq(school)
       expect(energy_tariff.created_by).to eq(current_user)
       expect(energy_tariff.updated_by).to eq(current_user)
       expect(energy_tariff.tnuos).to be_truthy
@@ -370,6 +379,8 @@ RSpec.shared_examples "the site settings energy tariff forms well navigated" do
       expect(page).to have_content('My First Gas Tariff')
 
       energy_tariff = EnergyTariff.last
+      expect(energy_tariff.tariff_holder_type).to eq('SiteSettings')
+      expect(energy_tariff.tariff_holder).to eq(SiteSettings.current)
       expect(energy_tariff.created_by).to eq(current_user)
       expect(energy_tariff.updated_by).to eq(nil)
 
@@ -383,229 +394,199 @@ RSpec.shared_examples "the site settings energy tariff forms well navigated" do
     end
   end
 
-  # context 'creating flat rate electricity tariffs' do
-  #   before(:each) do
-  #     visit school_path(school)
-  #     click_link('Manage tariffs')
-  #   end
+  context 'creating flat rate electricity tariffs' do
+    it 'can handle partially created tariff with bits missing' do
+      visit admin_settings_energy_tariffs_path
+      expect(current_path).to eq("/admin/settings/energy_tariffs")
+      expect(page).to have_content(I18n.t('schools.user_tariffs.index.title'))
 
-  #   it 'requires a meter to be selected' do
-  #     expect(current_path).to eq("/schools/#{school.slug}/energy_tariffs")
+      click_link('Add electricity tariff')
 
-  #     click_link('Add electricity tariff')
+      expect(page).not_to have_content('Select meters for this tariff')
 
-  #     expect(page).to have_content('Select meters for this tariff')
-  #     expect(page).to have_content(electricity_meter.mpan_mprn)
-  #     uncheck(electricity_meter.mpan_mprn.to_s)
-  #     click_button('Next')
+      click_button('Next')
 
-  #     expect(page).to have_content('Select meters for this tariff')
-  #     expect(page).to have_content('Please select at least one meter')
-  #   end
+      expect(page).to have_content('Choose a name and date range')
+      fill_in 'Name', with: 'My First Flat Tariff'
+      click_button('Next')
+      click_button('Simple')
 
-  #   it 'can handle partially created tariff with bits missing' do
-  #     expect(page).to have_content(I18n.t('schools.user_tariffs.index.title'))
+      visit admin_settings_energy_tariffs_path
 
-  #     click_link('Add electricity tariff')
+      expect(page).to have_content(I18n.t('schools.user_tariffs.index.title'))
+    end
 
-  #     expect(page).to have_content('Select meters for this tariff')
-  #     expect(page).to have_content(electricity_meter.mpan_mprn)
-  #     expect(page).not_to have_content(gas_meter.mpan_mprn)
+    it 'can create a flat rate tariff with price' do
+      visit admin_settings_energy_tariffs_path
+      expect(current_path).to eq("/admin/settings/energy_tariffs")
+      click_link('Add electricity tariff')
 
-  #     click_button('Next')
+      fill_in 'Name', with: 'My First Flat Tariff'
+      click_button('Next')
 
-  #     expect(page).to have_content('Choose a name and date range')
-  #     fill_in 'Name', with: 'My First Flat Tariff'
-  #     click_button('Next')
-  #     click_button('Simple')
+      click_button('Simple')
 
-  #     visit school_energy_tariffs_path(school)
+      fill_in "energy_tariff_price[value]", with: '1.5'
+      click_button('Next')
 
-  #     expect(page).to have_content(I18n.t('schools.user_tariffs.index.title'))
-  #   end
+      click_button('Next')
 
-  #   it 'can create a flat rate tariff with price' do
-  #     click_link('Add electricity tariff')
+      expect(page).to have_content('Tariff details')
+      expect(page).to have_content('Flat rate tariff')
+      expect(page).to have_content('£1.50 per kWh')
+      expect(page).not_to have_link('Delete')
 
-  #     check('12345678901234')
-  #     click_button('Next')
+      click_link('Finished')
+      expect(page).to have_content('Manage and view tariffs')
 
-  #     fill_in 'Name', with: 'My First Flat Tariff'
-  #     click_button('Next')
+      energy_tariff = EnergyTariff.last
+      expect(energy_tariff.tariff_holder_type).to eq('SiteSettings')
+      expect(energy_tariff.tariff_holder).to eq(SiteSettings.current)
+      expect(energy_tariff.created_by).to eq(current_user)
+      expect(energy_tariff.updated_by).to eq(current_user)
 
-  #     click_button('Simple')
+      expect(energy_tariff.meters).to match_array([])
+      expect(energy_tariff.tariff_type == 'flat_rate').to be_truthy
+      expect(energy_tariff.vat_rate).to eq(0)
+      expect(energy_tariff.ccl).to be_falsey
+      energy_tariff_price = energy_tariff.energy_tariff_prices.first
+      expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:00')
+      expect(energy_tariff_price.end_time.to_s(:time)).to eq('23:30')
+      expect(energy_tariff_price.value.to_s).to eq('1.5')
+      expect(energy_tariff_price.units).to eq('kwh')
+    end
+  end
 
-  #     fill_in "energy_tariff_price[value]", with: '1.5'
-  #     click_button('Next')
+  context 'creating differential electricity tariffs' do
+    it 'can create a tariff and add prices and charges' do
+      visit admin_settings_energy_tariffs_path
+      expect(current_path).to eq("/admin/settings/energy_tariffs")
+      click_link('Add electricity tariff')
 
-  #     click_button('Next')
+      fill_in 'Name', with: 'My First Diff Tariff'
+      click_button('Next')
 
-  #     expect(page).to have_content('Tariff details')
-  #     expect(page).to have_content('Flat rate tariff')
-  #     expect(page).to have_content('£1.50 per kWh')
-  #     expect(page).not_to have_link('Delete')
+      click_button('Day/Night tariff')
 
-  #     click_link('Finished')
-  #     expect(page).to have_content('Manage tariffs')
-  #     expect(page).to have_content('12345678901234')
+      expect(page).to have_content('Night rate (00:00 to 07:00)')
+      expect(page).to have_content('Day rate (07:00 to 00:00)')
+      expect(page).not_to have_link('Add rate')
+      expect(page).not_to have_link('Delete')
 
-  #     energy_tariff = EnergyTariff.last
-  #     expect(energy_tariff.created_by).to eq(current_user)
-  #     expect(energy_tariff.updated_by).to eq(current_user)
+      first('.energy-tariff-show-button').click
 
-  #     expect(energy_tariff.meters).to match_array([electricity_meter])
-  #     expect(energy_tariff.tariff_type == 'flat_rate').to be_truthy
-  #     expect(energy_tariff.vat_rate).to eq(0)
-  #     expect(energy_tariff.ccl).to be_falsey
-  #     energy_tariff_price = energy_tariff.energy_tariff_prices.first
-  #     expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:00')
-  #     expect(energy_tariff_price.end_time.to_s(:time)).to eq('23:30')
-  #     expect(energy_tariff_price.value.to_s).to eq('1.5')
-  #     expect(energy_tariff_price.units).to eq('kwh')
-  #   end
-  # end
+      select '00', from: 'energy_tariff_price_start_time_4i'
+      select '30', from: 'energy_tariff_price_start_time_5i'
+      select '06', from: 'energy_tariff_price_end_time_4i'
+      select '30', from: 'energy_tariff_price_end_time_5i'
 
-  # context 'creating differential electricity tariffs' do
-  #   before(:each) do
-  #     visit school_path(school)
-  #     click_link('Manage tariffs')
-  #   end
+      fill_in 'Rate in £/kWh', with: '1.5'
+      click_button('Save')
 
-  #   it 'can create a tariff and add prices and charges' do
-  #     expect(current_path).to eq("/schools/#{school.slug}/energy_tariffs")
-  #     click_link('Add electricity tariff')
+      expect(page).to have_content('Night rate (00:30 to 06:30)')
+      expect(page).to have_content('Day rate (07:00 to 00:00)')
+      expect(page).to have_content('£1.50 per kWh')
+      expect(page).to have_content('£0.00 per kWh')
 
-  #     check('12345678901234')
-  #     click_button('Next')
+      click_link('Next')
+      click_button('Next')
 
-  #     fill_in 'Name', with: 'My First Diff Tariff'
-  #     click_button('Next')
+      expect(page).to have_content('Tariff details')
+      expect(page).to have_content('£1.50 per kWh')
+      expect(page).not_to have_link('Delete')
 
-  #     click_button('Day/Night tariff')
+      click_link('Finished')
+      expect(page).to have_content('Manage and view tariffs')
 
-  #     expect(page).to have_content('Night rate (00:00 to 07:00)')
-  #     expect(page).to have_content('Day rate (07:00 to 00:00)')
-  #     expect(page).not_to have_link('Add rate')
-  #     expect(page).not_to have_link('Delete')
+      energy_tariff = EnergyTariff.last
+      expect(energy_tariff.tariff_holder_type).to eq('SiteSettings')
+      expect(energy_tariff.tariff_holder).to eq(SiteSettings.current)
+      expect(energy_tariff.created_by).to eq(current_user)
+      expect(energy_tariff.updated_by).to eq(current_user)
+      expect(energy_tariff.meters).to match_array([])
+      energy_tariff_price = energy_tariff.energy_tariff_prices.first
+      expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:30')
+      expect(energy_tariff_price.end_time.to_s(:time)).to eq('06:30')
+      expect(energy_tariff_price.value.to_s).to eq('1.5')
+      expect(energy_tariff_price.units).to eq('kwh')
+      energy_tariff_price = energy_tariff.energy_tariff_prices.last
+      expect(energy_tariff_price.start_time.to_s(:time)).to eq('07:00')
+      expect(energy_tariff_price.end_time.to_s(:time)).to eq('00:00')
+      expect(energy_tariff_price.value.to_s).to eq('0.0')
+      expect(energy_tariff_price.units).to eq('kwh')
+    end
+  end
 
-  #     first('.energy-tariff-show-button').click
+  context 'adding electricity standing charges' do
+    it 'can create a tariff and add charges' do
+      visit admin_settings_energy_tariffs_path
+      expect(current_path).to eq("/admin/settings/energy_tariffs")
 
-  #     select '00', from: 'energy_tariff_price_start_time_4i'
-  #     select '30', from: 'energy_tariff_price_start_time_5i'
-  #     select '06', from: 'energy_tariff_price_end_time_4i'
-  #     select '30', from: 'energy_tariff_price_end_time_5i'
+      click_link('Add electricity tariff')
 
-  #     fill_in 'Rate in £/kWh', with: '1.5'
-  #     click_button('Save')
+      fill_in 'Name', with: 'My First Diff Tariff'
+      click_button('Next')
 
-  #     expect(page).to have_content('Night rate (00:30 to 06:30)')
-  #     expect(page).to have_content('Day rate (07:00 to 00:00)')
-  #     expect(page).to have_content('£1.50 per kWh')
-  #     expect(page).to have_content('£0.00 per kWh')
+      click_button('Simple')
 
-  #     click_link('Next')
-  #     click_button('Next')
+      fill_in "energy_tariff_price[value]", with: '1.5'
+      click_button('Next')
 
-  #     expect(page).to have_content('Tariff details')
-  #     expect(page).to have_content('£1.50 per kWh')
-  #     expect(page).not_to have_link('Delete')
+      fill_in "energy_tariff_charges[fixed_charge][value]", with: '1.11'
+      select 'day', from: 'energy_tariff_charges[fixed_charge][units]'
 
-  #     click_link('Finished')
-  #     expect(page).to have_content('Manage tariffs')
-  #     expect(page).to have_content('12345678901234')
+      fill_in "energy_tariff_charges[site_fee][value]", with: '2.22'
+      select 'month', from: 'energy_tariff_charges[site_fee][units]'
 
-  #     energy_tariff = EnergyTariff.last
-  #     expect(energy_tariff.created_by).to eq(current_user)
-  #     expect(energy_tariff.updated_by).to eq(current_user)
-  #     expect(energy_tariff.meters).to match_array([electricity_meter])
-  #     energy_tariff_price = energy_tariff.energy_tariff_prices.first
-  #     expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:30')
-  #     expect(energy_tariff_price.end_time.to_s(:time)).to eq('06:30')
-  #     expect(energy_tariff_price.value.to_s).to eq('1.5')
-  #     expect(energy_tariff_price.units).to eq('kwh')
-  #     energy_tariff_price = energy_tariff.energy_tariff_prices.last
-  #     expect(energy_tariff_price.start_time.to_s(:time)).to eq('07:00')
-  #     expect(energy_tariff_price.end_time.to_s(:time)).to eq('00:00')
-  #     expect(energy_tariff_price.value.to_s).to eq('0.0')
-  #     expect(energy_tariff_price.units).to eq('kwh')
-  #   end
-  # end
+      fill_in "energy_tariff_charges[duos_red][value]", with: '3.33'
+      fill_in "energy_tariff_charges[duos_amber][value]", with: '4.44'
+      fill_in "energy_tariff_charges[duos_green][value]", with: '5.55'
 
-  # context 'adding electricity standing charges' do
-  #   before(:each) do
-  #     visit school_path(school)
-  #     click_link('Manage tariffs')
-  #   end
+      fill_in "energy_tariff_charges[agreed_availability_charge][value]", with: '6.66'
+      fill_in "energy_tariff_charges[excess_availability_charge][value]", with: '7.77'
+      fill_in "energy_tariff_charges[asc_limit_kw][value]", with: '8.88'
 
-  #   it 'can create a tariff and add charges' do
-  #     expect(current_path).to eq("/schools/#{school.slug}/energy_tariffs")
+      fill_in "energy_tariff_charges[reactive_power_charge][value]", with: '9.99'
+      fill_in "energy_tariff_charges[feed_in_tariff_levy][value]", with: '9.87'
 
-  #     click_link('Add electricity tariff')
+      fill_in "energy_tariff_charges[settlement_agency_fee][value]", with: '6.54'
+      fill_in "energy_tariff_charges[meter_asset_provider_charge][value]", with: '3.21'
+      fill_in "energy_tariff_charges[nhh_metering_agent_charge][value]", with: '1.9'
 
-  #     check('12345678901234')
-  #     click_button('Next')
+      fill_in "energy_tariff_charges[nhh_automatic_meter_reading_charge][value]", with: '.12'
+      fill_in "energy_tariff_charges[data_collection_dcda_agent_charge][value]", with: '.34'
 
-  #     fill_in 'Name', with: 'My First Diff Tariff'
-  #     click_button('Next')
+      check 'energy_tariff_charges[energy_tariff][tnuos]'
+      check 'energy_tariff_charges[energy_tariff][ccl]'
+      select '20%', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
 
-  #     click_button('Simple')
+      click_button('Next')
+      expect(page).to have_content('Tariff details')
 
-  #     fill_in "energy_tariff_price[value]", with: '1.5'
-  #     click_button('Next')
+      energy_tariff = EnergyTariff.last
+      expect(energy_tariff.tariff_holder_type).to eq('SiteSettings')
+      expect(energy_tariff.tariff_holder).to eq(SiteSettings.current)
+      expect(energy_tariff.created_by).to eq(current_user)
+      expect(energy_tariff.updated_by).to eq(current_user)
+      expect(energy_tariff.tnuos).to be_truthy
+      expect(energy_tariff.ccl).to be_truthy
+      expect(energy_tariff.vat_rate).to eq(20)
 
-  #     fill_in "energy_tariff_charges[fixed_charge][value]", with: '1.11'
-  #     select 'day', from: 'energy_tariff_charges[fixed_charge][units]'
-
-  #     fill_in "energy_tariff_charges[site_fee][value]", with: '2.22'
-  #     select 'month', from: 'energy_tariff_charges[site_fee][units]'
-
-  #     fill_in "energy_tariff_charges[duos_red][value]", with: '3.33'
-  #     fill_in "energy_tariff_charges[duos_amber][value]", with: '4.44'
-  #     fill_in "energy_tariff_charges[duos_green][value]", with: '5.55'
-
-  #     fill_in "energy_tariff_charges[agreed_availability_charge][value]", with: '6.66'
-  #     fill_in "energy_tariff_charges[excess_availability_charge][value]", with: '7.77'
-  #     fill_in "energy_tariff_charges[asc_limit_kw][value]", with: '8.88'
-
-  #     fill_in "energy_tariff_charges[reactive_power_charge][value]", with: '9.99'
-  #     fill_in "energy_tariff_charges[feed_in_tariff_levy][value]", with: '9.87'
-
-  #     fill_in "energy_tariff_charges[settlement_agency_fee][value]", with: '6.54'
-  #     fill_in "energy_tariff_charges[meter_asset_provider_charge][value]", with: '3.21'
-  #     fill_in "energy_tariff_charges[nhh_metering_agent_charge][value]", with: '1.9'
-
-  #     fill_in "energy_tariff_charges[nhh_automatic_meter_reading_charge][value]", with: '.12'
-  #     fill_in "energy_tariff_charges[data_collection_dcda_agent_charge][value]", with: '.34'
-
-  #     check 'energy_tariff_charges[energy_tariff][tnuos]'
-  #     check 'energy_tariff_charges[energy_tariff][ccl]'
-  #     select '20%', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
-
-  #     click_button('Next')
-  #     expect(page).to have_content('Tariff details')
-
-  #     energy_tariff = EnergyTariff.last
-  #     expect(energy_tariff.created_by).to eq(current_user)
-  #     expect(energy_tariff.updated_by).to eq(current_user)
-  #     expect(energy_tariff.tnuos).to be_truthy
-  #     expect(energy_tariff.ccl).to be_truthy
-  #     expect(energy_tariff.vat_rate).to eq(20)
-
-  #     expect(energy_tariff.value_for_charge(:fixed_charge)).to eq('1.11')
-  #     expect(energy_tariff.value_for_charge(:site_fee)).to eq('2.22')
-  #     expect(energy_tariff.value_for_charge(:duos_red)).to eq('3.33')
-  #     expect(energy_tariff.value_for_charge(:duos_amber)).to eq('4.44')
-  #     expect(energy_tariff.value_for_charge(:duos_green)).to eq('5.55')
-  #     expect(energy_tariff.value_for_charge(:agreed_availability_charge)).to eq('6.66')
-  #     expect(energy_tariff.value_for_charge(:excess_availability_charge)).to eq('7.77')
-  #     expect(energy_tariff.value_for_charge(:asc_limit_kw)).to eq('8.88')
-  #     expect(energy_tariff.value_for_charge(:reactive_power_charge)).to eq('9.99')
-  #     expect(energy_tariff.value_for_charge(:feed_in_tariff_levy)).to eq('9.87')
-  #     expect(energy_tariff.value_for_charge(:settlement_agency_fee)).to eq('6.54')
-  #     expect(energy_tariff.value_for_charge(:meter_asset_provider_charge)).to eq('3.21')
-  #     expect(energy_tariff.value_for_charge(:nhh_metering_agent_charge)).to eq('1.9')
-  #     expect(energy_tariff.value_for_charge(:nhh_automatic_meter_reading_charge)).to eq('0.12')
-  #     expect(energy_tariff.value_for_charge(:data_collection_dcda_agent_charge)).to eq('0.34')
-  #   end
-  # end
+      expect(energy_tariff.value_for_charge(:fixed_charge)).to eq('1.11')
+      expect(energy_tariff.value_for_charge(:site_fee)).to eq('2.22')
+      expect(energy_tariff.value_for_charge(:duos_red)).to eq('3.33')
+      expect(energy_tariff.value_for_charge(:duos_amber)).to eq('4.44')
+      expect(energy_tariff.value_for_charge(:duos_green)).to eq('5.55')
+      expect(energy_tariff.value_for_charge(:agreed_availability_charge)).to eq('6.66')
+      expect(energy_tariff.value_for_charge(:excess_availability_charge)).to eq('7.77')
+      expect(energy_tariff.value_for_charge(:asc_limit_kw)).to eq('8.88')
+      expect(energy_tariff.value_for_charge(:reactive_power_charge)).to eq('9.99')
+      expect(energy_tariff.value_for_charge(:feed_in_tariff_levy)).to eq('9.87')
+      expect(energy_tariff.value_for_charge(:settlement_agency_fee)).to eq('6.54')
+      expect(energy_tariff.value_for_charge(:meter_asset_provider_charge)).to eq('3.21')
+      expect(energy_tariff.value_for_charge(:nhh_metering_agent_charge)).to eq('1.9')
+      expect(energy_tariff.value_for_charge(:nhh_automatic_meter_reading_charge)).to eq('0.12')
+      expect(energy_tariff.value_for_charge(:data_collection_dcda_agent_charge)).to eq('0.34')
+    end
+  end
 end

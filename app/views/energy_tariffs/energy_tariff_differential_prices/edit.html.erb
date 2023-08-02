@@ -1,6 +1,6 @@
 <% url = case @energy_tariff.tariff_holder_type
          when 'School' then school_energy_tariff_energy_tariff_differential_price_path(@school, @energy_tariff, @energy_tariff_price)
-         when 'Settings' then admin_settings_energy_tariff_energy_tariff_differential_price_path(@energy_tariff, @energy_tariff_price)
+         when 'SiteSettings' then admin_settings_energy_tariff_energy_tariff_differential_price_path(@energy_tariff, @energy_tariff_price)
          end
 %>
 <%= simple_form_for @energy_tariff_price, url: url, remote: true, method: :put do |f| %>
