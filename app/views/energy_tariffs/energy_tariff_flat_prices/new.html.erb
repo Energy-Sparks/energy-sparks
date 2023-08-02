@@ -10,10 +10,9 @@
   <br/>
 
   <%
-    form_url = if @energy_tariff.tariff_holder_type == 'School'
-                 school_energy_tariff_energy_tariff_flat_prices_path(@school, @energy_tariff)
-               elsif  @energy_tariff.tariff_holder_type == 'SiteSettings'
-                 admin_settings_energy_tariff_energy_tariff_flat_prices_path(@energy_tariff)
+    form_url = case @energy_tariff.tariff_holder_type
+               when 'School' then school_energy_tariff_energy_tariff_flat_prices_path(@school, @energy_tariff)
+               when 'SiteSettings' then admin_settings_energy_tariff_energy_tariff_flat_prices_path(@energy_tariff)
                end
   %>
 
@@ -22,10 +21,9 @@
     <br/>
 
     <%
-      edit_path = if @energy_tariff.tariff_holder_type == 'School'
-                    edit_school_energy_tariff_path(@school, @energy_tariff)
-                  elsif @energy_tariff.tariff_holder_type == 'SiteSettings'
-                    edit_admin_settings_energy_tariff_path(@energy_tariff)
+      edit_path = case @energy_tariff.tariff_holder_type
+                  when 'School' then edit_school_energy_tariff_path(@school, @energy_tariff)
+                  when 'SiteSettings' then edit_admin_settings_energy_tariff_path(@energy_tariff)
                   end
     %>
 
