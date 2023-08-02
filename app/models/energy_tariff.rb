@@ -77,7 +77,9 @@ class EnergyTariff < ApplicationRecord
       rates: rates,
       vat: vat_rate.nil? ? nil : "#{vat_rate}%",
       climate_change_levy: ccl,
-      asc_limit_kw: (value_for_charge(:asc_limit_kw) if rates_has_availability_charge?(rates))
+      asc_limit_kw: (value_for_charge(:asc_limit_kw) if rates_has_availability_charge?(rates)),
+      tariff_holder: tariff_holder_symbol,
+      created_at: created_at.to_datetime
     }.compact
   end
 
@@ -88,6 +90,10 @@ class EnergyTariff < ApplicationRecord
   end
 
   private
+
+  def tariff_holder_symbol
+    meters.any? ? :meter : tariff_holder_type.underscore.to_sym
+  end
 
   def rates_attrs
     attrs = {}

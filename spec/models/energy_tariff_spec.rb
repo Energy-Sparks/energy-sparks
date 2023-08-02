@@ -109,6 +109,8 @@ describe EnergyTariff do
       expect(meter_attribute[:accounting_tariff_generic][0][:source]).to eq(:manually_entered)
       expect(meter_attribute[:accounting_tariff_generic][0][:type]).to eq(:flat)
       expect(meter_attribute[:accounting_tariff_generic][0][:vat]).to eq(:"5%")
+      expect(meter_attribute[:accounting_tariff_generic][0][:tariff_holder]).to eq :school
+      expect(meter_attribute[:accounting_tariff_generic][0][:created_at].iso8601).to eq energy_tariff.created_at.to_datetime.iso8601
     end
   end
 
