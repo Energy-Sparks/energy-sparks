@@ -2,15 +2,17 @@ require 'rails_helper'
 
 describe EnergyTariff do
 
+  let(:tariff_holder)         { create(:school) }
   let(:tariff_type)           { :flat_rate }
   let(:vat_rate)              { 5 }
 
   let(:energy_tariff_prices)  { [] }
   let(:energy_tariff_charges) { [] }
+  let(:meters)                { [] }
 
   let(:energy_tariff)  do
     EnergyTariff.create(
-      tariff_holder: create(:school),
+      tariff_holder: tariff_holder,
       start_date: '2021-04-01',
       end_date: '2022-03-31',
       name: 'My First Tariff',
@@ -18,7 +20,8 @@ describe EnergyTariff do
       tariff_type: tariff_type,
       vat_rate: vat_rate,
       energy_tariff_prices: energy_tariff_prices,
-      energy_tariff_charges: energy_tariff_charges
+      energy_tariff_charges: energy_tariff_charges,
+      meters: meters
       )
   end
 
@@ -109,6 +112,8 @@ describe EnergyTariff do
       expect(meter_attribute[:accounting_tariff_generic][0][:source]).to eq(:manually_entered)
       expect(meter_attribute[:accounting_tariff_generic][0][:type]).to eq(:flat)
       expect(meter_attribute[:accounting_tariff_generic][0][:vat]).to eq(:"5%")
+      expect(meter_attribute[:accounting_tariff_generic][0][:tariff_holder]).to eq :school
+      expect(meter_attribute[:accounting_tariff_generic][0][:created_at].iso8601).to eq energy_tariff.created_at.to_datetime.iso8601
     end
   end
 
@@ -122,6 +127,27 @@ describe EnergyTariff do
       expect(attributes[:source]).to eq(:manually_entered)
       expect(attributes[:sub_type]).to eq('')
       expect(attributes[:vat]).to eq('5%')
+      expect(attributes[:created_at].iso8601).to eq energy_tariff.created_at.to_datetime.iso8601
+    end
+
+    context 'when adding tariff holder' do
+      context 'with school' do
+        it "should identify tariff holder" do
+          expect(attributes[:tariff_holder]).to eq :school
+        end
+      end
+      context 'when attached to a meter' do
+        let(:meters)  { [create(:electricity_meter)] }
+        it "should identify tariff holder as a meter" do
+          expect(attributes[:tariff_holder]).to eq :meter
+        end
+      end
+      context 'with school_group' do
+        let(:tariff_holder) { create(:school_group) }
+        it "should identify tariff holder" do
+          expect(attributes[:tariff_holder]).to eq :school_group
+        end
+      end
     end
 
     it "should include ccl" do
