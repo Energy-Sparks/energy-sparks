@@ -7,7 +7,15 @@
 
   <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
 
-  <%= simple_form_for :energy_tariff_charges, url: school_energy_tariff_energy_tariff_charges_path(@school, @energy_tariff) do |f| %>
+  <%
+    form_url = if @energy_tariff.tariff_holder_type == 'School'
+                 school_energy_tariff_energy_tariff_charges_path(@school, @energy_tariff)
+               elsif @energy_tariff.tariff_holder_type == 'SiteSettings'
+                 admin_settings_energy_tariff_energy_tariff_charges_path(@energy_tariff)
+               end
+  %>
+
+  <%= simple_form_for :energy_tariff_charges, url: form_url do |f| %>
 
     <% if @energy_tariff.gas? %>
       <%= render 'charges_edit_gas', school: @school, energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
@@ -17,7 +25,15 @@
 
     <br/>
 
-    <%= link_to t('common.labels.previous'), school_energy_tariff_energy_tariff_prices_path(@school, @energy_tariff), class: 'btn' %>
+    <%
+      path = if @energy_tariff.tariff_holder_type == 'School'
+               school_energy_tariff_energy_tariff_prices_path(@school, @energy_tariff)
+             elsif @energy_tariff.tariff_holder_type == 'SiteSettings'
+               admin_settings_energy_tariff_energy_tariff_prices_path(@energy_tariff)
+             end
+    %>
+
+    <%= link_to t('common.labels.previous'), path, class: 'btn' %>
     <%= f.submit t('common.labels.next'), class: 'btn btn-primary' %>
 
   <% end %>

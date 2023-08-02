@@ -52,12 +52,9 @@ module EnergyTariffs
     def update
       if @energy_tariff.update(energy_tariff_params.merge(updated_by: current_user))
         EnergyTariffDefaultPricesCreator.new(@energy_tariff).process
-        if @school
-          redirect_to school_energy_tariff_energy_tariff_prices_path(@school, @energy_tariff)
-        elsif @school_group
-          # Placeholder for school group re-routing
-        else
-          redirect_to admin_settings_energy_tariff_energy_tariff_prices_path(@energy_tariff)
+        case @energy_tariff.tariff_holder_type
+        when 'School' then redirect_to school_energy_tariff_energy_tariff_prices_path(@school, @energy_tariff)
+        when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_prices_path(@energy_tariff)
         end
       else
         render :edit
@@ -68,12 +65,13 @@ module EnergyTariffs
     end
 
     def destroy
+      redirect_path = case @energy_tariff.tariff_holder_type
+                      when 'School' then school_energy_tariffs_path(@school)
+                      when 'SiteSettings' then redirect_to admin_settings_energy_tariffs_path
+                      end
+
       @energy_tariff.destroy
-      if @school
-        redirect_to school_energy_tariffs_path(@school)
-      else
-        redirect_to admin_settings_energy_tariffs_path
-      end
+      redirect_to redirect_path
     end
 
     private

@@ -42,7 +42,12 @@ module EnergyTariffs
       @energy_tariff_price = @energy_tariff.energy_tariff_prices.find(params[:id])
       respond_to do |format|
         if @energy_tariff_price.update(energy_tariff_price_params)
-          format.html { redirect_to school_energy_tariff_energy_tariff_differential_prices_path(@school, @energy_tariff) }
+          format.html do
+            case @energy_tariff.tariff_holder_type
+            when 'School' then redirect_to school_energy_tariff_energy_tariff_differential_prices_path(@school, @energy_tariff)
+            when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_differential_prices_path(@energy_tariff)
+            end
+          end
           format.js
         else
           format.html { render :edit }
@@ -53,7 +58,10 @@ module EnergyTariffs
 
     def destroy
       @energy_tariff.energy_tariff_prices.find(params[:id]).destroy
-      redirect_to school_energy_tariff_energy_tariff_differential_prices_path(@school, @energy_tariff)
+      case @energy_tariff.tariff_holder_type
+      when 'School' then redirect_to school_energy_tariff_energy_tariff_differential_prices_path(@school, @energy_tariff)
+      when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_differential_prices_path(@energy_tariff)
+      end
     end
 
     private

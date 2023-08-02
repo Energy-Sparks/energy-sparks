@@ -33,18 +33,16 @@ module EnergyTariffs
     private
 
     def redirect_energy_tariff_flat_prices_path
-      if @school
-        redirect_to school_energy_tariff_energy_tariff_flat_prices_path(@school, @energy_tariff)
-      elsif @site_setting
-        redirect_to admin_settings_energy_tariff_energy_tariff_flat_prices_path(@energy_tariff)
+      case @energy_tariff.tariff_holder_type
+      when 'School' then redirect_to school_energy_tariff_energy_tariff_flat_prices_path(@school, @energy_tariff)
+      when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_flat_prices_path(@energy_tariff)
       end
     end
 
     def redirect_energy_tariff_differential_prices_path
-      if @school
-        redirect_to school_energy_tariff_energy_tariff_differential_prices_path(@school, @energy_tariff)
-      elsif @site_setting
-        redirect_to admin_settings_energy_tariff_energy_tariff_differential_prices_path(@energy_tariff)
+      case @energy_tariff.tariff_holder_type
+      when 'School' then redirect_to school_energy_tariff_energy_tariff_differential_prices_path(@school, @energy_tariff)
+      when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_differential_prices_path(@energy_tariff)
       end
     end
   end

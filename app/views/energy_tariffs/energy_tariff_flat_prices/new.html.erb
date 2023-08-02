@@ -9,10 +9,27 @@
 
   <br/>
 
-  <%= simple_form_for @energy_tariff_price, url: school_energy_tariff_energy_tariff_flat_prices_path(@school, @energy_tariff) do |f| %>
+  <%
+    form_url = if @energy_tariff.tariff_holder_type == 'School'
+                 school_energy_tariff_energy_tariff_flat_prices_path(@school, @energy_tariff)
+               elsif  @energy_tariff.tariff_holder_type == 'SiteSettings'
+                 admin_settings_energy_tariff_energy_tariff_flat_prices_path(@energy_tariff)
+               end
+  %>
+
+  <%= simple_form_for @energy_tariff_price, url: form_url do |f| %>
     <%= render 'form', school: @school, energy_tariff: @energy_tariff, energy_tariff_price: @energy_tariff_price, f: f %>
     <br/>
-    <%= link_to t('common.labels.previous'), edit_school_energy_tariff_path(@school, @energy_tariff), class: 'btn' %>
+
+    <%
+      edit_path = if @energy_tariff.tariff_holder_type == 'School'
+                    edit_school_energy_tariff_path(@school, @energy_tariff)
+                  elsif @energy_tariff.tariff_holder_type == 'SiteSettings'
+                    edit_admin_settings_energy_tariff_path(@energy_tariff)
+                  end
+    %>
+
+    <%= link_to t('common.labels.previous'), edit_path, class: 'btn' %>
     <%= f.submit t('common.labels.next'), class: 'btn btn-primary' %>
 <% end %>
 
