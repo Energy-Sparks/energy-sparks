@@ -1,0 +1,17 @@
+<div class="row mt-4">
+  <div class="col">
+    <% EnergyTariff.meter_types.keys.each do |meter_type| %>
+      <div class="row">
+        <div class="col">
+            <h4>
+              <span class="<%= fuel_type_class(meter_type) %>">
+                <%= fa_icon( fuel_type_icon(meter_type) ) %>
+              </span>
+              <%= t("schools.user_tariffs.index.#{meter_type}.header") %>
+            </h4>
+            <%= render 'smart_meter_tariffs_summary_table', meters: @electricity_meters.dcc, school: @school %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

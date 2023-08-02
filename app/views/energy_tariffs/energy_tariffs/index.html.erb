@@ -1,5 +1,10 @@
 <h1><%= t('schools.user_tariffs.index.title') %></h1>
 
+
+
+
+
+
 <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
     <a class="nav-item nav-link active"
@@ -21,8 +26,13 @@
   </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
+  <% if @site_setting %>
+    <div id="nav-smart-meter-tariffs_site_settings" role="tabpanel" aria-labelledby="nav-smart-meter-tariffs-tab">
+      <%= render 'smart_meter_tariffs_tab_site_settings' %>
+    </div>
+  <% end %>
   <% if @school %>
-    <div class="tab-pane fade show active"
+    <div class="tab-pane fade show active">
         id="nav-user-tariffs" role="tabpanel" aria-labelledby="nav-user-tariffs-tab">
         <%= render 'energy_tariffs_tab' %>
     </div>

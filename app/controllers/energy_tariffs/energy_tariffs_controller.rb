@@ -13,7 +13,7 @@ module EnergyTariffs
       elsif @school_group
         # Placeholder for school group
       elsif can?(:manage, :admin)
-        @energy_tariffs = SiteSettings.current.energy_tariffs
+        @site_setting = SiteSettings.current
       else
         redirect_to new_user_session_path
       end
