@@ -88,7 +88,7 @@ module EnergyTariffs
     def redirect_to_choose_type_energy_tariff_path
       case @energy_tariff.tariff_holder_type
       when 'School' then redirect_to choose_type_school_energy_tariff_path(@school, @energy_tariff)
-      when 'SiteSettings' then redirect_to admin_settings_energy_tariff_path(@energy_tariff)
+      when 'SiteSettings' then redirect_to choose_type_admin_settings_energy_tariff_path(@energy_tariff)
       end
     end
 

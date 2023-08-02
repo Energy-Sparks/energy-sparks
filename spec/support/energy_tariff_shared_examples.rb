@@ -313,7 +313,7 @@ RSpec.shared_examples "the site settings energy tariff forms well navigated" do
 
   context 'checks current user role' do
     it 'expects the current user to be either an admin or a school admin' do
-      expect(['admin', 'school_admin']).to include(current_user.role)
+      expect(current_user.role).to eq('admin')
     end
   end
 
@@ -328,68 +328,60 @@ RSpec.shared_examples "the site settings energy tariff forms well navigated" do
     end
   end
 
-  # context 'creating flat rate gas tariffs' do
-  #   it 'can create a tariff and add prices and charges' do
-  #     visit school_path(school)
-  #     click_link('Manage tariffs')
-  #     expect(current_path).to eq("/schools/#{school.slug}/energy_tariffs")
+  context 'creating flat rate site setting gas tariffs' do
+    it 'can create a tariff and add prices and charges' do
+      visit admin_settings_energy_tariffs_path
+      expect(current_path).to eq("/admin/settings/energy_tariffs")
+      expect(page).to have_content('Manage and view tariffs')
+      expect(page).not_to have_content('My First Gas Tariff')
 
-  #     expect(page).to have_content('Manage tariffs')
+      click_link('Add gas tariff')
 
-  #     click_link('Add gas tariff')
+      expect(page).not_to have_content('Select meters for this tariff')
+      expect(page).to have_content('Choose a name and date range')
 
-  #     expect(page).to have_content('Select meters for this tariff')
-  #     check('999888777')
-  #     click_button('Next')
+      fill_in 'Name', with: 'My First Gas Tariff'
+      click_button('Next')
 
-  #     expect(page).to have_content('Choose a name and date range')
+      expect(page).to have_content('My First Gas Tariff')
 
-  #     fill_in 'Name', with: 'My First Gas Tariff'
-  #     click_button('Next')
+      fill_in "energy_tariff_price[value]", with: '1.5'
+      click_button('Next')
 
-  #     expect(page).to have_content('Add consumption charges')
-  #     expect(page).to have_content('01/04/2021 to 31/03/2022 : My First Gas Tariff')
-  #     expect(page).to have_content('999888777')
+      expect(page).to have_content('Add standing charges')
+      expect(page).to have_content('My First Gas Tariff')
 
-  #     fill_in "energy_tariff_price[value]", with: '1.5'
-  #     click_button('Next')
+      fill_in "energy_tariff_charges[fixed_charge][value]", with: '4.56'
+      select 'month', from: 'energy_tariff_charges[fixed_charge][units]'
+      check 'energy_tariff_charges[energy_tariff][ccl]'
+      select '5%', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
 
-  #     expect(page).to have_content('Add standing charges')
-  #     expect(page).to have_content('01/04/2021 to 31/03/2022 : My First Gas Tariff')
-  #     expect(page).to have_content('999888777')
+      click_button('Next')
 
-  #     fill_in "energy_tariff_charges[fixed_charge][value]", with: '4.56'
-  #     select 'month', from: 'energy_tariff_charges[fixed_charge][units]'
-  #     check 'energy_tariff_charges[energy_tariff][ccl]'
-  #     select '5%', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
+      expect(page).to have_content('Tariff details')
+      expect(page).to have_content('5%')
+      expect(page).to have_content('Flat rate tariff')
+      expect(page).to have_content('£1.50 per kWh')
+      expect(page).to have_content('£4.56 per month')
+      expect(page).not_to have_link('Delete')
 
-  #     click_button('Next')
+      click_link('Finished')
+      expect(page).to have_content('Manage and view tariffs')
+      expect(page).to have_content('My First Gas Tariff')
 
-  #     expect(page).to have_content('Tariff details')
-  #     expect(page).to have_content('999888777')
-  #     expect(page).to have_content('5%')
-  #     expect(page).to have_content('Flat rate tariff')
-  #     expect(page).to have_content('£1.50 per kWh')
-  #     expect(page).to have_content('£4.56 per month')
-  #     expect(page).not_to have_link('Delete')
+      energy_tariff = EnergyTariff.last
+      expect(energy_tariff.created_by).to eq(current_user)
+      expect(energy_tariff.updated_by).to eq(nil)
 
-  #     click_link('Finished')
-  #     expect(page).to have_content('Manage tariffs')
-  #     expect(page).to have_content('999888777')
-
-  #     energy_tariff = EnergyTariff.last
-  #     expect(energy_tariff.created_by).to eq(current_user)
-  #     expect(energy_tariff.updated_by).to eq(nil)
-
-  #     expect(energy_tariff.meters).to match_array([gas_meter])
-  #     expect(energy_tariff.vat_rate).to eq(5)
-  #     expect(energy_tariff.ccl).to be_truthy
-  #     energy_tariff_price = energy_tariff.energy_tariff_prices.first
-  #     expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:00')
-  #     expect(energy_tariff_price.end_time.to_s(:time)).to eq('23:30')
-  #     expect(energy_tariff_price.units).to eq('kwh')
-  #   end
-  # end
+      expect(energy_tariff.meters).to match_array([])
+      expect(energy_tariff.vat_rate).to eq(5)
+      expect(energy_tariff.ccl).to be_truthy
+      energy_tariff_price = energy_tariff.energy_tariff_prices.first
+      expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:00')
+      expect(energy_tariff_price.end_time.to_s(:time)).to eq('23:30')
+      expect(energy_tariff_price.units).to eq('kwh')
+    end
+  end
 
   # context 'creating flat rate electricity tariffs' do
   #   before(:each) do
