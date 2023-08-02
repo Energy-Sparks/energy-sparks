@@ -17,14 +17,23 @@ module EnergyTariffs
     end
 
     def new
-      @energy_tariff = @school.energy_tariffs.build(energy_tariff_params.merge(default_params))
+      @energy_tariff = if @school
+                         @school.energy_tariffs.build(energy_tariff_params.merge(default_params))
+                       elsif @site_setting
+                         @site_setting.energy_tariffs.build(meter_type: params[:meter_type])
+                       end
       if @energy_tariff.meter_ids.empty? && @school
         redirect_back fallback_location: school_energy_tariffs_path(@school), notice: "Please select at least one meter for this tariff"
       end
     end
 
     def create
-      @energy_tariff = @school.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
+      @energy_tariff = if @school
+                         @school.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
+                       elsif @site_setting
+                         @site_setting.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
+                       end
+
       if @energy_tariff.save
         if @energy_tariff.gas?
           redirect_to_energy_tariff_prices_path
@@ -67,7 +76,7 @@ module EnergyTariffs
     def destroy
       redirect_path = case @energy_tariff.tariff_holder_type
                       when 'School' then school_energy_tariffs_path(@school)
-                      when 'SiteSettings' then redirect_to admin_settings_energy_tariffs_path
+                      when 'SiteSettings' then admin_settings_energy_tariffs_path
                       end
 
       @energy_tariff.destroy
@@ -79,7 +88,7 @@ module EnergyTariffs
     def redirect_to_choose_type_energy_tariff_path
       case @energy_tariff.tariff_holder_type
       when 'School' then redirect_to choose_type_school_energy_tariff_path(@school, @energy_tariff)
-      when 'SiteSettings' then redirect_to choose_type_admin_settings_energy_tariff_path(@energy_tariff)
+      when 'SiteSettings' then redirect_to admin_settings_energy_tariff_path(@energy_tariff)
       end
     end
 

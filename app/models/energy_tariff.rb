@@ -68,8 +68,8 @@ class EnergyTariff < ApplicationRecord
   def to_hash
     rates = rates_attrs
     {
-      start_date: start_date.to_s(:es_compact),
-      end_date: end_date.to_s(:es_compact),
+      start_date: start_date ? start_date.to_s(:es_compact) : Date.new(2000, 1, 1).to_s(:es_compact),
+      end_date: end_date ? end_date.to_s(:es_compact) : Date.new(2050, 1, 1).to_s(:es_compact),
       source: source.to_sym,
       name: name,
       type: flat_rate? ? :flat : :differential,
