@@ -1,10 +1,6 @@
-<h1><%= t('schools.user_tariffs.new.title', fuel_type: @energy_tariff.meter_type) %></h1>
+<h1><%= t('schools.user_tariffs.new.title', fuel_type: t("common.#{@energy_tariff.meter_type}")) %></h1>
 
 <div class="energy_tariff">
-
-  <p><%= t('schools.user_tariffs.there_should_only_be_one_tariff_message') %>.</p>
-  <br/>
-
   <%= render 'energy_tariffs/energy_tariffs/meters', energy_tariff: @energy_tariff if @energy_tariff.tariff_holder_type == 'School' %>
   <br/>
 

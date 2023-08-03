@@ -33,12 +33,20 @@ module EnergyTariffsHelper
     start_date = energy_tariff&.start_date&.to_s(:es_compact)
     end_date = energy_tariff&.end_date&.to_s(:es_compact)
 
-    title = I18n.t(
-      'schools.tariffs_helper.user_tariff_title',
-      start_date: start_date,
-      end_date: end_date
-    )
-    title += " : #{energy_tariff&.name} " if energy_tariff&.name&.present?
+    title = ''
+
+    if start_date && end_date
+      title += I18n.t(
+        'schools.tariffs_helper.user_tariff_title',
+        start_date: start_date,
+        end_date: end_date
+      )
+      title += ' : '
+    elsif start_date || end_date
+      title = start_date.to_s + end_date.to_s + ' : '
+    end
+
+    title += "#{energy_tariff&.name} " if energy_tariff&.name&.present?
 
     if energy_tariff.meters.any? && with_mpxn
       if energy_tariff.gas?
