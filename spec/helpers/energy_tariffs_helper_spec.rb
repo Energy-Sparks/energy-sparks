@@ -103,6 +103,7 @@ describe EnergyTariffsHelper do
       expect(convert_value_to_long_currency(0.3)).to eq('£0.30')
       expect(convert_value_to_long_currency(0.311)).to eq('£0.311')
       expect(convert_value_to_long_currency(0.30000100000000)).to eq('£0.300001')
+      expect(convert_value_to_long_currency(1)).to eq('£1.00')
       expect(convert_value_to_long_currency(1.5)).to eq('£1.50')
       expect(convert_value_to_long_currency(1.511111)).to eq('£1.511111')
       expect(convert_value_to_long_currency(1.50000000000000)).to eq('£1.50')
