@@ -330,7 +330,7 @@ RSpec.shared_examples "the site settings energy tariff forms well navigated" do
     it 'from admin page to site settings energy tariffs index' do
       visit admin_path
       expect(current_path).to eq("/admin")
-      click_link('Site Settings Energy Tariffs')
+      click_link('Energy Tariffs')
       expect(current_path).to eq("/admin/settings/energy_tariffs")
       expect(page).to have_content(I18n.t('schools.user_tariffs.index.title'))
       expect(page).not_to have_link('cost analysis pages')
