@@ -1,7 +1,10 @@
 module EnergyTariffs
   class EnergyTariffChargesController < ApplicationController
+    include EnergyTariffable
+
     load_and_authorize_resource :school
     load_and_authorize_resource :energy_tariff
+    before_action :load_and_authorize_if_site_setting
 
     def index
       @energy_tariff_charges = @energy_tariff.energy_tariff_charges
@@ -16,7 +19,10 @@ module EnergyTariffs
           @energy_tariff.energy_tariff_charges.destroy_all
           @energy_tariff_charges.each(&:save!)
         end
-        redirect_to school_energy_tariff_path(@school, @energy_tariff)
+        case @energy_tariff.tariff_holder_type
+        when 'School' then redirect_to school_energy_tariff_path(@school, @energy_tariff)
+        when 'SiteSettings' then redirect_to admin_settings_energy_tariff_path(@energy_tariff)
+        end
       else
         render :index
       end

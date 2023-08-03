@@ -14,12 +14,12 @@ describe 'energy tariffs', type: :system do
 
   context 'as an admin' do
     let!(:current_user) { create(:admin) }
-    it_behaves_like "the energy tariff forms well navigated"
+    it_behaves_like "the school energy tariff forms well navigated"
   end
 
   context 'as a school admin' do
     let!(:current_user) { create(:school_admin, school: school) }
-    it_behaves_like "the energy tariff forms well navigated"
+    it_behaves_like "the school energy tariff forms well navigated"
   end
 
   context 'as a school user' do

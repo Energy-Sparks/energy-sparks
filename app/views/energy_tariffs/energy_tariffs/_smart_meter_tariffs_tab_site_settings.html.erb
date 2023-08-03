@@ -1,0 +1,20 @@
+<div class="row mt-4">
+  <div class="col">
+    <% EnergyTariff.meter_types.keys.each do |meter_type| %>
+      <div class="row pb-4">
+        <div class="col">
+          <h4>
+            <span class="<%= fuel_type_class(meter_type) %>">
+              <%= fa_icon( fuel_type_icon(meter_type) ) %>
+            </span>
+            <%= t("schools.user_tariffs.index.#{meter_type}.header") %>
+          </h4>
+          <%= render 'energy_tariffs_summary_table', tariffs: @site_setting.energy_tariffs.where(meter_type: meter_type) %>
+          <div class="mt-4">
+            <%= link_to t("schools.user_tariffs.index.#{meter_type}.add_label"), new_admin_settings_energy_tariff_path(meter_type: meter_type), class: 'btn btn-success' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

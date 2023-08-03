@@ -83,6 +83,10 @@ Rails.application.routes.draw do
   end
   end
 
+  scope '/admin/settings', as: :admin_settings do
+    concerns :tariff_holder
+  end
+
   resources :activity_types, only: [:show] do
     collection do
       get :search

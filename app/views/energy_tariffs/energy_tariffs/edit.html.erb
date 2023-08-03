@@ -7,8 +7,13 @@
 
   <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
 
-  <%= simple_form_for [@school, @energy_tariff] do |f| %>
-    <%= render 'form', school: @school, energy_tariff: @energy_tariff, f: f %>
+  <% if @school %>
+    <%= simple_form_for [@school, @energy_tariff] do |f| %>
+      <%= render 'form', school: @school, energy_tariff: @energy_tariff, f: f %>
+    <% end %>
+  <% else %>
+    <%= simple_form_for @energy_tariff, url: admin_settings_energy_tariff_path do |f| %>
+      <%= render 'form', energy_tariff: @energy_tariff, f: f %>
+    <% end %>
   <% end %>
-
 </div>

@@ -100,6 +100,10 @@ en:
           add_label: Add electricity tariff
           header: Electricity
           there_are_no_electricity_tariffs_set_up_yet: We have no user supplied tariffs for your electricity meters
+        exported_solar_pv:
+          add_label: Add exported solar PV tariff
+          header: Exported solar PV
+          there_are_no_solar_pv_tariffs_set_up_yet: We have no user supplied tariffs for your exported solar PV meters.
         gas:
           add_label: Add gas tariff
           header: Gas
@@ -113,6 +117,10 @@ en:
           </p>
         note_about_defaults: If we do not have your real tariff information, then we will estimate your costs using our default tariffs.
         note_about_smart_meter_tariffs: We are currently using tariffs automatically imported from your smart meters.
+        solar_pv:
+          add_label: Add solar PV tariff
+          header: Solar PV
+          there_are_no_solar_pv_tariffs_set_up_yet: We have no user supplied tariffs for your solar PV meters.
         tabs:
           default_tariffs: Default tariffs
           smart_meter_tariffs: Smart meter tariffs
