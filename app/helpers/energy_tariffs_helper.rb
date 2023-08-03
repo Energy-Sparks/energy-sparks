@@ -74,7 +74,7 @@ module EnergyTariffsHelper
     if energy_tariff_charge.units
       I18n.t(
         'schools.tariffs_helper.charge_value',
-        value: energy_tariff_charge.value ? ('£' + energy_tariff_charge.value.to_s) : '',
+        value: convert_value_to_long_currency(energy_tariff_charge.value),
         units: energy_tariff_charge_type_units_humanized(energy_tariff_charge.units)
       )
     else
