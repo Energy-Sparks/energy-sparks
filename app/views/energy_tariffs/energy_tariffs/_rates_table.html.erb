@@ -5,7 +5,7 @@
       <tr>
         <td class="description"><%= energy_tariff_price_title(energy_tariff_price) %></td>
         <td class="value">
-          <%= t('schools.user_tariffs.rates_table.price_per_kwh', price_value: number_to_currency(energy_tariff_price.value, unit: '£', precision: 10, strip_insignificant_zeros: true)) %>
+          <%= t('schools.user_tariffs.rates_table.price_per_kwh', price_value: '£' + energy_tariff_price.value)) %>
         </td>
         <% if allow_edits %>
           <td class="value">
