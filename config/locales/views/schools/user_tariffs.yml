@@ -131,6 +131,7 @@ en:
         meter_list: Meters
         meters_associated_with_this_tariff: Meters associated with this tariff
         there_are_no_meters_associated_with_this_tariff: There are no meters associated with this tariff
+        this_tariff_applies_to_all_meters: This tariff applies to all %{meter_type} meters
       name: Name
       new:
         title: Choose a name and date range for this %{fuel_type} tariff
