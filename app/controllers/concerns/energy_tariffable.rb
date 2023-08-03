@@ -3,11 +3,10 @@ module EnergyTariffable
 
   def load_and_authorize_if_site_setting
     return unless request.path.start_with?('/admin/settings') || @energy_tariff&.tariff_holder_type == 'SiteSettings'
-    if can?(:manage, :admin_functions)
+    if can?(:manage, :admin)
       @site_setting = SiteSettings.current
     else
-      flash[:error] = "You are not authorized to view that page."
-      redirect_to root_path
+      redirect_to new_user_session_path and return
     end
   end
 end
