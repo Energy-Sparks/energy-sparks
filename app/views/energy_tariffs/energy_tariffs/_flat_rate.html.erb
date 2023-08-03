@@ -7,7 +7,7 @@
       <% if allow_edits %>
         <td>
           <%= link_to t('common.labels.edit'), edit_school_energy_tariff_energy_tariff_differential_price_path(school, energy_tariff, energy_tariff_price), { class: 'btn', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window' } %>
-          <%= link_to t('common.labels.delete'), school_energy_tariff_energy_tariff_differential_price_path(school, energy_tariff, energy_tariff_price), method: :delete, data: { confirm: t('common .confirm') }, class: 'btn btn-danger' %>
+          <%= link_to t('common.labels.delete'), school_energy_tariff_energy_tariff_differential_price_path(school, energy_tariff, energy_tariff_price), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-danger' %>
         </td>
       <% end %>
     </tr>
