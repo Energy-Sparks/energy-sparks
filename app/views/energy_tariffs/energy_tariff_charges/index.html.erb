@@ -2,7 +2,13 @@
 
 <div class="energy_tariff">
 
-  <p><%= t('schools.user_tariff_charges.index.using_your_bill_introduction') %>.</p>
+  <p>
+    <%= case @energy_tariff.tariff_holder_type
+        when 'School' then t('schools.user_tariff_charges.index.introduction')
+        when 'SiteSettings' then t('schools.user_tariff_charges.index.introduction_site_settings')
+        end
+    %>.
+  </p>
   <br/>
 
   <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>

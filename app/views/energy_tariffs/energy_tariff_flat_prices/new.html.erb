@@ -2,13 +2,17 @@
 
 <div class="energy_tariff">
 
-  <p><%= t('schools.user_tariff_flat_prices.new.introduction') %>.</p>
+  <p>
+    <%= case @energy_tariff.tariff_holder_type
+        when 'School' then t('schools.user_tariff_flat_prices.new.introduction')
+        when 'SiteSettings' then t('schools.user_tariff_flat_prices.new.introduction_site_settings')
+        end
+    %>.
+  </p>
   <br/>
 
   <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
-
   <br/>
-
   <%
     form_url = case @energy_tariff.tariff_holder_type
                when 'School' then school_energy_tariff_energy_tariff_flat_prices_path(@school, @energy_tariff)
