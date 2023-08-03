@@ -15,7 +15,7 @@
     <% tariffs.each do |energy_tariff| %>
       <tr>
         <td><%= energy_tariff.name %></td>
-        <% unless @site_setting %>
+        <% unless energy_tariff.tariff_holder_type == 'SiteSettings' %>
           <td>
             <ul style="list-style: none; padding-left: 0px;">
               <% energy_tariff.meters.each do |meter| %>
@@ -30,12 +30,12 @@
         <td><%= energy_tariff.start_date&.to_s(:es_compact) %></td>
         <td><%= energy_tariff.end_date&.to_s(:es_compact) %></td>
         <td>
-          <% if @school %>
+          <% if energy_tariff.tariff_holder_type == 'School' %>
             <%= link_to t('schools.user_tariffs.tariff_partial.full_details'), school_energy_tariff_path(school, energy_tariff), class: 'btn' if can? :download, UserTariff  %>
             <%= link_to t('common.labels.edit'), edit_school_energy_tariff_path(school, energy_tariff), class: 'btn' %>
             <%= link_to t('common.labels.delete'), school_energy_tariff_path(school, energy_tariff), method: :delete, data: {confirm: t('common.confirm') }, class: 'btn btn-danger' %>
           <% end %>
-          <% if @site_setting %>
+          <% if energy_tariff.tariff_holder_type == 'SiteSettings' %>
             <%= link_to t('schools.user_tariffs.tariff_partial.full_details'), admin_settings_energy_tariff_path(energy_tariff), class: 'btn' %>
             <%= link_to t('common.labels.edit'), edit_admin_settings_energy_tariff_path(energy_tariff), class: 'btn' %>
             <%= link_to t('common.labels.delete'), admin_settings_energy_tariff_path(energy_tariff), method: :delete, data: {confirm: t('common.confirm') }, class: 'btn btn-danger' %>

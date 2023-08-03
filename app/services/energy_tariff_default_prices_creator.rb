@@ -10,7 +10,7 @@ class EnergyTariffDefaultPricesCreator
 
     night_times = case @energy_tariff.tariff_holder_type
                   when 'School' then Economy7Times.times(@energy_tariff&.meters&.first&.mpan_mprn)
-                  when 'SiteSettings' then TimeOfDay.new(0, 0)..TimeOfDay.new(7, 0)
+                  when 'SiteSettings' then TimeOfDay.new(0, 0)..TimeOfDay.new(7, 0) # Equivalent to Economy7Times::DEFAULT_TIMES
                   end
     day_times = night_times.last..night_times.first
 
