@@ -28,7 +28,6 @@
   <% end %>
   <% if @school %>
     <div class="tab-pane fade show active">
-        id="nav-user-tariffs" role="tabpanel" aria-labelledby="nav-user-tariffs-tab">
         <%= render 'energy_tariffs_tab' %>
     </div>
     <% if any_smart_meters?(@school) %>
