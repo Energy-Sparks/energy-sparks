@@ -1,4 +1,19 @@
 module EnergyTariffsHelper
+  def convert_value_to_long_currency(value, currency: '£')
+    return '' unless value.is_a? Numeric
+    value_as_string = value.to_s
+    split_value = value_as_string.split('.')
+
+    value_as_formatted_currency = if split_value.size == 1
+                                    split_value.first + '.00'
+                                  elsif split_value.last.length < 2
+                                    split_value.first + '.' + split_value.last + '0'
+                                  else
+                                    value_as_string
+                                  end
+    currency + value_as_formatted_currency
+  end
+
   def energy_tariff_price_title(energy_tariff_price)
     if energy_tariff_price.description.present?
       "#{energy_tariff_price&.description} (#{energy_tariff_price&.start_time&.to_s(:time)} to #{energy_tariff_price&.end_time&.to_s(:time)})"
@@ -67,7 +82,7 @@ module EnergyTariffsHelper
     if energy_tariff_charge.units
       I18n.t(
         'schools.tariffs_helper.charge_value',
-        value: number_to_currency(energy_tariff_charge.value, unit: '£'),
+        value: convert_value_to_long_currency(energy_tariff_charge.value),
         units: energy_tariff_charge_type_units_humanized(energy_tariff_charge.units)
       )
     else
@@ -77,5 +92,9 @@ module EnergyTariffsHelper
 
   def energy_tariff_charge_type_units_humanized(charge_type_units)
     EnergyTariffCharge.charge_type_units[charge_type_units.to_sym]
+  end
+
+  def settings(charge_type)
+    EnergyTariffCharge.charge_types[charge_type.to_sym] || {}
   end
 end
