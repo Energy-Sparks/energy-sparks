@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe TariffsHelper do
 
-  let(:user_tariff) { UserTariff.new(name: 'My Tariff', fuel_type: :gas, start_date: '2018-01-01', end_date: '2018-12-31')}
+  let(:user_tariff) { EnergyTariff.new(name: 'My Tariff', fuel_type: :gas, start_date: '2018-01-01', end_date: '2018-12-31')}
 
   describe '.user_tariff_title' do
     it "includes name, and dates" do
@@ -27,20 +27,20 @@ describe TariffsHelper do
 
   describe '.user_tariff_prices_text' do
     it "gives text if default prices exist" do
-      user_tariff.user_tariff_prices << UserTariffPrice.new(start_time: '00:00', end_time: '03:00', description: UserTariffPrice::NIGHT_RATE_DESCRIPTION)
+      user_tariff.user_tariff_prices << EnergyTariffPrice.new(start_time: '00:00', end_time: '03:00', description: EnergyTariffPrice::NIGHT_RATE_DESCRIPTION)
       expect(user_tariff_prices_text(user_tariff)).to include("we've set some default day/night periods")
     end
     it "no text if no default prices exist" do
-      user_tariff.user_tariff_prices << UserTariffPrice.new(start_time: '00:00', end_time: '03:00', description: '')
+      user_tariff.user_tariff_prices << EnergyTariffPrice.new(start_time: '00:00', end_time: '03:00', description: '')
       expect(user_tariff_prices_text(user_tariff)).to be_nil
     end
   end
 
   describe '.user_tariff_charge_for_type' do
 
-    let(:user_tariff_charge_1) { UserTariffCharge.new(charge_type: :fixed_charge) }
-    let(:user_tariff_charge_2) { UserTariffCharge.new(charge_type: :other) }
-    let(:user_tariff_charge_3) { UserTariffCharge.new(charge_type: :agreed_capacity) }
+    let(:user_tariff_charge_1) { EnergyTariffCharge.new(charge_type: :fixed_charge) }
+    let(:user_tariff_charge_2) { EnergyTariffCharge.new(charge_type: :other) }
+    let(:user_tariff_charge_3) { EnergyTariffCharge.new(charge_type: :agreed_capacity) }
     let(:user_tariff_charges) { [user_tariff_charge_1, user_tariff_charge_2, user_tariff_charge_3] }
 
     it "finds expected charge for sym" do
@@ -89,11 +89,11 @@ describe TariffsHelper do
 
   describe '.user_tariff_charge_value' do
     it "returns string with currency per unit" do
-      user_tariff_charge = UserTariffCharge.new(value: 1.23, units: :kva)
+      user_tariff_charge = EnergyTariffCharge.new(value: 1.23, units: :kva)
       expect(user_tariff_charge_value(user_tariff_charge)).to eq('£1.23 per kVA')
     end
     it "returns simple value" do
-      user_tariff_charge = UserTariffCharge.new(value: 1.23)
+      user_tariff_charge = EnergyTariffCharge.new(value: 1.23)
       expect(user_tariff_charge_value(user_tariff_charge)).to eq('1.23')
     end
   end

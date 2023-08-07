@@ -80,21 +80,21 @@ module TariffsHelper
   end
 
   def user_tariff_prices_text(user_tariff)
-    if user_tariff.user_tariff_prices.map(&:description).include?(UserTariffPrice::NIGHT_RATE_DESCRIPTION)
+    if user_tariff.user_tariff_prices.map(&:description).include?(EnergyTariffPrice::NIGHT_RATE_DESCRIPTION)
       I18n.t('schools.tariffs_helper.prices_text')
     end
   end
 
   def user_tariff_charge_for_type(user_tariff_charges, charge_type)
-    user_tariff_charges.find { |c| c.is_type?([charge_type]) } || UserTariffCharge.new(charge_type: charge_type)
+    user_tariff_charges.find { |c| c.is_type?([charge_type]) } || EnergyTariffCharge.new(charge_type: charge_type)
   end
 
   def user_tariff_charge_type_units_for(charge_type)
-    settings(charge_type).fetch(:units, []).map { |k| [UserTariffCharge.charge_type_units[k], k] }
+    settings(charge_type).fetch(:units, []).map { |k| [EnergyTariffCharge.charge_type_units[k], k] }
   end
 
   def user_tariff_charge_type_units_humanized(charge_type_units)
-    UserTariffCharge.charge_type_units[charge_type_units.to_sym]
+    EnergyTariffCharge.charge_type_units[charge_type_units.to_sym]
   end
 
   def user_tariff_charge_type_description(charge_type)
@@ -122,6 +122,6 @@ module TariffsHelper
   end
 
   def settings(charge_type)
-    UserTariffCharge.charge_types[charge_type.to_sym] || {}
+    EnergyTariffCharge.charge_types[charge_type.to_sym] || {}
   end
 end
