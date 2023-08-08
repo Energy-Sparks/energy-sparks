@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 58ea9547ef2a95e6a05d8d27c23ff56c490d3380
+  revision: e0f9c77a810f904daefe7bb5ae134c1cad41c73a
   branch: 3551-create-a-replacement-meter-tariff-manager
   specs:
     energy-sparks_analytics (1.2.1)
