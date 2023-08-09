@@ -226,7 +226,13 @@ class Meter < ApplicationRecord
   end
 
   def energy_tariff_meter_attributes
-    school.all_energy_tariff_attributes(meter_type) + energy_tariffs.complete.map(&:meter_attribute)
+    attributes = []
+    if EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs)
+      school_attributes = school.all_energy_tariff_attributes(meter_type)
+      attributes += school_attributes unless school_attributes.nil?
+    end
+    attributes += energy_tariffs.complete.map(&:meter_attribute)
+    attributes
   end
 
   def user_tariff_meter_attributes
