@@ -1,10 +1,12 @@
 module EnergyTariffs
   class EnergyTariffPricesController < ApplicationController
+    include Adminable
     include EnergyTariffable
 
     load_and_authorize_resource :school
     load_and_authorize_resource :energy_tariff
-    before_action :load_and_authorize_if_site_setting
+    before_action :admin_authorized?, if: :site_settings_resource?
+    before_action :load_site_setting, if: :site_settings_resource?
 
     def index
       if @energy_tariff.tariff_type == 'flat_rate'

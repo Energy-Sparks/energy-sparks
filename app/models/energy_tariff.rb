@@ -89,10 +89,14 @@ class EnergyTariff < ApplicationRecord
     end
   end
 
+  def site_settings_tariff_holder?
+    tariff_holder_symbol == :site_settings
+  end
+
   private
 
   def tariff_holder_symbol
-    meters.any? ? :meter : tariff_holder_type.underscore.to_sym
+    meters.any? ? :meter : tariff_holder_type&.underscore&.to_sym
   end
 
   def rates_attrs
