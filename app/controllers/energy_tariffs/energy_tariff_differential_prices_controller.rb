@@ -4,6 +4,7 @@ module EnergyTariffs
     include EnergyTariffable
 
     load_and_authorize_resource :school
+    load_and_authorize_resource :school_group
     load_and_authorize_resource :energy_tariff
     before_action :admin_authorized?, if: :site_settings_resource?
     before_action :load_site_setting, if: :site_settings_resource?
