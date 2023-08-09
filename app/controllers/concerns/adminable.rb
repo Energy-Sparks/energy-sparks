@@ -1,7 +1,7 @@
 module Adminable
   extend ActiveSupport::Concern
 
-  # private
+  private
 
   def admin_authorized?
     unless can?(:manage, :admin_functions)
