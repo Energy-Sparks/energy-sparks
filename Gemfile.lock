@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: e0f9c77a810f904daefe7bb5ae134c1cad41c73a
-  branch: 3551-create-a-replacement-meter-tariff-manager
+  revision: 33d91ff0ba876e31f9249909a4babdb7640afb0b
+  branch: additional-tariff-code-tests-and-refactoring
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
@@ -673,7 +673,7 @@ GEM
     websocket-extensions (0.1.5)
     wisper (2.0.0)
     wisper-rspec (1.1.0)
-    write_xlsx (1.11.0)
+    write_xlsx (1.11.1)
       rubyzip (>= 1.0.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
