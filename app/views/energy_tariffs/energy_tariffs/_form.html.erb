@@ -6,12 +6,12 @@
 </div>
 <div class="form-row">
   <div class="form-group col-md-6">
-    <%= f.input :start_date, include_blank: (@energy_tariff.tariff_holder_type == 'SiteSettings') %>
+    <%= f.input :start_date, include_blank: (['SiteSettings', 'SchoolGroup'].include?(@energy_tariff.tariff_holder_type)) %>
   </div>
 </div>
 <div class="form-row">
   <div class="form-group col-md-6">
-    <%= f.input :end_date, include_blank: (@energy_tariff.tariff_holder_type == 'SiteSettings') %>
+    <%= f.input :end_date, include_blank: (['SiteSettings', 'SchoolGroup'].include?(@energy_tariff.tariff_holder_type)) %>
   </div>
 </div>
 <%= f.submit t('common.labels.next'), class: 'btn'%>

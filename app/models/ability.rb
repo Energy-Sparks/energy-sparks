@@ -52,7 +52,7 @@ class Ability
         can :show_management_dash, SchoolGroup, id: user.school_group.id
         can :update_settings, SchoolGroup, id: user.school_group_id
         can :manage, SchoolGroupCluster, school_group_id: user.school_group_id
-        can :manage, EnergyTariff, tariff_holder: user.school_group
+        can :manage, EnergyTariff, tariff_holder_id: user.school_group_id
 
         can [:show, :update], Calendar do |calendar|
           user.school_group.calendars.include?(calendar)
