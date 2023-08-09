@@ -33,6 +33,7 @@ module EnergyTariffs
     def redirect_to_energy_tariff_charges_path
       case @energy_tariff.tariff_holder_type
       when 'School' then redirect_to school_energy_tariff_energy_tariff_charges_path(@school, @energy_tariff)
+      when 'SchoolGroup' then redirect_to school_group_energy_tariff_energy_tariff_charges_path(@school_group, @energy_tariff)
       when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_charges_path(@energy_tariff)
       end
     end
@@ -46,6 +47,7 @@ module EnergyTariffs
       if @energy_tariff_price.update(energy_tariff_price_params)
         case @energy_tariff.tariff_holder_type
         when 'School' then redirect_to school_energy_tariff_energy_tariff_charges_path(@school, @energy_tariff)
+        when 'SchoolGroup' then redirect_to school_group_energy_tariff_energy_tariff_charges_path(@school_group, @energy_tariff)
         when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_charges_path(@energy_tariff)
         end
       else
@@ -58,6 +60,7 @@ module EnergyTariffs
     def redirect_to_edit_energy_tariff_flat_price_path
       case @energy_tariff.tariff_holder_type
       when 'School' then redirect_to edit_school_energy_tariff_energy_tariff_flat_price_path(@school, @energy_tariff, @energy_tariff.energy_tariff_prices.first)
+      when 'SchoolGroup' then redirect_to edit_school_group_energy_tariff_energy_tariff_flat_price_path(@school_group, @energy_tariff, @energy_tariff.energy_tariff_prices.first)
       when 'SiteSettings' then redirect_to edit_admin_settings_energy_tariff_energy_tariff_flat_price_path(@energy_tariff, @energy_tariff.energy_tariff_prices.first)
       end
     end
@@ -65,6 +68,7 @@ module EnergyTariffs
     def redirect_to_new_energy_tariff_flat_price_path
       case @energy_tariff.tariff_holder_type
       when 'School' then redirect_to new_school_energy_tariff_energy_tariff_flat_price_path(@school, @energy_tariff)
+      when 'SchoolGroup' then redirect_to new_school_group_energy_tariff_energy_tariff_flat_price_path(@school_group, @energy_tariff)
       when 'SiteSettings' then redirect_to new_admin_settings_energy_tariff_energy_tariff_flat_price_path(@energy_tariff)
       end
     end

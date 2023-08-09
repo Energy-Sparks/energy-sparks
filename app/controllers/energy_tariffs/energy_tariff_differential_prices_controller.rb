@@ -48,6 +48,7 @@ module EnergyTariffs
           format.html do
             case @energy_tariff.tariff_holder_type
             when 'School' then redirect_to school_energy_tariff_energy_tariff_differential_prices_path(@school, @energy_tariff)
+            when 'SchoolGroup' then redirect_to school_group_energy_tariff_energy_tariff_differential_prices_path(@school_group, @energy_tariff)
             when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_differential_prices_path(@energy_tariff)
             end
           end
@@ -63,6 +64,7 @@ module EnergyTariffs
       @energy_tariff.energy_tariff_prices.find(params[:id]).destroy
       case @energy_tariff.tariff_holder_type
       when 'School' then redirect_to school_energy_tariff_energy_tariff_differential_prices_path(@school, @energy_tariff)
+      when 'SchoolGroup' then redirect_to school_group_energy_tariff_energy_tariff_differential_prices_path(@school_group, @energy_tariff)
       when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_differential_prices_path(@energy_tariff)
       end
     end

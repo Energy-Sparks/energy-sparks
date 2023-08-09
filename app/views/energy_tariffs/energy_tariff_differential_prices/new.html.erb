@@ -1,5 +1,6 @@
 <% url = case @energy_tariff.tariff_holder_type
          when 'School' then school_energy_tariff_energy_tariff_differential_prices_path(@school, @energy_tariff)
+         when 'SchoolGroup' then school_group_energy_tariff_energy_tariff_differential_prices_path(@school_group, @energy_tariff)
          when 'SiteSettings' then admin_settings_energy_tariff_energy_tariff_differential_prices_path(@energy_tariff)
          end
 %>
