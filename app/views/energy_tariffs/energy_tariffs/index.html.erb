@@ -13,7 +13,7 @@
         <%= t('schools.user_tariffs.index.tabs.smart_meter_tariffs') %>
       </a>
     <% end %>
-    <% if @school %>
+    <% if @school || @school_group %>
       <a class="nav-item nav-link" id="nav-default-tariffs-tab" data-toggle="tab" href="#nav-default-tariffs" role="tab" aria-controls="nav-default-tariffs" aria-selected="false">
         <%= t('schools.user_tariffs.index.tabs.default_tariffs') %>
       </a>
