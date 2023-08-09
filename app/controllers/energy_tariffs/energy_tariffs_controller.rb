@@ -22,6 +22,8 @@ module EnergyTariffs
     def new
       @energy_tariff = if @school
                          @school.energy_tariffs.build(energy_tariff_params.merge(default_params))
+                       elsif @school_group
+                         @school_group.energy_tariffs.build(meter_type: params[:meter_type])
                        elsif @site_setting
                          @site_setting.energy_tariffs.build(meter_type: params[:meter_type])
                        end
@@ -33,6 +35,8 @@ module EnergyTariffs
     def create
       @energy_tariff = if @school
                          @school.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
+                       elsif @school_group
+                         @school_group.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
                        elsif @site_setting
                          @site_setting.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
                        end
