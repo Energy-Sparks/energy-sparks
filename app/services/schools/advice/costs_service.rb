@@ -56,11 +56,7 @@ module Schools
         tariffs = tariff_information_service(analytics_meter).tariffs
         tariffs.map do |range, tariff|
           if tariff.real
-            tariff.user_tariff = if EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs)
-                                   @school.energy_tariffs.where(name: tariff.name).first
-                                 else
-                                   @school.user_tariffs.where(name: tariff.name).first
-                                 end
+            tariff.user_tariff = @school.energy_tariffs.where(name: tariff.name).first
           end
           [range, tariff]
         end

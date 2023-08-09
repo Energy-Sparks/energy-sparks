@@ -4,7 +4,7 @@
   <% end %>
 <% else %>
   <%= component 'notice', status: :negative, classes: 'mb-2' do |c| %>
-    <% c.with_link { link_to advice_t('gas_costs.analysis.tariff_note.manage_tariffs'), school_user_tariffs_path(school) } %>
+    <% c.with_link { link_to advice_t('gas_costs.analysis.tariff_note.manage_tariffs'), school_energy_tariffs_path(school) } %>
     <p>
       <%= advice_t('gas_costs.analysis.tariff_note.poor_estimate', period_start_and_end: @periods_with_missing_tariffs.map{|range| [range[0].to_s(:es_short), range[1].to_s(:es_short)].to_sentence }.join(",")) %>
     </p>

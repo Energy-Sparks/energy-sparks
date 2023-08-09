@@ -57,7 +57,7 @@
   <% end %>
 
   <div class="hidden">
-    <% if can? :download, UserTariff %>
+    <% if can? :download, EnergyTariff %>
       <h4><%= t('schools.user_tariffs.show.meter_attribute_view') %></h4>
       <%= print_meter_attribute(@energy_tariff.meter_attribute) %>
     <% end %>
