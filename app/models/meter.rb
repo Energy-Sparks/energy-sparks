@@ -210,13 +210,11 @@ class Meter < ApplicationRecord
   end
 
   def all_meter_attributes
-    meter_attributes_collection = global_meter_attributes + school_group_meter_attributes + school_meter_attributes + active_meter_attributes
-    meter_attributes_collection += if EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs)
-                                     energy_tariff_meter_attributes
-                                   else
-                                     user_tariff_meter_attributes
-                                   end
-    meter_attributes_collection
+    global_meter_attributes +
+      school_group_meter_attributes +
+      school_meter_attributes +
+      active_meter_attributes +
+      energy_tariff_meter_attributes
   end
 
   def active_meter_attributes

@@ -17,7 +17,7 @@ module EnergyTariffHolder
   def all_energy_tariff_attributes(meter_type = EnergyTariff.meter_types.keys)
     attributes = []
     parent = parent_tariff_holder
-    attributes += parent.all_energy_tariff_attributes(meter_type) if parent != nil
+    attributes += parent.all_energy_tariff_attributes(meter_type) unless parent.nil?
     attributes += energy_tariff_meter_attributes(meter_type)
     attributes
   end
