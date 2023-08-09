@@ -1,10 +1,12 @@
 module EnergyTariffs
   class EnergyTariffsController < ApplicationController
+    include Adminable
     include EnergyTariffable
 
     load_and_authorize_resource :school
     load_and_authorize_resource :energy_tariff
-    before_action :load_and_authorize_if_site_setting
+    before_action :admin_authorized?, if: -> { request.path.start_with?('/admin/settings') || @energy_tariff&.tariff_holder_type == 'SiteSettings' }
+    before_action :load_site_setting
     before_action :set_breadcrumbs
 
     def index
