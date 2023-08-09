@@ -5,8 +5,8 @@ module EnergyTariffs
 
     load_and_authorize_resource :school
     load_and_authorize_resource :energy_tariff
-    before_action :admin_authorized?, if: -> { request.path.start_with?('/admin/settings') || @energy_tariff&.tariff_holder_type == 'SiteSettings' }
-    before_action :load_site_setting
+    before_action :admin_authorized?, if: :site_settings_resource?
+    before_action :load_site_setting, if: :site_settings_resource?
 
     def index
     end

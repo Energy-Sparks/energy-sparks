@@ -6,8 +6,6 @@ module EnergyTariffable
   end
 
   def load_site_setting
-    return unless site_settings_resource?
-
     @site_setting = SiteSettings.current
   end
 end
