@@ -20,6 +20,7 @@ module EnergyTariffs
         @gas_meters = @school.meters.gas
         @gas_tariffs = @school.energy_tariffs.gas.by_start_date.by_name
       end
+      @site_setting = SiteSettings.current if @school_group
     end
 
     def new

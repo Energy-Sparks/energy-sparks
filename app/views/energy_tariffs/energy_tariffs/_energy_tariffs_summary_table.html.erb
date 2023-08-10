@@ -35,7 +35,7 @@
             <%= link_to t('common.labels.edit'), edit_school_energy_tariff_path(school, energy_tariff), class: 'btn' %>
             <%= link_to t('common.labels.delete'), school_energy_tariff_path(school, energy_tariff), method: :delete, data: {confirm: t('common.confirm') }, class: 'btn btn-danger' %>
           <% end %>
-          <% if energy_tariff.tariff_holder_type == 'SiteSettings' %>
+          <% if energy_tariff.tariff_holder_type == 'SiteSettings' && site_settings_page? %>
             <%= link_to t('schools.user_tariffs.tariff_partial.full_details'), admin_settings_energy_tariff_path(energy_tariff), class: 'btn' %>
             <%= link_to t('common.labels.edit'), edit_admin_settings_energy_tariff_path(energy_tariff), class: 'btn' %>
             <%= link_to t('common.labels.delete'), admin_settings_energy_tariff_path(energy_tariff), method: :delete, data: {confirm: t('common.confirm') }, class: 'btn btn-danger' %>

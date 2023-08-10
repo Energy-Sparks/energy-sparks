@@ -34,7 +34,7 @@
   <% if @school || @school_group %>
     <div id="nav-default-tariffs" role="tabpanel" aria-labelledby="nav-default-tariffs-tab" class="tab-pane fade">
       <%= render 'default_tariffs_tab_school' if @school %>
-      <%= render 'default_tariffs_tab_school_group' if @school_group %>
+      <%= render 'energy_tariffs_tab_site_settings' if @school_group %>
     </div>
   <% end %>
 </div>
