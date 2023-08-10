@@ -31,10 +31,17 @@
         <td><%= energy_tariff.end_date ? energy_tariff.end_date&.to_s(:es_compact) : t('schools.user_tariffs.summary_table.no_end_date') %></td>
         <td>
           <% if energy_tariff.tariff_holder_type == 'School' %>
-            <%= link_to t('schools.user_tariffs.tariff_partial.full_details'), school_energy_tariff_path(school, energy_tariff), class: 'btn' if can? :download, EnergyTariff  %>
-            <%= link_to t('common.labels.edit'), edit_school_energy_tariff_path(school, energy_tariff), class: 'btn' %>
-            <%= link_to t('common.labels.delete'), school_energy_tariff_path(school, energy_tariff), method: :delete, data: {confirm: t('common.confirm') }, class: 'btn btn-danger' %>
+            <%= link_to t('schools.user_tariffs.tariff_partial.full_details'), school_energy_tariff_path(@school, energy_tariff), class: 'btn' if can? :download, EnergyTariff  %>
+            <%= link_to t('common.labels.edit'), edit_school_energy_tariff_path(@school, energy_tariff), class: 'btn' %>
+            <%= link_to t('common.labels.delete'), school_energy_tariff_path(@school, energy_tariff), method: :delete, data: {confirm: t('common.confirm') }, class: 'btn btn-danger' %>
           <% end %>
+
+          <% if energy_tariff.tariff_holder_type == 'SchoolGroup' %>
+            <%= link_to t('schools.user_tariffs.tariff_partial.full_details'), school_group_energy_tariff_path(@school_group, energy_tariff), class: 'btn' if can? :download, EnergyTariff  %>
+            <%= link_to t('common.labels.edit'), edit_school_group_energy_tariff_path(@school_group, energy_tariff), class: 'btn' %>
+            <%= link_to t('common.labels.delete'), school_group_energy_tariff_path(@school_group, energy_tariff), method: :delete, data: {confirm: t('common.confirm') }, class: 'btn btn-danger' %>
+          <% end %>
+
           <% if energy_tariff.tariff_holder_type == 'SiteSettings' && site_settings_page? %>
             <%= link_to t('schools.user_tariffs.tariff_partial.full_details'), admin_settings_energy_tariff_path(energy_tariff), class: 'btn' %>
             <%= link_to t('common.labels.edit'), edit_admin_settings_energy_tariff_path(energy_tariff), class: 'btn' %>
