@@ -50,6 +50,7 @@ class EnergyTariff < ApplicationRecord
   enum tariff_type: [:flat_rate, :differential]
 
   validates :name, presence: true
+  validate :start_and_end_date_are_not_both_blank
 
   scope :enabled, -> { where(enabled: true) }
   scope :disabled, -> { where(enabled: false) }
@@ -94,6 +95,14 @@ class EnergyTariff < ApplicationRecord
   end
 
   private
+
+  def start_and_end_date_are_not_both_blank
+    return unless tariff_holder_type == 'SchoolGroup'
+    return if start_date.present? || end_date.present?
+
+    errors.add(:start_date, I18n.t('schools.user_tariffs.form.errors.dates.start_and_end_date_can_not_both_be_empty'))
+    errors.add(:end_date, I18n.t('schools.user_tariffs.form.errors.dates.start_and_end_date_can_not_both_be_empty'))
+  end
 
   def tariff_holder_symbol
     meters.any? ? :meter : tariff_holder_type&.underscore&.to_sym
