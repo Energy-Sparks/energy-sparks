@@ -4,6 +4,7 @@ module EnergyTariffs
     include EnergyTariffable
 
     load_and_authorize_resource :school
+    load_and_authorize_resource :school_group
     load_and_authorize_resource :energy_tariff
     before_action :admin_authorized?, if: :site_settings_resource?
     before_action :load_site_setting, if: :site_settings_resource?
@@ -37,6 +38,7 @@ module EnergyTariffs
     def redirect_to_edit_energy_tariff_differential_prices_path
       case @energy_tariff.tariff_holder_type
       when 'School' then redirect_to edit_school_energy_tariff_energy_tariff_differential_prices_path(@school, @energy_tariff)
+      when 'SchoolGroup' then redirect_to edit_school_group_energy_tariff_energy_tariff_differential_prices_path(@school_group, @energy_tariff)
       when 'SiteSettings' then redirect_to edit_admin_settings_energy_tariff_energy_tariff_differential_prices_path(@energy_tariff)
       end
     end
@@ -44,6 +46,7 @@ module EnergyTariffs
     def redirect_to_edit_energy_tariff_flat_prices_path
       case @energy_tariff.tariff_holder_type
       when 'School' then redirect_to edit_school_energy_tariff_energy_tariff_flat_prices_path(@school, @energy_tariff)
+      when 'SchoolGroup' then redirect_to edit_school_group_energy_tariff_energy_tariff_flat_prices_path(@school_group, @energy_tariff)
       when 'SiteSettings' then redirect_to edit_admin_settings_energy_tariff_energy_tariff_flat_prices_path(@energy_tariff)
       end
     end
@@ -51,6 +54,7 @@ module EnergyTariffs
     def redirect_energy_tariff_flat_prices_path
       case @energy_tariff.tariff_holder_type
       when 'School' then redirect_to school_energy_tariff_energy_tariff_flat_prices_path(@school, @energy_tariff)
+      when 'SchoolGroup' then redirect_to school_group_energy_tariff_energy_tariff_flat_prices_path(@school_group, @energy_tariff)
       when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_flat_prices_path(@energy_tariff)
       end
     end
@@ -58,6 +62,7 @@ module EnergyTariffs
     def redirect_energy_tariff_differential_prices_path
       case @energy_tariff.tariff_holder_type
       when 'School' then redirect_to school_energy_tariff_energy_tariff_differential_prices_path(@school, @energy_tariff)
+      when 'SchoolGroup' then redirect_to school_group_energy_tariff_energy_tariff_differential_prices_path(@school_group, @energy_tariff)
       when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_differential_prices_path(@energy_tariff)
       end
     end

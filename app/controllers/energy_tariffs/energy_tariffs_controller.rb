@@ -4,12 +4,16 @@ module EnergyTariffs
     include EnergyTariffable
 
     load_and_authorize_resource :school
+    load_and_authorize_resource :school_group
     load_and_authorize_resource :energy_tariff
     before_action :admin_authorized?, if: :site_settings_resource?
     before_action :load_site_setting, if: :site_settings_resource?
     before_action :set_breadcrumbs
 
     def index
+      authorize! :manage, @school.energy_tariffs.build if @school
+      authorize! :manage, @school_group.energy_tariffs.build if @school_group
+
       if @school
         @electricity_meters = @school.meters.electricity
         @electricity_tariffs = @school.energy_tariffs.electricity.by_start_date.by_name
@@ -21,6 +25,8 @@ module EnergyTariffs
     def new
       @energy_tariff = if @school
                          @school.energy_tariffs.build(energy_tariff_params.merge(default_params))
+                       elsif @school_group
+                         @school_group.energy_tariffs.build(meter_type: params[:meter_type])
                        elsif @site_setting
                          @site_setting.energy_tariffs.build(meter_type: params[:meter_type])
                        end
@@ -32,6 +38,8 @@ module EnergyTariffs
     def create
       @energy_tariff = if @school
                          @school.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
+                       elsif @school_group
+                         @school_group.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
                        elsif @site_setting
                          @site_setting.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
                        end
@@ -65,6 +73,7 @@ module EnergyTariffs
         EnergyTariffDefaultPricesCreator.new(@energy_tariff).process
         case @energy_tariff.tariff_holder_type
         when 'School' then redirect_to school_energy_tariff_energy_tariff_prices_path(@school, @energy_tariff)
+        when 'SchoolGroup' then redirect_to school_group_energy_tariff_energy_tariff_prices_path(@school_group, @energy_tariff)
         when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_prices_path(@energy_tariff)
         end
       else
@@ -78,6 +87,7 @@ module EnergyTariffs
     def destroy
       redirect_path = case @energy_tariff.tariff_holder_type
                       when 'School' then school_energy_tariffs_path(@school)
+                      when 'SchoolGroup' then school_group_energy_tariffs_path(@school_group)
                       when 'SiteSettings' then admin_settings_energy_tariffs_path
                       end
 
@@ -90,6 +100,7 @@ module EnergyTariffs
     def redirect_to_choose_type_energy_tariff_path
       case @energy_tariff.tariff_holder_type
       when 'School' then redirect_to choose_type_school_energy_tariff_path(@school, @energy_tariff)
+      when 'SchoolGroup' then redirect_to choose_type_school_group_energy_tariff_path(@school_group, @energy_tariff)
       when 'SiteSettings' then redirect_to choose_type_admin_settings_energy_tariff_path(@energy_tariff)
       end
     end
@@ -97,6 +108,7 @@ module EnergyTariffs
     def redirect_to_energy_tariff_prices_path
       case @energy_tariff.tariff_holder_type
       when 'School' then redirect_to school_energy_tariff_energy_tariff_prices_path(@school, @energy_tariff)
+      when 'SchoolGroup' then redirect_to school_group_energy_tariff_energy_tariff_prices_path(@school_group, @energy_tariff)
       when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_prices_path(@energy_tariff)
       end
     end

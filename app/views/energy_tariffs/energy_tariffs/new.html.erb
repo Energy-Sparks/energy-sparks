@@ -15,6 +15,14 @@
     <% end %>
   <% end %>
 
+  <% if @energy_tariff.tariff_holder_type == 'SchoolGroup' %>
+    <%= simple_form_for [@school_group, @energy_tariff] do |f| %>
+      <%= f.hidden_field :meter_type, value: @energy_tariff.meter_type %>
+      <%= f.hidden_field :tariff_type, value: @energy_tariff.tariff_type %>
+      <%= render 'form', school_group: @school_group, energy_tariff: @energy_tariff, f: f %>
+    <% end %>
+  <% end %>
+
   <% if @energy_tariff.tariff_holder_type == 'SiteSettings' %>
     <%= simple_form_for @energy_tariff, url: admin_settings_energy_tariffs_path(@energy_tariff) do |f| %>
       <%= f.hidden_field :meter_type, value: @energy_tariff.meter_type %>

@@ -1,4 +1,8 @@
 module EnergyTariffsHelper
+  def site_settings_page?
+    request.path.start_with?('/admin/settings')
+  end
+
   def convert_value_to_long_currency(value, currency: '£')
     return '' unless value.is_a? Numeric
     value_as_string = value.to_s
@@ -11,6 +15,7 @@ module EnergyTariffsHelper
                                   else
                                     value_as_string
                                   end
+
     currency + value_as_formatted_currency
   end
 
