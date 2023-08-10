@@ -322,7 +322,7 @@ RSpec.shared_examples "the site settings energy tariff forms well navigated" do
 
   context 'checks current user role' do
     it 'expects the current user to be an admin' do
-      expect(current_user.role).to eq('admin')
+      expect(['admin', 'analyst']).to include(current_user.role)
     end
   end
 
@@ -596,7 +596,7 @@ RSpec.shared_examples "the school group energy tariff forms well navigated" do
 
   context 'checks current user role' do
     it 'expects the current user to be either an admin or a school admin' do
-      expect(%w[admin group_admin]).to include(current_user.role)
+      expect(%w[admin analytics group_admin]).to include(current_user.role)
     end
   end
 

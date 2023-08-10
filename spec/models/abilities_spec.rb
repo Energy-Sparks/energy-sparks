@@ -21,6 +21,9 @@ describe Ability do
 
       it { is_expected.to be_able_to(:show_management_dash, create(:school_group))}
       it { is_expected.to be_able_to(:update_settings, create(:school_group))}
+      it { is_expected.to be_able_to(:manage, create(:school).energy_tariffs.build)}
+      it { is_expected.to be_able_to(:manage, create(:school_group).energy_tariffs.build)}
+      it { is_expected.to be_able_to(:manage, SiteSettings.current.energy_tariffs.build)}
     end
 
     context "as a school admin" do
@@ -68,6 +71,10 @@ describe Ability do
 
       it { is_expected.to be_able_to(:show_management_dash, mygroup)}
       it { is_expected.to_not be_able_to(:show_management_dash, create(:school_group))}
+
+      it { is_expected.to be_able_to(:manage, school.energy_tariffs.build)}
+      it { is_expected.to_not be_able_to(:manage, school.school_group.energy_tariffs.build)}
+      it { is_expected.to_not be_able_to(:manage, SiteSettings.current.energy_tariffs.build)}
     end
 
     context "when is a school user" do
@@ -99,6 +106,10 @@ describe Ability do
       it { is_expected.to be_able_to(:show_management_dash, mygroup)}
       it { is_expected.to_not be_able_to(:show_management_dash, create(:school_group))}
       it { is_expected.not_to be_able_to(:update_settings, mygroup)}
+
+      it { is_expected.to_not be_able_to(:manage, school.energy_tariffs.build)}
+      it { is_expected.to_not be_able_to(:manage, school.school_group.energy_tariffs.build)}
+      it { is_expected.to_not be_able_to(:manage, SiteSettings.current.energy_tariffs.build)}
     end
 
     context "when is a guest" do
@@ -122,6 +133,10 @@ describe Ability do
       it { is_expected.to_not be_able_to(:show_management_dash, create(:school_group))}
       it { is_expected.to_not be_able_to(:show_management_dash, mygroup)}
       it { is_expected.to_not be_able_to(:update_settings, mygroup)}
+
+      it { is_expected.to_not be_able_to(:manage, school.energy_tariffs.build)}
+      it { is_expected.to_not be_able_to(:manage, school.school_group.energy_tariffs.build)}
+      it { is_expected.to_not be_able_to(:manage, SiteSettings.current.energy_tariffs.build)}
     end
 
     context "when a group admin" do
@@ -154,6 +169,10 @@ describe Ability do
       it { is_expected.to be_able_to(:show_management_dash, school_group)}
       it { is_expected.to_not be_able_to(:show_management_dash, create(:school_group))}
       it { is_expected.to be_able_to(:update_settings, school_group)}
+
+      it { is_expected.to_not be_able_to(:manage, school.energy_tariffs.build)}
+      it { is_expected.to be_able_to(:manage, school_group.energy_tariffs.build)}
+      it { is_expected.to_not be_able_to(:manage, SiteSettings.current.energy_tariffs.build)}
 
       context 'is onboarding' do
 
