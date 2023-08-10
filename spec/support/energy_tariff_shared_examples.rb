@@ -600,12 +600,14 @@ RSpec.shared_examples "the school group energy tariff forms well navigated" do
     end
   end
 
-  context 'has navigation links' do
+  context 'has navigation links', skip: "Group tariff editor is temporarily admin only.  This skip can be removed when the group sub nav template is updated" do
     it 'from school group page to energy tariffs index' do
       visit school_group_path(school_group)
       expect(current_path).to eq("/school_groups/#{school_group.slug}")
+
       click_link('Manage Group')
       click_link('Manage tariffs')
+
       expect(current_path).to eq("/school_groups/#{school_group.slug}/energy_tariffs")
       expect(page).to have_content(I18n.t('schools.user_tariffs.index.title'))
     end
