@@ -83,6 +83,10 @@ Rails.application.routes.draw do
   end
   end
 
+  scope '/admin/settings', as: :admin_settings do
+    concerns :tariff_holder
+  end
+
   resources :activity_types, only: [:show] do
     collection do
       get :search
@@ -350,19 +354,6 @@ Rails.application.routes.draw do
       resources :batch_runs, only: [:index, :create, :show]
 
       resource :consents, only: [:show, :create]
-
-      resources :user_tariffs do
-        resources :user_tariff_prices, only: [:index, :new, :edit]
-        resources :user_tariff_flat_prices
-        resources :user_tariff_differential_prices
-        resources :user_tariff_charges
-        collection do
-          get :choose_meters, to: 'user_tariffs#choose_meters'
-        end
-        member do
-          get :choose_type, to: 'user_tariffs#choose_type'
-        end
-      end
     end
 
     # Maintain old scoreboard URL

@@ -91,7 +91,6 @@ class Ability
       can :manage, SchoolTarget, related_school_scope
       can :manage, Activity, related_school_scope
       can :manage, Contact, related_school_scope
-      can :manage, UserTariff, related_school_scope
       can :manage, EnergyTariff, tariff_holder: user.school
       can :show, Cad, related_school_scope
       can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)

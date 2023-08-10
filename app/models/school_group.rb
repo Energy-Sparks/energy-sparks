@@ -45,6 +45,7 @@
 
 class SchoolGroup < ApplicationRecord
   extend FriendlyId
+  include EnergyTariffHolder
   include ParentMeterAttributeHolder
   include Scorable
 
@@ -161,6 +162,10 @@ class SchoolGroup < ApplicationRecord
 
   def categorise_schools
     SchoolGroups::CategoriseSchools.new(school_group: self).categorise_schools
+  end
+
+  def parent_tariff_holder
+    SiteSettings.current
   end
 
   private

@@ -68,8 +68,8 @@ class EnergyTariff < ApplicationRecord
   def to_hash
     rates = rates_attrs
     {
-      start_date: start_date.to_s(:es_compact),
-      end_date: end_date.to_s(:es_compact),
+      start_date: start_date ? start_date.to_s(:es_compact) : Date.new(2000, 1, 1).to_s(:es_compact),
+      end_date: end_date ? end_date.to_s(:es_compact) : Date.new(2050, 1, 1).to_s(:es_compact),
       source: source.to_sym,
       name: name,
       type: flat_rate? ? :flat : :differential,
@@ -77,7 +77,9 @@ class EnergyTariff < ApplicationRecord
       rates: rates,
       vat: vat_rate.nil? ? nil : "#{vat_rate}%",
       climate_change_levy: ccl,
-      asc_limit_kw: (value_for_charge(:asc_limit_kw) if rates_has_availability_charge?(rates))
+      asc_limit_kw: (value_for_charge(:asc_limit_kw) if rates_has_availability_charge?(rates)),
+      tariff_holder: tariff_holder_symbol,
+      created_at: created_at.to_datetime
     }.compact
   end
 
@@ -87,7 +89,15 @@ class EnergyTariff < ApplicationRecord
     end
   end
 
+  def site_settings_tariff_holder?
+    tariff_holder_symbol == :site_settings
+  end
+
   private
+
+  def tariff_holder_symbol
+    meters.any? ? :meter : tariff_holder_type&.underscore&.to_sym
+  end
 
   def rates_attrs
     attrs = {}

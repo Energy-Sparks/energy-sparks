@@ -151,6 +151,8 @@ ignore_unused:
   - 'advice_pages.tables.tooltips.bill_components.*'
   - 'school_groups.show.we_are_working_with.*'
   - 'school_groups.priority_actions.alert_types.*_html'
+  - 'schools.user_tariffs.index.exported_solar_pv.*'
+  - 'schools.user_tariffs.index.solar_pv.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'

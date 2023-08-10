@@ -1,4 +1,7 @@
 <%= render 'energy_tariffs/energy_tariffs/title', energy_tariff: energy_tariff %>
-<%= render 'energy_tariffs/energy_tariffs/meters', energy_tariff: energy_tariff %>
-
+<% if energy_tariff.tariff_holder_type == 'SiteSettings' %>
+  <%= t('schools.user_tariffs.meters.this_tariff_applies_to_all_meters', meter_type: t("common.#{@energy_tariff.meter_type}")) %>
+<% else %>
+  <%= render 'energy_tariffs/energy_tariffs/meters', energy_tariff: energy_tariff %>
+<% end %>
 <br/>

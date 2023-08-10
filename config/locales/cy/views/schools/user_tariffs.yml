@@ -24,7 +24,7 @@ cy:
         other_charges: Costau eraill
       index:
         title: Ychwanegu taliadau sefydlog ar gyfer y tariff hwn
-        using_your_bill_introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y taliadau sefydlog sy'n gysylltiedig â'r tariff hwn
+        introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y taliadau sefydlog sy'n gysylltiedig â'r tariff hwn
     user_tariff_differential_prices:
       form:
         labels:
@@ -34,7 +34,7 @@ cy:
       index:
         consumption_charges: Costau defnydd
         title: Ychwanegu costau defnydd ar gyfer pob cyfnod amser ar gyfer y tariff hwn
-        using_your_bill_introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
+        introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
     user_tariff_flat_prices:
       edit:
         introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn

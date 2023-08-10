@@ -1,3 +1,12 @@
+<p>
+  <%= case energy_tariff.tariff_holder_type
+      when 'School' then t('schools.user_tariffs.there_should_only_be_one_tariff_message')
+      when 'SiteSettings' then t('schools.user_tariffs.there_should_only_be_one_tariff_message_site_settings')
+      end
+  %>.
+</p>
+<br/>
+
 <% if energy_tariff.meters.present? %>
   <div class="row">
     <div class="col-md-3">

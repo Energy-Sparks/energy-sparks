@@ -2,7 +2,13 @@
 
 <div class="energy_tariff">
 
-  <p><%= t('schools.user_tariff_differential_prices.index.using_your_bill_introduction') %>.</p>
+  <p>
+    <%= case @energy_tariff.tariff_holder_type
+        when 'School' then t('schools.user_tariff_differential_prices.index.introduction')
+        when 'SiteSettings' then t('schools.user_tariff_differential_prices.index.introduction_site_settings')
+        end
+    %>.
+  </p>
   <br/>
 
   <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
@@ -17,7 +23,18 @@
 
   <br/>
 
-  <%= link_to t('common.labels.previous'), edit_school_energy_tariff_path(@school, @energy_tariff), class: 'btn' %>
-  <%= link_to t('common.labels.next'), school_energy_tariff_energy_tariff_charges_path(@school, @energy_tariff), class: 'btn' %>
+  <% edit_path = case @energy_tariff.tariff_holder_type
+                 when 'School' then edit_school_energy_tariff_path(@school, @energy_tariff)
+                 when 'SiteSettings' then edit_admin_settings_energy_tariff_path(@energy_tariff)
+                 end
+  %>
+  <%= link_to t('common.labels.previous'), edit_path, class: 'btn' %>
+
+  <% next_path = case @energy_tariff.tariff_holder_type
+                 when 'School' then school_energy_tariff_energy_tariff_charges_path(@school, @energy_tariff)
+                 when 'SiteSettings' then admin_settings_energy_tariff_energy_tariff_charges_path(@energy_tariff)
+                 end
+  %>
+  <%= link_to t('common.labels.next'), next_path, class: 'btn' %>
 
 </div>
