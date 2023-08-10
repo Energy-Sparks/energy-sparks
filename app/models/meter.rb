@@ -210,13 +210,29 @@ class Meter < ApplicationRecord
   end
 
   def all_meter_attributes
-    meter_attributes_collection = global_meter_attributes + school_group_meter_attributes + school_meter_attributes + meter_attributes.active
-    meter_attributes_collection += energy_tariff_meter_attributes
-    meter_attributes_collection
+    global_meter_attributes +
+      school_group_meter_attributes +
+      school_meter_attributes +
+      active_meter_attributes +
+      energy_tariff_meter_attributes
+  end
+
+  def active_meter_attributes
+    if EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs)
+      meter_attributes.where.not(attribute_type: GlobalMeterAttribute::TARIFF_ATTRIBUTE_TYPES).active
+    else
+      meter_attributes.active
+    end
   end
 
   def energy_tariff_meter_attributes
-    energy_tariffs.complete.map(&:meter_attribute)
+    attributes = []
+    if EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs)
+      school_attributes = school.all_energy_tariff_attributes(meter_type)
+      attributes += school_attributes unless school_attributes.nil?
+    end
+    attributes += energy_tariffs.complete.map(&:meter_attribute)
+    attributes
   end
 
   def user_tariff_meter_attributes

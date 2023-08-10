@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 4950b97f178f513826dc55db7a18e8acc496f361
-  tag: 2.9.1
+  revision: 31bfbeb02d9e95587d602ffd46c06be74c78fede
+  tag: 3.0.0
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
@@ -673,7 +673,7 @@ GEM
     websocket-extensions (0.1.5)
     wisper (2.0.0)
     wisper-rspec (1.1.0)
-    write_xlsx (1.11.0)
+    write_xlsx (1.11.1)
       rubyzip (>= 1.0.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
