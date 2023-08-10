@@ -11,6 +11,9 @@ module EnergyTariffs
     before_action :set_breadcrumbs
 
     def index
+      authorize! :manage, @school.energy_tariffs.build if @school
+      authorize! :manage, @school_group.energy_tariffs.build if @school_group
+
       if @school
         @electricity_meters = @school.meters.electricity
         @electricity_tariffs = @school.energy_tariffs.electricity.by_start_date.by_name

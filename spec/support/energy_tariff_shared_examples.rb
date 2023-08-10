@@ -3,7 +3,7 @@ RSpec.shared_examples "the school energy tariff forms well navigated" do
 
   context 'checks current user role' do
     it 'expects the current user to be either an admin or a school admin' do
-      expect(%w[admin school_admin]).to include(current_user.role)
+      expect(%w[admin analytics school_admin]).to include(current_user.role)
     end
   end
 
@@ -321,7 +321,7 @@ RSpec.shared_examples "the site settings energy tariff forms well navigated" do
   before(:each) { sign_in(current_user) }
 
   context 'checks current user role' do
-    it 'expects the current user to be either an admin or a school admin' do
+    it 'expects the current user to be an admin' do
       expect(current_user.role).to eq('admin')
     end
   end

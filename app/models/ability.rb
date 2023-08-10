@@ -75,6 +75,7 @@ class Ability
         end
         can :read, [:my_school_menu]
         can :switch, School
+        can :manage, EnergyTariff, tariff_holder_id: user.school.id
       end
       #allow users from schools in same group to access dashboards
       if user.school.present?
@@ -92,7 +93,6 @@ class Ability
       can :manage, SchoolTarget, related_school_scope
       can :manage, Activity, related_school_scope
       can :manage, Contact, related_school_scope
-      can :manage, EnergyTariff, tariff_holder: user.school
       can :show, Cad, related_school_scope
       can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
       can [:index, :create, :read, :update], ConsentDocument, related_school_scope
