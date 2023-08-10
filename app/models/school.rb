@@ -86,6 +86,7 @@ require 'securerandom'
 
 class School < ApplicationRecord
   extend FriendlyId
+  include EnergyTariffHolder
   include ParentMeterAttributeHolder
 
   class ProcessDataError < StandardError; end
@@ -146,8 +147,6 @@ class School < ApplicationRecord
   has_many :school_batch_runs
 
   has_many :advice_page_school_benchmarks
-
-  has_many :energy_tariffs, as: :tariff_holder, dependent: :destroy
 
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
@@ -526,13 +525,20 @@ class School < ApplicationRecord
   end
 
   def all_pseudo_meter_attributes
-    [school_group_pseudo_meter_attributes, pseudo_meter_attributes, school_target_attributes, estimated_annual_consumption_meter_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
+    all_attributes = [school_group_pseudo_meter_attributes, pseudo_meter_attributes, school_target_attributes, estimated_annual_consumption_meter_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
       pseudo_attributes.each do |meter_type, attributes|
         collection[meter_type] ||= []
         collection[meter_type] = collection[meter_type] + attributes
       end
       collection
     end
+    if EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs)
+      all_attributes[:aggregated_electricity] = all_energy_tariff_attributes(:electricity)
+      all_attributes[:aggregated_gas] = all_energy_tariff_attributes(:gas)
+      all_attributes[:solar_pv_consumed_sub_meter] = all_energy_tariff_attributes(:solar_pv)
+      all_attributes[:solar_pv_exported_sub_meter] = all_energy_tariff_attributes(:exported_solar_pv)
+    end
+    all_attributes
   end
 
   def pseudo_meter_attributes_to_analytics
@@ -615,6 +621,14 @@ class School < ApplicationRecord
 
   def school_group_cluster_name
     school_group_cluster.try(:name) || I18n.t('common.labels.not_set')
+  end
+
+  def parent_tariff_holder
+    school_group.present? ? school_group : SiteSettings.current
+  end
+
+  def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys)
+    energy_tariffs.where(meter_type: meter_type).left_joins(:meters).where(meters: { id: nil }).complete.map(&:meter_attribute)
   end
 
   private

@@ -316,4 +316,61 @@ describe 'Meter', :meters do
       end
     end
   end
+
+  context '.all_meter_attributes' do
+    let(:school_group)    { create(:school_group) }
+    let(:school)          { create(:school, school_group: school_group) }
+    let(:meter)           { create(:electricity_meter, school: school) }
+    let(:feature_flag)    { 'false' }
+
+    around do |example|
+      ClimateControl.modify FEATURE_FLAG_USE_NEW_ENERGY_TARIFFS: feature_flag do
+        example.run
+      end
+    end
+
+    context 'with :use_new_energy_tariffs enabled' do
+      let(:feature_flag) { 'true' }
+
+      let(:all_meter_attributes)          { meter.all_meter_attributes }
+
+      context 'when there are tariffs stored as attributes' do
+        let!(:global_meter_attribute)       { GlobalMeterAttribute.create(attribute_type: 'accounting_tariff',
+          meter_types: ["electricity"], input_data: {})}
+        let!(:school_group_meter_attribute) { SchoolGroupMeterAttribute.create(attribute_type: 'economic_tariff',
+          meter_types: ["", "electricity"], school_group: school_group, input_data: {})}
+        let!(:meter_attribute)              { MeterAttribute.create(meter: meter, attribute_type: 'economic_tariff_change_over_time', input_data: {})}
+
+        it 'ignores inherited attributes' do
+          expect(all_meter_attributes).to be_empty
+        end
+      end
+
+      context 'when there are tariffs stored as EnergyTariffs' do
+
+        let!(:site_wide)        { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current) }
+        let!(:group_level)      { create(:energy_tariff, :with_flat_price, tariff_holder: school_group) }
+        let!(:school_specific)  { create(:energy_tariff, :with_flat_price, tariff_holder: school) }
+
+        context 'and there are meter specific tariffs' do
+          let!(:meter_specific)  { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter]) }
+          it 'includes those too' do
+            expect(all_meter_attributes.size).to eq 4
+            expect(all_meter_attributes[0].input_data['tariff_holder']).to eq 'site_settings'
+            expect(all_meter_attributes[1].input_data['tariff_holder']).to eq 'school_group'
+            expect(all_meter_attributes[2].input_data['tariff_holder']).to eq 'school'
+            expect(all_meter_attributes[3].input_data['tariff_holder']).to eq 'meter'
+          end
+        end
+
+        it 'includes inherited tariffs' do
+          expect(all_meter_attributes.size).to eq 3
+          expect(all_meter_attributes[0].input_data['tariff_holder']).to eq 'site_settings'
+          expect(all_meter_attributes[1].input_data['tariff_holder']).to eq 'school_group'
+          expect(all_meter_attributes[2].input_data['tariff_holder']).to eq 'school'
+        end
+      end
+    end
+
+  end
 end

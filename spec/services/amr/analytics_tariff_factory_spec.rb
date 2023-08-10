@@ -26,6 +26,7 @@ module Amr
            start_date: date,
            end_date: date,
            name: 'Tariff from DCC SMETS2 meter',
+           tariff_holder: :meter,
            rates: {
              rate0: {
                from: ::TimeOfDay30mins.new(0, 0),
@@ -72,6 +73,7 @@ module Amr
           :start_date => date,
           :end_date => date,
           :name => "Tariff from DCC SMETS2 meter",
+          tariff_holder: :meter,
           :rates => {
             :tiered_rate0 => {
               :from => ::TimeOfDay30mins.new(0, 0),

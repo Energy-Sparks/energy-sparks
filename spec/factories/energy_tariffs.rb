@@ -9,5 +9,12 @@ FactoryBot.define do
     tariff_holder { create(:school) }
     created_by { association :user }
     updated_by { association :user }
+
+    trait :with_flat_price do
+      after(:create) do |energy_tariff, evaluator|
+        create(:energy_tariff_price, energy_tariff: energy_tariff)
+        energy_tariff.reload
+      end
+    end
   end
 end
