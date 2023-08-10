@@ -1,0 +1,3 @@
+<%= link_to t('schools.user_tariffs.tariff_partial.full_details'), polymorphic_path(tariff_path_array), class: 'btn' if can? :download, EnergyTariff  %>
+<%= link_to t('common.labels.edit'), polymorphic_path([:edit] + tariff_path_array), class: 'btn' %>
+<%= link_to t('common.labels.delete'), polymorphic_path(tariff_path_array), method: :delete, data: {confirm: t('common.confirm') }, class: 'btn btn-danger' %>

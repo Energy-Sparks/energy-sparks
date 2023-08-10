@@ -2,7 +2,7 @@
   <thead>
     <tr>
       <th><%= t('schools.user_tariffs.name') %></th>
-      <% unless @site_setting %>
+      <% unless tariffs.map(&:tariff_holder_type).uniq == ['SiteSettings'] %>
         <th><%= t('schools.user_tariffs.meters.meter_list') %></th>
       <% end %>
       <th><%= t('schools.user_tariffs.tariff_partial.type') %></th>
@@ -30,16 +30,8 @@
         <td><%= energy_tariff.start_date ? energy_tariff.start_date&.to_s(:es_compact) : t('schools.user_tariffs.summary_table.no_start_date') %></td>
         <td><%= energy_tariff.end_date ? energy_tariff.end_date&.to_s(:es_compact) : t('schools.user_tariffs.summary_table.no_end_date') %></td>
         <td>
-          <% if ['School', 'SchoolGroup'].include?(energy_tariff.tariff_holder_type) %>
-            <%= link_to t('schools.user_tariffs.tariff_partial.full_details'), polymorphic_path([energy_tariff.tariff_holder, @energy_tariff]), class: 'btn' if can? :download, EnergyTariff  %>
-            <%= link_to t('common.labels.edit'), polymorphic_path([:edit, energy_tariff.tariff_holder, energy_tariff]), class: 'btn' %>
-            <%= link_to t('common.labels.delete'), polymorphic_path([energy_tariff.tariff_holder, energy_tariff]), method: :delete, data: {confirm: t('common.confirm') }, class: 'btn btn-danger' %>
-          <% end %>
-          <% if energy_tariff.tariff_holder_type == 'SiteSettings' && site_settings_page? %>
-            <%= link_to t('schools.user_tariffs.tariff_partial.full_details'), polymorphic_path([:admin, :settings, energy_tariff]), class: 'btn' %>
-            <%= link_to t('common.labels.edit'), polymorphic_path([:edit, :admin, :settings, energy_tariff]), class: 'btn' %>
-            <%= link_to t('common.labels.delete'), polymorphic_path([:admin, :settings, energy_tariff]), method: :delete, data: {confirm: t('common.confirm') }, class: 'btn btn-danger' %>
-          <% end %>
+          <%= render 'energy_tariffs_summary_table_actions', tariff_path_array: [energy_tariff.tariff_holder, energy_tariff] if ['School', 'SchoolGroup'].include?(energy_tariff.tariff_holder_type) %>
+          <%= render 'energy_tariffs_summary_table_actions', tariff_path_array: [:admin, :settings, energy_tariff] if energy_tariff.tariff_holder_type == 'SiteSettings' && site_settings_page? %>
         </td>
       </tr>
     <% end %>
