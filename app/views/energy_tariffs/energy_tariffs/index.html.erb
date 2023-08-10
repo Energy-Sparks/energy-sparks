@@ -21,29 +21,20 @@
   </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
-  <% if @site_setting %>
-    <div id="nav-smart-meter-tariffs_site_settings" role="tabpanel" aria-labelledby="nav-smart-meter-tariffs-tab">
-      <%= render 'smart_meter_tariffs_tab_site_settings' %>
+  <div id="nav-user-tariffs" role="tabpanel" aria-labelledby="nav-user-tariffs-tab" class="tab-pane fade show active">
+    <%= render 'energy_tariffs_tab_school' if @school %>
+    <%= render 'energy_tariffs_tab_school_groups' if @school_group %>
+    <%= render 'energy_tariffs_tab_site_settings' if @site_setting %>
+  </div>
+  <% if @school && any_smart_meters?(@school) %>
+    <div id="nav-smart-meter-tariffs" role="tabpanel" aria-labelledby="nav-smart-meter-tariffs-tab" class="tab-pane fade">
+      <%= render 'smart_meter_tariffs_tab_school' %>
     </div>
   <% end %>
-  <% if @school_group %>
-    <div id="nav-smart-meter-tariffs_site_settings" role="tabpanel" aria-labelledby="nav-smart-meter-tariffs-tab">
-      <%= render 'smart_meter_tariffs_tab_school_groups' %>
-    </div>
-  <% end %>
-  <% if @school %>
-    <div class="tab-pane fade show active">
-        <%= render 'energy_tariffs_tab' %>
-    </div>
-    <% if any_smart_meters?(@school) %>
-      <div class="tab-pane fade"
-          id="nav-smart-meter-tariffs" role="tabpanel" aria-labelledby="nav-smart-meter-tariffs-tab">
-          <%= render 'smart_meter_tariffs_tab' %>
-      </div>
-    <% end %>
-    <div class="tab-pane fade"
-        id="nav-default-tariffs" role="tabpanel" aria-labelledby="nav-default-tariffs-tab">
-        <%= render 'default_tariffs_tab' %>
+  <% if @school || @school_group %>
+    <div id="nav-default-tariffs" role="tabpanel" aria-labelledby="nav-default-tariffs-tab" class="tab-pane fade">
+      <%= render 'default_tariffs_tab_school' if @school %>
+      <%= render 'default_tariffs_tab_school_group' if @school_group %>
     </div>
   <% end %>
 </div>
