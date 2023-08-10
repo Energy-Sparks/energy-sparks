@@ -51,6 +51,11 @@
     <%= link_to t('common.labels.finished'), school_energy_tariffs_path(@school), class: 'btn' %>
   <% end %>
 
+  <% if @energy_tariff.tariff_holder_type == 'SchoolGroup' %>
+    <%= link_to t('common.labels.previous'), school_group_energy_tariff_energy_tariff_charges_path(@school_group, @energy_tariff), class: 'btn' %>
+    <%= link_to t('common.labels.finished'), school_group_energy_tariffs_path(@school_group), class: 'btn' %>
+  <% end %>
+
   <% if @energy_tariff.tariff_holder_type == 'SiteSettings' %>
     <%= link_to t('common.labels.previous'), admin_settings_energy_tariff_energy_tariff_charges_path(@energy_tariff), class: 'btn' %>
     <%= link_to t('common.labels.finished'), admin_settings_energy_tariffs_path, class: 'btn' %>

@@ -5,6 +5,7 @@
   <p>
     <%= case @energy_tariff.tariff_holder_type
         when 'School' then t('schools.user_tariff_flat_prices.new.introduction')
+        when 'SchoolGroup' then t('schools.user_tariff_flat_prices.new.introduction')
         when 'SiteSettings' then t('schools.user_tariff_flat_prices.new.introduction_site_settings')
         end
     %>.
@@ -16,6 +17,7 @@
   <%
     form_url = case @energy_tariff.tariff_holder_type
                when 'School' then school_energy_tariff_energy_tariff_flat_prices_path(@school, @energy_tariff)
+               when 'SchoolGroup' then school_group_energy_tariff_energy_tariff_flat_prices_path(@school_group, @energy_tariff)
                when 'SiteSettings' then admin_settings_energy_tariff_energy_tariff_flat_prices_path(@energy_tariff)
                end
   %>
@@ -27,6 +29,7 @@
     <%
       edit_path = case @energy_tariff.tariff_holder_type
                   when 'School' then edit_school_energy_tariff_path(@school, @energy_tariff)
+                  when 'SchoolGroup' then edit_school_group_energy_tariff_path(@school_group, @energy_tariff)
                   when 'SiteSettings' then edit_admin_settings_energy_tariff_path(@energy_tariff)
                   end
     %>

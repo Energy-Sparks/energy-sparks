@@ -16,10 +16,10 @@
         <% tariff = tariff_attributes[:economic_tariff] || tariff_attributes[:economic_tariff_change_over_time] %>
         <% if tariff.is_a? Array %>
           <% tariff.each do |t| %>
-            <%= render 'economic_tariff_table_row', tariff: t, aggregate_meter_type: aggregate_meter_type, scope: scope, school: school %>
+            <%= render 'economic_tariff_table_row_school', tariff: t, aggregate_meter_type: aggregate_meter_type, scope: scope, school: school %>
           <% end %>
         <% else %>
-          <%= render 'economic_tariff_table_row', tariff: tariff, aggregate_meter_type: aggregate_meter_type, scope: scope, school: school %>
+          <%= render 'economic_tariff_table_row_school', tariff: tariff, aggregate_meter_type: aggregate_meter_type, scope: scope, school: school %>
         <% end %>
       <% end %>
     <% end %>

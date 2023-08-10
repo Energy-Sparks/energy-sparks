@@ -5,6 +5,7 @@
   <p>
     <%= case @energy_tariff.tariff_holder_type
         when 'School' then t('schools.user_tariffs.there_should_only_be_one_tariff_message')
+        when 'SchoolGroup' then t('schools.user_tariffs.there_should_only_be_one_tariff_message')
         when 'SiteSettings' then t('schools.user_tariffs.there_should_only_be_one_tariff_message_site_settings')
         end
     %>.
@@ -16,6 +17,10 @@
   <% if @school %>
     <%= simple_form_for [@school, @energy_tariff] do |f| %>
       <%= render 'form', school: @school, energy_tariff: @energy_tariff, f: f %>
+    <% end %>
+  <% elsif @school_group %>
+    <%= simple_form_for [@school_group, @energy_tariff] do |f| %>
+      <%= render 'form', school_group: @school_group, energy_tariff: @energy_tariff, f: f %>
     <% end %>
   <% else %>
     <%= simple_form_for @energy_tariff, url: admin_settings_energy_tariff_path do |f| %>

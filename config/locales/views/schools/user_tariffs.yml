@@ -98,6 +98,10 @@ en:
         flat_rate_tariff: Flat rate tariff
         no_flat_rate_tariff_has_been_set_yet: No flat rate tariff has been set yet
         per_kwh: per kWh
+      form:
+        errors:
+          dates:
+            start_and_end_date_can_not_both_be_empty: start and end date can't both be empty
       index:
         changes_to_cost_calculations_message: The cost calculations based on these tariffs will update overnight
         electricity:

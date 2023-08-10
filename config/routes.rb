@@ -132,6 +132,8 @@ Rails.application.routes.draw do
   resource :school_switcher, only: [:create], controller: :school_switcher
 
   resources :school_groups, only: [:show] do
+    concerns :tariff_holder
+
     scope module: :school_groups do
       resources :chart_updates, only: [:index] do
         post :bulk_update_charts
