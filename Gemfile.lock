@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 33d91ff0ba876e31f9249909a4babdb7640afb0b
-  branch: additional-tariff-code-tests-and-refactoring
+  revision: 31bfbeb02d9e95587d602ffd46c06be74c78fede
+  tag: 3.0.0
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 7.1)
