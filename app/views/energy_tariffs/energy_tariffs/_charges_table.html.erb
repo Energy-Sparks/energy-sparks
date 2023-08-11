@@ -14,10 +14,12 @@
       <td class="value"><%= y_n(energy_tariff.tnuos?)  %></td>
     </tr>
   <% end %>
-  <tr>
-    <td class="description"><%= t('schools.user_tariffs.charges_table.vat_rate') %></td>
-    <td class="value"><%= energy_tariff.vat_rate  %></td>
-  </tr>
+  <% if energy_tariff.vat_rate %>
+    <tr>
+      <td class="description"><%= t('schools.user_tariffs.charges_table.vat_rate') %></td>
+      <td class="value"><%= energy_tariff.vat_rate  %></td>
+    </tr>
+  <% end %>
   <% if energy_tariff.ccl? %>
     <tr>
       <td class="description"><%= t('schools.user_tariffs.charges_table.climate_charge_levy') %></td>
