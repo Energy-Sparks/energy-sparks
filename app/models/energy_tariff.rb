@@ -34,6 +34,10 @@
 class EnergyTariff < ApplicationRecord
   belongs_to :tariff_holder, polymorphic: true
 
+  #Declaring associations allows us to use .joins(:school) or .joins(:school_group)
+  belongs_to :school, -> { where(energy_tariffs: { tariff_holder_type: 'School' }) }, foreign_key: 'tariff_holder_id', optional: true
+  belongs_to :school_group, -> { where(energy_tariffs: { tariff_holder_type: 'SchoolGroup' }) }, foreign_key: 'tariff_holder_id', optional: true
+
   delegated_type :tariff_holder, types: %w[SiteSettings School SchoolGroup]
 
   has_many :energy_tariff_prices, inverse_of: :energy_tariff, dependent: :destroy
@@ -61,6 +65,15 @@ class EnergyTariff < ApplicationRecord
 
   scope :by_name, -> { order(name: :asc) }
   scope :by_start_date, -> { order(start_date: :asc) }
+
+  scope :count_by_school_group, -> { enabled.joins(:school_group).group(:slug).count(:id) }
+
+  scope :for_schools_in_group, ->(school_group, source = :manually_entered) {
+    enabled.where(source: source).joins(:school).where({ schools: { school_group: school_group } })
+  }
+  scope :count_schools_with_tariff_by_group, ->(school_group, source = :manually_entered) {
+    for_schools_in_group(school_group, source).select(:tariff_holder_id).distinct.count
+  }
 
   def meter_attribute
     MeterAttribute.new(attribute_type: :accounting_tariff_generic, input_data: to_hash)

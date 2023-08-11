@@ -556,6 +556,7 @@ Rails.application.routes.draw do
       resource :funder_allocations, only: [:show] do
         post :deliver
       end
+      get 'energy_tariffs', to: 'energy_tariffs#index', as: :energy_tariffs
     end
 
     resource :settings, only: [:show, :update]
