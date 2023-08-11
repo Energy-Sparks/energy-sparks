@@ -81,7 +81,7 @@ module EnergyTariffs
     end
 
     def destroy
-      redirect_path = polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff])
+      redirect_path = polymorphic_path(@energy_tariff.tariff_holder_route + [:energy_tariffs])
       @energy_tariff.destroy
       redirect_to redirect_path
     end

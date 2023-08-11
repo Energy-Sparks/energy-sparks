@@ -14,7 +14,7 @@
 
   <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
 
-  <% url = polymorphic_path(energy_tariff.tariff_holder_route + [energy_tariff, :energy_tariff_flat_price], id: energy_tariff_price.id) %>
+  <% url = polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_flat_price], id: @energy_tariff_price.id) %>
 
   <%= simple_form_for @energy_tariff_price, url: url, method: :put do |f| %>
     <%= render 'form', school: @school, energy_tariff: @energy_tariff, energy_tariff_price: @energy_tariff_price, f: f %>
