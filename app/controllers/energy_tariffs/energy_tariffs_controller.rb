@@ -16,9 +16,9 @@ module EnergyTariffs
 
       if @school
         @electricity_meters = @school.meters.electricity
-        @electricity_tariffs = @school.energy_tariffs.electricity.by_start_date.by_name
+        @electricity_tariffs = @school.energy_tariffs.electricity.manually_entered.by_start_date.by_name
         @gas_meters = @school.meters.gas
-        @gas_tariffs = @school.energy_tariffs.gas.by_start_date.by_name
+        @gas_tariffs = @school.energy_tariffs.gas.manually_entered.by_start_date.by_name
       end
     end
 
@@ -30,8 +30,9 @@ module EnergyTariffs
                        elsif @site_setting
                          @site_setting.energy_tariffs.build(meter_type: params[:meter_type])
                        end
-      if @energy_tariff.meter_ids.empty? && @school
-        redirect_back fallback_location: school_energy_tariffs_path(@school), notice: "Please select at least one meter for this tariff"
+
+      if require_meters?
+        redirect_back fallback_location: school_energy_tariffs_path(@school), notice: "Please select at least one meter for this tariff. Or uncheck option to apply tariff to all meters"
       end
     end
 
@@ -96,6 +97,10 @@ module EnergyTariffs
     end
 
     private
+
+    def require_meters?
+      params[:specific_meters] && @energy_tariff.meter_ids.empty? && @school
+    end
 
     def redirect_to_choose_type_energy_tariff_path
       case @energy_tariff.tariff_holder_type
