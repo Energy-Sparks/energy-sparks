@@ -2,6 +2,7 @@ module EnergyTariffs
   class EnergyTariffFlatPricesController < ApplicationController
     include Adminable
     include EnergyTariffable
+    include EnergyTariffsHelper
 
     load_and_authorize_resource :school
     load_and_authorize_resource :school_group
@@ -46,15 +47,15 @@ module EnergyTariffs
     private
 
     def redirect_to_energy_tariff_charges_path
-      redirect_to polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_charges])
+      redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_charges])
     end
 
     def redirect_to_edit_energy_tariff_flat_price_path
-      redirect_to edit_polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_flat_price], id: @energy_tariff.energy_tariff_prices.first)
+      redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_flat_price], { id: @energy_tariff.energy_tariff_prices.first, action: :edit })
     end
 
     def redirect_to_new_energy_tariff_flat_price_path
-      redirect_to polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_flat_price], action: :new)
+      redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_flat_price], { action: :new })
     end
 
     def default_attributes

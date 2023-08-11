@@ -2,6 +2,7 @@ module EnergyTariffs
   class EnergyTariffsController < ApplicationController
     include Adminable
     include EnergyTariffable
+    include EnergyTariffsHelper
 
     load_and_authorize_resource :school
     load_and_authorize_resource :school_group
@@ -71,7 +72,7 @@ module EnergyTariffs
     def update
       if @energy_tariff.update(energy_tariff_params.merge(updated_by: current_user))
         EnergyTariffDefaultPricesCreator.new(@energy_tariff).process
-        redirect_to polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_prices])
+        redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_prices])
       else
         render :edit
       end
@@ -81,7 +82,7 @@ module EnergyTariffs
     end
 
     def destroy
-      redirect_path = polymorphic_path(@energy_tariff.tariff_holder_route + [:energy_tariffs])
+      redirect_path = energy_tariffs_path(@energy_tariff)
       @energy_tariff.destroy
       redirect_to redirect_path
     end
@@ -89,11 +90,12 @@ module EnergyTariffs
     private
 
     def redirect_to_choose_type_energy_tariff_path
-      redirect_to polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff], action: :choose_type)
+      redirect_to energy_tariffs_path(@energy_tariff, [], { action: :choose_type })
     end
 
     def redirect_to_energy_tariff_prices_path
-      redirect_to polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_prices])
+      # redirect_to polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_prices])
+      redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_prices])
     end
 
     def set_breadcrumbs

@@ -2,6 +2,7 @@ module EnergyTariffs
   class EnergyTariffChargesController < ApplicationController
     include Adminable
     include EnergyTariffable
+    include EnergyTariffsHelper
 
     load_and_authorize_resource :school
     load_and_authorize_resource :school_group
@@ -22,7 +23,8 @@ module EnergyTariffs
           @energy_tariff.energy_tariff_charges.destroy_all
           @energy_tariff_charges.each(&:save!)
         end
-        redirect_to polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff])
+
+        redirect_to energy_tariffs_path(@energy_tariff)
       else
         render :index
       end

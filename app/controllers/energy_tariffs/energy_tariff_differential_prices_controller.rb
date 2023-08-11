@@ -2,6 +2,7 @@ module EnergyTariffs
   class EnergyTariffDifferentialPricesController < ApplicationController
     include Adminable
     include EnergyTariffable
+    include EnergyTariffsHelper
 
     load_and_authorize_resource :school
     load_and_authorize_resource :school_group
@@ -46,7 +47,7 @@ module EnergyTariffs
       respond_to do |format|
         if @energy_tariff_price.update(energy_tariff_price_params)
           format.html do
-            redirect_to polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_differential_prices])
+            redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_prices])
           end
           format.js
         else
@@ -58,7 +59,7 @@ module EnergyTariffs
 
     def destroy
       @energy_tariff.energy_tariff_prices.find(params[:id]).destroy
-      redirect_to polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_differential_prices])
+      redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_prices])
     end
 
     private
