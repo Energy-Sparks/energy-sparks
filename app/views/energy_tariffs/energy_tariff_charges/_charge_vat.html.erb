@@ -10,7 +10,7 @@
       <%= t('schools.user_tariff_charges.charge_vat.rate') %>
     </td>
     <td class="value">
-      <%= f.select :vat_rate, options_for_select(['0%', '5%', '20%'], energy_tariff.vat_rate), {required: :true}, { class: 'form-control' } %>
+      <%= f.select :vat_rate, options_for_select(['0', '5', '20'], energy_tariff.vat_rate), {required: :true}, { class: 'form-control' } %>
     </td>
     <td class="units">
     </td>

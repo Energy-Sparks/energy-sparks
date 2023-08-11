@@ -40,7 +40,7 @@ module EnergyTariffs
     end
 
     def redirect_to_edit_energy_tariff_flat_prices_path
-      redirect_to polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_flat_prices])
+      redirect_to edit_polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_flat_prices])
     end
 
     def redirect_energy_tariff_flat_prices_path
