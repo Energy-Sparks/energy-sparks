@@ -50,11 +50,7 @@ module EnergyTariffs
     end
 
     def redirect_to_edit_energy_tariff_flat_price_path
-      # case @energy_tariff.tariff_holder_type
-      # when 'School' then redirect_to edit_school_energy_tariff_energy_tariff_flat_price_path(@school, @energy_tariff, @energy_tariff.energy_tariff_prices.first)
-      # when 'SchoolGroup' then redirect_to edit_school_group_energy_tariff_energy_tariff_flat_price_path(@school_group, @energy_tariff, @energy_tariff.energy_tariff_prices.first)
-      # when 'SiteSettings' then redirect_to edit_admin_settings_energy_tariff_energy_tariff_flat_price_path(@energy_tariff, @energy_tariff.energy_tariff_prices.first)
-      # end
+      redirect_to edit_polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_flat_price], id: @energy_tariff.energy_tariff_prices.first)
     end
 
     def redirect_to_new_energy_tariff_flat_price_path
