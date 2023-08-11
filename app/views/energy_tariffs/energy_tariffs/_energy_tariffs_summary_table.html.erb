@@ -31,9 +31,20 @@
         <td><%= energy_tariff.end_date ? energy_tariff.end_date&.to_s(:es_compact) : t('schools.user_tariffs.summary_table.no_end_date') %></td>
         <td>
           <% if show_summary_table_actions_for?(energy_tariff) %>
-            <%= link_to t('schools.user_tariffs.tariff_partial.full_details'), polymorphic_tariff_path_for(energy_tariff), class: 'btn' if can? :download, EnergyTariff  %>
-            <%= link_to t('common.labels.edit'), polymorphic_tariff_path_for(energy_tariff, :edit), class: 'btn' %>
-            <%= link_to t('common.labels.delete'), polymorphic_tariff_path_for(energy_tariff), method: :delete, data: {confirm: t('common.confirm') }, class: 'btn btn-danger' %>
+            <%= link_to t('schools.user_tariffs.tariff_partial.full_details'),
+                polymorphic_path(energy_tariff.tariff_holder_route + [energy_tariff]),
+                class: 'btn' if can? :download, EnergyTariff
+            %>
+            <%= link_to t('common.labels.edit'),
+                edit_polymorphic_path(energy_tariff.tariff_holder_route + [energy_tariff]),
+                class: 'btn'
+            %>
+            <%= link_to t('common.labels.delete'),
+                polymorphic_path(energy_tariff.tariff_holder_route + [energy_tariff]),
+                method: :delete,
+                data: {confirm: t('common.confirm') },
+                class: 'btn btn-danger'
+                %>
           <% end %>
         </td>
       </tr>

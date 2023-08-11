@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'energy tariffs', type: :system do
+describe 'school energy tariffs', type: :system do
   let!(:school) { create_active_school(name: "Big School")}
   let!(:school_2)                   { create_active_school(name: "Small School")}
   let!(:electricity_meter)        { create(:electricity_meter, school: school, mpan_mprn: '12345678901234') }

@@ -6,14 +6,6 @@ module EnergyTariffsHelper
     false
   end
 
-  def polymorphic_tariff_path_for(energy_tariff, action = nil)
-    [action].compact + if energy_tariff.tariff_holder_type == 'SiteSettings'
-                         [:admin, :settings, energy_tariff]
-                       else
-                         [energy_tariff.tariff_holder, energy_tariff]
-                       end
-  end
-
   def site_settings_page?
     request.path.start_with?('/admin/settings')
   end
