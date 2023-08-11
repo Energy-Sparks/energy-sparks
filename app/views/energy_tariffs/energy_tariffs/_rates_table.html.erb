@@ -10,7 +10,7 @@
         <% if allow_edits %>
           <td class="value">
             <% edit_path =  polymorphic_path(energy_tariff.tariff_holder_route + [energy_tariff, :energy_tariff_differential_price], action: 'edit', id: energy_tariff_price.id) %>
-            <%= link_to t('common.labels.edit'), edit_path , { class: 'btn energy-tariff-show-button', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window' } %>
+            <%= link_to t('common.labels.edit'), edit_path, { class: 'btn energy-tariff-show-button', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window' } %>
           </td>
         <% end %>
       </tr>

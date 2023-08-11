@@ -30,14 +30,6 @@ module EnergyTariffs
       end
     end
 
-    def redirect_to_energy_tariff_charges_path
-      case @energy_tariff.tariff_holder_type
-      when 'School' then redirect_to school_energy_tariff_energy_tariff_charges_path(@school, @energy_tariff)
-      when 'SchoolGroup' then redirect_to school_group_energy_tariff_energy_tariff_charges_path(@school_group, @energy_tariff)
-      when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_charges_path(@energy_tariff)
-      end
-    end
-
     def edit
       @energy_tariff_price = @energy_tariff.energy_tariff_prices.find(params[:id])
     end
@@ -45,11 +37,7 @@ module EnergyTariffs
     def update
       @energy_tariff_price = @energy_tariff.energy_tariff_prices.find(params[:id])
       if @energy_tariff_price.update(energy_tariff_price_params)
-        case @energy_tariff.tariff_holder_type
-        when 'School' then redirect_to school_energy_tariff_energy_tariff_charges_path(@school, @energy_tariff)
-        when 'SchoolGroup' then redirect_to school_group_energy_tariff_energy_tariff_charges_path(@school_group, @energy_tariff)
-        when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_charges_path(@energy_tariff)
-        end
+        redirect_to_energy_tariff_charges_path
       else
         render :edit
       end
@@ -57,20 +45,20 @@ module EnergyTariffs
 
     private
 
+    def redirect_to_energy_tariff_charges_path
+      redirect_to polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_charges])
+    end
+
     def redirect_to_edit_energy_tariff_flat_price_path
-      case @energy_tariff.tariff_holder_type
-      when 'School' then redirect_to edit_school_energy_tariff_energy_tariff_flat_price_path(@school, @energy_tariff, @energy_tariff.energy_tariff_prices.first)
-      when 'SchoolGroup' then redirect_to edit_school_group_energy_tariff_energy_tariff_flat_price_path(@school_group, @energy_tariff, @energy_tariff.energy_tariff_prices.first)
-      when 'SiteSettings' then redirect_to edit_admin_settings_energy_tariff_energy_tariff_flat_price_path(@energy_tariff, @energy_tariff.energy_tariff_prices.first)
-      end
+      # case @energy_tariff.tariff_holder_type
+      # when 'School' then redirect_to edit_school_energy_tariff_energy_tariff_flat_price_path(@school, @energy_tariff, @energy_tariff.energy_tariff_prices.first)
+      # when 'SchoolGroup' then redirect_to edit_school_group_energy_tariff_energy_tariff_flat_price_path(@school_group, @energy_tariff, @energy_tariff.energy_tariff_prices.first)
+      # when 'SiteSettings' then redirect_to edit_admin_settings_energy_tariff_energy_tariff_flat_price_path(@energy_tariff, @energy_tariff.energy_tariff_prices.first)
+      # end
     end
 
     def redirect_to_new_energy_tariff_flat_price_path
-      case @energy_tariff.tariff_holder_type
-      when 'School' then redirect_to new_school_energy_tariff_energy_tariff_flat_price_path(@school, @energy_tariff)
-      when 'SchoolGroup' then redirect_to new_school_group_energy_tariff_energy_tariff_flat_price_path(@school_group, @energy_tariff)
-      when 'SiteSettings' then redirect_to new_admin_settings_energy_tariff_energy_tariff_flat_price_path(@energy_tariff)
-      end
+      redirect_to polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_flat_price], action: :new)
     end
 
     def default_attributes

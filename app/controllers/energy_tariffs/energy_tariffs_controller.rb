@@ -71,11 +71,7 @@ module EnergyTariffs
     def update
       if @energy_tariff.update(energy_tariff_params.merge(updated_by: current_user))
         EnergyTariffDefaultPricesCreator.new(@energy_tariff).process
-        case @energy_tariff.tariff_holder_type
-        when 'School' then redirect_to school_energy_tariff_energy_tariff_prices_path(@school, @energy_tariff)
-        when 'SchoolGroup' then redirect_to school_group_energy_tariff_energy_tariff_prices_path(@school_group, @energy_tariff)
-        when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_prices_path(@energy_tariff)
-        end
+        redirect_to polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_prices])
       else
         render :edit
       end
@@ -85,12 +81,7 @@ module EnergyTariffs
     end
 
     def destroy
-      redirect_path = case @energy_tariff.tariff_holder_type
-                      when 'School' then school_energy_tariffs_path(@school)
-                      when 'SchoolGroup' then school_group_energy_tariffs_path(@school_group)
-                      when 'SiteSettings' then admin_settings_energy_tariffs_path
-                      end
-
+      redirect_path = polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff])
       @energy_tariff.destroy
       redirect_to redirect_path
     end
@@ -98,19 +89,11 @@ module EnergyTariffs
     private
 
     def redirect_to_choose_type_energy_tariff_path
-      case @energy_tariff.tariff_holder_type
-      when 'School' then redirect_to choose_type_school_energy_tariff_path(@school, @energy_tariff)
-      when 'SchoolGroup' then redirect_to choose_type_school_group_energy_tariff_path(@school_group, @energy_tariff)
-      when 'SiteSettings' then redirect_to choose_type_admin_settings_energy_tariff_path(@energy_tariff)
-      end
+      redirect_to polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff], action: :choose_type)
     end
 
     def redirect_to_energy_tariff_prices_path
-      case @energy_tariff.tariff_holder_type
-      when 'School' then redirect_to school_energy_tariff_energy_tariff_prices_path(@school, @energy_tariff)
-      when 'SchoolGroup' then redirect_to school_group_energy_tariff_energy_tariff_prices_path(@school_group, @energy_tariff)
-      when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_prices_path(@energy_tariff)
-      end
+      redirect_to polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_prices])
     end
 
     def set_breadcrumbs
