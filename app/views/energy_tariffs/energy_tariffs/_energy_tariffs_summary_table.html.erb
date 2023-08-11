@@ -32,15 +32,15 @@
         <td>
           <% if show_summary_table_actions_for?(energy_tariff) %>
             <%= link_to t('schools.user_tariffs.tariff_partial.full_details'),
-                polymorphic_path(energy_tariff.tariff_holder_route + [energy_tariff]),
+                energy_tariffs_path(energy_tariff),
                 class: 'btn' if can? :download, EnergyTariff
             %>
             <%= link_to t('common.labels.edit'),
-                edit_polymorphic_path(energy_tariff.tariff_holder_route + [energy_tariff]),
+                energy_tariffs_path(energy_tariff, [], { action: :edit }),
                 class: 'btn'
             %>
             <%= link_to t('common.labels.delete'),
-                polymorphic_path(energy_tariff.tariff_holder_route + [energy_tariff]),
+                energy_tariffs_path(energy_tariff),
                 method: :delete,
                 data: {confirm: t('common.confirm') },
                 class: 'btn btn-danger'

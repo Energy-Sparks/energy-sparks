@@ -46,8 +46,8 @@
   <br/>
   <br/>
 
-  <%= link_to t('common.labels.previous'), polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_charge]), class: 'btn' %>
-  <%= link_to t('common.labels.finished'), polymorphic_path(@energy_tariff.tariff_holder_route + [:energy_tariffs]), class: 'btn' %>
+  <%= link_to t('common.labels.previous'), energy_tariffs_path(@energy_tariff, [:energy_tariff_charge]), class: 'btn' %>
+  <%= link_to t('common.labels.finished'), energy_tariffs_path(@energy_tariff, [], { energy_tariff_index: true }), class: 'btn' %>
 
   <div class="hidden">
     <% if can? :download, EnergyTariff %>

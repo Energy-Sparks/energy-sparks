@@ -14,7 +14,7 @@
 
   <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
 
-  <% form_url = polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_charges]) %>
+  <% form_url = energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]) %>
 
   <%= simple_form_for :energy_tariff_charges, url: form_url do |f| %>
 
@@ -26,7 +26,7 @@
 
     <br/>
 
-    <% path = polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_prices]) %>
+    <% path = energy_tariffs_path(@energy_tariff, [:energy_tariff_prices]) %>
 
     <%= link_to t('common.labels.previous'), path, class: 'btn' %>
     <%= f.submit t('common.labels.next'), class: 'btn btn-primary' %>

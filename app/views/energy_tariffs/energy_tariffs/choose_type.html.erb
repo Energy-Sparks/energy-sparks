@@ -6,8 +6,7 @@
 
   <p><%= t('schools.user_tariffs.choose_type.is_this_a_simple_flat_rate') %></p>
 
-  <% form_url = polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff]) %>
-
+  <% form_url = energy_tariffs_path(@energy_tariff) %>
   <%= simple_form_for @energy_tariff, url: form_url do |f| %>
     <%= f.hidden_field :tariff_type, value: 'flat_rate' %>
     <%= submit_tag t('schools.user_tariffs.choose_type.simple'), class: 'btn btn-info' %>

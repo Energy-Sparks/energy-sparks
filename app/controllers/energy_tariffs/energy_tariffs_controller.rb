@@ -82,7 +82,7 @@ module EnergyTariffs
     end
 
     def destroy
-      redirect_path = energy_tariffs_path(@energy_tariff)
+      redirect_path = energy_tariffs_path(@energy_tariff, [], { energy_tariff_index: true })
       @energy_tariff.destroy
       redirect_to redirect_path
     end
