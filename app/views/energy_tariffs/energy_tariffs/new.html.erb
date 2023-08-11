@@ -5,8 +5,8 @@
   <br/>
 
   <%= simple_form_for @energy_tariff.tariff_holder_route + [@energy_tariff] do |f| %>
-    <%= f.hidden_field :meter_type, value: @energy_tariff.meter_type if @energy_tariff.tariff_holder_type == 'School' %>
-    <%= f.hidden_field :tariff_type, value: @energy_tariff.tariff_type if @energy_tariff.tariff_holder_type == 'School' %>
+    <%= f.hidden_field :meter_type, value: @energy_tariff.meter_type %>
+    <%= f.hidden_field :tariff_type, value: @energy_tariff.tariff_type %>
     <% @energy_tariff.meters.each do |meter| %>
       <%= f.hidden_field :meter_ids, value: meter.id, multiple: true %>
     <% end %>
