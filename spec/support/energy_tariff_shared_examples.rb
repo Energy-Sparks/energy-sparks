@@ -106,12 +106,14 @@ RSpec.shared_examples "the school energy tariff forms well navigated" do
 
       click_link('Add electricity tariff')
       expect(page).to have_content('Select meters for this tariff')
+      expect(page).to have_content('Will this tariff apply to all electricity meters at the school or just specific meters?')
 
       check('specific_meters')
       uncheck(electricity_meter.mpan_mprn.to_s)
 
       click_button('Next')
 
+      expect(page).to have_content('Please select at least one meter for this tariff. Or uncheck option to apply tariff to all meters')
       expect(page).to have_content('Select meters for this tariff')
       expect(page).to have_content('Please select at least one meter')
     end

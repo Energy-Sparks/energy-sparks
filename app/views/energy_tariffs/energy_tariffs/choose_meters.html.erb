@@ -6,13 +6,12 @@
     <div class="row">
       <div class="col-md-12">
         <p>
-          Will this tariff apply to all <%= params[:meter_type] %> meters at the school or
-          just specific meters?
+          <%= t('schools.user_tariffs.choose_meters.specific_meters_prompt', fuel_type: params[:meter_type]) %>
         </p>
         <div class="form-check">
           <div class="custom-control custom-checkbox">
             <%= check_box_tag :specific_meters, 'yes', false, {class: 'specific-meters custom-control-input', data: {reveals: '.meter-choices'}} %>
-            <%= label_tag :specific_meters, "Just specific meters. (Tick to choose them)", class: 'custom-control-label' %>
+            <%= label_tag :specific_meters, t('schools.user_tariffs.choose_meters.specific_meters_label'), class: 'custom-control-label' %>
           </div>
         </div>
       </div>

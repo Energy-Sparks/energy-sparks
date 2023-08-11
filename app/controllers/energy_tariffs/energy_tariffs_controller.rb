@@ -32,7 +32,7 @@ module EnergyTariffs
                        end
 
       if require_meters?
-        redirect_back fallback_location: school_energy_tariffs_path(@school), notice: "Please select at least one meter for this tariff. Or uncheck option to apply tariff to all meters"
+        redirect_back fallback_location: school_energy_tariffs_path(@school), notice: I18n.t('schools.user_tariffs.choose_meters.missing_meters')
       end
     end
 
