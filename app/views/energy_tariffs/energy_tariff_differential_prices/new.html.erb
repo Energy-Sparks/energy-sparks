@@ -1,9 +1,4 @@
-<% url = case @energy_tariff.tariff_holder_type
-         when 'School' then school_energy_tariff_energy_tariff_differential_prices_path(@school, @energy_tariff)
-         when 'SchoolGroup' then school_group_energy_tariff_energy_tariff_differential_prices_path(@school_group, @energy_tariff)
-         when 'SiteSettings' then admin_settings_energy_tariff_energy_tariff_differential_prices_path(@energy_tariff)
-         end
-%>
+<% url = polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_differential_prices]) %>
 
 <%= simple_form_for @energy_tariff_price, url: url, remote: true do |f| %>
   <%= render 'form', school: @school, energy_tariff: @energy_tariff, energy_tariff_price: @energy_tariff_price, f: f %>

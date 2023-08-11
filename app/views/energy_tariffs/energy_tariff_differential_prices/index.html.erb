@@ -24,20 +24,9 @@
 
   <br/>
 
-  <% edit_path = case @energy_tariff.tariff_holder_type
-                 when 'School' then edit_school_energy_tariff_path(@school, @energy_tariff)
-                 when 'SchoolGroup' then edit_school_group_energy_tariff_path(@school_group, @energy_tariff)
-                 when 'SiteSettings' then edit_admin_settings_energy_tariff_path(@energy_tariff)
-                 end
-  %>
+  <% edit_path = edit_polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff]) %>
   <%= link_to t('common.labels.previous'), edit_path, class: 'btn' %>
 
-  <% next_path = case @energy_tariff.tariff_holder_type
-                 when 'School' then school_energy_tariff_energy_tariff_charges_path(@school, @energy_tariff)
-                 when 'SchoolGroup' then school_group_energy_tariff_energy_tariff_charges_path(@school_group, @energy_tariff)
-                 when 'SiteSettings' then admin_settings_energy_tariff_energy_tariff_charges_path(@energy_tariff)
-                 end
-  %>
+  <% next_path = polymorphic_path(@energy_tariff.tariff_holder_route + [@energy_tariff, :energy_tariff_charges]) %>
   <%= link_to t('common.labels.next'), next_path, class: 'btn' %>
-
 </div>
