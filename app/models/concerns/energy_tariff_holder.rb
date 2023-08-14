@@ -26,6 +26,12 @@ module EnergyTariffHolder
     nil
   end
 
+  #Does it currently have any of that type
+  def any_tariffs_of_type?(meter_type, source=:manually_entered)
+    energy_tariffs.enabled.where(meter_type: meter_type, source: source).any?
+  end
+
+  #Can if have tariffs of a type
   def holds_tariffs_of_type?(_meter_type)
     true
   end

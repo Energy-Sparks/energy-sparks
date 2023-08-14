@@ -7,7 +7,7 @@
 
       <div class="row">
         <div class="col">
-          <% if @electricity_meters&.any? %>
+          <% if @tariff_holder.holds_tariffs_of_type?(:electricity) %>
             <h4>
               <span class="<%= fuel_type_class(:electricity) %>">
                 <%= fa_icon( fuel_type_icon(:electricity) ) %>
@@ -15,8 +15,8 @@
               <%= t('schools.user_tariffs.index.electricity.header') %>
             </h4>
 
-            <% if @electricity_tariffs&.any? %>
-              <%= render 'energy_tariffs_summary_table', meter_type: :electricity, tariffs: @electricity_tariffs %>
+            <% if @tariff_holder.any_tariffs_of_type?(:electricity) %>
+              <%= render 'energy_tariffs_summary_table', meter_type: :electricity, tariffs: sorted_tariffs(@tariff_holder, :electricity) %>
             <% else %>
               <p><%= t('schools.user_tariffs.index.electricity.there_are_no_electricity_tariffs_set_up_yet') %></p>
               <p>
@@ -28,7 +28,7 @@
               </p>
             <% end %>
             <div class="mt-4">
-              <%= link_to t('schools.user_tariffs.index.electricity.add_label'), choose_meters_school_energy_tariffs_path(@tariff_holder, meter_type: :electricity), class: 'btn btn-success' %>
+              <%= link_to t("schools.user_tariffs.index.electricity.add_label"), new_energy_tariff_path(@tariff_holder, meter_type: :electricity), class: 'btn btn-success' %>
             </div>
           <% end %>
         </div>
@@ -36,15 +36,15 @@
 
       <div class="row mt-4">
         <div class="col">
-          <% if @gas_meters&.any? %>
+          <% if @tariff_holder.holds_tariffs_of_type?(:gas) %>
             <h4>
               <span class="<%= fuel_type_class(:gas) %>">
                 <%= fa_icon( fuel_type_icon(:gas) ) %>
               </span>
               <%= t('schools.user_tariffs.index.gas.header') %>
             </h4>
-            <% if @gas_tariffs.any? %>
-              <%= render 'energy_tariffs_summary_table', meter_type: :gas, tariffs: @gas_tariffs %>
+            <% if @tariff_holder.any_tariffs_of_type?(:gas) %>
+              <%= render 'energy_tariffs_summary_table', meter_type: :gas, tariffs: sorted_tariffs(@tariff_holder, :gas) %>
             <% else %>
               <p><%= t('schools.user_tariffs.index.gas.there_are_no_gas_tariffs_set_up_yet') %></p>
               <p>
@@ -56,7 +56,7 @@
               </p>
             <% end %>
             <div>
-              <%= link_to t('schools.user_tariffs.index.gas.add_label'), choose_meters_school_energy_tariffs_path(@tariff_holder, meter_type: :gas), class: 'btn btn-success' %>
+              <%= link_to t("schools.user_tariffs.index.gas.add_label"), new_energy_tariff_path(@tariff_holder, meter_type: :gas), class: 'btn btn-success' %>
             </div>
           <% end %>
         </div>

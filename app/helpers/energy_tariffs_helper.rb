@@ -7,12 +7,24 @@ module EnergyTariffsHelper
     end
   end
 
+  def new_energy_tariff_path(tariff_holder, options = {})
+    if tariff_holder.school?
+      choose_meters_school_energy_tariffs_path(tariff_holder, options)
+    else
+      polymorphic_path(tariff_holder_route(tariff_holder) + [:energy_tariff], options.merge!({ action: :new }))
+    end
+  end
+
   def tariff_holder_route(tariff_holder)
     if tariff_holder.site_settings?
       [:admin, :settings]
     else
       [tariff_holder]
     end
+  end
+
+  def sorted_tariffs(tariff_holder, meter_type, source = :manually_entered)
+    tariff_holder.energy_tariffs.where(meter_type: meter_type, source: source).by_start_date.by_name
   end
 
   def show_summary_table_actions_for?(energy_tariff)

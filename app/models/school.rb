@@ -632,7 +632,7 @@ class School < ApplicationRecord
   end
 
   def holds_tariffs_of_type?(meter_type)
-    meters.where(meter_type).any?
+    meters.where(meter_type: meter_type).any?
   end
 
   private

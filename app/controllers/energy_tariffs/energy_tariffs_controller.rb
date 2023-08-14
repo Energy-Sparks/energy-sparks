@@ -16,9 +16,7 @@ module EnergyTariffs
 
       if @tariff_holder.school?
         @electricity_meters = @tariff_holder.meters.electricity
-        @electricity_tariffs = @tariff_holder.energy_tariffs.electricity.manually_entered.by_start_date.by_name
         @gas_meters = @tariff_holder.meters.gas
-        @gas_tariffs = @tariff_holder.energy_tariffs.gas.manually_entered.by_start_date.by_name
       end
     end
 

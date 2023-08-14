@@ -9,10 +9,10 @@
             </span>
             <%= t("schools.user_tariffs.index.#{meter_type}.header") %>
           </h4>
-          <%= render 'energy_tariffs_summary_table', default: default, meter_type: meter_type, tariffs: SiteSettings.current.energy_tariffs.where(meter_type: meter_type) %>
+          <%= render 'energy_tariffs_summary_table', default: default, meter_type: meter_type, tariffs: sorted_tariffs(@tariff_holder, meter_type) %>
           <% if site_settings_page? %>
             <div class="mt-4">
-              <%= link_to t("schools.user_tariffs.index.#{meter_type}.add_label"), new_admin_settings_energy_tariff_path(meter_type: meter_type), class: 'btn btn-success' %>
+              <%= link_to t("schools.user_tariffs.index.#{meter_type}.add_label"), new_energy_tariff_path(@tariff_holder, meter_type: meter_type), class: 'btn btn-success' %>
             </div>
           <% end %>
         </div>
