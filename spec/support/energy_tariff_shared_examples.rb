@@ -1,8 +1,12 @@
 RSpec.shared_examples "the user does not have access to the tariff editor" do
   it 'redirects away from the editor' do
-    visit school_energy_tariffs_path(school)
+    visit path
     if current_user && current_user.school
-      expect(current_path).to eq("/schools/#{current_user.school.slug}")
+      if current_user.pupil?
+        expect(current_path).to eq("/pupils/schools/#{current_user.school.slug}")
+      else
+        expect(current_path).to eq("/schools/#{current_user.school.slug}")
+      end
     else
       expect(current_path).to eq('/users/sign_in')
     end
