@@ -22,9 +22,7 @@
 </nav>
 <div class="tab-content" id="nav-tabContent">
   <div id="nav-user-tariffs" role="tabpanel" aria-labelledby="nav-user-tariffs-tab" class="tab-pane fade show active">
-    <%= render 'energy_tariffs_tab_school' if @tariff_holder.school? %>
-    <%= render 'energy_tariffs_tab_school_groups' if @tariff_holder.school_group? %>
-    <%= render 'energy_tariffs_tab_site_settings', default: false if @tariff_holder.site_settings? %>
+    <%= render 'energy_tariffs_tab', default: false, tariff_holder: @tariff_holder %>
   </div>
   <% if @tariff_holder.school? && any_smart_meters?(@tariff_holder) %>
     <div id="nav-smart-meter-tariffs" role="tabpanel" aria-labelledby="nav-smart-meter-tariffs-tab" class="tab-pane fade">
@@ -33,8 +31,7 @@
   <% end %>
   <% if @tariff_holder.school? || @tariff_holder.school_group? %>
     <div id="nav-default-tariffs" role="tabpanel" aria-labelledby="nav-default-tariffs-tab" class="tab-pane fade">
-      <%= render 'default_tariffs_tab_school' if @tariff_holder.school? %>
-      <%= render 'energy_tariffs_tab_site_settings', default: true if @tariff_holder.school_group? %>
+      <%= render 'energy_tariffs_tab', default: true, tariff_holder: @tariff_holder.parent_tariff_holder %>
     </div>
   <% end %>
 </div>

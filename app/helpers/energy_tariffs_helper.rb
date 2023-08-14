@@ -23,6 +23,10 @@ module EnergyTariffsHelper
     end
   end
 
+  def list_of_tariff_types(default = false)
+    default == true ? Meter::MAIN_METER_TYPES : EnergyTariff.meter_types.keys
+  end
+
   def sorted_tariffs(tariff_holder, meter_type, source = :manually_entered)
     tariff_holder.energy_tariffs.where(meter_type: meter_type, source: source).by_start_date.by_name
   end

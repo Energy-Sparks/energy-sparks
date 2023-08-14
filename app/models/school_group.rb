@@ -169,7 +169,7 @@ class SchoolGroup < ApplicationRecord
   end
 
   def holds_tariffs_of_type?(meter_type)
-    Meter.MAIN_METER_TYPES.include?(meter_type)
+    Meter::MAIN_METER_TYPES.include?(meter_type.to_sym)
   end
 
   private

@@ -85,6 +85,7 @@ RSpec.shared_examples "a gas tariff editor with no meter selection" do
     expect(page).to have_content('My First Gas Tariff')
 
     energy_tariff = EnergyTariff.last
+    expect(energy_tariff.enabled).to be true
     expect(energy_tariff.meter_type.to_sym).to eq(:gas)
     expect(energy_tariff.tariff_holder_type).to eq(tariff_holder_type)
     expect(energy_tariff.tariff_holder).to eq(tariff_holder)
@@ -119,6 +120,7 @@ RSpec.shared_examples "a gas tariff editor with meter selection" do
     click_button('Next')
 
     energy_tariff = EnergyTariff.last
+    expect(energy_tariff.enabled).to be true
     expect(energy_tariff.meter_type.to_sym).to eq(:gas)
     expect(energy_tariff.tariff_holder_type).to eq('School')
     expect(energy_tariff.tariff_holder).to eq(school)
@@ -180,6 +182,7 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).to have_content('Manage and view tariffs')
 
     energy_tariff = EnergyTariff.last
+    expect(energy_tariff.enabled).to be true
     expect(energy_tariff.meter_type.to_sym).to eq(:electricity)
     expect(energy_tariff.tariff_holder_type).to eq(tariff_holder_type)
     expect(energy_tariff.tariff_holder).to eq(tariff_holder)
@@ -234,6 +237,7 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).to have_content('Manage and view tariffs')
 
     energy_tariff = EnergyTariff.last
+    expect(energy_tariff.enabled).to be true
     expect(energy_tariff.meter_type.to_sym).to eq(:electricity)
     expect(energy_tariff.tariff_holder_type).to eq(tariff_holder_type)
     expect(energy_tariff.tariff_holder).to eq(tariff_holder)
@@ -293,6 +297,7 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).to have_content('Tariff details')
 
     energy_tariff = EnergyTariff.last
+    expect(energy_tariff.enabled).to be true
     expect(energy_tariff.meter_type.to_sym).to eq(:electricity)
     expect(energy_tariff.tariff_holder_type).to eq(tariff_holder_type)
     expect(energy_tariff.tariff_holder).to eq(tariff_holder)
@@ -340,6 +345,7 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     click_button('Next')
 
     energy_tariff = EnergyTariff.last
+    expect(energy_tariff.enabled).to be true
     expect(energy_tariff.meter_type.to_sym).to eq(:electricity)
     expect(energy_tariff.tariff_holder_type).to eq('School')
     expect(energy_tariff.tariff_holder).to eq(school)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_27_155443) do
+ActiveRecord::Schema.define(version: 2023_08_14_163714) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -805,7 +805,7 @@ ActiveRecord::Schema.define(version: 2023_07_27_155443) do
     t.text "name", null: false
     t.date "start_date"
     t.date "end_date"
-    t.boolean "enabled", default: false
+    t.boolean "enabled", default: true
     t.boolean "ccl", default: false
     t.boolean "tnuos", default: false
     t.integer "vat_rate"
