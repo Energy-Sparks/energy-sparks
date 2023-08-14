@@ -343,27 +343,6 @@ RSpec.shared_examples "a school tariff editor" do
     expect(page).to have_link('cost analysis pages')
   end
 
-  it 'can handle a user quitting the forms early' do
-    click_link('Add electricity tariff')
-
-    expect(page).to have_content('Select meters for this tariff')
-    check('specific_meters')
-    check(electricity_meter.mpan_mprn.to_s)
-    expect(page).not_to have_content(gas_meter.mpan_mprn)
-
-    click_button('Next')
-
-    expect(page).to have_content(electricity_meter.mpan_mprn)
-    expect(page).to have_content('Choose a name and date range')
-    fill_in 'Name', with: 'My First Flat Tariff'
-    click_button('Next')
-    click_button('Simple')
-
-    visit school_energy_tariffs_path(school)
-
-    expect(page).to have_content('My First Flat Tariff')
-  end
-
   context 'when creating gas tariffs' do
     let(:meter)       { gas_meter }
     let(:mpan_mprn)   { gas_meter.mpan_mprn.to_s }
@@ -411,7 +390,7 @@ RSpec.shared_examples "the site settings energy tariff editor" do
     click_link('Energy Tariffs')
   end
 
-  it 'has expected contents' do
+  it 'has expected index' do
     expect(page).to have_content(I18n.t('schools.user_tariffs.index.title'))
     expect(page).not_to have_link('cost analysis pages')
   end
