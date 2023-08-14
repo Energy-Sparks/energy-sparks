@@ -16,7 +16,7 @@
             </h4>
 
             <% if @electricity_tariffs&.any? %>
-              <%= render 'energy_tariffs_summary_table', tariffs: @electricity_tariffs %>
+              <%= render 'energy_tariffs_summary_table', meter_type: :electricity, tariffs: @electricity_tariffs %>
             <% else %>
               <p><%= t('schools.user_tariffs.index.electricity.there_are_no_electricity_tariffs_set_up_yet') %></p>
               <p>
@@ -44,7 +44,7 @@
               <%= t('schools.user_tariffs.index.gas.header') %>
             </h4>
             <% if @gas_tariffs.any? %>
-              <%= render 'energy_tariffs_summary_table', tariffs: @gas_tariffs %>
+              <%= render 'energy_tariffs_summary_table', meter_type: :gas, tariffs: @gas_tariffs %>
             <% else %>
               <p><%= t('schools.user_tariffs.index.gas.there_are_no_gas_tariffs_set_up_yet') %></p>
               <p>

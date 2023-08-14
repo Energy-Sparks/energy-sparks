@@ -14,6 +14,7 @@ FactoryBot.define do
     factory :pupil do
       role { :pupil }
       pupil_password { 'test' }
+      school
     end
 
     factory :staff do
@@ -37,6 +38,7 @@ FactoryBot.define do
     factory :volunteer do
       name { "Volunteer"}
       role { :volunteer }
+      school
     end
 
     factory :analytics do
