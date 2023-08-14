@@ -32,6 +32,7 @@ RSpec.shared_examples "the school energy tariff forms well navigated" do
       check('999888777')
       click_button('Next')
 
+      expect(page).to have_content('999888777')
       expect(page).to have_content('Choose a name and date range')
 
       fill_in 'Name', with: 'My First Gas Tariff'
@@ -89,16 +90,30 @@ RSpec.shared_examples "the school energy tariff forms well navigated" do
       click_link('Manage tariffs')
     end
 
-    it 'requires a meter to be selected' do
+    it 'doesnt require a meter to be selected by default' do
       expect(current_path).to eq("/schools/#{school.slug}/energy_tariffs")
 
       click_link('Add electricity tariff')
-
       expect(page).to have_content('Select meters for this tariff')
-      expect(page).to have_content(electricity_meter.mpan_mprn)
-      uncheck(electricity_meter.mpan_mprn.to_s)
+      expect(page).to have_unchecked_field('specific_meters')
       click_button('Next')
 
+      expect(page).to have_content('Choose a name and date range')
+    end
+
+    it 'requires a meter to be selected if we check the box' do
+      expect(current_path).to eq("/schools/#{school.slug}/energy_tariffs")
+
+      click_link('Add electricity tariff')
+      expect(page).to have_content('Select meters for this tariff')
+      expect(page).to have_content('Will this tariff apply to all electricity meters at the school or just specific meters?')
+
+      check('specific_meters')
+      uncheck(electricity_meter.mpan_mprn.to_s)
+
+      click_button('Next')
+
+      expect(page).to have_content('Please select at least one meter for this tariff. Or uncheck option to apply tariff to all meters')
       expect(page).to have_content('Select meters for this tariff')
       expect(page).to have_content('Please select at least one meter')
     end
@@ -109,11 +124,13 @@ RSpec.shared_examples "the school energy tariff forms well navigated" do
       click_link('Add electricity tariff')
 
       expect(page).to have_content('Select meters for this tariff')
-      expect(page).to have_content(electricity_meter.mpan_mprn)
+      check('specific_meters')
+      check(electricity_meter.mpan_mprn.to_s)
       expect(page).not_to have_content(gas_meter.mpan_mprn)
 
       click_button('Next')
 
+      expect(page).to have_content(electricity_meter.mpan_mprn)
       expect(page).to have_content('Choose a name and date range')
       fill_in 'Name', with: 'My First Flat Tariff'
       click_button('Next')
@@ -126,6 +143,8 @@ RSpec.shared_examples "the school energy tariff forms well navigated" do
 
     it 'can create a flat rate tariff with price' do
       click_link('Add electricity tariff')
+
+      check('specific_meters')
 
       check('12345678901234')
       click_button('Next')
@@ -176,6 +195,8 @@ RSpec.shared_examples "the school energy tariff forms well navigated" do
     it 'can create a tariff and add prices and charges' do
       expect(current_path).to eq("/schools/#{school.slug}/energy_tariffs")
       click_link('Add electricity tariff')
+
+      check('specific_meters')
 
       check('12345678901234')
       click_button('Next')
@@ -247,6 +268,7 @@ RSpec.shared_examples "the school energy tariff forms well navigated" do
 
       click_link('Add electricity tariff')
 
+      check('specific_meters')
       check('12345678901234')
       click_button('Next')
 

@@ -181,6 +181,10 @@ class Meter < ApplicationRecord
     name.present? ? name : mpan_mprn.to_s
   end
 
+  def mpan_mprn_and_name
+    name.present? ? "#{mpan_mprn} - #{name}" : mpan_mprn
+  end
+
   def display_name
     name.present? ? "#{display_meter_mpan_mprn} (#{name})" : display_meter_mpan_mprn
   end
