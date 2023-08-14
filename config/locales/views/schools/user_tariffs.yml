@@ -71,34 +71,6 @@ en:
         or_a_rate_which_varies_by_time_of_day: Or a rate which varies by time of day (e.g. Day/Night tariff, Economy7)
         simple: Simple
         title: Choose the type of this tariff
-      default_tariffs:
-        economic:
-          introduction_html: |-
-            <p>
-            Energy Sparks uses a simple cost model for:
-            </p>
-            <ul>
-              <li>Calculating the costs displayed on most charts and analysis across the site</li>
-              <li>Economic forecasting when doing cost-benefit analysis for suggesting improvements to your energy management</li>
-            </ul>
-            <p>
-            We only use your real tariffs as part of generating your <a href="%{advice_pages}">cost analysis pages</a>.
-            </p>
-            <p>
-            The table below summarises the tariffs we are using for your school.
-            </p>
-            <p>
-              <a href="mailto:hello@energysparks.uk">Contact us</a> if you would like the tariffs for your MAT or school updated. We will need information about the specific tariffs including the start date from when they are effective.
-            </p>
-          tariffs_table:
-            columns:
-              scope: Scope
-            labels:
-              aggregated_electricity: Electricity
-              aggregated_gas: Gas
-              global: System wide
-              school: School
-              school_group: School Group (MAT)
       edit:
         title: Edit the name and date range for this %{fuel_type} tariff
       flat_rate:
