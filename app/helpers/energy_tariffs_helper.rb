@@ -1,9 +1,17 @@
 module EnergyTariffsHelper
   def energy_tariffs_path(energy_tariff, path = [], options = {})
     if options[:energy_tariff_index] == true
-      polymorphic_path(energy_tariff.tariff_holder_route + [:energy_tariffs] + path, options)
+      polymorphic_path(tariff_holder_route(energy_tariff.tariff_holder) + [:energy_tariffs] + path, options)
     else
-      polymorphic_path(energy_tariff.tariff_holder_route + [energy_tariff] + path, options)
+      polymorphic_path(tariff_holder_route(energy_tariff.tariff_holder) + [energy_tariff] + path, options)
+    end
+  end
+
+  def tariff_holder_route(tariff_holder)
+    if tariff_holder.site_settings?
+      [:admin, :settings]
+    else
+      [tariff_holder]
     end
   end
 
