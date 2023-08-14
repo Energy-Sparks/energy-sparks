@@ -30,6 +30,10 @@ module EnergyTariffHolder
     true
   end
 
+  def tariff_holder_i18n_key
+    self.class.name.underscore&.to_sym
+  end
+
   def all_energy_tariff_attributes(meter_type = EnergyTariff.meter_types.keys)
     attributes = []
     parent = parent_tariff_holder

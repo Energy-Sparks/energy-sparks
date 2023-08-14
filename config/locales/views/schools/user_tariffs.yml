@@ -24,7 +24,8 @@ en:
         consumption_and_supply_charges: Consumption and supply charges
         other_charges: Other charges
       index:
-        introduction: Using your bill, please provide as much detail as you can about the standing charges associated with this tariff
+        introduction_school: Using your bill, please provide as much detail as you can about the standing charges associated with this tariff
+        introduction_school_group: Using your bill, please provide as much detail as you can about the standing charges associated with this tariff
         introduction_site_settings: Please provide as much detail as you can about the standing charges associated with this tariff
         title: Add standing charges for this tariff
     user_tariff_differential_prices:
@@ -35,19 +36,22 @@ en:
           value: Rate in £/kWh
       index:
         consumption_charges: Consumption charges
-        introduction: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
+        introduction_school: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
+        introduction_school_group: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         introduction_site_settings: Please provide as much detail as you can about the consumption charges associated with this tariff
         title: Add consumption charges for each time period for this tariff
     user_tariff_flat_prices:
       edit:
-        introduction: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
+        introduction_school: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
+        introduction_school_group: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         introduction_site_settings: Please provide as much detail as you can about the consumption charges associated with this tariff
         title: Edit the consumption charges for this tariff
       form:
         per_gbp_kwh: per £/kWh
         rate: Rate
       new:
-        introduction: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
+        introduction_school: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
+        introduction_school_group: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         introduction_site_settings: Please provide as much detail as you can about the consumption charges associated with this tariff
         title: Add consumption charges for this tariff
     user_tariffs:
@@ -182,7 +186,8 @@ en:
         simple_tariff: Simple tariff
         start_date: Start date
         type: Type
-      there_should_only_be_one_tariff_message: There should only be one tariff for each date period, for each meter
+      there_should_only_be_one_tariff_message_school: There should only be one tariff for each date period, for each meter
+      there_should_only_be_one_tariff_message_school_group: There should only be one tariff for each date period, for each meter
       there_should_only_be_one_tariff_message_site_settings: There should only be one tariff for each date period
       title_partial:
         heading: Tariff

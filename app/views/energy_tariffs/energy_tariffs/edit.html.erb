@@ -3,12 +3,7 @@
 <div class="energy_tariff">
 
   <p>
-    <%= case @energy_tariff.tariff_holder_type
-        when 'School' then t('schools.user_tariffs.there_should_only_be_one_tariff_message')
-        when 'SchoolGroup' then t('schools.user_tariffs.there_should_only_be_one_tariff_message')
-        when 'SiteSettings' then t('schools.user_tariffs.there_should_only_be_one_tariff_message_site_settings')
-        end
-    %>.
+    <%= t("schools.user_tariffs.there_should_only_be_one_tariff_message_#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
   </p>
   <br/>
 

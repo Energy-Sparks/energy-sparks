@@ -3,12 +3,7 @@
 <div class="energy_tariff">
 
   <p>
-    <%= case @energy_tariff.tariff_holder_type
-        when 'School' then t('schools.user_tariff_differential_prices.index.introduction')
-        when 'SchoolGroup' then t('schools.user_tariff_differential_prices.index.introduction')
-        when 'SiteSettings' then t('schools.user_tariff_differential_prices.index.introduction_site_settings')
-        end
-    %>.
+    <%= t("schools.user_tariff_differential_prices.index.introduction_#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
   </p>
   <br/>
 
