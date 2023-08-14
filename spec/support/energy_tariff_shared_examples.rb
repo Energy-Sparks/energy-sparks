@@ -17,6 +17,38 @@ RSpec.shared_examples "the user does not have access to the tariff editor" do
   end
 end
 
+RSpec.shared_examples "a tariff editor index" do
+  it 'has buttons to create new tariffs' do
+    expect(page).to have_link("Add gas tariff")
+    expect(page).to have_link("Add electricity tariff")
+  end
+
+  context 'when there are existing tariffs' do
+    include_context "with flat price electricity and gas tariffs"
+    before { refresh }
+    it 'displays the gas tariff' do
+      within '#gas-tariffs-table' do
+        expect(page).to have_content(gas_tariff.name)
+        expect(page).to have_content(gas_tariff.start_date.to_s(:es_compact))
+        expect(page).to have_content(gas_tariff.end_date.to_s(:es_compact))
+        expect(page).to have_link("Full details")
+        expect(page).to have_link("Edit")
+        expect(page).to have_link("Delete")
+      end
+    end
+    it 'displays the electricity tariff' do
+      within '#electricity-tariffs-table' do
+        expect(page).to have_content(electricity_tariff.name)
+        expect(page).to have_content(electricity_tariff.start_date.to_s(:es_compact))
+        expect(page).to have_content(electricity_tariff.end_date.to_s(:es_compact))
+        expect(page).to have_link("Full details")
+        expect(page).to have_link("Edit")
+        expect(page).to have_link("Delete")
+      end
+    end
+  end
+end
+
 RSpec.shared_examples "a gas tariff editor with no meter selection" do
   before { click_link('Add gas tariff') }
   it 'can create a flat rate tariff and add prices and charges' do
@@ -337,6 +369,12 @@ RSpec.shared_examples "a school tariff editor" do
     end
   end
 
+  context 'when viewing index' do
+    let(:tariff_holder)   { school }
+    before { visit school_energy_tariffs_path(school) }
+    it_behaves_like "a tariff editor index"
+  end
+
   it 'is navigable from the manage school menu' do
     expect(current_path).to eq("/schools/#{school.slug}/energy_tariffs")
     expect(page).to have_content(I18n.t('schools.user_tariffs.index.title'))
@@ -370,6 +408,12 @@ RSpec.shared_examples "a school group energy tariff editor" do
     end
   end
 
+  context 'when viewing index' do
+    let(:tariff_holder)   { school_group }
+    before { visit school_group_energy_tariffs_path(school_group) }
+    it_behaves_like "a tariff editor index"
+  end
+
   context 'when creating tariffs' do
     let(:tariff_index_path)   { school_group_energy_tariffs_path(school_group) }
     let(:tariff_holder)       { school_group }
@@ -388,6 +432,12 @@ RSpec.shared_examples "the site settings energy tariff editor" do
   before(:each) do
     visit admin_path
     click_link('Energy Tariffs')
+  end
+
+  context 'when viewing index' do
+    let(:tariff_holder)   { SiteSettings.current }
+    before { visit admin_settings_energy_tariffs_path }
+    it_behaves_like "a tariff editor index"
   end
 
   it 'has expected index' do
