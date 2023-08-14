@@ -3,12 +3,7 @@
 <div class="energy_tariff">
 
   <p>
-    <%= case @energy_tariff.tariff_holder_type
-        when 'School' then t('schools.user_tariff_charges.index.introduction')
-        when 'SchoolGroup' then t('schools.user_tariff_charges.index.introduction')
-        when 'SiteSettings' then t('schools.user_tariff_charges.index.introduction_site_settings')
-        end
-    %>.
+    <%= t("schools.user_tariff_charges.index.introduction_#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
   </p>
   <br/>
 
@@ -19,9 +14,9 @@
   <%= simple_form_for :energy_tariff_charges, url: form_url do |f| %>
 
     <% if @energy_tariff.gas? %>
-      <%= render 'charges_edit_gas', school: @school, energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
+      <%= render 'charges_edit_gas', school: @tariff_holder, energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
     <% else %>
-      <%= render 'charges_edit_electricity', school: @school, energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
+      <%= render 'charges_edit_electricity', school: @tariff_holder, energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
     <% end %>
 
     <br/>

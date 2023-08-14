@@ -3,18 +3,13 @@
 <div class="energy_tariff">
 
   <p>
-    <%= case @energy_tariff.tariff_holder_type
-        when 'School' then t('schools.user_tariffs.there_should_only_be_one_tariff_message')
-        when 'SchoolGroup' then t('schools.user_tariffs.there_should_only_be_one_tariff_message')
-        when 'SiteSettings' then t('schools.user_tariffs.there_should_only_be_one_tariff_message_site_settings')
-        end
-    %>.
+    <%= t("schools.user_tariffs.there_should_only_be_one_tariff_message_#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
   </p>
   <br/>
 
   <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
 
-  <% if @energy_tariff.tariff_holder_type == 'SiteSettings' %>
+  <% if @energy_tariff.tariff_holder.site_settings? %>
     <%= simple_form_for @energy_tariff, url: admin_settings_energy_tariff_path do |f| %>
       <%= render 'form', energy_tariff: @energy_tariff, f: f %>
     <% end %>

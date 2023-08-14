@@ -3,12 +3,7 @@
 <div class="energy_tariff">
 
   <p>
-    <%= case @energy_tariff.tariff_holder_type
-        when 'School' then t('schools.user_tariff_flat_prices.edit.introduction')
-        when 'SchoolGroup' then t('schools.user_tariff_flat_prices.edit.introduction')
-        when 'SiteSettings' then t('schools.user_tariff_flat_prices.edit.introduction_site_settings')
-        end
-    %>.
+    <%= t("schools.user_tariff_flat_prices.edit.introduction_#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
   </p>
   <br/>
 
@@ -16,7 +11,7 @@
 
   <% url = energy_tariffs_path(@energy_tariff, [:energy_tariff_flat_price], { id: @energy_tariff_price.id } ) %>
   <%= simple_form_for @energy_tariff_price, url: url, method: :put do |f| %>
-    <%= render 'form', school: @school, energy_tariff: @energy_tariff, energy_tariff_price: @energy_tariff_price, f: f %>
+    <%= render 'form', school: @tariff_holder, energy_tariff: @energy_tariff, energy_tariff_price: @energy_tariff_price, f: f %>
 
     <br/>
     <% edit_path = energy_tariffs_path(@energy_tariff, [], { action: :edit }) %>

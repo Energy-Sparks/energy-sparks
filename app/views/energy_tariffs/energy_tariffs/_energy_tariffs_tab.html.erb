@@ -1,0 +1,41 @@
+<div class="row mt-4">
+  <div class="col">
+    <% unless local_assigns[:default] %>
+      <%= t('schools.user_tariffs.index.introduction_html', advice_pages: school_advice_path(tariff_holder)) if tariff_holder.school? %>
+      <p><%= t('schools.user_tariffs.index.changes_to_cost_calculations_message') %></p>
+    <% end %>
+    <% list_of_tariff_types(local_assigns[:default]).each do |meter_type| %>
+      <% if tariff_holder.holds_tariffs_of_type?(meter_type) %>
+        <div class="row pb-4">
+          <div class="col">
+            <h4>
+              <span class="<%= fuel_type_class(meter_type) %>">
+                <%= fa_icon( fuel_type_icon(meter_type) ) %>
+              </span>
+              <%= t("schools.user_tariffs.index.#{meter_type}.header") %>
+            </h4>
+            <% if tariff_holder.any_tariffs_of_type?(meter_type) %>
+              <%= render 'energy_tariffs_summary_table', default: local_assigns[:default], meter_type: meter_type, tariffs: sorted_tariffs(tariff_holder, meter_type) %>
+            <% else %>
+              <p><%= t('schools.user_tariffs.index.electricity.there_are_no_electricity_tariffs_set_up_yet') %></p>
+              <% unless local_assigns[:default] %>
+                <p>
+                  <% if tariff_holder.school? && @electricity_meters&.dcc&.any? %>
+                    <%= t('schools.user_tariffs.index.note_about_smart_meter_tariffs') %>
+                  <% else %>
+                    <%= t('schools.user_tariffs.index.note_about_defaults') %>
+                  <% end %>
+                </p>
+              <% end %>
+            <% end %>
+            <% unless local_assigns[:default] %>
+              <div class="mt-4">
+                <%= link_to t("schools.user_tariffs.index.#{meter_type}.add_label"), new_energy_tariff_path(tariff_holder, meter_type: meter_type), class: 'btn btn-success' %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
