@@ -107,6 +107,14 @@ class EnergyTariff < ApplicationRecord
     tariff_holder_symbol == :site_settings
   end
 
+  def tariff_holder_route
+    if tariff_holder_type == 'SiteSettings'
+      [:admin, :settings]
+    else
+      [tariff_holder]
+    end
+  end
+
   private
 
   def start_and_end_date_are_not_both_blank

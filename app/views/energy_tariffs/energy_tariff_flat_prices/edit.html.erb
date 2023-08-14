@@ -14,25 +14,12 @@
 
   <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
 
-  <% url = case @energy_tariff.tariff_holder_type
-           when 'School' then school_energy_tariff_energy_tariff_flat_price_path(@school, @energy_tariff, @energy_tariff_price)
-           when 'SchoolGroup' then school_group_energy_tariff_energy_tariff_flat_price_path(@school_group, @energy_tariff, @energy_tariff_price)
-           when 'SiteSettings' then admin_settings_energy_tariff_energy_tariff_flat_price_path(@energy_tariff, @energy_tariff_price)
-           end
-  %>
-
+  <% url = energy_tariffs_path(@energy_tariff, [:energy_tariff_flat_price], { id: @energy_tariff_price.id } ) %>
   <%= simple_form_for @energy_tariff_price, url: url, method: :put do |f| %>
     <%= render 'form', school: @school, energy_tariff: @energy_tariff, energy_tariff_price: @energy_tariff_price, f: f %>
 
     <br/>
-
-    <% edit_path = case @energy_tariff.tariff_holder_type
-                   when 'School' then edit_school_energy_tariff_path(@school, @energy_tariff)
-                   when 'SchoolGroup' then edit_school_group_energy_tariff_path(@school_group, @energy_tariff)
-                   when 'SiteSettings' then edit_admin_settings_energy_tariff_path(@energy_tariff)
-                   end
-    %>
-
+    <% edit_path = energy_tariffs_path(@energy_tariff, [], { action: :edit }) %>
     <%= link_to t('common.labels.previous'), edit_path, class: 'btn' %>
     <%= f.submit t('common.labels.next'), class: 'btn btn-primary' %>
   <% end %>

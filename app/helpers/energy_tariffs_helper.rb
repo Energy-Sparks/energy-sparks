@@ -1,4 +1,19 @@
 module EnergyTariffsHelper
+  def energy_tariffs_path(energy_tariff, path = [], options = {})
+    if options[:energy_tariff_index] == true
+      polymorphic_path(energy_tariff.tariff_holder_route + [:energy_tariffs] + path, options)
+    else
+      polymorphic_path(energy_tariff.tariff_holder_route + [energy_tariff] + path, options)
+    end
+  end
+
+  def show_summary_table_actions_for?(energy_tariff)
+    return true if energy_tariff.tariff_holder_type == 'SiteSettings' && site_settings_page?
+    return true if %w[School SchoolGroup].include?(energy_tariff.tariff_holder_type)
+
+    false
+  end
+
   def site_settings_page?
     request.path.start_with?('/admin/settings')
   end

@@ -51,13 +51,13 @@ RSpec.shared_examples "the school energy tariff forms well navigated" do
       fill_in "energy_tariff_charges[fixed_charge][value]", with: '4.56'
       select 'month', from: 'energy_tariff_charges[fixed_charge][units]'
       check 'energy_tariff_charges[energy_tariff][ccl]'
-      select '5%', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
+      select '5', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
 
       click_button('Next')
 
       expect(page).to have_content('Tariff details')
       expect(page).to have_content('999888777')
-      expect(page).to have_content('5%')
+      expect(page).to have_content('5')
       expect(page).to have_content('Flat rate tariff')
       expect(page).to have_content('£1.50 per kWh')
       expect(page).to have_content('£4.56 per month')
@@ -157,7 +157,7 @@ RSpec.shared_examples "the school energy tariff forms well navigated" do
 
       expect(energy_tariff.meters).to match_array([electricity_meter])
       expect(energy_tariff.tariff_type == 'flat_rate').to be_truthy
-      expect(energy_tariff.vat_rate).to eq(0)
+      expect(energy_tariff.vat_rate).to eq(nil)
       expect(energy_tariff.ccl).to be_falsey
       energy_tariff_price = energy_tariff.energy_tariff_prices.first
       expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:00')
@@ -284,7 +284,7 @@ RSpec.shared_examples "the school energy tariff forms well navigated" do
 
       check 'energy_tariff_charges[energy_tariff][tnuos]'
       check 'energy_tariff_charges[energy_tariff][ccl]'
-      select '20%', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
+      select '20', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
 
       click_button('Next')
       expect(page).to have_content('Tariff details')
@@ -363,12 +363,12 @@ RSpec.shared_examples "the site settings energy tariff forms well navigated" do
       fill_in "energy_tariff_charges[fixed_charge][value]", with: '4.56'
       select 'month', from: 'energy_tariff_charges[fixed_charge][units]'
       check 'energy_tariff_charges[energy_tariff][ccl]'
-      select '5%', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
+      select '5', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
 
       click_button('Next')
 
       expect(page).to have_content('Tariff details')
-      expect(page).to have_content('5%')
+      expect(page).to have_content('5')
       expect(page).to have_content('Flat rate tariff')
       expect(page).to have_content('£1.50 per kWh')
       expect(page).to have_content('£4.56 per month')
@@ -447,7 +447,7 @@ RSpec.shared_examples "the site settings energy tariff forms well navigated" do
 
       expect(energy_tariff.meters).to match_array([])
       expect(energy_tariff.tariff_type == 'flat_rate').to be_truthy
-      expect(energy_tariff.vat_rate).to eq(0)
+      expect(energy_tariff.vat_rate).to eq(nil)
       expect(energy_tariff.ccl).to be_falsey
       energy_tariff_price = energy_tariff.energy_tariff_prices.first
       expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:00')
@@ -558,7 +558,7 @@ RSpec.shared_examples "the site settings energy tariff forms well navigated" do
 
       check 'energy_tariff_charges[energy_tariff][tnuos]'
       check 'energy_tariff_charges[energy_tariff][ccl]'
-      select '20%', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
+      select '20', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
 
       click_button('Next')
       expect(page).to have_content('Tariff details')
@@ -639,12 +639,12 @@ RSpec.shared_examples "the school group energy tariff forms well navigated" do
       fill_in "energy_tariff_charges[fixed_charge][value]", with: '4.56'
       select 'month', from: 'energy_tariff_charges[fixed_charge][units]'
       check 'energy_tariff_charges[energy_tariff][ccl]'
-      select '5%', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
+      select '5', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
 
       click_button('Next')
 
       expect(page).to have_content('Tariff details')
-      expect(page).to have_content('5%')
+      expect(page).to have_content('5')
       expect(page).to have_content('Flat rate tariff')
       expect(page).to have_content('£1.50 per kWh')
       expect(page).to have_content('£4.56 per month')
@@ -723,7 +723,7 @@ RSpec.shared_examples "the school group energy tariff forms well navigated" do
 
       expect(energy_tariff.meters).to match_array([])
       expect(energy_tariff.tariff_type == 'flat_rate').to be_truthy
-      expect(energy_tariff.vat_rate).to eq(0)
+      expect(energy_tariff.vat_rate).to eq(nil)
       expect(energy_tariff.ccl).to be_falsey
       energy_tariff_price = energy_tariff.energy_tariff_prices.first
       expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:00')
@@ -834,7 +834,7 @@ RSpec.shared_examples "the school group energy tariff forms well navigated" do
 
       check 'energy_tariff_charges[energy_tariff][tnuos]'
       check 'energy_tariff_charges[energy_tariff][ccl]'
-      select '20%', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
+      select '20', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
 
       click_button('Next')
       expect(page).to have_content('Tariff details')

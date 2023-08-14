@@ -6,13 +6,7 @@
 
   <p><%= t('schools.user_tariffs.choose_type.is_this_a_simple_flat_rate') %></p>
 
-  <% form_url = case @energy_tariff.tariff_holder_type
-                when 'School' then school_energy_tariff_path(@school, @energy_tariff)
-                when 'SchoolGroup' then school_group_energy_tariff_path(@school_group, @energy_tariff)
-                when 'SiteSettings' then admin_settings_energy_tariff_path(@energy_tariff)
-                end
-  %>
-
+  <% form_url = energy_tariffs_path(@energy_tariff) %>
   <%= simple_form_for @energy_tariff, url: form_url do |f| %>
     <%= f.hidden_field :tariff_type, value: 'flat_rate' %>
     <%= submit_tag t('schools.user_tariffs.choose_type.simple'), class: 'btn btn-info' %>

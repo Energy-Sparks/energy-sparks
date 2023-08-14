@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'energy tariffs', type: :system do
+describe 'school group energy tariffs', type: :system do
   let!(:school_group) { create(:school_group, public: true) }
   let!(:school_group_2) { create(:school_group, public: true) }
   let!(:school) { create(:school, name: 'Big School', school_group: school_group, number_of_pupils: 10, floor_area: 200.0, data_enabled: true, visible: true, active: true) }
