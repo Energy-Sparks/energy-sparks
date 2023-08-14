@@ -75,7 +75,7 @@ class Ability
         end
         can :read, [:my_school_menu]
         can :switch, School
-        can :manage, EnergyTariff, tariff_holder_id: user.school.id
+        can :manage, EnergyTariff, tariff_holder: user.school
       end
       #allow users from schools in same group to access dashboards
       if user.school.present?

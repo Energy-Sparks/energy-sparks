@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'school energy tariff editor', type: :system do
+describe 'school energy tariffs', type: :system do
 
   around do |example|
     ClimateControl.modify FEATURE_FLAG_USE_NEW_ENERGY_TARIFFS: 'true' do
@@ -40,12 +40,13 @@ describe 'school energy tariff editor', type: :system do
     context 'as a guest user' do
       let!(:current_user) { create(:guest) }
       let(:path)          { school_energy_tariffs_path(school) }
+      before(:each)       { sign_in(current_user) }
       it_behaves_like "the user does not have access to the tariff editor"
     end
 
     context 'as a pupil user' do
       let!(:current_user) { create(:pupil, school: school) }
-      before(:each) { sign_in(current_user) }
+      before(:each)       { sign_in(current_user) }
       let(:path)          { school_energy_tariffs_path(school) }
       it_behaves_like "the user does not have access to the tariff editor"
     end
@@ -60,7 +61,6 @@ describe 'school energy tariff editor', type: :system do
     context 'as a staff user' do
       let!(:current_user) { create(:staff, school: school) }
       let(:path)          { school_energy_tariffs_path(school) }
-
       before(:each)       { sign_in(current_user) }
       it_behaves_like "the user does not have access to the tariff editor"
     end
@@ -68,7 +68,6 @@ describe 'school energy tariff editor', type: :system do
     context 'as a volunteer user' do
       let!(:current_user) { create(:volunteer, school: school) }
       let(:path)          { school_energy_tariffs_path(school) }
-
       before(:each)       { sign_in(current_user) }
       it_behaves_like "the user does not have access to the tariff editor"
     end
