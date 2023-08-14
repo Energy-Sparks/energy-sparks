@@ -15,7 +15,7 @@
     <% tariffs.each do |energy_tariff| %>
       <tr>
         <td><%= energy_tariff.name %></td>
-        <% unless energy_tariff.tariff_holder_type == 'SiteSettings' %>
+        <% unless energy_tariff.tariff_holder.site_settings? %>
           <td>
             <ul style="list-style: none; padding-left: 0px;">
               <% energy_tariff.meters.each do |meter| %>

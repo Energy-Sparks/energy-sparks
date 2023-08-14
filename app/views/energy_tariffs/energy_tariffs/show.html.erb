@@ -2,7 +2,7 @@
 
 <div class="energy_tariff">
 
-  <% if @energy_tariff.tariff_holder_type == 'School' %>
+  <% if @energy_tariff.tariff_holder.school? %>
     <p>
       <%= t('schools.user_tariffs.show.introduction_html', electricity_analysis_path: analysis_page_finder_path(urn: @tariff_holder.urn, analysis_class: 'AdviceElectricityCosts'), gas_analysis_path: analysis_page_finder_path(urn: @tariff_holder.urn, analysis_class: 'AdviceGasCosts')) %>.
     </p>
@@ -13,11 +13,11 @@
 
   <h4>
     <%= t('schools.user_tariffs.show.consumption_charges') %>
-    <% if @energy_tariff.tariff_holder_type == 'School' %>
+    <% if @energy_tariff.tariff_holder.school? %>
       <%= link_to t('common.labels.edit'), school_energy_tariff_energy_tariff_prices_path(@tariff_holder, @energy_tariff), class: 'btn' %>
     <% end %>
 
-    <% if @energy_tariff.tariff_holder_type == 'SiteSettings' %>
+    <% if @energy_tariff.tariff_holder.site_settings? %>
       <%= link_to t('common.labels.edit'), admin_settings_energy_tariff_energy_tariff_prices_path(@energy_tariff), class: 'btn' %>
     <% end %>
   </h4>
@@ -32,11 +32,11 @@
 
   <h4>
     <%= t('schools.user_tariffs.show.standing_charges') %>
-    <% if @energy_tariff.tariff_holder_type == 'School' %>
+    <% if @energy_tariff.tariff_holder.school? %>
       <%= link_to t('common.labels.edit'), school_energy_tariff_energy_tariff_charges_path(@tariff_holder, @energy_tariff), class: 'btn' %>
     <% end %>
 
-    <% if @energy_tariff.tariff_holder_type == 'SiteSettings' %>
+    <% if @energy_tariff.tariff_holder.site_settings? %>
       <%= link_to t('common.labels.edit'), admin_settings_energy_tariff_energy_tariff_charges_path(@energy_tariff), class: 'btn' %>
     <% end %>
   </h4>
