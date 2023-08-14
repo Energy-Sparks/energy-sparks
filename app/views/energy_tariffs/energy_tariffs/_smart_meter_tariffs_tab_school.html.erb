@@ -1,7 +1,7 @@
 <div class="row mt-4">
   <div class="col">
 
-    <%= t('schools.user_tariffs.smart_meter_tariffs.introduction_html', advice_pages: school_advice_path(@school)) %>
+    <%= t('schools.user_tariffs.smart_meter_tariffs.introduction_html', advice_pages: school_advice_path(@tariff_holder)) %>
 
     <% if @electricity_meters.dcc.any? %>
       <div class="row">
@@ -12,7 +12,7 @@
               </span>
               <%= t('schools.user_tariffs.index.electricity.header') %>
             </h4>
-            <%= render 'smart_meter_tariffs_summary_table_school', meters: @electricity_meters.dcc, school: @school %>
+            <%= render 'smart_meter_tariffs_summary_table_school', meters: @electricity_meters.dcc, school: @tariff_holder %>
         </div>
       </div>
     <% end %>
@@ -26,7 +26,7 @@
               </span>
               <%= t('schools.user_tariffs.index.gas.header') %>
             </h4>
-            <%= render 'smart_meter_tariffs_summary_table_school', meters: @gas_meters.dcc, school: @school %>
+            <%= render 'smart_meter_tariffs_summary_table_school', meters: @gas_meters.dcc, school: @tariff_holder %>
         </div>
       </div>
     <% end %>

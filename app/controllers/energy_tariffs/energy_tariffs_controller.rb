@@ -4,48 +4,38 @@ module EnergyTariffs
     include EnergyTariffable
     include EnergyTariffsHelper
 
-    load_and_authorize_resource :school
-    load_and_authorize_resource :school_group
+    load_and_authorize_resource :school, instance_name: 'tariff_holder'
+    load_and_authorize_resource :school_group, instance_name: 'tariff_holder'
     load_and_authorize_resource :energy_tariff
     before_action :admin_authorized?, if: :site_settings_resource?
     before_action :load_site_setting, if: :site_settings_resource?
     before_action :set_breadcrumbs
 
     def index
-      authorize! :manage, @school.energy_tariffs.build if @school
-      authorize! :manage, @school_group.energy_tariffs.build if @school_group
+      authorize! :manage, @tariff_holder.energy_tariffs.build
 
-      if @school
-        @electricity_meters = @school.meters.electricity
-        @electricity_tariffs = @school.energy_tariffs.electricity.manually_entered.by_start_date.by_name
-        @gas_meters = @school.meters.gas
-        @gas_tariffs = @school.energy_tariffs.gas.manually_entered.by_start_date.by_name
+      if @tariff_holder.school?
+        @electricity_meters = @tariff_holder.meters.electricity
+        @electricity_tariffs = @tariff_holder.energy_tariffs.electricity.manually_entered.by_start_date.by_name
+        @gas_meters = @tariff_holder.meters.gas
+        @gas_tariffs = @tariff_holder.energy_tariffs.gas.manually_entered.by_start_date.by_name
       end
     end
 
     def new
-      @energy_tariff = if @school
-                         @school.energy_tariffs.build(energy_tariff_params.merge(default_params))
-                       elsif @school_group
-                         @school_group.energy_tariffs.build(meter_type: params[:meter_type])
-                       elsif @site_setting
-                         @site_setting.energy_tariffs.build(meter_type: params[:meter_type])
+      @energy_tariff = if @tariff_holder.school?
+                         @tariff_holder.energy_tariffs.build(energy_tariff_params.merge(default_params))
+                       else
+                         @tariff_holder.energy_tariffs.build(meter_type: params[:meter_type])
                        end
 
       if require_meters?
-        redirect_back fallback_location: school_energy_tariffs_path(@school), notice: I18n.t('schools.user_tariffs.choose_meters.missing_meters')
+        redirect_back fallback_location: school_energy_tariffs_path(@tariff_holder), notice: I18n.t('schools.user_tariffs.choose_meters.missing_meters')
       end
     end
 
     def create
-      @energy_tariff = if @school
-                         @school.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
-                       elsif @school_group
-                         @school_group.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
-                       elsif @site_setting
-                         @site_setting.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
-                       end
-
+      @energy_tariff = @tariff_holder.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
       if @energy_tariff.save
         if @energy_tariff.gas?
           redirect_to_energy_tariff_prices_path
@@ -59,9 +49,9 @@ module EnergyTariffs
 
     def choose_meters
       if params[:meter_type] == 'electricity'
-        @meters = @school.meters.electricity
+        @meters = @tariff_holder.meters.electricity
       elsif params[:meter_type] == 'gas'
-        @meters = @school.meters.gas
+        @meters = @tariff_holder.meters.gas
       else
         @meters = []
       end
@@ -91,7 +81,7 @@ module EnergyTariffs
     private
 
     def require_meters?
-      params[:specific_meters] && @energy_tariff.meter_ids.empty? && @school
+      params[:specific_meters] && @energy_tariff.meter_ids.empty? && @tariff_holder.school?
     end
 
     def redirect_to_choose_type_energy_tariff_path

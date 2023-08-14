@@ -16,7 +16,7 @@
   <br/>
   <% form_url = energy_tariffs_path(@energy_tariff, [:energy_tariff_flat_prices]) %>
   <%= simple_form_for @energy_tariff_price, url: form_url do |f| %>
-    <%= render 'form', school: @school, energy_tariff: @energy_tariff, energy_tariff_price: @energy_tariff_price, f: f %>
+    <%= render 'form', school: @tariff_holder, energy_tariff: @energy_tariff, energy_tariff_price: @energy_tariff_price, f: f %>
     <br/>
     <% edit_path = energy_tariffs_path(@energy_tariff) %>
     <%= link_to t('common.labels.previous'), edit_path, class: 'btn' %>

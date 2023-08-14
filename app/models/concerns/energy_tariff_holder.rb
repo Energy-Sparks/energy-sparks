@@ -6,12 +6,28 @@ module EnergyTariffHolder
     has_many :energy_tariffs, as: :tariff_holder, dependent: :destroy
   end
 
+  def site_settings?
+    is_a?(SiteSettings)
+  end
+
+  def school_group?
+    is_a?(SchoolGroup)
+  end
+
+  def school?
+    is_a?(School)
+  end
+
   def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys)
     energy_tariffs.where(meter_type: meter_type).complete.map(&:meter_attribute)
   end
 
   def parent_tariff_holder
     nil
+  end
+
+  def holds_tariffs_of_type?(_meter_type)
+    true
   end
 
   def all_energy_tariff_attributes(meter_type = EnergyTariff.meter_types.keys)

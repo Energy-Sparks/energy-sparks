@@ -6,6 +6,6 @@ module EnergyTariffable
   end
 
   def load_site_setting
-    @site_setting = SiteSettings.current if can?(:manage, :admin_functions)
+    @tariff_holder = SiteSettings.current if can?(:manage, :admin_functions)
   end
 end
