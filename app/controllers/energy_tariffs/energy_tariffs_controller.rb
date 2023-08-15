@@ -80,7 +80,7 @@ module EnergyTariffs
       if @energy_tariff.update(energy_tariff_params.merge(updated_by: current_user))
         redirect_to energy_tariffs_path(@energy_tariff)
       else
-        render :edit_meters
+        render :edit_dates
       end
     end
 
