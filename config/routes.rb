@@ -80,6 +80,8 @@ Rails.application.routes.draw do
         get :choose_type, to: 'energy_tariffs#choose_type'
         get :edit_meters, to: 'energy_tariffs#edit_meters'
         post :update_meters, to: 'energy_tariffs#update_meters'
+        get :edit_dates, to: 'energy_tariffs#edit_dates'
+        post :update_dates, to: 'energy_tariffs#update_dates'
       end
     end
   end

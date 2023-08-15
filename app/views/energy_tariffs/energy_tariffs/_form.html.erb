@@ -4,16 +4,5 @@
     <%= f.input :name, as: :string %>
   </div>
 </div>
-<div class="form-row">
-  <div class="form-group col-md-6">
-    <%= f.label :start_date %>
-    <%= component 'date_picker_form', form: f, field_name: :start_date, value: @energy_tariff.start_date&.strftime('%d/%m/%Y'), errors: @energy_tariff.errors.messages[:start_date].to_sentence %>
-  </div>
-</div>
-<div class="form-row">
-  <div class="form-group col-md-6">
-    <%= f.label :end_date %>
-    <%= component 'date_picker_form', form: f, field_name: :end_date, value: @energy_tariff.end_date&.strftime('%d/%m/%Y'), errors: @energy_tariff.errors.messages[:end_date].to_sentence %>
-  </div>
-</div>
+<%= render 'form_dates', f: f %>
 <%= f.submit t('common.labels.next'), class: 'btn'%>
