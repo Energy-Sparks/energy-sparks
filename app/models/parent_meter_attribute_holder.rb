@@ -2,7 +2,7 @@ module ParentMeterAttributeHolder
   extend ActiveSupport::Concern
 
   def meter_attributes_for(meter)
-    if EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs)
+    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
       meter_attributes.where('meter_types ? :meter_type', meter_type: meter.meter_type).where.not(attribute_type: GlobalMeterAttribute::TARIFF_ATTRIBUTE_TYPES).active
     else
       meter_attributes.where('meter_types ? :meter_type', meter_type: meter.meter_type).active
@@ -22,7 +22,7 @@ module ParentMeterAttributeHolder
   private
 
   def filtered_meter_attributes
-    if EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs)
+    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
       meter_attributes.where.not(attribute_type: GlobalMeterAttribute::TARIFF_ATTRIBUTE_TYPES)
     else
       meter_attributes
