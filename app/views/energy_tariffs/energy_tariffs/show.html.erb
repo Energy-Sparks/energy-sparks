@@ -11,16 +11,21 @@
 
   <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
 
-  <h4>
-    <%= t('schools.user_tariffs.show.consumption_charges') %>
+  <div class="d-flex justify-content-between">
+    <div>
+      <h4><%= t('schools.user_tariffs.show.consumption_charges') %></h4>
+    </div>
     <% if @energy_tariff.tariff_holder.school? %>
-      <%= link_to t('common.labels.edit'), school_energy_tariff_energy_tariff_prices_path(@tariff_holder, @energy_tariff), class: 'btn' %>
+      <div>
+        <%= link_to t('common.labels.edit'), school_energy_tariff_energy_tariff_prices_path(@tariff_holder, @energy_tariff), class: 'btn' %>
+      </div>
     <% end %>
-
     <% if @energy_tariff.tariff_holder.site_settings? %>
-      <%= link_to t('common.labels.edit'), admin_settings_energy_tariff_energy_tariff_prices_path(@energy_tariff), class: 'btn' %>
+      <div>
+        <%= link_to t('common.labels.edit'), admin_settings_energy_tariff_energy_tariff_prices_path(@energy_tariff), class: 'btn' %>
+      </div>
     <% end %>
-  </h4>
+  </div>
 
   <% if @energy_tariff.flat_rate? %>
     <%= render 'energy_tariffs/energy_tariffs/flat_rate', school: @tariff_holder, energy_tariff: @energy_tariff, allow_edits: false %>
@@ -30,16 +35,21 @@
 
   <br/>
 
-  <h4>
-    <%= t('schools.user_tariffs.show.standing_charges') %>
+  <div class="d-flex justify-content-between">
+    <div>
+      <h4><%= t('schools.user_tariffs.show.standing_charges') %></h4>
+    </div>
     <% if @energy_tariff.tariff_holder.school? %>
-      <%= link_to t('common.labels.edit'), school_energy_tariff_energy_tariff_charges_path(@tariff_holder, @energy_tariff), class: 'btn' %>
+      <div>
+        <%= link_to t('common.labels.edit'), school_energy_tariff_energy_tariff_charges_path(@tariff_holder, @energy_tariff), class: 'btn btn-primary' %>
+      </div>
     <% end %>
-
     <% if @energy_tariff.tariff_holder.site_settings? %>
-      <%= link_to t('common.labels.edit'), admin_settings_energy_tariff_energy_tariff_charges_path(@energy_tariff), class: 'btn' %>
+      <div>
+        <%= link_to t('common.labels.edit'), admin_settings_energy_tariff_energy_tariff_charges_path(@energy_tariff), class: 'btn btn-primary' %>
+      </div>
     <% end %>
-  </h4>
+  </div>
 
   <%= render 'energy_tariffs/energy_tariffs/charges_table', school: @tariff_holder, energy_tariff: @energy_tariff, allow_edits: false %>
 
