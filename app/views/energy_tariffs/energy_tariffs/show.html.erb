@@ -38,7 +38,7 @@
   <% if @energy_tariff.school? %>
     <div class="d-flex justify-content-between">
       <div>
-        <h4>Meters</h4>
+        <h4><%= t('schools.user_tariffs.show.meters') %></h4>
       </div>
       <div>
         <%= link_to t('common.labels.edit'),
@@ -107,6 +107,39 @@
   </div>
 
   <%= render 'energy_tariffs/energy_tariffs/charges_table', school: @tariff_holder, energy_tariff: @energy_tariff, allow_edits: false %>
+  <br />
+
+  <% if current_user.admin? %>
+    <div class="d-flex justify-content-between">
+      <div>
+        <h4><%= t('schools.user_tariffs.show.notes_html') %></h4>
+      </div>
+    </div>
+    <div>
+      <table class="table table-charges">
+        <tbody>
+          <tr>
+            <td class="description"><%= t('schools.user_tariffs.show.created_at') %></td>
+            <td class="value"><%= @energy_tariff.created_at&.to_s(:es_compact) %></td>
+          </tr>
+          <tr>
+            <td class="description"><%= t('schools.user_tariffs.show.created_by') %></td>
+            <td class="value"><%= @energy_tariff&.created_by&.display_name %></td>
+          </tr>
+          <tr>
+            <td class="description"><%= t('schools.user_tariffs.show.updated_at') %></td>
+            <td class="value">
+              <%= @energy_tariff&.updated_at&.to_s(:es_compact) %>
+            </td>
+          </tr>
+          <tr>
+            <td class="description"><%= t('schools.user_tariffs.show.updated_by') %></td>
+            <td class="value"><%= @energy_tariff&.updated_by&.display_name %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
 
   <br/>
   <br/>
@@ -121,3 +154,5 @@
     <% end %>
   </div>
 </div>
+
+
