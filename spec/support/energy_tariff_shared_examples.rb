@@ -80,6 +80,14 @@ RSpec.shared_examples "a gas tariff editor with no meter selection" do
     expect(page).to have_content('£4.56 per month')
     expect(page).not_to have_link('Delete')
 
+    within('#consumption-charges') do
+      expect(page).to have_link("Edit")
+    end
+
+    within('#standing-charges') do
+      expect(page).to have_link("Edit")
+    end
+
     click_link('Finished')
     expect(page).to have_content('Manage and view tariffs')
     expect(page).to have_content('My First Gas Tariff')
@@ -178,6 +186,14 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).to have_content('£1.50 per kWh')
     expect(page).not_to have_link('Delete')
 
+    within('#consumption-charges') do
+      expect(page).to have_link("Edit")
+    end
+
+    within('#standing-charges') do
+      expect(page).to have_link("Edit")
+    end
+
     click_link('Finished')
     expect(page).to have_content('Manage and view tariffs')
 
@@ -232,6 +248,14 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).to have_content('Tariff details')
     expect(page).to have_content('£1.50 per kWh')
     expect(page).not_to have_link('Delete')
+
+    within('#consumption-charges') do
+      expect(page).to have_link("Edit")
+    end
+
+    within('#standing-charges') do
+      expect(page).to have_link("Edit")
+    end
 
     click_link('Finished')
     expect(page).to have_content('Manage and view tariffs')
@@ -295,6 +319,14 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
 
     click_button('Next')
     expect(page).to have_content('Tariff details')
+
+    within('#consumption-charges') do
+      expect(page).to have_link("Edit")
+    end
+
+    within('#standing-charges') do
+      expect(page).to have_link("Edit")
+    end
 
     energy_tariff = EnergyTariff.last
     expect(energy_tariff.enabled).to be true
@@ -390,6 +422,14 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     expect(page).to have_content('Tariff details')
     expect(page).to have_content('£1.50 per kWh')
     expect(page).not_to have_link('Delete')
+
+    within('#consumption-charges') do
+      expect(page).to have_link("Edit")
+    end
+
+    within('#standing-charges') do
+      expect(page).to have_link("Edit")
+    end
 
     click_link('Finished')
     expect(page).to have_content('Manage and view tariffs')

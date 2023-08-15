@@ -11,7 +11,7 @@
 
   <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
 
-  <h4>
+  <h4 id="consumption-charges">
     <%= t('schools.user_tariffs.show.consumption_charges') %>
     <%= link_to t('common.labels.edit'), energy_tariffs_path(@energy_tariff, [:energy_tariff_prices]), class: 'btn' %>
   </h4>
@@ -24,7 +24,7 @@
 
   <br/>
 
-  <h4>
+  <h4 id="standing-charges">
     <%= t('schools.user_tariffs.show.standing_charges') %>
     <%= link_to t('common.labels.edit'), energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]), class: 'btn' %>
   </h4>
