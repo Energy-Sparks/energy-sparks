@@ -4,8 +4,8 @@ module EnergyTariffs
     include EnergyTariffable
     include EnergyTariffsHelper
 
-    load_and_authorize_resource :school
-    load_and_authorize_resource :school_group
+    load_and_authorize_resource :school, instance_name: 'tariff_holder'
+    load_and_authorize_resource :school_group, instance_name: 'tariff_holder'
     load_and_authorize_resource :energy_tariff
     before_action :admin_authorized?, if: :site_settings_resource?
     before_action :load_site_setting, if: :site_settings_resource?

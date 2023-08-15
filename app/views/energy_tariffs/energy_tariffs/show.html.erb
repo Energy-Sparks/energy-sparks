@@ -23,9 +23,9 @@
   </h4>
 
   <% if @energy_tariff.flat_rate? %>
-    <%= render 'energy_tariffs/energy_tariffs/flat_rate', school: @tariff_holder, energy_tariff: @energy_tariff, allow_edits: false %>
+    <%= render 'energy_tariffs/energy_tariffs/flat_rate', energy_tariff: @energy_tariff, allow_edits: false %>
   <% else %>
-    <%= render 'energy_tariffs/energy_tariffs/rates_table', school: @tariff_holder, energy_tariff: @energy_tariff, allow_edits: false %>
+    <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, allow_edits: false %>
   <% end %>
 
   <br/>
@@ -41,7 +41,7 @@
     <% end %>
   </h4>
 
-  <%= render 'energy_tariffs/energy_tariffs/charges_table', school: @tariff_holder, energy_tariff: @energy_tariff, allow_edits: false %>
+  <%= render 'energy_tariffs/energy_tariffs/charges_table', energy_tariff: @energy_tariff, allow_edits: false %>
 
   <br/>
   <br/>
