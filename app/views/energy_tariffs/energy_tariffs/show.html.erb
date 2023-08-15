@@ -13,6 +13,58 @@
 
   <div class="d-flex justify-content-between">
     <div>
+      <h4>Dates</h4>
+    </div>
+  </div>
+
+  <table class="table table-charges">
+    <tbody>
+      <tr>
+        <td class="description">Start date</td>
+        <td class="value"><%= @energy_tariff&.start_date&.to_s(:es_compact) %></td>
+      </tr>
+      <tr>
+        <td class="description">End date</td>
+        <td class="value"><%= @energy_tariff&.end_date&.to_s(:es_compact) %></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <br/>
+
+  <div class="d-flex justify-content-between">
+    <div>
+      <h4>Meters</h4>
+    </div>
+  </div>
+
+  <table class="table table-charges">
+    <tbody>
+      <% if @energy_tariff.meters.empty? %>
+        <tr>
+          <td class="description">All meters</td>
+          <td class="value"></td>
+        </tr>
+      <% end %>
+
+      <% @energy_tariff.meters.each do |meter| %>
+        <tr>
+          <td class="description"><%= meter.mpan_mprn_and_name %></td>
+          <td class="value"></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <br/>
+
+
+
+
+
+
+  <div class="d-flex justify-content-between">
+    <div>
       <h4><%= t('schools.user_tariffs.show.consumption_charges') %></h4>
     </div>
     <% if @energy_tariff.tariff_holder.school? %>
@@ -26,6 +78,7 @@
       </div>
     <% end %>
   </div>
+
 
   <% if @energy_tariff.flat_rate? %>
     <%= render 'energy_tariffs/energy_tariffs/flat_rate', school: @tariff_holder, energy_tariff: @energy_tariff, allow_edits: false %>
