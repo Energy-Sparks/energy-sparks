@@ -20,7 +20,7 @@ class EnergyTariffPrice < ApplicationRecord
   belongs_to :energy_tariff, inverse_of: :energy_tariff_prices
 
   validates :start_time, :end_time, :value, :units, presence: true
-  validates :value, numericality: true
+  validates :value, numericality: { greater_than_or_equal_to: 1 }
   validate :no_time_overlaps
   validate :time_range_given
 
