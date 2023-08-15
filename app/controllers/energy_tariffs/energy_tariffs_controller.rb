@@ -67,14 +67,7 @@ module EnergyTariffs
 
     def update_meters
       if @energy_tariff.update(energy_tariff_params.merge(updated_by: current_user))
-
-path = energy_tariffs_path(@energy_tariff)
-
-puts '----'
-puts path.inspect
-puts '----'
-
-redirect_to path
+        redirect_to energy_tariffs_path(@energy_tariff)
       else
         render :edit_meters
       end

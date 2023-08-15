@@ -35,39 +35,36 @@
   </table>
 
   <br/>
-
-  <div class="d-flex justify-content-between">
-    <div>
-      <h4>Meters</h4>
+  <% if @energy_tariff.school? %>
+    <div class="d-flex justify-content-between">
+      <div>
+        <h4>Meters</h4>
+      </div>
+      <div>
+        <%= link_to t('common.labels.edit'),
+            energy_tariffs_path(@energy_tariff, [], { action: :edit_meters }),
+            class: 'btn'
+        %>
+      </div>
     </div>
-    <div>
-      <%= link_to t('common.labels.edit'),
-          energy_tariffs_path(@energy_tariff, [], { action: :edit_meters }),
-          class: 'btn'
-      %>
-    </div>
-  </div>
-
-  <table class="table table-charges">
-    <tbody>
-      <% if @energy_tariff.meters.empty? %>
-        <tr>
-          <td class="description"><%= t('schools.user_tariffs.meters.this_tariff_applies_to_all_meters', meter_type: t("common.#{@energy_tariff.meter_type}")) %></td>
-          <td class="value"></td>
-        </tr>
-      <% end %>
-
-      <% @energy_tariff.meters.each do |meter| %>
-        <tr>
-          <td class="description"><%= meter.mpan_mprn_and_name %></td>
-          <td class="value"></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-
-  <br/>
-
+    <table class="table table-charges">
+      <tbody>
+        <% if @energy_tariff.meters.empty? %>
+          <tr>
+            <td class="description"><%= t('schools.user_tariffs.meters.this_tariff_applies_to_all_meters', meter_type: t("common.#{@energy_tariff.meter_type}")) %></td>
+            <td class="value"></td>
+          </tr>
+        <% end %>
+        <% @energy_tariff.meters.each do |meter| %>
+          <tr>
+            <td class="description"><%= meter.mpan_mprn_and_name %></td>
+            <td class="value"></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <br/>
+  <% end %>
   <div class="d-flex justify-content-between">
     <div>
       <h4><%= t('schools.user_tariffs.show.consumption_charges') %></h4>
