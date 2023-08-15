@@ -93,7 +93,22 @@ describe EnergyTariffHolder do
         expect(attributes.size).to eq 1
         expect(attributes[0].input_data['tariff_holder']).to eq 'school_group'
       end
+    end
+  end
 
+  context '.default_tariff_start_date' do
+    let(:tariff_holder) { SiteSettings.current }
+    it 'defaults to one day later' do
+      expect(tariff_holder.default_tariff_start_date(:electricity)).to eq energy_tariff.end_date + 1.day
+    end
+
+    it 'defaults to today otherwise' do
+      EnergyTariff.destroy_all
+      expect(tariff_holder.default_tariff_start_date(:electricity)).to eq Time.zone.today
+    end
+
+    it 'checks source when provided' do
+      expect(tariff_holder.default_tariff_start_date(:electricity, :dcc)).to eq Time.zone.today
     end
   end
 end
