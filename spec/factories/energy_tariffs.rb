@@ -13,7 +13,7 @@ FactoryBot.define do
 
     trait :with_flat_price do
       after(:create) do |energy_tariff, evaluator|
-        create(:energy_tariff_price, energy_tariff: energy_tariff)
+        create(:energy_tariff_price, energy_tariff: energy_tariff, value: 1)
         energy_tariff.reload
       end
     end
