@@ -4,7 +4,7 @@
 
   <% if @energy_tariff.tariff_holder.school? %>
     <p>
-      <%= t('schools.user_tariffs.show.introduction_html', electricity_analysis_path: analysis_page_finder_path(urn: @tariff_holder.urn, analysis_class: 'AdviceElectricityCosts'), gas_analysis_path: analysis_page_finder_path(urn: @tariff_holder.urn, analysis_class: 'AdviceGasCosts')) %>.
+      <%= t('schools.user_tariffs.show.introduction_html', analysis_path: analysis_page_finder_path(urn: @tariff_holder.urn, analysis_class: cost_analysis_class_for(@energy_tariff.meter_type)), meter_type: t("common.#{@energy_tariff.meter_type}").downcase) %>.
     </p>
     <br/>
   <% end %>
