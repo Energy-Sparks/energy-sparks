@@ -25,7 +25,7 @@ module EnergyTariffs
       @energy_tariff_price = @energy_tariff.energy_tariff_prices.build(energy_tariff_price_params.merge(units: 'kwh'))
       respond_to do |format|
         if @energy_tariff_price.save
-          format.html { redirect_to school_energy_tariff_energy_tariff_differential_prices_path(@school, @energy_tariff) }
+          format.html { redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_prices]) }
           format.js
         else
           format.html { render :new }

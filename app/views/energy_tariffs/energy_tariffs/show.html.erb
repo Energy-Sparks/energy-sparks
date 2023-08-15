@@ -13,13 +13,7 @@
 
   <h4>
     <%= t('schools.user_tariffs.show.consumption_charges') %>
-    <% if @energy_tariff.tariff_holder.school? %>
-      <%= link_to t('common.labels.edit'), school_energy_tariff_energy_tariff_prices_path(@tariff_holder, @energy_tariff), class: 'btn' %>
-    <% end %>
-
-    <% if @energy_tariff.tariff_holder.site_settings? %>
-      <%= link_to t('common.labels.edit'), admin_settings_energy_tariff_energy_tariff_prices_path(@energy_tariff), class: 'btn' %>
-    <% end %>
+    <%= link_to t('common.labels.edit'), energy_tariffs_path(@energy_tariff, [:energy_tariff_prices]), class: 'btn' %>
   </h4>
 
   <% if @energy_tariff.flat_rate? %>
@@ -32,13 +26,7 @@
 
   <h4>
     <%= t('schools.user_tariffs.show.standing_charges') %>
-    <% if @energy_tariff.tariff_holder.school? %>
-      <%= link_to t('common.labels.edit'), school_energy_tariff_energy_tariff_charges_path(@tariff_holder, @energy_tariff), class: 'btn' %>
-    <% end %>
-
-    <% if @energy_tariff.tariff_holder.site_settings? %>
-      <%= link_to t('common.labels.edit'), admin_settings_energy_tariff_energy_tariff_charges_path(@energy_tariff), class: 'btn' %>
-    <% end %>
+    <%= link_to t('common.labels.edit'), energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]), class: 'btn' %>
   </h4>
 
   <%= render 'energy_tariffs/energy_tariffs/charges_table', energy_tariff: @energy_tariff, allow_edits: false %>

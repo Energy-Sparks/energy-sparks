@@ -20,9 +20,9 @@ module EnergyTariffs
 
     def new
       if @energy_tariff.tariff_type == 'flat_rate'
-        redirect_to new_school_energy_tariff_energy_tariff_flat_prices_path(@school, @energy_tariff)
+        redirect_to_new_energy_tariff_differential_prices_path
       else
-        redirect_to new_school_energy_tariff_energy_tariff_differential_prices_path(@school, @energy_tariff)
+        redirect_to_new_energy_tariff_differential_prices_path
       end
     end
 
@@ -35,6 +35,14 @@ module EnergyTariffs
     end
 
     private
+
+    def redirect_to_new_energy_tariff_differential_prices_path
+      redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_prices], { action: :new })
+    end
+
+    def redirect_to_new_energy_tariff_flat_prices_path
+      redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_flat_prices], { action: :new })
+    end
 
     def redirect_to_edit_energy_tariff_differential_prices_path
       redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_prices], { action: :edit })
