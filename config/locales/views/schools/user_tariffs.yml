@@ -127,6 +127,10 @@ en:
         price_per_kwh: "%{price_value} per kWh"
       show:
         consumption_charges: Consumption charges
+        dates:
+          end_date: End date
+          start_date: Start date
+          title: Dates
         introduction_html: Any changes to the tariff will be reflected in the <a href='%{analysis_path}'>%{meter_type} cost analysis</a> page which will update overnight
         meter_attribute_view: Meter attribute view (admin only)
         standing_charges: Standing charges
