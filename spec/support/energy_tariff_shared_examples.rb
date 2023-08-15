@@ -185,6 +185,12 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     energy_tariff = EnergyTariff.last
 
     expect(page).to have_content(energy_tariff.name)
+    if current_user.admin?
+      expect(page).to have_content('Notes (admin only)')
+    else
+      expect(page).not_to have_content('Notes (admin only)')
+    end
+
     expect(page).to have_content('Flat rate tariff')
     expect(page).to have_content('£1.50 per kWh')
     expect(page).not_to have_link('Delete')
@@ -250,6 +256,12 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     energy_tariff = EnergyTariff.last
 
     expect(page).to have_content(energy_tariff.name)
+    if current_user.admin?
+      expect(page).to have_content('Notes (admin only)')
+    else
+      expect(page).not_to have_content('Notes (admin only)')
+    end
+
     expect(page).to have_content('£1.50 per kWh')
     expect(page).not_to have_link('Delete')
 
@@ -333,6 +345,11 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     energy_tariff = EnergyTariff.last
 
     expect(page).to have_content(energy_tariff.name)
+    if current_user.admin?
+      expect(page).to have_content('Notes (admin only)')
+    else
+      expect(page).not_to have_content('Notes (admin only)')
+    end
 
     expect(energy_tariff.enabled).to be true
     expect(energy_tariff.meter_type.to_sym).to eq(:electricity)
@@ -424,7 +441,15 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     click_link('Next')
     click_button('Next')
 
-    expect(page).to have_content('Tariff details')
+    energy_tariff = EnergyTariff.last
+
+    expect(page).to have_content(energy_tariff.name)
+    if current_user.admin?
+      expect(page).to have_content('Notes (admin only)')
+    else
+      expect(page).not_to have_content('Notes (admin only)')
+    end
+
     expect(page).to have_content('£1.50 per kWh')
     expect(page).not_to have_link('Delete')
 
@@ -439,7 +464,6 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     click_link('Finished')
     expect(page).to have_content('Manage and view tariffs')
 
-    energy_tariff = EnergyTariff.last
     expect(energy_tariff.enabled).to be true
     expect(energy_tariff.meter_type.to_sym).to eq(:electricity)
     expect(energy_tariff.meters).to match_array([meter])

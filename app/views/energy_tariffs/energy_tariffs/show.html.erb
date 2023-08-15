@@ -87,16 +87,9 @@
     <div>
       <h4><%= t('schools.user_tariffs.show.standing_charges') %></h4>
     </div>
-    <% if @energy_tariff.tariff_holder.school? %>
-      <div>
-        <%= link_to t('common.labels.edit'), energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]), class: 'btn btn-primary' %>
-      </div>
-    <% end %>
-    <% if @energy_tariff.tariff_holder.site_settings? %>
-      <div>
-        <%= link_to t('common.labels.edit'), admin_settings_energy_tariff_energy_tariff_charges_path(@energy_tariff), class: 'btn btn-primary' %>
-      </div>
-    <% end %>
+    <div>
+      <%= link_to t('common.labels.edit'), energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]), class: 'btn' %>
+    </div>
   </div>
 
   <%= render 'energy_tariffs/energy_tariffs/charges_table', energy_tariff: @energy_tariff, allow_edits: false %>
