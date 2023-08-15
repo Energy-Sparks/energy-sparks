@@ -69,7 +69,6 @@ Rails.application.routes.draw do
   concern :tariff_holder do
     scope module: 'energy_tariffs' do
     resources :energy_tariffs do
-      resources :energy_tariff_prices, only: [:index, :new, :edit]
       resources :energy_tariff_flat_prices
       resources :energy_tariff_differential_prices
       resources :energy_tariff_charges

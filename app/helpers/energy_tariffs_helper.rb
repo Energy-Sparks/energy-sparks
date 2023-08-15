@@ -15,6 +15,14 @@ module EnergyTariffsHelper
     end
   end
 
+  def energy_tariff_prices_path(energy_tariff, options = {})
+    if energy_tariff.flat_rate?
+      energy_tariffs_path(energy_tariff, [:energy_tariff_flat_prices], options)
+    else
+      energy_tariffs_path(energy_tariff, [:energy_tariff_differential_prices], options)
+    end
+  end
+
   def tariff_holder_route(tariff_holder)
     if tariff_holder.site_settings?
       [:admin, :settings]

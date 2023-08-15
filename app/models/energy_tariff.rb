@@ -75,6 +75,10 @@ class EnergyTariff < ApplicationRecord
     for_schools_in_group(school_group, source).select(:tariff_holder_id).distinct.count
   }
 
+  def flat_rate?
+    tariff_type == 'flat_rate'
+  end
+
   def meter_attribute
     MeterAttribute.new(attribute_type: :accounting_tariff_generic, input_data: to_hash)
   end
