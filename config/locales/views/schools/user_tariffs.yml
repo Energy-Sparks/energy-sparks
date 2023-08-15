@@ -130,7 +130,6 @@ en:
         introduction_html: Any changes to the tariff will be reflected in the <a href='%{electricity_analysis_path}'>electricity cost analysis</a> and <a href='%{gas_analysis_path}'>gas cost analysis</a> pages which will update overnight
         meter_attribute_view: Meter attribute view (admin only)
         standing_charges: Standing charges
-        title: Tariff details
       smart_meter_tariffs:
         introduction_html: |-
           <p>
