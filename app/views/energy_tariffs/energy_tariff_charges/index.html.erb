@@ -14,16 +14,14 @@
   <%= simple_form_for :energy_tariff_charges, url: form_url do |f| %>
 
     <% if @energy_tariff.gas? %>
-      <%= render 'charges_edit_gas', school: @tariff_holder, energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
+      <%= render 'charges_edit_gas', energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
     <% else %>
-      <%= render 'charges_edit_electricity', school: @tariff_holder, energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
+      <%= render 'charges_edit_electricity', energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
     <% end %>
 
     <br/>
 
-    <% path = energy_tariffs_path(@energy_tariff, [:energy_tariff_prices]) %>
-
-    <%= link_to t('common.labels.previous'), path, class: 'btn' %>
+    <%= link_to t('common.labels.previous'), energy_tariff_prices_path(@energy_tariff), class: 'btn' %>
     <%= f.submit t('common.labels.next'), class: 'btn btn-primary' %>
 
   <% end %>

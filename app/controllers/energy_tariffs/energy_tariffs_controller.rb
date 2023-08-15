@@ -36,7 +36,7 @@ module EnergyTariffs
       @energy_tariff = @tariff_holder.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
       if @energy_tariff.save
         if @energy_tariff.gas?
-          redirect_to_energy_tariff_prices_path
+          redirect_to energy_tariff_prices_path(@energy_tariff)
         else
           redirect_to_choose_type_energy_tariff_path
         end
@@ -90,7 +90,7 @@ module EnergyTariffs
     def update
       if @energy_tariff.update(energy_tariff_params.merge(updated_by: current_user))
         EnergyTariffDefaultPricesCreator.new(@energy_tariff).process
-        redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_prices])
+        redirect_to energy_tariff_prices_path(@energy_tariff)
       else
         render :edit
       end
@@ -113,10 +113,6 @@ module EnergyTariffs
 
     def redirect_to_choose_type_energy_tariff_path
       redirect_to energy_tariffs_path(@energy_tariff, [], { action: :choose_type })
-    end
-
-    def redirect_to_energy_tariff_prices_path
-      redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_prices])
     end
 
     def set_breadcrumbs

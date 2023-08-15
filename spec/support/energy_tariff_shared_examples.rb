@@ -82,6 +82,14 @@ RSpec.shared_examples "a gas tariff editor with no meter selection" do
     expect(page).to have_content('£4.56 per month')
     expect(page).not_to have_link('Delete')
 
+    within('#consumption-charges') do
+      expect(page).to have_link("Edit")
+    end
+
+    within('#standing-charges') do
+      expect(page).to have_link("Edit")
+    end
+
     click_link('Finished')
     expect(page).to have_content('Manage and view tariffs')
     expect(page).to have_content('My First Gas Tariff')
@@ -181,6 +189,14 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).to have_content('£1.50 per kWh')
     expect(page).not_to have_link('Delete')
 
+    within('#consumption-charges') do
+      expect(page).to have_link("Edit")
+    end
+
+    within('#standing-charges') do
+      expect(page).to have_link("Edit")
+    end
+
     click_link('Finished')
     expect(page).to have_content('Manage and view tariffs')
 
@@ -192,7 +208,7 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(energy_tariff.updated_by).to eq(current_user)
 
     expect(energy_tariff.meters).to match_array([])
-    expect(energy_tariff.tariff_type == 'flat_rate').to be_truthy
+    expect(energy_tariff.flat_rate?).to be_truthy
     expect(energy_tariff.vat_rate).to eq(nil)
     expect(energy_tariff.ccl).to be_falsey
     energy_tariff_price = energy_tariff.energy_tariff_prices.first
@@ -236,6 +252,14 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).to have_content(energy_tariff.name)
     expect(page).to have_content('£1.50 per kWh')
     expect(page).not_to have_link('Delete')
+
+    within('#consumption-charges') do
+      expect(page).to have_link("Edit")
+    end
+
+    within('#standing-charges') do
+      expect(page).to have_link("Edit")
+    end
 
     click_link('Finished')
     expect(page).to have_content('Manage and view tariffs')
@@ -298,6 +322,14 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
 
     click_button('Next')
 
+    within('#consumption-charges') do
+      expect(page).to have_link("Edit")
+    end
+
+    within('#standing-charges') do
+      expect(page).to have_link("Edit")
+    end
+
     energy_tariff = EnergyTariff.last
 
     expect(page).to have_content(energy_tariff.name)
@@ -335,7 +367,7 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
   let(:tariff_title)  { "My First Tariff for #{mpan_mprn}" }
   before              { click_link('Add electricity tariff') }
 
-  it 'can create a tariff and associate the meters' do
+  it 'can create a flat rate tariff and associate the meters' do
     #Meter selection
     expect(page).to have_content('Select meters for this tariff')
     check('specific_meters')
@@ -355,6 +387,76 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     expect(energy_tariff.tariff_holder_type).to eq('School')
     expect(energy_tariff.tariff_holder).to eq(school)
     expect(energy_tariff.meters).to match_array([meter])
+  end
+
+  it 'can create a differential tariff and associate the meters' do
+    #Meter selection
+    expect(page).to have_content('Select meters for this tariff')
+    check('specific_meters')
+    check(mpan_mprn)
+    click_button('Next')
+
+    fill_in 'Name', with: 'My First Diff Tariff'
+    click_button('Next')
+
+    click_button('Day/Night tariff')
+
+    expect(page).to have_content('Night rate (00:00 to 07:00)')
+    expect(page).to have_content('Day rate (07:00 to 00:00)')
+    expect(page).not_to have_link('Add rate')
+    expect(page).not_to have_link('Delete')
+
+    first('.energy-tariff-show-button').click
+
+    select '00', from: 'energy_tariff_price_start_time_4i'
+    select '30', from: 'energy_tariff_price_start_time_5i'
+    select '06', from: 'energy_tariff_price_end_time_4i'
+    select '30', from: 'energy_tariff_price_end_time_5i'
+
+    fill_in 'Rate in £/kWh', with: '1.5'
+    click_button('Save')
+
+    expect(page).to have_content('Night rate (00:30 to 06:30)')
+    expect(page).to have_content('Day rate (07:00 to 00:00)')
+    expect(page).to have_content('£1.50 per kWh')
+    expect(page).to have_content('£0.00 per kWh')
+
+    click_link('Next')
+    click_button('Next')
+
+    expect(page).to have_content('Tariff details')
+    expect(page).to have_content('£1.50 per kWh')
+    expect(page).not_to have_link('Delete')
+
+    within('#consumption-charges') do
+      expect(page).to have_link("Edit")
+    end
+
+    within('#standing-charges') do
+      expect(page).to have_link("Edit")
+    end
+
+    click_link('Finished')
+    expect(page).to have_content('Manage and view tariffs')
+
+    energy_tariff = EnergyTariff.last
+    expect(energy_tariff.enabled).to be true
+    expect(energy_tariff.meter_type.to_sym).to eq(:electricity)
+    expect(energy_tariff.meters).to match_array([meter])
+    expect(energy_tariff.tariff_holder_type).to eq(tariff_holder_type)
+    expect(energy_tariff.tariff_holder).to eq(tariff_holder)
+    expect(energy_tariff.created_by).to eq(current_user)
+    expect(energy_tariff.updated_by).to eq(current_user)
+    energy_tariff_price = energy_tariff.energy_tariff_prices.first
+    expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:30')
+    expect(energy_tariff_price.end_time.to_s(:time)).to eq('06:30')
+    expect(energy_tariff_price.value.to_s).to eq('1.5')
+    expect(energy_tariff_price.units).to eq('kwh')
+    energy_tariff_price = energy_tariff.energy_tariff_prices.last
+    expect(energy_tariff_price.start_time.to_s(:time)).to eq('07:00')
+    expect(energy_tariff_price.end_time.to_s(:time)).to eq('00:00')
+    expect(energy_tariff_price.value.to_s).to eq('0.0')
+    expect(energy_tariff_price.units).to eq('kwh')
   end
 
   it 'doesnt require a meter to be selected by default' do
@@ -407,6 +509,9 @@ RSpec.shared_examples "a school tariff editor" do
   context 'when creating electricity tariffs' do
     let(:meter)       { electricity_meter }
     let(:mpan_mprn)   { electricity_meter.mpan_mprn.to_s }
+    let(:tariff_holder)       { school }
+    let(:tariff_holder_type)  { 'School' }
+
     it_behaves_like "an electricity tariff editor with meter selection"
   end
 
