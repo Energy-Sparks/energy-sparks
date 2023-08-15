@@ -21,9 +21,7 @@
 
     <br/>
 
-    <% path = energy_tariffs_path(@energy_tariff, [:energy_tariff_prices]) %>
-
-    <%= link_to t('common.labels.previous'), path, class: 'btn' %>
+    <%= link_to t('common.labels.previous'), energy_tariff_prices_path(@energy_tariff), class: 'btn' %>
     <%= f.submit t('common.labels.next'), class: 'btn btn-primary' %>
 
   <% end %>

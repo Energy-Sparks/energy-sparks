@@ -206,7 +206,7 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(energy_tariff.updated_by).to eq(current_user)
 
     expect(energy_tariff.meters).to match_array([])
-    expect(energy_tariff.tariff_type == 'flat_rate').to be_truthy
+    expect(energy_tariff.flat_rate?).to be_truthy
     expect(energy_tariff.vat_rate).to eq(nil)
     expect(energy_tariff.ccl).to be_falsey
     energy_tariff_price = energy_tariff.energy_tariff_prices.first
