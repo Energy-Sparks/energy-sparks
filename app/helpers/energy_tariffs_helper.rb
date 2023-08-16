@@ -31,19 +31,12 @@ module EnergyTariffsHelper
     end
   end
 
-  def list_of_tariff_types(default = false)
-    default == true ? Meter::MAIN_METER_TYPES : EnergyTariff.meter_types.keys
+  def list_of_tariff_types(show_all: true)
+    show_all ? EnergyTariff.meter_types.keys : Meter::MAIN_METER_TYPES
   end
 
   def sorted_tariffs(tariff_holder, meter_type, source = :manually_entered)
     tariff_holder.energy_tariffs.where(meter_type: meter_type, source: source).by_start_date.by_name
-  end
-
-  def show_summary_table_actions_for?(energy_tariff)
-    return true if energy_tariff.tariff_holder_type == 'SiteSettings' && site_settings_page?
-    return true if %w[School SchoolGroup].include?(energy_tariff.tariff_holder_type)
-
-    false
   end
 
   def site_settings_page?

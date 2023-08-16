@@ -1,8 +1,8 @@
-<table class="table advice-table" id="<%=meter_type%><%= local_assigns[:default] ? '-default' : '' %>-tariffs-table">
+<table class="table advice-table" id="<%= table_id %>">
   <thead>
     <tr>
       <th><%= t('schools.user_tariffs.name') %></th>
-      <% unless tariffs.map(&:tariff_holder_type).uniq == ['SiteSettings'] %>
+      <% if show_meters? %>
         <th><%= t('schools.user_tariffs.meters.meter_list') %></th>
       <% end %>
       <th><%= t('schools.user_tariffs.tariff_partial.type') %></th>
@@ -12,10 +12,10 @@
     </tr>
   </thead>
   <tbody>
-    <% tariffs.each do |energy_tariff| %>
+    <% @tariffs.each do |energy_tariff| %>
       <tr>
         <td><%= energy_tariff.name %></td>
-        <% unless energy_tariff.tariff_holder.site_settings? %>
+        <% if show_meters? %>
           <td>
             <ul style="list-style: none; padding-left: 0px;">
               <% energy_tariff.meters.each do |meter| %>
@@ -25,12 +25,12 @@
           </td>
         <% end %>
         <td>
-          <%= energy_tariff.flat_rate? ? t('schools.user_tariffs.tariff_partial.simple_tariff') : t('schools.user_tariffs.tariff_partial.day_night_tariff') %>
+          <%= flat_rate_label(energy_tariff) %>
         </td>
-        <td><%= energy_tariff.start_date ? energy_tariff.start_date&.to_s(:es_compact) : t('schools.user_tariffs.summary_table.no_start_date') %></td>
-        <td><%= energy_tariff.end_date ? energy_tariff.end_date&.to_s(:es_compact) : t('schools.user_tariffs.summary_table.no_end_date') %></td>
+        <td><%= start_date(energy_tariff) %></td>
+        <td><%= end_date(energy_tariff) %></td>
         <td>
-          <% if show_summary_table_actions_for?(energy_tariff) %>
+          <% if show_actions? %>
             <%= link_to t('schools.user_tariffs.tariff_partial.full_details'),
                 energy_tariffs_path(energy_tariff),
                 class: 'btn' if can? :download, EnergyTariff

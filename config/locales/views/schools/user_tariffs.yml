@@ -90,7 +90,7 @@ en:
         exported_solar_pv:
           add_label: Add exported solar PV tariff
           header: Exported solar PV
-          there_are_no_solar_pv_tariffs_set_up_yet: We have no user supplied tariffs for your exported solar PV meters.
+          there_are_no_exported_solar_pv_tariffs_set_up_yet: We have no user supplied tariffs for your exported solar PV meters.
         gas:
           add_label: Add gas tariff
           header: Gas
