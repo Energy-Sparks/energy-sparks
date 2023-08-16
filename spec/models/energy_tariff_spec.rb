@@ -51,6 +51,10 @@ describe EnergyTariff do
         energy_tariff.update(tariff_holder: create(:school_group))
         expect(energy_tariff.tariff_holder_type).to eq('SchoolGroup')
         expect(energy_tariff).to be_valid
+        energy_tariff.update(start_date: '2021-04-01', end_date: nil)
+        expect(energy_tariff).to be_valid
+        energy_tariff.update(start_date: nil, end_date: '2021-04-01')
+        expect(energy_tariff).to be_valid
         energy_tariff.update(start_date: nil, end_date: nil)
         expect(energy_tariff).not_to be_valid
         expect(energy_tariff.errors.messages).to eq({end_date: ["start and end date can't both be empty"], start_date: ["start and end date can't both be empty"]})
@@ -66,6 +70,17 @@ describe EnergyTariff do
         expect(energy_tariff).to be_valid
         expect(energy_tariff.errors.messages).to be_empty
       end
+    end
+
+    it 'should not allow a start date that is greater than or equal to an end date' do
+      energy_tariff.update(start_date: '2021-04-01', end_date: '2022-03-31')
+      expect(energy_tariff).to be_valid
+      energy_tariff.update(start_date: '2022-03-31', end_date: '2021-04-01')
+      expect(energy_tariff).not_to be_valid
+      expect(energy_tariff.errors.messages).to eq({start_date: ["start date must be earlier than end date"]})
+      energy_tariff.update(start_date: '2021-04-01', end_date: '2021-04-01')
+      expect(energy_tariff).not_to be_valid
+      expect(energy_tariff.errors.messages).to eq({start_date: ["start date must be earlier than end date"]})
     end
 
     it "should prevent same start and end time" do
