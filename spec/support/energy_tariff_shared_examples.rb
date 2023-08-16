@@ -56,6 +56,8 @@ RSpec.shared_examples "a gas tariff editor with no meter selection" do
     expect(page).to have_content('Choose a name and date range')
 
     fill_in 'Name', with: 'My First Gas Tariff'
+    # fill_in 'Start date', with: 'My First Gas Tariff'
+
     click_button('Next')
 
     expect(page).to have_content('My First Gas Tariff')
@@ -240,7 +242,7 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).to have_content('Night rate (00:30 to 06:30)')
     expect(page).to have_content('Day rate (07:00 to 00:00)')
     expect(page).to have_content('£1.50 per kWh')
-    expect(page).to have_content('£0.00 per kWh')
+    expect(page).to have_content('£1.00 per kWh')
 
     click_link('Next')
     click_button('Next')
