@@ -39,17 +39,17 @@
         <td>
           <%= link_to t('schools.user_tariffs.tariff_partial.full_details'),
               energy_tariffs_path(energy_tariff),
-              class: 'btn' if can? :download, EnergyTariff
+              class: 'btn' if can? :manage, energy_tariff
           %>
           <%= link_to t('common.labels.edit'),
               energy_tariffs_path(energy_tariff, [], { action: :edit }),
-              class: 'btn'
+              class: 'btn' if can? :manage, energy_tariff
           %>
           <%= link_to t('common.labels.delete'),
               energy_tariffs_path(energy_tariff),
               method: :delete,
               data: {confirm: t('common.confirm') },
-              class: 'btn btn-danger'
+              class: 'btn btn-danger' if can? :manage, energy_tariff
               %>
           </td>
         <% end %>
