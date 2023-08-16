@@ -6,9 +6,10 @@ class EnergyTariffsComponent < ViewComponent::Base
   renders_one :header
   renders_one :footer
 
-  def initialize(tariff_holder:, tariff_types:, show_actions: true)
+  def initialize(tariff_holder:, tariff_types:, source: :manually_entered, show_actions: true)
     @tariff_holder = tariff_holder
     @tariff_types = tariff_types
     @show_actions = show_actions
+    @source = source
   end
 end
