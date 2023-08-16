@@ -24,6 +24,18 @@ class EnergyTariffTableComponent < ViewComponent::Base
     energy_tariff.start_date ? energy_tariff.start_date&.to_s(:es_compact) : t('schools.user_tariffs.summary_table.no_start_date')
   end
 
+  def start_date_sortable(energy_tariff)
+    energy_tariff.start_date&.iso8601
+  end
+
+  def end_date_sortable(energy_tariff)
+    energy_tariff.end_date&.iso8601
+  end
+
+  def table_sorted
+    @tariffs.length > 1 ? 'table-sorted' : ''
+  end
+
   def end_date(energy_tariff)
     energy_tariff.end_date ? energy_tariff.end_date&.to_s(:es_compact) : t('schools.user_tariffs.summary_table.no_end_date')
   end

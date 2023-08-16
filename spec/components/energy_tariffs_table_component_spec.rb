@@ -84,7 +84,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     end
 
     it 'includes the actions' do
-      expect(html).to have_link('Full details')
+      expect(html).to have_link('View details')
       expect(html).to have_link('Edit')
       expect(html).to have_link('Delete')
     end

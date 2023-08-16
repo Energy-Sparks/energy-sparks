@@ -1,20 +1,27 @@
-<table class="table advice-table" id="<%= @id %>">
+<table class="table advice-table <%=table_sorted%>" id="<%= @id %>">
   <thead>
     <tr>
-      <th><%= t('schools.user_tariffs.name') %></th>
-      <% if show_meters? %>
-        <th><%= t('schools.user_tariffs.meters.meter_list') %></th>
-      <% end %>
-      <th><%= t('schools.user_tariffs.tariff_partial.type') %></th>
       <th><%= t('schools.user_tariffs.tariff_partial.start_date') %></th>
       <th><%= t('schools.user_tariffs.tariff_partial.end_date') %></th>
-      <th></th>
+      <th><%= t('schools.user_tariffs.name') %></th>
+      <th><%= t('schools.user_tariffs.tariff_partial.type') %></th>
+      <% if show_meters? %>
+        <th data-orderable="false"><%= t('schools.user_tariffs.meters.meter_list') %></th>
+      <% end %>
+      <% if @show_actions %>
+        <th data-orderable="false"></th>
+      <% end %>
     </tr>
   </thead>
   <tbody>
     <% @tariffs.each do |energy_tariff| %>
       <tr>
+        <td data-order="<%= start_date_sortable(energy_tariff) %>"><%= start_date(energy_tariff) %></td>
+        <td data-order="<%= end_date_sortable(energy_tariff) %>"><%= end_date(energy_tariff) %></td>
         <td><%= energy_tariff.name %></td>
+        <td>
+          <%= flat_rate_label(energy_tariff) %>
+        </td>
         <% if show_meters? %>
           <td>
             <ul style="list-style: none; padding-left: 0px;">
@@ -24,29 +31,24 @@
             </ul>
           </td>
         <% end %>
+        <% if show_actions? %>
         <td>
-          <%= flat_rate_label(energy_tariff) %>
-        </td>
-        <td><%= start_date(energy_tariff) %></td>
-        <td><%= end_date(energy_tariff) %></td>
-        <td>
-          <% if show_actions? %>
-            <%= link_to t('schools.user_tariffs.tariff_partial.full_details'),
-                energy_tariffs_path(energy_tariff),
-                class: 'btn' if can? :download, EnergyTariff
-            %>
-            <%= link_to t('common.labels.edit'),
-                energy_tariffs_path(energy_tariff, [], { action: :edit }),
-                class: 'btn'
-            %>
-            <%= link_to t('common.labels.delete'),
-                energy_tariffs_path(energy_tariff),
-                method: :delete,
-                data: {confirm: t('common.confirm') },
-                class: 'btn btn-danger'
-                %>
-          <% end %>
-        </td>
+          <%= link_to t('schools.user_tariffs.tariff_partial.full_details'),
+              energy_tariffs_path(energy_tariff),
+              class: 'btn' if can? :download, EnergyTariff
+          %>
+          <%= link_to t('common.labels.edit'),
+              energy_tariffs_path(energy_tariff, [], { action: :edit }),
+              class: 'btn'
+          %>
+          <%= link_to t('common.labels.delete'),
+              energy_tariffs_path(energy_tariff),
+              method: :delete,
+              data: {confirm: t('common.confirm') },
+              class: 'btn btn-danger'
+              %>
+          </td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

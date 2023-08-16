@@ -31,7 +31,7 @@ RSpec.shared_examples "a tariff editor index" do
         expect(page).to have_content(gas_tariff.name)
         expect(page).to have_content(gas_tariff.start_date.to_s(:es_compact))
         expect(page).to have_content(gas_tariff.end_date.to_s(:es_compact))
-        expect(page).to have_link("Full details")
+        expect(page).to have_link("View details")
         expect(page).to have_link("Edit")
         expect(page).to have_link("Delete")
       end
@@ -41,7 +41,7 @@ RSpec.shared_examples "a tariff editor index" do
         expect(page).to have_content(electricity_tariff.name)
         expect(page).to have_content(electricity_tariff.start_date.to_s(:es_compact))
         expect(page).to have_content(electricity_tariff.end_date.to_s(:es_compact))
-        expect(page).to have_link("Full details")
+        expect(page).to have_link("View details")
         expect(page).to have_link("Edit")
         expect(page).to have_link("Delete")
       end

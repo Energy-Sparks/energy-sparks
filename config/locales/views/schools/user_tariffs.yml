@@ -100,7 +100,7 @@ en:
             You can improve the accuracy of the calculations on your <a href="%{advice_pages}">cost analysis pages</a> by adding details about your real tariffs.
           </p>
           <p>
-            To add a a new tariff you will need to supply detailed information about the energy costs and the range of standing charges that are included in your energy contract.
+            To add a a new tariff you will need to know the prices and, optionally, the range of standing charges that are included in your energy contract.
           </p>
         note_about_defaults: If we do not have your real tariff information, then we will estimate your costs using our default tariffs.
         note_about_smart_meter_tariffs: We are currently using tariffs automatically imported from your smart meters.
@@ -147,7 +147,7 @@ en:
       tariff_partial:
         day_night_tariff: Day/night tariff
         end_date: End date
-        full_details: Full details
+        full_details: View details
         simple_tariff: Simple tariff
         start_date: Start date
         type: Type
