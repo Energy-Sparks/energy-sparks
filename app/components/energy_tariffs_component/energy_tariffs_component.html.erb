@@ -18,12 +18,16 @@
                 tariffs: sorted_tariffs(@tariff_holder, meter_type, @source),
                 show_actions: @show_actions %>
             <% else %>
-              <p><%= t("schools.user_tariffs.index.#{meter_type}.there_are_no_#{meter_type}_tariffs_set_up_yet") %></p>
+              <p>
+                <%= t("schools.user_tariffs.index.#{meter_type}.there_are_no_#{meter_type}_tariffs_set_up_yet") %>
+              </p>
               <%= footer %>
             <% end %>
             <% if @show_actions %>
               <div class="mt-4">
-                <%= link_to t("schools.user_tariffs.index.#{meter_type}.add_label"), new_energy_tariff_path(@tariff_holder, meter_type: meter_type), class: 'btn btn-success' %>
+                <%= link_to t("schools.user_tariffs.index.#{meter_type}.add_label"),
+                  new_energy_tariff_path(@tariff_holder, meter_type: meter_type),
+                  class: 'btn btn-success' %>
               </div>
             <% end %>
           </div>
