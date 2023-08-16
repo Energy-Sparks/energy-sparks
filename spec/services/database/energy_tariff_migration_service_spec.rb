@@ -572,7 +572,7 @@ describe Database::EnergyTariffMigrationService do
   end
 
   context '#migrate_tariff_prices' do
-    let(:start_date)  { Date.yesterday - 1.day }
+    let(:start_date)  { Date.yesterday }
     let(:end_date)    { Date.yesterday }
     let(:source)      { "dcc" }
     let(:tariff_name) { "Tariff from DCC SMETS2 meter" }

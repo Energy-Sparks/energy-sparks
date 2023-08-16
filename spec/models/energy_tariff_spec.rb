@@ -72,15 +72,14 @@ describe EnergyTariff do
       end
     end
 
-    it 'should not allow a start date that is greater than or equal to an end date' do
+    it 'should not allow a start date that is greater than an end date' do
       energy_tariff.update(start_date: '2021-04-01', end_date: '2022-03-31')
+      expect(energy_tariff).to be_valid
+      energy_tariff.update(start_date: '2021-04-01', end_date: '2021-04-01')
       expect(energy_tariff).to be_valid
       energy_tariff.update(start_date: '2022-03-31', end_date: '2021-04-01')
       expect(energy_tariff).not_to be_valid
-      expect(energy_tariff.errors.messages).to eq({start_date: ["start date must be earlier than end date"]})
-      energy_tariff.update(start_date: '2021-04-01', end_date: '2021-04-01')
-      expect(energy_tariff).not_to be_valid
-      expect(energy_tariff.errors.messages).to eq({start_date: ["start date must be earlier than end date"]})
+      expect(energy_tariff.errors.messages).to eq({start_date: ["start date must be earlier than or equal to end date"]})
     end
 
     it "should prevent same start and end time" do

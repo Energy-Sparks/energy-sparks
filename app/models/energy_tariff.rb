@@ -122,9 +122,9 @@ class EnergyTariff < ApplicationRecord
 
   def start_date_is_earlier_than_end_date
     return unless start_date.present? && end_date.present?
-    return unless start_date >= end_date
+    return unless start_date > end_date
 
-    errors.add(:start_date, I18n.t('schools.user_tariffs.form.errors.dates.start_date_must_be_earlier_than_end_date'))
+    errors.add(:start_date, I18n.t('schools.user_tariffs.form.errors.dates.start_date_must_be_earlier_than_or_equal_to_end_date'))
   end
 
   def tariff_holder_symbol

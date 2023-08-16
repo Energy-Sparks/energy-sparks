@@ -81,7 +81,7 @@ en:
         errors:
           dates:
             start_and_end_date_can_not_both_be_empty: start and end date can't both be empty
-            start_date_must_be_earlier_than_end_date: start date must be earlier than end date
+            start_date_must_be_earlier_than_or_equal_to_end_date: start date must be earlier than or equal to end date
       index:
         changes_to_cost_calculations_message: The cost calculations based on these tariffs will update overnight
         electricity:
