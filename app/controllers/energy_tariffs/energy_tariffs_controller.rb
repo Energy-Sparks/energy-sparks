@@ -2,51 +2,41 @@ module EnergyTariffs
   class EnergyTariffsController < ApplicationController
     include Adminable
     include EnergyTariffable
+    include EnergyTariffsHelper
 
-    load_and_authorize_resource :school
-    load_and_authorize_resource :school_group
+    load_and_authorize_resource :school, instance_name: 'tariff_holder'
+    load_and_authorize_resource :school_group, instance_name: 'tariff_holder'
     load_and_authorize_resource :energy_tariff
     before_action :admin_authorized?, if: :site_settings_resource?
     before_action :load_site_setting, if: :site_settings_resource?
     before_action :set_breadcrumbs
 
     def index
-      authorize! :manage, @school.energy_tariffs.build if @school
-      authorize! :manage, @school_group.energy_tariffs.build if @school_group
+      authorize! :manage, @tariff_holder.energy_tariffs.build
 
-      if @school
-        @electricity_meters = @school.meters.electricity
-        @electricity_tariffs = @school.energy_tariffs.electricity.by_start_date.by_name
-        @gas_meters = @school.meters.gas
-        @gas_tariffs = @school.energy_tariffs.gas.by_start_date.by_name
+      if @tariff_holder.school?
+        @electricity_meters = @tariff_holder.meters.electricity
+        @gas_meters = @tariff_holder.meters.gas
       end
     end
 
     def new
-      @energy_tariff = if @school
-                         @school.energy_tariffs.build(energy_tariff_params.merge(default_params))
-                       elsif @school_group
-                         @school_group.energy_tariffs.build(meter_type: params[:meter_type])
-                       elsif @site_setting
-                         @site_setting.energy_tariffs.build(meter_type: params[:meter_type])
+      @energy_tariff = if @tariff_holder.school?
+                         @tariff_holder.energy_tariffs.build(default_params.merge(energy_tariff_params))
+                       else
+                         @tariff_holder.energy_tariffs.build(default_params.merge({ meter_type: params[:meter_type] }))
                        end
-      if @energy_tariff.meter_ids.empty? && @school
-        redirect_back fallback_location: school_energy_tariffs_path(@school), notice: "Please select at least one meter for this tariff"
+
+      if require_meters?
+        redirect_back fallback_location: school_energy_tariffs_path(@tariff_holder), notice: I18n.t('schools.user_tariffs.choose_meters.missing_meters')
       end
     end
 
     def create
-      @energy_tariff = if @school
-                         @school.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
-                       elsif @school_group
-                         @school_group.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
-                       elsif @site_setting
-                         @site_setting.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
-                       end
-
+      @energy_tariff = @tariff_holder.energy_tariffs.build(energy_tariff_params.merge(created_by: current_user))
       if @energy_tariff.save
         if @energy_tariff.gas?
-          redirect_to_energy_tariff_prices_path
+          redirect_to energy_tariff_prices_path(@energy_tariff)
         else
           redirect_to_choose_type_energy_tariff_path
         end
@@ -57,9 +47,9 @@ module EnergyTariffs
 
     def choose_meters
       if params[:meter_type] == 'electricity'
-        @meters = @school.meters.electricity
+        @meters = @tariff_holder.meters.electricity
       elsif params[:meter_type] == 'gas'
-        @meters = @school.meters.gas
+        @meters = @tariff_holder.meters.gas
       else
         @meters = []
       end
@@ -71,11 +61,7 @@ module EnergyTariffs
     def update
       if @energy_tariff.update(energy_tariff_params.merge(updated_by: current_user))
         EnergyTariffDefaultPricesCreator.new(@energy_tariff).process
-        case @energy_tariff.tariff_holder_type
-        when 'School' then redirect_to school_energy_tariff_energy_tariff_prices_path(@school, @energy_tariff)
-        when 'SchoolGroup' then redirect_to school_group_energy_tariff_energy_tariff_prices_path(@school_group, @energy_tariff)
-        when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_prices_path(@energy_tariff)
-        end
+        redirect_to energy_tariff_prices_path(@energy_tariff)
       else
         render :edit
       end
@@ -85,32 +71,19 @@ module EnergyTariffs
     end
 
     def destroy
-      redirect_path = case @energy_tariff.tariff_holder_type
-                      when 'School' then school_energy_tariffs_path(@school)
-                      when 'SchoolGroup' then school_group_energy_tariffs_path(@school_group)
-                      when 'SiteSettings' then admin_settings_energy_tariffs_path
-                      end
-
+      redirect_path = energy_tariffs_path(@energy_tariff, [], { energy_tariff_index: true })
       @energy_tariff.destroy
       redirect_to redirect_path
     end
 
     private
 
-    def redirect_to_choose_type_energy_tariff_path
-      case @energy_tariff.tariff_holder_type
-      when 'School' then redirect_to choose_type_school_energy_tariff_path(@school, @energy_tariff)
-      when 'SchoolGroup' then redirect_to choose_type_school_group_energy_tariff_path(@school_group, @energy_tariff)
-      when 'SiteSettings' then redirect_to choose_type_admin_settings_energy_tariff_path(@energy_tariff)
-      end
+    def require_meters?
+      params[:specific_meters] && @energy_tariff.meter_ids.empty? && @tariff_holder.school?
     end
 
-    def redirect_to_energy_tariff_prices_path
-      case @energy_tariff.tariff_holder_type
-      when 'School' then redirect_to school_energy_tariff_energy_tariff_prices_path(@school, @energy_tariff)
-      when 'SchoolGroup' then redirect_to school_group_energy_tariff_energy_tariff_prices_path(@school_group, @energy_tariff)
-      when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_prices_path(@energy_tariff)
-      end
+    def redirect_to_choose_type_energy_tariff_path
+      redirect_to energy_tariffs_path(@energy_tariff, [], { action: :choose_type })
     end
 
     def set_breadcrumbs
@@ -118,7 +91,12 @@ module EnergyTariffs
     end
 
     def default_params
-      { start_date: Date.parse('2021-04-01'), end_date: Date.parse('2022-03-31'), tariff_type: :flat_rate }
+      default_start_date = @tariff_holder.default_tariff_start_date(@energy_tariff.meter_type)
+      default_end_date = default_start_date + 1.year
+      {
+        start_date: default_start_date,
+        end_date: default_end_date
+      }
     end
 
     def energy_tariff_params

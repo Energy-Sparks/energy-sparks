@@ -23,7 +23,7 @@ gem 'pg_search'
 gem 'calculate_in_group'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '3.0.0'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '3.0.1'
 #gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'additional-tariff-code-tests-and-refactoring'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 

@@ -2,64 +2,40 @@
 
 <div class="energy_tariff">
 
-  <% if @energy_tariff.tariff_holder_type == 'School' %>
+  <% if @energy_tariff.tariff_holder.school? %>
     <p>
-      <%= t('schools.user_tariffs.show.introduction_html', electricity_analysis_path: analysis_page_finder_path(urn: @school.urn, analysis_class: 'AdviceElectricityCosts'), gas_analysis_path: analysis_page_finder_path(urn: @school.urn, analysis_class: 'AdviceGasCosts')) %>.</p>
+      <%= t('schools.user_tariffs.show.introduction_html', electricity_analysis_path: analysis_page_finder_path(urn: @tariff_holder.urn, analysis_class: 'AdviceElectricityCosts'), gas_analysis_path: analysis_page_finder_path(urn: @tariff_holder.urn, analysis_class: 'AdviceGasCosts')) %>.
     </p>
     <br/>
   <% end %>
 
   <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
 
-  <h4>
+  <h4 id="consumption-charges">
     <%= t('schools.user_tariffs.show.consumption_charges') %>
-    <% if @energy_tariff.tariff_holder_type == 'School' %>
-      <%= link_to t('common.labels.edit'), school_energy_tariff_energy_tariff_prices_path(@school, @energy_tariff), class: 'btn' %>
-    <% end %>
-
-    <% if @energy_tariff.tariff_holder_type == 'SiteSettings' %>
-      <%= link_to t('common.labels.edit'), admin_settings_energy_tariff_energy_tariff_prices_path(@energy_tariff), class: 'btn' %>
-    <% end %>
+    <%= link_to t('common.labels.edit'), energy_tariff_prices_path(@energy_tariff), class: 'btn' %>
   </h4>
 
   <% if @energy_tariff.flat_rate? %>
-    <%= render 'energy_tariffs/energy_tariffs/flat_rate', school: @school, energy_tariff: @energy_tariff, allow_edits: false %>
+    <%= render 'energy_tariffs/energy_tariffs/flat_rate', energy_tariff: @energy_tariff, allow_edits: false %>
   <% else %>
-    <%= render 'energy_tariffs/energy_tariffs/rates_table', school: @school, energy_tariff: @energy_tariff, allow_edits: false %>
+    <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, allow_edits: false %>
   <% end %>
 
   <br/>
 
-  <h4>
+  <h4 id="standing-charges">
     <%= t('schools.user_tariffs.show.standing_charges') %>
-    <% if @energy_tariff.tariff_holder_type == 'School' %>
-      <%= link_to t('common.labels.edit'), school_energy_tariff_energy_tariff_charges_path(@school, @energy_tariff), class: 'btn' %>
-    <% end %>
-
-    <% if @energy_tariff.tariff_holder_type == 'SiteSettings' %>
-      <%= link_to t('common.labels.edit'), admin_settings_energy_tariff_energy_tariff_charges_path(@energy_tariff), class: 'btn' %>
-    <% end %>
+    <%= link_to t('common.labels.edit'), energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]), class: 'btn' %>
   </h4>
 
-  <%= render 'energy_tariffs/energy_tariffs/charges_table', school: @school, energy_tariff: @energy_tariff, allow_edits: false %>
+  <%= render 'energy_tariffs/energy_tariffs/charges_table', energy_tariff: @energy_tariff, allow_edits: false %>
 
   <br/>
   <br/>
 
-  <% if @energy_tariff.tariff_holder_type == 'School' %>
-    <%= link_to t('common.labels.previous'), school_energy_tariff_energy_tariff_charges_path(@school, @energy_tariff), class: 'btn' %>
-    <%= link_to t('common.labels.finished'), school_energy_tariffs_path(@school), class: 'btn' %>
-  <% end %>
-
-  <% if @energy_tariff.tariff_holder_type == 'SchoolGroup' %>
-    <%= link_to t('common.labels.previous'), school_group_energy_tariff_energy_tariff_charges_path(@school_group, @energy_tariff), class: 'btn' %>
-    <%= link_to t('common.labels.finished'), school_group_energy_tariffs_path(@school_group), class: 'btn' %>
-  <% end %>
-
-  <% if @energy_tariff.tariff_holder_type == 'SiteSettings' %>
-    <%= link_to t('common.labels.previous'), admin_settings_energy_tariff_energy_tariff_charges_path(@energy_tariff), class: 'btn' %>
-    <%= link_to t('common.labels.finished'), admin_settings_energy_tariffs_path, class: 'btn' %>
-  <% end %>
+  <%= link_to t('common.labels.previous'), energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]), class: 'btn' %>
+  <%= link_to t('common.labels.finished'), energy_tariffs_path(@energy_tariff, [], { energy_tariff_index: true }), class: 'btn' %>
 
   <div class="hidden">
     <% if can? :download, EnergyTariff %>

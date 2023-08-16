@@ -7,13 +7,13 @@
       href="#nav-user-tariffs" role="tab" aria-controls="nav-user-tariffs" aria-selected="true">
       <%= t('schools.user_tariffs.index.tabs.user_tariffs') %>
     </a>
-    <% if @school && any_smart_meters?(@school) %>
+    <% if @tariff_holder.school? && any_smart_meters?(@tariff_holder) %>
       <a class="nav-item nav-link"
         id="nav-smart-meter-tariffs-tab" data-toggle="tab" href="#nav-smart-meter-tariffs" role="tab" aria-controls="nav-smart-meter-tariffs" aria-selected="false">
         <%= t('schools.user_tariffs.index.tabs.smart_meter_tariffs') %>
       </a>
     <% end %>
-    <% if @school || @school_group %>
+    <% if @tariff_holder.school? || @tariff_holder.school_group? %>
       <a class="nav-item nav-link" id="nav-default-tariffs-tab" data-toggle="tab" href="#nav-default-tariffs" role="tab" aria-controls="nav-default-tariffs" aria-selected="false">
         <%= t('schools.user_tariffs.index.tabs.default_tariffs') %>
       </a>
@@ -22,19 +22,16 @@
 </nav>
 <div class="tab-content" id="nav-tabContent">
   <div id="nav-user-tariffs" role="tabpanel" aria-labelledby="nav-user-tariffs-tab" class="tab-pane fade show active">
-    <%= render 'energy_tariffs_tab_school' if @school %>
-    <%= render 'energy_tariffs_tab_school_groups' if @school_group %>
-    <%= render 'energy_tariffs_tab_site_settings' if @site_setting %>
+    <%= render 'energy_tariffs_tab', default: false, tariff_holder: @tariff_holder %>
   </div>
-  <% if @school && any_smart_meters?(@school) %>
+  <% if @tariff_holder.school? && any_smart_meters?(@tariff_holder) %>
     <div id="nav-smart-meter-tariffs" role="tabpanel" aria-labelledby="nav-smart-meter-tariffs-tab" class="tab-pane fade">
       <%= render 'smart_meter_tariffs_tab_school' %>
     </div>
   <% end %>
-  <% if @school || @school_group %>
+  <% if @tariff_holder.school? || @tariff_holder.school_group? %>
     <div id="nav-default-tariffs" role="tabpanel" aria-labelledby="nav-default-tariffs-tab" class="tab-pane fade">
-      <%= render 'default_tariffs_tab_school' if @school %>
-      <%= render 'energy_tariffs_tab_site_settings' if @school_group %>
+      <%= render 'energy_tariffs_tab', default: true, tariff_holder: @tariff_holder.parent_tariff_holder %>
     </div>
   <% end %>
 </div>

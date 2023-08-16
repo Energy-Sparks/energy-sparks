@@ -532,7 +532,7 @@ class School < ApplicationRecord
       end
       collection
     end
-    if EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs)
+    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
       all_attributes[:aggregated_electricity] = all_energy_tariff_attributes(:electricity)
       all_attributes[:aggregated_gas] = all_energy_tariff_attributes(:gas)
       all_attributes[:solar_pv_consumed_sub_meter] = all_energy_tariff_attributes(:solar_pv)
@@ -629,6 +629,10 @@ class School < ApplicationRecord
 
   def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys)
     energy_tariffs.where(meter_type: meter_type).left_joins(:meters).where(meters: { id: nil }).complete.map(&:meter_attribute)
+  end
+
+  def holds_tariffs_of_type?(meter_type)
+    Meter::MAIN_METER_TYPES.include?(meter_type.to_sym) && meters.where(meter_type: meter_type).any?
   end
 
   private

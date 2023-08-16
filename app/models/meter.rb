@@ -181,6 +181,10 @@ class Meter < ApplicationRecord
     name.present? ? name : mpan_mprn.to_s
   end
 
+  def mpan_mprn_and_name
+    name.present? ? "#{mpan_mprn} - #{name}" : mpan_mprn
+  end
+
   def display_name
     name.present? ? "#{display_meter_mpan_mprn} (#{name})" : display_meter_mpan_mprn
   end
@@ -218,7 +222,7 @@ class Meter < ApplicationRecord
   end
 
   def active_meter_attributes
-    if EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs)
+    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
       meter_attributes.where.not(attribute_type: GlobalMeterAttribute::TARIFF_ATTRIBUTE_TYPES).active
     else
       meter_attributes.active
@@ -227,7 +231,7 @@ class Meter < ApplicationRecord
 
   def energy_tariff_meter_attributes
     attributes = []
-    if EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs)
+    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
       school_attributes = school.all_energy_tariff_attributes(meter_type)
       attributes += school_attributes unless school_attributes.nil?
     end

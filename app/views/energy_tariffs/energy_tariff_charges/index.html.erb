@@ -3,48 +3,25 @@
 <div class="energy_tariff">
 
   <p>
-    <%= case @energy_tariff.tariff_holder_type
-        when 'School' then t('schools.user_tariff_charges.index.introduction')
-        when 'SchoolGroup' then t('schools.user_tariff_charges.index.introduction')
-        when 'SiteSettings' then t('schools.user_tariff_charges.index.introduction_site_settings')
-        end
-    %>.
+    <%= t("schools.user_tariff_charges.index.introduction_#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
   </p>
   <br/>
 
   <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
 
-  <%
-    form_url = if @energy_tariff.tariff_holder_type == 'School'
-                 school_energy_tariff_energy_tariff_charges_path(@school, @energy_tariff)
-               elsif @energy_tariff.tariff_holder_type == 'SchoolGroup'
-                 school_group_energy_tariff_energy_tariff_charges_path(@school_group, @energy_tariff)
-               elsif @energy_tariff.tariff_holder_type == 'SiteSettings'
-                 admin_settings_energy_tariff_energy_tariff_charges_path(@energy_tariff)
-               end
-  %>
+  <% form_url = energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]) %>
 
   <%= simple_form_for :energy_tariff_charges, url: form_url do |f| %>
 
     <% if @energy_tariff.gas? %>
-      <%= render 'charges_edit_gas', school: @school, energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
+      <%= render 'charges_edit_gas', energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
     <% else %>
-      <%= render 'charges_edit_electricity', school: @school, energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
+      <%= render 'charges_edit_electricity', energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
     <% end %>
 
     <br/>
 
-    <%
-      path = if @energy_tariff.tariff_holder_type == 'School'
-               school_energy_tariff_energy_tariff_prices_path(@school, @energy_tariff)
-             elsif @energy_tariff.tariff_holder_type == 'SchoolGroup'
-               school_group_energy_tariff_energy_tariff_prices_path(@school_group, @energy_tariff)
-             elsif @energy_tariff.tariff_holder_type == 'SiteSettings'
-               admin_settings_energy_tariff_energy_tariff_prices_path(@energy_tariff)
-             end
-    %>
-
-    <%= link_to t('common.labels.previous'), path, class: 'btn' %>
+    <%= link_to t('common.labels.previous'), energy_tariff_prices_path(@energy_tariff), class: 'btn' %>
     <%= f.submit t('common.labels.next'), class: 'btn btn-primary' %>
 
   <% end %>

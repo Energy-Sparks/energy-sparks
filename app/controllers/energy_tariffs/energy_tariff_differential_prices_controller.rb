@@ -2,9 +2,10 @@ module EnergyTariffs
   class EnergyTariffDifferentialPricesController < ApplicationController
     include Adminable
     include EnergyTariffable
+    include EnergyTariffsHelper
 
-    load_and_authorize_resource :school
-    load_and_authorize_resource :school_group
+    load_and_authorize_resource :school, instance_name: 'tariff_holder'
+    load_and_authorize_resource :school_group, instance_name: 'tariff_holder'
     load_and_authorize_resource :energy_tariff
     before_action :admin_authorized?, if: :site_settings_resource?
     before_action :load_site_setting, if: :site_settings_resource?
@@ -24,7 +25,7 @@ module EnergyTariffs
       @energy_tariff_price = @energy_tariff.energy_tariff_prices.build(energy_tariff_price_params.merge(units: 'kwh'))
       respond_to do |format|
         if @energy_tariff_price.save
-          format.html { redirect_to school_energy_tariff_energy_tariff_differential_prices_path(@school, @energy_tariff) }
+          format.html { redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_prices]) }
           format.js
         else
           format.html { render :new }
@@ -46,11 +47,7 @@ module EnergyTariffs
       respond_to do |format|
         if @energy_tariff_price.update(energy_tariff_price_params)
           format.html do
-            case @energy_tariff.tariff_holder_type
-            when 'School' then redirect_to school_energy_tariff_energy_tariff_differential_prices_path(@school, @energy_tariff)
-            when 'SchoolGroup' then redirect_to school_group_energy_tariff_energy_tariff_differential_prices_path(@school_group, @energy_tariff)
-            when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_differential_prices_path(@energy_tariff)
-            end
+            redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_prices])
           end
           format.js
         else
@@ -62,11 +59,7 @@ module EnergyTariffs
 
     def destroy
       @energy_tariff.energy_tariff_prices.find(params[:id]).destroy
-      case @energy_tariff.tariff_holder_type
-      when 'School' then redirect_to school_energy_tariff_energy_tariff_differential_prices_path(@school, @energy_tariff)
-      when 'SchoolGroup' then redirect_to school_group_energy_tariff_energy_tariff_differential_prices_path(@school_group, @energy_tariff)
-      when 'SiteSettings' then redirect_to admin_settings_energy_tariff_energy_tariff_differential_prices_path(@energy_tariff)
-      end
+      redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_prices])
     end
 
     private

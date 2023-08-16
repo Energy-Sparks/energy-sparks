@@ -9,13 +9,7 @@
         </td>
         <% if allow_edits %>
           <td class="value">
-            <% edit_path = case energy_tariff.tariff_holder_type
-                      when 'School' then edit_school_energy_tariff_energy_tariff_differential_price_path(@school, energy_tariff, energy_tariff_price)
-                      when 'SchoolGroup' then edit_school_group_energy_tariff_energy_tariff_differential_price_path(@school_group, energy_tariff, energy_tariff_price)
-                      when 'SiteSettings' then edit_admin_settings_energy_tariff_energy_tariff_differential_price_path(energy_tariff, energy_tariff_price)
-                      end
-            %>
-
+            <% edit_path =  energy_tariffs_path(energy_tariff, [:energy_tariff_differential_price], { action: 'edit', id: energy_tariff_price.id }) %>
             <%= link_to t('common.labels.edit'), edit_path, { class: 'btn energy-tariff-show-button', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window' } %>
           </td>
         <% end %>

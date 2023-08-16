@@ -3,12 +3,7 @@
 <div class="energy_tariff">
 
   <p>
-    <%= case @energy_tariff.tariff_holder_type
-        when 'School' then t('schools.user_tariff_differential_prices.index.introduction')
-        when 'SchoolGroup' then t('schools.user_tariff_differential_prices.index.introduction')
-        when 'SiteSettings' then t('schools.user_tariff_differential_prices.index.introduction_site_settings')
-        end
-    %>.
+    <%= t("schools.user_tariff_differential_prices.index.introduction_#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
   </p>
   <br/>
 
@@ -20,24 +15,13 @@
 
   <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true" ></div>
 
-  <%= render 'energy_tariffs/energy_tariffs/rates_table', school: @school, energy_tariff: @energy_tariff, allow_edits: true %>
+  <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, allow_edits: true %>
 
   <br/>
 
-  <% edit_path = case @energy_tariff.tariff_holder_type
-                 when 'School' then edit_school_energy_tariff_path(@school, @energy_tariff)
-                 when 'SchoolGroup' then edit_school_group_energy_tariff_path(@school_group, @energy_tariff)
-                 when 'SiteSettings' then edit_admin_settings_energy_tariff_path(@energy_tariff)
-                 end
-  %>
+  <% edit_path = energy_tariffs_path(@energy_tariff, [], { action: :edit }) %>
   <%= link_to t('common.labels.previous'), edit_path, class: 'btn' %>
 
-  <% next_path = case @energy_tariff.tariff_holder_type
-                 when 'School' then school_energy_tariff_energy_tariff_charges_path(@school, @energy_tariff)
-                 when 'SchoolGroup' then school_group_energy_tariff_energy_tariff_charges_path(@school_group, @energy_tariff)
-                 when 'SiteSettings' then admin_settings_energy_tariff_energy_tariff_charges_path(@energy_tariff)
-                 end
-  %>
+  <% next_path = energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]) %>
   <%= link_to t('common.labels.next'), next_path, class: 'btn' %>
-
 </div>

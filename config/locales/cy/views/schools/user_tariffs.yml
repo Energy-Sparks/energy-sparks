@@ -59,33 +59,6 @@ cy:
         or_a_rate_which_varies_by_time_of_day: Neu gyfradd sy’n amrywio yn ôl amser o’r dydd (e.e. tariff Dydd/Nos, Economi7)
         simple: Syml
         title: Dewiswch y math o'r tariff hwn
-      default_tariffs:
-        economic:
-          introduction_html: |-
-            <p>
-            Mae Sbarcynni yn defnyddio model cost syml ar gyfer:
-            </p>
-            <ul>
-              <li>Cyfrifo'r costau a ddangosir ar y rhan fwyaf o siartiau a dadansoddiadau ar draws y safle</li>
-              <li>Rhagolygon economaidd wrth wneud dadansoddiad cost a budd ar gyfer awgrymu gwelliannau i'ch rheolaeth ynni</li>
-            </ul>
-            <p>
-            Dim ond fel rhan o gynhyrchu eich tudalen dadansoddi <a href="%{advice_pages}"> cost y byddwn yn defnyddio eich tariffau go iawn.</a>
-            </p>
-            <p>
-            Mae’r tabl isod yn crynhoi’r tariffau rydym yn eu defnyddio ar gyfer eich ysgol.
-            </p>
-            <p>
-              <a href="mailto:hello@energysparks.uk">Cysylltwch â ni</a>os hoffech i'r tariffau ar gyfer eich MAT neu'ch ysgol gael eu diweddaru. Bydd angen gwybodaeth arnom am y tariffau penodol gan gynnwys y dyddiad dechrau pan fyddant yn effeithiol.
-          tariffs_table:
-            columns:
-              scope: Cwmpas
-            labels:
-              aggregated_electricity: Trydan
-              aggregated_gas: Nwy
-              global: System eang
-              school: Ysgol
-              school_group: Grŵp Ysgol (MAT)
       edit:
         title: Golygu'r enw a'r ystod dyddiad ar gyfer y tariff %{fuel_type} hwn
       flat_rate:
