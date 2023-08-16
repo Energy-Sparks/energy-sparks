@@ -36,7 +36,7 @@ module EnergyTariffsHelper
   end
 
   def sorted_tariffs(tariff_holder, meter_type, source = :manually_entered)
-    tariff_holder.energy_tariffs.where(meter_type: meter_type, source: source).by_start_date.by_name
+    tariff_holder.energy_tariffs.where(meter_type: meter_type, source: source).by_start_and_end.by_name
   end
 
   def site_settings_page?
