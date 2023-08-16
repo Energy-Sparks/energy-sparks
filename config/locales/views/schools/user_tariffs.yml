@@ -114,6 +114,7 @@ en:
           user_tariffs: User supplied tariffs
         title: Manage and view tariffs
       meters:
+        all_meters: All %{meter_type} meters
         meter_list: Meters
         meters_associated_with_this_tariff: Meters associated with this tariff
         there_are_no_meters_associated_with_this_tariff: There are no meters associated with this tariff

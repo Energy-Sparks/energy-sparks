@@ -24,11 +24,15 @@
         </td>
         <% if show_meters? %>
           <td>
-            <ul style="list-style: none; padding-left: 0px;">
-              <% energy_tariff.meters.each do |meter| %>
-                <li><%= meter.name_or_mpan_mprn %></li>
-              <% end %>
-            </ul>
+            <% if energy_tariff.meters.any? %>
+              <ul style="list-style: none; padding-left: 0px;">
+                <% energy_tariff.meters.each do |meter| %>
+                  <li><%= meter.name_or_mpan_mprn %></li>
+                <% end %>
+              </ul>
+            <% else %>
+                <%= t('schools.user_tariffs.meters.all_meters', meter_type: energy_tariff.meter_type) %>
+            <% end %>
           </td>
         <% end %>
         <% if show_actions? %>
