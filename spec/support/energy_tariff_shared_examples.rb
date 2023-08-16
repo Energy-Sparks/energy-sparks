@@ -568,6 +568,40 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     click_link('Finished')
     expect(page).to have_content('Manage and view tariffs')
 
+    click_link('Full details')
+    expect(page).to have_content('My First Diff Tariff')
+    expect(page).to have_content('Dates')
+    expect(page).to have_content('Start date')
+    expect(page).to have_content('15/08/2023')
+    expect(page).to have_content('End date')
+    expect(page).to have_content('16/08/2023')
+    expect(page).to have_content('Meters')
+    expect(page).to have_content(mpan_mprn)
+    expect(page).not_to have_content('This tariff applies to all Electricity meters')
+
+    find('#edit_dates').click
+    expect(page).to have_content('Name')
+    expect(page).to have_content('Start date')
+    expect(page).to have_content('End date')
+
+    fill_in 'Name', with: 'My Updated First Diff Tariff'
+    fill_in 'Start date', with: '13/08/2023'
+    fill_in 'End date', with: '14/08/2023'
+    click_on('Next')
+    expect(page).to have_content('Add consumption charges for each time period for this tariff')
+    click_on('Next')
+    expect(page).to have_content('Add standing charges for this tariff')
+    click_on('Next')
+    expect(page).to have_content('My Updated First Diff Tariff')
+    expect(page).to have_content('Dates')
+    expect(page).to have_content('Start date')
+    expect(page).to have_content('13/08/2023')
+    expect(page).to have_content('End date')
+    expect(page).to have_content('14/08/2023')
+    expect(page).to have_content('Meters')
+    expect(page).to have_content(mpan_mprn)
+    expect(page).not_to have_content('This tariff applies to all Electricity meters')
+
     expect(energy_tariff.enabled).to be true
     expect(energy_tariff.meter_type.to_sym).to eq(:electricity)
     expect(energy_tariff.meters).to match_array([meter])
@@ -585,6 +619,21 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     expect(energy_tariff_price.end_time.to_s(:time)).to eq('00:00')
     expect(energy_tariff_price.value.to_s).to eq('0.0')
     expect(energy_tariff_price.units).to eq('kwh')
+
+    find('#edit_meters').click
+    expect(page).to have_content('Select meters for this tariff')
+    uncheck(mpan_mprn)
+    click_button('Submit')
+    expect(page).to have_content('My Updated First Diff Tariff')
+    expect(page).to have_content('Dates')
+    expect(page).to have_content('Start date')
+    expect(page).to have_content('13/08/2023')
+    expect(page).to have_content('End date')
+    expect(page).to have_content('14/08/2023')
+    expect(page).to have_content('Meters')
+    expect(page).not_to have_content(mpan_mprn)
+    expect(page).to have_content('This tariff applies to all Electricity meters')
+    expect(energy_tariff.reload.meters).to match_array([])
   end
 
   it 'doesnt require a meter to be selected by default' do
