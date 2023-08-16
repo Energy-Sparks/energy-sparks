@@ -73,17 +73,6 @@ module EnergyTariffs
       end
     end
 
-    def edit_dates
-    end
-
-    def update_dates
-      if @energy_tariff.update(energy_tariff_params.merge(updated_by: current_user))
-        redirect_to energy_tariffs_path(@energy_tariff)
-      else
-        render :edit_dates
-      end
-    end
-
     def choose_type
     end
 
