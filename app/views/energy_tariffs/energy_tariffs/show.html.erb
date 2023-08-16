@@ -16,7 +16,7 @@
     <div>
       <%= link_to t('common.labels.edit'),
           energy_tariffs_path(@energy_tariff, [], { action: :edit }),
-          class: 'btn'
+          class: 'btn', id: 'edit_dates'
       %>
     </div>
   </div>
@@ -43,7 +43,7 @@
       <div>
         <%= link_to t('common.labels.edit'),
             energy_tariffs_path(@energy_tariff, [], { action: :edit_meters }),
-            class: 'btn'
+            class: 'btn', id: 'edit_meters'
         %>
       </div>
     </div>
