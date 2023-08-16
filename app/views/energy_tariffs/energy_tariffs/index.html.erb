@@ -25,6 +25,7 @@
     <%= render 'energy_tariffs_tab',
       tariff_types: list_of_tariff_types(show_all: true),
       show_actions: true,
+      default_tariffs: false,
       tariff_holder: @tariff_holder %>
   </div>
   <% if @tariff_holder.school? && any_smart_meters?(@tariff_holder) %>
@@ -37,6 +38,7 @@
       <%= render 'energy_tariffs_tab',
         tariff_types: list_of_tariff_types(show_all: false),
         show_actions: false,
+        default_tariffs: true,
         tariff_holder: @tariff_holder.parent_tariff_holder %>
     </div>
   <% end %>

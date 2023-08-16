@@ -12,7 +12,11 @@
               <%= t("schools.user_tariffs.index.#{meter_type}.header") %>
             </h4>
             <% if @tariff_holder.any_tariffs_of_type?(meter_type) %>
-              <%= component 'energy_tariff_table', tariff_holder: @tariff_holder, meter_type: meter_type, tariffs: sorted_tariffs(@tariff_holder, meter_type, @source), show_actions: @show_actions %>
+              <%= component 'energy_tariff_table',
+                id: table_id(meter_type),
+                tariff_holder: @tariff_holder,
+                tariffs: sorted_tariffs(@tariff_holder, meter_type, @source),
+                show_actions: @show_actions %>
             <% else %>
               <p><%= t("schools.user_tariffs.index.#{meter_type}.there_are_no_#{meter_type}_tariffs_set_up_yet") %></p>
               <%= footer %>

@@ -5,19 +5,11 @@ class EnergyTariffTableComponent < ViewComponent::Base
 
   delegate :can?, :cannot?, to: :helpers
 
-  def initialize(tariff_holder:, meter_type:, tariffs:, show_actions: true)
+  def initialize(id: 'tariff-table', tariff_holder:, tariffs:, show_actions: true)
+    @id = id
     @tariff_holder = tariff_holder
-    @meter_type = meter_type
     @tariffs = tariffs
     @show_actions = show_actions
-  end
-
-  def table_id
-    if @as_default
-      "#{@meter_type}-default-tariffs-table"
-    else
-      "#{@meter_type}-tariffs-table"
-    end
   end
 
   def show_meters?

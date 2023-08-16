@@ -1,7 +1,8 @@
 <%= component 'energy_tariffs',
   tariff_holder: tariff_holder,
   tariff_types: tariff_types,
-  show_actions: show_actions do |c| %>
+  show_actions: show_actions,
+  default_tariffs: default_tariffs do |c| %>
   <% c.with_header do %>
     <%= t('schools.user_tariffs.index.introduction_html', advice_pages: school_advice_path(tariff_holder)) if tariff_holder.school? %>
     <p><%= t('schools.user_tariffs.index.changes_to_cost_calculations_message') %></p>
