@@ -114,7 +114,6 @@ en:
           user_tariffs: User supplied tariffs
         title: Manage and view tariffs
       meters:
-        meter: Meter
         meter_list: Meters
         meters_associated_with_this_tariff: Meters associated with this tariff
         there_are_no_meters_associated_with_this_tariff: There are no meters associated with this tariff
@@ -142,19 +141,13 @@ en:
           <p>
             Manually adding a new tariff will allow you to provide more information about your standing charges for a given period.
           </p>
-        tariff_charges:
-          per_day: "%{charge} per day"
-        tariff_types:
-          differential_tiered: Differential tiered tariff
       summary_table:
         no_end_date: No end date
         no_start_date: No start date
       tariff_partial:
-        consumption_charges: Consumption charges
         day_night_tariff: Day/night tariff
         end_date: End date
         full_details: Full details
-        price_from_to: "%{price_start_time} to %{price_end_time}:"
         simple_tariff: Simple tariff
         start_date: Start date
         type: Type
