@@ -18,7 +18,7 @@ class EnergyTariffCharge < ApplicationRecord
   belongs_to :energy_tariff, inverse_of: :energy_tariff_charges
 
   validates :charge_type, :value, presence: true
-  validates :value, numericality: { greater_than_or_equal_to: 0 }
+  validates :value, numericality: { greater_than_or_equal_to: 0.0 }
 
   scope :for_type, ->(type) { where('charge_type = ?', type.to_s) }
 

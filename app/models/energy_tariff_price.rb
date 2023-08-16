@@ -20,7 +20,7 @@ class EnergyTariffPrice < ApplicationRecord
   belongs_to :energy_tariff, inverse_of: :energy_tariff_prices
 
   validates :start_time, :end_time, :value, :units, presence: true
-  validates :value, numericality: { greater_than_or_equal_to: 1 }
+  validates :value, numericality: { greater_than_or_equal_to: 1.0 }
   validate :no_time_overlaps
   validate :time_range_given
 
@@ -37,7 +37,7 @@ class EnergyTariffPrice < ApplicationRecord
   private
 
   def no_time_overlaps
-    energy_tariff.energy_tariff_prices.without(self).each do |other_price|
+    energy_tariff&.energy_tariff_prices&.without(self)&.each do |other_price|
       errors.add(:start_time, 'overlaps with another time range') if other_price.time_range.include?(start_time)
       errors.add(:end_time, 'overlaps with another time range') if other_price.time_range.include?(end_time)
     end
