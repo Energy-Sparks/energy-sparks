@@ -35,6 +35,39 @@ describe EnergyTariff do
     let(:energy_tariff_prices)  { [energy_tariff_price_1, energy_tariff_price_2] }
     let(:energy_tariff_charges) { [energy_tariff_charge_1, energy_tariff_charge_2] }
 
+    context 'with school tariff holder' do
+      it "should allow start and end date to both be blank" do
+        energy_tariff.update(tariff_holder: create(:school))
+        expect(energy_tariff.tariff_holder_type).to eq('School')
+        expect(energy_tariff).to be_valid
+        energy_tariff.update(start_date: nil, end_date: nil)
+        expect(energy_tariff).to be_valid
+        expect(energy_tariff.errors.messages).to be_empty
+      end
+    end
+
+    context 'school group tariff holder' do
+      it "should not allow start and end time to both be blank" do
+        energy_tariff.update(tariff_holder: create(:school_group))
+        expect(energy_tariff.tariff_holder_type).to eq('SchoolGroup')
+        expect(energy_tariff).to be_valid
+        energy_tariff.update(start_date: nil, end_date: nil)
+        expect(energy_tariff).not_to be_valid
+        expect(energy_tariff.errors.messages).to eq({end_date: ["start and end date can't both be empty"], start_date: ["start and end date can't both be empty"]})
+      end
+    end
+
+    context 'site settings tariff holder' do
+      it "should allow start and end time to both be blank" do
+        energy_tariff.update(tariff_holder: SiteSettings.current)
+        expect(energy_tariff.tariff_holder_type).to eq('SiteSettings')
+        expect(energy_tariff).to be_valid
+        energy_tariff.update(start_date: nil, end_date: nil)
+        expect(energy_tariff).to be_valid
+        expect(energy_tariff.errors.messages).to be_empty
+      end
+    end
+
     it "should prevent same start and end time" do
       expect(energy_tariff).to be_valid
       energy_tariff_price_1.update(end_time: energy_tariff_price_1.start_time)
