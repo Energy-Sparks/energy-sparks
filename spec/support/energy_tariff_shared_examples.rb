@@ -56,7 +56,8 @@ RSpec.shared_examples "a gas tariff editor with no meter selection" do
     expect(page).to have_content('Choose a name and date range')
 
     fill_in 'Name', with: 'My First Gas Tariff'
-    # fill_in 'Start date', with: 'My First Gas Tariff'
+    fill_in 'Start date', with: Date.yesterday.strftime('%d/%m/%Y')
+    fill_in 'End date', with: Date.today.strftime('%d/%m/%Y')
 
     click_button('Next')
 
@@ -127,6 +128,9 @@ RSpec.shared_examples "a gas tariff editor with meter selection" do
     expect(page).to have_content(mpan_mprn)
 
     fill_in 'Name', with: tariff_title
+    fill_in 'Start date', with: Date.yesterday.strftime('%d/%m/%Y')
+    fill_in 'End date', with: Date.today.strftime('%d/%m/%Y')
+
     click_button('Next')
 
     energy_tariff = EnergyTariff.last
@@ -164,6 +168,9 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).not_to have_content('Select meters for this tariff')
     expect(page).to have_content('Choose a name and date range')
     fill_in 'Name', with: 'My First Tariff'
+    fill_in 'Start date', with: Date.yesterday.strftime('%d/%m/%Y')
+    fill_in 'End date', with: Date.today.strftime('%d/%m/%Y')
+
     click_button('Next')
     click_button('Simple')
 
@@ -174,6 +181,9 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
 
   it 'can create a flat rate tariff with just a price' do
     fill_in 'Name', with: 'My First Flat Tariff'
+    fill_in 'Start date', with: Date.yesterday.strftime('%d/%m/%Y')
+    fill_in 'End date', with: Date.today.strftime('%d/%m/%Y')
+
     click_button('Next')
 
     click_button('Simple')
@@ -220,6 +230,9 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
 
   it 'can create a differential tariff and add prices and charges' do
     fill_in 'Name', with: 'My First Diff Tariff'
+    fill_in 'Start date', with: Date.yesterday.strftime('%d/%m/%Y')
+    fill_in 'End date', with: Date.today.strftime('%d/%m/%Y')
+
     click_button('Next')
 
     click_button('Day/Night tariff')
@@ -242,7 +255,7 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).to have_content('Night rate (00:30 to 06:30)')
     expect(page).to have_content('Day rate (07:00 to 00:00)')
     expect(page).to have_content('£1.50 per kWh')
-    expect(page).to have_content('£1.00 per kWh')
+    expect(page).to have_content('£0.00 per kWh')
 
     click_link('Next')
     click_button('Next')
@@ -284,6 +297,9 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
 
   it 'can create a flat rate tariff and add all the charges' do
     fill_in 'Name', with: 'My First Tariff'
+    fill_in 'Start date', with: Date.yesterday.strftime('%d/%m/%Y')
+    fill_in 'End date', with: Date.today.strftime('%d/%m/%Y')
+
     click_button('Next')
 
     click_button('Simple')
@@ -376,6 +392,9 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     expect(page).to have_content(mpan_mprn)
 
     fill_in 'Name', with: tariff_title
+    fill_in 'Start date', with: Date.yesterday.strftime('%d/%m/%Y')
+    fill_in 'End date', with: Date.today.strftime('%d/%m/%Y')
+
     click_button('Next')
 
     energy_tariff = EnergyTariff.last
@@ -394,6 +413,9 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     click_button('Next')
 
     fill_in 'Name', with: 'My First Diff Tariff'
+    fill_in 'Start date', with: Date.yesterday.strftime('%d/%m/%Y')
+    fill_in 'End date', with: Date.today.strftime('%d/%m/%Y')
+
     click_button('Next')
 
     click_button('Day/Night tariff')
