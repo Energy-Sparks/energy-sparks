@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'school energy tariffs', type: :system do
 
   around do |example|
-    ClimateControl.modify FEATURE_FLAG_USE_NEW_ENERGY_TARIFFS: 'true' do
+    ClimateControl.modify FEATURE_FLAG_NEW_ENERGY_TARIFF_EDITOR: 'true' do
       example.run
     end
   end

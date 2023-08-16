@@ -4,7 +4,7 @@ describe 'school group energy tariffs', type: :system do
   let!(:school_group) { create(:school_group, public: true) }
 
   around do |example|
-    ClimateControl.modify FEATURE_FLAG_USE_NEW_ENERGY_TARIFFS: 'true' do
+    ClimateControl.modify FEATURE_FLAG_NEW_ENERGY_TARIFF_EDITOR: 'true' do
       ClimateControl.modify FEATURE_FLAG_ENHANCED_SCHOOL_GROUP_DASHBOARD: "true" do
         example.run
       end
