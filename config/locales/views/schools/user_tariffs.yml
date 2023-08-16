@@ -73,8 +73,6 @@ en:
         title: Choose the type of this tariff
       edit:
         title: Edit the name and date range for this %{fuel_type} tariff
-      edit_dates:
-        title: Edit dates
       flat_rate:
         flat_rate_tariff: Flat rate tariff
         no_flat_rate_tariff_has_been_set_yet: No flat rate tariff has been set yet
