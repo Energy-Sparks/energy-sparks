@@ -75,6 +75,8 @@ class EnergyTariff < ApplicationRecord
     for_schools_in_group(school_group, source).select(:tariff_holder_id).distinct.count
   }
 
+  scope :latest_with_fixed_end_date, ->(meter_type, source = :manually_entered) { where(meter_type: meter_type, source: source).where.not(end_date: nil).order(end_date: :desc) }
+
   def flat_rate?
     tariff_type == 'flat_rate'
   end
