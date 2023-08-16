@@ -117,6 +117,8 @@ describe EnergyTariff do
       energy_tariff_price_1.update(start_time: '08:00', end_time: '09:00')
       expect(energy_tariff_price_1).not_to be_valid
     end
+
+    it { should validate_numericality_of(:vat_rate).is_greater_than_or_equal_to(0.0).is_less_than_or_equal_to(100.0).allow_nil }
   end
 
   context '#complete' do
