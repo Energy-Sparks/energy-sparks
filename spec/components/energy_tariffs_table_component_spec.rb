@@ -2,10 +2,12 @@ require "rails_helper"
 
 RSpec.describe EnergyTariffTableComponent, type: :component do
 
-  let(:current_user)            { create(:admin) }
-  let(:tariff_holder)   { SiteSettings.current }
-  let(:energy_tariffs)   { [create(:energy_tariff, tariff_holder: tariff_holder, meter_type: :electricity)] }
-  let(:show_actions)    { true }
+  let(:current_user)      { create(:admin) }
+  let(:tariff_holder)     { SiteSettings.current }
+  let(:enabled)           { true }
+  let(:source)            { :manually_entered }
+  let(:energy_tariffs)    { [create(:energy_tariff, tariff_holder: tariff_holder, meter_type: :electricity, enabled: enabled, source: source)] }
+  let(:show_actions)      { true }
 
   let(:params) {
     {
@@ -83,12 +85,6 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
       expect(html).to have_css('#tariff-table')
     end
 
-    it 'includes the actions' do
-      expect(html).to have_link('View details')
-      expect(html).to have_link('Edit')
-      expect(html).to have_link('Delete')
-    end
-
     it 'includes the tariff details' do
       within('#tariff-table tbody tr[1]') do
         expect(html).to have_content(energy_tariffs.first.name)
@@ -123,4 +119,54 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
 
   end
 
+  context 'action buttons' do
+    it 'includes the actions' do
+      expect(html).to have_link('View details')
+      expect(html).to have_link('Edit')
+      expect(html).to have_link('Deactivate')
+      expect(html).to_not have_link('Delete')
+    end
+
+    context 'with disabled site settings tariff' do
+      let(:enabled)   { false }
+      it 'includes all the actions' do
+        expect(html).to have_link('View details')
+        expect(html).to have_link('Edit')
+        expect(html).to have_link('Activate')
+        expect(html).to have_link('Delete')
+      end
+    end
+
+    context 'with dcc tariff' do
+      let(:source)  { :dcc }
+      it 'includes the actions' do
+        expect(html).to have_link('View details')
+        expect(html).to have_link('Edit')
+        expect(html).to have_link('Deactivate')
+        expect(html).to_not have_link('Delete')
+      end
+
+      context 'that is disabled' do
+        let(:enabled)   { false }
+        it 'includes the expected actions' do
+          expect(html).to have_link('View details')
+          expect(html).to have_link('Edit')
+          expect(html).to have_link('Activate')
+        end
+      end
+
+    end
+
+    context 'with non-authorised user' do
+      let(:current_user)  { create(:school_admin) }
+
+      it 'does not include the actions' do
+        expect(html).to_not have_link('View details')
+        expect(html).to_not have_link('Edit')
+        expect(html).to_not have_link('Deactivate')
+        expect(html).to_not have_link('Delete')
+      end
+    end
+
+  end
 end

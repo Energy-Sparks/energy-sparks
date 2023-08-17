@@ -85,6 +85,10 @@ module EnergyTariffs
       end
     end
 
+    def toggle_enabled
+      @energy_tariff.toggle!(:enabled)
+    end
+
     def show
     end
 

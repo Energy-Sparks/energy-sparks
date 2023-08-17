@@ -10,10 +10,13 @@ RSpec.describe EnergyTariffsComponent, type: :component do
 
   let(:tariff_types)         { Meter::MAIN_METER_TYPES }
 
+  let(:show_add_button)      { true }
+
   let(:params) {
     {
       tariff_holder: tariff_holder,
-      tariff_types: tariff_types
+      tariff_types: tariff_types,
+      show_add_button: show_add_button
     }
   }
 
@@ -45,6 +48,13 @@ RSpec.describe EnergyTariffsComponent, type: :component do
     it 'should have button to add tariffs' do
       expect(html).to have_link(I18n.t("schools.user_tariffs.index.electricity.add_label"))
       expect(html).to have_link(I18n.t("schools.user_tariffs.index.gas.add_label"))
+    end
+    context 'when adding new tariffs is disabled' do
+      let(:show_add_button)      { false }
+      it 'should not have the buttons' do
+        expect(html).to_not have_link(I18n.t("schools.user_tariffs.index.electricity.add_label"))
+        expect(html).to_not have_link(I18n.t("schools.user_tariffs.index.gas.add_label"))
+      end
     end
   end
 
