@@ -55,6 +55,24 @@ module EnergyTariffs
       end
     end
 
+    def edit_meters
+      if @energy_tariff.electricity?
+        @meters = @tariff_holder.meters.electricity
+      elsif @energy_tariff.gas?
+        @meters = @tariff_holder.meters.gas
+      else
+        @meters = []
+      end
+    end
+
+    def update_meters
+      if @energy_tariff.update(energy_tariff_params.merge(updated_by: current_user))
+        redirect_to energy_tariffs_path(@energy_tariff)
+      else
+        render :edit_meters
+      end
+    end
+
     def choose_type
     end
 

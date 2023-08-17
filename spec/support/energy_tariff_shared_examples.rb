@@ -56,6 +56,9 @@ RSpec.shared_examples "a gas tariff editor with no meter selection" do
     expect(page).to have_content('Choose a name and date range')
 
     fill_in 'Name', with: 'My First Gas Tariff'
+    fill_in 'Start date', with: '15/08/2023'
+    fill_in 'End date', with: '16/08/2023'
+
     click_button('Next')
 
     expect(page).to have_content('My First Gas Tariff')
@@ -73,7 +76,9 @@ RSpec.shared_examples "a gas tariff editor with no meter selection" do
 
     click_button('Next')
 
-    expect(page).to have_content('Tariff details')
+    energy_tariff = EnergyTariff.last
+
+    expect(page).to have_content(energy_tariff.name)
     expect(page).to have_content('5')
     expect(page).to have_content('Flat rate tariff')
     expect(page).to have_content('£1.50 per kWh')
@@ -92,7 +97,34 @@ RSpec.shared_examples "a gas tariff editor with no meter selection" do
     expect(page).to have_content('Manage and view tariffs')
     expect(page).to have_content('My First Gas Tariff')
 
-    energy_tariff = EnergyTariff.last
+    click_link('Full details')
+    expect(page).to have_content('My First Gas Tariff')
+    expect(page).to have_content('Dates')
+    expect(page).to have_content('Start date')
+    expect(page).to have_content('15/08/2023')
+    expect(page).to have_content('End date')
+    expect(page).to have_content('16/08/2023')
+
+    find('#edit_dates').click
+    expect(page).to have_content('Name')
+    expect(page).to have_content('Start date')
+    expect(page).to have_content('End date')
+
+    fill_in 'Name', with: 'My Updated first Gas Tariff'
+    fill_in 'Start date', with: '13/08/2023'
+    fill_in 'End date', with: '14/08/2023'
+    click_on('Next')
+    expect(page).to have_content('Edit the consumption charges for this tariff')
+    click_on('Next')
+    expect(page).to have_content('Add standing charges for this tariff')
+    click_on('Next')
+    expect(page).to have_content('My Updated first Gas Tariff')
+    expect(page).to have_content('Dates')
+    expect(page).to have_content('Start date')
+    expect(page).to have_content('13/08/2023')
+    expect(page).to have_content('End date')
+    expect(page).to have_content('14/08/2023')
+
     expect(energy_tariff.enabled).to be true
     expect(energy_tariff.meter_type.to_sym).to eq(:gas)
     expect(energy_tariff.tariff_holder_type).to eq(tariff_holder_type)
@@ -125,6 +157,9 @@ RSpec.shared_examples "a gas tariff editor with meter selection" do
     expect(page).to have_content(mpan_mprn)
 
     fill_in 'Name', with: tariff_title
+    fill_in 'Start date', with: '15/08/2023'
+    fill_in 'End date', with: '16/08/2023'
+
     click_button('Next')
 
     energy_tariff = EnergyTariff.last
@@ -152,7 +187,6 @@ RSpec.shared_examples "a gas tariff editor with meter selection" do
     expect(page).to have_content('Please select at least one meter for this tariff. Or uncheck option to apply tariff to all meters')
     expect(page).to have_content('Select meters for this tariff')
   end
-
 end
 
 RSpec.shared_examples "an electricity tariff editor with no meter selection" do
@@ -162,6 +196,9 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).not_to have_content('Select meters for this tariff')
     expect(page).to have_content('Choose a name and date range')
     fill_in 'Name', with: 'My First Tariff'
+    fill_in 'Start date', with: '15/08/2023'
+    fill_in 'End date', with: '16/08/2023'
+
     click_button('Next')
     click_button('Simple')
 
@@ -172,6 +209,9 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
 
   it 'can create a flat rate tariff with just a price' do
     fill_in 'Name', with: 'My First Flat Tariff'
+    fill_in 'Start date', with: '15/08/2023'
+    fill_in 'End date', with: '16/08/2023'
+
     click_button('Next')
 
     click_button('Simple')
@@ -181,7 +221,15 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
 
     click_button('Next')
 
-    expect(page).to have_content('Tariff details')
+    energy_tariff = EnergyTariff.last
+
+    expect(page).to have_content(energy_tariff.name)
+    if current_user.admin?
+      expect(page).to have_content('Notes (admin only)')
+    else
+      expect(page).not_to have_content('Notes (admin only)')
+    end
+
     expect(page).to have_content('Flat rate tariff')
     expect(page).to have_content('£1.50 per kWh')
     expect(page).not_to have_link('Delete')
@@ -197,7 +245,34 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     click_link('Finished')
     expect(page).to have_content('Manage and view tariffs')
 
-    energy_tariff = EnergyTariff.last
+    click_link('Full details')
+    expect(page).to have_content('My First Flat Tariff')
+    expect(page).to have_content('Dates')
+    expect(page).to have_content('Start date')
+    expect(page).to have_content('15/08/2023')
+    expect(page).to have_content('End date')
+    expect(page).to have_content('16/08/2023')
+
+    find('#edit_dates').click
+    expect(page).to have_content('Name')
+    expect(page).to have_content('Start date')
+    expect(page).to have_content('End date')
+
+    fill_in 'Name', with: 'My Updated First Flat Tariff'
+    fill_in 'Start date', with: '13/08/2023'
+    fill_in 'End date', with: '14/08/2023'
+    click_on('Next')
+    expect(page).to have_content('Edit the consumption charges for this tariff')
+    click_on('Next')
+    expect(page).to have_content('Add standing charges for this tariff')
+    click_on('Next')
+    expect(page).to have_content('My Updated First Flat Tariff')
+    expect(page).to have_content('Dates')
+    expect(page).to have_content('Start date')
+    expect(page).to have_content('13/08/2023')
+    expect(page).to have_content('End date')
+    expect(page).to have_content('14/08/2023')
+
     expect(energy_tariff.enabled).to be true
     expect(energy_tariff.meter_type.to_sym).to eq(:electricity)
     expect(energy_tariff.tariff_holder_type).to eq(tariff_holder_type)
@@ -218,6 +293,9 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
 
   it 'can create a differential tariff and add prices and charges' do
     fill_in 'Name', with: 'My First Diff Tariff'
+    fill_in 'Start date', with: '15/08/2023'
+    fill_in 'End date', with: '16/08/2023'
+
     click_button('Next')
 
     click_button('Day/Night tariff')
@@ -245,7 +323,15 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     click_link('Next')
     click_button('Next')
 
-    expect(page).to have_content('Tariff details')
+    energy_tariff = EnergyTariff.last
+
+    expect(page).to have_content(energy_tariff.name)
+    if current_user.admin?
+      expect(page).to have_content('Notes (admin only)')
+    else
+      expect(page).not_to have_content('Notes (admin only)')
+    end
+
     expect(page).to have_content('£1.50 per kWh')
     expect(page).not_to have_link('Delete')
 
@@ -260,7 +346,34 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     click_link('Finished')
     expect(page).to have_content('Manage and view tariffs')
 
-    energy_tariff = EnergyTariff.last
+    click_link('Full details')
+    expect(page).to have_content('My First Diff Tariff')
+    expect(page).to have_content('Dates')
+    expect(page).to have_content('Start date')
+    expect(page).to have_content('15/08/2023')
+    expect(page).to have_content('End date')
+    expect(page).to have_content('16/08/2023')
+
+    find('#edit_dates').click
+    expect(page).to have_content('Name')
+    expect(page).to have_content('Start date')
+    expect(page).to have_content('End date')
+
+    fill_in 'Name', with: 'My Updated First Diff Tariff'
+    fill_in 'Start date', with: '13/08/2023'
+    fill_in 'End date', with: '14/08/2023'
+    click_on('Next')
+    expect(page).to have_content('Add consumption charges for each time period for this tariff')
+    click_on('Next')
+    expect(page).to have_content('Add standing charges for this tariff')
+    click_on('Next')
+    expect(page).to have_content('My Updated First Diff Tariff')
+    expect(page).to have_content('Dates')
+    expect(page).to have_content('Start date')
+    expect(page).to have_content('13/08/2023')
+    expect(page).to have_content('End date')
+    expect(page).to have_content('14/08/2023')
+
     expect(energy_tariff.enabled).to be true
     expect(energy_tariff.meter_type.to_sym).to eq(:electricity)
     expect(energy_tariff.tariff_holder_type).to eq(tariff_holder_type)
@@ -282,6 +395,9 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
 
   it 'can create a flat rate tariff and add all the charges' do
     fill_in 'Name', with: 'My First Tariff'
+    fill_in 'Start date', with: '15/08/2023'
+    fill_in 'End date', with: '16/08/2023'
+
     click_button('Next')
 
     click_button('Simple')
@@ -318,7 +434,6 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     select '20', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
 
     click_button('Next')
-    expect(page).to have_content('Tariff details')
 
     within('#consumption-charges') do
       expect(page).to have_link("Edit")
@@ -329,6 +444,14 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     end
 
     energy_tariff = EnergyTariff.last
+
+    expect(page).to have_content(energy_tariff.name)
+    if current_user.admin?
+      expect(page).to have_content('Notes (admin only)')
+    else
+      expect(page).not_to have_content('Notes (admin only)')
+    end
+
     expect(energy_tariff.enabled).to be true
     expect(energy_tariff.meter_type.to_sym).to eq(:electricity)
     expect(energy_tariff.tariff_holder_type).to eq(tariff_holder_type)
@@ -355,7 +478,6 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(energy_tariff.value_for_charge(:nhh_automatic_meter_reading_charge)).to eq('0.12')
     expect(energy_tariff.value_for_charge(:data_collection_dcda_agent_charge)).to eq('0.34')
   end
-
 end
 
 RSpec.shared_examples "an electricity tariff editor with meter selection" do
@@ -374,6 +496,8 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     expect(page).to have_content(mpan_mprn)
 
     fill_in 'Name', with: tariff_title
+    fill_in 'Start date', with: '15/08/2023'
+    fill_in 'End date', with: '16/08/2023'
     click_button('Next')
 
     energy_tariff = EnergyTariff.last
@@ -392,6 +516,8 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     click_button('Next')
 
     fill_in 'Name', with: 'My First Diff Tariff'
+    fill_in 'Start date', with: '15/08/2023'
+    fill_in 'End date', with: '16/08/2023'
     click_button('Next')
 
     click_button('Day/Night tariff')
@@ -419,7 +545,15 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     click_link('Next')
     click_button('Next')
 
-    expect(page).to have_content('Tariff details')
+    energy_tariff = EnergyTariff.last
+
+    expect(page).to have_content(energy_tariff.name)
+    if current_user.admin?
+      expect(page).to have_content('Notes (admin only)')
+    else
+      expect(page).not_to have_content('Notes (admin only)')
+    end
+
     expect(page).to have_content('£1.50 per kWh')
     expect(page).not_to have_link('Delete')
 
@@ -434,7 +568,40 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     click_link('Finished')
     expect(page).to have_content('Manage and view tariffs')
 
-    energy_tariff = EnergyTariff.last
+    click_link('Full details')
+    expect(page).to have_content('My First Diff Tariff')
+    expect(page).to have_content('Dates')
+    expect(page).to have_content('Start date')
+    expect(page).to have_content('15/08/2023')
+    expect(page).to have_content('End date')
+    expect(page).to have_content('16/08/2023')
+    expect(page).to have_content('Meters')
+    expect(page).to have_content(mpan_mprn)
+    expect(page).not_to have_content('This tariff applies to all Electricity meters')
+
+    find('#edit_dates').click
+    expect(page).to have_content('Name')
+    expect(page).to have_content('Start date')
+    expect(page).to have_content('End date')
+
+    fill_in 'Name', with: 'My Updated First Diff Tariff'
+    fill_in 'Start date', with: '13/08/2023'
+    fill_in 'End date', with: '14/08/2023'
+    click_on('Next')
+    expect(page).to have_content('Add consumption charges for each time period for this tariff')
+    click_on('Next')
+    expect(page).to have_content('Add standing charges for this tariff')
+    click_on('Next')
+    expect(page).to have_content('My Updated First Diff Tariff')
+    expect(page).to have_content('Dates')
+    expect(page).to have_content('Start date')
+    expect(page).to have_content('13/08/2023')
+    expect(page).to have_content('End date')
+    expect(page).to have_content('14/08/2023')
+    expect(page).to have_content('Meters')
+    expect(page).to have_content(mpan_mprn)
+    expect(page).not_to have_content('This tariff applies to all Electricity meters')
+
     expect(energy_tariff.enabled).to be true
     expect(energy_tariff.meter_type.to_sym).to eq(:electricity)
     expect(energy_tariff.meters).to match_array([meter])
@@ -452,6 +619,21 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     expect(energy_tariff_price.end_time.to_s(:time)).to eq('00:00')
     expect(energy_tariff_price.value.to_s).to eq('0.0')
     expect(energy_tariff_price.units).to eq('kwh')
+
+    find('#edit_meters').click
+    expect(page).to have_content('Select meters for this tariff')
+    uncheck(mpan_mprn)
+    click_button('Submit')
+    expect(page).to have_content('My Updated First Diff Tariff')
+    expect(page).to have_content('Dates')
+    expect(page).to have_content('Start date')
+    expect(page).to have_content('13/08/2023')
+    expect(page).to have_content('End date')
+    expect(page).to have_content('14/08/2023')
+    expect(page).to have_content('Meters')
+    expect(page).not_to have_content(mpan_mprn)
+    expect(page).to have_content('This tariff applies to all Electricity meters')
+    expect(energy_tariff.reload.meters).to match_array([])
   end
 
   it 'doesnt require a meter to be selected by default' do
@@ -474,7 +656,6 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
 end
 
 RSpec.shared_examples "a school tariff editor" do
-
   before(:each) do
     sign_in(current_user)
     visit school_path(school)
@@ -484,7 +665,7 @@ RSpec.shared_examples "a school tariff editor" do
   end
 
   context 'when viewing index' do
-    let(:tariff_holder)   { school }
+    let(:tariff_holder) { school }
     before { visit school_energy_tariffs_path(school) }
     it_behaves_like "a tariff editor index"
   end
@@ -509,7 +690,6 @@ RSpec.shared_examples "a school tariff editor" do
 
     it_behaves_like "an electricity tariff editor with meter selection"
   end
-
 end
 
 RSpec.shared_examples "a school group energy tariff editor" do
@@ -526,7 +706,7 @@ RSpec.shared_examples "a school group energy tariff editor" do
   end
 
   context 'when viewing index' do
-    let(:tariff_holder)   { school_group }
+    let(:tariff_holder) { school_group }
     before { visit school_group_energy_tariffs_path(school_group) }
     it_behaves_like "a tariff editor index"
   end
@@ -552,7 +732,7 @@ RSpec.shared_examples "the site settings energy tariff editor" do
   end
 
   context 'when viewing index' do
-    let(:tariff_holder)   { SiteSettings.current }
+    let(:tariff_holder) { SiteSettings.current }
     before { visit admin_settings_energy_tariffs_path }
     it_behaves_like "a tariff editor index"
   end

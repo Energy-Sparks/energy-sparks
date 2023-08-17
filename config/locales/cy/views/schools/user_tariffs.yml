@@ -104,7 +104,6 @@ cy:
         introduction_html: Bydd unrhyw newidiadau i'r tariff yn cael eu hadlewyrchu yn y tudalennau <a href='%{electricity_analysis_path}'>dadansoddiad cost trydan</a> a <a href='%{gas_analysis_path}'>dadansoddiad cost nwy</a> a fydd yn diweddaru dros nos
         meter_attribute_view: Gwedd priodoledd mesurydd (gweinyddwr yn unig)
         standing_charges: Costau sefydlog
-        title: Manylion tariff
       smart_meter_tariffs:
         introduction_html: |-
           <p>

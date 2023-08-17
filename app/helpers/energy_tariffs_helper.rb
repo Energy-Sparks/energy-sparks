@@ -1,4 +1,11 @@
 module EnergyTariffsHelper
+  def cost_analysis_class_for(meter_type)
+    case meter_type
+    when 'electricity' then 'AdviceElectricityCosts'
+    when 'gas' then 'AdviceGasCosts'
+    end
+  end
+
   def energy_tariffs_path(energy_tariff, path = [], options = {})
     if options[:energy_tariff_index] == true
       polymorphic_path(tariff_holder_route(energy_tariff.tariff_holder) + [:energy_tariffs] + path, options)

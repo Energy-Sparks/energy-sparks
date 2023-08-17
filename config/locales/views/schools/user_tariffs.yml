@@ -127,10 +127,19 @@ en:
         price_per_kwh: "%{price_value} per kWh"
       show:
         consumption_charges: Consumption charges
-        introduction_html: Any changes to the tariff will be reflected in the <a href='%{electricity_analysis_path}'>electricity cost analysis</a> and <a href='%{gas_analysis_path}'>gas cost analysis</a> pages which will update overnight
+        created_at: Date created
+        created_by: Created by
+        dates:
+          end_date: End date
+          start_date: Start date
+          title: Dates
+        introduction_html: Any changes to the tariff will be reflected in the <a href='%{analysis_path}'>%{meter_type} cost analysis</a> page which will update overnight
         meter_attribute_view: Meter attribute view (admin only)
+        meters: Meters
+        notes_html: Notes <small>(admin only)</small>
         standing_charges: Standing charges
-        title: Tariff details
+        updated_at: Date last updated
+        updated_by: Last updated by
       smart_meter_tariffs:
         introduction_html: |-
           <p>
