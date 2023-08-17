@@ -50,7 +50,7 @@
                   energy_tariffs_path(energy_tariff, [], { action: :toggle_enabled }),
                   class: 'btn btn-sm',
                   id: "energy-tariff-#{energy_tariff.id}-toggle",
-                  remote: true, method: :post, data: { confirm: 'Are you sure?' }
+                  remote: true, method: :post, data: { confirm: t('common.confirm') }
               %>
               <% if !energy_tariff.dcc? %>
                 <%= link_to t('common.labels.delete'),
