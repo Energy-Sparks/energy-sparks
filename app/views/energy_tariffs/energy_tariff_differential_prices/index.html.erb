@@ -9,11 +9,18 @@
 
   <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
 
+
   <h3><%= t('schools.user_tariff_differential_prices.index.consumption_charges') %></h3>
 
   <p><%= energy_tariff_prices_text(@energy_tariff) %></p>
 
   <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true" ></div>
+
+  <% if @energy_tariff.energy_tariff_prices.complete? %>
+    <span class="badge badge-success mb-2">Complete coverage</span>
+  <% else %>
+    <span class="badge badge-warning mb-2">Incomplete coverage</span>
+  <% end %>
 
   <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, allow_edits: true %>
 
