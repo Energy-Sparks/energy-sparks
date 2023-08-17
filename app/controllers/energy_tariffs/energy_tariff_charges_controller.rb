@@ -1,17 +1,5 @@
 module EnergyTariffs
-  class EnergyTariffChargesController < ApplicationController
-    include Adminable
-    include EnergyTariffable
-    include EnergyTariffsHelper
-
-    load_and_authorize_resource :school, instance_name: 'tariff_holder'
-    load_and_authorize_resource :school_group, instance_name: 'tariff_holder'
-    load_and_authorize_resource :energy_tariff
-    before_action :admin_authorized?, if: :site_settings_resource?
-    before_action :load_site_setting, if: :site_settings_resource?
-    before_action :set_page_title
-    before_action :build_breadcrumbs, unless: -> { @tariff_holder.site_settings? }
-
+  class EnergyTariffChargesController < EnergyTariffsBaseController
     def index
       @energy_tariff_charges = @energy_tariff.energy_tariff_charges
     end

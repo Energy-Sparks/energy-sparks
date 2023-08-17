@@ -23,7 +23,7 @@
               </p>
               <%= footer %>
             <% end %>
-            <% if @show_actions %>
+            <% if @show_add_button %>
               <div class="mt-4">
                 <%= link_to t("schools.user_tariffs.index.#{meter_type}.add_label"),
                   new_energy_tariff_path(@tariff_holder, meter_type: meter_type),

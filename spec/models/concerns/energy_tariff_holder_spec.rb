@@ -94,6 +94,16 @@ describe EnergyTariffHolder do
         expect(attributes[0].input_data['tariff_holder']).to eq 'school_group'
       end
     end
+
+    context 'when there are enabled and disabled tariffs' do
+      let!(:site_wide_2)   { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current, enabled: false) }
+      let!(:group_level_2) { create(:energy_tariff, :with_flat_price, tariff_holder: school_group, enabled: false) }
+
+      it 'maps only the enabled tariffs' do
+        expect(attributes.size).to eq 3
+      end
+
+    end
   end
 
   context '.default_tariff_start_date' do
