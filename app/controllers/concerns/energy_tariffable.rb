@@ -18,7 +18,10 @@ module EnergyTariffable
   end
 
   def set_page_title
-    @page_title = t("schools.#{controller_name.gsub('energy_tariff', 'user_tariff')}.#{action_name}.breadcrumb_title", default: action_name, name: @energy_tariff&.name)
+    @page_title = t("schools.#{controller_name.gsub('energy_tariff', 'user_tariff')}.#{action_name}.breadcrumb_title",
+                    default: action_name,
+                    name: @energy_tariff&.name
+                  )
   end
 
   def site_settings_resource?
