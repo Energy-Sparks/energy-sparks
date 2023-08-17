@@ -7,14 +7,13 @@
   </p>
 
   <%= component 'notice', status: :neutral do |c| %>
-    <%= t('schools.user_tariff_charges.index.notice') %>
-    <%= link_to t('schools.user_tariff_charges.index.skip_to_final_step'), energy_tariffs_path(@energy_tariff), class: 'btn btn-primary' %>
+    <div class="d-flex justify-content-between">
+      <%= t('schools.user_tariff_charges.index.notice') %>
+      <%= link_to t('schools.user_tariff_charges.index.skip_to_final_step'), energy_tariffs_path(@energy_tariff), class: 'btn btn-primary' %>
+    </div>
   <% end %>
 
   <br/>
-
-
-
   <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
 
   <% form_url = energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]) %>
