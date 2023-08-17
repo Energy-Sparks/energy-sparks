@@ -56,6 +56,8 @@ module EnergyTariffs
     end
 
     def edit_meters
+      redirect_to energy_tariffs_path(@energy_tariff) and return if @energy_tariff.dcc?
+
       if @energy_tariff.electricity?
         @meters = @tariff_holder.meters.electricity
       elsif @energy_tariff.gas?

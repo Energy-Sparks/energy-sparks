@@ -40,12 +40,14 @@
       <div>
         <h4><%= t('schools.user_tariffs.show.meters') %></h4>
       </div>
-      <div>
-        <%= link_to t('common.labels.edit'),
-            energy_tariffs_path(@energy_tariff, [], { action: :edit_meters }),
-            class: 'btn', id: 'edit_meters'
-        %>
-      </div>
+      <% unless @energy_tariff.dcc? %>
+        <div>
+          <%= link_to t('common.labels.edit'),
+              energy_tariffs_path(@energy_tariff, [], { action: :edit_meters }),
+              class: 'btn', id: 'edit_meters'
+          %>
+        </div>
+      <% end %>
     </div>
     <table class="table table-charges">
       <tbody>
