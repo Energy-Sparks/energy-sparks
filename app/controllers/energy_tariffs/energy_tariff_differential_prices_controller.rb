@@ -1,14 +1,6 @@
 module EnergyTariffs
-  class EnergyTariffDifferentialPricesController < ApplicationController
-    include Adminable
-    include EnergyTariffable
-    include EnergyTariffsHelper
-
-    load_and_authorize_resource :school, instance_name: 'tariff_holder'
-    load_and_authorize_resource :school_group, instance_name: 'tariff_holder'
-    load_and_authorize_resource :energy_tariff
-    before_action :admin_authorized?, if: :site_settings_resource?
-    before_action :load_site_setting, if: :site_settings_resource?
+  class EnergyTariffDifferentialPricesController < EnergyTariffsBaseController
+    before_action :redirect_if_dcc
 
     def index
     end
