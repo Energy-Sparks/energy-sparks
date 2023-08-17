@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_school_podium
-    @current_school_podium ||= if @school && @school.default_scoreboard
+    @current_school_podium ||= if @school && @school&.scoreboard
                                  podium_for(@school)
                                elsif @tariff_holder && @tariff_holder.school? && @tariff_holder.scoreboard
                                  podium_for(@tariff_holder)
