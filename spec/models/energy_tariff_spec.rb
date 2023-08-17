@@ -35,6 +35,53 @@ describe EnergyTariff do
     let(:energy_tariff_prices)  { [energy_tariff_price_1, energy_tariff_price_2] }
     let(:energy_tariff_charges) { [energy_tariff_charge_1, energy_tariff_charge_2] }
 
+    context 'with school tariff holder' do
+      it "should allow start and end date to both be blank" do
+        energy_tariff.update(tariff_holder: create(:school))
+        expect(energy_tariff.tariff_holder_type).to eq('School')
+        expect(energy_tariff).to be_valid
+        energy_tariff.update(start_date: nil, end_date: nil)
+        expect(energy_tariff).to be_valid
+        expect(energy_tariff.errors.messages).to be_empty
+      end
+    end
+
+    context 'school group tariff holder' do
+      it "should not allow start and end time to both be blank" do
+        energy_tariff.update(tariff_holder: create(:school_group))
+        expect(energy_tariff.tariff_holder_type).to eq('SchoolGroup')
+        expect(energy_tariff).to be_valid
+        energy_tariff.update(start_date: '2021-04-01', end_date: nil)
+        expect(energy_tariff).to be_valid
+        energy_tariff.update(start_date: nil, end_date: '2021-04-01')
+        expect(energy_tariff).to be_valid
+        energy_tariff.update(start_date: nil, end_date: nil)
+        expect(energy_tariff).not_to be_valid
+        expect(energy_tariff.errors.messages).to eq({end_date: ["start and end date can't both be empty"], start_date: ["start and end date can't both be empty"]})
+      end
+    end
+
+    context 'site settings tariff holder' do
+      it "should allow start and end time to both be blank" do
+        energy_tariff.update(tariff_holder: SiteSettings.current)
+        expect(energy_tariff.tariff_holder_type).to eq('SiteSettings')
+        expect(energy_tariff).to be_valid
+        energy_tariff.update(start_date: nil, end_date: nil)
+        expect(energy_tariff).to be_valid
+        expect(energy_tariff.errors.messages).to be_empty
+      end
+    end
+
+    it 'should not allow a start date that is greater than an end date' do
+      energy_tariff.update(start_date: '2021-04-01', end_date: '2022-03-31')
+      expect(energy_tariff).to be_valid
+      energy_tariff.update(start_date: '2021-04-01', end_date: '2021-04-01')
+      expect(energy_tariff).to be_valid
+      energy_tariff.update(start_date: '2022-03-31', end_date: '2021-04-01')
+      expect(energy_tariff).not_to be_valid
+      expect(energy_tariff.errors.messages).to eq({start_date: ["start date must be earlier than or equal to end date"]})
+    end
+
     it "should prevent same start and end time" do
       expect(energy_tariff).to be_valid
       energy_tariff_price_1.update(end_time: energy_tariff_price_1.start_time)
@@ -69,6 +116,8 @@ describe EnergyTariff do
       energy_tariff_price_1.update(start_time: '08:00', end_time: '09:00')
       expect(energy_tariff_price_1).not_to be_valid
     end
+
+    it { should validate_numericality_of(:vat_rate).is_greater_than_or_equal_to(0.0).is_less_than_or_equal_to(100.0).allow_nil }
   end
 
   context '#complete' do

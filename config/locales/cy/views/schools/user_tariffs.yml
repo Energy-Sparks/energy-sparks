@@ -90,7 +90,6 @@ cy:
           user_tariffs: Prisiau a gyflenwir gan ddefnyddwyr
         title: Rheoli a gweld tariffau
       meters:
-        meter: Mesurydd
         meter_list: Mesuryddion
         meters_associated_with_this_tariff: Mesuryddion sy'n gysylltiedig â'r tariff hwn
         there_are_no_meters_associated_with_this_tariff: Nid oes unrhyw fesuryddion yn gysylltiedig â'r tariff hwn
@@ -105,7 +104,6 @@ cy:
         introduction_html: Bydd unrhyw newidiadau i'r tariff yn cael eu hadlewyrchu yn y tudalennau <a href='%{electricity_analysis_path}'>dadansoddiad cost trydan</a> a <a href='%{gas_analysis_path}'>dadansoddiad cost nwy</a> a fydd yn diweddaru dros nos
         meter_attribute_view: Gwedd priodoledd mesurydd (gweinyddwr yn unig)
         standing_charges: Costau sefydlog
-        title: Manylion tariff
       smart_meter_tariffs:
         introduction_html: |-
           <p>
@@ -117,16 +115,10 @@ cy:
           <p>
             Bydd ychwanegu tariff newydd â llaw yn eich galluogi i ddarparu rhagor o wybodaeth am eich taliadau sefydlog am gyfnod penodol.
           </p>
-        tariff_charges:
-          per_day: "%{charge} y dydd"
-        tariff_types:
-          differential_tiered: Tariff haenau gwahaniaethol
       tariff_partial:
-        consumption_charges: Costau defnydd
         day_night_tariff: Tariff dydd/nos
         end_date: Dyddiad gorffen
         full_details: Manylion llawn
-        price_from_to: "%{price_start_time} i %{price_end_time}:"
         simple_tariff: Tariff syml
         start_date: Dyddiad cychwyn
         type: Math

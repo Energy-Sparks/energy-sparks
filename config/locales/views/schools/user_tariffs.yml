@@ -27,6 +27,8 @@ en:
         introduction_school: Using your bill, please provide as much detail as you can about the standing charges associated with this tariff
         introduction_school_group: Using your bill, please provide as much detail as you can about the standing charges associated with this tariff
         introduction_site_settings: Please provide as much detail as you can about the standing charges associated with this tariff
+        notice: Adding standing charges to this tariff will allow us to provide you with more detailed cost analysis. But this step is optional.
+        skip_to_final_step: Skip to final step
         title: Add standing charges for this tariff
     user_tariff_differential_prices:
       form:
@@ -81,6 +83,7 @@ en:
         errors:
           dates:
             start_and_end_date_can_not_both_be_empty: start and end date can't both be empty
+            start_date_must_be_earlier_than_or_equal_to_end_date: start date must be earlier than or equal to end date
       index:
         changes_to_cost_calculations_message: The cost calculations based on these tariffs will update overnight
         electricity:
@@ -90,7 +93,7 @@ en:
         exported_solar_pv:
           add_label: Add exported solar PV tariff
           header: Exported solar PV
-          there_are_no_solar_pv_tariffs_set_up_yet: We have no user supplied tariffs for your exported solar PV meters.
+          there_are_no_exported_solar_pv_tariffs_set_up_yet: We have no user supplied tariffs for your exported solar PV meters.
         gas:
           add_label: Add gas tariff
           header: Gas
@@ -100,7 +103,7 @@ en:
             You can improve the accuracy of the calculations on your <a href="%{advice_pages}">cost analysis pages</a> by adding details about your real tariffs.
           </p>
           <p>
-            To add a a new tariff you will need to supply detailed information about the energy costs and the range of standing charges that are included in your energy contract.
+            To add a a new tariff you will need to know the prices and, optionally, the range of standing charges that are included in your energy contract.
           </p>
         note_about_defaults: If we do not have your real tariff information, then we will estimate your costs using our default tariffs.
         note_about_smart_meter_tariffs: We are currently using tariffs automatically imported from your smart meters.
@@ -114,7 +117,7 @@ en:
           user_tariffs: User supplied tariffs
         title: Manage and view tariffs
       meters:
-        meter: Meter
+        all_meters: All %{meter_type} meters
         meter_list: Meters
         meters_associated_with_this_tariff: Meters associated with this tariff
         there_are_no_meters_associated_with_this_tariff: There are no meters associated with this tariff
@@ -127,10 +130,19 @@ en:
         price_per_kwh: "%{price_value} per kWh"
       show:
         consumption_charges: Consumption charges
-        introduction_html: Any changes to the tariff will be reflected in the <a href='%{electricity_analysis_path}'>electricity cost analysis</a> and <a href='%{gas_analysis_path}'>gas cost analysis</a> pages which will update overnight
+        created_at: Date created
+        created_by: Created by
+        dates:
+          end_date: End date
+          start_date: Start date
+          title: Dates
+        introduction_html: Any changes to the tariff will be reflected in the <a href='%{analysis_path}'>%{meter_type} cost analysis</a> page which will update overnight
         meter_attribute_view: Meter attribute view (admin only)
+        meters: Meters
+        notes_html: Notes <small>(admin only)</small>
         standing_charges: Standing charges
-        title: Tariff details
+        updated_at: Date last updated
+        updated_by: Last updated by
       smart_meter_tariffs:
         introduction_html: |-
           <p>
@@ -142,19 +154,13 @@ en:
           <p>
             Manually adding a new tariff will allow you to provide more information about your standing charges for a given period.
           </p>
-        tariff_charges:
-          per_day: "%{charge} per day"
-        tariff_types:
-          differential_tiered: Differential tiered tariff
       summary_table:
         no_end_date: No end date
         no_start_date: No start date
       tariff_partial:
-        consumption_charges: Consumption charges
         day_night_tariff: Day/night tariff
         end_date: End date
-        full_details: Full details
-        price_from_to: "%{price_start_time} to %{price_end_time}:"
+        full_details: View details
         simple_tariff: Simple tariff
         start_date: Start date
         type: Type

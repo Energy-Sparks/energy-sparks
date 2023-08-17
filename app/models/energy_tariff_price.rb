@@ -17,17 +17,19 @@
 #  index_energy_tariff_prices_on_energy_tariff_id  (energy_tariff_id)
 #
 class EnergyTariffPrice < ApplicationRecord
+  MINIMUM_VALUE = 0.0
+  NIGHT_RATE_DESCRIPTION = 'Night rate'.freeze
+  DAY_RATE_DESCRIPTION = 'Day rate'.freeze
+
   belongs_to :energy_tariff, inverse_of: :energy_tariff_prices
 
   validates :start_time, :end_time, :value, :units, presence: true
-  validates :value, numericality: true
+  validates :value, numericality: { greater_than_or_equal_to: MINIMUM_VALUE }
   validate :no_time_overlaps
   validate :time_range_given
 
   scope :by_start_time, -> { order(start_time: :asc) }
 
-  NIGHT_RATE_DESCRIPTION = 'Night rate'.freeze
-  DAY_RATE_DESCRIPTION = 'Day rate'.freeze
 
   def time_range
     last_time = end_time < start_time ? end_time + 1.day : end_time
@@ -37,7 +39,7 @@ class EnergyTariffPrice < ApplicationRecord
   private
 
   def no_time_overlaps
-    energy_tariff.energy_tariff_prices.without(self).each do |other_price|
+    energy_tariff&.energy_tariff_prices&.without(self)&.each do |other_price|
       errors.add(:start_time, 'overlaps with another time range') if other_price.time_range.include?(start_time)
       errors.add(:end_time, 'overlaps with another time range') if other_price.time_range.include?(end_time)
     end

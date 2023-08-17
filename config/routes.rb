@@ -77,6 +77,8 @@ Rails.application.routes.draw do
       end
       member do
         get :choose_type, to: 'energy_tariffs#choose_type'
+        get :edit_meters, to: 'energy_tariffs#edit_meters'
+        post :update_meters, to: 'energy_tariffs#update_meters'
       end
     end
   end

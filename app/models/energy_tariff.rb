@@ -54,7 +54,10 @@ class EnergyTariff < ApplicationRecord
   enum tariff_type: [:flat_rate, :differential]
 
   validates :name, presence: true
+  validates :vat_rate, numericality: { greater_than_or_equal_to: 0.0, less_than_or_equal_to: 100.0, allow_nil: true }
+
   validate :start_and_end_date_are_not_both_blank
+  validate :start_date_is_earlier_than_or_equal_to_end_date
 
   scope :enabled, -> { where(enabled: true) }
   scope :disabled, -> { where(enabled: false) }
@@ -63,8 +66,13 @@ class EnergyTariff < ApplicationRecord
   scope :has_charges, -> { where(id: EnergyTariffCharge.select(:energy_tariff_id)) }
   scope :complete, -> { has_prices.or(has_charges) }
 
-  scope :by_name, -> { order(name: :asc) }
+  scope :by_name,       -> { order(name: :asc) }
   scope :by_start_date, -> { order(start_date: :asc) }
+
+  #Sorts with null start date first, then start date, then end date
+  scope :by_start_and_end, -> {
+    order(Arel.sql("(CASE WHEN start_date is NULL THEN 0 ELSE 1 END) DESC, start_date asc, end_date asc"))
+  }
 
   scope :count_by_school_group, -> { enabled.joins(:school_group).group(:slug).count(:id) }
 
@@ -117,6 +125,13 @@ class EnergyTariff < ApplicationRecord
 
     errors.add(:start_date, I18n.t('schools.user_tariffs.form.errors.dates.start_and_end_date_can_not_both_be_empty'))
     errors.add(:end_date, I18n.t('schools.user_tariffs.form.errors.dates.start_and_end_date_can_not_both_be_empty'))
+  end
+
+  def start_date_is_earlier_than_or_equal_to_end_date
+    return unless start_date.present? && end_date.present?
+    return unless start_date > end_date
+
+    errors.add(:start_date, I18n.t('schools.user_tariffs.form.errors.dates.start_date_must_be_earlier_than_or_equal_to_end_date'))
   end
 
   def tariff_holder_symbol
