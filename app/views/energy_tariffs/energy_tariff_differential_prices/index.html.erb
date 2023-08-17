@@ -16,11 +16,29 @@
 
   <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true" ></div>
 
-  <% if @energy_tariff.energy_tariff_prices.complete? %>
-    <span class="badge badge-success mb-2">Complete coverage</span>
-  <% else %>
-    <span class="badge badge-warning mb-2">Incomplete coverage</span>
-  <% end %>
+  <div class="d-flex justify-content-between mb-2">
+    <div>
+      <% if @energy_tariff.energy_tariff_prices.complete? %>
+        <span class="badge badge-success">Complete 24 hour coverage</span>
+      <% else %>
+        <span class="badge badge-warning">Incomplete 24 hour coverage</span>
+      <% end %>
+    </div>
+    <div>
+      <% new_path =  energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_price], { action: 'new' }) %>
+      <%= button_to 'New',
+          new_path,
+          {
+            class: 'btn energy-tariff-show-button',
+            remote: true,
+            'data-toggle' =>  "modal",
+            'data-target' => '#modal-window',
+            disabled: @energy_tariff.energy_tariff_prices.complete?,
+            method: :get
+          }
+      %>
+    </div>
+  </div>
 
   <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, allow_edits: true %>
 

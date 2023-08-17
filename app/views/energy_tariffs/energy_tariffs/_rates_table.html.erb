@@ -10,7 +10,18 @@
         <% if allow_edits %>
           <td class="value">
             <% edit_path =  energy_tariffs_path(energy_tariff, [:energy_tariff_differential_price], { action: 'edit', id: energy_tariff_price.id }) %>
-            <%= link_to t('common.labels.edit'), edit_path, { class: 'btn energy-tariff-show-button', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window' } %>
+            <%= link_to t('common.labels.edit'),
+                edit_path,
+                { class: 'btn energy-tariff-show-button', remote: true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window' }
+            %>
+            <% delete_path =  energy_tariffs_path(energy_tariff, [:energy_tariff_differential_price], { id: energy_tariff_price.id }) %>
+            <%= link_to t('common.labels.delete'),
+                delete_path,
+                method: :delete,
+                data: { confirm: t('common.confirm') },
+                class: 'btn energy-tariff-show-button',
+                id: "energy-tariff-#{energy_tariff_price.id}-delete"
+            %>
           </td>
         <% end %>
       </tr>

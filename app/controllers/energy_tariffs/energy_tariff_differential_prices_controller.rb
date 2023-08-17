@@ -57,7 +57,7 @@ module EnergyTariffs
     private
 
     def energy_tariff_price_params
-      params.require(:energy_tariff_price).permit(:start_time, :end_time, :value)
+      params.require(:energy_tariff_price).permit(:start_time, :end_time, :value, :description)
     end
   end
 end
