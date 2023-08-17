@@ -97,7 +97,7 @@ RSpec.shared_examples "a gas tariff editor with no meter selection" do
     expect(page).to have_content('Manage and view tariffs')
     expect(page).to have_content('My First Gas Tariff')
 
-    click_link('Full details')
+    click_link('View details')
     expect(page).to have_content('My First Gas Tariff')
     expect(page).to have_content('Dates')
     expect(page).to have_content('Start date')
@@ -245,7 +245,7 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     click_link('Finished')
     expect(page).to have_content('Manage and view tariffs')
 
-    click_link('Full details')
+    click_link('View details')
     expect(page).to have_content('My First Flat Tariff')
     expect(page).to have_content('Dates')
     expect(page).to have_content('Start date')
@@ -346,7 +346,7 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     click_link('Finished')
     expect(page).to have_content('Manage and view tariffs')
 
-    click_link('Full details')
+    click_link('View details')
     expect(page).to have_content('My First Diff Tariff')
     expect(page).to have_content('Dates')
     expect(page).to have_content('Start date')
@@ -569,7 +569,7 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     click_link('Finished')
     expect(page).to have_content('Manage and view tariffs')
 
-    click_link('Full details')
+    click_link('View details')
     expect(page).to have_content('My First Diff Tariff')
     expect(page).to have_content('Dates')
     expect(page).to have_content('Start date')
