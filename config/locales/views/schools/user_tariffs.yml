@@ -1,8 +1,8 @@
 ---
 en:
   schools:
-    energy_tariff:
-      title: Energy Tariff
+    energy_tariffs:
+      title: Energy Tariffs
     tariffs_helper:
       charge_value: "%{value} per %{units}"
       for_mpan: "(for MPAN %{user_tariff_meters_list})"

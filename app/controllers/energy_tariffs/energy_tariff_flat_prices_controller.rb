@@ -9,6 +9,7 @@ module EnergyTariffs
     load_and_authorize_resource :energy_tariff
     before_action :admin_authorized?, if: :site_settings_resource?
     before_action :load_site_setting, if: :site_settings_resource?
+    before_action :build_breadcrumbs, unless: -> { @tariff_holder.site_settings? }
 
     def index
       if @energy_tariff.energy_tariff_prices.any?
