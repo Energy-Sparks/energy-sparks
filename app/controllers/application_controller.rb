@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
   def current_school_podium
     if @school && @school.scoreboard
       @school_podium ||= Podium.create(school: @school, scoreboard: @school.scoreboard)
-    elsif @tariff_holder.school? && @tariff_holder && @tariff_holder.scoreboard
+    elsif @tariff_holder && @tariff_holder.school? && @tariff_holder.scoreboard
       @school_podium ||= Podium.create(school: @tariff_holder, scoreboard: @tariff_holder.scoreboard)
     end
   end
