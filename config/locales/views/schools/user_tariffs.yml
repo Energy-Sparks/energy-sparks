@@ -148,13 +148,11 @@ en:
       smart_meter_tariffs:
         introduction_html: |-
           <p>
-            We are automatically loading basic tariff information from your smart meters.
+            We are automatically loading basic tariff information from your smart meters. This does not include information about
+            your standing charges as this is not stored on the meter.
           </p>
           <p>
-            This information is already being used to improve the accuracy of the calculations on your <a href="%{advice_pages}">cost analysis pages</a> and is summarised below.
-          </p>
-          <p>
-            Manually adding a new tariff will allow you to provide more information about your standing charges for a given period.
+            You can choose to edit these tariffs to add more detailed standing charge information for each meter. If you have already added tariffs for the whole school, you can instead choose to disable these tariffs.
           </p>
         limited_editing: This tariff information has been automatically imported from your smart meter. You may add details of standing charges but cannot edit any other information.
       summary_table:

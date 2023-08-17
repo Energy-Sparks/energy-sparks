@@ -53,7 +53,7 @@
               %>
             <% end %>
             <% if can_toggle_status?(energy_tariff) %>
-              <%= link_to energy_tariff.enabled ? t('common.labels.deactivate') : t('common.labels.activate'),
+              <%= link_to energy_tariff.enabled ? t('common.labels.disable') : t('common.labels.enable'),
                   energy_tariffs_path(energy_tariff, [], { action: :toggle_enabled }),
                   class: 'btn btn-sm',
                   id: "energy-tariff-#{energy_tariff.id}-toggle",
