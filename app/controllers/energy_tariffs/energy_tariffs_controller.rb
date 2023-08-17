@@ -1,15 +1,6 @@
 module EnergyTariffs
-  class EnergyTariffsController < ApplicationController
-    include Adminable
-    include EnergyTariffable
-    include EnergyTariffsHelper
-
-    load_and_authorize_resource :school, instance_name: 'tariff_holder'
-    load_and_authorize_resource :school_group, instance_name: 'tariff_holder'
-    load_and_authorize_resource :energy_tariff
-    before_action :admin_authorized?, if: :site_settings_resource?
-    before_action :load_site_setting, if: :site_settings_resource?
-    before_action :set_breadcrumbs
+  class EnergyTariffsController < EnergyTariffsBaseController
+    before_action :redirect_if_dcc, only: [:choose_meters, :edit_meters, :update_meters, :choose_type, :destroy, :edit]
 
     def index
       authorize! :manage, @tariff_holder.energy_tariffs.build
@@ -106,10 +97,6 @@ module EnergyTariffs
 
     def redirect_to_choose_type_energy_tariff_path
       redirect_to energy_tariffs_path(@energy_tariff, [], { action: :choose_type })
-    end
-
-    def set_breadcrumbs
-      @breadcrumbs = [{ name: I18n.t('manage_school_menu.manage_tariffs') }]
     end
 
     def default_params

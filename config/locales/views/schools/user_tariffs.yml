@@ -125,6 +125,7 @@ en:
       name: Name
       new:
         title: Choose a name and date range for this %{fuel_type} tariff
+      not_allowed_for_smart_meter_tariffs: This is not allowed for smart meter tariffs
       rates_table:
         no_consumption_charges_specified_yet: No consumption charges specified yet
         price_per_kwh: "%{price_value} per kWh"
