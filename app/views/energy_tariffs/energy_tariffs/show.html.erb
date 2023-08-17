@@ -2,11 +2,22 @@
 
 <div class="energy_tariff">
 
+  <% if @energy_tariff.dcc? %>
+    <%= component 'notice', classes: 'mb-2', status: :neutral do |c| %>
+      <div class="d-flex justify-content-between">
+        <%= t('schools.user_tariffs.smart_meter_tariffs.limited_editing') %>
+        <%= link_to t('schools.user_tariff_charges.edit_charges'),
+          energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]),
+          class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  <% end %>
   <% if @energy_tariff.tariff_holder.school? %>
-    <p>
-      <%= t('schools.user_tariffs.show.introduction_html', analysis_path: analysis_page_finder_path(urn: @tariff_holder.urn, analysis_class: cost_analysis_class_for(@energy_tariff.meter_type)), meter_type: t("common.#{@energy_tariff.meter_type}").downcase) %>.
-    </p>
-    <br/>
+    <%= component 'notice', classes: 'mb-2', status: :neutral do |c| %>
+      <p>
+        <%= t('schools.user_tariffs.show.introduction_html', analysis_path: analysis_page_finder_path(urn: @tariff_holder.urn, analysis_class: cost_analysis_class_for(@energy_tariff.meter_type)), meter_type: t("common.#{@energy_tariff.meter_type}").downcase) %>.
+      </p>
+    <% end %>
   <% end %>
 
   <div class="d-flex justify-content-between">
@@ -16,7 +27,7 @@
     <div>
       <%= link_to t('common.labels.edit'),
           energy_tariffs_path(@energy_tariff, [], { action: :edit }),
-          class: 'btn', id: 'edit_dates'
+          class: 'btn', id: 'edit_dates' unless @energy_tariff.dcc?
       %>
     </div>
   </div>
@@ -43,7 +54,7 @@
       <div>
         <%= link_to t('common.labels.edit'),
             energy_tariffs_path(@energy_tariff, [], { action: :edit_meters }),
-            class: 'btn', id: 'edit_meters'
+            class: 'btn', id: 'edit_meters' unless @energy_tariff.dcc?
         %>
       </div>
     </div>
@@ -71,7 +82,10 @@
       <h4><%= t('schools.user_tariffs.show.consumption_charges') %></h4>
     </div>
     <div>
-      <%= link_to t('common.labels.edit'), energy_tariff_prices_path(@energy_tariff), class: 'btn' %>
+      <%= link_to t('common.labels.edit'),
+        energy_tariff_prices_path(@energy_tariff),
+        class: 'btn' unless @energy_tariff.dcc?
+      %>
     </div>
   </div>
 
@@ -88,7 +102,9 @@
       <h4><%= t('schools.user_tariffs.show.standing_charges') %></h4>
     </div>
     <div>
-      <%= link_to t('common.labels.edit'), energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]), class: 'btn' %>
+      <%= link_to t('common.labels.edit'),
+        energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]),
+        class: 'btn' unless @energy_tariff.dcc? %>
     </div>
   </div>
 

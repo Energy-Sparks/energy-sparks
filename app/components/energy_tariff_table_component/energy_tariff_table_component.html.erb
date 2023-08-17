@@ -41,10 +41,17 @@
                 energy_tariffs_path(energy_tariff),
                 class: 'btn btn-sm'
             %>
-            <%= link_to t('common.labels.edit'),
-                energy_tariffs_path(energy_tariff, [], { action: :edit }),
-                class: 'btn btn-sm'
-            %>
+            <% if energy_tariff.dcc? %>
+              <%= link_to t('schools.user_tariff_charges.edit_charges'),
+                  energy_tariffs_path(energy_tariff, [:energy_tariff_charges]),
+                  class: 'btn btn-sm'
+              %>
+            <% else %>
+              <%= link_to t('common.labels.edit'),
+                  energy_tariffs_path(energy_tariff, [], { action: :edit }),
+                  class: 'btn btn-sm'
+              %>
+            <% end %>
             <% if can_toggle_status?(energy_tariff) %>
               <%= link_to energy_tariff.enabled ? t('common.labels.deactivate') : t('common.labels.activate'),
                   energy_tariffs_path(energy_tariff, [], { action: :toggle_enabled }),

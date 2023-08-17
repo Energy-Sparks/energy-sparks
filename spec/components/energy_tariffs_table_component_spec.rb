@@ -141,7 +141,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
       let(:source)  { :dcc }
       it 'includes the actions' do
         expect(html).to have_link('View details')
-        expect(html).to have_link('Edit')
+        expect(html).to have_link('Edit charges')
         expect(html).to have_link('Deactivate')
         expect(html).to_not have_link('Delete')
       end
@@ -150,7 +150,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
         let(:enabled)   { false }
         it 'includes the expected actions' do
           expect(html).to have_link('View details')
-          expect(html).to have_link('Edit')
+          expect(html).to have_link('Edit charges')
           expect(html).to have_link('Activate')
         end
       end

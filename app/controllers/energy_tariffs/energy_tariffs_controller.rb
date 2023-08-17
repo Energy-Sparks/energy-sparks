@@ -1,6 +1,6 @@
 module EnergyTariffs
   class EnergyTariffsController < EnergyTariffsBaseController
-    before_action :redirect_if_dcc, only: [:choose_meters, :edit_meters, :update_meters, :choose_type, :destroy, :edit]
+    before_action :redirect_if_dcc, only: [:edit_meters, :update_meters, :choose_type, :destroy, :edit]
 
     def index
       authorize! :manage, @tariff_holder.energy_tariffs.build
