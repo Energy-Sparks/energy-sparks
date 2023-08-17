@@ -222,7 +222,7 @@ class Meter < ApplicationRecord
   end
 
   def active_meter_attributes
-    if EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs)
+    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
       meter_attributes.where.not(attribute_type: GlobalMeterAttribute::TARIFF_ATTRIBUTE_TYPES).active
     else
       meter_attributes.active
@@ -231,7 +231,7 @@ class Meter < ApplicationRecord
 
   def energy_tariff_meter_attributes
     attributes = []
-    if EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs)
+    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
       school_attributes = school.all_energy_tariff_attributes(meter_type)
       attributes += school_attributes unless school_attributes.nil?
     end

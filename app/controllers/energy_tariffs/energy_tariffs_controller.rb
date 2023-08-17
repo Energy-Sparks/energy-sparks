@@ -22,9 +22,9 @@ module EnergyTariffs
 
     def new
       @energy_tariff = if @tariff_holder.school?
-                         @tariff_holder.energy_tariffs.build(energy_tariff_params.merge(default_params))
+                         @tariff_holder.energy_tariffs.build(default_params.merge(energy_tariff_params))
                        else
-                         @tariff_holder.energy_tariffs.build(meter_type: params[:meter_type])
+                         @tariff_holder.energy_tariffs.build(default_params.merge({ meter_type: params[:meter_type] }))
                        end
 
       if require_meters?
@@ -52,6 +52,24 @@ module EnergyTariffs
         @meters = @tariff_holder.meters.gas
       else
         @meters = []
+      end
+    end
+
+    def edit_meters
+      if @energy_tariff.electricity?
+        @meters = @tariff_holder.meters.electricity
+      elsif @energy_tariff.gas?
+        @meters = @tariff_holder.meters.gas
+      else
+        @meters = []
+      end
+    end
+
+    def update_meters
+      if @energy_tariff.update(energy_tariff_params.merge(updated_by: current_user))
+        redirect_to energy_tariffs_path(@energy_tariff)
+      else
+        render :edit_meters
       end
     end
 
@@ -91,7 +109,12 @@ module EnergyTariffs
     end
 
     def default_params
-      { start_date: Date.parse('2021-04-01'), end_date: Date.parse('2022-03-31'), tariff_type: :flat_rate }
+      default_start_date = @tariff_holder.default_tariff_start_date(@energy_tariff.meter_type)
+      default_end_date = default_start_date + 1.year
+      {
+        start_date: default_start_date,
+        end_date: default_end_date
+      }
     end
 
     def energy_tariff_params

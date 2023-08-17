@@ -36,7 +36,7 @@ class GlobalMeterAttribute < ApplicationRecord
   end
 
   def self.for(meter)
-    if EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs)
+    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
       where('meter_types ? :meter_type', meter_type: meter.meter_type).where.not(attribute_type: GlobalMeterAttribute::TARIFF_ATTRIBUTE_TYPES).active
     else
       where('meter_types ? :meter_type', meter_type: meter.meter_type).active
@@ -54,7 +54,7 @@ class GlobalMeterAttribute < ApplicationRecord
   end
 
   def self.filtered_attributes
-    if EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs)
+    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
       where.not(attribute_type: GlobalMeterAttribute::TARIFF_ATTRIBUTE_TYPES).active
     else
       active

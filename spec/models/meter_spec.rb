@@ -324,12 +324,12 @@ describe 'Meter', :meters do
     let(:feature_flag)    { 'false' }
 
     around do |example|
-      ClimateControl.modify FEATURE_FLAG_USE_NEW_ENERGY_TARIFFS: feature_flag do
+      ClimateControl.modify FEATURE_FLAG_NEW_ENERGY_TARIFF_EDITOR: feature_flag do
         example.run
       end
     end
 
-    context 'with :use_new_energy_tariffs enabled' do
+    context 'with :new_energy_tariff_editor enabled' do
       let(:feature_flag) { 'true' }
 
       let(:all_meter_attributes)          { meter.all_meter_attributes }
