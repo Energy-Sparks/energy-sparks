@@ -9,8 +9,7 @@ module EnergyTariffs
     load_and_authorize_resource :energy_tariff
     before_action :admin_authorized?, if: :site_settings_resource?
     before_action :load_site_setting, if: :site_settings_resource?
-    before_action :set_breadcrumbs
-    before_action :build_breadcrumbs
+    before_action :build_breadcrumbs, unless: -> { @tariff_holder.site_settings? }
 
     def index
       authorize! :manage, @tariff_holder.energy_tariffs.build
@@ -96,22 +95,6 @@ module EnergyTariffs
     end
 
     private
-
-    def build_breadcrumbs
-      return if @tariff_holder.site_settings?
-
-      href = if @tariff_holder.school?
-               school_path(@tariff_holder)
-             elsif @tariff_holder.school_group?
-               school_group_path(@tariff_holder)
-             end
-
-      @breadcrumbs = [
-        { name: I18n.t('common.schools'), href: schools_path },
-        { name: @tariff_holder.name, href: href },
-        { name: t('schools.energy_tariff.title') }
-      ]
-    end
 
     def require_meters?
       params[:specific_meters] && @energy_tariff.meter_ids.empty? && @tariff_holder.school?

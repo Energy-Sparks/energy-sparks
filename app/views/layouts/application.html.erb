@@ -3,13 +3,19 @@
   <head>
     <%= render 'shared/head' %>
   </head>
-  <body vocab="http://schema.org/" class="<%= 'sub-nav' if show_sub_nav?(@school, @hide_subnav) %>">
+  <body vocab="http://schema.org/" class="<%= 'sub-nav' if show_sub_nav?(@school || @tariff_holder, @hide_subnav) %>">
     <% if show_sub_nav?(@school, @hide_subnav) %>
       <%= render 'shared/mini_nav' %>
-      <%= render 'shared/sub_nav', podium: current_school_podium, school: @school %>
-    <% elsif EnergySparks::FeatureFlags.active?(:enhanced_school_group_dashboard) && controller_path.split('/').first == 'school_groups' && can?(:update_settings, @school_group) %>
+      <%= render 'shared/sub_nav', podium: current_school_podium, school: @school || @tariff_holder %>
+    <% elsif @tariff_holder&.school? && show_sub_nav?(@tariff_holder, @hide_subnav) %>
       <%= render 'shared/mini_nav' %>
-      <%= render 'school_groups/sub_nav' if can?(:update_settings, @school_group) %>
+      <%= render 'shared/sub_nav', podium: current_school_podium, school: @tariff_holder %>
+    <% elsif  @school_group && EnergySparks::FeatureFlags.active?(:enhanced_school_group_dashboard) && request.path.starts_with?('/school_groups') && can?(:update_settings, @school_group) %>
+      <%= render 'shared/mini_nav' %>
+      <%= render('school_groups/sub_nav', school_group: @school_group) if can?(:update_settings, @school_group || @tariff_holder) %>
+    <% elsif @tariff_holder&.school_group? && EnergySparks::FeatureFlags.active?(:enhanced_school_group_dashboard) && request.path.starts_with?('/school_groups') && can?(:update_settings, @tariff_holder) %>
+      <%= render 'shared/mini_nav' %>
+      <%= render('school_groups/sub_nav', school_group: @tariff_holder) if can?(:update_settings, @tariff_holder) %>
     <% else %>
       <%= render 'shared/nav' %>
     <% end %>
