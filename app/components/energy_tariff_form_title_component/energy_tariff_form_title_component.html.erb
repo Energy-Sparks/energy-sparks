@@ -1,0 +1,60 @@
+<div class="row">
+  <div class="col-md-12">
+    <%= page_title %>
+  </div>
+</div>
+
+<% if notice? %>
+  <div class="row">
+    <div class="col-md-12">
+      <%= notice %>
+    </div>
+  </div>
+<% end %>
+
+<div class="row">
+  <div class="col energy_tariff">
+    <h4><%= t('schools.user_tariffs.title_partial.heading') %></h4>
+    <table class="table table-sm table-charges">
+      <tbody>
+        <% unless skip_field?(:name) %>
+          <tr>
+            <td><%= t('schools.user_tariffs.name') %></td>
+            <td><%= name %></td>
+          </tr>
+        <% end %>
+        <% unless skip_field?(:type) %>
+          <tr>
+            <td><%= t('schools.user_tariffs.tariff_partial.type') %></td>
+            <td><%= type_label %></td>
+          </tr>
+        <% end %>
+        <% unless skip_field?(:dates) %>
+          <tr>
+            <td><%= t('schools.user_tariffs.show.dates.title') %></td>
+            <td><%= dates %></td>
+          </tr>
+        <% end %>
+        <% unless skip_field?(:meters) %>
+          <tr>
+            <td><%= t('schools.user_tariffs.meters.meter_list') %></td>
+            <td>
+              <% if
+                @energy_tariff.tariff_holder.site_settings? ||
+                @energy_tariff.tariff_holder.school_group? ||
+                @energy_tariff.meters.empty? %>
+                <%= t('schools.user_tariffs.meters.all_meters', meter_type: @energy_tariff.meter_type) %>
+              <% else %>
+                <ul style="list-style: none; padding-left: 0px;">
+                  <% @energy_tariff.meters.each do |meter| %>
+                    <li><%= meter.name_or_mpan_mprn %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

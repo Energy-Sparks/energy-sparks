@@ -2,8 +2,6 @@ cy:
   schools:
     tariffs_helper:
       charge_value: "%{value} fesul %{units}"
-      for_mpan: "(ar gyfer MPAN %{user_tariff_meters_list})"
-      for_mprn: "(ar gyfer MPRN %{user_tariff_meters_list})"
       prices_text: Yn seiliedig ar y mesuryddion sy'n gysylltiedig â'r tariff hwn, rydym wedi gosod rhai cyfnodau dydd/nos diofyn - bydd angen i chi ddiweddaru'r cyfraddau o'r manylion ar eich bil.
       user_tariff_title: "%{start_date} i %{end_date}"
     user_tariff_charges:
@@ -91,8 +89,6 @@ cy:
         title: Rheoli a gweld tariffau
       meters:
         meter_list: Mesuryddion
-        meters_associated_with_this_tariff: Mesuryddion sy'n gysylltiedig â'r tariff hwn
-        there_are_no_meters_associated_with_this_tariff: Nid oes unrhyw fesuryddion yn gysylltiedig â'r tariff hwn
       name: Enw
       new:
         title: Dewiswch enw ac ystod dyddiad ar gyfer y tariff %{fuel_type} hwn
@@ -122,7 +118,6 @@ cy:
         simple_tariff: Tariff syml
         start_date: Dyddiad cychwyn
         type: Math
-      there_should_only_be_one_tariff_message: Dim ond un tariff ddylai fod ar gyfer pob cyfnod dyddiad, ar gyfer pob metr
       title_partial:
         heading: Tariff
       view_and_manage_tariffs_html: <a href="%{user_tariffs_path}">Gweld a rheoli tariffau eich ysgol</a>
