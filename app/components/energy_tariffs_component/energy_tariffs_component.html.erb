@@ -1,0 +1,38 @@
+<div class="row mt-4">
+  <div class="col">
+    <%= header %>
+    <% @tariff_types.each do |meter_type| %>
+      <% if @tariff_holder.holds_tariffs_of_type?(meter_type) %>
+        <div class="row pb-4">
+          <div class="col">
+            <h4>
+              <span class="<%= fuel_type_class(meter_type) %>">
+                <%= fa_icon( fuel_type_icon(meter_type) ) %>
+              </span>
+              <%= t("schools.user_tariffs.index.#{meter_type}.header") %>
+            </h4>
+            <% if @tariff_holder.any_tariffs_of_type?(meter_type) %>
+              <%= component 'energy_tariff_table',
+                id: table_id(meter_type),
+                tariff_holder: @tariff_holder,
+                tariffs: sorted_tariffs(@tariff_holder, meter_type, @source),
+                show_actions: @show_actions %>
+            <% else %>
+              <p>
+                <%= t("schools.user_tariffs.index.#{meter_type}.there_are_no_#{meter_type}_tariffs_set_up_yet") %>
+              </p>
+              <%= footer %>
+            <% end %>
+            <% if @show_actions %>
+              <div class="mt-4">
+                <%= link_to t("schools.user_tariffs.index.#{meter_type}.add_label"),
+                  new_energy_tariff_path(@tariff_holder, meter_type: meter_type),
+                  class: 'btn btn-success' %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

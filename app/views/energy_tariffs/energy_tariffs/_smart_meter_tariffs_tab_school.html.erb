@@ -1,34 +1,9 @@
-<div class="row mt-4">
-  <div class="col">
-
-    <%= t('schools.user_tariffs.smart_meter_tariffs.introduction_html', advice_pages: school_advice_path(@tariff_holder)) %>
-
-    <% if @electricity_meters.dcc.any? %>
-      <div class="row">
-        <div class="col">
-            <h4>
-              <span class="<%= fuel_type_class(:electricity) %>">
-                <%= fa_icon( fuel_type_icon(:electricity) ) %>
-              </span>
-              <%= t('schools.user_tariffs.index.electricity.header') %>
-            </h4>
-            <%= render 'smart_meter_tariffs_summary_table_school', meters: @electricity_meters.dcc %>
-        </div>
-      </div>
-    <% end %>
-
-    <% if @gas_meters.dcc.any? %>
-      <div class="row">
-        <div class="col">
-            <h4>
-              <span class="<%= fuel_type_class(:gas) %>">
-                <%= fa_icon( fuel_type_icon(:gas) ) %>
-              </span>
-              <%= t('schools.user_tariffs.index.gas.header') %>
-            </h4>
-            <%= render 'smart_meter_tariffs_summary_table_school', meters: @gas_meters.dcc %>
-        </div>
-      </div>
-    <% end %>
-  </div>
-</div>
+<%= component 'energy_tariffs',
+  tariff_holder: tariff_holder,
+  tariff_types: list_of_tariff_types(show_all: false),
+  source: :dcc,
+  show_actions: false do |c| %>
+  <% c.with_header do %>
+    <%= t('schools.user_tariffs.smart_meter_tariffs.introduction_html', advice_pages: school_advice_path(tariff_holder)) %>
+  <% end %>
+<% end %>

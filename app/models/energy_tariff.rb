@@ -63,8 +63,13 @@ class EnergyTariff < ApplicationRecord
   scope :has_charges, -> { where(id: EnergyTariffCharge.select(:energy_tariff_id)) }
   scope :complete, -> { has_prices.or(has_charges) }
 
-  scope :by_name, -> { order(name: :asc) }
+  scope :by_name,       -> { order(name: :asc) }
   scope :by_start_date, -> { order(start_date: :asc) }
+
+  #Sorts with null start date first, then start date, then end date
+  scope :by_start_and_end, -> {
+    order(Arel.sql("(CASE WHEN start_date is NULL THEN 0 ELSE 1 END) DESC, start_date asc, end_date asc"))
+  }
 
   scope :count_by_school_group, -> { enabled.joins(:school_group).group(:slug).count(:id) }
 
