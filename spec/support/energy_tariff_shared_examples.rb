@@ -28,20 +28,18 @@ RSpec.shared_examples "a tariff editor index" do
     before { refresh }
     it 'displays the gas tariff' do
       within '#gas-tariffs-table' do
-        expect(page).to have_content(gas_tariff.name)
         expect(page).to have_content(gas_tariff.start_date.to_s(:es_compact))
         expect(page).to have_content(gas_tariff.end_date.to_s(:es_compact))
-        expect(page).to have_link("View details")
+        expect(page).to have_link(gas_tariff.name)
         expect(page).to have_link("Edit")
         expect(page).to have_link("Delete") if !tariff_holder.site_settings?
       end
     end
     it 'displays the electricity tariff' do
       within '#electricity-tariffs-table' do
-        expect(page).to have_content(electricity_tariff.name)
         expect(page).to have_content(electricity_tariff.start_date.to_s(:es_compact))
         expect(page).to have_content(electricity_tariff.end_date.to_s(:es_compact))
-        expect(page).to have_link("View details")
+        expect(page).to have_link(electricity_tariff.name)
         expect(page).to have_link("Edit")
         expect(page).to have_link("Delete") if !tariff_holder.site_settings?
       end
@@ -97,7 +95,7 @@ RSpec.shared_examples "a gas tariff editor with no meter selection" do
     expect(page).to have_content('Manage and view tariffs')
     expect(page).to have_content('My First Gas Tariff')
 
-    click_link('View details')
+    click_link(energy_tariff.name)
     expect(page).to have_content('My First Gas Tariff')
     expect(page).to have_content('Dates')
     expect(page).to have_content('Start date')
@@ -245,7 +243,7 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     click_link('Finished')
     expect(page).to have_content('Manage and view tariffs')
 
-    click_link('View details')
+    click_link(energy_tariff.name)
     expect(page).to have_content('My First Flat Tariff')
     expect(page).to have_content('Dates')
     expect(page).to have_content('Start date')
@@ -346,7 +344,7 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     click_link('Finished')
     expect(page).to have_content('Manage and view tariffs')
 
-    click_link('View details')
+    click_link(energy_tariff.name)
     expect(page).to have_content('My First Diff Tariff')
     expect(page).to have_content('Dates')
     expect(page).to have_content('Start date')
@@ -569,7 +567,7 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     click_link('Finished')
     expect(page).to have_content('Manage and view tariffs')
 
-    click_link('View details')
+    click_link(energy_tariff.name)
     expect(page).to have_content('My First Diff Tariff')
     expect(page).to have_content('Dates')
     expect(page).to have_content('Start date')

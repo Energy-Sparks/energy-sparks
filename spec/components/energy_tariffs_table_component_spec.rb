@@ -133,7 +133,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
 
   context 'action buttons' do
     it 'includes the actions' do
-      expect(html).to have_link('View details')
+      expect(html).to have_link(energy_tariffs.first.name)
       expect(html).to have_link('Edit')
       expect(html).to have_link('Disable')
       expect(html).to_not have_link('Delete')
@@ -142,7 +142,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     context 'with disabled site settings tariff' do
       let(:enabled)   { false }
       it 'includes all the actions' do
-        expect(html).to have_link('View details')
+        expect(html).to have_link(energy_tariffs.first.name)
         expect(html).to have_link('Edit')
         expect(html).to have_link('Enable')
         expect(html).to have_link('Delete')
@@ -152,7 +152,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     context 'with dcc tariff' do
       let(:source)  { :dcc }
       it 'includes the actions' do
-        expect(html).to have_link('View details')
+        expect(html).to have_link(energy_tariffs.first.name)
         expect(html).to have_link('Edit charges')
         expect(html).to have_link('Disable')
         expect(html).to_not have_link('Delete')
@@ -161,7 +161,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
       context 'that is disabled' do
         let(:enabled)   { false }
         it 'includes the expected actions' do
-          expect(html).to have_link('View details')
+          expect(html).to have_link(energy_tariffs.first.name)
           expect(html).to have_link('Edit charges')
           expect(html).to have_link('Enable')
         end
@@ -173,7 +173,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
       let(:current_user)  { create(:school_admin) }
 
       it 'does not include the actions' do
-        expect(html).to_not have_link('View details')
+        expect(html).to_not have_link(energy_tariffs.first.name)
         expect(html).to_not have_link('Edit')
         expect(html).to_not have_link('Disable')
         expect(html).to_not have_link('Delete')

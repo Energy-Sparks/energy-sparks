@@ -170,7 +170,6 @@ en:
         consumption_charges: Consumption charges
         day_night_tariff: Day/night tariff
         end_date: End date
-        full_details: View details
         price_from_to: "%{price_start_time} to %{price_end_time}:"
         simple_tariff: Simple tariff
         start_date: Start date
