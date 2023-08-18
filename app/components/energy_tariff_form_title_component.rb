@@ -8,8 +8,8 @@ class EnergyTariffFormTitleComponent < ViewComponent::Base
     @skip_fields = skip_fields
   end
 
-  def skip_field?(field)
-    @skip_fields.include?(field)
+  def show_field?(field)
+    @skip_fields.exclude?(field)
   end
 
   def name
