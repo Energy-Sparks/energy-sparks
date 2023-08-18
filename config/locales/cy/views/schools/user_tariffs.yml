@@ -112,12 +112,14 @@ cy:
             Bydd ychwanegu tariff newydd â llaw yn eich galluogi i ddarparu rhagor o wybodaeth am eich taliadau sefydlog am gyfnod penodol.
           </p>
       tariff_partial:
+        consumption_charges: Costau defnydd
         day_night_tariff: Tariff dydd/nos
         end_date: Dyddiad gorffen
         full_details: Manylion llawn
         simple_tariff: Tariff syml
         start_date: Dyddiad cychwyn
         type: Math
+        price_from_to: "%{price_start_time} i %{price_end_time}:"
       title_partial:
         heading: Tariff
       view_and_manage_tariffs_html: <a href="%{user_tariffs_path}">Gweld a rheoli tariffau eich ysgol</a>

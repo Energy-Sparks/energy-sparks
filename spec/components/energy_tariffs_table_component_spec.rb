@@ -8,12 +8,14 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
   let(:source)            { :manually_entered }
   let(:energy_tariffs)    { [create(:energy_tariff, tariff_holder: tariff_holder, meter_type: :electricity, enabled: enabled, source: source)] }
   let(:show_actions)      { true }
+  let(:show_prices)       { true }
 
   let(:params) {
     {
       tariff_holder: tariff_holder,
       tariffs: energy_tariffs,
-      show_actions: show_actions
+      show_actions: show_actions,
+      show_prices: show_prices
     }
   }
 
@@ -91,6 +93,16 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
         expect(html).to have_content('schools.user_tariffs.tariff_partial.simple_tariff')
         expect(html).to have_content(energy_tariffs.first.start_date.to_s(:es_compact))
         expect(html).to have_content(energy_tariffs.first.end_date.to_s(:es_compact))
+        expect(html).to have_content(energy_tariffs.first.energy_tariff_price.first)
+      end
+    end
+
+    context 'with show no prices option' do
+      let(:show_prices)       { true }
+      it 'doesnt show price' do
+        within('#tariff-table tbody tr[1]') do
+          expect(html).to_not have_content(energy_tariffs.first.energy_tariff_price.first)
+        end
       end
     end
 

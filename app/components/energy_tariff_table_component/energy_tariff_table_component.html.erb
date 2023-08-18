@@ -5,6 +5,9 @@
       <th><%= t('schools.user_tariffs.tariff_partial.end_date') %></th>
       <th><%= t('schools.user_tariffs.name') %></th>
       <th><%= t('schools.user_tariffs.tariff_partial.type') %></th>
+      <% if show_prices? %>
+        <th><%= t('schools.user_tariffs.tariff_partial.consumption_charges') %></th>
+      <% end %>
       <% if show_meters? %>
         <th data-orderable="false"><%= t('schools.user_tariffs.meters.meter_list') %></th>
       <% end %>
@@ -22,6 +25,20 @@
         <td>
           <%= flat_rate_label(energy_tariff) %>
         </td>
+        <% if show_prices? %>
+          <td>
+            <ul style="list-style: none; padding-left: 0px;">
+              <% energy_tariff.energy_tariff_prices.order(start_time: :asc).each do |price| %>
+                <li>
+                  <% if energy_tariff.differential? %>
+                    <%= t('schools.user_tariffs.tariff_partial.price_from_to', price_start_time: start_time(price), price_end_time: end_time(price)) %>
+                  <% end %>
+                  <%= t('schools.user_tariffs.rates_table.price_per_kwh', price_value: convert_value_to_long_currency(price.value)) %>
+                </li>
+              <% end %>
+            </ul>
+          </td>
+        <% end %>
         <% if show_meters? %>
           <td>
             <% if energy_tariff.meters.any? %>
