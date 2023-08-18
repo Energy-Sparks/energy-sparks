@@ -1,7 +1,7 @@
+<% content_for :page_title, @energy_tariff.name %>
 <h1><%= @energy_tariff.name %></h1>
 
 <div class="energy_tariff">
-
   <% if @energy_tariff.dcc? %>
     <%= component 'notice', classes: 'mb-2', status: :neutral do |c| %>
       <div class="d-flex justify-content-between">
@@ -31,7 +31,6 @@
       %>
     </div>
   </div>
-
   <table class="table table-charges">
     <tbody>
       <tr>
@@ -45,9 +44,8 @@
     </tbody>
   </table>
 
-  <br/>
   <% if @energy_tariff.school? %>
-    <div class="d-flex justify-content-between">
+    <div class="mt-4 d-flex justify-content-between">
       <div>
         <h4><%= t('schools.user_tariffs.show.meters') %></h4>
       </div>
@@ -74,10 +72,9 @@
         <% end %>
       </tbody>
     </table>
-    <br/>
   <% end %>
 
-  <div class="d-flex justify-content-between" id="consumption-charges">
+  <div class="mt-4 d-flex justify-content-between" id="consumption-charges">
     <div>
       <h4><%= t('schools.user_tariffs.show.consumption_charges') %></h4>
     </div>
@@ -88,16 +85,13 @@
       %>
     </div>
   </div>
-
   <% if @energy_tariff.flat_rate? %>
     <%= render 'energy_tariffs/energy_tariffs/flat_rate', energy_tariff: @energy_tariff, allow_edits: false %>
   <% else %>
     <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, allow_edits: false %>
   <% end %>
 
-  <br/>
-
-  <div class="d-flex justify-content-between" id="standing-charges">
+  <div class="mt-4 d-flex justify-content-between" id="standing-charges">
     <div>
       <h4><%= t('schools.user_tariffs.show.standing_charges') %></h4>
     </div>
@@ -107,12 +101,10 @@
         class: 'btn' unless @energy_tariff.dcc? %>
     </div>
   </div>
-
   <%= render 'energy_tariffs/energy_tariffs/charges_table', energy_tariff: @energy_tariff, allow_edits: false %>
-  <br />
 
   <% if current_user.admin? %>
-    <div class="d-flex justify-content-between">
+    <div class="mt-4 d-flex justify-content-between">
       <div>
         <h4><%= t('schools.user_tariffs.show.notes_html') %></h4>
       </div>

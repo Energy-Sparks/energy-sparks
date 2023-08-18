@@ -222,6 +222,8 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     energy_tariff = EnergyTariff.last
 
     expect(page).to have_content(energy_tariff.name)
+    expect(page).to have_content(I18n.t('schools.user_tariffs.show.no_standing_charges'))
+
     if current_user.admin?
       expect(page).to have_content('Notes (admin only)')
     else
