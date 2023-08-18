@@ -624,7 +624,7 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     find('#edit_meters').click
     expect(page).to have_content('Select meters for this tariff')
     uncheck(mpan_mprn)
-    click_button('Submit')
+    click_button('Next')
     expect(page).to have_content('My Updated First Diff Tariff')
     expect(page).to have_content('Dates')
     expect(page).to have_content('Start date')
