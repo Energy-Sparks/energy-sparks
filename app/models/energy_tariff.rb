@@ -121,6 +121,12 @@ class EnergyTariff < ApplicationRecord
     tariff_holder.site_settings? || tariff_holder.school_group? || meters.empty?
   end
 
+  #Used to the show page to decide whether there's content for the standing
+  #charge section which groups these together
+  def has_any_standing_charges?
+    energy_tariff_charges.any? || tnuos? || vat_rate.present? || ccl?
+  end
+
   private
 
   def start_and_end_date_are_not_both_blank

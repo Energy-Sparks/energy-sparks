@@ -149,6 +149,7 @@ en:
         introduction_html: Any changes to the tariff will be reflected in the <a href='%{analysis_path}'>%{meter_type} cost analysis</a> page which will update overnight
         meter_attribute_view: Meter attribute view (admin only)
         meters: Meters
+        no_standing_charges: No standing charges have been added
         notes_html: Notes <small>(admin only)</small>
         standing_charges: Standing charges
         updated_at: Date last updated

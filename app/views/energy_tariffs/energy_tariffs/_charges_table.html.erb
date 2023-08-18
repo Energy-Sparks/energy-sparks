@@ -1,30 +1,37 @@
 <table class="table table-charges">
   <tbody>
-  <% if energy_tariff.energy_tariff_charges.any? %>
-    <% energy_tariff.energy_tariff_charges.each do |energy_tariff_charge| %>
+    <% if energy_tariff.has_any_standing_charges? %>
+      <% if energy_tariff.energy_tariff_charges.any? %>
+        <% energy_tariff.energy_tariff_charges.each do |energy_tariff_charge| %>
+          <tr>
+            <td class="description"><%= energy_tariff_charge_type_description(energy_tariff_charge.charge_type) %></td>
+            <td class="value"><%= energy_tariff_charge_value(energy_tariff_charge) %></td>
+          </tr>
+        <% end %>
+      <% end %>
+      <% if energy_tariff.tnuos? %>
+        <tr>
+          <td class="description"><%= t('schools.user_tariffs.charges_table.tnuos') %></td>
+          <td class="value"><%= y_n(energy_tariff.tnuos?)  %></td>
+        </tr>
+      <% end %>
+      <% if energy_tariff.vat_rate %>
+        <tr>
+          <td class="description"><%= t('schools.user_tariffs.charges_table.vat_rate') %></td>
+          <td class="value"><%= energy_tariff.vat_rate  %></td>
+        </tr>
+      <% end %>
+      <% if energy_tariff.ccl? %>
+        <tr>
+          <td class="description"><%= t('schools.user_tariffs.charges_table.climate_charge_levy') %></td>
+          <td class="value"><%= y_n(energy_tariff.ccl?)  %></td>
+        </tr>
+      <% end %>
+    <% else %>
       <tr>
-        <td class="description"><%= energy_tariff_charge_type_description(energy_tariff_charge.charge_type) %></td>
-        <td class="value"><%= energy_tariff_charge_value(energy_tariff_charge) %></td>
+        <td class="description"><%= t('schools.user_tariffs.show.no_standing_charges') %></td>
+        <td class="value"></td>
       </tr>
     <% end %>
-  <% end %>
-  <% if energy_tariff.tnuos? %>
-    <tr>
-      <td class="description"><%= t('schools.user_tariffs.charges_table.tnuos') %></td>
-      <td class="value"><%= y_n(energy_tariff.tnuos?)  %></td>
-    </tr>
-  <% end %>
-  <% if energy_tariff.vat_rate %>
-    <tr>
-      <td class="description"><%= t('schools.user_tariffs.charges_table.vat_rate') %></td>
-      <td class="value"><%= energy_tariff.vat_rate  %></td>
-    </tr>
-  <% end %>
-  <% if energy_tariff.ccl? %>
-    <tr>
-      <td class="description"><%= t('schools.user_tariffs.charges_table.climate_charge_levy') %></td>
-      <td class="value"><%= y_n(energy_tariff.ccl?)  %></td>
-    </tr>
-  <% end %>
   </tbody>
 </table>
