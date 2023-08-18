@@ -173,9 +173,10 @@ en:
         no_end_date: No end date
         no_start_date: No start date
       tariff_partial:
+        consumption_charges: Consumption charges
         differential_tariff: Differential tariff
         end_date: End date
-        full_details: View details
+        price_from_to: "%{price_start_time} to %{price_end_time}:"
         simple_tariff: Simple tariff
         start_date: Start date
         type: Type

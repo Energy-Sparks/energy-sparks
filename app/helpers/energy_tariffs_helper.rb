@@ -100,6 +100,17 @@ module EnergyTariffsHelper
     settings(charge_type).fetch(:units, []).map { |k| [EnergyTariffCharge.charge_type_units[k], k] }
   end
 
+  #If user provides a value that cant be cast to underlying type,
+  #e.g. a string when a number is expected, you cant read the attribute
+  #value. This checks for errors and retrieves the original.
+  def value_allowing_for_errors(model, attribute = :value)
+    if model.errors.any?
+      model.read_attribute_before_type_cast(attribute)
+    else
+      model.read_attribute(attribute)
+    end
+  end
+
   def energy_tariff_charge_value(energy_tariff_charge)
     if energy_tariff_charge.units
       I18n.t(
