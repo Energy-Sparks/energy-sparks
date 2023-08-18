@@ -1,6 +1,8 @@
 ---
 en:
   schools:
+    energy_tariffs:
+      title: Energy Tariffs
     tariffs_helper:
       charge_value: "%{value} per %{units}"
       prices_text: Based on the meters associated with this tariff, we've set some default day/night periods - you'll need to update the rates from the details on your bill.
@@ -23,6 +25,7 @@ en:
         other_charges: Other charges
       edit_charges: Edit charges
       index:
+        breadcrumb_title: Add standing charges for this tariff
         introduction_school: Using your bill, please provide as much detail as you can about the standing charges associated with this tariff
         introduction_school_group: Using your bill, please provide as much detail as you can about the standing charges associated with this tariff
         introduction_site_settings: Please provide as much detail as you can about the standing charges associated with this tariff
@@ -36,6 +39,7 @@ en:
           start_time: Start time
           value: Rate in £/kWh
       index:
+        breadcrumb_title: Add consumption charges for each time period for this tariff
         complete_message: Complete 24 hour coverage
         consumption_charges: Consumption charges
         incomplete_message: Incomplete 24 hour coverage.  Please add another rate
@@ -45,6 +49,7 @@ en:
         title: Add consumption charges for each time period for this tariff
     user_tariff_flat_prices:
       edit:
+        breadcrumb_title: Edit the consumption charges for this tariff
         introduction_school: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         introduction_school_group: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         introduction_site_settings: Please provide as much detail as you can about the consumption charges associated with this tariff
@@ -53,6 +58,7 @@ en:
         per_gbp_kwh: per £/kWh
         rate: Rate
       new:
+        breadcrumb_title: Add consumption charges for this tariff
         introduction_school: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         introduction_school_group: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         introduction_site_settings: Please provide as much detail as you can about the consumption charges associated with this tariff
@@ -63,19 +69,24 @@ en:
         tnuos: TNUoS (Transmission Network Use of System)
         vat_rate: VAT rate
       choose_meters:
+        breadcrumb_title: Choose meters
         missing_meters: Please select at least one meter for this tariff. Or uncheck option to apply tariff to all meters
         specific_meters_label: Just specific meters. (Tick to choose them)
         specific_meters_prompt: Will this tariff apply to all %{fuel_type} meters at the school or just specific meters?
         title: Select meters for this tariff
         which_meters_will_this_tariff_apply_to: Which meters will this tariff apply to?
       choose_type:
+        breadcrumb_title: Choose tariff type
         differential_tariff: Differential tariff
         is_this_a_simple_flat_rate: Is this a simple flat rate?
         or_a_rate_which_varies_by_time_of_day: Or a rate which varies by time of day (e.g. Day/Night tariff, Economy7)
         simple: Simple
         title: Choose the type of this tariff
       edit:
+        breadcrumb_title: Edit the name and date range
         title: Edit the name and date range for this %{fuel_type} tariff
+      edit_meters:
+        breadcrumb_title: Edit meters for this tariff
       flat_rate:
         flat_rate_tariff: Flat rate tariff
         no_flat_rate_tariff_has_been_set_yet: No flat rate tariff has been set yet
@@ -122,12 +133,14 @@ en:
         meter_list: Meters
       name: Name
       new:
+        breadcrumb_title: Choose a name and date range
         title: Choose a name and date range for this %{fuel_type} tariff
       not_allowed_for_smart_meter_tariffs: This is not allowed for smart meter tariffs
       rates_table:
         no_consumption_charges_specified_yet: No consumption charges specified yet
         price_per_kwh: "%{price_value} per kWh"
       show:
+        breadcrumb_title: "%{name}"
         consumption_charges: Consumption charges
         created_at: Date created
         created_by: Created by
