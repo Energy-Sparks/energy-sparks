@@ -1,36 +1,43 @@
-<h1><%= t('schools.user_tariff_charges.index.title') %></h1>
-
-<div class="energy_tariff">
-
-  <p>
-    <%= t("schools.user_tariff_charges.index.introduction_#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
-  </p>
-
-  <%= component 'notice', status: :neutral do |c| %>
-    <div class="d-flex justify-content-between">
-      <%= t('schools.user_tariff_charges.index.notice') %>
-      <%= link_to t('schools.user_tariff_charges.index.skip_to_final_step'), energy_tariffs_path(@energy_tariff), class: 'btn btn-primary' %>
-    </div>
+<%= component 'energy_tariff_form_title',
+  energy_tariff: @energy_tariff do |c| %>
+  <% c.with_page_title do %>
+    <h1><%= t('schools.user_tariff_charges.index.title') %></h1>
   <% end %>
-
-  <br/>
-  <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
-
-  <% form_url = energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]) %>
-
-  <%= simple_form_for :energy_tariff_charges, url: form_url do |f| %>
-
-    <% if @energy_tariff.gas? %>
-      <%= render 'charges_edit_gas', energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
-    <% else %>
-      <%= render 'charges_edit_electricity', energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
+  <% c.with_notice do %>
+    <%= component 'notice', status: :neutral do |c| %>
+      <div class="d-flex justify-content-between">
+        <%= t('schools.user_tariff_charges.index.notice') %>
+        <%= link_to t('schools.user_tariff_charges.index.skip_to_final_step'), energy_tariffs_path(@energy_tariff), class: 'btn btn-primary' %>
+      </div>
     <% end %>
-
-    <br/>
-
-    <%= link_to t('common.labels.previous'), energy_tariff_prices_path(@energy_tariff), class: 'btn' %>
-    <%= f.submit t('common.labels.next'), class: 'btn btn-primary' %>
-
   <% end %>
+<% end %>
 
+<div class="row mt-4">
+  <div class="col-md-12">
+    <div class="energy_tariff">
+      <p>
+        <%= t("schools.user_tariff_charges.index.introduction_#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
+      </p>
+
+      <br/>
+
+      <% form_url = energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]) %>
+
+      <%= simple_form_for :energy_tariff_charges, url: form_url do |f| %>
+
+        <% if @energy_tariff.gas? %>
+          <%= render 'charges_edit_gas', energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
+        <% else %>
+          <%= render 'charges_edit_electricity', energy_tariff: @energy_tariff, energy_tariff_charges: @energy_tariff_charges, f: f %>
+        <% end %>
+
+        <br/>
+
+        <%= link_to t('common.labels.previous'), energy_tariff_prices_path(@energy_tariff), class: 'btn' %>
+        <%= f.submit t('common.labels.next'), class: 'btn btn-primary' %>
+
+      <% end %>
+    </div>
+  </div>
 </div>

@@ -1,27 +1,34 @@
-<h1><%= t('schools.user_tariff_differential_prices.index.title') %></h1>
+<%= component 'energy_tariff_form_title',
+  energy_tariff: @energy_tariff do |c| %>
+  <% c.with_page_title do %>
+    <h1><%= t('schools.user_tariff_differential_prices.index.title') %></h1>
+  <% end %>
+<% end %>
 
-<div class="energy_tariff">
+<div class="row mt-4">
+  <div class="col-md-12">
+    <div class="energy_tariff">
 
-  <p>
-    <%= t("schools.user_tariff_differential_prices.index.introduction_#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
-  </p>
-  <br/>
+      <p>
+        <%= t("schools.user_tariff_differential_prices.index.introduction_#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
+      </p>
+      <br/>
 
-  <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
+      <h3><%= t('schools.user_tariff_differential_prices.index.consumption_charges') %></h3>
 
-  <h3><%= t('schools.user_tariff_differential_prices.index.consumption_charges') %></h3>
+      <p><%= energy_tariff_prices_text(@energy_tariff) %></p>
 
-  <p><%= energy_tariff_prices_text(@energy_tariff) %></p>
+      <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true" ></div>
 
-  <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true" ></div>
+      <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, allow_edits: true %>
 
-  <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, allow_edits: true %>
+      <br/>
 
-  <br/>
+      <% edit_path = energy_tariffs_path(@energy_tariff, [], { action: :edit }) %>
+      <%= link_to t('common.labels.previous'), edit_path, class: 'btn' %>
 
-  <% edit_path = energy_tariffs_path(@energy_tariff, [], { action: :edit }) %>
-  <%= link_to t('common.labels.previous'), edit_path, class: 'btn' %>
-
-  <% next_path = energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]) %>
-  <%= link_to t('common.labels.next'), next_path, class: 'btn' %>
+      <% next_path = energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]) %>
+      <%= link_to t('common.labels.next'), next_path, class: 'btn' %>
+    </div>
+  </div>
 </div>
