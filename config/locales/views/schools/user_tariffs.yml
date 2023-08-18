@@ -36,7 +36,9 @@ en:
           start_time: Start time
           value: Rate in £/kWh
       index:
+        complete_message: Complete 24 hour coverage
         consumption_charges: Consumption charges
+        incomplete_message: Incomplete 24 hour coverage.  Please add another rate
         introduction_school: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         introduction_school_group: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         introduction_site_settings: Please provide as much detail as you can about the consumption charges associated with this tariff
@@ -154,7 +156,6 @@ en:
         no_end_date: No end date
         no_start_date: No start date
       tariff_partial:
-        day_night_tariff: Day/night tariff
         end_date: End date
         full_details: View details
         simple_tariff: Simple tariff

@@ -21,11 +21,11 @@
 
       <% if @energy_tariff.energy_tariff_prices.complete? %>
         <%= component 'notice', status: :positive do |c| %>
-          Complete 24 hour coverage
+          <%= t('schools.user_tariff_differential_prices.index.complete_message') %>
         <% end %>
       <% else %>
         <%= component 'notice', status: :negative do |c| %>
-          Incomplete 24 hour coverage.  Please add another rate.
+          <%= t('schools.user_tariff_differential_prices.index.incomplete_message') %>
         <% end %>
       <% end %>
       <br />
