@@ -6,6 +6,7 @@ en:
     tariffs_helper:
       charge_value: "%{value} per %{units}"
       prices_text: Based on the meters associated with this tariff, we've set some default day/night periods - you'll need to update the rates from the details on your bill.
+      rate_from: Rate from %{start_time} to %{end_time}
       user_tariff_title: "%{start_date} to %{end_date}"
     user_tariff_charges:
       charge_ccl:
