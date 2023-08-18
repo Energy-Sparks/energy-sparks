@@ -3,28 +3,7 @@
 <div class="energy_tariff">
   <%= simple_form_for :energy_tariff, url: new_school_energy_tariff_path(@tariff_holder), method: :get do |f| %>
     <%= f.hidden_field :meter_type, value: params[:meter_type] %>
-    <div class="row">
-      <div class="col-md-12">
-        <p>
-          <%= t('schools.user_tariffs.choose_meters.specific_meters_prompt', fuel_type: params[:meter_type]) %>
-        </p>
-        <div class="form-check">
-          <div class="custom-control custom-checkbox">
-            <%= check_box_tag :specific_meters, 'yes', false, {class: 'specific-meters custom-control-input', data: {reveals: '.meter-choices'}} %>
-            <%= label_tag :specific_meters, t('schools.user_tariffs.choose_meters.specific_meters_label'), class: 'custom-control-label' %>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row mt-4 meter-choices" data-revealed-by='.specific-meters'>
-      <div class="col-md-12">
-        <p>
-          <%= t('schools.user_tariffs.choose_meters.which_meters_will_this_tariff_apply_to') %>
-        </p>
-        <%= render 'form_meter_choices', f: f %>
-      </div>
-    </div>
-    <br/>
+    <%= render 'form_meter_choices', f: f, meter_type: params[:meter_type], specific_meters: false %>
     <%= submit_tag t('common.labels.next'), class: 'btn btn-info' %>
   <% end %>
 </div>
