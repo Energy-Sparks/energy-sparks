@@ -115,7 +115,6 @@ cy:
         consumption_charges: Costau defnydd
         day_night_tariff: Tariff dydd/nos
         end_date: Dyddiad gorffen
-        full_details: Manylion llawn
         simple_tariff: Tariff syml
         start_date: Dyddiad cychwyn
         type: Math
