@@ -67,14 +67,14 @@ module NavHelper
   end
 
   def add_school_group_extra_padding?
-    return true if controller_path.split('/').first == 'school_groups' && cannot?(:update_settings, @school_group)
+    return true if request.path.start_with?('/school_groups') && cannot?(:update_settings, @school_group)
 
     false
   end
 
   def add_extra_padding?
     return false if controller_path.split('/').first == 'school_groups'
-    return true unless show_sub_nav?(@school, @hide_subnav)
+    return true unless show_sub_nav?(@school || @tariff_holder, @hide_subnav)
 
     false
   end

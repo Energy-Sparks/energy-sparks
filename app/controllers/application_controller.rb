@@ -36,9 +36,11 @@ class ApplicationController < ActionController::Base
   end
 
   def current_school_podium
-    if @school && @school.scoreboard
-      @school_podium ||= Podium.create(school: @school, scoreboard: @school.scoreboard)
-    end
+    @current_school_podium ||= if @school && @school&.scoreboard
+                                 podium_for(@school)
+                               elsif @tariff_holder && @tariff_holder&.school? && @tariff_holder&.scoreboard
+                                 podium_for(@tariff_holder)
+                               end
   end
 
   def current_user_school
@@ -56,6 +58,10 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def podium_for(school)
+    Podium.create(school: school, scoreboard: school.scoreboard)
+  end
 
   def check_admin_mode
     if admin_mode? && !current_user_admin? && !login_page?
