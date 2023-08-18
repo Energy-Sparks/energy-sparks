@@ -156,6 +156,7 @@ en:
         no_end_date: No end date
         no_start_date: No start date
       tariff_partial:
+        differential_tariff: Differential tariff
         end_date: End date
         full_details: View details
         simple_tariff: Simple tariff
