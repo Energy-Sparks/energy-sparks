@@ -40,7 +40,7 @@ class EnergyTariffTableComponent < ViewComponent::Base
   end
 
   def end_time(price)
-    price.start_time.to_s(:time)
+    price.end_time.to_s(:time)
   end
 
   def flat_rate_label(energy_tariff)
