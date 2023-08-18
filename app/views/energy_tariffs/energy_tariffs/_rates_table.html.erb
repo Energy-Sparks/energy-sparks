@@ -3,7 +3,7 @@
   <% if energy_tariff.energy_tariff_prices.any? %>
     <% energy_tariff.energy_tariff_prices.by_start_time.each do |energy_tariff_price| %>
       <tr>
-        <td class="description"><%= energy_tariff_price_title(energy_tariff_price) %></td>
+        <td ><%= energy_tariff_price_title(energy_tariff_price) %></td>
         <td class="value">
           <%= t('schools.user_tariffs.rates_table.price_per_kwh', price_value: convert_value_to_long_currency(energy_tariff_price.value)) %>
         </td>

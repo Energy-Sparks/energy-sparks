@@ -69,7 +69,7 @@ en:
         title: Select meters for this tariff
         which_meters_will_this_tariff_apply_to: Which meters will this tariff apply to?
       choose_type:
-        day_night_tariff: Day/Night tariff
+        differential_tariff: Differential tariff
         is_this_a_simple_flat_rate: Is this a simple flat rate?
         or_a_rate_which_varies_by_time_of_day: Or a rate which varies by time of day (e.g. Day/Night tariff, Economy7)
         simple: Simple

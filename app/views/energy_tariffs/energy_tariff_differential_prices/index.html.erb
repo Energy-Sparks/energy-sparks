@@ -16,17 +16,30 @@
 
   <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true" ></div>
 
-  <div class="d-flex justify-content-between mb-2">
+  <% if @energy_tariff.energy_tariff_prices.complete? %>
+    <%= component 'notice', status: :positive do |c| %>
+      Complete 24 hour coverage
+    <% end %>
+  <% else %>
+    <%= component 'notice', status: :negative do |c| %>
+      Incomplete 24 hour coverage.  Please add another rate.
+    <% end %>
+  <% end %>
+  <br />
+  <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, allow_edits: true %>
+
+
+  <div class="d-flex justify-content-between mb-2 mt-2">
     <div>
-      <% if @energy_tariff.energy_tariff_prices.complete? %>
-        <span class="badge badge-success">Complete 24 hour coverage</span>
-      <% else %>
-        <span class="badge badge-warning">Incomplete 24 hour coverage</span>
-      <% end %>
+      <% edit_path = energy_tariffs_path(@energy_tariff, [], { action: :edit }) %>
+      <%= link_to t('common.labels.previous'), edit_path, class: 'btn' %>
+
+      <% next_path = energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]) %>
+      <%= link_to t('common.labels.next'), next_path, class: 'btn' %>
     </div>
     <div>
       <% new_path =  energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_price], { action: 'new' }) %>
-      <%= button_to 'New',
+      <%= button_to 'Add rate',
           new_path,
           {
             class: 'btn energy-tariff-show-button',
@@ -39,14 +52,4 @@
       %>
     </div>
   </div>
-
-  <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, allow_edits: true %>
-
-  <br/>
-
-  <% edit_path = energy_tariffs_path(@energy_tariff, [], { action: :edit }) %>
-  <%= link_to t('common.labels.previous'), edit_path, class: 'btn' %>
-
-  <% next_path = energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]) %>
-  <%= link_to t('common.labels.next'), next_path, class: 'btn' %>
 </div>

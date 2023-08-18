@@ -298,12 +298,11 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
 
     click_button('Next')
 
-    click_button('Day/Night tariff')
+    click_button('Differential tariff')
 
-    expect(page).to have_content('Night rate (00:00 to 07:00)')
-    expect(page).to have_content('Day rate (07:00 to 00:00)')
+    expect(page).to have_content('Rate from 00:00 to 07:00')
+    expect(page).to have_content('Rate from 07:00 to 00:00')
     expect(page).not_to have_link('Add rate')
-    expect(page).not_to have_link('Delete')
 
     first('.energy-tariff-show-button').click
 
@@ -315,8 +314,8 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     fill_in 'Rate in £/kWh', with: '1.5'
     click_button('Save')
 
-    expect(page).to have_content('Night rate (00:30 to 06:30)')
-    expect(page).to have_content('Day rate (07:00 to 00:00)')
+    expect(page).to have_content('Rate from 00:30 to 06:30')
+    expect(page).to have_content('Rate from 07:00 to 00:00')
     expect(page).to have_content('£1.50 per kWh')
     expect(page).to have_content('£0.00 per kWh')
 
@@ -333,7 +332,6 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     end
 
     expect(page).to have_content('£1.50 per kWh')
-    expect(page).not_to have_link('Delete')
 
     within('#consumption-charges') do
       expect(page).to have_link("Edit")
@@ -521,12 +519,12 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     fill_in 'End date', with: '16/08/2023'
     click_button('Next')
 
-    click_button('Day/Night tariff')
+    click_button('Differential tariff')
 
-    expect(page).to have_content('Night rate (00:00 to 07:00)')
-    expect(page).to have_content('Day rate (07:00 to 00:00)')
+    expect(page).to have_content('Rate from 00:00 to 07:00')
+    expect(page).to have_content('Rate from 07:00 to 00:00')
     expect(page).not_to have_link('Add rate')
-    expect(page).not_to have_link('Delete')
+    expect(page).to have_link('Delete')
 
     first('.energy-tariff-show-button').click
 
@@ -538,8 +536,8 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     fill_in 'Rate in £/kWh', with: '1.5'
     click_button('Save')
 
-    expect(page).to have_content('Night rate (00:30 to 06:30)')
-    expect(page).to have_content('Day rate (07:00 to 00:00)')
+    expect(page).to have_content('Rate from 00:30 to 06:30')
+    expect(page).to have_content('Rate from 07:00 to 00:00')
     expect(page).to have_content('£1.50 per kWh')
     expect(page).to have_content('£0.00 per kWh')
 
