@@ -354,7 +354,9 @@ describe 'Meter', :meters do
 
         context 'and there are meter specific tariffs' do
           let!(:meter_specific)  { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter]) }
-          it 'includes those too' do
+          let!(:meter_specific2) { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter], enabled: false) }
+
+          it 'includes those that are enabled' do
             expect(all_meter_attributes.size).to eq 4
             expect(all_meter_attributes[0].input_data['tariff_holder']).to eq 'site_settings'
             expect(all_meter_attributes[1].input_data['tariff_holder']).to eq 'school_group'

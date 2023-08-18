@@ -79,6 +79,7 @@ Rails.application.routes.draw do
         get :choose_type, to: 'energy_tariffs#choose_type'
         get :edit_meters, to: 'energy_tariffs#edit_meters'
         post :update_meters, to: 'energy_tariffs#update_meters'
+        post :toggle_enabled, to: 'energy_tariffs#toggle_enabled'
       end
     end
   end

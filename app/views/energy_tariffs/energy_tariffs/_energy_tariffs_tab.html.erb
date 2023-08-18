@@ -2,6 +2,7 @@
   tariff_holder: tariff_holder,
   tariff_types: tariff_types,
   show_actions: show_actions,
+  show_add_button: show_add_button,
   default_tariffs: default_tariffs do |c| %>
   <% c.with_header do %>
     <%= t('schools.user_tariffs.index.introduction_html', advice_pages: school_advice_path(tariff_holder)) if tariff_holder.school? %>

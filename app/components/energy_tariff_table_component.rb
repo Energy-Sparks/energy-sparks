@@ -40,6 +40,16 @@ class EnergyTariffTableComponent < ViewComponent::Base
     energy_tariff.end_date ? energy_tariff.end_date&.to_s(:es_compact) : t('schools.user_tariffs.summary_table.no_end_date')
   end
 
+  def can_toggle_status?(energy_tariff)
+    @tariff_holder.site_settings? || energy_tariff.dcc?
+  end
+
+  def can_delete?(energy_tariff)
+    return false if energy_tariff.dcc?
+    return false if @tariff_holder.site_settings? && energy_tariff.enabled?
+    true
+  end
+
   def show_actions?
     @show_actions
   end

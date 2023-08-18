@@ -35,22 +35,49 @@
             <% end %>
           </td>
         <% end %>
-        <% if show_actions? %>
-        <td>
-          <%= link_to t('schools.user_tariffs.tariff_partial.full_details'),
-              energy_tariffs_path(energy_tariff),
-              class: 'btn' if can? :manage, energy_tariff
-          %>
-          <%= link_to t('common.labels.edit'),
-              energy_tariffs_path(energy_tariff, [], { action: :edit }),
-              class: 'btn' if can? :manage, energy_tariff
-          %>
-          <%= link_to t('common.labels.delete'),
-              energy_tariffs_path(energy_tariff),
-              method: :delete,
-              data: {confirm: t('common.confirm') },
-              class: 'btn btn-danger' if can? :manage, energy_tariff
+        <% if show_actions? && can?(:manage, energy_tariff) %>
+          <td>
+            <%= link_to t('schools.user_tariffs.tariff_partial.full_details'),
+                energy_tariffs_path(energy_tariff),
+                class: 'btn btn-sm'
+            %>
+            <% if energy_tariff.dcc? %>
+              <%= link_to t('schools.user_tariff_charges.edit_charges'),
+                  energy_tariffs_path(energy_tariff, [:energy_tariff_charges]),
+                  class: 'btn btn-sm'
               %>
+            <% else %>
+              <%= link_to t('common.labels.edit'),
+                  energy_tariffs_path(energy_tariff, [], { action: :edit }),
+                  class: 'btn btn-sm'
+              %>
+            <% end %>
+            <% if can_toggle_status?(energy_tariff) %>
+              <%= link_to energy_tariff.enabled ? t('common.labels.disable') : t('common.labels.enable'),
+                  energy_tariffs_path(energy_tariff, [], { action: :toggle_enabled }),
+                  class: 'btn btn-sm',
+                  id: "energy-tariff-#{energy_tariff.id}-toggle",
+                  remote: true, method: :post, data: { confirm: t('common.confirm') }
+              %>
+              <% if !energy_tariff.dcc? %>
+                <%= link_to t('common.labels.delete'),
+                    energy_tariffs_path(energy_tariff),
+                    method: :delete,
+                    data: {confirm: t('common.confirm') },
+                    class: 'btn btn-sm btn-danger',
+                    style: energy_tariff.enabled ? 'display: none' : '',
+                    id: "energy-tariff-#{energy_tariff.id}-delete"
+                %>
+              <% end %>
+            <% elsif can_delete?(energy_tariff) %>
+              <%= link_to t('common.labels.delete'),
+                  energy_tariffs_path(energy_tariff),
+                  method: :delete,
+                  data: {confirm: t('common.confirm') },
+                  class: 'btn btn-sm btn-danger',
+                  id: "energy-tariff-#{energy_tariff.id}-delete"
+              %>
+            <% end %>
           </td>
         <% end %>
       </tr>
