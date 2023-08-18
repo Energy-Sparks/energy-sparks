@@ -39,13 +39,16 @@ en:
           start_time: Start time
           value: Rate in £/kWh
       index:
+        add_rate: Add rate
         breadcrumb_title: Add consumption charges for each time period for this tariff
         complete_message: Complete 24 hour coverage
         consumption_charges: Consumption charges
         incomplete_message: Incomplete 24 hour coverage.  Please add another rate
+        incomplete_zero_prices_message: A differential tariff must have at least 2 prices, e.g. a day time and a night-time rate. Please add prices, or reset to default
         introduction_school: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         introduction_school_group: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         introduction_site_settings: Please provide as much detail as you can about the consumption charges associated with this tariff
+        reset_to_default: Reset to default
         title: Add consumption charges for each time period for this tariff
     user_tariff_flat_prices:
       edit:

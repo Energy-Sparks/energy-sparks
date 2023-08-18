@@ -49,7 +49,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     context 'with differential tariff' do
       let(:energy_tariffs) { [create(:energy_tariff, tariff_type: :differential)]}
       it 'returns expected label' do
-        expect(component.flat_rate_label(energy_tariffs.first)).to eq I18n.t('schools.user_tariffs.tariff_partial.day_night_tariff')
+        expect(component.flat_rate_label(energy_tariffs.first)).to eq I18n.t('schools.user_tariffs.tariff_partial.differential_tariff')
       end
     end
   end

@@ -54,6 +54,11 @@ module EnergyTariffs
       redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_prices])
     end
 
+    def reset
+      EnergyTariffDefaultPricesCreator.new(@energy_tariff).process
+      redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_prices])
+    end
+
     private
 
     def energy_tariff_price_params

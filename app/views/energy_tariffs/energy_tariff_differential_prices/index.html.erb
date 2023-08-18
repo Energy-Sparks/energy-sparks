@@ -21,11 +21,15 @@
 
       <% if @energy_tariff.energy_tariff_prices.complete? %>
         <%= component 'notice', status: :positive do |c| %>
-          <%= t('schools.user_tariff_differential_prices.index.complete_message') %>
+          <%= t('schools.user_tariff_differential_prices.index.complete_message') %>.
+        <% end %>
+      <% elsif @energy_tariff.energy_tariff_prices.size.zero? %>
+        <%= component 'notice', status: :negative do |c| %>
+          <%= t('schools.user_tariff_differential_prices.index.incomplete_zero_prices_message') %>.
         <% end %>
       <% else %>
         <%= component 'notice', status: :negative do |c| %>
-          <%= t('schools.user_tariff_differential_prices.index.incomplete_message') %>
+          <%= t('schools.user_tariff_differential_prices.index.incomplete_message') %>.
         <% end %>
       <% end %>
       <br />
@@ -39,17 +43,21 @@
           <%= link_to t('common.labels.next'), next_path, class: 'btn' %>
         </div>
         <div>
-          <% new_path =  energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_price], { action: 'new' }) %>
-          <%= button_to 'Add rate',
-              new_path,
-              {
-                class: 'btn energy-tariff-show-button',
-                remote: true,
-                'data-toggle' =>  "modal",
-                'data-target' => '#modal-window',
-                disabled: @energy_tariff.energy_tariff_prices.complete?,
-                method: :get
-              }
+          <%= link_to t('schools.user_tariff_differential_prices.index.reset_to_default'),
+            energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_prices], { action: 'reset' }),
+            data: { confirm: t('common.confirm') },
+            class: "btn#{@energy_tariff.energy_tariff_prices.present? ? ' disabled' : ''}",
+            method: :get
+          %>
+          <%= link_to t('schools.user_tariff_differential_prices.index.add_rate'),
+            energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_price], { action: 'new' }),
+            {
+              class: "btn#{@energy_tariff.energy_tariff_prices.complete? ? ' disabled' : ''}",
+              remote: true,
+              'data-toggle' =>  "modal",
+              'data-target' => '#modal-window',
+              method: :get
+            }
           %>
         </div>
       </div>
