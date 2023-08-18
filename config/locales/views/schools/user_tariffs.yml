@@ -3,8 +3,6 @@ en:
   schools:
     tariffs_helper:
       charge_value: "%{value} per %{units}"
-      for_mpan: "(for MPAN %{user_tariff_meters_list})"
-      for_mprn: "(for MPRN %{user_tariff_meters_list})"
       prices_text: Based on the meters associated with this tariff, we've set some default day/night periods - you'll need to update the rates from the details on your bill.
       user_tariff_title: "%{start_date} to %{end_date}"
     user_tariff_charges:
@@ -120,9 +118,6 @@ en:
       meters:
         all_meters: All %{meter_type} meters
         meter_list: Meters
-        meters_associated_with_this_tariff: Meters associated with this tariff
-        there_are_no_meters_associated_with_this_tariff: There are no meters associated with this tariff
-        this_tariff_applies_to_all_meters: This tariff applies to all %{meter_type} meters
       name: Name
       new:
         title: Choose a name and date range for this %{fuel_type} tariff
@@ -165,9 +160,6 @@ en:
         simple_tariff: Simple tariff
         start_date: Start date
         type: Type
-      there_should_only_be_one_tariff_message_school: There should only be one tariff for each date period, for each meter
-      there_should_only_be_one_tariff_message_school_group: There should only be one tariff for each date period, for each meter
-      there_should_only_be_one_tariff_message_site_settings: There should only be one tariff for each date period
       title_partial:
         heading: Tariff
       view_and_manage_tariffs_html: <a href="%{user_tariffs_path}">View and manage your school tariffs</a>

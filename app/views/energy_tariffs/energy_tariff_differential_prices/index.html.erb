@@ -1,55 +1,58 @@
-<h1><%= t('schools.user_tariff_differential_prices.index.title') %></h1>
-
-<div class="energy_tariff">
-
-  <p>
-    <%= t("schools.user_tariff_differential_prices.index.introduction_#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
-  </p>
-  <br/>
-
-  <%= render 'energy_tariffs/energy_tariffs/header', energy_tariff: @energy_tariff %>
-
-
-  <h3><%= t('schools.user_tariff_differential_prices.index.consumption_charges') %></h3>
-
-  <p><%= energy_tariff_prices_text(@energy_tariff) %></p>
-
-  <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true" ></div>
-
-  <% if @energy_tariff.energy_tariff_prices.complete? %>
-    <%= component 'notice', status: :positive do |c| %>
-      Complete 24 hour coverage
-    <% end %>
-  <% else %>
-    <%= component 'notice', status: :negative do |c| %>
-      Incomplete 24 hour coverage.  Please add another rate.
-    <% end %>
+<%= component 'energy_tariff_form_title',
+  energy_tariff: @energy_tariff do |c| %>
+  <% c.with_page_title do %>
+    <h1><%= t('schools.user_tariff_differential_prices.index.title') %></h1>
   <% end %>
-  <br />
-  <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, allow_edits: true %>
+<% end %>
 
+<div class="row mt-4">
+  <div class="col-md-12">
+    <div class="energy_tariff">
+      <p>
+        <%= t("schools.user_tariff_differential_prices.index.introduction_#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
+      </p>
+      <br/>
 
-  <div class="d-flex justify-content-between mb-2 mt-2">
-    <div>
-      <% edit_path = energy_tariffs_path(@energy_tariff, [], { action: :edit }) %>
-      <%= link_to t('common.labels.previous'), edit_path, class: 'btn' %>
+      <h3><%= t('schools.user_tariff_differential_prices.index.consumption_charges') %></h3>
 
-      <% next_path = energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]) %>
-      <%= link_to t('common.labels.next'), next_path, class: 'btn' %>
-    </div>
-    <div>
-      <% new_path =  energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_price], { action: 'new' }) %>
-      <%= button_to 'Add rate',
-          new_path,
-          {
-            class: 'btn energy-tariff-show-button',
-            remote: true,
-            'data-toggle' =>  "modal",
-            'data-target' => '#modal-window',
-            disabled: @energy_tariff.energy_tariff_prices.complete?,
-            method: :get
-          }
-      %>
+      <p><%= energy_tariff_prices_text(@energy_tariff) %></p>
+
+      <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true" ></div>
+
+      <% if @energy_tariff.energy_tariff_prices.complete? %>
+        <%= component 'notice', status: :positive do |c| %>
+          Complete 24 hour coverage
+        <% end %>
+      <% else %>
+        <%= component 'notice', status: :negative do |c| %>
+          Incomplete 24 hour coverage.  Please add another rate.
+        <% end %>
+      <% end %>
+      <br />
+      <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, allow_edits: true %>
+
+      <div class="d-flex justify-content-between mb-2 mt-2">
+        <div>
+          <% edit_path = energy_tariffs_path(@energy_tariff, [], { action: :edit }) %>
+          <%= link_to t('common.labels.previous'), edit_path, class: 'btn' %>
+          <% next_path = energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]) %>
+          <%= link_to t('common.labels.next'), next_path, class: 'btn' %>
+        </div>
+        <div>
+          <% new_path =  energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_price], { action: 'new' }) %>
+          <%= button_to 'Add rate',
+              new_path,
+              {
+                class: 'btn energy-tariff-show-button',
+                remote: true,
+                'data-toggle' =>  "modal",
+                'data-target' => '#modal-window',
+                disabled: @energy_tariff.energy_tariff_prices.complete?,
+                method: :get
+              }
+          %>
+        </div>
+      </div>
     </div>
   </div>
 </div>

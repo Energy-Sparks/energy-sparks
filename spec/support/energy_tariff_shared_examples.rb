@@ -576,7 +576,7 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     expect(page).to have_content('16/08/2023')
     expect(page).to have_content('Meters')
     expect(page).to have_content(mpan_mprn)
-    expect(page).not_to have_content('This tariff applies to all Electricity meters')
+    expect(page).not_to have_content('All electricity meters')
 
     find('#edit_dates').click
     expect(page).to have_content('Name')
@@ -599,7 +599,7 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     expect(page).to have_content('14/08/2023')
     expect(page).to have_content('Meters')
     expect(page).to have_content(mpan_mprn)
-    expect(page).not_to have_content('This tariff applies to all Electricity meters')
+    expect(page).not_to have_content('All gas meters')
 
     expect(energy_tariff.enabled).to be true
     expect(energy_tariff.meter_type.to_sym).to eq(:electricity)
@@ -631,7 +631,7 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     expect(page).to have_content('14/08/2023')
     expect(page).to have_content('Meters')
     expect(page).not_to have_content(mpan_mprn)
-    expect(page).to have_content('This tariff applies to all Electricity meters')
+    expect(page).to have_content('All electricity meters')
     expect(energy_tariff.reload.meters).to match_array([])
   end
 

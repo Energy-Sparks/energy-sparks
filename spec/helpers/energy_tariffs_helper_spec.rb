@@ -4,27 +4,6 @@ describe EnergyTariffsHelper do
 
   let(:energy_tariff) { EnergyTariff.new(name: 'My Tariff', meter_type: :gas, start_date: '2018-01-01', end_date: '2018-12-31', tariff_holder_type: "School")}
 
-  describe '.energy_tariff_title' do
-    it "includes name, and dates" do
-      expect(energy_tariff_title(energy_tariff)).to match("My Tariff")
-      expect(energy_tariff_title(energy_tariff)).to match("01/01/2018")
-      expect(energy_tariff_title(energy_tariff)).to match("31/12/2018")
-    end
-    it "includes mpan for electricity meter" do
-      energy_tariff.update(meter_type: :electricity)
-      energy_tariff.meters << create(:electricity_meter, mpan_mprn: '111122222333344')
-      expect(energy_tariff_title(energy_tariff, true)).to match("MPAN 111122222333344")
-      expect(energy_tariff_title(energy_tariff, false)).not_to match("MPAN 111122222333344")
-    end
-    it "includes mprns for gas meters" do
-      energy_tariff.meters << create(:gas_meter, mpan_mprn: '1234567')
-      energy_tariff.meters << create(:gas_meter, mpan_mprn: '9876543')
-      energy_tariff.meters << create(:gas_meter, mpan_mprn: '1122334')
-      expect(energy_tariff_title(energy_tariff, true)).to match("MPRN 1234567, 9876543, and 1122334")
-      expect(energy_tariff_title(energy_tariff, false)).not_to match("MPRN 1234567, 9876543, and 1122334")
-    end
-  end
-
   describe '.energy_tariff_prices_text' do
     it "gives text if default prices exist" do
       energy_tariff.energy_tariff_prices << EnergyTariffPrice.new(start_time: '00:00', end_time: '03:00', description: EnergyTariffPrice::NIGHT_RATE_DESCRIPTION)
