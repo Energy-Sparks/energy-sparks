@@ -96,38 +96,19 @@ module EnergyTariffsHelper
     settings(charge_type).fetch(:label, default)
   end
 
-  def energy_tariff_title(energy_tariff, with_mpxn = false)
-    start_date = energy_tariff&.start_date&.to_s(:es_compact)
-    end_date = energy_tariff&.end_date&.to_s(:es_compact)
-
-    title = ''
-
-    if start_date && end_date
-      title += I18n.t(
-        'schools.tariffs_helper.user_tariff_title',
-        start_date: start_date,
-        end_date: end_date
-      )
-      title += ' : '
-    elsif start_date || end_date
-      title = start_date.to_s + end_date.to_s + ' : '
-    end
-
-    title += "#{energy_tariff&.name} " if energy_tariff&.name&.present?
-
-    if energy_tariff.meters.any? && with_mpxn
-      if energy_tariff.gas?
-        title += I18n.t('schools.tariffs_helper.for_mprn', user_tariff_meters_list: energy_tariff.meters.map(&:mpan_mprn).to_sentence)
-      else
-        title += I18n.t('schools.tariffs_helper.for_mpan', user_tariff_meters_list: energy_tariff.meters.map(&:mpan_mprn).to_sentence)
-      end
-    end
-
-    title
-  end
-
   def energy_tariff_charge_type_units_for(charge_type)
     settings(charge_type).fetch(:units, []).map { |k| [EnergyTariffCharge.charge_type_units[k], k] }
+  end
+
+  #If user provides a value that cant be cast to underlying type,
+  #e.g. a string when a number is expected, you cant read the attribute
+  #value. This checks for errors and retrieves the original.
+  def value_allowing_for_errors(model, attribute = :value)
+    if model.errors.any?
+      model.read_attribute_before_type_cast(attribute)
+    else
+      model.read_attribute(attribute)
+    end
   end
 
   def energy_tariff_charge_value(energy_tariff_charge)

@@ -1,15 +1,22 @@
-<h1><%= t('schools.user_tariffs.new.title', fuel_type: t("common.#{@energy_tariff.meter_type}")) %></h1>
-
-<div class="energy_tariff">
-  <%= render 'energy_tariffs/energy_tariffs/meters', energy_tariff: @energy_tariff if @energy_tariff.tariff_holder.school? %>
-  <br/>
-
-  <%= simple_form_for tariff_holder_route(@energy_tariff.tariff_holder) + [@energy_tariff] do |f| %>
-    <%= f.hidden_field :meter_type, value: @energy_tariff.meter_type %>
-    <%= f.hidden_field :tariff_type, value: @energy_tariff.tariff_type %>
-    <% @energy_tariff.meters.each do |meter| %>
-      <%= f.hidden_field :meter_ids, value: meter.id, multiple: true %>
-    <% end %>
-    <%= render 'form', energy_tariff: @energy_tariff, f: f %>
+<%= component 'energy_tariff_form_title',
+  energy_tariff: @energy_tariff,
+  skip_fields: [:name, :dates] do |c| %>
+  <% c.with_page_title do %>
+    <h1><%= t('schools.user_tariffs.new.title', fuel_type: t("common.#{@energy_tariff.meter_type}")) %></h1>
   <% end %>
+<% end %>
+
+<div class="row mt-4">
+  <div class="col-md-12">
+    <div class="energy_tariff">
+      <%= simple_form_for tariff_holder_route(@energy_tariff.tariff_holder) + [@energy_tariff] do |f| %>
+        <%= f.hidden_field :meter_type, value: @energy_tariff.meter_type %>
+        <%= f.hidden_field :tariff_type, value: @energy_tariff.tariff_type %>
+        <% @energy_tariff.meters.each do |meter| %>
+          <%= f.hidden_field :meter_ids, value: meter.id, multiple: true %>
+        <% end %>
+        <%= render 'form', energy_tariff: @energy_tariff, f: f %>
+      <% end %>
+    </div>
+  </div>
 </div>

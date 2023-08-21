@@ -6,14 +6,16 @@
   default_tariffs: default_tariffs do |c| %>
   <% c.with_header do %>
     <%= t('schools.user_tariffs.index.introduction_html', advice_pages: school_advice_path(tariff_holder)) if tariff_holder.school? %>
-    <p><%= t('schools.user_tariffs.index.changes_to_cost_calculations_message') %></p>
+    <% unless default_tariffs %>
+      <p><%= t('schools.user_tariffs.index.changes_to_cost_calculations_message') %></p>
+    <% end %>
   <% end %>
   <% c.with_footer do %>
     <p>
       <% if tariff_holder.school? && @electricity_meters&.dcc&.any? %>
         <%= t('schools.user_tariffs.index.note_about_smart_meter_tariffs') %>
       <% else %>
-        <%= t('schools.user_tariffs.index.note_about_defaults') %>
+        <%= t('schools.user_tariffs.index.note_about_defaults') unless default_tariffs %>
       <% end %>
     </p>
   <% end %>

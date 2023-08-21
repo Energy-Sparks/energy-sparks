@@ -19,7 +19,11 @@
                 show_actions: @show_actions %>
             <% else %>
               <p>
-                <%= t("schools.user_tariffs.index.#{meter_type}.there_are_no_#{meter_type}_tariffs_set_up_yet") %>
+                <% if @default_tariffs %>
+                  <%= t('schools.user_tariffs.index.no_defaults', meter_type: meter_type) %>
+                <% else %>
+                  <%= t("schools.user_tariffs.index.#{meter_type}.there_are_no_#{meter_type}_tariffs_set_up_yet") %>
+                <% end %>
               </p>
               <%= footer %>
             <% end %>
@@ -27,7 +31,7 @@
               <div class="mt-4">
                 <%= link_to t("schools.user_tariffs.index.#{meter_type}.add_label"),
                   new_energy_tariff_path(@tariff_holder, meter_type: meter_type),
-                  class: 'btn btn-success' %>
+                  class: 'btn btn-sm btn-success' %>
               </div>
             <% end %>
           </div>

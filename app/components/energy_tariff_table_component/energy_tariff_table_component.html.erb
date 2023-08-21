@@ -1,29 +1,50 @@
 <table class="table advice-table <%=table_sorted%>" id="<%= @id %>">
   <thead>
     <tr>
-      <th><%= t('schools.user_tariffs.tariff_partial.start_date') %></th>
-      <th><%= t('schools.user_tariffs.tariff_partial.end_date') %></th>
-      <th><%= t('schools.user_tariffs.name') %></th>
-      <th><%= t('schools.user_tariffs.tariff_partial.type') %></th>
+      <th class="col-1 text-right"><%= t('schools.user_tariffs.tariff_partial.start_date') %></th>
+      <th class="col-1 text-right"><%= t('schools.user_tariffs.tariff_partial.end_date') %></th>
+      <th class="col-3 text-left"><%= t('schools.user_tariffs.name') %></th>
+      <th class="col-1 text-left"><%= t('schools.user_tariffs.tariff_partial.type') %></th>
+      <% if show_prices? %>
+        <th class="col-3 text-right" data-orderable="false"><%= t('schools.user_tariffs.tariff_partial.consumption_charges') %></th>
+      <% end %>
       <% if show_meters? %>
-        <th data-orderable="false"><%= t('schools.user_tariffs.meters.meter_list') %></th>
+        <th class="col-1 text-left" data-orderable="false"><%= t('schools.user_tariffs.meters.meter_list') %></th>
       <% end %>
-      <% if @show_actions %>
-        <th data-orderable="false"></th>
-      <% end %>
+      <th class="col-2 text-right" data-orderable="false"></th>
     </tr>
   </thead>
   <tbody>
     <% @tariffs.each do |energy_tariff| %>
-      <tr>
-        <td data-order="<%= start_date_sortable(energy_tariff) %>"><%= start_date(energy_tariff) %></td>
-        <td data-order="<%= end_date_sortable(energy_tariff) %>"><%= end_date(energy_tariff) %></td>
-        <td><%= energy_tariff.name %></td>
-        <td>
+      <tr >
+        <td class="text-right" data-order="<%= start_date_sortable(energy_tariff) %>"><%= start_date(energy_tariff) %></td>
+        <td class="text-right" data-order="<%= end_date_sortable(energy_tariff) %>"><%= end_date(energy_tariff) %></td>
+        <td class="text-left" >
+          <% if show_actions? && can?(:manage, energy_tariff) %>
+            <%= link_to energy_tariff.name, energy_tariffs_path(energy_tariff)  %>
+          <% else %>
+            <%= energy_tariff.name %>
+          <% end %>
+        </td>
+        <td class="text-left" >
           <%= flat_rate_label(energy_tariff) %>
         </td>
+        <% if show_prices? %>
+          <td class="text-right" >
+            <ul style="list-style: none; padding-left: 0px;">
+              <% energy_tariff.energy_tariff_prices.order(start_time: :asc).each do |price| %>
+                <li>
+                  <% if energy_tariff.differential? %>
+                    <%= t('schools.user_tariffs.tariff_partial.price_from_to', price_start_time: start_time(price), price_end_time: end_time(price)) %>
+                  <% end %>
+                  <%= t('schools.user_tariffs.rates_table.price_per_kwh', price_value: convert_value_to_long_currency(price.value)) %>
+                </li>
+              <% end %>
+            </ul>
+          </td>
+        <% end %>
         <% if show_meters? %>
-          <td>
+          <td class="text-left" >
             <% if energy_tariff.meters.any? %>
               <ul style="list-style: none; padding-left: 0px;">
                 <% energy_tariff.meters.each do |meter| %>
@@ -36,11 +57,7 @@
           </td>
         <% end %>
         <% if show_actions? && can?(:manage, energy_tariff) %>
-          <td>
-            <%= link_to t('schools.user_tariffs.tariff_partial.full_details'),
-                energy_tariffs_path(energy_tariff),
-                class: 'btn btn-sm'
-            %>
+          <td class="text-right">
             <% if energy_tariff.dcc? %>
               <%= link_to t('schools.user_tariff_charges.edit_charges'),
                   energy_tariffs_path(energy_tariff, [:energy_tariff_charges]),

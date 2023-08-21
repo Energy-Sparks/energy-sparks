@@ -3,29 +3,11 @@
   <head>
     <%= render 'shared/head' %>
   </head>
-  <body vocab="http://schema.org/" class="<%= 'sub-nav' if show_sub_nav?(@school, @hide_subnav) %>">
-    <% if show_sub_nav?(@school, @hide_subnav) %>
-      <%= render 'shared/mini_nav' %>
-      <%= render 'shared/sub_nav', podium: current_school_podium, school: @school %>
-    <% elsif EnergySparks::FeatureFlags.active?(:enhanced_school_group_dashboard) && controller_path.split('/').first == 'school_groups' && can?(:update_settings, @school_group) %>
-      <%= render 'shared/mini_nav' %>
-      <%= render 'school_groups/sub_nav' if can?(:update_settings, @school_group) %>
-    <% else %>
-      <%= render 'shared/nav' %>
-    <% end %>
+  <body vocab="http://schema.org/" class="<%= 'sub-nav' if show_sub_nav?(@school || @tariff_holder, @hide_subnav) %>">
+    <%= render 'shared/navigation' %>
 
     <div class="application container<%= conditional_application_container_classes %>">
-      <% if show_sub_nav?(@school, @hide_subnav) || controller_path.split('/').first == 'school_groups' %>
-        <div class="page-breadcrumb">
-          <%= component 'breadcrumbs' do |c| %>
-            <% c.with_school(@school) if @school %>
-            <% if @breadcrumbs.present? && @breadcrumbs.any? %>
-              <% c.with_items(@breadcrumbs) %>
-            <% end %>
-          <% end %>
-        </div>
-      <% end %>
-
+      <%= render 'shared/breadcrumbs' %>
       <%= render 'shared/alerts' if flash.any? %>
       <%= yield %>
     </div>
