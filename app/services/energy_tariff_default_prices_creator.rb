@@ -8,9 +8,9 @@ class EnergyTariffDefaultPricesCreator
     return if @energy_tariff.energy_tariff_prices.any?
 
     night_times = if @energy_tariff.tariff_holder.school? && @energy_tariff.meters.any?
-                    Economy7Times.times(@energy_tariff&.meters&.first&.mpan_mprn)
+                    Meters::Economy7Times.times(@energy_tariff&.meters&.first&.mpan_mprn)
                   else
-                    Economy7Times::DEFAULT_TIMES
+                    Meters::Economy7Times::DEFAULT_TIMES
                   end
 
     day_times = night_times.last..night_times.first
