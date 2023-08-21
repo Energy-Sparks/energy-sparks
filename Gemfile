@@ -69,7 +69,7 @@ gem 'devise' # Use devise for authentication
 gem 'cancancan', '~> 3.0.1' # Use cancancan for authorization
 
 # Utils
-gem 'groupdate', '4.0.1' # Use groupdate to group usage stats
+gem 'groupdate', '6.2.1' # Use groupdate to group usage stats
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 
 # Bundle update installs 0.7.0 for some weird reason!
