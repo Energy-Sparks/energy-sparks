@@ -24,4 +24,12 @@ class TariffStandingCharge < ApplicationRecord
   belongs_to :tariff_import_log, inverse_of: :tariff_standing_charges
 
   attribute :value, :float
+
+  def self.delete_duplicates_for_meter!(meter)
+    last_charge = nil
+    meter.tariff_standing_charges.order(created_at: :asc).each do |tariff_standing_charge|
+      last_charge = tariff_standing_charge if last_charge.nil? || last_charge.value != tariff_standing_charge.value
+      tariff_standing_charge.destroy if tariff_standing_charge != last_charge && tariff_standing_charge.value == last_charge.value
+    end
+  end
 end
