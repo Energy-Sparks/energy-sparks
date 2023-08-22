@@ -45,7 +45,7 @@ class EnergyTariffPrice < ApplicationRecord
   end
 
   def self.complete?
-    return true if first.energy_tariff.flat_rate?
+    return true if first&.energy_tariff&.flat_rate?
 
     total_minutes == 1440
   end
@@ -53,7 +53,7 @@ class EnergyTariffPrice < ApplicationRecord
   private
 
   def no_time_overlaps
-    return if energy_tariff.flat_rate?
+    return if energy_tariff&.flat_rate?
 
     energy_tariff&.energy_tariff_prices&.without(self)&.each do |other_price|
       errors.add(:start_time, 'overlaps with another time range') if other_price.time_range.include?(start_time)
@@ -62,7 +62,7 @@ class EnergyTariffPrice < ApplicationRecord
   end
 
   def time_range_given
-    return if energy_tariff.flat_rate?
+    return if energy_tariff&.flat_rate?
 
     errors.add(:start_time, "can't be the same as end time") if start_time == end_time
   end
