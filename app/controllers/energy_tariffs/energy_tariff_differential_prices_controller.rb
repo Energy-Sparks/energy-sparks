@@ -55,6 +55,7 @@ module EnergyTariffs
     end
 
     def reset
+      @energy_tariff.energy_tariff_prices.delete_all
       EnergyTariffDefaultPricesCreator.new(@energy_tariff).process
       redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_prices])
     end

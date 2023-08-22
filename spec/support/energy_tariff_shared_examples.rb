@@ -334,7 +334,7 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).not_to have_content('Incomplete 24 hour coverage. Please add another rate.')
     expect(page).not_to have_content('A differential tariff must have at least 2 prices, e.g. a day time and a night-time rate. Please add prices, or reset to default.')
     expect(find("a", text: "Add rate")[:class]).to eq('btn disabled')
-    expect(find("a", text: "Reset to default")[:class]).to eq('btn disabled')
+    expect(find("a", text: "Reset to default")[:class]).to eq('btn')
 
     click_link("Delete", match: :first)
 
@@ -347,7 +347,7 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).to have_content('Incomplete 24 hour coverage. Please add another rate.')
     expect(page).not_to have_content('A differential tariff must have at least 2 prices, e.g. a day time and a night-time rate. Please add prices, or reset to default.')
     expect(find("a", text: "Add rate")[:class]).to eq('btn')
-    expect(find("a", text: "Reset to default")[:class]).to eq('btn disabled')
+    expect(find("a", text: "Reset to default")[:class]).to eq('btn')
 
     click_link("Delete", match: :first)
 
@@ -382,7 +382,7 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).not_to have_content('Incomplete 24 hour coverage. Please add another rate.')
     expect(page).not_to have_content('A differential tariff must have at least 2 prices, e.g. a day time and a night-time rate. Please add prices, or reset to default.')
     expect(find("a", text: "Add rate")[:class]).to eq('btn disabled')
-    expect(find("a", text: "Reset to default")[:class]).to eq('btn disabled')
+    expect(find("a", text: "Reset to default")[:class]).to eq('btn')
 
     click_link('Next')
     click_button('Next')
