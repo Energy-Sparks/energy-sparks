@@ -134,7 +134,7 @@ class EnergyTariff < ApplicationRecord
     # For a flate rate energy tariff to be considered "usable":
     # * it must have only one energy tariff price record
     # * the price record must have a value set greater than zero
-    return true if energy_tariff_prices.count == 1 && energy_tariff_prices.first.value > 0
+    return true if energy_tariff_prices.count == 1 && energy_tariff_prices&.first&.value&.nonzero?
 
     false
   end

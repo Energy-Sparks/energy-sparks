@@ -45,7 +45,7 @@ class EnergyTariffPrice < ApplicationRecord
   end
 
   def self.complete?
-    return true if energy_tariff.flat_rate?
+    return true if first.energy_tariff.flat_rate?
 
     total_minutes == 1440
   end

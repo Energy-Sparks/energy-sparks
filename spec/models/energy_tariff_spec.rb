@@ -409,10 +409,41 @@ describe EnergyTariff do
   end
 
   describe '#useable?' do
-    context 'for a flat rate tariff' do
-      it 'returns if an energy tariff can be mapped to a valid meter_attribute for use by the analytics services' do
+    before { energy_tariff.energy_tariff_prices.delete_all }
 
+    context 'for a flat rate tariff' do
+      it 'returns true if an energy tariff has only one energy tariff price record with a value set greater than zero' do
+        energy_tariff.update(tariff_type: "flat_rate")
+        expect(energy_tariff).to be_valid
+        expect(energy_tariff.energy_tariff_prices.count).to eq(0)
+        expect(energy_tariff.usable?).to eq(false)
+        energy_tariff_price = EnergyTariffPrice.create(start_time: '00:00', end_time: '00:00', value: nil, units: 'kwh', energy_tariff: energy_tariff)
+        expect(energy_tariff.reload.usable?).to eq(false)
+        energy_tariff_price.update(value: 0)
+        expect(energy_tariff.reload.usable?).to eq(false)
+        energy_tariff_price.update(value: 0.0001)
+        expect(energy_tariff.reload.usable?).to eq(true)
       end
     end
+
+    context 'for a differential rate tariff' do
+      it 'returns true if an energy tariff has 2 or more energy tariff price records with all values set greater than zero and combined start and end times covering a full 24 hour period (1440 minutes)' do
+        energy_tariff.update(tariff_type: "differential")
+        expect(energy_tariff).to be_valid
+        expect(energy_tariff.energy_tariff_prices.count).to eq(0)
+        expect(energy_tariff.usable?).to eq(false)
+        energy_tariff_price_1 = EnergyTariffPrice.create(start_time: '00:00', end_time: '12:00', value: nil, units: 'kwh', energy_tariff: energy_tariff)
+        expect(energy_tariff.reload.usable?).to eq(false)
+        energy_tariff_price_2 = EnergyTariffPrice.create(start_time: '12:00', end_time: '00:00', value: nil, units: 'kwh', energy_tariff: energy_tariff)
+        expect(energy_tariff.reload.usable?).to eq(false)
+        energy_tariff_price_1.update(value: 0)
+        energy_tariff_price_2.update(value: 0)
+        expect(energy_tariff.reload.usable?).to eq(false)
+        energy_tariff_price_1.update(value: 0.001)
+        energy_tariff_price_2.update(value: 0.001)
+        expect(energy_tariff.reload.usable?).to eq(true)
+      end
+    end
+
   end
 end
