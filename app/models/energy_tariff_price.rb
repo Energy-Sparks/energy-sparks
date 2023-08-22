@@ -24,7 +24,7 @@ class EnergyTariffPrice < ApplicationRecord
   belongs_to :energy_tariff, inverse_of: :energy_tariff_prices
 
   validates :start_time, :end_time, :units, presence: true
-  validates :value, numericality: { greater_than: MINIMUM_VALUE }, on: :update
+  validates :value, numericality: { greater_than: MINIMUM_VALUE }, allow_nil: true
   validate :no_time_overlaps
   validate :time_range_given
 
