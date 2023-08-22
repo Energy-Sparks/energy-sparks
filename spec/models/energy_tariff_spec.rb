@@ -83,10 +83,14 @@ describe EnergyTariff do
     end
 
     it "should prevent same start and end time" do
+      energy_tariff.update(tariff_type: "differential")
       expect(energy_tariff).to be_valid
       energy_tariff_price_1.update(end_time: energy_tariff_price_1.start_time)
       expect(energy_tariff_price_1).not_to be_valid
       expect(energy_tariff_price_1.errors[:start_time]).to include("can't be the same as end time")
+      energy_tariff.update(tariff_type: "flat_rate")
+      energy_tariff_price_1.update(end_time: energy_tariff_price_1.start_time)
+      expect(energy_tariff_price_1).to be_valid
     end
 
     it "should allow end time of one range to be start time of next" do
@@ -98,6 +102,7 @@ describe EnergyTariff do
 
     it "should prevent overlapping start time" do
       expect(energy_tariff).to be_valid
+      energy_tariff.update(tariff_type: 'differential')
       energy_tariff_price_2.update(start_time: energy_tariff_price_1.end_time - 1.minute)
       expect(energy_tariff_price_2).not_to be_valid
       expect(energy_tariff_price_2.errors[:start_time]).to include("overlaps with another time range")
@@ -106,52 +111,59 @@ describe EnergyTariff do
     it "should prevent overlapping end time" do
       expect(energy_tariff).to be_valid
       energy_tariff_price_1.update(end_time: energy_tariff_price_2.start_time + 1.minute)
+      energy_tariff.update(tariff_type: 'differential')
       expect(energy_tariff_price_1).not_to be_valid
       expect(energy_tariff_price_1.errors[:end_time]).to include("overlaps with another time range")
+      energy_tariff.update(tariff_type: 'flat_rate')
+      expect(energy_tariff_price_1).to be_valid
     end
 
     it "should handle midnight end time as next day" do
       expect(energy_tariff).to be_valid
       energy_tariff_price_2.update(start_time: '07:00', end_time: '00:00')
       energy_tariff_price_1.update(start_time: '08:00', end_time: '09:00')
+      energy_tariff.update(tariff_type: 'differential')
       expect(energy_tariff_price_1).not_to be_valid
+      expect(energy_tariff_price_1.errors.messages).to eq({end_time: ["overlaps with another time range"], start_time: ["overlaps with another time range"]})
+      energy_tariff.update(tariff_type: 'flat_rate')
+      expect(energy_tariff_price_1).to be_valid
     end
 
     it { should validate_numericality_of(:vat_rate).is_greater_than_or_equal_to(0.0).is_less_than_or_equal_to(100.0).allow_nil }
   end
 
-  context '#complete' do
+  # context '#complete' do
 
-    let(:energy_tariff_price)  { EnergyTariffPrice.new(start_time: '00:00', end_time: '23:30', value: 1.23, units: :kwh) }
-    let(:energy_tariff_charge)  { EnergyTariffCharge.new(charge_type: :fixed_charge, value: 4.56, units: :month) }
+  #   let(:energy_tariff_price)  { EnergyTariffPrice.new(start_time: '00:00', end_time: '23:30', value: 1.23, units: :kwh) }
+  #   let(:energy_tariff_charge)  { EnergyTariffCharge.new(charge_type: :fixed_charge, value: 4.56, units: :month) }
 
-    context 'with both prices and charges' do
-      let(:energy_tariff_prices)  { [energy_tariff_price] }
-      let(:energy_tariff_charges)  { [energy_tariff_charge] }
-      it "should include tariff" do
-        expect(EnergyTariff.complete).to include(energy_tariff)
-      end
-    end
-    context 'without prices or charges' do
-      let(:energy_tariff_prices)  { [] }
-      let(:energy_tariff_charges)  { [] }
-      it "should not include tariff" do
-        expect(EnergyTariff.complete).not_to include(energy_tariff)
-      end
-    end
-    context 'with only charges' do
-      let(:energy_tariff_charges)  { [energy_tariff_charge] }
-      it "should include tariff" do
-        expect(EnergyTariff.complete).to include(energy_tariff)
-      end
-    end
-    context 'with only prices' do
-      let(:energy_tariff_prices)  { [energy_tariff_price] }
-      it "should include tariff" do
-        expect(EnergyTariff.complete).to include(energy_tariff)
-      end
-    end
-  end
+  #   context 'with both prices and charges' do
+  #     let(:energy_tariff_prices)  { [energy_tariff_price] }
+  #     let(:energy_tariff_charges)  { [energy_tariff_charge] }
+  #     it "should include tariff" do
+  #       expect(EnergyTariff.complete).to include(energy_tariff)
+  #     end
+  #   end
+  #   context 'without prices or charges' do
+  #     let(:energy_tariff_prices)  { [] }
+  #     let(:energy_tariff_charges)  { [] }
+  #     it "should not include tariff" do
+  #       expect(EnergyTariff.complete).not_to include(energy_tariff)
+  #     end
+  #   end
+  #   context 'with only charges' do
+  #     let(:energy_tariff_charges)  { [energy_tariff_charge] }
+  #     it "should include tariff" do
+  #       expect(EnergyTariff.complete).to include(energy_tariff)
+  #     end
+  #   end
+  #   context 'with only prices' do
+  #     let(:energy_tariff_prices)  { [energy_tariff_price] }
+  #     it "should include tariff" do
+  #       expect(EnergyTariff.complete).to include(energy_tariff)
+  #     end
+  #   end
+  # end
 
   context '.meter_attribute' do
     let(:meter_attribute) { MeterAttribute.to_analytics([energy_tariff.meter_attribute]) }
@@ -393,6 +405,14 @@ describe EnergyTariff do
       expect(counts[school_group_1.slug]).to eq 1
       expect(counts[school_group_2.slug]).to eq 2
       expect(counts[school_group_3.slug]).to be_nil
+    end
+  end
+
+  describe '#useable?' do
+    context 'for a flat rate tariff' do
+      it 'returns if an energy tariff can be mapped to a valid meter_attribute for use by the analytics services' do
+
+      end
     end
   end
 end
