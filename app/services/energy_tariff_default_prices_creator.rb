@@ -23,7 +23,6 @@ class EnergyTariffDefaultPricesCreator
     {
       start_time: start_time,
       end_time: end_time,
-      value: EnergyTariffPrice::MINIMUM_VALUE,
       units: 'kwh',
       description: description
     }
