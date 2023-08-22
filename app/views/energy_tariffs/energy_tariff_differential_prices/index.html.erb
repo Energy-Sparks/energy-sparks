@@ -46,7 +46,7 @@
           <%= link_to t('schools.user_tariff_differential_prices.index.reset_to_default'),
             energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_prices], { action: 'reset' }),
             data: { confirm: t('common.confirm') },
-            class: "btn",
+            class: "btn#{@energy_tariff.energy_tariff_prices.complete? ? ' disabled' : ''}",
             method: :get
           %>
           <%= link_to t('schools.user_tariff_differential_prices.index.add_rate'),

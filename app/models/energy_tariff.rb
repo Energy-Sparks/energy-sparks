@@ -85,6 +85,17 @@ class EnergyTariff < ApplicationRecord
 
   scope :latest_with_fixed_end_date, ->(meter_type, source = :manually_entered) { where(meter_type: meter_type, source: source).where.not(end_date: nil).order(end_date: :desc) }
 
+  def usable
+    # For a flate rate energy tariff to be considered "usable":
+    # * it must have only one energy tariff price record
+    # * the price record must have a value set greater than zero
+    #
+    # For a differential rate energy tariff to be considered "usable":
+    # * it must have more two or more energy tariff price records
+    # * the energy tariff price records combined start and end times must cover a full 24 hour period (1440 minutes)
+    # * all energy tariff price records must have values set greater than zero
+  end
+
   def flat_rate?
     tariff_type == 'flat_rate'
   end
