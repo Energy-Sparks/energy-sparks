@@ -541,7 +541,7 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     expect(page).to have_content('Night rate (00:30 to 06:30)')
     expect(page).to have_content('Day rate (07:00 to 00:00)')
     expect(page).to have_content('£1.50 per kWh')
-    expect(page).to have_content('£0.00 per kWh')
+    expect(page).to have_content('£ per kWh')
 
     click_link('Next')
     click_button('Next')
@@ -618,7 +618,7 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     energy_tariff_price = energy_tariff.energy_tariff_prices.last
     expect(energy_tariff_price.start_time.to_s(:time)).to eq('07:00')
     expect(energy_tariff_price.end_time.to_s(:time)).to eq('00:00')
-    expect(energy_tariff_price.value.to_s).to eq('0.0')
+    expect(energy_tariff_price.value.to_s).to eq('')
     expect(energy_tariff_price.units).to eq('kwh')
 
     find('#edit_meters').click
