@@ -132,39 +132,6 @@ describe EnergyTariff do
     it { should validate_numericality_of(:vat_rate).is_greater_than_or_equal_to(0.0).is_less_than_or_equal_to(100.0).allow_nil }
   end
 
-  # context '#complete' do
-
-  #   let(:energy_tariff_price)  { EnergyTariffPrice.new(start_time: '00:00', end_time: '23:30', value: 1.23, units: :kwh) }
-  #   let(:energy_tariff_charge)  { EnergyTariffCharge.new(charge_type: :fixed_charge, value: 4.56, units: :month) }
-
-  #   context 'with both prices and charges' do
-  #     let(:energy_tariff_prices)  { [energy_tariff_price] }
-  #     let(:energy_tariff_charges)  { [energy_tariff_charge] }
-  #     it "should include tariff" do
-  #       expect(EnergyTariff.complete).to include(energy_tariff)
-  #     end
-  #   end
-  #   context 'without prices or charges' do
-  #     let(:energy_tariff_prices)  { [] }
-  #     let(:energy_tariff_charges)  { [] }
-  #     it "should not include tariff" do
-  #       expect(EnergyTariff.complete).not_to include(energy_tariff)
-  #     end
-  #   end
-  #   context 'with only charges' do
-  #     let(:energy_tariff_charges)  { [energy_tariff_charge] }
-  #     it "should include tariff" do
-  #       expect(EnergyTariff.complete).to include(energy_tariff)
-  #     end
-  #   end
-  #   context 'with only prices' do
-  #     let(:energy_tariff_prices)  { [energy_tariff_price] }
-  #     it "should include tariff" do
-  #       expect(EnergyTariff.complete).to include(energy_tariff)
-  #     end
-  #   end
-  # end
-
   context '.meter_attribute' do
     let(:meter_attribute) { MeterAttribute.to_analytics([energy_tariff.meter_attribute]) }
 
@@ -408,11 +375,49 @@ describe EnergyTariff do
     end
   end
 
+  describe '#usable' do
+    before { EnergyTariff.delete_all }
+
+    it 'returns a collection of all usable energy tariffs' do
+      flat_rate_energy_tariff = EnergyTariff.create(
+        tariff_holder: create(:school),
+        start_date: '2021-04-01',
+        end_date: '2022-03-31',
+        name: 'My First Tariff',
+        meter_type: :electricity,
+        tariff_type: 'flat_rate',
+        vat_rate: 0.1,
+        energy_tariff_prices: [],
+        energy_tariff_charges: [],
+        meters: meters
+      )
+      differential_energy_tariff = EnergyTariff.create(
+        tariff_holder: create(:school),
+        start_date: '2021-04-01',
+        end_date: '2022-03-31',
+        name: 'My First Tariff',
+        meter_type: :electricity,
+        tariff_type: 'differential',
+        vat_rate: 0.1,
+        energy_tariff_prices: [],
+        energy_tariff_charges: [],
+        meters: meters
+      )
+      expect(EnergyTariff.all.usable).to eq([])
+      EnergyTariffPrice.create(start_time: '00:00', end_time: '00:00', value: 0.001, units: 'kwh', energy_tariff: flat_rate_energy_tariff)
+      expect(EnergyTariff.all.usable).to eq([flat_rate_energy_tariff])
+      EnergyTariffPrice.create(start_time: '00:00', end_time: '12:00', value: 0.001, units: 'kwh', energy_tariff: differential_energy_tariff)
+      expect(EnergyTariff.all.usable).to eq([flat_rate_energy_tariff])
+      EnergyTariffPrice.create(start_time: '12:00', end_time: '00:00', value: 0.001, units: 'kwh', energy_tariff: differential_energy_tariff)
+      expect(EnergyTariff.all.usable).to eq([flat_rate_energy_tariff, differential_energy_tariff])
+    end
+  end
+
   describe '#useable?' do
     before { energy_tariff.energy_tariff_prices.delete_all }
 
     context 'for a flat rate tariff' do
-      it 'returns true if an energy tariff has only one energy tariff price record with a value set greater than zero' do
+      it 'returns true if an energy tariff has only one energy tariff price record with a value set greater than zero, irrespective of any charges' do
         energy_tariff.update(tariff_type: "flat_rate")
         expect(energy_tariff).to be_valid
         expect(energy_tariff.energy_tariff_prices.count).to eq(0)
@@ -427,7 +432,7 @@ describe EnergyTariff do
     end
 
     context 'for a differential rate tariff' do
-      it 'returns true if an energy tariff has 2 or more energy tariff price records with all values set greater than zero and combined start and end times covering a full 24 hour period (1440 minutes)' do
+      it 'returns true if an energy tariff has 2 or more energy tariff price records with all values set greater than zero and combined start and end times covering a full 24 hour period (1440 minutes), irrespective of any charges' do
         energy_tariff.update(tariff_type: "differential")
         expect(energy_tariff).to be_valid
         expect(energy_tariff.energy_tariff_prices.count).to eq(0)
