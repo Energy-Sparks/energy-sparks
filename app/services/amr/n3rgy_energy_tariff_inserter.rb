@@ -164,11 +164,17 @@ module Amr
       rates.map do |time_range, price|
         EnergyTariffPrice.new(
           start_time: time_range.first.to_time,
-          end_time: time_range.last.to_time,
+          end_time: to_end_time(time_range.last, flat_rate?),
           units: :kwh,
           value: price
         )
       end
+    end
+    #rubocop:enable Rails/Date
+
+    #rubocop:disable Rails/Date
+    def to_end_time(time_of_day, flat_rate = true)
+      flat_rate ? time_of_day.to_time : time_of_day.to_time.advance(minutes: 30)
     end
     #rubocop:enable Rails/Date
 

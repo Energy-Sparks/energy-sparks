@@ -62,6 +62,7 @@ describe Amr::N3rgyTariffsUpserter do
 
     context 'with differential tariff data from n3rgy' do
       #00:00-06:30, 07:00-23:30
+      #which when converted to display is 00:00-07:00, 07:00-00:00
       let(:raw_prices) { Array.new(14, price) + Array.new(34, price * 2)}
 
       it 'creates a new tariff' do
@@ -72,15 +73,14 @@ describe Amr::N3rgyTariffsUpserter do
         first = prices.order(start_time: :asc).first
         expect(first.value).to eq price
         expect(first.start_time.strftime('%H:%M')).to eq "00:00"
-        expect(first.end_time.strftime('%H:%M')).to eq "06:30"
+        expect(first.end_time.strftime('%H:%M')).to eq "07:00"
 
         last = prices.order(start_time: :asc).last
         expect(last.value).to eq price * 2
         expect(last.start_time.strftime('%H:%M')).to eq "07:00"
-        expect(last.end_time.strftime('%H:%M')).to eq "23:30"
+        expect(last.end_time.strftime('%H:%M')).to eq "00:00"
       end
 
-      it 'creates right dates on charges?'
       it 'creates the charges' do
         expect(charges.count).to eq 1
         expect(charges.first.charge_type.to_sym).to eq :standing_charge
@@ -187,17 +187,17 @@ describe Amr::N3rgyTariffsUpserter do
 
     context 'because price in the differential periods has changed' do
       let!(:old_price) { 0.22 }
-      #00:00-06:30, 07:00-23:30
-      let(:raw_prices) { Array.new(14, old_price) + Array.new(34, old_price * 2)}
+      #00:00-05:30, 05:30-23:30
+      let(:raw_prices) { Array.new(12, old_price) + Array.new(36, old_price * 2)}
 
       let!(:existing_energy_tariff) {
         create(:energy_tariff, tariff_type: :differential, source: :dcc, school: school, meters: [meter], end_date: nil)
       }
       let!(:existing_period_1) {
-        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: "00:00", end_time: "06:30")
+        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: "00:00", end_time: "07:00")
       }
       let!(:existing_period_2) {
-        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: "07:00", end_time: "23:30")
+        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: "07:00", end_time: "00:00")
       }
       it 'updates end date of previous tariff' do
         existing_energy_tariff.reload
@@ -216,10 +216,10 @@ describe Amr::N3rgyTariffsUpserter do
         create(:energy_tariff, tariff_type: :differential, source: :dcc, school: school, meters: [meter], end_date: nil)
       }
       let!(:existing_period_1) {
-        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: "00:00", end_time: "06:30")
+        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: "00:00", end_time: "07:00")
       }
       let!(:existing_period_2) {
-        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: "07:00", end_time: "23:30")
+        create(:energy_tariff_price, energy_tariff: existing_energy_tariff, value: old_price, units: :kwh, start_time: "07:00", end_time: "00:00")
       }
       it 'updates end date of previous tariff' do
         existing_energy_tariff.reload
@@ -241,8 +241,5 @@ describe Amr::N3rgyTariffsUpserter do
         expect(import_log.error_messages).to_not be_nil
       end
     end
-
-    it 'converts between stored times'
-
   end
 end
