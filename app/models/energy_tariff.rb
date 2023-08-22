@@ -89,6 +89,13 @@ class EnergyTariff < ApplicationRecord
     tariff_type == 'flat_rate'
   end
 
+  def usable?
+    case tariff_type
+    when 'differential' then usable_differential_tariff?
+    when 'flat_rate' then usable_flat_rate_tariff?
+    end
+  end
+
   def meter_attribute
     MeterAttribute.new(attribute_type: :accounting_tariff_generic, input_data: to_hash)
   end
@@ -128,6 +135,25 @@ class EnergyTariff < ApplicationRecord
   end
 
   private
+
+  def usable_flat_rate_tariff?
+    # For a flate rate energy tariff to be considered "usable":
+    # * it must have only one energy tariff price record
+    # * the price record must have a value set greater than zero
+    return true if energy_tariff_prices.count == 1 && energy_tariff_prices&.first&.value&.nonzero?
+
+    false
+  end
+
+  def usable_differential_tariff?
+    # For a differential rate energy tariff to be considered "usable":
+    # * it must have more two or more energy tariff price records
+    # * the energy tariff price records combined start and end times must cover a full 24 hour period (1440 minutes)
+    # * all energy tariff price records must have values set greater than zero
+    return true if energy_tariff_prices.count >= 2 && energy_tariff_prices.complete? && energy_tariff_prices&.map(&:value)&.all? { |value| value&.nonzero? }
+
+    false
+  end
 
   def start_and_end_date_are_not_both_blank
     return unless tariff_holder_type == 'SchoolGroup'

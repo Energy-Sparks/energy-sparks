@@ -305,7 +305,7 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).not_to have_link('Add rate')
     expect(page).not_to have_link('Delete')
 
-    first('.energy-tariff-show-button').click
+    page.all('.energy-tariff-show-button')[0].click
 
     select '00', from: 'energy_tariff_price_start_time_4i'
     select '30', from: 'energy_tariff_price_start_time_5i'
@@ -318,7 +318,19 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).to have_content('Night rate (00:30 to 06:30)')
     expect(page).to have_content('Day rate (07:00 to 00:00)')
     expect(page).to have_content('£1.50 per kWh')
-    expect(page).to have_content('£0.00 per kWh')
+    expect(page).to have_content('£ per kWh')
+
+    expect(find("a", text: "Next")[:class]).to eq('btn disabled')
+
+    page.all('.energy-tariff-show-button')[1].click
+
+    fill_in 'Rate in £/kWh', with: '2.5'
+    click_button('Save')
+
+    expect(page).to have_content('Night rate (00:30 to 06:30)')
+    expect(page).to have_content('Day rate (07:00 to 00:00)')
+    expect(page).to have_content('£1.50 per kWh')
+    expect(page).to have_content('£2.50 per kWh')
 
     click_link('Next')
     click_button('Next')
@@ -389,7 +401,7 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     energy_tariff_price = energy_tariff.energy_tariff_prices.last
     expect(energy_tariff_price.start_time.to_s(:time)).to eq('07:00')
     expect(energy_tariff_price.end_time.to_s(:time)).to eq('00:00')
-    expect(energy_tariff_price.value.to_s).to eq('0.0')
+    expect(energy_tariff_price.value.to_s).to eq('2.5')
     expect(energy_tariff_price.units).to eq('kwh')
   end
 
