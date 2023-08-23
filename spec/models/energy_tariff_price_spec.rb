@@ -82,5 +82,4 @@ describe EnergyTariffPrice do
       expect(energy_tariff.energy_tariff_prices.complete?).to eq(true) # 24 hours
     end
   end
->>>>>>> master
 end
