@@ -11,7 +11,7 @@
               </span>
               <%= t("schools.user_tariffs.index.#{meter_type}.header") %>
             </h4>
-            <% if @tariff_holder.any_tariffs_of_type?(meter_type) %>
+            <% if @tariff_holder.any_tariffs_of_type?(meter_type, @source) %>
               <%= component 'energy_tariff_table',
                 id: table_id(meter_type),
                 tariff_holder: @tariff_holder,
