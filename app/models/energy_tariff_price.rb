@@ -4,10 +4,10 @@
 #
 #  created_at       :datetime         not null
 #  description      :text
-#  end_time         :text             not null
+#  end_time         :time             default(Sat, 01 Jan 2000 23:30:00 UTC +00:00), not null
 #  energy_tariff_id :bigint(8)        not null
 #  id               :bigint(8)        not null, primary key
-#  start_time       :text             not null
+#  start_time       :time             default(Sat, 01 Jan 2000 00:00:00 UTC +00:00), not null
 #  units            :text
 #  updated_at       :datetime         not null
 #  value            :decimal(, )      default(0.0), not null
@@ -23,8 +23,11 @@ class EnergyTariffPrice < ApplicationRecord
 
   belongs_to :energy_tariff, inverse_of: :energy_tariff_prices
 
-  validates :start_time, :end_time, :value, :units, presence: true
-  validates :value, numericality: { greater_than_or_equal_to: MINIMUM_VALUE }
+  validates :start_time, :end_time, :units, presence: true
+  validates :value, presence: true, on: :update
+
+  validates :value, numericality: { greater_than: MINIMUM_VALUE }, allow_nil: true, on: :create
+  validates :value, numericality: { greater_than: MINIMUM_VALUE }, on: :update
   validate :no_time_overlaps
   validate :time_range_given
 
@@ -51,7 +54,7 @@ class EnergyTariffPrice < ApplicationRecord
   end
 
   def self.time_duration_gaps
-    return if complete?
+    return [] if complete?
 
     a = all.order(:start_time).map(&:time_range)
     gaps = []
@@ -66,6 +69,10 @@ class EnergyTariffPrice < ApplicationRecord
     end
 
     gaps
+  end
+
+  def self.invalid_prices?
+    all.map(&:value).any? { |value| value.nil? || value.zero? }
   end
 
   private

@@ -42,16 +42,12 @@ module EnergyTariffsHelper
     show_all ? EnergyTariff.meter_types.keys : Meter::MAIN_METER_TYPES
   end
 
-  def sorted_tariffs(tariff_holder, meter_type, source = :manually_entered)
-    tariff_holder.energy_tariffs.where(meter_type: meter_type, source: source).by_start_and_end.by_name
-  end
-
   def site_settings_page?
     request.path.start_with?('/admin/settings')
   end
 
   def convert_value_to_long_currency(value, currency: '£')
-    return '' unless value.is_a? Numeric
+    return '£' unless value.is_a? Numeric
     value_as_string = value.to_s
     split_value = value_as_string.split('.')
 

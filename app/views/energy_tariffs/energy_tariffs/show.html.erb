@@ -2,6 +2,26 @@
 <h1><%= @energy_tariff.name %></h1>
 
 <div class="energy_tariff">
+  <% if @energy_tariff.usable? %>
+    <% if @energy_tariff.tariff_holder.school? %>
+      <%= component 'notice', classes: 'mb-2', status: :neutral do |c| %>
+        <p>
+          <%= t('schools.user_tariffs.show.introduction_html', analysis_path: analysis_page_finder_path(urn: @tariff_holder.urn, analysis_class: cost_analysis_class_for(@energy_tariff.meter_type)), meter_type: t("common.#{@energy_tariff.meter_type}").downcase) %>.
+        </p>
+      <% end %>
+    <% end %>
+  <% else %>
+    <%= component 'notice', classes: 'mb-2', status: :negative do |c| %>
+      <div class="d-flex justify-content-between">
+        <%= t('schools.user_tariffs.show.not_usable') %>
+        <%= link_to t('common.labels.edit'),
+          energy_tariff_prices_path(@energy_tariff),
+          class: 'btn btn-primary' unless @energy_tariff.dcc?
+        %>
+      </div>
+    <% end %>
+  <% end %>
+
   <% if @energy_tariff.dcc? %>
     <%= component 'notice', classes: 'mb-2', status: :neutral do |c| %>
       <div class="d-flex justify-content-between">
@@ -10,13 +30,6 @@
           energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]),
           class: 'btn btn-primary' %>
       </div>
-    <% end %>
-  <% end %>
-  <% if @energy_tariff.tariff_holder.school? %>
-    <%= component 'notice', classes: 'mb-2', status: :neutral do |c| %>
-      <p>
-        <%= t('schools.user_tariffs.show.introduction_html', analysis_path: analysis_page_finder_path(urn: @tariff_holder.urn, analysis_class: cost_analysis_class_for(@energy_tariff.meter_type)), meter_type: t("common.#{@energy_tariff.meter_type}").downcase) %>.
-      </p>
     <% end %>
   <% end %>
 

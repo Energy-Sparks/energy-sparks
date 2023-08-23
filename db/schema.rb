@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_14_163714) do
+ActiveRecord::Schema.define(version: 2023_08_22_143756) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -788,7 +788,7 @@ ActiveRecord::Schema.define(version: 2023_08_14_163714) do
     t.bigint "energy_tariff_id", null: false
     t.time "start_time", default: "2000-01-01 00:00:00", null: false
     t.time "end_time", default: "2000-01-01 23:30:00", null: false
-    t.decimal "value", default: "0.0", null: false
+    t.decimal "value"
     t.text "units"
     t.text "description"
     t.datetime "created_at", precision: 6, null: false

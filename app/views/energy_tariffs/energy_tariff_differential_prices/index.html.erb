@@ -18,8 +18,11 @@
       <p><%= energy_tariff_prices_text(@energy_tariff) %></p>
 
       <div id="modal-window" class="modal hide" role="dialog" aria-hidden="true" ></div>
-
-      <% if @energy_tariff.energy_tariff_prices.complete? %>
+      <% if @energy_tariff.energy_tariff_prices.invalid_prices? %>
+        <%= component 'notice', status: :negative do |c| %>
+          <%= t('schools.user_tariff_differential_prices.index.invalid_values_message') %>.
+        <% end %>
+      <% elsif @energy_tariff.energy_tariff_prices.complete? %>
         <%= component 'notice', status: :positive do |c| %>
           <%= t('schools.user_tariff_differential_prices.index.complete_message') %>.
         <% end %>
@@ -50,7 +53,7 @@
           <% edit_path = energy_tariffs_path(@energy_tariff, [], { action: :edit }) %>
           <%= link_to t('common.labels.previous'), edit_path, class: 'btn' %>
           <% next_path = energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]) %>
-          <%= link_to t('common.labels.next'), next_path, class: 'btn' %>
+          <%= link_to t('common.labels.next'), next_path, class: "btn#{@energy_tariff.usable? ? '' : ' disabled' }" %>
         </div>
         <div>
           <%= link_to t('schools.user_tariff_differential_prices.index.reset_to_default'),

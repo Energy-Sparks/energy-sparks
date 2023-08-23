@@ -5,12 +5,12 @@
 #  ccl                :boolean          default(FALSE)
 #  created_at         :datetime         not null
 #  created_by_id      :bigint(8)
-#  enabled            :boolean          default(FALSE)
+#  enabled            :boolean          default(TRUE)
 #  end_date           :date
 #  id                 :bigint(8)        not null, primary key
 #  meter_type         :integer          default("electricity"), not null
 #  name               :text             not null
-#  source             :integer          default("manual"), not null
+#  source             :integer          default("manually_entered"), not null
 #  start_date         :date
 #  tariff_holder_id   :bigint(8)
 #  tariff_holder_type :string
@@ -18,7 +18,7 @@
 #  tnuos              :boolean          default(FALSE)
 #  updated_at         :datetime         not null
 #  updated_by_id      :bigint(8)
-#  vat_rate           :float
+#  vat_rate           :integer
 #
 # Indexes
 #
