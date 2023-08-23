@@ -236,6 +236,10 @@ describe Amr::N3rgyTariffsUpserter do
       it 'logs a warning' do
         expect(import_log.error_messages).to_not be_nil
       end
+      it 'updates end date of previous tariff' do
+        existing_energy_tariff.reload
+        expect(existing_energy_tariff.end_date).to eq (Time.zone.today - 1)
+      end
     end
   end
 end

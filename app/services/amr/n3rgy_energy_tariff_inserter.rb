@@ -18,11 +18,14 @@ module Amr
     end
 
     def perform
-      return if reject_as_zero_standing_charges?
-      return if reject_as_zero_tariffs?
       check_unexpected_tariff_format?
-
       energy_tariff = latest_energy_tariff
+
+      if reject_as_zero_standing_charges? || reject_as_zero_tariffs?
+        update_existing_tariff(energy_tariff)
+        return
+      end
+
       if energy_tariff.nil? || tariff_changed?(energy_tariff)
         create_new_tariff
         update_existing_tariff(energy_tariff)
