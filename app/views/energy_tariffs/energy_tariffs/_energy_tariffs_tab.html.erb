@@ -6,7 +6,9 @@
   default_tariffs: default_tariffs do |c| %>
   <% c.with_header do %>
     <%= t('schools.user_tariffs.index.introduction_html', advice_pages: school_advice_path(tariff_holder)) if tariff_holder.school? %>
-    <% unless default_tariffs %>
+    <% if default_tariffs %>
+      <div><p><%= t('schools.user_tariffs.index.default_tariffs_message') %></p></div>
+    <% else %>
       <p><%= t('schools.user_tariffs.index.changes_to_cost_calculations_message') %></p>
     <% end %>
   <% end %>
