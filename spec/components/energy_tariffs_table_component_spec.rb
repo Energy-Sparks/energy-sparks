@@ -6,7 +6,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
   let(:tariff_holder)     { SiteSettings.current }
   let(:enabled)           { true }
   let(:source)            { :manually_entered }
-  let(:energy_tariffs)    { [create(:energy_tariff, tariff_holder: tariff_holder, meter_type: :electricity, enabled: enabled, source: source)] }
+  let(:energy_tariffs)    { [create(:energy_tariff, :with_flat_price, tariff_holder: tariff_holder, meter_type: :electricity, enabled: enabled, source: source)] }
   let(:show_actions)      { true }
   let(:show_prices)       { true }
 
@@ -51,7 +51,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     context 'with differential tariff' do
       let(:energy_tariffs) { [create(:energy_tariff, tariff_type: :differential)]}
       it 'returns expected label' do
-        expect(component.flat_rate_label(energy_tariffs.first)).to eq I18n.t('schools.user_tariffs.tariff_partial.day_night_tariff')
+        expect(component.flat_rate_label(energy_tariffs.first)).to eq I18n.t('schools.user_tariffs.tariff_partial.differential_tariff')
       end
     end
   end
@@ -85,6 +85,10 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
   context 'basic rendering' do
     it 'renders table' do
       expect(html).to have_css('#tariff-table')
+    end
+
+    it 'does not treat tariff as not usable' do
+      expect(html).to_not have_css('tr.table-danger')
     end
 
     it 'includes the tariff details' do
@@ -147,6 +151,17 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
         expect(html).to have_link('Enable')
         expect(html).to have_link('Delete')
       end
+      it 'styles the row' do
+        expect(html).to have_css("tr.table-secondary")
+      end
+    end
+
+    context 'with unusable tariff' do
+      #no prices
+      let(:energy_tariffs)    { [create(:energy_tariff, tariff_holder: tariff_holder, meter_type: :electricity, enabled: enabled, source: source)] }
+      it 'styles the row' do
+        expect(html).to have_css("tr.table-danger")
+      end
     end
 
     context 'with dcc tariff' do
@@ -165,8 +180,10 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
           expect(html).to have_link('Edit charges')
           expect(html).to have_link('Enable')
         end
+        it 'styles the row' do
+          expect(html).to have_css("tr.table-secondary")
+        end
       end
-
     end
 
     context 'with non-authorised user' do

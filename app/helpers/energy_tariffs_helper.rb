@@ -42,16 +42,12 @@ module EnergyTariffsHelper
     show_all ? EnergyTariff.meter_types.keys : Meter::MAIN_METER_TYPES
   end
 
-  def sorted_tariffs(tariff_holder, meter_type, source = :manually_entered)
-    tariff_holder.energy_tariffs.where(meter_type: meter_type, source: source).by_start_and_end.by_name
-  end
-
   def site_settings_page?
     request.path.start_with?('/admin/settings')
   end
 
   def convert_value_to_long_currency(value, currency: '£')
-    return '' unless value.is_a? Numeric
+    return '£' unless value.is_a? Numeric
     value_as_string = value.to_s
     split_value = value_as_string.split('.')
 
@@ -67,11 +63,11 @@ module EnergyTariffsHelper
   end
 
   def energy_tariff_price_title(energy_tariff_price)
-    if energy_tariff_price.description.present?
-      "#{energy_tariff_price&.description} (#{energy_tariff_price&.start_time&.to_s(:time)} to #{energy_tariff_price&.end_time&.to_s(:time)})"
-    else
-      "Rate from #{energy_tariff_price&.start_time&.to_s(:time)} to #{energy_tariff_price&.end_time&.to_s(:time)}"
-    end
+    I18n.t(
+      'schools.tariffs_helper.rate_from',
+      start_time: energy_tariff_price&.start_time&.to_s(:time),
+      end_time: energy_tariff_price&.end_time&.to_s(:time)
+    )
   end
 
   def energy_tariff_prices_text(energy_tariff)

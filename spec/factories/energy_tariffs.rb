@@ -12,8 +12,11 @@ FactoryBot.define do
     enabled { true }
 
     trait :with_flat_price do
+      transient do
+        value { 1 }
+      end
       after(:create) do |energy_tariff, evaluator|
-        create(:energy_tariff_price, energy_tariff: energy_tariff, value: 1)
+        create(:energy_tariff_price, energy_tariff: energy_tariff, value: evaluator.value)
         energy_tariff.reload
       end
     end

@@ -8,7 +8,11 @@ namespace :amr do
 
     puts "#{DateTime.now.utc} import_n3rgy_tariffs start for #{meters.count} meters"
     meters.each do |meter|
-      Amr::N3rgyTariffsDownloadAndUpsert.new(meter: meter).perform
+      if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
+        Amr::N3rgyEnergyTariffLoader.new(meter: meter).perform
+      else
+        Amr::N3rgyTariffsDownloadAndUpsert.new(meter: meter).perform
+      end
     end
     puts "#{DateTime.now.utc} import_n3rgy_tariffs end"
   end

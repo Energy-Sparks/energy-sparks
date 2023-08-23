@@ -5,12 +5,12 @@
 #  ccl                :boolean          default(FALSE)
 #  created_at         :datetime         not null
 #  created_by_id      :bigint(8)
-#  enabled            :boolean          default(FALSE)
+#  enabled            :boolean          default(TRUE)
 #  end_date           :date
 #  id                 :bigint(8)        not null, primary key
 #  meter_type         :integer          default("electricity"), not null
 #  name               :text             not null
-#  source             :integer          default("manual"), not null
+#  source             :integer          default("manually_entered"), not null
 #  start_date         :date
 #  tariff_holder_id   :bigint(8)
 #  tariff_holder_type :string
@@ -18,7 +18,7 @@
 #  tnuos              :boolean          default(FALSE)
 #  updated_at         :datetime         not null
 #  updated_by_id      :bigint(8)
-#  vat_rate           :float
+#  vat_rate           :integer
 #
 # Indexes
 #
@@ -62,10 +62,6 @@ class EnergyTariff < ApplicationRecord
   scope :enabled, -> { where(enabled: true) }
   scope :disabled, -> { where(enabled: false) }
 
-  scope :has_prices, -> { where(id: EnergyTariffPrice.select(:energy_tariff_id)) }
-  scope :has_charges, -> { where(id: EnergyTariffCharge.select(:energy_tariff_id)) }
-  scope :complete, -> { has_prices.or(has_charges) }
-
   scope :by_name,       -> { order(name: :asc) }
   scope :by_start_date, -> { order(start_date: :asc) }
 
@@ -84,6 +80,17 @@ class EnergyTariff < ApplicationRecord
   }
 
   scope :latest_with_fixed_end_date, ->(meter_type, source = :manually_entered) { where(meter_type: meter_type, source: source).where.not(end_date: nil).order(end_date: :desc) }
+
+  def self.usable
+    select(&:usable?)
+  end
+
+  def usable?
+    case tariff_type
+    when 'differential' then usable_differential_tariff?
+    when 'flat_rate' then usable_flat_rate_tariff?
+    end
+  end
 
   def flat_rate?
     tariff_type == 'flat_rate'
@@ -128,6 +135,25 @@ class EnergyTariff < ApplicationRecord
   end
 
   private
+
+  def usable_flat_rate_tariff?
+    # For a flate rate energy tariff to be considered "usable":
+    # * it must have only one energy tariff price record
+    # * the price record must have a value set greater than zero
+    return true if energy_tariff_prices.count == 1 && energy_tariff_prices&.first&.value&.nonzero?
+
+    false
+  end
+
+  def usable_differential_tariff?
+    # For a differential rate energy tariff to be considered "usable":
+    # * it must have more two or more energy tariff price records
+    # * the energy tariff price records combined start and end times must cover a full 24 hour period (1440 minutes)
+    # * all energy tariff price records must have values set greater than zero
+    return true if energy_tariff_prices.count >= 2 && energy_tariff_prices.complete? && energy_tariff_prices&.map(&:value)&.all? { |value| value&.nonzero? }
+
+    false
+  end
 
   def start_and_end_date_are_not_both_blank
     return unless tariff_holder_type == 'SchoolGroup'

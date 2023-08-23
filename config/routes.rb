@@ -70,7 +70,11 @@ Rails.application.routes.draw do
     scope module: 'energy_tariffs' do
     resources :energy_tariffs do
       resources :energy_tariff_flat_prices
-      resources :energy_tariff_differential_prices
+      resources :energy_tariff_differential_prices do
+        collection do
+          get :reset, to: 'energy_tariff_differential_prices#reset'
+        end
+      end
       resources :energy_tariff_charges
       collection do
         get :choose_meters, to: 'energy_tariffs#choose_meters'

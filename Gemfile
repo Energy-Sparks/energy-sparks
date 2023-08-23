@@ -23,7 +23,7 @@ gem 'pg_search'
 gem 'calculate_in_group'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '3.0.1'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '3.0.2'
 #gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'additional-tariff-code-tests-and-refactoring'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
@@ -163,7 +163,7 @@ group :test do
   gem 'capybara-email'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
-  gem "webdrivers", '>= 5.2.0'
+  gem "webdrivers", '>= 5.3.0'
   gem 'simplecov', :require => false, :group => :test
   gem 'shoulda-matchers'
   gem 'timecop'

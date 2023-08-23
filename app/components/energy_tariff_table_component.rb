@@ -44,7 +44,7 @@ class EnergyTariffTableComponent < ViewComponent::Base
   end
 
   def flat_rate_label(energy_tariff)
-    energy_tariff.flat_rate? ? t('schools.user_tariffs.tariff_partial.simple_tariff') : t('schools.user_tariffs.tariff_partial.day_night_tariff')
+    energy_tariff.flat_rate? ? t('schools.user_tariffs.tariff_partial.simple_tariff') : t('schools.user_tariffs.tariff_partial.differential_tariff')
   end
 
   def start_date(energy_tariff)
@@ -65,5 +65,10 @@ class EnergyTariffTableComponent < ViewComponent::Base
 
   def table_sorted
     @tariffs.length > 1 ? 'table-sorted' : ''
+  end
+
+  def class_for_tariff(energy_tariff)
+    return "table-secondary" unless energy_tariff.enabled
+    return "table-danger" unless energy_tariff.usable?
   end
 end

@@ -19,7 +19,7 @@ module EnergyTariffHolder
   end
 
   def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys)
-    energy_tariffs.enabled.where(meter_type: meter_type).complete.map(&:meter_attribute)
+    energy_tariffs.enabled.where(meter_type: meter_type).usable.map(&:meter_attribute)
   end
 
   def parent_tariff_holder
@@ -27,8 +27,12 @@ module EnergyTariffHolder
   end
 
   #Does it currently have any of that type
-  def any_tariffs_of_type?(meter_type, source = :manually_entered)
-    energy_tariffs.where(meter_type: meter_type, source: source).any?
+  def any_tariffs_of_type?(meter_type, source = :manually_entered, only_enabled: false)
+    if only_enabled
+      energy_tariffs.where(meter_type: meter_type, source: source, enabled: true).any?
+    else
+      energy_tariffs.where(meter_type: meter_type, source: source).any?
+    end
   end
 
   #Can if have tariffs of a type

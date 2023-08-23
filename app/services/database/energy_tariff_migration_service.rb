@@ -281,10 +281,15 @@ module Database
                             :differential
                           end
 
+            end_date = if attribute[:start_date] == attribute[:end_date]
+                          nil
+                       else
+                         attribute[:end_date]
+                       end
             EnergyTariff.create!(
               ccl: false,
               enabled: true,
-              end_date: attribute[:end_date],
+              end_date: end_date,
               meter_type: meter.meter_type,
               name: attribute[:name],
               source: :dcc,
