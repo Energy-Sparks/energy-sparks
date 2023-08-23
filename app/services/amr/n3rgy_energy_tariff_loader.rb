@@ -6,7 +6,7 @@ module Amr
     end
 
     def perform
-      N3rgyEnergyTariffsInserter.new(
+      N3rgyEnergyTariffInserter.new(
         meter: @meter,
         start_date: start_date,
         tariff: download_todays_tariff,

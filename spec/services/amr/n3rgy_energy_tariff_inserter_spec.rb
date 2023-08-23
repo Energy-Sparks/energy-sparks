@@ -107,7 +107,7 @@ describe Amr::N3rgyTariffsUpserter do
       create(:energy_tariff, :with_flat_price, source: :dcc, school: school, meters: [meter], value: price, end_date: nil)
     }
     let!(:existing_charge) {
-      create(:energy_tariff_charge, energy_tariff: existing_energy_tariff, charge_type: :standing_charge, units: :kwh, value: charge)
+      create(:energy_tariff_charge, energy_tariff: existing_energy_tariff, charge_type: :standing_charge, units: :day, value: charge)
     }
 
     before(:each) do
@@ -141,7 +141,7 @@ describe Amr::N3rgyTariffsUpserter do
       create(:energy_tariff, :with_flat_price, source: :dcc, school: school, meters: [meter], value: old_price, end_date: nil)
     }
     let!(:existing_charge) {
-      create(:energy_tariff_charge, energy_tariff: existing_energy_tariff, charge_type: :standing_charge, units: :kwh, value: old_charge)
+      create(:energy_tariff_charge, energy_tariff: existing_energy_tariff, charge_type: :standing_charge, units: :day, value: old_charge)
     }
 
     before(:each) do

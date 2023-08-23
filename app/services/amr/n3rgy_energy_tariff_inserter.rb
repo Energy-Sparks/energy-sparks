@@ -53,7 +53,7 @@ module Amr
     end
 
     def same_standing_charge?(energy_tariff)
-      energy_tariff.energy_tariff_charges.where(charge_type: :standing_charge, value: standing_charge, units: :kwh).any?
+      energy_tariff.energy_tariff_charges.where(charge_type: :standing_charge, value: standing_charge, units: :day).any?
     end
 
     #Should already have checked if existing and new tariff are
