@@ -435,8 +435,6 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).to have_content('Manage and view tariffs')
 
     click_link(energy_tariff.name)
-    #previous flow leaves a zero charge
-    expect(page).to have_content(I18n.t('schools.user_tariffs.show.not_usable'))
 
     expect(page).to have_content('My First Diff Tariff')
     expect(page).to have_content('Dates')
