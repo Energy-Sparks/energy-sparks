@@ -69,7 +69,7 @@ gem 'devise' # Use devise for authentication
 gem 'cancancan', '~> 3.0.1' # Use cancancan for authorization
 
 # Utils
-gem 'groupdate', '4.0.1' # Use groupdate to group usage stats
+gem 'groupdate', '6.2.1' # Use groupdate to group usage stats
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 
 # Bundle update installs 0.7.0 for some weird reason!
@@ -119,7 +119,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem "bullet", require: false # use bullet to optimise queries
-  gem 'rspec-rails', '~> 4.0.1'
+  gem 'rspec-rails', '~> 5.1.2'
   gem 'rspec-json_expectations'
   gem 'rails-controller-testing'
   gem "fakefs", require: "fakefs/safe"

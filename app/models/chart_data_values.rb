@@ -141,8 +141,8 @@ class ChartDataValues
       I18n.t('analytics.series_data_manager.series_name.storage_heaters') => STORAGE_HEATER,
       '£' => MONEY,
       I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME_I18N_KEY}") => GREEN,
-      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME}") => DARK_ELECTRICITY,
-      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME}") => LIGHT_GAS_LINE,
+      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME_I18N_KEY}") => DARK_ELECTRICITY,
+      I18n.t("analytics.series_data_manager.series_name.#{SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME_I18N_KEY}") => LIGHT_GAS_LINE,
       I18n.t('analytics.series_data_manager.y2_solar_label') => MIDDLE_GAS,
       I18n.t('analytics.series_data_manager.y2_rating') => '#232b49'
     }

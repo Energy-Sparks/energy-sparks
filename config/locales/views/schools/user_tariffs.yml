@@ -121,6 +121,7 @@ en:
           <p>
             To add a a new tariff you will need to know the prices and, optionally, the range of standing charges that are included in your energy contract.
           </p>
+        no_defaults: We have no default tariffs for your %{meter_type} meters.
         note_about_defaults: If we do not have your real tariff information, then we will estimate your costs using our default tariffs.
         note_about_smart_meter_tariffs: We are currently using tariffs automatically imported from your smart meters.
         solar_pv:
@@ -155,6 +156,7 @@ en:
         introduction_html: Any changes to the tariff will be reflected in the <a href='%{analysis_path}'>%{meter_type} cost analysis</a> page which will update overnight
         meter_attribute_view: Meter attribute view (admin only)
         meters: Meters
+        no_standing_charges: No standing charges have been added
         notes_html: Notes <small>(admin only)</small>
         standing_charges: Standing charges
         updated_at: Date last updated
@@ -162,8 +164,8 @@ en:
       smart_meter_tariffs:
         introduction_html: |-
           <p>
-            We are automatically loading basic tariff information from your smart meters. This does not include information about
-            your standing charges as this is not stored on the meter.
+            We are automatically loading basic tariff information from your smart meters. These only include basic information about
+            your daily standing charges.
           </p>
           <p>
             You can choose to edit these tariffs to add more detailed standing charge information for each meter. If you have already added tariffs for the whole school, you can instead choose to disable these tariffs.
