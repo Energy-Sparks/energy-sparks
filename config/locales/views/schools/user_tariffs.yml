@@ -133,6 +133,7 @@ en:
         tabs:
           default_tariffs: Default tariffs
           smart_meter_tariffs: Smart meter tariffs
+          system_default_tariffs: System default tariffs
           user_tariffs: User supplied tariffs
         title: Manage and view tariffs
       meters:
