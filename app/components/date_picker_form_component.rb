@@ -3,10 +3,10 @@
 class DatePickerFormComponent < ViewComponent::Base
   attr_reader :form_object_name, :field_name, :value, :errors
 
-  def initialize(form:, field_name:, value: nil, errors: '')
+  def initialize(form:, field_name:, value: nil, default_if_nil: DateTime.now.strftime('%d/%m/%Y'), errors: '')
     @form_object_name = form.object_name
     @field_name = field_name
-    @value = value || DateTime.now.strftime('%d/%m/%Y')
+    @value = value || default_if_nil
     @errors = errors
   end
 
