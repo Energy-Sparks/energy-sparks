@@ -68,7 +68,7 @@ describe EnergyTariffPrice do
     end
   end
 
-  describe '#find_possible_time_range_gaps' do
+  describe '#possible_time_range_gaps' do
     it 'returns true if any value is nil or zero' do
       energy_tariff = EnergyTariff.create!(name: 'A new tariff', tariff_holder: create(:school), tariff_type: 'differential')
       EnergyTariffPrice.delete_all
@@ -77,7 +77,7 @@ describe EnergyTariffPrice do
       EnergyTariffPrice.create!(start_time: "2000-01-01 16:30:00", end_time: "2000-01-01 17:30:00", units: 'kwh', energy_tariff: energy_tariff)
       EnergyTariffPrice.create!(start_time: "2000-01-01 19:00:00", end_time: "2000-01-01 20:30:00", units: 'kwh', energy_tariff: energy_tariff)
       EnergyTariffPrice.create!(start_time: "2000-01-01 21:00:00", end_time: "2000-01-01 22:30:00", units: 'kwh', energy_tariff: energy_tariff)
-      expect(energy_tariff.energy_tariff_prices.find_possible_time_range_gaps).to match_array(
+      expect(energy_tariff.energy_tariff_prices.possible_time_range_gaps).to match_array(
         [
           DateTime.parse("2000-01-01 03:30:00 UTC")..DateTime.parse("2000-01-01 14:30:00 UTC"),
           DateTime.parse("2000-01-01 17:30:00 UTC")..DateTime.parse("2000-01-01 19:00:00 UTC"),
