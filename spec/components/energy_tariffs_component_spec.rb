@@ -9,14 +9,17 @@ RSpec.describe EnergyTariffsComponent, type: :component do
   let!(:exp_solar_pv_tariffs){ create_list(:energy_tariff, 1, tariff_holder: tariff_holder, meter_type: :exported_solar_pv)}
 
   let(:tariff_types)         { Meter::MAIN_METER_TYPES }
-
   let(:show_add_button)      { true }
+  let(:source)               { :manually_entered }
+  let(:default_tariffs)      { false }
 
   let(:params) {
     {
       tariff_holder: tariff_holder,
       tariff_types: tariff_types,
-      show_add_button: show_add_button
+      source: source,
+      show_add_button: show_add_button,
+      default_tariffs: default_tariffs
     }
   }
 
@@ -40,6 +43,24 @@ RSpec.describe EnergyTariffsComponent, type: :component do
         expect(html).to have_css('#gas-tariffs-table')
         expect(html).to have_css('#solar_pv-tariffs-table')
         expect(html).to have_css('#exported_solar_pv-tariffs-table')
+      end
+    end
+    context 'with smart meter tariffs' do
+      let(:source)               { :dcc }
+      context 'and no gas meters' do
+        let!(:gas_tariffs)         { nil }
+        it 'adds correct message' do
+          expect(html).to have_content(I18n.t('schools.user_tariffs.index.no_smart_meter_tariffs', meter_type: :gas))
+        end
+      end
+    end
+    context 'with default tariffs' do
+      let(:default_tariffs)      { true }
+      context 'and no gas meters' do
+        let!(:gas_tariffs)         { nil }
+        it 'adds correct message' do
+          expect(html).to have_content(I18n.t('schools.user_tariffs.index.no_defaults', meter_type: :gas))
+        end
       end
     end
   end

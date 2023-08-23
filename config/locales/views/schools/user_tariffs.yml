@@ -123,6 +123,7 @@ en:
             To add a a new tariff you will need to know the prices and, optionally, the range of standing charges that are included in your energy contract.
           </p>
         no_defaults: We have no default tariffs for your %{meter_type} meters.
+        no_smart_meter_tariffs: We have not imported any tariffs from your %{meter_type} meters.
         note_about_defaults: If we do not have your real tariff information, then we will estimate your costs using our default tariffs.
         note_about_smart_meter_tariffs: We are currently using tariffs automatically imported from your smart meters.
         solar_pv:
