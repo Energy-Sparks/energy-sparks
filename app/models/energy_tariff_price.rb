@@ -53,26 +53,30 @@ class EnergyTariffPrice < ApplicationRecord
     total_minutes == 1440
   end
 
-  def self.time_duration_gaps
-    return [] if complete?
-
-    a = all.order(:start_time).map(&:time_range)
-    gaps = []
-    a.each_with_index do |time_range, index|
-      element_index = index == a.size - 1 ? 0 : index + 1
-      next if time_range.last == a[element_index].first
-
-      start_time = time_range.last + 1.minute
-      end_time = a[element_index].first - 1.minute
-      next if start_time == end_time
-      gaps << (start_time..end_time)
-    end
-
-    gaps
-  end
-
   def self.invalid_prices?
     all.map(&:value).any? { |value| value.nil? || value.zero? }
+  end
+
+  def self.possible_time_range_gaps
+    return [] if complete?
+
+    find_possible_time_range_gaps
+  end
+
+  def self.find_possible_time_range_gaps
+    existing_time_ranges = all.order(:start_time).map(&:time_range)
+    possible_time_range_gaps = []
+
+    existing_time_ranges.each_with_index do |time_range, index|
+      end_time_index = (index == existing_time_ranges.size - 1 ? 0 : index + 1)
+      start_time = time_range.last + 1.minute
+      end_time = existing_time_ranges[end_time_index].first - 1.minute
+      next if start_time == end_time
+
+      possible_time_range_gaps << (start_time..end_time)
+    end
+
+    possible_time_range_gaps
   end
 
   private

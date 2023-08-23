@@ -34,7 +34,7 @@
         <%= component 'notice', status: :negative do |c| %>
           <p><%= t('schools.user_tariff_differential_prices.index.incomplete_message') %></p>
           <ul>
-            <% @energy_tariff.energy_tariff_prices.time_duration_gaps.each do |time_duration_gap| %>
+            <% @energy_tariff.energy_tariff_prices.possible_time_range_gaps.each do |time_duration_gap| %>
               <li>
                 <%= t('schools.tariffs_helper.rate_from',
                       start_time: time_duration_gap.first.to_s(:time),
