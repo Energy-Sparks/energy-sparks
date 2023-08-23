@@ -103,6 +103,8 @@ RSpec.shared_examples "a gas tariff editor with no meter selection" do
     expect(page).to have_content('End date')
     expect(page).to have_content('16/08/2023')
 
+    expect(page).to_not have_content(I18n.t('schools.user_tariffs.show.not_usable'))
+
     find('#edit_dates').click
     expect(page).to have_content('Name')
     expect(page).to have_content('Start date')
@@ -203,6 +205,9 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     visit tariff_index_path
 
     expect(page).to have_content('My First Tariff')
+
+    click_on('My First Tariff')
+    expect(page).to have_content(I18n.t('schools.user_tariffs.show.not_usable'))
   end
 
   it 'can create a flat rate tariff with just a price' do
@@ -252,6 +257,8 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).to have_content('15/08/2023')
     expect(page).to have_content('End date')
     expect(page).to have_content('16/08/2023')
+
+    expect(page).to_not have_content(I18n.t('schools.user_tariffs.show.not_usable'))
 
     find('#edit_dates').click
     expect(page).to have_content('Name')
@@ -428,6 +435,9 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).to have_content('Manage and view tariffs')
 
     click_link(energy_tariff.name)
+    #previous flow leaves a zero charge
+    expect(page).to have_content(I18n.t('schools.user_tariffs.show.not_usable'))
+
     expect(page).to have_content('My First Diff Tariff')
     expect(page).to have_content('Dates')
     expect(page).to have_content('Start date')
@@ -532,6 +542,8 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     else
       expect(page).not_to have_content('Notes (admin only)')
     end
+
+    expect(page).to_not have_content(I18n.t('schools.user_tariffs.show.not_usable'))
 
     expect(energy_tariff.enabled).to be true
     expect(energy_tariff.meter_type.to_sym).to eq(:electricity)

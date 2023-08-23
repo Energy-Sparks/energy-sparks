@@ -4,10 +4,10 @@
 #
 #  created_at       :datetime         not null
 #  description      :text
-#  end_time         :text             not null
+#  end_time         :time             default(Sat, 01 Jan 2000 23:30:00 UTC +00:00), not null
 #  energy_tariff_id :bigint(8)        not null
 #  id               :bigint(8)        not null, primary key
-#  start_time       :text             not null
+#  start_time       :time             default(Sat, 01 Jan 2000 00:00:00 UTC +00:00), not null
 #  units            :text
 #  updated_at       :datetime         not null
 #  value            :decimal(, )      default(0.0), not null
