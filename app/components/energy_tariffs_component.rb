@@ -22,4 +22,12 @@ class EnergyTariffsComponent < ViewComponent::Base
       "#{meter_type}-tariffs-table"
     end
   end
+
+  def sorted_tariffs(meter_type)
+    if @default_tariffs
+      @tariff_holder.energy_tariffs.where(meter_type: meter_type, source: @source, enabled: true).by_start_and_end.by_name.select(&:usable?)
+    else
+      @tariff_holder.energy_tariffs.where(meter_type: meter_type, source: @source).by_start_and_end.by_name
+    end
+  end
 end
