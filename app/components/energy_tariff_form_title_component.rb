@@ -17,7 +17,7 @@ class EnergyTariffFormTitleComponent < ViewComponent::Base
   end
 
   def type_label
-    @energy_tariff.flat_rate? ? t('schools.user_tariffs.tariff_partial.simple_tariff') : t('schools.user_tariffs.tariff_partial.day_night_tariff')
+    @energy_tariff.flat_rate? ? t('schools.user_tariffs.tariff_partial.simple_tariff') : t('schools.user_tariffs.tariff_partial.differential_tariff')
   end
 
   def dates

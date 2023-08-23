@@ -62,10 +62,6 @@ class EnergyTariff < ApplicationRecord
   scope :enabled, -> { where(enabled: true) }
   scope :disabled, -> { where(enabled: false) }
 
-  scope :has_prices, -> { where(id: EnergyTariffPrice.select(:energy_tariff_id)) }
-  scope :has_charges, -> { where(id: EnergyTariffCharge.select(:energy_tariff_id)) }
-  scope :complete, -> { has_prices.or(has_charges) }
-
   scope :by_name,       -> { order(name: :asc) }
   scope :by_start_date, -> { order(start_date: :asc) }
 
@@ -85,8 +81,8 @@ class EnergyTariff < ApplicationRecord
 
   scope :latest_with_fixed_end_date, ->(meter_type, source = :manually_entered) { where(meter_type: meter_type, source: source).where.not(end_date: nil).order(end_date: :desc) }
 
-  def flat_rate?
-    tariff_type == 'flat_rate'
+  def self.usable
+    select(&:usable?)
   end
 
   def usable?
@@ -94,6 +90,10 @@ class EnergyTariff < ApplicationRecord
     when 'differential' then usable_differential_tariff?
     when 'flat_rate' then usable_flat_rate_tariff?
     end
+  end
+
+  def flat_rate?
+    tariff_type == 'flat_rate'
   end
 
   def meter_attribute

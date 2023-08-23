@@ -6,6 +6,7 @@ en:
     tariffs_helper:
       charge_value: "%{value} per %{units}"
       prices_text: Based on the meters associated with this tariff, we've set some default day/night periods - you'll need to update the rates from the details on your bill.
+      rate_from: Rate from %{start_time} to %{end_time}
       user_tariff_title: "%{start_date} to %{end_date}"
     user_tariff_charges:
       charge_ccl:
@@ -39,11 +40,16 @@ en:
           start_time: Start time
           value: Rate in £/kWh
       index:
+        add_rate: Add rate
         breadcrumb_title: Add consumption charges for each time period for this tariff
+        complete_message: Complete 24 hour coverage
         consumption_charges: Consumption charges
+        incomplete_message: Incomplete 24 hour coverage.  Please add another rate
+        incomplete_zero_prices_message: A differential tariff must have at least 2 prices, e.g. a day time and a night-time rate. Please add prices, or reset to default
         introduction_school: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         introduction_school_group: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         introduction_site_settings: Please provide as much detail as you can about the consumption charges associated with this tariff
+        reset_to_default: Reset to default
         title: Add consumption charges for each time period for this tariff
     user_tariff_flat_prices:
       edit:
@@ -75,7 +81,7 @@ en:
         which_meters_will_this_tariff_apply_to: Which meters will this tariff apply to?
       choose_type:
         breadcrumb_title: Choose tariff type
-        day_night_tariff: Day/Night tariff
+        differential_tariff: Differential tariff
         is_this_a_simple_flat_rate: Is this a simple flat rate?
         or_a_rate_which_varies_by_time_of_day: Or a rate which varies by time of day (e.g. Day/Night tariff, Economy7)
         simple: Simple
@@ -170,7 +176,7 @@ en:
         no_start_date: No start date
       tariff_partial:
         consumption_charges: Consumption charges
-        day_night_tariff: Day/night tariff
+        differential_tariff: Differential tariff
         end_date: End date
         price_from_to: "%{price_start_time} to %{price_end_time}:"
         simple_tariff: Simple tariff
