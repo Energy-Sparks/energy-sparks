@@ -49,7 +49,7 @@ en:
         introduction_school: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         introduction_school_group: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         introduction_site_settings: Please provide as much detail as you can about the consumption charges associated with this tariff
-        invalid_values_message: You have one or more invalid prices. Please add valid prices for all rates marked
+        invalid_values_message: Please add valid prices for all marked rates
         reset_to_default: Reset to default
         title: Add consumption charges for each time period for this tariff
     user_tariff_flat_prices:
