@@ -33,6 +33,8 @@ en:
         notice: Adding standing charges to this tariff will allow us to provide you with more detailed cost analysis. But this step is optional.
         skip_to_final_step: Skip to final step
         title: Add standing charges for this tariff
+      per: per
+      value_in_gbp: Value in £
     user_tariff_differential_prices:
       form:
         labels:
@@ -68,6 +70,7 @@ en:
         introduction_school_group: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         introduction_site_settings: Please provide as much detail as you can about the consumption charges associated with this tariff
         title: Add consumption charges for this tariff
+      rate_in_gbp: Rate in £
     user_tariffs:
       charges_table:
         climate_charge_levy: Climate charge levy
