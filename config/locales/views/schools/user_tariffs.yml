@@ -158,6 +158,7 @@ en:
         meter_attribute_view: Meter attribute view (admin only)
         meters: Meters
         no_standing_charges: No standing charges have been added
+        not_usable: This tariff has missing or incomplete prices and so is not yet usable.
         notes_html: Notes <small>(admin only)</small>
         standing_charges: Standing charges
         updated_at: Date last updated

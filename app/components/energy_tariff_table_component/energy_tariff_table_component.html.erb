@@ -16,7 +16,7 @@
   </thead>
   <tbody>
     <% @tariffs.each do |energy_tariff| %>
-      <tr >
+      <tr class="<%= class_for_tariff(energy_tariff) %>" id="energy-tariff-<%=energy_tariff.id%>">
         <td class="text-right" data-order="<%= start_date_sortable(energy_tariff) %>"><%= start_date(energy_tariff) %></td>
         <td class="text-right" data-order="<%= end_date_sortable(energy_tariff) %>"><%= end_date(energy_tariff) %></td>
         <td class="text-left" >
