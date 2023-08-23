@@ -62,7 +62,6 @@ en:
         introduction_site_settings: Please provide as much detail as you can about the consumption charges associated with this tariff
         title: Edit the consumption charges for this tariff
       form:
-        per_gbp_kwh: per £/kWh
         rate: Rate
       new:
         breadcrumb_title: Add consumption charges for this tariff
