@@ -23,9 +23,8 @@
 
       <%= simple_form_for @energy_tariff, url: form_url do |f| %>
         <%= f.hidden_field :tariff_type, value: 'differential' %>
-        <%= submit_tag t('schools.user_tariffs.choose_type.day_night_tariff'), class: 'btn btn-info' %>
+        <%= submit_tag t('schools.user_tariffs.choose_type.differential_tariff'), class: 'btn btn-info' %>
       <% end %>
-
     </div>
   </div>
 </div>

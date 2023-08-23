@@ -52,7 +52,6 @@ cy:
         title: Dewiswch fesuryddion ar gyfer y tariff hwn
         which_meters_will_this_tariff_apply_to: I ba fesuryddion y bydd y tariff hwn yn berthnasol?
       choose_type:
-        day_night_tariff: Tariff Dydd/Nos
         is_this_a_simple_flat_rate: Ai cyfradd unffurf syml yw hon?
         or_a_rate_which_varies_by_time_of_day: Neu gyfradd sy’n amrywio yn ôl amser o’r dydd (e.e. tariff Dydd/Nos, Economi7)
         simple: Syml
@@ -113,7 +112,6 @@ cy:
           </p>
       tariff_partial:
         consumption_charges: Costau defnydd
-        day_night_tariff: Tariff dydd/nos
         end_date: Dyddiad gorffen
         simple_tariff: Tariff syml
         start_date: Dyddiad cychwyn
