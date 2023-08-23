@@ -1,5 +1,5 @@
 <table class="table table-charges">
   <tbody>
-    <%= render 'charge_basic_row', energy_tariff_charge: energy_tariff_charge, f: f %>
+    <%= render 'charge_basic_row', energy_tariff_charge: energy_tariff_charge, f: f, disabled: local_assigns[:disabled] %>
   </tbody>
 </table>
