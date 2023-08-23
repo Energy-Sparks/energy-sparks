@@ -20,8 +20,7 @@ module Amr
     def perform
       return if reject_as_zero_standing_charges?
       return if reject_as_zero_tariffs?
-      return if unexpected_tariff_format?
-      return if summary_tariff.nil?
+      check_unexpected_tariff_format?
 
       energy_tariff = latest_energy_tariff
       if energy_tariff.nil? || tariff_changed?(energy_tariff)
@@ -96,13 +95,13 @@ module Amr
     end
 
     #We only support flat rate and differential tariffs in the EnergyTariff
-    #model currently.
-    def unexpected_tariff_format?
+    #model currently. Raise exception to catch problems early
+    def check_unexpected_tariff_format?
       unless rates.values.all? {|price| price.is_a?(Numeric)}
-        log_error("Unexpected tariff format #{rates.inspect}")
-        return true
+        raise "Unexpected tariff format for #{@meter.mpan_mprn} on #{@start_date}: #{rates.inspect}"
       end
-      false
+      #Trigger parsing of tariff data, which may throw errors
+      summary_tariff
     end
 
     #Returns structures like:
@@ -126,9 +125,6 @@ module Amr
 
     def summary_tariff
       @summary_tariff ||= N3rgyTariffs.new(@tariff).parameterise
-    rescue => e
-      log_error("Error parsing tariff from n3rgy #{e.message}")
-      nil
     end
 
     def end_date

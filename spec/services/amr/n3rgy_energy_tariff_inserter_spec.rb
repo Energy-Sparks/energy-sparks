@@ -93,12 +93,8 @@ describe Amr::N3rgyTariffsUpserter do
     #fake up a tiered tariff
     let(:raw_prices) { [{ :tariffs => { 1 => 0.485, 2 => 0.16774 }, :thresholds => { 1 => 1000 }, :type => :tiered }] + Array.new(15, price) + Array.new(32, price * 2)}
 
-    before(:each) do
-      service.perform
-    end
-
-    it 'logs an error' do
-      expect(import_log.error_messages).to_not be_nil
+    it 'throws an exception' do
+      expect{ service.perform }.to raise_error(StandardError)
     end
   end
 
