@@ -23,8 +23,11 @@ class EnergyTariffPrice < ApplicationRecord
 
   belongs_to :energy_tariff, inverse_of: :energy_tariff_prices
 
-  validates :start_time, :end_time, :value, :units, presence: true
-  validates :value, numericality: { greater_than_or_equal_to: MINIMUM_VALUE }
+  validates :start_time, :end_time, :units, presence: true
+  validates :value, presence: true, on: :update
+
+  validates :value, numericality: { greater_than: MINIMUM_VALUE }, allow_nil: true, on: :create
+  validates :value, numericality: { greater_than: MINIMUM_VALUE }, on: :update
   validate :no_time_overlaps
   validate :time_range_given
 
@@ -48,6 +51,10 @@ class EnergyTariffPrice < ApplicationRecord
     return true if first&.energy_tariff&.flat_rate?
 
     total_minutes == 1440
+  end
+
+  def self.invalid_prices?
+    all.map(&:value).any? { |value| value.nil? || value.zero? }
   end
 
   private

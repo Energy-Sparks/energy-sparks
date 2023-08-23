@@ -47,7 +47,7 @@ module EnergyTariffsHelper
   end
 
   def convert_value_to_long_currency(value, currency: '£')
-    return '' unless value.is_a? Numeric
+    return '£' unless value.is_a? Numeric
     value_as_string = value.to_s
     split_value = value_as_string.split('.')
 

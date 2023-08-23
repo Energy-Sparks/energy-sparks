@@ -310,9 +310,9 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).to have_content('Rate from 00:00 to 07:00')
     expect(page).to have_content('Rate from 07:00 to 00:00')
     expect(page).to have_link('Add rate')
-    expect(page).to have_content('Complete 24 hour coverage.')
+    expect(page).to have_content('Please add valid prices for all marked rates')
 
-    first('.energy-tariff-show-button').click
+    page.all('.energy-tariff-show-button')[0].click
 
     select '00', from: 'energy_tariff_price_start_time_4i'
     select '30', from: 'energy_tariff_price_start_time_5i'
@@ -325,21 +325,26 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).to have_content('Rate from 00:30 to 06:30')
     expect(page).to have_content('Rate from 07:00 to 00:00')
     expect(page).to have_content('£1.50 per kWh')
-    expect(page).to have_content('£0.00 per kWh')
+    expect(page).to have_content('£ per kWh')
 
-    expect(page).to have_content('Incomplete 24 hour coverage. Please add another rate.')
-
+    expect(page).to have_content('Please add valid prices for all marked rates.')
     first('.energy-tariff-show-button').click
+
+    fill_in 'Rate in £/kWh', with: '1.5'
+    click_button('Save')
+
+
+    expect(page).to have_content('Please add valid prices for all marked rates.')
+    first('.energy-tariff-show-button').click
+
 
     select '00', from: 'energy_tariff_price_start_time_4i'
     select '00', from: 'energy_tariff_price_start_time_5i'
     select '07', from: 'energy_tariff_price_end_time_4i'
     select '00', from: 'energy_tariff_price_end_time_5i'
-
-    fill_in 'Rate in £/kWh', with: '1.5'
     click_button('Save')
 
-    expect(page).to have_content('Complete 24 hour coverage.')
+    expect(page).to have_content('Please add valid prices for all marked rates.')
     expect(page).not_to have_content('Incomplete 24 hour coverage. Please add another rate.')
     expect(page).not_to have_content('A differential tariff must have at least 2 prices, e.g. a day time and a night-time rate. Please add prices, or reset to default.')
     expect(find("a", text: "Add rate")[:class]).to eq('btn disabled')
@@ -350,10 +355,10 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).not_to have_content('Rate from 00:30 to 06:30')
     expect(page).to have_content('Rate from 07:00 to 00:00')
     expect(page).not_to have_content('£1.50 per kWh')
-    expect(page).to have_content('£0.00 per kWh')
+    expect(page).to have_content('£ per kWh')
 
     expect(page).not_to have_content('Complete 24 hour coverage.')
-    expect(page).to have_content('Incomplete 24 hour coverage. Please add another rate.')
+    expect(page).to have_content('Please add valid prices for all marked rates.')
     expect(page).not_to have_content('A differential tariff must have at least 2 prices, e.g. a day time and a night-time rate. Please add prices, or reset to default.')
     expect(find("a", text: "Add rate")[:class]).to eq('btn')
     expect(find("a", text: "Reset to default")[:class]).to eq('btn')
@@ -363,9 +368,9 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).not_to have_content('Rate from 00:30 to 06:30')
     expect(page).not_to have_content('Rate from 07:00 to 00:00')
     expect(page).not_to have_content('£1.50 per kWh')
-    expect(page).not_to have_content('£0.00 per kWh')
+    expect(page).not_to have_content('£ per kWh')
 
-    expect(page).not_to have_content('Complete 24 hour coverage.')
+    expect(page).not_to have_content('Please add valid prices for all marked rates.')
     expect(page).not_to have_content('Incomplete 24 hour coverage. Please add another rate.')
     expect(page).to have_content('A differential tariff must have at least 2 prices, e.g. a day time and a night-time rate. Please add prices, or reset to default.')
     expect(find("a", text: "Add rate")[:class]).to eq('btn')
@@ -375,17 +380,32 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
 
     expect(page).to have_content('Rate from 00:00 to 07:00')
     expect(page).to have_content('Rate from 07:00 to 00:00')
-    expect(page).to have_content('£0.00 per kWh')
-    expect(page).to have_content('£0.00 per kWh')
+    expect(page).to have_content('£ per kWh')
+    expect(page).to have_content('£ per kWh')
 
-    first('.energy-tariff-show-button').click
+    energy_tariff = EnergyTariff.last
+
+    find("#energy-tariff-show-button-#{energy_tariff.energy_tariff_prices.first.id}").click
+
     fill_in 'Rate in £/kWh', with: '1.5'
     click_button('Save')
 
     expect(page).to have_content('Rate from 00:00 to 07:00')
     expect(page).to have_content('Rate from 07:00 to 00:00')
     expect(page).to have_content('£1.50 per kWh')
-    expect(page).to have_content('£0.00 per kWh')
+    expect(page).to have_content('£ per kWh')
+
+    expect(find("a", text: "Next")[:class]).to eq('btn disabled')
+
+    find("#energy-tariff-show-button-#{energy_tariff.energy_tariff_prices.last.id}").click
+
+    fill_in 'Rate in £/kWh', with: '2.5'
+    click_button('Save')
+
+    expect(page).to have_content('Rate from 00:00 to 07:00 ')
+    expect(page).to have_content('Rate from 07:00 to 00:00')
+    expect(page).to have_content('£1.50 per kWh')
+    expect(page).to have_content('£2.50 per kWh')
 
     expect(page).to have_content('Complete 24 hour coverage.')
     expect(page).not_to have_content('Incomplete 24 hour coverage. Please add another rate.')
@@ -395,8 +415,6 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
 
     click_link('Next')
     click_button('Next')
-
-    energy_tariff = EnergyTariff.last
 
     expect(page).to have_content(energy_tariff.name)
     if current_user.admin?
@@ -417,8 +435,6 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     expect(page).to have_content('Manage and view tariffs')
 
     click_link(energy_tariff.name)
-    #previous flow leaves a zero charge
-    expect(page).to have_content(I18n.t('schools.user_tariffs.show.not_usable'))
 
     expect(page).to have_content('My First Diff Tariff')
     expect(page).to have_content('Dates')
@@ -462,7 +478,7 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     energy_tariff_price = energy_tariff.energy_tariff_prices.last
     expect(energy_tariff_price.start_time.to_s(:time)).to eq('07:00')
     expect(energy_tariff_price.end_time.to_s(:time)).to eq('00:00')
-    expect(energy_tariff_price.value.to_s).to eq('0.0')
+    expect(energy_tariff_price.value.to_s).to eq('2.5')
     expect(energy_tariff_price.units).to eq('kwh')
   end
 
@@ -616,7 +632,7 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     expect(page).to have_content('Rate from 00:30 to 06:30')
     expect(page).to have_content('Rate from 07:00 to 00:00')
     expect(page).to have_content('£1.50 per kWh')
-    expect(page).to have_content('£0.00 per kWh')
+    expect(page).to have_content('£ per kWh')
 
     click_link('Next')
     click_button('Next')
@@ -693,7 +709,7 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     energy_tariff_price = energy_tariff.energy_tariff_prices.last
     expect(energy_tariff_price.start_time.to_s(:time)).to eq('07:00')
     expect(energy_tariff_price.end_time.to_s(:time)).to eq('00:00')
-    expect(energy_tariff_price.value.to_s).to eq('0.0')
+    expect(energy_tariff_price.value.to_s).to eq('')
     expect(energy_tariff_price.units).to eq('kwh')
 
     find('#edit_meters').click
