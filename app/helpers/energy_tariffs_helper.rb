@@ -67,11 +67,11 @@ module EnergyTariffsHelper
   end
 
   def energy_tariff_price_title(energy_tariff_price)
-    if energy_tariff_price.description.present?
-      "#{energy_tariff_price&.description} (#{energy_tariff_price&.start_time&.to_s(:time)} to #{energy_tariff_price&.end_time&.to_s(:time)})"
-    else
-      "Rate from #{energy_tariff_price&.start_time&.to_s(:time)} to #{energy_tariff_price&.end_time&.to_s(:time)}"
-    end
+    I18n.t(
+      'schools.tariffs_helper.rate_from',
+      start_time: energy_tariff_price&.start_time&.to_s(:time),
+      end_time: energy_tariff_price&.end_time&.to_s(:time)
+    )
   end
 
   def energy_tariff_prices_text(energy_tariff)

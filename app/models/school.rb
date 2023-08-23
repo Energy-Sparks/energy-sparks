@@ -628,7 +628,7 @@ class School < ApplicationRecord
   end
 
   def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys)
-    energy_tariffs.where(meter_type: meter_type).left_joins(:meters).where(meters: { id: nil }).complete.map(&:meter_attribute)
+    energy_tariffs.where(meter_type: meter_type).left_joins(:meters).where(meters: { id: nil }).usable.map(&:meter_attribute)
   end
 
   def holds_tariffs_of_type?(meter_type)

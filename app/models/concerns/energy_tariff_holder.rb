@@ -19,7 +19,7 @@ module EnergyTariffHolder
   end
 
   def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys)
-    energy_tariffs.enabled.where(meter_type: meter_type).complete.map(&:meter_attribute)
+    energy_tariffs.enabled.where(meter_type: meter_type).usable.map(&:meter_attribute)
   end
 
   def parent_tariff_holder
