@@ -52,11 +52,24 @@ describe EnergyTariffPrice do
   end
 
   describe '#invalid_prices?' do
-
+    it 'returns true if any value is nil or zero' do
+      energy_tariff = EnergyTariff.create!(name: 'A new tariff', tariff_holder: create(:school), tariff_type: 'differential')
+      EnergyTariffPrice.delete_all
+      energy_tariff_price_1 = EnergyTariffPrice.create!(start_time: "2000-01-01 00:00:00", end_time: "2000-01-01 05:00:00", units: 'kwh', energy_tariff: energy_tariff)
+      energy_tariff_price_2 = EnergyTariffPrice.create!(start_time: "2000-01-01 07:00:00", end_time: "2000-01-01 00:00:00", units: 'kwh', energy_tariff: energy_tariff)
+      expect(energy_tariff.reload.energy_tariff_prices.map(&:value)).to eq([nil, nil])
+      expect(energy_tariff.energy_tariff_prices.invalid_prices?).to eq(true)
+      energy_tariff_price_1.update(value: 0.1)
+      expect(energy_tariff.reload.energy_tariff_prices.map(&:value)).to eq([0.1, nil])
+      expect(energy_tariff.energy_tariff_prices.invalid_prices?).to eq(true)
+      energy_tariff_price_2.update(value: 0.1)
+      expect(energy_tariff.reload.energy_tariff_prices.map(&:value)).to eq([0.1, 0.1])
+      expect(energy_tariff.energy_tariff_prices.invalid_prices?).to eq(false)
+    end
   end
 
   describe '#complete?' do
-    it 'it returns if the sum of all minutes in a collection of energy tariff prices adds up to 24 hours (1440 minutes) and can be considered complete' do
+    it 'returns if the sum of all minutes in a collection of energy tariff prices adds up to 24 hours (1440 minutes) and can be considered complete' do
       energy_tariff = EnergyTariff.create!(name: 'A new tariff', tariff_holder: create(:school), tariff_type: 'differential')
       EnergyTariffPrice.delete_all
       EnergyTariffPrice.create!(start_time: "2000-01-01 00:00:00", end_time: "2000-01-01 05:00:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
