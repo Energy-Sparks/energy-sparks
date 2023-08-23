@@ -61,14 +61,13 @@ module Amr
     #Should already have checked if existing and new tariff are
     #same type
     def same_prices?(energy_tariff)
-      if energy_tariff.flat_rate?
-        return energy_tariff.energy_tariff_prices.first.value == rates.values.first
-      else
-        return false unless energy_tariff.energy_tariff_prices.count == rates.keys.count
-        rates.each do |times, price|
-          return false unless energy_tariff.energy_tariff_prices.where(start_time: times.first.to_s, end_time: times.last.to_s, value: price).any?
-        end
+      return (energy_tariff.energy_tariff_prices.first.value == rates.values.first) if energy_tariff.flat_rate?
+      return false unless energy_tariff.energy_tariff_prices.count == rates.keys.count
+
+      rates.each do |times, price|
+        return false unless energy_tariff.energy_tariff_prices.where(start_time: times.first.to_s, end_time: times.last.to_s, value: price).any?
       end
+
       true
     end
 
@@ -81,20 +80,17 @@ module Amr
     end
 
     def reject_as_zero_standing_charges?
-      if standing_charge <= 0.0
-        log_error("Standing charge returned from n3rgy for #{@start_date} are zero #{standing_charge}")
-        return true
-      end
-      false
+      return false unless standing_charge <= 0.0
+      log_error("Standing charge returned from n3rgy for #{@start_date} are zero #{standing_charge}")
+      @import_log.save!
+      true
     end
 
     def reject_as_zero_tariffs?
-      if rates.values.all? { |price| price.is_a?(Numeric) && price <= 0.0 }
-        log_error("Prices returned from n3rgy for #{@start_date} are zero #{rates.inspect}")
-        @import_log.save!
-        return true
-      end
-      false
+      return false unless rates.values.all? { |price| price.is_a?(Numeric) && price <= 0.0 }
+      log_error("Prices returned from n3rgy for #{@start_date} are zero #{rates.inspect}")
+      @import_log.save!
+      true
     end
 
     #We only support flat rate and differential tariffs in the EnergyTariff
