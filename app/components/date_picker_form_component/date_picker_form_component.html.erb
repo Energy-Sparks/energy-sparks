@@ -3,9 +3,13 @@
   <div class="input-group-append" data-target="#<%= datetime_picker_id %>" data-toggle="datetimepicker">
     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
   </div>
+
   <% if errors.present? %>
     <div class="invalid-feedback">
       <%= errors %>
     </div>
   <% end %>
 </div>
+<% if hint.present? %>
+  <small class='class="form-text text-muted'><%= hint %></small>
+<% end %>
