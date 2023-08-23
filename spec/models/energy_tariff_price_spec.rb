@@ -30,23 +30,23 @@ describe EnergyTariffPrice do
     it 'it returns the sum of all minutes in a collection of energy tariff prices' do
       energy_tariff = EnergyTariff.create!(name: 'A new tariff', tariff_holder: create(:school), tariff_type: 'flat_rate')
       EnergyTariffPrice.delete_all
-      EnergyTariffPrice.create!(start_time: "2000-01-01 00:00:00", end_time: "2000-01-01 07:00:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
-      EnergyTariffPrice.create!(start_time: "2000-01-01 07:00:00", end_time: "2000-01-01 00:00:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 00:00:00", end_time: "2000-01-01 07:00:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 07:00:00", end_time: "2000-01-01 00:00:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
       expect(energy_tariff.energy_tariff_prices.total_minutes).to eq(24*60) # 24 hours
 
       EnergyTariffPrice.delete_all
-      EnergyTariffPrice.create!(start_time: "2000-01-01 00:00:00", end_time: "2000-01-01 05:00:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
-      EnergyTariffPrice.create!(start_time: "2000-01-01 07:00:00", end_time: "2000-01-01 00:00:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 00:00:00", end_time: "2000-01-01 05:00:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 07:00:00", end_time: "2000-01-01 00:00:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
       expect(energy_tariff.energy_tariff_prices.total_minutes).to eq(22*60) # 22 hours
 
       EnergyTariffPrice.delete_all
-      EnergyTariffPrice.create!(start_time: "2000-01-01 00:030:00", end_time: "2000-01-01 05:00:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
-      EnergyTariffPrice.create!(start_time: "2000-01-01 07:00:00", end_time: "2000-01-01 00:00:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 00:030:00", end_time: "2000-01-01 05:00:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 07:00:00", end_time: "2000-01-01 00:00:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
       expect(energy_tariff.energy_tariff_prices.total_minutes).to eq(21*60 + 30) # 21 hours 30 minutes
 
       EnergyTariffPrice.delete_all
-      EnergyTariffPrice.create!(start_time: "2000-01-01 01:30:00", end_time: "2000-01-01 05:00:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
-      EnergyTariffPrice.create!(start_time: "2000-01-01 05:00:00", end_time: "2000-01-01 01:30:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 01:30:00", end_time: "2000-01-01 05:00:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 05:00:00", end_time: "2000-01-01 01:30:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
       expect(energy_tariff.energy_tariff_prices.total_minutes).to eq(24*60) # 24 hours
     end
   end
@@ -59,30 +59,30 @@ describe EnergyTariffPrice do
     it 'it returns if the sum of all minutes in a collection of energy tariff prices adds up to 24 hours (1440 minutes) and can be considered complete' do
       energy_tariff = EnergyTariff.create!(name: 'A new tariff', tariff_holder: create(:school), tariff_type: 'differential')
       EnergyTariffPrice.delete_all
-      EnergyTariffPrice.create!(start_time: "2000-01-01 00:00:00", end_time: "2000-01-01 05:00:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
-      EnergyTariffPrice.create!(start_time: "2000-01-01 07:00:00", end_time: "2000-01-01 00:00:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 00:00:00", end_time: "2000-01-01 05:00:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 07:00:00", end_time: "2000-01-01 00:00:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
       expect(energy_tariff.energy_tariff_prices.complete?).to eq(false) # 22 hours
 
       EnergyTariffPrice.delete_all
-      EnergyTariffPrice.create!(start_time: "2000-01-01 00:030:00", end_time: "2000-01-01 05:00:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
-      EnergyTariffPrice.create!(start_time: "2000-01-01 07:00:00", end_time: "2000-01-01 00:00:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 00:030:00", end_time: "2000-01-01 05:00:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 07:00:00", end_time: "2000-01-01 00:00:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
       expect(energy_tariff.energy_tariff_prices.complete?).to eq(false) # 21 hours 30 minutes
 
       EnergyTariffPrice.delete_all
-      EnergyTariffPrice.create!(start_time: "2000-01-01 01:30:00", end_time: "2000-01-01 05:00:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
-      EnergyTariffPrice.create!(start_time: "2000-01-01 05:00:00", end_time: "2000-01-01 01:30:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 01:30:00", end_time: "2000-01-01 05:00:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 05:00:00", end_time: "2000-01-01 01:30:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
       expect(energy_tariff.energy_tariff_prices.complete?).to eq(true) # 24 hours
 
       EnergyTariffPrice.delete_all
-      EnergyTariffPrice.create!(start_time: "2000-01-01 03:30:00", end_time: "2000-01-01 05:00:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
-      EnergyTariffPrice.create!(start_time: "2000-01-01 05:00:00", end_time: "2000-01-01 22:00:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
-      EnergyTariffPrice.create!(start_time: "2000-01-01 22:00:00", end_time: "2000-01-01 02:30:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
-      EnergyTariffPrice.create!(start_time: "2000-01-01 02:30:00", end_time: "2000-01-01 03:30:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 03:30:00", end_time: "2000-01-01 05:00:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 05:00:00", end_time: "2000-01-01 22:00:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 22:00:00", end_time: "2000-01-01 02:30:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 02:30:00", end_time: "2000-01-01 03:30:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
       expect(energy_tariff.energy_tariff_prices.complete?).to eq(true) # 24 hours
 
       EnergyTariffPrice.delete_all
-      EnergyTariffPrice.create!(start_time: "2000-01-01 00:00:00", end_time: "2000-01-01 07:00:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
-      EnergyTariffPrice.create!(start_time: "2000-01-01 07:00:00", end_time: "2000-01-01 00:00:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 00:00:00", end_time: "2000-01-01 07:00:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
+      EnergyTariffPrice.create!(start_time: "2000-01-01 07:00:00", end_time: "2000-01-01 00:00:00", value: 0.1, units: 'kwh', energy_tariff: energy_tariff)
       expect(energy_tariff.energy_tariff_prices.complete?).to eq(true) # 24 hours
     end
   end
