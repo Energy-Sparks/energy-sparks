@@ -66,4 +66,9 @@ class EnergyTariffTableComponent < ViewComponent::Base
   def table_sorted
     @tariffs.length > 1 ? 'table-sorted' : ''
   end
+
+  def class_for_tariff(energy_tariff)
+    return "table-secondary" unless energy_tariff.enabled
+    return "table-danger" unless energy_tariff.usable?
+  end
 end
