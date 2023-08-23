@@ -86,7 +86,7 @@ en:
         is_this_a_simple_flat_rate: Is this a simple flat rate?
         or_a_rate_which_varies_by_time_of_day: Or a rate which varies by time of day (e.g. Day/Night tariff, Economy7)
         simple: Simple
-        title: Choose the type of this tariff
+        title: Choose the type of this %{fuel_type} tariff
       edit:
         breadcrumb_title: Edit the name and date range
         title: Edit the name and date range for this %{fuel_type} tariff
