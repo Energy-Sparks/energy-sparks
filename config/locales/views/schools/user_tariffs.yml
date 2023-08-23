@@ -27,12 +27,13 @@ en:
       edit_charges: Edit charges
       index:
         breadcrumb_title: Add standing charges for this tariff
-        introduction_school: Using your bill, please provide as much detail as you can about the standing charges associated with this tariff
-        introduction_school_group: Using your bill, please provide as much detail as you can about the standing charges associated with this tariff
+        introduction_school: Please provide as much detail as you can about the standing charges associated with this tariff. You can find details about the standing charges by looking at a recent bill
+        introduction_school_group: Please provide as much detail as you can about the standing charges associated with this tariff. You can find details about the standing charges by looking at a recent bill
         introduction_site_settings: Please provide as much detail as you can about the standing charges associated with this tariff
-        notice: Adding standing charges to this tariff will allow us to provide you with more detailed cost analysis. But this step is optional.
+        notice: This step is optional and if you do not have this information, you can skip it.
         skip_to_final_step: Skip to final step
-        title: Add standing charges for this tariff
+        title: Add standing charges for this %{fuel_type} tariff
+      tick_this_box_if_you_pay_this_charge: Tick this box if you pay this charge
     user_tariff_differential_prices:
       form:
         labels:
