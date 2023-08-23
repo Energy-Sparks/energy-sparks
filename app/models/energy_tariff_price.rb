@@ -53,6 +53,10 @@ class EnergyTariffPrice < ApplicationRecord
     total_minutes == 1440
   end
 
+  def self.invalid_prices?
+    all.map(&:value).any? { |value| value.nil? || value.zero? }
+  end
+
   private
 
   def no_time_overlaps

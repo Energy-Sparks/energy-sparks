@@ -7,7 +7,7 @@ describe EnergyTariffPrice do
   it { should validate_numericality_of(:value).is_greater_than(EnergyTariffPrice::MINIMUM_VALUE) }
 
   describe '#time_duration' do
-    it 'calculates the time durstion in minutes between the start and end date' do
+    it 'calculates the time duration in minutes between the start and end date' do
       energy_tariff_price = EnergyTariffPrice.new(start_time: "2000-01-01 00:00:00", end_time: "2000-01-01 00:30:00")
       expect(energy_tariff_price.time_duration).to eq(30.0) # 30 minutes
       energy_tariff_price.end_time = "2000-01-01 01:00:00"
@@ -49,6 +49,10 @@ describe EnergyTariffPrice do
       EnergyTariffPrice.create!(start_time: "2000-01-01 05:00:00", end_time: "2000-01-01 01:30:00", value: 0, units: 'kwh', energy_tariff: energy_tariff)
       expect(energy_tariff.energy_tariff_prices.total_minutes).to eq(24*60) # 24 hours
     end
+  end
+
+  describe '#invalid_prices?' do
+
   end
 
   describe '#complete?' do

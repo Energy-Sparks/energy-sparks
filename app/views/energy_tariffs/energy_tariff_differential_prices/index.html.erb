@@ -32,6 +32,11 @@
           <%= t('schools.user_tariff_differential_prices.index.incomplete_message') %>.
         <% end %>
       <% end %>
+      <% if @energy_tariff.energy_tariff_prices.invalid_prices? %>
+        <%= component 'notice', status: :negative do |c| %>
+          <%= t('schools.user_tariff_differential_prices.index.invalid_values_message') %> <%= icon('text-danger', 'x') %>.
+        <% end %>
+      <% end %>
       <br />
       <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, allow_edits: true %>
 
