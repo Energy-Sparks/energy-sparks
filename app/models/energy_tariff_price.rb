@@ -50,6 +50,24 @@ class EnergyTariffPrice < ApplicationRecord
     total_minutes == 1440
   end
 
+  def self.time_duration_gaps
+    return if complete?
+
+    a = all.order(:start_time).map(&:time_range)
+    gaps = []
+    a.each_with_index do |time_range, index|
+      element_index = index == a.size - 1 ? 0 : index + 1
+      next if time_range.last == a[element_index].first
+
+      start_time = time_range.last + 1.minute
+      end_time = a[element_index].first - 1.minute
+      next if start_time == end_time
+      gaps << (start_time..end_time)
+    end
+
+    gaps
+  end
+
   private
 
   def no_time_overlaps

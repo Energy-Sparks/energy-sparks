@@ -29,7 +29,17 @@
         <% end %>
       <% else %>
         <%= component 'notice', status: :negative do |c| %>
-          <%= t('schools.user_tariff_differential_prices.index.incomplete_message') %>.
+          <p><%= t('schools.user_tariff_differential_prices.index.incomplete_message') %></p>
+          <ul>
+            <% @energy_tariff.energy_tariff_prices.time_duration_gaps.each do |time_duration_gap| %>
+              <li>
+                <%= t('schools.tariffs_helper.rate_from',
+                      start_time: time_duration_gap.first.to_s(:time),
+                      end_time: time_duration_gap.last.to_s(:time)
+                ) %>
+              </li>
+            <% end %>
+          </ul>
         <% end %>
       <% end %>
       <br />
