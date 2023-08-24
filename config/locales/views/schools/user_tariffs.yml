@@ -32,7 +32,8 @@ en:
         introduction_site_settings: Please provide as much detail as you can about the standing charges associated with this tariff
         notice: This step is optional and if you do not have this information, you can skip it.
         skip_to_final_step: Skip to final step
-        title: Add standing charges for this %{fuel_type} tariff
+        smart_meter_notice: You cannot edit the daily standing charge for this tariff but can edit the other charges.
+        title: Add standing charges for this tariff
       tick_this_box_if_you_pay_this_charge: Tick this box if you pay this charge
     user_tariff_differential_prices:
       form:
@@ -179,7 +180,7 @@ en:
           <p>
             You can choose to edit these tariffs to add more detailed standing charge information for each meter. If you have already added tariffs for the whole school, you can instead choose to disable these tariffs.
           </p>
-        limited_editing: This tariff information has been automatically imported from your smart meter. You may add details of standing charges but cannot edit any other information.
+        limited_editing: This tariff information has been automatically imported from your smart meter. You may add additional detail about your standing charges but cannot edit any other information.
       summary_table:
         no_end_date: No end date
         no_start_date: No start date

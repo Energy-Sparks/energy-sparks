@@ -6,7 +6,11 @@
   <% c.with_notice do %>
     <%= component 'notice', status: :neutral do |c| %>
       <div class="d-flex justify-content-between">
-        <%= t('schools.user_tariff_charges.index.notice') %>
+        <% if @energy_tariff.dcc? %>
+          <%= t('schools.user_tariff_charges.index.smart_meter_notice') %>
+        <% else %>
+          <%= t('schools.user_tariff_charges.index.notice') %>
+        <% end %>
         <%= link_to t('schools.user_tariff_charges.index.skip_to_final_step'), energy_tariffs_path(@energy_tariff), class: 'btn btn-primary' %>
       </div>
     <% end %>
