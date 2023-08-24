@@ -2,7 +2,7 @@
   energy_tariff: @energy_tariff,
   skip_fields: [:name, :dates] do |c| %>
   <% c.with_page_title do %>
-    <h1><%= t('schools.user_tariffs.edit.title', fuel_type: @energy_tariff.meter_type) %></h1>
+    <h1><%= t('schools.user_tariffs.edit.title', fuel_type: t("common.#{@energy_tariff.meter_type}").downcase) %></h1>
   <% end %>
 <% end %>
 

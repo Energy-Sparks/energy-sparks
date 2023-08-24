@@ -6,7 +6,10 @@ module EnergyTariffs
     end
 
     def new
-      @energy_tariff_price = @energy_tariff.energy_tariff_prices.build
+      possible_time_range_gaps = @energy_tariff.energy_tariff_prices.possible_time_range_gaps
+      start_time = possible_time_range_gaps&.first&.first || Time.zone.parse('00:00')
+      end_time = possible_time_range_gaps&.first&.last || Time.zone.parse('23:30')
+      @energy_tariff_price = @energy_tariff.energy_tariff_prices.build(start_time: start_time, end_time: end_time)
       respond_to do |format|
         format.html
         format.js

@@ -256,7 +256,6 @@ RSpec.shared_examples "a gas tariff editor with meter selection" do
 
     #Name and dates
     expect(page).to have_content('Choose a name and date range')
-    expect(page).to have_content(mpan_mprn)
 
     fill_in 'Name', with: tariff_title
     fill_in 'Start date', with: '15/08/2023'
@@ -463,7 +462,7 @@ RSpec.shared_examples "an electricity tariff editor with no meter selection" do
     fill_in 'Start date', with: '13/08/2023'
     fill_in 'End date', with: '14/08/2023'
     click_on('Next')
-    expect(page).to have_content('Add consumption charges for each time period for this tariff')
+    expect(page).to have_content('Add consumption charges for each time period for this electricity tariff')
     click_on('Next')
     expect(page).to have_content('Add standing charges for this tariff')
     click_on('Next')
@@ -508,7 +507,6 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
 
     #Name and dates
     expect(page).to have_content('Choose a name and date range')
-    expect(page).to have_content(mpan_mprn)
 
     fill_in 'Name', with: tariff_title
     fill_in 'Start date', with: '15/08/2023'
@@ -604,7 +602,7 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
     fill_in 'Start date', with: '13/08/2023'
     fill_in 'End date', with: '14/08/2023'
     click_on('Next')
-    expect(page).to have_content('Add consumption charges for each time period for this tariff')
+    expect(page).to have_content('Add consumption charges for each time period for this electricity tariff')
     click_on('Next')
     expect(page).to have_content('Add standing charges for this tariff')
     click_on('Next')

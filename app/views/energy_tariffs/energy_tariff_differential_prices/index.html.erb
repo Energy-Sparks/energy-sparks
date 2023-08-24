@@ -1,7 +1,7 @@
 <%= component 'energy_tariff_form_title',
   energy_tariff: @energy_tariff do |c| %>
   <% c.with_page_title do %>
-    <h1><%= t('schools.user_tariff_differential_prices.index.title') %></h1>
+    <h1><%= t('schools.user_tariff_differential_prices.index.title', fuel_type: t("common.#{@energy_tariff.meter_type}").downcase) %></h1>
   <% end %>
 <% end %>
 
@@ -32,7 +32,17 @@
         <% end %>
       <% else %>
         <%= component 'notice', status: :negative do |c| %>
-          <%= t('schools.user_tariff_differential_prices.index.incomplete_message') %>.
+          <p><%= t('schools.user_tariff_differential_prices.index.incomplete_message') %></p>
+          <ul>
+            <% @energy_tariff.energy_tariff_prices.possible_time_range_gaps.each do |time_duration_gap| %>
+              <li>
+                <%= t('schools.tariffs_helper.rate_from',
+                      start_time: time_duration_gap.first.to_s(:time),
+                      end_time: time_duration_gap.last.to_s(:time)
+                ) %>
+              </li>
+            <% end %>
+          </ul>
         <% end %>
       <% end %>
       <br />
