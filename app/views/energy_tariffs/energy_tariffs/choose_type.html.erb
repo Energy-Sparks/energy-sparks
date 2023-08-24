@@ -8,12 +8,12 @@
 <div class="row mt-4">
   <div class="col-md-12">
     <div class="energy_tariff">
-      <p><%= t('schools.user_tariffs.choose_type.is_this_a_simple_flat_rate') %></p>
+      <p><%= t('schools.user_tariffs.choose_type.is_this_a_flat_rate') %></p>
 
       <% form_url = energy_tariffs_path(@energy_tariff) %>
       <%= simple_form_for @energy_tariff, url: form_url do |f| %>
         <%= f.hidden_field :tariff_type, value: 'flat_rate' %>
-        <%= submit_tag t('schools.user_tariffs.choose_type.simple'), class: 'btn btn-info' %>
+        <%= submit_tag t('schools.user_tariffs.choose_type.flat_rate'), class: 'btn btn-info' %>
       <% end %>
 
       <br/>

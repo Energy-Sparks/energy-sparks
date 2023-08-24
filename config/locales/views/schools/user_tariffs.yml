@@ -84,9 +84,9 @@ en:
       choose_type:
         breadcrumb_title: Choose tariff type
         differential_tariff: Differential tariff
-        is_this_a_simple_flat_rate: Is this a simple flat rate?
+        flat_rate: Flat rate tariff
+        is_this_a_flat_rate: Is this a flat rate tariff?
         or_a_rate_which_varies_by_time_of_day: Or a rate which varies by time of day (e.g. Day/Night tariff, Economy7)
-        simple: Simple
         title: Choose the type of this %{fuel_type} tariff
       edit:
         breadcrumb_title: Edit the name and date range
@@ -106,7 +106,7 @@ en:
           end_date: Leave blank if there is no end date
           start_date: Leave blank if there is no start date
       index:
-        changes_to_cost_calculations_message: The cost calculations based on these tariffs will update overnight
+        changes_to_cost_calculations_message: To add a new tariff, you will need to know the rate you are charged. You will also have the option to add any standing charges that you pay. Details of your rate and standing charges should be listed on a recent bill.
         default_tariffs_message: These tariffs will apply to any periods not covered by user supplied tariffs or any tariffs imported from your smart meters
         electricity:
           add_label: Add electricity tariff
@@ -187,8 +187,8 @@ en:
         consumption_charges: Consumption charges
         differential_tariff: Differential tariff
         end_date: End date
+        flat_rate_tariff: Flat rate tariff
         price_from_to: "%{price_start_time} to %{price_end_time}:"
-        simple_tariff: Simple tariff
         start_date: Start date
         type: Type
       title_partial:
