@@ -107,7 +107,7 @@ en:
           end_date: Leave blank if there is no end date
           start_date: Leave blank if there is no start date
       index:
-        changes_to_cost_calculations_message: To add a new tariff, you will need to know the rate you are charged. You will also have the option to add any standing charges that you pay. Details of your rate and standing charges should be listed on a recent bill.
+        changes_to_cost_calculations_message: The cost calculations based on these tariffs will update overnight
         default_tariffs_message: These tariffs will apply to any periods not covered by user supplied tariffs or any tariffs imported from your smart meters
         electricity:
           add_label: Add electricity tariff
@@ -126,7 +126,7 @@ en:
             You can improve the accuracy of the calculations on your <a href="%{advice_pages}">cost analysis pages</a> by adding details about your real tariffs.
           </p>
           <p>
-            To add a a new tariff you will need to know the prices and, optionally, the range of standing charges that are included in your energy contract.
+            To add a new tariff, you will need to know the rate you are charged. You will also have the option to add any standing charges that you pay. Details of your rate and standing charges should be listed on a recent bill.
           </p>
         no_defaults: We have no default tariffs for your %{meter_type} meters.
         no_smart_meter_tariffs: We have not imported any tariffs from your %{meter_type} meters.
