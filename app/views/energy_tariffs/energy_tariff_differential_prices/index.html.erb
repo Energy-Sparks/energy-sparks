@@ -50,10 +50,8 @@
 
       <div class="d-flex justify-content-between mb-2 mt-2">
         <div>
-          <% edit_path = energy_tariffs_path(@energy_tariff, [], { action: :edit }) %>
-          <%= link_to t('common.labels.previous'), edit_path, class: 'btn' %>
           <% next_path = energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]) %>
-          <%= link_to t('common.labels.next'), next_path, class: "btn#{@energy_tariff.usable? ? '' : ' disabled' }" %>
+          <%= link_to t('common.labels.continue'), energy_tariffs_path(@energy_tariff), class: "btn#{@energy_tariff.usable? ? '' : ' disabled' }" %>
         </div>
         <div>
           <%= link_to t('schools.user_tariff_differential_prices.index.reset_to_default'),

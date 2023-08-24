@@ -39,10 +39,6 @@ module EnergyTariffs
 
     private
 
-    def redirect_to_energy_tariff_charges_path
-      redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_charges])
-    end
-
     def redirect_to_edit_energy_tariff_flat_price_path
       redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_flat_price], { id: @energy_tariff.energy_tariff_prices.first, action: :edit })
     end

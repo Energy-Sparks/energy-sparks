@@ -3,6 +3,7 @@ module EnergyTariffs
     before_action :redirect_if_dcc
 
     def index
+      EnergyTariffDefaultPricesCreator.new(@energy_tariff).process unless params[:editing]
     end
 
     def new
@@ -55,7 +56,7 @@ module EnergyTariffs
 
     def destroy
       @energy_tariff.energy_tariff_prices.find(params[:id]).destroy
-      redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_prices])
+      redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_prices], { editing: true })
     end
 
     def reset

@@ -61,7 +61,7 @@ RSpec.shared_examples "the user can create a tariff" do
     expect(page).to have_content('15/08/2023')
     expect(page).to have_content('End date')
     expect(page).to have_content('16/08/2023')
-    expect(page).to have_content('Simple tariff')
+    expect(page).to have_content('Flat rate tariff')
     #Not yet usable
     expect(page).to have_content(I18n.t('schools.user_tariffs.show.not_usable'))
     expect(page).to_not have_css('#tariff-meters') unless tariff_holder.school?
@@ -107,16 +107,9 @@ RSpec.shared_examples "the user can create a tariff" do
 
     expect(energy_tariff.value_for_charge(:standing_charge)).to eq('1.11')
   end
-
 end
 
 RSpec.shared_examples "the user can edit the tariff" do
-  before do
-    #assumes staring from tarif index
-    refresh
-    click_on energy_tariff.name
-  end
-
   it 'allows me to edit price' do
     find("#edit-prices").click
     expect(page).to have_field('energy_tariff_price[value]', with: '1.0')
@@ -124,6 +117,7 @@ RSpec.shared_examples "the user can edit the tariff" do
     fill_in "energy_tariff_price[value]", with: '1.5'
     click_button('Continue')
     expect(page).to have_content('£1.50 per kWh')
+    expect(page).to_not have_content(I18n.t('schools.user_tariffs.show.not_usable'))
   end
 
   it 'allows me to edit the standing charge' do
@@ -159,609 +153,68 @@ RSpec.shared_examples "the user can edit the tariff" do
   end
 end
 
-RSpec.shared_examples "the user can edit the electricity tariff options" do
-  before do
-    #assumes staring from tarif index
-    refresh
-    click_on energy_tariff.name
+RSpec.shared_examples "the user can change the type of tariff" do
+  it 'allows switching to flat rate' do
+    expect(page).to have_content('Flat rate tariff')
+    find('#choose-type').click()
+    click_button('Flat rate tariff')
+    expect(page).to have_content('Flat rate tariff')
+    energy_tariff.reload
+    expect(energy_tariff.energy_tariff_prices.any?).to be false
   end
-  xit 'allows editing of tariff type' do
-    expect(page).to have_css('#choose-type')
+
+  it 'allows switching to differential' do
+    expect(page).to have_content('Flat rate tariff')
+    find('#choose-type').click()
+    click_button('Differential tariff')
+    expect(page).to have_content('Differential tariff')
+    energy_tariff.reload
+    expect(energy_tariff.energy_tariff_prices.any?).to be false
+    find('#choose-type').click()
+    click_button('Flat rate tariff')
+    expect(page).to have_content('Flat rate tariff')
   end
-  it 'allows adding all the charges' do
-    find('#edit-charges').click
+end
 
-    fill_in "energy_tariff_charges[fixed_charge][value]", with: '1.11'
-    select 'day', from: 'energy_tariff_charges[fixed_charge][units]'
+RSpec.shared_examples "the user can select the meters" do
+  it 'can create a tariff and associate the meters' do
+    expect(page).to have_content("All electricity meters")
 
-    fill_in "energy_tariff_charges[site_fee][value]", with: '2.22'
-    select 'month', from: 'energy_tariff_charges[site_fee][units]'
-
-    fill_in "energy_tariff_charges[duos_red][value]", with: '3.33'
-    fill_in "energy_tariff_charges[duos_amber][value]", with: '4.44'
-    fill_in "energy_tariff_charges[duos_green][value]", with: '5.55'
-
-    fill_in "energy_tariff_charges[agreed_availability_charge][value]", with: '6.66'
-    fill_in "energy_tariff_charges[excess_availability_charge][value]", with: '7.77'
-    fill_in "energy_tariff_charges[asc_limit_kw][value]", with: '8.88'
-
-    fill_in "energy_tariff_charges[reactive_power_charge][value]", with: '9.99'
-    fill_in "energy_tariff_charges[feed_in_tariff_levy][value]", with: '9.87'
-
-    fill_in "energy_tariff_charges[settlement_agency_fee][value]", with: '6.54'
-    fill_in "energy_tariff_charges[meter_asset_provider_charge][value]", with: '3.21'
-    fill_in "energy_tariff_charges[nhh_metering_agent_charge][value]", with: '1.9'
-
-    fill_in "energy_tariff_charges[nhh_automatic_meter_reading_charge][value]", with: '.12'
-    fill_in "energy_tariff_charges[data_collection_dcda_agent_charge][value]", with: '.34'
-
-    check 'energy_tariff_charges[energy_tariff][tnuos]'
-    check 'energy_tariff_charges[energy_tariff][ccl]'
-    select '20', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
-
+    find('#choose-meters').click
+    #Meter selection
+    expect(page).to have_content('Select meters for this tariff')
+    check('specific_meters')
+    check(mpan_mprn)
     click_button('Continue')
 
-    energy_tariff = EnergyTariff.last
-
-    expect(energy_tariff.updated_by).to eq(current_user)
-    expect(energy_tariff.tnuos).to be_truthy
-    expect(energy_tariff.ccl).to be_truthy
-    expect(energy_tariff.vat_rate).to eq(20)
-
-    expect(energy_tariff.value_for_charge(:fixed_charge)).to eq('1.11')
-    expect(energy_tariff.value_for_charge(:site_fee)).to eq('2.22')
-    expect(energy_tariff.value_for_charge(:duos_red)).to eq('3.33')
-    expect(energy_tariff.value_for_charge(:duos_amber)).to eq('4.44')
-    expect(energy_tariff.value_for_charge(:duos_green)).to eq('5.55')
-    expect(energy_tariff.value_for_charge(:agreed_availability_charge)).to eq('6.66')
-    expect(energy_tariff.value_for_charge(:excess_availability_charge)).to eq('7.77')
-    expect(energy_tariff.value_for_charge(:asc_limit_kw)).to eq('8.88')
-    expect(energy_tariff.value_for_charge(:reactive_power_charge)).to eq('9.99')
-    expect(energy_tariff.value_for_charge(:feed_in_tariff_levy)).to eq('9.87')
-    expect(energy_tariff.value_for_charge(:settlement_agency_fee)).to eq('6.54')
-    expect(energy_tariff.value_for_charge(:meter_asset_provider_charge)).to eq('3.21')
-    expect(energy_tariff.value_for_charge(:nhh_metering_agent_charge)).to eq('1.9')
-    expect(energy_tariff.value_for_charge(:nhh_automatic_meter_reading_charge)).to eq('0.12')
-    expect(energy_tariff.value_for_charge(:data_collection_dcda_agent_charge)).to eq('0.34')
-  end
-end
-
-RSpec.shared_examples "a basic gas tariff editor" do
-  let(:meter_type) { :gas }
-  context 'when adding a new tariff' do
-    before { click_link('Add gas tariff') }
-    it_behaves_like 'the user can create a tariff'
-  end
-
-  context 'with an existing tariff' do
-    let!(:energy_tariff)         { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022,1,1), end_date: Date.new(2022,12,31), tariff_holder: tariff_holder, meter_type: meter_type)}
-    it_behaves_like "the user can edit the tariff"
-    it 'does not offer option to edit the type of tariff' do
-      refresh
-      click_on energy_tariff.name
-      expect(page).to_not have_css('#choose-type')
-    end
-  end
-end
-
-RSpec.shared_examples "a gas tariff editor with meter selection" do
-  let(:tariff_title)  { "My First Tariff for #{mpan_mprn}" }
-  before { click_link('Add gas tariff') }
-  it 'can create a tariff and associate the meters' do
-    #Meter selection
-    expect(page).to have_content('Select meters for this tariff')
-    check('specific_meters')
-    check(mpan_mprn)
-    click_button('Next')
-
-    #Name and dates
-    expect(page).to have_content('Choose a name and date range')
-
-    fill_in 'Name', with: tariff_title
-    fill_in 'Start date', with: '15/08/2023'
-    fill_in 'End date', with: '16/08/2023'
-
-    click_button('Next')
-
-    energy_tariff = EnergyTariff.last
-    expect(energy_tariff.enabled).to be true
-    expect(energy_tariff.meter_type.to_sym).to eq(:gas)
-    expect(energy_tariff.tariff_holder_type).to eq('School')
-    expect(energy_tariff.tariff_holder).to eq(school)
+    expect(page).to_not have_content("All electricity meters")
+    expect(page).to have_content(meter.name_or_mpan_mprn)
+    energy_tariff.reload
     expect(energy_tariff.meters).to match_array([meter])
   end
 
   it 'doesnt require a meter to be selected by default' do
+    expect(page).to have_content("All electricity meters")
+    find('#choose-meters').click
+
     expect(page).to have_content('Select meters for this tariff')
     expect(page).to have_unchecked_field('specific_meters')
-    click_button('Next')
-    expect(page).to have_content('Choose a name and date range')
+    click_button('Continue')
+    expect(page).to have_content("All electricity meters")
   end
 
   it 'requires a meter to be selected if we check the box' do
+    expect(page).to have_content("All electricity meters")
+    find('#choose-meters').click
+
     expect(page).to have_content('Select meters for this tariff')
     expect(page).to have_content("Will this tariff apply to all #{meter.fuel_type} meters at the school or just specific meters?")
     check('specific_meters')
     uncheck(meter.mpan_mprn.to_s)
 
-    click_button('Next')
+    click_button('Continue')
     expect(page).to have_content('Please select at least one meter for this tariff. Or uncheck option to apply tariff to all meters')
     expect(page).to have_content('Select meters for this tariff')
   end
-end
 
-RSpec.shared_examples "a basic electricity tariff editor" do
-  let(:meter_type) { :electricity }
-  context 'when adding a new tariff' do
-    before { click_link('Add electricity tariff') }
-    it_behaves_like 'the user can create a tariff'
-  end
-
-  context 'with an existing tariff' do
-    let!(:energy_tariff)         { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022,1,1), end_date: Date.new(2022,12,31), tariff_holder: tariff_holder, meter_type: meter_type)}
-    it_behaves_like "the user can edit the tariff"
-    it_behaves_like "the user can edit the electricity tariff options"
-  end
-end
-
-
-RSpec.shared_examples "an electricity tariff editor with no meter selection" do
-  before { click_link('Add electricity tariff') }
-
-  it 'can create a differential tariff and add, edit, delete, and reset prices and charges' do
-    fill_in 'Name', with: 'My First Diff Tariff'
-    fill_in 'Start date', with: '15/08/2023'
-    fill_in 'End date', with: '16/08/2023'
-
-    click_button('Next')
-
-    click_button('Differential tariff')
-
-    expect(page).to have_content('Rate from 00:00 to 07:00')
-    expect(page).to have_content('Rate from 07:00 to 00:00')
-    expect(page).to have_link('Add rate')
-    expect(page).to have_content('Please add valid prices for all marked rates')
-
-    page.all('.energy-tariff-show-button')[0].click
-
-    select '00', from: 'energy_tariff_price_start_time_4i'
-    select '30', from: 'energy_tariff_price_start_time_5i'
-    select '06', from: 'energy_tariff_price_end_time_4i'
-    select '30', from: 'energy_tariff_price_end_time_5i'
-
-    fill_in 'Rate in £/kWh', with: '1.5'
-    click_button('Save')
-
-    expect(page).to have_content('Rate from 00:30 to 06:30')
-    expect(page).to have_content('Rate from 07:00 to 00:00')
-    expect(page).to have_content('£1.50 per kWh')
-    expect(page).to have_content('£ per kWh')
-
-    expect(page).to have_content('Please add valid prices for all marked rates.')
-    first('.energy-tariff-show-button').click
-
-    fill_in 'Rate in £/kWh', with: '1.5'
-    click_button('Save')
-
-
-    expect(page).to have_content('Please add valid prices for all marked rates.')
-    first('.energy-tariff-show-button').click
-
-
-    select '00', from: 'energy_tariff_price_start_time_4i'
-    select '00', from: 'energy_tariff_price_start_time_5i'
-    select '07', from: 'energy_tariff_price_end_time_4i'
-    select '00', from: 'energy_tariff_price_end_time_5i'
-    click_button('Save')
-
-    expect(page).to have_content('Please add valid prices for all marked rates.')
-    expect(page).not_to have_content('Incomplete 24 hour coverage. Please add another rate.')
-    expect(page).not_to have_content('A differential tariff must have at least 2 prices, e.g. a day time and a night-time rate. Please add prices, or reset to default.')
-    expect(find("a", text: "Add rate")[:class]).to eq('btn disabled')
-    expect(find("a", text: "Reset to default")[:class]).to eq('btn disabled')
-
-    click_link("Delete", match: :first)
-
-    expect(page).not_to have_content('Rate from 00:30 to 06:30')
-    expect(page).to have_content('Rate from 07:00 to 00:00')
-    expect(page).not_to have_content('£1.50 per kWh')
-    expect(page).to have_content('£ per kWh')
-
-    expect(page).not_to have_content('Complete 24 hour coverage.')
-    expect(page).to have_content('Please add valid prices for all marked rates.')
-    expect(page).not_to have_content('A differential tariff must have at least 2 prices, e.g. a day time and a night-time rate. Please add prices, or reset to default.')
-    expect(find("a", text: "Add rate")[:class]).to eq('btn')
-    expect(find("a", text: "Reset to default")[:class]).to eq('btn')
-
-    click_link("Delete", match: :first)
-
-    expect(page).not_to have_content('Rate from 00:30 to 06:30')
-    expect(page).not_to have_content('Rate from 07:00 to 00:00')
-    expect(page).not_to have_content('£1.50 per kWh')
-    expect(page).not_to have_content('£ per kWh')
-
-    expect(page).not_to have_content('Please add valid prices for all marked rates.')
-    expect(page).not_to have_content('Incomplete 24 hour coverage. Please add another rate.')
-    expect(page).to have_content('A differential tariff must have at least 2 prices, e.g. a day time and a night-time rate. Please add prices, or reset to default.')
-    expect(find("a", text: "Add rate")[:class]).to eq('btn')
-    expect(find("a", text: "Reset to default")[:class]).to eq('btn')
-
-    click_link('Reset to default')
-
-    expect(page).to have_content('Rate from 00:00 to 07:00')
-    expect(page).to have_content('Rate from 07:00 to 00:00')
-    expect(page).to have_content('£ per kWh')
-    expect(page).to have_content('£ per kWh')
-
-    energy_tariff = EnergyTariff.last
-
-    find("#energy-tariff-show-button-#{energy_tariff.energy_tariff_prices.first.id}").click
-
-    fill_in 'Rate in £/kWh', with: '1.5'
-    click_button('Save')
-
-    expect(page).to have_content('Rate from 00:00 to 07:00')
-    expect(page).to have_content('Rate from 07:00 to 00:00')
-    expect(page).to have_content('£1.50 per kWh')
-    expect(page).to have_content('£ per kWh')
-
-    expect(find("a", text: "Next")[:class]).to eq('btn disabled')
-
-    find("#energy-tariff-show-button-#{energy_tariff.energy_tariff_prices.last.id}").click
-
-    fill_in 'Rate in £/kWh', with: '2.5'
-    click_button('Save')
-
-    expect(page).to have_content('Rate from 00:00 to 07:00 ')
-    expect(page).to have_content('Rate from 07:00 to 00:00')
-    expect(page).to have_content('£1.50 per kWh')
-    expect(page).to have_content('£2.50 per kWh')
-
-    expect(page).to have_content('Complete 24 hour coverage.')
-    expect(page).not_to have_content('Incomplete 24 hour coverage. Please add another rate.')
-    expect(page).not_to have_content('A differential tariff must have at least 2 prices, e.g. a day time and a night-time rate. Please add prices, or reset to default.')
-    expect(find("a", text: "Add rate")[:class]).to eq('btn disabled')
-    expect(find("a", text: "Reset to default")[:class]).to eq('btn disabled')
-
-    click_link('Next')
-    click_button('Next')
-
-    expect(page).to have_content(energy_tariff.name)
-    if current_user.admin?
-      expect(page).to have_content('Notes (admin only)')
-    else
-      expect(page).not_to have_content('Notes (admin only)')
-    end
-
-    within('#consumption-charges') do
-      expect(page).to have_link("Edit")
-    end
-
-    within('#standing-charges') do
-      expect(page).to have_link("Edit")
-    end
-
-    click_link('Finished')
-    expect(page).to have_content('Manage and view tariffs')
-
-    click_link(energy_tariff.name)
-
-    expect(page).to have_content('My First Diff Tariff')
-    expect(page).to have_content('Dates')
-    expect(page).to have_content('Start date')
-    expect(page).to have_content('15/08/2023')
-    expect(page).to have_content('End date')
-    expect(page).to have_content('16/08/2023')
-
-    find('#edit-dates').click
-    expect(page).to have_content('Name')
-    expect(page).to have_content('Start date')
-    expect(page).to have_content('End date')
-
-    fill_in 'Name', with: 'My Updated First Diff Tariff'
-    fill_in 'Start date', with: '13/08/2023'
-    fill_in 'End date', with: '14/08/2023'
-    click_on('Next')
-    expect(page).to have_content('Add consumption charges for each time period for this electricity tariff')
-    click_on('Next')
-    expect(page).to have_content('Add standing charges for this tariff')
-    click_on('Next')
-    expect(page).to have_content('My Updated First Diff Tariff')
-    expect(page).to have_content('Dates')
-    expect(page).to have_content('Start date')
-    expect(page).to have_content('13/08/2023')
-    expect(page).to have_content('End date')
-    expect(page).to have_content('14/08/2023')
-
-    expect(energy_tariff.enabled).to be true
-    expect(energy_tariff.meter_type.to_sym).to eq(:electricity)
-    expect(energy_tariff.tariff_holder_type).to eq(tariff_holder_type)
-    expect(energy_tariff.tariff_holder).to eq(tariff_holder)
-    expect(energy_tariff.created_by).to eq(current_user)
-    expect(energy_tariff.updated_by).to eq(current_user)
-    expect(energy_tariff.meters).to match_array([])
-    energy_tariff_price = energy_tariff.energy_tariff_prices.first
-    expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:00')
-    expect(energy_tariff_price.end_time.to_s(:time)).to eq('07:00')
-    expect(energy_tariff_price.value.to_s).to eq('1.5')
-    expect(energy_tariff_price.units).to eq('kwh')
-    energy_tariff_price = energy_tariff.energy_tariff_prices.last
-    expect(energy_tariff_price.start_time.to_s(:time)).to eq('07:00')
-    expect(energy_tariff_price.end_time.to_s(:time)).to eq('00:00')
-    expect(energy_tariff_price.value.to_s).to eq('2.5')
-    expect(energy_tariff_price.units).to eq('kwh')
-  end
-
-end
-
-RSpec.shared_examples "an electricity tariff editor with meter selection" do
-  let(:tariff_title)  { "My First Tariff for #{mpan_mprn}" }
-  before              { click_link('Add electricity tariff') }
-
-  it 'can create a flat rate tariff and associate the meters' do
-    #Meter selection
-    expect(page).to have_content('Select meters for this tariff')
-    check('specific_meters')
-    check(mpan_mprn)
-    click_button('Next')
-
-    #Name and dates
-    expect(page).to have_content('Choose a name and date range')
-
-    fill_in 'Name', with: tariff_title
-    fill_in 'Start date', with: '15/08/2023'
-    fill_in 'End date', with: '16/08/2023'
-
-    click_button('Next')
-
-    energy_tariff = EnergyTariff.last
-    expect(energy_tariff.enabled).to be true
-    expect(energy_tariff.meter_type.to_sym).to eq(:electricity)
-    expect(energy_tariff.tariff_holder_type).to eq('School')
-    expect(energy_tariff.tariff_holder).to eq(school)
-    expect(energy_tariff.meters).to match_array([meter])
-  end
-
-  it 'can create a differential tariff and associate the meters' do
-    #Meter selection
-    expect(page).to have_content('Select meters for this tariff')
-    check('specific_meters')
-    check(mpan_mprn)
-    click_button('Next')
-
-    fill_in 'Name', with: 'My First Diff Tariff'
-    fill_in 'Start date', with: '15/08/2023'
-    fill_in 'End date', with: '16/08/2023'
-    click_button('Next')
-
-    click_button('Differential tariff')
-
-    expect(page).to have_content('Rate from 00:00 to 07:00')
-    expect(page).to have_content('Rate from 07:00 to 00:00')
-    expect(page).to have_link('Add rate')
-    expect(page).to have_link('Delete')
-
-    first('.energy-tariff-show-button').click
-
-    select '00', from: 'energy_tariff_price_start_time_4i'
-    select '30', from: 'energy_tariff_price_start_time_5i'
-    select '06', from: 'energy_tariff_price_end_time_4i'
-    select '30', from: 'energy_tariff_price_end_time_5i'
-
-    fill_in 'Rate in £/kWh', with: '1.5'
-    click_button('Save')
-
-    expect(page).to have_content('Rate from 00:30 to 06:30')
-    expect(page).to have_content('Rate from 07:00 to 00:00')
-    expect(page).to have_content('£1.50 per kWh')
-    expect(page).to have_content('£ per kWh')
-
-    click_link('Next')
-    click_button('Next')
-
-    energy_tariff = EnergyTariff.last
-
-    expect(page).to have_content(energy_tariff.name)
-    if current_user.admin?
-      expect(page).to have_content('Notes (admin only)')
-    else
-      expect(page).not_to have_content('Notes (admin only)')
-    end
-
-    expect(page).to have_content('£1.50 per kWh')
-    expect(page).not_to have_link('Delete')
-
-    within('#consumption-charges') do
-      expect(page).to have_link("Edit")
-    end
-
-    within('#standing-charges') do
-      expect(page).to have_link("Edit")
-    end
-
-    click_link('Finished')
-    expect(page).to have_content('Manage and view tariffs')
-
-    click_link(energy_tariff.name)
-    expect(page).to have_content('My First Diff Tariff')
-    expect(page).to have_content('Dates')
-    expect(page).to have_content('Start date')
-    expect(page).to have_content('15/08/2023')
-    expect(page).to have_content('End date')
-    expect(page).to have_content('16/08/2023')
-    expect(page).to have_content('Meters')
-    expect(page).to have_content(mpan_mprn)
-    expect(page).not_to have_content('All electricity meters')
-
-    find('#edit-dates').click
-    expect(page).to have_content('Name')
-    expect(page).to have_content('Start date')
-    expect(page).to have_content('End date')
-
-    fill_in 'Name', with: 'My Updated First Diff Tariff'
-    fill_in 'Start date', with: '13/08/2023'
-    fill_in 'End date', with: '14/08/2023'
-    click_on('Next')
-    expect(page).to have_content('Add consumption charges for each time period for this electricity tariff')
-    click_on('Next')
-    expect(page).to have_content('Add standing charges for this tariff')
-    click_on('Next')
-    expect(page).to have_content('My Updated First Diff Tariff')
-    expect(page).to have_content('Dates')
-    expect(page).to have_content('Start date')
-    expect(page).to have_content('13/08/2023')
-    expect(page).to have_content('End date')
-    expect(page).to have_content('14/08/2023')
-    expect(page).to have_content('Meters')
-    expect(page).to have_content(mpan_mprn)
-    expect(page).not_to have_content('All gas meters')
-
-    expect(energy_tariff.enabled).to be true
-    expect(energy_tariff.meter_type.to_sym).to eq(:electricity)
-    expect(energy_tariff.meters).to match_array([meter])
-    expect(energy_tariff.tariff_holder_type).to eq(tariff_holder_type)
-    expect(energy_tariff.tariff_holder).to eq(tariff_holder)
-    expect(energy_tariff.created_by).to eq(current_user)
-    expect(energy_tariff.updated_by).to eq(current_user)
-    energy_tariff_price = energy_tariff.energy_tariff_prices.first
-    expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:30')
-    expect(energy_tariff_price.end_time.to_s(:time)).to eq('06:30')
-    expect(energy_tariff_price.value.to_s).to eq('1.5')
-    expect(energy_tariff_price.units).to eq('kwh')
-    energy_tariff_price = energy_tariff.energy_tariff_prices.last
-    expect(energy_tariff_price.start_time.to_s(:time)).to eq('07:00')
-    expect(energy_tariff_price.end_time.to_s(:time)).to eq('00:00')
-    expect(energy_tariff_price.value.to_s).to eq('')
-    expect(energy_tariff_price.units).to eq('kwh')
-
-    find('#edit_meters').click
-    expect(page).to have_content('Select meters for this tariff')
-    uncheck(mpan_mprn)
-    click_button('Next')
-    expect(page).to have_content('My Updated First Diff Tariff')
-    expect(page).to have_content('Dates')
-    expect(page).to have_content('Start date')
-    expect(page).to have_content('13/08/2023')
-    expect(page).to have_content('End date')
-    expect(page).to have_content('14/08/2023')
-    expect(page).to have_content('Meters')
-    expect(page).not_to have_content(mpan_mprn)
-    expect(page).to have_content('All electricity meters')
-    expect(energy_tariff.reload.meters).to match_array([])
-  end
-
-  it 'doesnt require a meter to be selected by default' do
-    expect(page).to have_content('Select meters for this tariff')
-    expect(page).to have_unchecked_field('specific_meters')
-    click_button('Next')
-    expect(page).to have_content('Choose a name and date range')
-  end
-
-  it 'requires a meter to be selected if we check the box' do
-    expect(page).to have_content('Select meters for this tariff')
-    expect(page).to have_content("Will this tariff apply to all #{meter.fuel_type} meters at the school or just specific meters?")
-    check('specific_meters')
-    uncheck(meter.mpan_mprn.to_s)
-
-    click_button('Next')
-    expect(page).to have_content('Please select at least one meter for this tariff. Or uncheck option to apply tariff to all meters')
-    expect(page).to have_content('Select meters for this tariff')
-  end
-end
-
-RSpec.shared_examples "a school tariff editor" do
-  before(:each) do
-    sign_in(current_user)
-    visit school_path(school)
-    within '#manage_school_menu' do
-      click_on 'Manage tariffs'
-    end
-  end
-
-  context 'when viewing index' do
-    let(:tariff_holder) { school }
-    before { visit school_energy_tariffs_path(school) }
-    it_behaves_like "a tariff editor index"
-  end
-
-  it 'is navigable from the manage school menu' do
-    expect(current_path).to eq("/schools/#{school.slug}/energy_tariffs")
-    expect(page).to have_content(I18n.t('schools.user_tariffs.index.title'))
-    expect(page).to have_link('cost analysis pages')
-  end
-
-  context 'when creating gas tariffs' do
-    let(:meter)       { gas_meter }
-    let(:mpan_mprn)   { gas_meter.mpan_mprn.to_s }
-    it_behaves_like "a gas tariff editor with meter selection"
-  end
-
-  context 'when creating electricity tariffs' do
-    let(:meter)       { electricity_meter }
-    let(:mpan_mprn)   { electricity_meter.mpan_mprn.to_s }
-    let(:tariff_holder)       { school }
-    let(:tariff_holder_type)  { 'School' }
-
-    it_behaves_like "an electricity tariff editor with meter selection"
-  end
-end
-
-RSpec.shared_examples "a school group energy tariff editor" do
-  before(:each) { sign_in(current_user) }
-
-  context 'has navigation links', skip: "Group tariff editor is temporarily admin only.  This skip can be removed when the group sub nav template is updated" do
-    it 'from school group page to energy tariffs index' do
-      visit school_group_path(school_group)
-      click_link('Manage Group')
-      click_link('Manage tariffs')
-      expect(current_path).to eq("/school_groups/#{school_group.slug}/energy_tariffs")
-      expect(page).to have_content(I18n.t('schools.user_tariffs.index.title'))
-    end
-  end
-
-  context 'when viewing index' do
-    let(:tariff_holder) { school_group }
-    before { visit school_group_energy_tariffs_path(school_group) }
-    it_behaves_like "a tariff editor index"
-  end
-
-  context 'when creating tariffs' do
-    let(:tariff_index_path)   { school_group_energy_tariffs_path(school_group) }
-    let(:tariff_holder)       { school_group }
-    let(:tariff_holder_type)  { 'SchoolGroup' }
-
-    before(:each) do
-      visit tariff_index_path
-    end
-
-    it_behaves_like 'a basic gas tariff editor'
-    it_behaves_like 'a basic electricity tariff editor'
-  end
-end
-
-RSpec.shared_examples "the site settings energy tariff editor" do
-  before(:each) do
-    visit admin_path
-    click_link('Energy Tariffs')
-  end
-
-  context 'when viewing index' do
-    let(:tariff_holder) { SiteSettings.current }
-    before { visit admin_settings_energy_tariffs_path }
-    it_behaves_like "a tariff editor index"
-  end
-
-  it 'has expected index' do
-    expect(page).to have_content(I18n.t('schools.user_tariffs.index.title'))
-    expect(page).not_to have_link('cost analysis pages')
-  end
-
-  context 'when creating tariffs' do
-    let(:tariff_index_path)   { admin_settings_energy_tariffs_path }
-    let(:tariff_holder)       { SiteSettings.current }
-    let(:tariff_holder_type)  { 'SiteSettings' }
-
-    it_behaves_like 'a basic gas tariff editor'
-    it_behaves_like 'a basic electricity tariff editor'
-  end
 end
