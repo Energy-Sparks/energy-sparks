@@ -38,7 +38,8 @@ RSpec.describe DatePickerFormComponent, type: :component do
         form: OpenStruct.new(object_name: 'job'),
         field_name: :start_date,
         value: value,
-        default_if_nil: ''
+        default_if_nil: '',
+        hint: ''
         }
       }
       it 'uses that default' do

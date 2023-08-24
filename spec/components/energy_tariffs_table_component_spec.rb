@@ -46,7 +46,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
 
   context '.flat_rate_label' do
     it 'returns expected label' do
-      expect(component.flat_rate_label(energy_tariffs.first)).to eq I18n.t('schools.user_tariffs.tariff_partial.simple_tariff')
+      expect(component.flat_rate_label(energy_tariffs.first)).to eq I18n.t('schools.user_tariffs.tariff_partial.flat_rate_tariff')
     end
     context 'with differential tariff' do
       let(:energy_tariffs) { [create(:energy_tariff, tariff_type: :differential)]}
@@ -94,7 +94,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     it 'includes the tariff details' do
       within('#tariff-table tbody tr[1]') do
         expect(html).to have_content(energy_tariffs.first.name)
-        expect(html).to have_content('schools.user_tariffs.tariff_partial.simple_tariff')
+        expect(html).to have_content('schools.user_tariffs.tariff_partial.flat_rate_tariff')
         expect(html).to have_content(energy_tariffs.first.start_date.to_s(:es_compact))
         expect(html).to have_content(energy_tariffs.first.end_date.to_s(:es_compact))
         expect(html).to have_content(energy_tariffs.first.energy_tariff_price.first)
