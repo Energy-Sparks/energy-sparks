@@ -126,4 +126,8 @@ module EnergyTariffsHelper
   def any_smart_meters?(school)
     school.meters.dcc.any?
   end
+
+  def charge_row_feedback(energy_tariff)
+    energy_tariff.usable? ? 'positive-row' : 'negative-row'
+  end
 end
