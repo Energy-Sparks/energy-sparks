@@ -18,8 +18,6 @@
 #
 class EnergyTariffPrice < ApplicationRecord
   MINIMUM_VALUE = 0.0
-  NIGHT_RATE_DESCRIPTION = 'Night rate'.freeze
-  DAY_RATE_DESCRIPTION = 'Day rate'.freeze
 
   belongs_to :energy_tariff, inverse_of: :energy_tariff_prices
 

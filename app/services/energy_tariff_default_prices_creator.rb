@@ -15,16 +15,15 @@ class EnergyTariffDefaultPricesCreator
 
     day_times = night_times.last..night_times.first
 
-    @energy_tariff.energy_tariff_prices.create!(energy_tariff_price_defaults(night_times.first.to_s, night_times.last.to_s, EnergyTariffPrice::NIGHT_RATE_DESCRIPTION))
-    @energy_tariff.energy_tariff_prices.create!(energy_tariff_price_defaults(day_times.first.to_s, day_times.last.to_s, EnergyTariffPrice::DAY_RATE_DESCRIPTION))
+    @energy_tariff.energy_tariff_prices.create!(energy_tariff_price_defaults(night_times.first.to_s, night_times.last.to_s))
+    @energy_tariff.energy_tariff_prices.create!(energy_tariff_price_defaults(day_times.first.to_s, day_times.last.to_s))
   end
 
-  def energy_tariff_price_defaults(start_time, end_time, description)
+  def energy_tariff_price_defaults(start_time, end_time)
     {
       start_time: start_time,
       end_time: end_time,
-      units: 'kwh',
-      description: description
+      units: 'kwh'
     }
   end
 end
