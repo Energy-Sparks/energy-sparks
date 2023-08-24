@@ -80,7 +80,7 @@ module EnergyTariffs
     private
 
     def require_meters?
-      params[:specific_meters] && params[:energy_tariff][:meter_ids].reject(&:empty?).empty?
+      !params[:all_meters] && params[:energy_tariff][:meter_ids].reject(&:empty?).empty?
     end
 
     def default_params

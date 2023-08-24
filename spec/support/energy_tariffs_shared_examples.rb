@@ -183,7 +183,7 @@ RSpec.shared_examples "the user can select the meters" do
     find('#choose-meters').click
     #Meter selection
     expect(page).to have_content('Select meters for this tariff')
-    check('specific_meters')
+    uncheck('all_meters')
     check(mpan_mprn)
     click_button('Continue')
 
@@ -198,7 +198,7 @@ RSpec.shared_examples "the user can select the meters" do
     find('#choose-meters').click
 
     expect(page).to have_content('Select meters for this tariff')
-    expect(page).to have_unchecked_field('specific_meters')
+    expect(page).to have_checked_field('all_meters')
     click_button('Continue')
     expect(page).to have_content("All electricity meters")
   end
@@ -209,7 +209,7 @@ RSpec.shared_examples "the user can select the meters" do
 
     expect(page).to have_content('Select meters for this tariff')
     expect(page).to have_content("Will this tariff apply to all #{meter.fuel_type} meters at the school or just specific meters?")
-    check('specific_meters')
+    uncheck('all_meters')
     uncheck(meter.mpan_mprn.to_s)
 
     click_button('Continue')
