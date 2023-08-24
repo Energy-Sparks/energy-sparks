@@ -92,7 +92,7 @@ module EnergyTariffs
     private
 
     def require_meters?
-      params[:specific_meters] && @energy_tariff.meter_ids.empty? && @tariff_holder.school?
+      !params[:all_meters] && @energy_tariff.meter_ids.empty? && @tariff_holder.school?
     end
 
     def redirect_to_choose_type_energy_tariff_path
