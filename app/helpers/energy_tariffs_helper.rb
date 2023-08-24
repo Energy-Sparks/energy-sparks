@@ -77,7 +77,7 @@ module EnergyTariffsHelper
   end
 
   def default_energy_tariff_prices?(energy_tariff)
-    return false unless energy_tariff.energy_tariff_prices.count == 2
+    return false unless energy_tariff&.energy_tariff_prices&.count == 2
 
     all_energy_tariff_price_times_for(energy_tariff).any?(default_night_start_and_end_times)
   end
