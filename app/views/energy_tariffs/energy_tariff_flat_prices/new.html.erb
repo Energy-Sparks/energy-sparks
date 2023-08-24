@@ -17,9 +17,7 @@
       <%= simple_form_for @energy_tariff_price, url: form_url do |f| %>
         <%= render 'form', energy_tariff: @energy_tariff, energy_tariff_price: @energy_tariff_price, f: f %>
         <br/>
-        <% edit_path = energy_tariffs_path(@energy_tariff) %>
-        <%= link_to t('common.labels.previous'), edit_path, class: 'btn' %>
-        <%= f.submit t('common.labels.next'), class: 'btn btn-primary' %>
+        <%= f.submit t('common.labels.continue'), class: 'btn btn-primary' %>
       <% end %>
     </div>
   </div>

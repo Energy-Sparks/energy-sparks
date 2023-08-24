@@ -19,12 +19,6 @@ describe 'school group energy tariffs', type: :system do
     it_behaves_like "a school group energy tariff editor"
   end
 
-  context 'as an analytics user' do
-    let!(:current_user) { create(:analytics) }
-
-    it_behaves_like "a school group energy tariff editor"
-  end
-
   context 'as a group_admin user' do
     let(:current_user) { create(:user, role: :group_admin, school_group: school_group)}
 

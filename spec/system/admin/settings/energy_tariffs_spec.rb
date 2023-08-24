@@ -13,12 +13,6 @@ describe 'site settings energy tariffs', type: :system do
     it_behaves_like "the site settings energy tariff editor"
   end
 
-  context 'as an analytics user' do
-    let!(:current_user) { create(:admin) }
-    before(:each) { sign_in(current_user) }
-    it_behaves_like "the site settings energy tariff editor"
-  end
-
   context 'as a group_admin user' do
     let!(:current_user) { create(:group_admin) }
     let(:path)          { admin_settings_energy_tariffs_path }
