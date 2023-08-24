@@ -33,14 +33,14 @@
     <% end %>
   <% end %>
 
-  <div class="d-flex justify-content-between">
+  <div class="d-flex justify-content-between" id="tariff-metadata">
     <div>
       <h4><%= t('schools.user_tariffs.show.dates.title') %></h4>
     </div>
     <div>
       <%= link_to t('common.labels.edit'),
           energy_tariffs_path(@energy_tariff, [], { action: :edit }),
-          class: 'btn', id: 'edit_dates' unless @energy_tariff.dcc?
+          class: 'btn', id: 'edit-dates' unless @energy_tariff.dcc?
       %>
     </div>
   </div>
@@ -58,14 +58,14 @@
   </table>
 
   <% if @energy_tariff.school? %>
-    <div class="mt-4 d-flex justify-content-between">
+    <div class="mt-4 d-flex justify-content-between" id="tariff-meters">
       <div>
         <h4><%= t('schools.user_tariffs.show.meters') %></h4>
       </div>
       <div>
         <%= link_to t('common.labels.edit'),
             energy_tariffs_path(@energy_tariff, [], { action: :edit_meters }),
-            class: 'btn', id: 'edit_meters' unless @energy_tariff.dcc?
+            class: 'btn', id: 'choose-meters' unless @energy_tariff.dcc?
         %>
       </div>
     </div>
@@ -87,6 +87,27 @@
     </table>
   <% end %>
 
+  <div class="mt-4 d-flex justify-content-between" id="tariff-type">
+    <div>
+      <h4><%= t('schools.user_tariffs.choose_type.breadcrumb_title') %></h4>
+    </div>
+    <div>
+      <%= link_to t('common.labels.edit'),
+          energy_tariffs_path(@energy_tariff, [], { action: :choose_type }),
+          class: 'btn', id: 'choose-type' unless (@energy_tariff.gas? || @energy_tariff.dcc?)
+      %>
+    </div>
+  </div>
+  <table class="table table-charges">
+    <tbody>
+      <tr>
+        <td class="description"><%= t('schools.user_tariffs.tariff_partial.type') %></td>
+        <td class="value"><%= @energy_tariff.flat_rate? ? t('schools.user_tariffs.tariff_partial.flat_rate_tariff') : t('schools.user_tariffs.tariff_partial.differential_tariff') %></td>
+      </tr>
+    </tbody>
+  </table>
+
+
   <div class="mt-4 d-flex justify-content-between" id="consumption-charges">
     <div>
       <h4><%= t('schools.user_tariffs.show.consumption_charges') %></h4>
@@ -94,7 +115,7 @@
     <div>
       <%= link_to t('common.labels.edit'),
         energy_tariff_prices_path(@energy_tariff),
-        class: 'btn' unless @energy_tariff.dcc?
+        class: 'btn', id: 'edit-prices' unless @energy_tariff.dcc?
       %>
     </div>
   </div>
@@ -111,7 +132,7 @@
     <div>
       <%= link_to t('common.labels.edit'),
         energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]),
-        class: 'btn' unless @energy_tariff.dcc? %>
+        class: 'btn', id: 'edit-charges' unless @energy_tariff.dcc? %>
     </div>
   </div>
   <%= render 'energy_tariffs/energy_tariffs/charges_table', energy_tariff: @energy_tariff, allow_edits: false %>
@@ -151,13 +172,5 @@
   <br/>
   <br/>
 
-  <%= link_to t('common.labels.previous'), energy_tariffs_path(@energy_tariff, [:energy_tariff_charges]), class: 'btn' %>
   <%= link_to t('common.labels.finished'), energy_tariffs_path(@energy_tariff, [], { energy_tariff_index: true }), class: 'btn' %>
-
-  <div class="hidden">
-    <% if can? :download, EnergyTariff %>
-      <h4><%= t('schools.user_tariffs.show.meter_attribute_view') %></h4>
-      <%= print_meter_attribute(@energy_tariff.meter_attribute) %>
-    <% end %>
-  </div>
 </div>
