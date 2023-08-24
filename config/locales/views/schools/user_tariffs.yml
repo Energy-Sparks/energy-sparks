@@ -34,6 +34,8 @@ en:
         skip_to_final_step: Skip to final step
         smart_meter_notice: You cannot edit the daily standing charge for this tariff but can edit the other charges.
         title: Add standing charges for this tariff
+      per: per
+      value_in_gbp: Value in £
     user_tariff_differential_prices:
       form:
         labels:
@@ -61,7 +63,6 @@ en:
         introduction_site_settings: Please provide as much detail as you can about the consumption charges associated with this tariff
         title: Edit the consumption charges for this tariff
       form:
-        per_gbp_kwh: per £/kWh
         rate: Rate
       new:
         breadcrumb_title: Add consumption charges for this tariff
@@ -69,6 +70,7 @@ en:
         introduction_school_group: Using your bill, please provide as much detail as you can about the consumption charges associated with this tariff
         introduction_site_settings: Please provide as much detail as you can about the consumption charges associated with this tariff
         title: Add consumption charges for this tariff
+      rate_in_gbp: Rate in £
     user_tariffs:
       charges_table:
         climate_charge_levy: Climate charge levy

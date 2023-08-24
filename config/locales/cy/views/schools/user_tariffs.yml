@@ -38,7 +38,6 @@ cy:
         introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
         title: Golygu'r costau defnydd ar gyfer y tariff hwn
       form:
-        per_gbp_kwh: fesul £/kWh
         rate: Cyfradd
       new:
         introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
