@@ -88,7 +88,7 @@ module EnergyTariffsHelper
     settings(charge_type).fetch(:tip, '')
   end
 
-  def energy_tariff_charge_type_value_label(charge_type, default = 'Value in £')
+  def energy_tariff_charge_type_value_label(charge_type, default = I18n.t('schools.user_tariff_charges.value_in_gbp'))
     settings(charge_type).fetch(:label, default)
   end
 
