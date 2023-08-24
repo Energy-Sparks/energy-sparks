@@ -3,7 +3,7 @@
 <div class="energy_tariff">
   <%= simple_form_for :energy_tariff, url: new_school_energy_tariff_path(@tariff_holder), method: :get do |f| %>
     <%= f.hidden_field :meter_type, value: params[:meter_type] %>
-    <%= render 'form_meter_choices', f: f, meter_type: params[:meter_type], specific_meters: false %>
+    <%= render 'form_meter_choices', f: f, meter_type: params[:meter_type], all_meters: true %>
     <%= submit_tag t('common.labels.next'), class: 'btn btn-info' %>
   <% end %>
 </div>

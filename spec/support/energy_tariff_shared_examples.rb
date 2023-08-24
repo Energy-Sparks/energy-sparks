@@ -148,7 +148,7 @@ RSpec.shared_examples "a gas tariff editor with meter selection" do
   it 'can create a tariff and associate the meters' do
     #Meter selection
     expect(page).to have_content('Select meters for this tariff')
-    check('specific_meters')
+    uncheck('all_meters')
     check(mpan_mprn)
     click_button('Next')
 
@@ -171,7 +171,7 @@ RSpec.shared_examples "a gas tariff editor with meter selection" do
 
   it 'doesnt require a meter to be selected by default' do
     expect(page).to have_content('Select meters for this tariff')
-    expect(page).to have_unchecked_field('specific_meters')
+    expect(page).to have_checked_field('all_meters')
     click_button('Next')
     expect(page).to have_content('Choose a name and date range')
   end
@@ -179,7 +179,7 @@ RSpec.shared_examples "a gas tariff editor with meter selection" do
   it 'requires a meter to be selected if we check the box' do
     expect(page).to have_content('Select meters for this tariff')
     expect(page).to have_content("Will this tariff apply to all #{meter.fuel_type} meters at the school or just specific meters?")
-    check('specific_meters')
+    uncheck('all_meters')
     uncheck(meter.mpan_mprn.to_s)
 
     click_button('Next')
@@ -577,7 +577,7 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
   it 'can create a flat rate tariff and associate the meters' do
     #Meter selection
     expect(page).to have_content('Select meters for this tariff')
-    check('specific_meters')
+    uncheck('all_meters')
     check(mpan_mprn)
     click_button('Next')
 
@@ -601,7 +601,7 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
   it 'can create a differential tariff and associate the meters' do
     #Meter selection
     expect(page).to have_content('Select meters for this tariff')
-    check('specific_meters')
+    uncheck('all_meters')
     check(mpan_mprn)
     click_button('Next')
 
@@ -728,7 +728,7 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
 
   it 'doesnt require a meter to be selected by default' do
     expect(page).to have_content('Select meters for this tariff')
-    expect(page).to have_unchecked_field('specific_meters')
+    expect(page).to have_checked_field('all_meters')
     click_button('Next')
     expect(page).to have_content('Choose a name and date range')
   end
@@ -736,7 +736,7 @@ RSpec.shared_examples "an electricity tariff editor with meter selection" do
   it 'requires a meter to be selected if we check the box' do
     expect(page).to have_content('Select meters for this tariff')
     expect(page).to have_content("Will this tariff apply to all #{meter.fuel_type} meters at the school or just specific meters?")
-    check('specific_meters')
+    uncheck('all_meters')
     uncheck(meter.mpan_mprn.to_s)
 
     click_button('Next')

@@ -10,7 +10,7 @@
   <div class="col-md-12">
     <div class="energy_tariff">
       <%= simple_form_for :energy_tariff, url: energy_tariffs_path(@energy_tariff, [], { action: :update_meters }), method: :post do |f| %>
-        <%= render 'form_meter_choices', f: f, meter_type: @energy_tariff.meter_type, specific_meters: @energy_tariff.meters.any? %>
+        <%= render 'form_meter_choices', f: f, meter_type: @energy_tariff.meter_type, all_meters: !@energy_tariff.meters.any? %>
         <%= submit_tag t('common.labels.next'), class: 'btn btn-info' %>
       <% end %>
     </div>
