@@ -24,7 +24,7 @@
             <td><%= response.journey_minutes %> <%= t('schools.transport_surveys.common.mins') %></td>
             <td><%= response.transport_type.image %> <%= response.transport_type.name %></td>
             <td><%= response.passengers > 1 ? response.passengers : "" %></td>
-            <td><%= response.carbon.round(3) %>kg CO2</td>
+            <td><%= response.carbon_kg_co2 %>kg CO2</td>
             <td><%= nice_date_times response.surveyed_at, localtime: true %></td>
             <% if can? :delete, response %>
               <td><%= link_to t('common.labels.delete'), school_transport_survey_response_path(@school, @transport_survey, response), method: :delete, data: { confirm:  t('common.confirm') }, class: 'btn btn-sm btn-danger' %></td>
