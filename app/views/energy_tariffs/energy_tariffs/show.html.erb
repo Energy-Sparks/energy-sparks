@@ -50,7 +50,8 @@
     id: 'tariff-type',
     title: t('schools.user_tariffs.choose_type.breadcrumb_title'),
     edit_path: energy_tariffs_path(@energy_tariff, [], { action: :choose_type }),
-    show_button: @energy_tariff.electricity? && !@energy_tariff.dcc? do |c| %>
+    show_button: @energy_tariff.electricity? && !@energy_tariff.dcc?,
+    btn_class: (@energy_tariff.energy_tariff_prices.present? ? 'btn disabled' : 'btn') do |c| %>
     <% c.with_charges_section do %>
       <tr class="positive-row">
         <td class="description"><%= t('schools.user_tariffs.tariff_partial.type') %></td>
