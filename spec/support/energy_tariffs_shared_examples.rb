@@ -22,14 +22,30 @@ RSpec.shared_examples "a tariff editor index" do
 
   it 'navigates the index tabs' do
     expect(current_path).to end_with('energy_tariffs')
-    click_link('User supplied tariffs')
-    expect(current_path).to end_with('energy_tariffs')
+
+    if tariff_holder.school? || tariff_holder.school_group?
+      expect(page).not_to have_content('System default tariffs')
+      click_link('User supplied tariffs')
+      expect(current_path).to end_with('energy_tariffs')
+    else
+      expect(page).not_to have_content('User supplied tariffs')
+      click_link('System default tariffs')
+      expect(current_path).to end_with('energy_tariffs')
+    end
+
     if tariff_holder.school?
       click_link('Smart meter tariffs')
       expect(current_path).to end_with('energy_tariffs/smart_meter_tariffs')
+    else
+      expect(page).not_to have_content('Smart meter tariffs')
     end
-    click_link('Default tariffs')
-    expect(current_path).to end_with('energy_tariffs/default_tariffs')
+
+    if tariff_holder.school? || tariff_holder.school_group?
+      click_link('Default tariffs')
+      expect(current_path).to end_with('energy_tariffs/default_tariffs')
+    else
+      expect(page).not_to have_content('Default tariffs')
+    end
   end
 
   it 'has buttons to create new tariffs' do
