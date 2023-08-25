@@ -16,6 +16,15 @@
     .form-group {
       margin-bottom: 0px
     }
+    tr.positive-row {
+      border-left: 5px solid $green;
+    }
+    tr.negative-row {
+      border-left: 5px solid $new-red;
+    }
+    tr.neutral-row {
+      border-left: 5px solid #97E6FC;
+    }
   }
 
   .right {

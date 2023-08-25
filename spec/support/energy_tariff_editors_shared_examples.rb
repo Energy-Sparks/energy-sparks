@@ -40,7 +40,7 @@ RSpec.shared_examples "a basic electricity tariff editor" do
     include_examples 'the user can change the type of tariff'
 
     it 'allows adding all the charges' do
-      find('#edit-charges').click
+      find('#charges-section-edit').click
 
       fill_in "energy_tariff_charges[fixed_charge][value]", with: '1.11'
       select 'day', from: 'energy_tariff_charges[fixed_charge][units]'
@@ -107,7 +107,7 @@ RSpec.shared_examples "a basic electricity tariff editor" do
     end
 
     it 'can create a differential tariff and add, edit, delete, and reset prices and charges' do
-      find('#edit-prices').click()
+      find('#prices-section-edit').click()
       expect(page).to have_content('Rate from 00:00 to 07:00')
       expect(page).to have_content('Rate from 07:00 to 00:00')
       expect(page).to have_link('Add rate')
