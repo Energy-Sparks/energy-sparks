@@ -19,10 +19,12 @@
                 show_actions: @show_actions %>
             <% else %>
               <p>
-                <% if @default_tariffs %>
-                  <%= t('schools.user_tariffs.index.no_defaults', meter_type: meter_type) %>
+                <% if @source == :dcc %>
+                  <%= t('schools.user_tariffs.index.no_smart_meter_tariffs', meter_type: meter_type) %>.
+                <% elsif @default_tariffs %>
+                  <%= t('schools.user_tariffs.index.no_defaults', meter_type: meter_type) %>.
                 <% else %>
-                  <%= t("schools.user_tariffs.index.#{meter_type}.there_are_no_#{meter_type}_tariffs_set_up_yet") %>
+                  <%= t("schools.user_tariffs.index.#{meter_type}.there_are_no_#{meter_type}_tariffs_set_up_yet") %>.
                 <% end %>
               </p>
               <%= footer %>

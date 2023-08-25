@@ -64,8 +64,8 @@
                   class: 'btn btn-sm'
               %>
             <% else %>
-              <%= link_to t('common.labels.edit'),
-                  energy_tariffs_path(energy_tariff, [], { action: :edit }),
+              <%= link_to energy_tariff.usable? ? t('common.labels.edit') : t('common.labels.finish'),
+                  energy_tariffs_path(energy_tariff),
                   class: 'btn btn-sm'
               %>
             <% end %>

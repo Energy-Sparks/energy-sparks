@@ -3,7 +3,7 @@
 
 <div class="fixed_charge">
   <%= f.fields_for :fixed_charge do |ff| %>
-    <%= render 'charge_basic', energy_tariff_charge: energy_tariff_charge_for_type(energy_tariff_charges, :fixed_charge), f: ff %>
+    <%= render 'charge_basic', energy_tariff_charge: energy_tariff_charge_for_type(energy_tariff_charges, :fixed_charge), disabled: energy_tariff.dcc?, f: ff %>
   <% end %>
 </div>
 

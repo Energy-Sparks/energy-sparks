@@ -451,4 +451,18 @@ describe EnergyTariff do
     end
 
   end
+
+  context '.by_start_and_end' do
+    let(:energy_tariff_open_start) {
+      create(:energy_tariff, tariff_holder: tariff_holder, start_date: nil, end_date: Date.new(2022,3,31))
+    }
+    let(:energy_tariff_open_end) {
+      create(:energy_tariff, tariff_holder: tariff_holder, start_date: Date.new(2022,3,31), end_date: nil)
+    }
+    it 'sorts as expected' do
+      tariffs = tariff_holder.energy_tariffs.by_start_and_end
+      #using eq not match_array as we're expecting exactly this order
+      expect(tariffs).to eq([energy_tariff_open_start, energy_tariff, energy_tariff_open_end])
+    end
+  end
 end

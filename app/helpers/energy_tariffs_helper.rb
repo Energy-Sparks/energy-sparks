@@ -15,11 +15,7 @@ module EnergyTariffsHelper
   end
 
   def new_energy_tariff_path(tariff_holder, options = {})
-    if tariff_holder.school?
-      choose_meters_school_energy_tariffs_path(tariff_holder, options)
-    else
-      polymorphic_path(tariff_holder_route(tariff_holder) + [:energy_tariff], options.merge!({ action: :new }))
-    end
+    polymorphic_path(tariff_holder_route(tariff_holder) + [:energy_tariff], options.merge!({ action: :new }))
   end
 
   def energy_tariff_prices_path(energy_tariff, options = {})
@@ -88,7 +84,7 @@ module EnergyTariffsHelper
     settings(charge_type).fetch(:tip, '')
   end
 
-  def energy_tariff_charge_type_value_label(charge_type, default = 'Value in £')
+  def energy_tariff_charge_type_value_label(charge_type, default = I18n.t('schools.user_tariff_charges.value_in_gbp'))
     settings(charge_type).fetch(:label, default)
   end
 
@@ -129,5 +125,9 @@ module EnergyTariffsHelper
 
   def any_smart_meters?(school)
     school.meters.dcc.any?
+  end
+
+  def charge_row_feedback(energy_tariff)
+    energy_tariff.usable? ? 'positive-row' : 'negative-row'
   end
 end

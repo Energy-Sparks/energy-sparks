@@ -38,7 +38,6 @@ cy:
         introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
         title: Golygu'r costau defnydd ar gyfer y tariff hwn
       form:
-        per_gbp_kwh: fesul £/kWh
         rate: Cyfradd
       new:
         introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
@@ -52,9 +51,7 @@ cy:
         title: Dewiswch fesuryddion ar gyfer y tariff hwn
         which_meters_will_this_tariff_apply_to: I ba fesuryddion y bydd y tariff hwn yn berthnasol?
       choose_type:
-        is_this_a_simple_flat_rate: Ai cyfradd unffurf syml yw hon?
         or_a_rate_which_varies_by_time_of_day: Neu gyfradd sy’n amrywio yn ôl amser o’r dydd (e.e. tariff Dydd/Nos, Economi7)
-        simple: Syml
         title: Dewiswch y math o'r tariff hwn
       edit:
         title: Golygu'r enw a'r ystod dyddiad ar gyfer y tariff %{fuel_type} hwn
@@ -97,7 +94,6 @@ cy:
       show:
         consumption_charges: Costau defnydd
         introduction_html: Bydd unrhyw newidiadau i'r tariff yn cael eu hadlewyrchu yn y tudalennau <a href='%{electricity_analysis_path}'>dadansoddiad cost trydan</a> a <a href='%{gas_analysis_path}'>dadansoddiad cost nwy</a> a fydd yn diweddaru dros nos
-        meter_attribute_view: Gwedd priodoledd mesurydd (gweinyddwr yn unig)
         standing_charges: Costau sefydlog
       smart_meter_tariffs:
         introduction_html: |-
@@ -113,7 +109,6 @@ cy:
       tariff_partial:
         consumption_charges: Costau defnydd
         end_date: Dyddiad gorffen
-        simple_tariff: Tariff syml
         start_date: Dyddiad cychwyn
         type: Math
         price_from_to: "%{price_start_time} i %{price_end_time}:"

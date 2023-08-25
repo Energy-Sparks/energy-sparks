@@ -1,7 +1,7 @@
 <%= component 'energy_tariff_form_title',
   energy_tariff: @energy_tariff do |c| %>
   <% c.with_page_title do %>
-    <h1><%= t('schools.user_tariff_flat_prices.edit.title') %></h1>
+    <h1><%= t('schools.user_tariff_flat_prices.edit.title', fuel_type: t("common.#{@energy_tariff.meter_type}").downcase) %></h1>
   <% end %>
 <% end %>
 
@@ -19,9 +19,7 @@
         <%= render 'form', energy_tariff: @energy_tariff, energy_tariff_price: @energy_tariff_price, f: f %>
 
         <br/>
-        <% edit_path = energy_tariffs_path(@energy_tariff, [], { action: :edit }) %>
-        <%= link_to t('common.labels.previous'), edit_path, class: 'btn' %>
-        <%= f.submit t('common.labels.next'), class: 'btn btn-primary' %>
+        <%= f.submit t('common.labels.continue'), class: 'btn btn-primary' %>
       <% end %>
     </div>
   </div>
