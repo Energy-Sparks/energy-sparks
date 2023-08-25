@@ -36,9 +36,10 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
     let(:data_source_3) { create(:data_source) }
     let(:procurement_route_3) { create(:procurement_route) }
 
-    let(:school_group)  { create(:school_group) }
+    let!(:funder) { Funder.create(name: 'Funder 1') }
+    let!(:funder_2) { Funder.create(name: 'Funder 2') }
 
-    let!(:funder) { Funder.create(name: 'A new funder') }
+    let(:school_group)  { create(:school_group, funder: funder) }
 
     let!(:school_1)  { create(:school,
       visible: true,
@@ -49,7 +50,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
       region: :east_of_england,
       local_authority_area: local_authority_area,
       percentage_free_school_meals: 50,
-      funder: funder)
+      funder: nil)
     }
 
     let!(:activities)  { create_list(:activity, 5, school: school_1) }
@@ -60,7 +61,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
     let!(:solar_meter) { create(:solar_pv_meter, active: true, data_source: data_source_3, procurement_route: procurement_route_3, school: school_1)}
 
     #only basic data, helps to catch errors checking for nils
-    let!(:school_2)  { create(:school, visible: true, school_group: create(:school_group)) }
+    let!(:school_2)  { create(:school, visible: true, school_group: create(:school_group), funder: funder_2) }
     #not included in export
     let!(:not_visible)  { create(:school, visible: false, school_group: school_group) }
 
@@ -82,7 +83,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
           'true',
           school_1.school_onboarding.onboarding_completed_on.iso8601,
           school_1.school_onboarding.first_made_data_enabled.iso8601,
-          school_1.funder.name,
+          school_group.funder.name,
           school_1.funding_status.humanize,
           'ab1 2cd',
           'England',
@@ -111,6 +112,42 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
           nil,
           nil
         ].join(",")
+      expect(csv.lines[2].chomp).to eq [
+          school_2.school_group.name,
+          school_2.name,
+          'Primary',
+          'true',
+          nil,
+          nil,
+          school_2.funder.name,
+          school_2.funding_status.humanize,
+          'ab1 2cd',
+          'England',
+          school_2.number_of_pupils,
+          nil,
+          nil,
+          nil,
+          0,
+          0,
+          nil,
+          nil,
+          nil,
+          nil,
+          nil,
+          nil,
+          nil,
+          nil,
+          nil,
+          nil,
+          nil,
+          nil,
+          nil,
+          nil,
+          nil,
+          nil,
+          nil,
+          nil
+      ].join(",")
     end
   end
 end
