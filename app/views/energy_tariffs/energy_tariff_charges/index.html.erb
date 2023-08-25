@@ -11,7 +11,7 @@
         <% else %>
           <%= t('schools.user_tariff_charges.index.notice') %>
         <% end %>
-        <%= link_to t('schools.user_tariff_charges.index.skip_to_final_step'), energy_tariffs_path(@energy_tariff), class: 'btn btn-primary' %>
+        <%= link_to t('common.labels.cancel'), energy_tariffs_path(@energy_tariff), class: 'btn btn-primary' %>
       </div>
     <% end %>
   <% end %>
