@@ -31,7 +31,7 @@ en:
         introduction_school_group: Please provide as much detail as you can about the standing charges associated with this tariff. You can find details about the standing charges by looking at a recent bill
         introduction_site_settings: Please provide as much detail as you can about the standing charges associated with this tariff
         notice: This step is optional and if you do not have this information, you can skip it.
-        notice_site_settings: SiteSetting tariffs should only have consumption charges.
+        notice_site_settings: Site setting tariffs should only have consumption charges.
         smart_meter_notice: You cannot edit the daily standing charge for this tariff but can edit the other charges.
         title: Add standing charges for this tariff
       per: per
