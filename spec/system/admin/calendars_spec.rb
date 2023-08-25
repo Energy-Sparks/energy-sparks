@@ -15,14 +15,13 @@ RSpec.describe 'calendars', :calendar, type: :system do
   let!(:bank_holiday)               { create :bank_holiday, calendar: england_and_wales_calendar, start_date: "2012-04-06", end_date: "2012-04-06" }
 
   before do
+    travel_to Time.zone.local(2023,8,25) # 2023,8,25
     create_all_calendar_events
     AcademicYearFactory.new(england_and_wales_calendar).create(start_year: 2014, end_year: 2016)
   end
 
-  around do |example|
-    # travel_to Time.zone.local(2021,06,06) do
-    #   example.run
-    # end
+  after do
+    travel_back
   end
 
   describe 'when logged in' do
