@@ -73,14 +73,14 @@ RSpec.shared_examples "the user can create a tariff" do
     end
 
     #Add price
-    find("#edit-prices").click
+    find("#prices-section-edit").click
 
     fill_in "energy_tariff_price[value]", with: '1.5'
     click_button('Continue')
     expect(page).to have_content('£1.50 per kWh')
 
     #Add charges
-    find("#edit-charges").click
+    find("#charges-section-edit").click
 
     fill_in "energy_tariff_charges[standing_charge][value]", with: '1.11'
     select 'day', from: 'energy_tariff_charges[standing_charge][units]'
@@ -111,7 +111,7 @@ end
 
 RSpec.shared_examples "the user can edit the tariff" do
   it 'allows me to edit price' do
-    find("#edit-prices").click
+    find("#prices-section-edit").click
     expect(page).to have_field('energy_tariff_price[value]', with: '1.0')
 
     fill_in "energy_tariff_price[value]", with: '1.5'
@@ -122,7 +122,7 @@ RSpec.shared_examples "the user can edit the tariff" do
 
   it 'allows me to edit the standing charge' do
     expect(page).to have_content("No standing charges have been added")
-    find("#edit-charges").click
+    find("#charges-section-edit").click
 
     expect(page).to have_content("Add standing charges for this tariff")
     fill_in "energy_tariff_charges[standing_charge][value]", with: '1.11'
@@ -134,7 +134,7 @@ RSpec.shared_examples "the user can edit the tariff" do
   end
 
   it 'allows me to edit the tariff metadata' do
-    find("#edit-dates").click
+    find("#metadata-section-edit").click
     expect(page).to have_content('Name')
     expect(page).to have_content('Start date')
     expect(page).to have_content('End date')
@@ -156,7 +156,7 @@ end
 RSpec.shared_examples "the user can change the type of tariff" do
   it 'allows switching to flat rate' do
     expect(page).to have_content('Flat rate tariff')
-    find('#choose-type').click()
+    find('#tariff-type-section-edit').click()
     click_button('Flat rate tariff')
     expect(page).to have_content('Flat rate tariff')
     energy_tariff.reload
@@ -165,12 +165,12 @@ RSpec.shared_examples "the user can change the type of tariff" do
 
   it 'allows switching to differential' do
     expect(page).to have_content('Flat rate tariff')
-    find('#choose-type').click()
+    find('#tariff-type-section-edit').click()
     click_button('Differential tariff')
     expect(page).to have_content('Differential tariff')
     energy_tariff.reload
     expect(energy_tariff.energy_tariff_prices.any?).to be false
-    find('#choose-type').click()
+    find('#tariff-type-section-edit').click()
     click_button('Flat rate tariff')
     expect(page).to have_content('Flat rate tariff')
   end
@@ -180,7 +180,7 @@ RSpec.shared_examples "the user can select the meters" do
   it 'can create a tariff and associate the meters' do
     expect(page).to have_content("All electricity meters")
 
-    find('#choose-meters').click
+    find('#meters-section-edit').click
     #Meter selection
     expect(page).to have_content('Select meters for this tariff')
     uncheck('all_meters')
@@ -195,7 +195,7 @@ RSpec.shared_examples "the user can select the meters" do
 
   it 'doesnt require a meter to be selected by default' do
     expect(page).to have_content("All electricity meters")
-    find('#choose-meters').click
+    find('#meters-section-edit').click
 
     expect(page).to have_content('Select meters for this tariff')
     expect(page).to have_checked_field('all_meters')
@@ -205,7 +205,7 @@ RSpec.shared_examples "the user can select the meters" do
 
   it 'requires a meter to be selected if we check the box' do
     expect(page).to have_content("All electricity meters")
-    find('#choose-meters').click
+    find('#meters-section-edit').click
 
     expect(page).to have_content('Select meters for this tariff')
     expect(page).to have_content("Will this tariff apply to all #{meter.fuel_type} meters at the school or just specific meters?")

@@ -46,7 +46,11 @@
         <% end %>
       <% end %>
       <br />
-      <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, allow_edits: true %>
+      <table class="table table-charges">
+        <tbody>
+          <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, allow_edits: true %>
+        </tbody>
+      </table>
 
       <div class="d-flex justify-content-between mb-2 mt-2">
         <div>
