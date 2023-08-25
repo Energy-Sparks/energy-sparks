@@ -83,6 +83,8 @@ RSpec.configure do |config|
   config.before(:each, type: :component) do
     @request = controller.request
   end
+
+  config.include ActiveSupport::Testing::TimeHelpers
 end
 
 Shoulda::Matchers.configure do |config|
