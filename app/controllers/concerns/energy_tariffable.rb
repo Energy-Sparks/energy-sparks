@@ -11,8 +11,12 @@ module EnergyTariffable
     end
     if request.path.ends_with?('energy_tariffs')
       @breadcrumbs << { name: t('schools.energy_tariffs.title') }
+    elsif action_name == 'show'
+      @breadcrumbs << { name: t('schools.energy_tariffs.title'), href: polymorphic_path([@tariff_holder, :energy_tariffs]) }
+      @breadcrumbs << { name: @page_title }
     else
       @breadcrumbs << { name: t('schools.energy_tariffs.title'), href: polymorphic_path([@tariff_holder, :energy_tariffs]) }
+      @breadcrumbs << { name: @energy_tariff.name, href: energy_tariffs_path(@energy_tariff) }
       @breadcrumbs << { name: @page_title }
     end
   end
