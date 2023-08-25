@@ -10,7 +10,7 @@ module EnergyTariffs
     before_action :admin_authorized?, if: :site_settings_resource?
     before_action :load_site_setting, if: :site_settings_resource?
     before_action :set_page_title
-    before_action :build_breadcrumbs, unless: -> { @tariff_holder.site_settings? }
+    before_action :build_breadcrumbs #, unless: -> { @tariff_holder.site_settings? }
 
     private
 
