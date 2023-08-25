@@ -19,6 +19,12 @@ RSpec.describe 'calendars', :calendar, type: :system do
     AcademicYearFactory.new(england_and_wales_calendar).create(start_year: 2014, end_year: 2016)
   end
 
+  around do |example|
+    travel_to Time.zone.local(2021,06,06) do
+      example.run
+    end
+  end
+
   describe 'when logged in' do
     before(:each) do
       sign_in(admin)
