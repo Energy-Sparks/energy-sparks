@@ -1,2 +1,6 @@
 <%= render 'header_and_nav' %>
-
+<% if @tariff_holder.school? && any_smart_meters?(@tariff_holder) %>
+  <div id="nav-smart-meter-tariffs" role="tabpanel" aria-labelledby="nav-smart-meter-tariffs-tab" class="tab-pane">
+    <%= render 'smart_meter_tariffs_tab_school', tariff_holder: @tariff_holder %>
+  </div>
+<% end %>

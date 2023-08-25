@@ -1,25 +1,22 @@
 <h1><%= t('schools.user_tariffs.index.title') %></h1>
 <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <a class="nav-item nav-link active"
-      id="nav-user-tariffs-tab" data-toggle="tab"
-      href="#nav-user-tariffs" role="tab" aria-controls="nav-user-tariffs" aria-selected="true">
+    <%= link_to polymorphic_path([@tariff_holder, :energy_tariffs]), class: "nav-item nav-link#{ action_name == 'index' ? ' active' : '' }" do %>
       <% if @tariff_holder.site_settings? %>
         <%= t('schools.user_tariffs.index.tabs.system_default_tariffs') %>
       <% else %>
         <%= t('schools.user_tariffs.index.tabs.user_tariffs') %>
       <% end %>
-    </a>
+    <% end %>
     <% if @tariff_holder.school? && any_smart_meters?(@tariff_holder) %>
-      <a class="nav-item nav-link"
-        id="nav-smart-meter-tariffs-tab" data-toggle="tab" href="#nav-smart-meter-tariffs" role="tab" aria-controls="nav-smart-meter-tariffs" aria-selected="false">
+      <%= link_to polymorphic_path([@tariff_holder, :energy_tariffs], { action: :smart_meter_tariffs }), class: "nav-item nav-link#{ action_name == 'smart_meter_tariffs' ? ' active' : '' }" do %>
         <%= t('schools.user_tariffs.index.tabs.smart_meter_tariffs') %>
-      </a>
+      <% end %>
     <% end %>
     <% if @tariff_holder.school? || @tariff_holder.school_group? %>
-      <a class="nav-item nav-link" id="nav-default-tariffs-tab" data-toggle="tab" href="#nav-default-tariffs" role="tab" aria-controls="nav-default-tariffs" aria-selected="false">
+      <%= link_to polymorphic_path([@tariff_holder, :energy_tariffs], { action: :default_tariffs }), class: "nav-item nav-link#{ action_name == 'default_tariffs' ? ' active' : '' }" do %>
         <%= t('schools.user_tariffs.index.tabs.default_tariffs') %>
-      </a>
+      <% end %>
     <% end %>
   </div>
 </nav>

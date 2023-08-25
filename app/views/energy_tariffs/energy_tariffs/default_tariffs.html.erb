@@ -1,1 +1,11 @@
 <%= render 'header_and_nav' %>
+<% if @tariff_holder.school? || @tariff_holder.school_group? %>
+  <div id="nav-default-tariffs" role="tabpanel" aria-labelledby="nav-default-tariffs-tab" class="tab-pane">
+    <%= render 'energy_tariffs_tab',
+      tariff_types: list_of_tariff_types(show_all: false),
+      show_actions: false,
+      show_add_button: false,
+      default_tariffs: true,
+      tariff_holder: @tariff_holder.parent_tariff_holder %>
+  </div>
+<% end %>
