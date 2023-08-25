@@ -15,11 +15,7 @@ module EnergyTariffsHelper
   end
 
   def new_energy_tariff_path(tariff_holder, options = {})
-    if tariff_holder.school?
-      choose_meters_school_energy_tariffs_path(tariff_holder, options)
-    else
-      polymorphic_path(tariff_holder_route(tariff_holder) + [:energy_tariff], options.merge!({ action: :new }))
-    end
+    polymorphic_path(tariff_holder_route(tariff_holder) + [:energy_tariff], options.merge!({ action: :new }))
   end
 
   def energy_tariff_prices_path(energy_tariff, options = {})

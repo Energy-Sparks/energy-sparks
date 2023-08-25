@@ -10,8 +10,8 @@
     <div class="energy_tariff">
       <p><%= t('schools.user_tariffs.choose_type.is_this_a_flat_rate') %></p>
 
-      <% form_url = energy_tariffs_path(@energy_tariff) %>
-      <%= simple_form_for @energy_tariff, url: form_url do |f| %>
+      <% form_url = energy_tariffs_path(@energy_tariff, [], { action: :update_type }) %>
+      <%= simple_form_for @energy_tariff, url: form_url, method: :post do |f| %>
         <%= f.hidden_field :tariff_type, value: 'flat_rate' %>
         <%= submit_tag t('schools.user_tariffs.choose_type.flat_rate'), class: 'btn btn-info' %>
       <% end %>
@@ -21,7 +21,7 @@
 
       <p><%= t('schools.user_tariffs.choose_type.or_a_rate_which_varies_by_time_of_day') %></p>
 
-      <%= simple_form_for @energy_tariff, url: form_url do |f| %>
+      <%= simple_form_for @energy_tariff, url: form_url, method: :post do |f| %>
         <%= f.hidden_field :tariff_type, value: 'differential' %>
         <%= submit_tag t('schools.user_tariffs.choose_type.differential_tariff'), class: 'btn btn-info' %>
       <% end %>

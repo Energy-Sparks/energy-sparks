@@ -78,9 +78,9 @@ en:
         tnuos: TNUoS (Transmission Network Use of System)
         vat_rate: VAT rate
       choose_meters:
+        apply_tariff_to_all_meters: Apply tariff to all %{fuel_type} meters
         breadcrumb_title: Choose meters
         missing_meters: Please select at least one meter for this tariff. Or uncheck option to apply tariff to all meters
-        specific_meters_label: Just specific meters. (Tick to choose them)
         specific_meters_prompt: Will this tariff apply to all %{fuel_type} meters at the school or just specific meters?
         title: Select meters for this tariff
         which_meters_will_this_tariff_apply_to: Which meters will this tariff apply to?
@@ -165,7 +165,6 @@ en:
           start_date: Start date
           title: Dates
         introduction_html: Any changes to the tariff will be reflected in the <a href='%{analysis_path}'>%{meter_type} cost analysis</a> page which will update overnight
-        meter_attribute_view: Meter attribute view (admin only)
         meters: Meters
         no_standing_charges: No standing charges have been added
         not_usable: This tariff has missing or incomplete prices and so is not yet usable.
