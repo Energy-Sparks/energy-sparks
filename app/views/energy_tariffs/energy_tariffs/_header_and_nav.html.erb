@@ -1,0 +1,25 @@
+<h1><%= t('schools.user_tariffs.index.title') %></h1>
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link active"
+      id="nav-user-tariffs-tab" data-toggle="tab"
+      href="#nav-user-tariffs" role="tab" aria-controls="nav-user-tariffs" aria-selected="true">
+      <% if @tariff_holder.site_settings? %>
+        <%= t('schools.user_tariffs.index.tabs.system_default_tariffs') %>
+      <% else %>
+        <%= t('schools.user_tariffs.index.tabs.user_tariffs') %>
+      <% end %>
+    </a>
+    <% if @tariff_holder.school? && any_smart_meters?(@tariff_holder) %>
+      <a class="nav-item nav-link"
+        id="nav-smart-meter-tariffs-tab" data-toggle="tab" href="#nav-smart-meter-tariffs" role="tab" aria-controls="nav-smart-meter-tariffs" aria-selected="false">
+        <%= t('schools.user_tariffs.index.tabs.smart_meter_tariffs') %>
+      </a>
+    <% end %>
+    <% if @tariff_holder.school? || @tariff_holder.school_group? %>
+      <a class="nav-item nav-link" id="nav-default-tariffs-tab" data-toggle="tab" href="#nav-default-tariffs" role="tab" aria-controls="nav-default-tariffs" aria-selected="false">
+        <%= t('schools.user_tariffs.index.tabs.default_tariffs') %>
+      </a>
+    <% end %>
+  </div>
+</nav>
