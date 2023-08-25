@@ -3,6 +3,7 @@
 # Table name: programme_types
 #
 #  active            :boolean          default(FALSE)
+#  bonus_score       :integer          default(0)
 #  created_at        :datetime         default(Wed, 06 Jul 2022 12:00:00 UTC +00:00), not null
 #  default           :boolean          default(FALSE)
 #  document_link     :string
@@ -36,7 +37,7 @@ class ProgrammeType < ApplicationRecord
   scope :featured, -> { active.default_first.by_title }
 
   validates_presence_of :title
-
+  validates :bonus_score, numericality: { greater_than_or_equal_to: 0 }
   validates_uniqueness_of :default, if: :default
 
   accepts_nested_attributes_for :programme_type_activity_types, reject_if: proc {|attributes| attributes['position'].blank? }

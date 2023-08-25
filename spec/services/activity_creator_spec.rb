@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 describe ActivityCreator do
-
-  let(:activity_category){ create :activity_category }
-  let(:activity_type){ create :activity_type, activity_category: activity_category, score: 50}
+  let(:activity_category) { create :activity_category }
+  let(:activity_type) { create :activity_type, activity_category: activity_category, score: 50}
 
   it 'sets the activity category if the activity type has one' do
     activity = build(:activity, activity_type: activity_type, activity_category: nil)
@@ -36,17 +35,44 @@ describe ActivityCreator do
   end
 
   context 'with a programme' do
-    let!(:school)         { create :school }
-    let(:programme_type)  { create :programme_type_with_activity_types }
-    let(:activity_type)   { programme_type.activity_types.first }
-    let!(:programme)      { Programmes::Creator.new(school, programme_type).create }
+    let!(:school)           { create :school }
+    let!(:school_2)         { create :school }
+    let(:programme_type)    { create :programme_type_with_activity_types }
+    let(:programme_type_2)  { create :programme_type_with_activity_types }
+    let(:activity_type)     { programme_type.activity_types.first }
+    let(:activity_type_2)   { programme_type_2.activity_types.first }
+    let(:activity_type_3)   { create(:activity_type) }
+    let(:activity_2)        { create(:activity, activity_type: activity_type_2, school: school_1) }
+    let!(:programme)        { Programmes::Creator.new(school, programme_type).create }
+    let!(:programme_2)      { Programmes::Creator.new(school, programme_type_2).create }
 
-    it 'completes the activity in the programme' do
+    it 'a school is recording an activity that is in a programme' do
+      expect(activity_type.programme_types).to eq([programme_type])
+      expect(school.programmes).not_to include([programme_type])
       activity = build(:activity, activity_type: activity_type, school: school)
-      ActivityCreator.new(activity).process
-
-      expect(programme.programme_activities.count).to eql 1
+      expect do
+        ActivityCreator.new(activity).process
+      end.to change { programme.programme_activities.count }.by(1).and change { Observation.count }.by(1).and change(activity, :updated_at)
       expect(programme.programme_activities.find_by(activity_type: activity_type).activity_id).to be activity.id
+    end
+
+    it "a school is recording an activity that isn't in a programme" do
+      expect(activity_type_3.programme_types).to eq([])
+      activity = build(:activity, activity_type: activity_type_3, school: school)
+
+      expect do
+        ActivityCreator.new(activity).process
+      end.to change { programme.programme_activities.count }.by(0).and change { Observation.count }.by(1).and change(activity, :updated_at)
+    end
+
+    it "a school is recording an activity that is in a programme, but not one they're part of" do
+      expect(activity_type_2.programme_types).to eq([programme_type_2])
+      expect(school.programmes).not_to include([programme_type_2])
+
+      activity = build(:activity, activity_type: activity_type_2, school: school)
+      expect do
+        ActivityCreator.new(activity).process
+      end.to change { programme.programme_activities.count }.by(0).and change { Observation.count }.by(1).and change(activity, :updated_at)
     end
 
     it "completes the programme if all the activities are completed" do
@@ -59,7 +85,6 @@ describe ActivityCreator do
     end
 
     context "when extra activities are recorded, which are no longer in the programme" do
-
       before do
         extra_activity_type = create(:activity_type)
         extra_activity = create(:activity, activity_type: extra_activity_type)
@@ -94,4 +119,49 @@ describe ActivityCreator do
     end
   end
 
+  context 'creates an completed audit observation with the activities 2023 feature flag enabled' do
+    let(:activity_category) { create(:activity_category, name: 'Zebras') }
+    let(:school) { create(:school) }
+
+    before { Observation.delete_all }
+
+    it 'creates an observation for the activity with the points' do
+      ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
+        audit = create(:audit, :with_activity_and_intervention_types, school: school)
+        audit.activity_types[0...-1].each do |activity_type|
+          activity = Activity.new(happened_on: audit.created_at, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+          ActivityCreator.new(activity).process
+        end
+        expect(Observation.audit_activities_completed.count).to eq(0)
+
+        expect do
+          activity = Activity.new(school: school, happened_on: Time.zone.now, activity_type: audit.activity_types.last)
+          ActivityCreator.new(activity).process
+        end.to change { Observation.audit_activities_completed.count }.by(1)
+      end
+    end
+  end
+
+  context 'does not create an completed audit observation with the activities 2023 feature flag disabled' do
+    let(:activity_category) { create(:activity_category, name: 'Zebras') }
+    let(:school) { create(:school) }
+
+    before { Observation.delete_all }
+
+    it 'creates an observation for the activity with the points' do
+      ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'false' do
+        audit = create(:audit, :with_activity_and_intervention_types, school: school)
+        audit.activity_types[0...-1].each do |activity_type|
+          activity = Activity.new(happened_on: audit.created_at, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+          ActivityCreator.new(activity).process
+        end
+        expect(Observation.audit_activities_completed.count).to eq(0)
+
+        expect do
+          activity = Activity.new(school: school, happened_on: Time.zone.now, activity_type: audit.activity_types.last)
+          ActivityCreator.new(activity).process
+        end.to change { Observation.audit_activities_completed.count }.by(0)
+      end
+    end
+  end
 end

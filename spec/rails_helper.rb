@@ -11,10 +11,12 @@ require 'rspec/rails'
 require 'pry'
 require 'view_component/test_helpers'
 require 'capybara/rspec'
-require 'webdrivers'
+require 'selenium-webdriver'
+#require 'webdrivers'
 require 'capybara/email/rspec'
 require 'cancan/matchers'
 require 'wisper/rspec/matchers'
+
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in

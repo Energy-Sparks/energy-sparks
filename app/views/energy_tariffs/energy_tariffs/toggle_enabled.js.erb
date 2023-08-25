@@ -1,0 +1,3 @@
+$("#energy-tariff-<%= @energy_tariff.id %>-toggle").html("<%== @energy_tariff.enabled ? t('common.labels.disable') : t('common.labels.enable') %>")
+$("#energy-tariff-<%= @energy_tariff.id %>").toggleClass('table-secondary', <%== !@energy_tariff.enabled %>)
+$("#energy-tariff-<%= @energy_tariff.id %>-delete").toggle()

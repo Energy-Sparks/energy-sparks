@@ -8,8 +8,7 @@
     <%= link_to t('manage_school_menu.manage_users'), school_users_path(school), class: 'dropdown-item' if can? :manage_users, school %>
     <%= link_to t('manage_school_menu.manage_alert_contacts'), school_contacts_path(school), class: 'dropdown-item' if can? :manage, Contact %>
     <%= link_to t('manage_school_menu.manage_meters'), school_meters_path(school), class: 'dropdown-item' if can? :index, Meter %>
-    <%= link_to t('manage_school_menu.manage_tariffs'), school_user_tariffs_path(school), class: 'dropdown-item' if can? :manage, UserTariff %>
-
+    <%= link_to t('manage_school_menu.manage_tariffs'), school_energy_tariffs_path(school), class: 'dropdown-item' if can? :manage, EnergyTariff %>
     <%= link_to t('manage_school_menu.manage_usage_estimate'), school_estimated_annual_consumptions_path(school), class: 'dropdown-item' if school.latest_annual_estimate.present? || school.suggest_annual_estimate? %>
 
     <% if current_user.admin? %>
@@ -23,7 +22,7 @@
     <%= link_to t('manage_school_menu.manage_school_group'), admin_school_group_path(school.school_group), class: 'dropdown-item' if school.school_group && can?(:manage, school.school_group) %>
     <%= link_to t('manage_school_menu.manage_issues'), admin_school_issues_path(school), class: 'dropdown-item' if can? :manage, Issue %>
     <%= link_to t('manage_school_menu.batch_reports'), school_reports_path(school), class: 'dropdown-item' if can? :view_content_reports, school %>
-    <%= link_to t('schools.meters.index.view_target_data'), admin_school_target_data_path(@school), class: 'dropdown-item' if current_user.admin? %>
+    <%= link_to t('schools.meters.index.view_target_data'), admin_school_target_data_path(school), class: 'dropdown-item' if current_user.admin? %>
     <%= link_to t('manage_school_menu.review_targets'), school_school_targets_path(school), class: 'dropdown-item' if current_user.admin? && Targets::SchoolTargetService.targets_enabled?(school) && can?(:manage, SchoolTarget) && Targets::SchoolTargetService.new(school).enough_data? %>
     <%= link_to t('manage_school_menu.expert_analysis'), admin_school_analysis_path(school), class: 'dropdown-item' if can? :expert_analyse, school %>
     <% if replace_analysis_pages? %>

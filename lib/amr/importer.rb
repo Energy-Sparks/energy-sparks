@@ -24,11 +24,22 @@ module Amr
 
   private
 
+    def s3_key(file_name)
+      "#{@config.identifier}/#{file_name}"
+    end
+
+    def archived_key(file_name)
+      "#{@config.s3_archive_folder}/#{file_name}"
+    end
+
+    def local_file_name_and_path(file_name)
+      "#{@config.local_bucket_path}/#{file_name}"
+    end
+
     def get_file_from_s3(file_name)
-      key = "#{@config.identifier}/#{file_name}"
-      file_name_and_path = "#{@config.local_bucket_path}/#{file_name}"
+      key = s3_key(file_name)
       Rails.logger.info "Downloading from S3 key: #{key}"
-      @s3_client.get_object(bucket: @bucket, key: key, response_target: file_name_and_path)
+      @s3_client.get_object(bucket: @bucket, key: key, response_target: local_file_name_and_path(file_name))
       Rails.logger.info "Downloaded  from S3 key: #{key}"
     end
 
@@ -45,13 +56,12 @@ module Amr
     end
 
     def archive_file(file_name)
-      key = "#{@config.identifier}/#{file_name}"
-      archived_key = "#{@config.s3_archive_folder}/#{file_name}"
-      pp "Archiving #{key} to #{archived_key}"
+      key = s3_key(file_name)
+      archived_key = archived_key(file_name)
       @s3_client.copy_object(bucket: @bucket, copy_source: "#{@bucket}/#{key}", key: archived_key)
-
       @s3_client.delete_objects(bucket: @bucket, delete: { objects: [{ key: key }] })
-      Rails.logger.info "Archived #{key} to #{archived_key}"
+      File.delete local_file_name_and_path(file_name)
+      Rails.logger.info "Archived #{key} to #{archived_key} and removed local file"
     end
   end
 end

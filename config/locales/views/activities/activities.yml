@@ -22,11 +22,16 @@ en:
       page_title: Update activity
       update_your_activity: Update your activity
     form:
+      adding_a_photo_to_document_your_activity_will_score_you: Adding a photo to document your activity will score you
+      bonus_points:
+        one: bonus point
+        other: bonus points
       build_a_record_message: You can record a recent activity and older activities to build up a record of all of the energy saving activities you've carried out as a school
       cancel: Cancel
       completing_this_activity:
         one: Completing this activity will earn you 1 point
         other: Completing this activity will earn you %{count} points
+      how_many_pupils_were_involved_in_this_activity: How many pupils were involved in this activity?
       how_would_you_describe_this_activity: How would you describe this activity
       not_a_standard_activity_message: As you're not recording one of our standard activities, you need to supply a title. Choose a clear title which will make others want to read about your activity
       other: Other

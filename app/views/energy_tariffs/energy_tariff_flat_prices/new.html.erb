@@ -1,0 +1,26 @@
+<%= component 'energy_tariff_form_title',
+  energy_tariff: @energy_tariff do |c| %>
+  <% c.with_page_title do %>
+    <h1><%= t('schools.user_tariff_flat_prices.new.title') %></h1>
+  <% end %>
+<% end %>
+
+<div class="row mt-4">
+  <div class="col-md-12">
+    <div class="energy_tariff">
+      <p>
+        <%= t("schools.user_tariff_flat_prices.new.introduction_#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
+      </p>
+      <br/>
+
+      <% form_url = energy_tariffs_path(@energy_tariff, [:energy_tariff_flat_prices]) %>
+      <%= simple_form_for @energy_tariff_price, url: form_url do |f| %>
+        <%= render 'form', energy_tariff: @energy_tariff, energy_tariff_price: @energy_tariff_price, f: f %>
+        <br/>
+        <% edit_path = energy_tariffs_path(@energy_tariff) %>
+        <%= link_to t('common.labels.previous'), edit_path, class: 'btn' %>
+        <%= f.submit t('common.labels.next'), class: 'btn btn-primary' %>
+      <% end %>
+    </div>
+  </div>
+</div>

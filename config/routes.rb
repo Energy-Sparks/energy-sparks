@@ -66,6 +66,33 @@ Rails.application.routes.draw do
 
   resources :mailchimp_signups, only: [:new, :create, :index]
 
+  concern :tariff_holder do
+    scope module: 'energy_tariffs' do
+    resources :energy_tariffs do
+      resources :energy_tariff_flat_prices
+      resources :energy_tariff_differential_prices do
+        collection do
+          get :reset, to: 'energy_tariff_differential_prices#reset'
+        end
+      end
+      resources :energy_tariff_charges
+      collection do
+        get :choose_meters, to: 'energy_tariffs#choose_meters'
+      end
+      member do
+        get :choose_type, to: 'energy_tariffs#choose_type'
+        get :edit_meters, to: 'energy_tariffs#edit_meters'
+        post :update_meters, to: 'energy_tariffs#update_meters'
+        post :toggle_enabled, to: 'energy_tariffs#toggle_enabled'
+      end
+    end
+  end
+  end
+
+  scope '/admin/settings', as: :admin_settings do
+    concerns :tariff_holder
+  end
+
   resources :activity_types, only: [:show] do
     collection do
       get :search
@@ -111,9 +138,19 @@ Rails.application.routes.draw do
   resource :school_switcher, only: [:create], controller: :school_switcher
 
   resources :school_groups, only: [:show] do
+    concerns :tariff_holder
+
     scope module: :school_groups do
       resources :chart_updates, only: [:index] do
         post :bulk_update_charts
+      end
+      resources :clusters do
+        member do
+          post :unassign
+        end
+        collection do
+          post :assign
+        end
       end
     end
     member do
@@ -152,6 +189,8 @@ Rails.application.routes.draw do
         get :completed
       end
     end
+
+    concerns :tariff_holder
 
     scope module: :schools do
 
@@ -323,19 +362,6 @@ Rails.application.routes.draw do
       resources :batch_runs, only: [:index, :create, :show]
 
       resource :consents, only: [:show, :create]
-      resources :user_tariffs do
-        resources :user_tariff_prices, only: [:index, :new, :edit]
-        resources :user_tariff_flat_prices
-        resources :user_tariff_differential_prices
-        resources :user_tariff_charges
-        collection do
-          get :choose_meters, to: 'user_tariffs#choose_meters'
-        end
-        member do
-          get :choose_type, to: 'user_tariffs#choose_type'
-        end
-      end
-
     end
 
     # Maintain old scoreboard URL
@@ -361,8 +387,11 @@ Rails.application.routes.draw do
     resource :dashboard_message, only: [:update, :edit, :destroy], controller: '/admin/dashboard_messages'
   end
 
+
+
   namespace :admin do
     concerns :issueable
+    resources :funders
     resources :users do
       scope module: :users do
         resource :confirmation, only: [:create], controller: 'confirmation'
@@ -488,6 +517,7 @@ Rails.application.routes.draw do
     resources :prob_data_reports
     resources :procurement_routes
     resources :data_sources do
+      post :deliver
       scope module: :data_sources do
         concerns :issueable
       end
@@ -522,6 +552,7 @@ Rails.application.routes.draw do
       get "amr_data_feed_import_logs/warnings" => "amr_data_feed_import_logs#warnings"
       get "amr_data_feed_import_logs/successes" => "amr_data_feed_import_logs#successes"
 
+      resources :recent_audits, only: [:index]
       resources :tariff_import_logs, only: [:index]
       resources :amr_reading_warnings, only: [:index]
       resources :activities, only: :index
@@ -537,6 +568,7 @@ Rails.application.routes.draw do
       resource :funder_allocations, only: [:show] do
         post :deliver
       end
+      get 'energy_tariffs', to: 'energy_tariffs#index', as: :energy_tariffs
     end
 
     resource :settings, only: [:show, :update]

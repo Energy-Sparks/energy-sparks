@@ -24,4 +24,12 @@ class TariffPrice < ApplicationRecord
   belongs_to :tariff_import_log, inverse_of: :tariff_prices
 
   serialize :prices
+
+  def self.delete_duplicates_for_meter!(meter)
+    last_price = nil
+    meter.tariff_prices.order(tariff_date: :asc).each do |tariff_price|
+      last_price = tariff_price if last_price.nil? || last_price.prices != tariff_price.prices
+      tariff_price.destroy if tariff_price != last_price && tariff_price.prices == last_price.prices
+    end
+  end
 end

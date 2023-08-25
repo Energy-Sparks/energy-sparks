@@ -18,6 +18,7 @@
 #  alternative_heating_oil_notes                :text
 #  alternative_heating_oil_percent              :integer          default(0)
 #  bill_requested                               :boolean          default(FALSE)
+#  bill_requested_at                            :datetime
 #  calendar_id                                  :bigint(8)
 #  chart_preference                             :integer          default("default"), not null
 #  cooks_dinners_for_other_schools              :boolean          default(FALSE), not null
@@ -47,6 +48,7 @@
 #  public                                       :boolean          default(TRUE)
 #  region                                       :integer
 #  removal_date                                 :date
+#  school_group_cluster_id                      :bigint(8)
 #  school_group_id                              :bigint(8)
 #  school_type                                  :integer          not null
 #  scoreboard_id                                :bigint(8)
@@ -67,6 +69,7 @@
 #  index_schools_on_calendar_id              (calendar_id)
 #  index_schools_on_latitude_and_longitude   (latitude,longitude)
 #  index_schools_on_local_authority_area_id  (local_authority_area_id)
+#  index_schools_on_school_group_cluster_id  (school_group_cluster_id)
 #  index_schools_on_school_group_id          (school_group_id)
 #  index_schools_on_scoreboard_id            (scoreboard_id)
 #  index_schools_on_urn                      (urn) UNIQUE
@@ -74,6 +77,7 @@
 # Foreign Keys
 #
 #  fk_rails_...  (calendar_id => calendars.id) ON DELETE => restrict
+#  fk_rails_...  (school_group_cluster_id => school_group_clusters.id) ON DELETE => nullify
 #  fk_rails_...  (school_group_id => school_groups.id) ON DELETE => restrict
 #  fk_rails_...  (scoreboard_id => scoreboards.id) ON DELETE => nullify
 #
@@ -82,6 +86,7 @@ require 'securerandom'
 
 class School < ApplicationRecord
   extend FriendlyId
+  include EnergyTariffHolder
   include ParentMeterAttributeHolder
 
   class ProcessDataError < StandardError; end
@@ -145,6 +150,7 @@ class School < ApplicationRecord
 
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
+  belongs_to :school_group_cluster, optional: true
 
   belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, optional: true
@@ -155,6 +161,8 @@ class School < ApplicationRecord
 
   belongs_to :scoreboard, optional: true
   belongs_to :local_authority_area, optional: true
+
+  belongs_to :funder, optional: true
 
   has_one :school_onboarding
   has_one :configuration, class_name: 'Schools::Configuration'
@@ -185,6 +193,8 @@ class School < ApplicationRecord
 
   scope :with_config, -> { joins(:configuration) }
   scope :by_name,     -> { order(name: :asc) }
+
+  scope :not_in_cluster, -> { where(school_group_cluster_id: nil) }
 
   validates_presence_of :urn, :name, :address, :postcode, :website, :school_type
   validates_uniqueness_of :urn
@@ -515,13 +525,20 @@ class School < ApplicationRecord
   end
 
   def all_pseudo_meter_attributes
-    [school_group_pseudo_meter_attributes, pseudo_meter_attributes, school_target_attributes, estimated_annual_consumption_meter_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
+    all_attributes = [school_group_pseudo_meter_attributes, pseudo_meter_attributes, school_target_attributes, estimated_annual_consumption_meter_attributes].inject(global_pseudo_meter_attributes) do |collection, pseudo_attributes|
       pseudo_attributes.each do |meter_type, attributes|
         collection[meter_type] ||= []
         collection[meter_type] = collection[meter_type] + attributes
       end
       collection
     end
+    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
+      all_attributes[:aggregated_electricity] = all_energy_tariff_attributes(:electricity)
+      all_attributes[:aggregated_gas] = all_energy_tariff_attributes(:gas)
+      all_attributes[:solar_pv_consumed_sub_meter] = all_energy_tariff_attributes(:solar_pv)
+      all_attributes[:solar_pv_exported_sub_meter] = all_energy_tariff_attributes(:exported_solar_pv)
+    end
+    all_attributes
   end
 
   def pseudo_meter_attributes_to_analytics
@@ -600,6 +617,22 @@ class School < ApplicationRecord
 
   def all_procurement_routes(meter_type)
     meters.active.where(meter_type: meter_type).procurement_route_known.joins(:procurement_route).order("procurement_routes.organisation_name ASC").distinct.pluck("procurement_routes.organisation_name")
+  end
+
+  def school_group_cluster_name
+    school_group_cluster.try(:name) || I18n.t('common.labels.not_set')
+  end
+
+  def parent_tariff_holder
+    school_group.present? ? school_group : SiteSettings.current
+  end
+
+  def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys)
+    energy_tariffs.where(meter_type: meter_type).left_joins(:meters).where(meters: { id: nil }).usable.map(&:meter_attribute)
+  end
+
+  def holds_tariffs_of_type?(meter_type)
+    Meter::MAIN_METER_TYPES.include?(meter_type.to_sym) && meters.where(meter_type: meter_type).any?
   end
 
   private

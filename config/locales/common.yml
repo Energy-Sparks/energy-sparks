@@ -10,6 +10,7 @@ en:
     electricity: Electricity
     electricity_and_solar_pv: Electricity and Solar PV
     email_us: email us
+    exported_solar_pv: Exported Solar PV
     gas: Gas
     labels:
       actions: Actions
@@ -24,8 +25,10 @@ en:
       created: Created
       deactivate: Deactivate
       delete: Delete
+      disable: Disable
       download: Download
       edit: Edit
+      enable: Enable
       finished: Finished
       home: Home
       inactive: Inactive
@@ -35,6 +38,7 @@ en:
       manage: Manage
       next: Next
       no_label: 'No'
+      not_applicable: N/A
       not_set: Not set
       previous: Previous
       remove: Remove

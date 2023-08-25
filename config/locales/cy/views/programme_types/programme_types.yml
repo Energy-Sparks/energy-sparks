@@ -1,6 +1,7 @@
 cy:
   programme_types:
     cards:
+      bonus_points: Bydd cwblhau'r rhaglen hon y flwyddyn academaidd hon yn sgorio %{bonus_score} o bwyntiau bonws
       continue: Parhau
       view: Gweld
       you_have_already_completed_this_programme: Rydych chi eisoes wedi cwblhau'r rhaglen hon

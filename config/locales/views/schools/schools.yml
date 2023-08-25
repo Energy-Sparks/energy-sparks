@@ -95,7 +95,11 @@ en:
         title: New Audit
       show:
         completed_on: Completed on
+        completing_all_of_these_activities_will_award_you: Completing all of these activities will award you
         download_report: Download report
+        points:
+          one: point
+          other: points
         recommended_energy_saving_actions: Recommended energy saving actions
         recommended_pupil_lead_activities: Recommended pupil-lead activities
         title: "%{school_name} Audits - %{audit_title}"
@@ -320,7 +324,10 @@ en:
         activity:
           completed_an_activity: Completed an activity
         audit:
+          completed_audit_activities: Completed all audit activities
           received_an_audit: Received an energy audit
+        programme:
+          completed_a_programme: Completed a programme
         temperatures:
           recorded_temperatures_in: Recorded temperatures in
     private:

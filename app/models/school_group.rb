@@ -45,6 +45,7 @@
 
 class SchoolGroup < ApplicationRecord
   extend FriendlyId
+  include EnergyTariffHolder
   include ParentMeterAttributeHolder
   include Scorable
 
@@ -82,6 +83,9 @@ class SchoolGroup < ApplicationRecord
 
   has_many :meter_attributes, inverse_of: :school_group, class_name: 'SchoolGroupMeterAttribute'
 
+  has_many :energy_tariffs, as: :tariff_holder, dependent: :destroy
+
+  has_many :clusters, class_name: 'SchoolGroupCluster', dependent: :destroy
   scope :by_name, -> { order(name: :asc) }
   scope :is_public, -> { where(public: true) }
   validates :name, presence: true
@@ -158,6 +162,14 @@ class SchoolGroup < ApplicationRecord
 
   def categorise_schools
     SchoolGroups::CategoriseSchools.new(school_group: self).categorise_schools
+  end
+
+  def parent_tariff_holder
+    SiteSettings.current
+  end
+
+  def holds_tariffs_of_type?(meter_type)
+    Meter::MAIN_METER_TYPES.include?(meter_type.to_sym)
   end
 
   private

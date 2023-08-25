@@ -1,0 +1,11 @@
+<%= form_with model: [:admin, funder], local: true do |f| %>
+  <%= render 'shared/errors', subject: funder, subject_name: 'Job' %>
+
+  <div class="form-group">
+    <%= f.label :name, "Name", class: "form-label" %>
+    <%= f.text_field :name, class: 'form-control' %>
+  </div>
+
+  <%= f.submit funder.persisted? ? "Update" : "Create", class: "btn btn-primary" %>
+  <%= link_to "View all funders", admin_funders_path, class: "btn btn-primary" %>
+<% end %>

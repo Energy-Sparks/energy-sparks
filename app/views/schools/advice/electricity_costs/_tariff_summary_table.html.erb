@@ -14,7 +14,7 @@
       <tr>
         <td>
           <% if summary.user_tariff %>
-            <%= link_to summary.name, school_user_tariff_path(school, summary.user_tariff) %>
+            <%= link_to summary.name, school_energy_tariff_path(school, summary.user_tariff) %>
           <% else %>
             <%= summary.name %>
           <% end %>

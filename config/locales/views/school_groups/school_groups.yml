@@ -16,6 +16,45 @@ en:
           usage: Display chart data in kwh, where available
         group_chart_settings: chart settings
         update_all_schools_in_this_group: Update all schools in this group
+    clusters:
+      edit:
+        title: Edit cluster
+      group_type:
+        general: School Group
+        local_authority: Local Authority
+        multi_academy_trust: Multi-Academy Trust
+      index:
+        all_schools: All schools are in a cluster
+        cluster: "%{cluster} cluster"
+        create_new: Create new cluster
+        move: Move
+        move_selected: Move selected to cluster
+        no_clusters: No clusters
+        no_schools: This cluster has no schools
+        select_cluster: Select cluster
+        title: Clusters
+        unassigned_title: Schools not in a cluster
+      intro: A cluster is a set of schools that are grouped together within your %{group_type}. For example, you may want to group all your southern and northern schools, all your primaries, etc. Grouping schools into clusters will allow you to more easily compare related schools
+      labels:
+        cluster: Cluster
+        name: Name
+        new: New
+      messages:
+        assigned:
+          one: "%{count} school assigned to %{cluster}"
+          other: "%{count} schools assigned to %{cluster}"
+        created: Cluster created
+        deleted: Cluster deleted
+        select_cluster: Please select a cluster
+        unassigned:
+          one: "%{count} school unassigned from %{cluster}"
+          other: "%{count} schools unassigned from %{cluster}"
+        updated: Cluster updated
+      new:
+        title: Create cluster
+      schools:
+        one: 1 school
+        other: "%{count} schools"
     comparisons:
       category: Category
       how_does_it_compare:
@@ -27,21 +66,125 @@ en:
         gas_out_of_hours: How does the out of school hours gas use of your schools compare to other schools on Energy Sparks, with a similar floor area?
         heating_control: How does the heating control analysis of your schools compare to other schools on Energy Sparks, with a similar floor area?
         thermostatic_control: How does the thermostatic control analysis of your schools compare to other schools on Energy Sparks, with a similar floor area?
-      view_all_school_comparison_benchmarks: View all school comparison benchmarks
+      introduction_html: View a comparison of %{fuel_types} usage across a number of key benchmarks. Or <a href="%{link}">explore all school comparison benchmarks for this group</a>.
+      modal_subtitle_html: |-
+        <p>School are benchmarked as comparable schools based on the key characteristics including
+        floor area, location, pupil numbers and type.</p>
+        <p>"<span class="txt-exemplar_school">Exemplar</span>" schools represent the top 17.5% of Energy Sparks schools</p>
+        <p>"<span class="txt-benchmark_school">Well managed</span>" schools represent the top 30% of Energy Sparks schools</p>
+        <p>These schools are benchmarked as <span class="txt-%{category_id}">%{category}</span>.</p>
       view_detailed_comparison: View detailed comparison
+    current_scores:
+      introduction: Schools score points by recording their activities and energy saving actions. These are the scores for the current academic year.
+      regional_scoreboard_html: View how the schools rank against others in <a href="%{scoreboard}">their regional scoreboard</a>.
     download_as_csv: Download as CSV
     header:
       compare_schools: Compare schools
       scoreboard: Scoreboard
       view_all_schools: View all schools
-      view_group: View group
+      view_group: View dashboard
       view_map: View map
-      view_scoreboard: Scoreboard
+    labels:
+      floor_area: Floor area (m2)
     priority_actions:
+      alert_types:
+        alert_electricity_annual_versus_benchmark_html: |-
+          <p>
+          Understanding how a school's energy use matches up with other schools of a similar size and how much energy could be saved each year is a good place to start.
+          </p>
+          <p>
+          These savings are based on comparing electricity usage over the last 12 months against the best performing schools.
+          </p>
+        alert_electricity_baseload_versus_benchmark_html: |-
+          <p>
+            Electricity baseload is the electricity needed to provide power to appliances that keep running at all times.
+            It can be the fastest way of reducing a school's energy costs and reducing its carbon footprint.
+          </p>
+          <p>
+           These figures represent a comparison of school baseload over the last 12 months against the best performing schools.
+          </p>
+        alert_electricity_peak_kw_versus_benchmark_html: |-
+          <p>
+          Electricity use varies at different times of the day. Usage will be at a peak in the middle of the day, but should be low overnight.
+          </p>
+          <p>
+          These figures represent a comparison of usage at peak times against the best performing schools.
+          </p>
+        alert_gas_annual_versus_benchmark_html: |-
+          <p>
+          Understanding how a school's energy use matches up with other schools of a similar size and how much energy could be saved each year is a good place to start.
+          </p>
+          <p>
+          These savings are based on comparing gas usage over the last 12 months against the best performing schools.
+          </p>
+        alert_heating_coming_on_too_early_html: |-
+          <p>
+          Getting the heating control right for your schools can save money and carbon very quickly as well as improving the learning environment for students.
+          </p>
+          <p>
+          These savings are based on changing the average morning start time for heating in each school. So that the heating comes on later each day to minimise waste outside of school hours.
+          </p>
+        alert_heating_sensitivity_advice_html: |-
+          <p>
+            Even the best performing schools can reduce energy usage by turning down the heating.
+          </p>
+          <p>
+            Getting the heating control right for your schools can save money and carbon very quickly as well as improving the learning environment for students.
+          </p>
+        alert_out_of_hours_electricity_usage_html: |-
+          <p>
+            Out of hours electricity use is the amount of electricity used when the school is closed - overnight, at weekends and during the holidays. Reducing out of hours electricity use is one of the easiest, and cheapest ways of saving
+            lots of energy.
+          </p>
+          <p>
+            These figures are based on a comparison of electricity usage outside of school hours against the best performing
+            schools. Ensuring that school opening hours are up to date will improve the accuracy of the analysis.
+          </p>
+        alert_out_of_hours_gas_usage_html: |-
+          <p>
+            Out of hours gas use is the amount of gas used when the school is closed - overnight, at weekends and during the holidays. Reducing out of hours gas use is one of the easiest, and cheapest ways of saving
+            lots of energy.
+          </p>
+          <p>
+            These figures are based on a comparison of gas usage outside of school hours against the best performing
+            schools. Ensuring that school opening hours are up to date will improve the accuracy of the analysis.
+          </p>
+        alert_seasonal_heating_school_days_html: |-
+          <p>
+            Turning the boiler off in warm weather, for example earlier in the spring and later in the winter, can
+            reduce gas usage.
+          </p>
+          <p>
+            These savings are based on our analysis of when the heating has been on in schools during warm weather.
+            View the detailed analysis for each school for more information.
+          </p>
+        alert_seasonal_heating_school_days_storage_heaters_html: |-
+          <p>
+            Turning the heating off in warm weather, for example earlier in the spring and later in the winter, can
+            reduce gas usage.
+          </p>
+          <p>
+            These savings are based on our analysis of when the storage heaters has been on in schools during warm weather.
+            View the detailed analysis for each school for more information.
+          </p>
+        alert_solar_pv_benefit_estimator_html: |-
+          <p>
+          Solar PV works well at schools as peak output from the panels around midday coincides with peak consumption at your school. Schools are now seeing a return on their investment within five to ten years.
+          </p>
+          <p>
+          These savings are based on the estimated annual savings in energy use if solar panels were installed in these schools. Savings do not include capital costs. View the analysis for individual schools for more information on our estimates, including capital costs and payback periods.
+          </p>
+        alert_thermostatic_control_html: |-
+          <p>
+            A building with good thermostatic control means that the colder it is outside the higher the gas consumption for heating.
+          </p>
+          <p>
+            These savings are based on improving the thermostatic control in schools, to use less gas when the weather is warmer. This
+            could be by checking thermostats or configuring weather compensation settings on boilers.
+          </p>
       intro_html: |-
-        <p>We carry out daily analysis for all schools to help identify the areas where there are the biggest opportunities to reduce costs and carbon emissions.</p>
-        <p>This table summarises the potential savings across this entire group of schools. Click on a heading to view the savings for individual schools and explore the detailed analysis.</p>
-        <p><strong>Note</strong>: Savings are not additive across the table as reduced usage in one area, e.g. electricity baseload, will also lead to savings in other areas, e.g. out of hours electricity usage. The potential savings are intended to help to prioritise and coordinate energy saving actions across the group. Cost savings are based on the latest tariff information we have available for the individual schools.</p>
+        <p>We carry out daily analysis for all schools to identify the areas where there are the biggest opportunities to reduce costs and carbon emissions.</p>
+        <p>This page summarises these potential savings across this entire group of schools. Click on a heading to view the savings for individual schools and explore the detailed analysis.</p>
       modal_intro: This action has been identified as a priority for the following schools.
       view_analysis: View analysis
     show:
@@ -55,11 +198,15 @@ en:
       if_you_would_like_support_enrol_here_html: If you would like Energy Sparks to support your school to reduce its carbon emissions, enrol <a href='%{enrol_path}'>here</a>
       in_partnership_with: in partnership with
       metric:
-        change: "% change"
+        change: "% Change"
         co2: CO2 (kg)
         cost: Cost (£)
         usage: Use (kWh)
       not_visible_schools: Not visible schools
+      recent_usage_intro:
+        general: A summary of the recent energy usage across schools in this group.
+        local_authority: A summary of the recent energy usage across schools in this local authority.
+        multi_academy_trust: A summary of the recent energy usage across schools in this multi-academy trust.
       we_are_working_with:
         general:
           in_partnership_with_html:
@@ -84,6 +231,7 @@ en:
             other: We are working with %{count} schools in this multi-academy trust
     sub_nav:
       chart_settings: Chart settings
+      clusters: Manage clusters
       dashboards: Dashboards
       edit_group: Edit group
       group_admin: Group admin

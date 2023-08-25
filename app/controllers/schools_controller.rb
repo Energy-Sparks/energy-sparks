@@ -211,6 +211,7 @@ private
       :enable_targets_feature,
       :public,
       :chart_preference,
+      :funder_id,
       key_stage_ids: []
     )
   end

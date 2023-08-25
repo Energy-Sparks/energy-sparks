@@ -2,168 +2,7 @@ require 'rails_helper'
 
 RSpec.describe SchoolGroups::ComparisonsCsvGenerator do
   let(:school_group) { create(:school_group) }
-  before do
-    allow_any_instance_of(SchoolGroup).to receive(:categorise_schools) {
-      {
-        electricity: {
-          baseload: {
-            other_school: [
-              {
-                "school_id" => 1,
-                "school_slug" => "school-1",
-                "school_name" => "School 1",
-              },
-              {
-                "school_id" => 2,
-                "school_slug" => "school-2",
-                "school_name" => "School 2",
-              }
-            ],
-            benchmark_school: [
-              {
-                "school_id" => 3,
-                "school_slug" => "school-3",
-                "school_name" => "School 3",
-              },
-              {
-                "school_id" => 4,
-                "school_slug" => "school-4",
-                "school_name" => "School 4",
-              }
-            ],
-            exemplar_school: [
-              {
-                "school_id" => 5,
-                "school_slug" => "school-5",
-                "school_name" => "School 5",
-              },
-              {
-                "school_id" => 6,
-                "school_slug" => "school-6",
-                "school_name" => "School 6",
-              }
-            ]
-          },
-          electricity_long_term: {
-            other_school: [
-              {
-                "school_id" => 1,
-                "school_slug" => "school-1",
-                "school_name" => "School 1",
-              },
-              {
-                "school_id" => 2,
-                "school_slug" => "school-2",
-                "school_name" => "School 2",
-              }
-            ],
-            benchmark_school: [
-              {
-                "school_id" => 3,
-                "school_slug" => "school-3",
-                "school_name" => "School 3",
-              },
-              {
-                "school_id" => 4,
-                "school_slug" => "school-4",
-                "school_name" => "School 4",
-              }
-            ],
-            exemplar_school: [
-              {
-                "school_id" => 5,
-                "school_slug" => "school-5",
-                "school_name" => "School 5",
-              },
-              {
-                "school_id" => 6,
-                "school_slug" => "school-6",
-                "school_name" => "School 6",
-              }
-            ]
-          }
-        },
-        gas: {
-          gas_long_term: {
-            other_school: [
-              {
-                "school_id" => 1,
-                "school_slug" => "school-1",
-                "school_name" => "School 1",
-              },
-              {
-                "school_id" => 2,
-                "school_slug" => "school-2",
-                "school_name" => "School 2",
-              }
-            ],
-            benchmark_school: [
-              {
-                "school_id" => 3,
-                "school_slug" => "school-3",
-                "school_name" => "School 3",
-              },
-              {
-                "school_id" => 4,
-                "school_slug" => "school-4",
-                "school_name" => "School 4",
-              }
-            ],
-            exemplar_school: [
-              {
-                "school_id" => 5,
-                "school_slug" => "school-5",
-                "school_name" => "School 5",
-              },
-              {
-                "school_id" => 6,
-                "school_slug" => "school-6",
-                "school_name" => "School 6",
-              }
-            ]
-},
-          gas_out_of_hours: {
-            other_school: [
-              {
-                "school_id" => 1,
-                "school_slug" => "school-1",
-                "school_name" => "School 1",
-              },
-              {
-                "school_id" => 2,
-                "school_slug" => "school-2",
-                "school_name" => "School 2",
-              }
-            ],
-            benchmark_school: [
-              {
-                "school_id" => 3,
-                "school_slug" => "school-3",
-                "school_name" => "School 3",
-              },
-              {
-                "school_id" => 4,
-                "school_slug" => "school-4",
-                "school_name" => "School 4",
-              }
-            ],
-            exemplar_school: [
-              {
-                "school_id" => 5,
-                "school_slug" => "school-5",
-                "school_name" => "School 5",
-              },
-              {
-                "school_id" => 6,
-                "school_slug" => "school-6",
-                "school_name" => "School 6",
-              }
-            ]
-          }
-        }
-      }
-    }
-  end
+  include_context "school group comparisons"
 
   context "with school group data" do
     it 'returns school comparisons data as a csv for a school group for all advice page keys' do
@@ -194,6 +33,16 @@ RSpec.describe SchoolGroups::ComparisonsCsvGenerator do
       expect(csv.lines[22]).to eq("Gas,Out of school hours gas use,School 4,Well managed\n")
       expect(csv.lines[23]).to eq("Gas,Out of school hours gas use,School 1,Action needed\n")
       expect(csv.lines[24]).to eq("Gas,Out of school hours gas use,School 2,Action needed\n")
+    end
+
+    it 'includes cluster when include_cluster is set' do
+      csv = SchoolGroups::ComparisonsCsvGenerator.new(school_group: school_group, include_cluster: true).export
+      expect(csv.lines.count).to eq(25)
+      expect(csv.lines[0]).to eq("Fuel,Description,School,Cluster,Category\n")
+      (csv.lines[1..19] + csv.lines[21..24]).each do |line|
+        expect(line).to match(/^[a-z]+,[a-z\s]+,School \d+,My Cluster,[a-z\s]+$/i)
+      end
+      expect(csv.lines[20]).to eq("Gas,Out of school hours gas use,School 6,N/A,Exemplar\n")
     end
 
     it 'returns school comparisons data as a csv for a school group for a given set of advice page keys' do

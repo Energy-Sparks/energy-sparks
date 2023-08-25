@@ -113,6 +113,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:analytics-services-aggregation_service_solar_pv-yml]
+file_filter  = config/locales/<lang>/analytics/services/aggregation_service_solar_pv.yml
+source_file  = config/locales/analytics/services/aggregation_service_solar_pv.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:classes-tables-tables-yml]
 file_filter  = config/locales/<lang>/classes/tables/tables.yml
 source_file  = config/locales/classes/tables/tables.yml
@@ -221,13 +228,6 @@ minimum_perc = 100
 [o:energy-sparks:p:energy-sparks:r:views-activity_types-activity_types-yml]
 file_filter  = config/locales/<lang>/views/activity_types/activity_types.yml
 source_file  = config/locales/views/activity_types/activity_types.yml
-source_lang  = en
-type         = YML
-minimum_perc = 100
-
-[o:energy-sparks:p:energy-sparks:r:views-admin-school_groups-school_groups-yml]
-file_filter  = config/locales/<lang>/views/admin/school_groups/school_groups.yml
-source_file  = config/locales/views/admin/school_groups/school_groups.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100

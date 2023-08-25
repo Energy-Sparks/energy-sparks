@@ -140,6 +140,10 @@ class Issue < ApplicationRecord
     meters.map {|meter| meter.data_source.try(:name) }.compact.uniq.join('|').presence
   end
 
+  def school_group
+    issueable.is_a?(SchoolGroup) ? issueable : issueable.try(:school_group)
+  end
+
   private
 
   # From rails 6.1 onwards, a default for enums can be specified by setting by _default: :open or rails 7: default: :open on the enum definition

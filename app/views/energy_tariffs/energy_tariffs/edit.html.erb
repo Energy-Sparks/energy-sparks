@@ -1,0 +1,23 @@
+<%= component 'energy_tariff_form_title',
+  energy_tariff: @energy_tariff,
+  skip_fields: [:name, :dates] do |c| %>
+  <% c.with_page_title do %>
+    <h1><%= t('schools.user_tariffs.edit.title', fuel_type: @energy_tariff.meter_type) %></h1>
+  <% end %>
+<% end %>
+
+<div class="row mt-4">
+  <div class="col-md-12">
+    <div class="energy_tariff">
+      <% if @energy_tariff.tariff_holder.site_settings? %>
+        <%= simple_form_for @energy_tariff, url: admin_settings_energy_tariff_path do |f| %>
+          <%= render 'form', energy_tariff: @energy_tariff, f: f %>
+        <% end %>
+      <% else %>
+        <%= simple_form_for [@energy_tariff.tariff_holder, @energy_tariff] do |f| %>
+          <%= render 'form', energy_tariff: @energy_tariff, f: f %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

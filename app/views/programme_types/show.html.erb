@@ -9,6 +9,9 @@
   <div class="col-md-6">
     <h2><%= @programme_type.title %></h2>
     <p><%= @programme_type.short_description %></p>
+    <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
+      <p><%= t('programme_types.cards.bonus_points', bonus_score: @programme_type.bonus_score) %></p>
+    <% end %>
   </div>
   <div class="col-md-3">
     <%= link_to t('programme_types.show.view_all_programmes'), programme_types_path, class: 'btn btn-secondary float-right' %>

@@ -9,11 +9,12 @@ en:
         intro: Prioritise the following actions to reduce your costs and carbon dioxide emissions.
         table:
           columns:
-            co2_reduction: CO2 reduction
-            cost_saving: Cost saving
+            co2_reduction: CO2 (kg)
+            cost_saving: Cost (£)
             description: Description
             fuel_type: Fuel
-            kwh_saving: Energy saving
+            kwh_saving: Energy (kWh)
+            savings: Savings
         table_note: Use the table headings to sort the recommendations. Potential cost savings for the same fuel type are not additive.
         title: Priority actions
       show:

@@ -763,4 +763,44 @@ describe School do
       end
     end
   end
+
+  describe '.all_pseudo_meter_attributes' do
+    let(:school_group)    { create(:school_group) }
+    let(:school)          { create(:school, school_group: school_group) }
+    let(:feature_flag)    { 'false' }
+
+    around do |example|
+      ClimateControl.modify FEATURE_FLAG_NEW_ENERGY_TARIFF_EDITOR: feature_flag do
+        example.run
+      end
+    end
+
+    context 'with :new_energy_tariff_editor enabled' do
+      let(:feature_flag) { 'true' }
+
+      let(:all_pseudo_meter_attributes) { school.all_pseudo_meter_attributes }
+
+      let!(:global_meter_attribute)       { GlobalMeterAttribute.create(attribute_type: 'accounting_tariff',
+        meter_types: ["aggregated_electricity"], input_data: {})}
+      let!(:school_group_meter_attribute) { SchoolGroupMeterAttribute.create(attribute_type: 'economic_tariff',
+        meter_types: ["", "electricity", "aggregated_electricity"], school_group: school_group, input_data: {})}
+
+      context 'when there are tariffs stored as pseudo meter attributes' do
+        it 'ignores them' do
+          expect(all_pseudo_meter_attributes[:aggregated_electricity]).to be_empty
+        end
+      end
+
+      context 'when there are tariffs stored as EnergyTariffs' do
+        let!(:site_wide)        { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current) }
+        let!(:group_level)      { create(:energy_tariff, :with_flat_price, tariff_holder: school_group) }
+        let!(:school_specific)  { create(:energy_tariff, :with_flat_price, tariff_holder: school) }
+
+        it 'maps them to the pseudo meters' do
+          expect(all_pseudo_meter_attributes[:aggregated_electricity].size).to eq 3
+        end
+      end
+    end
+
+  end
 end

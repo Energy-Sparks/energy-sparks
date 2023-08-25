@@ -317,53 +317,62 @@ describe 'Meter', :meters do
     end
   end
 
-  describe ".to_csv" do
-    let(:data_source) { create(:data_source) }
-    subject { data_source.meters.to_csv }
-    let(:header) { "School group,School,MPAN/MPRN,Meter type,Active,First validated meter reading,Last validated meter reading,Admin Meter Status,Open issues" }
-    before { Timecop.freeze }
-    after { Timecop.return }
+  context '.all_meter_attributes' do
+    let(:school_group)    { create(:school_group) }
+    let(:school)          { create(:school, school_group: school_group) }
+    let(:meter)           { create(:electricity_meter, school: school) }
+    let(:feature_flag)    { 'false' }
 
-    context "with meters" do
-      let(:admin_meter_status) { AdminMeterStatus.create(label: "On Data Feed") }
-      let!(:meters) do
-        [ create(:gas_meter, data_source: data_source, school: create(:school), admin_meter_status: admin_meter_status),
-          create(:gas_meter, data_source: data_source, school: create(:school, :with_school_group), admin_meter_status: admin_meter_status) ]
+    around do |example|
+      ClimateControl.modify FEATURE_FLAG_NEW_ENERGY_TARIFF_EDITOR: feature_flag do
+        example.run
       end
-      let(:first_reading_date) { 1.year.ago.to_date + 2.days }
-      let(:last_reading_date) { 1.year.ago.to_date + 4.days }
+    end
 
-      before do
-        meters.each do |meter|
-          create(:amr_validated_reading, meter: meter, reading_date: first_reading_date)
-          create(:amr_validated_reading, meter: meter, reading_date: last_reading_date)
+    context 'with :new_energy_tariff_editor enabled' do
+      let(:feature_flag) { 'true' }
 
-          issue = create(:issue, issue_type: :issue, status: :open)
-          issue.meters << meter
-          issue.save!
+      let(:all_meter_attributes)          { meter.all_meter_attributes }
+
+      context 'when there are tariffs stored as attributes' do
+        let!(:global_meter_attribute)       { GlobalMeterAttribute.create(attribute_type: 'accounting_tariff',
+          meter_types: ["electricity"], input_data: {})}
+        let!(:school_group_meter_attribute) { SchoolGroupMeterAttribute.create(attribute_type: 'economic_tariff',
+          meter_types: ["", "electricity"], school_group: school_group, input_data: {})}
+        let!(:meter_attribute)              { MeterAttribute.create(meter: meter, attribute_type: 'economic_tariff_change_over_time', input_data: {})}
+
+        it 'ignores inherited attributes' do
+          expect(all_meter_attributes).to be_empty
         end
       end
 
-      it { expect(subject.lines.count).to eq(3) }
-      it { expect(subject.lines.first.chomp).to eq(header) }
-      2.times do |i|
-        it { expect(subject.lines[i+1].chomp).to eq([
-          meters[i].school.school_group.try(:name), meters[i].school.name, meters[i].mpan_mprn,
-          meters[i].meter_type.humanize, meters[i].active, first_reading_date, last_reading_date, admin_meter_status.label, 1].join(',')) }
+      context 'when there are tariffs stored as EnergyTariffs' do
+
+        let!(:site_wide)        { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current) }
+        let!(:group_level)      { create(:energy_tariff, :with_flat_price, tariff_holder: school_group) }
+        let!(:school_specific)  { create(:energy_tariff, :with_flat_price, tariff_holder: school) }
+
+        context 'and there are meter specific tariffs' do
+          let!(:meter_specific)  { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter]) }
+          let!(:meter_specific2) { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter], enabled: false) }
+
+          it 'includes those that are enabled' do
+            expect(all_meter_attributes.size).to eq 4
+            expect(all_meter_attributes[0].input_data['tariff_holder']).to eq 'site_settings'
+            expect(all_meter_attributes[1].input_data['tariff_holder']).to eq 'school_group'
+            expect(all_meter_attributes[2].input_data['tariff_holder']).to eq 'school'
+            expect(all_meter_attributes[3].input_data['tariff_holder']).to eq 'meter'
+          end
+        end
+
+        it 'includes inherited tariffs' do
+          expect(all_meter_attributes.size).to eq 3
+          expect(all_meter_attributes[0].input_data['tariff_holder']).to eq 'site_settings'
+          expect(all_meter_attributes[1].input_data['tariff_holder']).to eq 'school_group'
+          expect(all_meter_attributes[2].input_data['tariff_holder']).to eq 'school'
+        end
       end
     end
 
-    context "with meters for other data source" do
-      let!(:meters) do
-        [ create(:gas_meter),
-          create(:gas_meter) ]
-      end
-      it { expect(subject.lines.count).to eq(1) }
-    end
-
-    context "with no meters" do
-      it { expect(subject.lines.count).to eq(1) }
-      it { expect(subject.lines.first.chomp).to eq(header) }
-    end
   end
 end

@@ -44,8 +44,6 @@
 #
 
 class Meter < ApplicationRecord
-  include CsvExportable
-
   belongs_to :school, inverse_of: :meters
   belongs_to :low_carbon_hub_installation, optional: true
   belongs_to :solar_edge_installation, optional: true
@@ -66,6 +64,7 @@ class Meter < ApplicationRecord
 
   has_one :school_group, through: :school
   has_and_belongs_to_many :user_tariffs, inverse_of: :meters
+  has_and_belongs_to_many :energy_tariffs, inverse_of: :meters
 
   CREATABLE_METER_TYPES = [:electricity, :gas, :solar_pv, :exported_solar_pv].freeze
   MAIN_METER_TYPES = [:electricity, :gas].freeze
@@ -182,6 +181,10 @@ class Meter < ApplicationRecord
     name.present? ? name : mpan_mprn.to_s
   end
 
+  def mpan_mprn_and_name
+    name.present? ? "#{mpan_mprn} - #{name}" : mpan_mprn
+  end
+
   def display_name
     name.present? ? "#{display_meter_mpan_mprn} (#{name})" : display_meter_mpan_mprn
   end
@@ -210,12 +213,34 @@ class Meter < ApplicationRecord
     GlobalMeterAttribute.for(self)
   end
 
-  def user_tariff_meter_attributes
-    user_tariffs.complete.map(&:meter_attribute)
+  def all_meter_attributes
+    global_meter_attributes +
+      school_group_meter_attributes +
+      school_meter_attributes +
+      active_meter_attributes +
+      energy_tariff_meter_attributes
   end
 
-  def all_meter_attributes
-    global_meter_attributes + school_group_meter_attributes + school_meter_attributes + meter_attributes.active + user_tariff_meter_attributes
+  def active_meter_attributes
+    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
+      meter_attributes.where.not(attribute_type: GlobalMeterAttribute::TARIFF_ATTRIBUTE_TYPES).active
+    else
+      meter_attributes.active
+    end
+  end
+
+  def energy_tariff_meter_attributes
+    attributes = []
+    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
+      school_attributes = school.all_energy_tariff_attributes(meter_type)
+      attributes += school_attributes unless school_attributes.nil?
+    end
+    attributes += energy_tariffs.enabled.usable.map(&:meter_attribute)
+    attributes
+  end
+
+  def user_tariff_meter_attributes
+    user_tariffs.usable.map(&:meter_attribute)
   end
 
   def meter_attributes_to_analytics
@@ -238,20 +263,20 @@ class Meter < ApplicationRecord
     consent_granted
   end
 
-  def self.csv_headers
-    ["School group", "School", "MPAN/MPRN", "Meter type", "Active", "First validated meter reading", "Last validated meter reading", "Admin Meter Status", "Open issues"]
-  end
-
-  def self.csv_attributes
-    %w{school.school_group.name school.name mpan_mprn meter_type.humanize active first_validated_reading last_validated_reading admin_meter_status_label open_issues_count}
-  end
-
   def smart_meter_tariff_attributes
     @smart_meter_tariff_attributes ||= Amr::AnalyticsTariffFactory.new(self).build
   end
 
   def open_issues_count
-    issues&.where(issue_type: "issue")&.status_open&.count
+    open_issues.count
+  end
+
+  def open_issues_as_list
+    open_issues.order(created_at: :asc).map { |issue| issue&.description&.body&.to_plain_text }
+  end
+
+  def open_issues
+    issues&.where(issue_type: "issue")&.status_open
   end
 
   private
