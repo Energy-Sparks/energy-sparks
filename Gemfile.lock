@@ -588,7 +588,7 @@ GEM
     semantic_range (3.0.0)
     sexp_processor (4.16.0)
     shellany (0.0.1)
-    shoulda-matchers (5.1.0)
+    shoulda-matchers (5.3.0)
       activesupport (>= 5.2.0)
     simple_form (5.1.0)
       actionpack (>= 5.2)
