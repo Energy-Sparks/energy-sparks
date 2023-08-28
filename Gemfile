@@ -146,7 +146,7 @@ group :development do
   gem "binding_of_caller"
   gem 'annotate'
   gem 'pry'
-  gem 'pry-byebug', '~>3.9.0'
+  gem 'pry-byebug', '~>3.10.1'
   gem 'overcommit'
   gem 'fasterer'
   gem 'bundler-audit'
