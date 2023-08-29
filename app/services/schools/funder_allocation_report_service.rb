@@ -60,7 +60,7 @@ module Schools
             school.data_enabled,
             onboarding_completed(school),
             first_made_data_enabled(school),
-            school&.funder&.name,
+            (school&.funder&.name || school&.school_group&.funder&.name),
             school.funding_status.humanize,
             school.postcode,
             country(school),

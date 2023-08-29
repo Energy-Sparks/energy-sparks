@@ -35,7 +35,8 @@ class EnergyTariffCharge < ApplicationRecord
   def self.charge_types
     {
       standing_charge: {
-        units: [:day, :month, :quarter]
+        units: [:day, :month, :quarter],
+        name: I18n.t('user_tariff_charge.standing_charge')
       },
       asc_limit_kw: {
         units: [],
@@ -43,33 +44,42 @@ class EnergyTariffCharge < ApplicationRecord
         name: I18n.t('user_tariff_charge.available_capacity')
       },
       renewable_energy_obligation: {
-        units: [:kwh]
+        units: [:kwh],
+        name: I18n.t('user_tariff_charge.renewable_energy_obligation')
       },
       feed_in_tariff_levy: {
-        units: [:kwh]
+        units: [:kwh],
+        name: I18n.t('user_tariff_charge.feed_in_tariff_levy')
       },
       agreed_capacity: {
-        units: [:day, :month, :quarter]
+        units: [:day, :month, :quarter],
+        name: I18n.t('user_tariff_charge.agreed_capacity')
       },
       agreed_availability_charge: {
         units: [:kva],
-        tip: I18n.t('user_tariff_charge.available_capacity_tip')
+        tip: I18n.t('user_tariff_charge.available_capacity_tip'),
+        name: I18n.t('user_tariff_charge.agreed_availability_charge')
       },
       excess_availability_charge: {
         units: [:kva],
-        tip: I18n.t('user_tariff_charge.available_capacity_tip')
+        tip: I18n.t('user_tariff_charge.available_capacity_tip'),
+        name: I18n.t('user_tariff_charge.excess_availability_charge')
       },
       settlement_agency_fee: {
-        units: [:day, :month, :quarter]
+        units: [:day, :month, :quarter],
+        name: I18n.t('user_tariff_charge.settlement_agency_fee')
       },
       reactive_power_charge: {
-        units: [:kva]
+        units: [:kva],
+        name: I18n.t('user_tariff_charge.reactive_power_charge')
       },
       half_hourly_data_charge: {
-        units: [:day, :month, :quarter]
+        units: [:day, :month, :quarter],
+        name: I18n.t('user_tariff_charge.half_hourly_data_charge')
       },
       fixed_charge: {
-        units: [:day, :month, :quarter]
+        units: [:day, :month, :quarter],
+        name: I18n.t('user_tariff_charge.fixed_charge')
       },
       nhh_metering_agent_charge: {
         units: [:kwh, :day, :month, :quarter],
@@ -80,14 +90,16 @@ class EnergyTariffCharge < ApplicationRecord
         name: I18n.t('user_tariff_charge.nhh_automatic_meter_reading_charge')
       },
       meter_asset_provider_charge: {
-        units: [:day, :month, :quarter]
+        units: [:day, :month, :quarter],
+        name: I18n.t('user_tariff_charge.meter_asset_provider_charge')
       },
       data_collection_dcda_agent_charge: {
         units: [:day, :month, :quarter],
         name: I18n.t('user_tariff_charge.data_collection_dcda_agent_charge')
       },
       site_fee: {
-        units: [:day, :month, :quarter]
+        units: [:day, :month, :quarter],
+        name: I18n.t('user_tariff_charge.site_fee')
       },
       duos_red: {
         units: [],
@@ -105,7 +117,8 @@ class EnergyTariffCharge < ApplicationRecord
         label: I18n.t('user_tariff_charge.rate')
       },
       other: {
-        units: [:kwh, :day, :month, :quarter]
+        units: [:kwh, :day, :month, :quarter],
+        name: I18n.t('user_tariff_charge.other')
       },
     }.freeze
   end
