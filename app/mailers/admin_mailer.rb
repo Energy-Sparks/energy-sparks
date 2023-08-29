@@ -10,6 +10,15 @@ class AdminMailer < ApplicationMailer
     make_bootstrap_mail(to: to, subject: subject(title))
   end
 
+  def school_procurement_route_report
+    to, procurement_route_id = params.values_at(:to, :procurement_route_id)
+    @procurement_route = ProcurementRoute.find(procurement_route_id)
+    title = "#{t('common.application')}-#{@procurement_route.organisation_name}-meters-#{Time.zone.now.iso8601}".parameterize
+    attachments[(title + '.csv')] = { mime_type: 'text/csv', content: @procurement_route.to_csv }
+
+    make_bootstrap_mail(to: to, subject: subject(title))
+  end
+
   def school_group_meters_report
     to, meter_report = params.values_at(:to, :meter_report)
     @school_group = meter_report.school_group
