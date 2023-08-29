@@ -18,6 +18,11 @@
   </div>
 
   <div class="form-group">
+    <%= f.label :funder %>
+    <%= f.select :funder_id, options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), @school_group.funder_id), { include_blank: true }, { class: 'form-control' } %>
+  </div>
+
+  <div class="form-group">
     <div class="form-check form-check-inline">
       <%= f.check_box :public, class: 'form-check-input' %>
       <%= f.label :public, class: 'form-check-label' %>

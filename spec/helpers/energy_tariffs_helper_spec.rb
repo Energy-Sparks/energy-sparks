@@ -2,15 +2,15 @@ require "rails_helper"
 
 describe EnergyTariffsHelper do
 
-  let(:energy_tariff) { EnergyTariff.new(name: 'My Tariff', meter_type: :gas, start_date: '2018-01-01', end_date: '2018-12-31', tariff_holder_type: "School")}
+  let(:energy_tariff) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2018-01-01', end_date: '2018-12-31', tariff_holder_type: "School", school: create(:school), tariff_type: 'differential')}
 
   describe '.energy_tariff_prices_text' do
     it "gives text if default prices exist" do
-      energy_tariff.energy_tariff_prices << EnergyTariffPrice.new(start_time: '00:00', end_time: '03:00', description: EnergyTariffPrice::NIGHT_RATE_DESCRIPTION)
+      EnergyTariffDefaultPricesCreator.new(energy_tariff).process
       expect(energy_tariff_prices_text(energy_tariff)).to include("we've set some default day/night periods")
     end
     it "no text if no default prices exist" do
-      energy_tariff.energy_tariff_prices << EnergyTariffPrice.new(start_time: '00:00', end_time: '03:00', description: '')
+      energy_tariff.energy_tariff_prices << EnergyTariffPrice.new(start_time: '00:00', end_time: '12:00')
       expect(energy_tariff_prices_text(energy_tariff)).to be_nil
     end
   end

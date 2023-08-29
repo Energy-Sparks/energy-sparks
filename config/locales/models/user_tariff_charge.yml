@@ -7,13 +7,26 @@ en:
     month: month
     quarter: quarter
   user_tariff_charge:
+    agreed_availability_charge: Agreed availability charge
+    agreed_capacity: Agreed capacity
     available_capacity: Available capacity
     available_capacity_tip: Available capacity should also be entered, otherwise this setting will be ignored
     available_capacity_tooltip: Available capacity should be entered if Agreed availability charge or Excess availability charge are set
     data_collection_dcda_agent_charge: Data Collection DC/DA Agent Charge
+    excess_availability_charge: Excess availability charge
+    feed_in_tariff_levy: Feed in tariff levy
+    fixed_charge: Fixed charge
+    half_hourly_data_charge: Half hourly data charge
+    meter_asset_provider_charge: Meter asset provider charge
     nhh_automatic_meter_reading_charge: NHH automatic meter reading charge
     nhh_metering_agent_charge: NHH metering agent charge
+    other: Other
     rate: Rate
+    reactive_power_charge: Reactive power charge
+    renewable_energy_obligation: Renewable energy obligation
+    settlement_agency_fee: Settlement agency fee
+    site_fee: Site fee
+    standing_charge: Standing charge
     unit_rate_charge_amber: Unit rate charge (amber)
     unit_rate_charge_green: Unit rate charge (green)
     unit_rate_charge_red: Unit rate charge (red)

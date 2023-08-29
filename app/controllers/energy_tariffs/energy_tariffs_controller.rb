@@ -11,6 +11,12 @@ module EnergyTariffs
       end
     end
 
+    def default_tariffs
+    end
+
+    def smart_meter_tariffs
+    end
+
     def show
     end
 

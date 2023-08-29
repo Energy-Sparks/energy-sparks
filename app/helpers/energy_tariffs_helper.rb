@@ -67,9 +67,31 @@ module EnergyTariffsHelper
   end
 
   def energy_tariff_prices_text(energy_tariff)
-    if energy_tariff.energy_tariff_prices.map(&:description).include?(EnergyTariffPrice::NIGHT_RATE_DESCRIPTION)
+    if default_energy_tariff_prices?(energy_tariff)
       I18n.t('schools.tariffs_helper.prices_text')
     end
+  end
+
+  def default_energy_tariff_prices?(energy_tariff)
+    return false unless energy_tariff&.energy_tariff_prices&.count == 2
+
+    all_energy_tariff_price_times_for(energy_tariff).any?(default_night_start_and_end_times)
+  end
+
+  def all_energy_tariff_price_times_for(energy_tariff)
+    energy_tariff.energy_tariff_prices.map do |energy_tariff_price|
+      [
+        energy_tariff_price.start_time.to_s(:time),
+        energy_tariff_price.end_time.to_s(:time)
+      ]
+    end
+  end
+
+  def default_night_start_and_end_times
+    [
+      Meters::Economy7Times::DEFAULT_TIMES.first.to_s,
+      Meters::Economy7Times::DEFAULT_TIMES.last.to_s
+    ]
   end
 
   def energy_tariff_charge_for_type(energy_tariff_charges, charge_type)
