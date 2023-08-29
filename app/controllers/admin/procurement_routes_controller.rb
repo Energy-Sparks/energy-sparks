@@ -27,7 +27,7 @@ module Admin
     def deliver
       @procurement_route = ProcurementRoute.find(params[:procurement_route_id])
       SendProcurementRouteReportJob.perform_later(to: current_user.email, procurement_route_id: @procurement_route.id)
-      redirect_back fallback_location: admin_procurement_route_path(@procurement_route), notice: "Procurement route report for #{@procurement_route.name} requested to be sent to #{current_user.email}"
+      redirect_back fallback_location: admin_procurement_route_path(@procurement_route), notice: "Procurement route report for #{@procurement_route.organisation_name} requested to be sent to #{current_user.email}"
     end
 
     private
