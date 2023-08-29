@@ -11,6 +11,7 @@
       <th>First validated meter reading</th>
       <th>Last validated meter reading</th>
       <th>Admin Meter Status</th>
+      <th>Data Source</th>
       <th>Open issues count</th>
     </tr>
   </thead>
@@ -37,6 +38,7 @@
         <td><%= meter&.first_validated_reading %></td>
         <td><%= meter&.last_validated_reading %></td>
         <td><%= meter&.admin_meter_status_label %></td>
+        <td><%= meter&.data_source&.name %></td>
         <td><%= meter&.open_issues_count %></td>
       </tr>
     <% end %>
