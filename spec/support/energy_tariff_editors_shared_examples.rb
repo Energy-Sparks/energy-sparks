@@ -65,8 +65,8 @@ RSpec.shared_examples "a basic electricity tariff editor" do
 
       fill_in "energy_tariff_charges[nhh_automatic_meter_reading_charge][value]", with: '.12'
       fill_in "energy_tariff_charges[data_collection_dcda_agent_charge][value]", with: '.34'
-
-      check 'energy_tariff_charges[energy_tariff][tnuos]'
+      # TNUoS has been temporarily removed from the form
+      # check 'energy_tariff_charges[energy_tariff][tnuos]'
       check 'energy_tariff_charges[energy_tariff][ccl]'
       select '20', from: 'energy_tariff_charges[energy_tariff][vat_rate]'
 
@@ -75,7 +75,11 @@ RSpec.shared_examples "a basic electricity tariff editor" do
       energy_tariff = EnergyTariff.last
 
       expect(energy_tariff.updated_by).to eq(current_user)
-      expect(energy_tariff.tnuos).to be_truthy
+
+      # TNUoS has been temporarily removed from the form
+      # expect(energy_tariff.tnuos).to be_truthy
+      expect(energy_tariff.tnuos).to eq(false)
+
       expect(energy_tariff.ccl).to be_truthy
       expect(energy_tariff.vat_rate).to eq(20)
 
