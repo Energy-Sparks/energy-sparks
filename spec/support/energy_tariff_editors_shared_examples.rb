@@ -75,8 +75,11 @@ RSpec.shared_examples "a basic electricity tariff editor" do
       energy_tariff = EnergyTariff.last
 
       expect(energy_tariff.updated_by).to eq(current_user)
+
       # TNUoS has been temporarily removed from the form
       # expect(energy_tariff.tnuos).to be_truthy
+      expect(energy_tariff.tnuos).to eq(false)
+
       expect(energy_tariff.ccl).to be_truthy
       expect(energy_tariff.vat_rate).to eq(20)
 
