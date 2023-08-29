@@ -3,12 +3,14 @@ module EnergyTariffable
 
   def build_breadcrumbs
     @breadcrumbs = []
+
     if @tariff_holder.school_group?
       @breadcrumbs += [
         { name: I18n.t('common.schools'), href: schools_path },
         { name: @tariff_holder.name, href: school_group_path(@tariff_holder) }
       ]
     end
+
     if @tariff_holder.site_settings?
       @breadcrumbs += [
         { name: 'Admin', href: admin_path },
@@ -18,7 +20,7 @@ module EnergyTariffable
 
     if request.path.ends_with?('energy_tariffs')
       @breadcrumbs << { name: t('schools.energy_tariffs.title') }
-    elsif action_name == 'show'
+    elsif controller_name == 'energy_tariffs' && %w[show new].include?(action_name)
       @breadcrumbs << { name: t('schools.energy_tariffs.title'), href: polymorphic_path(tariff_holder_route(@tariff_holder) + [:energy_tariffs]) }
       @breadcrumbs << { name: @page_title }
     else
