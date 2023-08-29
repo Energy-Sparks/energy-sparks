@@ -6,6 +6,6 @@ class SendProcurementRouteReportJob < ApplicationJob
   end
 
   def perform(to:, procurement_route_id:)
-    AdminMailer.with(to: to, procurement_route_id: procurement_route_id).school_procurement_route_id_report.deliver
+    AdminMailer.with(to: to, procurement_route_id: procurement_route_id).school_procurement_route_report.deliver
   end
 end

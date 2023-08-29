@@ -1,0 +1,44 @@
+<h1><%= @procurement_route.organisation_name %> report</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>School group</th>
+      <th>School</th>
+      <th>MPAN/MPRN</th>
+      <th>Meter type</th>
+      <th>Active</th>
+      <th>First validated meter reading</th>
+      <th>Last validated meter reading</th>
+      <th>Admin Meter Status</th>
+      <th>Open issues count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @procurement_route.meters.each do |meter| %>
+      <tr>
+        <td>
+          <% if meter&.school&.school_group %>
+            <%= link_to meter&.school&.school_group&.name, school_group_url(meter&.school&.school_group) %>
+          <% end %>
+        </td>
+        <td>
+          <% if meter&.school&.name %>
+            <%= link_to meter&.school&.name, school_url(meter&.school) %>
+          <% end %>
+        </td>
+        <td>
+          <% if meter&.mpan_mprn %>
+            <%= link_to meter&.mpan_mprn, school_meter_url(meter&.school, meter) %>
+          <% end %>
+        </td>
+        <td><%= meter&.meter_type&.humanize %></td>
+        <td><%= meter&.active %></td>
+        <td><%= meter&.first_validated_reading %></td>
+        <td><%= meter&.last_validated_reading %></td>
+        <td><%= meter&.admin_meter_status_label %></td>
+        <td><%= meter&.open_issues_count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
