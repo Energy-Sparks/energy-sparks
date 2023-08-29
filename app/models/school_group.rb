@@ -80,6 +80,7 @@ class SchoolGroup < ApplicationRecord
   belongs_to :default_procurement_route_electricity, class_name: 'ProcurementRoute', foreign_key: 'default_procurement_route_electricity_id', optional: true
   belongs_to :default_procurement_route_gas, class_name: 'ProcurementRoute', foreign_key: 'default_procurement_route_gas_id', optional: true
   belongs_to :default_procurement_route_solar_pv, class_name: 'ProcurementRoute', foreign_key: 'default_procurement_route_solar_pv_id', optional: true
+  belongs_to :funder, optional: true
 
   has_many :meter_attributes, inverse_of: :school_group, class_name: 'SchoolGroupMeterAttribute'
 
