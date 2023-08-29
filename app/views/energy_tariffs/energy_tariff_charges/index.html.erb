@@ -8,6 +8,8 @@
       <div class="d-flex justify-content-between">
         <% if @energy_tariff.dcc? %>
           <%= t('schools.user_tariff_charges.index.smart_meter_notice') %>
+        <% elsif @tariff_holder.site_settings? %>
+          <%= t('schools.user_tariff_charges.index.notice_site_settings') %>
         <% else %>
           <%= t('schools.user_tariff_charges.index.notice') %>
         <% end %>
