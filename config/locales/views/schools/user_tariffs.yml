@@ -85,6 +85,7 @@ en:
         title: Select meters for this tariff
         which_meters_will_this_tariff_apply_to: Which meters will this tariff apply to?
       choose_type:
+        are_you_sure_message: Are you sure? Changing the type will delete all consumption charges associated with this tariff.
         breadcrumb_title: Choose tariff type
         differential_tariff: Differential tariff
         flat_rate: Flat rate tariff

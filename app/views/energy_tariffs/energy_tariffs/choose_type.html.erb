@@ -9,21 +9,28 @@
   <div class="col-md-12">
     <div class="energy_tariff">
       <p><%= t('schools.user_tariffs.choose_type.is_this_a_flat_rate') %></p>
-
       <% form_url = energy_tariffs_path(@energy_tariff, [], { action: :update_type }) %>
-      <%= simple_form_for @energy_tariff, url: form_url, method: :post do |f| %>
-        <%= f.hidden_field :tariff_type, value: 'flat_rate' %>
-        <%= submit_tag t('schools.user_tariffs.choose_type.flat_rate'), class: 'btn btn-info' %>
+
+      <% if @energy_tariff.flat_rate? %>
+        <%= link_to t('schools.user_tariffs.choose_type.flat_rate'), energy_tariffs_path(@energy_tariff, []), class: 'btn btn-info' %>
+      <% else %>
+        <%= simple_form_for @energy_tariff, url: form_url, method: :post do |f| %>
+          <%= f.hidden_field :tariff_type, value: 'flat_rate' %>
+          <% confirm = (@energy_tariff.differential? && @energy_tariff.energy_tariff_prices.present?) ? { confirm: t('schools.user_tariffs.choose_type.are_you_sure_message') } : { } %>
+          <%= submit_tag t('schools.user_tariffs.choose_type.flat_rate'), class: 'btn btn-info', data: confirm %>
+        <% end %>
       <% end %>
-
       <br/>
       <br/>
-
       <p><%= t('schools.user_tariffs.choose_type.or_a_rate_which_varies_by_time_of_day') %></p>
-
-      <%= simple_form_for @energy_tariff, url: form_url, method: :post do |f| %>
-        <%= f.hidden_field :tariff_type, value: 'differential' %>
-        <%= submit_tag t('schools.user_tariffs.choose_type.differential_tariff'), class: 'btn btn-info' %>
+      <% if @energy_tariff.differential? %>
+        <%= link_to t('schools.user_tariffs.choose_type.differential_tariff'), energy_tariffs_path(@energy_tariff, []), class: 'btn btn-info' %>
+      <% else %>
+        <%= simple_form_for @energy_tariff, url: form_url, method: :post do |f| %>
+          <%= f.hidden_field :tariff_type, value: 'differential' %>
+          <% confirm = (@energy_tariff.flat_rate? && @energy_tariff.energy_tariff_prices.present?) ? { confirm: t('schools.user_tariffs.choose_type.are_you_sure_message') } : {  } %>
+          <%= submit_tag t('schools.user_tariffs.choose_type.differential_tariff'), class: 'btn btn-info', data: confirm %>
+        <% end %>
       <% end %>
     </div>
   </div>
