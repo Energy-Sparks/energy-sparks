@@ -1,7 +1,7 @@
 <h1><%= t('schools.user_tariffs.index.title') %></h1>
 <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <%= link_to polymorphic_path(tariff_holder_route(@tariff_holder) + [:energy_tariffs]), class: "nav-item nav-link#{ action_name == 'index' ? ' active' : '' }" do %>
+    <%= link_to polymorphic_path(tariff_holder_route(@tariff_holder) + [:energy_tariffs]), class: "nav-item nav-link#{ action_name == 'index' ? ' active' : '' }", "aria-controls": "nav-user-tariffs", "aria-selected": (action_name == 'index') do %>
       <% if @tariff_holder.site_settings? %>
         <%= t('schools.user_tariffs.index.tabs.system_default_tariffs') %>
       <% else %>
@@ -9,12 +9,12 @@
       <% end %>
     <% end %>
     <% if @tariff_holder.school? && any_smart_meters?(@tariff_holder) %>
-      <%= link_to polymorphic_path(tariff_holder_route(@tariff_holder) + [:energy_tariffs], { action: :smart_meter_tariffs }), class: "nav-item nav-link#{ action_name == 'smart_meter_tariffs' ? ' active' : '' }" do %>
+      <%= link_to polymorphic_path(tariff_holder_route(@tariff_holder) + [:energy_tariffs], { action: :smart_meter_tariffs }), class: "nav-item nav-link#{ action_name == 'smart_meter_tariffs' ? ' active' : '' }", "aria-controls": "nav-user-tariffs", "aria-selected": (action_name == 'smart_meter_tariffs') do %>
         <%= t('schools.user_tariffs.index.tabs.smart_meter_tariffs') %>
       <% end %>
     <% end %>
     <% if @tariff_holder.school? || @tariff_holder.school_group? %>
-      <%= link_to polymorphic_path(tariff_holder_route(@tariff_holder) + [:energy_tariffs], { action: :default_tariffs }), class: "nav-item nav-link#{ action_name == 'default_tariffs' ? ' active' : '' }" do %>
+      <%= link_to polymorphic_path(tariff_holder_route(@tariff_holder) + [:energy_tariffs], { action: :default_tariffs }), class: "nav-item nav-link#{ action_name == 'default_tariffs' ? ' active' : '' }", "aria-controls": "nav-user-tariffs", "aria-selected": (action_name == 'default_tariffs') do %>
         <%= t('schools.user_tariffs.index.tabs.default_tariffs') %>
       <% end %>
     <% end %>
