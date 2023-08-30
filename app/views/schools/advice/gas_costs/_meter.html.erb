@@ -8,8 +8,7 @@
 <% if local_assigns[:tariffs] %>
   <%= render 'tariff_summary_table', school: school, tariffs: tariffs %>
   <div class="text-right">
-    <% school_tariff_path = EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs) ? school_energy_tariffs_path(school) : school_user_tariffs_path(school) %>
-    <%= t('schools.user_tariffs.view_and_manage_tariffs_html', user_tariffs_path: school_tariff_path) %>
+    <%= t('schools.user_tariffs.view_and_manage_tariffs_html', user_tariffs_path: school_energy_tariffs_path(school)) %>
   </div>
 <% end %>
 

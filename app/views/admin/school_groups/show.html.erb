@@ -45,6 +45,7 @@
   <%= link_to 'Edit', edit_admin_school_group_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Manage users', admin_school_group_users_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Manage partners', admin_school_group_partners_path(@school_group), class: 'btn btn-sm' %>
+  <%= link_to 'Manage tariffs', school_group_energy_tariffs_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Meter attributes', admin_school_group_meter_attributes_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Meter updates', admin_school_group_meter_updates_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Chart updates', school_group_chart_updates_path(@school_group), class: 'btn btn-sm' %>

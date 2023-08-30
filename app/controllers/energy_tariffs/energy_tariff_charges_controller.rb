@@ -1,8 +1,5 @@
 module EnergyTariffs
-  class EnergyTariffChargesController < ApplicationController
-    load_and_authorize_resource :school
-    load_and_authorize_resource :energy_tariff
-
+  class EnergyTariffChargesController < EnergyTariffsBaseController
     def index
       @energy_tariff_charges = @energy_tariff.energy_tariff_charges
     end
@@ -16,7 +13,8 @@ module EnergyTariffs
           @energy_tariff.energy_tariff_charges.destroy_all
           @energy_tariff_charges.each(&:save!)
         end
-        redirect_to school_energy_tariff_path(@school, @energy_tariff)
+        @energy_tariff.update!(updated_by: current_user)
+        redirect_to energy_tariffs_path(@energy_tariff)
       else
         render :index
       end

@@ -69,18 +69,31 @@ Rails.application.routes.draw do
   concern :tariff_holder do
     scope module: 'energy_tariffs' do
     resources :energy_tariffs do
-      resources :energy_tariff_prices, only: [:index, :new, :edit]
       resources :energy_tariff_flat_prices
-      resources :energy_tariff_differential_prices
+      resources :energy_tariff_differential_prices do
+        collection do
+          get :reset, to: 'energy_tariff_differential_prices#reset'
+        end
+      end
       resources :energy_tariff_charges
       collection do
         get :choose_meters, to: 'energy_tariffs#choose_meters'
+        get :default_tariffs, to: 'energy_tariffs#default_tariffs'
+        get :smart_meter_tariffs, to: 'energy_tariffs#smart_meter_tariffs'
       end
       member do
         get :choose_type, to: 'energy_tariffs#choose_type'
+        get :edit_meters, to: 'energy_tariffs#edit_meters'
+        post :update_meters, to: 'energy_tariffs#update_meters'
+        post :update_type, to: 'energy_tariffs#update_type'
+        post :toggle_enabled, to: 'energy_tariffs#toggle_enabled'
       end
     end
   end
+  end
+
+  scope '/admin/settings', as: :admin_settings do
+    concerns :tariff_holder
   end
 
   resources :activity_types, only: [:show] do
@@ -128,6 +141,8 @@ Rails.application.routes.draw do
   resource :school_switcher, only: [:create], controller: :school_switcher
 
   resources :school_groups, only: [:show] do
+    concerns :tariff_holder
+
     scope module: :school_groups do
       resources :chart_updates, only: [:index] do
         post :bulk_update_charts
@@ -344,19 +359,6 @@ Rails.application.routes.draw do
       resources :batch_runs, only: [:index, :create, :show]
 
       resource :consents, only: [:show, :create]
-
-      resources :user_tariffs do
-        resources :user_tariff_prices, only: [:index, :new, :edit]
-        resources :user_tariff_flat_prices
-        resources :user_tariff_differential_prices
-        resources :user_tariff_charges
-        collection do
-          get :choose_meters, to: 'user_tariffs#choose_meters'
-        end
-        member do
-          get :choose_type, to: 'user_tariffs#choose_type'
-        end
-      end
     end
 
     # Maintain old scoreboard URL
@@ -510,7 +512,9 @@ Rails.application.routes.draw do
     resources :consents
     resources :transport_types
     resources :prob_data_reports
-    resources :procurement_routes
+    resources :procurement_routes do
+      post :deliver
+    end
     resources :data_sources do
       post :deliver
       scope module: :data_sources do
@@ -563,6 +567,7 @@ Rails.application.routes.draw do
       resource :funder_allocations, only: [:show] do
         post :deliver
       end
+      get 'energy_tariffs', to: 'energy_tariffs#index', as: :energy_tariffs
     end
 
     resource :settings, only: [:show, :update]

@@ -23,8 +23,8 @@ gem 'pg_search'
 gem 'calculate_in_group'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '2.9.0'
-#gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'aws-eb-test'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '3.0.2'
+#gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'additional-tariff-code-tests-and-refactoring'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -69,7 +69,7 @@ gem 'devise' # Use devise for authentication
 gem 'cancancan', '~> 3.0.1' # Use cancancan for authorization
 
 # Utils
-gem 'groupdate', '4.0.1' # Use groupdate to group usage stats
+gem 'groupdate', '6.2.1' # Use groupdate to group usage stats
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 
 # Bundle update installs 0.7.0 for some weird reason!
@@ -119,7 +119,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem "bullet", require: false # use bullet to optimise queries
-  gem 'rspec-rails', '~> 4.0.1'
+  gem 'rspec-rails', '~> 5.1.2'
   gem 'rspec-json_expectations'
   gem 'rails-controller-testing'
   gem "fakefs", require: "fakefs/safe"
@@ -132,7 +132,7 @@ group :development, :test do
   gem 'terminal-notifier-guard', require: false
   gem 'rb-readline', require: false
   gem 'rubocop', '0.93.1'
-  gem 'rubocop-rails', '2.8.0'
+  gem 'rubocop-rails', '2.9.1'
   gem 'rubocop-performance', '1.8.0'
   gem 'rubocop-rspec'
   gem 'wisper-rspec', require: false
@@ -163,7 +163,7 @@ group :test do
   gem 'capybara-email'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
-  gem "webdrivers", '>= 5.2.0'
+  gem "webdrivers", '>= 5.3.0'
   gem 'simplecov', :require => false, :group => :test
   gem 'shoulda-matchers'
   gem 'timecop'

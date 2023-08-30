@@ -18,7 +18,8 @@
     </thead>
     <tbody>
     <% @group_meters.each do |school_group_name, school_meters| %>
-      <tr class='table-active'><td colspan="8"><strong><%= school_group_name || 'Ungrouped' %></strong></td></tr>
+      <% name = school_group_name || 'Ungrouped' %>
+      <tr class='table-active' id='<%=name.parameterize%>' ><td colspan="8"><strong><%= name %></strong></td></tr>
       <% school_meters.each do |school, meters| %>
         <% meters.each do |meter| %>
           <tr>

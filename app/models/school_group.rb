@@ -45,6 +45,7 @@
 
 class SchoolGroup < ApplicationRecord
   extend FriendlyId
+  include EnergyTariffHolder
   include ParentMeterAttributeHolder
   include Scorable
 
@@ -79,6 +80,7 @@ class SchoolGroup < ApplicationRecord
   belongs_to :default_procurement_route_electricity, class_name: 'ProcurementRoute', foreign_key: 'default_procurement_route_electricity_id', optional: true
   belongs_to :default_procurement_route_gas, class_name: 'ProcurementRoute', foreign_key: 'default_procurement_route_gas_id', optional: true
   belongs_to :default_procurement_route_solar_pv, class_name: 'ProcurementRoute', foreign_key: 'default_procurement_route_solar_pv_id', optional: true
+  belongs_to :funder, optional: true
 
   has_many :meter_attributes, inverse_of: :school_group, class_name: 'SchoolGroupMeterAttribute'
 
@@ -161,6 +163,14 @@ class SchoolGroup < ApplicationRecord
 
   def categorise_schools
     SchoolGroups::CategoriseSchools.new(school_group: self).categorise_schools
+  end
+
+  def parent_tariff_holder
+    SiteSettings.current
+  end
+
+  def holds_tariffs_of_type?(meter_type)
+    Meter::MAIN_METER_TYPES.include?(meter_type.to_sym)
   end
 
   private

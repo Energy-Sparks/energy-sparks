@@ -42,6 +42,21 @@ module Database
       end
     end
 
+    #Doesn't include user tariffs as that is being migrated via an
+    #after party task
+    def self.migrate_all
+      migrate_all_meter_attributes
+      migrate_tariff_prices
+    end
+
+    def self.migrate_all_meter_attributes
+      migrate_global_meter_attributes
+      migrate_global_solar_meter_attributes
+      migrate_school_group_meter_attributes
+      migrate_school_economic_tariffs
+      migrate_meter_accounting_tariffs
+    end
+
     #Turns the Global Meter Attributes that are accounting tariffs into
     #EnergyTariffs.
     def self.migrate_global_meter_attributes
@@ -266,10 +281,15 @@ module Database
                             :differential
                           end
 
+            end_date = if attribute[:start_date] == attribute[:end_date]
+                          nil
+                       else
+                         attribute[:end_date]
+                       end
             EnergyTariff.create!(
               ccl: false,
               enabled: true,
-              end_date: attribute[:end_date],
+              end_date: end_date,
               meter_type: meter.meter_type,
               name: attribute[:name],
               source: :dcc,
@@ -384,7 +404,7 @@ module Database
 
     #Determine tariff type from accounting tariff / accounting tariff differential attribute
     def self.tariff_type(attribute)
-      if attribute.input_data['rates']['daytime_rate'].present?
+      if attribute.input_data['rates']['daytime_rate'].present? && attribute.input_data['rates']['daytime_rate']['rate'].present?
         :differential
       else
         :flat_rate

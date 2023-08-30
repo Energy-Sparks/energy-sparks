@@ -67,7 +67,11 @@ class TransportSurveyResponse < ApplicationRecord
   end
 
   def self.csv_attributes
-    %w{id run_identifier weather_name weather_image journey_minutes transport_type.name transport_type.image passengers surveyed_at}
+    %w{id run_identifier weather_name journey_minutes transport_type.name passengers carbon_kg_co2 surveyed_at}
+  end
+
+  def carbon_kg_co2
+    carbon.round(3)
   end
 
   def carbon

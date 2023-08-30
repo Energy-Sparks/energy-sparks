@@ -47,6 +47,8 @@ cy:
     other: '%{count} ysgol'
   training:
     intro: Mae'r dudalen hon yn rhestru ein holl sesiynau hyfforddi sydd i ddod. Dilynwch y dolenni i’n tudalen Eventbrite i archebu eich tocynnau.
+    sold_out: Wedi gwerthu allan
+    spaces_available: Lleoedd ar gael
     title: Hyfforddiant
   videos:
     title: Fideos canllaw defnyddiwr

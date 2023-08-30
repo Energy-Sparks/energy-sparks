@@ -10,6 +10,7 @@ en:
     electricity: Electricity
     electricity_and_solar_pv: Electricity and Solar PV
     email_us: email us
+    exported_solar_pv: Exported Solar PV
     gas: Gas
     labels:
       actions: Actions
@@ -20,12 +21,16 @@ en:
       back: Back
       cancel: Cancel
       close: Close
+      continue: Continue
       create: Create
       created: Created
       deactivate: Deactivate
       delete: Delete
+      disable: Disable
       download: Download
       edit: Edit
+      enable: Enable
+      finish: Finish
       finished: Finished
       home: Home
       inactive: Inactive

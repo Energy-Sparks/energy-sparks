@@ -26,6 +26,7 @@
       <%= fa_icon("chevron-down") %><%= fa_icon("chevron-right") %>
     </span>
     <span class='float-right'>
+      <%= render 'email_report_button', procurement_route: @procurement_route, class: 'btn btn-sm' %>
       <%= link_to 'Edit', edit_admin_procurement_route_path(@procurement_route), class: "btn btn-sm" %>
       <%= link_to 'Delete', admin_procurement_route_path(@procurement_route), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-sm btn-danger" %>
     </span>

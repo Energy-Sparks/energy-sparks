@@ -5,12 +5,12 @@
 #  ccl                :boolean          default(FALSE)
 #  created_at         :datetime         not null
 #  created_by_id      :bigint(8)
-#  enabled            :boolean          default(FALSE)
+#  enabled            :boolean          default(TRUE)
 #  end_date           :date
 #  id                 :bigint(8)        not null, primary key
 #  meter_type         :integer          default("electricity"), not null
 #  name               :text             not null
-#  source             :integer          default("manual"), not null
+#  source             :integer          default("manually_entered"), not null
 #  start_date         :date
 #  tariff_holder_id   :bigint(8)
 #  tariff_holder_type :string
@@ -18,7 +18,7 @@
 #  tnuos              :boolean          default(FALSE)
 #  updated_at         :datetime         not null
 #  updated_by_id      :bigint(8)
-#  vat_rate           :float
+#  vat_rate           :integer
 #
 # Indexes
 #
@@ -33,6 +33,10 @@
 #
 class EnergyTariff < ApplicationRecord
   belongs_to :tariff_holder, polymorphic: true
+
+  #Declaring associations allows us to use .joins(:school) or .joins(:school_group)
+  belongs_to :school, -> { where(energy_tariffs: { tariff_holder_type: 'School' }) }, foreign_key: 'tariff_holder_id', optional: true
+  belongs_to :school_group, -> { where(energy_tariffs: { tariff_holder_type: 'SchoolGroup' }) }, foreign_key: 'tariff_holder_id', optional: true
 
   delegated_type :tariff_holder, types: %w[SiteSettings School SchoolGroup]
 
@@ -50,16 +54,47 @@ class EnergyTariff < ApplicationRecord
   enum tariff_type: [:flat_rate, :differential]
 
   validates :name, presence: true
+  validates :vat_rate, numericality: { greater_than_or_equal_to: 0.0, less_than_or_equal_to: 100.0, allow_nil: true }
+
+  validate :start_and_end_date_are_not_both_blank
+  validate :start_date_is_earlier_than_or_equal_to_end_date
 
   scope :enabled, -> { where(enabled: true) }
   scope :disabled, -> { where(enabled: false) }
 
-  scope :has_prices, -> { where(id: EnergyTariffPrice.select(:energy_tariff_id)) }
-  scope :has_charges, -> { where(id: EnergyTariffCharge.select(:energy_tariff_id)) }
-  scope :complete, -> { has_prices.or(has_charges) }
-
-  scope :by_name, -> { order(name: :asc) }
+  scope :by_name,       -> { order(name: :asc) }
   scope :by_start_date, -> { order(start_date: :asc) }
+
+  #Sorts with null start date first, then start date, then end date
+  scope :by_start_and_end, -> {
+    order(Arel.sql("(CASE WHEN start_date is NULL THEN 0 ELSE 1 END) ASC, start_date asc, end_date asc"))
+  }
+
+  scope :count_by_school_group, -> { enabled.joins(:school_group).group(:slug).count(:id) }
+
+  scope :for_schools_in_group, ->(school_group, source = :manually_entered) {
+    enabled.where(source: source).joins(:school).where({ schools: { school_group: school_group } })
+  }
+  scope :count_schools_with_tariff_by_group, ->(school_group, source = :manually_entered) {
+    for_schools_in_group(school_group, source).select(:tariff_holder_id).distinct.count
+  }
+
+  scope :latest_with_fixed_end_date, ->(meter_type, source = :manually_entered) { where(meter_type: meter_type, source: source).where.not(end_date: nil).order(end_date: :desc) }
+
+  def self.usable
+    select(&:usable?)
+  end
+
+  def usable?
+    case tariff_type
+    when 'differential' then usable_differential_tariff?
+    when 'flat_rate' then usable_flat_rate_tariff?
+    end
+  end
+
+  def flat_rate?
+    tariff_type == 'flat_rate'
+  end
 
   def meter_attribute
     MeterAttribute.new(attribute_type: :accounting_tariff_generic, input_data: to_hash)
@@ -68,8 +103,8 @@ class EnergyTariff < ApplicationRecord
   def to_hash
     rates = rates_attrs
     {
-      start_date: start_date.to_s(:es_compact),
-      end_date: end_date.to_s(:es_compact),
+      start_date: start_date ? start_date.to_s(:es_compact) : Date.new(2000, 1, 1).to_s(:es_compact),
+      end_date: end_date ? end_date.to_s(:es_compact) : Date.new(2050, 1, 1).to_s(:es_compact),
       source: source.to_sym,
       name: name,
       type: flat_rate? ? :flat : :differential,
@@ -77,7 +112,9 @@ class EnergyTariff < ApplicationRecord
       rates: rates,
       vat: vat_rate.nil? ? nil : "#{vat_rate}%",
       climate_change_levy: ccl,
-      asc_limit_kw: (value_for_charge(:asc_limit_kw) if rates_has_availability_charge?(rates))
+      asc_limit_kw: (value_for_charge(:asc_limit_kw) if rates_has_availability_charge?(rates)),
+      tariff_holder: tariff_holder_symbol,
+      created_at: created_at.to_datetime
     }.compact
   end
 
@@ -87,7 +124,55 @@ class EnergyTariff < ApplicationRecord
     end
   end
 
+  def energy_tariff_refers_to_all_meters?
+    tariff_holder.site_settings? || tariff_holder.school_group? || meters.empty?
+  end
+
+  #Used to the show page to decide whether there's content for the standing
+  #charge section which groups these together
+  def has_any_standing_charges?
+    energy_tariff_charges.any? || tnuos? || vat_rate.present? || ccl?
+  end
+
   private
+
+  def usable_flat_rate_tariff?
+    # For a flate rate energy tariff to be considered "usable":
+    # * it must have only one energy tariff price record
+    # * the price record must have a value set greater than zero
+    return true if energy_tariff_prices.count == 1 && energy_tariff_prices&.first&.value&.nonzero?
+
+    false
+  end
+
+  def usable_differential_tariff?
+    # For a differential rate energy tariff to be considered "usable":
+    # * it must have more two or more energy tariff price records
+    # * the energy tariff price records combined start and end times must cover a full 24 hour period (1440 minutes)
+    # * all energy tariff price records must have values set greater than zero
+    return true if energy_tariff_prices.count >= 2 && energy_tariff_prices.complete? && energy_tariff_prices&.map(&:value)&.all? { |value| value&.nonzero? }
+
+    false
+  end
+
+  def start_and_end_date_are_not_both_blank
+    return unless tariff_holder_type == 'SchoolGroup'
+    return if start_date.present? || end_date.present?
+
+    errors.add(:start_date, I18n.t('schools.user_tariffs.form.errors.dates.start_and_end_date_can_not_both_be_empty'))
+    errors.add(:end_date, I18n.t('schools.user_tariffs.form.errors.dates.start_and_end_date_can_not_both_be_empty'))
+  end
+
+  def start_date_is_earlier_than_or_equal_to_end_date
+    return unless start_date.present? && end_date.present?
+    return unless start_date > end_date
+
+    errors.add(:start_date, I18n.t('schools.user_tariffs.form.errors.dates.start_date_must_be_earlier_than_or_equal_to_end_date'))
+  end
+
+  def tariff_holder_symbol
+    meters.any? ? :meter : tariff_holder_type&.underscore&.to_sym
+  end
 
   def rates_attrs
     attrs = {}

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_27_155443) do
+ActiveRecord::Schema.define(version: 2023_08_25_133632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -788,7 +788,7 @@ ActiveRecord::Schema.define(version: 2023_07_27_155443) do
     t.bigint "energy_tariff_id", null: false
     t.time "start_time", default: "2000-01-01 00:00:00", null: false
     t.time "end_time", default: "2000-01-01 23:30:00", null: false
-    t.decimal "value", default: "0.0", null: false
+    t.decimal "value"
     t.text "units"
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
@@ -805,7 +805,7 @@ ActiveRecord::Schema.define(version: 2023_07_27_155443) do
     t.text "name", null: false
     t.date "start_date"
     t.date "end_date"
-    t.boolean "enabled", default: false
+    t.boolean "enabled", default: true
     t.boolean "ccl", default: false
     t.boolean "tnuos", default: false
     t.integer "vat_rate"
@@ -1409,6 +1409,7 @@ ActiveRecord::Schema.define(version: 2023_07_27_155443) do
     t.bigint "default_procurement_route_gas_id"
     t.bigint "default_procurement_route_solar_pv_id"
     t.integer "group_type", default: 0
+    t.bigint "funder_id"
     t.index ["default_issues_admin_user_id"], name: "index_school_groups_on_default_issues_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"

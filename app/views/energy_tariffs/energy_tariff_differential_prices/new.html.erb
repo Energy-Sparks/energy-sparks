@@ -1,3 +1,4 @@
-<%= simple_form_for @energy_tariff_price, url: school_energy_tariff_energy_tariff_differential_prices_path(@school, @energy_tariff), remote: true do |f| %>
-  <%= render 'form', school: @school, energy_tariff: @energy_tariff, energy_tariff_price: @energy_tariff_price, f: f %>
+<% url = energy_tariffs_path(@energy_tariff, [:energy_tariff_differential_prices]) %>
+<%= simple_form_for @energy_tariff_price, url: url, remote: true do |f| %>
+  <%= render 'form', energy_tariff: @energy_tariff, energy_tariff_price: @energy_tariff_price, f: f %>
 <% end %>

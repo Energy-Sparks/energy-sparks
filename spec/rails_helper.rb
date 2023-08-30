@@ -17,10 +17,6 @@ require 'capybara/email/rspec'
 require 'cancan/matchers'
 require 'wisper/rspec/matchers'
 
-#Pin version of Chrome driver. A workaround for this issue:
-# https://github.com/titusfortner/webdrivers/issues/247
-Webdrivers::Chromedriver.required_version = "114.0.5735.90"
-
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -87,6 +83,8 @@ RSpec.configure do |config|
   config.before(:each, type: :component) do
     @request = controller.request
   end
+
+  config.include ActiveSupport::Testing::TimeHelpers
 end
 
 Shoulda::Matchers.configure do |config|

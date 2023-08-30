@@ -1,13 +1,12 @@
 module EnergyTariffs
-  class EnergyTariffFlatPricesController < ApplicationController
-    load_and_authorize_resource :school
-    load_and_authorize_resource :energy_tariff
+  class EnergyTariffFlatPricesController < EnergyTariffsBaseController
+    before_action :redirect_if_dcc
 
     def index
       if @energy_tariff.energy_tariff_prices.any?
-        redirect_to edit_school_energy_tariff_energy_tariff_flat_price_path(@school, @energy_tariff, @energy_tariff.energy_tariff_prices.first)
+        redirect_to_edit_energy_tariff_flat_price_path
       else
-        redirect_to new_school_energy_tariff_energy_tariff_flat_price_path(@school, @energy_tariff)
+        redirect_to_new_energy_tariff_flat_price_path
       end
     end
 
@@ -18,7 +17,7 @@ module EnergyTariffs
     def create
       @energy_tariff_price = @energy_tariff.energy_tariff_prices.build(energy_tariff_price_params.merge(default_attributes))
       if @energy_tariff_price.save
-        redirect_to school_energy_tariff_energy_tariff_charges_path(@school, @energy_tariff)
+        redirect_to energy_tariffs_path(@energy_tariff)
       else
         render :new
       end
@@ -31,13 +30,22 @@ module EnergyTariffs
     def update
       @energy_tariff_price = @energy_tariff.energy_tariff_prices.find(params[:id])
       if @energy_tariff_price.update(energy_tariff_price_params)
-         redirect_to school_energy_tariff_energy_tariff_charges_path(@school, @energy_tariff)
+        @energy_tariff.update!(updated_by: current_user)
+        redirect_to energy_tariffs_path(@energy_tariff)
       else
         render :edit
       end
     end
 
     private
+
+    def redirect_to_edit_energy_tariff_flat_price_path
+      redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_flat_price], { id: @energy_tariff.energy_tariff_prices.first, action: :edit })
+    end
+
+    def redirect_to_new_energy_tariff_flat_price_path
+      redirect_to energy_tariffs_path(@energy_tariff, [:energy_tariff_flat_price], { action: :new })
+    end
 
     def default_attributes
       {

@@ -36,17 +36,9 @@
     <% end %>
   <% end %>
 
-  <% if EnergySparks::FeatureFlags.active?(:use_new_energy_tariffs) %>
-    <% meter.energy_tariffs.each do |energy_tariff| %>
-      <%= render 'shared/meter_attributes/print_meter_attribute', meter_attribute: energy_tariff.meter_attribute do %>
-        <div class="alert alert-info">from <%= link_to "Energy tariffs", school_energy_tariff_path(meter.school, energy_tariff) %></div>
-      <% end %>
-    <% end %>
-  <% else %>
-    <% meter.user_tariffs.each do |user_tariff| %>
-      <%= render 'shared/meter_attributes/print_meter_attribute', meter_attribute: user_tariff.meter_attribute do %>
-        <div class="alert alert-info">from <%= link_to "User tariffs", school_user_tariff_path(meter.school, user_tariff) %></div>
-      <% end %>
+  <% meter.energy_tariffs.each do |energy_tariff| %>
+    <%= render 'shared/meter_attributes/print_meter_attribute', meter_attribute: energy_tariff.meter_attribute do %>
+      <div class="alert alert-info">from <%= link_to "Energy tariffs", school_energy_tariff_path(meter.school, energy_tariff) %></div>
     <% end %>
   <% end %>
 

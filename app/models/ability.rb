@@ -52,6 +52,7 @@ class Ability
         can :show_management_dash, SchoolGroup, id: user.school_group.id
         can :update_settings, SchoolGroup, id: user.school_group_id
         can :manage, SchoolGroupCluster, school_group_id: user.school_group_id
+        can :manage, EnergyTariff, tariff_holder: user.school_group
 
         can [:show, :update], Calendar do |calendar|
           user.school_group.calendars.include?(calendar)
@@ -74,6 +75,7 @@ class Ability
         end
         can :read, [:my_school_menu]
         can :switch, School
+        can :manage, EnergyTariff, tariff_holder: user.school
       end
       #allow users from schools in same group to access dashboards
       if user.school.present?
@@ -91,8 +93,6 @@ class Ability
       can :manage, SchoolTarget, related_school_scope
       can :manage, Activity, related_school_scope
       can :manage, Contact, related_school_scope
-      can :manage, UserTariff, related_school_scope
-      can :manage, EnergyTariff, tariff_holder: user.school
       can :show, Cad, related_school_scope
       can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
       can [:index, :create, :read, :update], ConsentDocument, related_school_scope

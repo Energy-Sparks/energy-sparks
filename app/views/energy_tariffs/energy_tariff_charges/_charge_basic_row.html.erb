@@ -1,5 +1,3 @@
-<%= render 'shared/errors', subject: energy_tariff_charge, subject_name: 'charge' %>
-
 <tr>
   <td class="description">
     <%= energy_tariff_charge_type_description(energy_tariff_charge.charge_type) %>
@@ -11,16 +9,22 @@
     <%= energy_tariff_charge_type_value_label(energy_tariff_charge.charge_type) %>
   </td>
   <td class="value">
-    <%= f.input :value, pattern: '[0-9.]+', label: false, input_html: { value: energy_tariff_charge.value}.merge(local_assigns.slice(:data, :title)), required: false %>
+    <%= f.input :value, as: :decimal, pattern: '[0-9.]+', label: false,
+      input_html: { disabled: local_assigns[:disabled] ? 'disabled' : nil, value: value_allowing_for_errors(energy_tariff_charge) }.merge(local_assigns.slice(:data, :title)),
+      error: energy_tariff_charge.errors.any? ? energy_tariff_charge.errors.full_messages.first : nil,
+      required: false %>
   </td>
   <td class="units">
     <% if energy_tariff_charge_type_units_for(energy_tariff_charge.charge_type).any? %>
-      per
+      <%= t('schools.user_tariff_charges.per') %>
     <% end %>
   </td>
   <td class="units">
     <% if energy_tariff_charge_type_units_for(energy_tariff_charge.charge_type).any? %>
-      <%= f.select :units, options_for_select(energy_tariff_charge_type_units_for(energy_tariff_charge.charge_type), energy_tariff_charge.units), {required: :true}, { class: 'form-control' } %>
+      <%= f.select :units,
+       options_for_select(energy_tariff_charge_type_units_for(energy_tariff_charge.charge_type), energy_tariff_charge.units),
+       {required: :true},
+       { disabled: local_assigns[:disabled] ? 'disabled' : nil, class: 'form-control' } %>
     <% end %>
   </td>
 </tr>
