@@ -110,7 +110,8 @@ en:
           start_date: Leave blank if there is no start date
       index:
         changes_to_cost_calculations_message: The cost calculations based on these tariffs will update overnight
-        default_tariffs_message: These tariffs will apply to any periods not covered by user supplied tariffs or any tariffs imported from your smart meters
+        default_tariffs_message_html: These tariffs will apply to any periods not covered by <a href="%{user_supplied_tariffs_link}">user supplied tariffs</a>
+        default_tariffs_message_with_smart_meters_html: These tariffs will apply to any periods not covered by <a href="%{user_supplied_tariffs_link}">user supplied tariffs</a> or any tariffs imported from your <a href="%{smart_meter_tariffs_link}">smart meters</a>
         electricity:
           add_label: Add electricity tariff
           header: Electricity
@@ -132,8 +133,8 @@ en:
           </p>
         no_defaults: We have no default tariffs for your %{meter_type} meters.
         no_smart_meter_tariffs: We have not imported any tariffs from your %{meter_type} meters.
-        note_about_defaults: If we do not have your real tariff information, then we will estimate your costs using our default tariffs.
-        note_about_smart_meter_tariffs: We are currently using tariffs automatically imported from your smart meters.
+        note_about_defaults_html: If we do not have your real tariff information, then we will estimate your costs using our <a href="%{default_tariffs_link}">default tariffs</a>.
+        note_about_smart_meter_tariffs_html: We are currently using tariffs automatically imported from your <a href="%{smart_meter_tariffs_link}">smart meters</a>.
         solar_pv:
           add_label: Add solar PV tariff
           header: Solar PV
