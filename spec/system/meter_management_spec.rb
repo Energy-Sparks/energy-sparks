@@ -230,7 +230,7 @@ RSpec.describe "meter management", :meters, type: :system, include_application_h
       it 'the tariff report can be shown' do
         click_on meter.mpan_mprn.to_s
         click_on 'Tariff Report'
-        expect(page).to have_content("Standing charges")
+        expect(page).to have_content("Smart meter tariffs")
       end
 
       it 'the single meter attributes view can be shown' do
