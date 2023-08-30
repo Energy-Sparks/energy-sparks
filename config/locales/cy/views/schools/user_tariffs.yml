@@ -51,7 +51,6 @@ cy:
         title: Dewiswch fesuryddion ar gyfer y tariff hwn
         which_meters_will_this_tariff_apply_to: I ba fesuryddion y bydd y tariff hwn yn berthnasol?
       choose_type:
-        or_a_rate_which_varies_by_time_of_day: Neu gyfradd sy’n amrywio yn ôl amser o’r dydd (e.e. tariff Dydd/Nos, Economi7)
         title: Dewiswch y math o'r tariff hwn
       edit:
         title: Golygu'r enw a'r ystod dyddiad ar gyfer y tariff %{fuel_type} hwn
