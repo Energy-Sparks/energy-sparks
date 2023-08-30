@@ -12,7 +12,7 @@ RSpec.describe ProcurementRoute, type: :model do
     let(:procurement_route) { create(:procurement_route) }
     let(:data_source) { create(:data_source) }
     subject { procurement_route.to_csv }
-    let(:header) { "School group,School,MPAN/MPRN,Meter type,Active,First validated meter reading,Last validated meter reading,Admin Meter Status,Data Source,Open issues count,Open issues" }
+    let(:header) { "School group,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Data Source,Open issues count,Open issues" }
     before { Timecop.freeze }
     after { Timecop.return }
 
@@ -48,6 +48,7 @@ RSpec.describe ProcurementRoute, type: :model do
                 meters[i].mpan_mprn,
                 meters[i].meter_type.humanize,
                 meters[i].active,
+                (meters[i].half_hourly ? 'Yes' : 'No'),
                 first_reading_date,
                 last_reading_date,
                 admin_meter_status.label,
