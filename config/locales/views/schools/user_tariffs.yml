@@ -110,7 +110,8 @@ en:
           start_date: Leave blank if there is no start date
       index:
         changes_to_cost_calculations_message: The cost calculations based on these tariffs will update overnight
-        default_tariffs_message: These tariffs will apply to any periods not covered by user supplied tariffs or any tariffs imported from your smart meters
+        default_tariffs_message_html: These tariffs will apply to any periods not covered by <a href="%{user_supplied_tariffs_link}">user supplied tariffs</a>
+        default_tariffs_message_with_smart_meters_html: These tariffs will apply to any periods not covered by <a href="%{user_supplied_tariffs_link}">user supplied tariffs</a> or any tariffs imported from your <a href="%{smart_meter_tariffs_link}">smart meters</a>
         electricity:
           add_label: Add electricity tariff
           header: Electricity
