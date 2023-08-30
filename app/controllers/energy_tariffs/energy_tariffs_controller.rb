@@ -65,7 +65,12 @@ module EnergyTariffs
     end
 
     def update_type
-      if @energy_tariff.update(energy_tariff_params.merge(updated_by: current_user))
+      @energy_tariff.tariff_type = energy_tariff_params['tariff_type']
+      redirect_to energy_tariffs_path(@energy_tariff) and return unless @energy_tariff.tariff_type_changed?
+
+      @energy_tariff.updated_by = current_user
+
+      if @energy_tariff.save!
         @energy_tariff.energy_tariff_prices.destroy_all
         redirect_to energy_tariffs_path(@energy_tariff)
       else
