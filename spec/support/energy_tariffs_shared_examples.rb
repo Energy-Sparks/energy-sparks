@@ -212,7 +212,7 @@ RSpec.shared_examples "the user can change the type of tariff" do
     # Selecting the existing tariff type should retain all energy tariff prices
     find('#tariff-type-section-edit').click()
     expect(energy_tariff.reload.energy_tariff_prices.count).to eq(2)
-    click_link('Differential tariff')
+    click_button('Differential tariff')
     expect(energy_tariff.reload.energy_tariff_prices.count).to eq(2)
     expect(page).to have_content('Differential tariff')
     expect(page).to have_content('£1.50 per kWh')
@@ -233,7 +233,7 @@ RSpec.shared_examples "the user can change the type of tariff" do
 
     # Selecting the existing tariff type should retain all energy tariff prices
     find('#tariff-type-section-edit').click()
-    click_link('Flat rate tariff')
+    click_button('Flat rate tariff')
     expect(page).to have_content('Flat rate tariff')
     expect(energy_tariff.reload.energy_tariff_prices.count).to eq(1)
     expect(page).to have_content('£1.50 per kWh')
