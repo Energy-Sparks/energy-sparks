@@ -184,25 +184,59 @@ RSpec.shared_examples "the user can edit the tariff" do
 end
 
 RSpec.shared_examples "the user can change the type of tariff" do
-  it 'allows switching to flat rate' do
-    expect(page).to have_content('Flat rate tariff')
+  it 'allows switching between tariff types, deleting any consumption charges asscoated with the previous tariff type' do
+    # Switching tariff types should delete all energy tariff prices associated with the previous tariff type
+    expect(energy_tariff.tariff_type).to eq('flat_rate')
+    expect(energy_tariff.energy_tariff_prices.count).to eq(1)
     find('#tariff-type-section-edit').click()
-    click_button('Flat rate tariff')
-    expect(page).to have_content('Flat rate tariff')
-    energy_tariff.reload
-    expect(energy_tariff.energy_tariff_prices.any?).to be false
-  end
-
-  it 'allows switching to differential' do
-    expect(page).to have_content('Flat rate tariff')
-    find('#tariff-type-section-edit').click()
+    expect(page).to have_content('Is this a flat rate tariff?')
+    expect(page).to have_content('Or a rate which varies by time of day (e.g. Day/Night tariff, Economy7)')
     click_button('Differential tariff')
     expect(page).to have_content('Differential tariff')
-    energy_tariff.reload
-    expect(energy_tariff.energy_tariff_prices.any?).to be false
+    expect(energy_tariff.energy_tariff_prices.count).to eq(0)
+
+    # Add some differential tariff consumption charges
+    find("#prices-section-edit").click
+    expect(energy_tariff.energy_tariff_prices.count).to eq(2)
+    find("#energy-tariff-show-button-#{energy_tariff.energy_tariff_prices.first.id}").click
+    fill_in 'Rate in £/kWh', with: '1.5'
+    click_button('Save')
+    find("#energy-tariff-show-button-#{energy_tariff.energy_tariff_prices.last.id}").click
+    fill_in 'Rate in £/kWh', with: '2.5'
+    click_button('Save')
+    click_link(energy_tariff.name)
+    expect(page).to have_content('Differential tariff')
+    expect(page).to have_content('£1.50 per kWh')
+    expect(page).to have_content('£2.50 per kWh')
+
+    # Selecting the existing tariff type should retain all energy tariff prices
+    find('#tariff-type-section-edit').click()
+    expect(energy_tariff.reload.energy_tariff_prices.count).to eq(2)
+    click_link('Differential tariff')
+    expect(energy_tariff.reload.energy_tariff_prices.count).to eq(2)
+    expect(page).to have_content('Differential tariff')
+    expect(page).to have_content('£1.50 per kWh')
+    expect(page).to have_content('£2.50 per kWh')
+
+    # Switching tariff types should delete all energy tariff prices associated with the previous tariff type
     find('#tariff-type-section-edit').click()
     click_button('Flat rate tariff')
     expect(page).to have_content('Flat rate tariff')
+    expect(energy_tariff.reload.energy_tariff_prices.count).to eq(0)
+
+    # Add some flat rate consumption charges
+    find("#prices-section-edit").click
+    fill_in "energy_tariff_price[value]", with: '1.5'
+    click_button('Continue')
+    expect(energy_tariff.reload.energy_tariff_prices.count).to eq(1)
+    expect(page).to have_content('£1.50 per kWh')
+
+    # Selecting the existing tariff type should retain all energy tariff prices
+    find('#tariff-type-section-edit').click()
+    click_link('Flat rate tariff')
+    expect(page).to have_content('Flat rate tariff')
+    expect(energy_tariff.reload.energy_tariff_prices.count).to eq(1)
+    expect(page).to have_content('£1.50 per kWh')
   end
 end
 

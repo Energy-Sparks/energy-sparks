@@ -87,10 +87,12 @@ en:
       choose_type:
         are_you_sure_message: Are you sure? Changing the type will delete all consumption charges associated with this tariff.
         breadcrumb_title: Choose tariff type
+        differential: Differential tariff
         differential_tariff: Differential tariff
         flat_rate: Flat rate tariff
-        is_this_a_flat_rate: Is this a flat rate tariff?
-        or_a_rate_which_varies_by_time_of_day: Or a rate which varies by time of day (e.g. Day/Night tariff, Economy7)
+        is_this_a:
+          differential: Or a rate which varies by time of day (e.g. Day/Night tariff, Economy7)
+          flat_rate: Is this a flat rate tariff?
         title: Choose the type of this %{fuel_type} tariff
       edit:
         breadcrumb_title: Edit the name and date range
