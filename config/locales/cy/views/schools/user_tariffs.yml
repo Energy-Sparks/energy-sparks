@@ -76,8 +76,6 @@ cy:
           <p>
             I ychwanegu tariff newydd bydd angen i chi ddarparu gwybodaeth fanwl am y costau ynni a'r ystod o daliadau sefydlog sydd wedi'u cynnwys yn eich contract ynni.
           </p>
-        note_about_defaults: Os nad oes gennym eich gwybodaeth tariff go iawn, yna byddwn yn amcangyfrif eich costau gan ddefnyddio ein tariffau diofyn.
-        note_about_smart_meter_tariffs: Ar hyn o bryd rydym yn defnyddio tariffau a fewnforir yn awtomatig o'ch mesuryddion clyfar.
         tabs:
           default_tariffs: tariffau diofyn
           smart_meter_tariffs: Tariffau mesurydd clyfar

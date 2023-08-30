@@ -27,9 +27,9 @@
   <% c.with_footer do %>
     <p>
       <% if tariff_holder.school? && @electricity_meters&.dcc&.any? %>
-        <%= t('schools.user_tariffs.index.note_about_smart_meter_tariffs') %>.
+        <%= t('schools.user_tariffs.index.note_about_smart_meter_tariffs_html', smart_meter_tariffs_link: polymorphic_path(tariff_holder_route(tariff_holder) + [:energy_tariffs], { action: :smart_meter_tariffs })) %>.
       <% else %>
-        <%= t('schools.user_tariffs.index.note_about_defaults') unless default_tariffs %>
+        <%= t('schools.user_tariffs.index.note_about_defaults_html', default_tariffs_link: polymorphic_path(tariff_holder_route(tariff_holder) + [:energy_tariffs], { action: :default_tariffs })) unless default_tariffs %>
       <% end %>
     </p>
   <% end %>
