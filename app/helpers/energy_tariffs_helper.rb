@@ -66,7 +66,7 @@ module EnergyTariffsHelper
       I18n.t(
         'schools.tariffs_helper.rate_from',
         start_time: start_date,
-        end_time: start_date
+        end_time: end_date
       )
     elsif start_date || end_date
       start_date.to_s + end_date.to_s
