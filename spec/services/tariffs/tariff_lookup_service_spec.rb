@@ -78,8 +78,8 @@ describe Tariffs::TariffLookupService, type: :service do
       let(:tariff_start_date)    { Date.new(2022, 6, 1) }
       let(:tariff_end_date)      { Date.new(2022, 12, 31) }
       it 'also returns the group and system wide tariffs' do
-        expect(tariff_dates[system_tariff]).to eq(start_date..tariff_start_date)
         expect(tariff_dates[group_tariff]).to eq(tariff_start_date..end_date)
+        expect(tariff_dates[system_tariff]).to eq(start_date..tariff_start_date)
       end
     end
     context 'when group tariffs are outside the range' do
