@@ -518,7 +518,9 @@ Rails.application.routes.draw do
     resources :consents
     resources :transport_types
     resources :prob_data_reports
-    resources :procurement_routes
+    resources :procurement_routes do
+      post :deliver
+    end
     resources :data_sources do
       post :deliver
       scope module: :data_sources do

@@ -48,7 +48,7 @@
             <% if energy_tariff.meters.any? %>
               <ul style="list-style: none; padding-left: 0px;">
                 <% energy_tariff.meters.each do |meter| %>
-                  <li><%= meter.name_or_mpan_mprn %></li>
+                  <li><%= meter.mpan_mprn_and_name %></li>
                 <% end %>
               </ul>
             <% else %>

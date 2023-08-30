@@ -37,9 +37,9 @@
 
 <h4><%= t('schools.user_tariff_charges.charges_edit_electricity.transmission_charges') %></h4>
 
-<%= f.fields_for :energy_tariff do |ff| %>
-  <%= render 'charge_tnuos', energy_tariff: energy_tariff, f: ff %>
-<% end %>
+<%# f.fields_for :energy_tariff do |ff| %>
+  <%# render 'charge_tnuos', energy_tariff: energy_tariff, f: ff %>
+<%# end %>
 
 <%= f.fields_for :data_collection_dcda_agent_charge do |ff| %>
   <%= render 'charge_basic', energy_tariff_charge: energy_tariff_charge_for_type(energy_tariff_charges, :data_collection_dcda_agent_charge), f: ff %>
