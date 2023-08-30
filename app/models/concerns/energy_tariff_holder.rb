@@ -4,6 +4,38 @@ module EnergyTariffHolder
 
   included do
     has_many :energy_tariffs, as: :tariff_holder, dependent: :destroy
+
+    #All candidate tariffs are:
+    #those with open start and end
+    #those with earlier start and later end
+    #those with start and end within start/end
+    #those with open start and fixed end which is >= start
+    #those with open end and fixed start which is <= end
+    #enabled
+    #usable
+  end
+
+  def tariffs_within_dates(meter_type, start_date, end_date)
+    energy_tariffs.enabled.where(meter_type: meter_type).where(
+      #open range, or wider
+      "((start_date is NULL OR start_date <= :start_date) AND (end_date is NULL OR end_date >= :end_date))" +
+      #narrower tariff, within range
+      "OR (start_date >= :start_date AND end_date <= :end_date) " +
+      #tariff starts early but ends within range
+      "OR (start_date <= :start_date AND end_date <= :end_date) " +
+      #tariff ends later, but starts within range
+      "OR (end_date >= :end_date AND start_date <= :end_date) ", start_date: start_date, end_date: end_date
+    ).order(created_at: :desc).usable
+  end
+
+  def all_tariffs_within_dates(meter_type, start_date, end_date)
+    tariffs = tariffs_within_dates(meter_type, start_date, end_date)
+    parent = parent_tariff_holder
+    while parent != nil
+      tariffs += parent.tariffs_within_dates(meter_type, start_date, end_date)
+      parent = parent.parent_tariff_holder
+    end
+    tariffs
   end
 
   def site_settings?
