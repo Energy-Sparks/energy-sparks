@@ -533,11 +533,12 @@ class School < ApplicationRecord
       collection
     end
     if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
-      all_attributes[:aggregated_electricity] = all_energy_tariff_attributes(:electricity)
-      all_attributes[:aggregated_gas] = all_energy_tariff_attributes(:gas)
-      all_attributes[:solar_pv_consumed_sub_meter] = all_energy_tariff_attributes(:solar_pv)
-      all_attributes[:solar_pv_exported_sub_meter] = all_energy_tariff_attributes(:exported_solar_pv)
+      (all_attributes[:aggregated_electricity] ||= []) << all_energy_tariff_attributes(:electricity)
+      (all_attributes[:aggregated_gas] ||= []) << all_energy_tariff_attributes(:gas)
+      (all_attributes[:solar_pv_consumed_sub_meter] ||= []) << all_energy_tariff_attributes(:solar_pv)
+      (all_attributes[:solar_pv_exported_sub_meter] ||= []) << all_energy_tariff_attributes(:exported_solar_pv)
     end
+
     all_attributes
   end
 
