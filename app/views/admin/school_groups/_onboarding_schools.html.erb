@@ -4,6 +4,7 @@
       <tr>
         <th class="no-sort"><%= check_box_tag "check-all-#{school_group.id}", false, false, { class: 'check-all' } %></th>
         <th>School</th>
+        <th>Funder</th>
         <th>Contact email</th>
         <th>Last event</th>
         <th class="no-sort"></th>
@@ -14,6 +15,7 @@
         <tr class="bg-light">
           <td><%= f.check_box :school_onboarding_ids, { multiple: true, checked: false }, onboarding.id, nil %></td>
           <td><%= link_to onboarding.school_name, onboarding_path(onboarding) %></td>
+          <td><%= school.funder&.name || school_group.funder&.name %></td>
           <td class="wrap"><%= onboarding.contact_email %> <%= link_to fa_icon('edit'), edit_admin_school_onboarding_email_path(onboarding), class: "", title: "Change email address" if onboarding.has_only_sent_email_or_reminder? %></td>
           <td class="nowrap" data-order="<%= onboarding.events.maximum(:created_at) %>">
             <%= nice_date_times(onboarding.events.maximum(:created_at)) %><br />
