@@ -45,14 +45,14 @@ describe Tariffs::TariffLookupService, type: :service do
       let(:tariff_start_date)    { Date.new(2022, 6, 1) }
       let(:tariff_end_date)      { Date.new(2022, 12, 31) }
       it 'returns the tariffs' do
-        expect(tariff_dates[system_tariff]).to eq(start_date..tariff_end_date)
+        expect(tariff_dates[system_tariff]).to eq(tariff_start_date..tariff_end_date)
       end
     end
     context 'when the tariff ends during the period' do
       let(:tariff_start_date)    { Date.new(2022, 1, 1) }
       let(:tariff_end_date)      { Date.new(2022, 6, 30) }
       it 'returns the tariffs' do
-        expect(tariff_dates[system_tariff]).to eq(start_date..tariff_end_date)
+        expect(tariff_dates[system_tariff]).to eq(tariff_start_date..tariff_end_date)
       end
     end
   end
