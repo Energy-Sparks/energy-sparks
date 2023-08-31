@@ -53,12 +53,12 @@ module Tariffs
         if potential_tariff.start_date > start_date && potential_tariff.end_date < end_date
           puts "SPLIT"
           #in which case add that and look for first and last part of the ranges
-          tariffs[potential_tariff] = Range.new(potential_tariff.start_date, potential_tariff.end_date, earliest_start, earliest_end)
+          tariffs[potential_tariff] = Range.new(potential_tariff.start_date, potential_tariff.end_date)
           #split range, call select twice
           #for start
-          tariffs.merge!(select_tariffs(potential_tariffs[1..], earliest_start, potential_tariff.start_date))
+          tariffs.merge!(select_tariffs(potential_tariffs[1..], earliest_start, potential_tariff.start_date, earliest_start, earliest_end))
           #and end
-          tariffs.merge!(select_tariffs(potential_tariffs[1..], potential_tariff.end_date, earliest_end))
+          tariffs.merge!(select_tariffs(potential_tariffs[1..], potential_tariff.end_date, earliest_end, earliest_start, earliest_end))
         end
       end
       tariffs
