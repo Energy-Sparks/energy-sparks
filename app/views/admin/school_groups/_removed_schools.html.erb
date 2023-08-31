@@ -11,7 +11,7 @@
     <% school_group.schools.inactive.by_name.each do |school| %>
       <tr class="bg-light">
         <td><%= link_to school.name, school_path(school) %></td>
-        <td><%= school.funder&.name || school_group&.funder&.name %></td>
+        <td><%= school.funder&.name || school&.school_group&.funder&.name %></td>
         <td><%= nice_dates(school.removal_date) %></td>
         <td class="nowrap text-right">
           <%= link_to issue_type_icons(school.issues, label: 'Issues'), admin_school_issues_path(school), class: 'btn btn-sm' %>
