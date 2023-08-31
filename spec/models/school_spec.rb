@@ -798,11 +798,19 @@ describe School do
         let!(:target) { create(:school_target, start_date: Date.yesterday, school: school) }
         let!(:estimate)  { create(:estimated_annual_consumption, school: school, electricity: 1000.0, gas: 1500.0, storage_heaters: 500.0, year: 2021) }
 
-        it 'maps them to the pseudo meters, targets, and es ' do
+        it 'maps them to the pseudo meters, targets, and estimates' do
           expect(all_pseudo_meter_attributes[:aggregated_electricity].size).to eq 5
+          expect(all_pseudo_meter_attributes[:aggregated_electricity].map(&:attribute_type)).to match_array(
+            [
+              "targeting_and_tracking",
+              "estimated_period_consumption",
+              "accounting_tariff_generic",
+              "accounting_tariff_generic",
+              "accounting_tariff_generic"
+            ]
+          )
         end
       end
     end
-
   end
 end
