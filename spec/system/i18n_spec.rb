@@ -66,35 +66,31 @@ RSpec.describe "i18n", type: :system do
     end
 
     it 'should redirect back to activity page in english after login if the feature flag is set' do
-      ClimateControl.modify FEATURE_FLAG_REDIRECT_TO_PREFERRED_LOCALE: 'true' do
-        staff.update(preferred_locale: 'en')
-        visit activity_type_path(activity_type)
-        click_on "Sign in to record activity"
-        fill_in 'Email', with: staff.email
-        fill_in 'Password', with: staff.password
-        within '#staff' do
-          click_on 'Sign in'
-        end
-        expect(page).to have_content(activity_type.name_en)
-        expect(page).not_to have_content(activity_type.name_cy)
-        expect(current_url).to eq("http://energysparks.test/activity_types/#{activity_type.id}")
+      staff.update(preferred_locale: 'en')
+      visit activity_type_path(activity_type)
+      click_on "Sign in to record activity"
+      fill_in 'Email', with: staff.email
+      fill_in 'Password', with: staff.password
+      within '#staff' do
+        click_on 'Sign in'
       end
+      expect(page).to have_content(activity_type.name_en)
+      expect(page).not_to have_content(activity_type.name_cy)
+      expect(current_url).to eq("http://energysparks.test/activity_types/#{activity_type.id}")
     end
 
     it 'should redirect back to activity page in welsh after login if the feature flag is set' do
-      ClimateControl.modify FEATURE_FLAG_REDIRECT_TO_PREFERRED_LOCALE: 'true' do
-        staff.update(preferred_locale: 'cy')
-        visit activity_type_path(activity_type)
-        click_on "Sign in to record activity"
-        fill_in 'Email', with: staff.email
-        fill_in 'Password', with: staff.password
-        within '#staff' do
-          click_on 'Sign in'
-        end
-        expect(page).to have_content(activity_type.name_cy)
-        expect(page).not_to have_content(activity_type.name_en)
-        expect(current_url).to eq("http://cy.energysparks.test/activity_types/#{activity_type.id}")
+      staff.update(preferred_locale: 'cy')
+      visit activity_type_path(activity_type)
+      click_on "Sign in to record activity"
+      fill_in 'Email', with: staff.email
+      fill_in 'Password', with: staff.password
+      within '#staff' do
+        click_on 'Sign in'
       end
+      expect(page).to have_content(activity_type.name_cy)
+      expect(page).not_to have_content(activity_type.name_en)
+      expect(current_url).to eq("http://cy.energysparks.test/activity_types/#{activity_type.id}")
     end
   end
 end

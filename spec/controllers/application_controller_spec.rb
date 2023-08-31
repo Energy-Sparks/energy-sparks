@@ -17,12 +17,6 @@ RSpec.describe ApplicationController, type: :controller do
     context 'when redirecting to prefered locale' do
       let(:user) { create(:user, preferred_locale: :cy) }
 
-      around do |example|
-        ClimateControl.modify FEATURE_FLAG_REDIRECT_TO_PREFERRED_LOCALE: 'true' do
-          example.run
-        end
-      end
-
       it "redirects to the root path for locale" do
         expect(subject.after_sign_in_path_for(user)).to eq('http://cy.test.host/')
       end
