@@ -22,7 +22,7 @@
                 <% if @source == :dcc %>
                   <%= t('schools.user_tariffs.index.no_smart_meter_tariffs', meter_type: meter_type) %>.
                 <% elsif @default_tariffs %>
-                  <% tariffs = SiteSettings.current.energy_tariffs.where(meter_type: meter_type).enabled.usable %>
+                  <% tariffs = SiteSettings.current.energy_tariffs.where(meter_type: meter_type).enabled #.usable %>
                   <% if tariffs.empty? %>
                     <%= t('schools.user_tariffs.index.no_defaults', meter_type: meter_type) %>
                   <% else %>

@@ -56,10 +56,25 @@ RSpec.describe EnergyTariffsComponent, type: :component do
     end
     context 'with default tariffs' do
       let(:default_tariffs)      { true }
+
       context 'and no gas meters' do
         let!(:gas_tariffs)         { nil }
         it 'adds correct message' do
           expect(html).to have_content(I18n.t('schools.user_tariffs.index.no_defaults', meter_type: :gas))
+        end
+      end
+
+      context 'and no gas meters' do
+        let!(:tariff_holder) { create(:school_group) }
+        let!(:gas_tariffs)         { nil }
+        it 'returns no default message if there are no usable and enabled site settings tariffs for this meter type' do
+          expect(html).to have_content(I18n.t('schools.user_tariffs.index.no_defaults', meter_type: :gas))
+        end
+
+        it 'returns the usable and enabled site settings tariff for this meter type' do
+          energy_tariff = EnergyTariff.create!(tariff_holder: SiteSettings.current, meter_type: "gas", name: 'A site settings gas tariff', enabled: true)
+          allow(energy_tariff).to receive(:usable?) { true }
+          expect(html).to have_content('A site settings gas tariff')
         end
       end
     end
