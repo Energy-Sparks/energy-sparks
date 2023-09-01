@@ -11,7 +11,6 @@ module Amr
   class N3rgyEnergyTariffInserter
     class UnexpectedN3rgyTariffError < StandardError; end
 
-
     def initialize(meter:, start_date:, tariff:, import_log:)
       @meter = meter
       @start_date = start_date
