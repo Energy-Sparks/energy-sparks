@@ -73,7 +73,7 @@ RSpec.describe EnergyTariffsComponent, type: :component do
 
         it 'returns the usable and enabled site settings tariff for this meter type' do
           energy_tariff = EnergyTariff.create!(tariff_holder: SiteSettings.current, meter_type: "gas", name: 'A site settings gas tariff', enabled: true)
-          allow(energy_tariff).to receive(:usable?) { true }
+          allow(EnergyTariff).to receive(:usable) { [energy_tariff] }
           expect(html).to have_content('A site settings gas tariff')
         end
       end
