@@ -37,7 +37,7 @@ RSpec.describe "i18n", type: :system do
     let!(:activity_type) { create(:activity_type, name_en: activity_type_name_en, name_cy: activity_type_name_cy, activity_category: activity_category, key_stages: [ks1], subjects: [subject], data_driven: activity_data_driven) }
     let!(:staff) { create(:staff, school: school)}
 
-    it 'should redirect back to activity in english after login irrespective of preferred_locale if feature is not flag set' do
+    it 'should redirect back to activity page in english after login' do
       staff.update(preferred_locale: 'en')
       visit activity_type_path(activity_type)
       click_on "Sign in to record activity"
@@ -51,35 +51,7 @@ RSpec.describe "i18n", type: :system do
       expect(current_url).to eq("http://energysparks.test/activity_types/#{activity_type.id}")
     end
 
-    it 'should redirect back to activity in english after login irrespective of preferred_locale if feature is not flag set' do
-      staff.update(preferred_locale: 'cy')
-      visit activity_type_path(activity_type)
-      click_on "Sign in to record activity"
-      fill_in 'Email', with: staff.email
-      fill_in 'Password', with: staff.password
-      within '#staff' do
-        click_on 'Sign in'
-      end
-      expect(page).to have_content(activity_type.name_en)
-      expect(page).not_to have_content(activity_type.name_cy)
-      expect(current_url).to eq("http://energysparks.test/activity_types/#{activity_type.id}")
-    end
-
-    it 'should redirect back to activity page in english after login if the feature flag is set' do
-      staff.update(preferred_locale: 'en')
-      visit activity_type_path(activity_type)
-      click_on "Sign in to record activity"
-      fill_in 'Email', with: staff.email
-      fill_in 'Password', with: staff.password
-      within '#staff' do
-        click_on 'Sign in'
-      end
-      expect(page).to have_content(activity_type.name_en)
-      expect(page).not_to have_content(activity_type.name_cy)
-      expect(current_url).to eq("http://energysparks.test/activity_types/#{activity_type.id}")
-    end
-
-    it 'should redirect back to activity page in welsh after login if the feature flag is set' do
+    it 'should redirect back to activity page in welsh after login' do
       staff.update(preferred_locale: 'cy')
       visit activity_type_path(activity_type)
       click_on "Sign in to record activity"
