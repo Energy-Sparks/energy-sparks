@@ -100,9 +100,10 @@ describe Amr::N3rgyTariffsUpserter do
 
   context 'when there are no kwh_tariffs' do
     it 'logs an error but does not throw an exception' do
-      service = Amr::N3rgyEnergyTariffInserter.new(meter: meter, start_date: start_date, tariff: tariff.merge(kwh_tariffs: {}), import_log: import_log)
+      tariff_without_rates = tariff.merge(kwh_tariffs: {})
+      service = Amr::N3rgyEnergyTariffInserter.new(meter: meter, start_date: start_date, tariff: tariff_without_rates, import_log: import_log)
       expect { service.perform }.not_to raise_error
-      expect(import_log.error_messages).to eq("Rates returned from n3rgy for #{start_date} are empty {:kwh_tariffs=>{}, :standing_charges=>{Fri, 01 Sep 2023=>0.2048}, :missing_readings=>[]}")
+      expect(import_log.error_messages).to eq("Rates returned from n3rgy for #{start_date} are empty #{tariff_without_rates.inspect}")
     end
   end
 
