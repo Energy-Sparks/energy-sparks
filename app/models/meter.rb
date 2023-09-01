@@ -63,7 +63,6 @@ class Meter < ApplicationRecord
   has_many :issues, through: :issue_meters
 
   has_one :school_group, through: :school
-  has_and_belongs_to_many :user_tariffs, inverse_of: :meters
   has_and_belongs_to_many :energy_tariffs, inverse_of: :meters
 
   CREATABLE_METER_TYPES = [:electricity, :gas, :solar_pv, :exported_solar_pv].freeze
@@ -237,10 +236,6 @@ class Meter < ApplicationRecord
     end
     attributes += energy_tariffs.enabled.usable.map(&:meter_attribute)
     attributes
-  end
-
-  def user_tariff_meter_attributes
-    user_tariffs.usable.map(&:meter_attribute)
   end
 
   def meter_attributes_to_analytics

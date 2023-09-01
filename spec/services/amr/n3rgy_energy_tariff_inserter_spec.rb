@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Amr::N3rgyTariffsUpserter do
+describe Amr::N3rgyEnergyTariffInserter do
   let(:school)                      { create(:school) }
   let(:meter)                       { create(:electricity_meter, school: school) }
   let(:start_date)                  { Date.today }

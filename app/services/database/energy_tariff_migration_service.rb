@@ -1,52 +1,10 @@
 module Database
   class EnergyTariffMigrationService
-    def self.migrate_user_tariffs
-      ActiveRecord::Base.transaction do
-        UserTariff.all.order(:id).each do |ut|
-          energy_tariff_prices = ut.user_tariff_prices.map do |utp|
-            EnergyTariffPrice.new(
-              start_time: utp.start_time,
-              end_time: utp.end_time,
-              units: utp.units,
-              value: utp.value,
-              description: utp.description
-            )
-          end
-
-          energy_tariff_charges = ut.user_tariff_charges.map do |utc|
-            EnergyTariffCharge.new(
-              charge_type: utc.charge_type,
-              units: utc.units,
-              value: utc.value
-            )
-          end
-          vat_rate = ut.vat_rate.nil? ? nil : ut.vat_rate.gsub(/\D/, '').to_i
-          EnergyTariff.create!(
-            ccl: ut.ccl,
-            enabled: true,
-            end_date: ut.end_date,
-            meter_type: ut.fuel_type.to_sym,
-            name: ut.name,
-            source: :manually_entered,
-            start_date: ut.start_date,
-            tariff_holder_id: ut.school.id,
-            tariff_holder_type: School,
-            tariff_type: ut.flat_rate? ? :flat_rate : :differential,
-            tnuos: ut.tnuos,
-            vat_rate: vat_rate,
-            meters: ut.meters,
-            energy_tariff_charges: energy_tariff_charges,
-            energy_tariff_prices: energy_tariff_prices
-          )
-        end
-      end
-    end
-
     #Doesn't include user tariffs as that is being migrated via an
     #after party task
     def self.migrate_all
       migrate_all_meter_attributes
-      migrate_tariff_prices
+      # migrate_tariff_prices
     end
 
     def self.migrate_all_meter_attributes
@@ -264,45 +222,6 @@ module Database
               energy_tariff_charges: energy_tariff_charges(attribute.input_data['rates']),
               meters: [attribute.meter]
             )
-        end
-      end
-    end
-
-    def self.migrate_tariff_prices
-      ActiveRecord::Base.transaction do
-        Meter.dcc.each do |meter|
-          meter_attributes = meter.smart_meter_tariff_attributes
-          next if meter_attributes.nil?
-          #Note: this is an analytics meter attribute hash, not a MeterAttribute record
-          meter_attributes[:accounting_tariff_generic].each do |attribute|
-            tariff_type = if attribute[:rates][:flat_rate].present?
-                            :flat_rate
-                          else
-                            :differential
-                          end
-
-            end_date = if attribute[:start_date] == attribute[:end_date]
-                          nil
-                       else
-                         attribute[:end_date]
-                       end
-            EnergyTariff.create!(
-              ccl: false,
-              enabled: true,
-              end_date: end_date,
-              meter_type: meter.meter_type,
-              name: attribute[:name],
-              source: :dcc,
-              start_date: attribute[:start_date],
-              tariff_holder: meter.school,
-              tariff_type: tariff_type,
-              tnuos: false,
-              vat_rate: nil,
-              energy_tariff_prices: energy_tariff_prices(attribute[:rates], tariff_type, true),
-              energy_tariff_charges: energy_tariff_charges(attribute[:rates]),
-              meters: [meter]
-            )
-          end
         end
       end
     end

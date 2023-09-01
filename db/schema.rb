@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_30_144144) do
+ActiveRecord::Schema.define(version: 2023_08_31_141217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1626,8 +1626,8 @@ ActiveRecord::Schema.define(version: 2023_08_30_144144) do
     t.integer "management_priorities_page_limit", default: 10
     t.boolean "message_for_no_pupil_accounts", default: true
     t.jsonb "temperature_recording_months", default: ["10", "11", "12", "1", "2", "3", "4"]
-    t.integer "default_import_warning_days", default: 10
     t.jsonb "prices"
+    t.integer "default_import_warning_days", default: 10
     t.integer "photo_bonus_points", default: 0
     t.integer "audit_activities_bonus_points", default: 0
   end
@@ -1819,43 +1819,6 @@ ActiveRecord::Schema.define(version: 2023_08_30_144144) do
     t.integer "category"
     t.integer "position", default: 0, null: false
     t.index ["name"], name: "index_transport_types_on_name", unique: true
-  end
-
-  create_table "user_tariff_charges", force: :cascade do |t|
-    t.bigint "user_tariff_id", null: false
-    t.text "charge_type", null: false
-    t.decimal "value", null: false
-    t.text "units"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_tariff_id"], name: "index_user_tariff_charges_on_user_tariff_id"
-  end
-
-  create_table "user_tariff_prices", force: :cascade do |t|
-    t.bigint "user_tariff_id", null: false
-    t.decimal "value", null: false
-    t.text "units", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.time "start_time", default: "2000-01-01 00:00:00", null: false
-    t.time "end_time", default: "2000-01-01 23:30:00", null: false
-    t.string "description"
-    t.index ["user_tariff_id"], name: "index_user_tariff_prices_on_user_tariff_id"
-  end
-
-  create_table "user_tariffs", force: :cascade do |t|
-    t.bigint "school_id", null: false
-    t.text "name", null: false
-    t.text "fuel_type", null: false
-    t.boolean "flat_rate", default: true
-    t.date "start_date", null: false
-    t.date "end_date", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "vat_rate"
-    t.boolean "ccl", default: false
-    t.boolean "tnuos", default: false
-    t.index ["school_id"], name: "index_user_tariffs_on_school_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -2105,8 +2068,6 @@ ActiveRecord::Schema.define(version: 2023_08_30_144144) do
   add_foreign_key "transport_survey_responses", "transport_surveys", on_delete: :cascade
   add_foreign_key "transport_survey_responses", "transport_types"
   add_foreign_key "transport_surveys", "schools", on_delete: :cascade
-  add_foreign_key "user_tariff_charges", "user_tariffs", on_delete: :cascade
-  add_foreign_key "user_tariff_prices", "user_tariffs", on_delete: :cascade
   add_foreign_key "users", "school_groups", on_delete: :restrict
   add_foreign_key "users", "schools", on_delete: :cascade
   add_foreign_key "users", "staff_roles", on_delete: :restrict
