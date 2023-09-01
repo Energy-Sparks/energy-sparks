@@ -15,25 +15,16 @@ describe Solar::SolarAreaLookupService, type: :service do
 
   let(:service)         { Solar::SolarAreaLookupService.new(school, school_onboarding) }
 
-  context 'with feature flag off' do
-    it 'returns the area for the group' do
-      expect(service.lookup).to eq solar_area
-      expect(school.solar_pv_tuos_area).to be_nil
-    end
+  it 'finds nearest area' do
+    expect(service.lookup).to eq bath_area
+    expect(school.solar_pv_tuos_area).to be_nil
   end
 
-  context 'with feature flag on' do
-    it 'finds nearest area' do
-      expect(service.lookup).to eq bath_area
-      expect(school.solar_pv_tuos_area).to be_nil
-    end
-    it 'assigns the nearest area' do
-      expect(SolarAreaLoaderJob).to receive(:perform_later).with(bath_area)
-      expect(service.assign).to eq bath_area
-      expect(school.solar_pv_tuos_area).to eq bath_area
-      bath_area.reload
-      expect(bath_area.active).to eq true
-    end
+  it 'assigns the nearest area' do
+    expect(SolarAreaLoaderJob).to receive(:perform_later).with(bath_area)
+    expect(service.assign).to eq bath_area
+    expect(school.solar_pv_tuos_area).to eq bath_area
+    bath_area.reload
+    expect(bath_area.active).to eq true
   end
-
 end
