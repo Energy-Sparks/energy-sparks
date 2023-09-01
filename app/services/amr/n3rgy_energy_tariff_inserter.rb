@@ -132,7 +132,7 @@ module Amr
     #
     # Keys are TimeOfDay30mins.
     def rates
-      summary_tariff[:kwh_rates]&.values&.first
+      summary_tariff[:kwh_rates].values.first
     end
 
     def summary_tariff
