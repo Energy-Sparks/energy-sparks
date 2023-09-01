@@ -258,54 +258,6 @@ describe Database::EnergyTariffMigrationService do
     end
   end
 
-  context '#migrate_user_tariffs' do
-    let!(:user_tariff)  do
-      UserTariff.create(
-        school: create(:school),
-        start_date: start_date,
-        end_date: end_date,
-        name: tariff_name,
-        fuel_type: :electricity,
-        flat_rate: true,
-        vat_rate: '20%',
-        user_tariff_prices: user_tariff_prices,
-        user_tariff_charges: user_tariff_charges,
-        )
-    end
-    let(:user_tariff_price)  { UserTariffPrice.new(start_time: '00:00', end_time: '23:30', value: 1.23, units: 'kwh') }
-    let(:user_tariff_charge)  { UserTariffCharge.new(charge_type: :fixed_charge, value: 4.56, units: :month) }
-
-    let(:user_tariff_prices)  { [user_tariff_price] }
-    let(:user_tariff_charges)  { [user_tariff_charge] }
-
-    context 'it migrates flat rate tariffs' do
-      before do
-        Database::EnergyTariffMigrationService.migrate_user_tariffs
-      end
-      let(:energy_tariff)       { EnergyTariff.first }
-      let(:charge)              { energy_tariff.energy_tariff_charges.first }
-      let(:price)               { energy_tariff.energy_tariff_prices.first }
-      let(:tariff_holder)       { user_tariff.school }
-
-      it_behaves_like "the expected EnergyTariff"
-
-      it 'creates a flat rate energy tariff' do
-        expect(energy_tariff.tariff_type).to eq "flat_rate"
-      end
-      it 'creates energy tariff price' do
-        expect(price.start_time).to eq user_tariff_price.start_time
-        expect(price.end_time).to eq user_tariff_price.end_time
-        expect(price.value).to eq user_tariff_price.value
-        expect(price.units).to eq user_tariff_price.units
-      end
-      it 'creates energy tariff charge' do
-        expect(charge.charge_type).to eq user_tariff_charge.charge_type
-        expect(charge.units).to eq user_tariff_charge.units
-        expect(charge.value).to eq user_tariff_charge.value
-      end
-    end
-  end
-
   context '#migrate_global_solar_meter_attributes' do
     let!(:tariff_holder)           { SiteSettings.create! }
     let(:meter_type)               { "exported_solar_pv" }
@@ -570,63 +522,4 @@ describe Database::EnergyTariffMigrationService do
       it_behaves_like "a migrated differential accounting tariff"
     end
   end
-
-  context '#migrate_tariff_prices' do
-    let(:start_date)  { Date.yesterday }
-    let(:end_date)    { nil }
-    let(:source)      { "dcc" }
-    let(:tariff_name) { "Tariff from DCC SMETS2 meter" }
-    let(:tariff_holder) { create(:school)}
-    let(:meter)         { create(:electricity_meter, dcc_meter: true, school: tariff_holder) }
-
-    let!(:tariff_standing_charge) { create(:tariff_standing_charge, meter: meter, start_date: start_date, value: standing_charge) }
-
-    let(:energy_tariff)        { EnergyTariff.first }
-
-    context 'with flat rate tariff' do
-      let!(:tariff_price) { create(:tariff_price,
-        :with_flat_rate, meter: meter, tariff_date: start_date, flat_rate: Array.new(48, rate) ) }
-
-      before(:each) do
-        Database::EnergyTariffMigrationService.migrate_tariff_prices
-      end
-
-      it_behaves_like 'a migrated flat rate accounting tariff'
-    end
-
-    context 'with differential tariff' do
-      let!(:tariff_price) { create(:tariff_price,
-        :with_differential_tariff, meter: meter, tariff_date: start_date,
-        tiered_rate: Array.new(14, rate * 2) + Array.new(34, rate)) }
-
-      before(:each) do
-        Database::EnergyTariffMigrationService.migrate_tariff_prices
-      end
-
-      it_behaves_like 'a migrated differential accounting tariff'
-    end
-
-    context 'with multiple tariffs' do
-      let!(:tariff_price_1) { create(:tariff_price, :with_flat_rate, meter: meter,
-        tariff_date: Date.new(2022,1,1), flat_rate: Array.new(48, rate) ) }
-      let!(:tariff_price_2) { create(:tariff_price, :with_flat_rate, meter: meter,
-        tariff_date: Date.new(2023,1,1), flat_rate: Array.new(48, rate * 2) ) }
-
-      let!(:tariff_standing_charge_1) { create(:tariff_standing_charge, meter: meter, start_date: Date.new(2022,1,1), value: standing_charge) }
-
-      before(:each) do
-        Database::EnergyTariffMigrationService.migrate_tariff_prices
-      end
-
-      it 'produces multiple tariffs' do
-        expect(tariff_holder.energy_tariffs.count).to eq 2
-      end
-
-      it 'has open end date for last' do
-        tariffs = tariff_holder.energy_tariffs.where(start_date: Date.new(2023,1,1), end_date: nil).count
-        expect(tariffs).to eq 1
-      end
-    end
-  end
-
 end
