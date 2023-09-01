@@ -10,6 +10,7 @@ module Amr
   #check the energy tariff prices
   class N3rgyEnergyTariffInserter
     class UnexpectedN3rgyTariffError < StandardError; end
+    class MissingRatesN3rgyTariffError < StandardError; end
 
     def initialize(meter:, start_date:, tariff:, import_log:)
       @meter = meter
@@ -20,8 +21,6 @@ module Amr
     end
 
     def perform
-      return unless valid_tariff_rates?
-
       check_unexpected_tariff_format?
       energy_tariff = latest_energy_tariff
 
@@ -37,15 +36,6 @@ module Amr
     end
 
     private
-
-    def valid_tariff_rates?
-      return true if @tariff[:kwh_tariffs].present?
-
-      log_error("Rates returned from n3rgy for #{@start_date} are empty #{@tariff.inspect}")
-      @import_log.save!
-
-      false
-    end
 
     def latest_energy_tariff
       @meter.energy_tariffs.dcc.where(end_date: nil).order(created_at: :desc).first
@@ -106,9 +96,16 @@ module Amr
       true
     end
 
+    def valid_tariff_rates?
+      @tariff[:kwh_tariffs].present?
+    end
+
     #We only support flat rate and differential tariffs in the EnergyTariff
     #model currently. Raise exception to catch problems early
     def check_unexpected_tariff_format?
+      unless valid_tariff_rates?
+        raise MissingRatesN3rgyTariffError, "Rates returned from n3rgy for #{@start_date} are empty #{@tariff.inspect}"
+      end
       unless rates.values.all? {|price| price.is_a?(Numeric)}
         raise UnexpectedN3rgyTariffError, "Unexpected tariff format for #{@meter.mpan_mprn} on #{@start_date}: #{rates.inspect}"
       end

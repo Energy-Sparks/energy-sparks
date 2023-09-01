@@ -22,11 +22,11 @@ module Amr
     private
 
     def start_date
-      @start_date ||= DateTime.now.beginning_of_day
+      @start_date ||= DateTime.now.yesterday.beginning_of_day
     end
 
     def end_date
-      @end_date ||= DateTime.now.end_of_day
+      @end_date ||= DateTime.now.yesterday.end_of_day
     end
 
     def download_todays_tariff
