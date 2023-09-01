@@ -98,6 +98,14 @@ describe Amr::N3rgyTariffsUpserter do
     end
   end
 
+  context 'when there are no kwh_tariffs' do
+    let(:kwh_tariffs) { {} }
+
+    it 'logs an error but does not throw an exception' do
+      expect{ service.perform }.not_to raise_error(StandardError)
+    end
+  end
+
   context 'when the tariff has not changed' do
     let!(:existing_energy_tariff) {
       create(:energy_tariff, :with_flat_price, source: :dcc, school: school, meters: [meter], value: price, end_date: nil)
