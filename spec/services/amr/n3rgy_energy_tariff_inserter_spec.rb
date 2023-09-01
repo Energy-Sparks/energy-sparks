@@ -94,15 +94,15 @@ describe Amr::N3rgyTariffsUpserter do
     let(:raw_prices) { [{ :tariffs => { 1 => 0.485, 2 => 0.16774 }, :thresholds => { 1 => 1000 }, :type => :tiered }] + Array.new(15, price) + Array.new(32, price * 2)}
 
     it 'throws an exception' do
-      expect{ service.perform }.to raise_error(StandardError)
+      expect{ service.perform }.to raise_error(Amr::N3rgyEnergyTariffInserter::UnexpectedN3rgyTariffError)
     end
   end
 
   context 'when there are no kwh_tariffs' do
-    let(:kwh_tariffs) { {} }
-
     it 'logs an error but does not throw an exception' do
-      expect{ service.perform }.not_to raise_error(StandardError)
+      service = Amr::N3rgyEnergyTariffInserter.new(meter: meter, start_date: start_date, tariff: tariff.merge(kwh_tariffs: {}), import_log: import_log)
+      expect { service.perform }.not_to raise_error
+      expect(import_log.error_messages).to eq("Rates returned from n3rgy for #{start_date} are empty {:kwh_tariffs=>{}, :standing_charges=>{Fri, 01 Sep 2023=>0.2048}, :missing_readings=>[]}")
     end
   end
 
