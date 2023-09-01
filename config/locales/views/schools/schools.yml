@@ -247,6 +247,7 @@ en:
         dcc_smart_meter: DCC Smart Meter
         earliest_available_data: Earliest available data
         editing_disabled_for_pseudo_meters: Editing disabled for pseudo meters
+        half_hourly: Half-Hourly
         leave_this_blank_message: Leave this blank for new meters and system will check it is registered with n3rgy
         meter_point_number: Meter Point Number
         name: Name
@@ -265,6 +266,7 @@ en:
         data_processing_turned_on_message: Data processing must be turned on for this school before meter readings can be validated
         data_source: Data source
         first: First
+        half_hourly: Half-Hourly
         imported: Imported
         inactive_meters: Inactive meters
         large_gaps: Large gaps

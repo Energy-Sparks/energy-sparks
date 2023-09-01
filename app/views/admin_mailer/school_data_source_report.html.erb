@@ -8,6 +8,7 @@
       <th>MPAN/MPRN</th>
       <th>Meter type</th>
       <th>Active</th>
+      <th>Half-Hourly</th>
       <th>First validated meter reading</th>
       <th>Last validated meter reading</th>
       <th>Admin Meter Status</th>
@@ -34,6 +35,7 @@
         </td>
         <td><%= meter&.meter_type&.humanize %></td>
         <td><%= meter&.active %></td>
+        <td><%= meter.half_hourly ? 'Yes' : 'No' %></td>
         <td><%= meter&.first_validated_reading %></td>
         <td><%= meter&.last_validated_reading %></td>
         <td><%= meter&.admin_meter_status_label %></td>

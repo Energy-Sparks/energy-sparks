@@ -26,7 +26,7 @@ RSpec.describe ImportMailer, include_application_helper: true do
       attachments = email.attachments[0]
       expect(attachments.content_type).to include('text/csv')
       expect(attachments.filename).to eq("[energy-sparks-unknown] Energy Sparks import report: #{Date.today.strftime('%d/%m/%Y')}.csv")
-      expect(attachments.body.raw_source).to eq("\"\",Area,Meter type,School,MPAN/MPRN,Data source,Procurement route,Last validated reading date,Admin meter status,Issues,Notes,Group admin name\r\nMeter with stale data,#{sheffield_school.school_group.name},Gas,Sheffield School,#{meter_1.mpan_mprn},#{meter_1.data_source.name},,#{meter_1.last_validated_reading&.strftime('%d/%m/%Y')},\"\",0,0,Admin Two\r\nMeter with stale data,#{bath_school.school_group.name},Gas,Bath School,#{meter_2.mpan_mprn},#{meter_2.data_source.name},,#{meter_2.last_validated_reading&.strftime('%d/%m/%Y')},\"\",0,0,Admin One\r\n")
+      expect(attachments.body.raw_source).to eq("\"\",Area,Meter type,School,MPAN/MPRN,Half-Hourly,Data source,Procurement route,Last validated reading date,Admin meter status,Issues,Notes,Group admin name\r\nMeter with stale data,#{sheffield_school.school_group.name},Gas,Sheffield School,#{meter_1.mpan_mprn},Yes,#{meter_1.data_source.name},,#{meter_1.last_validated_reading&.strftime('%d/%m/%Y')},\"\",0,0,Admin Two\r\nMeter with stale data,#{bath_school.school_group.name},Gas,Bath School,#{meter_2.mpan_mprn},Yes,#{meter_2.data_source.name},,#{meter_2.last_validated_reading&.strftime('%d/%m/%Y')},\"\",0,0,Admin One\r\n")
     end
   end
 end
