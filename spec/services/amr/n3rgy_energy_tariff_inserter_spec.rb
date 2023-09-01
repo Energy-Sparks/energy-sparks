@@ -99,7 +99,7 @@ describe Amr::N3rgyTariffsUpserter do
   end
 
   context 'when there are no kwh_tariffs' do
-    it 'logs an error but does not throw an exception' do
+    it 'throws an exception' do
       tariff_without_rates = tariff.merge(kwh_tariffs: {})
       service = Amr::N3rgyEnergyTariffInserter.new(meter: meter, start_date: start_date, tariff: tariff_without_rates, import_log: import_log)
       expect{ service.perform }.to raise_error(Amr::N3rgyEnergyTariffInserter::MissingRatesN3rgyTariffError)
