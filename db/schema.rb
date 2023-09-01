@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_25_133632) do
+ActiveRecord::Schema.define(version: 2023_08_30_144144) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -1159,6 +1159,7 @@ ActiveRecord::Schema.define(version: 2023_08_25_133632) do
     t.bigint "data_source_id"
     t.bigint "admin_meter_statuses_id"
     t.bigint "procurement_route_id"
+    t.boolean "half_hourly", default: true
     t.index ["data_source_id"], name: "index_meters_on_data_source_id"
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_review_id"], name: "index_meters_on_meter_review_id"

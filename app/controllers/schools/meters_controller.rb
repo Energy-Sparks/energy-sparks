@@ -113,7 +113,7 @@ module Schools
     end
 
     def meter_params
-      params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number, :dcc_meter, :sandbox, :earliest_available_data, :data_source_id, :procurement_route_id, :admin_meter_statuses_id)
+      params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number, :dcc_meter, :sandbox, :earliest_available_data, :data_source_id, :procurement_route_id, :admin_meter_statuses_id, :half_hourly)
     end
   end
 end
