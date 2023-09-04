@@ -1,12 +1,13 @@
 module Admin
   class SettingsController < AdminController
+    before_action :load_site_settings
+
     def show
-      @settings = SiteSettings.current
       @temperature_setting_months = temperature_setting_months
     end
 
     def update
-      SiteSettings.create!(site_settings_params)
+      @settings.update!(site_settings_params)
       if EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices)
         BenchmarkMetrics.set_current_prices(prices: SiteSettings.current_prices)
       end
@@ -14,6 +15,10 @@ module Admin
     end
 
   private
+
+    def load_site_settings
+      @settings = SiteSettings.current
+    end
 
     def site_settings_params
       formatted_settings_params = settings_params
