@@ -1,5 +1,23 @@
 <%= render 'header_and_nav' %>
 <% if @tariff_holder.school_group? %>
   <div id="nav-group-school-tariffs" role="tabpanel" aria-labelledby="nav-group-school-tariffs-tab" class="tab-pane">
+    <table class="table advice-table">
+      <thead>
+        <tr>
+          <th class="col-1 text-right">Name</th>
+          <th class="col-1 text-right">Electricity tariffs</th>
+          <th class="col-1 text-right">Gas tariffs</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @tariff_holder.schools.joins(:energy_tariffs).each do |school| %>
+      <tr>
+        <td><%= school.name %></td>
+        <td><%= school.energy_tariffs.where(meter_type: 'electricity').count %></td>
+        <td><%= school.energy_tariffs.where(meter_type: 'gas').count %></td>
+      </tr>
+      <% end %>
+      </tbody>
+    </table>
   </div>
 <% end %>
