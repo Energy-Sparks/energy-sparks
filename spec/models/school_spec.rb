@@ -14,6 +14,22 @@ describe School do
     expect(subject.slug).to eq(subject.name.parameterize)
   end
 
+  describe '#with_energy_tariffs' do
+    it 'returns only schools with associated energy tariffs' do
+      school_1 = create(:school)
+      school_2 = create(:school)
+      EnergyTariff.create(
+        tariff_holder: school_1,
+        start_date: '2021-04-01',
+        end_date: '2022-03-31',
+        name: 'My First Tariff',
+        meter_type: :electricity
+      )
+      expect(School.all).to match_array([school_1, school_2])
+      expect(School.with_energy_tariffs).to eq([school_1])
+    end
+  end
+
   describe '#minimum_reading_date' do
     it 'returns the minimum amr validated readings date minus 1 year if amr_validated_readings are present' do
       meter = create(:electricity_meter, school: subject)
