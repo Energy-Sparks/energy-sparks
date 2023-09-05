@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Amr::N3rgyTariffsUpserter do
+describe Amr::N3rgyEnergyTariffInserter do
   let(:school)                      { create(:school) }
   let(:meter)                       { create(:electricity_meter, school: school) }
   let(:start_date)                  { Date.today }
@@ -94,7 +94,15 @@ describe Amr::N3rgyTariffsUpserter do
     let(:raw_prices) { [{ :tariffs => { 1 => 0.485, 2 => 0.16774 }, :thresholds => { 1 => 1000 }, :type => :tiered }] + Array.new(15, price) + Array.new(32, price * 2)}
 
     it 'throws an exception' do
-      expect{ service.perform }.to raise_error(StandardError)
+      expect{ service.perform }.to raise_error(Amr::N3rgyEnergyTariffInserter::UnexpectedN3rgyTariffError)
+    end
+  end
+
+  context 'when there are no kwh_tariffs' do
+    it 'throws an exception' do
+      tariff_without_rates = tariff.merge(kwh_tariffs: {})
+      service = Amr::N3rgyEnergyTariffInserter.new(meter: meter, start_date: start_date, tariff: tariff_without_rates, import_log: import_log)
+      expect{ service.perform }.to raise_error(Amr::N3rgyEnergyTariffInserter::MissingRatesN3rgyTariffError)
     end
   end
 

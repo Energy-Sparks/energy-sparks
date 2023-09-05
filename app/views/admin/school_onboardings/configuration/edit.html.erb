@@ -8,14 +8,6 @@
       <%= f.select :template_calendar_id, options_from_collection_for_select(Calendar.regional.order(:title), 'id', 'title', (@school_onboarding.template_calendar.id if @school_onboarding.template_calendar)),{},{class: 'form-control'}%>
     </div>
   </div>
-  <% unless EnergySparks::FeatureFlags.active?(:auto_assign_solar_area) %>
-    <div class="form-row">
-      <div class="form-group col-md-6">
-        <%= f.label :solar_pv_tuos_area_id, 'Solar PV from The University of Sheffield Data Feed Area' %>
-        <%= f.select :solar_pv_tuos_area_id, options_from_collection_for_select(SolarPvTuosArea.all.active.order(:title), 'id', 'title', (@school_onboarding.solar_pv_tuos_area.id if @school_onboarding.solar_pv_tuos_area)),{}, { class: 'form-control' }%>
-      </div>
-    </div>
-  <% end %>
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :dark_sky_area_id, 'Dark Sky Data Feed Area' %>

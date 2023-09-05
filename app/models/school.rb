@@ -109,7 +109,6 @@ class School < ApplicationRecord
   has_many :meter_attributes,     inverse_of: :school, class_name: 'SchoolMeterAttribute'
   has_many :consent_grants,       inverse_of: :school
   has_many :meter_reviews,        inverse_of: :school
-  has_many :user_tariffs,         inverse_of: :school
   has_many :school_targets,       inverse_of: :school
   has_many :school_target_events, inverse_of: :school
   has_many :audits,               inverse_of: :school
