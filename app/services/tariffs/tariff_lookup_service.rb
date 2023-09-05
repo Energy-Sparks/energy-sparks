@@ -16,21 +16,24 @@ module Tariffs
 
     private
 
-    #TODO sorting
+    #TODO sorting, to ensure we do all meter, school, school group tariffs first
     def select_tariffs(potential_tariffs, start_date, end_date, earliest_start = start_date, earliest_end = end_date)
       tariffs = {}
       return tariffs if potential_tariffs.empty?
 
       potential_tariff = potential_tariffs.first
 
-      puts outside_range?(potential_tariff, start_date, end_date)
-      puts fully_cover_range?(potential_tariff, start_date, end_date)
+      ap start_date
+      ap end_date
+      ap potential_tariff
+
       if outside_range?(potential_tariff, start_date, end_date)
         #tariff doesnt align with dates we need so continue looking
         tariffs.merge!(select_tariffs(potential_tariffs[1..], start_date, end_date, earliest_start, earliest_end))
       elsif fully_cover_range?(potential_tariff, start_date, end_date)
+        puts "FULL COVER"
         #tariff covers entire range, so we're done
-        tariffs[potential_tariff] = Range.new(start_date, end_date)
+        tariffs[Range.new(start_date, end_date)] = potential_tariff
       else
         puts "HERE"
         #...iterate with reduced list and updated dates
@@ -39,26 +42,29 @@ module Tariffs
         if (potential_tariff.start_date.nil? || potential_tariff.start_date <= start_date) && potential_tariff.end_date <= end_date
           puts "FIRST PART"
           #in which case add that, then continue looking with end of range dates
-          tariffs[potential_tariff] = Range.new(start_date, potential_tariff.end_date)
+          tariffs[Range.new(start_date, potential_tariff.end_date)] = potential_tariff
           tariffs.merge!(select_tariffs(potential_tariffs[1..], potential_tariff.end_date + 1, end_date, earliest_start, earliest_end))
         end
         #Cover the last part of the range
         if potential_tariff.start_date > start_date && potential_tariff.end_date >= end_date
           puts "LAST PART"
+          puts earliest_start
+          puts earliest_end
           #in which case add that, then continue looking with start of range dates
-          tariffs[potential_tariff] = Range.new(potential_tariff.start_date, end_date)
-          tariffs.merge!(select_tariffs(potential_tariffs[1..], earliest_start, potential_tariff.start_date, earliest_start, earliest_end))
+          tariffs[Range.new(potential_tariff.start_date, end_date)] = potential_tariff
+          tariffs.merge!(select_tariffs(potential_tariffs[1..], earliest_start, potential_tariff.start_date - 1, earliest_start, earliest_end))
         end
         #Cover the middle of the range
         if potential_tariff.start_date > start_date && potential_tariff.end_date < end_date
           puts "SPLIT"
           #in which case add that and look for first and last part of the ranges
-          tariffs[potential_tariff] = Range.new(potential_tariff.start_date, potential_tariff.end_date)
+          tariffs[Range.new(potential_tariff.start_date, potential_tariff.end_date)] = potential_tariff
           #split range, call select twice
           #for start
-          tariffs.merge!(select_tariffs(potential_tariffs[1..], earliest_start, potential_tariff.start_date, earliest_start, earliest_end))
+          tariffs.merge!(select_tariffs(potential_tariffs[1..], earliest_start, potential_tariff.start_date - 1, earliest_start, earliest_end))
           #and end
-          tariffs.merge!(select_tariffs(potential_tariffs[1..], potential_tariff.end_date, earliest_end, earliest_start, earliest_end))
+          #but earliest end should be at most earliest end, but if there's an existing range that starts later, end there
+          tariffs.merge!(select_tariffs(potential_tariffs[1..], potential_tariff.end_date + 1, earliest_end, earliest_start, earliest_end))
         end
       end
       tariffs
