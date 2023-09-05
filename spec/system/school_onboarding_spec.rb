@@ -60,11 +60,9 @@ RSpec.describe "onboarding", :schools, type: :system do
         choose('Primary')
         click_on 'Save school details'
 
-            onboarding.reload
-            expect(onboarding).to have_event(:school_details_created)
-            expect(onboarding.school.data_enabled).to be_falsey
-
-
+        onboarding.reload
+        expect(onboarding).to have_event(:school_details_created)
+        expect(onboarding.school.data_enabled).to be_falsey
 
         #Consent
         fill_in 'Name', with: 'Boss user'
@@ -378,9 +376,6 @@ RSpec.describe "onboarding", :schools, type: :system do
         it 'sends an email after completion' do
           click_on "Complete setup", match: :first
           email = ActionMailer::Base.deliveries.last
-          # expect(email.first.subject).to include("#{school_name} is now live on Energy Sparks")
-          # expect(email.first.to).to include('operations@energysparks.uk')
-
           expect(email.subject).to include("#{school_name} is now live on Energy Sparks")
           expect(email.to).to include(school.users.first.email)
         end
