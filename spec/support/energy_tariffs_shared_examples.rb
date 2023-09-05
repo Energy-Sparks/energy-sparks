@@ -26,7 +26,8 @@ RSpec.shared_examples "a tariff editor index" do
     if tariff_holder.school? || tariff_holder.site_settings?
       expect(page).not_to have_content('School tariffs')
     else
-      expect(page).to have_content('School tariffs')
+      click_link('School tariffs')
+      expect(current_path).to end_with('energy_tariffs/group_school_tariffs')
     end
 
     if tariff_holder.school? || tariff_holder.school_group?
