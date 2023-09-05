@@ -26,7 +26,7 @@ RSpec.describe "onboarding", :schools, type: :system do
       )
     end
 
-    let(:wisper_subscriber) { Onboarding::OnboardingListener.new }
+    let(:wisper_subscriber) { Onboarding::OnboardingDataEnabledListener.new }
 
     before  { Wisper.subscribe(wisper_subscriber) }
     after   { Wisper.clear }
@@ -60,6 +60,12 @@ RSpec.describe "onboarding", :schools, type: :system do
         choose('Primary')
         click_on 'Save school details'
 
+            onboarding.reload
+            expect(onboarding).to have_event(:school_details_created)
+            expect(onboarding.school.data_enabled).to be_falsey
+
+
+
         #Consent
         fill_in 'Name', with: 'Boss user'
         fill_in 'Job title', with: 'Boss'
@@ -76,7 +82,7 @@ RSpec.describe "onboarding", :schools, type: :system do
 
         #Completion
         click_on "Complete setup", match: :first
-        expect(page).to have_content("Setup completed")
+        expect(page).to have_content("Your school is now active!")
       end
 
       it 'starts at the welcome page' do
@@ -152,7 +158,7 @@ RSpec.describe "onboarding", :schools, type: :system do
 
             #Completion
             click_on "Complete setup", match: :first
-            expect(page).to have_content("Setup completed")
+            expect(page).to have_content("Your school is now active")
           end
         end
 
@@ -201,7 +207,7 @@ RSpec.describe "onboarding", :schools, type: :system do
 
             #Completion
             click_on "Complete setup", match: :first
-            expect(page).to have_content("Setup completed")
+            expect(page).to have_content("Your school is now active")
           end
         end
       end
@@ -267,30 +273,7 @@ RSpec.describe "onboarding", :schools, type: :system do
           expect(onboarding.school.has_swimming_pool?).to eq(false)
           expect(onboarding.school.cooks_dinners_for_other_schools_count).to eq(5)
           expect(onboarding.school.percentage_free_school_meals).to eq(16)
-          expect(onboarding.school.data_enabled).to be_truthy
-        end
-
-        context 'when data enabled' do
-
-          let(:wisper_subscriber) { Onboarding::OnboardingDataEnabledListener.new }
-
-          before :each do
-            allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-            visit new_onboarding_school_details_path(onboarding)
-          end
-
-          it 'sets data enabled false' do
-            fill_in 'Unique Reference Number', with: '4444244'
-            fill_in 'Address', with: '1 Station Road'
-            fill_in 'Postcode', with: 'A1 2BC'
-            fill_in 'Website', with: 'http://oldfield.sch.uk'
-            choose('Primary')
-            click_on 'Save school details'
-
-            onboarding.reload
-            expect(onboarding).to have_event(:school_details_created)
-            expect(onboarding.school.data_enabled).to be_falsey
-          end
+          expect(onboarding.school.data_enabled).to be_falsy
         end
       end
 
@@ -370,7 +353,7 @@ RSpec.describe "onboarding", :schools, type: :system do
 
       context 'having finished the initial steps' do
         let(:user) { create(:onboarding_user) }
-        let(:school) { build(:school, visible: false) }
+        let(:school) { build(:school, visible: false, name: school_name) }
 
         before(:each) do
           onboarding.update!(created_user: user)
@@ -384,19 +367,22 @@ RSpec.describe "onboarding", :schools, type: :system do
           expect(page).to have_content("Final step: review your answers")
           click_on "Complete setup", match: :first
           expect(onboarding).to have_event(:onboarding_complete)
-          expect(page).to have_content("Setup completed")
+          expect(page).to have_content("Your school is now active")
         end
 
         it 'the school is not yet visible' do
           click_on "Complete setup", match: :first
-          expect(school.reload).to_not be_visible
+          expect(school.reload).to be_visible
         end
 
         it 'sends an email after completion' do
           click_on "Complete setup", match: :first
           email = ActionMailer::Base.deliveries.last
-          expect(email.subject).to include("#{school_name} has completed the onboarding process")
-          expect(email.to).to include('operations@energysparks.uk')
+          # expect(email.first.subject).to include("#{school_name} is now live on Energy Sparks")
+          # expect(email.first.to).to include('operations@energysparks.uk')
+
+          expect(email.subject).to include("#{school_name} is now live on Energy Sparks")
+          expect(email.to).to include(school.users.first.email)
         end
 
         it 'sends confirmation emails after completion' do
