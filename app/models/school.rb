@@ -109,7 +109,6 @@ class School < ApplicationRecord
   has_many :meter_attributes,     inverse_of: :school, class_name: 'SchoolMeterAttribute'
   has_many :consent_grants,       inverse_of: :school
   has_many :meter_reviews,        inverse_of: :school
-  has_many :user_tariffs,         inverse_of: :school
   has_many :school_targets,       inverse_of: :school
   has_many :school_target_events, inverse_of: :school
   has_many :audits,               inverse_of: :school
@@ -532,12 +531,21 @@ class School < ApplicationRecord
       end
       collection
     end
-    if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
-      all_attributes[:aggregated_electricity] = all_energy_tariff_attributes(:electricity)
-      all_attributes[:aggregated_gas] = all_energy_tariff_attributes(:gas)
-      all_attributes[:solar_pv_consumed_sub_meter] = all_energy_tariff_attributes(:solar_pv)
-      all_attributes[:solar_pv_exported_sub_meter] = all_energy_tariff_attributes(:exported_solar_pv)
-    end
+
+    return all_attributes unless EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
+
+    all_attributes[:aggregated_electricity] ||= []
+    all_attributes[:aggregated_electricity] += all_energy_tariff_attributes(:electricity)
+
+    all_attributes[:aggregated_gas] ||= []
+    all_attributes[:aggregated_gas] += all_energy_tariff_attributes(:gas)
+
+    all_attributes[:solar_pv_consumed_sub_meter] ||= []
+    all_attributes[:solar_pv_consumed_sub_meter] += all_energy_tariff_attributes(:solar_pv)
+
+    all_attributes[:solar_pv_exported_sub_meter] ||= []
+    all_attributes[:solar_pv_exported_sub_meter] += all_energy_tariff_attributes(:exported_solar_pv)
+
     all_attributes
   end
 

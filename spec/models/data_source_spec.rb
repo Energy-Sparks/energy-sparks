@@ -14,7 +14,7 @@ RSpec.describe DataSource, type: :model do
   describe ".to_csv" do
     let(:data_source) { create(:data_source) }
     subject { data_source.to_csv }
-    let(:header) { "School group,School,MPAN/MPRN,Meter type,Active,First validated meter reading,Last validated meter reading,Admin Meter Status,Open issues count,Open issues" }
+    let(:header) { "School group,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Open issues count,Open issues" }
     before { Timecop.freeze }
     after { Timecop.return }
 
@@ -50,6 +50,7 @@ RSpec.describe DataSource, type: :model do
                 meters[i].mpan_mprn,
                 meters[i].meter_type.humanize,
                 meters[i].active,
+                (meters[i].half_hourly ? 'Yes' : 'No'),
                 first_reading_date,
                 last_reading_date,
                 admin_meter_status.label,

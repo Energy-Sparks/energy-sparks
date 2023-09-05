@@ -9,6 +9,9 @@ module Amr
   #which consists of time of day ranges that can be used to
   #check the energy tariff prices
   class N3rgyEnergyTariffInserter
+    class UnexpectedN3rgyTariffError < StandardError; end
+    class MissingRatesN3rgyTariffError < StandardError; end
+
     def initialize(meter:, start_date:, tariff:, import_log:)
       @meter = meter
       @start_date = start_date
@@ -93,11 +96,18 @@ module Amr
       true
     end
 
+    def valid_tariff_rates?
+      @tariff[:kwh_tariffs].present?
+    end
+
     #We only support flat rate and differential tariffs in the EnergyTariff
     #model currently. Raise exception to catch problems early
     def check_unexpected_tariff_format?
+      unless valid_tariff_rates?
+        raise MissingRatesN3rgyTariffError, "Rates returned from n3rgy for #{@start_date} are empty #{@tariff.inspect}"
+      end
       unless rates.values.all? {|price| price.is_a?(Numeric)}
-        raise "Unexpected tariff format for #{@meter.mpan_mprn} on #{@start_date}: #{rates.inspect}"
+        raise UnexpectedN3rgyTariffError, "Unexpected tariff format for #{@meter.mpan_mprn} on #{@start_date}: #{rates.inspect}"
       end
       #Trigger parsing of tariff data, which may throw errors
       summary_tariff

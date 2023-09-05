@@ -58,6 +58,21 @@ module EnergyTariffsHelper
     currency + value_as_formatted_currency
   end
 
+  def formatted_date_range_for(energy_tariff)
+    start_date = energy_tariff&.start_date&.to_s(:es_compact)
+    end_date = energy_tariff&.end_date&.to_s(:es_compact)
+
+    if start_date && end_date
+      I18n.t(
+        'schools.tariffs_helper.rate_from',
+        start_time: start_date,
+        end_time: end_date
+      )
+    elsif start_date || end_date
+      start_date.to_s + end_date.to_s
+    end
+  end
+
   def energy_tariff_price_title(energy_tariff_price)
     I18n.t(
       'schools.tariffs_helper.rate_from',
