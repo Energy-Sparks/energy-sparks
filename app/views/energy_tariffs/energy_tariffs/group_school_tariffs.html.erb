@@ -4,17 +4,17 @@
     <table class="table advice-table">
       <thead>
         <tr>
-          <th class="col-1 text-right">Name</th>
-          <th class="col-1 text-right">Electricity tariffs</th>
-          <th class="col-1 text-right">Gas tariffs</th>
+          <th class="text-left">Name</th>
+          <th class="text-right">Electricity tariffs</th>
+          <th class="text-right">Gas tariffs</th>
         </tr>
       </thead>
       <tbody>
-      <% @tariff_holder.schools.joins(:energy_tariffs).each do |school| %>
+      <% @tariff_holder.schools.with_energy_tariffs.each.each do |school| %>
       <tr>
-        <td><%= school.name %></td>
-        <td><%= school.energy_tariffs.where(meter_type: 'electricity').count %></td>
-        <td><%= school.energy_tariffs.where(meter_type: 'gas').count %></td>
+        <td class="text-left"><%= school.name %></td>
+        <td class="text-right"><%= school.energy_tariffs.where(meter_type: 'electricity').count %></td>
+        <td class="text-right"><%= school.energy_tariffs.where(meter_type: 'gas').count %></td>
       </tr>
       <% end %>
       </tbody>
