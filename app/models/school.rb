@@ -195,7 +195,7 @@ class School < ApplicationRecord
 
   scope :not_in_cluster, -> { where(school_group_cluster_id: nil) }
 
-  scope :with_energy_tariffs, -> { joins('inner join energy_tariffs on  energy_tariffs.tariff_holder_id = schools.id').group('schools.id').order('schools.name') }
+  scope :with_energy_tariffs, -> { joins('INNER JOIN energy_tariffs ON energy_tariffs.tariff_holder_id = schools.id').group('schools.id').order('schools.name') }
 
   validates_presence_of :urn, :name, :address, :postcode, :website, :school_type
   validates_uniqueness_of :urn

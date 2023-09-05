@@ -126,6 +126,11 @@ en:
           add_label: Add gas tariff
           header: Gas
           there_are_no_gas_tariffs_set_up_yet: We have no user supplied tariffs for your gas meters.
+        group_school_tariffs:
+          electricity: Electricity tariffs
+          gas: Gas tariffs
+          name: Name
+        group_school_tariffs_message: Schools in the %{school_group_name} group with their own custom tariffs
         introduction_html: |-
           <p>
             You can improve the accuracy of the calculations on your <a href="%{advice_pages}">cost analysis pages</a> by adding details about your real tariffs.

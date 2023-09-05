@@ -1,21 +1,24 @@
 <%= render 'header_and_nav' %>
 <% if @tariff_holder.school_group? %>
   <div id="nav-group-school-tariffs" role="tabpanel" aria-labelledby="nav-group-school-tariffs-tab" class="tab-pane">
-    <table class="table advice-table">
+    <div class='mt-4'>
+      <p><%= t('schools.user_tariffs.index.group_school_tariffs_message', school_group_name: @tariff_holder.name) %>.</p>
+    </div>
+    <table class="table advice-table table-sorted">
       <thead>
         <tr>
-          <th class="text-left">Name</th>
-          <th class="text-right">Electricity tariffs</th>
-          <th class="text-right">Gas tariffs</th>
+          <th class="text-left"><%= t('schools.user_tariffs.index.group_school_tariffs.name') %></th>
+          <th class="text-right"><%= t('schools.user_tariffs.index.group_school_tariffs.electricity') %></th>
+          <th class="text-right"><%= t('schools.user_tariffs.index.group_school_tariffs.gas') %></th>
         </tr>
       </thead>
       <tbody>
       <% @tariff_holder.schools.with_energy_tariffs.each.each do |school| %>
-      <tr>
-        <td class="text-left"><%= school.name %></td>
-        <td class="text-right"><%= school.energy_tariffs.where(meter_type: 'electricity').count %></td>
-        <td class="text-right"><%= school.energy_tariffs.where(meter_type: 'gas').count %></td>
-      </tr>
+        <tr>
+          <td class="text-left"><%= link_to school.name, school_energy_tariffs_path(school) %></td>
+          <td class="text-right"><%= school.energy_tariffs.where(meter_type: 'electricity').count %></td>
+          <td class="text-right"><%= school.energy_tariffs.where(meter_type: 'gas').count %></td>
+        </tr>
       <% end %>
       </tbody>
     </table>
