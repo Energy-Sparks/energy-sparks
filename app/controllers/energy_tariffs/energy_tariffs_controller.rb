@@ -17,6 +17,9 @@ module EnergyTariffs
     def smart_meter_tariffs
     end
 
+    def group_school_tariffs
+    end
+
     def show
     end
 

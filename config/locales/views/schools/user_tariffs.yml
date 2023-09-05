@@ -143,6 +143,7 @@ en:
           there_are_no_solar_pv_tariffs_set_up_yet: We have no user supplied tariffs for your solar PV meters.
         tabs:
           default_tariffs: Default tariffs
+          group_school_tariffs: School tariffs
           smart_meter_tariffs: Smart meter tariffs
           system_default_tariffs: System default tariffs
           user_tariffs: User supplied tariffs
