@@ -43,7 +43,7 @@ describe Onboarding::Service, type: :service do
       subject.complete_onboarding(onboarding, [])
       expect(onboarding.has_event?(:onboarding_complete)).to be_truthy
     end
-    it 'sets school visible if feature flag set' do
+    it 'sets school visible' do
       subject.complete_onboarding(onboarding, [])
       expect(onboarding.school.visible?).to be_truthy
     end
