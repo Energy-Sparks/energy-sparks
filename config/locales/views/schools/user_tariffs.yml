@@ -104,6 +104,8 @@ en:
         per_kwh: per kWh
       form:
         errors:
+          applies_to:
+            must_be_set_to_both: applies to must be set to 'both' for all non-electricity tariffs
           dates:
             start_and_end_date_can_not_both_be_empty: start and end date can't both be empty
             start_date_must_be_earlier_than_or_equal_to_end_date: start date must be earlier than or equal to end date
