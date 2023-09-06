@@ -52,12 +52,14 @@ class EnergyTariff < ApplicationRecord
   enum source: [:manually_entered, :dcc]
   enum meter_type: [:electricity, :gas, :solar_pv, :exported_solar_pv]
   enum tariff_type: [:flat_rate, :differential]
+  enum applies_to: [:both, :half_hourly, :non_half_hourly]
 
   validates :name, presence: true
   validates :vat_rate, numericality: { greater_than_or_equal_to: 0.0, less_than_or_equal_to: 100.0, allow_nil: true }
 
   validate :start_and_end_date_are_not_both_blank
   validate :start_date_is_earlier_than_or_equal_to_end_date
+  validate :applies_to_is_set_to_both, unless: :electricity?
 
   scope :enabled, -> { where(enabled: true) }
   scope :disabled, -> { where(enabled: false) }
@@ -80,6 +82,13 @@ class EnergyTariff < ApplicationRecord
   }
 
   scope :latest_with_fixed_end_date, ->(meter_type, source = :manually_entered) { where(meter_type: meter_type, source: source).where.not(end_date: nil).order(end_date: :desc) }
+
+  def applies_to_is_set_to_both
+    return if electricity?
+    return if both?
+
+    errors.add(:applies_to, I18n.t('schools.user_tariffs.form.errors.applies_to.must_be_set_to_both'))
+  end
 
   def self.usable
     select(&:usable?)
