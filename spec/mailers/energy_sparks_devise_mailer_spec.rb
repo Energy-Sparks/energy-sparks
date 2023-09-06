@@ -4,14 +4,11 @@ RSpec.describe EnergySparksDeviseMailer do
 
   let(:school)                { create(:school) }
   let(:user)                  { create(:user, school: school) }
-  let(:enable_locale_emails)  { 'true' }
   let(:country)               { "england" }
 
   around do |example|
-    ClimateControl.modify FEATURE_FLAG_EMAILS_WITH_PREFERRED_LOCALE: enable_locale_emails do
-      ClimateControl.modify WELSH_APPLICATION_HOST: 'cy.localhost' do
-        example.run
-      end
+    ClimateControl.modify WELSH_APPLICATION_HOST: 'cy.localhost' do
+      example.run
     end
   end
 
@@ -40,12 +37,6 @@ RSpec.describe EnergySparksDeviseMailer do
       it 'contains links to default site and cy site' do
         expect(@email.body.to_s).to include("http://localhost/users/confirmation?confirmation_token=")
         expect(@email.body.to_s).to include("http://cy.localhost/users/confirmation?confirmation_token=")
-      end
-      context 'but locale emails are turned off' do
-        let(:enable_locale_emails)  { 'false' }
-        it 'sends an email in en only' do
-          expect(@email.subject).to eq("Energy Sparks: confirm your account")
-        end
       end
     end
 
