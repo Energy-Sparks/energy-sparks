@@ -14,6 +14,17 @@ RSpec.describe OnboardingMailer do
     end
   end
 
+  def replace_variables(email_content, locale=nil)
+    prefix = locale ? "#{locale}." : ""
+    email_content.gsub('%{school_name}', school.name)
+                 .gsub('%{contact_url}', "http://#{prefix}localhost/contact")
+                 .gsub('%{activity_categories_url}', "http://#{prefix}localhost/activity_categories")
+                 .gsub('%{intervention_type_groups_url}', "http://#{prefix}localhost/intervention_type_groups")
+                 .gsub('%{school_url}', "http://#{prefix}localhost/schools/test-school")
+                 .gsub('%{user_guide_videos_url}', "http://#{prefix}localhost/user-guide-youtube")
+                 .gsub('%{training_url}', "http://#{prefix}localhost/training")
+  end
+
   describe '#onboarding_email' do
     context 'when locale emails disabled' do
       it 'sends the onboarding email in english only' do
@@ -105,14 +116,7 @@ RSpec.describe OnboardingMailer do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.activation_email.subject').gsub('%{school}', school.name))
         I18n.t('onboarding_mailer.activation_email').except(:subject, :set_your_first_targets).values.each do |email_content|
           expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
-            email_content.gsub('%{school_name}', school.name)
-                         .gsub('%{contact_url}', 'http://localhost/contact')
-                         .gsub('%{activity_categories_url}', 'http://localhost/activity_categories')
-                         .gsub('%{intervention_type_groups_url}', 'http://localhost/intervention_type_groups')
-                         .gsub('%{intervention_type_groups_url}', 'http://localhost/intervention_type_groups')
-                         .gsub('%{school_url}', 'http://localhost/schools/test-school')
-                         .gsub('%{user_guide_videos_url}', 'http://localhost/user-guide-videos')
-                         .gsub('%{training_url}', 'http://localhost/training')
+            replace_variables(email_content)
           )
         end
       end
@@ -125,19 +129,13 @@ RSpec.describe OnboardingMailer do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.activation_email.subject', locale: :cy).gsub('%{school}', school.name))
         I18n.t('onboarding_mailer.activation_email', locale: :cy).except(:subject, :set_your_first_targets).values.each do |email_content|
           expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
-                                                                                email_content.gsub('%{school_name}', school.name)
-                                                                                             .gsub('%{contact_url}', 'http://cy.localhost/contact')
-                                                                                             .gsub('%{activity_categories_url}', 'http://cy.localhost/activity_categories')
-                                                                                             .gsub('%{intervention_type_groups_url}', 'http://cy.localhost/intervention_type_groups')
-                                                                                             .gsub('%{intervention_type_groups_url}', 'http://cy.localhost/intervention_type_groups')
-                                                                                             .gsub('%{school_url}', 'http://cy.localhost/schools/test-school')
-                                                                                             .gsub('%{user_guide_videos_url}', 'http://cy.localhost/user-guide-videos')
-                                                                                             .gsub('%{training_url}', 'http://cy.localhost/training')
-                                                                              )
+            replace_variables(email_content, :cy)
+          )
         end
       end
     end
   end
+
 
   describe '#onboarded_email' do
     it 'sends the onboarded email' do
@@ -146,13 +144,7 @@ RSpec.describe OnboardingMailer do
       expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarded_email.subject').gsub('%{school}', school.name))
       I18n.t('onboarding_mailer.onboarded_email').except(:subject).values.each do |email_content|
         expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
-          email_content.gsub('%{school_name}', school.name)
-                       .gsub('%{contact_url}', 'http://localhost/contact')
-                       .gsub('%{activity_categories_url}', 'http://localhost/activity_categories')
-                       .gsub('%{intervention_type_groups_url}', 'http://localhost/intervention_type_groups')
-                       .gsub('%{school_url}', 'http://localhost/schools/test-school')
-                       .gsub('%{user_guide_videos_url}', 'http://localhost/user-guide-videos')
-                       .gsub('%{training_url}', 'http://localhost/training')
+          replace_variables(email_content)
         )
       end
     end
@@ -164,14 +156,8 @@ RSpec.describe OnboardingMailer do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarded_email.subject', locale: :cy).gsub('%{school}', school.name))
         I18n.t('onboarding_mailer.onboarded_email', locale: :cy).except(:subject).values.each do |email_content|
           expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
-                                                                                email_content.gsub('%{school_name}', school.name)
-                                                                                             .gsub('%{contact_url}', 'http://cy.localhost/contact')
-                                                                                             .gsub('%{activity_categories_url}', 'http://cy.localhost/activity_categories')
-                                                                                             .gsub('%{intervention_type_groups_url}', 'http://cy.localhost/intervention_type_groups')
-                                                                                             .gsub('%{school_url}', 'http://cy.localhost/schools/test-school')
-                                                                                             .gsub('%{user_guide_videos_url}', 'http://cy.localhost/user-guide-videos')
-                                                                                             .gsub('%{training_url}', 'http://cy.localhost/training')
-                                                                              )
+            replace_variables(email_content, :cy)
+          )
         end
       end
     end
@@ -184,13 +170,7 @@ RSpec.describe OnboardingMailer do
       expect(email.subject).to eq(I18n.t('onboarding_mailer.data_enabled_email.subject').gsub('%{school}', school.name))
       I18n.t('onboarding_mailer.data_enabled_email').except(:subject, :set_your_first_targets).values.each do |email_content|
         expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
-          email_content.gsub('%{school_name}', school.name)
-                       .gsub('%{contact_url}', 'http://localhost/contact')
-                       .gsub('%{contact_url}', 'http://localhost/contact')
-                       .gsub('%{activity_categories_url}', 'http://localhost/activity_categories')
-                       .gsub('%{school_url}', 'http://localhost/schools/test-school')
-                       .gsub('%{user_guide_videos_url}', 'http://localhost/user-guide-videos')
-                       .gsub('%{training_url}', 'http://localhost/training')
+          replace_variables(email_content)
         )
       end
     end
@@ -202,14 +182,8 @@ RSpec.describe OnboardingMailer do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.data_enabled_email.subject', locale: :cy).gsub('%{school}', school.name))
         I18n.t('onboarding_mailer.data_enabled_email', locale: :cy).except(:subject, :set_your_first_targets).values.each do |email_content|
           expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
-                                                                                email_content.gsub('%{school_name}', school.name)
-                                                                                             .gsub('%{contact_url}', 'http://cy.localhost/contact')
-                                                                                             .gsub('%{contact_url}', 'http://cy.localhost/contact')
-                                                                                             .gsub('%{activity_categories_url}', 'http://cy.localhost/activity_categories')
-                                                                                             .gsub('%{school_url}', 'http://cy.localhost/schools/test-school')
-                                                                                             .gsub('%{user_guide_videos_url}', 'http://cy.localhost/user-guide-videos')
-                                                                                             .gsub('%{training_url}', 'http://cy.localhost/training')
-                                                                              )
+            replace_variables(email_content, :cy)
+          )
         end
       end
     end
@@ -222,13 +196,7 @@ RSpec.describe OnboardingMailer do
       expect(email.subject).to eq(I18n.t('onboarding_mailer.welcome_email.subject'))
       I18n.t('onboarding_mailer.welcome_email').except(:subject).values.each do |email_content|
         expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
-          email_content.gsub('%{school_name}', school.name)
-                       .gsub('%{contact_url}', 'http://localhost/contact')
-                       .gsub('%{contact_url}', 'http://localhost/contact')
-                       .gsub('%{activity_categories_url}', 'http://localhost/activity_categories')
-                       .gsub('%{school_url}', 'http://localhost/schools/test-school')
-                       .gsub('%{user_guide_videos_url}', 'http://localhost/user-guide-videos')
-                       .gsub('%{training_url}', 'http://localhost/training')
+          replace_variables(email_content)
         )
       end
     end
@@ -240,14 +208,8 @@ RSpec.describe OnboardingMailer do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.welcome_email.subject', locale: :cy))
         I18n.t('onboarding_mailer.welcome_email', locale: :cy).except(:subject).values.each do |email_content|
           expect(ActionController::Base.helpers.sanitize(email.body.to_s)).to include(
-                                                                                email_content.gsub('%{school_name}', school.name)
-                                                                                             .gsub('%{contact_url}', 'http://cy.localhost/contact')
-                                                                                             .gsub('%{contact_url}', 'http://cy.localhost/contact')
-                                                                                             .gsub('%{activity_categories_url}', 'http://cy.localhost/activity_categories')
-                                                                                             .gsub('%{school_url}', 'http://cy.localhost/schools/test-school')
-                                                                                             .gsub('%{user_guide_videos_url}', 'http://cy.localhost/user-guide-videos')
-                                                                                             .gsub('%{training_url}', 'http://cy.localhost/training')
-                                                                              )
+            replace_variables(email_content, :cy)
+          )
         end
       end
     end

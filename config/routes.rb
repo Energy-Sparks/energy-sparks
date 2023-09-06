@@ -32,7 +32,9 @@ Rails.application.routes.draw do
   get 'datasets', to: 'home#datasets'
   get 'attribution', to: 'home#attribution'
   get 'child-safeguarding-policy', to: 'home#child_safeguarding_policy'
-  get 'user-guide-videos', to: 'home#user_guide_videos'
+  get 'user-guide-videos', to: 'home#user_guide_videos' # keep old route for now
+  get 'user-guide-youtube', to: redirect('https://www.youtube.com/@energysparksuk') # this is a redirect so it can be used in the sitemap
+
   get 'team', to: 'home#team'
   get 'funders', to: 'home#funders'
   get 'privacy_and_cookie_policy', to: 'home#privacy_and_cookie_policy', as: :privacy_and_cookie_policy
