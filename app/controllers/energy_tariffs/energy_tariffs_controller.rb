@@ -18,6 +18,7 @@ module EnergyTariffs
     end
 
     def group_school_tariffs
+      redirect_to polymorphic_path(tariff_holder_route(@tariff_holder) + [:energy_tariffs]) and return unless @tariff_holder.school_group?
     end
 
     def show

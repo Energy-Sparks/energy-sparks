@@ -23,11 +23,17 @@ RSpec.shared_examples "a tariff editor index" do
   it 'navigates the index tabs' do
     expect(current_path).to end_with('energy_tariffs')
 
-    if tariff_holder.school? || tariff_holder.site_settings?
+    if tariff_holder.school?
       expect(page).not_to have_content('School tariffs')
+      visit group_school_tariffs_school_energy_tariffs_path(tariff_holder)
+      expect(current_path).to eq("/schools/#{school.slug}/energy_tariffs")
+    elsif tariff_holder.site_settings?
+      expect(page).not_to have_content('School tariffs')
+      visit group_school_tariffs_admin_settings_energy_tariffs_path(tariff_holder)
+      expect(current_path).to eq('/admin/settings/energy_tariffs')
     else
       click_link('School tariffs')
-      expect(current_path).to end_with('energy_tariffs/group_school_tariffs')
+      expect(current_path).to eq("/school_groups/#{school_group.slug}/energy_tariffs/group_school_tariffs")
     end
 
     if tariff_holder.school? || tariff_holder.school_group?
