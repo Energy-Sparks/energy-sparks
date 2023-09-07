@@ -37,7 +37,7 @@
   <% if current_user.admin? %>
     <div class="form-group">
       <div class="custom-control custom-checkbox">
-        <%= form.label :meter_system, t('schools.meters.form.data_source') %>
+        <%= form.label :meter_system, t('schools.meters.form.meter_system') %>
         <%= form.select(:meter_system, Meter.meter_systems.keys.map { |meter_system| [I18n.t("meter.meter_system.#{meter_system}"), meter_system] }, { include_blank: true }, class: 'form-control') %>
       </div>
     </div>
