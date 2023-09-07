@@ -122,71 +122,41 @@ RSpec.describe "onboarding", :schools, type: :system do
       after   { Wisper.clear }
 
       let!(:school_onboarding)  { create :school_onboarding, :with_school, created_by: admin }
+
+      let(:wisper_subscriber) { Onboarding::OnboardingDataEnabledListener.new }
       let!(:consent_grant)      { create :consent_grant, school: school_onboarding.school }
 
-      context 'with original flow' do
-        let(:wisper_subscriber) { Onboarding::OnboardingListener.new }
+      it 'allows an onboarding to be completed and data enabled' do
+        # school will default to not data_enabled in new flow
+        school_onboarding.school.update(data_enabled: false)
+        expect(school_onboarding).to be_incomplete
 
-        it 'allows an onboarding to be completed for a school' do
-          expect(school_onboarding).to be_incomplete
+        click_on 'Manage school onboarding'
+        click_on 'Make visible'
 
-          click_on 'Manage school onboarding'
-          click_on 'Make visible'
+        expect(page).to have_content("School onboardings")
 
-          expect(page).to have_content("School onboardings")
+        school_onboarding.reload
+        expect(school_onboarding).to be_complete
+        expect(school_onboarding.school.visible).to be true
+        expect(school_onboarding.school.data_enabled).to be false
 
-          school_onboarding.reload
-          expect(school_onboarding).to be_complete
-          expect(school_onboarding.school.visible).to be true
+        visit school_path(school_onboarding.school)
+        click_on 'Data visible'
 
-          expect(ActionMailer::Base.deliveries.count).to eq(2)
+        expect(ActionMailer::Base.deliveries.count).to eq(3)
 
-          email = ActionMailer::Base.deliveries.first
-          expect(email.to).to include('operations@energysparks.uk')
-          expect(email.subject).to eq("#{school_onboarding.school.name} has completed the onboarding process")
+        email = ActionMailer::Base.deliveries.first
+        expect(email.to).to include('operations@energysparks.uk')
+        expect(email.subject).to eq("#{school_onboarding.school.name} has completed the onboarding process")
 
-          email = ActionMailer::Base.deliveries.last
-          expect(email.to).to include(school_onboarding.created_user.email)
-          expect(email.subject).to eq("#{school_onboarding.school.name} is live on Energy Sparks")
-        end
-      end
+        email = ActionMailer::Base.deliveries.second
+        expect(email.to).to include(school_onboarding.created_user.email)
+        expect(email.subject).to eq("#{school_onboarding.school.name} is now live on Energy Sparks")
 
-      context 'with new flow' do
-        let(:wisper_subscriber) { Onboarding::OnboardingDataEnabledListener.new }
-        let!(:consent_grant)      { create :consent_grant, school: school_onboarding.school }
-
-        it 'allows an onboarding to be completed and data enabled' do
-          # school will default to not data_enabled in new flow
-          school_onboarding.school.update(data_enabled: false)
-          expect(school_onboarding).to be_incomplete
-
-          click_on 'Manage school onboarding'
-          click_on 'Make visible'
-
-          expect(page).to have_content("School onboardings")
-
-          school_onboarding.reload
-          expect(school_onboarding).to be_complete
-          expect(school_onboarding.school.visible).to be true
-          expect(school_onboarding.school.data_enabled).to be false
-
-          visit school_path(school_onboarding.school)
-          click_on 'Data visible'
-
-          expect(ActionMailer::Base.deliveries.count).to eq(3)
-
-          email = ActionMailer::Base.deliveries.first
-          expect(email.to).to include('operations@energysparks.uk')
-          expect(email.subject).to eq("#{school_onboarding.school.name} has completed the onboarding process")
-
-          email = ActionMailer::Base.deliveries.second
-          expect(email.to).to include(school_onboarding.created_user.email)
-          expect(email.subject).to eq("#{school_onboarding.school.name} is now live on Energy Sparks")
-
-          email = ActionMailer::Base.deliveries.last
-          expect(email.to).to include(school_onboarding.created_user.email)
-          expect(email.subject).to eq("#{school_onboarding.school.name} energy data is now available on Energy Sparks")
-        end
+        email = ActionMailer::Base.deliveries.last
+        expect(email.to).to include(school_onboarding.created_user.email)
+        expect(email.subject).to eq("#{school_onboarding.school.name} energy data is now available on Energy Sparks")
       end
     end
 
