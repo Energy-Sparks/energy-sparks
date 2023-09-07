@@ -2,14 +2,15 @@ require 'rails_helper'
 
 describe 'password reset' do
 
-  let!(:user) { create(:user, preferred_locale: :cy) }
+  let(:preferred_locale) { }
+  let!(:user) { create(:user, preferred_locale: preferred_locale) }
+
+  let(:email) { ActionMailer::Base.deliveries.last }
 
   around do |example|
     ClimateControl.modify SEND_AUTOMATED_EMAILS: 'true' do
-      ClimateControl.modify FEATURE_FLAG_EMAILS_WITH_PREFERRED_LOCALE: enable_locale_emails do
-        ClimateControl.modify WELSH_APPLICATION_HOST: 'cy.localhost' do
-          example.run
-        end
+      ClimateControl.modify WELSH_APPLICATION_HOST: 'cy.localhost' do
+        example.run
       end
     end
   end
@@ -22,27 +23,24 @@ describe 'password reset' do
       click_button 'Send me reset password instructions'
     end
 
-    context 'with locales not enabled' do
-      let(:enable_locale_emails) { 'false' }
+    context 'preferred locale is en' do
+      let(:preferred_locale) { :en }
       it 'links to non-locale specific site' do
-        email = ActionMailer::Base.deliveries.last
         expect(email.body).to include("http://localhost/users/password/edit?reset_password_token=")
       end
     end
 
-    context 'with locales enabled' do
-      let(:enable_locale_emails) { 'true' }
-      it 'links to non-locale specific site' do
-        email = ActionMailer::Base.deliveries.last
+    context 'preferred locale is cy' do
+      let(:preferred_locale) { :cy }
+      it 'links to locale specific site' do
         expect(email.body).to include("http://cy.localhost/users/password/edit?reset_password_token=")
       end
     end
 
-    context 'with locale redirects and email locales enabled' do
-      let(:enable_locale_emails) { 'true' }
+    context 'with locale redirects' do
+      let(:preferred_locale) { :cy }
       it 'shows locale selector' do
         expect(user.reload.preferred_locale).to eq("cy")
-        email = ActionMailer::Base.deliveries.last
         urls = URI.extract(email.body.to_s, ['http'])
         visit urls.last
         expect(page).to have_content('Preferred language')
