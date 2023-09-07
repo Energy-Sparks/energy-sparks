@@ -100,6 +100,7 @@ class Meter < ApplicationRecord
 
   # If adding a new one, add to the amr_validated_reading case statement for downloading data
   enum meter_type: [:electricity, :gas, :solar_pv, :exported_solar_pv]
+  enum meter_system: [:nhh_amr, :nhh, :hh, :smets2_smart]
 
   delegate :area_name, to: :school
 
