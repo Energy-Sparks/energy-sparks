@@ -37,8 +37,8 @@
   <% if current_user.admin? %>
     <div class="form-group">
       <div class="custom-control custom-checkbox">
-        <%= form.check_box :half_hourly, checked: meter.half_hourly, class: "custom-control-input" %>
-        <%= form.label :half_hourly, t('schools.meters.form.half_hourly'), class: "custom-control-label" %>
+        <%= form.label :meter_system, t('schools.meters.form.data_source') %>
+        <%= form.select(:meter_system, Meter.meter_systems.keys.map { |meter_system| [I18n.t("meter.meter_system.#{meter_system}"), meter_system] }, { include_blank: true }, class: 'form-control') %>
       </div>
     </div>
     <div class="form-group">

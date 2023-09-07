@@ -48,7 +48,7 @@ class ImportMailer < ApplicationMailer
       meter.meter_type.to_s.humanize,
       meter.school.name,
       meter.mpan_mprn,
-      (meter.half_hourly ? 'Yes' : 'No'),
+      meter.t_meter_system,
       meter.data_source&.name,
       meter.procurement_route&.organisation_name,
       meter.last_validated_reading&.strftime('%d/%m/%Y'),

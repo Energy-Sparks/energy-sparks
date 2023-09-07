@@ -122,6 +122,10 @@ class Meter < ApplicationRecord
     school.name
   end
 
+  def t_meter_system
+    I18n.t("meter.meter_system.#{meter_system}")
+  end
+
   def admin_meter_status_label
     for_fuel_type = (fuel_type == :exported_solar_pv ? :solar_pv : fuel_type)
     admin_meter_status&.label || school&.school_group&.send(:"admin_meter_status_#{for_fuel_type}")&.label || ''
