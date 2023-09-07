@@ -635,8 +635,8 @@ class School < ApplicationRecord
     school_group.present? ? school_group : SiteSettings.current
   end
 
-  def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys)
-    energy_tariffs.where(meter_type: meter_type).left_joins(:meters).where(meters: { id: nil }).usable.map(&:meter_attribute)
+  def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys, applies_to = :both)
+    energy_tariffs.where(meter_type: meter_type, applies_to: applies_to).left_joins(:meters).where(meters: { id: nil }).usable.map(&:meter_attribute)
   end
 
   def holds_tariffs_of_type?(meter_type)
