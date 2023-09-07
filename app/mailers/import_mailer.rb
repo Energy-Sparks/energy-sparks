@@ -30,7 +30,7 @@ class ImportMailer < ApplicationMailer
       'Meter type',
       'School',
       'MPAN/MPRN',
-      'Half-Hourly',
+      'Meter system',
       'Data source',
       'Procurement route',
       'Last validated reading date',
