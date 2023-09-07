@@ -18,8 +18,8 @@ module EnergyTariffHolder
     is_a?(School)
   end
 
-  def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys)
-    energy_tariffs.enabled.where(meter_type: meter_type).usable.map(&:meter_attribute)
+  def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys, applies_to = :both)
+    energy_tariffs.enabled.where(meter_type: meter_type, applies_to: applies_to).usable.map(&:meter_attribute)
   end
 
   def parent_tariff_holder
@@ -53,11 +53,11 @@ module EnergyTariffHolder
     end
   end
 
-  def all_energy_tariff_attributes(meter_type = EnergyTariff.meter_types.keys)
+  def all_energy_tariff_attributes(meter_type = EnergyTariff.meter_types.keys, applies_to = :both)
     attributes = []
     parent = parent_tariff_holder
-    attributes += parent.all_energy_tariff_attributes(meter_type) unless parent.nil?
-    attributes += energy_tariff_meter_attributes(meter_type)
+    attributes += parent.all_energy_tariff_attributes(meter_type, applies_to) unless parent.nil?
+    attributes += energy_tariff_meter_attributes(meter_type, applies_to)
     attributes
   end
 end
