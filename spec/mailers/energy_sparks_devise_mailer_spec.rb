@@ -39,6 +39,12 @@ RSpec.describe EnergySparksDeviseMailer do
         expect(@email.body.to_s).to include("http://cy.localhost/users/confirmation?confirmation_token=")
       end
     end
+    context 'when school has country of england' do
+      let(:country) { "england" }
+      it 'sends an email in en only' do
+        expect(@email.subject).to eq("Energy Sparks: confirm your account")
+      end
+    end
 
     context 'when school group has country of wales (for group admins)' do
       let(:school_group)        { create(:school_group, default_country: 'wales') }
