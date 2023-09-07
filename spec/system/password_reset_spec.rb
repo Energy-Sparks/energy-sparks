@@ -2,10 +2,9 @@ require 'rails_helper'
 
 describe 'password reset' do
 
-  let(:preferred_locale) { }
-  let!(:user) { create(:user, preferred_locale: preferred_locale) }
-
-  let(:email) { ActionMailer::Base.deliveries.last }
+  let(:preferred_locale)  { }
+  let!(:user)             { create(:user, preferred_locale: preferred_locale) }
+  let(:email)             { ActionMailer::Base.deliveries.last }
 
   around do |example|
     ClimateControl.modify SEND_AUTOMATED_EMAILS: 'true' do
