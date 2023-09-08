@@ -238,11 +238,18 @@ class Meter < ApplicationRecord
   def energy_tariff_meter_attributes
     attributes = []
     if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
-      school_attributes = school.all_energy_tariff_attributes(meter_type)
+      school_attributes = school.all_energy_tariff_attributes(meter_type, applies_to_for_meter_system)
       attributes += school_attributes unless school_attributes.nil?
     end
     attributes += energy_tariffs.enabled.usable.map(&:meter_attribute)
     attributes
+  end
+
+  def applies_to_for_meter_system
+    case meter_system
+    when :nhh_amr, :nhh, :smets2_smart then :non_half_hourly
+    when :hh then :half_hourly
+    end
   end
 
   def meter_attributes_to_analytics

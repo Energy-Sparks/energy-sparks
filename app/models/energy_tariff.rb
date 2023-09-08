@@ -53,7 +53,7 @@ class EnergyTariff < ApplicationRecord
   enum meter_type: [:electricity, :gas, :solar_pv, :exported_solar_pv]
   enum tariff_type: [:flat_rate, :differential]
 
-  # When use as an all_energy_tariff_attributes filter:
+  # Used as an all_energy_tariff_attributes filter:
   # :half_hourly applies to meters which have a :meter_system of :hh
   # :non_half_hourly applies to meters which have a :meter_system of :nhh_amr, :nhh or :smets2_smart
   # :both applies to meters with all meter :system_type values
