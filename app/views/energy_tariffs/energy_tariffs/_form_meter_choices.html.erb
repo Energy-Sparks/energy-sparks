@@ -15,7 +15,7 @@
 <div class="row mt-4 meter-applies-to" data-hidden-by='.specific-meters'>
   <div class="col-md-12">
     <div class="form-check meter-applies-to">
-      <%= f.input :applies_to, as: :radio_buttons, collection: EnergyTariff.applies_tos, label: t('schools.user_tariffs.choose_meters.tariff_applies_to') %>
+      <%= f.input :applies_to, as: :radio_buttons, collection: EnergyTariff.applies_tos.keys.map { |applies_to_key| [t("schools.user_tariffs.choose_meters.#{applies_to_key}"), applies_to_key] }, label: t('schools.user_tariffs.choose_meters.tariff_applies_to') %>
     </div>
   </div>
 </div>

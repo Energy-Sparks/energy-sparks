@@ -69,7 +69,10 @@
       <% c.with_charges_section do %>
         <% if @energy_tariff.meters.empty? %>
           <tr class="positive-row">
-            <td class="description"><%= t('schools.user_tariffs.meters.all_meters', meter_type: @energy_tariff.meter_type) %></td>
+            <td class="description">
+              <%= t('schools.user_tariffs.meters.all_meters', meter_type: @energy_tariff.meter_type) %>
+              (<%= t("schools.user_tariffs.choose_meters.#{@energy_tariff.applies_to}") %>)
+            </td>
             <td class="value"></td>
           </tr>
         <% end %>
