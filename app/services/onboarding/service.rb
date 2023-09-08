@@ -4,7 +4,7 @@ module Onboarding
 
     def complete_onboarding(school_onboarding, users)
       school_onboarding.events.create(event: :onboarding_complete)
-      school_onboarding.school.update!(visible: true) if set_visible_on_completion?
+      school_onboarding.school.update!(visible: true)
       send_confirmation_instructions(users)
       enrol_in_default_programme(school_onboarding.school)
       broadcast(:onboarding_completed, school_onboarding)
@@ -25,10 +25,6 @@ module Onboarding
     end
 
     private
-
-    def set_visible_on_completion?
-      EnergySparks::FeatureFlags.active?(:data_enabled_onboarding)
-    end
 
     def enrol_in_default_programme(school)
       Programmes::Enroller.new.enrol(school)

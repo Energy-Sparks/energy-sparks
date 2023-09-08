@@ -69,7 +69,7 @@ en:
         theoretically_every_pupil_uses_html: |-
           <p>
             Theoretically every pupil uses about 5 litres of hot water per day, which for your school with %{number_of_pupils} pupils,
-            equates to %{theoretical_annual_hot_water_requirement_litres} litres of hot water over the 190 days of the school year. In a 100% efficient system
+            equates to %{theoretical_annual_hot_water_requirement_litres} litres of hot water over the 195 days of the school year. In a 100% efficient system
             about %{theoretical_annual_hot_water_requirement_kwh} kWh of energy is required each year to heat this hot water.
           </p>
         title: Analysis

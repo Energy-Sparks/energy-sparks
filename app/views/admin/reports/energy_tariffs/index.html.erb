@@ -28,7 +28,11 @@ The following table summarises the energy tariffs currently configured in the sy
         <td><%= @count_by_school_group[school_group.slug].present? ? link_to(@count_by_school_group[school_group.slug], school_group_energy_tariffs_path(school_group)) : '-' %></td>
         <td>
           <% count = EnergyTariff.count_schools_with_tariff_by_group(school_group) %>
-          <%= count != 0 ? count : '' %>
+          <% if count > 0 %>
+            <%= link_to count, group_school_tariffs_school_group_energy_tariffs_path(school_group) %>
+          <% else %>
+            -
+          <% end %>
         </td>
         <td>
           <% count = EnergyTariff.count_schools_with_tariff_by_group(school_group, :dcc) %>

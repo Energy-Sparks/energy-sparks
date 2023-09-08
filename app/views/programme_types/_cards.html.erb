@@ -22,7 +22,7 @@
         <%= programme_type.short_description %>
       </p>
       <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-        <p><%= t('programme_types.cards.bonus_points', bonus_score: programme_type.bonus_score) %></p>
+        <p><%= t('programme_types.cards.bonus_points_html', bonus_score: tag.span(programme_type.bonus_score, class: 'badge badge-success')) %></p>
       <% end %>
     </div>
     <div class="col-sm-2 align-self-center">

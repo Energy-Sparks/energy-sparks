@@ -18,7 +18,7 @@ module EnergyTariffable
       ]
     end
 
-    if controller_name == 'energy_tariffs' && %w[index default_tariffs smart_meter_tariffs].include?(action_name)
+    if controller_name == 'energy_tariffs' && %w[index default_tariffs smart_meter_tariffs group_school_tariffs].include?(action_name)
       @breadcrumbs << { name: t('schools.energy_tariffs.title') }
     elsif controller_name == 'energy_tariffs' && %w[show new create].include?(action_name)
       @breadcrumbs << { name: t('schools.energy_tariffs.title'), href: polymorphic_path(tariff_holder_route(@tariff_holder) + [:energy_tariffs]) }

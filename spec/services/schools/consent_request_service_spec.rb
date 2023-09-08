@@ -6,14 +6,7 @@ RSpec.describe Schools::ConsentRequestService do
   let!(:school)           { create(:school) }
   let!(:service)          { Schools::ConsentRequestService.new(school) }
 
-  around do |example|
-    ClimateControl.modify FEATURE_FLAG_EMAILS_WITH_PREFERRED_LOCALE: 'true' do
-      example.run
-    end
-  end
-
   context 'listing users' do
-
     context 'with no users' do
       it 'returns empty list' do
         expect(service.users).to eql([])
@@ -29,7 +22,6 @@ RSpec.describe Schools::ConsentRequestService do
         expect(service.users).to match_array([staff, school_admin])
       end
     end
-
   end
 
   context '#request_consent!' do

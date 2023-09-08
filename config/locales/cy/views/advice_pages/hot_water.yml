@@ -68,7 +68,7 @@ cy:
         theoretically_every_pupil_uses_html: |-
           <p>
             Yn ddamcaniaethol, mae pob disgybl yn defnyddio tua 5 litr o ddŵr poeth y dydd, sydd ar gyfer eich ysgol gyda %{number_of_pupils} o ddisgyblion,
-            sy'n hafal i  %{theoretical_annual_hot_water_requirement_litres} litr o ddŵr poeth dros y 190 diwrnod o'r flwyddyn ysgol. Mewn system 100% effeithlon mae angen
+            sy'n hafal i  %{theoretical_annual_hot_water_requirement_litres} litr o ddŵr poeth dros y 195 diwrnod o'r flwyddyn ysgol. Mewn system 100% effeithlon mae angen
             tua %{theoretical_annual_hot_water_requirement_kwh} kWh o ynni bob blwyddyn i gynhesu'r dŵr poeth hwn.
           </p>
         title: Dadansoddiad

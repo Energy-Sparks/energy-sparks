@@ -193,9 +193,7 @@ RSpec.describe Targets::TargetMailerService do
     context 'when preferred locales specified' do
       let!(:school_admin)  { create(:school_admin, school: school, preferred_locale: :cy) }
       it 'uses preferred locale' do
-        ClimateControl.modify FEATURE_FLAG_EMAILS_WITH_PREFERRED_LOCALE: 'true' do
-          service.invite_schools_to_set_first_target
-        end
+        service.invite_schools_to_set_first_target
         expect(ActionMailer::Base.deliveries.count).to eql 2
         emails = ActionMailer::Base.deliveries.last(2)
 
