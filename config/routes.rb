@@ -82,6 +82,7 @@ Rails.application.routes.draw do
         get :choose_meters, to: 'energy_tariffs#choose_meters'
         get :default_tariffs, to: 'energy_tariffs#default_tariffs'
         get :smart_meter_tariffs, to: 'energy_tariffs#smart_meter_tariffs'
+        get :group_school_tariffs, to: 'energy_tariffs#group_school_tariffs'
       end
       member do
         get :choose_type, to: 'energy_tariffs#choose_type'
