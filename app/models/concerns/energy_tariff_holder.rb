@@ -19,7 +19,7 @@ module EnergyTariffHolder
     is_a?(School)
   end
 
-  def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys, applies_to: :both)
+  def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys, applies_to = :both)
     raise InvalidAppliesToError unless EnergyTariff.applies_tos.key?(applies_to.to_s)
 
     applies_to_keys = [:both, applies_to].uniq
