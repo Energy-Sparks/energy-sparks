@@ -15,14 +15,20 @@ describe School do
   end
 
   describe '#with_energy_tariffs' do
-    let!(:school_1) { create(:school) }
-    let!(:school_2) { create(:school) }
-    let!(:school_group) { create(:school_group) }
-    let!(:energy_tariff) { create(:energy_tariff, tariff_holder: school_1) }
-    let!(:energy_tariff) { create(:energy_tariff, tariff_holder: SiteSettings.current) }
-    let!(:energy_tariff) { create(:energy_tariff, tariff_holder: school_group) }
+    let(:school_1) { create(:school) }
+    let(:school_2) { create(:school) }
+    let(:school_group) { create(:school_group) }
 
     it 'returns only schools with associated energy tariffs' do
+      [school_1, school_group, SiteSettings.current].each do |tariff_holder|
+        EnergyTariff.create(
+          tariff_holder: tariff_holder,
+          start_date: '2021-04-01',
+          end_date: '2022-03-31',
+          name: 'My First Tariff',
+          meter_type: :electricity
+        )
+      end
       expect(School.all).to match_array([school_1, school_2])
       expect(School.with_energy_tariffs).to eq([school_1])
     end
