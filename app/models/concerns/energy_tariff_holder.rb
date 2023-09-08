@@ -64,7 +64,9 @@ module EnergyTariffHolder
     attributes = []
     parent = parent_tariff_holder
     attributes += parent.all_energy_tariff_attributes(meter_type, applies_to) unless parent.nil?
-    attributes += energy_tariff_meter_attributes(meter_type, applies_to)
+    # It should NOT filter the tariffs with which it is directly associated.
+    # If a meter is explicitly linked to a tariff then it applies to it, regardless.
+    attributes += energy_tariff_meter_attributes(meter_type, EnergyTariff.applies_tos.keys)
     attributes
   end
 end
