@@ -635,8 +635,12 @@ class School < ApplicationRecord
     school_group.present? ? school_group : SiteSettings.current
   end
 
-  def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys)
-    energy_tariffs.where(meter_type: meter_type).left_joins(:meters).where(meters: { id: nil }).usable.map(&:meter_attribute)
+  def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys, applies_to = :both)
+    raise InvalidAppliesToError unless EnergyTariff.applies_tos.key?(applies_to.to_s)
+
+    applies_to_keys = [:both, applies_to].uniq
+
+    energy_tariffs.where(meter_type: meter_type).left_joins(:meters).where(meters: { id: nil }, applies_to: applies_to_keys).usable.map(&:meter_attribute)
   end
 
   def holds_tariffs_of_type?(meter_type)
