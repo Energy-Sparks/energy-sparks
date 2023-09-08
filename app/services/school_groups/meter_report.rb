@@ -45,7 +45,7 @@ module SchoolGroups
             meter.meter_type,
             meter.mpan_mprn,
             meter.name,
-            meter.half_hourly ? 'Yes' : 'No',
+            meter.t_meter_system,
             meter.data_source.try(:name) || '',
             meter.admin_meter_status_label,
             meter.procurement_route.try(:organisation_name) || '',

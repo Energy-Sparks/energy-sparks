@@ -98,8 +98,11 @@ class Meter < ApplicationRecord
            COUNT(1) FILTER (WHERE one_day_kwh = 0.0) AS zero_reading_days_count")
   }
 
-  # If adding a new one, add to the amr_validated_reading case statement for downloading data
+  # If adding a new meter_type, add to the amr_validated_reading case statement for downloading data
   enum meter_type: [:electricity, :gas, :solar_pv, :exported_solar_pv]
+  # The Meter's meter sytem defaults to NHH AMR (Non Half-Hourly Automatic Meter Reading)
+  # Other options are: NHH (Non Half-Hourly), HH (Half-Hourly), and SMETS2/smart (SMETS2 Smart Meters)
+  enum meter_system: [:nhh_amr, :nhh, :hh, :smets2_smart]
 
   delegate :area_name, to: :school
 
@@ -119,6 +122,10 @@ class Meter < ApplicationRecord
 
   def school_name
     school.name
+  end
+
+  def t_meter_system
+    I18n.t("meter.meter_system.#{meter_system}")
   end
 
   def admin_meter_status_label

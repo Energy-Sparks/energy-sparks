@@ -27,7 +27,7 @@
           <td>
             <%= link_to(meter.mpan_mprn, school_meter_url(meter.school, meter)) %>
           </td>
-          <td><%= meter.half_hourly ? t('common.labels.yes_label') : t('common.labels.no_label') %></td>
+          <td><%= meter.t_meter_system %></td>
           <td><%= link_to(meter.name.present? ? meter.name : meter.meter_type.to_s.humanize, admin_reports_amr_validated_reading_url(meter)) if AmrValidatedReading.where(meter_id: meter.id).any? %></td>
           <% if local_assigns[:all_meters] %>
             <td><%= meter.active ? 'Active' : 'Deprecated' %></td>
