@@ -16,8 +16,8 @@
       <% @tariff_holder.schools.with_energy_tariffs.each.each do |school| %>
         <tr>
           <td class="text-left"><%= link_to school.name, school_energy_tariffs_path(school) %></td>
-          <td class="text-right"><%= school.energy_tariffs.where(meter_type: 'electricity').count %></td>
-          <td class="text-right"><%= school.energy_tariffs.where(meter_type: 'gas').count %></td>
+          <td class="text-right"><%= school.energy_tariffs.electricity.count %></td>
+          <td class="text-right"><%= school.energy_tariffs.gas.count %></td>
         </tr>
       <% end %>
       </tbody>
