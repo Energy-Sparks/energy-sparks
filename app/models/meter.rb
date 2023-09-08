@@ -249,6 +249,7 @@ class Meter < ApplicationRecord
     case meter_system
     when :nhh_amr, :nhh, :smets2_smart then :non_half_hourly
     when :hh then :half_hourly
+    else :both
     end
   end
 
