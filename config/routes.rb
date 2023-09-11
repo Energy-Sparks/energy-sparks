@@ -70,29 +70,29 @@ Rails.application.routes.draw do
 
   concern :tariff_holder do
     scope module: 'energy_tariffs' do
-    resources :energy_tariffs do
-      resources :energy_tariff_flat_prices
-      resources :energy_tariff_differential_prices do
+      resources :energy_tariffs do
+        resources :energy_tariff_flat_prices
+        resources :energy_tariff_differential_prices do
+          collection do
+            get :reset, to: 'energy_tariff_differential_prices#reset'
+          end
+        end
+        resources :energy_tariff_charges
         collection do
-          get :reset, to: 'energy_tariff_differential_prices#reset'
+          get :choose_meters, to: 'energy_tariffs#choose_meters'
+          get :default_tariffs, to: 'energy_tariffs#default_tariffs'
+          get :smart_meter_tariffs, to: 'energy_tariffs#smart_meter_tariffs'
+          get :group_school_tariffs, to: 'energy_tariffs#group_school_tariffs'
+        end
+        member do
+          get :choose_type, to: 'energy_tariffs#choose_type'
+          get :edit_meters, to: 'energy_tariffs#edit_meters'
+          post :update_meters, to: 'energy_tariffs#update_meters'
+          post :update_type, to: 'energy_tariffs#update_type'
+          post :toggle_enabled, to: 'energy_tariffs#toggle_enabled'
         end
       end
-      resources :energy_tariff_charges
-      collection do
-        get :choose_meters, to: 'energy_tariffs#choose_meters'
-        get :default_tariffs, to: 'energy_tariffs#default_tariffs'
-        get :smart_meter_tariffs, to: 'energy_tariffs#smart_meter_tariffs'
-        get :group_school_tariffs, to: 'energy_tariffs#group_school_tariffs'
-      end
-      member do
-        get :choose_type, to: 'energy_tariffs#choose_type'
-        get :edit_meters, to: 'energy_tariffs#edit_meters'
-        post :update_meters, to: 'energy_tariffs#update_meters'
-        post :update_type, to: 'energy_tariffs#update_type'
-        post :toggle_enabled, to: 'energy_tariffs#toggle_enabled'
-      end
     end
-  end
   end
 
   scope '/admin/settings', as: :admin_settings do
