@@ -71,13 +71,6 @@ Rails.application.routes.draw do
   concern :tariff_holder do
     scope module: 'energy_tariffs' do
       resources :energy_tariffs do
-        resources :energy_tariff_flat_prices
-        resources :energy_tariff_differential_prices do
-          collection do
-            get :reset, to: 'energy_tariff_differential_prices#reset'
-          end
-        end
-        resources :energy_tariff_charges
         collection do
           get :choose_meters, to: 'energy_tariffs#choose_meters'
           get :default_tariffs, to: 'energy_tariffs#default_tariffs'
@@ -90,6 +83,13 @@ Rails.application.routes.draw do
           post :update_meters, to: 'energy_tariffs#update_meters'
           post :update_type, to: 'energy_tariffs#update_type'
           post :toggle_enabled, to: 'energy_tariffs#toggle_enabled'
+        end
+        resources :energy_tariff_flat_prices
+        resources :energy_tariff_charges
+        resources :energy_tariff_differential_prices do
+          collection do
+            get :reset, to: 'energy_tariff_differential_prices#reset'
+          end
         end
       end
     end
