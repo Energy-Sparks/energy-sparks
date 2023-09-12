@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_31_141217) do
+ActiveRecord::Schema.define(version: 2023_09_07_123002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -813,6 +813,7 @@ ActiveRecord::Schema.define(version: 2023_08_31_141217) do
     t.bigint "updated_by_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "applies_to", default: 0
     t.index ["created_by_id"], name: "index_energy_tariffs_on_created_by_id"
     t.index ["tariff_holder_type", "tariff_holder_id"], name: "index_energy_tariffs_on_tariff_holder_type_and_tariff_holder_id"
     t.index ["updated_by_id"], name: "index_energy_tariffs_on_updated_by_id"
@@ -1159,7 +1160,7 @@ ActiveRecord::Schema.define(version: 2023_08_31_141217) do
     t.bigint "data_source_id"
     t.bigint "admin_meter_statuses_id"
     t.bigint "procurement_route_id"
-    t.boolean "half_hourly", default: true
+    t.integer "meter_system", default: 0
     t.index ["data_source_id"], name: "index_meters_on_data_source_id"
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_review_id"], name: "index_meters_on_meter_review_id"
@@ -1626,8 +1627,8 @@ ActiveRecord::Schema.define(version: 2023_08_31_141217) do
     t.integer "management_priorities_page_limit", default: 10
     t.boolean "message_for_no_pupil_accounts", default: true
     t.jsonb "temperature_recording_months", default: ["10", "11", "12", "1", "2", "3", "4"]
-    t.jsonb "prices"
     t.integer "default_import_warning_days", default: 10
+    t.jsonb "prices"
     t.integer "photo_bonus_points", default: 0
     t.integer "audit_activities_bonus_points", default: 0
   end

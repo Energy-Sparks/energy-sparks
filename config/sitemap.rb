@@ -21,7 +21,7 @@ if ENV.key?('GENERATE_SITEMAP')
     add terms_and_conditions_path
     add case_studies_path
     add newsletters_path
-    add user_guide_videos_path
+    add user_guide_youtube_path
     add resources_path
     add jobs_path
 

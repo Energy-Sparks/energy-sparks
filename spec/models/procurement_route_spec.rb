@@ -48,7 +48,7 @@ RSpec.describe ProcurementRoute, type: :model do
                 meters[i].mpan_mprn,
                 meters[i].meter_type.humanize,
                 meters[i].active,
-                (meters[i].half_hourly ? 'Yes' : 'No'),
+                meters[i].t_meter_system,
                 first_reading_date,
                 last_reading_date,
                 admin_meter_status.label,

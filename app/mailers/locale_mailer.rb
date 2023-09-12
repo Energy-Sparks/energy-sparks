@@ -22,6 +22,6 @@ class LocaleMailer < ApplicationMailer
   end
 
   def locale_param
-    active_locale(params[:locale] || :en)
+    params[:locale] || :en
   end
 end

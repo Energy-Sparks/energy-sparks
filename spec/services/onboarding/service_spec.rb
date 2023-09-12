@@ -43,17 +43,9 @@ describe Onboarding::Service, type: :service do
       subject.complete_onboarding(onboarding, [])
       expect(onboarding.has_event?(:onboarding_complete)).to be_truthy
     end
-    it 'sets school visible if feature flag set' do
-      ClimateControl.modify FEATURE_FLAG_DATA_ENABLED_ONBOARDING: 'true' do
-        subject.complete_onboarding(onboarding, [])
-        expect(onboarding.school.visible?).to be_truthy
-      end
-    end
-    it 'does not set school visible if feature flag not set' do
-      ClimateControl.modify FEATURE_FLAG_DATA_ENABLED_ONBOARDING: 'false' do
-        subject.complete_onboarding(onboarding, [])
-        expect(onboarding.school.visible?).to be_falsey
-      end
+    it 'sets school visible' do
+      subject.complete_onboarding(onboarding, [])
+      expect(onboarding.school.visible?).to be_truthy
     end
     it 'sends confirmation email to unconfirmed users only' do
       expect(confirmed_user).not_to receive(:send_confirmation_instructions)

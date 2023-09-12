@@ -18,5 +18,10 @@
         <%= t('schools.user_tariffs.index.tabs.default_tariffs') %>
       <% end %>
     <% end %>
+    <% if @tariff_holder.school_group?  %>
+      <%= link_to polymorphic_path(tariff_holder_route(@tariff_holder) + [:energy_tariffs], { action: :group_school_tariffs }), id: "nav-group-school-tariffs-tab", class: "nav-item nav-link#{ action_name == 'group_school_tariffs' ? ' active' : '' }", "aria-controls": "nav-group-school-tariffs", "aria-selected": (action_name == 'group_school_tariffs') do %>
+        <%= t('schools.user_tariffs.index.tabs.group_school_tariffs') %>
+      <% end %>
+    <% end %>
   </div>
 </nav>

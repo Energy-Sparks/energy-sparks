@@ -129,6 +129,23 @@ describe EnergyTariff do
       expect(energy_tariff_price_1).to be_valid
     end
 
+    it 'should require applies to always be set to both except for electricity meter type tariffs' do
+      EnergyTariff.meter_types.keys.each do |meter_type|
+        energy_tariff.meter_type = meter_type
+        (EnergyTariff.applies_tos.keys).each do |applies_to|
+          energy_tariff.applies_to = applies_to
+          if meter_type == 'electricity'
+            expect(energy_tariff).to be_valid
+          elsif applies_to == 'both'
+            expect(energy_tariff).to be_valid
+          else
+            expect(energy_tariff).not_to be_valid
+            expect(energy_tariff.errors[:applies_to]).to eq(["applies to must be set to 'both' for all non-electricity tariffs"])
+          end
+        end
+      end
+    end
+
     it { should validate_numericality_of(:vat_rate).is_greater_than_or_equal_to(0.0).is_less_than_or_equal_to(100.0).allow_nil }
   end
 
