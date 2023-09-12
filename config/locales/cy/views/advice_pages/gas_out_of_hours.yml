@@ -56,7 +56,7 @@ cy:
       insights:
         comparison:
           callout_footer: defnydd blynyddol
-          how_do_you_compare: Sut mae eich defnydd o nwy y tu allan i oriau ysgol yn cymharu ag ysgolion %{school_type} eraill ar Sbarcynni, sydd â nifer tebyg o ddisgyblion?
+          how_do_you_compare: Sut mae eich defnydd o nwy y tu allan i oriau ysgol yn cymharu ag ysgolion %{school_type} eraill ar Sbarcynni, sydd ag arwynebedd llawr tebyg?
           more_detail_html: Am ragor o fanylion, <a href="%{link}">cymharwch gydag ysgolion eraill yn eich grŵp</a>
           title: Sut ydych chi'n cymharu?
         next_steps: Gwnewch yn siŵr bod eich gwres wedi'i osod i gynhesu'r ysgol dim ond pan fydd angen iddi fod yn gynnes. Gellir diffodd gwres a dŵr poeth gyda'r nos, penwythnosau a gwyliau ac ni ddylai gwres ddod ymlaen yn rhy gynnar yn y boreau. Defnyddiwch restr wirio o dasgau arbed ynni i'w cwblhau cyn gwyliau.

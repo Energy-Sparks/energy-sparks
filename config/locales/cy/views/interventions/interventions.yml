@@ -21,7 +21,13 @@ cy:
       page_title: Diweddaru gweithred arbed ynni
       title: Diweddarwch eich gweithred arbed ynni
     form:
+      adding_a_photo_to_document_your_action_will_score_you: Bydd ychwanegu llun i ddogfennu eich gweithred yn eich sgorio
       adding_some_background_detail_label: Gall ychwanegu rhai manylion cefndir eich helpu i olrhain a monitro gwelliannau
+      bonus_points:
+        one: pwynt bonws
+        two: pwyntiau bonws
+        many: pwyntiau bonws
+        other: pwyntiau bonws
       if_pupils_were_involved_label: Os oedd disgyblion yn ymwneud â chynnig, cynllunio, codi arian neu gyflawni'r weithred hon yna bydd cofnodi'r weithred hon yn sgorio
       points_for_your_school:
         one: pwynt ar gyfer eich ysgol
@@ -42,3 +48,5 @@ cy:
     new:
       page_title: Cofnodi gweithred arbed ynni
       title: Cofnodi gweithred arbed ynni ar gyfer eich ysgol
+    show:
+      pupils_involved_in_this_activity: Disgyblion sy'n cymryd rhan yn y gweithgaredd hwn
