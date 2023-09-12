@@ -58,15 +58,15 @@ module EnergyTariffHolder
     end
   end
 
-  def all_energy_tariff_attributes(meter_type = EnergyTariff.meter_types.keys, applies_to = :both)
-    raise InvalidAppliesToError unless EnergyTariff.applies_tos.key?(applies_to.to_s)
+  def all_energy_tariff_attributes(meter_type = EnergyTariff.meter_types.keys, applies_to_key = :both)
+    raise InvalidAppliesToError unless EnergyTariff.applies_tos.key?(applies_to_key.to_s)
 
     attributes = []
     parent = parent_tariff_holder
-    attributes += parent.all_energy_tariff_attributes(meter_type, applies_to) unless parent.nil?
+    attributes += parent.all_energy_tariff_attributes(meter_type, applies_to_key) unless parent.nil?
     # It should NOT filter the tariffs with which it is directly associated.
     # If a meter is explicitly linked to a tariff then it applies to it, regardless.
-    attributes += energy_tariff_meter_attributes(meter_type, EnergyTariff.applies_tos.keys)
+    attributes += energy_tariff_meter_attributes(meter_type, :both)
     attributes
   end
 end
