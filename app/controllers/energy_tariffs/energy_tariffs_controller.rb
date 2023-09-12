@@ -52,17 +52,17 @@ module EnergyTariffs
     end
 
     def update_meters
-puts '---'
-puts energy_tariff_params.inspect
-puts '---'
+      redirect_back fallback_location: school_energy_tariffs_path(@tariff_holder), notice: I18n.t('schools.user_tariffs.choose_meters.missing_meters') and return if require_meters?
 
-if require_meters?
-  redirect_back fallback_location: school_energy_tariffs_path(@tariff_holder), notice: I18n.t('schools.user_tariffs.choose_meters.missing_meters')
-elsif @energy_tariff.update(energy_tariff_params.merge(updated_by: current_user))
-  redirect_to energy_tariffs_path(@energy_tariff)
-else
-  render :edit_meters
-end
+      @energy_tariff.meter_ids = energy_tariff_params[:meter_ids]
+      @energy_tariff.applies_to = energy_tariff_params[:applies_to].present? ? energy_tariff_params[:applies_to] : :both
+      @energy_tariff.updated_by = current_user
+
+      if @energy_tariff.save!
+        redirect_to energy_tariffs_path(@energy_tariff)
+      else
+        render :edit_meters
+      end
     end
 
     def choose_type
