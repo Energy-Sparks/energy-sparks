@@ -241,6 +241,27 @@ RSpec.shared_examples "the user can change the type of tariff" do
 end
 
 RSpec.shared_examples "the user can select the meters" do
+  it 'can select which meter system types a tariff applies to' do
+    expect(page).to have_content("All electricity meters")
+    expect(energy_tariff.applies_to).to eq('both')
+
+    find('#meters-section-edit').click
+
+    expect(page).to have_content('Select meters for this tariff')
+    check('all_meters')
+    expect(page).to have_content('both half-hourly and non half-hourly meters')
+    expect(page).to have_content('half-hourly meters only')
+    expect(page).to have_content('non half-hourly meters only')
+
+    choose('energy_tariff[applies_to]', option: 'half_hourly')
+
+    click_button('Continue')
+
+    energy_tariff.reload
+    expect(energy_tariff.meters).to match_array([])
+    expect(energy_tariff.applies_to).to eq('half_hourly')
+  end
+
   it 'can create a tariff and associate the meters' do
     expect(page).to have_content("All electricity meters")
 
