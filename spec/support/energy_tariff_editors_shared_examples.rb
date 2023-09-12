@@ -265,7 +265,7 @@ RSpec.shared_examples "a school tariff editor" do
     end
   end
 
-  context 'when editing a school tariff' do
+  context 'when editing a school electricity tariff' do
     let(:meter)           { electricity_meter }
     let(:mpan_mprn)       { electricity_meter.mpan_mprn.to_s }
     let(:meter_type)      { :electricity }
@@ -275,6 +275,20 @@ RSpec.shared_examples "a school tariff editor" do
       click_on(energy_tariff.name)
     end
     include_examples "the user can select the meters"
+    include_examples "the user can select the meter system"
+  end
+
+  context 'when editing a school gas tariff' do
+    let(:meter)           { gas_meter }
+    let(:mpan_mprn)       { gas_meter.mpan_mprn.to_s }
+    let(:meter_type)      { :gas }
+    let!(:energy_tariff)  { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022,1,1), end_date: Date.new(2022,12,31), tariff_holder: tariff_holder, meter_type: meter_type)}
+    before(:each) do
+      refresh
+      click_on(energy_tariff.name)
+    end
+    include_examples "the user can select the meters"
+    include_examples "the user can not select the meter system"
   end
 end
 
