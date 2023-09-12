@@ -73,6 +73,9 @@ en:
         title: Add consumption charges for this %{fuel_type} tariff
       rate_in_gbp: Rate in £
     user_tariffs:
+      applies_to:
+        breadcrumb_title: Tariff applies to
+        title: Choose which meter systems this tariff applies to
       charges_table:
         climate_charge_levy: Climate charge levy
         tnuos: TNUoS (Transmission Network Use of System)
@@ -85,7 +88,7 @@ en:
         missing_meters: Please select at least one meter for this tariff. Or uncheck option to apply tariff to all meters
         non_half_hourly: non half-hourly meters only
         specific_meters_prompt: Will this tariff apply to all %{fuel_type} meters at the school or just specific meters?
-        tariff_applies_to: This tariff applies to
+        tariff_applies_to: Tariff applies to
         title: Select meters for this tariff
         which_meters_will_this_tariff_apply_to: Which meters will this tariff apply to?
       choose_type:

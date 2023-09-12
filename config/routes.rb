@@ -80,9 +80,11 @@ Rails.application.routes.draw do
         member do
           get :choose_type
           get :edit_meters
+          get :applies_to
           post :update_meters
           post :update_type
           post :toggle_enabled
+          post :update_applies_to
         end
         resources :energy_tariff_flat_prices
         resources :energy_tariff_charges

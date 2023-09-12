@@ -63,8 +63,8 @@
   <% if @energy_tariff.school_group? || @energy_tariff.site_settings? %>
     <%= component 'energy_tariff_section',
       id: 'meter-system',
-      title: 'Applies to',
-      edit_path: energy_tariffs_path(@energy_tariff, [], { action: :edit_meters }),
+      title: t('schools.user_tariffs.choose_meters.tariff_applies_to'),
+      edit_path: energy_tariffs_path(@energy_tariff, [], { action: :applies_to }),
       show_button: true do |c| %>
       <% c.with_charges_section do %>
         <tr class="positive-row">
