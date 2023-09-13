@@ -76,6 +76,7 @@ cy:
           annual_usage_kwh: Defnydd blynyddol (kWh)
           estimated_savings_gbp: Arbediad amcangyfrifedig (£)
           meter: Mesurydd
+          name: Enw
           percent: Canran o gyfanswm y defnydd
         labels:
           all_meters: Pob mesurydd
