@@ -69,6 +69,17 @@ module EnergyTariffs
       end
     end
 
+    def applies_to
+    end
+
+    def update_applies_to
+      if @energy_tariff.update!(applies_to: energy_tariff_params['applies_to'])
+        redirect_to energy_tariffs_path(@energy_tariff)
+      else
+        render :applies_to
+      end
+    end
+
     def choose_type
     end
 

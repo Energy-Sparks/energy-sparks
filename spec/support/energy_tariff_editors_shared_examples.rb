@@ -8,7 +8,7 @@ RSpec.shared_examples "a basic gas tariff editor" do
   context 'with an existing tariff' do
     let!(:energy_tariff)         { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022,1,1), end_date: Date.new(2022,12,31), tariff_holder: tariff_holder, meter_type: meter_type)}
     before do
-      #assumes staring from tariff index
+      #assumes starting from tariff index
       refresh
       click_on energy_tariff.name
     end
@@ -31,7 +31,7 @@ RSpec.shared_examples "a basic electricity tariff editor" do
   context 'with an existing tariff' do
     let!(:energy_tariff)         { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022,1,1), end_date: Date.new(2022,12,31), tariff_holder: tariff_holder, meter_type: meter_type)}
     before do
-      #assumes staring from tariff index
+      #assumes starting from tariff index
       refresh
       click_on energy_tariff.name
     end
@@ -105,7 +105,7 @@ RSpec.shared_examples "a basic electricity tariff editor" do
     let!(:energy_tariff)         { create(:energy_tariff, tariff_type: :differential, tariff_holder: tariff_holder, meter_type: meter_type)}
 
     before do
-      #assumes staring from tariff index
+      #assumes starting from tariff index
       refresh
       click_on energy_tariff.name
     end
@@ -276,6 +276,7 @@ RSpec.shared_examples "a school tariff editor" do
     end
     include_examples "the user can select the meters"
     include_examples "the user can select the meter system"
+    include_examples "the user can not see the meterless applies to editor"
   end
 
   context 'when editing a school gas tariff' do
@@ -289,6 +290,7 @@ RSpec.shared_examples "a school tariff editor" do
     end
     include_examples "the user can select the meters"
     include_examples "the user can not select the meter system"
+    include_examples "the user can not see the meterless applies to editor"
   end
 end
 
@@ -322,6 +324,7 @@ RSpec.shared_examples "a school group energy tariff editor" do
 
     it_behaves_like 'a basic gas tariff editor'
     it_behaves_like 'a basic electricity tariff editor'
+    it_behaves_like "the meterless applies to editor"
   end
 end
 
@@ -349,5 +352,6 @@ RSpec.shared_examples "the site settings energy tariff editor" do
 
     it_behaves_like 'a basic gas tariff editor'
     it_behaves_like 'a basic electricity tariff editor'
+    it_behaves_like "the meterless applies to editor"
   end
 end
