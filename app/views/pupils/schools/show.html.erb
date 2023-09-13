@@ -22,13 +22,31 @@
 <h2 class="mt-2"><%= t('pupils.schools.show.things_to_do') %></h2>
 <% if @dashboard_alerts && @dashboard_alerts.any? %>
   <% @dashboard_alerts.each do |content| %>
-    <%= render 'schools/dashboard/info_bar',
-          colour: class_for_alert_colour(content.colour),
-          icon: alert_icon(content.alert, 'fa-3x'),
-          content: content.pupil_dashboard_title,
-          buttons: dashboard_alert_buttons(@school, content)
-    %>
-   <% end %>
+    <%= component 'notice', status: content.colour do |c| %>
+      <div class="row">
+        <div class="col-md-1">
+          <%= fa_icon(alert_icon(content.alert, 'fa-3x')) %>
+        </div>
+        <% buttons = dashboard_alert_buttons(@school, content) %>
+        <% if buttons ||= [] %>
+          <div class='<%= "col-md-#{11 - buttons.size * 3}" %>'>
+            <%= content.pupil_dashboard_title %>
+          </div>
+          <% buttons.each do |title, path| %>
+            <div class="col-md-3">
+              <%= link_to (sanitize title), path, class: "btn btn-light btn rounded-pill font-weight-bold", style: 'height: fit-content;' %>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="col-md-11">
+            <h5><%= content %></h5>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    <br />
+  <% end %>
+  <br />
 <% end %>
 
 <% if @show_temperature_observations %>
