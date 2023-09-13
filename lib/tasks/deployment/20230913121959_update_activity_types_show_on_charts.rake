@@ -13,17 +13,17 @@ namespace :after_party do
     ActivityCategory.find_by(name: 'Analyst').activity_types.update_all(show_on_charts: false)
 
     ActivityType.where("name ILIKE '%electricity%' OR name ILIKE '%electrical%' OR name ILIKE '%lights%' OR name ILIKE '%lighting%' OR name ILIKE '%baseload%'").each do |activity_type|
-      activity_type.fuel_type << 'electricity'
+      activity_type.fuel_type |= ['electricity']
       activity_type.save!
     end
 
     ActivityType.where("name ILIKE '%heating%' OR name ILIKE '%hot water%' OR name ILIKE '%gas%' OR name ILIKE '%thermostat%' OR name ILIKE '%temperature%' OR name ILIKE '%insulation%'").each do |activity_type|
-      activity_type.fuel_type << 'gas'
+      activity_type.fuel_type |= ['gas']
       activity_type.save!
     end
 
     ActivityType.where("name ILIKE '%solar%'").each do |activity_type|
-      activity_type.fuel_type << 'solar'
+      activity_type.fuel_type |= ['solar']
       activity_type.save!
     end
 
