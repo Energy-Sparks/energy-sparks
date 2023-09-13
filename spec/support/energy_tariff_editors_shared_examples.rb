@@ -8,7 +8,7 @@ RSpec.shared_examples "a basic gas tariff editor" do
   context 'with an existing tariff' do
     let!(:energy_tariff)         { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022,1,1), end_date: Date.new(2022,12,31), tariff_holder: tariff_holder, meter_type: meter_type)}
     before do
-      #assumes staring from tariff index
+      #assumes starting from tariff index
       refresh
       click_on energy_tariff.name
     end
@@ -31,7 +31,7 @@ RSpec.shared_examples "a basic electricity tariff editor" do
   context 'with an existing tariff' do
     let!(:energy_tariff)         { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022,1,1), end_date: Date.new(2022,12,31), tariff_holder: tariff_holder, meter_type: meter_type)}
     before do
-      #assumes staring from tariff index
+      #assumes starting from tariff index
       refresh
       click_on energy_tariff.name
     end
@@ -105,7 +105,7 @@ RSpec.shared_examples "a basic electricity tariff editor" do
     let!(:energy_tariff)         { create(:energy_tariff, tariff_type: :differential, tariff_holder: tariff_holder, meter_type: meter_type)}
 
     before do
-      #assumes staring from tariff index
+      #assumes starting from tariff index
       refresh
       click_on energy_tariff.name
     end
