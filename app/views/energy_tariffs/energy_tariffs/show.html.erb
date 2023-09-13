@@ -60,7 +60,7 @@
     <% end %>
   <% end %>
 
-  <% if @energy_tariff.school_group? || @energy_tariff.site_settings? %>
+  <% if @energy_tariff.school_group? || @energy_tariff.site_setting? %>
     <%= component 'energy_tariff_section',
       id: 'meter-system',
       title: t('schools.user_tariffs.choose_meters.tariff_applies_to'),
