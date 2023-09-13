@@ -34,10 +34,6 @@ namespace :after_party do
       intervention_type.save!
     end
 
-    # InterventionType.each do |intervention_type|
-    #   intervention_type.fuel_type = intervention_type.fuel_type.uniq
-    # end
-
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).
     AfterParty::TaskRecord
