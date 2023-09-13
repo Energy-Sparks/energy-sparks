@@ -309,7 +309,7 @@ RSpec.shared_examples "the meterless applies to editor" do
   let!(:gas_tariff)         { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022,1,1), end_date: Date.new(2022,12,31), tariff_holder: tariff_holder, meter_type: :gas)}
 
   it 'can select which meter system types an electricity tariff applies to' do
-    # assumes staring from tariff index
+    # assumes starting from tariff index
     refresh
     click_on electricity_tariff.name
     expect(electricity_tariff.meters).to match_array([])
@@ -328,7 +328,7 @@ RSpec.shared_examples "the meterless applies to editor" do
   end
 
   it 'can not select which meter system types a gas tariff applies to' do
-    # assumes staring from tariff index
+    # assumes starting from tariff index
     refresh
     click_on gas_tariff.name
     expect(gas_tariff.meters).to match_array([])
