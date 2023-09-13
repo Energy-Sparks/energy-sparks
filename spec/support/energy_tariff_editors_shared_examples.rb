@@ -276,6 +276,7 @@ RSpec.shared_examples "a school tariff editor" do
     end
     include_examples "the user can select the meters"
     include_examples "the user can select the meter system"
+    include_examples "the user can not see the meterless applies to editor"
   end
 
   context 'when editing a school gas tariff' do
@@ -289,6 +290,7 @@ RSpec.shared_examples "a school tariff editor" do
     end
     include_examples "the user can select the meters"
     include_examples "the user can not select the meter system"
+    include_examples "the user can not see the meterless applies to editor"
   end
 end
 
@@ -322,6 +324,7 @@ RSpec.shared_examples "a school group energy tariff editor" do
 
     it_behaves_like 'a basic gas tariff editor'
     it_behaves_like 'a basic electricity tariff editor'
+    it_behaves_like "the meterless applies to editor"
   end
 end
 
@@ -349,5 +352,6 @@ RSpec.shared_examples "the site settings energy tariff editor" do
 
     it_behaves_like 'a basic gas tariff editor'
     it_behaves_like 'a basic electricity tariff editor'
+    it_behaves_like "the meterless applies to editor"
   end
 end
