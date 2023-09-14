@@ -1,6 +1,7 @@
-<%= render 'schools/dashboard/info_bar',
-  colour: 'bg-neutral',
-  content: t('schools.show.add_consumption_estimate', fuels: t_fuels_as_sentence(fuel_types)),
-  icon: 'calculator fa-3x',
-  buttons: { t('schools.show.add_estimate') => school_estimated_annual_consumptions_path(school)}
-%>
+<%= component 'notice', status: :neutral, classes: 'mb-4' do |c| %>
+  <%= component 'info_bar',
+      title: t('schools.show.add_consumption_estimate', fuels: t_fuels_as_sentence(fuel_types)),
+      icon: fa_icon('calculator fa-3x'),
+      buttons: { t('schools.show.add_estimate') => school_estimated_annual_consumptions_path(school) }
+  %>
+<% end %>

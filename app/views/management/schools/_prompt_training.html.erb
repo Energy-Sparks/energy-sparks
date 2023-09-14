@@ -1,6 +1,7 @@
-<%= render 'schools/dashboard/info_bar',
-  colour: 'bg-neutral',
-  content: t('schools.show.online_training_signup'),
-  icon: 'info-circle fa-3x',
-  buttons: {t('schools.show.find_training') => training_path}
-%>
+<%= component 'notice', status: :neutral, classes: 'mb-4' do |c| %>
+  <%= component 'info_bar',
+      title: t('schools.show.online_training_signup'),
+      icon: fa_icon('info-circle fa-3x'),
+      buttons: { t('schools.show.find_training') => training_path }
+  %>
+<% end %>
