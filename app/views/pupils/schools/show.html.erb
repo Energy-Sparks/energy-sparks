@@ -13,14 +13,11 @@
   <%= render 'default_equivalences', equivalences: @default_equivalences, chool: @school %>
   <%= component 'notice', status: :neutral, classes: 'mb-4' do |c| %>
     <%= component 'info_bar',
-        status:  :neutral,
         title: t('pupils.schools.show.setting_up'),
         icon: fa_icon('info-circle fa-3x'),
         buttons: {}
     %>
   <% end %>
-
-
 <% end %>
 
 <h2 class="mt-2"><%= t('pupils.schools.show.things_to_do') %></h2>
@@ -92,8 +89,6 @@
       </div>
     </div>
   </div>
-
-
 
   <div class="col card-deck actions">
     <% if current_school_podium && can?(:read, current_school_podium.scoreboard) %>
