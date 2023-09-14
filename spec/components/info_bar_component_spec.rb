@@ -2,11 +2,7 @@
 
 require "rails_helper"
 
-include ActionView::Helpers
-
 RSpec.describe InfoBarComponent, type: :component do
-  pending "add some examples to (or delete) #{__FILE__}"
-
   it "renders a three colum info bar with an icon, title text, and some optional buttons" do
     expect(
       render_inline(described_class.new(icon: '<i class="fas fa-school fa-3x"></i>'.html_safe, title: 'This is an info bar', buttons: { "Click me" => "http://www.example.com" })).to_html
