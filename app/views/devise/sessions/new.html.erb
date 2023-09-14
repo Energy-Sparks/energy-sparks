@@ -34,8 +34,9 @@
 
           <% if devise_mapping.rememberable? -%>
             <div class="form-group row">
-              <div class="col-sm-6 offset-sm-4">
-                <%= f.check_box :remember_me %> <%= f.label t('devise.sessions.new.remember_me') %>
+              <%= f.label t('devise.sessions.new.remember_me'), class: "col-sm-4 col-form-label" %>
+              <div class="col-sm-6">
+                <%= f.check_box :remember_me, class: "form-control col-sm-1" %>
               </div>
             </div>
           <% end -%>
