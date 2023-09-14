@@ -78,7 +78,6 @@ class Observation < ApplicationRecord
   private
 
   def add_bonus_points_for_included_images
-    return unless EnergySparks::FeatureFlags.active?(:activities_2023)
     # Only add bonus points if the site wide photo bonus points is set to non zero
     return unless SiteSettings.current.photo_bonus_points&.nonzero?
     # Only add bonus points if the current observation score is non zero
@@ -98,21 +97,11 @@ class Observation < ApplicationRecord
   end
 
   def add_points_for_interventions
-    if EnergySparks::FeatureFlags.active?(:activities_2023)
-      record_points_for_current_academic_year
-    else
-      record_points_for_current_academic_year_and_involved_pupils
-    end
+    record_points_for_current_academic_year
   end
 
   def record_points_for_current_academic_year
     return unless school.academic_year_for(at)&.current?
-
-    self.points = intervention_type.score
-  end
-
-  def record_points_for_current_academic_year_and_involved_pupils
-    return unless school.academic_year_for(at)&.current? && involved_pupils?
 
     self.points = intervention_type.score
   end
