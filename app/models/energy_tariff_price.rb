@@ -10,7 +10,7 @@
 #  start_time       :time             default(Sat, 01 Jan 2000 00:00:00 UTC +00:00), not null
 #  units            :text
 #  updated_at       :datetime         not null
-#  value            :decimal(, )      default(0.0), not null
+#  value            :decimal(, )
 #
 # Indexes
 #

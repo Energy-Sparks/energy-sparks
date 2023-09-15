@@ -13,6 +13,7 @@
 #  observation_type     :integer          not null
 #  points               :integer
 #  programme_id         :bigint(8)
+#  pupil_count          :integer
 #  school_id            :bigint(8)        not null
 #  school_target_id     :bigint(8)
 #  updated_at           :datetime         not null

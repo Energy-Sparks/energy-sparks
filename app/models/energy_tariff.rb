@@ -2,6 +2,7 @@
 #
 # Table name: energy_tariffs
 #
+#  applies_to         :integer          default("both")
 #  ccl                :boolean          default(FALSE)
 #  created_at         :datetime         not null
 #  created_by_id      :bigint(8)
