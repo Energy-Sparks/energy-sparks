@@ -18,7 +18,10 @@ class EnergyTariffsMailer < ApplicationMailer
     # School staff users should not get the email, only school admins.
     # If school admins are linked to multiple accounts they should get the email for each account.
     @school.school_admin.map(&:email).each do |school_admin_email|
-      make_bootstrap_mail(to: school_admin_email, subject: subject)
+      make_bootstrap_mail(
+        to: school_admin_email,
+        subject: subject
+      )
     end
   end
 end
