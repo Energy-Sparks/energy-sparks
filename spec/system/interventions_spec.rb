@@ -5,10 +5,13 @@ describe 'viewing and recording action', type: :system do
   let(:title)       { "Changed boiler" }
   let(:summary)     { 'Old boiler bad, new boiler good' }
   let(:description) { 'How to change your boiler' }
-
+  let(:photo_bonus_points) { nil }
   let!(:intervention_type){ create :intervention_type, name: title, summary: summary, description: description }
-
   let(:school) { create_active_school() }
+
+  before do
+    SiteSettings.current.update(photo_bonus_points: photo_bonus_points)
+  end
 
   context 'as a public user' do
 
@@ -203,10 +206,6 @@ describe 'viewing and recording action', type: :system do
         expect(observation.at.to_date).to eq(Date.today)
       end
 
-      context "showing photobonus points message" do
-        context "site settings"
-      end
-
       it 'does not show points if none scored' do
         click_on 'Record this action'
         fill_in 'observation_at', with: 2.years.ago # points are not scored for actions in previous aademic year
@@ -217,6 +216,36 @@ describe 'viewing and recording action', type: :system do
         expect(page).to_not have_content("You've just scored #{intervention_type.score} points")
         observation = school.observations.intervention.first
         expect(observation.points).to be_nil
+      end
+
+      context "showing photobonus points message" do
+        let(:photo_bonus_points) { nil }
+        before do
+          click_on 'Record this action'
+        end
+        context "site settings photo_bonus_points is nil" do
+          it { expect(page).to_not have_content("Adding a photo to document your action will score you")}
+        end
+        context "site settings photo_bonus_points is set" do
+          let(:photo_bonus_points) { 5 }
+          it { expect(page).to have_content("Adding a photo to document your action will score you 5 bonus points")}
+        end
+        context "site settings photo_bonus_points is 0" do
+          let(:photo_bonus_points) { 0 }
+          it { expect(page).to_not have_content("Adding a photo to document your action will score you")}
+        end
+      end
+
+      context "photo is provided" do
+        let(:photo_bonus_points) { 5 }
+
+        it "adds photo bonus" do
+          click_on 'Record this action'
+          fill_in 'observation_at', with: Date.today
+          fill_in_trix with: 'We changed to a more efficient boiler<figure></figure>'
+          click_on 'Record action'
+          expect(page).to have_content("You've just scored #{(intervention_type.score + photo_bonus_points)} points")
+        end
       end
 
       context 'on podium' do
