@@ -13,6 +13,8 @@
   </div>
 <% end %>
 
+<%= render 'management/schools/prompt_to_complete_program' %>
+
 <h3><%= t('schools.show.act_on_energy_usage') %></h3>
 
 <%= render 'management/schools/targets/progress_notice', school: @school, progress_summary: @progress_summary %>
