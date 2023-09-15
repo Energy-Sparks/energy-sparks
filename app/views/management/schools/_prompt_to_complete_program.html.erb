@@ -1,8 +1,9 @@
-<% title = "You have completed X/Y of the activities in the {title} programme. Complete you final Z activities now to score V points" %>
+
+<% title = "You have completed #{programme.activities.count}/#{programme.activity_types_completed.count} of the activities in the #{programme.programme_type.title} programme. Complete your final Z activities now to score V points" %>
 
 <%= component 'info_bar',
     status: :positive,
     title: title,
-    icon: fa_icon('circle-check fa-3x'),
+    icon: fa_icon('fas fa-tasks fa-3x'),
     buttons: { }
 %>

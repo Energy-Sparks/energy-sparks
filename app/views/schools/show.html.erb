@@ -13,7 +13,9 @@
   </div>
 <% end %>
 
-<%= render 'management/schools/prompt_to_complete_program' %>
+<% @school.programmes.each do |programme| %>
+  <%= render 'management/schools/prompt_to_complete_program', programme: programme %>
+<% end %>
 
 <h3><%= t('schools.show.act_on_energy_usage') %></h3>
 
