@@ -159,38 +159,4 @@ describe Observation do
       end
     end
   end
-
-  context 'creates an observation with the activities 2023 feature flag disabled' do
-    context 'activities' do
-      it 'does not set the score if an activity has an image in its activity description' do
-        ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'false' do
-          activity = create(:activity, description: "<div><figure></figure></div>")
-          SiteSettings.current.update(photo_bonus_points: 15)
-          observation = build(:observation, observation_type: :activity, activity: activity)
-          observation.save
-          expect(observation.points).to eq(nil)
-        end
-      end
-
-      it 'does not set a score if an activity has an image in its observation description' do
-        ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'false' do
-          activity = create(:activity, description: "<div></div>")
-          SiteSettings.current.update(photo_bonus_points: 15)
-          observation = build(:observation, observation_type: :activity, activity: activity, description: "<div><figure></figure></div>")
-          observation.save
-          expect(observation.points).to eq(nil)
-        end
-      end
-
-      it 'does not set a score if an activity has no image in its activity or observation description' do
-        ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'false' do
-          activity = create(:activity, description: "<div></div>")
-          SiteSettings.current.update(photo_bonus_points: 15)
-          observation = build(:observation, observation_type: :activity, activity: activity, description: "<div></div>")
-          observation.save
-          expect(observation.points).to eq(nil)
-        end
-      end
-    end
-  end
 end

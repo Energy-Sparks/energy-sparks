@@ -126,19 +126,17 @@ describe ActivityCreator do
     before { Observation.delete_all }
 
     it 'creates an observation for the activity with the points' do
-      ClimateControl.modify FEATURE_FLAG_ACTIVITIES_2023: 'true' do
-        audit = create(:audit, :with_activity_and_intervention_types, school: school)
-        audit.activity_types[0...-1].each do |activity_type|
-          activity = Activity.new(happened_on: audit.created_at, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
-          ActivityCreator.new(activity).process
-        end
-        expect(Observation.audit_activities_completed.count).to eq(0)
-
-        expect do
-          activity = Activity.new(school: school, happened_on: Time.zone.now, activity_type: audit.activity_types.last)
-          ActivityCreator.new(activity).process
-        end.to change { Observation.audit_activities_completed.count }.by(1)
+      audit = create(:audit, :with_activity_and_intervention_types, school: school)
+      audit.activity_types[0...-1].each do |activity_type|
+        activity = Activity.new(happened_on: audit.created_at, school: audit.school, activity_type_id: activity_type.id, activity_category: activity_category)
+        ActivityCreator.new(activity).process
       end
+      expect(Observation.audit_activities_completed.count).to eq(0)
+
+      expect do
+        activity = Activity.new(school: school, happened_on: Time.zone.now, activity_type: audit.activity_types.last)
+        ActivityCreator.new(activity).process
+      end.to change { Observation.audit_activities_completed.count }.by(1)
     end
   end
 end
