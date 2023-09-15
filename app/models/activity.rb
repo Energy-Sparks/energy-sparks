@@ -7,6 +7,7 @@
 #  created_at           :datetime         not null
 #  happened_on          :date
 #  id                   :bigint(8)        not null, primary key
+#  pupil_count          :integer
 #  school_id            :bigint(8)        not null
 #  title                :string
 #  updated_at           :datetime         not null

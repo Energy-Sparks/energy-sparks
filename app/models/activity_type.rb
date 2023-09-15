@@ -8,9 +8,11 @@
 #  custom                 :boolean          default(FALSE)
 #  data_driven            :boolean          default(FALSE)
 #  deprecated_description :text
+#  fuel_type              :string           default([]), is an Array
 #  id                     :bigint(8)        not null, primary key
 #  name                   :string
 #  score                  :integer
+#  show_on_charts         :boolean          default(TRUE)
 #  summary                :string
 #  updated_at             :datetime         not null
 #
