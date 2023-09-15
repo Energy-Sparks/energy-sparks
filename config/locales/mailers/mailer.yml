@@ -55,6 +55,23 @@ en:
       message: We need your school to update its consent to allow Energy Sparks to continue to collect, process and display your energy data.
       subject: We need permission to access your school's energy data
       view_school_account: view your school account
+  energy_tariffs_mailer:
+    group_admin_review_group_tariffs_reminder:
+      mail_body_html: |-
+        <p>To help Energy Sparks to provide you with accurate estimates of your energy costs and potential savings, we’re contacting you to ask you to review the information we have about your school’s energy tariffs.</p>
+        <br />
+        <p><a href='%{click_here_link}'>Click here</a> to review your current tariffs and to add or update the information based on your latest contract.</p>
+        <br />
+        <p>In future, please remember to update your tariffs on Energy Sparks when you change supply contract.</p>
+      subject: Provide your school’s energy tariffs to Energy Sparks
+    school_admin_review_school_tariffs_reminder:
+      mail_body_html: |-
+        <p>To help Energy Sparks to provide you with accurate estimates of your energy costs and potential savings, we’re contacting you to ask you to review the information we have about your school’s energy tariffs.</p>
+        <br />
+        <p><a href='%{click_here_link}'>Click here</a> to review your current tariffs and to add or update the information based on your latest contract.</p>
+        <br />
+        <p>In future, please remember to update your tariffs on Energy Sparks when you change supply contract.</p>
+      subject: Provide your schools' energy tariffs to Energy Sparks
   mailer:
     get_in_touch: Get in touch
   onboarding_mailer:
