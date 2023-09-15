@@ -253,9 +253,93 @@ RSpec.shared_examples "the user can change the type of tariff" do
   end
 end
 
+RSpec.shared_examples "the user can not select the meter system" do
+  it 'can not select which meter system types a tariff applies to' do
+    expect(page).to have_content("All #{energy_tariff.meter_type} meters")
+    expect(energy_tariff.applies_to).to eq('both')
+
+    find('#meters-section-edit').click
+
+    expect(page).to have_content('Select meters for this tariff')
+    check('all_meters')
+    expect(page).not_to have_content('both half-hourly and non half-hourly meters')
+    expect(page).not_to have_content('half-hourly meters only')
+    expect(page).not_to have_content('non half-hourly meters only')
+
+    click_button('Continue')
+
+    energy_tariff.reload
+    expect(energy_tariff.meters).to match_array([])
+    expect(energy_tariff.applies_to).to eq('both')
+  end
+end
+
+RSpec.shared_examples "the user can select the meter system" do
+  it 'can select which meter system types a tariff applies to' do
+    expect(page).to have_content("All electricity meters")
+    expect(energy_tariff.applies_to).to eq('both')
+
+    find('#meters-section-edit').click
+
+    expect(page).to have_content('Select meters for this tariff')
+    check('all_meters')
+    expect(page).to have_content('both half-hourly and non half-hourly meters')
+    expect(page).to have_content('half-hourly meters only')
+    expect(page).to have_content('non half-hourly meters only')
+
+    choose('energy_tariff[applies_to]', option: 'half_hourly')
+
+    click_button('Continue')
+
+    energy_tariff.reload
+    expect(energy_tariff.meters).to match_array([])
+    expect(energy_tariff.applies_to).to eq('half_hourly')
+  end
+end
+
+RSpec.shared_examples "the user can not see the meterless applies to editor" do
+  it 'can select which meter system types a tariff applies to' do
+    expect(page).to have_content("All #{energy_tariff.meter_type} meters")
+    expect(page).not_to have_content("Tariff applies to")
+  end
+end
+
+RSpec.shared_examples "the meterless applies to editor" do
+  let!(:electricity_tariff) { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022,1,1), end_date: Date.new(2022,12,31), tariff_holder: tariff_holder, meter_type: :electricity)}
+  let!(:gas_tariff)         { create(:energy_tariff, :with_flat_price, start_date: Date.new(2022,1,1), end_date: Date.new(2022,12,31), tariff_holder: tariff_holder, meter_type: :gas)}
+
+  it 'can select which meter system types an electricity tariff applies to' do
+    # assumes starting from tariff index
+    refresh
+    click_on electricity_tariff.name
+    expect(electricity_tariff.meters).to match_array([])
+    expect(electricity_tariff.applies_to).to eq('both')
+    expect(page).to have_content("Tariff applies to")
+    find('#applies-to-section-edit').click
+    expect(page).to have_content('Choose which meter systems this tariff applies to')
+    expect(page).to have_content('both half-hourly and non half-hourly meters')
+    expect(page).to have_content('half-hourly meters only')
+    expect(page).to have_content('non half-hourly meters only')
+    choose('energy_tariff[applies_to]', option: 'half_hourly')
+    click_button('Continue')
+    electricity_tariff.reload
+    expect(electricity_tariff.meters).to match_array([])
+    expect(electricity_tariff.applies_to).to eq('half_hourly')
+  end
+
+  it 'can not select which meter system types a gas tariff applies to' do
+    # assumes starting from tariff index
+    refresh
+    click_on gas_tariff.name
+    expect(gas_tariff.meters).to match_array([])
+    expect(gas_tariff.applies_to).to eq('both')
+    expect(page).not_to have_content("Tariff applies to")
+  end
+end
+
 RSpec.shared_examples "the user can select the meters" do
   it 'can create a tariff and associate the meters' do
-    expect(page).to have_content("All electricity meters")
+    expect(page).to have_content("All #{energy_tariff.meter_type} meters")
 
     find('#meters-section-edit').click
     #Meter selection
@@ -271,17 +355,17 @@ RSpec.shared_examples "the user can select the meters" do
   end
 
   it 'doesnt require a meter to be selected by default' do
-    expect(page).to have_content("All electricity meters")
+    expect(page).to have_content("All #{energy_tariff.meter_type} meters")
     find('#meters-section-edit').click
 
     expect(page).to have_content('Select meters for this tariff')
     expect(page).to have_checked_field('all_meters')
     click_button('Continue')
-    expect(page).to have_content("All electricity meters")
+    expect(page).to have_content("All #{energy_tariff.meter_type} meters")
   end
 
   it 'requires a meter to be selected if we check the box' do
-    expect(page).to have_content("All electricity meters")
+    expect(page).to have_content("All #{energy_tariff.meter_type} meters")
     find('#meters-section-edit').click
 
     expect(page).to have_content('Select meters for this tariff')

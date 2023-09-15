@@ -23,6 +23,7 @@ cy:
     fuel_type:
       electricity: trydan
       gas: nwy
+      other: arall
       solar_pv: solar ffotofoltaig
       storage_heater: stôr-wresogydd
     how_have_we_analysed_your_data:
@@ -49,8 +50,8 @@ cy:
       school_comparisons: Cymhariaethau ysgol
       school_comparisons_introduction_html: |-
         <p>Mae cymhariaethau ysgol yn seilied ar feincnodi eich ysgol ag ysgolion tebyg ar sail y nodweddion a amlinellir isod.</p>
-        <p>Mae ysgolion "enghreifftiol" yn cynyrchioli'r 17.5% uchaf o ysgolion Sbarcynni</p>
-        <p>Mae ysgolion "a reolir yn dda" yn cynrychioli'r 30% uchaf o ysgolion Sbarcynni</p>
+        <p>Mae ysgolion "<strong>enghreifftiol</strong>" yn cynyrchioli'r 17.5% uchaf o ysgolion Sbarcynni</p>
+        <p>Mae ysgolion "<strong>a reolir yn dda</strong>" yn cynrychioli'r 30% uchaf o ysgolion Sbarcynni</p>
       total_energy_use_table:
         columns:
           aggregated_meter_date_range: Ystod dyddiad mesurydd
@@ -104,13 +105,13 @@ cy:
         source: Ffynhonnell
       labels:
         bill_components:
-          00_30_to_07_00: 00:30 i 07:00
-          07_30_to_00_00: 07:30 i 00:00
           agreed_availability_charge: Tâl argaeledd y cytunwyd arno
           climate_change_levy__2020_21: Ardoll newid hinsawdd (2020/21)
           climate_change_levy__2021_22: Ardoll newid hinsawdd (2021/22)
           commodity_rate: Cyfradd nwyddau
           data_collection_dcda_agent_charge: Tâl asiant DC/DA
+          day_night: "%{time_from} i %{time_to}"
+          daytime_rate: Cyfradd yn ystod y dydd
           duos_amber: Deuawd (Ambr)
           duos_green: Deuawd (Gwyrdd)
           duos_red: Deuawd (Coch)
@@ -121,7 +122,9 @@ cy:
           meter_asset_provider_charge: Tâl darparwr asedau mesurydd
           nhh_automatic_meter_reading_charge: NHH Tâl darllen mesurydd awtomatig
           nhh_metering_agent_charge: Tâl asiant mesuryddion NHH
+          nighttime_rate: Cyfradd yn ystod y nos
           non_commodity_rate: Cyfradd heb fod yn nwyddau
+          rate: Cyfradd
           reactive_power_charge: Tâl ailweithredu pŵer
           renewable_energy_obligation: Rhwymedigaeth ynni adnewyddadwy
           settlement_agency_fee: Ffi asiantaeth setlo
@@ -144,13 +147,12 @@ cy:
         two_significant_figures: Cyflwynir data yn y tabl hwn i 2 ffigwr arwyddocaol.
       tooltips:
         bill_components:
-          00_30_to_07_00: Dyma'r tâl am drydan a ddefnyddir rhwng 00:30 a 00:70 y kWh
-          07_30_to_00_00: Dyma'r tâl am drydan a ddefnyddir rhwng 07:30 a 00:30 y kWh
           agreed_availability_charge: Tâl am y ceblau i ddarparu uchafswm y cytunwyd arno mewn KVA o drydan i'r ysgol. Yn aml gellir lleihau hyn trwy drafodaethau gyda'ch cyflenwr ynni
           all_day: trwy'r dydd
           climate_change_levy__2021_22: 'Ardoll Newid yn yr Hinsawdd: yn seiliedig ar eich allyriadau carbon (fesul kWh o ddefnydd). Os byddwch yn lleihau eich defnydd bydd eich CCL yn lleihau'
           commodity_rate: Y tâl fesul kWh o ddefnydd am y diwrnod cyfan
           data_collection_dcda_agent_charge: Cost casglu eich darlleniadau mesurydd bob hanner awr ddwywaith y dydd. Mae Sbarcynni yn defnyddio'r data hanner awr hwn i ddadansoddi eich defnydd o ynni
+          day_night: Dyma'r tâl am drydan a ddefnyddir rhwng %{time_from} a %{time_to} fesul kWh
           duos: 'Tâl defnyddio system wedi''i ddosbarthu: - tâl fesul kWh o ddefnydd yn ystod yr amseroedd hyn: %{charge_times}. I leihau, lleihau defnydd ysgolion yn ystod yr amseroedd hyn'
           excess_availability_charge: '''Dirwy'' am fynd dros eich ''Terfyn Argaeledd Cytûn'' mewn mis. Os ydych yn cael eich ‘dirwyo’ am fwy nag ychydig fisoedd y flwyddyn mae’n rhatach ar y cyfan i ofyn i’ch cyflenwr ynni gynyddu eich ‘Terfyn Argaeledd a Gytunwyd’.'
           feed_in_tariff_levy: Ffi i dalu costau cefnogi ynni adnewyddadwy ar y rhwydwaith trydan. Gallwch leihau hyn drwy leihau eich defnydd o ynni

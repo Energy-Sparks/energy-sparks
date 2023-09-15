@@ -30,6 +30,7 @@
 #  data_enabled                                 :boolean          default(FALSE)
 #  enable_targets_feature                       :boolean          default(TRUE)
 #  floor_area                                   :decimal(, )
+#  funder_id                                    :bigint(8)
 #  funding_status                               :integer          default("state_school"), not null
 #  has_swimming_pool                            :boolean          default(FALSE), not null
 #  id                                           :bigint(8)        not null, primary key

@@ -21,6 +21,7 @@
 #  default_template_calendar_id             :bigint(8)
 #  default_weather_station_id               :bigint(8)
 #  description                              :string
+#  funder_id                                :bigint(8)
 #  group_type                               :integer          default("general")
 #  id                                       :bigint(8)        not null, primary key
 #  name                                     :string           not null
