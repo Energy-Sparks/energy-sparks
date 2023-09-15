@@ -1,6 +1,6 @@
-<%= render 'schools/dashboard/info_bar',
-  colour: 'bg-neutral',
-  content: t('schools.show.complete_activities'),
-  icon: 'chalkboard-teacher fa-3x',
-  buttons: {t('schools.show.record_pupil_activity') => activity_categories_path}
+<%= component 'info_bar',
+    status: :neutral,
+    title: t('schools.show.complete_activities'),
+    icon: fa_icon('chalkboard-teacher fa-3x'),
+    buttons: { t('schools.show.record_pupil_activity') => activity_categories_path }
 %>
