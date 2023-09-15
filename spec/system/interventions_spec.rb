@@ -203,6 +203,10 @@ describe 'viewing and recording action', type: :system do
         expect(observation.at.to_date).to eq(Date.today)
       end
 
+      context "showing photobonus points message" do
+        context "site settings"
+      end
+
       it 'does not show points if none scored' do
         click_on 'Record this action'
         fill_in 'observation_at', with: 2.years.ago # points are not scored for actions in previous aademic year

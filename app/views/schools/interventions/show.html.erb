@@ -7,8 +7,6 @@
     <h4><%= nice_dates(@observation.at) %></h4>
     <%= @observation.description %>
 
-    <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-      <%= t('interventions.show.pupils_involved_in_this_activity') %>: <%= @observation.pupil_count %>
-    <% end %>
+    <%= t('interventions.show.pupils_involved_in_this_activity') %>: <%= @observation.pupil_count %>
   </div>
 </div>
