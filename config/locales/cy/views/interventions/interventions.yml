@@ -28,16 +28,9 @@ cy:
         two: pwyntiau bonws
         many: pwyntiau bonws
         other: pwyntiau bonws
-      if_pupils_were_involved_label: Os oedd disgyblion yn ymwneud â chynnig, cynllunio, codi arian neu gyflawni'r weithred hon yna bydd cofnodi'r weithred hon yn sgorio
-      points_for_your_school:
-        one: pwynt ar gyfer eich ysgol
-        two: pwyntiau ar gyfer eich ysgol
-        many: pwyntiau ar gyfer eich ysgol
-        other: o bwyntiau ar gyfer eich ysgol
       record_action: Cofnodi gweithred
       tell_us_more: Dywedwch ragor wrthym am yr hyn a wnaethoch
       update_action: Diweddaru'r weithred
-      were_the_pupils_involved: Oedd y disgyblion yn cymryd rhan?
       what_did_you_do: Beth wnaethoch chi?
       when_did_you_complete_this_action: Pryd wnaethoch chi gwblhau'r weithred hon?
       you_can_add_formatting_label: Gallwch ychwanegu fformatio, dolenni ac atodi lluniau gan ddefnyddio'r bar offer isod. Gallwch hofran dros bob eicon i ddysgu beth mae'n ei wneud
