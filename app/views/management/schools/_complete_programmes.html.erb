@@ -1,7 +1,6 @@
-<%= component 'notice', status: :neutral, classes: 'mb-4' do |c| %>
-  <%= component 'info_bar',
-      title: t('schools.show.complete_short_programme'),
-      icon: fa_icon('tasks fa-3x'),
-      buttons: { t('schools.show.view_programmes') => programme_types_path }
-  %>
-<% end %>
+<%= component 'info_bar',
+    status: :neutral,
+    title: t('schools.show.complete_short_programme'),
+    icon: fa_icon('tasks fa-3x'),
+    buttons: { t('schools.show.view_programmes') => programme_types_path }
+%>

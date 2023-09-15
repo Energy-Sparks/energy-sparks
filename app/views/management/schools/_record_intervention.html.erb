@@ -1,7 +1,6 @@
-<%= component 'notice', status: :neutral, classes: 'mb-4' do |c| %>
-  <%= component 'info_bar',
-      title: t('schools.show.complete_interventions'),
-      icon: fa_icon('school fa-3x'),
-      buttons: { t('schools.show.record_action') => intervention_type_groups_path }
-  %>
-<% end %>
+<%= component 'info_bar',
+    status: :neutral,
+    title: t('schools.show.complete_interventions'),
+    icon: fa_icon('school fa-3x'),
+    buttons: { t('schools.show.record_action') => intervention_type_groups_path }
+%>

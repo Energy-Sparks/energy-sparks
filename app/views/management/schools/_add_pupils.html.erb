@@ -1,7 +1,6 @@
-<%= component 'notice', status: :neutral, classes: 'mb-4' do |c| %>
-  <%= component 'info_bar',
-      title: t('schools.show.setup_pupil_account'),
-      icon: fa_icon('exclamation-circle fa-3x'),
-      buttons: { t('schools.show.create_pupil_account') => new_school_pupil_path(school) }
-  %>
-<% end %>
+<%= component 'info_bar',
+    status: :neutral,
+    title: t('schools.show.setup_pupil_account'),
+    icon: fa_icon('exclamation-circle fa-3x'),
+    buttons: { t('schools.show.create_pupil_account') => new_school_pupil_path(school) }
+%>

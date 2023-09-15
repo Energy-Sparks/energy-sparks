@@ -1,21 +1,23 @@
-<div class="row">
-  <div class="col-md-1 d-flex justify-content-center align-content-center">
-    <div class="d-flex align-content-center flex-wrap">
-      <%= icon %>
+<%= component 'notice', status: status, classes: 'mb-4' do %>
+  <div class="row">
+    <div class="col-md-1 d-flex justify-content-center align-content-center">
+      <div class="d-flex align-content-center flex-wrap">
+        <%= icon %>
+      </div>
     </div>
-  </div>
-  <% if buttons.present? %>
-    <div class='<%= "col-md-#{11 - buttons.size * 3}" %>'>
-      <%= title %>
-    </div>
-    <% buttons.each do |title, path| %>
-      <div class="col-md-3 align-right">
-        <%= link_to sanitize(title), path, class: "btn btn-light btn rounded-pill font-weight-bold", style: 'height: fit-content;' %>
+    <% if buttons.present? %>
+      <div class='<%= "col-md-#{11 - buttons.size * 3}" %>'>
+        <%= title %>
+      </div>
+      <% buttons.each do |title, path| %>
+        <div class="col-md-3 align-right">
+          <%= link_to sanitize(title), path, class: "btn btn-light btn rounded-pill font-weight-bold", style: 'height: fit-content;' %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="col-md-11">
+        <h5><%= title %></h5>
       </div>
     <% end %>
-  <% else %>
-    <div class="col-md-11">
-      <h5><%= title %></h5>
-    </div>
-  <% end %>
-</div>
+  </div>
+<% end %>
