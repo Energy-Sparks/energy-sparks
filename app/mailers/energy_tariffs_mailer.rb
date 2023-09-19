@@ -1,4 +1,4 @@
-class EnergyTariffsMailer < ApplicationMailer
+class EnergyTariffsMailer < LocaleMailer
   def group_admin_review_group_tariffs_reminder
     @school_group = SchoolGroup.find(params[:school_group_id])
     subject = I18n.t('energy_tariffs_mailer.group_admin_review_group_tariffs_reminder.subject')
