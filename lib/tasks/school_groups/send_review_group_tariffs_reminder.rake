@@ -1,7 +1,7 @@
 namespace :school_groups do
   desc "Sends an email to school group admins to review the information we have about their school group's energy tariffs"
   task send_review_group_tariffs_reminder: :environment do
-    return unless SendReviewGroupTariffsReminderJob.new.send?
+    next unless SendReviewGroupTariffsReminderJob.new.send?
 
     begin
       SendReviewGroupTariffsReminderJob.perform_later
