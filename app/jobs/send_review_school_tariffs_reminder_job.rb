@@ -11,10 +11,20 @@ class SendReviewSchoolTariffsReminderJob < ApplicationJob
   end
 
   def perform
-    return unless SEND_ON_MONTH_DAYS.map { |send_on| Date.new(Time.zone.today.year, send_on[:month], send_on[:day]) }.include?(Time.zone.today)
+    return unless send?
 
     School.all.each do |school|
       EnergyTariffsMailer.with(school_id: school.id).school_admin_review_school_tariffs_reminder.deliver
     end
+  end
+
+  private
+
+  def send?
+    send_on_month_days_to_dates.include?(Time.zone.today)
+  end
+
+  def send_on_month_days_to_dates
+    SEND_ON_MONTH_DAYS.map { |send_on| Date.new(Time.zone.today.year, send_on[:month], send_on[:day]) }
   end
 end
