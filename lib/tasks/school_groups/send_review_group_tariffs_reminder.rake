@@ -1,7 +1,7 @@
 namespace :school_groups do
   desc "Sends an email to school group admins to review the information we have about their school group's energy tariffs"
   task send_review_group_tariffs_reminder: :environment do
-    return unless SendReviewGroupTariffsReminderJob::SEND_ON_MONTH_DAYS.map { |send_on| Date.new(Time.zone.today.year,send_on[:month], send_on[:day]) }.include?(Time.zone.today)
+    return unless SendReviewGroupTariffsReminderJob.new.send?
 
     begin
       SendReviewGroupTariffsReminderJob.perform_later

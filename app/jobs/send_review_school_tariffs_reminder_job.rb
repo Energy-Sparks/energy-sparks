@@ -18,11 +18,11 @@ class SendReviewSchoolTariffsReminderJob < ApplicationJob
     end
   end
 
-  private
-
   def send?
     send_on_month_days_to_dates.include?(Time.zone.today)
   end
+
+  private
 
   def send_on_month_days_to_dates
     SEND_ON_MONTH_DAYS.map { |send_on| Date.new(Time.zone.today.year, send_on[:month], send_on[:day]) }
