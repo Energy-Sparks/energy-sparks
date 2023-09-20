@@ -89,9 +89,9 @@ describe Scoreboard, :scoreboards, type: :model do
 
   end
 
-  describe '#current_academic_year' do
+  describe '#this_academic_year' do
     it 'finds the right year' do
-      expect(scoreboard.current_academic_year).to eq AcademicYear.first
+      expect(scoreboard.this_academic_year).to eq AcademicYear.first
     end
   end
 

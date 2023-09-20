@@ -53,17 +53,9 @@ class Scoreboard < ApplicationRecord
     academic_year_calendar.academic_year_for(today)
   end
 
-  def previous_academic_year(today: Time.zone.today)
-    academic_year_calendar.academic_year_for(today).previous_year
-  end
-
   private
 
   def update_name
     self[:name] = self.name_en
-  end
-
-  def this_academic_year
-    academic_year_calendar.academic_year_for(Time.zone.today)
   end
 end

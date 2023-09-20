@@ -176,7 +176,7 @@ class SchoolGroup < ApplicationRecord
 
   private
 
-  def this_academic_year
-    default_template_calendar&.academic_year_for(Time.zone.today)
+  def scorable_calendar
+    default_template_calendar
   end
 end
