@@ -1,20 +1,22 @@
 <%= simple_form_for :intervention_type, url: for_school_intervention_type_path(intervention_type), method: :get do |f| %>
   <div class="row">
     <div class="col-md-9">
-      <div class="row alert info-bar text-dark bg-neutral" role="alert">
-        <div class="col-lg-1 d-none d-lg-block align-self-center">
-          <i class="fas fa-tasks fa-3x"></i>
-        </div>
-        <div class="col-lg-7 col-sm-12 align-self-center">
-          <%= t('intervention_types.prompt_score.complete_this_action_for_group_html', count: intervention_type.score) %><br />
-          <div class="w-75 pt-3">
-            <%= select_tag :school_id, options_from_collection_for_select(schools, :id, :name), include_blank: t('activity_types.show.select_school'), class: 'form-control select2 must-select' %>
+      <%= component 'notice', status: :neutral, classes: 'mb-4' do %>
+        <div class="row" role="alert">
+          <div class="col-lg-1 d-none d-lg-block align-self-center">
+            <i class="fas fa-tasks fa-3x"></i>
+          </div>
+          <div class="col-lg-7 col-sm-12 align-self-center">
+            <%= t('intervention_types.prompt_score.complete_this_action_for_group_html', count: intervention_type.score) %><br />
+            <div class="w-75 pt-3">
+              <%= select_tag :school_id, options_from_collection_for_select(schools, :id, :name), include_blank: t('activity_types.show.select_school'), class: 'form-control select2 must-select' %>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-12">
+            <%= f.submit t('intervention_types.prompt_score.record_this_action'), class: 'btn btn-primary' %>
           </div>
         </div>
-        <div class="col-lg-4 col-sm-12">
-          <%= f.submit t('intervention_types.prompt_score.record_this_action'), class: 'btn btn-primary' %>
-        </div>
-      </div>
+      <% end %>
     </div>
   </div>
 <% end %>
