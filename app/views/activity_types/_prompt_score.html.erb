@@ -1,5 +1,5 @@
-<div class="col-md-9">
-  <div class="row alert info-bar text-dark bg-neutral" role="alert">
+<%= component 'notice', status: :neutral, classes: 'mb-4' do %>
+  <div class="row" role="alert">
     <div class="col-lg-1 d-none d-lg-block align-self-center">
       <i class="fas fa-tasks fa-3x"></i>
     </div>
@@ -10,4 +10,4 @@
       <%= link_to t('activity_types.show.record_this_activity'), new_school_activity_path(school, activity_type_id: activity_type.id), class: 'btn btn-primary' %>
     </div>
   </div>
-</div>
+<% end %>
