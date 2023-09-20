@@ -368,32 +368,58 @@ describe 'Meter', :meters do
 
       context 'when there are tariffs stored as EnergyTariffs' do
 
-        let!(:site_wide)        { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current, name: 'Site setting tariff', applies_to: :both) }
-        let!(:group_level)      { create(:energy_tariff, :with_flat_price, tariff_holder: school_group) }
-        let!(:school_specific)  { create(:energy_tariff, :with_flat_price, tariff_holder: school, applies_to: :both) }
-        let!(:school_specific2)  { create(:energy_tariff, :with_flat_price, tariff_holder: school, applies_to: :non_half_hourly) }
-        let!(:school_specific3)  { create(:energy_tariff, :with_flat_price, tariff_holder: school, applies_to: :half_hourly) }
+        let!(:energy_tariff_site_wide_electricity_both) { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current, applies_to: :non_half_hourly) }
+        let!(:energy_tariff_group_level_electricity_both) { create(:energy_tariff, :with_flat_price, tariff_holder: school_group, applies_to: :non_half_hourly) }
+        let!(:energy_tariff_school_electricity_both) { create(:energy_tariff, :with_flat_price, tariff_holder: school, applies_to: :both) }
+        let!(:energy_tariff_school_electricity_non_half_hourly)  { create(:energy_tariff, :with_flat_price, tariff_holder: school, applies_to: :non_half_hourly) }
+        let!(:energy_tariff_school_electricity_half_hourly)  { create(:energy_tariff, :with_flat_price, tariff_holder: school, applies_to: :half_hourly) }
 
         context 'and there are meter specific tariffs' do
-          let!(:meter_specific)  { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter]) }
-          let!(:meter_specific2) { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter], enabled: false) }
+          let!(:meter_specific_electricity_both)  { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter], applies_to: :both) }
+          let!(:meter_specific_electricity_both_disabled) { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter], applies_to: :both, enabled: false) }
+          let!(:meter_specific_electricity_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter], applies_to: :half_hourly) }
+          let!(:meter_specific_electricity_non_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter], applies_to: :non_half_hourly) }
 
-          it 'includes those that are enabled' do
-            expect(all_meter_attributes.size).to eq 5
+          it 'includes all those that are enabled irrespective of applies to value but with the parent filtered by the meters meter_system (non_half_hourly)' do
+            expect(meter.applies_to_for_meter_system).to eq(:non_half_hourly)
+            expect(all_meter_attributes.size).to eq 7
             expect(all_meter_attributes[0].input_data['tariff_holder']).to eq 'site_settings'
             expect(all_meter_attributes[1].input_data['tariff_holder']).to eq 'school_group'
             expect(all_meter_attributes[2].input_data['tariff_holder']).to eq 'school'
             expect(all_meter_attributes[3].input_data['tariff_holder']).to eq 'school'
             expect(all_meter_attributes[4].input_data['tariff_holder']).to eq 'meter'
+            expect(all_meter_attributes[5].input_data['tariff_holder']).to eq 'meter'
+            expect(all_meter_attributes[6].input_data['tariff_holder']).to eq 'meter'
+
+            expect(all_meter_attributes.map { |m| m.input_data['name'] }).to eq(
+              [
+                energy_tariff_site_wide_electricity_both.name,
+                energy_tariff_group_level_electricity_both.name,
+                energy_tariff_school_electricity_both.name,
+                energy_tariff_school_electricity_non_half_hourly.name,
+                meter_specific_electricity_both.name,
+                meter_specific_electricity_half_hourly.name,
+                meter_specific_electricity_non_half_hourly.name
+              ]
+            )
           end
         end
 
-        it 'includes inherited tariffs' do
+        it 'includes inherited tariffs with the parent filtered by the meters meter_system (non_half_hourly)' do
           expect(all_meter_attributes.size).to eq 4
           expect(all_meter_attributes[0].input_data['tariff_holder']).to eq 'site_settings'
           expect(all_meter_attributes[1].input_data['tariff_holder']).to eq 'school_group'
           expect(all_meter_attributes[2].input_data['tariff_holder']).to eq 'school'
           expect(all_meter_attributes[3].input_data['tariff_holder']).to eq 'school'
+
+          expect(all_meter_attributes.map { |m| m.input_data['name'] }).to eq(
+            [
+              energy_tariff_site_wide_electricity_both.name,
+              energy_tariff_group_level_electricity_both.name,
+              energy_tariff_school_electricity_both.name,
+              energy_tariff_school_electricity_non_half_hourly.name
+            ]
+          )
         end
       end
     end
