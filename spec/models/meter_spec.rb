@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'Meter', :meters do
   describe 'meter attributes' do
-    let(:meter) { build(:electricity_meter) }
+    let(:meter) { create(:electricity_meter, meter_system: :nhh_amr) }
 
     it 'is not pseudo by default' do
       expect(meter.pseudo).to be false
@@ -368,20 +368,23 @@ describe 'Meter', :meters do
 
       context 'when there are tariffs stored as EnergyTariffs' do
 
-        let!(:site_wide)        { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current) }
+        let!(:site_wide)        { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current, name: 'Site setting tariff', applies_to: :both) }
         let!(:group_level)      { create(:energy_tariff, :with_flat_price, tariff_holder: school_group) }
-        let!(:school_specific)  { create(:energy_tariff, :with_flat_price, tariff_holder: school) }
+        let!(:school_specific)  { create(:energy_tariff, :with_flat_price, tariff_holder: school, applies_to: :both) }
+        let!(:school_specific2)  { create(:energy_tariff, :with_flat_price, tariff_holder: school, applies_to: :non_half_hourly) }
+        let!(:school_specific3)  { create(:energy_tariff, :with_flat_price, tariff_holder: school, applies_to: :half_hourly) }
 
         context 'and there are meter specific tariffs' do
           let!(:meter_specific)  { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter]) }
           let!(:meter_specific2) { create(:energy_tariff, :with_flat_price, tariff_holder: school, meters: [meter], enabled: false) }
 
           it 'includes those that are enabled' do
-            expect(all_meter_attributes.size).to eq 4
+            expect(all_meter_attributes.size).to eq 5
             expect(all_meter_attributes[0].input_data['tariff_holder']).to eq 'site_settings'
             expect(all_meter_attributes[1].input_data['tariff_holder']).to eq 'school_group'
             expect(all_meter_attributes[2].input_data['tariff_holder']).to eq 'school'
-            expect(all_meter_attributes[3].input_data['tariff_holder']).to eq 'meter'
+            expect(all_meter_attributes[3].input_data['tariff_holder']).to eq 'school'
+            expect(all_meter_attributes[4].input_data['tariff_holder']).to eq 'meter'
           end
         end
 

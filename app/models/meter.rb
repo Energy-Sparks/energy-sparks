@@ -242,6 +242,8 @@ class Meter < ApplicationRecord
       school_attributes = school.all_energy_tariff_attributes(meter_type, applies_to_for_meter_system)
       attributes += school_attributes unless school_attributes.nil?
     end
+    # It should NOT filter the tariffs with which it is directly associated.
+    # If a meter is explicitly linked to a tariff then it applies to it, regardless.
     attributes += energy_tariffs.enabled.usable.map(&:meter_attribute)
     attributes
   end
