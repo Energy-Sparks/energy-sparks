@@ -167,6 +167,7 @@ group :test do
   gem 'simplecov', :require => false, :group => :test
   gem 'shoulda-matchers'
   gem 'timecop'
+  gem "show_me_the_cookies"
 end
 
 gem 'sprockets', '3.7.2'

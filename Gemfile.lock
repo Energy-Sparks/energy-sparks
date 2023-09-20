@@ -590,6 +590,8 @@ GEM
     shellany (0.0.1)
     shoulda-matchers (5.3.0)
       activesupport (>= 5.2.0)
+    show_me_the_cookies (6.0.0)
+      capybara (>= 2, < 4)
     simple_form (5.1.0)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
@@ -762,6 +764,7 @@ DEPENDENCIES
   scout_apm
   selenium-webdriver
   shoulda-matchers
+  show_me_the_cookies
   simple_form
   simplecov
   sitemap_generator
