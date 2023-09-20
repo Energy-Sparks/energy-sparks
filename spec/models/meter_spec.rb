@@ -389,10 +389,11 @@ describe 'Meter', :meters do
         end
 
         it 'includes inherited tariffs' do
-          expect(all_meter_attributes.size).to eq 3
+          expect(all_meter_attributes.size).to eq 4
           expect(all_meter_attributes[0].input_data['tariff_holder']).to eq 'site_settings'
           expect(all_meter_attributes[1].input_data['tariff_holder']).to eq 'school_group'
           expect(all_meter_attributes[2].input_data['tariff_holder']).to eq 'school'
+          expect(all_meter_attributes[3].input_data['tariff_holder']).to eq 'school'
         end
       end
     end
