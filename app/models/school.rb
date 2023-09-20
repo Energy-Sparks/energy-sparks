@@ -30,6 +30,7 @@
 #  data_enabled                                 :boolean          default(FALSE)
 #  enable_targets_feature                       :boolean          default(TRUE)
 #  floor_area                                   :decimal(, )
+#  funder_id                                    :bigint(8)
 #  funding_status                               :integer          default("state_school"), not null
 #  has_swimming_pool                            :boolean          default(FALSE), not null
 #  id                                           :bigint(8)        not null, primary key
@@ -194,6 +195,8 @@ class School < ApplicationRecord
   scope :by_name,     -> { order(name: :asc) }
 
   scope :not_in_cluster, -> { where(school_group_cluster_id: nil) }
+
+  scope :with_energy_tariffs, -> { joins("INNER JOIN energy_tariffs ON energy_tariffs.tariff_holder_id = schools.id AND tariff_holder_type = 'School'").group('schools.id').order('schools.name') }
 
   validates_presence_of :urn, :name, :address, :postcode, :website, :school_type
   validates_uniqueness_of :urn

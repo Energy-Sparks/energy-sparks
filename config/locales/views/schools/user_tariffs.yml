@@ -73,15 +73,22 @@ en:
         title: Add consumption charges for this %{fuel_type} tariff
       rate_in_gbp: Rate in £
     user_tariffs:
+      applies_to:
+        breadcrumb_title: Tariff applies to
+        title: Choose which meter systems this tariff applies to
       charges_table:
         climate_charge_levy: Climate charge levy
         tnuos: TNUoS (Transmission Network Use of System)
         vat_rate: VAT rate
       choose_meters:
         apply_tariff_to_all_meters: Apply tariff to all %{fuel_type} meters
+        both: both half-hourly and non half-hourly meters
         breadcrumb_title: Choose meters
+        half_hourly: half-hourly meters only
         missing_meters: Please select at least one meter for this tariff. Or uncheck option to apply tariff to all meters
+        non_half_hourly: non half-hourly meters only
         specific_meters_prompt: Will this tariff apply to all %{fuel_type} meters at the school or just specific meters?
+        tariff_applies_to: Tariff applies to
         title: Select meters for this tariff
         which_meters_will_this_tariff_apply_to: Which meters will this tariff apply to?
       choose_type:
@@ -128,6 +135,11 @@ en:
           add_label: Add gas tariff
           header: Gas
           there_are_no_gas_tariffs_set_up_yet: We have no user supplied tariffs for your gas meters.
+        group_school_tariffs:
+          electricity: Electricity tariffs
+          gas: Gas tariffs
+          name: Name
+        group_school_tariffs_message: Schools in the %{school_group_name} group with their own custom tariffs
         introduction_html: |-
           <p>
             You can improve the accuracy of the calculations on your <a href="%{advice_pages}">cost analysis pages</a> by adding details about your real tariffs.
@@ -145,6 +157,7 @@ en:
           there_are_no_solar_pv_tariffs_set_up_yet: We have no user supplied tariffs for your solar PV meters.
         tabs:
           default_tariffs: Default tariffs
+          group_school_tariffs: School tariffs
           smart_meter_tariffs: Smart meter tariffs
           system_default_tariffs: System default tariffs
           user_tariffs: User supplied tariffs

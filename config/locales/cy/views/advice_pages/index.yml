@@ -8,9 +8,12 @@ cy:
         intro: Blaenoriaethwch y gweithredoedd canlynol i leihau eich costau ac allyriadau carbon deuocsid.
         table:
           columns:
-            co2_reduction: Gostyngiad CO2
-            cost_saving: Arbed costau
+            co2_reduction: CO2 (kg)
+            cost_saving: Cost (£)
+            description: Disgrifiad
             fuel_type: Tanwydd
+            kwh_saving: Ynni (kWh)
+            savings: Arbedion
         table_note: Defnyddiwch benawdau'r tabl i drefnu'r argymhellion. Nid yw arbedion cost posibl ar gyfer yr un math o danwydd yn ychwanegyn.
         title: Camau gweithredu â blaenoriaeth
       show:

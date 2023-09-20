@@ -14,6 +14,7 @@
 #  low_carbon_hub_installation_id :bigint(8)
 #  meter_review_id                :bigint(8)
 #  meter_serial_number            :text
+#  meter_system                   :integer          default("nhh_amr")
 #  meter_type                     :integer
 #  mpan_mprn                      :bigint(8)
 #  name                           :string

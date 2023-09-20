@@ -1,16 +1,16 @@
 <% if reportable_progress?(progress_summary) && progress_summary.any_failing_targets? %>
-    <%= render 'schools/dashboard/info_bar',
-      colour: 'bg-negative',
-      icon: 'tachometer-alt fa-3x',
-      content: t('schools.show.not_meeting_target', fuels: t_fuels_as_sentence(progress_summary.failing_fuel_targets)),
+  <%= component 'info_bar',
+      status: :negative,
+      title: t('schools.show.not_meeting_target', fuels: t_fuels_as_sentence(progress_summary.failing_fuel_targets)),
+      icon: fa_icon('tachometer-alt fa-3x'),
       buttons: {t('schools.show.review_progress') => school_school_targets_path(school)}
-    %>
+  %>
 <% end %>
 <% if reportable_progress?(progress_summary) && progress_summary.any_passing_targets? %>
-  <%= render 'schools/dashboard/info_bar',
-    colour: 'bg-positive',
-    icon: 'tachometer-alt fa-3x',
-    content: t('schools.show.making_progress', fuels: t_fuels_as_sentence(progress_summary.passing_fuel_targets)),
-    buttons: {t('schools.show.review_progress') => school_school_targets_path(school)}
+  <%= component 'info_bar',
+      status: :positive,
+      title: t('schools.show.making_progress', fuels: t_fuels_as_sentence(progress_summary.passing_fuel_targets)),
+      icon: fa_icon('tachometer-alt fa-3x'),
+      buttons: {t('schools.show.review_progress') => school_school_targets_path(school)}
   %>
 <% end %>

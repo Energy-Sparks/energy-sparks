@@ -25,14 +25,9 @@ en:
       bonus_points:
         one: bonus point
         other: bonus points
-      if_pupils_were_involved_label: If pupils were involved in proposing, planning, fund-raising or carrying out this action then recording this action will score
-      points_for_your_school:
-        one: points for your school
-        other: points for your school
       record_action: Record action
       tell_us_more: Tell us more about what you did
       update_action: Update action
-      were_the_pupils_involved: Were the pupils involved?
       what_did_you_do: What did you do?
       when_did_you_complete_this_action: When did you complete this action?
       you_can_add_formatting_label: You can add formatting, links and attach images using the toolbar below. Hover over each icon to learn what it does

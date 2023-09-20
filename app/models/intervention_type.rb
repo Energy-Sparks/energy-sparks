@@ -5,10 +5,12 @@
 #  active                     :boolean          default(TRUE)
 #  created_at                 :datetime         not null
 #  custom                     :boolean          default(FALSE)
+#  fuel_type                  :string           default([]), is an Array
 #  id                         :bigint(8)        not null, primary key
 #  intervention_type_group_id :bigint(8)        not null
 #  name                       :string
 #  score                      :integer
+#  show_on_charts             :boolean          default(TRUE)
 #  summary                    :string
 #  updated_at                 :datetime         not null
 #

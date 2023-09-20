@@ -55,5 +55,6 @@ cy:
         columns:
           cost: Cost (£)
           meter: Mesurydd
+          name: Enw
         labels:
           total: Cyfanswm

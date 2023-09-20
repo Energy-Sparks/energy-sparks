@@ -81,6 +81,7 @@ cy:
           highest_day_baseload: Llwyth sylfaenol diwrnod uchaf (kW)
           lowest_day_baseload: Llwyth sylfaenol diwrnod isaf (kW)
           meter: Mesurydd
+          name: Enw
           percentage_difference: "% gwahaniaeth"
           percentage_of_total: "% o gyfanswm y llwyth sylfaenol"
           potential_saving_co2: Gostyngiad CO2 (kg)
