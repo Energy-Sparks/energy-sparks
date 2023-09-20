@@ -1,12 +1,11 @@
 require 'rails_helper'
 
 describe EnergyTariffHolder do
-
-  let!(:energy_tariff)   { create(:energy_tariff, :with_flat_price, tariff_holder: tariff_holder, meter_type: 'electricity', name: 'Electricity tariff both') }
+  let!(:energy_tariff) { create(:energy_tariff, :with_flat_price, tariff_holder: tariff_holder, meter_type: 'electricity', name: 'Electricity tariff both') }
 
   context '.energy_tariff_meter_attributes' do
     context 'with SiteSettings' do
-      let(:tariff_holder)   { SiteSettings.current }
+      let(:tariff_holder) { SiteSettings.current }
 
       it 'adds the association' do
         expect(tariff_holder.energy_tariffs.first).to eq energy_tariff
@@ -46,9 +45,6 @@ describe EnergyTariffHolder do
       let!(:site_settings) { SiteSettings.current }
       let(:school_group) { nil }
       let(:tariff_holder) { create(:school, school_group: school_group) }
-      let!(:energy_tariff_electricty_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: tariff_holder, meter_type: "electricity", applies_to: "half_hourly", name: 'Electricity Tariff half_hourly') }
-      let!(:energy_tariff_electricty_non_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: tariff_holder, meter_type: "electricity", applies_to: "non_half_hourly", name: 'Electricity Tariff non_half_hourly') }
-      let!(:energy_tariff_gas_both) { create(:energy_tariff, :with_flat_price, tariff_holder: tariff_holder, meter_type: "gas", applies_to: "both", name: 'Gas Tariff both') }
 
       before do
         site_settings.save!
@@ -62,38 +58,42 @@ describe EnergyTariffHolder do
         expect(tariff_holder.energy_tariff_meter_attributes.first).to be_a MeterAttribute
       end
 
-      it 'maps the tariffs to meter attribute filtering by meter type and applies to' do
-        expect(tariff_holder.energy_tariffs.count).to eq(4)
+      context 'when filtering tariffs' do
+        let!(:energy_tariff_electricty_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: tariff_holder, meter_type: "electricity", applies_to: "half_hourly", name: 'Electricity Tariff half_hourly') }
+        let!(:energy_tariff_electricty_non_half_hourly) { create(:energy_tariff, :with_flat_price, tariff_holder: tariff_holder, meter_type: "electricity", applies_to: "non_half_hourly", name: 'Electricity Tariff non_half_hourly') }
+        let!(:energy_tariff_gas_both) { create(:energy_tariff, :with_flat_price, tariff_holder: tariff_holder, meter_type: "gas", applies_to: "both", name: 'Gas Tariff both') }
 
-        expect(tariff_holder.energy_tariffs.both.count).to eq(2)
+        it 'defaults and returns both when no meter system is specified' do
+          expect(tariff_holder.energy_tariff_meter_attributes.map { |m| m.input_data['name'] }.sort).to eq(["Electricity tariff both", "Gas Tariff both"])
+          expect(tariff_holder.energy_tariff_meter_attributes(%w[electricity gas]).map { |m| m.input_data['name'] }.sort).to eq(["Electricity tariff both", "Gas Tariff both"])
+          expect(tariff_holder.energy_tariff_meter_attributes(['electricity']).map { |m| m.input_data['name'] }.sort).to eq(["Electricity tariff both"])
+          expect(tariff_holder.energy_tariff_meter_attributes(['gas']).map { |m| m.input_data['name'] }.sort).to eq(["Gas Tariff both"])
+        end
 
-        expect(tariff_holder.energy_tariffs.electricity.both.count).to eq(1)
-        expect(tariff_holder.energy_tariffs.electricity.half_hourly.count).to eq(1)
-        expect(tariff_holder.energy_tariffs.electricity.non_half_hourly.count).to eq(1)
+        it 'returns both when filtering for both' do
+          expect(tariff_holder.energy_tariff_meter_attributes(%w[electricity gas], :both).map { |m| m.input_data['name'] }.sort).to eq(["Electricity tariff both", "Gas Tariff both"])
+          expect(tariff_holder.energy_tariff_meter_attributes(['electricity'], :both).map { |m| m.input_data['name'] }.sort).to eq(["Electricity tariff both"])
+          expect(tariff_holder.energy_tariff_meter_attributes(['gas'], :both).map { |m| m.input_data['name'] }.sort).to eq(["Gas Tariff both"])
+        end
 
-        expect(tariff_holder.energy_tariffs.gas.both.count).to eq(1)
-        expect(tariff_holder.energy_tariffs.gas.half_hourly.count).to eq(0)
-        expect(tariff_holder.energy_tariffs.gas.non_half_hourly.count).to eq(0)
+        it 'returns both and half_hourly tariffs when filtering for half_hourly' do
+          expect(tariff_holder.energy_tariff_meter_attributes(%w[electricity gas], :half_hourly).map { |m| m.input_data['name'] }.sort).to eq(["Electricity Tariff half_hourly", "Electricity tariff both", "Gas Tariff both"])
+          expect(tariff_holder.energy_tariff_meter_attributes(['electricity'], :half_hourly).map { |m| m.input_data['name'] }.sort).to eq(["Electricity Tariff half_hourly", "Electricity tariff both"])
+        end
 
-        expect(tariff_holder.energy_tariff_meter_attributes.map { |m| m.input_data['name'] }.sort).to eq(["Electricity tariff both", "Gas Tariff both"])
-        expect(tariff_holder.energy_tariff_meter_attributes(['electricity', 'gas']).map { |m| m.input_data['name'] }.sort).to eq(["Electricity tariff both", "Gas Tariff both"])
-        expect(tariff_holder.energy_tariff_meter_attributes(['electricity', 'gas'], :both).map { |m| m.input_data['name'] }.sort).to eq(["Electricity tariff both", "Gas Tariff both"])
-        expect(tariff_holder.energy_tariff_meter_attributes(['electricity', 'gas'], :half_hourly).map { |m| m.input_data['name'] }.sort).to eq(["Electricity Tariff half_hourly", "Electricity tariff both", "Gas Tariff both"])
-        expect(tariff_holder.energy_tariff_meter_attributes(['electricity', 'gas'], :non_half_hourly).map { |m| m.input_data['name'] }.sort).to eq(["Electricity Tariff non_half_hourly", "Electricity tariff both", "Gas Tariff both"])
+        it 'returns both and non_half_hourly tariffs when filtering for non_half_hourly' do
+          expect(tariff_holder.energy_tariff_meter_attributes(%w[electricity gas], :non_half_hourly).map { |m| m.input_data['name'] }.sort).to eq(["Electricity Tariff non_half_hourly", "Electricity tariff both", "Gas Tariff both"])
+          expect(tariff_holder.energy_tariff_meter_attributes(['electricity'], :non_half_hourly).map { |m| m.input_data['name'] }.sort).to eq(["Electricity Tariff non_half_hourly", "Electricity tariff both"])
+        end
 
-        expect(tariff_holder.energy_tariff_meter_attributes(['electricity']).map { |m| m.input_data['name'] }.sort).to eq(["Electricity tariff both"])
-        expect(tariff_holder.energy_tariff_meter_attributes(['electricity'], :both).map { |m| m.input_data['name'] }.sort).to eq(["Electricity tariff both"])
-        expect(tariff_holder.energy_tariff_meter_attributes(['electricity'], :half_hourly).map { |m| m.input_data['name'] }.sort).to eq(["Electricity Tariff half_hourly", "Electricity tariff both"])
-        expect(tariff_holder.energy_tariff_meter_attributes(['electricity'], :non_half_hourly).map { |m| m.input_data['name'] }.sort).to eq(["Electricity Tariff non_half_hourly", "Electricity tariff both"])
-
-        expect(tariff_holder.energy_tariff_meter_attributes(['gas']).map { |m| m.input_data['name'] }.sort).to eq(["Gas Tariff both"])
-        expect(tariff_holder.energy_tariff_meter_attributes(['gas'], :both).map { |m| m.input_data['name'] }.sort).to eq(["Gas Tariff both"])
-        expect(tariff_holder.energy_tariff_meter_attributes(['gas'], :half_hourly).map { |m| m.input_data['name'] }.sort).to eq(["Gas Tariff both"])
-        expect(tariff_holder.energy_tariff_meter_attributes(['gas'], :non_half_hourly).map { |m| m.input_data['name'] }.sort).to eq(["Gas Tariff both"])
+        it 'ignores meter system when requesting gas tariffs' do
+          expect(tariff_holder.energy_tariff_meter_attributes(['gas'], :half_hourly).map { |m| m.input_data['name'] }.sort).to eq(["Gas Tariff both"])
+          expect(tariff_holder.energy_tariff_meter_attributes(['gas'], :non_half_hourly).map { |m| m.input_data['name'] }.sort).to eq(["Gas Tariff both"])
+        end
       end
 
       context 'that has a school group' do
-        let(:school_group)  { create(:school_group) }
+        let(:school_group) { create(:school_group) }
         it 'the group is the parent' do
           expect(tariff_holder.parent_tariff_holder).to eq school_group
         end
@@ -134,7 +134,6 @@ describe EnergyTariffHolder do
       it 'maps only the enabled tariffs' do
         expect(attributes.size).to eq 3
       end
-
     end
   end
 
