@@ -4,6 +4,7 @@ class EnergyTariffsMailer < LocaleMailer
 
     @school_group.users.where(role: 'group_admin').each do |group_admin|
       params[:locale] = group_admin.preferred_locale
+
       make_bootstrap_mail(
         to: group_admin.email,
         subject: I18n.t('energy_tariffs_mailer.group_admin_review_group_tariffs_reminder.subject', locale: params[:locale]),
