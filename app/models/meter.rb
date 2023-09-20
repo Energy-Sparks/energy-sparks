@@ -249,7 +249,7 @@ class Meter < ApplicationRecord
   def applies_to_for_meter_system
     return :both unless electricity?
 
-    case meter_system
+    case meter_system.to_sym
     when :nhh_amr, :nhh, :smets2_smart then :non_half_hourly
     when :hh then :half_hourly
     else :both

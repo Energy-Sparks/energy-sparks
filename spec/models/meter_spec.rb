@@ -225,6 +225,26 @@ describe 'Meter', :meters do
     end
   end
 
+  describe '#applies_to_for_meter_system' do
+    context 'for an electricity meter' do
+      it 'returns which type of energy tariffs (half-hourly, non half-hourly, or both) a given meter applies to depending on the meter system set' do
+        expect(build(:electricity_meter, meter_system: :nhh_amr).applies_to_for_meter_system).to eq(:non_half_hourly)
+        expect(build(:electricity_meter, meter_system: :nhh).applies_to_for_meter_system).to eq(:non_half_hourly)
+        expect(build(:electricity_meter, meter_system: :smets2_smart).applies_to_for_meter_system).to eq(:non_half_hourly)
+        expect(build(:electricity_meter, meter_system: :hh).applies_to_for_meter_system).to eq(:half_hourly)
+      end
+    end
+
+    context 'for a gas meter' do
+      it 'always returns both types of energy tariffs a given meter applies to irrespective of the meter system set' do
+        expect(build(:gas_meter, meter_system: :nhh_amr).applies_to_for_meter_system).to eq(:both)
+        expect(build(:gas_meter, meter_system: :nhh).applies_to_for_meter_system).to eq(:both)
+        expect(build(:gas_meter, meter_system: :smets2_smart).applies_to_for_meter_system).to eq(:both)
+        expect(build(:gas_meter, meter_system: :hh).applies_to_for_meter_system).to eq(:both)
+      end
+    end
+  end
+
   describe 'correct_mpan_check_digit?' do
     it 'returns true if the check digit matches' do
       meter = Meter.new(meter_type: :electricity, mpan_mprn: 2040015001169)
