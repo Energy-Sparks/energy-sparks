@@ -15,24 +15,14 @@ shared_examples "a logged out user" do
 end
 
 shared_examples "a user with updated trackable fields" do
-  it do
-    puts user.last_sign_in_at
-    puts last_sign_in_at
-    expect(user.last_sign_in_at).to_not eq(last_sign_in_at)
-  end
+  it { expect(user.reload.last_sign_in_at).to_not eq(last_sign_in_at) }
 end
 
 shared_examples "a user with unmodified trackable fields" do
-  it do
-    puts user.last_sign_in_at
-    puts last_sign_in_at
-    expect(user.last_sign_in_at).to eq(last_sign_in_at)
-  end
+  it { expect(user.reload.last_sign_in_at).to eq(last_sign_in_at) }
 end
 
 RSpec.describe "sign in", type: :system do
-
-  let!(:last_sign_in_at) { 10.minutes.ago }
   let!(:school) { create(:school) }
   before do
     visit root_path
@@ -48,7 +38,7 @@ RSpec.describe "sign in", type: :system do
   end
 
   context "staff login" do
-    let!(:user) { create(:staff, last_sign_in_at: last_sign_in_at) }
+    let!(:user) { create(:staff) }
     let(:check_remember_me) {}
     let(:travel_forward) {}
 
@@ -58,32 +48,41 @@ RSpec.describe "sign in", type: :system do
         fill_in 'Password', with: user.password
         check 'Stay signed in' if check_remember_me
         click_on 'Sign in'
-        expire_cookies # kills session cookies
-        Timecop.travel(3.weeks) if travel_forward
-        visit root_path
       end
     end
     after(:each) { Timecop.return }
 
-    context "with remember me checked" do
-      let(:check_remember_me) { true }
-      it_behaves_like "a logged in user"
-      it_behaves_like "a user with updated trackable fields"
-
-      context "when remember me has expired" do
-        let(:travel_forward) { true }
-        it_behaves_like "a logged out user"
+    context "closing the browser and visiting home page" do
+      let!(:last_sign_in_at) { user.reload.last_sign_in_at }
+      before do
+        expire_cookies # kills session cookies
+        Timecop.travel(3.weeks) if travel_forward
+        visit root_path
       end
-    end
 
-    context "with remember me unchecked" do
-      let(:check_remember_me) { false }
+      context "with remember me checked" do
+        let(:check_remember_me) { true }
+        it_behaves_like "a logged in user"
+        it_behaves_like "a user with updated trackable fields"
 
-      it_behaves_like "a logged out user"
+        context "and we have gone past the remember me expirey" do
+          let(:travel_forward) { true }
+          it_behaves_like "a logged out user"
+          it_behaves_like "a user with unmodified trackable fields"
+        end
+      end
 
-      context "when remember me has expired" do
-        let(:travel_forward) { true }
+      context "with remember me unchecked" do
+        let(:check_remember_me) { false }
+
         it_behaves_like "a logged out user"
+        it_behaves_like "a user with unmodified trackable fields"
+
+        context "and we have gone past the remember me expirey" do
+          let(:travel_forward) { true }
+          it_behaves_like "a logged out user"
+          it_behaves_like "a user with unmodified trackable fields"
+        end
       end
     end
   end
@@ -96,7 +95,7 @@ RSpec.describe "sign in", type: :system do
   end
 
   context "pupil login" do
-    let!(:user) { create(:pupil, school: school, last_sign_in_at: last_sign_in_at) }
+    let!(:user) { create(:pupil, school: school) }
     before do
       within('#pupil') do
         select user.school_name, from: 'Select your school'
