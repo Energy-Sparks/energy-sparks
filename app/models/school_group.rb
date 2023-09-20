@@ -174,8 +174,6 @@ class SchoolGroup < ApplicationRecord
     Meter::MAIN_METER_TYPES.include?(meter_type.to_sym)
   end
 
-  private
-
   def scorable_calendar
     default_template_calendar
   end
