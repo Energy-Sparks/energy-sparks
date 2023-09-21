@@ -9,3 +9,8 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "energy-sparks_analytics"
+        update-types: ["version-update:semver-patch"]
+      - dependency-name: "statsample"
+        update-types: ["version-update:semver-patch"]
