@@ -28,6 +28,7 @@ class InterventionType < ApplicationRecord
   include TransifexSerialisable
   include Searchable
   include TranslatableAttachment
+  include FuelTypeable
 
   TX_REWRITEABLE_FIELDS = [:description_cy, :download_links_cy].freeze
 
@@ -53,6 +54,7 @@ class InterventionType < ApplicationRecord
   validates :intervention_type_group, :name, presence: true
   validates :name, uniqueness: { scope: :intervention_type_group_id }
   validates :score, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validate :all_fuel_types_are_in_valid_fuel_types_list
 
   scope :by_name,               -> { order(name: :asc) }
   scope :by_id,                 -> { order(id: :asc) }

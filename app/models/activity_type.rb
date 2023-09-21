@@ -31,6 +31,7 @@ class ActivityType < ApplicationRecord
   include TransifexSerialisable
   include Searchable
   include TranslatableAttachment
+  include FuelTypeable
 
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :summary, type: :string, fallbacks: { cy: :en }
@@ -70,6 +71,7 @@ class ActivityType < ApplicationRecord
   validates_presence_of :name, :activity_category_id, :score
   validates_uniqueness_of :name, scope: :activity_category_id
   validates :score, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validate :all_fuel_types_are_in_valid_fuel_types_list
 
   has_many :activity_type_suggestions
   has_many :suggested_types, through: :activity_type_suggestions
