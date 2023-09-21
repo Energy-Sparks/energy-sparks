@@ -29,7 +29,7 @@ gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-spa
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
 # Last proper release does that, causing all kinds of weird behaviour (+ not defined etc)
-gem 'statsample', git: 'https://github.com/Energy-Sparks/statsample', tag: '2.1.1-energy-sparks', branch: 'update-gems-and-awesome-print'
+gem 'statsample', git: 'https://github.com/Energy-Sparks/statsample', tag: 'update-gems-and-awesome-print', branch: 'update-gems-and-awesome-print'
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
@@ -131,7 +131,7 @@ group :development, :test do
   gem 'terminal-notifier', require: false
   gem 'terminal-notifier-guard', require: false
   gem 'rb-readline', require: false
-  gem 'rubocop', '0.93.1'
+  gem 'rubocop', '1.56.3'
   gem 'rubocop-rails', '2.9.1'
   gem 'rubocop-performance', '1.8.0'
   gem 'rubocop-rspec'
