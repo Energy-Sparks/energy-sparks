@@ -55,6 +55,7 @@ class InterventionType < ApplicationRecord
   validates :intervention_type_group, :name, presence: true
   validates :name, uniqueness: { scope: :intervention_type_group_id }
   validates :score, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validate :all_fuel_types_are_in_valid_fuel_types_list
 
   scope :by_name,               -> { order(name: :asc) }
   scope :by_id,                 -> { order(id: :asc) }
@@ -81,6 +82,13 @@ class InterventionType < ApplicationRecord
   end
 
   private
+
+  def all_fuel_types_are_in_valid_fuel_types_list
+    return if fuel_type.compact.empty?
+    invalid_fuel_types = (fuel_type.map(&:to_s) - VALID_FUEL_TYPES.map(&:to_s))
+    return if invalid_fuel_types.empty?
+    errors.add(:fuel_type, I18n.t('intervention_types.errors.invalid_fuel_type', count: invalid_fuel_types.count) + invalid_fuel_types.to_sentence)
+  end
 
   def copy_searchable_attributes
     self.write_attribute(:name, self.name(locale: :en))
