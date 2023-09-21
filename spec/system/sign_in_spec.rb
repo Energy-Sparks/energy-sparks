@@ -75,6 +75,7 @@ RSpec.describe "sign in", type: :system do
       it_behaves_like "a user with updated last_sign_in_at" do
         let(:saved_last_sign_in_at) { last_sign_in_at }
       end
+
       context "closing the browser and visiting home page" do
         let!(:saved_last_sign_in_at) { user.reload.last_sign_in_at }
 
