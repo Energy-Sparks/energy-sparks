@@ -5,9 +5,9 @@ module FuelTypeable
   private
 
   def all_fuel_types_are_in_valid_fuel_types_list
-    return if fuel_type.compact.empty?
+    return if fuel_type.reject(&:blank?).empty?
 
-    invalid_fuel_types = (fuel_type.map(&:to_s) - VALID_FUEL_TYPES.map(&:to_s))
+    invalid_fuel_types = (fuel_type.reject(&:blank?).map(&:to_s) - VALID_FUEL_TYPES.map(&:to_s))
 
     return if invalid_fuel_types.empty?
 
