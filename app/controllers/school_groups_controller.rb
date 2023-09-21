@@ -1,6 +1,7 @@
 class SchoolGroupsController < ApplicationController
   include PartnersHelper
   include Promptable
+  include Scoring
 
   before_action :find_school_group
   before_action :redirect_unless_feature_enabled, only: [:map, :comparisons, :priority_actions, :current_scores]
@@ -51,11 +52,12 @@ class SchoolGroupsController < ApplicationController
   end
 
   def current_scores
+    setup_scores_and_years(@school_group)
     respond_to do |format|
       format.html {}
       format.csv do
-        send_data SchoolGroups::CurrentScoresCsvGenerator.new(school_group: @school_group, include_cluster: include_cluster).export,
-        filename: csv_filename_for('current_scores')
+        send_data SchoolGroups::CurrentScoresCsvGenerator.new(school_group: @school_group, scored_schools: @scored_schools, include_cluster: include_cluster).export,
+        filename: csv_filename_for(params[:academic_year].present? ? 'previous_scores' : 'current_scores')
       end
     end
   end
