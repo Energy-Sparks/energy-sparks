@@ -192,10 +192,6 @@ class User < ApplicationRecord
     OnboardingMailer.with_user_locales(users: [self], school: school) { |mailer| mailer.welcome_email.deliver_now } if self.school.present?
   end
 
-  def after_remembered
-    # puts "YAY!"
-  end
-
 protected
 
   def preferred_locale_presence_in_available_locales
