@@ -68,7 +68,7 @@
   <%= f.input :show_on_charts, label: 'Show on charts?' %>
 
   <h2>Fuel types</h2>
-  <%= render 'crud_filter_checkboxes', field: :fuel_type, collection: Meter::CREATABLE_METER_TYPES.map { |m| OpenStruct.new(id: m.to_s, name: m.to_s.capitalize.humanize) }, form: f %>
+  <%= render 'crud_filter_checkboxes', field: :fuel_type, collection: ActivityType::VALID_FUEL_TYPES.map { |fuel_type| OpenStruct.new(id: fuel_type.to_s, name: fuel_type.to_s.capitalize.humanize) }, form: f %>
 
   <h2>Key Stages</h2>
   <%= render 'crud_filter_checkboxes', field: :key_stage_ids, collection: @key_stages, form: f %>

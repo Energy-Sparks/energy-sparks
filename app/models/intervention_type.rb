@@ -31,6 +31,8 @@ class InterventionType < ApplicationRecord
 
   TX_REWRITEABLE_FIELDS = [:description_cy, :download_links_cy].freeze
 
+  VALID_FUEL_TYPES = [:gas, :electricity, :solar, :storage_heater].freeze
+
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :summary, type: :string, fallbacks: { cy: :en }
   translates :description, backend: :action_text

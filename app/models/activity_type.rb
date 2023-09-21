@@ -44,6 +44,8 @@ class ActivityType < ApplicationRecord
 
   TX_REWRITEABLE_FIELDS = [:description_cy, :school_specific_description_cy, :download_links_cy].freeze
 
+  VALID_FUEL_TYPES = [:gas, :electricity, :solar, :storage_heater].freeze
+
   belongs_to :activity_category
 
   t_has_one_attached :image
