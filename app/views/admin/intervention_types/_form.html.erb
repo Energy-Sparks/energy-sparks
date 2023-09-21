@@ -54,6 +54,11 @@
 
   <%= f.input :custom, label: "Custom ('Other')" %>
 
+  <%= f.input :show_on_charts, label: 'Show on charts?' %>
+
+  <h2>Fuel types</h2>
+  <%= render 'admin/activity_types/crud_filter_checkboxes', field: :fuel_type, collection: Meter::CREATABLE_METER_TYPES.map { |m| OpenStruct.new(id: m.to_s, name: m.to_s.capitalize.humanize) }, form: f %>
+
   <div class="intervention_type_suggestions">
     <h2>Suggested Next Actions</h2>
 
