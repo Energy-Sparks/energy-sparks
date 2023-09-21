@@ -22,11 +22,11 @@ describe 'InterventionType' do
       expect(intervention_type).to be_valid
     end
 
-    intervention_type.fuel_type = ActivityType::VALID_FUEL_TYPES + ['coal']
+    intervention_type.fuel_type = InterventionType::VALID_FUEL_TYPES + ['coal']
     expect(intervention_type).to_not be_valid
     expect(intervention_type.errors[:fuel_type]).to include('invalid fuel type: coal')
 
-    intervention_type.fuel_type = ActivityType::VALID_FUEL_TYPES + ['coal', 'exported solar pv']
+    intervention_type.fuel_type = InterventionType::VALID_FUEL_TYPES + ['coal', 'exported solar pv']
     expect(intervention_type).to_not be_valid
     expect(intervention_type.errors[:fuel_type]).to include('invalid fuel types: coal and exported solar pv')
   end
