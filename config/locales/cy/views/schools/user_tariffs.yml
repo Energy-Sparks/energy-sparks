@@ -1,8 +1,11 @@
 cy:
   schools:
+    energy_tariffs:
+      title: Tariffau Ynni
     tariffs_helper:
       charge_value: "%{value} fesul %{units}"
       prices_text: Yn seiliedig ar y mesuryddion sy'n gysylltiedig â'r tariff hwn, rydym wedi gosod rhai cyfnodau dydd/nos diofyn - bydd angen i chi ddiweddaru'r cyfraddau o'r manylion ar eich bil.
+      rate_from: Cyfradd o %{start_time} i %{end_time}
       user_tariff_title: "%{start_date} i %{end_date}"
     user_tariff_charges:
       charge_ccl:
@@ -20,9 +23,19 @@ cy:
       charges_edit_gas:
         consumption_and_supply_charges: Costau defnyddio a chyflenwi
         other_charges: Costau eraill
+      edit_charges: Golygu costau
       index:
+        breadcrumb_title: Ychwanegu taliadau sefydlog ar gyfer y tariff hwn
+        introduction_school: Rhowch gymaint o fanylion ag y gallwch am y taliadau sefydlog sy'n gysylltiedig â'r tariff hwn. Gallwch ddod o hyd i fanylion am y taliadau sefydlog drwy edrych ar fil diweddar
+        introduction_school_group: Rhowch gymaint o fanylion ag y gallwch am y taliadau sefydlog sy'n gysylltiedig â'r tariff hwn. Gallwch ddod o hyd i fanylion am y taliadau sefydlog drwy edrych ar fil diweddar
+        introduction_site_settings: Rhowch gymaint o fanylion ag y gallwch am y taliadau sefydlog sy'n gysylltiedig â'r tariff hwn
+        notice: Mae'r cam hwn yn ddewisol ac os nad oes gennych y wybodaeth hon, gallwch ei hepgor.
+        notice_site_settings: Dim ond taliadau defnydd ddylai fod ar dariffau gosod safle.
+        smart_meter_notice: Ni allwch olygu'r tâl sefydlog dyddiol ar gyfer y tariff hwn ond gallwch olygu'r taliadau eraill.
         title: Ychwanegu taliadau sefydlog ar gyfer y tariff hwn
-        introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y taliadau sefydlog sy'n gysylltiedig â'r tariff hwn
+      per: fesul
+      tick_this_box_if_you_pay_this_charge: Ticiwch y blwch hwn os ydych chi'n talu'r tâl hwn
+      value_in_gbp: Gwerth mewn £
     user_tariff_differential_prices:
       form:
         labels:
@@ -30,85 +43,170 @@ cy:
           start_time: Amser cychwyn
           value: Cyfradd mewn £/kWh
       index:
+        add_rate: Ychwanegu cyfradd
+        breadcrumb_title: Ychwanegu costau defnydd ar gyfer pob cyfnod amser ar gyfer y tariff hwn
+        complete_message: Cwmpas 24 awr cyflawn
         consumption_charges: Costau defnydd
-        title: Ychwanegu costau defnydd ar gyfer pob cyfnod amser ar gyfer y tariff hwn
-        introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
+        incomplete_message: 'Cwmpas 24 awr anghyflawn. Ar cyfer cwmpas 24 awr cyflawn bydd angen i chi ychwanegu prisiau ychwanegol o fewn yr ystodau amseroedd hyn sydd ar goll:'
+        incomplete_zero_prices_message: Rhaid bod gan dariff gwahaniaethol o leiaf 2 bris, e.e. cyfradd dydd a chyfradd nos. Ychwanegwch brisiau neu ailosodwch i'r diofyn
+        introduction_school: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
+        introduction_school_group: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
+        introduction_site_settings: Rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
+        invalid_values_message: Ychwanegwch brisiau dilys ar gyfer pob cyfradd a farciwyd
+        reset_to_default: Ailosod i'r diofyn
+        title: Ychwanegu taliadau defnydd ar gyfer pob cyfnod amser ar gyfer y tariff %{fuel_type} hwn
     user_tariff_flat_prices:
       edit:
-        introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
-        title: Golygu'r costau defnydd ar gyfer y tariff hwn
+        breadcrumb_title: Golygu'r costau defnydd ar gyfer y tariff hwn
+        introduction_school: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
+        introduction_school_group: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
+        introduction_site_settings: Rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
+        title: Golygu taliadau defnydd ar gyfer y tariff %{fuel_type} hwn
       form:
         rate: Cyfradd
       new:
-        introduction: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
-        title: Ychwanegu costau defnydd ar gyfer y tariff hwn
+        breadcrumb_title: Ychwanegu costau defnydd ar gyfer y tariff hwn
+        introduction_school: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
+        introduction_school_group: Gan ddefnyddio'ch bil, rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
+        introduction_site_settings: Rhowch gymaint o fanylion ag y gallwch am y costau defnydd sy'n gysylltiedig â'r tariff hwn
+        title: Ychwanegu taliadau defnydd ar gyfer y tariff %{fuel_type} hwn
+      rate_in_gbp: Cyfradd mewn £
     user_tariffs:
       charges_table:
         climate_charge_levy: Ardoll tâl hinsawdd
         tnuos: TNUoS (Defnydd System Rhwydwaith Trosglwyddo)
         vat_rate: Cyfradd TAW
       choose_meters:
+        apply_tariff_to_all_meters: Cymhwyso tariff i bob mesurydd %{fuel_type}
+        both: mesuryddion hanner awr ac nid hanner awr
+        breadcrumb_title: Dewis mesuryddion
+        half_hourly: mesuryddion hanner awr yn unig
+        missing_meters: Dewiswch o leiaf un mesurydd ar gyfer y tariff hwn. Neu dad-diciwch yr opsiwn i gymhwydo'r tariff i bob mesurydd
+        non_half_hourly: mesuryddion nad ydynt yn hanner awr yn unig
+        specific_meters_prompt: A fydd y tariff hwn yn berthnasol i bob mesurydd %{fuel_type} yn yr ysgol neu fesuryddion penodol yn unig?
+        tariff_applies_to: Mae'r tariff hwn yn berthnasol i
         title: Dewiswch fesuryddion ar gyfer y tariff hwn
         which_meters_will_this_tariff_apply_to: I ba fesuryddion y bydd y tariff hwn yn berthnasol?
       choose_type:
-        title: Dewiswch y math o'r tariff hwn
+        are_you_sure_message: Ydych chi'n siŵr? Bydd newid y math yn dileu pob tâl defnydd sy'n gysylltiedig â'r tariff hwn.
+        breadcrumb_title: Dewis math o dariff
+        differential: Tariff gwahaniaethol
+        flat_rate: Tariff cyfradd fflat
+        is_this_a:
+          differential: Neu gyfradd sy’n amrywio yn ôl amser o’r dydd (e.e. tariff Dydd/Nos, Economi7)
+          flat_rate: A yw hwn yn dariff cyfradd safonol?
+        title: Dewiswch fath y tariff %{fuel_type} hwn
       edit:
+        breadcrumb_title: Golygu enw ac ystod dyddiadau
         title: Golygu'r enw a'r ystod dyddiad ar gyfer y tariff %{fuel_type} hwn
+      edit_meters:
+        breadcrumb_title: Golygu mesuryddion y tariff hwn
       flat_rate:
         flat_rate_tariff: Tariff cyfradd fflat
         no_flat_rate_tariff_has_been_set_yet: Nid oes tariff cyfradd unffurf wedi'i osod eto
         per_kwh: fesul kWh
+      form:
+        errors:
+          applies_to:
+            must_be_set_to_both: rhaid gosod yn berthnasol i i 'y ddau' ar gyfer pob tariff nad yw'n drydan
+          dates:
+            start_and_end_date_can_not_both_be_empty: ni all y dyddiad dechrau a gorffen fod yn wag
+            start_date_must_be_earlier_than_or_equal_to_end_date: rhaid i'r dyddiad dechrau fod cyn neu'n hafal i'r dyddiad gorffen
+        hints:
+          end_date: Gadewch yn wag os nad oes dyddiad gorffen
+          start_date: Gadewch yn wag os nad oes dyddiad dechrau
       index:
         changes_to_cost_calculations_message: Bydd y cyfrifiadau cost yn seiliedig ar y tariffau hyn yn diweddaru dros nos
+        default_tariffs_message_html: Bydd y tariffau hyn yn berthnasol i unrhyw gyfnodau sy'n cael eu cwmpasu gan <a href="%{user_supplied_tariffs_link}">dariffau a gyflenwir gan ddefnyddwyr</a>
+        default_tariffs_message_with_smart_meters_html: Bydd y tariffau hyn yn berthnasol i unrhyw gyfnodau sy'n cael eu cwmpasu gan <a href="%{user_supplied_tariffs_link}">dariffau a gyflenwir gan ddefnyddwyr</a> neu unrhyw dariffau a fewnforiwyd o'ch <a href="%{smart_meter_tariffs_link}">mesuryddion clyfar</a>
         electricity:
           add_label: Ychwanegu tariff trydan
           header: Trydan
           there_are_no_electricity_tariffs_set_up_yet: Nid oes gennym unrhyw dariffau a gyflenwir gan ddefnyddwyr ar gyfer eich mesuryddion trydan
+        exported_solar_pv:
+          add_label: Ychwanegu tariff solar ffotofoltaig wedi'i allforio
+          header: Solar ffotofoltaig wedi'i allforio
+          there_are_no_exported_solar_pv_tariffs_set_up_yet: Nid oes gennym unrhyw dariffau a gyflenwir gan ddefnyddwyr ar gyfer eich mesuryddion solar ffotofoltaig wedi'i allforio.
         gas:
           add_label: Ychwanegu tariff nwy
           header: Nwy
           there_are_no_gas_tariffs_set_up_yet: Nid oes gennym unrhyw dariffau a gyflenwir gan ddefnyddwyr ar gyfer eich mesuryddion nwy.
+        group_school_tariffs:
+          electricity: Tariffau trydan
+          gas: Tariffau nwy
+          name: Enw
+        group_school_tariffs_message: Ysgolion yn y grŵp %{school_group_name} gyda'u tariffau personol eu hun
         introduction_html: |-
           <p>
-          Gallwch wella cywirdeb y cyfrifiadau ar eich<a href="%{advice_pages}"> tudalennau dadansoddi costau</a> drwy ychwanegu manylion am eich tariffau go iawn.
+          Gallwch wella cywirdeb y cyfrifiadau ar eich <a href="%{advice_pages}">tudalennau dadansoddi costau</a> trwy ychwanegu manylion am eich tariffau go iawn.
           </p>
           <p>
-            I ychwanegu tariff newydd bydd angen i chi ddarparu gwybodaeth fanwl am y costau ynni a'r ystod o daliadau sefydlog sydd wedi'u cynnwys yn eich contract ynni.
+          I ychwanegu tariff newydd, bydd angen i chi wybod y gyfradd a godir arnoch. Bydd gennych hefyd yr opsiwn i ychwanegu unrhyw daliadau sefydlog rydych yn eu talu. Dylai manylion eich cyfradd a'ch taliadau sefydlog fod wedi'u rhestru ar fil diweddar.
           </p>
+        no_defaults: Nid oes gennym unrhyw dariffau diofyn ar gyfer eich mesuryddion %{meter_type}.
+        no_smart_meter_tariffs: Nid ydym wedi mewnforio unrhyw dariffau o'ch mesuryddion %{meter_type}.
+        note_about_defaults_html: Os nad oes gennym eich gwybodaeth tariff go iawn, yna byddwn yn amcangyfrif eich costau gan ddefnyddio ein <a href="%{default_tariffs_link}">tariffau diofyn</a>.
+        note_about_smart_meter_tariffs_html: Ar hyn o bryd rydym yn defnyddio tariffau a fewnforiwyd yn awtomatig o'ch <a href="%{smart_meter_tariffs_link}">mesuryddion clyfar</a>.
+        solar_pv:
+          add_label: Ychwanegu tariff solar ffotofoltaig
+          header: Solar ffotofoltaig
+          there_are_no_solar_pv_tariffs_set_up_yet: Nid oes gennym unrhyw dariffau a gyflenwir gan ddefnyddwyr ar gyfer eich mesuryddion solar ffotofoltaig.
         tabs:
-          default_tariffs: tariffau diofyn
+          default_tariffs: Tariffau diofyn
+          group_school_tariffs: Tariffau ysgol
           smart_meter_tariffs: Tariffau mesurydd clyfar
+          system_default_tariffs: Tariffau diofyn system
           user_tariffs: Prisiau a gyflenwir gan ddefnyddwyr
         title: Rheoli a gweld tariffau
       meters:
+        all_meters: Pob mesurydd %{meter_type}
         meter_list: Mesuryddion
       name: Enw
       new:
+        breadcrumb_title: Dewiswch enw ac ystod dyddiadau
         title: Dewiswch enw ac ystod dyddiad ar gyfer y tariff %{fuel_type} hwn
+      not_allowed_for_smart_meter_tariffs: Ni chaniateir hyn ar gyfer tariffau mesuryddion clyfar
       rates_table:
         no_consumption_charges_specified_yet: Dim costau defnydd wedi'u nodi eto
         price_per_kwh: "%{price_value} fesul kWh"
       show:
+        breadcrumb_title: "%{name}"
         consumption_charges: Costau defnydd
-        introduction_html: Bydd unrhyw newidiadau i'r tariff yn cael eu hadlewyrchu yn y tudalennau <a href='%{electricity_analysis_path}'>dadansoddiad cost trydan</a> a <a href='%{gas_analysis_path}'>dadansoddiad cost nwy</a> a fydd yn diweddaru dros nos
-        standing_charges: Costau sefydlog
+        created_at: Dyddiad creu
+        created_by: Crëwyd gan
+        dates:
+          end_date: Dyddiad gorffen
+          start_date: Dyddiad cychwyn
+          title: Dyddiadau
+        introduction_html: Bydd unrhyw newidiadau i'r tariff yn cael eu hadlewyrchu yn y dudalen <a href='%{analysis_path}'>dadansoddiad costau %{meter_type}</a> a fydd yn diweddaru dros nos
+        meters: Mesuryddion
+        no_standing_charges: Nid oes unrhyw taliadau sefydlog wedi'u hychwanegu
+        not_usable: Mae gan y tariff hwn brisiau anghyflawn neu ar goll ac felly nid yw wedi'i orffen eto.
+        notes_html: Nodiadau <small>(gweinyddwyr yn unig)</small>
+        standing_charges: Taliadau sefydlog
+        updated_at: Dyddiad y diweddarwyd ddiwethaf
+        updated_by: Diweddarwyd ddiwethaf gan
       smart_meter_tariffs:
         introduction_html: |-
           <p>
-            Rydym yn llwytho gwybodaeth tariff sylfaenol yn awtomatig o'ch mesuryddion clyfar.
+          Rydym yn llwytho gwybodaeth tariff sylfaenol yn awtomatig o'ch mesuryddion clyfar. Dim ond gwybodaeth sylfaenol am
+          eich taliadau sefydlog dyddion y mae'r rhain yn cynnwys.
           </p>
           <p>
-            Mae'r wybodaeth hon eisoes yn cael ei defnyddio i wella cywirdeb y cyfrifiadau ar eich <a href="%{advice_pages}">tudalennau dadansoddi costau</a> ac fe'i crynhoir isod.
+          Gallwch ddewis olygu'r tariffau hyn i ychwanegu gwybodaeth tâl sefydlog mwy manwl ar gyfer pob mesurydd. Os ydych eisoes wedi ychwanegu tariffau ar gyfer yr ysgol gyfan, gallwch ddewis analluogi'r tariffau hyn yn lle.
           </p>
-          <p>
-            Bydd ychwanegu tariff newydd â llaw yn eich galluogi i ddarparu rhagor o wybodaeth am eich taliadau sefydlog am gyfnod penodol.
-          </p>
+        limited_editing: Mae'r wybodaeth tariff hon wedi'i mewnforio'n awtomatig o'ch mesurydd clyfar. Gallwch ychwanegu manylion ychwanegol am eich taliadau sefydlog ond ni allwch olygu unrhyw wybodaeth arall.
+      summary_table:
+        no_end_date: Dim dyddiad gorffen
+        no_start_date: Dim dyddiad dechrau
       tariff_partial:
         consumption_charges: Costau defnydd
+        differential_tariff: Tariff gwahaniaethol
         end_date: Dyddiad gorffen
+        flat_rate_tariff: Tariff cyfradd fflat
+        price_from_to: "%{price_start_time} i %{price_end_time}:"
         start_date: Dyddiad cychwyn
         type: Math
-        price_from_to: "%{price_start_time} i %{price_end_time}:"
       title_partial:
         heading: Tariff
       view_and_manage_tariffs_html: <a href="%{user_tariffs_path}">Gweld a rheoli tariffau eich ysgol</a>

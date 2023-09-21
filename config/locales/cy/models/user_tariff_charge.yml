@@ -6,11 +6,26 @@ cy:
     month: mis
     quarter: chwarter
   user_tariff_charge:
+    agreed_availability_charge: Tâl argaeledd y cytunwyd arno
+    agreed_capacity: Capasiti y cytunwyd arno
     available_capacity: Capasiti sydd ar gael
+    available_capacity_tip: Dylid nodi'r capasiti sydd ar gael hefyd, fel arall bydd y gosodiad hwn yn cael ei anwybyddu
+    available_capacity_tooltip: Dylid nodi'r capasiti sydd ar gael os pennir y tâl argaeledd y cytunwyd arno neu'r tâl argaeledd gormodol
     data_collection_dcda_agent_charge: Casglu Data DC/DA Tâl Asiant
+    excess_availability_charge: Tâl argaeledd gormodol
+    feed_in_tariff_levy: Ardoll tariff bwydo i mewn
+    fixed_charge: Tâl sefydlog
+    half_hourly_data_charge: Tâl data fesul hanner awr
+    meter_asset_provider_charge: Tâl darparwr asedau mesurydd
     nhh_automatic_meter_reading_charge: Tâl darllen mesurydd awtomatig NHH
     nhh_metering_agent_charge: Tâl asiant mesuryddion NHH
+    other: Arall
     rate: Cyfradd
+    reactive_power_charge: Tâl ailweithredu pŵer
+    renewable_energy_obligation: Rhwymedigaeth ynni adnewyddadwy
+    settlement_agency_fee: Ffi asiantaeth setlo
+    site_fee: Ffi safle
+    standing_charge: Tâl sefydlog
     unit_rate_charge_amber: Tâl cyfradd uned (ambr)
     unit_rate_charge_green: Tâl cyfradd uned (gwyrdd)
     unit_rate_charge_red: Tâl cyfradd uned (coch)
