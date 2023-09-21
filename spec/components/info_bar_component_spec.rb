@@ -19,7 +19,7 @@ RSpec.describe InfoBarComponent, type: :component do
               <div class="col-md-8">
                 This is an info bar
               </div>
-                <div class="col-md-3 align-right">
+                <div class="col-md-3 d-flex justify-content-end">
                   <a class="btn btn-light btn rounded-pill font-weight-bold" style="height: fit-content;" href="http://www.example.com">Click me</a>
                 </div>
           </div>
