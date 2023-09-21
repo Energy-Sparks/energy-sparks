@@ -11,7 +11,7 @@
       </div>
       <% buttons.each do |title, path| %>
         <div class="col-md-3 d-flex justify-content-end">
-          <%= link_to sanitize(title), path, class: "btn btn-light btn rounded-pill font-weight-bold text-right", style: 'height: fit-content;' %>
+          <%= link_to sanitize(title), path, class: "btn btn-light btn rounded-pill font-weight-bold", style: 'height: fit-content;' %>
         </div>
       <% end %>
     <% else %>
