@@ -90,8 +90,8 @@ en:
       the_energy_sparks_team: The Energy Sparks Team
     completion_email:
       find_them_on_energy_sparks: Find them on Energy Sparks
-      subject: "%{school} has completed the onboarding process"
-      title: "%{school_name} has completed the automatic setup process"
+      subject: "%{school} (%{school_group}) has completed the onboarding process"
+      title: "%{school_name} (%{school_group}) has completed the automatic setup process"
     data_enabled_email:
       explore_data: Explore your data
       get_in_touch_html: <a href="%{contact_url}">Get in touch</a> if you have any further questions.
