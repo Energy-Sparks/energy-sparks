@@ -10,6 +10,7 @@ FactoryBot.define do
     created_by { association :user }
     updated_by { association :user }
     enabled { true }
+    applies_to { :both }
 
     trait :with_flat_price do
       transient do
