@@ -14,7 +14,6 @@ describe 'InterventionType' do
     expect( type.errors[:score] ).to include('must be greater than or equal to 0')
   end
 
-
   it 'validates every fuel type is valid' do
     intervention_type = build :intervention_type
 

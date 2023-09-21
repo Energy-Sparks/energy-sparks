@@ -31,6 +31,7 @@ class ActivityType < ApplicationRecord
   include TransifexSerialisable
   include Searchable
   include TranslatableAttachment
+  include FuelTypeable
 
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :summary, type: :string, fallbacks: { cy: :en }
@@ -43,8 +44,6 @@ class ActivityType < ApplicationRecord
   }.freeze
 
   TX_REWRITEABLE_FIELDS = [:description_cy, :school_specific_description_cy, :download_links_cy].freeze
-
-  VALID_FUEL_TYPES = [:gas, :electricity, :solar, :storage_heater].freeze
 
   belongs_to :activity_category
 
@@ -135,13 +134,6 @@ class ActivityType < ApplicationRecord
   end
 
   private
-
-  def all_fuel_types_are_in_valid_fuel_types_list
-    return if fuel_type.compact.empty?
-    invalid_fuel_types = (fuel_type.map(&:to_s) - VALID_FUEL_TYPES.map(&:to_s))
-    return if invalid_fuel_types.empty?
-    errors.add(:fuel_type, I18n.t('activity_types.errors.invalid_fuel_type', count: invalid_fuel_types.count) + invalid_fuel_types.to_sentence)
-  end
 
   def copy_searchable_attributes
     self.write_attribute(:name, self.name(locale: :en))
