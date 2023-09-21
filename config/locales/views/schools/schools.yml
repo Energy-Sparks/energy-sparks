@@ -546,9 +546,6 @@ en:
       add_consumption_estimate: Add an estimate of your annual %{fuels} consumption so we can provide you with a more detailed progress report to help you achieve your targets
       add_estimate: Add an estimate
       coming_soon: Coming Soon
-      complete_activities: Teach pupils about energy and climate change within the context of your own school by completing our freely available activities
-      complete_interventions: Record energy saving actions made by school staff and facilities management to help to track whether your interventions have saved energy.
-      complete_short_programme: Take the next step towards completing one of our short programmes of activity to increase your impact and score points for your school
       configuring_data_access: We're configuring access to your energy data and will notify you when it's ready to explore
       create_pupil_account: Create a pupil account
       dashboard_title: Adult dashboard for %{school_name}
@@ -566,8 +563,6 @@ en:
       print_view: Print view
       recent_energy_audit: The Energy Sparks team have recently completed an energy audit for this school
       recent_energy_usage: Recent energy usage
-      record_action: Record an action
-      record_pupil_activity: Record a pupil activity
       review_audit: Review audit
       review_progress: Review progress
       review_target: Review your target
@@ -579,7 +574,6 @@ en:
       setup_pupil_account: Set up a pupil account for your school to give your pupils direct access to the pupil dashboard. No email address is needed for a pupil account.
       summary_of_recent_energy_usage: Summary of recent energy usage
       upload_energy_bill: Upload a bill
-      view_programmes: View your programmes
     timeline:
       no_events: No events to show
       title: What's been going on?
