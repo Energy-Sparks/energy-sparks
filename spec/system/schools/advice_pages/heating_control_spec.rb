@@ -61,9 +61,17 @@ RSpec.describe "heating control advice page", type: :system do
       end
 
       it 'includes expected data' do
+        expect(page).to have_content('the average start time for your heating')
         expect(page).to have_content("04:00")
         expect(page).to have_content("£1,234")
         expect(page).to have_content("42")
+      end
+
+      context 'and theres is no average start time' do
+        let(:last_week_start_times) { Heating::HeatingStartTimes.new(days: [day, day, day], average_start_time: nil) }
+        it 'does not show that text' do
+          expect(page).to_not have_content('the average start time for your heating')
+        end
       end
     end
     context "clicking the 'Analysis' tab" do
@@ -82,6 +90,7 @@ RSpec.describe "heating control advice page", type: :system do
       end
 
       it 'includes expected data in table' do
+        expect(page).to have_css('#heating-start-times')
         expect(page).to have_content(date.to_s(:es_short))
         expect(page).to have_content("05:00")
         expect(page).to have_content("06:00")
@@ -91,6 +100,14 @@ RSpec.describe "heating control advice page", type: :system do
       it 'includes expected data in seasonal analysis' do
         expect(page).to have_content("£1,234")
         expect(page).to have_content("42")
+      end
+
+      context 'and theres is no average start time' do
+        let(:last_week_start_times) { Heating::HeatingStartTimes.new(days: [day, day, day], average_start_time: nil) }
+        it 'does not show the table' do
+          expect(page).to_not have_content(I18n.t('advice_pages.heating_control.analysis.heating_timings.intro_html '))
+          expect(page).to_not have_css('#heating-start-times')
+        end
       end
     end
     context "clicking the 'Learn More' tab" do
