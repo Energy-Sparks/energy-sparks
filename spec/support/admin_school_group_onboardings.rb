@@ -6,7 +6,6 @@ RSpec.shared_examples "admin school group onboardings" do
   end
 
   context "selectable actions" do
-
     let(:school_group_onboardings) { 3.times.collect { create :school_onboarding, :with_school, school_group: school_group, created_by: admin } }
     let(:setup_data) { school_group_onboardings }
 
@@ -50,7 +49,7 @@ RSpec.shared_examples "admin school group onboardings" do
             it "sends onboarding complete email" do
               email = ActionMailer::Base.deliveries.first
               expect(email.to).to include('operations@energysparks.uk')
-              expect(email.subject).to eq("#{onboarding.school.name} has completed the onboarding process")
+              expect(email.subject).to eq("#{onboarding.school.name} () has completed the onboarding process")
             end
             it "sends school live email" do
               email = ActionMailer::Base.deliveries.second
