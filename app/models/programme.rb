@@ -33,14 +33,11 @@ class Programme < ApplicationRecord
       after do
         self.update(ended_on: Time.zone.now)
         if EnergySparks::FeatureFlags.active?(:activities_2023)
-          # Only apply the bonus points if the programme is completed in the same academic year
-          points = school.academic_year_for(started_on)&.current? ? programme_type.bonus_score : 0
-
           Observation.create!(
             school: school,
             observation_type: :programme,
             at: Time.zone.now,
-            points: points,
+            points: points_for_completion,
             programme_id: id
           )
         end
@@ -56,6 +53,11 @@ class Programme < ApplicationRecord
   scope :active, -> { joins(:programme_type).merge(ProgrammeType.active) }
 
   delegate :title, :description, :short_description, :document_link, :image, to: :programme_type
+
+  def points_for_completion
+    # Only apply the bonus points if the programme is completed in the same academic year
+    school.academic_year_for(started_on)&.current? ? programme_type.bonus_score : 0
+  end
 
   def activity_types_completed
     activities.map(&:activity_type).uniq

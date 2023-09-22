@@ -10,18 +10,17 @@ module Programmes
     delegate :count, to: :activity_types_completed, prefix: :activity_types_completed
 
     def notification_text
-      I18n.t('schools.programme.progress.notification_html',
+      I18n.t('schools.programme.progress.notification',
         programme_type_title: programme_type_title,
         programme_activities_count: programme_activities_count,
         activity_types_count: activity_types_count,
         activity_types_uncompleted_count: activity_types_uncompleted_count,
-        total_points: total_points,
-        link: ''
+        total_points: total_points
       )
     end
 
     def total_points
-      activity_types.sum(:score) + programme.programme_type.bonus_score
+      activity_types.sum(:score) + programme.points_for_completion
     end
 
     def programme_type_title

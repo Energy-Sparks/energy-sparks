@@ -339,7 +339,7 @@ en:
     programme:
       progress:
         choose_a_new_programme_message: It's time to choose a new programme of activities. What challenge will you take on next?
-        notification_html: You have completed %{programme_activities_count}/%{activity_types_count} of the activities in the %{programme_type_title} programme. Complete the final %{activity_types_uncompleted_count} activities now to score %{total_points} points
+        notification: You have completed %{programme_activities_count}/%{activity_types_count} of the activities in the %{programme_type_title} programme. Complete the final %{activity_types_uncompleted_count} activities now to score %{total_points} points
         start_a_new_programme: Start a new programme
         view_now: View now
     pupils:
