@@ -21,7 +21,7 @@
     <!-- Energy analysis -->
     <% if current_user.school.data_enabled? %>
       <%= link_to t('my_school_menu.energy_audits'), school_audits_path(current_user.school), class: 'dropdown-item' %>
-      <%= link_to t('my_school_menu.energy_analysis'), school_advice_link(current_user.school), class: 'dropdown-item' %>
+      <%= link_to t('my_school_menu.energy_analysis'), school_advice_path(current_user.school), class: 'dropdown-item' %>
     <% end %>
 
     <!-- Review targets -->
