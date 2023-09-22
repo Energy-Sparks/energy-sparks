@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_13_104648) do
+ActiveRecord::Schema.define(version: 2023_09_22_131629) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(version: 2023_09_13_104648) do
     t.boolean "featured", default: false
     t.boolean "pupil", default: false
     t.boolean "live_data", default: false
+    t.string "icon", default: "question-circle"
   end
 
   create_table "activity_timings", force: :cascade do |t|
