@@ -6,7 +6,7 @@ module Schools
         school,
         aggregated_meter_collection,
         fuel_configuration,
-        dashboard_fuel_types = DashboardConfiguration::DASHBOARD_FUEL_TYPES,
+        dashboard_fuel_types = {},
         dashboard_page_configuration = DashboardConfiguration::DASHBOARD_PAGE_GROUPS
       )
       @school = school
