@@ -29,8 +29,6 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     end
   end
 
-  let(:html) { rendered_content }
-
   context '.show_meters?' do
     it 'returns false' do
       expect(component.show_meters?).to be false
@@ -83,20 +81,20 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
 
   context 'basic rendering' do
     it 'renders table' do
-      expect(html).to have_css('#tariff-table')
+      expect(page).to have_css('#tariff-table')
     end
 
     it 'does not treat tariff as not usable' do
-      expect(html).to_not have_css('tr.table-danger')
+      expect(page).to_not have_css('tr.table-danger')
     end
 
     it 'includes the tariff details' do
       within('#tariff-table tbody tr[1]') do
-        expect(html).to have_content(energy_tariffs.first.name)
-        expect(html).to have_content('schools.user_tariffs.tariff_partial.flat_rate_tariff')
-        expect(html).to have_content(energy_tariffs.first.start_date.to_s(:es_compact))
-        expect(html).to have_content(energy_tariffs.first.end_date.to_s(:es_compact))
-        expect(html).to have_content(energy_tariffs.first.energy_tariff_price.first)
+        expect(page).to have_content(energy_tariffs.first.name)
+        expect(page).to have_content('schools.user_tariffs.tariff_partial.flat_rate_tariff')
+        expect(page).to have_content(energy_tariffs.first.start_date.to_s(:es_compact))
+        expect(page).to have_content(energy_tariffs.first.end_date.to_s(:es_compact))
+        expect(page).to have_content(energy_tariffs.first.energy_tariff_price.first)
       end
     end
 
@@ -104,7 +102,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
       let(:show_prices)       { true }
       it 'doesnt show price' do
         within('#tariff-table tbody tr[1]') do
-          expect(html).to_not have_content(energy_tariffs.first.energy_tariff_price.first)
+          expect(page).to_not have_content(energy_tariffs.first.energy_tariff_price.first)
         end
       end
     end
@@ -113,7 +111,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
       let(:energy_tariffs) { [create(:energy_tariff, tariff_type: :differential)]}
       it 'returns expected label' do
         within('#tariff-table tbody tr[1]') do
-          expect(html).to eq I18n.t('schools.user_tariffs.tariff_partial.day_night_tariff')
+          expect(page).to eq I18n.t('schools.user_tariffs.tariff_partial.day_night_tariff')
         end
       end
     end
@@ -128,7 +126,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
         }
       }
       it 'renders table with id' do
-        expect(html).to have_css('#my-custom-id')
+        expect(page).to have_css('#my-custom-id')
       end
     end
 
@@ -136,22 +134,22 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
 
   context 'action buttons' do
     it 'includes the actions' do
-      expect(html).to have_link(energy_tariffs.first.name)
-      expect(html).to have_link('Edit')
-      expect(html).to have_link('Disable')
-      expect(html).to_not have_link('Delete')
+      expect(page).to have_link(energy_tariffs.first.name)
+      expect(page).to have_link('Edit')
+      expect(page).to have_link('Disable')
+      expect(page).to_not have_link('Delete')
     end
 
     context 'with disabled site settings tariff' do
       let(:enabled)   { false }
       it 'includes all the actions' do
-        expect(html).to have_link(energy_tariffs.first.name)
-        expect(html).to have_link('Edit')
-        expect(html).to have_link('Enable')
-        expect(html).to have_link('Delete')
+        expect(page).to have_link(energy_tariffs.first.name)
+        expect(page).to have_link('Edit')
+        expect(page).to have_link('Enable')
+        expect(page).to have_link('Delete')
       end
       it 'styles the row' do
-        expect(html).to have_css("tr.table-secondary")
+        expect(page).to have_css("tr.table-secondary")
       end
     end
 
@@ -159,28 +157,28 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
       #no prices
       let(:energy_tariffs)    { [create(:energy_tariff, tariff_holder: tariff_holder, meter_type: :electricity, enabled: enabled, source: source)] }
       it 'styles the row' do
-        expect(html).to have_css("tr.table-danger")
+        expect(page).to have_css("tr.table-danger")
       end
     end
 
     context 'with dcc tariff' do
       let(:source)  { :dcc }
       it 'includes the actions' do
-        expect(html).to have_link(energy_tariffs.first.name)
-        expect(html).to have_link('Edit charges')
-        expect(html).to have_link('Disable')
-        expect(html).to_not have_link('Delete')
+        expect(page).to have_link(energy_tariffs.first.name)
+        expect(page).to have_link('Edit charges')
+        expect(page).to have_link('Disable')
+        expect(page).to_not have_link('Delete')
       end
 
       context 'that is disabled' do
         let(:enabled)   { false }
         it 'includes the expected actions' do
-          expect(html).to have_link(energy_tariffs.first.name)
-          expect(html).to have_link('Edit charges')
-          expect(html).to have_link('Enable')
+          expect(page).to have_link(energy_tariffs.first.name)
+          expect(page).to have_link('Edit charges')
+          expect(page).to have_link('Enable')
         end
         it 'styles the row' do
-          expect(html).to have_css("tr.table-secondary")
+          expect(page).to have_css("tr.table-secondary")
         end
       end
     end
@@ -189,10 +187,10 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
       let(:current_user)  { create(:school_admin) }
 
       it 'does not include the actions' do
-        expect(html).to_not have_link(energy_tariffs.first.name)
-        expect(html).to_not have_link('Edit')
-        expect(html).to_not have_link('Disable')
-        expect(html).to_not have_link('Delete')
+        expect(page).to_not have_link(energy_tariffs.first.name)
+        expect(page).to_not have_link('Edit')
+        expect(page).to_not have_link('Disable')
+        expect(page).to_not have_link('Delete')
       end
     end
 
