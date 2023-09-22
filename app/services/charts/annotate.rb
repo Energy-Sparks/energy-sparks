@@ -20,7 +20,7 @@ module Charts
           event: observation.intervention_type.name,
           date: observation.at.to_date,
           x_axis_category: observation.at.strftime('%d-%m-%Y'),
-          icon: observation.intervention_type.intervention_type_group.icon,
+          icon: icon_for(observation),
           observation_type: observation.observation_type
         }
       end
@@ -35,14 +35,29 @@ module Charts
     def weekly_relevant_observations_for(x_axis_categories, date_categories)
       relevant_observations_for(date_categories.min, date_categories.max + 6.days).map do |observation|
         relevant_start_date = date_categories.find {|date| (date..(date + 6.days)).cover?(observation.at.to_date)}
+
         {
           id: observation.id,
-          event: observation.intervention_type.name,
+          event: event_for(observation),
           date: observation.at.to_date,
           x_axis_category: x_axis_categories[date_categories.index(relevant_start_date)],
-          icon: observation.intervention_type.intervention_type_group.icon,
+          icon: icon_for(observation),
           observation_type: observation.observation_type
         }
+      end
+    end
+
+    def icon_for(observation)
+      case observation.observation_type
+      when 'activity' then activity.activity_category.icon
+      when 'intervention' then observation.intervention_type.intervention_type_group.icon
+      end
+    end
+
+    def event_for(observation)
+      case observation.observation_type
+      when 'activity' then observation.activity.activity_category.icon
+      when 'intervention' then observation.intervention_type.name
       end
     end
 
