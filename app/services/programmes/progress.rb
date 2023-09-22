@@ -5,8 +5,11 @@ module Programmes
       @programme = programme
     end
 
+    # The number of activities, of the programme, that the school has completed.
     delegate :count, to: :programme_activities, prefix: :programme_activities
+    # The number of different activity types associated with the programme.
     delegate :count, to: :activity_types, prefix: :activity_types
+    # The number of different activity types associated with the programme that have been completed.
     delegate :count, to: :activity_types_completed, prefix: :activity_types_completed
 
     def notification_text
@@ -23,16 +26,18 @@ module Programmes
       activity_types.sum(:score) + programme.points_for_completion
     end
 
+    def activity_types_total_scores
+      activity_types.sum(:score)
+    end
+
     def programme_type_title
       programme.programme_type.title
     end
 
-    # The number of activities, of the programme, that the school has completed.
     def programme_activities
       programme.activities
     end
 
-    # The number of different activity types associated with the programme.
     def activity_types
       programme.programme_type.activity_types
     end
