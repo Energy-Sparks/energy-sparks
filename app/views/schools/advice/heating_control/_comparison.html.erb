@@ -6,7 +6,7 @@
   </p>
   <div class="col">
     <%= component 'school_comparison', id: 'comparison-warm-weather-days', comparison: @benchmark_warm_weather_days do |c| %>
-      <% c.with_callout_footer { advice_t('heating_control.insights.comparison.callout_footer') } %>
+      <% c.with_footer { advice_t('heating_control.insights.comparison.callout_footer') } %>
     <% end %>
   </div>
 <% end %>
