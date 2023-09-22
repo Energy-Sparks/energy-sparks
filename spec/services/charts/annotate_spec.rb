@@ -74,7 +74,8 @@ describe Charts::Annotate do
                 event: 'Changed boiler',
                 id: intervention_1.id,
                 date: Date.new(2018, 6, 28),
-                icon: 'question-circle'
+                icon: 'question-circle',
+                annotation_type: :intervention
               }
             ]
           )
@@ -94,14 +95,16 @@ describe Charts::Annotate do
                 event: 'Changed boiler',
                 id: intervention_1.id,
                 date: Date.new(2018, 6, 28),
-                icon: 'question-circle'
+                icon: 'question-circle',
+                annotation_type: :intervention
               },
               {
                 x_axis_category: '08 Jul 2018',
                 event: 'Changed bulbs',
                 id: intervention_2.id,
                 date: Date.new(2018, 7, 8),
-                icon: 'question-circle'
+                icon: 'question-circle',
+                annotation_type: :intervention
               }
             ]
           )
@@ -138,7 +141,8 @@ describe Charts::Annotate do
                 event: 'Changed boiler',
                 id: intervention_1.id,
                 date: Date.new(2018, 6, 28),
-                icon: 'question-circle'
+                icon: 'question-circle',
+                annotation_type: :intervention
               }
             ]
           )
@@ -158,14 +162,16 @@ describe Charts::Annotate do
                 event: 'Changed boiler',
                 id: intervention_1.id,
                 date: Date.new(2018, 6, 28),
-                icon: 'question-circle'
+                icon: 'question-circle',
+                annotation_type: :intervention
               },
               {
                 x_axis_category: '08-07-2018',
                 event: 'Changed bulbs',
                 id: intervention_2.id,
                 date: Date.new(2018, 7, 8),
-                icon: 'question-circle'
+                icon: 'question-circle',
+                annotation_type: :intervention
               }
             ]
           )

@@ -8,46 +8,44 @@ module Charts
     def annotate_weekly(x_axis_categories)
       return if x_axis_categories.empty?
 
-      date_categories = x_axis_categories.map do |x_axis_category|
-        date_for(x_axis_category)
+      date_categories = x_axis_categories.map { |x_axis_category| date_for(x_axis_category) }
+      weekly_relevant_interventions_for(x_axis_categories, date_categories)
+    end
+
+    def annotate_daily(x_axis_start, x_axis_end)
+      return if x_axis_start.blank? || x_axis_end.blank?
+
+      relevant_interventions_for(Date.parse(x_axis_start), Date.parse(x_axis_end)).map do |intervention|
+        {
+          id: intervention.id,
+          event: intervention.intervention_type.name,
+          date: intervention.at.to_date,
+          x_axis_category: intervention.at.strftime('%d-%m-%Y'),
+          icon: intervention.intervention_type.intervention_type_group.icon,
+          annotation_type: :intervention
+        }
       end
+    end
 
-      first_date = date_categories.min
-      last_date = date_categories.max + 6.days
+    private
 
-      relevant_interventions = @interventions_scope.where('at BETWEEN ? AND ?', first_date, last_date)
+    def relevant_interventions_for(start_date, end_date)
+      @interventions_scope.where('at BETWEEN ? AND ?', start_date, end_date)
+    end
 
-      relevant_interventions.map do |intervention|
+    def weekly_relevant_interventions_for(x_axis_categories, date_categories)
+      relevant_interventions_for(date_categories.min, date_categories.max + 6.days).map do |intervention|
         relevant_start_date = date_categories.find {|date| (date..(date + 6.days)).cover?(intervention.at.to_date)}
         {
           id: intervention.id,
           event: intervention.intervention_type.name,
           date: intervention.at.to_date,
           x_axis_category: x_axis_categories[date_categories.index(relevant_start_date)],
-          icon: intervention.intervention_type.intervention_type_group.icon
+          icon: intervention.intervention_type.intervention_type_group.icon,
+          annotation_type: :intervention
         }
       end
     end
-
-    def annotate_daily(x_axis_start, x_axis_end)
-      return if x_axis_start.blank? || x_axis_end.blank?
-      first_date = Date.parse(x_axis_start)
-      last_date = Date.parse(x_axis_end)
-
-      relevant_interventions = @interventions_scope.where('at BETWEEN ? AND ?', first_date, last_date)
-
-      relevant_interventions.map do |intervention|
-        {
-          id: intervention.id,
-          event: intervention.intervention_type.name,
-          date: intervention.at.to_date,
-          x_axis_category: intervention.at.strftime('%d-%m-%Y'),
-          icon: intervention.intervention_type.intervention_type_group.icon
-        }
-      end
-    end
-
-    private
 
     def abbr_month_name_lookup
       @abbr_month_name_lookup ||= I18n.t('date.abbr_month_names').map.with_index do |abbr_month_name, index|
