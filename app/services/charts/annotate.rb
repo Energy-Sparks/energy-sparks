@@ -17,7 +17,7 @@ module Charts
       relevant_observations_for(Date.parse(x_axis_start), Date.parse(x_axis_end)).map do |observation|
         {
           id: observation.id,
-          event: observation.intervention_type.name,
+          event: event_for(observation),
           date: observation.at.to_date,
           x_axis_category: observation.at.strftime('%d-%m-%Y'),
           icon: icon_for(observation),
