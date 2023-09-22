@@ -163,7 +163,6 @@ private
     # Initially just a single prompt for the programme that the school most recently started.
     # We might revise this to show multiple programmes, or choose a random programme.
     @school.programmes.started.order(started_on: :desc).limit(1)
-    []
   end
 
   def setup_data_enabled_features
