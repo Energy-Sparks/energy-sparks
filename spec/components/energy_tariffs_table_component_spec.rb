@@ -21,16 +21,15 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
 
   let(:component) { EnergyTariffTableComponent.new(**params) }
 
-  let(:html) do
+  before do
+    # This allows us to set what the current user is during rendering
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(current_user)
     with_controller_class ApplicationController do
       render_inline(component)
     end
   end
 
-  #This allows us to set what the current user is during rendering
-  before do
-    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(current_user)
-  end
+  let(:html) { rendered_content }
 
   context '.show_meters?' do
     it 'returns false' do
