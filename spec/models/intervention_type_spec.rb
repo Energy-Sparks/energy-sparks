@@ -14,6 +14,23 @@ describe 'InterventionType' do
     expect( type.errors[:score] ).to include('must be greater than or equal to 0')
   end
 
+  it 'validates every fuel type is valid' do
+    intervention_type = build :intervention_type
+
+    InterventionType::VALID_FUEL_TYPES.each do |valid_fuel_type|
+      intervention_type.fuel_type = [valid_fuel_type]
+      expect(intervention_type).to be_valid
+    end
+
+    intervention_type.fuel_type = InterventionType::VALID_FUEL_TYPES + ['coal']
+    expect(intervention_type).to_not be_valid
+    expect(intervention_type.errors[:fuel_type]).to include('invalid fuel type: coal')
+
+    intervention_type.fuel_type = InterventionType::VALID_FUEL_TYPES + ['coal', 'exported solar pv']
+    expect(intervention_type).to_not be_valid
+    expect(intervention_type.errors[:fuel_type]).to include('invalid fuel types: coal and exported solar pv')
+  end
+
   context 'when translations are being applied' do
     let(:old_name) { 'old-name' }
     let(:new_name) { 'new-name' }

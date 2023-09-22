@@ -21,6 +21,7 @@
 #  default_template_calendar_id             :bigint(8)
 #  default_weather_station_id               :bigint(8)
 #  description                              :string
+#  funder_id                                :bigint(8)
 #  group_type                               :integer          default("general")
 #  id                                       :bigint(8)        not null, primary key
 #  name                                     :string           not null
@@ -173,9 +174,7 @@ class SchoolGroup < ApplicationRecord
     Meter::MAIN_METER_TYPES.include?(meter_type.to_sym)
   end
 
-  private
-
-  def this_academic_year
-    default_template_calendar&.academic_year_for(Time.zone.today)
+  def scorable_calendar
+    default_template_calendar
   end
 end

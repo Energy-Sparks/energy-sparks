@@ -1,0 +1,13 @@
+<p>
+  <%= I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.to_help') %>
+</p>
+<br />
+<p>
+  <%= I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.click_here_html',
+    click_here_link: school_energy_tariffs_url(@school)).html_safe
+  %> <%= I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.to_review') %>
+</p>
+<br />
+<p>
+  <%= I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.in_future') %>
+</p>

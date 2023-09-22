@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe OnboardingMailer do
-  let(:school)            { create(:school, name: 'Test School') }
+  let(:school)            { create(:school, name: 'Test School', school_group: create(:school_group)) }
   let(:preferred_locale)  { :cy }
   let(:user)              { create(:onboarding_user, school: school, preferred_locale: preferred_locale) }
   let(:country)           { 'wales' }
@@ -69,9 +69,9 @@ RSpec.describe OnboardingMailer do
   describe '#completion_email' do
     it 'sends the completion email' do
       OnboardingMailer.with(school_onboarding: school_onboarding).completion_email.deliver_now
-      expect(email.subject).to eq(I18n.t('onboarding_mailer.completion_email.subject').gsub('%{school}', school.name))
+      expect(email.subject).to eq(I18n.t('onboarding_mailer.completion_email.subject').gsub('%{school}', school.name).gsub('%{school_group}', school.area_name))
       I18n.t('onboarding_mailer.completion_email').except(:subject).values.each do |email_content|
-        expect(email.body.to_s).to include(email_content.gsub('%{school_name}', school.name))
+        expect(email.body.to_s).to include(email_content.gsub('%{school_name}', school.name).gsub('%{school_group}', school.area_name))
       end
     end
   end

@@ -65,13 +65,11 @@
 <% if @audit.audit_activity_types.any? %>
   <h3><%= t('schools.audits.show.recommended_pupil_lead_activities') %></h3>
 
-  <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-    <p>
-      <%= t('schools.audits.show.completing_all_of_these_activities_will_award_you') %>
-      <span class="badge badge-success"><%= SiteSettings.current&.audit_activities_bonus_points %></span>
-      <%= t('schools.audits.show.points', count: SiteSettings.current&.audit_activities_bonus_points) %>
-    </p>
-  <% end %>
+  <p>
+    <%= t('schools.audits.show.completing_all_of_these_activities_will_award_you') %>
+    <span class="badge badge-success"><%= SiteSettings.current&.audit_activities_bonus_points %></span>
+    <%= t('schools.audits.show.points', count: SiteSettings.current&.audit_activities_bonus_points) %>
+  </p>
 
   <% @audit.audit_activity_types.by_name.each_with_index do |audit_activity_type, idx| %>
     <div class="row">

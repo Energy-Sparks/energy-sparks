@@ -1,6 +1,19 @@
 module Scorable
   extend ActiveSupport::Concern
 
+  def this_academic_year(today: Time.zone.today)
+    scorable_calendar.academic_year_for(today)
+  end
+
+  def previous_academic_year(today: Time.zone.today)
+    scorable_calendar.academic_year_for(today).previous_year
+  end
+
+  #Calendar to be used for finding academic years. Overridden by groups
+  def scorable_calendar
+    academic_year_calendar
+  end
+
   def scored_schools(recent_boundary: 1.month.ago, academic_year: this_academic_year)
     if academic_year
       with_academic_year = scored(recent_boundary: recent_boundary).joins(

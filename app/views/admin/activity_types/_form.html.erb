@@ -65,6 +65,10 @@
   <%= f.input :active %>
   <%= f.input :data_driven, label: 'Uses data?' %>
   <%= f.input :custom, label: "Custom ('Other')" %>
+  <%= f.input :show_on_charts, label: 'Show on charts?' %>
+
+  <h2>Fuel types</h2>
+  <%= render 'crud_filter_checkboxes', field: :fuel_type, collection: ActivityType::VALID_FUEL_TYPES.map { |fuel_type| OpenStruct.new(id: fuel_type.to_s, name: fuel_type.to_s.capitalize.humanize) }, form: f %>
 
   <h2>Key Stages</h2>
   <%= render 'crud_filter_checkboxes', field: :key_stage_ids, collection: @key_stages, form: f %>

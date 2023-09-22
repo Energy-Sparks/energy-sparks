@@ -7,14 +7,16 @@
 
 <%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertHeatingSensitivityAdvice), show_links: false, show_icons: false %>
 
-<p>
-  <%= t('advice_pages.heating_control.insights.controls.average_start_time',
-  time: @last_week_start_times.average_start_time) %>
-</p>
-
 <%= t('advice_pages.heating_control.analysis.heating_timings.estimated_savings_html',
   estimated_saving: format_unit(@estimated_savings.£, :£),
   percent: format_unit(@percentage_of_annual_gas, :percent)) %>
+
+<% if @last_week_start_times.average_start_time.present? %>
+  <p>
+    <%= t('advice_pages.heating_control.insights.controls.average_start_time',
+    time: @last_week_start_times.average_start_time) %>
+  </p>
+<% end %>
 
 <p>
   <%= t('advice_pages.heating_control.insights.view_our_analysis_html', href: analysis_school_advice_heating_control_path(@school, anchor: 'heating-timings')) %>

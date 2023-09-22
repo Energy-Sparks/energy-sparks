@@ -70,6 +70,8 @@ module Admin
           :intervention_type_group_id,
           :score,
           :custom,
+          :show_on_charts,
+          fuel_type: [],
           link_rewrites_attributes: link_rewrites_params,
           intervention_type_suggestions_attributes: suggestions_params
       )

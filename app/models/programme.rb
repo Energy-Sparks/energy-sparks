@@ -32,15 +32,14 @@ class Programme < ApplicationRecord
     event :complete do
       after do
         self.update(ended_on: Time.zone.now)
-        if EnergySparks::FeatureFlags.active?(:activities_2023)
-          Observation.create!(
-            school: school,
-            observation_type: :programme,
-            at: Time.zone.now,
-            points: points_for_completion,
-            programme_id: id
-          )
-        end
+
+        Observation.create!(
+          school: school,
+          observation_type: :programme,
+          at: Time.zone.now,
+          points: points_for_completion,
+          programme_id: id
+        )
       end
       transition :started => :completed
     end

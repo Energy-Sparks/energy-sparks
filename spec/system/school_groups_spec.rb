@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe 'school groups', :school_groups, type: :system do
   let(:public)                 { true }
-  let!(:school_group)          { create(:school_group, public: public) }
+  let!(:template_calendar) { create :template_calendar }
+  let!(:school_group)          { create(:school_group, public: public, default_template_calendar: template_calendar) }
 
   let!(:user)                  { create(:user) }
 
@@ -448,6 +449,14 @@ describe 'school groups', :school_groups, type: :system do
             let(:breadcrumb)    { 'Current Scores' }
           end
 
+          it 'includes a link to previous year' do
+            expect(page).to have_content("View the final scores from last year")
+            click_on("View the final scores from last year")
+            expect(page).to have_content("These were the final scores from last year")
+            click_on("View the current scores")
+            expect(page).to have_content("These are the scores for the current academic year")
+          end
+
           it 'allows a csv download of scores' do
             click_on 'Download as CSV'
             header = page.response_headers['Content-Disposition']
@@ -461,7 +470,18 @@ describe 'school groups', :school_groups, type: :system do
             let(:url) { current_scores_school_group_path(school_group) }
           end
 
-          it 'shows expected content'
+          it 'lists the schools' do
+            expect(page).to have_content("School 1")
+            expect(page).to have_content("School 3")
+            expect(page).to have_content("School 4")
+          end
+
+          it 'shows scores' do
+            expect(page).to have_link("20")
+            expect(page).to have_link("18")
+            expect(page).to have_content("0")
+          end
+
         end
 
         describe 'showing map' do
