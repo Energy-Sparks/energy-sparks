@@ -1,8 +1,9 @@
 module Charts
   class Annotate
-    def initialize(interventions_scope:, activities_scope:)
-      @interventions_scope = interventions_scope
-      @activities_scope = activities_scope
+    def initialize(school)
+      @school = school
+      @interventions_scope = @school.observations.intervention
+      @activities_scope = @school.observations.activity
     end
 
     def annotate_weekly(x_axis_categories)
@@ -22,7 +23,7 @@ module Charts
           date: intervention.at.to_date,
           x_axis_category: intervention.at.strftime('%d-%m-%Y'),
           icon: intervention.intervention_type.intervention_type_group.icon,
-          annotation_type: :intervention
+          observation_type: intervention.observation_type
         }
       end
     end
@@ -42,7 +43,7 @@ module Charts
           date: intervention.at.to_date,
           x_axis_category: x_axis_categories[date_categories.index(relevant_start_date)],
           icon: intervention.intervention_type.intervention_type_group.icon,
-          annotation_type: :intervention
+          observation_type: intervention.observation_type
         }
       end
     end
