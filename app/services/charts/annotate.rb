@@ -1,49 +1,47 @@
 module Charts
   class Annotate
     def initialize(school)
-      @school = school
-      @interventions_scope = @school.observations.intervention
-      @activities_scope = @school.observations.activity
+      @observations = school.observations.where(observation_type: %w[activity intervention])
     end
 
     def annotate_weekly(x_axis_categories)
       return if x_axis_categories.empty?
 
       date_categories = x_axis_categories.map { |x_axis_category| date_for(x_axis_category) }
-      weekly_relevant_interventions_for(x_axis_categories, date_categories)
+      weekly_relevant_observations_for(x_axis_categories, date_categories)
     end
 
     def annotate_daily(x_axis_start, x_axis_end)
       return if x_axis_start.blank? || x_axis_end.blank?
 
-      relevant_interventions_for(Date.parse(x_axis_start), Date.parse(x_axis_end)).map do |intervention|
+      relevant_observations_for(Date.parse(x_axis_start), Date.parse(x_axis_end)).map do |observation|
         {
-          id: intervention.id,
-          event: intervention.intervention_type.name,
-          date: intervention.at.to_date,
-          x_axis_category: intervention.at.strftime('%d-%m-%Y'),
-          icon: intervention.intervention_type.intervention_type_group.icon,
-          observation_type: intervention.observation_type
+          id: observation.id,
+          event: observation.intervention_type.name,
+          date: observation.at.to_date,
+          x_axis_category: observation.at.strftime('%d-%m-%Y'),
+          icon: observation.intervention_type.intervention_type_group.icon,
+          observation_type: observation.observation_type
         }
       end
     end
 
     private
 
-    def relevant_interventions_for(start_date, end_date)
-      @interventions_scope.where('at BETWEEN ? AND ?', start_date, end_date)
+    def relevant_observations_for(start_date, end_date)
+      @observations.where('at BETWEEN ? AND ?', start_date, end_date)
     end
 
-    def weekly_relevant_interventions_for(x_axis_categories, date_categories)
-      relevant_interventions_for(date_categories.min, date_categories.max + 6.days).map do |intervention|
-        relevant_start_date = date_categories.find {|date| (date..(date + 6.days)).cover?(intervention.at.to_date)}
+    def weekly_relevant_observations_for(x_axis_categories, date_categories)
+      relevant_observations_for(date_categories.min, date_categories.max + 6.days).map do |observation|
+        relevant_start_date = date_categories.find {|date| (date..(date + 6.days)).cover?(observation.at.to_date)}
         {
-          id: intervention.id,
-          event: intervention.intervention_type.name,
-          date: intervention.at.to_date,
+          id: observation.id,
+          event: observation.intervention_type.name,
+          date: observation.at.to_date,
           x_axis_category: x_axis_categories[date_categories.index(relevant_start_date)],
-          icon: intervention.intervention_type.intervention_type_group.icon,
-          observation_type: intervention.observation_type
+          icon: observation.intervention_type.intervention_type_group.icon,
+          observation_type: observation.observation_type
         }
       end
     end
