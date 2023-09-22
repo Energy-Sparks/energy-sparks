@@ -1,7 +1,8 @@
 module Charts
   class Annotate
-    def initialize(interventions_scope:)
+    def initialize(interventions_scope:, activities_scope:)
       @interventions_scope = interventions_scope
+      @activities_scope = activities_scope
     end
 
     def annotate_weekly(x_axis_categories)
