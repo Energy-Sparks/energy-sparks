@@ -54,6 +54,10 @@
   <%= render 'management/schools/targets/set_new_target', school: @school %>
 <% end %>
 
+<% if @show_standard_prompts %>
+  <%= render 'schools/engagement_prompts', school: @school %>
+<% end %>
+
 <% if @add_pupils %>
   <%= render 'management/schools/add_pupils', school: @school %>
 <% end %>
