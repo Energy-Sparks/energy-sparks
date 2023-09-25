@@ -14,10 +14,25 @@ RSpec.describe "advice pages", type: :system do
     before do
       allow_any_instance_of(Schools::Advice::AdviceBaseController).to receive(:learn_more).and_raise(StandardError.new('testing..'))
     end
-    it 'shows the error page' do
-      visit learn_more_school_advice_total_energy_use_path(school)
-      expect(page).to have_content('Sorry, something has gone wrong')
-      expect(page).to have_content('We encountered an error attempting to generate your analysis')
+
+    context "in production" do
+      before do
+        allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new("production"))
+      end
+      it 'shows the error page' do
+        visit learn_more_school_advice_total_energy_use_path(school)
+        expect(page).to have_content('Sorry, something has gone wrong')
+        expect(page).to have_content('We encountered an error attempting to generate your analysis')
+      end
+    end
+
+    context "in test" do
+      before do
+        allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new("test"))
+      end
+      it 'throws error' do
+        expect { visit learn_more_school_advice_total_energy_use_path(school) }.to raise_error(StandardError)
+      end
     end
   end
 

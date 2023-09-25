@@ -1,6 +1,10 @@
 ---
 en:
   intervention_types:
+    errors:
+      invalid_fuel_type:
+        one: 'invalid fuel type: '
+        other: 'invalid fuel types: '
     intervention_type_points:
       points_for_this_action:
         one: point for this action

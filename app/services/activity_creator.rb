@@ -26,8 +26,6 @@ class ActivityCreator
   end
 
   def create_completed_audit_activities_observation
-    return unless EnergySparks::FeatureFlags.active?(:activities_2023)
-
     @activity.school.audits.with_activity_types.each(&:create_activities_completed_observation!)
   end
 

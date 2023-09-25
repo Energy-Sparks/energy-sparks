@@ -21,6 +21,9 @@ cy:
         es_per_pupil_v_per_floor_area_html: "<p>\n   Yn gyffredinol, mae meincnodau fesul disgybl yn briodol ar gyfer trydan (gan y dylent fod yn gymesur â'r offer\n a ddefnyddir), ond mae meincnodau fesul arwynebedd llawr yn fwy priodol ar gyfer nwy (maint yr adeilad sydd angen gwresogi). At ei gilydd, \n   mae'n debyg bod cymharu defnydd ynni fesul disgybl yn fwy priodol yn y rhan fwyaf o achosion.\n</p>"
         es_per_pupil_v_per_floor_area_useful_html: "<p>\n  Yn gyffredinol, mae meincnodau fesul disgybl yn briodol ar gyfer trydan (gan y dylent fod yn gymesur â'r offer \n a ddefnyddir), ond mae meincnodau fesul arwynebedd llawr yn fwy priodol ar gyfer nwy (maint yr adeilad sydd angen gwresogi). At ei gilydd, \n  mae'n debyg bod cymharu defnydd ynni fesul disgybl yn fwy priodol nag ar sail arwynebedd llawr, ond gall y dadansoddiad hwn\n fod yn ddefnyddiol mewn rhai amgylchiadau.\n</p>"
       chart_table_config:
+        annual_change_in_electricity_out_of_hours_use: Newid blynyddol yn y trydan a ddefnyddir y tu allan i oriau ysgol
+        annual_change_in_gas_out_of_hours_use: Newid blynyddol yn y nwy a ddefnyddir y tu allan i oriau ysgol
+        annual_change_in_storage_heater_out_of_hours_use: Newid blynyddol yn y defnydd o wresogyddion storio y tu allan i oriau ysgol
         annual_electricity_costs_per_pupil: Defnydd trydan blynyddol fesul disgybl gyda photensial i arbed arian
         annual_electricity_out_of_hours_use: Trydan a ddefnyddir y tu allan i oriau ysgol
         annual_energy_costs: Cost flynyddol trydan, nwy, stôr-wresogyddion ac ynni cyfun
@@ -62,6 +65,7 @@ cy:
         recent_change_in_baseload: Newid diweddar yn y llwyth sylfaenol
         seasonal_baseload_variation: Amrywiad llwyth sylfaenol tymhorol
         sept_nov_2021_2022_energy_comparison: Medi i Ragfyr 2021 yn erbyn defnydd ynni 2022
+        solar_generation_summary: Crynodeb cenhedlaeth solar
         solar_pv_benefit_estimate: Mantais gosod PV solar
         storage_heater_consumption_during_holiday: Defnydd gwresogydd stôr yn ystod y gwyliau presennol
         thermostat_sensitivity: Arbediad blynyddol trwy ostyngiad o 1C yn nhymheredd y thermostat
@@ -189,7 +193,10 @@ cy:
           last_year_gas_£: Y llynedd Nwy £
           last_year_heating_costs_per_floor_area: Costau gwresogi y llynedd  fesul arwynebedd llawr
           last_year_kwh_consumption: Defnydd kWh y llynedd
+          last_year_out_of_hours_co2: ' Co2 y tu allan i oriau y llynedd'
           last_year_out_of_hours_cost: Cost y tu allan i oriau y llynedd
+          last_year_out_of_hours_cost_ct: Cost y tu allan i oriau y llynedd ar y tariff cyfredol
+          last_year_out_of_hours_kwh: Kwh y tu allan i oriau y llynedd
           last_year_saving_if_improve_to_exemplar: 'Cynilo os gwella i batrwm enghreifftiol y llynedd '
           last_year_saving_per_1c_reduction_in_thermostat: Arbed fesul gostyngiad o 1C mewn thermostat
           last_year_storage_heater_costs_£: Costau stôr-wresogydd y llynedd
@@ -221,6 +228,9 @@ cy:
           previous_year: Gwyliau blaenorol
           previous_year_electricity_£: Trydan y flwyddyn flaenorol £
           previous_year_gas_costs_£: Costau nwy y flwyddyn flaenorol
+          previous_year_out_of_hours_co2: Co2 y tu allan i oriau y llynedd?
+          previous_year_out_of_hours_cost_ct: Cost y tu allan i oriau y flwyddyn flaenorol ar y tariff cyfredol
+          previous_year_out_of_hours_kwh: 'kWh y tu allan i oriau y flwyddyn flaenorol '
           previous_year_storage_heater_costs_£: Costau stôr-wresogydd storio y flwyddyn flaenorol
           previous_year_temperature_adjusted: Y flwyddyn flaenorol (wedi addasu o ran tymheredd)
           previous_year_temperature_unadjusted: Y flwyddyn flaenorol (heb addasu o ran tymheredd)
@@ -255,9 +265,14 @@ cy:
           school_name: Enw'r ysgol
           size_kwp: 'Maint: kWp'
           size_of_reduction_rating: Maint y radd ostyngiad
+          solar_export: Allforio (kWh)
+          solar_generation: Cenhedlaeth (kWh)
+          solar_mains_consume: Defnydd o'r prif gyflenwad (kWh)
+          solar_mains_onsite: Cyfanswm y defnydd ar y safle (kWh)
           solar_pv: Solar ffotofoltaig
           solar_pv_co2_last_year: CO2 solar ffotofoltäig (y llynedd)
           solar_pv_co2_previous_year: CO2 solar ffotofoltäig (blwyddyn flaenorol)
+          solar_self_consume: Hunan-ddefnydd (kWh)
           standard_deviation_of_start_time__hours_last_year: Gwyriad safonol amser cychwyn - oriau, y llynedd
           start_date_for_target: Dyddiad cychwyn ar gyfer y targed
           storage_heater_co2_last_year: Stôr-wresogydd CO2 (y llynedd)
@@ -289,6 +304,30 @@ cy:
                 cyfrifir gwerthoedd £ eraill gan ddefnyddio'r tariff perthnasol ar y pryd
           </p>
       content:
+        annual_change_in_electricity_out_of_hours_use:
+          introduction_text_html: |-
+            <p>
+             Mae’r tabl hwn yn cymharu’r trydan a ddefnyddiwyd y tu allan i oriau ysgol dros y 12 mis diwethaf, â’r cyfnod blaenorol o 12 mis.
+            </p>
+        annual_change_in_gas_out_of_hours_use:
+          introduction_text_html: |-
+            <p>
+              Mae'r tabl hwn yn cymharu nwy a ddefnyddiwyd y tu allan i oriau ysgol dros y 12 mis diwethaf, â'r cyfnod blaenorol o 12 mis.
+            </p>
+        annual_change_in_out_of_hours_use:
+          table_html: |-
+            <p>
+             Os oes gan ysgol lai na 12 mis o ddata, yna ni ddangosir cymhariaeth. Os oes gan ysgol lai na 2 flynedd o ddata
+              yna dim ond y data ar gyfer y 12 mis diwethaf a ddangosir.
+            </p>
+            <p>
+              Costs areCyfrifir costau ar sail tariff presennol yr ysgol. calculated based on the school's current tariff.
+            </p>
+        annual_change_in_storage_heater_out_of_hours_use:
+          introduction_text_html: |-
+            <p>
+             Mae'r tabl hwn yn cymharu'r defnydd o wresogyddion storio y tu allan i oriau ysgol dros y 12 mis diwethaf, â'r cyfnod blaenorol o 12 mis.
+            </p>
         annual_electricity_costs_per_pupil:
           introduction_text_html: "<p>\n  Mae'r meincnod hwn yn cymharu cost trydan fesul disgybl yn y flwyddyn ddiwethaf.\n</p>\n<p>\n  Ni ddylai fod gwahaniaeth sylweddol rhwng ysgolion gan fod angen i bob ysgol ddefnyddio tua’r un faint o offer TGCh, \n  goleuadau ac oergelloedd fesul disgybl. Gall eithriadau gynnwys ysgolion sydd â phyllau nofio neu oleuadau llifogydd chwaraeon a all gynyddu'r \n  galw yn sylweddol. Mae gan ysgolion arbennig hefyd gostau trydan uwch fesul disgybl oherwydd dwysedd disgyblion is ac offer arbenigol.\n</p>\n<p>\n  Nid yw'r data yn cynnwys stôr-wresogyddion a adroddir mewn mannau eraill o dan y meincnodau 'gwresogi'.\n</p>"
         annual_electricity_out_of_hours_use:
@@ -552,6 +591,12 @@ cy:
           introduction_text_html: |-
             <p>Llwyth sylfaenol ysgol yw'r trydan a ddefnyddir gan offer sy'n cael eu cadw'n rhedeg bob amser.</p>
             <p>Yn gyffredinol, dylai'r llwyth sylfaenol yn y gaeaf fod yn debyg iawn i'r haf. Yn ymarferol mae llawer o ysgolion yn gadael gwresogyddion trydan ymlaen dros nos pan fydd yr ysgol yn wag. Mae nodi a diffodd neu amseru offer o'r fath yn well yn ffordd gyflym o arbed trydan a chostau.</p>
+        solar_generation_summary:
+          introduction_text_html: |-
+            <p>
+            Yn crynhoi perfformiad y paneli solar a osodwyd ar yr ysgolion hyn dros y 12 mis diwethaf. Cyfwerth â'r tabl
+            "Manteision gosod paneli solar" ar ddadansoddiad solar unigol yr ysgol.
+            </p>
         solar_pv_benefit_estimate:
           introduction_text_html: |-
             <p>

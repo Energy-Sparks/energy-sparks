@@ -123,7 +123,7 @@ RSpec.describe SchoolComparisonComponent, type: :component do
   context 'with callout footer' do
     let(:html) do
       render_inline(SchoolComparisonComponent.new(**params)) do |c|
-        c.with_callout_footer { "Custom footer" }
+        c.with_footer { "Custom footer" }
       end
     end
     it "adds the callout footer" do

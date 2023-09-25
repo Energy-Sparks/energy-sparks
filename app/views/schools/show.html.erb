@@ -55,13 +55,7 @@
 <% end %>
 
 <% if @show_standard_prompts %>
-  <%= render 'management/schools/complete_programmes', school: @school %>
-
-  <%= render 'management/schools/record_activity', school: @school %>
-
-  <%= render 'management/schools/record_intervention', school: @school %>
-
-  <%= render 'schools/dashboard/transport_surveys', school: @school %>
+  <%= render 'schools/engagement_prompts', school: @school %>
 <% end %>
 
 <% if @add_pupils %>

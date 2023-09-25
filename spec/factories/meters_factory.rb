@@ -4,6 +4,7 @@ FactoryBot.define do
     sequence(:mpan_mprn)  { |n| n }
     meter_type            { :gas }
     active                { true }
+    meter_system          { :nhh_amr }
 
     trait :with_unvalidated_readings do
       transient do
@@ -55,6 +56,7 @@ FactoryBot.define do
     sequence(:mpan_mprn)  { |n| "10#{sprintf('%011d', n)}" }
     meter_type            { :electricity }
     active                { true }
+    meter_system          { :nhh_amr }
 
     factory :electricity_meter_with_reading do
       transient do
@@ -100,6 +102,7 @@ FactoryBot.define do
     sequence(:mpan_mprn)  { |n| "91#{sprintf('%012d', n)}" }
     meter_type            { :exported_solar_pv }
     active                { true }
+    meter_system          { :nhh_amr }
 
     trait :with_unvalidated_readings do
       transient do
@@ -123,6 +126,7 @@ FactoryBot.define do
     sequence(:mpan_mprn)  { |n| "71#{sprintf('%012d', n)}" }
     meter_type            { :solar_pv }
     active                { true }
+    meter_system          { :nhh_amr }
 
     trait :with_unvalidated_readings do
       transient do

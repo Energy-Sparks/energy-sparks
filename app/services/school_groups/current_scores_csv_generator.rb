@@ -1,14 +1,15 @@
 module SchoolGroups
   class CurrentScoresCsvGenerator
-    def initialize(school_group:, include_cluster: false)
+    def initialize(school_group:, scored_schools: nil, include_cluster: false)
       @school_group = school_group
+      @scored_schools = scored_schools || @school_group.scored_schools
       @include_cluster = include_cluster
     end
 
     def export
       CSV.generate(headers: true) do |csv|
         csv << headers
-        @school_group.scored_schools.with_points.schools_with_positions.each do |position, schools|
+        @scored_schools.with_points.schools_with_positions.each do |position, schools|
           schools.each do |school|
             row = [
               (schools.size > 1 ? '=' : '') + position.to_s,
@@ -19,7 +20,7 @@ module SchoolGroups
             csv << row
           end
         end
-        @school_group.scored_schools.without_points.each do |school|
+        @scored_schools.without_points.each do |school|
           row = ['-', school.name]
           row << school.school_group_cluster_name if @include_cluster
           row << 0

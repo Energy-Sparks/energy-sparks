@@ -68,8 +68,8 @@ cy:
         theoretically_every_pupil_uses_html: |-
           <p>
             Yn ddamcaniaethol, mae pob disgybl yn defnyddio tua 5 litr o ddŵr poeth y dydd, sydd ar gyfer eich ysgol gyda %{number_of_pupils} o ddisgyblion,
-            sy'n hafal i  %{theoretical_annual_hot_water_requirement_litres} litr o ddŵr poeth dros y 195 diwrnod o'r flwyddyn ysgol. Mewn system 100% effeithlon mae angen
-            tua %{theoretical_annual_hot_water_requirement_kwh} kWh o ynni bob blwyddyn i gynhesu'r dŵr poeth hwn.
+            yn hafal i  %{theoretical_annual_hot_water_requirement_litres} litr o ddŵr poeth dros y 195 diwrnod o'r flwyddyn ysgol. Mewn system 100% effeithlon
+           mae angen tua %{theoretical_annual_hot_water_requirement_kwh} kWh o ynni bob blwyddyn i gynhesu'r dŵr poeth hwn.
           </p>
         title: Dadansoddiad
         we_calculate_the_efficiency_html: "<p>Rydym yn cyfrifo effeithlonrwydd eich system dŵr poeth drwy gymharu cyfrifiad hwn o %{theoretical_annual_hot_water_requirement_kwh} kWh ar gyfer system 100% effeithlon ag amcangyfrif Sbarcynni o %{existing_gas_annual_kwh} kWh ar gyfer eich system bresennol.</p>"

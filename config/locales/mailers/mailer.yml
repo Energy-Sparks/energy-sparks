@@ -55,6 +55,21 @@ en:
       message: We need your school to update its consent to allow Energy Sparks to continue to collect, process and display your energy data.
       subject: We need permission to access your school's energy data
       view_school_account: view your school account
+  energy_tariffs_mailer:
+    group_admin_review_group_tariffs_reminder:
+      mail_body:
+        click_here_html: "<a href='%{click_here_link}'>Click here</a>"
+        in_future: In future, please remember to update your schools' tariffs on Energy Sparks when you change supply contract.
+        to_help: To help Energy Sparks to provide you with accurate estimates of your energy costs and potential savings, we're contacting you to ask you to review the information we have about your schools' energy tariffs.
+        to_review: to review your current tariffs and to add or update the information based on your latest contract. You can choose to provide an average tariff for your group contract or individual tariffs for each school.
+      subject: Provide your school’s energy tariffs to Energy Sparks
+    school_admin_review_school_tariffs_reminder:
+      mail_body:
+        click_here_html: "<a href='%{click_here_link}'>Click here</a>"
+        in_future: In future, please remember to update your tariffs on Energy Sparks when you change supply contract.
+        to_help: To help Energy Sparks to provide you with accurate estimates of your energy costs and potential savings, we're contacting you to ask you to review the information we have about your school's energy tariffs.
+        to_review: to review your current tariffs and to add or update the information based on your latest contract.
+      subject: Provide your schools' energy tariffs to Energy Sparks
   mailer:
     get_in_touch: Get in touch
   onboarding_mailer:
@@ -75,8 +90,8 @@ en:
       the_energy_sparks_team: The Energy Sparks Team
     completion_email:
       find_them_on_energy_sparks: Find them on Energy Sparks
-      subject: "%{school} has completed the onboarding process"
-      title: "%{school_name} has completed the automatic setup process"
+      subject: "%{school} (%{school_group}) has completed the onboarding process"
+      title: "%{school_name} (%{school_group}) has completed the automatic setup process"
     data_enabled_email:
       explore_data: Explore your data
       get_in_touch_html: <a href="%{contact_url}">Get in touch</a> if you have any further questions.

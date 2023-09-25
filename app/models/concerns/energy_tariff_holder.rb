@@ -1,6 +1,7 @@
 # Should be included by classes that tariff holders
 module EnergyTariffHolder
   extend ActiveSupport::Concern
+  class InvalidAppliesToError < StandardError; end
 
   included do
     has_many :energy_tariffs, as: :tariff_holder, dependent: :destroy
@@ -18,8 +19,12 @@ module EnergyTariffHolder
     is_a?(School)
   end
 
-  def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys)
-    energy_tariffs.enabled.where(meter_type: meter_type).usable.map(&:meter_attribute)
+  def energy_tariff_meter_attributes(meter_type = EnergyTariff.meter_types.keys, applies_to = :both)
+    raise InvalidAppliesToError unless EnergyTariff.applies_tos.key?(applies_to.to_s)
+
+    applies_to_keys = [:both, applies_to].uniq
+
+    energy_tariffs.enabled.where(meter_type: meter_type, applies_to: applies_to_keys).usable.map(&:meter_attribute)
   end
 
   def parent_tariff_holder
@@ -53,11 +58,13 @@ module EnergyTariffHolder
     end
   end
 
-  def all_energy_tariff_attributes(meter_type = EnergyTariff.meter_types.keys)
+  def all_energy_tariff_attributes(meter_type = EnergyTariff.meter_types.keys, applies_to_key = :both)
+    raise InvalidAppliesToError unless EnergyTariff.applies_tos.key?(applies_to_key.to_s)
+
     attributes = []
     parent = parent_tariff_holder
-    attributes += parent.all_energy_tariff_attributes(meter_type) unless parent.nil?
-    attributes += energy_tariff_meter_attributes(meter_type)
+    attributes += parent.all_energy_tariff_attributes(meter_type, applies_to_key) unless parent.nil?
+    attributes += energy_tariff_meter_attributes(meter_type, applies_to_key)
     attributes
   end
 end

@@ -183,9 +183,23 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:models-energy_tariff_price-yml]
+file_filter  = config/locales/<lang>/models/energy_tariff_price.yml
+source_file  = config/locales/models/energy_tariff_price.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:models-lists-yml]
 file_filter  = config/locales/<lang>/models/lists.yml
 source_file  = config/locales/models/lists.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:models-meter-yml]
+file_filter  = config/locales/<lang>/models/meter.yml
+source_file  = config/locales/models/meter.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100

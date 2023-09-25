@@ -14,6 +14,7 @@
 #  low_carbon_hub_installation_id :bigint(8)
 #  meter_review_id                :bigint(8)
 #  meter_serial_number            :text
+#  meter_system                   :integer          default("nhh_amr")
 #  meter_type                     :integer
 #  mpan_mprn                      :bigint(8)
 #  name                           :string
@@ -83,7 +84,7 @@ class Meter < ApplicationRecord
   scope :not_dcc, -> { where(dcc_meter: false) }
   scope :dcc, -> { where(dcc_meter: true) }
   scope :consented, -> { where(dcc_meter: true, consent_granted: true) }
-  scope :not_recently_checked, -> { where("dcc_checked_at is NULL OR dcc_checked_at < ?", 2.months.ago) }
+  scope :not_recently_checked, -> { where("dcc_checked_at is NULL OR dcc_checked_at < ?", 1.month.ago) }
   scope :meters_to_check_against_dcc, -> { main_meter.not_dcc.not_recently_checked }
   scope :data_source_known, -> { where.not(data_source: nil) }
   scope :procurement_route_known, -> { where.not(procurement_route: nil) }
@@ -238,11 +239,23 @@ class Meter < ApplicationRecord
   def energy_tariff_meter_attributes
     attributes = []
     if EnergySparks::FeatureFlags.active?(:new_energy_tariff_editor)
-      school_attributes = school.all_energy_tariff_attributes(meter_type)
+      school_attributes = school.all_energy_tariff_attributes(meter_type, applies_to_for_meter_system)
       attributes += school_attributes unless school_attributes.nil?
     end
+    # It should NOT filter the tariffs with which it is directly associated.
+    # If a meter is explicitly linked to a tariff then it applies to it, regardless.
     attributes += energy_tariffs.enabled.usable.map(&:meter_attribute)
     attributes
+  end
+
+  def applies_to_for_meter_system
+    return :both unless electricity?
+
+    case meter_system.to_sym
+    when :nhh_amr, :nhh, :smets2_smart then :non_half_hourly
+    when :hh then :half_hourly
+    else :both
+    end
   end
 
   def meter_attributes_to_analytics

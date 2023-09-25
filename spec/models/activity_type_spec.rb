@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'ActivityType' do
-
   subject { create :activity_type }
 
   it 'is valid with valid attributes' do
@@ -10,14 +9,35 @@ describe 'ActivityType' do
 
   it 'is invalid with invalid attributes' do
     type = build :activity_type, score: -1
-    expect( type ).to_not be_valid
-    expect( type.errors[:score] ).to include('must be greater than or equal to 0')
+    expect(type).to_not be_valid
+    expect(type.errors[:score]).to include('must be greater than or equal to 0')
+  end
+
+  it 'is valid with valid attributes' do
+    expect(subject).to be_valid
+  end
+
+  it 'validates every fuel type is valid' do
+    activity_type = build :activity_type, activity_category: create(:activity_category, live_data: false)
+
+    ActivityType::VALID_FUEL_TYPES.each do |valid_fuel_type|
+      activity_type.fuel_type = [valid_fuel_type]
+      expect(activity_type).to be_valid
+    end
+
+    activity_type.fuel_type = ActivityType::VALID_FUEL_TYPES + ['coal']
+    expect(activity_type).to_not be_valid
+    expect(activity_type.errors[:fuel_type]).to include('invalid fuel type: coal')
+
+    activity_type.fuel_type = ActivityType::VALID_FUEL_TYPES + ['coal', 'exported solar pv']
+    expect(activity_type).to_not be_valid
+    expect(activity_type.errors[:fuel_type]).to include('invalid fuel types: coal and exported solar pv')
   end
 
   it 'applies live data scope via category' do
     activity_type_1 = create(:activity_type, activity_category: create(:activity_category, live_data: true))
     activity_type_2 = create(:activity_type, activity_category: create(:activity_category, live_data: false))
-    expect( ActivityType.live_data ).to match_array([activity_type_1])
+    expect(ActivityType.live_data).to match_array([activity_type_1])
   end
 
   context 'when translations are being applied' do
@@ -124,12 +144,11 @@ describe 'ActivityType' do
   end
 
   context 'serialising for transifex' do
-
     context 'finding resources for transifex' do
       let!(:activity_type_1) { create(:activity_type, name: "activity", active: true)}
       let!(:activity_type_2) { create(:activity_type, name: "activity", active: false)}
       it "#tx_resources" do
-        expect( ActivityType.tx_resources ).to match_array([activity_type_1])
+        expect(ActivityType.tx_resources).to match_array([activity_type_1])
       end
     end
 
@@ -154,7 +173,7 @@ describe 'ActivityType' do
         expect(data["en"]).to_not be nil
         key = "activity_type_#{activity_type.id}"
         expect(data["en"][key]).to_not be nil
-        expect(data["en"][key].keys).to match_array(["name", "description_html", "school_specific_description_html", "download_links_html", "summary"])
+        expect(data["en"][key].keys).to match_array(%w[name description_html school_specific_description_html download_links_html summary])
       end
       it 'created categories' do
         expect(activity_type.tx_categories).to match_array(["activity_type"])
@@ -176,7 +195,8 @@ describe 'ActivityType' do
     let(:name) { subject.name }
     let(:description) { subject.description }
     let(:school_specific_description) { subject.school_specific_description}
-    let(:data) { {
+    let(:data) do
+      {
       "cy" => {
          resource_key => {
            "name" => "Welsh name",
@@ -185,7 +205,7 @@ describe 'ActivityType' do
          }
        }
      }
-    }
+    end
     context 'when updating from transifex' do
       before(:each) do
         subject.tx_update(data, :cy)
@@ -218,7 +238,8 @@ describe 'ActivityType' do
       end
 
       context 'when updating from transifex' do
-        let(:data) { {
+        let(:data) do
+          {
           "cy" => {
              resource_key => {
                "name" => "Welsh name",
@@ -227,7 +248,7 @@ describe 'ActivityType' do
              }
            }
          }
-        }
+        end
 
         before(:each) do
           subject.tx_update(data, :cy)
@@ -235,9 +256,10 @@ describe 'ActivityType' do
         end
 
         context 'and source link is escaped' do
-          let(:source)    { "http://old.example.org?param1=x&param2=y" }
+          let(:source) { "http://old.example.org?param1=x&param2=y" }
 
-          let(:data) { {
+          let(:data) do
+            {
             "cy" => {
                resource_key => {
                  "name" => "Welsh name",
@@ -246,7 +268,7 @@ describe 'ActivityType' do
                }
              }
            }
-          }
+          end
           it 'automatically rewrites links' do
             expect(subject.description_cy.to_s).to eq "<div class=\"trix-content\">\n  The Welsh description <a href=\"http://new.example.org\">Link</a>\n</div>\n"
             expect(subject.school_specific_description_cy.to_s).to eq "<div class=\"trix-content\">\n  Instructions for schools. {{#chart}}chart_name|£{{/chart}}. <a href=\"http://old.example.org\">Link</a>\n</div>\n"
@@ -267,7 +289,5 @@ describe 'ActivityType' do
         end
       end
     end
-
   end
-
 end

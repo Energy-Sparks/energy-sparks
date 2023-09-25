@@ -148,7 +148,7 @@ RSpec.describe "onboarding", :schools, type: :system do
 
         email = ActionMailer::Base.deliveries.first
         expect(email.to).to include('operations@energysparks.uk')
-        expect(email.subject).to eq("#{school_onboarding.school.name} has completed the onboarding process")
+        expect(email.subject).to eq("#{school_onboarding.school.name} () has completed the onboarding process")
 
         email = ActionMailer::Base.deliveries.second
         expect(email.to).to include(school_onboarding.created_user.email)
