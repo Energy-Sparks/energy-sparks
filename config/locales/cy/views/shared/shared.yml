@@ -45,12 +45,6 @@ cy:
         <li>rhoi gwybod i chi os ydych yn gwneud yn dda o gymharu ag ysgolion eraill a'ch perfformiad yn y gorffennol</li>
       </ul>
     title: 'Rhybuddion Sbarcynni:'
-  dashboard_alerts:
-    show_more_alerts:
-      one: Dangos 1 rhybudd arall
-      two: Dangos %{count} rybudd arall
-      many: Dangos %{count} o rybuddion eraill
-      other: Dangos %{count} o rybuddion eraill
   dashboards:
     adult_dashboard: Dangosfwrdd oedolion
     pupil_dashboard: Dangosfwrdd disgyblion

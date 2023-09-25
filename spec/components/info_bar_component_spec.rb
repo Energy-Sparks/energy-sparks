@@ -3,29 +3,60 @@
 require "rails_helper"
 
 RSpec.describe InfoBarComponent, type: :component do
-  it "renders a three colum info bar with an icon, title text, and some optional buttons" do
-    expect(
-      render_inline(described_class.new(icon: '<i class="fas fa-school fa-3x"></i>'.html_safe, title: 'This is an info bar', buttons: { "Click me" => "http://www.example.com" })).to_html
-    ).to include(
-      <<~HTML.chomp
-        <div class="p-4 notice-component neutral mb-4">
-          
-          <div class="row">
-            <div class="col-md-1 d-flex justify-content-center align-content-center">
-              <div class="d-flex align-content-center flex-wrap">
-                <i class="fas fa-school fa-3x"></i>
-              </div>
-            </div>
-              <div class="col-md-8">
-                This is an info bar
-              </div>
-                <div class="col-md-3 d-flex justify-content-end">
-                  <a class="btn btn-light btn rounded-pill font-weight-bold" style="height: fit-content;" href="http://www.example.com">Click me</a>
-                </div>
-          </div>
-        
-        </div>
-      HTML
-    )
+  let(:title)         { 'This is an info bar' }
+  let(:button_title)  { 'Click me' }
+  let(:button_link)   { 'http://www.example.com' }
+  let(:icon)          { '<i class="fas fa-school fa-3x"></i>' }
+  let(:status)        { :neutral }
+  let(:params)        {
+    {
+      icon: icon.html_safe,
+      title: title,
+      buttons: { button_title => button_link }
+    }
+  }
+
+  let(:component) { InfoBarComponent.new(**params) }
+
+  let(:html) do
+    render_inline(component)
+  end
+
+  it 'renders a notice' do
+    expect(html).to have_css('.notice-component')
+  end
+
+  it 'renders the right status' do
+    expect(html).to have_css('.neutral')
+  end
+
+  it 'centers the items in the row' do
+    expect(html).to have_css('.row.align-items-center')
+  end
+
+  it 'centers the icon in the column' do
+    expect(html).to have_css('.col-md-1.justify-content-center')
+  end
+
+  it 'right aligns the button link' do
+    expect(html).to have_css('.col-md-3.justify-content-end')
+  end
+
+  it 'includes icon' do
+    within('.row .col-md-1') do
+      expect(html).to have_css('.fa-school')
+    end
+  end
+
+  it 'includes the title' do
+    within('.row .col-md-8') do
+      expect(html).to have_content(title)
+    end
+  end
+
+  it 'includes the link' do
+    within('.row .col-md-3') do
+      expect(html).to have_link(button_title, href: button_link)
+    end
   end
 end

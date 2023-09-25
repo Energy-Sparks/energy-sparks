@@ -1,7 +1,7 @@
 module DashboardAlerts
   extend ActiveSupport::Concern
 
-  def setup_alerts(alerts, content_field, limit: 3)
+  def setup_alerts(alerts, content_field, limit: 2)
     alerts.includes(:content_version, :find_out_more).by_priority.limit(limit).map do |dashboard_alert|
       TemplateInterpolation.new(
         dashboard_alert.content_version,
