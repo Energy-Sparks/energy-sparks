@@ -389,8 +389,6 @@ Rails.application.routes.draw do
     resource :dashboard_message, only: [:update, :edit, :destroy], controller: '/admin/dashboard_messages'
   end
 
-
-
   namespace :admin do
     concerns :issueable
     resources :funders

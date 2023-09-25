@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   before_action :pagy_locale
   before_action :check_admin_mode
   helper_method :site_settings, :current_school_podium, :current_user_school, :current_school_group
+  before_action :update_trackable!
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_url, alert: exception.message
@@ -87,5 +88,13 @@ class ApplicationController < ActionController::Base
 
   def header_fix_enabled
     @header_fix_enabled = true
+  end
+
+  # user has signed in via devise "remember me" functionality
+  def update_trackable!
+    if user_signed_in? && !session[:updated_tracked_fields]
+      current_user.update_tracked_fields!(request)
+      session[:updated_tracked_fields] = true
+    end
   end
 end
