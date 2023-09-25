@@ -13,9 +13,10 @@ class OnboardingMailer < LocaleMailer
   def completion_email
     @school_onboarding = params[:school_onboarding]
     @title = @school_onboarding.school_name
+    @school_group_name = @school_onboarding.school&.school_group&.name
     if @school_onboarding.created_by
       make_bootstrap_mail(to: 'operations@energysparks.uk', subject:
-        default_i18n_subject(school: @school_onboarding.school_name))
+        default_i18n_subject(school: @school_onboarding.school_name, school_group: @school_group_name))
     end
   end
 

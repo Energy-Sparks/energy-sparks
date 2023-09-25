@@ -21,7 +21,7 @@
     <h3><%= t('common.electricity') %></h3>
     <div class="col">
       <%= component 'school_comparison', id: 'electricity-comparison', comparison: @electricity_benchmarked_usage do |c| %>
-        <% c.with_callout_footer { advice_t('electricity_long_term.insights.comparison.callout_footer') } %>
+        <% c.with_footer { advice_t('electricity_long_term.insights.comparison.callout_footer') } %>
       <% end %>
     </div>
   <% end %>
@@ -30,7 +30,7 @@
     <h3><%= t('common.gas') %></h3>
     <div class="col">
       <%= component 'school_comparison', id: 'gas-comparison', comparison: @gas_benchmarked_usage do |c| %>
-        <% c.with_callout_footer { advice_t('gas_long_term.insights.comparison.callout_footer') } %>
+        <% c.with_footer { advice_t('gas_long_term.insights.comparison.callout_footer') } %>
       <% end %>
     </div>
   <% end %>

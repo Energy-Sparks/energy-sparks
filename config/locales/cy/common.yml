@@ -9,6 +9,7 @@ cy:
     electricity: Trydan
     electricity_and_solar_pv: Trydan a Solar Ffotofoltaig
     email_us: e-bostio ni
+    exported_solar_pv: Solar ffotofoltaig wedi'i allforio
     gas: Nwy
     labels:
       actions: Gweithredoedd
@@ -19,19 +20,26 @@ cy:
       back: Yn ôl
       cancel: Canslo
       close: Cau
+      continue: Parhau
       create: Creu
       created: Crëwyd
       deactivate: Dadweithredu
       delete: Dileu
+      disable: Analluogi
       download: Lawrlwytho
       edit: Golygu
+      enable: Galluogi
+      finish: Gorffen
       finished: Wedi gorffen
       home: Hafan
       inactive: Anweithredol
       last_updated: Diweddarwyd ddiwethaf
+      last_week: Wythnos ddiwethaf
+      last_year: Y llynedd
       manage: Rheoli
       next: Nesaf
       no_label: 'Na'
+      not_applicable: Amh
       not_set: Heb ei osod
       previous: Blaenorol
       remove: Tynnu
@@ -58,6 +66,7 @@ cy:
       primary: Cynradd
       secondary: Uwchradd
       special: Arbennig
+    schools: Ysgolion
     solar_pv: Solar ffotofoltaig
     storage_heater: Stôr-wresogydd
     storage_heaters: Stôr-wresogyddion

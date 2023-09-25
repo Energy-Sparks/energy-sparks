@@ -1,5 +1,5 @@
 class SchoolComparisonComponent < ViewComponent::Base
-  renders_one :callout_footer
+  renders_one :footer
 
   CATEGORIES = [:exemplar_school, :benchmark_school, :other_school].freeze
 

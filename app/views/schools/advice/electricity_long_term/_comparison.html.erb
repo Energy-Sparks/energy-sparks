@@ -7,7 +7,7 @@
 
 <div class="col">
   <%= component 'school_comparison', id: 'electricity-comparison', comparison: @benchmarked_usage do |c| %>
-    <% c.with_callout_footer { advice_t('electricity_long_term.insights.comparison.callout_footer') } %>
+    <% c.with_footer { advice_t('electricity_long_term.insights.comparison.callout_footer') } %>
   <% end %>
 </div>
 

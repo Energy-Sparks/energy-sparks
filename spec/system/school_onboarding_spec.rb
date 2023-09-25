@@ -404,8 +404,8 @@ RSpec.describe "onboarding", :schools, type: :system do
 
           it 'sends an email after completion' do
             click_on "Complete setup", match: :first
-            email = ActionMailer::Base.deliveries[-2]
-            expect(email.subject).to include("#{school_name} has completed the onboarding process")
+            email = ActionMailer::Base.deliveries.first
+            expect(email.subject).to include("#{school_name} (#{school.area_name}) has completed the onboarding process")
             expect(email.to).to include('operations@energysparks.uk')
           end
 

@@ -82,11 +82,13 @@ module Admin
           :activity_category_id,
           :score,
           :data_driven,
+          :show_on_charts,
           key_stage_ids: [],
           impact_ids: [],
           subject_ids: [],
           topic_ids: [],
           activity_timing_ids: [],
+          fuel_type: [],
           link_rewrites_attributes: link_rewrites_params,
           activity_type_suggestions_attributes: suggestions_params)
     end

@@ -15,7 +15,7 @@ RSpec.shared_examples "a meter with a non half hourly meter system" do |meter_ty
       expect(all_meter_attributes[6].input_data['tariff_holder']).to eq 'meter'
       expect(all_meter_attributes[7].input_data['tariff_holder']).to eq 'meter'
       expect(all_meter_attributes[8].input_data['tariff_holder']).to eq 'meter'
-      expect(all_meter_attributes.map { |m| m.input_data['name'] }).to eq(
+      expect(all_meter_attributes.map { |m| m.input_data['name'] }).to match_array(
         [
           energy_tariff_site_wide_electricity_both.name,
           energy_tariff_site_wide_electricity_non_half_hourly.name,
@@ -47,7 +47,7 @@ RSpec.shared_examples "a meter with a half hourly meter system" do |meter_type, 
       expect(all_meter_attributes[6].input_data['tariff_holder']).to eq 'meter'
       expect(all_meter_attributes[7].input_data['tariff_holder']).to eq 'meter'
       expect(all_meter_attributes[8].input_data['tariff_holder']).to eq 'meter'
-      expect(all_meter_attributes.map { |m| m.input_data['name'] }).to eq(
+      expect(all_meter_attributes.map { |m| m.input_data['name'] }).to match_array(
         [
           energy_tariff_site_wide_electricity_both.name,
           energy_tariff_site_wide_electricity_half_hourly.name,
