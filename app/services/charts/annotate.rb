@@ -3,7 +3,7 @@ module Charts
     ANNOTATABLE_OBSERVATION_TYPES = %w[activity intervention].freeze
 
     def initialize(school)
-      @observations = school.observations.where(observation_type: ANNOTATABLE_OBSERVATION_TYPES)
+      @school = school
     end
 
     def annotate_weekly(x_axis_categories)
@@ -27,7 +27,9 @@ module Charts
     end
 
     def relevant_observations_for(start_date, end_date)
-      @observations.where('at BETWEEN ? AND ?', start_date, end_date)
+      @school.observations
+             .where(observation_type: ANNOTATABLE_OBSERVATION_TYPES)
+             .where('at BETWEEN ? AND ?', start_date, end_date)
     end
 
     def weekly_relevant_observations_for(x_axis_categories, date_categories)
@@ -61,20 +63,28 @@ module Charts
         date: observation.at.to_date,
         x_axis_category: x_axis_category,
         icon: icon_for(observation),
-        observation_type: observation.observation_type
+        observation_type: observation.observation_type,
+        url: url_for(observation)
       }
+    end
+
+    def url_for(observation)
+      case observation.observation_type
+      when 'activity' then Rails.application.routes.url_helpers.school_activity_path(@school, observation.activity)
+      when 'intervention' then Rails.application.routes.url_helpers.school_intervention_path(@school, observation)
+      end
     end
 
     def icon_for(observation)
       case observation.observation_type
-      when 'activity' then activity.activity_category.icon
+      when 'activity' then observation.activity.activity_category.icon
       when 'intervention' then observation.intervention_type.intervention_type_group.icon
       end
     end
 
     def event_for(observation)
       case observation.observation_type
-      when 'activity' then observation.activity.activity_category.icon
+      when 'activity' then observation.activity.activity_category.name
       when 'intervention' then observation.intervention_type.name
       end
     end
