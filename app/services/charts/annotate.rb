@@ -9,7 +9,9 @@ module Charts
     def annotate_weekly(x_axis_categories)
       return if x_axis_categories.empty?
 
-      weekly_relevant_observations_for(x_axis_categories)
+      date_categories = date_categories_for(x_axis_categories)
+
+      weekly_relevant_observations_for(x_axis_categories, date_categories)
     end
 
     def annotate_daily(x_axis_start, x_axis_end)
@@ -20,8 +22,15 @@ module Charts
 
     private
 
-    def weekly_relevant_observations_for(x_axis_categories)
-      date_categories = date_categories_for(x_axis_categories)
+    def date_categories_for(x_axis_categories)
+      x_axis_categories.map { |x_axis_category| date_for(x_axis_category) }
+    end
+
+    def relevant_observations_for(start_date, end_date)
+      @observations.where('at BETWEEN ? AND ?', start_date, end_date)
+    end
+
+    def weekly_relevant_observations_for(x_axis_categories, date_categories)
       relevant_observations = relevant_observations_for(date_categories.min, date_categories.max + 6.days)
 
       relevant_observations.map do |observation|
@@ -31,20 +40,18 @@ module Charts
       end
     end
 
+    def weekly_x_axis_category_for(x_axis_categories, date_categories, observation)
+      weekly_relevant_start_date = date_categories.find { |date| (date..(date + 6.days)).cover?(observation.at.to_date) }
+
+      x_axis_categories[date_categories.index(weekly_relevant_start_date)]
+    end
+
     def daily_relevant_observations_for(x_axis_start, x_axis_end)
       relevant_observations = relevant_observations_for(Date.parse(x_axis_start), Date.parse(x_axis_end))
 
       relevant_observations.map do |observation|
         annotation_for(observation: observation, x_axis_category: observation.at.strftime('%d-%m-%Y'))
       end
-    end
-
-    def relevant_observations_for(start_date, end_date)
-      @observations.where('at BETWEEN ? AND ?', start_date, end_date)
-    end
-
-    def date_categories_for(x_axis_categories)
-      x_axis_categories.map { |x_axis_category| date_for(x_axis_category) }
     end
 
     def annotation_for(observation:, x_axis_category:)
@@ -56,16 +63,6 @@ module Charts
         icon: icon_for(observation),
         observation_type: observation.observation_type
       }
-    end
-
-    def weekly_x_axis_category_for(x_axis_categories, date_categories, observation)
-      relevant_start_date = weekly_relevant_start_date_for(date_categories, observation)
-
-      x_axis_categories[date_categories.index(relevant_start_date)]
-    end
-
-    def weekly_relevant_start_date_for(date_categories, observation)
-      date_categories.find { |date| (date..(date + 6.days)).cover?(observation.at.to_date) }
     end
 
     def icon_for(observation)
