@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 5e03e16d95ba83601a56dcc5846dc66d8b7ac40c
+  revision: 9f74c702a6d2abe19d6e6ef4a8b3712b790207c6
   branch: clean-up-advice-classes
   specs:
     energy-sparks_analytics (1.2.1)
