@@ -9,7 +9,7 @@
     </td>
     <td class="value align-middle">
       <%= f.input :value, pattern: '[0-9.]+', label: false,
-        input_html: { value: value_allowing_for_errors(energy_tariff_price) },
+        input_html: { value: value_allowing_for_errors(energy_tariff_price), style:"width: 8em" },
         error: energy_tariff_price.errors.any? ? energy_tariff_price.errors.full_messages.first : nil,
         required: false %>
     </td>
