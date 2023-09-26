@@ -6,12 +6,12 @@ module Pupils
       school = School.find(params.require(:pupil).fetch(:school_id))
       password = params.require(:pupil).fetch(:password)
       if password.blank?
-        redirect_to new_user_session_path(role: 'pupil', school: school), alert: 'Please enter a password'
+        redirect_to new_user_session_path(role: 'pupil', school: school), alert: t('errors.messages.enter_a_password')
       else
         sign_in_pupil(school, password)
       end
     rescue ActiveRecord::RecordNotFound
-      redirect_back fallback_location: new_user_session_path(role: 'pupil'), alert: 'Please select a school'
+      redirect_back fallback_location: new_user_session_path(role: 'pupil'), alert: t('errors.messages.select_a_school')
     end
 
     private
@@ -20,9 +20,9 @@ module Pupils
       pupil = school.authenticate_pupil(password)
       if pupil
         sign_in(:user, pupil)
-        redirect_to pupils_school_path(school), notice: 'Signed in successfully'
+        redirect_to pupils_school_path(school), notice: t('devise.sessions.new.signed_in_successfully')
       else
-        redirect_to new_user_session_path(role: 'pupil', school: school), alert: "Sorry, that password doesn't work!"
+        redirect_to new_user_session_path(role: 'pupil', school: school), alert: t('errors.messages.invalid_password')
       end
     end
   end

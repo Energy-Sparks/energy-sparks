@@ -10,6 +10,7 @@ require 'spec_helper'
 require 'rspec/rails'
 require 'pry'
 require 'view_component/test_helpers'
+require "view_component/system_test_helpers"
 require 'capybara/rspec'
 require 'selenium-webdriver'
 #require 'webdrivers'
@@ -81,10 +82,11 @@ RSpec.configure do |config|
   config.include Capybara::RSpecMatchers, type: :component
   config.include Devise::Test::ControllerHelpers, type: :component
   config.before(:each, type: :component) do
-    @request = controller.request
+    @request = vc_test_controller.request
   end
 
   config.include ActiveSupport::Testing::TimeHelpers
+  config.include ShowMeTheCookies, :type => :system
 end
 
 Shoulda::Matchers.configure do |config|
