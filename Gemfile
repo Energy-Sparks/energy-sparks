@@ -10,7 +10,7 @@ gem 'rack-canonical-host' # Redirect www to root
 gem 'webpacker'
 gem "image_processing", "~> 1.12"
 
-gem 'puma', '5.6.4' # Use Puma as the app server
+gem 'puma', '6.4.0' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
 
