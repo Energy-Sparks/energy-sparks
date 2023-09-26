@@ -5,8 +5,6 @@ describe Charts::Annotate do
   let(:school){ create :school }
   let(:boiler_intervention){ create :intervention_type, name: 'Changed boiler' }
   let(:bulbs_intervention){ create :intervention_type, name: 'Changed bulbs' }
-  let(:staff_led_activity){ create :activity_category, name: 'School staff led activities' }
-  let(:pupil_led_activity){ create :activity_category, name: 'School pupil led activities' }
 
   describe '.annotate' do
 
@@ -66,20 +64,31 @@ describe Charts::Annotate do
 
       context 'with intervention that match the date ranges' do
 
-        let!(:intervention_1){ create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
-        # let!(:activity_1){ create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity_category: staff_led_activity) }
+        let!(:intervention_observation){ create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
+        let!(:activity_category){ create :activity_category }
+        let!(:activity) { create(:activity, activity_category: activity_category) }
+        let!(:activity_observation){ create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
 
         it 'finds annotations that match the range'  do
           expect(subject).to eq(
             [
               {
                 x_axis_category: '24 Jun 2018',
-                event: 'Changed boiler',
-                id: intervention_1.id,
+                event: intervention_observation.intervention_type.name,
+                id: intervention_observation.id,
                 date: Date.new(2018, 6, 28),
                 icon: 'question-circle',
                 observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_1.id}"
+                url: "/schools/#{school.slug}/interventions/#{intervention_observation.id}"
+              },
+              {
+                x_axis_category: '24 Jun 2018',
+                event: activity_observation.activity.activity_category.name,
+                id: activity_observation.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'volleyball-ball',
+                observation_type: 'activity',
+                url: "/schools/#{school.slug}/activities/#{activity_observation.activity.id}"
               }
             ]
           )
@@ -90,6 +99,9 @@ describe Charts::Annotate do
 
         let!(:intervention_1){ create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
         let!(:intervention_2){ create(:observation, :intervention, school: school, at: Date.new(2018, 7, 8), intervention_type: bulbs_intervention) }
+        let!(:activity_category){ create :activity_category }
+        let!(:activity) { create(:activity, activity_category: activity_category) }
+        let!(:activity_observation){ create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
 
         it 'finds annotations that match the range'  do
           expect(subject).to eq(
@@ -111,6 +123,15 @@ describe Charts::Annotate do
                 icon: 'question-circle',
                 observation_type: 'intervention',
                 url: "/schools/#{school.slug}/interventions/#{intervention_2.id}"
+              },
+              {
+                x_axis_category: '24 Jun 2018',
+                event: activity_observation.activity.activity_category.name,
+                id: activity_observation.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'volleyball-ball',
+                observation_type: 'activity',
+                url: "/schools/#{school.slug}/activities/#{activity_observation.activity.id}"
               }
             ]
           )
@@ -138,6 +159,9 @@ describe Charts::Annotate do
       context 'with intervention that match the date ranges' do
 
         let!(:intervention_1){ create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
+        let!(:activity_category){ create :activity_category }
+        let!(:activity) { create(:activity, activity_category: activity_category) }
+        let!(:activity_observation){ create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
 
         it 'finds annotations that match the range'  do
           expect(subject).to eq(
@@ -150,6 +174,15 @@ describe Charts::Annotate do
                 icon: 'question-circle',
                 observation_type: 'intervention',
                 url: "/schools/#{school.slug}/interventions/#{intervention_1.id}"
+              },
+              {
+                x_axis_category: '28-06-2018',
+                event: activity_observation.activity.activity_category.name,
+                id: activity_observation.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'volleyball-ball',
+                observation_type: 'activity',
+                url: "/schools/#{school.slug}/activities/#{activity_observation.activity.id}"
               }
             ]
           )
@@ -160,6 +193,9 @@ describe Charts::Annotate do
 
         let!(:intervention_1){ create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
         let!(:intervention_2){ create(:observation, :intervention, school: school, at: Date.new(2018, 7, 8), intervention_type: bulbs_intervention) }
+        let!(:activity_category){ create :activity_category }
+        let!(:activity) { create(:activity, activity_category: activity_category) }
+        let!(:activity_observation){ create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
 
         it 'finds annotations that match the range'  do
           expect(subject).to eq(
@@ -181,6 +217,15 @@ describe Charts::Annotate do
                 icon: 'question-circle',
                 observation_type: 'intervention',
                 url: "/schools/#{school.slug}/interventions/#{intervention_2.id}"
+              },
+              {
+                x_axis_category: '28-06-2018',
+                event: activity_observation.activity.activity_category.name,
+                id: activity_observation.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'volleyball-ball',
+                observation_type: 'activity',
+                url: "/schools/#{school.slug}/activities/#{activity_observation.activity.id}"
               }
             ]
           )
