@@ -222,7 +222,6 @@ function processAnnotations(loaded_annotations, chart){
     var date = new Date(annotation.date);
     var point = xAxis.series[0].getValidPoints()[categoryIndex];
     var date = new Date(annotation.date);
-    var annotationType = annotation.observation_type;
 
     if (point) {
       if(xAxis.series[0].stackKey){
