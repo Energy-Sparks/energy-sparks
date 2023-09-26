@@ -77,6 +77,7 @@ RSpec.describe EnergyTariffsMailer, include_application_helper: true do
         expect(email.subject).to eq(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.subject', school_name: school.name, locale: :cy))
         expect(email.to).to eq([school_admin.email])
         expect(email.body.to_s).to include(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.to_help', school_name: school.name, locale: :cy))
+        expect(email.body.to_s).to include(I18n.t('energy_tariffs_mailer.group_admin_review_group_tariffs_reminder.mail_body.you_can_set'))
         expect(email.body.to_s).to include("http://cy.localhost/schools/#{school.slug}/energy_tariffs")
         expect(email.body.to_s).to include(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.to_review', locale: :cy))
         expect(email.body.to_s).to include(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.in_future', locale: :cy))
