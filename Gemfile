@@ -102,7 +102,7 @@ gem 'cocoon'
 
 # Internationalisation
 gem 'i18n-tasks', '~> 1.0.10'
-gem 'mobility', '~> 1.2.6'
+gem 'mobility', '~> 1.2.9'
 gem 'mobility-actiontext', '~> 1.1.1'
 
 # Background jobs
@@ -167,6 +167,7 @@ group :test do
   gem 'simplecov', :require => false, :group => :test
   gem 'shoulda-matchers'
   gem 'timecop'
+  gem "show_me_the_cookies"
 end
 
 gem 'sprockets', '3.7.2'

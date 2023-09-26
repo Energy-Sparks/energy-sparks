@@ -383,7 +383,7 @@ GEM
     minimization (0.2.5)
       text-table (~> 1.2)
     minitest (5.20.0)
-    mobility (1.2.6)
+    mobility (1.2.9)
       i18n (>= 0.6.10, < 2)
       request_store (~> 1.0)
     mobility-actiontext (1.1.1)
@@ -436,7 +436,7 @@ GEM
       addressable
       css_parser (>= 1.6.0)
       htmlentities (>= 4.0.0)
-    pry (0.13.1)
+    pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
     pry-byebug (3.10.1)
@@ -504,7 +504,7 @@ GEM
       prawn (~> 0.8.4)
       prawn-svg (~> 0.9.1)
       text-table (~> 1.2)
-    request_store (1.5.0)
+    request_store (1.5.1)
       rack (>= 1.4)
     require_all (2.0.0)
     responders (3.0.1)
@@ -612,6 +612,8 @@ GEM
     shellany (0.0.1)
     shoulda-matchers (5.3.0)
       activesupport (>= 5.2.0)
+    show_me_the_cookies (6.0.0)
+      capybara (>= 2, < 4)
     simple_form (5.1.0)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
@@ -752,7 +754,7 @@ DEPENDENCIES
   listen (~> 3.0.5)
   lograge
   mailgun_rails
-  mobility (~> 1.2.6)
+  mobility (~> 1.2.9)
   mobility-actiontext (~> 1.1.1)
   momentjs-rails
   mustache (~> 1.0)
@@ -784,6 +786,7 @@ DEPENDENCIES
   scout_apm
   selenium-webdriver
   shoulda-matchers
+  show_me_the_cookies
   simple_form
   simplecov
   sitemap_generator
