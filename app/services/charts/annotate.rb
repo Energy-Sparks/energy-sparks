@@ -63,6 +63,7 @@ module Charts
         date: observation.at.to_date,
         x_axis_category: x_axis_category,
         icon: icon_for(observation),
+        icon_color: icon_color_for(observation),
         observation_type: observation.observation_type,
         url: url_for(observation)
       }
@@ -79,6 +80,13 @@ module Charts
       case observation.observation_type
       when 'activity' then observation.activity.activity_category.icon
       when 'intervention' then observation.intervention_type.intervention_type_group.icon
+      end
+    end
+
+    def icon_color_for(observation)
+      case observation.observation_type
+      when 'activity' then '#FFCC66'
+      when 'intervention' then '#BFDBFF'
       end
     end
 
