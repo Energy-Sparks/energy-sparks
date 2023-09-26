@@ -1,7 +1,7 @@
 <% if @programmes_to_prompt.present? %>
   <% @programmes_to_prompt.each do |programme| %>
     <%= component 'info_bar',
-        status: :positive,
+        status: :neutral,
         title: Programmes::Progress.new(programme).notification_text,
         icon: fa_icon('fas fa-tasks fa-3x'),
         buttons: { I18n.t('schools.programme.progress.view_now') => programme_type_path(programme.programme_type) }
