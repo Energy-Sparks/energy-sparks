@@ -58,9 +58,9 @@ RSpec.describe EnergyTariffsMailer, include_application_helper: true do
         EnergyTariffsMailer.with(school_id: school.id).school_admin_review_school_tariffs_reminder.deliver_now
         expect(ActionMailer::Base.deliveries.count).to eq(1)
         email = ActionMailer::Base.deliveries.last
-        expect(email.subject).to eq(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.subject', locale: :en))
+        expect(email.subject).to eq(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.subject', school_name: school.name, locale: :en))
         expect(email.to).to eq([school_admin.email])
-        expect(email.body.to_s).to include(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.to_help', locale: :en))
+        expect(email.body.to_s).to include(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.to_help', school_name: school.name, locale: :en))
         expect(email.body.to_s).to include("http://localhost/schools/#{school.slug}/energy_tariffs")
         expect(email.body.to_s).to include(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.to_review', locale: :en))
         expect(email.body.to_s).to include(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.in_future', locale: :en))
@@ -74,9 +74,9 @@ RSpec.describe EnergyTariffsMailer, include_application_helper: true do
         EnergyTariffsMailer.with(school_id: school.id).school_admin_review_school_tariffs_reminder.deliver_now
         expect(ActionMailer::Base.deliveries.count).to eq(1)
         email = ActionMailer::Base.deliveries.last
-        expect(email.subject).to eq(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.subject', locale: :cy))
+        expect(email.subject).to eq(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.subject', school_name: school.name, locale: :cy))
         expect(email.to).to eq([school_admin.email])
-        expect(email.body.to_s).to include(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.to_help', locale: :cy))
+        expect(email.body.to_s).to include(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.to_help', school_name: school.name, locale: :cy))
         expect(email.body.to_s).to include("http://cy.localhost/schools/#{school.slug}/energy_tariffs")
         expect(email.body.to_s).to include(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.to_review', locale: :cy))
         expect(email.body.to_s).to include(I18n.t('energy_tariffs_mailer.school_admin_review_school_tariffs_reminder.mail_body.in_future', locale: :cy))
