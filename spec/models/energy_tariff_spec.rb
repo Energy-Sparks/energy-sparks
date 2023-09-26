@@ -26,8 +26,8 @@ describe EnergyTariff do
   end
 
   context 'validations' do
-    let(:energy_tariff_price_1)  { EnergyTariffPrice.new(start_time: '00:00', end_time: '03:30', value: 1.23, units: 'kwh') }
-    let(:energy_tariff_price_2)  { EnergyTariffPrice.new(start_time: '04:00', end_time: '23:30', value: 2.46, units: 'kwh') }
+    let(:energy_tariff_price_1)  { EnergyTariffPrice.new(start_time: '00:00', end_time: '03:30', value: 0.23, units: 'kwh') }
+    let(:energy_tariff_price_2)  { EnergyTariffPrice.new(start_time: '04:00', end_time: '23:30', value: 0.46, units: 'kwh') }
 
     let(:energy_tariff_charge_1)  { EnergyTariffCharge.new(charge_type: :fixed_charge, value: 4.56, units: :month) }
     let(:energy_tariff_charge_2)  { EnergyTariffCharge.new(charge_type: :agreed_availability_charge, value: 6.78, units: :kva) }
@@ -221,7 +221,7 @@ describe EnergyTariff do
     context 'with flat rate electricity tariff' do
       let(:tariff_type)     { :flat_rate }
 
-      let(:energy_tariff_price)   { EnergyTariffPrice.new(start_time: '00:00', end_time: '23:30', value: 1.23, units: :kwh) }
+      let(:energy_tariff_price)   { EnergyTariffPrice.new(start_time: '00:00', end_time: '23:30', value: 0.23, units: :kwh) }
       let(:energy_tariff_charge)  { EnergyTariffCharge.new(charge_type: :fixed_charge, value: 4.56, units: :month) }
 
       let(:energy_tariff_prices)  { [energy_tariff_price] }
@@ -239,7 +239,7 @@ describe EnergyTariff do
       it "should include rate" do
         rates = attributes[:rates]
         expect(rates[:flat_rate][:per]).to eq('kwh')
-        expect(rates[:flat_rate][:rate]).to eq('1.23')
+        expect(rates[:flat_rate][:rate]).to eq('0.23')
       end
 
     end
@@ -247,8 +247,8 @@ describe EnergyTariff do
     context 'with differential electricity tariff' do
       let(:tariff_type)     { :differential }
 
-      let(:energy_tariff_price_1)  { EnergyTariffPrice.new(start_time: '00:00', end_time: '03:30', value: 1.23, units: 'kwh') }
-      let(:energy_tariff_price_2)  { EnergyTariffPrice.new(start_time: '04:00', end_time: '23:30', value: 2.46, units: 'kwh') }
+      let(:energy_tariff_price_1)  { EnergyTariffPrice.new(start_time: '00:00', end_time: '03:30', value: 0.23, units: 'kwh') }
+      let(:energy_tariff_price_2)  { EnergyTariffPrice.new(start_time: '04:00', end_time: '23:30', value: 0.46, units: 'kwh') }
       let(:energy_tariff_charge_1)  { EnergyTariffCharge.new(charge_type: :fixed_charge, value: 4.56, units: :month) }
       let(:energy_tariff_charge_2)  { EnergyTariffCharge.new(charge_type: :agreed_availability_charge, value: 6.78, units: :kva) }
 
@@ -340,11 +340,11 @@ describe EnergyTariff do
       it "should include rates with adjusted end times" do
         rates = attributes[:rates]
         expect(rates[:rate0][:per]).to eq('kwh')
-        expect(rates[:rate0][:rate]).to eq('1.23')
+        expect(rates[:rate0][:rate]).to eq('0.23')
         expect(rates[:rate0][:from]).to eq({hour: "00", minutes: "00"})
         expect(rates[:rate0][:to]).to eq({hour: "03", minutes: "00"})
         expect(rates[:rate1][:per]).to eq('kwh')
-        expect(rates[:rate1][:rate]).to eq('2.46')
+        expect(rates[:rate1][:rate]).to eq('0.46')
         expect(rates[:rate1][:from]).to eq({hour: "04", minutes: "00"})
         expect(rates[:rate1][:to]).to eq({hour: "23", minutes: "00"})
       end
