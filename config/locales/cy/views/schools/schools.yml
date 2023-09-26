@@ -525,9 +525,7 @@ cy:
           many: Nid ydym wedi derbyn eich data am eich defnydd %{out_of_date_fuel_types} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
           other: Nid ydym wedi derbyn eich data am eich defnydd %{out_of_date_fuel_types} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
     schools:
-      carbon_emissions: Allyriadau carbon
       compare_schools: Cymharu ysgolion
-      explore_data: Archwilio data
       review_energy_analysis: Adolygu dadansoddiad ynni
     show:
       act_on_energy_usage: Gweithredu ar y defnydd o ynni
