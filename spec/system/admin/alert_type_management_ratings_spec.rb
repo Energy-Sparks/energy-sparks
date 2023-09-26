@@ -127,12 +127,6 @@ RSpec.describe 'alert type management', type: :system do
 
   describe 'creating alert content' do
 
-    around do |example|
-      ClimateControl.modify FEATURE_FLAG_REPLACE_FIND_OUT_MORES: 'false' do
-        example.run
-      end
-    end
-
     let!(:alert) do
       create(:alert, alert_type: gas_fuel_alert_type, template_data: {gas_percentage: '10%', chart_a: :example_chart_value}, school: create(:school))
     end
@@ -194,38 +188,6 @@ RSpec.describe 'alert type management', type: :system do
           click_on 'Preview (English)'
           within '#management_priorities-preview-en .content' do
             expect(page).to have_content('Your school is spending too much on gas')
-          end
-        end
-
-        check 'Find out more'
-
-        within '.find_out_more_active' do
-
-          fill_in 'Page title', with: 'You are using too much gas!'
-
-          within '.alert_type_rating_content_find_out_more_chart_variable' do
-            expect(page).to have_unchecked_field('chart description A')
-            expect(page).to have_unchecked_field('chart description B')
-            expect(page).to have_checked_field('None')
-          end
-
-          choose 'chart description B'
-          fill_in 'Chart title', with: 'This is a chart'
-
-          fill_in_trix with: 'You are using {{gas_percentage}} too much gas! You need to do something about it.'
-
-          within '.alert_type_rating_content_find_out_more_table_variable' do
-            expect(page).to have_unchecked_field('table description A')
-            expect(page).to have_unchecked_field('table description B')
-            expect(page).to have_checked_field('None')
-          end
-
-          choose 'table description B'
-
-          click_on 'Preview (English)'
-
-          within '#find_out_more-preview-en .content' do
-            expect(page).to have_content('You are using 10% too much gas!')
           end
         end
 
