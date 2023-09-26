@@ -5,6 +5,8 @@ describe Charts::Annotate do
   let(:school){ create :school }
   let(:boiler_intervention){ create :intervention_type, name: 'Changed boiler' }
   let(:bulbs_intervention){ create :intervention_type, name: 'Changed bulbs' }
+  let(:staff_led_activity){ create :activity_category, name: 'School staff led activities' }
+  let(:pupil_led_activity){ create :activity_category, name: 'School pupil led activities' }
 
   describe '.annotate' do
 
@@ -65,6 +67,7 @@ describe Charts::Annotate do
       context 'with intervention that match the date ranges' do
 
         let!(:intervention_1){ create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
+        # let!(:activity_1){ create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity_category: staff_led_activity) }
 
         it 'finds annotations that match the range'  do
           expect(subject).to eq(
@@ -75,7 +78,8 @@ describe Charts::Annotate do
                 id: intervention_1.id,
                 date: Date.new(2018, 6, 28),
                 icon: 'question-circle',
-                observation_type: 'intervention'
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_1.id}"
               }
             ]
           )
@@ -96,7 +100,8 @@ describe Charts::Annotate do
                 id: intervention_1.id,
                 date: Date.new(2018, 6, 28),
                 icon: 'question-circle',
-                observation_type: 'intervention'
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_1.id}"
               },
               {
                 x_axis_category: '08 Jul 2018',
@@ -104,7 +109,8 @@ describe Charts::Annotate do
                 id: intervention_2.id,
                 date: Date.new(2018, 7, 8),
                 icon: 'question-circle',
-                observation_type: 'intervention'
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_2.id}"
               }
             ]
           )
@@ -142,7 +148,8 @@ describe Charts::Annotate do
                 id: intervention_1.id,
                 date: Date.new(2018, 6, 28),
                 icon: 'question-circle',
-                observation_type: 'intervention'
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_1.id}"
               }
             ]
           )
@@ -163,7 +170,8 @@ describe Charts::Annotate do
                 id: intervention_1.id,
                 date: Date.new(2018, 6, 28),
                 icon: 'question-circle',
-                observation_type: 'intervention'
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_1.id}"
               },
               {
                 x_axis_category: '08-07-2018',
@@ -171,7 +179,8 @@ describe Charts::Annotate do
                 id: intervention_2.id,
                 date: Date.new(2018, 7, 8),
                 icon: 'question-circle',
-                observation_type: 'intervention'
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_2.id}"
               }
             ]
           )
