@@ -114,6 +114,7 @@ en:
             weekends: Weekends
         title: What do we mean by hot water gas use?
         we_estimate_your_hot_water_efficiency_to_be_html: We estimate your hot water efficiency to be %{efficiency_percent}
+      not_enough_data_message: The hot water usage analysis compares periods before and during the summer holidays but we don't currently have enough gas data in order to run this analysis for your school.
       not_relevant:
         other_reasons:
           reason: |-
