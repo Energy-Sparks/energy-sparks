@@ -10,7 +10,7 @@ describe SendReviewGroupTariffsReminderJob do
       expect do
         job.perform
       end.to change { ActionMailer::Base.deliveries.count }.by(1)
-      expect(ActionMailer::Base.deliveries.last.subject).to eq("Provide your school’s energy tariffs to Energy Sparks")
+      expect(ActionMailer::Base.deliveries.last.subject).to eq("It's time to review the energy tariffs for #{school_group.name} on Energy Sparks")
       expect(ActionMailer::Base.deliveries.last.to).to eq([school_group_admin.email])
     end
   end
