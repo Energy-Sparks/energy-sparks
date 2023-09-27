@@ -85,8 +85,8 @@ module Charts
 
     def icon_color_for(observation)
       case observation.observation_type
-      when 'activity' then '#FFCC66'
-      when 'intervention' then '#BFDBFF'
+      when 'activity' then '#FFFFFF'
+      when 'intervention' then '#FFFFFF'
       end
     end
 

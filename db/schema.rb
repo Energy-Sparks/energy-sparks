@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 2023_09_22_131629) do
     t.boolean "featured", default: false
     t.boolean "pupil", default: false
     t.boolean "live_data", default: false
-    t.string "icon", default: "volleyball-ball"
+    t.string "icon", default: "clipboard-check"
   end
 
   create_table "activity_timings", force: :cascade do |t|

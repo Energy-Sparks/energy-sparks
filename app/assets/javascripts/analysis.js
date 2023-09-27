@@ -236,7 +236,7 @@ function processAnnotations(loaded_annotations, chart){
           xAxis: 0,
           yAxis: 0,
         },
-        text: '<a href="' + annotation.url + '"><i style="color: ' + annotation.icon_color + '" class="fas fa-'+annotation.icon+'" data-toggle="tooltip" data-placement="right" title="(' + date.toLocaleDateString() + ') ' + annotation.event + '"></i></a>',
+        text: '<div style="width: 16px;" class="d-flex justify-content-center"><a href="' + annotation.url + '"><i style="color: ' + annotation.icon_color + '" class="fas fa-'+annotation.icon+'" data-toggle="tooltip" data-placement="right" title="(' + date.toLocaleDateString() + ') ' + annotation.event + '"></i></a></div>',
       };
     }
   });

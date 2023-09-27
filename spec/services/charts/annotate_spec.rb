@@ -87,7 +87,7 @@ describe Charts::Annotate do
                 event: activity_observation.activity.activity_category.name,
                 id: activity_observation.id,
                 date: Date.new(2018, 6, 28),
-                icon: 'volleyball-ball',
+                icon: 'clipboard-check',
                 icon_color: '#FFCC66',
                 observation_type: 'activity',
                 url: "/schools/#{school.slug}/activities/#{activity_observation.activity.id}"
@@ -133,7 +133,7 @@ describe Charts::Annotate do
                 event: activity_observation.activity.activity_category.name,
                 id: activity_observation.id,
                 date: Date.new(2018, 6, 28),
-                icon: 'volleyball-ball',
+                icon: 'clipboard-check',
                 icon_color: '#FFCC66',
                 observation_type: 'activity',
                 url: "/schools/#{school.slug}/activities/#{activity_observation.activity.id}"
@@ -186,7 +186,7 @@ describe Charts::Annotate do
                 event: activity_observation.activity.activity_category.name,
                 id: activity_observation.id,
                 date: Date.new(2018, 6, 28),
-                icon: 'volleyball-ball',
+                icon: 'clipboard-check',
                 icon_color: '#FFCC66',
                 observation_type: 'activity',
                 url: "/schools/#{school.slug}/activities/#{activity_observation.activity.id}"
@@ -232,7 +232,7 @@ describe Charts::Annotate do
                 event: activity_observation.activity.activity_category.name,
                 id: activity_observation.id,
                 date: Date.new(2018, 6, 28),
-                icon: 'volleyball-ball',
+                icon: 'clipboard-check',
                 icon_color: '#FFCC66',
                 observation_type: 'activity',
                 url: "/schools/#{school.slug}/activities/#{activity_observation.activity.id}"
