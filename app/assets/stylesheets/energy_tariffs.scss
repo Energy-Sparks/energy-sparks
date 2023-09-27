@@ -10,6 +10,9 @@
     td.value {
       width: 10%
     }
+    td.value input {
+      width: 7em;
+    }
     td.units {
       width: 10%
     }
@@ -38,4 +41,5 @@
   .energy_tariff-show-button {
     margin-top: -5px
   }
+
 }
