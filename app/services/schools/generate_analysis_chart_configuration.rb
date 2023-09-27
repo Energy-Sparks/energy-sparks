@@ -6,23 +6,21 @@ module Schools
         school,
         aggregated_meter_collection,
         fuel_configuration,
-        dashboard_fuel_types = {},
         dashboard_page_configuration = DashboardConfiguration::DASHBOARD_PAGE_GROUPS
       )
       @school = school
       @aggregated_meter_collection = aggregated_meter_collection
       @fuel_configuration = fuel_configuration
-      @dashboard_fuel_types = dashboard_fuel_types
       @dashboard_page_configuration = dashboard_page_configuration
     end
 
-    def generate(pages = pages_from_fuel_types)
+    def generate(pages)
       if @fuel_configuration.no_meters_with_validated_readings
         Rails.logger.info "No readings for #{@school.name}, so no configuration"
         return {}
       end
 
-      Rails.logger.info "Generating chart configuration for #{@school.name} - using default values"
+      Rails.logger.info "Generating pupil chart configuration for #{@school.name}"
       page_and_chart_config = {}
       pages.each do |page|
         page_configuration = page_config(page)
@@ -59,10 +57,6 @@ module Schools
         chart_config,
         reraise_exception: false
       ).has_chart_data?
-    end
-
-    def pages_from_fuel_types
-      @dashboard_fuel_types[@fuel_configuration.fuel_types_for_analysis]
     end
 
     def page_config(page)
