@@ -1,52 +1,101 @@
 module Charts
   class Annotate
-    def initialize(interventions_scope:)
-      @interventions_scope = interventions_scope
+    ANNOTATABLE_OBSERVATION_TYPES = %w[activity intervention].freeze
+
+    def initialize(school)
+      @school = school
     end
 
     def annotate_weekly(x_axis_categories)
       return if x_axis_categories.empty?
 
-      date_categories = x_axis_categories.map do |x_axis_category|
-        date_for(x_axis_category)
-      end
+      date_categories = date_categories_for(x_axis_categories)
 
-      first_date = date_categories.min
-      last_date = date_categories.max + 6.days
-
-      relevant_interventions = @interventions_scope.where('at BETWEEN ? AND ?', first_date, last_date)
-
-      relevant_interventions.map do |intervention|
-        relevant_start_date = date_categories.find {|date| (date..(date + 6.days)).cover?(intervention.at.to_date)}
-        {
-          id: intervention.id,
-          event: intervention.intervention_type.name,
-          date: intervention.at.to_date,
-          x_axis_category: x_axis_categories[date_categories.index(relevant_start_date)],
-          icon: intervention.intervention_type.intervention_type_group.icon
-        }
-      end
+      weekly_relevant_observations_for(x_axis_categories, date_categories)
     end
 
     def annotate_daily(x_axis_start, x_axis_end)
       return if x_axis_start.blank? || x_axis_end.blank?
-      first_date = Date.parse(x_axis_start)
-      last_date = Date.parse(x_axis_end)
 
-      relevant_interventions = @interventions_scope.where('at BETWEEN ? AND ?', first_date, last_date)
-
-      relevant_interventions.map do |intervention|
-        {
-          id: intervention.id,
-          event: intervention.intervention_type.name,
-          date: intervention.at.to_date,
-          x_axis_category: intervention.at.strftime('%d-%m-%Y'),
-          icon: intervention.intervention_type.intervention_type_group.icon
-        }
-      end
+      daily_relevant_observations_for(x_axis_start, x_axis_end)
     end
 
     private
+
+    def date_categories_for(x_axis_categories)
+      x_axis_categories.map { |x_axis_category| date_for(x_axis_category) }
+    end
+
+    def relevant_observations_for(start_date, end_date)
+      @school.observations
+             .where(observation_type: ANNOTATABLE_OBSERVATION_TYPES)
+             .where('at BETWEEN ? AND ?', start_date, end_date)
+    end
+
+    def weekly_relevant_observations_for(x_axis_categories, date_categories)
+      relevant_observations = relevant_observations_for(date_categories.min, date_categories.max + 6.days)
+
+      relevant_observations.map do |observation|
+        x_axis_category = weekly_x_axis_category_for(x_axis_categories, date_categories, observation)
+
+        annotation_for(observation: observation, x_axis_category: x_axis_category)
+      end
+    end
+
+    def weekly_x_axis_category_for(x_axis_categories, date_categories, observation)
+      weekly_relevant_start_date = date_categories.find { |date| (date..(date + 6.days)).cover?(observation.at.to_date) }
+
+      x_axis_categories[date_categories.index(weekly_relevant_start_date)]
+    end
+
+    def daily_relevant_observations_for(x_axis_start, x_axis_end)
+      relevant_observations = relevant_observations_for(Date.parse(x_axis_start), Date.parse(x_axis_end))
+
+      relevant_observations.map do |observation|
+        annotation_for(observation: observation, x_axis_category: observation.at.strftime('%d-%m-%Y'))
+      end
+    end
+
+    def annotation_for(observation:, x_axis_category:)
+      {
+        id: observation.id,
+        event: event_for(observation),
+        date: observation.at.to_date,
+        x_axis_category: x_axis_category,
+        icon: icon_for(observation),
+        icon_color: icon_color_for(observation),
+        observation_type: observation.observation_type,
+        url: url_for(observation)
+      }
+    end
+
+    def url_for(observation)
+      case observation.observation_type
+      when 'activity' then Rails.application.routes.url_helpers.school_activity_path(@school, observation.activity)
+      when 'intervention' then Rails.application.routes.url_helpers.school_intervention_path(@school, observation)
+      end
+    end
+
+    def icon_for(observation)
+      case observation.observation_type
+      when 'activity' then observation.activity.activity_category.icon
+      when 'intervention' then observation.intervention_type.intervention_type_group.icon
+      end
+    end
+
+    def icon_color_for(observation)
+      case observation.observation_type
+      when 'activity' then '#FFFFFF'
+      when 'intervention' then '#FFFFFF'
+      end
+    end
+
+    def event_for(observation)
+      case observation.observation_type
+      when 'activity' then observation.activity.activity_category.name
+      when 'intervention' then observation.intervention_type.name
+      end
+    end
 
     def abbr_month_name_lookup
       @abbr_month_name_lookup ||= I18n.t('date.abbr_month_names').map.with_index do |abbr_month_name, index|
