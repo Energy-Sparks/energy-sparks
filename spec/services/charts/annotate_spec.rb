@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe Charts::Annotate do
   let(:school) { create :school }
-  let(:boiler_intervention) { create :intervention_type, name: 'Changed boiler', show_on_charts: true }
-  let(:bulbs_intervention) { create :intervention_type, name: 'Changed bulbs', show_on_charts: true }
+  let(:boiler_intervention) { create :intervention_type, name: 'Changed boiler', show_on_charts: true, fuel_type: ['gas'] }
+  let(:bulbs_intervention) { create :intervention_type, name: 'Changed bulbs', show_on_charts: true, fuel_type: ['gas'] }
 
   describe '.annotate' do
     describe '#abbr_month_name_lookup' do
@@ -64,7 +64,7 @@ describe Charts::Annotate do
       context 'with intervention that match the date ranges' do
         let!(:intervention_observation) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
         let!(:activity_category) { create :activity_category }
-        let!(:activity_type) { create :activity_type, show_on_charts: true }
+        let!(:activity_type) { create :activity_type, show_on_charts: true, fuel_type: ['gas'] }
         let!(:activity) { create(:activity, activity_category: activity_category, activity_type: activity_type) }
         let!(:activity_observation) { create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
 
@@ -100,7 +100,7 @@ describe Charts::Annotate do
         let!(:intervention_1) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
         let!(:intervention_2) { create(:observation, :intervention, school: school, at: Date.new(2018, 7, 8), intervention_type: bulbs_intervention) }
         let!(:activity_category) { create :activity_category }
-        let!(:activity_type) { create :activity_type, show_on_charts: true }
+        let!(:activity_type) { create :activity_type, show_on_charts: true, fuel_type: ['gas'] }
         let!(:activity) { create(:activity, activity_category: activity_category, activity_type: activity_type) }
         let!(:activity_observation) { create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
 
@@ -161,7 +161,7 @@ describe Charts::Annotate do
       context 'with intervention that match the date ranges' do
         let!(:intervention_1) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
         let!(:activity_category) { create :activity_category }
-        let!(:activity_type) { create :activity_type, show_on_charts: true }
+        let!(:activity_type) { create :activity_type, show_on_charts: true, fuel_type: ['gas'] }
         let!(:activity) { create(:activity, activity_category: activity_category, activity_type: activity_type) }
         let!(:activity_observation) { create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
 
@@ -197,7 +197,7 @@ describe Charts::Annotate do
         let!(:intervention_1) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
         let!(:intervention_2) { create(:observation, :intervention, school: school, at: Date.new(2018, 7, 8), intervention_type: bulbs_intervention) }
         let!(:activity_category) { create :activity_category }
-        let!(:activity_type) { create :activity_type, show_on_charts: true }
+        let!(:activity_type) { create :activity_type, show_on_charts: true, fuel_type: ['gas'] }
         let!(:activity) { create(:activity, activity_category: activity_category, activity_type: activity_type) }
         let!(:activity_observation) { create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
 
