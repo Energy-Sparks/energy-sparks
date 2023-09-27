@@ -11,7 +11,7 @@ module ChartHelper
         autoload_chart: autoload_chart,
         chart_config: chart_config.merge(
           type: chart_type,
-          annotations: school_annotations_path(school, fuel_type: fuel_type),
+          annotations: fuel_type ? school_annotations_path(school, fuel_type: fuel_type) : [],
           jsonUrl: school_chart_path(school, format: :json),
           transformations: []
         )
