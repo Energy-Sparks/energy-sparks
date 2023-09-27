@@ -4,7 +4,8 @@ module Schools
 
     def show
       @school = School.find(params[:school_id])
-      annotator = Charts::Annotate.new(@school)
+
+      annotator = Charts::Annotate.new(school: @school, fuel_types: [params['fuel_type']])
 
       @annotations = case params[:date_grouping]
                      when 'weekly' then annotator.annotate_weekly(params[:x_axis_categories])

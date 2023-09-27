@@ -1,8 +1,8 @@
 module Charts
   class Annotate
-    def initialize(school, fuel_type: FuelTypeable::VALID_FUEL_TYPES)
+    def initialize(school:, fuel_types: FuelTypeable::VALID_FUEL_TYPES)
       @school = school
-      @fuel_type = fuel_type
+      @fuel_types = fuel_types
     end
 
     def annotate_weekly(x_axis_categories)
@@ -37,7 +37,7 @@ module Charts
                        ON intervention_types.id = observations.intervention_type_id
         WHERE  observation_type = #{Observation.observation_types['intervention']}
                AND intervention_types.show_on_charts = true
-               AND intervention_types.fuel_type && '{#{@fuel_type.join(',')}}'
+               AND intervention_types.fuel_type && '{#{@fuel_types.join(',')}}'
                AND ( observations.at BETWEEN '#{start_date}' AND '#{end_date}' )
                AND observations.school_id = #{@school.id}
         UNION ALL
@@ -49,7 +49,7 @@ module Charts
                        ON activity_types.id = activities.activity_type_id
         WHERE  observation_type = #{Observation.observation_types['activity']}
                AND activity_types.show_on_charts = true
-               AND activity_types.fuel_type && '{#{@fuel_type.join(',')}}'
+               AND activity_types.fuel_type && '{#{@fuel_types.join(',')}}'
                AND ( observations.at BETWEEN '#{start_date}' AND '#{end_date}' )
                AND observations.school_id = #{@school.id}
       SQL
