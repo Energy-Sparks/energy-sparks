@@ -78,7 +78,7 @@ describe Charts::Annotate do
                 id: intervention_observation.id,
                 date: Date.new(2018, 6, 28),
                 icon: 'question-circle',
-                icon_color: '#BFDBFF',
+                icon_color: '#FFFFFF',
                 observation_type: 'intervention',
                 url: "/schools/#{school.slug}/interventions/#{intervention_observation.id}"
               },
@@ -88,7 +88,7 @@ describe Charts::Annotate do
                 id: activity_observation.id,
                 date: Date.new(2018, 6, 28),
                 icon: 'clipboard-check',
-                icon_color: '#FFCC66',
+                icon_color: '#FFFFFF',
                 observation_type: 'activity',
                 url: "/schools/#{school.slug}/activities/#{activity_observation.activity.id}"
               }
@@ -114,7 +114,7 @@ describe Charts::Annotate do
                 id: intervention_1.id,
                 date: Date.new(2018, 6, 28),
                 icon: 'question-circle',
-                icon_color: '#BFDBFF',
+                icon_color: '#FFFFFF',
                 observation_type: 'intervention',
                 url: "/schools/#{school.slug}/interventions/#{intervention_1.id}"
               },
@@ -124,7 +124,7 @@ describe Charts::Annotate do
                 id: intervention_2.id,
                 date: Date.new(2018, 7, 8),
                 icon: 'question-circle',
-                icon_color: '#BFDBFF',
+                icon_color: '#FFFFFF',
                 observation_type: 'intervention',
                 url: "/schools/#{school.slug}/interventions/#{intervention_2.id}"
               },
@@ -134,7 +134,7 @@ describe Charts::Annotate do
                 id: activity_observation.id,
                 date: Date.new(2018, 6, 28),
                 icon: 'clipboard-check',
-                icon_color: '#FFCC66',
+                icon_color: '#FFFFFF',
                 observation_type: 'activity',
                 url: "/schools/#{school.slug}/activities/#{activity_observation.activity.id}"
               }
@@ -177,7 +177,7 @@ describe Charts::Annotate do
                 id: intervention_1.id,
                 date: Date.new(2018, 6, 28),
                 icon: 'question-circle',
-                icon_color: '#BFDBFF',
+                icon_color: '#FFFFFF',
                 observation_type: 'intervention',
                 url: "/schools/#{school.slug}/interventions/#{intervention_1.id}"
               },
@@ -187,7 +187,7 @@ describe Charts::Annotate do
                 id: activity_observation.id,
                 date: Date.new(2018, 6, 28),
                 icon: 'clipboard-check',
-                icon_color: '#FFCC66',
+                icon_color: '#FFFFFF',
                 observation_type: 'activity',
                 url: "/schools/#{school.slug}/activities/#{activity_observation.activity.id}"
               }
@@ -213,7 +213,7 @@ describe Charts::Annotate do
                 id: intervention_1.id,
                 date: Date.new(2018, 6, 28),
                 icon: 'question-circle',
-                icon_color: '#BFDBFF',
+                icon_color: '#FFFFFF',
                 observation_type: 'intervention',
                 url: "/schools/#{school.slug}/interventions/#{intervention_1.id}"
               },
@@ -223,7 +223,7 @@ describe Charts::Annotate do
                 id: intervention_2.id,
                 date: Date.new(2018, 7, 8),
                 icon: 'question-circle',
-                icon_color: '#BFDBFF',
+                icon_color: '#FFFFFF',
                 observation_type: 'intervention',
                 url: "/schools/#{school.slug}/interventions/#{intervention_2.id}"
               },
@@ -233,7 +233,7 @@ describe Charts::Annotate do
                 id: activity_observation.id,
                 date: Date.new(2018, 6, 28),
                 icon: 'clipboard-check',
-                icon_color: '#FFCC66',
+                icon_color: '#FFFFFF',
                 observation_type: 'activity',
                 url: "/schools/#{school.slug}/activities/#{activity_observation.activity.id}"
               }
