@@ -121,6 +121,6 @@ class AmrDataFeedReading < ApplicationRecord
   def self.unvalidated_data_report_for_mpans(mpans, amr_data_feed_config_ids = [])
     query = build_unvalidated_data_report_query(mpans, amr_data_feed_config_ids)
     rows = ActiveRecord::Base.connection.execute(ActiveRecord::Base.sanitize_sql(query))
-    rows.sort_by { |row| mpans.index(row['mpan_mprn']) }
+    rows.sort_by { |row| mpans.index(row['mpan_mprn']).to_s.rjust(10, '0') + row['latest_reading'] }
   end
 end
