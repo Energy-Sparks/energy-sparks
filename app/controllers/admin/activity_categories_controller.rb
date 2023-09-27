@@ -37,7 +37,7 @@ module Admin
     # Never trust parameters from the scary internet, only allow the white list through.
     def activity_category_params
       translated_params = t_params(ActivityCategory.mobility_attributes + ActivityCategory.t_attached_attributes)
-      params.require(:activity_category).permit(translated_params, :name, :description, :featured, :pupil, :live_data)
+      params.require(:activity_category).permit(translated_params, :name, :description, :featured, :pupil, :live_data, :icon)
     end
   end
 end
