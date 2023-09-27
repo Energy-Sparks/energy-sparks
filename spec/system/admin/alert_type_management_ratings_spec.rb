@@ -127,12 +127,6 @@ RSpec.describe 'alert type management', type: :system do
 
   describe 'creating alert content' do
 
-    around do |example|
-      ClimateControl.modify FEATURE_FLAG_REPLACE_FIND_OUT_MORES: 'false' do
-        example.run
-      end
-    end
-
     let!(:alert) do
       create(:alert, alert_type: gas_fuel_alert_type, template_data: {gas_percentage: '10%', chart_a: :example_chart_value}, school: create(:school))
     end
@@ -197,38 +191,6 @@ RSpec.describe 'alert type management', type: :system do
           end
         end
 
-        check 'Find out more'
-
-        within '.find_out_more_active' do
-
-          fill_in 'Page title', with: 'You are using too much gas!'
-
-          within '.alert_type_rating_content_find_out_more_chart_variable' do
-            expect(page).to have_unchecked_field('chart description A')
-            expect(page).to have_unchecked_field('chart description B')
-            expect(page).to have_checked_field('None')
-          end
-
-          choose 'chart description B'
-          fill_in 'Chart title', with: 'This is a chart'
-
-          fill_in_trix with: 'You are using {{gas_percentage}} too much gas! You need to do something about it.'
-
-          within '.alert_type_rating_content_find_out_more_table_variable' do
-            expect(page).to have_unchecked_field('table description A')
-            expect(page).to have_unchecked_field('table description B')
-            expect(page).to have_checked_field('None')
-          end
-
-          choose 'table description B'
-
-          click_on 'Preview (English)'
-
-          within '#find_out_more-preview-en .content' do
-            expect(page).to have_content('You are using 10% too much gas!')
-          end
-        end
-
         check 'SMS content'
         fill_in 'SMS content', with: gas_fuel_alert_type_title
 
@@ -259,7 +221,6 @@ RSpec.describe 'alert type management', type: :system do
         alert_type_rating = gas_fuel_alert_type.ratings.first
         expect(alert_type_rating.content_versions.size).to eq(1)
         first_content = alert_type_rating.current_content
-        expect(first_content.find_out_more_title).to eq('You are using too much gas!')
         expect(first_content.sms_content).to eq(gas_fuel_alert_type_title)
         expect(first_content.management_dashboard_title.to_plain_text).to eq('MDASH - Your school is using gas')
         expect(first_content.management_dashboard_title(locale: :cy).to_plain_text).to eq('MDASH WELSH - Your school is using gas')
@@ -270,15 +231,10 @@ RSpec.describe 'alert type management', type: :system do
         click_on 'Dummy alert'
         expect(page).to have_content('chart description A chart example_chart_value')
 
-        fill_in 'Page title', with: 'Stop using so much gas!'
+        fill_in 'Email title en', with: 'Stop using so much gas!'
         click_on 'Update content'
 
         expect(alert_type_rating.content_versions.size).to eq(2)
-        second_content = alert_type_rating.current_content
-        expect(second_content.find_out_more_title).to eq('Stop using so much gas!')
-        expect(second_content.find_out_more_chart_variable).to eq('chart_b')
-        expect(second_content.find_out_more_chart_title).to eq('This is a chart')
-        expect(second_content.find_out_more_table_variable).to eq('table_b')
       end
     end
 

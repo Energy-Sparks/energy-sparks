@@ -25,11 +25,7 @@
     <%= link_to t('schools.meters.index.view_target_data'), admin_school_target_data_path(school), class: 'dropdown-item' if current_user.admin? %>
     <%= link_to t('manage_school_menu.review_targets'), school_school_targets_path(school), class: 'dropdown-item' if current_user.admin? && Targets::SchoolTargetService.targets_enabled?(school) && can?(:manage, SchoolTarget) && Targets::SchoolTargetService.new(school).enough_data? %>
     <%= link_to t('manage_school_menu.expert_analysis'), admin_school_analysis_path(school), class: 'dropdown-item' if can? :expert_analyse, school %>
-    <% if replace_analysis_pages? %>
-      <%= link_to t('manage_school_menu.old_analysis_pages'), school_analysis_index_path(school), class: 'dropdown-item' if can? :view_advice_pages, school %>
-    <% else %>
-      <%= link_to t('manage_school_menu.advice_pages'), school_advice_path(school), class: 'dropdown-item' if can? :view_advice_pages, school %>
-    <% end %>
+    <%= link_to t('manage_school_menu.old_analysis_pages'), school_analysis_index_path(school), class: 'dropdown-item' if can? :view_advice_pages, school %>
     <%= link_to t('manage_school_menu.remove_school'), removal_admin_school_path(school), class: 'dropdown-item' if can? :remove_school, school %>
   </div>
 </li>
