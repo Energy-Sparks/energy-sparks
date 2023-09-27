@@ -1,17 +1,15 @@
 require 'rails_helper'
 
 describe Charts::Annotate do
-
-  let(:school){ create :school }
-  let(:boiler_intervention){ create :intervention_type, name: 'Changed boiler' }
-  let(:bulbs_intervention){ create :intervention_type, name: 'Changed bulbs' }
+  let(:school) { create :school }
+  let(:boiler_intervention) { create :intervention_type, name: 'Changed boiler', show_on_charts: true }
+  let(:bulbs_intervention) { create :intervention_type, name: 'Changed bulbs', show_on_charts: true }
 
   describe '.annotate' do
-
     describe '#abbr_month_name_lookup' do
       it 'creates a lookup hash for abbreviated month names and those in default locale as values' do
         I18n.locale = 'cy'
-        expect(Charts::Annotate.new(school).send(:abbr_month_name_lookup)).to eq({""=>"", "Awst"=>"Aug", "Chwe"=>"Feb", "Ebr"=>"Apr", "Gorff"=>"Jul", "Hyd"=>"Oct", "Ion"=>"Jan", "Mai"=>"May", "Maw"=>"Mar", "Medi"=>"Sep", "Meh"=>"Jun", "Rhag"=>"Dec", "Tach"=>"Nov"})
+        expect(Charts::Annotate.new(school).send(:abbr_month_name_lookup)).to eq({ "" => "", "Awst" => "Aug", "Chwe" => "Feb", "Ebr" => "Apr", "Gorff" => "Jul", "Hyd" => "Oct", "Ion" => "Jan", "Mai" => "May", "Maw" => "Mar", "Medi" => "Sep", "Meh" => "Jun", "Rhag" => "Dec", "Tach" => "Nov" })
         I18n.locale = 'en'
       end
     end
@@ -48,28 +46,29 @@ describe Charts::Annotate do
     end
 
     describe 'annotating weekly charts' do
-
       subject { Charts::Annotate.new(school).annotate_weekly(x_axis_categories)}
 
-      let(:x_axis_categories){ [
-        "24 Jun 2018",
-        "01 Jul 2018",
-        "08 Jul 2018",
-        "15 Jul 2018"
-      ]}
+      let(:x_axis_categories) do
+        [
+          "24 Jun 2018",
+          "01 Jul 2018",
+          "08 Jul 2018",
+          "15 Jul 2018"
+        ]
+      end
 
       context 'with no annotations' do
-        it{ is_expected.to be_empty }
+        it { is_expected.to be_empty }
       end
 
       context 'with intervention that match the date ranges' do
+        let!(:intervention_observation) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
+        let!(:activity_category) { create :activity_category }
+        let!(:activity_type) { create :activity_type, show_on_charts: true }
+        let!(:activity) { create(:activity, activity_category: activity_category, activity_type: activity_type) }
+        let!(:activity_observation) { create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
 
-        let!(:intervention_observation){ create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
-        let!(:activity_category){ create :activity_category }
-        let!(:activity) { create(:activity, activity_category: activity_category) }
-        let!(:activity_observation){ create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
-
-        it 'finds annotations that match the range'  do
+        it 'finds annotations that match the range' do
           expect(subject).to eq(
             [
               {
@@ -98,14 +97,14 @@ describe Charts::Annotate do
       end
 
       context 'with multiple annotations that match the date ranges' do
+        let!(:intervention_1) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
+        let!(:intervention_2) { create(:observation, :intervention, school: school, at: Date.new(2018, 7, 8), intervention_type: bulbs_intervention) }
+        let!(:activity_category) { create :activity_category }
+        let!(:activity_type) { create :activity_type, show_on_charts: true }
+        let!(:activity) { create(:activity, activity_category: activity_category, activity_type: activity_type) }
+        let!(:activity_observation) { create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
 
-        let!(:intervention_1){ create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
-        let!(:intervention_2){ create(:observation, :intervention, school: school, at: Date.new(2018, 7, 8), intervention_type: bulbs_intervention) }
-        let!(:activity_category){ create :activity_category }
-        let!(:activity) { create(:activity, activity_category: activity_category) }
-        let!(:activity_observation){ create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
-
-        it 'finds annotations that match the range'  do
+        it 'finds annotations that match the range' do
           expect(subject).to eq(
             [
               {
@@ -144,31 +143,29 @@ describe Charts::Annotate do
       end
 
       context 'with anotations outside of the date range' do
-        let!(:intervention_1){ create(:observation, :intervention, school: school, at: Date.new(2018, 7, 23), intervention_type: boiler_intervention) }
-        it{ is_expected.to be_empty }
+        let!(:intervention_1) { create(:observation, :intervention, school: school, at: Date.new(2018, 7, 23), intervention_type: boiler_intervention) }
+        it { is_expected.to be_empty }
       end
-
     end
 
     describe 'annotating daily charts' do
-
       subject { Charts::Annotate.new(school).annotate_daily(first_date, last_date)}
 
-      let(:first_date){ '24 Jun 2018' }
-      let(:last_date){ '22 Jul 2018' }
+      let(:first_date) { '24 Jun 2018' }
+      let(:last_date) { '22 Jul 2018' }
 
       context 'with no annotations' do
-        it{ is_expected.to be_empty }
+        it { is_expected.to be_empty }
       end
 
       context 'with intervention that match the date ranges' do
+        let!(:intervention_1) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
+        let!(:activity_category) { create :activity_category }
+        let!(:activity_type) { create :activity_type, show_on_charts: true }
+        let!(:activity) { create(:activity, activity_category: activity_category, activity_type: activity_type) }
+        let!(:activity_observation) { create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
 
-        let!(:intervention_1){ create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
-        let!(:activity_category){ create :activity_category }
-        let!(:activity) { create(:activity, activity_category: activity_category) }
-        let!(:activity_observation){ create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
-
-        it 'finds annotations that match the range'  do
+        it 'finds annotations that match the range' do
           expect(subject).to eq(
             [
               {
@@ -197,14 +194,14 @@ describe Charts::Annotate do
       end
 
       context 'with multiple annotations that match the date ranges' do
+        let!(:intervention_1) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
+        let!(:intervention_2) { create(:observation, :intervention, school: school, at: Date.new(2018, 7, 8), intervention_type: bulbs_intervention) }
+        let!(:activity_category) { create :activity_category }
+        let!(:activity_type) { create :activity_type, show_on_charts: true }
+        let!(:activity) { create(:activity, activity_category: activity_category, activity_type: activity_type) }
+        let!(:activity_observation) { create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
 
-        let!(:intervention_1){ create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
-        let!(:intervention_2){ create(:observation, :intervention, school: school, at: Date.new(2018, 7, 8), intervention_type: bulbs_intervention) }
-        let!(:activity_category){ create :activity_category }
-        let!(:activity) { create(:activity, activity_category: activity_category) }
-        let!(:activity_observation){ create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
-
-        it 'finds annotations that match the range'  do
+        it 'finds annotations that match the range' do
           expect(subject).to eq(
             [
               {
@@ -243,8 +240,8 @@ describe Charts::Annotate do
       end
 
       context 'with anotations outside of the date range' do
-        let!(:intervention_1){ create(:observation, :intervention, school: school, at: Date.new(2018, 7, 23), intervention_type: boiler_intervention) }
-        it{ is_expected.to be_empty }
+        let!(:intervention_1) { create(:observation, :intervention, school: school, at: Date.new(2018, 7, 23), intervention_type: boiler_intervention) }
+        it { is_expected.to be_empty }
       end
     end
   end
