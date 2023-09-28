@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '~> 2.7.6'
 
 # Rails/Core
-gem 'rails', '~> 6.0.4' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '7.0.8' #, '7.0.8' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'bootsnap'
 gem 'rack-canonical-host' # Redirect www to root
@@ -109,7 +109,7 @@ gem 'mobility-actiontext', '~> 1.1.1'
 gem "good_job", "~> 3.4.6"
 
 # Rails 6.1 functionality. Can be removed when we upgrade.
-gem 'delegated_type'
+# gem 'delegated_type'
 
 # Spreadsheet parsing
 gem 'roo'
@@ -150,7 +150,7 @@ group :development do
   gem 'overcommit'
   gem 'fasterer'
   gem 'bundler-audit'
-  gem 'brakeman'
+  # gem 'brakeman'
   gem 'scout_apm'
 #  gem 'rack-mini-profiler'
 #  gem 'memory_profiler'
@@ -161,7 +161,7 @@ group :test do
   gem 'test-prof'
   gem 'capybara'
   gem 'capybara-email'
-  gem 'selenium-webdriver'
+  # gem 'selenium-webdriver'
   gem 'database_cleaner'
   gem "webdrivers", '>= 5.3.0'
   gem 'simplecov', :require => false, :group => :test
