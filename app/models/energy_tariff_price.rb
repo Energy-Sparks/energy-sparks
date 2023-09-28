@@ -18,14 +18,16 @@
 #
 class EnergyTariffPrice < ApplicationRecord
   MINIMUM_VALUE = 0.0
+  MAXIMUM_VALUE = 1.0
 
   belongs_to :energy_tariff, inverse_of: :energy_tariff_prices
 
   validates :start_time, :end_time, :units, presence: true
   validates :value, presence: true, on: :update
 
-  validates :value, numericality: { greater_than: MINIMUM_VALUE }, allow_nil: true, on: :create
-  validates :value, numericality: { greater_than: MINIMUM_VALUE }, on: :update
+  validates :value, numericality: { greater_than: MINIMUM_VALUE, less_than: MAXIMUM_VALUE }, allow_nil: true, on: :create
+  validates :value, numericality: { greater_than: MINIMUM_VALUE, less_than: MAXIMUM_VALUE }, on: :update
+
   validate :no_time_overlaps
   validate :time_range_given
 
