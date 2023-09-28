@@ -10,8 +10,6 @@ describe Charts::Annotate do
     let(:activity_type) { create :activity_type, show_on_charts: true, fuel_type: ['gas'] }
     let(:activity) { create(:activity, activity_category: activity_category, activity_type: activity_type) }
 
-    subject { Charts::Annotate.new(school: school).annotate_weekly(x_axis_categories) }
-
     let(:x_axis_categories) do
       [
         "24 Jun 2018",
@@ -21,17 +19,19 @@ describe Charts::Annotate do
       ]
     end
 
-    context 'with no annotations' do
-      it { is_expected.to be_empty }
+    context 'with no intervention or activity observations' do
+      it 'returns no annotations' do
+        expect(Charts::Annotate.new(school: school).annotate_weekly(x_axis_categories)).to be_empty
+      end
     end
 
     context 'with an intervention and activity observations that match the date ranges' do
       let!(:intervention_observation) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: boiler_intervention) }
       let!(:activity_observation) { create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
 
-      context 'electricity' do
-        it 'finds annotations that match the range' do
-          expect(subject).to eq(
+      context 'for all possible fuel types' do
+        it 'returns annotations that match the range' do
+          expect(Charts::Annotate.new(school: school).annotate_weekly(x_axis_categories)).to eq(
             [
               {
                 x_axis_category: '24 Jun 2018',
@@ -58,8 +58,37 @@ describe Charts::Annotate do
         end
       end
 
+      context 'for electricity' do
+        it 'returns annotations that match the range' do
+        end
+      end
+
       context 'gas' do
-        it 'finds annotations that match the range' do
+        it 'returns annotations that match the range' do
+          expect(Charts::Annotate.new(school: school, fuel_types: ['gas']).annotate_weekly(x_axis_categories)).to eq(
+            [
+              {
+                x_axis_category: '24 Jun 2018',
+                event: intervention_observation.intervention_type.name,
+                id: intervention_observation.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'question-circle',
+                icon_color: '#FFFFFF',
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_observation.id}"
+              },
+              {
+                x_axis_category: '24 Jun 2018',
+                event: activity_observation.activity.activity_category.name,
+                id: activity_observation.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'clipboard-check',
+                icon_color: '#FFFFFF',
+                observation_type: 'activity',
+                url: "/schools/#{school.slug}/activities/#{activity_observation.activity.id}"
+              }
+            ]
+          )
         end
       end
     end
@@ -69,47 +98,87 @@ describe Charts::Annotate do
       let!(:intervention_2) { create(:observation, :intervention, school: school, at: Date.new(2018, 7, 8), intervention_type: bulbs_intervention) }
       let!(:activity_observation) { create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
 
+      context 'for all possible fuel types' do
+        it 'returns annotations that match the range' do
+          expect(Charts::Annotate.new(school: school).annotate_weekly(x_axis_categories)).to eq(
+            [
+              {
+                x_axis_category: '24 Jun 2018',
+                event: 'Changed boiler',
+                id: intervention_1.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'question-circle',
+                icon_color: '#FFFFFF',
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_1.id}"
+              },
+              {
+                x_axis_category: '08 Jul 2018',
+                event: 'Changed bulbs',
+                id: intervention_2.id,
+                date: Date.new(2018, 7, 8),
+                icon: 'question-circle',
+                icon_color: '#FFFFFF',
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_2.id}"
+              },
+              {
+                x_axis_category: '24 Jun 2018',
+                event: activity_observation.activity.activity_category.name,
+                id: activity_observation.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'clipboard-check',
+                icon_color: '#FFFFFF',
+                observation_type: 'activity',
+                url: "/schools/#{school.slug}/activities/#{activity_observation.activity.id}"
+              }
+            ]
+          )
+        end
+      end
+
       context 'electricity' do
-        it 'finds annotations that match the range' do
-                expect(subject).to eq(
-                  [
-                    {
-                      x_axis_category: '24 Jun 2018',
-                      event: 'Changed boiler',
-                      id: intervention_1.id,
-                      date: Date.new(2018, 6, 28),
-                      icon: 'question-circle',
-                      icon_color: '#FFFFFF',
-                      observation_type: 'intervention',
-                      url: "/schools/#{school.slug}/interventions/#{intervention_1.id}"
-                    },
-                    {
-                      x_axis_category: '08 Jul 2018',
-                      event: 'Changed bulbs',
-                      id: intervention_2.id,
-                      date: Date.new(2018, 7, 8),
-                      icon: 'question-circle',
-                      icon_color: '#FFFFFF',
-                      observation_type: 'intervention',
-                      url: "/schools/#{school.slug}/interventions/#{intervention_2.id}"
-                    },
-                    {
-                      x_axis_category: '24 Jun 2018',
-                      event: activity_observation.activity.activity_category.name,
-                      id: activity_observation.id,
-                      date: Date.new(2018, 6, 28),
-                      icon: 'clipboard-check',
-                      icon_color: '#FFFFFF',
-                      observation_type: 'activity',
-                      url: "/schools/#{school.slug}/activities/#{activity_observation.activity.id}"
-                    }
-                  ]
-        )
+        it 'returns annotations that match the range' do
+
         end
       end
 
       context 'gas' do
-        it 'finds annotations that match the range' do
+        it 'returns annotations that match the range' do
+          expect(Charts::Annotate.new(school: school, fuel_types: ['gas']).annotate_weekly(x_axis_categories)).to eq(
+            [
+              {
+                x_axis_category: '24 Jun 2018',
+                event: 'Changed boiler',
+                id: intervention_1.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'question-circle',
+                icon_color: '#FFFFFF',
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_1.id}"
+              },
+              {
+                x_axis_category: '08 Jul 2018',
+                event: 'Changed bulbs',
+                id: intervention_2.id,
+                date: Date.new(2018, 7, 8),
+                icon: 'question-circle',
+                icon_color: '#FFFFFF',
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_2.id}"
+              },
+              {
+                x_axis_category: '24 Jun 2018',
+                event: activity_observation.activity.activity_category.name,
+                id: activity_observation.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'clipboard-check',
+                icon_color: '#FFFFFF',
+                observation_type: 'activity',
+                url: "/schools/#{school.slug}/activities/#{activity_observation.activity.id}"
+              }
+            ]
+          )
         end
       end
     end
@@ -118,7 +187,9 @@ describe Charts::Annotate do
       let!(:intervention_observation) { create(:observation, :intervention, school: school, at: Date.new(2018, 7, 23), intervention_type: boiler_intervention) }
       let!(:activity_observation) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 23), activity: activity) }
 
-      it { is_expected.to be_empty }
+      it 'returns no annotations' do
+        expect(Charts::Annotate.new(school: school).annotate_weekly(x_axis_categories)).to be_empty
+      end
     end
   end
 
@@ -143,7 +214,7 @@ describe Charts::Annotate do
       let!(:activity_observation) { create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
 
       context 'electricity' do
-        it 'finds annotations that match the range' do
+        it 'returns annotations that match the range' do
           expect(subject).to eq(
             [
               {
@@ -172,7 +243,7 @@ describe Charts::Annotate do
       end
 
       context 'gas' do
-        it 'finds annotations that match the range' do
+        it 'returns annotations that match the range' do
         end
       end
     end
@@ -183,7 +254,7 @@ describe Charts::Annotate do
       let!(:activity_observation) { create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity) }
 
       context 'electricity' do
-        it 'finds annotations that match the range' do
+        it 'returns annotations that match the range' do
           expect(subject).to eq(
             [
               {
@@ -222,12 +293,10 @@ describe Charts::Annotate do
       end
 
       context 'electricity' do
-        it 'finds annotations that match the range' do
+        it 'returns annotations that match the range' do
         end
       end
     end
-
-
 
     context 'with anotations outside of the date range' do
       let!(:intervention_1) { create(:observation, :intervention, school: school, at: Date.new(2018, 7, 23), intervention_type: boiler_intervention) }
