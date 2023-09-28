@@ -47,6 +47,46 @@ describe Charts::Annotate do
       end
     end
 
+    context 'show on charts' do
+      let!(:intervention_observation_multi_fuel) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 24), intervention_type: multi_fuel_intervention) }
+      let!(:activity_observation_multi_fuel) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 8), activity: activity_multi_fuel) }
+
+      it 'is set true' do
+        multi_fuel_intervention.update(show_on_charts: true)
+        activity_type_multi_fuel.update(show_on_charts: true)
+        expect(subject_multi_fuel.annotate_weekly(x_axis_categories)).to eq(
+          [
+            {
+              x_axis_category: '24 Jun 2018',
+              event: intervention_observation_multi_fuel.intervention_type.name,
+              id: intervention_observation_multi_fuel.id,
+              date: Date.new(2018, 6, 24),
+              icon: 'question-circle',
+              icon_color: '#FFFFFF',
+              observation_type: 'intervention',
+              url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
+            },
+            {
+              x_axis_category: '08 Jul 2018',
+              event: activity_observation_multi_fuel.activity.activity_category.name,
+              id: activity_observation_multi_fuel.id,
+              date: Date.new(2018, 7, 8),
+              icon: 'clipboard-check',
+              icon_color: '#FFFFFF',
+              observation_type: 'activity',
+              url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
+            }
+          ]
+        )
+      end
+
+      it 'is set false' do
+        multi_fuel_intervention.update(show_on_charts: false)
+        activity_type_multi_fuel.update(show_on_charts: false)
+        expect(subject_multi_fuel.annotate_weekly(x_axis_categories)).to eq([])
+      end
+    end
+
     context 'with intervention and activity observations that match the date ranges' do
       let!(:intervention_observation_multi_fuel) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 24), intervention_type: multi_fuel_intervention) }
       let!(:intervention_observation_gas) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 25), intervention_type: gas_intervention) }
@@ -385,6 +425,46 @@ describe Charts::Annotate do
     context 'with no intervention or activity observations' do
       it 'returns no annotations' do
         expect(subject_multi_fuel.annotate_daily(first_date, last_date)).to be_empty
+      end
+    end
+
+    context 'show on charts' do
+      let!(:intervention_observation_multi_fuel) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 24), intervention_type: multi_fuel_intervention) }
+      let!(:activity_observation_multi_fuel) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 8), activity: activity_multi_fuel) }
+
+      it 'is set true' do
+        multi_fuel_intervention.update(show_on_charts: true)
+        activity_type_multi_fuel.update(show_on_charts: true)
+        expect(subject_multi_fuel.annotate_daily(first_date, last_date)).to eq(
+          [
+            {
+              x_axis_category: '24-06-2018',
+              event: intervention_observation_multi_fuel.intervention_type.name,
+              id: intervention_observation_multi_fuel.id,
+              date: Date.new(2018, 6, 24),
+              icon: 'question-circle',
+              icon_color: '#FFFFFF',
+              observation_type: 'intervention',
+              url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
+            },
+            {
+              x_axis_category: '08-07-2018',
+              event: activity_observation_multi_fuel.activity.activity_category.name,
+              id: activity_observation_multi_fuel.id,
+              date: Date.new(2018, 7, 8),
+              icon: 'clipboard-check',
+              icon_color: '#FFFFFF',
+              observation_type: 'activity',
+              url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
+            }
+          ]
+        )
+      end
+
+      it 'is set false' do
+        multi_fuel_intervention.update(show_on_charts: false)
+        activity_type_multi_fuel.update(show_on_charts: false)
+        expect(subject_multi_fuel.annotate_daily(first_date, last_date)).to eq([])
       end
     end
 
