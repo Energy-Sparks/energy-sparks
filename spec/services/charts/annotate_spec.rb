@@ -25,6 +25,12 @@ describe Charts::Annotate do
   let(:activity_type_storage_heater) { create :activity_type, show_on_charts: true, fuel_type: ['storage_heater'] }
   let(:activity_storage_heater) { create(:activity, activity_category: activity_category_storage_heater, activity_type: activity_type_storage_heater) }
 
+  subject(:subject_multi_fuel) { Charts::Annotate.new(school: school) }
+  subject(:subject_electricity) { Charts::Annotate.new(school: school, fuel_types: ['electricity']) }
+  subject(:subject_gas) { Charts::Annotate.new(school: school, fuel_types: ['gas']) }
+  subject(:subject_solar) { Charts::Annotate.new(school: school, fuel_types: ['solar']) }
+  subject(:subject_storage_heater) { Charts::Annotate.new(school: school, fuel_types: ['storage_heater']) }
+
   describe '#annotate_weekly' do
     let(:x_axis_categories) do
       [
@@ -37,32 +43,32 @@ describe Charts::Annotate do
 
     context 'with no intervention or activity observations' do
       it 'returns no annotations' do
-        expect(Charts::Annotate.new(school: school).annotate_weekly(x_axis_categories)).to be_empty
+        expect(subject_multi_fuel.annotate_weekly(x_axis_categories)).to be_empty
       end
     end
 
     context 'with intervention and activity observations that match the date ranges' do
-      let!(:intervention_observation_multi_fuel) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: multi_fuel_intervention) }
-      let!(:intervention_observation_gas) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: gas_intervention) }
-      let!(:intervention_observation_electricity) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: electricity_intervention) }
-      let!(:intervention_observation_solar) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: solar_intervention) }
+      let!(:intervention_observation_multi_fuel) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 24), intervention_type: multi_fuel_intervention) }
+      let!(:intervention_observation_gas) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 25), intervention_type: gas_intervention) }
+      let!(:intervention_observation_electricity) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 26), intervention_type: electricity_intervention) }
+      let!(:intervention_observation_solar) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 27), intervention_type: solar_intervention) }
       let!(:intervention_observation_storage_heater) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: storage_heater_intervention) }
 
       let!(:activity_observation_multi_fuel) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 8), activity: activity_multi_fuel) }
-      let!(:activity_observation_gas) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 8), activity: activity_gas) }
-      let!(:activity_observation_electricity) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 8), activity: activity_electricity) }
-      let!(:activity_observation_solar) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 8), activity: activity_solar) }
-      let!(:activity_observation_storage_heater) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 8), activity: activity_storage_heater) }
+      let!(:activity_observation_gas) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 9), activity: activity_gas) }
+      let!(:activity_observation_electricity) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 10), activity: activity_electricity) }
+      let!(:activity_observation_solar) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 11), activity: activity_solar) }
+      let!(:activity_observation_storage_heater) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 12), activity: activity_storage_heater) }
 
       context 'for all fuel types' do
         it 'returns annotations that match the range' do
-          expect(Charts::Annotate.new(school: school).annotate_weekly(x_axis_categories)).to eq(
+          expect(subject_multi_fuel.annotate_weekly(x_axis_categories)).to eq(
             [
               {
                 x_axis_category: '24 Jun 2018',
                 event: intervention_observation_multi_fuel.intervention_type.name,
                 id: intervention_observation_multi_fuel.id,
-                date: Date.new(2018, 6, 28),
+                date: Date.new(2018, 6, 24),
                 icon: 'question-circle',
                 icon_color: '#FFFFFF',
                 observation_type: 'intervention',
@@ -72,7 +78,7 @@ describe Charts::Annotate do
                 x_axis_category: '24 Jun 2018',
                 event: intervention_observation_gas.intervention_type.name,
                 id: intervention_observation_gas.id,
-                date: Date.new(2018, 6, 28),
+                date: Date.new(2018, 6, 25),
                 icon: 'question-circle',
                 icon_color: '#FFFFFF',
                 observation_type: 'intervention',
@@ -82,7 +88,7 @@ describe Charts::Annotate do
                 x_axis_category: '24 Jun 2018',
                 event: intervention_observation_electricity.intervention_type.name,
                 id: intervention_observation_electricity.id,
-                date: Date.new(2018, 6, 28),
+                date: Date.new(2018, 6, 26),
                 icon: 'question-circle',
                 icon_color: '#FFFFFF',
                 observation_type: 'intervention',
@@ -92,7 +98,7 @@ describe Charts::Annotate do
                 x_axis_category: '24 Jun 2018',
                 event: intervention_observation_solar.intervention_type.name,
                 id: intervention_observation_solar.id,
-                date: Date.new(2018, 6, 28),
+                date: Date.new(2018, 6, 27),
                 icon: 'question-circle',
                 icon_color: '#FFFFFF',
                 observation_type: 'intervention',
@@ -122,7 +128,7 @@ describe Charts::Annotate do
                 x_axis_category: '08 Jul 2018',
                 event: activity_observation_gas.activity.activity_category.name,
                 id: activity_observation_gas.id,
-                date: Date.new(2018, 7, 8),
+                date: Date.new(2018, 7, 9),
                 icon: 'clipboard-check',
                 icon_color: '#FFFFFF',
                 observation_type: 'activity',
@@ -132,7 +138,7 @@ describe Charts::Annotate do
                 x_axis_category: '08 Jul 2018',
                 event: activity_observation_electricity.activity.activity_category.name,
                 id: activity_observation_electricity.id,
-                date: Date.new(2018, 7, 8),
+                date: Date.new(2018, 7, 10),
                 icon: 'clipboard-check',
                 icon_color: '#FFFFFF',
                 observation_type: 'activity',
@@ -142,7 +148,7 @@ describe Charts::Annotate do
                 x_axis_category: '08 Jul 2018',
                 event: activity_observation_solar.activity.activity_category.name,
                 id: activity_observation_solar.id,
-                date: Date.new(2018, 7, 8),
+                date: Date.new(2018, 7, 11),
                 icon: 'clipboard-check',
                 icon_color: '#FFFFFF',
                 observation_type: 'activity',
@@ -152,7 +158,7 @@ describe Charts::Annotate do
                 x_axis_category: '08 Jul 2018',
                 event: activity_observation_storage_heater.activity.activity_category.name,
                 id: activity_observation_storage_heater.id,
-                date: Date.new(2018, 7, 8),
+                date: Date.new(2018, 7, 12),
                 icon: 'clipboard-check',
                 icon_color: '#FFFFFF',
                 observation_type: 'activity',
@@ -165,13 +171,13 @@ describe Charts::Annotate do
 
       context 'for a gas fuel type' do
         it 'returns annotations that match the range' do
-          expect(Charts::Annotate.new(school: school, fuel_types: ['gas']).annotate_weekly(x_axis_categories)).to eq(
+          expect(subject_gas.annotate_weekly(x_axis_categories)).to eq(
             [
               {
                 x_axis_category: '24 Jun 2018',
                 event: intervention_observation_multi_fuel.intervention_type.name,
                 id: intervention_observation_multi_fuel.id,
-                date: Date.new(2018, 6, 28),
+                date: Date.new(2018, 6, 24),
                 icon: 'question-circle',
                 icon_color: '#FFFFFF',
                 observation_type: 'intervention',
@@ -181,7 +187,7 @@ describe Charts::Annotate do
                 x_axis_category: '24 Jun 2018',
                 event: intervention_observation_gas.intervention_type.name,
                 id: intervention_observation_gas.id,
-                date: Date.new(2018, 6, 28),
+                date: Date.new(2018, 6, 25),
                 icon: 'question-circle',
                 icon_color: '#FFFFFF',
                 observation_type: 'intervention',
@@ -201,7 +207,7 @@ describe Charts::Annotate do
                 x_axis_category: '08 Jul 2018',
                 event: activity_observation_gas.activity.activity_category.name,
                 id: activity_observation_gas.id,
-                date: Date.new(2018, 7, 8),
+                date: Date.new(2018, 7, 9),
                 icon: 'clipboard-check',
                 icon_color: '#FFFFFF',
                 observation_type: 'activity',
@@ -214,13 +220,13 @@ describe Charts::Annotate do
 
       context 'for an electricity fuel type' do
         it 'returns annotations that match the range' do
-          expect(Charts::Annotate.new(school: school, fuel_types: ['electricity']).annotate_weekly(x_axis_categories)).to eq(
+          expect(subject_electricity.annotate_weekly(x_axis_categories)).to eq(
             [
               {
                 x_axis_category: '24 Jun 2018',
                 event: intervention_observation_multi_fuel.intervention_type.name,
                 id: intervention_observation_multi_fuel.id,
-                date: Date.new(2018, 6, 28),
+                date: Date.new(2018, 6, 24),
                 icon: 'question-circle',
                 icon_color: '#FFFFFF',
                 observation_type: 'intervention',
@@ -230,7 +236,7 @@ describe Charts::Annotate do
                 x_axis_category: '24 Jun 2018',
                 event: intervention_observation_electricity.intervention_type.name,
                 id: intervention_observation_electricity.id,
-                date: Date.new(2018, 6, 28),
+                date: Date.new(2018, 6, 26),
                 icon: 'question-circle',
                 icon_color: '#FFFFFF',
                 observation_type: 'intervention',
@@ -250,12 +256,12 @@ describe Charts::Annotate do
                 x_axis_category: '08 Jul 2018',
                 event: activity_observation_electricity.activity.activity_category.name,
                 id: activity_observation_electricity.id,
-                date: Date.new(2018, 7, 8),
+                date: Date.new(2018, 7, 10),
                 icon: 'clipboard-check',
                 icon_color: '#FFFFFF',
                 observation_type: 'activity',
                 url: "/schools/#{school.slug}/activities/#{activity_observation_electricity.activity.id}"
-              },
+              }
             ]
           )
         end
@@ -263,13 +269,13 @@ describe Charts::Annotate do
 
       context 'for a solar fuel type' do
         it 'returns annotations that match the range' do
-          expect(Charts::Annotate.new(school: school, fuel_types: ['solar']).annotate_weekly(x_axis_categories)).to eq(
+          expect(subject_solar.annotate_weekly(x_axis_categories)).to eq(
             [
               {
                 x_axis_category: '24 Jun 2018',
                 event: intervention_observation_multi_fuel.intervention_type.name,
                 id: intervention_observation_multi_fuel.id,
-                date: Date.new(2018, 6, 28),
+                date: Date.new(2018, 6, 24),
                 icon: 'question-circle',
                 icon_color: '#FFFFFF',
                 observation_type: 'intervention',
@@ -279,7 +285,7 @@ describe Charts::Annotate do
                 x_axis_category: '24 Jun 2018',
                 event: intervention_observation_solar.intervention_type.name,
                 id: intervention_observation_solar.id,
-                date: Date.new(2018, 6, 28),
+                date: Date.new(2018, 6, 27),
                 icon: 'question-circle',
                 icon_color: '#FFFFFF',
                 observation_type: 'intervention',
@@ -299,7 +305,7 @@ describe Charts::Annotate do
                 x_axis_category: '08 Jul 2018',
                 event: activity_observation_solar.activity.activity_category.name,
                 id: activity_observation_solar.id,
-                date: Date.new(2018, 7, 8),
+                date: Date.new(2018, 7, 11),
                 icon: 'clipboard-check',
                 icon_color: '#FFFFFF',
                 observation_type: 'activity',
@@ -312,13 +318,13 @@ describe Charts::Annotate do
 
       context 'for a storage heater fuel type' do
         it 'returns annotations that match the range' do
-          expect(Charts::Annotate.new(school: school, fuel_types: ['storage_heater']).annotate_weekly(x_axis_categories)).to eq(
+          expect(subject_storage_heater.annotate_weekly(x_axis_categories)).to eq(
             [
               {
                 x_axis_category: '24 Jun 2018',
                 event: intervention_observation_multi_fuel.intervention_type.name,
                 id: intervention_observation_multi_fuel.id,
-                date: Date.new(2018, 6, 28),
+                date: Date.new(2018, 6, 24),
                 icon: 'question-circle',
                 icon_color: '#FFFFFF',
                 observation_type: 'intervention',
@@ -348,7 +354,7 @@ describe Charts::Annotate do
                 x_axis_category: '08 Jul 2018',
                 event: activity_observation_storage_heater.activity.activity_category.name,
                 id: activity_observation_storage_heater.id,
-                date: Date.new(2018, 7, 8),
+                date: Date.new(2018, 7, 12),
                 icon: 'clipboard-check',
                 icon_color: '#FFFFFF',
                 observation_type: 'activity',
@@ -365,7 +371,7 @@ describe Charts::Annotate do
       let!(:activity_observation) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 23), activity: activity_gas) }
 
       it 'returns no annotations' do
-        expect(Charts::Annotate.new(school: school).annotate_weekly(x_axis_categories)).to be_empty
+        expect(subject_multi_fuel.annotate_weekly(x_axis_categories)).to be_empty
       end
     end
   end
