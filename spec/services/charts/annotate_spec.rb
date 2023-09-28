@@ -42,14 +42,141 @@ describe Charts::Annotate do
     end
 
     context 'with intervention and activity observations that match the date ranges' do
+      let!(:intervention_observation_multi_fuel) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: multi_fuel_intervention) }
       let!(:intervention_observation_gas) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: gas_intervention) }
-      let!(:intervention_observation_electricity) { create(:observation, :intervention, school: school, at: Date.new(2018, 7, 8), intervention_type: electricity_intervention) }
-      let!(:activity_observation_gas) { create(:observation, :activity, school: school, at: Date.new(2018, 6, 28), activity: activity_gas) }
+      let!(:intervention_observation_electricity) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: electricity_intervention) }
+      let!(:intervention_observation_solar) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: solar_intervention) }
+      let!(:intervention_observation_storage_heater) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 28), intervention_type: storage_heater_intervention) }
 
-      context 'for all possible fuel types' do
+      let!(:activity_observation_multi_fuel) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 8), activity: activity_multi_fuel) }
+      let!(:activity_observation_gas) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 8), activity: activity_gas) }
+      let!(:activity_observation_electricity) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 8), activity: activity_electricity) }
+      let!(:activity_observation_solar) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 8), activity: activity_solar) }
+      let!(:activity_observation_storage_heater) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 8), activity: activity_storage_heater) }
+
+      context 'for all fuel types' do
         it 'returns annotations that match the range' do
           expect(Charts::Annotate.new(school: school).annotate_weekly(x_axis_categories)).to eq(
             [
+              {
+                x_axis_category: '24 Jun 2018',
+                event: intervention_observation_multi_fuel.intervention_type.name,
+                id: intervention_observation_multi_fuel.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'question-circle',
+                icon_color: '#FFFFFF',
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
+              },
+              {
+                x_axis_category: '24 Jun 2018',
+                event: intervention_observation_gas.intervention_type.name,
+                id: intervention_observation_gas.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'question-circle',
+                icon_color: '#FFFFFF',
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_observation_gas.id}"
+              },
+              {
+                x_axis_category: '24 Jun 2018',
+                event: intervention_observation_electricity.intervention_type.name,
+                id: intervention_observation_electricity.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'question-circle',
+                icon_color: '#FFFFFF',
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_observation_electricity.id}"
+              },
+              {
+                x_axis_category: '24 Jun 2018',
+                event: intervention_observation_solar.intervention_type.name,
+                id: intervention_observation_solar.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'question-circle',
+                icon_color: '#FFFFFF',
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_observation_solar.id}"
+              },
+              {
+                x_axis_category: '24 Jun 2018',
+                event: intervention_observation_storage_heater.intervention_type.name,
+                id: intervention_observation_storage_heater.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'question-circle',
+                icon_color: '#FFFFFF',
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_observation_storage_heater.id}"
+              },
+              {
+                x_axis_category: '08 Jul 2018',
+                event: activity_observation_multi_fuel.activity.activity_category.name,
+                id: activity_observation_multi_fuel.id,
+                date: Date.new(2018, 7, 8),
+                icon: 'clipboard-check',
+                icon_color: '#FFFFFF',
+                observation_type: 'activity',
+                url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
+              },
+              {
+                x_axis_category: '08 Jul 2018',
+                event: activity_observation_gas.activity.activity_category.name,
+                id: activity_observation_gas.id,
+                date: Date.new(2018, 7, 8),
+                icon: 'clipboard-check',
+                icon_color: '#FFFFFF',
+                observation_type: 'activity',
+                url: "/schools/#{school.slug}/activities/#{activity_observation_gas.activity.id}"
+              },
+              {
+                x_axis_category: '08 Jul 2018',
+                event: activity_observation_electricity.activity.activity_category.name,
+                id: activity_observation_electricity.id,
+                date: Date.new(2018, 7, 8),
+                icon: 'clipboard-check',
+                icon_color: '#FFFFFF',
+                observation_type: 'activity',
+                url: "/schools/#{school.slug}/activities/#{activity_observation_electricity.activity.id}"
+              },
+              {
+                x_axis_category: '08 Jul 2018',
+                event: activity_observation_solar.activity.activity_category.name,
+                id: activity_observation_solar.id,
+                date: Date.new(2018, 7, 8),
+                icon: 'clipboard-check',
+                icon_color: '#FFFFFF',
+                observation_type: 'activity',
+                url: "/schools/#{school.slug}/activities/#{activity_observation_solar.activity.id}"
+              },
+              {
+                x_axis_category: '08 Jul 2018',
+                event: activity_observation_storage_heater.activity.activity_category.name,
+                id: activity_observation_storage_heater.id,
+                date: Date.new(2018, 7, 8),
+                icon: 'clipboard-check',
+                icon_color: '#FFFFFF',
+                observation_type: 'activity',
+                url: "/schools/#{school.slug}/activities/#{activity_observation_storage_heater.activity.id}"
+              }
+            ]
+          )
+        end
+      end
+
+      context 'for a gas fuel type' do
+        it 'returns annotations that match the range' do
+          expect(Charts::Annotate.new(school: school, fuel_types: ['gas']).annotate_weekly(x_axis_categories)).to eq(
+            [
+              {
+                x_axis_category: '24 Jun 2018',
+                event: intervention_observation_multi_fuel.intervention_type.name,
+                id: intervention_observation_multi_fuel.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'question-circle',
+                icon_color: '#FFFFFF',
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
+              },
               {
                 x_axis_category: '24 Jun 2018',
                 event: intervention_observation_gas.intervention_type.name,
@@ -62,67 +189,174 @@ describe Charts::Annotate do
               },
               {
                 x_axis_category: '08 Jul 2018',
+                event: activity_observation_multi_fuel.activity.activity_category.name,
+                id: activity_observation_multi_fuel.id,
+                date: Date.new(2018, 7, 8),
+                icon: 'clipboard-check',
+                icon_color: '#FFFFFF',
+                observation_type: 'activity',
+                url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
+              },
+              {
+                x_axis_category: '08 Jul 2018',
+                event: activity_observation_gas.activity.activity_category.name,
+                id: activity_observation_gas.id,
+                date: Date.new(2018, 7, 8),
+                icon: 'clipboard-check',
+                icon_color: '#FFFFFF',
+                observation_type: 'activity',
+                url: "/schools/#{school.slug}/activities/#{activity_observation_gas.activity.id}"
+              }
+            ]
+          )
+        end
+      end
+
+      context 'for an electricity fuel type' do
+        it 'returns annotations that match the range' do
+          expect(Charts::Annotate.new(school: school, fuel_types: ['electricity']).annotate_weekly(x_axis_categories)).to eq(
+            [
+              {
+                x_axis_category: '24 Jun 2018',
+                event: intervention_observation_multi_fuel.intervention_type.name,
+                id: intervention_observation_multi_fuel.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'question-circle',
+                icon_color: '#FFFFFF',
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
+              },
+              {
+                x_axis_category: '24 Jun 2018',
                 event: intervention_observation_electricity.intervention_type.name,
                 id: intervention_observation_electricity.id,
-                date: Date.new(2018, 7, 8),
+                date: Date.new(2018, 6, 28),
                 icon: 'question-circle',
                 icon_color: '#FFFFFF',
                 observation_type: 'intervention',
                 url: "/schools/#{school.slug}/interventions/#{intervention_observation_electricity.id}"
               },
               {
-                x_axis_category: '24 Jun 2018',
-                event: activity_observation_gas.activity.activity_category.name,
-                id: activity_observation_gas.id,
-                date: Date.new(2018, 6, 28),
+                x_axis_category: '08 Jul 2018',
+                event: activity_observation_multi_fuel.activity.activity_category.name,
+                id: activity_observation_multi_fuel.id,
+                date: Date.new(2018, 7, 8),
                 icon: 'clipboard-check',
                 icon_color: '#FFFFFF',
                 observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_gas.activity.id}"
-              }
+                url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
+              },
+              {
+                x_axis_category: '08 Jul 2018',
+                event: activity_observation_electricity.activity.activity_category.name,
+                id: activity_observation_electricity.id,
+                date: Date.new(2018, 7, 8),
+                icon: 'clipboard-check',
+                icon_color: '#FFFFFF',
+                observation_type: 'activity',
+                url: "/schools/#{school.slug}/activities/#{activity_observation_electricity.activity.id}"
+              },
             ]
           )
         end
       end
 
-      context 'gas' do
+      context 'for a solar fuel type' do
         it 'returns annotations that match the range' do
-          expect(Charts::Annotate.new(school: school, fuel_types: ['gas']).annotate_weekly(x_axis_categories)).to eq(
+          expect(Charts::Annotate.new(school: school, fuel_types: ['solar']).annotate_weekly(x_axis_categories)).to eq(
             [
               {
                 x_axis_category: '24 Jun 2018',
-                event: intervention_observation_gas.intervention_type.name,
-                id: intervention_observation_gas.id,
+                event: intervention_observation_multi_fuel.intervention_type.name,
+                id: intervention_observation_multi_fuel.id,
                 date: Date.new(2018, 6, 28),
                 icon: 'question-circle',
                 icon_color: '#FFFFFF',
                 observation_type: 'intervention',
-                url: "/schools/#{school.slug}/interventions/#{intervention_observation_gas.id}"
+                url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
               },
               {
                 x_axis_category: '24 Jun 2018',
-                event: activity_observation_gas.activity.activity_category.name,
-                id: activity_observation_gas.id,
+                event: intervention_observation_solar.intervention_type.name,
+                id: intervention_observation_solar.id,
                 date: Date.new(2018, 6, 28),
+                icon: 'question-circle',
+                icon_color: '#FFFFFF',
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_observation_solar.id}"
+              },
+              {
+                x_axis_category: '08 Jul 2018',
+                event: activity_observation_multi_fuel.activity.activity_category.name,
+                id: activity_observation_multi_fuel.id,
+                date: Date.new(2018, 7, 8),
                 icon: 'clipboard-check',
                 icon_color: '#FFFFFF',
                 observation_type: 'activity',
-                url: "/schools/#{school.slug}/activities/#{activity_observation_gas.activity.id}"
+                url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
+              },
+              {
+                x_axis_category: '08 Jul 2018',
+                event: activity_observation_solar.activity.activity_category.name,
+                id: activity_observation_solar.id,
+                date: Date.new(2018, 7, 8),
+                icon: 'clipboard-check',
+                icon_color: '#FFFFFF',
+                observation_type: 'activity',
+                url: "/schools/#{school.slug}/activities/#{activity_observation_solar.activity.id}"
               }
             ]
           )
         end
       end
 
-      context 'electricity' do
+      context 'for a storage heater fuel type' do
         it 'returns annotations that match the range' do
+          expect(Charts::Annotate.new(school: school, fuel_types: ['storage_heater']).annotate_weekly(x_axis_categories)).to eq(
+            [
+              {
+                x_axis_category: '24 Jun 2018',
+                event: intervention_observation_multi_fuel.intervention_type.name,
+                id: intervention_observation_multi_fuel.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'question-circle',
+                icon_color: '#FFFFFF',
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_observation_multi_fuel.id}"
+              },
+              {
+                x_axis_category: '24 Jun 2018',
+                event: intervention_observation_storage_heater.intervention_type.name,
+                id: intervention_observation_storage_heater.id,
+                date: Date.new(2018, 6, 28),
+                icon: 'question-circle',
+                icon_color: '#FFFFFF',
+                observation_type: 'intervention',
+                url: "/schools/#{school.slug}/interventions/#{intervention_observation_storage_heater.id}"
+              },
+              {
+                x_axis_category: '08 Jul 2018',
+                event: activity_observation_multi_fuel.activity.activity_category.name,
+                id: activity_observation_multi_fuel.id,
+                date: Date.new(2018, 7, 8),
+                icon: 'clipboard-check',
+                icon_color: '#FFFFFF',
+                observation_type: 'activity',
+                url: "/schools/#{school.slug}/activities/#{activity_observation_multi_fuel.activity.id}"
+              },
+              {
+                x_axis_category: '08 Jul 2018',
+                event: activity_observation_storage_heater.activity.activity_category.name,
+                id: activity_observation_storage_heater.id,
+                date: Date.new(2018, 7, 8),
+                icon: 'clipboard-check',
+                icon_color: '#FFFFFF',
+                observation_type: 'activity',
+                url: "/schools/#{school.slug}/activities/#{activity_observation_storage_heater.activity.id}"
+              }
+            ]
+          )
         end
-      end
-
-      context 'solar' do
-      end
-
-      context 'storage_heater' do
       end
     end
 
@@ -137,12 +371,6 @@ describe Charts::Annotate do
   end
 
   describe '#annotate_daily' do
-    # let(:gas_intervention) { create :intervention_type, name: 'Changed boiler', show_on_charts: true, fuel_type: ['gas'] }
-    # let(:electricity_intervention) { create :intervention_type, name: 'Changed bulbs', show_on_charts: true, fuel_type: ['gas'] }
-    # let(:activity_category) { create :activity_category }
-    # let(:activity_type) { create :activity_type, show_on_charts: true, fuel_type: ['gas'] }
-    # let(:activity) { create(:activity, activity_category: activity_category, activity_type: activity_type) }
-
     subject { Charts::Annotate.new(school: school).annotate_daily(first_date, last_date)}
 
     let(:first_date) { '24 Jun 2018' }
