@@ -101,7 +101,7 @@ namespace :utility do
   # https://github.com/rails/rails/issues/43906
   desc 'Runs before rake assets:precompile'
   task before_assets_precompile: :environment do
-    system('yarn')
+    system('yarn --ignore-engines')
   end
 
   # Every time you execute 'rake assets:precompile'
