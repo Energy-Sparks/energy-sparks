@@ -46,7 +46,7 @@ Rails.application.configure do
   # Raises error for missing translations
   config.i18n.raise_on_missing_translations = true
 
-  config.mailchimp_client = MailchimpMarketing::MockClient.new
+  # config.mailchimp_client = MailchimpMarketing::MockClient.new
 
   # Default good job execution mode configuration for test
   # See https://github.com/bensheldon/good_job#configuration-options
