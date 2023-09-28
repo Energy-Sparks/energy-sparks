@@ -673,33 +673,40 @@ describe Charts::Annotate do
   end
 
   describe '#date_for' do
-    it 'returns a date from a date string formatted "%d %b %Y" irrespective of locale' do
-      I18n.locale = 'cy'
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Ion 2022')).to eq(Date.parse('01/01/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Chwe 2022')).to eq(Date.parse('01/02/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Maw 2022')).to eq(Date.parse('01/03/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Ebr 2022')).to eq(Date.parse('01/04/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Mai 2022')).to eq(Date.parse('01/05/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Meh 2022')).to eq(Date.parse('01/06/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Gorff 2022')).to eq(Date.parse('01/07/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Awst 2022')).to eq(Date.parse('01/08/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Medi 2022')).to eq(Date.parse('01/09/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Hyd 2022')).to eq(Date.parse('01/10/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Tach 2022')).to eq(Date.parse('01/11/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Rhag 2022')).to eq(Date.parse('01/12/2022'))
-      I18n.locale = 'en'
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Jan 2022')).to eq(Date.parse('01/01/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Feb 2022')).to eq(Date.parse('01/02/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Mar 2022')).to eq(Date.parse('01/03/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Apr 2022')).to eq(Date.parse('01/04/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 May 2022')).to eq(Date.parse('01/05/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Jun 2022')).to eq(Date.parse('01/06/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Jul 2022')).to eq(Date.parse('01/07/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Aug 2022')).to eq(Date.parse('01/08/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Sep 2022')).to eq(Date.parse('01/09/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Oct 2022')).to eq(Date.parse('01/10/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Nov 2022')).to eq(Date.parse('01/11/2022'))
-      expect(Charts::Annotate.new(school: school).send(:date_for, '01 Dec 2022')).to eq(Date.parse('01/12/2022'))
+    context 'in Welsh' do
+      it 'returns a date from a date string formatted "%d %b %Y" irrespective of locale' do
+        I18n.locale = 'cy'
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Ion 2022')).to eq(Date.parse('01/01/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Chwe 2022')).to eq(Date.parse('01/02/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Maw 2022')).to eq(Date.parse('01/03/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Ebr 2022')).to eq(Date.parse('01/04/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Mai 2022')).to eq(Date.parse('01/05/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Meh 2022')).to eq(Date.parse('01/06/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Gorff 2022')).to eq(Date.parse('01/07/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Awst 2022')).to eq(Date.parse('01/08/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Medi 2022')).to eq(Date.parse('01/09/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Hyd 2022')).to eq(Date.parse('01/10/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Tach 2022')).to eq(Date.parse('01/11/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Rhag 2022')).to eq(Date.parse('01/12/2022'))
+      end
+    end
+
+    context 'in English' do
+      it 'returns a date from a date string formatted "%d %b %Y" irrespective of locale' do
+        I18n.locale = 'en'
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Jan 2022')).to eq(Date.parse('01/01/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Feb 2022')).to eq(Date.parse('01/02/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Mar 2022')).to eq(Date.parse('01/03/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Apr 2022')).to eq(Date.parse('01/04/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 May 2022')).to eq(Date.parse('01/05/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Jun 2022')).to eq(Date.parse('01/06/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Jul 2022')).to eq(Date.parse('01/07/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Aug 2022')).to eq(Date.parse('01/08/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Sep 2022')).to eq(Date.parse('01/09/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Oct 2022')).to eq(Date.parse('01/10/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Nov 2022')).to eq(Date.parse('01/11/2022'))
+        expect(Charts::Annotate.new(school: school).send(:date_for, '01 Dec 2022')).to eq(Date.parse('01/12/2022'))
+      end
     end
   end
 end
