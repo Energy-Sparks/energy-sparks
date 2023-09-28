@@ -97,4 +97,14 @@ namespace :utility do
       puts "#{meter.mpan_mprn}, #{meter.school.name}, #{elements.size}"
     end
   end
+
+  # https://github.com/rails/rails/issues/43906
+  desc 'Runs before rake assets:precompile'
+  task before_assets_precompile: :environment do
+    system('yarn')
+  end
+
+  # Every time you execute 'rake assets:precompile'
+  # run 'before_assets_precompile' first
+  Rake::Task['assets:precompile'].enhance ['before_assets_precompile']
 end

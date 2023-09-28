@@ -34,6 +34,9 @@ jobs:
       # Add or replace database setup steps here
       - name: Set up database schema
         run: bin/rails db:schema:load
+      # Run before assets precompile
+      - name: Before assets precompile
+        run: bin/rails utility:before_assets_precompile
       # Precompile assets
       - name: Precompile assets
         run: bundle exec rake assets:precompile
