@@ -171,4 +171,4 @@ group :test do
 end
 
 gem 'sprockets', '3.7.2'
-gem 'sass-rails', '5.1.0'
+gem 'sass-rails' #, '5.1.0'
