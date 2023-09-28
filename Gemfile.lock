@@ -143,6 +143,7 @@ GEM
     aws-sigv4 (1.6.0)
       aws-eventstream (~> 1, >= 1.0.2)
     backports (3.24.1)
+    base64 (0.1.1)
     bcrypt (3.1.19)
     benchmark-memory (0.1.2)
       memory_profiler (~> 0.9)
@@ -175,6 +176,7 @@ GEM
       jquery-rails (~> 4.2, >= 4.2.0)
       moment-timezone-rails (~> 1.0)
       momentjs-rails (>= 2.10.5, <= 3.0.0)
+    brakeman (5.4.1)
     builder (3.2.4)
     bullet (7.0.7)
       activesupport (>= 3.0.0)
@@ -359,9 +361,10 @@ GEM
       thor (>= 0.14, < 2.0)
     json (2.6.3)
     jwt (2.7.1)
-    listen (3.0.8)
-      rb-fsevent (~> 0.9, >= 0.9.4)
-      rb-inotify (~> 0.9, >= 0.9.7)
+    language_server-protocol (3.17.0.3)
+    listen (3.8.0)
+      rb-fsevent (~> 0.10, >= 0.10.3)
+      rb-inotify (~> 0.9, >= 0.9.10)
     lograge (0.13.0)
       actionpack (>= 4)
       activesupport (>= 4)
@@ -558,35 +561,44 @@ GEM
     rspec-mocks (3.12.6)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.12.0)
-    rspec-rails (5.1.2)
-      actionpack (>= 5.2)
-      activesupport (>= 5.2)
-      railties (>= 5.2)
-      rspec-core (~> 3.10)
-      rspec-expectations (~> 3.10)
-      rspec-mocks (~> 3.10)
-      rspec-support (~> 3.10)
+    rspec-rails (6.0.3)
+      actionpack (>= 6.1)
+      activesupport (>= 6.1)
+      railties (>= 6.1)
+      rspec-core (~> 3.12)
+      rspec-expectations (~> 3.12)
+      rspec-mocks (~> 3.12)
+      rspec-support (~> 3.12)
     rspec-support (3.12.1)
-    rubocop (0.93.1)
+    rubocop (1.56.4)
+      base64 (~> 0.1.1)
+      json (~> 2.3)
+      language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
-      parser (>= 2.7.1.5)
+      parser (>= 3.2.2.3)
       rainbow (>= 2.2.2, < 4.0)
-      regexp_parser (>= 1.8)
-      rexml
-      rubocop-ast (>= 0.6.0)
+      regexp_parser (>= 1.8, < 3.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.28.1, < 2.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 1.4.0, < 2.0)
+      unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.29.0)
       parser (>= 3.2.1.0)
-    rubocop-performance (1.8.0)
-      rubocop (>= 0.87.0)
-    rubocop-rails (2.9.1)
+    rubocop-capybara (2.19.0)
+      rubocop (~> 1.41)
+    rubocop-factory_bot (2.24.0)
+      rubocop (~> 1.33)
+    rubocop-performance (1.19.1)
+      rubocop (>= 1.7.0, < 2.0)
+      rubocop-ast (>= 0.4.0)
+    rubocop-rails (2.21.1)
       activesupport (>= 4.2.0)
       rack (>= 1.1)
-      rubocop (>= 0.90.0, < 2.0)
-    rubocop-rspec (1.44.1)
-      rubocop (~> 0.87)
-      rubocop-ast (>= 0.7.1)
+      rubocop (>= 1.33.0, < 2.0)
+    rubocop-rspec (2.24.1)
+      rubocop (~> 1.33)
+      rubocop-capybara (~> 2.17)
+      rubocop-factory_bot (~> 2.22)
     ruby-limiter (1.1.0)
     ruby-ole (1.2.12.2)
     ruby-prof (0.17.0)
@@ -656,7 +668,7 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    stateful_enum (0.6.0)
+    stateful_enum (0.7.0)
     strongtyping (2.0.7)
     structured_warnings (0.3.0)
     sys-uname (1.0.4)
@@ -684,7 +696,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.8.2)
-    unicode-display_width (1.8.0)
+    unicode-display_width (2.4.2)
     uniform_notifier (1.16.0)
     view_component (3.6.0)
       activesupport (>= 5.2.0, < 8.0)
@@ -738,6 +750,7 @@ DEPENDENCIES
   bootstrap (~> 4.3.0)
   bootstrap-email
   bootstrap4-datetime-picker-rails
+  brakeman
   bullet
   bundler-audit
   byebug
@@ -767,7 +780,7 @@ DEPENDENCIES
   image_processing (~> 1.12)
   jbuilder (~> 2.5)
   jquery-rails
-  listen (~> 3.0.5)
+  listen
   lograge
   mailgun_rails
   mobility (~> 1.2.9)
@@ -793,20 +806,21 @@ DEPENDENCIES
   roo
   roo-xls
   rspec-json_expectations
-  rspec-rails (~> 5.1.2)
-  rubocop (= 0.93.1)
-  rubocop-performance (= 1.8.0)
-  rubocop-rails (= 2.9.1)
+  rspec-rails
+  rubocop
+  rubocop-performance
+  rubocop-rails
   rubocop-rspec
   sass-rails (= 5.1.0)
   scout_apm
+  selenium-webdriver
   shoulda-matchers
   show_me_the_cookies
   simple_form
   simplecov
   sitemap_generator
   sprockets (= 3.7.2)
-  stateful_enum (= 0.6.0)
+  stateful_enum
   statsample!
   terminal-notifier
   terminal-notifier-guard

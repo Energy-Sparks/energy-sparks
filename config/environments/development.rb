@@ -74,7 +74,7 @@ Rails.application.configure do
   config.log_level = :debug
 
   # Raises error for missing translations
-  config.action_view.raise_on_missing_translations = true
+  config.i18n.raise_on_missing_translations = true
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
@@ -102,12 +102,12 @@ Rails.application.configure do
   # This adds a 'mirror' locale that turns all translated text upside down so we can visually check for any
   # untranslated text in the erb templates.
   config.i18n.available_locales << :mirror
-  I18n::Backend::Simple.include(I18n::Backend::Mirror)
+  # I18n::Backend::Simple.include(I18n::Backend::Mirror)
 
   # Add these to your /etc/hosts file
   config.hosts << "energysparks.development"
   config.hosts << "cy.energysparks.development"
-  config.hosts << "mirror.energysparks.development"
+  # config.hosts << "mirror.energysparks.development"
 
   # View components - Always place view in a sidecar directory when using the generator
   config.view_component.generate.sidecar = true

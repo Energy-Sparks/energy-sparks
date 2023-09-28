@@ -97,7 +97,7 @@ gem 'MailchimpMarketing'
 gem 'eventbrite_sdk'
 
 gem 'wisper', '2.0.0'
-gem 'stateful_enum', '0.6.0'
+gem 'stateful_enum'#, '0.6.0'
 gem 'cocoon'
 
 # Internationalisation
@@ -119,7 +119,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem "bullet", require: false # use bullet to optimise queries
-  gem 'rspec-rails', '~> 5.1.2'
+  gem 'rspec-rails' #, '~> 5.1.2'
   gem 'rspec-json_expectations'
   gem 'rails-controller-testing'
   gem "fakefs", require: "fakefs/safe"
@@ -131,9 +131,9 @@ group :development, :test do
   gem 'terminal-notifier', require: false
   gem 'terminal-notifier-guard', require: false
   gem 'rb-readline', require: false
-  gem 'rubocop', '0.93.1'
-  gem 'rubocop-rails', '2.9.1'
-  gem 'rubocop-performance', '1.8.0'
+  gem 'rubocop' #, '0.93.1'
+  gem 'rubocop-rails' #, '2.9.1'
+  gem 'rubocop-performance' #, '1.8.0'
   gem 'rubocop-rspec'
   gem 'wisper-rspec', require: false
 end
@@ -141,7 +141,7 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console'
-  gem 'listen', '~> 3.0.5'
+  gem 'listen' #, '~> 3.0.5'
   gem 'better_errors'
   gem "binding_of_caller"
   gem 'annotate'
@@ -150,7 +150,7 @@ group :development do
   gem 'overcommit'
   gem 'fasterer'
   gem 'bundler-audit'
-  # gem 'brakeman'
+  gem 'brakeman'
   gem 'scout_apm'
 #  gem 'rack-mini-profiler'
 #  gem 'memory_profiler'
@@ -161,7 +161,7 @@ group :test do
   gem 'test-prof'
   gem 'capybara'
   gem 'capybara-email'
-  # gem 'selenium-webdriver'
+  gem 'selenium-webdriver'
   gem 'database_cleaner'
   gem "webdrivers", '>= 5.3.0'
   gem 'simplecov', :require => false, :group => :test
