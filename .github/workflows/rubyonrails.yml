@@ -36,7 +36,7 @@ jobs:
         run: bin/rails db:schema:load
       # Run before assets precompile
       - name: Before assets precompile
-        run: bin/rails utility:before_assets_precompile
+        run: bundle exec rake utility:before_assets_precompile
       # Precompile assets
       - name: Precompile assets
         run: bundle exec rake assets:precompile
@@ -77,7 +77,7 @@ jobs:
         run: bin/rails db:schema:load
       # Run before assets precompile
       - name: Before assets precompile
-        run: bin/rails utility:before_assets_precompile
+        run: bundle exec rake utility:before_assets_precompile
       # Precompile assets
       - name: Precompile assets
         run: bundle exec rake assets:precompile
