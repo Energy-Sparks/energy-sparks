@@ -20,7 +20,6 @@ gem 'after_party' # load data after deploy
 gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
 gem 'pg_search'
-gem 'calculate_in_group'
 
 # Dashboard analytics
 gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '3.0.3'

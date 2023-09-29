@@ -1,7 +1,5 @@
 module Schools
   class ReportingStatisticsService
-    RANGES = [0..10, 11..20, 21..30, 31..40, 41..50, 51..60, 61..70, 71..80, 81..90, 91..100].freeze
-
     def school_types
       @school_types ||= School.visible.group(:school_type).count
     end
