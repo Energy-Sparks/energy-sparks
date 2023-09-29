@@ -51,12 +51,12 @@ describe Charts::Annotate do
       let!(:intervention_observation_multi_fuel) { create(:observation, :intervention, school: school, at: Date.new(2018, 6, 24), intervention_type: multi_fuel_intervention) }
       let!(:activity_observation_multi_fuel) { create(:observation, :activity, school: school, at: Date.new(2018, 7, 8), activity: activity_multi_fuel) }
 
-      context 'is set true' do
-        before do
-          multi_fuel_intervention.update(show_on_charts: true)
-          activity_type_multi_fuel.update(show_on_charts: true)
-        end
+      after do
+        multi_fuel_intervention.update(show_on_charts: true)
+        activity_type_multi_fuel.update(show_on_charts: true)
+      end
 
+      context 'is set true' do
         it 'returns annotations that match the date ranges' do
           expect(subject_multi_fuel.annotate_weekly(x_axis_categories)).to eq(
             [
