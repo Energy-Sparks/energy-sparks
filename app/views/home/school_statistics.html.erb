@@ -1,4 +1,5 @@
 <% content_for :page_title, t('school_statistics.page_title') %>
+
 <div class="application container">
   <div class="row pt-4">
     <div class="col">
@@ -6,7 +7,7 @@
       <p><%= t('school_statistics.introduction') %>.</p>
     </div>
   </div>
-
+  <%= render 'school_statistics_nav' %>
   <div class="row">
     <div class="col-6">
       <%= render 'onboarding_status', report: @report %>
