@@ -763,6 +763,8 @@ describe Charts::Annotate do
   end
 
   describe '#date_for' do
+    after { I18n.locale = 'en' }
+
     context 'in Welsh' do
       it 'returns a date from a date string formatted "%d %b %Y" irrespective of locale' do
         I18n.locale = 'cy'
