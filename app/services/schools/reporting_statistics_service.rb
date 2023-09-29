@@ -7,7 +7,7 @@ module Schools
     end
 
     def free_school_meals
-      @free_school_meals ||= School.visible.calculate_in_group(:count, :percentage_free_school_meals, RANGES, { include_nil: 'unknown' })
+      @free_school_meals ||= find_free_school_meal_percentage_counts
     end
 
     def country_summary
@@ -29,12 +29,23 @@ module Schools
 
     private
 
+    def find_free_school_meal_percentage_counts
+      sql = <<-SQL.squish
+        SELECT floor((schools.percentage_free_school_meals + 9) / 10) * 10 AS percentage_range_end, count(*)
+        FROM schools
+        WHERE schools.active = true AND schools.visible = true
+        GROUP BY floor((schools.percentage_free_school_meals + 9) / 10) * 10
+        ORDER BY floor((schools.percentage_free_school_meals + 9) / 10) * 10;
+      SQL
+      ActiveRecord::Base.connection.execute(ActiveRecord::Base.sanitize_sql(sql))
+    end
+
     def find_country_summary_counts
       sql = <<-SQL.squish
-        select country, count(distinct(schools.id)) as school_count, sum(schools.number_of_pupils) as pupil_count
-        from schools
-        WHERE schools.active = true and schools.visible = true
-        group by schools.country;
+        SELECT country, count(distinct(schools.id)) AS school_count, sum(schools.number_of_pupils) AS pupil_count
+        FROM schools
+        WHERE schools.active = true AND schools.visible = true
+        GROUP BY schools.country;
       SQL
       ActiveRecord::Base.connection.execute(ActiveRecord::Base.sanitize_sql(sql))
     end
