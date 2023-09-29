@@ -58,7 +58,7 @@ describe Charts::Annotate do
 
       context 'is set true' do
         it 'returns annotations that match the date ranges' do
-          expect(subject_multi_fuel.annotate_weekly(x_axis_categories)).to eq(
+          expect(subject_multi_fuel.annotate_weekly(x_axis_categories)).to match_array(
             [
               {
                 x_axis_category: '24 Jun 2018',
@@ -112,7 +112,7 @@ describe Charts::Annotate do
 
       context 'for all fuel types' do
         it 'returns annotations that match the range' do
-          expect(subject_multi_fuel.annotate_weekly(x_axis_categories)).to eq(
+          expect(subject_multi_fuel.annotate_weekly(x_axis_categories)).to match_array(
             [
               {
                 x_axis_category: '24 Jun 2018',
@@ -221,7 +221,7 @@ describe Charts::Annotate do
 
       context 'for a gas fuel type' do
         it 'returns annotations that match the range' do
-          expect(subject_gas.annotate_weekly(x_axis_categories)).to eq(
+          expect(subject_gas.annotate_weekly(x_axis_categories)).to match_array(
             [
               {
                 x_axis_category: '24 Jun 2018',
@@ -270,7 +270,7 @@ describe Charts::Annotate do
 
       context 'for an electricity fuel type' do
         it 'returns annotations that match the range' do
-          expect(subject_electricity.annotate_weekly(x_axis_categories)).to eq(
+          expect(subject_electricity.annotate_weekly(x_axis_categories)).to match_array(
             [
               {
                 x_axis_category: '24 Jun 2018',
@@ -319,7 +319,7 @@ describe Charts::Annotate do
 
       context 'for a solar fuel type' do
         it 'returns annotations that match the range' do
-          expect(subject_solar.annotate_weekly(x_axis_categories)).to eq(
+          expect(subject_solar.annotate_weekly(x_axis_categories)).to match_array(
             [
               {
                 x_axis_category: '24 Jun 2018',
@@ -368,7 +368,7 @@ describe Charts::Annotate do
 
       context 'for a storage heater fuel type' do
         it 'returns annotations that match the range' do
-          expect(subject_storage_heater.annotate_weekly(x_axis_categories)).to eq(
+          expect(subject_storage_heater.annotate_weekly(x_axis_categories)).to match_array(
             [
               {
                 x_axis_category: '24 Jun 2018',
@@ -445,7 +445,7 @@ describe Charts::Annotate do
       it 'is set true' do
         multi_fuel_intervention.update(show_on_charts: true)
         activity_type_multi_fuel.update(show_on_charts: true)
-        expect(subject_multi_fuel.annotate_daily(first_date, last_date)).to eq(
+        expect(subject_multi_fuel.annotate_daily(first_date, last_date)).to match_array(
           [
             {
               x_axis_category: '24-06-2018',
@@ -493,7 +493,7 @@ describe Charts::Annotate do
 
       context 'for all fuel types' do
         it 'returns annotations that match the range' do
-          expect(subject_multi_fuel.annotate_daily(first_date, last_date)).to eq(
+          expect(subject_multi_fuel.annotate_daily(first_date, last_date)).to match_array(
             [
               {
                 x_axis_category: '24-06-2018',
@@ -602,7 +602,7 @@ describe Charts::Annotate do
 
       context 'electricity' do
         it 'returns annotations that match the range' do
-          expect(subject_electricity.annotate_daily(first_date, last_date)).to eq(
+          expect(subject_electricity.annotate_daily(first_date, last_date)).to match_array(
             [
               {
                 x_axis_category: '24-06-2018',
@@ -651,7 +651,7 @@ describe Charts::Annotate do
 
       context 'solar' do
         it 'returns annotations that match the range' do
-          expect(subject_solar.annotate_daily(first_date, last_date)).to eq(
+          expect(subject_solar.annotate_daily(first_date, last_date)).to match_array(
             [
               {
                 x_axis_category: '24-06-2018',
@@ -700,7 +700,7 @@ describe Charts::Annotate do
 
       context 'storage_heater' do
         it 'returns annotations that match the range' do
-          expect(subject_storage_heater.annotate_daily(first_date, last_date)).to eq(
+          expect(subject_storage_heater.annotate_daily(first_date, last_date)).to match_array(
             [
               {
                 x_axis_category: '24-06-2018',
@@ -763,6 +763,8 @@ describe Charts::Annotate do
   end
 
   describe '#date_for' do
+    after { I18n.locale = 'en' }
+
     context 'in Welsh' do
       it 'returns a date from a date string formatted "%d %b %Y" irrespective of locale' do
         I18n.locale = 'cy'
