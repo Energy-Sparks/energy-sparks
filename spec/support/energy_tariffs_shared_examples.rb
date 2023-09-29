@@ -118,9 +118,9 @@ RSpec.shared_examples "the user can create a tariff" do
     #Add price
     find("#prices-section-edit").click
 
-    fill_in "energy_tariff_price[value]", with: '1.5'
+    fill_in "energy_tariff_price[value]", with: '0.15'
     click_button('Continue')
-    expect(page).to have_content('£1.50 per kWh')
+    expect(page).to have_content('£0.15 per kWh')
 
     #Add charges
     find("#charges-section-edit").click
@@ -145,7 +145,7 @@ RSpec.shared_examples "the user can create a tariff" do
     energy_tariff_price = energy_tariff.energy_tariff_prices.first
     expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:00')
     expect(energy_tariff_price.end_time.to_s(:time)).to eq('23:30')
-    expect(energy_tariff_price.value).to eq(1.5)
+    expect(energy_tariff_price.value).to eq(0.15)
     expect(energy_tariff_price.units).to eq('kwh')
 
     expect(energy_tariff.value_for_charge(:standing_charge)).to eq('1.11')
@@ -155,11 +155,11 @@ end
 RSpec.shared_examples "the user can edit the tariff" do
   it 'allows me to edit price' do
     find("#prices-section-edit").click
-    expect(page).to have_field('energy_tariff_price[value]', with: '1.0')
+    expect(page).to have_field('energy_tariff_price[value]', with: '0.1')
 
-    fill_in "energy_tariff_price[value]", with: '1.5'
+    fill_in "energy_tariff_price[value]", with: '0.15'
     click_button('Continue')
-    expect(page).to have_content('£1.50 per kWh')
+    expect(page).to have_content('£0.15 per kWh')
     expect(page).to_not have_content(I18n.t('schools.user_tariffs.show.not_usable'))
   end
 
@@ -212,15 +212,15 @@ RSpec.shared_examples "the user can change the type of tariff" do
     find("#prices-section-edit").click
     expect(energy_tariff.energy_tariff_prices.count).to eq(2)
     find("#energy-tariff-show-button-#{energy_tariff.energy_tariff_prices.first.id}").click
-    fill_in 'Rate in £/kWh', with: '1.5'
+    fill_in 'Rate in £/kWh', with: '0.5'
     click_button('Save')
     find("#energy-tariff-show-button-#{energy_tariff.energy_tariff_prices.last.id}").click
-    fill_in 'Rate in £/kWh', with: '2.5'
+    fill_in 'Rate in £/kWh', with: '0.25'
     click_button('Save')
     click_link(energy_tariff.name)
     expect(page).to have_content('Differential tariff')
-    expect(page).to have_content('£1.50 per kWh')
-    expect(page).to have_content('£2.50 per kWh')
+    expect(page).to have_content('£0.50 per kWh')
+    expect(page).to have_content('£0.25 per kWh')
 
     # Selecting the existing tariff type should retain all energy tariff prices
     find('#tariff-type-section-edit').click()
@@ -228,8 +228,8 @@ RSpec.shared_examples "the user can change the type of tariff" do
     click_button('Differential tariff')
     expect(energy_tariff.reload.energy_tariff_prices.count).to eq(2)
     expect(page).to have_content('Differential tariff')
-    expect(page).to have_content('£1.50 per kWh')
-    expect(page).to have_content('£2.50 per kWh')
+    expect(page).to have_content('£0.50 per kWh')
+    expect(page).to have_content('£0.25 per kWh')
 
     # Switching tariff types should delete all energy tariff prices associated with the previous tariff type
     find('#tariff-type-section-edit').click()
@@ -239,17 +239,17 @@ RSpec.shared_examples "the user can change the type of tariff" do
 
     # Add some flat rate consumption charges
     find("#prices-section-edit").click
-    fill_in "energy_tariff_price[value]", with: '1.5'
+    fill_in "energy_tariff_price[value]", with: '0.15'
     click_button('Continue')
     expect(energy_tariff.reload.energy_tariff_prices.count).to eq(1)
-    expect(page).to have_content('£1.50 per kWh')
+    expect(page).to have_content('£0.15 per kWh')
 
     # Selecting the existing tariff type should retain all energy tariff prices
     find('#tariff-type-section-edit').click()
     click_button('Flat rate tariff')
     expect(page).to have_content('Flat rate tariff')
     expect(energy_tariff.reload.energy_tariff_prices.count).to eq(1)
-    expect(page).to have_content('£1.50 per kWh')
+    expect(page).to have_content('£0.15 per kWh')
   end
 end
 

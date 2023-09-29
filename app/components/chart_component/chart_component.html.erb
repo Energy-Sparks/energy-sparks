@@ -13,7 +13,7 @@
     <%= header %>
 
     <%= render 'shared/analysis_controls', chart_type: chart_type, axis_controls: axis_controls, analysis_controls: analysis_controls %>
-    <%= chart_tag(school, chart_type, no_zoom: no_zoom, wrap: false, html_class: html_class, chart_config: chart_config) %>
+    <%= chart_tag(school, chart_type, no_zoom: no_zoom, wrap: false, html_class: html_class, chart_config: chart_config, fuel_type: fuel_type) %>
   </div>
 
   <%= footer %>

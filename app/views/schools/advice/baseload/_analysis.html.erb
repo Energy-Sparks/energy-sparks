@@ -28,7 +28,7 @@
 
   <p><%= t('advice_pages.baseload.analysis.usage_percent_html', percent: format_unit(@baseload_usage.percent, :percent)) %></p>
 
-  <%= component 'chart', chart_type: :baseload_lastyear, school: @school do |c| %>
+  <%= component 'chart', chart_type: :baseload_lastyear, school: @school, fuel_type: @advice_page.fuel_type do |c| %>
     <% c.with_title { t('advice_pages.baseload.analysis.charts.baseload_chart_title', months_analysed: @analysis_dates.months_analysed) } %>
     <% c.with_subtitle { t('advice_pages.baseload.analysis.charts.baseload_chart_subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
     <% c.with_footer do %>

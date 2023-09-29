@@ -1,5 +1,5 @@
 module ChartHelper
-  def chart_tag(school, chart_type, wrap: true, show_advice: false, no_zoom: false, chart_config: {}, html_class: 'analysis-chart', autoload_chart: true)
+  def chart_tag(school, chart_type, wrap: true, show_advice: false, no_zoom: false, chart_config: {}, html_class: 'analysis-chart', autoload_chart: true, fuel_type: nil)
     chart_config[:no_advice] = !show_advice
     chart_config[:no_zoom] = no_zoom
     chart_container = content_tag(
@@ -11,7 +11,7 @@ module ChartHelper
         autoload_chart: autoload_chart,
         chart_config: chart_config.merge(
           type: chart_type,
-          annotations: school_annotations_path(school),
+          annotations: fuel_type ? school_annotations_path(school, fuel_type: fuel_type) : [],
           jsonUrl: school_chart_path(school, format: :json),
           transformations: []
         )
