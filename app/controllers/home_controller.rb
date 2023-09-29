@@ -120,7 +120,7 @@ class HomeController < ApplicationController
   end
 
   def school_statistics
-    @report = Schools::ReportingStatisticsService.new
+    @report = find_school_statistics
   end
 
   def school_statistics_key_data
@@ -134,6 +134,10 @@ class HomeController < ApplicationController
   end
 
   private
+
+  def find_school_statistics
+    Schools::ReportingStatisticsService.new
+  end
 
   def videos
     [

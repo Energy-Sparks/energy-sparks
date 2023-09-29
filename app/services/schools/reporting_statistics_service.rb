@@ -49,7 +49,16 @@ module Schools
     end
 
     def incomplete_onboardings
-      SchoolOnboarding.all.count(&:incomplete?)
+      sql = <<~SQL.squish
+        SELECT COUNT(distinct(school_onboarding_id))
+        FROM school_onboarding_events
+        WHERE school_onboarding_id NOT IN (
+          SELECT school_onboarding_id
+          FROM school_onboarding_events
+          WHERE event = #{SchoolOnboardingEvent.events['onboarding_complete']}
+        );
+      SQL
+      ActiveRecord::Base.connection.execute(ActiveRecord::Base.sanitize_sql(sql)).first['count']
     end
   end
 end
