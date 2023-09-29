@@ -1,9 +1,8 @@
 module Charts
   class Annotate
-    ANNOTATABLE_OBSERVATION_TYPES = %w[activity intervention].freeze
-
-    def initialize(school)
+    def initialize(school:, fuel_types: FuelTypeable::VALID_FUEL_TYPES)
       @school = school
+      @fuel_types = fuel_types
     end
 
     def annotate_weekly(x_axis_categories)
@@ -27,9 +26,33 @@ module Charts
     end
 
     def relevant_observations_for(start_date, end_date)
-      @school.observations
-             .where(observation_type: ANNOTATABLE_OBSERVATION_TYPES)
-             .where('at BETWEEN ? AND ?', start_date, end_date)
+      Observation.find_by_sql(observation_query_for(start_date, end_date))
+    end
+
+    def observation_query_for(start_date, end_date)
+      <<~SQL.squish
+        SELECT observations.*
+        FROM   observations
+               INNER JOIN intervention_types
+                       ON intervention_types.id = observations.intervention_type_id
+        WHERE  observation_type = #{Observation.observation_types['intervention']}
+               AND intervention_types.show_on_charts = true
+               AND intervention_types.fuel_type && '{#{@fuel_types.join(',')}}'
+               AND ( observations.at BETWEEN '#{start_date}' AND '#{end_date}' )
+               AND observations.school_id = #{@school.id}
+        UNION ALL
+        SELECT observations.*
+        FROM   observations
+               INNER JOIN activities
+                       ON activities.id = observations.activity_id
+               INNER JOIN activity_types
+                       ON activity_types.id = activities.activity_type_id
+        WHERE  observation_type = #{Observation.observation_types['activity']}
+               AND activity_types.show_on_charts = true
+               AND activity_types.fuel_type && '{#{@fuel_types.join(',')}}'
+               AND ( observations.at BETWEEN '#{start_date}' AND '#{end_date}' )
+               AND observations.school_id = #{@school.id}
+      SQL
     end
 
     def weekly_relevant_observations_for(x_axis_categories, date_categories)
