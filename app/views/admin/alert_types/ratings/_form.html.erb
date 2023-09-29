@@ -60,18 +60,4 @@
       <%= content.rich_text_area t_field(:management_priorities_title, locale) %>
     <% end %>
   <% end %>
-
-  <%= render 'content_section', form: form, field: :find_out_more_active, field_name: 'Find out more' do %>
-    <%= render 'admin/shared/preview_section', content: content, scope: 'find_out_more', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :find_out_more) do %>
-      <%= content.input :find_out_more_table_variable, as: :radio_buttons, collection: @available_tables %>
-      <%= content.input :find_out_more_chart_variable, as: :radio_buttons, collection: @available_charts %>
-      <%= content.input :find_out_more_chart_title %>
-      <%= content.input :find_out_more_title, hint: 'Main title at top of Find Out More Page' %>
-
-      <%= content.label 'Find out more content', for: :find_out_more_content %>
-      <%= content.rich_text_area :find_out_more_content %>
-      <p class="small text-muted">'Main body copy for Find Out More Page'</p>
-    <% end %>
-  <% end %>
-
 <% end %>

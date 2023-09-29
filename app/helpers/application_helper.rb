@@ -459,14 +459,6 @@ module ApplicationHelper
     render(component.new(*args, **kwargs), &block)
   end
 
-  def school_advice_link(school)
-    replace_analysis_pages? ? school_advice_path(school) : school_analysis_index_path(school)
-  end
-
-  def replace_analysis_pages?
-    EnergySparks::FeatureFlags.active?(:replace_analysis_pages)
-  end
-
   def school_name_group(school)
     if school.school_group
       "#{school.name} (#{school.school_group.name})"

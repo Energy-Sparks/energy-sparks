@@ -3,6 +3,7 @@ require 'rails_helper'
 describe Alerts::GenerateEmailNotifications do
   let(:school)               { create(:school) }
   let(:alert_generation_run) { create(:alert_generation_run, school: school) }
+  let(:alert_type)           { create(:alert_type, advice_page: create(:advice_page, key: :baseload))}
   let(:alert_1)              { create(:alert, school: school, alert_generation_run: alert_generation_run) }
   let(:alert_2)              { create(:alert, school: school, alert_generation_run: alert_generation_run) }
   let!(:school_admin)        { create(:school_admin, school: school) }
@@ -20,7 +21,7 @@ describe Alerts::GenerateEmailNotifications do
   let(:alert_subscription_event_2) { AlertSubscriptionEvent.find_by!(content_version: content_version_2) }
 
   around do |example|
-    ClimateControl.modify SEND_AUTOMATED_EMAILS: 'true', FEATURE_FLAG_REPLACE_FIND_OUT_MORES: 'false' do
+    ClimateControl.modify SEND_AUTOMATED_EMAILS: 'true' do
       example.run
     end
   end
@@ -170,6 +171,8 @@ describe Alerts::GenerateEmailNotifications do
   end
 
   context 'when generating email content' do
+    let(:alert_1)              { create(:alert, school: school, alert_type: alert_type, alert_generation_run: alert_generation_run) }
+
     before(:each) do
       alert_type_rating_1.update!(find_out_more_active: true)
       Alerts::GenerateContent.new(school).perform
