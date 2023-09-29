@@ -21,10 +21,6 @@ module Schools
       }
     end
 
-    def school_groups
-      @school_groups ||= SchoolGroup.with_active_schools.is_public.order(:name)
-    end
-
     private
 
     def find_free_school_meal_percentage_counts

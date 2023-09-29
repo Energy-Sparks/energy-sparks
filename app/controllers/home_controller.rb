@@ -123,6 +123,10 @@ class HomeController < ApplicationController
     @report = Schools::ReportingStatisticsService.new
   end
 
+  def school_statistics_key_data
+    @school_groups = SchoolGroup.with_active_schools.is_public.order(:name)
+  end
+
   def team
     @staff = TeamMember.staff.order(:position)
     @consultants = TeamMember.consultant.order(:position)
