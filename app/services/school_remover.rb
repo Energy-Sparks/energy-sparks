@@ -1,8 +1,9 @@
 class SchoolRemover
   class Error < StandardError; end
 
-  def initialize(school)
+  def initialize(school, archive: false)
     @school = school
+    @archive = archive
   end
 
   def school_ready?
@@ -24,7 +25,14 @@ class SchoolRemover
   def remove_school!
     raise SchoolRemover::Error.new('Cannot remove school while it is still visible') if @school.visible?
     @school.transaction do
-      @school.update(active: false, process_data: false, removal_date: Time.zone.today)
+      @school.update(active: false, process_data: false, removal_date: removal_date)
+    end
+  end
+
+  def reenable_school!
+    raise SchoolRemover::Error.new('Cannot reenable an active school') if @school.active?
+    @school.transaction do
+      @school.update(active: true, removal_date: nil)
     end
   end
 
@@ -35,6 +43,7 @@ class SchoolRemover
         if user.has_other_schools?
           user.remove_school(@school)
         else
+          user.contacts.for_school(@school).first&.destroy unless @archive
           user.lock_access!(send_instructions: false)
         end
       end
@@ -51,6 +60,10 @@ class SchoolRemover
   end
 
   private
+
+  def removal_date
+    @archive ? nil : Time.zone.today
+  end
 
   def remove_meter(meter)
     service = MeterManagement.new(meter)
