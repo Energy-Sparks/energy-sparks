@@ -98,8 +98,8 @@ describe SchoolRemover, :schools, type: :service do
       it 'removes the validated data' do
         expect(AmrValidatedReading.count).to eq 0
       end
-      it 'dissociates the unvalidated data' do
-        expect(AmrDataFeedReading.first.meter).to be_nil
+      it 'does not unlink the unvalidated data' do
+        expect(AmrDataFeedReading.first.meter).to_not be_nil
       end
     end
   end

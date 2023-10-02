@@ -68,6 +68,6 @@ class SchoolRemover
   def remove_meter(meter)
     service = MeterManagement.new(meter)
     service.deactivate_meter!
-    service.remove_data!
+    service.remove_data!(archive: @archive)
   end
 end
