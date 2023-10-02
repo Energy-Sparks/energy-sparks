@@ -5,6 +5,7 @@
 #  created_at  :datetime         not null
 #  description :string
 #  featured    :boolean          default(FALSE)
+#  icon        :string           default("clipboard-check")
 #  id          :bigint(8)        not null, primary key
 #  live_data   :boolean          default(FALSE)
 #  name        :string

@@ -28,18 +28,9 @@ module SchoolsHelper
   #Switches between linking to the old find out more pages and the
   #new advice pages.
   def find_out_more_path_from_alert_content(school, alert_content, params: {}, mailer: false)
-    if EnergySparks::FeatureFlags.active?(:replace_find_out_mores)
-      alert_type = alert_content.alert.alert_type
-      return nil unless alert_type.advice_page.present?
-      advice_page_path_from_alert_type(school, alert_type, params: params, mailer: mailer)
-    else
-      return nil unless alert_content.find_out_more.present?
-      if mailer
-        school_find_out_more_url(school, alert_content.find_out_more, params: params)
-      else
-        school_find_out_more_path(school, alert_content.find_out_more, params: params)
-      end
-    end
+    alert_type = alert_content.alert.alert_type
+    return nil unless alert_type.advice_page.present?
+    advice_page_path_from_alert_type(school, alert_type, params: params, mailer: mailer)
   end
 
   def advice_page_path_from_alert_type(school, alert_type, params: {}, mailer: false)

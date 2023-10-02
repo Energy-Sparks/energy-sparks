@@ -28,6 +28,8 @@ RSpec.describe "onboarding", :schools, type: :system do
     )
   end
 
+  let(:last_email) { ActionMailer::Base.deliveries.last }
+
   context 'as an admin' do
     let!(:other_template_calendar)  { create(:regional_calendar, :with_terms, title: 'Oxford calendar') }
 
@@ -84,9 +86,8 @@ RSpec.describe "onboarding", :schools, type: :system do
       click_on 'Manage school onboarding'
       click_on 'Send reminder email'
 
-      email = ActionMailer::Base.deliveries.last
-      expect(email.subject).to include("Don't forget to set up your school on Energy Sparks")
-      expect(email.body.to_s).to include(onboarding_path(onboarding))
+      expect(last_email.subject).to include("Don't forget to set up your school on Energy Sparks")
+      expect(last_email.body.to_s).to include(onboarding_path(onboarding))
     end
 
     it 'allows editing of an onboarding setup' do
@@ -194,34 +195,43 @@ RSpec.describe "onboarding", :schools, type: :system do
       expect(page.source).to have_content 'Manual school'
     end
 
-    it 'I can amend the email address if the user has not responded' do
-      onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
-      click_on 'Manage school onboarding'
-      expect(onboarding.has_only_sent_email_or_reminder?).to be true
-
-      click_on 'Change'
-      expect(page).to have_content('Change email address')
-
-      fill_in(:school_onboarding_contact_email, with: '')
-      click_on 'Save'
-
-      expect(page).to have_content('Change email address')
-
-      new_email_address = 'oof@youareawful.com'
-      fill_in(:school_onboarding_contact_email, with: new_email_address)
-
-      click_on 'Save'
-
-      expect(page).to have_content(new_email_address)
-
-      email = ActionMailer::Base.deliveries.last
-      expect(email.to).to include(new_email_address)
-
-      onboarding.reload
-
-      expect(onboarding.has_only_sent_email_or_reminder?).to be true
-
-      expect(onboarding.contact_email).to eq new_email_address
+    context "amending the contact email address when user has not responded" do
+      let!(:onboarding) { create :school_onboarding, :with_events, event_names: [:email_sent] }
+      let(:email_address) { }
+      let(:email_sent_events_count) { onboarding.events.where(event: :email_sent).count }
+      it { expect(email_sent_events_count).to eql(1) }
+      before do
+        click_on 'Manage school onboarding'
+        click_on 'Change email address' # link name is hidden in title of email icon
+        fill_in(:school_onboarding_contact_email, with: email_address)
+        click_on 'Save'
+      end
+      context "to a blank email address" do
+        let(:email_address) { '' }
+        it "doesn't save" do
+          expect(page).to have_content("Contact email *\ncan't be blank")
+          expect(page).to have_content('Change email address')
+        end
+      end
+      context "to a different email address" do
+        let(:email_address) { 'different_address@email.com' }
+        it "saves" do
+          expect(page).to have_content('School onboardings in progress')
+          expect(page).to have_content(email_address)
+        end
+        it "sends email" do
+          expect(last_email.to).to include(email_address)
+        end
+        it "logs event" do
+          expect(email_sent_events_count).to eql(2)
+        end
+        it "updates onboarding record" do
+          expect(onboarding.reload.contact_email).to eq email_address
+        end
+        it "doesn't log event types other than email or reminder" do
+          expect(onboarding.has_only_sent_email_or_reminder?).to be true
+        end
+      end
     end
 
     it 'shows links to groups' do

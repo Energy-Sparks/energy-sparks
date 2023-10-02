@@ -10,7 +10,7 @@ gem 'rack-canonical-host' # Redirect www to root
 gem 'webpacker'
 gem "image_processing", "~> 1.12"
 
-gem 'puma', '5.6.4' # Use Puma as the app server
+gem 'puma', '6.4.0' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
 
@@ -23,8 +23,8 @@ gem 'pg_search'
 gem 'calculate_in_group'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '3.0.3'
-#gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'additional-tariff-code-tests-and-refactoring'
+gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '4.0.0'
+#gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'clean-up-advice-classes'
 #gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -102,7 +102,7 @@ gem 'cocoon'
 
 # Internationalisation
 gem 'i18n-tasks', '~> 1.0.10'
-gem 'mobility', '~> 1.2.6'
+gem 'mobility', '~> 1.2.9'
 gem 'mobility-actiontext', '~> 1.1.1'
 
 # Background jobs
@@ -167,6 +167,7 @@ group :test do
   gem 'simplecov', :require => false, :group => :test
   gem 'shoulda-matchers'
   gem 'timecop'
+  gem "show_me_the_cookies"
 end
 
 gem 'sprockets', '3.7.2'

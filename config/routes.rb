@@ -202,13 +202,6 @@ Rails.application.routes.draw do
 
     scope module: :schools do
 
-      [
-        :main_dashboard_electric, :main_dashboard_gas, :electricity_detail, :gas_detail, :main_dashboard_electric_and_gas,
-        :boiler_control, :heating_model_fitting, :storage_heaters, :solar_pv, :carbon_emissions, :test, :cost
-      ].each do |tab|
-        get "/#{tab}", to: redirect("/schools/%{school_id}/analysis")
-      end
-
       resource :advice, controller: 'advice', only: [:show] do
         [:total_energy_use,
          :baseload,
@@ -388,8 +381,6 @@ Rails.application.routes.draw do
   concern :messageable do
     resource :dashboard_message, only: [:update, :edit, :destroy], controller: '/admin/dashboard_messages'
   end
-
-
 
   namespace :admin do
     concerns :issueable

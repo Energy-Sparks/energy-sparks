@@ -1,0 +1,17 @@
+<% if @programmes_to_prompt.present? %>
+  <% @programmes_to_prompt.each do |programme| %>
+    <%= component 'info_bar',
+        status: :neutral,
+        title: Programmes::Progress.new(programme).notification_text,
+        icon: fa_icon('fas fa-tasks fa-3x'),
+        buttons: { I18n.t('schools.programme.progress.view_now') => programme_type_path(programme.programme_type) }
+    %>
+  <% end %>
+<% else %>
+  <%= component 'info_bar',
+      status: :positive,
+      title: I18n.t('schools.programme.progress.choose_a_new_programme_message'),
+      icon: fa_icon('fas fa-tasks fa-3x'),
+      buttons: { I18n.t('schools.programme.progress.start_a_new_programme') => programme_types_path }
+  %>
+<% end %>
