@@ -64,6 +64,11 @@ class SchoolOnboarding < ApplicationRecord
   scope :incomplete, ->(parent = nil) { where.not(id: parent ? parent.school_onboardings.complete : complete) }
   scope :for_school_type, ->(school_type) { joins(:school).where(schools: { school_type: school_type }) }
 
+  scope :email_sent_over_a_week_ago, -> { joins(:events).where(school_onboarding_events: { event: SchoolOnboardingEvent.events[:email_sent], created_at: ..1.week.ago }) }
+  scope :reminder_not_sent_yet, -> { joins(:events).where.not(school_onboarding_events: { event: SchoolOnboardingEvent.events[:reminder_sent] }) }
+  scope :reminder_sent_over_a_week_ago, -> { joins(:events).where(school_onboarding_events: { event: SchoolOnboardingEvent.events[:reminder_sent], created_at: ..1.week.ago }) }
+  scope :reminder_due, -> { incomplete.email_sent_over_a_week_ago.reminder_not_sent_yet.or(incomplete.reminder_sent_over_a_week_ago) }
+
   enum default_chart_preference: [:default, :carbon, :usage, :cost]
   enum country: School.countries
 
