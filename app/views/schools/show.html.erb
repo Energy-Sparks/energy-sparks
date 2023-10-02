@@ -13,7 +13,9 @@
   </div>
 <% end %>
 
+<% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
 <%= render('schools/prompt_to_complete_program', programmes_to_prompt: @programmes_to_prompt) %>
+<% end %>
 
 <h3><%= t('schools.show.act_on_energy_usage') %></h3>
 
