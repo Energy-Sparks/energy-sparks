@@ -1,5 +1,5 @@
 <div class="row justify-content-md-center">
   <div class="col col-md-2">
-    <%== pagy_bootstrap_nav(@pagy) if @pagy.count > @pagy.items %>
+    <%== render partial: 'pagy/bootstrap_nav', locals: {pagy: @pagy} if @pagy.count > @pagy.items %>
   </div>
 </div>
