@@ -17,6 +17,9 @@
   <dt class="col-md-2">Frequency</dt>
   <dd class="col-md-10"><%= @alert_type.frequency.humanize %></dd>
 
+  <dt class="col-md-2">Benchmark?</dt>
+  <dd class="col-md-10"><%= y_n(@alert_type.benchmark) %></dd>
+
   <dt class="col-md-2">Advice Page</dt>
   <dd class="col-md-10">
     <% if @alert_type.advice_page.present? %>
