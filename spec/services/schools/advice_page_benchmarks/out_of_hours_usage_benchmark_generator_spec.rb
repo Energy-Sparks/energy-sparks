@@ -9,28 +9,14 @@ RSpec.describe Schools::AdvicePageBenchmarks::OutOfHoursUsageBenchmarkGenerator,
 
   context '#benchmark_school' do
     let(:enough_data) { true }
-    let(:usage) {
-      CombinedUsageMetric.new(
-        £: 12.0,
-        kwh: 12.0,
-        co2: 12.0,
-        percent: 0.4
-      )
-    }
     before(:each) do
       allow_any_instance_of(Usage::AnnualUsageBreakdownService).to receive(:enough_data?).and_return(enough_data)
-      allow_any_instance_of(Usage::AnnualUsageBreakdownService).to receive(:usage_breakdown) do
-        Usage::AnnualUsageCategoryBreakdown.new(
-          holiday: usage,
-          school_day_closed: usage,
-          school_day_open: usage,
-          weekend: usage,
-          out_of_hours: usage,
-          community: usage,
-          fuel_type: :electricity
-        )
+      allow_any_instance_of(Usage::AnnualUsageBreakdownService).to receive(:annual_out_of_hours_kwh) do
+        {
+          out_of_hours: 12,
+          total_annual: 40
+        }
       end
-      allow_any_instance_of(Usage::AnnualUsageCategoryBreakdown).to receive(:potential_savings) { usage }
     end
 
     context 'not enough data' do
