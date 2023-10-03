@@ -384,6 +384,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    resources :mailer_previews, only: [:index]
     concerns :issueable
     resources :funders
     resources :users do
@@ -607,6 +608,8 @@ Rails.application.routes.draw do
       mount GoodJob::Engine => 'good_job'
     end
   end # Admin name space
+
+  get 'admin/mailer_previews/*path' => "rails/mailers#preview", as: :admin_mailer_preview
 
   #redirect from old teacher dashboard
   namespace :teachers do
