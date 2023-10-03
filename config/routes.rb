@@ -382,10 +382,10 @@ Rails.application.routes.draw do
     resource :dashboard_message, only: [:update, :edit, :destroy], controller: '/admin/dashboard_messages'
   end
 
-  get 'admin/mailers' => "rails/mailers#index"
-  get '/admin/mailers/*path' => "rails/mailers#preview"
+  get 'admin/emails/*path' => "rails/mailers#preview", as: :admin_email_preview
 
   namespace :admin do
+    resources :emails, only: [:index]
     concerns :issueable
     resources :funders
     resources :users do
