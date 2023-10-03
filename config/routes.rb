@@ -592,12 +592,12 @@ Rails.application.routes.draw do
         resource :target_data, only: :show
       end
       member do
-        get :removal
-        post :deactivate_meters
+        post :archive
+        post :archive_meters
         post :delete_meters
         post :deactivate_users
         post :reenable
-        post :archive
+        get :removal
         post :delete
       end
       concerns :issueable

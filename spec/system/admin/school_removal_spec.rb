@@ -35,12 +35,23 @@ RSpec.describe "school removal", :schools, type: :system do
     end
     context 'and there are meters' do
       let!(:electricity_meter)  { create(:electricity_meter, school: school) }
-      before do
-        refresh
-        click_button 'Deactivate all meters and delete data'
+      context 'when deactivating them' do
+        before do
+          refresh
+          click_button 'Deactivate all meters and delete data'
+        end
+        it 'removes the meters' do
+          expect(page).to have_content('Meters have been deactivated')
+        end
       end
-      it 'removes the meters' do
-        expect(page).to have_content('Meters have been deactivated')
+      context 'when archiving them' do
+        before do
+          refresh
+          click_button 'Archive meters'
+        end
+        it 'removes the meters' do
+          expect(page).to have_content('Meters have been archived')
+        end
       end
     end
     context 'when the school is ready for removal' do
