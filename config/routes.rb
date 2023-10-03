@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   get 'home-page', to: 'home#show'
   get 'map', to: 'map#index'
   get 'school_statistics', to: 'home#school_statistics'
+  get 'school_statistics_key_data', to: 'home#school_statistics_key_data'
 
   get 'contact', to: 'home#contact'
   get 'enrol', to: 'home#enrol'

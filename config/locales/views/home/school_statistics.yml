@@ -17,8 +17,10 @@ en:
     postcode: Postcode
     pupil_numbers: Pupil numbers
     school_group: School group
+    school_key_data_tab: School key data
     school_name: Name
     school_summary: Key data for active schools
+    school_summary_tab: School summary
     school_type: School type
     school_types: Active schools by type
     scotland: Scotland
