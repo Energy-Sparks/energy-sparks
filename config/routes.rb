@@ -599,8 +599,11 @@ Rails.application.routes.draw do
       member do
         get :removal
         post :deactivate_meters
+        post :delete_meters
         post :deactivate_users
-        post :deactivate
+        post :reenable
+        post :archive
+        post :delete
       end
       concerns :issueable
     end
