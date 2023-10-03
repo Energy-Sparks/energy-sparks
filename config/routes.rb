@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   get 'home-page', to: 'home#show'
   get 'map', to: 'map#index'
   get 'school_statistics', to: 'home#school_statistics'
+  get 'school_statistics_key_data', to: 'home#school_statistics_key_data'
 
   get 'contact', to: 'home#contact'
   get 'enrol', to: 'home#enrol'
@@ -383,6 +384,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    resources :mailer_previews, only: [:index]
     concerns :issueable
     resources :funders
     resources :users do
@@ -591,10 +593,13 @@ Rails.application.routes.draw do
         resource :target_data, only: :show
       end
       member do
-        get :removal
-        post :deactivate_meters
+        post :archive
+        post :archive_meters
+        post :delete_meters
         post :deactivate_users
-        post :deactivate
+        post :reenable
+        get :removal
+        post :delete
       end
       concerns :issueable
     end
@@ -603,6 +608,8 @@ Rails.application.routes.draw do
       mount GoodJob::Engine => 'good_job'
     end
   end # Admin name space
+
+  get 'admin/mailer_previews/*path' => "rails/mailers#preview", as: :admin_mailer_preview
 
   #redirect from old teacher dashboard
   namespace :teachers do

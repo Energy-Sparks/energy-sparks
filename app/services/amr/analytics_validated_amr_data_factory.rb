@@ -5,7 +5,7 @@ module Amr
   private
 
     def build_meter_data(active_record_meter)
-      validated_reading_array = AmrValidatedReading.where(meter_id: active_record_meter.id).order(reading_date: :asc).pluck(:reading_date, :status, :substitute_date, :upload_datetime, :kwh_data_x48)
+      validated_reading_array = AmrValidatedReading.where(meter_id: active_record_meter.id).pluck(:reading_date, :status, :substitute_date, :upload_datetime, :kwh_data_x48)
       readings = validated_reading_array.map do |reading|
         {
           reading_date: reading[0],
