@@ -9,8 +9,10 @@
   <h1>Removing <%= @school.name %></h1>
   <% if @school.users.any? %>
     <h2>User status</h2>
-    <%= component 'notice', status: :negative, classes: 'mb-4' do %>
-      <p>School cannot be removed while it has active users.</p>
+    <% unless @school_remover.users_ready? %>
+      <%= component 'notice', status: :negative, classes: 'mb-4' do %>
+        <p>School cannot be removed while it has active users.</p>
+      <% end %>
     <% end %>
     <p>Current users:</p>
     <ol>
@@ -30,8 +32,10 @@
 
   <% if @school.meters.any? %>
     <h2>Meter status</h2>
-    <%= component 'notice', status: :negative, classes: 'mb-4' do %>
-      <p>School cannot be removed while it has active meters</p>
+    <% unless @school_remover.meters_ready? %>
+      <%= component 'notice', status: :negative, classes: 'mb-4' do %>
+        <p>School cannot be removed while it has active meters</p>
+      <% end %>
     <% end %>
     <p>Current meters:</p>
     <ol>
@@ -43,14 +47,14 @@
 
   <% unless @school_remover.meters_ready? %>
     <div class="mt-4">
-      <p>Archiving meters will mark them all as inactive, remove validated data but leave unvalidated
-        data intact</p>
-      <%= button_to 'Archive meters', deactivate_meters_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
+      <p>Archiving meters will mark them all as inactive. Validated data will be removed, but unvalidated
+        data will remain linked to the meter.</p>
+      <%= button_to 'Archive meters', archive_meters_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
     </div>
     <div class="mt-4">
       <p>
-        Deactivating and deleting meter data, will mark meters as inactive, and remove both the validated
-        and unvalidated data.
+        Deactivating and deleting meter data, will mark meters as inactive. Validated data will be removed and
+        the unvalidated data will be unlinked from the meter.
       </p>
       <%= button_to 'Deactivate all meters and delete data', delete_meters_admin_school_path(@school), method: :post, class: 'btn btn-success'%>
     </div>

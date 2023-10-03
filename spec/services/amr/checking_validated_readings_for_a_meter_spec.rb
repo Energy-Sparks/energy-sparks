@@ -14,8 +14,9 @@ describe Amr::CheckingValidatedReadingsForAMeter do
 
     it 'removes data when appropriate' do
       expect(AmrValidatedReading.count).to be number_of_readings
+
       last_reading_date = gas_dashboard_meter.amr_data.keys.last
-      gas_dashboard_meter.amr_data.delete(last_reading_date)
+      gas_dashboard_meter.amr_data.set_end_date(last_reading_date - 1)
 
       upserted_meter_collection = upsert_gas_service.perform
       deleted = Amr::CheckingValidatedReadingsForAMeter.new(upserted_meter_collection).perform

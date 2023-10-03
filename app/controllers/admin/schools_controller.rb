@@ -16,14 +16,14 @@ module Admin
 
     def archive_meters
       remove_meters(archive: true)
-      redirect_back fallback_location: root_path, notice: "Meters have been deactivated and only validated data removed"
+      redirect_back fallback_location: root_path, notice: "Meters have been archived and validated data removed"
     rescue => e
       redirect_back fallback_location: root_path, notice: e.message
     end
 
     def delete_meters
       remove_meters(archive: false)
-      redirect_back fallback_location: root_path, notice: "Meters have been deactivated and all data removed"
+      redirect_back fallback_location: root_path, notice: "Meters have been deactivated and validated data removed"
     rescue => e
       redirect_back fallback_location: root_path, notice: e.message
     end

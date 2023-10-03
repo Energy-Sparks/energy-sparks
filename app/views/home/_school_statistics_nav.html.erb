@@ -1,0 +1,12 @@
+<div class="row pt-2 pb-4">
+  <nav class='w-100'>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <%= link_to school_statistics_path, id: "nav-user-tariffs-tab", class: "nav-item nav-link#{ action_name == 'school_statistics' ? ' active' : '' }", "aria-controls": "nav-user-tariffs", "aria-selected": (action_name == 'school_statistics') do %>
+        <%= t('school_statistics.school_summary_tab') %>
+      <% end %>
+      <%= link_to school_statistics_key_data_path, id: "nav-user-tariffs-tab", class: "nav-item nav-link#{ action_name == 'school_statistics_key_data' ? ' active' : '' }", "aria-controls": "nav-user-tariffs", "aria-selected": (action_name == 'school_statistics_key_data') do %>
+        <%= t('school_statistics.school_key_data_tab') %>
+      <% end %>
+    </div>
+  </nav>
+</div>
