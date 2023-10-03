@@ -18,6 +18,8 @@ describe 'Emails', type: :system do
         visit admin_emails_path
         expect(current_path).to eq("/admin/emails")
         preview = ActionMailer::Preview.all.last
+        visit admin_email_preview_path(preview.preview_name)
+        expect(current_path).to eq("/admin/emails/" + preview.preview_name)
         visit admin_email_preview_path(preview.preview_name + '/' + preview.emails.first)
         expect(current_path).to eq("/admin/emails/" + preview.preview_name + '/' + preview.emails.first)
       end
@@ -28,72 +30,86 @@ describe 'Emails', type: :system do
         visit admin_emails_path
         expect(current_path).to eq("/users/sign_in")
         preview = ActionMailer::Preview.all.last
+        visit admin_email_preview_path(preview.preview_name)
+        expect(current_path).to eq("/users/sign_in")
         visit admin_email_preview_path(preview.preview_name + '/' + preview.emails.first)
         expect(current_path).to eq("/users/sign_in")
       end
     end
 
     context 'as a group_admin user' do
-      before { sign_in(group_admin) }
       it 'prevents the user from seeing the admin email preview page' do
+        sign_in(group_admin)
         visit admin_emails_path
         expect(current_path).to eq("/school_groups/#{group_admin.school_group.slug}")
         preview = ActionMailer::Preview.all.last
+        visit admin_email_preview_path(preview.preview_name)
+        expect(current_path).to eq("/school_groups/#{group_admin.school_group.slug}")
         visit admin_email_preview_path(preview.preview_name + '/' + preview.emails.first)
         expect(current_path).to eq("/school_groups/#{group_admin.school_group.slug}")
       end
     end
 
     context 'as a guest user' do
-      before { sign_in(guest) }
       it 'prevents the user from seeing the admin email preview page' do
+        sign_in(guest)
         visit admin_emails_path
         expect(current_path).to eq("/schools")
         preview = ActionMailer::Preview.all.last
+        visit admin_email_preview_path(preview.preview_name)
+        expect(current_path).to eq("/schools")
         visit admin_email_preview_path(preview.preview_name + '/' + preview.emails.first)
         expect(current_path).to eq("/schools")
       end
     end
 
     context 'as a pupil user' do
-      before { sign_in(pupil) }
       it 'prevents the user from seeing the admin email preview page' do
+        sign_in(pupil)
         visit admin_emails_path
         expect(current_path).to eq("/pupils/schools/#{school.slug}")
         preview = ActionMailer::Preview.all.last
+        visit admin_email_preview_path(preview.preview_name)
+        expect(current_path).to eq("/pupils/schools/#{school.slug}")
         visit admin_email_preview_path(preview.preview_name + '/' + preview.emails.first)
         expect(current_path).to eq("/pupils/schools/#{school.slug}")
       end
     end
 
     context 'as a school_onboarding user' do
-      before { sign_in(onboarding_user) }
       it 'prevents the user from seeing the admin email preview page' do
+        sign_in(onboarding_user)
         visit admin_emails_path
         expect(current_path).to eq("/schools/#{school.slug}")
         preview = ActionMailer::Preview.all.last
+        visit admin_email_preview_path(preview.preview_name)
+        expect(current_path).to eq("/schools/#{school.slug}")
         visit admin_email_preview_path(preview.preview_name + '/' + preview.emails.first)
         expect(current_path).to eq("/schools/#{school.slug}")
       end
     end
 
     context 'as a staff user' do
-      before { sign_in(staff) }
       it 'prevents the user from seeing the admin email preview page' do
+        sign_in(staff)
         visit admin_emails_path
         expect(current_path).to eq("/schools/#{school.slug}")
         preview = ActionMailer::Preview.all.last
+        visit admin_email_preview_path(preview.preview_name)
+        expect(current_path).to eq("/schools/#{school.slug}")
         visit admin_email_preview_path(preview.preview_name + '/' + preview.emails.first)
         expect(current_path).to eq("/schools/#{school.slug}")
       end
     end
 
     context 'as a volunteer user' do
-      before { sign_in(volunteer) }
       it 'prevents the user from seeing the admin email preview page' do
+        sign_in(volunteer)
         visit admin_emails_path
         expect(current_path).to eq("/schools/#{school.slug}")
         preview = ActionMailer::Preview.all.last
+        visit admin_email_preview_path(preview.preview_name)
+        expect(current_path).to eq("/schools/#{school.slug}")
         visit admin_email_preview_path(preview.preview_name + '/' + preview.emails.first)
         expect(current_path).to eq("/schools/#{school.slug}")
       end
