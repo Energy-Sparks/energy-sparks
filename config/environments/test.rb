@@ -1,6 +1,12 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  # Allows mailer previews to be viewed on production
+  # See also: config/initializers/action_mailer.rb
+  config.action_mailer.show_previews = true
+  # Rspec makes rails use spec/mailers/previews as the mail previews path
+  config.action_mailer.preview_path = Rails.root.join('spec', 'mailers', 'previews')
+
   # The test environment is used exclusively to run your application's
   # test suite. You never need to work with it otherwise. Remember that
   # your test database is "scratch space" for the test suite and is wiped
