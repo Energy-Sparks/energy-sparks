@@ -9,11 +9,11 @@ module Schools
       private
 
       def benchmark_usage
-        annual_usage_breakdown = usage_service.usage_breakdown
+        annual_out_of_hours_kwh = usage_service.annual_out_of_hours_kwh
         Schools::Comparison.new(
-          school_value: annual_usage_breakdown.out_of_hours.kwh,
-          benchmark_value: (annual_usage_breakdown.total.kwh * BenchmarkMetrics::BENCHMARK_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY),
-          exemplar_value: (annual_usage_breakdown.total.kwh * BenchmarkMetrics::EXEMPLAR_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY),
+          school_value: annual_out_of_hours_kwh[:out_of_hours],
+          benchmark_value: (annual_out_of_hours_kwh[:total_annual] * BenchmarkMetrics::BENCHMARK_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY),
+          exemplar_value: (annual_out_of_hours_kwh[:total_annual] * BenchmarkMetrics::EXEMPLAR_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY),
           unit: :kwh
         )
       end
