@@ -18,7 +18,9 @@ class ImportNotifier
   #nil, numeric, string values are not blank, so this equates to an array of ['']
   def meters_with_blank_data(from: 24.hours.ago, to: Time.zone.now)
     meters = Meter.active
+    .joins(:school)
     .joins(:amr_data_feed_readings)
+    .where(schools: { active: true })
     .where("amr_data_feed_readings.readings = ARRAY[?]", Array.new(48, '')) #where readings is empty string
     .joins("INNER JOIN amr_data_feed_import_logs on amr_data_feed_readings.amr_data_feed_import_log_id = amr_data_feed_import_logs.id") #manually join to import logs
     .where('import_time BETWEEN :from AND :to', from: from, to: to) #limit to period
@@ -31,7 +33,9 @@ class ImportNotifier
   #this meant any dodgy chars, e.g. '-', where treated as 0.0
   def meters_with_zero_data(from: 24.hours.ago, to: Time.zone.now)
     meters = Meter.active
+    .joins(:school)
     .where.not(meter_type: :exported_solar_pv) # exported solar PV is legitimately zero on some days
+    .where(schools: { active: true })
     .joins(:amr_data_feed_readings)
     .where("amr_data_feed_readings.readings = ARRAY[?] OR amr_data_feed_readings.readings = ARRAY[?]", Array.new(48, '0'), Array.new(48, '0.0')) #where readings are 0, or 0.0
     .joins("INNER JOIN amr_data_feed_import_logs on amr_data_feed_readings.amr_data_feed_import_log_id = amr_data_feed_import_logs.id") #manually join to import logs
@@ -51,6 +55,7 @@ class ImportNotifier
          .joins(:school)
          .joins('LEFT JOIN data_sources on data_sources.id = meters.data_source_id')
          .joins(:amr_validated_readings)
+         .where(schools: { active: true })
          .group('meters.id, data_sources.import_warning_days')
          .having(
            <<-SQL.squish

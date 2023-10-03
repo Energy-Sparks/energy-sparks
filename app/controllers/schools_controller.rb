@@ -24,7 +24,9 @@ class SchoolsController < ApplicationController
   end
 
   #Redirect users associated with this school to a holding page, if its not
-  #visible yet. Other users will end up getting an access denied error
+  #visible yet.
+  #Admins will be sent to removal page
+  #Other users will end up getting an access denied error
   before_action :redirect_if_not_visible, only: [:show]
 
   #Redirect pupil accounts associated with this school to the pupil dashboard
@@ -131,6 +133,7 @@ private
 
   def redirect_if_not_visible
     redirect_to school_inactive_path(@school) if user_signed_in_and_linked_to_school? && !@school.visible?
+    redirect_to removal_admin_school_path(@school) if !@school.active && can?(:remove_school, @school)
   end
 
   def redirect_pupils

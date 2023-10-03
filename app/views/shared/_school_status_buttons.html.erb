@@ -1,5 +1,4 @@
 <% if can?(:change_visibility, school) %>
-
   <% if school.visible? %>
     <%= link_to 'Visible', school_visibility_path(school), class: 'badge badge-pill badge-success', method: :delete, data: { confirm: 'Are you sure?' } %>
   <% else %>

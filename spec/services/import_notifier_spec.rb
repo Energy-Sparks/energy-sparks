@@ -11,6 +11,12 @@ describe ImportNotifier do
   let(:sheffield_import_log) { create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago) }
 
   describe '#meters_running_behind' do
+    it 'does not include meters from inactive schools' do
+      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, data_source: create(:data_source, import_warning_days: 5), school: create(:school, active: false))
+      meters_running_behind = ImportNotifier.new.meters_running_behind
+      expect(meters_running_behind).to match_array([])
+    end
+
     it 'gets all the meters that have not had validated data for X days' do
       meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 9.days.ago, data_source: create(:data_source, import_warning_days: 5))
       meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, data_source: create(:data_source, import_warning_days: 5))
@@ -73,7 +79,16 @@ describe ImportNotifier do
   end
 
   describe '#meters_with_blank_data' do
-    it 'gets all the meters from the imports where there is missing data' do
+    context 'with inactive schools' do
+      let(:school)  { create(:school, active: false)}
+      let(:meter_1) { create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log, school: school) }
+      it 'ignores the meter' do
+        meters_with_blank_data = ImportNotifier.new.meters_with_blank_data(from: 2.days.ago, to: Time.now)
+        expect(meters_with_blank_data).to match_array([])
+      end
+    end
+
+    it 'gets all the meters from the imports wherethere is missing data' do
       meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
       meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
 
@@ -84,6 +99,16 @@ describe ImportNotifier do
   end
 
   describe '#meters_with_zero_data' do
+    context 'with inactive schools' do
+      let(:school)  { create(:school, active: false)}
+      let(:meter_1) { create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log, school: school) }
+      it 'ignores the meter' do
+        meter_1.amr_data_feed_readings.last.update!(readings: Array.new(48, 0))
+        meters_with_zero_data = ImportNotifier.new.meters_with_zero_data(from: 2.days.ago, to: Time.now)
+        expect(meters_with_zero_data).to match_array([])
+      end
+    end
+
     it 'gets all the meters from the imports where there is zero data' do
       meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
       meter_2 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log)
