@@ -86,7 +86,8 @@ module Admin
           'Name',
           'Email',
           'Role',
-          'Staff Role'
+          'Staff Role',
+          'Locked'
         ]
         User.where.not(role: :pupil).where.not(role: :admin).order(:email).each do |user|
           csv << [
@@ -97,6 +98,7 @@ module Admin
             user.email,
             user.role.titleize,
             user.staff_role&.title,
+            y_n(user.access_locked?)
           ]
         end
       end

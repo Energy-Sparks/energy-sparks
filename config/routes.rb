@@ -428,7 +428,9 @@ Rails.application.routes.draw do
             post :make_visible
           end
         end
-        resource :users, only: [:show]
+        resource :users, only: [:show] do
+          get 'unlock', to: 'users#unlock'
+        end
         resource :partners, only: [:show, :update]
         resource :meter_report, only: [:show] do
           post :deliver, on: :member
