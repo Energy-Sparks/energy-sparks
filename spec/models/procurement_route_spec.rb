@@ -8,6 +8,20 @@ RSpec.describe ProcurementRoute, type: :model do
     it { is_expected.to validate_presence_of(:organisation_name) }
   end
 
+  describe '#meters_from_active_schools' do
+    let(:procurement_route) { create(:procurement_route) }
+    let(:data_source) { create(:data_source) }
+    let(:admin_meter_status) { AdminMeterStatus.create(label: "On Data Feed") }
+    let!(:meter_active_1) { create(:gas_meter, data_source: data_source, procurement_route: procurement_route, school: create(:school, active: true), admin_meter_status: admin_meter_status) }
+    let!(:meter_active_2) { create(:gas_meter, data_source: data_source, procurement_route: procurement_route, school: create(:school, :with_school_group, active: true), admin_meter_status: admin_meter_status) }
+    let!(:meter_inactive) { create(:gas_meter, data_source: data_source, procurement_route: procurement_route, school: create(:school, active: false), admin_meter_status: admin_meter_status) }
+
+    it 'returns meters associated with this procurment route from active schools' do
+      expect(procurement_route.meters).to match_array([meter_active_1, meter_active_2, meter_inactive])
+      expect(procurement_route.meters_from_active_schools).to match_array([meter_active_1, meter_active_2])
+    end
+  end
+
   describe ".to_csv" do
     let(:procurement_route) { create(:procurement_route) }
     let(:data_source) { create(:data_source) }
@@ -19,8 +33,11 @@ RSpec.describe ProcurementRoute, type: :model do
     context "with meters" do
       let(:admin_meter_status) { AdminMeterStatus.create(label: "On Data Feed") }
       let!(:meters) do
-        [create(:gas_meter, data_source: data_source, procurement_route: procurement_route, school: create(:school), admin_meter_status: admin_meter_status),
-         create(:gas_meter, data_source: data_source, procurement_route: procurement_route, school: create(:school, :with_school_group), admin_meter_status: admin_meter_status)]
+        [
+          create(:gas_meter, data_source: data_source, procurement_route: procurement_route, school: create(:school, active: true), admin_meter_status: admin_meter_status),
+          create(:gas_meter, data_source: data_source, procurement_route: procurement_route, school: create(:school, :with_school_group, active: true), admin_meter_status: admin_meter_status),
+          create(:gas_meter, data_source: data_source, procurement_route: procurement_route, school: create(:school, active: false), admin_meter_status: admin_meter_status)
+        ]
       end
       let(:first_reading_date) { 1.year.ago.to_date + 2.days }
       let(:last_reading_date) { 1.year.ago.to_date + 4.days }
@@ -39,7 +56,7 @@ RSpec.describe ProcurementRoute, type: :model do
       it { expect(subject.lines.count).to eq(3) }
       it { expect(subject.lines.first.chomp).to eq(header) }
       2.times do |i|
-        it do
+        it 'returns rows for all meters for active schools with this procurement route' do
           expect(subject.lines[i + 1].chomp).to eq(
             (
               [
