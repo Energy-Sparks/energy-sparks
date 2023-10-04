@@ -15,9 +15,6 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
   end
 
   describe '.csv' do
-
-    before { School.delete_all }
-
     let!(:academic_year_start) { Date.today - 6.months }
     let!(:academic_year_end) { Date.today + 6.months }
     let!(:academic_year) { create(:academic_year,
