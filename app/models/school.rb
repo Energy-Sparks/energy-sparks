@@ -186,6 +186,7 @@ class School < ApplicationRecord
   scope :inactive,            -> { where(active: false) }
   scope :deleted,             -> { inactive.where.not(removal_date: nil)}
   scope :archived,            -> { inactive.where(removal_date: nil)}
+  scope :active_and_archived, -> { where(removal_date: nil)}
   scope :visible,             -> { active.where(visible: true) }
   scope :not_visible,         -> { active.where(visible: false) }
   scope :process_data,        -> { active.where(process_data: true) }
@@ -237,11 +238,15 @@ class School < ApplicationRecord
   after_save :add_joining_observation, if: proc { saved_change_to_activation_date?(from: nil) }
 
   def deleted?
-    !active and removal_date.present?
+    not_active? and removal_date.present?
   end
 
   def archived?
-    !active && removal_date.nil?
+    not_active? && removal_date.nil?
+  end
+
+  def not_active?
+    !active
   end
 
   def minimum_reading_date

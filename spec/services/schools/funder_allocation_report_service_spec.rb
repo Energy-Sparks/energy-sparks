@@ -16,6 +16,8 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
 
   describe '.csv' do
 
+    before { School.delete_all }
+
     let!(:academic_year_start) { Date.today - 6.months }
     let!(:academic_year_end) { Date.today + 6.months }
     let!(:academic_year) { create(:academic_year,
@@ -50,7 +52,9 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
       region: :east_of_england,
       local_authority_area: local_authority_area,
       percentage_free_school_meals: 50,
-      funder: nil)
+      funder: nil,
+      removal_date: nil,
+      )
     }
 
     let!(:activities)  { create_list(:activity, 5, school: school_1) }
@@ -61,9 +65,9 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
     let!(:solar_meter) { create(:solar_pv_meter, active: true, data_source: data_source_3, procurement_route: procurement_route_3, school: school_1)}
 
     #only basic data, helps to catch errors checking for nils
-    let!(:school_2)  { create(:school, visible: true, school_group: create(:school_group), funder: funder_2) }
+    let!(:school_2)  { create(:school, visible: true, active: false, removal_date: nil, school_group: create(:school_group), funder: funder_2) }
     #not included in export
-    let!(:not_visible)  { create(:school, visible: false, school_group: school_group) }
+    let!(:not_visible)  { create(:school, visible: true, active: false, removal_date: Date.today, school_group: school_group) }
 
     let(:csv)   { service.csv }
 
@@ -76,10 +80,14 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
     end
 
     it 'returns expected data for school' do
+      expect(school_1.archived?).to eq(false)
+      expect(school_2.archived?).to eq(true)
+
       expect(csv.lines[1].chomp).to eq [
           school_1.school_group.name,
           school_1.name,
           'Primary',
+          'false',
           'true',
           school_1.school_onboarding.onboarding_completed_on.iso8601,
           school_1.school_onboarding.first_made_data_enabled.iso8601,
@@ -116,6 +124,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
           school_2.school_group.name,
           school_2.name,
           'Primary',
+          'true',
           'true',
           nil,
           nil,

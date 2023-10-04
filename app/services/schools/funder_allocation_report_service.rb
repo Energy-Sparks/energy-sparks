@@ -6,6 +6,7 @@ module Schools
           'School group',
           'School name',
           'School type',
+          'Archived',
           'Data visible?',
           'Onboarding date',
           'Date enabled date', #(see “Recently onboarded” report)
@@ -44,7 +45,7 @@ module Schools
     def csv
       CSV.generate(headers: true) do |csv|
         csv << self.class.csv_headers
-        School.visible.includes(:local_authority_area, :calendar).order(:school_group_id).each do |school|
+        School.active_and_archived.includes(:local_authority_area, :calendar).order(:school_group_id).each do |school|
           electricity_data_sources = school.all_data_sources(:electricity)
           gas_data_sources = school.all_data_sources(:gas)
           solar_data_sources = school.all_data_sources([:solar_pv, :exported_solar_pv])
@@ -57,6 +58,7 @@ module Schools
             school.school_group.name,
             school.name,
             school.school_type.humanize,
+            school.archived?,
             school.data_enabled,
             onboarding_completed(school),
             first_made_data_enabled(school),
