@@ -6,7 +6,7 @@ module Schools
           'School group',
           'School name',
           'School type',
-          'Archived',
+          'Archived?',
           'Data visible?',
           'Onboarding date',
           'Date enabled date', #(see “Recently onboarded” report)
