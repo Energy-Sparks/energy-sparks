@@ -1,5 +1,6 @@
 module Admin
   class UsersController < AdminController
+    include ApplicationHelper
     load_and_authorize_resource
 
     def index
@@ -41,6 +42,12 @@ module Admin
     def destroy
       @user.destroy
       redirect_to admin_users_path, notice: 'User was successfully destroyed.'
+    end
+
+    def unlock
+      user = User.find(params['user_id'])
+      user.unlock_access!
+      redirect_to admin_users_path, notice: "User '#{user.email}' was successfully unlocked."
     end
 
   private
