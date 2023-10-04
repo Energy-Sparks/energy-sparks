@@ -24,7 +24,7 @@ describe SchoolRemover, :schools, type: :service do
   end
 
   describe '#remove_school!' do
-    it 'marks the school as inactive and sets removal date' do
+    it 'marks the school as inactive, sets removal date and deletes any school meter or school issues' do
       service.remove_school!
       expect(school.active).to be_falsey
       expect(school.process_data).to be_falsey
@@ -43,7 +43,7 @@ describe SchoolRemover, :schools, type: :service do
 
     context 'when archive flag set true' do
       let(:archive) { true }
-      it 'marks the school as inactive but with no removal date' do
+      it 'marks the school as inactive but with no removal date or issue deletion' do
         service.remove_school!
         expect(school.active).to be_falsey
         expect(school.process_data).to be_falsey
