@@ -39,7 +39,7 @@ class SchoolRemover
   def remove_users!
     raise SchoolRemover::Error.new('Cannot remove users while school is still visible') if @school.visible?
 
-    # We don’t remove users from schools when they are archived or deleted, so the links are retained
+    # Don’t remove users from schools when they are archived or deleted, so the links are retained
     return if @archive
 
     @school.transaction do

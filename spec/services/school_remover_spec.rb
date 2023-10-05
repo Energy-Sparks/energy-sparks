@@ -40,6 +40,7 @@ describe SchoolRemover, :schools, type: :service do
 
   describe '#remove_users!' do
     let(:remove)    { service.remove_users! }
+
     it 'locks the user accounts' do
       remove
       expect(school.users.all?(&:access_locked?)).to be_truthy
@@ -52,17 +53,22 @@ describe SchoolRemover, :schools, type: :service do
 
     context 'when archiving' do
       let(:archive) { true }
+
       it 'keeps the alert contacts' do
         remove
+        expect(school.users.all?(&:access_locked?)).to be_falsey
         expect(Contact.count).to eq 1
       end
     end
+
     context 'when user is linked to other schools' do
       let(:other_school)  { create(:school) }
+
       before do
         school_admin.add_cluster_school(other_school)
         remove
       end
+
       it 'does not lock user and switches them to the other school' do
         school_admin.reload
         expect(school_admin.access_locked?).to be_falsey
