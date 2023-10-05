@@ -46,7 +46,6 @@ module Schools
       CSV.generate(headers: true) do |csv|
         csv << self.class.csv_headers
 
-        # School.find_by_sql(School.active.to_sql + ' UNION ALL ' + School.archived.to_sql).each do |school|
         School.active_and_archived.each do |school|
           electricity_data_sources = school.all_data_sources(:electricity)
           gas_data_sources = school.all_data_sources(:gas)
