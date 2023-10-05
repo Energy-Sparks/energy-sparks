@@ -24,7 +24,7 @@ class ProcurementRoute < ApplicationRecord
   def to_csv
     CSV.generate(headers: true) do |csv|
       csv << csv_headers
-      meters_from_active_schools.each do |meter|
+      meters.from_active_schools.each do |meter|
         csv << [
           meter&.school&.school_group&.name,
           meter&.school&.name,
@@ -40,10 +40,6 @@ class ProcurementRoute < ApplicationRecord
         ] + meter&.open_issues_as_list
       end
     end
-  end
-
-  def meters_from_active_schools
-    meters.joins(:school).where('schools.active = TRUE')
   end
 
   private
