@@ -20,7 +20,7 @@ describe SchoolRemover, :schools, type: :service do
     context 'with all access locked all users' do
       before { school.users.each(&:lock_access!) }
 
-      it 'requires all users to be access locked' do
+      it 'returns true' do
         expect(visible_school.cluster_users.count).to eq(0)
         expect(school.users.count).to eq(4)
         expect(school.users.all?(&:access_locked?)).to eq(true)
@@ -34,7 +34,7 @@ describe SchoolRemover, :schools, type: :service do
         school.users.first.unlock_access!
       end
 
-      it 'requires all users to be access locked' do
+      it 'returns false' do
         expect(visible_school.cluster_users.count).to eq(0)
         expect(school.users.count).to eq(4)
         expect(school.users.all?(&:access_locked?)).to eq(false)
@@ -49,7 +49,7 @@ describe SchoolRemover, :schools, type: :service do
         school.users.first.add_cluster_school(visible_school)
       end
 
-      it 'requires all users to be access locked' do
+      it 'returns true' do
         expect(visible_school.cluster_users.count).to eq(1)
         expect(school.users.count).to eq(4)
         expect(school.users.all?(&:access_locked?)).to eq(false)
