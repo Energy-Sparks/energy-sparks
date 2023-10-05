@@ -24,7 +24,7 @@ class ProcurementRoute < ApplicationRecord
   def to_csv
     CSV.generate(headers: true) do |csv|
       csv << csv_headers
-      meters.each do |meter|
+      meters.from_active_schools.each do |meter|
         csv << [
           meter&.school&.school_group&.name,
           meter&.school&.name,
