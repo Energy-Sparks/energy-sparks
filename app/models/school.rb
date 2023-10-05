@@ -237,11 +237,6 @@ class School < ApplicationRecord
   # https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Dirty.html#method-i-will_save_change_to_attribute-3F
   after_save :add_joining_observation, if: proc { saved_change_to_activation_date?(from: nil) }
 
-  # def self.active_and_archived
-  #   find_by_sql(active.to_sql + ' UNION ALL ' + archived.to_sql)
-  # end
-
-
   def deleted?
     not_active? and removal_date.present?
   end
