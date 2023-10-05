@@ -39,15 +39,14 @@ class SchoolRemover
   def remove_users!
     raise SchoolRemover::Error.new('Cannot remove users while school is still visible') if @school.visible?
 
-    # Don’t remove users from schools when they are archived or deleted, so the links are retained
-    return if @archive
-
     @school.transaction do
       @school.users.each do |user|
         if user.has_other_schools?
-          user.remove_school(@school)
+          # Don’t remove users from schools when they are archived so the links are retained
+          user.remove_school(@school) unless @archive
         else
           user.contacts.for_school(@school).first&.destroy unless @archive
+          # Lock account if user is linked to only this school
           user.lock_access!(send_instructions: false)
         end
       end

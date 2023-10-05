@@ -56,7 +56,7 @@ describe SchoolRemover, :schools, type: :service do
 
       it 'keeps the alert contacts' do
         remove
-        expect(school.users.all?(&:access_locked?)).to be_falsey
+        expect(school.users.all?(&:access_locked?)).to be_truthy
         expect(Contact.count).to eq 1
       end
     end
