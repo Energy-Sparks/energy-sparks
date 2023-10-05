@@ -15,9 +15,9 @@ class SchoolRemover
   end
 
   def users_ready?
+    # Requires all users are access locked except those users linked to another school
     return true if @school.users.all?(&:access_locked?)
-
-    # Requires all users are access locked except those user linked to another school
+    return true if unlocked_users_linked_to_another_school.any?
 
     false
   end
@@ -68,6 +68,18 @@ class SchoolRemover
   end
 
   private
+
+  def unlocked_users_linked_to_another_school
+    unlocked_user_ids = @school.users.reject(&:access_locked?).pluck(:id)
+    query = <<-SQL.squish
+      SELECT *
+      FROM cluster_schools_users
+      WHERE school_id != #{@school.id}
+      AND user_id IN (#{unlocked_user_ids.join(',')});
+    SQL
+
+    ActiveRecord::Base.connection.execute(query)
+  end
 
   def removal_date
     @archive ? nil : Time.zone.today

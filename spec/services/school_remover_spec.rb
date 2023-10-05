@@ -18,18 +18,26 @@ describe SchoolRemover, :schools, type: :service do
 
   describe '#users_ready?' do
     context 'with all access locked all users' do
-      before { school.users.each(&:lock_access!)  }
+      before { school.users.each(&:lock_access!) }
+
       it 'requires all users to be access locked' do
+        expect(visible_school.cluster_users.count).to eq(0)
+        expect(school.users.count).to eq(4)
+        expect(school.users.all?(&:access_locked?)).to eq(true)
         expect(service.users_ready?).to eq(true)
       end
     end
 
-    context 'with no access locked users' do
+    context 'with at least 1 access unlocked user' do
       before do
         school.users.each(&:lock_access!)
         school.users.first.unlock_access!
       end
+
       it 'requires all users to be access locked' do
+        expect(visible_school.cluster_users.count).to eq(0)
+        expect(school.users.count).to eq(4)
+        expect(school.users.all?(&:access_locked?)).to eq(false)
         expect(service.users_ready?).to eq(false)
       end
     end
@@ -37,11 +45,14 @@ describe SchoolRemover, :schools, type: :service do
     context 'with all access locked users except those associated with another school' do
       before do
         school.users.each(&:lock_access!)
-        staff_user.add_cluster_school(visible_school)
-        staff_user.unlock_access!
+        school.users.first.unlock_access!
+        school.users.first.add_cluster_school(visible_school)
       end
 
       it 'requires all users to be access locked' do
+        expect(visible_school.cluster_users.count).to eq(1)
+        expect(school.users.count).to eq(4)
+        expect(school.users.all?(&:access_locked?)).to eq(false)
         expect(service.users_ready?).to eq(true)
       end
     end
