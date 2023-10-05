@@ -184,8 +184,9 @@ class School < ApplicationRecord
   #are archived, with chance of returning if we receive funding
   scope :active,              -> { where(active: true) }
   scope :inactive,            -> { where(active: false) }
-  scope :deleted,             -> { inactive.where.not(removal_date: nil)}
-  scope :archived,            -> { inactive.where(removal_date: nil)}
+  scope :deleted,             -> { inactive.where.not(removal_date: nil) }
+  scope :archived,            -> { inactive.where(removal_date: nil) }
+  scope :active_and_archived, -> { find_by_sql(active.to_sql + ' UNION ALL ' + archived.to_sql) }
   scope :visible,             -> { active.where(visible: true) }
   scope :not_visible,         -> { active.where(visible: false) }
   scope :process_data,        -> { active.where(process_data: true) }
@@ -235,6 +236,11 @@ class School < ApplicationRecord
   # Note that saved_change_to_activation_date? is a magic ActiveRecord method
   # https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Dirty.html#method-i-will_save_change_to_attribute-3F
   after_save :add_joining_observation, if: proc { saved_change_to_activation_date?(from: nil) }
+
+  # def self.active_and_archived
+  #   find_by_sql(active.to_sql + ' UNION ALL ' + archived.to_sql)
+  # end
+
 
   def deleted?
     not_active? and removal_date.present?
