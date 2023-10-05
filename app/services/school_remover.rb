@@ -25,7 +25,9 @@ class SchoolRemover
   def remove_school!
     raise SchoolRemover::Error.new('Cannot remove school while it is still visible') if @school.visible?
     @school.transaction do
-      @school.update(active: false, process_data: false, removal_date: removal_date)
+      if @school.update!(active: false, process_data: false, removal_date: removal_date)
+        delete_school_issues
+      end
     end
   end
 
@@ -60,6 +62,13 @@ class SchoolRemover
   end
 
   private
+
+  def delete_school_issues
+    return if @archive
+
+    IssueMeter.where(meter: @school.meters).delete_all
+    @school.issues.delete_all
+  end
 
   def removal_date
     @archive ? nil : Time.zone.today
