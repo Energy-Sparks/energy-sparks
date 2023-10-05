@@ -4,13 +4,13 @@ FactoryBot.define do
   factory :dashboard_one_day_amr_reading, class: 'OneDayAMRReading' do
     transient do
       association :dashboard_meter, factory: :dashboard_gas_meter
-      date          { Date.yesterday }
-      kwh_data_x48  { Array.new(48, rand.to_f) }
-      one_day_kwh   { kwh_data_x48.sum.to_f }
-      status        { 'ORIG'}
+      date            { Date.yesterday }
+      status          { 'ORIG' }
+      substitute_date { nil }
+      upload_datetime { Date.today }
+      kwh_data_x48    { Array.new(48, rand.to_f) }
     end
 
-    # Note the nil is the substitute date
-    initialize_with { OneDayAMRReading.new(dashboard_meter.id, date, status, nil, DateTime.now, kwh_data_x48) }
+    initialize_with { OneDayAMRReading.new(dashboard_meter.id, date, status, substitute_date, upload_datetime, kwh_data_x48) }
   end
 end
