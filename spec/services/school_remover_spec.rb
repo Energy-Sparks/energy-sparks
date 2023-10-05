@@ -2,15 +2,50 @@ require 'rails_helper'
 
 describe SchoolRemover, :schools, type: :service do
 
-  let(:school)              { create(:school, visible: false) }
+  let(:school)              { create(:school, visible: false, number_of_pupils: 12) }
+  let(:visible_school)      { create(:school, visible: true, number_of_pupils: 12) }
   let!(:school_admin)       { create(:school_admin, school: school) }
   let!(:contact)            { create(:contact_with_name_email_phone, school: school, user: school_admin)}
+  let!(:school_admin_user)       { create(:school_admin, school: school) }
+  let!(:staff_user)              { create(:staff, school: school) }
+  let!(:pupil_user)            { create(:pupil, school: school) }
 
   let!(:electricity_meter) { create(:electricity_meter_with_validated_reading, school: school) }
   let!(:gas_meter)         { create(:gas_meter, :with_unvalidated_readings, school: school)}
 
   let(:archive) { false }
   let(:service) { SchoolRemover.new(school, archive: archive) }
+
+  describe '#users_ready?' do
+    context 'with all access locked all users' do
+      before { school.users.each(&:lock_access!)  }
+      it 'requires all users to be access locked' do
+        expect(service.users_ready?).to eq(true)
+      end
+    end
+
+    context 'with no access locked users' do
+      before do
+        school.users.each(&:lock_access!)
+        school.users.first.unlock_access!
+      end
+      it 'requires all users to be access locked' do
+        expect(service.users_ready?).to eq(false)
+      end
+    end
+
+    context 'with all access locked users except those associated with another school' do
+      before do
+        school.users.each(&:lock_access!)
+        staff_user.add_cluster_school(visible_school)
+        staff_user.unlock_access!
+      end
+
+      it 'requires all users to be access locked' do
+        expect(service.users_ready?).to eq(true)
+      end
+    end
+  end
 
   describe '#remove_school!' do
     it 'marks the school as inactive and sets removal date' do

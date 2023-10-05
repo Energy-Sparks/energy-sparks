@@ -15,7 +15,11 @@ class SchoolRemover
   end
 
   def users_ready?
-    @school.users.all?(&:access_locked?)
+    return true if @school.users.all?(&:access_locked?)
+
+    # Requires all users are access locked except those user linked to another school
+
+    false
   end
 
   def can_remove_school?
@@ -44,6 +48,7 @@ class SchoolRemover
         if user.has_other_schools?
           # Don’t remove users from schools when they are archived so the links are retained
           user.remove_school(@school) unless @archive
+
         else
           user.contacts.for_school(@school).first&.destroy unless @archive
           # Lock account if user is linked to only this school
