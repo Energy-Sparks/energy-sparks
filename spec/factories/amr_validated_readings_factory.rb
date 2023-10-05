@@ -6,5 +6,6 @@ FactoryBot.define do
     one_day_kwh             { 139.0 }
     status                  { 'ORIG'}
     upload_datetime         { Date.today }
+    substitute_date         { nil }
   end
 end

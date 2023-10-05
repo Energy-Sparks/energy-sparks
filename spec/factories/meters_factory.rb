@@ -45,6 +45,7 @@ FactoryBot.define do
         kwh_data_x48    { Array.new(48, rand) }
         one_day_kwh     { 139.0 }
         upload_datetime { Date.today }
+        substitute_date { nil }
       end
 
       after(:create) do |meter, evaluator|
@@ -55,7 +56,8 @@ FactoryBot.define do
             upload_datetime: evaluator.upload_datetime,
             status: evaluator.status,
             kwh_data_x48: evaluator.kwh_data_x48,
-            one_day_kwh: evaluator.one_day_kwh)
+            one_day_kwh: evaluator.one_day_kwh,
+            substitute_date: evaluator.substitute_date)
         end
       end
     end
