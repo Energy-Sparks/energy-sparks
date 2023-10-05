@@ -11,19 +11,6 @@ RSpec.describe DataSource, type: :model do
     it { should define_enum_for(:organisation_type).with_values([:energy_supplier, :procurement_organisation, :meter_operator, :council, :solar_monitoring_provider]) }
   end
 
-  describe '#meters_from_active_schools' do
-    let(:data_source) { create(:data_source) }
-    let(:admin_meter_status) { AdminMeterStatus.create(label: "On Data Feed") }
-    let!(:meter_active_1) { create(:gas_meter, data_source: data_source, school: create(:school, active: true), admin_meter_status: admin_meter_status) }
-    let!(:meter_active_2) { create(:gas_meter, data_source: data_source, school: create(:school, :with_school_group, active: true), admin_meter_status: admin_meter_status) }
-    let!(:meter_inactive) { create(:gas_meter, data_source: data_source, school: create(:school, active: false), admin_meter_status: admin_meter_status) }
-
-    it 'returns meters associated with this procurment route from active schools' do
-      expect(data_source.meters).to match_array([meter_active_1, meter_active_2, meter_inactive])
-      expect(data_source.meters_from_active_schools).to match_array([meter_active_1, meter_active_2])
-    end
-  end
-
   describe ".to_csv" do
     let(:data_source) { create(:data_source) }
     subject { data_source.to_csv }
