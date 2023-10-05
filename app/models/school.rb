@@ -186,7 +186,6 @@ class School < ApplicationRecord
   scope :inactive,            -> { where(active: false) }
   scope :deleted,             -> { inactive.where.not(removal_date: nil) }
   scope :archived,            -> { inactive.where(removal_date: nil) }
-  scope :active_and_archived, -> { find_by_sql(active.to_sql + ' UNION ALL ' + archived.to_sql) }
   scope :visible,             -> { active.where(visible: true) }
   scope :not_visible,         -> { active.where(visible: false) }
   scope :process_data,        -> { active.where(process_data: true) }

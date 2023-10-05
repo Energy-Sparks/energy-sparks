@@ -46,7 +46,11 @@ module Schools
       CSV.generate(headers: true) do |csv|
         csv << self.class.csv_headers
 
-        School.active_and_archived.each do |school|
+        school_ids = School.active.pluck(:id) + School.archived.pluck(:id)
+        active_and_archived_schools = School.where(id: school_ids)
+                                            .order(:school_group_id)
+
+        active_and_archived_schools.each do |school|
           electricity_data_sources = school.all_data_sources(:electricity)
           gas_data_sources = school.all_data_sources(:gas)
           solar_data_sources = school.all_data_sources([:solar_pv, :exported_solar_pv])
