@@ -45,14 +45,13 @@ class SchoolRemover
 
     @school.transaction do
       @school.users.each do |user|
-        # Do not remove a user from an archived
         next if user.has_other_schools? && @archive
 
         if user.has_other_schools?
           user.remove_school(@school)
         else
-          user.contacts.for_school(@school).first&.destroy unless @archive
           # Lock account if user is linked to only this school
+          user.contacts.for_school(@school).first&.destroy unless @archive
           user.lock_access!(send_instructions: false)
         end
       end
