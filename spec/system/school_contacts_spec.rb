@@ -21,7 +21,7 @@ RSpec.describe "school", type: :system do
         visit school_contacts_path(school)
         expect(page).not_to have_content('Standalone contacts')
 
-        first(:link, "Enable alerts").click
+        find("#enable_alerts_#{teacher.id}").click
         expect(find_field('Email address').value).to eq teacher.email
 
         click_on('Enable alerts')
