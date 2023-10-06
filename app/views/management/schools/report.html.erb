@@ -14,7 +14,7 @@
 
 <% @overview_charts.each_with_index do |(energy, chart_config), index| %>
   <h2><%= t("management.schools.overview_charts.overview.#{energy.to_s}") %></h2>
-  <%= component 'chart', chart_type: chart_config[:chart], school: @school, chart_config: chart_config: {y_axis_units: select_y_axis(@school, chart_config[:chart], chart_config[:units])} %>
+  <%= component 'chart', chart_type: chart_config[:chart], school: @school, chart_config: {y_axis_units: select_y_axis(@school, chart_config[:chart], chart_config[:units])} %>
 <% end %>
 
 <% unless @management_priorities.empty? %>
