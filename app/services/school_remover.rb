@@ -79,20 +79,11 @@ class SchoolRemover
   end
 
   def unlocked_users_linked_to_another_school_ids
-    @unlocked_users_linked_to_another_school_ids ||= unlocked_users_linked_to_another_school.map { |row| row['user_id'] }
-                                                                                            .compact
-                                                                                            .uniq
+    @unlocked_users_linked_to_another_school_ids ||= unlocked_users_linked_to_another_school.pluck(:id)
   end
 
   def unlocked_users_linked_to_another_school
-    sql = <<-SQL.squish
-      SELECT user_id
-      FROM cluster_schools_users
-      WHERE school_id != #{@school.id}
-      AND user_id IN (#{unlocked_user_ids.join(',')});
-    SQL
-
-    ActiveRecord::Base.connection.execute(sql)
+    User.find_school_users_linked_to_other_schools(school_id: @school.id, user_ids: unlocked_user_ids)
   end
 
   def unlocked_user_ids
