@@ -28,9 +28,9 @@ RSpec.describe "school", type: :system do
         expect(page).to have_content "Alerts enabled for #{teacher.name}"
 
         contacts = school.contacts
-        expect(contacts.map(&:user_id)).to include(teacher.id)
-        expect(contacts.map(&:email_address)).to include(teacher.email)
-        expect(contacts.map(&:name)).to include(teacher.name)
+        expect(contacts.pluck(:user_id)).to include(teacher.id)
+        expect(contacts.pluck(:email_address)).to include(teacher.email)
+        expect(contacts.pluck(:name)).to include(teacher.name)
       end
     end
 
