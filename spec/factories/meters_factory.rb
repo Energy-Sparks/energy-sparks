@@ -39,13 +39,25 @@ FactoryBot.define do
 
     factory :gas_meter_with_validated_reading_dates do
       transient do
-        start_date { Date.parse('01/06/2019') }
-        end_date   { Date.parse('02/06/2019') }
+        start_date      { Date.parse('01/06/2019') }
+        end_date        { Date.parse('02/06/2019') }
+        status          { 'ORIG' }
+        kwh_data_x48    { Array.new(48, rand) }
+        one_day_kwh     { 139.0 }
+        upload_datetime { Date.today }
+        substitute_date { nil }
       end
 
       after(:create) do |meter, evaluator|
         (evaluator.start_date.to_date..evaluator.end_date.to_date).each do |this_date|
-          create(:amr_validated_reading, meter: meter, reading_date: this_date)
+          create(:amr_validated_reading,
+            meter: meter,
+            reading_date: this_date,
+            upload_datetime: evaluator.upload_datetime,
+            status: evaluator.status,
+            kwh_data_x48: evaluator.kwh_data_x48,
+            one_day_kwh: evaluator.one_day_kwh,
+            substitute_date: evaluator.substitute_date)
         end
       end
     end

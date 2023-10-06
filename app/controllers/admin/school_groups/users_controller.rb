@@ -13,6 +13,12 @@ module Admin
         end
       end
 
+      def unlock
+        user = User.find(params['user_id'])
+        user.unlock_access!
+        redirect_to admin_school_group_users_path(@school_group), notice: "User '#{user.email}' was successfully unlocked."
+      end
+
       private
 
       def filename(school_group)
@@ -39,7 +45,8 @@ module Admin
             'Confirmed',
             'Last signed in',
             'Alerts',
-            'Language'
+            'Language',
+            'Locked'
           ]
           group_admins.each do |user|
             add_user_to_csv(csv, school_group, nil, user)
@@ -63,7 +70,8 @@ module Admin
           y_n(user.confirmed?),
           display_last_signed_in_as(user),
           user.group_admin? ? 'N/A' : y_n(user.contact_for_school),
-          I18n.t("languages.#{user.preferred_locale}")
+          I18n.t("languages.#{user.preferred_locale}"),
+          y_n(user.access_locked?)
         ]
       end
     end
