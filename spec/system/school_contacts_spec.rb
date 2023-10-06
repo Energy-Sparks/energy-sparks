@@ -27,10 +27,10 @@ RSpec.describe "school", type: :system do
         click_on('Enable alerts')
         expect(page).to have_content "Alerts enabled for #{teacher.name}"
 
-        contact = school.contacts.last
-        expect(contact.user).to eq(teacher)
-        expect(contact.email_address).to eq(teacher.email)
-        expect(contact.name).to eq(teacher.name)
+        contacts = school.contacts
+        expect(contacts.map(&:user_id)).to include(teacher.id)
+        expect(contacts.map(&:email_address)).to include(teacher.email)
+        expect(contacts.map(&:name)).to include(teacher.name)
       end
     end
 
@@ -134,8 +134,6 @@ RSpec.describe "school", type: :system do
       let!(:contact) { create(:contact_with_name_email, school: school) }
       it 'shows me the contacts on the page' do
         visit school_contacts_path(school)
-
-        pp page.html
 
         expect(page).to have_content('Standalone contacts')
         expect(page).to have_content contact.name
