@@ -23,7 +23,7 @@ describe SchoolRemover, :schools, type: :service do
       it 'returns true' do
         expect(visible_school.cluster_users.count).to eq(0)
         expect(school.users.count).to eq(4)
-        expect(school.users.all?(&:access_locked?)).to eq(true)
+        expect(school.users.count(&:access_locked?)).to eq(4)
         expect(service.users_ready?).to eq(true)
       end
     end
@@ -37,12 +37,12 @@ describe SchoolRemover, :schools, type: :service do
       it 'returns false' do
         expect(visible_school.cluster_users.count).to eq(0)
         expect(school.users.count).to eq(4)
-        expect(school.users.all?(&:access_locked?)).to eq(false)
+        expect(school.users.count(&:access_locked?)).to eq(3)
         expect(service.users_ready?).to eq(false)
       end
     end
 
-    context 'with all access locked users except those associated with another school' do
+    context 'with all access locked users except one which is associated with another school' do
       before do
         school.users.each(&:lock_access!)
         school.users.first.unlock_access!
@@ -52,8 +52,24 @@ describe SchoolRemover, :schools, type: :service do
       it 'returns true' do
         expect(visible_school.cluster_users.count).to eq(1)
         expect(school.users.count).to eq(4)
-        expect(school.users.all?(&:access_locked?)).to eq(false)
+        expect(school.users.count(&:access_locked?)).to eq(3)
         expect(service.users_ready?).to eq(true)
+      end
+    end
+
+    context 'with two access locked users and two unlocked users, only one of which is associated with another school' do
+      before do
+        school.users.each(&:lock_access!)
+        school.users.first.unlock_access!
+        school.users.second.unlock_access!
+        school.users.first.add_cluster_school(visible_school)
+      end
+
+      it 'returns true' do
+        expect(visible_school.cluster_users.count).to eq(1)
+        expect(school.users.count).to eq(4)
+        expect(school.users.count(&:access_locked?)).to eq(2)
+        expect(service.users_ready?).to eq(false)
       end
     end
   end
