@@ -25,9 +25,7 @@
   </div>
 
   <div class="row">
-    <div class="col-md-12 chart-wrapper" id="chart_wrapper_<%=@chart_config[@period]%>">
-      <%= component 'chart', chart_type: @chart_config[@period], analysis_controls: true, school: @school, chart_config: create_chart_config(@school, @chart_config[@period]), html_class: 'usage-chart' %>
-    </div>
+    <%= component 'chart', chart_type: @chart_config[@period], analysis_controls: true, school: @school, chart_config: create_chart_config(@school, @chart_config[@period]), html_class: 'usage-chart' %>
   </div>
 
   <%= render 'shared/usage_controls', chart_config: @chart_config, period: @period, supply: @supply, split_meters: @split_meters, meters: @meters  %>
