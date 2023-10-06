@@ -9,8 +9,7 @@
   <% overview_charts.each_with_index do |(energy, chart_config), index| %>
     <div class="tab-pane fade show <%= 'active' if index == 0 %>" id="<%= energy %>-overview" role="tabpanel" aria-labelledby="<%= energy %>-tab">
       <div id="chart_wrapper_<%= chart_config[:chart] %>" class="chart-wrapper">
-        <%= render 'shared/analysis_controls', chart_type: chart_config[:chart], axis_controls: true, analysis_controls: true %>
-        <%= chart_tag(@school, chart_config[:chart], no_zoom: true, fuel_type: energy, chart_config: {y_axis_units: select_y_axis(@school, chart_config[:chart], chart_config[:units])}, wrap: false, autoload_chart: index.zero?, html_class: "analysis-chart #{energy}-overview-analysis-chart") %>
+        <%= component 'chart', chart_type: chart_config[:chart],  school: @school, chart_config: {y_axis_units: select_y_axis(@school, chart_config[:chart], chart_config[:units])} %>
       </div>
     </div>
   <% end %>
