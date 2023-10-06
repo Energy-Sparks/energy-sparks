@@ -3,5 +3,5 @@
   <div class="dynamic-titles">
     <h5 class="text-center"></h5>
   </div>
-  <%= chart_tag(school, content, no_zoom: true, wrap: false, chart_config: create_chart_config(school, content, mpan_mprn)) %>
+  <%= component 'chart', no_zoom: true, chart_type: content, analysis_controls: true, school: @school, chart_config: create_chart_config(school, content, mpan_mprn) %>
 </div>
