@@ -23,7 +23,6 @@ class OnboardingMailer < LocaleMailer
   def reminder_email
     email = params[:email]
     @school_onboardings = params[:school_onboardings]
-    raise "Onboardings contains contact emails that don't match email parameter" if @school_onboardings.pluck(:contact_email).uniq != [email]
     locales = @school_onboardings.reduce([]) { |memo, onboarding| memo.union(onboarding.email_locales) }
     @body = for_each_locale(locales) { render :reminder_email_content, layout: nil }.join("<hr>")
     subject = for_each_locale(locales) { default_i18n_subject(count: @school_onboardings.count) }.join(" / ")

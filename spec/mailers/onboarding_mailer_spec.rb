@@ -129,10 +129,9 @@ RSpec.describe OnboardingMailer do
 
     let(:scope) { [:onboarding_mailer, :reminder_email] }
     let(:school_onboardings) { [] }
-    let(:mailer) { OnboardingMailer.with(school_onboardings: school_onboardings, email: school_onboarding.contact_email).reminder_email }
+    before { OnboardingMailer.with(school_onboardings: school_onboardings, email: school_onboarding.contact_email).reminder_email.deliver_now }
 
     context "country is wales" do
-      before { mailer.deliver_now }
       let(:country) { 'wales' }
 
       context "with single onboarding" do
@@ -159,7 +158,6 @@ RSpec.describe OnboardingMailer do
     end
 
     context "country is england" do
-      before { mailer.deliver_now }
       let(:country) { 'england' }
 
       context "with single onboarding" do
@@ -182,14 +180,6 @@ RSpec.describe OnboardingMailer do
 
         it_behaves_like "a reminder email in locale", locale: :en, context: 'other'
         it_behaves_like "a reminder email not in locale", locale: :cy, context: 'other'
-      end
-    end
-
-    context "email doesn't match onboardings contact emails" do
-      let(:school_onboardings) { [school_onboarding, create(:school_onboarding, contact_email: 'different@nothesame.com')] }
-
-      it "raises error" do
-        expect{ mailer.deliver_now }.to raise_error("Onboardings contains contact emails that don't match email parameter")
       end
     end
   end
