@@ -1,30 +1,37 @@
 module Onboarding
   class ReminderMailer
     class << self
-      def send_due
-        onboardings_by_email.each do |email, onboardings|
-          OnboardingMailer.with(email: email, school_onboardings: onboardings).reminder_email.deliver_now
-          create_events_for(onboardings)
+      def deliver_all
+        deliver(school_onboardings: onboardings_with_reminders_due)
+      end
+
+      def deliver(school_onboardings:)
+        onboardings_by_email(school_onboardings).each do |email, onboardings_for_email|
+          OnboardingMailer.with(email: email, school_onboardings: onboardings_for_email).reminder_email.deliver_now
+          create_events_for(onboardings_for_email)
         end
       end
 
       private
 
-      def find_schools
+      def onboardings_with_reminders_due
         # The reminders should be sent one week after the initial onboarding email was sent,
         # and then weekly after the last reminder until the onboarding is completed.
         # (See the SchoolOnboardingEvents events for the dates)
         SchoolOnboarding.reminder_due
       end
 
-      def onboardings_by_email
+      def onboardings_by_email(school_onboardings)
         # Build hash of email addresses mapping to array of onboardings that match the same email
-        find_schools.reduce({}) { |memo, onboarding| (memo[onboarding.contact_email] ||= []) << onboarding }
+        school_onboardings.reduce({}) do |memo, school_onboarding|
+          (memo[school_onboarding.contact_email] ||= []) << school_onboarding
+          memo
+        end
       end
 
-      def create_events_for(onboardings)
-        onboardings.each do |onboarding|
-          onboarding.events.create!(event: :reminder_sent)
+      def create_events_for(school_onboardings)
+        school_onboardings.each do |school_onboarding|
+          school_onboarding.events.create!(event: :reminder_sent)
         end
       end
     end
