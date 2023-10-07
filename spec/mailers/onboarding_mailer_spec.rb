@@ -110,7 +110,6 @@ RSpec.describe OnboardingMailer do
   end
 
   describe '#reminder_email' do
-
     ## these next two statements can be removed when we have translations from transifex for these!
     let(:missing_translations) do
       { subject:          { other: "cy other subject"},
@@ -123,14 +122,15 @@ RSpec.describe OnboardingMailer do
     before { I18n.backend.store_translations(:cy, { onboarding_mailer: { reminder_email: missing_translations } } ) }
 
     let(:scope) { [:onboarding_mailer, :reminder_email] }
-    let(:onboardings) { [] }
-    before { OnboardingMailer.with(onboardings: onboardings, email: school_onboarding.contact_email).reminder_email.deliver_now }
+    let(:school_onboardings) { [] }
+    let(:mailer) { OnboardingMailer.with(school_onboardings: school_onboardings, email: school_onboarding.contact_email).reminder_email }
 
     context "country is wales" do
+      before { mailer.deliver_now }
       let(:country) { 'wales' }
 
       context "with single onboarding" do
-        let(:onboardings) { [school_onboarding] }
+        let(:school_onboardings) { [school_onboarding] }
 
         it 'singular subject is in both languages' do
           expect(email.subject).to eq(I18n.t('subject.one', scope: scope, locale: :en) + " / " + I18n.t('subject.one', scope: scope, locale: :cy))
@@ -141,7 +141,7 @@ RSpec.describe OnboardingMailer do
       end
 
       context "with multiple onboardings for same email address" do
-        let(:onboardings) { [school_onboarding, create(:school_onboarding, contact_email: school_onboarding.contact_email)] }
+        let(:school_onboardings) { [school_onboarding, create(:school_onboarding, contact_email: school_onboarding.contact_email)] }
 
         it 'the multiples subject is in both languages' do
           expect(email.subject).to eq(I18n.t('subject.other', scope: scope, locale: :en) + " / " + I18n.t('subject.other', scope: scope, locale: :cy))
@@ -153,10 +153,11 @@ RSpec.describe OnboardingMailer do
     end
 
     context "country is england" do
+      before { mailer.deliver_now }
       let(:country) { 'england' }
 
       context "with single onboarding" do
-        let(:onboardings) { [school_onboarding] }
+        let(:school_onboardings) { [school_onboarding] }
 
         it 'singular subject is in English only' do
           expect(email.subject).to eq(I18n.t('subject.one', scope: scope, locale: :en))
@@ -167,7 +168,7 @@ RSpec.describe OnboardingMailer do
       end
 
       context "with multiple onboardings for same email address" do
-        let(:onboardings) { [school_onboarding, create(:school_onboarding, contact_email: school_onboarding.contact_email)] }
+        let(:school_onboardings) { [school_onboarding, create(:school_onboarding, contact_email: school_onboarding.contact_email)] }
 
         it 'the multiples subject is in English only' do
           expect(email.subject).to eq(I18n.t('subject.other', scope: scope, locale: :en))
@@ -175,6 +176,14 @@ RSpec.describe OnboardingMailer do
 
         it_behaves_like "a reminder email in locale", locale: :en, context: 'other'
         it_behaves_like "a reminder email not in locale", locale: :cy, context: 'other'
+      end
+    end
+
+    context "email doesn't match onboardings contact emails" do
+      let(:school_onboardings) { [school_onboarding, create(:school_onboarding, contact_email: 'different@nothesame.com')] }
+
+      it "raises error" do
+        expect{ mailer.deliver_now }.to raise_error("Onboardings contains contact emails that don't match email parameter")
       end
     end
   end

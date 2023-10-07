@@ -12,7 +12,7 @@ module Admin
 
       def reminders
         for_selected "reminders sent" do |onboarding|
-          OnboardingMailer.with(onboardings: [onboarding], email: onboarding.contact_email).reminder_email.deliver_now
+          OnboardingMailer.with(school_onboardings: [onboarding], email: onboarding.contact_email).reminder_email.deliver_now
           onboarding.events.create!(event: :reminder_sent)
         end
       end
