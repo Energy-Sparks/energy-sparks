@@ -13,27 +13,19 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
   let(:stub)              { double('service_stub') }
 
   describe '#perform' do
-
-    context 'it should update school configuration' do
-      before do
+    context 'when updating school configuration' do
+      it 'should run the service' do
         expect(Schools::GenerateConfiguration).to receive(:new).with(school, anything).and_return(stub)
         expect(stub).to receive(:generate)
-      end
-      it 'runs the benchmarks' do
         service.perform
       end
     end
 
-    context 'it should update alerts and benchmarks' do
-      context 'it should run the service' do
-        before(:each) do
-          expect(Alerts::GenerateAndSaveAlertsAndBenchmarks).to receive(:new).with(school: school, aggregate_school: anything, benchmark_result_generation_run: benchmark_run).and_return(stub)
-          expect(stub).to receive(:perform).once
-        end
-
-        it 'should run alerts and benchmarks' do
-          service.perform
-        end
+    context 'when running alerts and benchmarks' do
+      it 'should run the service' do
+        expect(Alerts::GenerateAndSaveAlertsAndBenchmarks).to receive(:new).with(school: school, aggregate_school: anything, benchmark_result_generation_run: benchmark_run).and_return(stub)
+        expect(stub).to receive(:perform).once
+        service.perform
       end
 
       it 'should store school specific benchmarks' do
@@ -42,46 +34,37 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
       end
     end
 
-    context 'it should update equivalences' do
-      before(:each) do
+    context 'when generating equivalences' do
+      it 'should run the service' do
         expect(Equivalences::GenerateEquivalences).to receive(:new).with(school: school, aggregate_school: anything).and_return(stub)
         expect(stub).to receive(:perform).once
-      end
-
-      it 'should run alerts and benchmarks' do
         service.perform
       end
     end
 
-
-    context 'it should generate school content' do
-      before(:each) do
+    context 'when generating content' do
+      it 'should run the service' do
         expect(Alerts::GenerateContent).to receive(:new).with(school).and_return(stub)
         expect(stub).to receive(:perform).once
-      end
-
-      it 'should run alerts and benchmarks' do
         service.perform
       end
     end
 
-    context 'when school has a target' do
+    context 'when updating school targets' do
       let!(:school_target) { create(:school_target, school: school) }
       before do
         service.perform
       end
-      it 'should end up updated' do
+      it 'should update the target' do
         school_target.reload
         expect(school_target.report_last_generated).to_not be_nil
       end
     end
 
-    context 'it should run advice page benchmarks' do
-      before(:each) do
+    context 'when generating advice page benchmarks' do
+      it 'runs the service' do
         expect(Schools::AdvicePageBenchmarks::GenerateBenchmarks).to receive(:new).with(school: school, aggregate_school: anything).and_return(stub)
         expect(stub).to receive(:generate!).once
-      end
-      it 'runs the benchmarks' do
         service.perform
       end
     end
