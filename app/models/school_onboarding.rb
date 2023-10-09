@@ -71,8 +71,12 @@ class SchoolOnboarding < ApplicationRecord
     events.where(event: event_name).any?
   end
 
-  def has_event_older_than?(event_name, created_at)
-    events.where(event: event_name, created_at: ..created_at).any?
+  def last_event(event_name)
+    events.where(event: event_name).last
+  end
+
+  def last_event_older_than?(event_name, time)
+    last_event(event_name) && last_event(event_name).created_at < time
   end
 
   def has_only_sent_email_or_reminder?

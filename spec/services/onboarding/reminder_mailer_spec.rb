@@ -11,11 +11,11 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
 
   it { expect(deliveries).to be_empty }
 
-  describe ".deliver_all" do
+  describe ".deliver_due" do
     let!(:onboardings) { [] }
     let(:onboarding) { onboardings.first }
 
-    before { Onboarding::ReminderMailer.deliver_all }
+    before { Onboarding::ReminderMailer.deliver_due }
 
     context "email_sent over a week ago" do
       let(:onboardings) { [create(:school_onboarding, events: [email_sent_over_a_week_ago])] }
@@ -48,6 +48,17 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
       end
       it "events remain the same" do
         expect(onboarding.events.pluck(:event)).to match_array ["email_sent", "reminder_sent"]
+      end
+    end
+
+    context "reminder_sent over a week ago & reminder_sent less than a week ago" do
+      let(:onboardings) { [create(:school_onboarding, events: [email_sent_over_a_week_ago, reminder_sent_over_a_week_ago, reminder_sent_less_than_a_week_ago])] }
+      before { onboarding.reload }
+      it "doesn't send email" do
+        expect(deliveries.count).to be 0
+      end
+      it "events remain the same" do
+        expect(onboarding.events.pluck(:event)).to match_array ["email_sent", "reminder_sent", "reminder_sent"]
       end
     end
 

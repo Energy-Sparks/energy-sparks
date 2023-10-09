@@ -3,7 +3,7 @@ module Onboarding
     THRESHOLD = 7
 
     class << self
-      def deliver_all
+      def deliver_due
         deliver(school_onboardings: onboardings_with_reminders_due)
       end
 
@@ -21,8 +21,8 @@ module Onboarding
         # and then weekly after the last reminder until the onboarding is completed.
         threshold = THRESHOLD.days.ago
         SchoolOnboarding.incomplete.select do |onboarding|
-          onboarding.has_event_older_than?(:reminder_sent, threshold) ||
-            onboarding.has_event_older_than?(:email_sent, threshold) && !onboarding.has_event?(:reminder_sent)
+          onboarding.last_event_older_than?(:reminder_sent, threshold) ||
+            (onboarding.last_event_older_than?(:email_sent, threshold) && !onboarding.has_event?(:reminder_sent))
         end
       end
 
