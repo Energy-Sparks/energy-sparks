@@ -3,7 +3,7 @@ namespace :school do
   task daily_regeneration: :environment do
     puts "#{DateTime.now.utc} Run daily regeneration for all process data schools start"
     BenchmarkResultGenerationRun.create!
-    School.process_data.order(:name).limit(5).each do |school|
+    School.process_data.order(:name).each do |school|
       puts "Run daily regeneration job for #{school.name}"
       begin
         DailyRegenerationJob.perform_later(school: school)
