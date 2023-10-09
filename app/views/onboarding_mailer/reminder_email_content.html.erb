@@ -10,7 +10,7 @@
   <%= t('onboarding_mailer.reminder_email.paragraph_3.other') %>
   <ul>
   <% @school_onboardings.each do |onboarding| %>
-    <li><%= link_to onboarding.school_name, onboarding_url(onboarding), class: 'btn btn-primary mb-3 mt-3'%></li>
+    <li><%= link_to onboarding.school_name, onboarding_url(onboarding) %></li>
   <% end %>
   </ul>
 <% else %>
