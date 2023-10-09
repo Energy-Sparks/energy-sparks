@@ -88,6 +88,7 @@ class Meter < ApplicationRecord
   scope :meters_to_check_against_dcc, -> { main_meter.not_dcc.not_recently_checked }
   scope :data_source_known, -> { where.not(data_source: nil) }
   scope :procurement_route_known, -> { where.not(procurement_route: nil) }
+  scope :from_active_schools, -> { joins(:school).where('schools.active = TRUE') }
 
   scope :with_zero_reading_days_and_dates, -> {
       left_outer_joins(:amr_validated_readings)
