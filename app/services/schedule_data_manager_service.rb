@@ -2,6 +2,7 @@ require 'dashboard'
 
 class ScheduleDataManagerService
   DEFAULT_TARGET_TEMPERATURE_DAYS_EITHER_SIDE = 4
+  CACHE_EXPIRY = 4.hours
 
   def initialize(school, meter_data_type = :unvalidated_meter_data)
     @school = school
@@ -53,7 +54,7 @@ class ScheduleDataManagerService
 
   def find_solar_pv
     cache_key = "#{@solar_pv_tuos_area_id}-solar-pv-2-tuos"
-    cached_solar_pv ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+    cached_solar_pv ||= Rails.cache.fetch(cache_key, expires_in: CACHE_EXPIRY) do
       data = SolarPV.new('solar pv')
       DataFeeds::SolarPvTuosReading.where(area_id: @solar_pv_tuos_area_id).pluck(:reading_date, :generation_mw_x48).each do |date, values|
         data.add(date, values.map(&:to_f))
@@ -70,7 +71,7 @@ class ScheduleDataManagerService
 
   def find_uk_grid_carbon_intensity
     cache_key = "co2-feed"
-    cached_uk_grid_carbon_intensity ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+    cached_uk_grid_carbon_intensity ||= Rails.cache.fetch(cache_key, expires_in: CACHE_EXPIRY) do
       uk_grid_carbon_intensity_data = GridCarbonIntensity.new
       DataFeeds::CarbonIntensityReading.all.pluck(:reading_date, :carbon_intensity_x48).each do |date, values|
         uk_grid_carbon_intensity_data.add(date, values.map(&:to_f))
@@ -87,7 +88,7 @@ class ScheduleDataManagerService
 
   def find_temperatures
     cache_key = cache_key_temperatures
-    cached_temperatures ||= Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+    cached_temperatures ||= Rails.cache.fetch(cache_key, expires_in: CACHE_EXPIRY) do
       data = Temperatures.new('temperatures')
 
       #FEATURE FLAG: if this is set then we want to start using Meteostat data
@@ -126,7 +127,7 @@ class ScheduleDataManagerService
   end
 
   def find_holidays
-    Rails.cache.fetch(self.class.calendar_cache_key(@calendar), expires_in: 3.hours) do
+    Rails.cache.fetch(self.class.calendar_cache_key(@calendar), expires_in: CACHE_EXPIRY) do
       hol_data = HolidayData.new
 
       Calendar.find(@calendar.id).outside_term_time.order(:start_date).includes(:academic_year, :calendar_event_type).map do |holiday|
