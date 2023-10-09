@@ -152,6 +152,17 @@ RSpec.describe OnboardingMailer do
           expect(email.subject).to eq(I18n.t('subject.other', scope: scope, locale: :en) + " / " + I18n.t('subject.other', scope: scope, locale: :cy))
         end
 
+        it 'has links to schools for both languages' do
+          expect(body).to have_link(school_onboardings[0].school_name,
+            href: "http://localhost/school_setup/#{school_onboardings[0].uuid}")
+          expect(body).to have_link(school_onboardings[0].school_name,
+            href: "http://cy.localhost/school_setup/#{school_onboardings[0].uuid}")
+          expect(body).to have_link(school_onboardings[1].school_name,
+            href: "http://localhost/school_setup/#{school_onboardings[1].uuid}")
+          expect(body).to have_link(school_onboardings[1].school_name,
+            href: "http://cy.localhost/school_setup/#{school_onboardings[1].uuid}")
+        end
+
         it_behaves_like "a reminder email in locale", locale: :cy, context: 'other'
         it_behaves_like "a reminder email in locale", locale: :en, context: 'other'
       end
@@ -176,6 +187,13 @@ RSpec.describe OnboardingMailer do
 
         it 'the multiples subject is in English only' do
           expect(email.subject).to eq(I18n.t('subject.other', scope: scope, locale: :en))
+        end
+
+        it 'has links to schools in English' do
+          expect(body).to have_link(school_onboardings[0].school_name,
+            href: "http://localhost/school_setup/#{school_onboardings[0].uuid}")
+          expect(body).to have_link(school_onboardings[1].school_name,
+            href: "http://localhost/school_setup/#{school_onboardings[1].uuid}")
         end
 
         it_behaves_like "a reminder email in locale", locale: :en, context: 'other'
