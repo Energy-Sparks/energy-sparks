@@ -14,7 +14,7 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
 
   describe '#perform' do
     context 'when updating school configuration' do
-      it 'should run the service' do
+      it 'runs the service' do
         expect(Schools::GenerateConfiguration).to receive(:new).with(school, anything).and_return(stub)
         expect(stub).to receive(:generate)
         service.perform
@@ -22,20 +22,20 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
     end
 
     context 'when running alerts and benchmarks' do
-      it 'should run the service' do
+      it 'runs the service' do
         expect(Alerts::GenerateAndSaveAlertsAndBenchmarks).to receive(:new).with(school: school, aggregate_school: anything, benchmark_result_generation_run: benchmark_run).and_return(stub)
         expect(stub).to receive(:perform).once
         service.perform
       end
 
-      it 'should store school specific benchmarks' do
+      it 'stores school specific benchmarks' do
         service.perform
         expect(BenchmarkResultSchoolGenerationRun.last.benchmark_result_generation_run).to eq(benchmark_run)
       end
     end
 
     context 'when generating equivalences' do
-      it 'should run the service' do
+      it 'runs the service' do
         expect(Equivalences::GenerateEquivalences).to receive(:new).with(school: school, aggregate_school: anything).and_return(stub)
         expect(stub).to receive(:perform).once
         service.perform
@@ -43,7 +43,7 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
     end
 
     context 'when generating content' do
-      it 'should run the service' do
+      it 'runs the service' do
         expect(Alerts::GenerateContent).to receive(:new).with(school).and_return(stub)
         expect(stub).to receive(:perform).once
         service.perform
@@ -55,7 +55,7 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
       before do
         service.perform
       end
-      it 'should update the target' do
+      it 'updates the target' do
         school_target.reload
         expect(school_target.report_last_generated).to_not be_nil
       end

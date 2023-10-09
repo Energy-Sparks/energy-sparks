@@ -23,7 +23,7 @@ describe Schools::SchoolRegenerationService, type: :service do
       expect_any_instance_of(AggregateSchoolService).to receive(:cache)
       expect_any_instance_of(Schools::SchoolMetricsGeneratorService).to receive(:perform)
     end
-    it 'should call validate, update cache and regenerate metrics ' do
+    it 'calls validate, update cache and regenerate metrics ' do
       service.perform
     end
   end
