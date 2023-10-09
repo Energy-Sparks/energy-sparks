@@ -1,5 +1,7 @@
 module Onboarding
   class ReminderMailer
+    THRESHOLD = 7
+
     class << self
       def deliver_all
         deliver(school_onboardings: onboardings_with_reminders_due)
@@ -17,8 +19,11 @@ module Onboarding
       def onboardings_with_reminders_due
         # The reminders should be sent one week after the initial onboarding email was sent,
         # and then weekly after the last reminder until the onboarding is completed.
-        # (See the SchoolOnboardingEvents events for the dates)
-        SchoolOnboarding.reminder_due
+        threshold = THRESHOLD.days.ago
+        SchoolOnboarding.incomplete.select do |onboarding|
+          onboarding.has_event_older_than?(:reminder_sent, threshold) ||
+            onboarding.has_event_older_than?(:email_sent, threshold) && !onboarding.has_event?(:reminder_sent)
+        end
       end
 
       def onboardings_by_email(school_onboardings)
@@ -29,8 +34,8 @@ module Onboarding
         end
       end
 
-      def create_events_for(school_onboardings)
-        school_onboardings.each do |school_onboarding|
+      def create_events_for(onboardings_for_email)
+        onboardings_for_email.each do |school_onboarding|
           school_onboarding.events.create!(event: :reminder_sent)
         end
       end
