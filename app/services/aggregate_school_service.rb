@@ -15,6 +15,11 @@ class AggregateSchoolService
     end
   end
 
+  #overwrite whatever we have cached
+  def cache(meter_collection)
+    Rails.cache.write(cache_key, meter_collection)
+  end
+
   def invalidate_cache
     Rails.cache.delete(cache_key)
   end
