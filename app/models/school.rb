@@ -213,6 +213,7 @@ class School < ApplicationRecord
   #simplified pattern from: https://stackoverflow.com/questions/164979/regex-for-matching-uk-postcodes
   #adjusted to use \A and \z
   validates :postcode, format: { with: /\A[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}\z/i }
+  validate :valid_postcode
 
   validates_associated :school_times, on: :school_time_update
 
@@ -230,7 +231,7 @@ class School < ApplicationRecord
     end
   end
 
-  after_validation :geocode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
+  before_validation :geocode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
 
   # Note that saved_change_to_activation_date? is a magic ActiveRecord method
   # https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Dirty.html#method-i-will_save_change_to_attribute-3F
@@ -667,6 +668,12 @@ class School < ApplicationRecord
   end
 
   private
+
+  def valid_postcode
+    return unless latitude.blank? || longitude.blank? || country.blank?
+
+    errors.add(:postcode, I18n.t('schools.school_details.geocode_not_found_message'))
+  end
 
   def add_joining_observation
     observations.create!(
