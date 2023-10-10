@@ -24,13 +24,19 @@ class ChartComponent < ViewComponent::Base
     @wrap = wrap
   end
 
+  def chart_config
+    @chart_config ||= create_chart_config(@school, @chart_type, export_title: @export_title, export_subtitle: @export_subtitle)
+  rescue StandardError
+    nil
+  end
+
   def before_render
     @export_title = title.present? ? title.to_s : ''
     @export_subtitle = subtitle.present? ? subtitle.to_s : ''
   end
 
   def valid_config?
-    !@chart_config.nil?
+    !chart_config.nil?
   end
 
   def chart_config_json
@@ -40,9 +46,7 @@ class ChartComponent < ViewComponent::Base
   private
 
   def build_chart_config_to_json
-    config = @chart_config || create_chart_config(school, chart_type, export_title: @export_title, export_subtitle: @export_subtitle)
-
-    config.merge(
+    chart_config.merge(
       no_advice: !show_advice,
       no_zoom: no_zoom,
       type: chart_type,
@@ -53,6 +57,6 @@ class ChartComponent < ViewComponent::Base
   end
 
   def chart_id
-    @chart_config[:mpan_mprn].present? ? "chart_#{chart_type}_#{@chart_config[:mpan_mprn]}" : "chart_#{chart_type}"
+    chart_config[:mpan_mprn].present? ? "chart_#{chart_type}_#{@chart_config[:mpan_mprn]}" : "chart_#{chart_type}"
   end
 end
