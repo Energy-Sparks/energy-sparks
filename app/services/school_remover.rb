@@ -15,7 +15,10 @@ class SchoolRemover
   end
 
   def users_ready?
-    @school.users.all?(&:access_locked?)
+    # Requires all school users are access locked except those linked to another school
+    return true if @school.users.all?(&:access_locked?)
+
+    all_unlocked_users_are_linked_to_other_schools?
   end
 
   def can_remove_school?
@@ -40,11 +43,15 @@ class SchoolRemover
 
   def remove_users!
     raise SchoolRemover::Error.new('Cannot remove users while school is still visible') if @school.visible?
+
     @school.transaction do
       @school.users.each do |user|
+        next if user.has_other_schools? && @archive
+
         if user.has_other_schools?
           user.remove_school(@school)
         else
+          # Lock account if user is linked to only this school
           user.contacts.for_school(@school).first&.destroy unless @archive
           user.lock_access!(send_instructions: false)
         end
@@ -62,6 +69,26 @@ class SchoolRemover
   end
 
   private
+
+  def all_unlocked_users_are_linked_to_other_schools?
+    # Return false if none of the unlocked users have other schools
+    return false if unlocked_users_linked_to_another_school_ids.empty?
+
+    # Confirm *all* unlocked users have other schools
+    (unlocked_user_ids - unlocked_users_linked_to_another_school_ids).empty?
+  end
+
+  def unlocked_users_linked_to_another_school_ids
+    @unlocked_users_linked_to_another_school_ids ||= unlocked_users_linked_to_another_school.pluck(:id)
+  end
+
+  def unlocked_users_linked_to_another_school
+    User.find_school_users_linked_to_other_schools(school_id: @school.id, user_ids: unlocked_user_ids)
+  end
+
+  def unlocked_user_ids
+    @unlocked_user_ids ||= @school.users.reject(&:access_locked?).pluck(:id)
+  end
 
   def delete_school_issues
     return if @archive

@@ -134,6 +134,44 @@ describe User do
     end
   end
 
+  describe '.find_school_users_linked_to_other_schools' do
+    let(:school)              { create(:school) }
+    let(:school_2)            { create(:school) }
+    let(:school_3)            { create(:school) }
+    let!(:school_admin)       { create(:school_admin, school: school) }
+    let!(:staff_user)         { create(:staff, school: school) }
+    let!(:pupil_user)         { create(:pupil, school: school) }
+
+    context 'with users linked to other schools' do
+      before do
+        school_admin.add_cluster_school(school_2)
+        staff_user.add_cluster_school(school_3)
+      end
+
+      it 'returns a collection of all school users supplied in a list of user ids linked with another school' do
+        expect(school.users.count).to eq(3)
+        expect(school_2.cluster_users.count).to eq(1)
+        expect(school_3.cluster_users.count).to eq(1)
+        expect(User.find_school_users_linked_to_other_schools(school_id: school, user_ids: school.users.pluck(:id))).to match_array([school_admin, staff_user])
+        expect(User.find_school_users_linked_to_other_schools(school_id: school, user_ids: [school_admin.id])).to match_array([school_admin])
+        expect(User.find_school_users_linked_to_other_schools(school_id: school, user_ids: [staff_user.id])).to match_array([staff_user])
+        expect(User.find_school_users_linked_to_other_schools(school_id: school, user_ids: [pupil_user.id])).to match_array([])
+      end
+    end
+
+    context 'with users not linked to other schools' do
+      it 'returns an empty user collection' do
+        expect(school.users.count).to eq(3)
+        expect(school_2.cluster_users.count).to eq(0)
+        expect(school_3.cluster_users.count).to eq(0)
+        expect(User.find_school_users_linked_to_other_schools(school_id: school, user_ids: school.users.pluck(:id))).to match_array([])
+        expect(User.find_school_users_linked_to_other_schools(school_id: school, user_ids: [school_admin.id])).to match_array([])
+        expect(User.find_school_users_linked_to_other_schools(school_id: school, user_ids: [staff_user.id])).to match_array([])
+        expect(User.find_school_users_linked_to_other_schools(school_id: school, user_ids: [pupil_user.id])).to match_array([])
+      end
+    end
+  end
+
   describe 'welcome email' do
     let(:school) { create(:school) }
     let(:user) { create(:staff, school: school, confirmed_at: nil) }
