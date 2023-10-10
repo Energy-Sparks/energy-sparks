@@ -81,6 +81,8 @@ describe School do
       subject.postcode=valid
       expect(subject).to be_valid
     end
+
+
   end
 
   it 'validates free school meals' do
@@ -305,11 +307,11 @@ describe School do
 
     it 'the school is geolocated if the postcode is changed' do
       school = create(:school)
-      school.update(latitude: nil, longitude: nil, country: 'scotland')
+      school.update(latitude: 55.952221, longitude: -3.174625, country: 'scotland')
       school.reload
 
-      expect(school.latitude).to be nil
-      expect(school.longitude).to be nil
+      expect(school.latitude).to eq(55.952221)
+      expect(school.longitude).to eq(-3.174625)
       expect(school.country).to eq('scotland')
 
       school.update(postcode: "OL8 4JZ")

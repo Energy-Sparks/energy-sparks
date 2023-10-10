@@ -28,6 +28,16 @@ Geocoder.configure(
 if Rails.env.test?
   Geocoder.configure(lookup: :test, ip_lookup: :test)
 
+  # Geocoder::Lookup::Test.add_stub(
+  #   "EH99 1SP", [
+  #     {
+  #       'coordinates'  => [55.952221, -3.174625],
+  #       'country'      => 'Scotland'
+  #     }
+  #   ]
+  # )
+
+
   Geocoder::Lookup::Test.set_default_stub(
     [
       {
@@ -41,4 +51,7 @@ if Rails.env.test?
       }
     ]
   )
+
+
+
 end
