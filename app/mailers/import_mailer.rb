@@ -1,5 +1,6 @@
 class ImportMailer < ApplicationMailer
   helper :application, :issues
+  layout 'admin_mailer'
 
   def import_summary
     @meters_running_behind = params[:meters_running_behind]
@@ -9,7 +10,7 @@ class ImportMailer < ApplicationMailer
     environment_identifier = ENV['ENVIRONMENT_IDENTIFIER'] || 'unknown'
     subject = "[energy-sparks-#{environment_identifier}] Energy Sparks #{subject_description}: #{Time.zone.today.strftime('%d/%m/%Y')}"
     attachments[subject + '.csv'] = { mime_type: 'text/csv', content: to_csv }
-    make_bootstrap_mail(to: 'operations@energysparks.uk', subject: subject)
+    mail(to: 'operations@energysparks.uk', subject: subject)
   end
 
   private
