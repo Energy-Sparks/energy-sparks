@@ -51,7 +51,7 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
       end
     end
 
-    context "reminder_sent over a week ago & reminder_sent less than a week ago" do
+    context "email_sent over a week ago & reminder_sent less than a week ago" do
       let(:onboardings) { [create(:school_onboarding, events: [email_sent_over_a_week_ago, reminder_sent_over_a_week_ago, reminder_sent_less_than_a_week_ago])] }
       before { onboarding.reload }
       it "doesn't send email" do
