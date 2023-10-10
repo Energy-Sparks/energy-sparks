@@ -19,8 +19,8 @@ module Schools
       @logger.info("Total validated readings for school: #{total_amr_readings_after} - Difference: #{total_amr_readings_after - total_amr_readings_before}")
       meter_collection
     rescue => e
-      puts e
       log_error("Failed to validate and persist readings", e)
+      create_meter_collection_from_validated_readings
     end
 
     def run_aggregation(meter_collection)
@@ -28,7 +28,6 @@ module Schools
       AggregateDataService.new(meter_collection).aggregate_heat_and_electricity_meters
       @logger.info("Aggregated school")
     rescue => e
-      puts e
       log_error("Failed to aggregate school", e)
     end
 
@@ -51,6 +50,11 @@ module Schools
       @logger.error "Exception: #{msg} #{@school.name}: #{exception.class} #{exception.message}"
       @logger.error exception.backtrace.join("\n")
       Rollbar.error(exception, job: :school_regeneration_job, school_id: @school.id, school: @school.name)
+    end
+
+    def create_meter_collection_from_validated_readings
+      @logger.info("Continuing with validated readings")
+      Amr::AnalyticsMeterCollectionFactory.new(@school).validated
     end
   end
 end
