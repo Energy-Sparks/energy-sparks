@@ -18,10 +18,12 @@
       <div id='chart_wrapper_<%= chart_type %>' class='chart-wrapper'>
         <div id="<%= chart_id %>" class="<%= html_class %>" data-autoload-chart="<%= autoload_chart %>" data-chart-config="<%= chart_config_json %>">
         </div>
+        <div id='chart-error' class='d-none'><%= I18n.t('chart_data_values.standard_error_message') %></div>
       </div>
     <% else %>
       <div id="<%= chart_id %>" class="<%= html_class %>" data-autoload-chart="<%= autoload_chart %>" data-chart-config="<%= chart_config_json %>">
       </div>
+      <div id='chart-error' class='d-none'><%= I18n.t('chart_data_values.standard_error_message') %></div>
     <% end %>
 
   </div>
