@@ -36,13 +36,13 @@ class ChartComponent < ViewComponent::Base
     !chart_config.nil?
   end
 
-  def chart_tag(school, chart_type, wrap: true, show_advice: false, no_zoom: false, chart_config: {}, html_class: 'analysis-chart', autoload_chart: true, fuel_type: nil)
+  def chart_tag(school, chart_type, wrap: true, show_advice: false, no_zoom: false, html_class: 'analysis-chart', autoload_chart: true, fuel_type: nil)
     chart_config[:no_advice] = !show_advice
     chart_config[:no_zoom] = no_zoom
     chart_container = content_tag(
       :div,
       '',
-      id: chart_config[:mpan_mprn].present? ? "chart_#{chart_type}_#{chart_config[:mpan_mprn]}" : "chart_#{chart_type}",
+      id: chart_id,
       class: html_class,
       data: {
         autoload_chart: autoload_chart,
@@ -60,5 +60,11 @@ class ChartComponent < ViewComponent::Base
     else
       chart_container
     end
+  end
+
+  private
+
+  def chart_id
+    chart_config[:mpan_mprn].present? ? "chart_#{chart_type}_#{chart_config[:mpan_mprn]}" : "chart_#{chart_type}"
   end
 end
