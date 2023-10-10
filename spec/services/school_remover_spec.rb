@@ -2,15 +2,20 @@ require 'rails_helper'
 
 describe SchoolRemover, :schools, type: :service do
 
-  let(:school)              { create(:school, visible: false) }
-  let!(:school_admin)       { create(:school_admin, school: school) }
-  let!(:contact)            { create(:contact_with_name_email_phone, school: school, user: school_admin)}
+  let(:school)                   { create(:school, visible: false, number_of_pupils: 12) }
+  let(:visible_school)           { create(:school, visible: true, number_of_pupils: 12) }
 
-  let!(:electricity_meter) { create(:electricity_meter_with_validated_reading, school: school) }
-  let!(:gas_meter)         { create(:gas_meter, :with_unvalidated_readings, school: school)}
-  let!(:electricity_meter_issue)             { create(:issue, school: school) }
-  let!(:gas_meter_issue)             { create(:issue, school: school) }
-  let!(:school_issue)             { create(:issue, school: school) }
+  let!(:school_admin)            { create(:school_admin, school: school) }
+  let!(:contact)                 { create(:contact_with_name_email_phone, school: school, user: school_admin)}
+  let!(:school_admin_user)       { create(:school_admin, school: school) }
+  let!(:staff_user)              { create(:staff, school: school) }
+  let!(:pupil_user)              { create(:pupil, school: school) }
+
+  let!(:electricity_meter)       { create(:electricity_meter_with_validated_reading, school: school) }
+  let!(:gas_meter)               { create(:gas_meter, :with_unvalidated_readings, school: school)}
+  let!(:electricity_meter_issue) { create(:issue, school: school) }
+  let!(:gas_meter_issue)         { create(:issue, school: school) }
+  let!(:school_issue)            { create(:issue, school: school) }
 
 
   let(:archive) { false }
@@ -21,6 +26,64 @@ describe SchoolRemover, :schools, type: :service do
     electricity_meter_issue.save!
     gas_meter_issue.meters << gas_meter
     gas_meter_issue.save!
+  end
+
+  describe '#users_ready?' do
+    context 'with all access locked all users' do
+      before { school.users.each(&:lock_access!) }
+
+      it 'returns true' do
+        expect(visible_school.cluster_users.count).to eq(0)
+        expect(school.users.count).to eq(4)
+        expect(school.users.count(&:access_locked?)).to eq(4)
+        expect(service.users_ready?).to eq(true)
+      end
+    end
+
+    context 'with at least 1 access unlocked user' do
+      before do
+        school.users.each(&:lock_access!)
+        school.users.first.unlock_access!
+      end
+
+      it 'returns false' do
+        expect(visible_school.cluster_users.count).to eq(0)
+        expect(school.users.count).to eq(4)
+        expect(school.users.count(&:access_locked?)).to eq(3)
+        expect(service.users_ready?).to eq(false)
+      end
+    end
+
+    context 'with all access locked users except one which is associated with another school' do
+      before do
+        school.users.each(&:lock_access!)
+        school.users.first.unlock_access!
+        school.users.first.add_cluster_school(visible_school)
+      end
+
+      it 'returns true' do
+        expect(visible_school.cluster_users.count).to eq(1)
+        expect(school.users.count).to eq(4)
+        expect(school.users.count(&:access_locked?)).to eq(3)
+        expect(service.users_ready?).to eq(true)
+      end
+    end
+
+    context 'with two access locked users and two unlocked users, only one of which is associated with another school' do
+      before do
+        school.users.each(&:lock_access!)
+        school.users.first.unlock_access!
+        school.users.second.unlock_access!
+        school.users.first.add_cluster_school(visible_school)
+      end
+
+      it 'returns true' do
+        expect(visible_school.cluster_users.count).to eq(1)
+        expect(school.users.count).to eq(4)
+        expect(school.users.count(&:access_locked?)).to eq(2)
+        expect(service.users_ready?).to eq(false)
+      end
+    end
   end
 
   describe '#remove_school!' do
@@ -57,6 +120,7 @@ describe SchoolRemover, :schools, type: :service do
 
   describe '#remove_users!' do
     let(:remove)    { service.remove_users! }
+
     it 'locks the user accounts' do
       remove
       expect(school.users.all?(&:access_locked?)).to be_truthy
@@ -69,17 +133,22 @@ describe SchoolRemover, :schools, type: :service do
 
     context 'when archiving' do
       let(:archive) { true }
+
       it 'keeps the alert contacts' do
         remove
+        expect(school.users.all?(&:access_locked?)).to be_truthy
         expect(Contact.count).to eq 1
       end
     end
+
     context 'when user is linked to other schools' do
       let(:other_school)  { create(:school) }
+
       before do
         school_admin.add_cluster_school(other_school)
         remove
       end
+
       it 'does not lock user and switches them to the other school' do
         school_admin.reload
         expect(school_admin.access_locked?).to be_falsey
