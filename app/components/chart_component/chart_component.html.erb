@@ -1,6 +1,8 @@
 <% if valid_config? %>
 
-  <div id="chart_wrapper_<%= chart_type %>" class="chart-wrapper">
+  <% if wrap %>
+    <div id="chart_wrapper_<%= chart_type %>" class="chart-wrapper">
+  <% end %>
 
     <% if title %>
       <h4 id="chart-section-<%= chart_type %>" class="chart-title"><%= title %></h4>
@@ -14,19 +16,13 @@
 
     <%= render 'shared/analysis_controls', chart_type: chart_type, axis_controls: axis_controls, analysis_controls: analysis_controls %>
 
-    <% if wrap %>
-      <div id='chart_wrapper_<%= chart_type %>' class='chart-wrapper'>
-        <div id="<%= chart_id %>" class="<%= html_class %>" data-autoload-chart="<%= autoload_chart %>" data-chart-config="<%= chart_config_json %>">
-        </div>
-        <div id='chart-error' class='d-none'><%= I18n.t('chart_data_values.standard_error_message') %></div>
-      </div>
-    <% else %>
-      <div id="<%= chart_id %>" class="<%= html_class %>" data-autoload-chart="<%= autoload_chart %>" data-chart-config="<%= chart_config_json %>">
-      </div>
-      <div id='chart-error' class='d-none'><%= I18n.t('chart_data_values.standard_error_message') %></div>
-    <% end %>
+    <div id="<%= chart_id %>" class="<%= html_class %>" data-autoload-chart="<%= autoload_chart %>" data-chart-config="<%= chart_config_json %>">
+    </div>
+    <div id='chart-error' class='d-none'><%= I18n.t('chart_data_values.standard_error_message') %></div>
 
-  </div>
+  <% if wrap %>
+    </div>
+  <% end %>
 
   <%= footer %>
 
