@@ -196,6 +196,13 @@ RSpec.describe OnboardingMailer do
             href: "http://localhost/school_setup/#{school_onboardings[1].uuid}")
         end
 
+        it "doesn't have links to schools in Welsh" do
+          expect(body).to_not have_link(school_onboardings[0].school_name,
+            href: "http://cy.localhost/school_setup/#{school_onboardings[0].uuid}")
+          expect(body).to_not have_link(school_onboardings[1].school_name,
+            href: "http://cy.localhost/school_setup/#{school_onboardings[1].uuid}")
+        end
+
         it_behaves_like "a reminder email in locale", locale: :en, context: 'other'
         it_behaves_like "a reminder email not in locale", locale: :cy, context: 'other'
       end
