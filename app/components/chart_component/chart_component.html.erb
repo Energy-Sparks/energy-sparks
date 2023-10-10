@@ -13,10 +13,16 @@
     <%= header %>
 
     <%= render 'shared/analysis_controls', chart_type: chart_type, axis_controls: axis_controls, analysis_controls: analysis_controls %>
-    <%= chart_tag(school, chart_type, no_zoom: no_zoom, wrap: false, html_class: html_class, fuel_type: fuel_type) %>
 
-
-
+    <% if wrap %>
+      <div id='chart_wrapper_<%= chart_type %>' class='chart-wrapper'>
+        <div id="<%= chart_id %>" class="<%= html_class %>" data-autoload-chart="<%= autoload_chart %>" data-chart-config="<%= chart_config_json %>">
+        </div>
+      </div>
+    <% else %>
+      <div id="<%= chart_id %>" class="<%= html_class %>" data-autoload-chart="<%= autoload_chart %>" data-chart-config="<%= chart_config_json %>">
+      </div>
+    <% end %>
 
   </div>
 
