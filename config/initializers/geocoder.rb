@@ -32,12 +32,8 @@ if Rails.env.test?
     "EH99 1SP", [
       {
         'coordinates'  => [55.952221, -3.174625],
-        'address'      => 'Holyrood, Edinburgh, Scotland, EH99 1SP',
-        'state'        => 'Edinburgh',
-        'state_code'   => 'EH',
         'country'      => 'scotland',
-        'country_code' => 'uk',
-        'postal_code'     => 'EH99 1SP',
+        'postal_code'  => 'EH99 1SP',
         'latitude'     => 55.952221,
         'longitude'    => -3.174625
       }
@@ -48,12 +44,8 @@ if Rails.env.test?
     "AB1 2CD", [
       {
         'coordinates'  => [55.952221, -3.174625],
-        'address'      => 'Freshford Station',
-        'state'        => 'Somerset',
-        'state_code'   => 'EH',
         'country'      => 'england',
-        'country_code' => 'uk',
-        'postal_code'     => 'AB1 2CD',
+        'postal_code'  => 'AB1 2CD',
         'latitude'     => 51.340620,
         'longitude'    => -2.301420
       }
@@ -64,12 +56,8 @@ if Rails.env.test?
     "OL84JZ", [
       {
         'coordinates'  => [55.952221, -3.174625],
-        'address'      => 'Freshford Station',
-        'state'        => 'Somerset',
-        'state_code'   => 'EH',
         'country'      => 'england',
-        'country_code' => 'uk',
-        'postal_code'     => 'OL84JZ',
+        'postal_code'  => 'OL84JZ',
         'latitude'     => 51.340620,
         'longitude'    => -2.301420
       }
@@ -80,12 +68,8 @@ if Rails.env.test?
     "OL8 4JZ", [
       {
         'coordinates'  => [55.952221, -3.174625],
-        'address'      => 'Freshford Station',
-        'state'        => 'Somerset',
-        'state_code'   => 'EH',
         'country'      => 'england',
-        'country_code' => 'uk',
-        'postal_code'     => 'OL8 4JZ',
+        'postal_code'  => 'OL8 4JZ',
         'latitude'     => 51.340620,
         'longitude'    => -2.301420
       }
