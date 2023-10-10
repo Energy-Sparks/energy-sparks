@@ -1,5 +1,12 @@
-<%= component 'chart', no_zoom: true, chart_type: content, analysis_controls: true, school: @school, chart_config: create_chart_config(school, content, mpan_mprn) do %>
+<div id="chart_wrapper_<%= content %>" class="pt-3 chart-wrapper">
   <div class="dynamic-titles">
     <h5 class="text-center"></h5>
   </div>
-<% end %>
+  <%= component 'chart',
+                school: school,
+                chart_type: content,
+                no_zoom: true,
+                wrap: false,
+                chart_config: create_chart_config(school, content, mpan_mprn
+  %>
+</div>

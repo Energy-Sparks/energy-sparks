@@ -10,5 +10,12 @@
       <h3></h3>
       <h5></h5>
   </div>
-  <%= component 'chart', chart_type: @chart_type.to_s, analysis_controls: true, school: @school, chart_config: create_chart_config(@school, @chart_type, apply_preferred_units: false), fuel_type: @fuel_type %>
+  <%= component 'chart',
+                school: @school,
+                chart_type: @chart_type.to_s,
+                no_zoom: true,
+                wrap: false,
+                chart_config: create_chart_config(@school, @chart_type, apply_preferred_units: false),
+                fuel_type: @fuel_type
+  %>
 </div>
