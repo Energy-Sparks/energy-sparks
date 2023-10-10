@@ -227,7 +227,7 @@ class School < ApplicationRecord
     if (geo = results.first)
       obj.latitude = geo.data['latitude']
       obj.longitude = geo.data['longitude']
-      obj.country = geo.data['country'].downcase
+      obj.country = geo.data['country']&.downcase
     end
   end
 
@@ -670,6 +670,7 @@ class School < ApplicationRecord
   private
 
   def valid_postcode
+    return unless postcode
     return unless latitude.blank? || longitude.blank? || country.blank?
 
     errors.add(:postcode, I18n.t('schools.school_details.geocode_not_found_message'))

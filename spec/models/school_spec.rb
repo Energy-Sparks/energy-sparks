@@ -77,7 +77,7 @@ describe School do
       subject.postcode=invalid
       expect(subject).to_not be_valid
     end
-    ["Sa48JA", "OL8 4JZ"].each do |valid|
+    ["OL84JZ", "OL8 4JZ"].each do |valid|
       subject.postcode=valid
       expect(subject).to be_valid
     end
@@ -321,6 +321,24 @@ describe School do
       expect(school.latitude).to eq(51.340620)
       expect(school.longitude).to eq(-2.301420)
       expect(school.country).to eq('england')
+    end
+
+    it 'passes validation with a findable postcode' do
+      school = build(:school, postcode: 'EH99 1SP')
+      expect(school.valid?).to eq(true)
+      expect(school.errors.messages).to eq({})
+      expect(school.latitude).to eq(55.952221)
+      expect(school.longitude).to eq(-3.174625)
+      expect(school.country).to eq('scotland')
+    end
+
+    it 'fails validation with a non findable postcode' do
+      school = build(:school, postcode: 'EH99 2SP')
+      expect(school.valid?).to eq(false)
+      expect(school.errors.messages[:postcode]).to eq(['not found.'])
+      expect(school.latitude).to eq(nil)
+      expect(school.longitude).to eq(nil)
+      expect(school.country).to eq(nil)
     end
   end
 
