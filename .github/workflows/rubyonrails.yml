@@ -36,13 +36,13 @@ jobs:
         run: bin/rails db:schema:load
       # Precompile assets
       - name: Precompile assets
-        run: bundle exec rake assets:precompile
+        run: bundle exec bin/rake assets:precompile
       # Fail early if we have issues with translation keys
       - name: Run i18n-tasks
         run: bundle exec i18n-tasks health
       # Add or replace test runners here
       - name: Run tests
-        run: bundle exec rspec --exclude-pattern "spec/system/**/*_spec.rb"
+        run: bundle exec bin/rspec --exclude-pattern "spec/system/**/*_spec.rb"
   test-system:
     runs-on: ubuntu-latest
     services:
