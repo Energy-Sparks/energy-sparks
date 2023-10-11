@@ -222,6 +222,12 @@ describe ImportNotifier do
       let!(:meter_2)  { create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings,
         start_date: start_date, end_date: end_date, school: bath_school, data_source: create(:data_source, import_warning_days: 2)) }
 
+      let(:admin_1) { create(:admin, name: 'Admin One') }
+      let(:admin_2) { create(:admin, name: 'Admin Two') }
+
+      let!(:bath_school)               { create(:school, school_group: create(:school_group, default_issues_admin_user: admin_1))}
+      let!(:sheffield_school)          { create(:school, school_group: create(:school_group, default_issues_admin_user: admin_2))}
+
       it 'contains the meter information in the email' do
         ImportNotifier.new.notify(from: 2.days.ago, to: Time.now)
         email_body = email.html_part.body
@@ -229,6 +235,15 @@ describe ImportNotifier do
         expect(email_body).to include(meter_1.school_name)
         expect(email_body).to include(meter_2.mpan_mprn.to_s)
         expect(email_body).to include(meter_2.school_name)
+        expect(email_body).to include(admin_1.name)
+        expect(email_body).to include(admin_2.name)
+      end
+
+      it 'has an attachment' do
+        attachment = email.attachments[0]
+        expect(attachment.content_type).to include('text/csv')
+        expect(attachment.filename).to eq("[energy-sparks-unknown] Energy Sparks import report: #{Date.today.strftime('%d/%m/%Y')}.csv")
+        expect(attachment.body.raw_source.split("\r\n").first).to eq("\"\",Area,Meter type,School,MPAN/MPRN,Meter system,Data source,Procurement route,Last validated reading date,Admin meter status,Issues,Notes,Group admin name")
       end
     end
 
