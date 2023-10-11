@@ -1,5 +1,6 @@
 class ApplicationMailer < ActionMailer::Base
   include DefaultUrlOptionsHelper
+  include PremailerOverrideHelper
 
   default from: 'Energy Sparks <hello@energysparks.uk>'
   layout 'mailer'
