@@ -3,6 +3,7 @@ class EnergySparksDeviseMailer < Devise::Mailer
   include Devise::Controllers::UrlHelpers
   include DefaultUrlOptionsHelper
   include LocaleMailerHelper
+  include PremailerOverrideHelper
 
   default template_path: 'devise/mailer'
 
