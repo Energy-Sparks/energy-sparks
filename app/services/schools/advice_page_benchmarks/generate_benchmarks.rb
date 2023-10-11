@@ -7,7 +7,7 @@ module Schools
       end
 
       def generate!
-        AdvicePage.all.each do |advice_page|
+        AdvicePage.all.find_each do |advice_page|
           generator = SchoolBenchmarkGenerator.generator_for(advice_page: advice_page, school: @school, aggregate_school: @aggregate_school)
           generator.perform if generator.present?
         end

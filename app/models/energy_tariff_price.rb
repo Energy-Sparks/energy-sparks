@@ -44,7 +44,7 @@ class EnergyTariffPrice < ApplicationRecord
   end
 
   def self.total_minutes
-    all.map(&:time_duration).sum
+    all.sum(&:time_duration)
   end
 
   def self.complete?

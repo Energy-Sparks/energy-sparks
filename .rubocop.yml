@@ -1,8 +1,9 @@
 AllCops:
+  NewCops: disable
+  SuggestExtensions: false
   Include:
     - 'app/**/*.rb'
     - 'lib/**/*.rb'
-    - 'data-pipeline/handlers/**/*.rb'
 # Disable specs for now
 #   - 'spec/**/*.rb'
   Exclude:
@@ -20,8 +21,9 @@ require:
   - rubocop-performance
 # Disable specs for now
 # - rubocop-rspec
-#
-
+# - rubocop-capybara
+# - rubocop-factory_bot
+# - rubocop-rspec
 
 # Rails cops
 Naming/AsciiIdentifiers:
@@ -352,7 +354,7 @@ Performance/Squeeze: # (new in 1.7)
 Performance/StringInclude: # (new in 1.7)
   Enabled: false
 Performance/Sum: # (new in 1.8)
-  Enabled: true
+  Enabled: false
 
 # Rspec cops
 #
@@ -373,3 +375,18 @@ Performance/Sum: # (new in 1.8)
 #   Enabled: false
 # RSpec/DescribeClass:
 #   Enabled: false
+
+Naming/VariableNumber:
+  Enabled: false
+Performance/CollectionLiteralInLoop:
+  Enabled: true
+Rails/Date:
+  Enabled: true
+Lint/RedundantCopDisableDirective:
+  Enabled: false
+Lint/RedundantCopEnableDirective:
+  Enabled: false
+Rails/RelativeDateConstant:
+  Enabled: false
+Style/ZeroLengthPredicate:
+  Enabled: false
