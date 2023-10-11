@@ -35,7 +35,7 @@ module Amr
       else
         mpan_mprn = fetch_from_row(:mpan_mprn_index, row)
 
-        # Error if the mpan_mprn isn't numeric e.g. contains a '+'
+        # Error if the mpan_mprn is not numeric e.g. contains a '+'
         raise DataFeedException.new("Invalid mpan_mprn '#{mpan_mprn}'") unless /^(\d)+$/.match?(mpan_mprn)
 
         meter = find_meter_by_mpan_mprn(mpan_mprn)
