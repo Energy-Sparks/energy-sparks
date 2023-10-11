@@ -49,7 +49,7 @@ class ImportNotifier
          .joins('LEFT JOIN data_sources on data_sources.id = meters.data_source_id')
          .joins(:amr_validated_readings)
          .where(schools: { active: true })
-         .joins('LEFT JOIN school_groups on schools.id = school_groups.id')
+         .joins('LEFT JOIN school_groups on schools.school_group_id = school_groups.id')
          .group('meters.id, data_sources.import_warning_days, school_groups.name, schools.name')
          .having(
            <<-SQL.squish
