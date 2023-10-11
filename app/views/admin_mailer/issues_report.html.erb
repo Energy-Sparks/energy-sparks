@@ -18,7 +18,7 @@
   </thead>
   <tbody>
     <% @issues.each do |issue| %>
-      <tr class="bg-light">
+      <tr>
         <td title="<%= issue.issue_type %>"><%= issue_type_image(issue.issue_type) %></td>
         <td><%= render 'admin/issues/issueable', issueable: issue.try(:issueable), email: true %></td>
         <td>

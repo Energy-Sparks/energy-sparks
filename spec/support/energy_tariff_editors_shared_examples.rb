@@ -124,18 +124,18 @@ RSpec.shared_examples "a basic electricity tariff editor" do
       select '06', from: 'energy_tariff_price_end_time_4i'
       select '30', from: 'energy_tariff_price_end_time_5i'
 
-      fill_in 'Rate in £/kWh', with: '1.5'
+      fill_in 'Rate in £/kWh', with: '0.15'
       click_button('Save')
 
       expect(page).to have_content('Rate from 00:30 to 06:30')
       expect(page).to have_content('Rate from 07:00 to 00:00')
-      expect(page).to have_content('£1.50 per kWh')
+      expect(page).to have_content('£0.15 per kWh')
       expect(page).to have_content('£ per kWh')
 
       expect(page).to have_content('Please add valid prices for all marked rates.')
       first('.energy-tariff-show-button').click
 
-      fill_in 'Rate in £/kWh', with: '1.5'
+      fill_in 'Rate in £/kWh', with: '0.15'
       click_button('Save')
 
       expect(page).to have_content('Please add valid prices for all marked rates.')
@@ -157,7 +157,7 @@ RSpec.shared_examples "a basic electricity tariff editor" do
 
       expect(page).not_to have_content('Rate from 00:30 to 06:30')
       expect(page).to have_content('Rate from 07:00 to 00:00')
-      expect(page).not_to have_content('£1.50 per kWh')
+      expect(page).not_to have_content('£0.15 per kWh')
       expect(page).to have_content('£ per kWh')
 
       expect(page).not_to have_content('Complete 24 hour coverage.')
@@ -170,7 +170,7 @@ RSpec.shared_examples "a basic electricity tariff editor" do
 
       expect(page).not_to have_content('Rate from 00:30 to 06:30')
       expect(page).not_to have_content('Rate from 07:00 to 00:00')
-      expect(page).not_to have_content('£1.50 per kWh')
+      expect(page).not_to have_content('£0.15 per kWh')
       expect(page).not_to have_content('£ per kWh')
 
       expect(page).not_to have_content('Please add valid prices for all marked rates.')
@@ -188,25 +188,25 @@ RSpec.shared_examples "a basic electricity tariff editor" do
 
       find("#energy-tariff-show-button-#{energy_tariff.energy_tariff_prices.first.id}").click
 
-      fill_in 'Rate in £/kWh', with: '1.5'
+      fill_in 'Rate in £/kWh', with: '0.15'
       click_button('Save')
 
       expect(page).to have_content('Rate from 00:00 to 07:00')
       expect(page).to have_content('Rate from 07:00 to 00:00')
-      expect(page).to have_content('£1.50 per kWh')
+      expect(page).to have_content('£0.15 per kWh')
       expect(page).to have_content('£ per kWh')
 
       expect(find("a", text: "Continue")[:class]).to eq('btn disabled')
 
       find("#energy-tariff-show-button-#{energy_tariff.energy_tariff_prices.last.id}").click
 
-      fill_in 'Rate in £/kWh', with: '2.5'
+      fill_in 'Rate in £/kWh', with: '0.25'
       click_button('Save')
 
       expect(page).to have_content('Rate from 00:00 to 07:00 ')
       expect(page).to have_content('Rate from 07:00 to 00:00')
-      expect(page).to have_content('£1.50 per kWh')
-      expect(page).to have_content('£2.50 per kWh')
+      expect(page).to have_content('£0.15 per kWh')
+      expect(page).to have_content('£0.25 per kWh')
 
       expect(page).to have_content('Complete 24 hour coverage.')
       expect(page).not_to have_content('Incomplete 24 hour coverage. Please add another rate.')
@@ -221,12 +221,12 @@ RSpec.shared_examples "a basic electricity tariff editor" do
       energy_tariff_price = energy_tariff.energy_tariff_prices.first
       expect(energy_tariff_price.start_time.to_s(:time)).to eq('00:00')
       expect(energy_tariff_price.end_time.to_s(:time)).to eq('07:00')
-      expect(energy_tariff_price.value.to_s).to eq('1.5')
+      expect(energy_tariff_price.value.to_s).to eq('0.15')
       expect(energy_tariff_price.units).to eq('kwh')
       energy_tariff_price = energy_tariff.energy_tariff_prices.last
       expect(energy_tariff_price.start_time.to_s(:time)).to eq('07:00')
       expect(energy_tariff_price.end_time.to_s(:time)).to eq('00:00')
-      expect(energy_tariff_price.value.to_s).to eq('2.5')
+      expect(energy_tariff_price.value.to_s).to eq('0.25')
       expect(energy_tariff_price.units).to eq('kwh')
     end
   end

@@ -180,14 +180,18 @@ class School < ApplicationRecord
   enum funding_status: [:state_school, :private_school]
   enum region: [:north_east, :north_west, :yorkshire_and_the_humber, :east_midlands, :west_midlands, :east_of_england, :london, :south_east, :south_west]
 
-  scope :active,             -> { where(active: true) }
-  scope :inactive,           -> { where(active: false) }
-  scope :visible,            -> { active.where(visible: true) }
-  scope :not_visible,        -> { active.where(visible: false) }
-  scope :process_data,       -> { active.where(process_data: true) }
-  scope :data_enabled,       -> { active.where(data_enabled: true) }
-  scope :without_group,      -> { active.where(school_group_id: nil) }
-  scope :without_scoreboard, -> { active.where(scoreboard_id: nil) }
+  #active flag is a soft-delete, those with a removal date are deleted, others
+  #are archived, with chance of returning if we receive funding
+  scope :active,              -> { where(active: true) }
+  scope :inactive,            -> { where(active: false) }
+  scope :deleted,             -> { inactive.where.not(removal_date: nil) }
+  scope :archived,            -> { inactive.where(removal_date: nil) }
+  scope :visible,             -> { active.where(visible: true) }
+  scope :not_visible,         -> { active.where(visible: false) }
+  scope :process_data,        -> { active.where(process_data: true) }
+  scope :data_enabled,        -> { active.where(data_enabled: true) }
+  scope :without_group,       -> { active.where(school_group_id: nil) }
+  scope :without_scoreboard,  -> { active.where(scoreboard_id: nil) }
   scope :awaiting_activation, -> { active.where("visible = ? or data_enabled = ?", false, false) }
   scope :data_visible,        -> { data_enabled.visible }
 
@@ -231,6 +235,18 @@ class School < ApplicationRecord
   # Note that saved_change_to_activation_date? is a magic ActiveRecord method
   # https://api.rubyonrails.org/classes/ActiveRecord/AttributeMethods/Dirty.html#method-i-will_save_change_to_attribute-3F
   after_save :add_joining_observation, if: proc { saved_change_to_activation_date?(from: nil) }
+
+  def deleted?
+    not_active? and removal_date.present?
+  end
+
+  def archived?
+    not_active? && removal_date.nil?
+  end
+
+  def not_active?
+    !active
+  end
 
   def minimum_reading_date
     return unless amr_validated_readings.present?

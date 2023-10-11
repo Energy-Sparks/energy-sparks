@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   get 'home-page', to: 'home#show'
   get 'map', to: 'map#index'
   get 'school_statistics', to: 'home#school_statistics'
+  get 'school_statistics_key_data', to: 'home#school_statistics_key_data'
 
   get 'contact', to: 'home#contact'
   get 'enrol', to: 'home#enrol'
@@ -202,13 +203,6 @@ Rails.application.routes.draw do
 
     scope module: :schools do
 
-      [
-        :main_dashboard_electric, :main_dashboard_gas, :electricity_detail, :gas_detail, :main_dashboard_electric_and_gas,
-        :boiler_control, :heating_model_fitting, :storage_heaters, :solar_pv, :carbon_emissions, :test, :cost
-      ].each do |tab|
-        get "/#{tab}", to: redirect("/schools/%{school_id}/analysis")
-      end
-
       resource :advice, controller: 'advice', only: [:show] do
         [:total_energy_use,
          :baseload,
@@ -385,9 +379,11 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    resources :mailer_previews, only: [:index]
     concerns :issueable
     resources :funders
     resources :users do
+      get 'unlock', to: 'users#unlock'
       scope module: :users do
         resource :confirmation, only: [:create], controller: 'confirmation'
       end
@@ -428,7 +424,9 @@ Rails.application.routes.draw do
             post :make_visible
           end
         end
-        resource :users, only: [:show]
+        resource :users, only: [:show] do
+          get 'unlock', to: 'users#unlock'
+        end
         resource :partners, only: [:show, :update]
         resource :meter_report, only: [:show] do
           post :deliver, on: :member
@@ -593,10 +591,13 @@ Rails.application.routes.draw do
         resource :target_data, only: :show
       end
       member do
-        get :removal
-        post :deactivate_meters
+        post :archive
+        post :archive_meters
+        post :delete_meters
         post :deactivate_users
-        post :deactivate
+        post :reenable
+        get :removal
+        post :delete
       end
       concerns :issueable
     end
@@ -605,6 +606,8 @@ Rails.application.routes.draw do
       mount GoodJob::Engine => 'good_job'
     end
   end # Admin name space
+
+  get 'admin/mailer_previews/*path' => "rails/mailers#preview", as: :admin_mailer_preview
 
   #redirect from old teacher dashboard
   namespace :teachers do

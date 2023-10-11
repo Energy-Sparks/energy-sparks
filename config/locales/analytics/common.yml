@@ -60,7 +60,7 @@ en:
       mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
       primary: Primary
       secondary: Secondary
-      special: Special
+      special: Special or Alternative Provision
     series_data_manager:
       series_name:
         baseload: BASELOAD

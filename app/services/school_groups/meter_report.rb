@@ -70,7 +70,7 @@ module SchoolGroups
       scope = Meter.all
         .joins(:school)
         .joins(:school_group)
-        .where(schools: { school_group: school_group })
+        .where(schools: { school_group: school_group, active: true })
         .with_zero_reading_days_and_dates
         .order("schools.name", :mpan_mprn)
       scope = all_meters ? scope : scope.active
