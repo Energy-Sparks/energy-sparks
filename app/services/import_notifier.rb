@@ -4,14 +4,7 @@ class ImportNotifier
   end
 
   def meters_running_behind
-    find_meters_running_behind.sort_by do |meter|
-      [
-        meter.school.area_name.to_s,
-        meter.meter_type,
-        meter.school_name,
-        meter.mpan_mprn
-      ]
-    end
+    find_meters_running_behind
   end
 
   #data feed readings, creating in last 24 hours, where the readings are ALL blank
@@ -56,7 +49,8 @@ class ImportNotifier
          .joins('LEFT JOIN data_sources on data_sources.id = meters.data_source_id')
          .joins(:amr_validated_readings)
          .where(schools: { active: true })
-         .group('meters.id, data_sources.import_warning_days')
+         .joins('LEFT JOIN school_groups on schools.id = school_groups.id')
+         .group('meters.id, data_sources.import_warning_days, school_groups.name, schools.name')
          .having(
            <<-SQL.squish
              MAX(amr_validated_readings.reading_date) < NOW() - COALESCE(
@@ -71,5 +65,6 @@ class ImportNotifier
                                                                      ) * '1 day'::interval
            SQL
          )
+         .order("school_groups.name asc, meters.meter_type asc, schools.name asc, meters.mpan_mprn asc")
   end
 end
