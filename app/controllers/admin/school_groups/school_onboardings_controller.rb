@@ -77,6 +77,8 @@ module Admin
         ]
       end
 
+      # For all (selected) onboarding ids provided in params[:school_group][:school_onboarding_ids],
+      # Invoke the block provided to for_selected
       def for_selected(message)
         if onboardings.any?
           onboardings.each do |onboarding|
