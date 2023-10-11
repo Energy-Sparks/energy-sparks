@@ -395,6 +395,10 @@ GEM
     multipart-post (2.0.0)
     mustache (1.1.1)
     nenv (0.3.0)
+    net-protocol (0.2.1)
+      timeout
+    net-smtp (0.4.0)
+      net-protocol
     netrc (0.11.0)
     nio4r (2.5.8)
     nokogiri (1.15.4)
@@ -434,6 +438,10 @@ GEM
       addressable
       css_parser (>= 1.6.0)
       htmlentities (>= 4.0.0)
+    premailer-rails (1.12.0)
+      actionmailer (>= 3)
+      net-smtp
+      premailer (~> 1.7, >= 1.7.9)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -652,6 +660,7 @@ GEM
     thread_safe (0.3.6)
     tilt (2.0.10)
     timecop (0.9.5)
+    timeout (0.4.0)
     trix-rails (2.3.0)
       rails (> 4.1, < 7.0)
     twilio-ruby (6.6.0)
@@ -760,6 +769,7 @@ DEPENDENCIES
   pagy
   pg
   pg_search
+  premailer-rails
   pry
   pry-byebug (~> 3.10.1)
   puma (= 6.4.0)

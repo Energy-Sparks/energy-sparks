@@ -114,6 +114,9 @@ gem 'delegated_type'
 gem 'roo'
 gem 'roo-xls'
 
+# Used to handle CSS style processing for
+gem 'premailer-rails'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
