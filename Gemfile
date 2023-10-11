@@ -114,7 +114,7 @@ gem 'delegated_type'
 gem 'roo'
 gem 'roo-xls'
 
-# Used to handle CSS style processing for
+# Used to handle mail processing for the admin mailer
 gem 'premailer-rails'
 
 group :development, :test do
