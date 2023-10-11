@@ -6,6 +6,7 @@ module Programmes
 
     def enrol(school)
       return unless enrol?(school)
+
       Programmes::Creator.new(school, @enrol_programme_type).create
     end
 

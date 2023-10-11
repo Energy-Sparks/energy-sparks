@@ -3,13 +3,13 @@ require 'rails_helper'
 RSpec.describe 'Weather stations', type: :system do
   let!(:admin)                  { create(:admin) }
   let(:title)                   { 'Weather station zebra' }
-  let(:description)             { 'The description'}
+  let(:description)             { 'The description' }
   let(:latitude)                { 123.456 }
   let(:longitude)               { -789.012 }
-  let(:provider)                { "Meteostat"}
+  let(:provider)                { 'Meteostat' }
 
   describe 'when logged in' do
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
       click_on 'Manage'
@@ -18,7 +18,7 @@ RSpec.describe 'Weather stations', type: :system do
     end
 
     it 'can create a new weather station' do
-      expect(page).to have_content("There are no Weather Stations")
+      expect(page).to have_content('There are no Weather Stations')
 
       click_on 'New Weather Station'
 
@@ -29,9 +29,9 @@ RSpec.describe 'Weather stations', type: :system do
       select 'Meteostat', from: 'Provider'
       check 'Load data?'
 
-      expect { click_on 'Create' }.to change { WeatherStation.count }.by(1)
+      expect { click_on 'Create' }.to change(WeatherStation, :count).by(1)
 
-      expect(page).to have_content("New Weather Station created")
+      expect(page).to have_content('New Weather Station created')
       expect(page).to have_content('Weather Stations')
       expect(page).to have_content title
       expect(page).to have_content description
@@ -45,14 +45,14 @@ RSpec.describe 'Weather stations', type: :system do
       fill_in 'Title', with: title
       fill_in 'Latitude', with: latitude
 
-      expect { click_on 'Create' }.to change { WeatherStation.count }.by(0)
+      expect { click_on 'Create' }.to change(WeatherStation, :count).by(0)
 
       expect(page).to have_content("can't be blank")
 
       fill_in 'Longitude', with: longitude
       select 'Meteostat', from: 'Provider'
       check 'Load data?'
-      expect { click_on 'Create' }.to change { WeatherStation.count }.by(1)
+      expect { click_on 'Create' }.to change(WeatherStation, :count).by(1)
 
       expect(page).to have_content('Weather Stations')
       expect(page).to have_content title
@@ -61,10 +61,9 @@ RSpec.describe 'Weather stations', type: :system do
     end
 
     context 'with an existing weather station' do
+      let!(:station) { WeatherStation.create!(title: title, latitude: latitude, longitude: longitude, provider: 'meteostat') }
 
-      let!(:station) { WeatherStation.create!(title: title, latitude: latitude, longitude: longitude, provider: "meteostat") }
-
-      before(:each) do
+      before do
         click_on 'Manage'
         click_on 'Admin'
         click_on 'Weather Stations'
@@ -82,8 +81,8 @@ RSpec.describe 'Weather stations', type: :system do
 
         new_latitude = 111.111
         new_longitude = 999.999
-        new_title = "New title"
-        new_description = "New description"
+        new_title = 'New title'
+        new_description = 'New description'
 
         fill_in 'Title', with: new_title
         fill_in 'Description', with: new_description
@@ -92,7 +91,7 @@ RSpec.describe 'Weather stations', type: :system do
 
         click_on 'Update'
 
-        expect(page).to have_content("Weather Station was updated")
+        expect(page).to have_content('Weather Station was updated')
 
         expect(page).to have_content('Weather Stations')
         expect(page).to have_content new_title
@@ -104,7 +103,7 @@ RSpec.describe 'Weather stations', type: :system do
       it 'checks for valid fields on update' do
         click_on 'Edit'
 
-        new_title = "New title"
+        new_title = 'New title'
 
         fill_in 'Title', with: ''
         check('Load data?')
@@ -116,17 +115,16 @@ RSpec.describe 'Weather stations', type: :system do
         fill_in 'Title', with: new_title
 
         click_on 'Update'
-        expect(page).to have_content("Weather Station was updated")
+        expect(page).to have_content('Weather Station was updated')
 
         expect(page).to have_content('Weather Stations')
         expect(page).to have_content new_title
       end
 
       it 'deletes old temperature readings if lat/long changed' do
-
         WeatherObservation.create!(
           reading_date: '2020-03-25',
-          temperature_celsius_x48: 48.times.map{rand(40.0)},
+          temperature_celsius_x48: 48.times.map { rand(40.0) },
           weather_station_id: station.id
         )
 
@@ -142,7 +140,7 @@ RSpec.describe 'Weather stations', type: :system do
 
         click_on 'Update'
 
-        expect(page).to have_content("Weather Station was updated")
+        expect(page).to have_content('Weather Station was updated')
         expect(page).to have_content new_title
         expect(station.weather_observations.count).to eq(1)
 
@@ -153,13 +151,11 @@ RSpec.describe 'Weather stations', type: :system do
 
         click_on 'Update'
 
-        expect(page).to have_content("Weather Station was updated")
+        expect(page).to have_content('Weather Station was updated')
         expect(page).to have_content new_latitude
         expect(page).to have_content new_longitude
         expect(station.weather_observations.count).to eq(0)
-
       end
-
     end
   end
 end

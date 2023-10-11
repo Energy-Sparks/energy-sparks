@@ -24,7 +24,7 @@ module Transifex
     end
 
     def list_resources
-      url = add_filter("resources")
+      url = add_filter('resources')
       get_data(url)
     end
 
@@ -34,19 +34,19 @@ module Transifex
     end
 
     def delete_resource(slug)
-      raise AccessError.new("#{slug} in #{@project} is not deletable") unless resource_is_deletable
+      raise AccessError, "#{slug} in #{@project} is not deletable" unless resource_is_deletable
 
       url = make_url("resources/#{resource_id(slug)}")
       del_data(url)
     end
 
     def create_resource(name, slug, categories = [], priority = 'normal')
-      url = make_url("resources")
+      url = make_url('resources')
       post_data(url, resource_data(name, slug, project_id, categories, priority))
     end
 
     def create_resource_strings_async_upload(slug, content)
-      url = make_url("resource_strings_async_uploads")
+      url = make_url('resource_strings_async_uploads')
       post_data(url, resource_strings_async_upload_data(resource_id(slug), content))
     end
 
@@ -58,7 +58,7 @@ module Transifex
     end
 
     def create_resource_translations_async_downloads(slug, language, mode = 'onlyreviewed')
-      url = make_url("resource_translations_async_downloads")
+      url = make_url('resource_translations_async_downloads')
       post_data(url, resource_translations_async_downloads_data(resource_id(slug), language, mode))
     end
 
@@ -70,11 +70,11 @@ module Transifex
     end
 
     def get_resource_language_stats(slug = nil, language = nil)
-      if slug && language
-        url = make_url("resource_language_stats/#{resource_language_id(slug, language)}")
-      else
-        url = add_filter("resource_language_stats")
-      end
+      url = if slug && language
+              make_url("resource_language_stats/#{resource_language_id(slug, language)}")
+            else
+              add_filter('resource_language_stats')
+            end
       get_data(url)
     end
 
@@ -129,11 +129,12 @@ module Transifex
     end
 
     def check_response_status(response)
-      raise BadRequest.new(error_message(response)) if response.status == 400
-      raise NotAuthorised.new(error_message(response)) if response.status == 401
-      raise NotAllowed.new(error_message(response)) if response.status == 403
-      raise NotFound.new(error_message(response)) if response.status == 404
-      raise ApiFailure.new(error_message(response)) unless response.success?
+      raise BadRequest, error_message(response) if response.status == 400
+      raise NotAuthorised, error_message(response) if response.status == 401
+      raise NotAllowed, error_message(response) if response.status == 403
+      raise NotFound, error_message(response) if response.status == 404
+      raise ApiFailure, error_message(response) unless response.success?
+
       true
     end
 
@@ -159,17 +160,15 @@ module Transifex
     end
 
     def process_errors(data)
-      if data['attributes']['errors'].present?
-        raise ResponseError.new(error_messages(data['attributes']['errors']))
-      end
+      raise ResponseError, error_messages(data['attributes']['errors']) if data['attributes']['errors'].present?
     end
 
     def error_messages(errors)
-      errors.map { |error| error["code"] + ": " + error["detail"] }.join('\n')
+      errors.map { |error| error['code'] + ': ' + error['detail'] }.join('\n')
     end
 
     def json?(response)
-      response.headers["content-type"].include?(CONTENT_TYPE_JSON)
+      response.headers['content-type'].include?(CONTENT_TYPE_JSON)
     end
 
     def error_message(response)
@@ -179,8 +178,8 @@ module Transifex
       else
         response.body
       end
-    rescue
-      #problem parsing or traversing json, return original api error
+    rescue StandardError
+      # problem parsing or traversing json, return original api error
       response.body
     end
 
@@ -188,6 +187,7 @@ module Transifex
       if (deletable_projects = ENV['TRANSIFEX_DELETABLE_PROJECTS'])
         return deletable_projects.split(',').include?(@project)
       end
+
       false
     end
 
@@ -196,17 +196,17 @@ module Transifex
         "data": {
           "attributes": {
             "content": content,
-            "content_encoding": "text"
+            "content_encoding": 'text'
           },
           "relationships": {
             "resource": {
               "data": {
                 "id": resource_id,
-                "type": "resources"
+                "type": 'resources'
               }
             }
           },
-          "type": "resource_strings_async_uploads"
+          "type": 'resource_strings_async_uploads'
         }
       }
     end
@@ -219,23 +219,23 @@ module Transifex
             "categories": categories,
             "name": name,
             "priority": priority,
-            "slug": slug,
+            "slug": slug
           },
           "relationships": {
             "i18n_format": {
               "data": {
-                "id": "YML_KEY",
-                "type": "i18n_formats"
+                "id": 'YML_KEY',
+                "type": 'i18n_formats'
               }
             },
             "project": {
               "data": {
                 "id": project_id,
-                "type": "projects"
+                "type": 'projects'
               }
             }
           },
-          "type": "resources"
+          "type": 'resources'
         }
       }
     end
@@ -244,8 +244,8 @@ module Transifex
       {
         "data": {
           "attributes": {
-            "content_encoding": "text",
-            "file_type": "default",
+            "content_encoding": 'text',
+            "file_type": 'default',
             "mode": mode,
             "pseudo": false
           },
@@ -253,17 +253,17 @@ module Transifex
             "language": {
               "data": {
                 "id": "l:#{language}",
-                "type": "languages"
+                "type": 'languages'
               }
             },
             "resource": {
               "data": {
                 "id": resource_id,
-                "type": "resources"
+                "type": 'resources'
               }
             }
           },
-          "type": "resource_translations_async_downloads"
+          "type": 'resource_translations_async_downloads'
         }
       }
     end

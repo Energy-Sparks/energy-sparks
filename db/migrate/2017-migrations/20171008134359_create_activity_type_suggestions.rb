@@ -5,7 +5,7 @@ class CreateActivityTypeSuggestions < ActiveRecord::Migration[5.0]
       t.integer :suggested_type_id
       t.timestamps
     end
-    #add_foreign_key :activity_type_suggestions, :activity_types, column: :suggested_activity_type_id
-    #add_index :activity_type_suggestions, [:activity_type_id, :suggested_activity_type_id], unique: true, name: "activity_type_suggestion_unique"
+    # add_foreign_key :activity_type_suggestions, :activity_types, column: :suggested_activity_type_id
+    # add_index :activity_type_suggestions, [:activity_type_id, :suggested_activity_type_id], unique: true, name: "activity_type_suggestion_unique"
   end
 end

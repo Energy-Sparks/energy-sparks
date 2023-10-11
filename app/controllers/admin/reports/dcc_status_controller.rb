@@ -11,9 +11,9 @@ module Admin
       private
 
       def set_consented_mpxns
-        @mpxns = MeterReadingsFeeds::N3rgy.new(api_key: ENV["N3RGY_API_KEY"], production: true).mpxns
+        @mpxns = MeterReadingsFeeds::N3rgy.new(api_key: ENV['N3RGY_API_KEY'], production: true).mpxns
         @consent_lookup_error = false
-      rescue
+      rescue StandardError
         @mpxns = []
         @consent_lookup_error = true
       end

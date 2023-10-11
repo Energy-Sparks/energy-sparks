@@ -35,7 +35,7 @@
 class EnergyTariff < ApplicationRecord
   belongs_to :tariff_holder, polymorphic: true
 
-  #Declaring associations allows us to use .joins(:school) or .joins(:school_group)
+  # Declaring associations allows us to use .joins(:school) or .joins(:school_group)
   belongs_to :school, -> { where(energy_tariffs: { tariff_holder_type: 'School' }) }, foreign_key: 'tariff_holder_id', optional: true
   belongs_to :school_group, -> { where(energy_tariffs: { tariff_holder_type: 'SchoolGroup' }) }, foreign_key: 'tariff_holder_id', optional: true
 
@@ -44,21 +44,21 @@ class EnergyTariff < ApplicationRecord
   has_many :energy_tariff_prices, inverse_of: :energy_tariff, dependent: :destroy
   has_many :energy_tariff_charges, inverse_of: :energy_tariff, dependent: :destroy
 
-  #only populated if tariff_holder is school
+  # only populated if tariff_holder is school
   has_and_belongs_to_many :meters, inverse_of: :energy_tariffs
 
   belongs_to :created_by, optional: true, class_name: 'User'
   belongs_to :updated_by, optional: true, class_name: 'User'
 
-  enum source: [:manually_entered, :dcc]
-  enum meter_type: [:electricity, :gas, :solar_pv, :exported_solar_pv]
-  enum tariff_type: [:flat_rate, :differential]
+  enum source: { manually_entered: 0, dcc: 1 }
+  enum meter_type: { electricity: 0, gas: 1, solar_pv: 2, exported_solar_pv: 3 }
+  enum tariff_type: { flat_rate: 0, differential: 1 }
 
   # Used as an all_energy_tariff_attributes filter:
   # :half_hourly applies to meters which have a :meter_system of :hh
   # :non_half_hourly applies to meters which have a :meter_system of :nhh_amr, :nhh or :smets2_smart
   # :both applies to meters with all meter :system_type values
-  enum applies_to: [:both, :half_hourly, :non_half_hourly]
+  enum applies_to: { both: 0, half_hourly: 1, non_half_hourly: 2 }
 
   validates :name, presence: true
   validates :vat_rate, numericality: { greater_than_or_equal_to: 0.0, less_than_or_equal_to: 100.0, allow_nil: true }
@@ -74,17 +74,17 @@ class EnergyTariff < ApplicationRecord
   scope :by_name,       -> { order(name: :asc) }
   scope :by_start_date, -> { order(start_date: :asc) }
 
-  #Sorts with null start date first, then start date, then end date
-  scope :by_start_and_end, -> {
-    order(Arel.sql("(CASE WHEN start_date is NULL THEN 0 ELSE 1 END) ASC, start_date asc, end_date asc"))
+  # Sorts with null start date first, then start date, then end date
+  scope :by_start_and_end, lambda {
+    order(Arel.sql('(CASE WHEN start_date is NULL THEN 0 ELSE 1 END) ASC, start_date asc, end_date asc'))
   }
 
   scope :count_by_school_group, -> { enabled.joins(:school_group).group(:slug).count(:id) }
 
-  scope :for_schools_in_group, ->(school_group, source = :manually_entered) {
+  scope :for_schools_in_group, lambda { |school_group, source = :manually_entered|
     enabled.where(source: source).joins(:school).where({ schools: { school_group: school_group } })
   }
-  scope :count_schools_with_tariff_by_group, ->(school_group, source = :manually_entered) {
+  scope :count_schools_with_tariff_by_group, lambda { |school_group, source = :manually_entered|
     for_schools_in_group(school_group, source).select(:tariff_holder_id).distinct.count
   }
 
@@ -144,8 +144,8 @@ class EnergyTariff < ApplicationRecord
     tariff_holder.site_settings? || tariff_holder.school_group? || meters.empty?
   end
 
-  #Used to the show page to decide whether there's content for the standing
-  #charge section which groups these together
+  # Used to the show page to decide whether there's content for the standing
+  # charge section which groups these together
   def has_any_standing_charges?
     energy_tariff_charges.any? || tnuos? || vat_rate.present? || ccl?
   end
@@ -166,7 +166,9 @@ class EnergyTariff < ApplicationRecord
     # * it must have more two or more energy tariff price records
     # * the energy tariff price records combined start and end times must cover a full 24 hour period (1440 minutes)
     # * all energy tariff price records must have values set greater than zero
-    return true if energy_tariff_prices.count >= 2 && energy_tariff_prices.complete? && energy_tariff_prices&.map(&:value)&.all? { |value| value&.nonzero? }
+    if energy_tariff_prices.count >= 2 && energy_tariff_prices.complete? && energy_tariff_prices&.map(&:value)&.all? { |value| value&.nonzero? }
+      return true
+    end
 
     false
   end
@@ -204,14 +206,14 @@ class EnergyTariff < ApplicationRecord
     energy_tariff_charges.select { |c| c.units.present? }.each do |charge|
       charge_value = { rate: charge.value.to_s, per: charge.units.to_s }
       charge_type = charge.charge_type.to_sym
-      #only add these charges if we also have an asc limit
-      if charge.is_type?([:agreed_availability_charge, :excess_availability_charge])
+      # only add these charges if we also have an asc limit
+      if charge.is_type?(%i[agreed_availability_charge excess_availability_charge])
         attrs[charge_type] = charge_value if value_for_charge(:asc_limit_kw).present?
       else
         attrs[charge_type] = charge_value
       end
     end
-    energy_tariff_charges.select { |c| c.is_type?([:duos_red, :duos_amber, :duos_green]) }.each do |charge|
+    energy_tariff_charges.select { |c| c.is_type?(%i[duos_red duos_amber duos_green]) }.each do |charge|
       attrs[charge.charge_type.to_sym] = charge.value.to_s
     end
     attrs[:tnuos] = tnuos

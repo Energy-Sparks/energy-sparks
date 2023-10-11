@@ -11,15 +11,13 @@ module Equivalences
       @school.transaction do
         @school.equivalences.destroy_all
         school_equivalence_types.map do |equivalence_type|
-          begin
-            equivalence = Calculator.new(@school, analytics).perform(equivalence_type)
-            equivalence.save!
-          rescue Calculator::CalculationError => e
-            Rails.logger.debug("#{e.message} for #{@school.name}")
-          rescue => e
-            Rails.logger.error("#{e.message} for #{@school.name}")
-            Rollbar.error(e, job: :generate_equivalences, equivalence_type: equivalence_type.id, school_id: @school.id, school: @school.name)
-          end
+          equivalence = Calculator.new(@school, analytics).perform(equivalence_type)
+          equivalence.save!
+        rescue Calculator::CalculationError => e
+          Rails.logger.debug("#{e.message} for #{@school.name}")
+        rescue StandardError => e
+          Rails.logger.error("#{e.message} for #{@school.name}")
+          Rollbar.error(e, job: :generate_equivalences, equivalence_type: equivalence_type.id, school_id: @school.id, school: @school.name)
         end
       end
     end

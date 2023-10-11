@@ -29,12 +29,8 @@ module Alerts
 
         benchmark_result_school_generation_run.benchmark_results.pluck(result_column).each do |benchmark_result|
           # When collating results we need to collate around benchmark run date not analysis (asof) date
-          unless benchmarks.key?(benchmark_run_date)
-            benchmarks[benchmark_run_date] = { school_id => {} }
-          end
-          unless benchmarks[benchmark_run_date].key?(school_id)
-            benchmarks[benchmark_run_date][school_id] = {}
-          end
+          benchmarks[benchmark_run_date] = { school_id => {} } unless benchmarks.key?(benchmark_run_date)
+          benchmarks[benchmark_run_date][school_id] = {} unless benchmarks[benchmark_run_date].key?(school_id)
           benchmarks[benchmark_run_date][school_id] = benchmarks[benchmark_run_date][school_id].merge!(BenchmarkResult.convert_for_processing(benchmark_result))
         end
       end

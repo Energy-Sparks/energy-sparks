@@ -8,16 +8,13 @@ module Admin
     end
 
     # GET /newsletters/1
-    def show
-    end
+    def show; end
 
     # GET /newsletters/new
-    def new
-    end
+    def new; end
 
     # GET /newsletters/1/edit
-    def edit
-    end
+    def edit; end
 
     # POST /newsletters
     def create

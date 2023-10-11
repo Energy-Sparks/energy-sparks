@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 describe Alerts::GenerateSubscriptionEvents do
-
   let(:school)                      { create(:school) }
   let(:rating)                      { 5.0 }
   let(:alert_type)                  { create(:alert_type, frequency: :weekly) }
-  let!(:alert)                      { create(:alert, :with_run, alert_type: alert_type, school: school, rating: rating)}
+  let!(:alert)                      { create(:alert, :with_run, alert_type: alert_type, school: school, rating: rating) }
   let(:subscription_generation_run) { create(:subscription_generation_run, school: school) }
   let(:service)                     { Alerts::GenerateSubscriptionEvents.new(school, subscription_generation_run: subscription_generation_run) }
   let(:weekly_alerts)               { school.alerts.joins(:alert_type).where(alert_types: { frequency: [:weekly] }).without_exclusions }
@@ -20,7 +19,7 @@ describe Alerts::GenerateSubscriptionEvents do
   context 'alerts, but no subscriptions' do
     it 'does nothing, no events created' do
       create(:alert, school: school)
-      service.perform(weekly_alerts )
+      service.perform(weekly_alerts)
       expect(subscription_generation_run.alert_subscription_events.count).to eq 0
     end
   end
@@ -28,7 +27,7 @@ describe Alerts::GenerateSubscriptionEvents do
   context 'alerts and subscriptions' do
     let(:sms_active)                { true }
     let(:email_active)              { true }
-    let!(:alert_type_rating)        { create :alert_type_rating, alert_type: alert.alert_type, rating_from: 1, rating_to: 6, sms_active: sms_active, email_active: email_active}
+    let!(:alert_type_rating)        { create :alert_type_rating, alert_type: alert.alert_type, rating_from: 1, rating_to: 6, sms_active: sms_active, email_active: email_active }
 
     let!(:email_contact)            { create(:contact_with_name_email, school: school) }
     let!(:sms_contact)              { create(:contact_with_name_phone, school: school) }
@@ -38,17 +37,15 @@ describe Alerts::GenerateSubscriptionEvents do
     let(:no_frequency_alerts)     { school.alerts.joins(:alert_type).where(alert_types: { frequency: [] }).without_exclusions }
 
     context 'contacts with email, sms and both' do
-
       context 'with some content' do
-
-        let!(:content_version){ create :alert_type_rating_content_version, alert_type_rating: alert_type_rating }
+        let!(:content_version) { create :alert_type_rating_content_version, alert_type_rating: alert_type_rating }
 
         it 'does not process anything the frequency is set to empty' do
-          expect { service.perform(no_frequency_alerts)}.to_not change { subscription_generation_run.alert_subscription_events.count }
+          expect { service.perform(no_frequency_alerts) }.not_to change { subscription_generation_run.alert_subscription_events.count }
         end
 
         it 'does not process anything the frequency is set to a different frequency' do
-          expect { service.perform(termly_alerts)}.to_not change { subscription_generation_run.alert_subscription_events.count }
+          expect { service.perform(termly_alerts) }.not_to change { subscription_generation_run.alert_subscription_events.count }
         end
 
         it 'assigns a find out more from the run, if is from the latest school content run' do
@@ -72,34 +69,34 @@ describe Alerts::GenerateSubscriptionEvents do
         end
 
         it 'creates events and associates the content versions' do
-          expect { service.perform(weekly_alerts)}.to change { subscription_generation_run.alert_subscription_events.count }.by(4)
+          expect { service.perform(weekly_alerts) }.to change { subscription_generation_run.alert_subscription_events.count }.by(4)
 
           expect(email_contact.alert_subscription_events.count).to eq 1
           expect(email_contact.alert_subscription_events.first.communication_type).to eq 'email'
           expect(email_contact.alert_subscription_events.first.content_version).to eq content_version
-          expect(email_contact.alert_subscription_events.first.unsubscription_uuid).to_not be_nil
+          expect(email_contact.alert_subscription_events.first.unsubscription_uuid).not_to be_nil
           expect(sms_contact.alert_subscription_events.count).to eq 1
           expect(sms_contact.alert_subscription_events.first.communication_type).to eq 'sms'
           expect(sms_contact.alert_subscription_events.first.content_version).to eq content_version
           expect(sms_and_email_contact.alert_subscription_events.count).to eq 2
-          expect(sms_and_email_contact.alert_subscription_events.pluck(:communication_type)).to match_array ['sms','email']
+          expect(sms_and_email_contact.alert_subscription_events.pluck(:communication_type)).to match_array %w[sms email]
         end
 
         it 'does not create any events for the scope if there is an unsubscription record that matches the rating' do
           create :alert_type_rating_unsubscription, contact: email_contact, alert_type_rating: alert_type_rating, scope: :email
 
-          expect { service.perform(weekly_alerts)}.to change { subscription_generation_run.alert_subscription_events.count }.by(3)
+          expect { service.perform(weekly_alerts) }.to change { subscription_generation_run.alert_subscription_events.count }.by(3)
 
           expect(email_contact.alert_subscription_events.count).to eq 0
           expect(sms_contact.alert_subscription_events.count).to eq 1
           expect(sms_and_email_contact.alert_subscription_events.count).to eq 2
-          expect(sms_and_email_contact.alert_subscription_events.pluck(:communication_type)).to match_array ['email', 'sms']
+          expect(sms_and_email_contact.alert_subscription_events.pluck(:communication_type)).to match_array %w[email sms]
         end
 
         it 'does not create any events for the scope if there is an alert type exception' do
           SchoolAlertTypeExclusion.create(school: school, alert_type: alert_type)
 
-          expect { service.perform(weekly_alerts)}.to change { subscription_generation_run.alert_subscription_events.count }.by(0)
+          expect { service.perform(weekly_alerts) }.to change { subscription_generation_run.alert_subscription_events.count }.by(0)
         end
 
         it 'ignores if events already exist' do
@@ -113,7 +110,8 @@ describe Alerts::GenerateSubscriptionEvents do
         end
 
         context 'where SMS content is inactive' do
-          let(:sms_active){ false }
+          let(:sms_active) { false }
+
           it 'does not create events for that type' do
             service.perform(weekly_alerts)
             expect(email_contact.alert_subscription_events.count).to eq 1
@@ -123,7 +121,8 @@ describe Alerts::GenerateSubscriptionEvents do
         end
 
         context 'where email content is inactive' do
-          let(:email_active){ false }
+          let(:email_active) { false }
+
           it 'does not create events for that type' do
             service.perform(weekly_alerts)
             expect(email_contact.alert_subscription_events.count).to eq 0
@@ -131,9 +130,7 @@ describe Alerts::GenerateSubscriptionEvents do
             expect(sms_and_email_contact.alert_subscription_events.count).to eq 1
           end
         end
-
       end
-
     end
   end
 end

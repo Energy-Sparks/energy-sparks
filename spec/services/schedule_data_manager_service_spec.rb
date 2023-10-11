@@ -5,6 +5,7 @@ describe ScheduleDataManagerService do
 
   describe '#calendar_cache_key' do
     let!(:school) { create(:school, calendar: calendar) }
+
     it 'generates a key' do
       expect(ScheduleDataManagerService.calendar_cache_key(calendar)).to include(calendar.id.to_s)
     end
@@ -12,6 +13,7 @@ describe ScheduleDataManagerService do
 
   describe '#invalidate_cached_calendar' do
     let!(:school) { create(:school, calendar: calendar) }
+
     it 'invalidates cache' do
       expect(Rails.cache).to receive(:delete)
       ScheduleDataManagerService.invalidate_cached_calendar(calendar)
@@ -20,6 +22,7 @@ describe ScheduleDataManagerService do
 
   describe '#use_date_bounded_schedule_data?' do
     let!(:school) { create(:school, calendar: calendar) }
+
     it 'returns false' do
       ClimateControl.modify FEATURE_FLAG_DATE_BOUND_SCHEDULE_DATA: 'false' do
         allow(school).to receive(:minimum_reading_date).and_return(Date.today)
@@ -58,7 +61,7 @@ describe ScheduleDataManagerService do
         results = ScheduleDataManagerService.new(school).holidays
         school_date_period = results.find_holiday(date_version_of_holiday_date_from_calendar)
         expect(school_date_period.start_date).to eq date_version_of_holiday_date_from_calendar
-        expect(school_date_period.type).to_not be_nil
+        expect(school_date_period.type).not_to be_nil
         expect(results.class).to eq(Holidays)
       end
     end
@@ -139,6 +142,7 @@ describe ScheduleDataManagerService do
   describe '#solar_pv' do
     let!(:school)           { create(:school, solar_pv_tuos_area: create(:solar_pv_tuos_area)) }
     let!(:service)          { ScheduleDataManagerService.new(school, :validated_meter_data) }
+
     it 'loads the solar pv data' do
       ClimateControl.modify FEATURE_FLAG_DATE_BOUND_SCHEDULE_DATA: 'true' do
         reading_1 = create(:solar_pv_tuos_reading, area_id: school.solar_pv_tuos_area.id, reading_date: '2019-01-01')
@@ -236,11 +240,11 @@ describe ScheduleDataManagerService do
       obs_2 = create(:weather_observation, weather_station: station, reading_date: '2020-02-01')
       ClimateControl.modify FEATURE_FLAG_USE_METEOSTAT: 'true', FEATURE_FLAG_DATE_BOUND_SCHEDULE_DATA: 'true' do
         temperatures = service.temperatures
-        #all 4 dates with expected start/end
-        expect(temperatures.date_exists?(reading_1.reading_date)).to eql true
-        expect(temperatures.date_exists?(reading_2.reading_date)).to eql true
-        expect(temperatures.date_exists?(obs_1.reading_date)).to eql true
-        expect(temperatures.date_exists?(obs_2.reading_date)).to eql true
+        # all 4 dates with expected start/end
+        expect(temperatures.date_exists?(reading_1.reading_date)).to be true
+        expect(temperatures.date_exists?(reading_2.reading_date)).to be true
+        expect(temperatures.date_exists?(obs_1.reading_date)).to be true
+        expect(temperatures.date_exists?(obs_2.reading_date)).to be true
         expect(temperatures.start_date).to eql reading_1.reading_date
         expect(temperatures.end_date).to eql obs_2.reading_date
 
@@ -261,8 +265,8 @@ describe ScheduleDataManagerService do
       reading_2 = create(:dark_sky_temperature_reading, dark_sky_area: area, reading_date: '2019-02-01')
       ClimateControl.modify FEATURE_FLAG_USE_METEOSTAT: 'true', FEATURE_FLAG_DATE_BOUND_SCHEDULE_DATA: 'true' do
         temperatures = service.temperatures
-        expect(temperatures.date_exists?(reading_1.reading_date)).to eql true
-        expect(temperatures.date_exists?(reading_2.reading_date)).to eql true
+        expect(temperatures.date_exists?(reading_1.reading_date)).to be true
+        expect(temperatures.date_exists?(reading_2.reading_date)).to be true
         expect(temperatures.start_date).to eql reading_1.reading_date
         expect(temperatures.end_date).to eql reading_2.reading_date
         expect(temperatures.class).to eq(Temperatures)
@@ -283,17 +287,17 @@ describe ScheduleDataManagerService do
       allow(school).to receive(:minimum_reading_date).and_return(Date.parse('2019-03-01'))
       ClimateControl.modify FEATURE_FLAG_USE_METEOSTAT: 'true', FEATURE_FLAG_DATE_BOUND_SCHEDULE_DATA: 'true' do
         temperatures = service.temperatures
-        #all 4 dates with expected start/end
-        expect(temperatures.date_exists?(reading_1.reading_date)).to eql false
-        expect(temperatures.date_exists?(reading_2.reading_date)).to eql false
-        expect(temperatures.date_exists?(reading_3.reading_date)).to eql true
-        expect(temperatures.date_exists?(reading_4.reading_date)).to eql true
-        expect(temperatures.date_exists?(reading_5.reading_date)).to eql true
-        expect(temperatures.date_exists?(reading_6.reading_date)).to eql true
-        expect(temperatures.date_exists?(obs_1.reading_date)).to eql true
-        expect(temperatures.date_exists?(obs_2.reading_date)).to eql true
-        expect(temperatures.date_exists?(obs_3.reading_date)).to eql true
-        expect(temperatures.date_exists?(obs_4.reading_date)).to eql true
+        # all 4 dates with expected start/end
+        expect(temperatures.date_exists?(reading_1.reading_date)).to be false
+        expect(temperatures.date_exists?(reading_2.reading_date)).to be false
+        expect(temperatures.date_exists?(reading_3.reading_date)).to be true
+        expect(temperatures.date_exists?(reading_4.reading_date)).to be true
+        expect(temperatures.date_exists?(reading_5.reading_date)).to be true
+        expect(temperatures.date_exists?(reading_6.reading_date)).to be true
+        expect(temperatures.date_exists?(obs_1.reading_date)).to be true
+        expect(temperatures.date_exists?(obs_2.reading_date)).to be true
+        expect(temperatures.date_exists?(obs_3.reading_date)).to be true
+        expect(temperatures.date_exists?(obs_4.reading_date)).to be true
         expect(temperatures.start_date).to eql reading_3.reading_date
         expect(temperatures.end_date).to eql obs_4.reading_date
         expect(temperatures.keys.sort).to eq(

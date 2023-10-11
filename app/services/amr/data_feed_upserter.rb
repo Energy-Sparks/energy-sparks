@@ -9,7 +9,7 @@ module Amr
       records_count_before = count_by_mpan
 
       add_import_log_id_and_dates_to_hash
-      result = AmrDataFeedReading.upsert_all(@array_of_data_feed_reading_hashes, unique_by: [:mpan_mprn, :reading_date])
+      result = AmrDataFeedReading.upsert_all(@array_of_data_feed_reading_hashes, unique_by: %i[mpan_mprn reading_date])
 
       inserted_count = count_by_mpan - records_count_before
       updated_count = result.rows.flatten.size - inserted_count
@@ -19,7 +19,7 @@ module Amr
       Rails.logger.info "Updated #{updated_count} Inserted #{inserted_count}"
     end
 
-  private
+    private
 
     def count_by_mpan
       mpans = []

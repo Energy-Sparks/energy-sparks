@@ -6,7 +6,7 @@ class Schools::ContactsController < ApplicationController
   def index
     @standalone_contacts = @contacts.where(user_id: nil)
     @account_contacts = @contacts.where.not(user_id: nil)
-    @accounts_without_contacts = @school.users.alertable.left_outer_joins(:contacts).where('contacts.id IS NULL')
+    @accounts_without_contacts = @school.users.alertable.left_outer_joins(:contacts).where(contacts: { id: nil })
   end
 
   def new
@@ -17,8 +17,7 @@ class Schools::ContactsController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     authorize! :enable_alerts, @contact.user if @contact.user
@@ -42,7 +41,7 @@ class Schools::ContactsController < ApplicationController
     redirect_user(current_user_notice: 'Alerts disabled', notice: "Alerts disabled for #{@contact.display_name}")
   end
 
-private
+  private
 
   def set_breadcrumbs
     @breadcrumbs = [{ name: I18n.t('manage_school_menu.manage_alert_contacts') }]
@@ -56,7 +55,7 @@ private
       :name,
       :user_id,
       :staff_role_id,
-      user_attributes: [:id, :preferred_locale]
+      user_attributes: %i[id preferred_locale]
     )
   end
 

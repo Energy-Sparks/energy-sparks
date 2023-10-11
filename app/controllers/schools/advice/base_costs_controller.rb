@@ -3,9 +3,9 @@ module Schools
     class BaseCostsController < AdviceBaseController
       protect_from_forgery except: :meter_costs
 
-      before_action :set_tariff_coverage, only: [:insights, :analysis]
+      before_action :set_tariff_coverage, only: %i[insights analysis]
       before_action :set_next_steps, only: [:insights]
-      before_action :set_one_year_breakdown_chart, only: [:analysis, :meter_costs]
+      before_action :set_one_year_breakdown_chart, only: %i[analysis meter_costs]
       before_action :set_meters, only: [:analysis]
 
       def insights
@@ -36,7 +36,7 @@ module Schools
           @monthly_costs = costs_service.calculate_costs_for_latest_twelve_months
           @change_in_costs = costs_service.calculate_change_in_costs
         else
-          meter = @school.meters.find_by_mpan_mprn(params[:mpan_mprn])
+          meter = @school.meters.find_by(mpan_mprn: params[:mpan_mprn])
           @mpan_mprn = params[:mpan_mprn]
           @label = meter.name_or_mpan_mprn
           analytics_meter = costs_service.analytics_meter_for_mpan(@mpan_mprn)

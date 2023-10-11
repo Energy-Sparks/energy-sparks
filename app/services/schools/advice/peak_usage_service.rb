@@ -8,19 +8,17 @@ module Schools
         @meter_collection = meter_collection
       end
 
-      #Not yet implemented in underlying services
+      # Not yet implemented in underlying services
       def enough_data?
         meter_data_checker.one_years_data?
       end
 
-      #Not yet implemented in underlying services
+      # Not yet implemented in underlying services
       def data_available_from
         meter_data_checker.date_when_enough_data_available(365)
       end
 
-      def average_peak_kw
-        peak_usage_calculation_service.average_peak_kw
-      end
+      delegate :average_peak_kw, to: :peak_usage_calculation_service
 
       def previous_year_peak_kw
         previous_years_peak_usage_calculation_service = peak_usage_calculation_service(previous_years_asof_date)

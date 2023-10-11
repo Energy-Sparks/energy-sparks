@@ -1,6 +1,6 @@
 module Onboarding
   class PupilAccountController < BaseController
-    before_action only: [:new, :create] do
+    before_action only: %i[new create] do
       redirect_if_event(:pupil_account_created, new_onboarding_completion_path(@school_onboarding))
     end
 
@@ -32,7 +32,7 @@ module Onboarding
       end
     end
 
-  private
+    private
 
     def pupil_params
       params.require(:user).permit(:name, :pupil_password)

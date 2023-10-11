@@ -21,37 +21,36 @@ module DataFeeds
 
     def import_station(station)
       process_station(station)
-      @stations_processed = @stations_processed + 1
+      @stations_processed += 1
     end
 
     private
 
     def process_station(station)
-      begin
-        results = @meteostat_interface.historic_temperatures(station.latitude, station.longitude, @start_date, @end_date)
-        results[:temperatures].each do |reading_date, temperature_celsius_x48|
-          next if temperature_celsius_x48.size != 48
-          process_day(reading_date, temperature_celsius_x48, station)
-        end
-      rescue => e
-        Rails.logger.error "Exception: running station import for #{station.title} from #{@start_date} to #{@end_date} : #{e.class} #{e.message}"
-        Rails.logger.error e.backtrace.join("\n")
-        Rollbar.error(e, job: :meteostat_loader, station_id: station.id, station: station.title)
+      results = @meteostat_interface.historic_temperatures(station.latitude, station.longitude, @start_date, @end_date)
+      results[:temperatures].each do |reading_date, temperature_celsius_x48|
+        next if temperature_celsius_x48.size != 48
+
+        process_day(reading_date, temperature_celsius_x48, station)
       end
+    rescue StandardError => e
+      Rails.logger.error "Exception: running station import for #{station.title} from #{@start_date} to #{@end_date} : #{e.class} #{e.message}"
+      Rails.logger.error e.backtrace.join("\n")
+      Rollbar.error(e, job: :meteostat_loader, station_id: station.id, station: station.title)
     end
 
     def process_day(reading_date, temperature_celsius_x48, station)
       record = WeatherObservation.find_by(reading_date: reading_date, weather_station: station)
       if record
         record.update(temperature_celsius_x48: temperature_celsius_x48)
-        @update_count = @update_count + 1
+        @update_count += 1
       else
         WeatherObservation.create(
           weather_station: station,
           reading_date: reading_date,
           temperature_celsius_x48: temperature_celsius_x48
         )
-        @insert_count = @insert_count + 1
+        @insert_count += 1
       end
     end
   end

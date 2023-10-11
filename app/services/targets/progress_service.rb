@@ -5,14 +5,14 @@ module Targets
     end
 
     def display_progress_for_fuel_type?(fuel_type)
-      #for v2 we will allow them to see a progress report, even if there's not enough data
-      #so just check there is a fuel type and target
+      # for v2 we will allow them to see a progress report, even if there's not enough data
+      # so just check there is a fuel type and target
       has_fuel_type_and_target?(fuel_type)
     end
 
     def progress_summary
       if Targets::SchoolTargetService.targets_enabled?(@school) && target.present?
-        #create from data in school target
+        # create from data in school target
         target.to_progress_summary
       end
     end
@@ -32,7 +32,8 @@ module Targets
     end
 
     def has_target_for_fuel_type?(fuel_type)
-      return false unless target.present?
+      return false if target.blank?
+
       case fuel_type
       when :electricity
         target.electricity.present?

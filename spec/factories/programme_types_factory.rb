@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :programme_type do
-    sequence(:title)              { |n| "Programme Type title #{n}"}
-    sequence(:description)        { |n| "Programme Type description #{n}"}
-    sequence(:short_description)  { |n| "Programme Type short description #{n}"}
+    sequence(:title)              { |n| "Programme Type title #{n}" }
+    sequence(:description)        { |n| "Programme Type description #{n}" }
+    sequence(:short_description)  { |n| "Programme Type short description #{n}" }
     sequence(:document_link)      { |n| "http://example.org/document#{n}.pdf" }
     active                              { true }
 

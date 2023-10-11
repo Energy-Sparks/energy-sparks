@@ -1,7 +1,7 @@
 class CreateDataSources < ActiveRecord::Migration[6.0]
   def change
     create_table :data_sources do |t|
-      t.string :name, null:false
+      t.string :name, null: false
       t.integer :organisation_type
       t.string :contact_name
       t.string :contact_email

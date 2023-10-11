@@ -1,8 +1,8 @@
 namespace :calendars do
   desc 'Fix Swansea calendars'
   task fix_swansea_calendars: [:environment] do
-    swansea_calendar = Calendar.regional.find_by_title('Swansea')
-    pp "Checking Swansea calendars.."
+    swansea_calendar = Calendar.regional.find_by(title: 'Swansea')
+    pp 'Checking Swansea calendars..'
     ignored = []
     swansea_calendar.calendars.each do |calendar|
       if calendar.calendar_events.count == swansea_calendar.calendar_events.count
@@ -14,11 +14,11 @@ namespace :calendars do
       end
     end
     if ignored.any?
-      pp "##############"
-      pp "please update these calendars manually: "
-      pp "#{ignored.map(&:title).join(',')}"
-      pp "##############"
+      pp '##############'
+      pp 'please update these calendars manually: '
+      pp ignored.map(&:title).join(',').to_s
+      pp '##############'
     end
-    pp "Finished"
+    pp 'Finished'
   end
 end

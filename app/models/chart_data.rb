@@ -25,10 +25,9 @@ class ChartData
     parent_timescale_description = chart_manager.parent_chart_timescale_description(transformed_chart_config)
     parent_timescale_description = I18n.t("chart_data.timescale_description.#{parent_timescale_description}", default: nil) || parent_timescale_description
 
-
     run_chart = run_chart_for(chart_manager, transformed_chart_config, transformed_chart_type)
 
-    values = ChartDataValues.new(
+    ChartDataValues.new(
       run_chart,
       transformed_chart_type,
       transformations: @transformations,
@@ -37,8 +36,6 @@ class ChartData
       parent_timescale_description: parent_timescale_description,
       y1_axis_choices: Charts::YAxisSelectionService.new(@school, transformed_chart_type).y1_axis_choices(transformed_chart_config)
     ).process
-
-    values
   end
 
   def run_chart_for(chart_manager, transformed_chart_config, transformed_chart_type)
@@ -50,7 +47,7 @@ class ChartData
       @reraise_exception,             # reraise_exception
       provide_advice: @provide_advice # provide_advice
     )
-  rescue => e
+  rescue StandardError => e
     if @reraise_exception
       Rollbar.error(
         e,
@@ -65,16 +62,16 @@ class ChartData
   end
 
   def has_chart_data?
-    ! data.series_data.nil?
+    !data.series_data.nil?
   rescue EnergySparksNotEnoughDataException, EnergySparksNoMeterDataAvailableForFuelType, EnergySparksMissingPeriodForSpecifiedPeriodChart
     false
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error "Chart generation failed unexpectedly for #{@original_chart_type} and #{@aggregated_school.name} - #{e.message}"
     Rollbar.error(e, school_name: @school.name, original_chart_type: @original_chart_type, chart_config_overrides: @chart_config_overrides, transformations: @transformations)
     false
   end
 
-private
+  private
 
   def customised_chart_config(chart_manager)
     chart_config = chart_manager.get_chart_config(@original_chart_type)
@@ -107,22 +104,30 @@ private
     OPERATIONS.each do |operation_type|
       manipulator = ChartManagerTimescaleManipulation.factory(operation_type, chart_config, @aggregated_school)
       allowed_operations[operation_type] = if manipulator.chart_suitable_for_timescale_manipulation?
-        timescale_description = manipulator.timescale_description
-        {
-          timescale_description: timescale_description,
-          directions: {
-            forward: (manipulator.can_go_forward_in_time_one_period? rescue false), # remove rescue once manipulation for drilled down charts is fixed
-            back: (manipulator.can_go_back_in_time_one_period? rescue false) # remove rescue once manipulation for drilled down charts is fixed
-          }
-        }
+                                             timescale_description = manipulator.timescale_description
+                                             {
+                                               timescale_description: timescale_description,
+                                               directions: {
+                                                 forward: begin
+                                                   manipulator.can_go_forward_in_time_one_period?
+                                                 rescue StandardError
+                                                   false
+                                                 end, # remove rescue once manipulation for drilled down charts is fixed
+                                                 back: begin
+                                                   manipulator.can_go_back_in_time_one_period?
+                                                 rescue StandardError
+                                                   false
+                                                 end # remove rescue once manipulation for drilled down charts is fixed
+                                               }
+                                             }
                                            else
-        {
-          timescale_description: 'period',
-          directions: {
-            forward: false,
-            back: false
-          }
-        }
+                                             {
+                                               timescale_description: 'period',
+                                               directions: {
+                                                 forward: false,
+                                                 back: false
+                                               }
+                                             }
                                            end
     end
     allowed_operations

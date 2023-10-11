@@ -33,19 +33,19 @@ class Activity < ApplicationRecord
   has_many   :programme_activities
   has_many   :observations
 
-  validates_presence_of :school, :activity_type, :activity_category, :happened_on
+  validates :school, :activity_type, :activity_category, :happened_on, presence: true
 
   scope :for_activity_type, ->(activity_type) { where(activity_type: activity_type) }
   scope :for_school, ->(school) { where(school: school) }
   scope :most_recent, -> { order(created_at: :desc) }
   scope :by_date, -> { order(happened_on: :asc) }
   scope :between, ->(first_date, last_date) { where('happened_on BETWEEN ? AND ?', first_date, last_date) }
-  scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago)}
-  scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago)}
+  scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago) }
+  scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago) }
 
   has_rich_text :description
 
-  self.ignored_columns = %w(deprecated_description)
+  self.ignored_columns = %w[deprecated_description]
 
   def display_name
     activity_type.custom ? title : activity_type.name
@@ -56,6 +56,6 @@ class Activity < ApplicationRecord
   end
 
   def description_includes_images?
-    description&.body&.to_trix_html&.include?("figure")
+    description&.body&.to_trix_html&.include?('figure')
   end
 end

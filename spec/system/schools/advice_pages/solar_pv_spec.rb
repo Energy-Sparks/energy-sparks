@@ -1,8 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe "solar pv advice page", type: :system do
+RSpec.describe 'solar pv advice page', type: :system do
   let(:key) { 'solar_pv' }
-  include_context "solar advice page"
+
+  include_context 'solar advice page'
 
   def expected_page_title
     school.has_solar_pv? ? 'Solar PV generation' : 'Benefits of installing solar panels'
@@ -26,7 +27,7 @@ RSpec.describe "solar pv advice page", type: :system do
             annual_exported_solar_pv_kwh: 1295.4532532740932,
             annual_solar_pv_consumed_onsite_kwh: 12_900.481391744512,
             annual_consumed_from_national_grid_kwh: 48_157.39999999996
-                                   ),
+          ),
           build_potential_benefits: OpenStruct.new(
             optimum_kwp: 52.5,
             optimum_payback_years: 5.682322708769174,
@@ -44,7 +45,7 @@ RSpec.describe "solar pv advice page", type: :system do
               capital_cost_£: 2392.9653,
               payback_years: 17.07143409053209
             )]
-                                    )
+          )
         }
       )
 
@@ -52,16 +53,16 @@ RSpec.describe "solar pv advice page", type: :system do
       visit school_advice_solar_pv_path(school)
     end
 
-    it_behaves_like "an advice page tab", tab: "Insights"
+    it_behaves_like 'an advice page tab', tab: 'Insights'
 
     context "clicking the 'Insights' tab as a school *without* solar pv" do
       before do
-        allow_any_instance_of(School).to receive(:has_solar_pv?) { false }
+        allow_any_instance_of(School).to receive(:has_solar_pv?).and_return(false)
 
         click_on 'Insights'
       end
 
-      it_behaves_like "an advice page tab", tab: "Insights"
+      it_behaves_like 'an advice page tab', tab: 'Insights'
 
       it 'shows expected content' do
         expect(page).to have_content('Benefits of installing solar panels')
@@ -74,12 +75,12 @@ RSpec.describe "solar pv advice page", type: :system do
 
     context "clicking the 'Insights' tab as a school *with* solar pv" do
       before do
-        allow_any_instance_of(School).to receive(:has_solar_pv?) { true }
+        allow_any_instance_of(School).to receive(:has_solar_pv?).and_return(true)
 
         click_on 'Insights'
       end
 
-      it_behaves_like "an advice page tab", tab: "Insights"
+      it_behaves_like 'an advice page tab', tab: 'Insights'
 
       it 'shows expected content' do
         expect(page).not_to have_content('Benefits of installing solar panels')
@@ -95,13 +96,13 @@ RSpec.describe "solar pv advice page", type: :system do
 
     context "clicking the 'Analysis' tab as a school *without* solar pv" do
       before do
-        allow_any_instance_of(School).to receive(:has_solar_pv?) { false }
-        @expected_page_title = "Benefits of installing solar panels"
+        allow_any_instance_of(School).to receive(:has_solar_pv?).and_return(false)
+        @expected_page_title = 'Benefits of installing solar panels'
 
         click_on 'Analysis'
       end
 
-      it_behaves_like "an advice page tab", tab: "Analysis"
+      it_behaves_like 'an advice page tab', tab: 'Analysis'
 
       it 'shows expected content' do
         expect(page).to have_content('Analysis')
@@ -113,12 +114,12 @@ RSpec.describe "solar pv advice page", type: :system do
 
     context "clicking the 'Analysis' tab as a school *with* solar pv" do
       before do
-        allow_any_instance_of(School).to receive(:has_solar_pv?) { true }
+        allow_any_instance_of(School).to receive(:has_solar_pv?).and_return(true)
 
         click_on 'Analysis'
       end
 
-      it_behaves_like "an advice page tab", tab: "Analysis"
+      it_behaves_like 'an advice page tab', tab: 'Analysis'
 
       it 'shows expected content' do
         expect(page).to have_content('Analysis')
@@ -134,7 +135,8 @@ RSpec.describe "solar pv advice page", type: :system do
 
     context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }
-      it_behaves_like "an advice page tab", tab: "Learn More"
+
+      it_behaves_like 'an advice page tab', tab: 'Learn More'
     end
   end
 end

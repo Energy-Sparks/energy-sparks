@@ -5,9 +5,9 @@ namespace :after_party do
 
     # Put your task implementation HERE.
     config = {}
-    config['description'] = "GDST Electricity 2"
+    config['description'] = 'GDST Electricity 2'
     config['identifier'] = 'gdst-electricity2'
-    config['date_format'] = "%d/%m/%y"
+    config['date_format'] = '%d/%m/%y'
     config['mpan_mprn_field'] = 'Site Id'
     config['msn_field'] = 'Meter Number'
     config['reading_date_field'] = 'Reading Date'

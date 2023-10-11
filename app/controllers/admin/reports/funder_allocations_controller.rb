@@ -1,8 +1,7 @@
 module Admin
   module Reports
     class FunderAllocationsController < AdminController
-      def show
-      end
+      def show; end
 
       def deliver
         FunderAllocationReportJob.perform_later(to: current_user.email)

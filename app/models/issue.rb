@@ -45,10 +45,11 @@ class Issue < ApplicationRecord
   has_many :issue_meters, dependent: :destroy
   has_many :meters, through: :issue_meters
 
-  scope :for_school_group, ->(school_group) do
+  scope :for_school_group, lambda { |school_group|
     where(issues: { issueable_type: 'SchoolGroup', issueable_id: school_group }).or(
-      where(issues: { issueable_type: 'School', issueable_id: school_group.schools }))
-  end
+      where(issues: { issueable_type: 'School', issueable_id: school_group.schools })
+    )
+  }
 
   scope :for_issue_types, ->(issue_types) { where(issue_type: issue_types) }
   scope :for_owned_by, ->(owned_by) { where(owned_by: owned_by) }
@@ -63,14 +64,14 @@ class Issue < ApplicationRecord
 
   has_rich_text :description
   enum issue_type: { issue: 0, note: 1 }
-  enum fuel_type: [:electricity, :gas, :solar, :gas_and_electricity, :alternative_heating]
+  enum fuel_type: { electricity: 0, gas: 1, solar: 2, gas_and_electricity: 3, alternative_heating: 4 }
   enum status: { open: 0, closed: 1 }, _prefix: true
 
   validates :issue_type, :status, :title, :description, presence: true
   validate :school_issue_meters_only
 
-  before_save :set_note_status
   after_initialize :set_enum_defaults
+  before_save :set_note_status
 
   def resolve!(attrs = {})
     self.attributes = attrs
@@ -82,11 +83,11 @@ class Issue < ApplicationRecord
   end
 
   def self.csv_headers
-    ["For", "Name", "Title", "Description", "Fuel type", "Type", "Status", "Status summary", "Meters", "Meter status", "Data sources", "Owned by", "Created by", "Created at", "Updated by", "Updated at"]
+    ['For', 'Name', 'Title', 'Description', 'Fuel type', 'Type', 'Status', 'Status summary', 'Meters', 'Meter status', 'Data sources', 'Owned by', 'Created by', 'Created at', 'Updated by', 'Updated at']
   end
 
   def self.csv_attributes
-    %w{issueable_type.titleize issueable.name title description.to_plain_text fuel_type issue_type status status_summary mpan_mprns admin_meter_statuses data_source_names owned_by.display_name created_by.display_name created_at updated_by.display_name updated_at}
+    %w[issueable_type.titleize issueable.name title description.to_plain_text fuel_type issue_type status status_summary mpan_mprns admin_meter_statuses data_source_names owned_by.display_name created_by.display_name created_at updated_by.display_name updated_at]
   end
 
   def self.issue_type_images
@@ -106,7 +107,7 @@ class Issue < ApplicationRecord
   end
 
   def status_summary
-    issue? ? "#{status} issue" : "note"
+    issue? ? "#{status} issue" : 'note'
   end
 
   def issue_type_image
@@ -133,11 +134,12 @@ class Issue < ApplicationRecord
     labels = meters.map { |meter| meter.admin_meter_status&.label }
     return nil if labels.compact.empty?
     return labels.first if labels.uniq.size == 1
+
     labels.map { |label| label || 'None' }.join('|')
   end
 
   def data_source_names
-    meters.map {|meter| meter.data_source.try(:name) }.compact.uniq.join('|').presence
+    meters.map { |meter| meter.data_source.try(:name) }.compact.uniq.join('|').presence
   end
 
   def school_group
@@ -154,12 +156,10 @@ class Issue < ApplicationRecord
   end
 
   def set_note_status
-    self.status = :open if self.note?
+    self.status = :open if note?
   end
 
   def school_issue_meters_only
-    if meters.any? && !issueable.is_a?(School)
-      errors.add(:base, "Only school issues can have associated meters")
-    end
+    errors.add(:base, 'Only school issues can have associated meters') if meters.any? && !issueable.is_a?(School)
   end
 end

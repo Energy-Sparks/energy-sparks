@@ -1,6 +1,6 @@
 class ProgrammeTypesController < ApplicationController
   load_and_authorize_resource :programme_type
-  skip_before_action :authenticate_user!, only: [:index, :show]
+  skip_before_action :authenticate_user!, only: %i[index show]
 
   before_action :user_progress
 
@@ -8,8 +8,7 @@ class ProgrammeTypesController < ApplicationController
     @programme_types = @programme_types.active.by_title
   end
 
-  def show
-  end
+  def show; end
 
   private
 

@@ -1,12 +1,11 @@
 require 'rails_helper'
 
 describe Programmes::UserProgress, type: :service do
-
   let(:user)            { nil }
   let(:service)         { Programmes::UserProgress.new(user) }
 
-  let!(:programme_type_1) { create(:programme_type_with_activity_types)}
-  let!(:programme_type_2) { create(:programme_type_with_activity_types)}
+  let!(:programme_type_1) { create(:programme_type_with_activity_types) }
+  let!(:programme_type_2) { create(:programme_type_with_activity_types) }
 
   let!(:activity_type_1)  { create(:activity_type) }
 
@@ -31,7 +30,7 @@ describe Programmes::UserProgress, type: :service do
   end
 
   context 'with an admin user' do
-    let(:school)          { create(:school) }
+    let(:school) { create(:school) }
     let(:user)      { create(:school_admin, school: school) }
 
     context 'and no programmes or activities' do
@@ -44,8 +43,8 @@ describe Programmes::UserProgress, type: :service do
     end
 
     context 'and enrolled in programme' do
-      before(:each) do
-        #this is because the Enroller relies on this currently
+      before do
+        # this is because the Enroller relies on this currently
         allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
 
         Programmes::Enroller.new(programme_type_1).enrol(school)
@@ -59,8 +58,9 @@ describe Programmes::UserProgress, type: :service do
       end
 
       context 'and activity completed' do
-        let(:activity)      { create(:activity, school: school, activity_type: programme_type_1.activity_types.first)}
-        before(:each) do
+        let(:activity)      { create(:activity, school: school, activity_type: programme_type_1.activity_types.first) }
+
+        before do
           ActivityCreator.new(activity).process
         end
 

@@ -9,12 +9,12 @@ module Schools
       service.aggregate_school unless service.in_cache?
 
       respond_to do |format|
-        format.json { render json: { status: 'aggregated' }}
+        format.json { render json: { status: 'aggregated' } }
       end
-    rescue => e
+    rescue StandardError => e
       Rollbar.error(e)
       respond_to do |format|
-        format.json { render json: { status: 'error', message: e.message }, status: :bad_request}
+        format.json { render json: { status: 'error', message: e.message }, status: :bad_request }
       end
     end
   end

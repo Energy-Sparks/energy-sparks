@@ -9,8 +9,8 @@
 #  updated_at :datetime         not null
 #
 class LocalAuthorityArea < ApplicationRecord
-  validates_presence_of :code, :name
-  validates_uniqueness_of :code
+  validates :code, :name, presence: true
+  validates :code, uniqueness: true
 
   has_many :schools
 end

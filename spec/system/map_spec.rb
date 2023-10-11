@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe "map", type: :system do
-
-  let!(:school_1)             { create(:school, name: 'My School 1')}
-  let!(:school_2)             { create(:school, name: 'My School 2')}
-  let!(:school_3)             { create(:school, name: 'My School 3')}
-  let!(:school_invisible)     { create(:school, name: 'Invisible School', visible: false)}
+RSpec.describe 'map', type: :system do
+  let!(:school_1)             { create(:school, name: 'My School 1') }
+  let!(:school_2)             { create(:school, name: 'My School 2') }
+  let!(:school_3)             { create(:school, name: 'My School 3') }
+  let!(:school_invisible)     { create(:school, name: 'Invisible School', visible: false) }
 
   let!(:school_group_1)       { create(:school_group, name: 'My School Group 1', schools: [school_1, school_2]) }
   let!(:school_group_2)       { create(:school_group, name: 'My School Group 2', schools: [school_3]) }

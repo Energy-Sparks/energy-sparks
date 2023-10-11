@@ -12,13 +12,13 @@ class MailchimpSubscriber
       if config.valid?
         @mailchimp_api.subscribe(list.id, config)
       else
-        raise MailchimpSubscriber::Error.new('Invalid newsletter subscription parameters')
+        raise MailchimpSubscriber::Error, 'Invalid newsletter subscription parameters'
       end
     else
-      raise MailchimpSubscriber::Error.new('Mailchimp API failed')
+      raise MailchimpSubscriber::Error, 'Mailchimp API failed'
     end
   rescue MailchimpApi::Error => e
-    raise MailchimpSubscriber::Error.new(e)
+    raise MailchimpSubscriber::Error, e
   end
 
   def mailchimp_signup_params(user, list)
@@ -44,9 +44,7 @@ class MailchimpSubscriber
     unless items.empty?
       list.categories.each do |category|
         category.interests.each do |interest|
-          if items.include?(interest.name)
-            ret[interest.id] = interest.id
-          end
+          ret[interest.id] = interest.id if items.include?(interest.name)
         end
       end
     end

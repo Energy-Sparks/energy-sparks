@@ -4,17 +4,15 @@ module Onboarding
 
     def new
       @school = @school_onboarding.school
-      @users = @school_onboarding.school.users.reject {|u| u.id == current_user.id || u.pupil? }
+      @users = @school_onboarding.school.users.reject { |u| u.id == current_user.id || u.pupil? }
       @pupil = @school_onboarding.school.users.pupil.first
       @meters = @school.meters
-      @school_times = @school.school_times.school_day.sort_by {|time| SchoolTime.days[time.day]}
-      if @school.calendar
-        @inset_days = @school.calendar.calendar_events.inset_days.order(:start_date, :end_date)
-      end
+      @school_times = @school.school_times.school_day.sort_by { |time| SchoolTime.days[time.day] }
+      @inset_days = @school.calendar.calendar_events.inset_days.order(:start_date, :end_date) if @school.calendar
     end
 
     def create
-      users = @school_onboarding.school.users.reject {|u| u.id == current_user.id || u.pupil? }
+      users = @school_onboarding.school.users.reject { |u| u.id == current_user.id || u.pupil? }
       onboarding_service.complete_onboarding(@school_onboarding, users)
       redirect_to onboarding_completion_path(@school_onboarding)
     end

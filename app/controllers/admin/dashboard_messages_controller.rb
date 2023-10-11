@@ -23,7 +23,7 @@ module Admin
       redirect_to params[:redirect_back] || request.referer, notice: "#{@messageable.model_name.human} dashboard message removed"
     end
 
-  private
+    private
 
     def dashboard_message_params
       params.require(:dashboard_message).permit(:message)

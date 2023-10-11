@@ -1,12 +1,12 @@
 module Alerts
   class GenerateAlertTypeRunResult
     def initialize(
-        school:,
-        alert_type:,
-        framework_adapter: FrameworkAdapter,
-        aggregate_school: AggregateSchoolService.new(school).aggregate_school,
-        use_max_meter_date_if_less_than_asof_date: false
-      )
+      school:,
+      alert_type:,
+      framework_adapter: FrameworkAdapter,
+      aggregate_school: AggregateSchoolService.new(school).aggregate_school,
+      use_max_meter_date_if_less_than_asof_date: false
+    )
       @school = school
       @alert_framework_adapter_class = framework_adapter
       @aggregate_school = aggregate_school

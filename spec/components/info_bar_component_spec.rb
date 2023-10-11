@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe InfoBarComponent, type: :component do
   let(:title)         { 'This is an info bar' }
@@ -8,13 +8,13 @@ RSpec.describe InfoBarComponent, type: :component do
   let(:button_link)   { 'http://www.example.com' }
   let(:icon)          { '<i class="fas fa-school fa-3x"></i>' }
   let(:status)        { :neutral }
-  let(:params)        {
+  let(:params)        do
     {
       icon: icon.html_safe,
       title: title,
       buttons: { button_title => button_link }
     }
-  }
+  end
 
   let(:component) { InfoBarComponent.new(**params) }
 

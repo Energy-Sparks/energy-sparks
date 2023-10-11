@@ -1,8 +1,8 @@
 namespace :issues do
-  desc "Issue report"
+  desc 'Issue report'
   task send_user_report: [:environment] do
     puts "#{Time.zone.now} send_user_report start - Sending weekly issues report to admins"
-    if ENV['ENVIRONMENT_IDENTIFIER'] == "production"
+    if ENV['ENVIRONMENT_IDENTIFIER'] == 'production'
       User.admin.each do |user|
         if AdminMailer.with(user: user).issues_report.deliver
           puts "Issues report delivered to #{user.email}"

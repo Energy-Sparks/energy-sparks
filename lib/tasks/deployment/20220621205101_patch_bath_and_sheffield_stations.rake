@@ -1,15 +1,15 @@
 namespace :after_party do
   desc 'Deployment task: patch_bath_and_sheffield_stations'
   task patch_bath_and_sheffield_stations: :environment do
-    puts "Copy missing data between Bath and Sheffield stations"
+    puts 'Copy missing data between Bath and Sheffield stations'
 
-    #Start Date: 2022-06-02
-    #End Date: 2022-06-13
+    # Start Date: 2022-06-02
+    # End Date: 2022-06-13
 
-    #Bath
-    #Dark Sky: 11
-    #Meteostat: 6
-    (Date.new(2022,06,02)..Date.new(2022,06,13)).each do |day|
+    # Bath
+    # Dark Sky: 11
+    # Meteostat: 6
+    (Date.new(2022, 0o6, 0o2)..Date.new(2022, 0o6, 13)).each do |day|
       ds_reading = DarkSkyArea.find(11).dark_sky_temperature_readings.where(reading_date: day).first
       ws_reading = WeatherStation.find(6).weather_observations.where(reading_date: day).first
       if ds_reading.present? && ws_reading.present?
@@ -17,10 +17,10 @@ namespace :after_party do
       end
     end
 
-    #Sheffield
-    #Dark Sky: 12
-    #Meteostat: 2
-    (Date.new(2022,06,02)..Date.new(2022,06,13)).each do |day|
+    # Sheffield
+    # Dark Sky: 12
+    # Meteostat: 2
+    (Date.new(2022, 0o6, 0o2)..Date.new(2022, 0o6, 13)).each do |day|
       ds_reading = DarkSkyArea.find(12).dark_sky_temperature_readings.where(reading_date: day).first
       ws_reading = WeatherStation.find(2).weather_observations.where(reading_date: day).first
       if ds_reading.present? && ws_reading.present?

@@ -1,12 +1,10 @@
 require 'rails_helper'
 
 describe 'programme type management', type: :system do
-
   let!(:school) { create(:school) }
   let!(:admin)  { create(:admin, school: school) }
 
   describe 'managing' do
-
     before do
       sign_in(admin)
       visit root_path
@@ -22,12 +20,12 @@ describe 'programme type management', type: :system do
       click_on 'New Programme Type'
       fill_in :programme_type_title_en, with: old_title
       fill_in_trix '#programme_type_description_en', with: description
-      attach_file(:programme_type_image_en, Rails.root + "spec/fixtures/images/placeholder.png")
+      attach_file(:programme_type_image_en, Rails.root + 'spec/fixtures/images/placeholder.png')
 
       click_on 'Save'
       expect(page).to have_content('Programme Types')
       expect(page).to have_content(old_title)
-      expect(page).to have_css(".text-danger")
+      expect(page).to have_css('.text-danger')
       expect(page).to have_content('No')
 
       expect(ProgrammeType.last.image_en.filename).to eq('placeholder.png')
@@ -35,13 +33,13 @@ describe 'programme type management', type: :system do
       click_on 'Edit'
       fill_in :programme_type_title_en, with: new_title
       fill_in :programme_type_bonus_score, with: bonus_score
-      check("Active", allow_label_click: true)
-      check("Default", allow_label_click: true)
+      check('Active', allow_label_click: true)
+      check('Default', allow_label_click: true)
 
       click_on 'Save'
       expect(page).to have_content('Programme Types')
       expect(page).to have_content(new_title)
-      expect(page).to have_css(".text-success")
+      expect(page).to have_css('.text-success')
       expect(page).to have_content('Yes')
 
       click_on new_title
@@ -54,13 +52,12 @@ describe 'programme type management', type: :system do
     end
 
     context 'manages order' do
-      let!(:activity_category)  { create(:activity_category)}
+      let!(:activity_category)  { create(:activity_category) }
       let!(:activity_type_1)    { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category) }
       let!(:activity_type_2)    { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category) }
       let!(:activity_type_3)    { create(:activity_type, name: 'Turn down the cooker', activity_category: activity_category) }
 
       it 'assigns activity types to programme types via a text box position' do
-
         description = 'SPN1'
         old_title = 'Super programme number 1'
 
@@ -83,12 +80,11 @@ describe 'programme type management', type: :system do
         expect(programme_type.programme_type_activity_types.first.position).to eq(1)
         expect(programme_type.programme_type_activity_types.second.position).to eq(2)
 
-        expect(all('ol.activities li').map(&:text)).to eq ['Turn down the heating','Turn off the lights']
+        expect(all('ol.activities li').map(&:text)).to eq ['Turn down the heating', 'Turn off the lights']
       end
     end
 
     context 'when progammes exist for schools' do
-
       let!(:activity_type_1)    { create(:activity_type) }
       let!(:activity_type_2)    { create(:activity_type) }
       let!(:programme_type)     { create(:programme_type, activity_types: [activity_type_1, activity_type_2]) }
@@ -96,7 +92,7 @@ describe 'programme type management', type: :system do
       let!(:activity_1)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Dark now', happened_on: Date.yesterday) }
       let!(:activity_2)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Still dark', happened_on: Date.today) }
 
-      before :each do
+      before do
         # enrolment only enabled if targets enabled...
         allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
       end

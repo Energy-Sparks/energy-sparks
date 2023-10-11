@@ -13,10 +13,10 @@ namespace :after_party do
     EOL
 
     if ConsentStatement.any?
-      puts "A ConsentStatement already exists, skipping task"
+      puts 'A ConsentStatement already exists, skipping task'
     else
       ConsentStatement.create!(
-        title: "Baseline Consent Statement",
+        title: 'Baseline Consent Statement',
         content: content,
         current: true
       )

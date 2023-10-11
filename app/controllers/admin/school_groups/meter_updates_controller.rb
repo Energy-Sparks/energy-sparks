@@ -3,8 +3,7 @@ module Admin
     class MeterUpdatesController < AdminController
       load_and_authorize_resource :school_group
 
-      def index
-      end
+      def index; end
 
       def bulk_update_meter_data_source
         meters = @school_group.meters.where(meter_type: meter_types)
@@ -29,7 +28,7 @@ module Admin
       private
 
       def meter_types
-        @meter_types ||= params['meter_update_id'] == 'solar_pv' ? %w(solar_pv exported_solar_pv) : [params['meter_update_id']]
+        @meter_types ||= params['meter_update_id'] == 'solar_pv' ? %w[solar_pv exported_solar_pv] : [params['meter_update_id']]
       end
 
       def meter_update_params

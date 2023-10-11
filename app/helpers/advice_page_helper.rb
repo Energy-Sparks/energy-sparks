@@ -12,9 +12,9 @@ module AdvicePageHelper
     I18n.t("advice_pages.nav.pages.#{advice_page.key}")
   end
 
-  #Helper for the advice pages, passes a scope to the I18n.t API based on
-  #our naming convention and page keys. Will only work on advice pages
-  #content, e.g advice_pages.*
+  # Helper for the advice pages, passes a scope to the I18n.t API based on
+  # our naming convention and page keys. Will only work on advice pages
+  # content, e.g advice_pages.*
   def advice_t(key, **vars)
     I18n.t(key, vars.merge(scope: [:advice_pages])).html_safe
   end
@@ -34,7 +34,7 @@ module AdvicePageHelper
   end
 
   def month_year(date)
-    I18n.t('date.month_names')[date.month] + " " + date.year.to_s
+    I18n.t('date.month_names')[date.month] + ' ' + date.year.to_s
   end
 
   def partial_year_note(year, amr_start_date, amr_end_date)
@@ -52,11 +52,11 @@ module AdvicePageHelper
   end
 
   def format_rating(rating)
-    rating > 4 ? "Limited variation" : "Large variation"
+    rating > 4 ? 'Limited variation' : 'Large variation'
   end
 
-  #link to a specific benchmark for a school group, falls back to the
-  #generic benchmark page if a school doesn't have a group
+  # link to a specific benchmark for a school group, falls back to the
+  # generic benchmark page if a school doesn't have a group
   def compare_for_school_group_path(benchmark_type, school)
     if school.school_group.present?
       compare_path(benchmark: benchmark_type, school_group_ids: [school.school_group.id])
@@ -65,10 +65,11 @@ module AdvicePageHelper
     end
   end
 
-  #calculate relative % change of a current value from a base value
+  # calculate relative % change of a current value from a base value
   def relative_percent(base, current)
     return 0.0 if base.nil? || current.nil? || base == current
     return 0.0 if base == 0.0
+
     (current - base) / base
   end
 
@@ -98,15 +99,16 @@ module AdvicePageHelper
   end
 
   def meters_by_estimated_saving(meters)
-    meters.sort_by {|_, v| v.estimated_saving_£.present? ? -v.estimated_saving_£ : 0.0 }
+    meters.sort_by { |_, v| v.estimated_saving_£.present? ? -v.estimated_saving_£ : 0.0 }
   end
 
   def meters_by_percentage_baseload(meters)
-    meters.sort_by {|_, v| -v.percentage_baseload }
+    meters.sort_by { |_, v| -v.percentage_baseload }
   end
 
   def heating_time_class(heating_start_time, recommended_time)
     return '' if heating_start_time.nil?
+
     if heating_start_time >= recommended_time
       'text-positive'
     else
@@ -116,6 +118,7 @@ module AdvicePageHelper
 
   def heating_time_assessment(heating_start_time, recommended_time)
     return I18n.t('analytics.modelling.heating.no_heating') if heating_start_time.nil?
+
     if heating_start_time >= recommended_time
       I18n.t('analytics.modelling.heating.on_time')
     else
@@ -132,7 +135,7 @@ module AdvicePageHelper
   end
 
   def warm_weather_on_days_status(rating)
-    if [:excellent, :good].include?(rating)
+    if %i[excellent good].include?(rating)
       :positive
     else
       :negative
@@ -144,8 +147,8 @@ module AdvicePageHelper
   end
 
   def school_has_fuel_type?(school, fuel_type)
-    fuel_type = 'storage_heaters' if fuel_type == "storage_heater"
-    fuel_type = 'electricity' if fuel_type == "solar_pv"
+    fuel_type = 'storage_heaters' if fuel_type == 'storage_heater'
+    fuel_type = 'electricity' if fuel_type == 'solar_pv'
     school.send("has_#{fuel_type}?".to_sym)
   end
 
@@ -155,6 +158,7 @@ module AdvicePageHelper
 
   def tariff_source(tariff_summary)
     return t('advice_pages.tables.labels.default') unless tariff_summary.real
+
     if tariff_summary.name.include?('DCC SMETS2')
       t('advice_pages.tables.labels.smart_meter')
     else
@@ -183,14 +187,15 @@ module AdvicePageHelper
     I18n.t('date.day_names')[week_day]
   end
 
-  #sort an array of SchoolPeriod objects
+  # sort an array of SchoolPeriod objects
   def sort_school_periods(periods)
-    periods.sort { |a, b| a.start_date <=> b.start_date }
+    periods.sort_by(&:start_date)
   end
 
   def can_compare_holiday_usage?(holiday, holiday_usage)
-    return false unless holiday_usage.usage.present?
-    return false unless holiday_usage.previous_holiday_usage.present?
+    return false if holiday_usage.usage.blank?
+    return false if holiday_usage.previous_holiday_usage.blank?
+
     Time.zone.today > holiday.end_date
   end
 
@@ -199,11 +204,13 @@ module AdvicePageHelper
   end
 
   def average_daily_usage(usage, school_period)
-    return usage.kwh / (school_period.end_date - school_period.start_date)
+    usage.kwh / (school_period.end_date - school_period.start_date)
   end
 
   def icon_tooltip(text = '')
-    tag.span(fa_icon('info-circle'), data: { toggle: "tooltip", placement: "top", title: text }, class: 'text-muted') if text.present?
+    if text.present?
+      tag.span(fa_icon('info-circle'), data: { toggle: 'tooltip', placement: 'top', title: text }, class: 'text-muted')
+    end
   end
 
   def formatted_unit_to_num(value)

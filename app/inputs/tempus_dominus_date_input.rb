@@ -1,14 +1,14 @@
 class TempusDominusDateInput < SimpleForm::Inputs::Base
   def input(wrapper_options)
     merged_input_options = merge_wrapper_options(input_html_options, wrapper_options)
-    template.content_tag(:div, class: "input-group date #{input_group_class}", data: { target_input: 'nearest' }, id: wrapper_id) do
+    template.tag.div(class: "input-group date #{input_group_class}", data: { target_input: 'nearest' }, id: wrapper_id) do
       template.concat @builder.text_field(attribute_name, merged_input_options)
       template.concat div_button
     end
   end
 
   def input_group_class
-    "tempus-dominus-date".freeze
+    'tempus-dominus-date'.freeze
   end
 
   def input_html_options
@@ -20,26 +20,24 @@ class TempusDominusDateInput < SimpleForm::Inputs::Base
   end
 
   def input_value_format
-    "%d/%m/%Y".freeze
+    '%d/%m/%Y'.freeze
   end
 
   def input_value
     object = @builder.object
     value = object && object.send(attribute_name).try(:strftime, input_value_format)
-    if value.nil? && options.key?(input_value_key)
-      value = options[input_value_key].try(:strftime, input_value_format)
-    end
+    value = options[input_value_key].try(:strftime, input_value_format) if value.nil? && options.key?(input_value_key)
     value
   end
 
   def div_button
-    template.content_tag(:div, class: 'input-group-append', data: { target: "##{wrapper_id}", toggle: 'datetimepicker' }) do
+    template.tag.div(class: 'input-group-append', data: { target: "##{wrapper_id}", toggle: 'datetimepicker' }) do
       template.concat span_table
     end
   end
 
   def span_table
-    template.content_tag(:div, class: 'input-group-text') do
+    template.tag.div(class: 'input-group-text') do
       template.concat icon_table
     end
   end

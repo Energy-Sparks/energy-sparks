@@ -17,7 +17,7 @@ module Schools
       private
 
       def meter_for_mpan(mpan_mprn)
-        @school.meters.find_by_mpan_mprn(mpan_mprn)
+        @school.meters.find_by(mpan_mprn: mpan_mprn)
       end
     end
   end

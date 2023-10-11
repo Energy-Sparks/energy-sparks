@@ -29,7 +29,7 @@ class MeterReview < ApplicationRecord
   has_many :meters
   has_and_belongs_to_many :consent_documents
 
-  validates_presence_of :school, :user, :consent_grant
+  validates :school, :user, :consent_grant, presence: true
 
   before_destroy do |review|
     review.meters.clear

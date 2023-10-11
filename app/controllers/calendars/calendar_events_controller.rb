@@ -15,8 +15,7 @@ class Calendars::CalendarEventsController < ApplicationController
     @calendar_event = CalendarEvent.new
   end
 
-  def edit
-  end
+  def edit; end
 
   # POST /calendars
   def create
@@ -52,7 +51,7 @@ class Calendars::CalendarEventsController < ApplicationController
     end
   end
 
-private
+  private
 
   def calendar_event_params
     params.require(:calendar_event).permit(:calendar_event_type_id, :start_date, :end_date, :school_id)

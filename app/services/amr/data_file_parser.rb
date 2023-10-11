@@ -17,7 +17,7 @@ module Amr
       ext = File.extname(path_and_file_name)
 
       content =
-        if %w(.xlsx .xls).include?(ext)
+        if %w[.xlsx .xls].include?(ext)
           spreadsheet = Roo::Spreadsheet.open(path_and_file_name)
           spreadsheet.sheet(0).to_csv
         else

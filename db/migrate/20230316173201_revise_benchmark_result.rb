@@ -8,5 +8,4 @@ class ReviseBenchmarkResult < ActiveRecord::Migration[6.0]
     add_column :benchmark_results, :data, :text
     remove_column :benchmark_results, :results_cy
   end
-
 end

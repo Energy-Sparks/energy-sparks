@@ -3,6 +3,7 @@ module Schools
     class HeatingControlBenchmarkGenerator < SchoolBenchmarkGenerator
       def benchmark_school
         return unless heating_control_service.enough_data_for_seasonal_analysis?
+
         heating_control_service.benchmark_warm_weather_days.category
       end
 

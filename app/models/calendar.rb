@@ -27,11 +27,11 @@ class Calendar < ApplicationRecord
 
   has_many    :schools
 
-  validates_presence_of :title
+  validates :title, presence: true
 
   delegate :terms, :holidays, :bank_holidays, :inset_days, :outside_term_time, to: :calendar_events
 
-  enum calendar_type: [:national, :regional, :school]
+  enum calendar_type: { national: 0, regional: 1, school: 2 }
 
   scope :template, -> { regional }
 

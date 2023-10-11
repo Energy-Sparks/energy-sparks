@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 describe 'Jobs', type: :system do
-
-  let!(:admin)  { create(:admin) }
+  let!(:admin) { create(:admin) }
 
   before do
     sign_in(admin)
@@ -22,7 +21,7 @@ describe 'Jobs', type: :system do
     click_on 'Create'
     expect(page).to have_content('blank')
     fill_in 'Title', with: title
-    attach_file("File", Rails.root + "spec/fixtures/images/newsletter-placeholder.png")
+    attach_file('File', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
     check 'Voluntary'
     click_on 'Create'
     expect(page).to have_content title
@@ -37,5 +36,4 @@ describe 'Jobs', type: :system do
     expect(page).to have_content('Job was successfully deleted.')
     expect(Job.count).to eq(0)
   end
-
 end

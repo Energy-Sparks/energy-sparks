@@ -38,18 +38,17 @@ class BenchmarkContentFilter
     charts?(count: 2) || tables?(count: 2)
   end
 
-private
+  private
 
   def extract_title(content)
-    i = content.find_index { |fragment| fragment[:type] == :title && fragment[:content].present?}
+    i = content.find_index { |fragment| fragment[:type] == :title && fragment[:content].present? }
     @title = content.delete_at(i)[:content] if i
   end
 
   def count_content_types(content)
-    content.inject({}) do |counts, fragment|
+    content.each_with_object({}) do |fragment, counts|
       counts[fragment[:type]] ||= 0
       counts[fragment[:type]] += 1
-      counts
     end
   end
 
@@ -88,8 +87,9 @@ private
   end
 
   def select_fragment?(fragment)
-    return false unless fragment.present?
-    [:title, :chart, :html, :table_composite].include?(fragment[:type]) && fragment[:content].present?
+    return false if fragment.blank?
+
+    %i[title chart html table_composite].include?(fragment[:type]) && fragment[:content].present?
   end
 
   def extract_rest(benchmarks)
@@ -112,11 +112,11 @@ private
         chunk << fragment
       end
 
-      if key
-        @content[keep] ||= []
-        @content[keep] += intro + chunk
-        chunk = []
-      end
+      next unless key
+
+      @content[keep] ||= []
+      @content[keep] += intro + chunk
+      chunk = []
     end
     if chunk.any? && keep
       @content[keep] ||= []

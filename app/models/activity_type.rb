@@ -40,10 +40,10 @@ class ActivityType < ApplicationRecord
   translates :download_links, backend: :action_text
 
   TX_ATTRIBUTE_MAPPING = {
-    school_specific_description: { templated: true },
+    school_specific_description: { templated: true }
   }.freeze
 
-  TX_REWRITEABLE_FIELDS = [:description_cy, :school_specific_description_cy, :download_links_cy].freeze
+  TX_REWRITEABLE_FIELDS = %i[description_cy school_specific_description_cy download_links_cy].freeze
 
   belongs_to :activity_category
 
@@ -68,8 +68,8 @@ class ActivityType < ApplicationRecord
   scope :for_key_stages, ->(key_stages) { joins(:key_stages).where(key_stages: { id: key_stages.map(&:id) }).distinct }
   scope :for_subjects, ->(subjects) { joins(:subjects).where(subjects: { id: subjects.map(&:id) }).distinct }
 
-  validates_presence_of :name, :activity_category_id, :score
-  validates_uniqueness_of :name, scope: :activity_category_id
+  validates :name, :activity_category_id, :score, presence: true
+  validates :name, uniqueness: { scope: :activity_category_id }
   validates :score, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validate :all_fuel_types_are_in_valid_fuel_types_list
 
@@ -93,11 +93,11 @@ class ActivityType < ApplicationRecord
   before_save :copy_searchable_attributes
 
   def suggested_from
-    ActivityType.joins(:activity_type_suggestions).where("activity_type_suggestions.suggested_type_id = ?", id)
+    ActivityType.joins(:activity_type_suggestions).where(activity_type_suggestions: { suggested_type_id: id })
   end
 
   def referenced_from_find_out_mores
-    AlertTypeRating.joins(:alert_type_rating_activity_types).where("alert_type_rating_activity_types.activity_type_id = ?", id)
+    AlertTypeRating.joins(:alert_type_rating_activity_types).where(alert_type_rating_activity_types: { activity_type_id: id })
   end
 
   def key_stage_list
@@ -109,12 +109,10 @@ class ActivityType < ApplicationRecord
   end
 
   def school_specific_description_or_fallback
-    school_specific_description.blank? ? description : school_specific_description
+    school_specific_description.presence || description
   end
 
-  def activities_for_school(school)
-    activities.for_school(school)
-  end
+  delegate :for_school, to: :activities, prefix: true
 
   def grouped_school_count
     activities.group(:school).count
@@ -124,7 +122,7 @@ class ActivityType < ApplicationRecord
     activities.select(:school_id).distinct.count
   end
 
-  #override default name for this resource in transifex
+  # override default name for this resource in transifex
   def tx_name
     name
   end
@@ -136,6 +134,6 @@ class ActivityType < ApplicationRecord
   private
 
   def copy_searchable_attributes
-    self.write_attribute(:name, self.name(locale: :en))
+    self[:name] = name(locale: :en)
   end
 end

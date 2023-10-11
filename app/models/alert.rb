@@ -60,21 +60,17 @@ class Alert < ApplicationRecord
 
   scope :by_type, -> { joins(:alert_type).order('alert_types.title') }
 
-  scope :rating_between, ->(from, to) { where("rating BETWEEN ? AND ?", from, to) }
+  scope :rating_between, ->(from, to) { where('rating BETWEEN ? AND ?', from, to) }
 
-  enum enough_data: [:enough, :not_enough, :minimum_might_not_be_accurate], _prefix: :data
-  enum relevance: [:relevant, :not_relevant, :never_relevant], _prefix: :relevance
+  enum enough_data: { enough: 0, not_enough: 1, minimum_might_not_be_accurate: 2 }, _prefix: :data
+  enum relevance: { relevant: 0, not_relevant: 1, never_relevant: 2 }, _prefix: :relevance
 
   scope :without_exclusions, -> { joins(:alert_type).joins('LEFT OUTER JOIN school_alert_type_exclusions ON school_alert_type_exclusions.school_id = alerts.school_id AND school_alert_type_exclusions.alert_type_id = alert_types.id').where(school_alert_type_exclusions: { school_id: nil }) }
   scope :displayable, -> { where(displayable: true) }
 
-  def advice_page
-    alert_type.advice_page
-  end
+  delegate :advice_page, to: :alert_type
 
-  def frequency
-    alert_type.frequency
-  end
+  delegate :frequency, to: :alert_type
 
   def formatted_rating
     rating.nil? ? 'Unrated' : "#{rating.round(0)}/10"

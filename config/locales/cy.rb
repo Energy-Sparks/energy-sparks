@@ -37,30 +37,30 @@
 # 30     | degfed ar hugain         | 30ain
 # 31     | unfed ar ddeg ar hugain  | 31ain
 {
-  :cy => {
+  cy: {
     number: {
       nth: {
         ordinals: lambda do |_key, options|
           number = options[:number]
           case number
-          when 1; 'af'
-          when 2; 'ail'
-          when 3, 4; 'ydd'
-          when 5, 6; 'ed'
-          when 7, 8, 9, 10, 12, 15, 18, 20, 40, 50, 60, 70, 80, 90, 100; 'fed'
-          when 11, 13, 14, 16, 17, 19; 'eg'
-          when 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39; 'ain'
+          when 1 then 'af'
+          when 2 then 'ail'
+          when 3, 4 then 'ydd'
+          when 5, 6 then 'ed'
+          when 7, 8, 9, 10, 12, 15, 18, 20, 40, 50, 60, 70, 80, 90, 100 then 'fed'
+          when 11, 13, 14, 16, 17, 19 then 'eg'
+          when 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39 then 'ain'
           else
             num_modulo = number.to_i.abs % 100
             num_modulo %= 10 if num_modulo > 13
             case num_modulo
-            when 1; 'af'
-            when 2; 'ail'
-            when 3, 4; 'ydd'
-            when 5, 6; 'ed'
-            when 7, 8, 9, 10, 12, 15, 18, 20, 40, 50, 60, 70, 80, 90, 100; 'fed'
-            when 11, 13, 14, 16, 17, 19; 'eg'
-            when 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39; 'ain'
+            when 1 then 'af'
+            when 2 then 'ail'
+            when 3, 4 then 'ydd'
+            when 5, 6 then 'ed'
+            when 7, 8, 9, 10, 12, 15, 18, 20, 40, 50, 60, 70, 80, 90, 100 then 'fed'
+            when 11, 13, 14, 16, 17, 19 then 'eg'
+            when 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39 then 'ain'
             end
           end
         end,

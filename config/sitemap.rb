@@ -1,9 +1,8 @@
 # Set the host name for URL creation
-SitemapGenerator::Sitemap.default_host = "https://energysparks.uk"
+SitemapGenerator::Sitemap.default_host = 'https://energysparks.uk'
 
 if ENV.key?('GENERATE_SITEMAP')
   SitemapGenerator::Sitemap.create do
-
     # Home controller stuff
     add root_path
 

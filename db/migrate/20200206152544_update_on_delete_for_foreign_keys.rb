@@ -1,21 +1,20 @@
 class UpdateOnDeleteForForeignKeys < ActiveRecord::Migration[6.0]
-
   CHANGES = {
-    [:activities, :schools] => :cascade,
-    [:activities, :activity_categories] => :restrict,
-    [:activities, :activity_types] => :restrict,
-    [:activity_type_suggestions, :activity_types] => :cascade,
-    [:alert_subscription_events, :alerts] => :cascade,
-    [:amr_validated_readings, :meters] => :cascade,
-    [:calendar_events, :academic_years] => :restrict,
-    [:calendar_events, :calendar_event_types] => :restrict,
-    [:calendar_events, :calendars] => :cascade,
-    [:meters, :schools] => :cascade,
-    [:schools, :calendars] => :restrict,
-    [:schools, :school_groups] => :restrict,
-    [:simulations, :schools] => :cascade,
-    [:simulations, :users] => :nullify,
-  }
+    %i[activities schools] => :cascade,
+    %i[activities activity_categories] => :restrict,
+    %i[activities activity_types] => :restrict,
+    %i[activity_type_suggestions activity_types] => :cascade,
+    %i[alert_subscription_events alerts] => :cascade,
+    %i[amr_validated_readings meters] => :cascade,
+    %i[calendar_events academic_years] => :restrict,
+    %i[calendar_events calendar_event_types] => :restrict,
+    %i[calendar_events calendars] => :cascade,
+    %i[meters schools] => :cascade,
+    %i[schools calendars] => :restrict,
+    %i[schools school_groups] => :restrict,
+    %i[simulations schools] => :cascade,
+    %i[simulations users] => :nullify
+  }.freeze
 
   def up
     # remove and re-add with on_delete

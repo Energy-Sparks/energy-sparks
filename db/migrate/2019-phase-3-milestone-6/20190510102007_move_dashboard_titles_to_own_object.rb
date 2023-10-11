@@ -8,15 +8,15 @@ class MoveDashboardTitlesToOwnObject < ActiveRecord::Migration[6.0]
 
     create_table :dashboard_alerts do |t|
       t.integer    :dashboard, null: false # enum: teacher, pupil etc
-      t.references :content_generation_run, null: false, foreign_key: {on_delete: :cascade}
-      t.references :alert, null: false, foreign_key: {on_delete: :cascade}
-      t.references :alert_type_rating_content_version, null: false, foreign_key: {on_delete: :restrict}
-      t.references :find_out_more, foreign_key: {on_delete: :nullify}
+      t.references :content_generation_run, null: false, foreign_key: { on_delete: :cascade }
+      t.references :alert, null: false, foreign_key: { on_delete: :cascade }
+      t.references :alert_type_rating_content_version, null: false, foreign_key: { on_delete: :restrict }
+      t.references :find_out_more, foreign_key: { on_delete: :nullify }
       t.timestamps
     end
 
-    add_reference :alert_subscription_events, :find_out_more, foreign_key: {on_delete: :nullify}
-    add_reference :alert_subscription_events, :content_generation_run, null: false, foreign_key: {on_delete: :cascade}
+    add_reference :alert_subscription_events, :find_out_more, foreign_key: { on_delete: :nullify }
+    add_reference :alert_subscription_events, :content_generation_run, null: false, foreign_key: { on_delete: :cascade }
 
     reversible do |dir|
       dir.up do
@@ -35,6 +35,5 @@ class MoveDashboardTitlesToOwnObject < ActiveRecord::Migration[6.0]
         )
       end
     end
-
   end
 end

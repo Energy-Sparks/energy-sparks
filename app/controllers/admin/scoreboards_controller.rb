@@ -8,8 +8,7 @@ module Admin
       @scoreboards = @scoreboards.order(:name)
     end
 
-    def new
-    end
+    def new; end
 
     def edit
       @schools = @scoreboard.schools.by_name
@@ -36,11 +35,11 @@ module Admin
     def destroy
       @scoreboard.safe_destroy
       redirect_to admin_scoreboards_path, notice: 'Scoreboard deleted'
-    rescue EnergySparks::SafeDestroyError => error
-      redirect_to admin_scoreboards_path, alert: "Delete failed: #{error.message}"
+    rescue EnergySparks::SafeDestroyError => e
+      redirect_to admin_scoreboards_path, alert: "Delete failed: #{e.message}"
     end
 
-  private
+    private
 
     def scoreboard_params
       translated_params = t_params(Scoreboard.mobility_attributes)

@@ -6,7 +6,7 @@ class CreateAlerts < ActiveRecord::Migration[5.2]
       t.date        :run_on
       t.integer     :status
       t.text        :summary
-      t.json        :data,          default: {}
+      t.json        :data, default: {}
       t.timestamps
     end
   end

@@ -3,11 +3,11 @@ require 'dashboard'
 module Solar
   class RtoneVariantDownloader
     def initialize(
-        installation:,
-        start_date:,
-        end_date:,
-        api:
-      )
+      installation:,
+      start_date:,
+      end_date:,
+      api:
+    )
       @rtone_variant_installation = installation
       @low_carbon_hub_api = api
       @start_date = start_date

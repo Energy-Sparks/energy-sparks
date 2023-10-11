@@ -4,9 +4,9 @@ namespace :after_party do
     puts "Running deploy task 'east_sussex_gas'"
 
     config = {}
-    config['description'] = "East Sussex Gas Feed Configuration"
+    config['description'] = 'East Sussex Gas Feed Configuration'
     config['identifier'] = 'east-sussex-gas'
-    config['date_format'] = "%y-%m-%d"
+    config['date_format'] = '%y-%m-%d'
     config['mpan_mprn_field'] = 'Meter'
     config['reading_date_field'] = 'Date'
     config['total_field'] = 'Total'
@@ -15,7 +15,6 @@ namespace :after_party do
     config['number_of_header_rows'] = 1
 
     AmrDataFeedConfig.create!(config)
-
 
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).

@@ -29,11 +29,11 @@ class TransportSurvey < ApplicationRecord
   end
 
   def total_responses
-    self.responses.count
+    responses.count
   end
 
   def total_carbon
-    self.responses.sum(&:carbon)
+    responses.sum(&:carbon)
   end
 
   def today?
@@ -41,7 +41,7 @@ class TransportSurvey < ApplicationRecord
   end
 
   def responses_per_category
-    responses_per_cat = self.responses.with_transport_type.group(:category).count
+    responses_per_cat = responses.with_transport_type.group(:category).count
     # also include counts of zero for categories without responses
     TransportType.categories_with_other.transform_values { |v| responses_per_cat[v] || 0 }
   end
@@ -89,13 +89,13 @@ class TransportSurvey < ApplicationRecord
 
   def equivalences
     if total_carbon == 0
-      return [{ statement: I18n.t('schools.transport_surveys.equivalences.neutral'), svg: self.class.equivalence_svgs[:neutral] }]
+      [{ statement: I18n.t('schools.transport_surveys.equivalences.neutral'), svg: self.class.equivalence_svgs[:neutral] }]
     else
       self.class.equivalences.collect do |equivalence|
         amount = (total_carbon / equivalence[:rate]).round
         if amount > 0
           { statement: I18n.t(equivalence[:name], scope: 'schools.transport_surveys.equivalences', image: equivalence[:image], count: amount),
-                    svg: self.class.equivalence_svgs[equivalence[:name]] }
+            svg: self.class.equivalence_svgs[equivalence[:name]] }
         end
       end.compact.shuffle
     end
@@ -103,7 +103,7 @@ class TransportSurvey < ApplicationRecord
 
   def responses=(responses_attributes)
     responses_attributes.each do |response_attributes|
-      self.responses.create_with(response_attributes).find_or_create_by(response_attributes.slice(:run_identifier, :surveyed_at))
+      responses.create_with(response_attributes).find_or_create_by(response_attributes.slice(:run_identifier, :surveyed_at))
     end
   end
 end

@@ -3,23 +3,25 @@ require 'dashboard'
 module Solar
   class LowCarbonHubInstallationFactory
     def initialize(
-        school:,
-        rbee_meter_id:,
-        amr_data_feed_config:,
-        username:,
-        password:
-      )
+      school:,
+      rbee_meter_id:,
+      amr_data_feed_config:,
+      username:,
+      password:
+    )
       @school = school
       @rbee_meter_id = rbee_meter_id
       @amr_data_feed_config = amr_data_feed_config
       @username = username
       @password = password
-      raise ArgumentError, 'Amr Data Feed Config is not set for the Low carbon hub API' unless amr_data_feed_config.low_carbon_hub_api?
+      unless amr_data_feed_config.low_carbon_hub_api?
+        raise ArgumentError, 'Amr Data Feed Config is not set for the Low carbon hub API'
+      end
     end
 
     def perform
       installation = LowCarbonHubInstallation.where(school_id: @school.id, rbee_meter_id: @rbee_meter_id, amr_data_feed_config: @amr_data_feed_config).first_or_create!
-      #save credentials to avoid api error meaning they're not saved
+      # save credentials to avoid api error meaning they're not saved
       installation.update(username: username, password: password)
       installation.update(information: information)
 

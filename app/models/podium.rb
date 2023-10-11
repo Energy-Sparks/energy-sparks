@@ -1,6 +1,7 @@
 class Podium
   class Position
     attr_reader :school, :points, :position, :normalised_points
+
     def initialize(school:, points:, position:, normalised_points:, recent_points:)
       @school = school
       @points = points
@@ -75,7 +76,7 @@ class Podium
   end
 
   def school_position
-    @positions.find {|position| position.school == @school}
+    @positions.find { |position| position.school == @school }
   end
 
   def next_school_position

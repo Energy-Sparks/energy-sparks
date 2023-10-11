@@ -3,10 +3,10 @@ module Schools
     load_resource :school
     load_and_authorize_resource :observation, through: :school, parent: false
 
-    skip_before_action :authenticate_user!, only: [:index, :show]
-    before_action :check_recording_enabled, only: [:new, :create]
-    before_action :set_location_names, only: [:new, :create]
-    before_action :set_inital_recording_count, only: [:new, :create]
+    skip_before_action :authenticate_user!, only: %i[index show]
+    before_action :check_recording_enabled, only: %i[new create]
+    before_action :set_location_names, only: %i[new create]
+    before_action :set_inital_recording_count, only: %i[new create]
     before_action :set_breadcrumbs
 
     TEMPERATURE_RECORD_INCREASE = 10
@@ -29,8 +29,7 @@ module Schools
       end
     end
 
-    def show
-    end
+    def show; end
 
     def index
       @locations = @school.locations.order(name: :asc)
@@ -42,11 +41,11 @@ module Schools
       redirect_back fallback_location: school_temperature_observations_path(@school), notice: 'Successfully deleted.'
     end
 
-  private
+    private
 
     def set_breadcrumbs
       @breadcrumbs = [
-        { name: I18n.t('schools.temperature_observations.index.page_title') },
+        { name: I18n.t('schools.temperature_observations.index.page_title') }
       ]
     end
 
@@ -61,7 +60,7 @@ module Schools
     end
 
     def observation_params
-      params.require(:observation).permit(:description, :at, temperature_recordings_attributes: [:id, :centigrade, :location_id])
+      params.require(:observation).permit(:description, :at, temperature_recordings_attributes: %i[id centigrade location_id])
     end
 
     def check_recording_enabled

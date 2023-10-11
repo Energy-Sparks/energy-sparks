@@ -3,7 +3,7 @@ class MailchimpSignupParams
 
   attr_accessor :email_address, :tags, :interests, :merge_fields
 
-  validates_presence_of :email_address
+  validates :email_address, presence: true
   validate :interests_specified?
 
   def initialize(email_address:, tags: '', interests: {}, merge_fields: {})

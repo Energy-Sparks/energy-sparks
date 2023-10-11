@@ -22,9 +22,9 @@
 class SchoolTime < ApplicationRecord
   belongs_to :school, inverse_of: :school_times
 
-  enum day: [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday, :weekdays, :weekends, :everyday]
-  enum usage_type: [:school_day, :community_use]
-  enum calendar_period: [:term_times, :only_holidays, :all_year]
+  enum day: { monday: 0, tuesday: 1, wednesday: 2, thursday: 3, friday: 4, saturday: 5, sunday: 6, weekdays: 7, weekends: 8, everyday: 9 }
+  enum usage_type: { school_day: 0, community_use: 1 }
+  enum calendar_period: { term_times: 0, only_holidays: 1, all_year: 2 }
 
   validates :opening_time, :closing_time, :day, presence: true
   validates :opening_time, :closing_time, numericality: {
@@ -34,14 +34,14 @@ class SchoolTime < ApplicationRecord
     message: 'must be between 0000 and 2359'
   }
 
-  #Can only have one of each school day per school
-  validates_uniqueness_of :day, scope: :school_id, conditions: -> { where(usage_type: :school_day) }, if: :school_day?, message: "Cannot have duplicate school days"
+  # Can only have one of each school day per school
+  validates :day, uniqueness: { scope: :school_id, conditions: -> { where(usage_type: :school_day) }, if: :school_day?, message: 'Cannot have duplicate school days' }
 
-  #School days must be a named day
-  validates_inclusion_of :day, in: %w(monday tuesday wednesday thursday friday), if: :school_day?
+  # School days must be a named day
+  validates :day, inclusion: { in: %w[monday tuesday wednesday thursday friday], if: :school_day? }
 
-  #School days must be term time
-  validates_inclusion_of :calendar_period, in: ["term_times"], if: :school_day?
+  # School days must be term time
+  validates :calendar_period, inclusion: { in: ['term_times'], if: :school_day? }
 
   validate :closing_after_opening
 
@@ -58,48 +58,53 @@ class SchoolTime < ApplicationRecord
   end
 
   def community_use_defaults!
-    if self.usage_type.to_sym == :community_use
+    if usage_type.to_sym == :community_use
       self.opening_time = nil
       self.closing_time = nil
     end
   end
 
   def overlaps_school_day?
-    overlapping("school_day")
+    overlapping('school_day')
   end
 
   def overlaps_other?
-    overlapping(self.usage_type)
+    overlapping(usage_type)
   end
 
   def no_overlaps
-    return unless self.opening_time.present? && self.closing_time.present?
-    errors.add(:overlapping_time, 'Community use periods cannot overlap the school day') if usage_type == "community_use" && overlaps_school_day?
+    return unless opening_time.present? && closing_time.present?
+
+    if usage_type == 'community_use' && overlaps_school_day?
+      errors.add(:overlapping_time, 'Community use periods cannot overlap the school day')
+    end
     errors.add(:overlapping_time, 'Periods cannot overlap each other') if overlaps_other?
   end
 
   def closing_after_opening
-    errors.add(:closing_time, 'must be before opening time') if closing_time.present? && opening_time.present? && closing_time <= opening_time
+    if closing_time.present? && opening_time.present? && closing_time <= opening_time
+      errors.add(:closing_time, 'must be before opening time')
+    end
   end
 
   def to_analytics
     {
-      day: self.day.to_sym,
-      usage_type: self.usage_type.to_sym,
-      opening_time: convert_to_time_of_day(self.opening_time),
-      closing_time: convert_to_time_of_day(self.closing_time),
-      calendar_period: self.calendar_period.to_sym
+      day: day.to_sym,
+      usage_type: usage_type.to_sym,
+      opening_time: convert_to_time_of_day(opening_time),
+      closing_time: convert_to_time_of_day(closing_time),
+      calendar_period: calendar_period.to_sym
     }
   end
 
   private
 
-  #Check whether this SchoolTime overlaps with other SchoolTimes associated with
-  #the same school. This doesn't query the database, because we also need to do
-  #this validation when adding multiple times to a school as part of a form update.
-  #When rails does this is runs the validation for all models, then inserts them
-  #so doing database queries for the time ranges was allowing invalid data to be
-  #inserted
+  # Check whether this SchoolTime overlaps with other SchoolTimes associated with
+  # the same school. This doesn't query the database, because we also need to do
+  # this validation when adding multiple times to a school as part of a form update.
+  # When rails does this is runs the validation for all models, then inserts them
+  # so doing database queries for the time ranges was allowing invalid data to be
+  # inserted
   def overlapping(usage_type)
     day = overlapping_days
     calendar_period = overlapping_calendar_periods
@@ -116,62 +121,62 @@ class SchoolTime < ApplicationRecord
   end
 
   def overlapping_times?(other)
-    return same_period?(other) || shorter_period?(other) || longer_period?(other) || overlaps_start?(other) || overlaps_end?(other)
+    same_period?(other) || shorter_period?(other) || longer_period?(other) || overlaps_start?(other) || overlaps_end?(other)
   end
 
   def same_period?(other)
-    other.opening_time == self.opening_time && other.closing_time == self.closing_time
+    other.opening_time == opening_time && other.closing_time == closing_time
   end
 
   def shorter_period?(other)
-    other.opening_time > self.opening_time && other.closing_time < self.closing_time
+    other.opening_time > opening_time && other.closing_time < closing_time
   end
 
   def longer_period?(other)
-    other.opening_time < self.opening_time && other.closing_time > self.closing_time
+    other.opening_time < opening_time && other.closing_time > closing_time
   end
 
   def overlaps_start?(other)
-    other.opening_time < self.opening_time && other.closing_time > self.opening_time && other.closing_time < self.closing_time
+    other.opening_time < opening_time && other.closing_time > opening_time && other.closing_time < closing_time
   end
 
   def overlaps_end?(other)
-    other.opening_time > self.opening_time && other.opening_time < self.closing_time
+    other.opening_time > opening_time && other.opening_time < closing_time
   end
 
   def overlapping_calendar_periods
-    case self.calendar_period
-    when "term_times"
-      [self.calendar_period, "all_year"]
-    when "only_holidays"
-      [self.calendar_period, "all_year"]
-    when "all_year"
-      [self.calendar_period, "term_times", "only_holidays"]
+    case calendar_period
+    when 'term_times'
+      [calendar_period, 'all_year']
+    when 'only_holidays'
+      [calendar_period, 'all_year']
+    when 'all_year'
+      [calendar_period, 'term_times', 'only_holidays']
     else
-      [self.calendar_period]
+      [calendar_period]
     end
   end
 
   def overlapping_days
-    case self.day
-    when "monday", "tuesday", "wednesday", "thursday", "friday"
-      [self.day, "weekdays", "everyday"]
-    when "saturday", "sunday"
-      [self.day, "weekends", "everyday"]
-    when "weekdays"
-      [self.day, "monday", "tuesday", "wednesday", "thursday", "friday"]
-    when "weekends"
-      [self.day, "saturday", "sunday"]
-    when "everyday"
+    case day
+    when 'monday', 'tuesday', 'wednesday', 'thursday', 'friday'
+      [day, 'weekdays', 'everyday']
+    when 'saturday', 'sunday'
+      [day, 'weekends', 'everyday']
+    when 'weekdays'
+      [day, 'monday', 'tuesday', 'wednesday', 'thursday', 'friday']
+    when 'weekends'
+      [day, 'saturday', 'sunday']
+    when 'everyday'
       SchoolTime.days.keys.map(&:to_s)
     else
-      [self.day]
+      [day]
     end
   end
 
   def convert_to_time_of_day(hours_minutes_as_integer)
-      minutes = hours_minutes_as_integer % 100
-      hours = hours_minutes_as_integer.div 100
-      TimeOfDay.new(hours, minutes)
+    minutes = hours_minutes_as_integer % 100
+    hours = hours_minutes_as_integer.div 100
+    TimeOfDay.new(hours, minutes)
   end
 end

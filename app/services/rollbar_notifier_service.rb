@@ -8,8 +8,8 @@ class RollbarNotifierService
 
   REPORTS = {
     validation_errors: {
-      title: "Meter validation problems",
-      description: "Validation failed for the following schools in the last 48 hours. Failed caused by the listed meter",
+      title: 'Meter validation problems',
+      description: 'Validation failed for the following schools in the last 48 hours. Failed caused by the listed meter',
       rql_query: <<-QUERY
       SELECT timestamp, body.trace.extra.school_id, body.trace.extra.school, body.trace.extra.mpan_mprn, body.trace.exception.message
       from item_occurrence
@@ -19,8 +19,8 @@ class RollbarNotifierService
       QUERY
     },
     n3rgy_errors: {
-      title: "N3RGY Meter loading errors",
-      description: "Errors reported when trying to load data from N3RGY",
+      title: 'N3RGY Meter loading errors',
+      description: 'Errors reported when trying to load data from N3RGY',
       rql_query: <<-QUERY
       SELECT timestamp, body.trace.extra.meter_id, body.trace.extra.start_date, body.trace.extra.end_date, body.trace.exception.message
       from item_occurrence
@@ -37,7 +37,7 @@ class RollbarNotifierService
       results[key] = config.dup
       results[key][:results] = run_report(config)
     end
-    return results
+    results
   end
 
   def perform
@@ -48,14 +48,14 @@ class RollbarNotifierService
 
   def run_report(report)
     query_result = @rql_jobs.run_query(report[:rql_query])
-    return {
-      columns: query_result["result"]["result"]["columns"],
-      rows: query_result["result"]["result"]["rows"]
+    {
+      columns: query_result['result']['result']['columns'],
+      rows: query_result['result']['result']['rows']
     }
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error "Exception: running RQL report '#{report[:title]}' against rollbar. #{e.class} #{e.message}"
     Rails.logger.error e.backtrace.join("\n")
     Rollbar.error(e)
-    return { error: true, rows: [], columns: [] }
+    { error: true, rows: [], columns: [] }
   end
 end

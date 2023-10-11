@@ -4,8 +4,7 @@ module Schools
     before_action :authorized?
     before_action :set_breadcrumbs
 
-    def index
-    end
+    def index; end
 
     private
 
@@ -15,7 +14,7 @@ module Schools
 
     def authorized?
       unless can?(:download_school_data, @school)
-        flash[:error] = "You are not authorized to view that page."
+        flash[:error] = 'You are not authorized to view that page.'
         redirect_to school_path(@school)
       end
     end

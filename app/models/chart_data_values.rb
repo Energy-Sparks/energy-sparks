@@ -18,10 +18,10 @@ class ChartDataValues
   DARK_STORAGE = '#7C3AFF'.freeze
   LIGHT_STORAGE = '#E097FC'.freeze
   GREEN = '#5cb85c'.freeze
-  STORAGE_HEATER = "#501e74".freeze
+  STORAGE_HEATER = '#501e74'.freeze
   MONEY = '#232B49'.freeze
 
-  X_AXIS_CATEGORIES = %w(S M T W T F S).freeze
+  X_AXIS_CATEGORIES = %w[S M T W T F S].freeze
 
   BENCHMARK_LABELS = [
     I18n.t('analytics.series_data_manager.series_name.benchmark_school'), I18n.t('analytics.series_data_manager.series_name.exemplar_school')
@@ -67,11 +67,12 @@ class ChartDataValues
   def translate_categories_for(categories)
     return categories unless categories.is_a? Array
     return categories if @chart1_type == :scatter
+
     categories.map { |category_label| translated_series_item_for(category_label) }
   end
 
   def translate_data_keys_for(data)
-    return unless data.present?
+    return if data.blank?
 
     data.transform_keys { |series_item| translated_series_item_for(series_item) }
   end
@@ -86,6 +87,7 @@ class ChartDataValues
 
   def process
     return self if @chart.nil?
+
     @x_data_hash = reverse_x_data_if_required
 
     @series_data = []
@@ -101,7 +103,7 @@ class ChartDataValues
     elsif @chart1_type == :scatter
       scatter_and_trendline
     elsif @chart1_type == :line
-      #TODO chart colours that show gas/electricity/storage should all be using usage_line.
+      # TODO: chart colours that show gas/electricity/storage should all be using usage_line.
       if @chart_type.match?(/^targeting_and_tracking/) || @chart_type.match?(/^calendar_picker/) && @chart[:configuration][:series_breakdown] != :meter
         usage_line
       else
@@ -162,47 +164,48 @@ class ChartDataValues
   end
 
   def self.as_chart_json(output)
-    [
-      :title,
-      :subtitle,
-      :chart1_type,
-      :chart1_subtype,
-      :y_axis_label,
-      :x_axis_label,
-      :x_axis_categories,
-      :x_max_value,
-      :x_min_value,
-      :advice_header,
-      :advice_footer,
-      :y2_axis_label,
-      :y2_point_format,
-      :y2_max,
-      :series_data,
-      :annotations,
-      :allowed_operations,
-      :drilldown_available,
-      :transformations,
-      :parent_timescale_description,
-      :uses_time_of_day,
-      :y1_axis_choices,
-      :explore_message,
-      :pinch_and_zoom_message,
-      :click_and_drag_message,
-      :subtitle_start_date,
-      :subtitle_end_date
-    ].inject({}) do |json, field|
-      json[field] = output.public_send(field)
-      json
+    %i[
+      title
+      subtitle
+      chart1_type
+      chart1_subtype
+      y_axis_label
+      x_axis_label
+      x_axis_categories
+      x_max_value
+      x_min_value
+      advice_header
+      advice_footer
+      y2_axis_label
+      y2_point_format
+      y2_max
+      series_data
+      annotations
+      allowed_operations
+      drilldown_available
+      transformations
+      parent_timescale_description
+      uses_time_of_day
+      y1_axis_choices
+      explore_message
+      pinch_and_zoom_message
+      click_and_drag_message
+      subtitle_start_date
+      subtitle_end_date
+    ].index_with do |field|
+      output.public_send(field)
     end
   end
 
   def subtitle_start_date
     return nil unless x_axis_ranges_present? && transformations_empty_or_only_move?
+
     format_subtitle_date(@x_axis_ranges.first.first)
   end
 
   def subtitle_end_date
     return nil unless x_axis_ranges_present? && transformations_empty_or_only_move?
+
     format_subtitle_date(@x_axis_ranges.last.last)
   end
 
@@ -216,12 +219,16 @@ class ChartDataValues
 
   def translated_series_item_for(series_key_as_string)
     series_key_as_string = series_key_as_string.to_s
-    return I18n.t('analytics.series_data_manager.series_name.baseload') if series_key_as_string.casecmp('baseload').zero?
+    if series_key_as_string.casecmp('baseload').zero?
+      return I18n.t('analytics.series_data_manager.series_name.baseload')
+    end
     return I18n.t('advice_pages.benchmarks.benchmark_school') if series_key_as_string == 'benchmark'
     return I18n.t('advice_pages.benchmarks.exemplar_school') if series_key_as_string == 'exemplar'
     return I18n.t('analytics.common.school_day') if series_key_as_string == 'school day'
 
-    return translate_bill_component_series(series_key_as_string) if I18n.t("advice_pages.tables.labels.bill_components").keys.map(&:to_s).include?(series_key_as_string)
+    if I18n.t('advice_pages.tables.labels.bill_components').keys.map(&:to_s).include?(series_key_as_string)
+      return translate_bill_component_series(series_key_as_string)
+    end
 
     i18n_key = series_translation_key_lookup[series_key_as_string]
     return series_key_as_string unless i18n_key
@@ -274,7 +281,7 @@ class ChartDataValues
     }
   end
 
-private
+  private
 
   def start_date_from_label(full_label)
     # Remove leading Energy:
@@ -287,6 +294,7 @@ private
   def format_teachers_label(full_label)
     start_date = start_date_from_label(full_label)
     return full_label unless start_date
+
     end_date = start_date + 6.days
     "#{I18n.l(start_date, format: '%a %d/%m/%Y')} - #{I18n.l(end_date, format: '%a %d/%m/%Y')}"
   rescue ArgumentError
@@ -296,16 +304,14 @@ private
   def usage_column
     @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
       colour = teachers_chart_colour(index)
-      #get the start date
+      # get the start date
       start_date = start_date_from_label(data_type)
 
-      #run map over the data to turn it into a hash of {y: d, day: formatted_date from index}
-      if start_date
-        data.map!.with_index {|v, i| { y: v, day: I18n.l(start_date.next_day(i), format: '%a %d/%m/%Y') } }
-      end
+      # run map over the data to turn it into a hash of {y: d, day: formatted_date from index}
+      data.map!.with_index { |v, i| { y: v, day: I18n.l(start_date.next_day(i), format: '%a %d/%m/%Y') } } if start_date
 
-      #add some useful cue to the json to indicate it should use an alternate formatter
-      #e.g. pointFormat: :day, :orderedPoint
+      # add some useful cue to the json to indicate it should use an alternate formatter
+      # e.g. pointFormat: :day, :orderedPoint
       { name: format_teachers_label(data_type), color: colour, type: @chart1_type, data: data, index: index, day_format: start_date.present? }
     end
   end
@@ -329,20 +335,18 @@ private
       data_type = tidy_label(data_type)
       colour = work_out_best_colour(data_type)
 
-      # ToDo is there a better way we can detect this reliably?
+      # TODO: is there a better way we can detect this reliably?
       if data.detect { |record| record.is_a?(TimeOfDay) }
         @uses_time_of_day = true
         data = data.map { |record| record.present? ? convert_relative_time(record.relative_time) : nil }
       end
 
-      if is_benchmark_chart?
-        colour_benchmark_bars(data_type, data)
-      end
+      colour_benchmark_bars(data_type, data) if is_benchmark_chart?
 
       { name: data_type, color: colour, type: @chart1_type, data: data, index: index }
     end
 
-    if @y2_data != nil && @y2_chart_type == :line
+    if !@y2_data.nil? && @y2_chart_type == :line
       y2_data_title = @y2_data.keys[0]
       @y2_axis_label, @y2_point_format, @y2_max = label_point_and_max_for(y2_data_title)
 
@@ -355,29 +359,29 @@ private
 
   def label_point_and_max_for(y2_data_title)
     if y2_is_temperature?(y2_data_title)
-      ['°C', '{point.y:.2f} °C',]
+      ['°C', '{point.y:.2f} °C']
     elsif y2_is_degree_days?(y2_data_title)
       [
         wrap_label_as_html(y2_data_title),
-        "{point.y:.2f} #{y2_data_title}",
+        "{point.y:.2f} #{y2_data_title}"
       ]
     elsif y2_is_carbon_intensity?(y2_data_title)
       ['kg/kWh', '{point.y:.2f} kg/kWh', 0.5]
 
     elsif y2_is_carbon?(y2_data_title)
-      ['kWh', '{point.y:.2f} kWh',]
+      ['kWh', '{point.y:.2f} kWh']
     elsif y2_is_solar?(y2_data_title)
       [
         I18n.t('analytics.series_data_manager.y2_solar_html'),
-        '{point.y:.2f} W/m2',
+        '{point.y:.2f} W/m2'
       ]
     elsif y2_is_rating?(y2_data_title)
-      [I18n.t('analytics.series_data_manager.y2_rating'),]
+      [I18n.t('analytics.series_data_manager.y2_rating')]
     end
   end
 
   def trendline?(data_type)
-    data_type.to_s.downcase.start_with?("trendline")
+    data_type.to_s.downcase.start_with?('trendline')
   end
 
   def scatter_and_trendline
@@ -426,7 +430,7 @@ private
       { name: data_type, color: colour_options[index], type: @chart1_type, data: data }
     end
 
-    if @y2_data != nil && @y2_chart_type == :line
+    if !@y2_data.nil? && @y2_chart_type == :line
       @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
         data_type = tidy_and_keep_label(data_type)
         { name: data_type, color: colour_options[index], type: @chart1_type, data: data }
@@ -471,9 +475,7 @@ private
   end
 
   def tidy_label(current_label)
-    if label_is_energy_plus?(current_label)
-      current_label = sort_out_dates_when_tidying_labels(current_label)
-    end
+    current_label = sort_out_dates_when_tidying_labels(current_label) if label_is_energy_plus?(current_label)
     current_label
   end
 
@@ -521,7 +523,7 @@ private
 
   def y2_is_solar?(y2_data_title)
     return true if y2_data_title == translated_series_item_for(Series::Irradiance::IRRADIANCE)
-    return true if y2_data_title.downcase.starts_with?('solar') # TODO match against series constants
+    return true if y2_data_title.downcase.starts_with?('solar') # TODO: match against series constants
 
     false
   end
@@ -535,8 +537,9 @@ private
   end
 
   def transformations_empty_or_only_move?
-    return true if @transformations.nil? || @transformations.empty?
+    return true if @transformations.blank?
     return true if @transformations.length == 1 && transformation_type(@transformations[0]) == :move
+
     false
   end
 
@@ -550,23 +553,24 @@ private
 
   def colour_benchmark_bars(data_type, data)
     @x_axis_categories.each_with_index do |category, index|
-      if BENCHMARK_LABELS.include?(category)
-         #replace the scalar value with an object that
-         #holds the original y axis data and specifies a custom colour
-         data[index] = {
-           y: data[index], color: benchmark_colour(data_type, category)
-         }
-      end
+      next unless BENCHMARK_LABELS.include?(category)
+
+      # replace the scalar value with an object that
+      # holds the original y axis data and specifies a custom colour
+      data[index] = {
+        y: data[index], color: benchmark_colour(data_type, category)
+      }
     end
   end
 
-  #category = benchmark, exemplar
-  #data_type = Gas, Electricity
+  # category = benchmark, exemplar
+  # data_type = Gas, Electricity
   def benchmark_colour(data_type, category)
-    #this has multiple fuel types
-    if [:benchmark, :benchmark_one_year].include?(@chart_type)
+    # this has multiple fuel types
+    if %i[benchmark benchmark_one_year].include?(@chart_type)
       return colours_for_multiple_fuel_type_bencmark(data_type, category)
     end
+
     if @chart_type.match?(/_gas_/)
       if benchmark_school_category?(category)
         MIDDLE_GAS

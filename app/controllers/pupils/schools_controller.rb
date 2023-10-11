@@ -23,7 +23,7 @@ module Pupils
       setup_data_enabled_features if @show_data_enabled_features
     end
 
-  private
+    private
 
     def set_breadcrumbs
       @breadcrumbs = [{ name: I18n.t('dashboards.pupil_dashboard') }]
@@ -55,7 +55,7 @@ module Pupils
       @equivalences_content = @equivalences.map do |equivalence|
         TemplateInterpolation.new(
           equivalence.content_version,
-          with_objects: { equivalence_type: equivalence.content_version.equivalence_type },
+          with_objects: { equivalence_type: equivalence.content_version.equivalence_type }
         ).interpolate(
           :equivalence,
           with: equivalence.formatted_variables
@@ -69,11 +69,11 @@ module Pupils
 
     def default_equivalences
       [
-        { measure: I18n.t("pupils.default_equivalences.equivalence_1.measure_html"), equivalence: I18n.t("pupils.default_equivalences.equivalence_1.equivalence"), image_name: "kettle" },
-        { measure: I18n.t("pupils.default_equivalences.equivalence_2.measure_html"), equivalence: I18n.t("pupils.default_equivalences.equivalence_2.equivalence"), image_name: "onshore_wind_turbine" },
-        { measure: I18n.t("pupils.default_equivalences.equivalence_3.measure_html"), equivalence: I18n.t("pupils.default_equivalences.equivalence_3.equivalence"), image_name: "tree" },
-        { measure: I18n.t("pupils.default_equivalences.equivalence_4.measure_html"), equivalence: I18n.t("pupils.default_equivalences.equivalence_4.equivalence"), image_name: "meal" },
-        { measure: I18n.t("pupils.default_equivalences.equivalence_5.measure_html"), equivalence: I18n.t("pupils.default_equivalences.equivalence_5.equivalence"), image_name: "house" }
+        { measure: I18n.t('pupils.default_equivalences.equivalence_1.measure_html'), equivalence: I18n.t('pupils.default_equivalences.equivalence_1.equivalence'), image_name: 'kettle' },
+        { measure: I18n.t('pupils.default_equivalences.equivalence_2.measure_html'), equivalence: I18n.t('pupils.default_equivalences.equivalence_2.equivalence'), image_name: 'onshore_wind_turbine' },
+        { measure: I18n.t('pupils.default_equivalences.equivalence_3.measure_html'), equivalence: I18n.t('pupils.default_equivalences.equivalence_3.equivalence'), image_name: 'tree' },
+        { measure: I18n.t('pupils.default_equivalences.equivalence_4.measure_html'), equivalence: I18n.t('pupils.default_equivalences.equivalence_4.equivalence'), image_name: 'meal' },
+        { measure: I18n.t('pupils.default_equivalences.equivalence_5.measure_html'), equivalence: I18n.t('pupils.default_equivalences.equivalence_5.equivalence'), image_name: 'house' }
       ]
     end
   end

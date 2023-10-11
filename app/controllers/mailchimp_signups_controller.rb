@@ -5,14 +5,13 @@ class MailchimpSignupsController < ApplicationController
     @config = mailchimp_signup_params(params)
     @onboarding_complete = params[:onboarding_complete]
     @list = mailchimp_api.list_with_interests
-  rescue => e
+  rescue StandardError => e
     flash[:error] = 'Mailchimp API is not configured'
     Rails.logger.error "Mailchimp API is not configured - #{e.message}"
     Rollbar.error(e)
   end
 
-  def index
-  end
+  def index; end
 
   def create
     list_id = params[:list_id]

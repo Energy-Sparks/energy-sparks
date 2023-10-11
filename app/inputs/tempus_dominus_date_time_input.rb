@@ -1,6 +1,6 @@
 class TempusDominusDateTimeInput < TempusDominusDateInput
   def input_group_class
-    "tempus-dominus-date-time".freeze
+    'tempus-dominus-date-time'.freeze
   end
 
   def input_value_key
@@ -8,6 +8,6 @@ class TempusDominusDateTimeInput < TempusDominusDateInput
   end
 
   def input_value_format
-    "%d/%m/%Y %H:%M".freeze
+    '%d/%m/%Y %H:%M'.freeze
   end
 end

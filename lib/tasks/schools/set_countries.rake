@@ -1,5 +1,5 @@
 namespace :school do
-  desc "Schools set countries"
+  desc 'Schools set countries'
   task set_countries: :environment do
     puts "#{DateTime.now.utc} Set countries using geocoder.."
 

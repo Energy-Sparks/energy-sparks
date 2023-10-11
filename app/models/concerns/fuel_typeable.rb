@@ -1,6 +1,6 @@
 module FuelTypeable
   extend ActiveSupport::Concern
-  VALID_FUEL_TYPES = [:gas, :electricity, :solar, :storage_heater].freeze
+  VALID_FUEL_TYPES = %i[gas electricity solar storage_heater].freeze
 
   private
 

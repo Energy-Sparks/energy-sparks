@@ -1,4 +1,3 @@
-# rubocop:disable Lint/ParenthesesAsGroupedExpression
 json.calendar_events (@first_read.at.to_date..Time.zone.today).each do |the_date|
   json.startDate  the_date
   json.endDate    the_date
@@ -16,4 +15,3 @@ json.calendar_events (@first_read.at.to_date..Time.zone.today).each do |the_date
     json.color 'rgb(255,69,0)'
   end
 end
-# rubocop:enable Lint/ParenthesesAsGroupedExpression

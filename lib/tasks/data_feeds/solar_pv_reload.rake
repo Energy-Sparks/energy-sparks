@@ -5,12 +5,12 @@ namespace :data_feeds do
 
     SolarPvTuosArea.active.by_title.each do |solar_pv_tuos_area|
       puts "Starting reload for #{solar_pv_tuos_area.title}"
-      #find the earliest reading
+      # find the earliest reading
       earliest_reading_date = solar_pv_tuos_area.solar_pv_tuos_readings.minimum(:reading_date)
       start_date = earliest_reading_date.beginning_of_year
 
-      #reload the readings, one year at a time
-      while start_date.year != Date.today.year do
+      # reload the readings, one year at a time
+      while start_date.year != Date.today.year
         end_date = start_date.end_of_year
         puts "Running loader for #{start_date} - #{end_date}"
         DataFeeds::SolarPvTuosLoader.new(start_date, end_date).import_area(solar_pv_tuos_area)

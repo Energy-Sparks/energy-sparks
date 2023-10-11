@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :energy_tariff do
-    sequence(:name) {|n| "Energy Tariff #{n}"}
+    sequence(:name) { |n| "Energy Tariff #{n}" }
     start_date { '2020-01-01' }
     end_date { '2022-12-31' }
     meter_type { :electricity }

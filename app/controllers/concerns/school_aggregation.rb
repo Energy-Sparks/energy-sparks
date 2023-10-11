@@ -1,10 +1,11 @@
 module SchoolAggregation
   extend ActiveSupport::Concern
 
-private
+  private
 
   def check_aggregated_school_in_cache
     return unless show_data_enabled_features?
+
     unless aggregate_school_service.in_cache_or_cache_off? || request.xhr?
       @aggregation_path = school_aggregated_meter_collection_path(@school)
       render 'schools/aggregated_meter_collections/show'

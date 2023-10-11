@@ -40,7 +40,7 @@ class CalendarEvent < ApplicationRecord
   scope :bank_holidays,     -> { joins(:calendar_event_type).merge(CalendarEventType.bank_holiday) }
   scope :outside_term_time, -> { joins(:calendar_event_type).merge(CalendarEventType.outside_term_time) }
 
-  scope :by_end_date,       -> { order(end_date: :asc)}
+  scope :by_end_date,       -> { order(end_date: :asc) }
   before_validation :update_academic_year
 
   validates :calendar, :calendar_event_type, :start_date, :end_date, presence: true
@@ -57,9 +57,7 @@ class CalendarEvent < ApplicationRecord
   end
 
   def start_date_end_date_order
-    if (start_date && end_date) && (end_date < start_date)
-      errors.add(:end_date, 'must be on or after the start date')
-    end
+    errors.add(:end_date, 'must be on or after the start date') if (start_date && end_date) && (end_date < start_date)
   end
 
   def no_overlaps

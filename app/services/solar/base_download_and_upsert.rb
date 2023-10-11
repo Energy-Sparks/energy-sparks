@@ -8,7 +8,7 @@ module Solar
 
     def perform
       download_and_upsert
-    rescue => e
+    rescue StandardError => e
       import_log.update!(error_messages: "Error downloading data from #{start_date} to #{end_date} for #{school.name} : #{e.class}  #{e.message}")
       Rails.logger.error "Exception: downloading solar data from #{start_date} to #{end_date} : #{e.class} #{e.message}"
       Rails.logger.error e.backtrace.join("\n")
@@ -17,12 +17,12 @@ module Solar
 
     protected
 
-    #implement this in the subclass
+    # implement this in the subclass
     def download_and_upsert
       nil
     end
 
-    #provide a more meaningful job name for logging in subclass
+    # provide a more meaningful job name for logging in subclass
     def job
       :solar_download
     end
@@ -47,14 +47,15 @@ module Solar
     end
 
     def end_date
-      @requested_end_date.present? ? @requested_end_date : Date.yesterday
+      @requested_end_date.presence || Date.yesterday
     end
 
     def import_log
       @import_log ||= AmrDataFeedImportLog.create(
         amr_data_feed_config: @installation.amr_data_feed_config,
         file_name: "#{job.to_s.humanize} import #{DateTime.now.utc}",
-        import_time: DateTime.now.utc)
+        import_time: DateTime.now.utc
+      )
     end
   end
 end

@@ -7,8 +7,6 @@ class CreateTariffStandingCharges < ActiveRecord::Migration[6.0]
       t.decimal       :value, null: false
       t.timestamps
     end
-    add_index :tariff_standing_charges, [:meter_id, :start_date], unique: true
+    add_index :tariff_standing_charges, %i[meter_id start_date], unique: true
   end
 end
-
-

@@ -1,6 +1,6 @@
 module EnergyTariffs
   class EnergyTariffsController < EnergyTariffsBaseController
-    before_action :redirect_if_dcc, only: [:edit_meters, :update_meters, :choose_type, :destroy, :edit]
+    before_action :redirect_if_dcc, only: %i[edit_meters update_meters choose_type destroy edit]
 
     def index
       authorize! :manage, @tariff_holder.energy_tariffs.build
@@ -11,18 +11,17 @@ module EnergyTariffs
       end
     end
 
-    def default_tariffs
-    end
+    def default_tariffs; end
 
-    def smart_meter_tariffs
-    end
+    def smart_meter_tariffs; end
 
     def group_school_tariffs
-      redirect_to polymorphic_path(tariff_holder_route(@tariff_holder) + [:energy_tariffs]) and return unless @tariff_holder.school_group?
+      unless @tariff_holder.school_group?
+        redirect_to polymorphic_path(tariff_holder_route(@tariff_holder) + [:energy_tariffs]) and return
+      end
     end
 
-    def show
-    end
+    def show; end
 
     def new
       @energy_tariff = @tariff_holder.energy_tariffs.build(default_params.merge({ meter_type: params[:meter_type] }))
@@ -46,20 +45,22 @@ module EnergyTariffs
     end
 
     def edit_meters
-      if @energy_tariff.electricity?
-        @meters = @tariff_holder.meters.electricity
-      elsif @energy_tariff.gas?
-        @meters = @tariff_holder.meters.gas
-      else
-        @meters = []
-      end
+      @meters = if @energy_tariff.electricity?
+                  @tariff_holder.meters.electricity
+                elsif @energy_tariff.gas?
+                  @tariff_holder.meters.gas
+                else
+                  []
+                end
     end
 
     def update_meters
-      redirect_back fallback_location: school_energy_tariffs_path(@tariff_holder), notice: I18n.t('schools.user_tariffs.choose_meters.missing_meters') and return if require_meters?
+      if require_meters?
+        redirect_back fallback_location: school_energy_tariffs_path(@tariff_holder), notice: I18n.t('schools.user_tariffs.choose_meters.missing_meters') and return
+      end
 
       @energy_tariff.meter_ids = energy_tariff_params[:meter_ids]
-      @energy_tariff.applies_to = energy_tariff_params[:applies_to].present? ? energy_tariff_params[:applies_to] : :both
+      @energy_tariff.applies_to = energy_tariff_params[:applies_to].presence || :both
       @energy_tariff.updated_by = current_user
 
       if @energy_tariff.save!
@@ -69,8 +70,7 @@ module EnergyTariffs
       end
     end
 
-    def applies_to
-    end
+    def applies_to; end
 
     def update_applies_to
       if @energy_tariff.update!(applies_to: energy_tariff_params['applies_to'])
@@ -80,8 +80,7 @@ module EnergyTariffs
       end
     end
 
-    def choose_type
-    end
+    def choose_type; end
 
     def update_type
       @energy_tariff.tariff_type = energy_tariff_params['tariff_type']

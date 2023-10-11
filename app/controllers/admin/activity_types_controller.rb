@@ -3,12 +3,12 @@ module Admin
     include LocaleHelper
     load_and_authorize_resource
 
-    before_action :load_filters, only: [:new, :edit, :create, :update]
+    before_action :load_filters, only: %i[new edit create update]
     before_action :load_chart_list, except: :index
 
     def index
       @activity_categories = ActivityCategory.by_name
-      @activity_types = @activity_types.includes(:activity_category).order("activity_categories.name", :name)
+      @activity_types = @activity_types.includes(:activity_category).order('activity_categories.name', :name)
     end
 
     def show
@@ -47,7 +47,7 @@ module Admin
 
     def update
       if @activity_type.update(activity_type_params)
-        #Rewrite links in Welsh text
+        # Rewrite links in Welsh text
         rewritten = @activity_type.update(@activity_type.rewrite_all)
         notice = rewritten ? 'Activity type was successfully updated.' : 'Activity type was saved, but failed to rewrite links.'
         redirect_to admin_activity_types_path, notice: notice
@@ -63,7 +63,7 @@ module Admin
       redirect_to admin_activity_types_path, notice: 'Activity type not deleted, please mark as inactive'
     end
 
-  private
+    private
 
     def add_activity_type_suggestions(number_of_suggestions_so_far = 0)
       (0..(7 - number_of_suggestions_so_far)).each { @activity_type.activity_type_suggestions.build }
@@ -73,32 +73,32 @@ module Admin
     def activity_type_params
       translated_params = t_params(ActivityType.mobility_attributes + ActivityType.t_attached_attributes)
       params.require(:activity_type).permit(translated_params,
-          :name,
-          :description,
-          :summary,
-          :school_specific_description,
-          :download_links,
-          :active,
-          :activity_category_id,
-          :score,
-          :data_driven,
-          :show_on_charts,
-          key_stage_ids: [],
-          impact_ids: [],
-          subject_ids: [],
-          topic_ids: [],
-          activity_timing_ids: [],
-          fuel_type: [],
-          link_rewrites_attributes: link_rewrites_params,
-          activity_type_suggestions_attributes: suggestions_params)
+                                            :name,
+                                            :description,
+                                            :summary,
+                                            :school_specific_description,
+                                            :download_links,
+                                            :active,
+                                            :activity_category_id,
+                                            :score,
+                                            :data_driven,
+                                            :show_on_charts,
+                                            key_stage_ids: [],
+                                            impact_ids: [],
+                                            subject_ids: [],
+                                            topic_ids: [],
+                                            activity_timing_ids: [],
+                                            fuel_type: [],
+                                            link_rewrites_attributes: link_rewrites_params,
+                                            activity_type_suggestions_attributes: suggestions_params)
     end
 
     def suggestions_params
-      [:id, :suggested_type_id, :_destroy]
+      %i[id suggested_type_id _destroy]
     end
 
     def link_rewrites_params
-      [:id, :source, :target, :_destroy]
+      %i[id source target _destroy]
     end
 
     def load_filters
@@ -111,7 +111,7 @@ module Admin
 
     def load_chart_list
       analysis_charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS.except(:simulator, :simulator_detail, :simulator_debug, :test, :pupil_analysis_page, :heating_model_fitting, :cost_unused).map do |top_level_key, config|
-        ["#{config[:name]} (#{top_level_key})", config.fetch(:charts) {[]}]
+        ["#{config[:name]} (#{top_level_key})", config.fetch(:charts) { [] }]
       end
       custom_activity_charts = [['Activity charts (custom)', ChartManager::STANDARD_CHART_CONFIGURATION.keys.grep(/^activities/)]]
       @chart_list = custom_activity_charts + analysis_charts

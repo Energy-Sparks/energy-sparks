@@ -20,7 +20,7 @@ class UpdateAlertStructure < ActiveRecord::Migration[6.0]
     remove_column :alerts, :data
     remove_column :alerts, :summary
 
-    connection.execute "DELETE FROM alerts WHERE rating IS NULL"
-    connection.execute "DELETE FROM content_generation_runs"
+    connection.execute 'DELETE FROM alerts WHERE rating IS NULL'
+    connection.execute 'DELETE FROM content_generation_runs'
   end
 end

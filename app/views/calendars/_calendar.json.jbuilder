@@ -4,7 +4,7 @@
 json.calendar_events @calendar.calendar_events.order(calendar_event_type_id: :asc) do |event|
   json.id event.id
   json.calendarEventTypeId event.calendar_event_type.id
-  json.name "#{event.calendar_event_type.description}"
+  json.name event.calendar_event_type.description.to_s
   json.color event.calendar_event_type.colour
   json.startDate event.start_date
   json.endDate event.end_date

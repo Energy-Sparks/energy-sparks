@@ -21,12 +21,13 @@ module DataFeeds
       end
     end
 
-  private
+    private
 
     def get_missing_array(first_reading, reading_summary)
       return [] if first_reading.nil?
+
       missing_array = (first_reading.reading_date.to_date..Time.zone.today).collect do |day|
-        if ! reading_summary.key?(day)
+        if !reading_summary.key?(day)
           [day, 'No readings']
         elsif reading_summary.key?(day) && reading_summary[day] < 48
           [day, 'Partial readings']

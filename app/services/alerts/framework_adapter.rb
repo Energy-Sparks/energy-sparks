@@ -20,19 +20,13 @@ module Alerts
       adapter_instance.content(user_type)
     end
 
-    def has_structured_content?
-      adapter_instance.has_structured_content?
-    end
+    delegate :has_structured_content?, to: :adapter_instance
 
-    def structured_content
-      adapter_instance.structured_content
-    end
+    delegate :structured_content, to: :adapter_instance
 
-    def benchmark_dates
-      adapter_instance.benchmark_dates
-    end
+    delegate :benchmark_dates, to: :adapter_instance
 
-  private
+    private
 
     def adapter_instance
       adapter_class(@alert_type).new(alert_type: @alert_type, school: @school, analysis_date: @analysis_date, aggregate_school: @aggregate_school, use_max_meter_date_if_less_than_asof_date: @use_max_meter_date_if_less_than_asof_date)

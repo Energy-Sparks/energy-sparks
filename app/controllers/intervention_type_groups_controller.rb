@@ -1,17 +1,14 @@
 class InterventionTypeGroupsController < ApplicationController
   load_and_authorize_resource
 
-  skip_before_action :authenticate_user!, only: [:index, :show]
+  skip_before_action :authenticate_user!, only: %i[index show]
 
   def index
-    if current_user_school
-      @suggested_interventions = load_suggested_interventions(current_user_school)
-    end
+    @suggested_interventions = load_suggested_interventions(current_user_school) if current_user_school
     @intervention_type_groups = @intervention_type_groups.by_name
   end
 
-  def show
-  end
+  def show; end
 
   def recommended
     @suggested_interventions = load_suggested_interventions(current_user.school)

@@ -1,6 +1,5 @@
 module Admin
   class MailerPreviewsController < AdminController
-    def index
-    end
+    def index; end
   end
 end

@@ -7,14 +7,11 @@ module Admin
       @intervention_type_groups = @intervention_type_groups.by_name
     end
 
-    def show
-    end
+    def show; end
 
-    def new
-    end
+    def new; end
 
-    def edit
-    end
+    def edit; end
 
     def create
       if @intervention_type_group.save
@@ -32,7 +29,7 @@ module Admin
       end
     end
 
-  private
+    private
 
     def intervention_type_group_params
       translated_params = t_params(InterventionTypeGroup.mobility_attributes)

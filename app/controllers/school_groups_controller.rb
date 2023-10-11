@@ -4,8 +4,8 @@ class SchoolGroupsController < ApplicationController
   include Scoring
 
   before_action :find_school_group
-  before_action :redirect_unless_feature_enabled, only: [:map, :comparisons, :priority_actions, :current_scores]
-  before_action :redirect_unless_authorised, only: [:comparisons, :priority_actions, :current_scores]
+  before_action :redirect_unless_feature_enabled, only: %i[map comparisons priority_actions current_scores]
+  before_action :redirect_unless_authorised, only: %i[comparisons priority_actions current_scores]
   before_action :find_schools_and_partners
   before_action :build_breadcrumbs
   before_action :find_school_group_fuel_types
@@ -22,8 +22,7 @@ class SchoolGroupsController < ApplicationController
     end
   end
 
-  def map
-  end
+  def map; end
 
   def comparisons
     respond_to do |format|
@@ -31,9 +30,9 @@ class SchoolGroupsController < ApplicationController
       format.csv do
         head :bad_request and return unless params['advice_page_keys']
 
-        filename = "#{@school_group.name}-#{I18n.t('school_groups.titles.comparisons')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+        filename = "#{@school_group.name}-#{I18n.t('school_groups.titles.comparisons')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + '.csv'
         send_data SchoolGroups::ComparisonsCsvGenerator.new(school_group: @school_group, advice_page_keys: params['advice_page_keys'], include_cluster: include_cluster).export,
-        filename: filename
+                  filename: filename
       end
     end
   end
@@ -57,7 +56,7 @@ class SchoolGroupsController < ApplicationController
       format.html {}
       format.csv do
         send_data SchoolGroups::CurrentScoresCsvGenerator.new(school_group: @school_group, scored_schools: @scored_schools, include_cluster: include_cluster).export,
-        filename: csv_filename_for(params[:academic_year].present? ? 'previous_scores' : 'current_scores')
+                  filename: csv_filename_for(params[:academic_year].present? ? 'previous_scores' : 'current_scores')
       end
     end
   end
@@ -66,7 +65,7 @@ class SchoolGroupsController < ApplicationController
 
   def csv_filename_for(action)
     title = I18n.t("school_groups.titles.#{action}")
-    "#{@school_group.name}-#{title}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + ".csv"
+    "#{@school_group.name}-#{title}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + '.csv'
   end
 
   def priority_actions_csv
@@ -102,7 +101,9 @@ class SchoolGroupsController < ApplicationController
   end
 
   def redirect_unless_feature_enabled
-    redirect_to school_group_path(@school_group) and return unless EnergySparks::FeatureFlags.active?(:enhanced_school_group_dashboard)
+    unless EnergySparks::FeatureFlags.active?(:enhanced_school_group_dashboard)
+      redirect_to school_group_path(@school_group) and return
+    end
   end
 
   def redirect_unless_authorised
@@ -139,7 +140,7 @@ class SchoolGroupsController < ApplicationController
         end
         format.csv do
           send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group, include_cluster: include_cluster).export,
-          filename: csv_filename_for('recent_usage')
+                    filename: csv_filename_for('recent_usage')
         end
       end
     else

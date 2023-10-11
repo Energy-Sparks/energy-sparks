@@ -11,7 +11,7 @@ module Schools
         aggregate_school.aggregated_heat_meters&.original_meter
       end
 
-      #FIXME keep to current, or change over?
+      # FIXME: keep to current, or change over?
       def set_one_year_breakdown_chart
         dates = analysis_dates
         days_of_data = dates.end_date - dates.start_date

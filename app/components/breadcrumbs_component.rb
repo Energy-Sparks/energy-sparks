@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class BreadcrumbsComponent < ViewComponent::Base
-  renders_one :school, "SchoolComponent"
-  renders_many :items, "ItemComponent"
+  renders_one :school, 'SchoolComponent'
+  renders_many :items, 'ItemComponent'
 
   class SchoolComponent < ViewComponent::Base
     attr_accessor :selected, :school
@@ -13,8 +13,10 @@ class BreadcrumbsComponent < ViewComponent::Base
     end
 
     def call
-      out  = render(ItemComponent.new(name: t('components.breadcrumbs.schools'), href: schools_path))
-      out += render(ItemComponent.new(name: school.school_group.name, href: school_group_path(school.school_group))) if school.school_group
+      out = render(ItemComponent.new(name: t('components.breadcrumbs.schools'), href: schools_path))
+      if school.school_group
+        out += render(ItemComponent.new(name: school.school_group.name, href: school_group_path(school.school_group)))
+      end
       out += render(ItemComponent.new(name: school.name, href: school_path(school), selected: selected))
       out
     end
@@ -33,10 +35,10 @@ class BreadcrumbsComponent < ViewComponent::Base
     def call
       args = { class: 'breadcrumb-item' }
       if selected
-        args[:class] += " active"
-        args[:"aria-current"] = "page"
+        args[:class] += ' active'
+        args[:"aria-current"] = 'page'
       end
-      content_tag(:li, link_to_unless(selected || href.blank?, name, href), args)
+      tag.li(link_to_unless(selected || href.blank?, name, href), args)
     end
 
     def render?

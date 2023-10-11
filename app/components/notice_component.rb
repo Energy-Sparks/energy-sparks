@@ -10,7 +10,7 @@ class NoticeComponent < ViewComponent::Base
   end
 
   def validate
-    raise ArgumentError.new(self.class.status_error) unless self.class.statuses.include?(@status.to_sym)
+    raise ArgumentError, self.class.status_error unless self.class.statuses.include?(@status.to_sym)
   end
 
   def classes
@@ -24,10 +24,10 @@ class NoticeComponent < ViewComponent::Base
   end
 
   def self.statuses
-    [:positive, :negative, :neutral]
+    %i[positive negative neutral]
   end
 
   def self.status_error
-    "Status must be: " + self.statuses.to_sentence(last_word_connector: ' or ')
+    'Status must be: ' + statuses.to_sentence(last_word_connector: ' or ')
   end
 end

@@ -1,7 +1,6 @@
 namespace :solar do
-  desc "Import rtone variant api readings"
-  task :import_rtone_variant_readings, [:start_date, :end_date] => :environment do |_t, args|
-
+  desc 'Import rtone variant api readings'
+  task :import_rtone_variant_readings, %i[start_date end_date] => :environment do |_t, args|
     start_date = args[:start_date].present? ? Date.parse(args[:start_date]) : nil
     end_date = args[:end_date].present? ? Date.parse(args[:end_date]) : nil
 

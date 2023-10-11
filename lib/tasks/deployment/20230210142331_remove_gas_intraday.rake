@@ -3,7 +3,7 @@ namespace :after_party do
   task remove_gas_intraday: :environment do
     puts "Running deploy task 'remove_gas_intraday'"
 
-    page = AdvicePage.find_by_key(:gas_intraday)&.destroy
+    page = AdvicePage.find_by(key: :gas_intraday)&.destroy
 
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).

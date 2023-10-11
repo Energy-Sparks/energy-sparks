@@ -1,7 +1,7 @@
 class CreateProcurementRoutes < ActiveRecord::Migration[6.0]
   def change
     create_table :procurement_routes do |t|
-      t.string :organisation_name, null:false
+      t.string :organisation_name, null: false
       t.string :contact_name
       t.string :contact_email
       t.string :loa_contact_details

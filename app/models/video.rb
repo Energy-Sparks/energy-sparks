@@ -12,8 +12,8 @@
 #  youtube_id  :text             not null
 #
 class Video < ApplicationRecord
-  validates_presence_of :youtube_id, :title, :position
-  validates_uniqueness_of :youtube_id
+  validates :youtube_id, :title, :position, presence: true
+  validates :youtube_id, uniqueness: true
 
   scope :featured, -> { where(featured: true) }
 

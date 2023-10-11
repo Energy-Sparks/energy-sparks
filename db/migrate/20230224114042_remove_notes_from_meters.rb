@@ -1,14 +1,14 @@
 class RemoveNotesFromMeters < ActiveRecord::Migration[6.0]
-
   def issue_attrs_from_meter(meter)
     fuel_type_map = {
       electricity: :electricity,
       gas: :gas,
       solar_pv: :solar,
-      exported_solar_pv: :solar }
+      exported_solar_pv: :solar
+    }
 
     title = "#{meter.fuel_type} meter: #{meter.mpan_mprn}".capitalize
-    title += " - #{meter.name}" unless meter.name.blank?
+    title += " - #{meter.name}" if meter.name.present?
     attrs = {  issue_type: :issue,
                title: title,
                issueable: meter.school,
@@ -22,7 +22,7 @@ class RemoveNotesFromMeters < ActiveRecord::Migration[6.0]
     # Strip trix-content divs from imported meter notes while here
     Meter.all.each do |meter|
       if issue = Issue.find_by(issue_attrs_from_meter(meter))
-        issue.description = issue.description.body.to_html.to_s.gsub(/\A<div class="trix-content">(.*)<\/div>\z/m, '\1').strip.html_safe
+        issue.description = issue.description.body.to_html.to_s.gsub(%r{\A<div class="trix-content">(.*)</div>\z}m, '\1').strip.html_safe
         issue.save!
       end
     end

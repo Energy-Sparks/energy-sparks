@@ -4,13 +4,13 @@ namespace :after_party do
   task load_all_gsp_regions: :environment do
     puts "Running deploy task 'load_all_gsp_regions'"
 
-    file_name = File.join( File.expand_path(File.dirname(__FILE__)) , "gsp_centroids_20220314.csv" )
-    CSV.foreach( file_name, headers: true ) do |row|
+    file_name = File.join(__dir__, 'gsp_centroids_20220314.csv')
+    CSV.foreach(file_name, headers: true) do |row|
       gsp_id = row[0]
       gsp_name = row[1]
       centroid_longitude = row[2]
       centroid_latitude = row[3]
-      area = SolarPvTuosArea.find_by_gsp_id(gsp_id.to_i)
+      area = SolarPvTuosArea.find_by(gsp_id: gsp_id.to_i)
       if area.present?
         area.update(
           title: "Region #{gsp_id}",
@@ -19,7 +19,7 @@ namespace :after_party do
           longitude: centroid_longitude
         )
       else
-        $stderr.puts "Creating new inactive region for #{gsp_id}"
+        warn "Creating new inactive region for #{gsp_id}"
         SolarPvTuosArea.create!(
           active: false,
           title: "Region #{gsp_id}",
@@ -30,7 +30,6 @@ namespace :after_party do
         )
       end
     end
-
 
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).

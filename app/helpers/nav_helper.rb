@@ -2,7 +2,7 @@ module NavHelper
   def navbar_image_link
     title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
     link_to '/home-page', class: 'navbar-brand', title: title do
-      image_tag("nav-brand-transparent-#{I18n.locale}.png", class: "d-inline-block align-top")
+      image_tag("nav-brand-transparent-#{I18n.locale}.png", class: 'd-inline-block align-top')
     end
   end
 
@@ -24,6 +24,7 @@ module NavHelper
     split_application_host = split_application_host_for(locale)
     return split_application_host.first if split_application_host&.size == 3
     return '' if locale.to_s == 'en'
+
     locale.to_s
   end
 
@@ -84,7 +85,7 @@ module NavHelper
   end
 
   def nav_link(link_text, link_path)
-    content_tag(:li) do
+    tag.li do
       if current_page?(link_path)
         link_to link_text, link_path, class: 'nav-link active'
       else

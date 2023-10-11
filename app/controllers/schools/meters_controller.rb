@@ -38,16 +38,13 @@ module Schools
       end
     end
 
-    def edit
-    end
+    def edit; end
 
     def update
       @meter.attributes = meter_params
       manager = MeterManagement.new(@meter)
       if @meter.save
-        if @meter.mpan_mprn_previously_changed?
-          manager.process_mpan_mpnr_change!
-        end
+        manager.process_mpan_mpnr_change! if @meter.mpan_mprn_previously_changed?
         redirect_to school_meters_path(@school), notice: 'Meter updated'
       else
         render :edit
@@ -57,7 +54,7 @@ module Schools
     def inventory
       @inventory = Amr::N3rgyApiFactory.new.data_api(@meter).inventory(@meter.mpan_mprn)
       render :inventory
-    rescue => e
+    rescue StandardError => e
       flash[:error] = e
       render :inventory
     end
@@ -77,10 +74,11 @@ module Schools
       redirect_to school_meters_path(@school)
     end
 
-  private
+    private
 
     def set_n3rgy_status
       return unless can?(:view_dcc_data, @school)
+
       manager = MeterManagement.new(@meter)
       @known_to_n3rgy = manager.is_meter_known_to_n3rgy?
       if @known_to_n3rgy && @meter.dcc_meter
@@ -96,6 +94,7 @@ module Schools
 
     def enough_data_for_targets?
       return nil unless can?(:view_target_data, @school)
+
       Targets::SchoolTargetService.new(@school).enough_data?
     end
 

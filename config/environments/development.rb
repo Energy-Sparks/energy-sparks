@@ -32,7 +32,7 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options)
   # To use amazon locally, set ACTIVE_STORAGE_SERVICE = amazon in your .env file
   # and ensure you have the AWS credentials set up in your .env file
-  config.active_storage.service = ENV.fetch('ACTIVE_STORAGE_SERVICE'){ :local }
+  config.active_storage.service = ENV.fetch('ACTIVE_STORAGE_SERVICE') { :local }
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
@@ -83,11 +83,11 @@ Rails.application.configure do
   # Use mailcatcher locally - https://github.com/sj26/mailcatcher
   # NOTE not using default port!
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { address: '127.0.0.1', port:ENV.fetch('LOCAL_SMTP_PORT') { 1025 } }
+  config.action_mailer.smtp_settings = { address: '127.0.0.1', port: ENV.fetch('LOCAL_SMTP_PORT') { 1025 } }
   config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
-  config.action_mailer.asset_host = ENV['ASSET_HOST'] && ENV['APPLICATION_HOST'] ? ENV.fetch('ASSET_HOST'){ "http://#{ENV['APPLICATION_HOST']}" } : 'localhost:3000'
+  config.action_mailer.asset_host = ENV['ASSET_HOST'] && ENV['APPLICATION_HOST'] ? ENV.fetch('ASSET_HOST') { "http://#{ENV['APPLICATION_HOST']}" } : 'localhost:3000'
 
   config.mailchimp_client = MailchimpMarketing::Client.new({ api_key: ENV['MAILCHIMP_API_KEY'], server: ENV['MAILCHIMP_SERVER'] })
 
@@ -105,20 +105,16 @@ Rails.application.configure do
   I18n::Backend::Simple.include(I18n::Backend::Mirror)
 
   # Add these to your /etc/hosts file
-  config.hosts << "energysparks.development"
-  config.hosts << "cy.energysparks.development"
-  config.hosts << "mirror.energysparks.development"
+  config.hosts << 'energysparks.development'
+  config.hosts << 'cy.energysparks.development'
+  config.hosts << 'mirror.energysparks.development'
 
   # View components - Always place view in a sidecar directory when using the generator
   config.view_component.generate.sidecar = true
 end
 
 class MyAppFormatter < Logger::Formatter
-
-    def call(severity, time, programName, message)
-
-        "#{datetime}, #{severity}: #{message} from #{programName}\n"
-
-    end
-
+  def call(severity, _time, programName, message)
+    "#{datetime}, #{severity}: #{message} from #{programName}\n"
+  end
 end

@@ -13,5 +13,5 @@
 class Newsletter < ApplicationRecord
   has_one_attached :image
 
-  validates_presence_of :title, :url, :published_on
+  validates :title, :url, :published_on, presence: true
 end

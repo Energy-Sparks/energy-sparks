@@ -27,13 +27,13 @@ class AdvicePage < ApplicationRecord
   has_many :intervention_types, through: :advice_page_intervention_types
   has_many :advice_page_school_benchmarks
 
-  accepts_nested_attributes_for :advice_page_activity_types, reject_if: proc {|attributes| attributes['position'].blank? }
+  accepts_nested_attributes_for :advice_page_activity_types, reject_if: proc { |attributes| attributes['position'].blank? }
 
-  accepts_nested_attributes_for :advice_page_intervention_types, reject_if: proc {|attributes| attributes['position'].blank? }
+  accepts_nested_attributes_for :advice_page_intervention_types, reject_if: proc { |attributes| attributes['position'].blank? }
 
   scope :by_key, -> { order(key: :asc) }
 
-  enum fuel_type: [:electricity, :gas, :storage_heater, :solar_pv]
+  enum fuel_type: { electricity: 0, gas: 1, storage_heater: 2, solar_pv: 3 }
 
   def label
     key.humanize
@@ -66,9 +66,9 @@ class AdvicePage < ApplicationRecord
     end
   end
 
-  #Check whether school has the fuel type for this advice page
-  #Defaults to treating unknown/nil fuel type as applicable to
-  #all schools
+  # Check whether school has the fuel type for this advice page
+  # Defaults to treating unknown/nil fuel type as applicable to
+  # all schools
   def school_has_fuel_type?(school, default_value: true)
     case fuel_type&.to_sym
     when :gas

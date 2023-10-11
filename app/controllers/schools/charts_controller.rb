@@ -16,7 +16,7 @@ class Schools::ChartsController < ApplicationController
     end
   end
 
-private
+  private
 
   def render_html
     @chart_type = params.require(:chart_type).to_sym
@@ -27,10 +27,10 @@ private
 
   def render_json
     @chart_type ||= begin
-                      params.require(:chart_type).to_sym
-                    rescue => error
-                      render json: { error: error, status: 400 }.to_json and return
-                    end
+      params.require(:chart_type).to_sym
+    rescue StandardError => e
+      render json: { error: e, status: 400 }.to_json and return
+    end
 
     chart_config = {
       mpan_mprn: params[:mpan_mprn],

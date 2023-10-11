@@ -7,6 +7,6 @@ class CreateTariffPrices < ActiveRecord::Migration[6.0]
       t.json          :prices, default: {}
       t.timestamps
     end
-    add_index :tariff_prices, [:meter_id, :tariff_date], unique: true
+    add_index :tariff_prices, %i[meter_id tariff_date], unique: true
   end
 end

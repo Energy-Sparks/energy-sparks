@@ -1,7 +1,7 @@
 module Onboarding
   class UsersController < BaseController
     def index
-      @users = @school_onboarding.school.users.reject {|u| u.id == current_user.id || u.pupil? }
+      @users = @school_onboarding.school.users.reject { |u| u.id == current_user.id || u.pupil? }
     end
 
     def new

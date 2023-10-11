@@ -60,13 +60,13 @@ class User < ApplicationRecord
 
   has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
 
-  has_and_belongs_to_many :cluster_schools, class_name: "School", join_table: :cluster_schools_users
+  has_and_belongs_to_many :cluster_schools, class_name: 'School', join_table: :cluster_schools_users
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable, :confirmable
 
-  enum role: [:guest, :staff, :admin, :school_admin, :school_onboarding, :pupil, :group_admin, :analytics, :volunteer]
+  enum role: { guest: 0, staff: 1, admin: 2, school_admin: 3, school_onboarding: 4, pupil: 5, group_admin: 6, analytics: 7, volunteer: 8 }
 
   scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin], User.roles[:volunteer]]) }
 
@@ -96,11 +96,12 @@ class User < ApplicationRecord
   end
 
   def display_name
-    name.present? ? name : email
+    name.presence || email
   end
 
   def staff_role_as_symbol
     return nil unless staff_role
+
     staff_role.as_symbol
   end
 
@@ -119,7 +120,7 @@ class User < ApplicationRecord
   def self.find_school_users_linked_to_other_schools(school_id:, user_ids:)
     User.joins(:cluster_schools_users)
         .where.not('cluster_schools_users.school_id' => school_id)
-        .where('cluster_schools_users.user_id in (?)', user_ids)
+        .where(cluster_schools_users: { user_id: user_ids })
   end
 
   def remove_school(school_to_remove)
@@ -134,8 +135,9 @@ class User < ApplicationRecord
   end
 
   def schools
-    return School.visible.by_name if self.admin?
-    return school_group.schools.visible.by_name if self.school_group
+    return School.visible.by_name if admin?
+    return school_group.schools.visible.by_name if school_group
+
     [school].compact
   end
 
@@ -195,15 +197,17 @@ class User < ApplicationRecord
   end
 
   def after_confirmation
-    OnboardingMailer.with_user_locales(users: [self], school: school) { |mailer| mailer.welcome_email.deliver_now } if self.school.present?
+    if school.present?
+      OnboardingMailer.with_user_locales(users: [self], school: school) { |mailer| mailer.welcome_email.deliver_now }
+    end
   end
 
-protected
+  protected
 
   def preferred_locale_presence_in_available_locales
     return if I18n.available_locales.include? preferred_locale&.to_sym
 
-    errors.add(:preferred_locale, "must be present in the list of availale locales")
+    errors.add(:preferred_locale, 'must be present in the list of availale locales')
   end
 
   def password_required?
@@ -219,6 +223,7 @@ protected
 
   def pupil_password_unique
     return if pupil_password.blank?
+
     existing_user = school.authenticate_pupil(pupil_password)
     if existing_user && existing_user != self
       errors.add(:pupil_password, "is already in use for '#{existing_user.name}'")

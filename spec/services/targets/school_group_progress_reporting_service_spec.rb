@@ -1,24 +1,22 @@
 require 'rails_helper'
 
 describe Targets::SchoolGroupProgressReportingService, type: :service do
-
   let(:enable_targets)      { false }
   let(:enough_data)         { true }
   let(:school_target)       { nil }
   let(:progress_summary)    { nil }
 
   let(:school_group)        { create(:school_group) }
-  let!(:school)              { create(:school, school_group: school_group, enable_targets_feature: enable_targets) }
+  let!(:school) { create(:school, school_group: school_group, enable_targets_feature: enable_targets) }
 
   let(:service) { Targets::SchoolGroupProgressReportingService.new(school_group) }
 
-  before(:each) do
+  before do
     allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
   end
 
   describe '#report' do
-
-    before(:each) do
+    before do
       allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(enough_data)
     end
 
@@ -26,7 +24,7 @@ describe Targets::SchoolGroupProgressReportingService, type: :service do
 
     context 'schools with target disabled' do
       it 'includes the school' do
-        expect(report.size).to eql 1
+        expect(report.size).to be 1
         expect(report.first.school).to eq school
         expect(report.first.targets_enabled).to eq false
         expect(report.first.enough_data).to be_nil
@@ -39,7 +37,7 @@ describe Targets::SchoolGroupProgressReportingService, type: :service do
       let(:enough_data)         { false }
 
       it 'includes the school' do
-        expect(report.size).to eql 1
+        expect(report.size).to be 1
         expect(report.first.school).to eq school
         expect(report.first.targets_enabled).to eq true
         expect(report.first.enough_data).to eq false
@@ -51,7 +49,7 @@ describe Targets::SchoolGroupProgressReportingService, type: :service do
       let(:enough_data)         { true }
 
       it 'includes the school' do
-        expect(report.size).to eql 1
+        expect(report.size).to be 1
         expect(report.first.school).to eq school
         expect(report.first.targets_enabled).to eq true
         expect(report.first.enough_data).to eq true
@@ -64,11 +62,12 @@ describe Targets::SchoolGroupProgressReportingService, type: :service do
       let(:school_target)       { create(:school_target, school: school) }
       let(:progress_summary)    { build(:progress_summary, school_target: school_target) }
 
-      before(:each) do
+      before do
         allow_any_instance_of(Targets::ProgressService).to receive(:progress_summary).and_return(progress_summary)
       end
+
       it 'includes the school' do
-        expect(report.size).to eql 1
+        expect(report.size).to be 1
         expect(report.first.school).to eq school
         expect(report.first.targets_enabled).to eq true
         expect(report.first.enough_data).to eq true

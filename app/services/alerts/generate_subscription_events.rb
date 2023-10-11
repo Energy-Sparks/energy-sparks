@@ -10,15 +10,19 @@ module Alerts
     def perform(alerts)
       alerts.each do |alert|
         content_and_contacts_for(alert, :email) do |content_version, find_out_more, contact, priority|
-          first_or_create_alert_subscription_event(contact, alert, content_version, find_out_more, priority, :email) if contact.email_address?
+          if contact.email_address?
+            first_or_create_alert_subscription_event(contact, alert, content_version, find_out_more, priority, :email)
+          end
         end
         content_and_contacts_for(alert, :sms) do |content_version, find_out_more, contact, priority|
-          first_or_create_alert_subscription_event(contact, alert, content_version, find_out_more, priority, :sms) if contact.mobile_phone_number?
+          if contact.mobile_phone_number?
+            first_or_create_alert_subscription_event(contact, alert, content_version, find_out_more, priority, :sms)
+          end
         end
       end
     end
 
-  private
+    private
 
     def content_and_contacts_for(alert, scope)
       FetchContent.new(alert).content_versions_with_priority(scope: scope).each do |content_version, priority|

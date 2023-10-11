@@ -1,5 +1,5 @@
 namespace :school do
-  desc "Schools daily regeneration"
+  desc 'Schools daily regeneration'
   task daily_regeneration: :environment do
     puts "#{DateTime.now.utc} Run daily regeneration for all process data schools start"
     BenchmarkResultGenerationRun.create!
@@ -7,7 +7,7 @@ namespace :school do
       puts "Run daily regeneration job for #{school.name}"
       begin
         DailyRegenerationJob.perform_later(school: school)
-      rescue => e
+      rescue StandardError => e
         puts "Exception: running validation for #{school.name}: #{e.class} #{e.message}"
         puts e.backtrace.join("\n")
         Rails.logger.error "Exception: running validation for #{school.name}: #{e.class} #{e.message}"

@@ -21,7 +21,7 @@ module Measurements
     end
   end
 
-private
+  private
 
   def valid_measurement?(measurement)
     measurement && MEASUREMENT_OPTIONS.key?(measurement)

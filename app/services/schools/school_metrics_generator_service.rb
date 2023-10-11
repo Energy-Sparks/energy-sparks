@@ -7,7 +7,7 @@ module Schools
     end
 
     def perform
-      #Relies on the benchmark run already existing, created in daily_regeneration.rake
+      # Relies on the benchmark run already existing, created in daily_regeneration.rake
       @benchmark_result_generation_run = BenchmarkResultGenerationRun.latest
       generate_metrics(@benchmark_result_generation_run)
     end
@@ -18,7 +18,7 @@ module Schools
       # Configuration school
       suppress_output { Schools::GenerateConfiguration.new(@school, @meter_collection).generate }
 
-      @logger.info "Generated configuration"
+      @logger.info 'Generated configuration'
 
       # Generate alerts & benchmarks
       suppress_output do
@@ -28,27 +28,27 @@ module Schools
           benchmark_result_generation_run: benchmark_result_generation_run
         ).perform
       end
-      @logger.info "Generated alerts & benchmarks"
+      @logger.info 'Generated alerts & benchmarks'
 
       # Generate equivalences
       suppress_output { Equivalences::GenerateEquivalences.new(school: @school, aggregate_school: @meter_collection).perform }
 
-      @logger.info "Generated equivalences"
+      @logger.info 'Generated equivalences'
 
       # Generate content
       Alerts::GenerateContent.new(@school).perform
 
-      @logger.info "Generated alert content"
+      @logger.info 'Generated alert content'
 
       # Generate target progress
       Targets::GenerateProgressService.new(@school, @meter_collection).generate!
 
-      @logger.info "Generated target data"
+      @logger.info 'Generated target data'
 
       # Generate advice page benchmarks
       Schools::AdvicePageBenchmarks::GenerateBenchmarks.new(school: @school, aggregate_school: @meter_collection).generate!
-      @logger.info "Generated advice page benchmarks"
-    rescue => e
+      @logger.info 'Generated advice page benchmarks'
+    rescue StandardError => e
       @logger.error "There was an error for #{@school.name} - #{@e.message}"
       Rollbar.error(e, job: :school_metric_genetator, school_id: @school.id, school: @school.name)
     end

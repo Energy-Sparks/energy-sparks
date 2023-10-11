@@ -1,6 +1,5 @@
 class SplitActiveStatusOnSchools < ActiveRecord::Migration[6.0]
   def change
-
     add_column :schools, :visible, :boolean, default: false
     add_column :schools, :process_data, :boolean, default: false
 

@@ -12,6 +12,5 @@ class AddCascadeDeletesToUserTariffs < ActiveRecord::Migration[6.0]
     add_foreign_key :user_tariff_charges, :user_tariffs, on_delete: :cascade
   end
 
-  def down
-  end
+  def down; end
 end

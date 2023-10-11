@@ -2,12 +2,8 @@ module Amr
   class N3rgyDownloaderDates
     def self.start_date(available_range, current_range)
       start = default_start_date
-      if available_range
-        start = available_range.first
-      end
-      if current_range && current_range.first <= start
-        start = current_range.last
-      end
+      start = available_range.first if available_range
+      start = current_range.last if current_range && current_range.first <= start
 
       start.change({ hour: 0, min: 0, sec: 0 })
     end

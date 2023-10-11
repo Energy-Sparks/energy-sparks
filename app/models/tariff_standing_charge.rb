@@ -29,7 +29,9 @@ class TariffStandingCharge < ApplicationRecord
     last_charge = nil
     meter.tariff_standing_charges.order(start_date: :asc).each do |tariff_standing_charge|
       last_charge = tariff_standing_charge if last_charge.nil? || last_charge.value != tariff_standing_charge.value
-      tariff_standing_charge.destroy if tariff_standing_charge != last_charge && tariff_standing_charge.value == last_charge.value
+      if tariff_standing_charge != last_charge && tariff_standing_charge.value == last_charge.value
+        tariff_standing_charge.destroy
+      end
     end
   end
 end

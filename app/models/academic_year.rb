@@ -23,11 +23,11 @@ class AcademicYear < ApplicationRecord
   end
 
   def previous_year
-    AcademicYear.for_date(self.start_date - 1).where(calendar: self.calendar).reject(&:current?).first
+    AcademicYear.for_date(start_date - 1).where(calendar: calendar).reject(&:current?).first
   end
 
   def next_year
-    AcademicYear.for_date(self.end_date + 1).where(calendar: self.calendar).reject(&:current?).first
+    AcademicYear.for_date(end_date + 1).where(calendar: calendar).reject(&:current?).first
   end
 
   def title

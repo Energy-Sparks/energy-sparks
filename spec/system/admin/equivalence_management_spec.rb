@@ -1,12 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe 'equivalence type management', type: :system do
+  let!(:school)   { create(:school) }
+  let!(:admin)    { create(:admin) }
 
-  let!(:school)   { create(:school)}
-  let!(:admin)    { create(:admin)}
-
-  let!(:kwh_value)          { "2,600 kWh" }
-  let!(:equivalence_calc)   { double(from_date: Date.parse('20200101'), to_date: Date.parse('20210101'), formatted_variables: {kwh: kwh_value}, :hide_preview? => false) }
+  let!(:kwh_value)          { '2,600 kWh' }
+  let!(:equivalence_calc)   { double(from_date: Date.parse('20200101'), to_date: Date.parse('20210101'), formatted_variables: { kwh: kwh_value }, hide_preview?: false) }
 
   before do
     sign_in(admin)
@@ -14,7 +13,6 @@ RSpec.describe 'equivalence type management', type: :system do
   end
 
   it 'allows the creation and editing of equivalences', js: true do
-
     allow_any_instance_of(Equivalences::Calculator).to receive(:perform).and_return(equivalence_calc)
 
     click_on 'Manage'
@@ -64,8 +62,7 @@ RSpec.describe 'equivalence type management', type: :system do
   end
 
   context 'allows the deletion equivalences with context types' do
-
-    before(:each) do
+    before do
       equivalence_type = create(:equivalence_type, meter_type: :electricity, time_period: :last_month)
       equivalence_text = "You used {{kwh}} of electricity last month, that's like {{number_trees}} trees"
       content_version = create(
@@ -82,7 +79,7 @@ RSpec.describe 'equivalence type management', type: :system do
     end
 
     it 'only' do
-      expect { click_on 'Delete' }.to change { EquivalenceType.count }.by(-1).and change { EquivalenceTypeContentVersion.count }.by(-1)
+      expect { click_on 'Delete' }.to change(EquivalenceType, :count).by(-1).and change(EquivalenceTypeContentVersion, :count).by(-1)
     end
 
     it 'and equivalences too' do
@@ -95,21 +92,21 @@ RSpec.describe 'equivalence type management', type: :system do
       analytics = double :analytics
 
       expect(analytics).to receive(:new).and_return(analytics)
-      expect(analytics).to receive(:front_end_convert).at_least(:once).with(:kwh, {month: -1}, :electricity).and_return(
+      expect(analytics).to receive(:front_end_convert).at_least(:once).with(:kwh, { month: -1 }, :electricity).and_return(
         {
           formatted_equivalence: '100 kwh',
           show_equivalence: true
         }
       )
-      expect(analytics).to receive(:front_end_convert).at_least(:once).with(:number_trees, {month: -1}, :electricity).and_return(
+      expect(analytics).to receive(:front_end_convert).at_least(:once).with(:number_trees, { month: -1 }, :electricity).and_return(
         {
           formatted_equivalence: '200,000',
           show_equivalence: true
         }
       )
 
-      expect { Equivalences::GenerateEquivalences.new(school: school, analytics_class: analytics, aggregate_school: aggregate_school).perform }.to change { Equivalence.count }.by(1)
-      expect { click_on 'Delete' }.to change { EquivalenceType.count }.by(-1).and change { EquivalenceTypeContentVersion.count }.by(-1).and change { Equivalence.count }.by(-1)
+      expect { Equivalences::GenerateEquivalences.new(school: school, analytics_class: analytics, aggregate_school: aggregate_school).perform }.to change(Equivalence, :count).by(1)
+      expect { click_on 'Delete' }.to change(EquivalenceType, :count).by(-1).and change(EquivalenceTypeContentVersion, :count).by(-1).and change(Equivalence, :count).by(-1)
     end
   end
 end

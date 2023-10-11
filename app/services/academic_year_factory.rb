@@ -6,7 +6,8 @@ class AcademicYearFactory
   end
 
   def create(start_year: 1990, end_year: 2023)
-    raise ArgumentError.new("End year: #{end_year} must be greater than start year: #{start_year}") if start_year > end_year
+    raise ArgumentError, "End year: #{end_year} must be greater than start year: #{start_year}" if start_year > end_year
+
     (start_year..end_year).each do |year|
       AcademicYear.where(calendar: @calendar, start_date: Date.parse("#{@start_date}-#{year}"), end_date: "#{@end_date}-#{year + 1}").first_or_create!
     end

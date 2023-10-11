@@ -1,7 +1,7 @@
 class ActivityTypesController < ApplicationController
   include Pagy::Backend
   load_and_authorize_resource
-  skip_before_action :authenticate_user!, only: [:show, :search, :for_school]
+  skip_before_action :authenticate_user!, only: %i[show search for_school]
 
   def search
     @key_stages = key_stages
@@ -17,11 +17,11 @@ class ActivityTypesController < ApplicationController
   def show
     @recorded = Activity.where(activity_type: @activity_type).count
     @school_count = Activity.select(:school_id).where(activity_type: @activity_type).distinct.count
-    if current_user_school
-      @activity_type_content = load_content(@activity_type, current_user_school)
-    else
-      @activity_type_content = @activity_type.description
-    end
+    @activity_type_content = if current_user_school
+                               load_content(@activity_type, current_user_school)
+                             else
+                               @activity_type.description
+                             end
     @can_be_completed_for_schools = can_be_completed_for_schools(@activity_type, current_user) if current_user
   end
 
@@ -34,6 +34,7 @@ class ActivityTypesController < ApplicationController
 
   def can_be_completed_for_schools(activity_type, user)
     return user.schools if user.admin?
+
     user.schools.select do |school|
       ActivityTypeFilter.new(school: school).activity_types.include?(activity_type)
     end

@@ -20,17 +20,17 @@ class ManualDataLoadRunJob < ApplicationJob
 
       Amr::ProcessAmrReadingData.new(amr_data_feed_import_log).perform(amr_uploaded_reading.valid_readings, amr_uploaded_reading.warnings)
 
-      manual_data_load_run.info("Finished processing")
+      manual_data_load_run.info('Finished processing')
       amr_uploaded_reading.update!(imported: true)
       manual_data_load_run.info("Inserted: #{amr_data_feed_import_log.records_imported}")
       manual_data_load_run.info("Updated: #{amr_data_feed_import_log.records_updated}")
       vaccuum_for_large_imports(amr_data_feed_import_log.records_imported, amr_data_feed_import_log.records_updated)
-      manual_data_load_run.info("SUCCESS")
+      manual_data_load_run.info('SUCCESS')
       status = :done
-    rescue => e
+    rescue StandardError => e
       Rollbar.error(e, job: :manual_data_load_run, id: manual_data_load_run.id, filename: amr_uploaded_reading.file_name)
       manual_data_load_run.error("Error: #{e.message}")
-      manual_data_load_run.error("FAILED")
+      manual_data_load_run.error('FAILED')
       status = :failed
     end
     manual_data_load_run.update!(status: status)
@@ -39,9 +39,7 @@ class ManualDataLoadRunJob < ApplicationJob
   private
 
   def vaccuum_for_large_imports(imported, updated)
-    if (imported.to_i + updated.to_i) > 10
-      Database::VacuumService.new([:amr_data_feed_readings]).perform
-    end
+    Database::VacuumService.new([:amr_data_feed_readings]).perform if (imported.to_i + updated.to_i) > 10
   end
 
   def create_import_log(amr_data_feed_config, file_name)

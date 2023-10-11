@@ -13,11 +13,9 @@ module Schools
       end
     end
 
-    def show
-    end
+    def show; end
 
-    def edit
-    end
+    def edit; end
 
     def create
       if Audits::AuditService.new(@school).process(@audit)
@@ -41,7 +39,7 @@ module Schools
       redirect_to school_audits_path(@school), notice: I18n.t('schools.audits.deleted')
     end
 
-  private
+    private
 
     def set_breadcrumbs
       @breadcrumbs = [{ name: I18n.t('energy_audits.title') }]
@@ -52,11 +50,11 @@ module Schools
     end
 
     def audit_activity_types_attributes
-      [:id, :activity_type_id, :activity_type, :notes, :_destroy]
+      %i[id activity_type_id activity_type notes _destroy]
     end
 
     def audit_intervention_types_attributes
-      [:id, :intervention_type_id, :intervention_type, :notes, :_destroy]
+      %i[id intervention_type_id intervention_type notes _destroy]
     end
   end
 end

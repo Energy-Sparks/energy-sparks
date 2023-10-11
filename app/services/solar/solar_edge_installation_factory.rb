@@ -3,30 +3,30 @@ require 'dashboard'
 module Solar
   class SolarEdgeInstallationFactory
     def initialize(
-        school:,
-        mpan:,
-        site_id:,
-        api_key:,
-        amr_data_feed_config:
-      )
+      school:,
+      mpan:,
+      site_id:,
+      api_key:,
+      amr_data_feed_config:
+    )
       @school = school
       @mpan = mpan
       @site_id = site_id
       @api_key = api_key
       @amr_data_feed_config = amr_data_feed_config
-      raise ArgumentError, 'Amr Data Feed Config is not set for the Solar Edge API' unless amr_data_feed_config.solar_edge_api?
+      unless amr_data_feed_config.solar_edge_api?
+        raise ArgumentError, 'Amr Data Feed Config is not set for the Solar Edge API'
+      end
     end
 
     def self.update_information(installation)
-      begin
-        solar_edge_api = SolarEdgeAPI.new(installation.api_key)
-        installation.update(information: {
-          site_details: solar_edge_api.site_details,
-          dates: solar_edge_api.site_start_end_dates(installation.site_id)
-        })
-      rescue => e
-        Rollbar.error(e, job: :solar_download, school: installation.school)
-      end
+      solar_edge_api = SolarEdgeAPI.new(installation.api_key)
+      installation.update(information: {
+                            site_details: solar_edge_api.site_details,
+                            dates: solar_edge_api.site_start_end_dates(installation.site_id)
+                          })
+    rescue StandardError => e
+      Rollbar.error(e, job: :solar_download, school: installation.school)
     end
 
     def perform

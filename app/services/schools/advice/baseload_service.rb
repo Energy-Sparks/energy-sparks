@@ -4,13 +4,9 @@ module Schools
     class BaseloadService < BaseService
       include AnalysableMixin
 
-      def enough_data?
-        baseload_service.enough_data?
-      end
+      delegate :enough_data?, to: :baseload_service
 
-      def data_available_from
-        baseload_service.data_available_from
-      end
+      delegate :data_available_from, to: :baseload_service
 
       def has_electricity?
         @school.has_electricity?
@@ -34,13 +30,11 @@ module Schools
           baseload_service = Baseload::BaseloadCalculationService.new(aggregate_meter, end_of_previous_week)
           @previous_week_average_baseload_kw ||= baseload_service.enough_data? ? baseload_service.average_baseload_kw(period: period) : nil
         else
-          raise "Invalid period"
+          raise 'Invalid period'
         end
       end
 
-      def saving_through_1_kw_reduction_in_baseload
-        baseload_service.saving_through_1_kw_reduction_in_baseload
-      end
+      delegate :saving_through_1_kw_reduction_in_baseload, to: :baseload_service
 
       def annual_baseload_usage
         @annual_baseload_usage ||= baseload_service.annual_baseload_usage(include_percentage: true)
@@ -58,7 +52,7 @@ module Schools
         benchmark_service.estimated_savings(versus: versus)
       end
 
-      #Calculate the annual average baseload for every year
+      # Calculate the annual average baseload for every year
       def annual_average_baseloads
         start_date = aggregate_meter.amr_data.start_date
         end_date = aggregate_meter.amr_data.end_date
@@ -85,7 +79,7 @@ module Schools
         meter_breakdowns
       end
 
-      #helper for building "all meters" / total row for meter breakdown table
+      # helper for building "all meters" / total row for meter breakdown table
       def meter_breakdown_table_total
         baseload_usage = annual_baseload_usage
         previous_year_baseload = previous_period_average_baseload_kw(period: :year)
@@ -105,6 +99,7 @@ module Schools
 
       def seasonal_variation_by_meter
         return {} unless electricity_meters.count > 1
+
         electricity_meters.each_with_object({}) do |meter, variation_by_meter|
           variation_by_meter[meter.mpan_mprn] = calculate_seasonal_variation(meter, meter.amr_data.end_date, true)
         end
@@ -116,6 +111,7 @@ module Schools
 
       def intraweek_variation_by_meter
         return {} unless electricity_meters.count > 1
+
         electricity_meters.each_with_object({}) do |meter, variation_by_meter|
           variation_by_meter[meter.mpan_mprn] = calculate_intraweek_variation(meter, meter.amr_data.end_date, true)
         end
@@ -125,7 +121,7 @@ module Schools
         electricity_meters.each_with_object({}) do |analytics_meter, date_range_by_meter|
           end_date = analytics_meter.amr_data.end_date
           start_date = analytics_meter.amr_data.start_date
-          meter = @school.meters.find_by_mpan_mprn(analytics_meter.mpan_mprn)
+          meter = @school.meters.find_by(mpan_mprn: analytics_meter.mpan_mprn)
           date_range_by_meter[analytics_meter.mpan_mprn] = {
             meter: meter,
             start_date: start_date,
@@ -153,13 +149,13 @@ module Schools
         @asof_date ||= aggregate_meter.amr_data.end_date
       end
 
-      #the ElectricityBaseloadAnalysis class defines one_week_ago as
-      #6 days before the calculation date. So when we calculate last weeks
-      #baseload is asof_date - 6. This is apparently to address some issues
-      #with large intraweek variation.
+      # the ElectricityBaseloadAnalysis class defines one_week_ago as
+      # 6 days before the calculation date. So when we calculate last weeks
+      # baseload is asof_date - 6. This is apparently to address some issues
+      # with large intraweek variation.
       #
-      #So for our comparison of last week and previous week, we want a week
-      #before that which is 13 days...
+      # So for our comparison of last week and previous week, we want a week
+      # before that which is 13 days...
       def end_of_previous_week
         asof_date - 13
       end
@@ -198,12 +194,16 @@ module Schools
       def calculate_seasonal_variation(analytics_meter = aggregate_meter, date = asof_date, load_meter = false)
         meter = load_meter ? meter_for_mpan(analytics_meter.mpan_mprn) : nil
         seasonal_baseload_service = Baseload::SeasonalBaseloadService.new(analytics_meter, date)
-        #return if there's not enough data, then return limited object
-        return OpenStruct.new(meter: meter, enough_data?: false, data_available_from: seasonal_baseload_service.data_available_from) unless seasonal_baseload_service.enough_data?
+        # return if there's not enough data, then return limited object
+        unless seasonal_baseload_service.enough_data?
+          return OpenStruct.new(meter: meter, enough_data?: false, data_available_from: seasonal_baseload_service.data_available_from)
+        end
+
         variation = seasonal_baseload_service.seasonal_variation
-        #we may have >1 year of data, but not enough to actually calculate a seasonal analysis
-        #e.g. a meter for a swimming pool only used in the summer
+        # we may have >1 year of data, but not enough to actually calculate a seasonal analysis
+        # e.g. a meter for a swimming pool only used in the summer
         return OpenStruct.new(meter: meter, enough_data?: false) if variation.percentage.nan?
+
         saving = seasonal_baseload_service.estimated_costs
         build_seasonal_variation(meter, variation, saving)
       end
@@ -228,7 +228,10 @@ module Schools
       def calculate_intraweek_variation(analytics_meter = aggregate_meter, date = asof_date, load_meter = false)
         intraweek_baseload_service = Baseload::IntraweekBaseloadService.new(analytics_meter, date)
         meter = load_meter ? meter_for_mpan(analytics_meter.mpan_mprn) : nil
-        return OpenStruct.new(meter: meter, enough_data?: false, data_available_from: intraweek_baseload_service.data_available_from) unless intraweek_baseload_service.enough_data?
+        unless intraweek_baseload_service.enough_data?
+          return OpenStruct.new(meter: meter, enough_data?: false, data_available_from: intraweek_baseload_service.data_available_from)
+        end
+
         variation = intraweek_baseload_service.intraweek_variation
         saving = intraweek_baseload_service.estimated_costs
         build_intraweek_variation(meter, variation, saving)

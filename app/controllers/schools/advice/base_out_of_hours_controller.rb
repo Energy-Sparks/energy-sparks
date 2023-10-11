@@ -30,18 +30,18 @@ module Schools
           recent_data: recent_data?(end_date),
           months_of_data: months_between(start_date, end_date),
           last_full_week_start_date: last_full_week_start_date(end_date),
-          last_full_week_end_date: last_full_week_end_date(end_date),
+          last_full_week_end_date: last_full_week_end_date(end_date)
         )
       end
 
-      #for charts that use the last full week
-      #beginning of the week is Sunday
+      # for charts that use the last full week
+      # beginning of the week is Sunday
       def last_full_week_start_date(end_date)
         (end_date - 13.months).beginning_of_week - 1
       end
 
-      #for charts that use the last full week
-      #end of the week is Saturday
+      # for charts that use the last full week
+      # end of the week is Saturday
       def last_full_week_end_date(end_date)
         end_date.prev_week.end_of_week - 1
       end
@@ -70,7 +70,7 @@ module Schools
       end
 
       def set_usage_categories
-        @usage_categories = [:holiday, :weekend, :school_day_open, :school_day_closed]
+        @usage_categories = %i[holiday weekend school_day_open school_day_closed]
         @usage_categories += [:community] if @school.school_times.community_use.any?
         @usage_categories
       end

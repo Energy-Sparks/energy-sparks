@@ -4,20 +4,18 @@ module Onboarding
     before_action :check_complete
     before_action :hide_subnav
 
-  private
+    private
 
     def load_school_onboarding
-      @school_onboarding = SchoolOnboarding.find_by_uuid!(params.fetch(:onboarding_id) { params[:id] })
+      @school_onboarding = SchoolOnboarding.find_by!(uuid: params.fetch(:onboarding_id) { params[:id] })
       authorize! :manage, @school_onboarding
-    rescue => e
+    rescue StandardError => e
       store_location_for(:user, onboarding_path(@school_onboarding))
       redirect_to new_user_session_path, notice: message(@school_onboarding, e)
     end
 
     def redirect_if_event(event, path)
-      if @school_onboarding.has_event?(event)
-        redirect_to path
-      end
+      redirect_to path if @school_onboarding.has_event?(event)
     end
 
     def check_complete
@@ -30,7 +28,7 @@ module Onboarding
 
     def message(school_onboarding, exception)
       if current_user.nil? && school_onboarding.created_user.present?
-        "You must sign in to resume the onboarding process"
+        'You must sign in to resume the onboarding process'
       else
         exception.message
       end

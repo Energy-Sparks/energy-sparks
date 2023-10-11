@@ -3,7 +3,7 @@ namespace :after_party do
   task add_school_target_observations: :environment do
     puts "Running deploy task 'add_school_target_observations'"
 
-    #Create an observation for every existing target in the system
+    # Create an observation for every existing target in the system
     SchoolTarget.all.each do |school_target|
       Observation.create!(
         school: school_target.school,

@@ -32,7 +32,7 @@ RSpec.configure do |config|
     options.add_argument('disable-gpu')
     options.add_argument('disable-dev-shm-usage')
     options.add_argument('window-size=1400,10000')
-    #now needs to be true, to get a session id?
+    # now needs to be true, to get a session id?
     options.add_option('w3c', true)
     Capybara::Selenium::Driver.new(app, browser: :chrome, capabilities: options)
   end
@@ -52,11 +52,11 @@ RSpec.configure do |config|
         errors.each do |error|
           expect(error.level).not_to eq('SEVERE'), error.message
           next unless error.level == 'WARNING'
-          STDERR.puts 'WARN: javascript warning'
-          STDERR.puts error.message
+
+          warn 'WARN: javascript warning'
+          warn error.message
         end
       end
     end
   end
-
 end

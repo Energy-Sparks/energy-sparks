@@ -36,7 +36,7 @@ module Schools
     }.freeze
 
     delegate :has_electricity, :has_gas, :has_storage_heaters, :has_solar_pv, :fuel_types_for_analysis, :dual_fuel,
-      to: :fuel_configuration
+             to: :fuel_configuration
 
     def fuel_configuration
       FuelConfiguration.new(**super.symbolize_keys)
@@ -48,8 +48,8 @@ module Schools
 
     def enough_data_to_set_target_for_fuel_type?(fuel_type)
       case fuel_type.to_s
-      when "storage_heater", "storage_heaters"
-        school_target_fuel_types.include?("storage_heater")
+      when 'storage_heater', 'storage_heaters'
+        school_target_fuel_types.include?('storage_heater')
       else
         school_target_fuel_types.include?(fuel_type.to_s)
       end
@@ -61,8 +61,8 @@ module Schools
 
     def suggest_annual_estimate_for_fuel_type?(fuel_type)
       case fuel_type.to_s
-      when "storage_heater", "storage_heaters"
-        suggest_estimates_fuel_types.include?("storage_heater")
+      when 'storage_heater', 'storage_heaters'
+        suggest_estimates_fuel_types.include?('storage_heater')
       else
         suggest_estimates_fuel_types.include?(fuel_type.to_s)
       end
@@ -81,11 +81,11 @@ module Schools
     end
 
     def get_charts(charts_field, page, *sub_pages)
-      page_config = analysis_charts_as_symbols(charts_field).fetch(page) {{}}
+      page_config = analysis_charts_as_symbols(charts_field).fetch(page) { {} }
       base_chart_config = sub_pages.inject(page_config) do |config, page_name|
-        config[:sub_pages].find {|sub_page| sub_page[:name] == page_name} || { sub_pages: [] }
+        config[:sub_pages].find { |sub_page| sub_page[:name] == page_name } || { sub_pages: [] }
       end
-      base_chart_config.fetch(:charts) {[]}
+      base_chart_config.fetch(:charts) { [] }
     end
 
     def can_show_analysis_chart?(charts_field, page, *sub_pages, chart_name)
@@ -106,7 +106,7 @@ module Schools
       dates = aggregate_meter_dates.deep_symbolize_keys
       dates_for_fuel_types = dates[fuel_type.to_sym]
       if dates_for_fuel_types.present?
-        dates_for_fuel_types.transform_values {|v| Date.parse(v) }
+        dates_for_fuel_types.transform_values { |v| Date.parse(v) }
       else
         {}
       end
@@ -117,7 +117,7 @@ module Schools
     def symbolize_charts_config(charts_config)
       config = charts_config.deep_symbolize_keys
       if config.key?(:sub_pages)
-        config[:sub_pages] = config[:sub_pages].map {|sub_page| symbolize_charts_config(sub_page) }
+        config[:sub_pages] = config[:sub_pages].map { |sub_page| symbolize_charts_config(sub_page) }
       else
         config[:charts] = config[:charts].map(&:to_sym)
       end

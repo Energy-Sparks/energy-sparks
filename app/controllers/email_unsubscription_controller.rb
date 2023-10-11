@@ -3,7 +3,7 @@ class EmailUnsubscriptionController < ApplicationController
 
   def new
     @alert_subscription_event = AlertSubscriptionEvent.find_by(unsubscription_uuid: params[:uuid])
-    if @alert_subscription_event != nil
+    if !@alert_subscription_event.nil?
       @content = AlertMailer.create_content([@alert_subscription_event]).first
       @alert_type_rating_unsubscription = AlertTypeRatingUnsubscription.new
       render :new
@@ -29,6 +29,5 @@ class EmailUnsubscriptionController < ApplicationController
     end
   end
 
-  def show
-  end
+  def show; end
 end

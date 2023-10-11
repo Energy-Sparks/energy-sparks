@@ -1,6 +1,5 @@
 class CreateSchoolGroupsAndScoreboards < ActiveRecord::Migration[5.2]
   def change
-
     create_table :scoreboards do |t|
       t.string :name, null: false
       t.string :description
@@ -17,6 +16,5 @@ class CreateSchoolGroupsAndScoreboards < ActiveRecord::Migration[5.2]
     end
 
     add_reference :schools, :school_group, foreign_key: true
-
   end
 end

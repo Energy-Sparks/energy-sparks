@@ -1,34 +1,37 @@
 require 'rails_helper'
 
-RSpec.describe "manage school alert contacts", type: :system do
+RSpec.describe 'manage school alert contacts', type: :system do
   let(:school) { create(:school) }
   let(:school2) { create(:school) }
 
-  before(:each) do
+  before do
     sign_in(user) if user.present?
   end
 
   context 'as a guest' do
     let(:user) { nil }
-    it 'should not be able to visit the alert contacts page and instead redirected to the log in page' do
+
+    it 'is not able to visit the alert contacts page and instead redirected to the log in page' do
       visit school_contacts_path(school)
-      expect(page.current_path).to eq(new_user_session_path)
+      expect(page).to have_current_path(new_user_session_path, ignore_query: true)
     end
   end
 
   context 'as a pupil' do
     let(:user) { create(:pupil, school: school) }
-    it 'should not be able to visit the alert contacts page and instead redirected to the schools pupil page' do
+
+    it 'is not able to visit the alert contacts page and instead redirected to the schools pupil page' do
       visit school_contacts_path(school)
-      expect(page.current_path).to eq(pupils_school_path(school))
+      expect(page).to have_current_path(pupils_school_path(school), ignore_query: true)
     end
   end
 
   context 'as staff' do
-    let(:user)   { create(:staff, school: school) }
-    it 'should be able to visit the alert contacts page' do
+    let(:user) { create(:staff, school: school) }
+
+    it 'is able to visit the alert contacts page' do
       visit school_contacts_path(school)
-      expect(page.current_path).to eq(school_path(school))
+      expect(page).to have_current_path(school_path(school), ignore_query: true)
     end
   end
 end

@@ -14,9 +14,9 @@
 #  updated_at      :datetime         not null
 #
 class WeatherStation < ApplicationRecord
-  METEOSTAT = "meteostat".freeze
+  METEOSTAT = 'meteostat'.freeze
   has_many :weather_observations, dependent: :destroy
-  validates_presence_of :latitude, :longitude, :title, :provider, :back_fill_years
+  validates :latitude, :longitude, :title, :provider, :back_fill_years, presence: true
   validates :provider, inclusion: { in: [METEOSTAT] }
   scope :by_title, -> { order(title: :asc) }
   scope :active_by_provider, ->(provider) { where(active: true, provider: provider) }
@@ -27,15 +27,11 @@ class WeatherStation < ApplicationRecord
   end
 
   def first_observation_date
-    if observation_count > 0
-      weather_observations.by_date.first.reading_date.strftime('%d %b %Y')
-    end
+    weather_observations.by_date.first.reading_date.strftime('%d %b %Y') if observation_count > 0
   end
 
   def last_observation_date
-    if observation_count > 0
-      weather_observations.by_date.last.reading_date.strftime('%d %b %Y')
-    end
+    weather_observations.by_date.last.reading_date.strftime('%d %b %Y') if observation_count > 0
   end
 
   def has_sufficient_readings?(latest_date, minimum_readings_per_year)

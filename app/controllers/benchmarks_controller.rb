@@ -8,11 +8,10 @@ class BenchmarksController < ApplicationController
   before_action :latest_benchmark_run
   before_action :content_manager
   before_action :page_groups, only: [:index]
-  before_action :load_filter, only: [:index, :show]
+  before_action :load_filter, only: %i[index show]
   before_action :filter_lists, only: [:show]
 
-  def index
-  end
+  def index; end
 
   def show
     benchmark_results unless @benchmark_filter[:school_group_ids].empty?
@@ -25,11 +24,11 @@ class BenchmarksController < ApplicationController
 
         sort_content_and_page_groups(@page_groups)
       end
-      format.yaml { send_data YAML.dump(@benchmark_results), filename: "benchmark_results_data.yaml" }
+      format.yaml { send_data YAML.dump(@benchmark_results), filename: 'benchmark_results_data.yaml' }
     end
   end
 
-private
+  private
 
   def latest_benchmark_run
     @latest_benchmark_run = BenchmarkResultGenerationRun.latest
@@ -55,7 +54,7 @@ private
 
     error_message = "Exception: #{page}: #{e.class} #{e.message}"
 
-    backtrace = e.backtrace.select { |b| b.include?('analytics')}.join("<br>")
+    backtrace = e.backtrace.select { |b| b.include?('analytics') }.join('<br>')
     full_html_output = "Exception: #{page}: #{e.class} #{e.message} #{backtrace}"
     errors << { message: error_message, full_html_output: full_html_output }
     {}
@@ -68,7 +67,7 @@ private
   def load_filter
     @benchmark_filter = {
       school_group_ids: (params.dig(:benchmark, :school_group_ids) || []).reject(&:empty?),
-      school_types:     (params.dig(:benchmark, :school_types) || all_school_type_ids).reject(&:empty?)
+      school_types: (params.dig(:benchmark, :school_types) || all_school_type_ids).reject(&:empty?)
     }
     school_group_names = SchoolGroup.find(@benchmark_filter[:school_group_ids]).pluck(:name).join(', ')
     @filter_names = school_group_names
@@ -92,9 +91,7 @@ private
     include_invisible = can? :show, :all_schools
 
     schools = SchoolFilter.new(**{ include_invisible: include_invisible }.merge(@benchmark_filter)).filter
-    unless include_invisible
-      schools = schools.select {|s| can?(:show, s) }
-    end
+    schools = schools.select { |s| can?(:show, s) } unless include_invisible
     @benchmark_results = Alerts::CollateBenchmarkData.new(@latest_benchmark_run).perform(schools)
   end
 
@@ -107,8 +104,8 @@ private
   end
 
   def content_select?(content)
-    return false unless content.present?
+    return false if content.blank?
 
-    [:chart, :html, :table_composite, :title].include?(content[:type]) && content[:content].present?
+    %i[chart html table_composite title].include?(content[:type]) && content[:content].present?
   end
 end

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe TemperatureObservationCreator do
-
   it 'saves the observation' do
     observation = build(:observation)
     TemperatureObservationCreator.new(observation).process
@@ -11,7 +10,7 @@ describe TemperatureObservationCreator do
   it 'sets the observation type to :temperature' do
     observation = build(:observation, observation_type: nil)
     TemperatureObservationCreator.new(observation).process
-    expect(observation.observation_type).to eq("temperature")
+    expect(observation.observation_type).to eq('temperature')
   end
 
   it 'creates an observation with 5 points' do
@@ -35,5 +34,4 @@ describe TemperatureObservationCreator do
     expect(observation_1.points).to eq(5)
     expect(observation_2.points).to eq(nil)
   end
-
 end

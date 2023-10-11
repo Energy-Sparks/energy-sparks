@@ -8,13 +8,13 @@ module Alerts
       rating = @alert.rating
       return [] if rating.blank?
 
-      alert_type_ratings = AlertTypeRating.
-        for_rating(rating.to_f.round(1)).
-        where(alert_type: @alert.alert_type).
-        where(:"#{scope}_active" => true)
+      alert_type_ratings = AlertTypeRating
+                           .for_rating(rating.to_f.round(1))
+                           .where(alert_type: @alert.alert_type)
+                           .where("#{scope}_active": true)
 
       current_content = alert_type_ratings.map(&:current_content).compact
-      current_content.select {|content| content.meets_timings?(scope: scope, today: today)}
+      current_content.select { |content| content.meets_timings?(scope: scope, today: today) }
     end
 
     def content_versions_with_priority(scope:, today: Time.zone.today)
@@ -23,11 +23,10 @@ module Alerts
       end
     end
 
-
     private
 
     def calculate_score(content_version, scope)
-      ((11 - @alert.rating) * content_version.read_attribute(:"#{scope}_weighting") * @alert.priority_data.fetch('time_of_year_relevance') {5.0}) / 1000
+      ((11 - @alert.rating) * content_version.read_attribute(:"#{scope}_weighting") * @alert.priority_data.fetch('time_of_year_relevance') { 5.0 }) / 1000
     end
   end
 end

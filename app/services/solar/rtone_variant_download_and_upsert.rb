@@ -1,10 +1,10 @@
 module Solar
   class RtoneVariantDownloadAndUpsert < BaseDownloadAndUpsert
     def initialize(
-        installation:,
-        start_date:,
-        end_date:
-      )
+      installation:,
+      start_date:,
+      end_date:
+    )
       super(start_date: start_date, end_date: end_date, installation: installation)
     end
 

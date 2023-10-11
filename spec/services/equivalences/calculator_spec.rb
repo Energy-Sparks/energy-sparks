@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Equivalences::Calculator do
-
   it 'creates and equivalence for the school that matches the current data and stores the calculated equivalences' do
     equivalence_type = create(:equivalence_type, meter_type: :electricity, time_period: :last_month)
     content_version = create(
@@ -13,14 +12,14 @@ describe Equivalences::Calculator do
 
     analytics = double :analytics
 
-    expect(analytics).to receive(:front_end_convert).at_most(:twice).with(:kwh, {month: -1}, :electricity).and_return(
+    expect(analytics).to receive(:front_end_convert).at_most(:twice).with(:kwh, { month: -1 }, :electricity).and_return(
       {
         formatted_equivalence: '100 kwh',
         show_equivalence: true
       }
     )
 
-    expect(analytics).to receive(:front_end_convert).at_most(:twice).with(:number_trees, {month: -1}, :electricity).and_return(
+    expect(analytics).to receive(:front_end_convert).at_most(:twice).with(:number_trees, { month: -1 }, :electricity).and_return(
       {
         formatted_equivalence: '200,000',
         show_equivalence: true
@@ -33,14 +32,14 @@ describe Equivalences::Calculator do
     expect(equivalence.content_version).to eq(content_version)
     expect(equivalence.data).to eq(
       {
-        'kwh' => {'formatted_equivalence' => '100 kwh', 'show_equivalence' => true},
-        'number_trees' => {'formatted_equivalence' => '200,000', 'show_equivalence' => true}
+        'kwh' => { 'formatted_equivalence' => '100 kwh', 'show_equivalence' => true },
+        'number_trees' => { 'formatted_equivalence' => '200,000', 'show_equivalence' => true }
       }
     )
     expect(equivalence.data_cy).to eq(
       {
-        'kwh' => {'formatted_equivalence' => '100 kwh', 'show_equivalence' => true},
-        'number_trees' => {'formatted_equivalence' => '200,000', 'show_equivalence' => true}
+        'kwh' => { 'formatted_equivalence' => '100 kwh', 'show_equivalence' => true },
+        'number_trees' => { 'formatted_equivalence' => '200,000', 'show_equivalence' => true }
       }
     )
     expect(equivalence.relevant).to eq(true)
@@ -57,14 +56,14 @@ describe Equivalences::Calculator do
 
     analytics = double :analytics
 
-    expect(analytics).to receive(:front_end_convert).at_most(:twice).with(:kwh, {month: -1}, :electricity).and_return(
+    expect(analytics).to receive(:front_end_convert).at_most(:twice).with(:kwh, { month: -1 }, :electricity).and_return(
       {
         formatted_equivalence: '100 kwh',
         show_equivalence: true
       }
     )
 
-    expect(analytics).to receive(:front_end_convert).at_most(:twice).with(:number_trees, {month: -1}, :electricity).and_return(
+    expect(analytics).to receive(:front_end_convert).at_most(:twice).with(:number_trees, { month: -1 }, :electricity).and_return(
       {
         formatted_equivalence: '200,000',
         show_equivalence: false
@@ -87,7 +86,7 @@ describe Equivalences::Calculator do
 
     analytics = double :analytics
 
-    expect(analytics).to receive(:front_end_convert).at_most(:twice).with(:kwh, {month: -1}, :electricity).and_return(
+    expect(analytics).to receive(:front_end_convert).at_most(:twice).with(:kwh, { month: -1 }, :electricity).and_return(
       {
         formatted_equivalence: '100 kwh',
         show_equivalence: true,
@@ -96,7 +95,7 @@ describe Equivalences::Calculator do
       }
     )
 
-    expect(analytics).to receive(:front_end_convert).at_most(:twice).with(:number_trees, {month: -1}, :electricity).and_return(
+    expect(analytics).to receive(:front_end_convert).at_most(:twice).with(:number_trees, { month: -1 }, :electricity).and_return(
       {
         formatted_equivalence: '200,000',
         show_equivalence: true,
@@ -116,21 +115,21 @@ describe Equivalences::Calculator do
     content_version = create(
       :equivalence_type_content_version,
       equivalence_type: equivalence_type,
-      equivalence: "You used {{kwh}} of electricity last month"
+      equivalence: 'You used {{kwh}} of electricity last month'
     )
     school = create(:school)
 
     analytics = double :analytics
 
-    expect(analytics).to receive(:front_end_convert).with(:kwh, {month: -1}, :electricity).and_return(
+    expect(analytics).to receive(:front_end_convert).with(:kwh, { month: -1 }, :electricity).and_return(
       {
         formatted_equivalence: '100 kwh',
         show_equivalence: true
       }
     )
 
-    #Welsh
-    expect(analytics).to receive(:front_end_convert).with(:kwh, {month: -1}, :electricity).and_return(
+    # Welsh
+    expect(analytics).to receive(:front_end_convert).with(:kwh, { month: -1 }, :electricity).and_return(
       {
         formatted_equivalence: '100 kwh in Welsh',
         show_equivalence: true
@@ -143,15 +142,14 @@ describe Equivalences::Calculator do
     expect(equivalence.content_version).to eq(content_version)
     expect(equivalence.data).to eq(
       {
-        'kwh' => {'formatted_equivalence' => '100 kwh', 'show_equivalence' => true}
+        'kwh' => { 'formatted_equivalence' => '100 kwh', 'show_equivalence' => true }
       }
     )
     expect(equivalence.data_cy).to eq(
       {
-        'kwh' => {'formatted_equivalence' => '100 kwh in Welsh', 'show_equivalence' => true}
+        'kwh' => { 'formatted_equivalence' => '100 kwh in Welsh', 'show_equivalence' => true }
       }
     )
     expect(equivalence.relevant).to eq(true)
   end
-
 end

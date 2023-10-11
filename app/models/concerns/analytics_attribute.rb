@@ -7,8 +7,8 @@ module AnalyticsAttribute
     belongs_to :created_by, class_name: 'User', optional: true
     has_one :replaces, class_name: name, foreign_key: :replaced_by_id
 
-    scope :active,  -> { where(replaced_by_id: nil, deleted_by_id: nil).order(created_at: :asc)}
-    scope :deleted, -> { where(replaced_by_id: nil).where.not(deleted_by_id: nil).order(created_at: :asc)}
+    scope :active,  -> { where(replaced_by_id: nil, deleted_by_id: nil).order(created_at: :asc) }
+    scope :deleted, -> { where(replaced_by_id: nil).where.not(deleted_by_id: nil).order(created_at: :asc) }
 
     validate :input_data_valid
 
@@ -33,8 +33,9 @@ module AnalyticsAttribute
 
   def input_data_valid
     return if input_data.blank?
+
     meter_attribute_type.parse(input_data)
-  rescue => e
+  rescue StandardError => e
     errors.add(:input_data, e.message)
   end
 end

@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 describe ImportNotifier do
-
-  let(:sheffield_school) { create(:school, :with_school_group, name: "Sheffield School")}
-  let(:bath_school) { create(:school, :with_school_group, name: "Bath School")}
+  let(:sheffield_school) { create(:school, :with_school_group, name: 'Sheffield School') }
+  let(:bath_school) { create(:school, :with_school_group, name: 'Bath School') }
   let(:sheffield_config) { create(:amr_data_feed_config, description: 'Sheffield') }
   let(:bath_config) { create(:amr_data_feed_config, description: 'Bath') }
   let(:other_config) { create(:amr_data_feed_config, description: 'Other') }
@@ -80,8 +79,9 @@ describe ImportNotifier do
 
   describe '#meters_with_blank_data' do
     context 'with inactive schools' do
-      let(:school)  { create(:school, active: false)}
+      let(:school)  { create(:school, active: false) }
       let(:meter_1) { create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log, school: school) }
+
       it 'ignores the meter' do
         meters_with_blank_data = ImportNotifier.new.meters_with_blank_data(from: 2.days.ago, to: Time.now)
         expect(meters_with_blank_data).to match_array([])
@@ -100,8 +100,9 @@ describe ImportNotifier do
 
   describe '#meters_with_zero_data' do
     context 'with inactive schools' do
-      let(:school)  { create(:school, active: false)}
+      let(:school)  { create(:school, active: false) }
       let(:meter_1) { create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: 20.days.ago, end_date: 2.days.ago, config: sheffield_config, log: sheffield_import_log, school: school) }
+
       it 'ignores the meter' do
         meter_1.amr_data_feed_readings.last.update!(readings: Array.new(48, 0))
         meters_with_zero_data = ImportNotifier.new.meters_with_zero_data(from: 2.days.ago, to: Time.now)
@@ -126,14 +127,13 @@ describe ImportNotifier do
       expect(meters_with_zero_data).to be_empty
     end
 
-    #future requirement
+    # future requirement
     xit 'does not include gas data in the summer' do
-      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: Date.new(2022,8,1), end_date: Date.new(2022,9,1), config: sheffield_config, log: sheffield_import_log)
+      meter_1 = create(:gas_meter_with_validated_reading_dates, :with_unvalidated_readings, start_date: Date.new(2022, 8, 1), end_date: Date.new(2022, 9, 1), config: sheffield_config, log: sheffield_import_log)
       meter_1.amr_data_feed_readings.last.update!(readings: Array.new(48, 0))
-      meters_with_zero_data = ImportNotifier.new.meters_with_zero_data(from: Date.new(2022,8,1), to: Time.now)
+      meters_with_zero_data = ImportNotifier.new.meters_with_zero_data(from: Date.new(2022, 8, 1), to: Time.now)
       expect(meters_with_zero_data).to match_array([])
     end
-
   end
 
   describe '#notify' do
@@ -145,7 +145,7 @@ describe ImportNotifier do
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to include('Energy Sparks import')
       email_body = email.html_part.body
-      expect(email_body).to include("Data issues")
+      expect(email_body).to include('Data issues')
     end
 
     it 'contains the meter information' do

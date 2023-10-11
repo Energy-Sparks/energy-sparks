@@ -3,8 +3,7 @@ module Admin
     class EmailController < AdminController
       load_and_authorize_resource :school_onboarding, find_by: :uuid
 
-      def new
-      end
+      def new; end
 
       def create
         OnboardingMailer.with(school_onboarding: @school_onboarding).onboarding_email.deliver_now
@@ -12,8 +11,7 @@ module Admin
         redirect_to admin_school_onboardings_path
       end
 
-      def edit
-      end
+      def edit; end
 
       def update
         if @school_onboarding.update(school_params)
@@ -25,12 +23,12 @@ module Admin
         end
       end
 
-    private
+      private
 
       def school_params
         params.require(:school_onboarding).permit(
           :contact_email,
-          :notes,
+          :notes
         )
       end
     end

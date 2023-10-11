@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Programmes::Progress do
-
   let(:school) { create(:school) }
   let(:programme_type) { create(:programme_type_with_activity_types, bonus_score: 12) }
   let(:programme) { Programme.create!(programme_type: programme_type, started_on: '2020-01-01', school: school) }
@@ -24,7 +23,7 @@ describe Programmes::Progress do
     end
   end
 
-  describe "#total_points" do
+  describe '#total_points' do
     it 'includes bonus points if the programme is completed within the same academic year as started' do
       allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: true) }
       expect(service.total_points).to eq(87)

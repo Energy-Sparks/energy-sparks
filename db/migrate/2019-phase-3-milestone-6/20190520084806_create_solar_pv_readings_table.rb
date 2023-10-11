@@ -12,6 +12,6 @@ class CreateSolarPvReadingsTable < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    add_index :solar_pv_tuos_readings, [:area_id, :reading_date], unique: true
+    add_index :solar_pv_tuos_readings, %i[area_id reading_date], unique: true
   end
 end

@@ -8,7 +8,7 @@ namespace :after_party do
 
     energy_assets = sheffield_gas.attributes
     energy_assets.delete('id')
-    energy_assets['description'] = "Energy Assets generic feed, based on Sheffield gas"
+    energy_assets['description'] = 'Energy Assets generic feed, based on Sheffield gas'
     energy_assets['identifier'] = 'energy-assets'
 
     AmrDataFeedConfig.create!(energy_assets)

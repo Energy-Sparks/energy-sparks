@@ -21,7 +21,7 @@ class SchoolsLoader
   def school_slugs_from_file
     data = YAML.load_file(@filepath) || {}
     data.fetch('schools', {}).map { |entry| entry['name'] }
-  rescue
+  rescue StandardError
     []
   end
 end

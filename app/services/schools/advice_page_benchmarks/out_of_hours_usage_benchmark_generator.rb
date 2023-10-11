@@ -3,6 +3,7 @@ module Schools
     class OutOfHoursUsageBenchmarkGenerator < SchoolBenchmarkGenerator
       def benchmark_school
         return unless usage_service.enough_data?
+
         benchmark_usage.category
       end
 

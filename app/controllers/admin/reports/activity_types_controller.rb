@@ -17,7 +17,7 @@ module Admin
       private
 
       def group_by_school
-        @activity_type.grouped_school_count.to_a.sort {|a, b| b[1] <=> a[1]}
+        @activity_type.grouped_school_count.to_a.sort { |a, b| b[1] <=> a[1] }
       end
     end
   end

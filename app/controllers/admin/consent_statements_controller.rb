@@ -7,14 +7,11 @@ module Admin
       @consent_statements = ConsentStatement.by_date
     end
 
-    def show
-    end
+    def show; end
 
-    def new
-    end
+    def new; end
 
-    def edit
-    end
+    def edit; end
 
     def create
       if @consent_statement.save

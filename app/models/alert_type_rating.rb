@@ -51,8 +51,8 @@ class AlertTypeRating < ApplicationRecord
 
   validate :ratings_not_out_of_order
 
-  accepts_nested_attributes_for :alert_type_rating_activity_types, reject_if: proc {|attributes| attributes['position'].blank? }
-  accepts_nested_attributes_for :alert_type_rating_intervention_types, reject_if: proc {|attributes| attributes['position'].blank? }
+  accepts_nested_attributes_for :alert_type_rating_activity_types, reject_if: proc { |attributes| attributes['position'].blank? }
+  accepts_nested_attributes_for :alert_type_rating_intervention_types, reject_if: proc { |attributes| attributes['position'].blank? }
 
   def current_content
     content_versions.latest.first
@@ -99,7 +99,7 @@ class AlertTypeRating < ApplicationRecord
     I18n.t("school_groups.priority_actions.alert_types.#{alert_type_class_key}_html")
   end
 
-private
+  private
 
   def alert_type_class_key
     alert_type.class_name.underscore
@@ -115,9 +115,7 @@ private
 
   def ratings_not_out_of_order
     if rating_from.present? && rating_to.present?
-      if rating_to <= rating_from
-        errors.add(:rating_to, 'must be less than rating from')
-      end
+      errors.add(:rating_to, 'must be less than rating from') if rating_to <= rating_from
     end
   end
 end

@@ -1,5 +1,5 @@
 module Amr
-  #Convert tariff prices and standing charges into meter attributes for use by analytics
+  # Convert tariff prices and standing charges into meter attributes for use by analytics
   class AnalyticsTariffFactory
     def initialize(meter)
       @meter = meter
@@ -7,6 +7,7 @@ module Amr
 
     def build
       return nil unless @meter.dcc_meter?
+
       convert_to_meter_attributes(build_tariff_data)
     end
 
@@ -14,9 +15,9 @@ module Amr
 
     def build_tariff_data
       N3rgyTariffs.new({
-        kwh_tariffs: tariffs,
-        standing_charges: standing_charges
-      }).parameterise
+                         kwh_tariffs: tariffs,
+                         standing_charges: standing_charges
+                       }).parameterise
     end
 
     def convert_to_meter_attributes(tariff_data)
@@ -28,9 +29,8 @@ module Amr
     end
 
     def tariffs
-      @meter.tariff_prices.by_date.pluck(:tariff_date, :prices).inject({}) do |result, price|
+      @meter.tariff_prices.by_date.pluck(:tariff_date, :prices).each_with_object({}) do |price, result|
         result[price[0]] = price[1]
-        result
       end
     end
   end

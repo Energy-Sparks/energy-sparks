@@ -5,11 +5,9 @@ module Schools
 
     skip_before_action :authenticate_user!, only: [:live_data]
 
-    def index
-    end
+    def index; end
 
-    def new
-    end
+    def new; end
 
     def create
       if @cad.save
@@ -19,8 +17,7 @@ module Schools
       end
     end
 
-    def edit
-    end
+    def edit; end
 
     def update
       if @cad.update(cad_params)
@@ -41,12 +38,12 @@ module Schools
       @power = Cads::RealtimePowerConsumptionService.read_consumption(@cad)
       respond_to do |format|
         format.json { render json: { type: :electricity, units: :watts, value: @reading, power: @power } }
-        format.html { }
+        format.html {}
       end
-    rescue => @error
+    rescue StandardError => e
       respond_to do |format|
         format.json { render json: @error.message, status: :internal_server_error }
-        format.html { }
+        format.html {}
       end
     end
 

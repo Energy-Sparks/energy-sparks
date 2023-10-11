@@ -2,7 +2,7 @@ Geocoder.configure(
   # Geocoding options
   # timeout: 3,                 # geocoding service timeout (secs)
   # lookup: :nominatim,           # name of geocoding service (symbol)
-  lookup: :postcodes_io,
+  lookup: :postcodes_io
   # ip_lookup: :ipinfo_io,      # name of IP address geocoding service (symbol)
   # language: :en,              # ISO-639 language code
   # use_https: false,           # use HTTPS for lookup requests? (if supported)
@@ -31,12 +31,12 @@ if Rails.env.test?
   Geocoder::Lookup::Test.set_default_stub(
     [
       {
-        'latitude'     => 51.340620,
-        'longitude'    => -2.301420,
-        'address'      => 'Freshford Station',
-        'state'        => 'Somerset',
-        'state_code'   => '',
-        'country'      => 'England',
+        'latitude' => 51.340620,
+        'longitude' => -2.301420,
+        'address' => 'Freshford Station',
+        'state' => 'Somerset',
+        'state_code' => '',
+        'country' => 'England',
         'country_code' => 'UK'
       }
     ]

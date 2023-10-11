@@ -11,7 +11,8 @@ describe HelpPageHelper do
     end
 
     context 'when help page exists' do
-      let!(:help_page) { create(:help_page, feature: :school_targets, title: "My School Targets", published: true) }
+      let!(:help_page) { create(:help_page, feature: :school_targets, title: 'My School Targets', published: true) }
+
       it 'formats title' do
         expect(helper.link_to_help_for_feature(:school_targets, title: 'Info for school targets')).to have_content('Info for school targets')
       end

@@ -1,7 +1,7 @@
 module Schools
   module Advice
     class ElectricityOutOfHoursController < BaseOutOfHoursController
-      before_action :load_dashboard_alerts, only: [:insights, :analysis]
+      before_action :load_dashboard_alerts, only: %i[insights analysis]
 
       private
 

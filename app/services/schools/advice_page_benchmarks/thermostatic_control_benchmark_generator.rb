@@ -3,6 +3,7 @@ module Schools
     class ThermostaticControlBenchmarkGenerator < SchoolBenchmarkGenerator
       def benchmark_school
         return unless thermostatic_analysis_service.enough_data?
+
         thermostatic_analysis_service.benchmark_thermostatic_control.category
       end
 

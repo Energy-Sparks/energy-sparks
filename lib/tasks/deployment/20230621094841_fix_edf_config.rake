@@ -3,7 +3,7 @@ namespace :after_party do
   task fix_edf_config: :environment do
     puts "Running deploy task 'fix_edf_config'"
 
-    config = AmrDataFeedConfig.find_by_identifier("edf-historic")
+    config = AmrDataFeedConfig.find_by(identifier: 'edf-historic')
     if config.present?
       config.update!(
         mpan_mprn_field: 'MPAN',

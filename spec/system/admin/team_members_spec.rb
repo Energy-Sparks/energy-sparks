@@ -1,10 +1,9 @@
 require 'rails_helper'
 
 describe 'Team members', type: :system do
-  let!(:admin)  { create(:admin) }
+  let!(:admin) { create(:admin) }
 
   describe 'managing' do
-
     before do
       sign_in(admin)
       visit root_path
@@ -27,7 +26,7 @@ describe 'Team members', type: :system do
       # for some reason, this is filling the profile field
       # fill_in_trix with: profile
 
-      attach_file("Image", Rails.root + "spec/fixtures/images/banes.png")
+      attach_file('Image', Rails.root + 'spec/fixtures/images/banes.png')
       click_on 'Create Team member'
       expect(page).to have_content 'Team member was successfully created'
       expect(page).to have_content title
@@ -43,4 +42,3 @@ describe 'Team members', type: :system do
     end
   end
 end
-

@@ -3,12 +3,12 @@ class LocaleMailer < ApplicationMailer
 
   def self.with_user_locales(users:, **args)
     users_by_locale(users).each do |locale, locale_users|
-      yield self.with(**args, locale: locale, users: locale_users)
+      yield with(**args, locale: locale, users: locale_users)
     end
   end
 
   def self.with_contact_locale(contact:, **args)
-    yield self.with(**args, school: contact.school, email_address: contact.email_address, locale: contact.preferred_locale)
+    yield with(**args, school: contact.school, email_address: contact.email_address, locale: contact.preferred_locale)
   end
 
   def self.users_by_locale(users)

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe InterventionTypeSearchService do
-
   context 'search by query term' do
     before { I18n.locale = 'en' }
 
@@ -61,8 +60,8 @@ describe InterventionTypeSearchService do
       intervention_type_1 = create(:intervention_type, name: 'a thing')
       intervention_type_2 = create(:intervention_type, name: 'some things')
 
-      expect(InterventionTypeSearchService.search('thing', 'en')).to include(*[intervention_type_1, intervention_type_2])
-      expect(InterventionTypeSearchService.search('things', 'en')).to include(*[intervention_type_1, intervention_type_2])
+      expect(InterventionTypeSearchService.search('thing', 'en')).to include(intervention_type_1, intervention_type_2)
+      expect(InterventionTypeSearchService.search('things', 'en')).to include(intervention_type_1, intervention_type_2)
     end
 
     it 'does not match parts of words' do

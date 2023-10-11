@@ -3,8 +3,7 @@ module Schools
     load_and_authorize_resource :school
     load_and_authorize_resource through: :school
 
-    def new
-    end
+    def new; end
 
     def create
       @low_carbon_hub_installation = Solar::LowCarbonHubInstallationFactory.new(
@@ -12,7 +11,7 @@ module Schools
         rbee_meter_id: low_carbon_hub_installation_params[:rbee_meter_id],
         username: low_carbon_hub_installation_params[:username],
         password: low_carbon_hub_installation_params[:password],
-        amr_data_feed_config: AmrDataFeedConfig.find(low_carbon_hub_installation_params[:amr_data_feed_config_id]),
+        amr_data_feed_config: AmrDataFeedConfig.find(low_carbon_hub_installation_params[:amr_data_feed_config_id])
       ).perform
 
       if @low_carbon_hub_installation.persisted?
@@ -22,14 +21,13 @@ module Schools
       end
     rescue EnergySparksUnexpectedStateException
       redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'Rtone API is not available at the moment'
-    rescue => e
+    rescue StandardError => e
       Rollbar.error(e)
       flash[:error] = e.message
       render :new
     end
 
-    def edit
-    end
+    def edit; end
 
     def update
       if @low_carbon_hub_installation.update(low_carbon_hub_installation_params)
@@ -48,7 +46,7 @@ module Schools
       redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'Low carbon hub deleted'
     end
 
-  private
+    private
 
     def low_carbon_hub_installation_params
       params.require(:low_carbon_hub_installation).permit(

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Amr::AnalyticsSchoolFactory do
-
   let(:school) { create(:school, data_enabled: true) }
   let(:factory) { Amr::AnalyticsSchoolFactory.new(school) }
 
@@ -15,7 +14,7 @@ describe Amr::AnalyticsSchoolFactory do
     expect(data[:area_name]).to eql(school.area_name)
     expect(data[:urn]).to eql(school.urn)
     expect(data[:postcode]).to eql(school.postcode)
-    expect(data[:country]).to eql(:england)
+    expect(data[:country]).to be(:england)
     expect(data[:activation_date]).to eql(school.activation_date)
     expect(data[:created_at]).to eql(school.created_at)
     expect(data[:location]).to eql([school.latitude, school.longitude])
@@ -25,9 +24,9 @@ describe Amr::AnalyticsSchoolFactory do
   it 'returns expected funding status' do
     school.funding_status = :private_school
     data = factory.build
-    expect(data[:funding_status]).to eql(:private)
+    expect(data[:funding_status]).to be(:private)
     school.funding_status = :state_school
     data = factory.build
-    expect(data[:funding_status]).to eql(:state)
+    expect(data[:funding_status]).to be(:state)
   end
 end

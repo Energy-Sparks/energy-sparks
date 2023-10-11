@@ -6,14 +6,11 @@ module Admin
       @partners = Partner.order(:position)
     end
 
-    def show
-    end
+    def show; end
 
-    def new
-    end
+    def new; end
 
-    def edit
-    end
+    def edit; end
 
     def create
       if @partner.save

@@ -1,18 +1,17 @@
 require 'rails_helper'
 
-describe "Jobs", type: :system do
+describe 'Jobs', type: :system do
+  let!(:job)         { create(:job, closing_date: Date.today, title: 'Closes today') }
+  let!(:old_job)     { create(:job, closing_date: '2010-01-01', title: 'Old job') }
+  let!(:voluntary)   { create(:job, voluntary: true, title: 'Voluntary') }
+  let!(:open_role)   { create(:job, closing_date: nil, title: 'Open role') }
 
-  let!(:job)         { create(:job, closing_date: Date.today, title: "Closes today") }
-  let!(:old_job)     { create(:job, closing_date: "2010-01-01", title: "Old job")}
-  let!(:voluntary)   { create(:job, voluntary: true, title: "Voluntary") }
-  let!(:open_role)   { create(:job, closing_date: nil, title: "Open role") }
-
-  before(:each) do
+  before do
     visit jobs_path
   end
 
   it 'shows me the jobs page' do
-    expect(page).to have_content("Jobs")
+    expect(page).to have_content('Jobs')
   end
 
   it 'shows me current jobs' do
@@ -25,15 +24,15 @@ describe "Jobs", type: :system do
   end
 
   it 'hides older jobs' do
-    expect(page).to_not have_content(old_job.title)
+    expect(page).not_to have_content(old_job.title)
   end
 
   it 'shows expected download links' do
-    expect(page.has_link? "More information", href: "/jobs/#{job.id}/inline").to be true
+    expect(page.has_link?('More information', href: "/jobs/#{job.id}/inline")).to be true
   end
 
   it 'serves the file' do
     find("a[href='/jobs/#{job.id}/inline']").click
-    expect(page.status_code).to eql 200
+    expect(page.status_code).to be 200
   end
 end

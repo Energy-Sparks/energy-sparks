@@ -1,7 +1,7 @@
 module ActivityTypeFilterable
   extend ActiveSupport::Concern
 
-private
+  private
 
   def activity_type_filter_query
     permitted = params.permit(
@@ -12,7 +12,7 @@ private
       impact: { impact_ids: [] }
     )
     hash_of_id_parameters = permitted.values.inject({}, &:update)
-    without_blanks = hash_of_id_parameters.map {|key, values| [key, values.reject(&:blank?)]}
+    without_blanks = hash_of_id_parameters.map { |key, values| [key, values.reject(&:blank?)] }
     HashWithIndifferentAccess[without_blanks]
   end
 

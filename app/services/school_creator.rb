@@ -34,7 +34,8 @@ class SchoolCreator
   end
 
   def make_visible!
-    raise Error.new("School cannot be made visible as we dont have a record of consent") unless @school.consent_grants.any?
+    raise Error, 'School cannot be made visible as we dont have a record of consent' unless @school.consent_grants.any?
+
     @school.update!(visible: true)
     if onboarding_service.should_complete_onboarding?(@school)
       users = @school.users.reject(&:pupil?)
@@ -44,7 +45,8 @@ class SchoolCreator
   end
 
   def make_data_enabled!
-    raise Error.new('School must be visible before enabling data') unless @school.visible
+    raise Error, 'School must be visible before enabling data' unless @school.visible
+
     @school.update!(data_enabled: true)
     onboarding_service.record_event(@school.school_onboarding, :onboarding_data_enabled)
     broadcast(:school_made_data_enabled, @school)
@@ -60,7 +62,7 @@ class SchoolCreator
     generate_calendar
   end
 
-private
+  private
 
   def add_school(user, school)
     return if user.group_admin?
@@ -70,20 +72,21 @@ private
   end
 
   def copy_onboarding_details_to_school(onboarding)
-      @school.update!(
-        school_group: onboarding.school_group,
-        template_calendar: onboarding.template_calendar,
-        dark_sky_area: onboarding.dark_sky_area,
-        scoreboard: onboarding.scoreboard,
-        weather_station: onboarding.weather_station,
-        public: onboarding.school_will_be_public,
-        chart_preference: onboarding.default_chart_preference
-      )
-      Solar::SolarAreaLookupService.new(@school, onboarding).assign
+    @school.update!(
+      school_group: onboarding.school_group,
+      template_calendar: onboarding.template_calendar,
+      dark_sky_area: onboarding.dark_sky_area,
+      scoreboard: onboarding.scoreboard,
+      weather_station: onboarding.weather_station,
+      public: onboarding.school_will_be_public,
+      chart_preference: onboarding.default_chart_preference
+    )
+    Solar::SolarAreaLookupService.new(@school, onboarding).assign
   end
 
   def create_default_contact(onboarding)
     return if onboarding.created_user.group_admin?
+
     onboarding_service.record_event(onboarding, :alert_contact_created) do
       @school.contacts.create!(
         user: onboarding.created_user,
@@ -105,6 +108,7 @@ private
 
   def generate_configuration
     return if @school.configuration
+
     Schools::Configuration.create!(school: @school)
   end
 

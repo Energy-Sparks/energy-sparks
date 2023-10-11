@@ -4,7 +4,7 @@ class ActivitiesController < ApplicationController
   load_resource :school
   load_and_authorize_resource through: :school
 
-  skip_before_action :authenticate_user!, only: [:index, :show]
+  skip_before_action :authenticate_user!, only: %i[index show]
 
   def index
     @activities = @activities.order(happened_on: :desc)
@@ -34,13 +34,12 @@ class ActivitiesController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     respond_to do |format|
       if ActivityCreator.new(@activity).process
-        format.html { redirect_to completed_school_activity_path(@school, @activity)}
+        format.html { redirect_to completed_school_activity_path(@school, @activity) }
         format.json { render :show, status: :created, location: @school }
       else
         format.html { render :new }
@@ -62,7 +61,7 @@ class ActivitiesController < ApplicationController
   end
 
   def destroy
-    @activity.observations.each {|observation| ObservationRemoval.new(observation).process}
+    @activity.observations.each { |observation| ObservationRemoval.new(observation).process }
     @activity.destroy
     respond_to do |format|
       format.html { redirect_back fallback_location: school_activities_path(@school), notice: 'Activity was successfully destroyed.' }
@@ -70,7 +69,7 @@ class ActivitiesController < ApplicationController
     end
   end
 
-private
+  private
 
   def activity_params
     params.require(:activity).permit(:school_id, :activity_type_id, :title, :description, :happened_on, :content, :pupil_count)

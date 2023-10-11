@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :calendar do
-    title { "Test Calendar" }
+    title { 'Test Calendar' }
     calendar_type { :school }
 
     factory :template_calendar do
@@ -36,7 +36,7 @@ FactoryBot.define do
       end
 
       after(:create) do |calendar, evaluator|
-        evaluator.academic_year_count.times do |i|
+        evaluator.academic_year_count.times do |_i|
           create(:academic_year, calendar: calendar)
         end
       end
@@ -48,7 +48,6 @@ FactoryBot.define do
       end
 
       after(:create) do |calendar, evaluator|
-
         evaluator.term_count.times do |i|
           create(:term, calendar: calendar, start_date: i.weeks.from_now, end_date: (i.weeks.from_now + 6.days))
         end

@@ -22,7 +22,7 @@ module Targets
       @usage.present? && @target.present?
     end
 
-    #TODO improve so we have ways to check for achieving and exceeding
+    # TODO: improve so we have ways to check for achieving and exceeding
     def achieving_target?
       @target.present? && @progress.present? && @progress <= 0
     end

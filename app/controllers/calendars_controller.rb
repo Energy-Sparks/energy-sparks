@@ -9,9 +9,7 @@ class CalendarsController < ApplicationController
   def show
     @academic_year = academic_year
     @current_events = list_current_events(@academic_year)
-    if @calendar.schools.count == 1
-      @school = @calendar.schools.first
-    end
+    @school = @calendar.schools.first if @calendar.schools.count == 1
   end
 
   def current_events
@@ -50,6 +48,7 @@ class CalendarsController < ApplicationController
 
   def list_current_events(academic_year)
     return [] unless academic_year
+
     next_academic_year = academic_year.next_year
     academic_year_filter = next_academic_year.present? ? [academic_year, next_academic_year] : academic_year
     @calendar.calendar_events.where(academic_year: academic_year_filter).order(:start_date)

@@ -4,7 +4,7 @@ class CreateAreas < ActiveRecord::Migration[5.2]
       t.text      :type, null: false
       t.text      :title
       t.text      :description
-      t.integer   :parent_area_id,   index: true
+      t.integer   :parent_area_id, index: true
       # t.boolean   :calendar,          default: true
       # t.boolean   :temperature,       default: false
       # t.boolean   :solar_irradiance,  default: false

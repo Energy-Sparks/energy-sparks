@@ -2,11 +2,9 @@ module Admin
   class SolarPvTuosAreasController < AdminController
     load_and_authorize_resource
 
-    def index
-    end
+    def index; end
 
-    def new
-    end
+    def new; end
 
     def create
       if @solar_pv_tuos_area.save
@@ -16,8 +14,7 @@ module Admin
       end
     end
 
-    def edit
-    end
+    def edit; end
 
     def update
       if @solar_pv_tuos_area.update(solar_pv_tuos_area_params)

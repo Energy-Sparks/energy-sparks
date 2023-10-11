@@ -5,7 +5,7 @@ describe 'Unsubscribing from email alerts' do
   let(:alert)                { create(:alert, :with_run, school: school) }
   let!(:email_contact)       { create(:contact_with_name_email, school: school) }
   let!(:alert_type_rating)   { create :alert_type_rating, alert_type: alert.alert_type, email_active: true }
-  let!(:content_version)     { create :alert_type_rating_content_version, alert_type_rating: alert_type_rating, email_title: 'You need to do something!', email_content: 'You really do'}
+  let!(:content_version)     { create :alert_type_rating_content_version, alert_type_rating: alert_type_rating, email_title: 'You need to do something!', email_content: 'You really do' }
 
   before do
     Alerts::GenerateSubscriptions.new(school).perform(subscription_frequency: AlertType.frequencies.keys)
@@ -24,5 +24,4 @@ describe 'Unsubscribing from email alerts' do
     expect(unsubscription.alert_type_rating).to eq(alert_type_rating)
     expect(unsubscription.effective_until).to eq(6.months.from_now.to_date)
   end
-
 end

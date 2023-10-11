@@ -2,12 +2,12 @@ require 'rails_helper'
 
 RSpec.describe 'consent_grants', type: :system do
   let(:user) { create(:user) }
-  let(:school) { create(:school, name: "Test Primary School") }
+  let(:school) { create(:school, name: 'Test Primary School') }
   let(:name) { 'Mr Consent' }
   let(:job_title) { 'Chief Granter' }
   let(:ip_address) { '123.456.789.000' }
 
-  let(:consent_statement) { ConsentStatement.create!( title: 'First consent statement', content: 'You may use my data..') }
+  let(:consent_statement) { ConsentStatement.create!(title: 'First consent statement', content: 'You may use my data..') }
 
   context 'as admin' do
     let(:admin) { create(:admin) }
@@ -17,7 +17,7 @@ RSpec.describe 'consent_grants', type: :system do
     end
 
     context 'when consent grants exist' do
-      let!(:grant)       {
+      let!(:grant) do
         ConsentGrant.create!(
           user: user,
           school: school,
@@ -26,18 +26,18 @@ RSpec.describe 'consent_grants', type: :system do
           job_title: job_title,
           ip_address: ip_address
         )
-      }
+      end
 
-      let!(:meter)     { create(:gas_meter, school: school) }
+      let!(:meter) { create(:gas_meter, school: school) }
 
-      before(:each) do
+      before do
         visit root_path
         click_on 'Reports'
         click_on 'Consents Granted'
       end
 
       shared_examples 'a search page with a result' do
-        it "shows consent granted" do
+        it 'shows consent granted' do
           expect(page).to have_content('Consents Granted')
           expect(page).to have_content(school.name)
           expect(page).to have_content(name)
@@ -48,55 +48,60 @@ RSpec.describe 'consent_grants', type: :system do
       end
 
       shared_examples 'a search page with no results' do
-        context "when term is not found" do
-          let(:term) { "none" }
-          it { expect(page).to have_content "No results were found" }
+        context 'when term is not found' do
+          let(:term) { 'none' }
+
+          it { expect(page).to have_content 'No results were found' }
         end
       end
 
-      it_behaves_like "a search page with a result"
+      it_behaves_like 'a search page with a result'
 
-      describe "searching" do
+      describe 'searching' do
         before do
           fill_in field, with: term
-          click_on "Search"
+          click_on 'Search'
         end
 
-        context "by school name" do
-          let(:field) { "School" }
-          it_behaves_like "a search page with no results"
-          it_behaves_like "a search page with a result" do
-            let(:term) { "Primary" }
+        context 'by school name' do
+          let(:field) { 'School' }
+
+          it_behaves_like 'a search page with no results'
+          it_behaves_like 'a search page with a result' do
+            let(:term) { 'Primary' }
           end
-          it_behaves_like "a search page with a result" do
-            let(:term) { "primary" }
+          it_behaves_like 'a search page with a result' do
+            let(:term) { 'primary' }
           end
-          it_behaves_like "a search page with a result" do
+          it_behaves_like 'a search page with a result' do
             let(:term) { school.name }
           end
         end
 
-        context "by reference" do
-          let(:field) { "Reference" }
-          it_behaves_like "a search page with no results"
-          it_behaves_like "a search page with a result" do
+        context 'by reference' do
+          let(:field) { 'Reference' }
+
+          it_behaves_like 'a search page with no results'
+          it_behaves_like 'a search page with a result' do
             let(:term) { grant.guid }
           end
         end
 
-        context "by mpxn" do
+        context 'by mpxn' do
           let(:field) { 'Mpxn' }
-          it_behaves_like "a search page with no results"
-          it_behaves_like "a search page with a result" do
+
+          it_behaves_like 'a search page with no results'
+          it_behaves_like 'a search page with a result' do
             let(:term) { meter.mpan_mprn }
           end
         end
       end
 
-      describe "viewing" do
+      describe 'viewing' do
         before do
           click_on 'View'
         end
+
         it 'shows consent details and contents' do
           expect(page).to have_content(school.name)
           expect(page).to have_content(name)

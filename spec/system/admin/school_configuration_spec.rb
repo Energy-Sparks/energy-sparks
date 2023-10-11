@@ -1,44 +1,44 @@
 require 'rails_helper'
 
-RSpec.describe "manage school configuration", type: :system do
-  let!(:admin)              { create(:admin)}
+RSpec.describe 'manage school configuration', type: :system do
+  let!(:admin)              { create(:admin) }
 
   let!(:ks1)                { KeyStage.create(name: 'KS1') }
   let!(:ks2)                { KeyStage.create(name: 'KS2') }
   let!(:ks3)                { KeyStage.create(name: 'KS3') }
 
   let(:school_name)         { 'Oldfield Park Infants' }
-  let!(:school)             { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142)}
+  let!(:school)             { create(:school, name: school_name, latitude: 51.34062, longitude: -2.30142) }
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit root_path
-    expect(page.has_content? 'Sign Out').to be true
+    expect(page.has_content?('Sign Out')).to be true
     click_on('View schools')
-    expect(page.has_content? "Energy Sparks schools across the UK").to be true
+    expect(page.has_content?('Energy Sparks schools across the UK')).to be true
   end
 
   it 'I can set up a school for KS1' do
     click_on(school_name)
     click_on('Edit school details')
-    expect(school.key_stages).to_not include(ks1)
-    expect(school.key_stages).to_not include(ks2)
-    expect(school.key_stages).to_not include(ks3)
+    expect(school.key_stages).not_to include(ks1)
+    expect(school.key_stages).not_to include(ks2)
+    expect(school.key_stages).not_to include(ks3)
 
     check('KS1')
     click_on('Update School')
     school.reload
     expect(school.key_stages).to include(ks1)
-    expect(school.key_stages).to_not include(ks2)
-    expect(school.key_stages).to_not include(ks3)
+    expect(school.key_stages).not_to include(ks2)
+    expect(school.key_stages).not_to include(ks3)
   end
 
   it 'I can set up a school for KS1 and KS2' do
     click_on(school_name)
     click_on('Edit school details')
-    expect(school.key_stages).to_not include(ks1)
-    expect(school.key_stages).to_not include(ks2)
-    expect(school.key_stages).to_not include(ks3)
+    expect(school.key_stages).not_to include(ks1)
+    expect(school.key_stages).not_to include(ks2)
+    expect(school.key_stages).not_to include(ks3)
 
     check('KS1')
     check('KS2')
@@ -46,7 +46,7 @@ RSpec.describe "manage school configuration", type: :system do
     school.reload
     expect(school.key_stages).to include(ks1)
     expect(school.key_stages).to include(ks2)
-    expect(school.key_stages).to_not include(ks3)
+    expect(school.key_stages).not_to include(ks3)
   end
 
   it 'can set climate impact reporting preference' do
@@ -57,7 +57,7 @@ RSpec.describe "manage school configuration", type: :system do
     click_on('Update School')
     school.reload
 
-    expect(school.chart_preference).to eq "carbon"
+    expect(school.chart_preference).to eq 'carbon'
   end
 
   it 'can see when the school was created on Energy Sparks' do
@@ -89,10 +89,10 @@ RSpec.describe "manage school configuration", type: :system do
     expect(page).to have_field('Activation date')
     activation_date = Date.parse('01/01/2020')
 
-    fill_in 'Activation date', with: activation_date.strftime("%d/%m/%Y")
+    fill_in 'Activation date', with: activation_date.strftime('%d/%m/%Y')
     click_on('Update School')
 
-    expect(school.observations.first.description.to_s).to include("became an active user of Energy Sparks!")
+    expect(school.observations.first.description.to_s).to include('became an active user of Energy Sparks!')
 
     school.reload
     expect(school.activation_date).to eq activation_date
@@ -115,8 +115,8 @@ RSpec.describe "manage school configuration", type: :system do
     expect(school.enable_targets_feature?).to be false
   end
 
-  context "can update storage heaters" do
-    it "and changes are saved" do
+  context 'can update storage heaters' do
+    it 'and changes are saved' do
       click_on(school_name)
       click_on('Edit school details')
       check 'Our school has night storage heaters'
@@ -136,7 +136,6 @@ RSpec.describe "manage school configuration", type: :system do
     click_on('Update School')
 
     school.reload
-    expect(school.chart_preference).to eq "cost"
+    expect(school.chart_preference).to eq 'cost'
   end
-
 end

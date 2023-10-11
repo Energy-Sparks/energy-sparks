@@ -6,14 +6,11 @@ module Admin
       @resource_files = ResourceFile.order(:title)
     end
 
-    def show
-    end
+    def show; end
 
-    def new
-    end
+    def new; end
 
-    def edit
-    end
+    def edit; end
 
     def create
       if @resource_file.save

@@ -1,6 +1,6 @@
 namespace :data_feeds do
   desc 'Load solar pv data'
-  task :solar_pv_tuos_loader, [:start_date, :end_date] => :environment do |_t, args|
+  task :solar_pv_tuos_loader, %i[start_date end_date] => :environment do |_t, args|
     puts "#{DateTime.now.utc} solar_pv_tuos_loader start"
 
     start_date = args[:start_date].present? ? Date.parse(args[:start_date]) : Date.yesterday - 11

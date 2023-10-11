@@ -2,11 +2,9 @@ module Admin
   class WeatherStationsController < AdminController
     load_and_authorize_resource
 
-    def index
-    end
+    def index; end
 
-    def new
-    end
+    def new; end
 
     def create
       if @weather_station.save
@@ -16,8 +14,7 @@ module Admin
       end
     end
 
-    def edit
-    end
+    def edit; end
 
     def update
       if @weather_station.update(weather_station_params)

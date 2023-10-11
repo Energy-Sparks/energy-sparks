@@ -1,8 +1,8 @@
 namespace :amr do
-  desc "Import data from N3RGY/DCC"
-  task :import_n3rgy_readings, [:start_date, :end_date] => :environment do |_t, args|
-    #Only expecting there to be one system-wide config
-    #its just there to refer to import logs/messages
+  desc 'Import data from N3RGY/DCC'
+  task :import_n3rgy_readings, %i[start_date end_date] => :environment do |_t, args|
+    # Only expecting there to be one system-wide config
+    # its just there to refer to import logs/messages
     config = AmrDataFeedConfig.n3rgy_api.first
 
     start_date = Date.parse(args[:start_date]) if args[:start_date].present?

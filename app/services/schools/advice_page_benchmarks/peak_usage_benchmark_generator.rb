@@ -3,6 +3,7 @@ module Schools
     class PeakUsageBenchmarkGenerator < SchoolBenchmarkGenerator
       def benchmark_school
         return unless usage_service.enough_data?
+
         usage_service.benchmark_peak_usage.category
       end
 

@@ -7,6 +7,7 @@ module Programmes
 
     def create
       return if already_enrolled?
+
       programme = @school.programmes.create(
         programme_type: @programme_type,
         started_on: Time.zone.today

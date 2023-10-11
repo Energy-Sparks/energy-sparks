@@ -4,13 +4,12 @@ require 'dashboard'
 
 class Schools::SimulationsController < ApplicationController
   load_and_authorize_resource :school
-  load_and_authorize_resource :simulation, through: :school, except: [:new_exemplar, :new_fitted]
+  load_and_authorize_resource :simulation, through: :school, except: %i[new_exemplar new_fitted]
 
   include SchoolAggregation
   include NewSimulatorChartConfig
 
   before_action :check_aggregated_school_in_cache
-
 
   def index
     @simulations = @simulations.order(:created_at)
@@ -26,7 +25,7 @@ class Schools::SimulationsController < ApplicationController
   end
 
   def new
-    #TODO sort this out including method renames ;)
+    # TODO: sort this out including method renames ;)
     @local_school = aggregate_school
     @actual_simulator = ElectricitySimulator.new(@local_school)
     default_appliance_configuration = @actual_simulator.default_simulator_parameters
@@ -36,7 +35,7 @@ class Schools::SimulationsController < ApplicationController
   end
 
   def new_fitted
-    #TODO sort this out including method renames ;)
+    # TODO: sort this out including method renames ;)
     @simulation = @school.simulations.new
     authorize! :create, @simulation
     @local_school = aggregate_school
@@ -47,7 +46,7 @@ class Schools::SimulationsController < ApplicationController
   end
 
   def new_exemplar
-    #TODO sort this out including method renames ;)
+    # TODO: sort this out including method renames ;)
     @simulation = @school.simulations.new
     authorize! :create, @simulation
     @local_school = aggregate_school
@@ -71,8 +70,8 @@ class Schools::SimulationsController < ApplicationController
       notes = simulation_params[:notes]
     else
       default = true
-      title = "Default appliance configuration"
-      notes = "This simulation has been run with the default appliance configurations, you can create a new simulation with your own configurations."
+      title = 'Default appliance configuration'
+      notes = 'This simulation has been run with the default appliance configurations, you can create a new simulation with your own configurations.'
     end
     @simulation = Simulation.create(user: current_user, school: @school, configuration: simulation_configuration, default: default, title: title, notes: notes)
 
@@ -99,14 +98,14 @@ class Schools::SimulationsController < ApplicationController
   end
 
   def edit
-    #TODO sort this out including method renames ;)
+    # TODO: sort this out including method renames ;)
     @local_school = aggregate_school
     @actual_simulator = ElectricitySimulator.new(@local_school)
     @simulation_configuration = @simulation.configuration
     sort_out_simulation_stuff
   end
 
-private
+  private
 
   def common_show(charts_group)
     @charts = DashboardConfiguration::DASHBOARD_PAGE_GROUPS[charts_group][:charts]
@@ -148,11 +147,12 @@ private
     results
   end
 
-  # TODO works but is messy
+  # TODO: works but is messy
   def merge_into_existing_configuration(simulation_params, simulation_configuration)
     updated_simulation_configuration = simulation_params.to_h.deep_symbolize_keys
     updated_simulation_configuration.each do |appliance, configuration_hash|
       break unless configuration_hash.is_a? Hash
+
       current_applicance = simulation_configuration[appliance]
       configuration_hash.each do |config, value|
         if current_applicance.key?(config) && config != :title
@@ -176,7 +176,7 @@ private
 
     @actual_simulator.simulate(@simulation_configuration)
 
-    @charts = [:intraday_line_school_days_6months, :intraday_line_school_days_6months]
+    @charts = %i[intraday_line_school_days_6months intraday_line_school_days_6months]
     chart_type = :intraday_line_school_days_6months
 
     @number_of_charts = @charts.size
@@ -192,7 +192,7 @@ private
 
         @output = [
           { chart_type: chart_type, data: sort_out_chart_data(chart_manager, chart_type, chart_config_for_school, chart_config_for_simulator) },
-          { chart_type: chart_type, data: sort_out_chart_data(chart_manager, chart_type, winter_config_for_school, winter_config_for_simulator) },
+          { chart_type: chart_type, data: sort_out_chart_data(chart_manager, chart_type, winter_config_for_school, winter_config_for_simulator) }
         ]
         render 'schools/simulations/chart_data'
       end
@@ -214,26 +214,31 @@ private
   end
 
   def is_float?(string)
-    true if Float(string) rescue false
+    true if Float(string)
+  rescue StandardError
+    false
   end
 
   def is_integer?(string)
-    true if Integer(string) rescue false
+    true if Integer(string)
+  rescue StandardError
+    false
   end
 
   def convert_to_correct_format(key, value)
     return value if key == :title
     return TimeOfDay.new(Time.parse(value).getlocal.hour, Time.parse(value).getlocal.min) if key.to_s.include?('time')
-    return value.to_sym if [:type, :control_type].include? key
+    return value.to_sym if %i[type control_type].include? key
     return true if value == 'true'
     return false if value == 'false'
     return value.to_i if is_integer?(value)
+
     is_float?(value) ? value.to_f : value
   end
 
   def simulation_params
     config = ElectricitySimulatorConfiguration.new
-    editable = config.keys.map { |key| { key => config.dig(key, :editable) }}
+    editable = config.keys.map { |key| { key => config.dig(key, :editable) } }
 
     editable.push(:title)
     editable.push(:notes)

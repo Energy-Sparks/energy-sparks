@@ -1,6 +1,7 @@
 module Programmes
   class Progress
     attr_reader :programme
+
     def initialize(programme)
       @programme = programme
     end
@@ -14,12 +15,11 @@ module Programmes
 
     def notification_text
       I18n.t('schools.programme.progress.notification',
-        programme_type_title: programme_type_title,
-        programme_activities_count: programme_activities_count,
-        activity_types_count: activity_types_count,
-        activity_types_uncompleted_count: activity_types_uncompleted_count,
-        total_points: total_points
-      )
+             programme_type_title: programme_type_title,
+             programme_activities_count: programme_activities_count,
+             activity_types_count: activity_types_count,
+             activity_types_uncompleted_count: activity_types_uncompleted_count,
+             total_points: total_points)
     end
 
     def total_points
@@ -34,17 +34,13 @@ module Programmes
       programme.programme_type.title
     end
 
-    def programme_activities
-      programme.activities
-    end
+    delegate :activities, to: :programme, prefix: true
 
     def activity_types
       programme.programme_type.activity_types
     end
 
-    def activity_types_completed
-      programme.activity_types_completed
-    end
+    delegate :activity_types_completed, to: :programme
 
     def activity_types_uncompleted_count
       activity_types_count - activity_types_completed_count

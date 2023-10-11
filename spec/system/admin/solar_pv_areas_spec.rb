@@ -9,7 +9,7 @@ RSpec.describe 'Solar pv areas', type: :system do
   let(:gsp_name)                { 'MELK_1' }
 
   describe 'when logged in' do
-    before(:each) do
+    before do
       sign_in(admin)
       visit root_path
       click_on 'Manage'
@@ -18,7 +18,7 @@ RSpec.describe 'Solar pv areas', type: :system do
     end
 
     it 'can create a new area' do
-      expect(page).to have_content("There are no Solar PV Areas")
+      expect(page).to have_content('There are no Solar PV Areas')
 
       click_on 'New Solar PV Area'
 
@@ -28,9 +28,9 @@ RSpec.describe 'Solar pv areas', type: :system do
       fill_in 'Gsp id', with: gsp_id
       fill_in 'Gsp name', with: gsp_name
 
-      expect { click_on 'Create' }.to change { SolarPvTuosArea.count }.by(1)
+      expect { click_on 'Create' }.to change(SolarPvTuosArea, :count).by(1)
 
-      expect(page).to have_content("New Solar PV Area created")
+      expect(page).to have_content('New Solar PV Area created')
       expect(page).to have_content('Solar PV Areas')
       expect(page).to have_content title
       expect(page).to have_content latitude
@@ -45,14 +45,14 @@ RSpec.describe 'Solar pv areas', type: :system do
       fill_in 'Title', with: title
       fill_in 'Latitude', with: latitude
 
-      expect { click_on 'Create' }.to change { SolarPvTuosArea.count }.by(0)
+      expect { click_on 'Create' }.to change(SolarPvTuosArea, :count).by(0)
 
       expect(page).to have_content("can't be blank")
 
       fill_in 'Longitude', with: longitude
       fill_in 'Gsp name', with: gsp_name
       fill_in 'Gsp id', with: gsp_id
-      expect { click_on 'Create' }.to change { SolarPvTuosArea.count }.by(1)
+      expect { click_on 'Create' }.to change(SolarPvTuosArea, :count).by(1)
 
       expect(page).to have_content('Solar PV Areas')
       expect(page).to have_content title
@@ -63,10 +63,9 @@ RSpec.describe 'Solar pv areas', type: :system do
     end
 
     context 'with an existing area' do
-
       let!(:area) { SolarPvTuosArea.create!(title: title, latitude: latitude, longitude: longitude, gsp_name: 'ABC') }
 
-      before(:each) do
+      before do
         click_on 'Manage'
         click_on 'Admin'
         click_on 'Solar PV Areas'
@@ -91,7 +90,7 @@ RSpec.describe 'Solar pv areas', type: :system do
         fill_in 'Gsp name', with: gsp_name
         click_on 'Update'
 
-        expect(page).to have_content("Solar PV Area was updated")
+        expect(page).to have_content('Solar PV Area was updated')
 
         expect(page).to have_content('Solar PV Areas')
         expect(page).to have_content title
@@ -119,7 +118,7 @@ RSpec.describe 'Solar pv areas', type: :system do
         fill_in 'Gsp name', with: gsp_name
 
         click_on 'Update'
-        expect(page).to have_content("Solar PV Area was updated")
+        expect(page).to have_content('Solar PV Area was updated')
 
         expect(page).to have_content('Solar PV Areas')
         expect(page).to have_content title

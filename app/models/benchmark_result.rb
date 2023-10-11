@@ -26,14 +26,16 @@ class BenchmarkResult < ApplicationRecord
   belongs_to :benchmark_result_school_generation_run, counter_cache: :benchmark_result_count
   belongs_to :alert_type
 
-  #converts JSON which may contain, NAN, Float::Infinity,
+  # converts JSON which may contain, NAN, Float::Infinity,
   def self.convert_for_storage(json)
     return nil if json.nil?
+
     json.transform_values { |v| for_storage(v) }
   end
 
   def self.convert_for_processing(json)
     return nil if json.nil?
+
     json.transform_values { |v| for_processing(v) }
   end
 
@@ -43,23 +45,24 @@ class BenchmarkResult < ApplicationRecord
 
   private_class_method def self.for_storage(val)
     return val if val.nil? || !needs_conversion?(val)
+
     if val.infinite? == 1
-      ".inf"
+      '.inf'
     elsif val.infinite? == -1
-      "-.Inf"
+      '-.Inf'
     elsif val.nan?
-      ".NAN"
+      '.NAN'
     else
       val
     end
   end
 
   private_class_method def self.for_processing(val)
-    if val == ".inf"
+    if val == '.inf'
       Float::INFINITY
-    elsif val == "-.Inf"
+    elsif val == '-.Inf'
       -Float::INFINITY
-    elsif val == ".NAN"
+    elsif val == '.NAN'
       Float::NAN
     else
       val

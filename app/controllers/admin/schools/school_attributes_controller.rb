@@ -24,7 +24,7 @@ module Admin
           created_by: current_user
         )
         redirect_to admin_school_school_attributes_path(@school)
-      rescue => e
+      rescue StandardError => e
         redirect_back fallback_location: admin_school_school_attributes_path(@school), notice: e.message
       end
 
@@ -50,7 +50,7 @@ module Admin
         )
         meter_attribute.update!(replaced_by: new_attribute)
         redirect_to admin_school_school_attributes_path(@school)
-      rescue => e
+      rescue StandardError => e
         redirect_back fallback_location: admin_school_school_attributes_path(@school), notice: e.message
       end
 

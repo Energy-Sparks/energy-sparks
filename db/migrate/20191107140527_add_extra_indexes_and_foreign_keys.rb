@@ -3,7 +3,7 @@ class AddExtraIndexesAndForeignKeys < ActiveRecord::Migration[6.0]
     add_foreign_key :alerts, :schools, on_delete: :cascade
     add_foreign_key :alerts, :alert_types, on_delete: :cascade
     add_index :alerts, :run_on
-    add_index :alerts, [:alert_type_id, :created_at]
+    add_index :alerts, %i[alert_type_id created_at]
 
     reversible do |dir|
       dir.up do

@@ -4,8 +4,8 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.0]
       t.references :school, foreign_key: true
 
       ## Database authenticatable
-      t.string :email,              null: false, default: ""
-      t.string :encrypted_password, null: false, default: ""
+      t.string :email,              null: false, default: ''
+      t.string :encrypted_password, null: false, default: ''
 
       # role for authorization
       t.integer :role, null: false, default: 0

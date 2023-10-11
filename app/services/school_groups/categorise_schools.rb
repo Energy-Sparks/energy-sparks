@@ -5,10 +5,9 @@ module SchoolGroups
     end
 
     def categorise_schools
-      find_advice_page_school_benchmarks.reduce(init_hash) do |results, school_result|
+      find_advice_page_school_benchmarks.each_with_object(init_hash) do |school_result, results|
         r = SchoolResult.new(school_result)
         results[r.fuel_type][r.advice_page_key][r.benchmarked_as] << school_result
-        results
       end
     end
 

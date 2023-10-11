@@ -7,9 +7,7 @@ module Rack
     def call(env)
       status, headers, response = @app.call(env)
 
-      if no_crawling?
-        headers["X-Robots-Tag"] = "none"
-      end
+      headers['X-Robots-Tag'] = 'none' if no_crawling?
 
       [status, headers, response]
     end
@@ -17,7 +15,7 @@ module Rack
     private
 
     def no_crawling?
-      ! ENV.key?("ALLOW_CRAWLING")
+      !ENV.key?('ALLOW_CRAWLING')
     end
   end
 end

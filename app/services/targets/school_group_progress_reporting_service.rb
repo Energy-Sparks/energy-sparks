@@ -7,13 +7,11 @@ module Targets
     def report
       school_progress = []
       schools.each do |school|
-        begin
-          school_progress << school_target_progress(school)
-        rescue => e
-          Rails.logger.error "Unable to generate progress report for #{school.name}: #{e.message}"
-          Rails.logger.error e.backtrace.join("\n")
-          Rollbar.error(e, job: :school_progress_reporting, school_id: school.id, school: school.name)
-        end
+        school_progress << school_target_progress(school)
+      rescue StandardError => e
+        Rails.logger.error "Unable to generate progress report for #{school.name}: #{e.message}"
+        Rails.logger.error e.backtrace.join("\n")
+        Rollbar.error(e, job: :school_progress_reporting, school_id: school.id, school: school.name)
       end
       school_progress
     end

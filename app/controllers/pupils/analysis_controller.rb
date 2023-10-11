@@ -36,7 +36,10 @@ module Pupils
 
       charts = @school.configuration.get_charts(:pupil_analysis_charts, :pupil_analysis_page, *sub_pages)
       chart = charts.first
-      raise ActionController::RoutingError.new("Chart for :pupil_analysis_page #{sub_pages.join(' ')} not found") unless chart
+      unless chart
+        raise ActionController::RoutingError, "Chart for :pupil_analysis_page #{sub_pages.join(' ')} not found"
+      end
+
       chart
     end
   end

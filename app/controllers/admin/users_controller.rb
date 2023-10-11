@@ -8,7 +8,7 @@ module Admin
       @search_users = find_users
       @unattached_users = @users.where(school_id: nil, school_group_id: nil).order(:email)
       respond_to do |format|
-        format.html { }
+        format.html {}
         format.csv { send_data produce_user_csv, filename: 'users.csv' }
       end
     end
@@ -50,13 +50,13 @@ module Admin
       redirect_to admin_users_path, notice: "User '#{user.email}' was successfully unlocked."
     end
 
-  private
+    private
 
     def find_users
       if params[:search].present?
         search = params[:search]
-        if search["email"].present?
-          return User.where("email like ?", "%#{search['email']}%").where.not(role: :pupil).limit(50)
+        if search['email'].present?
+          return User.where('email like ?', "%#{search['email']}%").where.not(role: :pupil).limit(50)
         else
           return []
         end

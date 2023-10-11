@@ -31,7 +31,7 @@ class Programme < ApplicationRecord
   enum status: { started: 0, completed: 1, abandoned: 2 } do
     event :complete do
       after do
-        self.update(ended_on: Time.zone.now)
+        update(ended_on: Time.zone.now)
 
         Observation.create!(
           school: school,
@@ -41,11 +41,11 @@ class Programme < ApplicationRecord
           programme_id: id
         )
       end
-      transition :started => :completed
+      transition started: :completed
     end
 
     event :abandon do
-      transition :started => :abandoned
+      transition started: :abandoned
     end
   end
 

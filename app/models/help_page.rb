@@ -16,15 +16,15 @@
 #
 class HelpPage < ApplicationRecord
   extend FriendlyId
-  friendly_id :title, use: [:finders, :slugged, :history]
+  friendly_id :title, use: %i[finders slugged history]
 
   extend Mobility
   include TransifexSerialisable
   translates :title, type: :string, fallbacks: { cy: :en }
   translates :description, backend: :action_text
 
-  validates_presence_of :title, :feature
-  validates_uniqueness_of :feature
+  validates :title, :feature, presence: true
+  validates :feature, uniqueness: true
 
   scope :published,            -> { where(published: true) }
   scope :by_title,             -> { i18n.order(title: :asc) }

@@ -2,30 +2,30 @@ module Amr
   class SingleReadConverter
     BLANK_THRESHOLD = 1
 
-    #@param Array single_reading_array an array of readings
-    #@param boolean indexed whether the array should be interpreted in HH order, rather than via timestamp.
+    # @param Array single_reading_array an array of readings
+    # @param boolean indexed whether the array should be interpreted in HH order, rather than via timestamp.
     def initialize(single_reading_array, indexed: false)
       @single_reading_array = single_reading_array
       @indexed = indexed
       @results_array = []
     end
 
-    #Reading will be either:
+    # Reading will be either:
     #
-    #{:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019 00:30:00", :readings=>["14.4"]
+    # {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019 00:30:00", :readings=>["14.4"]
     #
     # With timestamps starting at 00:00:00 or 00:30:00
     #
     # OR (indexed: true, with a named period number field)
     #
-    #{:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019", :period=> 1, :readings=>["14.4"]
-    #{:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019", :period=> 2, :readings=>["14.4"]
+    # {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019", :period=> 1, :readings=>["14.4"]
+    # {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019", :period=> 2, :readings=>["14.4"]
     #
     # ...where each consecutive reading is a new HH period
     # For here we need to determine the period by counting the index into the array
     def perform
       @single_reading_array.each do |single_reading|
-        #ignore rows that dont have necessary information
+        # ignore rows that dont have necessary information
         next unless single_reading[:reading_date].present? && single_reading[:mpan_mprn].present?
 
         reading_day = Date.parse(single_reading[:reading_date])
@@ -35,7 +35,7 @@ module Amr
         next if reading_index.nil?
 
         if last_reading_of_day?(reading_index)
-          reading_day = reading_day - 1.day
+          reading_day -= 1.day
           reading_index = 47
         end
 

@@ -1,6 +1,5 @@
 module Admin
   class ReportsController < AdminController
-    def index
-    end
+    def index; end
   end
 end

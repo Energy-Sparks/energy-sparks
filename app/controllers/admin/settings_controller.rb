@@ -14,7 +14,7 @@ module Admin
       redirect_to admin_settings_path, notice: 'Settings updated'
     end
 
-  private
+    private
 
     def load_site_settings
       @settings = SiteSettings.current
@@ -50,7 +50,7 @@ module Admin
     end
 
     def temperature_setting_months
-      (1..12).map {|month| [Date::MONTHNAMES[month], month]}
+      (1..12).map { |month| [Date::MONTHNAMES[month], month] }
     end
   end
 end

@@ -28,7 +28,7 @@ class SolarEdgeInstallation < ApplicationRecord
 
   has_many :meters
 
-  validates_presence_of :site_id, :mpan, :api_key
+  validates :site_id, :mpan, :api_key, presence: true
 
   def school_number
     school.urn

@@ -1,9 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe "school creation", :schools, type: :system do
-
-  let(:school_name) { 'Oldfield Park Infants'}
-  let!(:admin)  { create(:admin)}
+RSpec.describe 'school creation', :schools, type: :system do
+  let(:school_name) { 'Oldfield Park Infants' }
+  let!(:admin) { create(:admin) }
 
   let!(:ks1) { KeyStage.create(name: 'KS1') }
 
@@ -12,7 +11,7 @@ RSpec.describe "school creation", :schools, type: :system do
   let!(:solar_pv_area)  { create(:solar_pv_tuos_area, title: 'BANES solar') }
   let!(:dark_sky_area)  { create(:dark_sky_area, title: 'BANES dark sky weather') }
   let!(:scoreboard)     { create(:scoreboard, name: 'BANES scoreboard') }
-  let!(:weather_station) { create(:weather_station, title: 'BANES weather')}
+  let!(:weather_station) { create(:weather_station, title: 'BANES weather') }
 
   let!(:school_group) do
     create(
@@ -26,7 +25,7 @@ RSpec.describe "school creation", :schools, type: :system do
     )
   end
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit root_path
     click_on 'Admin'
@@ -61,7 +60,7 @@ RSpec.describe "school creation", :schools, type: :system do
     click_on 'Next'
 
     expect(page).to have_content("St Mary's School")
-    expect(page).to have_content("Manage meters")
+    expect(page).to have_content('Manage meters')
 
     school = School.where(urn: '4444244').first
     expect(school.key_stages).to match_array([ks1])
@@ -74,5 +73,4 @@ RSpec.describe "school creation", :schools, type: :system do
     expect(school.visible).to be false
     expect(school.public).to be false
   end
-
 end

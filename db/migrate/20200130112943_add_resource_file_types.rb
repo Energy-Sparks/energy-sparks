@@ -6,6 +6,6 @@ class AddResourceFileTypes < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    add_reference :resource_files, :resource_file_type, foreign_key: {on_delete: :restrict}
+    add_reference :resource_files, :resource_file_type, foreign_key: { on_delete: :restrict }
   end
 end

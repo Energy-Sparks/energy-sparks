@@ -8,6 +8,6 @@ class CreateHelpPages < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    add_index :help_pages, :slug, :unique => true
+    add_index :help_pages, :slug, unique: true
   end
 end

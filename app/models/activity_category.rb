@@ -22,8 +22,8 @@ class ActivityCategory < ApplicationRecord
   translates :description, type: :string, fallbacks: { cy: :en }
 
   has_many :activity_types
-  validates_presence_of :name
-  validates_uniqueness_of :name
+  validates :name, presence: true
+  validates :name, uniqueness: true
 
   t_has_one_attached :image
 
@@ -33,6 +33,6 @@ class ActivityCategory < ApplicationRecord
   scope :live_data, -> { where(live_data: true) }
 
   def self.listed_with_activity_types
-    by_name.map {|category| [category, category.activity_types.custom_last.order(:name).to_a]}
+    by_name.map { |category| [category, category.activity_types.custom_last.order(:name).to_a] }
   end
 end

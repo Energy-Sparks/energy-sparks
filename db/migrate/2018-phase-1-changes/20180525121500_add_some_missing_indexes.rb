@@ -5,6 +5,6 @@ class AddSomeMissingIndexes < ActiveRecord::Migration[5.2]
     add_index :data_feeds, :area_id
     add_index :merit_actions, :user_id
     add_index :merit_scores, :sash_id unless index_exists?(:merit_scores, :sash_id)
-    add_index :merit_activity_logs, [:related_change_id, :related_change_type], name: 'merit_activity_logs_for_related_changes'
+    add_index :merit_activity_logs, %i[related_change_id related_change_type], name: 'merit_activity_logs_for_related_changes'
   end
 end

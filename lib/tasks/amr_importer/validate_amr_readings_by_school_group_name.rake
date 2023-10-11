@@ -1,12 +1,14 @@
 namespace :amr_importer do
-  desc "Validate readings"
+  desc 'Validate readings'
   task :validate_amr_readings_by_school_group_name, [:school_group_name] => :environment do |_t, args|
     puts DateTime.now.utc
     total_amr_readings_before = AmrValidatedReading.count
     puts "Total AMR Readings before: #{total_amr_readings_before}"
 
     school_group_name = args[:school_group_name]
-    raise ArgumentError, 'Region description not set, should be, Bath, Frome, Sheffield for example' if school_group_name.nil?
+    if school_group_name.nil?
+      raise ArgumentError, 'Region description not set, should be, Bath, Frome, Sheffield for example'
+    end
 
     school_group = SchoolGroup.where('name LIKE ?', "%#{school_group_name}%").first
     raise ArgumentError, "Can't find school group for #{school_group_name}" if school_group.nil?

@@ -3,16 +3,16 @@ namespace :after_party do
   task new_opus_format: :environment do
     puts "Running deploy task 'new_opus_format'"
 
-    identifier = "opus-hh"
+    identifier = 'opus-hh'
     config = {}
-    config["identifier"] = identifier
-    config["description"] = "Opus HH Format"
-    config["notes"] = "Used to process data exported from Excel sheets"
-    config["date_format"] = "%d/%m/%Y"
+    config['identifier'] = identifier
+    config['description'] = 'Opus HH Format'
+    config['notes'] = 'Used to process data exported from Excel sheets'
+    config['date_format'] = '%d/%m/%Y'
     config['mpan_mprn_field'] = 'MPANCore'
     config['reading_date_field'] = 'Sett Date'
     config['reading_fields'] = ['Meter Read']
-    config['header_example'] = "MPANCore,Sett Date,Sett Period,Type,Meter Read"
+    config['header_example'] = 'MPANCore,Sett Date,Sett Period,Type,Meter Read'
     config['row_per_reading'] = true
     config['positional_index'] = true
     config['number_of_header_rows'] = 2

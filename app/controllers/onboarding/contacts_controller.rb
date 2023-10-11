@@ -32,7 +32,7 @@ module Onboarding
       redirect_to new_onboarding_completion_path(@school_onboarding, anchor: 'alert-contacts')
     end
 
-  private
+    private
 
     def contact_params
       params.require(:contact).permit(

@@ -50,7 +50,7 @@ class SchoolGroup < ApplicationRecord
   include ParentMeterAttributeHolder
   include Scorable
 
-  friendly_id :name, use: [:finders, :slugged, :history]
+  friendly_id :name, use: %i[finders slugged history]
 
   has_many :schools
   has_many :meters, through: :schools
@@ -60,7 +60,7 @@ class SchoolGroup < ApplicationRecord
 
   has_many :school_group_partners, -> { order(position: :asc) }
   has_many :partners, through: :school_group_partners
-  accepts_nested_attributes_for :school_group_partners, reject_if: proc {|attributes| attributes['position'].blank?}
+  accepts_nested_attributes_for :school_group_partners, reject_if: proc { |attributes| attributes['position'].blank? }
 
   has_one :dashboard_message, as: :messageable, dependent: :destroy
   has_many :issues, as: :issueable, dependent: :destroy
@@ -69,18 +69,18 @@ class SchoolGroup < ApplicationRecord
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
   belongs_to :default_solar_pv_tuos_area, class_name: 'SolarPvTuosArea', optional: true
   belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true
-  belongs_to :default_weather_station, class_name: 'WeatherStation', foreign_key: 'default_weather_station_id', optional: true
+  belongs_to :default_weather_station, class_name: 'WeatherStation', optional: true
   belongs_to :default_scoreboard, class_name: 'Scoreboard', optional: true
-  belongs_to :default_issues_admin_user, class_name: 'User', foreign_key: 'default_issues_admin_user_id', optional: true
+  belongs_to :default_issues_admin_user, class_name: 'User', optional: true
   belongs_to :admin_meter_status_electricity, class_name: 'AdminMeterStatus', foreign_key: 'admin_meter_statuses_electricity_id', optional: true
   belongs_to :admin_meter_status_gas, class_name: 'AdminMeterStatus', foreign_key: 'admin_meter_statuses_gas_id', optional: true
   belongs_to :admin_meter_status_solar_pv, class_name: 'AdminMeterStatus', foreign_key: 'admin_meter_statuses_solar_pv_id', optional: true
-  belongs_to :default_data_source_electricity, class_name: 'DataSource', foreign_key: 'default_data_source_electricity_id', optional: true
-  belongs_to :default_data_source_gas, class_name: 'DataSource', foreign_key: 'default_data_source_gas_id', optional: true
-  belongs_to :default_data_source_solar_pv, class_name: 'DataSource', foreign_key: 'default_data_source_solar_pv_id', optional: true
-  belongs_to :default_procurement_route_electricity, class_name: 'ProcurementRoute', foreign_key: 'default_procurement_route_electricity_id', optional: true
-  belongs_to :default_procurement_route_gas, class_name: 'ProcurementRoute', foreign_key: 'default_procurement_route_gas_id', optional: true
-  belongs_to :default_procurement_route_solar_pv, class_name: 'ProcurementRoute', foreign_key: 'default_procurement_route_solar_pv_id', optional: true
+  belongs_to :default_data_source_electricity, class_name: 'DataSource', optional: true
+  belongs_to :default_data_source_gas, class_name: 'DataSource', optional: true
+  belongs_to :default_data_source_solar_pv, class_name: 'DataSource', optional: true
+  belongs_to :default_procurement_route_electricity, class_name: 'ProcurementRoute', optional: true
+  belongs_to :default_procurement_route_gas, class_name: 'ProcurementRoute', optional: true
+  belongs_to :default_procurement_route_solar_pv, class_name: 'ProcurementRoute', optional: true
   belongs_to :funder, optional: true
 
   has_many :meter_attributes, inverse_of: :school_group, class_name: 'SchoolGroupMeterAttribute'
@@ -92,8 +92,8 @@ class SchoolGroup < ApplicationRecord
   scope :is_public, -> { where(public: true) }
   validates :name, presence: true
 
-  enum group_type: [:general, :local_authority, :multi_academy_trust]
-  enum default_chart_preference: [:default, :carbon, :usage, :cost]
+  enum group_type: { general: 0, local_authority: 1, multi_academy_trust: 2 }
+  enum default_chart_preference: { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum default_country: School.countries
 
   def visible_schools_count
@@ -103,6 +103,7 @@ class SchoolGroup < ApplicationRecord
   def fuel_types
     school_ids = schools.visible.pluck(:id)
     return [] if school_ids.empty?
+
     query = <<-SQL.squish
       SELECT DISTINCT(fuel_types.key) FROM (
         SELECT
@@ -132,6 +133,7 @@ class SchoolGroup < ApplicationRecord
   def safe_destroy
     raise EnergySparks::SafeDestroyError, 'Group has associated schools' if schools.any?
     raise EnergySparks::SafeDestroyError, 'Group has associated users' if users.any?
+
     destroy
   end
 
@@ -159,7 +161,7 @@ class SchoolGroup < ApplicationRecord
   end
 
   def email_locales
-    default_country == 'wales' ? [:en, :cy] : [:en]
+    default_country == 'wales' ? %i[en cy] : [:en]
   end
 
   def categorise_schools

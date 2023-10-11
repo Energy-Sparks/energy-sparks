@@ -36,8 +36,8 @@ class Contact < ApplicationRecord
   validates :email_address,       presence: true, unless: ->(contact) { contact.mobile_phone_number.present? }
   validates :name,                presence: true
 
-  validates_uniqueness_of :email_address, scope: :school_id, unless: ->(contact) { contact.email_address.blank? }
-  validates_uniqueness_of :mobile_phone_number, scope: :school_id, unless: ->(contact) { contact.mobile_phone_number.blank? }
+  validates :email_address, uniqueness: { scope: :school_id, unless: ->(contact) { contact.email_address.blank? } }
+  validates :mobile_phone_number, uniqueness: { scope: :school_id, unless: ->(contact) { contact.mobile_phone_number.blank? } }
 
   accepts_nested_attributes_for :user
 

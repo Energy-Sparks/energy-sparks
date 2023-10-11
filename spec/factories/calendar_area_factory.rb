@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :calendar_area do
-    sequence(:title) {|n| "Calendar area #{n}"}
+    sequence(:title) { |n| "Calendar area #{n}" }
   end
 
   trait :child do
@@ -8,7 +8,7 @@ FactoryBot.define do
   end
 
   trait :parent do
-    after(:create) do |calendar_area, evaluator|
+    after(:create) do |calendar_area, _evaluator|
       create(:academic_year, calendar_area: calendar_area)
     end
   end

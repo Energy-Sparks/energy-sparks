@@ -22,7 +22,7 @@
 class EstimatedAnnualConsumption < ApplicationRecord
   belongs_to :school
 
-  validates_presence_of :school, :year
+  validates :school, :year, presence: true
   validate :must_have_one_estimate
 
   def meter_attributes_by_meter_type
@@ -57,7 +57,7 @@ class EstimatedAnnualConsumption < ApplicationRecord
 
   def must_have_one_estimate
     if electricity.blank? && gas.blank? && storage_heaters.blank?
-      errors.add :base, "At least one estimate must be provided"
+      errors.add :base, 'At least one estimate must be provided'
     end
   end
 end

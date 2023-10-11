@@ -30,7 +30,7 @@ class TransportSurveyResponse < ApplicationRecord
   belongs_to :transport_survey
   belongs_to :transport_type, inverse_of: :responses
 
-  scope :with_transport_type, -> {joins(:transport_type)}
+  scope :with_transport_type, -> { joins(:transport_type) }
 
   def self.journey_minutes_options
     [5, 10, 15, 20, 30, 45, 60]
@@ -44,7 +44,7 @@ class TransportSurveyResponse < ApplicationRecord
   validates :journey_minutes, inclusion: { in: journey_minutes_options }
   validates :passengers, inclusion: { in: passengers_options }
 
-  enum weather: [:sun, :cloud, :rain, :snow]
+  enum weather: { sun: 0, cloud: 1, rain: 2, snow: 3 }
 
   def self.weather_images
     { sun: '☀️', cloud: '⛅', rain: '🌧️', snow: '❄️' }
@@ -67,7 +67,7 @@ class TransportSurveyResponse < ApplicationRecord
   end
 
   def self.csv_attributes
-    %w{id run_identifier weather_name journey_minutes transport_type.name passengers carbon_kg_co2 surveyed_at}
+    %w[id run_identifier weather_name journey_minutes transport_type.name passengers carbon_kg_co2 surveyed_at]
   end
 
   def carbon_kg_co2

@@ -13,7 +13,7 @@ class EnergySparksDeviseMailer < Devise::Mailer
   protected
 
   def devise_mail(record, action, opts = {}, &block)
-    @title = t(:title, scope: [:devise, :mailer, action], default: "")
+    @title = t(:title, scope: [:devise, :mailer, action], default: '')
     initialize_from_record(record)
     if BILINGUAL_EMAILS.include?(action)
       devise_mail_for_locales(action, opts, active_locales_for_devise(record), &block)
@@ -29,6 +29,7 @@ class EnergySparksDeviseMailer < Devise::Mailer
   def active_locales_for_devise(record)
     return record.school.email_locales if record.try(:school)
     return record.school_group.email_locales if record.try(:school_group)
+
     [:en]
   end
 
@@ -40,8 +41,8 @@ class EnergySparksDeviseMailer < Devise::Mailer
 
   def devise_mail_for_locales(action, opts, locales, &block)
     template = "#{action}_content"
-    subject = for_each_locale(locales) { subject_for(action) }.join(" / ")
-    @body = for_each_locale(locales) { render template, layout: nil }.join("<hr>")
+    subject = for_each_locale(locales) { subject_for(action) }.join(' / ')
+    @body = for_each_locale(locales) { render template, layout: nil }.join('<hr>')
     make_bootstrap_mail headers_for(action, opts.merge(subject: subject)), &block
   end
 end

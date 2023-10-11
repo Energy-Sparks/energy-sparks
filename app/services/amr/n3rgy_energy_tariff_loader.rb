@@ -10,8 +10,9 @@ module Amr
         meter: @meter,
         start_date: start_date,
         tariff: download_todays_tariff,
-        import_log: import_log).perform
-    rescue => e
+        import_log: import_log
+      ).perform
+    rescue StandardError => e
       msg = "Exception: downloading N3rgy tariffs for #{@meter.mpan_mprn} from #{start_date} to #{end_date} : #{e.class} #{e.message}"
       import_log.update!(error_messages: msg) if import_log
       Rails.logger.error msg
@@ -43,7 +44,8 @@ module Amr
         description: "Tariff import for #{@meter.mpan_mprn} at #{DateTime.now.utc}",
         start_date: start_date,
         end_date: end_date,
-        import_time: DateTime.now.utc)
+        import_time: DateTime.now.utc
+      )
     end
   end
 end

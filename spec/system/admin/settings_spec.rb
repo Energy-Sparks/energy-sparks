@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 describe 'site-wide settings' do
-
-  let!(:admin)  { create(:admin)}
+  let!(:admin) { create(:admin) }
 
   before do
     sign_in(admin)
@@ -24,9 +23,9 @@ describe 'site-wide settings' do
         uncheck 'Message for no contacts'
         uncheck 'October'
         check 'May'
-        fill_in "Electricity price", with: 0.99
-        fill_in "Solar export price", with: 0.98
-        fill_in "Gas price", with: 0.97
+        fill_in 'Electricity price', with: 0.99
+        fill_in 'Solar export price', with: 0.98
+        fill_in 'Gas price', with: 0.97
         expect(BenchmarkMetrics.pricing).to eq(BenchmarkMetrics.default_prices)
         click_on 'Update settings'
         expect(SiteSettings.count).to eq 1
@@ -44,12 +43,13 @@ describe 'site-wide settings' do
       before do
         SiteSettings.create!(message_for_no_contacts: false, electricity_price: 1.2, gas_price: 0.2, solar_export_price: 0.1, temperature_recording_months: [1, 2, 3, 4, 5])
       end
+
       it 'updates price' do
         click_on 'Site Settings'
         check 'Message for no contacts'
-        fill_in "Electricity price", with: 0.99
-        fill_in "Solar export price", with: 0.98
-        fill_in "Gas price", with: 0.97
+        fill_in 'Electricity price', with: 0.99
+        fill_in 'Solar export price', with: 0.98
+        fill_in 'Gas price', with: 0.97
         click_on 'Update settings'
         expect(SiteSettings.count).to eq 1
         expect(SiteSettings.current.electricity_price).to eq(0.99)
@@ -60,20 +60,18 @@ describe 'site-wide settings' do
       end
 
       context 'that have tariffs' do
-        let!(:tariff)   { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current)}
+        let!(:tariff) { create(:energy_tariff, :with_flat_price, tariff_holder: SiteSettings.current) }
 
         it 'updates price' do
           click_on 'Site Settings'
-          fill_in "Electricity price", with: 0.99
+          fill_in 'Electricity price', with: 0.99
           click_on 'Update settings'
           expect(SiteSettings.count).to eq 1
           expect(SiteSettings.current.electricity_price).to eq(0.99)
           expect(SiteSettings.current.energy_tariffs.first).to eq tariff
         end
-
       end
     end
-
   end
 
   context 'with pricing feature flag disabled' do
@@ -90,9 +88,9 @@ describe 'site-wide settings' do
       uncheck 'Message for no contacts'
       uncheck 'October'
       check 'May'
-      expect(page).to_not have_content('Electricity price')
-      expect(page).to_not have_content('Solar export price')
-      expect(page).to_not have_content('Gas price')
+      expect(page).not_to have_content('Electricity price')
+      expect(page).not_to have_content('Solar export price')
+      expect(page).not_to have_content('Gas price')
       expect(BenchmarkMetrics.pricing).to eq(BenchmarkMetrics.default_prices)
       click_on 'Update settings'
       expect(SiteSettings.current.message_for_no_contacts).to eq(false)
@@ -102,8 +100,5 @@ describe 'site-wide settings' do
       expect(SiteSettings.current.gas_price).to eq(nil)
       expect(BenchmarkMetrics.pricing).to eq(BenchmarkMetrics.default_prices)
     end
-
   end
-
-
 end

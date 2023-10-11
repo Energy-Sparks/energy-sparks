@@ -4,4 +4,3 @@ class AddForeignKeyForImportLog < ActiveRecord::Migration[6.0]
     add_foreign_key :amr_data_feed_readings, :amr_data_feed_import_logs, on_delete: :cascade
   end
 end
-

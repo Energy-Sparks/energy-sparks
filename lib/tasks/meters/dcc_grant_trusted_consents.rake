@@ -1,6 +1,6 @@
 namespace :meters do
   desc 'Grant trusted consents in the DCC'
-  task :dcc_grant_trusted_consents => :environment do |_t, args|
+  task dcc_grant_trusted_consents: :environment do |_t, _args|
     puts "#{DateTime.now.utc} dcc_grant_trusted_consents start"
 
     meters = Meter.awaiting_trusted_consent

@@ -7,7 +7,7 @@ namespace :after_party do
     puts "#{orphan_contacts.count} orphans contacts found"
 
     orphan_contacts.each do |contact|
-      if (user = User.find_by_email(contact.email_address.downcase))
+      if (user = User.find_by(email: contact.email_address.downcase))
         contact.update(user: user)
         puts "updated contact #{contact.id} with user #{user.id}"
       end
@@ -16,7 +16,7 @@ namespace :after_party do
     orphan_contacts = Contact.where(user_id: nil)
     puts "#{orphan_contacts.count} orphans contacts remaining"
 
-    puts "Finished"
+    puts 'Finished'
 
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).

@@ -2,11 +2,9 @@ module Admin
   class DarkSkyAreasController < AdminController
     load_and_authorize_resource
 
-    def index
-    end
+    def index; end
 
-    def new
-    end
+    def new; end
 
     def create
       if @dark_sky_area.save
@@ -16,8 +14,7 @@ module Admin
       end
     end
 
-    def edit
-    end
+    def edit; end
 
     def update
       if @dark_sky_area.update(dark_sky_area_params)

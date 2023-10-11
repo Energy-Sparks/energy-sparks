@@ -8,12 +8,12 @@ describe SchoolOnboarding, type: :model do
     end
 
     it 'with an email and a reminder sent' do
-      onboarding = create :school_onboarding, :with_events, event_names: [:email_sent, :reminder_sent]
+      onboarding = create :school_onboarding, :with_events, event_names: %i[email_sent reminder_sent]
       expect(onboarding.has_only_sent_email_or_reminder?).to be true
     end
 
     it 'or when it has not with extra events' do
-      onboarding = create :school_onboarding, :with_events, event_names: [:email_sent, :reminder_sent, :school_admin_created]
+      onboarding = create :school_onboarding, :with_events, event_names: %i[email_sent reminder_sent school_admin_created]
       expect(onboarding.has_only_sent_email_or_reminder?).to be false
     end
 
@@ -37,39 +37,47 @@ describe SchoolOnboarding, type: :model do
     end
   end
 
-  describe ".email_locales" do
-    it "only en for england" do
+  describe '.email_locales' do
+    it 'only en for england' do
       expect(SchoolOnboarding.new(country: 'england').email_locales).to eq([:en])
     end
-    it "only en for scotland" do
+
+    it 'only en for scotland' do
       expect(SchoolOnboarding.new(country: 'scotland').email_locales).to eq([:en])
     end
-    it "en and cy for wales" do
-      expect(SchoolOnboarding.new(country: 'wales').email_locales).to eq([:en, :cy])
+
+    it 'en and cy for wales' do
+      expect(SchoolOnboarding.new(country: 'wales').email_locales).to eq(%i[en cy])
     end
   end
 
-  describe ".incomplete" do
-    context "when there is an onboarding with no events" do
+  describe '.incomplete' do
+    context 'when there is an onboarding with no events' do
       let!(:incomplete) { create :school_onboarding }
-      it "returns onboarding" do
+
+      it 'returns onboarding' do
         expect(SchoolOnboarding.incomplete).to eq([incomplete])
       end
     end
-    context "when an onboarding has events" do
+
+    context 'when an onboarding has events' do
       let!(:complete) { create :school_onboarding, :with_events, event_names: [:onboarding_complete] }
       let!(:incomplete) { create :school_onboarding, :with_events, event_names: [:email_sent] }
-      it "returns all incomplete onboardings only" do
+
+      it 'returns all incomplete onboardings only' do
         expect(SchoolOnboarding.incomplete).to eq([incomplete])
       end
-      context "scoped to school group" do
+
+      context 'scoped to school group' do
         let(:school_group) { create :school_group }
         let!(:group_complete) { create :school_onboarding, :with_events, event_names: [:onboarding_complete], school_group: school_group }
         let!(:group_incomplete) { create :school_onboarding, :with_events, event_names: [:email_sent], school_group: school_group }
-        it "returns incomplete onboardings scoped to group only" do
+
+        it 'returns incomplete onboardings scoped to group only' do
           expect(school_group.school_onboardings.incomplete).to eq([group_incomplete])
         end
-        it "returns all incomplete onboardings" do
+
+        it 'returns all incomplete onboardings' do
           expect(SchoolOnboarding.incomplete).to eq([incomplete, group_incomplete])
         end
       end

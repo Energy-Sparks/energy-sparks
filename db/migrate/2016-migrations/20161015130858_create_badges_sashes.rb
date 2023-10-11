@@ -5,7 +5,7 @@ class CreateBadgesSashes < ActiveRecord::Migration[5.0]
       t.boolean :notified_user, default: false
       t.datetime :created_at
     end
-    add_index :badges_sashes, [:badge_id, :sash_id]
+    add_index :badges_sashes, %i[badge_id sash_id]
     add_index :badges_sashes, :badge_id
     add_index :badges_sashes, :sash_id
   end

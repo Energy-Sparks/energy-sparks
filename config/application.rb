@@ -1,10 +1,9 @@
 require_relative 'boot'
 
-require "rails"
-require "rails/all"
-require "active_storage/engine"
-require_relative "../lib/rack/x_robots_tag"
-
+require 'rails'
+require 'rails/all'
+require 'active_storage/engine'
+require_relative '../lib/rack/x_robots_tag'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -23,7 +22,7 @@ module EnergySparks
     # Pull in folders without namespacing
     config.eager_load_paths << Rails.root.join('app', 'models', 'areas')
 
-    #config.time_zone = 'London'
+    # config.time_zone = 'London'
     # optional - note it can be only :utc or :local (default is :utc)
     # HAS to be UTC for group by date to work
     config.active_record.default_timezone = :utc
@@ -36,7 +35,7 @@ module EnergySparks
 
     # uploaded SVG files are served as octet stream by default for security
     # this will remove them from the list of binary file types, but is a slight risk
-    config.active_storage.content_types_to_serve_as_binary.delete("image/svg+xml")
+    config.active_storage.content_types_to_serve_as_binary.delete('image/svg+xml')
 
     # session cookie config will be overridden in production.rb
     config.session_store :cookie_store, key: '_energy-sparks_session'
@@ -57,7 +56,7 @@ module EnergySparks
     config.good_job.cleanup_preserved_jobs_before_seconds_ago = 30.days.to_i
     config.good_job.logger = Logger.new(File.join(Rails.root, 'log', 'good_job.log'))
 
-    config.i18n.available_locales = [:en, :cy]
+    config.i18n.available_locales = %i[en cy]
     config.i18n.default_locale = :en
     config.i18n.enforce_available_locales = true
     config.i18n.fallbacks = true

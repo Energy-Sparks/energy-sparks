@@ -5,7 +5,7 @@ namespace :i18n do
     full_sync = (ENV['ENVIRONMENT_IDENTIFIER'] == 'production')
     begin
       Transifex::Loader.new(:cy, Rails.logger, full_sync).perform
-    rescue => e
+    rescue StandardError => e
       puts "Exception: running transifex_load: #{e.class} #{e.message}"
       puts e.backtrace.join("\n")
       Rails.logger.error "Exception: running transifex_load: #{e.class} #{e.message}"

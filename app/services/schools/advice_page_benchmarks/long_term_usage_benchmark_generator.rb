@@ -3,6 +3,7 @@ module Schools
     class LongTermUsageBenchmarkGenerator < SchoolBenchmarkGenerator
       def benchmark_school
         return unless usage_service.enough_data?
+
         usage_service.benchmark_usage.category
       end
 

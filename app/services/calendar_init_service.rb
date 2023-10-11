@@ -15,7 +15,7 @@ class CalendarInitService
         end
       end
     end
-  rescue => e
+  rescue StandardError => e
     pp e.inspect
   end
 

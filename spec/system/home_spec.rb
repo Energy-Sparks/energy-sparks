@@ -1,16 +1,15 @@
 require 'rails_helper'
 
-RSpec.describe "home", type: :system do
-
+RSpec.describe 'home', type: :system do
   it 'has a home page' do
     visit root_path
-    expect(page.has_content? "Energy Sparks")
+    expect(page.has_content?('Energy Sparks'))
   end
 
   it 'allows locale switch retaining extra parameters' do
     ClimateControl.modify FEATURE_FLAG_LOCALE_SWITCHER_BUTTONS: 'true' do
       visit root_path(foo: :bar)
-      expect(page).to have_link("Cymraeg", href: "http://127.0.0.1/?foo=bar")
+      expect(page).to have_link('Cymraeg', href: 'http://127.0.0.1/?foo=bar')
     end
   end
 
@@ -20,10 +19,10 @@ RSpec.describe "home", type: :system do
     within('#our-services') do
       click_on('For Schools')
     end
-    expect(page).to have_content("Energy Sparks for schools")
+    expect(page).to have_content('Energy Sparks for schools')
     click_on('Enrol our school')
-    expect(page).to have_content("Enrol our school")
-    expect(page).to have_link("Enrol now")
+    expect(page).to have_content('Enrol our school')
+    expect(page).to have_link('Enrol now')
   end
 
   it 'redirects old pages' do
@@ -43,10 +42,10 @@ RSpec.describe "home", type: :system do
     within('#our-services') do
       click_on('For Local Authorities')
     end
-    expect(page).to have_content("Energy Sparks for Local Authorities")
+    expect(page).to have_content('Energy Sparks for Local Authorities')
     click_on('Enrol our Local Authority')
-    expect(page).to have_content("Enrol our Local Authority")
-    expect(page).to have_link("Enrol now")
+    expect(page).to have_content('Enrol our Local Authority')
+    expect(page).to have_link('Enrol now')
   end
 
   it 'has a for-multi-academy-trusts page' do
@@ -55,10 +54,10 @@ RSpec.describe "home", type: :system do
     within('#our-services') do
       click_on('For Multi-Academy Trusts')
     end
-    expect(page).to have_content("Energy Sparks for Multi-Academy Trusts")
+    expect(page).to have_content('Energy Sparks for Multi-Academy Trusts')
     click_on('Enrol our Multi-Academy Trust')
-    expect(page).to have_content("Enrol our Multi-Academy Trust")
-    expect(page).to have_link("Enrol now")
+    expect(page).to have_content('Enrol our Multi-Academy Trust')
+    expect(page).to have_link('Enrol now')
   end
 
   it 'has a contact page' do
@@ -67,13 +66,13 @@ RSpec.describe "home", type: :system do
     within('#about-menu') do
       click_on('Contact')
     end
-    expect(page.has_content? "Contact us")
+    expect(page.has_content?('Contact us'))
   end
 
   it 'has an enrol page' do
     visit root_path
     click_on('Enrol')
-    expect(page.has_content? "Enrol with Energy Sparks")
+    expect(page.has_content?('Enrol with Energy Sparks'))
   end
 
   describe 'having a training page' do
@@ -95,12 +94,12 @@ RSpec.describe "home", type: :system do
 
     it { expect(page).to have_content('Training') }
 
-    it "has available event" do
+    it 'has available event' do
       expect(page).to have_content('Event 1')
       expect(page).to have_content('Spaces available')
     end
 
-    it "has sold out event" do
+    it 'has sold out event' do
       expect(page).to have_content('Event 2')
       expect(page).to have_content('Sold out')
     end
@@ -112,7 +111,7 @@ RSpec.describe "home", type: :system do
     within('#about-menu') do
       click_on('Datasets')
     end
-    expect(page.has_content? "Data used in Energy Sparks")
+    expect(page.has_content?('Data used in Energy Sparks'))
   end
 
   context 'with newsletters' do
@@ -124,7 +123,7 @@ RSpec.describe "home", type: :system do
     it 'shows the latest newsletters only' do
       visit root_path
 
-      expect(page).to_not have_content(newsletter_1.title)
+      expect(page).not_to have_content(newsletter_1.title)
       expect(page).to have_content(newsletter_2.title)
       expect(page).to have_content(newsletter_3.title)
       expect(page).to have_content(newsletter_4.title)
@@ -150,7 +149,7 @@ RSpec.describe "home", type: :system do
       expect(page).to have_content(case_study_1.title)
       expect(page).to have_content(case_study_2.title)
       expect(page).to have_content(case_study_3.title)
-      expect(page).to_not have_content(case_study_4.title)
+      expect(page).not_to have_content(case_study_4.title)
 
       click_on 'More case studies'
 
@@ -162,17 +161,16 @@ RSpec.describe "home", type: :system do
   end
 
   context 'school admin user' do
-    let(:school)       { create(:school, :with_school_group, name: 'Oldfield Park Infants')}
-    let(:school_admin) { create(:school_admin, school: school)}
+    let(:school)       { create(:school, :with_school_group, name: 'Oldfield Park Infants') }
+    let(:school_admin) { create(:school_admin, school: school) }
 
-    before(:each) do
+    before do
       sign_in(school_admin)
       visit root_path
     end
 
     context 'with not visible school' do
-
-      before(:each) do
+      before do
         school.update(visible: false)
         visit root_path
       end
@@ -182,13 +180,12 @@ RSpec.describe "home", type: :system do
       end
 
       it 'does not have navigation options' do
-        expect(page).to_not have_css('#my_school_menu')
-        expect(page).to_not have_content('Dashboards')
+        expect(page).not_to have_css('#my_school_menu')
+        expect(page).not_to have_content('Dashboards')
       end
     end
 
     context 'with a visible school' do
-
       it 'redirects from teacher page' do
         visit "/teachers/schools/#{school.slug}"
         within('.dashboard-school-title') do
@@ -197,7 +194,7 @@ RSpec.describe "home", type: :system do
       end
 
       it 'does not redirect to holding page' do
-        expect(page).to_not have_content('Your school is currently inactive while we are setting up your energy data')
+        expect(page).not_to have_content('Your school is currently inactive while we are setting up your energy data')
       end
 
       it 'does have navigation options' do

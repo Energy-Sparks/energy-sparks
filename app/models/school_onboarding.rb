@@ -64,7 +64,7 @@ class SchoolOnboarding < ApplicationRecord
   scope :incomplete, ->(parent = nil) { where.not(id: parent ? parent.school_onboardings.complete : complete) }
   scope :for_school_type, ->(school_type) { joins(:school).where(schools: { school_type: school_type }) }
 
-  enum default_chart_preference: [:default, :carbon, :usage, :cost]
+  enum default_chart_preference: { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum country: School.countries
 
   def has_event?(event_name)
@@ -72,7 +72,7 @@ class SchoolOnboarding < ApplicationRecord
   end
 
   def has_only_sent_email_or_reminder?
-    (events.pluck(:event).map(&:to_sym) - [:email_sent, :reminder_sent]).empty?
+    (events.pluck(:event).map(&:to_sym) - %i[email_sent reminder_sent]).empty?
   end
 
   def complete?
@@ -108,16 +108,16 @@ class SchoolOnboarding < ApplicationRecord
   end
 
   def additional_users_created?
-    school.present? && school.users.count {|u| !u.pupil?} > 1
+    school.present? && school.users.count { |u| !u.pupil? } > 1
   end
 
   def ready_for_review?
-    #adding pupil password is trigger for last step
+    # adding pupil password is trigger for last step
     pupil_account_created?
   end
 
   def email_locales
-    country == 'wales' ? [:en, :cy] : [:en]
+    country == 'wales' ? %i[en cy] : [:en]
   end
 
   def to_param
@@ -138,8 +138,10 @@ class SchoolOnboarding < ApplicationRecord
 
   def days_until_data_enabled
     return nil unless complete?
+
     data_enabled_on = first_made_data_enabled
-    return nil unless data_enabled_on.present?
+    return nil if data_enabled_on.blank?
+
     (data_enabled_on.to_date - onboarding_completed_on.to_date).to_i
   end
 end

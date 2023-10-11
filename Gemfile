@@ -8,7 +8,7 @@ gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.
 gem 'bootsnap'
 gem 'rack-canonical-host' # Redirect www to root
 gem 'webpacker'
-gem "image_processing", "~> 1.12"
+gem 'image_processing', '~> 1.12'
 
 gem 'puma', '6.4.0' # Use Puma as the app server
 gem 'rack'
@@ -23,8 +23,8 @@ gem 'pg_search'
 
 # Dashboard analytics
 gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', tag: '4.0.4'
-#gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'allow-passing-of-readings'
-#gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
+# gem 'energy-sparks_analytics', git: 'https://github.com/Energy-Sparks/energy-sparks_analytics.git', branch: 'allow-passing-of-readings'
+# gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
 # Last proper release does that, causing all kinds of weird behaviour (+ not defined etc)
@@ -32,7 +32,7 @@ gem 'statsample', git: 'https://github.com/Energy-Sparks/statsample', tag: '2.1.
 
 # Assets
 gem 'jquery-rails' # Use jquery as the JavaScript library
-#gem 'sass-rails'# Use SCSS for stylesheets
+# gem 'sass-rails'# Use SCSS for stylesheets
 gem 'uglifier' # Use Uglifier as compressor for JavaScript assets
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
 gem 'momentjs-rails'
@@ -58,7 +58,7 @@ gem 'view_component'
 # JS Templating
 gem 'handlebars_assets'
 # Template variables
-gem "mustache", "~> 1.0"
+gem 'mustache', '~> 1.0'
 
 # User input
 gem 'trix-rails', require: 'trix'
@@ -69,7 +69,7 @@ gem 'cancancan', '~> 3.0.1' # Use cancancan for authorization
 
 # Utils
 gem 'groupdate', '6.2.1' # Use groupdate to group usage stats
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby] # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby] # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 
 # Bundle update installs 0.7.0 for some weird reason!
 gem 'dotenv-rails', '~> 2.7.4' # Shim to load environment variables from .env into ENV in development.
@@ -105,7 +105,7 @@ gem 'mobility', '~> 1.2.9'
 gem 'mobility-actiontext', '~> 1.1.1'
 
 # Background jobs
-gem "good_job", "~> 3.4.6"
+gem 'good_job', '~> 3.4.6'
 
 # Rails 6.1 functionality. Can be removed when we upgrade.
 gem 'delegated_type'
@@ -117,11 +117,11 @@ gem 'roo-xls'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
-  gem "bullet", require: false # use bullet to optimise queries
+  gem 'bullet', require: false # use bullet to optimise queries
   gem 'rspec-rails', '~> 5.1.2'
   gem 'rspec-json_expectations'
   gem 'rails-controller-testing'
-  gem "fakefs", require: "fakefs/safe"
+  gem 'fakefs', require: 'fakefs/safe'
   gem 'factory_bot_rails'
   gem 'climate_control'
   gem 'webmock'
@@ -130,9 +130,9 @@ group :development, :test do
   gem 'terminal-notifier', require: false
   gem 'terminal-notifier-guard', require: false
   gem 'rb-readline', require: false
-  gem 'rubocop', '0.93.1'
-  gem 'rubocop-rails', '2.9.1'
-  gem 'rubocop-performance', '1.8.0'
+  gem 'rubocop'
+  gem 'rubocop-rails'
+  gem 'rubocop-performance'
   gem 'rubocop-rspec'
   gem 'wisper-rspec', require: false
 end
@@ -142,7 +142,7 @@ group :development do
   gem 'web-console'
   gem 'listen', '~> 3.0.5'
   gem 'better_errors'
-  gem "binding_of_caller"
+  gem 'binding_of_caller'
   gem 'annotate'
   gem 'pry'
   gem 'pry-byebug', '~>3.10.1'
@@ -151,9 +151,9 @@ group :development do
   gem 'bundler-audit'
   gem 'brakeman'
   gem 'scout_apm'
-#  gem 'rack-mini-profiler'
-#  gem 'memory_profiler'
-#  gem 'i18n-debug'
+  #  gem 'rack-mini-profiler'
+  #  gem 'memory_profiler'
+  #  gem 'i18n-debug'
 end
 
 group :test do
@@ -162,11 +162,11 @@ group :test do
   gem 'capybara-email'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
-  gem "webdrivers", '>= 5.3.0'
-  gem 'simplecov', :require => false, :group => :test
+  gem 'webdrivers', '>= 5.3.0'
+  gem 'simplecov', require: false, group: :test
   gem 'shoulda-matchers'
   gem 'timecop'
-  gem "show_me_the_cookies"
+  gem 'show_me_the_cookies'
 end
 
 gem 'sprockets', '3.7.2'

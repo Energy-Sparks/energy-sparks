@@ -1,13 +1,13 @@
 module Amr
-  #This version makes some assumptions about what tariffs are
-  #loaded. Specifically, that there is a single days tariff.
-  #This is what v1 of the n3rgy API now supports.
+  # This version makes some assumptions about what tariffs are
+  # loaded. Specifically, that there is a single days tariff.
+  # This is what v1 of the n3rgy API now supports.
   #
-  #As a result the class ignores the date ranges returned by
-  #the `N3rgyTariffs` class. It just relies on that to map
-  #the list of prices into a more compressed representation
-  #which consists of time of day ranges that can be used to
-  #check the energy tariff prices
+  # As a result the class ignores the date ranges returned by
+  # the `N3rgyTariffs` class. It just relies on that to map
+  # the list of prices into a more compressed representation
+  # which consists of time of day ranges that can be used to
+  # check the energy tariff prices
   class N3rgyEnergyTariffInserter
     class UnexpectedN3rgyTariffError < StandardError; end
     class MissingRatesN3rgyTariffError < StandardError; end
@@ -41,7 +41,7 @@ module Amr
       @meter.energy_tariffs.dcc.where(end_date: nil).order(created_at: :desc).first
     end
 
-    #Change means:
+    # Change means:
     #  Different type of tariff
     #  Different standing charge, but same type of tariff
     #  Different prices, but same type of tariff
@@ -50,6 +50,7 @@ module Amr
       return true unless same_tariff_type?(energy_tariff)
       return true unless same_standing_charge?(energy_tariff)
       return true unless same_prices?(energy_tariff)
+
       false
     end
 
@@ -61,14 +62,16 @@ module Amr
       energy_tariff.energy_tariff_charges.where(charge_type: :standing_charge, value: standing_charge, units: :day).any?
     end
 
-    #Should already have checked if existing and new tariff are
-    #same type
+    # Should already have checked if existing and new tariff are
+    # same type
     def same_prices?(energy_tariff)
       return (energy_tariff.energy_tariff_prices.first.value == rates.values.first) if energy_tariff.flat_rate?
       return false unless energy_tariff.energy_tariff_prices.count == rates.keys.count
 
       rates.each do |times, price|
-        return false unless energy_tariff.energy_tariff_prices.where(start_time: times.first.to_s, end_time: times.last.to_s, value: price).any?
+        unless energy_tariff.energy_tariff_prices.where(start_time: times.first.to_s, end_time: times.last.to_s, value: price).any?
+          return false
+        end
       end
 
       true
@@ -84,6 +87,7 @@ module Amr
 
     def reject_as_zero_standing_charges?
       return false unless standing_charge <= 0.0
+
       log_error("Standing charge returned from n3rgy for #{@start_date} are zero #{standing_charge}")
       @import_log.save!
       true
@@ -91,6 +95,7 @@ module Amr
 
     def reject_as_zero_tariffs?
       return false unless rates.values.all? { |price| price.is_a?(Numeric) && price <= 0.0 }
+
       log_error("Prices returned from n3rgy for #{@start_date} are zero #{rates.inspect}")
       @import_log.save!
       true
@@ -100,20 +105,21 @@ module Amr
       @tariff[:kwh_tariffs].present?
     end
 
-    #We only support flat rate and differential tariffs in the EnergyTariff
-    #model currently. Raise exception to catch problems early
+    # We only support flat rate and differential tariffs in the EnergyTariff
+    # model currently. Raise exception to catch problems early
     def check_unexpected_tariff_format?
       unless valid_tariff_rates?
         raise MissingRatesN3rgyTariffError, "Rates returned from n3rgy for #{@start_date} are empty #{@tariff.inspect}"
       end
-      unless rates.values.all? {|price| price.is_a?(Numeric)}
+      unless rates.values.all? { |price| price.is_a?(Numeric) }
         raise UnexpectedN3rgyTariffError, "Unexpected tariff format for #{@meter.mpan_mprn} on #{@start_date}: #{rates.inspect}"
       end
-      #Trigger parsing of tariff data, which may throw errors
+
+      # Trigger parsing of tariff data, which may throw errors
       summary_tariff
     end
 
-    #Returns structures like:
+    # Returns structures like:
     #
     # Flat Rate:
     #
@@ -141,7 +147,8 @@ module Amr
     end
 
     def update_existing_tariff(energy_tariff)
-      return unless energy_tariff.present?
+      return if energy_tariff.blank?
+
       energy_tariff.update!(end_date: end_date)
     end
 
@@ -151,7 +158,7 @@ module Amr
         enabled: true,
         end_date: nil,
         meter_type: @meter.meter_type,
-        name: "Tariff from DCC SMETS2 meter",
+        name: 'Tariff from DCC SMETS2 meter',
         source: :dcc,
         start_date: @start_date,
         tariff_holder: @meter.school,
@@ -164,7 +171,6 @@ module Amr
       )
     end
 
-    #rubocop:disable Rails/Date
     def energy_tariff_prices
       rates.map do |time_range, price|
         EnergyTariffPrice.new(
@@ -175,13 +181,10 @@ module Amr
         )
       end
     end
-    #rubocop:enable Rails/Date
 
-    #rubocop:disable Rails/Date
     def to_end_time(time_of_day, flat_rate = true)
       flat_rate ? time_of_day.to_time : time_of_day.to_time.advance(minutes: 30)
     end
-    #rubocop:enable Rails/Date
 
     def energy_tariff_charges
       [

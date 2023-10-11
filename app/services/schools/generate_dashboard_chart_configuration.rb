@@ -12,7 +12,7 @@ module Schools
       charts << chart_type(:gas) if can_show_gas?
       charts << chart_type(:storage_heaters) if can_show_storage_heaters?
       charts << chart_type(:solar_pv) if can_show_solar_pv?
-      return charts
+      charts
     end
 
     private

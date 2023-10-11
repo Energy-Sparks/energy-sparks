@@ -34,13 +34,13 @@ class ManagementDashboardTable < ApplicationRecord
   def data
     # analytics currently returns a hash serialised as string,
     # would be preferable to return e.g. json
-    if alert.template_data['summary_data'].blank?
-      summary_data = {}
-    else
-      # rubocop:disable Security/Eval
-      summary_data = eval(alert.template_data['summary_data'])
-      # rubocop:enable Security/Eval
-    end
+    summary_data = if alert.template_data['summary_data'].blank?
+                     {}
+                   else
+                     # rubocop:disable Security/Eval
+                     eval(alert.template_data['summary_data'])
+                     # rubocop:enable Security/Eval
+                   end
     Tables::SummaryTableData.new(summary_data)
   end
 end

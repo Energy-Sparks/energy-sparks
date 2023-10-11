@@ -4,11 +4,10 @@ class HomeController < ApplicationController
   # **** ALL ACTIONS IN THIS CONTROLLER ARE PUBLIC! ****
   skip_before_action :authenticate_user!
   before_action :redirect_if_logged_in, only: :index
-  before_action :set_newsletters, only: [:index, :show]
-  before_action :set_case_studies, only: [:index, :show, :for_management, :for_teachers]
+  before_action :set_newsletters, only: %i[index show]
+  before_action :set_case_studies, only: %i[index show for_management for_teachers]
 
-  def index
-  end
+  def index; end
 
   def show
     render :index
@@ -70,41 +69,29 @@ class HomeController < ApplicationController
     ].sample
   end
 
-  def energy_audits
-  end
+  def energy_audits; end
 
-  def education_workshops
-  end
+  def education_workshops; end
 
-  def contact
-  end
+  def contact; end
 
-  def enrol
-  end
+  def enrol; end
 
-  def enrol_our_school
-  end
+  def enrol_our_school; end
 
-  def enrol_our_multi_academy_trust
-  end
+  def enrol_our_multi_academy_trust; end
 
-  def enrol_our_local_authority
-  end
+  def enrol_our_local_authority; end
 
-  def privacy_and_cookie_policy
-  end
+  def privacy_and_cookie_policy; end
 
-  def support_us
-  end
+  def support_us; end
 
-  def terms_and_conditions
-  end
+  def terms_and_conditions; end
 
-  def attribution
-  end
+  def attribution; end
 
-  def child_safeguarding_policy
-  end
+  def child_safeguarding_policy; end
 
   def funders
     @school_count = School.visible.count
@@ -143,7 +130,7 @@ class HomeController < ApplicationController
     [
       { title: 'What is Energy Sparks - an introduction', embed_url: 'https://www.youtube.com/embed/yPx8LCsK_rc' },
       { title: 'An introduction to Energy Sparks for eco teams', embed_url: 'https://www.youtube.com/embed/P9yJMOP9O9w' },
-      { title: 'Saundersfoot CP School and Energy Sparks', embed_url: 'https://www.youtube.com/embed/Rg0znmJtr5s' },
+      { title: 'Saundersfoot CP School and Energy Sparks', embed_url: 'https://www.youtube.com/embed/Rg0znmJtr5s' }
     ]
   end
 

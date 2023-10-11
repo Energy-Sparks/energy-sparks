@@ -5,9 +5,7 @@ namespace :after_party do
 
     SchoolTarget.all.each do |school_target|
       obs = Observation.where(school_target: school_target).order(created_at: :desc)
-      if obs.length > 1
-        obs[0..-2].each do |obs| obs.destroy end
-      end
+      obs[0..-2].each { |obs| obs.destroy } if obs.length > 1
     end
 
     # Update task as completed.  If you remove the line below, the task will

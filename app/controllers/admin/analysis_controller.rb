@@ -43,7 +43,7 @@ module Admin
 
     def title_and_chart_configuration
       tab = params[:tab].to_sym
-      if [:test, :heating_model_fitting].include?(tab)
+      if %i[test heating_model_fitting].include?(tab)
         DashboardConfiguration::DASHBOARD_PAGE_GROUPS[tab]
       else
         @school.configuration.analysis_charts_as_symbols(:analysis_charts)[tab]

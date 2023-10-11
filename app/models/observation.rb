@@ -48,9 +48,9 @@ class Observation < ApplicationRecord
   belongs_to :audit, optional: true
   belongs_to :school_target, optional: true
   # If adding a new observation type remember to also add a timelime template in app/views/schools/observations/timeline
-  enum observation_type: [:temperature, :intervention, :activity, :event, :audit, :school_target, :programme, :audit_activities_completed]
+  enum observation_type: { temperature: 0, intervention: 1, activity: 2, event: 3, audit: 4, school_target: 5, programme: 6, audit_activities_completed: 7 }
 
-  validates_presence_of :at, :school
+  validates :at, :school, presence: true
   validates_associated :temperature_recordings
 
   validates :intervention_type_id, presence: { message: 'please select an option' }, if: :intervention?
@@ -68,8 +68,8 @@ class Observation < ApplicationRecord
   scope :by_date, -> { order(at: :desc) }
   scope :for_school, ->(school) { where(school: school) }
   scope :between, ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
-  scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago)}
-  scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago)}
+  scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago) }
+  scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago) }
 
   has_rich_text :description
 
@@ -82,18 +82,18 @@ class Observation < ApplicationRecord
     # Only add bonus points if the site wide photo bonus points is set to non zero
     return unless SiteSettings.current.photo_bonus_points&.nonzero?
     # Only add bonus points if the current observation score is non zero
-    return unless self.points&.nonzero?
+    return unless points&.nonzero?
     # Only add bonus points if the description has an image
     return unless description_includes_images?
 
-    self.points = (self.points || 0) + SiteSettings.current.photo_bonus_points
+    self.points = (points || 0) + SiteSettings.current.photo_bonus_points
   end
 
   def description_includes_images?
     if intervention?
-      description&.body&.to_trix_html&.include?("figure")
+      description&.body&.to_trix_html&.include?('figure')
     elsif activity?
-      description&.body&.to_trix_html&.include?("figure") || activity.description_includes_images?
+      description&.body&.to_trix_html&.include?('figure') || activity.description_includes_images?
     end
   end
 

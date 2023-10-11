@@ -7,8 +7,7 @@ module SchoolGroups
     before_action :header_fix_enabled
     before_action :set_breadcrumbs
 
-    def index
-    end
+    def index; end
 
     def create
       @cluster = @school_group.clusters.build(cluster_params)
@@ -19,8 +18,7 @@ module SchoolGroups
       end
     end
 
-    def edit
-    end
+    def edit; end
 
     def update
       if @cluster.update(cluster_params)
@@ -58,16 +56,18 @@ module SchoolGroups
 
     def cluster_params
       params.fetch(:school_group_cluster, {}).permit(:name, school_ids: [])
-        .with_defaults(school_ids: [])
+            .with_defaults(school_ids: [])
     end
 
     def set_breadcrumbs
       @breadcrumbs = [
         { name: I18n.t('common.schools'), href: schools_path },
         { name: @school_group.name, href: school_group_path(@school_group) },
-        { name: t('school_groups.clusters.index.title').capitalize, href: school_group_clusters_path(@school_group) },
+        { name: t('school_groups.clusters.index.title').capitalize, href: school_group_clusters_path(@school_group) }
       ]
-      @breadcrumbs << { name: @cluster.new_record? ? I18n.t('school_groups.clusters.labels.new') : @cluster.name } if @cluster
+      if @cluster
+        @breadcrumbs << { name: @cluster.new_record? ? I18n.t('school_groups.clusters.labels.new') : @cluster.name }
+      end
     end
   end
 end

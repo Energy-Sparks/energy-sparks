@@ -16,12 +16,10 @@ module Targets
     private
 
     def add_estimate_for_fuel_type(estimates, fuel_type)
-      begin
-        estimate = target_service(fuel_type).annual_kwh_estimate_kwh
-        estimates[fuel_type] = estimate if estimate.present?
-      rescue => e
-        Rollbar.error(e, scope: :add_estimate_for_fuel_type, school_id: @school.id, school: @school.name, fuel_type: fuel_type)
-      end
+      estimate = target_service(fuel_type).annual_kwh_estimate_kwh
+      estimates[fuel_type] = estimate if estimate.present?
+    rescue StandardError => e
+      Rollbar.error(e, scope: :add_estimate_for_fuel_type, school_id: @school.id, school: @school.name, fuel_type: fuel_type)
     end
 
     def target_service(fuel_type)

@@ -5,9 +5,9 @@ namespace :after_party do
 
     # Put your task implementation HERE.
     energy_assets = {}
-    energy_assets['description'] = "Solar Edge"
+    energy_assets['description'] = 'Solar Edge'
     energy_assets['identifier'] = 'solar-edge'
-    energy_assets['date_format'] = "%d/%m/%Y"
+    energy_assets['date_format'] = '%d/%m/%Y'
     energy_assets['mpan_mprn_field'] = 'N/A'
     energy_assets['reading_date_field'] = 'N/A'
     energy_assets['reading_fields'] = 'N/A'

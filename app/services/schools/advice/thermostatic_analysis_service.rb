@@ -11,20 +11,16 @@ module Schools
         @meter_collection = meter_collection
       end
 
-      def enough_data?
-        thermostatic_analysis_service.enough_data?
-      end
+      delegate :enough_data?, to: :thermostatic_analysis_service
 
-      def data_available_from
-        thermostatic_analysis_service.data_available_from
-      end
+      delegate :data_available_from, to: :thermostatic_analysis_service
 
       def thermostatic_analysis
         build_thermostatic_analysis_model
       end
 
-      #Benchmark schools using their r2 value.
-      #See HeatingModel.r2_statistics for an example of grading r2 values
+      # Benchmark schools using their r2 value.
+      # See HeatingModel.r2_statistics for an example of grading r2 values
       def benchmark_thermostatic_control
         Schools::Comparison.new(
           school_value: thermostatic_analysis.r2,
@@ -36,7 +32,6 @@ module Schools
       end
 
       private
-
 
       def build_thermostatic_analysis_model
         thermostatic_analysis_service.create_model

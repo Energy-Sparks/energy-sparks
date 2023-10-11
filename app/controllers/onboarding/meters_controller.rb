@@ -21,16 +21,14 @@ module Onboarding
     def update
       @meter = @school_onboarding.school.meters.find(params[:id])
       if @meter.update(meter_params)
-        if @meter.mpan_mprn_previously_changed?
-          MeterManagement.new(@meter).process_mpan_mpnr_change!
-        end
+        MeterManagement.new(@meter).process_mpan_mpnr_change! if @meter.mpan_mprn_previously_changed?
         redirect_to new_onboarding_completion_path(@school_onboarding, anchor: 'meters')
       else
         render :edit
       end
     end
 
-  private
+    private
 
     def meter_params
       params.require(:meter).permit(:mpan_mprn, :meter_type, :name, :meter_serial_number)

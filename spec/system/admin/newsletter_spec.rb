@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 describe 'Newsletter managment', type: :system do
-
-  let!(:admin)  { create(:admin) }
+  let!(:admin) { create(:admin) }
 
   describe 'managing' do
-
     before do
       sign_in(admin)
       visit root_path
@@ -25,7 +23,7 @@ describe 'Newsletter managment', type: :system do
       click_on 'Create Newsletter'
       expect(page).to have_content('blank')
       fill_in 'Url', with: url
-      attach_file("Image", Rails.root + "spec/fixtures/images/newsletter-placeholder.png")
+      attach_file('Image', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
       click_on 'Create Newsletter'
       expect(page).to have_content url
 

@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe ImportMailer, include_application_helper: true do
   describe '#import_summary' do
-    let(:sheffield_school) { create(:school, :with_school_group, name: "Sheffield School")}
-    let(:bath_school) { create(:school, :with_school_group, name: "Bath School")}
+    let(:sheffield_school) { create(:school, :with_school_group, name: 'Sheffield School') }
+    let(:bath_school) { create(:school, :with_school_group, name: 'Bath School') }
     let(:sheffield_config) { create(:amr_data_feed_config, description: 'Sheffield') }
     let(:bath_config) { create(:amr_data_feed_config, description: 'Bath') }
     let(:admin_1) { create(:admin, name: 'Admin One') }
@@ -18,7 +18,7 @@ RSpec.describe ImportMailer, include_application_helper: true do
       ImportNotifier.new.notify(from: 2.days.ago, to: Time.now)
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to include('Energy Sparks import')
-      expect(email.html_part.body).to include("Data issues")
+      expect(email.html_part.body).to include('Data issues')
       expect(email.html_part.body).to include(meter_1.mpan_mprn.to_s)
       expect(email.html_part.body).to include(meter_1.school_name)
       expect(email.html_part.body).to include(meter_2.mpan_mprn.to_s)

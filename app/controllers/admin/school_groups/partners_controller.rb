@@ -5,14 +5,13 @@ module Admin
 
       def show
         @partners = Partner.all.order(:name)
-        @positions = @school_group.school_group_partners.inject({}) do |positions, school_group_partner|
+        @positions = @school_group.school_group_partners.each_with_object({}) do |school_group_partner, positions|
           positions[school_group_partner.partner_id] = school_group_partner.position
-          positions
         end
       end
 
       def update
-        position_attributes = params.permit(school_group_partners: [:position, :partner_id]).fetch(:school_group_partners) { {} }
+        position_attributes = params.permit(school_group_partners: %i[position partner_id]).fetch(:school_group_partners) { {} }
         @school_group.update_school_partner_positions!(position_attributes)
         redirect_to admin_school_group_path(@school_group), notice: 'Partners updated'
       end

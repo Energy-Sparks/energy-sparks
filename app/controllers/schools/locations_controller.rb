@@ -7,11 +7,9 @@ module Schools
       @locations = @locations.order(:name)
     end
 
-    def new
-    end
+    def new; end
 
-    def edit
-    end
+    def edit; end
 
     def create
       @location.school = @school
@@ -35,7 +33,7 @@ module Schools
       redirect_back fallback_location: school_locations_path(@school), notice: 'Successfully deleted.'
     end
 
-  private
+    private
 
     def location_params
       params.require(:location).permit(:description, :name)

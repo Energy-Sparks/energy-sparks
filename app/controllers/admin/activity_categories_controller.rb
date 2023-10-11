@@ -7,14 +7,11 @@ module Admin
       @activity_categories = @activity_categories.by_name
     end
 
-    def show
-    end
+    def show; end
 
-    def new
-    end
+    def new; end
 
-    def edit
-    end
+    def edit; end
 
     def create
       if @activity_category.save
@@ -32,7 +29,7 @@ module Admin
       end
     end
 
-  private
+    private
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def activity_category_params

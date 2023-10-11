@@ -17,7 +17,7 @@ class ConsentStatement < ApplicationRecord
   translates :content, backend: :action_text
 
   validates :title, :content, presence: true
-  validates_uniqueness_of :current, if: :current
+  validates :current, uniqueness: { if: :current }
 
   scope :by_date, -> { order(created_at: :desc) }
 

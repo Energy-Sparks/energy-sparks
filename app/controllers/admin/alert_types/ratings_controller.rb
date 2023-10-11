@@ -62,7 +62,7 @@ module Admin
         redirect_to admin_alert_type_ratings_path(@alert_type), notice: 'Rating deletion failed'
       end
 
-    private
+      private
 
       def rating_params
         params.require(:alert_type_rating).permit(
@@ -91,19 +91,17 @@ module Admin
 
       def set_available_charts
         @available_charts = @alert_type.available_charts
-        @available_charts << ["None", :none]
+        @available_charts << ['None', :none]
       end
 
       def set_available_tables
         @available_tables = @alert_type.available_tables
-        @available_tables << ["None", :none]
+        @available_tables << ['None', :none]
       end
 
       def load_example_variables(rating)
         example_alert = rating.alert_type.alerts.displayable.rating_between(rating.rating_from || 0, rating.rating_to || 10).order(created_at: :desc).first
-        if example_alert
-          @example_variables = example_alert.template_variables
-        end
+        @example_variables = example_alert.template_variables if example_alert
       end
     end
   end

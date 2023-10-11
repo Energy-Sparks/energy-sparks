@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe EnergyTariffsMailer, include_application_helper: true do
-
   around do |example|
     ClimateControl.modify WELSH_APPLICATION_HOST: 'cy.localhost' do
       example.run
@@ -12,7 +11,7 @@ RSpec.describe EnergyTariffsMailer, include_application_helper: true do
     let!(:school_group) { create(:school_group, group_type: :general) }
     let!(:school_group_admin) { create(:group_admin, school_group: school_group) }
 
-    context "preferred locale is cy" do
+    context 'preferred locale is cy' do
       it 'sends group admins a review group tariffs reminder email' do
         school_group_admin.update(preferred_locale: :cy)
 
@@ -29,7 +28,7 @@ RSpec.describe EnergyTariffsMailer, include_application_helper: true do
       end
     end
 
-    context "preferred locale is en" do
+    context 'preferred locale is en' do
       it 'sends group admins a review group tariffs reminder email' do
         school_group_admin.update(preferred_locale: :en)
 
@@ -53,7 +52,7 @@ RSpec.describe EnergyTariffsMailer, include_application_helper: true do
     let!(:staff) { create(:staff, school: school) }
     let!(:pupil) { create(:pupil, school: school) }
 
-    context "preferred locale is en" do
+    context 'preferred locale is en' do
       it 'sends school admins a review school tariffs reminder email' do
         school_admin.update(preferred_locale: :en)
 
@@ -69,7 +68,7 @@ RSpec.describe EnergyTariffsMailer, include_application_helper: true do
       end
     end
 
-    context "preferred locale is cy" do
+    context 'preferred locale is cy' do
       it 'sends school admins a review school tariffs reminder email' do
         school_admin.update(preferred_locale: :cy)
 

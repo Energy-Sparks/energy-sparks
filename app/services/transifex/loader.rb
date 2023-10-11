@@ -9,43 +9,43 @@ module Transifex
     def perform
       transifex_load = TransifexLoad.create!(status: :running)
       begin
-        log("Synchronising Activity Types")
+        log('Synchronising Activity Types')
         synchronise_resources(transifex_load, ActivityType.tx_resources)
-        log("Synchronising Intervention Types")
+        log('Synchronising Intervention Types')
         synchronise_resources(transifex_load, InterventionType.tx_resources)
-        log("Synchronising Activity Categories")
+        log('Synchronising Activity Categories')
         synchronise_resources(transifex_load, ActivityCategory.tx_resources)
-        log("Synchronising Intervention Type Groups")
+        log('Synchronising Intervention Type Groups')
         synchronise_resources(transifex_load, InterventionTypeGroup.tx_resources)
-        log("Synchronising Programme Types")
+        log('Synchronising Programme Types')
         synchronise_resources(transifex_load, ProgrammeType.tx_resources)
-        log("Synchronising Help Pages")
+        log('Synchronising Help Pages')
         synchronise_resources(transifex_load, HelpPage.tx_resources)
-        log("Synchronising Case Studies")
+        log('Synchronising Case Studies')
         synchronise_resources(transifex_load, CaseStudy.tx_resources)
-        log("Synchronising Transport Types")
+        log('Synchronising Transport Types')
         synchronise_resources(transifex_load, TransportType.tx_resources)
-        log("Synchronising Alert Type Rating Content Versions")
+        log('Synchronising Alert Type Rating Content Versions')
         synchronise_resources(transifex_load, AlertTypeRatingContentVersion.tx_resources)
-        log("Synchronising Equivalence Type Content Versions")
+        log('Synchronising Equivalence Type Content Versions')
         synchronise_resources(transifex_load, EquivalenceTypeContentVersion.tx_resources)
-        log("Synchronising Consent Statements")
+        log('Synchronising Consent Statements')
         synchronise_resources(transifex_load, ConsentStatement.tx_resources)
 
         if EnergySparks::FeatureFlags.active?(:sync_advice_page_translations)
-          log("Synchronising Advice Pages")
+          log('Synchronising Advice Pages')
           synchronise_resources(transifex_load, AdvicePage.tx_resources)
         end
-      rescue => error
-        #ensure all errors are caught and logged
-        log_error(transifex_load, error)
+      rescue StandardError => e
+        # ensure all errors are caught and logged
+        log_error(transifex_load, e)
       end
       transifex_load.update!(status: :done)
     end
 
     private
 
-    #synchronise a list of individual resources
+    # synchronise a list of individual resources
     def synchronise_resources(transifex_load, tx_serialisable_resources)
       counter = OpenStruct.new(total_pulled: 0, total_pushed: 0)
       tx_serialisable_resources.each do |tx_serialisable|
@@ -58,26 +58,23 @@ module Transifex
     end
 
     def process_tx_serialisable(transifex_load, tx_serialisable, counter)
-      begin
-        synchroniser = Synchroniser.new(tx_serialisable, @locale)
-        log("processing #{tx_serialisable.resource_key}")
-        counter.total_pulled += 1 if synchroniser.pull
-        if @full_sync
-          counter.total_pushed += 1 if synchroniser.push
-        end
-      rescue => error
-        log("error processing #{tx_serialisable.resource_key}")
-        log_error(transifex_load, error, tx_serialisable)
+      synchroniser = Synchroniser.new(tx_serialisable, @locale)
+      log("processing #{tx_serialisable.resource_key}")
+      counter.total_pulled += 1 if synchroniser.pull
+      if @full_sync
+        counter.total_pushed += 1 if synchroniser.push
       end
+    rescue StandardError => e
+      log("error processing #{tx_serialisable.resource_key}")
+      log_error(transifex_load, e, tx_serialisable)
     end
 
     def log_error(transifex_load, error, tx_serialisable = nil)
       if tx_serialisable.present?
         Rollbar.error(error,
-          job: :transifex_load,
-          record_type: tx_serialisable.class.name,
-          record_id: tx_serialisable.id
-        )
+                      job: :transifex_load,
+                      record_type: tx_serialisable.class.name,
+                      record_id: tx_serialisable.id)
         transifex_load.transifex_load_errors.create!(
           record_type: tx_serialisable.class.name,
           record_id: tx_serialisable.id,

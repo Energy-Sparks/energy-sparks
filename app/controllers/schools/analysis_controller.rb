@@ -35,12 +35,12 @@ module Schools
         # old-style analysis tab name, redirect back to main page
         redirect_to school_analysis_index_path(@school), status: :moved_permanently
       end
-    rescue => e
+    rescue StandardError => e
       log_error_if_current_page(e, @school, @page)
       flash[:error] = "Analysis page raised error: #{e.message}"
     end
 
-  private
+    private
 
     def log_error_if_current_page(error, school, page)
       if school.latest_analysis_pages.include?(page)

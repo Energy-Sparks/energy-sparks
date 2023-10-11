@@ -21,7 +21,7 @@ module Targets
       out_of_date = []
       out_of_date << :electricity if electricity_progress.present? && !electricity_progress.recent_data?
       out_of_date << :gas if gas_progress.present? && !gas_progress.recent_data?
-      #treat storage heaters are electricity data when reporting to users
+      # treat storage heaters are electricity data when reporting to users
       out_of_date << :electricity if storage_heater_progress.present? && !storage_heater_progress.recent_data?
       out_of_date.uniq
     end
@@ -60,6 +60,7 @@ module Targets
       return false unless fuel_progress.present? && fuel_progress.achieving_target?
       return true unless check_recent
       return true if fuel_progress.recent_data?
+
       false
     end
 
@@ -67,6 +68,7 @@ module Targets
       return false unless fuel_progress.present? && !fuel_progress.achieving_target?
       return true unless check_recent
       return true if fuel_progress.recent_data?
+
       false
     end
   end

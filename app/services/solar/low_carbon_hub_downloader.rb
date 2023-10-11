@@ -3,11 +3,11 @@ require 'dashboard'
 module Solar
   class LowCarbonHubDownloader
     def initialize(
-        installation:,
-        start_date:,
-        end_date:,
-        api:
-      )
+      installation:,
+      start_date:,
+      end_date:,
+      api:
+    )
       @low_carbon_hub_installation = installation
       @low_carbon_hub_api = api
       @start_date = start_date
@@ -21,7 +21,7 @@ module Solar
         @start_date,
         @end_date
       )
-    rescue => e
+    rescue StandardError => e
       Rollbar.error(
         e,
         installation_id: @low_carbon_hub_installation.id,

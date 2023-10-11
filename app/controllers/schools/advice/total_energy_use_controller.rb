@@ -52,6 +52,7 @@ module Schools
         return :benchmark_one_year if can_benchmark_gas? && can_benchmark_electricity?
         return :benchmark_electric_only_one_year_kwh if can_benchmark_electricity?
         return :benchmark_gas_only_one_year_kwh if can_benchmark_gas?
+
         nil
       end
 

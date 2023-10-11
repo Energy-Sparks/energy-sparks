@@ -24,18 +24,18 @@ module EnergyTariffs
 
     def make_charges(defs, energy_tariff)
       defs.keys.map do |type|
-        if EnergyTariffCharge.charge_types.key?(type.to_sym)
-          value = defs[type][:value]
-          units = defs[type][:units]
-          if value.present?
-            EnergyTariffCharge.new(charge_type: type, value: value, units: units, energy_tariff: energy_tariff)
-          end
+        next unless EnergyTariffCharge.charge_types.key?(type.to_sym)
+
+        value = defs[type][:value]
+        units = defs[type][:units]
+        if value.present?
+          EnergyTariffCharge.new(charge_type: type, value: value, units: units, energy_tariff: energy_tariff)
         end
       end.compact
     end
 
     def energy_tariff_params
-      params.require(:energy_tariff_charges).permit(energy_tariff: [:vat_rate, :ccl, :tnuos])[:energy_tariff]
+      params.require(:energy_tariff_charges).permit(energy_tariff: %i[vat_rate ccl tnuos])[:energy_tariff]
     end
   end
 end

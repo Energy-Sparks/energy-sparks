@@ -1,10 +1,12 @@
 module SchoolProgress
   extend ActiveSupport::Concern
 
-private
+  private
 
   def redirect_if_disabled
-    redirect_to school_path(@school) unless Targets::SchoolTargetService.targets_enabled?(@school) && Targets::SchoolTargetService.new(@school).enough_data?
+    unless Targets::SchoolTargetService.targets_enabled?(@school) && Targets::SchoolTargetService.new(@school).enough_data?
+      redirect_to school_path(@school)
+    end
   end
 
   def prompt_for_target?
@@ -37,6 +39,7 @@ private
 
   def fuel_types_changed
     return nil unless @school.has_target?
+
     @school.most_recent_target.revised_fuel_types
   end
 

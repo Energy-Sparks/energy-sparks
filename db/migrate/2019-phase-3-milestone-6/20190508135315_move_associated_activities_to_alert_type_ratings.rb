@@ -1,8 +1,7 @@
 class MoveAssociatedActivitiesToAlertTypeRatings < ActiveRecord::Migration[6.0]
   def change
-
     rename_table :alert_type_activity_types, :alert_type_rating_activity_types
-    add_reference :alert_type_rating_activity_types, :alert_type_rating, foreign_key: {on_delete: :cascade}
+    add_reference :alert_type_rating_activity_types, :alert_type_rating, foreign_key: { on_delete: :cascade }
 
     reversible do |dir|
       dir.up do
@@ -17,6 +16,5 @@ class MoveAssociatedActivitiesToAlertTypeRatings < ActiveRecord::Migration[6.0]
 
     change_column_null :alert_type_rating_activity_types, :alert_type_rating_id, false
     remove_reference :alert_type_rating_activity_types, :alert_type
-
   end
 end

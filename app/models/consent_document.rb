@@ -21,5 +21,5 @@ class ConsentDocument < ApplicationRecord
 
   scope :by_created_date, -> { order(created_at: :asc) }
 
-  validates_presence_of :school, :title, :file, presence: true
+  validates :school, :title, :file, presence: { presence: true }
 end

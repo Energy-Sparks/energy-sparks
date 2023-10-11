@@ -20,5 +20,5 @@
 #
 class TransifexLoadError < ApplicationRecord
   belongs_to :transifex_load
-  validates_presence_of :error
+  validates :error, presence: true
 end

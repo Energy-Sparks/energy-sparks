@@ -15,7 +15,7 @@
 #  index_transifex_statuses_uniqueness  (record_type,record_id) UNIQUE
 #
 class TransifexStatus < ApplicationRecord
-  validates_presence_of :record_type, :record_id
+  validates :record_type, :record_id, presence: true
   validates :record_id, uniqueness: { scope: :record_type }
 
   def self.find_by_model(model)

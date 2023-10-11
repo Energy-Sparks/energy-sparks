@@ -3,12 +3,12 @@ namespace :after_party do
   task load_local_authority_areas: :environment do
     puts "Running deploy task 'load_local_authority_areas'"
 
-    file_name = File.join( File.expand_path(File.dirname(__FILE__)) , "lad-2022-05.csv" )
-    #LAD22CD,LAD22NM
-    CSV.foreach( file_name, headers: true ) do |lad|
-      area = LocalAuthorityArea.find_by_code(lad[0])
+    file_name = File.join(__dir__, 'lad-2022-05.csv')
+    # LAD22CD,LAD22NM
+    CSV.foreach(file_name, headers: true) do |lad|
+      area = LocalAuthorityArea.find_by(code: lad[0])
       if area.present?
-        $stderr.puts "#{lad[0]} (#{lad[1]}) already present, skipping"
+        warn "#{lad[0]} (#{lad[1]}) already present, skipping"
       else
         LocalAuthorityArea.create!(
           code: lad[0],

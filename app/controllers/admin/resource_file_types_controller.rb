@@ -6,14 +6,11 @@ module Admin
       @resource_file_types = @resource_file_types.order(:position)
     end
 
-    def show
-    end
+    def show; end
 
-    def new
-    end
+    def new; end
 
-    def edit
-    end
+    def edit; end
 
     def create
       if @resource_file_type.save

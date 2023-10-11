@@ -4,9 +4,7 @@ Rollbar.configure do |config|
 
   config.access_token = ENV['ROLLBAR_ACCESS_TOKEN']
 
-  unless Rails.env.production?
-    config.enabled = false
-  end
+  config.enabled = false unless Rails.env.production?
 
   # By default, Rollbar will try to call the `current_user` controller method
   # to fetch the logged-in user object, and then call that object's `id`,
@@ -27,12 +25,12 @@ Rollbar.configure do |config|
   # Valid levels: 'critical', 'error', 'warning', 'info', 'debug', 'ignore'
   # 'ignore' will cause the exception to not be reported at all.
   #
-  #Added RecordNotFound to ignore list as we're getting quite a few hits to
-  #schools and scoreboard pages for old or non-existent schools (e.g. made up ids)
+  # Added RecordNotFound to ignore list as we're getting quite a few hits to
+  # schools and scoreboard pages for old or non-existent schools (e.g. made up ids)
   config.exception_level_filters.merge!({
-    'ActionController::RoutingError' => 'ignore',
-    'ActiveRecord::RecordNotFound' => 'ignore'
-  })
+                                          'ActionController::RoutingError' => 'ignore',
+                                          'ActiveRecord::RecordNotFound' => 'ignore'
+                                        })
   #
   # You can also specify a callable, which will be called with the exception instance.
   # config.exception_level_filters.merge!('MyCriticalException' => lambda { |e| 'critical' })

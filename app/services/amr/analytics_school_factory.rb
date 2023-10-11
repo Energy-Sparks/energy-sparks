@@ -28,7 +28,7 @@ module Amr
       }
     end
 
-  private
+    private
 
     def country
       @active_record_school.country ? @active_record_school.country.to_sym : :england

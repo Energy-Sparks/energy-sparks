@@ -5,6 +5,7 @@ module SchoolGroups
 
     def index
       redirect_to school_group_path(@school_group) and return unless can?(:update_settings, @school_group)
+
       @breadcrumbs = [
         { name: I18n.t('common.schools'), href: schools_path },
         { name: @school_group.name, href: school_group_path(@school_group) },

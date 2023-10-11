@@ -24,7 +24,7 @@ module Admin
           current_user
         )
         redirect_to admin_school_meter_attributes_path(@school)
-      rescue => e
+      rescue StandardError => e
         redirect_back fallback_location: admin_school_meter_attributes_path(@school), notice: e.message
       end
 
@@ -37,7 +37,7 @@ module Admin
         @meter_attribute.validate!
         @meter_attribute_type = @meter_attribute.meter_attribute_type
         @input_data = @meter_attribute.input_data
-      rescue => e
+      rescue StandardError => e
         redirect_back fallback_location: admin_school_meter_attributes_path(@school), notice: e.message
       end
 
@@ -50,7 +50,7 @@ module Admin
           current_user
         )
         redirect_to admin_school_meter_attributes_path(@school)
-      rescue => e
+      rescue StandardError => e
         redirect_back fallback_location: edit_admin_school_meter_attribute_path(@school, meter_attribute), notice: e.message
       end
 
@@ -58,7 +58,7 @@ module Admin
         service = Meters::MeterAttributeManager.new(@school)
         service.delete!(params[:id], current_user)
         redirect_to admin_school_meter_attributes_path(@school)
-      rescue => e
+      rescue StandardError => e
         redirect_back fallback_location: admin_school_meter_attributes_path(@school), notice: e.message
       end
     end

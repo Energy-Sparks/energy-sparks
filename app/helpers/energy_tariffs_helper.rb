@@ -28,7 +28,7 @@ module EnergyTariffsHelper
 
   def tariff_holder_route(tariff_holder)
     if tariff_holder.site_settings?
-      [:admin, :settings]
+      %i[admin settings]
     else
       [tariff_holder]
     end
@@ -44,6 +44,7 @@ module EnergyTariffsHelper
 
   def convert_value_to_long_currency(value, currency: '£')
     return '£' unless value.is_a? Numeric
+
     value_as_string = value.to_s
     split_value = value_as_string.split('.')
 
@@ -82,9 +83,7 @@ module EnergyTariffsHelper
   end
 
   def energy_tariff_prices_text(energy_tariff)
-    if default_energy_tariff_prices?(energy_tariff)
-      I18n.t('schools.tariffs_helper.prices_text')
-    end
+    I18n.t('schools.tariffs_helper.prices_text') if default_energy_tariff_prices?(energy_tariff)
   end
 
   def default_energy_tariff_prices?(energy_tariff)
@@ -129,9 +128,9 @@ module EnergyTariffsHelper
     settings(charge_type).fetch(:units, []).map { |k| [EnergyTariffCharge.charge_type_units[k], k] }
   end
 
-  #If user provides a value that cant be cast to underlying type,
-  #e.g. a string when a number is expected, you cant read the attribute
-  #value. This checks for errors and retrieves the original.
+  # If user provides a value that cant be cast to underlying type,
+  # e.g. a string when a number is expected, you cant read the attribute
+  # value. This checks for errors and retrieves the original.
   def value_allowing_for_errors(model, attribute = :value)
     if model.errors.any?
       model.read_attribute_before_type_cast(attribute)

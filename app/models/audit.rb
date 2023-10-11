@@ -26,7 +26,7 @@ class Audit < ApplicationRecord
 
   has_many :observations, dependent: :destroy
 
-  validates_presence_of :school, :title, :file
+  validates :school, :title, :file, presence: true
 
   has_many :audit_activity_types
   has_many :activity_types, through: :audit_activity_types
@@ -44,6 +44,7 @@ class Audit < ApplicationRecord
   def activities_completed?
     activity_type_ids = activity_types.pluck(:id)
     return if activity_type_ids.empty?
+
     # Checks if the associated school has completed all activites that corresponds with the activity types
     # listed in the audit.  It only includes activities logged after the audit was created and completed within
     # 12 months of the audit's creation date.
@@ -53,7 +54,9 @@ class Audit < ApplicationRecord
   def create_activities_completed_observation!
     return unless SiteSettings.current.audit_activities_bonus_points
     return unless activities_completed?
-    return if observations&.audit_activities_completed&.present? # Only one audit activities completed observation is permitted per audit
+    if observations&.audit_activities_completed&.present?
+      return
+    end # Only one audit activities completed observation is permitted per audit
 
     Observation.create!(
       school: school,

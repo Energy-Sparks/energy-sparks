@@ -8,11 +8,9 @@ module Admin
       @analysis_alert_types = AlertType.analysis.editable.order(:title)
     end
 
-    def show
-    end
+    def show; end
 
-    def edit
-    end
+    def edit; end
 
     def update
       if @alert_type.update(alert_type_params)
@@ -22,7 +20,7 @@ module Admin
       end
     end
 
-  private
+    private
 
     def alert_type_params
       params.require(:alert_type).permit(:title, :description, :frequency, :group, :advice_page_id, :link_to, :link_to_section, :enabled)

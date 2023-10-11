@@ -13,8 +13,7 @@ class CompareController < ApplicationController
   end
 
   # pick benchmark
-  def benchmarks
-  end
+  def benchmarks; end
 
   # display results
   def show
@@ -28,8 +27,8 @@ class CompareController < ApplicationController
   def filter
     @filter ||=
       params.permit(:search, :benchmark, :country, :school_type, school_group_ids: [], school_types: [])
-        .with_defaults(school_group_ids: [], school_types: School.school_types.keys)
-        .to_hash.symbolize_keys
+            .with_defaults(school_group_ids: [], school_types: School.school_types.keys)
+            .to_hash.symbolize_keys
   end
 
   def index_params
@@ -54,7 +53,7 @@ class CompareController < ApplicationController
     school_params = filter.slice(:school_group_ids, :school_types, :school_type, :country).merge(include_invisible: include_invisible)
 
     schools = SchoolFilter.new(**school_params).filter
-    schools.select {|s| can?(:show, s) } unless include_invisible
+    schools.select { |s| can?(:show, s) } unless include_invisible
     schools
   end
 
@@ -72,6 +71,6 @@ class CompareController < ApplicationController
   end
 
   def extract_title_from_benchmark(benchmark)
-    benchmark_groups.find {|group| group[:benchmarks]}.dig(:benchmarks, benchmark)
+    benchmark_groups.find { |group| group[:benchmarks] }.dig(:benchmarks, benchmark)
   end
 end

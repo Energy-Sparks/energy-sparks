@@ -19,7 +19,7 @@ class CreateAmrDataFeedConfigTable < ActiveRecord::Migration[5.2]
       t.text    :postcode_field
       t.text    :units_field
       t.text    :header_example
-      t.boolean :expect_header,        null: false, default: true
+      t.boolean :expect_header, null: false, default: true
       t.timestamps
     end
   end

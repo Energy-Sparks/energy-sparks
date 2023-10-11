@@ -2,7 +2,7 @@ class InterventionTypesController < ApplicationController
   include Pagy::Backend
   load_and_authorize_resource
 
-  skip_before_action :authenticate_user!, only: [:search, :show, :for_school]
+  skip_before_action :authenticate_user!, only: %i[search show for_school]
 
   def search
     if params[:query]

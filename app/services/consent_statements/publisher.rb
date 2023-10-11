@@ -12,7 +12,7 @@ module ConsentStatements
         consent_statement.update(current: true)
       end
       true
-    rescue => e
+    rescue StandardError => e
       @error_message = "Failed to publish consent statement: #{e.message}"
       false
     end

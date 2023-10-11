@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 describe AmrDataFeedImportLog, type: :system, include_application_helper: true do
-
   let!(:admin)           { create(:admin) }
   let(:sheffield_config) { create(:amr_data_feed_config, description: 'Sheffield') }
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit root_path
     click_on 'Manage'
@@ -13,7 +12,7 @@ describe AmrDataFeedImportLog, type: :system, include_application_helper: true d
   end
 
   it 'shows an import log summary table' do
-    error_messages = "Oh no!"
+    error_messages = 'Oh no!'
     log_1 = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, error_messages: error_messages, import_time: 1.day.ago)
     log_2 = create(:amr_data_feed_import_log, amr_data_feed_config: sheffield_config, records_imported: 200, import_time: 1.day.ago)
 

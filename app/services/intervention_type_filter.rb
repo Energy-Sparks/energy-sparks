@@ -14,7 +14,7 @@ class InterventionTypeFilter
     filtered
   end
 
-private
+  private
 
   def exclude_if_done_this_year
     @query[:exclude_if_done_this_year]

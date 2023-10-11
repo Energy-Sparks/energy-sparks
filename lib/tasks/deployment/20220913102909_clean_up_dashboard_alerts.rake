@@ -3,7 +3,7 @@ namespace :after_party do
   task clean_up_dashboard_alerts: :environment do
     puts "Running deploy task 'clean_up_dashboard_alerts'"
 
-    DashboardAlert.where(dashboard: ['public', 'teacher']).delete_all
+    DashboardAlert.where(dashboard: %w[public teacher]).delete_all
 
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).

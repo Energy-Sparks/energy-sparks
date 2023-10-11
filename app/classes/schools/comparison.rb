@@ -22,6 +22,7 @@ module Schools
 
     def categorise_school
       return :other_school if @school_value.nil? || @benchmark_value.nil? || @exemplar_value.nil?
+
       if exemplar_school?
         :exemplar_school
       elsif benchmark_school?

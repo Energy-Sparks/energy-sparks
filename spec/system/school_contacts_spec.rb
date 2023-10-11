@@ -1,16 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe "school", type: :system do
-
+RSpec.describe 'school', type: :system do
   let(:school_name) { 'Oldfield Park Infants' }
   let!(:school) { create(:school, :with_school_group, name: school_name) }
   let!(:teacher) { create(:staff, school: school) }
 
   describe 'when logged in as a school admin' do
-
     let!(:school_admin) { create(:school_admin, school: school) }
 
-    before(:each) do
+    before do
       sign_in(school_admin)
       visit root_path
       click_on 'Manage alert contacts'
@@ -35,12 +33,10 @@ RSpec.describe "school", type: :system do
     end
 
     describe 'multiple contacts' do
-
       let!(:contact) { create(:contact_with_name_email, user: school_admin, school: school) }
       let!(:other_school) { create(:school, :with_school_group, name: 'School Two') }
 
       it 'lets me sign up for alerts for correct school' do
-
         expect(school_admin.contact_for_school).to eq(contact)
 
         school_admin.update(school: other_school)
@@ -54,7 +50,7 @@ RSpec.describe "school", type: :system do
         click_button 'Enable alerts'
 
         school_admin.reload
-        expect(school_admin.contact_for_school).to_not be_nil
+        expect(school_admin.contact_for_school).not_to be_nil
 
         click_on 'My alerts'
 
@@ -69,15 +65,15 @@ RSpec.describe "school", type: :system do
   end
 
   describe 'when logged in as an admin' do
-
     let!(:admin) { create(:admin) }
 
-    before(:each) do
+    before do
       sign_in(admin)
     end
 
     describe 'existing standalone contacts' do
       let!(:contact) { create(:contact_with_name_email, school: school) }
+
       it 'shows me the contacts on the page' do
         visit school_contacts_path(school)
         expect(page).to have_content('Standalone contacts')
@@ -102,14 +98,15 @@ RSpec.describe "school", type: :system do
 
       it 'allows contacts to be deleted' do
         visit school_contacts_path(school)
-        expect {
+        expect do
           click_on('Delete')
-        }.to change { Contact.count }.by(-1)
+        end.to change(Contact, :count).by(-1)
       end
     end
 
     describe 'existing account contacts' do
       let!(:contact) { create(:contact_with_name_email, user: teacher, school: school) }
+
       it 'allows contacts to be edited' do
         visit school_contacts_path(school)
 
@@ -124,14 +121,15 @@ RSpec.describe "school", type: :system do
 
       it 'allows contacts to be deleted' do
         visit school_contacts_path(school)
-        expect {
+        expect do
           click_on('Disable alerts')
-        }.to change { Contact.count }.by(-1)
+        end.to change(Contact, :count).by(-1)
       end
     end
 
     describe 'existing standalone contacts' do
       let!(:contact) { create(:contact_with_name_email, school: school) }
+
       it 'shows me the contacts on the page' do
         visit school_contacts_path(school)
 
@@ -159,21 +157,19 @@ RSpec.describe "school", type: :system do
 
       it 'allows existing contacts to be deleted' do
         visit school_contacts_path(school)
-        expect {
+        expect do
           click_on('Delete')
-        }.to change { Contact.count }.by(-1)
+        end.to change(Contact, :count).by(-1)
       end
     end
   end
 
   describe 'when logged in as a teacher' do
-
-    before(:each) do
+    before do
       sign_in(teacher)
     end
 
     it 'lets me sign up for alerts' do
-
       expect(teacher.contact_for_school).to be_nil
       visit school_path(school)
 
@@ -187,7 +183,7 @@ RSpec.describe "school", type: :system do
       click_button 'Enable alerts'
 
       teacher.reload
-      expect(teacher.contact_for_school).to_not be_nil
+      expect(teacher.contact_for_school).not_to be_nil
       expect(teacher.contact_for_school.mobile_phone_number).to eq('01122333444')
       expect(teacher.preferred_locale).to eq('cy')
 

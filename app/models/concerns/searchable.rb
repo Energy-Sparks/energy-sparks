@@ -20,7 +20,7 @@ module Searchable
     def build_translation_search_sql(locale, query)
       dictionary = dictionary_for(locale)
 
-      search_sql = <<-SQL.squish
+      <<-SQL.squish
         INNER JOIN (
           SELECT "#{table_name}"."id" AS search_id, (
             ts_rank(
@@ -71,8 +71,6 @@ module Searchable
 
         ORDER BY search_type_results.rank DESC, "#{table_name}"."id" ASC
       SQL
-
-      search_sql
     end
 
     def dictionary_for(locale)

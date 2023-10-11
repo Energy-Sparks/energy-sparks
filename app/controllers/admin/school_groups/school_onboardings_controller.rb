@@ -11,14 +11,14 @@ module Admin
       end
 
       def reminders
-        for_selected "reminders sent" do |onboarding|
+        for_selected 'reminders sent' do |onboarding|
           OnboardingMailer.with(school_onboarding: onboarding).reminder_email.deliver_now
           onboarding.events.create!(event: :reminder_sent)
         end
       end
 
       def make_visible
-        for_selected "made visible" do |onboarding|
+        for_selected 'made visible' do |onboarding|
           SchoolCreator.new(onboarding.school).make_visible! if onboarding.school
         end
       rescue SchoolCreator::Error => e
@@ -84,13 +84,13 @@ module Admin
             yield onboarding
           end
         else
-          notice = "Nothing selected"
+          notice = 'Nothing selected'
         end
         redirect_to redirect_location, notice: "Selected #{@school_group.name} schools #{notice}"
       end
 
       def redirect_location
-        if params[:anchor] == "onboarding"
+        if params[:anchor] == 'onboarding'
           admin_school_group_path(@school_group, anchor: 'onboarding')
         else
           admin_school_onboardings_path(anchor: @school_group.slug)

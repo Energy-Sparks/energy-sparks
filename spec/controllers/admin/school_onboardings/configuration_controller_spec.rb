@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Admin::SchoolOnboardings::ConfigurationController, type: :controller do
-
   let(:admin)             { create(:admin) }
   let(:school_group)      { create :school_group, name: 'My Super Group' }
   let(:expected_anchor)   { 'my-super-group' }
@@ -15,7 +14,7 @@ RSpec.describe Admin::SchoolOnboardings::ConfigurationController, type: :control
 
   describe '#update' do
     it 'redirects to url with anchor' do
-      post :update, params: { school_onboarding_id: onboarding.uuid, school_onboarding: { :template_calendar_id => template_calendar.id } }
+      post :update, params: { school_onboarding_id: onboarding.uuid, school_onboarding: { template_calendar_id: template_calendar.id } }
       expect(response).to redirect_to(admin_school_onboardings_path(anchor: expected_anchor))
     end
   end

@@ -1,7 +1,7 @@
 module Schools
   class TransportSurveysController < ApplicationController
     include Pagy::Backend
-    skip_before_action :authenticate_user!, only: [:index, :show]
+    skip_before_action :authenticate_user!, only: %i[index show]
 
     load_resource :school
     load_resource :transport_survey, find_by: :run_on, id_param: :run_on, through: :school, except: [:update]
@@ -45,12 +45,12 @@ module Schools
 
     def set_breadcrumbs
       @breadcrumbs = [
-        { name: I18n.t('activerecord.models.transport_survey.other') },
+        { name: I18n.t('activerecord.models.transport_survey.other') }
       ]
     end
 
     def transport_survey_params
-      params.require(:transport_survey).permit(:run_on, responses: [:run_identifier, :journey_minutes, :surveyed_at, :passengers, :transport_type_id, :weather])
+      params.require(:transport_survey).permit(:run_on, responses: %i[run_identifier journey_minutes surveyed_at passengers transport_type_id weather])
     end
 
     def load_or_create

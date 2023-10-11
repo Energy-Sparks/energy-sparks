@@ -5,6 +5,7 @@ class RemoveUnusedMeterColumns < ActiveRecord::Migration[5.2]
     remove_column :meters, :storage_heaters
     remove_column :meters, :floor_area
   end
+
   def down
     add_column :meters, :number_of_pupils, :integer
     add_column :meters, :solar_pv, :boolean, default: false

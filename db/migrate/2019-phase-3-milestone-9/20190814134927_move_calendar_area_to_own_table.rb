@@ -1,5 +1,4 @@
 class MoveCalendarAreaToOwnTable < ActiveRecord::Migration[6.0]
-
   def up
     create_table :calendar_areas do |t|
       t.string :title, null: false
@@ -36,5 +35,4 @@ class MoveCalendarAreaToOwnTable < ActiveRecord::Migration[6.0]
 
     drop_table :calendar_areas
   end
-
 end

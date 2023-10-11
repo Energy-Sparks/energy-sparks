@@ -11,12 +11,11 @@ class TemplateInterpolation
 
   def interpolate(*fields, with: {})
     base_methods = { template_variables: with }.merge(@with_objects)
-    with_proxied_objects = @proxy.inject(base_methods) do |collection, field|
+    with_proxied_objects = @proxy.each_with_object(base_methods) do |field, collection|
       collection[field] = @object.send(field)
-      collection
     end
-    templated = fields.inject(with_proxied_objects) do |collection, field|
-      template = @object.send(field) || ""
+    templated = fields.each_with_object(with_proxied_objects) do |field, collection|
+      template = @object.send(field) || ''
       collection[field] = if template.is_a?(ActionText::RichText)
                             process_rich_text_template(template, with)
                           elsif template.is_a?(Mobility::Backends::ActionText::RichTextTranslation)
@@ -24,7 +23,6 @@ class TemplateInterpolation
                           else
                             process_string_template(template, with)
                           end
-      collection
     end
     ClosedStruct.new(templated)
   end
@@ -33,10 +31,10 @@ class TemplateInterpolation
     from_templates = fields.inject([]) do |variables, field|
       variables + get_variables(@object.send(field))
     end
-    from_templates.uniq.map {|variable| variable.gsub('gbp', '£') }
+    from_templates.uniq.map { |variable| variable.gsub('gbp', '£') }
   end
 
-private
+  private
 
   def process_string_template(template, variables)
     @render_with.render(template, variables)

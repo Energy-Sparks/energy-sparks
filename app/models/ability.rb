@@ -7,17 +7,17 @@ class Ability
 
     # all users can do these things
     can :read, Activity, school: { visible: true }
-    can [:read, :recommended], ActivityCategory
-    can [:read, :recommended], InterventionTypeGroup
-    can [:read, :search, :for_school], InterventionType
-    can [:read, :search, :for_school], ActivityType
+    can %i[read recommended], ActivityCategory
+    can %i[read recommended], InterventionTypeGroup
+    can %i[read search for_school], InterventionType
+    can %i[read search for_school], ActivityType
 
     can :read, SchoolGroup
     can :compare, SchoolGroup, public: true
 
     can :index, School
-    can [
-      :show, :usage, :show_pupils_dash, :suggest_activity
+    can %i[
+      show usage show_pupils_dash suggest_activity
     ], School, visible: true, public: true
 
     can :live_data, Cad, visible: true, public: true
@@ -60,15 +60,15 @@ class Ability
         can :manage, CalendarEvent do |calendar_event|
           user.school_group.calendars.include?(calendar_event.calendar)
         end
-        #A group admin can manage onboarding for any school in their group
-        #The onboarding must be associated with the group
+        # A group admin can manage onboarding for any school in their group
+        # The onboarding must be associated with the group
         can :manage, SchoolOnboarding do |onboarding|
           onboarding.school_group.present? && user.school_group == onboarding.school_group
         end
       else
         school_scope = { id: user.school_id, visible: true }
         related_school_scope = { school_id: user.school_id }
-        can [:show, :update], Calendar, id: user.school.try(:calendar_id)
+        can %i[show update], Calendar, id: user.school.try(:calendar_id)
         can :manage, CalendarEvent, calendar_id: user.school.try(:calendar_id)
         can :manage, SchoolOnboarding do |onboarding|
           onboarding.created_user.blank? || (onboarding.created_user == user)
@@ -77,17 +77,17 @@ class Ability
         can :switch, School
         can :manage, EnergyTariff, tariff_holder: user.school
       end
-      #allow users from schools in same group to access dashboards
+      # allow users from schools in same group to access dashboards
       if user.school.present?
-        can [:show, :usage, :show_pupils_dash], School, { school_group_id: user.school.school_group_id, visible: true }
+        can %i[show usage show_pupils_dash], School, { school_group_id: user.school.school_group_id, visible: true }
         can :compare, SchoolGroup, { id: user.school.school_group_id, public: false }
         can :show_management_dash, SchoolGroup, { id: user.school.school_group_id }
       end
-      can [
-        :show, :usage, :show_pupils_dash,
-        :update, :manage_school_times, :suggest_activity, :manage_users,
-        :show_management_dash,
-        :read, :start_programme, :read_restricted_analysis, :read_restricted_advice
+      can %i[
+        show usage show_pupils_dash
+        update manage_school_times suggest_activity manage_users
+        show_management_dash
+        read start_programme read_restricted_analysis read_restricted_advice
       ], School, school_scope
       can :manage, EstimatedAnnualConsumption, related_school_scope
       can :manage, SchoolTarget, related_school_scope
@@ -95,12 +95,12 @@ class Ability
       can :manage, Contact, related_school_scope
       can :show, Cad, related_school_scope
       can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
-      can [:index, :create, :read, :update], ConsentDocument, related_school_scope
-      can [:index, :read], ConsentGrant, related_school_scope
-      can [:index, :create, :read, :update], Meter, related_school_scope
+      can %i[index create read update], ConsentDocument, related_school_scope
+      can %i[index read], ConsentGrant, related_school_scope
+      can %i[index create read update], Meter, related_school_scope
       can :activate, Meter, { active: false }.merge(related_school_scope)
       can :deactivate, Meter, { active: true }.merge(related_school_scope)
-      can [:destroy, :delete], Meter, related_school_scope
+      can %i[destroy delete], Meter, related_school_scope
       cannot [:destroy, :delete], Meter do |meter|
         meter.amr_data_feed_readings.any?
       end
@@ -109,7 +109,7 @@ class Ability
       can :manage, TransportSurveyResponse, transport_survey: related_school_scope
       can :crud, Programme, related_school_scope
 
-      can [:manage, :enable_alerts], User, related_school_scope
+      can %i[manage enable_alerts], User, related_school_scope
 
       can [:manage, :enable_alerts], User do |other_user|
         other_user.cluster_schools.include?(user.school)
@@ -119,19 +119,19 @@ class Ability
         user.id == other_user.id
       end
 
-      can [:show, :read, :index], Audit, related_school_scope
+      can %i[show read index], Audit, related_school_scope
       can :download_school_data, School, school_scope
     elsif user.staff? || user.volunteer? || user.pupil?
-      #abilities that give you access to dashboards for own school
+      # abilities that give you access to dashboards for own school
       school_scope = { id: user.school_id, visible: true }
-      can [
-        :show, :usage, :show_pupils_dash, :suggest_activity
+      can %i[
+        show usage show_pupils_dash suggest_activity
       ], School, school_scope
-      #they can also do these things for schools in same group
-      can [
-        :show, :usage, :show_pupils_dash, :suggest_activity
+      # they can also do these things for schools in same group
+      can %i[
+        show usage show_pupils_dash suggest_activity
       ], School, { school_group_id: user.school.school_group_id, visible: true }
-      can [:show, :read, :index], Audit, school: { id: user.school_id, visible: true }
+      can %i[show read index], Audit, school: { id: user.school_id, visible: true }
       can :compare, SchoolGroup, { id: user.school.school_group_id }
       can :show_management_dash, SchoolGroup, { id: user.school.school_group_id }
 
@@ -142,19 +142,19 @@ class Ability
       can :download_school_data, School, school_scope
       can :read, Meter
       can [:start_programme], School, id: user.school_id, visible: true
-      #pupils can view management dashboard for their school and others in group
+      # pupils can view management dashboard for their school and others in group
       if user.pupil?
         can :show_management_dash, School, id: user.school_id, visible: true
         can :show_management_dash, School, { school_group_id: user.school.school_group_id, visible: true }
-        can [:start, :read, :update, :create], TransportSurvey, related_school_scope
-        can [:read, :create], TransportSurveyResponse, transport_survey: related_school_scope
+        can %i[start read update create], TransportSurvey, related_school_scope
+        can %i[read create], TransportSurveyResponse, transport_survey: related_school_scope
       end
-      #pupils and volunteers can only read real cost data if their school is public
+      # pupils and volunteers can only read real cost data if their school is public
       if user.volunteer? || user.pupil?
         can :read_restricted_analysis, School, { id: user.school_id, visible: true, public: true }
         can :read_restricted_advice, School, { id: user.school_id, visible: true, public: true }
       else
-        #but staff can read it regardless
+        # but staff can read it regardless
         can :read_restricted_analysis, School, { id: user.school_id, visible: true }
         can :read_restricted_advice, School, { id: user.school_id, visible: true }
       end
@@ -162,10 +162,10 @@ class Ability
         can :manage, SchoolTarget, school: { id: user.school_id, visible: true }
         can :manage, EstimatedAnnualConsumption, school: { id: user.school_id, visible: true }
         can [:show_management_dash], School, id: user.school_id, visible: true
-        can [:show_management_dash, :start_programme], School, { school_group_id: user.school.school_group_id, visible: true }
+        can %i[show_management_dash start_programme], School, { school_group_id: user.school.school_group_id, visible: true }
         can :crud, Programme, school: { id: user.school_id, visible: true }
         can :enable_alerts, User, id: user.id
-        can [:create, :update, :destroy], Contact, user_id: user.id
+        can %i[create update destroy], Contact, user_id: user.id
         can :manage, TransportSurvey, school: { id: user.school_id, visible: true }
         can :manage, TransportSurveyResponse, transport_survey: { school: { id: user.school_id, visible: true } }
       end

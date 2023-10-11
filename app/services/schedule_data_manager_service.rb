@@ -7,7 +7,8 @@ class ScheduleDataManagerService
   def initialize(school, meter_data_type = :unvalidated_meter_data)
     @school = school
     @meter_data_type = meter_data_type
-    raise 'Invalid meter data type' unless [:validated_meter_data, :unvalidated_meter_data].include?(meter_data_type)
+    raise 'Invalid meter data type' unless %i[validated_meter_data unvalidated_meter_data].include?(meter_data_type)
+
     @calendar = school.calendar
     @solar_pv_tuos_area_id = school.solar_pv_tuos_area_id
     @dark_sky_area_id = school.dark_sky_area_id
@@ -15,7 +16,7 @@ class ScheduleDataManagerService
   end
 
   def self.invalidate_cached_calendar(calendar)
-    Rails.cache.delete(self.calendar_cache_key(calendar))
+    Rails.cache.delete(calendar_cache_key(calendar))
   end
 
   def self.calendar_cache_key(calendar)
@@ -70,7 +71,7 @@ class ScheduleDataManagerService
   end
 
   def find_uk_grid_carbon_intensity
-    cache_key = "co2-feed"
+    cache_key = 'co2-feed'
     cached_uk_grid_carbon_intensity ||= Rails.cache.fetch(cache_key, expires_in: CACHE_EXPIRY) do
       uk_grid_carbon_intensity_data = GridCarbonIntensity.new
       DataFeeds::CarbonIntensityReading.all.pluck(:reading_date, :carbon_intensity_x48).each do |date, values|
@@ -91,9 +92,9 @@ class ScheduleDataManagerService
     cached_temperatures ||= Rails.cache.fetch(cache_key, expires_in: CACHE_EXPIRY) do
       data = Temperatures.new('temperatures')
 
-      #FEATURE FLAG: if this is set then we want to start using Meteostat data
-      #Relies on the school, or its group also having been associated with
-      #a station
+      # FEATURE FLAG: if this is set then we want to start using Meteostat data
+      # Relies on the school, or its group also having been associated with
+      # a station
       if EnergySparks::FeatureFlags.active?(:use_meteostat)
         earliest = load_meteostat_readings(data)
         load_dark_sky_readings(data, earliest)
@@ -120,9 +121,9 @@ class ScheduleDataManagerService
     # of year in previous years, the number needs to be smooth and not too noisy, '4 days either side' provides
     # this averaging, otherwise you get a much more volatile temperature adjustment.
     if TargetMeterTemperatureCompensatedDailyDayTypeBase.const_defined?('TARGET_TEMPERATURE_DAYS_EITHER_SIDE')
-       TargetMeterTemperatureCompensatedDailyDayTypeBase::TARGET_TEMPERATURE_DAYS_EITHER_SIDE
+      TargetMeterTemperatureCompensatedDailyDayTypeBase::TARGET_TEMPERATURE_DAYS_EITHER_SIDE
     else
-       DEFAULT_TARGET_TEMPERATURE_DAYS_EITHER_SIDE
+      DEFAULT_TARGET_TEMPERATURE_DAYS_EITHER_SIDE
     end
   end
 
@@ -155,8 +156,8 @@ class ScheduleDataManagerService
     end
   end
 
-  #Load Meteostat readings if there are any
-  #returns earliest date encountered
+  # Load Meteostat readings if there are any
+  # returns earliest date encountered
   def load_meteostat_readings(temperatures)
     earliest = nil
     WeatherObservation.where(weather_station_id: @weather_station_id).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
@@ -170,12 +171,12 @@ class ScheduleDataManagerService
     earliest
   end
 
-  #Load Dark Sky readings if there's any associated with schools
-  #Optionally only loading those from before a specified date
+  # Load Dark Sky readings if there's any associated with schools
+  # Optionally only loading those from before a specified date
   def load_dark_sky_readings(temperatures, earliest = nil)
     if @dark_sky_area_id.present?
       if earliest.present?
-        DataFeeds::DarkSkyTemperatureReading.where("area_id = ? AND reading_date < ?", @dark_sky_area_id, earliest).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
+        DataFeeds::DarkSkyTemperatureReading.where('area_id = ? AND reading_date < ?', @dark_sky_area_id, earliest).pluck(:reading_date, :temperature_celsius_x48).each do |date, values|
           temperatures.add(date, values.map(&:to_f))
         end
       else

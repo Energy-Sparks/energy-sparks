@@ -7,11 +7,9 @@ module Admin
       @programme_types = @programme_types.by_title
     end
 
-    def show
-    end
+    def show; end
 
-    def edit
-    end
+    def edit; end
 
     def create
       if @programme_type.save
@@ -31,10 +29,10 @@ module Admin
 
     def destroy
       @programme_type.destroy
-      redirect_to admin_programme_types_path, notice: "Programme type was successfully deleted."
+      redirect_to admin_programme_types_path, notice: 'Programme type was successfully deleted.'
     end
 
-  private
+    private
 
     def programme_type_params
       translated_params = t_params(ProgrammeType.mobility_attributes + ProgrammeType.t_attached_attributes)

@@ -10,7 +10,9 @@ module Amr
       array_of_rows = DataFeedValidator.new(@config, array_of_rows).perform
       array_of_data_feed_reading_hashes = DataFeedTranslator.new(@config, array_of_rows).perform
 
-      array_of_data_feed_reading_hashes = convert_to_day_per_row_format(array_of_data_feed_reading_hashes) if @config.row_per_reading
+      if @config.row_per_reading
+        array_of_data_feed_reading_hashes = convert_to_day_per_row_format(array_of_data_feed_reading_hashes)
+      end
       array_of_data_feed_reading_hashes.uniq
 
       missing_reading_threshold = @config.row_per_reading? ? SingleReadConverter::BLANK_THRESHOLD : 0

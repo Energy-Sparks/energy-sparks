@@ -2,29 +2,28 @@ require 'rails_helper'
 require 'fileutils'
 
 describe Amr::Importer do
+  subject { Amr::Importer.new(config, bucket, s3_client) }
 
   let(:bucket)        { 'test-bucket' }
-  let(:thing_prefix)  { 'this-path'}
+  let(:thing_prefix)  { 'this-path' }
   let(:thing_name)    { 'test-thing.csv' }
   let(:key)           { "#{thing_prefix}/#{thing_name}" }
 
   let(:config)        { create(:amr_data_feed_config, identifier: thing_prefix) }
 
-  let(:expected_local_file)  { "#{config.local_bucket_path}/#{thing_name}" }
+  let(:expected_local_file) { "#{config.local_bucket_path}/#{thing_name}" }
 
-  let(:s3_client) {  Aws::S3::Client.new(stub_responses: true) }
+  let(:s3_client) { Aws::S3::Client.new(stub_responses: true) }
 
-  #responses from AWS API to stub out network calls in client
-  let(:list_of_objects)   { { contents: [{ key: key , size: 100}, { key: "#{thing_prefix}" , size: 0}] } }
-  let(:object_data) { { key => { body: 'meter-readings!' }} }
+  # responses from AWS API to stub out network calls in client
+  let(:list_of_objects) { { contents: [{ key: key, size: 100 }, { key: thing_prefix.to_s, size: 0 }] } }
+  let(:object_data) { { key => { body: 'meter-readings!' } } }
 
-  subject { Amr::Importer.new(config, bucket, s3_client) }
-
-  before(:each) do
+  before do
     FileUtils.mkdir_p config.local_bucket_path
     s3_client.stub_responses(:list_objects, list_of_objects)
 
-    s3_client.stub_responses(:get_object, -> (context) {
+    s3_client.stub_responses(:get_object, lambda { |context|
       obj = object_data[context.params[:key]]
       obj || 'NoSuchKey'
     })

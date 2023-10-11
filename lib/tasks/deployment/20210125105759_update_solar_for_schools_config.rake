@@ -4,13 +4,13 @@ namespace :after_party do
     puts "Running deploy task 'update_solar_for_schools_config'"
 
     # Put your task implementation HERE.
-    config = AmrDataFeedConfig.find_by_identifier("solar-for-schools")
+    config = AmrDataFeedConfig.find_by(identifier: 'solar-for-schools')
     if config.present?
-      config.date_format = "%d/%m/%Y"
+      config.date_format = '%d/%m/%Y'
       config.mpan_mprn_field = 'MPR'
       config.reading_date_field = 'Date'
       config.reading_fields =
-      'hr0000,hr0030,hr0100,hr0130,hr0200,hr0230,hr0300,hr0330,hr0400,hr0430,hr0500,hr0530,hr0600,hr0630,hr0700,hr0730,hr0800,hr0830,hr0900,hr0930,hr1000,hr1030,hr1100,hr1130,hr1200,hr1230,hr1300,hr1330,hr1400,hr1430,hr1500,hr1530,hr1600,hr1630,hr1700,hr1730,hr1800,hr1830,hr1900,hr1930,hr2000,hr2030,hr2100,hr2130,hr2200,hr2230,hr2300,hr2330'.split(',')
+        'hr0000,hr0030,hr0100,hr0130,hr0200,hr0230,hr0300,hr0330,hr0400,hr0430,hr0500,hr0530,hr0600,hr0630,hr0700,hr0730,hr0800,hr0830,hr0900,hr0930,hr1000,hr1030,hr1100,hr1130,hr1200,hr1230,hr1300,hr1330,hr1400,hr1430,hr1500,hr1530,hr1600,hr1630,hr1700,hr1730,hr1800,hr1830,hr1900,hr1930,hr2000,hr2030,hr2100,hr2130,hr2200,hr2230,hr2300,hr2330'.split(',')
       config.header_example = 'MPR,Date,hr0000,hr0030,hr0100,hr0130,hr0200,hr0230,hr0300,hr0330,hr0400,hr0430,hr0500,hr0530,hr0600,hr0630,hr0700,hr0730,hr0800,hr0830,hr0900,hr0930,hr1000,hr1030,hr1100,hr1130,hr1200,hr1230,hr1300,hr1330,hr1400,hr1430,hr1500,hr1530,hr1600,hr1630,hr1700,hr1730,hr1800,hr1830,hr1900,hr1930,hr2000,hr2030,hr2100,hr2130,hr2200,hr2230,hr2300,hr2330'
       config.save!
     end

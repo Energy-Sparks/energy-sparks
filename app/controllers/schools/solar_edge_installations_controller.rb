@@ -3,8 +3,7 @@ module Schools
     load_and_authorize_resource :school
     load_and_authorize_resource through: :school
 
-    def new
-    end
+    def new; end
 
     def create
       @solar_edge_installation = Solar::SolarEdgeInstallationFactory.new(
@@ -12,7 +11,7 @@ module Schools
         mpan: solar_edge_installation_params[:mpan],
         site_id: solar_edge_installation_params[:site_id],
         api_key: solar_edge_installation_params[:api_key],
-        amr_data_feed_config: AmrDataFeedConfig.find(solar_edge_installation_params[:amr_data_feed_config_id]),
+        amr_data_feed_config: AmrDataFeedConfig.find(solar_edge_installation_params[:amr_data_feed_config_id])
       ).perform
 
       if @solar_edge_installation.persisted?
@@ -20,14 +19,13 @@ module Schools
       else
         render :new
       end
-    rescue => e
+    rescue StandardError => e
       Rollbar.error(e, job: :solar_download, school: @school)
       flash[:error] = e.message
       render :new
     end
 
-    def edit
-    end
+    def edit; end
 
     def update
       if @solar_edge_installation.update(solar_edge_installation_params)
@@ -44,7 +42,7 @@ module Schools
       end
 
       @solar_edge_installation.destroy
-      redirect_to school_solar_feeds_configuration_index_path(@school), notice: "Solar Edge API feed deleted"
+      redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'Solar Edge API feed deleted'
     end
 
     private

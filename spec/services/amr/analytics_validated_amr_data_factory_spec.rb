@@ -3,8 +3,7 @@ require 'rails_helper'
 
 module Amr
   describe AnalyticsValidatedAmrDataFactory do
-
-    let(:school_name) { 'Active school'}
+    let(:school_name) { 'Active school' }
     let!(:school)     { create(:school, :with_school_group, name: school_name) }
     let!(:config)     { create(:amr_data_feed_config) }
     let!(:e_meter)    { create(:electricity_meter_with_validated_reading_dates, start_date: Date.parse('01/06/2019'), end_date: Date.parse('02/06/2019'), school: school) }

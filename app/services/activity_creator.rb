@@ -4,9 +4,7 @@ class ActivityCreator
   end
 
   def process
-    if @activity.activity_type
-      @activity.activity_category = @activity.activity_type.activity_category
-    end
+    @activity.activity_category = @activity.activity_type.activity_category if @activity.activity_type
 
     if @activity.save
       process_programmes if started_active_programmes.any?
@@ -31,9 +29,7 @@ class ActivityCreator
 
   def create_activity_observation
     academic_year = @activity.school.academic_year_for(@activity.happened_on)
-    points = if academic_year && academic_year.current?
-               @activity.activity_type.score
-             end
+    points = (@activity.activity_type.score if academic_year && academic_year.current?)
     Observation.create!(
       school: @activity.school,
       observation_type: :activity,

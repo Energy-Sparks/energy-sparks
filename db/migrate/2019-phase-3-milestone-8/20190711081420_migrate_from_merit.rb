@@ -7,7 +7,7 @@ class MigrateFromMerit < ActiveRecord::Migration[6.0]
     add_column :activities, :points, :integer, default: 0
 
     connection.execute(
-      "UPDATE activities SET points = (SELECT SUM(merit_score_points.num_points) FROM merit_score_points " \
+      'UPDATE activities SET points = (SELECT SUM(merit_score_points.num_points) FROM merit_score_points ' \
       "INNER JOIN merit_activity_logs ON merit_activity_logs.related_change_id = merit_score_points.id AND merit_activity_logs.related_change_type = 'Merit::Score::Point' " \
       "INNER JOIN merit_actions ON merit_activity_logs.action_id = merit_actions.id AND merit_actions.target_model = 'activities' AND merit_actions.target_id = activities.id)"
     )

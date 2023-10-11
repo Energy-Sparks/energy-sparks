@@ -31,9 +31,8 @@ class Equivalence < ApplicationRecord
   delegate :equivalence_type, to: :content_version
 
   def formatted_variables(locale = I18n.locale)
-    variables(locale).inject({}) do |formatted, (name, values)|
+    variables(locale).each_with_object({}) do |(name, values), formatted|
       formatted[name] = values[:formatted_equivalence]
-      formatted
     end
   end
 
@@ -42,10 +41,10 @@ class Equivalence < ApplicationRecord
   end
 
   def hide_preview?
-    ! relevant
+    !relevant
   end
 
-private
+  private
 
   def data_via_units
     energy_conversion_units.map { |unit| data.dig(unit.to_s, 'via') }
@@ -56,11 +55,11 @@ private
   end
 
   def variables(locale)
-    if locale == :cy
-      variables = data_cy&.any? ? data_cy : data
-    else
-      variables = data
-    end
+    variables = if locale == :cy
+                  data_cy&.any? ? data_cy : data
+                else
+                  data
+                end
     variables.deep_transform_keys do |key|
       :"#{key.to_s.gsub('£', 'gbp')}"
     end

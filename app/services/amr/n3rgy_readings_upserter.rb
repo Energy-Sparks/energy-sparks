@@ -11,6 +11,7 @@ module Amr
 
     def perform
       return if meter_readings.empty?
+
       Rails.logger.info "Upserting #{meter_readings} for #{@meter.mpan_mprn} at #{@meter.school.name}"
       DataFeedUpserter.new(data_feed_reading_array(meter_readings), @amr_data_feed_import_log).perform
       Rails.logger.info "Upserted #{@amr_data_feed_import_log.records_updated} inserted #{@amr_data_feed_import_log.records_imported} for #{@meter.mpan_mprn} at #{@meter.school.name}"
@@ -28,7 +29,7 @@ module Amr
           amr_data_feed_config_id: @amr_data_feed_config.id,
           meter_id: @meter.id,
           mpan_mprn: @meter.mpan_mprn,
-          reading_date: reading_date.strftime("%Y-%m-%d"),
+          reading_date: reading_date.strftime('%Y-%m-%d'),
           readings: one_day_amr_reading.kwh_data_x48
         }
       end

@@ -1,14 +1,13 @@
 module Schools
   module Advice
     class StorageHeatersController < AdviceBaseController
-      before_action :load_dashboard_alerts, only: [:insights, :analysis, :learn_more]
-      before_action :set_seasonal_analysis, only: [:insights, :analysis]
-      before_action :set_annual_usage_breakdown, only: [:insights, :analysis]
-      before_action :set_usage_categories, only: [:insights, :analysis]
-      before_action :set_heating_thermostatic_analysis, only: [:insights, :analysis]
+      before_action :load_dashboard_alerts, only: %i[insights analysis learn_more]
+      before_action :set_seasonal_analysis, only: %i[insights analysis]
+      before_action :set_annual_usage_breakdown, only: %i[insights analysis]
+      before_action :set_usage_categories, only: %i[insights analysis]
+      before_action :set_heating_thermostatic_analysis, only: %i[insights analysis]
 
-      def insights
-      end
+      def insights; end
 
       def analysis
         @analysis_dates = analysis_dates
@@ -75,7 +74,7 @@ module Schools
       end
 
       def set_usage_categories
-        @usage_categories = [:holiday, :weekend, :school_day_open, :school_day_closed]
+        @usage_categories = %i[holiday weekend school_day_open school_day_closed]
         @usage_categories += [:community] if @school.school_times.community_use.any?
         @usage_categories
       end

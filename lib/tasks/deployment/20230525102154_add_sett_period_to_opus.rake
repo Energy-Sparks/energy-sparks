@@ -3,12 +3,9 @@ namespace :after_party do
   task add_sett_period_to_opus: :environment do
     puts "Running deploy task 'add_sett_period_to_opus'"
 
-    identifier = "opus-hh"
+    identifier = 'opus-hh'
     amr_data_feed_config = AmrDataFeedConfig.find_by(identifier: identifier)
-    if amr_data_feed_config
-      amr_data_feed_config.update!(period_field: 'Sett Period')
-    end
-
+    amr_data_feed_config.update!(period_field: 'Sett Period') if amr_data_feed_config
 
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).

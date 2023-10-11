@@ -28,17 +28,13 @@ class HolidayFactory
       calendar_event.attributes = attributes
       reset_parent(calendar_event)
       if calendar_event.calendar_event_type.term_time || calendar_event.calendar_event_type.holiday
-        if calendar_event.start_date_changed?
-          update_previous_events(calendar_event, pre_save, post_save)
-        end
-        if calendar_event.end_date_changed?
-          update_following_events(calendar_event, pre_save, post_save)
-        end
+        update_previous_events(calendar_event, pre_save, post_save) if calendar_event.start_date_changed?
+        update_following_events(calendar_event, pre_save, post_save) if calendar_event.end_date_changed?
       end
     end
   end
 
-private
+  private
 
   def reset_parent(calendar_event)
     if calendar_event.start_date_changed? || calendar_event.end_date_changed? || calendar_event.calendar_event_type_id_changed?
@@ -73,11 +69,11 @@ private
   end
 
   def move_neighbour(event, field, new_date)
-    lambda { event.update!(field => new_date, based_on: nil) }
+    -> { event.update!(field => new_date, based_on: nil) }
   end
 
   def destroy_neighbour(event)
-    lambda { event.destroy }
+    -> { event.destroy }
   end
 
   def process_changes(calendar_event, pre_save, post_save)

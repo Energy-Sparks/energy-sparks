@@ -14,7 +14,7 @@ module SchoolGroups
         @total_savings.each do |alert_type_rating, _savings|
           next unless @alert_type_rating_ids.map(&:to_i).include?(alert_type_rating.id)
 
-          @priority_actions[alert_type_rating].sort {|a, b| a.school.name <=> b.school.name }.each do |saving|
+          @priority_actions[alert_type_rating].sort { |a, b| a.school.name <=> b.school.name }.each do |saving|
             row = [
               I18n.t("common.#{alert_type_rating.alert_type&.fuel_type}"),
               alert_type_rating.current_content.management_priorities_title.to_plain_text,

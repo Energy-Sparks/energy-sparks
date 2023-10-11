@@ -41,9 +41,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user_school
-    if current_user && current_user.school
-      current_user.school
-    end
+    current_user.school if current_user && current_user.school
   end
 
   def current_ip_address
@@ -61,13 +59,11 @@ class ApplicationController < ActionController::Base
   end
 
   def check_admin_mode
-    if admin_mode? && !current_user_admin? && !login_page?
-      render 'home/maintenance', layout: false
-    end
+    render 'home/maintenance', layout: false if admin_mode? && !current_user_admin? && !login_page?
   end
 
   def admin_mode?
-    ENV["ADMIN_MODE"] == 'true'
+    ENV['ADMIN_MODE'] == 'true'
   end
 
   def current_user_admin?

@@ -28,7 +28,7 @@ class Cad < ApplicationRecord
   belongs_to :school
   belongs_to :meter, optional: true
 
-  validates_presence_of :name, :device_identifier
+  validates :name, :device_identifier, presence: true
 
   scope :active, -> { where(active: true) }
 end

@@ -22,7 +22,7 @@ module Admin
           created_by: current_user
         )
         redirect_to admin_school_group_meter_attributes_path(@school_group)
-      rescue => e
+      rescue StandardError => e
         redirect_back fallback_location: admin_school_group_meter_attributes_path(@school_group), notice: e.message
       end
 
@@ -37,7 +37,7 @@ module Admin
         @meter_attribute_type = @meter_attribute.meter_attribute_type
         authorize! :edit, @meter_attribute
         @input_data = @meter_attribute.input_data
-      rescue => e
+      rescue StandardError => e
         redirect_back fallback_location: admin_school_group_meter_attributes_path(@school_group), notice: e.message
       end
 
@@ -53,7 +53,7 @@ module Admin
         )
         meter_attribute.update!(replaced_by: new_attribute)
         redirect_to admin_school_group_meter_attributes_path(@school_group)
-      rescue => e
+      rescue StandardError => e
         redirect_back fallback_location: admin_school_group_meter_attributes_path(@school_group), notice: e.message
       end
 
@@ -63,7 +63,7 @@ module Admin
         meter_attribute.deleted_by = current_user
         meter_attribute.save(validate: false)
         redirect_to admin_school_group_meter_attributes_path(@school_group)
-      rescue => e
+      rescue StandardError => e
         redirect_back fallback_location: admin_school_group_meter_attributes_path(@school_group), notice: e.message
       end
     end

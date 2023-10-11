@@ -9,32 +9,32 @@ class SchoolsController < ApplicationController
   include SchoolProgress
   include Promptable
 
-  load_and_authorize_resource except: [:show, :index]
+  load_and_authorize_resource except: %i[show index]
   load_resource only: [:show]
 
-  skip_before_action :authenticate_user!, only: [:index, :show, :usage]
-  before_action :set_key_stages, only: [:new, :create, :edit, :update]
+  skip_before_action :authenticate_user!, only: %i[index show usage]
+  before_action :set_key_stages, only: %i[new create edit update]
 
   before_action :check_aggregated_school_in_cache, only: [:show]
 
-  #If this isn't a publicly visible school, then redirect away if user can't
-  #view this school
+  # If this isn't a publicly visible school, then redirect away if user can't
+  # view this school
   before_action only: [:show] do
     redirect_unless_permitted :show
   end
 
-  #Redirect users associated with this school to a holding page, if its not
-  #visible yet.
-  #Admins will be sent to removal page
-  #Other users will end up getting an access denied error
+  # Redirect users associated with this school to a holding page, if its not
+  # visible yet.
+  # Admins will be sent to removal page
+  # Other users will end up getting an access denied error
   before_action :redirect_if_not_visible, only: [:show]
 
-  #Redirect pupil accounts associated with this school to the pupil dashboard
-  #(unless they should see the adult dashboard)
+  # Redirect pupil accounts associated with this school to the pupil dashboard
+  # (unless they should see the adult dashboard)
   before_action :redirect_pupils, only: [:show]
 
-  #Redirect guest / not logged in users to the pupil dashboard if not
-  #data enabled to offer a better initial user experience
+  # Redirect guest / not logged in users to the pupil dashboard if not
+  # data enabled to offer a better initial user experience
   before_action :redirect_to_pupil_dash_if_not_data_enabled, only: [:show]
 
   before_action :set_breadcrumbs
@@ -47,35 +47,33 @@ class SchoolsController < ApplicationController
   end
 
   def show
-    #The before_actions will redirect users away in certain scenarios
-    #If we reach this action, then the current user will be:
-    #Not logged in, a guest, an admin, or any other user not directly linked to this school
-    #OR an adult user for this school, or a pupil that is trying to view the adult dashboard
+    # The before_actions will redirect users away in certain scenarios
+    # If we reach this action, then the current user will be:
+    # Not logged in, a guest, an admin, or any other user not directly linked to this school
+    # OR an adult user for this school, or a pupil that is trying to view the adult dashboard
     authorize! :show, @school
     @show_data_enabled_features = show_data_enabled_features?
     setup_default_features
     setup_data_enabled_features if @show_data_enabled_features
 
     if params[:report] && @show_data_enabled_features
-      render template: "management/schools/report", layout: 'report'
+      render template: 'management/schools/report', layout: 'report'
     else
       render :show
     end
   end
 
   # GET /schools/new
-  def new
-  end
+  def new; end
 
   # GET /schools/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /schools
   # POST /schools.json
   def create
     respond_to do |format|
-      #ensure schools are created as not visible initially
+      # ensure schools are created as not visible initially
       @school.visible = false
       if @school.save
         SchoolCreator.new(@school).process_new_school!
@@ -113,14 +111,14 @@ class SchoolsController < ApplicationController
     end
   end
 
-private
+  private
 
   def set_breadcrumbs
-    if action_name.to_sym == :edit
-      @breadcrumbs = [{ name: I18n.t('manage_school_menu.edit_school_details') }]
-    else
-      @breadcrumbs = [{ name: I18n.t('dashboards.adult_dashboard') }]
-    end
+    @breadcrumbs = if action_name.to_sym == :edit
+                     [{ name: I18n.t('manage_school_menu.edit_school_details') }]
+                   else
+                     [{ name: I18n.t('dashboards.adult_dashboard') }]
+                   end
   end
 
   def user_signed_in_and_linked_to_school?
@@ -137,11 +135,13 @@ private
   end
 
   def redirect_pupils
-    redirect_to pupils_school_path(@school) if user_signed_in_and_linked_to_school? && current_user.pupil? && !switch_dashboard?
+    if user_signed_in_and_linked_to_school? && current_user.pupil? && !switch_dashboard?
+      redirect_to pupils_school_path(@school)
+    end
   end
 
   def switch_dashboard?
-    params[:switch].present? && params[:switch] == "true"
+    params[:switch].present? && params[:switch] == 'true'
   end
 
   def redirect_to_pupil_dash_if_not_data_enabled
@@ -150,8 +150,8 @@ private
 
   def setup_default_features
     @observations = setup_timeline(@school.observations)
-    #Setup management dashboard features if users has permission
-    #to do that
+    # Setup management dashboard features if users has permission
+    # to do that
     @show_standard_prompts = show_standard_prompts?(@school)
     if can?(:show_management_dash, @school)
       @add_contacts = site_settings.message_for_no_contacts && @school.contacts.empty? && can?(:manage, Contact)
@@ -176,8 +176,8 @@ private
     @progress_summary = progress_service.progress_summary
     @co2_pages = setup_co2_pages(@school.latest_analysis_pages)
 
-    #Setup management dashboard features if users has permission
-    #to do that
+    # Setup management dashboard features if users has permission
+    # to do that
     if can?(:show_management_dash, @school)
       @add_targets = prompt_for_target?
       @set_new_target = prompt_to_set_new_target?

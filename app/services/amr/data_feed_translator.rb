@@ -12,7 +12,7 @@ module Amr
       check_units(hash_rows)
     end
 
-  private
+    private
 
     def translate_row_to_hash(row)
       data_feed_reading_hash = meter_details_from_row(row)
@@ -46,6 +46,7 @@ module Amr
 
     def fetch_from_row(index_symbol, row)
       return if map_of_fields_to_indexes[index_symbol].nil?
+
       row[map_of_fields_to_indexes[index_symbol]]
     end
 
@@ -55,13 +56,15 @@ module Amr
 
     def check_units(rows)
       return rows if @config.expected_units.blank?
-      rows.select {|row| row[:units] == @config.expected_units}
+
+      rows.select { |row| row[:units] == @config.expected_units }
     end
 
     def find_meter_by_mpan_mprn(mpan_mprn)
       unless @meters_by_mpan_mprn.key?(mpan_mprn)
         meters = Meter.where(mpan_mprn: mpan_mprn)
-        raise DataFeedException.new("Multiple meters found with mpan_mprn #{mpan_mprn}") if meters.size > 1
+        raise DataFeedException, "Multiple meters found with mpan_mprn #{mpan_mprn}" if meters.size > 1
+
         @meters_by_mpan_mprn[mpan_mprn] = meters.first
       end
       @meters_by_mpan_mprn[mpan_mprn]
@@ -70,7 +73,10 @@ module Amr
     def find_meter_by_serial_number(meter_serial_number)
       unless @meters_by_serial_number.key?(meter_serial_number)
         meters = Meter.where(meter_serial_number: meter_serial_number)
-        raise DataFeedException.new("Multiple meters found with meter_serial_number #{meter_serial_number}") if meters.size > 1
+        if meters.size > 1
+          raise DataFeedException, "Multiple meters found with meter_serial_number #{meter_serial_number}"
+        end
+
         @meters_by_serial_number[meter_serial_number] = meters.first
       end
       @meters_by_serial_number[meter_serial_number]

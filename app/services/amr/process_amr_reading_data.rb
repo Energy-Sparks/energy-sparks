@@ -25,7 +25,7 @@ module Amr
           fuel_type: fuel_type(warning),
           reading_date: warning[:reading_date],
           readings: warning[:readings]
-         }
+        }
       end
       AmrReadingWarning.insert_all(updated_warnings)
     end

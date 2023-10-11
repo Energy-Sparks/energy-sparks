@@ -29,7 +29,7 @@ class LowCarbonHubInstallation < ApplicationRecord
 
   has_many :meters
 
-  validates_presence_of :rbee_meter_id
+  validates :rbee_meter_id, presence: true
 
   def school_number
     school.urn

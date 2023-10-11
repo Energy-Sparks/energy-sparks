@@ -1,7 +1,7 @@
 class SchoolComparisonComponent < ViewComponent::Base
   renders_one :footer
 
-  CATEGORIES = [:exemplar_school, :benchmark_school, :other_school].freeze
+  CATEGORIES = %i[exemplar_school benchmark_school other_school].freeze
 
   def initialize(id: 'comparison', comparison:)
     @id = id
@@ -38,11 +38,13 @@ class SchoolComparisonComponent < ViewComponent::Base
 
   def benchmark_value
     return nil unless @comparison.benchmark_value
+
     format_unit(@comparison.benchmark_value).html_safe
   end
 
   def other_value
     return exemplar_value unless @comparison.benchmark_value
+
     format_unit(@comparison.benchmark_value).html_safe
   end
 

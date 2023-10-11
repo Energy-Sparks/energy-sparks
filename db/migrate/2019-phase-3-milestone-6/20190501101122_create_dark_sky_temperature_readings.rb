@@ -7,6 +7,6 @@ class CreateDarkSkyTemperatureReadings < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    add_index :dark_sky_temperature_readings, [:area_id, :reading_date], unique: true
+    add_index :dark_sky_temperature_readings, %i[area_id reading_date], unique: true
   end
 end

@@ -21,7 +21,7 @@ module Alerts
             enough_data: :not_enough
           )
         else
-          late_running_meters = meters.select {|meter| meter.last_validated_reading < cutoff}
+          late_running_meters = meters.select { |meter| meter.last_validated_reading < cutoff }
           if late_running_meters.empty?
             Adapters::Report.new(
               valid: true,
@@ -55,7 +55,7 @@ module Alerts
       private
 
       def mpan_mprns(meters, locale = :en)
-        mprns = ""
+        mprns = ''
         if locale == :en
           mprns = meters.map(&:mpan_mprn).to_sentence
         else

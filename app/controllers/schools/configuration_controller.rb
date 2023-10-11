@@ -18,15 +18,14 @@ module Schools
       redirect_to school_meters_path(@school)
     end
 
-    def edit
-    end
+    def edit; end
 
     def update
       @school.update!(school_params)
       redirect_to school_path(@school)
     end
 
-  private
+    private
 
     def set_school
       @school = School.friendly.find(params[:school_id])

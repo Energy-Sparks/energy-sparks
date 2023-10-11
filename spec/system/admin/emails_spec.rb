@@ -16,24 +16,24 @@ describe 'Emails', type: :system do
       it 'lets the user see the email preview page' do
         sign_in(admin)
         visit admin_mailer_previews_path
-        expect(current_path).to eq("/admin/mailer_previews")
+        expect(page).to have_current_path('/admin/mailer_previews')
         preview = ActionMailer::Preview.all.last
         visit admin_mailer_preview_path(preview.preview_name)
-        expect(current_path).to eq("/admin/mailer_previews/" + preview.preview_name)
+        expect(page).to have_current_path('/admin/mailer_previews/' + preview.preview_name, ignore_query: true)
         visit admin_mailer_preview_path(preview.preview_name + '/' + preview.emails.first)
-        expect(current_path).to eq("/admin/mailer_previews/" + preview.preview_name + '/' + preview.emails.first)
+        expect(page).to have_current_path('/admin/mailer_previews/' + preview.preview_name + '/' + preview.emails.first, ignore_query: true)
       end
     end
 
     context 'with no signed in user' do
       it 'prevents the user from seeing the admin email preview page' do
         visit admin_mailer_previews_path
-        expect(current_path).to eq("/users/sign_in")
+        expect(page).to have_current_path('/users/sign_in')
         preview = ActionMailer::Preview.all.last
         visit admin_mailer_preview_path(preview.preview_name)
-        expect(current_path).to eq("/users/sign_in")
+        expect(page).to have_current_path('/users/sign_in')
         visit admin_mailer_preview_path(preview.preview_name + '/' + preview.emails.first)
-        expect(current_path).to eq("/users/sign_in")
+        expect(page).to have_current_path('/users/sign_in')
       end
     end
 
@@ -41,12 +41,12 @@ describe 'Emails', type: :system do
       it 'prevents the user from seeing the admin email preview page' do
         sign_in(group_admin)
         visit admin_mailer_previews_path
-        expect(current_path).to eq("/school_groups/#{group_admin.school_group.slug}")
+        expect(page).to have_current_path("/school_groups/#{group_admin.school_group.slug}", ignore_query: true)
         preview = ActionMailer::Preview.all.last
         visit admin_mailer_preview_path(preview.preview_name)
-        expect(current_path).to eq("/school_groups/#{group_admin.school_group.slug}")
+        expect(page).to have_current_path("/school_groups/#{group_admin.school_group.slug}", ignore_query: true)
         visit admin_mailer_preview_path(preview.preview_name + '/' + preview.emails.first)
-        expect(current_path).to eq("/school_groups/#{group_admin.school_group.slug}")
+        expect(page).to have_current_path("/school_groups/#{group_admin.school_group.slug}", ignore_query: true)
       end
     end
 
@@ -54,12 +54,12 @@ describe 'Emails', type: :system do
       it 'prevents the user from seeing the admin email preview page' do
         sign_in(guest)
         visit admin_mailer_previews_path
-        expect(current_path).to eq("/schools")
+        expect(page).to have_current_path('/schools')
         preview = ActionMailer::Preview.all.last
         visit admin_mailer_preview_path(preview.preview_name)
-        expect(current_path).to eq("/schools")
+        expect(page).to have_current_path('/schools')
         visit admin_mailer_preview_path(preview.preview_name + '/' + preview.emails.first)
-        expect(current_path).to eq("/schools")
+        expect(page).to have_current_path('/schools')
       end
     end
 
@@ -67,12 +67,12 @@ describe 'Emails', type: :system do
       it 'prevents the user from seeing the admin email preview page' do
         sign_in(pupil)
         visit admin_mailer_previews_path
-        expect(current_path).to eq("/pupils/schools/#{school.slug}")
+        expect(page).to have_current_path("/pupils/schools/#{school.slug}", ignore_query: true)
         preview = ActionMailer::Preview.all.last
         visit admin_mailer_preview_path(preview.preview_name)
-        expect(current_path).to eq("/pupils/schools/#{school.slug}")
+        expect(page).to have_current_path("/pupils/schools/#{school.slug}", ignore_query: true)
         visit admin_mailer_preview_path(preview.preview_name + '/' + preview.emails.first)
-        expect(current_path).to eq("/pupils/schools/#{school.slug}")
+        expect(page).to have_current_path("/pupils/schools/#{school.slug}", ignore_query: true)
       end
     end
 
@@ -80,12 +80,12 @@ describe 'Emails', type: :system do
       it 'prevents the user from seeing the admin email preview page' do
         sign_in(onboarding_user)
         visit admin_mailer_previews_path
-        expect(current_path).to eq("/schools/#{school.slug}")
+        expect(page).to have_current_path("/schools/#{school.slug}", ignore_query: true)
         preview = ActionMailer::Preview.all.last
         visit admin_mailer_preview_path(preview.preview_name)
-        expect(current_path).to eq("/schools/#{school.slug}")
+        expect(page).to have_current_path("/schools/#{school.slug}", ignore_query: true)
         visit admin_mailer_preview_path(preview.preview_name + '/' + preview.emails.first)
-        expect(current_path).to eq("/schools/#{school.slug}")
+        expect(page).to have_current_path("/schools/#{school.slug}", ignore_query: true)
       end
     end
 
@@ -93,12 +93,12 @@ describe 'Emails', type: :system do
       it 'prevents the user from seeing the admin email preview page' do
         sign_in(staff)
         visit admin_mailer_previews_path
-        expect(current_path).to eq("/schools/#{school.slug}")
+        expect(page).to have_current_path("/schools/#{school.slug}", ignore_query: true)
         preview = ActionMailer::Preview.all.last
         visit admin_mailer_preview_path(preview.preview_name)
-        expect(current_path).to eq("/schools/#{school.slug}")
+        expect(page).to have_current_path("/schools/#{school.slug}", ignore_query: true)
         visit admin_mailer_preview_path(preview.preview_name + '/' + preview.emails.first)
-        expect(current_path).to eq("/schools/#{school.slug}")
+        expect(page).to have_current_path("/schools/#{school.slug}", ignore_query: true)
       end
     end
 
@@ -106,14 +106,13 @@ describe 'Emails', type: :system do
       it 'prevents the user from seeing the admin email preview page' do
         sign_in(volunteer)
         visit admin_mailer_previews_path
-        expect(current_path).to eq("/schools/#{school.slug}")
+        expect(page).to have_current_path("/schools/#{school.slug}", ignore_query: true)
         preview = ActionMailer::Preview.all.last
         visit admin_mailer_preview_path(preview.preview_name)
-        expect(current_path).to eq("/schools/#{school.slug}")
+        expect(page).to have_current_path("/schools/#{school.slug}", ignore_query: true)
         visit admin_mailer_preview_path(preview.preview_name + '/' + preview.emails.first)
-        expect(current_path).to eq("/schools/#{school.slug}")
+        expect(page).to have_current_path("/schools/#{school.slug}", ignore_query: true)
       end
     end
   end
 end
-

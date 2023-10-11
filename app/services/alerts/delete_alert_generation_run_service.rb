@@ -8,7 +8,7 @@ module Alerts
     end
 
     def delete!
-      alert_generation_runs = AlertGenerationRun.where("created_at <= ?", @older_than)
+      alert_generation_runs = AlertGenerationRun.where('created_at <= ?', @older_than)
       alert_generation_runs.destroy_all
     end
   end

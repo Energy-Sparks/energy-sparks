@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 describe 'advice page management', type: :system do
-
   let(:school)        { create(:school) }
   let(:admin)         { create(:admin, school: school) }
 
-  let!(:advice_page)   { create(:advice_page, key: 'baseload-summary') }
+  let!(:advice_page) { create(:advice_page, key: 'baseload-summary') }
 
   before do
     sign_in(admin)
@@ -42,9 +41,9 @@ describe 'advice page management', type: :system do
   end
 
   describe 'managing associated activities' do
-    let!(:activity_category) { create(:activity_category)}
-    let!(:activity_type_1) { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category)}
-    let!(:activity_type_2) { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category)}
+    let!(:activity_category) { create(:activity_category) }
+    let!(:activity_type_1) { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category) }
+    let!(:activity_type_2) { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category) }
 
     before do
       visit admin_path
@@ -72,8 +71,8 @@ describe 'advice page management', type: :system do
 
   describe 'managing associated actions' do
     let!(:intervention_type_group) { create(:intervention_type_group) }
-    let!(:intervention_type_1) { create(:intervention_type, name: 'Install cladding', intervention_type_group: intervention_type_group)}
-    let!(:intervention_type_2) { create(:intervention_type, name: 'Check the boiler', intervention_type_group: intervention_type_group)}
+    let!(:intervention_type_1) { create(:intervention_type, name: 'Install cladding', intervention_type_group: intervention_type_group) }
+    let!(:intervention_type_2) { create(:intervention_type, name: 'Check the boiler', intervention_type_group: intervention_type_group) }
 
     before do
       visit admin_path
@@ -97,6 +96,5 @@ describe 'advice page management', type: :system do
       expect(advice_page.intervention_types).to match_array([intervention_type_2])
       expect(advice_page.advice_page_intervention_types.first.position).to eq(1)
     end
-
   end
 end

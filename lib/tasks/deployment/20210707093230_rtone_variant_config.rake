@@ -4,16 +4,16 @@ namespace :after_party do
     puts "Running deploy task 'rtone_variant_config'"
 
     config = {}
-    config['description'] = "Rtone Variant API"
+    config['description'] = 'Rtone Variant API'
     config['identifier'] = 'rtone-variant-api'
-    config['date_format'] = "%Y%m%d"
+    config['date_format'] = '%Y%m%d'
     config['mpan_mprn_field'] = 'N/A'
     config['reading_date_field'] = 'N/A'
     config['reading_fields'] = 'N/A'
     config['process_type'] = :rtone_variant_api
     config['source_type'] = :api
 
-    fc = AmrDataFeedConfig.find_by_identifier('rtone-variant-api')
+    fc = AmrDataFeedConfig.find_by(identifier: 'rtone-variant-api')
     if fc.nil?
       AmrDataFeedConfig.create!(config)
     else

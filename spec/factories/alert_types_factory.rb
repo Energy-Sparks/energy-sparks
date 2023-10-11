@@ -15,9 +15,7 @@
 module Alerts
   module System
     class DummyAlert
-
-      def initialize(args = {})
-      end
+      def initialize(args = {}); end
 
       def report
         Alerts::Adapters::Report.new(
@@ -40,23 +38,22 @@ module Alerts
         )
       end
 
-      def front_end_template_chart_data
-      end
+      def front_end_template_chart_data; end
 
       def benchmark_dates(asof_date)
         [asof_date, asof_date - 1.year]
       end
 
       def self.front_end_template_charts
-        TEMPLATE_VARIABLES.select{|key, value| value[:units] == :chart }
+        TEMPLATE_VARIABLES.select { |_key, value| value[:units] == :chart }
       end
 
       def self.front_end_template_tables
-        TEMPLATE_VARIABLES.select{|key, value| value[:units] == :table }
+        TEMPLATE_VARIABLES.select { |_key, value| value[:units] == :table }
       end
 
       def self.front_end_template_variables
-        { "Dummy alert" => TEMPLATE_VARIABLES, "Common" => {} }
+        { 'Dummy alert' => TEMPLATE_VARIABLES, 'Common' => {} }
       end
 
       TEMPLATE_VARIABLES = {
@@ -83,7 +80,7 @@ end
 
 FactoryBot.define do
   factory :alert_type do
-    sequence(:title)  {|n| "Alert Type #{n}"}
+    sequence(:title)  { |n| "Alert Type #{n}" }
     fuel_type         { :gas }
     sub_category      { :heating }
     frequency         { :weekly }

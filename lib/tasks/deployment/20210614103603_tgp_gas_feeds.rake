@@ -4,9 +4,9 @@ namespace :after_party do
     puts "Running deploy task 'tgp_gas_feeds'"
 
     config = {}
-    config['description'] = "TGP Gas Feed Configuration"
+    config['description'] = 'TGP Gas Feed Configuration'
     config['identifier'] = 'tgp-gas'
-    config['date_format'] = "%d/%m/%Y"
+    config['date_format'] = '%d/%m/%Y'
     config['mpan_mprn_field'] = 'MPR'
     config['reading_date_field'] = 'ReadDate'
     config['meter_description_field'] = 'Site'

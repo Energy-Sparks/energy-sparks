@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'TariffsReport', type: :system, include_application_helper: true do
-
   let(:admin)                   { create(:admin) }
   let(:school_group)            { create(:school_group, name: 'Big Group') }
   let(:school)                  { create(:school, school_group: school_group) }
@@ -17,12 +16,12 @@ describe 'TariffsReport', type: :system, include_application_helper: true do
   # let!(:price_1) { create(:tariff_price, meter: meter, tariff_date: Date.parse('2020-01-03'), prices: [1,2,3]) }
   # let!(:price_2) { create(:tariff_price, meter: meter, tariff_date: Date.parse('2020-01-04'), prices: [1,2,3]) }
 
-  let(:energy_tariff_1) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2018-01-01', end_date: '2018-12-31', tariff_holder_type: "School", school: school, tariff_type: 'differential')}
-  let(:energy_tariff_2) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2019-01-01', end_date: '2019-12-31', tariff_holder_type: "School", school: school, tariff_type: 'differential')}
-  let(:energy_tariff_3) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2020-01-01', end_date: '2020-12-31', tariff_holder_type: "School", school: school, tariff_type: 'differential')}
-  let(:energy_tariff_4) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2021-01-01', end_date: '2021-12-31', tariff_holder_type: "School", school: school_without_group, tariff_type: 'differential')}
+  let(:energy_tariff_1) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2018-01-01', end_date: '2018-12-31', tariff_holder_type: 'School', school: school, tariff_type: 'differential') }
+  let(:energy_tariff_2) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2019-01-01', end_date: '2019-12-31', tariff_holder_type: 'School', school: school, tariff_type: 'differential') }
+  let(:energy_tariff_3) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2020-01-01', end_date: '2020-12-31', tariff_holder_type: 'School', school: school, tariff_type: 'differential') }
+  let(:energy_tariff_4) { EnergyTariff.create(name: 'My Tariff', meter_type: :gas, start_date: '2021-01-01', end_date: '2021-12-31', tariff_holder_type: 'School', school: school_without_group, tariff_type: 'differential') }
 
-  before(:each) do
+  before do
     meter.update!(energy_tariffs: [energy_tariff_1, energy_tariff_2, energy_tariff_3])
     meter_without_group.update!(energy_tariffs: [energy_tariff_4])
     sign_in(admin)

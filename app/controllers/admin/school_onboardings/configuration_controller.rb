@@ -24,7 +24,7 @@ module Admin
         end
       end
 
-    private
+      private
 
       def school_params
         params.require(:school_onboarding).permit(

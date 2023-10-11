@@ -24,7 +24,7 @@ class AmrReadingData
     duplicate_reading: WARNING_DUPLICATE_READING
   }.freeze
 
-  validates_presence_of :reading_data, message: ERROR_UNABLE_TO_PARSE_FILE
+  validates :reading_data, presence: { message: ERROR_UNABLE_TO_PARSE_FILE }
   validate :any_valid_readings?
 
   def initialize(reading_data:, date_format:, missing_reading_threshold: 0, today: Time.zone.today)
@@ -62,9 +62,7 @@ class AmrReadingData
   private
 
   def any_valid_readings?
-    if valid_reading_count == 0
-      errors.add(:reading_data, ERROR_NO_VALID_READINGS)
-    end
+    errors.add(:reading_data, ERROR_NO_VALID_READINGS) if valid_reading_count == 0
   end
 
   def invalid_row_check
@@ -104,7 +102,7 @@ class AmrReadingData
   end
 
   def missing_readings?(readings)
-    readings.compact.count {|reading| reading.present? && reading != '-'} < (48 - @missing_reading_threshold)
+    readings.compact.count { |reading| reading.present? && reading != '-' } < (48 - @missing_reading_threshold)
   end
 
   def valid_reading_date?(reading_date)
@@ -117,6 +115,7 @@ class AmrReadingData
 
   def parse_date(reading_date)
     return reading_date if reading_date.is_a? Date
+
     Date.strptime(reading_date, @date_format)
   rescue ArgumentError
     begin

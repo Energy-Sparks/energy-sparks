@@ -1,20 +1,19 @@
 require 'rails_helper'
 
-describe "downloads", type: :system do
-
-  let(:school_name)               { 'Active school'}
-  let!(:school)                   { create_active_school(name: school_name)}
-  let!(:teacher)                  { create(:staff, school: school)}
-  let(:mpan)                      { 1234567890123 }
-  let!(:meter)                    { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school, mpan_mprn: mpan ) }
+describe 'downloads', type: :system do
+  let(:school_name)               { 'Active school' }
+  let!(:school)                   { create_active_school(name: school_name) }
+  let!(:teacher)                  { create(:staff, school: school) }
+  let(:mpan)                      { 1_234_567_890_123 }
+  let!(:meter)                    { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school, mpan_mprn: mpan) }
 
   context 'as teacher' do
-    before(:each) do
+    before do
       allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(school)
 
       sign_in(teacher)
       visit root_path
-      #this is the my school menu link
+      # this is the my school menu link
       click_link 'download-your-data'
       expect(page).to have_content("Downloads for #{school.name}")
       expect(page).to have_content(mpan)
@@ -24,8 +23,8 @@ describe "downloads", type: :system do
       click_on 'Download meter data for all meters combined'
 
       header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
-      expect(header).to match /school-amr-readings-#{school.name.parameterize}.csv$/
+      expect(header).to(match(/^attachment/))
+      expect(header).to(match(/school-amr-readings-#{school.name.parameterize}.csv$/))
 
       # Then check the content
       meter.amr_validated_readings.each do |amr|
@@ -40,8 +39,8 @@ describe "downloads", type: :system do
 
       # Make sure the page is a CSV
       header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
-      expect(header).to match /filename=\"meter-amr-readings-#{meter.mpan_mprn}.csv\"/
+      expect(header).to(match(/^attachment/))
+      expect(header).to(match(/filename="meter-amr-readings-#{meter.mpan_mprn}.csv"/))
 
       # Then check the content
       meter.amr_validated_readings.each do |amr|
@@ -58,19 +57,18 @@ describe "downloads", type: :system do
     it 'does not allow download of other schools data' do
       sign_in(school_admin)
       visit school_downloads_path(other_school)
-      expect(page).to have_content("You are not authorized to view that page")
+      expect(page).to have_content('You are not authorized to view that page')
     end
   end
 
   context 'as admin' do
-
     let!(:admin)                  { create(:admin) }
-    let!(:filtered_school)        { create(:school, :with_feed_areas, name: "Filter school") }
+    let!(:filtered_school)        { create(:school, :with_feed_areas, name: 'Filter school') }
 
-    before(:each) do
+    before do
       sign_in(admin)
       visit school_path(filtered_school)
-      #this is the in-page link
+      # this is the in-page link
       click_on 'Download your data'
       expect(page).to have_content("Downloads for #{filtered_school.name}")
     end
@@ -82,14 +80,14 @@ describe "downloads", type: :system do
 
       # Make sure the page is a CSV
       header = page.response_headers['Content-Disposition']
-      expect(header).to match /^attachment/
-      expect(header).to match /#{filtered_school.name.parameterize}-amr-raw-readings.csv$/
+      expect(header).to(match(/^attachment/))
+      expect(header).to(match(/#{filtered_school.name.parameterize}-amr-raw-readings.csv$/))
 
       expect(page.source).to have_content AmrDataFeedReading::CSV_HEADER_DATA_FEED_READING
 
       # Then check the content
       meter.amr_data_feed_readings.each do |record|
-        expect(page.source).to_not have_content amr_data_feed_reading_to_s(meter, record)
+        expect(page.source).not_to have_content amr_data_feed_reading_to_s(meter, record)
       end
 
       filtered_meter_with_raw_data.amr_data_feed_readings.each do |record|

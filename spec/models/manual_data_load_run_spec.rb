@@ -7,9 +7,9 @@ RSpec.describe ManualDataLoadRun, type: :model do
       new_manual_data_load_run = ManualDataLoadRun.create!(
         amr_uploaded_reading: create(:amr_uploaded_reading),
         status: 'done'
-                                 )
-      ManualDataLoadRunLogEntry.create(manual_data_load_run: new_manual_data_load_run, message: "SUCCESS")
-      ManualDataLoadRunLogEntry.create(manual_data_load_run: new_manual_data_load_run, message: "SUCCESS")
+      )
+      ManualDataLoadRunLogEntry.create(manual_data_load_run: new_manual_data_load_run, message: 'SUCCESS')
+      ManualDataLoadRunLogEntry.create(manual_data_load_run: new_manual_data_load_run, message: 'SUCCESS')
       expect(new_manual_data_load_run.manual_data_load_run_log_entries.count).to eq(2)
       expect do
         new_manual_data_load_run.destroy

@@ -36,11 +36,11 @@ class ProgrammeType < ApplicationRecord
   scope :default_first, -> { order(default: :desc) }
   scope :featured, -> { active.default_first.by_title }
 
-  validates_presence_of :title
+  validates :title, presence: true
   validates :bonus_score, numericality: { greater_than_or_equal_to: 0 }
-  validates_uniqueness_of :default, if: :default
+  validates :default, uniqueness: { if: :default }
 
-  accepts_nested_attributes_for :programme_type_activity_types, reject_if: proc {|attributes| attributes['position'].blank? }
+  accepts_nested_attributes_for :programme_type_activity_types, reject_if: proc { |attributes| attributes['position'].blank? }
 
   def activity_types_by_position
     programme_type_activity_types.order(:position).map(&:activity_type)

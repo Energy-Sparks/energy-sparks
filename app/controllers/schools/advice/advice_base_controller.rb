@@ -12,23 +12,24 @@ module Schools
 
       before_action :header_fix_enabled
       before_action :load_advice_pages
-      before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
-      before_action :set_tab_name, only: [:insights, :analysis, :learn_more]
-      before_action :load_advice_page, only: [:insights, :analysis, :learn_more]
-      before_action :check_authorisation, only: [:insights, :analysis, :learn_more]
+      before_action :check_aggregated_school_in_cache, only: %i[insights analysis]
+      before_action :set_tab_name, only: %i[insights analysis learn_more]
+      before_action :load_advice_page, only: %i[insights analysis learn_more]
+      before_action :check_authorisation, only: %i[insights analysis learn_more]
       before_action :load_recommendations, only: [:insights]
-      before_action :set_page_title, only: [:insights, :analysis, :learn_more]
-      before_action :check_has_fuel_type, only: [:insights, :analysis]
-      before_action :check_can_run_analysis, only: [:insights, :analysis]
-      before_action :set_data_warning, only: [:insights, :analysis]
-      before_action :set_page_subtitle, only: [:insights, :analysis]
-      before_action :set_breadcrumbs, only: [:insights, :analysis, :learn_more]
+      before_action :set_page_title, only: %i[insights analysis learn_more]
+      before_action :check_has_fuel_type, only: %i[insights analysis]
+      before_action :check_can_run_analysis, only: %i[insights analysis]
+      before_action :set_data_warning, only: %i[insights analysis]
+      before_action :set_page_subtitle, only: %i[insights analysis]
+      before_action :set_breadcrumbs, only: %i[insights analysis learn_more]
       before_action :set_insights_next_steps, only: [:insights]
-      before_action :set_economic_tariffs_change_caveats, only: [:insights, :analysis]
+      before_action :set_economic_tariffs_change_caveats, only: %i[insights analysis]
 
       rescue_from StandardError do |exception|
         Rollbar.error(exception, advice_page: advice_page_key, school: @school.name, school_id: @school.id, tab: @tab)
         raise if !Rails.env.production? || @advice_page.nil?
+
         locale = LocaleFinder.new(params, request).locale
         I18n.with_locale(locale) do
           render 'error', status: :internal_server_error
@@ -76,15 +77,13 @@ module Schools
       def set_breadcrumbs
         @breadcrumbs = [
           { name: t('advice_pages.breadcrumbs.root'), href: school_advice_path(@school) },
-          { name: @advice_page_title, href: advice_page_path(@school, @advice_page) },
+          { name: @advice_page_title, href: advice_page_path(@school, @advice_page) }
         ]
       end
 
       def if_exists(key)
         full_key = "advice_pages.#{@advice_page.key}.#{key}"
-        if I18n.exists?(full_key, I18n.locale)
-          t(full_key)
-        end
+        t(full_key) if I18n.exists?(full_key, I18n.locale)
       end
 
       def set_data_warning
@@ -100,7 +99,7 @@ module Schools
       end
 
       def load_advice_page
-        @advice_page = AdvicePage.find_by_key(advice_page_key)
+        @advice_page = AdvicePage.find_by(key: advice_page_key)
       end
 
       def check_authorisation
@@ -111,17 +110,16 @@ module Schools
 
       def check_has_fuel_type
         render('no_fuel_type', status: :bad_request) and return unless school_has_fuel_type?
+
         true
       end
 
-      #Checks that the analysis can be run.
-      #Enforces check that school has the necessary fuel type
-      #and provides hook for controllers to plug in custom checks
+      # Checks that the analysis can be run.
+      # Enforces check that school has the necessary fuel type
+      # and provides hook for controllers to plug in custom checks
       def check_can_run_analysis
         @analysable = create_analysable
-        if @analysable.present? && !@analysable.enough_data?
-          render 'not_enough_data'
-        end
+        render 'not_enough_data' if @analysable.present? && !@analysable.enough_data?
       end
 
       def school_has_fuel_type?
@@ -130,8 +128,8 @@ module Schools
 
       def start_end_dates
         {
-          earliest_reading:  analysis_start_date,
-          last_reading:  analysis_end_date,
+          earliest_reading: analysis_start_date,
+          last_reading: analysis_end_date
         }
       end
 
@@ -147,12 +145,12 @@ module Schools
         aggregate_school.aggregate_meter(advice_page_fuel_type).amr_data.end_date
       end
 
-      #for charts that use the last full week
+      # for charts that use the last full week
       def last_full_week_start_date(end_date)
         end_date.prev_year.end_of_week
       end
 
-      #for charts that use the last full week
+      # for charts that use the last full week
       def last_full_week_end_date(end_date)
         end_date.end_of_week - 1
       end
@@ -174,10 +172,10 @@ module Schools
         )
       end
 
-      #Should return an object that conforms to interface described
-      #by the AnalysableMixin. Will be used to determine whether
-      #there's enough data and, optionally, identify when we think there
-      #will be enough data.
+      # Should return an object that conforms to interface described
+      # by the AnalysableMixin. Will be used to determine whether
+      # there's enough data and, optionally, identify when we think there
+      # will be enough data.
       def create_analysable
         nil
       end

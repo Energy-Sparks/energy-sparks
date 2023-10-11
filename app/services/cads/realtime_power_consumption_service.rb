@@ -10,9 +10,8 @@ module Cads
 
     def self.read_consumption(cad)
       power_consumption_service = Rails.cache.fetch(cache_key(cad))
-      if power_consumption_service
-        return power_consumption_service.perform.round(2)
-      end
+      return power_consumption_service.perform.round(2) if power_consumption_service
+
       nil
     end
 
@@ -22,8 +21,9 @@ module Cads
     end
 
     private_class_method def self.find_meter(aggregate_school, cad)
-      return aggregate_school.aggregated_electricity_meters unless cad.meter.present?
-      return aggregate_school.meter?(cad.meter.mpan_mprn.to_s)
+      return aggregate_school.aggregated_electricity_meters if cad.meter.blank?
+
+      aggregate_school.meter?(cad.meter.mpan_mprn.to_s)
     end
 
     private_class_method def self.cache_key(cad)

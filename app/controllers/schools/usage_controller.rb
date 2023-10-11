@@ -34,15 +34,15 @@ module Schools
         {
           weekly: :calendar_picker_electricity_week_example_comparison_chart,
           daily: :calendar_picker_electricity_day_example_comparison_chart,
-          earliest_reading:  aggregate_school.aggregate_meter(:electricity).amr_data.start_date,
-          last_reading:  aggregate_school.aggregate_meter(:electricity).amr_data.end_date,
+          earliest_reading: aggregate_school.aggregate_meter(:electricity).amr_data.start_date,
+          last_reading: aggregate_school.aggregate_meter(:electricity).amr_data.end_date
         }
       elsif supply == :gas
         {
           weekly: :calendar_picker_gas_week_example_comparison_chart,
           daily: :calendar_picker_gas_day_example_comparison_chart,
-          earliest_reading:  aggregate_school.aggregate_meter(:gas).amr_data.start_date,
-          last_reading:  aggregate_school.aggregate_meter(:gas).amr_data.end_date,
+          earliest_reading: aggregate_school.aggregate_meter(:gas).amr_data.start_date,
+          last_reading: aggregate_school.aggregate_meter(:gas).amr_data.end_date
         }
       end
     end
@@ -61,7 +61,8 @@ module Schools
 
     def get_period
       period = params.require(:period).to_sym
-      raise ActionController::RoutingError, "Period #{period} not valid" unless [:weekly, :daily].include?(period)
+      raise ActionController::RoutingError, "Period #{period} not valid" unless %i[weekly daily].include?(period)
+
       period
     end
   end

@@ -37,12 +37,12 @@ module Admin
 
         def from_parameter
           from = params.fetch(:alert_type_rating, {})[:rating_from]
-          from.blank? ? 0 : from
+          from.presence || 0
         end
 
         def to_parameter
           to = params.fetch(:alert_type_rating, {})[:rating_to]
-          to.blank? ? 10 : to
+          to.presence || 10
         end
 
         def content_params
@@ -81,7 +81,7 @@ module Admin
         end
 
         def content_managed?
-          @alert_type.class_name == "Alerts::System::ContentManaged"
+          @alert_type.class_name == 'Alerts::System::ContentManaged'
         end
       end
     end

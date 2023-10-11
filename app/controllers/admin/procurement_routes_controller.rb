@@ -42,8 +42,7 @@ module Admin
                                                 :add_existing_data_feed,
                                                 :data_issues_contact_details,
                                                 :loa_expiry_procedure,
-                                                :comments
-                                               )
+                                                :comments)
     end
   end
 end

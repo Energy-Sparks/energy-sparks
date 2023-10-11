@@ -1,7 +1,7 @@
 module Onboarding
   class SchoolDetailsController < BaseController
     before_action :set_key_stages
-    before_action only: [:new, :create] do
+    before_action only: %i[new create] do
       redirect_if_event(:school_details_created, onboarding_consent_path(@school_onboarding))
     end
 
@@ -38,7 +38,7 @@ module Onboarding
       end
     end
 
-  private
+    private
 
     def set_key_stages
       @key_stages = KeyStage.order(:name)

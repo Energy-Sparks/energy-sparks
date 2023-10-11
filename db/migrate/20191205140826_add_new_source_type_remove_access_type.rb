@@ -12,4 +12,3 @@ class AddNewSourceTypeRemoveAccessType < ActiveRecord::Migration[6.0]
     remove_column :amr_data_feed_configs, :access_type, :text
   end
 end
-

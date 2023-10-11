@@ -17,7 +17,7 @@ module Schools
           format.html { @pagy, @responses = pagy(@responses) }
           format.csv do
             send_data @responses.to_csv,
-            filename: "#{t('common.application')}-#{TransportSurvey.model_name.human}-#{@school.slug}-#{@transport_survey.run_on}".parameterize + '.csv'
+                      filename: "#{t('common.application')}-#{TransportSurvey.model_name.human}-#{@school.slug}-#{@transport_survey.run_on}".parameterize + '.csv'
           end
         end
       end

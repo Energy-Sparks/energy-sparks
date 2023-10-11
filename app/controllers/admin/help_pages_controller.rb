@@ -7,8 +7,7 @@ module Admin
       @help_pages = HelpPage.all.by_title
     end
 
-    def new
-    end
+    def new; end
 
     def create
       if @help_page.save
@@ -18,8 +17,7 @@ module Admin
       end
     end
 
-    def edit
-    end
+    def edit; end
 
     def update
       if @help_page.update(help_page_params)

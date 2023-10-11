@@ -1,10 +1,10 @@
 FactoryBot.define do
   factory :contact do
-    description { "Here is a contact" }
+    description { 'Here is a contact' }
     school
 
     trait :with_name do
-      name { "Eleanor Rigby" }
+      name { 'Eleanor Rigby' }
     end
 
     trait :with_email_address do
@@ -12,11 +12,11 @@ FactoryBot.define do
     end
 
     trait :with_mobile_phone do
-      mobile_phone_number { SecureRandom.random_number(999999999) }
+      mobile_phone_number { SecureRandom.random_number(999_999_999) }
     end
 
-    factory :contact_with_name_email,         traits: [:with_name, :with_email_address]
-    factory :contact_with_name_email_phone,   traits: [:with_name, :with_email_address, :with_mobile_phone]
-    factory :contact_with_name_phone,         traits: [:with_name, :with_mobile_phone]
+    factory :contact_with_name_email,         traits: %i[with_name with_email_address]
+    factory :contact_with_name_email_phone,   traits: %i[with_name with_email_address with_mobile_phone]
+    factory :contact_with_name_phone,         traits: %i[with_name with_mobile_phone]
   end
 end

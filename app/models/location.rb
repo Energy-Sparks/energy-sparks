@@ -17,10 +17,9 @@
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
 
-
 class Location < ApplicationRecord
   belongs_to :school
   has_many   :temperature_recordings
 
-  validates_presence_of :name
+  validates :name, presence: true
 end

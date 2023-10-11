@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe ActivityTypeSearchService do
-
   before { ActivityType.delete_all }
 
   context 'search by query term' do

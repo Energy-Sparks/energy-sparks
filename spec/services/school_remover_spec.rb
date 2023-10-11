@@ -1,22 +1,20 @@
 require 'rails_helper'
 
 describe SchoolRemover, :schools, type: :service do
-
   let(:school)                   { create(:school, visible: false, number_of_pupils: 12) }
   let(:visible_school)           { create(:school, visible: true, number_of_pupils: 12) }
 
   let!(:school_admin)            { create(:school_admin, school: school) }
-  let!(:contact)                 { create(:contact_with_name_email_phone, school: school, user: school_admin)}
+  let!(:contact)                 { create(:contact_with_name_email_phone, school: school, user: school_admin) }
   let!(:school_admin_user)       { create(:school_admin, school: school) }
   let!(:staff_user)              { create(:staff, school: school) }
   let!(:pupil_user)              { create(:pupil, school: school) }
 
   let!(:electricity_meter)       { create(:electricity_meter_with_validated_reading, school: school) }
-  let!(:gas_meter)               { create(:gas_meter, :with_unvalidated_readings, school: school)}
+  let!(:gas_meter)               { create(:gas_meter, :with_unvalidated_readings, school: school) }
   let!(:electricity_meter_issue) { create(:issue, school: school) }
   let!(:gas_meter_issue)         { create(:issue, school: school) }
   let!(:school_issue)            { create(:issue, school: school) }
-
 
   let(:archive) { false }
   let(:service) { SchoolRemover.new(school, archive: archive) }
@@ -99,13 +97,14 @@ describe SchoolRemover, :schools, type: :service do
 
     it 'fails if school is visible' do
       school.update(visible: true)
-      expect {
+      expect do
         service.remove_school!
-      }.to raise_error(SchoolRemover::Error)
+      end.to raise_error(SchoolRemover::Error)
     end
 
     context 'when archive flag set true' do
       let(:archive) { true }
+
       it 'marks the school as inactive but with no removal date or issue deletion' do
         service.remove_school!
         expect(school.active).to be_falsey
@@ -119,7 +118,7 @@ describe SchoolRemover, :schools, type: :service do
   end
 
   describe '#remove_users!' do
-    let(:remove)    { service.remove_users! }
+    let(:remove) { service.remove_users! }
 
     it 'locks the user accounts' do
       remove
@@ -160,7 +159,7 @@ describe SchoolRemover, :schools, type: :service do
   end
 
   describe '#remove_meters!' do
-    before(:each) do
+    before do
       service.remove_meters!
     end
 
@@ -185,13 +184,13 @@ describe SchoolRemover, :schools, type: :service do
       it 'removes the validated data' do
         expect(AmrValidatedReading.count).to eq 0
       end
+
       it 'does not unlink the unvalidated data' do
-        expect(AmrDataFeedReading.first.meter).to_not be_nil
+        expect(AmrDataFeedReading.first.meter).not_to be_nil
       end
     end
   end
 
   # remove onboarding?
   # remove calendars?
-
 end

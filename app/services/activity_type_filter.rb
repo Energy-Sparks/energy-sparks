@@ -1,5 +1,5 @@
 class ActivityTypeFilter
-  FILTERS = [:key_stages, :subjects, :topics, :activity_timings, :impacts].freeze
+  FILTERS = %i[key_stages subjects topics activity_timings impacts].freeze
 
   attr_reader :query
 
@@ -49,7 +49,7 @@ class ActivityTypeFilter
       ActivityTiming.none
     else
       checked = ActivityTiming.where(id: @query[:activity_timing_ids])
-      (checked + checked.select(&:include_lower).map {|timing| ActivityTiming.where('position < ?', timing.position)}.flatten).uniq
+      (checked + checked.select(&:include_lower).map { |timing| ActivityTiming.where('position < ?', timing.position) }.flatten).uniq
     end
   end
 
@@ -77,7 +77,7 @@ class ActivityTypeFilter
     @all_impacts ||= Impact.order(:name)
   end
 
-private
+  private
 
   def load_selected(model, key)
     if @query[key].blank?

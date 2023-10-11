@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe SchoolGroups::CurrentScoresCsvGenerator do
   let(:school_group) { create(:school_group) }
 
-  include_context "school group current scores"
+  include_context 'school group current scores'
 
-  context "with school group data" do
+  context 'with school group data' do
     it 'returns priority actions data as a csv for a school group' do
       csv = SchoolGroups::CurrentScoresCsvGenerator.new(school_group: school_group.reload).export
       expect(csv.lines.count).to eq(6)
@@ -17,8 +17,9 @@ RSpec.describe SchoolGroups::CurrentScoresCsvGenerator do
       expect(csv.lines[5]).to eq("-,School 5,0\n")
     end
 
-    context "when including cluster" do
+    context 'when including cluster' do
       subject(:csv) { SchoolGroups::CurrentScoresCsvGenerator.new(school_group: school_group.reload, include_cluster: true).export }
+
       it 'includes cluster' do
         expect(csv.lines.count).to eq(6)
         expect(csv.lines[0]).to eq("Position,School,Cluster,Score\n")

@@ -3,20 +3,20 @@ namespace :after_party do
   task my_sefe_portal_format: :environment do
     puts "Running deploy task 'my_sefe_portal_format'"
 
-    identifier = "my-sefe-portal"
+    identifier = 'my-sefe-portal'
     config = {}
-    config["identifier"] = identifier
-    config["description"] = "My SEFE Portal"
-    config["notes"] = "For processing data downloaded from the My SEFE Portal. Requires that the meter serial numbers are in Energy Sparks"
-    config['header_example'] = "ReadDateTime_UTC,MeterSerialNumber,Consumption"
+    config['identifier'] = identifier
+    config['description'] = 'My SEFE Portal'
+    config['notes'] = 'For processing data downloaded from the My SEFE Portal. Requires that the meter serial numbers are in Energy Sparks'
+    config['header_example'] = 'ReadDateTime_UTC,MeterSerialNumber,Consumption'
     config['number_of_header_rows'] = 1
-    config["date_format"] = "%d/%m/%Y %H:%M:%S"
+    config['date_format'] = '%d/%m/%Y %H:%M:%S'
 
     config['mpan_mprn_field'] = ''
 
     config['msn_field'] = 'MeterSerialNumber'
     config['reading_date_field'] = 'ReadDateTime_UTC'
-    config['reading_fields'] = ["Consumption"]
+    config['reading_fields'] = ['Consumption']
 
     config['row_per_reading'] = true
     config['lookup_by_serial_number'] = true

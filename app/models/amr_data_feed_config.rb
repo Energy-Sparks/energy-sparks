@@ -39,8 +39,8 @@
 #
 
 class AmrDataFeedConfig < ApplicationRecord
-  enum process_type: [:s3_folder, :low_carbon_hub_api, :solar_edge_api, :n3rgy_api, :rtone_variant_api]
-  enum source_type: [:email, :manual, :api, :sftp]
+  enum process_type: { s3_folder: 0, low_carbon_hub_api: 1, solar_edge_api: 2, n3rgy_api: 3, rtone_variant_api: 4 }
+  enum source_type: { email: 0, manual: 1, api: 2, sftp: 3 }
 
   has_many :amr_data_feed_import_logs
   has_many :meters, -> { distinct }, through: :amr_data_feed_import_logs
@@ -53,7 +53,7 @@ class AmrDataFeedConfig < ApplicationRecord
     this_header = header || header_example
     header_array = this_header.split(',')
     {
-      mpan_mprn_index:    header_array.find_index(mpan_mprn_field),
+      mpan_mprn_index: header_array.find_index(mpan_mprn_field),
       reading_date_index: header_array.find_index(reading_date_field),
       postcode_index: header_array.find_index(postcode_field),
       units_index: header_array.find_index(units_field),

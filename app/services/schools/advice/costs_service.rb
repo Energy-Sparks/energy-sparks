@@ -11,9 +11,7 @@ module Schools
         tariff_information_service.percentage_with_real_tariffs > 0.99
       end
 
-      def periods_with_missing_tariffs
-        tariff_information_service.periods_with_missing_tariffs
-      end
+      delegate :periods_with_missing_tariffs, to: :tariff_information_service
 
       def multiple_meters?
         reporting_meters.length > 1
@@ -32,7 +30,7 @@ module Schools
         breakdown
       end
 
-      #find the analytics meter for a given mpan
+      # find the analytics meter for a given mpan
       def analytics_meter_for_mpan(mpan_mprn)
         @meter_collection.meter?(mpan_mprn)
       end
@@ -55,12 +53,10 @@ module Schools
       def tariffs(analytics_meter)
         tariffs = tariff_information_service(analytics_meter).tariffs
         tariffs.map do |range, tariff|
-          if tariff.real
-            tariff.user_tariff = @school.energy_tariffs.where(name: tariff.name).first
-          end
+          tariff.user_tariff = @school.energy_tariffs.where(name: tariff.name).first if tariff.real
           [range, tariff]
         end
-        tariffs.sort { |a, b| a[0].begin <=> b[0].begin}
+        tariffs.sort { |a, b| a[0].begin <=> b[0].begin }
       end
 
       def analysis_date_range
@@ -70,7 +66,7 @@ module Schools
       private
 
       def meter_for_mpan(mpan_mprn)
-        @school.meters.find_by_mpan_mprn(mpan_mprn)
+        @school.meters.find_by(mpan_mprn: mpan_mprn)
       end
 
       def aggregate_meter

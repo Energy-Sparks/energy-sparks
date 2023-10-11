@@ -3,8 +3,7 @@ module Admin
     before_action :header_fix_enabled
     load_and_authorize_resource
 
-    def show
-    end
+    def show; end
 
     def deliver
       @data_source = DataSource.find(params[:data_source_id])

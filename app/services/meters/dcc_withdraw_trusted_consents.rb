@@ -10,16 +10,14 @@ module Meters
 
     def perform
       @meters.each do |meter|
-        begin
-          meter.update(consent_granted: false)
-          @n3rgy_api_factory.consent_api(meter).withdraw_trusted_consent(meter.mpan_mprn)
-        rescue => e
-          @errors << e
-          Rails.logger.error("#{e.message} for mpxn #{meter.mpan_mprn}, school #{meter.school.name}")
-          Rollbar.error(e, job: :dcc_withdraw_trusted_consents, mpxn: meter.mpan_mprn, school_name: meter.school.name)
-        end
+        meter.update(consent_granted: false)
+        @n3rgy_api_factory.consent_api(meter).withdraw_trusted_consent(meter.mpan_mprn)
+      rescue StandardError => e
+        @errors << e
+        Rails.logger.error("#{e.message} for mpxn #{meter.mpan_mprn}, school #{meter.school.name}")
+        Rollbar.error(e, job: :dcc_withdraw_trusted_consents, mpxn: meter.mpan_mprn, school_name: meter.school.name)
       end
-      return errors.empty?
+      errors.empty?
     end
   end
 end

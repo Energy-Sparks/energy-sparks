@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Amr::CheckingValidatedReadingsForAMeter do
-
   let(:start_date)            { Date.today - 2 }
   let(:end_date)              { Date.today }
   let(:expected_readings)     { 3 }
@@ -9,8 +8,7 @@ describe Amr::CheckingValidatedReadingsForAMeter do
   let(:upsert_gas_service)    { Amr::UpsertValidatedReadingsForAMeter.new(gas_dashboard_meter) }
 
   describe 'with a validated set of readings' do
-
-    before(:each) do
+    before do
       upsert_gas_service.perform
     end
 

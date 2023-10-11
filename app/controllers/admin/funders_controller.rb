@@ -6,14 +6,11 @@ module Admin
       @funders = Funder.all.order(name: :asc)
     end
 
-    def show
-    end
+    def show; end
 
-    def new
-    end
+    def new; end
 
-    def edit
-    end
+    def edit; end
 
     def create
       if @funder.save

@@ -14,11 +14,11 @@ module Onboarding
       end
     end
 
-  private
+    private
 
     def school_params
       params.require(:school).permit(
-        school_times_attributes: [:id, :day, :opening_time, :closing_time, :calendar_period, :usage_type]
+        school_times_attributes: %i[id day opening_time closing_time calendar_period usage_type]
       )
     end
   end

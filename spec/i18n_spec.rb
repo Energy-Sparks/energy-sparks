@@ -9,17 +9,17 @@ RSpec.describe I18n do
   let(:unused_keys) { i18n.unused_keys }
   let(:inconsistent_interpolations) { i18n.inconsistent_interpolations }
 
-  it 'does not have missing keys', skip: "covered by i18n-tasks in commit hook" do
+  it 'does not have missing keys', skip: 'covered by i18n-tasks in commit hook' do
     expect(missing_keys).to be_empty,
                             "Missing #{missing_keys.leaves.count} i18n keys, run `i18n-tasks missing' to show them"
   end
 
-  it 'does not have unused keys', skip: "covered by i18n-tasks in commit hook" do
+  it 'does not have unused keys', skip: 'covered by i18n-tasks in commit hook' do
     expect(unused_keys).to be_empty,
                            "#{unused_keys.leaves.count} unused i18n keys, run `i18n-tasks unused' to show them"
   end
 
-  it 'files are normalized', skip: "covered by i18n-tasks in commit hook" do
+  it 'files are normalized', skip: 'covered by i18n-tasks in commit hook' do
     non_normalized = i18n.non_normalized_paths
     error_message = "The following files need to be normalized:\n" \
                     "#{non_normalized.map { |path| "  #{path}" }.join("\n")}\n" \
@@ -27,7 +27,7 @@ RSpec.describe I18n do
     expect(non_normalized).to be_empty, error_message
   end
 
-  it 'does not have inconsistent interpolations', skip: "covered by i18n-tasks in commit hook" do
+  it 'does not have inconsistent interpolations', skip: 'covered by i18n-tasks in commit hook' do
     error_message = "#{inconsistent_interpolations.leaves.count} i18n keys have inconsistent interpolations.\n" \
                     "Run `i18n-tasks check-consistent-interpolations' to show them"
     expect(inconsistent_interpolations).to be_empty, error_message
@@ -48,7 +48,7 @@ RSpec.describe I18n do
   it 'ensures the analytics yaml translation files have been synced with the main application with rake i18n:copy_analytics_yaml' do
     analytics_gem_path = `bundle info energy-sparks_analytics --path`.chomp
     analytics_yaml = File.join(analytics_gem_path, 'config', 'locales')
-    yaml = Dir["**/*.yml", base: analytics_yaml].reject {|f| f.match /^x-/}.sort
+    yaml = Dir['**/*.yml', base: analytics_yaml].reject { |f| f.match(/^x-/) }.sort
     yaml.each do |yml|
       expect(YAML.load_file(File.join(analytics_gem_path, 'config', 'locales', yml))).to eq(YAML.load_file(Rails.root.join('config', 'locales', 'analytics', yml)))
     end

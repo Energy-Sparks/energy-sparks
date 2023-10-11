@@ -5,8 +5,8 @@ class OnboardingMailer < LocaleMailer
     @school_onboarding = params[:school_onboarding]
     @title = @school_onboarding.school_name
     locales = @school_onboarding.email_locales
-    @body = for_each_locale(locales) { render :onboarding_email_content, layout: nil }.join("<hr>")
-    @subject = for_each_locale(locales) { default_i18n_subject }.join(" / ")
+    @body = for_each_locale(locales) { render :onboarding_email_content, layout: nil }.join('<hr>')
+    @subject = for_each_locale(locales) { default_i18n_subject }.join(' / ')
     make_bootstrap_mail(to: @school_onboarding.contact_email, subject: @subject)
   end
 
@@ -24,8 +24,8 @@ class OnboardingMailer < LocaleMailer
     @school_onboarding = params[:school_onboarding]
     @title = @school_onboarding.school_name
     locales = @school_onboarding.email_locales
-    @body = for_each_locale(locales) { render :reminder_email_content, layout: nil }.join("<hr>")
-    @subject = for_each_locale(locales) { default_i18n_subject }.join(" / ")
+    @body = for_each_locale(locales) { render :reminder_email_content, layout: nil }.join('<hr>')
+    @subject = for_each_locale(locales) { default_i18n_subject }.join(' / ')
     make_bootstrap_mail(to: @school_onboarding.contact_email, subject: @subject)
   end
 

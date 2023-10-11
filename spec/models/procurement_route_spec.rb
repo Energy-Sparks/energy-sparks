@@ -1,23 +1,26 @@
 require 'rails_helper'
 
 RSpec.describe ProcurementRoute, type: :model do
-
   describe 'validations' do
     subject { build(:procurement_route) }
+
     it { is_expected.to be_valid }
     it { is_expected.to validate_presence_of(:organisation_name) }
   end
 
-  describe ".to_csv" do
-    let(:procurement_route) { create(:procurement_route) }
-    let(:data_source) { create(:data_source) }
+  describe '.to_csv' do
     subject { procurement_route.to_csv }
-    let(:header) { "School group,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Data Source,Open issues count,Open issues" }
+
+    let(:procurement_route) { create(:procurement_route) }
+    let(:header) { 'School group,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Data Source,Open issues count,Open issues' }
+    let(:data_source) { create(:data_source) }
+
     before { Timecop.freeze }
+
     after { Timecop.return }
 
-    context "with meters" do
-      let(:admin_meter_status) { AdminMeterStatus.create(label: "On Data Feed") }
+    context 'with meters' do
+      let(:admin_meter_status) { AdminMeterStatus.create(label: 'On Data Feed') }
       let!(:meters) do
         [
           create(:gas_meter, data_source: data_source, procurement_route: procurement_route, school: create(:school, active: true), admin_meter_status: admin_meter_status),
@@ -41,6 +44,7 @@ RSpec.describe ProcurementRoute, type: :model do
 
       it { expect(subject.lines.count).to eq(3) }
       it { expect(subject.lines.first.chomp).to eq(header) }
+
       2.times do |i|
         it 'returns rows for all meters for active schools with this procurement route' do
           expect(subject.lines[i + 1].chomp).to eq(
@@ -64,15 +68,16 @@ RSpec.describe ProcurementRoute, type: :model do
       end
     end
 
-    context "with meters for other data source" do
+    context 'with meters for other data source' do
       let!(:meters) do
         [create(:gas_meter),
          create(:gas_meter)]
       end
+
       it { expect(subject.lines.count).to eq(1) }
     end
 
-    context "with no meters" do
+    context 'with no meters' do
       it { expect(subject.lines.count).to eq(1) }
       it { expect(subject.lines.first.chomp).to eq(header) }
     end

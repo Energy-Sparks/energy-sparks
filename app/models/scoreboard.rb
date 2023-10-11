@@ -33,7 +33,7 @@ class Scoreboard < ApplicationRecord
 
   FIRST_YEAR = 2018
 
-  friendly_id :name_en, use: [:finders, :slugged, :history]
+  friendly_id :name_en, use: %i[finders slugged history]
 
   has_many :schools
   belongs_to :academic_year_calendar, class_name: 'Calendar', optional: true
@@ -42,6 +42,7 @@ class Scoreboard < ApplicationRecord
 
   def safe_destroy
     raise EnergySparks::SafeDestroyError, 'Scoreboard has associated schools' if schools.any?
+
     destroy
   end
 
@@ -56,6 +57,6 @@ class Scoreboard < ApplicationRecord
   private
 
   def update_name
-    self[:name] = self.name_en
+    self[:name] = name_en
   end
 end

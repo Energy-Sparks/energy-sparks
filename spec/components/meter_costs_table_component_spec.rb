@@ -1,23 +1,23 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe MeterCostsTableComponent, type: :component do
+  let(:january) { Date.new(2023, 1, 1) }
 
-  let(:january)         { Date.new(2023, 1, 1) }
-
-  let(:simple_bill_component_costs) {
+  let(:simple_bill_component_costs) do
     {
       flat_rate: 100.0,
       standing_charge: 50.0
     }
-  }
+  end
 
-  let(:january_costs)    {
+  let(:january_costs) do
     Costs::MeterMonth.new(
       month_start_date: january,
       start_date: january,
       end_date: january.end_of_month,
-      bill_component_costs: simple_bill_component_costs )
-  }
+      bill_component_costs: simple_bill_component_costs
+    )
+  end
 
   let(:monthly_costs)   { { january => january_costs } }
   let(:change_in_costs) { nil }
@@ -30,52 +30,53 @@ RSpec.describe MeterCostsTableComponent, type: :component do
     let(:html) do
       render_inline(MeterCostsTableComponent.new(**params))
     end
+
     it 'includes id' do
       expect(html).to have_css('#cost-table-id')
     end
 
     it 'includes month' do
-      expect(html).to have_text("Jan")
+      expect(html).to have_text('Jan')
     end
 
     it 'includes flat rate row' do
-      expect(html).to have_text("Flat rate")
+      expect(html).to have_text('Flat rate')
       expect(html).to have_css("span[data-title='The charge per kWh of consumption for the whole day']")
-      expect(html).to have_text("£100")
+      expect(html).to have_text('£100')
     end
 
     it 'includes standing charge row' do
-      expect(html).to have_text("Standing charge")
+      expect(html).to have_text('Standing charge')
       expect(html).to have_css("span[data-title='Fixed fee for your energy supply']")
-      expect(html).to have_text("£50")
+      expect(html).to have_text('£50')
     end
 
     it 'includes total row' do
-      expect(html).to have_text("Total")
-      expect(html).to have_text("£150")
+      expect(html).to have_text('Total')
+      expect(html).to have_text('£150')
     end
 
     it 'includes two rows in thead' do
-      expect(html).to have_css("thead tr", :count=>2)
+      expect(html).to have_css('thead tr', count: 2)
     end
 
     it 'includes three rows in tbody' do
-      expect(html).to have_css("tbody tr", :count=>3)
+      expect(html).to have_css('tbody tr', count: 3)
     end
   end
 
   context 'with alternate thead' do
-    let(:params)  { { id: 'cost-table-id', year_header: false, month_format: '%b %Y', monthly_costs: monthly_costs, change_in_costs: change_in_costs, school: meter.school, fuel_type: :electricity } }
+    let(:params) { { id: 'cost-table-id', year_header: false, month_format: '%b %Y', monthly_costs: monthly_costs, change_in_costs: change_in_costs, school: meter.school, fuel_type: :electricity } }
     let(:html) do
       render_inline(MeterCostsTableComponent.new(**params))
     end
 
     it 'includes two rows in thead' do
-      expect(html).to have_css("thead tr", :count=>1)
+      expect(html).to have_css('thead tr', count: 1)
     end
 
     it 'includes month' do
-      expect(html).to have_text("Jan 2023")
+      expect(html).to have_text('Jan 2023')
     end
   end
 
@@ -85,13 +86,14 @@ RSpec.describe MeterCostsTableComponent, type: :component do
     let(:html) do
       render_inline(MeterCostsTableComponent.new(**params))
     end
+
     it 'does not include month' do
-      expect(html).to_not have_text("Feb")
+      expect(html).not_to have_text('Feb')
     end
   end
 
   context 'rendering with mixed costs' do
-    let(:complex_bill_component_costs) {
+    let(:complex_bill_component_costs) do
       {
         flat_rate: 100.0,
         standing_charge: 50,
@@ -100,54 +102,55 @@ RSpec.describe MeterCostsTableComponent, type: :component do
         '00_30_to_12_30': 15,
         '12_30_to_23_30': 20
       }
-    }
+    end
 
-    let(:february)        { Date.new(2023, 2, 1) }
-    let(:february_costs)    {
+    let(:february) { Date.new(2023, 2, 1) }
+    let(:february_costs) do
       Costs::MeterMonth.new(
         month_start_date: february,
         start_date: february,
         end_date: february.end_of_month,
-        bill_component_costs: complex_bill_component_costs )
-    }
+        bill_component_costs: complex_bill_component_costs
+      )
+    end
 
-    let(:monthly_costs)   { { january => january_costs, february => february_costs } }
+    let(:monthly_costs) { { january => january_costs, february => february_costs } }
 
     let(:html) do
       render_inline(MeterCostsTableComponent.new(**params))
     end
 
     it 'includes extra month' do
-      expect(html).to have_text("Feb")
+      expect(html).to have_text('Feb')
     end
 
     it 'includes duos red row' do
-      expect(html).to have_text("Duos (Red)")
+      expect(html).to have_text('Duos (Red)')
       expect(html).to have_css("span[data-title='Distributed use of system charge: - charge per kWh of usage during these times: weekdays: 16:00 – 19:00 . To reduce, reduce the schools usage during these times']")
-      expect(html).to have_text("£10")
+      expect(html).to have_text('£10')
     end
 
     it 'includes availability charge row' do
-      expect(html).to have_text("Agreed availability charge")
+      expect(html).to have_text('Agreed availability charge')
       expect(html).to have_css("span[data-title='A charge for the cabling to provide an agreed maximum amount of power in KVA of electricity to the school. This can often be reduced via discussions with your energy supplier']")
-      expect(html).to have_text("£27")
+      expect(html).to have_text('£27')
     end
 
     it 'includes two day night charge rows' do
-      expect(html).to have_text("00:30 to 12:30")
+      expect(html).to have_text('00:30 to 12:30')
       expect(html).to have_css("span[data-title='This is the charge for electricity consumed between 00:30 and 12:30 per kWh']")
-      expect(html).to have_text("£15")
-      expect(html).to have_text("12:30 to 23:30")
+      expect(html).to have_text('£15')
+      expect(html).to have_text('12:30 to 23:30')
       expect(html).to have_css("span[data-title='This is the charge for electricity consumed between 12:30 and 23:30 per kWh']")
-      expect(html).to have_text("£20")
+      expect(html).to have_text('£20')
     end
 
     it 'includes five rows in tbody' do
-      expect(html).to have_css("tbody tr", :count=>7)
+      expect(html).to have_css('tbody tr', count: 7)
     end
 
     it 'has correct total' do
-      expect(html).to have_text("£222")
+      expect(html).to have_text('£222')
     end
   end
 
@@ -158,16 +161,18 @@ RSpec.describe MeterCostsTableComponent, type: :component do
 
     context 'with costs' do
       let(:change_in_costs) { { january => 80.0 } }
+
       it 'includes change in cost row' do
-        expect(html).to have_css("tbody tr", :count=>4)
-        expect(html).to have_text("£80")
+        expect(html).to have_css('tbody tr', count: 4)
+        expect(html).to have_text('£80')
       end
     end
 
     context 'with no costs for month' do
       let(:change_in_costs) { { january => nil } }
+
       it 'does not include change in cost row' do
-        expect(html).to have_css("tbody tr", :count=>3)
+        expect(html).to have_css('tbody tr', count: 3)
       end
     end
   end

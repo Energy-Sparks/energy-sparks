@@ -9,20 +9,18 @@ module Amr
     def import_all
       Rails.logger.info "Download all from S3 key pattern: #{@config.identifier}"
       get_array_of_files_in_bucket_with_prefix.each do |file_name|
-        begin
-          get_file_from_s3(file_name)
-          import_file(file_name)
-          archive_file(file_name)
-        rescue => e
-          Rails.logger.error "Exception: running import_all for #{@config.description}"
-          Rails.logger.error e.backtrace.join("\n")
-          Rollbar.error(e, job: :import_all, config: @config.identifier, file_name: file_name)
-        end
+        get_file_from_s3(file_name)
+        import_file(file_name)
+        archive_file(file_name)
+      rescue StandardError => e
+        Rails.logger.error "Exception: running import_all for #{@config.description}"
+        Rails.logger.error e.backtrace.join("\n")
+        Rollbar.error(e, job: :import_all, config: @config.identifier, file_name: file_name)
       end
-      Rails.logger.info "Downloaded all"
+      Rails.logger.info 'Downloaded all'
     end
 
-  private
+    private
 
     def s3_key(file_name)
       "#{@config.identifier}/#{file_name}"

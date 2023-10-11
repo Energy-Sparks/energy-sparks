@@ -3,7 +3,7 @@ module Admin
   class SchoolOnboardingsController < AdminController
     load_and_authorize_resource find_by: :uuid
 
-    INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME = "incomplete-onboarding-schools.csv".freeze
+    INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME = 'incomplete-onboarding-schools.csv'.freeze
 
     def index
       @school_groups = SchoolGroup.order(name: :asc)
@@ -13,8 +13,7 @@ module Admin
       end
     end
 
-    def new
-    end
+    def new; end
 
     def completed
       @completed_schools = @school_onboardings.complete.order(updated_at: :desc)
@@ -30,8 +29,7 @@ module Admin
       end
     end
 
-    def edit
-    end
+    def edit; end
 
     def update
       if @school_onboarding.update(school_onboarding_params)
@@ -44,7 +42,7 @@ module Admin
     def destroy
       SchoolOnboardingDeletor.new(@school_onboarding).delete!
       redirect_back fallback_location: admin_school_onboardings_path, notice: 'School onboarding was successfully destroyed.'
-    rescue => e
+    rescue StandardError => e
       redirect_back fallback_location: admin_school_onboardings_path, notice: e.message
     end
 

@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 class PageNavComponent < ViewComponent::Base
-  renders_many :sections, ->(**args) do
+  renders_many :sections, lambda { |**args|
     args[:options] = options
     SectionComponent.new(**args)
-  end
+  }
 
   attr_reader :name, :icon, :classes, :href, :options
 
-  def initialize(name: "Menu", icon: 'home', href:, classes: nil, options: {})
+  def initialize(name: 'Menu', icon: 'home', href:, classes: nil, options: {})
     @name = name
     @icon = icon
     @classes = classes
@@ -23,10 +23,10 @@ class PageNavComponent < ViewComponent::Base
   end
 
   class SectionComponent < ViewComponent::Base
-    renders_many :items, ->(**args) do
+    renders_many :items, lambda { |**args|
       args[:match_controller] ||= options[:match_controller]
       PageNavComponent::ItemComponent.new(**args)
-    end
+    }
 
     attr_reader :name, :icon, :visible, :classes, :options
 
@@ -43,7 +43,7 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def link_text
-      helpers.text_with_icon(name, icon) + content_tag(:span, helpers.toggler, class: 'pl-1 float-right')
+      helpers.text_with_icon(name, icon) + tag.span(helpers.toggler, class: 'pl-1 float-right')
     end
 
     def render?
@@ -76,7 +76,7 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def call
-      args = { class: "nav-link border-bottom item small" }
+      args = { class: 'nav-link border-bottom item small' }
       args[:class] += " #{classes}" if classes
       args[:class] += ' current' if current_item?(href)
       link_to(name, href, args)

@@ -7,29 +7,30 @@ namespace :after_party do
       electricity: :electricity,
       gas: :gas,
       solar_pv: :solar,
-      exported_solar_pv: :solar }
+      exported_solar_pv: :solar
+    }
 
-    default_user = User.find_by_email('rebecca.scutt@energysparks.uk')
+    default_user = User.find_by(email: 'rebecca.scutt@energysparks.uk')
 
     Meter.all.each do |meter|
-      if meter.notes.present?
-        admin_user = meter.school.try(:school_group).try(:default_issues_admin_user) || default_user
-        title = "#{meter.fuel_type} meter: #{meter.mpan_mprn}".capitalize
-        title += " - #{meter.name}" unless meter.name.blank?
-        attrs = {
-          issue_type: :issue,
-          title: title,
-          issueable: meter.school,
-          fuel_type: fuel_type_map[meter.fuel_type],
-          owned_by: admin_user,
-          created_by: admin_user,
-          updated_by: admin_user
-        }
+      next if meter.notes.blank?
 
-        Issue.find_or_create_by!(attrs) do |issue|
-          issue.description = meter.notes
-          issue.meters = [meter]
-        end
+      admin_user = meter.school.try(:school_group).try(:default_issues_admin_user) || default_user
+      title = "#{meter.fuel_type} meter: #{meter.mpan_mprn}".capitalize
+      title += " - #{meter.name}" if meter.name.present?
+      attrs = {
+        issue_type: :issue,
+        title: title,
+        issueable: meter.school,
+        fuel_type: fuel_type_map[meter.fuel_type],
+        owned_by: admin_user,
+        created_by: admin_user,
+        updated_by: admin_user
+      }
+
+      Issue.find_or_create_by!(attrs) do |issue|
+        issue.description = meter.notes
+        issue.meters = [meter]
       end
     end
 

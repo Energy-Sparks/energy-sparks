@@ -20,7 +20,7 @@ module Admin
       render plain: "#{e.message} for #{school.name}"
     end
 
-  private
+    private
 
     def template_fields
       translated_params = t_params(EquivalenceTypeContentVersion.mobility_attributes)
@@ -29,7 +29,7 @@ module Admin
 
     def equivalence_type_params
       params.require(:equivalence_type).permit(
-        template_fields + [:meter_type, :time_period, :image_name]
+        template_fields + %i[meter_type time_period image_name]
       )
     end
 

@@ -1,6 +1,6 @@
 module Schools
   class InterventionsController < ApplicationController
-    skip_before_action :authenticate_user!, only: [:index, :show]
+    skip_before_action :authenticate_user!, only: %i[index show]
     load_resource :school
     load_and_authorize_resource :observation, through: :school, parent: false
 
@@ -45,15 +45,14 @@ module Schools
       redirect_back fallback_location: school_interventions_path(@school)
     end
 
-    def show
-    end
+    def show; end
 
     def completed
       @suggested_actions = load_suggested_actions(@school)
       @completed_actions = load_completed_actions(@school)
     end
 
-  private
+    private
 
     def observation_params
       params.require(:observation).permit(:description, :at, :intervention_type_id, :involved_pupils, :pupil_count)

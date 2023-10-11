@@ -19,16 +19,14 @@ module Cads
     rescue MeterReadingsFeeds::GeoApi::NotAuthorised, MeterReadingsFeeds::GeoApi::NotAllowed => e
       reset_token
       Rollbar.error(e, school_id: @cad.school.id, school: @cad.school.name, device_identifier: @cad.device_identifier)
-    rescue => e
+    rescue StandardError => e
       Rollbar.error(e, school_id: @cad.school.id, school: @cad.school.name, device_identifier: @cad.device_identifier)
     end
 
     private
 
     def power_for_type(powers, type)
-      if powers
-        power = powers.select { |p| p['type'].downcase == type.to_s }.last
-      end
+      power = powers.select { |p| p['type'].downcase == type.to_s }.last if powers
       power ? power['watts'] : 0
     end
 

@@ -7,14 +7,11 @@ module Admin
       @case_studies = CaseStudy.order(:position)
     end
 
-    def show
-    end
+    def show; end
 
-    def new
-    end
+    def new; end
 
-    def edit
-    end
+    def edit; end
 
     def create
       if @case_study.save

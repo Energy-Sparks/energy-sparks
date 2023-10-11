@@ -1,6 +1,6 @@
 class AttachAcademicYearsToCalendarAreas < ActiveRecord::Migration[6.0]
   def change
-    add_reference :academic_years, :calendar_area, foreign_key: {on_delete: :cascade}
+    add_reference :academic_years, :calendar_area, foreign_key: { on_delete: :cascade }
     reversible do |dir|
       dir.up do
         connection.execute 'UPDATE academic_years SET calendar_area_id = (SELECT id FROM calendar_areas WHERE parent_id IS NULL LIMIT 1)'

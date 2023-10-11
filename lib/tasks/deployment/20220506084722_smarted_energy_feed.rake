@@ -4,10 +4,10 @@ namespace :after_party do
     puts "Running deploy task 'smarted_energy_feed'"
 
     config = {}
-    config['description'] = "SmartestEnergy"
+    config['description'] = 'SmartestEnergy'
     config['identifier'] = 'smartestenergy'
     config['number_of_header_rows'] = 7
-    config['date_format'] = "%d/%m/%y"
+    config['date_format'] = '%d/%m/%y'
     config['mpan_mprn_field'] = 'MPAN'
     config['reading_date_field'] = 'Date'
     config['meter_description_field'] = 'Online Meter Name'

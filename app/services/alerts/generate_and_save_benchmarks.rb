@@ -1,11 +1,11 @@
 module Alerts
   class GenerateAndSaveBenchmarks
     def initialize(
-        school:,
-        benchmark_result_generation_run:,
-        aggregate_school: AggregateSchoolService.new(school).aggregate_school,
-        framework_adapter: FrameworkAdapter
-        )
+      school:,
+      benchmark_result_generation_run:,
+      aggregate_school: AggregateSchoolService.new(school).aggregate_school,
+      framework_adapter: FrameworkAdapter
+    )
       @school = school
       @aggregate_school = aggregate_school
       @framework_adapter = framework_adapter

@@ -6,7 +6,7 @@ module Equivalences
       last_work_week: 14,
       last_month: 14,
       last_year: 90,
-      last_academic_year: 180,
+      last_academic_year: 180
     }.freeze
 
     def initialize(school)
@@ -17,7 +17,7 @@ module Equivalences
       relevant_equivalences.select { |eq| in_date(eq) }
     end
 
-  private
+    private
 
     def in_date(equivalence)
       relevant_days_ago(equivalence) < equivalence.to_date

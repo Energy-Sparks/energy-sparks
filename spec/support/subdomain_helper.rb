@@ -1,7 +1,9 @@
 module SubdomainHelper
   def within_subdomain(subdomain)
     before { host! "#{subdomain}.energysparks.test" }
-    after  { host! "www.energysparks.test" }
+
+    after  { host! 'www.energysparks.test' }
+
     yield
   end
 end

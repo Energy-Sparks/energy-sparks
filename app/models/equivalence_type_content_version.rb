@@ -24,7 +24,7 @@ class EquivalenceTypeContentVersion < ApplicationRecord
   include TransifexSerialisable
 
   belongs_to :equivalence_type
-  belongs_to :replaced_by, class_name: 'EquivalenceTypeContentVersion', foreign_key: :replaced_by_id, optional: true
+  belongs_to :replaced_by, class_name: 'EquivalenceTypeContentVersion', optional: true
 
   translates :equivalence, backend: :action_text
 
@@ -36,7 +36,7 @@ class EquivalenceTypeContentVersion < ApplicationRecord
 
   def self.template_fields
     [
-      :equivalence,
+      :equivalence
     ]
   end
 
@@ -53,6 +53,6 @@ class EquivalenceTypeContentVersion < ApplicationRecord
   end
 
   def self.tx_resources
-    self.latest
+    latest
   end
 end

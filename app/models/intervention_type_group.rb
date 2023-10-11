@@ -24,12 +24,12 @@ class InterventionTypeGroup < ApplicationRecord
   scope :by_name, -> { i18n.order(name: :asc) }
   scope :active,  -> { where(active: true) }
 
-  #override default name for this resource in transifex
+  # override default name for this resource in transifex
   def tx_name
     name
   end
 
   def self.listed_with_intervention_types
-    all.order(:name).map {|group| [group, group.intervention_types.display_order.to_a]}
+    all.order(:name).map { |group| [group, group.intervention_types.display_order.to_a] }
   end
 end

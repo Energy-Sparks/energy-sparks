@@ -3,11 +3,11 @@ namespace :after_party do
   task update_refrigeration_alert: :environment do
     puts "Running deploy task 'update_refrigeration_alert'"
 
-    alert = AlertType.find_by_class_name("AlertSummerHolidayRefridgerationAnalysis")
+    alert = AlertType.find_by(class_name: 'AlertSummerHolidayRefridgerationAnalysis')
     if alert
       alert.update(
-        class_name: "AlertSummerHolidayRefrigerationAnalysis",
-        title: "Impact of turning fridges and freezers off over the summer holidays"
+        class_name: 'AlertSummerHolidayRefrigerationAnalysis',
+        title: 'Impact of turning fridges and freezers off over the summer holidays'
       )
       alert.save!
     end

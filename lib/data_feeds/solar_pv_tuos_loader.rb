@@ -22,10 +22,10 @@ module DataFeeds
       p "Imported #{@insert_count} records, Updated #{@update_count} records"
     end
 
-  private
+    private
 
     def gsp_area_id(area)
-      area.gsp_id.present? ? area.gsp_id : nearest_gsp_area(area)[:gsp_id]
+      area.gsp_id.presence || nearest_gsp_area(area)[:gsp_id]
     end
 
     def nearest_gsp_area(area)
@@ -44,9 +44,10 @@ module DataFeeds
       solar_pv_data.each do |reading_date, generation_mw_x48|
         next if generation_mw_x48.size != 48
         next if reading_date.nil?
+
         process_day(reading_date, generation_mw_x48, area)
       end
-    rescue => e
+    rescue StandardError => e
       Rails.logger.error "Exception: running solar pv for #{area.title} from #{@start_date} to #{@end_date} : #{e.class} #{e.message}"
       Rails.logger.error e.backtrace.join("\n")
       Rollbar.error(e, job: :solar_pv_tuos_area, area_id: area.id, area: area.title)
@@ -56,13 +57,14 @@ module DataFeeds
       record = SolarPvTuosReading.find_by(reading_date: reading_date, area_id: area.id)
       if record
         record.update(generation_mw_x48: generation_mw_x48)
-        @update_count = @update_count + 1
+        @update_count += 1
       else
         SolarPvTuosReading.create!(
           reading_date: reading_date,
           generation_mw_x48: generation_mw_x48,
-          area_id: area.id)
-        @insert_count = @insert_count + 1
+          area_id: area.id
+        )
+        @insert_count += 1
       end
     end
   end

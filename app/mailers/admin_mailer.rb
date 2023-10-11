@@ -26,7 +26,7 @@ class AdminMailer < ApplicationMailer
     @all_meters = meter_report.all_meters
 
     title = "Meter report for #{@school_group.name}"
-    title += @all_meters ? " - all meters" : " - active meters"
+    title += @all_meters ? ' - all meters' : ' - active meters'
     attachments[meter_report.csv_filename] = { mime_type: 'text/csv', content: meter_report.csv }
 
     make_bootstrap_mail(to: to, subject: subject(title))
@@ -34,7 +34,7 @@ class AdminMailer < ApplicationMailer
 
   def issues_report
     @user = params[:user]
-    @issues = Issue.for_owned_by(@user).status_open.issue.by_updated_at.includes([:created_by, :updated_by, :issueable])
+    @issues = Issue.for_owned_by(@user).status_open.issue.by_updated_at.includes(%i[created_by updated_by issueable])
     title = "Issue report for #{@user.display_name}"
 
     if @issues.any?

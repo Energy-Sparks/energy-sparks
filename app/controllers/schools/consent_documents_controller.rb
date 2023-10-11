@@ -4,11 +4,9 @@ module Schools
     load_resource :school
     load_and_authorize_resource :consent_document, through: :school
 
-    def index
-    end
+    def index; end
 
-    def show
-    end
+    def show; end
 
     def new
       @consent_document = ConsentDocument.new(title: "#{@school.name} Bill, Uploaded #{nice_dates(Time.zone.today)}")
@@ -29,7 +27,7 @@ module Schools
       if @consent_document.update(consent_document_params)
         BillRequestMailer.with(school: @school, consent_document: @consent_document, updated: true).notify_admin.deliver_now
         @school.update!(bill_requested: false)
-        redirect_to school_consent_documents_path, notice: "The bill was successfully updated."
+        redirect_to school_consent_documents_path, notice: 'The bill was successfully updated.'
       else
         render :edit
       end
@@ -37,7 +35,7 @@ module Schools
 
     def destroy
       @consent_document.delete
-      redirect_to school_consent_documents_path, notice: "The bill was successfully deleted."
+      redirect_to school_consent_documents_path, notice: 'The bill was successfully deleted.'
     end
 
     private

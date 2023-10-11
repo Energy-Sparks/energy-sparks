@@ -14,27 +14,29 @@ RSpec.describe BillRequestMailer do
     end
   end
 
-  before :each do
+  before do
     BillRequestMailer.with_user_locales(users: [user], school: school, electricity_meters: [electricity_meter], gas_meters: [gas_meter]) { |mailer| mailer.request_bill.deliver_now }
     @email = ActionMailer::Base.deliveries.last
   end
 
   describe '#request_bill' do
-    context "preferred locale is en" do
+    context 'preferred locale is en' do
       let(:preferred_locale) { :en }
+
       it 'sends an email with en strings' do
-        expect(@email.subject).to eql ("Please upload a recent energy bill to Energy Sparks")
-        expect(@email.body.to_s).to include("Please upload an energy bill for Test School")
-        expect(@email.body.to_s).to include("http://localhost/schools/test-school/consent_documents")
+        expect(@email.subject).to eql('Please upload a recent energy bill to Energy Sparks')
+        expect(@email.body.to_s).to include('Please upload an energy bill for Test School')
+        expect(@email.body.to_s).to include('http://localhost/schools/test-school/consent_documents')
       end
     end
 
-    context "preferred locale is cy" do
+    context 'preferred locale is cy' do
       let(:preferred_locale) { :cy }
+
       it 'sends an email with cy strings' do
-        expect(@email.subject).to eql ("Uwchlwythwch fil ynni diweddar i Sbarcynni")
-        expect(@email.body.to_s).to include("Uwchlwythwch fil ynni ar gyfer Test School")
-        expect(@email.body.to_s).to include("http://cy.localhost/schools/test-school/consent_documents")
+        expect(@email.subject).to eql('Uwchlwythwch fil ynni diweddar i Sbarcynni')
+        expect(@email.body.to_s).to include('Uwchlwythwch fil ynni ar gyfer Test School')
+        expect(@email.body.to_s).to include('http://cy.localhost/schools/test-school/consent_documents')
       end
     end
   end

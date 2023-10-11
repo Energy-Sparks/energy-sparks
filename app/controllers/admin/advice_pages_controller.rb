@@ -7,8 +7,7 @@ module Admin
       @advice_pages = @advice_pages.by_key
     end
 
-    def edit
-    end
+    def edit; end
 
     def update
       if @advice_page.update(advice_page_params)
@@ -18,13 +17,12 @@ module Admin
       end
     end
 
-  private
+    private
 
     def advice_page_params
       translated_params = t_params(AdvicePage.mobility_attributes)
       params.require(:advice_page).permit(translated_params,
-          :restricted
-      )
+                                          :restricted)
     end
   end
 end

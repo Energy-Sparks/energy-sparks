@@ -9,17 +9,17 @@ module Schools
           'Archived?',
           'Data visible?',
           'Onboarding date',
-          'Date enabled date', #(see “Recently onboarded” report)
+          'Date enabled date', # (see “Recently onboarded” report)
           'Funder',
           'Funding status',
           'Postcode',
           'Country',
           'Pupils',
           '% FSM',
-          'Local Authority Name', #(LAD22NM code)
-          'Region name', #(RGN22NM)
-          'Activities this year', #Number of activities recorded this academic year
-          'Actions this year', #Number of actions recorded this academic year
+          'Local Authority Name', # (LAD22NM code)
+          'Region name', # (RGN22NM)
+          'Activities this year', # Number of activities recorded this academic year
+          'Actions this year', # Number of actions recorded this academic year
           'Electricity Data Source 1',
           'Electricity Data Source 2',
           'Electricity Data Source 3',
@@ -53,11 +53,11 @@ module Schools
         active_and_archived_schools.each do |school|
           electricity_data_sources = school.all_data_sources(:electricity)
           gas_data_sources = school.all_data_sources(:gas)
-          solar_data_sources = school.all_data_sources([:solar_pv, :exported_solar_pv])
+          solar_data_sources = school.all_data_sources(%i[solar_pv exported_solar_pv])
 
           electricity_routes = school.all_procurement_routes(:electricity)
           gas_routes = school.all_procurement_routes(:gas)
-          solar_routes = school.all_procurement_routes([:solar_pv, :exported_solar_pv])
+          solar_routes = school.all_procurement_routes(%i[solar_pv exported_solar_pv])
 
           csv << [
             school.school_group.name,
@@ -128,13 +128,15 @@ module Schools
 
     def activities_this_academic_year(school)
       academic_year = academic_year(school)
-      return 0 unless academic_year.present?
+      return 0 if academic_year.blank?
+
       school.activities.between(academic_year.start_date, academic_year.end_date).count
     end
 
     def actions_this_academic_year(school)
       academic_year = academic_year(school)
-      return 0 unless academic_year.present?
+      return 0 if academic_year.blank?
+
       school.observations.intervention.between(academic_year.start_date, academic_year.end_date).count
     end
 

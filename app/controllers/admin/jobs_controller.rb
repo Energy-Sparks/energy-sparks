@@ -6,14 +6,11 @@ module Admin
       @jobs = Job.all.by_created_date
     end
 
-    def show
-    end
+    def show; end
 
-    def new
-    end
+    def new; end
 
-    def edit
-    end
+    def edit; end
 
     def create
       if @job.save

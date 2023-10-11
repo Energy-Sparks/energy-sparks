@@ -3,8 +3,7 @@ module Schools
     before_action :set_school
     before_action :set_breadcrumbs
 
-    def edit
-    end
+    def edit; end
 
     def update
       @school.attributes = school_params
@@ -15,7 +14,7 @@ module Schools
       end
     end
 
-  private
+    private
 
     def set_school
       @school = School.friendly.find(params[:school_id])
@@ -28,7 +27,7 @@ module Schools
 
     def school_params
       params.require(:school).permit(
-        school_times_attributes: [:id, :day, :opening_time, :closing_time, :calendar_period, :usage_type, :_destroy]
+        school_times_attributes: %i[id day opening_time closing_time calendar_period usage_type _destroy]
       )
     end
   end

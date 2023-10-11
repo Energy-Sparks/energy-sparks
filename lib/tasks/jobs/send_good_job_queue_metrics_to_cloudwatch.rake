@@ -11,12 +11,7 @@ namespace :jobs do
       [:queued].each do |status|
         count = GoodJob::Job.where(queue_name: queue_name).send(status).count
 
-        commands << (command_template % {
-          metric_name: status.capitalize,
-          time_stamp: Time.now.to_i,
-          value: count,
-          queue_name: queue_name
-        })
+        commands << (format(command_template, metric_name: status.capitalize, time_stamp: Time.now.to_i, value: count, queue_name: queue_name))
       end
 
       commands.each { |command| system(command) }

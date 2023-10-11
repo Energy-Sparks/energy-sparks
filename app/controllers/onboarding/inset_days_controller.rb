@@ -37,17 +37,14 @@ module Onboarding
       redirect_to new_onboarding_completion_path(@school_onboarding, anchor: 'inset-days')
     end
 
-  private
-
+    private
 
     def load_event_types
       @calendar_event_types = CalendarEventType.inset_day
     end
 
     def complete_event_details(event)
-      if event.start_date
-        event.end_date = event.start_date
-      end
+      event.end_date = event.start_date if event.start_date
     end
 
     def calendar_event_params

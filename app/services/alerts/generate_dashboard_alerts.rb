@@ -12,7 +12,7 @@ module Alerts
       @content_generation_run.dashboard_alerts
     end
 
-  private
+    private
 
     def process_dashboard_alerts(alert, dashboard)
       FetchContent.new(alert).content_versions_with_priority(scope: :"#{dashboard}_dashboard_alert").each do |content_version, priority|

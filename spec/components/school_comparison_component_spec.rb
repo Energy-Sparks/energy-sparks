@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe SchoolComparisonComponent, type: :component do
   let(:comparison) do
@@ -25,14 +25,17 @@ RSpec.describe SchoolComparisonComponent, type: :component do
     let(:html) do
       render_inline(component)
     end
+
     it 'still renders' do
       expect(component.render?).to eq true
     end
+
     it 'uses adjusts values for footer' do
       expect(component.benchmark_value).to eq nil
       expect(component.other_value).to eq '10 kW'
     end
-    it "classifies the school as other_school" do
+
+    it 'classifies the school as other_school' do
       expect(component.category).to eq 'other_school'
       within '.school-comparison-component-callout-box .body' do
         expect(html).to have_content('>15 kW')
@@ -52,14 +55,14 @@ RSpec.describe SchoolComparisonComponent, type: :component do
     let(:component) { SchoolComparisonComponent.new(**params) }
 
     it 'shows greater and less than arrows for each category when the low is good value is false' do
-      allow_any_instance_of(Schools::Comparison).to receive(:low_is_good) { false }
+      allow_any_instance_of(Schools::Comparison).to receive(:low_is_good).and_return(false)
       expect(component.exemplar_value_sign).to eq('&gt;')
       expect(component.benchmark_value_sign).to eq('&gt;')
       expect(component.other_value_sign).to eq('&lt;')
     end
 
     it 'shows greater and less than arrows for each category when the low is good value is true' do
-      allow_any_instance_of(Schools::Comparison).to receive(:low_is_good) { true }
+      allow_any_instance_of(Schools::Comparison).to receive(:low_is_good).and_return(true)
       expect(component.exemplar_value_sign).to eq('&lt;')
       expect(component.benchmark_value_sign).to eq('&lt;')
       expect(component.other_value_sign).to eq('&gt;')
@@ -71,25 +74,25 @@ RSpec.describe SchoolComparisonComponent, type: :component do
       render_inline(SchoolComparisonComponent.new(**params))
     end
 
-    it "has the right id" do
+    it 'has the right id' do
       expect(html).to have_css('#spec-id')
     end
 
-    it "includes the values" do
+    it 'includes the values' do
       expect(html).to have_content('10 kW')
       expect(html).to have_content('15 kW')
       expect(html).to have_content('20 kW')
     end
 
-    it "classifies the school" do
+    it 'classifies the school' do
       within '.school-comparison-component-callout-box .body' do
         expect(html).to have_content('15 kW')
       end
     end
 
-    it "adds responsive classes to other categories" do
+    it 'adds responsive classes to other categories' do
       expect(html).to have_css('div.exemplar_school.d-none')
-      expect(html).to_not have_css('div.benchmark_school.d-none')
+      expect(html).not_to have_css('div.benchmark_school.d-none')
       expect(html).to have_css('div.other_school.d-none')
     end
   end
@@ -107,28 +110,29 @@ RSpec.describe SchoolComparisonComponent, type: :component do
       render_inline(SchoolComparisonComponent.new(**params))
     end
 
-    it "classifies the school" do
+    it 'classifies the school' do
       within '.school-comparison-component-callout-box .body' do
         expect(html).to have_content('150 kW')
       end
     end
 
-    it "adds responsive classes to other categories" do
+    it 'adds responsive classes to other categories' do
       expect(html).to have_css('div.exemplar_school.d-none')
       expect(html).to have_css('div.benchmark_school.d-none')
-      expect(html).to_not have_css('div.other_school.d-none')
+      expect(html).not_to have_css('div.other_school.d-none')
     end
   end
 
   context 'with callout footer' do
     let(:html) do
       render_inline(SchoolComparisonComponent.new(**params)) do |c|
-        c.with_footer { "Custom footer" }
+        c.with_footer { 'Custom footer' }
       end
     end
-    it "adds the callout footer" do
+
+    it 'adds the callout footer' do
       within '.school-comparison-component-callout-box .footer' do
-        expect(html).to have_content("Custom footer")
+        expect(html).to have_content('Custom footer')
       end
     end
   end

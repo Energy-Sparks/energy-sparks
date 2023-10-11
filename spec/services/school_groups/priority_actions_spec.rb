@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe SchoolGroups::PriorityActions, type: :service do
-
   let(:school_group) { create :school_group, name: 'A Group' }
 
   let(:school_1)  { create(:school, school_group: school_group, visible: true) }
@@ -16,14 +15,14 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
       rating_from: 0,
       rating_to: 4,
       management_priorities_active: true,
-      description: "low"
+      description: 'low'
     )
   end
   let!(:alert_type_rating_content_version_low) do
     create(
       :alert_type_rating_content_version,
       alert_type_rating: alert_type_rating_low,
-      management_priorities_title: 'Spending too much money on heating (low)',
+      management_priorities_title: 'Spending too much money on heating (low)'
     )
   end
   let!(:alert_type_rating_medium) do
@@ -33,14 +32,14 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
       rating_from: 4.1,
       rating_to: 6,
       management_priorities_active: true,
-      description: "medium"
+      description: 'medium'
     )
   end
   let!(:alert_type_rating_content_version_medium) do
     create(
       :alert_type_rating_content_version,
       alert_type_rating: alert_type_rating_medium,
-      management_priorities_title: 'Spending too much money on heating (medium)',
+      management_priorities_title: 'Spending too much money on heating (medium)'
     )
   end
   let!(:alert_type_rating_high) do
@@ -50,77 +49,74 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
       rating_from: 6.1,
       rating_to: 10,
       management_priorities_active: true,
-      description: "high"
+      description: 'high'
     )
   end
   let!(:alert_type_rating_content_version_high) do
     create(
       :alert_type_rating_content_version,
       alert_type_rating: alert_type_rating_high,
-      management_priorities_title: 'Spending too much money on heating (high)',
+      management_priorities_title: 'Spending too much money on heating (high)'
     )
   end
 
   let!(:alert_school_1) do
     create(:alert, :with_run,
-      alert_type: alert_type,
-      run_on: Date.today, school: school_1,
-      rating: 2.0,
-      template_data: {
-        average_one_year_saving_£: '£1,000',
-        one_year_saving_co2: '1,100 kg CO2',
-        one_year_saving_kwh: '1,111 kWh'
-      }
-    )
+           alert_type: alert_type,
+           run_on: Date.today, school: school_1,
+           rating: 2.0,
+           template_data: {
+             average_one_year_saving_£: '£1,000',
+             one_year_saving_co2: '1,100 kg CO2',
+             one_year_saving_kwh: '1,111 kWh'
+           })
   end
 
   let!(:alert_school_2) do
     create(:alert, :with_run,
-      alert_type: alert_type,
-      run_on: Date.today, school: school_2,
-      rating: 8.0,
-      template_data: {
-        average_one_year_saving_£: '£2,000',
-        one_year_saving_co2: '2,200 kg CO2',
-        one_year_saving_kwh: '2,222 kWh'
-      }
-    )
+           alert_type: alert_type,
+           run_on: Date.today, school: school_2,
+           rating: 8.0,
+           template_data: {
+             average_one_year_saving_£: '£2,000',
+             one_year_saving_co2: '2,200 kg CO2',
+             one_year_saving_kwh: '2,222 kWh'
+           })
   end
 
   let!(:alert_school_3) do
     create(:alert, :with_run,
-      alert_type: alert_type,
-      run_on: Date.today, school: school_3,
-      rating: 8.0,
-      template_data: {
-        average_one_year_saving_£: '£9,000',
-        one_year_saving_co2: '9,900 kg CO2',
-        one_year_saving_kwh: '9,999 kWh'
-      }
-    )
+           alert_type: alert_type,
+           run_on: Date.today, school: school_3,
+           rating: 8.0,
+           template_data: {
+             average_one_year_saving_£: '£9,000',
+             one_year_saving_co2: '9,900 kg CO2',
+             one_year_saving_kwh: '9,999 kWh'
+           })
   end
 
   let(:service) { SchoolGroups::PriorityActions.new(school_group) }
 
   before do
-    #just run the services to set up rest of test data
+    # just run the services to set up rest of test data
     Alerts::GenerateContent.new(school_1).perform
     Alerts::GenerateContent.new(school_2).perform
     Alerts::GenerateContent.new(school_3).perform
   end
 
-  context '#priority_actions' do
-    let(:priority_actions)  { service.priority_actions }
+  describe '#priority_actions' do
+    let(:priority_actions) { service.priority_actions }
 
     it 'always keys the hash on the alert type rating with highest range' do
-      expect(priority_actions).to_not have_key(alert_type_rating_low)
-      expect(priority_actions).to_not have_key(alert_type_rating_medium)
+      expect(priority_actions).not_to have_key(alert_type_rating_low)
+      expect(priority_actions).not_to have_key(alert_type_rating_medium)
       expect(priority_actions).to have_key(alert_type_rating_high)
     end
 
     it 'does not include ratings without priorities' do
-      priority_actions.each do |_k,v|
-        expect(v).to_not be_empty
+      priority_actions.each do |_k, v|
+        expect(v).not_to be_empty
       end
     end
 
@@ -133,15 +129,14 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
       school_2_priority = OpenStruct.new(school: school_2, average_one_year_saving_gbp: 2000, one_year_saving_co2: 2200, one_year_saving_kwh: 2222)
       expect(priority_actions[alert_type_rating_high]).to match_array([school_1_priority, school_2_priority])
     end
-
   end
 
-  context '#total_savings' do
-    let(:total_savings)  { service.total_savings }
+  describe '#total_savings' do
+    let(:total_savings) { service.total_savings }
 
     it 'returns a hash keyed on alert type rating to a total saving and school count' do
-      expect(total_savings).to_not have_key(alert_type_rating_low)
-      expect(total_savings).to_not have_key(alert_type_rating_medium)
+      expect(total_savings).not_to have_key(alert_type_rating_low)
+      expect(total_savings).not_to have_key(alert_type_rating_medium)
       expect(total_savings).to have_key(alert_type_rating_high)
       expect(total_savings[alert_type_rating_high]).to be_a OpenStruct
     end
@@ -161,7 +156,5 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
     it 'calculates correct kwh total' do
       expect(total_savings[alert_type_rating_high].one_year_saving_kwh).to eq 3333
     end
-
   end
-
 end

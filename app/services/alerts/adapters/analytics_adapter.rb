@@ -30,7 +30,7 @@ module Alerts
         has_structured_content? ? analysis_object.structured_content : []
       end
 
-    private
+      private
 
       def benchmark_variables?(alert_class)
         alert_class.benchmark_template_variables.present? && @alert_type.analytics?
@@ -41,10 +41,10 @@ module Alerts
         variables = variable_data(analysis_object, benchmark)
 
         Report.new(**{
-          valid:       true,
-          rating:      analysis_object.rating,
+          valid: true,
+          rating: analysis_object.rating,
           enough_data: analysis_object.enough_data,
-          relevance:   analysis_object.relevance
+          relevance: analysis_object.relevance
         }.merge(variables))
       end
 
@@ -53,9 +53,9 @@ module Alerts
 
         variable_data = {
           template_data: analysis_object.front_end_template_data,
-          chart_data:    analysis_object.front_end_template_chart_data,
-          table_data:    analysis_object.front_end_template_table_data,
-          priority_data: analysis_object.priority_template_data,
+          chart_data: analysis_object.front_end_template_chart_data,
+          table_data: analysis_object.front_end_template_table_data,
+          priority_data: analysis_object.priority_template_data
         }
 
         I18n.with_locale(:cy) do
@@ -74,10 +74,10 @@ module Alerts
 
       def invalid_alert_report(analysis_object)
         Report.new(
-          valid:       false,
-          rating:      nil,
+          valid: false,
+          rating: nil,
           enough_data: nil,
-          relevance:   analysis_object.relevance
+          relevance: analysis_object.relevance
         )
       end
     end

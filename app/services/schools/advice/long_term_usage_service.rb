@@ -9,21 +9,13 @@ module Schools
         @fuel_type = fuel_type
       end
 
-      def enough_data?
-        annual_usage_calculator.enough_data?
-      end
+      delegate :enough_data?, to: :annual_usage_calculator
 
-      def data_available_from
-        annual_usage_calculator.data_available_from
-      end
+      delegate :data_available_from, to: :annual_usage_calculator
 
-      def annual_usage
-        annual_usage_calculator.annual_usage
-      end
+      delegate :annual_usage, to: :annual_usage_calculator
 
-      def annual_usage_change_since_last_year
-        annual_usage_calculator.annual_usage_change_since_last_year
-      end
+      delegate :annual_usage_change_since_last_year, to: :annual_usage_calculator
 
       def annual_usage_kwh(compare: :benchmark_school)
         annual_usage_benchmark.annual_usage_kwh(compare: compare)
@@ -53,7 +45,6 @@ module Schools
           unit: :kwh
         )
       end
-
 
       private
 

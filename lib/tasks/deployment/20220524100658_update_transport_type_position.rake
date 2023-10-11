@@ -3,10 +3,10 @@ namespace :after_party do
   task update_transport_type_position: :environment do
     puts "Running deploy task 'update_transport_type_position'"
 
-    order = [ "Walking", "Bike",
-              "Park and Stride", "Car", "Car (Petrol)", "Car (Diesel)", "Car (Hybrid)", "Electric Car", "Taxi",
-              "School bus", "Bus", "Bus (London)", "Train", "Tube",
-              "Motorbike"]
+    order = ['Walking', 'Bike',
+             'Park and Stride', 'Car', 'Car (Petrol)', 'Car (Diesel)', 'Car (Hybrid)', 'Electric Car', 'Taxi',
+             'School bus', 'Bus', 'Bus (London)', 'Train', 'Tube',
+             'Motorbike']
 
     order.each_with_index do |name, position|
       TransportType.find_by(name: name).update(position: position)

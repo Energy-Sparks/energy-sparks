@@ -1,16 +1,14 @@
 require 'rails_helper'
 
 describe Schools::SchoolMetricsGeneratorService, type: :service do
+  subject(:service)       { Schools::SchoolMetricsGeneratorService.new(school: school, meter_collection: meter_collection) }
 
   let!(:benchmark_run)    { BenchmarkResultGenerationRun.create! }
+  let(:stub)              { double('service_stub') }
 
   let(:school)            { create(:school) }
-  #this will create an empty meter collection as the school has no data
+  # this will create an empty meter collection as the school has no data
   let(:meter_collection)  { Amr::AnalyticsMeterCollectionFactory.new(school).validated }
-
-  subject(:service)       { Schools::SchoolMetricsGeneratorService.new(school: school, meter_collection: meter_collection)}
-
-  let(:stub)              { double('service_stub') }
 
   describe '#perform' do
     context 'when updating school configuration' do
@@ -52,12 +50,14 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
 
     context 'when updating school targets' do
       let!(:school_target) { create(:school_target, school: school) }
+
       before do
         service.perform
       end
+
       it 'updates the target' do
         school_target.reload
-        expect(school_target.report_last_generated).to_not be_nil
+        expect(school_target.report_last_generated).not_to be_nil
       end
     end
 
@@ -68,8 +68,5 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
         service.perform
       end
     end
-
   end
-
-
 end

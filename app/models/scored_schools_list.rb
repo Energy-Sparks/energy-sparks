@@ -14,7 +14,7 @@ class ScoredSchoolsList
   end
 
   def position(school)
-    schools_with_positions.select {|_position, schools| schools.include?(school)}.first.first
+    schools_with_positions.select { |_position, schools| schools.include?(school) }.first.first
   end
 
   def top_three
@@ -42,12 +42,12 @@ class ScoredSchoolsList
   end
 
   def each
-    @scored_schools.each {|school| yield school}
+    @scored_schools.each { |school| yield school }
   end
 
   private
 
   def positive_scored_schools
-    @scored_schools.select {|scored_school| scored_school.sum_points&.positive?}
+    @scored_schools.select { |scored_school| scored_school.sum_points&.positive? }
   end
 end

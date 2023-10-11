@@ -10,7 +10,7 @@ module Alerts
         email = Email.create!(contact: contact)
         target_prompt = include_target_prompt_in_email?(contact.school)
         AlertMailer.with_contact_locale(contact: contact, events: contact_events, target_prompt: target_prompt) { |mailer| mailer.alert_email.deliver_now }
-        contact_events.each {|event| event.update!(status: :sent, email: email) }
+        contact_events.each { |event| event.update!(status: :sent, email: email) }
         email.update(sent_at: Time.now.utc)
       end
     end
@@ -18,7 +18,7 @@ module Alerts
     private
 
     def include_target_prompt_in_email?(school)
-      return Targets::SchoolTargetService.targets_enabled?(school) && Targets::SchoolTargetService.new(school).enough_data?
+      Targets::SchoolTargetService.targets_enabled?(school) && Targets::SchoolTargetService.new(school).enough_data?
     end
   end
 end

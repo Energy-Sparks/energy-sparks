@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Maps::SchoolFeatures do
-
   #
   # Format of JSON for features looks like this:
   #
@@ -22,10 +21,9 @@ describe Maps::SchoolFeatures do
   #   ]
   # }
 
-
-  let!(:school_1)             { create(:school, name: 'My School 1', number_of_pupils: 100)}
-  let!(:school_2)             { create(:school, name: 'My School 2', number_of_pupils: 200)}
-  let!(:school_3)             { create(:school, name: 'My School 3', number_of_pupils: 300)}
+  let!(:school_1)             { create(:school, name: 'My School 1', number_of_pupils: 100) }
+  let!(:school_2)             { create(:school, name: 'My School 2', number_of_pupils: 200) }
+  let!(:school_3)             { create(:school, name: 'My School 3', number_of_pupils: 300) }
 
   let!(:fuel_electricity)     { Schools::FuelConfiguration.new(has_electricity: true) }
   let!(:school_1_config)      { create(:configuration, school: school_1, fuel_configuration: fuel_electricity) }
@@ -73,5 +71,4 @@ describe Maps::SchoolFeatures do
     expect(feature['properties']['schoolPopupHtml']).not_to include('<i class="fas fa-fire">') # does not have gas
     expect(feature['properties']['schoolPopupHtml']).to include('<i class="fas fa-sun">') # has solar pv
   end
-
 end

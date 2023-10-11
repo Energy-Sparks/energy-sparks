@@ -26,11 +26,11 @@ module Meters
       18 => { times: TimeOfDay.new(22,  0)..TimeOfDay.new(8,  0), region: :south_scotland },
       19 => { times: [TimeOfDay.new(23, 30)..TimeOfDay.new(0, 30),
                       TimeOfDay.new(2, 30)..TimeOfDay.new(7, 30)], region: :south_east },
-      20 => { times:  { gmt: TimeOfDay.new(23, 30)..TimeOfDay.new(6, 30),
-                        bst: TimeOfDay.new(0, 30)..TimeOfDay.new(7, 30) }, region: :southern },
+      20 => { times: { gmt: TimeOfDay.new(23, 30)..TimeOfDay.new(6, 30),
+                       bst: TimeOfDay.new(0, 30)..TimeOfDay.new(7, 30) }, region: :southern },
       21 => { varies_between_meter: true, region: :south_wales },
       22 => { varies_between_meter: true, region: :south_west },
-      24 => { times: TimeOfDay.new(0, 30)..TimeOfDay.new(7, 30), region: :yorkshire },
-      }.freeze
+      24 => { times: TimeOfDay.new(0, 30)..TimeOfDay.new(7, 30), region: :yorkshire }
+    }.freeze
   end
 end

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'TariffsReport', type: :system do
-
   let(:admin)                    { create(:admin) }
   let!(:school_group)            { create(:school_group) }
   let!(:school)                  { create(:school, school_group: school_group) }
@@ -13,7 +12,7 @@ describe 'TariffsReport', type: :system do
 
   let!(:school_dcc_tariff)       { create(:energy_tariff, tariff_holder: school, source: :dcc) }
 
-  before(:each) do
+  before do
     sign_in(admin)
     visit root_path
     click_on 'Manage'
@@ -23,8 +22,8 @@ describe 'TariffsReport', type: :system do
   it 'displays a report' do
     click_on 'Energy Tariffs'
     expect(page).to have_link(school_group.name, href: school_group_energy_tariffs_path(school_group))
-    expect(page).to have_link("3", href: school_group_energy_tariffs_path(school_group))
-    expect(page).to have_link("1", href: admin_reports_tariffs_path(anchor: school_group.name.parameterize))
-    expect(page).to have_content("2")
+    expect(page).to have_link('3', href: school_group_energy_tariffs_path(school_group))
+    expect(page).to have_link('1', href: admin_reports_tariffs_path(anchor: school_group.name.parameterize))
+    expect(page).to have_content('2')
   end
 end

@@ -12,6 +12,7 @@ module SchoolGroups
         @school_group.categorise_schools.each do |fuel_type, advice_pages|
           advice_pages.each do |advice_page_key, comparison|
             next unless add_row_for(advice_page_key)
+
             SchoolGroupComparisonComponent::CATEGORIES.each do |category|
               comparison[category]&.each do |school|
                 row = [

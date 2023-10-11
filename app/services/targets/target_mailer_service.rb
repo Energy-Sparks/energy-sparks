@@ -1,7 +1,7 @@
 module Targets
   class TargetMailerService
     def list_schools
-      candidates = School.visible.data_enabled.reject {|s| s.has_target? || s.has_school_target_event?(:first_target_sent)}
+      candidates = School.visible.data_enabled.reject { |s| s.has_target? || s.has_school_target_event?(:first_target_sent) }
       with_enough_data(candidates)
     end
 
@@ -11,7 +11,7 @@ module Targets
     end
 
     def list_schools_requiring_review
-      candidates = School.visible.data_enabled.reject {|s| !s.has_target? || s.has_current_target? || s.has_school_target_event?(:review_target_sent)}
+      candidates = School.visible.data_enabled.reject { |s| !s.has_target? || s.has_current_target? || s.has_school_target_event?(:review_target_sent) }
       with_enough_data(candidates)
     end
 
@@ -59,7 +59,8 @@ module Targets
 
     def reject_for_reminder?(school)
       return true if school.has_target? || school.has_school_target_event?(:first_target_reminder_sent)
-      school.school_target_events.where(event: :first_target_sent).where("created_at <= ?", 30.days.ago).empty?
+
+      school.school_target_events.where(event: :first_target_sent).where('created_at <= ?', 30.days.ago).empty?
     end
   end
 end

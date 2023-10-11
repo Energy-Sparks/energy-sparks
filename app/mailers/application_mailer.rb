@@ -7,7 +7,7 @@ class ApplicationMailer < ActionMailer::Base
   before_action :set_title
 
   def set_title
-    @title = params[:title] || ""
+    @title = params[:title] || ''
   end
 
   def user_emails(users)

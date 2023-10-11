@@ -1,8 +1,8 @@
 module Onboarding
   class AccountController < BaseController
-    skip_before_action :authenticate_user!, only: [:new, :create]
+    skip_before_action :authenticate_user!, only: %i[new create]
     before_action :redirect_if_logged_in, only: [:new]
-    before_action only: [:new, :create] do
+    before_action only: %i[new create] do
       redirect_if_event(:onboarding_user_created, new_onboarding_school_details_path(@school_onboarding))
     end
 
@@ -23,11 +23,10 @@ module Onboarding
       end
     end
 
-    def edit
-    end
+    def edit; end
 
     def update
-      if current_user.update(user_params.reject {|key, value| key =~ /password/ && value.blank?})
+      if current_user.update(user_params.reject { |key, value| key =~ /password/ && value.blank? })
         @school_onboarding.events.create!(event: :onboarding_user_updated)
         bypass_sign_in(current_user)
         redirect_to new_onboarding_completion_path(@school_onboarding)
@@ -36,7 +35,7 @@ module Onboarding
       end
     end
 
-  private
+    private
 
     def redirect_if_logged_in
       if user_signed_in? && @school_onboarding.created_user.blank?

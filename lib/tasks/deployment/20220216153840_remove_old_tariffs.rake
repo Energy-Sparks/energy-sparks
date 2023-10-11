@@ -3,11 +3,11 @@ namespace :after_party do
   task remove_old_tariffs: :environment do
     puts "Running deploy task 'remove_old_tariffs'"
 
-    #The associations for tariff_prices and tariff_standing_charges on the
-    #Meter class were using the default strategy (nullify) following a delete.
-    #So the data hasn't actually been removed.
-    #The code has been changed to add dependent: destroy, but we need to clean up
-    #Use delete all to do it in a single SQL statement
+    # The associations for tariff_prices and tariff_standing_charges on the
+    # Meter class were using the default strategy (nullify) following a delete.
+    # So the data hasn't actually been removed.
+    # The code has been changed to add dependent: destroy, but we need to clean up
+    # Use delete all to do it in a single SQL statement
     TariffPrice.where(meter: nil).delete_all
     TariffStandingCharge.where(meter: nil).delete_all
 

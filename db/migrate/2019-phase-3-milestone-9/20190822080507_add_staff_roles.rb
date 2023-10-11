@@ -5,6 +5,6 @@ class AddStaffRoles < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    add_reference :users, :staff_role, foreign_key: {on_delete: :restrict}
+    add_reference :users, :staff_role, foreign_key: { on_delete: :restrict }
   end
 end

@@ -18,8 +18,7 @@ module Schools
       end
     end
 
-    def edit
-    end
+    def edit; end
 
     def update
       if @rtone_variant_installation.update(rtone_variant_installation_params)

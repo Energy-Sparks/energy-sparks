@@ -7,13 +7,12 @@ module Admin
         format.html { @school_groups = @school_groups.by_name }
         format.csv do
           send_data ::SchoolGroups::CsvGenerator.new(@school_groups.by_name).export_detail,
-          filename: ::SchoolGroups::CsvGenerator.filename
+                    filename: ::SchoolGroups::CsvGenerator.filename
         end
       end
     end
 
-    def new
-    end
+    def new; end
 
     def edit
       @schools = @school_group.schools.by_name
@@ -38,11 +37,11 @@ module Admin
     def destroy
       @school_group.safe_destroy
       redirect_to admin_school_groups_path, notice: 'School group deleted'
-    rescue EnergySparks::SafeDestroyError => error
-      redirect_to admin_school_groups_path, alert: "Delete failed: #{error.message}"
+    rescue EnergySparks::SafeDestroyError => e
+      redirect_to admin_school_groups_path, alert: "Delete failed: #{e.message}"
     end
 
-  private
+    private
 
     def school_group_params
       params.require(:school_group).permit(

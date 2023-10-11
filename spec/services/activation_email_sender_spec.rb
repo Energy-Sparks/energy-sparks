@@ -1,37 +1,37 @@
 require 'rails_helper'
 
 describe ActivationEmailSender, :schools, type: :service do
-
   let(:service) { ActivationEmailSender.new(school) }
 
   describe 'send' do
-    let(:school){ create :school, visible: false}
+    let(:school) { create :school, visible: false }
 
     context 'where the school has not been created via the onboarding process' do
-      let!(:school_admin)  { create(:school_admin, school: school) }
+      let!(:school_admin) { create(:school_admin, school: school) }
       let!(:staff) { create(:staff, school: school) }
 
-      before(:each) do
+      before do
         service.send
       end
 
       it 'sends an activation email to staff and admins' do
         email = ActionMailer::Base.deliveries.last
-        expect(email).to_not be nil
+        expect(email).not_to be nil
         expect(email.subject).to include('is live on Energy Sparks')
         expect(email.to).to match [school_admin.email, staff.email]
       end
     end
 
     context 'where the school has been created as part of the onboarding process' do
-      let(:onboarding_user){ create :onboarding_user }
-      let!(:school_onboarding){ create :school_onboarding, school: school, created_user: onboarding_user}
+      let(:onboarding_user) { create :onboarding_user }
+      let!(:school_onboarding) { create :school_onboarding, school: school, created_user: onboarding_user }
 
       context 'when an email has already been sent' do
-        before(:each) do
+        before do
           school_onboarding.events.create!(event: :activation_email_sent)
           service.send
         end
+
         it 'doesnt send another' do
           expect(ActionMailer::Base.deliveries.size).to eq(0)
         end
@@ -51,7 +51,7 @@ describe ActivationEmailSender, :schools, type: :service do
         end
 
         context 'when there are staff and admins' do
-          let!(:school_admin)  { create(:school_admin, school: school) }
+          let!(:school_admin) { create(:school_admin, school: school) }
           let!(:staff) { create(:staff, school: school) }
 
           it 'sends the email to staff and admins' do
@@ -61,11 +61,12 @@ describe ActivationEmailSender, :schools, type: :service do
           end
 
           context 'but no created user' do
-            #can happen when admin completes process for a school
+            # can happen when admin completes process for a school
             let(:school_onboarding) do
               create :school_onboarding,
-                created_user: nil
+                     created_user: nil
             end
+
             it 'still sends email to staff and admins' do
               service.send
               email = ActionMailer::Base.deliveries.last
@@ -80,30 +81,29 @@ describe ActivationEmailSender, :schools, type: :service do
           let(:email_body) { email.body.to_s }
           let(:matcher) { Capybara::Node::Simple.new(email_body) }
 
-          before :each do
+          before do
             school.update(data_enabled: false)
             # service.send
           end
 
           it 'links to activities' do
             service.send
-            expect(matcher).to have_link("activities and educational resources")
-            expect(matcher).to have_link("energy saving actions")
+            expect(matcher).to have_link('activities and educational resources')
+            expect(matcher).to have_link('energy saving actions')
           end
 
           it 'link to school dashboard' do
             service.send
-            expect(matcher).to have_link("school dashboard")
+            expect(matcher).to have_link('school dashboard')
           end
 
           it 'links to help content and contact' do
             service.send
-            expect(matcher).to have_link("User Guide")
-            expect(matcher).to have_link("Training Videos")
-            expect(matcher).to have_link("Join a webinar")
-            expect(matcher).to have_link("Get in touch")
+            expect(matcher).to have_link('User Guide')
+            expect(matcher).to have_link('Training Videos')
+            expect(matcher).to have_link('Join a webinar')
+            expect(matcher).to have_link('Get in touch')
           end
-
         end
       end
     end

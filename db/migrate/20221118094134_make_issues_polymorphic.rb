@@ -8,4 +8,3 @@ class MakeIssuesPolymorphic < ActiveRecord::Migration[6.0]
     remove_reference :issues, :school
   end
 end
-

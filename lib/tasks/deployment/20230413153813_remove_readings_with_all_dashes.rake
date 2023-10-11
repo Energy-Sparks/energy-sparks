@@ -3,16 +3,16 @@ namespace :after_party do
   task remove_readings_with_all_dashes: :environment do
     puts "Running deploy task 'remove_readings_with_all_dashes'"
 
-    #Remove all readings where the contents are only dashes.
-    #Should remove around 780-800 records
-    AmrDataFeedReading.where(readings: Array.new(48, "-")).destroy_all
+    # Remove all readings where the contents are only dashes.
+    # Should remove around 780-800 records
+    AmrDataFeedReading.where(readings: Array.new(48, '-')).destroy_all
 
-    #Remove all readings where there is more than one dash
+    # Remove all readings where there is more than one dash
     #
-    #First where clause: find record that have a dash in the readings array
-    #this just intersects the readings with an array of containing a single dash
+    # First where clause: find record that have a dash in the readings array
+    # this just intersects the readings with an array of containing a single dash
     #
-    #Second where clause:
+    # Second where clause:
     # uses the array_positions function to find the positions of the "-" in the readings array
     # then calculates the cardinality of that array (which is equal to number of dashes)
     # when limit selection to where cardinality is > 1

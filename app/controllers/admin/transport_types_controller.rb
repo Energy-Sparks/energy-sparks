@@ -26,8 +26,8 @@ module Admin
     def destroy
       @transport_type.safe_destroy
       redirect_to admin_transport_types_path, notice: 'Transport type was successfully deleted.'
-    rescue EnergySparks::SafeDestroyError => error
-      redirect_to admin_transport_types_path, alert: "Delete failed: #{error.message}."
+    rescue EnergySparks::SafeDestroyError => e
+      redirect_to admin_transport_types_path, alert: "Delete failed: #{e.message}."
     end
 
     private

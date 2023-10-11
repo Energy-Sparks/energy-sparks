@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 describe Observation do
-  let(:school_name) { 'Active school'}
+  let(:school_name) { 'Active school' }
   let!(:school)     { create(:school, name: school_name) }
 
   before { SiteSettings.current.update(photo_bonus_points: 0) }
 
   describe '#pupil_count' do
-    it "is valid when present for interventions only" do
+    it 'is valid when present for interventions only' do
       expect(build(:observation, observation_type: :temperature, pupil_count: 12)).to be_invalid
       expect(build(:observation, observation_type: :event, pupil_count: 12)).to be_invalid
       expect(build(:observation, observation_type: :activity, activity: create(:activity), pupil_count: 12)).to be_invalid
@@ -23,13 +23,13 @@ describe Observation do
     let(:observation_last_week_1)  { create(:observation, observation_type: :temperature) }
     let(:observation_last_week_2)  { create(:observation, observation_type: :temperature) }
 
-    before :each do
+    before do
       observation_too_old.update!(created_at: (7.days.ago - 1.minute))
       observation_last_week_1.update!(created_at: (7.days.ago + 1.minute))
       observation_last_week_2.update!(created_at: 1.minute.ago)
     end
 
-    it 'should exclude older observations' do
+    it 'excludes older observations' do
       expect(Observation.recorded_in_last_week).to match_array([observation_last_week_1, observation_last_week_2])
     end
   end
@@ -37,7 +37,7 @@ describe Observation do
   context 'creates an observation' do
     context 'activities' do
       it 'sets a score if an activity has an image in its activity description and the current observation score is non zero' do
-        activity = create(:activity, description: "<div><figure></figure></div>")
+        activity = create(:activity, description: '<div><figure></figure></div>')
         SiteSettings.current.update(photo_bonus_points: 15)
         # Notes: see ActivityCreator where observation points are assigned for activities
         observation = build(:observation, observation_type: :activity, activity: activity, points: 10)
@@ -46,16 +46,16 @@ describe Observation do
       end
 
       it 'sets a score if an activity has an image in its observation description and the current observation score is non zero' do
-        activity = create(:activity, description: "<div></div>")
+        activity = create(:activity, description: '<div></div>')
         SiteSettings.current.update(photo_bonus_points: 15)
         # Notes: see ActivityCreator where observation points are assigned for activities
-        observation = build(:observation, observation_type: :activity, activity: activity, description: "<div><figure></figure></div>", points: 10)
+        observation = build(:observation, observation_type: :activity, activity: activity, description: '<div><figure></figure></div>', points: 10)
         observation.save
         expect(observation.points).to eq(25)
       end
 
       it 'does not set a score if an activity has an image in its activity description but the current observation score is otherwise nil or zero' do
-        activity = create(:activity, description: "<div><figure></figure></div>")
+        activity = create(:activity, description: '<div><figure></figure></div>')
         SiteSettings.current.update(photo_bonus_points: 15)
         # Notes: see ActivityCreator where observation points are assigned for activities
         observation = build(:observation, observation_type: :activity, activity: activity, points: 0)
@@ -67,20 +67,20 @@ describe Observation do
       end
 
       it 'does not set a score if an activity has an image in its observation description but the current observation score is otherwise nil or zero' do
-        activity = create(:activity, description: "<div></div>")
+        activity = create(:activity, description: '<div></div>')
         SiteSettings.current.update(photo_bonus_points: 15)
-        observation = build(:observation, observation_type: :activity, activity: activity, description: "<div><figure></figure></div>")
+        observation = build(:observation, observation_type: :activity, activity: activity, description: '<div><figure></figure></div>')
         observation.save
         expect(observation.points).to eq(nil)
-        observation = build(:observation, observation_type: :activity, activity: activity, description: "<div><figure></figure></div>", points: 0)
+        observation = build(:observation, observation_type: :activity, activity: activity, description: '<div><figure></figure></div>', points: 0)
         observation.save
         expect(observation.points).to eq(0)
       end
 
       it 'does not sets a score if an activity has no image in its activity or observation description' do
-        activity = create(:activity, description: "<div></div>")
+        activity = create(:activity, description: '<div></div>')
         SiteSettings.current.update(photo_bonus_points: 15)
-        observation = build(:observation, observation_type: :activity, activity: activity, description: "<div></div>")
+        observation = build(:observation, observation_type: :activity, activity: activity, description: '<div></div>')
         observation.save
         expect(observation.points).to eq(nil)
       end
@@ -93,7 +93,7 @@ describe Observation do
 
       it 'does not set a score if an intervention has an image in its description (bonus points) but the current observation score is otherwise nil or zero (outside academic year)' do
         allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: false) }
-        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, description: "<div><figure></figure></div>")
+        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, description: '<div><figure></figure></div>')
         observation.save
         expect(observation.points).to eq(nil)
       end
@@ -101,10 +101,10 @@ describe Observation do
       it 'does not set a score if an intervention is completed outside of the academic year it was started and no image in its description (bonus points)' do
         allow_any_instance_of(School).to receive(:academic_year_for) { OpenStruct.new(current?: false) }
         SiteSettings.current.update(photo_bonus_points: 25)
-        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, description: "<div></div>")
+        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, description: '<div></div>')
         observation.save
         expect(observation.points).to eq(nil)
-        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, description: "<div></div>", points: 0)
+        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, description: '<div></div>', points: 0)
         observation.save
         expect(observation.points).to eq(0)
       end
@@ -124,7 +124,7 @@ describe Observation do
       end
 
       it 'sets the score if observation recorded within the academic year and adds bonus points if the description contains an image' do
-        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, description: "<div><figure></figure></div>")
+        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, description: '<div><figure></figure></div>')
         observation.save
         expect(observation.points).to eq(75)
       end
@@ -143,7 +143,7 @@ describe Observation do
         observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago)
         observation.save
         expect(observation.points).to eq(nil)
-        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago, description: "<div><figure></figure></div>")
+        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago, description: '<div><figure></figure></div>')
         observation.save
         expect(observation.points).to eq(nil)
       end

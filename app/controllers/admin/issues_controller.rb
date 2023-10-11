@@ -24,7 +24,7 @@ module Admin
         format.csv do
           @issues = @issueable.all_issues if @issueable && @issueable.is_a?(SchoolGroup)
           send_data @issues.by_updated_at.to_csv,
-          filename: "#{t('common.application')}-issues-#{Time.zone.now.iso8601}".parameterize + '.csv'
+                    filename: "#{t('common.application')}-issues-#{Time.zone.now.iso8601}".parameterize + '.csv'
         end
       end
     end
@@ -56,10 +56,8 @@ module Admin
     end
 
     def resolve
-      notice = "was successfully resolved"
-      unless @issue.resolve!(updated_by: current_user)
-        notice = "Can only resolve issues (and not notes)."
-      end
+      notice = 'was successfully resolved'
+      notice = 'Can only resolve issues (and not notes).' unless @issue.resolve!(updated_by: current_user)
       redirect_back_or_index notice: notice
     end
 
@@ -85,7 +83,7 @@ module Admin
     end
 
     def issueable_notice(notice)
-      [@issue.issueable.try(:model_name).try(:human), @issue.issue_type, notice].compact.join(" ").capitalize
+      [@issue.issueable.try(:model_name).try(:human), @issue.issue_type, notice].compact.join(' ').capitalize
     end
 
     def issue_params

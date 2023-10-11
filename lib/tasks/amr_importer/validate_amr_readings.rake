@@ -1,5 +1,5 @@
 namespace :amr_importer do
-  desc "Validate readings"
+  desc 'Validate readings'
   task validate_amr_readings: :environment do
     puts "#{DateTime.now.utc} Validate AMR readings start"
     total_amr_readings_before = AmrValidatedReading.count
@@ -11,7 +11,7 @@ namespace :amr_importer do
         Amr::ValidateAndPersistReadingsService.new(each_school).perform
         puts "Clear cache for #{each_school.name}"
         AggregateSchoolService.new(each_school).invalidate_cache
-      rescue => e
+      rescue StandardError => e
         puts "Exception: running validation for #{each_school.name}: #{e.class} #{e.message}"
         puts e.backtrace.join("\n")
         Rails.logger.error "Exception: running validation for #{each_school.name}: #{e.class} #{e.message}"

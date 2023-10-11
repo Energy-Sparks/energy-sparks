@@ -3,6 +3,7 @@ module Schools
     class BaseloadBenchmarkGenerator < SchoolBenchmarkGenerator
       def benchmark_school
         return unless baseload_service.enough_data?
+
         baseload_service.benchmark_baseload.category
       end
 

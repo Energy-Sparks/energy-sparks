@@ -5,15 +5,11 @@ module Programmes
     end
 
     def enrolled_programme_types
-      if user_and_school?
-        school_programme_types
-      end
+      school_programme_types if user_and_school?
     end
 
     def enrolled?(programme_type)
-      if user_and_school?
-        enrolled_programme_types.include?(programme_type)
-      end
+      enrolled_programme_types.include?(programme_type) if user_and_school?
     end
 
     def in_progress?(programme_type)
@@ -29,15 +25,11 @@ module Programmes
     end
 
     def completed_activity(programme_type, activity_type)
-      if user_and_school?
-        programme_type.activity_of_type_for_school(school, activity_type)
-      end
+      programme_type.activity_of_type_for_school(school, activity_type) if user_and_school?
     end
 
     def completed_activity?(programme_type, activity_type)
-      if user_and_school?
-        completed_activity(programme_type, activity_type).present?
-      end
+      completed_activity(programme_type, activity_type).present? if user_and_school?
     end
 
     private

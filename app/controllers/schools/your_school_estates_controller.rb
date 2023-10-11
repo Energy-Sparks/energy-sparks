@@ -4,8 +4,7 @@ module Schools
     before_action :return_to_school_unless_feature_enabled
     before_action :set_breadcrumbs
 
-    def edit
-    end
+    def edit; end
 
     def update
       respond_to do |format|

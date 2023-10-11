@@ -23,7 +23,6 @@
 # CalendarEvent.create(calendar: calendar, calendar_event_type: term5, start_date: '2018-04-09', end_date: '2018-05-25')
 # CalendarEvent.create(calendar: calendar, calendar_event_type: term6, start_date: '2018-06-04', end_date: '2018-07-24')
 
-
 # "2015-16 Term 1",2015-09-02,2015-10-21
 # "2015-16 Term 2",2015-11-02,2015-12-18
 # "2015-16 Term 3",2016-01-04,2016-02-12
@@ -43,9 +42,8 @@
 # "2017-18 Term 5",2018-04-09,2018-05-25
 # "2017-18 Term 6",2018-06-04,2018-07-24
 
-
-      # t.text    :description
-      # t.text    :alias
-      # t.boolean :term_time, default: true
-      # t.boolean :holiday,   default: false
-      # t.boolean :occupied,  default: true
+# t.text    :description
+# t.text    :alias
+# t.boolean :term_time, default: true
+# t.boolean :holiday,   default: false
+# t.boolean :occupied,  default: true

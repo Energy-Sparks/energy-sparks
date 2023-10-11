@@ -38,18 +38,18 @@ class MailchimpApi
       list.categories = list_categories
     end
     list
-  rescue => e
-    raise MailchimpApi::Error.new(e.message)
+  rescue StandardError => e
+    raise MailchimpApi::Error, e.message
   end
 
   def subscribe(list_id, params)
     body = format_body(params.email_address, params.tags, params.interests, params.merge_fields)
     opts = format_opts
     client.lists.add_list_member(list_id, body, opts)
-  rescue ArgumentError => error
-    raise MailchimpApi::Error.new(error.message)
-  rescue MailchimpMarketing::ApiError => error
-    raise MailchimpApi::Error.new(error_message(error))
+  rescue ArgumentError => e
+    raise MailchimpApi::Error, e.message
+  rescue MailchimpMarketing::ApiError => e
+    raise MailchimpApi::Error, error_message(e)
   end
 
   private
@@ -58,7 +58,7 @@ class MailchimpApi
     @client ||= Rails.configuration.mailchimp_client
   end
 
-  def format_body(email, tags, interests, merge_fields, status = "subscribed")
+  def format_body(email, tags, interests, merge_fields, status = 'subscribed')
     {
       "email_address": email,
       "status": status,
@@ -87,7 +87,7 @@ class MailchimpApi
     message = eval(error.message)
     response_body = JSON.parse(message[:response_body])
     response_body['detail']
-  rescue => e
+  rescue StandardError => e
     e.message
   end
 end

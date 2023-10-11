@@ -30,7 +30,7 @@ class InterventionType < ApplicationRecord
   include TranslatableAttachment
   include FuelTypeable
 
-  TX_REWRITEABLE_FIELDS = [:description_cy, :download_links_cy].freeze
+  TX_REWRITEABLE_FIELDS = %i[description_cy download_links_cy].freeze
 
   translates :name, type: :string, fallbacks: { cy: :en }
   translates :summary, type: :string, fallbacks: { cy: :en }
@@ -71,7 +71,7 @@ class InterventionType < ApplicationRecord
     observations.for_school(school)
   end
 
-  #override default name for this resource in transifex
+  # override default name for this resource in transifex
   def tx_name
     name
   end
@@ -83,6 +83,6 @@ class InterventionType < ApplicationRecord
   private
 
   def copy_searchable_attributes
-    self.write_attribute(:name, self.name(locale: :en))
+    self[:name] = name(locale: :en)
   end
 end

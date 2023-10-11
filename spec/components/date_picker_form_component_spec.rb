@@ -1,56 +1,58 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe DatePickerFormComponent, type: :component do
-  let(:value)         { '01/12/2022' }
-  let(:params)    {
+  let(:value) { '01/12/2022' }
+  let(:params) do
     {
-    form: OpenStruct.new(object_name: 'job'),
-    field_name: :start_date,
-    value: value,
+      form: OpenStruct.new(object_name: 'job'),
+      field_name: :start_date,
+      value: value
     }
-  }
+  end
 
   let(:component) { DatePickerFormComponent.new(**params) }
 
-  let(:html) {
+  let(:html) do
     render_inline(component)
-  }
+  end
 
-  it "renders expected field" do
+  it 'renders expected field' do
     expect(html).to have_css('#job_start_date')
   end
 
-  it "renders expected value" do
+  it 'renders expected value' do
     expect(html).to have_field('job[start_date]', with: value)
   end
 
   context 'with empty value' do
     let(:value) { nil }
+
     it 'defaults to today' do
-      expect(html).to have_field('job[start_date]', with: Date.today.strftime("%d/%m/%Y"))
+      expect(html).to have_field('job[start_date]', with: Date.today.strftime('%d/%m/%Y'))
     end
 
     context 'and a default supplied' do
-      let(:params)    {
+      let(:params)    do
         {
-        form: OpenStruct.new(object_name: 'job'),
-        field_name: :start_date,
-        value: value,
-        default_if_nil: '',
-        hint: ''
+          form: OpenStruct.new(object_name: 'job'),
+          field_name: :start_date,
+          value: value,
+          default_if_nil: '',
+          hint: ''
         }
-      }
+      end
+
       it 'uses that default' do
         expect(html).to have_field('job[start_date]', with: '')
       end
     end
   end
 
-  it "renders a datepicker form component" do
+  it 'renders a datepicker form component' do
     expect(
-      ActionController::Base.render component
+      ActionController::Base.render(component)
     ).to eq(
       <<~HTML.chomp
         <div class="input-group date" id="datepickerformcomponent_start_date" data-target-input="nearest">

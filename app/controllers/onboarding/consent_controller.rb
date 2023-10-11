@@ -21,7 +21,7 @@ module Onboarding
       end
     end
 
-  private
+    private
 
     def school_onboarding_consent_params
       params.require(:consent_grant).permit(:school_name, :name, :job_title, :consent_statement_id)

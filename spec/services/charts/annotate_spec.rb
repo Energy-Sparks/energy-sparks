@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe Charts::Annotate do
+  subject(:subject_storage_heater) { Charts::Annotate.new(school: school, fuel_types: ['storage_heater']) }
+
   let(:school) { create :school }
 
   let(:multi_fuel_intervention) { create :intervention_type, show_on_charts: true, fuel_type: FuelTypeable::VALID_FUEL_TYPES }
@@ -25,19 +27,21 @@ describe Charts::Annotate do
   let(:activity_type_storage_heater) { create :activity_type, show_on_charts: true, fuel_type: ['storage_heater'] }
   let(:activity_storage_heater) { create(:activity, activity_category: activity_category_storage_heater, activity_type: activity_type_storage_heater) }
 
-  subject(:subject_multi_fuel) { Charts::Annotate.new(school: school) }
-  subject(:subject_electricity) { Charts::Annotate.new(school: school, fuel_types: ['electricity']) }
-  subject(:subject_gas) { Charts::Annotate.new(school: school, fuel_types: ['gas']) }
-  subject(:subject_solar) { Charts::Annotate.new(school: school, fuel_types: ['solar']) }
-  subject(:subject_storage_heater) { Charts::Annotate.new(school: school, fuel_types: ['storage_heater']) }
+  let(:subject_multi_fuel) { Charts::Annotate.new(school: school) }
+
+  let(:subject_electricity) { Charts::Annotate.new(school: school, fuel_types: ['electricity']) }
+
+  let(:subject_gas) { Charts::Annotate.new(school: school, fuel_types: ['gas']) }
+
+  let(:subject_solar) { Charts::Annotate.new(school: school, fuel_types: ['solar']) }
 
   describe '#annotate_weekly' do
     let(:x_axis_categories) do
       [
-        "24 Jun 2018",
-        "01 Jul 2018",
-        "08 Jul 2018",
-        "15 Jul 2018"
+        '24 Jun 2018',
+        '01 Jul 2018',
+        '08 Jul 2018',
+        '15 Jul 2018'
       ]
     end
 
@@ -427,7 +431,7 @@ describe Charts::Annotate do
   end
 
   describe '#annotate_daily' do
-    subject { Charts::Annotate.new(school: school).annotate_daily(first_date, last_date)}
+    subject { Charts::Annotate.new(school: school).annotate_daily(first_date, last_date) }
 
     let(:first_date) { '24 Jun 2018' }
     let(:last_date) { '22 Jul 2018' }
@@ -750,6 +754,7 @@ describe Charts::Annotate do
 
     context 'with anotations outside of the date range' do
       let!(:intervention_1) { create(:observation, :intervention, school: school, at: Date.new(2018, 7, 23), intervention_type: gas_intervention) }
+
       it { is_expected.to be_empty }
     end
   end
@@ -757,7 +762,7 @@ describe Charts::Annotate do
   describe '#abbr_month_name_lookup' do
     it 'creates a lookup hash for abbreviated month names and those in default locale as values' do
       I18n.locale = 'cy'
-      expect(Charts::Annotate.new(school: school).send(:abbr_month_name_lookup)).to eq({ "" => "", "Awst" => "Aug", "Chwe" => "Feb", "Ebr" => "Apr", "Gorff" => "Jul", "Hyd" => "Oct", "Ion" => "Jan", "Mai" => "May", "Maw" => "Mar", "Medi" => "Sep", "Meh" => "Jun", "Rhag" => "Dec", "Tach" => "Nov" })
+      expect(Charts::Annotate.new(school: school).send(:abbr_month_name_lookup)).to eq({ '' => '', 'Awst' => 'Aug', 'Chwe' => 'Feb', 'Ebr' => 'Apr', 'Gorff' => 'Jul', 'Hyd' => 'Oct', 'Ion' => 'Jan', 'Mai' => 'May', 'Maw' => 'Mar', 'Medi' => 'Sep', 'Meh' => 'Jun', 'Rhag' => 'Dec', 'Tach' => 'Nov' })
       I18n.locale = 'en'
     end
   end

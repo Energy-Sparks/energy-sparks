@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 describe 'managing help pages', type: :system do
-
-  let(:admin)       { create(:admin) }
+  let(:admin) { create(:admin) }
 
   context 'as an admin' do
-    before(:each) do
+    before do
       sign_in(admin)
       visit admin_path
       click_on 'Help Pages'
@@ -24,7 +23,7 @@ describe 'managing help pages', type: :system do
 
       click_on 'Create'
       expect(page).to have_content('Page title')
-      expect(page).to have_css(".text-danger")
+      expect(page).to have_css('.text-danger')
 
       click_on 'Edit'
       within('.description-trix-editor-en') do
@@ -37,7 +36,7 @@ describe 'managing help pages', type: :system do
       click_on 'Update'
 
       expect(page).to have_content('New title')
-      expect(page).to have_css(".text-success")
+      expect(page).to have_css('.text-success')
     end
 
     context 'with an existing page' do
@@ -46,13 +45,13 @@ describe 'managing help pages', type: :system do
       it 'lets me publish and unpublish help pages' do
         refresh
         expect(page).to have_content(help_page.title)
-        expect(page).to have_link("Publish")
+        expect(page).to have_link('Publish')
 
         click_on 'Publish'
         help_page.reload
         expect(help_page.published).to be true
 
-        expect(page).to have_link("Hide")
+        expect(page).to have_link('Hide')
         click_on 'Hide'
 
         help_page.reload

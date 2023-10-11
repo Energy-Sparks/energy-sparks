@@ -2,8 +2,7 @@ module Schools
   class SchoolGroupController < ApplicationController
     before_action :set_school, :set_groups
 
-    def new
-    end
+    def new; end
 
     def create
       @school.update!(school_group_id: params[:school_group_id])

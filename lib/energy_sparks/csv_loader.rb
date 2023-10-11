@@ -6,7 +6,7 @@ module EnergySparks
         headers: true,
         header_converters: :symbol,
         skip_blanks: true,
-        converters: lambda {|f| f ? f.strip : nil}
+        converters: ->(f) { f ? f.strip : nil }
       }
     end
 
@@ -15,7 +15,7 @@ module EnergySparks
     end
 
     def self.process(rows)
-      rows.reject {|row| row.fields.all?(&:nil?) }
+      rows.reject { |row| row.fields.all?(&:nil?) }
     end
   end
 end

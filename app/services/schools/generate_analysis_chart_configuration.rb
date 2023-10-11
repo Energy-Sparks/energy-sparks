@@ -3,11 +3,11 @@ require 'dashboard'
 module Schools
   class GenerateAnalysisChartConfiguration
     def initialize(
-        school,
-        aggregated_meter_collection,
-        fuel_configuration,
-        dashboard_page_configuration = DashboardConfiguration::DASHBOARD_PAGE_GROUPS
-      )
+      school,
+      aggregated_meter_collection,
+      fuel_configuration,
+      dashboard_page_configuration = DashboardConfiguration::DASHBOARD_PAGE_GROUPS
+    )
       @school = school
       @aggregated_meter_collection = aggregated_meter_collection
       @fuel_configuration = fuel_configuration
@@ -30,14 +30,14 @@ module Schools
       page_and_chart_config
     end
 
-  private
+    private
 
     def white_listed_page_config(page_configuration)
       if page_configuration.key?(:sub_pages)
         white_listed_sub_pages = page_configuration[:sub_pages].map do |sub_page|
           white_listed_page_config(sub_page)
         end
-        non_empty_sub_pages = white_listed_sub_pages.reject {|sub_page| empty?(sub_page)}
+        non_empty_sub_pages = white_listed_sub_pages.reject { |sub_page| empty?(sub_page) }
         { name: page_configuration[:name], sub_pages: non_empty_sub_pages }
       else
         list_of_charts = page_configuration[:charts]
@@ -65,7 +65,7 @@ module Schools
 
     def empty?(page_configuration)
       if page_configuration.key?(:sub_pages)
-        page_configuration[:sub_pages].all? {|sub_page| empty?(sub_page)}
+        page_configuration[:sub_pages].all? { |sub_page| empty?(sub_page) }
       else
         page_configuration[:charts].empty?
       end

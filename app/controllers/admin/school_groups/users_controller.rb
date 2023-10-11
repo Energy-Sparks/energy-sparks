@@ -8,7 +8,7 @@ module Admin
         @group_admins = @school_group.users.sort_by(&:email)
         @school_users = school_users
         respond_to do |format|
-          format.html { }
+          format.html {}
           format.csv { send_data produce_csv(@school_group, @group_admins, @school_users), filename: filename(@school_group) }
         end
       end
@@ -64,7 +64,7 @@ module Admin
           school_group.name,
           school.present? ? school.name : 'N/A',
           user.name,
-          user.pupil? ? "N/A" : user.email,
+          user.pupil? ? 'N/A' : user.email,
           user.role.titleize,
           user.group_admin? ? 'N/A' : user.staff_role&.title,
           y_n(user.confirmed?),

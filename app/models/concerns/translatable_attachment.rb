@@ -15,9 +15,7 @@ module TranslatableAttachment
   end
 
   def t_attached(name, locale = I18n.default_locale)
-    unless I18n.available_locales.include?(locale.try(:to_sym))
-      locale = I18n.default_locale
-    end
+    locale = I18n.default_locale unless I18n.available_locales.include?(locale.try(:to_sym))
     send("#{name}_#{locale}")
   end
 

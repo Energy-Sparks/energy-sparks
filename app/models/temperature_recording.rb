@@ -20,13 +20,12 @@
 #  fk_rails_...  (observation_id => observations.id) ON DELETE => cascade
 #
 
-
 class TemperatureRecording < ApplicationRecord
   belongs_to :observation
   belongs_to :location
 
-  validates_presence_of :centigrade, :location
-  validates_numericality_of :centigrade, greater_than: 0, less_than: 50
+  validates :centigrade, :location, presence: true
+  validates :centigrade, numericality: { greater_than: 0, less_than: 50 }
   validates_associated :location
 
   accepts_nested_attributes_for :location

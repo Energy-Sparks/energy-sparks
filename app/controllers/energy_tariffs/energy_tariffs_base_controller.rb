@@ -15,7 +15,9 @@ module EnergyTariffs
     private
 
     def redirect_if_dcc
-      redirect_back fallback_location: school_energy_tariffs_path(@tariff_holder), notice: I18n.t('schools.user_tariffs.not_allowed_for_smart_meter_tariffs') if @energy_tariff.dcc?
+      if @energy_tariff.dcc?
+        redirect_back fallback_location: school_energy_tariffs_path(@tariff_holder), notice: I18n.t('schools.user_tariffs.not_allowed_for_smart_meter_tariffs')
+      end
     end
   end
 end

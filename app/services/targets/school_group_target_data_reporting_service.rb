@@ -4,19 +4,17 @@ module Targets
       @school_group = school_group
     end
 
-    #returns Hash of School => Struct(school:, electricity: , gas:, storage_heater:)
+    # returns Hash of School => Struct(school:, electricity: , gas:, storage_heater:)
     def report
       report = {}
       schools.each do |school|
-        begin
-          aggregate_school = AggregateSchoolService.new(school).aggregate_school
-          report[school] = report_for_school(school, aggregate_school)
-        rescue => e
-          report[school] = nil
-          Rails.logger.error "Unable to generate report for #{school.name}: #{e.message}"
-          Rails.logger.error e.backtrace.join("\n")
-          Rollbar.error(e, job: :target_data, school: school)
-        end
+        aggregate_school = AggregateSchoolService.new(school).aggregate_school
+        report[school] = report_for_school(school, aggregate_school)
+      rescue StandardError => e
+        report[school] = nil
+        Rails.logger.error "Unable to generate report for #{school.name}: #{e.message}"
+        Rails.logger.error e.backtrace.join("\n")
+        Rollbar.error(e, job: :target_data, school: school)
       end
       report
     end
@@ -31,16 +29,20 @@ module Targets
       ::TargetsService.new(aggregate_school, fuel_type)
     end
 
-    #OpenStruct to group them
+    # OpenStruct to group them
     def report_for_school(school, aggregate_school)
       result = OpenStruct.new(school: school)
-      result.electricity = report_for_school_and_fuel_type(school, aggregate_school, :electricity) if school.has_electricity?
+      if school.has_electricity?
+        result.electricity = report_for_school_and_fuel_type(school, aggregate_school, :electricity)
+      end
       result.gas = report_for_school_and_fuel_type(school, aggregate_school, :gas) if school.has_gas?
-      result.storage_heater = report_for_school_and_fuel_type(school, aggregate_school, :storage_heater) if school.has_storage_heaters?
+      if school.has_storage_heaters?
+        result.storage_heater = report_for_school_and_fuel_type(school, aggregate_school, :storage_heater)
+      end
       result
     end
 
-    #OpenStruct, move to target service?
+    # OpenStruct, move to target service?
     def report_for_school_and_fuel_type(school, aggregate_school, fuel_type)
       service = target_service(aggregate_school, fuel_type)
       OpenStruct.new(
