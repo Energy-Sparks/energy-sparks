@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_22_131629) do
+ActiveRecord::Schema.define(version: 2023_10_11_141535) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -471,7 +471,6 @@ ActiveRecord::Schema.define(version: 2023_09_22_131629) do
     t.datetime "upload_datetime"
     t.index ["meter_id", "one_day_kwh"], name: "index_amr_validated_readings_on_meter_id_and_one_day_kwh"
     t.index ["meter_id", "reading_date"], name: "unique_amr_meter_validated_readings", unique: true
-    t.index ["meter_id"], name: "index_amr_validated_readings_on_meter_id"
     t.index ["reading_date"], name: "index_amr_validated_readings_on_reading_date"
   end
 
@@ -1611,19 +1610,6 @@ ActiveRecord::Schema.define(version: 2023_09_22_131629) do
     t.index ["academic_year_calendar_id"], name: "index_scoreboards_on_academic_year_calendar_id"
   end
 
-  create_table "simulations", force: :cascade do |t|
-    t.text "title"
-    t.text "notes"
-    t.bigint "school_id", null: false
-    t.bigint "user_id", null: false
-    t.text "configuration"
-    t.boolean "default"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["school_id"], name: "index_simulations_on_school_id"
-    t.index ["user_id"], name: "index_simulations_on_user_id"
-  end
-
   create_table "site_settings", force: :cascade do |t|
     t.boolean "message_for_no_contacts", default: true
     t.datetime "created_at", precision: 6, null: false
@@ -2061,8 +2047,6 @@ ActiveRecord::Schema.define(version: 2023_09_22_131629) do
   add_foreign_key "schools", "school_groups", on_delete: :restrict
   add_foreign_key "schools", "scoreboards", on_delete: :nullify
   add_foreign_key "scoreboards", "calendars", column: "academic_year_calendar_id", on_delete: :nullify
-  add_foreign_key "simulations", "schools", on_delete: :cascade
-  add_foreign_key "simulations", "users", on_delete: :nullify
   add_foreign_key "sms_records", "alert_subscription_events", on_delete: :cascade
   add_foreign_key "solar_edge_installations", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "solar_edge_installations", "schools", on_delete: :cascade
