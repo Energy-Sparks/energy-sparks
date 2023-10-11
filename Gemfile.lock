@@ -395,6 +395,8 @@ GEM
     multipart-post (2.0.0)
     mustache (1.1.1)
     nenv (0.3.0)
+    net-http (0.3.2)
+      uri
     net-protocol (0.2.1)
       timeout
     net-smtp (0.4.0)
@@ -676,6 +678,7 @@ GEM
     unf_ext (0.0.8)
     unicode-display_width (1.8.0)
     uniform_notifier (1.14.2)
+    uri (0.12.2)
     view_component (3.6.0)
       activesupport (>= 5.2.0, < 8.0)
       concurrent-ruby (~> 1.0)
@@ -764,6 +767,7 @@ DEPENDENCIES
   mobility-actiontext (~> 1.1.1)
   momentjs-rails
   mustache (~> 1.0)
+  net-http
   oj
   overcommit
   pagy
