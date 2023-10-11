@@ -21,16 +21,16 @@ RSpec.describe "school", type: :system do
         visit school_contacts_path(school)
         expect(page).not_to have_content('Standalone contacts')
 
-        first(:link, "Enable alerts").click
+        find("#enable_alerts_#{teacher.id}").click
         expect(find_field('Email address').value).to eq teacher.email
 
         click_on('Enable alerts')
         expect(page).to have_content "Alerts enabled for #{teacher.name}"
 
-        contact = school.contacts.last
-        expect(contact.user).to eq(teacher)
-        expect(contact.email_address).to eq(teacher.email)
-        expect(contact.name).to eq(teacher.name)
+        contacts = school.contacts
+        expect(contacts.pluck(:user_id)).to include(teacher.id)
+        expect(contacts.pluck(:email_address)).to include(teacher.email)
+        expect(contacts.pluck(:name)).to include(teacher.name)
       end
     end
 
@@ -134,8 +134,6 @@ RSpec.describe "school", type: :system do
       let!(:contact) { create(:contact_with_name_email, school: school) }
       it 'shows me the contacts on the page' do
         visit school_contacts_path(school)
-
-        pp page.html
 
         expect(page).to have_content('Standalone contacts')
         expect(page).to have_content contact.name

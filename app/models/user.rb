@@ -116,6 +116,12 @@ class User < ApplicationRecord
     cluster_schools.excluding(school).any?
   end
 
+  def self.find_school_users_linked_to_other_schools(school_id:, user_ids:)
+    User.joins(:cluster_schools_users)
+        .where.not('cluster_schools_users.school_id' => school_id)
+        .where('cluster_schools_users.user_id in (?)', user_ids)
+  end
+
   def remove_school(school_to_remove)
     cluster_schools.delete(school_to_remove)
     if school == school_to_remove

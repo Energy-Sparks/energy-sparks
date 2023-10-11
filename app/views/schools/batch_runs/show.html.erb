@@ -18,16 +18,16 @@
 
 <table class="table table-striped">
   <thead>
-  <tr>
-    <th>Time</th>
-    <th>Message</th>
+  <tr class="row">
+    <th class="col-md-4">Time</th>
+    <th class="col-md-8">Message</th>
   </tr>
   </thead>
   <tbody>
   <% @school_batch_run.school_batch_run_log_entries.by_date.each do |entry| %>
-    <tr>
-      <td><%= nice_dates(entry.created_at) %> <%= entry.created_at.strftime("%H:%M:%S") %></td>
-      <td><%= entry.message %></td>
+    <tr class="row">
+      <td class="col-md-4"><%= nice_dates(entry.created_at) %> <%= entry.created_at.strftime("%H:%M:%S") %></td>
+      <td class="col-md-8"><%= entry.message %></td>
     </tr>
   <% end %>
   </tbody>

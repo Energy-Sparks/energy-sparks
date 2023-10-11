@@ -20,14 +20,14 @@ module Amr
       expect(first_electricity_meter[:identifier]).to eq e_meter.mpan_mprn
       expect(first_electricity_meter[:dcc_meter]).to be false
       expect(first_electricity_meter[:readings].size).to eq 2
-      expect(first_electricity_meter[:readings].map { |reading| reading[:kwh_data_x48] }).to match_array e_meter.amr_data_feed_readings.map { |reading| reading.readings.map(&:to_f) }
+      expect(first_electricity_meter[:readings].map { |reading| reading.kwh_data_x48 }).to match_array e_meter.amr_data_feed_readings.map { |reading| reading.readings.map(&:to_f) }
 
       first_gas_meter = amr_data[:heat_meters].first
 
       expect(first_gas_meter[:identifier]).to eq g_meter.mpan_mprn
       expect(first_gas_meter[:dcc_meter]).to be true
-      expect(first_gas_meter[:readings].first[:reading_date]).to eq Date.parse(g_meter.amr_data_feed_readings.first.reading_date)
-      expect(first_gas_meter[:readings].first[:kwh_data_x48]).to eq g_meter.amr_data_feed_readings.first.readings.map(&:to_f)
+      expect(first_gas_meter[:readings].first.date).to eq Date.parse(g_meter.amr_data_feed_readings.first.reading_date)
+      expect(first_gas_meter[:readings].first.kwh_data_x48).to eq g_meter.amr_data_feed_readings.first.readings.map(&:to_f)
     end
 
     it 'fallsback to date parse where the specified format does not work' do
@@ -36,7 +36,7 @@ module Amr
       expect(e_meter.amr_data_feed_readings.count).to be 3
       amr_data = AnalyticsUnvalidatedAmrDataFactory.new(heat_meters: [g_meter], electricity_meters: [e_meter]).build
       expect(amr_data[:electricity_meters].first[:readings].size).to eq 3
-      expect(amr_data[:electricity_meters].first[:readings].map{|reading| reading[:reading_date]}).to include Date.tomorrow
+      expect(amr_data[:electricity_meters].first[:readings].map{|reading| reading.date}).to include Date.tomorrow
     end
 
     it 'skips invalid date formats' do
@@ -63,9 +63,9 @@ module Amr
 
       amr_data = AnalyticsUnvalidatedAmrDataFactory.new(heat_meters: [], electricity_meters: [e_meter]).build
 
-      expect(amr_data[:electricity_meters].last[:readings].last[:kwh_data_x48][0]).to be 1.23
-      expect(amr_data[:electricity_meters].last[:readings].last[:kwh_data_x48][1]).to be 0.0
-      expect(amr_data[:electricity_meters].last[:readings].last[:kwh_data_x48][47]).to be 0.0
+      expect(amr_data[:electricity_meters].last[:readings].last.kwh_data_x48[0]).to be 1.23
+      expect(amr_data[:electricity_meters].last[:readings].last.kwh_data_x48[1]).to be 0.0
+      expect(amr_data[:electricity_meters].last[:readings].last.kwh_data_x48[47]).to be 0.0
     end
 
     context 'with custom_tariffs' do
