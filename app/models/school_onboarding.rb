@@ -72,7 +72,7 @@ class SchoolOnboarding < ApplicationRecord
   end
 
   def last_event(event_name)
-    events.where(event: event_name).last
+    events.by_event_name(event_name).last
   end
 
   def last_event_older_than?(event_name, time)
