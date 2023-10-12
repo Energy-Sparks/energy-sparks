@@ -9,7 +9,6 @@ gem 'bootsnap'
 gem 'rack-canonical-host' # Redirect www to root
 gem 'webpacker'
 gem "image_processing", "~> 1.12"
-# gem 'net-http'
 
 gem 'puma', '6.4.0' # Use Puma as the app server
 gem 'rack'
