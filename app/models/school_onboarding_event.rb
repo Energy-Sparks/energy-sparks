@@ -20,6 +20,8 @@
 class SchoolOnboardingEvent < ApplicationRecord
   belongs_to :school_onboarding
 
+  scope :by_event_name, ->(event_name) { where(event: event_name).order(created_at: :asc) }
+
   enum event: {
     email_sent: 0,
     privacy_policy_agreed: 9,
