@@ -49,9 +49,7 @@ module Schools
         end
         @fuel_type = advice_page_fuel_type
         @analysis_dates = analysis_dates
-        respond_to do |format|
-          format.js
-        end
+        respond_to(&:js)
       end
 
       private
