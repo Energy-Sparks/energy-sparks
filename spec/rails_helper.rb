@@ -86,7 +86,7 @@ RSpec.configure do |config|
   end
 
   config.include ActiveSupport::Testing::TimeHelpers
-  config.include ShowMeTheCookies, :type => :system
+  config.include ShowMeTheCookies, type: :system
 end
 
 Shoulda::Matchers.configure do |config|

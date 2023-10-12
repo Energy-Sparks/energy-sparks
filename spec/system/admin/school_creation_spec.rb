@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "school creation", :schools, type: :system do
-
   let(:school_name) { 'Oldfield Park Infants'}
-  let!(:admin)  { create(:admin)}
+  let!(:admin) { create(:admin)}
 
   let!(:ks1) { KeyStage.create(name: 'KS1') }
 
@@ -35,12 +34,13 @@ RSpec.describe "school creation", :schools, type: :system do
   it 'splits the journey up in to basic details and configuration' do
     click_on 'Manual School Setup'
 
+    expect(page).to have_content('New School')
     fill_in 'School name', with: "St Mary's School"
     fill_in 'Unique Reference Number', with: '4444244'
     fill_in 'Number of pupils', with: 300
     fill_in 'Floor area in square metres', with: 400
     fill_in 'Address', with: '1 Station Road'
-    fill_in 'Postcode', with: 'A1 2BC'
+    fill_in 'Postcode', with: 'AB1 2CD'
     fill_in 'Website', with: 'http://stmarys.sch.uk'
 
     choose 'Primary'
@@ -48,7 +48,6 @@ RSpec.describe "school creation", :schools, type: :system do
     uncheck 'Public'
 
     click_on 'Next'
-
     select 'BANES', from: 'Group'
     click_on 'Next'
 
@@ -75,4 +74,28 @@ RSpec.describe "school creation", :schools, type: :system do
     expect(school.public).to be false
   end
 
+  it 'shows an error message for an invalid postcode' do
+    # Note: stubbed valid postcodes (e.g. AB1 2CD) are defined in config/initializers/geocoder.rb
+    click_on 'Manual School Setup'
+
+    fill_in 'School name', with: "St Mary's School"
+    fill_in 'Unique Reference Number', with: '4444244'
+    fill_in 'Number of pupils', with: 300
+    fill_in 'Floor area in square metres', with: 400
+    fill_in 'Address', with: '1 Station Road'
+    fill_in 'Postcode', with: 'AB 2CD'
+    fill_in 'Website', with: 'http://stmarys.sch.uk'
+    choose 'Primary'
+    check 'KS1'
+    uncheck 'Public'
+    click_on 'Next'
+    expect(page).to have_content('is invalid and not found')
+    fill_in 'Postcode', with: 'AB2 2CD'
+    click_on 'Next'
+    expect(page).to have_content('not found')
+    fill_in 'Postcode', with: 'AB1 2CD'
+    click_on 'Next'
+    expect(page).not_to have_content('is invalid')
+    expect(page).not_to have_content('not found')
+  end
 end

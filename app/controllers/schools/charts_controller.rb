@@ -28,9 +28,9 @@ private
   def render_json
     @chart_type ||= begin
                       params.require(:chart_type).to_sym
-                    rescue => error
+    rescue => error
                       render json: { error: error, status: 400 }.to_json and return
-                    end
+    end
 
     chart_config = {
       mpan_mprn: params[:mpan_mprn],

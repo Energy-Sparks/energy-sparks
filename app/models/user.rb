@@ -55,7 +55,6 @@ class User < ApplicationRecord
   belongs_to :staff_role, optional: true
   belongs_to :school_group, optional: true
   has_many :contacts
-  has_many :simulations, dependent: :destroy
   has_many :consent_grants, inverse_of: :user, dependent: :nullify
 
   has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
