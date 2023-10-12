@@ -17,13 +17,6 @@ Lint/ConstantDefinitionInBlock:
     - 'spec/services/alerts/adapters/analytics_adapter_spec.rb'
     - 'spec/system/schools/transport_surveys_spec.rb'
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: IgnoreEmptyBlocks, AllowUnusedKeywordArguments.
-Lint/UnusedBlockArgument:
-  Exclude:
-    - 'spec/support/shared_examples/school_groups.rb'
-
 # Offense count: 4
 # Configuration parameters: AsciiConstants.
 Naming/AsciiIdentifiers:
