@@ -61,6 +61,12 @@ class AmrReadingData
 
   private
 
+  def invalid_mpan_mprn?(mpan_mprn)
+    return unless mpan_mprn.present?
+
+    /^(\d)+$/.match?(mpan_mprn)
+  end
+
   def any_valid_readings?
     if valid_reading_count == 0
       errors.add(:reading_data, ERROR_NO_VALID_READINGS)
@@ -76,6 +82,7 @@ class AmrReadingData
 
       warnings << :missing_readings if missing_readings?(readings)
       warnings << :missing_mpan_mprn if reading[:mpan_mprn].blank?
+      warnings << :invalid_mpan_mprn if invalid_mpan_mprn?(reading[:mpan_mprn])
       warnings << :missing_reading_date if reading_date.blank?
       warnings << :duplicate_reading if duplicate_reading?(reading, @reading_data[index + 1..-1])
 

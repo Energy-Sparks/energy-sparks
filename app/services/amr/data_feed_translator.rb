@@ -34,10 +34,6 @@ module Amr
         mpan_mprn = meter ? meter.mpan_mprn.to_s : nil
       else
         mpan_mprn = fetch_from_row(:mpan_mprn_index, row)
-
-        # Error if the mpan_mprn is not numeric e.g. contains a '+'
-        raise DataFeedException.new("Invalid mpan_mprn '#{mpan_mprn}'") unless /^(\d)+$/.match?(mpan_mprn)
-
         meter = find_meter_by_mpan_mprn(mpan_mprn)
         meter_serial_number = meter ? meter.meter_serial_number.to_s : nil
       end
