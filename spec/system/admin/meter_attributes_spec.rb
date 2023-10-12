@@ -183,7 +183,7 @@ RSpec.describe "meter attribute management", :meters, type: :system do
 
       header = page.response_headers['Content-Disposition']
       expect(header).to match(/^attachment/)
-      expect(YAML.safe_load(page.source)[meter_attribute.meter.school.urn][:meter_attributes][meter_attribute.meter.mpan_mprn][:function]).to eq([:heating_only])
+      expect(YAML.load(page.source)[meter_attribute.meter.school.urn][:meter_attributes][meter_attribute.meter.mpan_mprn][:function]).to eq([:heating_only])
     end
 
     it 'allow the admin to manage global meter attributes' do

@@ -26,6 +26,9 @@ require:
 # - rubocop-factory_bot
 # - rubocop-rspec
 
+Security/YAMLLoad:
+  Exclude:
+    - 'spec/system/admin/meter_attributes_spec.rb'
 # Rails cops
 Security/Eval:
   Exclude:
