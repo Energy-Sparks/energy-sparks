@@ -117,8 +117,7 @@ RSpec.describe OnboardingMailer do
         title:            { other: "cy other title"},
         paragraph_1_html: { other: "cy other paragraph_1_html" },
         paragraph_2:      { other: "cy other paragraph_2" },
-        paragraph_3:      { other: "cy other paragraph_3" },
-      }
+        paragraph_3:      { other: "cy other paragraph_3" },}
     end
 
     before do

@@ -80,8 +80,8 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
     before { Onboarding::ReminderMailer.deliver(school_onboardings: onboardings) }
     context "two onboardings with the same contact email" do
       let(:onboardings) do
-        [ create(:school_onboarding, events: [], contact_email: 'test@test.com'),
-          create(:school_onboarding, events: [], contact_email: 'test@test.com') ]
+        [create(:school_onboarding, events: [], contact_email: 'test@test.com'),
+         create(:school_onboarding, events: [], contact_email: 'test@test.com')]
       end
 
       it "sends one email" do
@@ -100,8 +100,8 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
 
     context "two onboardings with different contact emails" do
       let(:onboardings) do
-        [ create(:school_onboarding, events: [], contact_email: 'email_a@test.com'),
-          create(:school_onboarding, events: [], contact_email: 'email_b@test.com')]
+        [create(:school_onboarding, events: [], contact_email: 'email_a@test.com'),
+         create(:school_onboarding, events: [], contact_email: 'email_b@test.com')]
       end
 
       it "sends seperate emails" do
@@ -122,9 +122,9 @@ RSpec.describe Onboarding::ReminderMailer, type: :service do
 
     context "three onboardings, two with the same contact emails" do
       let(:onboardings) do
-        [ create(:school_onboarding, events: [], contact_email: 'email_a@test.com'),
-          create(:school_onboarding, events: [], contact_email: 'email_b@test.com'),
-          create(:school_onboarding, events: [], contact_email: 'email_a@test.com')]
+        [create(:school_onboarding, events: [], contact_email: 'email_a@test.com'),
+         create(:school_onboarding, events: [], contact_email: 'email_b@test.com'),
+         create(:school_onboarding, events: [], contact_email: 'email_a@test.com')]
       end
 
       it "sends two emails" do
